@@ -2,17 +2,16 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Map, FileText, Building2, Menu, LogOut, User } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
-import { ThemeToggle } from '@/components/theme-toggle';
 import { useAuth } from '@/contexts/AuthContext';
 
 const navItems = [
-  { href: '/policies', label: 'Policies', icon: FileText },
-  { href: '/map', label: 'Map', icon: Map },
-  { href: '/agencies', label: 'Agencies', icon: Building2 },
+  { href: '/', label: 'Policies' },
+  { href: '/map', label: 'Map' },
+  { href: '/agencies', label: 'Agencies' },
 ];
 
 export function Header() {
@@ -25,122 +24,99 @@ export function Header() {
     router.push('/');
   };
 
+  const isActive = (href: string) => {
+    if (href === '/') return pathname === '/' || pathname.startsWith('/policies');
+    return pathname === href || pathname.startsWith(href + '/');
+  };
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto flex h-16 items-center px-4">
-        <Link href="/" className="flex items-center space-x-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <span className="text-lg font-bold">P</span>
-          </div>
-          <span className="text-xl font-bold">Policai</span>
+    <header className="sticky top-0 z-50 w-full border-b-2 border-foreground bg-background">
+      <div className="container mx-auto flex h-12 items-center px-4">
+        <Link href="/" className="font-sans text-lg font-bold tracking-wide uppercase">
+          Policai
         </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="ml-8 hidden md:flex items-center space-x-1">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  'flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md transition-colors',
-                  isActive
-                    ? 'bg-primary/10 text-primary'
-                    : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-                )}
-              >
-                <Icon className="h-4 w-4" />
-                {item.label}
-              </Link>
-            );
-          })}
+        <nav className="ml-8 hidden md:flex items-center gap-1">
+          {navItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={cn(
+                'px-3 py-1.5 text-sm font-medium transition-colors border-b-2 -mb-[2px]',
+                isActive(item.href)
+                  ? 'border-primary text-primary'
+                  : 'border-transparent text-muted-foreground hover:text-foreground'
+              )}
+            >
+              {item.label}
+            </Link>
+          ))}
         </nav>
 
-        <div className="ml-auto flex items-center space-x-2">
-          <ThemeToggle />
+        <div className="ml-auto flex items-center gap-4">
           {!isLoading && (
             <>
               {user ? (
-                <>
-                  <Button variant="outline" size="sm" asChild className="hidden md:flex">
-                    <Link href="/admin">Admin</Link>
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={handleSignOut}
-                    className="hidden md:flex items-center gap-2"
-                  >
-                    <LogOut className="h-4 w-4" />
-                    Sign Out
-                  </Button>
-                </>
-              ) : (
-                <Button variant="outline" size="sm" asChild className="hidden md:flex">
-                  <Link href="/admin/login">
-                    <User className="h-4 w-4 mr-2" />
-                    Admin Login
+                <div className="hidden md:flex items-center gap-3">
+                  <Link href="/admin" className="text-sm text-muted-foreground hover:text-foreground">
+                    Admin
                   </Link>
-                </Button>
+                  <button
+                    onClick={handleSignOut}
+                    className="text-sm text-muted-foreground hover:text-foreground"
+                  >
+                    Sign out
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  href="/admin/login"
+                  className="hidden md:block text-sm text-muted-foreground hover:text-foreground"
+                >
+                  Admin
+                </Link>
               )}
             </>
           )}
 
-          {/* Mobile Navigation */}
           <Sheet>
             <SheetTrigger asChild className="md:hidden">
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" className="h-8 w-8">
                 <Menu className="h-5 w-5" />
                 <span className="sr-only">Toggle menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[300px]">
-              <nav className="flex flex-col space-y-2 mt-8">
-                {navItems.map((item) => {
-                  const Icon = item.icon;
-                  const isActive = pathname === item.href;
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className={cn(
-                        'flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md transition-colors',
-                        isActive
-                          ? 'bg-primary/10 text-primary'
-                          : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-                      )}
-                    >
-                      <Icon className="h-5 w-5" />
-                      {item.label}
-                    </Link>
-                  );
-                })}
+            <SheetContent side="right" className="w-[250px]">
+              <nav className="flex flex-col gap-1 mt-8">
+                {navItems.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={cn(
+                      'px-3 py-2 text-sm font-medium rounded transition-colors',
+                      isActive(item.href)
+                        ? 'bg-muted text-foreground'
+                        : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
                 {user ? (
                   <>
-                    <Link
-                      href="/admin"
-                      className="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
-                    >
-                      <User className="h-5 w-5" />
+                    <Link href="/admin" className="px-3 py-2 text-sm text-muted-foreground hover:text-foreground">
                       Admin
                     </Link>
                     <button
                       onClick={handleSignOut}
-                      className="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md text-muted-foreground hover:bg-muted hover:text-foreground w-full text-left"
+                      className="px-3 py-2 text-sm text-left text-muted-foreground hover:text-foreground"
                     >
-                      <LogOut className="h-5 w-5" />
-                      Sign Out
+                      Sign out
                     </button>
                   </>
                 ) : (
-                  <Link
-                    href="/admin/login"
-                    className="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
-                  >
-                    <User className="h-5 w-5" />
-                    Admin Login
+                  <Link href="/admin/login" className="px-3 py-2 text-sm text-muted-foreground hover:text-foreground">
+                    Admin
                   </Link>
                 )}
               </nav>
