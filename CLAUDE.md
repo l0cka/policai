@@ -66,9 +66,7 @@ src/
 │   │   └── SettingsTab.tsx       # AI and database configuration
 │   ├── visualizations/           # AustraliaMap, Timeline, PolicyFrameworkMap
 │   ├── auth/ProtectedRoute.tsx   # Auth guard wrapper
-│   ├── home-search.tsx           # Homepage search component
-│   ├── theme-toggle.tsx          # Dark/light mode toggle
-│   └── theme-provider.tsx        # Theme context provider
+│   └── home-search.tsx           # Homepage search component
 ├── contexts/AuthContext.tsx       # Authentication state context
 ├── hooks/use-toast.ts            # Toast notification hook
 ├── lib/
@@ -126,7 +124,7 @@ import { cn } from '@/lib/utils'
 - Tailwind CSS utility classes for all styling
 - Use `cn()` from `@/lib/utils` to merge conditional Tailwind classes
 - Theme colors defined as CSS variables in `globals.css`
-- Dark mode supported via `next-themes` (class-based toggling)
+- Light-only theme with IBM Plex color system
 - shadcn/ui components follow New York style variant
 
 ### Adding UI Components
