@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { Map, FileText, ArrowRight, Building2, MapPin, CheckCircle2, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { HomeSearch } from '@/components/home-search';
 import {
@@ -23,10 +22,10 @@ const stats = {
 };
 
 const statusColors: Record<string, string> = {
-  proposed: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-  active: 'bg-green-100 text-green-800 border-green-200',
-  amended: 'bg-blue-100 text-blue-800 border-blue-200',
-  repealed: 'bg-gray-100 text-gray-800 border-gray-200',
+  proposed: 'bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/40 dark:text-yellow-300 dark:border-yellow-700',
+  active: 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/40 dark:text-green-300 dark:border-green-700',
+  amended: 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/40 dark:text-blue-300 dark:border-blue-700',
+  repealed: 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-800/40 dark:text-gray-300 dark:border-gray-600',
 };
 
 // Get recent policies sorted by updatedAt
@@ -143,37 +142,35 @@ export default function HomePage() {
               </Link>
             </Button>
           </div>
-          <div className="space-y-3">
+          <div className="space-y-2">
             {recentPolicies.map((policy) => (
-              <Link key={policy.id} href={`/policies/${policy.id}`}>
-                <Card className="hover:shadow-md hover:border-primary/30 transition-all">
-                  <CardContent className="flex items-center gap-4 p-4">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1 flex-wrap">
-                        <h3 className="font-medium truncate">{policy.title}</h3>
-                      </div>
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <Badge
-                          variant="outline"
-                          className={`text-xs ${statusColors[policy.status] || ''}`}
-                        >
-                          {POLICY_STATUS_NAMES[policy.status as PolicyStatus]}
-                        </Badge>
-                        <Badge variant="secondary" className="text-xs">
-                          {JURISDICTION_NAMES[policy.jurisdiction as Jurisdiction]}
-                        </Badge>
-                        <span className="text-xs text-muted-foreground flex items-center gap-1">
-                          <Calendar className="h-3 w-3" />
-                          {new Date(policy.effectiveDate).toLocaleDateString('en-AU', {
-                            year: 'numeric',
-                            month: 'short',
-                          })}
-                        </span>
-                      </div>
-                    </div>
-                    <ArrowRight className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                  </CardContent>
-                </Card>
+              <Link
+                key={policy.id}
+                href={`/policies/${policy.id}`}
+                className="flex items-center gap-4 p-4 rounded-lg border border-border bg-card hover:bg-accent hover:border-primary/30 transition-colors"
+              >
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-medium truncate mb-1">{policy.title}</h3>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <Badge
+                      variant="outline"
+                      className={`text-xs ${statusColors[policy.status] || ''}`}
+                    >
+                      {POLICY_STATUS_NAMES[policy.status as PolicyStatus]}
+                    </Badge>
+                    <Badge variant="secondary" className="text-xs">
+                      {JURISDICTION_NAMES[policy.jurisdiction as Jurisdiction]}
+                    </Badge>
+                    <span className="text-xs text-muted-foreground flex items-center gap-1">
+                      <Calendar className="h-3 w-3" />
+                      {new Date(policy.effectiveDate).toLocaleDateString('en-AU', {
+                        year: 'numeric',
+                        month: 'short',
+                      })}
+                    </span>
+                  </div>
+                </div>
+                <ArrowRight className="h-4 w-4 text-muted-foreground flex-shrink-0" />
               </Link>
             ))}
           </div>
