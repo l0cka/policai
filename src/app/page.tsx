@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { Search } from 'lucide-react';
 import { FilterSidebar } from '@/components/filter-sidebar';
 import { PolicyTable } from '@/components/policy-table';
@@ -8,15 +8,25 @@ import {
   JURISDICTION_NAMES,
   POLICY_TYPE_NAMES,
   POLICY_STATUS_NAMES,
+  type Policy,
 } from '@/types';
 
-import policiesData from '@/../public/data/sample-policies.json';
-
 export default function HomePage() {
+  const [policiesData, setPoliciesData] = useState<Policy[]>([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const searchRef = useRef<HTMLInputElement>(null);
   const [jurisdictionFilter, setJurisdictionFilter] = useState('all');
   const [typeFilter, setTypeFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
+
+  useEffect(() => {
+    fetch('/api/policies')
+      .then((res) => res.json())
+      .then((json) => setPoliciesData(json.data ?? []))
+      .catch((err) => console.error('Failed to load policies:', err))
+      .finally(() => setLoading(false));
+  }, []);
 
   const hasActiveFilters = jurisdictionFilter !== 'all' || typeFilter !== 'all' || statusFilter !== 'all';
 
@@ -40,7 +50,7 @@ export default function HomePage() {
         const matchesStatus = statusFilter === 'all' || p.status === statusFilter;
         return matchesSearch && matchesJurisdiction && matchesType && matchesStatus;
       });
-  }, [search, jurisdictionFilter, typeFilter, statusFilter]);
+  }, [policiesData, search, jurisdictionFilter, typeFilter, statusFilter]);
 
   const allPolicies = policiesData.filter((p) => p.status !== 'trashed');
   const jurisdictions = new Set(allPolicies.map((p) => p.jurisdiction));
@@ -85,6 +95,16 @@ export default function HomePage() {
     { label: 'jurisdictions', value: jurisdictions.size },
   ];
 
+  if (loading) {
+    return (
+      <div className="container mx-auto px-4 py-6">
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="animate-pulse text-muted-foreground">Loading policies...</div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto px-4 py-6">
       <div className="flex flex-col lg:flex-row gap-8">
@@ -100,16 +120,20 @@ export default function HomePage() {
           <div className="relative mb-5">
             <Search className="absolute left-0 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <input
+              ref={searchRef}
               type="search"
               placeholder="Search policies..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-7 pr-2 py-2 text-sm bg-transparent border-b border-border focus:border-foreground focus:outline-none transition-colors placeholder:text-muted-foreground"
+              className="w-full pl-7 pr-16 py-2 text-sm bg-transparent border-b border-border focus:border-foreground focus:outline-none transition-colors placeholder:text-muted-foreground"
             />
+            <kbd className="absolute right-0 top-1/2 -translate-y-1/2 hidden sm:inline-flex items-center gap-0.5 font-mono text-[10px] text-muted-foreground/60 border border-border rounded px-1.5 py-0.5">
+              <span className="text-xs">&#8984;</span>K
+            </kbd>
           </div>
 
           {/* Count */}
-          <div className="font-mono text-xs text-muted-foreground mb-3">
+          <div className="font-mono text-xs text-muted-foreground mb-3" aria-live="polite">
             Showing {filteredPolicies.length} of {allPolicies.length} policies
           </div>
 

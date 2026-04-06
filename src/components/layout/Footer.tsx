@@ -7,12 +7,14 @@ export function Footer() {
         <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 font-mono text-xs text-muted-foreground">
           <span>&copy; {new Date().getFullYear()} Policai</span>
           <span className="hidden sm:inline">&middot;</span>
-          <Link href="/about" className="hover:text-foreground transition-colors">About</Link>
+          <Link href="/policies" className="hover:text-foreground transition-colors">Policies</Link>
           <span className="hidden sm:inline">&middot;</span>
-          <Link href="/methodology" className="hover:text-foreground transition-colors">Methodology</Link>
+          <Link href="/map" className="hover:text-foreground transition-colors">Map</Link>
+          <span className="hidden sm:inline">&middot;</span>
+          <Link href="/agencies" className="hover:text-foreground transition-colors">Agencies</Link>
           <span className="hidden sm:inline">&middot;</span>
           <a
-            href="https://github.com"
+            href="https://github.com/l0cka/policai"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-foreground transition-colors"

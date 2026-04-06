@@ -15,7 +15,7 @@ import {
   BackgroundVariant,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -46,9 +46,6 @@ import {
   Network,
   GitBranch,
   BarChart3,
-  ZoomIn,
-  ZoomOut,
-  Maximize2,
 } from 'lucide-react';
 import {
   JURISDICTION_NAMES,
@@ -57,10 +54,9 @@ import {
   type Jurisdiction,
   type PolicyType,
   type PolicyStatus,
+  type Policy,
+  type Agency,
 } from '@/types';
-
-import policiesData from '@/../public/data/sample-policies.json';
-import agenciesData from '@/../public/data/sample-agencies.json';
 
 type NodeType = 'policy' | 'agency' | 'jurisdiction';
 
@@ -69,35 +65,17 @@ interface NodeData extends Record<string, unknown> {
   type: NodeType;
   status?: string;
   policyType?: string;
-  originalData: (typeof policiesData)[0] | (typeof agenciesData)[0] | { jurisdiction: Jurisdiction };
+  originalData: Policy | Agency | { jurisdiction: Jurisdiction };
 }
-
-// Node color configurations - CSS custom properties for theme awareness
-const NODE_COLORS = {
-  jurisdiction: {
-    bg: 'hsl(var(--chart-1))',
-    border: 'hsl(var(--chart-1))',
-    text: 'white',
-  },
-  agency: {
-    bg: 'hsl(var(--chart-4))',
-    border: 'hsl(var(--chart-4))',
-    text: 'hsl(var(--foreground))',
-  },
-  policy: {
-    active: { bg: '#22c55e', border: '#16a34a' },
-    proposed: { bg: '#f59e0b', border: '#d97706' },
-    amended: { bg: '#3b82f6', border: '#2563eb' },
-    repealed: { bg: '#6b7280', border: '#4b5563' },
-  },
-};
 
 // Improved layout algorithm with hierarchical positioning grouped by jurisdiction
 function generateGraphData(
   filterJurisdiction: string,
   filterStatus: string,
   filterType: string,
-  searchQuery: string
+  searchQuery: string,
+  policiesData: Policy[],
+  agenciesData: Agency[],
 ) {
   const nodes: Node<NodeData>[] = [];
   const edges: Edge[] = [];
@@ -318,7 +296,8 @@ function calculateStats(
   filterJurisdiction: string,
   filterStatus: string,
   filterType: string,
-  searchQuery: string
+  searchQuery: string,
+  policiesData: Policy[],
 ) {
   const filteredPolicies = policiesData.filter((p) => {
     const matchesJurisdiction = filterJurisdiction === 'all' || p.jurisdiction === filterJurisdiction;
@@ -344,6 +323,9 @@ function calculateStats(
 }
 
 export default function NetworkPage() {
+  const [policiesData, setPoliciesData] = useState<Policy[]>([]);
+  const [agenciesData, setAgenciesData] = useState<Agency[]>([]);
+  const [dataLoading, setDataLoading] = useState(true);
   const [filterJurisdiction, setFilterJurisdiction] = useState<string>('all');
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [filterType, setFilterType] = useState<string>('all');
@@ -351,16 +333,29 @@ export default function NetworkPage() {
   const [selectedNode, setSelectedNode] = useState<Node<NodeData> | null>(null);
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
 
+  useEffect(() => {
+    Promise.all([
+      fetch('/api/policies').then((r) => r.json()),
+      fetch('/api/agencies').then((r) => r.json()),
+    ])
+      .then(([policiesJson, agenciesJson]) => {
+        setPoliciesData(policiesJson.data ?? []);
+        setAgenciesData(agenciesJson.data ?? []);
+      })
+      .catch((err) => console.error('Failed to load network data:', err))
+      .finally(() => setDataLoading(false));
+  }, []);
+
   // Generate graph data based on filters
   const { nodes: graphNodes, edges: graphEdges } = useMemo(
-    () => generateGraphData(filterJurisdiction, filterStatus, filterType, searchQuery),
-    [filterJurisdiction, filterStatus, filterType, searchQuery]
+    () => generateGraphData(filterJurisdiction, filterStatus, filterType, searchQuery, policiesData, agenciesData),
+    [filterJurisdiction, filterStatus, filterType, searchQuery, policiesData, agenciesData]
   );
 
   // Calculate statistics
   const stats = useMemo(
-    () => calculateStats(filterJurisdiction, filterStatus, filterType, searchQuery),
-    [filterJurisdiction, filterStatus, filterType, searchQuery]
+    () => calculateStats(filterJurisdiction, filterStatus, filterType, searchQuery, policiesData),
+    [filterJurisdiction, filterStatus, filterType, searchQuery, policiesData]
   );
 
   const [nodes, setNodes, onNodesChange] = useNodesState(graphNodes);
@@ -450,6 +445,16 @@ export default function NetworkPage() {
         return '#6b7280';
     }
   };
+
+  if (dataLoading) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="animate-pulse text-muted-foreground">Loading network data...</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -762,63 +767,63 @@ export default function NetworkPage() {
               <ScrollArea className="max-h-[400px] mt-4">
                 <div className="space-y-4">
                   <h3 className="font-semibold">
-                    {(selectedNode.data.originalData as (typeof policiesData)[0]).title}
+                    {(selectedNode.data.originalData as Policy).title}
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     <Badge
                       variant={
-                        (selectedNode.data.originalData as (typeof policiesData)[0]).status === 'active'
+                        (selectedNode.data.originalData as Policy).status === 'active'
                           ? 'default'
                           : 'secondary'
                       }
                       className={
-                        (selectedNode.data.originalData as (typeof policiesData)[0]).status === 'active'
+                        (selectedNode.data.originalData as Policy).status === 'active'
                           ? 'bg-green-500 hover:bg-green-600'
                           : ''
                       }
                     >
                       {
                         POLICY_STATUS_NAMES[
-                          (selectedNode.data.originalData as (typeof policiesData)[0]).status as PolicyStatus
+                          (selectedNode.data.originalData as Policy).status as PolicyStatus
                         ]
                       }
                     </Badge>
                     <Badge variant="outline">
                       {
                         POLICY_TYPE_NAMES[
-                          (selectedNode.data.originalData as (typeof policiesData)[0]).type as PolicyType
+                          (selectedNode.data.originalData as Policy).type as PolicyType
                         ]
                       }
                     </Badge>
                     <Badge variant="secondary">
                       {
                         JURISDICTION_NAMES[
-                          (selectedNode.data.originalData as (typeof policiesData)[0]).jurisdiction as Jurisdiction
+                          (selectedNode.data.originalData as Policy).jurisdiction as Jurisdiction
                         ]
                       }
                     </Badge>
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    {(selectedNode.data.originalData as (typeof policiesData)[0]).description}
+                    {(selectedNode.data.originalData as Policy).description}
                   </p>
-                  {(selectedNode.data.originalData as (typeof policiesData)[0]).aiSummary && (
+                  {(selectedNode.data.originalData as Policy).aiSummary && (
                     <div className="p-4 bg-muted rounded-lg">
                       <h4 className="text-sm font-medium mb-2">AI Summary</h4>
                       <p className="text-sm text-muted-foreground">
-                        {(selectedNode.data.originalData as (typeof policiesData)[0]).aiSummary}
+                        {(selectedNode.data.originalData as Policy).aiSummary}
                       </p>
                     </div>
                   )}
                   <div className="flex flex-wrap gap-2">
-                    {(selectedNode.data.originalData as (typeof policiesData)[0]).tags?.map((tag) => (
+                    {(selectedNode.data.originalData as Policy).tags?.map((tag) => (
                       <Badge key={tag} variant="outline" className="text-xs">
                         {tag}
                       </Badge>
                     ))}
                   </div>
-                  {(selectedNode.data.originalData as (typeof policiesData)[0]).sourceUrl && (
+                  {(selectedNode.data.originalData as Policy).sourceUrl && (
                     <a
-                      href={(selectedNode.data.originalData as (typeof policiesData)[0]).sourceUrl}
+                      href={(selectedNode.data.originalData as Policy).sourceUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-sm text-primary hover:underline inline-flex items-center gap-1"
@@ -847,41 +852,41 @@ export default function NetworkPage() {
               </DialogHeader>
               <div className="space-y-4 mt-4">
                 <h3 className="font-semibold">
-                  {(selectedNode.data.originalData as (typeof agenciesData)[0]).name}
+                  {(selectedNode.data.originalData as Agency).name}
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="default">
-                    {(selectedNode.data.originalData as (typeof agenciesData)[0]).acronym}
+                    {(selectedNode.data.originalData as Agency).acronym}
                   </Badge>
                   <Badge variant="outline">
-                    {(selectedNode.data.originalData as (typeof agenciesData)[0]).level}
+                    {(selectedNode.data.originalData as Agency).level}
                   </Badge>
                   <Badge variant="secondary">
                     {
                       JURISDICTION_NAMES[
-                        (selectedNode.data.originalData as (typeof agenciesData)[0]).jurisdiction as Jurisdiction
+                        (selectedNode.data.originalData as Agency).jurisdiction as Jurisdiction
                       ]
                     }
                   </Badge>
                 </div>
-                {(selectedNode.data.originalData as (typeof agenciesData)[0]).aiTransparencyStatement && (
+                {(selectedNode.data.originalData as Agency).aiTransparencyStatement && (
                   <div className="p-4 bg-muted rounded-lg">
                     <h4 className="text-sm font-medium mb-2">AI Transparency Statement</h4>
                     <p className="text-sm text-muted-foreground">
-                      {(selectedNode.data.originalData as (typeof agenciesData)[0]).aiTransparencyStatement}
+                      {(selectedNode.data.originalData as Agency).aiTransparencyStatement}
                     </p>
                   </div>
                 )}
-                {(selectedNode.data.originalData as (typeof agenciesData)[0]).aiUsageDisclosure && (
+                {(selectedNode.data.originalData as Agency).aiUsageDisclosure && (
                   <div className="p-4 bg-blue-500/10 rounded-lg border border-blue-500/20">
                     <h4 className="text-sm font-medium mb-2">AI Usage Disclosure</h4>
                     <p className="text-sm text-muted-foreground">
-                      {(selectedNode.data.originalData as (typeof agenciesData)[0]).aiUsageDisclosure}
+                      {(selectedNode.data.originalData as Agency).aiUsageDisclosure}
                     </p>
                   </div>
                 )}
                 <a
-                  href={(selectedNode.data.originalData as (typeof agenciesData)[0]).website}
+                  href={(selectedNode.data.originalData as Agency).website}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm text-primary hover:underline inline-flex items-center gap-1"

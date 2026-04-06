@@ -10,32 +10,34 @@ import {
   type Jurisdiction,
   type PolicyStatus,
   type PolicyType,
+  type Policy,
 } from '@/types';
 
-import policiesData from '@/../public/data/sample-policies.json';
-import agenciesData from '@/../public/data/sample-agencies.json';
-
-const STATUS_COLORS: Record<string, string> = {
-  active: 'text-green-700',
-  proposed: 'text-amber-600',
-  amended: 'text-blue-700',
-  repealed: 'text-gray-500',
-};
+import { STATUS_COLORS } from '@/lib/design-tokens';
 
 export default function MapPage() {
+  const [policiesData, setPoliciesData] = useState<Policy[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedJurisdiction, setSelectedJurisdiction] = useState<Jurisdiction | null>(null);
-  const [hoveredJurisdiction, setHoveredJurisdiction] = useState<Jurisdiction | null>(null);
+  const [, setHoveredJurisdiction] = useState<Jurisdiction | null>(null);
   const [panelVisible, setPanelVisible] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Animate panel in/out when selection changes
+  // Load data
+  useEffect(() => {
+    fetch('/api/policies')
+      .then((res) => res.json())
+      .then((json) => setPoliciesData(json.data ?? []))
+      .catch((err) => console.error('Failed to load map data:', err))
+      .finally(() => setLoading(false));
+  }, []);
+
+  // Animate panel in when selection changes
   useEffect(() => {
     if (selectedJurisdiction) {
       // Small delay for the spring-in effect
       requestAnimationFrame(() => setPanelVisible(true));
-    } else {
-      setPanelVisible(false);
     }
   }, [selectedJurisdiction]);
 
@@ -61,12 +63,12 @@ export default function MapPage() {
     });
 
     return data;
-  }, []);
+  }, [policiesData]);
 
   const selectedPolicies = useMemo(() => {
     if (!selectedJurisdiction) return [];
     return policiesData.filter((p) => p.jurisdiction === selectedJurisdiction && p.status !== 'trashed');
-  }, [selectedJurisdiction]);
+  }, [selectedJurisdiction, policiesData]);
 
   const handleJurisdictionClick = (j: Jurisdiction) => {
     // Clear any pending close timer so a stale timeout can't clear a new selection
@@ -87,6 +89,14 @@ export default function MapPage() {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="h-[calc(100vh-4rem)] flex items-center justify-center">
+        <div className="animate-pulse text-muted-foreground">Loading map data...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="h-[calc(100vh-4rem)] flex overflow-hidden relative">
       {/* Map area — takes full width, panel overlays */}
@@ -102,14 +112,18 @@ export default function MapPage() {
       {/* Sliding policy panel */}
       <div
         ref={panelRef}
-        className="absolute top-0 right-0 h-[calc(100vh-4rem)] w-[340px] border-l border-border bg-background z-10 flex flex-col overflow-hidden"
-        style={{
-          transform: panelVisible ? 'translateX(0)' : 'translateX(100%)',
-          transition: 'transform 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
-        }}
+        className={`absolute md:top-0 md:right-0 md:h-[calc(100vh-4rem)] md:w-[340px] md:border-l bottom-0 left-0 right-0 max-h-[60vh] md:max-h-none border-t md:border-t-0 border-border bg-background z-10 flex flex-col overflow-hidden rounded-t-xl md:rounded-none transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          panelVisible
+            ? 'translate-y-0 md:translate-y-0 md:translate-x-0'
+            : 'translate-y-full md:translate-y-0 md:translate-x-full'
+        }`}
       >
         {selectedJurisdiction && (
           <>
+            {/* Mobile drag handle */}
+            <div className="md:hidden flex justify-center py-2 flex-shrink-0">
+              <div className="w-10 h-1 rounded-full bg-border" />
+            </div>
             {/* Panel header */}
             <div className="p-5 border-b border-border flex-shrink-0">
               <div className="flex items-center justify-between mb-1">
@@ -189,9 +203,12 @@ export default function MapPage() {
       </div>
 
       {/* Bottom summary bar */}
-      <div className="absolute bottom-0 left-0 border-t border-border bg-background/90 backdrop-blur-sm px-5 py-2 z-5" style={{ right: panelVisible ? '340px' : '0', transition: 'right 0.35s cubic-bezier(0.16, 1, 0.3, 1)' }}>
-        <div className="font-mono text-xs text-muted-foreground">
+      <div className="absolute bottom-0 left-0 right-0 md:right-auto border-t border-border bg-background/90 backdrop-blur-sm px-5 py-2 z-5" style={{ ...(panelVisible ? { right: undefined } : {}), transition: 'right 0.35s cubic-bezier(0.16, 1, 0.3, 1)' }}>
+        <div className="font-mono text-xs text-muted-foreground" aria-live="polite">
           {policiesData.filter(p => p.status !== 'trashed').length} policies across {Object.keys(jurisdictionData).length} jurisdictions
+          {selectedJurisdiction && (
+            <span> &middot; Viewing {JURISDICTION_NAMES[selectedJurisdiction]}</span>
+          )}
         </div>
       </div>
     </div>

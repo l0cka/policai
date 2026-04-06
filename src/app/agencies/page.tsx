@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Search } from 'lucide-react';
 import {
   Select,
@@ -9,23 +9,32 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-
-import commonwealthAgenciesData from '@/../public/data/commonwealth-agencies.json';
+import type { Agency } from '@/types';
 
 export default function AgenciesPage() {
+  const [agencies, setAgencies] = useState<Agency[]>([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [statementFilter, setStatementFilter] = useState<string>('all');
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
-  const stats = useMemo(() => {
-    const total = commonwealthAgenciesData.length;
-    const withStatements = commonwealthAgenciesData.filter((a) => a.hasPublishedStatement).length;
-    const withoutStatements = total - withStatements;
-    return { total, withStatements, withoutStatements };
+  useEffect(() => {
+    fetch('/api/agencies?commonwealth=true')
+      .then((res) => res.json())
+      .then((json) => setAgencies(json.data ?? []))
+      .catch((err) => console.error('Failed to load agencies:', err))
+      .finally(() => setLoading(false));
   }, []);
 
+  const stats = useMemo(() => {
+    const total = agencies.length;
+    const withStatements = agencies.filter((a) => a.hasPublishedStatement).length;
+    const withoutStatements = total - withStatements;
+    return { total, withStatements, withoutStatements };
+  }, [agencies]);
+
   const filteredAgencies = useMemo(() => {
-    return commonwealthAgenciesData.filter((agency) => {
+    return agencies.filter((agency) => {
       const matchesSearch =
         search === '' ||
         agency.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -38,12 +47,20 @@ export default function AgenciesPage() {
 
       return matchesSearch && matchesStatement;
     });
-  }, [search, statementFilter]);
+  }, [search, statementFilter, agencies]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="animate-pulse text-muted-foreground">Loading agencies...</div>
+      </div>
+    );
+  }
 
   return (
-    <div className="flex min-h-[calc(100vh-8rem)] max-w-screen-xl mx-auto">
-      {/* Sidebar */}
-      <aside className="w-60 shrink-0 border-r border-border p-6 space-y-6">
+    <div className="flex flex-col md:flex-row min-h-[calc(100vh-8rem)] max-w-screen-xl mx-auto">
+      {/* Sidebar - horizontal on mobile, vertical on desktop */}
+      <aside className="w-full md:w-60 shrink-0 md:border-r border-b md:border-b-0 border-border p-4 md:p-6 space-y-4 md:space-y-6">
         <div className="relative">
           <Search className="absolute left-0 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
           <input

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import type { Jurisdiction } from '@/types';
 
@@ -140,7 +140,6 @@ export function AustraliaMap({
     }
   }, []);
 
-  const activeJurisdiction = hoveredJurisdiction || selectedJurisdiction;
   const tooltipData = hoveredJurisdiction ? data[hoveredJurisdiction] : null;
 
   return (

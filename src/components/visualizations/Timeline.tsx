@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
-import { JURISDICTION_NAMES, type Jurisdiction } from '@/types';
+import { JURISDICTION_NAMES, type Jurisdiction, type TimelineEvent } from '@/types';
 import {
   FileText,
   Edit,
@@ -13,17 +13,6 @@ import {
   Flag,
   Circle,
 } from 'lucide-react';
-
-interface TimelineEvent {
-  id: string;
-  date: string;
-  title: string;
-  description: string;
-  type: 'policy_introduced' | 'policy_amended' | 'policy_repealed' | 'announcement' | 'milestone';
-  jurisdiction: Jurisdiction;
-  relatedPolicyId?: string;
-  sourceUrl?: string;
-}
 
 interface TimelineProps {
   events: TimelineEvent[];

@@ -11,24 +11,19 @@ import {
   type PolicyStatus,
 } from '@/types';
 
+import { STATUS_COLORS } from '@/lib/design-tokens';
+
 interface PolicyRow {
   id: string;
   title: string;
   jurisdiction: string;
   type: string;
   status: string;
-  effectiveDate: string;
+  effectiveDate: string | Date;
 }
 
 type SortField = 'title' | 'jurisdiction' | 'type' | 'status' | 'effectiveDate';
 type SortDirection = 'asc' | 'desc';
-
-const STATUS_COLORS: Record<string, string> = {
-  active: 'text-green-700',
-  proposed: 'text-amber-600',
-  amended: 'text-blue-700',
-  repealed: 'text-gray-500',
-};
 
 function SortIndicator({ field, current, direction }: { field: SortField; current: SortField; direction: SortDirection }) {
   if (field !== current) return <span className="text-transparent ml-1">&uarr;</span>;
@@ -42,6 +37,8 @@ interface PolicyTableProps {
 export function PolicyTable({ policies }: PolicyTableProps) {
   const [sortField, setSortField] = useState<SortField>('title');
   const [sortDir, setSortDir] = useState<SortDirection>('asc');
+  const [page, setPage] = useState(0);
+  const pageSize = 20;
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -53,15 +50,22 @@ export function PolicyTable({ policies }: PolicyTableProps) {
   };
 
   const sorted = [...policies].sort((a, b) => {
-    const aVal = a[sortField] || '';
-    const bVal = b[sortField] || '';
+    const aRaw = a[sortField];
+    const bRaw = b[sortField];
+    const aVal = aRaw instanceof Date ? aRaw.toISOString() : (aRaw || '');
+    const bVal = bRaw instanceof Date ? bRaw.toISOString() : (bRaw || '');
     const cmp = aVal.localeCompare(bVal);
     return sortDir === 'asc' ? cmp : -cmp;
   });
 
-  const formatDate = (dateStr: string) => {
+  const totalPages = Math.ceil(sorted.length / pageSize);
+  // Clamp page to valid range (auto-resets when filters shrink the list)
+  const safePage = totalPages > 0 ? Math.min(page, totalPages - 1) : 0;
+  const paged = sorted.slice(safePage * pageSize, (safePage + 1) * pageSize);
+
+  const formatDate = (dateStr: string | Date) => {
     if (!dateStr) return '\u2014';
-    const d = new Date(dateStr);
+    const d = dateStr instanceof Date ? dateStr : new Date(dateStr);
     return d.toLocaleDateString('en-AU', { month: 'short', year: 'numeric' });
   };
 
@@ -91,7 +95,7 @@ export function PolicyTable({ policies }: PolicyTableProps) {
           </tr>
         </thead>
         <tbody>
-          {sorted.map((policy) => (
+          {paged.map((policy) => (
             <tr key={policy.id} className="border-b border-border hover:bg-[#f0efed] transition-colors">
               <td className="py-3 pr-4">
                 <Link
@@ -120,7 +124,7 @@ export function PolicyTable({ policies }: PolicyTableProps) {
               </td>
             </tr>
           ))}
-          {sorted.length === 0 && (
+          {paged.length === 0 && (
             <tr>
               <td colSpan={5} className="py-8 text-center text-sm text-muted-foreground">
                 No policies match the current filters.
@@ -129,6 +133,31 @@ export function PolicyTable({ policies }: PolicyTableProps) {
           )}
         </tbody>
       </table>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between pt-4 border-t border-border mt-2">
+          <div className="font-mono text-xs text-muted-foreground">
+            Page {safePage + 1} of {totalPages}
+          </div>
+          <div className="flex gap-1">
+            <button
+              onClick={() => setPage(Math.max(0, safePage - 1))}
+              disabled={safePage === 0}
+              className="font-mono text-xs px-3 py-1.5 rounded border border-border hover:bg-muted disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+            >
+              Prev
+            </button>
+            <button
+              onClick={() => setPage(Math.min(totalPages - 1, safePage + 1))}
+              disabled={safePage >= totalPages - 1}
+              className="font-mono text-xs px-3 py-1.5 rounded border border-border hover:bg-muted disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

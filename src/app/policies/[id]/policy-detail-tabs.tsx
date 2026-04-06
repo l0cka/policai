@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, Copy, Check, FileText } from 'lucide-react';
 import {
   JURISDICTION_NAMES,
   POLICY_TYPE_NAMES,
@@ -12,13 +12,8 @@ import {
   type PolicyType,
   type PolicyStatus,
 } from '@/types';
-
-const STATUS_COLORS: Record<string, string> = {
-  active: 'text-green-700',
-  proposed: 'text-amber-600',
-  amended: 'text-blue-700',
-  repealed: 'text-gray-500',
-};
+import { STATUS_COLORS } from '@/lib/design-tokens';
+import { EmptyState } from '@/components/ui/empty-state';
 
 interface PolicyDetailTabsProps {
   policy: Policy;
@@ -125,15 +120,31 @@ export function PolicyDetailTabs({ policy, relatedPolicies }: PolicyDetailTabsPr
       )}
 
       {activeTab === 'content' && (
-        <div className="text-sm leading-relaxed whitespace-pre-wrap max-w-[720px]">
-          {policy.content || 'No detailed content available.'}
+        <div className="max-w-[720px]">
+          {policy.content ? (
+            <div className="relative group">
+              <CopyButton text={policy.content} />
+              <div className="text-sm leading-relaxed whitespace-pre-wrap font-serif">
+                {policy.content}
+              </div>
+            </div>
+          ) : (
+            <EmptyState
+              icon={FileText}
+              title="No content available"
+              description="Detailed policy content has not been added yet."
+            />
+          )}
         </div>
       )}
 
       {activeTab === 'related' && (
         <div>
           {relatedPolicies.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No related policies found.</p>
+            <EmptyState
+              title="No related policies"
+              description="No other policies share the same jurisdiction and tags."
+            />
           ) : (
             <div className="border-t border-border">
               {relatedPolicies.map((rp) => (
@@ -160,5 +171,22 @@ export function PolicyDetailTabs({ policy, relatedPolicies }: PolicyDetailTabsPr
         </div>
       )}
     </div>
+  );
+}
+
+function CopyButton({ text }: { text: string }) {
+  const [copied, setCopied] = useState(false);
+  return (
+    <button
+      onClick={() => {
+        navigator.clipboard.writeText(text);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      }}
+      className="absolute top-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity p-2 text-muted-foreground hover:text-foreground"
+      aria-label="Copy content"
+    >
+      {copied ? <Check className="h-4 w-4 text-green-600" /> : <Copy className="h-4 w-4" />}
+    </button>
   );
 }

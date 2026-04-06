@@ -1,19 +1,11 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import path from 'path';
 import { type Policy } from '@/types';
-import { readJsonFile } from '@/lib/file-store';
+import { getPolicyById, getPolicies } from '@/lib/data-service';
 import { PolicyDetailTabs } from './policy-detail-tabs';
 
-const POLICIES_FILE = path.join(process.cwd(), 'public', 'data', 'sample-policies.json');
-
-async function getPolicy(id: string): Promise<Policy | null> {
-  const policies = await readJsonFile<Policy[]>(POLICIES_FILE, []);
-  return policies.find(p => p.id === id) || null;
-}
-
 async function getRelatedPolicies(currentPolicy: Policy): Promise<Policy[]> {
-  const policies = await readJsonFile<Policy[]>(POLICIES_FILE, []);
+  const policies = await getPolicies();
   return policies
     .filter(p => p.id !== currentPolicy.id && p.status !== 'trashed')
     .filter(p =>
@@ -23,14 +15,9 @@ async function getRelatedPolicies(currentPolicy: Policy): Promise<Policy[]> {
     .slice(0, 3);
 }
 
-export async function generateStaticParams() {
-  const policies = await readJsonFile<Policy[]>(POLICIES_FILE, []);
-  return policies.map(policy => ({ id: policy.id }));
-}
-
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const policy = await getPolicy(id);
+  const policy = await getPolicyById(id);
   if (!policy) return { title: 'Policy Not Found — Policai' };
   return {
     title: `${policy.title} — Policai`,
@@ -41,7 +28,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
 export default async function PolicyDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const policy = await getPolicy(id);
+  const policy = await getPolicyById(id);
   if (!policy) notFound();
 
   const relatedPolicies = await getRelatedPolicies(policy);

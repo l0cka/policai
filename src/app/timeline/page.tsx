@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { Filter, ArrowRight, Calendar } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -24,44 +24,40 @@ import { Timeline } from '@/components/visualizations/Timeline';
 import {
   JURISDICTION_NAMES,
   POLICY_TYPE_NAMES,
-  type Jurisdiction,
   type PolicyType,
+  type Policy,
+  type TimelineEvent,
 } from '@/types';
 
-import timelineData from '@/../public/data/sample-timeline.json';
-import policiesData from '@/../public/data/sample-policies.json';
-
-type TimelineEventType =
-  | 'policy_introduced'
-  | 'policy_amended'
-  | 'policy_repealed'
-  | 'announcement'
-  | 'milestone';
-
-interface TimelineEvent {
-  id: string;
-  date: string;
-  title: string;
-  description: string;
-  type: TimelineEventType;
-  jurisdiction: Jurisdiction;
-  relatedPolicyId?: string;
-  sourceUrl?: string;
-}
-
 export default function TimelinePage() {
+  const [timelineData, setTimelineData] = useState<TimelineEvent[]>([]);
+  const [policiesData, setPoliciesData] = useState<Policy[]>([]);
+  const [loading, setLoading] = useState(true);
   const [jurisdictionFilter, setJurisdictionFilter] = useState<string>('all');
   const [typeFilter, setTypeFilter] = useState<string>('all');
   const [selectedEvent, setSelectedEvent] = useState<TimelineEvent | null>(null);
 
+  useEffect(() => {
+    Promise.all([
+      fetch('/api/timeline').then((r) => r.json()),
+      fetch('/api/policies').then((r) => r.json()),
+    ])
+      .then(([timelineJson, policiesJson]) => {
+        setTimelineData(timelineJson.data ?? []);
+        setPoliciesData(policiesJson.data ?? []);
+      })
+      .catch((err) => console.error('Failed to load timeline data:', err))
+      .finally(() => setLoading(false));
+  }, []);
+
   const filteredEvents = useMemo(() => {
-    return (timelineData as TimelineEvent[]).filter((event) => {
+    return timelineData.filter((event) => {
       const matchesJurisdiction =
         jurisdictionFilter === 'all' || event.jurisdiction === jurisdictionFilter;
       const matchesType = typeFilter === 'all' || event.type === typeFilter;
       return matchesJurisdiction && matchesType;
     });
-  }, [jurisdictionFilter, typeFilter]);
+  }, [jurisdictionFilter, typeFilter, timelineData]);
 
   // Get related policy details
   const relatedPolicy = selectedEvent?.relatedPolicyId
@@ -78,7 +74,17 @@ export default function TimelinePage() {
       jurisdictions: jurisdictions.size,
       policyEvents: timelineData.filter((e) => e.type.startsWith('policy_')).length,
     };
-  }, []);
+  }, [timelineData]);
+
+  if (loading) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="animate-pulse text-muted-foreground">Loading timeline...</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
