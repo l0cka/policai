@@ -44,6 +44,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# supabase local state
+supabase/.temp/
+
 # scraper logs and state
 /logs/
 /data/scraper-state.json
