@@ -448,7 +448,7 @@ export default function NetworkPage() {
 
   if (dataLoading) {
     return (
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto max-w-7xl px-4 py-8 md:py-10">
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="animate-pulse text-muted-foreground">Loading network data...</div>
         </div>
@@ -457,69 +457,69 @@ export default function NetworkPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto max-w-7xl px-4 py-8 md:py-10">
       {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center gap-3 mb-2">
-          <div className="p-2 rounded-lg bg-primary/10">
+      <div className="mb-8 space-y-2">
+        <div className="flex items-center gap-3">
+          <div className="rounded-xl bg-primary/10 p-3">
             <Network className="h-6 w-6 text-primary" />
           </div>
-          <h1 className="text-3xl font-bold">Relationship Network</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Relationship Network</h1>
         </div>
-        <p className="text-muted-foreground">
+        <p className="max-w-3xl text-muted-foreground">
           Visualise connections between AI policies, government agencies, and jurisdictions across Australia
         </p>
       </div>
 
       {/* Statistics Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <Card className="bg-gradient-to-br from-indigo-500/10 to-indigo-500/5 border-indigo-500/20">
+        <Card className="border-indigo-500/15 bg-indigo-500/5 shadow-sm">
           <CardContent className="pt-4 pb-3">
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-lg bg-indigo-500/20">
                 <Map className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
               </div>
               <div>
-                <div className="text-2xl font-bold">{stats.jurisdictions}</div>
+                <div className="text-2xl font-bold tabular-nums">{stats.jurisdictions}</div>
                 <p className="text-xs text-muted-foreground">Jurisdictions</p>
               </div>
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-gradient-to-br from-green-500/10 to-green-500/5 border-green-500/20">
+        <Card className="border-green-500/15 bg-green-500/5 shadow-sm">
           <CardContent className="pt-4 pb-3">
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-lg bg-green-500/20">
                 <FileText className="h-4 w-4 text-green-600 dark:text-green-400" />
               </div>
               <div>
-                <div className="text-2xl font-bold">{stats.activePolicies}</div>
+                <div className="text-2xl font-bold tabular-nums">{stats.activePolicies}</div>
                 <p className="text-xs text-muted-foreground">Active Policies</p>
               </div>
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-gradient-to-br from-amber-500/10 to-amber-500/5 border-amber-500/20">
+        <Card className="border-amber-500/15 bg-amber-500/5 shadow-sm">
           <CardContent className="pt-4 pb-3">
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-lg bg-amber-500/20">
                 <GitBranch className="h-4 w-4 text-amber-600 dark:text-amber-400" />
               </div>
               <div>
-                <div className="text-2xl font-bold">{stats.proposedPolicies}</div>
+                <div className="text-2xl font-bold tabular-nums">{stats.proposedPolicies}</div>
                 <p className="text-xs text-muted-foreground">Proposed</p>
               </div>
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-gradient-to-br from-purple-500/10 to-purple-500/5 border-purple-500/20">
+        <Card className="border-purple-500/15 bg-purple-500/5 shadow-sm">
           <CardContent className="pt-4 pb-3">
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-lg bg-purple-500/20">
                 <BarChart3 className="h-4 w-4 text-purple-600 dark:text-purple-400" />
               </div>
               <div>
-                <div className="text-2xl font-bold">{stats.totalPolicies}</div>
+                <div className="text-2xl font-bold tabular-nums">{stats.totalPolicies}</div>
                 <p className="text-xs text-muted-foreground">Total Policies</p>
               </div>
             </div>
@@ -529,9 +529,9 @@ export default function NetworkPage() {
 
       <div className="grid lg:grid-cols-4 gap-6">
         {/* Sidebar: Filters & Legend */}
-        <div className="lg:col-span-1 space-y-4">
+        <div className="space-y-4 lg:col-span-1 lg:sticky lg:top-24 lg:self-start">
           {/* Search */}
-          <Card>
+          <Card className="shadow-sm">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm flex items-center gap-2">
                 <Search className="h-4 w-4" />
@@ -559,7 +559,7 @@ export default function NetworkPage() {
           </Card>
 
           {/* Filters */}
-          <Card>
+          <Card className="shadow-sm">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm flex items-center gap-2">
                 <Filter className="h-4 w-4" />
@@ -628,7 +628,7 @@ export default function NetworkPage() {
           </Card>
 
           {/* Legend */}
-          <Card>
+          <Card className="shadow-sm">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm flex items-center gap-2">
                 <Info className="h-4 w-4" />
@@ -685,7 +685,7 @@ export default function NetworkPage() {
           </Card>
 
           {/* How to Use */}
-          <Card>
+          <Card className="shadow-sm">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm">Controls</CardTitle>
             </CardHeader>
@@ -702,7 +702,7 @@ export default function NetworkPage() {
 
         {/* Network Graph */}
         <div className="lg:col-span-3">
-          <Card className="h-[400px] lg:h-[700px] overflow-hidden">
+          <Card className="h-[440px] overflow-hidden shadow-sm lg:h-[700px]">
             <CardContent className="p-0 h-full">
               {highlightedNodes.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-center p-8">
