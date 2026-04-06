@@ -222,6 +222,17 @@ export interface VerificationResult {
   suggestedCorrections: string[];
 }
 
+export interface ScraperRunLog {
+  id: string;
+  timestamp: string;
+  sourceId: string;
+  sourceName: string;
+  linksFound: number;
+  policiesCreated: number;
+  errors: string[];
+  durationMs: number;
+}
+
 export interface PipelineRun {
   id: string;
   startedAt: string;

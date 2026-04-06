@@ -96,7 +96,7 @@ export function PolicyTable({ policies }: PolicyTableProps) {
         </thead>
         <tbody>
           {paged.map((policy) => (
-            <tr key={policy.id} className="border-b border-border hover:bg-[#f0efed] transition-colors">
+            <tr key={policy.id} className="border-b border-border transition-colors hover:bg-[var(--row-hover)]">
               <td className="py-3 pr-4">
                 <Link
                   href={`/policies/${policy.id}`}

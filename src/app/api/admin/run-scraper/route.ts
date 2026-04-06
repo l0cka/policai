@@ -1,44 +1,9 @@
 import { NextResponse } from 'next/server';
-import { analyseContentRelevance } from '@/lib/claude';
+import { analyseContentRelevance, type ContentAnalysis } from '@/lib/claude';
 import { verifyAuth, unauthorizedResponse } from '@/lib/auth';
 import * as cheerio from 'cheerio';
 import { cleanHtmlContent } from '@/lib/utils';
-
-// Data source URLs mapping
-const DATA_SOURCES = {
-  'source-1': {
-    name: 'DTA AI Policy',
-    url: 'https://www.dta.gov.au/our-projects/artificial-intelligence',
-  },
-  'source-2': {
-    name: 'DISER AI Strategy',
-    url: 'https://www.industry.gov.au/science-technology-and-innovation/technology/artificial-intelligence',
-  },
-  'source-3': {
-    name: 'CSIRO Data61',
-    url: 'https://www.csiro.au/en/research/technology-space/ai',
-  },
-  'source-4': {
-    name: 'AHRC AI Ethics',
-    url: 'https://humanrights.gov.au/our-work/technology-and-human-rights',
-  },
-  'source-5': {
-    name: 'OAIC AI Guidance',
-    url: 'https://www.oaic.gov.au/privacy/guidance-and-advice/artificial-intelligence-and-privacy',
-  },
-  'source-6': {
-    name: 'NSW Digital AI',
-    url: 'https://www.digital.nsw.gov.au/policy/artificial-intelligence',
-  },
-  'source-7': {
-    name: 'Victorian AI Strategy',
-    url: 'https://www.vic.gov.au/artificial-intelligence-strategy',
-  },
-  'source-8': {
-    name: 'ACCC Digital Platforms',
-    url: 'https://www.accc.gov.au/focus-areas/digital-platforms-and-services',
-  },
-} as const;
+import { DATA_SOURCES_MAP } from '@/lib/data-sources';
 
 interface ScrapedLink {
   url: string;
@@ -138,7 +103,7 @@ async function fetchContent(url: string): Promise<string> {
 /**
  * Create a policy from analyzed content
  */
-async function createPolicy(title: string, url: string, analysis: any, content: string) {
+async function createPolicy(title: string, url: string, analysis: ContentAnalysis, content: string) {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002'}/api/policies`, {
     method: 'POST',
     headers: {
@@ -169,7 +134,7 @@ async function createPolicy(title: string, url: string, analysis: any, content: 
 /**
  * Add content to pending review queue
  */
-async function addToPendingReview(title: string, url: string, analysis: any) {
+async function addToPendingReview(title: string, url: string, analysis: ContentAnalysis) {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002'}/api/admin/pending`, {
     method: 'POST',
     headers: {
@@ -218,7 +183,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const source = DATA_SOURCES[sourceId as keyof typeof DATA_SOURCES];
+    const source = DATA_SOURCES_MAP[sourceId];
     if (!source) {
       return NextResponse.json(
         { error: 'Invalid sourceId', success: false },

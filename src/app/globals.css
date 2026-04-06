@@ -45,6 +45,7 @@
 }
 
 :root {
+  color-scheme: light;
   --radius: 0.375rem;
   --background: #f8f7f5;
   --foreground: #1a1a1a;
@@ -77,6 +78,117 @@
   --sidebar-accent-foreground: #1a1a1a;
   --sidebar-border: #d4d4d4;
   --sidebar-ring: #1e40af;
+  --row-hover: #f0efed;
+  --status-active: #15803d;
+  --status-proposed: #b45309;
+  --status-amended: #1d4ed8;
+  --status-repealed: #6b7280;
+  --status-active-bg: #dcfce7;
+  --status-proposed-bg: #fef3c7;
+  --status-amended-bg: #dbeafe;
+  --status-repealed-bg: #f3f4f6;
+  --map-fill-0: #e8e5e0;
+  --map-fill-1: #c7d2e0;
+  --map-fill-2: #93aacc;
+  --map-fill-3: #5a7db5;
+  --map-fill-4: #1e40af;
+  --map-hover-0: #d4d0c8;
+  --map-hover-1: #aebdd4;
+  --map-hover-2: #7a96be;
+  --map-hover-3: #4468a0;
+  --map-hover-4: #153296;
+  --map-stroke: #a8a29e;
+  --map-label: #57534e;
+  --map-label-muted: #78716c;
+  --network-jurisdiction-bg: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  --network-jurisdiction-border: #4f46e5;
+  --network-agency-bg: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+  --network-agency-foreground: #1f2937;
+  --network-agency-border: #d97706;
+  --network-active-bg: linear-gradient(135deg, #22c55e 0%, #4ade80 100%);
+  --network-active-border: #16a34a;
+  --network-proposed-bg: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+  --network-proposed-border: #d97706;
+  --network-amended-bg: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+  --network-amended-border: #2563eb;
+  --network-default-bg: linear-gradient(135deg, #6b7280 0%, #9ca3af 100%);
+  --network-default-border: #4b5563;
+  --network-edge: #64748b;
+  --network-minimap-mask: rgba(0, 0, 0, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --background: #0f141b;
+    --foreground: #edf2f7;
+    --card: #151c25;
+    --card-foreground: #edf2f7;
+    --popover: #151c25;
+    --popover-foreground: #edf2f7;
+    --primary: #7fb0ff;
+    --primary-foreground: #08101b;
+    --secondary: #1b2430;
+    --secondary-foreground: #d9e1ea;
+    --muted: #1b2430;
+    --muted-foreground: #9db0c2;
+    --accent: #202b39;
+    --accent-foreground: #edf2f7;
+    --destructive: #ef4444;
+    --border: #2c3a4b;
+    --input: #2c3a4b;
+    --ring: #7fb0ff;
+    --chart-1: #7fb0ff;
+    --chart-2: #4ade80;
+    --chart-3: #fbbf24;
+    --chart-4: #c084fc;
+    --chart-5: #f87171;
+    --sidebar: #121923;
+    --sidebar-foreground: #edf2f7;
+    --sidebar-primary: #7fb0ff;
+    --sidebar-primary-foreground: #08101b;
+    --sidebar-accent: #1d2733;
+    --sidebar-accent-foreground: #edf2f7;
+    --sidebar-border: #2c3a4b;
+    --sidebar-ring: #7fb0ff;
+    --row-hover: #1b2430;
+    --status-active: #4ade80;
+    --status-proposed: #fbbf24;
+    --status-amended: #60a5fa;
+    --status-repealed: #94a3b8;
+    --status-active-bg: rgba(74, 222, 128, 0.16);
+    --status-proposed-bg: rgba(251, 191, 36, 0.16);
+    --status-amended-bg: rgba(96, 165, 250, 0.16);
+    --status-repealed-bg: rgba(148, 163, 184, 0.16);
+    --map-fill-0: #1f2731;
+    --map-fill-1: #33465d;
+    --map-fill-2: #476689;
+    --map-fill-3: #618dc2;
+    --map-fill-4: #8ab6ff;
+    --map-hover-0: #2a3340;
+    --map-hover-1: #415774;
+    --map-hover-2: #5a7faa;
+    --map-hover-3: #77a4de;
+    --map-hover-4: #a5c8ff;
+    --map-stroke: #506176;
+    --map-label: #d4dee8;
+    --map-label-muted: #a5b6c8;
+    --network-jurisdiction-bg: linear-gradient(135deg, #6366f1 0%, #9b8af9 100%);
+    --network-jurisdiction-border: #7c83ff;
+    --network-agency-bg: linear-gradient(135deg, #d79b1e 0%, #f3c84a 100%);
+    --network-agency-foreground: #10151c;
+    --network-agency-border: #e2aa2a;
+    --network-active-bg: linear-gradient(135deg, #15974a 0%, #38d77a 100%);
+    --network-active-border: #4ade80;
+    --network-proposed-bg: linear-gradient(135deg, #c58612 0%, #eab534 100%);
+    --network-proposed-border: #fbbf24;
+    --network-amended-bg: linear-gradient(135deg, #2563eb 0%, #60a5fa 100%);
+    --network-amended-border: #7fb0ff;
+    --network-default-bg: linear-gradient(135deg, #475569 0%, #718096 100%);
+    --network-default-border: #94a3b8;
+    --network-edge: #7b8ea3;
+    --network-minimap-mask: rgba(15, 20, 27, 0.45);
+  }
 }
 
 @layer base {

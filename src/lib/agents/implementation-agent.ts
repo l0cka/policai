@@ -1,25 +1,18 @@
 import Anthropic from '@anthropic-ai/sdk';
-import path from 'path';
 import type { ResearchFinding, VerificationResult, Policy } from '@/types';
 import { updateFindingStatus } from './pipeline-storage';
 import { extractJsonFromResponse } from '@/lib/utils';
-import { readJsonFile, writeJsonFile } from '@/lib/file-store';
+import {
+  getPolicies,
+  createPolicy as createPolicyInDb,
+  updatePolicy as updatePolicyInDb,
+} from '@/lib/data-service';
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY || '',
 });
 
 const MODEL = 'claude-sonnet-4-20250514';
-
-const POLICIES_FILE = path.join(process.cwd(), 'public', 'data', 'sample-policies.json');
-
-async function loadPolicies(): Promise<Policy[]> {
-  return readJsonFile<Policy[]>(POLICIES_FILE, []);
-}
-
-async function savePolicies(policies: Policy[]) {
-  return writeJsonFile(POLICIES_FILE, policies);
-}
 
 /**
  * Generate a proper policy entry from a verified finding using Claude
@@ -137,7 +130,7 @@ export async function runImplementationAgent(
   let updatedCount = 0;
   let skippedCount = 0;
 
-  const policies = await loadPolicies();
+  const policies = await getPolicies();
   const verificationMap = new Map(verifications.map(v => [v.findingId, v]));
 
   // Only implement verified findings
@@ -166,18 +159,15 @@ export async function runImplementationAgent(
       );
 
       if (existingPolicy && !finding.isNewPolicy) {
-        // Update existing policy
+        // Update existing policy via data-service
         const policyData = await generatePolicyEntry(finding, verification);
-        const idx = policies.findIndex(p => p.id === existingPolicy.id);
 
-        policies[idx] = {
-          ...existingPolicy,
+        await updatePolicyInDb(existingPolicy.id, {
           description: policyData.description,
           aiSummary: policyData.aiSummary,
           tags: [...new Set([...existingPolicy.tags, ...policyData.tags])],
           agencies: [...new Set([...existingPolicy.agencies, ...policyData.agencies])],
-          updatedAt: new Date().toISOString(),
-        };
+        });
 
         await updateFindingStatus(finding.id, 'implemented');
         results.push({
@@ -187,7 +177,7 @@ export async function runImplementationAgent(
         });
         updatedCount++;
       } else {
-        // Create new policy
+        // Create new policy via data-service
         const policyData = await generatePolicyEntry(finding, verification);
         const policyId = generatePolicyId(policyData.title);
 
@@ -210,7 +200,7 @@ export async function runImplementationAgent(
           updatedAt: new Date().toISOString(),
         };
 
-        policies.push(newPolicy);
+        await createPolicyInDb(newPolicy);
         await updateFindingStatus(finding.id, 'implemented');
         results.push({
           findingId: finding.id,
@@ -235,9 +225,6 @@ export async function runImplementationAgent(
       skippedCount++;
     }
   }
-
-  // Save updated policies
-  await savePolicies(policies);
 
   console.log(`[Implementation Agent] Complete. Created: ${createdCount}, Updated: ${updatedCount}, Skipped: ${skippedCount}`);
 

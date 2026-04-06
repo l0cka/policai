@@ -91,22 +91,21 @@ const jurisdictionFullNames: Record<Jurisdiction, string> = {
 };
 
 function getFillColor(count: number, maxCount: number): string {
-  if (count === 0) return '#e8e5e0';
+  if (count === 0) return 'var(--map-fill-0)';
   const intensity = Math.min(count / maxCount, 1);
-  // Warm institutional palette: light tan → deep navy
-  if (intensity < 0.25) return '#c7d2e0';
-  if (intensity < 0.5) return '#93aacc';
-  if (intensity < 0.75) return '#5a7db5';
-  return '#1e40af';
+  if (intensity < 0.25) return 'var(--map-fill-1)';
+  if (intensity < 0.5) return 'var(--map-fill-2)';
+  if (intensity < 0.75) return 'var(--map-fill-3)';
+  return 'var(--map-fill-4)';
 }
 
 function getFillColorHover(count: number, maxCount: number): string {
-  if (count === 0) return '#d4d0c8';
+  if (count === 0) return 'var(--map-hover-0)';
   const intensity = Math.min(count / maxCount, 1);
-  if (intensity < 0.25) return '#aebdd4';
-  if (intensity < 0.5) return '#7a96be';
-  if (intensity < 0.75) return '#4468a0';
-  return '#153296';
+  if (intensity < 0.25) return 'var(--map-hover-1)';
+  if (intensity < 0.5) return 'var(--map-hover-2)';
+  if (intensity < 0.75) return 'var(--map-hover-3)';
+  return 'var(--map-hover-4)';
 }
 
 const renderOrder: Jurisdiction[] = ['wa', 'sa', 'nt', 'qld', 'nsw', 'vic', 'tas', 'act'];
@@ -259,7 +258,7 @@ export function AustraliaMap({
                   key={index}
                   d={pathD}
                   fill={fillColor}
-                  stroke={isSelected ? '#1e40af' : '#a8a29e'}
+                  stroke={isSelected ? 'var(--primary)' : 'var(--map-stroke)'}
                   strokeWidth={isSelected ? 4 : isHovered ? 3 : 1.5}
                   className="state-path"
                   style={{
@@ -278,7 +277,7 @@ export function AustraliaMap({
                   y={labelY - 4}
                   textAnchor="middle"
                   dominantBaseline="middle"
-                  fill={isSelected || isHovered ? '#1a1a1a' : '#57534e'}
+                  fill={isSelected || isHovered ? 'var(--foreground)' : 'var(--map-label)'}
                   fontSize="28"
                   fontWeight="700"
                   fontFamily="'IBM Plex Sans', sans-serif"
@@ -291,7 +290,7 @@ export function AustraliaMap({
                   y={labelY + 20}
                   textAnchor="middle"
                   dominantBaseline="middle"
-                  fill={isSelected || isHovered ? '#1e40af' : '#78716c'}
+                  fill={isSelected || isHovered ? 'var(--primary)' : 'var(--map-label-muted)'}
                   fontSize="16"
                   fontWeight={isSelected || isHovered ? '600' : '400'}
                   fontFamily="'IBM Plex Mono', monospace"
@@ -306,22 +305,22 @@ export function AustraliaMap({
 
         {/* Legend */}
         <g transform="translate(-550, 1450)">
-          <text x="0" y="10" fill="#57534e" fontSize="14" fontWeight="500" fontFamily="'IBM Plex Mono', monospace" letterSpacing="1" style={{ textTransform: 'uppercase' }}>
+          <text x="0" y="10" fill="var(--map-label)" fontSize="14" fontWeight="500" fontFamily="'IBM Plex Mono', monospace" letterSpacing="1" style={{ textTransform: 'uppercase' }}>
             Policy Density
           </text>
           <g transform="translate(0, 28)">
             {[
-              { color: '#e8e5e0', label: 'None' },
-              { color: '#c7d2e0', label: '' },
-              { color: '#93aacc', label: '' },
-              { color: '#5a7db5', label: '' },
-              { color: '#1e40af', label: 'High' },
+              { color: 'var(--map-fill-0)', label: 'None' },
+              { color: 'var(--map-fill-1)', label: '' },
+              { color: 'var(--map-fill-2)', label: '' },
+              { color: 'var(--map-fill-3)', label: '' },
+              { color: 'var(--map-fill-4)', label: 'High' },
             ].map((item, i) => (
-              <rect key={i} x={i * 44} width="40" height="20" rx="3" fill={item.color} stroke="#a8a29e" strokeWidth="0.5" />
+              <rect key={i} x={i * 44} width="40" height="20" rx="3" fill={item.color} stroke="var(--map-stroke)" strokeWidth="0.5" />
             ))}
           </g>
-          <text x="5" y="68" fill="#78716c" fontSize="12" fontFamily="'IBM Plex Mono', monospace">None</text>
-          <text x="195" y="68" fill="#78716c" fontSize="12" fontFamily="'IBM Plex Mono', monospace">High</text>
+          <text x="5" y="68" fill="var(--map-label-muted)" fontSize="12" fontFamily="'IBM Plex Mono', monospace">None</text>
+          <text x="195" y="68" fill="var(--map-label-muted)" fontSize="12" fontFamily="'IBM Plex Mono', monospace">High</text>
         </g>
       </svg>
 
@@ -334,16 +333,16 @@ export function AustraliaMap({
           'absolute bottom-10 left-1/2 flex w-[min(1040px,calc(100%-2rem))] -translate-x-1/2 items-center justify-between px-5 py-3',
           'border rounded font-mono text-sm transition-all duration-300',
           selectedJurisdiction === 'federal'
-            ? 'bg-[#1e40af] text-white border-[#1e40af]'
+            ? 'bg-primary text-primary-foreground border-primary'
             : hoveredJurisdiction === 'federal'
-              ? 'bg-[#1e40af]/10 border-[#1e40af]/40 text-foreground'
-              : 'bg-white/80 backdrop-blur-sm border-border text-muted-foreground hover:border-[#1e40af]/30'
+              ? 'bg-primary/10 border-primary/40 text-foreground'
+              : 'bg-card/80 backdrop-blur-sm border-border text-muted-foreground hover:border-primary/30'
         )}
       >
         <span className="font-semibold font-sans">Federal Government (Commonwealth)</span>
         <span className={cn(
           'text-lg font-bold font-sans',
-          selectedJurisdiction === 'federal' ? 'text-white' : 'text-[#1e40af]'
+          selectedJurisdiction === 'federal' ? 'text-primary-foreground' : 'text-primary'
         )}>
           {data.federal?.count || 0} policies
         </span>
@@ -359,7 +358,7 @@ export function AustraliaMap({
             opacity: tooltipData ? 1 : 0,
           }}
         >
-          <div className="bg-white border border-border rounded px-3 py-2 shadow-lg min-w-[160px]">
+          <div className="bg-card border border-border rounded px-3 py-2 shadow-lg min-w-[160px]">
             <div className="font-sans text-sm font-semibold text-foreground">
               {jurisdictionFullNames[hoveredJurisdiction]}
             </div>
@@ -370,7 +369,7 @@ export function AustraliaMap({
               </div>
               <div className="flex justify-between gap-4">
                 <span>Active</span>
-                <span className="font-semibold text-green-700">{tooltipData.active}</span>
+                <span className="font-semibold text-[var(--status-active)]">{tooltipData.active}</span>
               </div>
             </div>
           </div>

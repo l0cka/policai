@@ -11,7 +11,7 @@
 
 import path from 'path';
 import { readJsonFile, writeJsonFile } from '@/lib/file-store';
-import type { Policy, Agency, TimelineEvent } from '@/types';
+import type { Policy, Agency, TimelineEvent, ScraperRunLog } from '@/types';
 
 // ---------------------------------------------------------------------------
 // Supabase availability
@@ -295,4 +295,48 @@ export async function getTimelineEvents(filters?: {
     events = events.filter((e) => e.jurisdiction === filters.jurisdiction);
   }
   return events.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+}
+
+// ---------------------------------------------------------------------------
+// Scraper run logging
+// ---------------------------------------------------------------------------
+
+const SCRAPER_RUNS_FILE = path.join(process.cwd(), 'public', 'data', 'scraper-runs.json');
+
+export async function logScraperRun(run: ScraperRunLog): Promise<void> {
+  if (isSupabaseConfigured) {
+    try {
+      const supabase = await getSupabase();
+      const { error } = await supabase.from('scraper_runs').insert(run);
+      if (!error) return;
+      console.warn('[data-service] Supabase logScraperRun failed, falling back to JSON:', error?.message);
+    } catch (err) {
+      console.warn('[data-service] Supabase logScraperRun exception, falling back to JSON:', err);
+    }
+  }
+
+  const runs = await readJsonFile<ScraperRunLog[]>(SCRAPER_RUNS_FILE, []);
+  runs.unshift(run);
+  // Keep only the last 100 runs in JSON to prevent unbounded growth
+  await writeJsonFile(SCRAPER_RUNS_FILE, runs.slice(0, 100));
+}
+
+export async function getRecentScraperRuns(limit = 20): Promise<ScraperRunLog[]> {
+  if (isSupabaseConfigured) {
+    try {
+      const supabase = await getSupabase();
+      const { data, error } = await supabase
+        .from('scraper_runs')
+        .select('*')
+        .order('timestamp', { ascending: false })
+        .limit(limit);
+      if (!error && data) return data as ScraperRunLog[];
+      console.warn('[data-service] Supabase getRecentScraperRuns failed, falling back to JSON:', error?.message);
+    } catch (err) {
+      console.warn('[data-service] Supabase getRecentScraperRuns exception, falling back to JSON:', err);
+    }
+  }
+
+  const runs = await readJsonFile<ScraperRunLog[]>(SCRAPER_RUNS_FILE, []);
+  return runs.slice(0, limit);
 }

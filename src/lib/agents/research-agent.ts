@@ -3,6 +3,7 @@ import * as cheerio from 'cheerio';
 import type { ResearchFinding, PolicyType, Jurisdiction } from '@/types';
 import { saveFindings } from './pipeline-storage';
 import { cleanHtmlContent, extractJsonFromResponse } from '@/lib/utils';
+import { DATA_SOURCES } from '@/lib/data-sources';
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY || '',
@@ -10,49 +11,7 @@ const anthropic = new Anthropic({
 
 const MODEL = 'claude-sonnet-4-20250514';
 
-// Australian government AI policy sources
-const RESEARCH_SOURCES = [
-  {
-    id: 'dta',
-    name: 'DTA AI Policy',
-    url: 'https://www.dta.gov.au/our-projects/artificial-intelligence',
-  },
-  {
-    id: 'diser',
-    name: 'DISER AI Strategy',
-    url: 'https://www.industry.gov.au/science-technology-and-innovation/technology/artificial-intelligence',
-  },
-  {
-    id: 'csiro',
-    name: 'CSIRO Data61',
-    url: 'https://www.csiro.au/en/research/technology-space/ai',
-  },
-  {
-    id: 'ahrc',
-    name: 'AHRC AI Ethics',
-    url: 'https://humanrights.gov.au/our-work/technology-and-human-rights',
-  },
-  {
-    id: 'oaic',
-    name: 'OAIC AI Guidance',
-    url: 'https://www.oaic.gov.au/privacy/guidance-and-advice/artificial-intelligence-and-privacy',
-  },
-  {
-    id: 'nsw',
-    name: 'NSW Digital AI',
-    url: 'https://www.digital.nsw.gov.au/policy/artificial-intelligence',
-  },
-  {
-    id: 'vic',
-    name: 'Victorian AI Strategy',
-    url: 'https://www.vic.gov.au/artificial-intelligence-strategy',
-  },
-  {
-    id: 'accc',
-    name: 'ACCC Digital Platforms',
-    url: 'https://www.accc.gov.au/focus-areas/digital-platforms-and-services',
-  },
-];
+const RESEARCH_SOURCES = DATA_SOURCES.filter((s) => s.enabled);
 
 interface ScrapedPage {
   url: string;

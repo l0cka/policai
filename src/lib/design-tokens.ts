@@ -5,16 +5,16 @@
 
 /** Tailwind text-color classes keyed by PolicyStatus */
 export const STATUS_COLORS: Record<string, string> = {
-  active: 'text-green-700',
-  proposed: 'text-amber-600',
-  amended: 'text-blue-700',
-  repealed: 'text-gray-500',
+  active: 'text-[var(--status-active)]',
+  proposed: 'text-[var(--status-proposed)]',
+  amended: 'text-[var(--status-amended)]',
+  repealed: 'text-[var(--status-repealed)]',
 };
 
 /** Tailwind background-color classes keyed by PolicyStatus */
 export const STATUS_BG_COLORS: Record<string, string> = {
-  active: 'bg-green-100',
-  proposed: 'bg-amber-100',
-  amended: 'bg-blue-100',
-  repealed: 'bg-gray-100',
+  active: 'bg-[var(--status-active-bg)]',
+  proposed: 'bg-[var(--status-proposed-bg)]',
+  amended: 'bg-[var(--status-amended-bg)]',
+  repealed: 'bg-[var(--status-repealed-bg)]',
 };

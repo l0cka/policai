@@ -18,6 +18,13 @@ function generateRunId(): string {
   return `run-${date}-${rand}`;
 }
 
+export interface PipelineOptions {
+  /** Skip HITL for high-confidence findings and auto-implement them. */
+  autoApprove?: boolean;
+  /** Verification confidence threshold for auto-approve (default 0.8). */
+  autoApproveThreshold?: number;
+}
+
 /**
  * Start a new pipeline run - executes the Research Agent and Verifier Agent,
  * then pauses for HITL review before implementation.
@@ -27,12 +34,13 @@ function generateRunId(): string {
  * 2. research_complete -> Findings stored
  * 3. verification    -> Verifier Agent checks findings
  * 4. verification_complete -> HITL checkpoint #1 (post-verification)
- * 5. hitl_review     -> Waiting for human approval
+ * 5. hitl_review     -> Waiting for human approval (skipped if autoApprove)
  * 6. implementation  -> Implementation Agent applies changes
  * 7. complete        -> Done
  */
 export async function startPipelineRun(
-  existingPolicyTitles: string[]
+  existingPolicyTitles: string[],
+  options?: PipelineOptions,
 ): Promise<PipelineRun> {
   const runId = generateRunId();
   const run: PipelineRun = {
@@ -74,8 +82,47 @@ export async function startPipelineRun(
     run.rejectedCount = verifierResult.rejectedCount;
     await updateStage(run, 'verification_complete');
 
-    // Stage 3: HITL checkpoint - pause for human review
-    // The pipeline stops here. An admin must call approvePipelineRun() to continue.
+    // Stage 3: HITL checkpoint or auto-approve
+    const autoApprove = options?.autoApprove ?? false;
+    const threshold = options?.autoApproveThreshold ?? 0.8;
+
+    if (autoApprove) {
+      // Auto-approve verified findings above the confidence threshold
+      const allFindings = await getFindings(runId);
+      const allVerifications = await getVerifications(runId);
+      const verificationMap = new Map(allVerifications.map(v => [v.findingId, v]));
+
+      const highConfFindings = allFindings.filter(f => {
+        if (f.status !== 'verified') return false;
+        const v = verificationMap.get(f.id);
+        return v && v.confidenceScore >= threshold;
+      });
+
+      if (highConfFindings.length > 0) {
+        console.log(`[Pipeline] Auto-approving ${highConfFindings.length} high-confidence findings (threshold: ${threshold})`);
+
+        run.hitlApprovedAt = new Date().toISOString();
+        run.hitlApprovedBy = 'auto';
+        run.hitlNotes = `Auto-approved ${highConfFindings.length} findings with confidence >= ${threshold}`;
+
+        await updateStage(run, 'implementation');
+        const implResult = await runImplementationAgent(highConfFindings, allVerifications);
+        run.implementedCount = implResult.createdCount + implResult.updatedCount;
+
+        run.completedAt = new Date().toISOString();
+        await updateStage(run, 'complete');
+
+        console.log(`[Pipeline] Run ${runId} auto-completed. Implemented: ${run.implementedCount}`);
+      } else {
+        run.completedAt = new Date().toISOString();
+        await updateStage(run, 'complete');
+        console.log(`[Pipeline] Run ${runId} completed. No findings met auto-approve threshold.`);
+      }
+
+      return run;
+    }
+
+    // Manual mode: pause for human review
     await updateStage(run, 'hitl_review');
 
     console.log(`[Pipeline] Run ${runId} paused at HITL review.`);

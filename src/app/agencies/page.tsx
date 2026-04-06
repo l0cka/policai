@@ -112,7 +112,7 @@ export default function AgenciesPage() {
                 return (
                   <tr
                     key={agency.id}
-                    className="group cursor-pointer border-b border-border/30 hover:bg-[#f0efed] dark:hover:bg-muted/40"
+                    className="group cursor-pointer border-b border-border/30 transition-colors hover:bg-[var(--row-hover)]"
                     onClick={() => setExpandedId(isExpanded ? null : agency.id)}
                   >
                     <td colSpan={4} className="p-0">
@@ -120,7 +120,7 @@ export default function AgenciesPage() {
                         <span className="pr-4">{agency.name}</span>
                         <span className="pr-4 font-mono text-xs text-muted-foreground w-[100px]">{agency.acronym}</span>
                         <span className="pr-4 text-muted-foreground w-[120px] capitalize">{agency.jurisdiction}</span>
-                        <span className={`w-[100px] ${agency.hasPublishedStatement ? 'text-green-700' : 'text-amber-600'}`}>
+                        <span className={`w-[100px] ${agency.hasPublishedStatement ? 'text-[var(--status-active)]' : 'text-[var(--status-proposed)]'}`}>
                           {agency.hasPublishedStatement ? 'Published' : 'Pending'}
                         </span>
                       </div>

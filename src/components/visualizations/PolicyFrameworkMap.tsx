@@ -74,7 +74,6 @@ interface FrameworkData {
 interface PolicyFrameworkMapProps {
   data: FrameworkData;
   onPillarSelect?: (pillarId: string | null) => void;
-  onRequirementSelect?: (requirementId: string | null) => void;
 }
 
 const iconMap: Record<string, React.ElementType> = {
@@ -90,9 +89,9 @@ function RequirementCard({ requirement }: { requirement: Requirement }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const typeStyles: Record<string, string> = {
-    mandatory: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
-    recommended: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
-    consideration: 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400',
+    mandatory: 'bg-red-100 text-red-800 dark:bg-red-950/40 dark:text-red-300',
+    recommended: 'bg-blue-100 text-blue-800 dark:bg-blue-950/40 dark:text-blue-300',
+    consideration: 'bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-300',
   };
 
   const typeLabels: Record<string, string> = {
@@ -194,7 +193,7 @@ function PolicyAimCard({ aim }: { aim: PolicyAim }) {
   );
 }
 
-export function PolicyFrameworkMap({ data, onPillarSelect, onRequirementSelect }: PolicyFrameworkMapProps) {
+export function PolicyFrameworkMap({ data, onPillarSelect }: PolicyFrameworkMapProps) {
   const [selectedPillar, setSelectedPillar] = useState<string | null>(null);
   const [view, setView] = useState<'overview' | 'detailed'>('overview');
 
@@ -342,7 +341,7 @@ export function PolicyFrameworkMap({ data, onPillarSelect, onRequirementSelect }
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {data.inScopeCriteria.map((criteria) => (
-                <div key={criteria.id} className="border rounded-lg p-4 bg-amber-50 dark:bg-amber-950/20">
+                <div key={criteria.id} className="border rounded-lg p-4 bg-amber-50 dark:bg-amber-950/30 dark:border-amber-900/50">
                   <p className="text-sm font-medium">{criteria.description}</p>
                   <div className="flex flex-wrap gap-1 mt-2">
                     {criteria.applicableTo.map((item) => (

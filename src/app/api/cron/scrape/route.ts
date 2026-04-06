@@ -4,18 +4,22 @@
  * Triggered by Vercel Cron Jobs on schedule (see vercel.json).
  * Protected by CRON_SECRET so only Vercel infrastructure can invoke it.
  *
- * The scraper logic runs inline — no HTTP calls to localhost required.
+ * Fan-out strategy:
+ * - Without ?source= param: dispatches one request per enabled source
+ *   using waitUntil() so the fan-out doesn't block the response.
+ * - With ?source=<sourceId>: scrapes only that single source, keeping
+ *   each invocation well under the 300s timeout.
  */
 
 import { NextResponse } from 'next/server';
+import { after } from 'next/server';
 import * as cheerio from 'cheerio';
 import { analyseContentRelevance, summarizePolicy } from '@/lib/claude';
 import { cleanHtmlContent } from '@/lib/utils';
 import { DATA_SOURCES, type DataSource } from '@/lib/data-sources';
-import { createPolicy, policyExists } from '@/lib/data-service';
+import { createPolicy, policyExists, logScraperRun } from '@/lib/data-service';
 import type { Policy } from '@/types';
 
-// Allow long-running (Vercel Cron timeout is 60s on Hobby, 300s on Pro)
 export const maxDuration = 300;
 
 // ---------------------------------------------------------------------------
@@ -89,7 +93,7 @@ async function fetchContent(url: string): Promise<string> {
   return cleanHtmlContent(await response.text());
 }
 
-/** Build and persist a new policy from analysed content. */
+/** Build and persist a new policy from analysed content via data-service. */
 async function processHighConfidenceLink(
   title: string,
   url: string,
@@ -113,7 +117,6 @@ async function processHighConfidenceLink(
     return false;
   }
 
-  // Optionally generate a richer AI summary
   let aiSummary = analysis.summary || '';
   if (process.env.ANTHROPIC_API_KEY) {
     try {
@@ -153,6 +156,7 @@ async function processHighConfidenceLink(
 // ---------------------------------------------------------------------------
 
 async function scrapeSource(source: DataSource) {
+  const startTime = Date.now();
   console.log(`[cron] Scraping: ${source.name} (${source.url})`);
 
   const links = await scrapeLinks(source.url);
@@ -160,6 +164,7 @@ async function scrapeSource(source: DataSource) {
 
   let created = 0;
   let skipped = 0;
+  const errors: string[] = [];
 
   for (const link of links) {
     try {
@@ -182,20 +187,35 @@ async function scrapeSource(source: DataSource) {
       // Rate limit between pages
       await new Promise((r) => setTimeout(r, 2000));
     } catch (err) {
-      console.error(`[cron] Error processing ${link.url}:`, err);
+      const msg = err instanceof Error ? err.message : 'Unknown error';
+      console.error(`[cron] Error processing ${link.url}:`, msg);
+      errors.push(`${link.url}: ${msg}`);
       skipped++;
     }
   }
 
-  return { source: source.name, linksFound: links.length, created, skipped };
+  const durationMs = Date.now() - startTime;
+
+  // Log the run for monitoring
+  await logScraperRun({
+    id: `cron-${source.id}-${Date.now()}`,
+    timestamp: new Date().toISOString(),
+    sourceId: source.id,
+    sourceName: source.name,
+    linksFound: links.length,
+    policiesCreated: created,
+    errors,
+    durationMs,
+  });
+
+  return { source: source.name, linksFound: links.length, created, skipped, errors };
 }
 
 // ---------------------------------------------------------------------------
-// Route handler
+// Auth helper
 // ---------------------------------------------------------------------------
 
-export async function GET(request: Request) {
-  // Verify the request is from Vercel Cron
+function verifyCronAuth(request: Request): NextResponse | null {
   const authHeader = request.headers.get('authorization');
   const cronSecret = process.env.CRON_SECRET;
 
@@ -218,38 +238,62 @@ export async function GET(request: Request) {
     );
   }
 
-  console.log(`[cron] Starting scheduled scrape at ${new Date().toISOString()}`);
+  return null;
+}
 
-  const results = [];
-  const enabledSources = DATA_SOURCES.filter((s) => s.enabled);
+// ---------------------------------------------------------------------------
+// Route handler
+// ---------------------------------------------------------------------------
 
-  for (const source of enabledSources) {
-    try {
-      const result = await scrapeSource(source);
-      results.push(result);
-    } catch (err) {
-      console.error(`[cron] Failed to scrape ${source.name}:`, err);
-      results.push({
-        source: source.name,
-        linksFound: 0,
-        created: 0,
-        skipped: 0,
-        error: err instanceof Error ? err.message : 'Unknown error',
-      });
+export async function GET(request: Request) {
+  const authError = verifyCronAuth(request);
+  if (authError) return authError;
+
+  const url = new URL(request.url);
+  const sourceId = url.searchParams.get('source');
+
+  // Single source mode — scrape just one source
+  if (sourceId) {
+    const source = DATA_SOURCES.find((s) => s.id === sourceId && s.enabled);
+    if (!source) {
+      return NextResponse.json(
+        { error: `Source not found or disabled: ${sourceId}`, success: false },
+        { status: 404 },
+      );
     }
 
-    // Rate limit between sources
-    await new Promise((r) => setTimeout(r, 5000));
+    const result = await scrapeSource(source);
+    return NextResponse.json({ success: true, result });
   }
 
-  const totalCreated = results.reduce((sum, r) => sum + r.created, 0);
-  console.log(`[cron] Completed. Created ${totalCreated} new policies from ${enabledSources.length} sources.`);
+  // Fan-out mode — dispatch one request per enabled source
+  console.log(`[cron] Starting fan-out scrape at ${new Date().toISOString()}`);
+  const enabledSources = DATA_SOURCES.filter((s) => s.enabled);
+
+  const cronSecret = process.env.CRON_SECRET!;
+
+  after(async () => {
+    for (const source of enabledSources) {
+      try {
+        const sourceUrl = new URL(url.pathname, url.origin);
+        sourceUrl.searchParams.set('source', source.id);
+
+        await fetch(sourceUrl.toString(), {
+          headers: { Authorization: `Bearer ${cronSecret}` },
+        });
+      } catch (err) {
+        console.error(`[cron] Failed to dispatch ${source.name}:`, err);
+      }
+
+      // Stagger dispatches by 2s to avoid thundering herd
+      await new Promise((r) => setTimeout(r, 2000));
+    }
+  });
 
   return NextResponse.json({
     success: true,
+    dispatched: true,
+    sources: enabledSources.map((s) => s.id),
     timestamp: new Date().toISOString(),
-    sourcesScanned: enabledSources.length,
-    totalCreated,
-    results,
   });
 }

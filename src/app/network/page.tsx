@@ -129,17 +129,34 @@ function generateGraphData(
   const jurisdictionGap = 60;
   const columnGap = 250;
 
+  const styles = {
+    jurisdictionBg: 'var(--network-jurisdiction-bg)',
+    jurisdictionBorder: 'var(--network-jurisdiction-border)',
+    agencyBg: 'var(--network-agency-bg)',
+    agencyForeground: 'var(--network-agency-foreground)',
+    agencyBorder: 'var(--network-agency-border)',
+    activeBg: 'var(--network-active-bg)',
+    activeBorder: 'var(--network-active-border)',
+    proposedBg: 'var(--network-proposed-bg)',
+    proposedBorder: 'var(--network-proposed-border)',
+    amendedBg: 'var(--network-amended-bg)',
+    amendedBorder: 'var(--network-amended-border)',
+    defaultBg: 'var(--network-default-bg)',
+    defaultBorder: 'var(--network-default-border)',
+    edge: 'var(--network-edge)',
+  };
+
   // Get policy status colors
   const getStatusColors = (status: string) => {
     switch (status) {
       case 'active':
-        return { bg: 'linear-gradient(135deg, #22c55e 0%, #4ade80 100%)', border: '#16a34a' };
+        return { bg: styles.activeBg, border: styles.activeBorder };
       case 'proposed':
-        return { bg: 'linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%)', border: '#d97706' };
+        return { bg: styles.proposedBg, border: styles.proposedBorder };
       case 'amended':
-        return { bg: 'linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%)', border: '#2563eb' };
+        return { bg: styles.amendedBg, border: styles.amendedBorder };
       default:
-        return { bg: 'linear-gradient(135deg, #6b7280 0%, #9ca3af 100%)', border: '#4b5563' };
+        return { bg: styles.defaultBg, border: styles.defaultBorder };
     }
   };
 
@@ -169,15 +186,15 @@ function generateGraphData(
         originalData: { jurisdiction: jurisdiction as Jurisdiction },
       },
       style: {
-        background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+        background: styles.jurisdictionBg,
         color: 'white',
-        border: '2px solid #4f46e5',
+        border: `2px solid ${styles.jurisdictionBorder}`,
         borderRadius: '12px',
         padding: '12px 20px',
         fontWeight: 600,
         fontSize: '13px',
         width: 160,
-        boxShadow: '0 4px 12px rgba(99, 102, 241, 0.3)',
+        boxShadow: `0 4px 12px color-mix(in srgb, ${styles.jurisdictionBorder} 35%, transparent)`,
       },
       sourcePosition: Position.Right,
       targetPosition: Position.Left,
@@ -196,15 +213,15 @@ function generateGraphData(
           originalData: agency,
         },
         style: {
-          background: 'linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%)',
-          color: '#1f2937',
-          border: '2px solid #d97706',
+          background: styles.agencyBg,
+          color: styles.agencyForeground,
+          border: `2px solid ${styles.agencyBorder}`,
           borderRadius: '10px',
           padding: '10px 16px',
           fontWeight: 500,
           fontSize: '12px',
           width: 130,
-          boxShadow: '0 4px 12px rgba(245, 158, 11, 0.25)',
+          boxShadow: `0 4px 12px color-mix(in srgb, ${styles.agencyBorder} 28%, transparent)`,
         },
         sourcePosition: Position.Right,
         targetPosition: Position.Left,
@@ -217,8 +234,8 @@ function generateGraphData(
         target: `agency-${agency.id}`,
         type: 'smoothstep',
         animated: false,
-        style: { stroke: '#64748b', strokeWidth: 1.5 },
-        markerEnd: { type: MarkerType.ArrowClosed, color: '#64748b', width: 12, height: 12 },
+        style: { stroke: styles.edge, strokeWidth: 1.5 },
+        markerEnd: { type: MarkerType.ArrowClosed, color: styles.edge, width: 12, height: 12 },
       });
     });
 
@@ -270,12 +287,12 @@ function generateGraphData(
             type: 'smoothstep',
             animated: policy.status === 'active',
             style: {
-              stroke: policy.status === 'active' ? '#22c55e' : '#64748b',
+              stroke: policy.status === 'active' ? styles.activeBorder : styles.edge,
               strokeWidth: policy.status === 'active' ? 2 : 1.5,
             },
             markerEnd: {
               type: MarkerType.ArrowClosed,
-              color: policy.status === 'active' ? '#22c55e' : '#64748b',
+              color: policy.status === 'active' ? styles.activeBorder : styles.edge,
               width: 12,
               height: 12,
             },
@@ -436,13 +453,19 @@ export default function NetworkPage() {
   const nodeColor = (node: Node<NodeData>) => {
     switch (node.data.type) {
       case 'jurisdiction':
-        return '#6366f1';
+        return 'var(--network-jurisdiction-border)';
       case 'agency':
-        return '#f59e0b';
+        return 'var(--network-agency-border)';
       case 'policy':
-        return node.data.status === 'active' ? '#22c55e' : node.data.status === 'proposed' ? '#f59e0b' : '#6b7280';
+        return node.data.status === 'active'
+          ? 'var(--network-active-border)'
+          : node.data.status === 'proposed'
+            ? 'var(--network-proposed-border)'
+            : node.data.status === 'amended'
+              ? 'var(--network-amended-border)'
+              : 'var(--network-default-border)';
       default:
-        return '#6b7280';
+        return 'var(--network-default-border)';
     }
   };
 
@@ -473,7 +496,7 @@ export default function NetworkPage() {
 
       {/* Statistics Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <Card className="border-indigo-500/15 bg-indigo-500/5 shadow-sm">
+        <Card className="border-indigo-500/15 bg-indigo-500/5 shadow-sm dark:border-indigo-400/20 dark:bg-indigo-400/10">
           <CardContent className="pt-4 pb-3">
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-lg bg-indigo-500/20">
@@ -486,7 +509,7 @@ export default function NetworkPage() {
             </div>
           </CardContent>
         </Card>
-        <Card className="border-green-500/15 bg-green-500/5 shadow-sm">
+        <Card className="border-green-500/15 bg-green-500/5 shadow-sm dark:border-green-400/20 dark:bg-green-400/10">
           <CardContent className="pt-4 pb-3">
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-lg bg-green-500/20">
@@ -499,7 +522,7 @@ export default function NetworkPage() {
             </div>
           </CardContent>
         </Card>
-        <Card className="border-amber-500/15 bg-amber-500/5 shadow-sm">
+        <Card className="border-amber-500/15 bg-amber-500/5 shadow-sm dark:border-amber-400/20 dark:bg-amber-400/10">
           <CardContent className="pt-4 pb-3">
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-lg bg-amber-500/20">
@@ -512,7 +535,7 @@ export default function NetworkPage() {
             </div>
           </CardContent>
         </Card>
-        <Card className="border-purple-500/15 bg-purple-500/5 shadow-sm">
+        <Card className="border-purple-500/15 bg-purple-500/5 shadow-sm dark:border-purple-400/20 dark:bg-purple-400/10">
           <CardContent className="pt-4 pb-3">
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-lg bg-purple-500/20">
@@ -639,35 +662,35 @@ export default function NetworkPage() {
               <div className="flex items-center gap-2">
                 <div
                   className="h-4 w-8 rounded"
-                  style={{ background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)' }}
+                  style={{ background: 'var(--network-jurisdiction-bg)' }}
                 />
                 <span className="text-xs">Jurisdiction</span>
               </div>
               <div className="flex items-center gap-2">
                 <div
                   className="h-4 w-8 rounded"
-                  style={{ background: 'linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%)' }}
+                  style={{ background: 'var(--network-agency-bg)' }}
                 />
                 <span className="text-xs">Agency</span>
               </div>
               <div className="flex items-center gap-2">
                 <div
                   className="h-4 w-8 rounded"
-                  style={{ background: 'linear-gradient(135deg, #22c55e 0%, #4ade80 100%)' }}
+                  style={{ background: 'var(--network-active-bg)' }}
                 />
                 <span className="text-xs">Active Policy</span>
               </div>
               <div className="flex items-center gap-2">
                 <div
                   className="h-4 w-8 rounded"
-                  style={{ background: 'linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%)' }}
+                  style={{ background: 'var(--network-proposed-bg)' }}
                 />
                 <span className="text-xs">Proposed Policy</span>
               </div>
               <div className="flex items-center gap-2">
                 <div
                   className="h-4 w-8 rounded"
-                  style={{ background: 'linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%)' }}
+                  style={{ background: 'var(--network-amended-bg)' }}
                 />
                 <span className="text-xs">Amended Policy</span>
               </div>
@@ -734,10 +757,10 @@ export default function NetworkPage() {
                   }}
                 >
                   <Controls showInteractive={false} />
-                  <Background variant={BackgroundVariant.Dots} gap={20} size={1} />
+                  <Background variant={BackgroundVariant.Dots} gap={20} size={1} color="var(--border)" />
                   <MiniMap
                     nodeColor={nodeColor}
-                    maskColor="rgba(0, 0, 0, 0.1)"
+                    maskColor="var(--network-minimap-mask)"
                     className="bg-background/80 backdrop-blur-sm border border-border rounded-lg"
                     position="bottom-right"
                   />
@@ -778,7 +801,7 @@ export default function NetworkPage() {
                       }
                       className={
                         (selectedNode.data.originalData as Policy).status === 'active'
-                          ? 'bg-green-500 hover:bg-green-600'
+                          ? 'bg-[var(--status-active)] hover:opacity-90 text-background'
                           : ''
                       }
                     >
@@ -841,7 +864,7 @@ export default function NetworkPage() {
             <>
               <DialogHeader>
                 <div className="flex items-center gap-2">
-                  <div className="p-2 rounded-lg bg-amber-500/10">
+                  <div className="p-2 rounded-lg bg-amber-500/10 dark:bg-amber-400/15">
                     <Building2 className="h-5 w-5 text-amber-600 dark:text-amber-400" />
                   </div>
                   <div>
@@ -878,7 +901,7 @@ export default function NetworkPage() {
                   </div>
                 )}
                 {(selectedNode.data.originalData as Agency).aiUsageDisclosure && (
-                  <div className="p-4 bg-blue-500/10 rounded-lg border border-blue-500/20">
+                  <div className="p-4 bg-blue-500/10 dark:bg-blue-400/10 rounded-lg border border-blue-500/20 dark:border-blue-400/20">
                     <h4 className="text-sm font-medium mb-2">AI Usage Disclosure</h4>
                     <p className="text-sm text-muted-foreground">
                       {(selectedNode.data.originalData as Agency).aiUsageDisclosure}
@@ -902,7 +925,7 @@ export default function NetworkPage() {
             <>
               <DialogHeader>
                 <div className="flex items-center gap-2">
-                  <div className="p-2 rounded-lg bg-indigo-500/10">
+                  <div className="p-2 rounded-lg bg-indigo-500/10 dark:bg-indigo-400/15">
                     <Map className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
                   </div>
                   <div>
@@ -919,7 +942,7 @@ export default function NetworkPage() {
               </DialogHeader>
               <div className="space-y-4 mt-4">
                 <div className="grid grid-cols-2 gap-4">
-                  <Card className="bg-gradient-to-br from-green-500/10 to-green-500/5 border-green-500/20">
+                  <Card className="bg-gradient-to-br from-green-500/10 to-green-500/5 border-green-500/20 dark:from-green-400/15 dark:to-green-400/5 dark:border-green-400/20">
                     <CardContent className="pt-4 pb-3">
                       <div className="text-2xl font-bold">
                         {
@@ -933,7 +956,7 @@ export default function NetworkPage() {
                       <p className="text-xs text-muted-foreground">Policies</p>
                     </CardContent>
                   </Card>
-                  <Card className="bg-gradient-to-br from-amber-500/10 to-amber-500/5 border-amber-500/20">
+                  <Card className="bg-gradient-to-br from-amber-500/10 to-amber-500/5 border-amber-500/20 dark:from-amber-400/15 dark:to-amber-400/5 dark:border-amber-400/20">
                     <CardContent className="pt-4 pb-3">
                       <div className="text-2xl font-bold">
                         {
