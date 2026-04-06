@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
+import { SiteDisclaimerBanner } from '@/components/layout/SiteDisclaimerBanner';
 
 const navItems = [
   { href: '/', label: 'Policies' },
@@ -51,6 +52,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b-2 border-foreground bg-background">
+      <SiteDisclaimerBanner />
       <div className="container mx-auto flex h-12 items-center px-4">
         <Link href="/" className="font-sans text-lg font-bold tracking-wide uppercase">
           Policai
