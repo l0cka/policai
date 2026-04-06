@@ -22,7 +22,7 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Policai — Australian AI Policy Tracker',
+  title: 'Policai — Australian AI Policy / Government AI Tracker',
   description:
     'Search and browse Australian AI policy, regulation, and governance developments across federal and state jurisdictions.',
   keywords: [

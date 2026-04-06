@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
 export const metadata = {
-  title: 'AI in Government Policy Framework | Policai',
+  title: 'Policy for the Responsible Use of AI in Government | Policai',
   description: 'Interactive visualization of Australia\'s Policy for the Responsible Use of AI in Government',
 };
 
