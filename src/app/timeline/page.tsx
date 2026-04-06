@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
-import { Filter, ArrowRight, Calendar } from 'lucide-react';
+import { Filter, ArrowRight, Calendar, Clock3 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -78,7 +78,7 @@ export default function TimelinePage() {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto max-w-6xl px-4 py-8 md:py-10">
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="animate-pulse text-muted-foreground">Loading timeline...</div>
         </div>
@@ -87,37 +87,42 @@ export default function TimelinePage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">Policy Timeline</h1>
-        <p className="mt-2 text-muted-foreground">
+    <div className="container mx-auto max-w-6xl px-4 py-8 md:py-10">
+      <div className="mb-8 space-y-2">
+        <div className="flex items-center gap-3">
+          <div className="rounded-xl bg-primary/10 p-3">
+            <Clock3 className="h-6 w-6 text-primary" />
+          </div>
+          <h1 className="text-3xl font-bold tracking-tight">Policy Timeline</h1>
+        </div>
+        <p className="max-w-3xl text-muted-foreground">
           Track the evolution of Australian AI policy through key events and milestones
         </p>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <Card>
-          <CardContent className="pt-6">
-            <div className="text-2xl font-bold">{stats.totalEvents}</div>
+        <Card className="bg-muted/30 shadow-sm">
+          <CardContent className="pt-5 pb-4">
+            <div className="text-2xl font-bold tabular-nums">{stats.totalEvents}</div>
             <p className="text-sm text-muted-foreground">Total Events</p>
           </CardContent>
         </Card>
-        <Card>
-          <CardContent className="pt-6">
-            <div className="text-2xl font-bold">{stats.years}</div>
+        <Card className="bg-muted/30 shadow-sm">
+          <CardContent className="pt-5 pb-4">
+            <div className="text-2xl font-bold tabular-nums">{stats.years}</div>
             <p className="text-sm text-muted-foreground">Years Covered</p>
           </CardContent>
         </Card>
-        <Card>
-          <CardContent className="pt-6">
-            <div className="text-2xl font-bold">{stats.jurisdictions}</div>
+        <Card className="bg-muted/30 shadow-sm">
+          <CardContent className="pt-5 pb-4">
+            <div className="text-2xl font-bold tabular-nums">{stats.jurisdictions}</div>
             <p className="text-sm text-muted-foreground">Jurisdictions</p>
           </CardContent>
         </Card>
-        <Card>
-          <CardContent className="pt-6">
-            <div className="text-2xl font-bold">{stats.policyEvents}</div>
+        <Card className="bg-muted/30 shadow-sm">
+          <CardContent className="pt-5 pb-4">
+            <div className="text-2xl font-bold tabular-nums">{stats.policyEvents}</div>
             <p className="text-sm text-muted-foreground">Policy Events</p>
           </CardContent>
         </Card>
@@ -125,8 +130,8 @@ export default function TimelinePage() {
 
       <div className="grid lg:grid-cols-4 gap-8">
         {/* Filters Sidebar */}
-        <div className="lg:col-span-1">
-          <Card>
+        <div className="space-y-4 lg:col-span-1 lg:sticky lg:top-24 lg:self-start">
+          <Card className="shadow-sm">
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
                 <Filter className="h-4 w-4" />
@@ -182,6 +187,7 @@ export default function TimelinePage() {
                     setJurisdictionFilter('all');
                     setTypeFilter('all');
                   }}
+                  className="w-full"
                 >
                   Clear Filters
                 </Button>
@@ -190,7 +196,7 @@ export default function TimelinePage() {
           </Card>
 
           {/* Legend */}
-          <Card className="mt-4">
+          <Card className="shadow-sm">
             <CardHeader>
               <CardTitle className="text-lg">Legend</CardTitle>
             </CardHeader>
@@ -221,8 +227,8 @@ export default function TimelinePage() {
 
         {/* Timeline */}
         <div className="lg:col-span-3">
-          <Card>
-            <CardHeader>
+          <Card className="shadow-sm">
+            <CardHeader className="pb-4">
               <CardTitle>Timeline</CardTitle>
               <CardDescription>Click on an event to see more details</CardDescription>
             </CardHeader>

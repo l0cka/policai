@@ -145,7 +145,7 @@ export function AustraliaMap({
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-full"
+      className="relative flex h-full w-full min-h-0 items-start justify-center overflow-visible pb-24 md:pb-20"
       onMouseMove={handleMouseMove}
     >
       <style>{`
@@ -183,15 +183,12 @@ export function AustraliaMap({
 
       <svg
         viewBox="-603 -163 1955 1795"
-        className="w-full h-full"
+        className="h-auto w-full max-w-[1040px] max-h-[62svh] md:max-h-[68svh]"
         role="img"
         aria-label="Interactive map of Australian jurisdictions showing AI policy density"
         preserveAspectRatio="xMidYMid meet"
       >
         <title>Australian AI Policy Map</title>
-
-        {/* Clean background */}
-        <rect x="-603" y="-163" width="1955" height="1795" fill="#f0efed" />
 
         {/* Render each jurisdiction */}
         {renderOrder.map((jurisdiction, idx) => {
@@ -334,7 +331,7 @@ export function AustraliaMap({
         onMouseEnter={() => handleMouseEnter('federal')}
         onMouseLeave={handleMouseLeave}
         className={cn(
-          'absolute bottom-10 left-4 right-4 px-5 py-3 flex items-center justify-between',
+          'absolute bottom-10 left-1/2 flex w-[min(1040px,calc(100%-2rem))] -translate-x-1/2 items-center justify-between px-5 py-3',
           'border rounded font-mono text-sm transition-all duration-300',
           selectedJurisdiction === 'federal'
             ? 'bg-[#1e40af] text-white border-[#1e40af]'

@@ -91,16 +91,16 @@ export default function MapPage() {
 
   if (loading) {
     return (
-      <div className="h-[calc(100vh-4rem)] flex items-center justify-center">
+      <div className="flex min-h-[calc(100svh-4rem)] items-center justify-center">
         <div className="animate-pulse text-muted-foreground">Loading map data...</div>
       </div>
     );
   }
 
   return (
-    <div className="h-[calc(100vh-4rem)] flex overflow-hidden relative">
+    <div className="relative flex min-h-[calc(100svh-4rem)] overflow-hidden bg-background">
       {/* Map area — takes full width, panel overlays */}
-      <div className="flex-1 relative">
+      <div className="relative flex flex-1 min-w-0 items-start justify-center px-4 pt-4 pb-28 md:px-8 md:pt-6 md:pb-16">
         <AustraliaMap
           data={jurisdictionData}
           selectedJurisdiction={selectedJurisdiction}
@@ -112,7 +112,7 @@ export default function MapPage() {
       {/* Sliding policy panel */}
       <div
         ref={panelRef}
-        className={`absolute md:top-0 md:right-0 md:h-[calc(100vh-4rem)] md:w-[340px] md:border-l bottom-0 left-0 right-0 max-h-[60vh] md:max-h-none border-t md:border-t-0 border-border bg-background z-10 flex flex-col overflow-hidden rounded-t-xl md:rounded-none transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+        className={`absolute inset-x-0 bottom-0 z-10 flex max-h-[60vh] flex-col overflow-hidden rounded-t-xl border-t border-border bg-background shadow-2xl transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] md:top-6 md:right-6 md:left-auto md:h-[calc(100%-3rem)] md:max-h-none md:w-[22rem] md:rounded-2xl md:border md:bg-card/95 md:shadow-xl md:backdrop-blur-sm ${
           panelVisible
             ? 'translate-y-0 md:translate-y-0 md:translate-x-0'
             : 'translate-y-full md:translate-y-0 md:translate-x-full'
@@ -125,9 +125,9 @@ export default function MapPage() {
               <div className="w-10 h-1 rounded-full bg-border" />
             </div>
             {/* Panel header */}
-            <div className="p-5 border-b border-border flex-shrink-0">
+            <div className="flex-shrink-0 border-b border-border bg-muted/30 p-5 md:p-6">
               <div className="flex items-center justify-between mb-1">
-                <h2 className="font-sans text-lg font-bold">
+                <h2 className="font-sans text-xl font-bold tracking-tight">
                   {JURISDICTION_NAMES[selectedJurisdiction]}
                 </h2>
                 <button
@@ -142,7 +142,7 @@ export default function MapPage() {
                       closeTimerRef.current = null;
                     }, 300);
                   }}
-                  className="font-mono text-xs text-muted-foreground hover:text-foreground transition-colors"
+                  className="font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
                 >
                   Close
                 </button>
@@ -161,22 +161,22 @@ export default function MapPage() {
                   No policies found for this jurisdiction.
                 </div>
               ) : (
-                <div className="divide-y divide-border">
+                <div className="divide-y divide-border/80">
                   {selectedPolicies.map((policy, idx) => (
                     <Link
                       key={policy.id}
                       href={`/policies/${policy.id}`}
-                      className="block p-4 hover:bg-muted/50 transition-colors"
+                      className="block p-4 transition-colors hover:bg-muted/40 md:px-6 md:py-5"
                       style={{
                         opacity: panelVisible ? 1 : 0,
                         transform: panelVisible ? 'translateX(0)' : 'translateX(20px)',
                         transition: `opacity 0.3s ease ${idx * 0.05 + 0.15}s, transform 0.3s ease ${idx * 0.05 + 0.15}s`,
                       }}
                     >
-                      <div className="text-sm font-medium text-primary hover:underline leading-snug">
+                      <div className="text-base font-medium leading-snug text-foreground">
                         {policy.title}
                       </div>
-                      <div className="font-mono text-xs text-muted-foreground mt-1.5 flex items-center gap-2">
+                      <div className="mt-2 flex items-center gap-2 font-mono text-xs text-muted-foreground">
                         <span className={STATUS_COLORS[policy.status] || 'text-muted-foreground'}>
                           {POLICY_STATUS_NAMES[policy.status as PolicyStatus]}
                         </span>
@@ -190,7 +190,7 @@ export default function MapPage() {
             </div>
 
             {/* Panel footer */}
-            <div className="p-4 border-t border-border flex-shrink-0">
+            <div className="flex-shrink-0 border-t border-border bg-muted/20 p-4 md:px-6">
               <Link
                 href="/"
                 className="font-mono text-xs text-primary hover:underline"
@@ -203,7 +203,11 @@ export default function MapPage() {
       </div>
 
       {/* Bottom summary bar */}
-      <div className="absolute bottom-0 left-0 right-0 md:right-auto border-t border-border bg-background/90 backdrop-blur-sm px-5 py-2 z-5" style={{ ...(panelVisible ? { right: undefined } : {}), transition: 'right 0.35s cubic-bezier(0.16, 1, 0.3, 1)' }}>
+      <div
+        className={`absolute right-0 bottom-0 left-0 border-t border-border bg-background/90 px-5 py-2 backdrop-blur-sm transition-[right] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          panelVisible ? 'md:right-[calc(22rem+1.5rem)]' : 'md:right-0'
+        }`}
+      >
         <div className="font-mono text-xs text-muted-foreground" aria-live="polite">
           {policiesData.filter(p => p.status !== 'trashed').length} policies across {Object.keys(jurisdictionData).length} jurisdictions
           {selectedJurisdiction && (
