@@ -8,7 +8,7 @@
     "aiTransparencyStatement": "DISER is committed to the responsible use of AI in policy development and service delivery.",
     "aiUsageDisclosure": "We use AI-assisted tools for document analysis and policy research.",
     "website": "https://www.industry.gov.au",
-    "policies": ["1"]
+    "policies": ["australias-ai-ethics-framework", "national-ai-plan-2025", "voluntary-ai-safety-standard", "safe-and-responsible-ai-australia-proposals-paper"]
   },
   {
     "id": "dta",
@@ -19,7 +19,7 @@
     "aiTransparencyStatement": "DTA leads the government's approach to responsible AI adoption and maintains the Policy for the Responsible Use of AI in Government.",
     "aiUsageDisclosure": "AI tools are used to improve digital services and analyse citizen feedback.",
     "website": "https://www.dta.gov.au",
-    "policies": ["dta-ai-policy-v2", "1", "6"]
+    "policies": ["policy-responsible-use-ai-government-v2", "implementation-plan-policy-responsible-use-ai-government-2025", "aps-ai-plan-2025"]
   },
   {
     "id": "agd",
@@ -29,7 +29,7 @@
     "jurisdiction": "federal",
     "aiTransparencyStatement": "AGD ensures AI regulation protects rights while enabling innovation.",
     "website": "https://www.ag.gov.au",
-    "policies": ["2", "4"]
+    "policies": ["automated-decision-making-ai-regulation-issues-paper", "government-response-privacy-act-review-report"]
   },
   {
     "id": "oaic",
@@ -39,7 +39,7 @@
     "jurisdiction": "federal",
     "aiTransparencyStatement": "OAIC provides guidance on privacy implications of AI systems.",
     "website": "https://www.oaic.gov.au",
-    "policies": ["4"]
+    "policies": ["government-response-privacy-act-review-report"]
   },
   {
     "id": "csiro",
@@ -50,7 +50,7 @@
     "aiTransparencyStatement": "CSIRO conducts responsible AI research for Australia's benefit.",
     "aiUsageDisclosure": "AI is used extensively in research projects across all domains.",
     "website": "https://www.csiro.au",
-    "policies": ["8"]
+    "policies": []
   },
   {
     "id": "nsw-dcs",
@@ -61,7 +61,7 @@
     "aiTransparencyStatement": "NSW DCS ensures AI improves services while protecting citizen rights.",
     "aiUsageDisclosure": "AI chatbots and document processing are used in citizen services.",
     "website": "https://www.digital.nsw.gov.au",
-    "policies": ["3"]
+    "policies": ["nsw-artificial-intelligence-assessment-framework"]
   },
   {
     "id": "vic-dpc",
@@ -71,7 +71,7 @@
     "jurisdiction": "vic",
     "aiTransparencyStatement": "Victoria is committed to ethical AI in government.",
     "website": "https://www.vic.gov.au/department-premier-and-cabinet",
-    "policies": ["5"]
+    "policies": ["victoria-genai-guideline-vps"]
   },
   {
     "id": "qld-dsiti",
@@ -81,6 +81,6 @@
     "jurisdiction": "qld",
     "aiTransparencyStatement": "Queensland embraces AI for economic growth and improved services.",
     "website": "https://www.qld.gov.au",
-    "policies": ["7"]
+    "policies": ["queensland-ai-governance-policy"]
   }
 ]

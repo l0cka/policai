@@ -1,13 +1,13 @@
 [
   {
     "id": "1",
-    "date": "2019-11-01",
-    "title": "AI Ethics Framework Released",
-    "description": "Australia releases its voluntary AI Ethics Framework, establishing 8 core principles for responsible AI.",
+    "date": "2019-11-07",
+    "title": "AI Ethics Principles Published",
+    "description": "Australia publishes its voluntary AI Ethics Principles, establishing 8 principles for responsible AI.",
     "type": "policy_introduced",
     "jurisdiction": "federal",
-    "relatedPolicyId": "1",
-    "sourceUrl": "https://www.industry.gov.au/publications/australias-artificial-intelligence-ethics-framework"
+    "relatedPolicyId": "australias-ai-ethics-framework",
+    "sourceUrl": "https://www.industry.gov.au/publications/australias-ai-ethics-principles"
   },
   {
     "id": "2",
@@ -15,17 +15,16 @@
     "title": "CSIRO AI Ethics Principles Adopted",
     "description": "CSIRO adopts internal AI Ethics Principles to guide research activities.",
     "type": "policy_introduced",
-    "jurisdiction": "federal",
-    "relatedPolicyId": "8"
+    "jurisdiction": "federal"
   },
   {
     "id": "3",
-    "date": "2022-03-15",
-    "title": "NSW AI Assurance Framework Launched",
-    "description": "NSW becomes the first Australian state to release a comprehensive AI assurance framework.",
+    "date": "2024-07-01",
+    "title": "NSW AI Assessment Framework Made Mandatory",
+    "description": "NSW Circular DCS-2024-04 requires agencies using AI to apply the NSW AI Assessment Framework and AI Ethics Policy.",
     "type": "policy_introduced",
     "jurisdiction": "nsw",
-    "relatedPolicyId": "3"
+    "relatedPolicyId": "nsw-artificial-intelligence-assessment-framework"
   },
   {
     "id": "4",
@@ -33,60 +32,61 @@
     "title": "DTA Responsible AI Network Established",
     "description": "Federal government establishes the Responsible AI Network to coordinate AI governance.",
     "type": "milestone",
-    "jurisdiction": "federal",
-    "relatedPolicyId": "6"
+    "jurisdiction": "federal"
   },
   {
     "id": "5",
-    "date": "2023-06-01",
-    "title": "AG Issues Paper on AI Regulation",
-    "description": "Attorney-General's Department releases issues paper exploring AI regulatory options.",
+    "date": "2022-03-17",
+    "title": "ADM and AI Regulation Issues Paper Released",
+    "description": "The Digital Technology Taskforce launches consultation on automated decision-making and AI regulation.",
     "type": "announcement",
     "jurisdiction": "federal",
-    "relatedPolicyId": "2"
+    "relatedPolicyId": "automated-decision-making-ai-regulation-issues-paper"
   },
   {
     "id": "6",
-    "date": "2023-07-01",
-    "title": "Queensland AI Strategy Released",
-    "description": "Queensland releases its state AI strategy focusing on economic opportunity and governance.",
+    "date": "2024-09-01",
+    "title": "Queensland AI Governance Policy Published",
+    "description": "Queensland publishes its whole-of-government AI governance policy under QGEA.",
     "type": "policy_introduced",
     "jurisdiction": "qld",
-    "relatedPolicyId": "7"
+    "relatedPolicyId": "queensland-ai-governance-policy"
   },
   {
     "id": "7",
-    "date": "2023-09-01",
-    "title": "Victorian AI Guidelines Published",
-    "description": "Victoria publishes guidelines for AI use in the public sector.",
+    "date": "2024-11-27",
+    "title": "Victorian Generative AI Guideline Published",
+    "description": "Victoria publishes its current administrative guideline for safe and responsible generative AI use in the public sector.",
     "type": "policy_introduced",
     "jurisdiction": "vic",
-    "relatedPolicyId": "5"
+    "relatedPolicyId": "victoria-genai-guideline-vps"
   },
   {
     "id": "8",
-    "date": "2024-01-15",
-    "title": "National AI Consultation Begins",
-    "description": "Federal government launches national consultation on mandatory AI guardrails.",
+    "date": "2024-09-05",
+    "title": "Mandatory Guardrails Proposals Paper Released",
+    "description": "The Australian Government releases its proposals paper on mandatory AI guardrails for high-risk settings.",
     "type": "announcement",
-    "jurisdiction": "federal"
+    "jurisdiction": "federal",
+    "relatedPolicyId": "safe-and-responsible-ai-australia-proposals-paper"
   },
   {
     "id": "9",
-    "date": "2024-06-01",
-    "title": "Privacy Act AI Amendments Proposed",
-    "description": "Proposed amendments to Privacy Act addressing AI and automated decision-making.",
+    "date": "2023-09-28",
+    "title": "Privacy Act Review Response Released",
+    "description": "The Australian Government releases its response to the Privacy Act Review, including positions relevant to AI and automated decision-making.",
     "type": "policy_introduced",
     "jurisdiction": "federal",
-    "relatedPolicyId": "4"
+    "relatedPolicyId": "government-response-privacy-act-review-report"
   },
   {
     "id": "10",
-    "date": "2025-01-01",
-    "title": "AI Safety Framework Expected",
-    "description": "Federal government expected to release mandatory AI safety framework.",
-    "type": "milestone",
-    "jurisdiction": "federal"
+    "date": "2025-12-02",
+    "title": "National AI Plan Released",
+    "description": "The Australian Government publishes the National AI Plan setting out its economy-wide direction for AI.",
+    "type": "policy_introduced",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "national-ai-plan-2025"
   },
   {
     "id": "11",
@@ -95,7 +95,7 @@
     "description": "Digital Transformation Agency releases Version 2.0 of the Policy for the Responsible Use of AI in Government, introducing mandatory requirements for transparency statements, accountable officials, use case registers, and risk-based impact assessments.",
     "type": "policy_introduced",
     "jurisdiction": "federal",
-    "relatedPolicyId": "dta-ai-policy-v2",
+    "relatedPolicyId": "policy-responsible-use-ai-government-v2",
     "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy"
   }
 ]

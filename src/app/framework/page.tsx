@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export const metadata = {
-  title: 'AI in Government Policy Framework | Policai',
+  title: 'Policy for the Responsible Use of AI in Government | Policai',
   description: 'Interactive visualization of Australia\'s Policy for the Responsible Use of AI in Government',
 };
 
@@ -103,13 +103,23 @@ export default function FrameworkPage() {
           </p>
           <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs text-muted-foreground">
             <div>
-              <span className="font-medium">Last Updated:</span>{' '}
+              <span className="font-medium">Effective:</span>{' '}
               {new Date(frameworkData.effectiveDate).toLocaleDateString('en-AU', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',
               })}
             </div>
+            {frameworkData.lastUpdated && (
+              <div>
+                <span className="font-medium">Page Updated:</span>{' '}
+                {new Date(frameworkData.lastUpdated).toLocaleDateString('en-AU', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </div>
+            )}
             <div>
               <span className="font-medium">Version:</span> {frameworkData.version}
             </div>
