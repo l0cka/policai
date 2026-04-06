@@ -27,6 +27,7 @@ export default function MapPage() {
   const [hoveredJurisdiction, setHoveredJurisdiction] = useState<Jurisdiction | null>(null);
   const [panelVisible, setPanelVisible] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Animate panel in/out when selection changes
   useEffect(() => {
@@ -68,17 +69,26 @@ export default function MapPage() {
   }, [selectedJurisdiction]);
 
   const handleJurisdictionClick = (j: Jurisdiction) => {
+    // Clear any pending close timer so a stale timeout can't clear a new selection
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+
     if (selectedJurisdiction === j) {
       setPanelVisible(false);
       // Wait for animation out before clearing
-      setTimeout(() => setSelectedJurisdiction(null), 300);
+      closeTimerRef.current = setTimeout(() => {
+        setSelectedJurisdiction(null);
+        closeTimerRef.current = null;
+      }, 300);
     } else {
       setSelectedJurisdiction(j);
     }
   };
 
   return (
-    <div className="h-[calc(100vh-4rem)] flex overflow-hidden">
+    <div className="h-[calc(100vh-4rem)] flex overflow-hidden relative">
       {/* Map area — takes full width, panel overlays */}
       <div className="flex-1 relative">
         <AustraliaMap
@@ -108,8 +118,15 @@ export default function MapPage() {
                 </h2>
                 <button
                   onClick={() => {
+                    if (closeTimerRef.current) {
+                      clearTimeout(closeTimerRef.current);
+                      closeTimerRef.current = null;
+                    }
                     setPanelVisible(false);
-                    setTimeout(() => setSelectedJurisdiction(null), 300);
+                    closeTimerRef.current = setTimeout(() => {
+                      setSelectedJurisdiction(null);
+                      closeTimerRef.current = null;
+                    }, 300);
                   }}
                   className="font-mono text-xs text-muted-foreground hover:text-foreground transition-colors"
                 >
