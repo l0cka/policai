@@ -15,7 +15,7 @@ export function PolicaiLogo({
   withWordmark = true,
 }: PolicaiLogoProps) {
   return (
-    <span className={cn('inline-flex items-center gap-2', className)}>
+    <span className={cn('inline-flex items-center gap-3', className)}>
       <span className={cn('relative block shrink-0 h-7 w-7', iconClassName)}>
         <Image
           src="/logo-policai-black.png"

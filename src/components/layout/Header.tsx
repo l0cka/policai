@@ -58,12 +58,12 @@ export function Header() {
         <Link href="/" aria-label="Policai home">
           <PolicaiLogo
             className="transition-opacity hover:opacity-80"
-            iconClassName="h-8 w-8 max-sm:h-6 max-sm:w-6"
-            textClassName="text-xl tracking-[0.22em] max-sm:text-base"
+            iconClassName="h-10 w-10 max-sm:h-7 max-sm:w-7"
+            textClassName="text-2xl tracking-[0.22em] max-sm:text-lg"
           />
         </Link>
 
-        <nav className="ml-8 hidden md:flex items-end h-full gap-1">
+        <nav className="ml-8 hidden md:flex items-center h-full gap-1">
           {navItems.map((item) => (
             <Link
               key={item.href}
