@@ -104,7 +104,7 @@ async function fetchContent(url: string): Promise<string> {
  * Create a policy from analyzed content
  */
 async function createPolicy(title: string, url: string, analysis: ContentAnalysis, content: string) {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002'}/api/policies`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/policies`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -135,7 +135,7 @@ async function createPolicy(title: string, url: string, analysis: ContentAnalysi
  * Add content to pending review queue
  */
 async function addToPendingReview(title: string, url: string, analysis: ContentAnalysis) {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002'}/api/admin/pending`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/admin/pending`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

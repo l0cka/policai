@@ -1,148 +1,101 @@
 # Policai
 
-Policai is an Australian AI policy tracker that aggregates and visualizes AI policy, regulation, and governance developments across federal and state jurisdictions. It monitors government guidance and Commonwealth agency activity.
+Policai is an Australian AI policy tracker built with Next.js. It aggregates, analyses, and visualises AI policy, regulation, and governance developments across Australian federal and state or territory jurisdictions.
 
-**Current scope:**
-- searchable Australian AI policy explorer
-- Commonwealth agencies directory
-- interactive view of the DTA's **Policy for the Responsible Use of AI in Government** (effective **15 December 2025**)
+Current product surface:
+- searchable policy browser with timeline view
+- agencies directory
+- interactive Australia map
+- DTA framework visualisation
+- admin workflow for scraping, review, and pipeline operations
 
-## Features
+## Stack
 
-- **Policy Browser** - Search and browse tracked AI policies with filtering by jurisdiction, status, and category
-- **Policy Framework** - Interactive visual map of the DTA AI Policy with requirements and timelines
-- **Geographic View** - Explore policies by state and territory on an interactive map of Australia
-- **Timeline** - Track the evolution of AI policy through time with key milestones and events
-- **Relationship Graph** - Visualize connections between policies, agencies, and jurisdictions
-- **Agency Directory** - Browse government agencies and their AI transparency statements
-- **Admin Dashboard** - Manage content, review pending items, and monitor data sources
-- **Automated Scraping** - AI-powered scraper that discovers and imports policies from government sources
+- Next.js 16 App Router
+- React 19
+- TypeScript 5 in strict mode
+- Tailwind CSS 4
+- shadcn/ui on Radix UI
+- D3.js and React Flow
+- Supabase with JSON-file fallback in `public/data/`
+- Anthropic API for policy analysis and pipeline tasks
 
-## Tech Stack
-
-- **Framework**: Next.js 16 with App Router
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **UI Components**: Radix UI
-- **Visualizations**: D3.js, React Flow
-- **Database**: Supabase
-- **AI**: Anthropic Claude API (for web scraping analysis)
-
-## Getting Started
+## Quick Start
 
 ### Prerequisites
 
-- Node.js 20+
-- npm, yarn, pnpm, or bun
+- Node.js `>=20.19.0`
+- npm
 
-### Installation
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/danielalkurdi/policai.git
-   cd policai
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Create a `.env.local` file with the required environment variables:
-   ```bash
-   # Supabase (optional - for admin features)
-   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-
-   # Anthropic API (required for scraper)
-   ANTHROPIC_API_KEY=your_anthropic_api_key
-
-   # Admin Authentication
-   ADMIN_PASSWORD=your_admin_password
-   ```
-
-4. Run the development server:
-   ```bash
-   npm run dev
-   ```
-
-5. Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-## Automated Scraper
-
-Policai includes an AI-powered scraper that automatically discovers and imports AI policies from Australian government sources.
-
-### Quick Start
+### Install and Run
 
 ```bash
-npm run scrape
+npm install
+# create .env.local manually
+npm run dev
 ```
 
-This will run all configured scrapers and:
-- Analyze pages using Claude AI
-- Auto-create high-confidence policies (relevance >= 0.8)
-- Queue medium-confidence items for review (relevance 0.5-0.8)
-- Skip low-relevance content
+Open [http://localhost:3000](http://localhost:3000).
 
-### Data Sources
+### Minimal `.env.local`
 
-The scraper monitors 8 Australian government sources:
-- Digital Transformation Agency (DTA)
-- Department of Industry, Science and Resources (DISER)
-- CSIRO
-- Australian Human Rights Commission (AHRC)
-- Office of the Australian Information Commissioner (OAIC)
-- NSW Government
-- Victorian Government
-- Australian Competition and Consumer Commission (ACCC)
+```bash
+# Required for scraper and AI-assisted pipeline features
+ANTHROPIC_API_KEY=sk-ant-...
 
-For detailed scraper documentation, see:
-- [QUICKSTART_SCRAPER.md](./QUICKSTART_SCRAPER.md) - Quick setup guide
-- [SCRAPER_GUIDE.md](./SCRAPER_GUIDE.md) - Comprehensive documentation
+# Optional: Supabase
+NEXT_PUBLIC_SUPABASE_URL=...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=...
 
-## Project Structure
+# Optional: admin password
+ADMIN_PASSWORD=...
 
+# Optional: override when scripts need to call a non-default app URL
+NEXT_PUBLIC_API_URL=http://localhost:3000
 ```
-policai/
-├── public/
-│   └── data/           # JSON data files for policies, agencies, timeline
-├── scripts/            # Scraper scripts
-├── src/
-│   ├── app/            # Next.js App Router pages
-│   │   ├── admin/      # Admin dashboard
-│   │   ├── agencies/   # Agency directory
-│   │   ├── api/        # API routes
-│   │   ├── framework/  # Policy framework visualization
-│   │   ├── map/        # Geographic map view
-│   │   ├── network/    # Relationship graph
-│   │   ├── policies/   # Policy browser
-│   │   └── timeline/   # Timeline view
-│   ├── components/     # React components
-│   │   ├── auth/       # Authentication components
-│   │   ├── layout/     # Header, Footer
-│   │   ├── ui/         # UI primitives (shadcn/ui)
-│   │   └── visualizations/  # D3 and React Flow visualizations
-│   └── lib/            # Utility functions
-└── data/               # Scraper state files
+
+## Commands
+
+```bash
+npm run dev         # local dev server
+npm run build       # production build
+npm run start       # run the production server
+npm run lint        # ESLint
+npm run test        # Vitest
+npm run scrape      # run scheduled scraper sources
+npm run pipeline    # run the daily research/verifier pipeline
 ```
+
+## Repository Layout
+
+```text
+src/app/            App Router pages and API routes
+src/components/     UI, layout, admin, and visualisation components
+src/lib/            data services, AI clients, helpers, and agent modules
+src/types/          shared domain types
+public/data/        JSON fallback data
+scripts/            local automation entrypoints
+docs/               operational and project documentation
+```
+
+## Data Model
+
+Policai uses a dual-storage approach:
+- Supabase when environment variables are configured
+- JSON files in `public/data/` as the local fallback
+
+This keeps local development simple while allowing production deployments to use a real database.
+
+## Operations Docs
+
+- [Documentation index](./docs/README.md)
+- [Scraper operations guide](./docs/scraper.md)
+- [Scripts overview](./scripts/README.md)
+- [Agent instructions](./AGENTS.md)
 
 ## Deployment
 
-### Vercel (Recommended)
-
-1. Push your code to GitHub
-2. Import the project in [Vercel](https://vercel.com)
-3. Add environment variables in the Vercel dashboard
-4. Deploy
-
-### Other Platforms
-
-Build the production bundle:
-
-```bash
-npm run build
-npm start
-```
+Vercel is the default target. Set the required environment variables in the Vercel project, then deploy normally with the platform or CLI.
 
 ## License
 

@@ -13,7 +13,7 @@
  *   0 6 * * * cd /path/to/Policai && tsx scripts/run-daily-pipeline.ts >> logs/pipeline.log 2>&1
  */
 
-const PIPELINE_API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002';
+const PIPELINE_API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
 async function runDailyPipeline() {
   console.log('='.repeat(60));

@@ -22,7 +22,11 @@
 
 # misc
 .DS_Store
+*.Zone.Identifier
 *.pem
+.forge/
+.playwright-mcp/
+.superpowers/
 
 # debug
 npm-debug.log*

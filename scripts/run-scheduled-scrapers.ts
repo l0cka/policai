@@ -72,7 +72,7 @@ const DATA_SOURCES: DataSource[] = [
   },
 ];
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 const STATE_FILE = './data/scraper-state.json';
 
 interface ScraperState {
