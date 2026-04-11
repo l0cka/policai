@@ -301,7 +301,7 @@ export async function getTimelineEvents(filters?: {
 // Scraper run logging
 // ---------------------------------------------------------------------------
 
-const SCRAPER_RUNS_FILE = path.join(process.cwd(), 'public', 'data', 'scraper-runs.json');
+const SCRAPER_RUNS_FILE = path.join(process.cwd(), 'data', 'scraper-runs.json');
 
 export async function logScraperRun(run: ScraperRunLog): Promise<void> {
   if (isSupabaseConfigured) {

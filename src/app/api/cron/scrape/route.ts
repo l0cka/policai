@@ -263,6 +263,13 @@ export async function GET(request: Request) {
     }
 
     const result = await scrapeSource(source);
+    const allFailed = result.linksFound > 0 && result.created === 0 && result.errors.length === result.linksFound;
+    if (allFailed) {
+      return NextResponse.json(
+        { success: false, result, error: 'All links failed to process' },
+        { status: 502 },
+      );
+    }
     return NextResponse.json({ success: true, result });
   }
 

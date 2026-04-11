@@ -50,4 +50,7 @@ supabase/.temp/
 # scraper logs and state
 /logs/
 /data/scraper-state.json
+/data/scraper-runs.json
+/data/pipeline/
+/public/data/scraper-runs.json
 .env*.local
