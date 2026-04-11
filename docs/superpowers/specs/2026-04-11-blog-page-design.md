@@ -2,7 +2,11 @@
 
 ## Overview
 
-Add a blog to Policai for project updates and AI policy commentary. Single author (developer), content stored as MDX files in the repo, processed by Contentlayer2 into typed data at build time.
+Add a blog to Policai for project updates and AI policy commentary. Single author (developer), content stored as MDX files in the repo, parsed at build/request time with gray-matter and rendered with next-mdx-remote.
+
+## Design Change Log
+
+- **2026-04-12:** Replaced Contentlayer2 with gray-matter + next-mdx-remote. Contentlayer2 wraps `next.config.ts` via webpack plugin, which conflicts with Next.js 16's default Turbopack bundler. The raw approach avoids this coupling entirely with no change to the authoring workflow or user-facing design.
 
 ## Content Authoring
 
@@ -18,14 +22,17 @@ description: string # Short excerpt for list page and meta tags (required)
 ---
 ```
 
-- Contentlayer2 processes these files at build time, generating typed TypeScript objects
 - MDX allows embedding React components inside Markdown if needed in the future
 
 ## Dependencies
 
-- `contentlayer2` — MDX/Markdown content processing with type generation
-- `next-contentlayer2` — Next.js integration plugin (wraps next config)
+- `gray-matter` — Parses YAML frontmatter from MDX files
+- `next-mdx-remote` — Renders MDX content in React Server Components
 - `@tailwindcss/typography` — Prose styling for rendered Markdown content
+
+## Content Utility
+
+- A utility module at `src/lib/blog.ts` reads MDX files from `content/blog/`, parses frontmatter with gray-matter, and exposes functions to list all posts (sorted by date, newest first) and get a single post by slug.
 
 ## Pages & Routing
 
@@ -40,15 +47,15 @@ description: string # Short excerpt for list page and meta tags (required)
 ### `/blog/[slug]` — Blog Post Page
 
 - Server Component at `src/app/blog/[slug]/page.tsx`
-- Looks up post by slug from Contentlayer's generated data
-- Renders MDX content with Tailwind typography prose classes
+- Looks up post by slug via the blog utility
+- Renders MDX content with next-mdx-remote and Tailwind typography prose classes
 - Shows title, date, and back-link to `/blog`
 - Returns 404 via `notFound()` if slug doesn't match any post
 
 ## Navigation
 
 - "Blog" added as the 4th item in the main header navigation, after "Agencies"
-- Modification to `src/components/layout/Header.tsx` (or equivalent nav component)
+- Modification to `src/components/layout/Header.tsx`
 
 ## Styling
 
@@ -59,9 +66,8 @@ description: string # Short excerpt for list page and meta tags (required)
 
 ## Configuration
 
-- Contentlayer config file at project root: `contentlayer.config.ts`
-- Defines a `Post` document type with the frontmatter schema above
-- `next.config.ts` wrapped with `withContentlayer()` from `next-contentlayer2`
+- No `next.config.ts` changes required
+- No build plugins or config wrapping needed
 
 ## Seed Content
 
