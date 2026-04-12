@@ -19,6 +19,7 @@ export default function HomePage() {
   const [jurisdictionFilter, setJurisdictionFilter] = useState('all');
   const [typeFilter, setTypeFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [lastResearch, setLastResearch] = useState<string | null>(null);
 
   useEffect(() => {
     fetch('/api/policies')
@@ -26,6 +27,14 @@ export default function HomePage() {
       .then((json) => setPoliciesData(json.data ?? []))
       .catch((err) => console.error('Failed to load policies:', err))
       .finally(() => setLoading(false));
+
+    fetch('/api/status')
+      .then((res) => res.json())
+      .then((json) => {
+        const ts = json.lastPipelineRun?.completedAt || json.lastPipelineRun?.startedAt;
+        if (ts) setLastResearch(ts);
+      })
+      .catch(() => {});
   }, []);
 
   const hasActiveFilters = jurisdictionFilter !== 'all' || typeFilter !== 'all' || statusFilter !== 'all';
@@ -132,9 +141,14 @@ export default function HomePage() {
             </kbd>
           </div>
 
-          {/* Count */}
-          <div className="font-mono text-xs text-muted-foreground mb-3" aria-live="polite">
-            Showing {filteredPolicies.length} of {allPolicies.length} policies
+          {/* Count + last research */}
+          <div className="flex items-center justify-between font-mono text-xs text-muted-foreground mb-3" aria-live="polite">
+            <span>Showing {filteredPolicies.length} of {allPolicies.length} policies</span>
+            {lastResearch && (
+              <span title={new Date(lastResearch).toLocaleString('en-AU')}>
+                Last research: {new Date(lastResearch).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}
+              </span>
+            )}
           </div>
 
           {/* Table */}

@@ -35,8 +35,8 @@ interface PolicyTableProps {
 }
 
 export function PolicyTable({ policies }: PolicyTableProps) {
-  const [sortField, setSortField] = useState<SortField>('title');
-  const [sortDir, setSortDir] = useState<SortDirection>('asc');
+  const [sortField, setSortField] = useState<SortField>('effectiveDate');
+  const [sortDir, setSortDir] = useState<SortDirection>('desc');
   const [page, setPage] = useState(0);
   const pageSize = 20;
 
