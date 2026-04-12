@@ -18,7 +18,7 @@ Current product surface:
 - shadcn/ui on Radix UI
 - D3.js and React Flow
 - Supabase with JSON-file fallback in `public/data/`
-- Anthropic API for policy analysis and pipeline tasks
+- OpenRouter (Perplexity + auto model routing) for policy discovery and analysis
 
 ## Quick Start
 
@@ -37,22 +37,15 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-### Minimal `.env.local`
+### Environment
+
+Copy the example file and fill in your keys:
 
 ```bash
-# Required for scraper and AI-assisted pipeline features
-ANTHROPIC_API_KEY=sk-ant-...
-
-# Optional: Supabase
-NEXT_PUBLIC_SUPABASE_URL=...
-NEXT_PUBLIC_SUPABASE_ANON_KEY=...
-
-# Optional: admin password
-ADMIN_PASSWORD=...
-
-# Optional: override when scripts need to call a non-default app URL
-NEXT_PUBLIC_API_URL=http://localhost:3000
+cp .env.example .env.local
 ```
+
+The app works without any keys by falling back to JSON files in `public/data/`. See `.env.example` for all available variables.
 
 ## Commands
 
@@ -97,6 +90,10 @@ This keeps local development simple while allowing production deployments to use
 
 Vercel is the default target. Set the required environment variables in the Vercel project, then deploy normally with the platform or CLI.
 
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute.
+
 ## License
 
-MIT
+[AGPL-3.0](LICENSE)

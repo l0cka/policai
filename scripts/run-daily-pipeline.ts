@@ -22,8 +22,8 @@ async function runDailyPipeline() {
   console.log('='.repeat(60));
 
   // Check if API key is configured
-  if (!process.env.ANTHROPIC_API_KEY) {
-    console.error('ERROR: ANTHROPIC_API_KEY environment variable is not set');
+  if (!process.env.OPENROUTER_API_KEY) {
+    console.error('ERROR: OPENROUTER_API_KEY environment variable is not set');
     process.exit(1);
   }
 
