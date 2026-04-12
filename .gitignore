@@ -27,6 +27,10 @@
 .forge/
 .playwright-mcp/
 .superpowers/
+/output/
+/tmp/
+/plans/
+docs/superpowers/
 
 # debug
 npm-debug.log*
