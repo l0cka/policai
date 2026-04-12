@@ -278,22 +278,35 @@ export async function getCommonwealthAgencies(): Promise<Agency[]> {
 export async function getTimelineEvents(filters?: {
   jurisdiction?: string;
 }): Promise<TimelineEvent[]> {
-  if (isSupabaseConfigured) {
-    try {
-      const supabase = await getSupabase();
-      let query = supabase.from('timeline_events').select('*');
-      if (filters?.jurisdiction) query = query.eq('jurisdiction', filters.jurisdiction);
-      const { data, error } = await query.order('date', { ascending: true });
-      if (!error && data) return data as TimelineEvent[];
-    } catch {
-      // fall through
-    }
-  }
+  // Generate timeline events from policies + merge with manual curated events
+  const policies = await getPolicies();
+  const manualEvents = await readJsonFile<TimelineEvent[]>(TIMELINE_FILE, []);
 
-  let events = await readJsonFile<TimelineEvent[]>(TIMELINE_FILE, []);
+  // Build a set of relatedPolicyIds from manual events for dedup
+  const manualPolicyIds = new Set(
+    manualEvents.filter((e) => e.relatedPolicyId).map((e) => e.relatedPolicyId),
+  );
+
+  // Generate timeline events from policies (skip if manual event already covers it)
+  const policyEvents: TimelineEvent[] = policies
+    .filter((p) => p.effectiveDate && !manualPolicyIds.has(p.id))
+    .map((p) => ({
+      id: `policy-timeline-${p.id}`,
+      date: typeof p.effectiveDate === 'string' ? p.effectiveDate : new Date(p.effectiveDate).toISOString().split('T')[0],
+      title: p.title,
+      description: p.description.length > 200 ? p.description.slice(0, 197) + '...' : p.description,
+      type: p.status === 'amended' ? 'policy_amended' as const : 'policy_introduced' as const,
+      jurisdiction: p.jurisdiction,
+      relatedPolicyId: p.id,
+      sourceUrl: p.sourceUrl,
+    }));
+
+  let events = [...manualEvents, ...policyEvents];
+
   if (filters?.jurisdiction) {
     events = events.filter((e) => e.jurisdiction === filters.jurisdiction);
   }
+
   return events.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 }
 
