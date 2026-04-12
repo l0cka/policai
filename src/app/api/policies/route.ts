@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { summarizePolicy } from '@/lib/claude';
 import { DuplicatePolicyError, getPolicies, createPolicy } from '@/lib/data-service';
+import { verifyAuth, unauthorizedResponse } from '@/lib/auth';
 import type { Policy } from '@/types';
 
 export async function GET(request: Request) {
@@ -20,6 +21,9 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  const user = await verifyAuth(request);
+  if (!user) return unauthorizedResponse();
+
   try {
     const body = await request.json();
     const { title, description, jurisdiction, type, status, effectiveDate, sourceUrl, content, aiSummary, tags, agencies, generateSummary } = body;

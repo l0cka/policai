@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getPolicyById, updatePolicy, deletePolicy } from '@/lib/data-service';
+import { verifyAuth, unauthorizedResponse } from '@/lib/auth';
 
 // GET - Retrieve a single policy by ID
 export async function GET(
@@ -35,6 +36,9 @@ export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const user = await verifyAuth(request);
+  if (!user) return unauthorizedResponse();
+
   try {
     const { id } = await params;
     const body = await request.json();
@@ -66,6 +70,9 @@ export async function DELETE(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const user = await verifyAuth(request);
+  if (!user) return unauthorizedResponse();
+
   try {
     const { id } = await params;
     const deleted = await deletePolicy(id);

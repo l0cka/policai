@@ -53,8 +53,9 @@ export async function verifyAuth(request: Request) {
     return null;
   }
 
-  // Strategy 3: No auth backend configured — allow access (dev/local mode)
-  if (!supabaseUrl && !supabaseAnonKey) {
+  // Strategy 3: No auth backend configured — allow access in development only
+  if (!supabaseUrl && !supabaseAnonKey && process.env.NODE_ENV === 'development') {
+    console.warn('[auth] No auth backend configured — granting dev-mode access');
     return { id: 'local-admin', email: 'admin@localhost' };
   }
 
