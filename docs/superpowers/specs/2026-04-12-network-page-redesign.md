@@ -21,13 +21,14 @@ The graph fills the page height (calc viewport minus header). No cards, stat gri
 
 Built with D3.js force simulation (already a project dependency — no React Flow needed).
 
-**Nodes:**
+**Nodes (policy-only):**
 - **Policy nodes**: circles sized by tag count (proxy for scope/importance), colored by jurisdiction using `--chart-1` through `--chart-5`
 - **Cluster labels**: jurisdiction name rendered as a text label at the centroid of each cluster, not as a node
+- **No agency nodes**: agencies are not graph entities. They appear as metadata in the sidebar when a policy is selected (listed under "Agencies" as plain text). This avoids the 50-agency clutter problem and keeps the graph focused on policy-to-policy relationships.
 
-**Edges:**
-- **Intra-jurisdiction**: faint lines between policies sharing an agency or 2+ tags. Stroke color matches jurisdiction.
-- **Cross-jurisdiction**: dashed purple lines between policies sharing 3+ tags or referencing the same agency. These are the interesting connections.
+**Edges (tag-based only):**
+- **Intra-jurisdiction**: faint lines between policies sharing 2+ tags. Stroke color matches jurisdiction.
+- **Cross-jurisdiction**: dashed purple lines between policies sharing 3+ tags. These are the interesting connections.
 
 **Forces:**
 - Cluster force: policies attract toward their jurisdiction centroid
@@ -61,7 +62,8 @@ Built with existing shadcn `Input` component and Tailwind classes. Uses `bg-card
 - **Title**: policy title in semibold
 - **Date**: effective date in muted text
 - **Description**: 2-3 line description
-- **Connected nodes**: list of related policies/agencies with jurisdiction color dot. Clicking a connected node navigates to it in the graph.
+- **Connected policies**: list of policies linked by shared tags, with jurisdiction color dot. Clicking navigates to that node in the graph.
+- **Agencies**: plain text list of agency names from `policy.agencies` (non-navigable metadata, not graph entities)
 - **Tags**: tag pills in muted style
 - **Actions**: "View Full Policy →" link to `/policies/[id]`, "Source ↗" external link
 
@@ -69,13 +71,19 @@ Uses shadcn `Badge`, `ScrollArea`, and `Button` components. Background uses `bg-
 
 ### Edge Computation
 
-Edges are computed client-side from the policy data:
+Edges are computed **server-side** via a new API endpoint `GET /api/network` that returns pre-computed nodes and edges. This avoids unreliable client-side fuzzy matching.
 
-1. **Shared agency**: if two policies reference the same agency string (fuzzy matched), create an edge
-2. **Shared tags**: if two policies share 2+ tags, create an edge (3+ for cross-jurisdiction)
-3. **Dedup**: one edge per policy pair, weight = number of shared connections
+**Tag-based edges only (no agency string matching):**
 
-This replaces the current static hierarchy with data-driven relationships.
+The `Policy.agencies` field is free-text `string[]` with no canonical IDs — values like "Data and Digital Government Strategy Branch" don't resolve to agency records. Fuzzy matching would create false relationships and miss real ones. Instead, edges are derived solely from shared tags, which are structured and consistent:
+
+1. **Intra-jurisdiction**: two policies in the same jurisdiction sharing 2+ tags → edge
+2. **Cross-jurisdiction**: two policies in different jurisdictions sharing 3+ tags → edge
+3. **Dedup**: one edge per policy pair, weight = number of shared tags
+
+The `/api/network` endpoint returns `{ nodes: PolicyNode[], edges: Edge[] }` so the client receives a trusted, pre-computed graph. Agency names appear as metadata in the sidebar (non-navigable) but do not drive graph topology.
+
+**Future improvement:** When `Policy.agencies` is normalized to canonical agency IDs (foreign keys to the `agencies` table), agency-based edges can be added reliably.
 
 ### Styling
 
@@ -91,23 +99,33 @@ All colors from CSS variables — works in both light and dark mode:
 Break the 995-line monolith into focused components:
 
 ```
-src/app/network/page.tsx              — page shell, data fetching, state
+src/app/network/page.tsx              — page shell, data fetching, state management
+src/app/api/network/route.ts          — server-side edge computation, returns nodes + edges
 src/components/network/
   ForceGraph.tsx                      — D3 force simulation + SVG rendering
   NetworkToolbar.tsx                  — search, jurisdiction pills, stats
   NetworkSidebar.tsx                  — slide-out detail panel
   use-force-simulation.ts            — custom hook for D3 force setup
-  compute-edges.ts                   — edge computation from policy data
 ```
 
 ### Data Flow
 
-1. Page fetches `/api/policies` and `/api/agencies` on mount (same as current)
-2. `compute-edges.ts` builds edge list from shared agencies/tags
-3. `use-force-simulation.ts` initializes D3 force simulation with nodes + edges
-4. `ForceGraph.tsx` renders SVG with D3-managed positions
-5. Toolbar filter state flows down — filtered-out nodes get `opacity: 0.1`
-6. Click events flow up — page sets `selectedNodeId`, sidebar renders
+1. Page fetches `/api/network` on mount (single request, returns pre-computed nodes + edges)
+2. `use-force-simulation.ts` initializes D3 force simulation with the response data
+3. `ForceGraph.tsx` renders SVG with D3-managed positions
+4. Toolbar filter state flows down — filtered-out nodes get `opacity: 0.1`
+5. Click events flow up — page sets `selectedNodeId`, sidebar renders
+
+### Loading, Error, and Empty States
+
+The graph is the only content area, so degraded states must be explicit:
+
+- **Loading**: centered spinner with "Loading network..." text (same pattern as other pages)
+- **Error (fetch failure / 429)**: centered error message with "Failed to load network data" and a "Retry" button. No blank canvas.
+- **Empty (0 policies)**: centered illustration with "No policies found" message and link to the policies page
+- **Partial data**: if the API returns data but edge computation yields 0 edges, show the nodes without edges and a subtle note: "No cross-policy connections found yet"
+
+The page component manages `loading`, `error`, and `data` states explicitly — never renders the graph SVG until data is confirmed present.
 
 ### What Gets Removed
 
