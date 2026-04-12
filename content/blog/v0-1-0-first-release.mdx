@@ -1,43 +1,64 @@
 ---
 title: "Policai v0.1.0 — Our First Release"
 date: "2026-04-12"
-description: "Announcing the first release of Policai, an open-source Australian AI policy tracker with searchable policies, interactive maps, and an autonomous scraper system."
+description: "Policai v0.1.0 introduces the first public release of our open-source tracker for Australian AI policy, with searchable records, map and network views, and an AI-assisted ingestion workflow."
 ---
 
-We're excited to announce the first official release of Policai — an open-source tracker for Australian AI policy and governance developments.
+Today we’re publishing `v0.1.0`, the first public release of Policai.
+
+Policai is an open-source tracker for Australian AI policy and governance developments. The goal is simple: make it easier to follow how AI policy is emerging across Commonwealth, state, and territory governments without having to piece it together from scattered departmental websites, consultation pages, and policy PDFs.
 
 ## What is Policai?
 
-Policai aggregates, analyses, and visualises AI policy developments across all Australian jurisdictions — federal, state, and territory. It covers legislation, regulation, guidelines, frameworks, and standards related to artificial intelligence, all in one searchable interface.
+Policai aggregates, analyses, and visualises policy activity across every Australian jurisdiction. It covers legislation, regulation, guidelines, frameworks, and standards related to artificial intelligence, then presents that information in a form that is easier to search, compare, and explore.
+
+This first release is the foundation: a working public tracker, a structured policy dataset, and the tooling needed to keep that dataset moving.
 
 ## What's in v0.1.0
 
-This release includes the core platform with several key features:
+`v0.1.0` includes the core product surface and the first pass of the ingestion workflow behind it.
 
-### Policy Browser
+### Searchable policy records
 
-A searchable, filterable list of Australian AI policies. Filter by jurisdiction, policy type, or status. Each policy has a detail page with an AI-generated summary, related policies, and source links.
+The main experience is a searchable browser of Australian AI policies. You can filter records by jurisdiction, policy type, and status, then open individual policy pages for summaries, source links, tags, and related material.
 
-### Interactive Map
+### Multiple ways to explore the data
 
-An interactive map of Australia showing policy activity by state and territory. Click any jurisdiction to see its active policies.
+The release includes an interactive map of Australia for jurisdiction-based browsing, plus supporting views such as the agencies directory, framework visualisation, and policy network page. The aim is to make the same dataset useful from different angles rather than forcing everything into a single list.
 
-### Autonomous Scraper
+### AI-assisted policy ingestion
 
-Policai monitors 8 Australian government sources for new AI policy content. The scraper runs automatically, sends content through AI analysis for relevance scoring, and either publishes high-confidence findings or queues them for review.
+Policai currently monitors eight Australian government sources for new AI-related policy material. New pages are fetched, analysed for relevance, and then either pushed forward automatically at high confidence or queued for review when the result is less certain. That gives us a practical balance between automation and editorial control.
 
-### Dark Mode
+### Admin workflow for review and operations
 
-Full system-level dark mode support across the entire application.
+Behind the public site, there is an admin workflow for running scrapers, reviewing pending findings, managing sources, and operating the pipeline. This release is not just a front end; it is the start of the internal machinery required to keep the tracker current.
 
-### This Blog
+### System dark mode support
 
-And of course, this blog — where we'll share project updates, new data source announcements, and commentary on significant AI policy developments.
+Policai also ships with system-level dark mode support across the application, so the interface stays usable in longer research sessions and lower-light environments.
 
-## Open Source
+### The blog itself
 
-Policai is fully open source. Check out the repository on GitHub to explore the code, report issues, or contribute.
+And yes, this blog is part of the release. We’ll use it for product updates, source coverage announcements, and occasional commentary on meaningful AI policy developments in Australia.
 
-## What's Next
+## Why this matters
 
-We're continuing to expand coverage of Australian AI policy sources, improve the AI analysis pipeline, and add new visualisation features. Stay tuned for updates here on the blog.
+Australian AI policy is evolving quickly, but the information environment is fragmented. Relevant material is spread across different jurisdictions, agencies, consultation processes, guidance documents, and program pages. Even when the documents are public, the discovery work is not trivial.
+
+Policai is our attempt to reduce that friction. The immediate value is not perfect completeness. It is a clearer starting point for researchers, practitioners, journalists, public servants, and anyone else trying to understand what the Australian AI policy landscape actually looks like.
+
+## Open source
+
+Policai is open source, and that is intentional. We want the tracker to be inspectable, reusable, and improvable in public. If you want to review the code, suggest fixes, or contribute new ideas, the repository is the right place to start.
+
+## What’s next
+
+The next phase is straightforward:
+
+- expand source coverage across more federal and state bodies
+- improve the quality and reliability of the AI analysis and verification pipeline
+- strengthen the public-facing browsing experience as the dataset grows
+- keep refining the visualisations so they are genuinely useful, not just decorative
+
+`v0.1.0` is an initial release, not a finished product. But it is enough to put the project in public, start tracking the landscape in earnest, and improve the system in the open.
