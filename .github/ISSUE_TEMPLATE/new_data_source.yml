@@ -1,0 +1,45 @@
+name: New Data Source
+description: Suggest a .gov.au source we should be tracking
+labels: ["data-source"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Know of an Australian government AI policy page we're not tracking? Let us know!
+  - type: input
+    id: url
+    attributes:
+      label: URL
+      description: The .gov.au page URL
+      placeholder: https://www.example.gov.au/ai-policy
+    validations:
+      required: true
+  - type: input
+    id: agency
+    attributes:
+      label: Agency / Department
+      description: Which government agency publishes this?
+    validations:
+      required: true
+  - type: dropdown
+    id: jurisdiction
+    attributes:
+      label: Jurisdiction
+      options:
+        - Federal
+        - NSW
+        - Victoria
+        - Queensland
+        - Western Australia
+        - South Australia
+        - Tasmania
+        - ACT
+        - Northern Territory
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What kind of content does this page contain?
+      placeholder: e.g. AI transparency statement, AI ethics framework, AI usage policy
