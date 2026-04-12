@@ -2,9 +2,13 @@ import { NextResponse } from 'next/server';
 import { summarizePolicy } from '@/lib/claude';
 import { DuplicatePolicyError, getPolicies, createPolicy } from '@/lib/data-service';
 import { verifyAuth, unauthorizedResponse } from '@/lib/auth';
+import { checkRateLimit } from '@/lib/rate-limit';
 import type { Policy } from '@/types';
 
 export async function GET(request: Request) {
+  const limited = checkRateLimit(request);
+  if (limited) return limited;
+
   const { searchParams } = new URL(request.url);
   const jurisdiction = searchParams.get('jurisdiction') || undefined;
   const type = searchParams.get('type') || undefined;

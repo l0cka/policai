@@ -1,8 +1,12 @@
 import { NextResponse } from 'next/server';
 import { analyseContentRelevance } from '@/lib/claude';
 import { verifyAuth, unauthorizedResponse } from '@/lib/auth';
+import { checkRateLimit } from '@/lib/rate-limit';
 
 export async function POST(request: Request) {
+  const limited = checkRateLimit(request, { limit: 10, windowSeconds: 60 });
+  if (limited) return limited;
+
   const user = await verifyAuth(request);
   if (!user) return unauthorizedResponse();
 

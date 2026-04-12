@@ -1,9 +1,15 @@
 import { NextResponse } from 'next/server';
 import { analyseContentRelevance, type ContentAnalysis } from '@/lib/claude';
+import { summarizePolicy } from '@/lib/claude';
 import { verifyAuth, unauthorizedResponse } from '@/lib/auth';
 import * as cheerio from 'cheerio';
 import { cleanHtmlContent } from '@/lib/utils';
 import { DATA_SOURCES_MAP } from '@/lib/data-sources';
+import {
+  createPolicy as createPolicyInDb,
+  DuplicatePolicyError,
+} from '@/lib/data-service';
+import type { Policy } from '@/types';
 
 interface ScrapedLink {
   url: string;
@@ -101,61 +107,68 @@ async function fetchContent(url: string): Promise<string> {
 }
 
 /**
- * Create a policy from analyzed content
+ * Create a policy from analyzed content (direct data-service call, no HTTP loopback)
  */
 async function createPolicy(title: string, url: string, analysis: ContentAnalysis, content: string) {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/policies`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      title,
-      description: analysis.summary,
-      jurisdiction: analysis.jurisdiction || 'federal',
-      type: analysis.policyType || 'guideline',
-      status: 'active',
-      sourceUrl: url,
-      content: content.slice(0, 10000), // Limit content size
-      tags: analysis.tags || [],
-      agencies: analysis.agencies || [],
-      generateSummary: true,
-    }),
-  });
+  const id = title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '')
+    .slice(0, 50);
 
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to create policy');
-  }
-
-  return response.json();
-}
-
-/**
- * Add content to pending review queue
- */
-async function addToPendingReview(title: string, url: string, analysis: ContentAnalysis) {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/admin/pending`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      url,
-      title,
-      analysis,
-    }),
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    // If it already exists, that's fine
-    if (!error.error?.includes('already exists')) {
-      throw new Error(error.error || 'Failed to add to pending review');
+  let aiSummary = analysis.summary || '';
+  if (process.env.OPENROUTER_API_KEY) {
+    try {
+      const summaryResult = await summarizePolicy(title, content);
+      if (summaryResult.summary && summaryResult.summary !== 'Unable to generate summary') {
+        aiSummary = summaryResult.summary;
+      }
+    } catch {
+      // Use the analysis summary as fallback
     }
   }
 
-  return response.json();
+  const now = new Date().toISOString();
+  const newPolicy: Policy = {
+    id,
+    title,
+    description: analysis.summary || '',
+    jurisdiction: (analysis.jurisdiction as Policy['jurisdiction']) || 'federal',
+    type: (analysis.policyType as Policy['type']) || 'guideline',
+    status: 'active',
+    effectiveDate: now.split('T')[0],
+    agencies: analysis.agencies || [],
+    sourceUrl: url,
+    content: content.slice(0, 10000),
+    aiSummary,
+    tags: analysis.tags || [],
+    createdAt: now,
+    updatedAt: now,
+  };
+
+  try {
+    return await createPolicyInDb(newPolicy);
+  } catch (err) {
+    if (err instanceof DuplicatePolicyError) {
+      console.log(`[scraper] Policy already exists: ${id}`);
+      return null;
+    }
+    throw err;
+  }
+}
+
+/**
+ * Add content to pending review queue (writes directly to JSON file)
+ */
+async function addToPendingReview(title: string, url: string, analysis: ContentAnalysis) {
+  const { readJsonFile, writeJsonFile } = await import('@/lib/file-store');
+  const path = await import('path');
+  const pendingFile = path.join(process.cwd(), 'public', 'data', 'pending-content.json');
+
+  const pending = await readJsonFile<Array<{ url: string; title: string; analysis: ContentAnalysis }>>(pendingFile, []);
+  if (pending.some((p) => p.url === url)) return; // already exists
+  pending.push({ url, title, analysis });
+  await writeJsonFile(pendingFile, pending);
 }
 
 export async function POST(request: Request) {

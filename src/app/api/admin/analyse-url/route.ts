@@ -2,8 +2,12 @@ import { NextResponse } from 'next/server';
 import { analyseContentRelevance } from '@/lib/claude';
 import { verifyAuth, unauthorizedResponse } from '@/lib/auth';
 import { cleanHtmlContent } from '@/lib/utils';
+import { checkRateLimit } from '@/lib/rate-limit';
 
 export async function POST(request: Request) {
+  const limited = checkRateLimit(request, { limit: 10, windowSeconds: 60 });
+  if (limited) return limited;
+
   const user = await verifyAuth(request);
   if (!user) {
     return unauthorizedResponse();
@@ -16,6 +20,28 @@ export async function POST(request: Request) {
     if (!url) {
       return NextResponse.json(
         { error: 'URL is required', success: false },
+        { status: 400 }
+      );
+    }
+
+    // Validate URL is a .gov.au domain to prevent SSRF
+    try {
+      const parsed = new URL(url);
+      if (!parsed.hostname.endsWith('.gov.au')) {
+        return NextResponse.json(
+          { error: 'Only .gov.au URLs are allowed', success: false },
+          { status: 400 }
+        );
+      }
+      if (!['http:', 'https:'].includes(parsed.protocol)) {
+        return NextResponse.json(
+          { error: 'Only HTTP/HTTPS URLs are allowed', success: false },
+          { status: 400 }
+        );
+      }
+    } catch {
+      return NextResponse.json(
+        { error: 'Invalid URL format', success: false },
         { status: 400 }
       );
     }

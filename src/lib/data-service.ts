@@ -33,6 +33,22 @@ async function getSupabase() {
 }
 
 // ---------------------------------------------------------------------------
+// Input sanitization
+// ---------------------------------------------------------------------------
+
+/**
+ * Sanitize search input for PostgREST filters.
+ * Strips characters that could be used for filter injection (commas, dots,
+ * parentheses, and PostgREST operators).
+ */
+function sanitizeSearchInput(input: string): string {
+  return input
+    .replace(/[,().]/g, '') // PostgREST filter delimiters
+    .replace(/\\/g, '')     // escape characters
+    .slice(0, 200);         // cap length
+}
+
+// ---------------------------------------------------------------------------
 // File paths
 // ---------------------------------------------------------------------------
 
@@ -73,8 +89,9 @@ export async function getPolicies(filters?: PolicyFilters): Promise<Policy[]> {
       if (filters?.type) query = query.eq('type', filters.type);
       if (filters?.status) query = query.eq('status', filters.status);
       if (filters?.search) {
+        const sanitized = sanitizeSearchInput(filters.search);
         query = query.or(
-          `title.ilike.%${filters.search}%,description.ilike.%${filters.search}%`,
+          `title.ilike.%${sanitized}%,description.ilike.%${sanitized}%`,
         );
       }
 
