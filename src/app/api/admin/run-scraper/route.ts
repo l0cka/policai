@@ -6,6 +6,12 @@ import * as cheerio from 'cheerio';
 import { cleanHtmlContent } from '@/lib/utils';
 import { DATA_SOURCES_MAP } from '@/lib/data-sources';
 import {
+  cleanScrapedLinkTitle,
+  isRelevantScrapedCandidate,
+  shouldCreatePolicyFromAnalysis,
+  shouldQueuePolicyForReview,
+} from '@/lib/scraper-filter';
+import {
   createPolicy as createPolicyInDb,
   DuplicatePolicyError,
 } from '@/lib/data-service';
@@ -40,7 +46,7 @@ async function scrapeLinks(sourceUrl: string): Promise<ScrapedLink[]> {
     // Find all links on the page
     $('a').each((_, element) => {
       const href = $(element).attr('href');
-      const text = $(element).text().trim();
+      const text = cleanScrapedLinkTitle($(element).text().trim());
 
       if (!href || !text) return;
 
@@ -54,29 +60,18 @@ async function scrapeLinks(sourceUrl: string): Promise<ScrapedLink[]> {
       }
 
       // Filter for likely policy/document links
-      const isLikelyPolicy =
-        href.includes('pdf') ||
-        href.includes('policy') ||
-        href.includes('guidance') ||
-        href.includes('framework') ||
-        href.includes('strategy') ||
-        href.includes('standard') ||
-        href.includes('regulation') ||
-        text.toLowerCase().includes('policy') ||
-        text.toLowerCase().includes('framework') ||
-        text.toLowerCase().includes('guidance') ||
-        text.toLowerCase().includes('standard');
+      const candidate = {
+        url: absoluteUrl,
+        title: text,
+        text: $(element).parent().text().trim().slice(0, 500),
+      };
 
-      if (isLikelyPolicy) {
-        links.push({
-          url: absoluteUrl,
-          title: text,
-          text: $(element).parent().text().trim().slice(0, 500),
-        });
+      if (isRelevantScrapedCandidate(candidate)) {
+        links.push(candidate);
       }
     });
 
-    return links.slice(0, 10); // Limit to 10 links per source
+    return Array.from(new Map(links.map((link) => [link.url, link])).values()).slice(0, 10);
   } catch (error) {
     console.error(`Error scraping ${sourceUrl}:`, error);
     return [];
@@ -229,7 +224,7 @@ export async function POST(request: Request) {
         itemsProcessed++;
 
         // Decision logic based on relevance score
-        if (analysis.relevanceScore >= 0.8 && analysis.isRelevant) {
+        if (shouldCreatePolicyFromAnalysis(link, analysis)) {
           // High confidence - auto-create policy
           try {
             await createPolicy(link.title, link.url, analysis, content);
@@ -241,7 +236,7 @@ export async function POST(request: Request) {
             await addToPendingReview(link.title, link.url, analysis);
             itemsPending++;
           }
-        } else if (analysis.relevanceScore >= 0.5 && analysis.isRelevant) {
+        } else if (shouldQueuePolicyForReview(link, analysis)) {
           // Medium confidence - add to pending review
           await addToPendingReview(link.title, link.url, analysis);
           itemsPending++;

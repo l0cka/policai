@@ -34,6 +34,14 @@ export async function analyseContentRelevance(
         role: 'user',
         content: `Analyse the following web content and determine if it's relevant to Australian AI policy, regulation, or governance.
 
+Only mark content as relevant when the page itself materially discusses AI or automated decision-making policy, regulation, standards, frameworks, guidance, assurance, safety, ethics, procurement, or government adoption.
+
+Do NOT mark content as relevant if it is primarily:
+- generic site navigation or landing-page content
+- privacy policies, accessibility statements, cookie notices, terms, or copyright pages
+- generic "mission", "commitments", or organisational strategy pages unless they explicitly govern AI
+- a general policy hub that is not specifically about AI policy/governance
+
 Source URL: ${sourceUrl}
 
 Content:

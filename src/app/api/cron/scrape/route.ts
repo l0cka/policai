@@ -17,10 +17,22 @@ import * as cheerio from 'cheerio';
 import { analyseContentRelevance, summarizePolicy } from '@/lib/claude';
 import { cleanHtmlContent } from '@/lib/utils';
 import { DATA_SOURCES, type DataSource } from '@/lib/data-sources';
-import { createPolicy, policyExists, logScraperRun } from '@/lib/data-service';
+import {
+  createPolicy,
+  DuplicatePolicyError,
+  policyExists,
+  policyExistsBySourceUrl,
+  logScraperRun,
+} from '@/lib/data-service';
+import {
+  cleanScrapedLinkTitle,
+  isRelevantScrapedCandidate,
+  shouldCreatePolicyFromAnalysis,
+} from '@/lib/scraper-filter';
 import type { Policy } from '@/types';
 
 export const maxDuration = 300;
+export const dynamic = 'force-dynamic';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -45,7 +57,7 @@ async function scrapeLinks(sourceUrl: string): Promise<ScrapedLink[]> {
 
     $('a').each((_, element) => {
       const href = $(element).attr('href');
-      const text = $(element).text().trim();
+      const text = cleanScrapedLinkTitle($(element).text().trim());
       if (!href || !text) return;
 
       let absoluteUrl = href;
@@ -56,29 +68,18 @@ async function scrapeLinks(sourceUrl: string): Promise<ScrapedLink[]> {
         return;
       }
 
-      const isLikelyPolicy =
-        href.includes('pdf') ||
-        href.includes('policy') ||
-        href.includes('guidance') ||
-        href.includes('framework') ||
-        href.includes('strategy') ||
-        href.includes('standard') ||
-        href.includes('regulation') ||
-        text.toLowerCase().includes('policy') ||
-        text.toLowerCase().includes('framework') ||
-        text.toLowerCase().includes('guidance') ||
-        text.toLowerCase().includes('standard');
+      const candidate = {
+        url: absoluteUrl,
+        title: text,
+        text: $(element).parent().text().trim().slice(0, 500),
+      };
 
-      if (isLikelyPolicy) {
-        links.push({
-          url: absoluteUrl,
-          title: text,
-          text: $(element).parent().text().trim().slice(0, 500),
-        });
+      if (isRelevantScrapedCandidate(candidate)) {
+        links.push(candidate);
       }
     });
 
-    return links.slice(0, 10);
+    return Array.from(new Map(links.map((link) => [link.url, link])).values()).slice(0, 10);
   } catch (error) {
     console.error(`[cron] Error scraping ${sourceUrl}:`, error);
     return [];
@@ -112,7 +113,7 @@ async function processHighConfidenceLink(
     .replace(/(^-|-$)/g, '')
     .slice(0, 50);
 
-  if (await policyExists(id)) {
+  if (await policyExists(id) || await policyExistsBySourceUrl(url)) {
     console.log(`[cron] Policy already exists: ${id}`);
     return false;
   }
@@ -147,8 +148,16 @@ async function processHighConfidenceLink(
     updatedAt: now,
   };
 
-  await createPolicy(newPolicy);
-  return true;
+  try {
+    await createPolicy(newPolicy);
+    return true;
+  } catch (error) {
+    if (error instanceof DuplicatePolicyError) {
+      console.log(`[cron] Policy already exists: ${id}`);
+      return false;
+    }
+    throw error;
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -171,7 +180,7 @@ async function scrapeSource(source: DataSource) {
       const content = await fetchContent(link.url);
       const analysis = await analyseContentRelevance(content, link.url);
 
-      if (analysis.relevanceScore >= 0.8 && analysis.isRelevant) {
+      if (shouldCreatePolicyFromAnalysis(link, analysis)) {
         const wasCreated = await processHighConfidenceLink(
           link.title,
           link.url,

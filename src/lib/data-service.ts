@@ -151,6 +151,33 @@ export async function getPolicyById(id: string): Promise<Policy | null> {
   return policies.find((p) => p.id === id) || null;
 }
 
+export async function getPolicyBySourceUrl(sourceUrl: string): Promise<Policy | null> {
+  if (isSupabaseConfigured) {
+    try {
+      const supabase = await getSupabase();
+      const { data, error } = await supabase
+        .from('policies')
+        .select('*')
+        .eq('sourceUrl', sourceUrl)
+        .maybeSingle();
+      if (!error && data) return data as Policy;
+      if (!error) return null;
+      console.warn('[data-service] Supabase getPolicyBySourceUrl failed, falling back to JSON:', error?.message);
+    } catch (err) {
+      console.warn('[data-service] Supabase getPolicyBySourceUrl exception, falling back to JSON:', err);
+    }
+  }
+
+  const policies = await readJsonFile<Policy[]>(POLICIES_FILE, []);
+  return policies.find((p) => p.sourceUrl === sourceUrl) || null;
+}
+
+function isSupabaseDuplicateError(message?: string): boolean {
+  if (!message) return false;
+  const normalized = message.toLowerCase();
+  return normalized.includes('duplicate key') || normalized.includes('unique constraint');
+}
+
 export async function createPolicy(policy: Policy): Promise<Policy> {
   if (isSupabaseConfigured) {
     try {
@@ -161,8 +188,14 @@ export async function createPolicy(policy: Policy): Promise<Policy> {
         .select()
         .single();
       if (!error && data) return data as Policy;
+      if (isSupabaseDuplicateError(error?.message)) {
+        throw new DuplicatePolicyError(policy.id);
+      }
       console.warn('[data-service] Supabase createPolicy failed, falling back to JSON:', error?.message);
     } catch (err) {
+      if (err instanceof DuplicatePolicyError) {
+        throw err;
+      }
       console.warn('[data-service] Supabase createPolicy exception, falling back to JSON:', err);
     }
   }
@@ -235,6 +268,11 @@ export async function deletePolicy(id: string): Promise<boolean> {
 /** Check if a policy with a given ID already exists. */
 export async function policyExists(id: string): Promise<boolean> {
   const policy = await getPolicyById(id);
+  return policy !== null;
+}
+
+export async function policyExistsBySourceUrl(sourceUrl: string): Promise<boolean> {
+  const policy = await getPolicyBySourceUrl(sourceUrl);
   return policy !== null;
 }
 
