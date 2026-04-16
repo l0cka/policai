@@ -371,5 +371,95 @@
     "tags": ["Northern Territory", "AI assurance", "framework", "public sector", "risk management"],
     "createdAt": "2026-04-13T03:05:00Z",
     "updatedAt": "2026-04-13T03:05:00Z"
+  },
+  {
+    "id": "federal-court-gpn-ai",
+    "title": "GPN-AI — Use of Generative Artificial Intelligence",
+    "description": "Federal Court of Australia general practice note governing the use of generative AI by all persons appearing before or filing documents with the Court.",
+    "jurisdiction": "federal",
+    "type": "practice_note",
+    "status": "active",
+    "effectiveDate": "2026-04-16",
+    "agencies": [
+      "Federal Court of Australia"
+    ],
+    "sourceUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-ai",
+    "content": "GPN-AI is a General Practice Note signed by Chief Justice Mortimer that sets out the Federal Court's expectations for use of generative AI in connection with proceedings. It applies to all persons who appear before or file documents with the Court, including litigants, witnesses, and third parties producing documents under subpoena. The practice note establishes three baseline expectations: users should understand AI capabilities, limitations and risks; use must not adversely affect the administration of justice; and disclosure of AI use may be required. It identifies heightened risk areas in pleadings and submissions (hallucinated citations, fictitious authorities) and evidentiary materials (affidavits, expert reports). Confidentiality obligations apply to information entered into AI tools. Non-compliance may attract adverse costs orders.",
+    "aiSummary": "Federal Court practice note setting disclosure obligations and baseline expectations for generative AI use in proceedings, effective 16 April 2026.",
+    "tags": ["practice note", "generative AI", "Federal Court", "disclosure", "courts", "judicial"],
+    "createdAt": "2026-04-16T00:00:00Z",
+    "updatedAt": "2026-04-16T00:00:00Z"
+  },
+  {
+    "id": "nsw-supreme-court-sc-gen-23",
+    "title": "SC Gen 23 — Use of Artificial Intelligence in Court Proceedings",
+    "description": "Supreme Court of New South Wales practice note on the use of AI in proceedings before the Court.",
+    "jurisdiction": "nsw",
+    "type": "practice_note",
+    "status": "active",
+    "effectiveDate": "2024-12-01",
+    "agencies": [
+      "Supreme Court of New South Wales"
+    ],
+    "sourceUrl": "https://www.supremecourt.justice.nsw.gov.au/practice-and-procedure/practice-notes/practice-notes-sc-gen/sc-gen-23---use-of-artificial-intelligence-in-court-proceedings",
+    "content": "SC Gen 23 was issued by the Supreme Court of New South Wales in late 2024 and establishes the Court's expectations for the use of artificial intelligence in connection with proceedings. It requires legal practitioners and parties to disclose any use of AI in preparing court documents, including submissions, affidavits, and expert reports. The practice note addresses risks of AI-generated content including fabricated case citations and factual inaccuracies, and places responsibility on the person filing the document to verify all AI-assisted content.",
+    "aiSummary": "NSW Supreme Court practice note requiring disclosure of AI use in court proceedings and verification of AI-generated content.",
+    "tags": ["practice note", "AI", "Supreme Court", "NSW", "disclosure", "courts", "judicial"],
+    "createdAt": "2026-04-16T00:00:00Z",
+    "updatedAt": "2026-04-16T00:00:00Z"
+  },
+  {
+    "id": "vic-supreme-court-ai-guidelines",
+    "title": "Guidelines on the Use of Artificial Intelligence in Court Proceedings",
+    "description": "Supreme Court of Victoria guidelines addressing the use of AI tools in matters before the Court.",
+    "jurisdiction": "vic",
+    "type": "practice_note",
+    "status": "active",
+    "effectiveDate": "2025-03-01",
+    "agencies": [
+      "Supreme Court of Victoria"
+    ],
+    "sourceUrl": "https://www.supremecourt.vic.gov.au/law-and-practice/practice-notes",
+    "content": "The Supreme Court of Victoria issued guidelines on the use of artificial intelligence in court proceedings. The guidelines require practitioners and self-represented litigants to disclose the use of AI tools in the preparation of documents filed with the Court. They emphasise that responsibility for the accuracy and completeness of all court documents remains with the person filing them, regardless of whether AI was used. The guidelines address specific risks including hallucinated case citations and fabricated legal propositions.",
+    "aiSummary": "Victorian Supreme Court guidelines on AI use in proceedings, requiring disclosure and placing verification responsibility on practitioners.",
+    "tags": ["practice note", "AI", "Supreme Court", "Victoria", "guidelines", "courts", "judicial"],
+    "createdAt": "2026-04-16T00:00:00Z",
+    "updatedAt": "2026-04-16T00:00:00Z"
+  },
+  {
+    "id": "family-court-ai-practice-direction",
+    "title": "Practice Direction — Use of Artificial Intelligence",
+    "description": "Federal Circuit and Family Court of Australia practice direction on the use of AI tools in proceedings.",
+    "jurisdiction": "federal",
+    "type": "practice_note",
+    "status": "active",
+    "effectiveDate": "2025-06-01",
+    "agencies": [
+      "Federal Circuit and Family Court of Australia"
+    ],
+    "sourceUrl": "https://www.fcfcoa.gov.au/fl/practice-directions",
+    "content": "The Federal Circuit and Family Court of Australia issued a practice direction addressing the use of artificial intelligence tools by parties and practitioners in family law and general federal law proceedings. The direction requires disclosure of AI use in affidavits and other evidentiary material, and places particular emphasis on the sensitivity of family law proceedings where personal and financial information may be at risk if entered into AI tools. Practitioners must verify all AI-generated content and certify that cited authorities exist.",
+    "aiSummary": "Federal Circuit and Family Court practice direction on AI use in proceedings, with emphasis on confidentiality in family law matters.",
+    "tags": ["practice note", "AI", "Family Court", "federal", "disclosure", "confidentiality", "courts", "judicial"],
+    "createdAt": "2026-04-16T00:00:00Z",
+    "updatedAt": "2026-04-16T00:00:00Z"
+  },
+  {
+    "id": "qld-supreme-court-ai-practice-direction",
+    "title": "Practice Direction — Artificial Intelligence",
+    "description": "Supreme Court of Queensland practice direction on the use of AI in matters before the Court.",
+    "jurisdiction": "qld",
+    "type": "practice_note",
+    "status": "active",
+    "effectiveDate": "2025-08-01",
+    "agencies": [
+      "Supreme Court of Queensland"
+    ],
+    "sourceUrl": "https://www.courts.qld.gov.au/court-users/practice-directions/supreme-court",
+    "content": "The Supreme Court of Queensland issued a practice direction on the use of artificial intelligence in matters before the Court. The direction requires practitioners and self-represented litigants to disclose any use of AI tools in the preparation of documents filed with the Court, including submissions, affidavits, and expert reports. It requires that all cited legal authorities be verified as genuine and accurately cited.",
+    "aiSummary": "Queensland Supreme Court practice direction requiring AI disclosure and authority verification in court documents.",
+    "tags": ["practice note", "AI", "Supreme Court", "Queensland", "disclosure", "courts", "judicial"],
+    "createdAt": "2026-04-16T00:00:00Z",
+    "updatedAt": "2026-04-16T00:00:00Z"
   }
 ]

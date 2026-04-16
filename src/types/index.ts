@@ -16,7 +16,8 @@ export type PolicyType =
   | 'regulation'
   | 'guideline'
   | 'framework'
-  | 'standard';
+  | 'standard'
+  | 'practice_note';
 
 export type PolicyStatus =
   | 'proposed'
@@ -154,6 +155,7 @@ export const POLICY_TYPE_NAMES: Record<PolicyType, string> = {
   guideline: 'Guideline',
   framework: 'Framework',
   standard: 'Standard',
+  practice_note: 'Practice Note',
 };
 
 export const POLICY_STATUS_NAMES: Record<PolicyStatus, string> = {

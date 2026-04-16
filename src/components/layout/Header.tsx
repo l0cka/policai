@@ -13,6 +13,7 @@ import { PolicaiLogo } from '@/components/layout/PolicaiLogo';
 
 const navItems = [
   { href: '/', label: 'Policies' },
+  { href: '/courts', label: 'Courts' },
   { href: '/map', label: 'Map' },
   { href: '/agencies', label: 'Agencies' },
   { href: '/blog', label: 'Blog' },
