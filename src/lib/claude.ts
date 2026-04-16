@@ -53,7 +53,7 @@ Please respond in JSON format with the following structure:
   "relevanceScore": number between 0 and 1,
   "summary": "brief summary if relevant",
   "tags": ["relevant", "tags"],
-  "policyType": "legislation|regulation|guideline|framework|standard|null",
+  "policyType": "legislation|regulation|guideline|framework|standard|practice_note|null",
   "jurisdiction": "federal|nsw|vic|qld|wa|sa|tas|act|nt|null",
   "agencies": ["mentioned agencies"],
   "keyDates": ["any important dates mentioned"],

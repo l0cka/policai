@@ -49,7 +49,7 @@ Respond in JSON format:
   "title": "official policy title",
   "description": "2-3 sentence accurate description",
   "jurisdiction": "federal|nsw|vic|qld|wa|sa|tas|act|nt",
-  "type": "legislation|regulation|guideline|framework|standard",
+  "type": "legislation|regulation|guideline|framework|standard|practice_note",
   "status": "proposed|active|amended|repealed",
   "effectiveDate": "YYYY-MM-DD or empty string",
   "agencies": ["agencies involved"],

@@ -36,13 +36,20 @@ function extractCourtName(policy: Policy): string {
 export default function CourtsPage() {
   const [policies, setPolicies] = useState<Policy[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   useEffect(() => {
     fetch('/api/policies')
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error(`Server returned ${res.status}`);
+        return res.json();
+      })
       .then((json) => setPolicies(json.data ?? []))
-      .catch((err) => console.error('Failed to load policies:', err))
+      .catch((err) => {
+        console.error('Failed to load policies:', err);
+        setError('Unable to load court practice notes. Please try refreshing the page.');
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -79,6 +86,20 @@ export default function CourtsPage() {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="animate-pulse text-muted-foreground">Loading court practice notes...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-3">
+        <p className="text-sm text-muted-foreground">{error}</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="font-mono text-xs text-primary hover:underline"
+        >
+          Retry
+        </button>
       </div>
     );
   }

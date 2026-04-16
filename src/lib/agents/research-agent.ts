@@ -108,7 +108,7 @@ Respond in JSON format:
       "title": "name of the policy/finding",
       "summary": "2-3 sentence summary of what this finding is about",
       "relevanceScore": 0.0-1.0,
-      "suggestedType": "legislation|regulation|guideline|framework|standard|null",
+      "suggestedType": "legislation|regulation|guideline|framework|standard|practice_note|null",
       "suggestedJurisdiction": "federal|nsw|vic|qld|wa|sa|tas|act|nt|null",
       "tags": ["relevant tags"],
       "agencies": ["government agencies mentioned"],
