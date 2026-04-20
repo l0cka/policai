@@ -10,7 +10,7 @@
 import { NextResponse } from 'next/server';
 import { runAgencyDiscoveryAgent } from '@/lib/agents/agency-discovery-agent';
 import { getAgencies } from '@/lib/data-service';
-import { isSupabaseConfigured } from '@/lib/data-service';
+import { isSupabaseAdminConfigured } from '@/lib/data-service';
 
 export const maxDuration = 300;
 export const dynamic = 'force-dynamic';
@@ -42,7 +42,7 @@ export async function GET(request: Request) {
 
   try {
     // Get existing agency names for dedup
-    const existingAgencies = await getAgencies();
+    const existingAgencies = await getAgencies(undefined, { access: 'admin' });
     const existingNames = existingAgencies.map((a) => a.name);
 
     // Run discovery
@@ -52,8 +52,9 @@ export async function GET(request: Request) {
     let created = 0;
     let updated = 0;
 
-    if (isSupabaseConfigured && updates.length > 0) {
-      const { supabase } = await import('@/lib/supabase');
+    if (isSupabaseAdminConfigured && updates.length > 0) {
+      const { createSupabaseAdminClient } = await import('@/lib/supabase-admin');
+      const supabase = createSupabaseAdminClient();
 
       for (const update of updates) {
         // Try to find existing agency by name (case-insensitive)

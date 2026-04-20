@@ -14,7 +14,7 @@ import {
 import { getPolicies } from '@/lib/data-service';
 
 async function getExistingPolicyTitles(): Promise<string[]> {
-  const policies = await getPolicies();
+  const policies = await getPolicies(undefined, { access: 'admin' });
   return policies.map((p) => p.title);
 }
 

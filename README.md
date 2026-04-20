@@ -47,6 +47,8 @@ cp .env.example .env.local
 
 The app works without any keys by falling back to JSON files in `public/data/`. See `.env.example` for all available variables.
 
+For Supabase-backed deployments, run the RLS migration and configure the server-only `SUPABASE_SERVICE_ROLE_KEY` so protected admin and cron routes can write while the public anon key remains read-only. See [Supabase RLS setup](./docs/supabase-rls.md).
+
 ## Commands
 
 ```bash
@@ -83,6 +85,7 @@ This keeps local development simple while allowing production deployments to use
 
 - [Documentation index](./docs/README.md)
 - [Scraper operations guide](./docs/scraper.md)
+- [Supabase RLS setup](./docs/supabase-rls.md)
 - [Scripts overview](./scripts/README.md)
 - [Agent instructions](./AGENTS.md)
 

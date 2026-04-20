@@ -19,9 +19,11 @@ import type { Policy, Agency, TimelineEvent, ScraperRunLog } from '@/types';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
 /** True when the env vars are set and non-empty. */
 export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
+export const isSupabaseAdminConfigured = Boolean(supabaseUrl && supabaseServiceRoleKey);
 
 /**
  * Lazily import the Supabase client so the JSON-only path never triggers
@@ -30,6 +32,44 @@ export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
 async function getSupabase() {
   const { supabase } = await import('@/lib/supabase');
   return supabase;
+}
+
+async function getSupabaseAdmin() {
+  const { createSupabaseAdminClient } = await import('@/lib/supabase-admin');
+  return createSupabaseAdminClient();
+}
+
+type DataAccess = 'public' | 'admin';
+
+interface DataServiceOptions {
+  access?: DataAccess;
+}
+
+const PUBLIC_POLICY_STATUSES = new Set(['proposed', 'active', 'amended', 'repealed']);
+
+function isPublicPolicy(policy: Policy): boolean {
+  return PUBLIC_POLICY_STATUSES.has(policy.status);
+}
+
+function applyPublicPolicyFilter(policies: Policy[]): Policy[] {
+  return policies.filter(isPublicPolicy);
+}
+
+function toPublicAgencies(agencies: Agency[]): Agency[] {
+  return agencies.map((agency) => ({
+    id: agency.id,
+    name: agency.name,
+    acronym: agency.acronym,
+    level: agency.level,
+    jurisdiction: agency.jurisdiction,
+    aiTransparencyStatement: agency.aiTransparencyStatement,
+    aiUsageDisclosure: agency.aiUsageDisclosure,
+    website: agency.website,
+    policies: agency.policies,
+    transparencyStatementUrl: agency.transparencyStatementUrl,
+    lastUpdated: agency.lastUpdated,
+    hasPublishedStatement: agency.hasPublishedStatement,
+  }));
 }
 
 // ---------------------------------------------------------------------------
@@ -79,15 +119,25 @@ export class DuplicatePolicyError extends Error {
   }
 }
 
-export async function getPolicies(filters?: PolicyFilters): Promise<Policy[]> {
+export async function getPolicies(
+  filters?: PolicyFilters,
+  options: DataServiceOptions = {},
+): Promise<Policy[]> {
+  const access = options.access ?? 'public';
+
   if (isSupabaseConfigured) {
     try {
-      const supabase = await getSupabase();
+      const supabase = access === 'admin' && isSupabaseAdminConfigured
+        ? await getSupabaseAdmin()
+        : await getSupabase();
       let query = supabase.from('policies').select('*');
 
       if (filters?.jurisdiction) query = query.eq('jurisdiction', filters.jurisdiction);
       if (filters?.type) query = query.eq('type', filters.type);
       if (filters?.status) query = query.eq('status', filters.status);
+      if (access === 'public') {
+        query = query.in('status', Array.from(PUBLIC_POLICY_STATUSES));
+      }
       if (filters?.search) {
         const sanitized = sanitizeSearchInput(filters.search);
         query = query.or(
@@ -105,6 +155,9 @@ export async function getPolicies(filters?: PolicyFilters): Promise<Policy[]> {
 
   // JSON fallback
   let policies = await readJsonFile<Policy[]>(POLICIES_FILE, []);
+  if (access === 'public') {
+    policies = applyPublicPolicyFilter(policies);
+  }
 
   if (filters?.jurisdiction) {
     policies = policies.filter((p) => p.jurisdiction === filters.jurisdiction);
@@ -130,15 +183,25 @@ export async function getPolicies(filters?: PolicyFilters): Promise<Policy[]> {
   );
 }
 
-export async function getPolicyById(id: string): Promise<Policy | null> {
+export async function getPolicyById(
+  id: string,
+  options: DataServiceOptions = {},
+): Promise<Policy | null> {
+  const access = options.access ?? 'public';
+
   if (isSupabaseConfigured) {
     try {
-      const supabase = await getSupabase();
-      const { data, error } = await supabase
+      const supabase = access === 'admin' && isSupabaseAdminConfigured
+        ? await getSupabaseAdmin()
+        : await getSupabase();
+      let query = supabase
         .from('policies')
         .select('*')
-        .eq('id', id)
-        .maybeSingle();
+        .eq('id', id);
+      if (access === 'public') {
+        query = query.in('status', Array.from(PUBLIC_POLICY_STATUSES));
+      }
+      const { data, error } = await query.maybeSingle();
       if (!error && data) return data as Policy;
       if (!error) return null;
       console.warn('[data-service] Supabase getPolicyById failed, falling back to JSON:', error?.message);
@@ -148,18 +211,30 @@ export async function getPolicyById(id: string): Promise<Policy | null> {
   }
 
   const policies = await readJsonFile<Policy[]>(POLICIES_FILE, []);
-  return policies.find((p) => p.id === id) || null;
+  const policy = policies.find((p) => p.id === id) || null;
+  if (policy && access === 'public' && !isPublicPolicy(policy)) return null;
+  return policy;
 }
 
-export async function getPolicyBySourceUrl(sourceUrl: string): Promise<Policy | null> {
+export async function getPolicyBySourceUrl(
+  sourceUrl: string,
+  options: DataServiceOptions = {},
+): Promise<Policy | null> {
+  const access = options.access ?? 'public';
+
   if (isSupabaseConfigured) {
     try {
-      const supabase = await getSupabase();
-      const { data, error } = await supabase
+      const supabase = access === 'admin' && isSupabaseAdminConfigured
+        ? await getSupabaseAdmin()
+        : await getSupabase();
+      let query = supabase
         .from('policies')
         .select('*')
-        .eq('sourceUrl', sourceUrl)
-        .maybeSingle();
+        .eq('sourceUrl', sourceUrl);
+      if (access === 'public') {
+        query = query.in('status', Array.from(PUBLIC_POLICY_STATUSES));
+      }
+      const { data, error } = await query.maybeSingle();
       if (!error && data) return data as Policy;
       if (!error) return null;
       console.warn('[data-service] Supabase getPolicyBySourceUrl failed, falling back to JSON:', error?.message);
@@ -169,7 +244,9 @@ export async function getPolicyBySourceUrl(sourceUrl: string): Promise<Policy | 
   }
 
   const policies = await readJsonFile<Policy[]>(POLICIES_FILE, []);
-  return policies.find((p) => p.sourceUrl === sourceUrl) || null;
+  const policy = policies.find((p) => p.sourceUrl === sourceUrl) || null;
+  if (policy && access === 'public' && !isPublicPolicy(policy)) return null;
+  return policy;
 }
 
 function isSupabaseDuplicateError(message?: string): boolean {
@@ -179,9 +256,9 @@ function isSupabaseDuplicateError(message?: string): boolean {
 }
 
 export async function createPolicy(policy: Policy): Promise<Policy> {
-  if (isSupabaseConfigured) {
+  if (isSupabaseAdminConfigured) {
     try {
-      const supabase = await getSupabase();
+      const supabase = await getSupabaseAdmin();
       const { data, error } = await supabase
         .from('policies')
         .insert(policy)
@@ -198,6 +275,8 @@ export async function createPolicy(policy: Policy): Promise<Policy> {
       }
       console.warn('[data-service] Supabase createPolicy exception, falling back to JSON:', err);
     }
+  } else if (isSupabaseConfigured) {
+    console.warn('[data-service] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for createPolicy');
   }
 
   const policies = await readJsonFile<Policy[]>(POLICIES_FILE, []);
@@ -213,9 +292,9 @@ export async function updatePolicy(
   id: string,
   updates: Partial<PolicyWithTrash>,
 ): Promise<Policy | null> {
-  if (isSupabaseConfigured) {
+  if (isSupabaseAdminConfigured) {
     try {
-      const supabase = await getSupabase();
+      const supabase = await getSupabaseAdmin();
       const { data, error } = await supabase
         .from('policies')
         .update({ ...updates, updatedAt: new Date().toISOString() })
@@ -227,6 +306,8 @@ export async function updatePolicy(
     } catch (err) {
       console.warn('[data-service] Supabase updatePolicy exception, falling back to JSON:', err);
     }
+  } else if (isSupabaseConfigured) {
+    console.warn('[data-service] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for updatePolicy');
   }
 
   const policies = await readJsonFile<PolicyWithTrash[]>(POLICIES_FILE, []);
@@ -246,15 +327,17 @@ export async function updatePolicy(
 }
 
 export async function deletePolicy(id: string): Promise<boolean> {
-  if (isSupabaseConfigured) {
+  if (isSupabaseAdminConfigured) {
     try {
-      const supabase = await getSupabase();
+      const supabase = await getSupabaseAdmin();
       const { error } = await supabase.from('policies').delete().eq('id', id);
       if (!error) return true;
       console.warn('[data-service] Supabase deletePolicy failed, falling back to JSON:', error?.message);
     } catch (err) {
       console.warn('[data-service] Supabase deletePolicy exception, falling back to JSON:', err);
     }
+  } else if (isSupabaseConfigured) {
+    console.warn('[data-service] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for deletePolicy');
   }
 
   const policies = await readJsonFile<Policy[]>(POLICIES_FILE, []);
@@ -267,12 +350,12 @@ export async function deletePolicy(id: string): Promise<boolean> {
 
 /** Check if a policy with a given ID already exists. */
 export async function policyExists(id: string): Promise<boolean> {
-  const policy = await getPolicyById(id);
+  const policy = await getPolicyById(id, { access: 'admin' });
   return policy !== null;
 }
 
 export async function policyExistsBySourceUrl(sourceUrl: string): Promise<boolean> {
-  const policy = await getPolicyBySourceUrl(sourceUrl);
+  const policy = await getPolicyBySourceUrl(sourceUrl, { access: 'admin' });
   return policy !== null;
 }
 
@@ -280,18 +363,26 @@ export async function policyExistsBySourceUrl(sourceUrl: string): Promise<boolea
 // Agency operations
 // ---------------------------------------------------------------------------
 
-export async function getAgencies(filters?: {
-  level?: string;
-  jurisdiction?: string;
-}): Promise<Agency[]> {
+export async function getAgencies(
+  filters?: {
+    level?: string;
+    jurisdiction?: string;
+  },
+  options: DataServiceOptions = {},
+): Promise<Agency[]> {
+  const access = options.access ?? 'public';
+
   if (isSupabaseConfigured) {
     try {
-      const supabase = await getSupabase();
+      const supabase = isSupabaseAdminConfigured ? await getSupabaseAdmin() : await getSupabase();
       let query = supabase.from('agencies').select('*');
       if (filters?.level) query = query.eq('level', filters.level);
       if (filters?.jurisdiction) query = query.eq('jurisdiction', filters.jurisdiction);
       const { data, error } = await query.order('name');
-      if (!error && data) return data as Agency[];
+      if (!error && data) {
+        const agencies = data as Agency[];
+        return access === 'admin' ? agencies : toPublicAgencies(agencies);
+      }
       console.warn('[data-service] Supabase getAgencies failed, falling back to JSON:', error?.message);
     } catch (err) {
       console.warn('[data-service] Supabase getAgencies exception, falling back to JSON:', err);
@@ -305,25 +396,34 @@ export async function getAgencies(filters?: {
   if (filters?.jurisdiction) {
     agencies = agencies.filter((a) => a.jurisdiction === filters.jurisdiction);
   }
-  return agencies.sort((a, b) => a.name.localeCompare(b.name));
+  const sorted = agencies.sort((a, b) => a.name.localeCompare(b.name));
+  return access === 'admin' ? sorted : toPublicAgencies(sorted);
 }
 
-export async function getCommonwealthAgencies(): Promise<Agency[]> {
+export async function getCommonwealthAgencies(
+  options: DataServiceOptions = {},
+): Promise<Agency[]> {
+  const access = options.access ?? 'public';
+
   if (isSupabaseConfigured) {
     try {
-      const supabase = await getSupabase();
+      const supabase = isSupabaseAdminConfigured ? await getSupabaseAdmin() : await getSupabase();
       const { data, error } = await supabase
         .from('agencies')
         .select('*')
         .eq('level', 'federal')
         .order('name');
-      if (!error && data) return data as Agency[];
+      if (!error && data) {
+        const agencies = data as Agency[];
+        return access === 'admin' ? agencies : toPublicAgencies(agencies);
+      }
     } catch {
       // fall through
     }
   }
 
-  return readJsonFile<Agency[]>(COMMONWEALTH_AGENCIES_FILE, []);
+  const agencies = await readJsonFile<Agency[]>(COMMONWEALTH_AGENCIES_FILE, []);
+  return access === 'admin' ? agencies : toPublicAgencies(agencies);
 }
 
 // ---------------------------------------------------------------------------
@@ -372,15 +472,17 @@ export async function getTimelineEvents(filters?: {
 const SCRAPER_RUNS_FILE = path.join(process.cwd(), 'data', 'scraper-runs.json');
 
 export async function logScraperRun(run: ScraperRunLog): Promise<void> {
-  if (isSupabaseConfigured) {
+  if (isSupabaseAdminConfigured) {
     try {
-      const supabase = await getSupabase();
+      const supabase = await getSupabaseAdmin();
       const { error } = await supabase.from('scraper_runs').insert(run);
       if (!error) return;
       console.warn('[data-service] Supabase logScraperRun failed, falling back to JSON:', error?.message);
     } catch (err) {
       console.warn('[data-service] Supabase logScraperRun exception, falling back to JSON:', err);
     }
+  } else if (isSupabaseConfigured) {
+    console.warn('[data-service] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for logScraperRun');
   }
 
   const runs = await readJsonFile<ScraperRunLog[]>(SCRAPER_RUNS_FILE, []);
@@ -390,9 +492,9 @@ export async function logScraperRun(run: ScraperRunLog): Promise<void> {
 }
 
 export async function getRecentScraperRuns(limit = 20): Promise<ScraperRunLog[]> {
-  if (isSupabaseConfigured) {
+  if (isSupabaseAdminConfigured) {
     try {
-      const supabase = await getSupabase();
+      const supabase = await getSupabaseAdmin();
       const { data, error } = await supabase
         .from('scraper_runs')
         .select('*')
@@ -403,6 +505,8 @@ export async function getRecentScraperRuns(limit = 20): Promise<ScraperRunLog[]>
     } catch (err) {
       console.warn('[data-service] Supabase getRecentScraperRuns exception, falling back to JSON:', err);
     }
+  } else if (isSupabaseConfigured) {
+    console.warn('[data-service] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for getRecentScraperRuns');
   }
 
   const runs = await readJsonFile<ScraperRunLog[]>(SCRAPER_RUNS_FILE, []);

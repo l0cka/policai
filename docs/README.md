@@ -5,6 +5,7 @@ This directory holds the project-facing documentation that should stay in sync w
 ## Available Docs
 
 - [Scraper operations guide](./scraper.md) — setup, local runs, automation, data files, and troubleshooting for the policy scraper.
+- [Supabase RLS setup](./supabase-rls.md) — row-level security model, required environment variables, and migration instructions.
 
 ## Canonical Sources
 

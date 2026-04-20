@@ -40,7 +40,7 @@ export async function GET(request: Request) {
   console.log(`[cron/pipeline] Starting pipeline at ${new Date().toISOString()}`);
 
   try {
-    const policies = await getPolicies();
+    const policies = await getPolicies(undefined, { access: 'admin' });
     const existingTitles = policies.map((p) => p.title);
     const existingSourceUrls = policies.map((p) => p.sourceUrl).filter(Boolean);
 

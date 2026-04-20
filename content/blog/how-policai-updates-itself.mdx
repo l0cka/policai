@@ -1,0 +1,121 @@
+---
+title: "How Policai Updates Itself"
+date: "2026-04-13"
+description: "A look at the automated discovery, verification, and update pipeline that keeps Policai current — and where human review still matters."
+---
+
+One of the core goals behind Policai is that it should not depend on somebody manually refreshing a spreadsheet every time an Australian government department publishes a new AI-related policy document.
+
+So how does the site update itself?
+
+The short answer is: Policai runs an automated discovery and review pipeline that scans known government sources, extracts likely AI policy material, verifies it, and then pushes approved changes into the public dataset.
+
+The more accurate answer is: it is automated, but not blindly automated. That distinction matters.
+
+## The update loop
+
+Policai currently has two main update mechanisms working together.
+
+### 1. Scheduled source scraping
+
+The first layer is a scheduled scraper runner. Policai maintains a set of tracked government sources — such as DTA, DISER, CSIRO Data61, OAIC, NSW Digital, and other relevant policy pages — each with its own run frequency.
+
+The scraper runner checks whether each source is due to run based on its schedule:
+
+- daily
+- weekly
+- monthly
+
+When a source is due, Policai calls the scraper endpoint, fetches the source page, extracts likely policy and document links, and then fetches the underlying content.
+
+This is the system that handles repeat monitoring of known sources.
+
+### 2. The AI review pipeline
+
+The second layer is a broader research and verification pipeline. This is the part that makes Policai more than a simple scraper.
+
+That pipeline runs in stages:
+
+1. **Research**
+   Policai scans configured sources, fetches pages, and uses AI analysis to identify potential policy findings.
+
+2. **Discovery**
+   It can also look for newly discovered `.gov.au` pages so the tracker is not limited only to a static list of known URLs.
+
+3. **Verification**
+   Findings are cross-checked by a verifier agent, which looks at source support, extracted metadata, corroborating evidence, and overall confidence.
+
+4. **Implementation**
+   Verified findings can be turned into policy entries or used to update existing records in the policy database.
+
+The result is a pipeline that does not just scrape links — it tries to reason about whether a page actually contains a meaningful AI policy development.
+
+## What happens when a new page is found
+
+When Policai encounters a promising document or page, it does not immediately treat it as a trustworthy policy record.
+
+Instead, it processes the content in steps:
+
+- fetch the page content
+- clean and extract readable text
+- analyse relevance and likely policy type
+- infer metadata such as jurisdiction, agencies, and dates
+- check for duplicates or likely overlaps with existing records
+- either create a new record, update an existing one, or hold the finding for review
+
+There is also threshold logic involved. High-confidence findings can move forward automatically, while medium-confidence findings are routed into a review flow instead of being published straight away.
+
+## Why it is not fully automatic
+
+It would be easy to say that Policai "automatically updates itself" and leave it there. But that would flatten an important part of how the system actually works.
+
+Some parts are automatic:
+
+- source monitoring
+- page fetching
+- link extraction
+- AI-assisted analysis
+- deduplication
+- verification scoring
+- policy record generation
+
+But the system is deliberately designed to pause for human review at key points.
+
+That is because policy tracking is not just a technical ingestion problem. Government documents are often ambiguous, spread across multiple pages, updated quietly, or written in a way that makes classification non-trivial. A fully automated pipeline that never stops to check itself would be faster, but it would also be much more likely to introduce bad records.
+
+So Policai is built as an automation-first system with review checkpoints, not as a fully autonomous publishing robot.
+
+## What gets stored
+
+Once approved, findings are turned into structured policy entries with fields such as:
+
+- title
+- description
+- jurisdiction
+- policy type
+- status
+- effective date
+- agencies
+- source URL
+- tags
+- AI summary
+
+Depending on deployment configuration, that data can be written through the app's data layer to the current backing store used by the site.
+
+## Why this matters
+
+Australian AI policy is fragmented across jurisdictions, agencies, consultations, frameworks, standards, and technical guidance. The real challenge is not just reading documents once they are known. It is discovering them consistently, checking whether they matter, and integrating them into a public tracker without creating noise.
+
+That is the problem Policai is trying to solve.
+
+The automation layer reduces the amount of repetitive monitoring work. The verification and review layers reduce the chance that the tracker drifts into low-quality or misleading coverage. Together, they make it possible for the site to stay current without depending entirely on manual upkeep.
+
+## In plain English
+
+If you want the non-technical version:
+
+Policai keeps itself updated by regularly scanning government sources, using AI to identify relevant policy developments, checking what it finds, and then turning approved findings into structured records on the site.
+
+It updates itself — but with guardrails.
+
+That is the real design principle.

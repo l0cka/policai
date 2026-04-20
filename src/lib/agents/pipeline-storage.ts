@@ -6,15 +6,15 @@ import type {
   VerificationResult,
 } from '@/types';
 import { readJsonFile, writeJsonFile } from '@/lib/file-store';
-import { isSupabaseConfigured } from '@/lib/data-service';
+import { isSupabaseConfigured, isSupabaseAdminConfigured } from '@/lib/data-service';
 
 // ---------------------------------------------------------------------------
 // Supabase helper (lazy import to avoid build errors without env vars)
 // ---------------------------------------------------------------------------
 
 async function getSupabase() {
-  const { supabase } = await import('@/lib/supabase');
-  return supabase;
+  const { createSupabaseAdminClient } = await import('@/lib/supabase-admin');
+  return createSupabaseAdminClient();
 }
 
 // ---------------------------------------------------------------------------
@@ -40,7 +40,7 @@ async function writeJsonWithDir(filePath: string, data: unknown) {
 // ---------------------------------------------------------------------------
 
 export async function getPipelineRuns(): Promise<PipelineRun[]> {
-  if (isSupabaseConfigured) {
+  if (isSupabaseAdminConfigured) {
     try {
       const supabase = await getSupabase();
       const { data, error } = await supabase
@@ -52,13 +52,15 @@ export async function getPipelineRuns(): Promise<PipelineRun[]> {
     } catch (err) {
       console.warn('[pipeline-storage] Supabase getPipelineRuns exception, falling back to JSON:', err);
     }
+  } else if (isSupabaseConfigured) {
+    console.warn('[pipeline-storage] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for getPipelineRuns');
   }
 
   return readJsonFile<PipelineRun[]>(RUNS_FILE, []);
 }
 
 export async function getPipelineRun(id: string): Promise<PipelineRun | null> {
-  if (isSupabaseConfigured) {
+  if (isSupabaseAdminConfigured) {
     try {
       const supabase = await getSupabase();
       const { data, error } = await supabase
@@ -72,6 +74,8 @@ export async function getPipelineRun(id: string): Promise<PipelineRun | null> {
     } catch (err) {
       console.warn('[pipeline-storage] Supabase getPipelineRun exception, falling back to JSON:', err);
     }
+  } else if (isSupabaseConfigured) {
+    console.warn('[pipeline-storage] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for getPipelineRun');
   }
 
   const runs = await getPipelineRuns();
@@ -79,7 +83,7 @@ export async function getPipelineRun(id: string): Promise<PipelineRun | null> {
 }
 
 export async function getLatestPipelineRun(): Promise<PipelineRun | null> {
-  if (isSupabaseConfigured) {
+  if (isSupabaseAdminConfigured) {
     try {
       const supabase = await getSupabase();
       const { data, error } = await supabase
@@ -94,6 +98,8 @@ export async function getLatestPipelineRun(): Promise<PipelineRun | null> {
     } catch (err) {
       console.warn('[pipeline-storage] Supabase getLatestPipelineRun exception, falling back to JSON:', err);
     }
+  } else if (isSupabaseConfigured) {
+    console.warn('[pipeline-storage] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for getLatestPipelineRun');
   }
 
   const runs = await getPipelineRuns();
@@ -102,7 +108,7 @@ export async function getLatestPipelineRun(): Promise<PipelineRun | null> {
 }
 
 export async function savePipelineRun(run: PipelineRun) {
-  if (isSupabaseConfigured) {
+  if (isSupabaseAdminConfigured) {
     try {
       const supabase = await getSupabase();
       const { error } = await supabase
@@ -113,6 +119,8 @@ export async function savePipelineRun(run: PipelineRun) {
     } catch (err) {
       console.warn('[pipeline-storage] Supabase savePipelineRun exception, falling back to JSON:', err);
     }
+  } else if (isSupabaseConfigured) {
+    console.warn('[pipeline-storage] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for savePipelineRun');
   }
 
   const runs = await readJsonFile<PipelineRun[]>(RUNS_FILE, []);
@@ -145,7 +153,7 @@ function sanitizeForPostgres<T>(obj: T): T {
 // ---------------------------------------------------------------------------
 
 export async function getFindings(pipelineRunId?: string): Promise<ResearchFinding[]> {
-  if (isSupabaseConfigured) {
+  if (isSupabaseAdminConfigured) {
     try {
       const supabase = await getSupabase();
       let query = supabase.from('research_findings').select('*');
@@ -158,6 +166,8 @@ export async function getFindings(pipelineRunId?: string): Promise<ResearchFindi
     } catch (err) {
       console.warn('[pipeline-storage] Supabase getFindings exception, falling back to JSON:', err);
     }
+  } else if (isSupabaseConfigured) {
+    console.warn('[pipeline-storage] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for getFindings');
   }
 
   const findings = await readJsonFile<ResearchFinding[]>(FINDINGS_FILE, []);
@@ -168,7 +178,7 @@ export async function getFindings(pipelineRunId?: string): Promise<ResearchFindi
 }
 
 export async function getFinding(id: string): Promise<ResearchFinding | null> {
-  if (isSupabaseConfigured) {
+  if (isSupabaseAdminConfigured) {
     try {
       const supabase = await getSupabase();
       const { data, error } = await supabase
@@ -182,6 +192,8 @@ export async function getFinding(id: string): Promise<ResearchFinding | null> {
     } catch (err) {
       console.warn('[pipeline-storage] Supabase getFinding exception, falling back to JSON:', err);
     }
+  } else if (isSupabaseConfigured) {
+    console.warn('[pipeline-storage] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for getFinding');
   }
 
   const findings = await readJsonFile<ResearchFinding[]>(FINDINGS_FILE, []);
@@ -189,7 +201,7 @@ export async function getFinding(id: string): Promise<ResearchFinding | null> {
 }
 
 export async function saveFindings(newFindings: ResearchFinding[]) {
-  if (isSupabaseConfigured) {
+  if (isSupabaseAdminConfigured) {
     try {
       const supabase = await getSupabase();
       const sanitized = sanitizeForPostgres(newFindings);
@@ -201,6 +213,8 @@ export async function saveFindings(newFindings: ResearchFinding[]) {
     } catch (err) {
       console.warn('[pipeline-storage] Supabase saveFindings exception, falling back to JSON:', err);
     }
+  } else if (isSupabaseConfigured) {
+    console.warn('[pipeline-storage] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for saveFindings');
   }
 
   const existing = await readJsonFile<ResearchFinding[]>(FINDINGS_FILE, []);
@@ -216,7 +230,7 @@ export async function saveFindings(newFindings: ResearchFinding[]) {
 }
 
 export async function updateFindingStatus(id: string, status: ResearchFinding['status']) {
-  if (isSupabaseConfigured) {
+  if (isSupabaseAdminConfigured) {
     try {
       const supabase = await getSupabase();
       const { error } = await supabase
@@ -228,6 +242,8 @@ export async function updateFindingStatus(id: string, status: ResearchFinding['s
     } catch (err) {
       console.warn('[pipeline-storage] Supabase updateFindingStatus exception, falling back to JSON:', err);
     }
+  } else if (isSupabaseConfigured) {
+    console.warn('[pipeline-storage] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for updateFindingStatus');
   }
 
   const findings = await readJsonFile<ResearchFinding[]>(FINDINGS_FILE, []);
@@ -243,7 +259,7 @@ export async function updateFindingStatus(id: string, status: ResearchFinding['s
 // ---------------------------------------------------------------------------
 
 export async function getVerifications(pipelineRunId?: string): Promise<VerificationResult[]> {
-  if (isSupabaseConfigured) {
+  if (isSupabaseAdminConfigured) {
     try {
       const supabase = await getSupabase();
       let query = supabase.from('verification_results').select('*');
@@ -256,6 +272,8 @@ export async function getVerifications(pipelineRunId?: string): Promise<Verifica
     } catch (err) {
       console.warn('[pipeline-storage] Supabase getVerifications exception, falling back to JSON:', err);
     }
+  } else if (isSupabaseConfigured) {
+    console.warn('[pipeline-storage] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for getVerifications');
   }
 
   const results = await readJsonFile<VerificationResult[]>(VERIFICATIONS_FILE, []);
@@ -266,7 +284,7 @@ export async function getVerifications(pipelineRunId?: string): Promise<Verifica
 }
 
 export async function saveVerifications(newResults: VerificationResult[]) {
-  if (isSupabaseConfigured) {
+  if (isSupabaseAdminConfigured) {
     try {
       const supabase = await getSupabase();
       const { error } = await supabase
@@ -277,6 +295,8 @@ export async function saveVerifications(newResults: VerificationResult[]) {
     } catch (err) {
       console.warn('[pipeline-storage] Supabase saveVerifications exception, falling back to JSON:', err);
     }
+  } else if (isSupabaseConfigured) {
+    console.warn('[pipeline-storage] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for saveVerifications');
   }
 
   const existing = await readJsonFile<VerificationResult[]>(VERIFICATIONS_FILE, []);

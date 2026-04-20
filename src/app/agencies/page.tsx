@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { Fragment, useState, useMemo, useEffect } from 'react';
 import { Search } from 'lucide-react';
 import {
   Select,
@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import type { Agency } from '@/types';
+import { JURISDICTION_NAMES, type Agency } from '@/types';
 
 export default function AgenciesPage() {
   const [agencies, setAgencies] = useState<Agency[]>([]);
@@ -90,91 +90,131 @@ export default function AgenciesPage() {
 
       {/* Main area */}
       <main className="flex-1 min-w-0 p-6">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b-2 border-foreground">
-              <th className="text-left font-mono text-xs uppercase tracking-wider py-2 pr-4">Agency</th>
-              <th className="text-left font-mono text-xs uppercase tracking-wider py-2 pr-4">Acronym</th>
-              <th className="text-left font-mono text-xs uppercase tracking-wider py-2 pr-4">Jurisdiction</th>
-              <th className="text-left font-mono text-xs uppercase tracking-wider py-2">Statement</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredAgencies.length === 0 ? (
-              <tr>
-                <td colSpan={4} className="py-12 text-center text-muted-foreground">
-                  No agencies found matching your filters.
-                </td>
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[44rem] table-fixed text-sm">
+            <colgroup>
+              <col />
+              <col className="w-28" />
+              <col className="w-44" />
+              <col className="w-32" />
+            </colgroup>
+            <thead>
+              <tr className="border-b-2 border-foreground">
+                <th className="py-2 pr-4 text-left font-mono text-xs uppercase tracking-wider">Agency</th>
+                <th className="py-2 pr-4 text-left font-mono text-xs uppercase tracking-wider">Acronym</th>
+                <th className="py-2 pr-4 text-left font-mono text-xs uppercase tracking-wider">Jurisdiction</th>
+                <th className="py-2 text-left font-mono text-xs uppercase tracking-wider">Statement</th>
               </tr>
-            ) : (
-              filteredAgencies.map((agency) => {
-                const isExpanded = expandedId === agency.id;
-                return (
-                  <tr
-                    key={agency.id}
-                    className="group cursor-pointer border-b border-border/30 transition-colors hover:bg-[var(--row-hover)]"
-                    onClick={() => setExpandedId(isExpanded ? null : agency.id)}
-                  >
-                    <td colSpan={4} className="p-0">
-                      <div className="grid grid-cols-[1fr_auto_auto_auto] items-center py-2.5 pr-4">
-                        <span className="pr-4">{agency.name}</span>
-                        <span className="pr-4 font-mono text-xs text-muted-foreground w-[100px]">{agency.acronym}</span>
-                        <span className="pr-4 text-muted-foreground w-[120px] capitalize">{agency.jurisdiction}</span>
-                        <span className={`w-[100px] ${agency.hasPublishedStatement ? 'text-[var(--status-active)]' : 'text-[var(--status-proposed)]'}`}>
+            </thead>
+            <tbody>
+              {filteredAgencies.length === 0 ? (
+                <tr>
+                  <td colSpan={4} className="py-12 text-center text-muted-foreground">
+                    No agencies found matching your filters.
+                  </td>
+                </tr>
+              ) : (
+                filteredAgencies.map((agency) => {
+                  const isExpanded = expandedId === agency.id;
+
+                  return (
+                    <Fragment key={agency.id}>
+                      <tr
+                        className="cursor-pointer border-b border-border/30 align-top transition-colors hover:bg-[var(--row-hover)]"
+                        onClick={() => setExpandedId(isExpanded ? null : agency.id)}
+                        onKeyDown={(event) => {
+                          if (event.key === 'Enter' || event.key === ' ') {
+                            event.preventDefault();
+                            setExpandedId(isExpanded ? null : agency.id);
+                          }
+                        }}
+                        role="button"
+                        tabIndex={0}
+                        aria-expanded={isExpanded}
+                        aria-controls={`agency-details-${agency.id}`}
+                      >
+                        <td className="py-3 pr-4">
+                          <span className="block font-medium text-foreground">{agency.name}</span>
+                        </td>
+                        <td className="py-3 pr-4 align-top font-mono text-xs text-muted-foreground">
+                          {agency.acronym}
+                        </td>
+                        <td className="py-3 pr-4 align-top text-muted-foreground">
+                          {JURISDICTION_NAMES[agency.jurisdiction]}
+                        </td>
+                        <td
+                          className={`py-3 align-top ${
+                            agency.hasPublishedStatement
+                              ? 'text-[var(--status-active)]'
+                              : 'text-[var(--status-proposed)]'
+                          }`}
+                        >
                           {agency.hasPublishedStatement ? 'Published' : 'Pending'}
-                        </span>
-                      </div>
+                        </td>
+                      </tr>
                       {isExpanded && (
-                        <div className="pb-4 pr-4 space-y-3 text-sm text-muted-foreground border-b border-border/20">
-                          {agency.aiTransparencyStatement && (
-                            <div>
-                              <span className="font-medium text-foreground text-xs uppercase tracking-wider font-mono">Transparency Statement</span>
-                              <p className="mt-1">{agency.aiTransparencyStatement}</p>
+                        <tr id={`agency-details-${agency.id}`} className="border-b border-border/20">
+                          <td colSpan={4} className="pb-4 pr-4 text-sm text-muted-foreground">
+                            <div className="space-y-3">
+                              {agency.aiTransparencyStatement && (
+                                <div>
+                                  <span className="font-mono text-xs font-medium uppercase tracking-wider text-foreground">
+                                    Transparency Statement
+                                  </span>
+                                  <p className="mt-1">{agency.aiTransparencyStatement}</p>
+                                </div>
+                              )}
+                              {agency.aiUsageDisclosure && (
+                                <div>
+                                  <span className="font-mono text-xs font-medium uppercase tracking-wider text-foreground">
+                                    AI Usage
+                                  </span>
+                                  <p className="mt-1">{agency.aiUsageDisclosure}</p>
+                                </div>
+                              )}
+                              {agency.lastUpdated && (
+                                <div>
+                                  <span className="font-mono text-xs font-medium uppercase tracking-wider text-foreground">
+                                    Last Updated
+                                  </span>
+                                  <p className="mt-1">
+                                    {new Date(agency.lastUpdated).toLocaleDateString('en-AU', {
+                                      year: 'numeric',
+                                      month: 'long',
+                                      day: 'numeric',
+                                    })}
+                                  </p>
+                                </div>
+                              )}
+                              {agency.website && (
+                                <div>
+                                  <span className="font-mono text-xs font-medium uppercase tracking-wider text-foreground">
+                                    Website
+                                  </span>
+                                  <p className="mt-1">
+                                    <a
+                                      href={agency.website}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="text-primary hover:underline"
+                                      onClick={(e) => e.stopPropagation()}
+                                    >
+                                      {agency.website}
+                                    </a>
+                                  </p>
+                                </div>
+                              )}
                             </div>
-                          )}
-                          {agency.aiUsageDisclosure && (
-                            <div>
-                              <span className="font-medium text-foreground text-xs uppercase tracking-wider font-mono">AI Usage</span>
-                              <p className="mt-1">{agency.aiUsageDisclosure}</p>
-                            </div>
-                          )}
-                          {agency.lastUpdated && (
-                            <div>
-                              <span className="font-medium text-foreground text-xs uppercase tracking-wider font-mono">Last Updated</span>
-                              <p className="mt-1">
-                                {new Date(agency.lastUpdated).toLocaleDateString('en-AU', {
-                                  year: 'numeric',
-                                  month: 'long',
-                                  day: 'numeric',
-                                })}
-                              </p>
-                            </div>
-                          )}
-                          {agency.website && (
-                            <div>
-                              <span className="font-medium text-foreground text-xs uppercase tracking-wider font-mono">Website</span>
-                              <p className="mt-1">
-                                <a
-                                  href={agency.website}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-primary hover:underline"
-                                  onClick={(e) => e.stopPropagation()}
-                                >
-                                  {agency.website}
-                                </a>
-                              </p>
-                            </div>
-                          )}
-                        </div>
+                          </td>
+                        </tr>
                       )}
-                    </td>
-                  </tr>
-                );
-              })
-            )}
-          </tbody>
-        </table>
+                    </Fragment>
+                  );
+                })
+              )}
+            </tbody>
+          </table>
+        </div>
       </main>
     </div>
   );

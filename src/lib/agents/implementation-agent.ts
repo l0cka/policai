@@ -124,7 +124,7 @@ export async function runImplementationAgent(
   let updatedCount = 0;
   let skippedCount = 0;
 
-  const policies = await getPolicies();
+  const policies = await getPolicies(undefined, { access: 'admin' });
   const verificationMap = new Map(verifications.map(v => [v.findingId, v]));
 
   // Only implement verified findings

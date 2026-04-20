@@ -14,8 +14,17 @@ export async function GET(request: Request) {
   const type = searchParams.get('type') || undefined;
   const status = searchParams.get('status') || undefined;
   const search = searchParams.get('search') || undefined;
+  const requiresAdmin = status === 'trashed';
 
-  const filteredPolicies = await getPolicies({ jurisdiction, type, status, search });
+  if (requiresAdmin) {
+    const user = await verifyAuth(request);
+    if (!user) return unauthorizedResponse();
+  }
+
+  const filters = { jurisdiction, type, status, search };
+  const filteredPolicies = requiresAdmin
+    ? await getPolicies(filters, { access: 'admin' })
+    : await getPolicies(filters);
 
   return NextResponse.json({
     data: filteredPolicies,
