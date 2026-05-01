@@ -2,13 +2,15 @@
 
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-const { readFile, writeFile } = vi.hoisted(() => ({
+const { mkdir, readFile, writeFile } = vi.hoisted(() => ({
+  mkdir: vi.fn(),
   readFile: vi.fn(),
   writeFile: vi.fn(),
 }))
 
 vi.mock('fs', () => ({
   promises: {
+    mkdir,
     readFile,
     writeFile,
   },
@@ -19,6 +21,7 @@ import { readJsonFile, writeJsonFile } from './file-store'
 describe('file-store', () => {
   beforeEach(() => {
     readFile.mockReset()
+    mkdir.mockReset()
     writeFile.mockReset()
   })
 
@@ -44,6 +47,7 @@ describe('file-store', () => {
     it('writes pretty-printed JSON', async () => {
       await writeJsonFile('/tmp/out.json', { ok: true })
 
+      expect(mkdir).toHaveBeenCalledWith('/tmp', { recursive: true })
       expect(writeFile).toHaveBeenCalledWith('/tmp/out.json', '{\n  "ok": true\n}', 'utf-8')
     })
   })

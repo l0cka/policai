@@ -11,7 +11,15 @@
 
 import path from 'path';
 import { readJsonFile, writeJsonFile } from '@/lib/file-store';
-import type { Policy, Agency, TimelineEvent, ScraperRunLog } from '@/types';
+import type {
+  Policy,
+  Agency,
+  TimelineEvent,
+  ScraperRunLog,
+  SourceReview,
+  SourceReviewStatus,
+  McpAuditLog,
+} from '@/types';
 
 // ---------------------------------------------------------------------------
 // Supabase availability
@@ -96,6 +104,9 @@ const POLICIES_FILE = path.join(process.cwd(), 'public', 'data', 'sample-policie
 const AGENCIES_FILE = path.join(process.cwd(), 'public', 'data', 'sample-agencies.json');
 const COMMONWEALTH_AGENCIES_FILE = path.join(process.cwd(), 'public', 'data', 'commonwealth-agencies.json');
 const TIMELINE_FILE = path.join(process.cwd(), 'public', 'data', 'sample-timeline.json');
+const SOURCE_REVIEWS_FILE = path.join(process.cwd(), 'data', 'source-reviews.json');
+const LEGACY_PENDING_CONTENT_FILE = path.join(process.cwd(), 'public', 'data', 'pending-content.json');
+const MCP_AUDIT_LOG_FILE = path.join(process.cwd(), 'data', 'mcp-audit-log.json');
 
 // ---------------------------------------------------------------------------
 // Policy operations
@@ -360,6 +371,228 @@ export async function policyExistsBySourceUrl(sourceUrl: string): Promise<boolea
 }
 
 // ---------------------------------------------------------------------------
+// Source review operations
+// ---------------------------------------------------------------------------
+
+interface LegacyPendingItem {
+  id: string;
+  title: string;
+  source: string;
+  discoveredAt: string;
+  status: 'pending_review' | 'approved' | 'rejected';
+  aiAnalysis: SourceReview['analysis'];
+}
+
+function createPolicyFromReview(item: LegacyPendingItem): Policy {
+  const now = new Date().toISOString();
+  const id = item.title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '')
+    .slice(0, 50);
+
+  return {
+    id,
+    title: item.title,
+    description: item.aiAnalysis.summary,
+    jurisdiction: (item.aiAnalysis.suggestedJurisdiction as Policy['jurisdiction']) || 'federal',
+    type: (item.aiAnalysis.suggestedType as Policy['type']) || 'guideline',
+    status: 'active',
+    effectiveDate: item.discoveredAt.split('T')[0] || now.split('T')[0],
+    agencies: item.aiAnalysis.agencies || [],
+    sourceUrl: item.source,
+    content: item.aiAnalysis.summary,
+    aiSummary: item.aiAnalysis.summary,
+    tags: item.aiAnalysis.tags || [],
+    createdAt: now,
+    updatedAt: now,
+  };
+}
+
+function legacyPendingToSourceReview(item: LegacyPendingItem): SourceReview {
+  return {
+    id: item.id,
+    sourceUrl: item.source,
+    title: item.title,
+    entryKind: 'policy',
+    status: item.status,
+    discoveredAt: item.discoveredAt,
+    createdBy: 'legacy-admin-review',
+    analysis: item.aiAnalysis,
+    proposedRecord: createPolicyFromReview(item),
+    updatedAt: item.discoveredAt,
+  };
+}
+
+async function readSourceReviewsFromJson(): Promise<SourceReview[]> {
+  const reviews = await readJsonFile<SourceReview[]>(SOURCE_REVIEWS_FILE, []);
+  if (reviews.length > 0) return reviews;
+
+  const legacyItems = await readJsonFile<LegacyPendingItem[]>(LEGACY_PENDING_CONTENT_FILE, []);
+  return legacyItems.map(legacyPendingToSourceReview);
+}
+
+export async function getSourceReviews(filters?: {
+  status?: SourceReviewStatus;
+}): Promise<SourceReview[]> {
+  if (isSupabaseAdminConfigured) {
+    try {
+      const supabase = await getSupabaseAdmin();
+      let query = supabase.from('source_reviews').select('*');
+      if (filters?.status) query = query.eq('status', filters.status);
+      const { data, error } = await query.order('discoveredAt', { ascending: false });
+      if (!error && data) return data as SourceReview[];
+      console.warn('[data-service] Supabase getSourceReviews failed, falling back to JSON:', error?.message);
+    } catch (err) {
+      console.warn('[data-service] Supabase getSourceReviews exception, falling back to JSON:', err);
+    }
+  } else if (isSupabaseConfigured) {
+    console.warn('[data-service] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for getSourceReviews');
+  }
+
+  let reviews = await readSourceReviewsFromJson();
+  if (filters?.status) {
+    reviews = reviews.filter((review) => review.status === filters.status);
+  }
+  return reviews.sort(
+    (a, b) => new Date(b.discoveredAt).getTime() - new Date(a.discoveredAt).getTime(),
+  );
+}
+
+export async function getSourceReviewById(id: string): Promise<SourceReview | null> {
+  if (isSupabaseAdminConfigured) {
+    try {
+      const supabase = await getSupabaseAdmin();
+      const { data, error } = await supabase
+        .from('source_reviews')
+        .select('*')
+        .eq('id', id)
+        .maybeSingle();
+      if (!error && data) return data as SourceReview;
+      if (!error) return null;
+      console.warn('[data-service] Supabase getSourceReviewById failed, falling back to JSON:', error?.message);
+    } catch (err) {
+      console.warn('[data-service] Supabase getSourceReviewById exception, falling back to JSON:', err);
+    }
+  } else if (isSupabaseConfigured) {
+    console.warn('[data-service] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for getSourceReviewById');
+  }
+
+  const reviews = await readSourceReviewsFromJson();
+  return reviews.find((review) => review.id === id) || null;
+}
+
+export async function createSourceReview(review: SourceReview): Promise<SourceReview> {
+  if (await sourceUrlExists(review.sourceUrl)) {
+    throw new DuplicatePolicyError(review.sourceUrl);
+  }
+
+  if (isSupabaseAdminConfigured) {
+    try {
+      const supabase = await getSupabaseAdmin();
+      const { data, error } = await supabase
+        .from('source_reviews')
+        .insert(review)
+        .select()
+        .single();
+      if (!error && data) return data as SourceReview;
+      if (isSupabaseDuplicateError(error?.message)) {
+        throw new DuplicatePolicyError(review.sourceUrl);
+      }
+      console.warn('[data-service] Supabase createSourceReview failed, falling back to JSON:', error?.message);
+    } catch (err) {
+      if (err instanceof DuplicatePolicyError) {
+        throw err;
+      }
+      console.warn('[data-service] Supabase createSourceReview exception, falling back to JSON:', err);
+    }
+  } else if (isSupabaseConfigured) {
+    console.warn('[data-service] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for createSourceReview');
+  }
+
+  const reviews = await readSourceReviewsFromJson();
+  if (reviews.some((existing) => existing.id === review.id || existing.sourceUrl === review.sourceUrl)) {
+    throw new DuplicatePolicyError(review.sourceUrl);
+  }
+  reviews.unshift(review);
+  await writeJsonFile(SOURCE_REVIEWS_FILE, reviews);
+  return review;
+}
+
+export async function updateSourceReview(
+  id: string,
+  updates: Partial<SourceReview>,
+): Promise<SourceReview | null> {
+  const nextUpdates = { ...updates, updatedAt: new Date().toISOString() };
+
+  if (isSupabaseAdminConfigured) {
+    try {
+      const supabase = await getSupabaseAdmin();
+      const { data, error } = await supabase
+        .from('source_reviews')
+        .update(nextUpdates)
+        .eq('id', id)
+        .select()
+        .single();
+      if (!error && data) return data as SourceReview;
+      console.warn('[data-service] Supabase updateSourceReview failed, falling back to JSON:', error?.message);
+    } catch (err) {
+      console.warn('[data-service] Supabase updateSourceReview exception, falling back to JSON:', err);
+    }
+  } else if (isSupabaseConfigured) {
+    console.warn('[data-service] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for updateSourceReview');
+  }
+
+  const reviews = await readSourceReviewsFromJson();
+  const idx = reviews.findIndex((review) => review.id === id);
+  if (idx === -1) return null;
+  reviews[idx] = { ...reviews[idx], ...nextUpdates };
+  await writeJsonFile(SOURCE_REVIEWS_FILE, reviews);
+  return reviews[idx];
+}
+
+export async function deleteSourceReview(id: string): Promise<boolean> {
+  if (isSupabaseAdminConfigured) {
+    try {
+      const supabase = await getSupabaseAdmin();
+      const { error } = await supabase.from('source_reviews').delete().eq('id', id);
+      if (!error) return true;
+      console.warn('[data-service] Supabase deleteSourceReview failed, falling back to JSON:', error?.message);
+    } catch (err) {
+      console.warn('[data-service] Supabase deleteSourceReview exception, falling back to JSON:', err);
+    }
+  } else if (isSupabaseConfigured) {
+    console.warn('[data-service] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for deleteSourceReview');
+  }
+
+  const reviews = await readSourceReviewsFromJson();
+  const filtered = reviews.filter((review) => review.id !== id);
+  if (filtered.length === reviews.length) return false;
+  await writeJsonFile(SOURCE_REVIEWS_FILE, filtered);
+  return true;
+}
+
+export async function sourceUrlExists(
+  sourceUrl: string,
+  options: {
+    excludeSourceReviewId?: string;
+  } = {},
+): Promise<boolean> {
+  if (await policyExistsBySourceUrl(sourceUrl)) return true;
+
+  const timelineEvents = await getTimelineEvents(undefined, { includeGenerated: false });
+  if (timelineEvents.some((event) => event.sourceUrl === sourceUrl)) return true;
+
+  const sourceReviews = await getSourceReviews();
+  return sourceReviews.some(
+    (review) =>
+      review.sourceUrl === sourceUrl &&
+      review.id !== options.excludeSourceReviewId &&
+      review.status !== 'rejected',
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Agency operations
 // ---------------------------------------------------------------------------
 
@@ -430,12 +663,78 @@ export async function getCommonwealthAgencies(
 // Timeline operations
 // ---------------------------------------------------------------------------
 
-export async function getTimelineEvents(filters?: {
-  jurisdiction?: string;
-}): Promise<TimelineEvent[]> {
+async function getManualTimelineEvents(): Promise<TimelineEvent[]> {
+  if (isSupabaseConfigured) {
+    try {
+      const supabase = isSupabaseAdminConfigured ? await getSupabaseAdmin() : await getSupabase();
+      const { data, error } = await supabase
+        .from('timeline_events')
+        .select('*')
+        .order('date', { ascending: true });
+      if (!error && data) return data as TimelineEvent[];
+      console.warn('[data-service] Supabase getManualTimelineEvents failed, falling back to JSON:', error?.message);
+    } catch (err) {
+      console.warn('[data-service] Supabase getManualTimelineEvents exception, falling back to JSON:', err);
+    }
+  }
+
+  return readJsonFile<TimelineEvent[]>(TIMELINE_FILE, []);
+}
+
+export async function createTimelineEvent(
+  event: TimelineEvent,
+  options: {
+    excludeSourceReviewId?: string;
+  } = {},
+): Promise<TimelineEvent> {
+  if (event.sourceUrl && (await sourceUrlExists(event.sourceUrl, options))) {
+    throw new DuplicatePolicyError(event.sourceUrl);
+  }
+
+  if (isSupabaseAdminConfigured) {
+    try {
+      const supabase = await getSupabaseAdmin();
+      const { data, error } = await supabase
+        .from('timeline_events')
+        .insert(event)
+        .select()
+        .single();
+      if (!error && data) return data as TimelineEvent;
+      if (isSupabaseDuplicateError(error?.message)) {
+        throw new DuplicatePolicyError(event.id);
+      }
+      console.warn('[data-service] Supabase createTimelineEvent failed, falling back to JSON:', error?.message);
+    } catch (err) {
+      if (err instanceof DuplicatePolicyError) {
+        throw err;
+      }
+      console.warn('[data-service] Supabase createTimelineEvent exception, falling back to JSON:', err);
+    }
+  } else if (isSupabaseConfigured) {
+    console.warn('[data-service] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for createTimelineEvent');
+  }
+
+  const events = await readJsonFile<TimelineEvent[]>(TIMELINE_FILE, []);
+  if (events.some((existing) => existing.id === event.id || (event.sourceUrl && existing.sourceUrl === event.sourceUrl))) {
+    throw new DuplicatePolicyError(event.id);
+  }
+  events.push(event);
+  await writeJsonFile(TIMELINE_FILE, events);
+  return event;
+}
+
+export async function getTimelineEvents(
+  filters?: {
+    jurisdiction?: string;
+  },
+  options: {
+    includeGenerated?: boolean;
+  } = {},
+): Promise<TimelineEvent[]> {
+  const includeGenerated = options.includeGenerated ?? true;
   // Generate timeline events from policies + merge with manual curated events
-  const policies = await getPolicies();
-  const manualEvents = await readJsonFile<TimelineEvent[]>(TIMELINE_FILE, []);
+  const policies = includeGenerated ? await getPolicies() : [];
+  const manualEvents = await getManualTimelineEvents();
 
   // Build a set of relatedPolicyIds from manual events for dedup
   const manualPolicyIds = new Set(
@@ -463,6 +762,25 @@ export async function getTimelineEvents(filters?: {
   }
 
   return events.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+}
+
+export async function logMcpAuditEvent(log: McpAuditLog): Promise<void> {
+  if (isSupabaseAdminConfigured) {
+    try {
+      const supabase = await getSupabaseAdmin();
+      const { error } = await supabase.from('mcp_audit_log').insert(log);
+      if (!error) return;
+      console.warn('[data-service] Supabase logMcpAuditEvent failed, falling back to JSON:', error?.message);
+    } catch (err) {
+      console.warn('[data-service] Supabase logMcpAuditEvent exception, falling back to JSON:', err);
+    }
+  } else if (isSupabaseConfigured) {
+    console.warn('[data-service] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for logMcpAuditEvent');
+  }
+
+  const logs = await readJsonFile<McpAuditLog[]>(MCP_AUDIT_LOG_FILE, []);
+  logs.unshift(log);
+  await writeJsonFile(MCP_AUDIT_LOG_FILE, logs.slice(0, 500));
 }
 
 // ---------------------------------------------------------------------------

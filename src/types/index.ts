@@ -86,6 +86,50 @@ export interface TimelineEvent {
   sourceUrl?: string;
 }
 
+export type SourceReviewEntryKind = 'policy' | 'timeline_event';
+
+export type SourceReviewStatus =
+  | 'pending_review'
+  | 'approved'
+  | 'published'
+  | 'rejected';
+
+export interface SourceReviewAnalysis {
+  isRelevant: boolean;
+  relevanceScore: number;
+  suggestedType: PolicyType | string | null;
+  suggestedJurisdiction: Jurisdiction | string | null;
+  summary: string;
+  tags?: string[];
+  agencies?: string[];
+}
+
+export interface SourceReview {
+  id: string;
+  sourceUrl: string;
+  title: string;
+  entryKind: SourceReviewEntryKind;
+  status: SourceReviewStatus;
+  discoveredAt: string;
+  createdBy: string;
+  notes?: string;
+  analysis: SourceReviewAnalysis;
+  proposedRecord: Policy | TimelineEvent;
+  publishedAt?: string;
+  rejectionReason?: string;
+  updatedAt: string;
+}
+
+export interface McpAuditLog {
+  id: string;
+  createdAt: string;
+  actor: string;
+  toolName: string;
+  sourceUrl?: string;
+  status: 'success' | 'error';
+  errorSummary?: string;
+}
+
 // Map visualization types
 export interface JurisdictionStats {
   jurisdiction: Jurisdiction;

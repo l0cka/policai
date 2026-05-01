@@ -22,7 +22,9 @@ begin
     'scraper_runs',
     'pipeline_runs',
     'research_findings',
-    'verification_results'
+    'verification_results',
+    'source_reviews',
+    'mcp_audit_log'
   ]
   loop
     if to_regclass(format('public.%I', table_name)) is not null then

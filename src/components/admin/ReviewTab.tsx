@@ -26,7 +26,7 @@ export interface PendingItem {
   title: string;
   source: string;
   discoveredAt: string;
-  status: 'pending_review' | 'approved' | 'rejected';
+  status: 'pending_review' | 'approved' | 'published' | 'rejected';
   aiAnalysis: {
     isRelevant: boolean;
     relevanceScore: number;
