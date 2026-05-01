@@ -107,5 +107,34 @@
     "jurisdiction": "federal",
     "relatedPolicyId": "policy-responsible-use-ai-government-v2",
     "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy"
+  },
+  {
+    "id": "12",
+    "date": "2026-04-08",
+    "title": "ASIC Warns on AI-Powered Investment Scams",
+    "description": "ASIC announces expanded takedown action against phishing and investment scam websites and warns that AI-generated videos, fake endorsements and targeted ads are making financial scams more convincing.",
+    "type": "announcement",
+    "jurisdiction": "federal",
+    "sourceUrl": "https://www.asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-063mr-asic-ramps-up-action-to-protect-consumers-from-ai-powered-online-investment-scams/"
+  },
+  {
+    "id": "13",
+    "date": "2026-04-09",
+    "title": "ASD Issues Frontier AI Cyber Security Guidance",
+    "description": "ASD publishes guidance on frontier AI models after Anthropic's Claude Mythos Preview announcement, warning that AI can accelerate vulnerability discovery and exploitation while also supporting defensive remediation.",
+    "type": "policy_introduced",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "asd-frontier-ai-models-cyber-security-2026",
+    "sourceUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/frontier-models-and-their-impact-on-cyber-security"
+  },
+  {
+    "id": "14",
+    "date": "2026-04-30",
+    "title": "APRA Calls for Step-Change in AI Risk Management",
+    "description": "APRA publishes an industry letter warning banks, insurers and superannuation trustees that AI governance, assurance and operational resilience practices are not keeping pace with AI adoption and frontier-model cyber risks.",
+    "type": "policy_introduced",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "apra-ai-industry-letter-2026",
+    "sourceUrl": "https://www.apra.gov.au/apra-letter-to-industry-on-artificial-intelligence-ai"
   }
 ]

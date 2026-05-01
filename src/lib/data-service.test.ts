@@ -166,4 +166,65 @@ describe('data-service JSON fallback', () => {
     expect(persistedRuns[0]).toEqual(expect.objectContaining({ id: 'latest-run' }))
     expect(persistedRuns.at(-1)).toEqual(expect.objectContaining({ id: 'existing-98' }))
   })
+
+  it('detects duplicate source URLs across tracked policies', async () => {
+    const existing = buildPolicy({ sourceUrl: 'https://example.gov.au/policy' })
+    readJsonFile.mockImplementation(async (filePath: string, fallback: unknown) => {
+      if (filePath.endsWith('sample-policies.json')) return [existing]
+      return fallback
+    })
+
+    const { sourceUrlExists } = await loadDataServiceModule()
+
+    await expect(sourceUrlExists('https://example.gov.au/policy')).resolves.toBe(true)
+  })
+
+  it('creates source reviews in the JSON fallback after duplicate checks', async () => {
+    readJsonFile.mockImplementation(async (_filePath: string, fallback: unknown) => fallback)
+
+    const { createSourceReview } = await loadDataServiceModule()
+    const review = await createSourceReview({
+      id: 'source-review-1',
+      sourceUrl: 'https://example.gov.au/new-policy',
+      title: 'New policy',
+      entryKind: 'policy',
+      status: 'pending_review',
+      discoveredAt: '2026-05-01T00:00:00.000Z',
+      createdBy: 'local-mcp-admin',
+      analysis: {
+        isRelevant: true,
+        relevanceScore: 0.9,
+        suggestedType: 'guideline',
+        suggestedJurisdiction: 'federal',
+        summary: 'A relevant policy.',
+      },
+      proposedRecord: buildPolicy({
+        id: 'new-policy',
+        sourceUrl: 'https://example.gov.au/new-policy',
+      }),
+      updatedAt: '2026-05-01T00:00:00.000Z',
+    })
+
+    expect(review.id).toBe('source-review-1')
+    expect(writeJsonFile).toHaveBeenCalledWith(
+      expect.stringContaining('source-reviews.json'),
+      [expect.objectContaining({ id: 'source-review-1' })],
+    )
+  })
+
+  it('creates manual timeline events in the JSON fallback', async () => {
+    readJsonFile.mockImplementation(async (_filePath: string, fallback: unknown) => fallback)
+
+    const { createTimelineEvent } = await loadDataServiceModule()
+    const event = buildTimelineEvent({
+      id: 'timeline-new',
+      sourceUrl: 'https://example.gov.au/timeline-new',
+    })
+
+    await expect(createTimelineEvent(event)).resolves.toEqual(event)
+    expect(writeJsonFile).toHaveBeenCalledWith(
+      expect.stringContaining('sample-timeline.json'),
+      [event],
+    )
+  })
 })

@@ -479,5 +479,42 @@
     "tags": ["practice note", "AI", "Supreme Court", "Queensland", "disclosure", "courts", "judicial"],
     "createdAt": "2026-04-16T00:00:00Z",
     "updatedAt": "2026-04-16T00:00:00Z"
+  },
+  {
+    "id": "asd-frontier-ai-models-cyber-security-2026",
+    "title": "Frontier AI models and their impact on cyber security",
+    "description": "Australian Signals Directorate guidance on the cyber security implications of increasingly capable frontier AI models, including Claude Mythos Preview.",
+    "jurisdiction": "federal",
+    "type": "guideline",
+    "status": "active",
+    "effectiveDate": "2026-04-09",
+    "agencies": [
+      "Australian Signals Directorate",
+      "Australian Cyber Security Centre"
+    ],
+    "sourceUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/frontier-models-and-their-impact-on-cyber-security",
+    "content": "ASD published guidance on 9 April 2026 about the cyber security implications of increasingly capable frontier AI models, following Anthropic's 7 April 2026 announcement of Claude Mythos Preview. The guidance says frontier models reduce the cost, effort and expertise required to discover and exploit software vulnerabilities, while also creating opportunities for defenders to identify and remediate vulnerabilities before exploitation. ASD advises organisations to maintain strong cyber security baselines aligned to the Information Security Manual and Essential Eight, reduce exposed attack paths, patch more frequently, use AI defensively where appropriate, and implement layered security. APRA's 30 April 2026 AI industry letter points regulated entities to ASD advice on frontier AI models.",
+    "aiSummary": "ASD guidance on frontier AI cyber risks, defensive use of AI, patching tempo, attack-surface reduction, and layered cyber resilience.",
+    "tags": ["frontier AI", "Claude Mythos", "cyber security", "AI risk", "Essential Eight", "financial system resilience"],
+    "createdAt": "2026-05-01T00:00:00Z",
+    "updatedAt": "2026-05-01T00:00:00Z"
+  },
+  {
+    "id": "apra-ai-industry-letter-2026",
+    "title": "APRA Letter to Industry on Artificial Intelligence (AI)",
+    "description": "APRA industry letter setting expectations for banks, insurers and superannuation trustees to strengthen governance, assurance, cyber security and operational resilience for AI-related risks.",
+    "jurisdiction": "federal",
+    "type": "guideline",
+    "status": "active",
+    "effectiveDate": "2026-04-30",
+    "agencies": [
+      "Australian Prudential Regulation Authority"
+    ],
+    "sourceUrl": "https://www.apra.gov.au/apra-letter-to-industry-on-artificial-intelligence-ai",
+    "content": "APRA published a 30 April 2026 letter to industry after targeted supervisory engagement with selected large banks, insurers and superannuation trustees in late 2025. APRA found AI adoption accelerating across regulated industries while governance, risk management, assurance and operational resilience practices were not keeping pace. The letter says APRA is engaging across the sector on increased cyber threats from high capability frontier AI models such as Anthropic Mythos, and expects entities to manage AI risk through board literacy, risk appetite, oversight and accountability, stronger information security controls, timely patching, vulnerability remediation, attention to third-party and concentration risks, and credible fallback processes for critical operations. APRA says it may take stronger supervisory action or enforcement where entities fail to identify, manage or control AI risks proportionate to their size, scale and complexity.",
+    "aiSummary": "APRA guidance requiring regulated financial entities to lift AI governance, assurance, cyber resilience and operational-risk controls in response to fast-moving AI risks including Anthropic Mythos.",
+    "tags": ["APRA", "financial system", "AI governance", "operational resilience", "cyber security", "Claude Mythos", "prudential supervision"],
+    "createdAt": "2026-05-01T00:00:00Z",
+    "updatedAt": "2026-05-01T00:00:00Z"
   }
 ]

@@ -1,33 +1,40 @@
 import { NextResponse } from 'next/server';
-import path from 'path';
 import { verifyAuth, unauthorizedResponse } from '@/lib/auth';
-import { readJsonFile, writeJsonFile } from '@/lib/file-store';
+import {
+  createSourceReview,
+  deleteSourceReview,
+  getSourceReviews,
+  updateSourceReview,
+} from '@/lib/data-service';
+import type { Policy, SourceReview, SourceReviewStatus, TimelineEvent } from '@/types';
 
-interface PendingItem {
-  id: string;
-  title: string;
-  source: string;
-  discoveredAt: string;
-  status: 'pending_review' | 'approved' | 'rejected';
-  aiAnalysis: {
-    isRelevant: boolean;
-    relevanceScore: number;
-    suggestedType: string | null;
-    suggestedJurisdiction: string | null;
-    summary: string;
-    tags?: string[];
-    agencies?: string[];
+function toPendingItem(review: SourceReview) {
+  return {
+    id: review.id,
+    title: review.title,
+    source: review.sourceUrl,
+    discoveredAt: review.discoveredAt,
+    status: review.status,
+    aiAnalysis: {
+      isRelevant: review.analysis.isRelevant,
+      relevanceScore: review.analysis.relevanceScore,
+      suggestedType: review.analysis.suggestedType,
+      suggestedJurisdiction: review.analysis.suggestedJurisdiction,
+      summary: review.analysis.summary,
+      tags: review.analysis.tags,
+      agencies: review.analysis.agencies,
+    },
+    entryKind: review.entryKind,
+    notes: review.notes,
   };
 }
 
-const PENDING_FILE_PATH = path.join(process.cwd(), 'public', 'data', 'pending-content.json');
-
-async function readPendingContent(): Promise<PendingItem[]> {
-  return readJsonFile<PendingItem[]>(PENDING_FILE_PATH, []);
-}
-
-async function writePendingContent(items: PendingItem[]): Promise<void> {
-  return writeJsonFile(PENDING_FILE_PATH, items);
+function buildPolicyId(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '')
+    .slice(0, 50);
 }
 
 // GET - Retrieve all pending content
@@ -39,13 +46,10 @@ export async function GET(request: Request) {
 
   try {
     const { searchParams } = new URL(request.url);
-    const status = searchParams.get('status');
+    const status = searchParams.get('status') as SourceReviewStatus | null;
 
-    let items = await readPendingContent();
-
-    if (status) {
-      items = items.filter(item => item.status === status);
-    }
+    const reviews = await getSourceReviews(status ? { status } : undefined);
+    const items = reviews.map(toPendingItem);
 
     return NextResponse.json({
       data: items,
@@ -56,7 +60,7 @@ export async function GET(request: Request) {
     console.error('Error reading pending content:', error);
     return NextResponse.json(
       { error: 'Failed to read pending content', success: false },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -70,55 +74,81 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json();
-    const { url, title, analysis } = body;
+    const { url, title, analysis, entryKind = 'policy', notes } = body;
 
     if (!url || !analysis) {
       return NextResponse.json(
         { error: 'URL and analysis are required', success: false },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
-    const items = await readPendingContent();
+    const now = new Date().toISOString();
+    const reviewTitle = title || 'Untitled';
+    const policyId = buildPolicyId(reviewTitle);
+    const proposedRecord: Policy | TimelineEvent = entryKind === 'timeline_event'
+      ? {
+          id: `timeline-${policyId || Date.now()}`,
+          date: now.split('T')[0],
+          title: reviewTitle,
+          description: analysis.summary || '',
+          type: 'announcement' as const,
+          jurisdiction: analysis.jurisdiction || analysis.suggestedJurisdiction || 'federal',
+          sourceUrl: url,
+        } as TimelineEvent
+      : {
+          id: policyId,
+          title: reviewTitle,
+          description: analysis.summary || '',
+          jurisdiction: analysis.jurisdiction || analysis.suggestedJurisdiction || 'federal',
+          type: analysis.policyType || analysis.suggestedType || 'guideline',
+          status: 'active',
+          effectiveDate: now.split('T')[0],
+          agencies: analysis.agencies || [],
+          sourceUrl: url,
+          content: analysis.summary || '',
+          aiSummary: analysis.summary || '',
+          tags: analysis.tags || [],
+          createdAt: now,
+          updatedAt: now,
+        } as Policy;
 
-    // Check if URL already exists
-    const existingIndex = items.findIndex(item => item.source === url);
-    if (existingIndex !== -1) {
-      return NextResponse.json(
-        { error: 'URL already exists in pending content', success: false },
-        { status: 400 }
-      );
-    }
-
-    const newItem: PendingItem = {
-      id: `pending-${Date.now()}`,
-      title: title || 'Untitled',
-      source: url,
-      discoveredAt: new Date().toISOString(),
+    const review = await createSourceReview({
+      id: `source-review-${Date.now()}`,
+      sourceUrl: url,
+      title: reviewTitle,
+      entryKind,
       status: 'pending_review',
-      aiAnalysis: {
+      discoveredAt: now,
+      createdBy: typeof user.email === 'string' ? user.email : user.id || 'admin',
+      notes,
+      analysis: {
         isRelevant: analysis.isRelevant,
         relevanceScore: analysis.relevanceScore,
-        suggestedType: analysis.policyType || null,
-        suggestedJurisdiction: analysis.jurisdiction || null,
+        suggestedType: analysis.policyType || analysis.suggestedType || null,
+        suggestedJurisdiction: analysis.jurisdiction || analysis.suggestedJurisdiction || null,
         summary: analysis.summary,
         tags: analysis.tags,
         agencies: analysis.agencies,
       },
-    };
-
-    items.unshift(newItem);
-    await writePendingContent(items);
+      proposedRecord,
+      updatedAt: now,
+    });
 
     return NextResponse.json({
-      data: newItem,
+      data: toPendingItem(review),
       success: true,
     });
   } catch (error) {
     console.error('Error adding pending content:', error);
     return NextResponse.json(
-      { error: 'Failed to add pending content', success: false },
-      { status: 500 }
+      {
+        error: error instanceof Error && error.name === 'DuplicatePolicyError'
+          ? 'URL already exists in tracked or pending content'
+          : 'Failed to add pending content',
+        success: false,
+      },
+      { status: error instanceof Error && error.name === 'DuplicatePolicyError' ? 400 : 500 },
     );
   }
 }
@@ -137,39 +167,34 @@ export async function PUT(request: Request) {
     if (!id || !status) {
       return NextResponse.json(
         { error: 'ID and status are required', success: false },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
-    if (!['pending_review', 'approved', 'rejected'].includes(status)) {
+    if (!['pending_review', 'approved', 'published', 'rejected'].includes(status)) {
       return NextResponse.json(
         { error: 'Invalid status', success: false },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
-    const items = await readPendingContent();
-    const itemIndex = items.findIndex(item => item.id === id);
-
-    if (itemIndex === -1) {
+    const updated = await updateSourceReview(id, { status });
+    if (!updated) {
       return NextResponse.json(
         { error: 'Pending content not found', success: false },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
-    items[itemIndex].status = status;
-    await writePendingContent(items);
-
     return NextResponse.json({
-      data: items[itemIndex],
+      data: toPendingItem(updated),
       success: true,
     });
   } catch (error) {
     console.error('Error updating pending content:', error);
     return NextResponse.json(
       { error: 'Failed to update pending content', success: false },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -188,21 +213,17 @@ export async function DELETE(request: Request) {
     if (!id) {
       return NextResponse.json(
         { error: 'ID is required', success: false },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
-    const items = await readPendingContent();
-    const filteredItems = items.filter(item => item.id !== id);
-
-    if (items.length === filteredItems.length) {
+    const deleted = await deleteSourceReview(id);
+    if (!deleted) {
       return NextResponse.json(
         { error: 'Pending content not found', success: false },
-        { status: 404 }
+        { status: 404 },
       );
     }
-
-    await writePendingContent(filteredItems);
 
     return NextResponse.json({
       success: true,
@@ -211,7 +232,7 @@ export async function DELETE(request: Request) {
     console.error('Error deleting pending content:', error);
     return NextResponse.json(
       { error: 'Failed to delete pending content', success: false },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
