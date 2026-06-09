@@ -13,45 +13,41 @@ import { PolicaiLogo } from '@/components/layout/PolicaiLogo';
 
 const navItems = [
   { href: '/', label: 'Policies' },
-  { href: '/courts', label: 'Courts' },
   { href: '/map', label: 'Map' },
   { href: '/agencies', label: 'Agencies' },
-  { href: '/blog', label: 'Blog' },
+  { href: '/courts', label: 'Courts' },
 ];
 
-const moreItems = [
+const insightItems = [
+  { href: '/timeline', label: 'Timeline' },
   { href: '/network', label: 'Network' },
   { href: '/framework', label: 'Framework' },
-  { href: '/timeline', label: 'Timeline' },
+  { href: '/blog', label: 'Blog' },
 ];
 
 export function Header() {
   const pathname = usePathname();
-  const router = useRouter();
-  const { user, signOut, isLoading } = useAuth();
-  const [moreOpen, setMoreOpen] = useState(false);
-  const moreRef = useRef<HTMLDivElement>(null);
+  const [insightsOpen, setInsightsOpen] = useState(false);
+  const insightsRef = useRef<HTMLDivElement>(null);
+  const isAdminRoute = pathname.startsWith('/admin');
 
   // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (moreRef.current && !moreRef.current.contains(e.target as Node)) {
-        setMoreOpen(false);
+      if (insightsRef.current && !insightsRef.current.contains(e.target as Node)) {
+        setInsightsOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleSignOut = async () => {
-    await signOut();
-    router.push('/');
-  };
-
   const isActive = (href: string) => {
     if (href === '/') return pathname === '/' || pathname.startsWith('/policies');
     return pathname === href || pathname.startsWith(href + '/');
   };
+
+  const insightsActive = insightItems.some((item) => isActive(item.href));
 
   return (
     <header className="sticky top-0 z-50 w-full border-b-2 border-foreground bg-background">
@@ -80,27 +76,31 @@ export function Header() {
               {item.label}
             </Link>
           ))}
-          {/* More dropdown */}
-          <div ref={moreRef} className="relative">
+          {/* Insights dropdown */}
+          <div ref={insightsRef} className="relative">
             <button
-              onClick={() => setMoreOpen(!moreOpen)}
+              type="button"
+              onClick={() => setInsightsOpen(!insightsOpen)}
+              aria-haspopup="menu"
+              aria-expanded={insightsOpen}
               className={cn(
                 'px-3 pb-3 pt-1 text-sm font-medium transition-colors border-b-2 flex items-center gap-1',
-                moreItems.some(item => isActive(item.href))
+                insightsActive
                   ? 'border-primary text-primary'
                   : 'border-transparent text-muted-foreground hover:text-foreground'
               )}
             >
-              More
-              <ChevronDown className={cn('h-3 w-3 transition-transform', moreOpen && 'rotate-180')} />
+              Insights
+              <ChevronDown className={cn('h-3 w-3 transition-transform', insightsOpen && 'rotate-180')} />
             </button>
-            {moreOpen && (
-              <div className="absolute top-full left-0 mt-1 bg-background border border-border rounded-md shadow-lg py-1 min-w-[140px] z-50">
-                {moreItems.map((item) => (
+            {insightsOpen && (
+              <div className="absolute top-full left-0 mt-1 bg-background border border-border rounded-md shadow-lg py-1 min-w-[140px] z-50" role="menu">
+                {insightItems.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
-                    onClick={() => setMoreOpen(false)}
+                    onClick={() => setInsightsOpen(false)}
+                    role="menuitem"
                     className={cn(
                       'block px-4 py-2 text-sm transition-colors',
                       isActive(item.href)
@@ -117,30 +117,7 @@ export function Header() {
         </nav>
 
         <div className="ml-auto flex items-center gap-4">
-          {!isLoading && (
-            <>
-              {user ? (
-                <div className="hidden md:flex items-center gap-3">
-                  <Link href="/admin" className="text-sm text-muted-foreground hover:text-foreground">
-                    Admin
-                  </Link>
-                  <button
-                    onClick={handleSignOut}
-                    className="text-sm text-muted-foreground hover:text-foreground"
-                  >
-                    Sign out
-                  </button>
-                </div>
-              ) : (
-                <Link
-                  href="/admin/login"
-                  className="hidden md:block text-sm text-muted-foreground hover:text-foreground"
-                >
-                  Admin
-                </Link>
-              )}
-            </>
-          )}
+          {isAdminRoute && <AdminHeaderActions variant="desktop" />}
 
           <Sheet>
             <SheetTrigger asChild className="md:hidden">
@@ -166,7 +143,10 @@ export function Header() {
                   </Link>
                 ))}
                 <div className="my-2 border-t border-border" />
-                {moreItems.map((item) => (
+                <div className="px-3 py-1 text-xs font-medium text-muted-foreground">
+                  Insights
+                </div>
+                {insightItems.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
@@ -180,22 +160,11 @@ export function Header() {
                     {item.label}
                   </Link>
                 ))}
-                {user ? (
+                {isAdminRoute && (
                   <>
-                    <Link href="/admin" className="px-3 py-2 text-sm text-muted-foreground hover:text-foreground">
-                      Admin
-                    </Link>
-                    <button
-                      onClick={handleSignOut}
-                      className="px-3 py-2 text-sm text-left text-muted-foreground hover:text-foreground"
-                    >
-                      Sign out
-                    </button>
+                    <div className="my-2 border-t border-border" />
+                    <AdminHeaderActions variant="mobile" />
                   </>
-                ) : (
-                  <Link href="/admin/login" className="px-3 py-2 text-sm text-muted-foreground hover:text-foreground">
-                    Admin
-                  </Link>
                 )}
               </nav>
             </SheetContent>
@@ -203,5 +172,58 @@ export function Header() {
         </div>
       </div>
     </header>
+  );
+}
+
+function AdminHeaderActions({ variant }: { variant: 'desktop' | 'mobile' }) {
+  const pathname = usePathname();
+  const router = useRouter();
+  const { user, signOut, isLoading } = useAuth();
+
+  if (isLoading) return null;
+
+  const handleSignOut = async () => {
+    await signOut();
+    router.push('/');
+  };
+
+  if (!user) return null;
+
+  const showDashboardLink = pathname !== '/admin';
+
+  if (variant === 'mobile') {
+    return (
+      <>
+        {showDashboardLink && (
+          <Link href="/admin" className="px-3 py-2 text-sm text-muted-foreground hover:text-foreground">
+            Admin Dashboard
+          </Link>
+        )}
+        <button
+          type="button"
+          onClick={handleSignOut}
+          className="px-3 py-2 text-left text-sm text-muted-foreground hover:text-foreground"
+        >
+          Sign out
+        </button>
+      </>
+    );
+  }
+
+  return (
+    <div className="hidden md:flex items-center gap-3">
+      {showDashboardLink && (
+        <Link href="/admin" className="text-sm text-muted-foreground hover:text-foreground">
+          Admin Dashboard
+        </Link>
+      )}
+      <button
+        type="button"
+        onClick={handleSignOut}
+        className="text-sm text-muted-foreground hover:text-foreground"
+      >
+        Sign out
+      </button>
+    </div>
   );
 }

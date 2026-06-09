@@ -148,16 +148,6 @@ export function AustraliaMap({
       onMouseMove={handleMouseMove}
     >
       <style>{`
-        @keyframes pulse-ring {
-          0% { transform: scale(1); opacity: 0.4; }
-          50% { transform: scale(1.8); opacity: 0; }
-          100% { transform: scale(1); opacity: 0; }
-        }
-        @keyframes pulse-ring-lg {
-          0% { transform: scale(1); opacity: 0.3; }
-          50% { transform: scale(2.2); opacity: 0; }
-          100% { transform: scale(1); opacity: 0; }
-        }
         @keyframes state-enter {
           from { opacity: 0; transform: scale(0.95); }
           to { opacity: 1; transform: scale(1); }
@@ -165,18 +155,8 @@ export function AustraliaMap({
         .state-path {
           animation: state-enter 0.6s ease-out both;
         }
-        .pulse-circle {
-          animation: pulse-ring 3s ease-out infinite;
-          transform-origin: center;
-        }
-        .pulse-circle-lg {
-          animation: pulse-ring-lg 3.5s ease-out infinite;
-          animation-delay: 0.5s;
-          transform-origin: center;
-        }
         @media (prefers-reduced-motion: reduce) {
           .state-path { animation: none; opacity: 1; }
-          .pulse-circle, .pulse-circle-lg { animation: none; opacity: 0; }
         }
       `}</style>
 
@@ -224,7 +204,7 @@ export function AustraliaMap({
                 transition: 'opacity 0.4s ease',
               }}
             >
-              {/* Pulse rings for states with policies */}
+              {/* Static density halos for states with policies */}
               {jurisdictionData.count > 0 && !isDimmed && (
                 <g>
                   <circle
@@ -234,8 +214,7 @@ export function AustraliaMap({
                     fill="none"
                     stroke={getFillColor(jurisdictionData.count, maxCount)}
                     strokeWidth="2"
-                    className="pulse-circle"
-                    style={{ animationDelay: `${idx * 0.4}s` }}
+                    opacity={isSelected || isHovered ? 0.5 : 0.24}
                   />
                   {jurisdictionData.count >= 3 && (
                     <circle
@@ -245,8 +224,7 @@ export function AustraliaMap({
                       fill="none"
                       stroke={getFillColor(jurisdictionData.count, maxCount)}
                       strokeWidth="1.5"
-                      className="pulse-circle-lg"
-                      style={{ animationDelay: `${idx * 0.4 + 1}s` }}
+                      opacity={isSelected || isHovered ? 0.36 : 0.18}
                     />
                   )}
                 </g>
@@ -264,8 +242,6 @@ export function AustraliaMap({
                   style={{
                     animationDelay: `${idx * 0.08}s`,
                     transition: 'fill 0.3s ease, stroke 0.3s ease, stroke-width 0.3s ease',
-                    transform: isSelected ? 'scale(1.02)' : 'scale(1)',
-                    transformOrigin: `${labelX}px ${labelY}px`,
                   }}
                 />
               ))}

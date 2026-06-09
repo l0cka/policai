@@ -1,91 +1,112 @@
-import * as cheerio from 'cheerio';
-import type { ResearchFinding, PolicyType, Jurisdiction } from '@/types';
-import { saveFindings } from './pipeline-storage';
-import { cleanHtmlContent, extractJsonFromResponse, titleSimilarity, normalizeUrl } from '@/lib/utils';
-import { DATA_SOURCES } from '@/lib/data-sources';
-import { ai, AI_MODEL, getResponseText } from '@/lib/ai-client';
-import { runDiscoveryAgent } from './discovery-agent';
+import * as cheerio from "cheerio";
+import {
+	normalizeJurisdiction,
+	normalizePolicyType,
+	type ResearchFinding,
+} from "@/types";
+import { saveFindings } from "./pipeline-storage";
+import {
+	cleanHtmlContent,
+	extractJsonFromResponse,
+	titleSimilarity,
+	normalizeUrl,
+} from "@/lib/utils";
+import { DATA_SOURCES } from "@/lib/data-sources";
+import { ai, AI_MODEL, getResponseText } from "@/lib/ai-client";
+import { runDiscoveryAgent } from "./discovery-agent";
 
 const RESEARCH_SOURCES = DATA_SOURCES.filter((s) => s.enabled);
 
 interface ScrapedPage {
-  url: string;
-  title: string;
-  content: string;
-  sourceId: string;
+	url: string;
+	title: string;
+	content: string;
+	sourceId: string;
 }
 
 /**
  * Scrape links from a source page
  */
-async function scrapeSourceLinks(sourceUrl: string): Promise<{ url: string; title: string }[]> {
-  try {
-    const response = await fetch(sourceUrl, {
-      headers: { 'User-Agent': 'Policai/1.0 (Australian AI Policy Tracker)' },
-    });
+async function scrapeSourceLinks(
+	sourceUrl: string,
+): Promise<{ url: string; title: string }[]> {
+	try {
+		const response = await fetch(sourceUrl, {
+			headers: { "User-Agent": "Policai/1.0 (Australian AI Policy Tracker)" },
+		});
 
-    if (!response.ok) return [];
+		if (!response.ok) return [];
 
-    const html = await response.text();
-    const $ = cheerio.load(html);
-    const links: { url: string; title: string }[] = [];
+		const html = await response.text();
+		const $ = cheerio.load(html);
+		const links: { url: string; title: string }[] = [];
 
-    $('a').each((_, el) => {
-      const href = $(el).attr('href');
-      const text = $(el).text().trim();
-      if (!href || !text) return;
+		$("a").each((_, el) => {
+			const href = $(el).attr("href");
+			const text = $(el).text().trim();
+			if (!href || !text) return;
 
-      let absoluteUrl = href;
-      if (href.startsWith('/')) {
-        const base = new URL(sourceUrl);
-        absoluteUrl = `${base.origin}${href}`;
-      } else if (!href.startsWith('http')) {
-        return;
-      }
+			let absoluteUrl = href;
+			if (href.startsWith("/")) {
+				const base = new URL(sourceUrl);
+				absoluteUrl = `${base.origin}${href}`;
+			} else if (!href.startsWith("http")) {
+				return;
+			}
 
-      const keywords = ['policy', 'framework', 'guidance', 'standard', 'regulation', 'strategy', 'ai', 'artificial-intelligence', 'digital'];
-      const combined = (href + ' ' + text).toLowerCase();
-      if (keywords.some(kw => combined.includes(kw))) {
-        links.push({ url: absoluteUrl, title: text });
-      }
-    });
+			const keywords = [
+				"policy",
+				"framework",
+				"guidance",
+				"standard",
+				"regulation",
+				"strategy",
+				"ai",
+				"artificial-intelligence",
+				"digital",
+			];
+			const combined = (href + " " + text).toLowerCase();
+			if (keywords.some((kw) => combined.includes(kw))) {
+				links.push({ url: absoluteUrl, title: text });
+			}
+		});
 
-    return links.slice(0, 15);
-  } catch {
-    return [];
-  }
+		return links.slice(0, 15);
+	} catch {
+		return [];
+	}
 }
 
 /**
  * Fetch and clean page content
  */
 async function fetchPageContent(url: string): Promise<string> {
-  const response = await fetch(url, {
-    headers: { 'User-Agent': 'Policai/1.0 (Australian AI Policy Tracker)' },
-  });
+	const response = await fetch(url, {
+		headers: { "User-Agent": "Policai/1.0 (Australian AI Policy Tracker)" },
+	});
 
-  if (!response.ok) {
-    throw new Error(`HTTP ${response.status}`);
-  }
+	if (!response.ok) {
+		throw new Error(`HTTP ${response.status}`);
+	}
 
-  const html = await response.text();
-  return cleanHtmlContent(html);
+	const html = await response.text();
+	return cleanHtmlContent(html);
 }
 
 /**
  * Use AI to analyze a page for AI policy research findings
  */
 async function analyzeForFindings(
-  page: ScrapedPage,
-  existingPolicyTitles: string[]
-): Promise<Omit<ResearchFinding, 'id' | 'pipelineRunId' | 'status'>[]> {
-  const completion = await ai.chat.completions.create({
-    model: AI_MODEL,
-    max_tokens: 2048,
-    messages: [
-      {
-        role: 'user',
-        content: `You are a research agent for an Australian AI Policy Tracker. Analyse this web page content and extract any AI policy findings.
+	page: ScrapedPage,
+	existingPolicyTitles: string[],
+): Promise<Omit<ResearchFinding, "id" | "pipelineRunId" | "status">[]> {
+	const completion = await ai.chat.completions.create({
+		model: AI_MODEL,
+		max_tokens: 2048,
+		messages: [
+			{
+				role: "user",
+				content: `You are a research agent for an Australian AI Policy Tracker. Analyse this web page content and extract any AI policy findings.
 
 Source: ${page.url}
 Page Title: ${page.title}
@@ -94,7 +115,10 @@ Content:
 ${page.content.slice(0, 6000)}
 
 Existing policies already tracked:
-${existingPolicyTitles.slice(0, 20).map(t => `- ${t}`).join('\n')}
+${existingPolicyTitles
+	.slice(0, 20)
+	.map((t) => `- ${t}`)
+	.join("\n")}
 
 For each distinct AI policy finding on this page, extract the details. A finding could be:
 - A new policy, framework, guideline, or regulation
@@ -122,36 +146,44 @@ Respond in JSON format:
 }
 
 If the page has no relevant AI policy content, return: {"findings": []}`,
-      },
-    ],
-  });
+			},
+		],
+	});
 
-  const text = getResponseText(completion);
+	const text = getResponseText(completion);
 
-  const parsed = extractJsonFromResponse<{ findings?: Record<string, unknown>[] }>(text, { findings: [] });
-  return (parsed.findings || []).map((f) => ({
-    title: f.title as string,
-    summary: f.summary as string,
-    sourceUrl: page.url,
-    sourceContent: page.content.slice(0, 2000),
-    discoveredAt: new Date().toISOString(),
-    relevanceScore: f.relevanceScore as number,
-    suggestedType: (f.suggestedType as PolicyType) || null,
-    suggestedJurisdiction: (f.suggestedJurisdiction as Jurisdiction) || null,
-    tags: (f.tags as string[]) || [],
-    agencies: (f.agencies as string[]) || [],
-    keyDates: (f.keyDates as string[]) || [],
-    relatedTopics: (f.relatedTopics as string[]) || [],
-    isNewPolicy: f.isNewPolicy as boolean,
-    existingPolicyId: undefined,
-    changeDescription: f.changeDescription as string | undefined,
-  }));
+	const parsed = extractJsonFromResponse<{
+		findings?: Record<string, unknown>[];
+	}>(text, { findings: [] });
+	return (parsed.findings || []).map((f) => ({
+		title: f.title as string,
+		summary: f.summary as string,
+		sourceUrl: page.url,
+		sourceContent: page.content.slice(0, 2000),
+		discoveredAt: new Date().toISOString(),
+		relevanceScore: f.relevanceScore as number,
+		suggestedType:
+			typeof f.suggestedType === "string"
+				? normalizePolicyType(f.suggestedType)
+				: null,
+		suggestedJurisdiction:
+			typeof f.suggestedJurisdiction === "string"
+				? normalizeJurisdiction(f.suggestedJurisdiction)
+				: null,
+		tags: (f.tags as string[]) || [],
+		agencies: (f.agencies as string[]) || [],
+		keyDates: (f.keyDates as string[]) || [],
+		relatedTopics: (f.relatedTopics as string[]) || [],
+		isNewPolicy: f.isNewPolicy as boolean,
+		existingPolicyId: undefined,
+		changeDescription: f.changeDescription as string | undefined,
+	}));
 }
 
 export interface ResearchAgentResult {
-  findings: ResearchFinding[];
-  sourcesScanned: string[];
-  errors: string[];
+	findings: ResearchFinding[];
+	sourcesScanned: string[];
+	errors: string[];
 }
 
 /**
@@ -159,156 +191,179 @@ export interface ResearchAgentResult {
  * including dynamically discovered .gov.au pages via Perplexity search.
  */
 export async function runResearchAgent(
-  pipelineRunId: string,
-  existingPolicyTitles: string[],
-  existingSourceUrls: string[] = [],
+	pipelineRunId: string,
+	existingPolicyTitles: string[],
+	existingSourceUrls: string[] = [],
 ): Promise<ResearchAgentResult> {
-  const allFindings: ResearchFinding[] = [];
-  const sourcesScanned: string[] = [];
-  const errors: string[] = [];
-  let findingCounter = 0;
+	const allFindings: ResearchFinding[] = [];
+	const sourcesScanned: string[] = [];
+	const errors: string[] = [];
+	let findingCounter = 0;
 
-  // Phase 1: Discover new .gov.au sources via Perplexity web search
-  const staticUrls = RESEARCH_SOURCES.map((s) => s.url);
-  const allKnownUrls = [...staticUrls, ...existingSourceUrls];
-  let discoveredSources: { url: string; title: string }[] = [];
+	// Phase 1: Discover new .gov.au sources via Perplexity web search
+	const staticUrls = RESEARCH_SOURCES.map((s) => s.url);
+	const allKnownUrls = [...staticUrls, ...existingSourceUrls];
+	let discoveredSources: { url: string; title: string }[] = [];
 
-  try {
-    discoveredSources = await runDiscoveryAgent(allKnownUrls);
-    console.log(`[Research Agent] Discovery found ${discoveredSources.length} new URLs`);
-  } catch (err) {
-    const errMsg = `Discovery agent failed: ${err instanceof Error ? err.message : 'Unknown error'}`;
-    console.error(`[Research Agent] ${errMsg}`);
-    errors.push(errMsg);
-  }
+	try {
+		discoveredSources = await runDiscoveryAgent(allKnownUrls);
+		console.log(
+			`[Research Agent] Discovery found ${discoveredSources.length} new URLs`,
+		);
+	} catch (err) {
+		const errMsg = `Discovery agent failed: ${err instanceof Error ? err.message : "Unknown error"}`;
+		console.error(`[Research Agent] ${errMsg}`);
+		errors.push(errMsg);
+	}
 
-  // Phase 2: Scan static sources (existing behavior)
-  for (const source of RESEARCH_SOURCES) {
-    try {
-      console.log(`[Research Agent] Scanning: ${source.name} (${source.url})`);
-      sourcesScanned.push(source.id);
+	// Phase 2: Scan static sources (existing behavior)
+	for (const source of RESEARCH_SOURCES) {
+		try {
+			console.log(`[Research Agent] Scanning: ${source.name} (${source.url})`);
+			sourcesScanned.push(source.id);
 
-      // Get links from source page
-      const links = await scrapeSourceLinks(source.url);
-      console.log(`[Research Agent] Found ${links.length} links from ${source.name}`);
+			// Get links from source page
+			const links = await scrapeSourceLinks(source.url);
+			console.log(
+				`[Research Agent] Found ${links.length} links from ${source.name}`,
+			);
 
-      // Also analyze the source page itself
-      const pages: ScrapedPage[] = [];
+			// Also analyze the source page itself
+			const pages: ScrapedPage[] = [];
 
-      try {
-        const sourceContent = await fetchPageContent(source.url);
-        pages.push({
-          url: source.url,
-          title: source.name,
-          content: sourceContent,
-          sourceId: source.id,
-        });
-      } catch (err) {
-        console.error(`[Research Agent] Failed to fetch source page: ${source.url}`, err);
-      }
+			try {
+				const sourceContent = await fetchPageContent(source.url);
+				pages.push({
+					url: source.url,
+					title: source.name,
+					content: sourceContent,
+					sourceId: source.id,
+				});
+			} catch (err) {
+				console.error(
+					`[Research Agent] Failed to fetch source page: ${source.url}`,
+					err,
+				);
+			}
 
-      // Fetch content from linked pages (limit to 5 per source)
-      for (const link of links.slice(0, 5)) {
-        try {
-          const content = await fetchPageContent(link.url);
-          pages.push({
-            url: link.url,
-            title: link.title,
-            content,
-            sourceId: source.id,
-          });
+			// Fetch content from linked pages (limit to 5 per source)
+			for (const link of links.slice(0, 5)) {
+				try {
+					const content = await fetchPageContent(link.url);
+					pages.push({
+						url: link.url,
+						title: link.title,
+						content,
+						sourceId: source.id,
+					});
 
-          // Rate limit: 2s between fetches
-          await new Promise(resolve => setTimeout(resolve, 2000));
-        } catch (err) {
-          console.error(`[Research Agent] Failed to fetch: ${link.url}`, err);
-        }
-      }
+					// Rate limit: 2s between fetches
+					await new Promise((resolve) => setTimeout(resolve, 2000));
+				} catch (err) {
+					console.error(`[Research Agent] Failed to fetch: ${link.url}`, err);
+				}
+			}
 
-      // Analyze each page for findings
-      for (const page of pages) {
-        try {
-          const pageFindings = await analyzeForFindings(page, existingPolicyTitles);
+			// Analyze each page for findings
+			for (const page of pages) {
+				try {
+					const pageFindings = await analyzeForFindings(
+						page,
+						existingPolicyTitles,
+					);
 
-          for (const finding of pageFindings) {
-            if (finding.relevanceScore >= 0.5) {
-              findingCounter++;
-              allFindings.push({
-                ...finding,
-                id: `finding-${pipelineRunId}-${findingCounter}`,
-                pipelineRunId,
-                status: 'discovered',
-              } as ResearchFinding);
-            }
-          }
+					for (const finding of pageFindings) {
+						if (finding.relevanceScore >= 0.5) {
+							findingCounter++;
+							allFindings.push({
+								...finding,
+								id: `finding-${pipelineRunId}-${findingCounter}`,
+								pipelineRunId,
+								status: "discovered",
+							} as ResearchFinding);
+						}
+					}
 
-          // Rate limit: 1s between AI calls
-          await new Promise(resolve => setTimeout(resolve, 1000));
-        } catch (err) {
-          console.error(`[Research Agent] Analysis failed for: ${page.url}`, err);
-        }
-      }
+					// Rate limit: 1s between AI calls
+					await new Promise((resolve) => setTimeout(resolve, 1000));
+				} catch (err) {
+					console.error(
+						`[Research Agent] Analysis failed for: ${page.url}`,
+						err,
+					);
+				}
+			}
 
-      // Rate limit: 3s between sources
-      await new Promise(resolve => setTimeout(resolve, 3000));
-    } catch (err) {
-      const errMsg = `Failed to scan ${source.name}: ${err instanceof Error ? err.message : 'Unknown error'}`;
-      console.error(`[Research Agent] ${errMsg}`);
-      errors.push(errMsg);
-    }
-  }
+			// Rate limit: 3s between sources
+			await new Promise((resolve) => setTimeout(resolve, 3000));
+		} catch (err) {
+			const errMsg = `Failed to scan ${source.name}: ${err instanceof Error ? err.message : "Unknown error"}`;
+			console.error(`[Research Agent] ${errMsg}`);
+			errors.push(errMsg);
+		}
+	}
 
-  // Phase 3: Scan discovered sources (skip link-scraping, go straight to content)
-  if (discoveredSources.length > 0) {
-    sourcesScanned.push('discovery');
+	// Phase 3: Scan discovered sources (skip link-scraping, go straight to content)
+	if (discoveredSources.length > 0) {
+		sourcesScanned.push("discovery");
 
-    for (const discovered of discoveredSources) {
-      try {
-        console.log(`[Research Agent] Scanning discovered: ${discovered.title} (${discovered.url})`);
+		for (const discovered of discoveredSources) {
+			try {
+				console.log(
+					`[Research Agent] Scanning discovered: ${discovered.title} (${discovered.url})`,
+				);
 
-        const content = await fetchPageContent(discovered.url);
-        const page: ScrapedPage = {
-          url: discovered.url,
-          title: discovered.title,
-          content,
-          sourceId: 'discovery',
-        };
+				const content = await fetchPageContent(discovered.url);
+				const page: ScrapedPage = {
+					url: discovered.url,
+					title: discovered.title,
+					content,
+					sourceId: "discovery",
+				};
 
-        const pageFindings = await analyzeForFindings(page, existingPolicyTitles);
+				const pageFindings = await analyzeForFindings(
+					page,
+					existingPolicyTitles,
+				);
 
-        for (const finding of pageFindings) {
-          if (finding.relevanceScore >= 0.5) {
-            findingCounter++;
-            allFindings.push({
-              ...finding,
-              id: `finding-${pipelineRunId}-${findingCounter}`,
-              pipelineRunId,
-              status: 'discovered',
-            } as ResearchFinding);
-          }
-        }
+				for (const finding of pageFindings) {
+					if (finding.relevanceScore >= 0.5) {
+						findingCounter++;
+						allFindings.push({
+							...finding,
+							id: `finding-${pipelineRunId}-${findingCounter}`,
+							pipelineRunId,
+							status: "discovered",
+						} as ResearchFinding);
+					}
+				}
 
-        // Rate limit: 2s between fetches
-        await new Promise(resolve => setTimeout(resolve, 2000));
-      } catch (err) {
-        console.error(`[Research Agent] Failed to process discovered URL: ${discovered.url}`, err);
-      }
-    }
-  }
+				// Rate limit: 2s between fetches
+				await new Promise((resolve) => setTimeout(resolve, 2000));
+			} catch (err) {
+				console.error(
+					`[Research Agent] Failed to process discovered URL: ${discovered.url}`,
+					err,
+				);
+			}
+		}
+	}
 
-  // Deduplicate findings by title similarity
-  const uniqueFindings = deduplicateFindings(allFindings);
+	// Deduplicate findings by title similarity
+	const uniqueFindings = deduplicateFindings(allFindings);
 
-  // Save findings to storage
-  await saveFindings(uniqueFindings);
+	// Save findings to storage
+	await saveFindings(uniqueFindings);
 
-  console.log(`[Research Agent] Complete. Found ${uniqueFindings.length} unique findings from ${sourcesScanned.length} sources.`);
+	console.log(
+		`[Research Agent] Complete. Found ${uniqueFindings.length} unique findings from ${sourcesScanned.length} sources.`,
+	);
 
-  return {
-    findings: uniqueFindings,
-    sourcesScanned,
-    errors,
-  };
+	return {
+		findings: uniqueFindings,
+		sourcesScanned,
+		errors,
+	};
 }
 
 /**
@@ -316,30 +371,30 @@ export async function runResearchAgent(
  * Keeps the highest-scoring finding when duplicates are found.
  */
 function deduplicateFindings(findings: ResearchFinding[]): ResearchFinding[] {
-  const unique: ResearchFinding[] = [];
-  const seenUrls = new Set<string>();
+	const unique: ResearchFinding[] = [];
+	const seenUrls = new Set<string>();
 
-  for (const finding of findings) {
-    // Check URL-level duplicate
-    const normUrl = finding.sourceUrl ? normalizeUrl(finding.sourceUrl) : '';
-    if (normUrl && seenUrls.has(normUrl)) continue;
+	for (const finding of findings) {
+		// Check URL-level duplicate
+		const normUrl = finding.sourceUrl ? normalizeUrl(finding.sourceUrl) : "";
+		if (normUrl && seenUrls.has(normUrl)) continue;
 
-    // Check fuzzy title duplicate against already-accepted findings
-    const existingMatch = unique.findIndex(
-      (f) => titleSimilarity(f.title, finding.title) >= 0.6,
-    );
+		// Check fuzzy title duplicate against already-accepted findings
+		const existingMatch = unique.findIndex(
+			(f) => titleSimilarity(f.title, finding.title) >= 0.6,
+		);
 
-    if (existingMatch >= 0) {
-      // Keep the one with the higher relevance score
-      if (finding.relevanceScore > unique[existingMatch].relevanceScore) {
-        unique[existingMatch] = finding;
-      }
-    } else {
-      unique.push(finding);
-    }
+		if (existingMatch >= 0) {
+			// Keep the one with the higher relevance score
+			if (finding.relevanceScore > unique[existingMatch].relevanceScore) {
+				unique[existingMatch] = finding;
+			}
+		} else {
+			unique.push(finding);
+		}
 
-    if (normUrl) seenUrls.add(normUrl);
-  }
+		if (normUrl) seenUrls.add(normUrl);
+	}
 
-  return unique;
+	return unique;
 }

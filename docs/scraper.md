@@ -4,7 +4,7 @@ This guide covers the automated policy scraper and the daily review pipeline.
 
 ## What the Scraper Does
 
-The scraper visits configured Australian government sources, extracts likely policy links, analyses the content with Anthropic, and then:
+The scraper visits configured Australian government sources, extracts likely policy links, analyses the content through the OpenRouter-backed AI client, and then:
 
 - auto-creates policies when relevance is `>= 0.8`
 - sends medium-confidence items to `public/data/pending-content.json`
@@ -27,10 +27,16 @@ Current scheduled sources:
 
 ## Local Setup
 
-Required:
+Required for AI analysis and discovery:
 
 ```bash
-ANTHROPIC_API_KEY=sk-ant-...
+OPENROUTER_API_KEY=
+```
+
+Optional model override:
+
+```bash
+AI_MODEL=openrouter/auto
 ```
 
 Optional but useful when scripts need to call a non-default app URL:
@@ -87,14 +93,14 @@ They require `CRON_SECRET` and are intended to be triggered by Vercel Cron Jobs.
 A starter workflow is available at [`/.github/workflows/scraper.yml.example`](../.github/workflows/scraper.yml.example). If you use it:
 
 - rename it to `scraper.yml`
-- add `ANTHROPIC_API_KEY` to repository secrets
+- add `OPENROUTER_API_KEY` to repository secrets
 - add `NEXT_PUBLIC_API_URL` only if the workflow must target a non-default app URL
 
 ## Troubleshooting
 
-### `ANTHROPIC_API_KEY` not configured
+### `OPENROUTER_API_KEY` not configured
 
-Add the key to `.env.local` locally or to your deployment environment.
+Add the key to `.env.local` locally or to your deployment environment. Without it, AI-backed analysis and discovery cannot run.
 
 ### The scraper hits the wrong local port
 

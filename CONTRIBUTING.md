@@ -52,16 +52,16 @@ Thanks for your interest in contributing to Policai! This guide covers the basic
 Before submitting a PR, make sure everything passes:
 
 ```bash
-npm run lint        # ESLint
-npm run test        # Vitest
-npm run build       # Production build
+npm run check       # ESLint, Vitest, and production build
 ```
+
+For narrower local loops, run `npm run lint`, `npm run test`, or `npm run build` individually.
 
 ## Pull Requests
 
 1. Push your branch and open a PR against `main`
 2. Fill in the PR template
-3. Ensure CI checks pass (lint, test, build)
+3. Ensure CI checks pass (`npm run check` locally covers lint, test, and build)
 4. Keep the PR description clear — explain what and why
 
 ### PR Size
@@ -87,8 +87,10 @@ The app works without any external services by falling back to JSON files in `pu
 | `OPENROUTER_API_KEY` | For AI features | Powers scraping analysis and discovery |
 | `NEXT_PUBLIC_SUPABASE_URL` | For database | Supabase project URL |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | For database | Supabase anon key |
+| `SUPABASE_SERVICE_ROLE_KEY` | For protected writes | Server-only key used by admin and cron routes when RLS is enabled |
 | `CRON_SECRET` | For cron jobs | Authenticates scheduled scraper runs |
 | `ADMIN_PASSWORD` | For admin UI | Protects the admin dashboard |
+| `POLICAI_MCP_ADMIN_TOKEN` | For MCP ingest | Authorises local MCP source-ingest writes |
 
 ## License
 

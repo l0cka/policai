@@ -3,10 +3,12 @@
 Policai is an Australian AI policy tracker built with Next.js. It aggregates, analyses, and visualises AI policy, regulation, and governance developments across Australian federal and state or territory jurisdictions.
 
 Current product surface:
-- searchable policy browser with timeline view
+- searchable policy browser
 - agencies directory
+- court AI guidance view
 - interactive Australia map
-- DTA framework visualisation
+- timeline, network, and DTA framework visualisations
+- MDX-backed blog
 - admin workflow for scraping, review, and pipeline operations
 
 ## Stack
@@ -16,7 +18,7 @@ Current product surface:
 - TypeScript 5 in strict mode
 - Tailwind CSS 4
 - shadcn/ui on Radix UI
-- D3.js and React Flow
+- D3.js
 - Supabase with JSON-file fallback in `public/data/`
 - OpenRouter (Perplexity + auto model routing) for policy discovery and analysis
 
@@ -57,20 +59,24 @@ npm run build       # production build
 npm run start       # run the production server
 npm run lint        # ESLint
 npm run test        # Vitest
+npm run check       # lint, test, and production build
 npm run scrape      # run scheduled scraper sources
 npm run pipeline    # run the daily research/verifier pipeline
+npm run mcp         # run the local MCP source-ingest server
 ```
 
 ## Repository Layout
 
 ```text
 src/app/            App Router pages and API routes
-src/components/     UI, layout, admin, and visualisation components
+src/components/     UI, layout, admin, network, and visualisation components
 src/lib/            data services, AI clients, helpers, and agent modules
+src/mcp/            local MCP source-ingest server
 src/types/          shared domain types
 public/data/        JSON fallback data
 scripts/            local automation entrypoints
 docs/               operational and project documentation
+content/blog/       MDX blog posts
 ```
 
 ## Data Model

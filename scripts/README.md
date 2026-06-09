@@ -14,7 +14,7 @@ npm run scrape
 npm run pipeline
 ```
 
-Both scripts expect `ANTHROPIC_API_KEY` to be configured. They call the app over HTTP and default to `http://localhost:3000` unless `NEXT_PUBLIC_API_URL` is set.
+Both scripts expect `OPENROUTER_API_KEY` to be configured for AI-backed analysis and discovery. They call the app over HTTP and default to `http://localhost:3000` unless `NEXT_PUBLIC_API_URL` is set.
 
 ## Related Docs
 
@@ -52,7 +52,7 @@ if (analysis.relevanceScore >= 0.9 && analysis.isRelevant) {
 - Each scraper processes up to 10 links per source
 - Rate limiting: 2 seconds between pages, 5 seconds between sources
 - Typical run time: 3-5 minutes per source
-- Claude API cost: ~$0.05-0.10 per scraper run
+- AI API cost depends on the configured OpenRouter model and the amount of extracted source text
 
 ## Contributing
 

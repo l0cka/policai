@@ -2,20 +2,23 @@
 
 ## Project Overview
 
-Policai is an Australian AI Policy Tracker — a Next.js web application that aggregates, analyzes, and visualizes AI policy, regulation, and governance developments across Australian federal and state/territory jurisdictions. It uses Codex AI to automatically discover, analyze, and categorize government AI policies from official sources.
+Policai is an Australian AI policy tracker built with Next.js. It aggregates, analyses, and visualises AI policy, regulation, governance, court guidance, and government AI-use developments across Australian federal and state/territory jurisdictions.
+
+The app uses OpenRouter/OpenAI-compatible chat completions for policy discovery, content analysis, verification, and implementation-draft generation. Supabase is optional; local development works with JSON fallback files in `public/data/`.
 
 ## Tech Stack
 
-- **Framework:** Next.js 16 (App Router) with React 19
-- **Language:** TypeScript 5 (strict mode)
+- **Framework:** Next.js 16 App Router with React 19
+- **Language:** TypeScript 5 in strict mode
 - **Styling:** Tailwind CSS 4 with CSS variables
-- **UI Components:** shadcn/ui (New York style) built on Radix UI primitives
+- **UI Components:** shadcn/ui New York style on Radix UI primitives
 - **Icons:** Lucide React
-- **Visualizations:** D3.js 7, React Flow 11
-- **Database:** Supabase (PostgreSQL) + file-based JSON in `public/data/`
-- **AI:** Anthropic Codex SDK (`Codex-sonnet-4-20250514` model)
+- **Visualisations:** D3.js 7
+- **Database:** Supabase PostgreSQL plus JSON-file fallback in `public/data/`
+- **AI:** OpenRouter via the `openai` SDK (`OPENROUTER_API_KEY`, optional `AI_MODEL`)
 - **Scraping:** Cheerio for HTML parsing
-- **Auth:** Supabase Auth + custom admin password
+- **Auth:** Supabase Auth plus admin password/token checks for protected operations
+- **MCP:** Local MCP source-ingest server in `src/mcp/server.ts`
 
 ## Commands
 
@@ -23,176 +26,180 @@ Policai is an Australian AI Policy Tracker — a Next.js web application that ag
 npm run dev        # Start dev server on http://localhost:3000
 npm run build      # Production build
 npm run start      # Run production server
-npm run lint       # Run ESLint (Next.js core-web-vitals + TypeScript rules)
-npm run scrape     # Run scheduled scrapers (tsx scripts/run-scheduled-scrapers.ts)
+npm run lint       # Run ESLint
+npm run test       # Run Vitest tests
+npm run check      # Run lint, tests, and production build
+npm run scrape     # Run scheduled scrapers
+npm run pipeline   # Run daily research/verifier pipeline
+npm run mcp        # Run local MCP source-ingest server
 ```
 
 ## Project Structure
 
-```
+```text
 src/
-├── app/                          # Next.js App Router pages and API routes
-│   ├── layout.tsx                # Root layout (theme provider, header, footer)
-│   ├── page.tsx                  # Home page
-│   ├── admin/                    # Admin dashboard (login + management)
-│   ├── agencies/page.tsx         # Government agency directory
-│   ├── framework/page.tsx        # DTA AI Policy Framework visualization
-│   ├── map/page.tsx              # Interactive Australia map view
-│   ├── network/page.tsx          # Policy relationship graph
-│   ├── policies/                 # Policy browser (list + detail + timeline)
-│   │   ├── page.tsx              # Searchable/filterable policy list with timeline tab
-│   │   └── [id]/
-│   │       ├── page.tsx          # Policy detail page (server component)
-│   │       └── policy-detail-tabs.tsx  # Tabbed detail view (Overview/Content/Related)
-│   ├── timeline/page.tsx         # AI policy timeline (standalone, not in main nav)
-│   └── api/                      # API route handlers
-│       ├── admin/
-│       │   ├── run-scraper/route.ts    # Main scraper endpoint
-│       │   ├── pending/route.ts        # Pending content management
-│       │   └── analyse-url/route.ts    # URL analysis
-│       ├── Codex/analyze/route.ts     # Codex AI analysis endpoint
-│       └── policies/
-│           ├── route.ts                # Policy CRUD (GET/POST)
-│           └── [id]/route.ts           # Single policy (GET/PUT/DELETE)
-├── components/
-│   ├── ui/                       # shadcn/ui components (button, card, dialog, etc.)
-│   ├── layout/                   # Header, Footer
-│   ├── admin/                    # Admin dashboard tab sub-components
-│   │   ├── OverviewTab.tsx       # Stats and recent activity
-│   │   ├── ReviewTab.tsx         # AI-suggested content review
-│   │   ├── PipelineTab.tsx       # AI research pipeline controls
-│   │   ├── SourcesTab.tsx        # Data source management
-│   │   ├── TrashTab.tsx          # Soft-deleted policy management
-│   │   └── SettingsTab.tsx       # AI and database configuration
-│   ├── visualizations/           # AustraliaMap, Timeline, PolicyFrameworkMap
-│   ├── auth/ProtectedRoute.tsx   # Auth guard wrapper
-│   └── home-search.tsx           # Homepage search component
-├── contexts/AuthContext.tsx       # Authentication state context
-├── hooks/use-toast.ts            # Toast notification hook
-├── lib/
-│   ├── Codex.ts                 # Codex AI integration (analysis, summarization, extraction)
-│   ├── supabase.ts               # Supabase client and query functions
-│   ├── auth.ts                   # Auth utility functions
-│   ├── file-store.ts             # Shared JSON file I/O (readJsonFile, writeJsonFile)
-│   ├── utils.ts                  # Helpers (cn, cleanHtmlContent, extractJsonFromResponse)
-│   └── agents/                   # AI pipeline agent modules
-│       ├── research-agent.ts     # Web research and content discovery
-│       ├── verifier-agent.ts     # Fact-checking and verification
-│       ├── implementation-agent.ts # Policy entry generation
-│       └── pipeline-storage.ts   # Pipeline run/finding/verification persistence
-└── types/index.ts                # All TypeScript type definitions
+├── app/                         # App Router pages and API routes
+│   ├── page.tsx                 # Policy browser home page
+│   ├── admin/                   # Admin dashboard and login
+│   ├── agencies/page.tsx        # Government agency directory
+│   ├── blog/                    # MDX-backed blog
+│   ├── courts/page.tsx          # Court AI guidance view
+│   ├── framework/page.tsx       # DTA framework visualisation
+│   ├── map/page.tsx             # Interactive Australia map
+│   ├── network/page.tsx         # Policy relationship graph
+│   ├── policies/[id]/           # Policy detail pages
+│   ├── timeline/page.tsx        # Timeline visualisation
+│   └── api/                     # API route handlers
+├── components/                  # UI, layout, admin, network, and visualisation components
+├── contexts/AuthContext.tsx     # Authentication state context
+├── hooks/use-toast.ts           # Toast notification hook
+├── lib/                         # Data services, AI clients, auth, file I/O, helpers, agents
+├── mcp/server.ts                # Local MCP source-ingest server
+├── test/                        # Test factories and setup
+└── types/index.ts               # Shared domain types
 
-public/data/                      # JSON data files (policies, agencies, timeline, etc.)
-scripts/                          # Scraper automation scripts
+public/data/                     # JSON fallback/sample data
+scripts/                         # Local automation entrypoints
+docs/                            # Operational documentation
+content/blog/                    # MDX blog posts
 ```
 
 ## Architecture & Patterns
 
 ### Navigation Structure
-The app uses a simplified 3-item navigation: **Policies**, **Map**, **Agencies**. Other views (Framework, Network, Timeline) still exist as pages but are not in the main nav. Timeline is embedded as a tab within the Policies page. The home page focuses on search and a recent policies feed.
+
+The primary navigation contains **Policies**, **Map**, **Agencies**, and **Courts**. Secondary insight views live under the **Insights** dropdown: **Timeline**, **Network**, **Framework**, and **Blog**. Admin actions are only shown on admin routes.
 
 ### Page Patterns
-- **Policies list** (`/policies`): Client component with Browse/Timeline tabs, collapsible filters behind a toggle button, compact card design
-- **Policy detail** (`/policies/[id]`): Server component for data fetching + client `PolicyDetailTabs` component with Overview/Content/Related tabs
-- **Home page**: Server component with search bar, stats, and recent policies feed
+
+- **Home / policy browser** (`/`): client component with search, filters, summary stats, and policy table.
+- **Policy detail** (`/policies/[id]`): server component for data fetching plus client tabs for overview/content/related policies.
+- **Admin dashboard** (`/admin`): protected client workflow for scraping, review, pipeline, sources, trash, and settings.
+- **Visualisations:** D3/client-side rendering for map, timeline, framework, and network views.
 
 ### Routing
-Next.js App Router with file-based routing. Pages are in `src/app/[route]/page.tsx`, API routes in `src/app/api/[endpoint]/route.ts`. Dynamic routes use `[id]` folder convention.
+
+Next.js App Router uses file-based routes in `src/app/[route]/page.tsx` and API handlers in `src/app/api/[endpoint]/route.ts`. Dynamic routes use `[id]` folder names. The legacy-named `src/app/api/claude/analyze/route.ts` currently calls the OpenRouter-backed analysis helper; do not assume it uses Anthropic.
 
 ### Server vs Client Components
-- Pages default to Server Components for data fetching
-- Interactive components use `'use client'` directive at the top of the file
-- Policy detail page uses a server/client split: server component fetches data, passes it to a client `PolicyDetailTabs` component for tabs
-- Visualizations (D3, React Flow) are client-side only
+
+- Pages default to Server Components when they only fetch/render data.
+- Interactive components use `'use client'`.
+- Keep browser-only D3/visualisation logic in client components.
+- API routes export named HTTP method handlers (`GET`, `POST`, `PUT`, `DELETE`).
 
 ### Data Storage
-Dual storage strategy:
-1. **Supabase** — primary database when configured (optional, requires env vars)
-2. **JSON files** in `public/data/` — fallback/default data source, read via `fetch('/data/*.json')`
 
-Policy data flows: Scraper fetches government sources -> Codex AI analyzes content -> policies saved to JSON or Supabase.
+Data access should go through `src/lib/data-service.ts` and shared file helpers in `src/lib/file-store.ts` where practical.
+
+Storage strategy:
+1. **Supabase** when configured.
+2. **JSON files** in `public/data/` as the local/default fallback.
+
+Server-side writes that need to bypass RLS use `SUPABASE_SERVICE_ROLE_KEY` through server-only helpers. Never expose the service role key to client code.
+
+### AI Pipeline
+
+Shared AI client configuration lives in `src/lib/ai-client.ts` and uses OpenRouter through the `openai` SDK. Pipeline modules live in `src/lib/agents/`:
+
+- `discovery-agent.ts` and `agency-discovery-agent.ts` discover candidate sources.
+- `research-agent.ts` fetches and extracts source content.
+- `verifier-agent.ts` checks findings.
+- `implementation-agent.ts` drafts policy/timeline records.
+- `pipeline-storage.ts` persists run, finding, and verification state.
+
+`src/lib/claude.ts` is a legacy filename for analysis/summarisation helpers. Treat the implementation, not the filename, as canonical.
 
 ### Import Aliases
-The `@/*` alias maps to `./src/*` (configured in `tsconfig.json`). Use it for all imports:
+
+The `@/*` alias maps to `./src/*`. Prefer it for source imports:
+
 ```typescript
-import { Button } from '@/components/ui/button'
-import { Policy } from '@/types'
-import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button';
+import type { Policy } from '@/types';
+import { cn } from '@/lib/utils';
 ```
 
 ### Styling
-- Tailwind CSS utility classes for all styling
-- Use `cn()` from `@/lib/utils` to merge conditional Tailwind classes
-- Theme colors defined as CSS variables in `globals.css`
-- Light-only theme with IBM Plex color system
-- shadcn/ui components follow New York style variant
 
-### Adding UI Components
-shadcn/ui components live in `src/components/ui/`. To add new ones:
-```bash
-npx shadcn@latest add <component-name>
-```
-Configuration is in `components.json`.
+- Use Tailwind utilities and CSS variables from `globals.css`.
+- Use `cn()` from `@/lib/utils` for conditional classes.
+- Prefer existing shadcn/ui components in `src/components/ui/`.
+- Keep design tokens and status colours centralised in shared helpers such as `src/lib/design-tokens.ts`.
 
 ## Key Domain Types
 
 Defined in `src/types/index.ts`:
 
-- **Jurisdiction:** `'federal' | 'nsw' | 'vic' | 'qld' | 'wa' | 'sa' | 'tas' | 'act' | 'nt'`
-- **PolicyType:** `'legislation' | 'regulation' | 'guideline' | 'framework' | 'standard'`
-- **PolicyStatus:** `'proposed' | 'active' | 'amended' | 'repealed' | 'trashed'`
-- **Policy** — core entity with id, title, description, jurisdiction, type, status, agencies, aiSummary, tags, etc.
-- **Agency** — government agency with transparency statement fields
-- **TimelineEvent** — dated events with type (policy_introduced, amended, repealed, announcement, milestone)
-- **PipelineRun**, **ResearchFinding**, **VerificationResult** — AI pipeline types
-- Display name mappings: `JURISDICTION_NAMES`, `POLICY_TYPE_NAMES`, `POLICY_STATUS_NAMES`, `PIPELINE_STAGE_NAMES`, `VERIFICATION_OUTCOME_NAMES`
+- **Jurisdiction:** `federal | nsw | vic | qld | wa | sa | tas | act | nt`
+- **PolicyType:** `legislation | regulation | guideline | framework | standard | practice_note | policy | tool | funding_program`
+- **PolicyStatus:** `proposed | active | amended | repealed | trashed`
+- **Policy:** core policy/court/guidance entity.
+- **Agency:** government agency record and AI transparency metadata.
+- **TimelineEvent:** dated event for timeline views.
+- **PipelineRun**, **ResearchFinding**, **VerificationResult**, **SourceReview:** AI pipeline and human-review records.
+
+Use display-name helpers and maps from `@/types`, including `getPolicyTypeName()` for untrusted or newly discovered policy type strings.
 
 ## Environment Variables
 
-Create a `.env.local` file in the project root:
+Create `.env.local` from `.env.example`:
 
 ```bash
-# Required for AI features and scraping
-ANTHROPIC_API_KEY=sk-ant-...
-
-# Optional — Supabase (database features)
-NEXT_PUBLIC_SUPABASE_URL=...
-NEXT_PUBLIC_SUPABASE_ANON_KEY=...
-
-# Optional — Admin authentication
-ADMIN_PASSWORD=...
+cp .env.example .env.local
 ```
 
-The app works without Supabase by falling back to JSON files in `public/data/`.
+Important variables:
 
-## Linting
+```bash
+OPENROUTER_API_KEY=          # AI discovery, analysis, verification, implementation drafts
+AI_MODEL=                    # Optional model override; defaults in src/lib/ai-client.ts
+NEXT_PUBLIC_SUPABASE_URL=    # Optional Supabase URL
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=   # Server-only writes with RLS enabled
+CRON_SECRET=                 # Cron endpoint authentication
+ADMIN_PASSWORD=              # Admin dashboard password
+POLICAI_MCP_ADMIN_TOKEN=     # Local MCP source-ingest writes
+```
 
-ESLint 9 with flat config (`eslint.config.mjs`):
-- Extends `eslint-config-next/core-web-vitals` and `eslint-config-next/typescript`
-- Ignores: `.next/`, `out/`, `build/`, `next-env.d.ts`
-- No Prettier configured — rely on ESLint rules only
-- Run `npm run lint` to check; fix issues before committing
+The app can run without Supabase by falling back to JSON files.
 
-## Testing
+## Linting and Testing
 
-No test framework is currently configured. There are no unit or integration tests.
+ESLint 9 uses flat config in `eslint.config.mjs`. Vitest is configured for unit/API tests.
+
+Run before handing off or committing:
+
+```bash
+npm run check
+```
 
 ## Scraper System
 
-The automated scraper monitors 8 Australian government sources for AI policy content:
-- Fetches pages with Cheerio HTML parsing
-- Sends content to Codex AI for relevance scoring (0-1 scale)
-- Auto-creates policies scoring >= 0.8, queues 0.5-0.8 for review, skips < 0.5
-- Rate limited: 2s between pages, 5s between sources
-- State tracked in `data/scraper-state.json`
-- Trigger via `npm run scrape` or the admin dashboard API
+The scraper monitors configured Australian government sources for AI policy content:
+
+- Fetches pages with Cheerio.
+- Sends extracted content to OpenRouter-backed analysis for relevance scoring.
+- Auto-creates high-confidence policies, queues medium-confidence content for review, and skips low-confidence content.
+- Rate limits between pages and sources.
+- Tracks local scheduler state in `data/scraper-state.json`.
+- Runs via `npm run scrape`, cron endpoints, or the admin dashboard.
 
 ## Code Conventions
 
-- PascalCase for React components and type/interface names
-- camelCase for functions, variables, and file names (except components which use PascalCase filenames)
-- All types centralized in `src/types/index.ts` — always import from `@/types`, never redefine locally
-- Shared utilities in `@/lib/utils.ts` (`cleanHtmlContent`, `extractJsonFromResponse`) and `@/lib/file-store.ts` (`readJsonFile`, `writeJsonFile`) — use these instead of inline implementations
-- API routes export named functions matching HTTP methods (`GET`, `POST`, `PUT`, `DELETE`)
-- Error handling with try/catch and `NextResponse.json()` with appropriate status codes
-- Toast notifications for user-facing feedback (`use-toast` hook)
+- PascalCase for React components and type/interface names.
+- camelCase for functions, variables, and non-component file names.
+- Import shared domain types from `@/types`; do not redefine them locally.
+- Use `readJsonFile`/`writeJsonFile` from `@/lib/file-store` instead of ad hoc JSON file I/O.
+- Use `cleanHtmlContent` and `extractJsonFromResponse` from `@/lib/utils` instead of inline parsing variants.
+- Handle API errors with `try/catch` and `NextResponse.json()` status codes.
+- Use `use-toast` for user-facing notifications.
+
+## Documentation Standard
+
+Keep docs HADS-aligned:
+
+- **Honest:** describe the code that exists now; call out legacy names instead of pretending they are current.
+- **Actionable:** include exact commands, paths, environment variables, and verification steps.
+- **Durable:** avoid vendor/model claims that drift quickly unless the code depends on them.
+- **Specific:** prefer concrete project paths and behaviours over generic advice.

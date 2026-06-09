@@ -20,6 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added automatic timeline generation from policy records and agency transparency discovery.
 - Added a new blog post covering DTA's AI PoC to Scale guidance.
 - Added a new blog post explaining how Policai updates itself automatically.
+- Added `npm run check` as a single local quality gate for linting, tests, and production builds.
+- Added shared domain value guards and display helpers for jurisdictions, policy types, statuses, timeline event types, and source-review wire values.
 
 ### Changed
 
@@ -27,15 +29,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated the site disclaimer to emphasise that Policai is a work in progress and that all information should be independently verified.
 - Sorted policies by date and surfaced the most recent research run in the interface.
 - Continued open source preparation with repository cleanup and contribution-focused documentation.
+- Updated project documentation to follow the HADS standard: honest, actionable, durable, and specific.
+- Updated stale Anthropic/Claude/Codex documentation and admin settings copy to describe the current OpenRouter/OpenAI-compatible implementation.
+- Routed admin scraper pending-review writes through the unified source-review data service instead of direct legacy JSON writes.
+- Hardened AI JSON response parsing for fenced, nested, and array JSON values.
 
 ### Fixed
 
 - Improved blog prose readability in dark mode.
+- Removed unsafe domain casts in pipeline/API/UI paths by normalising untrusted type and jurisdiction strings.
 
 ### Removed
 
-- Removed the admin login page and admin dashboard UI from the public application shell.
-- Removed client-side admin authentication wrappers and navigation links tied to the deleted admin surface.
+- Removed `CLAUDE.md` so agent guidance lives only in `AGENTS.md`.
+- Removed a tracked generated `docs/superpowers/` network redesign artifact.
+- Removed unused `@anthropic-ai/sdk` and `@xyflow/react` dependencies.
+- Removed public application-shell admin navigation links except for admin-route actions.
 
 ### Security
 

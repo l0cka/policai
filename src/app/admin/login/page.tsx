@@ -49,7 +49,7 @@ export default function AdminLoginPage() {
         });
         router.push('/admin');
       }
-    } catch (error) {
+    } catch {
       toast({
         title: 'Error',
         description: 'An unexpected error occurred',

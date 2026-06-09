@@ -11,153 +11,163 @@
  *   each invocation well under the 300s timeout.
  */
 
-import { NextResponse } from 'next/server';
-import { after } from 'next/server';
-import * as cheerio from 'cheerio';
-import { analyseContentRelevance, summarizePolicy } from '@/lib/claude';
-import { cleanHtmlContent } from '@/lib/utils';
-import { DATA_SOURCES, type DataSource } from '@/lib/data-sources';
+import { NextResponse } from "next/server";
+import { after } from "next/server";
+import * as cheerio from "cheerio";
+import { analyseContentRelevance, summarizePolicy } from "@/lib/claude";
+import { cleanHtmlContent } from "@/lib/utils";
+import { DATA_SOURCES, type DataSource } from "@/lib/data-sources";
 import {
-  createPolicy,
-  DuplicatePolicyError,
-  policyExists,
-  policyExistsBySourceUrl,
-  logScraperRun,
-} from '@/lib/data-service';
+	createPolicy,
+	DuplicatePolicyError,
+	policyExists,
+	policyExistsBySourceUrl,
+	logScraperRun,
+} from "@/lib/data-service";
 import {
-  cleanScrapedLinkTitle,
-  isRelevantScrapedCandidate,
-  shouldCreatePolicyFromAnalysis,
-} from '@/lib/scraper-filter';
-import type { Policy } from '@/types';
+	cleanScrapedLinkTitle,
+	isRelevantScrapedCandidate,
+	shouldCreatePolicyFromAnalysis,
+} from "@/lib/scraper-filter";
+import {
+	normalizeJurisdiction,
+	normalizePolicyType,
+	type Policy,
+} from "@/types";
 
 export const maxDuration = 300;
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 
 interface ScrapedLink {
-  url: string;
-  title: string;
-  text: string;
+	url: string;
+	title: string;
+	text: string;
 }
 
 async function scrapeLinks(sourceUrl: string): Promise<ScrapedLink[]> {
-  try {
-    const response = await fetch(sourceUrl, {
-      headers: { 'User-Agent': 'Policai/1.0 (Australian AI Policy Tracker)' },
-    });
-    if (!response.ok) return [];
+	try {
+		const response = await fetch(sourceUrl, {
+			headers: { "User-Agent": "Policai/1.0 (Australian AI Policy Tracker)" },
+		});
+		if (!response.ok) return [];
 
-    const html = await response.text();
-    const $ = cheerio.load(html);
-    const links: ScrapedLink[] = [];
+		const html = await response.text();
+		const $ = cheerio.load(html);
+		const links: ScrapedLink[] = [];
 
-    $('a').each((_, element) => {
-      const href = $(element).attr('href');
-      const text = cleanScrapedLinkTitle($(element).text().trim());
-      if (!href || !text) return;
+		$("a").each((_, element) => {
+			const href = $(element).attr("href");
+			const text = cleanScrapedLinkTitle($(element).text().trim());
+			if (!href || !text) return;
 
-      let absoluteUrl = href;
-      if (href.startsWith('/')) {
-        const baseUrl = new URL(sourceUrl);
-        absoluteUrl = `${baseUrl.origin}${href}`;
-      } else if (!href.startsWith('http')) {
-        return;
-      }
+			let absoluteUrl = href;
+			if (href.startsWith("/")) {
+				const baseUrl = new URL(sourceUrl);
+				absoluteUrl = `${baseUrl.origin}${href}`;
+			} else if (!href.startsWith("http")) {
+				return;
+			}
 
-      const candidate = {
-        url: absoluteUrl,
-        title: text,
-        text: $(element).parent().text().trim().slice(0, 500),
-      };
+			const candidate = {
+				url: absoluteUrl,
+				title: text,
+				text: $(element).parent().text().trim().slice(0, 500),
+			};
 
-      if (isRelevantScrapedCandidate(candidate)) {
-        links.push(candidate);
-      }
-    });
+			if (isRelevantScrapedCandidate(candidate)) {
+				links.push(candidate);
+			}
+		});
 
-    return Array.from(new Map(links.map((link) => [link.url, link])).values()).slice(0, 10);
-  } catch (error) {
-    console.error(`[cron] Error scraping ${sourceUrl}:`, error);
-    return [];
-  }
+		return Array.from(
+			new Map(links.map((link) => [link.url, link])).values(),
+		).slice(0, 10);
+	} catch (error) {
+		console.error(`[cron] Error scraping ${sourceUrl}:`, error);
+		return [];
+	}
 }
 
 async function fetchContent(url: string): Promise<string> {
-  const response = await fetch(url, {
-    headers: { 'User-Agent': 'Policai/1.0 (Australian AI Policy Tracker)' },
-  });
-  if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-  return cleanHtmlContent(await response.text());
+	const response = await fetch(url, {
+		headers: { "User-Agent": "Policai/1.0 (Australian AI Policy Tracker)" },
+	});
+	if (!response.ok)
+		throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+	return cleanHtmlContent(await response.text());
 }
 
 /** Build and persist a new policy from analysed content via data-service. */
 async function processHighConfidenceLink(
-  title: string,
-  url: string,
-  analysis: {
-    summary?: string;
-    jurisdiction?: string;
-    policyType?: string;
-    tags?: string[];
-    agencies?: string[];
-  },
-  content: string,
+	title: string,
+	url: string,
+	analysis: {
+		summary?: string;
+		jurisdiction?: string;
+		policyType?: string;
+		tags?: string[];
+		agencies?: string[];
+	},
+	content: string,
 ): Promise<boolean> {
-  const id = title
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '')
-    .slice(0, 50);
+	const id = title
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/g, "-")
+		.replace(/(^-|-$)/g, "")
+		.slice(0, 50);
 
-  if (await policyExists(id) || await policyExistsBySourceUrl(url)) {
-    console.log(`[cron] Policy already exists: ${id}`);
-    return false;
-  }
+	if ((await policyExists(id)) || (await policyExistsBySourceUrl(url))) {
+		console.log(`[cron] Policy already exists: ${id}`);
+		return false;
+	}
 
-  let aiSummary = analysis.summary || '';
-  if (process.env.OPENROUTER_API_KEY) {
-    try {
-      const summaryResult = await summarizePolicy(title, content);
-      if (summaryResult.summary && summaryResult.summary !== 'Unable to generate summary') {
-        aiSummary = summaryResult.summary;
-      }
-    } catch {
-      // Use the analysis summary as fallback
-    }
-  }
+	let aiSummary = analysis.summary || "";
+	if (process.env.OPENROUTER_API_KEY) {
+		try {
+			const summaryResult = await summarizePolicy(title, content);
+			if (
+				summaryResult.summary &&
+				summaryResult.summary !== "Unable to generate summary"
+			) {
+				aiSummary = summaryResult.summary;
+			}
+		} catch {
+			// Use the analysis summary as fallback
+		}
+	}
 
-  const now = new Date().toISOString();
-  const newPolicy: Policy = {
-    id,
-    title,
-    description: analysis.summary || '',
-    jurisdiction: (analysis.jurisdiction as Policy['jurisdiction']) || 'federal',
-    type: (analysis.policyType as Policy['type']) || 'guideline',
-    status: 'active',
-    effectiveDate: now.split('T')[0],
-    agencies: analysis.agencies || [],
-    sourceUrl: url,
-    content: content.slice(0, 10000),
-    aiSummary,
-    tags: analysis.tags || [],
-    createdAt: now,
-    updatedAt: now,
-  };
+	const now = new Date().toISOString();
+	const newPolicy: Policy = {
+		id,
+		title,
+		description: analysis.summary || "",
+		jurisdiction: normalizeJurisdiction(analysis.jurisdiction),
+		type: normalizePolicyType(analysis.policyType),
+		status: "active",
+		effectiveDate: now.split("T")[0],
+		agencies: analysis.agencies || [],
+		sourceUrl: url,
+		content: content.slice(0, 10000),
+		aiSummary,
+		tags: analysis.tags || [],
+		createdAt: now,
+		updatedAt: now,
+	};
 
-  try {
-    await createPolicy(newPolicy);
-    return true;
-  } catch (error) {
-    if (error instanceof DuplicatePolicyError) {
-      console.log(`[cron] Policy already exists: ${id}`);
-      return false;
-    }
-    throw error;
-  }
+	try {
+		await createPolicy(newPolicy);
+		return true;
+	} catch (error) {
+		if (error instanceof DuplicatePolicyError) {
+			console.log(`[cron] Policy already exists: ${id}`);
+			return false;
+		}
+		throw error;
+	}
 }
 
 // ---------------------------------------------------------------------------
@@ -165,59 +175,65 @@ async function processHighConfidenceLink(
 // ---------------------------------------------------------------------------
 
 async function scrapeSource(source: DataSource) {
-  const startTime = Date.now();
-  console.log(`[cron] Scraping: ${source.name} (${source.url})`);
+	const startTime = Date.now();
+	console.log(`[cron] Scraping: ${source.name} (${source.url})`);
 
-  const links = await scrapeLinks(source.url);
-  console.log(`[cron]   Found ${links.length} potential policy links`);
+	const links = await scrapeLinks(source.url);
+	console.log(`[cron]   Found ${links.length} potential policy links`);
 
-  let created = 0;
-  let skipped = 0;
-  const errors: string[] = [];
+	let created = 0;
+	let skipped = 0;
+	const errors: string[] = [];
 
-  for (const link of links) {
-    try {
-      const content = await fetchContent(link.url);
-      const analysis = await analyseContentRelevance(content, link.url);
+	for (const link of links) {
+		try {
+			const content = await fetchContent(link.url);
+			const analysis = await analyseContentRelevance(content, link.url);
 
-      if (shouldCreatePolicyFromAnalysis(link, analysis)) {
-        const wasCreated = await processHighConfidenceLink(
-          link.title,
-          link.url,
-          analysis,
-          content,
-        );
-        if (wasCreated) created++;
-        else skipped++;
-      } else {
-        skipped++;
-      }
+			if (shouldCreatePolicyFromAnalysis(link, analysis)) {
+				const wasCreated = await processHighConfidenceLink(
+					link.title,
+					link.url,
+					analysis,
+					content,
+				);
+				if (wasCreated) created++;
+				else skipped++;
+			} else {
+				skipped++;
+			}
 
-      // Rate limit between pages
-      await new Promise((r) => setTimeout(r, 2000));
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Unknown error';
-      console.error(`[cron] Error processing ${link.url}:`, msg);
-      errors.push(`${link.url}: ${msg}`);
-      skipped++;
-    }
-  }
+			// Rate limit between pages
+			await new Promise((r) => setTimeout(r, 2000));
+		} catch (err) {
+			const msg = err instanceof Error ? err.message : "Unknown error";
+			console.error(`[cron] Error processing ${link.url}:`, msg);
+			errors.push(`${link.url}: ${msg}`);
+			skipped++;
+		}
+	}
 
-  const durationMs = Date.now() - startTime;
+	const durationMs = Date.now() - startTime;
 
-  // Log the run for monitoring
-  await logScraperRun({
-    id: `cron-${source.id}-${Date.now()}`,
-    timestamp: new Date().toISOString(),
-    sourceId: source.id,
-    sourceName: source.name,
-    linksFound: links.length,
-    policiesCreated: created,
-    errors,
-    durationMs,
-  });
+	// Log the run for monitoring
+	await logScraperRun({
+		id: `cron-${source.id}-${Date.now()}`,
+		timestamp: new Date().toISOString(),
+		sourceId: source.id,
+		sourceName: source.name,
+		linksFound: links.length,
+		policiesCreated: created,
+		errors,
+		durationMs,
+	});
 
-  return { source: source.name, linksFound: links.length, created, skipped, errors };
+	return {
+		source: source.name,
+		linksFound: links.length,
+		created,
+		skipped,
+		errors,
+	};
 }
 
 // ---------------------------------------------------------------------------
@@ -225,29 +241,29 @@ async function scrapeSource(source: DataSource) {
 // ---------------------------------------------------------------------------
 
 function verifyCronAuth(request: Request): NextResponse | null {
-  const authHeader = request.headers.get('authorization');
-  const cronSecret = process.env.CRON_SECRET;
+	const authHeader = request.headers.get("authorization");
+	const cronSecret = process.env.CRON_SECRET;
 
-  if (!cronSecret) {
-    console.error('[cron] CRON_SECRET is not configured');
-    return NextResponse.json(
-      { error: 'CRON_SECRET not configured', success: false },
-      { status: 500 },
-    );
-  }
+	if (!cronSecret) {
+		console.error("[cron] CRON_SECRET is not configured");
+		return NextResponse.json(
+			{ error: "CRON_SECRET not configured", success: false },
+			{ status: 500 },
+		);
+	}
 
-  if (authHeader !== `Bearer ${cronSecret}`) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+	if (authHeader !== `Bearer ${cronSecret}`) {
+		return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+	}
 
-  if (!process.env.OPENROUTER_API_KEY) {
-    return NextResponse.json(
-      { error: 'OPENROUTER_API_KEY not configured', success: false },
-      { status: 500 },
-    );
-  }
+	if (!process.env.OPENROUTER_API_KEY) {
+		return NextResponse.json(
+			{ error: "OPENROUTER_API_KEY not configured", success: false },
+			{ status: 500 },
+		);
+	}
 
-  return null;
+	return null;
 }
 
 // ---------------------------------------------------------------------------
@@ -255,61 +271,64 @@ function verifyCronAuth(request: Request): NextResponse | null {
 // ---------------------------------------------------------------------------
 
 export async function GET(request: Request) {
-  const authError = verifyCronAuth(request);
-  if (authError) return authError;
+	const authError = verifyCronAuth(request);
+	if (authError) return authError;
 
-  const url = new URL(request.url);
-  const sourceId = url.searchParams.get('source');
+	const url = new URL(request.url);
+	const sourceId = url.searchParams.get("source");
 
-  // Single source mode — scrape just one source
-  if (sourceId) {
-    const source = DATA_SOURCES.find((s) => s.id === sourceId && s.enabled);
-    if (!source) {
-      return NextResponse.json(
-        { error: `Source not found or disabled: ${sourceId}`, success: false },
-        { status: 404 },
-      );
-    }
+	// Single source mode — scrape just one source
+	if (sourceId) {
+		const source = DATA_SOURCES.find((s) => s.id === sourceId && s.enabled);
+		if (!source) {
+			return NextResponse.json(
+				{ error: `Source not found or disabled: ${sourceId}`, success: false },
+				{ status: 404 },
+			);
+		}
 
-    const result = await scrapeSource(source);
-    const allFailed = result.linksFound > 0 && result.created === 0 && result.errors.length === result.linksFound;
-    if (allFailed) {
-      return NextResponse.json(
-        { success: false, result, error: 'All links failed to process' },
-        { status: 502 },
-      );
-    }
-    return NextResponse.json({ success: true, result });
-  }
+		const result = await scrapeSource(source);
+		const allFailed =
+			result.linksFound > 0 &&
+			result.created === 0 &&
+			result.errors.length === result.linksFound;
+		if (allFailed) {
+			return NextResponse.json(
+				{ success: false, result, error: "All links failed to process" },
+				{ status: 502 },
+			);
+		}
+		return NextResponse.json({ success: true, result });
+	}
 
-  // Fan-out mode — dispatch one request per enabled source
-  console.log(`[cron] Starting fan-out scrape at ${new Date().toISOString()}`);
-  const enabledSources = DATA_SOURCES.filter((s) => s.enabled);
+	// Fan-out mode — dispatch one request per enabled source
+	console.log(`[cron] Starting fan-out scrape at ${new Date().toISOString()}`);
+	const enabledSources = DATA_SOURCES.filter((s) => s.enabled);
 
-  const cronSecret = process.env.CRON_SECRET!;
+	const cronSecret = process.env.CRON_SECRET!;
 
-  after(async () => {
-    for (const source of enabledSources) {
-      try {
-        const sourceUrl = new URL(url.pathname, url.origin);
-        sourceUrl.searchParams.set('source', source.id);
+	after(async () => {
+		for (const source of enabledSources) {
+			try {
+				const sourceUrl = new URL(url.pathname, url.origin);
+				sourceUrl.searchParams.set("source", source.id);
 
-        await fetch(sourceUrl.toString(), {
-          headers: { Authorization: `Bearer ${cronSecret}` },
-        });
-      } catch (err) {
-        console.error(`[cron] Failed to dispatch ${source.name}:`, err);
-      }
+				await fetch(sourceUrl.toString(), {
+					headers: { Authorization: `Bearer ${cronSecret}` },
+				});
+			} catch (err) {
+				console.error(`[cron] Failed to dispatch ${source.name}:`, err);
+			}
 
-      // Stagger dispatches by 2s to avoid thundering herd
-      await new Promise((r) => setTimeout(r, 2000));
-    }
-  });
+			// Stagger dispatches by 2s to avoid thundering herd
+			await new Promise((r) => setTimeout(r, 2000));
+		}
+	});
 
-  return NextResponse.json({
-    success: true,
-    dispatched: true,
-    sources: enabledSources.map((s) => s.id),
-    timestamp: new Date().toISOString(),
-  });
+	return NextResponse.json({
+		success: true,
+		dispatched: true,
+		sources: enabledSources.map((s) => s.id),
+		timestamp: new Date().toISOString(),
+	});
 }

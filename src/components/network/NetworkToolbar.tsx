@@ -1,8 +1,6 @@
 'use client';
 
 import { Search, X } from 'lucide-react';
-import { JURISDICTION_NAMES, type Jurisdiction } from '@/types';
-import { JURISDICTION_COLORS } from './jurisdiction-colors';
 
 interface JurisdictionInfo {
   key: string;

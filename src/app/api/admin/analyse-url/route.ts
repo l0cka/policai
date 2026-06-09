@@ -81,7 +81,7 @@ export async function POST(request: Request) {
     // Strip HTML tags and clean content for analysis
     const cleanContent = cleanHtmlContent(content);
 
-    // Analyse the content with Claude
+    // Analyse the content with the configured AI client
     const analysis = await analyseContentRelevance(cleanContent, url);
 
     // Extract title from content (basic extraction)

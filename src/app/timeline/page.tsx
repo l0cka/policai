@@ -23,8 +23,7 @@ import {
 import { Timeline } from '@/components/visualizations/Timeline';
 import {
   JURISDICTION_NAMES,
-  POLICY_TYPE_NAMES,
-  type PolicyType,
+  getPolicyTypeName,
   type Policy,
   type TimelineEvent,
 } from '@/types';
@@ -282,7 +281,7 @@ export default function TimelinePage() {
                   </p>
                   <div className="mt-2 flex gap-2">
                     <Badge variant="secondary">
-                      {POLICY_TYPE_NAMES[relatedPolicy.type as PolicyType]}
+                      {getPolicyTypeName(relatedPolicy.type)}
                     </Badge>
                     <Link
                       href={`/policies/${relatedPolicy.id}`}

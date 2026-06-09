@@ -10,68 +10,59 @@
  *   tsx scripts/seed-practice-notes.ts
  */
 
-import { createClient } from '@supabase/supabase-js';
-import { readFileSync } from 'fs';
-import path from 'path';
+import { createClient } from "@supabase/supabase-js";
+import path from "path";
+import { readJsonFile } from "../src/lib/file-store";
+import type { Policy } from "../src/types";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY');
-  process.exit(1);
+	console.error(
+		"Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY",
+	);
+	process.exit(1);
 }
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-interface PolicyRow {
-  id: string;
-  title: string;
-  description: string;
-  jurisdiction: string;
-  type: string;
-  status: string;
-  effectiveDate: string;
-  agencies: string[];
-  sourceUrl: string;
-  content: string;
-  aiSummary: string;
-  tags: string[];
-  createdAt: string;
-  updatedAt: string;
-}
-
 async function main() {
-  const filePath = path.join(process.cwd(), 'public', 'data', 'sample-policies.json');
-  const allPolicies: PolicyRow[] = JSON.parse(readFileSync(filePath, 'utf-8'));
+	const filePath = path.join(
+		process.cwd(),
+		"public",
+		"data",
+		"sample-policies.json",
+	);
+	const allPolicies = await readJsonFile<Policy[]>(filePath, []);
 
-  const practiceNotes = allPolicies.filter((p) => p.type === 'practice_note');
+	const practiceNotes = allPolicies.filter((p) => p.type === "practice_note");
 
-  if (practiceNotes.length === 0) {
-    console.log('No practice notes found in sample-policies.json');
-    return;
-  }
+	if (practiceNotes.length === 0) {
+		console.log("No practice notes found in sample-policies.json");
+		return;
+	}
 
-  console.log(`Found ${practiceNotes.length} practice notes to seed...`);
+	console.log(`Found ${practiceNotes.length} practice notes to seed...`);
 
-  for (const note of practiceNotes) {
-    const { data, error } = await supabase
-      .from('policies')
-      .upsert(note, { onConflict: 'id' })
-      .select()
-      .single();
+	for (const note of practiceNotes) {
+		const { data, error } = await supabase
+			.from("policies")
+			.upsert(note, { onConflict: "id" })
+			.select()
+			.single();
 
-    if (error) {
-      console.error(`  FAIL: ${note.title} — ${error.message}`);
-    } else {
-      console.log(`  OK: ${data.title}`);
-    }
-  }
+		if (error) {
+			console.error(`  FAIL: ${note.title} — ${error.message}`);
+		} else {
+			console.log(`  OK: ${data.title}`);
+		}
+	}
 
-  console.log('Done.');
+	console.log("Done.");
 }
 
 main().catch((err) => {
-  console.error('Fatal error:', err);
-  process.exit(1);
+	console.error("Fatal error:", err);
+	process.exit(1);
 });
