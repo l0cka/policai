@@ -109,14 +109,15 @@ export const WATCH_SOURCES: WatchSource[] = [
   },
   // --- Federal: regulators ---
   {
-    id: 'oaic-rss',
-    name: 'OAIC — media releases',
+    id: 'oaic-media',
+    name: 'OAIC — media centre',
     jurisdiction: 'federal',
     category: 'regulator',
-    url: 'https://www.oaic.gov.au/rss',
-    kind: 'rss',
+    url: 'https://www.oaic.gov.au/news/media-centre',
+    kind: 'html-index',
     schedule: 'daily',
     enabled: true,
+    notes: 'The OAIC RSS feed omits item links, so scrape the index instead.',
   },
   {
     id: 'accc-rss',

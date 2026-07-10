@@ -81,6 +81,8 @@ const SUBSECTION_URL_PATTERNS = [
 export function cleanScrapedLinkTitle(title: string): string {
   return title
     .replace(/(?:\s+|_)?(?:north_?east|north_?west|south_?east|south_?west|east|west|north|south)$/i, '')
+    .replace(/\(opens? in (?:a )?new (?:window|tab)\)/gi, '')
+    .replace(/\b(?:PDF|DOCX?|XLSX?|PPTX?)\s*,?\s*\d+(?:\.\d+)?\s*(?:KB|MB|GB)\b/gi, '')
     .replace(/\s+/g, ' ')
     .trim();
 }
