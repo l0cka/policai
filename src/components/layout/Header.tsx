@@ -2,12 +2,11 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { Menu, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
-import { useAuth } from '@/contexts/AuthContext';
 import { SiteDisclaimerBanner } from '@/components/layout/SiteDisclaimerBanner';
 import { PolicaiLogo } from '@/components/layout/PolicaiLogo';
 
@@ -29,7 +28,6 @@ export function Header() {
   const pathname = usePathname();
   const [insightsOpen, setInsightsOpen] = useState(false);
   const insightsRef = useRef<HTMLDivElement>(null);
-  const isAdminRoute = pathname.startsWith('/admin');
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -117,8 +115,6 @@ export function Header() {
         </nav>
 
         <div className="ml-auto flex items-center gap-4">
-          {isAdminRoute && <AdminHeaderActions variant="desktop" />}
-
           <Sheet>
             <SheetTrigger asChild className="md:hidden">
               <Button variant="ghost" size="icon" className="h-8 w-8">
@@ -160,70 +156,11 @@ export function Header() {
                     {item.label}
                   </Link>
                 ))}
-                {isAdminRoute && (
-                  <>
-                    <div className="my-2 border-t border-border" />
-                    <AdminHeaderActions variant="mobile" />
-                  </>
-                )}
               </nav>
             </SheetContent>
           </Sheet>
         </div>
       </div>
     </header>
-  );
-}
-
-function AdminHeaderActions({ variant }: { variant: 'desktop' | 'mobile' }) {
-  const pathname = usePathname();
-  const router = useRouter();
-  const { user, signOut, isLoading } = useAuth();
-
-  if (isLoading) return null;
-
-  const handleSignOut = async () => {
-    await signOut();
-    router.push('/');
-  };
-
-  if (!user) return null;
-
-  const showDashboardLink = pathname !== '/admin';
-
-  if (variant === 'mobile') {
-    return (
-      <>
-        {showDashboardLink && (
-          <Link href="/admin" className="px-3 py-2 text-sm text-muted-foreground hover:text-foreground">
-            Admin Dashboard
-          </Link>
-        )}
-        <button
-          type="button"
-          onClick={handleSignOut}
-          className="px-3 py-2 text-left text-sm text-muted-foreground hover:text-foreground"
-        >
-          Sign out
-        </button>
-      </>
-    );
-  }
-
-  return (
-    <div className="hidden md:flex items-center gap-3">
-      {showDashboardLink && (
-        <Link href="/admin" className="text-sm text-muted-foreground hover:text-foreground">
-          Admin Dashboard
-        </Link>
-      )}
-      <button
-        type="button"
-        onClick={handleSignOut}
-        className="text-sm text-muted-foreground hover:text-foreground"
-      >
-        Sign out
-      </button>
-    </div>
   );
 }

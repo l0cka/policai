@@ -31,7 +31,7 @@ export default function HomePage() {
     fetch('/api/status')
       .then((res) => res.json())
       .then((json) => {
-        const ts = json.lastPipelineRun?.completedAt || json.lastPipelineRun?.startedAt;
+        const ts = json.lastCollectedAt || json.lastReviewedAt;
         if (ts) setLastResearch(ts);
       })
       .catch(() => {});

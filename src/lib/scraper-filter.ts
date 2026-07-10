@@ -1,4 +1,4 @@
-import type { ContentAnalysis } from '@/lib/claude';
+import type { ContentAnalysis } from '@/lib/analysis';
 
 interface ScrapedLinkLike {
   url: string;

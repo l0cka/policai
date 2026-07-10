@@ -1,77 +1,82 @@
 /* @vitest-environment node */
 
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { buildScraperRunLog } from '@/test/factories'
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const { getLatestPipelineRun, getRecentScraperRuns } = vi.hoisted(() => ({
-  getLatestPipelineRun: vi.fn(),
-  getRecentScraperRuns: vi.fn(),
-}))
+const { getCollectionMeta, getDevelopments } = vi.hoisted(() => ({
+	getCollectionMeta: vi.fn(),
+	getDevelopments: vi.fn(),
+}));
 
-vi.mock('@/lib/agents/pipeline-storage', () => ({
-  getLatestPipelineRun,
-}))
+vi.mock("@/lib/data-service", () => ({
+	getCollectionMeta,
+	getDevelopments,
+}));
 
-vi.mock('@/lib/data-service', () => ({
-  getRecentScraperRuns,
-}))
+import { GET } from "./route";
 
-import { GET } from './route'
+describe("/api/status", () => {
+	beforeEach(() => {
+		getCollectionMeta.mockReset();
+		getDevelopments.mockReset();
+	});
 
-describe('/api/status', () => {
-  beforeEach(() => {
-    getLatestPipelineRun.mockReset()
-    getRecentScraperRuns.mockReset()
-  })
+	it("returns null freshness data before the collector has ever run", async () => {
+		getCollectionMeta.mockResolvedValue({
+			lastCollectedAt: null,
+			lastReviewedAt: null,
+			collector: { runCount: 0, lastRunSources: [], lastRunErrors: [] },
+		});
+		getDevelopments.mockResolvedValue([]);
 
-  it('returns null run summaries when there is no pipeline or scraper history', async () => {
-    getLatestPipelineRun.mockResolvedValue(null)
-    getRecentScraperRuns.mockResolvedValue([])
+		const response = await GET();
 
-    const response = await GET()
+		await expect(response.json()).resolves.toEqual({
+			lastCollectedAt: null,
+			lastReviewedAt: null,
+			latestDevelopment: null,
+			success: true,
+		});
+	});
 
-    await expect(response.json()).resolves.toEqual({
-      lastPipelineRun: null,
-      lastScrapeRun: null,
-      success: true,
-    })
-  })
+	it("returns collection freshness and the latest development", async () => {
+		getCollectionMeta.mockResolvedValue({
+			lastCollectedAt: "2026-07-10T05:30:00.000Z",
+			lastReviewedAt: "2026-07-01T00:00:00.000Z",
+			collector: {
+				runCount: 4,
+				lastRunSources: ["dta-ai-policy"],
+				lastRunErrors: [],
+			},
+		});
+		getDevelopments.mockResolvedValue([
+			{
+				id: "dev-1",
+				title: "New OAIC guidance on AI and privacy",
+				url: "https://www.oaic.gov.au/example",
+				sourceId: "oaic-ai-guidance",
+				sourceName: "OAIC AI Guidance",
+				jurisdiction: "federal",
+				detectedAt: "2026-07-10T05:30:00.000Z",
+				relevanceScore: 0.9,
+				classification: "ai",
+				status: "detected",
+			},
+		]);
 
-  it('returns condensed status information for the latest pipeline and scraper runs', async () => {
-    getLatestPipelineRun.mockResolvedValue({
-      id: 'pipeline-1',
-      stage: 'verification_complete',
-      startedAt: '2025-02-01T00:00:00.000Z',
-      completedAt: '2025-02-01T00:10:00.000Z',
-      findingsCount: 8,
-      implementedCount: 3,
-      rejectedCount: 1,
-    })
-    getRecentScraperRuns.mockResolvedValue([
-      buildScraperRunLog({
-        timestamp: '2025-02-02T00:00:00.000Z',
-        sourceName: 'Federal Register',
-        policiesCreated: 2,
-      }),
-    ])
+		const response = await GET();
 
-    const response = await GET()
+		await expect(response.json()).resolves.toEqual({
+			lastCollectedAt: "2026-07-10T05:30:00.000Z",
+			lastReviewedAt: "2026-07-01T00:00:00.000Z",
+			latestDevelopment: {
+				id: "dev-1",
+				title: "New OAIC guidance on AI and privacy",
+				url: "https://www.oaic.gov.au/example",
+				detectedAt: "2026-07-10T05:30:00.000Z",
+			},
+			success: true,
+		});
 
-    await expect(response.json()).resolves.toEqual({
-      lastPipelineRun: {
-        id: 'pipeline-1',
-        stage: 'verification_complete',
-        startedAt: '2025-02-01T00:00:00.000Z',
-        completedAt: '2025-02-01T00:10:00.000Z',
-        findingsCount: 8,
-        implementedCount: 3,
-      },
-      lastScrapeRun: {
-        timestamp: '2025-02-02T00:00:00.000Z',
-        sourceName: 'Federal Register',
-        policiesCreated: 2,
-      },
-      success: true,
-    })
-  })
-})
+		expect(getDevelopments).toHaveBeenCalledWith({ limit: 1 });
+	});
+});

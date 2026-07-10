@@ -1,10 +1,9 @@
 /* @vitest-environment node */
 
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
 	buildAgency,
 	buildPolicy,
-	buildScraperRunLog,
 	buildTimelineEvent,
 } from "@/test/factories";
 
@@ -16,27 +15,15 @@ vi.mock("@/lib/file-store", () => ({
 	writeJsonFile,
 }));
 
-const originalEnv = {
-	supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
-	supabaseAnonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-};
-
 async function loadDataServiceModule() {
 	vi.resetModules();
 	return import("./data-service");
 }
 
-describe("data-service JSON fallback", () => {
+describe("data-service file store", () => {
 	beforeEach(() => {
 		readJsonFile.mockReset();
 		writeJsonFile.mockReset();
-		delete process.env.NEXT_PUBLIC_SUPABASE_URL;
-		delete process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-	});
-
-	afterEach(() => {
-		process.env.NEXT_PUBLIC_SUPABASE_URL = originalEnv.supabaseUrl;
-		process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = originalEnv.supabaseAnonKey;
 	});
 
 	it("filters and sorts policies from the JSON fallback", async () => {
@@ -178,27 +165,58 @@ describe("data-service JSON fallback", () => {
 		);
 	});
 
-	it("caps persisted scraper logs at the most recent 100 entries", async () => {
-		readJsonFile.mockResolvedValue(
-			Array.from({ length: 100 }, (_, index) =>
-				buildScraperRunLog({
-					id: `existing-${index}`,
-					timestamp: `2025-02-${String(index + 1).padStart(2, "0")}T00:00:00.000Z`,
-				}),
-			),
-		);
+	it("keeps superseded and closed policies visible in public reads", async () => {
+		readJsonFile.mockResolvedValue([
+			buildPolicy({ id: "active-policy", status: "active" }),
+			buildPolicy({ id: "superseded-policy", status: "superseded" }),
+			buildPolicy({ id: "closed-policy", status: "closed" }),
+			buildPolicy({ id: "trashed-policy", status: "trashed" }),
+		]);
 
-		const { logScraperRun } = await loadDataServiceModule();
-		await logScraperRun(buildScraperRunLog({ id: "latest-run" }));
+		const { getPolicies } = await loadDataServiceModule();
+		const result = await getPolicies();
 
-		const persistedRuns = writeJsonFile.mock.calls[0]?.[1];
-		expect(persistedRuns).toHaveLength(100);
-		expect(persistedRuns[0]).toEqual(
-			expect.objectContaining({ id: "latest-run" }),
-		);
-		expect(persistedRuns.at(-1)).toEqual(
-			expect.objectContaining({ id: "existing-98" }),
-		);
+		expect(result.map((policy) => policy.id).sort()).toEqual([
+			"active-policy",
+			"closed-policy",
+			"superseded-policy",
+		]);
+	});
+
+	it("sorts developments by published date and honours the limit", async () => {
+		readJsonFile.mockResolvedValue([
+			{
+				id: "dev-older",
+				title: "Older",
+				url: "https://example.gov.au/older",
+				sourceId: "s",
+				sourceName: "S",
+				jurisdiction: "federal",
+				detectedAt: "2026-06-01T00:00:00.000Z",
+				relevanceScore: 0.7,
+				classification: "heuristic",
+				status: "detected",
+			},
+			{
+				id: "dev-newer",
+				title: "Newer",
+				url: "https://example.gov.au/newer",
+				sourceId: "s",
+				sourceName: "S",
+				jurisdiction: "federal",
+				publishedAt: "2026-07-01",
+				detectedAt: "2026-06-15T00:00:00.000Z",
+				relevanceScore: 0.9,
+				classification: "ai",
+				status: "detected",
+			},
+		]);
+
+		const { getDevelopments } = await loadDataServiceModule();
+		const result = await getDevelopments({ limit: 1 });
+
+		expect(result).toHaveLength(1);
+		expect(result[0].id).toBe("dev-newer");
 	});
 
 	it("detects duplicate source URLs across tracked policies", async () => {
