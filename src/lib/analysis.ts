@@ -1,5 +1,5 @@
 import { extractJsonFromResponse } from '@/lib/utils';
-import { ai, AI_MODEL, getResponseText } from '@/lib/ai-client';
+import { runAnalysisPrompt } from '@/lib/ai-client';
 
 export interface ContentAnalysis {
   isRelevant: boolean;
@@ -25,13 +25,8 @@ export async function analyseContentRelevance(
   content: string,
   sourceUrl: string
 ): Promise<ContentAnalysis> {
-  const completion = await ai.chat.completions.create({
-    model: AI_MODEL,
-    max_tokens: 1024,
-    messages: [
-      {
-        role: 'user',
-        content: `Analyse the following web content and determine if it's relevant to Australian AI policy, regulation, or governance.
+  const responseText = await runAnalysisPrompt(
+    `Analyse the following web content and determine if it's relevant to Australian AI policy, regulation, or governance.
 
 Only mark content as relevant when the page itself materially discusses AI or automated decision-making policy, regulation, standards, frameworks, guidance, assurance, safety, ethics, procurement, or government adoption.
 
@@ -58,11 +53,8 @@ Please respond in JSON format with the following structure:
   "keyDates": ["any important dates mentioned"],
   "relatedTopics": ["AI ethics", "data privacy", etc]
 }`,
-      },
-    ],
-  });
-
-  const responseText = getResponseText(completion);
+    { maxTokens: 1024 },
+  );
 
   return extractJsonFromResponse<ContentAnalysis>(responseText, {
     isRelevant: false,
@@ -80,13 +72,8 @@ export async function summarizePolicy(
   title: string,
   content: string
 ): Promise<PolicySummary> {
-  const completion = await ai.chat.completions.create({
-    model: AI_MODEL,
-    max_tokens: 1024,
-    messages: [
-      {
-        role: 'user',
-        content: `Summarize the following Australian AI policy document:
+  const responseText = await runAnalysisPrompt(
+    `Summarize the following Australian AI policy document:
 
 Title: ${title}
 
@@ -100,11 +87,8 @@ Please respond in JSON format:
   "implications": ["implication for AI use", ...],
   "affectedSectors": ["healthcare", "finance", etc]
 }`,
-      },
-    ],
-  });
-
-  const responseText = getResponseText(completion);
+    { maxTokens: 1024 },
+  );
 
   return extractJsonFromResponse<PolicySummary>(responseText, {
     summary: 'Unable to generate summary',
