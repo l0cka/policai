@@ -1,64 +1,31 @@
 # Scripts
 
-This directory contains local automation entrypoints for the Policai operations workflow.
+Local CLIs for the Policai data workflow. Both are plain `tsx` entrypoints — no dev server required.
 
-## Included Scripts
+## collect.ts
 
-- `run-scheduled-scrapers.ts` — runs scraper sources that are due based on local schedule state.
-- `run-daily-pipeline.ts` — runs the research and verification pipeline and stops if a human review is already pending.
-
-## Usage
+Runs one collection pass over the watch sources and persists the results (developments feed, watch state, staged reviews, freshness metadata). This is what the daily GitHub Actions workflow runs.
 
 ```bash
-npm run scrape
-npm run pipeline
+npm run collect -- --dry-run           # preview without writing
+npm run collect -- --source=apra-rss   # single source
+npm run collect -- --max-items=3       # cap new items per source
+npm run collect                        # full pass, writes data files
 ```
 
-Both scripts expect `OPENROUTER_API_KEY` to be configured for AI-backed analysis and discovery. They call the app over HTTP and default to `http://localhost:3000` unless `NEXT_PUBLIC_API_URL` is set.
+Optional environment: `ANTHROPIC_API_KEY` or `OPENROUTER_API_KEY` for AI classification (`AI_MODEL` to override the model). Without a key the collector runs in heuristic mode and labels detections "Needs review".
+
+## validate-data.ts
+
+Structural validation for the repo data files (enums, ISO dates, unique ids, https government source hosts, cross-references). Runs in `npm run check`, PR CI, and the collector workflow.
+
+```bash
+npm run validate:data
+```
+
+Exit code 1 on errors; warnings print without failing.
 
 ## Related Docs
 
-- [`../docs/scraper.md`](../docs/scraper.md)
+- [`../docs/collector.md`](../docs/collector.md)
 - [`../README.md`](../README.md)
-
-### Test a Single Source
-
-Modify the script to run only one source:
-
-```typescript
-const DATA_SOURCES = [
-  {
-    id: 'source-1',
-    name: 'DTA AI Policy',
-    schedule: 'daily',
-    enabled: true,
-  },
-];
-```
-
-### Adjust Confidence Thresholds
-
-Edit `/src/app/api/admin/run-scraper/route.ts`:
-
-```typescript
-if (analysis.relevanceScore >= 0.9 && analysis.isRelevant) {
-  // Higher threshold for auto-creation
-  await createPolicy(/*...*/);
-}
-```
-
-## Performance
-
-- Each scraper processes up to 10 links per source
-- Rate limiting: 2 seconds between pages, 5 seconds between sources
-- Typical run time: 3-5 minutes per source
-- AI API cost depends on the configured OpenRouter model and the amount of extracted source text
-
-## Contributing
-
-To add support for more data sources:
-
-1. Add the source to `DATA_SOURCES` in `run-scraper/route.ts`
-2. Update the schedule in `run-scheduled-scrapers.ts`
-3. Test with manual execution first
-4. Monitor the admin dashboard for quality
