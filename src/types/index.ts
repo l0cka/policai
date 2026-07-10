@@ -32,6 +32,8 @@ export const POLICY_STATUSES = [
 	"proposed",
 	"active",
 	"amended",
+	"superseded",
+	"closed",
 	"repealed",
 	"trashed",
 ] as const;
@@ -65,6 +67,8 @@ export interface Policy {
 	tags: string[];
 	createdAt: Date | string;
 	updatedAt: Date | string;
+	supersededBy?: string;
+	lastReviewedAt?: string;
 }
 
 export interface Agency {
@@ -145,6 +149,50 @@ export interface SourceReview {
 	publishedAt?: string;
 	rejectionReason?: string;
 	updatedAt: string;
+}
+
+// Developments radar feed — automated detections from the collector.
+// Distinct from the curated policy registry: safe to auto-publish because
+// every entry carries provenance and a confidence label.
+
+export const DEVELOPMENT_STATUSES = [
+	"detected",
+	"promoted",
+	"dismissed",
+] as const;
+
+export type DevelopmentStatus = (typeof DEVELOPMENT_STATUSES)[number];
+
+export interface Development {
+	id: string;
+	title: string;
+	url: string;
+	sourceId: string;
+	sourceName: string;
+	jurisdiction: Jurisdiction;
+	publishedAt?: string;
+	detectedAt: string;
+	summary?: string;
+	relevanceScore: number;
+	classification: "ai" | "heuristic";
+	status: DevelopmentStatus;
+	relatedPolicyId?: string;
+}
+
+export interface CollectionMeta {
+	lastCollectedAt: string | null;
+	lastReviewedAt: string | null;
+	collector: {
+		runCount: number;
+		lastRunSources: string[];
+		lastRunErrors: string[];
+	};
+}
+
+export function isDevelopmentStatus(
+	value: string | null | undefined,
+): value is DevelopmentStatus {
+	return isOneOf(DEVELOPMENT_STATUSES, value);
 }
 
 export interface McpAuditLog {
@@ -328,6 +376,8 @@ export const POLICY_STATUS_NAMES: Record<PolicyStatus, string> = {
 	proposed: "Proposed",
 	active: "Active",
 	amended: "Amended",
+	superseded: "Superseded",
+	closed: "Closed",
 	repealed: "Repealed",
 	trashed: "Trashed",
 };
