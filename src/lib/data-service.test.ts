@@ -207,7 +207,7 @@ describe("data-service JSON fallback", () => {
 		});
 		readJsonFile.mockImplementation(
 			async (filePath: string, fallback: unknown) => {
-				if (filePath.endsWith("sample-policies.json")) return [existing];
+				if (filePath.endsWith("policies.json")) return [existing];
 				return fallback;
 			},
 		);
@@ -307,7 +307,7 @@ describe("data-service JSON fallback", () => {
 
 		await expect(createTimelineEvent(event)).resolves.toEqual(event);
 		expect(writeJsonFile).toHaveBeenCalledWith(
-			expect.stringContaining("sample-timeline.json"),
+			expect.stringContaining("timeline.json"),
 			[event],
 		);
 	});

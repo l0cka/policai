@@ -113,13 +113,13 @@ const POLICIES_FILE = path.join(
 	process.cwd(),
 	"public",
 	"data",
-	"sample-policies.json",
+	"policies.json",
 );
 const AGENCIES_FILE = path.join(
 	process.cwd(),
 	"public",
 	"data",
-	"sample-agencies.json",
+	"agencies.json",
 );
 const COMMONWEALTH_AGENCIES_FILE = path.join(
 	process.cwd(),
@@ -131,7 +131,7 @@ const TIMELINE_FILE = path.join(
 	process.cwd(),
 	"public",
 	"data",
-	"sample-timeline.json",
+	"timeline.json",
 );
 const SOURCE_REVIEWS_FILE = path.join(
 	process.cwd(),
