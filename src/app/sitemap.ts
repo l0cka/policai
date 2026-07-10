@@ -20,9 +20,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1.0,
     },
     {
-      url: `${BASE_URL}/policies`,
+      url: `${BASE_URL}/developments`,
       changeFrequency: 'daily',
       priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/courts`,
+      changeFrequency: 'weekly',
+      priority: 0.8,
     },
     {
       url: `${BASE_URL}/agencies`,

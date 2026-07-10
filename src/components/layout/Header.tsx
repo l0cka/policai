@@ -5,16 +5,17 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { SiteDisclaimerBanner } from '@/components/layout/SiteDisclaimerBanner';
 import { PolicaiLogo } from '@/components/layout/PolicaiLogo';
 
 const navItems = [
   { href: '/', label: 'Policies' },
+  { href: '/developments', label: 'Developments' },
+  { href: '/courts', label: 'Courts' },
   { href: '/map', label: 'Map' },
   { href: '/agencies', label: 'Agencies' },
-  { href: '/courts', label: 'Courts' },
 ];
 
 const insightItems = [
@@ -123,6 +124,7 @@ export function Header() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-[250px]">
+              <SheetTitle className="sr-only">Navigation</SheetTitle>
               <nav className="flex flex-col gap-1 mt-8">
                 {navItems.map((item) => (
                   <Link

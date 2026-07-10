@@ -6,13 +6,24 @@ import { PolicyDetailTabs } from './policy-detail-tabs';
 
 async function getRelatedPolicies(currentPolicy: Policy): Promise<Policy[]> {
   const policies = await getPolicies();
-  return policies
+  const related = policies
     .filter(p => p.id !== currentPolicy.id && p.status !== 'trashed')
     .filter(p =>
       p.jurisdiction === currentPolicy.jurisdiction ||
       p.tags.some(tag => currentPolicy.tags.includes(tag))
     )
     .slice(0, 3);
+
+  // The superseding instrument must always be resolvable for the banner.
+  if (
+    currentPolicy.supersededBy &&
+    !related.some(p => p.id === currentPolicy.supersededBy)
+  ) {
+    const successor = policies.find(p => p.id === currentPolicy.supersededBy);
+    if (successor) related.unshift(successor);
+  }
+
+  return related;
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {

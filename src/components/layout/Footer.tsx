@@ -7,7 +7,9 @@ export function Footer() {
         <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 font-mono text-xs text-muted-foreground">
           <span>&copy; {new Date().getFullYear()} Policai</span>
           <span className="hidden sm:inline">&middot;</span>
-          <Link href="/policies" className="hover:text-foreground transition-colors">Policies</Link>
+          <Link href="/" className="hover:text-foreground transition-colors">Policies</Link>
+          <span className="hidden sm:inline">&middot;</span>
+          <Link href="/developments" className="hover:text-foreground transition-colors">Developments</Link>
           <span className="hidden sm:inline">&middot;</span>
           <Link href="/map" className="hover:text-foreground transition-colors">Map</Link>
           <span className="hidden sm:inline">&middot;</span>

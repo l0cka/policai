@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "policai-dev",
+      "runtimeExecutable": "/Users/l0cka/.nvm/versions/node/v20.20.1/bin/npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 3000
+    }
+  ]
+}
