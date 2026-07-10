@@ -189,7 +189,7 @@ export function validateDevelopments(
       errors.push(`${label}: invalid jurisdiction "${development.jurisdiction}"`);
     if (!isOneOf(DEVELOPMENT_STATUSES, development.status))
       errors.push(`${label}: invalid status "${development.status}"`);
-    if (!isOneOf(['ai', 'heuristic'], development.classification))
+    if (!isOneOf(['ai', 'heuristic', 'curated'], development.classification))
       errors.push(
         `${label}: invalid classification "${development.classification}"`,
       );

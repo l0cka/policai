@@ -13,7 +13,14 @@
     "sourceUrl": "https://blueprint.asd.gov.au/security-and-governance/",
     "content": "ASD's Blueprint for Secure Cloud was initially launched on 19 December 2023 and last updated on 20 April 2026. It is better-practice guidance for designing, configuring and deploying secure cloud and hybrid workspaces, with a current focus on Microsoft 365. Its security and governance section links system security planning, the Essential Eight, system security plan annexes, and organisational policies and strategies. The organisational policies checklist explicitly identifies a general-purpose artificial intelligence usage policy as a requirement of ISM control ISM-2074. The Blueprint does not provide a template for this artefact, but positions it as part of the documentation agencies should review, develop and maintain when operating systems built using the Blueprint.",
     "aiSummary": "ASD Blueprint guidance, first launched in December 2023 and updated in April 2026, identifies a general-purpose AI usage policy as an ISM-2074 organisational policy requirement.",
-    "tags": ["ASD", "Blueprint for Secure Cloud", "ISM-2074", "AI usage policy", "cloud security", "governance"],
+    "tags": [
+      "ASD",
+      "Blueprint for Secure Cloud",
+      "ISM-2074",
+      "AI usage policy",
+      "cloud security",
+      "governance"
+    ],
     "createdAt": "2026-04-20T00:00:00Z",
     "updatedAt": "2026-04-20T00:00:00Z"
   },
@@ -32,9 +39,15 @@
     "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
     "content": "Version 2.0 of the Australian Government policy for the responsible use of AI in government took effect on 15 December 2025. It applies to all non-corporate Commonwealth entities, with limited carve-outs, and establishes mandatory requirements for accountability, transparency, staff training, strategic AI adoption, and risk-based impact assessment.",
     "aiSummary": "Core Commonwealth policy governing responsible AI use in government from 15 December 2025.",
-    "tags": ["responsible AI", "governance", "transparency", "commonwealth"],
+    "tags": [
+      "responsible AI",
+      "governance",
+      "transparency",
+      "commonwealth"
+    ],
     "createdAt": "2026-04-06T07:59:40.767Z",
-    "updatedAt": "2026-04-06T07:59:40.767Z"
+    "updatedAt": "2026-04-06T07:59:40.767Z",
+    "lastReviewedAt": "2026-07-10"
   },
   {
     "id": "implementation-plan-policy-responsible-use-ai-government-2025",
@@ -50,7 +63,12 @@
     "sourceUrl": "https://www.dataanddigital.gov.au/implementation-plan/2025/artificial-intelligence",
     "content": "The 2025 Implementation Plan's artificial intelligence section summarises how the APS is accelerating AI adoption, lifting workforce capability, implementing the AI Plan for the Australian Public Service, and applying the updated AI in government policy, impact assessment tool, and technical standard. The 2025 implementation-plan page was last updated on 17 November 2025.",
     "aiSummary": "2025 implementation-plan chapter covering APS AI adoption, governance, and enabling actions, last updated on 17 November 2025.",
-    "tags": ["implementation", "responsible AI", "capability uplift", "procurement"],
+    "tags": [
+      "implementation",
+      "responsible AI",
+      "capability uplift",
+      "procurement"
+    ],
     "createdAt": "2026-04-06T16:50:00Z",
     "updatedAt": "2026-04-06T16:50:00Z"
   },
@@ -69,9 +87,15 @@
     "sourceUrl": "https://www.digital.gov.au/policy/ai/australian-public-service-ai-plan-2025",
     "content": "The APS AI Plan 2025 sets direction for how the Australian Public Service should adopt AI responsibly, improve capability, and embed whole-of-service operating practices.",
     "aiSummary": "APS-wide plan for responsible AI adoption, capability, and operating model uplift.",
-    "tags": ["public service", "AI adoption", "capability", "governance"],
+    "tags": [
+      "public service",
+      "AI adoption",
+      "capability",
+      "governance"
+    ],
     "createdAt": "2026-04-06T16:50:00Z",
-    "updatedAt": "2026-04-06T16:50:00Z"
+    "updatedAt": "2026-04-06T16:50:00Z",
+    "lastReviewedAt": "2026-07-10"
   },
   {
     "id": "national-ai-plan-2025",
@@ -87,27 +111,40 @@
     "sourceUrl": "https://www.industry.gov.au/publications/national-ai-plan",
     "content": "The National AI Plan is the Australian Government's plan to grow the AI industry in Australia. It sets out steps to build an AI-enabled economy that is more competitive, productive and resilient, with 3 goals: capture the opportunity, spread the benefits, and keep Australians safe.",
     "aiSummary": "National-level AI plan covering economy-wide adoption, capability, and policy direction.",
-    "tags": ["national plan", "AI adoption", "investment", "safeguards"],
+    "tags": [
+      "national plan",
+      "AI adoption",
+      "investment",
+      "safeguards"
+    ],
     "createdAt": "2026-04-06T16:50:00Z",
-    "updatedAt": "2026-04-06T16:50:00Z"
+    "updatedAt": "2026-04-06T16:50:00Z",
+    "lastReviewedAt": "2026-07-10"
   },
   {
     "id": "voluntary-ai-safety-standard",
     "title": "Voluntary AI Safety Standard",
-    "description": "Australian Government standard intended to help organisations developing or deploying AI systems adopt practical safety guardrails.",
+    "description": "Voluntary standard (September 2024) with ten guardrails for organisations developing or deploying AI. Superseded on 21 October 2025 by the National AI Centre’s Guidance for AI Adoption.",
     "jurisdiction": "federal",
     "type": "standard",
-    "status": "active",
+    "status": "superseded",
     "effectiveDate": "2024-09-05",
     "agencies": [
       "Department of Industry, Science and Resources"
     ],
     "sourceUrl": "https://www.industry.gov.au/publications/voluntary-ai-safety-standard",
-    "content": "The Voluntary AI Safety Standard provides baseline practices for organisations building and deploying AI, including governance, testing, transparency, and risk management expectations.",
-    "aiSummary": "Practical Australian government AI safety standard for organisations building or deploying AI systems.",
-    "tags": ["AI safety", "standard", "risk management", "testing"],
+    "content": "The Voluntary AI Safety Standard (published 5 September 2024) provided ten voluntary guardrails covering governance, testing, transparency, and risk management for organisations building and deploying AI. On 21 October 2025 it was superseded by the National AI Centre’s Guidance for AI Adoption (the \"AI6\" essential practices). The standard remains available for reference but is no longer the current federal guidance.",
+    "aiSummary": "Superseded 2024 voluntary standard of ten AI safety guardrails, replaced by the Guidance for AI Adoption in October 2025.",
+    "tags": [
+      "AI safety",
+      "standard",
+      "risk management",
+      "testing"
+    ],
     "createdAt": "2026-04-06T16:50:00Z",
-    "updatedAt": "2026-04-06T16:50:00Z"
+    "updatedAt": "2026-07-10T00:00:00.000Z",
+    "supersededBy": "guidance-for-ai-adoption",
+    "lastReviewedAt": "2026-07-10"
   },
   {
     "id": "australias-ai-ethics-framework",
@@ -123,9 +160,15 @@
     "sourceUrl": "https://www.industry.gov.au/publications/australias-ai-ethics-principles",
     "content": "Australia's AI Ethics Principles were published on 7 November 2019 and updated on 2 December 2025. They set out 8 voluntary principles to guide businesses and governments in responsibly designing, developing, and implementing AI.",
     "aiSummary": "Foundational Australian AI ethics principles published in 2019 and maintained as a current reference point.",
-    "tags": ["AI ethics", "framework", "responsible AI", "principles"],
+    "tags": [
+      "AI ethics",
+      "framework",
+      "responsible AI",
+      "principles"
+    ],
     "createdAt": "2026-04-06T16:50:00Z",
-    "updatedAt": "2026-04-06T16:50:00Z"
+    "updatedAt": "2026-04-06T16:50:00Z",
+    "lastReviewedAt": "2026-07-10"
   },
   {
     "id": "government-response-privacy-act-review-report",
@@ -141,35 +184,46 @@
     "sourceUrl": "https://www.ag.gov.au/rights-and-protections/publications/government-response-privacy-act-review-report",
     "content": "The Australian Government released its response to the Privacy Act Review Report on 28 September 2023 and last updated the publication page on 12 March 2025. The response remains relevant to AI policy because it addresses profiling, automated decision-making, and other privacy reforms with downstream implications for AI systems.",
     "aiSummary": "Commonwealth privacy reform response published on 28 September 2023, with continuing relevance to AI and automated decision-making.",
-    "tags": ["privacy", "automated decision-making", "regulation", "Privacy Act"],
+    "tags": [
+      "privacy",
+      "automated decision-making",
+      "regulation",
+      "Privacy Act"
+    ],
     "createdAt": "2026-04-06T16:50:00Z",
     "updatedAt": "2026-04-06T16:50:00Z"
   },
   {
     "id": "safe-and-responsible-ai-australia-proposals-paper",
     "title": "Introducing mandatory guardrails for AI in high-risk settings: proposals paper",
-    "description": "Commonwealth proposals paper consulting on mandatory guardrails, high-risk definitions, and regulatory options for AI in Australia.",
+    "description": "DISR proposals paper (September 2024) on mandatory guardrails for AI in high-risk settings. Consultation closed 4 October 2024; the National AI Plan (2 December 2025) confirmed the government will not proceed with mandatory guardrails or a dedicated AI Act at this time.",
     "jurisdiction": "federal",
     "type": "guideline",
-    "status": "proposed",
+    "status": "closed",
     "effectiveDate": "2024-09-05",
     "agencies": [
       "Department of Industry, Science and Resources"
     ],
     "sourceUrl": "https://consult.industry.gov.au/ai-mandatory-guardrails",
-    "content": "This 2024 proposals paper sought views on proposed mandatory guardrails for AI in high-risk settings, how high-risk AI should be defined, and regulatory options for implementing the guardrails. The consultation opened on 5 September 2024 and has since closed. The current update on the official consultation page states that the Australian Government will not proceed at this time with the previous guardrail proposals, and that feedback informed development of the National AI Plan.",
-    "aiSummary": "2024 federal proposals paper on mandatory AI guardrails in high-risk settings; the government later said it will not proceed with those proposals at this time.",
-    "tags": ["AI guardrails", "consultation", "proposals", "responsible AI"],
+    "content": "The proposals paper \"Introducing mandatory guardrails for AI in high-risk settings\" was released on 5 September 2024 and consulted on options including a standalone AI Act. The consultation closed on 4 October 2024 and attracted more than 300 submissions. The National AI Plan, released 2 December 2025, confirmed the government will not proceed with mandatory guardrails at this time, relying instead on existing technology-neutral laws, sector regulators, voluntary guidance and the Australian AI Safety Institute.",
+    "aiSummary": "Closed 2024 consultation on mandatory high-risk AI guardrails; the December 2025 National AI Plan confirmed the government is not proceeding.",
+    "tags": [
+      "AI guardrails",
+      "consultation",
+      "proposals",
+      "responsible AI"
+    ],
     "createdAt": "2026-04-06T16:50:00Z",
-    "updatedAt": "2026-04-06T16:50:00Z"
+    "updatedAt": "2026-07-10T00:00:00.000Z",
+    "lastReviewedAt": "2026-07-10"
   },
   {
     "id": "automated-decision-making-ai-regulation-issues-paper",
     "title": "Positioning Australia as a leader in digital economy regulation — Automated Decision Making and AI Regulation",
-    "description": "2022 issues paper consulting on Australia's regulatory settings for automated decision-making and AI.",
+    "description": "Historical 2022 issues paper on automated decision making and AI regulation. The consultation closed in May 2022; no dedicated ADM/AI regulation followed.",
     "jurisdiction": "federal",
     "type": "regulation",
-    "status": "proposed",
+    "status": "closed",
     "effectiveDate": "2022-03-17",
     "agencies": [
       "Department of the Prime Minister and Cabinet"
@@ -177,27 +231,38 @@
     "sourceUrl": "https://consult.industry.gov.au/automated-decision-making-ai-regulation-issues-paper",
     "content": "The Digital Technology Taskforce consultation on automated decision-making and AI regulation opened on 17 March 2022 and closed on 20 May 2022. It examined how Australia's regulatory settings could better support responsible use of AI and automated decision-making.",
     "aiSummary": "2022 federal issues paper on regulatory settings for automated decision-making and AI.",
-    "tags": ["automated decision-making", "regulation", "AI governance"],
+    "tags": [
+      "automated decision-making",
+      "regulation",
+      "AI governance"
+    ],
     "createdAt": "2026-04-06T16:50:00Z",
-    "updatedAt": "2026-04-06T16:50:00Z"
+    "updatedAt": "2026-07-10T00:00:00.000Z",
+    "lastReviewedAt": "2026-07-10"
   },
   {
     "id": "nsw-artificial-intelligence-assessment-framework",
     "title": "NSW AI Assessment Framework",
-    "description": "Current NSW whole-of-government framework for assessing AI use cases, risks, and controls across the public sector.",
+    "description": "Mandatory assessment framework for NSW Government AI projects. A modernised framework, built by the NSW Office for AI with CSIRO’s Data61 and aligned to the national assurance framework and the EU AI Act, launched on 27 January 2026, replacing the version in force since 1 July 2024.",
     "jurisdiction": "nsw",
     "type": "framework",
     "status": "active",
-    "effectiveDate": "2024-07-01",
+    "effectiveDate": "2026-01-27",
     "agencies": [
       "Digital NSW"
     ],
     "sourceUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks/nsw-ai-assessment-framework",
-    "content": "The NSW AI Assessment Framework (AIAF) is the current mandatory NSW Government self-assessment framework for AI systems. It operates under Circular DCS-2024-04, issued on 1 July 2024, and is used to identify risks, define mitigations, and escalate higher-risk systems to the AI Review Committee.",
+    "content": "The NSW AI Assessment Framework (AIAF) is mandatory for NSW Government agencies’ AI projects. The original framework commenced 1 July 2024. On 27 January 2026 NSW launched a modernised AIAF developed by the NSW Office for AI (established September 2025) with CSIRO’s Data61, aligned with the National framework for the assurance of AI in government and international approaches including the EU AI Act. NSW also published an Australian-first guide to using AI agents in government on 20 October 2025.",
     "aiSummary": "Current mandatory NSW framework for assessing AI systems under Circular DCS-2024-04.",
-    "tags": ["NSW", "assessment framework", "risk management", "public sector"],
+    "tags": [
+      "NSW",
+      "assessment framework",
+      "risk management",
+      "public sector"
+    ],
     "createdAt": "2026-04-06T16:50:00Z",
-    "updatedAt": "2026-04-06T16:50:00Z"
+    "updatedAt": "2026-07-10T00:00:00.000Z",
+    "lastReviewedAt": "2026-07-10"
   },
   {
     "id": "victoria-genai-guideline-vps",
@@ -213,9 +278,15 @@
     "sourceUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
     "content": "This guideline was endorsed by the Victorian Secretaries Board on 24 September 2024 and made by the Secretary, Department of Premier and Cabinet, on 27 November 2024. The public page was updated on 12 February 2025. It sets minimum requirements for safe and responsible use of generative AI in the Victorian Public Sector.",
     "aiSummary": "Victorian public-sector generative AI guideline made in November 2024 and updated in February 2025.",
-    "tags": ["Victoria", "generative AI", "guideline", "public sector"],
+    "tags": [
+      "Victoria",
+      "generative AI",
+      "guideline",
+      "public sector"
+    ],
     "createdAt": "2026-04-06T16:50:00Z",
-    "updatedAt": "2026-04-06T16:50:00Z"
+    "updatedAt": "2026-04-06T16:50:00Z",
+    "lastReviewedAt": "2026-07-10"
   },
   {
     "id": "queensland-ai-governance-policy",
@@ -231,9 +302,15 @@
     "sourceUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
     "content": "Queensland's current QGEA artificial intelligence governance policy is a current mandated policy, version 1.0.0, effective from September 2024. It requires agencies to use a consistent evidence-based process for evaluating AI and to establish AI governance arrangements based on ISO 38507. The page was last updated on 8 August 2025.",
     "aiSummary": "Current mandated Queensland AI governance policy under QGEA, effective from September 2024.",
-    "tags": ["Queensland", "AI governance", "QGEA", "public sector"],
+    "tags": [
+      "Queensland",
+      "AI governance",
+      "QGEA",
+      "public sector"
+    ],
     "createdAt": "2026-04-06T16:50:00Z",
-    "updatedAt": "2026-04-06T16:50:00Z"
+    "updatedAt": "2026-04-06T16:50:00Z",
+    "lastReviewedAt": "2026-07-10"
   },
   {
     "id": "queensland-use-of-generative-ai-in-government",
@@ -250,7 +327,13 @@
     "sourceUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/use-of-generative-ai-in-queensland-government",
     "content": "Queensland's Use of generative AI in Queensland Government guideline is a current non-mandated QGEA guideline effective from August 2023. It describes the issues Queensland Government agencies should consider when using generative AI tools and services, including information handling, procurement, evaluation, and risk controls in government contexts.",
     "aiSummary": "Queensland's current whole-of-government guideline for using generative AI safely in government work, effective from August 2023.",
-    "tags": ["Queensland", "generative AI", "guideline", "QGEA", "public sector"],
+    "tags": [
+      "Queensland",
+      "generative AI",
+      "guideline",
+      "QGEA",
+      "public sector"
+    ],
     "createdAt": "2026-04-13T02:15:00Z",
     "updatedAt": "2026-04-13T02:15:00Z"
   },
@@ -269,9 +352,16 @@
     "sourceUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/foundational-artificial-intelligence-risk-assessment-guideline",
     "content": "Queensland's Foundational artificial intelligence risk assessment guideline is a current non-mandated QGEA guideline effective from September 2024. It provides agencies with a consistent method for assessing AI lifecycle risks and positions FAIRA as a supporting instrument under the Queensland Artificial intelligence governance policy.",
     "aiSummary": "Queensland's FAIRA guideline provides the recommended risk-assessment method supporting the state's AI governance policy from September 2024.",
-    "tags": ["Queensland", "risk assessment", "FAIRA", "guideline", "AI governance"],
+    "tags": [
+      "Queensland",
+      "risk assessment",
+      "FAIRA",
+      "guideline",
+      "AI governance"
+    ],
     "createdAt": "2026-04-13T02:15:00Z",
-    "updatedAt": "2026-04-13T02:15:00Z"
+    "updatedAt": "2026-04-13T02:15:00Z",
+    "lastReviewedAt": "2026-07-10"
   },
   {
     "id": "victorian-ai-mission-statement",
@@ -288,9 +378,16 @@
     "sourceUrl": "https://djsir.vic.gov.au/priorities-and-initiatives/ai-mission-statement",
     "content": "Victoria's AI Mission Statement was released on 30 January 2026 and sets out the Victorian Government's plan to responsibly develop and adopt AI. It outlines six pillars covering investment and adoption, digital infrastructure, local innovation, talent and workforce, ethical AI use, and public sector adoption.",
     "aiSummary": "Victorian Government AI strategy statement released on 30 January 2026, outlining six pillars for responsible development and adoption of AI.",
-    "tags": ["Victoria", "strategy", "AI adoption", "ethical AI", "public sector"],
+    "tags": [
+      "Victoria",
+      "strategy",
+      "AI adoption",
+      "ethical AI",
+      "public sector"
+    ],
     "createdAt": "2026-04-13T02:15:00Z",
-    "updatedAt": "2026-04-13T02:15:00Z"
+    "updatedAt": "2026-04-13T02:15:00Z",
+    "lastReviewedAt": "2026-07-10"
   },
   {
     "id": "sa-artificial-intelligence-ethics-policy",
@@ -308,7 +405,13 @@
     "sourceUrl": "https://www.treasury.sa.gov.au/__data/assets/pdf_file/0004/1194340/AI_Ethics_Policy.pdf",
     "content": "The South Australian Artificial Intelligence Ethics Policy is an across-government mandatory policy approved on 10 October 2025. It applies to all South Australian public sector agencies and requires agencies to align AI-enabled systems and services with the Australian AI Ethics Principles and the National Framework for the Assurance of Artificial Intelligence in Government.",
     "aiSummary": "Mandatory South Australian across-government AI ethics policy effective from 10 October 2025.",
-    "tags": ["South Australia", "AI ethics", "policy", "public sector", "governance"],
+    "tags": [
+      "South Australia",
+      "AI ethics",
+      "policy",
+      "public sector",
+      "governance"
+    ],
     "createdAt": "2026-04-13T03:05:00Z",
     "updatedAt": "2026-04-13T03:05:00Z"
   },
@@ -328,7 +431,13 @@
     "sourceUrl": "https://www.treasury.sa.gov.au/__data/assets/pdf_file/0007/936745/Guideline-13.1-Use-of-Large-Language-Model-AI-Tools-Utilities.pdf",
     "content": "This South Australian across-government guideline was approved on 17 February 2026 as version 1.4 FINAL. It applies to all South Australian Government public sector agencies and provides practical guidance, risk controls, and safe-use expectations for generative AI and large language model tools, including privacy, confidentiality, security, and output validation requirements.",
     "aiSummary": "Current South Australian government guideline for safe use of generative AI and LLM tools, approved on 17 February 2026.",
-    "tags": ["South Australia", "generative AI", "LLM", "guideline", "public sector"],
+    "tags": [
+      "South Australia",
+      "generative AI",
+      "LLM",
+      "guideline",
+      "public sector"
+    ],
     "createdAt": "2026-04-13T03:05:00Z",
     "updatedAt": "2026-04-13T03:05:00Z"
   },
@@ -347,7 +456,13 @@
     "sourceUrl": "https://www.ai.sa.gov.au/__data/assets/pdf_file/0009/1237077/Office-for-AI-Discussion-Paper-2026.pdf",
     "content": "In January 2026, the South Australian Government published a discussion paper on an artificial intelligence strategy for government. The paper sets out the intended vision, key focus areas, and safeguards for AI-enabled government services and was released to gather feedback before finalising the strategy.",
     "aiSummary": "January 2026 South Australian discussion paper proposing a whole-of-government AI strategy for public services.",
-    "tags": ["South Australia", "strategy", "consultation", "AI policy", "public sector"],
+    "tags": [
+      "South Australia",
+      "strategy",
+      "consultation",
+      "AI policy",
+      "public sector"
+    ],
     "createdAt": "2026-04-13T03:05:00Z",
     "updatedAt": "2026-04-13T03:05:00Z"
   },
@@ -367,9 +482,16 @@
     "sourceUrl": "https://www.dpac.tas.gov.au/divisions/digital_strategy_and_services/resources/FINAL-Guidance-for-AI-v1.4.pdf",
     "content": "Tasmania's AI guidance, revision 1.4 dated 23 July 2024, provides seven recommendations for agencies on responsible and risk-based use of AI in government. It aligns with the National Framework for the Assurance of Artificial Intelligence in Government and supports Tasmanian agencies with assurance, governance, procurement, capability, and glossary guidance.",
     "aiSummary": "Tasmanian Government AI guidance issued on 23 July 2024 for responsible and risk-based use of AI across government agencies.",
-    "tags": ["Tasmania", "guideline", "AI assurance", "public sector", "risk management"],
+    "tags": [
+      "Tasmania",
+      "guideline",
+      "AI assurance",
+      "public sector",
+      "risk management"
+    ],
     "createdAt": "2026-04-13T03:05:00Z",
-    "updatedAt": "2026-04-13T03:05:00Z"
+    "updatedAt": "2026-04-13T03:05:00Z",
+    "lastReviewedAt": "2026-07-10"
   },
   {
     "id": "nt-artificial-intelligence-assurance-framework",
@@ -386,9 +508,16 @@
     "sourceUrl": "https://digitalterritory.nt.gov.au/digital-government/strategies-and-guidance/policies-standards-and-guidance/artificial-intelligence-assurance-framework",
     "content": "The Northern Territory Government Artificial Intelligence Assurance Framework, published in November 2025 and last updated on 10 December 2025, outlines ethics principles, a quick risk assessment, and an assurance process for agencies and government-owned corporations using AI-enabled systems. It applies stronger controls to medium and high-risk AI activities while enabling low-risk use with agency-level oversight.",
     "aiSummary": "Northern Territory whole-of-government AI assurance framework published in November 2025 for responsible and risk-based AI use in public services.",
-    "tags": ["Northern Territory", "AI assurance", "framework", "public sector", "risk management"],
+    "tags": [
+      "Northern Territory",
+      "AI assurance",
+      "framework",
+      "public sector",
+      "risk management"
+    ],
     "createdAt": "2026-04-13T03:05:00Z",
-    "updatedAt": "2026-04-13T03:05:00Z"
+    "updatedAt": "2026-04-13T03:05:00Z",
+    "lastReviewedAt": "2026-07-10"
   },
   {
     "id": "federal-court-gpn-ai",
@@ -404,9 +533,17 @@
     "sourceUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-ai",
     "content": "GPN-AI is a General Practice Note signed by Chief Justice Mortimer that sets out the Federal Court's expectations for use of generative AI in connection with proceedings. It applies to all persons who appear before or file documents with the Court, including litigants, witnesses, and third parties producing documents under subpoena. The practice note establishes three baseline expectations: users should understand AI capabilities, limitations and risks; use must not adversely affect the administration of justice; and disclosure of AI use may be required. It identifies heightened risk areas in pleadings and submissions (hallucinated citations, fictitious authorities) and evidentiary materials (affidavits, expert reports). Confidentiality obligations apply to information entered into AI tools. Non-compliance may attract adverse costs orders.",
     "aiSummary": "Federal Court practice note setting disclosure obligations and baseline expectations for generative AI use in proceedings, effective 16 April 2026.",
-    "tags": ["practice note", "generative AI", "Federal Court", "disclosure", "courts", "judicial"],
+    "tags": [
+      "practice note",
+      "generative AI",
+      "Federal Court",
+      "disclosure",
+      "courts",
+      "judicial"
+    ],
     "createdAt": "2026-04-16T00:00:00Z",
-    "updatedAt": "2026-04-16T00:00:00Z"
+    "updatedAt": "2026-04-16T00:00:00Z",
+    "lastReviewedAt": "2026-07-10"
   },
   {
     "id": "nsw-supreme-court-sc-gen-23",
@@ -415,70 +552,108 @@
     "jurisdiction": "nsw",
     "type": "practice_note",
     "status": "active",
-    "effectiveDate": "2024-12-01",
+    "effectiveDate": "2025-02-03",
     "agencies": [
       "Supreme Court of New South Wales"
     ],
     "sourceUrl": "https://www.supremecourt.justice.nsw.gov.au/practice-and-procedure/practice-notes/practice-notes-sc-gen/sc-gen-23---use-of-artificial-intelligence-in-court-proceedings",
-    "content": "SC Gen 23 was issued by the Supreme Court of New South Wales in late 2024 and establishes the Court's expectations for the use of artificial intelligence in connection with proceedings. It requires legal practitioners and parties to disclose any use of AI in preparing court documents, including submissions, affidavits, and expert reports. The practice note addresses risks of AI-generated content including fabricated case citations and factual inaccuracies, and places responsibility on the person filing the document to verify all AI-assisted content.",
+    "content": "Practice Note SC Gen 23 governs the use of generative AI in NSW Supreme Court proceedings, including restrictions on using generative AI to draft affidavits, witness statements and expert reports. It was issued on 21 November 2024, reissued on 28 January 2025, and commenced on 3 February 2025. The Court published a review statement on 17 November 2025.",
     "aiSummary": "NSW Supreme Court practice note requiring disclosure of AI use in court proceedings and verification of AI-generated content.",
-    "tags": ["practice note", "AI", "Supreme Court", "NSW", "disclosure", "courts", "judicial"],
+    "tags": [
+      "practice note",
+      "AI",
+      "Supreme Court",
+      "NSW",
+      "disclosure",
+      "courts",
+      "judicial"
+    ],
     "createdAt": "2026-04-16T00:00:00Z",
-    "updatedAt": "2026-04-16T00:00:00Z"
+    "updatedAt": "2026-07-10T00:00:00.000Z",
+    "lastReviewedAt": "2026-07-10"
   },
   {
     "id": "vic-supreme-court-ai-guidelines",
     "title": "Guidelines on the Use of Artificial Intelligence in Court Proceedings",
-    "description": "Supreme Court of Victoria guidelines addressing the use of AI tools in matters before the Court.",
+    "description": "Guidelines for litigants on responsible AI use in Victorian Supreme Court proceedings, issued 6 May 2024. Replaced on 14 May 2026 by Practice Note SC GEN 25.",
     "jurisdiction": "vic",
     "type": "practice_note",
-    "status": "active",
-    "effectiveDate": "2025-03-01",
+    "status": "superseded",
+    "effectiveDate": "2024-05-06",
     "agencies": [
       "Supreme Court of Victoria"
     ],
     "sourceUrl": "https://www.supremecourt.vic.gov.au/law-and-practice/practice-notes",
     "content": "The Supreme Court of Victoria issued guidelines on the use of artificial intelligence in court proceedings. The guidelines require practitioners and self-represented litigants to disclose the use of AI tools in the preparation of documents filed with the Court. They emphasise that responsibility for the accuracy and completeness of all court documents remains with the person filing them, regardless of whether AI was used. The guidelines address specific risks including hallucinated case citations and fabricated legal propositions.",
     "aiSummary": "Victorian Supreme Court guidelines on AI use in proceedings, requiring disclosure and placing verification responsibility on practitioners.",
-    "tags": ["practice note", "AI", "Supreme Court", "Victoria", "guidelines", "courts", "judicial"],
+    "tags": [
+      "practice note",
+      "AI",
+      "Supreme Court",
+      "Victoria",
+      "guidelines",
+      "courts",
+      "judicial"
+    ],
     "createdAt": "2026-04-16T00:00:00Z",
-    "updatedAt": "2026-04-16T00:00:00Z"
+    "updatedAt": "2026-07-10T00:00:00.000Z",
+    "supersededBy": "vic-supreme-court-sc-gen-25",
+    "lastReviewedAt": "2026-07-10"
   },
   {
     "id": "family-court-ai-practice-direction",
-    "title": "Practice Direction — Use of Artificial Intelligence",
-    "description": "Federal Circuit and Family Court of Australia practice direction on the use of AI tools in proceedings.",
+    "title": "FCFCOA Practice Direction — Use of Artificial Intelligence (PD-AI)",
+    "description": "Practice direction of the Federal Circuit and Family Court of Australia on the use of AI, including generative AI, issued 29 May 2026 and applying to proceedings commenced on or after 1 December 2025 in Divisions 1 and 2.",
     "jurisdiction": "federal",
     "type": "practice_note",
     "status": "active",
-    "effectiveDate": "2025-06-01",
+    "effectiveDate": "2026-05-29",
     "agencies": [
       "Federal Circuit and Family Court of Australia"
     ],
-    "sourceUrl": "https://www.fcfcoa.gov.au/fl/practice-directions",
-    "content": "The Federal Circuit and Family Court of Australia issued a practice direction addressing the use of artificial intelligence tools by parties and practitioners in family law and general federal law proceedings. The direction requires disclosure of AI use in affidavits and other evidentiary material, and places particular emphasis on the sensitivity of family law proceedings where personal and financial information may be at risk if entered into AI tools. Practitioners must verify all AI-generated content and certify that cited authorities exist.",
+    "sourceUrl": "https://www.fcfcoa.gov.au/pd/pd-ai",
+    "content": "FCFCOA Practice Direction: Use of Artificial Intelligence (PD-AI) was issued on 29 May 2026. It applies to litigants (including self-represented litigants), lawyers, experts and other court users in proceedings commenced on or after 1 December 2025. It requires AI use consistent with integrity, accuracy, accountability, professional obligations, confidentiality and data security, and prohibits inputting confidential or privileged material into public AI tools, with strict requirements around discovery, disclosure orders, suppression orders and subpoenas.",
     "aiSummary": "Federal Circuit and Family Court practice direction on AI use in proceedings, with emphasis on confidentiality in family law matters.",
-    "tags": ["practice note", "AI", "Family Court", "federal", "disclosure", "confidentiality", "courts", "judicial"],
+    "tags": [
+      "practice note",
+      "AI",
+      "Family Court",
+      "federal",
+      "disclosure",
+      "confidentiality",
+      "courts",
+      "judicial"
+    ],
     "createdAt": "2026-04-16T00:00:00Z",
-    "updatedAt": "2026-04-16T00:00:00Z"
+    "updatedAt": "2026-07-10T00:00:00.000Z",
+    "lastReviewedAt": "2026-07-10"
   },
   {
     "id": "qld-supreme-court-ai-practice-direction",
-    "title": "Practice Direction — Artificial Intelligence",
-    "description": "Supreme Court of Queensland practice direction on the use of AI in matters before the Court.",
+    "title": "Practice Direction 5 of 2025 — Accuracy of References",
+    "description": "Queensland Supreme Court practice direction (24 September 2025) addressing the accuracy of references and citations in court documents, responding to AI-generated hallucinated authorities. District Court and Planning & Environment Court issued equivalents.",
     "jurisdiction": "qld",
     "type": "practice_note",
     "status": "active",
-    "effectiveDate": "2025-08-01",
+    "effectiveDate": "2025-09-24",
     "agencies": [
       "Supreme Court of Queensland"
     ],
     "sourceUrl": "https://www.courts.qld.gov.au/court-users/practice-directions/supreme-court",
     "content": "The Supreme Court of Queensland issued a practice direction on the use of artificial intelligence in matters before the Court. The direction requires practitioners and self-represented litigants to disclose any use of AI tools in the preparation of documents filed with the Court, including submissions, affidavits, and expert reports. It requires that all cited legal authorities be verified as genuine and accurately cited.",
     "aiSummary": "Queensland Supreme Court practice direction requiring AI disclosure and authority verification in court documents.",
-    "tags": ["practice note", "AI", "Supreme Court", "Queensland", "disclosure", "courts", "judicial"],
+    "tags": [
+      "practice note",
+      "AI",
+      "Supreme Court",
+      "Queensland",
+      "disclosure",
+      "courts",
+      "judicial"
+    ],
     "createdAt": "2026-04-16T00:00:00Z",
-    "updatedAt": "2026-04-16T00:00:00Z"
+    "updatedAt": "2026-07-10T00:00:00.000Z",
+    "lastReviewedAt": "2026-07-10"
   },
   {
     "id": "asd-frontier-ai-models-cyber-security-2026",
@@ -495,7 +670,14 @@
     "sourceUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/frontier-models-and-their-impact-on-cyber-security",
     "content": "ASD published guidance on 9 April 2026 about the cyber security implications of increasingly capable frontier AI models, following Anthropic's 7 April 2026 announcement of Claude Mythos Preview. The guidance says frontier models reduce the cost, effort and expertise required to discover and exploit software vulnerabilities, while also creating opportunities for defenders to identify and remediate vulnerabilities before exploitation. ASD advises organisations to maintain strong cyber security baselines aligned to the Information Security Manual and Essential Eight, reduce exposed attack paths, patch more frequently, use AI defensively where appropriate, and implement layered security. APRA's 30 April 2026 AI industry letter points regulated entities to ASD advice on frontier AI models.",
     "aiSummary": "ASD guidance on frontier AI cyber risks, defensive use of AI, patching tempo, attack-surface reduction, and layered cyber resilience.",
-    "tags": ["frontier AI", "Claude Mythos", "cyber security", "AI risk", "Essential Eight", "financial system resilience"],
+    "tags": [
+      "frontier AI",
+      "Claude Mythos",
+      "cyber security",
+      "AI risk",
+      "Essential Eight",
+      "financial system resilience"
+    ],
     "createdAt": "2026-05-01T00:00:00Z",
     "updatedAt": "2026-05-01T00:00:00Z"
   },
@@ -513,8 +695,263 @@
     "sourceUrl": "https://www.apra.gov.au/apra-letter-to-industry-on-artificial-intelligence-ai",
     "content": "APRA published a 30 April 2026 letter to industry after targeted supervisory engagement with selected large banks, insurers and superannuation trustees in late 2025. APRA found AI adoption accelerating across regulated industries while governance, risk management, assurance and operational resilience practices were not keeping pace. The letter says APRA is engaging across the sector on increased cyber threats from high capability frontier AI models such as Anthropic Mythos, and expects entities to manage AI risk through board literacy, risk appetite, oversight and accountability, stronger information security controls, timely patching, vulnerability remediation, attention to third-party and concentration risks, and credible fallback processes for critical operations. APRA says it may take stronger supervisory action or enforcement where entities fail to identify, manage or control AI risks proportionate to their size, scale and complexity.",
     "aiSummary": "APRA guidance requiring regulated financial entities to lift AI governance, assurance, cyber resilience and operational-risk controls in response to fast-moving AI risks including Anthropic Mythos.",
-    "tags": ["APRA", "financial system", "AI governance", "operational resilience", "cyber security", "Claude Mythos", "prudential supervision"],
+    "tags": [
+      "APRA",
+      "financial system",
+      "AI governance",
+      "operational resilience",
+      "cyber security",
+      "Claude Mythos",
+      "prudential supervision"
+    ],
     "createdAt": "2026-05-01T00:00:00Z",
-    "updatedAt": "2026-05-01T00:00:00Z"
+    "updatedAt": "2026-05-01T00:00:00Z",
+    "lastReviewedAt": "2026-07-10"
+  },
+  {
+    "id": "guidance-for-ai-adoption",
+    "title": "Guidance for AI Adoption",
+    "description": "The National AI Centre’s Guidance for AI Adoption (21 October 2025) sets out six essential practices (\"AI6\") for safe and responsible AI, in Foundations and Implementation tiers. It supersedes the Voluntary AI Safety Standard.",
+    "jurisdiction": "federal",
+    "type": "guideline",
+    "status": "active",
+    "effectiveDate": "2025-10-21",
+    "agencies": [
+      "National AI Centre",
+      "Department of Industry, Science and Resources"
+    ],
+    "sourceUrl": "https://www.industry.gov.au/publications/guidance-for-ai-adoption",
+    "content": "Guidance for AI Adoption, published by the National AI Centre on 21 October 2025, replaces the Voluntary AI Safety Standard. It defines six essential practices (AI6) across two tiers — Foundations for organisations starting out, and Implementation practices for organisations governing AI at scale — covering accountability, risk management, data governance, testing, transparency and human oversight.",
+    "aiSummary": "Current federal voluntary guidance: six essential practices for safe and responsible AI adoption, replacing the 2024 Voluntary AI Safety Standard.",
+    "tags": [
+      "AI safety",
+      "guidance",
+      "AI6",
+      "National AI Centre",
+      "responsible AI"
+    ],
+    "createdAt": "2026-07-10T00:00:00.000Z",
+    "updatedAt": "2026-07-10T00:00:00.000Z",
+    "lastReviewedAt": "2026-07-10"
+  },
+  {
+    "id": "ai-technical-standard",
+    "title": "Australian Government AI technical standard",
+    "description": "DTA technical standard (31 July 2025) for designing, developing, deploying and decommissioning AI systems in government, structured around the Discover/Operate/Retire lifecycle.",
+    "jurisdiction": "federal",
+    "type": "standard",
+    "status": "active",
+    "effectiveDate": "2025-07-31",
+    "agencies": [
+      "Digital Transformation Agency"
+    ],
+    "sourceUrl": "https://www.digital.gov.au/policy/ai/AI-technical-standard",
+    "content": "The Australian Government AI technical standard, released by the DTA on 31 July 2025, gives agencies detailed technical requirements across the AI system lifecycle — from discovery and design through operation to retirement — supporting the Policy for the responsible use of AI in government.",
+    "aiSummary": "DTA lifecycle technical standard for building and operating AI systems in the Australian Government.",
+    "tags": [
+      "technical standard",
+      "AI lifecycle",
+      "government AI",
+      "DTA"
+    ],
+    "createdAt": "2026-07-10T00:00:00.000Z",
+    "updatedAt": "2026-07-10T00:00:00.000Z",
+    "lastReviewedAt": "2026-07-10"
+  },
+  {
+    "id": "national-framework-assurance-ai-government",
+    "title": "National framework for the assurance of artificial intelligence in government",
+    "description": "Joint Commonwealth, state and territory assurance framework agreed by Data and Digital Ministers on 21 June 2024, with five cornerstones mapped to Australia’s AI Ethics Principles.",
+    "jurisdiction": "federal",
+    "type": "framework",
+    "status": "active",
+    "effectiveDate": "2024-06-21",
+    "agencies": [
+      "Department of Finance",
+      "Data and Digital Ministers"
+    ],
+    "sourceUrl": "https://www.finance.gov.au/government/public-data/data-and-digital-ministers-meeting/national-framework-assurance-artificial-intelligence-government",
+    "content": "The National framework for the assurance of artificial intelligence in government was agreed by Data and Digital Ministers on 21 June 2024. It establishes a nationally consistent approach to AI assurance across the Commonwealth, states and territories, built on five cornerstones with practices mapped to the eight AI Ethics Principles. Jurisdictional frameworks (such as the NSW AIAF and WA framework) align to it.",
+    "aiSummary": "Cross-jurisdictional assurance framework aligning all Australian governments’ AI oversight to the AI Ethics Principles.",
+    "tags": [
+      "assurance",
+      "framework",
+      "data and digital ministers",
+      "intergovernmental"
+    ],
+    "createdAt": "2026-07-10T00:00:00.000Z",
+    "updatedAt": "2026-07-10T00:00:00.000Z",
+    "lastReviewedAt": "2026-07-10"
+  },
+  {
+    "id": "oaic-guidance-developing-training-genai",
+    "title": "OAIC guidance on privacy and developing and training generative AI models",
+    "description": "OAIC guidance (21 October 2024) on how the Privacy Act and APPs apply to developing and training generative AI models.",
+    "jurisdiction": "federal",
+    "type": "guideline",
+    "status": "active",
+    "effectiveDate": "2024-10-21",
+    "agencies": [
+      "Office of the Australian Information Commissioner"
+    ],
+    "sourceUrl": "https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-developing-and-training-generative-ai-models",
+    "content": "Published 21 October 2024 alongside companion guidance on commercial AI products, this OAIC guidance explains how the Privacy Act 1988 and the Australian Privacy Principles apply when organisations develop or fine-tune generative AI models, including collection, use and disclosure of personal information in training data.",
+    "aiSummary": "OAIC guidance applying the Privacy Act to the development and training of generative AI models.",
+    "tags": [
+      "privacy",
+      "OAIC",
+      "generative AI",
+      "training data"
+    ],
+    "createdAt": "2026-07-10T00:00:00.000Z",
+    "updatedAt": "2026-07-10T00:00:00.000Z",
+    "lastReviewedAt": "2026-07-10"
+  },
+  {
+    "id": "oaic-guidance-commercial-ai-products",
+    "title": "OAIC guidance on privacy and the use of commercially available AI products",
+    "description": "OAIC guidance (21 October 2024) for organisations deploying commercial AI products consistently with the Privacy Act and APPs.",
+    "jurisdiction": "federal",
+    "type": "guideline",
+    "status": "active",
+    "effectiveDate": "2024-10-21",
+    "agencies": [
+      "Office of the Australian Information Commissioner"
+    ],
+    "sourceUrl": "https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-the-use-of-commercially-available-ai-products",
+    "content": "Published 21 October 2024, this OAIC guidance addresses privacy obligations when organisations select and use commercially available AI products, including due diligence, transparency to individuals, and handling of personal information entered into AI tools.",
+    "aiSummary": "OAIC guidance on privacy obligations when deploying commercial AI products.",
+    "tags": [
+      "privacy",
+      "OAIC",
+      "AI products",
+      "deployment"
+    ],
+    "createdAt": "2026-07-10T00:00:00.000Z",
+    "updatedAt": "2026-07-10T00:00:00.000Z",
+    "lastReviewedAt": "2026-07-10"
+  },
+  {
+    "id": "esafety-genai-industry-codes",
+    "title": "Online safety industry codes covering generative AI and AI companions",
+    "description": "Enforceable eSafety industry codes registered in September 2025 — including for generative AI services and AI companion chatbots — in effect from 9 March 2026, with age-assurance obligations and penalties up to $49.5m.",
+    "jurisdiction": "federal",
+    "type": "regulation",
+    "status": "active",
+    "effectiveDate": "2026-03-09",
+    "agencies": [
+      "eSafety Commissioner"
+    ],
+    "sourceUrl": "https://www.esafety.gov.au/industry/codes",
+    "content": "In September 2025 the eSafety Commissioner registered six new industry codes under the Online Safety Act, including codes covering generative AI services and AI companion chatbots. The codes took effect on 9 March 2026 and impose age-assurance and safety obligations, with civil penalties of up to $49.5 million. In March 2026 eSafety reported on risks AI companions pose to children following transparency notices issued to four providers in October 2025.",
+    "aiSummary": "Enforceable online-safety codes for generative AI and AI companion services, in force since March 2026.",
+    "tags": [
+      "online safety",
+      "eSafety",
+      "industry codes",
+      "age assurance",
+      "AI companions"
+    ],
+    "createdAt": "2026-07-10T00:00:00.000Z",
+    "updatedAt": "2026-07-10T00:00:00.000Z",
+    "lastReviewedAt": "2026-07-10"
+  },
+  {
+    "id": "wa-ai-policy-assurance-framework",
+    "title": "WA Government Artificial Intelligence Policy and Assurance Framework",
+    "description": "Western Australia’s whole-of-government AI policy and assurance framework (first published 5 March 2024; policy version 2 released July 2025), with AI Accountable Officers, mandatory risk self-assessments and an AI Advisory Board review of higher-risk projects.",
+    "jurisdiction": "wa",
+    "type": "framework",
+    "status": "active",
+    "effectiveDate": "2024-03-05",
+    "agencies": [
+      "Office of Digital Government",
+      "Department of the Premier and Cabinet"
+    ],
+    "sourceUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+    "content": "The WA Government Artificial Intelligence Policy and Assurance Framework was first published on 5 March 2024 by the Office of Digital Government. It requires agencies to appoint AI Accountable Officers, complete risk self-assessments for AI use cases, and refer higher-risk projects to the WA AI Advisory Board. Version 2 of the policy was released in July 2025.",
+    "aiSummary": "WA’s mandatory AI policy and assurance framework with accountable officers and risk-based review.",
+    "tags": [
+      "assurance",
+      "framework",
+      "WA",
+      "risk assessment",
+      "accountability"
+    ],
+    "createdAt": "2026-07-10T00:00:00.000Z",
+    "updatedAt": "2026-07-10T00:00:00.000Z",
+    "lastReviewedAt": "2026-07-10"
+  },
+  {
+    "id": "act-ai-policy",
+    "title": "ACT Government Artificial Intelligence Policy",
+    "description": "The ACT Government’s AI policy (version 0.1, July 2024) with a framework and self-assessment tool for responsible AI use in the territory public service.",
+    "jurisdiction": "act",
+    "type": "policy",
+    "status": "active",
+    "effectiveDate": "2024-07-01",
+    "agencies": [
+      "ACT Government"
+    ],
+    "sourceUrl": "https://www.act.gov.au/open/act-government-artificial-intelligence-policy",
+    "content": "The ACT Government Artificial Intelligence Policy (version 0.1, published July 2024) sets out principles and a self-assessment approach for responsible AI use across the ACT public service. The effective date shown reflects the July 2024 publication month; the ACT has not published a day-level commencement date.",
+    "aiSummary": "ACT public service AI policy with principles and a self-assessment tool (v0.1, July 2024).",
+    "tags": [
+      "ACT",
+      "policy",
+      "self-assessment",
+      "responsible AI"
+    ],
+    "createdAt": "2026-07-10T00:00:00.000Z",
+    "updatedAt": "2026-07-10T00:00:00.000Z",
+    "lastReviewedAt": "2026-07-10"
+  },
+  {
+    "id": "vic-supreme-court-sc-gen-25",
+    "title": "Practice Note SC GEN 25 — Use of Artificial Intelligence by Court Users",
+    "description": "Victorian Supreme Court practice note (14 May 2026) governing AI use by court users, replacing the May 2024 guidelines; accompanied by new judicial guidelines.",
+    "jurisdiction": "vic",
+    "type": "practice_note",
+    "status": "active",
+    "effectiveDate": "2026-05-14",
+    "agencies": [
+      "Supreme Court of Victoria"
+    ],
+    "sourceUrl": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes",
+    "content": "Practice Note SC GEN 25, issued by the Supreme Court of Victoria on 14 May 2026, governs the use of artificial intelligence by court users in proceedings. It replaces the Court’s May 2024 guidelines for litigants and was issued alongside updated guidance for judicial officers.",
+    "aiSummary": "Victoria’s current Supreme Court practice note on AI use in proceedings, replacing the 2024 guidelines.",
+    "tags": [
+      "courts",
+      "practice note",
+      "generative AI",
+      "Victoria"
+    ],
+    "createdAt": "2026-07-10T00:00:00.000Z",
+    "updatedAt": "2026-07-10T00:00:00.000Z",
+    "lastReviewedAt": "2026-07-10"
+  },
+  {
+    "id": "sa-courts-genai-guidelines",
+    "title": "Guidelines for the use of Generative AI in South Australian courts",
+    "description": "Guidelines approved by the Supreme Court judges for generative AI use in litigation, applying to civil and criminal proceedings from 1 January 2026 across South Australian courts.",
+    "jurisdiction": "sa",
+    "type": "practice_note",
+    "status": "active",
+    "effectiveDate": "2026-01-01",
+    "agencies": [
+      "Courts Administration Authority of South Australia"
+    ],
+    "sourceUrl": "https://www.courts.sa.gov.au/2026/01/19/supreme-court-issues-guidelines-for-the-use-of-generative-ai/",
+    "content": "Following a May 2025 consultation launched by the Chief Justice, the judges of the Supreme Court of South Australia approved guidelines for the use of generative AI in litigation, applying to any step taken in civil or criminal proceedings from 1 January 2026 in the Supreme, District, Magistrates, Youth and Environment, Resources and Development Courts. The guidelines give examples of ethical and responsible use and improper use, and were announced on 19 January 2026.",
+    "aiSummary": "SA courts’ generative AI guidelines, effective 1 January 2026 across the state’s courts.",
+    "tags": [
+      "courts",
+      "generative AI",
+      "South Australia",
+      "litigation"
+    ],
+    "createdAt": "2026-07-10T00:00:00.000Z",
+    "updatedAt": "2026-07-10T00:00:00.000Z",
+    "lastReviewedAt": "2026-07-10"
   }
 ]

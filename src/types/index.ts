@@ -162,7 +162,7 @@ export interface Development {
 	detectedAt: string;
 	summary?: string;
 	relevanceScore: number;
-	classification: "ai" | "heuristic";
+	classification: "ai" | "heuristic" | "curated";
 	status: DevelopmentStatus;
 	relatedPolicyId?: string;
 }

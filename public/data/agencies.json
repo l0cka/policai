@@ -5,10 +5,14 @@
     "acronym": "DISER",
     "level": "federal",
     "jurisdiction": "federal",
-    "aiTransparencyStatement": "DISER is committed to the responsible use of AI in policy development and service delivery.",
-    "aiUsageDisclosure": "We use AI-assisted tools for document analysis and policy research.",
     "website": "https://www.industry.gov.au",
-    "policies": ["australias-ai-ethics-framework", "national-ai-plan-2025", "voluntary-ai-safety-standard", "safe-and-responsible-ai-australia-proposals-paper"]
+    "policies": [
+      "australias-ai-ethics-framework",
+      "national-ai-plan-2025",
+      "voluntary-ai-safety-standard",
+      "safe-and-responsible-ai-australia-proposals-paper"
+    ],
+    "hasPublishedStatement": false
   },
   {
     "id": "dta",
@@ -16,10 +20,13 @@
     "acronym": "DTA",
     "level": "federal",
     "jurisdiction": "federal",
-    "aiTransparencyStatement": "DTA leads the government's approach to responsible AI adoption and maintains the Policy for the Responsible Use of AI in Government.",
-    "aiUsageDisclosure": "AI tools are used to improve digital services and analyse citizen feedback.",
     "website": "https://www.dta.gov.au",
-    "policies": ["policy-responsible-use-ai-government-v2", "implementation-plan-policy-responsible-use-ai-government-2025", "aps-ai-plan-2025"]
+    "policies": [
+      "policy-responsible-use-ai-government-v2",
+      "implementation-plan-policy-responsible-use-ai-government-2025",
+      "aps-ai-plan-2025"
+    ],
+    "hasPublishedStatement": false
   },
   {
     "id": "agd",
@@ -27,9 +34,12 @@
     "acronym": "AGD",
     "level": "federal",
     "jurisdiction": "federal",
-    "aiTransparencyStatement": "AGD ensures AI regulation protects rights while enabling innovation.",
     "website": "https://www.ag.gov.au",
-    "policies": ["automated-decision-making-ai-regulation-issues-paper", "government-response-privacy-act-review-report"]
+    "policies": [
+      "automated-decision-making-ai-regulation-issues-paper",
+      "government-response-privacy-act-review-report"
+    ],
+    "hasPublishedStatement": false
   },
   {
     "id": "oaic",
@@ -37,9 +47,11 @@
     "acronym": "OAIC",
     "level": "federal",
     "jurisdiction": "federal",
-    "aiTransparencyStatement": "OAIC provides guidance on privacy implications of AI systems.",
     "website": "https://www.oaic.gov.au",
-    "policies": ["government-response-privacy-act-review-report"]
+    "policies": [
+      "government-response-privacy-act-review-report"
+    ],
+    "hasPublishedStatement": false
   },
   {
     "id": "csiro",
@@ -47,10 +59,9 @@
     "acronym": "CSIRO",
     "level": "federal",
     "jurisdiction": "federal",
-    "aiTransparencyStatement": "CSIRO conducts responsible AI research for Australia's benefit.",
-    "aiUsageDisclosure": "AI is used extensively in research projects across all domains.",
     "website": "https://www.csiro.au",
-    "policies": []
+    "policies": [],
+    "hasPublishedStatement": false
   },
   {
     "id": "nsw-dcs",
@@ -58,10 +69,11 @@
     "acronym": "NSW DCS",
     "level": "state",
     "jurisdiction": "nsw",
-    "aiTransparencyStatement": "NSW DCS ensures AI improves services while protecting citizen rights.",
-    "aiUsageDisclosure": "AI chatbots and document processing are used in citizen services.",
     "website": "https://www.digital.nsw.gov.au",
-    "policies": ["nsw-artificial-intelligence-assessment-framework"]
+    "policies": [
+      "nsw-artificial-intelligence-assessment-framework"
+    ],
+    "hasPublishedStatement": false
   },
   {
     "id": "vic-dpc",
@@ -69,9 +81,11 @@
     "acronym": "VIC DPC",
     "level": "state",
     "jurisdiction": "vic",
-    "aiTransparencyStatement": "Victoria is committed to ethical AI in government.",
     "website": "https://www.vic.gov.au/department-premier-and-cabinet",
-    "policies": ["victoria-genai-guideline-vps"]
+    "policies": [
+      "victoria-genai-guideline-vps"
+    ],
+    "hasPublishedStatement": false
   },
   {
     "id": "qld-dsiti",
@@ -79,8 +93,72 @@
     "acronym": "QLD DSITI",
     "level": "state",
     "jurisdiction": "qld",
-    "aiTransparencyStatement": "Queensland embraces AI for economic growth and improved services.",
     "website": "https://www.qld.gov.au",
-    "policies": ["queensland-ai-governance-policy"]
+    "policies": [
+      "queensland-ai-governance-policy"
+    ],
+    "hasPublishedStatement": false
+  },
+  {
+    "id": "nsw-office-for-ai",
+    "name": "NSW Office for AI",
+    "acronym": "OFAI",
+    "level": "state",
+    "jurisdiction": "nsw",
+    "website": "https://www.digital.nsw.gov.au/policy/artificial-intelligence",
+    "hasPublishedStatement": false,
+    "policies": [
+      "nsw-artificial-intelligence-assessment-framework"
+    ]
+  },
+  {
+    "id": "wa-office-of-digital-government",
+    "name": "Office of Digital Government (WA)",
+    "acronym": "DGov",
+    "level": "state",
+    "jurisdiction": "wa",
+    "website": "https://www.wa.gov.au/organisation/department-of-the-premier-and-cabinet/office-of-digital-government",
+    "hasPublishedStatement": false,
+    "policies": [
+      "wa-ai-policy-assurance-framework"
+    ]
+  },
+  {
+    "id": "sa-office-for-ai",
+    "name": "SA Office for AI",
+    "acronym": "OFAI-SA",
+    "level": "state",
+    "jurisdiction": "sa",
+    "website": "https://www.ai.sa.gov.au/",
+    "hasPublishedStatement": false,
+    "policies": [
+      "sa-artificial-intelligence-ethics-policy",
+      "sa-guideline-use-of-generative-ai-and-llm-tools",
+      "sa-ai-for-better-government-discussion-paper"
+    ]
+  },
+  {
+    "id": "tas-dpac-dss",
+    "name": "Department of Premier and Cabinet — Digital Strategy and Services (TAS)",
+    "acronym": "DPAC DSS",
+    "level": "state",
+    "jurisdiction": "tas",
+    "website": "https://www.dpac.tas.gov.au/divisions/digital_strategy_and_services",
+    "hasPublishedStatement": false,
+    "policies": [
+      "tas-guidance-for-the-use-of-artificial-intelligence-in-government"
+    ]
+  },
+  {
+    "id": "nt-dcdd",
+    "name": "Department of Corporate and Digital Development (NT)",
+    "acronym": "DCDD",
+    "level": "state",
+    "jurisdiction": "nt",
+    "website": "https://digitalterritory.nt.gov.au",
+    "hasPublishedStatement": false,
+    "policies": [
+      "nt-artificial-intelligence-assurance-framework"
+    ]
   }
 ]
