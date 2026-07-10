@@ -1,4 +1,4 @@
-import type { Agency, Policy, ScraperRunLog, TimelineEvent } from '@/types'
+import type { Agency, Policy, TimelineEvent } from '@/types'
 
 export function buildPolicy(overrides: Partial<Policy> = {}): Policy {
   return {
@@ -42,20 +42,6 @@ export function buildTimelineEvent(overrides: Partial<TimelineEvent> = {}): Time
     type: 'announcement',
     jurisdiction: 'federal',
     sourceUrl: 'https://example.gov.au/timeline/manual-event',
-    ...overrides,
-  }
-}
-
-export function buildScraperRunLog(overrides: Partial<ScraperRunLog> = {}): ScraperRunLog {
-  return {
-    id: 'run-1',
-    timestamp: '2025-02-01T00:00:00.000Z',
-    sourceId: 'source-1',
-    sourceName: 'Department feed',
-    linksFound: 3,
-    policiesCreated: 1,
-    errors: [],
-    durationMs: 1200,
     ...overrides,
   }
 }

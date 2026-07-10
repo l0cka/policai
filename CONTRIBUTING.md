@@ -76,20 +76,21 @@ Smaller PRs are easier to review. If your change is large, consider splitting it
 
 ## Data Sources
 
-Policai tracks Australian government AI policy. If you know of a .gov.au source we're missing, open an issue with the URL and we'll add it to the discovery pipeline.
+Policai tracks Australian government AI policy. If you know of a .gov.au source we're missing, open an issue with the URL — or add it to `src/lib/pipeline/sources.ts` yourself and verify it with `npm run collect -- --dry-run --source=<id>`.
+
+## Data Corrections
+
+The data itself lives in this repository (`public/data/*.json`). Corrections are ordinary pull requests: edit the record, keep the `sourceUrl` pointing at the official instrument, and run `npm run validate:data` before pushing.
 
 ## Environment Variables
 
-The app works without any external services by falling back to JSON files in `public/data/`. For full functionality:
+The site runs with no environment variables at all. Optional:
 
 | Variable | Required | Purpose |
 |----------|----------|---------|
-| `OPENROUTER_API_KEY` | For AI features | Powers scraping analysis and discovery |
-| `NEXT_PUBLIC_SUPABASE_URL` | For database | Supabase project URL |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | For database | Supabase anon key |
-| `SUPABASE_SERVICE_ROLE_KEY` | For protected writes | Server-only key used by admin and cron routes when RLS is enabled |
-| `CRON_SECRET` | For cron jobs | Authenticates scheduled scraper runs |
-| `ADMIN_PASSWORD` | For admin UI | Protects the admin dashboard |
+| `ANTHROPIC_API_KEY` | For AI classification | Preferred provider for the collector |
+| `OPENROUTER_API_KEY` | For AI classification | Fallback provider for the collector |
+| `AI_MODEL` | Optional | Model override for either provider |
 | `POLICAI_MCP_ADMIN_TOKEN` | For MCP ingest | Authorises local MCP source-ingest writes |
 
 ## License

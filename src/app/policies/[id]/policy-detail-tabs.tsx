@@ -31,8 +31,36 @@ export function PolicyDetailTabs({
 		{ id: "related" as const, label: "Related" },
 	];
 
+	const supersededBy = policy.supersededBy
+		? relatedPolicies.find((rp) => rp.id === policy.supersededBy)
+		: undefined;
+
 	return (
 		<div>
+			{(policy.status === "superseded" || policy.status === "closed") && (
+				<div className="mb-4 border-l-2 border-[var(--status-repealed)] bg-[var(--status-repealed-bg)] px-4 py-3 text-sm">
+					{policy.status === "superseded" ? (
+						<>
+							This instrument has been superseded
+							{policy.supersededBy && (
+								<>
+									{" by "}
+									<Link
+										href={`/policies/${policy.supersededBy}`}
+										className="font-medium text-primary hover:underline"
+									>
+										{supersededBy?.title ?? "its replacement"}
+									</Link>
+								</>
+							)}
+							. It is kept for the historical record.
+						</>
+					) : (
+						<>This consultation or proposal is closed and no longer active.</>
+					)}
+				</div>
+			)}
+
 			<h1 className="text-2xl font-bold mb-3">{policy.title}</h1>
 
 			<div className="font-mono text-sm text-muted-foreground mb-6 flex flex-wrap gap-x-2">
@@ -117,8 +145,19 @@ export function PolicyDetailTabs({
 							className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
 						>
 							<ExternalLink className="h-3 w-3" />
-							View source
+							View official source
 						</a>
+					)}
+
+					{policy.lastReviewedAt && (
+						<p className="font-mono text-xs text-muted-foreground">
+							Last reviewed{" "}
+							{new Date(policy.lastReviewedAt).toLocaleDateString("en-AU", {
+								day: "numeric",
+								month: "long",
+								year: "numeric",
+							})}
+						</p>
 					)}
 				</div>
 			)}

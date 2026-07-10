@@ -1,0 +1,11 @@
+{
+  "lastCollectedAt": "2026-07-10T12:31:49.593Z",
+  "lastReviewedAt": "2026-07-10T00:00:00.000Z",
+  "collector": {
+    "runCount": 1,
+    "lastRunSources": [
+      "apra-rss"
+    ],
+    "lastRunErrors": []
+  }
+}

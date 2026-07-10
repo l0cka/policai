@@ -1,12 +1,10 @@
 /**
- * Data Service — unified abstraction over Supabase (primary) and JSON files (fallback).
+ * Data Service — file-backed reads and writes over the repo's JSON data.
  *
- * Every public function first checks whether Supabase is configured. If it is,
- * the query goes to Supabase. If not (or if the query fails), it transparently
- * falls back to the static JSON files in `public/data/`.
- *
- * This lets the site work on Vercel with a live database *and* locally with
- * zero external dependencies.
+ * Git is the database: the JSON files under `public/data/` are the canonical
+ * store, versioned with the code and deployed as static assets. Local tools
+ * (the MCP source-ingest server, the collector CLI) write to these files and
+ * publish by committing; the deployed site only ever reads them.
  */
 
 import path from "path";
@@ -14,42 +12,15 @@ import { readJsonFile, writeJsonFile } from "@/lib/file-store";
 import {
 	normalizeJurisdiction,
 	normalizePolicyType,
-	type Policy,
 	type Agency,
-	type TimelineEvent,
-	type ScraperRunLog,
+	type CollectionMeta,
+	type Development,
+	type McpAuditLog,
+	type Policy,
 	type SourceReview,
 	type SourceReviewStatus,
-	type McpAuditLog,
+	type TimelineEvent,
 } from "@/types";
-
-// ---------------------------------------------------------------------------
-// Supabase availability
-// ---------------------------------------------------------------------------
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
-const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
-
-/** True when the env vars are set and non-empty. */
-export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
-export const isSupabaseAdminConfigured = Boolean(
-	supabaseUrl && supabaseServiceRoleKey,
-);
-
-/**
- * Lazily import the Supabase client so the JSON-only path never triggers
- * `createClient` with placeholder credentials.
- */
-async function getSupabase() {
-	const { supabase } = await import("@/lib/supabase");
-	return supabase;
-}
-
-async function getSupabaseAdmin() {
-	const { createSupabaseAdminClient } = await import("@/lib/supabase-admin");
-	return createSupabaseAdminClient();
-}
 
 type DataAccess = "public" | "admin";
 
@@ -57,15 +28,9 @@ interface DataServiceOptions {
 	access?: DataAccess;
 }
 
-const PUBLIC_POLICY_STATUSES = new Set([
-	"proposed",
-	"active",
-	"amended",
-	"repealed",
-]);
-
+/** Trashed policies are the only records hidden from public reads. */
 function isPublicPolicy(policy: Policy): boolean {
-	return PUBLIC_POLICY_STATUSES.has(policy.status);
+	return policy.status !== "trashed";
 }
 
 function applyPublicPolicyFilter(policies: Policy[]): Policy[] {
@@ -90,22 +55,6 @@ function toPublicAgencies(agencies: Agency[]): Agency[] {
 }
 
 // ---------------------------------------------------------------------------
-// Input sanitization
-// ---------------------------------------------------------------------------
-
-/**
- * Sanitize search input for PostgREST filters.
- * Strips characters that could be used for filter injection (commas, dots,
- * parentheses, and PostgREST operators).
- */
-function sanitizeSearchInput(input: string): string {
-	return input
-		.replace(/[,().]/g, "") // PostgREST filter delimiters
-		.replace(/\\/g, "") // escape characters
-		.slice(0, 200); // cap length
-}
-
-// ---------------------------------------------------------------------------
 // File paths
 // ---------------------------------------------------------------------------
 
@@ -113,13 +62,13 @@ const POLICIES_FILE = path.join(
 	process.cwd(),
 	"public",
 	"data",
-	"sample-policies.json",
+	"policies.json",
 );
 const AGENCIES_FILE = path.join(
 	process.cwd(),
 	"public",
 	"data",
-	"sample-agencies.json",
+	"agencies.json",
 );
 const COMMONWEALTH_AGENCIES_FILE = path.join(
 	process.cwd(),
@@ -131,8 +80,15 @@ const TIMELINE_FILE = path.join(
 	process.cwd(),
 	"public",
 	"data",
-	"sample-timeline.json",
+	"timeline.json",
 );
+const DEVELOPMENTS_FILE = path.join(
+	process.cwd(),
+	"public",
+	"data",
+	"developments.json",
+);
+const META_FILE = path.join(process.cwd(), "public", "data", "meta.json");
 const SOURCE_REVIEWS_FILE = path.join(
 	process.cwd(),
 	"data",
@@ -178,45 +134,6 @@ export async function getPolicies(
 ): Promise<Policy[]> {
 	const access = options.access ?? "public";
 
-	if (isSupabaseConfigured) {
-		try {
-			const supabase =
-				access === "admin" && isSupabaseAdminConfigured
-					? await getSupabaseAdmin()
-					: await getSupabase();
-			let query = supabase.from("policies").select("*");
-
-			if (filters?.jurisdiction)
-				query = query.eq("jurisdiction", filters.jurisdiction);
-			if (filters?.type) query = query.eq("type", filters.type);
-			if (filters?.status) query = query.eq("status", filters.status);
-			if (access === "public") {
-				query = query.in("status", Array.from(PUBLIC_POLICY_STATUSES));
-			}
-			if (filters?.search) {
-				const sanitized = sanitizeSearchInput(filters.search);
-				query = query.or(
-					`title.ilike.%${sanitized}%,description.ilike.%${sanitized}%`,
-				);
-			}
-
-			const { data, error } = await query.order("effectiveDate", {
-				ascending: false,
-			});
-			if (!error && data) return data as Policy[];
-			console.warn(
-				"[data-service] Supabase getPolicies failed, falling back to JSON:",
-				error?.message,
-			);
-		} catch (err) {
-			console.warn(
-				"[data-service] Supabase getPolicies exception, falling back to JSON:",
-				err,
-			);
-		}
-	}
-
-	// JSON fallback
 	let policies = await readJsonFile<Policy[]>(POLICIES_FILE, []);
 	if (access === "public") {
 		policies = applyPublicPolicyFilter(policies);
@@ -252,32 +169,6 @@ export async function getPolicyById(
 	options: DataServiceOptions = {},
 ): Promise<Policy | null> {
 	const access = options.access ?? "public";
-
-	if (isSupabaseConfigured) {
-		try {
-			const supabase =
-				access === "admin" && isSupabaseAdminConfigured
-					? await getSupabaseAdmin()
-					: await getSupabase();
-			let query = supabase.from("policies").select("*").eq("id", id);
-			if (access === "public") {
-				query = query.in("status", Array.from(PUBLIC_POLICY_STATUSES));
-			}
-			const { data, error } = await query.maybeSingle();
-			if (!error && data) return data as Policy;
-			if (!error) return null;
-			console.warn(
-				"[data-service] Supabase getPolicyById failed, falling back to JSON:",
-				error?.message,
-			);
-		} catch (err) {
-			console.warn(
-				"[data-service] Supabase getPolicyById exception, falling back to JSON:",
-				err,
-			);
-		}
-	}
-
 	const policies = await readJsonFile<Policy[]>(POLICIES_FILE, []);
 	const policy = policies.find((p) => p.id === id) || null;
 	if (policy && access === "public" && !isPublicPolicy(policy)) return null;
@@ -289,82 +180,13 @@ export async function getPolicyBySourceUrl(
 	options: DataServiceOptions = {},
 ): Promise<Policy | null> {
 	const access = options.access ?? "public";
-
-	if (isSupabaseConfigured) {
-		try {
-			const supabase =
-				access === "admin" && isSupabaseAdminConfigured
-					? await getSupabaseAdmin()
-					: await getSupabase();
-			let query = supabase
-				.from("policies")
-				.select("*")
-				.eq("sourceUrl", sourceUrl);
-			if (access === "public") {
-				query = query.in("status", Array.from(PUBLIC_POLICY_STATUSES));
-			}
-			const { data, error } = await query.maybeSingle();
-			if (!error && data) return data as Policy;
-			if (!error) return null;
-			console.warn(
-				"[data-service] Supabase getPolicyBySourceUrl failed, falling back to JSON:",
-				error?.message,
-			);
-		} catch (err) {
-			console.warn(
-				"[data-service] Supabase getPolicyBySourceUrl exception, falling back to JSON:",
-				err,
-			);
-		}
-	}
-
 	const policies = await readJsonFile<Policy[]>(POLICIES_FILE, []);
 	const policy = policies.find((p) => p.sourceUrl === sourceUrl) || null;
 	if (policy && access === "public" && !isPublicPolicy(policy)) return null;
 	return policy;
 }
 
-function isSupabaseDuplicateError(message?: string): boolean {
-	if (!message) return false;
-	const normalized = message.toLowerCase();
-	return (
-		normalized.includes("duplicate key") ||
-		normalized.includes("unique constraint")
-	);
-}
-
 export async function createPolicy(policy: Policy): Promise<Policy> {
-	if (isSupabaseAdminConfigured) {
-		try {
-			const supabase = await getSupabaseAdmin();
-			const { data, error } = await supabase
-				.from("policies")
-				.insert(policy)
-				.select()
-				.single();
-			if (!error && data) return data as Policy;
-			if (isSupabaseDuplicateError(error?.message)) {
-				throw new DuplicatePolicyError(policy.id);
-			}
-			console.warn(
-				"[data-service] Supabase createPolicy failed, falling back to JSON:",
-				error?.message,
-			);
-		} catch (err) {
-			if (err instanceof DuplicatePolicyError) {
-				throw err;
-			}
-			console.warn(
-				"[data-service] Supabase createPolicy exception, falling back to JSON:",
-				err,
-			);
-		}
-	} else if (isSupabaseConfigured) {
-		console.warn(
-			"[data-service] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for createPolicy",
-		);
-	}
-
 	const policies = await readJsonFile<Policy[]>(POLICIES_FILE, []);
 	if (policies.some((existingPolicy) => existingPolicy.id === policy.id)) {
 		throw new DuplicatePolicyError(policy.id);
@@ -378,32 +200,6 @@ export async function updatePolicy(
 	id: string,
 	updates: Partial<PolicyWithTrash>,
 ): Promise<Policy | null> {
-	if (isSupabaseAdminConfigured) {
-		try {
-			const supabase = await getSupabaseAdmin();
-			const { data, error } = await supabase
-				.from("policies")
-				.update({ ...updates, updatedAt: new Date().toISOString() })
-				.eq("id", id)
-				.select()
-				.single();
-			if (!error && data) return data as Policy;
-			console.warn(
-				"[data-service] Supabase updatePolicy failed, falling back to JSON:",
-				error?.message,
-			);
-		} catch (err) {
-			console.warn(
-				"[data-service] Supabase updatePolicy exception, falling back to JSON:",
-				err,
-			);
-		}
-	} else if (isSupabaseConfigured) {
-		console.warn(
-			"[data-service] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for updatePolicy",
-		);
-	}
-
 	const policies = await readJsonFile<PolicyWithTrash[]>(POLICIES_FILE, []);
 	const idx = policies.findIndex((p) => p.id === id);
 	if (idx === -1) return null;
@@ -425,27 +221,6 @@ export async function updatePolicy(
 }
 
 export async function deletePolicy(id: string): Promise<boolean> {
-	if (isSupabaseAdminConfigured) {
-		try {
-			const supabase = await getSupabaseAdmin();
-			const { error } = await supabase.from("policies").delete().eq("id", id);
-			if (!error) return true;
-			console.warn(
-				"[data-service] Supabase deletePolicy failed, falling back to JSON:",
-				error?.message,
-			);
-		} catch (err) {
-			console.warn(
-				"[data-service] Supabase deletePolicy exception, falling back to JSON:",
-				err,
-			);
-		}
-	} else if (isSupabaseConfigured) {
-		console.warn(
-			"[data-service] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for deletePolicy",
-		);
-	}
-
 	const policies = await readJsonFile<Policy[]>(POLICIES_FILE, []);
 	const idx = policies.findIndex((p) => p.id === id);
 	if (idx === -1) return false;
@@ -535,31 +310,6 @@ async function readSourceReviewsFromJson(): Promise<SourceReview[]> {
 export async function getSourceReviews(filters?: {
 	status?: SourceReviewStatus;
 }): Promise<SourceReview[]> {
-	if (isSupabaseAdminConfigured) {
-		try {
-			const supabase = await getSupabaseAdmin();
-			let query = supabase.from("source_reviews").select("*");
-			if (filters?.status) query = query.eq("status", filters.status);
-			const { data, error } = await query.order("discoveredAt", {
-				ascending: false,
-			});
-			if (!error && data) return data as SourceReview[];
-			console.warn(
-				"[data-service] Supabase getSourceReviews failed, falling back to JSON:",
-				error?.message,
-			);
-		} catch (err) {
-			console.warn(
-				"[data-service] Supabase getSourceReviews exception, falling back to JSON:",
-				err,
-			);
-		}
-	} else if (isSupabaseConfigured) {
-		console.warn(
-			"[data-service] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for getSourceReviews",
-		);
-	}
-
 	let reviews = await readSourceReviewsFromJson();
 	if (filters?.status) {
 		reviews = reviews.filter((review) => review.status === filters.status);
@@ -573,32 +323,6 @@ export async function getSourceReviews(filters?: {
 export async function getSourceReviewById(
 	id: string,
 ): Promise<SourceReview | null> {
-	if (isSupabaseAdminConfigured) {
-		try {
-			const supabase = await getSupabaseAdmin();
-			const { data, error } = await supabase
-				.from("source_reviews")
-				.select("*")
-				.eq("id", id)
-				.maybeSingle();
-			if (!error && data) return data as SourceReview;
-			if (!error) return null;
-			console.warn(
-				"[data-service] Supabase getSourceReviewById failed, falling back to JSON:",
-				error?.message,
-			);
-		} catch (err) {
-			console.warn(
-				"[data-service] Supabase getSourceReviewById exception, falling back to JSON:",
-				err,
-			);
-		}
-	} else if (isSupabaseConfigured) {
-		console.warn(
-			"[data-service] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for getSourceReviewById",
-		);
-	}
-
 	const reviews = await readSourceReviewsFromJson();
 	return reviews.find((review) => review.id === id) || null;
 }
@@ -608,37 +332,6 @@ export async function createSourceReview(
 ): Promise<SourceReview> {
 	if (await sourceUrlExists(review.sourceUrl)) {
 		throw new DuplicatePolicyError(review.sourceUrl);
-	}
-
-	if (isSupabaseAdminConfigured) {
-		try {
-			const supabase = await getSupabaseAdmin();
-			const { data, error } = await supabase
-				.from("source_reviews")
-				.insert(review)
-				.select()
-				.single();
-			if (!error && data) return data as SourceReview;
-			if (isSupabaseDuplicateError(error?.message)) {
-				throw new DuplicatePolicyError(review.sourceUrl);
-			}
-			console.warn(
-				"[data-service] Supabase createSourceReview failed, falling back to JSON:",
-				error?.message,
-			);
-		} catch (err) {
-			if (err instanceof DuplicatePolicyError) {
-				throw err;
-			}
-			console.warn(
-				"[data-service] Supabase createSourceReview exception, falling back to JSON:",
-				err,
-			);
-		}
-	} else if (isSupabaseConfigured) {
-		console.warn(
-			"[data-service] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for createSourceReview",
-		);
 	}
 
 	const reviews = await readSourceReviewsFromJson();
@@ -661,32 +354,6 @@ export async function updateSourceReview(
 ): Promise<SourceReview | null> {
 	const nextUpdates = { ...updates, updatedAt: new Date().toISOString() };
 
-	if (isSupabaseAdminConfigured) {
-		try {
-			const supabase = await getSupabaseAdmin();
-			const { data, error } = await supabase
-				.from("source_reviews")
-				.update(nextUpdates)
-				.eq("id", id)
-				.select()
-				.single();
-			if (!error && data) return data as SourceReview;
-			console.warn(
-				"[data-service] Supabase updateSourceReview failed, falling back to JSON:",
-				error?.message,
-			);
-		} catch (err) {
-			console.warn(
-				"[data-service] Supabase updateSourceReview exception, falling back to JSON:",
-				err,
-			);
-		}
-	} else if (isSupabaseConfigured) {
-		console.warn(
-			"[data-service] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for updateSourceReview",
-		);
-	}
-
 	const reviews = await readSourceReviewsFromJson();
 	const idx = reviews.findIndex((review) => review.id === id);
 	if (idx === -1) return null;
@@ -696,30 +363,6 @@ export async function updateSourceReview(
 }
 
 export async function deleteSourceReview(id: string): Promise<boolean> {
-	if (isSupabaseAdminConfigured) {
-		try {
-			const supabase = await getSupabaseAdmin();
-			const { error } = await supabase
-				.from("source_reviews")
-				.delete()
-				.eq("id", id);
-			if (!error) return true;
-			console.warn(
-				"[data-service] Supabase deleteSourceReview failed, falling back to JSON:",
-				error?.message,
-			);
-		} catch (err) {
-			console.warn(
-				"[data-service] Supabase deleteSourceReview exception, falling back to JSON:",
-				err,
-			);
-		}
-	} else if (isSupabaseConfigured) {
-		console.warn(
-			"[data-service] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for deleteSourceReview",
-		);
-	}
-
 	const reviews = await readSourceReviewsFromJson();
 	const filtered = reviews.filter((review) => review.id !== id);
 	if (filtered.length === reviews.length) return false;
@@ -763,32 +406,6 @@ export async function getAgencies(
 ): Promise<Agency[]> {
 	const access = options.access ?? "public";
 
-	if (isSupabaseConfigured) {
-		try {
-			const supabase = isSupabaseAdminConfigured
-				? await getSupabaseAdmin()
-				: await getSupabase();
-			let query = supabase.from("agencies").select("*");
-			if (filters?.level) query = query.eq("level", filters.level);
-			if (filters?.jurisdiction)
-				query = query.eq("jurisdiction", filters.jurisdiction);
-			const { data, error } = await query.order("name");
-			if (!error && data) {
-				const agencies = data as Agency[];
-				return access === "admin" ? agencies : toPublicAgencies(agencies);
-			}
-			console.warn(
-				"[data-service] Supabase getAgencies failed, falling back to JSON:",
-				error?.message,
-			);
-		} catch (err) {
-			console.warn(
-				"[data-service] Supabase getAgencies exception, falling back to JSON:",
-				err,
-			);
-		}
-	}
-
 	let agencies = await readJsonFile<Agency[]>(AGENCIES_FILE, []);
 	if (filters?.level) {
 		agencies = agencies.filter((a) => a.level === filters.level);
@@ -804,26 +421,6 @@ export async function getCommonwealthAgencies(
 	options: DataServiceOptions = {},
 ): Promise<Agency[]> {
 	const access = options.access ?? "public";
-
-	if (isSupabaseConfigured) {
-		try {
-			const supabase = isSupabaseAdminConfigured
-				? await getSupabaseAdmin()
-				: await getSupabase();
-			const { data, error } = await supabase
-				.from("agencies")
-				.select("*")
-				.eq("level", "federal")
-				.order("name");
-			if (!error && data) {
-				const agencies = data as Agency[];
-				return access === "admin" ? agencies : toPublicAgencies(agencies);
-			}
-		} catch {
-			// fall through
-		}
-	}
-
 	const agencies = await readJsonFile<Agency[]>(COMMONWEALTH_AGENCIES_FILE, []);
 	return access === "admin" ? agencies : toPublicAgencies(agencies);
 }
@@ -833,28 +430,6 @@ export async function getCommonwealthAgencies(
 // ---------------------------------------------------------------------------
 
 async function getManualTimelineEvents(): Promise<TimelineEvent[]> {
-	if (isSupabaseConfigured) {
-		try {
-			const supabase = isSupabaseAdminConfigured
-				? await getSupabaseAdmin()
-				: await getSupabase();
-			const { data, error } = await supabase
-				.from("timeline_events")
-				.select("*")
-				.order("date", { ascending: true });
-			if (!error && data) return data as TimelineEvent[];
-			console.warn(
-				"[data-service] Supabase getManualTimelineEvents failed, falling back to JSON:",
-				error?.message,
-			);
-		} catch (err) {
-			console.warn(
-				"[data-service] Supabase getManualTimelineEvents exception, falling back to JSON:",
-				err,
-			);
-		}
-	}
-
 	return readJsonFile<TimelineEvent[]>(TIMELINE_FILE, []);
 }
 
@@ -866,37 +441,6 @@ export async function createTimelineEvent(
 ): Promise<TimelineEvent> {
 	if (event.sourceUrl && (await sourceUrlExists(event.sourceUrl, options))) {
 		throw new DuplicatePolicyError(event.sourceUrl);
-	}
-
-	if (isSupabaseAdminConfigured) {
-		try {
-			const supabase = await getSupabaseAdmin();
-			const { data, error } = await supabase
-				.from("timeline_events")
-				.insert(event)
-				.select()
-				.single();
-			if (!error && data) return data as TimelineEvent;
-			if (isSupabaseDuplicateError(error?.message)) {
-				throw new DuplicatePolicyError(event.id);
-			}
-			console.warn(
-				"[data-service] Supabase createTimelineEvent failed, falling back to JSON:",
-				error?.message,
-			);
-		} catch (err) {
-			if (err instanceof DuplicatePolicyError) {
-				throw err;
-			}
-			console.warn(
-				"[data-service] Supabase createTimelineEvent exception, falling back to JSON:",
-				err,
-			);
-		}
-	} else if (isSupabaseConfigured) {
-		console.warn(
-			"[data-service] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for createTimelineEvent",
-		);
 	}
 
 	const events = await readJsonFile<TimelineEvent[]>(TIMELINE_FILE, []);
@@ -966,95 +510,51 @@ export async function getTimelineEvents(
 	);
 }
 
-export async function logMcpAuditEvent(log: McpAuditLog): Promise<void> {
-	if (isSupabaseAdminConfigured) {
-		try {
-			const supabase = await getSupabaseAdmin();
-			const { error } = await supabase.from("mcp_audit_log").insert(log);
-			if (!error) return;
-			console.warn(
-				"[data-service] Supabase logMcpAuditEvent failed, falling back to JSON:",
-				error?.message,
-			);
-		} catch (err) {
-			console.warn(
-				"[data-service] Supabase logMcpAuditEvent exception, falling back to JSON:",
-				err,
-			);
-		}
-	} else if (isSupabaseConfigured) {
-		console.warn(
-			"[data-service] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for logMcpAuditEvent",
+// ---------------------------------------------------------------------------
+// Developments feed + collection metadata
+// ---------------------------------------------------------------------------
+
+export async function getDevelopments(filters?: {
+	jurisdiction?: string;
+	status?: string;
+	limit?: number;
+}): Promise<Development[]> {
+	let developments = await readJsonFile<Development[]>(DEVELOPMENTS_FILE, []);
+
+	if (filters?.jurisdiction) {
+		developments = developments.filter(
+			(d) => d.jurisdiction === filters.jurisdiction,
 		);
 	}
+	if (filters?.status) {
+		developments = developments.filter((d) => d.status === filters.status);
+	}
 
+	developments = developments.sort(
+		(a, b) =>
+			new Date(b.publishedAt || b.detectedAt).getTime() -
+			new Date(a.publishedAt || a.detectedAt).getTime(),
+	);
+
+	return filters?.limit ? developments.slice(0, filters.limit) : developments;
+}
+
+const EMPTY_META: CollectionMeta = {
+	lastCollectedAt: null,
+	lastReviewedAt: null,
+	collector: { runCount: 0, lastRunSources: [], lastRunErrors: [] },
+};
+
+export async function getCollectionMeta(): Promise<CollectionMeta> {
+	return readJsonFile<CollectionMeta>(META_FILE, EMPTY_META);
+}
+
+// ---------------------------------------------------------------------------
+// MCP audit logging
+// ---------------------------------------------------------------------------
+
+export async function logMcpAuditEvent(log: McpAuditLog): Promise<void> {
 	const logs = await readJsonFile<McpAuditLog[]>(MCP_AUDIT_LOG_FILE, []);
 	logs.unshift(log);
 	await writeJsonFile(MCP_AUDIT_LOG_FILE, logs.slice(0, 500));
-}
-
-// ---------------------------------------------------------------------------
-// Scraper run logging
-// ---------------------------------------------------------------------------
-
-const SCRAPER_RUNS_FILE = path.join(process.cwd(), "data", "scraper-runs.json");
-
-export async function logScraperRun(run: ScraperRunLog): Promise<void> {
-	if (isSupabaseAdminConfigured) {
-		try {
-			const supabase = await getSupabaseAdmin();
-			const { error } = await supabase.from("scraper_runs").insert(run);
-			if (!error) return;
-			console.warn(
-				"[data-service] Supabase logScraperRun failed, falling back to JSON:",
-				error?.message,
-			);
-		} catch (err) {
-			console.warn(
-				"[data-service] Supabase logScraperRun exception, falling back to JSON:",
-				err,
-			);
-		}
-	} else if (isSupabaseConfigured) {
-		console.warn(
-			"[data-service] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for logScraperRun",
-		);
-	}
-
-	const runs = await readJsonFile<ScraperRunLog[]>(SCRAPER_RUNS_FILE, []);
-	runs.unshift(run);
-	// Keep only the last 100 runs in JSON to prevent unbounded growth
-	await writeJsonFile(SCRAPER_RUNS_FILE, runs.slice(0, 100));
-}
-
-export async function getRecentScraperRuns(
-	limit = 20,
-): Promise<ScraperRunLog[]> {
-	if (isSupabaseAdminConfigured) {
-		try {
-			const supabase = await getSupabaseAdmin();
-			const { data, error } = await supabase
-				.from("scraper_runs")
-				.select("*")
-				.order("timestamp", { ascending: false })
-				.limit(limit);
-			if (!error && data) return data as ScraperRunLog[];
-			console.warn(
-				"[data-service] Supabase getRecentScraperRuns failed, falling back to JSON:",
-				error?.message,
-			);
-		} catch (err) {
-			console.warn(
-				"[data-service] Supabase getRecentScraperRuns exception, falling back to JSON:",
-				err,
-			);
-		}
-	} else if (isSupabaseConfigured) {
-		console.warn(
-			"[data-service] SUPABASE_SERVICE_ROLE_KEY is not configured; falling back to JSON for getRecentScraperRuns",
-		);
-	}
-
-	const runs = await readJsonFile<ScraperRunLog[]>(SCRAPER_RUNS_FILE, []);
-	return runs.slice(0, limit);
 }

@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { analyseContentRelevance } from "@/lib/claude";
+import { analyseContentRelevance } from "@/lib/analysis";
 import { cleanHtmlContent } from "@/lib/utils";
 import {
 	createPolicy,

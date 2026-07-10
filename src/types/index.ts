@@ -32,6 +32,8 @@ export const POLICY_STATUSES = [
 	"proposed",
 	"active",
 	"amended",
+	"superseded",
+	"closed",
 	"repealed",
 	"trashed",
 ] as const;
@@ -65,6 +67,8 @@ export interface Policy {
 	tags: string[];
 	createdAt: Date | string;
 	updatedAt: Date | string;
+	supersededBy?: string;
+	lastReviewedAt?: string;
 }
 
 export interface Agency {
@@ -83,18 +87,6 @@ export interface Agency {
 	accountableOfficial?: string;
 	contactEmail?: string;
 	auditFindings?: string;
-}
-
-export interface NewsItem {
-	id: string;
-	title: string;
-	summary: string;
-	source: string;
-	sourceUrl: string;
-	publishedDate: Date | string;
-	relevanceScore: number;
-	relatedPolicies: string[];
-	tags: string[];
 }
 
 export interface TimelineEvent {
@@ -145,6 +137,50 @@ export interface SourceReview {
 	publishedAt?: string;
 	rejectionReason?: string;
 	updatedAt: string;
+}
+
+// Developments radar feed — automated detections from the collector.
+// Distinct from the curated policy registry: safe to auto-publish because
+// every entry carries provenance and a confidence label.
+
+export const DEVELOPMENT_STATUSES = [
+	"detected",
+	"promoted",
+	"dismissed",
+] as const;
+
+export type DevelopmentStatus = (typeof DEVELOPMENT_STATUSES)[number];
+
+export interface Development {
+	id: string;
+	title: string;
+	url: string;
+	sourceId: string;
+	sourceName: string;
+	jurisdiction: Jurisdiction;
+	publishedAt?: string;
+	detectedAt: string;
+	summary?: string;
+	relevanceScore: number;
+	classification: "ai" | "heuristic" | "curated";
+	status: DevelopmentStatus;
+	relatedPolicyId?: string;
+}
+
+export interface CollectionMeta {
+	lastCollectedAt: string | null;
+	lastReviewedAt: string | null;
+	collector: {
+		runCount: number;
+		lastRunSources: string[];
+		lastRunErrors: string[];
+	};
+}
+
+export function isDevelopmentStatus(
+	value: string | null | undefined,
+): value is DevelopmentStatus {
+	return isOneOf(DEVELOPMENT_STATUSES, value);
 }
 
 export interface McpAuditLog {
@@ -328,6 +364,8 @@ export const POLICY_STATUS_NAMES: Record<PolicyStatus, string> = {
 	proposed: "Proposed",
 	active: "Active",
 	amended: "Amended",
+	superseded: "Superseded",
+	closed: "Closed",
 	repealed: "Repealed",
 	trashed: "Trashed",
 };
@@ -337,106 +375,3 @@ export function getPolicyStatusName(status: string | null | undefined): string {
 	return isPolicyStatus(status) ? POLICY_STATUS_NAMES[status] : status;
 }
 
-// AI Review Pipeline Types
-
-export type PipelineStage =
-	| "research"
-	| "research_complete"
-	| "verification"
-	| "verification_complete"
-	| "hitl_review"
-	| "implementation"
-	| "complete"
-	| "failed";
-
-export type FindingStatus =
-	| "discovered"
-	| "verified"
-	| "rejected"
-	| "implemented";
-
-export type VerificationOutcome =
-	| "confirmed"
-	| "partially_confirmed"
-	| "unverifiable"
-	| "contradicted";
-
-export interface ResearchFinding {
-	id: string;
-	pipelineRunId: string;
-	title: string;
-	summary: string;
-	sourceUrl: string;
-	sourceContent: string;
-	discoveredAt: string;
-	status: FindingStatus;
-	relevanceScore: number;
-	suggestedType: PolicyType | null;
-	suggestedJurisdiction: Jurisdiction | null;
-	tags: string[];
-	agencies: string[];
-	keyDates: string[];
-	relatedTopics: string[];
-	isNewPolicy: boolean;
-	existingPolicyId?: string;
-	changeDescription?: string;
-}
-
-export interface VerificationResult {
-	id: string;
-	findingId: string;
-	pipelineRunId: string;
-	verifiedAt: string;
-	outcome: VerificationOutcome;
-	confidenceScore: number;
-	sourcesCrossReferenced: string[];
-	verificationNotes: string;
-	factualIssues: string[];
-	suggestedCorrections: string[];
-}
-
-export interface ScraperRunLog {
-	id: string;
-	timestamp: string;
-	sourceId: string;
-	sourceName: string;
-	linksFound: number;
-	policiesCreated: number;
-	errors: string[];
-	durationMs: number;
-}
-
-export interface PipelineRun {
-	id: string;
-	startedAt: string;
-	completedAt?: string;
-	stage: PipelineStage;
-	sourcesScanned: string[];
-	findingsCount: number;
-	verifiedCount: number;
-	implementedCount: number;
-	rejectedCount: number;
-	hitlRequired: boolean;
-	hitlApprovedAt?: string;
-	hitlApprovedBy?: string;
-	hitlNotes?: string;
-	error?: string;
-}
-
-export const PIPELINE_STAGE_NAMES: Record<PipelineStage, string> = {
-	research: "Researching",
-	research_complete: "Research Complete",
-	verification: "Verifying",
-	verification_complete: "Verification Complete",
-	hitl_review: "Awaiting Review",
-	implementation: "Implementing",
-	complete: "Complete",
-	failed: "Failed",
-};
-
-export const VERIFICATION_OUTCOME_NAMES: Record<VerificationOutcome, string> = {
-	confirmed: "Confirmed",
-	partially_confirmed: "Partially Confirmed",
-	unverifiable: "Unverifiable",
-	contradicted: "Contradicted",
-};

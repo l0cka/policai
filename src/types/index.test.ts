@@ -3,6 +3,7 @@ import {
 	getJurisdictionName,
 	getPolicyStatusName,
 	getPolicyTypeName,
+	isDevelopmentStatus,
 	isPolicyType,
 	isSourceReviewEntryKind,
 	isSourceReviewStatus,
@@ -34,6 +35,20 @@ describe("domain type helpers", () => {
 		expect(isSourceReviewStatus("pending")).toBe(false);
 		expect(isSourceReviewEntryKind("timeline_event")).toBe(true);
 		expect(isSourceReviewEntryKind("news")).toBe(false);
+	});
+
+	it("recognises lifecycle statuses for stale instruments", () => {
+		expect(normalizePolicyStatus("superseded")).toBe("superseded");
+		expect(normalizePolicyStatus("closed")).toBe("closed");
+		expect(getPolicyStatusName("superseded")).toBe("Superseded");
+		expect(getPolicyStatusName("closed")).toBe("Closed");
+	});
+
+	it("recognises development feed statuses", () => {
+		expect(isDevelopmentStatus("detected")).toBe(true);
+		expect(isDevelopmentStatus("promoted")).toBe(true);
+		expect(isDevelopmentStatus("dismissed")).toBe(true);
+		expect(isDevelopmentStatus("archived")).toBe(false);
 	});
 
 	it("returns display names and safe fallbacks", () => {

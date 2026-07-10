@@ -1,31 +1,25 @@
-import { NextResponse } from 'next/server';
-import { getLatestPipelineRun } from '@/lib/agents/pipeline-storage';
-import { getRecentScraperRuns } from '@/lib/data-service';
+import { NextResponse } from "next/server";
+import { getCollectionMeta, getDevelopments } from "@/lib/data-service";
 
 export async function GET() {
-  const [latestPipeline, recentScrapes] = await Promise.all([
-    getLatestPipelineRun(),
-    getRecentScraperRuns(1),
-  ]);
+	const [meta, recentDevelopments] = await Promise.all([
+		getCollectionMeta(),
+		getDevelopments({ limit: 1 }),
+	]);
 
-  return NextResponse.json({
-    lastPipelineRun: latestPipeline
-      ? {
-          id: latestPipeline.id,
-          stage: latestPipeline.stage,
-          startedAt: latestPipeline.startedAt,
-          completedAt: latestPipeline.completedAt,
-          findingsCount: latestPipeline.findingsCount,
-          implementedCount: latestPipeline.implementedCount,
-        }
-      : null,
-    lastScrapeRun: recentScrapes[0]
-      ? {
-          timestamp: recentScrapes[0].timestamp,
-          sourceName: recentScrapes[0].sourceName,
-          policiesCreated: recentScrapes[0].policiesCreated,
-        }
-      : null,
-    success: true,
-  });
+	const latest = recentDevelopments[0];
+
+	return NextResponse.json({
+		lastCollectedAt: meta.lastCollectedAt,
+		lastReviewedAt: meta.lastReviewedAt,
+		latestDevelopment: latest
+			? {
+					id: latest.id,
+					title: latest.title,
+					url: latest.url,
+					detectedAt: latest.detectedAt,
+				}
+			: null,
+		success: true,
+	});
 }
