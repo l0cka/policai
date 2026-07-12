@@ -1,11 +1,52 @@
 {
-  "lastCollectedAt": "2026-07-10T12:31:49.593Z",
+  "lastCollectedAt": "2026-07-12T12:01:59.304Z",
   "lastReviewedAt": "2026-07-10T00:00:00.000Z",
   "collector": {
-    "runCount": 1,
+    "runCount": 2,
     "lastRunSources": [
-      "apra-rss"
+      "dta-media",
+      "digital-gov-ai",
+      "disr-news",
+      "naic-news",
+      "finance-news",
+      "agd-news",
+      "treasury-news",
+      "csiro-news",
+      "oaic-media",
+      "accc-rss",
+      "apra-rss",
+      "asic-newsroom",
+      "esafety-media",
+      "pc-media",
+      "ahrc-media",
+      "fedcourt-practice-notes",
+      "nsw-sc-practice-notes",
+      "vic-sc-practice-notes",
+      "qld-courts-news",
+      "nsw-digital-ai",
+      "vic-ai",
+      "qld-qgea-ai",
+      "wa-ai-policy",
+      "sa-office-for-ai",
+      "tas-dpac-policies",
+      "act-ai-policy",
+      "nt-ai-assurance"
     ],
-    "lastRunErrors": []
+    "lastRunErrors": [
+      "dta-media: The operation was aborted due to timeout",
+      "digital-gov-ai: The operation was aborted due to timeout",
+      "disr-news: The operation was aborted due to timeout",
+      "naic-news: The operation was aborted due to timeout",
+      "finance-news: The operation was aborted due to timeout",
+      "agd-news: The operation was aborted due to timeout",
+      "treasury-news: HTTP 404",
+      "esafety-media: The operation was aborted due to timeout",
+      "ahrc-media: HTTP 403",
+      "fedcourt-practice-notes: HTTP 403",
+      "qld-courts-news: HTTP 404",
+      "tas-dpac-policies: HTTP 403",
+      "act-ai-policy: HTTP 403",
+      "nt-ai-assurance: HTTP 403"
+    ]
   }
 }

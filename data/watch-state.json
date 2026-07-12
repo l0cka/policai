@@ -1,6 +1,87 @@
 {
-  "seen": {},
+  "seen": {
+    "https://www.pc.gov.au/ai-transparency/": {
+      "firstSeenAt": "2026-07-12T12:01:59.304Z",
+      "sourceId": "pc-media"
+    },
+    "https://www.digital.nsw.gov.au/node/957": {
+      "firstSeenAt": "2026-07-12T12:01:59.304Z",
+      "sourceId": "nsw-digital-ai"
+    },
+    "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks/ai-review-committee": {
+      "firstSeenAt": "2026-07-12T12:01:59.304Z",
+      "sourceId": "nsw-digital-ai"
+    },
+    "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-strategy-and-ethics-policy": {
+      "firstSeenAt": "2026-07-12T12:01:59.304Z",
+      "sourceId": "nsw-digital-ai"
+    },
+    "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks": {
+      "firstSeenAt": "2026-07-12T12:01:59.304Z",
+      "sourceId": "nsw-digital-ai"
+    },
+    "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-guidance-and-tools": {
+      "firstSeenAt": "2026-07-12T12:01:59.304Z",
+      "sourceId": "nsw-digital-ai"
+    },
+    "https://www.finance.gov.au/government/public-data/data-and-digital-ministers-meeting/national-framework-assurance-artificial-intelligence-government": {
+      "firstSeenAt": "2026-07-12T12:01:59.304Z",
+      "sourceId": "vic-ai"
+    },
+    "https://prov.vic.gov.au/recordkeeping-government/a-z-topics/AI": {
+      "firstSeenAt": "2026-07-12T12:01:59.304Z",
+      "sourceId": "vic-ai"
+    },
+    "https://www.vic.gov.au/sites/default/files/2024-11/Generative-AI-Guideline-%281%29.pdf": {
+      "firstSeenAt": "2026-07-12T12:01:59.304Z",
+      "sourceId": "vic-ai"
+    },
+    "https://forms.digital.wa.gov.au/250231755970861": {
+      "firstSeenAt": "2026-07-12T12:01:59.304Z",
+      "sourceId": "wa-ai-policy"
+    },
+    "https://www.finance.gov.au/sites/default/files/2024-06/National-framework-for-the-assurance-of-AI-in-government.pdf": {
+      "firstSeenAt": "2026-07-12T12:01:59.304Z",
+      "sourceId": "wa-ai-policy"
+    },
+    "https://www.wa.gov.au/organisation/department-of-the-premier-and-cabinet/office-of-digital-government/western-australian-artificial-intelligence-advisory-board": {
+      "firstSeenAt": "2026-07-12T12:01:59.304Z",
+      "sourceId": "wa-ai-policy"
+    },
+    "https://www.wa.gov.au/system/files/2025-07/ai_policyv2.pdf": {
+      "firstSeenAt": "2026-07-12T12:01:59.304Z",
+      "sourceId": "wa-ai-policy"
+    },
+    "https://www.wa.gov.au/organisation/department-of-the-premier-and-cabinet/office-of-digital-government/artificial-intelligence-governance-toolkit-wa-public-sector-entities": {
+      "firstSeenAt": "2026-07-12T12:01:59.304Z",
+      "sourceId": "wa-ai-policy"
+    },
+    "https://www.ai.sa.gov.au/ai-knowledge-centre": {
+      "firstSeenAt": "2026-07-12T12:01:59.304Z",
+      "sourceId": "sa-office-for-ai"
+    },
+    "https://www.ai.sa.gov.au/ai-knowledge-centre/policies,-standards-and-guidelines": {
+      "firstSeenAt": "2026-07-12T12:01:59.304Z",
+      "sourceId": "sa-office-for-ai"
+    },
+    "https://www.ai.sa.gov.au/who-we-are/about-our-work/strategies": {
+      "firstSeenAt": "2026-07-12T12:01:59.304Z",
+      "sourceId": "sa-office-for-ai"
+    }
+  },
   "lastCheckedBySource": {
-    "apra-rss": "2026-07-10T12:31:49.593Z"
+    "apra-rss": "2026-07-12T12:01:59.304Z",
+    "csiro-news": "2026-07-12T12:01:59.304Z",
+    "oaic-media": "2026-07-12T12:01:59.304Z",
+    "accc-rss": "2026-07-12T12:01:59.304Z",
+    "asic-newsroom": "2026-07-12T12:01:59.304Z",
+    "pc-media": "2026-07-12T12:01:59.304Z",
+    "nsw-sc-practice-notes": "2026-07-12T12:01:59.304Z",
+    "vic-sc-practice-notes": "2026-07-12T12:01:59.304Z",
+    "nsw-digital-ai": "2026-07-12T12:01:59.304Z",
+    "vic-ai": "2026-07-12T12:01:59.304Z",
+    "qld-qgea-ai": "2026-07-12T12:01:59.304Z",
+    "wa-ai-policy": "2026-07-12T12:01:59.304Z",
+    "sa-office-for-ai": "2026-07-12T12:01:59.304Z"
   }
 }
