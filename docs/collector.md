@@ -51,7 +51,7 @@ The push triggers a Vercel deployment, so the site republishes with the new data
 
 - `ANTHROPIC_API_KEY` or `OPENROUTER_API_KEY` secret (optional, enables AI classification)
 - `AI_MODEL` repository variable (optional model override)
-- The "Protect main" ruleset must list the **GitHub Actions** app as a bypass actor (`bypass_mode: always`), otherwise the workflow's direct push to `main` is rejected with `GH013: Repository rule violations`. The safety story does not depend on the ruleset here: the registry-guard step and CI both enforce that automation never touches `policies.json`.
+- `COLLECTOR_DEPLOY_KEY` secret — private half of the repo's write deploy key ("collector (collect.yml push)"). Checkout uses it (`ssh-key:`) so the push authenticates as the deploy key, and the "Protect main" ruleset lists **Deploy keys** as a bypass actor (`bypass_mode: always`). Without this pair the push is rejected with `GH013: Repository rule violations` — the default `GITHUB_TOKEN` cannot be a bypass actor on a user-owned repo. The safety story does not depend on the ruleset here: the registry-guard step and CI both enforce that automation never touches `policies.json`.
 
 Without secrets the workflow still runs in heuristic mode.
 
@@ -75,7 +75,7 @@ npm run collect -- --dry-run --source=<id>
 
 ## Troubleshooting
 
-- **The workflow fails at `git push` with `GH013: Repository rule violations`** — the GitHub Actions app is missing from the "Protect main" ruleset bypass list. Re-add it (Settings → Rules → Rulesets → Protect main → Bypass list) or via `gh api -X PUT repos/l0cka/policai/rulesets/<id>` with the app in `bypass_actors`.
+- **The workflow fails at `git push` with `GH013: Repository rule violations`** — the deploy-key bypass is broken: either the `COLLECTOR_DEPLOY_KEY` secret / write deploy key was removed, or "Deploy keys" is missing from the "Protect main" ruleset bypass list (Settings → Rules → Rulesets → Protect main → Bypass list, or `gh api -X PUT repos/l0cka/policai/rulesets/<id>` with `{"actor_type": "DeployKey", "bypass_mode": "always"}` in `bypass_actors`).
 - **A source keeps failing** — check `meta.json` → `collector.lastRunErrors`. 403s usually mean bot protection; try from a different network, or disable the source with `enabled: false` and a `notes` explanation.
 - **Nothing new detected** — expected on most days; the feed only grows when monitored pages change. Check `watch-state.json` to confirm URLs are being seen.
 - **Validation fails in CI** — run `npm run validate:data` locally; it prints every structural error with the offending record id.
