@@ -1,5 +1,7 @@
 # Policai
 
+[![Daily collection](https://github.com/l0cka/policai/actions/workflows/collect.yml/badge.svg)](https://github.com/l0cka/policai/actions/workflows/collect.yml)
+
 Policai is an Australian AI policy tracker. It maintains a curated register of AI policy, regulation, governance and court guidance across federal and state/territory jurisdictions, and automatically detects new developments from official government sources every day.
 
 Product surface:

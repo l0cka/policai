@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added failure alerting to the daily collector workflow: any failed run now opens (or comments on) a `collector-failure` issue, and the README carries a live workflow status badge.
 - Added a dedicated `/courts` page tracking judicial AI practice notes and practice directions across Australian jurisdictions.
 - Added `practice_note` as a new policy type so court instruments are a first-class category alongside legislation, guidelines, frameworks, and standards.
 - Seeded five court practice notes: Federal Court GPN-AI, Federal Circuit & Family Court practice direction, NSW SC Gen 23, Vic Supreme Court guidelines, and Qld Supreme Court practice direction.
@@ -44,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Fixed the daily collector's push to `main` being rejected by the branch-protection ruleset (every scheduled run since 10 July had collected data and then failed to land it); the GitHub Actions app is now a documented bypass actor and the requirement is recorded in the collector docs.
 - Improved blog prose readability in dark mode.
 - Removed unsafe domain casts in pipeline/API/UI paths by normalising untrusted type and jurisdiction strings.
 

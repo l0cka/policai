@@ -43,6 +43,7 @@ Note: several federal sites (dta.gov.au, industry.gov.au, ag.gov.au, and others 
 2. `npm run validate:data`
 3. Guard: fail if `public/data/policies.json` changed
 4. Commit `developments.json`, `meta.json`, `watch-state.json`, `source-reviews.json` and push
+5. On any failure: open (or comment on) an issue labelled `collector-failure` so scheduled breakage is never silent
 
 The push triggers a Vercel deployment, so the site republishes with the new data. Manual runs: Actions → "Collect AI policy developments" → Run workflow (optionally with a single source id).
 
@@ -50,6 +51,7 @@ The push triggers a Vercel deployment, so the site republishes with the new data
 
 - `ANTHROPIC_API_KEY` or `OPENROUTER_API_KEY` secret (optional, enables AI classification)
 - `AI_MODEL` repository variable (optional model override)
+- The "Protect main" ruleset must list the **GitHub Actions** app as a bypass actor (`bypass_mode: always`), otherwise the workflow's direct push to `main` is rejected with `GH013: Repository rule violations`. The safety story does not depend on the ruleset here: the registry-guard step and CI both enforce that automation never touches `policies.json`.
 
 Without secrets the workflow still runs in heuristic mode.
 
@@ -73,6 +75,7 @@ npm run collect -- --dry-run --source=<id>
 
 ## Troubleshooting
 
+- **The workflow fails at `git push` with `GH013: Repository rule violations`** — the GitHub Actions app is missing from the "Protect main" ruleset bypass list. Re-add it (Settings → Rules → Rulesets → Protect main → Bypass list) or via `gh api -X PUT repos/l0cka/policai/rulesets/<id>` with the app in `bypass_actors`.
 - **A source keeps failing** — check `meta.json` → `collector.lastRunErrors`. 403s usually mean bot protection; try from a different network, or disable the source with `enabled: false` and a `notes` explanation.
 - **Nothing new detected** — expected on most days; the feed only grows when monitored pages change. Check `watch-state.json` to confirm URLs are being seen.
 - **Validation fails in CI** — run `npm run validate:data` locally; it prints every structural error with the offending record id.
