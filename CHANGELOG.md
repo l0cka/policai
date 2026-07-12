@@ -45,7 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Fixed the daily collector's push to `main` being rejected by the branch-protection ruleset (every scheduled run since 10 July had collected data and then failed to land it); the GitHub Actions app is now a documented bypass actor and the requirement is recorded in the collector docs.
+- Fixed the daily collector's push to `main` being rejected by the branch-protection ruleset (every scheduled run since 10 July had collected data and then failed to land it); the workflow now pushes via a dedicated write deploy key that is a ruleset bypass actor, and the setup is recorded in the collector docs.
 - Improved blog prose readability in dark mode.
 - Removed unsafe domain casts in pipeline/API/UI paths by normalising untrusted type and jurisdiction strings.
 

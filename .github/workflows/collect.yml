@@ -26,6 +26,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          # Fetch and push over SSH as the collector deploy key, which is a
+          # bypass actor on the "Protect main" ruleset. The default
+          # GITHUB_TOKEN cannot push to main — see docs/collector.md.
+          ssh-key: ${{ secrets.COLLECTOR_DEPLOY_KEY }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v5
@@ -73,8 +78,6 @@ jobs:
           git config user.email "policai-collector[bot]@users.noreply.github.com"
           git add public/data/developments.json public/data/meta.json data/watch-state.json data/source-reviews.json
           git commit -m "chore(data): daily collection $(date -u +%F)"
-          # Requires the GitHub Actions app as a bypass actor on the
-          # "Protect main" ruleset — see docs/collector.md.
           git push
 
       - name: Alert on failure
