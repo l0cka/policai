@@ -1,8 +1,8 @@
 {
-  "lastCollectedAt": "2026-07-14T20:37:38.908Z",
+  "lastCollectedAt": "2026-07-15T20:32:43.549Z",
   "lastReviewedAt": "2026-07-10T00:00:00.000Z",
   "collector": {
-    "runCount": 5,
+    "runCount": 6,
     "lastRunSources": [
       "dta-media",
       "digital-gov-ai",
