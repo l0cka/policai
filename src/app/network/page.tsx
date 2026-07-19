@@ -14,5 +14,10 @@ export const metadata: Metadata = {
 export default async function NetworkPage() {
   const policies = await getPolicies();
   const { nodes, edges } = buildNetworkData(policies);
-  return <NetworkBrowser nodes={nodes} edges={edges} />;
+  return (
+    <>
+      <h1 className="sr-only">Australian AI policy network</h1>
+      <NetworkBrowser nodes={nodes} edges={edges} />
+    </>
+  );
 }

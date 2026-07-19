@@ -5,9 +5,10 @@ import {
 import { getPolicyFrameworkArtifact } from '@/lib/data-service';
 import { parseCalendarDateForDisplay } from '@/lib/format-policy-date';
 import Link from 'next/link';
-import { ArrowLeft, ExternalLink, FileText, Download, Landmark } from 'lucide-react';
+import { ArrowLeft, ExternalLink, FileText, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { PageIntro } from '@/components/layout';
 
 export const revalidate = 3600;
 
@@ -20,7 +21,7 @@ export default async function FrameworkPage() {
   const artifact = await getPolicyFrameworkArtifact();
   if (!artifact) {
     return (
-      <div className="container mx-auto max-w-3xl px-4 py-8 md:py-10">
+      <div className="container mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="mb-6">
           <Link
             href="/policies"
@@ -30,7 +31,11 @@ export default async function FrameworkPage() {
             Back to Policies
           </Link>
         </div>
-        <Card className="border-amber-500/30 bg-amber-500/5 shadow-sm">
+        <PageIntro
+          title="AI in Government framework"
+          description="Explore the structure, obligations and accountability model behind the Australian Government policy for responsible AI use."
+        />
+        <Card className="rounded-none border-[var(--caution)]/30 bg-[var(--status-proposed-bg)]/25 shadow-none">
           <CardHeader>
             <CardTitle>Framework temporarily unavailable</CardTitle>
           </CardHeader>
@@ -56,7 +61,7 @@ export default async function FrameworkPage() {
   const frameworkData = artifact as unknown as FrameworkData;
 
   return (
-    <div className="container mx-auto max-w-6xl px-4 py-8 md:py-10">
+    <div className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
       {/* Breadcrumb */}
       <div className="mb-6">
         <Link
@@ -69,19 +74,16 @@ export default async function FrameworkPage() {
       </div>
 
       <div className="mb-8 space-y-6">
-        <div className="flex items-start gap-4">
-          <div className="rounded-xl bg-primary/10 p-3">
-            <Landmark className="h-6 w-6 text-primary" />
-          </div>
-          <div className="space-y-2">
-            <h1 className="text-3xl font-bold tracking-tight">AI in Government Framework</h1>
-            <p className="max-w-3xl text-sm text-muted-foreground md:text-base">
+        <PageIntro
+          title="AI in Government framework"
+          description={
+            <p>
               Explore the structure, obligations, and accountability model behind the Australian Government&apos;s policy for responsible AI use.
             </p>
-          </div>
-        </div>
+          }
+        />
 
-        <Card className="border-primary/20 bg-primary/5 shadow-sm">
+        <Card className="rounded-none border-primary/20 bg-primary/5 shadow-none">
           <CardContent className="p-6">
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
               <div className="flex-1">
@@ -131,7 +133,7 @@ export default async function FrameworkPage() {
       <PolicyFrameworkMap data={frameworkData as FrameworkData} />
 
       {/* Footer Note */}
-      <Card className="mt-10 shadow-sm">
+      <Card className="mt-10 rounded-none border-border bg-card/35 shadow-none">
         <CardHeader className="pb-3">
           <CardTitle className="text-lg">About This Visualization</CardTitle>
         </CardHeader>

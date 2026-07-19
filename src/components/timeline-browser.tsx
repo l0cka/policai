@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { Filter, ArrowRight, Calendar, Clock3 } from 'lucide-react';
+import { Filter, ArrowRight, Calendar } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -29,6 +29,7 @@ import {
   type Policy,
   type TimelineEvent,
 } from '@/types';
+import { MetricStrip, PageIntro } from '@/components/layout';
 
 export function TimelineBrowser({
   timelineData,
@@ -74,52 +75,28 @@ export function TimelineBrowser({
   }, [timelineData]);
 
   return (
-    <div className="container mx-auto max-w-6xl px-4 py-8 md:py-10">
-      <div className="mb-8 space-y-2">
-        <div className="flex items-center gap-3">
-          <div className="rounded-xl bg-primary/10 p-3">
-            <Clock3 className="h-6 w-6 text-primary" />
-          </div>
-          <h1 className="text-3xl font-bold tracking-tight">Policy Timeline</h1>
-        </div>
-        <p className="max-w-3xl text-muted-foreground">
+    <div className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
+      <PageIntro
+        title="Policy timeline"
+        description={
+          <p>
           Track the evolution of Australian AI policy through source-linked
           events. Each event carries its editorial verification state.
-        </p>
-      </div>
+          </p>
+        }
+      />
 
-      {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <Card className="bg-muted/30 shadow-sm">
-          <CardContent className="pt-5 pb-4">
-            <div className="text-2xl font-bold tabular-nums">{stats.totalEvents}</div>
-            <p className="text-sm text-muted-foreground">Total Events</p>
-          </CardContent>
-        </Card>
-        <Card className="bg-muted/30 shadow-sm">
-          <CardContent className="pt-5 pb-4">
-            <div className="text-2xl font-bold tabular-nums">{stats.years}</div>
-            <p className="text-sm text-muted-foreground">Years Covered</p>
-          </CardContent>
-        </Card>
-        <Card className="bg-muted/30 shadow-sm">
-          <CardContent className="pt-5 pb-4">
-            <div className="text-2xl font-bold tabular-nums">{stats.jurisdictions}</div>
-            <p className="text-sm text-muted-foreground">Jurisdictions</p>
-          </CardContent>
-        </Card>
-        <Card className="bg-muted/30 shadow-sm">
-          <CardContent className="pt-5 pb-4">
-            <div className="text-2xl font-bold tabular-nums">{stats.verifiedEvents}</div>
-            <p className="text-sm text-muted-foreground">Verified Events</p>
-          </CardContent>
-        </Card>
-      </div>
+      <MetricStrip metrics={[
+        { value: stats.totalEvents, label: 'events' },
+        { value: stats.years, label: 'years covered' },
+        { value: stats.jurisdictions, label: 'jurisdictions' },
+        { value: stats.verifiedEvents, label: 'verified events' },
+      ]} />
 
-      <div className="grid lg:grid-cols-4 gap-8">
+      <div className="mt-8 grid gap-8 lg:grid-cols-4">
         {/* Filters Sidebar */}
         <div className="space-y-4 lg:col-span-1 lg:sticky lg:top-24 lg:self-start">
-          <Card className="shadow-sm">
+          <Card className="rounded-none border-border bg-card/35 shadow-none">
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
                 <Filter className="h-4 w-4" />
@@ -185,7 +162,7 @@ export function TimelineBrowser({
           </Card>
 
           {/* Legend */}
-          <Card className="shadow-sm">
+          <Card className="rounded-none border-border bg-card/35 shadow-none">
             <CardHeader>
               <CardTitle className="text-lg">Legend</CardTitle>
             </CardHeader>
@@ -216,7 +193,7 @@ export function TimelineBrowser({
 
         {/* Timeline */}
         <div className="lg:col-span-3">
-          <Card className="shadow-sm">
+          <Card className="rounded-none border-border bg-card/35 shadow-none">
             <CardHeader className="pb-4">
               <CardTitle>Timeline</CardTitle>
               <CardDescription>Click on an event to see more details</CardDescription>

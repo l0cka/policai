@@ -12,5 +12,10 @@ export const metadata: Metadata = {
 
 export default async function MapPage() {
   const policies = await getPolicies();
-  return <MapBrowser policiesData={policies} />;
+  return (
+    <>
+      <h1 className="sr-only">Australian AI policy map</h1>
+      <MapBrowser policiesData={policies} />
+    </>
+  );
 }

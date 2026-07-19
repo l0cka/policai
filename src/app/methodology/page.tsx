@@ -7,6 +7,7 @@ import {
 } from '@/lib/data-service';
 import { WATCH_SOURCES } from '@/lib/pipeline/sources';
 import { summarizeManualSourceCoverage } from '@/lib/source-monitoring';
+import { MetricStrip, PageIntro } from '@/components/layout';
 
 export const revalidate = 3600;
 
@@ -37,23 +38,29 @@ export default async function MethodologyPage() {
   );
 
   return (
-    <article className="container mx-auto max-w-3xl px-4 py-8">
-      <header className="mb-10">
-        <h1 className="text-2xl font-semibold tracking-tight mb-3">
-          Methodology &amp; verification
-        </h1>
-        <p className="text-sm leading-6 text-muted-foreground">
+    <article className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
+      <PageIntro
+        title="Methodology & verification"
+        description={
+          <p>
           Policai separates automated discovery from editorial verification.
           The policy register is source-backed; the developments radar can
           contain unverified leads and labels them accordingly.
-        </p>
-      </header>
+          </p>
+        }
+      />
+      <MetricStrip metrics={[
+        { value: publicPolicies.length, label: 'public records' },
+        { value: withheldCount, label: 'withheld for review' },
+        { value: meta.collector.automaticSourceCount, label: 'automatic sources' },
+        { value: manualCoverage.total, label: 'manual sources' },
+      ]} />
 
-      <div className="space-y-10 text-sm leading-6">
+      <div className="mx-auto max-w-4xl space-y-10 py-9 text-sm leading-6">
         <section>
-          <h2 className="text-lg font-semibold mb-2">Trust levels</h2>
+          <h2 className="font-display text-3xl">Trust levels</h2>
           <dl className="space-y-4">
-            <div>
+            <div className="mt-4 border-l-2 border-[var(--trust)] bg-[var(--status-active-bg)]/25 px-4 py-3">
               <dt className="font-medium">Verified register record</dt>
               <dd className="text-muted-foreground">
                 Title, jurisdiction, issuer, type, status, displayed date, and
@@ -61,7 +68,7 @@ export default async function MethodologyPage() {
                 editor.
               </dd>
             </div>
-            <div>
+            <div className="border-l-2 border-[var(--caution)] bg-[var(--status-proposed-bg)]/30 px-4 py-3">
               <dt className="font-medium">Automated radar item</dt>
               <dd className="text-muted-foreground">
                 A lead detected on an official source and assessed by a model or
@@ -72,8 +79,8 @@ export default async function MethodologyPage() {
           </dl>
         </section>
 
-        <section>
-          <h2 className="text-lg font-semibold mb-2">Source and date rules</h2>
+        <section className="border-t border-border pt-7">
+          <h2 className="font-display text-3xl">Source and date rules</h2>
           <ul className="list-disc pl-5 text-muted-foreground space-y-2">
             <li>
               Verified records use the official instrument page or document.
@@ -93,8 +100,8 @@ export default async function MethodologyPage() {
           </ul>
         </section>
 
-        <section>
-          <h2 className="text-lg font-semibold mb-2">Current register state</h2>
+        <section className="border-t border-border pt-7">
+          <h2 className="font-display text-3xl">Current register state</h2>
           <p className="text-muted-foreground">
             {publicPolicies.length} records are currently publishable in the
             public register.
@@ -104,8 +111,8 @@ export default async function MethodologyPage() {
           </p>
         </section>
 
-        <section>
-          <h2 className="text-lg font-semibold mb-2">Collection health</h2>
+        <section className="border-t border-border pt-7">
+          <h2 className="font-display text-3xl">Collection health</h2>
           <p className="text-muted-foreground">
             The latest run is <strong>{meta.collector.health}</strong>, with{' '}
             {meta.collector.successfulSourceCount} of{' '}
@@ -125,8 +132,8 @@ export default async function MethodologyPage() {
           </p>
         </section>
 
-        <section>
-          <h2 className="text-lg font-semibold mb-2">Open data and corrections</h2>
+        <section className="border-t border-border pt-7">
+          <h2 className="font-display text-3xl">Open data and corrections</h2>
           <p className="text-muted-foreground">
             Canonical records are versioned in Git and available as{' '}
             <a

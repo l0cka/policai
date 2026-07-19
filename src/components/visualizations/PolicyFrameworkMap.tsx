@@ -107,7 +107,7 @@ function RequirementCard({ requirement }: { requirement: Requirement }) {
   return (
     <div
       className={cn(
-        'border rounded-lg p-3 transition-all cursor-pointer hover:shadow-md',
+        'border p-3 transition-all cursor-pointer hover:border-primary',
         isExpanded && 'ring-2 ring-primary/20'
       )}
       onClick={() => setIsExpanded(!isExpanded)}
@@ -155,8 +155,8 @@ function PillarCard({ pillar, isSelected, onSelect }: { pillar: Pillar; isSelect
   return (
     <Card
       className={cn(
-        'cursor-pointer transition-all hover:shadow-lg',
-        isSelected && 'ring-2 ring-primary shadow-lg'
+        'cursor-pointer transition-all hover:border-primary',
+        isSelected && 'ring-2 ring-primary'
       )}
       onClick={onSelect}
     >
@@ -184,7 +184,7 @@ function PolicyAimCard({ aim }: { aim: PolicyAim }) {
   const Icon = iconMap[aim.icon] || Rocket;
 
   return (
-    <div className="flex-1 p-4 rounded-lg border bg-card hover:shadow-md transition-shadow">
+    <div className="flex-1 border bg-card/35 p-4 transition-colors hover:border-primary">
       <div
         className="h-10 w-10 rounded-full flex items-center justify-center mb-3"
         style={{ backgroundColor: `${aim.color}20` }}

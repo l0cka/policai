@@ -27,16 +27,16 @@ export function NetworkToolbar({
   totalPolicies,
 }: NetworkToolbarProps) {
   return (
-    <div className="absolute top-4 left-4 right-4 z-10 flex items-center gap-3 bg-card/90 backdrop-blur-lg border border-border rounded-xl px-4 py-2.5 shadow-sm">
+    <div className="absolute left-3 right-3 top-3 z-10 flex flex-col gap-3 border border-border bg-background/95 px-3 py-3 backdrop-blur-lg md:left-4 md:right-4 md:top-4 md:flex-row md:items-center md:px-4 md:py-2.5">
       {/* Search */}
-      <div className="relative flex-shrink-0 w-48">
+      <div className="relative w-full shrink-0 md:w-56">
         <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
         <input
           type="text"
           placeholder="Search policies..."
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
-          className="w-full bg-muted/50 border border-border rounded-lg pl-7 pr-7 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-ring placeholder:text-muted-foreground/60"
+          className="h-10 w-full border border-border bg-background pl-8 pr-8 text-xs placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-ring/20"
         />
         {searchQuery && (
           <button
@@ -49,17 +49,17 @@ export function NetworkToolbar({
       </div>
 
       {/* Divider */}
-      <div className="w-px h-6 bg-border" />
+      <div className="hidden h-6 w-px bg-border md:block" />
 
       {/* Jurisdiction pills */}
-      <div className="flex gap-1.5 flex-wrap flex-1 min-w-0">
+      <div className="flex min-w-0 flex-1 gap-1.5 overflow-x-auto md:flex-wrap">
         {jurisdictions.map((j) => {
           const active = activeJurisdictions.has(j.key);
           return (
             <button
               key={j.key}
               onClick={() => onToggleJurisdiction(j.key)}
-              className="flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium transition-all"
+              className="flex shrink-0 items-center gap-1 rounded-md px-2.5 py-1.5 text-[11px] font-medium transition-all"
               style={
                 active
                   ? { background: j.color, color: 'white' }
@@ -74,7 +74,7 @@ export function NetworkToolbar({
       </div>
 
       {/* Stats */}
-      <div className="flex-shrink-0 font-mono text-[11px] text-muted-foreground whitespace-nowrap">
+      <div className="hidden shrink-0 whitespace-nowrap font-mono text-[11px] text-muted-foreground sm:block">
         <strong className="text-foreground">{totalPolicies}</strong> policies
       </div>
     </div>

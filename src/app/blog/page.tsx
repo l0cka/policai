@@ -1,43 +1,45 @@
-import { getAllPosts } from '@/lib/blog'
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
-import { format } from 'date-fns'
-import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
+import { getAllPosts } from '@/lib/blog';
+import { format } from 'date-fns';
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
+import { PageIntro } from '@/components/layout';
 
 export const metadata = {
   title: 'Blog — Policai',
   description: 'Project updates and AI policy commentary from Policai.',
-}
+};
 
 export default function BlogPage() {
-  const posts = getAllPosts()
+  const posts = getAllPosts();
 
   return (
-    <div className="container mx-auto px-4 py-10">
-      <h1 className="text-3xl font-bold mb-2">Blog</h1>
-      <p className="text-muted-foreground mb-8">
-        Project updates and commentary on Australian AI policy developments.
-      </p>
+    <div className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
+      <PageIntro
+        title="Research notes"
+        description="Project updates, methodology notes and commentary on Australian AI policy developments."
+      />
       {posts.length === 0 ? (
-        <p className="text-muted-foreground">No posts yet. Check back soon.</p>
+        <p className="py-12 text-sm text-muted-foreground">No posts yet. Check back soon.</p>
       ) : (
-        <div className="grid gap-4">
+        <div className="mx-auto max-w-5xl py-7">
           {posts.map((post) => (
-            <Link key={post.slug} href={`/blog/${post.slug}`}>
-              <Card className="transition-colors hover:bg-muted/50">
-                <CardHeader>
-                  <CardTitle>{post.title}</CardTitle>
-                  <CardDescription>{format(new Date(post.date), 'MMMM d, yyyy')}</CardDescription>
-                </CardHeader>
-                <CardContent className="flex items-center justify-between">
-                  <span>{post.description}</span>
-                  <ArrowRight className="h-4 w-4 shrink-0 ml-4" />
-                </CardContent>
-              </Card>
+            <Link
+              key={post.slug}
+              href={`/blog/${post.slug}`}
+              className="group grid gap-3 border-b border-border py-6 transition-colors hover:bg-[var(--row-hover)] sm:grid-cols-[9rem_minmax(0,1fr)_auto] sm:px-3"
+            >
+              <time className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+                {format(new Date(post.date), 'dd MMMM yyyy')}
+              </time>
+              <span>
+                <span className="block font-display text-2xl group-hover:text-primary">{post.title}</span>
+                <span className="mt-2 block text-sm leading-6 text-muted-foreground">{post.description}</span>
+              </span>
+              <ArrowRight className="h-5 w-5 self-center text-primary" />
             </Link>
           ))}
         </div>
       )}
     </div>
-  )
+  );
 }

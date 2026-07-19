@@ -47,11 +47,13 @@ export default async function PolicyDetailPage({ params }: { params: Promise<{ i
   const relatedPolicies = await getRelatedPolicies(policy);
 
   return (
-    <div className="container mx-auto px-4 py-6">
-      <nav className="font-mono text-xs text-muted-foreground mb-6">
-        <Link href="/" className="hover:text-foreground">Policies</Link>
+    <div className="container mx-auto px-4 py-6 sm:px-6 lg:px-8">
+      <nav className="mb-6 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+        <Link href="/" className="hover:text-primary">Register</Link>
         <span className="mx-2">/</span>
-        <span className="text-foreground">{policy.title}</span>
+        <span>{policy.jurisdiction}</span>
+        <span className="mx-2">/</span>
+        <span className="text-foreground">Policy</span>
       </nav>
 
       <PolicyDetailTabs policy={policy} relatedPolicies={relatedPolicies} />

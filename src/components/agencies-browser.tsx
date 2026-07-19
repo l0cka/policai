@@ -10,6 +10,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { JURISDICTION_NAMES, type Agency } from '@/types';
+import { MetricStrip, PageIntro } from '@/components/layout';
 
 export function AgenciesBrowser({ agencies }: { agencies: Agency[] }) {
   const [search, setSearch] = useState('');
@@ -55,9 +56,20 @@ export function AgenciesBrowser({ agencies }: { agencies: Agency[] }) {
   }, [search, statementFilter, agencies]);
 
   return (
-    <div className="flex flex-col md:flex-row min-h-[calc(100vh-8rem)] max-w-screen-xl mx-auto">
+    <div className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
+      <PageIntro
+        title="Agency transparency"
+        description="Browse Australian Government agency AI transparency statements, public disclosures and their current source-verification state."
+      />
+      <MetricStrip metrics={[
+        { value: stats.total, label: 'agencies' },
+        { value: stats.withStatements, label: 'verified statements' },
+        { value: stats.withoutStatements, label: 'none located' },
+        { value: stats.awaitingReview, label: 'awaiting review' },
+      ]} />
+      <div className="flex min-h-[32rem] flex-col md:flex-row">
       {/* Sidebar - horizontal on mobile, vertical on desktop */}
-      <aside className="w-full md:w-60 shrink-0 md:border-r border-b md:border-b-0 border-border p-4 md:p-6 space-y-4 md:space-y-6">
+      <aside className="w-full shrink-0 space-y-4 border-b border-border py-5 md:w-64 md:border-b-0 md:border-r md:pr-8">
         <div className="relative">
           <Search className="absolute left-0 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
           <input
@@ -88,7 +100,7 @@ export function AgenciesBrowser({ agencies }: { agencies: Agency[] }) {
       </aside>
 
       {/* Main area */}
-      <main className="flex-1 min-w-0 p-6">
+      <main className="min-w-0 flex-1 py-6 md:pl-8">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[44rem] table-fixed text-sm">
             <colgroup>
@@ -98,11 +110,11 @@ export function AgenciesBrowser({ agencies }: { agencies: Agency[] }) {
               <col className="w-32" />
             </colgroup>
             <thead>
-              <tr className="border-b-2 border-foreground">
-                <th className="py-2 pr-4 text-left font-mono text-xs uppercase tracking-wider">Agency</th>
-                <th className="py-2 pr-4 text-left font-mono text-xs uppercase tracking-wider">Acronym</th>
-                <th className="py-2 pr-4 text-left font-mono text-xs uppercase tracking-wider">Jurisdiction</th>
-                <th className="py-2 text-left font-mono text-xs uppercase tracking-wider">Statement</th>
+              <tr className="border-y border-foreground/55">
+                <th className="py-2 pr-4 text-left font-mono text-[10px] uppercase tracking-[0.1em]">Agency</th>
+                <th className="py-2 pr-4 text-left font-mono text-[10px] uppercase tracking-[0.1em]">Acronym</th>
+                <th className="py-2 pr-4 text-left font-mono text-[10px] uppercase tracking-[0.1em]">Jurisdiction</th>
+                <th className="py-2 text-left font-mono text-[10px] uppercase tracking-[0.1em]">Statement</th>
               </tr>
             </thead>
             <tbody>
@@ -253,6 +265,7 @@ export function AgenciesBrowser({ agencies }: { agencies: Agency[] }) {
           </table>
         </div>
       </main>
+      </div>
     </div>
   );
 }

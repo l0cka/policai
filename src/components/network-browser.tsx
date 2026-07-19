@@ -96,7 +96,7 @@ export function NetworkBrowser({
 	}
 
 	return (
-		<div className="relative w-full h-[calc(100vh-4rem)] overflow-hidden">
+		<div className="relative h-[calc(100svh-7rem)] min-h-[38rem] w-full overflow-hidden">
 			<NetworkToolbar
 				searchQuery={searchQuery}
 				onSearchChange={setSearchQuery}

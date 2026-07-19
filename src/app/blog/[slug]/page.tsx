@@ -41,7 +41,7 @@ export default async function BlogPostPage({
   }
 
   return (
-    <div className="container mx-auto px-4 py-10 max-w-3xl">
+    <div className="container mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
       <Link
         href="/blog"
         className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6"
@@ -50,14 +50,14 @@ export default async function BlogPostPage({
         Back to Blog
       </Link>
 
-      <header className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">{post.title}</h1>
-        <p className="text-muted-foreground">
+      <header className="mb-9 border-b border-border pb-7">
+        <h1 className="font-display text-[clamp(2.75rem,6vw,5rem)] leading-[1.02] tracking-[-0.035em]">{post.title}</h1>
+        <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
           {format(new Date(post.date), 'MMMM d, yyyy')}
         </p>
       </header>
 
-      <article className="prose prose-neutral dark:prose-invert max-w-none">
+      <article className="prose prose-slate max-w-none prose-headings:font-display prose-headings:font-medium prose-a:text-primary">
         <MDXRemote source={post.content} />
       </article>
     </div>

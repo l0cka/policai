@@ -1,93 +1,99 @@
 'use client';
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { Check, X } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
-interface FilterOption {
+export interface FilterOption {
   value: string;
   label: string;
+  count: number;
 }
 
-interface FilterConfig {
+export interface FilterGroup {
   id: string;
   label: string;
-  value: string;
   options: FilterOption[];
-  onChange: (value: string) => void;
+  selectedValues: string[];
+  onToggle: (value: string) => void;
 }
 
-interface SummaryStat {
-  label: string;
-  value: number;
+interface FilterControlsProps {
+  groups: FilterGroup[];
+  onClear: () => void;
+  hasActiveFilters: boolean;
+  className?: string;
 }
 
-interface FilterSidebarProps {
-  filters: FilterConfig[];
-  summary?: SummaryStat[];
-  onClear?: () => void;
-  hasActiveFilters?: boolean;
-}
-
-export function FilterSidebar({ filters, summary, onClear, hasActiveFilters }: FilterSidebarProps) {
+export function FilterControls({
+  groups,
+  onClear,
+  hasActiveFilters,
+  className,
+}: FilterControlsProps) {
   return (
-    <aside className="w-full lg:w-60 flex-shrink-0 lg:border-r lg:border-border lg:pr-6">
-      <div className="sticky top-16 pt-1">
-        <div className="font-mono text-xs font-medium uppercase tracking-wider text-muted-foreground mb-4">
+    <div className={cn('space-y-6', className)}>
+      <div className="flex items-center justify-between">
+        <span className="font-mono text-[11px] font-medium uppercase tracking-[0.12em]">
           Filters
-        </div>
-
-        <div className="space-y-4">
-          {filters.map((filter) => (
-            <div key={filter.id}>
-              <label className="font-mono text-xs text-muted-foreground mb-1.5 block">
-                {filter.label}
-              </label>
-              <Select value={filter.value} onValueChange={filter.onChange}>
-                <SelectTrigger className="h-8 text-sm rounded bg-white">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {filter.options.map((opt) => (
-                    <SelectItem key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          ))}
-        </div>
-
-        {hasActiveFilters && onClear && (
+        </span>
+        {hasActiveFilters ? (
           <button
+            type="button"
             onClick={onClear}
-            className="mt-3 font-mono text-xs text-primary hover:underline"
+            className="inline-flex min-h-8 items-center gap-1 text-xs text-primary hover:underline"
           >
-            Clear filters
+            Clear all
+            <X className="h-3 w-3" aria-hidden="true" />
           </button>
-        )}
-
-        {summary && summary.length > 0 && (
-          <div className="mt-6 pt-4 border-t border-border">
-            <div className="font-mono text-xs font-medium uppercase tracking-wider text-muted-foreground mb-3">
-              Summary
-            </div>
-            <div className="space-y-1.5">
-              {summary.map((stat) => (
-                <div key={stat.label} className="font-mono text-xs">
-                  <span className="font-semibold text-foreground">{stat.value}</span>{' '}
-                  <span className="text-muted-foreground">{stat.label}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        ) : null}
       </div>
+
+      {groups.map((group) => (
+        <fieldset key={group.id} className="border-t border-border pt-4 first:border-t-0 first:pt-0">
+          <legend className="mb-3 text-sm font-medium">{group.label}</legend>
+          <div className="space-y-2.5">
+            {group.options.map((option) => {
+              const checked = group.selectedValues.includes(option.value);
+              return (
+                <label
+                  key={option.value}
+                  className="group flex min-h-6 cursor-pointer items-start gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  <input
+                    type="checkbox"
+                    checked={checked}
+                    onChange={() => group.onToggle(option.value)}
+                    className="sr-only"
+                  />
+                  <span
+                    className={cn(
+                      'mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-[3px] border transition-colors',
+                      checked
+                        ? 'border-primary bg-primary text-primary-foreground'
+                        : 'border-input bg-background group-hover:border-foreground/50',
+                    )}
+                    aria-hidden="true"
+                  >
+                    {checked ? <Check className="h-3 w-3" strokeWidth={2.5} /> : null}
+                  </span>
+                  <span className="flex-1 leading-5">{option.label}</span>
+                  <span className="font-mono text-[10px] tabular-nums text-muted-foreground/75">
+                    {option.count}
+                  </span>
+                </label>
+              );
+            })}
+          </div>
+        </fieldset>
+      ))}
+    </div>
+  );
+}
+
+export function FilterSidebar(props: FilterControlsProps) {
+  return (
+    <aside className="hidden w-64 shrink-0 border-r border-border pr-8 lg:block">
+      <FilterControls {...props} className="sticky top-[8.5rem] py-5" />
     </aside>
   );
 }

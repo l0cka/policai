@@ -1,213 +1,250 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
+import { useMemo, useState } from 'react';
+import Link from 'next/link';
+import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import {
-	getJurisdictionName,
-	getPolicyDateTypeName,
-	getPrimaryPolicyDate,
-	getPolicyStatusName,
-	getPolicyTypeName,
-	type Policy,
-} from "@/types";
-import { formatPolicyDate } from "@/lib/format-policy-date";
+  getJurisdictionName,
+  getPolicyDateTypeName,
+  getPolicyStatusName,
+  getPolicyTypeName,
+  getPrimaryPolicyDate,
+  type Policy,
+} from '@/types';
+import { formatPolicyDate } from '@/lib/format-policy-date';
+import { cn } from '@/lib/utils';
 
-import { STATUS_COLORS } from "@/lib/design-tokens";
+export type PolicySortField = 'title' | 'jurisdiction' | 'type' | 'status' | 'effectiveDate';
+export type PolicySortDirection = 'asc' | 'desc';
+export type PolicyViewMode = 'table' | 'list';
 
-interface PolicyRow {
-	id: string;
-	title: string;
-	jurisdiction: string;
-	type: string;
-	status: string;
-	effectiveDate: string | Date;
-	dates: Policy["dates"];
-	verification: Policy["verification"];
+function comparePolicies(a: Policy, b: Policy, field: PolicySortField): number {
+  if (field === 'effectiveDate') {
+    return String(getPrimaryPolicyDate(a).date).localeCompare(
+      String(getPrimaryPolicyDate(b).date),
+    );
+  }
+
+  return String(a[field]).localeCompare(String(b[field]));
 }
 
-type SortField = "title" | "jurisdiction" | "type" | "status" | "effectiveDate";
-type SortDirection = "asc" | "desc";
+function StatusPill({ status }: { status: Policy['status'] }) {
+  const tone =
+    status === 'active'
+      ? 'border-[var(--trust)]/20 bg-[var(--status-active-bg)] text-[var(--status-active)]'
+      : status === 'proposed'
+        ? 'border-[var(--caution)]/20 bg-[var(--status-proposed-bg)] text-[var(--status-proposed)]'
+        : status === 'amended'
+          ? 'border-primary/20 bg-[var(--status-amended-bg)] text-[var(--status-amended)]'
+          : 'border-border bg-[var(--status-repealed-bg)] text-[var(--status-repealed)]';
 
-function SortIndicator({
-	field,
-	current,
-	direction,
+  return (
+    <span className={cn('inline-flex rounded-md border px-2 py-1 text-xs font-medium', tone)}>
+      {getPolicyStatusName(status)}
+    </span>
+  );
+}
+
+function SourceState({ policy }: { policy: Policy }) {
+  const verified = policy.verification.status === 'verified';
+
+  return (
+    <span
+      className={cn(
+        'inline-flex items-center gap-1.5 text-xs',
+        verified ? 'text-[var(--trust)]' : 'text-[var(--caution)]',
+      )}
+    >
+      <CheckCircle2 className="h-4 w-4" fill="currentColor" strokeWidth={1.8} />
+      <span className="text-muted-foreground">
+        {verified ? 'Verified source' : 'Needs review'}
+      </span>
+    </span>
+  );
+}
+
+function PolicyCard({ policy, compact = false }: { policy: Policy; compact?: boolean }) {
+  const primaryDate = getPrimaryPolicyDate(policy);
+
+  return (
+    <article className="content-auto border border-border bg-card/45 p-4">
+      <Link
+        href={`/policies/${policy.id}`}
+        className="text-[17px] font-semibold leading-snug text-primary hover:underline"
+      >
+        {policy.title}
+      </Link>
+      {!compact ? (
+        <p className="mt-1.5 line-clamp-2 text-sm leading-5 text-muted-foreground">
+          {policy.description}
+        </p>
+      ) : null}
+      <p className="mt-3 text-sm">
+        {getJurisdictionName(policy.jurisdiction)}
+        <span className="mx-2 text-border">•</span>
+        {getPolicyTypeName(policy.type)}
+      </p>
+      <div className="mt-3 grid grid-cols-[auto_1fr] items-center gap-3 border-t border-border pt-3 sm:grid-cols-[auto_auto_1fr_auto]">
+        <StatusPill status={policy.status} />
+        <span className="font-mono text-[10px] uppercase leading-4 text-muted-foreground">
+          {formatPolicyDate(primaryDate, { short: true })}
+          <span className="block">{getPolicyDateTypeName(primaryDate.type)}</span>
+        </span>
+        <SourceState policy={policy} />
+        <Link
+          href={`/policies/${policy.id}`}
+          aria-label={`View ${policy.title}`}
+          className="ml-auto hidden text-primary sm:inline-flex"
+        >
+          <ArrowRight className="h-4 w-4" />
+        </Link>
+      </div>
+    </article>
+  );
+}
+
+export function PolicyTable({
+  policies,
+  viewMode,
+  mobileViewMode,
+  sortField,
+  sortDirection,
+  onSort,
 }: {
-	field: SortField;
-	current: SortField;
-	direction: SortDirection;
+  policies: Policy[];
+  viewMode: PolicyViewMode;
+  mobileViewMode: PolicyViewMode;
+  sortField: PolicySortField;
+  sortDirection: PolicySortDirection;
+  onSort: (field: PolicySortField) => void;
 }) {
-	if (field !== current)
-		return <span className="text-transparent ml-1">&uarr;</span>;
-	return (
-		<span className="ml-1">{direction === "asc" ? "\u2191" : "\u2193"}</span>
-	);
-}
+  const [page, setPage] = useState(0);
+  const pageSize = 20;
 
-interface PolicyTableProps {
-	policies: PolicyRow[];
-}
+  const sorted = useMemo(
+    () =>
+      [...policies].sort((a, b) => {
+        const comparison = comparePolicies(a, b, sortField);
+        return sortDirection === 'asc' ? comparison : -comparison;
+      }),
+    [policies, sortDirection, sortField],
+  );
 
-export function PolicyTable({ policies }: PolicyTableProps) {
-	const [sortField, setSortField] = useState<SortField>("effectiveDate");
-	const [sortDir, setSortDir] = useState<SortDirection>("desc");
-	const [page, setPage] = useState(0);
-	const pageSize = 20;
+  const totalPages = Math.ceil(sorted.length / pageSize);
+  const safePage = totalPages > 0 ? Math.min(page, totalPages - 1) : 0;
+  const paged = sorted.slice(safePage * pageSize, (safePage + 1) * pageSize);
 
-	const handleSort = (field: SortField) => {
-		if (sortField === field) {
-			setSortDir(sortDir === "asc" ? "desc" : "asc");
-		} else {
-			setSortField(field);
-			setSortDir("asc");
-		}
-	};
+  const handleSort = (field: PolicySortField) => {
+    setPage(0);
+    onSort(field);
+  };
 
-	const sorted = [...policies].sort((a, b) => {
-		const aRaw = a[sortField];
-		const bRaw = b[sortField];
-		const aVal = aRaw instanceof Date ? aRaw.toISOString() : aRaw || "";
-		const bVal = bRaw instanceof Date ? bRaw.toISOString() : bRaw || "";
-		const cmp = aVal.localeCompare(bVal);
-		return sortDir === "asc" ? cmp : -cmp;
-	});
+  const sortLabel = (field: PolicySortField, label: string) =>
+    `${label}${sortField === field ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}`;
 
-	const totalPages = Math.ceil(sorted.length / pageSize);
-	// Clamp page to valid range (auto-resets when filters shrink the list)
-	const safePage = totalPages > 0 ? Math.min(page, totalPages - 1) : 0;
-	const paged = sorted.slice(safePage * pageSize, (safePage + 1) * pageSize);
+  if (paged.length === 0) {
+    return (
+      <div className="border-y border-border py-14 text-center">
+        <p className="font-display text-2xl">No matching policies</p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Try removing a filter or broadening the search.
+        </p>
+      </div>
+    );
+  }
 
-	const columns: { key: SortField; label: string; className: string }[] = [
-		{ key: "title", label: "Policy", className: "text-left" },
-		{
-			key: "jurisdiction",
-			label: "Jurisdiction",
-			className: "text-left hidden md:table-cell",
-		},
-		{ key: "type", label: "Type", className: "text-left hidden lg:table-cell" },
-		{ key: "status", label: "Status", className: "text-left" },
-		{
-			key: "effectiveDate",
-			label: "Key date",
-			className: "text-left hidden sm:table-cell",
-		},
-	];
+  return (
+    <div>
+      <div className="space-y-3 md:hidden">
+        {paged.map((policy) => (
+          <PolicyCard key={policy.id} policy={policy} compact={mobileViewMode === 'table'} />
+        ))}
+      </div>
+      {viewMode === 'list' ? (
+        <div className="hidden space-y-3 md:block">
+          {paged.map((policy) => <PolicyCard key={policy.id} policy={policy} />)}
+        </div>
+      ) : (
+          <div className="hidden overflow-x-auto md:block">
+            <table className="w-full table-fixed">
+              <thead>
+                <tr className="border-y border-foreground/55">
+                  {([
+                    ['title', 'Policy', 'w-[33%]'],
+                    ['jurisdiction', 'Jurisdiction', 'w-[16%]'],
+                    ['type', 'Type', 'w-[11%]'],
+                    ['status', 'Status', 'w-[10%]'],
+                    ['effectiveDate', 'Key date', 'w-[11%]'],
+                  ] as const).map(([field, label, width]) => (
+                    <th key={field} className={cn('py-2 pr-3 text-left', width)}>
+                      <button
+                        type="button"
+                        onClick={() => handleSort(field)}
+                        className="font-mono text-[10px] font-medium uppercase tracking-[0.1em] text-muted-foreground hover:text-foreground"
+                      >
+                        {sortLabel(field, label)}
+                      </button>
+                    </th>
+                  ))}
+                  <th className="w-[16%] py-2 text-left font-mono text-[10px] font-medium uppercase tracking-[0.1em] text-muted-foreground">
+                    Source
+                  </th>
+                  <th className="w-6" />
+                </tr>
+              </thead>
+              <tbody>
+                {paged.map((policy) => {
+                  const primaryDate = getPrimaryPolicyDate(policy);
+                  return (
+                    <tr key={policy.id} className="content-auto border-b border-border transition-colors hover:bg-[var(--row-hover)]">
+                      <td className="py-3 pr-5 align-top">
+                        <Link href={`/policies/${policy.id}`} className="text-sm font-semibold leading-5 text-primary hover:underline">
+                          {policy.title}
+                        </Link>
+                        <p className="mt-1 line-clamp-2 max-w-xl text-xs leading-4 text-muted-foreground">
+                          {policy.description}
+                        </p>
+                      </td>
+                      <td className="py-3 pr-3 align-top text-xs leading-5 text-muted-foreground">
+                        {getJurisdictionName(policy.jurisdiction)}
+                      </td>
+                      <td className="py-3 pr-3 align-top text-xs leading-5 text-muted-foreground">
+                        {getPolicyTypeName(policy.type)}
+                      </td>
+                      <td className="py-3 pr-3 align-top"><StatusPill status={policy.status} /></td>
+                      <td className="py-3 pr-3 align-top font-mono text-[10px] uppercase leading-4 text-muted-foreground">
+                        {formatPolicyDate(primaryDate, { short: true })}
+                        <span className="block">{getPolicyDateTypeName(primaryDate.type)}</span>
+                      </td>
+                      <td className="py-3 align-top"><SourceState policy={policy} /></td>
+                      <td className="py-3 align-top">
+                        <Link href={`/policies/${policy.id}`} aria-label={`View ${policy.title}`} className="text-primary">
+                          <ArrowRight className="h-4 w-4" />
+                        </Link>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+      )}
 
-	return (
-		<div className="overflow-x-auto">
-			<table className="w-full">
-				<thead>
-					<tr className="border-b-2 border-foreground">
-						{columns.map((col) => (
-							<th
-								key={col.key}
-								className={`${col.className} py-2 pr-4 font-mono text-xs font-medium uppercase tracking-wider text-muted-foreground cursor-pointer hover:text-foreground select-none`}
-								onClick={() => handleSort(col.key)}
-							>
-								{col.label}
-								<SortIndicator
-									field={col.key}
-									current={sortField}
-									direction={sortDir}
-								/>
-							</th>
-						))}
-					</tr>
-				</thead>
-				<tbody>
-					{paged.map((policy) => {
-						const primaryDate = getPrimaryPolicyDate(policy);
-						return (
-						<tr
-							key={policy.id}
-							className="border-b border-border transition-colors hover:bg-[var(--row-hover)]"
-						>
-							<td className="py-3 pr-4">
-								<Link
-									href={`/policies/${policy.id}`}
-									className="text-sm font-medium text-primary hover:underline"
-								>
-									{policy.title}
-								</Link>
-								<div className="mt-1 font-mono text-[11px] text-muted-foreground">
-									<span className="md:hidden">
-										{getJurisdictionName(policy.jurisdiction)}
-										{" \u00b7 "}
-										{getPolicyTypeName(policy.type)}
-										{" \u00b7 "}
-									</span>
-									<span
-										className={
-											policy.verification.status === "verified"
-												? "text-[var(--status-active)]"
-												: "text-[var(--status-proposed)]"
-										}
-									>
-										{policy.verification.status === "verified"
-											? "Verified"
-											: "Needs review"}
-									</span>
-								</div>
-							</td>
-							<td className="py-3 pr-4 text-sm text-muted-foreground hidden md:table-cell">
-								{getJurisdictionName(policy.jurisdiction)}
-							</td>
-							<td className="py-3 pr-4 text-sm text-muted-foreground hidden lg:table-cell">
-								{getPolicyTypeName(policy.type)}
-							</td>
-							<td
-								className={`py-3 pr-4 text-sm font-medium ${STATUS_COLORS[policy.status] || "text-muted-foreground"}`}
-							>
-								{getPolicyStatusName(policy.status)}
-							</td>
-							<td className="py-3 font-mono text-xs text-muted-foreground hidden sm:table-cell">
-								<span className="block">
-									{formatPolicyDate(primaryDate, { short: true })}
-								</span>
-								<span className="block text-[10px]">
-									{getPolicyDateTypeName(primaryDate.type)}
-								</span>
-							</td>
-						</tr>
-						);
-					})}
-					{paged.length === 0 && (
-						<tr>
-							<td
-								colSpan={5}
-								className="py-8 text-center text-sm text-muted-foreground"
-							>
-								No policies match the current filters.
-							</td>
-						</tr>
-					)}
-				</tbody>
-			</table>
-
-			{/* Pagination */}
-			{totalPages > 1 && (
-				<div className="flex items-center justify-between pt-4 border-t border-border mt-2">
-					<div className="font-mono text-xs text-muted-foreground">
-						Page {safePage + 1} of {totalPages}
-					</div>
-					<div className="flex gap-1">
-						<button
-							onClick={() => setPage(Math.max(0, safePage - 1))}
-							disabled={safePage === 0}
-							className="font-mono text-xs px-3 py-1.5 rounded border border-border hover:bg-muted disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-						>
-							Prev
-						</button>
-						<button
-							onClick={() => setPage(Math.min(totalPages - 1, safePage + 1))}
-							disabled={safePage >= totalPages - 1}
-							className="font-mono text-xs px-3 py-1.5 rounded border border-border hover:bg-muted disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-						>
-							Next
-						</button>
-					</div>
-				</div>
-			)}
-		</div>
-	);
+      {totalPages > 1 ? (
+        <div className="mt-5 flex items-center justify-between border-t border-border pt-4">
+          <span className="font-mono text-[11px] text-muted-foreground">
+            Page {safePage + 1} of {totalPages}
+          </span>
+          <div className="flex gap-2">
+            <button type="button" onClick={() => setPage(Math.max(0, safePage - 1))} disabled={safePage === 0} className="min-h-10 border border-border px-4 text-xs font-medium hover:bg-muted disabled:opacity-35">
+              Previous
+            </button>
+            <button type="button" onClick={() => setPage(Math.min(totalPages - 1, safePage + 1))} disabled={safePage >= totalPages - 1} className="min-h-10 border border-border px-4 text-xs font-medium hover:bg-muted disabled:opacity-35">
+              Next
+            </button>
+          </div>
+        </div>
+      ) : null}
+    </div>
+  );
 }

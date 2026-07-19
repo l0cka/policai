@@ -34,7 +34,7 @@ export function NetworkSidebar({
 }: NetworkSidebarProps) {
 	return (
 		<div
-			className={`absolute top-0 right-0 bottom-0 w-80 bg-card/95 backdrop-blur-xl border-l border-border transition-transform duration-300 z-20 ${
+			className={`absolute bottom-0 right-0 top-0 z-20 w-full max-w-80 border-l border-border bg-card/95 backdrop-blur-xl transition-transform duration-300 ${
 				policy ? "translate-x-0" : "translate-x-full"
 			}`}
 		>
@@ -125,7 +125,7 @@ export function NetworkSidebar({
 										<button
 											key={cp.id}
 											onClick={() => onNavigateToNode(cp.id)}
-											className="flex items-center gap-2 w-full px-2.5 py-2 rounded-lg bg-muted/50 hover:bg-muted text-left transition-colors group"
+											className="group flex w-full items-center gap-2 border-b border-border px-2.5 py-2 text-left transition-colors hover:bg-muted"
 										>
 											<div
 												className="w-2 h-2 rounded-full flex-shrink-0"
@@ -180,7 +180,7 @@ export function NetworkSidebar({
 						<div className="flex gap-2 pt-2">
 							<a
 								href={`/policies/${policy.id}`}
-								className="flex-1 flex items-center justify-center gap-1 px-3 py-2 bg-muted hover:bg-accent border border-border rounded-lg text-xs font-medium transition-colors"
+								className="flex flex-1 items-center justify-center gap-1 border border-border bg-muted px-3 py-2 text-xs font-medium transition-colors hover:bg-accent"
 							>
 								View Full Policy
 								<ArrowRight className="h-3 w-3" />
@@ -190,7 +190,7 @@ export function NetworkSidebar({
 									href={policy.sourceUrl}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="flex items-center gap-1 px-3 py-2 bg-muted/50 hover:bg-muted border border-border rounded-lg text-xs text-muted-foreground transition-colors"
+									className="flex items-center gap-1 border border-border bg-muted/50 px-3 py-2 text-xs text-muted-foreground transition-colors hover:bg-muted"
 								>
 									Source
 									<ExternalLink className="h-3 w-3" />

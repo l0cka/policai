@@ -80,7 +80,7 @@ export function MapBrowser({ policiesData }: { policiesData: Policy[] }) {
 	};
 
 	return (
-		<div className="relative flex min-h-[calc(100svh-4rem)] overflow-hidden bg-background">
+		<div className="relative flex min-h-[calc(100svh-7rem)] overflow-hidden bg-background">
 			{/* Map area — takes full width, panel overlays */}
 			<div className="relative flex flex-1 min-w-0 items-start justify-center px-4 pt-4 pb-28 md:px-8 md:pt-6 md:pb-16">
 				<AustraliaMap
@@ -94,7 +94,7 @@ export function MapBrowser({ policiesData }: { policiesData: Policy[] }) {
 			{/* Sliding policy panel */}
 			<div
 				ref={panelRef}
-				className={`absolute inset-x-0 bottom-0 z-10 flex max-h-[60vh] flex-col overflow-hidden rounded-t-xl border-t border-border bg-background shadow-2xl transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] md:top-6 md:right-6 md:left-auto md:h-[calc(100%-3rem)] md:max-h-none md:w-[22rem] md:rounded-2xl md:border md:bg-card/95 md:shadow-xl md:backdrop-blur-sm ${
+				className={`absolute inset-x-0 bottom-0 z-10 flex max-h-[60vh] flex-col overflow-hidden border-t border-border bg-background shadow-xl transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] md:bottom-6 md:left-auto md:right-6 md:top-6 md:h-[calc(100%-3rem)] md:max-h-none md:w-[22rem] md:border md:bg-card/95 md:shadow-lg md:backdrop-blur-sm ${
 					panelVisible
 						? "translate-y-0 md:translate-y-0 md:translate-x-0"
 						: "translate-y-full md:translate-y-0 md:translate-x-full"

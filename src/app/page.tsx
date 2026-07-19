@@ -33,6 +33,7 @@ export default async function HomePage() {
     <PolicyBrowser
       policies={policies}
       developments={developments}
+      developmentCount={allDevelopments.filter((development) => development.status !== 'dismissed').length}
       lastCollectedAt={meta.lastCollectedAt}
       lastHealthyAt={meta.lastHealthyAt}
       lastReviewedAt={meta.lastReviewedAt}

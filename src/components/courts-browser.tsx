@@ -13,6 +13,7 @@ import {
 } from "@/types";
 import { STATUS_COLORS } from "@/lib/design-tokens";
 import { formatPolicyDate } from "@/lib/format-policy-date";
+import { MetricStrip, PageIntro } from "@/components/layout";
 
 /** Group practice notes by jurisdiction, ordered with federal first. */
 const JURISDICTION_ORDER: Jurisdiction[] = [
@@ -70,42 +71,27 @@ export function CourtsBrowser({ policies }: { policies: Policy[] }) {
 	);
 
 	return (
-		<div className="container mx-auto px-4 py-6 max-w-screen-lg">
-			{/* Page header */}
-			<div className="mb-8">
-				<h1 className="text-2xl font-semibold tracking-tight mb-2">
-					Courts &amp; Tribunals
-				</h1>
-				<p className="text-sm text-muted-foreground max-w-2xl">
+		<div className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
+			<PageIntro
+				title="Courts & Tribunals"
+				description={
+					<p>
 					Practice notes, practice directions, and guidelines issued by
 					Australian courts and tribunals governing the use of AI in
 					proceedings. These instruments operate at the level of procedural
 					rules and directly affect how AI may be used when interacting with the
 					judiciary.
-				</p>
-			</div>
+					</p>
+				}
+			/>
+			<MetricStrip metrics={[
+				{ value: practiceNotes.length, label: "practice notes" },
+				{ value: jurisdictionsWithNotes.length, label: "jurisdictions" },
+				{ value: practiceNotes.filter((note) => note.verification.status === "verified").length, label: "verified" },
+				{ value: jurisdictionsWithout.length, label: "pending" },
+			]} />
 
-			{/* Summary stats */}
-			<div className="flex gap-6 mb-8 font-mono text-xs text-muted-foreground">
-				<span>
-					<span className="font-semibold text-foreground">
-						{practiceNotes.length}
-					</span>{" "}
-					practice notes
-				</span>
-				<span>
-					<span className="font-semibold text-foreground">
-						{jurisdictionsWithNotes.length}
-					</span>{" "}
-					jurisdictions
-				</span>
-				<span>
-					<span className="font-semibold text-foreground">
-						{jurisdictionsWithout.length}
-					</span>{" "}
-					pending
-				</span>
-			</div>
+			<div className="mx-auto max-w-5xl pt-8">
 
 			{/* Jurisdictions with practice notes */}
 			{jurisdictionsWithNotes.map((jurisdiction) => {
@@ -249,7 +235,7 @@ export function CourtsBrowser({ policies }: { policies: Policy[] }) {
 
 			{/* Jurisdictions without practice notes */}
 			{jurisdictionsWithout.length > 0 && (
-				<section className="mt-10">
+			<section className="mt-10">
 					<h2 className="font-mono text-xs font-medium uppercase tracking-wider text-muted-foreground mb-3">
 						No currently verified practice notes
 					</h2>
@@ -270,6 +256,7 @@ export function CourtsBrowser({ policies }: { policies: Policy[] }) {
 					</p>
 				</section>
 			)}
+			</div>
 		</div>
 	);
 }

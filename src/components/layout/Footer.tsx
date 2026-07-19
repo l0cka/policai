@@ -3,20 +3,14 @@ import Link from 'next/link';
 export function Footer() {
   return (
     <footer className="border-t border-border">
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 font-mono text-xs text-muted-foreground">
-          <span>&copy; {new Date().getFullYear()} Policai</span>
-          <span className="hidden sm:inline">&middot;</span>
-          <Link href="/" className="hover:text-foreground transition-colors">Policies</Link>
-          <span className="hidden sm:inline">&middot;</span>
-          <Link href="/developments" className="hover:text-foreground transition-colors">Developments</Link>
-          <span className="hidden sm:inline">&middot;</span>
-          <Link href="/map" className="hover:text-foreground transition-colors">Map</Link>
-          <span className="hidden sm:inline">&middot;</span>
-          <Link href="/agencies" className="hover:text-foreground transition-colors">Agencies</Link>
-          <span className="hidden sm:inline">&middot;</span>
-          <Link href="/methodology" className="hover:text-foreground transition-colors">Methodology</Link>
-          <span className="hidden sm:inline">&middot;</span>
+      <div className="container mx-auto flex flex-col gap-4 px-4 py-5 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+        <p className="max-w-3xl font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground lg:text-[10px]">
+          Policai is a public interest research project. Data is collected from official sources and verified by human review.
+        </p>
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-muted-foreground">
+          <Link href="/methodology" className="transition-colors hover:text-foreground">Methodology</Link>
+          <Link href="/api/policies" className="transition-colors hover:text-foreground">API</Link>
+          <Link href="/blog" className="transition-colors hover:text-foreground">About</Link>
           <a
             href="https://github.com/l0cka/policai"
             target="_blank"
