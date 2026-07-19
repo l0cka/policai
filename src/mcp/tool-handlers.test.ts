@@ -147,6 +147,8 @@ describe('MCP tool handlers', () => {
       url: 'https://example.gov.au/policy',
       entryKind: 'policy',
       targetRecordId: 'policy-1',
+      proposedRecord: undefined,
+      replaceTargetSource: undefined,
       notes: undefined,
       actor: 'local-mcp-admin',
       browserCapture: capture,

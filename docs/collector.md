@@ -244,8 +244,8 @@ current evidence is approved. Changed-document reviews likewise update their
 existing `targetPolicyId` in place instead of creating another record with the
 same source URL.
 
-If the official page for an existing tracked record is readable in a real
-browser but consistently blocks the hardened retriever, use the MCP
+If an official page is readable in a real browser but consistently blocks the
+hardened retriever or the configured analysis provider is unavailable, use the MCP
 `stage_source_capture` tool instead of editing `data/source-reviews.json`.
 Supply the displayed page title, normalized semantic `main` text, relevant
 official links, a fresh capture timestamp, the human capture reviewer, and the
@@ -255,7 +255,13 @@ semantic page fingerprint remains mandatory. For supplied documents, the tool
 only reads regular files from the system temporary directory or the reviewer's
 Downloads directory, rejects symlinks and unsupported or oversized payloads,
 validates document signatures, fingerprints the exact bytes, and never stores
-the local path. It is intentionally limited to an existing `targetRecordId`.
+the local path. Existing records use `targetRecordId`. A new official-source
+proposal must instead include a complete explicit `proposedRecord`; the MCP
+does not synthesize editorial fields from a browser capture. If a tracked URL
+is dead, an explicit replacement additionally sets `replaceTargetSource` and
+supplies a proposed record that preserves the target id while using the new
+official URL. Revision hashes and collision checks bind that migration to the
+current canonical record.
 
 A browser-captured review remains subject to the normal gates.
 `approve_staged_source` requires a fresh matching `browserCapture`, and its

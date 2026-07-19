@@ -1,29 +1,56 @@
 [
   {
     "id": "dev-learn-about-the-ai-assessment-framework-1qoe2un",
-    "title": "Learn about the AI Assessment Framework",
+    "title": "NSW AI Assessment Framework",
     "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks/nsw-ai-assessment-framework",
     "sourceId": "nsw-digital-ai",
     "sourceName": "Digital NSW — artificial intelligence",
     "jurisdiction": "nsw",
     "detectedAt": "2026-07-18T20:12:16.563Z",
-    "summary": "NSW AI Assessment Framework (AIAF) The AIAF is a self-assessment framework that helps NSW Government agencies assess the risks, impacts and readiness of AI projects. Agencies deploying systems with AI components are required to complete an AIAF assessment. Learn about the AI Assessment Framework",
-    "relevanceScore": 0.65,
-    "classification": "heuristic",
-    "status": "detected",
+    "summary": "Mandatory assessment framework for NSW Government AI projects. A modernised framework, built by the NSW Office for AI with CSIRO’s Data61 and aligned to the national assurance framework and the EU AI Act, launched on 27 January 2026, replacing the version in force since 1 July 2024.",
+    "relevanceScore": 1,
+    "classification": "curated",
+    "status": "promoted",
     "assessment": {
-      "method": "heuristic",
-      "assessedAt": "2026-07-18T20:12:16.563Z",
-      "promptVersion": "legacy-keyword-rules-v1"
+      "method": "editorial",
+      "assessedAt": "2026-07-19T06:14:28.866Z",
+      "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
         "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks/nsw-ai-assessment-framework",
-        "title": "Learn about the AI Assessment Framework",
-        "publisher": "Digital NSW — artificial intelligence"
-      }
-    }
+        "finalUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks/nsw-ai-assessment-framework",
+        "title": "NSW AI Assessment Framework | Digital NSW",
+        "retrievedAt": "2026-07-19T06:12:45.941Z",
+        "contentType": "text/html",
+        "contentHash": "002847f2550a0859411daf5b20589813ba648da2438679b163f0c5d73b07c8ff",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-07-19T06:12:45.941Z",
+          "capturedBy": "Daniel Alkurdi",
+          "notes": "Browser-reviewed official source evidence for the approved Policai verification batch on 19 July 2026.",
+          "pageContentHash": "1b3c4af8197eb0c14a99952ee29c7a5d2811814495c51e7b6d31c9d34f501214",
+          "characterCount": 11931
+        },
+        "reviewedDate": {
+          "date": "2026-01-27",
+          "precision": "day",
+          "reviewedAt": "2026-07-19T06:14:28.866Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "Verified against the NSW Government release for the modernised NSW AI Assessment Framework, published 27 January 2026."
+        }
+      },
+      "checkedAt": "2026-07-19T06:14:28.866Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026.",
+      "lastSourceAuditAt": "2026-07-16T10:00:09.104Z"
+    },
+    "publishedAt": "2026-01-27",
+    "publishedAtPrecision": "day",
+    "relatedPolicyId": "nsw-artificial-intelligence-assessment-framework"
   },
   {
     "id": "dev-identifying-ai-eophv9",
@@ -33,75 +60,153 @@
     "sourceName": "Digital NSW — artificial intelligence",
     "jurisdiction": "nsw",
     "detectedAt": "2026-07-18T20:12:16.563Z",
-    "summary": "Identifying AIeast",
-    "relevanceScore": 0.55,
-    "classification": "heuristic",
-    "status": "detected",
+    "summary": "NSW Government guidance for determining when a system or project uses artificial intelligence and should enter AI governance and assurance processes.",
+    "relevanceScore": 1,
+    "classification": "curated",
+    "status": "promoted",
     "assessment": {
-      "method": "heuristic",
-      "assessedAt": "2026-07-18T20:12:16.563Z",
-      "promptVersion": "legacy-keyword-rules-v1"
+      "method": "editorial",
+      "assessedAt": "2026-07-19T06:14:28.190Z",
+      "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
         "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/nsw-artificial-intelligence-assessment-framework/identifying-ai",
+        "finalUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/nsw-artificial-intelligence-assessment-framework/identifying-ai",
         "title": "Identifying AI",
-        "publisher": "Digital NSW — artificial intelligence"
-      }
-    }
+        "retrievedAt": "2026-07-19T06:12:45.941Z",
+        "contentType": "text/html",
+        "contentHash": "ae9fb6f67aa98b3839650f2e83b9f801fecf08731e397b44be8263d444a981a7",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-07-19T06:12:45.941Z",
+          "capturedBy": "Daniel Alkurdi",
+          "notes": "Browser-reviewed official source evidence for the approved Policai verification batch on 19 July 2026.",
+          "pageContentHash": "8885658697db5ef45c5782d2d6c7324a8d69eaa744d21241b4f328c15a3d202d",
+          "characterCount": 7260
+        },
+        "reviewedDate": {
+          "date": "2024-12-01",
+          "precision": "month",
+          "reviewedAt": "2026-07-19T06:14:28.190Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "Verified from the official Digital NSW downloadable guidance path and filename, which identify December 2024; month precision is retained."
+        }
+      },
+      "checkedAt": "2026-07-19T06:14:28.190Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026."
+    },
+    "publishedAt": "2024-12-01",
+    "publishedAtPrecision": "month",
+    "relatedPolicyId": "nsw-identifying-ai-guidance"
   },
   {
     "id": "dev-responsible-ai-guidance-1bg1iji",
-    "title": "Responsible AI guidance",
+    "title": "Understanding Responsibilities in AI Practices",
     "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/nsw-artificial-intelligence-assessment-framework/responsibilities",
     "sourceId": "nsw-digital-ai",
     "sourceName": "Digital NSW — artificial intelligence",
     "jurisdiction": "nsw",
     "detectedAt": "2026-07-18T20:12:16.563Z",
-    "summary": "Responsible AI guidanceeast",
-    "relevanceScore": 0.65,
-    "classification": "heuristic",
-    "status": "detected",
+    "summary": "NSW Government guidance describing organisational responsibilities for the safe, ethical and accountable use of artificial intelligence.",
+    "relevanceScore": 1,
+    "classification": "curated",
+    "status": "promoted",
     "assessment": {
-      "method": "heuristic",
-      "assessedAt": "2026-07-18T20:12:16.563Z",
-      "promptVersion": "legacy-keyword-rules-v1"
+      "method": "editorial",
+      "assessedAt": "2026-07-19T06:14:28.176Z",
+      "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
         "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/nsw-artificial-intelligence-assessment-framework/responsibilities",
-        "title": "Responsible AI guidance",
-        "publisher": "Digital NSW — artificial intelligence"
-      }
-    }
+        "finalUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/nsw-artificial-intelligence-assessment-framework/responsibilities",
+        "title": "Understanding Responsibilities in AI Practices",
+        "retrievedAt": "2026-07-19T06:12:45.941Z",
+        "contentType": "text/html",
+        "contentHash": "df3a0cccc5bc8d640c28927ba614535c239b783e280c46daf0f9fab8b8a8fc57",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-07-19T06:12:45.941Z",
+          "capturedBy": "Daniel Alkurdi",
+          "notes": "Browser-reviewed official source evidence for the approved Policai verification batch on 19 July 2026.",
+          "pageContentHash": "c11293c5874aa5e0aa09ab31f66b80a2b257f52cf16a236980c78c27993a84f1",
+          "characterCount": 4817
+        },
+        "reviewedDate": {
+          "date": "2024-12-01",
+          "precision": "month",
+          "reviewedAt": "2026-07-19T06:14:28.176Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "Verified from the official Digital NSW downloadable guidance path and filename, which identify December 2024; month precision is retained."
+        }
+      },
+      "checkedAt": "2026-07-19T06:14:28.176Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026."
+    },
+    "publishedAt": "2024-12-01",
+    "publishedAtPrecision": "month",
+    "relatedPolicyId": "nsw-responsible-ai-guidance"
   },
   {
     "id": "dev-ai-procurement-essentials-ortra4",
-    "title": "AI procurement essentials",
+    "title": "Artificial intelligence (AI) procurement essentials",
     "url": "https://www.info.buy.nsw.gov.au/resources/artificial-intelligence-ai-procurement-essentials",
     "sourceId": "nsw-digital-ai",
     "sourceName": "Digital NSW — artificial intelligence",
     "jurisdiction": "nsw",
     "detectedAt": "2026-07-18T20:12:16.563Z",
-    "summary": "AI procurement essentialseast",
-    "relevanceScore": 0.55,
-    "classification": "heuristic",
-    "status": "detected",
+    "summary": "NSW Government procurement guidance for assessing artificial intelligence products, suppliers, risks and contractual requirements.",
+    "relevanceScore": 1,
+    "classification": "curated",
+    "status": "promoted",
     "assessment": {
-      "method": "heuristic",
-      "assessedAt": "2026-07-18T20:12:16.563Z",
-      "promptVersion": "legacy-keyword-rules-v1"
+      "method": "editorial",
+      "assessedAt": "2026-07-19T06:14:28.162Z",
+      "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
         "url": "https://www.info.buy.nsw.gov.au/resources/artificial-intelligence-ai-procurement-essentials",
-        "title": "AI procurement essentials",
-        "publisher": "Digital NSW — artificial intelligence"
-      }
-    }
+        "finalUrl": "https://www.info.buy.nsw.gov.au/resources/artificial-intelligence-ai-procurement-essentials",
+        "title": "Artificial intelligence (AI) procurement essentials",
+        "retrievedAt": "2026-07-19T05:42:27.329Z",
+        "contentType": "text/html",
+        "contentHash": "1e692eb1c4aedf84573a86cfea784d93041e0efba7cf2c0aba03f7bbc879fdc1",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-07-19T05:42:27.329Z",
+          "capturedBy": "Daniel Alkurdi",
+          "notes": "Fresh controlled Chrome capture for the approved bulk review of Artificial intelligence (AI) procurement essentials; the official page is fingerprinted as the deterministic evidence boundary.",
+          "pageContentHash": "5d738b5cda98ccdfbdfd773be71f8cbb31413693c847a13b8bb1b2b7def0b64f",
+          "characterCount": 7240
+        },
+        "reviewedDate": {
+          "date": "2026-05-06",
+          "precision": "day",
+          "reviewedAt": "2026-07-19T06:14:28.162Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "Verified against the Digital NSW procurement guidance page, which states Updated 6 May 2026."
+        }
+      },
+      "checkedAt": "2026-07-19T06:14:28.162Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026."
+    },
+    "publishedAt": "2026-05-06",
+    "publishedAtPrecision": "day",
+    "relatedPolicyId": "nsw-ai-procurement-essentials"
   },
   {
     "id": "dev-ai-transparency-cvt4l5",
@@ -169,7 +274,7 @@
     "summary": "Message from the Minister “Artificial intelligence offers the opportunity to create a safer and more productive world, and we must do so responsibly, safely, and ethically.” - Minister Dib Artificial Intelligence (AI) is transforming how we work and the government services we provide for the people ",
     "relevanceScore": 0.55,
     "classification": "heuristic",
-    "status": "detected",
+    "status": "dismissed",
     "assessment": {
       "method": "heuristic",
       "assessedAt": "2026-07-12T12:01:59.304Z",
@@ -182,7 +287,8 @@
         "title": "AI Review Committee",
         "publisher": "Digital NSW — artificial intelligence"
       }
-    }
+    },
+    "dismissalReason": "Rejected after editorial review: this is a governance body, not a policy, development or practice note suitable for the Policai register."
   },
   {
     "id": "dev-ai-strategy-and-ethics-policy-117oyz4",
@@ -295,29 +401,55 @@
   },
   {
     "id": "dev-advice-on-ai-and-recordkeeping-1fn1f9z",
-    "title": "advice on AI and recordkeeping",
+    "title": "Artificial Intelligence (AI)",
     "url": "https://prov.vic.gov.au/recordkeeping-government/a-z-topics/AI",
     "sourceId": "vic-ai",
     "sourceName": "vic.gov.au — generative AI guidance",
     "jurisdiction": "vic",
     "detectedAt": "2026-07-12T12:01:59.304Z",
-    "summary": "Public Record Office Victoria(opens in a new window) can provide advice on AI and recordkeeping(opens in a new window), including its recordkeeping policy(opens in a new window).",
-    "relevanceScore": 0.55,
-    "classification": "heuristic",
-    "status": "detected",
+    "summary": "Victorian Government recordkeeping guidance for the creation, capture, management and disposal of records involving artificial intelligence.",
+    "relevanceScore": 1,
+    "classification": "curated",
+    "status": "promoted",
     "assessment": {
-      "method": "heuristic",
-      "assessedAt": "2026-07-12T12:01:59.304Z",
-      "promptVersion": "legacy-keyword-rules-v1"
+      "method": "editorial",
+      "assessedAt": "2026-07-19T06:14:28.146Z",
+      "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
         "url": "https://prov.vic.gov.au/recordkeeping-government/a-z-topics/AI",
-        "title": "advice on AI and recordkeeping",
-        "publisher": "vic.gov.au — generative AI guidance"
-      }
-    }
+        "finalUrl": "https://prov.vic.gov.au/recordkeeping-government/a-z-topics/AI",
+        "title": "Artificial Intelligence (AI) | PROV",
+        "retrievedAt": "2026-07-19T06:12:45.941Z",
+        "contentType": "text/html",
+        "contentHash": "af360ec1cb4cadd9b274587134f8eeda59f62264376643e2513c64676d63c25f",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-07-19T06:12:45.941Z",
+          "capturedBy": "Daniel Alkurdi",
+          "notes": "Browser-reviewed official source evidence for the approved Policai verification batch on 19 July 2026.",
+          "pageContentHash": "5177b78fe5f88a43e8a841e919408778b5bd4290eaba0a09201a4c8380510cb5",
+          "characterCount": 7423
+        },
+        "reviewedDate": {
+          "date": "2026-06-04",
+          "precision": "day",
+          "reviewedAt": "2026-07-19T06:14:28.146Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "Verified against the Public Record Office Victoria guidance page, which states Last updated June 4, 2026."
+        }
+      },
+      "checkedAt": "2026-07-19T06:14:28.146Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026."
+    },
+    "publishedAt": "2026-06-04",
+    "publishedAtPrecision": "day",
+    "relatedPolicyId": "victoria-ai-recordkeeping-guidance"
   },
   {
     "id": "dev-guideline-for-safe-and-responsible-use-of-genera-1htcnua",
@@ -355,23 +487,49 @@
     "sourceName": "WA — AI policy and assurance framework",
     "jurisdiction": "wa",
     "detectedAt": "2026-07-12T12:01:59.304Z",
-    "summary": "The WA Government AI Assurance Framework (self-assessment) supports entities to evaluate their AI project’s implications, risks and controls in a way that aligns with the principles set out in the Policy and the National Framework for the assurance of AI in government.",
-    "relevanceScore": 0.65,
-    "classification": "heuristic",
-    "status": "detected",
+    "summary": "WA Government self-assessment tool for evaluating an AI project's implications, risks and controls under the state AI policy and assurance framework.",
+    "relevanceScore": 1,
+    "classification": "curated",
+    "status": "promoted",
     "assessment": {
-      "method": "heuristic",
-      "assessedAt": "2026-07-12T12:01:59.304Z",
-      "promptVersion": "legacy-keyword-rules-v1"
+      "method": "editorial",
+      "assessedAt": "2026-07-19T06:14:28.131Z",
+      "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
         "url": "https://forms.digital.wa.gov.au/250231755970861",
+        "finalUrl": "https://forms.digital.wa.gov.au/250231755970861",
         "title": "WA Government AI Assurance Framework",
-        "publisher": "WA — AI policy and assurance framework"
-      }
-    }
+        "retrievedAt": "2026-07-19T05:42:21.999Z",
+        "contentType": "text/html",
+        "contentHash": "a77f0c2955e1013e60f8df324705784ac9e92d9a166431999001ae599d565bd0",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-07-19T05:42:21.999Z",
+          "capturedBy": "Daniel Alkurdi",
+          "notes": "Fresh controlled Chrome capture for the approved bulk review of WA Government AI Assurance Framework; the official page is fingerprinted as the deterministic evidence boundary.",
+          "pageContentHash": "3ede3afd987e93a7a6b70eaffb12e322db8b533ff94d438a7322148e08c2a020",
+          "characterCount": 1224
+        },
+        "reviewedDate": {
+          "date": "2025-04-01",
+          "precision": "month",
+          "reviewedAt": "2026-07-19T06:14:28.131Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "Verified against the official WA Government AI Assurance Framework document labelled Version 2.0, April 2025; month precision is retained."
+        }
+      },
+      "checkedAt": "2026-07-19T06:14:28.131Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026."
+    },
+    "publishedAt": "2025-04-01",
+    "publishedAtPrecision": "month",
+    "relatedPolicyId": "wa-ai-assurance-self-assessment"
   },
   {
     "id": "dev-national-framework-for-the-assurance-of-ai-in-go-1y23ag9",
@@ -412,7 +570,7 @@
     "summary": "If an AI project meets one or more of the following criteria, entities must submit their completed self-assessment to the WA Government AI Advisory Board:",
     "relevanceScore": 0.55,
     "classification": "heuristic",
-    "status": "detected",
+    "status": "dismissed",
     "assessment": {
       "method": "heuristic",
       "assessedAt": "2026-07-12T12:01:59.304Z",
@@ -425,7 +583,8 @@
         "title": "WA Government AI Advisory Board",
         "publisher": "WA — AI policy and assurance framework"
       }
-    }
+    },
+    "dismissalReason": "Rejected after editorial review: this is a governance body, not a policy, development or practice note suitable for the Policai register."
   },
   {
     "id": "dev-wa-government-artificial-intelligence-policy-12vvhgh",
@@ -457,29 +616,55 @@
   },
   {
     "id": "dev-ai-governance-toolkit-for-entities-n3hwj4",
-    "title": "AI governance toolkit for entities",
+    "title": "Artificial Intelligence governance toolkit for WA public sector entities",
     "url": "https://www.wa.gov.au/organisation/department-of-the-premier-and-cabinet/office-of-digital-government/artificial-intelligence-governance-toolkit-wa-public-sector-entities",
     "sourceId": "wa-ai-policy",
     "sourceName": "WA — AI policy and assurance framework",
     "jurisdiction": "wa",
     "detectedAt": "2026-07-12T12:01:59.304Z",
-    "summary": "AI governance toolkit for entities",
-    "relevanceScore": 0.55,
-    "classification": "heuristic",
-    "status": "detected",
+    "summary": "WA Government toolkit supporting public sector entities to establish governance, assurance and risk controls for artificial intelligence.",
+    "relevanceScore": 1,
+    "classification": "curated",
+    "status": "promoted",
     "assessment": {
-      "method": "heuristic",
-      "assessedAt": "2026-07-12T12:01:59.304Z",
-      "promptVersion": "legacy-keyword-rules-v1"
+      "method": "editorial",
+      "assessedAt": "2026-07-19T06:14:28.115Z",
+      "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
         "url": "https://www.wa.gov.au/organisation/department-of-the-premier-and-cabinet/office-of-digital-government/artificial-intelligence-governance-toolkit-wa-public-sector-entities",
-        "title": "AI governance toolkit for entities",
-        "publisher": "WA — AI policy and assurance framework"
-      }
-    }
+        "finalUrl": "https://www.wa.gov.au/organisation/department-of-the-premier-and-cabinet/office-of-digital-government/artificial-intelligence-governance-toolkit-wa-public-sector-entities",
+        "title": "Artificial Intelligence governance toolkit for WA public sector entities",
+        "retrievedAt": "2026-07-19T05:42:18.760Z",
+        "contentType": "text/html",
+        "contentHash": "221020770ee14f037e8950ee9f394bbd5d210a3b4b314c7141faabe92c5c4cdd",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-07-19T05:42:18.760Z",
+          "capturedBy": "Daniel Alkurdi",
+          "notes": "Fresh controlled Chrome capture for the approved bulk review of Artificial Intelligence governance toolkit for WA public sector entities; the official page is fingerprinted as the deterministic evidence boundary.",
+          "pageContentHash": "3dd21a9dc1054a94525d7f6a48e4396016334f685f8802baf05b2e7b3138486c",
+          "characterCount": 5513
+        },
+        "reviewedDate": {
+          "date": "2026-01-15",
+          "precision": "day",
+          "reviewedAt": "2026-07-19T06:14:28.115Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "Verified against the WA Office of the Auditor General page, which states that the toolkit was last updated on 15 January 2026."
+        }
+      },
+      "checkedAt": "2026-07-19T06:14:28.115Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026."
+    },
+    "publishedAt": "2026-01-15",
+    "publishedAtPrecision": "day",
+    "relatedPolicyId": "wa-ai-governance-toolkit"
   },
   {
     "id": "dev-ai-knowledge-centre-1f8sbt9",

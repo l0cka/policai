@@ -101,11 +101,13 @@ server.registerTool(
   {
     title: 'Stage browser-captured source',
     description:
-      'Stages an existing tracked record from a fresh, reviewer-attributed browser capture when the official source blocks the hardened server-side retriever. The capture includes normalized page text and local bytes for every linked canonical document; paths are validated and never persisted. Requires POLICAI_MCP_ADMIN_TOKEN. Does not approve or publish.',
+      'Stages a fresh, reviewer-attributed browser capture when the official source blocks the hardened server-side retriever. Existing records use targetRecordId; new records require an explicit proposedRecord; replacing a dead target URL additionally requires replaceTargetSource. The capture includes normalized page text and local bytes for linked canonical documents; paths are validated and never persisted. Requires POLICAI_MCP_ADMIN_TOKEN. Does not approve or publish.',
     inputSchema: {
       url: z.string().url(),
       entryKind: z.enum(['policy', 'timeline_event']),
-      targetRecordId: z.string().min(1),
+      targetRecordId: z.string().min(1).optional(),
+      proposedRecord: z.record(z.string(), z.unknown()).optional(),
+      replaceTargetSource: z.boolean().optional(),
       notes: z.string().optional(),
       capture: browserCaptureSchema,
       adminToken: z.string(),

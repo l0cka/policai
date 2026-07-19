@@ -790,6 +790,8 @@ async function stageSourceUrlUnlocked(input: {
 	url: string;
 	entryKind: SourceReviewEntryKind;
 	targetRecordId?: string;
+	proposedRecord?: PolicyDraft | TimelineEventDraft;
+	replaceTargetSource?: boolean;
 	notes?: string;
 	actor: string;
 	stageOnly?: boolean;
@@ -823,10 +825,12 @@ async function stageSourceUrlUnlocked(input: {
 	}
 	const targetPolicy =
 		input.entryKind === "policy"
-			? matchingPolicies.find(
-					(policy) =>
-						!input.targetRecordId || policy.id === input.targetRecordId,
-				)
+			? input.replaceTargetSource && input.targetRecordId
+				? trackedPolicies.find((policy) => policy.id === input.targetRecordId)
+				: matchingPolicies.find(
+						(policy) =>
+							!input.targetRecordId || policy.id === input.targetRecordId,
+					)
 			: undefined;
 	const targetTimelineEvent =
 		input.entryKind === "timeline_event"
@@ -839,6 +843,26 @@ async function stageSourceUrlUnlocked(input: {
 		throw new Error(
 			`targetRecordId "${input.targetRecordId}" does not identify a tracked ${input.entryKind === "policy" ? "policy" : "timeline event"} with this source URL`,
 		);
+	}
+	if (input.replaceTargetSource) {
+		if (
+			!input.browserCapture ||
+			!input.proposedRecord ||
+			!targetPolicy ||
+			sourceUrlsEqual(targetPolicy.sourceUrl, canonicalUrl)
+		) {
+			throw new Error(
+				"Replacing a tracked source requires a different official browser capture, the target policy id, and an explicit proposedRecord",
+			);
+		}
+		if (
+			input.proposedRecord.id !== targetPolicy.id ||
+			!sourceUrlsEqual(input.proposedRecord.sourceUrl, canonicalUrl)
+		) {
+			throw new Error(
+				"Source replacement proposedRecord must preserve the target policy id and use the captured source URL",
+			);
+		}
 	}
 	if (
 		!targetPolicy &&
@@ -855,7 +879,8 @@ async function stageSourceUrlUnlocked(input: {
 			(review) =>
 				(review.status === "pending_review" || review.status === "approved") &&
 				review.targetPolicyId === targetPolicy.id &&
-				sourceUrlsEqual(review.sourceUrl, canonicalUrl),
+				(input.replaceTargetSource ||
+					sourceUrlsEqual(review.sourceUrl, canonicalUrl)),
 		);
 	} else if (targetTimelineEvent) {
 		existingReview = sourceReviews.find(
@@ -885,14 +910,28 @@ async function stageSourceUrlUnlocked(input: {
 			sourceUrlsEqual(development.url, canonicalUrl) &&
 			development.status === "detected",
 	);
-	if (input.browserCapture && !targetPolicy && !targetTimelineEvent) {
+	if (
+		input.browserCapture &&
+		!targetPolicy &&
+		!targetTimelineEvent &&
+		!input.proposedRecord
+	) {
 		throw new Error(
-			"Browser capture staging is limited to an existing tracked record",
+			"New browser-captured sources require an explicitly reviewed proposedRecord",
+		);
+	}
+	if (
+		input.browserCapture &&
+		input.proposedRecord &&
+		!sourceUrlsEqual(input.proposedRecord.sourceUrl, canonicalUrl)
+	) {
+		throw new Error(
+			"Browser-captured proposedRecord sourceUrl must match the captured source URL",
 		);
 	}
 	let requiresManualExtraction = false;
 	let analysisResult: SourceAnalysisResult;
-	if (targetPolicy || targetTimelineEvent) {
+	if (targetPolicy || targetTimelineEvent || input.browserCapture) {
 		const retrieved = input.browserCapture
 			? await buildBrowserCapturedSource(canonicalUrl, input.browserCapture)
 			: await retrieveEditorialSource(
@@ -911,10 +950,15 @@ async function stageSourceUrlUnlocked(input: {
 		}
 		if (document) {
 			if (input.browserCapture) {
-				const trackedRecord = targetPolicy ?? targetTimelineEvent;
-				if (!trackedRecord) {
-					throw new Error("Tracked record disappeared during staging");
+				const capturedRecord =
+					targetPolicy ?? targetTimelineEvent ?? input.proposedRecord;
+				if (!capturedRecord) {
+					throw new Error("Browser-captured proposal disappeared during staging");
 				}
+				const capturedPolicy =
+					input.entryKind === "policy"
+						? (capturedRecord as PolicyDraft)
+						: undefined;
 				analysisResult = {
 					url: canonicalUrl,
 					title: document.title,
@@ -922,12 +966,11 @@ async function stageSourceUrlUnlocked(input: {
 					analysis: {
 						isRelevant: true,
 						relevanceScore: 1,
-						policyType: targetPolicy?.type ?? null,
-						jurisdiction: trackedRecord.jurisdiction,
-						summary:
-							targetPolicy?.description ?? trackedRecord.description,
-						tags: targetPolicy?.tags ?? [],
-						agencies: targetPolicy?.agencies ?? [],
+						policyType: capturedPolicy?.type ?? null,
+						jurisdiction: capturedRecord.jurisdiction,
+						summary: capturedRecord.description,
+						tags: capturedPolicy?.tags ?? [],
+						agencies: capturedPolicy?.agencies ?? [],
 					},
 					sourceEvidence: canonicalizeSourceEvidence({
 						...retrieved.evidence,
@@ -946,22 +989,27 @@ async function stageSourceUrlUnlocked(input: {
 				);
 			}
 		} else {
-			const trackedRecord = targetPolicy ?? targetTimelineEvent;
-			if (!trackedRecord) {
-				throw new Error("Tracked record disappeared during staging");
+			const capturedRecord =
+				targetPolicy ?? targetTimelineEvent ?? input.proposedRecord;
+			if (!capturedRecord) {
+				throw new Error("Browser-captured proposal disappeared during staging");
 			}
+			const capturedPolicy =
+				input.entryKind === "policy"
+					? (capturedRecord as PolicyDraft)
+					: undefined;
 			analysisResult = {
 				url: canonicalUrl,
-				title: trackedRecord.title,
-				cleanContent: targetPolicy?.content ?? trackedRecord.description,
+				title: capturedRecord.title,
+				cleanContent: capturedPolicy?.content ?? capturedRecord.description,
 				analysis: {
 					isRelevant: true,
 					relevanceScore: 1,
-					policyType: targetPolicy?.type ?? null,
-					jurisdiction: trackedRecord.jurisdiction,
-					summary: targetPolicy?.description ?? trackedRecord.description,
-					tags: targetPolicy?.tags ?? [],
-					agencies: targetPolicy?.agencies ?? [],
+					policyType: capturedPolicy?.type ?? null,
+					jurisdiction: capturedRecord.jurisdiction,
+					summary: capturedRecord.description,
+					tags: capturedPolicy?.tags ?? [],
+					agencies: capturedPolicy?.agencies ?? [],
 				},
 				sourceEvidence: canonicalizeSourceEvidence(retrieved.evidence),
 				discoveredAt:
@@ -969,20 +1017,23 @@ async function stageSourceUrlUnlocked(input: {
 				};
 			}
 		const targetRecord = targetPolicy ?? targetTimelineEvent;
-		if (!targetRecord) {
-			throw new Error("Tracked record disappeared during staging");
-		}
-		const newlyAdoptedIdentityUrls = sourceIdentityUrlsNotOwnedBy(
-			sourceIdentityUrls(canonicalUrl, analysisResult.sourceEvidence),
-			targetRecord.sourceUrl,
-			targetRecord.verification?.source,
+		const candidateIdentityUrls = sourceIdentityUrls(
+			canonicalUrl,
+			analysisResult.sourceEvidence,
 		);
+		const collisionIdentityUrls = targetRecord
+			? sourceIdentityUrlsNotOwnedBy(
+					candidateIdentityUrls,
+					targetRecord.sourceUrl,
+					targetRecord.verification?.source,
+				)
+			: candidateIdentityUrls;
 		const redirectCollision =
 			trackedPolicies.some(
 				(policy) =>
 					policy.id !== targetPolicy?.id &&
 					sourceIdentityMatches(
-						newlyAdoptedIdentityUrls,
+						collisionIdentityUrls,
 						policy.sourceUrl,
 						policy.verification.source,
 					),
@@ -991,7 +1042,7 @@ async function stageSourceUrlUnlocked(input: {
 				(event) =>
 					event.id !== targetTimelineEvent?.id &&
 					sourceIdentityMatches(
-						newlyAdoptedIdentityUrls,
+						collisionIdentityUrls,
 						event.sourceUrl,
 						event.verification?.source,
 					),
@@ -1001,14 +1052,16 @@ async function stageSourceUrlUnlocked(input: {
 					review.status !== "rejected" &&
 					review.id !== existingReview?.id &&
 					sourceIdentityMatches(
-						newlyAdoptedIdentityUrls,
+						collisionIdentityUrls,
 						review.sourceUrl,
 						review.sourceEvidence,
 					),
 			);
 		if (redirectCollision) {
 			throw new Error(
-				"Tracked source redirected to an identity owned by another record or review",
+				targetRecord
+					? "Tracked source redirected to an identity owned by another record or review"
+					: "Browser-captured source identity is already owned by another record or review",
 			);
 		}
 	} else {
@@ -1066,11 +1119,11 @@ async function stageSourceUrlUnlocked(input: {
 		}
 	}
 	const now = new Date().toISOString();
-	const proposedRecord = targetPolicy
+	const proposedRecord = input.proposedRecord ?? (targetPolicy
 		? buildReverificationDraft(targetPolicy, now)
 		: targetTimelineEvent
 			? buildTimelineReverificationDraft(targetTimelineEvent)
-			: buildProposedRecord(input.entryKind, analysisResult);
+			: buildProposedRecord(input.entryKind, analysisResult));
 
 	const reviewProposal: Omit<SourceReview, "id"> = {
 		sourceUrl: canonicalUrl,
@@ -1081,6 +1134,9 @@ async function stageSourceUrlUnlocked(input: {
 			? {
 				targetPolicyId: targetPolicy.id,
 				targetPolicyBaseRevisionHash: policyRevisionHash(targetPolicy),
+				...(input.replaceTargetSource
+					? { targetPolicyPreviousSourceUrl: targetPolicy.sourceUrl }
+					: {}),
 			}
 			: {}),
 		...(targetTimelineEvent
@@ -1563,6 +1619,7 @@ async function approveStagedSourceUnlocked(input: {
 
 	const draft = proposedRecord as PolicyDraft;
 	let targetPolicy: Policy | undefined;
+	let replacesTargetPolicySource = false;
 	const [policies, timelineEvents, sourceReviews] = await Promise.all([
 		getPolicies(undefined, { access: "admin" }),
 		getTimelineEvents(undefined, {
@@ -1578,7 +1635,18 @@ async function approveStagedSourceUnlocked(input: {
 		if (!targetPolicy) {
 			throw new Error("Target policy for update review was not found");
 		}
-		if (!sourceUrlsEqual(targetPolicy.sourceUrl, review.sourceUrl)) {
+		replacesTargetPolicySource = Boolean(
+			review.targetPolicyPreviousSourceUrl &&
+				sourceUrlsEqual(
+					targetPolicy.sourceUrl,
+					review.targetPolicyPreviousSourceUrl,
+				) &&
+				!sourceUrlsEqual(targetPolicy.sourceUrl, review.sourceUrl),
+		);
+		if (
+			!sourceUrlsEqual(targetPolicy.sourceUrl, review.sourceUrl) &&
+			!replacesTargetPolicySource
+		) {
 			throw new Error(
 				"Update review source URL does not match the target policy",
 			);
@@ -1694,7 +1762,8 @@ async function approveStagedSourceUnlocked(input: {
 	if (
 		targetPolicy &&
 		(draft.id !== targetPolicy.id ||
-			!sourceUrlsEqual(draft.sourceUrl, targetPolicy.sourceUrl))
+			(!sourceUrlsEqual(draft.sourceUrl, targetPolicy.sourceUrl) &&
+				!replacesTargetPolicySource))
 	) {
 		throw new Error(
 			"Update review must preserve the target policy id and source URL",
@@ -2260,7 +2329,18 @@ async function publishStagedSourceUnlocked(
 			if (!targetPolicy) {
 				throw new Error("Target policy for update review was not found");
 			}
-			if (!sourceUrlsEqual(targetPolicy.sourceUrl, review.sourceUrl)) {
+			const replacesTargetSource = Boolean(
+				review.targetPolicyPreviousSourceUrl &&
+					sourceUrlsEqual(
+						targetPolicy.sourceUrl,
+						review.targetPolicyPreviousSourceUrl,
+					) &&
+					!sourceUrlsEqual(targetPolicy.sourceUrl, review.sourceUrl),
+			);
+			if (
+				!sourceUrlsEqual(targetPolicy.sourceUrl, review.sourceUrl) &&
+				!replacesTargetSource
+			) {
 				throw new Error(
 					"Update review source URL does not match the target policy",
 				);

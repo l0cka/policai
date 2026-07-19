@@ -258,6 +258,8 @@ export interface SourceReview {
 	title: string;
 	entryKind: SourceReviewEntryKind;
 	targetPolicyId?: string;
+	/** Prior canonical URL when an explicitly reviewed update migrates a dead source. */
+	targetPolicyPreviousSourceUrl?: string;
 	/** Editorial revision from which an update review's draft was staged. */
 	targetPolicyBaseRevisionHash?: string;
 	/** Immutable collector transition order for mutable direct-document updates. */

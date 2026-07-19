@@ -111,7 +111,9 @@ export async function handleStageSourceUrl(input: {
 export async function handleStageSourceCapture(input: {
   url: string;
   entryKind: SourceReviewEntryKind;
-  targetRecordId: string;
+  targetRecordId?: string;
+  proposedRecord?: Record<string, unknown>;
+  replaceTargetSource?: boolean;
   notes?: string;
   capture: BrowserCaptureInput;
   adminToken?: string;
@@ -122,6 +124,11 @@ export async function handleStageSourceCapture(input: {
       url: input.url,
       entryKind: input.entryKind,
       targetRecordId: input.targetRecordId,
+      proposedRecord: input.proposedRecord as
+        | PolicyDraft
+        | TimelineEventDraft
+        | undefined,
+      replaceTargetSource: input.replaceTargetSource,
       notes: input.notes,
       actor: MCP_ACTOR,
       browserCapture: input.capture,

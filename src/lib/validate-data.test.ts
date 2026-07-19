@@ -497,6 +497,53 @@ describe('validateSourceReviews', () => {
     );
   });
 
+  it('accepts a published target source replacement after the canonical policy moves', () => {
+    const previousSourceUrl = 'https://example.gov.au/policy-v1';
+    const replacementSourceUrl = 'https://example.gov.au/policy-v2';
+    const policy = buildPolicy({
+      id: 'migrated-policy',
+      sourceUrl: replacementSourceUrl,
+    });
+    const report = validateSourceReviews(
+      [
+        {
+          id: 'source-review-published-source-replacement',
+          sourceUrl: replacementSourceUrl,
+          title: policy.title,
+          entryKind: 'policy',
+          targetPolicyId: policy.id,
+          targetPolicyPreviousSourceUrl: previousSourceUrl,
+          targetPolicyBaseRevisionHash: 'a'.repeat(64),
+          targetPolicyRevisionHash: 'b'.repeat(64),
+          status: 'published',
+          discoveredAt: '2026-07-16T08:00:00.000Z',
+          createdBy: 'editor',
+          analysis: {
+            isRelevant: true,
+            relevanceScore: 1,
+            suggestedType: policy.type,
+            suggestedJurisdiction: policy.jurisdiction,
+            summary: 'The canonical source moved to a replacement URL.',
+          },
+          sourceEvidence: {
+            url: replacementSourceUrl,
+            retrievedAt: '2026-07-16T08:00:00.000Z',
+          },
+          proposedRecord: policy,
+          reviewedAt: '2026-07-16T09:00:00.000Z',
+          reviewedBy: 'reviewer',
+          publishedAt: '2026-07-16T10:00:00.000Z',
+          updatedAt: '2026-07-16T10:00:00.000Z',
+        },
+      ],
+      { policies: [policy], timelineEvents: [] },
+    );
+
+    expect(report.errors).not.toContain(
+      'source-review-published-source-replacement: invalid target policy source replacement',
+    );
+  });
+
   it('rejects source reviews without a usable sourceEvidence object', () => {
     const policy = buildPolicy();
     const malformedReview = {

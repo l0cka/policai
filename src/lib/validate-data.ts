@@ -1109,10 +1109,31 @@ export function validateSourceReviews(
       const targetPolicy = policiesById.get(review.targetPolicyId);
       if (!targetPolicy) {
         errors.push(`${label}: targetPolicyId does not match a policy`);
-      } else if (!sourceUrlsEqual(targetPolicy.sourceUrl, review.sourceUrl)) {
-        errors.push(
-          `${label}: sourceUrl does not match the target policy source`,
+      } else if (review.targetPolicyPreviousSourceUrl) {
+        const proposedSourceMatchesReview = sourceUrlsEqual(
+          review.proposedRecord?.sourceUrl,
+          review.sourceUrl,
         );
+        const targetStillUsesPreviousSource =
+          sourceUrlsEqual(
+            targetPolicy.sourceUrl,
+            review.targetPolicyPreviousSourceUrl,
+          ) && !sourceUrlsEqual(targetPolicy.sourceUrl, review.sourceUrl);
+        const targetUsesPublishedReplacement =
+          (review.status === 'approved' || review.status === 'published') &&
+          sourceUrlsEqual(targetPolicy.sourceUrl, review.sourceUrl) &&
+          !sourceUrlsEqual(
+            targetPolicy.sourceUrl,
+            review.targetPolicyPreviousSourceUrl,
+          );
+        if (
+          !proposedSourceMatchesReview ||
+          (!targetStillUsesPreviousSource && !targetUsesPublishedReplacement)
+        ) {
+          errors.push(`${label}: invalid target policy source replacement`);
+        }
+      } else if (!sourceUrlsEqual(targetPolicy.sourceUrl, review.sourceUrl)) {
+        errors.push(`${label}: sourceUrl does not match the target policy source`);
       }
       if (!SHA256.test(review.targetPolicyBaseRevisionHash ?? '')) {
         errors.push(
@@ -1135,6 +1156,11 @@ export function validateSourceReviews(
         errors.push(`${label}: invalid sourceVersionSequence`);
       }
     } else {
+      if (review.targetPolicyPreviousSourceUrl) {
+        errors.push(
+          `${label}: targetPolicyPreviousSourceUrl requires targetPolicyId`,
+        );
+      }
       if (review.targetPolicyBaseRevisionHash) {
         errors.push(
           `${label}: targetPolicyBaseRevisionHash requires targetPolicyId`,

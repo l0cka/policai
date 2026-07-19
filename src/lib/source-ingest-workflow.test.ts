@@ -770,6 +770,163 @@ describe('source ingest approval workflow', () => {
     expect(staged.sourceEvidence.linkedDocuments).toEqual([]);
   });
 
+  it('stages a new official browser capture only with an explicit proposed record', async () => {
+    const proposedRecord = buildDraft({
+      id: 'browser-captured-new-policy',
+      effectiveDate: '2026-07-01',
+    });
+    const browserCapture = {
+      pageTitle: 'New official AI policy',
+      pageText: 'Official browser-captured policy text for a new editorial proposal.',
+      references: [SOURCE_URL],
+      capturedAt: new Date().toISOString(),
+      capturedBy: 'Jane Reviewer',
+      notes: 'Captured from the official source after automated analysis was unavailable.',
+      linkedDocuments: [],
+    };
+
+    await stageSourceCapture({
+      url: SOURCE_URL,
+      entryKind: 'policy',
+      proposedRecord,
+      actor: 'local-mcp-admin',
+      browserCapture,
+    });
+
+    const staged = createSourceReview.mock.calls[0][0] as SourceReview;
+    expect(staged.targetPolicyId).toBeUndefined();
+    expect(staged.proposedRecord).toEqual(proposedRecord);
+    expect(staged.sourceEvidence.browserCapture).toEqual(
+      expect.objectContaining({ capturedBy: 'Jane Reviewer' }),
+    );
+
+    await expect(
+      stageSourceCapture({
+        url: 'https://example.gov.au/another-policy',
+        entryKind: 'policy',
+        actor: 'local-mcp-admin',
+        browserCapture,
+      }),
+    ).rejects.toThrow('require an explicitly reviewed proposedRecord');
+  });
+
+  it('stages an explicit browser-verified replacement for a dead target source', async () => {
+    const replacementUrl = 'https://example.gov.au/replacement-policy';
+    const targetDraft = buildDraft({
+      id: 'policy-with-dead-source',
+      effectiveDate: '2026-07-01',
+    });
+    const target: Policy = {
+      ...targetDraft,
+      effectiveDate: '2026-07-01',
+      dates: targetDraft.dates ?? [],
+      verification: {
+        status: 'stale',
+        source: { url: SOURCE_URL },
+      },
+    };
+    getPolicies.mockResolvedValue([target]);
+    const proposedRecord = {
+      ...targetDraft,
+      sourceUrl: replacementUrl,
+    };
+
+    await stageSourceCapture({
+      url: replacementUrl,
+      entryKind: 'policy',
+      targetRecordId: target.id,
+      proposedRecord,
+      replaceTargetSource: true,
+      actor: 'local-mcp-admin',
+      browserCapture: {
+        pageTitle: 'Replacement official AI policy',
+        pageText: 'Official replacement policy text captured for editorial review.',
+        references: [replacementUrl],
+        capturedAt: new Date().toISOString(),
+        capturedBy: 'Jane Reviewer',
+        notes: 'Captured after confirming that the previous canonical URL is dead.',
+        linkedDocuments: [],
+      },
+    });
+
+    const staged = createSourceReview.mock.calls[0][0] as SourceReview;
+    expect(staged).toEqual(
+      expect.objectContaining({
+        sourceUrl: replacementUrl,
+        targetPolicyId: target.id,
+        targetPolicyPreviousSourceUrl: SOURCE_URL,
+        proposedRecord: expect.objectContaining({
+          id: target.id,
+          sourceUrl: replacementUrl,
+        }),
+      }),
+    );
+  });
+
+  it('refreshes an unresolved target review when its official source is replaced', async () => {
+    const replacementUrl = 'https://example.gov.au/replacement-policy';
+    const targetDraft = buildDraft({
+      id: 'policy-with-moved-source',
+      effectiveDate: '2026-07-01',
+    });
+    const target: Policy = {
+      ...targetDraft,
+      effectiveDate: '2026-07-01',
+      dates: targetDraft.dates ?? [],
+      verification: {
+        status: 'stale',
+        source: { url: SOURCE_URL },
+      },
+    };
+    const pending = buildReview({
+      id: 'source-review-existing-target',
+      targetPolicyId: target.id,
+      proposedRecord: targetDraft,
+    });
+    const proposedRecord = {
+      ...targetDraft,
+      sourceUrl: replacementUrl,
+    };
+    getPolicies.mockResolvedValue([target]);
+    getSourceReviews.mockResolvedValue([pending]);
+    updateSourceReview.mockImplementation(async (id, updates) => ({
+      ...pending,
+      ...updates,
+      id,
+    }));
+
+    await stageSourceCapture({
+      url: replacementUrl,
+      entryKind: 'policy',
+      targetRecordId: target.id,
+      proposedRecord,
+      replaceTargetSource: true,
+      actor: 'local-mcp-admin',
+      browserCapture: {
+        pageTitle: 'Replacement official AI policy',
+        pageText: 'Official replacement policy text captured for editorial review.',
+        references: [replacementUrl],
+        capturedAt: new Date().toISOString(),
+        capturedBy: 'Jane Reviewer',
+        notes: 'Captured after confirming that the previous canonical URL moved.',
+        linkedDocuments: [],
+      },
+    });
+
+    expect(updateSourceReview).toHaveBeenCalledWith(
+      pending.id,
+      expect.objectContaining({
+        sourceUrl: replacementUrl,
+        targetPolicyPreviousSourceUrl: SOURCE_URL,
+        proposedRecord: expect.objectContaining({
+          id: target.id,
+          sourceUrl: replacementUrl,
+        }),
+      }),
+    );
+    expect(createSourceReview).not.toHaveBeenCalled();
+  });
+
   it('rejects tracked re-verification that redirects to another policy identity', async () => {
     const otherUrl = 'https://example.gov.au/other-policy';
     const targetDraft = buildDraft({

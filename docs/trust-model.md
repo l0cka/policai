@@ -260,8 +260,9 @@ history where useful, but are not shown as current public developments.
 - HTTP 200 browser challenges are retrieval failures, not successful source
   checks, including HTML challenges served with a missing or generic binary
   MIME type.
-- For an existing tracked record whose official source consistently blocks the
-  hardened retriever, the local MCP can accept an explicit browser capture.
+- When an official source consistently blocks the hardened retriever or the
+  configured analysis provider is unavailable, the local MCP can accept an
+  explicit browser capture.
   This is not a visual-check exception: the capture must include the normalized
   semantic page text, relevant official links, a fresh timestamp, reviewer
   attribution, and the locally downloaded bytes for every canonical instrument
@@ -271,9 +272,11 @@ history where useful, but are not shown as current public developments.
   hashes the page and exact document bytes into one composite fingerprint, and
   persists the hashes and provenance without retaining local file paths.
   Approval and publication each require a fresh matching capture; a changed
-  page or document therefore returns the record to review. Browser capture is
-  unavailable for new records and cannot bypass stage, human approval, or the
-  publication gate.
+  page or document therefore returns the record to review. Existing records
+  remain revision-bound. New records require a complete explicit proposal, and
+  replacement of a dead tracked URL requires a separately declared source
+  migration that preserves the target id and passes identity-collision checks.
+  Browser capture cannot bypass stage, human approval, or the publication gate.
 
 ## Date policy
 
