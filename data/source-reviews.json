@@ -1,5 +1,176 @@
 [
   {
+    "id": "source-review-8d90e037-e007-4227-8995-f596b1c236b8",
+    "sourceUrl": "https://www.industry.gov.au/publications/national-ai-plan",
+    "title": "National AI Plan",
+    "entryKind": "policy",
+    "targetPolicyId": "national-ai-plan-2025",
+    "targetPolicyBaseRevisionHash": "ebbc2f26ae5996e36287e949d0458ace56e18766c621ec1e0006f5c03eae62bb",
+    "status": "published",
+    "discoveredAt": "2026-07-19T02:09:40.786Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Daniel Alkurdi authorised staging under the standing Policai MCP authority after checking the official DISR landing page and 37-page plan. The review should retain the verified 2 December 2025 publication date, DISR publisher, federal jurisdiction and active status; change the type from guideline to framework because the plan calls itself a whole-of-government framework; and clarify its strategic character and nine actions. Staging does not publish.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": "guideline",
+      "suggestedJurisdiction": "federal",
+      "summary": "Australian Government national plan setting the broader policy agenda for AI capability, adoption, investment, and safeguards across the economy.",
+      "tags": [
+        "national plan",
+        "AI adoption",
+        "investment",
+        "safeguards"
+      ],
+      "agencies": [
+        "Department of Industry, Science and Resources"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://www.industry.gov.au/publications/national-ai-plan",
+      "finalUrl": "https://www.industry.gov.au/publications/national-ai-plan",
+      "title": "National AI Plan | Department of Industry Science and Resources",
+      "retrievedAt": "2026-07-19T02:17:26.121Z",
+      "contentType": "text/html",
+      "contentHash": "f9212eef7aee92b0acfc77c1394146bf4388ccfa946d811121abb34ba5b93737",
+      "linkedDocuments": [
+        {
+          "url": "https://www.industry.gov.au/sites/default/files/2025-12/national-ai-plan.pdf",
+          "finalUrl": "https://www.industry.gov.au/sites/default/files/2025-12/national-ai-plan.pdf",
+          "retrievedAt": "2026-07-19T02:17:26.121Z",
+          "contentType": "application/pdf",
+          "contentHash": "726535cb0003e33b9c08b70d437c7ece445ec1fc46799a6a683102c5b65e269f"
+        }
+      ],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-07-19T02:17:26.121Z",
+        "capturedBy": "Daniel Alkurdi",
+        "notes": "Fresh approval capture from the current official DISR National AI Plan landing page in Chrome. The linked 37-page official PDF was visually rechecked and its exact byte fingerprint matches the staged document.",
+        "pageContentHash": "dd33582a4da67f2a9e29d7ac029ea46b7f8f1854a13ca109e49a45452520a562",
+        "characterCount": 2248
+      },
+      "reviewedDate": {
+        "date": "2025-12-02",
+        "precision": "day",
+        "reviewedAt": "2026-07-19T02:19:09.583Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The official DISR publication page explicitly states 'Date published: 2 December 2025' and links the ministerial launch announcement from the same date."
+      }
+    },
+    "proposedRecord": {
+      "id": "national-ai-plan-2025",
+      "title": "National AI Plan",
+      "description": "Whole-of-government strategic framework for growing Australia’s AI industry and guiding economy-wide AI adoption, capability, investment and safety.",
+      "jurisdiction": "federal",
+      "type": "framework",
+      "status": "active",
+      "effectiveDate": "2025-12-02",
+      "agencies": [
+        "Department of Industry, Science and Resources"
+      ],
+      "sourceUrl": "https://www.industry.gov.au/publications/national-ai-plan",
+      "content": "Published on 2 December 2025, the National AI Plan sets Australian Government direction through three goals and nine actions: capture opportunities through smart infrastructure, domestic AI capability and investment; spread benefits through adoption, workforce skills and public services; and keep Australians safe through harm mitigation, responsible practices and global norms. It is a strategic framework rather than legislation. Implementation is iterative and evidence-based, supported by existing technology-neutral laws and sector regulators, and includes establishing the Australian AI Safety Institute.",
+      "aiSummary": "Whole-of-government framework with three goals and nine actions for AI industry growth, broad adoption and safety.",
+      "tags": [
+        "national plan",
+        "AI adoption",
+        "AI safety",
+        "infrastructure",
+        "skills",
+        "investment"
+      ],
+      "createdAt": "2026-04-06T16:50:00Z",
+      "updatedAt": "2026-07-19T02:19:09.583Z",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2025-12-02",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.industry.gov.au/publications/national-ai-plan",
+            "finalUrl": "https://www.industry.gov.au/publications/national-ai-plan",
+            "title": "National AI Plan | Department of Industry Science and Resources",
+            "retrievedAt": "2026-07-19T02:17:26.121Z",
+            "contentType": "text/html",
+            "contentHash": "f9212eef7aee92b0acfc77c1394146bf4388ccfa946d811121abb34ba5b93737",
+            "linkedDocuments": [
+              {
+                "url": "https://www.industry.gov.au/sites/default/files/2025-12/national-ai-plan.pdf",
+                "finalUrl": "https://www.industry.gov.au/sites/default/files/2025-12/national-ai-plan.pdf",
+                "retrievedAt": "2026-07-19T02:17:26.121Z",
+                "contentType": "application/pdf",
+                "contentHash": "726535cb0003e33b9c08b70d437c7ece445ec1fc46799a6a683102c5b65e269f"
+              }
+            ],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-07-19T02:17:26.121Z",
+              "capturedBy": "Daniel Alkurdi",
+              "notes": "Fresh approval capture from the current official DISR National AI Plan landing page in Chrome. The linked 37-page official PDF was visually rechecked and its exact byte fingerprint matches the staged document.",
+              "pageContentHash": "dd33582a4da67f2a9e29d7ac029ea46b7f8f1854a13ca109e49a45452520a562",
+              "characterCount": 2248
+            },
+            "reviewedDate": {
+              "date": "2025-12-02",
+              "precision": "day",
+              "reviewedAt": "2026-07-19T02:19:09.583Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "The official DISR publication page explicitly states 'Date published: 2 December 2025' and links the ministerial launch announcement from the same date."
+            }
+          }
+        }
+      ],
+      "lastReviewedAt": "2026-07-19T02:19:09.583Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.industry.gov.au/publications/national-ai-plan",
+          "finalUrl": "https://www.industry.gov.au/publications/national-ai-plan",
+          "title": "National AI Plan | Department of Industry Science and Resources",
+          "retrievedAt": "2026-07-19T02:17:26.121Z",
+          "contentType": "text/html",
+          "contentHash": "f9212eef7aee92b0acfc77c1394146bf4388ccfa946d811121abb34ba5b93737",
+          "linkedDocuments": [
+            {
+              "url": "https://www.industry.gov.au/sites/default/files/2025-12/national-ai-plan.pdf",
+              "finalUrl": "https://www.industry.gov.au/sites/default/files/2025-12/national-ai-plan.pdf",
+              "retrievedAt": "2026-07-19T02:17:26.121Z",
+              "contentType": "application/pdf",
+              "contentHash": "726535cb0003e33b9c08b70d437c7ece445ec1fc46799a6a683102c5b65e269f"
+            }
+          ],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-07-19T02:17:26.121Z",
+            "capturedBy": "Daniel Alkurdi",
+            "notes": "Fresh approval capture from the current official DISR National AI Plan landing page in Chrome. The linked 37-page official PDF was visually rechecked and its exact byte fingerprint matches the staged document.",
+            "pageContentHash": "dd33582a4da67f2a9e29d7ac029ea46b7f8f1854a13ca109e49a45452520a562",
+            "characterCount": 2248
+          },
+          "reviewedDate": {
+            "date": "2025-12-02",
+            "precision": "day",
+            "reviewedAt": "2026-07-19T02:19:09.583Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The official DISR publication page explicitly states 'Date published: 2 December 2025' and links the ministerial launch announcement from the same date."
+          }
+        },
+        "checkedAt": "2026-07-19T02:19:09.583Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Daniel Alkurdi approved the corrections after reviewing the current official DISR landing page and the complete 37-page National AI Plan. The fresh page and PDF fingerprints match the staged evidence. The record retains the official 2 December 2025 publication date, DISR publisher, federal jurisdiction and active status; classifies the instrument as a framework because the plan describes itself as a whole-of-government framework; and accurately distinguishes its strategic direction from legislation while summarising its three goals, nine actions, adaptive implementation and AI Safety Institute."
+      }
+    },
+    "updatedAt": "2026-07-19T02:19:09.879Z",
+    "targetPolicyRevisionHash": "ebbc2f26ae5996e36287e949d0458ace56e18766c621ec1e0006f5c03eae62bb",
+    "reviewedAt": "2026-07-19T02:19:09.583Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Daniel Alkurdi approved the corrections after reviewing the current official DISR landing page and the complete 37-page National AI Plan. The fresh page and PDF fingerprints match the staged evidence. The record retains the official 2 December 2025 publication date, DISR publisher, federal jurisdiction and active status; classifies the instrument as a framework because the plan describes itself as a whole-of-government framework; and accurately distinguishes its strategic direction from legislation while summarising its three goals, nine actions, adaptive implementation and AI Safety Institute.",
+    "publishedAt": "2026-07-19T02:19:09.876Z"
+  },
+  {
     "id": "source-review-d20bd713-a1ba-4d43-800d-c3ccf23a4cc5",
     "sourceUrl": "https://www.digital.gov.au/policy/ai/australian-public-service-ai-plan-2025",
     "title": "AI Plan for the Australian Public Service 2025",

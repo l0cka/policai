@@ -1,5 +1,27 @@
 [
   {
+    "id": "mcp-audit-e4d6065e-f1b3-49c8-8a09-511a791c10ad",
+    "createdAt": "2026-07-19T02:19:09.884Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-bfff0dc6-9da2-4b36-9db6-70d596c4790c",
+    "createdAt": "2026-07-19T02:19:09.868Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-1195cc8c-dd1d-41b0-9830-fea0d7c6a706",
+    "createdAt": "2026-07-19T02:09:40.793Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.industry.gov.au/publications/national-ai-plan",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-44e503f2-8c14-4263-8648-05541e7c6b8c",
     "createdAt": "2026-07-19T01:54:30.067Z",
     "actor": "local-mcp-admin",
