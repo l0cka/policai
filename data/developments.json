@@ -1,5 +1,109 @@
 [
   {
+    "id": "dev-learn-about-the-ai-assessment-framework-1qoe2un",
+    "title": "Learn about the AI Assessment Framework",
+    "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks/nsw-ai-assessment-framework",
+    "sourceId": "nsw-digital-ai",
+    "sourceName": "Digital NSW — artificial intelligence",
+    "jurisdiction": "nsw",
+    "detectedAt": "2026-07-18T20:12:16.563Z",
+    "summary": "NSW AI Assessment Framework (AIAF) The AIAF is a self-assessment framework that helps NSW Government agencies assess the risks, impacts and readiness of AI projects. Agencies deploying systems with AI components are required to complete an AIAF assessment. Learn about the AI Assessment Framework",
+    "relevanceScore": 0.65,
+    "classification": "heuristic",
+    "status": "detected",
+    "assessment": {
+      "method": "heuristic",
+      "assessedAt": "2026-07-18T20:12:16.563Z",
+      "promptVersion": "legacy-keyword-rules-v1"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks/nsw-ai-assessment-framework",
+        "title": "Learn about the AI Assessment Framework",
+        "publisher": "Digital NSW — artificial intelligence"
+      }
+    }
+  },
+  {
+    "id": "dev-identifying-ai-eophv9",
+    "title": "Identifying AI",
+    "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/nsw-artificial-intelligence-assessment-framework/identifying-ai",
+    "sourceId": "nsw-digital-ai",
+    "sourceName": "Digital NSW — artificial intelligence",
+    "jurisdiction": "nsw",
+    "detectedAt": "2026-07-18T20:12:16.563Z",
+    "summary": "Identifying AIeast",
+    "relevanceScore": 0.55,
+    "classification": "heuristic",
+    "status": "detected",
+    "assessment": {
+      "method": "heuristic",
+      "assessedAt": "2026-07-18T20:12:16.563Z",
+      "promptVersion": "legacy-keyword-rules-v1"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/nsw-artificial-intelligence-assessment-framework/identifying-ai",
+        "title": "Identifying AI",
+        "publisher": "Digital NSW — artificial intelligence"
+      }
+    }
+  },
+  {
+    "id": "dev-responsible-ai-guidance-1bg1iji",
+    "title": "Responsible AI guidance",
+    "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/nsw-artificial-intelligence-assessment-framework/responsibilities",
+    "sourceId": "nsw-digital-ai",
+    "sourceName": "Digital NSW — artificial intelligence",
+    "jurisdiction": "nsw",
+    "detectedAt": "2026-07-18T20:12:16.563Z",
+    "summary": "Responsible AI guidanceeast",
+    "relevanceScore": 0.65,
+    "classification": "heuristic",
+    "status": "detected",
+    "assessment": {
+      "method": "heuristic",
+      "assessedAt": "2026-07-18T20:12:16.563Z",
+      "promptVersion": "legacy-keyword-rules-v1"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/nsw-artificial-intelligence-assessment-framework/responsibilities",
+        "title": "Responsible AI guidance",
+        "publisher": "Digital NSW — artificial intelligence"
+      }
+    }
+  },
+  {
+    "id": "dev-ai-procurement-essentials-ortra4",
+    "title": "AI procurement essentials",
+    "url": "https://www.info.buy.nsw.gov.au/resources/artificial-intelligence-ai-procurement-essentials",
+    "sourceId": "nsw-digital-ai",
+    "sourceName": "Digital NSW — artificial intelligence",
+    "jurisdiction": "nsw",
+    "detectedAt": "2026-07-18T20:12:16.563Z",
+    "summary": "AI procurement essentialseast",
+    "relevanceScore": 0.55,
+    "classification": "heuristic",
+    "status": "detected",
+    "assessment": {
+      "method": "heuristic",
+      "assessedAt": "2026-07-18T20:12:16.563Z",
+      "promptVersion": "legacy-keyword-rules-v1"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.info.buy.nsw.gov.au/resources/artificial-intelligence-ai-procurement-essentials",
+        "title": "AI procurement essentials",
+        "publisher": "Digital NSW — artificial intelligence"
+      }
+    }
+  },
+  {
     "id": "dev-ai-transparency-cvt4l5",
     "title": "Ai transparency",
     "url": "https://www.pc.gov.au/ai-transparency",

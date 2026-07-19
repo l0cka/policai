@@ -118,22 +118,38 @@
       "status": "processed",
       "attempts": 1,
       "processedAt": "2026-07-12T12:01:59.304Z"
+    },
+    "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks/nsw-ai-assessment-framework": {
+      "firstSeenAt": "2026-07-18T20:12:16.563Z",
+      "sourceId": "nsw-digital-ai"
+    },
+    "https://www.digital.nsw.gov.au/policy/artificial-intelligence/nsw-artificial-intelligence-assessment-framework/identifying-ai": {
+      "firstSeenAt": "2026-07-18T20:12:16.563Z",
+      "sourceId": "nsw-digital-ai"
+    },
+    "https://www.digital.nsw.gov.au/policy/artificial-intelligence/nsw-artificial-intelligence-assessment-framework/responsibilities": {
+      "firstSeenAt": "2026-07-18T20:12:16.563Z",
+      "sourceId": "nsw-digital-ai"
+    },
+    "https://www.info.buy.nsw.gov.au/resources/artificial-intelligence-ai-procurement-essentials": {
+      "firstSeenAt": "2026-07-18T20:12:16.563Z",
+      "sourceId": "nsw-digital-ai"
     }
   },
   "lastCheckedBySource": {
-    "apra-rss": "2026-07-16T09:59:08.212Z",
-    "csiro-news": "2026-07-12T12:01:59.304Z",
-    "oaic-media": "2026-07-16T09:59:08.212Z",
-    "accc-rss": "2026-07-16T09:59:08.212Z",
-    "asic-newsroom": "2026-07-12T12:01:59.304Z",
-    "pc-media": "2026-07-12T12:01:59.304Z",
-    "nsw-sc-practice-notes": "2026-07-12T12:01:59.304Z",
-    "vic-sc-practice-notes": "2026-07-12T12:01:59.304Z",
-    "nsw-digital-ai": "2026-07-12T12:01:59.304Z",
-    "vic-ai": "2026-07-12T12:01:59.304Z",
-    "qld-qgea-ai": "2026-07-12T12:01:59.304Z",
-    "wa-ai-policy": "2026-07-12T12:01:59.304Z",
-    "sa-office-for-ai": "2026-07-12T12:01:59.304Z",
+    "apra-rss": "2026-07-18T20:12:16.563Z",
+    "csiro-news": "2026-07-18T20:12:16.563Z",
+    "oaic-media": "2026-07-18T20:12:16.563Z",
+    "accc-rss": "2026-07-18T20:12:16.563Z",
+    "asic-newsroom": "2026-07-18T20:12:16.563Z",
+    "pc-media": "2026-07-18T20:12:16.563Z",
+    "nsw-sc-practice-notes": "2026-07-18T20:12:16.563Z",
+    "vic-sc-practice-notes": "2026-07-18T20:12:16.563Z",
+    "nsw-digital-ai": "2026-07-18T20:12:16.563Z",
+    "vic-ai": "2026-07-18T20:12:16.563Z",
+    "qld-qgea-ai": "2026-07-18T20:12:16.563Z",
+    "wa-ai-policy": "2026-07-18T20:12:16.563Z",
+    "sa-office-for-ai": "2026-07-18T20:12:16.563Z",
     "treasury-publications": "2026-07-16T09:59:08.212Z",
     "qld-courts-news": "2026-07-16T09:59:08.212Z"
   },
