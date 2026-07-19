@@ -1,5 +1,27 @@
 [
   {
+    "id": "mcp-audit-44e503f2-8c14-4263-8648-05541e7c6b8c",
+    "createdAt": "2026-07-19T01:54:30.067Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-8977890b-2615-499c-8707-b79f068839de",
+    "createdAt": "2026-07-19T01:54:30.054Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-eacbbce7-4fa5-4a45-9109-125c0b5da8c2",
+    "createdAt": "2026-07-19T01:51:54.090Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.digital.gov.au/policy/ai/australian-public-service-ai-plan-2025",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-4d856ada-affb-4fc1-b120-3736598c7339",
     "createdAt": "2026-07-19T01:35:10.163Z",
     "actor": "local-mcp-admin",

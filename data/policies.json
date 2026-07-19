@@ -311,18 +311,19 @@
   {
     "id": "aps-ai-plan-2025",
     "title": "AI Plan for the Australian Public Service 2025",
-    "description": "APS-wide plan for lifting AI capability, adoption, governance, and public-sector delivery readiness across the Australian Public Service.",
+    "description": "Australian Government plan for substantially increasing safe and responsible AI adoption across the APS through governance, workforce capability and secure tools.",
     "jurisdiction": "federal",
     "type": "guideline",
     "status": "active",
-    "effectiveDate": "2025-11-12",
+    "effectiveDate": "2025-11-01",
     "agencies": [
+      "Department of Finance",
       "Digital Transformation Agency",
-      "Australian Public Service"
+      "Australian Public Service Commission"
     ],
     "sourceUrl": "https://www.digital.gov.au/policy/ai/australian-public-service-ai-plan-2025",
-    "content": "The APS AI Plan 2025 sets direction for how the Australian Public Service should adopt AI responsibly, improve capability, and embed whole-of-service operating practices.",
-    "aiSummary": "APS-wide plan for responsible AI adoption, capability, and operating model uplift.",
+    "content": "Published in November 2025, the APS AI Plan is limited to AI adoption and use by Australian Government agencies rather than industry or personal use. It organises APS action around three pillars—Trust, People and Tools—and sets measures including foundational AI training, access to secure AI tools, Chief AI Officers, and tracking and reporting of AI use. The plan is jointly owned by the Department of Finance, Digital Transformation Agency and Australian Public Service Commission.",
+    "aiSummary": "APS-wide AI adoption plan built around Trust, People and Tools, published in November 2025 and jointly owned by Finance, DTA and APSC.",
     "tags": [
       "public service",
       "AI adoption",
@@ -330,25 +331,112 @@
       "governance"
     ],
     "createdAt": "2026-04-06T16:50:00Z",
-    "updatedAt": "2026-04-06T16:50:00Z",
-    "lastReviewedAt": "2026-07-10",
+    "updatedAt": "2026-07-19T01:54:29.573Z",
+    "lastReviewedAt": "2026-07-19T01:54:29.573Z",
     "verification": {
-      "status": "stale",
+      "status": "verified",
       "source": {
-        "url": "https://www.digital.gov.au/policy/ai/australian-public-service-ai-plan-2025"
+        "url": "https://www.digital.gov.au/policy/ai/australian-public-service-ai-plan-2025",
+        "finalUrl": "https://www.digital.gov.au/policy/ai/australian-public-service-ai-plan-2025",
+        "title": "AI Plan for the Australian Public Service 2025 | digital.gov.au",
+        "retrievedAt": "2026-07-19T01:41:59.584Z",
+        "contentType": "text/html",
+        "contentHash": "7f704dc041e9d4c044345e3a25c2e36c79fbf0c21fcb251073e2e265472c73f9",
+        "linkedDocuments": [
+          {
+            "url": "https://www.digital.gov.au/sites/default/files/documents/2025-11/APS%20AI%20Plan_Statement%20of%20Intent.pdf",
+            "finalUrl": "https://www.digital.gov.au/sites/default/files/documents/2025-11/APS%20AI%20Plan_Statement%20of%20Intent.pdf",
+            "retrievedAt": "2026-07-19T01:41:59.584Z",
+            "contentType": "application/pdf",
+            "contentHash": "0d00186109b42e5aacb1f0505866eb5d8712b28a200aa714de113b1d8deac95a"
+          },
+          {
+            "url": "https://www.digital.gov.au/sites/default/files/documents/2025-11/APS%20AI%20Plan%202025.pdf",
+            "finalUrl": "https://www.digital.gov.au/sites/default/files/documents/2025-11/APS%20AI%20Plan%202025.pdf",
+            "retrievedAt": "2026-07-19T01:41:59.584Z",
+            "contentType": "application/pdf",
+            "contentHash": "fe8b00ad8ec48d9e48a1f4a258579ce8a7e0ae3a5ce689376adb0bc18bbb657d"
+          },
+          {
+            "url": "https://www.digital.gov.au/sites/default/files/documents/2025-11/APS%20AI%20Plan%20on%20a%20page.pdf",
+            "finalUrl": "https://www.digital.gov.au/sites/default/files/documents/2025-11/APS%20AI%20Plan%20on%20a%20page.pdf",
+            "retrievedAt": "2026-07-19T01:41:59.584Z",
+            "contentType": "application/pdf",
+            "contentHash": "7f194f5ea8e477bdf72f43fdb80f17f2cc51fcba47c3a1353504cc88b4ba7e03"
+          }
+        ],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-07-19T01:41:59.584Z",
+          "capturedBy": "Daniel Alkurdi",
+          "notes": "Captured from the official digital.gov.au APS AI Plan 2025 landing page after Policai's hardened retriever timed out. All three canonical downloadable resources exposed by the page were downloaded through that page and are fingerprinted from their exact bytes.",
+          "pageContentHash": "3bed257af9802c04efdf98c15f3ecaacf5c63c94243e9fe1e51ae08b7bd9ce66",
+          "characterCount": 1948
+        },
+        "reviewedDate": {
+          "date": "2025-11-01",
+          "precision": "month",
+          "reviewedAt": "2026-07-19T01:54:29.573Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The official APS AI Plan 2025 states 'Published November 2025'. It does not identify a day-level publication date. The stored first day represents November under Policai's month-precision convention; 12 November 2025 is separately shown as the ministerial foreword date and landing-page last-updated date."
+        }
       },
-      "checkedAt": "2026-07-10T00:00:00.000Z",
-      "checkedBy": "Policai editorial review",
-      "method": "manual"
+      "checkedAt": "2026-07-19T01:54:29.573Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Daniel Alkurdi approved the corrections after reviewing the official digital.gov.au landing page, full APS AI Plan 2025, plan-on-a-page and Statement of Intent. The full plan says 'Published November 2025'; 12 November is the ministerial foreword date and the landing page's last-updated date, not a verified publication day. The plan states that implementation is jointly led and owned by the Department of Finance, Digital Transformation Agency and Australian Public Service Commission. The record now reflects its APS-only scope, Trust, People and Tools pillars, and principal capability, governance and reporting measures."
     },
     "dates": [
       {
         "type": "published",
-        "date": "2025-11-12",
-        "precision": "day",
+        "date": "2025-11-01",
+        "precision": "month",
         "primary": true,
         "source": {
-          "url": "https://www.digital.gov.au/policy/ai/australian-public-service-ai-plan-2025"
+          "url": "https://www.digital.gov.au/policy/ai/australian-public-service-ai-plan-2025",
+          "finalUrl": "https://www.digital.gov.au/policy/ai/australian-public-service-ai-plan-2025",
+          "title": "AI Plan for the Australian Public Service 2025 | digital.gov.au",
+          "retrievedAt": "2026-07-19T01:41:59.584Z",
+          "contentType": "text/html",
+          "contentHash": "7f704dc041e9d4c044345e3a25c2e36c79fbf0c21fcb251073e2e265472c73f9",
+          "linkedDocuments": [
+            {
+              "url": "https://www.digital.gov.au/sites/default/files/documents/2025-11/APS%20AI%20Plan_Statement%20of%20Intent.pdf",
+              "finalUrl": "https://www.digital.gov.au/sites/default/files/documents/2025-11/APS%20AI%20Plan_Statement%20of%20Intent.pdf",
+              "retrievedAt": "2026-07-19T01:41:59.584Z",
+              "contentType": "application/pdf",
+              "contentHash": "0d00186109b42e5aacb1f0505866eb5d8712b28a200aa714de113b1d8deac95a"
+            },
+            {
+              "url": "https://www.digital.gov.au/sites/default/files/documents/2025-11/APS%20AI%20Plan%202025.pdf",
+              "finalUrl": "https://www.digital.gov.au/sites/default/files/documents/2025-11/APS%20AI%20Plan%202025.pdf",
+              "retrievedAt": "2026-07-19T01:41:59.584Z",
+              "contentType": "application/pdf",
+              "contentHash": "fe8b00ad8ec48d9e48a1f4a258579ce8a7e0ae3a5ce689376adb0bc18bbb657d"
+            },
+            {
+              "url": "https://www.digital.gov.au/sites/default/files/documents/2025-11/APS%20AI%20Plan%20on%20a%20page.pdf",
+              "finalUrl": "https://www.digital.gov.au/sites/default/files/documents/2025-11/APS%20AI%20Plan%20on%20a%20page.pdf",
+              "retrievedAt": "2026-07-19T01:41:59.584Z",
+              "contentType": "application/pdf",
+              "contentHash": "7f194f5ea8e477bdf72f43fdb80f17f2cc51fcba47c3a1353504cc88b4ba7e03"
+            }
+          ],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-07-19T01:41:59.584Z",
+            "capturedBy": "Daniel Alkurdi",
+            "notes": "Captured from the official digital.gov.au APS AI Plan 2025 landing page after Policai's hardened retriever timed out. All three canonical downloadable resources exposed by the page were downloaded through that page and are fingerprinted from their exact bytes.",
+            "pageContentHash": "3bed257af9802c04efdf98c15f3ecaacf5c63c94243e9fe1e51ae08b7bd9ce66",
+            "characterCount": 1948
+          },
+          "reviewedDate": {
+            "date": "2025-11-01",
+            "precision": "month",
+            "reviewedAt": "2026-07-19T01:54:29.573Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The official APS AI Plan 2025 states 'Published November 2025'. It does not identify a day-level publication date. The stored first day represents November under Policai's month-precision convention; 12 November 2025 is separately shown as the ministerial foreword date and landing-page last-updated date."
+          }
         }
       }
     ]
