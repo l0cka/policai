@@ -1,5 +1,36 @@
 [
   {
+    "id": "mcp-audit-ca470993-325f-444f-95df-a4e4ee278b96",
+    "createdAt": "2026-07-19T02:30:21.297Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-359e6829-b7a1-4471-a77e-37dab0810703",
+    "createdAt": "2026-07-19T02:30:21.288Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-54bd4cad-4300-46e0-83c9-eb14f91b0320",
+    "createdAt": "2026-07-19T02:27:12.885Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.industry.gov.au/publications/voluntary-ai-safety-standard",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-8707621f-f900-4d93-b289-78b0ae520099",
+    "createdAt": "2026-07-19T02:26:41.683Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.industry.gov.au/publications/voluntary-ai-safety-standard",
+    "status": "error",
+    "errorSummary": "POLICAI_MCP_ADMIN_TOKEN is not configured"
+  },
+  {
     "id": "mcp-audit-e4d6065e-f1b3-49c8-8a09-511a791c10ad",
     "createdAt": "2026-07-19T02:19:09.884Z",
     "actor": "local-mcp-admin",

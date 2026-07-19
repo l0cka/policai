@@ -1,5 +1,153 @@
 [
   {
+    "id": "source-review-907e651a-e230-4a11-99a6-141e961afdbb",
+    "sourceUrl": "https://www.industry.gov.au/publications/voluntary-ai-safety-standard",
+    "title": "Voluntary AI Safety Standard",
+    "entryKind": "policy",
+    "targetPolicyId": "voluntary-ai-safety-standard",
+    "targetPolicyBaseRevisionHash": "43e224f86a1e33bce970cd8e569f9a5d15a654f14b7495ec6b1550063bc202ca",
+    "status": "published",
+    "discoveredAt": "2026-07-19T02:27:12.878Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Browser-verified against the official DISR/NAIC digital publication on 19 July 2026. The landing page identifies the publisher as the National Artificial Intelligence Centre, dates publication to 5 September 2024, describes 10 voluntary guardrails across the AI supply chain, and states that the Guidance for AI Adoption published on 21 October 2025 is updated and simplified guidance that evolves the VAISS. The legal-landscape page confirms the standard creates no new legal obligations. The former official PDF URL now returns 404 and the live page exposes no downloadable file, so this review deliberately fingerprints the current official HTML publication without retaining a dead document link. Staging only; publication remains subject to Daniel Alkurdi review and explicit approval.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": "standard",
+      "suggestedJurisdiction": "federal",
+      "summary": "Voluntary standard (September 2024) with ten guardrails for organisations developing or deploying AI. Superseded on 21 October 2025 by the National AI Centre’s Guidance for AI Adoption.",
+      "tags": [
+        "AI safety",
+        "standard",
+        "risk management",
+        "testing"
+      ],
+      "agencies": [
+        "Department of Industry, Science and Resources"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://www.industry.gov.au/publications/voluntary-ai-safety-standard",
+      "finalUrl": "https://www.industry.gov.au/publications/voluntary-ai-safety-standard",
+      "title": "Voluntary AI Safety Standard",
+      "retrievedAt": "2026-07-19T02:25:37.896Z",
+      "contentType": "text/html",
+      "contentHash": "59b81d514eb2cd5978f91c7b8326cb1d1567b9ba2e95f712ded3089f221bb402",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-07-19T02:25:37.896Z",
+        "capturedBy": "Daniel Alkurdi",
+        "notes": "Captured in controlled Chrome from the official DISR digital publication. The page visibly identified its publication and update dates, NAIC as publisher, the 10 voluntary guardrails, and the October 2025 successor guidance. Related official digital-publication pages were checked for the guardrail details and legal status. No live downloadable document was exposed, and the former PDF URL returned 404, so the capture is HTML-only.",
+        "pageContentHash": "bc9e8a8ace3144efcdb9dde071eb5246fef86c2bcb24a55951ec0ca4fdea414f",
+        "characterCount": 3253
+      },
+      "reviewedDate": {
+        "date": "2024-09-05",
+        "precision": "day",
+        "reviewedAt": "2026-07-19T02:30:21.275Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The official publication page visibly states “Date published: 5 September 2024” in the browser capture reviewed by Daniel Alkurdi."
+      }
+    },
+    "proposedRecord": {
+      "id": "voluntary-ai-safety-standard",
+      "title": "Voluntary AI Safety Standard",
+      "description": "Australia's first voluntary AI safety standard, published in September 2024 with 10 governance guardrails and updated in October 2025 through the Guidance for AI Adoption.",
+      "jurisdiction": "federal",
+      "type": "standard",
+      "status": "superseded",
+      "effectiveDate": "2024-09-05",
+      "agencies": [
+        "National AI Centre"
+      ],
+      "sourceUrl": "https://www.industry.gov.au/publications/voluntary-ai-safety-standard",
+      "content": "Published on 5 September 2024, Australia's first Voluntary AI Safety Standard set out 10 voluntary guardrails for organisations across the AI supply chain: accountability and governance; risk and impact management; data governance and security; testing and monitoring; human oversight; user transparency; contestability; supply-chain transparency; compliance records; and stakeholder engagement, fairness and inclusion. The standard did not create new legal obligations; it was designed to help organisations comply with existing Australian law, emerging guidance and community expectations. On 21 October 2025, the National AI Centre published the Guidance for AI Adoption, updating and simplifying the standard into 6 essential practices. This historical record is linked as superseded by that current guidance.",
+      "aiSummary": "Historical 2024 voluntary standard of 10 AI governance guardrails, evolved into the Guidance for AI Adoption in October 2025.",
+      "tags": [
+        "AI safety",
+        "AI governance",
+        "risk management",
+        "testing",
+        "human oversight",
+        "transparency"
+      ],
+      "createdAt": "2026-04-06T16:50:00Z",
+      "updatedAt": "2026-07-19T02:30:21.275Z",
+      "supersededBy": "guidance-for-ai-adoption",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2024-09-05",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.industry.gov.au/publications/voluntary-ai-safety-standard",
+            "finalUrl": "https://www.industry.gov.au/publications/voluntary-ai-safety-standard",
+            "title": "Voluntary AI Safety Standard",
+            "retrievedAt": "2026-07-19T02:25:37.896Z",
+            "contentType": "text/html",
+            "contentHash": "59b81d514eb2cd5978f91c7b8326cb1d1567b9ba2e95f712ded3089f221bb402",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-07-19T02:25:37.896Z",
+              "capturedBy": "Daniel Alkurdi",
+              "notes": "Captured in controlled Chrome from the official DISR digital publication. The page visibly identified its publication and update dates, NAIC as publisher, the 10 voluntary guardrails, and the October 2025 successor guidance. Related official digital-publication pages were checked for the guardrail details and legal status. No live downloadable document was exposed, and the former PDF URL returned 404, so the capture is HTML-only.",
+              "pageContentHash": "bc9e8a8ace3144efcdb9dde071eb5246fef86c2bcb24a55951ec0ca4fdea414f",
+              "characterCount": 3253
+            },
+            "reviewedDate": {
+              "date": "2024-09-05",
+              "precision": "day",
+              "reviewedAt": "2026-07-19T02:30:21.275Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "The official publication page visibly states “Date published: 5 September 2024” in the browser capture reviewed by Daniel Alkurdi."
+            }
+          }
+        }
+      ],
+      "lastReviewedAt": "2026-07-19T02:30:21.275Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.industry.gov.au/publications/voluntary-ai-safety-standard",
+          "finalUrl": "https://www.industry.gov.au/publications/voluntary-ai-safety-standard",
+          "title": "Voluntary AI Safety Standard",
+          "retrievedAt": "2026-07-19T02:25:37.896Z",
+          "contentType": "text/html",
+          "contentHash": "59b81d514eb2cd5978f91c7b8326cb1d1567b9ba2e95f712ded3089f221bb402",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-07-19T02:25:37.896Z",
+            "capturedBy": "Daniel Alkurdi",
+            "notes": "Captured in controlled Chrome from the official DISR digital publication. The page visibly identified its publication and update dates, NAIC as publisher, the 10 voluntary guardrails, and the October 2025 successor guidance. Related official digital-publication pages were checked for the guardrail details and legal status. No live downloadable document was exposed, and the former PDF URL returned 404, so the capture is HTML-only.",
+            "pageContentHash": "bc9e8a8ace3144efcdb9dde071eb5246fef86c2bcb24a55951ec0ca4fdea414f",
+            "characterCount": 3253
+          },
+          "reviewedDate": {
+            "date": "2024-09-05",
+            "precision": "day",
+            "reviewedAt": "2026-07-19T02:30:21.275Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The official publication page visibly states “Date published: 5 September 2024” in the browser capture reviewed by Daniel Alkurdi."
+          }
+        },
+        "checkedAt": "2026-07-19T02:30:21.275Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Daniel Alkurdi explicitly approved publication on 19 July 2026. Corrected the responsible agency to the National AI Centre; retained the verified 5 September 2024 publication date, federal jurisdiction, standard type, superseded status and successor link; clarified the 10 guardrails, voluntary legal status, AI-supply-chain scope, and the official wording that the October 2025 Guidance for AI Adoption updated and evolved the standard into 6 essential practices."
+      }
+    },
+    "updatedAt": "2026-07-19T02:30:21.296Z",
+    "targetPolicyRevisionHash": "43e224f86a1e33bce970cd8e569f9a5d15a654f14b7495ec6b1550063bc202ca",
+    "reviewedAt": "2026-07-19T02:30:21.275Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Daniel Alkurdi explicitly approved publication on 19 July 2026. Corrected the responsible agency to the National AI Centre; retained the verified 5 September 2024 publication date, federal jurisdiction, standard type, superseded status and successor link; clarified the 10 guardrails, voluntary legal status, AI-supply-chain scope, and the official wording that the October 2025 Guidance for AI Adoption updated and evolved the standard into 6 essential practices.",
+    "publishedAt": "2026-07-19T02:30:21.295Z"
+  },
+  {
     "id": "source-review-8d90e037-e007-4227-8995-f596b1c236b8",
     "sourceUrl": "https://www.industry.gov.au/publications/national-ai-plan",
     "title": "National AI Plan",
