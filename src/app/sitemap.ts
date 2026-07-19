@@ -2,6 +2,7 @@ import type { MetadataRoute } from 'next';
 import { getPolicies } from '@/lib/data-service';
 
 const BASE_URL = 'https://policai.com.au';
+export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const policies = await getPolicies();
@@ -48,6 +49,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${BASE_URL}/timeline`,
       changeFrequency: 'weekly',
       priority: 0.6,
+    },
+    {
+      url: `${BASE_URL}/methodology`,
+      changeFrequency: 'monthly',
+      priority: 0.8,
     },
   ];
 

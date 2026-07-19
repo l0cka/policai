@@ -9,7 +9,10 @@
   "application": {
     "mandatory": "Non-corporate Commonwealth entities (NCEs)",
     "encouraged": "Corporate Commonwealth entities",
-    "excluded": ["Defence portfolio", "National Intelligence Community"]
+    "excluded": [
+      "Defence portfolio",
+      "National Intelligence Community"
+    ]
   },
   "policyAims": [
     {
@@ -256,27 +259,47 @@
     {
       "id": "harm-potential",
       "description": "Use, misuse or failure could lead to more than insignificant harm",
-      "applicableTo": ["individuals", "communities", "organisations", "environment", "First Nations peoples"]
+      "applicableTo": [
+        "individuals",
+        "communities",
+        "organisations",
+        "environment",
+        "First Nations peoples"
+      ]
     },
     {
       "id": "administrative-decisions",
       "description": "AI materially influences administrative decisions affecting stakeholders",
-      "applicableTo": ["individuals", "communities", "organisations", "environment", "First Nations peoples"]
+      "applicableTo": [
+        "individuals",
+        "communities",
+        "organisations",
+        "environment",
+        "First Nations peoples"
+      ]
     },
     {
       "id": "public-interaction",
       "description": "Public directly interacts with or is significantly impacted by AI without human review",
-      "applicableTo": ["public-facing AI", "automated outputs"]
+      "applicableTo": [
+        "public-facing AI",
+        "automated outputs"
+      ]
     },
     {
       "id": "sensitive-data",
       "description": "AI uses personal/sensitive data or security classified information",
-      "applicableTo": ["Privacy Act data", "PSPF classified information"]
+      "applicableTo": [
+        "Privacy Act data",
+        "PSPF classified information"
+      ]
     },
     {
       "id": "dta-direction",
       "description": "Deemed elevated risk as directed by DTA",
-      "applicableTo": ["specific use cases"]
+      "applicableTo": [
+        "specific use cases"
+      ]
     }
   ],
   "riskAreas": [
@@ -310,7 +333,21 @@
       "Public generative AI tools guidance",
       "Technical standard for government AI"
     ],
-    "adm": ["Automated Decision-making Better Practice Guide"],
-    "dataDigital": ["Data and Digital Government Strategy"]
+    "adm": [
+      "Automated Decision-making Better Practice Guide"
+    ],
+    "dataDigital": [
+      "Data and Digital Government Strategy"
+    ]
+  },
+  "relatedPolicyId": "policy-responsible-use-ai-government-v2",
+  "verification": {
+    "status": "stale",
+    "source": {
+      "url": "https://www.digital.gov.au/ai/ai-in-government-policy"
+    },
+    "checkedAt": "2026-07-10T00:00:00.000Z",
+    "checkedBy": "Policai editorial review",
+    "method": "manual"
   }
 }

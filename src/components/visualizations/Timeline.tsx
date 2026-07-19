@@ -1,8 +1,11 @@
 'use client';
 
 import { useMemo } from 'react';
-import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
+import {
+  formatPolicyDate,
+  parseCalendarDateForDisplay,
+} from '@/lib/format-policy-date';
 import { Badge } from '@/components/ui/badge';
 import { JURISDICTION_NAMES, type Jurisdiction, type TimelineEvent } from '@/types';
 import {
@@ -36,6 +39,11 @@ const eventTypeConfig = {
     color: 'bg-red-500',
     label: 'Policy Repealed',
   },
+  policy_superseded: {
+    icon: Trash2,
+    color: 'bg-orange-500',
+    label: 'Policy Superseded',
+  },
   announcement: {
     icon: Megaphone,
     color: 'bg-yellow-500',
@@ -56,12 +64,16 @@ export function Timeline({ events, selectedJurisdiction, onEventClick }: Timelin
       : events;
 
     const sorted = [...filtered].sort(
-      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+      (a, b) =>
+        parseCalendarDateForDisplay(b.date).getTime() -
+        parseCalendarDateForDisplay(a.date).getTime()
     );
 
     const grouped: Record<string, TimelineEvent[]> = {};
     sorted.forEach((event) => {
-      const year = new Date(event.date).getFullYear().toString();
+      const year = parseCalendarDateForDisplay(event.date)
+        .getFullYear()
+        .toString();
       if (!grouped[year]) {
         grouped[year] = [];
       }
@@ -130,8 +142,23 @@ export function Timeline({ events, selectedJurisdiction, onEventClick }: Timelin
                       <Badge variant="secondary">
                         {JURISDICTION_NAMES[event.jurisdiction]}
                       </Badge>
+                      <Badge
+                        variant={
+                          event.verification.status === 'verified'
+                            ? 'secondary'
+                            : 'outline'
+                        }
+                      >
+                        {event.verification.status === 'verified'
+                          ? 'Verified'
+                          : 'Needs review'}
+                      </Badge>
                       <span className="text-xs text-muted-foreground">
-                        {format(new Date(event.date), 'MMMM d, yyyy')}
+                        {formatPolicyDate({
+                          type: 'published',
+                          date: event.date,
+                          precision: event.datePrecision ?? 'day',
+                        })}
                       </span>
                     </div>
 
@@ -141,17 +168,15 @@ export function Timeline({ events, selectedJurisdiction, onEventClick }: Timelin
 
                     <p className="text-sm text-muted-foreground">{event.description}</p>
 
-                    {event.sourceUrl && (
-                      <a
-                        href={event.sourceUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs text-primary hover:underline"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        View source →
-                      </a>
-                    )}
+                    <a
+                      href={event.sourceUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs text-primary hover:underline"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      View source →
+                    </a>
                   </div>
                 </div>
               );

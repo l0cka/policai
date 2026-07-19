@@ -1,13 +1,28 @@
 import { extractJsonFromResponse } from '@/lib/utils';
 import { runAnalysisPrompt } from '@/lib/ai-client';
+import { z } from 'zod';
+
+export const RELEVANCE_PROMPT_VERSION = 'australian-ai-policy-relevance-v2';
+
+const contentAnalysisSchema = z.object({
+  isRelevant: z.boolean(),
+  relevanceScore: z.number().min(0).max(1),
+  summary: z.string(),
+  tags: z.array(z.string()).default([]),
+  policyType: z.string().nullable().optional(),
+  jurisdiction: z.string().nullable().optional(),
+  agencies: z.array(z.string()).default([]),
+  keyDates: z.array(z.string()).default([]),
+  relatedTopics: z.array(z.string()).default([]),
+});
 
 export interface ContentAnalysis {
   isRelevant: boolean;
   relevanceScore: number;
   summary: string;
   tags: string[];
-  policyType?: string;
-  jurisdiction?: string;
+  policyType?: string | null;
+  jurisdiction?: string | null;
   agencies: string[];
   keyDates: string[];
   relatedTopics: string[];
@@ -56,15 +71,13 @@ Please respond in JSON format with the following structure:
     { maxTokens: 1024 },
   );
 
-  return extractJsonFromResponse<ContentAnalysis>(responseText, {
-    isRelevant: false,
-    relevanceScore: 0,
-    summary: '',
-    tags: [],
-    agencies: [],
-    keyDates: [],
-    relatedTopics: [],
-  });
+  const parsed = contentAnalysisSchema.safeParse(
+    extractJsonFromResponse<unknown>(responseText, null),
+  );
+  if (!parsed.success) {
+    throw new Error('AI relevance analysis returned invalid structured data');
+  }
+  return parsed.data;
 }
 
 // Generate a detailed summary of a policy document
@@ -97,4 +110,3 @@ Please respond in JSON format:
     affectedSectors: [],
   });
 }
-

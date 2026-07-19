@@ -22,6 +22,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import type { RecordVerification } from '@/types';
 
 // Types for the framework data
 interface PolicyAim {
@@ -58,13 +59,16 @@ interface InScopeCriteria {
   applicableTo: string[];
 }
 
-interface FrameworkData {
+export interface FrameworkData {
   id: string;
   title: string;
   version: string;
   effectiveDate: string;
+  lastUpdated?: string;
   authority: string;
   sourceUrl: string;
+  relatedPolicyId: string;
+  verification: RecordVerification;
   policyAims: PolicyAim[];
   pillars: Pillar[];
   inScopeCriteria: InScopeCriteria[];

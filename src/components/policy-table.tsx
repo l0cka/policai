@@ -4,9 +4,13 @@ import { useState } from "react";
 import Link from "next/link";
 import {
 	getJurisdictionName,
+	getPolicyDateTypeName,
+	getPrimaryPolicyDate,
 	getPolicyStatusName,
 	getPolicyTypeName,
+	type Policy,
 } from "@/types";
+import { formatPolicyDate } from "@/lib/format-policy-date";
 
 import { STATUS_COLORS } from "@/lib/design-tokens";
 
@@ -17,6 +21,8 @@ interface PolicyRow {
 	type: string;
 	status: string;
 	effectiveDate: string | Date;
+	dates: Policy["dates"];
+	verification: Policy["verification"];
 }
 
 type SortField = "title" | "jurisdiction" | "type" | "status" | "effectiveDate";
@@ -71,12 +77,6 @@ export function PolicyTable({ policies }: PolicyTableProps) {
 	const safePage = totalPages > 0 ? Math.min(page, totalPages - 1) : 0;
 	const paged = sorted.slice(safePage * pageSize, (safePage + 1) * pageSize);
 
-	const formatDate = (dateStr: string | Date) => {
-		if (!dateStr) return "\u2014";
-		const d = dateStr instanceof Date ? dateStr : new Date(dateStr);
-		return d.toLocaleDateString("en-AU", { month: "short", year: "numeric" });
-	};
-
 	const columns: { key: SortField; label: string; className: string }[] = [
 		{ key: "title", label: "Policy", className: "text-left" },
 		{
@@ -88,7 +88,7 @@ export function PolicyTable({ policies }: PolicyTableProps) {
 		{ key: "status", label: "Status", className: "text-left" },
 		{
 			key: "effectiveDate",
-			label: "Date",
+			label: "Key date",
 			className: "text-left hidden sm:table-cell",
 		},
 	];
@@ -115,7 +115,9 @@ export function PolicyTable({ policies }: PolicyTableProps) {
 					</tr>
 				</thead>
 				<tbody>
-					{paged.map((policy) => (
+					{paged.map((policy) => {
+						const primaryDate = getPrimaryPolicyDate(policy);
+						return (
 						<tr
 							key={policy.id}
 							className="border-b border-border transition-colors hover:bg-[var(--row-hover)]"
@@ -127,10 +129,24 @@ export function PolicyTable({ policies }: PolicyTableProps) {
 								>
 									{policy.title}
 								</Link>
-								<div className="md:hidden mt-1 font-mono text-xs text-muted-foreground">
-									{getJurisdictionName(policy.jurisdiction)}
-									{" \u00b7 "}
-									{getPolicyTypeName(policy.type)}
+								<div className="mt-1 font-mono text-[11px] text-muted-foreground">
+									<span className="md:hidden">
+										{getJurisdictionName(policy.jurisdiction)}
+										{" \u00b7 "}
+										{getPolicyTypeName(policy.type)}
+										{" \u00b7 "}
+									</span>
+									<span
+										className={
+											policy.verification.status === "verified"
+												? "text-[var(--status-active)]"
+												: "text-[var(--status-proposed)]"
+										}
+									>
+										{policy.verification.status === "verified"
+											? "Verified"
+											: "Needs review"}
+									</span>
 								</div>
 							</td>
 							<td className="py-3 pr-4 text-sm text-muted-foreground hidden md:table-cell">
@@ -145,10 +161,16 @@ export function PolicyTable({ policies }: PolicyTableProps) {
 								{getPolicyStatusName(policy.status)}
 							</td>
 							<td className="py-3 font-mono text-xs text-muted-foreground hidden sm:table-cell">
-								{formatDate(policy.effectiveDate)}
+								<span className="block">
+									{formatPolicyDate(primaryDate, { short: true })}
+								</span>
+								<span className="block text-[10px]">
+									{getPolicyDateTypeName(primaryDate.type)}
+								</span>
 							</td>
 						</tr>
-					))}
+						);
+					})}
 					{paged.length === 0 && (
 						<tr>
 							<td

@@ -3,7 +3,7 @@
 import { useRef, useEffect, useState, useCallback, useMemo } from "react";
 import { zoom as d3Zoom, type ZoomBehavior } from "d3-zoom";
 import { select } from "d3-selection";
-import type { NetworkNode, NetworkEdge } from "@/app/api/network/route";
+import type { NetworkNode, NetworkEdge } from "@/lib/network-data";
 import { useForceSimulation, type SimNode } from "./use-force-simulation";
 import { JURISDICTION_COLORS, resolveColor } from "./jurisdiction-colors";
 import { getJurisdictionName } from "@/types";

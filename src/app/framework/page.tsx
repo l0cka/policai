@@ -1,16 +1,60 @@
-import { PolicyFrameworkMap } from '@/components/visualizations/PolicyFrameworkMap';
-import frameworkData from '@/../public/data/dta-ai-policy-framework.json';
+import {
+  PolicyFrameworkMap,
+  type FrameworkData,
+} from '@/components/visualizations/PolicyFrameworkMap';
+import { getPolicyFrameworkArtifact } from '@/lib/data-service';
+import { parseCalendarDateForDisplay } from '@/lib/format-policy-date';
 import Link from 'next/link';
 import { ArrowLeft, ExternalLink, FileText, Download, Landmark } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
+export const revalidate = 3600;
 
 export const metadata = {
   title: 'Policy for the Responsible Use of AI in Government | Policai',
   description: 'Interactive visualization of Australia\'s Policy for the Responsible Use of AI in Government',
 };
 
-export default function FrameworkPage() {
+export default async function FrameworkPage() {
+  const artifact = await getPolicyFrameworkArtifact();
+  if (!artifact) {
+    return (
+      <div className="container mx-auto max-w-3xl px-4 py-8 md:py-10">
+        <div className="mb-6">
+          <Link
+            href="/policies"
+            className="inline-flex items-center text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Policies
+          </Link>
+        </div>
+        <Card className="border-amber-500/30 bg-amber-500/5 shadow-sm">
+          <CardHeader>
+            <CardTitle>Framework temporarily unavailable</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4 text-sm text-muted-foreground">
+            <p>
+              Policai is withholding this derived visualisation while its
+              source policy and framework data await fingerprinted editorial
+              re-verification. This prevents an older interpretation from
+              being presented as current.
+            </p>
+            <p>
+              See the{' '}
+              <Link href="/methodology" className="text-primary hover:underline">
+                methodology and trust model
+              </Link>{' '}
+              for how records return to public view.
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+  const frameworkData = artifact as unknown as FrameworkData;
+
   return (
     <div className="container mx-auto max-w-6xl px-4 py-8 md:py-10">
       {/* Breadcrumb */}
@@ -51,8 +95,14 @@ export default function FrameworkPage() {
               </div>
               <div className="flex flex-wrap gap-2">
                 <Button variant="outline" size="sm" asChild>
+                  <Link href={`/policies/${frameworkData.relatedPolicyId}`}>
+                    <FileText className="mr-2 h-4 w-4" />
+                    Register entry
+                  </Link>
+                </Button>
+                <Button variant="outline" size="sm" asChild>
                   <a
-                    href="https://www.digital.gov.au/ai/ai-in-government-policy"
+                    href={frameworkData.sourceUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -78,7 +128,7 @@ export default function FrameworkPage() {
       </div>
 
       {/* Framework Visualization */}
-      <PolicyFrameworkMap data={frameworkData} />
+      <PolicyFrameworkMap data={frameworkData as FrameworkData} />
 
       {/* Footer Note */}
       <Card className="mt-10 shadow-sm">
@@ -92,7 +142,7 @@ export default function FrameworkPage() {
             non-corporate Commonwealth entities and provides a framework for responsible AI adoption.
             For the authoritative source, please refer to the{' '}
             <a
-              href="https://www.digital.gov.au/ai/ai-in-government-policy"
+              href={frameworkData.sourceUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="text-primary hover:underline"
@@ -104,7 +154,9 @@ export default function FrameworkPage() {
           <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs text-muted-foreground">
             <div>
               <span className="font-medium">Effective:</span>{' '}
-              {new Date(frameworkData.effectiveDate).toLocaleDateString('en-AU', {
+              {parseCalendarDateForDisplay(
+                frameworkData.effectiveDate,
+              ).toLocaleDateString('en-AU', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',
@@ -113,7 +165,9 @@ export default function FrameworkPage() {
             {frameworkData.lastUpdated && (
               <div>
                 <span className="font-medium">Page Updated:</span>{' '}
-                {new Date(frameworkData.lastUpdated).toLocaleDateString('en-AU', {
+                {parseCalendarDateForDisplay(
+                  frameworkData.lastUpdated,
+                ).toLocaleDateString('en-AU', {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric',
@@ -125,6 +179,12 @@ export default function FrameworkPage() {
             </div>
             <div>
               <span className="font-medium">Authority:</span> {frameworkData.authority}
+            </div>
+            <div>
+              <span className="font-medium">Verification:</span>{' '}
+              {frameworkData.verification.status === 'verified'
+                ? 'Verified'
+                : 'Needs review'}
             </div>
           </div>
         </CardContent>

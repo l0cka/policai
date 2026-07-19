@@ -1,0 +1,255 @@
+[
+  {
+    "id": "diser",
+    "name": "Department of Industry, Science and Resources",
+    "acronym": "DISER",
+    "level": "federal",
+    "jurisdiction": "federal",
+    "website": "https://www.industry.gov.au/",
+    "policies": [
+      "australias-ai-ethics-framework",
+      "national-ai-plan-2025",
+      "voluntary-ai-safety-standard",
+      "safe-and-responsible-ai-australia-proposals-paper"
+    ],
+    "hasPublishedStatement": false,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.industry.gov.au/"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
+  },
+  {
+    "id": "dta",
+    "name": "Digital Transformation Agency",
+    "acronym": "DTA",
+    "level": "federal",
+    "jurisdiction": "federal",
+    "website": "https://www.dta.gov.au/",
+    "policies": [
+      "policy-responsible-use-ai-government-v2",
+      "implementation-plan-policy-responsible-use-ai-government-2025",
+      "aps-ai-plan-2025"
+    ],
+    "hasPublishedStatement": false,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.dta.gov.au/"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
+  },
+  {
+    "id": "agd",
+    "name": "Attorney-General's Department",
+    "acronym": "AGD",
+    "level": "federal",
+    "jurisdiction": "federal",
+    "website": "https://www.ag.gov.au/",
+    "policies": [
+      "automated-decision-making-ai-regulation-issues-paper",
+      "government-response-privacy-act-review-report"
+    ],
+    "hasPublishedStatement": false,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.ag.gov.au/"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
+  },
+  {
+    "id": "oaic",
+    "name": "Office of the Australian Information Commissioner",
+    "acronym": "OAIC",
+    "level": "federal",
+    "jurisdiction": "federal",
+    "website": "https://www.oaic.gov.au/",
+    "policies": [
+      "government-response-privacy-act-review-report"
+    ],
+    "hasPublishedStatement": false,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.oaic.gov.au/"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
+  },
+  {
+    "id": "csiro",
+    "name": "Commonwealth Scientific and Industrial Research Organisation",
+    "acronym": "CSIRO",
+    "level": "federal",
+    "jurisdiction": "federal",
+    "website": "https://www.csiro.au/",
+    "policies": [],
+    "hasPublishedStatement": false,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.csiro.au/"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
+  },
+  {
+    "id": "nsw-dcs",
+    "name": "NSW Department of Customer Service",
+    "acronym": "NSW DCS",
+    "level": "state",
+    "jurisdiction": "nsw",
+    "website": "https://www.digital.nsw.gov.au/",
+    "policies": [
+      "nsw-artificial-intelligence-assessment-framework"
+    ],
+    "hasPublishedStatement": false,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.digital.nsw.gov.au/"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
+  },
+  {
+    "id": "vic-dpc",
+    "name": "Victorian Department of Premier and Cabinet",
+    "acronym": "VIC DPC",
+    "level": "state",
+    "jurisdiction": "vic",
+    "website": "https://www.vic.gov.au/department-premier-and-cabinet",
+    "policies": [
+      "victoria-genai-guideline-vps"
+    ],
+    "hasPublishedStatement": false,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.vic.gov.au/department-premier-and-cabinet"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
+  },
+  {
+    "id": "qld-dsiti",
+    "name": "Queensland Department of Science, Innovation and Technology",
+    "acronym": "QLD DSITI",
+    "level": "state",
+    "jurisdiction": "qld",
+    "website": "https://www.qld.gov.au/",
+    "policies": [
+      "queensland-ai-governance-policy"
+    ],
+    "hasPublishedStatement": false,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.qld.gov.au/"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
+  },
+  {
+    "id": "nsw-office-for-ai",
+    "name": "NSW Office for AI",
+    "acronym": "OFAI",
+    "level": "state",
+    "jurisdiction": "nsw",
+    "website": "https://www.digital.nsw.gov.au/policy/artificial-intelligence",
+    "hasPublishedStatement": false,
+    "policies": [
+      "nsw-artificial-intelligence-assessment-framework"
+    ],
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
+  },
+  {
+    "id": "wa-office-of-digital-government",
+    "name": "Office of Digital Government (WA)",
+    "acronym": "DGov",
+    "level": "state",
+    "jurisdiction": "wa",
+    "website": "https://www.wa.gov.au/organisation/department-of-the-premier-and-cabinet/office-of-digital-government",
+    "hasPublishedStatement": false,
+    "policies": [
+      "wa-ai-policy-assurance-framework"
+    ],
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.wa.gov.au/organisation/department-of-the-premier-and-cabinet/office-of-digital-government"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
+  },
+  {
+    "id": "sa-office-for-ai",
+    "name": "SA Office for AI",
+    "acronym": "OFAI-SA",
+    "level": "state",
+    "jurisdiction": "sa",
+    "website": "https://www.ai.sa.gov.au/",
+    "hasPublishedStatement": false,
+    "policies": [
+      "sa-artificial-intelligence-ethics-policy",
+      "sa-guideline-use-of-generative-ai-and-llm-tools",
+      "sa-ai-for-better-government-discussion-paper"
+    ],
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.ai.sa.gov.au/"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
+  },
+  {
+    "id": "tas-dpac-dss",
+    "name": "Department of Premier and Cabinet — Digital Strategy and Services (TAS)",
+    "acronym": "DPAC DSS",
+    "level": "state",
+    "jurisdiction": "tas",
+    "website": "https://www.dpac.tas.gov.au/divisions/digital_strategy_and_services",
+    "hasPublishedStatement": false,
+    "policies": [
+      "tas-guidance-for-the-use-of-artificial-intelligence-in-government"
+    ],
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.dpac.tas.gov.au/divisions/digital_strategy_and_services"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
+  },
+  {
+    "id": "nt-dcdd",
+    "name": "Department of Corporate and Digital Development (NT)",
+    "acronym": "DCDD",
+    "level": "state",
+    "jurisdiction": "nt",
+    "website": "https://digitalterritory.nt.gov.au/",
+    "hasPublishedStatement": false,
+    "policies": [
+      "nt-artificial-intelligence-assurance-framework"
+    ],
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://digitalterritory.nt.gov.au/"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
+  }
+]

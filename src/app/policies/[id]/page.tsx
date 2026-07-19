@@ -4,6 +4,8 @@ import { type Policy } from '@/types';
 import { getPolicyById, getPolicies } from '@/lib/data-service';
 import { PolicyDetailTabs } from './policy-detail-tabs';
 
+export const revalidate = 3600;
+
 async function getRelatedPolicies(currentPolicy: Policy): Promise<Policy[]> {
   const policies = await getPolicies();
   const related = policies

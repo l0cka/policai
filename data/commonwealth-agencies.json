@@ -7,10 +7,17 @@
     "jurisdiction": "federal",
     "aiTransparencyStatement": "DTA is introducing a structured AI-assisted evaluation model to assist with the Digital Marketplace Panel 2 evaluation process. Currently uses Microsoft 365 Copilot for workplace productivity.",
     "aiUsageDisclosure": "AI tools leverage generative AI to help automate repetitive tasks, summarize documents, generate emails and reports, and assist with data analysis.",
-    "website": "https://www.dta.gov.au",
+    "website": "https://www.dta.gov.au/",
     "transparencyStatementUrl": "https://www.dta.gov.au/ai-transparency-statement",
     "lastUpdated": "2025-12-01",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.dta.gov.au/ai-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "ato",
@@ -20,10 +27,17 @@
     "jurisdiction": "federal",
     "aiTransparencyStatement": "The ATO uses data and analytics (D&A), including automation and AI, which helps administer the tax and superannuation systems more effectively. Only uses AI in ways that maintain security, privacy, transparency and ethical use of data.",
     "aiUsageDisclosure": "AI models prompt individuals completing their tax return online through myTax to help them get it right. However, recent ANAO audit found concerns about insufficient integration of ethical and legal considerations.",
-    "website": "https://www.ato.gov.au",
+    "website": "https://www.ato.gov.au/",
     "transparencyStatementUrl": "https://www.ato.gov.au/about-ato/commitments-and-reporting/information-and-privacy/ato-ai-transparency-statement",
     "hasPublishedStatement": true,
-    "auditFindings": "ANAO audit revealed ATO has not sufficiently integrated ethical and legal considerations into AI model design and development."
+    "auditFindings": "ANAO audit revealed ATO has not sufficiently integrated ethical and legal considerations into AI model design and development.",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.ato.gov.au/about-ato/commitments-and-reporting/information-and-privacy/ato-ai-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "asic",
@@ -32,9 +46,16 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "ASIC is committed to safe, responsible, and transparent use of AI and will comply with applicable laws and regulation.",
-    "website": "https://www.asic.gov.au",
-    "transparencyStatementUrl": "https://www.asic.gov.au/about-asic/what-we-do/how-we-operate/accountability-and-reporting/artificial-intelligence-transparency-statement/",
-    "hasPublishedStatement": true
+    "website": "https://www.asic.gov.au/",
+    "transparencyStatementUrl": "https://www.asic.gov.au/about-asic/what-we-do/how-we-operate/accountability-and-reporting/artificial-intelligence-transparency-statement",
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.asic.gov.au/about-asic/what-we-do/how-we-operate/accountability-and-reporting/artificial-intelligence-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "art",
@@ -43,9 +64,16 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Has published a statement complying with DTA requirements.",
-    "website": "https://www.art.gov.au",
+    "website": "https://www.art.gov.au/",
     "transparencyStatementUrl": "https://www.art.gov.au/ai-transparency-statement",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.art.gov.au/ai-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "abs",
@@ -54,10 +82,17 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Transparency statement published to website on 16th July 2025, updated every 12 months or as their approach to AI changes.",
-    "website": "https://www.abs.gov.au",
+    "website": "https://www.abs.gov.au/",
     "transparencyStatementUrl": "https://www.abs.gov.au/about/legislation-and-policy/ai-transparency-statement",
     "lastUpdated": "2025-07-16",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.abs.gov.au/about/legislation-and-policy/ai-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "health",
@@ -66,9 +101,16 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Published AI transparency statement outlining commitment to responsible AI use.",
-    "website": "https://www.health.gov.au",
+    "website": "https://www.health.gov.au/",
     "transparencyStatementUrl": "https://www.health.gov.au/about-us/corporate-reporting/our-commitments/ai-transparency-statement",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.health.gov.au/about-us/corporate-reporting/our-commitments/ai-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "homeaffairs",
@@ -77,10 +119,17 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Published transparency statement in February 2025.",
-    "website": "https://www.homeaffairs.gov.au",
+    "website": "https://www.homeaffairs.gov.au/",
     "transparencyStatementUrl": "https://www.homeaffairs.gov.au/commitments/files/ai-transparency-statement.pdf",
     "lastUpdated": "2025-02",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.homeaffairs.gov.au/commitments/files/ai-transparency-statement.pdf"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "dfat",
@@ -89,9 +138,16 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "DFAT requires all staff to undertake training on the appropriate use of AI prior to enabling their access.",
-    "website": "https://www.dfat.gov.au",
+    "website": "https://www.dfat.gov.au/",
     "transparencyStatementUrl": "https://www.dfat.gov.au/about-us/corporate/artificial-intelligence-ai-transparency-statement",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.dfat.gov.au/about-us/corporate/artificial-intelligence-ai-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "csiro",
@@ -101,9 +157,16 @@
     "jurisdiction": "federal",
     "aiTransparencyStatement": "CSIRO conducts responsible AI research for Australia's benefit. Statement explains how they use AI responsibly and ethically, outlining their principles, governance, and commitment to transparency, safety and continuous improvement.",
     "aiUsageDisclosure": "AI is used extensively in research projects across all domains.",
-    "website": "https://www.csiro.au",
+    "website": "https://www.csiro.au/",
     "transparencyStatementUrl": "https://www.csiro.au/en/about/policies/artificial-intelligence-statement",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.csiro.au/en/about/policies/artificial-intelligence-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "education",
@@ -112,10 +175,17 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Has an AI transparency statement last updated 30/09/2025.",
-    "website": "https://www.education.gov.au",
+    "website": "https://www.education.gov.au/",
     "transparencyStatementUrl": "https://www.education.gov.au/about-department/corporate-reporting/artificial-intelligence-ai-transparency-statement",
     "lastUpdated": "2025-09-30",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.education.gov.au/about-department/corporate-reporting/artificial-intelligence-ai-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "daff",
@@ -124,10 +194,17 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Does not currently use AI in any way that directly interacts with the public without a human intermediary or intervention.",
-    "website": "https://www.agriculture.gov.au",
+    "website": "https://www.agriculture.gov.au/",
     "transparencyStatementUrl": "https://www.agriculture.gov.au/about/reporting/obligations/AI-transparency-statement",
     "hasPublishedStatement": true,
-    "accountableOfficial": "Chief Data Officer (designated 16 October 2024)"
+    "accountableOfficial": "Chief Data Officer (designated 16 October 2024)",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.agriculture.gov.au/about/reporting/obligations/AI-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "treasury",
@@ -136,9 +213,16 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Provides details of Treasury's implementation of policy requirements relating to accountable officials and transparency statements.",
-    "website": "https://treasury.gov.au",
+    "website": "https://treasury.gov.au/",
     "transparencyStatementUrl": "https://treasury.gov.au/the-department/accountability-reporting/ai-transparency-statement",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://treasury.gov.au/the-department/accountability-reporting/ai-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "agd",
@@ -147,9 +231,16 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Outlines the department's commitment to responsible AI use, detailing technologies, governance, data privacy, and continuous improvement in alignment with government policies on AI transparency and ethics.",
-    "website": "https://www.ag.gov.au",
+    "website": "https://www.ag.gov.au/",
     "transparencyStatementUrl": "https://www.ag.gov.au/about-us/accountability-and-reporting/attorney-generals-department-artificial-intelligence-transparency-statement",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.ag.gov.au/about-us/accountability-and-reporting/attorney-generals-department-artificial-intelligence-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "finance",
@@ -158,9 +249,16 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Published AI transparency statement in accordance with government policy.",
-    "website": "https://www.finance.gov.au",
+    "website": "https://www.finance.gov.au/",
     "transparencyStatementUrl": "https://www.finance.gov.au/about-us/artificial-intelligence-ai-transparency-statement",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.finance.gov.au/about-us/artificial-intelligence-ai-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "servicesaustralia",
@@ -170,11 +268,18 @@
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Committed to ensuring use of automation and AI is human-centric, safe, responsible, transparent, fair, ethical and legal. Aligns with Australia's AI Ethics Principles and National framework for the assurance of AI in government.",
     "aiUsageDisclosure": "Uses automation to improve efficiency of government service delivery. Do NOT use AI to process claims. Human oversight of AI in compliance, auditing and decision-making processes.",
-    "website": "https://www.servicesaustralia.gov.au",
+    "website": "https://www.servicesaustralia.gov.au/",
     "transparencyStatementUrl": "https://www.servicesaustralia.gov.au/automation-and-artificial-intelligence-transparency-statement",
     "lastUpdated": "2025-10-10",
     "hasPublishedStatement": true,
-    "contactEmail": "AI.Accountable.Official@servicesaustralia.gov.au"
+    "contactEmail": "AI.Accountable.Official@servicesaustralia.gov.au",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.servicesaustralia.gov.au/automation-and-artificial-intelligence-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "dss",
@@ -183,9 +288,16 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Published AI transparency statement discussing commitment to policy requirements and ethical use of AI.",
-    "website": "https://www.dss.gov.au",
+    "website": "https://www.dss.gov.au/",
     "transparencyStatementUrl": "https://www.dss.gov.au/doing-business-us/corporate-policies/artificial-intelligence-ai-transparency-statement",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.dss.gov.au/doing-business-us/corporate-policies/artificial-intelligence-ai-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "apra",
@@ -194,9 +306,16 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Has an AI Transparency Statement in accordance with DTA's Policy for responsible use of AI in government.",
-    "website": "https://www.apra.gov.au",
+    "website": "https://www.apra.gov.au/",
     "transparencyStatementUrl": "https://www.apra.gov.au/apras-ai-transparency-statement",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.apra.gov.au/apras-ai-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "accc",
@@ -205,9 +324,16 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Published AI transparency statement outlining how they intend to use AI, what they use it for, and how they'll monitor its usage.",
-    "website": "https://www.accc.gov.au",
+    "website": "https://www.accc.gov.au/",
     "transparencyStatementUrl": "https://www.accc.gov.au/about-us/accc-role-and-structure/governance-and-accountability/artificial-intelligence-ai-transparency-statement",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.accc.gov.au/about-us/accc-role-and-structure/governance-and-accountability/artificial-intelligence-ai-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "austrac",
@@ -216,9 +342,16 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Published Artificial Intelligence Transparency Statement.",
-    "website": "https://www.austrac.gov.au",
+    "website": "https://www.austrac.gov.au/",
     "transparencyStatementUrl": "https://www.austrac.gov.au/about-us/corporate-information-and-governance/reports-and-accountability/austrac-artificial-intelligence-transparency-statement",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.austrac.gov.au/about-us/corporate-information-and-governance/reports-and-accountability/austrac-artificial-intelligence-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "disr",
@@ -227,9 +360,16 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Published artificial intelligence transparency statement.",
-    "website": "https://www.industry.gov.au",
+    "website": "https://www.industry.gov.au/",
     "transparencyStatementUrl": "https://www.industry.gov.au/publications/artificial-intelligence-transparency-statement",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.industry.gov.au/publications/artificial-intelligence-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "naa",
@@ -238,9 +378,16 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Published AI transparency statement.",
-    "website": "https://www.naa.gov.au",
+    "website": "https://www.naa.gov.au/",
     "transparencyStatementUrl": "https://www.naa.gov.au/about-us/who-we-are/accountability-and-reporting/artificial-intelligence-ai-transparency-statement",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.naa.gov.au/about-us/who-we-are/accountability-and-reporting/artificial-intelligence-ai-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "esafety",
@@ -249,9 +396,16 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Published AI transparency statement.",
-    "website": "https://www.esafety.gov.au",
+    "website": "https://www.esafety.gov.au/",
     "transparencyStatementUrl": "https://www.esafety.gov.au/about-us/corporate-documents/ai-transparency-statement",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.esafety.gov.au/about-us/corporate-documents/ai-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "fwc",
@@ -261,9 +415,16 @@
     "jurisdiction": "federal",
     "aiTransparencyStatement": "The Commission will not use generative AI to make decisions under the Fair Work Act 2009. Has established an AI Assessment Committee (AIAC) to provide oversight.",
     "aiUsageDisclosure": "May develop generative AI tools that the public can interact with in future to enhance service delivery.",
-    "website": "https://www.fwc.gov.au",
+    "website": "https://www.fwc.gov.au/",
     "transparencyStatementUrl": "https://www.fwc.gov.au/about-us/artificial-intelligence-transparency-statement",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.fwc.gov.au/about-us/artificial-intelligence-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "fwo",
@@ -272,10 +433,17 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Published AI transparency statement in February 2025.",
-    "website": "https://www.fairwork.gov.au",
+    "website": "https://www.fairwork.gov.au/",
     "transparencyStatementUrl": "https://www.fairwork.gov.au/sites/default/files/2025-02/fwo-ai-transparency-statement.pdf",
     "lastUpdated": "2025-02",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.fairwork.gov.au/sites/default/files/2025-02/fwo-ai-transparency-statement.pdf"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "pc",
@@ -284,9 +452,16 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Outlines their approach to AI adoption and use in accordance with DTA's policy on responsible use of AI in government.",
-    "website": "https://www.pc.gov.au",
+    "website": "https://www.pc.gov.au/",
     "transparencyStatementUrl": "https://www.pc.gov.au/ai-transparency",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.pc.gov.au/ai-transparency"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "niaa",
@@ -296,10 +471,17 @@
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Discusses the agency's commitment to policy requirements and ethical use of AI to enhance public services for Indigenous Australians, ensuring transparency, accountability, and inclusivity.",
     "aiUsageDisclosure": "Considering trialling adoption of AI as part of Australian Government's commitment to digital innovation through technical partnership with PM&C.",
-    "website": "https://www.niaa.gov.au",
+    "website": "https://www.niaa.gov.au/",
     "transparencyStatementUrl": "https://www.niaa.gov.au/artificial-intelligence-ai-transparency-statement",
     "lastUpdated": "2025-02-19",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.niaa.gov.au/artificial-intelligence-ai-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "cer",
@@ -309,9 +491,16 @@
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Committed to using technology, including AI, to enhance capability to be an efficient and effective economic regulator. Don't currently use AI in services or advice they provide.",
     "aiUsageDisclosure": "Will consider AI use to provide analytics for and insights into the schemes they regulate.",
-    "website": "https://www.cer.gov.au",
+    "website": "https://www.cer.gov.au/",
     "transparencyStatementUrl": "https://cer.gov.au/about-us/our-policies/artificial-intelligence-transparency-statement",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://cer.gov.au/about-us/our-policies/artificial-intelligence-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "anao",
@@ -321,9 +510,16 @@
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Does not use AI tools that interact directly with the public and considers current AI use to have a low impact on the public. Exploring how generative AI can enhance the audit process.",
     "aiUsageDisclosure": "Uses three enterprise applications with AI: Nuix (eDiscovery), Adobe Acrobat (auto form-filling), and another tool. Trialing Microsoft Copilot.",
-    "website": "https://www.anao.gov.au",
+    "website": "https://www.anao.gov.au/",
     "transparencyStatementUrl": "https://www.anao.gov.au/work/corporate/anaos-artificial-intelligence-transparency-statement",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.anao.gov.au/work/corporate/anaos-artificial-intelligence-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "gbrmpa",
@@ -332,11 +528,18 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Not currently using AI across any of its domains. Any future uses would be documented in future iterations of the AI Transparency Statement.",
-    "website": "https://www.gbrmpa.gov.au",
+    "website": "https://www.gbrmpa.gov.au/",
     "transparencyStatementUrl": "https://www2.gbrmpa.gov.au/artificial-intelligence-ai-transparency-statement",
     "lastUpdated": "2025-02-20",
     "hasPublishedStatement": true,
-    "accountableOfficial": "Chief Digital Officer"
+    "accountableOfficial": "Chief Digital Officer",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www2.gbrmpa.gov.au/artificial-intelligence-ai-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "ipaustralia",
@@ -345,9 +548,16 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Uses AI to support the achievement of their purpose and strategic objectives. Committed to continuous improvement and recognises AI is becoming increasingly important to foster innovation in stewardship of the IP rights system.",
-    "website": "https://www.ipaustralia.gov.au",
+    "website": "https://www.ipaustralia.gov.au/",
     "transparencyStatementUrl": "https://www.ipaustralia.gov.au/news-and-community/news/artificial-intelligence-ai-transparency-statement",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.ipaustralia.gov.au/news-and-community/news/artificial-intelligence-ai-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "ndisqsc",
@@ -356,9 +566,16 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Currently does not use AI in services or advice they provide externally or internally.",
-    "website": "https://www.ndiscommission.gov.au",
+    "website": "https://www.ndiscommission.gov.au/",
     "transparencyStatementUrl": "https://www.ndiscommission.gov.au/about-us/corporate-reports/ai-statement",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.ndiscommission.gov.au/about-us/corporate-reports/ai-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "afp",
@@ -367,10 +584,17 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Strengthening responsible AI practices by releasing a transparency statement in accordance with the policy for responsible use of AI in government.",
-    "website": "https://www.afp.gov.au",
+    "website": "https://www.afp.gov.au/",
     "transparencyStatementUrl": "https://www.afp.gov.au/news-centre/feature/artificial-intelligence-ai-transparency-statement",
     "hasPublishedStatement": true,
-    "accountableOfficial": "Manager Technology Strategy and Data"
+    "accountableOfficial": "Manager Technology Strategy and Data",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.afp.gov.au/news-centre/feature/artificial-intelligence-ai-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "osi",
@@ -379,9 +603,16 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Receives IT services from AGD and AFP under shared services agreements. Uses AI in line with the AI policies of AGD and AFP.",
-    "website": "https://www.osi.gov.au",
+    "website": "https://www.osi.gov.au/",
     "transparencyStatementUrl": "https://www.osi.gov.au/policy-responsible-use-ai-government-ai-transparency-statement",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.osi.gov.au/policy-responsible-use-ai-government-ai-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "arc",
@@ -390,10 +621,17 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "First published in April 2025. Statement reviewed annually, or when significant change is made to the ARC's approach to AI.",
-    "website": "https://www.arc.gov.au",
+    "website": "https://www.arc.gov.au/",
     "transparencyStatementUrl": "https://www.arc.gov.au/about-arc/arc-strategies-and-policies/ai-transparency",
     "lastUpdated": "2025-04",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.arc.gov.au/about-arc/arc-strategies-and-policies/ai-transparency"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "comcare",
@@ -402,11 +640,18 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Outlines commitment to the safe, ethical and responsible use of AI. Published in February 2025.",
-    "website": "https://www.comcare.gov.au",
+    "website": "https://www.comcare.gov.au/",
     "transparencyStatementUrl": "https://www.comcare.gov.au/about/forms-pubs/docs/pubs/corporate-publications/ai-transparency-statement",
     "lastUpdated": "2025-02",
     "hasPublishedStatement": true,
-    "accountableOfficial": "Chief Information Office"
+    "accountableOfficial": "Chief Information Office",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.comcare.gov.au/about/forms-pubs/docs/pubs/corporate-publications/ai-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "swa",
@@ -415,10 +660,17 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "First published to website on 28 February 2025. Will be reviewed annually or when significant changes occur.",
-    "website": "https://www.safeworkaustralia.gov.au",
+    "website": "https://www.safeworkaustralia.gov.au/",
     "transparencyStatementUrl": "https://www.safeworkaustralia.gov.au/about-us/corporate-publications-and-resources/ai-transparency-statement",
     "lastUpdated": "2025-02-28",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.safeworkaustralia.gov.au/about-us/corporate-publications-and-resources/ai-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "cgc",
@@ -427,9 +679,16 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Published AI transparency statement.",
-    "website": "https://www.cgc.gov.au",
+    "website": "https://www.cgc.gov.au/",
     "transparencyStatementUrl": "https://www.cgc.gov.au/about-us/accountability-and-reporting/artificial-intelligence-transparency-statement",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.cgc.gov.au/about-us/accountability-and-reporting/artificial-intelligence-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "ombudsman",
@@ -438,9 +697,16 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Published AI transparency statement.",
-    "website": "https://www.ombudsman.gov.au",
+    "website": "https://www.ombudsman.gov.au/",
     "transparencyStatementUrl": "https://www.ombudsman.gov.au/about/ai-transparency-statement",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.ombudsman.gov.au/about/ai-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "pbo",
@@ -449,9 +715,16 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Published AI transparency statement.",
-    "website": "https://www.pbo.gov.au",
+    "website": "https://www.pbo.gov.au/",
     "transparencyStatementUrl": "https://www.pbo.gov.au/about-the-pbo/performance-and-reporting/information-and-privacy/ai-transparency-statement",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.pbo.gov.au/about-the-pbo/performance-and-reporting/information-and-privacy/ai-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "teqsa",
@@ -460,9 +733,16 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Published AI transparency statement.",
-    "website": "https://www.teqsa.gov.au",
+    "website": "https://www.teqsa.gov.au/",
     "transparencyStatementUrl": "https://www.teqsa.gov.au/about-us/reporting-and-accountability/ai-transparency-statement",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.teqsa.gov.au/about-us/reporting-and-accountability/ai-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "cdpp",
@@ -471,9 +751,16 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Published AI transparency statement.",
-    "website": "https://www.cdpp.gov.au",
+    "website": "https://www.cdpp.gov.au/",
     "transparencyStatementUrl": "https://www.cdpp.gov.au/about-us/ai-transparency-statement",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.cdpp.gov.au/about-us/ai-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "ditrdca",
@@ -482,9 +769,16 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Published Artificial Intelligence Transparency Statement.",
-    "website": "https://www.infrastructure.gov.au",
+    "website": "https://www.infrastructure.gov.au/",
     "transparencyStatementUrl": "https://www.infrastructure.gov.au/about-us/artificial-intelligence-transparency-statement",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.infrastructure.gov.au/about-us/artificial-intelligence-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "dcceew",
@@ -493,9 +787,16 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Published Artificial Intelligence Transparency Statement.",
-    "website": "https://www.dcceew.gov.au",
+    "website": "https://www.dcceew.gov.au/",
     "transparencyStatementUrl": "https://www.dcceew.gov.au/about/commitment/information-public-data/ai-transparency-statement",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.dcceew.gov.au/about/commitment/information-public-data/ai-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "dva",
@@ -505,11 +806,18 @@
     "jurisdiction": "federal",
     "aiTransparencyStatement": "First published in February 2025. Accessing Commonwealth GovAI environment to evaluate potential AI tools to speed up claims processing. Statement reviewed annually or when significant changes occur.",
     "aiUsageDisclosure": "Testing on GovAI platform does not use veteran personal data. Small-scale pilots including Microsoft Copilot trial and proof-of-concept claims tool being used to test whether generative AI can simplify navigation and speed claims work.",
-    "website": "https://www.dva.gov.au",
+    "website": "https://www.dva.gov.au/",
     "transparencyStatementUrl": "https://www.dva.gov.au/about/accessing-information/what-can-i-access/corporate-information-access/artificial-intelligence-ai-transparency-statement",
     "lastUpdated": "2025-02",
     "hasPublishedStatement": true,
-    "contactEmail": "AI@dva.gov.au"
+    "contactEmail": "AI@dva.gov.au",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.dva.gov.au/about/accessing-information/what-can-i-access/corporate-information-access/artificial-intelligence-ai-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "nhmrc",
@@ -518,9 +826,16 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Published AI transparency statement.",
-    "website": "https://www.nhmrc.gov.au",
+    "website": "https://www.nhmrc.gov.au/",
     "transparencyStatementUrl": "https://www.nhmrc.gov.au/about-us/accountability-and-reporting/artificial-intelligence-ai-transparency-statement",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.nhmrc.gov.au/about-us/accountability-and-reporting/artificial-intelligence-ai-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "aic",
@@ -529,9 +844,16 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Published AI transparency statement.",
-    "website": "https://www.aic.gov.au",
+    "website": "https://www.aic.gov.au/",
     "transparencyStatementUrl": "https://www.aic.gov.au/about-us/artificial-intelligence-ai-transparency-statement",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.aic.gov.au/about-us/artificial-intelligence-ai-transparency-statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "aph",
@@ -540,9 +862,16 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Published AI transparency statement.",
-    "website": "https://www.aph.gov.au",
+    "website": "https://www.aph.gov.au/",
     "transparencyStatementUrl": "https://www.aph.gov.au/About_Parliament/Parliamentary_departments/Department_of_the_Senate/Accountability_and_reporting/AI_transparency_statement",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.aph.gov.au/About_Parliament/Parliamentary_departments/Department_of_the_Senate/Accountability_and_reporting/AI_transparency_statement"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "acma",
@@ -552,9 +881,16 @@
     "jurisdiction": "federal",
     "aiTransparencyStatement": "First published in February 2025. Transparent in internal use of AI technology as they explore, evaluate and adopt AI. Currently does not plan to use AI in services that the public may directly interact with.",
     "aiUsageDisclosure": "Has developed overarching agency approach to AI and established an AI Steering Committee. Generative AI tools must not be used unless specifically approved under robust approval, assurance and evaluation process and staff have undertaken AI training.",
-    "website": "https://www.acma.gov.au",
+    "website": "https://www.acma.gov.au/",
     "lastUpdated": "2025-02",
-    "hasPublishedStatement": true
+    "hasPublishedStatement": true,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.acma.gov.au/"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "ndia",
@@ -563,8 +899,15 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Yet to publish an AI transparency statement. Has not voluntarily published like some other exempt agencies.",
-    "website": "https://www.ndis.gov.au",
-    "hasPublishedStatement": false
+    "website": "https://www.ndis.gov.au/",
+    "hasPublishedStatement": false,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.ndis.gov.au/"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   },
   {
     "id": "oaic",
@@ -573,7 +916,14 @@
     "level": "federal",
     "jurisdiction": "federal",
     "aiTransparencyStatement": "Provides guidance on privacy implications of AI systems.",
-    "website": "https://www.oaic.gov.au",
-    "hasPublishedStatement": false
+    "website": "https://www.oaic.gov.au/",
+    "hasPublishedStatement": false,
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.oaic.gov.au/"
+      },
+      "notes": "Legacy directory record; the agency statement and absence/presence claim require editorial re-checking."
+    }
   }
 ]

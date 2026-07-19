@@ -1,0 +1,169 @@
+{
+  "manualReviews": [
+    {
+      "sourceId": "nt-ai-assurance",
+      "status": "checked",
+      "reviewedAt": "2026-07-16T10:15:00.000Z",
+      "reviewedBy": "Policai editorial source review",
+      "evidence": {
+        "url": "https://digitalterritory.nt.gov.au/digital-government/strategies-and-guidance/policies-standards-and-guidance/artificial-intelligence-assurance-framework",
+        "title": "Artificial Intelligence Assurance Framework",
+        "publisher": "Northern Territory Government",
+        "finalUrl": "https://dcdd.nt.gov.au/publications/artificial-intelligence-assurance-framework"
+      },
+      "notes": "Reviewed the current Northern Territory Artificial Intelligence Assurance Framework page and its redirect."
+    },
+    {
+      "sourceId": "act-ai-policy",
+      "status": "checked",
+      "reviewedAt": "2026-07-16T10:15:00.000Z",
+      "reviewedBy": "Policai editorial source review",
+      "evidence": {
+        "url": "https://www.act.gov.au/open/act-government-artificial-intelligence-policy",
+        "title": "ACT Government Artificial Intelligence Policy",
+        "publisher": "ACT Government"
+      },
+      "notes": "Reviewed the current ACT Government Artificial Intelligence Policy page."
+    },
+    {
+      "sourceId": "tas-dpac-policies",
+      "status": "checked",
+      "reviewedAt": "2026-07-16T10:15:00.000Z",
+      "reviewedBy": "Policai editorial source review",
+      "evidence": {
+        "url": "https://www.dpac.tas.gov.au/divisions/digital_strategy_and_services/policies",
+        "title": "Policies and guidelines",
+        "publisher": "Department of Premier and Cabinet Tasmania",
+        "finalUrl": "https://www.dpac.tas.gov.au/government-information/governance-ministerial/policies-and-guidelines"
+      },
+      "notes": "Reviewed the redirected Tasmanian policies and guidelines index for AI-specific instruments."
+    },
+    {
+      "sourceId": "sa-office-for-ai",
+      "status": "checked",
+      "reviewedAt": "2026-07-16T10:15:00.000Z",
+      "reviewedBy": "Policai editorial source review",
+      "evidence": {
+        "url": "https://www.ai.sa.gov.au/",
+        "title": "Office for AI",
+        "publisher": "Government of South Australia"
+      },
+      "notes": "Reviewed the Office for AI site. The AI-strategy consultation status and dates were reconciled in the register."
+    },
+    {
+      "sourceId": "qld-qgea-ai",
+      "status": "source_unavailable",
+      "reviewedAt": "2026-07-16T10:15:00.000Z",
+      "reviewedBy": "Policai editorial source review",
+      "evidence": {
+        "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy"
+      },
+      "notes": "The official landing page returned an AWS WAF browser challenge rather than policy content. The source is now excluded from automatic success coverage."
+    },
+    {
+      "sourceId": "fedcourt-practice-notes",
+      "status": "checked",
+      "reviewedAt": "2026-07-16T10:15:00.000Z",
+      "reviewedBy": "Policai editorial source review",
+      "evidence": {
+        "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes",
+        "title": "Practice Notes",
+        "publisher": "Federal Court of Australia"
+      },
+      "notes": "Reviewed the current practice-note index. GPN-AI remains listed at 16 April 2026 and no newer AI-specific practice note was identified."
+    },
+    {
+      "sourceId": "ahrc-media",
+      "status": "checked",
+      "reviewedAt": "2026-07-16T10:15:00.000Z",
+      "reviewedBy": "Policai editorial source review",
+      "evidence": {
+        "url": "https://humanrights.gov.au/about-us/media-centre",
+        "title": "Media centre",
+        "publisher": "Australian Human Rights Commission"
+      },
+      "notes": "Reviewed the current media-centre updates; no new discrete AI policy development was identified."
+    },
+    {
+      "sourceId": "esafety-media",
+      "status": "checked",
+      "reviewedAt": "2026-07-16T10:15:00.000Z",
+      "reviewedBy": "Policai editorial source review",
+      "evidence": {
+        "url": "https://www.esafety.gov.au/newsroom/media-releases",
+        "title": "Media releases",
+        "publisher": "eSafety Commissioner"
+      },
+      "notes": "Reviewed the eSafety media-release index for AI-related regulatory and online-safety developments."
+    },
+    {
+      "sourceId": "agd-news",
+      "status": "source_unavailable",
+      "reviewedAt": "2026-07-16T10:15:00.000Z",
+      "reviewedBy": "Policai editorial source review",
+      "evidence": {
+        "url": "https://www.ag.gov.au/about-us/news-and-media"
+      },
+      "notes": "The official news and media endpoint was unavailable to the browser reviewer during this pass."
+    },
+    {
+      "sourceId": "finance-news",
+      "status": "checked",
+      "reviewedAt": "2026-07-16T10:15:00.000Z",
+      "reviewedBy": "Policai editorial source review",
+      "evidence": {
+        "url": "https://www.finance.gov.au/about-us/news",
+        "title": "Latest News",
+        "publisher": "Department of Finance"
+      },
+      "notes": "Reviewed the Department of Finance latest-news index for AI governance and public-sector AI announcements."
+    },
+    {
+      "sourceId": "naic-news",
+      "status": "checked",
+      "reviewedAt": "2026-07-16T10:15:00.000Z",
+      "reviewedBy": "Policai editorial source review",
+      "evidence": {
+        "url": "https://www.ai.gov.au/news-and-insights",
+        "title": "News and insights",
+        "publisher": "National AI Centre"
+      },
+      "notes": "Reviewed the National AI Centre news and insights index; no additional register-ready government policy instrument was identified."
+    },
+    {
+      "sourceId": "disr-news",
+      "status": "checked",
+      "reviewedAt": "2026-07-16T10:15:00.000Z",
+      "reviewedBy": "Policai editorial source review",
+      "evidence": {
+        "url": "https://www.industry.gov.au/news",
+        "title": "News",
+        "publisher": "Department of Industry, Science and Resources"
+      },
+      "notes": "Reviewed the current department news index; no additional discrete AI policy instrument requiring publication was identified."
+    },
+    {
+      "sourceId": "digital-gov-ai",
+      "status": "checked",
+      "reviewedAt": "2026-07-16T10:15:00.000Z",
+      "reviewedBy": "Policai editorial source review",
+      "evidence": {
+        "url": "https://www.digital.gov.au/policy/ai",
+        "title": "Artificial intelligence in government",
+        "publisher": "Digital Transformation Agency",
+        "finalUrl": "https://www.digital.gov.au/policy/ai"
+      },
+      "notes": "Reviewed the current AI policy hub. The Agentic AI addendum was identified, verified and published through the stage-approve-publish workflow."
+    },
+    {
+      "sourceId": "dta-media",
+      "status": "source_unavailable",
+      "reviewedAt": "2026-07-16T10:15:00.000Z",
+      "reviewedBy": "Policai editorial source review",
+      "evidence": {
+        "url": "https://www.dta.gov.au/news-and-blogs/latest/feed/news_item"
+      },
+      "notes": "The official RSS endpoint could not be retrieved. The separate digital.gov.au AI policy hub was reviewed successfully in this coverage pass."
+    }
+  ]
+}

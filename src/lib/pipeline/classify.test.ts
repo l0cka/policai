@@ -2,13 +2,27 @@
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const { hasAiProvider, analyseContentRelevance } = vi.hoisted(() => ({
+const {
+  analyseContentRelevance,
+  getAiModel,
+  getAiProvider,
+  hasAiProvider,
+} = vi.hoisted(() => ({
   hasAiProvider: vi.fn(),
   analyseContentRelevance: vi.fn(),
+  getAiModel: vi.fn(),
+  getAiProvider: vi.fn(),
 }));
 
-vi.mock('@/lib/ai-client', () => ({ hasAiProvider }));
-vi.mock('@/lib/analysis', () => ({ analyseContentRelevance }));
+vi.mock('@/lib/ai-client', () => ({
+  getAiModel,
+  getAiProvider,
+  hasAiProvider,
+}));
+vi.mock('@/lib/analysis', () => ({
+  analyseContentRelevance,
+  RELEVANCE_PROMPT_VERSION: 'test-prompt-v1',
+}));
 
 import { classifyCandidate, heuristicClassification } from './classify';
 
@@ -43,6 +57,10 @@ describe('classifyCandidate', () => {
   beforeEach(() => {
     hasAiProvider.mockReset();
     analyseContentRelevance.mockReset();
+    getAiModel.mockReset();
+    getAiProvider.mockReset();
+    getAiProvider.mockReturnValue('anthropic');
+    getAiModel.mockReturnValue('test-model');
   });
 
   it('uses AI analysis when a provider and page content are available', async () => {
@@ -66,6 +84,12 @@ describe('classifyCandidate', () => {
     expect(result.summary).toBe('A new assurance framework.');
     expect(result.suggestedType).toBe('framework');
     expect(result.suggestedJurisdiction).toBe('federal');
+    expect(result.assessment).toEqual({
+      method: 'ai',
+      promptVersion: 'test-prompt-v1',
+      provider: 'anthropic',
+      model: 'test-model',
+    });
   });
 
   it('falls back to heuristics without a provider', async () => {

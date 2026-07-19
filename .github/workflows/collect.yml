@@ -42,6 +42,8 @@ jobs:
         run: npm ci
 
       - name: Run collector
+        id: collector
+        continue-on-error: true
         env:
           # Optional — enables AI classification. Without a key the collector
           # falls back to keyword heuristics (detections marked for review).
@@ -62,9 +64,9 @@ jobs:
       - name: Guard the curated registry
         run: |
           # The collector must never modify the curated policy registry.
-          if ! git diff --quiet -- public/data/policies.json; then
-            echo "::error::Collector modified public/data/policies.json — aborting."
-            git diff -- public/data/policies.json
+          if ! git diff --quiet -- data/policies.json; then
+            echo "::error::Collector modified data/policies.json — aborting."
+            git diff -- data/policies.json
             exit 1
           fi
 
@@ -76,9 +78,15 @@ jobs:
           fi
           git config user.name "policai-collector[bot]"
           git config user.email "policai-collector[bot]@users.noreply.github.com"
-          git add public/data/developments.json public/data/meta.json data/watch-state.json data/source-reviews.json
+          git add data/developments.json public/data/meta.json data/watch-state.json data/source-reviews.json
           git commit -m "chore(data): daily collection $(date -u +%F)"
           git push
+
+      - name: Fail after preserving unhealthy collection state
+        if: steps.collector.outcome == 'failure'
+        run: |
+          echo "::error::Collector reported failed coverage or a fatal error; operational state was preserved before failing."
+          exit 1
 
       - name: Alert on failure
         if: failure()

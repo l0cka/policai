@@ -9,8 +9,9 @@ import type { Jurisdiction } from '@/types';
  * collector tolerates per-source failures and reports them in meta.json.
  */
 
-export type SourceKind = 'html-index' | 'rss';
+export type SourceKind = 'html-index' | 'rss' | 'document';
 export type SourceCategory = 'government' | 'regulator' | 'court';
+export type SourceAutomation = 'automatic' | 'manual';
 
 export interface WatchSource {
   id: string;
@@ -21,6 +22,8 @@ export interface WatchSource {
   kind: SourceKind;
   schedule: 'daily' | 'weekly';
   enabled: boolean;
+  automation: SourceAutomation;
+  critical?: boolean;
   notes?: string;
 }
 
@@ -31,10 +34,14 @@ export const WATCH_SOURCES: WatchSource[] = [
     name: 'Digital Transformation Agency — media releases',
     jurisdiction: 'federal',
     category: 'government',
-    url: 'https://www.dta.gov.au/media-releases',
-    kind: 'html-index',
+    url: 'https://www.dta.gov.au/news-and-blogs/latest/feed/news_item',
+    kind: 'rss',
     schedule: 'daily',
     enabled: true,
+    automation: 'manual',
+    critical: true,
+    notes:
+      'Official DTA news RSS feed. GovCMS/Akamai currently stalls cloud-hosted collectors; review manually.',
   },
   {
     id: 'digital-gov-ai',
@@ -45,6 +52,10 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'daily',
     enabled: true,
+    automation: 'manual',
+    critical: true,
+    notes:
+      'GovCMS/Akamai currently stalls cloud-hosted collectors; review manually.',
   },
   {
     id: 'disr-news',
@@ -55,7 +66,9 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'daily',
     enabled: true,
-    notes: 'May reject non-browser user agents.',
+    automation: 'manual',
+    notes:
+      'GovCMS/Akamai currently stalls cloud-hosted collectors; review manually.',
   },
   {
     id: 'naic-news',
@@ -66,6 +79,9 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'weekly',
     enabled: true,
+    automation: 'manual',
+    notes:
+      'GovCMS/Akamai currently stalls cloud-hosted collectors; review manually.',
   },
   {
     id: 'finance-news',
@@ -76,6 +92,9 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'weekly',
     enabled: true,
+    automation: 'manual',
+    notes:
+      'GovCMS/Akamai currently stalls cloud-hosted collectors; review manually.',
   },
   {
     id: 'agd-news',
@@ -86,16 +105,20 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'weekly',
     enabled: true,
+    automation: 'manual',
+    notes:
+      'GovCMS/Akamai currently stalls cloud-hosted collectors; review manually.',
   },
   {
-    id: 'treasury-news',
-    name: 'Treasury — newsroom (digital competition, consumer law)',
+    id: 'treasury-publications',
+    name: 'Treasury — publications (digital competition, consumer law)',
     jurisdiction: 'federal',
     category: 'government',
-    url: 'https://treasury.gov.au/newsroom',
+    url: 'https://treasury.gov.au/publication',
     kind: 'html-index',
     schedule: 'weekly',
     enabled: true,
+    automation: 'automatic',
   },
   {
     id: 'csiro-news',
@@ -106,6 +129,7 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'weekly',
     enabled: true,
+    automation: 'automatic',
   },
   // --- Federal: regulators ---
   {
@@ -117,6 +141,7 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'daily',
     enabled: true,
+    automation: 'automatic',
     notes: 'The OAIC RSS feed omits item links, so scrape the index instead.',
   },
   {
@@ -128,6 +153,7 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'rss',
     schedule: 'daily',
     enabled: true,
+    automation: 'automatic',
   },
   {
     id: 'apra-rss',
@@ -138,16 +164,18 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'rss',
     schedule: 'daily',
     enabled: true,
+    automation: 'automatic',
   },
   {
     id: 'asic-newsroom',
     name: 'ASIC — newsroom',
     jurisdiction: 'federal',
     category: 'regulator',
-    url: 'https://asic.gov.au/newsroom/',
+    url: 'https://asic.gov.au/newsroom',
     kind: 'html-index',
     schedule: 'weekly',
     enabled: true,
+    automation: 'automatic',
   },
   {
     id: 'esafety-media',
@@ -158,6 +186,9 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'weekly',
     enabled: true,
+    automation: 'manual',
+    notes:
+      'GovCMS/Akamai currently stalls cloud-hosted collectors; review manually.',
   },
   {
     id: 'pc-media',
@@ -168,6 +199,7 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'weekly',
     enabled: true,
+    automation: 'automatic',
   },
   {
     id: 'ahrc-media',
@@ -178,7 +210,8 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'weekly',
     enabled: true,
-    notes: 'Returns 403 to non-browser user agents.',
+    automation: 'manual',
+    notes: 'Returns 403 to cloud-hosted collectors; review manually.',
   },
   // --- Courts ---
   {
@@ -190,6 +223,8 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'weekly',
     enabled: true,
+    automation: 'manual',
+    notes: 'Returns 403 to cloud-hosted collectors; review manually.',
   },
   {
     id: 'nsw-sc-practice-notes',
@@ -200,6 +235,7 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'weekly',
     enabled: true,
+    automation: 'automatic',
   },
   {
     id: 'vic-sc-practice-notes',
@@ -210,16 +246,18 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'weekly',
     enabled: true,
+    automation: 'automatic',
   },
   {
     id: 'qld-courts-news',
     name: 'Queensland Courts — news',
     jurisdiction: 'qld',
     category: 'court',
-    url: 'https://www.courts.qld.gov.au/about/news',
+    url: 'https://www.courts.qld.gov.au/newsroom/news',
     kind: 'html-index',
     schedule: 'weekly',
     enabled: true,
+    automation: 'automatic',
   },
   // --- States and territories ---
   {
@@ -231,6 +269,7 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'weekly',
     enabled: true,
+    automation: 'automatic',
   },
   {
     id: 'vic-ai',
@@ -238,9 +277,10 @@ export const WATCH_SOURCES: WatchSource[] = [
     jurisdiction: 'vic',
     category: 'government',
     url: 'https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps',
-    kind: 'html-index',
+    kind: 'document',
     schedule: 'weekly',
     enabled: true,
+    automation: 'automatic',
   },
   {
     id: 'qld-qgea-ai',
@@ -248,9 +288,12 @@ export const WATCH_SOURCES: WatchSource[] = [
     jurisdiction: 'qld',
     category: 'government',
     url: 'https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy',
-    kind: 'html-index',
+    kind: 'document',
     schedule: 'weekly',
     enabled: true,
+    automation: 'manual',
+    notes:
+      'The site returns an AWS WAF browser challenge to cloud-hosted collectors; review manually.',
   },
   {
     id: 'wa-ai-policy',
@@ -258,9 +301,10 @@ export const WATCH_SOURCES: WatchSource[] = [
     jurisdiction: 'wa',
     category: 'government',
     url: 'https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework',
-    kind: 'html-index',
+    kind: 'document',
     schedule: 'weekly',
     enabled: true,
+    automation: 'automatic',
   },
   {
     id: 'sa-office-for-ai',
@@ -271,6 +315,8 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'weekly',
     enabled: true,
+    automation: 'manual',
+    notes: 'Returns 403 to cloud-hosted collectors; review manually.',
   },
   {
     id: 'tas-dpac-policies',
@@ -281,6 +327,8 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'weekly',
     enabled: true,
+    automation: 'manual',
+    notes: 'Returns 403 to cloud-hosted collectors; review manually.',
   },
   {
     id: 'act-ai-policy',
@@ -288,9 +336,11 @@ export const WATCH_SOURCES: WatchSource[] = [
     jurisdiction: 'act',
     category: 'government',
     url: 'https://www.act.gov.au/open/act-government-artificial-intelligence-policy',
-    kind: 'html-index',
+    kind: 'document',
     schedule: 'weekly',
     enabled: true,
+    automation: 'manual',
+    notes: 'Returns 403 to cloud-hosted collectors; review manually.',
   },
   {
     id: 'nt-ai-assurance',
@@ -298,15 +348,27 @@ export const WATCH_SOURCES: WatchSource[] = [
     jurisdiction: 'nt',
     category: 'government',
     url: 'https://digitalterritory.nt.gov.au/digital-government/strategies-and-guidance/policies-standards-and-guidance/artificial-intelligence-assurance-framework',
-    kind: 'html-index',
+    kind: 'document',
     schedule: 'weekly',
     enabled: true,
+    automation: 'manual',
     notes: 'Returns 403 to non-browser user agents.',
   },
 ];
 
-export function getEnabledSources(): WatchSource[] {
-  return WATCH_SOURCES.filter((source) => source.enabled);
+export function getAutomaticSources(): WatchSource[] {
+  return WATCH_SOURCES.filter(
+    (source) => source.enabled && source.automation === 'automatic',
+  );
+}
+
+/** @deprecated Prefer getAutomaticSources() so the coverage boundary is clear. */
+export const getEnabledSources = getAutomaticSources;
+
+export function getManualSources(): WatchSource[] {
+  return WATCH_SOURCES.filter(
+    (source) => source.enabled && source.automation === 'manual',
+  );
 }
 
 export function getSourceById(id: string): WatchSource | undefined {

@@ -57,5 +57,6 @@ supabase/.temp/
 /data/scraper-state.json
 /data/scraper-runs.json
 /data/pipeline/
+/data/.mutation.lock*
 /public/data/scraper-runs.json
 .env*.local

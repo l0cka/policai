@@ -51,7 +51,14 @@ export function SiteDisclaimerBanner() {
       <div className="container mx-auto flex items-start gap-3 px-4 py-3 sm:items-center">
         <p className="flex-1 text-sm leading-6 text-foreground/85">
           Policai tracks official sources automatically and is reviewed periodically — always
-          check the linked source before relying on a record. It is open source, and
+          check the linked source before relying on a record. Read the{' '}
+          <a
+            href="/methodology"
+            className="font-medium underline underline-offset-4 transition-colors hover:text-foreground"
+          >
+            methodology
+          </a>
+          . It is open source, and
           contributions are encouraged via{' '}
           <a
             href={GITHUB_URL}

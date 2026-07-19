@@ -15,6 +15,8 @@ export function Footer() {
           <span className="hidden sm:inline">&middot;</span>
           <Link href="/agencies" className="hover:text-foreground transition-colors">Agencies</Link>
           <span className="hidden sm:inline">&middot;</span>
+          <Link href="/methodology" className="hover:text-foreground transition-colors">Methodology</Link>
+          <span className="hidden sm:inline">&middot;</span>
           <a
             href="https://github.com/l0cka/policai"
             target="_blank"

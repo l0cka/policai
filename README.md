@@ -18,15 +18,19 @@ Product surface:
 
 **Git is the database.** The canonical data lives in this repository:
 
-- `public/data/policies.json` — the curated policy register (only changed by reviewed commits)
-- `public/data/developments.json` — the automated radar feed
-- `public/data/timeline.json`, `agencies.json`, `commonwealth-agencies.json`, `meta.json`
-- `data/watch-state.json` — the collector's seen-URL registry
+- `data/policies.json` — the curated policy register (only changed by reviewed commits; served through a filtered route)
+- `data/developments.json` — the automated radar feed, served through a filtered route
+- `public/data/meta.json` — public collection health metadata
+- `data/dta-ai-policy-framework.json` — editorial visualization artifact gated by its related policy
+- `data/timeline.json`, `agencies.json`, `commonwealth-agencies.json` —
+  editorial datasets whose public JSON routes apply verification filters
+- `data/watch-state.json` — retryable candidate and source-snapshot state
 - `data/source-reviews.json` — detections staged for curated review
+- `data/source-monitoring.json` — the manual-source review ledger
 
-A daily GitHub Actions workflow ([collect.yml](.github/workflows/collect.yml)) runs the collector over ~27 official sources (departments, regulators, courts, all states and territories — see [src/lib/pipeline/sources.ts](src/lib/pipeline/sources.ts)), classifies new items with AI when a key is configured (keyword heuristics otherwise), validates the data, and commits the results. Vercel redeploys on push, so the site always serves the latest reviewed data as static content — no runtime database.
+A daily GitHub Actions workflow ([collect.yml](.github/workflows/collect.yml)) runs the collector over the official sources that reliably permit machine retrieval. Sources protected by browser challenges are kept in the same 27-source catalogue but reviewed through the manual coverage ledger. New items are classified with AI when a key is configured (keyword heuristics otherwise), validated, and committed. Vercel redeploys on push, so the site serves static, versioned content — no runtime database.
 
-High-confidence detections are staged in `data/source-reviews.json`; a human (or the local MCP server) reviews and publishes them into the register with a commit. The collector never writes to `policies.json` directly, and CI enforces that.
+High-confidence detections are staged in `data/source-reviews.json`; a reviewer uses the local stage → approve → publish workflow before they enter the register. Public register and timeline reads only expose verified records. The collector never writes to `policies.json` directly, and CI enforces that.
 
 ## Stack
 
@@ -56,8 +60,11 @@ npm run start          # run the production server
 npm run lint           # ESLint
 npm run test           # Vitest
 npm run validate:data  # structural validation of the repo data files
-npm run check          # lint + test + validate + build
+npm run canonicalize:urls # normalize legacy/manual source URL variants
+npm run check          # lint + strict typecheck + test + validate + build
 npm run collect        # run one collection pass (add -- --dry-run to preview)
+npm run audit:sources  # live health check of automatic discovery sources
+npm run audit:register # compare curated source fingerprints
 npm run mcp            # run the local MCP source-ingest server
 ```
 
@@ -70,9 +77,9 @@ src/lib/            data service, validation, analysis helpers
 src/lib/pipeline/   collector: sources, extract, classify, orchestrate
 src/mcp/            local MCP source-ingest server (curated publishing)
 src/types/          shared domain types
-public/data/        canonical data (also served as an open JSON API)
-data/               collector state and staged reviews
-scripts/            collect.ts and validate-data.ts CLIs
+public/data/        public-safe canonical data served directly as open JSON
+data/               editorial register/data, collector state, reviews, coverage
+scripts/            collector, source audits, validation and migrations
 docs/               operational documentation
 content/blog/       MDX blog posts
 ```
@@ -85,10 +92,16 @@ Everything the site shows is also available as plain JSON, for example:
 - `https://policai.com.au/data/developments.json`
 - `https://policai.com.au/data/timeline.json`
 
+Policy, agency, and timeline JSON is served through read-only route handlers so
+unverified, stale, or withheld editorial records cannot bypass the same public
+filters as the site.
+
 ## Operations Docs
 
 - [Documentation index](./docs/README.md)
 - [Collector operations guide](./docs/collector.md)
+- [Information trust model](./docs/trust-model.md)
+- [Architecture](./docs/architecture.md)
 - [Scripts overview](./scripts/README.md)
 - [Agent instructions](./AGENTS.md)
 

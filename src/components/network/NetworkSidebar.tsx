@@ -5,11 +5,13 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
 	getJurisdictionName,
+	getPolicyDateTypeName,
 	getPolicyStatusName,
 	getPolicyTypeName,
 } from "@/types";
-import type { NetworkNode } from "@/app/api/network/route";
+import type { NetworkNode } from "@/lib/network-data";
 import { JURISDICTION_COLORS, resolveColor } from "./jurisdiction-colors";
+import { formatPolicyDate } from "@/lib/format-policy-date";
 
 interface ConnectedPolicy {
 	id: string;
@@ -81,14 +83,29 @@ export function NetworkSidebar({
 						{/* Date */}
 						{policy.effectiveDate && (
 							<p className="text-[11px] text-muted-foreground">
-								Effective:{" "}
-								{new Date(policy.effectiveDate).toLocaleDateString("en-AU", {
-									day: "numeric",
-									month: "short",
-									year: "numeric",
-								})}
+								{getPolicyDateTypeName(policy.dateType)}:{" "}
+								{formatPolicyDate(
+									{
+										type: policy.dateType,
+										date: policy.effectiveDate,
+										precision: policy.datePrecision,
+									},
+									{ short: true },
+								)}
 							</p>
 						)}
+
+						<p
+							className={
+								policy.verificationStatus === "verified"
+									? "font-mono text-[11px] text-[var(--status-active)]"
+									: "font-mono text-[11px] text-[var(--status-proposed)]"
+							}
+						>
+							{policy.verificationStatus === "verified"
+								? "Verified"
+								: "Needs review"}
+						</p>
 
 						{/* Description */}
 						<p className="text-sm text-muted-foreground leading-relaxed">

@@ -1,11 +1,19 @@
-import { hasAiProvider } from '@/lib/ai-client';
-import { analyseContentRelevance } from '@/lib/analysis';
+import {
+  getAiModel,
+  getAiProvider,
+  hasAiProvider,
+} from '@/lib/ai-client';
+import {
+  analyseContentRelevance,
+  RELEVANCE_PROMPT_VERSION,
+} from '@/lib/analysis';
 import { isRelevantScrapedCandidate } from '@/lib/scraper-filter';
 import { cleanHtmlContent } from '@/lib/utils';
 import {
   isJurisdiction,
   isPolicyType,
   type Jurisdiction,
+  type ContentAssessment,
   type PolicyType,
 } from '@/types';
 import type { Candidate } from './extract';
@@ -19,6 +27,7 @@ export interface Classification {
   suggestedJurisdiction?: Jurisdiction;
   tags: string[];
   agencies: string[];
+  assessment: Omit<ContentAssessment, 'assessedAt'>;
 }
 
 const GOVERNANCE_TITLE_KEYWORDS = [
@@ -46,6 +55,10 @@ export function heuristicClassification(candidate: Candidate): Classification {
       classification: 'heuristic',
       tags: [],
       agencies: [],
+      assessment: {
+        method: 'heuristic',
+        promptVersion: 'keyword-rules-v1',
+      },
     };
   }
 
@@ -61,6 +74,10 @@ export function heuristicClassification(candidate: Candidate): Classification {
     summary: candidate.text || undefined,
     tags: [],
     agencies: [],
+    assessment: {
+      method: 'heuristic',
+      promptVersion: 'keyword-rules-v1',
+    },
   };
 }
 
@@ -80,6 +97,7 @@ export async function classifyCandidate(
   try {
     const content = cleanHtmlContent(pageHtml);
     const analysis = await analyseContentRelevance(content, candidate.url);
+    const provider = getAiProvider();
     return {
       isRelevant: analysis.isRelevant,
       relevanceScore: analysis.relevanceScore,
@@ -93,6 +111,12 @@ export async function classifyCandidate(
         : undefined,
       tags: analysis.tags || [],
       agencies: analysis.agencies || [],
+      assessment: {
+        method: 'ai',
+        promptVersion: RELEVANCE_PROMPT_VERSION,
+        provider: provider ?? undefined,
+        model: getAiModel(),
+      },
     };
   } catch (error) {
     console.warn(

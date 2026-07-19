@@ -5,11 +5,13 @@ import Link from 'next/link';
 import { ArrowUpRight, Search } from 'lucide-react';
 import { FilterSidebar } from '@/components/filter-sidebar';
 import { PolicyTable } from '@/components/policy-table';
+import { formatPolicyDate } from '@/lib/format-policy-date';
 import {
   JURISDICTION_NAMES,
   POLICY_TYPE_NAMES,
   POLICY_STATUS_NAMES,
   getJurisdictionName,
+  type CollectionHealthStatus,
   type Development,
   type Policy,
 } from '@/types';
@@ -18,7 +20,15 @@ interface PolicyBrowserProps {
   policies: Policy[];
   developments: Development[];
   lastCollectedAt: string | null;
+  lastHealthyAt: string | null;
   lastReviewedAt: string | null;
+  collectionHealth: CollectionHealthStatus;
+  successfulSourceCount: number;
+  dueSourceCount: number;
+  automaticSourceCount: number;
+  manualSourceCount: number;
+  currentManualSourceCount: number;
+  unavailableManualSourceCount: number;
 }
 
 function formatDate(value: string): string {
@@ -29,11 +39,33 @@ function formatDate(value: string): string {
   });
 }
 
+function formatDevelopmentDate(development: Development): string {
+  if (!development.publishedAt) {
+    return formatDate(development.detectedAt);
+  }
+  return formatPolicyDate(
+    {
+      type: 'published',
+      date: development.publishedAt,
+      precision: development.publishedAtPrecision ?? 'day',
+    },
+    { short: true },
+  );
+}
+
 export function PolicyBrowser({
   policies,
   developments,
   lastCollectedAt,
+  lastHealthyAt,
   lastReviewedAt,
+  collectionHealth,
+  successfulSourceCount,
+  dueSourceCount,
+  automaticSourceCount,
+  manualSourceCount,
+  currentManualSourceCount,
+  unavailableManualSourceCount,
 }: PolicyBrowserProps) {
   const [search, setSearch] = useState('');
   const searchRef = useRef<HTMLInputElement>(null);
@@ -107,11 +139,17 @@ export function PolicyBrowser({
     { label: 'jurisdictions', value: jurisdictions.size },
   ];
 
-  const freshness = lastCollectedAt
-    ? `Sources last checked ${formatDate(lastCollectedAt)}`
-    : lastReviewedAt
-      ? `Data reviewed ${formatDate(lastReviewedAt)}`
-      : null;
+  const freshness =
+    collectionHealth !== 'healthy' && lastCollectedAt
+      ? `Source check ${collectionHealth}: ${successfulSourceCount}/${dueSourceCount} due sources reached`
+      : lastHealthyAt
+        ? `Sources successfully checked ${formatDate(lastHealthyAt)}`
+        : lastCollectedAt
+          ? `Sources last attempted ${formatDate(lastCollectedAt)}`
+          : lastReviewedAt
+            ? `Data reviewed ${formatDate(lastReviewedAt)}`
+            : null;
+  const coverage = `${automaticSourceCount} automatic sources; ${currentManualSourceCount}/${manualSourceCount} manual sources checked${unavailableManualSourceCount > 0 ? `; ${unavailableManualSourceCount} unavailable` : ''}`;
 
   return (
     <div className="container mx-auto px-4 py-6">
@@ -119,7 +157,7 @@ export function PolicyBrowser({
         <section aria-label="Latest developments" className="mb-8 border-b border-border pb-6">
           <div className="flex items-baseline justify-between mb-3">
             <h2 className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-              Latest developments
+              Latest verified developments
             </h2>
             <Link
               href="/developments"
@@ -132,7 +170,7 @@ export function PolicyBrowser({
             {developments.map((development) => (
               <li key={development.id} className="flex items-baseline gap-3 text-sm">
                 <span className="font-mono text-xs text-muted-foreground whitespace-nowrap">
-                  {formatDate(development.publishedAt || development.detectedAt)}
+                  {formatDevelopmentDate(development)}
                 </span>
                 <a
                   href={development.url}
@@ -187,7 +225,12 @@ export function PolicyBrowser({
             <span>
               Showing {filteredPolicies.length} of {policies.length} policies
             </span>
-            {freshness && <span>{freshness}</span>}
+            {freshness && (
+              <span className="text-right">
+                <span className="block">{freshness}</span>
+                <span className="block">{coverage}</span>
+              </span>
+            )}
           </div>
 
           {/* Table */}

@@ -5,12 +5,15 @@ import Link from "next/link";
 import { ExternalLink, Copy, Check, FileText } from "lucide-react";
 import {
 	getJurisdictionName,
+	getPolicyDateTypeName,
+	getPrimaryPolicyDate,
 	getPolicyStatusName,
 	getPolicyTypeName,
 	type Policy,
 } from "@/types";
 import { STATUS_COLORS } from "@/lib/design-tokens";
 import { EmptyState } from "@/components/ui/empty-state";
+import { formatPolicyDate } from "@/lib/format-policy-date";
 
 interface PolicyDetailTabsProps {
 	policy: Policy;
@@ -34,6 +37,7 @@ export function PolicyDetailTabs({
 	const supersededBy = policy.supersededBy
 		? relatedPolicies.find((rp) => rp.id === policy.supersededBy)
 		: undefined;
+	const primaryDate = getPrimaryPolicyDate(policy);
 
 	return (
 		<div>
@@ -71,17 +75,11 @@ export function PolicyDetailTabs({
 				<span className={STATUS_COLORS[policy.status] || ""}>
 					{getPolicyStatusName(policy.status)}
 				</span>
-				{policy.effectiveDate && (
-					<>
-						<span>&middot;</span>
-						<span>
-							{new Date(policy.effectiveDate).toLocaleDateString("en-AU", {
-								month: "long",
-								year: "numeric",
-							})}
-						</span>
-					</>
-				)}
+				<span>&middot;</span>
+				<span>
+					{getPolicyDateTypeName(primaryDate.type)}{" "}
+					{formatPolicyDate(primaryDate)}
+				</span>
 			</div>
 
 			<div className="border-b border-border mb-6">
@@ -109,7 +107,7 @@ export function PolicyDetailTabs({
 					{policy.aiSummary && (
 						<div className="border-l-2 border-primary/30 pl-4 py-3">
 							<div className="font-mono text-xs font-medium uppercase tracking-wider text-muted-foreground mb-2">
-								AI Summary
+								Machine-assisted summary
 							</div>
 							<p className="text-sm leading-relaxed text-muted-foreground">
 								{policy.aiSummary}
@@ -137,6 +135,22 @@ export function PolicyDetailTabs({
 						</div>
 					)}
 
+					<div>
+						<div className="font-mono text-xs font-medium uppercase tracking-wider text-muted-foreground mb-1">
+							Key dates
+						</div>
+						<dl className="grid grid-cols-[max-content_1fr] gap-x-4 gap-y-1 text-sm">
+							{policy.dates.map((date) => (
+								<div className="contents" key={`${date.type}-${String(date.date)}`}>
+									<dt className="text-muted-foreground">
+										{getPolicyDateTypeName(date.type)}
+									</dt>
+									<dd>{formatPolicyDate(date)}</dd>
+								</div>
+							))}
+						</dl>
+					</div>
+
 					{policy.sourceUrl && (
 						<a
 							href={policy.sourceUrl}
@@ -149,16 +163,48 @@ export function PolicyDetailTabs({
 						</a>
 					)}
 
-					{policy.lastReviewedAt && (
-						<p className="font-mono text-xs text-muted-foreground">
-							Last reviewed{" "}
-							{new Date(policy.lastReviewedAt).toLocaleDateString("en-AU", {
-								day: "numeric",
-								month: "long",
-								year: "numeric",
-							})}
+					<div className="border-t border-border pt-4 space-y-1 font-mono text-xs text-muted-foreground">
+						<p>
+							<span className="text-foreground">Verification:</span>{" "}
+							{policy.verification.status === "verified"
+								? "Verified against the official source"
+								: policy.verification.status === "needs_review"
+									? "Needs editorial review"
+									: policy.verification.status === "stale"
+										? "Verification is stale"
+										: "Official source is currently unavailable"}
 						</p>
-					)}
+						{policy.verification.checkedAt && (
+							<p>
+								Checked{" "}
+								{new Date(
+									policy.verification.checkedAt,
+								).toLocaleDateString("en-AU", {
+									day: "numeric",
+									month: "long",
+									year: "numeric",
+								})}
+								{policy.verification.checkedBy
+									? ` by ${policy.verification.checkedBy}`
+									: ""}
+							</p>
+						)}
+						{policy.verification.source.retrievedAt && (
+							<p>
+								Source retrieved{" "}
+								{new Date(
+									policy.verification.source.retrievedAt,
+								).toLocaleDateString("en-AU", {
+									day: "numeric",
+									month: "long",
+									year: "numeric",
+								})}
+							</p>
+						)}
+						{policy.verification.notes && (
+							<p>{policy.verification.notes}</p>
+						)}
+					</div>
 				</div>
 			)}
 

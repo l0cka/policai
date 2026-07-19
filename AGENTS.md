@@ -12,7 +12,8 @@ Policai is an Australian AI policy tracker. It maintains a curated register of A
 - **Language:** TypeScript 5 (strict mode)
 - **Styling:** Tailwind CSS 4 with CSS variables; shadcn/ui (New York) on Radix
 - **Visualisations:** D3.js
-- **Data:** JSON files in `public/data/` (canonical, versioned) and `data/` (collector state)
+- **Data:** public-safe JSON in `public/data/`; editorial and collector JSON in
+  `data/`, all canonical and versioned
 - **AI (optional):** Anthropic SDK (preferred) or OpenAI SDK against OpenRouter, selected in `src/lib/ai-client.ts`; without a key the collector uses keyword heuristics
 - **Scraping:** Cheerio
 - **Testing:** Vitest (+ Testing Library)
@@ -26,8 +27,10 @@ npm run build          # production build
 npm run lint           # ESLint (flat config)
 npm run test           # Vitest
 npm run validate:data  # structural validation of the data files
-npm run check          # lint + test + validate:data + build — run before handing off
+npm run check          # lint + typecheck + test + validate:data + build — run before handing off
 npm run collect        # one collection pass (-- --dry-run to preview, -- --source=<id> for one source)
+npm run audit:sources  # live audit of automatic watch sources
+npm run audit:register # compare curated source fingerprints
 npm run mcp            # local MCP source-ingest server
 ```
 
@@ -57,19 +60,26 @@ src/
 ├── mcp/                          # Local MCP server for staging/publishing records
 └── types/index.ts                # All shared domain types
 
-public/data/                      # Canonical data (also served as open JSON)
-data/                             # watch-state.json, source-reviews.json (collector state)
-scripts/                          # collect.ts, validate-data.ts CLIs
+public/data/                      # Public-safe canonical data served directly
+data/                             # Editorial register/data, state, reviews, coverage
+scripts/                          # collector, audits, validation, migrations
 docs/                             # collector.md + docs index
 ```
 
 ## Data Model & Flow
 
-1. **Register** (`public/data/policies.json`): curated policy records. Changed only by reviewed commits (human or MCP-assisted). The collector never writes it; the workflow fails if it does.
-2. **Developments** (`public/data/developments.json`): automated radar feed. Each entry has provenance (`sourceId`, `url`), a relevance score, and a `classification` label — `ai`, `heuristic` (capped confidence, shows as "Needs review"), or `curated`.
-3. **Collector** (`src/lib/pipeline/collect.ts`): pure orchestrator — fetch sources → extract candidates → diff against `data/watch-state.json` → classify → return developments/review candidates/state/meta. The CLI (`scripts/collect.ts`) persists them.
-4. **Review**: high-confidence detections are staged in `data/source-reviews.json`; publishing (via the MCP tools or manual edit) creates a register record.
-5. **Freshness**: `public/data/meta.json` records `lastCollectedAt`, `lastReviewedAt`, and per-run errors; the UI surfaces it.
+1. **Register** (`data/policies.json`): curated policy records. Changed only through explicit editorial approval (human or MCP-assisted). `/data/policies.json` and API/site reads expose only verified, non-trashed, non-withheld records. The collector never writes it; the workflow fails if it does.
+2. **Developments** (`data/developments.json`): automated radar feed. Each entry has provenance (`sourceId`, `url`), a relevance score, and a `classification` label — `ai`, `heuristic` (capped confidence, shows as "Needs review"), or `curated`. `/data/developments.json` filters dismissed entries.
+3. **Editorial directories** (`data/timeline.json`, `data/agencies.json`,
+   `data/commonwealth-agencies.json`): may contain records awaiting review and
+   are never served statically; `/data/*.json` route handlers apply public
+   verification filters.
+   The DTA framework artifact is also editorial and is withheld whenever its
+   related register policy is withheld.
+4. **Collector** (`src/lib/pipeline/collect.ts`): pure orchestrator — fetch sources → extract candidates → diff against `data/watch-state.json` → classify → return developments/review candidates/state/meta. The CLI (`scripts/collect.ts`) persists them.
+5. **Review**: high-confidence detections are staged in `data/source-reviews.json`; a separate approval action is required before publishing creates a register record. Changed direct-document sources stage a version-specific review with `targetPolicyId`, temporarily withhold the existing policy publicly, and update that policy in place after approval.
+6. **Coverage**: automatic sources report usable-content health in `public/data/meta.json`; protected sources are tracked in `data/source-monitoring.json`.
+7. **Freshness**: register source fingerprints are checked with `npm run audit:register`; changed content marks a record stale until editorial re-verification.
 
 See [docs/collector.md](./docs/collector.md) for operations.
 
@@ -79,7 +89,7 @@ Defined in `src/types/index.ts` — always import from `@/types`:
 
 - **Jurisdiction:** `federal | nsw | vic | qld | wa | sa | tas | act | nt`
 - **PolicyType:** `legislation | regulation | guideline | framework | standard | practice_note | policy | tool | funding_program`
-- **PolicyStatus:** `proposed | active | amended | superseded | closed | repealed | trashed` (only `trashed` is hidden from public reads; `superseded` records carry `supersededBy`)
+- **PolicyStatus:** `proposed | active | amended | superseded | closed | repealed | trashed` (unverified and `trashed` records are hidden from public register reads; `superseded` records carry `supersededBy`)
 - **Policy** — register entity (with optional `supersededBy`, `lastReviewedAt`)
 - **Development**, **CollectionMeta** — feed + collector metadata
 - **TimelineEvent**, **Agency**, **SourceReview**, **McpAuditLog**
@@ -99,7 +109,8 @@ POLICAI_MCP_ADMIN_TOKEN=  # local MCP source-ingest writes
 
 ## Editing Data
 
-- Change `public/data/*.json` directly (or via the MCP tools), then run `npm run validate:data`.
+- Change the relevant canonical file in `public/data/` or `data/` (or use the
+  MCP tools), then run `npm run validate:data`.
 - Every policy needs a real, verified `sourceUrl` (https, `.gov.au` or allow-listed host) and accurate dates — if a day-level date can't be verified, say so in `content` rather than inventing precision.
 - Mark replaced instruments `superseded` (+ `supersededBy`) and dead consultations `closed`; don't delete history.
 - Stamp `lastReviewedAt` when you have verified a record against its source.

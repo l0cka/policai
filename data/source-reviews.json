@@ -1,1 +1,97 @@
-[]
+[
+  {
+    "id": "source-review-efc6fef1-59ec-4f60-be43-0bb622a9b7a4",
+    "sourceUrl": "https://www.digital.gov.au/policy/ai/agentic-ai-addendum",
+    "title": "Agentic AI addendum to the AI technical standard for Australian Government",
+    "entryKind": "policy",
+    "status": "published",
+    "discoveredAt": "2026-07-16T09:56:00.000Z",
+    "createdBy": "Policai editorial source review",
+    "notes": "Discovered during the scheduled manual review of the digital.gov.au AI policy hub.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": "standard",
+      "suggestedJurisdiction": "federal",
+      "summary": "DTA addendum extending the Australian Government AI technical standard with secure and governed agentic-AI implementation guidance.",
+      "tags": [
+        "agentic AI",
+        "AI agents",
+        "technical standard",
+        "AI lifecycle",
+        "security",
+        "governance"
+      ],
+      "agencies": [
+        "Digital Transformation Agency"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://www.digital.gov.au/policy/ai/agentic-ai-addendum",
+      "title": "Agentic AI addendum",
+      "publisher": "Digital Transformation Agency",
+      "retrievedAt": "2026-07-16T09:56:00.000Z",
+      "publishedAt": "2026-06-04"
+    },
+    "proposedRecord": {
+      "id": "agentic-ai-addendum-technical-standard-2026",
+      "title": "Agentic AI addendum to the AI technical standard for Australian Government",
+      "description": "Australian Government best-practice standard for secure and governed implementation of agentic AI systems.",
+      "jurisdiction": "federal",
+      "type": "standard",
+      "status": "active",
+      "dates": [
+        {
+          "type": "amended",
+          "date": "2026-06-04",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.digital.gov.au/policy/ai/agentic-ai-addendum",
+            "title": "Agentic AI addendum",
+            "publisher": "Digital Transformation Agency",
+            "retrievedAt": "2026-07-16T09:56:00.000Z",
+            "publishedAt": "2026-06-04"
+          }
+        }
+      ],
+      "agencies": [
+        "Digital Transformation Agency"
+      ],
+      "sourceUrl": "https://www.digital.gov.au/policy/ai/agentic-ai-addendum",
+      "content": "The Agentic AI addendum provides best-practice guidance for Australian Government agencies exploring, developing or using agentic AI. It applies alongside the Australian Government AI technical standard and addresses agentic considerations across the AI lifecycle, including design, data, training, evaluation, integration, monitoring and decommissioning. The underlying technical-standard statements, criteria and general guidance continue to apply.",
+      "aiSummary": "DTA addendum extending the Australian Government AI technical standard with secure and governed agentic-AI implementation guidance.",
+      "tags": [
+        "agentic AI",
+        "AI agents",
+        "technical standard",
+        "AI lifecycle",
+        "security",
+        "governance"
+      ],
+      "createdAt": "2026-07-16T09:56:00.000Z",
+      "updatedAt": "2026-07-16T09:57:13.447Z",
+      "effectiveDate": "2026-06-04",
+      "lastReviewedAt": "2026-07-16T09:57:13.447Z",
+      "verification": {
+        "status": "stale",
+        "source": {
+          "url": "https://www.digital.gov.au/policy/ai/agentic-ai-addendum",
+          "title": "Agentic AI addendum",
+          "publisher": "Digital Transformation Agency",
+          "retrievedAt": "2026-07-16T09:56:00.000Z",
+          "publishedAt": "2026-06-04"
+        },
+        "checkedAt": "2026-07-16T09:57:13.447Z",
+        "checkedBy": "Policai editorial source review",
+        "method": "manual",
+        "notes": "Checked against the official DTA page, including scope and the displayed 4 June 2026 last-updated date. Migration review on 17 July 2026 confirmed that the page remained available through an independent browser retrieval, but Policai's controlled retriever timed out and no canonical fingerprint could be established. The record is withheld pending fingerprinted re-verification."
+      }
+    },
+    "updatedAt": "2026-07-16T09:57:13.450Z",
+    "reviewedAt": "2026-07-16T09:57:13.447Z",
+    "reviewedBy": "Policai editorial source review",
+    "approvalNotes": "Checked against the official DTA page, including scope and the displayed 4 June 2026 last-updated date.",
+    "publishedAt": "2026-07-16T09:57:13.450Z"
+  }
+]

@@ -2,7 +2,7 @@
   {
     "id": "dev-ai-transparency-cvt4l5",
     "title": "Ai transparency",
-    "url": "https://www.pc.gov.au/ai-transparency/",
+    "url": "https://www.pc.gov.au/ai-transparency",
     "sourceId": "pc-media",
     "sourceName": "Productivity Commission — media and speeches",
     "jurisdiction": "federal",
@@ -10,7 +10,21 @@
     "summary": "© Productivity Commission 2026PrivacyAccessibilityDisclaimerCopyrightSocial mediaFeedbackVulnerability disclosureAi transparency",
     "relevanceScore": 0.55,
     "classification": "heuristic",
-    "status": "detected"
+    "status": "dismissed",
+    "assessment": {
+      "method": "heuristic",
+      "assessedAt": "2026-07-12T12:01:59.304Z",
+      "promptVersion": "legacy-keyword-rules-v1"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.pc.gov.au/ai-transparency",
+        "title": "Ai transparency",
+        "publisher": "Productivity Commission — media and speeches"
+      }
+    },
+    "dismissalReason": "Agency transparency page, not a discrete policy development; tracked through the agency directory."
   },
   {
     "id": "dev-ai-assessment-framework-1yptmyq",
@@ -23,7 +37,22 @@
     "summary": "Message from the Minister “Artificial intelligence offers the opportunity to create a safer and more productive world, and we must do so responsibly, safely, and ethically.” - Minister Dib Artificial Intelligence (AI) is transforming how we work and the government services we provide for the people ",
     "relevanceScore": 0.65,
     "classification": "heuristic",
-    "status": "detected"
+    "status": "dismissed",
+    "assessment": {
+      "method": "heuristic",
+      "assessedAt": "2026-07-12T12:01:59.304Z",
+      "promptVersion": "legacy-keyword-rules-v1"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.digital.nsw.gov.au/node/957",
+        "title": "AI Assessment Framework",
+        "publisher": "Digital NSW — artificial intelligence"
+      }
+    },
+    "dismissalReason": "Duplicate of an existing verified register record.",
+    "relatedPolicyId": "nsw-artificial-intelligence-assessment-framework"
   },
   {
     "id": "dev-ai-review-committee-19sechp",
@@ -36,7 +65,20 @@
     "summary": "Message from the Minister “Artificial intelligence offers the opportunity to create a safer and more productive world, and we must do so responsibly, safely, and ethically.” - Minister Dib Artificial Intelligence (AI) is transforming how we work and the government services we provide for the people ",
     "relevanceScore": 0.55,
     "classification": "heuristic",
-    "status": "detected"
+    "status": "detected",
+    "assessment": {
+      "method": "heuristic",
+      "assessedAt": "2026-07-12T12:01:59.304Z",
+      "promptVersion": "legacy-keyword-rules-v1"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks/ai-review-committee",
+        "title": "AI Review Committee",
+        "publisher": "Digital NSW — artificial intelligence"
+      }
+    }
   },
   {
     "id": "dev-ai-strategy-and-ethics-policy-117oyz4",
@@ -49,7 +91,21 @@
     "summary": "AI Strategy and Ethics Policy",
     "relevanceScore": 0.65,
     "classification": "heuristic",
-    "status": "detected"
+    "status": "dismissed",
+    "assessment": {
+      "method": "heuristic",
+      "assessedAt": "2026-07-12T12:01:59.304Z",
+      "promptVersion": "legacy-keyword-rules-v1"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-strategy-and-ethics-policy",
+        "title": "AI Strategy and Ethics Policy",
+        "publisher": "Digital NSW — artificial intelligence"
+      }
+    },
+    "dismissalReason": "Navigation/category page rather than a discrete policy instrument or dated development."
   },
   {
     "id": "dev-ai-governance-assurance-and-frameworks-ev0sud",
@@ -62,7 +118,21 @@
     "summary": "AI governance, assurance, and frameworks",
     "relevanceScore": 0.65,
     "classification": "heuristic",
-    "status": "detected"
+    "status": "dismissed",
+    "assessment": {
+      "method": "heuristic",
+      "assessedAt": "2026-07-12T12:01:59.304Z",
+      "promptVersion": "legacy-keyword-rules-v1"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks",
+        "title": "AI governance, assurance, and frameworks",
+        "publisher": "Digital NSW — artificial intelligence"
+      }
+    },
+    "dismissalReason": "Navigation/category page rather than a discrete policy instrument or dated development."
   },
   {
     "id": "dev-ai-guidance-and-tools-9e402j",
@@ -75,7 +145,21 @@
     "summary": "AI guidance and tools",
     "relevanceScore": 0.65,
     "classification": "heuristic",
-    "status": "detected"
+    "status": "dismissed",
+    "assessment": {
+      "method": "heuristic",
+      "assessedAt": "2026-07-12T12:01:59.304Z",
+      "promptVersion": "legacy-keyword-rules-v1"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-guidance-and-tools",
+        "title": "AI guidance and tools",
+        "publisher": "Digital NSW — artificial intelligence"
+      }
+    },
+    "dismissalReason": "Navigation/category page rather than a discrete policy instrument or dated development."
   },
   {
     "id": "dev-australia-s-national-framework-for-the-assurance-5ivcig",
@@ -88,7 +172,22 @@
     "summary": "The Victorian Government agreed to Australia’s national framework for the assurance of artificial intelligence in government(opens in a new window) at the meeting of Data and Digital Ministers on 21 June 2024.",
     "relevanceScore": 0.65,
     "classification": "heuristic",
-    "status": "detected"
+    "status": "dismissed",
+    "assessment": {
+      "method": "heuristic",
+      "assessedAt": "2026-07-12T12:01:59.304Z",
+      "promptVersion": "legacy-keyword-rules-v1"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.finance.gov.au/government/public-data/data-and-digital-ministers-meeting/national-framework-assurance-artificial-intelligence-government",
+        "title": "Australia’s national framework for the assurance of artificial intelligence in government",
+        "publisher": "vic.gov.au — generative AI guidance"
+      }
+    },
+    "dismissalReason": "Duplicate of an existing verified register record.",
+    "relatedPolicyId": "national-framework-assurance-ai-government"
   },
   {
     "id": "dev-advice-on-ai-and-recordkeeping-1fn1f9z",
@@ -101,7 +200,20 @@
     "summary": "Public Record Office Victoria(opens in a new window) can provide advice on AI and recordkeeping(opens in a new window), including its recordkeeping policy(opens in a new window).",
     "relevanceScore": 0.55,
     "classification": "heuristic",
-    "status": "detected"
+    "status": "detected",
+    "assessment": {
+      "method": "heuristic",
+      "assessedAt": "2026-07-12T12:01:59.304Z",
+      "promptVersion": "legacy-keyword-rules-v1"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://prov.vic.gov.au/recordkeeping-government/a-z-topics/AI",
+        "title": "advice on AI and recordkeeping",
+        "publisher": "vic.gov.au — generative AI guidance"
+      }
+    }
   },
   {
     "id": "dev-guideline-for-safe-and-responsible-use-of-genera-1htcnua",
@@ -114,7 +226,22 @@
     "summary": "Personnel – refers to the employees, contractors, consultants and volunteers who may have access to a public sector information or systems in connection with the official work which they are undertaking on behalf of a public sector body or public entity.Download Guideline for safe and responsible us",
     "relevanceScore": 0.65,
     "classification": "heuristic",
-    "status": "detected"
+    "status": "dismissed",
+    "assessment": {
+      "method": "heuristic",
+      "assessedAt": "2026-07-12T12:01:59.304Z",
+      "promptVersion": "legacy-keyword-rules-v1"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.vic.gov.au/sites/default/files/2024-11/Generative-AI-Guideline-%281%29.pdf",
+        "title": "Guideline for safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector",
+        "publisher": "vic.gov.au — generative AI guidance"
+      }
+    },
+    "dismissalReason": "Duplicate document link for an existing verified register record.",
+    "relatedPolicyId": "victoria-genai-guideline-vps"
   },
   {
     "id": "dev-wa-government-ai-assurance-framework-q21v61",
@@ -127,7 +254,20 @@
     "summary": "The WA Government AI Assurance Framework (self-assessment) supports entities to evaluate their AI project’s implications, risks and controls in a way that aligns with the principles set out in the Policy and the National Framework for the assurance of AI in government.",
     "relevanceScore": 0.65,
     "classification": "heuristic",
-    "status": "detected"
+    "status": "detected",
+    "assessment": {
+      "method": "heuristic",
+      "assessedAt": "2026-07-12T12:01:59.304Z",
+      "promptVersion": "legacy-keyword-rules-v1"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://forms.digital.wa.gov.au/250231755970861",
+        "title": "WA Government AI Assurance Framework",
+        "publisher": "WA — AI policy and assurance framework"
+      }
+    }
   },
   {
     "id": "dev-national-framework-for-the-assurance-of-ai-in-go-1y23ag9",
@@ -140,7 +280,22 @@
     "summary": "The WA Government AI Assurance Framework (self-assessment) supports entities to evaluate their AI project’s implications, risks and controls in a way that aligns with the principles set out in the Policy and the National Framework for the assurance of AI in government.",
     "relevanceScore": 0.65,
     "classification": "heuristic",
-    "status": "detected"
+    "status": "dismissed",
+    "assessment": {
+      "method": "heuristic",
+      "assessedAt": "2026-07-12T12:01:59.304Z",
+      "promptVersion": "legacy-keyword-rules-v1"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.finance.gov.au/sites/default/files/2024-06/National-framework-for-the-assurance-of-AI-in-government.pdf",
+        "title": "National Framework for the assurance of AI in government",
+        "publisher": "WA — AI policy and assurance framework"
+      }
+    },
+    "dismissalReason": "Duplicate PDF link for an existing verified register record.",
+    "relatedPolicyId": "national-framework-assurance-ai-government"
   },
   {
     "id": "dev-wa-government-ai-advisory-board-ixz55j",
@@ -153,7 +308,20 @@
     "summary": "If an AI project meets one or more of the following criteria, entities must submit their completed self-assessment to the WA Government AI Advisory Board:",
     "relevanceScore": 0.55,
     "classification": "heuristic",
-    "status": "detected"
+    "status": "detected",
+    "assessment": {
+      "method": "heuristic",
+      "assessedAt": "2026-07-12T12:01:59.304Z",
+      "promptVersion": "legacy-keyword-rules-v1"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.wa.gov.au/organisation/department-of-the-premier-and-cabinet/office-of-digital-government/western-australian-artificial-intelligence-advisory-board",
+        "title": "WA Government AI Advisory Board",
+        "publisher": "WA — AI policy and assurance framework"
+      }
+    }
   },
   {
     "id": "dev-wa-government-artificial-intelligence-policy-12vvhgh",
@@ -166,7 +334,22 @@
     "summary": "WA Government Artificial Intelligence Policy (PDF, 509.87KB)",
     "relevanceScore": 0.65,
     "classification": "heuristic",
-    "status": "detected"
+    "status": "dismissed",
+    "assessment": {
+      "method": "heuristic",
+      "assessedAt": "2026-07-12T12:01:59.304Z",
+      "promptVersion": "legacy-keyword-rules-v1"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.wa.gov.au/system/files/2025-07/ai_policyv2.pdf",
+        "title": "WA Government Artificial Intelligence Policy ()",
+        "publisher": "WA — AI policy and assurance framework"
+      }
+    },
+    "dismissalReason": "Duplicate PDF link for an existing verified register record.",
+    "relatedPolicyId": "wa-ai-policy-assurance-framework"
   },
   {
     "id": "dev-ai-governance-toolkit-for-entities-n3hwj4",
@@ -179,7 +362,20 @@
     "summary": "AI governance toolkit for entities",
     "relevanceScore": 0.55,
     "classification": "heuristic",
-    "status": "detected"
+    "status": "detected",
+    "assessment": {
+      "method": "heuristic",
+      "assessedAt": "2026-07-12T12:01:59.304Z",
+      "promptVersion": "legacy-keyword-rules-v1"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.wa.gov.au/organisation/department-of-the-premier-and-cabinet/office-of-digital-government/artificial-intelligence-governance-toolkit-wa-public-sector-entities",
+        "title": "AI governance toolkit for entities",
+        "publisher": "WA — AI policy and assurance framework"
+      }
+    }
   },
   {
     "id": "dev-ai-knowledge-centre-1f8sbt9",
@@ -192,7 +388,21 @@
     "summary": "AI Knowledge Centre Show submenu for \"AI Knowledge Centre\" AI Knowledge Centre Menu About AI Education Policies, standards, and guidelines Useful links",
     "relevanceScore": 0.55,
     "classification": "heuristic",
-    "status": "detected"
+    "status": "dismissed",
+    "assessment": {
+      "method": "heuristic",
+      "assessedAt": "2026-07-12T12:01:59.304Z",
+      "promptVersion": "legacy-keyword-rules-v1"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.ai.sa.gov.au/ai-knowledge-centre",
+        "title": "AI Knowledge Centre",
+        "publisher": "SA Office for AI"
+      }
+    },
+    "dismissalReason": "Resource hub rather than a discrete policy instrument or dated development."
   },
   {
     "id": "dev-policies-standards-and-guidelinesexplore-our-sui-17w06ld",
@@ -205,7 +415,21 @@
     "summary": "Policies, standards,and guidelinesExplore our suite of AI policies and guidelines to help ensure AI is adopted responsibly.",
     "relevanceScore": 0.65,
     "classification": "heuristic",
-    "status": "detected"
+    "status": "dismissed",
+    "assessment": {
+      "method": "heuristic",
+      "assessedAt": "2026-07-12T12:01:59.304Z",
+      "promptVersion": "legacy-keyword-rules-v1"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.ai.sa.gov.au/ai-knowledge-centre/policies,-standards-and-guidelines",
+        "title": "Policies, standards,and guidelinesExplore our suite of AI policies and guidelines to help ensure AI is adopted responsibly.",
+        "publisher": "SA Office for AI"
+      }
+    },
+    "dismissalReason": "Resource category page rather than a discrete policy instrument or dated development."
   },
   {
     "id": "dev-strategiesshaping-sa-s-future-with-ai-through-re-lds9d",
@@ -218,7 +442,22 @@
     "summary": "StrategiesShaping SA's future with AI through responsible, community-focused plans for the public sector and economy.",
     "relevanceScore": 0.55,
     "classification": "heuristic",
-    "status": "detected"
+    "status": "dismissed",
+    "assessment": {
+      "method": "heuristic",
+      "assessedAt": "2026-07-12T12:01:59.304Z",
+      "promptVersion": "legacy-keyword-rules-v1"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.ai.sa.gov.au/who-we-are/about-our-work/strategies",
+        "title": "StrategiesShaping SA's future with AI through responsible, community-focused plans for the public sector and economy.",
+        "publisher": "SA Office for AI"
+      }
+    },
+    "dismissalReason": "Strategy category page rather than a discrete development; the underlying consultation is in the register.",
+    "relatedPolicyId": "sa-ai-for-better-government-discussion-paper"
   },
   {
     "id": "dev-2026-06-15-dta-ai-policy-v2-first-new-mandatory-requirement-c",
@@ -233,7 +472,23 @@
     "relevanceScore": 1,
     "classification": "curated",
     "status": "promoted",
-    "relatedPolicyId": "policy-responsible-use-ai-government-v2"
+    "relatedPolicyId": "policy-responsible-use-ai-government-v2",
+    "assessment": {
+      "method": "editorial",
+      "assessedAt": "2026-07-10T00:00:00.000Z",
+      "promptVersion": "editorial-seed-v1"
+    },
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://www.digital.gov.au/ai/ai-in-government-policy",
+        "title": "DTA AI policy v2: first new mandatory requirement commences",
+        "publisher": "digital.gov.au — AI in government policy hub"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
   },
   {
     "id": "dev-2026-05-29-fcfcoa-issues-practice-direction-on-the-use-of-ai-",
@@ -248,7 +503,23 @@
     "relevanceScore": 1,
     "classification": "curated",
     "status": "promoted",
-    "relatedPolicyId": "family-court-ai-practice-direction"
+    "relatedPolicyId": "family-court-ai-practice-direction",
+    "assessment": {
+      "method": "editorial",
+      "assessedAt": "2026-07-10T00:00:00.000Z",
+      "promptVersion": "editorial-seed-v1"
+    },
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://www.fcfcoa.gov.au/pd/pd-ai",
+        "title": "FCFCOA issues Practice Direction on the use of AI (PD-AI)",
+        "publisher": "Federal Circuit and Family Court"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
   },
   {
     "id": "dev-2026-05-18-oaic-opens-consultation-on-adm-transparency-guidan",
@@ -262,7 +533,23 @@
     "summary": "Issues paper ahead of Privacy Act automated-decision-making transparency obligations commencing 10 December 2026.",
     "relevanceScore": 1,
     "classification": "curated",
-    "status": "promoted"
+    "status": "promoted",
+    "assessment": {
+      "method": "editorial",
+      "assessedAt": "2026-07-10T00:00:00.000Z",
+      "promptVersion": "editorial-seed-v1"
+    },
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://www.oaic.gov.au/engage-with-us/consultations/consultation-on-guidance-for-transparency-in-automated-decision-making",
+        "title": "OAIC opens consultation on ADM transparency guidance",
+        "publisher": "OAIC — media centre"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
   },
   {
     "id": "dev-2026-05-14-victorian-supreme-court-replaces-ai-guidelines-wit",
@@ -277,12 +564,28 @@
     "relevanceScore": 1,
     "classification": "curated",
     "status": "promoted",
-    "relatedPolicyId": "vic-supreme-court-sc-gen-25"
+    "relatedPolicyId": "vic-supreme-court-sc-gen-25",
+    "assessment": {
+      "method": "editorial",
+      "assessedAt": "2026-07-10T00:00:00.000Z",
+      "promptVersion": "editorial-seed-v1"
+    },
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes",
+        "title": "Victorian Supreme Court replaces AI guidelines with Practice Note SC GEN 25",
+        "publisher": "Victorian Supreme Court — practice notes"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
   },
   {
     "id": "dev-2026-05-08-asic-writes-to-licensees-on-ai-era-cyber-resilienc",
     "title": "ASIC writes to licensees on AI-era cyber resilience",
-    "url": "https://asic.gov.au/newsroom/",
+    "url": "https://asic.gov.au/newsroom",
     "sourceId": "asic-newsroom",
     "sourceName": "ASIC — newsroom",
     "jurisdiction": "federal",
@@ -291,7 +594,23 @@
     "summary": "Open letter to AFS licensees and market participants on AI-driven cyber threats.",
     "relevanceScore": 1,
     "classification": "curated",
-    "status": "promoted"
+    "status": "promoted",
+    "assessment": {
+      "method": "editorial",
+      "assessedAt": "2026-07-10T00:00:00.000Z",
+      "promptVersion": "editorial-seed-v1"
+    },
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://asic.gov.au/newsroom",
+        "title": "ASIC writes to licensees on AI-era cyber resilience",
+        "publisher": "ASIC — newsroom"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
   },
   {
     "id": "dev-2026-04-30-apra-sets-out-ai-governance-expectations-in-letter",
@@ -306,7 +625,23 @@
     "relevanceScore": 1,
     "classification": "curated",
     "status": "promoted",
-    "relatedPolicyId": "apra-ai-industry-letter-2026"
+    "relatedPolicyId": "apra-ai-industry-letter-2026",
+    "assessment": {
+      "method": "editorial",
+      "assessedAt": "2026-07-10T00:00:00.000Z",
+      "promptVersion": "editorial-seed-v1"
+    },
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://www.apra.gov.au/apra-letter-to-industry-on-artificial-intelligence-ai",
+        "title": "APRA sets out AI governance expectations in letter to industry",
+        "publisher": "APRA — news"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
   },
   {
     "id": "dev-2026-04-16-federal-court-issues-gpn-ai-practice-note-on-gener",
@@ -321,7 +656,23 @@
     "relevanceScore": 1,
     "classification": "curated",
     "status": "promoted",
-    "relatedPolicyId": "federal-court-gpn-ai"
+    "relatedPolicyId": "federal-court-gpn-ai",
+    "assessment": {
+      "method": "editorial",
+      "assessedAt": "2026-07-10T00:00:00.000Z",
+      "promptVersion": "editorial-seed-v1"
+    },
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-ai",
+        "title": "Federal Court issues GPN-AI practice note on generative AI",
+        "publisher": "Federal Court — practice notes"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
   },
   {
     "id": "dev-2026-04-01-government-response-to-the-senate-adopting-ai-repo",
@@ -335,7 +686,23 @@
     "summary": "Response to the November 2024 Senate Select Committee report, consistent with the National AI Plan approach.",
     "relevanceScore": 1,
     "classification": "curated",
-    "status": "promoted"
+    "status": "promoted",
+    "assessment": {
+      "method": "editorial",
+      "assessedAt": "2026-07-10T00:00:00.000Z",
+      "promptVersion": "editorial-seed-v1"
+    },
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://www.industry.gov.au/publications/australian-government-response-senate-select-committee-adopting-artificial-intelligence-ai-report",
+        "title": "Government response to the Senate Adopting AI report tabled",
+        "publisher": "Department of Industry, Science and Resources — news"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
   },
   {
     "id": "dev-2026-03-24-esafety-report-ai-companions-putting-children-at-r",
@@ -349,7 +716,23 @@
     "summary": "Findings from transparency notices to four AI companion providers issued in October 2025.",
     "relevanceScore": 1,
     "classification": "curated",
-    "status": "promoted"
+    "status": "promoted",
+    "assessment": {
+      "method": "editorial",
+      "assessedAt": "2026-07-10T00:00:00.000Z",
+      "promptVersion": "editorial-seed-v1"
+    },
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://www.esafety.gov.au/newsroom/media-releases/esafety-report-shows-ai-companions-are-putting-children-at-risk",
+        "title": "eSafety report: AI companions putting children at risk",
+        "publisher": "eSafety Commissioner — media releases"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
   },
   {
     "id": "dev-2026-03-09-esafety-industry-codes-for-generative-ai-take-effe",
@@ -364,6 +747,22 @@
     "relevanceScore": 1,
     "classification": "curated",
     "status": "promoted",
-    "relatedPolicyId": "esafety-genai-industry-codes"
+    "relatedPolicyId": "esafety-genai-industry-codes",
+    "assessment": {
+      "method": "editorial",
+      "assessedAt": "2026-07-10T00:00:00.000Z",
+      "promptVersion": "editorial-seed-v1"
+    },
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://www.esafety.gov.au/industry/codes",
+        "title": "eSafety industry codes for generative AI take effect",
+        "publisher": "eSafety Commissioner — media releases"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
   }
 ]

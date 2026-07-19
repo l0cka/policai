@@ -1,42 +1,143 @@
 {
-  "lastCollectedAt": "2026-07-15T20:32:43.549Z",
-  "lastReviewedAt": "2026-07-10T00:00:00.000Z",
+  "lastCollectedAt": "2026-07-16T09:59:08.212Z",
+  "lastHealthyAt": "2026-07-16T09:59:08.212Z",
+  "lastReviewedAt": "2026-07-16T09:57:13.447Z",
   "collector": {
-    "runCount": 6,
+    "runCount": 7,
     "lastRunSources": [
-      "dta-media",
-      "digital-gov-ai",
-      "disr-news",
-      "naic-news",
-      "finance-news",
-      "agd-news",
-      "treasury-news",
+      "treasury-publications",
       "oaic-media",
       "accc-rss",
       "apra-rss",
-      "esafety-media",
-      "ahrc-media",
-      "fedcourt-practice-notes",
-      "qld-courts-news",
-      "tas-dpac-policies",
-      "act-ai-policy",
-      "nt-ai-assurance"
+      "qld-courts-news"
     ],
-    "lastRunErrors": [
-      "dta-media: The operation was aborted due to timeout",
-      "digital-gov-ai: The operation was aborted due to timeout",
-      "disr-news: The operation was aborted due to timeout",
-      "naic-news: The operation was aborted due to timeout",
-      "finance-news: The operation was aborted due to timeout",
-      "agd-news: The operation was aborted due to timeout",
-      "treasury-news: HTTP 404",
-      "esafety-media: The operation was aborted due to timeout",
-      "ahrc-media: HTTP 403",
-      "fedcourt-practice-notes: HTTP 403",
-      "qld-courts-news: HTTP 404",
-      "tas-dpac-policies: HTTP 403",
-      "act-ai-policy: HTTP 403",
-      "nt-ai-assurance: HTTP 403"
+    "lastRunErrors": [],
+    "health": "healthy",
+    "dueSourceCount": 5,
+    "successfulSourceCount": 5,
+    "failedSourceCount": 0,
+    "skippedSourceCount": 8,
+    "successRate": 1,
+    "automaticSourceCount": 13,
+    "manualSourceCount": 14,
+    "sourceResults": [
+      {
+        "sourceId": "treasury-publications",
+        "status": "success",
+        "checkedAt": "2026-07-16T09:59:08.212Z",
+        "durationMs": 364,
+        "itemCount": 84,
+        "candidateCount": 0,
+        "newCandidateCount": 0
+      },
+      {
+        "sourceId": "csiro-news",
+        "status": "skipped",
+        "checkedAt": "2026-07-16T09:59:08.212Z",
+        "durationMs": 0,
+        "itemCount": null,
+        "candidateCount": 0,
+        "newCandidateCount": 0
+      },
+      {
+        "sourceId": "oaic-media",
+        "status": "success",
+        "checkedAt": "2026-07-16T09:59:08.212Z",
+        "durationMs": 855,
+        "itemCount": 58,
+        "candidateCount": 0,
+        "newCandidateCount": 0
+      },
+      {
+        "sourceId": "accc-rss",
+        "status": "success",
+        "checkedAt": "2026-07-16T09:59:08.212Z",
+        "durationMs": 453,
+        "itemCount": 20,
+        "candidateCount": 0,
+        "newCandidateCount": 0
+      },
+      {
+        "sourceId": "apra-rss",
+        "status": "success",
+        "checkedAt": "2026-07-16T09:59:08.212Z",
+        "durationMs": 291,
+        "itemCount": 10,
+        "candidateCount": 0,
+        "newCandidateCount": 0
+      },
+      {
+        "sourceId": "asic-newsroom",
+        "status": "skipped",
+        "checkedAt": "2026-07-16T09:59:08.212Z",
+        "durationMs": 0,
+        "itemCount": null,
+        "candidateCount": 0,
+        "newCandidateCount": 0
+      },
+      {
+        "sourceId": "pc-media",
+        "status": "skipped",
+        "checkedAt": "2026-07-16T09:59:08.212Z",
+        "durationMs": 0,
+        "itemCount": null,
+        "candidateCount": 0,
+        "newCandidateCount": 0
+      },
+      {
+        "sourceId": "nsw-sc-practice-notes",
+        "status": "skipped",
+        "checkedAt": "2026-07-16T09:59:08.212Z",
+        "durationMs": 0,
+        "itemCount": null,
+        "candidateCount": 0,
+        "newCandidateCount": 0
+      },
+      {
+        "sourceId": "vic-sc-practice-notes",
+        "status": "skipped",
+        "checkedAt": "2026-07-16T09:59:08.212Z",
+        "durationMs": 0,
+        "itemCount": null,
+        "candidateCount": 0,
+        "newCandidateCount": 0
+      },
+      {
+        "sourceId": "qld-courts-news",
+        "status": "success",
+        "checkedAt": "2026-07-16T09:59:08.212Z",
+        "durationMs": 310,
+        "itemCount": 75,
+        "candidateCount": 0,
+        "newCandidateCount": 0
+      },
+      {
+        "sourceId": "nsw-digital-ai",
+        "status": "skipped",
+        "checkedAt": "2026-07-16T09:59:08.212Z",
+        "durationMs": 0,
+        "itemCount": null,
+        "candidateCount": 0,
+        "newCandidateCount": 0
+      },
+      {
+        "sourceId": "vic-ai",
+        "status": "skipped",
+        "checkedAt": "2026-07-16T09:59:08.212Z",
+        "durationMs": 0,
+        "itemCount": null,
+        "candidateCount": 0,
+        "newCandidateCount": 0
+      },
+      {
+        "sourceId": "wa-ai-policy",
+        "status": "skipped",
+        "checkedAt": "2026-07-16T09:59:08.212Z",
+        "durationMs": 0,
+        "itemCount": null,
+        "candidateCount": 0,
+        "newCandidateCount": 0
+      }
     ]
   }
 }

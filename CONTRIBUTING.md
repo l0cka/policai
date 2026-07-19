@@ -52,7 +52,7 @@ Thanks for your interest in contributing to Policai! This guide covers the basic
 Before submitting a PR, make sure everything passes:
 
 ```bash
-npm run check       # ESLint, Vitest, and production build
+npm run check       # ESLint, strict TypeScript, Vitest, data validation, and production build
 ```
 
 For narrower local loops, run `npm run lint`, `npm run test`, or `npm run build` individually.
@@ -61,7 +61,8 @@ For narrower local loops, run `npm run lint`, `npm run test`, or `npm run build`
 
 1. Push your branch and open a PR against `main`
 2. Fill in the PR template
-3. Ensure CI checks pass (`npm run check` locally covers lint, test, and build)
+3. Ensure CI checks pass (`npm run check` locally covers lint, strict
+   TypeScript, tests, data validation, and the production build)
 4. Keep the PR description clear — explain what and why
 
 ### PR Size
@@ -80,7 +81,13 @@ Policai tracks Australian government AI policy. If you know of a .gov.au source 
 
 ## Data Corrections
 
-The data itself lives in this repository (`public/data/*.json`). Corrections are ordinary pull requests: edit the record, keep the `sourceUrl` pointing at the official instrument, and run `npm run validate:data` before pushing.
+Canonical editorial data lives in `data/*.json`; only operationally safe public
+artifacts such as `public/data/meta.json` remain under `public/`. Corrections are
+ordinary pull requests: edit the canonical record (or use the local staged MCP
+workflow), keep `sourceUrl` pointing at the official instrument, stamp verified
+source evidence and review metadata, and run `npm run validate:data` before
+pushing. The `/data/*.json` website routes are filtered public projections, not
+files to edit.
 
 ## Environment Variables
 

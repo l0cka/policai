@@ -5,6 +5,9 @@ This directory holds the project-facing documentation that should stay in sync w
 ## Available Docs
 
 - [Collector operations guide](./collector.md) — how the daily collector works, running it locally, the GitHub Actions workflow, reviewing detections into the register, and adding sources.
+- [Architecture](./architecture.md) — system boundaries, data ownership, and non-negotiable invariants.
+- [Information trust model](./trust-model.md) — verification tiers, source rules, date policy, and publication gates.
+- [Authoritative refactor tracker](./refactor-authoritative-policai.md) — baseline findings, workstreams, and completion gates.
 
 ## Canonical Sources
 

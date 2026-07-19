@@ -22,6 +22,7 @@ const insightItems = [
   { href: '/timeline', label: 'Timeline' },
   { href: '/network', label: 'Network' },
   { href: '/framework', label: 'Framework' },
+  { href: '/methodology', label: 'Methodology' },
   { href: '/blog', label: 'Blog' },
 ];
 

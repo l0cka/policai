@@ -40,10 +40,88 @@ export const POLICY_STATUSES = [
 
 export type PolicyStatus = (typeof POLICY_STATUSES)[number];
 
+export const VERIFICATION_STATUSES = [
+	"verified",
+	"needs_review",
+	"stale",
+	"source_unavailable",
+] as const;
+
+export type VerificationStatus = (typeof VERIFICATION_STATUSES)[number];
+
+export const VERIFICATION_METHODS = ["manual", "automated"] as const;
+
+export type VerificationMethod = (typeof VERIFICATION_METHODS)[number];
+
+export interface LinkedDocumentEvidence {
+	url: string;
+	finalUrl?: string;
+	retrievedAt?: string;
+	contentType?: string;
+	contentHash: string;
+	etag?: string;
+	lastModified?: string;
+}
+
+export const MANUAL_EXTRACTION_METHODS = [
+	"ocr",
+	"manual_transcription",
+] as const;
+
+export type ManualExtractionMethod =
+	(typeof MANUAL_EXTRACTION_METHODS)[number];
+
+export interface ManualExtractionEvidence {
+	method: ManualExtractionMethod;
+	extractedAt: string;
+	extractedBy: string;
+	notes: string;
+	textHash: string;
+	characterCount: number;
+}
+
+export interface ReviewedDateEvidence {
+	date: string;
+	precision: DatePrecision;
+	reviewedAt: string;
+	reviewedBy: string;
+	notes: string;
+}
+
+export interface SourceEvidence {
+	url: string;
+	finalUrl?: string;
+	title?: string;
+	publisher?: string;
+	retrievedAt?: string;
+	publishedAt?: string;
+	publishedAtPrecision?: DatePrecision;
+	contentType?: string;
+	contentHash?: string;
+	etag?: string;
+	lastModified?: string;
+	linkedDocuments?: LinkedDocumentEvidence[];
+	manualExtraction?: ManualExtractionEvidence;
+	/** Human confirmation for a record date not exposed as document metadata. */
+	reviewedDate?: ReviewedDateEvidence;
+}
+
+export interface RecordVerification {
+	status: VerificationStatus;
+	source: SourceEvidence;
+	checkedAt?: string;
+	checkedBy?: string;
+	method?: VerificationMethod;
+	/** Latest automated fingerprint check; does not renew editorial review. */
+	lastSourceAuditAt?: string;
+	notes?: string;
+}
+
 export const TIMELINE_EVENT_TYPES = [
 	"policy_introduced",
 	"policy_amended",
 	"policy_repealed",
+	"policy_superseded",
 	"announcement",
 	"milestone",
 ] as const;
@@ -52,6 +130,33 @@ export type TimelineEventType = (typeof TIMELINE_EVENT_TYPES)[number];
 
 export type AgencyLevel = "federal" | "state";
 
+export const POLICY_DATE_TYPES = [
+	"published",
+	"issued",
+	"approved",
+	"effective",
+	"commenced",
+	"amended",
+	"consultation_opened",
+	"consultation_closed",
+	"superseded",
+	"repealed",
+] as const;
+
+export type PolicyDateType = (typeof POLICY_DATE_TYPES)[number];
+
+export const DATE_PRECISIONS = ["day", "month", "year"] as const;
+
+export type DatePrecision = (typeof DATE_PRECISIONS)[number];
+
+export interface PolicyDate {
+	type: PolicyDateType;
+	date: Date | string;
+	precision: DatePrecision;
+	primary?: boolean;
+	source?: SourceEvidence;
+}
+
 export interface Policy {
 	id: string;
 	title: string;
@@ -59,7 +164,12 @@ export interface Policy {
 	jurisdiction: Jurisdiction;
 	type: PolicyType;
 	status: PolicyStatus;
+	/**
+	 * Compatibility alias for the primary structured date. New code should use
+	 * `dates` and getPrimaryPolicyDate().
+	 */
 	effectiveDate: Date | string;
+	dates: PolicyDate[];
 	agencies: string[];
 	sourceUrl: string;
 	content: string;
@@ -67,6 +177,7 @@ export interface Policy {
 	tags: string[];
 	createdAt: Date | string;
 	updatedAt: Date | string;
+	verification: RecordVerification;
 	supersededBy?: string;
 	lastReviewedAt?: string;
 }
@@ -83,21 +194,24 @@ export interface Agency {
 	policies?: string[];
 	transparencyStatementUrl?: string;
 	lastUpdated?: string;
-	hasPublishedStatement: boolean;
+	hasPublishedStatement?: boolean;
 	accountableOfficial?: string;
 	contactEmail?: string;
 	auditFindings?: string;
+	verification: RecordVerification;
 }
 
 export interface TimelineEvent {
 	id: string;
 	date: Date | string;
+	datePrecision?: DatePrecision;
 	title: string;
 	description: string;
 	type: TimelineEventType;
 	jurisdiction: Jurisdiction;
 	relatedPolicyId?: string;
-	sourceUrl?: string;
+	sourceUrl: string;
+	verification: RecordVerification;
 }
 
 export const SOURCE_REVIEW_ENTRY_KINDS = ["policy", "timeline_event"] as const;
@@ -128,16 +242,51 @@ export interface SourceReview {
 	sourceUrl: string;
 	title: string;
 	entryKind: SourceReviewEntryKind;
+	targetPolicyId?: string;
+	/** Editorial revision from which an update review's draft was staged. */
+	targetPolicyBaseRevisionHash?: string;
+	/** Immutable collector transition order for mutable direct-document updates. */
+	sourceVersionSequence?: number;
+	/** Canonical policy revision captured when an update review was approved. */
+	targetPolicyRevisionHash?: string;
+	/** Stable id of the tracked timeline event being re-verified. */
+	targetTimelineEventId?: string;
+	/**
+	 * Canonical timeline revision captured when staging an existing event or
+	 * recovering a partial publication.
+	 */
+	targetTimelineRevisionHash?: string;
 	status: SourceReviewStatus;
 	discoveredAt: string;
 	createdBy: string;
 	notes?: string;
 	analysis: SourceReviewAnalysis;
-	proposedRecord: Policy | TimelineEvent;
+	sourceEvidence: SourceEvidence;
+	proposedRecord: PolicyDraft | TimelineEventDraft;
+	/** Stable collector output retained so partial multi-file writes can recover. */
+	linkedDevelopment?: Development;
+	reviewedAt?: string;
+	reviewedBy?: string;
+	approvalNotes?: string;
 	publishedAt?: string;
 	rejectionReason?: string;
 	updatedAt: string;
 }
+
+export type PolicyDraft = Omit<
+	Policy,
+	"effectiveDate" | "dates" | "verification" | "lastReviewedAt"
+> & {
+	effectiveDate?: Date | string;
+	dates?: PolicyDate[];
+	verification?: RecordVerification;
+	lastReviewedAt?: string;
+};
+
+export type TimelineEventDraft = Omit<TimelineEvent, "date" | "verification"> & {
+	date?: Date | string;
+	verification?: RecordVerification;
+};
 
 // Developments radar feed — automated detections from the collector.
 // Distinct from the curated policy registry: safe to auto-publish because
@@ -151,6 +300,14 @@ export const DEVELOPMENT_STATUSES = [
 
 export type DevelopmentStatus = (typeof DEVELOPMENT_STATUSES)[number];
 
+export interface ContentAssessment {
+	method: "ai" | "heuristic" | "editorial";
+	assessedAt: string;
+	promptVersion: string;
+	provider?: "anthropic" | "openrouter";
+	model?: string;
+}
+
 export interface Development {
 	id: string;
 	title: string;
@@ -159,22 +316,84 @@ export interface Development {
 	sourceName: string;
 	jurisdiction: Jurisdiction;
 	publishedAt?: string;
+	publishedAtPrecision?: DatePrecision;
 	detectedAt: string;
 	summary?: string;
 	relevanceScore: number;
 	classification: "ai" | "heuristic" | "curated";
+	assessment: ContentAssessment;
+	verification: RecordVerification;
 	status: DevelopmentStatus;
 	relatedPolicyId?: string;
+	relatedTimelineEventId?: string;
+	dismissalReason?: string;
+}
+
+export const COLLECTION_HEALTH_STATUSES = [
+	"healthy",
+	"degraded",
+	"failed",
+] as const;
+
+export type CollectionHealthStatus =
+	(typeof COLLECTION_HEALTH_STATUSES)[number];
+
+export const SOURCE_RUN_STATUSES = ["success", "error", "skipped"] as const;
+
+export type SourceRunStatus = (typeof SOURCE_RUN_STATUSES)[number];
+
+export interface SourceRunResult {
+	sourceId: string;
+	status: SourceRunStatus;
+	/** False for candidate-only retries when the source index was not due. */
+	coverageEligible?: boolean;
+	checkedAt: string;
+	durationMs: number;
+	itemCount: number | null;
+	candidateCount: number;
+	newCandidateCount: number;
+	error?: string;
 }
 
 export interface CollectionMeta {
 	lastCollectedAt: string | null;
+	lastHealthyAt: string | null;
 	lastReviewedAt: string | null;
 	collector: {
 		runCount: number;
 		lastRunSources: string[];
 		lastRunErrors: string[];
+		health: CollectionHealthStatus;
+		dueSourceCount: number;
+		successfulSourceCount: number;
+		failedSourceCount: number;
+		skippedSourceCount: number;
+		successRate: number;
+		automaticSourceCount: number;
+		manualSourceCount: number;
+		sourceResults: SourceRunResult[];
 	};
+}
+
+export const MANUAL_SOURCE_REVIEW_STATUSES = [
+	"checked",
+	"source_unavailable",
+] as const;
+
+export type ManualSourceReviewStatus =
+	(typeof MANUAL_SOURCE_REVIEW_STATUSES)[number];
+
+export interface ManualSourceReview {
+	sourceId: string;
+	status: ManualSourceReviewStatus;
+	reviewedAt: string;
+	reviewedBy: string;
+	evidence?: SourceEvidence;
+	notes?: string;
+}
+
+export interface SourceMonitoringState {
+	manualReviews: ManualSourceReview[];
 }
 
 export function isDevelopmentStatus(
@@ -266,6 +485,19 @@ export const POLICY_TYPE_NAMES: Record<PolicyType, string> = {
 	policy: "Policy",
 	tool: "Tool",
 	funding_program: "Funding Program",
+};
+
+export const POLICY_DATE_TYPE_NAMES: Record<PolicyDateType, string> = {
+	published: "Published",
+	issued: "Issued",
+	approved: "Approved",
+	effective: "Effective",
+	commenced: "Commenced",
+	amended: "Amended",
+	consultation_opened: "Consultation opened",
+	consultation_closed: "Consultation closed",
+	superseded: "Superseded",
+	repealed: "Repealed",
 };
 
 function isOneOf<T extends readonly string[]>(
@@ -360,6 +592,24 @@ export function getPolicyTypeName(type: string | null | undefined): string {
 		.join(" ");
 }
 
+export function getPrimaryPolicyDate(
+	policy: Pick<Policy, "dates" | "effectiveDate">,
+): PolicyDate {
+	return (
+		policy.dates.find((date) => date.primary) ??
+		policy.dates[0] ?? {
+			type: "effective",
+			date: policy.effectiveDate,
+			precision: "day",
+			primary: true,
+		}
+	);
+}
+
+export function getPolicyDateTypeName(type: PolicyDateType): string {
+	return POLICY_DATE_TYPE_NAMES[type];
+}
+
 export const POLICY_STATUS_NAMES: Record<PolicyStatus, string> = {
 	proposed: "Proposed",
 	active: "Active",
@@ -374,4 +624,3 @@ export function getPolicyStatusName(status: string | null | undefined): string {
 	if (!status) return "Unknown";
 	return isPolicyStatus(status) ? POLICY_STATUS_NAMES[status] : status;
 }
-

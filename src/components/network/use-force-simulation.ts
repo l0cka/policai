@@ -12,7 +12,7 @@ import {
   type SimulationNodeDatum,
   type SimulationLinkDatum,
 } from 'd3-force';
-import type { NetworkNode, NetworkEdge } from '@/app/api/network/route';
+import type { NetworkNode, NetworkEdge } from '@/lib/network-data';
 
 export interface SimNode extends SimulationNodeDatum, NetworkNode {
   x: number;

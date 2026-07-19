@@ -1,0 +1,854 @@
+[
+  {
+    "id": "tl-2019-11-07-ai-ethics-principles-published",
+    "date": "2019-11-07",
+    "title": "AI Ethics Principles Published",
+    "description": "Australia publishes its voluntary AI Ethics Principles, establishing 8 principles for responsible AI.",
+    "type": "policy_introduced",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "australias-ai-ethics-framework",
+    "sourceUrl": "https://www.industry.gov.au/publications/australias-ai-ethics-principles",
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://www.industry.gov.au/publications/australias-ai-ethics-principles"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
+  },
+  {
+    "id": "tl-2022-03-17-adm-and-ai-regulation-issues-paper-released",
+    "date": "2022-03-17",
+    "title": "ADM and AI Regulation Issues Paper Released",
+    "description": "The Digital Technology Taskforce launches consultation on automated decision-making and AI regulation.",
+    "type": "announcement",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "automated-decision-making-ai-regulation-issues-paper",
+    "sourceUrl": "https://consult.industry.gov.au/automated-decision-making-ai-regulation-issues-paper",
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://consult.industry.gov.au/automated-decision-making-ai-regulation-issues-paper"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
+  },
+  {
+    "id": "tl-2023-06-22-responsible-ai-network-first-report",
+    "date": "2023-06-22",
+    "title": "Responsible AI Network publishes its first major report",
+    "description": "Australia's National AI Centre, coordinated by CSIRO, publishes the Responsible AI Network's first major report on implementing Australia's AI Ethics Principles.",
+    "type": "milestone",
+    "jurisdiction": "federal",
+    "sourceUrl": "https://www.csiro.au/en/news/All/News/2023/June/New-report-to-help-business-implement-responsible-AI",
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://www.csiro.au/en/news/All/News/2023/June/New-report-to-help-business-implement-responsible-AI",
+        "title": "New report to help businesses implement responsible AI",
+        "publisher": "CSIRO",
+        "publishedAt": "2023-06-22",
+        "retrievedAt": "2026-07-16T00:00:00.000Z"
+      },
+      "checkedAt": "2026-07-16T00:00:00.000Z",
+      "checkedBy": "Codex source review",
+      "method": "manual"
+    }
+  },
+  {
+    "id": "tl-2023-09-28-privacy-act-review-response-released",
+    "date": "2023-09-28",
+    "title": "Privacy Act Review Response Released",
+    "description": "The Australian Government releases its response to the Privacy Act Review, including positions relevant to AI and automated decision-making.",
+    "type": "policy_introduced",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "government-response-privacy-act-review-report",
+    "sourceUrl": "https://www.ag.gov.au/rights-and-protections/publications/government-response-privacy-act-review-report",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.ag.gov.au/rights-and-protections/publications/government-response-privacy-act-review-report"
+      },
+      "notes": "Legacy timeline entry; its date and description require editorial re-checking against the source."
+    }
+  },
+  {
+    "id": "tl-2023-12-19-asd-launches-blueprint-for-secure-cloud",
+    "date": "2023-12-19",
+    "title": "ASD launches Blueprint for Secure Cloud",
+    "description": "ASD's Blueprint for Secure Cloud launches with security and governance guidance later updated to identify a general-purpose artificial intelligence usage policy as an organisational policy requirement under ISM control ISM-2074.",
+    "type": "policy_introduced",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "asd-blueprint-secure-cloud-ai-usage-policy",
+    "sourceUrl": "https://blueprint.asd.gov.au/security-and-governance",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://blueprint.asd.gov.au/security-and-governance"
+      },
+      "notes": "Legacy timeline entry; its date and description require editorial re-checking against the source."
+    }
+  },
+  {
+    "id": "tl-2024-01-17-interim-response-to-safe-and-responsible-ai-consul",
+    "date": "2024-01-17",
+    "title": "Interim response to Safe and Responsible AI consultation",
+    "description": "Government agrees to a risk-based approach to AI regulation and establishes a temporary AI Expert Group.",
+    "type": "announcement",
+    "jurisdiction": "federal",
+    "sourceUrl": "https://www.industry.gov.au/news/australian-governments-interim-response-safe-and-responsible-ai-consultation",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.industry.gov.au/news/australian-governments-interim-response-safe-and-responsible-ai-consultation"
+      },
+      "notes": "Legacy timeline entry; its date and description require editorial re-checking against the source."
+    }
+  },
+  {
+    "id": "tl-2024-03-05-wa-ai-policy-and-assurance-framework-published",
+    "date": "2024-03-05",
+    "title": "WA AI Policy and Assurance Framework published",
+    "description": "Western Australia publishes its whole-of-government AI policy and assurance framework.",
+    "type": "policy_introduced",
+    "jurisdiction": "wa",
+    "relatedPolicyId": "wa-ai-policy-assurance-framework",
+    "sourceUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
+  },
+  {
+    "id": "tl-2024-05-06-victorian-supreme-court-issues-ai-guidelines-for-l",
+    "date": "2024-05-06",
+    "title": "Victorian Supreme Court issues AI guidelines for litigants",
+    "description": "First Victorian Supreme Court guidance on responsible AI use in proceedings (County Court followed in July 2024).",
+    "type": "policy_introduced",
+    "jurisdiction": "vic",
+    "relatedPolicyId": "vic-supreme-court-ai-guidelines",
+    "sourceUrl": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes"
+      },
+      "notes": "Legacy timeline entry; its date and description require editorial re-checking against the source."
+    }
+  },
+  {
+    "id": "tl-2024-06-21-national-framework-for-the-assurance-of-ai-in-gove",
+    "date": "2024-06-21",
+    "title": "National framework for the assurance of AI in government agreed",
+    "description": "Data and Digital Ministers agree a joint Commonwealth-state assurance framework mapped to the AI Ethics Principles.",
+    "type": "policy_introduced",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "national-framework-assurance-ai-government",
+    "sourceUrl": "https://www.finance.gov.au/government/public-data/data-and-digital-ministers-meeting/national-framework-assurance-artificial-intelligence-government",
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://www.finance.gov.au/government/public-data/data-and-digital-ministers-meeting/national-framework-assurance-artificial-intelligence-government"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
+  },
+  {
+    "id": "tl-2024-07-01-nsw-ai-assessment-framework-made-mandatory",
+    "date": "2024-07-01",
+    "title": "NSW AI Assessment Framework Made Mandatory",
+    "description": "NSW Circular DCS-2024-04 requires agencies using AI to apply the NSW AI Assessment Framework and AI Ethics Policy.",
+    "type": "policy_introduced",
+    "jurisdiction": "nsw",
+    "relatedPolicyId": "nsw-artificial-intelligence-assessment-framework",
+    "sourceUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks/nsw-ai-assessment-framework",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks/nsw-ai-assessment-framework"
+      },
+      "notes": "Legacy timeline entry; its date and description require editorial re-checking against the source."
+    }
+  },
+  {
+    "id": "tl-2024-07-01-act-government-ai-policy-published",
+    "date": "2024-07-01",
+    "title": "ACT Government AI Policy published",
+    "description": "The ACT publishes version 0.1 of its AI policy with a self-assessment tool (July 2024).",
+    "type": "policy_introduced",
+    "jurisdiction": "act",
+    "relatedPolicyId": "act-ai-policy",
+    "sourceUrl": "https://www.act.gov.au/open/act-government-artificial-intelligence-policy",
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://www.act.gov.au/open/act-government-artificial-intelligence-policy"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
+  },
+  {
+    "id": "tl-2024-09-01-queensland-ai-governance-policy-published",
+    "date": "2024-09-01",
+    "title": "Queensland AI Governance Policy Published",
+    "description": "Queensland publishes its whole-of-government AI governance policy under QGEA.",
+    "type": "policy_introduced",
+    "jurisdiction": "qld",
+    "relatedPolicyId": "queensland-ai-governance-policy",
+    "sourceUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
+  },
+  {
+    "id": "tl-2024-09-05-mandatory-guardrails-proposals-paper-released",
+    "date": "2024-09-05",
+    "title": "Mandatory Guardrails Proposals Paper Released",
+    "description": "The Australian Government releases its proposals paper on mandatory AI guardrails for high-risk settings.",
+    "type": "announcement",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "safe-and-responsible-ai-australia-proposals-paper",
+    "sourceUrl": "https://consult.industry.gov.au/ai-mandatory-guardrails",
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://consult.industry.gov.au/ai-mandatory-guardrails"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
+  },
+  {
+    "id": "tl-2024-09-05-voluntary-ai-safety-standard-published",
+    "date": "2024-09-05",
+    "title": "Voluntary AI Safety Standard published",
+    "description": "Ten voluntary guardrails for organisations developing and deploying AI, published alongside the mandatory-guardrails proposals paper.",
+    "type": "policy_introduced",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "voluntary-ai-safety-standard",
+    "sourceUrl": "https://www.industry.gov.au/publications/voluntary-ai-safety-standard",
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://www.industry.gov.au/publications/voluntary-ai-safety-standard"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
+  },
+  {
+    "id": "tl-2024-10-21-oaic-publishes-twin-ai-privacy-guidance",
+    "date": "2024-10-21",
+    "title": "OAIC publishes twin AI privacy guidance",
+    "description": "Guidance on developing and training generative AI models, and on using commercially available AI products.",
+    "type": "policy_introduced",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "oaic-guidance-developing-training-genai",
+    "sourceUrl": "https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-developing-and-training-generative-ai-models",
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-developing-and-training-generative-ai-models"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
+  },
+  {
+    "id": "tl-2024-10-29-asic-report-798-on-ai-governance",
+    "date": "2024-10-29",
+    "title": "ASIC Report 798 on AI governance",
+    "description": "ASIC finds a governance gap between AI adoption and oversight in licensees (\"Beware the gap\").",
+    "type": "announcement",
+    "jurisdiction": "federal",
+    "sourceUrl": "https://asic.gov.au/newsroom",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://asic.gov.au/newsroom"
+      },
+      "notes": "Legacy timeline entry; its date and description require editorial re-checking against the source."
+    }
+  },
+  {
+    "id": "tl-2024-11-26-senate-select-committee-on-adopting-ai-reports",
+    "date": "2024-11-26",
+    "title": "Senate Select Committee on Adopting AI reports",
+    "description": "Final report makes 13 recommendations, including dedicated AI legislation.",
+    "type": "milestone",
+    "jurisdiction": "federal",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Adopting_Artificial_Intelligence_AI",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Adopting_Artificial_Intelligence_AI"
+      },
+      "notes": "Legacy timeline entry; its date and description require editorial re-checking against the source."
+    }
+  },
+  {
+    "id": "tl-2024-11-27-victorian-generative-ai-guideline-published",
+    "date": "2024-11-27",
+    "title": "Victorian Generative AI Guideline Published",
+    "description": "Victoria publishes its current administrative guideline for safe and responsible generative AI use in the public sector.",
+    "type": "policy_introduced",
+    "jurisdiction": "vic",
+    "relatedPolicyId": "victoria-genai-guideline-vps",
+    "sourceUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
+  },
+  {
+    "id": "tl-2024-12-10-privacy-act-amendments-assented",
+    "date": "2024-12-10",
+    "title": "Privacy Act amendments assented",
+    "description": "Privacy and Other Legislation Amendment Act 2024 introduces automated-decision-making transparency obligations commencing 10 December 2026.",
+    "type": "milestone",
+    "jurisdiction": "federal",
+    "sourceUrl": "https://www.oaic.gov.au/privacy/privacy-legislation/the-privacy-act",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.oaic.gov.au/privacy/privacy-legislation/the-privacy-act"
+      },
+      "notes": "Legacy timeline entry; its date and description require editorial re-checking against the source."
+    }
+  },
+  {
+    "id": "tl-2025-02-03-nsw-supreme-court-practice-note-sc-gen-23-commence",
+    "date": "2025-02-03",
+    "title": "NSW Supreme Court Practice Note SC Gen 23 commences",
+    "description": "Restrictions on generative AI use in NSW Supreme Court proceedings take effect (issued 21 November 2024).",
+    "type": "policy_introduced",
+    "jurisdiction": "nsw",
+    "relatedPolicyId": "nsw-supreme-court-sc-gen-23",
+    "sourceUrl": "https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html"
+      },
+      "notes": "Legacy timeline entry; its date and description require editorial re-checking against the source."
+    }
+  },
+  {
+    "id": "tl-2025-07-28-sa-launches-the-nation-first-office-for-ai",
+    "date": "2025-07-28",
+    "title": "SA launches the nation-first Office for AI",
+    "description": "South Australia establishes a $28m Office for AI to drive whole-of-government adoption and governance.",
+    "type": "milestone",
+    "jurisdiction": "sa",
+    "sourceUrl": "https://www.ai.sa.gov.au/",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.ai.sa.gov.au/"
+      },
+      "notes": "Legacy timeline entry; its date and description require editorial re-checking against the source."
+    }
+  },
+  {
+    "id": "tl-2025-07-31-australian-government-ai-technical-standard-releas",
+    "date": "2025-07-31",
+    "title": "Australian Government AI technical standard released",
+    "description": "DTA publishes a lifecycle technical standard for AI systems in government.",
+    "type": "policy_introduced",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "ai-technical-standard",
+    "sourceUrl": "https://www.digital.gov.au/policy/ai/AI-technical-standard",
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://www.digital.gov.au/policy/ai/AI-technical-standard"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
+  },
+  {
+    "id": "tl-2025-08-05-productivity-commission-interim-report-on-data-and",
+    "date": "2025-08-05",
+    "title": "Productivity Commission interim report on data and digital",
+    "description": "Interim report floats a copyright text-and-data-mining exception and cautions against AI-specific regulation.",
+    "type": "announcement",
+    "jurisdiction": "federal",
+    "sourceUrl": "https://www.pc.gov.au/inquiries/current/data-digital",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.pc.gov.au/inquiries/current/data-digital"
+      },
+      "notes": "Legacy timeline entry; its date and description require editorial re-checking against the source."
+    }
+  },
+  {
+    "id": "tl-2025-09-24-queensland-supreme-court-practice-direction-5-of-2",
+    "date": "2025-09-24",
+    "title": "Queensland Supreme Court Practice Direction 5 of 2025",
+    "description": "Practice direction on accuracy of references responds to AI-generated citations; QAO also reports on managing AI ethics risks.",
+    "type": "policy_introduced",
+    "jurisdiction": "qld",
+    "relatedPolicyId": "qld-supreme-court-ai-practice-direction",
+    "sourceUrl": "https://www.courts.qld.gov.au/",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.courts.qld.gov.au/"
+      },
+      "notes": "Legacy timeline entry; its date and description require editorial re-checking against the source."
+    }
+  },
+  {
+    "id": "tl-2025-10-20-nsw-publishes-australian-first-ai-agents-guidance",
+    "date": "2025-10-20",
+    "title": "NSW publishes Australian-first AI agents guidance",
+    "description": "Digital NSW releases guidance for using agentic AI in government.",
+    "type": "announcement",
+    "jurisdiction": "nsw",
+    "sourceUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/guide-to-using-ai-agents-nsw-government",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/guide-to-using-ai-agents-nsw-government"
+      },
+      "notes": "Legacy timeline entry; its date and description require editorial re-checking against the source."
+    }
+  },
+  {
+    "id": "tl-2025-10-21-guidance-for-ai-adoption-supersedes-the-voluntary-",
+    "date": "2025-10-21",
+    "title": "Guidance for AI Adoption supersedes the Voluntary AI Safety Standard",
+    "description": "The National AI Centre’s six essential practices (AI6) become the current federal voluntary guidance.",
+    "type": "policy_amended",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "guidance-for-ai-adoption",
+    "sourceUrl": "https://www.industry.gov.au/publications/guidance-for-ai-adoption",
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://www.industry.gov.au/publications/guidance-for-ai-adoption"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
+  },
+  {
+    "id": "tl-2025-10-26-attorney-general-rules-out-a-copyright-tdm-excepti",
+    "date": "2025-10-26",
+    "title": "Attorney-General rules out a copyright TDM exception",
+    "description": "Government will not introduce a text-and-data-mining exception; CAIRG re-tasked to consult on licensing models for AI training.",
+    "type": "announcement",
+    "jurisdiction": "federal",
+    "sourceUrl": "https://www.ag.gov.au/rights-and-protections/copyright/copyright-and-artificial-intelligence-reference-group-cairg",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.ag.gov.au/rights-and-protections/copyright/copyright-and-artificial-intelligence-reference-group-cairg"
+      },
+      "notes": "Legacy timeline entry; its date and description require editorial re-checking against the source."
+    }
+  },
+  {
+    "id": "tl-2025-11-12-aps-ai-plan-launched",
+    "date": "2025-11-12",
+    "title": "APS AI Plan launched",
+    "description": "Department of Finance launches the APS AI Plan: Chief AI Officers in every agency, the GovAI platform, and GovAI Chat trials from April 2026.",
+    "type": "policy_introduced",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "aps-ai-plan-2025",
+    "sourceUrl": "https://www.finance.gov.au/about-us/news/2025/introducing-aps-ai-plan",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.finance.gov.au/about-us/news/2025/introducing-aps-ai-plan"
+      },
+      "notes": "Legacy timeline entry; its date and description require editorial re-checking against the source."
+    }
+  },
+  {
+    "id": "tl-2025-11-25-australian-ai-safety-institute-announced",
+    "date": "2025-11-25",
+    "title": "Australian AI Safety Institute announced",
+    "description": "Government commits $29.9m to establish an AI Safety Institute, standing up during 2026.",
+    "type": "announcement",
+    "jurisdiction": "federal",
+    "sourceUrl": "https://www.minister.industry.gov.au/ministers/timayres/media-releases/establishment-australian-ai-safety-institute",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.minister.industry.gov.au/ministers/timayres/media-releases/establishment-australian-ai-safety-institute"
+      },
+      "notes": "Legacy timeline entry; its date and description require editorial re-checking against the source."
+    }
+  },
+  {
+    "id": "tl-2025-12-02-national-ai-plan-released",
+    "date": "2025-12-02",
+    "title": "National AI Plan Released",
+    "description": "The Australian Government publishes the National AI Plan setting out its economy-wide direction for AI.",
+    "type": "policy_introduced",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "national-ai-plan-2025",
+    "sourceUrl": "https://www.industry.gov.au/publications/national-ai-plan",
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://www.industry.gov.au/publications/national-ai-plan"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
+  },
+  {
+    "id": "tl-2025-12-15-dta-ai-policy-version-2-0-released",
+    "date": "2025-12-15",
+    "title": "DTA AI Policy Version 2.0 Released",
+    "description": "Digital Transformation Agency releases Version 2.0 of the Policy for the Responsible Use of AI in Government, introducing mandatory requirements for transparency statements, accountable officials, use case registers, and risk-based impact assessments.",
+    "type": "policy_introduced",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "policy-responsible-use-ai-government-v2",
+    "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://www.digital.gov.au/ai/ai-in-government-policy"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
+  },
+  {
+    "id": "tl-2025-12-19-productivity-commission-final-report-released",
+    "date": "2025-12-19",
+    "title": "Productivity Commission final report released",
+    "description": "Final \"Harnessing data and digital technology\" report recommends regulating AI through existing frameworks; tabled 29 January 2026.",
+    "type": "milestone",
+    "jurisdiction": "federal",
+    "sourceUrl": "https://www.pc.gov.au/inquiries/current/data-digital",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.pc.gov.au/inquiries/current/data-digital"
+      },
+      "notes": "Legacy timeline entry; its date and description require editorial re-checking against the source."
+    }
+  },
+  {
+    "id": "tl-2026-01-01-sa-courts-generative-ai-guidelines-take-effect",
+    "date": "2026-01-01",
+    "title": "SA courts generative AI guidelines take effect",
+    "description": "Guidelines apply to steps in civil and criminal proceedings across South Australian courts from 1 January 2026.",
+    "type": "policy_introduced",
+    "jurisdiction": "sa",
+    "relatedPolicyId": "sa-courts-genai-guidelines",
+    "sourceUrl": "https://www.courts.sa.gov.au/2026/01/19/supreme-court-issues-guidelines-for-the-use-of-generative-ai",
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://www.courts.sa.gov.au/2026/01/19/supreme-court-issues-guidelines-for-the-use-of-generative-ai"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
+  },
+  {
+    "id": "tl-2026-01-27-modernised-nsw-ai-assessment-framework-launched",
+    "date": "2026-01-27",
+    "title": "Modernised NSW AI Assessment Framework launched",
+    "description": "NSW Office for AI launches the new AIAF, aligned to the national assurance framework and the EU AI Act.",
+    "type": "policy_amended",
+    "jurisdiction": "nsw",
+    "relatedPolicyId": "nsw-artificial-intelligence-assessment-framework",
+    "sourceUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks/nsw-ai-assessment-framework",
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks/nsw-ai-assessment-framework"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
+  },
+  {
+    "id": "tl-2026-01-30-victoria-s-ai-mission-statement-launched",
+    "date": "2026-01-30",
+    "title": "Victoria’s AI Mission Statement launched",
+    "description": "Economy-wide AI strategy with six pillars, a $5.5m data-centre plan and an $8.1m AI career conversion program.",
+    "type": "policy_introduced",
+    "jurisdiction": "vic",
+    "relatedPolicyId": "victorian-ai-mission-statement",
+    "sourceUrl": "https://djsir.vic.gov.au/priorities-and-initiatives/ai-mission-statement",
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://djsir.vic.gov.au/priorities-and-initiatives/ai-mission-statement"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
+  },
+  {
+    "id": "tl-2026-03-09-esafety-industry-codes-take-effect",
+    "date": "2026-03-09",
+    "title": "eSafety industry codes take effect",
+    "description": "Codes covering generative AI services and AI companion chatbots become enforceable, with penalties up to $49.5m.",
+    "type": "policy_introduced",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "esafety-genai-industry-codes",
+    "sourceUrl": "https://www.esafety.gov.au/industry/codes",
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://www.esafety.gov.au/industry/codes"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
+  },
+  {
+    "id": "tl-2026-03-24-esafety-reports-on-ai-companion-risks-to-children",
+    "date": "2026-03-24",
+    "title": "eSafety reports on AI companion risks to children",
+    "description": "Report follows transparency notices to four AI companion providers; Character.AI adds age assurance, Chub AI geo-blocks Australia.",
+    "type": "announcement",
+    "jurisdiction": "federal",
+    "sourceUrl": "https://www.esafety.gov.au/newsroom/media-releases/esafety-report-shows-ai-companions-are-putting-children-at-risk",
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://www.esafety.gov.au/newsroom/media-releases/esafety-report-shows-ai-companions-are-putting-children-at-risk",
+        "title": "eSafety report: AI companions putting children at risk",
+        "publisher": "eSafety Commissioner — media releases"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
+  },
+  {
+    "id": "tl-2026-04-01-government-responds-to-the-senate-adopting-ai-repo",
+    "date": "2026-04-01",
+    "title": "Government responds to the Senate Adopting AI report",
+    "description": "Response to the Senate Select Committee tabled, consistent with the National AI Plan’s existing-frameworks approach.",
+    "type": "announcement",
+    "jurisdiction": "federal",
+    "sourceUrl": "https://www.industry.gov.au/publications/australian-government-response-senate-select-committee-adopting-artificial-intelligence-ai-report",
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://www.industry.gov.au/publications/australian-government-response-senate-select-committee-adopting-artificial-intelligence-ai-report",
+        "title": "Government response to the Senate Adopting AI report tabled",
+        "publisher": "Department of Industry, Science and Resources — news"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
+  },
+  {
+    "id": "tl-2026-04-08-asic-warns-on-ai-powered-investment-scams",
+    "date": "2026-04-08",
+    "title": "ASIC Warns on AI-Powered Investment Scams",
+    "description": "ASIC announces expanded takedown action against phishing and investment scam websites and warns that AI-generated videos, fake endorsements and targeted ads are making financial scams more convincing.",
+    "type": "announcement",
+    "jurisdiction": "federal",
+    "sourceUrl": "https://www.asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-063mr-asic-ramps-up-action-to-protect-consumers-from-ai-powered-online-investment-scams",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-063mr-asic-ramps-up-action-to-protect-consumers-from-ai-powered-online-investment-scams"
+      },
+      "notes": "Legacy timeline entry; its date and description require editorial re-checking against the source."
+    }
+  },
+  {
+    "id": "tl-2026-04-09-asd-issues-frontier-ai-cyber-security-guidance",
+    "date": "2026-04-09",
+    "title": "ASD Issues Frontier AI Cyber Security Guidance",
+    "description": "ASD publishes guidance on frontier AI models after Anthropic's Claude Mythos Preview announcement, warning that AI can accelerate vulnerability discovery and exploitation while also supporting defensive remediation.",
+    "type": "policy_introduced",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "asd-frontier-ai-models-cyber-security-2026",
+    "sourceUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/frontier-models-and-their-impact-on-cyber-security",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.cyber.gov.au/about-us/view-all-content/news/frontier-models-and-their-impact-on-cyber-security"
+      },
+      "notes": "Legacy timeline entry; its date and description require editorial re-checking against the source."
+    }
+  },
+  {
+    "id": "tl-2026-04-16-federal-court-issues-gpn-ai-practice-note",
+    "date": "2026-04-16",
+    "title": "Federal Court issues GPN-AI practice note",
+    "description": "First Federal Court practice note on generative AI in proceedings, with verification and disclosure duties.",
+    "type": "policy_introduced",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "federal-court-gpn-ai",
+    "sourceUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-ai",
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-ai"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
+  },
+  {
+    "id": "tl-2026-04-30-apra-calls-for-step-change-in-ai-risk-management",
+    "date": "2026-04-30",
+    "title": "APRA Calls for Step-Change in AI Risk Management",
+    "description": "APRA publishes an industry letter warning banks, insurers and superannuation trustees that AI governance, assurance and operational resilience practices are not keeping pace with AI adoption and frontier-model cyber risks.",
+    "type": "policy_introduced",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "apra-ai-industry-letter-2026",
+    "sourceUrl": "https://www.apra.gov.au/apra-letter-to-industry-on-artificial-intelligence-ai",
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://www.apra.gov.au/apra-letter-to-industry-on-artificial-intelligence-ai"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
+  },
+  {
+    "id": "tl-2026-05-08-asic-open-letter-on-ai-era-cyber-resilience",
+    "date": "2026-05-08",
+    "title": "ASIC open letter on AI-era cyber resilience",
+    "description": "ASIC writes to AFS licensees and market participants on AI-driven cyber threats.",
+    "type": "announcement",
+    "jurisdiction": "federal",
+    "sourceUrl": "https://asic.gov.au/newsroom",
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://asic.gov.au/newsroom",
+        "title": "ASIC writes to licensees on AI-era cyber resilience",
+        "publisher": "ASIC — newsroom"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
+  },
+  {
+    "id": "tl-2026-05-14-victorian-supreme-court-practice-note-sc-gen-25",
+    "date": "2026-05-14",
+    "title": "Victorian Supreme Court Practice Note SC GEN 25",
+    "description": "New practice note on AI use by court users replaces the 2024 guidelines.",
+    "type": "policy_introduced",
+    "jurisdiction": "vic",
+    "relatedPolicyId": "vic-supreme-court-sc-gen-25",
+    "sourceUrl": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes",
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
+  },
+  {
+    "id": "tl-2026-05-18-oaic-consults-on-automated-decision-making-transpa",
+    "date": "2026-05-18",
+    "title": "OAIC consults on automated decision-making transparency",
+    "description": "Issues paper on ADM transparency guidance ahead of Privacy Act obligations commencing 10 December 2026; submissions closed 15 June 2026.",
+    "type": "announcement",
+    "jurisdiction": "federal",
+    "sourceUrl": "https://www.oaic.gov.au/engage-with-us/consultations/consultation-on-guidance-for-transparency-in-automated-decision-making",
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://www.oaic.gov.au/engage-with-us/consultations/consultation-on-guidance-for-transparency-in-automated-decision-making",
+        "title": "OAIC opens consultation on ADM transparency guidance",
+        "publisher": "OAIC — media centre"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
+  },
+  {
+    "id": "tl-2026-05-29-fcfcoa-issues-practice-direction-on-ai-pd-ai",
+    "date": "2026-05-29",
+    "title": "FCFCOA issues Practice Direction on AI (PD-AI)",
+    "description": "Federal Circuit and Family Court practice direction applies to proceedings commenced on or after 1 December 2025.",
+    "type": "policy_introduced",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "family-court-ai-practice-direction",
+    "sourceUrl": "https://www.fcfcoa.gov.au/pd/pd-ai",
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://www.fcfcoa.gov.au/pd/pd-ai"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
+  },
+  {
+    "id": "tl-2026-06-15-first-new-mandatory-requirement-under-the-ai-in-go",
+    "date": "2026-06-15",
+    "title": "First new mandatory requirement under the AI in government policy v2 commences",
+    "description": "Phased commencement of version 2 requirements begins; all requirements apply from December 2026.",
+    "type": "milestone",
+    "jurisdiction": "federal",
+    "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
+    "verification": {
+      "status": "stale",
+      "source": {
+        "url": "https://www.digital.gov.au/ai/ai-in-government-policy",
+        "title": "DTA AI policy v2: first new mandatory requirement commences",
+        "publisher": "digital.gov.au — AI in government policy hub"
+      },
+      "checkedAt": "2026-07-10T00:00:00.000Z",
+      "checkedBy": "Policai editorial review",
+      "method": "manual"
+    }
+  }
+]
