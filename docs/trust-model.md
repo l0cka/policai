@@ -260,6 +260,18 @@ history where useful, but are not shown as current public developments.
 - HTTP 200 browser challenges are retrieval failures, not successful source
   checks, including HTML challenges served with a missing or generic binary
   MIME type.
+- For an existing tracked record whose official source consistently blocks the
+  hardened retriever, the local MCP can accept an explicit browser capture.
+  This is not a visual-check exception: the capture must include the normalized
+  semantic page text, relevant official document links, a fresh timestamp,
+  reviewer attribution, and the locally downloaded bytes for every linked
+  canonical instrument. Policai validates file signatures and size limits,
+  hashes the page and exact document bytes into one composite fingerprint, and
+  persists the hashes and provenance without retaining local file paths.
+  Approval and publication each require a fresh matching capture; a changed
+  page or document therefore returns the record to review. Browser capture is
+  unavailable for new records and cannot bypass stage, human approval, or the
+  publication gate.
 
 ## Date policy
 
@@ -315,8 +327,10 @@ replaces the last editorially verified fingerprint; later audits and the
 collector continue comparing against that trusted baseline. The audit never
 promotes a record back to verified.
 Records migrated without a reproducible fingerprint are likewise stale and
-withheld until a successful fingerprinted editorial re-verification; current
-availability in a browser is not a substitute for canonical hash evidence.
+withheld until a successful fingerprinted editorial re-verification. Current
+availability in a browser is not by itself a substitute for canonical hash
+evidence; the controlled browser-capture workflow above is acceptable because
+it produces and later rechecks that evidence.
 Canonical migrated records in that state are explicitly labelled `stale`, and
 `npm run validate:data` rejects any future record labelled `verified` without a
 valid SHA-256 source fingerprint.

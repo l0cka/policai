@@ -7,10 +7,12 @@ const {
   publishStagedSource,
   recordManualSourceReview,
   rejectStagedSource,
+  stageSourceCapture,
   stageSourceUrl,
 } = vi.hoisted(() => ({
   approveStagedSource: vi.fn(),
   stageSourceUrl: vi.fn(),
+  stageSourceCapture: vi.fn(),
   publishStagedSource: vi.fn(),
   recordManualSourceReview: vi.fn(),
   rejectStagedSource: vi.fn(),
@@ -22,6 +24,7 @@ vi.mock('@/lib/source-ingest', () => ({
   checkCoverage: vi.fn(),
   normalizeReviewStatus: vi.fn((status?: string) => status),
   approveStagedSource,
+  stageSourceCapture,
   stageSourceUrl,
   publishStagedSource,
   recordManualSourceReview,
@@ -37,6 +40,7 @@ import {
   handlePublishStagedSource,
   handleRecordManualSourceReview,
   handleRejectStagedSource,
+  handleStageSourceCapture,
   handleStageSourceUrl,
 } from './tool-handlers'
 
@@ -46,6 +50,7 @@ describe('MCP tool handlers', () => {
   beforeEach(() => {
     process.env.POLICAI_MCP_ADMIN_TOKEN = 'secret-token'
     stageSourceUrl.mockReset()
+    stageSourceCapture.mockReset()
     approveStagedSource.mockReset()
     publishStagedSource.mockReset()
     recordManualSourceReview.mockReset()
@@ -85,6 +90,7 @@ describe('MCP tool handlers', () => {
     ).rejects.toThrow('Invalid POLICAI_MCP_ADMIN_TOKEN')
 
     expect(stageSourceUrl).not.toHaveBeenCalled()
+    expect(stageSourceCapture).not.toHaveBeenCalled()
     expect(approveStagedSource).not.toHaveBeenCalled()
     expect(publishStagedSource).not.toHaveBeenCalled()
     expect(rejectStagedSource).not.toHaveBeenCalled()
@@ -110,6 +116,40 @@ describe('MCP tool handlers', () => {
       approvalNotes: undefined,
       manualExtraction: undefined,
       reviewedDate: undefined,
+      browserCapture: undefined,
+    })
+  })
+
+  it('forwards reviewer-attributed browser captures without persisting the token', async () => {
+    stageSourceCapture.mockResolvedValue({ id: 'source-review-1' })
+    const capture = {
+      pageTitle: 'Official policy',
+      pageText: 'Official policy text with enough content for review.',
+      references: ['https://example.gov.au/policy.pdf'],
+      capturedAt: new Date().toISOString(),
+      capturedBy: 'Jane Reviewer',
+      notes: 'Captured from the official page in a controlled browser.',
+      linkedDocuments: [{
+        url: 'https://example.gov.au/policy.pdf',
+        filePath: '/tmp/policy.pdf',
+      }],
+    }
+
+    await handleStageSourceCapture({
+      url: 'https://example.gov.au/policy',
+      entryKind: 'policy',
+      targetRecordId: 'policy-1',
+      capture,
+      adminToken: 'secret-token',
+    })
+
+    expect(stageSourceCapture).toHaveBeenCalledWith({
+      url: 'https://example.gov.au/policy',
+      entryKind: 'policy',
+      targetRecordId: 'policy-1',
+      notes: undefined,
+      actor: 'local-mcp-admin',
+      browserCapture: capture,
     })
   })
 

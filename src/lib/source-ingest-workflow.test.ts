@@ -1,5 +1,6 @@
 /* @vitest-environment node */
 
+import { unlink, writeFile } from 'node:fs/promises';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type {
   Development,
@@ -13,6 +14,7 @@ const {
   createPolicy,
   createSourceReview,
   createTimelineEvent,
+  documentKindFromBytes,
   extractRetrievedDocument,
   getDevelopments,
   getPolicies,
@@ -34,6 +36,7 @@ const {
   createPolicy: vi.fn(),
   createSourceReview: vi.fn(),
   createTimelineEvent: vi.fn(),
+  documentKindFromBytes: vi.fn(),
   extractRetrievedDocument: vi.fn(),
   getDevelopments: vi.fn(),
   getPolicies: vi.fn(),
@@ -54,7 +57,10 @@ const {
 
 vi.mock('@/lib/analysis', () => ({ analyseContentRelevance }));
 vi.mock('@/lib/pipeline/content', () => ({ extractRetrievedDocument }));
-vi.mock('@/lib/pipeline/fetch', () => ({ retrieveSource }));
+vi.mock('@/lib/pipeline/fetch', () => ({
+  documentKindFromBytes,
+  retrieveSource,
+}));
 vi.mock('@/lib/data-service', () => ({
   createPolicy,
   createSourceReview,
@@ -81,6 +87,7 @@ import {
   publishStagedSource,
   recordManualSourceReview,
   rejectStagedSource,
+  stageSourceCapture,
   stageSourceUrl,
 } from './source-ingest';
 import { timelineRevisionHash } from './policy-revision';
@@ -194,6 +201,7 @@ describe('source ingest approval workflow', () => {
     getSourceReviews.mockResolvedValue([]);
     getTimelineEvents.mockResolvedValue([]);
     sourceUrlExists.mockResolvedValue(false);
+    documentKindFromBytes.mockReturnValue('pdf');
     retrieveSource.mockResolvedValue({
       body: '<main>Official AI policy</main>',
       durationMs: 1,
@@ -485,6 +493,7 @@ describe('source ingest approval workflow', () => {
     expect(sourceUrlExists).toHaveBeenCalledWith(SOURCE_URL);
     expect(retrieveSource).toHaveBeenCalledWith(SOURCE_URL, {
       destinationPolicy: 'official',
+      timeoutMs: 60_000,
     });
     expect(createSourceReview).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -649,6 +658,70 @@ describe('source ingest approval workflow', () => {
     const staged = createSourceReview.mock.calls[0][0] as SourceReview;
     expect(staged.proposedRecord).not.toHaveProperty('verification');
     expect(staged.proposedRecord).not.toHaveProperty('lastReviewedAt');
+  });
+
+  it('stages a browser-fingerprinted tracked source without persisting local paths', async () => {
+    const targetDraft = buildDraft({
+      id: 'existing-policy',
+      effectiveDate: '2026-07-01',
+    });
+    const target: Policy = {
+      ...targetDraft,
+      effectiveDate: '2026-07-01',
+      dates: targetDraft.dates ?? [],
+      verification: {
+        status: 'stale',
+        source: { url: SOURCE_URL },
+      },
+    };
+    getPolicies.mockResolvedValue([target]);
+    const capturedDocumentUrl = 'https://example.gov.au/policy.pdf';
+    const capturedDocumentPath = `/tmp/policai-capture-${Date.now()}.pdf`;
+    await writeFile(capturedDocumentPath, '%PDF-1.4\n% test fixture\n');
+
+    try {
+      await stageSourceCapture({
+        url: SOURCE_URL,
+        entryKind: 'policy',
+        targetRecordId: target.id,
+        actor: 'local-mcp-admin',
+        browserCapture: {
+          pageTitle: 'Official AI policy',
+          pageText: 'Official browser-captured policy text for review.',
+          references: [capturedDocumentUrl],
+          capturedAt: new Date().toISOString(),
+          capturedBy: 'Jane Reviewer',
+          notes: 'Captured in a controlled browser from the official source.',
+          linkedDocuments: [{
+            url: capturedDocumentUrl,
+            filePath: capturedDocumentPath,
+          }],
+        },
+      });
+    } finally {
+      await unlink(capturedDocumentPath).catch(() => undefined);
+    }
+
+    expect(retrieveSource).not.toHaveBeenCalled();
+    expect(analyseContentRelevance).not.toHaveBeenCalled();
+    const staged = createSourceReview.mock.calls[0][0] as SourceReview;
+    expect(staged.sourceEvidence).toEqual(
+      expect.objectContaining({
+        contentHash: expect.stringMatching(/^[a-f0-9]{64}$/),
+        browserCapture: expect.objectContaining({
+          capturedBy: 'Jane Reviewer',
+          characterCount: 49,
+          pageContentHash: expect.stringMatching(/^[a-f0-9]{64}$/),
+        }),
+        linkedDocuments: [
+          expect.objectContaining({
+            url: capturedDocumentUrl,
+            contentHash: expect.stringMatching(/^[a-f0-9]{64}$/),
+          }),
+        ],
+      }),
+    );
+    expect(JSON.stringify(staged)).not.toContain(capturedDocumentPath);
   });
 
   it('rejects tracked re-verification that redirects to another policy identity', async () => {
@@ -1224,7 +1297,9 @@ describe('source ingest approval workflow', () => {
         method: 'manual',
       },
     });
-    expect(retrieveSource).toHaveBeenCalledWith(SOURCE_URL);
+    expect(retrieveSource).toHaveBeenCalledWith(SOURCE_URL, {
+      timeoutMs: 60_000,
+    });
   });
 
   it('refuses approval when a new-policy draft id belongs to another policy', async () => {
@@ -1699,7 +1774,9 @@ describe('source ingest approval workflow', () => {
       approvalNotes: 'Matched the lead to the official publication.',
     });
 
-    expect(retrieveSource).toHaveBeenCalledWith(SOURCE_URL);
+    expect(retrieveSource).toHaveBeenCalledWith(SOURCE_URL, {
+      timeoutMs: 60_000,
+    });
     expect(extractRetrievedDocument).toHaveBeenCalledWith(
       expect.objectContaining({
         evidence: expect.objectContaining({ url: SOURCE_URL }),
@@ -2975,7 +3052,9 @@ describe('source ingest approval workflow', () => {
 
     expect(createPolicy).not.toHaveBeenCalled();
     expect(sourceUrlExists).not.toHaveBeenCalled();
-    expect(retrieveSource).toHaveBeenCalledWith(SOURCE_URL);
+    expect(retrieveSource).toHaveBeenCalledWith(SOURCE_URL, {
+      timeoutMs: 60_000,
+    });
     expect(markCollectionReviewed).toHaveBeenCalled();
     expect(updateSourceReview).toHaveBeenCalledWith(
       'source-review-1',
@@ -3062,7 +3141,9 @@ describe('source ingest approval workflow', () => {
 
     await publishStagedSource('source-review-1');
 
-    expect(retrieveSource).toHaveBeenCalledWith(SOURCE_URL);
+    expect(retrieveSource).toHaveBeenCalledWith(SOURCE_URL, {
+      timeoutMs: 60_000,
+    });
     expect(createTimelineEvent).not.toHaveBeenCalled();
     expect(updateSourceReview).toHaveBeenCalledWith(
       'source-review-1',

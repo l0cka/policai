@@ -1,4 +1,7 @@
 import { createHash, randomUUID } from "node:crypto";
+import { lstat, readFile, realpath, stat } from "node:fs/promises";
+import { homedir, tmpdir } from "node:os";
+import { isAbsolute, relative, resolve } from "node:path";
 import { analyseContentRelevance } from "@/lib/analysis";
 import { isValidCalendarDate } from "@/lib/calendar-date";
 import { withDataMutationLock } from "@/lib/data-lock";
@@ -7,6 +10,7 @@ import {
 	type ExtractedDocument,
 } from "@/lib/pipeline/content";
 import {
+	documentKindFromBytes,
 	retrieveSource,
 	type RetrievedSource,
 } from "@/lib/pipeline/fetch";
@@ -78,6 +82,282 @@ export interface ReviewedDateInput {
 	date: string;
 	precision: DatePrecision;
 	notes: string;
+}
+
+export interface BrowserCaptureInput {
+	pageTitle: string;
+	pageText: string;
+	references: string[];
+	stableMetadata?: Array<{ key: string; value: string }>;
+	capturedAt: string;
+	capturedBy: string;
+	notes: string;
+	linkedDocuments: Array<{
+		url: string;
+		filePath: string;
+	}>;
+}
+
+const EDITORIAL_SOURCE_TIMEOUT_MS = 60_000;
+const MAX_BROWSER_CAPTURE_CHARACTERS = 500_000;
+const MAX_CAPTURED_DOCUMENT_BYTES = 32 * 1024 * 1024;
+const SHA256_PATTERN = /^[a-f0-9]{64}$/;
+
+function retrieveEditorialSource(
+	url: string,
+	destinationPolicy?: "official" | "public-https",
+): Promise<RetrievedSource> {
+	return retrieveSource(url, {
+		timeoutMs: EDITORIAL_SOURCE_TIMEOUT_MS,
+		...(destinationPolicy ? { destinationPolicy } : {}),
+	});
+}
+
+const STABLE_BROWSER_METADATA_KEYS = new Set([
+	"article:published_time",
+	"article:modified_time",
+	"date",
+	"datepublished",
+	"dcterms.date",
+	"dcterms.issued",
+	"dcterms.modified",
+	"dc.date",
+	"og:title",
+	"citation_title",
+	"citation_publication_date",
+]);
+
+function capturePathIsWithin(root: string, filePath: string): boolean {
+	const child = relative(root, filePath);
+	return child === "" || (!child.startsWith("..") && !isAbsolute(child));
+}
+
+async function readCapturedDocument(
+	filePath: string,
+): Promise<{ bytes: Uint8Array; contentType: string }> {
+	if (!isAbsolute(filePath)) {
+		throw new Error("Browser capture document paths must be absolute");
+	}
+	const original = await lstat(filePath);
+	if (original.isSymbolicLink()) {
+		throw new Error("Browser capture document paths cannot be symbolic links");
+	}
+	const resolvedPath = await realpath(filePath);
+	const allowedRoots = await Promise.all(
+		[resolve(tmpdir()), resolve("/tmp"), resolve(homedir(), "Downloads")].map(
+			async (root) => realpath(root).catch(() => root),
+		),
+	);
+	if (!allowedRoots.some((root) => capturePathIsWithin(root, resolvedPath))) {
+		throw new Error(
+			"Browser capture documents must be in the system temporary directory or the reviewer's Downloads directory",
+		);
+	}
+	const details = await stat(resolvedPath);
+	if (!details.isFile()) {
+		throw new Error("Browser capture document path must identify a regular file");
+	}
+	if (details.size <= 0 || details.size > MAX_CAPTURED_DOCUMENT_BYTES) {
+		throw new Error(
+			`Browser capture document must be between 1 and ${MAX_CAPTURED_DOCUMENT_BYTES} bytes`,
+		);
+	}
+	const bytes = await readFile(resolvedPath);
+	const kind = documentKindFromBytes(bytes);
+	if (!kind) {
+		throw new Error(
+			"Browser capture document must be a recognised PDF, Word, or RTF file",
+		);
+	}
+	const contentType =
+		kind === "pdf"
+			? "application/pdf"
+			: kind === "docx"
+				? "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+				: kind === "doc"
+					? "application/msword"
+					: "application/rtf";
+	return { bytes, contentType };
+}
+
+function escapeCapturedHtml(value: string): string {
+	return value
+		.replaceAll("&", "&amp;")
+		.replaceAll("<", "&lt;")
+		.replaceAll(">", "&gt;")
+		.replaceAll('"', "&quot;")
+		.replaceAll("'", "&#39;");
+}
+
+async function buildBrowserCapturedSource(
+	sourceUrl: string,
+	input: BrowserCaptureInput,
+): Promise<RetrievedSource> {
+	const canonicalUrl = canonicalizeSourceUrl(sourceUrl);
+	if (!isAllowedSourceHost(canonicalUrl)) {
+		throw new Error("Browser captures require an allow-listed official source URL");
+	}
+	const capturedAtMs = Date.parse(input.capturedAt);
+	if (!Number.isFinite(capturedAtMs)) {
+		throw new Error("Browser capture requires an RFC 3339 capturedAt timestamp");
+	}
+	const nowMs = Date.now();
+	if (capturedAtMs > nowMs + VERIFICATION_CLOCK_SKEW_TOLERANCE_MS) {
+		throw new Error("Browser capture timestamp cannot be in the future");
+	}
+	if (capturedAtMs < nowMs - 24 * 60 * 60 * 1000) {
+		throw new Error("Browser capture must have been collected within the last 24 hours");
+	}
+	const capturedBy = input.capturedBy.trim();
+	const notes = input.notes.trim();
+	const pageTitle = input.pageTitle.trim();
+	const pageText = input.pageText.replace(/\s+/g, " ").trim();
+	if (!capturedBy) throw new Error("Browser capture requires a human reviewer identity");
+	if (notes.length < 20) {
+		throw new Error("Browser capture requires substantive provenance notes");
+	}
+	if (!pageTitle) throw new Error("Browser capture requires the displayed page title");
+	if (
+		pageText.length < 20 ||
+		pageText.length > MAX_BROWSER_CAPTURE_CHARACTERS
+	) {
+		throw new Error(
+			`Browser capture page text must contain 20 to ${MAX_BROWSER_CAPTURE_CHARACTERS} characters`,
+		);
+	}
+	if (input.linkedDocuments.length === 0 || input.linkedDocuments.length > 8) {
+		throw new Error("Browser capture requires between 1 and 8 linked documents");
+	}
+
+	const references = Array.from(
+		new Set(
+			input.references.map((value) => {
+				const canonical = canonicalizeSourceUrl(value);
+				const parsed = new URL(canonical);
+				if (
+					parsed.protocol !== "https:" ||
+					parsed.username ||
+					parsed.password
+				) {
+					throw new Error("Browser capture references must be public HTTPS URLs");
+				}
+				return canonical;
+			}),
+		),
+	).sort();
+	const metadata = Array.from(
+		new Set(
+			(input.stableMetadata ?? []).map(({ key, value }) => {
+				const normalizedKey = key.trim().toLowerCase();
+				const normalizedValue = value.trim();
+				if (
+					!STABLE_BROWSER_METADATA_KEYS.has(normalizedKey) ||
+					!normalizedValue
+				) {
+					throw new Error("Browser capture contains unsupported stable metadata");
+				}
+				return `${normalizedKey}:${normalizedValue}`;
+			}),
+		),
+	).sort();
+	const pageContentHash = createHash("sha256")
+		.update(
+			JSON.stringify({
+				text: pageText,
+				references: references.map((url) => `a:href:${url}`),
+				metadata,
+			}),
+		)
+		.digest("hex");
+	if (!SHA256_PATTERN.test(pageContentHash)) {
+		throw new Error("Browser capture did not produce a valid page fingerprint");
+	}
+
+	let capturedBytes = 0;
+	const linkedSources: RetrievedSource[] = [];
+	for (const linked of input.linkedDocuments) {
+		const linkedUrl = canonicalizeSourceUrl(linked.url);
+		if (!isAllowedSourceHost(linkedUrl)) {
+			throw new Error(
+				"Browser capture linked documents require allow-listed official URLs",
+			);
+		}
+		if (!references.some((reference) => sourceUrlsEqual(reference, linkedUrl))) {
+			throw new Error(
+				"Every captured document URL must appear in the captured page references",
+			);
+		}
+		const captured = await readCapturedDocument(linked.filePath);
+		capturedBytes += captured.bytes.byteLength;
+		if (capturedBytes > MAX_CAPTURED_DOCUMENT_BYTES) {
+			throw new Error(
+				`Browser capture documents exceed the ${MAX_CAPTURED_DOCUMENT_BYTES} byte aggregate limit`,
+			);
+		}
+		linkedSources.push({
+			body: "",
+			bytes: captured.bytes,
+			durationMs: 0,
+			evidence: {
+				url: linkedUrl,
+				finalUrl: linkedUrl,
+				retrievedAt: input.capturedAt,
+				contentType: captured.contentType,
+				contentHash: createHash("sha256")
+					.update(captured.bytes)
+					.digest("hex"),
+			},
+		});
+	}
+	linkedSources.sort((left, right) =>
+		left.evidence.url.localeCompare(right.evidence.url),
+	);
+	const linkedDocuments = linkedSources.map(({ evidence }) => ({
+		url: evidence.url,
+		finalUrl: evidence.finalUrl,
+		retrievedAt: evidence.retrievedAt,
+		contentType: evidence.contentType,
+		contentHash: evidence.contentHash ?? "",
+	}));
+	const contentHash = createHash("sha256")
+		.update(
+			JSON.stringify({
+				pageHash: pageContentHash,
+				linkedDocuments: linkedDocuments.map(({ url, contentHash }) => ({
+					url,
+					contentHash,
+				})),
+			}),
+		)
+		.digest("hex");
+	const referenceMarkup = references
+		.map(
+			(reference) =>
+				`<a href="${escapeCapturedHtml(reference)}">${escapeCapturedHtml(reference)}</a>`,
+		)
+		.join(" ");
+	return {
+		body: `<main><h1>${escapeCapturedHtml(pageTitle)}</h1><p>${escapeCapturedHtml(pageText)}</p>${referenceMarkup}</main>`,
+		linkedSources,
+		durationMs: 0,
+		evidence: {
+			url: canonicalUrl,
+			finalUrl: canonicalUrl,
+			title: pageTitle,
+			retrievedAt: input.capturedAt,
+			contentType: "text/html",
+			contentHash,
+			linkedDocuments,
+			browserCapture: {
+				method: "browser",
+				capturedAt: input.capturedAt,
+				capturedBy,
+				notes,
+				pageContentHash,
+				characterCount: pageText.length,
+			},
+		},
+	};
 }
 
 export interface SourceAnalysisResult {
@@ -398,11 +678,10 @@ export async function analyseSourceUrl(
 	const validation = validateSourceUrl(url, options);
 
 	const canonicalUrl = validation.canonicalUrl;
-	const retrieved = await retrieveSource(canonicalUrl, {
-		destinationPolicy: validation.isOfficial
-			? "official"
-			: "public-https",
-	});
+	const retrieved = await retrieveEditorialSource(
+		canonicalUrl,
+		validation.isOfficial ? "official" : "public-https",
+	);
 	const document = await extractRetrievedDocument(
 		retrieved,
 		canonicalUrl,
@@ -514,6 +793,7 @@ async function stageSourceUrlUnlocked(input: {
 	notes?: string;
 	actor: string;
 	stageOnly?: boolean;
+	browserCapture?: BrowserCaptureInput;
 }): Promise<SourceReview> {
 	const { canonicalUrl, isOfficial } = validateSourceUrl(input.url, {
 		stageOnly: input.stageOnly,
@@ -605,12 +885,20 @@ async function stageSourceUrlUnlocked(input: {
 			sourceUrlsEqual(development.url, canonicalUrl) &&
 			development.status === "detected",
 	);
+	if (input.browserCapture && !targetPolicy && !targetTimelineEvent) {
+		throw new Error(
+			"Browser capture staging is limited to an existing tracked record",
+		);
+	}
 	let requiresManualExtraction = false;
 	let analysisResult: SourceAnalysisResult;
 	if (targetPolicy || targetTimelineEvent) {
-		const retrieved = await retrieveSource(canonicalUrl, {
-			destinationPolicy: isOfficial ? "official" : "public-https",
-		});
+		const retrieved = input.browserCapture
+			? await buildBrowserCapturedSource(canonicalUrl, input.browserCapture)
+			: await retrieveEditorialSource(
+					canonicalUrl,
+					isOfficial ? "official" : "public-https",
+				);
 		let document: ExtractedDocument | undefined;
 		try {
 			document = await extractRetrievedDocument(
@@ -622,11 +910,41 @@ async function stageSourceUrlUnlocked(input: {
 			requiresManualExtraction = true;
 		}
 		if (document) {
-			analysisResult = await analyseExtractedSource(
-				retrieved,
-				canonicalUrl,
-				document,
-			);
+			if (input.browserCapture) {
+				const trackedRecord = targetPolicy ?? targetTimelineEvent;
+				if (!trackedRecord) {
+					throw new Error("Tracked record disappeared during staging");
+				}
+				analysisResult = {
+					url: canonicalUrl,
+					title: document.title,
+					cleanContent: document.text,
+					analysis: {
+						isRelevant: true,
+						relevanceScore: 1,
+						policyType: targetPolicy?.type ?? null,
+						jurisdiction: trackedRecord.jurisdiction,
+						summary:
+							targetPolicy?.description ?? trackedRecord.description,
+						tags: targetPolicy?.tags ?? [],
+						agencies: targetPolicy?.agencies ?? [],
+					},
+					sourceEvidence: canonicalizeSourceEvidence({
+						...retrieved.evidence,
+						title: document.title,
+						publishedAt: document.publishedAt,
+						publishedAtPrecision: document.publishedAtPrecision,
+					}),
+					discoveredAt:
+						retrieved.evidence.retrievedAt ?? new Date().toISOString(),
+				};
+			} else {
+				analysisResult = await analyseExtractedSource(
+					retrieved,
+					canonicalUrl,
+					document,
+				);
+			}
 		} else {
 			const trackedRecord = targetPolicy ?? targetTimelineEvent;
 			if (!trackedRecord) {
@@ -844,6 +1162,14 @@ export function stageSourceUrl(
 	return withDataMutationLock(() => stageSourceUrlUnlocked(input));
 }
 
+export function stageSourceCapture(
+	input: Omit<Parameters<typeof stageSourceUrlUnlocked>[0], "browserCapture"> & {
+		browserCapture: BrowserCaptureInput;
+	},
+): ReturnType<typeof stageSourceUrlUnlocked> {
+	return withDataMutationLock(() => stageSourceUrlUnlocked(input));
+}
+
 function rebaseLinkedDevelopment(
 	review: SourceReview,
 	sourceUrl: string,
@@ -871,6 +1197,7 @@ async function approveStagedSourceUnlocked(input: {
 	approvalNotes?: string;
 	manualExtraction?: ManualExtractionInput;
 	reviewedDate?: ReviewedDateInput;
+	browserCapture?: BrowserCaptureInput;
 }): Promise<SourceReview> {
 	const review = await getSourceReviewById(input.id);
 	if (!review) {
@@ -909,7 +1236,30 @@ async function approveStagedSourceUnlocked(input: {
 		);
 	}
 	validateSourceUrl(approvalSourceUrl);
-	const retrieved = await retrieveSource(approvalSourceUrl);
+	const stagedWithBrowserCapture = Boolean(
+		review.sourceEvidence.browserCapture,
+	);
+	if (stagedWithBrowserCapture !== Boolean(input.browserCapture)) {
+		throw new Error(
+			stagedWithBrowserCapture
+				? "Browser-captured reviews require a fresh browser capture for approval"
+				: "A browser capture changes the retrieval method and must be staged before approval",
+		);
+	}
+	if (
+		input.browserCapture &&
+		input.browserCapture.capturedBy.trim() !== input.actor.trim()
+	) {
+		throw new Error(
+			"The approving reviewer must be the named browser-capture reviewer",
+		);
+	}
+	const retrieved = input.browserCapture
+		? await buildBrowserCapturedSource(
+				approvalSourceUrl,
+				input.browserCapture,
+			)
+		: await retrieveEditorialSource(approvalSourceUrl);
 	if (!replacesSource) {
 		if (!review.sourceEvidence.contentHash) {
 			throw new Error(
@@ -1596,6 +1946,7 @@ function policyWithLatestSourceAudit(
 async function assertSourceStillMatchesApproval(
 	review: SourceReview,
 	approvedVerification: Policy["verification"],
+	browserCapture?: BrowserCaptureInput,
 ): Promise<void> {
 	const approvedHash = approvedVerification.source.contentHash;
 	const approvedDestination =
@@ -1611,7 +1962,19 @@ async function assertSourceStillMatchesApproval(
 			"Approved source evidence is incomplete or inconsistent; re-approve the source before publication",
 		);
 	}
-	const retrieved = await retrieveSource(review.sourceUrl);
+	const approvedWithBrowserCapture = Boolean(
+		approvedVerification.source.browserCapture,
+	);
+	if (approvedWithBrowserCapture !== Boolean(browserCapture)) {
+		throw new Error(
+			approvedWithBrowserCapture
+				? "Browser-captured sources require a fresh browser capture before publication"
+				: "A browser capture changes the retrieval method and requires a new staged review",
+		);
+	}
+	const retrieved = browserCapture
+		? await buildBrowserCapturedSource(review.sourceUrl, browserCapture)
+		: await retrieveEditorialSource(review.sourceUrl);
 	if (retrieved.evidence.contentHash !== approvedHash) {
 		throw new Error(
 			"Official source changed after approval; re-approve it before publication",
@@ -1719,12 +2082,18 @@ async function canonicalRecordWrittenFromReview(
 		: null;
 }
 
-export function publishStagedSource(id: string): Promise<SourceReview> {
-	return withDataMutationLock(() => publishStagedSourceUnlocked(id));
+export function publishStagedSource(
+	id: string,
+	options: { browserCapture?: BrowserCaptureInput } = {},
+): Promise<SourceReview> {
+	return withDataMutationLock(() =>
+		publishStagedSourceUnlocked(id, options),
+	);
 }
 
 async function publishStagedSourceUnlocked(
 	id: string,
+	options: { browserCapture?: BrowserCaptureInput } = {},
 ): Promise<SourceReview> {
 	const review = await getSourceReviewById(id);
 	if (!review) {
@@ -1775,7 +2144,11 @@ async function publishStagedSourceUnlocked(
 		}
 	}
 	await assertTargetSourceIdentityIsUncontested(review, approvedVerification);
-	await assertSourceStillMatchesApproval(review, approvedVerification);
+	await assertSourceStillMatchesApproval(
+		review,
+		approvedVerification,
+		options.browserCapture,
+	);
 
 	const publishedAt = new Date().toISOString();
 	let reviewForPublication = canonicalRecord

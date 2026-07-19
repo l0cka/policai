@@ -127,6 +127,53 @@ function validateManualExtractionEvidence(
   }
 }
 
+function validateBrowserCaptureEvidence(
+  label: string,
+  source: SourceEvidence | undefined,
+  errors: string[],
+): void {
+  const capture = source?.browserCapture;
+  if (!capture) return;
+  if (capture.method !== 'browser') {
+    errors.push(`${label}: invalid browser capture method`);
+  }
+  if (!isTimestampString(capture.capturedAt)) {
+    errors.push(`${label}: invalid browser capture timestamp`);
+  }
+  if (!isNonEmptyString(capture.capturedBy)) {
+    errors.push(`${label}: browser capture requires a reviewer`);
+  }
+  if (
+    !isNonEmptyString(capture.notes) ||
+    capture.notes.trim().length < 20
+  ) {
+    errors.push(`${label}: browser capture requires substantive notes`);
+  }
+  if (!SHA256.test(capture.pageContentHash)) {
+    errors.push(`${label}: browser capture pageContentHash must be SHA-256`);
+  }
+  if (
+    !Number.isInteger(capture.characterCount) ||
+    capture.characterCount < 20 ||
+    capture.characterCount > 500_000
+  ) {
+    errors.push(
+      `${label}: browser capture characterCount must be between 20 and 500000`,
+    );
+  }
+  if (!source?.contentHash) {
+    errors.push(`${label}: browser capture requires a source contentHash`);
+  }
+  if (
+    source?.retrievedAt &&
+    capture.capturedAt !== source.retrievedAt
+  ) {
+    errors.push(
+      `${label}: browser capture timestamp must match source retrieval`,
+    );
+  }
+}
+
 function validateReviewedDateEvidence(
   label: string,
   source: SourceEvidence | undefined,
@@ -267,6 +314,11 @@ function validateVerification(
     errors.push(`${label}: verification contentHash must be SHA-256`);
   }
   validateManualExtractionEvidence(
+    `${label}: verification source`,
+    source,
+    errors,
+  );
+  validateBrowserCaptureEvidence(
     `${label}: verification source`,
     source,
     errors,
@@ -492,6 +544,7 @@ export function validatePolicies(policies: Policy[]): ValidationReport {
           } else {
             const dateSource = date.source as unknown as SourceEvidence;
             validateManualExtractionEvidence(dateLabel, dateSource, errors);
+            validateBrowserCaptureEvidence(dateLabel, dateSource, errors);
             validateReviewedDateEvidence(dateLabel, dateSource, errors);
             if (
               dateSource.reviewedDate &&
@@ -1177,6 +1230,11 @@ export function validateSourceReviews(
       );
     }
     validateManualExtractionEvidence(
+      `${label}: source evidence`,
+      sourceEvidence,
+      errors,
+    );
+    validateBrowserCaptureEvidence(
       `${label}: source evidence`,
       sourceEvidence,
       errors,

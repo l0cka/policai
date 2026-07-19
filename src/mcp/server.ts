@@ -10,6 +10,7 @@ import {
   handlePublishStagedSource,
   handleRecordManualSourceReview,
   handleRejectStagedSource,
+  handleStageSourceCapture,
   handleStageSourceUrl,
   toToolText,
 } from './tool-handlers';
@@ -17,6 +18,23 @@ import {
 const server = new McpServer({
   name: 'policai-source-ingest',
   version: '0.1.0',
+});
+
+const browserCaptureSchema = z.object({
+  pageTitle: z.string().min(1).max(500),
+  pageText: z.string().min(20).max(500_000),
+  references: z.array(z.string().url()).max(256),
+  stableMetadata: z.array(z.object({
+    key: z.string().min(1),
+    value: z.string().min(1),
+  })).max(32).optional(),
+  capturedAt: z.string().datetime({ offset: true }),
+  capturedBy: z.string().min(1),
+  notes: z.string().min(20),
+  linkedDocuments: z.array(z.object({
+    url: z.string().url(),
+    filePath: z.string().min(1),
+  })).min(1).max(8),
 });
 
 server.registerTool(
@@ -79,6 +97,29 @@ server.registerTool(
 );
 
 server.registerTool(
+  'stage_source_capture',
+  {
+    title: 'Stage browser-captured source',
+    description:
+      'Stages an existing tracked record from a fresh, reviewer-attributed browser capture when the official source blocks the hardened server-side retriever. The capture includes normalized page text and local bytes for every linked canonical document; paths are validated and never persisted. Requires POLICAI_MCP_ADMIN_TOKEN. Does not approve or publish.',
+    inputSchema: {
+      url: z.string().url(),
+      entryKind: z.enum(['policy', 'timeline_event']),
+      targetRecordId: z.string().min(1),
+      notes: z.string().optional(),
+      capture: browserCaptureSchema,
+      adminToken: z.string(),
+    },
+    annotations: {
+      readOnlyHint: false,
+      idempotentHint: false,
+      destructiveHint: true,
+    },
+  },
+  async (input) => toToolText(await handleStageSourceCapture(input)),
+);
+
+server.registerTool(
   'list_staged_sources',
   {
     title: 'List staged sources',
@@ -121,6 +162,7 @@ server.registerTool(
         precision: z.enum(['day', 'month', 'year']),
         notes: z.string().min(20),
       }).optional(),
+      browserCapture: browserCaptureSchema.optional(),
       adminToken: z.string(),
     },
     annotations: {
@@ -173,6 +215,7 @@ server.registerTool(
     description: 'Publishes a staged source review into Policai data. Requires POLICAI_MCP_ADMIN_TOKEN.',
     inputSchema: {
       id: z.string(),
+      browserCapture: browserCaptureSchema.optional(),
       adminToken: z.string(),
     },
     annotations: {

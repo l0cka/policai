@@ -2,6 +2,7 @@ import {
 	analyseSourceUrl,
 	approveStagedSource,
 	auditMcpTool,
+  type BrowserCaptureInput,
   type ManualExtractionInput,
   type ReviewedDateInput,
   checkCoverage,
@@ -9,6 +10,7 @@ import {
   publishStagedSource,
   recordManualSourceReview,
   rejectStagedSource,
+  stageSourceCapture,
   stageSourceUrl,
 } from '@/lib/source-ingest';
 import { getSourceReviews } from '@/lib/data-service';
@@ -106,6 +108,27 @@ export async function handleStageSourceUrl(input: {
   });
 }
 
+export async function handleStageSourceCapture(input: {
+  url: string;
+  entryKind: SourceReviewEntryKind;
+  targetRecordId: string;
+  notes?: string;
+  capture: BrowserCaptureInput;
+  adminToken?: string;
+}) {
+  return audited('stage_source_capture', { sourceUrl: input.url }, () => {
+    requireMcpAdminToken(input.adminToken);
+    return stageSourceCapture({
+      url: input.url,
+      entryKind: input.entryKind,
+      targetRecordId: input.targetRecordId,
+      notes: input.notes,
+      actor: MCP_ACTOR,
+      browserCapture: input.capture,
+    });
+  });
+}
+
 export async function handleListStagedSources(input: { status?: string }) {
   const status = normalizeReviewStatus(input.status);
   return getSourceReviews(status ? { status } : undefined);
@@ -120,6 +143,7 @@ export async function handleApproveStagedSource(input: {
   approvalNotes?: string;
   manualExtraction?: ManualExtractionInput;
   reviewedDate?: ReviewedDateInput;
+  browserCapture?: BrowserCaptureInput;
   adminToken?: string;
 }) {
   return audited('approve_staged_source', {}, () => {
@@ -140,14 +164,21 @@ export async function handleApproveStagedSource(input: {
       approvalNotes: input.approvalNotes,
       manualExtraction: input.manualExtraction,
       reviewedDate: input.reviewedDate,
+      browserCapture: input.browserCapture,
     });
   });
 }
 
-export async function handlePublishStagedSource(input: { id: string; adminToken?: string }) {
+export async function handlePublishStagedSource(input: {
+  id: string;
+  browserCapture?: BrowserCaptureInput;
+  adminToken?: string;
+}) {
   return audited('publish_staged_source', {}, () => {
     requireMcpAdminToken(input.adminToken);
-    return publishStagedSource(input.id);
+    return publishStagedSource(input.id, {
+      browserCapture: input.browserCapture,
+    });
   });
 }
 

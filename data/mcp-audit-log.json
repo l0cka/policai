@@ -1,0 +1,50 @@
+[
+  {
+    "id": "mcp-audit-b938b77b-bc87-4f25-b4e7-0740efe1aa5d",
+    "createdAt": "2026-07-19T01:04:34.405Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-52c2b4c1-272b-4003-972c-fc531d7d41c4",
+    "createdAt": "2026-07-19T01:03:17.920Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-b6681e27-9738-4b2e-a6be-7177328dff2e",
+    "createdAt": "2026-07-19T00:55:55.779Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-804e8b72-db76-45d4-b5c6-234d95f2787c",
+    "createdAt": "2026-07-19T00:54:45.096Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-adc01152-c8f6-45a8-8834-4b9295d41de5",
+    "createdAt": "2026-07-19T00:54:20.286Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
+    "status": "error",
+    "errorSummary": "401 {\"type\":\"error\",\"error\":{\"type\":\"authentication_error\",\"message\":\"API key is invalid.\"},\"request_id\":null}"
+  },
+  {
+    "id": "mcp-audit-c7eff1c4-adbd-4c34-8482-8ff411cb91a3",
+    "createdAt": "2026-07-19T00:32:18.841Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
+    "status": "error",
+    "errorSummary": "Timed out after 60000ms"
+  }
+]

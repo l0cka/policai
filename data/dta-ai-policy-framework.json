@@ -342,12 +342,42 @@
   },
   "relatedPolicyId": "policy-responsible-use-ai-government-v2",
   "verification": {
-    "status": "stale",
+    "status": "verified",
     "source": {
-      "url": "https://www.digital.gov.au/ai/ai-in-government-policy"
+      "url": "https://www.digital.gov.au/ai/ai-in-government-policy",
+      "finalUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
+      "title": "Policy for the responsible use of AI in government - Version 2.0 | digital.gov.au",
+      "retrievedAt": "2026-07-19T01:02:33.000Z",
+      "contentType": "text/html",
+      "contentHash": "384e529e7460f92b6886998f1530575a9f006516f042468e19a98450612ba5ab",
+      "linkedDocuments": [
+        {
+          "url": "https://www.digital.gov.au/sites/default/files/documents/2025-12/Policy%20for%20the%20responsible%20use%20of%20AI%20in%20Government%202.0_0.pdf",
+          "finalUrl": "https://www.digital.gov.au/sites/default/files/documents/2025-12/Policy%20for%20the%20responsible%20use%20of%20AI%20in%20Government%202.0_0.pdf",
+          "retrievedAt": "2026-07-19T01:02:33.000Z",
+          "contentType": "application/pdf",
+          "contentHash": "94beda4e6e9f61e0dd5d5f17b45b18cf6015b20fd9aabe41d20318f725273c11"
+        }
+      ],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-07-19T01:02:33.000Z",
+        "capturedBy": "Daniel Alkurdi",
+        "notes": "Captured from the official digital.gov.au policy page in Google Chrome after Policai's hardened retriever timed out; the linked version 2.0 PDF was downloaded through the same official page and its bytes are fingerprinted by the MCP server.",
+        "pageContentHash": "abb9d99da9cbe80f2b6a26180d046f8ebe8cc90d29e70a3b7207a1aeacb558e6",
+        "characterCount": 3178
+      },
+      "reviewedDate": {
+        "date": "2025-12-15",
+        "precision": "day",
+        "reviewedAt": "2026-07-19T01:03:17.636Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "Confirmed the version 2.0 effective date of 15 December 2025 on the official digital.gov.au policy page and in the linked official PDF."
+      }
     },
-    "checkedAt": "2026-07-10T00:00:00.000Z",
-    "checkedBy": "Policai editorial review",
-    "method": "manual"
+    "checkedAt": "2026-07-19T01:03:17.636Z",
+    "checkedBy": "Daniel Alkurdi",
+    "method": "manual",
+    "notes": "Daniel Alkurdi reviewed the framework artifact against the approved official digital.gov.au page and version 2.0 PDF evidence. Its scope, exclusions, pillars, requirements and effective date remain consistent with the source; the exact page and PDF fingerprints match the related policy verification."
   }
 }

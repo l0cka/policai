@@ -1,5 +1,175 @@
 [
   {
+    "id": "source-review-a2bde567-cdeb-4f15-a13a-560eac4d90e1",
+    "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
+    "title": "Policy for the Responsible Use of AI in Government",
+    "entryKind": "policy",
+    "targetPolicyId": "policy-responsible-use-ai-government-v2",
+    "targetPolicyBaseRevisionHash": "b501a03eba0e475be29abf7cb566de36eb8686e7281bcb04d74b44dcdfc89d97",
+    "status": "published",
+    "discoveredAt": "2026-07-19T00:55:55.771Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Revision-bound browser re-verification prepared for Daniel Alkurdi's substantive editorial review. Staging does not constitute approval.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": "guideline",
+      "suggestedJurisdiction": "federal",
+      "summary": "Whole-of-government policy setting mandatory requirements for the safe, transparent, and accountable use of AI by Australian Government agencies.",
+      "tags": [
+        "responsible AI",
+        "governance",
+        "transparency",
+        "commonwealth"
+      ],
+      "agencies": [
+        "Digital Transformation Agency",
+        "Data and Digital Government Strategy Branch"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://www.digital.gov.au/ai/ai-in-government-policy",
+      "finalUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
+      "title": "Policy for the responsible use of AI in government - Version 2.0 | digital.gov.au",
+      "retrievedAt": "2026-07-19T01:02:33.000Z",
+      "contentType": "text/html",
+      "contentHash": "384e529e7460f92b6886998f1530575a9f006516f042468e19a98450612ba5ab",
+      "linkedDocuments": [
+        {
+          "url": "https://www.digital.gov.au/sites/default/files/documents/2025-12/Policy%20for%20the%20responsible%20use%20of%20AI%20in%20Government%202.0_0.pdf",
+          "finalUrl": "https://www.digital.gov.au/sites/default/files/documents/2025-12/Policy%20for%20the%20responsible%20use%20of%20AI%20in%20Government%202.0_0.pdf",
+          "retrievedAt": "2026-07-19T01:02:33.000Z",
+          "contentType": "application/pdf",
+          "contentHash": "94beda4e6e9f61e0dd5d5f17b45b18cf6015b20fd9aabe41d20318f725273c11"
+        }
+      ],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-07-19T01:02:33.000Z",
+        "capturedBy": "Daniel Alkurdi",
+        "notes": "Captured from the official digital.gov.au policy page in Google Chrome after Policai's hardened retriever timed out; the linked version 2.0 PDF was downloaded through the same official page and its bytes are fingerprinted by the MCP server.",
+        "pageContentHash": "abb9d99da9cbe80f2b6a26180d046f8ebe8cc90d29e70a3b7207a1aeacb558e6",
+        "characterCount": 3178
+      },
+      "reviewedDate": {
+        "date": "2025-12-15",
+        "precision": "day",
+        "reviewedAt": "2026-07-19T01:03:17.636Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "Confirmed the version 2.0 effective date of 15 December 2025 on the official digital.gov.au policy page and in the linked official PDF."
+      }
+    },
+    "proposedRecord": {
+      "id": "policy-responsible-use-ai-government-v2",
+      "title": "Policy for the Responsible Use of AI in Government",
+      "description": "Commonwealth policy setting mandatory requirements for the safe, transparent, and accountable use of AI by non-corporate Commonwealth entities.",
+      "jurisdiction": "federal",
+      "type": "policy",
+      "status": "active",
+      "effectiveDate": "2025-12-15",
+      "agencies": [
+        "Digital Transformation Agency"
+      ],
+      "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
+      "content": "Version 2.0 took effect on 15 December 2025 and applies to all non-corporate Commonwealth entities, with specified exceptions. It requires accountable officials, transparency statements, a strategic approach to AI adoption, operational controls for responsible AI use, AI use-case accountability and registers, staff training, and AI use-case impact assessments.",
+      "aiSummary": "Core Commonwealth policy governing responsible AI use by non-corporate Commonwealth entities from 15 December 2025.",
+      "tags": [
+        "responsible AI",
+        "governance",
+        "transparency",
+        "commonwealth"
+      ],
+      "createdAt": "2026-04-06T07:59:40.767Z",
+      "updatedAt": "2026-07-19T01:03:17.636Z",
+      "dates": [
+        {
+          "type": "effective",
+          "date": "2025-12-15",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.digital.gov.au/ai/ai-in-government-policy",
+            "finalUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
+            "title": "Policy for the responsible use of AI in government - Version 2.0 | digital.gov.au",
+            "retrievedAt": "2026-07-19T01:02:33.000Z",
+            "contentType": "text/html",
+            "contentHash": "384e529e7460f92b6886998f1530575a9f006516f042468e19a98450612ba5ab",
+            "linkedDocuments": [
+              {
+                "url": "https://www.digital.gov.au/sites/default/files/documents/2025-12/Policy%20for%20the%20responsible%20use%20of%20AI%20in%20Government%202.0_0.pdf",
+                "finalUrl": "https://www.digital.gov.au/sites/default/files/documents/2025-12/Policy%20for%20the%20responsible%20use%20of%20AI%20in%20Government%202.0_0.pdf",
+                "retrievedAt": "2026-07-19T01:02:33.000Z",
+                "contentType": "application/pdf",
+                "contentHash": "94beda4e6e9f61e0dd5d5f17b45b18cf6015b20fd9aabe41d20318f725273c11"
+              }
+            ],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-07-19T01:02:33.000Z",
+              "capturedBy": "Daniel Alkurdi",
+              "notes": "Captured from the official digital.gov.au policy page in Google Chrome after Policai's hardened retriever timed out; the linked version 2.0 PDF was downloaded through the same official page and its bytes are fingerprinted by the MCP server.",
+              "pageContentHash": "abb9d99da9cbe80f2b6a26180d046f8ebe8cc90d29e70a3b7207a1aeacb558e6",
+              "characterCount": 3178
+            },
+            "reviewedDate": {
+              "date": "2025-12-15",
+              "precision": "day",
+              "reviewedAt": "2026-07-19T01:03:17.636Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "Confirmed the version 2.0 effective date of 15 December 2025 on the official digital.gov.au policy page and in the linked official PDF."
+            }
+          }
+        }
+      ],
+      "lastReviewedAt": "2026-07-19T01:03:17.636Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.digital.gov.au/ai/ai-in-government-policy",
+          "finalUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
+          "title": "Policy for the responsible use of AI in government - Version 2.0 | digital.gov.au",
+          "retrievedAt": "2026-07-19T01:02:33.000Z",
+          "contentType": "text/html",
+          "contentHash": "384e529e7460f92b6886998f1530575a9f006516f042468e19a98450612ba5ab",
+          "linkedDocuments": [
+            {
+              "url": "https://www.digital.gov.au/sites/default/files/documents/2025-12/Policy%20for%20the%20responsible%20use%20of%20AI%20in%20Government%202.0_0.pdf",
+              "finalUrl": "https://www.digital.gov.au/sites/default/files/documents/2025-12/Policy%20for%20the%20responsible%20use%20of%20AI%20in%20Government%202.0_0.pdf",
+              "retrievedAt": "2026-07-19T01:02:33.000Z",
+              "contentType": "application/pdf",
+              "contentHash": "94beda4e6e9f61e0dd5d5f17b45b18cf6015b20fd9aabe41d20318f725273c11"
+            }
+          ],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-07-19T01:02:33.000Z",
+            "capturedBy": "Daniel Alkurdi",
+            "notes": "Captured from the official digital.gov.au policy page in Google Chrome after Policai's hardened retriever timed out; the linked version 2.0 PDF was downloaded through the same official page and its bytes are fingerprinted by the MCP server.",
+            "pageContentHash": "abb9d99da9cbe80f2b6a26180d046f8ebe8cc90d29e70a3b7207a1aeacb558e6",
+            "characterCount": 3178
+          },
+          "reviewedDate": {
+            "date": "2025-12-15",
+            "precision": "day",
+            "reviewedAt": "2026-07-19T01:03:17.636Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "Confirmed the version 2.0 effective date of 15 December 2025 on the official digital.gov.au policy page and in the linked official PDF."
+          }
+        },
+        "checkedAt": "2026-07-19T01:03:17.636Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Daniel Alkurdi compared the record against the official digital.gov.au landing page and version 2.0 PDF. Approved corrections: classify the instrument as a policy; retain the Digital Transformation Agency as the supported agency; narrow the scope wording to non-corporate Commonwealth entities; and update the descriptions accordingly. The fresh page and PDF fingerprints matched the staged evidence."
+      }
+    },
+    "updatedAt": "2026-07-19T01:04:34.403Z",
+    "targetPolicyRevisionHash": "b501a03eba0e475be29abf7cb566de36eb8686e7281bcb04d74b44dcdfc89d97",
+    "reviewedAt": "2026-07-19T01:03:17.636Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Daniel Alkurdi compared the record against the official digital.gov.au landing page and version 2.0 PDF. Approved corrections: classify the instrument as a policy; retain the Digital Transformation Agency as the supported agency; narrow the scope wording to non-corporate Commonwealth entities; and update the descriptions accordingly. The fresh page and PDF fingerprints matched the staged evidence.",
+    "publishedAt": "2026-07-19T01:04:34.400Z"
+  },
+  {
     "id": "source-review-efc6fef1-59ec-4f60-be43-0bb622a9b7a4",
     "sourceUrl": "https://www.digital.gov.au/policy/ai/agentic-ai-addendum",
     "title": "Agentic AI addendum to the AI technical standard for Australian Government",

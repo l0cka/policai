@@ -88,6 +88,20 @@ export interface ReviewedDateEvidence {
 	notes: string;
 }
 
+/**
+ * Provenance for an authenticated browser capture used when an official site
+ * is readable in a real browser but blocks the hardened server-side retriever.
+ * Local capture paths are deliberately never persisted.
+ */
+export interface BrowserCaptureEvidence {
+	method: "browser";
+	capturedAt: string;
+	capturedBy: string;
+	notes: string;
+	pageContentHash: string;
+	characterCount: number;
+}
+
 export interface SourceEvidence {
 	url: string;
 	finalUrl?: string;
@@ -101,6 +115,7 @@ export interface SourceEvidence {
 	etag?: string;
 	lastModified?: string;
 	linkedDocuments?: LinkedDocumentEvidence[];
+	browserCapture?: BrowserCaptureEvidence;
 	manualExtraction?: ManualExtractionEvidence;
 	/** Human confirmation for a record date not exposed as document metadata. */
 	reviewedDate?: ReviewedDateEvidence;

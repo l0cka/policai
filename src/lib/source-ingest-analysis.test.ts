@@ -51,7 +51,10 @@ describe("source ingest analysis", () => {
 
 		expect(retrieveSource).toHaveBeenCalledWith(
 			"https://policy.example.com/analysis",
-			{ destinationPolicy: "public-https" },
+			{
+				destinationPolicy: "public-https",
+				timeoutMs: 60_000,
+			},
 		);
 	});
 });

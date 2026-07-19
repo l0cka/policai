@@ -92,6 +92,11 @@ The boundaries are deliberately strict:
   its extracted text is included in assessment.
   HTML policy fingerprints are scoped to semantic content and relevant
   instrument links so site chrome does not create false changes.
+- Existing tracked records blocked by browser challenges can use the local MCP
+  browser-capture path. It fingerprints normalized semantic page text and
+  exact linked-document bytes, records reviewer provenance without local file
+  paths, and requires a fresh matching capture at approval and publication.
+  It cannot introduce a new register record or skip the editorial gates.
 - `src/lib/register-audit.ts` compares official-source fingerprints and marks
   changed or confirmed-missing records stale without automatically
   re-verifying them; temporary retrieval failures remain operational alerts.

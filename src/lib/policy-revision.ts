@@ -33,6 +33,7 @@ function editorialSourceEvidence(source: SourceEvidence): unknown {
       url: document.url,
       contentHash: document.contentHash,
     })),
+		browserCapture: source.browserCapture,
     manualExtraction: source.manualExtraction,
     reviewedDate: source.reviewedDate,
   };

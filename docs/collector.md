@@ -227,23 +227,40 @@ Detections staged in `data/source-reviews.json` are proposals. To publish one:
    acknowledge the current canonical revision.
 4. Call the publish tool. Publishing refuses pending drafts and creates the
    verified policy or timeline record through `src/lib/source-ingest.ts`.
-
-One-off publication scripts must also enter through `stageSourceUrl()` rather
-than constructing a review by hand, so the approval gate always has freshly
-retrieved source fingerprints.
-   Staging a URL already used by a tracked policy or manual timeline event
-   creates a revision-bound re-verification review for that record instead of
-   rejecting it as a duplicate. Supply `targetRecordId` when more than one
-   record of the requested `entryKind` uses the same official URL. This is the
-   supported path for refreshing an unchanged record whose editorial review
-   interval expired or whose first audit fingerprint still needs human
-   comparison. Repeating the staging operation refreshes an unresolved review
-   in place if the source drifts again, clears its prior approval, and keeps
-   the policy withheld until the current evidence is approved. Changed-document
-   reviews likewise update their existing
-   `targetPolicyId` in place instead of creating another record with the same
-   source URL.
 5. Run `npm run validate:data`, commit, and push (or open a PR).
+
+One-off publication scripts must also enter through `stageSourceUrl()` or the
+controlled `stageSourceCapture()` fallback rather than constructing a review
+by hand, so the approval gate always has fresh source fingerprints. Staging a
+URL already used by a tracked policy or manual timeline event creates a
+revision-bound re-verification review for that record instead of rejecting it
+as a duplicate. Supply `targetRecordId` when more than one record of the
+requested `entryKind` uses the same official URL. This is the supported path
+for refreshing an unchanged record whose editorial review interval expired or
+whose first audit fingerprint still needs human comparison. Repeating the
+staging operation refreshes an unresolved review in place if the source drifts
+again, clears its prior approval, and keeps the policy withheld until the
+current evidence is approved. Changed-document reviews likewise update their
+existing `targetPolicyId` in place instead of creating another record with the
+same source URL.
+
+If the official page for an existing tracked record is readable in a real
+browser but consistently blocks the hardened retriever, use the MCP
+`stage_source_capture` tool instead of editing `data/source-reviews.json`.
+Supply the displayed page title, normalized semantic `main` text, relevant
+official links, a fresh capture timestamp, the human capture reviewer, and the
+local path and official URL for every linked canonical document. The tool only
+reads regular files from the system temporary directory or the reviewer's
+Downloads directory, rejects symlinks and unsupported or oversized payloads,
+validates document signatures, fingerprints the exact bytes, and never stores
+the local path. It is intentionally limited to an existing `targetRecordId`.
+
+A browser-captured review remains subject to the normal gates.
+`approve_staged_source` requires a fresh matching `browserCapture`, and its
+`reviewer` must match the capture reviewer. `publish_staged_source` requires
+another fresh matching capture. Any page-text, relevant-link, or document-byte
+change forces re-staging or re-approval rather than silently refreshing the
+trusted baseline.
 
 Dismissals: reject the staged review and set the matching development's status
 to `dismissed` with a `dismissalReason`. Publishing a collector review promotes
