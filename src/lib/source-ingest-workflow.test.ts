@@ -724,6 +724,52 @@ describe('source ingest approval workflow', () => {
     expect(JSON.stringify(staged)).not.toContain(capturedDocumentPath);
   });
 
+  it('stages an HTML-only browser capture when the official page exposes no document', async () => {
+    const targetDraft = buildDraft({
+      id: 'html-only-policy',
+      effectiveDate: '2026-07-01',
+    });
+    const target: Policy = {
+      ...targetDraft,
+      effectiveDate: '2026-07-01',
+      dates: targetDraft.dates ?? [],
+      verification: {
+        status: 'stale',
+        source: { url: SOURCE_URL },
+      },
+    };
+    getPolicies.mockResolvedValue([target]);
+
+    await stageSourceCapture({
+      url: SOURCE_URL,
+      entryKind: 'policy',
+      targetRecordId: target.id,
+      actor: 'local-mcp-admin',
+      browserCapture: {
+        pageTitle: 'Official HTML-only AI policy',
+        pageText: 'Official browser-captured HTML policy text for editorial review.',
+        references: ['https://example.gov.au/related-guidance'],
+        capturedAt: new Date().toISOString(),
+        capturedBy: 'Jane Reviewer',
+        notes: 'Captured from an official page that exposes no canonical document.',
+        linkedDocuments: [],
+      },
+    });
+
+    expect(retrieveSource).not.toHaveBeenCalled();
+    const staged = createSourceReview.mock.calls[0][0] as SourceReview;
+    expect(staged.sourceEvidence).toEqual(
+      expect.objectContaining({
+        contentHash: expect.stringMatching(/^[a-f0-9]{64}$/),
+        browserCapture: expect.objectContaining({
+          capturedBy: 'Jane Reviewer',
+          pageContentHash: expect.stringMatching(/^[a-f0-9]{64}$/),
+        }),
+      }),
+    );
+    expect(staged.sourceEvidence.linkedDocuments).toEqual([]);
+  });
+
   it('rejects tracked re-verification that redirects to another policy identity', async () => {
     const otherUrl = 'https://example.gov.au/other-policy';
     const targetDraft = buildDraft({

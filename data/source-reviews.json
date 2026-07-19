@@ -1,5 +1,150 @@
 [
   {
+    "id": "source-review-e0bb180b-cd5f-4b30-99d3-5596fa564324",
+    "sourceUrl": "https://www.dataanddigital.gov.au/implementation-plan/2025/artificial-intelligence",
+    "title": "Artificial intelligence | 2025 Implementation Plan",
+    "entryKind": "policy",
+    "targetPolicyId": "implementation-plan-policy-responsible-use-ai-government-2025",
+    "targetPolicyBaseRevisionHash": "48250559d80d7d9ace7329a87e6820df010cf7f4bf35eb4b562783817d754bc0",
+    "status": "published",
+    "discoveredAt": "2026-07-19T01:31:55.489Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Daniel Alkurdi authorised staging after comparison with the official AI chapter, 2025 Implementation Plan landing page, version history and version 1.0 PDF. Review must correct the plan date and agency before approval; staging does not publish.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": "guideline",
+      "suggestedJurisdiction": "federal",
+      "summary": "Artificial intelligence chapter of the Data and Digital Government Strategy 2025 Implementation Plan, covering APS AI adoption, policy updates, standards, and related implementation priorities.",
+      "tags": [
+        "implementation",
+        "responsible AI",
+        "capability uplift",
+        "procurement"
+      ],
+      "agencies": [
+        "Data and Digital Government Strategy Branch"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://www.dataanddigital.gov.au/implementation-plan/2025/artificial-intelligence",
+      "finalUrl": "https://www.dataanddigital.gov.au/implementation-plan/2025/artificial-intelligence",
+      "title": "Artificial intelligence | Data and Digital",
+      "retrievedAt": "2026-07-19T01:33:46.077Z",
+      "contentType": "text/html",
+      "contentHash": "e75234753d1f3c1568b6ad9102100d5707b0daf77815816ac6af12fee0978180",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-07-19T01:33:46.077Z",
+        "capturedBy": "Daniel Alkurdi",
+        "notes": "Fresh approval capture from the official Data and Digital 2025 Implementation Plan artificial intelligence chapter. The HTML-only page exposes no canonical document, so its semantic text and official references form the complete source fingerprint.",
+        "pageContentHash": "7b3149c29bfd5dea0c8bfd1aec615ad724ea75350fde3ad0f4471788a7b0acd4",
+        "characterCount": 12359
+      },
+      "reviewedDate": {
+        "date": "2025-11-01",
+        "precision": "month",
+        "reviewedAt": "2026-07-19T01:34:32.759Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The official Data and Digital Government Strategy 2025 Implementation Plan PDF, version 1.0, states 'First published: November 2025'. No day-level publication date is stated, so Policai records the first day only as the required month-precision storage convention. The plan landing page separately reports LAST UPDATED: 17 Nov 2025."
+      }
+    },
+    "proposedRecord": {
+      "id": "implementation-plan-policy-responsible-use-ai-government-2025",
+      "title": "Artificial intelligence | 2025 Implementation Plan",
+      "description": "Artificial intelligence chapter of the third annual Data and Digital Government Strategy Implementation Plan, covering APS AI adoption, governance, capability and delivery priorities.",
+      "jurisdiction": "federal",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2025-11-01",
+      "agencies": [
+        "Digital Transformation Agency"
+      ],
+      "sourceUrl": "https://www.dataanddigital.gov.au/implementation-plan/2025/artificial-intelligence",
+      "content": "The third annual Data and Digital Government Strategy Implementation Plan identifies artificial intelligence as one of four priorities for the coming year. Its AI chapter covers adoption across the Australian Public Service, responsible-use policy and governance, public- and private-sector use cases, productivity, and workforce capability. The official version 1.0 PDF says the plan was first published in November 2025, while the plan landing page was last updated on 17 November 2025. Policai therefore records the publication date at month precision rather than inventing a day.",
+      "aiSummary": "AI chapter of the third annual Data and Digital Government Strategy Implementation Plan, first published in November 2025.",
+      "tags": [
+        "implementation",
+        "responsible AI",
+        "capability uplift",
+        "procurement"
+      ],
+      "createdAt": "2026-04-06T16:50:00Z",
+      "updatedAt": "2026-07-19T01:34:32.759Z",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2025-11-01",
+          "precision": "month",
+          "primary": true,
+          "source": {
+            "url": "https://www.dataanddigital.gov.au/implementation-plan/2025/artificial-intelligence",
+            "finalUrl": "https://www.dataanddigital.gov.au/implementation-plan/2025/artificial-intelligence",
+            "title": "Artificial intelligence | Data and Digital",
+            "retrievedAt": "2026-07-19T01:33:46.077Z",
+            "contentType": "text/html",
+            "contentHash": "e75234753d1f3c1568b6ad9102100d5707b0daf77815816ac6af12fee0978180",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-07-19T01:33:46.077Z",
+              "capturedBy": "Daniel Alkurdi",
+              "notes": "Fresh approval capture from the official Data and Digital 2025 Implementation Plan artificial intelligence chapter. The HTML-only page exposes no canonical document, so its semantic text and official references form the complete source fingerprint.",
+              "pageContentHash": "7b3149c29bfd5dea0c8bfd1aec615ad724ea75350fde3ad0f4471788a7b0acd4",
+              "characterCount": 12359
+            },
+            "reviewedDate": {
+              "date": "2025-11-01",
+              "precision": "month",
+              "reviewedAt": "2026-07-19T01:34:32.759Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "The official Data and Digital Government Strategy 2025 Implementation Plan PDF, version 1.0, states 'First published: November 2025'. No day-level publication date is stated, so Policai records the first day only as the required month-precision storage convention. The plan landing page separately reports LAST UPDATED: 17 Nov 2025."
+            }
+          }
+        }
+      ],
+      "lastReviewedAt": "2026-07-19T01:34:32.759Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.dataanddigital.gov.au/implementation-plan/2025/artificial-intelligence",
+          "finalUrl": "https://www.dataanddigital.gov.au/implementation-plan/2025/artificial-intelligence",
+          "title": "Artificial intelligence | Data and Digital",
+          "retrievedAt": "2026-07-19T01:33:46.077Z",
+          "contentType": "text/html",
+          "contentHash": "e75234753d1f3c1568b6ad9102100d5707b0daf77815816ac6af12fee0978180",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-07-19T01:33:46.077Z",
+            "capturedBy": "Daniel Alkurdi",
+            "notes": "Fresh approval capture from the official Data and Digital 2025 Implementation Plan artificial intelligence chapter. The HTML-only page exposes no canonical document, so its semantic text and official references form the complete source fingerprint.",
+            "pageContentHash": "7b3149c29bfd5dea0c8bfd1aec615ad724ea75350fde3ad0f4471788a7b0acd4",
+            "characterCount": 12359
+          },
+          "reviewedDate": {
+            "date": "2025-11-01",
+            "precision": "month",
+            "reviewedAt": "2026-07-19T01:34:32.759Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The official Data and Digital Government Strategy 2025 Implementation Plan PDF, version 1.0, states 'First published: November 2025'. No day-level publication date is stated, so Policai records the first day only as the required month-precision storage convention. The plan landing page separately reports LAST UPDATED: 17 Nov 2025."
+          }
+        },
+        "checkedAt": "2026-07-19T01:34:32.759Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Daniel Alkurdi approved corrections after comparing the official artificial intelligence chapter with the 2025 Implementation Plan landing page, version history and version 1.0 PDF. The 13 December 2024 date belongs to the second plan; the third annual 2025 plan PDF says it was first published in November 2025 and the landing page was last updated on 17 November 2025. The record now preserves month precision, attributes the instrument to the Digital Transformation Agency, and accurately describes the AI chapter. The fresh approval page fingerprint matches the staged evidence."
+      }
+    },
+    "updatedAt": "2026-07-19T01:35:10.159Z",
+    "targetPolicyRevisionHash": "48250559d80d7d9ace7329a87e6820df010cf7f4bf35eb4b562783817d754bc0",
+    "reviewedAt": "2026-07-19T01:34:32.759Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Daniel Alkurdi approved corrections after comparing the official artificial intelligence chapter with the 2025 Implementation Plan landing page, version history and version 1.0 PDF. The 13 December 2024 date belongs to the second plan; the third annual 2025 plan PDF says it was first published in November 2025 and the landing page was last updated on 17 November 2025. The record now preserves month precision, attributes the instrument to the Digital Transformation Agency, and accurately describes the AI chapter. The fresh approval page fingerprint matches the staged evidence.",
+    "publishedAt": "2026-07-19T01:35:10.153Z"
+  },
+  {
     "id": "source-review-a2bde567-cdeb-4f15-a13a-560eac4d90e1",
     "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
     "title": "Policy for the Responsible Use of AI in Government",

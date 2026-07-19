@@ -34,7 +34,7 @@ const browserCaptureSchema = z.object({
   linkedDocuments: z.array(z.object({
     url: z.string().url(),
     filePath: z.string().min(1),
-  })).min(1).max(8),
+  })).max(8),
 });
 
 server.registerTool(

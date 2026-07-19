@@ -249,8 +249,10 @@ browser but consistently blocks the hardened retriever, use the MCP
 `stage_source_capture` tool instead of editing `data/source-reviews.json`.
 Supply the displayed page title, normalized semantic `main` text, relevant
 official links, a fresh capture timestamp, the human capture reviewer, and the
-local path and official URL for every linked canonical document. The tool only
-reads regular files from the system temporary directory or the reviewer's
+local path and official URL for every linked canonical document the page
+exposes. HTML-only official pages may supply an empty document list; their
+semantic page fingerprint remains mandatory. For supplied documents, the tool
+only reads regular files from the system temporary directory or the reviewer's
 Downloads directory, rejects symlinks and unsupported or oversized payloads,
 validates document signatures, fingerprints the exact bytes, and never stores
 the local path. It is intentionally limited to an existing `targetRecordId`.

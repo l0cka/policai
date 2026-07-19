@@ -263,9 +263,11 @@ history where useful, but are not shown as current public developments.
 - For an existing tracked record whose official source consistently blocks the
   hardened retriever, the local MCP can accept an explicit browser capture.
   This is not a visual-check exception: the capture must include the normalized
-  semantic page text, relevant official document links, a fresh timestamp,
-  reviewer attribution, and the locally downloaded bytes for every linked
-  canonical instrument. Policai validates file signatures and size limits,
+  semantic page text, relevant official links, a fresh timestamp, reviewer
+  attribution, and the locally downloaded bytes for every canonical instrument
+  linked by the page. An HTML-only page may have no linked instrument; in that
+  case its semantic page hash is the complete capture fingerprint. When
+  documents are present, Policai validates file signatures and size limits,
   hashes the page and exact document bytes into one composite fingerprint, and
   persists the hashes and provenance without retaining local file paths.
   Approval and publication each require a fresh matching capture; a changed

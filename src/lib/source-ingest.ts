@@ -225,8 +225,8 @@ async function buildBrowserCapturedSource(
 			`Browser capture page text must contain 20 to ${MAX_BROWSER_CAPTURE_CHARACTERS} characters`,
 		);
 	}
-	if (input.linkedDocuments.length === 0 || input.linkedDocuments.length > 8) {
-		throw new Error("Browser capture requires between 1 and 8 linked documents");
+	if (input.linkedDocuments.length > 8) {
+		throw new Error("Browser capture accepts at most 8 linked documents");
 	}
 
 	const references = Array.from(
