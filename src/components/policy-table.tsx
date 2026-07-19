@@ -196,7 +196,7 @@ export function PolicyTable({
                 {paged.map((policy) => {
                   const primaryDate = getPrimaryPolicyDate(policy);
                   return (
-                    <tr key={policy.id} className="content-auto border-b border-border transition-colors hover:bg-[var(--row-hover)]">
+                    <tr key={policy.id} className="group/row content-auto border-b border-border transition-colors hover:bg-[var(--row-hover)]">
                       <td className="py-3 pr-5 align-top">
                         <Link href={`/policies/${policy.id}`} className="text-sm font-semibold leading-5 text-primary hover:underline">
                           {policy.title}
@@ -219,7 +219,7 @@ export function PolicyTable({
                       <td className="py-3 align-top"><SourceState policy={policy} /></td>
                       <td className="py-3 align-top">
                         <Link href={`/policies/${policy.id}`} aria-label={`View ${policy.title}`} className="text-primary">
-                          <ArrowRight className="h-4 w-4" />
+                          <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover/row:translate-x-0.5" />
                         </Link>
                       </td>
                     </tr>

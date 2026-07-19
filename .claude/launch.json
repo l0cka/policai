@@ -3,7 +3,7 @@
   "configurations": [
     {
       "name": "policai-dev",
-      "runtimeExecutable": "/Users/l0cka/.nvm/versions/node/v20.20.1/bin/npm",
+      "runtimeExecutable": "/Users/l0cka/.nvm/versions/node/v24.14.0/bin/npm",
       "runtimeArgs": ["run", "dev"],
       "port": 3000
     }

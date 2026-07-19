@@ -44,15 +44,22 @@ export function Header({ dataCurrentAt }: { dataCurrentAt: string | null }) {
   const [insightsOpen, setInsightsOpen] = useState(false);
   const insightsRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown on outside click
+  // Close dropdown on outside click or Escape
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (insightsRef.current && !insightsRef.current.contains(e.target as Node)) {
         setInsightsOpen(false);
       }
     };
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setInsightsOpen(false);
+    };
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleEscape);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscape);
+    };
   }, []);
 
   const isActive = (href: string) => {
@@ -119,7 +126,7 @@ export function Header({ dataCurrentAt }: { dataCurrentAt: string | null }) {
               <ChevronDown className={cn('h-3 w-3 transition-transform', insightsOpen && 'rotate-180')} />
             </button>
             {insightsOpen && (
-              <div className="absolute left-0 top-full z-50 min-w-[168px] border border-border bg-popover py-1 shadow-lg" role="menu">
+              <div className="dropdown-in absolute left-0 top-full z-50 min-w-[168px] border border-border bg-popover py-1 shadow-lg" role="menu">
                 {insightItems.map((item) => (
                   <Link
                     key={item.href}

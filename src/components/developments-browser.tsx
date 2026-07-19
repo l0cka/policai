@@ -164,7 +164,7 @@ export function DevelopmentsBrowser({
 
   return (
     <div className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
-      <header>
+      <header className="reveal">
         <h1 className="font-display text-[clamp(2.65rem,4vw,4rem)] leading-none tracking-[-0.035em]">Policy developments</h1>
         <p className="mt-3 max-w-3xl text-sm leading-6 text-muted-foreground">
           Track updates to AI policies, strategies and frameworks across Australian governments.
@@ -172,7 +172,7 @@ export function DevelopmentsBrowser({
         </p>
       </header>
 
-      <div className="mt-5 flex gap-8 overflow-x-auto border-b border-border" role="tablist" aria-label="Development verification state">
+      <div className="no-scrollbar mt-5 flex gap-8 overflow-x-auto border-b border-border" role="tablist" aria-label="Development verification state">
         <button type="button" role="tab" aria-selected={activeTab === 'verified'} onClick={() => setActiveTab('verified')} className={cn('-mb-px min-h-14 whitespace-nowrap border-b-[3px] px-2 text-lg transition-colors', activeTab === 'verified' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground')}>
           Verified developments <span className="ml-2 font-mono text-sm">{verified.length}</span>
         </button>

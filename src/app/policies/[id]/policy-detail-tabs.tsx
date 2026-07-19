@@ -160,7 +160,7 @@ export function PolicyDetailTabs({
             </button>
           </div>
 
-          <div className="mt-5 overflow-x-auto border-b border-border">
+          <div className="no-scrollbar mt-5 overflow-x-auto border-b border-border">
             <div className="flex min-w-max gap-8" role="tablist" aria-label="Policy sections">
               {tabs.map((tab) => (
                 <button

@@ -12,7 +12,7 @@ export function PageIntro({
   return (
     <header className="border-b border-border pb-6">
       <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-        <div>
+        <div className="reveal">
           <h1 className="font-display text-[clamp(2.65rem,4vw,4rem)] leading-none tracking-[-0.035em]">
             {title}
           </h1>
@@ -20,7 +20,7 @@ export function PageIntro({
             {description}
           </div>
         </div>
-        {actions ? <div className="shrink-0">{actions}</div> : null}
+        {actions ? <div className="reveal reveal-1 shrink-0">{actions}</div> : null}
       </div>
     </header>
   );
@@ -32,7 +32,7 @@ export function MetricStrip({
   metrics: Array<{ label: string; value: number | string }>;
 }) {
   return (
-    <dl className="grid grid-cols-2 border-b border-border lg:grid-cols-4">
+    <dl className="reveal reveal-1 grid grid-cols-2 border-b border-border lg:grid-cols-4">
       {metrics.map((metric, index) => (
         <div
           key={metric.label}

@@ -12,9 +12,9 @@ import {
 import Link from 'next/link';
 import {
   ArrowRight,
+  ArrowUpDown,
   ArrowUpRight,
   CheckCircle2,
-  Filter,
   List,
   Search,
   SlidersHorizontal,
@@ -255,7 +255,7 @@ export function PolicyBrowser({
     <div>
       <section className="container mx-auto px-4 pb-4 pt-6 sm:px-6 sm:pt-8 lg:px-8 lg:pb-6">
         <div className="grid gap-6 border-b border-border pb-6 lg:grid-cols-[minmax(0,1fr)_23rem] lg:items-end">
-          <div>
+          <div className="reveal">
             <h1 className="max-w-5xl font-display text-[clamp(2.65rem,4.5vw,4.5rem)] leading-[0.98] tracking-[-0.035em]">
               Australian AI policy, made legible.
             </h1>
@@ -267,7 +267,7 @@ export function PolicyBrowser({
               Verified sources, clear status and transparent provenance.
             </p>
           </div>
-          <div className="hidden border-l border-border pl-5 lg:mb-1 lg:block">
+          <div className="reveal reveal-1 hidden border-l border-border pl-5 lg:mb-1 lg:block">
             <p className="flex items-center gap-2 font-mono text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--trust)]">
               <span className="h-2.5 w-2.5 rounded-full bg-[var(--trust)]" />
               {collectionHealth === 'healthy' ? 'Live' : collectionHealth}
@@ -281,14 +281,14 @@ export function PolicyBrowser({
           </div>
         </div>
 
-        <p className="border-b border-border py-4 text-sm text-muted-foreground md:hidden">
+        <p className="reveal reveal-1 border-b border-border py-4 text-sm text-muted-foreground md:hidden">
           <span className="font-display text-2xl text-primary">{policies.length}</span> policies
           <span className="mx-2">·</span>
           <span className="font-display text-2xl text-primary">{distinctJurisdictions.size}</span> jurisdictions
           <span className="mx-2">·</span>
           <span className="text-[var(--trust)]">Verified sources</span>
         </p>
-        <dl className="hidden grid-cols-2 border-b border-border md:grid md:grid-cols-4">
+        <dl className="reveal reveal-1 hidden grid-cols-2 border-b border-border md:grid md:grid-cols-4">
           {[
             [policies.length, 'policies'],
             [distinctJurisdictions.size, 'jurisdictions'],
@@ -303,7 +303,7 @@ export function PolicyBrowser({
         </dl>
       </section>
 
-      <section className="container mx-auto px-4 pb-10 sm:px-6 lg:px-8">
+      <section className="reveal reveal-2 container mx-auto px-4 pb-10 sm:px-6 lg:px-8">
         <div className="flex items-stretch">
           <FilterSidebar groups={filterGroups} onClear={clearFilters} hasActiveFilters={hasActiveFilters} />
 
@@ -346,7 +346,7 @@ export function PolicyBrowser({
               </Sheet>
               <label className="relative">
                 <span className="sr-only">Sort policies</span>
-                <Filter className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
+                <ArrowUpDown className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
                 <select
                   value={`${sortField}:${sortDirection}`}
                   onChange={(event) => handleMobileSort(event.target.value)}
@@ -362,21 +362,29 @@ export function PolicyBrowser({
 
             {hasActiveFilters ? (
               <div className="mt-3 flex flex-wrap gap-2">
-                {[...jurisdictions, ...types, ...statuses].map((value) => (
-                  <button
-                    type="button"
-                    key={value}
-                    onClick={() => {
-                      if (jurisdictions.includes(value)) toggleFilter(value, setJurisdictions);
-                      if (types.includes(value)) toggleFilter(value, setTypes);
-                      if (statuses.includes(value)) toggleFilter(value, setStatuses);
-                    }}
-                    className="inline-flex min-h-9 items-center gap-2 rounded-md border border-[var(--trust)]/25 bg-[var(--status-active-bg)] px-3 text-xs text-[var(--trust)]"
-                  >
-                    {JURISDICTION_NAMES[value as keyof typeof JURISDICTION_NAMES] ?? POLICY_TYPE_NAMES[value as keyof typeof POLICY_TYPE_NAMES] ?? POLICY_STATUS_NAMES[value as keyof typeof POLICY_STATUS_NAMES] ?? value}
-                    <span aria-hidden="true">×</span>
-                  </button>
-                ))}
+                {[...jurisdictions, ...types, ...statuses].map((value) => {
+                  const label =
+                    JURISDICTION_NAMES[value as keyof typeof JURISDICTION_NAMES] ??
+                    POLICY_TYPE_NAMES[value as keyof typeof POLICY_TYPE_NAMES] ??
+                    POLICY_STATUS_NAMES[value as keyof typeof POLICY_STATUS_NAMES] ??
+                    value;
+                  return (
+                    <button
+                      type="button"
+                      key={value}
+                      aria-label={`Remove filter: ${label}`}
+                      onClick={() => {
+                        if (jurisdictions.includes(value)) toggleFilter(value, setJurisdictions);
+                        if (types.includes(value)) toggleFilter(value, setTypes);
+                        if (statuses.includes(value)) toggleFilter(value, setStatuses);
+                      }}
+                      className="inline-flex min-h-9 items-center gap-2 rounded-md border border-primary/30 bg-accent px-3 text-xs font-medium text-primary transition-colors hover:border-primary/60"
+                    >
+                      {label}
+                      <span aria-hidden="true">×</span>
+                    </button>
+                  );
+                })}
               </div>
             ) : null}
 
@@ -414,7 +422,7 @@ export function PolicyBrowser({
                   <p className="font-mono text-[10px] uppercase text-muted-foreground">{formatDevelopmentDate(development)}</p>
                   <a href={development.url} target="_blank" rel="noopener noreferrer" className="group mt-2 inline-flex items-start gap-1.5 text-sm font-semibold leading-5 hover:text-primary">
                     {development.title}
-                    <ArrowUpRight className="mt-0.5 h-3.5 w-3.5 shrink-0 opacity-55 group-hover:opacity-100" />
+                    <ArrowUpRight className="mt-0.5 h-3.5 w-3.5 shrink-0 opacity-55 transition duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:opacity-100" />
                   </a>
                   {development.summary ? <p className="mt-1.5 line-clamp-2 text-xs leading-4 text-muted-foreground">{development.summary}</p> : null}
                   <p className="mt-2 flex items-center gap-1.5 text-[11px] text-muted-foreground">
@@ -429,8 +437,8 @@ export function PolicyBrowser({
                 </p>
               ) : null}
             </div>
-            <Link href="/developments" className="mt-4 inline-flex items-center gap-2 text-xs font-medium text-primary hover:underline">
-              View all developments <ArrowRight className="h-3.5 w-3.5" />
+            <Link href="/developments" className="group mt-4 inline-flex items-center gap-2 text-xs font-medium text-primary hover:underline">
+              View all developments <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
             </Link>
 
             <div className="mt-7 border-t border-border pt-5 font-mono text-[10px] leading-5 text-muted-foreground">
