@@ -682,17 +682,22 @@ function errorMessage(error: unknown): string {
   return String(error);
 }
 
+export const BOT_CHALLENGE_SIGNALS = [
+  'awswafintegration',
+  'verify that you&#39;re not a robot',
+  "verify that you're not a robot",
+  'checking your browser before accessing',
+  'cf-chl-',
+] as const;
+
+export function looksLikeBotChallenge(body: string): boolean {
+  const normalized = body.toLowerCase();
+  return BOT_CHALLENGE_SIGNALS.some((signal) => normalized.includes(signal));
+}
+
 function assertUsableSource(body: string, contentType: string): void {
   if (!isHtmlPayload(body, contentType)) return;
-  const normalized = body.toLowerCase();
-  const challengeSignals = [
-    'awswafintegration',
-    'verify that you&#39;re not a robot',
-    "verify that you're not a robot",
-    'checking your browser before accessing',
-    'cf-chl-',
-  ];
-  if (challengeSignals.some((signal) => normalized.includes(signal))) {
+  if (looksLikeBotChallenge(body)) {
     throw new SourceFetchError(
       'Received a bot-challenge page instead of source content',
       { retryable: false },

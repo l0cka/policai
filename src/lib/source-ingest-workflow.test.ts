@@ -3767,18 +3767,18 @@ describe('source ingest approval workflow', () => {
 
   it('records an explicit check for a manual-only catalogue source', async () => {
     const review = await recordManualSourceReview({
-      sourceId: 'dta-media',
+      sourceId: 'sa-office-for-ai',
       status: 'checked',
       actor: 'reviewer',
       notes: 'Checked in a browser.',
     });
 
     expect(review).toMatchObject({
-      sourceId: 'dta-media',
+      sourceId: 'sa-office-for-ai',
       status: 'checked',
       reviewedBy: 'reviewer',
       evidence: {
-        url: 'https://www.dta.gov.au/news-and-blogs/latest/feed/news_item',
+        url: 'https://www.ai.sa.gov.au/',
       },
       notes: 'Checked in a browser.',
     });
@@ -3788,7 +3788,7 @@ describe('source ingest approval workflow', () => {
   it('requires an explanation when a manual source is unavailable', async () => {
     await expect(
       recordManualSourceReview({
-        sourceId: 'dta-media',
+        sourceId: 'sa-office-for-ai',
         status: 'source_unavailable',
         actor: 'reviewer',
       }),
@@ -3799,7 +3799,7 @@ describe('source ingest approval workflow', () => {
   it('requires substantive notes for a successful manual source check', async () => {
     await expect(
       recordManualSourceReview({
-        sourceId: 'dta-media',
+        sourceId: 'sa-office-for-ai',
         status: 'checked',
         actor: 'reviewer',
         notes: 'Checked.',
@@ -3811,7 +3811,7 @@ describe('source ingest approval workflow', () => {
   it('rejects materially future-dated manual source reviews', async () => {
     await expect(
       recordManualSourceReview({
-        sourceId: 'dta-media',
+        sourceId: 'sa-office-for-ai',
         status: 'checked',
         actor: 'reviewer',
         notes: 'Inspected the complete source listing in a browser.',

@@ -18,6 +18,10 @@ import { withDataMutationLock } from '../src/lib/data-lock';
 import { readJsonFile, writeJsonFile } from '../src/lib/file-store';
 import { getAiProvider } from '../src/lib/ai-client';
 import {
+  createBrowserFetch,
+  type BrowserFetch,
+} from '../src/lib/pipeline/browser-fetch';
+import {
   collect,
   collectionRunFailed,
   emptyWatchState,
@@ -70,6 +74,18 @@ function parseArgs(argv: string[]): CliOptions {
   return options;
 }
 
+async function createOptionalBrowserFetch(): Promise<BrowserFetch | null> {
+  try {
+    await import('playwright-core');
+  } catch {
+    console.warn(
+      '[collect] playwright-core unavailable — browser retrieval disabled.',
+    );
+    return null;
+  }
+  return createBrowserFetch();
+}
+
 async function main() {
   const options = parseArgs(process.argv.slice(2));
 
@@ -91,6 +107,8 @@ async function main() {
       `[collect] Targeted ${source.automation} source run; global collection health will not be overwritten.`,
     );
   }
+
+  const browserFetch = await createOptionalBrowserFetch();
 
   const runCollection = async () => {
     const [state, developments, meta, reviews, policies] = await Promise.all([
@@ -118,6 +136,7 @@ async function main() {
       ),
       trackedPolicies: policies,
       sourceReviews: reviews,
+      browserFetchImpl: browserFetch?.fetchImpl,
       trackedUrls: [
         ...policies.flatMap((policy) =>
           sourceIdentityUrls(policy.sourceUrl, policy.verification.source),
@@ -206,10 +225,14 @@ async function main() {
 
   };
 
-  if (options.dryRun) {
-    await runCollection();
-  } else {
-    await withDataMutationLock(runCollection);
+  try {
+    if (options.dryRun) {
+      await runCollection();
+    } else {
+      await withDataMutationLock(runCollection);
+    }
+  } finally {
+    await browserFetch?.close();
   }
 }
 

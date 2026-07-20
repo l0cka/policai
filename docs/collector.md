@@ -156,8 +156,16 @@ failed automatic-source audit, not healthy coverage.
 The source catalogue deliberately separates:
 
 - **automatic sources** — reliably return usable content to the collector; and
-- **manual sources** — official endpoints protected by WAF/browser challenges
-  or otherwise unsuitable for dependable cloud retrieval.
+- **manual sources** — official endpoints that reject every automated client,
+  including the headless browser.
+
+Most previously-manual sources are automatic again since the collector gained
+a headless-browser retriever (`src/lib/pipeline/browser-fetch.ts`, Playwright
+Chromium). Sources marked `fetchStrategy: 'browser'` are retrieved through the
+browser directly; every other source falls back to the browser when the plain
+HTTP client is blocked or an index renders no extractable items. CI installs
+the browser with `npx playwright-core install --with-deps chromium` (cached
+between runs); without it the collector still runs, minus the fallback.
 
 Manual sources remain enabled. Review them with a browser and record the result
 through the MCP `record_manual_source_review` tool, supplying the human

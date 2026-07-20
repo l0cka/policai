@@ -86,6 +86,12 @@ export interface CollectOptions {
   sourceReviews?: readonly SourceReview[];
   previousMeta?: CollectionMeta;
   fetchImpl?: typeof fetch;
+  /**
+   * Headless-browser retriever with the fetch signature. Used directly for
+   * fetchStrategy 'browser' sources and as a fallback when the primary
+   * retriever is blocked or an index renders no extractable items.
+   */
+  browserFetchImpl?: typeof fetch;
   now?: () => Date;
   maxItemsPerSource?: number;
   /** Bypass schedule checks, used by explicit targeted diagnostics. */
@@ -121,6 +127,16 @@ const DEFAULT_MIN_SCORE_FOR_REVIEW = 0.7;
 const DEFAULT_MIN_HEALTHY_SOURCE_RATE = 0.8;
 const MAX_CANDIDATE_ATTEMPTS = 5;
 const WEEKLY_INTERVAL_MS = 6 * 24 * 60 * 60 * 1000;
+/** Browser retrieval covers cold start plus challenge settling. */
+const BROWSER_RETRIEVAL_TIMEOUT_MS = 60_000;
+
+/** Allow-list and homepage-redirect failures are not client-dependent. */
+function isBrowserFallbackFutile(error: unknown): boolean {
+  return (
+    error instanceof SourceFetchError &&
+    error.code === 'destination_mismatch'
+  );
+}
 
 export function emptyWatchState(): WatchState {
   return { seen: {}, lastCheckedBySource: {}, sourceSnapshots: {} };
@@ -916,8 +932,34 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
   const errors: string[] = [];
   const sourceResults: SourceRunResult[] = [];
 
+  const browserFetchImpl = options.browserFetchImpl;
+
   for (const source of sources) {
     const startedAt = Date.now();
+    const preferBrowser =
+      source.fetchStrategy === 'browser' && Boolean(browserFetchImpl);
+    const retrievePageWithFallback = async (
+      url: string,
+    ): Promise<RetrievedSource> => {
+      if (preferBrowser) {
+        return retrieveSource(url, {
+          fetchImpl: browserFetchImpl,
+          now: () => now,
+          timeoutMs: BROWSER_RETRIEVAL_TIMEOUT_MS,
+        });
+      }
+      try {
+        return await retrieveSource(url, { fetchImpl, now: () => now });
+      } catch (error) {
+        if (!browserFetchImpl || isBrowserFallbackFutile(error)) throw error;
+        log(`[collect] ${source.id}: retrying ${url} with the browser retriever`);
+        return retrieveSource(url, {
+          fetchImpl: browserFetchImpl,
+          now: () => now,
+          timeoutMs: BROWSER_RETRIEVAL_TIMEOUT_MS,
+        });
+      }
+    };
     let pending = pendingCandidatesForSource(state, source.id);
     for (const candidate of pending) {
       if (!isAllowedSourceHost(candidate.url)) {
@@ -963,11 +1005,61 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
 
     if (due) {
       try {
-        sourceRetrieval = await retrieveSource(source.url, {
-          fetchImpl,
-          now: () => now,
-          hashLinkedDocuments: source.kind === 'document',
-        });
+        const attemptIndexRetrieval = async (
+          impl: typeof fetch | undefined,
+          timeoutMs?: number,
+        ) => {
+          const retrieval = await retrieveSource(source.url, {
+            fetchImpl: impl,
+            now: () => now,
+            hashLinkedDocuments: source.kind === 'document',
+            ...(timeoutMs !== undefined ? { timeoutMs } : {}),
+          });
+          const extracted =
+            source.kind === 'document'
+              ? null
+              : source.kind === 'rss'
+                ? extractFromRss(retrieval.body, source.url)
+                : extractFromHtml(retrieval.body, source.url);
+          return { retrieval, extracted };
+        };
+        let indexAttempt: Awaited<ReturnType<typeof attemptIndexRetrieval>>;
+        if (preferBrowser) {
+          indexAttempt = await attemptIndexRetrieval(
+            browserFetchImpl,
+            BROWSER_RETRIEVAL_TIMEOUT_MS,
+          );
+        } else {
+          try {
+            indexAttempt = await attemptIndexRetrieval(fetchImpl);
+            if (
+              browserFetchImpl &&
+              indexAttempt.extracted?.itemCount === 0 &&
+              !indexAttempt.extracted.feedValid
+            ) {
+              log(
+                `[collect] ${source.id}: empty index, retrying with the browser retriever`,
+              );
+              indexAttempt = await attemptIndexRetrieval(
+                browserFetchImpl,
+                BROWSER_RETRIEVAL_TIMEOUT_MS,
+              );
+            }
+          } catch (error) {
+            if (!browserFetchImpl || isBrowserFallbackFutile(error)) {
+              throw error;
+            }
+            log(
+              `[collect] ${source.id}: retrying source with the browser retriever`,
+            );
+            indexAttempt = await attemptIndexRetrieval(
+              browserFetchImpl,
+              BROWSER_RETRIEVAL_TIMEOUT_MS,
+            );
+          }
+        }
+        sourceRetrieval = indexAttempt.retrieval;
+        const indexExtraction = indexAttempt.extracted;
         if (source.kind === 'document') {
           itemCount = 1;
           const contentHash = sourceRetrieval.evidence.contentHash;
@@ -1090,17 +1182,16 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
             }];
           }
         } else {
-          const extraction =
-            source.kind === 'rss'
-              ? extractFromRss(sourceRetrieval.body, source.url)
-              : extractFromHtml(sourceRetrieval.body, source.url);
-          itemCount = extraction.itemCount;
-          if (itemCount === 0) {
+          if (!indexExtraction) {
+            throw new Error('Index source retrieval produced no extraction');
+          }
+          itemCount = indexExtraction.itemCount;
+          if (itemCount === 0 && !indexExtraction.feedValid) {
             throw new Error(
               'Source returned no extractable index or feed items',
             );
           }
-          discovered = extraction.candidates;
+          discovered = indexExtraction.candidates;
         }
 
         const unsafeCandidateCount = discovered.filter(
@@ -1186,10 +1277,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
           sourceUrlsEqual(candidate.url, source.url) &&
           sourceRetrieval
             ? sourceRetrieval
-            : await retrieveSource(candidate.url, {
-                fetchImpl,
-                now: () => now,
-              });
+            : await retrievePageWithFallback(candidate.url);
         existingPolicy = candidate.changeFingerprint
           ? trackedPoliciesByUrl.get(sourceUrlIdentity(candidate.url))
           : undefined;

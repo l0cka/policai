@@ -111,6 +111,35 @@ describe('extractCandidatesFromHtml', () => {
     expect(result.itemCount).toBe(0);
   });
 
+  it('extracts entries from Drupal views tables', () => {
+    const result = extractFromHtml(
+      `<main><table class="cols-3 table">
+        <thead><tr>
+          <th class="views-field views-field-created"><a href="?sort=asc">Date Sort ascending</a></th>
+          <th class="views-field views-field-title">Title</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td class="views-field views-field-created"><time datetime="2026-07-17">17 July 2026</time></td>
+            <td class="views-field views-field-title"><a href="/news/ai-data-centre-standards">Draft grid standards for AI data centres</a></td>
+          </tr>
+          <tr>
+            <td class="views-field views-field-created"><time datetime="2026-07-10">10 July 2026</time></td>
+            <td class="views-field views-field-title"><a href="/news/gas-rules">New Version 92 of the National Gas Rules</a></td>
+          </tr>
+        </tbody>
+      </table></main>`,
+      'https://example.gov.au/news-centre/media-releases',
+    );
+
+    expect(result.itemCount).toBe(2);
+    expect(result.candidates).toHaveLength(1);
+    expect(result.candidates[0]).toMatchObject({
+      url: 'https://example.gov.au/news/ai-data-centre-standards',
+      dateHint: '2026-07-17',
+    });
+  });
+
   it('keeps semantic entry links inside article headers', () => {
     const result = extractFromHtml(
       `<main>
@@ -207,6 +236,30 @@ describe('extractCandidatesFromHtml', () => {
 });
 
 describe('extractCandidatesFromRss', () => {
+  it('marks a valid but empty feed so coverage is not treated as failure', () => {
+    const result = extractFromRss(
+      `<?xml version="1.0" encoding="UTF-8"?>
+      <rss version="2.0"><channel>
+        <title>House Inquiries</title>
+        <description>New inquiries</description>
+      </channel></rss>`,
+      'https://www.aph.gov.au/house/rss/house_inquiries',
+    );
+
+    expect(result.itemCount).toBe(0);
+    expect(result.feedValid).toBe(true);
+  });
+
+  it('does not mark ordinary HTML as a valid feed', () => {
+    const result = extractFromRss(
+      '<html><body>Checking your browser before accessing</body></html>',
+      'https://www.example.gov.au/rss',
+    );
+
+    expect(result.itemCount).toBe(0);
+    expect(result.feedValid).toBe(false);
+  });
+
   it('reports feed item coverage even when no item is AI-policy relevant', () => {
     const result = extractFromRss(
       `<rss><channel>

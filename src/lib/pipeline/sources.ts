@@ -3,15 +3,21 @@ import type { Jurisdiction } from '@/types';
 /**
  * Watch-source registry — the official pages and feeds the collector monitors.
  *
- * Sources verified 2026-07-20. `rss` sources are parsed as RSS/Atom feeds;
- * `html-index` sources are scraped for dated announcement links. Some
- * government sites reject non-browser user agents (noted per source) — the
- * collector tolerates per-source failures and reports them in meta.json.
+ * Sources verified 2026-07-20 against the collector's own retrieval pipeline
+ * (targeted dry runs). `rss` sources are parsed as RSS/Atom feeds;
+ * `html-index` sources are scraped for announcement links; `document`
+ * sources are watched for content-hash changes. Hosts that reject plain
+ * HTTP clients (GovCMS behind Akamai, APH, AWS WAF fronted state sites)
+ * are marked fetchStrategy 'browser' and retrieved through the headless
+ * browser; every other source still falls back to the browser when the
+ * plain retriever fails. The collector tolerates per-source failures and
+ * reports them in meta.json.
  */
 
 export type SourceKind = 'html-index' | 'rss' | 'document';
 export type SourceCategory = 'government' | 'regulator' | 'court';
 export type SourceAutomation = 'automatic' | 'manual';
+export type SourceFetchStrategy = 'http' | 'browser';
 
 export interface WatchSource {
   id: string;
@@ -23,6 +29,12 @@ export interface WatchSource {
   schedule: 'daily' | 'weekly';
   enabled: boolean;
   automation: SourceAutomation;
+  /**
+   * 'browser' skips the plain HTTP client and retrieves through the headless
+   * browser directly — for hosts known to reject non-browser clients. The
+   * default 'http' path still falls back to the browser on failure.
+   */
+  fetchStrategy?: SourceFetchStrategy;
   critical?: boolean;
   notes?: string;
 }
@@ -52,10 +64,11 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'document',
     schedule: 'daily',
     enabled: true,
-    automation: 'manual',
+    automation: 'automatic',
+    fetchStrategy: 'browser',
     critical: true,
     notes:
-      'Directly tracks the Office of AI mandate and national standards implementation; the hardened retriever currently receives no readable document text, so review manually.',
+      'Directly tracks the Office of AI mandate and national standards implementation; PMC serves an empty shell to plain HTTP clients, so the page is rendered in the headless browser.',
   },
   {
     id: 'industry-ai-publications',
@@ -66,10 +79,11 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'daily',
     enabled: true,
-    automation: 'manual',
+    automation: 'automatic',
+    fetchStrategy: 'browser',
     critical: true,
     notes:
-      'AI-topic filtered publications index for formal policy, standards, frameworks and agreements; GovCMS currently times out in the hardened retriever, so review manually.',
+      'AI-topic filtered publications index (Drupal views table) for formal policy, standards, frameworks and agreements; GovCMS rejects plain HTTP clients.',
   },
   {
     id: 'industry-ministers-media',
@@ -80,10 +94,11 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'rss',
     schedule: 'daily',
     enabled: true,
-    automation: 'manual',
+    automation: 'automatic',
+    fetchStrategy: 'browser',
     critical: true,
     notes:
-      'Official all-ministers RSS feed covering AI announcements, international agreements and infrastructure commitments; the hardened retriever currently times out, so review manually.',
+      'Official all-ministers RSS feed covering AI announcements, international agreements and infrastructure commitments; GovCMS rejects plain HTTP clients.',
   },
   {
     id: 'dta-media',
@@ -94,10 +109,11 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'rss',
     schedule: 'daily',
     enabled: true,
-    automation: 'manual',
+    automation: 'automatic',
+    fetchStrategy: 'browser',
     critical: true,
     notes:
-      'Official DTA news RSS feed. GovCMS/Akamai currently stalls cloud-hosted collectors; review manually.',
+      'Official DTA news RSS feed; GovCMS/Akamai rejects plain HTTP clients.',
   },
   {
     id: 'digital-gov-ai',
@@ -108,10 +124,10 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'daily',
     enabled: true,
-    automation: 'manual',
+    automation: 'automatic',
+    fetchStrategy: 'browser',
     critical: true,
-    notes:
-      'GovCMS/Akamai currently stalls cloud-hosted collectors; review manually.',
+    notes: 'GovCMS/Akamai rejects plain HTTP clients.',
   },
   {
     id: 'disr-news',
@@ -122,9 +138,10 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'daily',
     enabled: true,
-    automation: 'manual',
+    automation: 'automatic',
+    fetchStrategy: 'browser',
     notes:
-      'Departmental news and media-release index; GovCMS currently stalls the hardened retriever, so review manually.',
+      'Departmental news and media-release index; GovCMS rejects plain HTTP clients.',
   },
   {
     id: 'naic-news',
@@ -132,12 +149,13 @@ export const WATCH_SOURCES: WatchSource[] = [
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.ai.gov.au/news-and-insights',
-    kind: 'html-index',
+    kind: 'document',
     schedule: 'weekly',
     enabled: true,
-    automation: 'manual',
+    automation: 'automatic',
+    fetchStrategy: 'browser',
     notes:
-      'GovCMS/Akamai currently stalls cloud-hosted collectors; review manually.',
+      'The page is now a curated hub rather than a dated index, so it is watched for content changes; GovCMS/Akamai rejects plain HTTP clients.',
   },
   {
     id: 'finance-news',
@@ -148,9 +166,9 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'weekly',
     enabled: true,
-    automation: 'manual',
-    notes:
-      'GovCMS/Akamai currently stalls cloud-hosted collectors; review manually.',
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    notes: 'GovCMS/Akamai rejects plain HTTP clients.',
   },
   {
     id: 'agd-news',
@@ -160,10 +178,10 @@ export const WATCH_SOURCES: WatchSource[] = [
     url: 'https://www.ag.gov.au/about-us/news-and-media',
     kind: 'html-index',
     schedule: 'weekly',
-    enabled: true,
+    enabled: false,
     automation: 'manual',
     notes:
-      'GovCMS/Akamai currently stalls cloud-hosted collectors; review manually.',
+      'The departmental news index now returns 404 and no successor page is published (verified 2026-07-20); portfolio announcements are covered by agd-ministers-media.',
   },
   {
     id: 'agd-ministers-media',
@@ -174,9 +192,10 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'daily',
     enabled: true,
-    automation: 'manual',
+    automation: 'automatic',
+    fetchStrategy: 'browser',
     notes:
-      'Whole-of-government AI safety, privacy, copyright and automated-decision announcements; the hardened retriever currently times out, so review manually.',
+      'Whole-of-government AI safety, privacy, copyright and automated-decision announcements; the host rejects plain HTTP clients.',
   },
   {
     id: 'treasury-publications',
@@ -184,12 +203,12 @@ export const WATCH_SOURCES: WatchSource[] = [
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://treasury.gov.au/publication',
-    kind: 'html-index',
+    kind: 'document',
     schedule: 'weekly',
     enabled: true,
-    automation: 'manual',
+    automation: 'automatic',
     notes:
-      'Digital competition and consumer-law publications remain in scope, but the current index exposes no extractable entries to the collector; review manually.',
+      'Digital competition and consumer-law publications; the index markup exposes no extractable entries, so the page is watched for content changes.',
   },
   {
     id: 'csiro-news',
@@ -211,9 +230,10 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'daily',
     enabled: true,
-    automation: 'manual',
+    automation: 'automatic',
+    fetchStrategy: 'browser',
     notes:
-      'ASD/ACSC news index covering AI cyber guidance and joint statements; the hardened retriever currently times out, so review manually.',
+      'ASD/ACSC news index covering AI cyber guidance and joint statements; the host rejects plain HTTP clients.',
   },
   {
     id: 'apsc-latest-news',
@@ -224,9 +244,10 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'daily',
     enabled: true,
-    automation: 'manual',
+    automation: 'automatic',
+    fetchStrategy: 'browser',
     notes:
-      'APS-wide AI workforce, recruitment, capability and governance guidance; the hardened retriever currently times out, so review manually.',
+      'APS-wide AI workforce, recruitment, capability and governance guidance; the host rejects plain HTTP clients.',
   },
   {
     id: 'anao-performance-audits',
@@ -237,9 +258,10 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'weekly',
     enabled: true,
-    automation: 'manual',
+    automation: 'automatic',
+    fetchStrategy: 'browser',
     notes:
-      'Commonwealth governance audits, including agency use and oversight of AI; the hardened retriever currently times out, so review manually.',
+      'Commonwealth governance audits, including agency use and oversight of AI; the host rejects plain HTTP clients.',
   },
   {
     id: 'senate-ai-data-centres',
@@ -250,9 +272,10 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'document',
     schedule: 'weekly',
     enabled: true,
-    automation: 'manual',
+    automation: 'automatic',
+    fetchStrategy: 'browser',
     notes:
-      'Tracks inquiry milestones, submissions and the report due in November 2026; APH returns 403 to the hardened retriever, so review manually.',
+      'Tracks inquiry milestones, submissions and the report due in November 2026; APH returns 403 to plain HTTP clients.',
   },
   {
     id: 'senate-new-inquiries',
@@ -281,6 +304,104 @@ export const WATCH_SOURCES: WatchSource[] = [
       'Official Senate RSS feed for committee reports and policy recommendations.',
   },
   {
+    id: 'house-new-inquiries',
+    name: 'House of Representatives — new committee inquiries',
+    jurisdiction: 'federal',
+    category: 'government',
+    url: 'https://www.aph.gov.au/house/rss/house_inquiries',
+    kind: 'rss',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    notes:
+      'Official House RSS feed for newly referred committee inquiries; APH returns 403 to plain HTTP clients. The feed is legitimately empty between referrals.',
+  },
+  {
+    id: 'joint-new-inquiries',
+    name: 'Parliamentary joint committees — new inquiries',
+    jurisdiction: 'federal',
+    category: 'government',
+    url: 'https://www.aph.gov.au/house/rss/joint_inquiries',
+    kind: 'rss',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    notes:
+      'Official joint-committee RSS feed for newly referred inquiries; APH returns 403 to plain HTTP clients. The feed is legitimately empty between referrals.',
+  },
+  {
+    id: 'aph-bills-digests',
+    name: 'Parliamentary Library — bills digests',
+    jurisdiction: 'federal',
+    category: 'government',
+    url: 'https://parlinfo.aph.gov.au/parlInfo/feeds/rss.w3p;adv=yes;orderBy=date-eFirst;page=0;query=Date%3AthisYear%20Dataset%3Abillsdgs;resCount=100',
+    kind: 'rss',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    notes:
+      'Official ParlInfo feed of Parliamentary Library bills digests — the leading indicator for bills before parliament, including AI legislation; APH rejects plain HTTP clients.',
+  },
+  {
+    id: 'legislation-whats-new',
+    name: 'Federal Register of Legislation — what’s new',
+    jurisdiction: 'federal',
+    category: 'government',
+    url: 'https://www.legislation.gov.au/whatsnew',
+    kind: 'document',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    notes:
+      'Newly registered acts and legislative instruments; the register is a client-rendered application, so the rendered page is watched for content changes.',
+  },
+  {
+    id: 'agd-consultations',
+    name: "Attorney-General's Department — consultation hub",
+    jurisdiction: 'federal',
+    category: 'government',
+    url: 'https://consultations.ag.gov.au/',
+    kind: 'html-index',
+    schedule: 'weekly',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    notes:
+      'Open consultations on copyright and AI, automated decision-making and privacy reform — policy signals months before announcements.',
+  },
+  {
+    id: 'industry-consultations',
+    name: 'Department of Industry — consultation hub',
+    jurisdiction: 'federal',
+    category: 'government',
+    url: 'https://consult.industry.gov.au/',
+    kind: 'document',
+    schedule: 'weekly',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    notes:
+      'Open DISR consultations, including AI regulatory proposals; the hub markup exposes no extractable entries, so the page is watched for content changes.',
+  },
+  {
+    id: 'treasury-consultations',
+    name: 'Treasury — consultation hub',
+    jurisdiction: 'federal',
+    category: 'government',
+    url: 'https://consult.treasury.gov.au/',
+    kind: 'document',
+    schedule: 'weekly',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    notes:
+      'Open Treasury consultations, including digital competition and consumer-law reform; the hub markup exposes no extractable entries, so the page is watched for content changes.',
+  },
+  {
     id: 'aemc-media',
     name: 'Australian Energy Market Commission — media releases',
     jurisdiction: 'federal',
@@ -289,9 +410,9 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'weekly',
     enabled: true,
-    automation: 'manual',
+    automation: 'automatic',
     notes:
-      'Energy-market rules and standards affecting large AI and data-centre loads; the current table markup exposes no extractable index entries, so review manually.',
+      'Energy-market rules and standards affecting large AI and data-centre loads (Drupal views table).',
   },
   // --- Federal: regulators ---
   {
@@ -337,9 +458,94 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'weekly',
     enabled: true,
-    automation: 'manual',
+    automation: 'automatic',
+    fetchStrategy: 'browser',
     notes:
-      'The current newsroom index exposes no extractable entries to the collector; review manually.',
+      'The newsroom list is client-rendered, so it is retrieved through the headless browser.',
+  },
+  {
+    id: 'acma-media',
+    name: 'ACMA — media releases',
+    jurisdiction: 'federal',
+    category: 'regulator',
+    url: 'https://www.acma.gov.au/media-releases',
+    kind: 'html-index',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    notes:
+      'Communications and media regulation, including misinformation, deepfakes and online platforms; GovCMS rejects plain HTTP clients.',
+  },
+  {
+    id: 'tga-media',
+    name: 'TGA — media releases',
+    jurisdiction: 'federal',
+    category: 'regulator',
+    url: 'https://www.tga.gov.au/news/media-releases',
+    kind: 'html-index',
+    schedule: 'weekly',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    notes:
+      'Therapeutic goods regulation, including AI as a medical device and software-as-medical-device guidance; GovCMS rejects plain HTTP clients.',
+  },
+  {
+    id: 'ipa-news',
+    name: 'IP Australia — news',
+    jurisdiction: 'federal',
+    category: 'regulator',
+    url: 'https://www.ipaustralia.gov.au/about-us/news-and-community/news',
+    kind: 'html-index',
+    schedule: 'weekly',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    notes:
+      'Intellectual property practice at the AI interface — AI-assisted inventions, examination practice and copyright signals.',
+  },
+  {
+    id: 'fwc-news',
+    name: 'Fair Work Commission — news and media',
+    jurisdiction: 'federal',
+    category: 'regulator',
+    url: 'https://www.fwc.gov.au/about-us/news-and-media',
+    kind: 'html-index',
+    schedule: 'weekly',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    notes:
+      'Workplace-relations decisions and guidance touching AI in hiring, monitoring and workplace change.',
+  },
+  {
+    id: 'teqsa-news',
+    name: 'TEQSA — latest news',
+    jurisdiction: 'federal',
+    category: 'regulator',
+    url: 'https://www.teqsa.gov.au/latest-news',
+    kind: 'document',
+    schedule: 'weekly',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    notes:
+      'Higher-education regulation including generative AI and academic integrity; the news index markup exposes no extractable entries, so the page is watched for content changes.',
+  },
+  {
+    id: 'aec-media',
+    name: 'AEC — media releases',
+    jurisdiction: 'federal',
+    category: 'regulator',
+    url: 'https://www.aec.gov.au/media/media-releases.htm',
+    kind: 'document',
+    schedule: 'weekly',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    notes:
+      'Electoral communications and AI/deepfake guidance; the legacy index markup exposes no extractable entries, so the page is watched for content changes.',
   },
   {
     id: 'esafety-media',
@@ -348,24 +554,24 @@ export const WATCH_SOURCES: WatchSource[] = [
     category: 'regulator',
     url: 'https://www.esafety.gov.au/newsroom/media-releases',
     kind: 'html-index',
-    schedule: 'weekly',
+    schedule: 'daily',
     enabled: true,
-    automation: 'manual',
-    notes:
-      'GovCMS/Akamai currently stalls cloud-hosted collectors; review manually.',
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    notes: 'GovCMS/Akamai rejects plain HTTP clients.',
   },
   {
     id: 'pc-media',
-    name: 'Productivity Commission — media and speeches',
+    name: 'Productivity Commission — media releases',
     jurisdiction: 'federal',
     category: 'regulator',
-    url: 'https://www.pc.gov.au/media-speeches',
-    kind: 'html-index',
+    url: 'https://www.pc.gov.au/media-speeches/media-releases',
+    kind: 'document',
     schedule: 'weekly',
     enabled: true,
-    automation: 'manual',
+    automation: 'automatic',
     notes:
-      'The current media index exposes no extractable entries to the collector; review manually.',
+      'Inquiry milestones including the digital-economy and AI stream; the redesigned site exposes no extractable index entries, so the page is watched for content changes.',
   },
   {
     id: 'ahrc-media',
@@ -374,10 +580,11 @@ export const WATCH_SOURCES: WatchSource[] = [
     category: 'regulator',
     url: 'https://humanrights.gov.au/about-us/media-centre',
     kind: 'html-index',
-    schedule: 'weekly',
+    schedule: 'daily',
     enabled: true,
-    automation: 'manual',
-    notes: 'Returns 403 to cloud-hosted collectors; review manually.',
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    notes: 'The host rejects plain HTTP clients.',
   },
   // --- Courts ---
   {
@@ -386,11 +593,13 @@ export const WATCH_SOURCES: WatchSource[] = [
     jurisdiction: 'federal',
     category: 'court',
     url: 'https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes',
-    kind: 'html-index',
+    kind: 'document',
     schedule: 'weekly',
     enabled: true,
-    automation: 'manual',
-    notes: 'Returns 403 to cloud-hosted collectors; review manually.',
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    notes:
+      'Practice notes including generative-AI usage directions; the directory markup exposes no extractable entries, so the page is watched for content changes. The host rejects plain HTTP clients.',
   },
   {
     id: 'nsw-sc-practice-notes',
@@ -398,12 +607,12 @@ export const WATCH_SOURCES: WatchSource[] = [
     jurisdiction: 'nsw',
     category: 'court',
     url: 'https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html',
-    kind: 'html-index',
+    kind: 'document',
     schedule: 'weekly',
     enabled: true,
-    automation: 'manual',
+    automation: 'automatic',
     notes:
-      'The current practice-note index exposes no extractable entries to the collector; review manually.',
+      'Practice notes including the generative-AI practice note; the directory markup exposes no extractable entries, so the page is watched for content changes.',
   },
   {
     id: 'vic-sc-practice-notes',
@@ -422,12 +631,12 @@ export const WATCH_SOURCES: WatchSource[] = [
     jurisdiction: 'qld',
     category: 'court',
     url: 'https://www.courts.qld.gov.au/newsroom/news',
-    kind: 'html-index',
+    kind: 'document',
     schedule: 'weekly',
     enabled: true,
-    automation: 'manual',
+    automation: 'automatic',
     notes:
-      'The current news index exposes no extractable entries to the collector; review manually.',
+      'Court announcements including AI practice directions; the news index markup exposes no extractable entries, so the page is watched for content changes.',
   },
   // --- States and territories ---
   {
@@ -436,12 +645,26 @@ export const WATCH_SOURCES: WatchSource[] = [
     jurisdiction: 'nsw',
     category: 'government',
     url: 'https://www.digital.nsw.gov.au/policy/artificial-intelligence',
-    kind: 'html-index',
+    kind: 'document',
     schedule: 'weekly',
     enabled: true,
-    automation: 'manual',
+    automation: 'automatic',
     notes:
-      'The current AI policy page exposes no extractable entries to the collector; review manually.',
+      'NSW AI policy and assurance framework hub; the page exposes no extractable index entries, so it is watched for content changes.',
+  },
+  {
+    id: 'nsw-media-releases',
+    name: 'NSW Government — media releases',
+    jurisdiction: 'nsw',
+    category: 'government',
+    url: 'https://www.nsw.gov.au/media-releases',
+    kind: 'html-index',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    notes:
+      'Whole-of-government NSW announcements, including AI policy and digital government decisions.',
   },
   {
     id: 'vic-ai',
@@ -455,6 +678,19 @@ export const WATCH_SOURCES: WatchSource[] = [
     automation: 'automatic',
   },
   {
+    id: 'ovic-news',
+    name: 'OVIC — news',
+    jurisdiction: 'vic',
+    category: 'regulator',
+    url: 'https://ovic.vic.gov.au/about-us/news-and-media/news',
+    kind: 'html-index',
+    schedule: 'weekly',
+    enabled: true,
+    automation: 'automatic',
+    notes:
+      'Victorian information commissioner — the most active state privacy regulator on AI and automated decision-making.',
+  },
+  {
     id: 'qld-qgea-ai',
     name: 'Queensland QGEA — AI governance policy',
     jurisdiction: 'qld',
@@ -463,9 +699,37 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'document',
     schedule: 'weekly',
     enabled: true,
-    automation: 'manual',
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    notes: 'AWS WAF challenges plain HTTP clients.',
+  },
+  {
+    id: 'qld-ministerial-statements',
+    name: 'Queensland Government — ministerial media statements',
+    jurisdiction: 'qld',
+    category: 'government',
+    url: 'https://statements.qld.gov.au/',
+    kind: 'document',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
     notes:
-      'The site returns an AWS WAF browser challenge to cloud-hosted collectors; review manually.',
+      'Whole-of-government Queensland announcements; the statements list is client-rendered without extractable entries, so the page is watched for content changes.',
+  },
+  {
+    id: 'wa-media-statements',
+    name: 'WA Government — media statements',
+    jurisdiction: 'wa',
+    category: 'government',
+    url: 'https://www.mediastatements.wa.gov.au/',
+    kind: 'html-index',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    notes:
+      'Whole-of-government WA announcements, including AI policy and digital government decisions.',
   },
   {
     id: 'wa-ai-policy',
@@ -476,9 +740,9 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'document',
     schedule: 'weekly',
     enabled: true,
-    automation: 'manual',
-    notes:
-      'The direct policy document currently times out in the hardened retriever; review manually.',
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    notes: 'The host rejects plain HTTP clients.',
   },
   {
     id: 'sa-office-for-ai',
@@ -486,11 +750,12 @@ export const WATCH_SOURCES: WatchSource[] = [
     jurisdiction: 'sa',
     category: 'government',
     url: 'https://www.ai.sa.gov.au/',
-    kind: 'html-index',
+    kind: 'document',
     schedule: 'weekly',
     enabled: true,
     automation: 'manual',
-    notes: 'Returns 403 to cloud-hosted collectors; review manually.',
+    notes:
+      'Returns 403 to every automated client, including the headless browser (verified 2026-07-20); review manually.',
   },
   {
     id: 'tas-dpac-policies',
@@ -501,8 +766,9 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'weekly',
     enabled: true,
-    automation: 'manual',
-    notes: 'Returns 403 to cloud-hosted collectors; review manually.',
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    notes: 'The host rejects plain HTTP clients.',
   },
   {
     id: 'act-ai-policy',
@@ -513,8 +779,9 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'document',
     schedule: 'weekly',
     enabled: true,
-    automation: 'manual',
-    notes: 'Returns 403 to cloud-hosted collectors; review manually.',
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    notes: 'The host rejects plain HTTP clients.',
   },
   {
     id: 'nt-ai-assurance',
@@ -525,7 +792,8 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'document',
     schedule: 'weekly',
     enabled: true,
-    automation: 'manual',
+    automation: 'automatic',
+    fetchStrategy: 'browser',
     notes: 'Returns 403 to non-browser user agents.',
   },
 ];

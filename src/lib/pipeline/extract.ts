@@ -25,6 +25,11 @@ export interface Candidate {
 export interface ExtractionResult {
   itemCount: number;
   candidates: Candidate[];
+  /**
+   * True when the payload parsed as a real RSS/Atom feed, so an empty item
+   * list means "no new entries", not a soft failure.
+   */
+  feedValid?: boolean;
 }
 
 const DEFAULT_MAX_CANDIDATES = 25;
@@ -164,6 +169,9 @@ export function extractFromHtml(
     '[class*="publication"]',
     '[class*="media"]',
     '.views-row',
+    // Drupal views tables render one entry per body row; header rows carry
+    // th cells only, so sort links never count as entries.
+    'tr:has(td[class*="views-field"])',
   ].join(',');
   const semanticListSelector = [
     'ul[class*="result"]',
@@ -316,6 +324,7 @@ export function extractFromRss(
     candidates: deduped
       .filter(isRelevantScrapedCandidate)
       .slice(0, maxCandidates),
+    feedValid: $('channel, feed').length > 0,
   };
 }
 

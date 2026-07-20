@@ -41,6 +41,15 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Cache Playwright Chromium
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Install headless Chromium for browser retrieval
+        run: npx playwright-core install --with-deps chromium
+
       - name: Run collector
         id: collector
         continue-on-error: true

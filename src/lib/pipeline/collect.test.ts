@@ -170,8 +170,8 @@ describe('collect', () => {
       itemCount: 2,
       candidateCount: 2,
     });
-    expect(result.meta.collector.automaticSourceCount).toBe(9);
-    expect(result.meta.collector.manualSourceCount).toBe(30);
+    expect(result.meta.collector.automaticSourceCount).toBe(54);
+    expect(result.meta.collector.manualSourceCount).toBe(1);
     expect(result.errors).toEqual([]);
   });
 
@@ -591,7 +591,8 @@ describe('collect', () => {
       previousMeta,
       fetchImpl: fakeFetch({
         'https://www.example.gov.au/news': 403,
-        'https://www.example.gov.au/rss': '<rss><channel /></rss>',
+        'https://www.example.gov.au/rss':
+          '<html><body>Interstitial page with no feed</body></html>',
       }),
       now: () => new Date('2026-07-10T00:00:00.000Z'),
     });
@@ -1822,5 +1823,127 @@ describe('collect', () => {
       status: 'pending',
       attempts: 0,
     });
+  });
+});
+
+describe('collect browser fallback', () => {
+  beforeEach(() => {
+    hasAiProvider.mockReturnValue(false);
+  });
+
+  it('retries a blocked source through the browser retriever', async () => {
+    const fetchImpl = fakeFetch({
+      'https://www.example.gov.au/news': 403,
+      'https://www.example.gov.au/news/ai-policy-framework': 403,
+    });
+    const browserFetchImpl = fakeFetch({
+      'https://www.example.gov.au/news': INDEX_HTML,
+      'https://www.example.gov.au/news/ai-policy-framework':
+        '<html><body><h1>New AI policy framework released</h1></body></html>',
+      'https://www.example.gov.au/news/seen-before':
+        '<html><body><h1>Existing AI governance standard update</h1></body></html>',
+    });
+
+    const result = await collect({
+      sources: [HTML_SOURCE],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl,
+      browserFetchImpl,
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+    });
+
+    expect(fetchImpl).toHaveBeenCalled();
+    expect(browserFetchImpl).toHaveBeenCalled();
+    expect(result.errors).toEqual([]);
+    expect(result.meta.collector.sourceResults[0].status).toBe('success');
+    expect(
+      result.developments.map((development) => development.url),
+    ).toContain('https://www.example.gov.au/news/ai-policy-framework');
+  });
+
+  it('uses the browser retriever directly for browser-strategy sources', async () => {
+    const browserSource: WatchSource = {
+      ...HTML_SOURCE,
+      fetchStrategy: 'browser',
+    };
+    const fetchImpl = fakeFetch({});
+    const browserFetchImpl = fakeFetch({
+      'https://www.example.gov.au/news': INDEX_HTML,
+      'https://www.example.gov.au/news/ai-policy-framework':
+        '<html><body><h1>New AI policy framework released</h1></body></html>',
+      'https://www.example.gov.au/news/seen-before':
+        '<html><body><h1>Existing AI governance standard update</h1></body></html>',
+    });
+
+    const result = await collect({
+      sources: [browserSource],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl,
+      browserFetchImpl,
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+    });
+
+    expect(fetchImpl).not.toHaveBeenCalled();
+    expect(browserFetchImpl).toHaveBeenCalled();
+    expect(result.errors).toEqual([]);
+    expect(result.meta.collector.sourceResults[0].status).toBe('success');
+  });
+
+  it('still reports failure when both retrievers fail', async () => {
+    const result = await collect({
+      sources: [HTML_SOURCE],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl: fakeFetch({ 'https://www.example.gov.au/news': 403 }),
+      browserFetchImpl: fakeFetch({
+        'https://www.example.gov.au/news': 403,
+      }),
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+    });
+
+    expect(result.errors).toHaveLength(1);
+    expect(result.meta.collector.sourceResults[0].status).toBe('error');
+  });
+
+  it('treats a valid but empty feed as successful coverage', async () => {
+    const emptyFeed = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"><channel>
+  <title>House Inquiries</title>
+  <description>This feed contains new inquiries</description>
+</channel></rss>`;
+
+    const result = await collect({
+      sources: [RSS_SOURCE],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl: fakeFetch({
+        'https://www.example.gov.au/rss': {
+          body: emptyFeed,
+          contentType: 'application/rss+xml',
+        },
+      }),
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+    });
+
+    expect(result.errors).toEqual([]);
+    expect(result.meta.collector.sourceResults[0].status).toBe('success');
+    expect(result.developments).toEqual([]);
+  });
+
+  it('does not attempt the browser retriever when none is provided', async () => {
+    const fetchImpl = fakeFetch({ 'https://www.example.gov.au/news': 403 });
+
+    const result = await collect({
+      sources: [HTML_SOURCE],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl,
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+    });
+
+    expect(result.errors).toHaveLength(1);
+    expect(result.meta.collector.sourceResults[0].status).toBe('error');
   });
 });
