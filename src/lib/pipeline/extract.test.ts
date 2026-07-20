@@ -151,6 +151,20 @@ describe('extractCandidatesFromHtml', () => {
     expect(urls).not.toContain('https://www.example.gov.au/news/quantum-grants');
   });
 
+  it('captures governed data-centre infrastructure without requiring AI in the title', () => {
+    const result = extractFromHtml(
+      `<main><ul class="news-list">
+        <li><a href="/news/draft-grid-rule-data-centres">Draft grid standards for data centre connections</a></li>
+        <li><a href="/news/new-data-centre-opens">New data centre opens in regional Australia</a></li>
+      </ul></main>`,
+      'https://example.gov.au/news',
+    );
+
+    expect(result.candidates.map((candidate) => candidate.url)).toEqual([
+      'https://example.gov.au/news/draft-grid-rule-data-centres',
+    ]);
+  });
+
   it('dedupes repeated links', () => {
     const candidates = extractCandidatesFromHtml(
       INDEX_HTML,

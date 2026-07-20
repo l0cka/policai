@@ -3,7 +3,7 @@ import type { Jurisdiction } from '@/types';
 /**
  * Watch-source registry — the official pages and feeds the collector monitors.
  *
- * Sources verified 2026-07-10. `rss` sources are parsed as RSS/Atom feeds;
+ * Sources verified 2026-07-20. `rss` sources are parsed as RSS/Atom feeds;
  * `html-index` sources are scraped for dated announcement links. Some
  * government sites reject non-browser user agents (noted per source) — the
  * collector tolerates per-source failures and reports them in meta.json.
@@ -29,6 +29,62 @@ export interface WatchSource {
 
 export const WATCH_SOURCES: WatchSource[] = [
   // --- Federal: policy owners ---
+  {
+    id: 'pm-media',
+    name: 'Prime Minister of Australia — media',
+    jurisdiction: 'federal',
+    category: 'government',
+    url: 'https://www.pm.gov.au/media',
+    kind: 'html-index',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    critical: true,
+    notes:
+      'Whole-of-government announcements, including cross-portfolio AI policy decisions.',
+  },
+  {
+    id: 'pmc-office-ai',
+    name: 'Department of the Prime Minister and Cabinet — Office of AI',
+    jurisdiction: 'federal',
+    category: 'government',
+    url: 'https://www.pmc.gov.au/domestic-policy/office-ai',
+    kind: 'document',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'manual',
+    critical: true,
+    notes:
+      'Directly tracks the Office of AI mandate and national standards implementation; the hardened retriever currently receives no readable document text, so review manually.',
+  },
+  {
+    id: 'industry-ai-publications',
+    name: 'Department of Industry — AI publications',
+    jurisdiction: 'federal',
+    category: 'government',
+    url: 'https://www.industry.gov.au/publications?pub-topic=2963',
+    kind: 'html-index',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'manual',
+    critical: true,
+    notes:
+      'AI-topic filtered publications index for formal policy, standards, frameworks and agreements; GovCMS currently times out in the hardened retriever, so review manually.',
+  },
+  {
+    id: 'industry-ministers-media',
+    name: 'Industry, Science and Resources ministers — media centre',
+    jurisdiction: 'federal',
+    category: 'government',
+    url: 'https://www.minister.industry.gov.au/feed/all/all/rss.xml',
+    kind: 'rss',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'manual',
+    critical: true,
+    notes:
+      'Official all-ministers RSS feed covering AI announcements, international agreements and infrastructure commitments; the hardened retriever currently times out, so review manually.',
+  },
   {
     id: 'dta-media',
     name: 'Digital Transformation Agency — media releases',
@@ -68,7 +124,7 @@ export const WATCH_SOURCES: WatchSource[] = [
     enabled: true,
     automation: 'manual',
     notes:
-      'GovCMS/Akamai currently stalls cloud-hosted collectors; review manually.',
+      'Departmental news and media-release index; GovCMS currently stalls the hardened retriever, so review manually.',
   },
   {
     id: 'naic-news',
@@ -110,6 +166,19 @@ export const WATCH_SOURCES: WatchSource[] = [
       'GovCMS/Akamai currently stalls cloud-hosted collectors; review manually.',
   },
   {
+    id: 'agd-ministers-media',
+    name: "Attorney-General's portfolio ministers — media centre",
+    jurisdiction: 'federal',
+    category: 'government',
+    url: 'https://ministers.ag.gov.au/media-centre',
+    kind: 'html-index',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'manual',
+    notes:
+      'Whole-of-government AI safety, privacy, copyright and automated-decision announcements; the hardened retriever currently times out, so review manually.',
+  },
+  {
     id: 'treasury-publications',
     name: 'Treasury — publications (digital competition, consumer law)',
     jurisdiction: 'federal',
@@ -118,7 +187,9 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'weekly',
     enabled: true,
-    automation: 'automatic',
+    automation: 'manual',
+    notes:
+      'Digital competition and consumer-law publications remain in scope, but the current index exposes no extractable entries to the collector; review manually.',
   },
   {
     id: 'csiro-news',
@@ -130,6 +201,97 @@ export const WATCH_SOURCES: WatchSource[] = [
     schedule: 'weekly',
     enabled: true,
     automation: 'automatic',
+  },
+  {
+    id: 'cyber-news',
+    name: 'Australian Cyber Security Centre — news',
+    jurisdiction: 'federal',
+    category: 'government',
+    url: 'https://www.cyber.gov.au/about-us/view-all-content/news',
+    kind: 'html-index',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'manual',
+    notes:
+      'ASD/ACSC news index covering AI cyber guidance and joint statements; the hardened retriever currently times out, so review manually.',
+  },
+  {
+    id: 'apsc-latest-news',
+    name: 'Australian Public Service Commission — latest news',
+    jurisdiction: 'federal',
+    category: 'government',
+    url: 'https://www.apsc.gov.au/latest-news',
+    kind: 'html-index',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'manual',
+    notes:
+      'APS-wide AI workforce, recruitment, capability and governance guidance; the hardened retriever currently times out, so review manually.',
+  },
+  {
+    id: 'anao-performance-audits',
+    name: 'Australian National Audit Office — performance audit reports',
+    jurisdiction: 'federal',
+    category: 'government',
+    url: 'https://www.anao.gov.au/pubs/performance-audit?items_per_page=120&page=0',
+    kind: 'html-index',
+    schedule: 'weekly',
+    enabled: true,
+    automation: 'manual',
+    notes:
+      'Commonwealth governance audits, including agency use and oversight of AI; the hardened retriever currently times out, so review manually.',
+  },
+  {
+    id: 'senate-ai-data-centres',
+    name: 'Senate inquiry — artificial intelligence and data centres',
+    jurisdiction: 'federal',
+    category: 'government',
+    url: 'https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P',
+    kind: 'document',
+    schedule: 'weekly',
+    enabled: true,
+    automation: 'manual',
+    notes:
+      'Tracks inquiry milestones, submissions and the report due in November 2026; APH returns 403 to the hardened retriever, so review manually.',
+  },
+  {
+    id: 'senate-new-inquiries',
+    name: 'Australian Senate — new committee inquiries',
+    jurisdiction: 'federal',
+    category: 'government',
+    url: 'https://www.aph.gov.au/senate/rss/new_inquiries',
+    kind: 'rss',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    notes:
+      'Official Senate RSS feed for newly referred inquiries, including AI and data-centre scrutiny.',
+  },
+  {
+    id: 'senate-reports',
+    name: 'Australian Senate — committee reports tabled',
+    jurisdiction: 'federal',
+    category: 'government',
+    url: 'https://www.aph.gov.au/senate/rss/reports',
+    kind: 'rss',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    notes:
+      'Official Senate RSS feed for committee reports and policy recommendations.',
+  },
+  {
+    id: 'aemc-media',
+    name: 'Australian Energy Market Commission — media releases',
+    jurisdiction: 'federal',
+    category: 'regulator',
+    url: 'https://www.aemc.gov.au/news-centre/media-releases',
+    kind: 'html-index',
+    schedule: 'weekly',
+    enabled: true,
+    automation: 'manual',
+    notes:
+      'Energy-market rules and standards affecting large AI and data-centre loads; the current table markup exposes no extractable index entries, so review manually.',
   },
   // --- Federal: regulators ---
   {
@@ -175,7 +337,9 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'weekly',
     enabled: true,
-    automation: 'automatic',
+    automation: 'manual',
+    notes:
+      'The current newsroom index exposes no extractable entries to the collector; review manually.',
   },
   {
     id: 'esafety-media',
@@ -199,7 +363,9 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'weekly',
     enabled: true,
-    automation: 'automatic',
+    automation: 'manual',
+    notes:
+      'The current media index exposes no extractable entries to the collector; review manually.',
   },
   {
     id: 'ahrc-media',
@@ -235,7 +401,9 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'weekly',
     enabled: true,
-    automation: 'automatic',
+    automation: 'manual',
+    notes:
+      'The current practice-note index exposes no extractable entries to the collector; review manually.',
   },
   {
     id: 'vic-sc-practice-notes',
@@ -257,7 +425,9 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'weekly',
     enabled: true,
-    automation: 'automatic',
+    automation: 'manual',
+    notes:
+      'The current news index exposes no extractable entries to the collector; review manually.',
   },
   // --- States and territories ---
   {
@@ -269,7 +439,9 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'weekly',
     enabled: true,
-    automation: 'automatic',
+    automation: 'manual',
+    notes:
+      'The current AI policy page exposes no extractable entries to the collector; review manually.',
   },
   {
     id: 'vic-ai',
@@ -304,7 +476,9 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'document',
     schedule: 'weekly',
     enabled: true,
-    automation: 'automatic',
+    automation: 'manual',
+    notes:
+      'The direct policy document currently times out in the hardened retriever; review manually.',
   },
   {
     id: 'sa-office-for-ai',

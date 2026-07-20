@@ -1,5 +1,184 @@
 [
   {
+    "id": "asd-careful-adoption-agentic-ai-services-2026",
+    "title": "Careful adoption of agentic AI services",
+    "description": "Joint ASD-led cyber-security guidance for organisations designing, deploying or operating agentic AI systems.",
+    "jurisdiction": "federal",
+    "type": "guideline",
+    "status": "active",
+    "effectiveDate": "2026-05-01",
+    "dates": [
+      {
+        "type": "published",
+        "date": "2026-05-01",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://www.cyber.gov.au/about-us/view-all-content/news/new-joint-guidance-provides-mitigations-for-cautious-adoption-of-agentic-ai",
+          "finalUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/new-joint-guidance-provides-mitigations-for-cautious-adoption-of-agentic-ai",
+          "title": "New joint guidance provides mitigations for careful adoption of agentic AI services",
+          "retrievedAt": "2026-07-20T10:05:51.978Z",
+          "contentType": "text/html",
+          "contentHash": "a171019164b913d952ef542ce78850548bf29655333c5facf7ccbcd01f6e6d9d",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-07-20T10:05:51.978Z",
+            "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
+            "notes": "Fresh official-source browser verification performed on 20 July 2026 immediately before recording the user approval.",
+            "pageContentHash": "020e3085cfc9b77306f5364fb0c1098a6938d93d8979ec08c627e135761b1e78",
+            "characterCount": 217
+          },
+          "reviewedDate": {
+            "date": "2026-05-01",
+            "precision": "day",
+            "reviewedAt": "2026-07-20T10:05:51.989Z",
+            "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+            "notes": "Guidance publication date verified on the official ASD and ACSC source."
+          }
+        }
+      }
+    ],
+    "agencies": [
+      "Australian Signals Directorate",
+      "Australian Cyber Security Centre"
+    ],
+    "sourceUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/new-joint-guidance-provides-mitigations-for-cautious-adoption-of-agentic-ai",
+    "content": "Published on 1 May 2026 with international cyber-security partners, the guidance addresses the autonomy, interconnected architecture and large-language-model dependencies of agentic AI. Organisations are advised to introduce agentic systems incrementally and begin with low-risk tasks; enforce least privilege and strong identity management; monitor actions and system state continuously; retain effective human oversight; constrain tools, data and network access; and align deployments with existing cyber-security and risk-management frameworks. The guidance is directed to government, critical infrastructure and large organisations.",
+    "aiSummary": "Joint ASD-led cyber-security guidance for organisations designing, deploying or operating agentic AI systems.",
+    "tags": [
+      "agentic AI",
+      "cyber security",
+      "risk management",
+      "identity",
+      "human oversight"
+    ],
+    "createdAt": "2026-07-20T09:54:59.076Z",
+    "updatedAt": "2026-07-20T10:05:51.989Z",
+    "lastReviewedAt": "2026-07-20T10:05:51.989Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.cyber.gov.au/about-us/view-all-content/news/new-joint-guidance-provides-mitigations-for-cautious-adoption-of-agentic-ai",
+        "finalUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/new-joint-guidance-provides-mitigations-for-cautious-adoption-of-agentic-ai",
+        "title": "New joint guidance provides mitigations for careful adoption of agentic AI services",
+        "retrievedAt": "2026-07-20T10:05:51.978Z",
+        "contentType": "text/html",
+        "contentHash": "a171019164b913d952ef542ce78850548bf29655333c5facf7ccbcd01f6e6d9d",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-07-20T10:05:51.978Z",
+          "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
+          "notes": "Fresh official-source browser verification performed on 20 July 2026 immediately before recording the user approval.",
+          "pageContentHash": "020e3085cfc9b77306f5364fb0c1098a6938d93d8979ec08c627e135761b1e78",
+          "characterCount": 217
+        },
+        "reviewedDate": {
+          "date": "2026-05-01",
+          "precision": "day",
+          "reviewedAt": "2026-07-20T10:05:51.989Z",
+          "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+          "notes": "Guidance publication date verified on the official ASD and ACSC source."
+        }
+      },
+      "checkedAt": "2026-07-20T10:05:51.989Z",
+      "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
+      "method": "manual",
+      "notes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source."
+    }
+  },
+  {
+    "id": "expectations-data-centres-ai-infrastructure-2026",
+    "title": "Expectations of data centres and AI infrastructure developers",
+    "description": "Australian Government framework setting national-interest, energy, water, workforce and innovation expectations for large data-centre and AI-infrastructure developments.",
+    "jurisdiction": "federal",
+    "type": "framework",
+    "status": "active",
+    "effectiveDate": "2026-03-23",
+    "dates": [
+      {
+        "type": "published",
+        "date": "2026-03-23",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://www.industry.gov.au/publications/expectations-data-centres-and-ai-infrastructure-developers",
+          "finalUrl": "https://www.industry.gov.au/publications/expectations-data-centres-and-ai-infrastructure-developers",
+          "title": "Expectations of data centres and AI infrastructure developers",
+          "retrievedAt": "2026-07-20T10:05:51.823Z",
+          "contentType": "text/html",
+          "contentHash": "e0824e047206520d2d599b82002a0745b90bb1c2948d794d03ce44a29ce7bb82",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-07-20T10:05:51.823Z",
+            "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
+            "notes": "Fresh official-source browser verification performed on 20 July 2026 immediately before recording the user approval.",
+            "pageContentHash": "5ab0416d326c26c8f5f979ca550b1795e3fc7df974b0fe1de5f5dafefc18d208",
+            "characterCount": 244
+          },
+          "reviewedDate": {
+            "date": "2026-03-23",
+            "precision": "day",
+            "reviewedAt": "2026-07-20T10:05:51.845Z",
+            "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+            "notes": "Publication date verified on the official Department of Industry source."
+          }
+        }
+      }
+    ],
+    "agencies": [
+      "Department of Industry, Science and Resources",
+      "Department of Climate Change, Energy, the Environment and Water"
+    ],
+    "sourceUrl": "https://www.industry.gov.au/publications/expectations-data-centres-and-ai-infrastructure-developers",
+    "content": "Published on 23 March 2026 as a National AI Plan deliverable, the framework establishes five expectations for data-centre and AI-infrastructure developers: prioritise Australia’s national interest; support the energy transition; use water sustainably and efficiently; invest in Australian skills and jobs; and strengthen research, innovation and local capability. New and expanded projects should secure additional clean generation or storage, cover their grid and water infrastructure costs, provide demand flexibility, protect sensitive data and national security, engage local communities, and make compute and technical capability available to Australian innovators. Commonwealth assessments will prioritise projects aligned with the expectations, which operate alongside existing laws.",
+    "aiSummary": "Australian Government framework setting national-interest, energy, water, workforce and innovation expectations for large data-centre and AI-infrastructure developments.",
+    "tags": [
+      "data centres",
+      "AI infrastructure",
+      "energy",
+      "water",
+      "national interest",
+      "National AI Plan"
+    ],
+    "createdAt": "2026-07-20T09:54:59.076Z",
+    "updatedAt": "2026-07-20T10:05:51.845Z",
+    "lastReviewedAt": "2026-07-20T10:05:51.845Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.industry.gov.au/publications/expectations-data-centres-and-ai-infrastructure-developers",
+        "finalUrl": "https://www.industry.gov.au/publications/expectations-data-centres-and-ai-infrastructure-developers",
+        "title": "Expectations of data centres and AI infrastructure developers",
+        "retrievedAt": "2026-07-20T10:05:51.823Z",
+        "contentType": "text/html",
+        "contentHash": "e0824e047206520d2d599b82002a0745b90bb1c2948d794d03ce44a29ce7bb82",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-07-20T10:05:51.823Z",
+          "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
+          "notes": "Fresh official-source browser verification performed on 20 July 2026 immediately before recording the user approval.",
+          "pageContentHash": "5ab0416d326c26c8f5f979ca550b1795e3fc7df974b0fe1de5f5dafefc18d208",
+          "characterCount": 244
+        },
+        "reviewedDate": {
+          "date": "2026-03-23",
+          "precision": "day",
+          "reviewedAt": "2026-07-20T10:05:51.845Z",
+          "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+          "notes": "Publication date verified on the official Department of Industry source."
+        }
+      },
+      "checkedAt": "2026-07-20T10:05:51.845Z",
+      "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
+      "method": "manual",
+      "notes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source."
+    }
+  },
+  {
     "id": "nsw-identifying-ai-guidance",
     "title": "Identifying AI",
     "description": "NSW Government guidance for determining when a system or project uses artificial intelligence and should enter AI governance and assurance processes.",

@@ -1,5 +1,385 @@
 [
   {
+    "id": "mcp-audit-c8bf0145-7ba7-4cd3-9bfd-375af2d7283d",
+    "createdAt": "2026-07-20T10:08:01.275Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-5f7fe86b-dca2-48dd-b76c-5cf9ef4c73db",
+    "createdAt": "2026-07-20T10:08:01.263Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-8a3a53c5-f21b-4b99-aaf8-fb9c546a5472",
+    "createdAt": "2026-07-20T10:08:01.251Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-143581cc-1f19-4735-92a8-258686c2de44",
+    "createdAt": "2026-07-20T10:08:01.238Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-b8ab0554-a379-434d-a41b-a3a1ee6f0757",
+    "createdAt": "2026-07-20T10:08:01.226Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-316d01c9-d0e4-441a-9d97-d077009498f3",
+    "createdAt": "2026-07-20T10:08:01.213Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-aa0d561c-27b6-4dd2-96e1-05e498434427",
+    "createdAt": "2026-07-20T10:08:01.201Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-1bec3984-1dae-40b4-be62-93db63794be6",
+    "createdAt": "2026-07-20T10:08:01.185Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-f18f8031-ea10-4bb5-921c-57c163ed7093",
+    "createdAt": "2026-07-20T10:08:01.173Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-85074cdd-b13c-4fb7-bdd0-743734f64daf",
+    "createdAt": "2026-07-20T10:08:01.158Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-b85ca4b0-2b72-4123-97fa-6ab00262f668",
+    "createdAt": "2026-07-20T10:05:52.011Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-7f05b573-13bf-420d-91a1-08382562322a",
+    "createdAt": "2026-07-20T10:05:52.002Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.anao.gov.au/work/performance-audit/artificial-intelligence-use-ip-australia",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-77f84a4c-6372-47b8-b9cd-a7bec4956d5f",
+    "createdAt": "2026-07-20T10:05:51.993Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-614fd520-eb5d-4948-9258-1893042a9cf3",
+    "createdAt": "2026-07-20T10:05:51.985Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/new-joint-guidance-provides-mitigations-for-cautious-adoption-of-agentic-ai",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-4a41f856-f96b-4fe6-8f11-5d7367db1e9a",
+    "createdAt": "2026-07-20T10:05:51.977Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-32bc798b-4d85-446e-b69b-e1b7bebba9a2",
+    "createdAt": "2026-07-20T10:05:51.969Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.minister.industry.gov.au/charlton/media/australia-and-uk-partner-strengthen-ai-safety-and-security",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-f9209419-5c1d-4232-b374-d4be02a8d0a2",
+    "createdAt": "2026-07-20T10:05:51.960Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-da01b872-65f5-4436-903e-f00408ef20ca",
+    "createdAt": "2026-07-20T10:05:51.951Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.minister.industry.gov.au/t-ayres/media/new-agreement-ai-collaboration-microsoft",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-448d9034-9e8c-4930-9f21-1e2ad938a945",
+    "createdAt": "2026-07-20T10:05:51.942Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-e4925a53-e67f-4da4-8e2b-435b45fe4ccb",
+    "createdAt": "2026-07-20T10:05:51.933Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.minister.industry.gov.au/t-ayres/media/new-agreement-ai-collaboration-anthropic",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-8a73ad6f-663b-403c-bcf6-787232dd45bb",
+    "createdAt": "2026-07-20T10:05:51.925Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-c99b50a4-2d20-4f1e-a835-e60da2ff9638",
+    "createdAt": "2026-07-20T10:05:51.917Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-cbbfcadd-9782-411a-b083-9d1b11286805",
+    "createdAt": "2026-07-20T10:05:51.906Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-7406b226-1496-4b3e-8ad4-da774f2246d3",
+    "createdAt": "2026-07-20T10:05:51.897Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.aemc.gov.au/news-centre/media-releases/aemc-proposes-new-grid-standards-data-centre-connections",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-ca781e85-238d-4114-bb4d-64594fd0a71a",
+    "createdAt": "2026-07-20T10:05:51.889Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-94eb90ec-dc8b-4a86-a99c-8bcb79076e82",
+    "createdAt": "2026-07-20T10:05:51.880Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.minister.industry.gov.au/charlton/media/ai-consumer-safety-priorities",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-f1b8f202-6fe3-4f6f-a821-71e977c4b78b",
+    "createdAt": "2026-07-20T10:05:51.871Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-d35e0fd9-a018-4f4a-9abe-7e15d6380aef",
+    "createdAt": "2026-07-20T10:05:51.862Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.pm.gov.au/media/ai-australias-interests",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-2b3c1e34-5909-46c4-a759-8a2e43306744",
+    "createdAt": "2026-07-20T10:05:51.851Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-ada127ce-6ffa-4028-9cc4-017d2f4ae196",
+    "createdAt": "2026-07-20T10:05:51.840Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.industry.gov.au/publications/expectations-data-centres-and-ai-infrastructure-developers",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-66e5349f-1c13-464a-9ed3-9e6bdd79441b",
+    "createdAt": "2026-07-20T10:04:56.312Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "error",
+    "errorSummary": "Official source changed after staging and must be reviewed again before approval"
+  },
+  {
+    "id": "mcp-audit-503c439f-83fc-4b6e-b0ca-0106eb85e94b",
+    "createdAt": "2026-07-20T10:04:40.798Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "error",
+    "errorSummary": "The approving reviewer must be the named browser-capture reviewer"
+  },
+  {
+    "id": "mcp-audit-cb41ea31-836c-40a6-9406-f0aad105fdd8",
+    "createdAt": "2026-07-20T10:03:22.675Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "error",
+    "errorSummary": "Browser-captured reviews require a fresh browser capture for approval"
+  },
+  {
+    "id": "mcp-audit-29e81187-829e-48b0-b414-4a5a7b5556e6",
+    "createdAt": "2026-07-20T09:58:54.219Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_manual_source_review",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-ec86ce6e-b4ff-4aca-a77f-61a18aa9a15e",
+    "createdAt": "2026-07-20T09:58:54.215Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_manual_source_review",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-c377a975-e3a4-4288-bc81-a20ff828b8aa",
+    "createdAt": "2026-07-20T09:58:54.211Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_manual_source_review",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-47222cb8-9484-4843-a3b1-3eea98a62217",
+    "createdAt": "2026-07-20T09:58:54.208Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_manual_source_review",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-52088de2-f9d5-44da-833e-7d4fa8102ad8",
+    "createdAt": "2026-07-20T09:58:54.204Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_manual_source_review",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-b2bdcdca-4718-4345-9daa-0e739218fe18",
+    "createdAt": "2026-07-20T09:58:54.200Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_manual_source_review",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-19955273-4957-4be8-901e-f6996be631ba",
+    "createdAt": "2026-07-20T09:58:54.194Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_manual_source_review",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-79f6eba0-85c3-4b8f-b059-8220b3a5a6c0",
+    "createdAt": "2026-07-20T09:58:54.190Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_manual_source_review",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-e76ba358-f337-4a4b-813e-394cbd5dbe43",
+    "createdAt": "2026-07-20T09:54:59.576Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.anao.gov.au/work/performance-audit/artificial-intelligence-use-ip-australia",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-e4041e9d-0e7b-4720-86aa-9c058e626eb6",
+    "createdAt": "2026-07-20T09:54:59.563Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/new-joint-guidance-provides-mitigations-for-cautious-adoption-of-agentic-ai",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-b8343497-4538-49ad-b67f-6575aec68642",
+    "createdAt": "2026-07-20T09:54:59.551Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.minister.industry.gov.au/charlton/media/australia-and-uk-partner-strengthen-ai-safety-and-security",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-3b6ac9fd-ffae-41de-a991-5ec128987535",
+    "createdAt": "2026-07-20T09:54:59.539Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.minister.industry.gov.au/t-ayres/media/new-agreement-ai-collaboration-microsoft",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-2dcf70c6-c281-46a7-805b-363f635083d9",
+    "createdAt": "2026-07-20T09:54:59.526Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.minister.industry.gov.au/t-ayres/media/new-agreement-ai-collaboration-anthropic",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-202cffa1-b7bb-47cc-903b-d7981078c1d0",
+    "createdAt": "2026-07-20T09:54:59.514Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-db185bf9-ab25-4414-b8db-31e2079edf7e",
+    "createdAt": "2026-07-20T09:54:59.500Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.aemc.gov.au/news-centre/media-releases/aemc-proposes-new-grid-standards-data-centre-connections",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-46fe7d54-dc0c-42aa-b28b-5d552c6aeac7",
+    "createdAt": "2026-07-20T09:54:59.488Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.minister.industry.gov.au/charlton/media/ai-consumer-safety-priorities",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-ce9c121b-90d5-4256-9756-4a6ab6957f21",
+    "createdAt": "2026-07-20T09:54:59.475Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.pm.gov.au/media/ai-australias-interests",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-3b878e1d-eb58-4e54-9aaa-eb0f0a361343",
+    "createdAt": "2026-07-20T09:54:59.461Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.industry.gov.au/publications/expectations-data-centres-and-ai-infrastructure-developers",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-22cfb75d-f6a4-4c50-a400-3065719e8b98",
     "createdAt": "2026-07-19T06:14:44.225Z",
     "actor": "local-mcp-admin",

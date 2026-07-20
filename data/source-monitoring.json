@@ -1,6 +1,118 @@
 {
   "manualReviews": [
     {
+      "sourceId": "aemc-media",
+      "status": "checked",
+      "reviewedAt": "2026-07-20T09:58:54.218Z",
+      "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+      "evidence": {
+        "url": "https://www.aemc.gov.au/news-centre/media-releases",
+        "finalUrl": "https://www.aemc.gov.au/news-centre/media-releases",
+        "title": "AEMC media releases",
+        "publisher": "Australian Energy Market Commission",
+        "retrievedAt": "2026-07-20T09:58:53.820Z"
+      },
+      "notes": "Browser-reviewed on 20 July 2026. The draft grid-connection standards for large data centres were identified and staged for editorial review."
+    },
+    {
+      "sourceId": "senate-ai-data-centres",
+      "status": "checked",
+      "reviewedAt": "2026-07-20T09:58:54.214Z",
+      "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+      "evidence": {
+        "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+        "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+        "title": "Artificial intelligence and data centres",
+        "publisher": "Parliament of Australia",
+        "retrievedAt": "2026-07-20T09:58:53.820Z"
+      },
+      "notes": "Browser-reviewed on 20 July 2026. The inquiry terms, referral date and November reporting deadline were verified and the inquiry was staged for editorial review."
+    },
+    {
+      "sourceId": "anao-performance-audits",
+      "status": "checked",
+      "reviewedAt": "2026-07-20T09:58:54.211Z",
+      "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+      "evidence": {
+        "url": "https://www.anao.gov.au/pubs/performance-audit?items_per_page=120&page=0",
+        "finalUrl": "https://www.anao.gov.au/pubs/performance-audit?items_per_page=120&page=0",
+        "title": "Performance audit reports",
+        "publisher": "Australian National Audit Office",
+        "retrievedAt": "2026-07-20T09:58:53.820Z"
+      },
+      "notes": "Browser-reviewed on 20 July 2026. The audit of AI use in IP Australia was identified and staged for editorial review."
+    },
+    {
+      "sourceId": "apsc-latest-news",
+      "status": "checked",
+      "reviewedAt": "2026-07-20T09:58:54.207Z",
+      "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+      "evidence": {
+        "url": "https://www.apsc.gov.au/latest-news",
+        "finalUrl": "https://www.apsc.gov.au/latest-news",
+        "title": "Australian Public Service Commission latest news",
+        "publisher": "Australian Public Service Commission",
+        "retrievedAt": "2026-07-20T09:58:53.820Z"
+      },
+      "notes": "Browser-reviewed on 20 July 2026. APS AI recruitment and workforce-governance announcements were identified for a follow-up editorial pass."
+    },
+    {
+      "sourceId": "cyber-news",
+      "status": "checked",
+      "reviewedAt": "2026-07-20T09:58:54.203Z",
+      "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+      "evidence": {
+        "url": "https://www.cyber.gov.au/about-us/view-all-content/news",
+        "finalUrl": "https://www.cyber.gov.au/about-us/view-all-content/news",
+        "title": "Australian Cyber Security Centre news",
+        "publisher": "Australian Signals Directorate",
+        "retrievedAt": "2026-07-20T09:58:53.820Z"
+      },
+      "notes": "Browser-reviewed on 20 July 2026. The joint agentic-AI cyber-security guidance was identified and staged for editorial review."
+    },
+    {
+      "sourceId": "industry-ministers-media",
+      "status": "checked",
+      "reviewedAt": "2026-07-20T09:58:54.199Z",
+      "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+      "evidence": {
+        "url": "https://www.minister.industry.gov.au/feed/all/all/rss.xml",
+        "finalUrl": "https://www.minister.industry.gov.au/feed/all/all/rss.xml",
+        "title": "Industry portfolio ministers media feed",
+        "publisher": "Australian Government ministers for Industry, Science and Resources",
+        "retrievedAt": "2026-07-20T09:58:53.820Z"
+      },
+      "notes": "Browser-reviewed on 20 July 2026 using the official media centre and linked releases. Current AI safety, data-centre and collaboration announcements were staged for editorial review."
+    },
+    {
+      "sourceId": "industry-ai-publications",
+      "status": "checked",
+      "reviewedAt": "2026-07-20T09:58:54.194Z",
+      "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+      "evidence": {
+        "url": "https://www.industry.gov.au/publications?pub-topic=2963",
+        "finalUrl": "https://www.industry.gov.au/publications?pub-topic=2963",
+        "title": "Artificial intelligence publications",
+        "publisher": "Department of Industry, Science and Resources",
+        "retrievedAt": "2026-07-20T09:58:53.820Z"
+      },
+      "notes": "Browser-reviewed on 20 July 2026. The data-centre and AI-infrastructure expectations were identified and staged for editorial review."
+    },
+    {
+      "sourceId": "pmc-office-ai",
+      "status": "checked",
+      "reviewedAt": "2026-07-20T09:58:54.189Z",
+      "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+      "evidence": {
+        "url": "https://www.pmc.gov.au/domestic-policy/office-ai",
+        "finalUrl": "https://www.pmc.gov.au/domestic-policy/office-ai",
+        "title": "Office of AI",
+        "publisher": "Department of the Prime Minister and Cabinet",
+        "retrievedAt": "2026-07-20T09:58:53.820Z"
+      },
+      "notes": "Browser-reviewed on 20 July 2026. The Office of AI mandate was verified and captured with the 15 July national AI standards announcement staged for editorial review."
+    },
+    {
       "sourceId": "nt-ai-assurance",
       "status": "checked",
       "reviewedAt": "2026-07-16T10:15:00.000Z",

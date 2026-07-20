@@ -1,5 +1,1011 @@
 [
   {
+    "id": "source-review-679df490-fba5-4ac6-9b34-3f0b5128cbc5",
+    "sourceUrl": "https://www.anao.gov.au/work/performance-audit/artificial-intelligence-use-ip-australia",
+    "title": "ANAO audits IP Australia’s use of AI",
+    "entryKind": "timeline_event",
+    "status": "published",
+    "discoveredAt": "2026-07-20T10:05:51.999Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Official source refreshed after the user approved the proposal on 20 July 2026; publication remains a separate action.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "The Auditor-General publishes a performance audit of AI governance, controls and effectiveness in IP Australia’s patent-rights processes.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.anao.gov.au/work/performance-audit/artificial-intelligence-use-ip-australia",
+      "finalUrl": "https://www.anao.gov.au/work/performance-audit/artificial-intelligence-use-ip-australia",
+      "title": "Artificial Intelligence Use in IP Australia",
+      "retrievedAt": "2026-07-20T10:05:51.994Z",
+      "contentType": "text/html",
+      "contentHash": "de06febdc3a9f72eff656c73351191d24e7f3f2e9da047df6a9b78c54fcf3ee1",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-07-20T10:05:51.994Z",
+        "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
+        "notes": "Fresh official-source browser verification performed on 20 July 2026 immediately before recording the user approval.",
+        "pageContentHash": "dbf33ea75f93ce89faea775fabef40bfad414699918f2ea96d3c983144d628d0",
+        "characterCount": 166
+      },
+      "reviewedDate": {
+        "date": "2026-06-29",
+        "precision": "day",
+        "reviewedAt": "2026-07-20T10:05:52.006Z",
+        "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+        "notes": "Audit publication date verified on the official ANAO source."
+      }
+    },
+    "proposedRecord": {
+      "id": "tl-2026-06-29-anao-audit-ip-australia-ai",
+      "date": "2026-06-29",
+      "datePrecision": "day",
+      "title": "ANAO audits IP Australia’s use of AI",
+      "description": "The Auditor-General publishes a performance audit of AI governance, controls and effectiveness in IP Australia’s patent-rights processes.",
+      "type": "milestone",
+      "jurisdiction": "federal",
+      "sourceUrl": "https://www.anao.gov.au/work/performance-audit/artificial-intelligence-use-ip-australia",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.anao.gov.au/work/performance-audit/artificial-intelligence-use-ip-australia",
+          "finalUrl": "https://www.anao.gov.au/work/performance-audit/artificial-intelligence-use-ip-australia",
+          "title": "Artificial Intelligence Use in IP Australia",
+          "retrievedAt": "2026-07-20T10:05:51.994Z",
+          "contentType": "text/html",
+          "contentHash": "de06febdc3a9f72eff656c73351191d24e7f3f2e9da047df6a9b78c54fcf3ee1",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-07-20T10:05:51.994Z",
+            "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
+            "notes": "Fresh official-source browser verification performed on 20 July 2026 immediately before recording the user approval.",
+            "pageContentHash": "dbf33ea75f93ce89faea775fabef40bfad414699918f2ea96d3c983144d628d0",
+            "characterCount": 166
+          },
+          "reviewedDate": {
+            "date": "2026-06-29",
+            "precision": "day",
+            "reviewedAt": "2026-07-20T10:05:52.006Z",
+            "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+            "notes": "Audit publication date verified on the official ANAO source."
+          }
+        },
+        "checkedAt": "2026-07-20T10:05:52.006Z",
+        "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
+        "method": "manual",
+        "notes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source."
+      }
+    },
+    "updatedAt": "2026-07-20T10:08:01.272Z",
+    "reviewedAt": "2026-07-20T10:05:52.006Z",
+    "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+    "approvalNotes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source.",
+    "publishedAt": "2026-07-20T10:08:01.267Z"
+  },
+  {
+    "id": "source-review-d0b58157-9607-42d2-9135-e543a0473110",
+    "sourceUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/new-joint-guidance-provides-mitigations-for-cautious-adoption-of-agentic-ai",
+    "title": "Careful adoption of agentic AI services",
+    "entryKind": "policy",
+    "status": "published",
+    "discoveredAt": "2026-07-20T10:05:51.983Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Official source refreshed after the user approved the proposal on 20 July 2026; publication remains a separate action.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": "guideline",
+      "suggestedJurisdiction": "federal",
+      "summary": "Joint ASD-led cyber-security guidance for organisations designing, deploying or operating agentic AI systems.",
+      "tags": [
+        "agentic AI",
+        "cyber security",
+        "risk management",
+        "identity",
+        "human oversight"
+      ],
+      "agencies": [
+        "Australian Signals Directorate",
+        "Australian Cyber Security Centre"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://www.cyber.gov.au/about-us/view-all-content/news/new-joint-guidance-provides-mitigations-for-cautious-adoption-of-agentic-ai",
+      "finalUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/new-joint-guidance-provides-mitigations-for-cautious-adoption-of-agentic-ai",
+      "title": "New joint guidance provides mitigations for careful adoption of agentic AI services",
+      "retrievedAt": "2026-07-20T10:05:51.978Z",
+      "contentType": "text/html",
+      "contentHash": "a171019164b913d952ef542ce78850548bf29655333c5facf7ccbcd01f6e6d9d",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-07-20T10:05:51.978Z",
+        "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
+        "notes": "Fresh official-source browser verification performed on 20 July 2026 immediately before recording the user approval.",
+        "pageContentHash": "020e3085cfc9b77306f5364fb0c1098a6938d93d8979ec08c627e135761b1e78",
+        "characterCount": 217
+      },
+      "reviewedDate": {
+        "date": "2026-05-01",
+        "precision": "day",
+        "reviewedAt": "2026-07-20T10:05:51.989Z",
+        "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+        "notes": "Guidance publication date verified on the official ASD and ACSC source."
+      }
+    },
+    "proposedRecord": {
+      "id": "asd-careful-adoption-agentic-ai-services-2026",
+      "title": "Careful adoption of agentic AI services",
+      "description": "Joint ASD-led cyber-security guidance for organisations designing, deploying or operating agentic AI systems.",
+      "jurisdiction": "federal",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2026-05-01",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-05-01",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.cyber.gov.au/about-us/view-all-content/news/new-joint-guidance-provides-mitigations-for-cautious-adoption-of-agentic-ai",
+            "finalUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/new-joint-guidance-provides-mitigations-for-cautious-adoption-of-agentic-ai",
+            "title": "New joint guidance provides mitigations for careful adoption of agentic AI services",
+            "retrievedAt": "2026-07-20T10:05:51.978Z",
+            "contentType": "text/html",
+            "contentHash": "a171019164b913d952ef542ce78850548bf29655333c5facf7ccbcd01f6e6d9d",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-07-20T10:05:51.978Z",
+              "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
+              "notes": "Fresh official-source browser verification performed on 20 July 2026 immediately before recording the user approval.",
+              "pageContentHash": "020e3085cfc9b77306f5364fb0c1098a6938d93d8979ec08c627e135761b1e78",
+              "characterCount": 217
+            },
+            "reviewedDate": {
+              "date": "2026-05-01",
+              "precision": "day",
+              "reviewedAt": "2026-07-20T10:05:51.989Z",
+              "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+              "notes": "Guidance publication date verified on the official ASD and ACSC source."
+            }
+          }
+        }
+      ],
+      "agencies": [
+        "Australian Signals Directorate",
+        "Australian Cyber Security Centre"
+      ],
+      "sourceUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/new-joint-guidance-provides-mitigations-for-cautious-adoption-of-agentic-ai",
+      "content": "Published on 1 May 2026 with international cyber-security partners, the guidance addresses the autonomy, interconnected architecture and large-language-model dependencies of agentic AI. Organisations are advised to introduce agentic systems incrementally and begin with low-risk tasks; enforce least privilege and strong identity management; monitor actions and system state continuously; retain effective human oversight; constrain tools, data and network access; and align deployments with existing cyber-security and risk-management frameworks. The guidance is directed to government, critical infrastructure and large organisations.",
+      "aiSummary": "Joint ASD-led cyber-security guidance for organisations designing, deploying or operating agentic AI systems.",
+      "tags": [
+        "agentic AI",
+        "cyber security",
+        "risk management",
+        "identity",
+        "human oversight"
+      ],
+      "createdAt": "2026-07-20T09:54:59.076Z",
+      "updatedAt": "2026-07-20T10:05:51.989Z",
+      "lastReviewedAt": "2026-07-20T10:05:51.989Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.cyber.gov.au/about-us/view-all-content/news/new-joint-guidance-provides-mitigations-for-cautious-adoption-of-agentic-ai",
+          "finalUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/new-joint-guidance-provides-mitigations-for-cautious-adoption-of-agentic-ai",
+          "title": "New joint guidance provides mitigations for careful adoption of agentic AI services",
+          "retrievedAt": "2026-07-20T10:05:51.978Z",
+          "contentType": "text/html",
+          "contentHash": "a171019164b913d952ef542ce78850548bf29655333c5facf7ccbcd01f6e6d9d",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-07-20T10:05:51.978Z",
+            "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
+            "notes": "Fresh official-source browser verification performed on 20 July 2026 immediately before recording the user approval.",
+            "pageContentHash": "020e3085cfc9b77306f5364fb0c1098a6938d93d8979ec08c627e135761b1e78",
+            "characterCount": 217
+          },
+          "reviewedDate": {
+            "date": "2026-05-01",
+            "precision": "day",
+            "reviewedAt": "2026-07-20T10:05:51.989Z",
+            "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+            "notes": "Guidance publication date verified on the official ASD and ACSC source."
+          }
+        },
+        "checkedAt": "2026-07-20T10:05:51.989Z",
+        "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
+        "method": "manual",
+        "notes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source."
+      }
+    },
+    "updatedAt": "2026-07-20T10:08:01.260Z",
+    "reviewedAt": "2026-07-20T10:05:51.989Z",
+    "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+    "approvalNotes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source.",
+    "publishedAt": "2026-07-20T10:08:01.256Z"
+  },
+  {
+    "id": "source-review-d1ceced5-086d-42ef-9d9f-6feb3566f771",
+    "sourceUrl": "https://www.minister.industry.gov.au/charlton/media/australia-and-uk-partner-strengthen-ai-safety-and-security",
+    "title": "Australia and UK sign AI safety and security MoU",
+    "entryKind": "timeline_event",
+    "status": "published",
+    "discoveredAt": "2026-07-20T10:05:51.966Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Official source refreshed after the user approved the proposal on 20 July 2026; publication remains a separate action.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "Australia and the United Kingdom establish cooperation between their AI safety institutes on capability and risk information, testing research and international AI measurement work.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.minister.industry.gov.au/charlton/media/australia-and-uk-partner-strengthen-ai-safety-and-security",
+      "finalUrl": "https://www.minister.industry.gov.au/charlton/media/australia-and-uk-partner-strengthen-ai-safety-and-security",
+      "title": "Australia and UK partner to strengthen AI safety and security",
+      "retrievedAt": "2026-07-20T10:05:51.961Z",
+      "contentType": "text/html",
+      "contentHash": "99ed9e8fbbeeb41493e999fadefeeabaa43065773e9798520f987aff8fe78ca7",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-07-20T10:05:51.961Z",
+        "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
+        "notes": "Fresh official-source browser verification performed on 20 July 2026 immediately before recording the user approval.",
+        "pageContentHash": "a529fe40a4463f54f24d94e31337385946b05d7d65f00e8da5dcac6b3d27648a",
+        "characterCount": 200
+      },
+      "reviewedDate": {
+        "date": "2026-05-25",
+        "precision": "day",
+        "reviewedAt": "2026-07-20T10:05:51.973Z",
+        "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+        "notes": "Agreement announcement date verified on the official Industry Minister source."
+      }
+    },
+    "proposedRecord": {
+      "id": "tl-2026-05-25-australia-uk-ai-safety-mou",
+      "date": "2026-05-25",
+      "datePrecision": "day",
+      "title": "Australia and UK sign AI safety and security MoU",
+      "description": "Australia and the United Kingdom establish cooperation between their AI safety institutes on capability and risk information, testing research and international AI measurement work.",
+      "type": "milestone",
+      "jurisdiction": "federal",
+      "sourceUrl": "https://www.minister.industry.gov.au/charlton/media/australia-and-uk-partner-strengthen-ai-safety-and-security",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.minister.industry.gov.au/charlton/media/australia-and-uk-partner-strengthen-ai-safety-and-security",
+          "finalUrl": "https://www.minister.industry.gov.au/charlton/media/australia-and-uk-partner-strengthen-ai-safety-and-security",
+          "title": "Australia and UK partner to strengthen AI safety and security",
+          "retrievedAt": "2026-07-20T10:05:51.961Z",
+          "contentType": "text/html",
+          "contentHash": "99ed9e8fbbeeb41493e999fadefeeabaa43065773e9798520f987aff8fe78ca7",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-07-20T10:05:51.961Z",
+            "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
+            "notes": "Fresh official-source browser verification performed on 20 July 2026 immediately before recording the user approval.",
+            "pageContentHash": "a529fe40a4463f54f24d94e31337385946b05d7d65f00e8da5dcac6b3d27648a",
+            "characterCount": 200
+          },
+          "reviewedDate": {
+            "date": "2026-05-25",
+            "precision": "day",
+            "reviewedAt": "2026-07-20T10:05:51.973Z",
+            "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+            "notes": "Agreement announcement date verified on the official Industry Minister source."
+          }
+        },
+        "checkedAt": "2026-07-20T10:05:51.973Z",
+        "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
+        "method": "manual",
+        "notes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source."
+      }
+    },
+    "updatedAt": "2026-07-20T10:08:01.249Z",
+    "reviewedAt": "2026-07-20T10:05:51.973Z",
+    "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+    "approvalNotes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source.",
+    "publishedAt": "2026-07-20T10:08:01.243Z"
+  },
+  {
+    "id": "source-review-dc810f7d-d430-4c56-adf8-4ffd3e14df86",
+    "sourceUrl": "https://www.minister.industry.gov.au/t-ayres/media/new-agreement-ai-collaboration-microsoft",
+    "title": "Australian Government signs National AI Plan MoU with Microsoft",
+    "entryKind": "timeline_event",
+    "status": "published",
+    "discoveredAt": "2026-07-20T10:05:51.948Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Official source refreshed after the user approved the proposal on 20 July 2026; publication remains a separate action.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "The Commonwealth signs an AI collaboration agreement with Microsoft covering infrastructure, safety, workforce capability and alignment with Australia’s data-centre expectations.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.minister.industry.gov.au/t-ayres/media/new-agreement-ai-collaboration-microsoft",
+      "finalUrl": "https://www.minister.industry.gov.au/t-ayres/media/new-agreement-ai-collaboration-microsoft",
+      "title": "New agreement on AI collaboration with Microsoft",
+      "retrievedAt": "2026-07-20T10:05:51.943Z",
+      "contentType": "text/html",
+      "contentHash": "f96c3ad8d27aa25a8965b305c007c0c3e1d05829f9a3c494ce711aeccf25066a",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-07-20T10:05:51.943Z",
+        "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
+        "notes": "Fresh official-source browser verification performed on 20 July 2026 immediately before recording the user approval.",
+        "pageContentHash": "247dad36853b748ff0197af4ea908db0e98baa10bd86e3abdbfef48844ff713a",
+        "characterCount": 198
+      },
+      "reviewedDate": {
+        "date": "2026-04-23",
+        "precision": "day",
+        "reviewedAt": "2026-07-20T10:05:51.955Z",
+        "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+        "notes": "Agreement announcement date verified on the official Industry Minister source."
+      }
+    },
+    "proposedRecord": {
+      "id": "tl-2026-04-23-australia-microsoft-ai-mou",
+      "date": "2026-04-23",
+      "datePrecision": "day",
+      "title": "Australian Government signs National AI Plan MoU with Microsoft",
+      "description": "The Commonwealth signs an AI collaboration agreement with Microsoft covering infrastructure, safety, workforce capability and alignment with Australia’s data-centre expectations.",
+      "type": "milestone",
+      "jurisdiction": "federal",
+      "sourceUrl": "https://www.minister.industry.gov.au/t-ayres/media/new-agreement-ai-collaboration-microsoft",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.minister.industry.gov.au/t-ayres/media/new-agreement-ai-collaboration-microsoft",
+          "finalUrl": "https://www.minister.industry.gov.au/t-ayres/media/new-agreement-ai-collaboration-microsoft",
+          "title": "New agreement on AI collaboration with Microsoft",
+          "retrievedAt": "2026-07-20T10:05:51.943Z",
+          "contentType": "text/html",
+          "contentHash": "f96c3ad8d27aa25a8965b305c007c0c3e1d05829f9a3c494ce711aeccf25066a",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-07-20T10:05:51.943Z",
+            "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
+            "notes": "Fresh official-source browser verification performed on 20 July 2026 immediately before recording the user approval.",
+            "pageContentHash": "247dad36853b748ff0197af4ea908db0e98baa10bd86e3abdbfef48844ff713a",
+            "characterCount": 198
+          },
+          "reviewedDate": {
+            "date": "2026-04-23",
+            "precision": "day",
+            "reviewedAt": "2026-07-20T10:05:51.955Z",
+            "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+            "notes": "Agreement announcement date verified on the official Industry Minister source."
+          }
+        },
+        "checkedAt": "2026-07-20T10:05:51.955Z",
+        "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
+        "method": "manual",
+        "notes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source."
+      }
+    },
+    "updatedAt": "2026-07-20T10:08:01.236Z",
+    "reviewedAt": "2026-07-20T10:05:51.955Z",
+    "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+    "approvalNotes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source.",
+    "publishedAt": "2026-07-20T10:08:01.230Z"
+  },
+  {
+    "id": "source-review-11db9888-d834-42b1-a33d-ddfc0c58dd6a",
+    "sourceUrl": "https://www.minister.industry.gov.au/t-ayres/media/new-agreement-ai-collaboration-anthropic",
+    "title": "Australian Government signs National AI Plan MoU with Anthropic",
+    "entryKind": "timeline_event",
+    "status": "published",
+    "discoveredAt": "2026-07-20T10:05:51.931Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Official source refreshed after the user approved the proposal on 20 July 2026; publication remains a separate action.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "The Commonwealth signs its first National AI Plan collaboration agreement, with Anthropic committing to support Australian AI capability and align future operations with the national data-centre expectations.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.minister.industry.gov.au/t-ayres/media/new-agreement-ai-collaboration-anthropic",
+      "finalUrl": "https://www.minister.industry.gov.au/t-ayres/media/new-agreement-ai-collaboration-anthropic",
+      "title": "New agreement on AI collaboration with Anthropic",
+      "retrievedAt": "2026-07-20T10:05:51.926Z",
+      "contentType": "text/html",
+      "contentHash": "dd44b3ad29aadfa3b0c9444ade3cfcbd412b899122012d53fc0f0537d222608a",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-07-20T10:05:51.926Z",
+        "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
+        "notes": "Fresh official-source browser verification performed on 20 July 2026 immediately before recording the user approval.",
+        "pageContentHash": "2d7eebd29ba0748f27c6ce6206951ebab652c156759f946d8bddae93489301f7",
+        "characterCount": 200
+      },
+      "reviewedDate": {
+        "date": "2026-04-01",
+        "precision": "day",
+        "reviewedAt": "2026-07-20T10:05:51.937Z",
+        "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+        "notes": "Agreement announcement date verified on the official Industry Minister source."
+      }
+    },
+    "proposedRecord": {
+      "id": "tl-2026-04-01-australia-anthropic-ai-mou",
+      "date": "2026-04-01",
+      "datePrecision": "day",
+      "title": "Australian Government signs National AI Plan MoU with Anthropic",
+      "description": "The Commonwealth signs its first National AI Plan collaboration agreement, with Anthropic committing to support Australian AI capability and align future operations with the national data-centre expectations.",
+      "type": "milestone",
+      "jurisdiction": "federal",
+      "sourceUrl": "https://www.minister.industry.gov.au/t-ayres/media/new-agreement-ai-collaboration-anthropic",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.minister.industry.gov.au/t-ayres/media/new-agreement-ai-collaboration-anthropic",
+          "finalUrl": "https://www.minister.industry.gov.au/t-ayres/media/new-agreement-ai-collaboration-anthropic",
+          "title": "New agreement on AI collaboration with Anthropic",
+          "retrievedAt": "2026-07-20T10:05:51.926Z",
+          "contentType": "text/html",
+          "contentHash": "dd44b3ad29aadfa3b0c9444ade3cfcbd412b899122012d53fc0f0537d222608a",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-07-20T10:05:51.926Z",
+            "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
+            "notes": "Fresh official-source browser verification performed on 20 July 2026 immediately before recording the user approval.",
+            "pageContentHash": "2d7eebd29ba0748f27c6ce6206951ebab652c156759f946d8bddae93489301f7",
+            "characterCount": 200
+          },
+          "reviewedDate": {
+            "date": "2026-04-01",
+            "precision": "day",
+            "reviewedAt": "2026-07-20T10:05:51.937Z",
+            "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+            "notes": "Agreement announcement date verified on the official Industry Minister source."
+          }
+        },
+        "checkedAt": "2026-07-20T10:05:51.937Z",
+        "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
+        "method": "manual",
+        "notes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source."
+      }
+    },
+    "updatedAt": "2026-07-20T10:08:01.223Z",
+    "reviewedAt": "2026-07-20T10:05:51.937Z",
+    "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+    "approvalNotes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source.",
+    "publishedAt": "2026-07-20T10:08:01.218Z"
+  },
+  {
+    "id": "source-review-5eb195ac-e587-41c3-b0b6-2ba9e32c05ab",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+    "title": "Senate opens inquiry into artificial intelligence and data centres",
+    "entryKind": "timeline_event",
+    "status": "published",
+    "discoveredAt": "2026-07-20T10:05:51.914Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Official source refreshed after the user approved the proposal on 20 July 2026; publication remains a separate action.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "The Senate refers AI and data-centre regulation, government deals, and community, industry, energy, water and environmental impacts to the Environment and Communications References Committee.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+      "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+      "title": "Artificial intelligence and data centres",
+      "retrievedAt": "2026-07-20T10:05:51.907Z",
+      "contentType": "text/html",
+      "contentHash": "4d33fd470c456dc2467575a389f27bf53bc420f1a4739a98b017da6d79b9cf74",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-07-20T10:05:51.907Z",
+        "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
+        "notes": "Fresh official-source browser verification performed on 20 July 2026 immediately before recording the user approval.",
+        "pageContentHash": "0f42ffbd734bb65572c04e64dbbc0418fdec4482bac60f70d03c1e250307bcde",
+        "characterCount": 217
+      },
+      "reviewedDate": {
+        "date": "2026-05-13",
+        "precision": "day",
+        "reviewedAt": "2026-07-20T10:05:51.920Z",
+        "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+        "notes": "Inquiry referral date verified on the official Parliament of Australia source."
+      }
+    },
+    "proposedRecord": {
+      "id": "tl-2026-05-13-senate-ai-data-centres-inquiry",
+      "date": "2026-05-13",
+      "datePrecision": "day",
+      "title": "Senate opens inquiry into artificial intelligence and data centres",
+      "description": "The Senate refers AI and data-centre regulation, government deals, and community, industry, energy, water and environmental impacts to the Environment and Communications References Committee.",
+      "type": "announcement",
+      "jurisdiction": "federal",
+      "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+          "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+          "title": "Artificial intelligence and data centres",
+          "retrievedAt": "2026-07-20T10:05:51.907Z",
+          "contentType": "text/html",
+          "contentHash": "4d33fd470c456dc2467575a389f27bf53bc420f1a4739a98b017da6d79b9cf74",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-07-20T10:05:51.907Z",
+            "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
+            "notes": "Fresh official-source browser verification performed on 20 July 2026 immediately before recording the user approval.",
+            "pageContentHash": "0f42ffbd734bb65572c04e64dbbc0418fdec4482bac60f70d03c1e250307bcde",
+            "characterCount": 217
+          },
+          "reviewedDate": {
+            "date": "2026-05-13",
+            "precision": "day",
+            "reviewedAt": "2026-07-20T10:05:51.920Z",
+            "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+            "notes": "Inquiry referral date verified on the official Parliament of Australia source."
+          }
+        },
+        "checkedAt": "2026-07-20T10:05:51.920Z",
+        "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
+        "method": "manual",
+        "notes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source."
+      }
+    },
+    "updatedAt": "2026-07-20T10:08:01.211Z",
+    "reviewedAt": "2026-07-20T10:05:51.920Z",
+    "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+    "approvalNotes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source.",
+    "publishedAt": "2026-07-20T10:08:01.206Z"
+  },
+  {
+    "id": "source-review-6f228400-2992-4a15-82a6-ae024070a9a0",
+    "sourceUrl": "https://www.aemc.gov.au/news-centre/media-releases/aemc-proposes-new-grid-standards-data-centre-connections",
+    "title": "AEMC proposes grid-connection standards for large data centres",
+    "entryKind": "timeline_event",
+    "status": "published",
+    "discoveredAt": "2026-07-20T10:05:51.895Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Official source refreshed after the user approved the proposal on 20 July 2026; publication remains a separate action.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "AEMC releases a draft National Electricity Rule establishing technical connection standards for large data centres and other inverter-based loads to protect power-system stability.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.aemc.gov.au/news-centre/media-releases/aemc-proposes-new-grid-standards-data-centre-connections",
+      "finalUrl": "https://www.aemc.gov.au/news-centre/media-releases/aemc-proposes-new-grid-standards-data-centre-connections",
+      "title": "AEMC proposes new grid standards for data centre connections",
+      "retrievedAt": "2026-07-20T10:05:51.890Z",
+      "contentType": "text/html",
+      "contentHash": "a10a5d578a58de4500241589087d2e56d8ef6e1e824f75f8592828d382175c22",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-07-20T10:05:51.890Z",
+        "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
+        "notes": "Fresh official-source browser verification performed on 20 July 2026 immediately before recording the user approval.",
+        "pageContentHash": "4cc54a3c9e7cb9d77c4c109c2620e3dfe2053bbd5b2a538a3f87e0704d6771cc",
+        "characterCount": 184
+      },
+      "reviewedDate": {
+        "date": "2026-03-12",
+        "precision": "day",
+        "reviewedAt": "2026-07-20T10:05:51.901Z",
+        "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+        "notes": "Draft-rule announcement date verified on the official AEMC source."
+      }
+    },
+    "proposedRecord": {
+      "id": "tl-2026-03-12-aemc-draft-data-centre-grid-standards",
+      "date": "2026-03-12",
+      "datePrecision": "day",
+      "title": "AEMC proposes grid-connection standards for large data centres",
+      "description": "AEMC releases a draft National Electricity Rule establishing technical connection standards for large data centres and other inverter-based loads to protect power-system stability.",
+      "type": "policy_introduced",
+      "jurisdiction": "federal",
+      "sourceUrl": "https://www.aemc.gov.au/news-centre/media-releases/aemc-proposes-new-grid-standards-data-centre-connections",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.aemc.gov.au/news-centre/media-releases/aemc-proposes-new-grid-standards-data-centre-connections",
+          "finalUrl": "https://www.aemc.gov.au/news-centre/media-releases/aemc-proposes-new-grid-standards-data-centre-connections",
+          "title": "AEMC proposes new grid standards for data centre connections",
+          "retrievedAt": "2026-07-20T10:05:51.890Z",
+          "contentType": "text/html",
+          "contentHash": "a10a5d578a58de4500241589087d2e56d8ef6e1e824f75f8592828d382175c22",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-07-20T10:05:51.890Z",
+            "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
+            "notes": "Fresh official-source browser verification performed on 20 July 2026 immediately before recording the user approval.",
+            "pageContentHash": "4cc54a3c9e7cb9d77c4c109c2620e3dfe2053bbd5b2a538a3f87e0704d6771cc",
+            "characterCount": 184
+          },
+          "reviewedDate": {
+            "date": "2026-03-12",
+            "precision": "day",
+            "reviewedAt": "2026-07-20T10:05:51.901Z",
+            "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+            "notes": "Draft-rule announcement date verified on the official AEMC source."
+          }
+        },
+        "checkedAt": "2026-07-20T10:05:51.901Z",
+        "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
+        "method": "manual",
+        "notes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source."
+      }
+    },
+    "updatedAt": "2026-07-20T10:08:01.195Z",
+    "reviewedAt": "2026-07-20T10:05:51.901Z",
+    "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+    "approvalNotes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source.",
+    "publishedAt": "2026-07-20T10:08:01.190Z"
+  },
+  {
+    "id": "source-review-178140af-db5e-4096-bfd4-ea8ed360065e",
+    "sourceUrl": "https://www.minister.industry.gov.au/charlton/media/ai-consumer-safety-priorities",
+    "title": "Government sets whole-of-government AI consumer safety priorities",
+    "entryKind": "timeline_event",
+    "status": "published",
+    "discoveredAt": "2026-07-20T10:05:51.878Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Official source refreshed after the user approved the proposal on 20 July 2026; publication remains a separate action.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "The Commonwealth identifies five AI-safety workstreams covering a Digital Duty of Care, privacy reform, workplace safety, consumer-law responses and a federal automated-decision-making framework.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.minister.industry.gov.au/charlton/media/ai-consumer-safety-priorities",
+      "finalUrl": "https://www.minister.industry.gov.au/charlton/media/ai-consumer-safety-priorities",
+      "title": "AI consumer safety priorities",
+      "retrievedAt": "2026-07-20T10:05:51.872Z",
+      "contentType": "text/html",
+      "contentHash": "d6478a5a0953e8f669beb2c9d362b5832f5b44c07cb89a4f0daffff371957b00",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-07-20T10:05:51.872Z",
+        "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
+        "notes": "Fresh official-source browser verification performed on 20 July 2026 immediately before recording the user approval.",
+        "pageContentHash": "4974ac51348d6e400206b8e69a6a7da7207d8d32af3ad59a51a41c39ab5a4f44",
+        "characterCount": 183
+      },
+      "reviewedDate": {
+        "date": "2026-07-20",
+        "precision": "day",
+        "reviewedAt": "2026-07-20T10:05:51.884Z",
+        "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+        "notes": "Announcement date verified on the official Industry Minister source."
+      }
+    },
+    "proposedRecord": {
+      "id": "tl-2026-07-20-ai-consumer-safety-priorities",
+      "date": "2026-07-20",
+      "datePrecision": "day",
+      "title": "Government sets whole-of-government AI consumer safety priorities",
+      "description": "The Commonwealth identifies five AI-safety workstreams covering a Digital Duty of Care, privacy reform, workplace safety, consumer-law responses and a federal automated-decision-making framework.",
+      "type": "announcement",
+      "jurisdiction": "federal",
+      "sourceUrl": "https://www.minister.industry.gov.au/charlton/media/ai-consumer-safety-priorities",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.minister.industry.gov.au/charlton/media/ai-consumer-safety-priorities",
+          "finalUrl": "https://www.minister.industry.gov.au/charlton/media/ai-consumer-safety-priorities",
+          "title": "AI consumer safety priorities",
+          "retrievedAt": "2026-07-20T10:05:51.872Z",
+          "contentType": "text/html",
+          "contentHash": "d6478a5a0953e8f669beb2c9d362b5832f5b44c07cb89a4f0daffff371957b00",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-07-20T10:05:51.872Z",
+            "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
+            "notes": "Fresh official-source browser verification performed on 20 July 2026 immediately before recording the user approval.",
+            "pageContentHash": "4974ac51348d6e400206b8e69a6a7da7207d8d32af3ad59a51a41c39ab5a4f44",
+            "characterCount": 183
+          },
+          "reviewedDate": {
+            "date": "2026-07-20",
+            "precision": "day",
+            "reviewedAt": "2026-07-20T10:05:51.884Z",
+            "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+            "notes": "Announcement date verified on the official Industry Minister source."
+          }
+        },
+        "checkedAt": "2026-07-20T10:05:51.884Z",
+        "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
+        "method": "manual",
+        "notes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source."
+      }
+    },
+    "updatedAt": "2026-07-20T10:08:01.183Z",
+    "reviewedAt": "2026-07-20T10:05:51.884Z",
+    "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+    "approvalNotes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source.",
+    "publishedAt": "2026-07-20T10:08:01.178Z"
+  },
+  {
+    "id": "source-review-727b321a-3c59-4998-9942-f3558be84d8f",
+    "sourceUrl": "https://www.pm.gov.au/media/ai-australias-interests",
+    "title": "Government announces Australian AI Standards and establishes Office of AI",
+    "entryKind": "timeline_event",
+    "status": "published",
+    "discoveredAt": "2026-07-20T10:05:51.859Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Official source refreshed after the user approved the proposal on 20 July 2026; publication remains a separate action.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "The Australian Government announces proposed national AI standards with mandatory energy, water, safety and copyright requirements for large AI data centres, and establishes an Office of AI in PM&C to coordinate implementation.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.pm.gov.au/media/ai-australias-interests",
+      "finalUrl": "https://www.pm.gov.au/media/ai-australias-interests",
+      "title": "AI in Australia's interests",
+      "retrievedAt": "2026-07-20T10:05:51.852Z",
+      "contentType": "text/html",
+      "contentHash": "14e65bf8d4a32ae030b3d3f4caf531f4d970f1e4be90f266f05d7bb6b12d6835",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-07-20T10:05:51.852Z",
+        "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
+        "notes": "Fresh official-source browser verification performed on 20 July 2026 immediately before recording the user approval.",
+        "pageContentHash": "fa342c8936fa39adb293260e6bdf4ba9a59ce9b725cc4fe87c4d093f335a8961",
+        "characterCount": 218
+      },
+      "reviewedDate": {
+        "date": "2026-07-15",
+        "precision": "day",
+        "reviewedAt": "2026-07-20T10:05:51.866Z",
+        "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+        "notes": "Announcement date verified on the official Prime Minister source."
+      }
+    },
+    "proposedRecord": {
+      "id": "tl-2026-07-15-australian-ai-standards-office-of-ai",
+      "date": "2026-07-15",
+      "datePrecision": "day",
+      "title": "Government announces Australian AI Standards and establishes Office of AI",
+      "description": "The Australian Government announces proposed national AI standards with mandatory energy, water, safety and copyright requirements for large AI data centres, and establishes an Office of AI in PM&C to coordinate implementation.",
+      "type": "policy_introduced",
+      "jurisdiction": "federal",
+      "sourceUrl": "https://www.pm.gov.au/media/ai-australias-interests",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.pm.gov.au/media/ai-australias-interests",
+          "finalUrl": "https://www.pm.gov.au/media/ai-australias-interests",
+          "title": "AI in Australia's interests",
+          "retrievedAt": "2026-07-20T10:05:51.852Z",
+          "contentType": "text/html",
+          "contentHash": "14e65bf8d4a32ae030b3d3f4caf531f4d970f1e4be90f266f05d7bb6b12d6835",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-07-20T10:05:51.852Z",
+            "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
+            "notes": "Fresh official-source browser verification performed on 20 July 2026 immediately before recording the user approval.",
+            "pageContentHash": "fa342c8936fa39adb293260e6bdf4ba9a59ce9b725cc4fe87c4d093f335a8961",
+            "characterCount": 218
+          },
+          "reviewedDate": {
+            "date": "2026-07-15",
+            "precision": "day",
+            "reviewedAt": "2026-07-20T10:05:51.866Z",
+            "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+            "notes": "Announcement date verified on the official Prime Minister source."
+          }
+        },
+        "checkedAt": "2026-07-20T10:05:51.866Z",
+        "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
+        "method": "manual",
+        "notes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source."
+      }
+    },
+    "updatedAt": "2026-07-20T10:08:01.170Z",
+    "reviewedAt": "2026-07-20T10:05:51.866Z",
+    "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+    "approvalNotes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source.",
+    "publishedAt": "2026-07-20T10:08:01.164Z"
+  },
+  {
+    "id": "source-review-c0b14790-6f24-48ae-879a-6c4889561c8d",
+    "sourceUrl": "https://www.industry.gov.au/publications/expectations-data-centres-and-ai-infrastructure-developers",
+    "title": "Expectations of data centres and AI infrastructure developers",
+    "entryKind": "policy",
+    "status": "published",
+    "discoveredAt": "2026-07-20T10:05:51.837Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Official source refreshed after the user approved the proposal on 20 July 2026; publication remains a separate action.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": "framework",
+      "suggestedJurisdiction": "federal",
+      "summary": "Australian Government framework setting national-interest, energy, water, workforce and innovation expectations for large data-centre and AI-infrastructure developments.",
+      "tags": [
+        "data centres",
+        "AI infrastructure",
+        "energy",
+        "water",
+        "national interest",
+        "National AI Plan"
+      ],
+      "agencies": [
+        "Department of Industry, Science and Resources",
+        "Department of Climate Change, Energy, the Environment and Water"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://www.industry.gov.au/publications/expectations-data-centres-and-ai-infrastructure-developers",
+      "finalUrl": "https://www.industry.gov.au/publications/expectations-data-centres-and-ai-infrastructure-developers",
+      "title": "Expectations of data centres and AI infrastructure developers",
+      "retrievedAt": "2026-07-20T10:05:51.823Z",
+      "contentType": "text/html",
+      "contentHash": "e0824e047206520d2d599b82002a0745b90bb1c2948d794d03ce44a29ce7bb82",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-07-20T10:05:51.823Z",
+        "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
+        "notes": "Fresh official-source browser verification performed on 20 July 2026 immediately before recording the user approval.",
+        "pageContentHash": "5ab0416d326c26c8f5f979ca550b1795e3fc7df974b0fe1de5f5dafefc18d208",
+        "characterCount": 244
+      },
+      "reviewedDate": {
+        "date": "2026-03-23",
+        "precision": "day",
+        "reviewedAt": "2026-07-20T10:05:51.845Z",
+        "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+        "notes": "Publication date verified on the official Department of Industry source."
+      }
+    },
+    "proposedRecord": {
+      "id": "expectations-data-centres-ai-infrastructure-2026",
+      "title": "Expectations of data centres and AI infrastructure developers",
+      "description": "Australian Government framework setting national-interest, energy, water, workforce and innovation expectations for large data-centre and AI-infrastructure developments.",
+      "jurisdiction": "federal",
+      "type": "framework",
+      "status": "active",
+      "effectiveDate": "2026-03-23",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-03-23",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.industry.gov.au/publications/expectations-data-centres-and-ai-infrastructure-developers",
+            "finalUrl": "https://www.industry.gov.au/publications/expectations-data-centres-and-ai-infrastructure-developers",
+            "title": "Expectations of data centres and AI infrastructure developers",
+            "retrievedAt": "2026-07-20T10:05:51.823Z",
+            "contentType": "text/html",
+            "contentHash": "e0824e047206520d2d599b82002a0745b90bb1c2948d794d03ce44a29ce7bb82",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-07-20T10:05:51.823Z",
+              "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
+              "notes": "Fresh official-source browser verification performed on 20 July 2026 immediately before recording the user approval.",
+              "pageContentHash": "5ab0416d326c26c8f5f979ca550b1795e3fc7df974b0fe1de5f5dafefc18d208",
+              "characterCount": 244
+            },
+            "reviewedDate": {
+              "date": "2026-03-23",
+              "precision": "day",
+              "reviewedAt": "2026-07-20T10:05:51.845Z",
+              "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+              "notes": "Publication date verified on the official Department of Industry source."
+            }
+          }
+        }
+      ],
+      "agencies": [
+        "Department of Industry, Science and Resources",
+        "Department of Climate Change, Energy, the Environment and Water"
+      ],
+      "sourceUrl": "https://www.industry.gov.au/publications/expectations-data-centres-and-ai-infrastructure-developers",
+      "content": "Published on 23 March 2026 as a National AI Plan deliverable, the framework establishes five expectations for data-centre and AI-infrastructure developers: prioritise Australia’s national interest; support the energy transition; use water sustainably and efficiently; invest in Australian skills and jobs; and strengthen research, innovation and local capability. New and expanded projects should secure additional clean generation or storage, cover their grid and water infrastructure costs, provide demand flexibility, protect sensitive data and national security, engage local communities, and make compute and technical capability available to Australian innovators. Commonwealth assessments will prioritise projects aligned with the expectations, which operate alongside existing laws.",
+      "aiSummary": "Australian Government framework setting national-interest, energy, water, workforce and innovation expectations for large data-centre and AI-infrastructure developments.",
+      "tags": [
+        "data centres",
+        "AI infrastructure",
+        "energy",
+        "water",
+        "national interest",
+        "National AI Plan"
+      ],
+      "createdAt": "2026-07-20T09:54:59.076Z",
+      "updatedAt": "2026-07-20T10:05:51.845Z",
+      "lastReviewedAt": "2026-07-20T10:05:51.845Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.industry.gov.au/publications/expectations-data-centres-and-ai-infrastructure-developers",
+          "finalUrl": "https://www.industry.gov.au/publications/expectations-data-centres-and-ai-infrastructure-developers",
+          "title": "Expectations of data centres and AI infrastructure developers",
+          "retrievedAt": "2026-07-20T10:05:51.823Z",
+          "contentType": "text/html",
+          "contentHash": "e0824e047206520d2d599b82002a0745b90bb1c2948d794d03ce44a29ce7bb82",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-07-20T10:05:51.823Z",
+            "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
+            "notes": "Fresh official-source browser verification performed on 20 July 2026 immediately before recording the user approval.",
+            "pageContentHash": "5ab0416d326c26c8f5f979ca550b1795e3fc7df974b0fe1de5f5dafefc18d208",
+            "characterCount": 244
+          },
+          "reviewedDate": {
+            "date": "2026-03-23",
+            "precision": "day",
+            "reviewedAt": "2026-07-20T10:05:51.845Z",
+            "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+            "notes": "Publication date verified on the official Department of Industry source."
+          }
+        },
+        "checkedAt": "2026-07-20T10:05:51.845Z",
+        "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
+        "method": "manual",
+        "notes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source."
+      }
+    },
+    "updatedAt": "2026-07-20T10:08:01.155Z",
+    "reviewedAt": "2026-07-20T10:05:51.845Z",
+    "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+    "approvalNotes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source.",
+    "publishedAt": "2026-07-20T10:08:01.150Z"
+  },
+  {
     "id": "source-review-7ced71d3-263a-4501-8efc-fd3b471a7826",
     "sourceUrl": "https://www.dpac.tas.gov.au/__data/assets/pdf_file/0034/497176/Tasmanian-Government-Guidance-Artificial-Intelligence.pdf",
     "title": "Guidance for the use of artificial intelligence in Tasmanian Government",
