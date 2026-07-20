@@ -134,13 +134,213 @@
     "https://www.info.buy.nsw.gov.au/resources/artificial-intelligence-ai-procurement-essentials": {
       "firstSeenAt": "2026-07-18T20:12:16.563Z",
       "sourceId": "nsw-digital-ai"
+    },
+    "https://www.industry.gov.au/publications/overview-memorandum-understanding-artificial-intelligence-safety-and-security-collaboration-between-australia-and-uk": {
+      "firstSeenAt": "2026-07-20T12:19:40.243Z",
+      "sourceId": "industry-ai-publications",
+      "status": "processed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-07-20T12:19:40.243Z",
+      "processedAt": "2026-07-20T12:19:40.243Z",
+      "candidate": {
+        "url": "https://www.industry.gov.au/publications/overview-memorandum-understanding-artificial-intelligence-safety-and-security-collaboration-between-australia-and-uk",
+        "title": "Overview of the memorandum of understanding on artificial intelligence safety and security collaboration between Australia and the UK",
+        "text": "Overview of the memorandum of understanding on artificial intelligence safety and security collaboration between Australia and the UK Date published: 25 May 2026 Share Share this page Facebook (external link) X (external link) LinkedIn (external link) Email Topics Artificial intelligence Science, technology and innovation Technology Publisher Department of Industry, Science and Resources Introduction Link copied Australia and the United Kingdom (UK) have signed a memorandum of understanding (MoU) on AI safety and security collaboration. It is part of the Australian Government’s work with trust",
+        "dateHint": "2026-05-25",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://www.industry.gov.au/publications/memorandum-understanding-between-australian-government-and-microsoft-collaboration-ai-opportunities": {
+      "firstSeenAt": "2026-07-20T12:19:40.243Z",
+      "sourceId": "industry-ai-publications",
+      "status": "processed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-07-20T12:19:40.243Z",
+      "processedAt": "2026-07-20T12:19:40.243Z",
+      "candidate": {
+        "url": "https://www.industry.gov.au/publications/memorandum-understanding-between-australian-government-and-microsoft-collaboration-ai-opportunities",
+        "title": "Memorandum of understanding between the Australian Government and Microsoft on collaboration on AI opportunities",
+        "text": "Memorandum of understanding between the Australian Government and Microsoft on collaboration on AI opportunities Date published: 23 April 2026 Share Share this page Facebook (external link) X (external link) LinkedIn (external link) Email Topics Artificial intelligence Science, technology and innovation Technology Publisher Department of Industry, Science and Resources Memorandum of understanding Link copied The Australian Government’s National AI Plan establishes a framework for action, guiding government, industry, research and the community to work together to capture the full benefits of A",
+        "dateHint": "2026-04-23",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://www.industry.gov.au/publications/memorandum-understanding-between-australian-government-and-anthropic-collaboration-ai-opportunities": {
+      "firstSeenAt": "2026-07-20T12:19:40.243Z",
+      "sourceId": "industry-ai-publications",
+      "status": "processed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-07-20T12:19:40.243Z",
+      "processedAt": "2026-07-20T12:19:40.243Z",
+      "candidate": {
+        "url": "https://www.industry.gov.au/publications/memorandum-understanding-between-australian-government-and-anthropic-collaboration-ai-opportunities",
+        "title": "Memorandum of understanding between the Australian Government and Anthropic on collaboration on AI opportunities",
+        "text": "Memorandum of understanding between the Australian Government and Anthropic on collaboration on AI opportunities Date published: 1 April 2026 Share Share this page Facebook (external link) X (external link) LinkedIn (external link) Email Topics Artificial intelligence Science, technology and innovation Technology Publisher Department of Industry, Science and Resources Memorandum of understanding Link copied The Australian Government’s National AI Plan establishes a framework for action, guiding government, industry, research and the community to work together to capture the full benefits of AI",
+        "dateHint": "2026-04-23",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://www.industry.gov.au/publications/memorandum-understanding-artificial-intelligence-safety-collaboration-between-australia-and-canada": {
+      "firstSeenAt": "2026-07-20T12:19:40.243Z",
+      "sourceId": "industry-ai-publications",
+      "status": "processed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-07-20T12:19:40.243Z",
+      "processedAt": "2026-07-20T12:19:40.243Z",
+      "candidate": {
+        "url": "https://www.industry.gov.au/publications/memorandum-understanding-artificial-intelligence-safety-collaboration-between-australia-and-canada",
+        "title": "Memorandum of understanding on artificial intelligence safety collaboration between Australia and Canada",
+        "text": "Memorandum of understanding on artificial intelligence safety collaboration between Australia and Canada Date published: 5 March 2026 Share Share this page Facebook (external link) X (external link) LinkedIn (external link) Email Topics Science, technology and innovation Technology Publisher Department of Industry, Science and Resources Introduction Link copied This memorandum recognises the importance of mutual cooperation between Australia, Canada and each countries’ respective AI safety institutes. Memorandum of understanding Link copied The Department of Industry, Science and Resources of ",
+        "dateHint": "2026-04-21",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://www.minister.industry.gov.au/t-ayres/media/ai-consumer-safety-priorities": {
+      "firstSeenAt": "2026-07-20T12:19:40.243Z",
+      "sourceId": "industry-ministers-media",
+      "status": "processed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-07-20T12:19:40.243Z",
+      "processedAt": "2026-07-20T12:19:40.243Z",
+      "candidate": {
+        "url": "https://www.minister.industry.gov.au/t-ayres/media/ai-consumer-safety-priorities",
+        "title": "AI consumer safety priorities | Senator the Hon Tim Ayres | Ministers for the Department of Industry, Science and Resources",
+        "text": "AI consumer safety priorities 20 July 2026 Media release Approx. 2 minutes read Joint media release with Attorney-General Michelle Rowland, Minister for Communications and Minister for Sport Anika Wells, Minister for Employment and Workplace Relations Amanda Rishworth, Assistant Minister for Science, Technology and Digital Economy Andrew Charlton and Assistant Minister for Productivity, Competition, Charities and Treasury Andrew Leigh The Albanese Government is delivering on its plan to keep Australians safe, today outlining a series of AI safety priorities to help ensure AI works better for A"
+      }
+    },
+    "https://www.industry.gov.au/news/australia-canada-and-india-strengthen-ties-ai-and-emerging-tech": {
+      "firstSeenAt": "2026-07-20T12:19:40.243Z",
+      "sourceId": "disr-news",
+      "status": "processed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-07-20T12:19:40.243Z",
+      "processedAt": "2026-07-20T12:19:40.243Z",
+      "candidate": {
+        "url": "https://www.industry.gov.au/news/australia-canada-and-india-strengthen-ties-ai-and-emerging-tech",
+        "title": "Australia, Canada and India to strengthen ties on AI and emerging tech",
+        "text": "Australia, Canada and India to strengthen ties on AI and emerging tech Our 3 countries have signed a memorandum of understanding (MoU) affirming the Australia–Canada–India Technology and Innovation (ACITI) Partnership. 10 July 2026 News 2 min read Artificial intelligence Science, technology and innovation Technology Through the partnership, we are working together to encourage the development and adoption of technologies that improve productivity and quality of life for our citizens. The MoU follows agreement in March 2026 by Prime Minister Albanese, Prime Minister Carney and Prime Minister Mo",
+        "dateHint": "2026-07-13",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://ministers.ag.gov.au/media-centre/ai-consumer-safety-priorities-20-07-2026": {
+      "firstSeenAt": "2026-07-20T12:19:40.243Z",
+      "sourceId": "agd-ministers-media",
+      "status": "processed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-07-20T12:19:40.243Z",
+      "processedAt": "2026-07-20T12:19:40.243Z",
+      "candidate": {
+        "url": "https://ministers.ag.gov.au/media-centre/ai-consumer-safety-priorities-20-07-2026",
+        "title": "AI Consumer safety priorities",
+        "text": "AI Consumer safety priorities The Hon Michelle Rowland MP 20 July 2026 Media Release Minister for Communications and Minister for SportThe Hon Anika Wells MPMinister for Employment and Workplace RelationsThe Hon Amanda Rishworth MPAttorney-GeneralThe Hon Michelle Rowland MPMinister for Industry and InnovationMinister for ScienceSenator The Hon Tim AyresAssistant Minister for Productivity, Competition, Charities and TreasuryThe Hon Dr Andrew Leigh MPAssistant Minister for Science, Technology and Digital EconomyThe Hon Dr Andrew Charlton MPJoint media releaseThe Albanese Government is delivering",
+        "dateHint": "2026-07-20",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://www.cyber.gov.au/about-us/view-all-content/news/five-eyes-cyber-security-agencies-statement": {
+      "firstSeenAt": "2026-07-20T12:19:40.243Z",
+      "sourceId": "cyber-news",
+      "status": "dismissed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-07-20T12:19:40.243Z",
+      "processedAt": "2026-07-20T12:19:40.243Z",
+      "candidate": {
+        "url": "https://www.cyber.gov.au/about-us/view-all-content/news/five-eyes-cyber-security-agencies-statement",
+        "title": "Five Eyes cyber security agencies statement",
+        "text": "As the leaders of the Five Eyes cyber security agencies, we are united in our call to action: the evolving landscape of artificial intelligence (AI) is rapidly transforming cyber risk, and we must act swiftly to remain ahead.A call to actionWhile Al will help us improve cyber defence over time, it also accelerates the speed, scale, and sophistication of cyber threats.Frontier Al models are anticipated to exceed current industry expectations, fundamentally transforming both offensive and defensive cyber capabilities. The timeline is not years, it is months.In this environment, cyber resilience "
+      }
+    },
+    "https://www.apsc.gov.au/working-aps/hr-practitioners/recruitment-aps/ai-recruitment": {
+      "firstSeenAt": "2026-07-20T12:19:40.243Z",
+      "sourceId": "apsc-latest-news",
+      "status": "processed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-07-20T12:19:40.243Z",
+      "processedAt": "2026-07-20T12:19:40.243Z",
+      "candidate": {
+        "url": "https://www.apsc.gov.au/working-aps/hr-practitioners/recruitment-aps/ai-recruitment",
+        "title": "AI in recruitment",
+        "text": "[Document 1: AI in recruitment]\nAI in recruitment Published 20 April 2026 Last updated 29 April 2026 Share Linkedin - external site Twitter - external site Facebook - external site Email Print Contents OverviewResourcesFurther informationDownloads Overview# The APS is committed to upholding high standards of integrity and fairness in its recruitment practices as required by the APS Employment Principles. As AI tools and technologies become more widely used by APS agencies in recruitment processes, it is essential that their adoption and use is compliant with the Public Service Act 1999, the Au"
+      }
+    },
+    "https://www.anao.gov.au/work/performance-audit/governance-of-artificial-intelligence-the-australian-taxation-office": {
+      "firstSeenAt": "2026-07-20T12:19:40.243Z",
+      "sourceId": "anao-performance-audits",
+      "status": "processed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-07-20T12:19:40.243Z",
+      "processedAt": "2026-07-20T12:19:40.243Z",
+      "candidate": {
+        "url": "https://www.anao.gov.au/work/performance-audit/governance-of-artificial-intelligence-the-australian-taxation-office",
+        "title": "Governance of Artificial Intelligence at the Australian Taxation Office | Australian National Audit Office (ANAO)",
+        "text": "[Document 1: Governance of Artificial Intelligence at the Australian Taxation Office | Australian National Audit Office (ANAO)]\nPerformance audit report Auditor-General Report No. 26 of 2024–25 Governance of Artificial Intelligence at the Australian Taxation Office Published Monday 24 February 2025 Portfolio Australian Taxation Office Entity Australian Taxation Office Contact Please direct enquiries through our contact page. Activity Governance Sector Taxation Audit snapshotWhy did we do this audit?The term artificial intelligence (AI) incorporates a range of technologies. AI technologies are "
+      }
+    },
+    "https://www.anao.gov.au/work/performance-audit/2022-23-aids-to-navigation-maintenance-procurement": {
+      "firstSeenAt": "2026-07-20T12:19:40.243Z",
+      "sourceId": "anao-performance-audits",
+      "status": "processed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-07-20T12:19:40.243Z",
+      "processedAt": "2026-07-20T12:19:40.243Z",
+      "candidate": {
+        "url": "https://www.anao.gov.au/work/performance-audit/2022-23-aids-to-navigation-maintenance-procurement",
+        "title": "2022–23 Aids to Navigation Maintenance Procurement | Australian National Audit Office (ANAO)",
+        "text": "Performance audit report Auditor-General Report No. 34 of 2023–24 2022–23 Aids to Navigation Maintenance Procurement Published Monday 3 June 2024 Portfolio Infrastructure, Transport, Regional Development, Communications and the Arts Entity Australian Maritime Safety Authority Contact Please direct enquiries through our contact page. Activity Procurement Sector Infrastructure Audit snapshotWhy did we do this audit?Aids to Navigation (AtoN) are navigational tools which support coastal navigation safety. Types of AtoN include: traditional lighthouses, beacons and buoys. Since 2001, the Australian"
+      }
+    },
+    "https://humanrights.gov.au/about-us/media-centre/opinion-pieces/rights-and-freedoms/human-rights-belong-at-the-centre-of-australias-ai-future2": {
+      "firstSeenAt": "2026-07-20T12:19:40.243Z",
+      "sourceId": "ahrc-media",
+      "status": "processed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-07-20T12:19:40.243Z",
+      "processedAt": "2026-07-20T12:19:40.243Z",
+      "candidate": {
+        "url": "https://humanrights.gov.au/about-us/media-centre/opinion-pieces/rights-and-freedoms/human-rights-belong-at-the-centre-of-australias-ai-future2",
+        "title": "Human Rights Belong at the Centre of Australia’s AI Future",
+        "text": "Human Rights Belong at the Centre of Australia’s AI Future Human Rights Commissioner Lorraine Finlay says Australia's AI framework must place human rights at its centre. Human rights Opinion piece Listen Opinion piece summary Australia's approach to AI should be shaped by human rights as well as economic and technological considerations. Author: Lorraine Finlay, Human Rights Commissioner Published in: The Nightly and The West Australian Publish date: 16 July 2026 More: Access the full article. Artificial intelligence is not just a question of productivity or national competitiveness. It is a q"
+      }
+    },
+    "https://www.act.gov.au/open/act-government-artificial-intelligence-policy#policai-change=0040e7ec83db2a7430b63de7cf72e581dcc938a3139b85ec32c40aa15dc5f4a0:1": {
+      "firstSeenAt": "2026-07-20T12:19:40.243Z",
+      "sourceId": "act-ai-policy",
+      "status": "processed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-07-20T12:19:40.243Z",
+      "processedAt": "2026-07-20T12:19:40.243Z",
+      "candidate": {
+        "title": "ACT Government Artificial Intelligence Policy",
+        "url": "https://www.act.gov.au/open/act-government-artificial-intelligence-policy",
+        "text": "[Document 1: ACT Government Artificial Intelligence Policy]\nACT Government Artificial Intelligence Policy On this pageACT Government Artificial Intelligence PolicyACT AI Assurance Framework ACT Government Artificial Intelligence PolicyThis policy ensures the safe, ethical, and responsible use of artificial intelligence (AI) within the ACT Government. It provides a framework to guide the ACT Government to identify and manage benefits and risks associated with AI technologies, supporting innovative service delivery and decision-making that align with community expectations.The primary objective ",
+        "changeFingerprint": "0040e7ec83db2a7430b63de7cf72e581dcc938a3139b85ec32c40aa15dc5f4a0:1",
+        "dateHint": "2025-10-29",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://digitalterritory.nt.gov.au/digital-government/strategies-and-guidance/policies-standards-and-guidance/artificial-intelligence-assurance-framework#policai-change=afd9802a203e8782df4f27cf28fad8fe07f58eb8880ee292a815e82bf7e5d456:1": {
+      "firstSeenAt": "2026-07-20T12:19:40.243Z",
+      "sourceId": "nt-ai-assurance",
+      "status": "processed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-07-20T12:19:40.243Z",
+      "processedAt": "2026-07-20T12:19:40.243Z",
+      "candidate": {
+        "title": "Artificial Intelligence Assurance Framework",
+        "url": "https://digitalterritory.nt.gov.au/digital-government/strategies-and-guidance/policies-standards-and-guidance/artificial-intelligence-assurance-framework",
+        "text": "Artificial Intelligence Assurance Framework On this pagePurposeWhat is AIAI ethics principles for responsible useAssurance process for AI projectsDefinitions The Northern Territory (NT) Government Artificial Intelligence (AI) Assurance Framework (November 2025) outlines guidelines for the responsible use of AI in government to enhance service delivery while managing associated risks.The framework aims to improve public services through responsible AI use.This AI Assurance framework provides ethics principles, a self-assurance assessment and a quick risk assessment to help agencies:authorise th",
+        "changeFingerprint": "afd9802a203e8782df4f27cf28fad8fe07f58eb8880ee292a815e82bf7e5d456:1",
+        "dateHint": "2026-06-05",
+        "dateHintPrecision": "day"
+      }
     }
   },
   "lastCheckedBySource": {
-    "apra-rss": "2026-07-19T20:23:11.983Z",
+    "apra-rss": "2026-07-20T12:19:40.243Z",
     "csiro-news": "2026-07-18T20:12:16.563Z",
-    "oaic-media": "2026-07-19T20:23:11.983Z",
-    "accc-rss": "2026-07-19T20:23:11.983Z",
+    "oaic-media": "2026-07-20T12:19:40.243Z",
+    "accc-rss": "2026-07-20T12:19:40.243Z",
     "asic-newsroom": "2026-07-18T20:12:16.563Z",
     "pc-media": "2026-07-18T20:12:16.563Z",
     "nsw-sc-practice-notes": "2026-07-18T20:12:16.563Z",
@@ -151,7 +351,120 @@
     "wa-ai-policy": "2026-07-18T20:12:16.563Z",
     "sa-office-for-ai": "2026-07-18T20:12:16.563Z",
     "treasury-publications": "2026-07-16T09:59:08.212Z",
-    "qld-courts-news": "2026-07-16T09:59:08.212Z"
+    "qld-courts-news": "2026-07-16T09:59:08.212Z",
+    "pm-media": "2026-07-20T12:19:40.243Z",
+    "pmc-office-ai": "2026-07-20T12:19:40.243Z",
+    "industry-ai-publications": "2026-07-20T12:19:40.243Z",
+    "industry-ministers-media": "2026-07-20T12:19:40.243Z",
+    "dta-media": "2026-07-20T12:19:40.243Z",
+    "digital-gov-ai": "2026-07-20T12:19:40.243Z",
+    "disr-news": "2026-07-20T12:19:40.243Z",
+    "naic-news": "2026-07-20T12:19:40.243Z",
+    "finance-news": "2026-07-20T12:19:40.243Z",
+    "agd-ministers-media": "2026-07-20T12:19:40.243Z",
+    "cyber-news": "2026-07-20T12:19:40.243Z",
+    "apsc-latest-news": "2026-07-20T12:19:40.243Z",
+    "anao-performance-audits": "2026-07-20T12:19:40.243Z",
+    "senate-ai-data-centres": "2026-07-20T12:19:40.243Z",
+    "senate-new-inquiries": "2026-07-20T12:19:40.243Z",
+    "senate-reports": "2026-07-20T12:19:40.243Z",
+    "house-new-inquiries": "2026-07-20T12:19:40.243Z",
+    "joint-new-inquiries": "2026-07-20T12:19:40.243Z",
+    "aph-bills-digests": "2026-07-20T12:19:40.243Z",
+    "legislation-whats-new": "2026-07-20T12:19:40.243Z",
+    "agd-consultations": "2026-07-20T12:19:40.243Z",
+    "industry-consultations": "2026-07-20T12:19:40.243Z",
+    "treasury-consultations": "2026-07-20T12:19:40.243Z",
+    "aemc-media": "2026-07-20T12:19:40.243Z",
+    "acma-media": "2026-07-20T12:19:40.243Z",
+    "tga-media": "2026-07-20T12:19:40.243Z",
+    "fwc-news": "2026-07-20T12:19:40.243Z",
+    "teqsa-news": "2026-07-20T12:19:40.243Z",
+    "aec-media": "2026-07-20T12:19:40.243Z",
+    "esafety-media": "2026-07-20T12:19:40.243Z",
+    "ahrc-media": "2026-07-20T12:19:40.243Z",
+    "fedcourt-practice-notes": "2026-07-20T12:19:40.243Z",
+    "nsw-media-releases": "2026-07-20T12:19:40.243Z",
+    "ovic-news": "2026-07-20T12:19:40.243Z",
+    "qld-ministerial-statements": "2026-07-20T12:19:40.243Z",
+    "tas-dpac-policies": "2026-07-20T12:19:40.243Z",
+    "act-ai-policy": "2026-07-20T12:19:40.243Z",
+    "nt-ai-assurance": "2026-07-20T12:19:40.243Z"
   },
-  "sourceSnapshots": {}
+  "sourceSnapshots": {
+    "pmc-office-ai": {
+      "contentHash": "4db862eda78cf3d07a56d47be8a73cd5e283dc189501fe090ad5708d1f55116e",
+      "firstCheckedAt": "2026-07-20T12:19:40.243Z",
+      "lastCheckedAt": "2026-07-20T12:19:40.243Z",
+      "changeCount": 0
+    },
+    "naic-news": {
+      "contentHash": "70c8d05957c9f1642e821d43a90510457390a1e05fd9f7738f6481fd2604a9dd",
+      "firstCheckedAt": "2026-07-20T12:19:40.243Z",
+      "lastCheckedAt": "2026-07-20T12:19:40.243Z",
+      "changeCount": 0
+    },
+    "senate-ai-data-centres": {
+      "contentHash": "d598e33b6da3f7aa9ae10107119280ef79db2a9ec523d419d83f808eb46b33d1",
+      "firstCheckedAt": "2026-07-20T12:19:40.243Z",
+      "lastCheckedAt": "2026-07-20T12:19:40.243Z",
+      "changeCount": 0
+    },
+    "legislation-whats-new": {
+      "contentHash": "6898692b3f969ac4d3f2145dfd6d7a6e061ac9f576b2348763dff65877daed2f",
+      "firstCheckedAt": "2026-07-20T12:19:40.243Z",
+      "lastCheckedAt": "2026-07-20T12:19:40.243Z",
+      "changeCount": 0
+    },
+    "industry-consultations": {
+      "contentHash": "4f2f2d60999db56d6bd8ab0825962d598a26de877679c3d705f71bfdbb2243d1",
+      "firstCheckedAt": "2026-07-20T12:19:40.243Z",
+      "lastCheckedAt": "2026-07-20T12:19:40.243Z",
+      "changeCount": 0
+    },
+    "treasury-consultations": {
+      "contentHash": "4f2f2d60999db56d6bd8ab0825962d598a26de877679c3d705f71bfdbb2243d1",
+      "firstCheckedAt": "2026-07-20T12:19:40.243Z",
+      "lastCheckedAt": "2026-07-20T12:19:40.243Z",
+      "changeCount": 0
+    },
+    "teqsa-news": {
+      "contentHash": "dbaecc33f19d0bff339bd04bd440612ab8785638f2bb19b2355606e4257260ce",
+      "firstCheckedAt": "2026-07-20T12:19:40.243Z",
+      "lastCheckedAt": "2026-07-20T12:19:40.243Z",
+      "changeCount": 0
+    },
+    "aec-media": {
+      "contentHash": "946d6cc9072df67e7179628fb3f19cc1d711269b0a58572c059624d7182f3d60",
+      "firstCheckedAt": "2026-07-20T12:19:40.243Z",
+      "lastCheckedAt": "2026-07-20T12:19:40.243Z",
+      "changeCount": 0
+    },
+    "fedcourt-practice-notes": {
+      "contentHash": "406f718e50de48900ee4aca16f43a6f9ef8c0d21614e5944ca9298d556b98888",
+      "firstCheckedAt": "2026-07-20T12:19:40.243Z",
+      "lastCheckedAt": "2026-07-20T12:19:40.243Z",
+      "changeCount": 0
+    },
+    "qld-ministerial-statements": {
+      "contentHash": "7f3b79a0b6c3851b8b46ec10a61ec4e639d78afa1ea471eee034b5729327b598",
+      "firstCheckedAt": "2026-07-20T12:19:40.243Z",
+      "lastCheckedAt": "2026-07-20T12:19:40.243Z",
+      "changeCount": 0
+    },
+    "act-ai-policy": {
+      "contentHash": "0040e7ec83db2a7430b63de7cf72e581dcc938a3139b85ec32c40aa15dc5f4a0",
+      "firstCheckedAt": "2026-07-20T12:19:40.243Z",
+      "lastCheckedAt": "2026-07-20T12:19:40.243Z",
+      "lastChangedAt": "2026-07-20T12:19:40.243Z",
+      "changeCount": 1
+    },
+    "nt-ai-assurance": {
+      "contentHash": "afd9802a203e8782df4f27cf28fad8fe07f58eb8880ee292a815e82bf7e5d456",
+      "firstCheckedAt": "2026-07-20T12:19:40.243Z",
+      "lastCheckedAt": "2026-07-20T12:19:40.243Z",
+      "lastChangedAt": "2026-07-20T12:19:40.243Z",
+      "changeCount": 1
+    }
+  }
 }
