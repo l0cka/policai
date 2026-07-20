@@ -29,6 +29,10 @@ export interface BrowserPageLike {
     arg: Arg,
   ): Promise<Result>;
   waitForTimeout(milliseconds: number): Promise<void>;
+  waitForLoadState?(
+    state: 'networkidle',
+    options?: { timeout?: number },
+  ): Promise<void>;
   close(): Promise<void>;
 }
 
@@ -67,6 +71,11 @@ export interface CreateBrowserFetchOptions {
 
 const DEFAULT_CHALLENGE_SETTLE_MS = 5_000;
 const DEFAULT_NAVIGATION_TIMEOUT_MS = 45_000;
+/**
+ * Client-rendered indexes populate after the load event, and slower CI
+ * hardware widens that window; bounded so long-polling pages cannot stall.
+ */
+const NETWORK_IDLE_SETTLE_MS = 5_000;
 
 const BROWSER_LOCALE = 'en-AU';
 /** Statuses WAF interstitials return before a challenge cookie is granted. */
@@ -312,6 +321,12 @@ export function createBrowserFetch(
         );
       }
 
+      await page
+        .waitForLoadState?.('networkidle', { timeout: NETWORK_IDLE_SETTLE_MS })
+        .catch(() => {
+          // Pages that never go idle (long polling, analytics beacons) are
+          // read as-is after the bounded settle window.
+        });
       let body = await page.content();
       if (looksLikeBotChallenge(body) && challengeSettleMs > 0) {
         await page.waitForTimeout(challengeSettleMs);

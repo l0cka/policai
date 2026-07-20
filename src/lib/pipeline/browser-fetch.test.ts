@@ -40,6 +40,8 @@ function fakeBrowser(
     contextOptions: [] as Array<{ userAgent?: string } | undefined>,
     requestGets: [] as string[],
     inPageFetches: [] as string[],
+    loadStateWaits: [] as string[],
+    rejectLoadStateWaits: false,
   };
 
   const launch = vi.fn(async (): Promise<BrowserLike> => {
@@ -105,6 +107,12 @@ function fakeBrowser(
             },
             waitForTimeout: async (ms: number) => {
               state.waits.push(ms);
+            },
+            waitForLoadState: async (loadState: string) => {
+              state.loadStateWaits.push(loadState);
+              if (state.rejectLoadStateWaits) {
+                throw new Error('page.waitForLoadState: Timeout exceeded.');
+              }
             },
             close: async () => {},
           };
@@ -382,6 +390,39 @@ describe('createBrowserFetch', () => {
     expect(state.inPageFetches).toEqual([
       'https://www.example.gov.au/files/challenged.pdf',
     ]);
+  });
+
+  it('lets client-rendered pages settle to network idle before reading', async () => {
+    const { launch, state } = fakeBrowser({
+      'https://www.example.gov.au/news': {
+        contents: [
+          '<html><body><main><a href="/news/ai-item">AI policy item</a></main></body></html>',
+        ],
+      },
+    });
+    const browserFetch = createBrowserFetch({ launch });
+
+    await browserFetch.fetchImpl('https://www.example.gov.au/news');
+
+    expect(state.loadStateWaits).toEqual(['networkidle']);
+  });
+
+  it('tolerates pages that never reach network idle', async () => {
+    const { launch, state } = fakeBrowser({
+      'https://www.example.gov.au/news': {
+        contents: [
+          '<html><body><main>Long-polling page content</main></body></html>',
+        ],
+      },
+    });
+    state.rejectLoadStateWaits = true;
+    const browserFetch = createBrowserFetch({ launch });
+
+    const response = await browserFetch.fetchImpl(
+      'https://www.example.gov.au/news',
+    );
+
+    expect(await response.text()).toContain('Long-polling page content');
   });
 
   it('throws when navigation yields no response', async () => {
