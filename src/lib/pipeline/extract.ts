@@ -340,11 +340,20 @@ export function extractPublishedDateEvidence(
 ): ParsedSourceDate | null {
   const $ = cheerio.load(html);
 
+  const visibleContainer = $('main, article, [role="main"]').first();
+  const visibleText = (visibleContainer.length > 0 ? visibleContainer : $('body'))
+    .text()
+    .replace(/\s+/g, ' ')
+    .trim();
+  const visiblePublicationLabel = visibleText.match(
+    /\b(?:date\s+published|published(?:\s+on)?|publication\s+date|date\s+issued|issued\s+on|release\s+date)\s*:?\s*(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday)?\s*((?:\d{1,2}\s+[a-z]+\s+\d{4})|(?:[a-z]+\s+\d{4})|(?:\d{4}-\d{2}(?:-\d{2})?))/i,
+  );
+  const visiblePublished = parseSourceDate(visiblePublicationLabel?.[1]);
+  if (visiblePublished) return visiblePublished;
+
   const metaSelectors = [
     'meta[property="article:published_time"]',
     'meta[name="dcterms.issued"]',
-    'meta[name="dcterms.date"]',
-    'meta[name="date"]',
     'meta[itemprop="datePublished"]',
   ];
   for (const selector of metaSelectors) {
@@ -389,7 +398,16 @@ export function extractPublishedDateEvidence(
 		}
 		published = parseSourceDate(time.attr('datetime'));
 	});
-	return published;
+	if (published) return published;
+
+	for (const selector of [
+		'meta[name="dcterms.date"]',
+		'meta[name="date"]',
+	]) {
+		const value = parseSourceDate($(selector).attr('content'));
+		if (value) return value;
+	}
+	return null;
 }
 
 /**

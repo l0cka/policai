@@ -175,6 +175,52 @@ describe('collect', () => {
     expect(result.errors).toEqual([]);
   });
 
+  it('suppresses same-month alternate government release URLs by headline', async () => {
+    const result = await collect({
+      sources: [HTML_SOURCE],
+      state: emptyWatchState(),
+      existingDevelopments: [
+        {
+          id: 'dev-original-consumer-safety-release',
+          title: 'Government sets whole-of-government AI consumer safety priorities',
+          url: 'https://www.example.gov.au/ministers/original/ai-consumer-safety-priorities',
+          sourceId: 'minister-original',
+          sourceName: 'Original minister',
+          jurisdiction: 'federal',
+          publishedAt: '2026-07-20',
+          publishedAtPrecision: 'day',
+          detectedAt: '2026-07-20T00:00:00.000Z',
+          relevanceScore: 1,
+          classification: 'curated',
+          assessment: {
+            method: 'editorial',
+            assessedAt: '2026-07-20T00:00:00.000Z',
+            promptVersion: 'editorial-review-v1',
+          },
+          verification: {
+            status: 'verified',
+            source: {
+              url: 'https://www.example.gov.au/ministers/original/ai-consumer-safety-priorities',
+            },
+          },
+          status: 'promoted',
+        },
+      ],
+      fetchImpl: fakeFetch({
+        [HTML_SOURCE.url]: `
+          <html><body><main><ul class="news-list"><li>
+            <a href="/minister/alternate/ai-consumer-safety-priorities">AI consumer safety priorities | Another minister</a>
+          </li></ul></main></body></html>
+        `,
+      }),
+      now: () => new Date('2026-07-20T12:00:00.000Z'),
+    });
+
+    expect(result.developments).toEqual([]);
+    expect(result.reviewCandidates).toEqual([]);
+    expect(result.errors).toEqual([]);
+  });
+
   it('does not fingerprint document attachments while retrieving a discovery index', async () => {
     const attachmentLinks = Array.from(
       { length: 9 },

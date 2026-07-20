@@ -18,9 +18,9 @@ const AI_KEYWORDS = [
   'hyperscale',
   'large-scale compute',
   'compute infrastructure',
-  'ai ',
-  ' ai',
 ];
+
+const STANDALONE_AI_PATTERN = /(?:^|[^a-z0-9])ai(?:[^a-z0-9]|$)/i;
 
 const GOVERNANCE_KEYWORDS = [
   'policy',
@@ -110,8 +110,16 @@ function hasAnyKeyword(text: string, keywords: string[]): boolean {
   return keywords.some((keyword) => text.includes(keyword));
 }
 
+function hasAiSignal(text: string): boolean {
+  const normalized = normalize(text);
+  return (
+    hasAnyKeyword(normalized, AI_KEYWORDS) ||
+    STANDALONE_AI_PATTERN.test(normalized)
+  );
+}
+
 function hasAiSignalInTitleOrUrl(title: string, url: string): boolean {
-  return hasAnyKeyword(normalize(`${title} ${url}`), AI_KEYWORDS);
+  return hasAiSignal(`${title} ${url}`);
 }
 
 function hasGovernanceSignal(text: string): boolean {
@@ -174,7 +182,7 @@ export function shouldCreatePolicyFromAnalysis(
     `${analysis.summary} ${analysis.tags.join(' ')} ${analysis.relatedTopics.join(' ')}`,
   );
 
-  return hasAiSignalInTitleOrUrl(link.title, link.url) || hasAnyKeyword(analysisContext, AI_KEYWORDS);
+  return hasAiSignalInTitleOrUrl(link.title, link.url) || hasAiSignal(analysisContext);
 }
 
 export function shouldQueuePolicyForReview(
@@ -189,5 +197,5 @@ export function shouldQueuePolicyForReview(
     `${analysis.summary} ${analysis.tags.join(' ')} ${analysis.relatedTopics.join(' ')}`,
   );
 
-  return hasAiSignalInTitleOrUrl(link.title, link.url) || hasAnyKeyword(analysisContext, AI_KEYWORDS);
+  return hasAiSignalInTitleOrUrl(link.title, link.url) || hasAiSignal(analysisContext);
 }

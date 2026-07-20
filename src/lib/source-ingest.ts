@@ -893,7 +893,6 @@ async function stageSourceUrlUnlocked(input: {
 		existingReview = sourceReviews.find(
 			(review) =>
 				(review.status === "pending_review" || review.status === "approved") &&
-				review.entryKind === input.entryKind &&
 				!review.targetPolicyId &&
 				!timelineReviewTargetId(review) &&
 				sourceUrlsEqual(review.sourceUrl, canonicalUrl),
@@ -1178,7 +1177,14 @@ async function stageSourceUrlUnlocked(input: {
 		if (existingReview.sourceVersionSequence !== undefined) {
 			const priorHash = existingReview.sourceEvidence.contentHash;
 			const refreshedHash = reviewProposal.sourceEvidence.contentHash;
-			if (!priorHash || !refreshedHash || priorHash !== refreshedHash) {
+			const refreshesPendingCollectorEvidenceWithBrowserCapture =
+				Boolean(input.browserCapture) &&
+				existingReview.status === "pending_review" &&
+				Boolean(targetPolicy || targetTimelineEvent);
+			if (
+				(!priorHash || !refreshedHash || priorHash !== refreshedHash) &&
+				!refreshesPendingCollectorEvidenceWithBrowserCapture
+			) {
 				throw new Error(
 					"The source changed since the collector staged this ordered review; run collection again to create the next source transition",
 				);

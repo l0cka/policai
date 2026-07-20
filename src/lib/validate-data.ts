@@ -1133,7 +1133,23 @@ export function validateSourceReviews(
           errors.push(`${label}: invalid target policy source replacement`);
         }
       } else if (!sourceUrlsEqual(targetPolicy.sourceUrl, review.sourceUrl)) {
-        errors.push(`${label}: sourceUrl does not match the target policy source`);
+        const supersededByPublishedSourceReplacement =
+          review.status === 'published' &&
+          reviews.some(
+            (candidate) =>
+              candidate.id !== review.id &&
+              candidate.status === 'published' &&
+              candidate.targetPolicyId === review.targetPolicyId &&
+              typeof candidate.targetPolicyPreviousSourceUrl === 'string' &&
+              sourceUrlsEqual(
+                candidate.targetPolicyPreviousSourceUrl,
+                review.sourceUrl,
+              ) &&
+              sourceUrlsEqual(candidate.sourceUrl, targetPolicy.sourceUrl),
+          );
+        if (!supersededByPublishedSourceReplacement) {
+          errors.push(`${label}: sourceUrl does not match the target policy source`);
+        }
       }
       if (!SHA256.test(review.targetPolicyBaseRevisionHash ?? '')) {
         errors.push(

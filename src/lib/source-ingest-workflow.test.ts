@@ -555,6 +555,38 @@ describe('source ingest approval workflow', () => {
     expect(createSourceReview).not.toHaveBeenCalled();
   });
 
+  it('corrects an unresolved new-source review kind without dismissing its radar lead', async () => {
+    const linkedDevelopment = buildLinkedDevelopment();
+    const existingReview = buildReview({
+      entryKind: 'policy',
+      linkedDevelopment,
+    });
+    getSourceReviews.mockResolvedValue([existingReview]);
+    sourceUrlExists.mockResolvedValue(true);
+
+    await stageSourceUrl({
+      url: SOURCE_URL,
+      entryKind: 'timeline_event',
+      actor: 'reviewer',
+    });
+
+    expect(sourceUrlExists).not.toHaveBeenCalled();
+    expect(updateDevelopment).not.toHaveBeenCalled();
+    expect(updateSourceReview).toHaveBeenCalledWith(
+      existingReview.id,
+      expect.objectContaining({
+        entryKind: 'timeline_event',
+        status: 'pending_review',
+        linkedDevelopment,
+        proposedRecord: expect.objectContaining({
+          date: '2026-07-01',
+          sourceUrl: SOURCE_URL,
+        }),
+      }),
+    );
+    expect(createSourceReview).not.toHaveBeenCalled();
+  });
+
   it('rejects a redirect alias whose destination is already tracked', async () => {
     const aliasUrl = 'https://alias.example.gov.au/ai-policy';
     const existingDraft = buildDraft({
@@ -1246,6 +1278,69 @@ describe('source ingest approval workflow', () => {
         linkedDevelopment,
       }),
     );
+  });
+
+  it('refreshes pending ordered collector evidence with a browser capture before approval', async () => {
+    const draft = buildDraft({
+      id: 'existing-policy',
+      effectiveDate: '2026-07-01',
+    });
+    const target: Policy = {
+      ...draft,
+      effectiveDate: '2026-07-01',
+      dates: draft.dates ?? [],
+      verification: {
+        status: 'verified',
+        source: { url: SOURCE_URL, contentHash: '0'.repeat(64) },
+        checkedAt: '2026-01-01T00:00:00.000Z',
+        checkedBy: 'reviewer',
+        method: 'manual',
+      },
+    };
+    const existingReview = buildReview({
+      id: 'collector-transition-review',
+      targetPolicyId: target.id,
+      targetPolicyBaseRevisionHash: policyRevisionHash(target),
+      sourceVersionSequence: 4,
+      sourceEvidence: {
+        url: SOURCE_URL,
+        retrievedAt: '2026-07-15T00:00:00.000Z',
+        contentHash: 'a'.repeat(64),
+      },
+    });
+    getPolicies.mockResolvedValue([target]);
+    getSourceReviews.mockResolvedValue([existingReview]);
+
+    await stageSourceCapture({
+      url: SOURCE_URL,
+      entryKind: 'policy',
+      targetRecordId: target.id,
+      actor: 'local-mcp-admin',
+      browserCapture: {
+        pageTitle: 'Official AI policy',
+        pageText: 'Fresh official browser-captured policy text for editorial review.',
+        references: [SOURCE_URL],
+        capturedAt: new Date().toISOString(),
+        capturedBy: 'Jane Reviewer',
+        notes: 'Captured because the official source blocks the server-side retriever.',
+        linkedDocuments: [],
+      },
+    });
+
+    expect(updateSourceReview).toHaveBeenCalledWith(
+      existingReview.id,
+      expect.objectContaining({
+        status: 'pending_review',
+        sourceVersionSequence: 4,
+        discoveredAt: existingReview.discoveredAt,
+        sourceEvidence: expect.objectContaining({
+          browserCapture: expect.objectContaining({
+            capturedBy: 'Jane Reviewer',
+          }),
+        }),
+      }),
+    );
+    expect(createSourceReview).not.toHaveBeenCalled();
   });
 
   it('refuses to rewrite an ordered collector review as a different source version', async () => {

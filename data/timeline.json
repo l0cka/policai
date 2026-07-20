@@ -1178,5 +1178,128 @@
       "method": "manual",
       "notes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source."
     }
+  },
+  {
+    "id": "tl-2026-03-05-australia-canada-ai-safety-mou",
+    "date": "2026-03-05",
+    "datePrecision": "day",
+    "title": "Australia and Canada sign AI safety collaboration MoU",
+    "description": "Australia and Canada signed a non-binding memorandum establishing technical cooperation between their AI safety institutes, including work on evaluations, standards, research and capability development.",
+    "type": "milestone",
+    "jurisdiction": "federal",
+    "sourceUrl": "https://www.industry.gov.au/publications/memorandum-understanding-artificial-intelligence-safety-collaboration-between-australia-and-canada",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.industry.gov.au/publications/memorandum-understanding-artificial-intelligence-safety-collaboration-between-australia-and-canada",
+        "finalUrl": "https://www.industry.gov.au/publications/memorandum-understanding-artificial-intelligence-safety-collaboration-between-australia-and-canada",
+        "title": "Memorandum of understanding on artificial intelligence safety collaboration between Australia and Canada",
+        "retrievedAt": "2026-07-20T13:00:27.592Z",
+        "contentType": "text/html",
+        "contentHash": "b98040a400e43ed074ea5dd6ebb10b8f4df28a9ee4faad1be602b0a5478982e3",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-07-20T13:00:27.592Z",
+          "capturedBy": "Daniel Alkurdi",
+          "notes": "Controlled browser review of the official Department of Industry page after the hardened server-side retriever timed out. The displayed publication date, cooperation scope and non-binding legal status were checked.",
+          "pageContentHash": "820984aaab6dde17567d32a49aef84d902d7838cd1662c8e76ec167f9130a429",
+          "characterCount": 607
+        },
+        "reviewedDate": {
+          "date": "2026-03-05",
+          "precision": "day",
+          "reviewedAt": "2026-07-20T13:00:36.571Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The official Department of Industry page displays Date published: 5 March 2026."
+        }
+      },
+      "checkedAt": "2026-07-20T13:00:36.571Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Verified as a federal timeline milestone, not a register policy. The MoU is non-binding and establishes Australia-Canada AI safety cooperation."
+    }
+  },
+  {
+    "id": "tl-2026-07-10-aciti-ai-emerging-technology-partnership",
+    "date": "2026-07-10",
+    "datePrecision": "day",
+    "title": "Australia, Canada and India establish ACITI technology partnership",
+    "description": "Australia, Canada and India signed the ACITI Partnership MoU, creating a joint working group covering AI adoption and workforce skills, AI investment ecosystems, policy and regulation exchanges, and AI risk mitigation.",
+    "type": "milestone",
+    "jurisdiction": "federal",
+    "sourceUrl": "https://www.industry.gov.au/news/australia-canada-and-india-strengthen-ties-ai-and-emerging-tech",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.industry.gov.au/news/australia-canada-and-india-strengthen-ties-ai-and-emerging-tech",
+        "finalUrl": "https://www.industry.gov.au/news/australia-canada-and-india-strengthen-ties-ai-and-emerging-tech",
+        "title": "Australia, Canada and India to strengthen ties on AI and emerging tech",
+        "retrievedAt": "2026-07-20T13:00:53.485Z",
+        "contentType": "text/html",
+        "contentHash": "886ba3563de75e4dd3174b6e5e4856ba18e8b21d603848bfb3ae02901f36e9a5",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-07-20T13:00:53.485Z",
+          "capturedBy": "Daniel Alkurdi",
+          "notes": "Controlled browser review of the official Department of Industry news page. The displayed 10 July 2026 date and the joint working groups AI remit were checked directly.",
+          "pageContentHash": "aa07d142d47a9f7d3855d2e660f46715fc9a7ccf5db4410439a14db14ba83e12",
+          "characterCount": 592
+        },
+        "reviewedDate": {
+          "date": "2026-07-10",
+          "precision": "day",
+          "reviewedAt": "2026-07-20T13:01:05.869Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The official Department of Industry page displays 10 July 2026 and states the MoU was signed on that date."
+        }
+      },
+      "checkedAt": "2026-07-20T13:01:05.869Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Verified as a federal timeline milestone. The partnership spans AI and other emerging technologies and is not treated as a domestic policy instrument."
+    }
+  },
+  {
+    "id": "tl-2025-02-24-anao-ato-ai-governance-audit",
+    "date": "2025-02-24",
+    "datePrecision": "day",
+    "title": "ANAO reports on AI governance at the Australian Taxation Office",
+    "description": "The Auditor-General found the ATO's arrangements for adopting AI were partly effective and made seven recommendations on governance, risk management, evaluation and information management, all accepted by the ATO.",
+    "type": "milestone",
+    "jurisdiction": "federal",
+    "sourceUrl": "https://www.anao.gov.au/work/performance-audit/governance-of-artificial-intelligence-the-australian-taxation-office",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.anao.gov.au/work/performance-audit/governance-of-artificial-intelligence-the-australian-taxation-office",
+        "finalUrl": "https://www.anao.gov.au/work/performance-audit/governance-of-artificial-intelligence-the-australian-taxation-office",
+        "title": "Governance of Artificial Intelligence at the Australian Taxation Office",
+        "retrievedAt": "2026-07-20T13:02:25.167Z",
+        "contentType": "text/html",
+        "contentHash": "82ac68050e8a37324ef08ef384111444499d67d818d9c6ef0abf80d6cc0e22a8",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-07-20T13:02:25.167Z",
+          "capturedBy": "Daniel Alkurdi",
+          "notes": "Controlled browser review of the official ANAO performance-audit page. The report number, publication date, conclusion and recommendation outcome were checked directly.",
+          "pageContentHash": "ea0c21b743cb064389f2772c4eec095139e9457fbe508942d7e0f04cc2b382be",
+          "characterCount": 552
+        },
+        "reviewedDate": {
+          "date": "2025-02-24",
+          "precision": "day",
+          "reviewedAt": "2026-07-20T13:02:35.075Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The official ANAO audit page displays Published Monday 24 February 2025."
+        }
+      },
+      "checkedAt": "2026-07-20T13:02:35.075Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Verified as a federal timeline milestone reporting an independent performance audit, not as a policy instrument."
+    }
   }
 ]

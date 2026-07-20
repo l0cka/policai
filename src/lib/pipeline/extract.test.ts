@@ -356,6 +356,22 @@ describe('extractPublishedDate', () => {
       null,
     );
   });
+
+  it('prefers an explicit visible publication label over generic CMS date metadata', () => {
+    expect(
+      extractPublishedDateEvidence(`
+        <html>
+          <head><meta name="dcterms.date" content="2026-07-13"></head>
+          <body><main><h1>AI partnership</h1><p>Date published: 10 July 2026</p></main></body>
+        </html>
+      `),
+    ).toEqual({ date: '2026-07-10', precision: 'day' });
+    expect(
+      extractPublishedDate(
+        '<html><body><main><p>Published Monday 24 February 2025</p></main></body></html>',
+      ),
+    ).toBe('2025-02-24');
+  });
 });
 
 describe('extractDocumentCandidate', () => {

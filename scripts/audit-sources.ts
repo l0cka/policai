@@ -13,6 +13,10 @@ import {
   extractFromRss,
 } from '../src/lib/pipeline/extract';
 import { extractRetrievedDocument } from '../src/lib/pipeline/content';
+import {
+  createBrowserFetch,
+  type BrowserFetch,
+} from '../src/lib/pipeline/browser-fetch';
 import { retrieveSource } from '../src/lib/pipeline/fetch';
 import {
   getAutomaticSources,
@@ -78,27 +82,67 @@ async function mapWithConcurrency<T, R>(
   return results;
 }
 
-async function auditSource(source: WatchSource): Promise<SourceAuditResult> {
+async function createOptionalBrowserFetch(): Promise<BrowserFetch | null> {
+  try {
+    await import('playwright-core');
+    return createBrowserFetch();
+  } catch {
+    console.warn(
+      '[audit:sources] playwright-core unavailable — browser retrieval disabled.',
+    );
+    return null;
+  }
+}
+
+async function auditSource(
+  source: WatchSource,
+  browserFetchImpl?: typeof fetch,
+): Promise<SourceAuditResult> {
   const startedAt = Date.now();
   try {
-    const retrieved = await retrieveSource(source.url, {
-      attempts: 1,
-      timeoutMs: 15_000,
-      hashLinkedDocuments: source.kind === 'document',
-    });
-    let extraction: { itemCount: number; candidates: unknown[] };
-    if (source.kind === 'rss') {
-      extraction = extractFromRss(retrieved.body, source.url);
-    } else if (source.kind === 'html-index') {
-      extraction = extractFromHtml(retrieved.body, source.url);
+    const attempt = async (
+      fetchImpl: typeof fetch | undefined,
+      timeoutMs: number,
+    ) => {
+      const retrieved = await retrieveSource(source.url, {
+        attempts: 1,
+        timeoutMs,
+        fetchImpl,
+        hashLinkedDocuments: source.kind === 'document',
+      });
+      let extraction: { itemCount: number; candidates: unknown[] };
+      if (source.kind === 'rss') {
+        extraction = extractFromRss(retrieved.body, source.url);
+      } else if (source.kind === 'html-index') {
+        extraction = extractFromHtml(retrieved.body, source.url);
+      } else {
+        await extractRetrievedDocument(
+          retrieved,
+          source.url,
+          source.name,
+        );
+        extraction = { itemCount: 1, candidates: [] };
+      }
+      return { retrieved, extraction };
+    };
+
+    const preferBrowser =
+      source.fetchStrategy === 'browser' && Boolean(browserFetchImpl);
+    let result;
+    if (preferBrowser) {
+      result = await attempt(browserFetchImpl, 60_000);
     } else {
-      await extractRetrievedDocument(
-        retrieved,
-        source.url,
-        source.name,
-      );
-      extraction = { itemCount: 1, candidates: [] };
+      try {
+        result = await attempt(undefined, 15_000);
+        if (result.extraction.itemCount === 0 && browserFetchImpl) {
+          result = await attempt(browserFetchImpl, 60_000);
+        }
+      } catch (error) {
+        if (!browserFetchImpl) throw error;
+        result = await attempt(browserFetchImpl, 60_000);
+      }
     }
+    const { retrieved, extraction } = result;
     if (extraction.itemCount === 0) {
       throw new Error('Source returned no extractable index or feed items');
     }
@@ -148,7 +192,15 @@ async function main() {
     sources = [source];
   }
 
-  const results = await mapWithConcurrency(sources, 4, auditSource);
+  const browserFetch = await createOptionalBrowserFetch();
+  let results: SourceAuditResult[];
+  try {
+    results = await mapWithConcurrency(sources, 4, (source) =>
+      auditSource(source, browserFetch?.fetchImpl),
+    );
+  } finally {
+    await browserFetch?.close();
+  }
   const successes = results.filter((result) => result.ok).length;
   const failures = results.length - successes;
   const successRate = results.length === 0 ? 1 : successes / results.length;

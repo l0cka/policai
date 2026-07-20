@@ -1,5 +1,269 @@
 [
   {
+    "id": "mcp-audit-1731623d-b769-4c78-9fbb-d4f80e2d595c",
+    "createdAt": "2026-07-20T13:04:15.924Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-a297035d-e07d-414f-81e4-db6e54259169",
+    "createdAt": "2026-07-20T13:04:10.618Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-88f93e8c-3fe4-45e8-8f58-d92bdef5b739",
+    "createdAt": "2026-07-20T13:04:05.969Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://dcdd.nt.gov.au/publications/artificial-intelligence-assurance-framework",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-a8bd9ea4-bd91-4b08-9a56-6142858a816e",
+    "createdAt": "2026-07-20T13:03:18.902Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-3111088b-e6ad-4d21-936e-e0cfe95c41b9",
+    "createdAt": "2026-07-20T13:03:14.331Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-9b574076-6ee2-4606-b494-43b962351985",
+    "createdAt": "2026-07-20T13:03:06.405Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.act.gov.au/open/act-government-artificial-intelligence-policy",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-36b2d2c3-8155-4a2e-b039-0dc809611c28",
+    "createdAt": "2026-07-20T13:02:43.562Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-a647a5d9-ef15-46ac-a3f1-62262a63fa92",
+    "createdAt": "2026-07-20T13:02:35.088Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-f91faed1-5083-4d94-bd8d-9136128e44e7",
+    "createdAt": "2026-07-20T13:02:30.980Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.anao.gov.au/work/performance-audit/governance-of-artificial-intelligence-the-australian-taxation-office",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-48424a5d-1f20-4877-a4fd-fb32039d296d",
+    "createdAt": "2026-07-20T13:01:54.112Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "error",
+    "errorSummary": "Official source changed after approval; re-approve it before publication"
+  },
+  {
+    "id": "mcp-audit-f2e1c88b-dc77-4033-9b20-367e2ae266b5",
+    "createdAt": "2026-07-20T13:01:32.262Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-77aa56c5-93b1-4a8c-bbe9-940904c904b0",
+    "createdAt": "2026-07-20T13:01:27.611Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.anao.gov.au/work/performance-audit/governance-of-artificial-intelligence-the-australian-taxation-office",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-c76540f7-b625-4ed5-8b7e-9aed4d5d8ecb",
+    "createdAt": "2026-07-20T13:01:11.512Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-9be751ac-ba57-4436-873c-8688eb3193f2",
+    "createdAt": "2026-07-20T13:01:05.882Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-25191f23-a383-4955-b9d9-03ab180f8e0d",
+    "createdAt": "2026-07-20T13:01:02.300Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.industry.gov.au/news/australia-canada-and-india-strengthen-ties-ai-and-emerging-tech",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-013bc492-7620-44a8-879c-fa5e591ed071",
+    "createdAt": "2026-07-20T13:00:41.611Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-f0734b2d-f7d4-4fc4-b7ac-4f915157a6ca",
+    "createdAt": "2026-07-20T13:00:36.584Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-08f99aaf-b081-401d-b1a6-9b145cfbafd9",
+    "createdAt": "2026-07-20T13:00:32.343Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.industry.gov.au/publications/memorandum-understanding-artificial-intelligence-safety-collaboration-between-australia-and-canada",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-d5933c48-fc8e-48ee-b887-10839da19a14",
+    "createdAt": "2026-07-20T12:59:55.545Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.industry.gov.au/publications/memorandum-understanding-artificial-intelligence-safety-collaboration-between-australia-and-canada",
+    "status": "error",
+    "errorSummary": "Timed out after 60000ms"
+  },
+  {
+    "id": "mcp-audit-134372c0-7673-442d-bd4f-57088b2dd3ab",
+    "createdAt": "2026-07-20T12:57:55.228Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.industry.gov.au/publications/memorandum-understanding-artificial-intelligence-safety-collaboration-between-australia-and-canada",
+    "status": "error",
+    "errorSummary": "Timed out after 60000ms"
+  },
+  {
+    "id": "mcp-audit-bed65a2f-c970-424d-bec5-851caa3cabbd",
+    "createdAt": "2026-07-20T12:53:37.562Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.industry.gov.au/publications/memorandum-understanding-artificial-intelligence-safety-collaboration-between-australia-and-canada",
+    "status": "error",
+    "errorSummary": "Source URL already exists in tracked or staged content"
+  },
+  {
+    "id": "mcp-audit-e2e74a82-1375-45e8-a377-fab4c1999fc9",
+    "createdAt": "2026-07-20T12:51:02.144Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "error",
+    "errorSummary": "HTTP 403"
+  },
+  {
+    "id": "mcp-audit-dd74117f-3dde-44e8-8d5b-aaa7a54b8f5d",
+    "createdAt": "2026-07-20T12:50:42.435Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-825e7669-b8fe-47b4-8f73-3143ed08f19e",
+    "createdAt": "2026-07-20T12:50:39.383Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-25389e60-cb13-4983-a577-212952bde6b7",
+    "createdAt": "2026-07-20T12:50:35.909Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.apsc.gov.au/working-aps/hr-practitioners/recruitment-aps/ai-recruitment",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-ab735cef-1f8c-4cc7-8a00-272f0c959807",
+    "createdAt": "2026-07-20T12:50:02.430Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.act.gov.au/open/act-government-artificial-intelligence-policy",
+    "status": "error",
+    "errorSummary": "The source changed since the collector staged this ordered review; run collection again to create the next source transition"
+  },
+  {
+    "id": "mcp-audit-6bf5e834-50ba-4d0e-85bc-577f3a8c9a6f",
+    "createdAt": "2026-07-20T12:49:12.133Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "error",
+    "errorSummary": "HTTP 403"
+  },
+  {
+    "id": "mcp-audit-13e018e3-1e02-4232-a1f0-c30521342e75",
+    "createdAt": "2026-07-20T12:48:44.338Z",
+    "actor": "local-mcp-admin",
+    "toolName": "reject_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-a0324442-de80-4864-a40c-b518c00a5722",
+    "createdAt": "2026-07-20T12:48:41.544Z",
+    "actor": "local-mcp-admin",
+    "toolName": "reject_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-d395f587-07d1-4dc9-be61-edbe99b84477",
+    "createdAt": "2026-07-20T12:48:38.185Z",
+    "actor": "local-mcp-admin",
+    "toolName": "reject_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-465bb818-7cda-4e1f-bc2c-7dba46c09c44",
+    "createdAt": "2026-07-20T12:48:34.587Z",
+    "actor": "local-mcp-admin",
+    "toolName": "reject_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-1f9651ff-de71-46d9-9cc8-7ed8c0445d05",
+    "createdAt": "2026-07-20T12:48:31.988Z",
+    "actor": "local-mcp-admin",
+    "toolName": "reject_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-0ee29b29-87a7-4318-b106-10584299c58f",
+    "createdAt": "2026-07-20T12:48:28.488Z",
+    "actor": "local-mcp-admin",
+    "toolName": "reject_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-5074d1fb-b2b4-420d-ba4e-7836658481f9",
+    "createdAt": "2026-07-20T12:48:25.010Z",
+    "actor": "local-mcp-admin",
+    "toolName": "reject_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-982e0f17-109a-463e-8e9a-fa5bb4d0f7f6",
+    "createdAt": "2026-07-20T12:47:46.100Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "error",
+    "errorSummary": "Timed out after 60000ms"
+  },
+  {
     "id": "mcp-audit-c8bf0145-7ba7-4cd3-9bfd-375af2d7283d",
     "createdAt": "2026-07-20T10:08:01.275Z",
     "actor": "local-mcp-admin",

@@ -32,7 +32,8 @@
         "publishedAtPrecision": "day"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Duplicate of verified timeline event tl-2026-05-25-australia-uk-ai-safety-mou; no new register record required."
   },
   {
     "id": "dev-memorandum-of-understanding-between-the-australi-12wuaoy",
@@ -67,7 +68,8 @@
         "publishedAtPrecision": "day"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Duplicate of verified timeline event tl-2026-04-23-australia-microsoft-ai-mou; no new register record required."
   },
   {
     "id": "dev-memorandum-of-understanding-between-the-australi-idzgwy",
@@ -102,42 +104,60 @@
         "publishedAtPrecision": "day"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Duplicate of verified timeline event tl-2026-04-01-australia-anthropic-ai-mou; no new register record required."
   },
   {
     "id": "dev-memorandum-of-understanding-on-artificial-intell-jxm7st",
-    "title": "Memorandum of understanding on artificial intelligence safety collaboration between Australia and Canada",
+    "title": "Australia and Canada sign AI safety collaboration MoU",
     "url": "https://www.industry.gov.au/publications/memorandum-understanding-artificial-intelligence-safety-collaboration-between-australia-and-canada",
     "sourceId": "industry-ai-publications",
     "sourceName": "Department of Industry — AI publications",
     "jurisdiction": "federal",
-    "publishedAt": "2026-04-21",
+    "publishedAt": "2026-03-05",
     "publishedAtPrecision": "day",
     "detectedAt": "2026-07-20T12:19:40.243Z",
-    "summary": "Memorandum of understanding on artificial intelligence safety collaboration between Australia and Canada Date published: 5 March 2026 Share Share this page Facebook (external link) X (external link) LinkedIn (external link) Email Topics Science, technology and innovation Technology Publisher Department of Industry, Science and Resources Introduction Link copied This memorandum recognises the importance of mutual cooperation between Australia, Canada and each countries’ respective AI safety institutes. Memorandum of understanding Link copied The Department of Industry, Science and Resources of ",
-    "relevanceScore": 0.55,
-    "classification": "heuristic",
+    "summary": "Australia and Canada signed a non-binding memorandum establishing technical cooperation between their AI safety institutes, including work on evaluations, standards, research and capability development.",
+    "relevanceScore": 1,
+    "classification": "curated",
     "assessment": {
-      "method": "heuristic",
-      "promptVersion": "keyword-rules-v1",
-      "assessedAt": "2026-07-20T12:19:40.243Z"
+      "method": "editorial",
+      "assessedAt": "2026-07-20T13:00:36.571Z",
+      "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
         "url": "https://www.industry.gov.au/publications/memorandum-understanding-artificial-intelligence-safety-collaboration-between-australia-and-canada",
         "finalUrl": "https://www.industry.gov.au/publications/memorandum-understanding-artificial-intelligence-safety-collaboration-between-australia-and-canada",
-        "retrievedAt": "2026-07-20T12:19:40.243Z",
-        "contentType": "text/html",
-        "contentHash": "1415c30c26d474e0d98346f63dc583cb5b76caddcbff9eb721167f90f398f9cf",
-        "etag": "\"1784546877\"",
-        "lastModified": "Mon, 20 Jul 2026 11:27:57 GMT",
         "title": "Memorandum of understanding on artificial intelligence safety collaboration between Australia and Canada",
-        "publishedAt": "2026-04-21",
-        "publishedAtPrecision": "day"
-      }
+        "retrievedAt": "2026-07-20T13:00:27.592Z",
+        "contentType": "text/html",
+        "contentHash": "b98040a400e43ed074ea5dd6ebb10b8f4df28a9ee4faad1be602b0a5478982e3",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-07-20T13:00:27.592Z",
+          "capturedBy": "Daniel Alkurdi",
+          "notes": "Controlled browser review of the official Department of Industry page after the hardened server-side retriever timed out. The displayed publication date, cooperation scope and non-binding legal status were checked.",
+          "pageContentHash": "820984aaab6dde17567d32a49aef84d902d7838cd1662c8e76ec167f9130a429",
+          "characterCount": 607
+        },
+        "reviewedDate": {
+          "date": "2026-03-05",
+          "precision": "day",
+          "reviewedAt": "2026-07-20T13:00:36.571Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The official Department of Industry page displays Date published: 5 March 2026."
+        }
+      },
+      "checkedAt": "2026-07-20T13:00:36.571Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Verified as a federal timeline milestone, not a register policy. The MoU is non-binding and establishes Australia-Canada AI safety cooperation."
     },
-    "status": "detected"
+    "status": "promoted",
+    "relatedTimelineEventId": "tl-2026-03-05-australia-canada-ai-safety-mou"
   },
   {
     "id": "dev-ai-consumer-safety-priorities-senator-the-hon-ti-m7lhj1",
@@ -168,42 +188,60 @@
         "title": "AI consumer safety priorities | Senator the Hon Tim Ayres | Ministers for the Department of Industry, Science and Resources"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Duplicate ministerial URL for verified timeline event tl-2026-07-20-ai-consumer-safety-priorities."
   },
   {
     "id": "dev-australia-canada-and-india-to-strengthen-ties-on-dt2vrr",
-    "title": "Australia, Canada and India to strengthen ties on AI and emerging tech",
+    "title": "Australia, Canada and India establish ACITI technology partnership",
     "url": "https://www.industry.gov.au/news/australia-canada-and-india-strengthen-ties-ai-and-emerging-tech",
     "sourceId": "disr-news",
     "sourceName": "Department of Industry, Science and Resources — news",
     "jurisdiction": "federal",
-    "publishedAt": "2026-07-13",
+    "publishedAt": "2026-07-10",
     "publishedAtPrecision": "day",
     "detectedAt": "2026-07-20T12:19:40.243Z",
-    "summary": "Australia, Canada and India to strengthen ties on AI and emerging tech Our 3 countries have signed a memorandum of understanding (MoU) affirming the Australia–Canada–India Technology and Innovation (ACITI) Partnership. 10 July 2026 News 2 min read Artificial intelligence Science, technology and innovation Technology Through the partnership, we are working together to encourage the development and adoption of technologies that improve productivity and quality of life for our citizens. The MoU follows agreement in March 2026 by Prime Minister Albanese, Prime Minister Carney and Prime Minister Mo",
-    "relevanceScore": 0.55,
-    "classification": "heuristic",
+    "summary": "Australia, Canada and India signed the ACITI Partnership MoU, creating a joint working group covering AI adoption and workforce skills, AI investment ecosystems, policy and regulation exchanges, and AI risk mitigation.",
+    "relevanceScore": 1,
+    "classification": "curated",
     "assessment": {
-      "method": "heuristic",
-      "promptVersion": "keyword-rules-v1",
-      "assessedAt": "2026-07-20T12:19:40.243Z"
+      "method": "editorial",
+      "assessedAt": "2026-07-20T13:01:05.869Z",
+      "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
         "url": "https://www.industry.gov.au/news/australia-canada-and-india-strengthen-ties-ai-and-emerging-tech",
         "finalUrl": "https://www.industry.gov.au/news/australia-canada-and-india-strengthen-ties-ai-and-emerging-tech",
-        "retrievedAt": "2026-07-20T12:19:40.243Z",
-        "contentType": "text/html",
-        "contentHash": "97a022ef4573585aeaa87274e70fbe39dfc284e9a8bc365081cd2d5c221cb0c4",
-        "etag": "\"1784540643\"",
-        "lastModified": "Mon, 20 Jul 2026 09:44:03 GMT",
         "title": "Australia, Canada and India to strengthen ties on AI and emerging tech",
-        "publishedAt": "2026-07-13",
-        "publishedAtPrecision": "day"
-      }
+        "retrievedAt": "2026-07-20T13:00:53.485Z",
+        "contentType": "text/html",
+        "contentHash": "886ba3563de75e4dd3174b6e5e4856ba18e8b21d603848bfb3ae02901f36e9a5",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-07-20T13:00:53.485Z",
+          "capturedBy": "Daniel Alkurdi",
+          "notes": "Controlled browser review of the official Department of Industry news page. The displayed 10 July 2026 date and the joint working groups AI remit were checked directly.",
+          "pageContentHash": "aa07d142d47a9f7d3855d2e660f46715fc9a7ccf5db4410439a14db14ba83e12",
+          "characterCount": 592
+        },
+        "reviewedDate": {
+          "date": "2026-07-10",
+          "precision": "day",
+          "reviewedAt": "2026-07-20T13:01:05.869Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The official Department of Industry page displays 10 July 2026 and states the MoU was signed on that date."
+        }
+      },
+      "checkedAt": "2026-07-20T13:01:05.869Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Verified as a federal timeline milestone. The partnership spans AI and other emerging technologies and is not treated as a domestic policy instrument."
     },
-    "status": "detected"
+    "status": "promoted",
+    "relatedTimelineEventId": "tl-2026-07-10-aciti-ai-emerging-technology-partnership"
   },
   {
     "id": "dev-ai-consumer-safety-priorities-1cqhmcp",
@@ -238,110 +276,112 @@
         "publishedAtPrecision": "day"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Duplicate Attorney-General URL for verified timeline event tl-2026-07-20-ai-consumer-safety-priorities."
   },
   {
     "id": "dev-ai-in-recruitment-1ho92xc",
-    "title": "AI in recruitment",
+    "title": "APS principles for the use of AI in recruitment",
     "url": "https://www.apsc.gov.au/working-aps/hr-practitioners/recruitment-aps/ai-recruitment",
     "sourceId": "apsc-latest-news",
     "sourceName": "Australian Public Service Commission — latest news",
     "jurisdiction": "federal",
     "detectedAt": "2026-07-20T12:19:40.243Z",
-    "summary": "[Document 1: AI in recruitment]\nAI in recruitment Published 20 April 2026 Last updated 29 April 2026 Share Linkedin - external site Twitter - external site Facebook - external site Email Print Contents OverviewResourcesFurther informationDownloads Overview# The APS is committed to upholding high standards of integrity and fairness in its recruitment practices as required by the APS Employment Principles. As AI tools and technologies become more widely used by APS agencies in recruitment processes, it is essential that their adoption and use is compliant with the Public Service Act 1999, the Au",
-    "relevanceScore": 0.55,
-    "classification": "heuristic",
+    "summary": "Australian Public Service principles and guidance governing agency and candidate use of artificial intelligence in recruitment, with agency implementation expected from 1 June 2026.",
+    "relevanceScore": 1,
+    "classification": "curated",
     "assessment": {
-      "method": "heuristic",
-      "promptVersion": "keyword-rules-v1",
-      "assessedAt": "2026-07-20T12:19:40.243Z"
+      "method": "editorial",
+      "assessedAt": "2026-07-20T12:50:39.369Z",
+      "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
         "url": "https://www.apsc.gov.au/working-aps/hr-practitioners/recruitment-aps/ai-recruitment",
         "finalUrl": "https://www.apsc.gov.au/working-aps/hr-practitioners/recruitment-aps/ai-recruitment",
-        "retrievedAt": "2026-07-20T12:19:40.243Z",
+        "title": "AI in recruitment",
+        "retrievedAt": "2026-07-20T12:50:32.247Z",
         "contentType": "text/html",
-        "contentHash": "160a5af8651c6da0f179ef80a72c264c2dfa6d80bca89e37c4500eee8d8cc16a",
-        "etag": "\"1784549523\"",
-        "lastModified": "Mon, 20 Jul 2026 12:12:03 GMT",
-        "linkedDocuments": [
-          {
-            "url": "https://www.apsc.gov.au/sites/default/files/2026-04/Guide%20for%20managing%20candidate%20use%20of%20AI%20in%20recruitment_accessible.pdf",
-            "finalUrl": "https://www.apsc.gov.au/sites/default/files/2026-04/Guide%20for%20managing%20candidate%20use%20of%20AI%20in%20recruitment_accessible.pdf",
-            "retrievedAt": "2026-07-20T12:19:40.243Z",
-            "contentType": "application/pdf",
-            "contentHash": "31297450404bca7c1c726b5276e109d33ec7245097e782737346409e2c64f6ad"
-          },
-          {
-            "url": "https://www.apsc.gov.au/sites/default/files/2026-04/Principles%20for%20agency%20use%20of%20AI%20in%20recruitment_accessible.pdf",
-            "finalUrl": "https://www.apsc.gov.au/sites/default/files/2026-04/Principles%20for%20agency%20use%20of%20AI%20in%20recruitment_accessible.pdf",
-            "retrievedAt": "2026-07-20T12:19:40.243Z",
-            "contentType": "application/pdf",
-            "contentHash": "0dfca4c0c79a9f97167a218605e0711fd0527784f049aad8b1cc4647da8d2228"
-          },
-          {
-            "url": "https://www.apsc.gov.au/sites/default/files/2026-04/Principles%20for%20candidate%20use%20of%20AI%20in%20recruitment_accessible.pdf",
-            "finalUrl": "https://www.apsc.gov.au/sites/default/files/2026-04/Principles%20for%20candidate%20use%20of%20AI%20in%20recruitment_accessible.pdf",
-            "retrievedAt": "2026-07-20T12:19:40.243Z",
-            "contentType": "application/pdf",
-            "contentHash": "f83b1f2642a6c80a62cd3cb1642ddccb192fa2ebc60622378265710e5cba4514"
-          },
-          {
-            "url": "https://www.digital.gov.au/sites/default/files/documents/2024-10/Policy%20for%20the%20responsible%20use%20of%20AI%20in%20government%201.1.pdf",
-            "finalUrl": "https://www.digital.gov.au/sites/default/files/documents/2024-10/Policy%20for%20the%20responsible%20use%20of%20AI%20in%20government%201.1.pdf",
-            "retrievedAt": "2026-07-20T12:19:40.243Z",
-            "contentType": "application/pdf",
-            "contentHash": "76f6562e93f4698249cb20029ef2a167babb0104e13558033e3a367163b4fe7c"
-          }
-        ],
-        "title": "AI in recruitment"
-      }
+        "contentHash": "4f0eaca36c21d2aae60fe50a40069b3760c115c53f0d837a68deef41395dc7e6",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-07-20T12:50:32.247Z",
+          "capturedBy": "Daniel Alkurdi",
+          "notes": "Controlled browser review of the official APSC page after the normal approval re-fetch exceeded the MCP timeout. Visible publication, update and implementation dates were checked against the page.",
+          "pageContentHash": "ba80f839b54062f700fd87ec42be2e4f05a42efdb928541c4ea25be30fe89f36",
+          "characterCount": 813
+        },
+        "reviewedDate": {
+          "date": "2026-06-01",
+          "precision": "day",
+          "reviewedAt": "2026-07-20T12:50:39.369Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The official APSC page states that APS agencies are expected to implement the Principles for agency use of AI in Recruitment by 1 June 2026; it separately shows publication on 20 April 2026."
+        }
+      },
+      "checkedAt": "2026-07-20T12:50:39.369Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Verified from the official APSC page and classified as a federal guideline. The implementation date is primary and the publication date is retained separately."
     },
-    "status": "detected"
+    "status": "promoted",
+    "publishedAt": "2026-06-01",
+    "publishedAtPrecision": "day",
+    "relatedPolicyId": "ai-in-recruitment"
   },
   {
     "id": "dev-governance-of-artificial-intelligence-at-the-aus-awl38q",
-    "title": "Governance of Artificial Intelligence at the Australian Taxation Office | Australian National Audit Office (ANAO)",
+    "title": "ANAO reports on AI governance at the Australian Taxation Office",
     "url": "https://www.anao.gov.au/work/performance-audit/governance-of-artificial-intelligence-the-australian-taxation-office",
     "sourceId": "anao-performance-audits",
     "sourceName": "Australian National Audit Office — performance audit reports",
     "jurisdiction": "federal",
     "detectedAt": "2026-07-20T12:19:40.243Z",
-    "summary": "[Document 1: Governance of Artificial Intelligence at the Australian Taxation Office | Australian National Audit Office (ANAO)]\nPerformance audit report Auditor-General Report No. 26 of 2024–25 Governance of Artificial Intelligence at the Australian Taxation Office Published Monday 24 February 2025 Portfolio Australian Taxation Office Entity Australian Taxation Office Contact Please direct enquiries through our contact page. Activity Governance Sector Taxation Audit snapshotWhy did we do this audit?The term artificial intelligence (AI) incorporates a range of technologies. AI technologies are ",
-    "relevanceScore": 0.55,
-    "classification": "heuristic",
+    "summary": "The Auditor-General found the ATO's arrangements for adopting AI were partly effective and made seven recommendations on governance, risk management, evaluation and information management, all accepted by the ATO.",
+    "relevanceScore": 1,
+    "classification": "curated",
     "assessment": {
-      "method": "heuristic",
-      "promptVersion": "keyword-rules-v1",
-      "assessedAt": "2026-07-20T12:19:40.243Z"
+      "method": "editorial",
+      "assessedAt": "2026-07-20T13:02:35.075Z",
+      "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
         "url": "https://www.anao.gov.au/work/performance-audit/governance-of-artificial-intelligence-the-australian-taxation-office",
         "finalUrl": "https://www.anao.gov.au/work/performance-audit/governance-of-artificial-intelligence-the-australian-taxation-office",
-        "retrievedAt": "2026-07-20T12:19:40.243Z",
+        "title": "Governance of Artificial Intelligence at the Australian Taxation Office",
+        "retrievedAt": "2026-07-20T13:02:25.167Z",
         "contentType": "text/html",
-        "contentHash": "c9e08b5f087d3cb5de939aa249268bbbc1151fa95db88c1f861d37477cdac1e4",
-        "etag": "\"1784546116\"",
-        "lastModified": "Mon, 20 Jul 2026 11:15:16 GMT",
-        "linkedDocuments": [
-          {
-            "url": "https://www.aicd.com.au/content/dam/aicd/pdf/tools-resources/director-resources/a-directors-guide-to-ai-governance-web.pdf",
-            "finalUrl": "https://www.aicd.com.au/content/dam/aicd/pdf/tools-resources/director-resources/a-directors-guide-to-ai-governance-web.pdf",
-            "retrievedAt": "2026-07-20T12:19:40.243Z",
-            "contentType": "application/pdf",
-            "contentHash": "5a9f97d3c028506dd1925848d75903b69b43765e1d9aed819de1be6322d492ad",
-            "etag": "\"58da83-61a9789a5eb00\"",
-            "lastModified": "Tue, 11 Jun 2024 06:40:12 GMT"
-          }
-        ],
-        "title": "Governance of Artificial Intelligence at the Australian Taxation Office | Australian National Audit Office (ANAO)"
-      }
+        "contentHash": "82ac68050e8a37324ef08ef384111444499d67d818d9c6ef0abf80d6cc0e22a8",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-07-20T13:02:25.167Z",
+          "capturedBy": "Daniel Alkurdi",
+          "notes": "Controlled browser review of the official ANAO performance-audit page. The report number, publication date, conclusion and recommendation outcome were checked directly.",
+          "pageContentHash": "ea0c21b743cb064389f2772c4eec095139e9457fbe508942d7e0f04cc2b382be",
+          "characterCount": 552
+        },
+        "reviewedDate": {
+          "date": "2025-02-24",
+          "precision": "day",
+          "reviewedAt": "2026-07-20T13:02:35.075Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The official ANAO audit page displays Published Monday 24 February 2025."
+        }
+      },
+      "checkedAt": "2026-07-20T13:02:35.075Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Verified as a federal timeline milestone reporting an independent performance audit, not as a policy instrument."
     },
-    "status": "detected"
+    "status": "promoted",
+    "relatedTimelineEventId": "tl-2025-02-24-anao-ato-ai-governance-audit",
+    "publishedAt": "2025-02-24",
+    "publishedAtPrecision": "day"
   },
   {
     "id": "dev-2022-23-aids-to-navigation-maintenance-procureme-nnkwu6",
@@ -372,7 +412,8 @@
         "title": "2022–23 Aids to Navigation Maintenance Procurement | Australian National Audit Office (ANAO)"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "False positive: Aids to Navigation (AtoN) is maritime navigation infrastructure, not artificial intelligence."
   },
   {
     "id": "dev-human-rights-belong-at-the-centre-of-australia-s-1fzy4pq",
@@ -401,7 +442,8 @@
         "title": "Human Rights Belong at the Centre of Australia’s AI Future"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Official opinion commentary, not a policy instrument or discrete policy milestone; excluded from the curated register and timeline."
   },
   {
     "id": "dev-act-government-artificial-intelligence-policy-vgoc7b",
@@ -410,80 +452,102 @@
     "sourceId": "act-ai-policy",
     "sourceName": "ACT Government — AI policy",
     "jurisdiction": "act",
-    "publishedAt": "2025-10-29",
-    "publishedAtPrecision": "day",
+    "publishedAt": "2025-05-01",
+    "publishedAtPrecision": "month",
     "detectedAt": "2026-07-20T12:19:40.243Z",
-    "summary": "The official source content for \"ACT Government Artificial Intelligence Policy\" changed. Editorial re-verification is required before the register record can be treated as current.",
+    "summary": "The ACT Government Artificial Intelligence Policy (version 1.0, May 2025) sets governance requirements and is supported by the ACT AI Assurance Framework and self-assessment tools.",
     "relevanceScore": 1,
-    "classification": "heuristic",
+    "classification": "curated",
     "assessment": {
-      "method": "heuristic",
-      "promptVersion": "keyword-rules-v1",
-      "assessedAt": "2026-07-20T12:19:40.243Z"
+      "method": "editorial",
+      "assessedAt": "2026-07-20T13:03:14.316Z",
+      "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
         "url": "https://www.act.gov.au/open/act-government-artificial-intelligence-policy",
         "finalUrl": "https://www.act.gov.au/open/act-government-artificial-intelligence-policy",
-        "retrievedAt": "2026-07-20T12:19:40.243Z",
-        "contentType": "text/html",
-        "contentHash": "0040e7ec83db2a7430b63de7cf72e581dcc938a3139b85ec32c40aa15dc5f4a0",
-        "linkedDocuments": [
-          {
-            "url": "https://www.act.gov.au/__data/assets/pdf_file/0010/2931382/ACT-Government-Artificial-Intelligence-Policy.pdf",
-            "finalUrl": "https://www.act.gov.au/__data/assets/pdf_file/0010/2931382/ACT-Government-Artificial-Intelligence-Policy.pdf",
-            "retrievedAt": "2026-07-20T12:19:40.243Z",
-            "contentType": "application/pdf",
-            "contentHash": "b5db92b7f610062c9fe8c98c413c1b531245ec995b330f30aac2e92a435c0574"
-          },
-          {
-            "url": "https://www.act.gov.au/__data/assets/pdf_file/0011/2931365/ACT-AI-Assurance-Framework.pdf",
-            "finalUrl": "https://www.act.gov.au/__data/assets/pdf_file/0011/2931365/ACT-AI-Assurance-Framework.pdf",
-            "retrievedAt": "2026-07-20T12:19:40.243Z",
-            "contentType": "application/pdf",
-            "contentHash": "59bc10f99e42b807985a346dee14310c623837bb80261af77d674db61de0fa7f"
-          }
-        ],
         "title": "ACT Government Artificial Intelligence Policy",
-        "publishedAt": "2025-10-29",
-        "publishedAtPrecision": "day"
-      }
+        "retrievedAt": "2026-07-20T13:03:00.364Z",
+        "contentType": "text/html",
+        "contentHash": "3bdbd8db21249763b2b6668f1d03b6bdb5ccadc8a17925bd1223a262c4622b76",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-07-20T13:03:00.364Z",
+          "capturedBy": "Daniel Alkurdi",
+          "notes": "Controlled browser review of the official ACT Government page after the server-side editorial retriever returned HTTP 403. The visible page distinguishes the policy from the separately linked assurance framework.",
+          "pageContentHash": "6084cd16c0e0fc1106d487de8420d4482907f87c00eb305706c40e09ec6e1f78",
+          "characterCount": 595
+        },
+        "reviewedDate": {
+          "date": "2025-05-01",
+          "precision": "month",
+          "reviewedAt": "2026-07-20T13:03:14.316Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The official ACT Government Artificial Intelligence Policy PDF is labelled Version 1.0, May 2025. The separately linked assurance framework and page update date do not change the policy instrument date."
+        }
+      },
+      "checkedAt": "2026-07-20T13:03:14.316Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Re-verified after the source page added the ACT AI Assurance Framework. May 2025 month precision is preserved for the unchanged policy instrument."
     },
-    "status": "detected"
+    "status": "promoted",
+    "relatedPolicyId": "act-ai-policy"
   },
   {
     "id": "dev-artificial-intelligence-assurance-framework-1m60dgy",
     "title": "Artificial Intelligence Assurance Framework",
-    "url": "https://digitalterritory.nt.gov.au/digital-government/strategies-and-guidance/policies-standards-and-guidance/artificial-intelligence-assurance-framework",
+    "url": "https://dcdd.nt.gov.au/publications/artificial-intelligence-assurance-framework",
     "sourceId": "nt-ai-assurance",
     "sourceName": "NT Digital Territory — AI assurance framework",
     "jurisdiction": "nt",
-    "publishedAt": "2026-06-05",
-    "publishedAtPrecision": "day",
+    "publishedAt": "2025-11-01",
+    "publishedAtPrecision": "month",
     "detectedAt": "2026-07-20T12:19:40.243Z",
-    "summary": "The official source content for \"Artificial Intelligence Assurance Framework\" changed. Editorial re-verification is required before the register record can be treated as current.",
+    "summary": "Northern Territory whole-of-government framework for responsible, risk-based use of AI in public services.",
     "relevanceScore": 1,
-    "classification": "heuristic",
+    "classification": "curated",
     "assessment": {
-      "method": "heuristic",
-      "promptVersion": "keyword-rules-v1",
-      "assessedAt": "2026-07-20T12:19:40.243Z"
+      "method": "editorial",
+      "assessedAt": "2026-07-20T13:04:10.601Z",
+      "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
-        "url": "https://digitalterritory.nt.gov.au/digital-government/strategies-and-guidance/policies-standards-and-guidance/artificial-intelligence-assurance-framework",
+        "url": "https://dcdd.nt.gov.au/publications/artificial-intelligence-assurance-framework",
         "finalUrl": "https://dcdd.nt.gov.au/publications/artificial-intelligence-assurance-framework",
-        "retrievedAt": "2026-07-20T12:19:40.243Z",
-        "contentType": "text/html",
-        "contentHash": "afd9802a203e8782df4f27cf28fad8fe07f58eb8880ee292a815e82bf7e5d456",
         "title": "Artificial Intelligence Assurance Framework",
-        "publishedAt": "2026-06-05",
-        "publishedAtPrecision": "day"
-      }
+        "retrievedAt": "2026-07-20T13:03:58.965Z",
+        "contentType": "text/html",
+        "contentHash": "882c30e08acf01fbd22aad0500c362e861a3562a9e15ed351f11789dc4a644d4",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-07-20T13:03:58.965Z",
+          "capturedBy": "Daniel Alkurdi",
+          "notes": "Controlled browser review of the current official Department of Corporate and Digital Development page after the legacy Digital Territory URL redirected and the server-side editorial retriever returned HTTP 403.",
+          "pageContentHash": "965ebf436c4110e1776c208036a69a7b81ec48d48d85697d4aa38c5bbd36eb64",
+          "characterCount": 647
+        },
+        "reviewedDate": {
+          "date": "2025-11-01",
+          "precision": "month",
+          "reviewedAt": "2026-07-20T13:04:10.601Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The current official NT Government page identifies the Artificial Intelligence Assurance Framework as November 2025; month precision is retained."
+        }
+      },
+      "checkedAt": "2026-07-20T13:04:10.601Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Re-verified on the current Department of Corporate and Digital Development page. The canonical URL is updated, while November 2025 remains the framework date; this is a source migration, not a substantive amendment."
     },
-    "status": "detected"
+    "status": "promoted",
+    "relatedPolicyId": "nt-artificial-intelligence-assurance-framework"
   },
   {
     "id": "dev-learn-about-the-ai-assessment-framework-1qoe2un",

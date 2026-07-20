@@ -544,6 +544,64 @@ describe('validateSourceReviews', () => {
     );
   });
 
+  it('retains a published historical review after a later review migrates the canonical source', () => {
+    const previousSourceUrl = 'https://example.gov.au/policy-v1';
+    const replacementSourceUrl = 'https://example.gov.au/policy-v2';
+    const previousPolicy = buildPolicy({
+      id: 'migrated-policy',
+      sourceUrl: previousSourceUrl,
+    });
+    const currentPolicy = buildPolicy({
+      id: previousPolicy.id,
+      sourceUrl: replacementSourceUrl,
+    });
+    const common = {
+      title: currentPolicy.title,
+      entryKind: 'policy' as const,
+      targetPolicyId: currentPolicy.id,
+      targetPolicyBaseRevisionHash: 'a'.repeat(64),
+      targetPolicyRevisionHash: 'b'.repeat(64),
+      status: 'published' as const,
+      discoveredAt: '2026-07-16T08:00:00.000Z',
+      createdBy: 'editor',
+      analysis: {
+        isRelevant: true,
+        relevanceScore: 1,
+        suggestedType: currentPolicy.type,
+        suggestedJurisdiction: currentPolicy.jurisdiction,
+        summary: 'Canonical source migration history.',
+      },
+      reviewedAt: '2026-07-16T09:00:00.000Z',
+      reviewedBy: 'reviewer',
+      publishedAt: '2026-07-16T10:00:00.000Z',
+      updatedAt: '2026-07-16T10:00:00.000Z',
+    };
+    const report = validateSourceReviews(
+      [
+        {
+          ...common,
+          id: 'source-review-published-original-source',
+          sourceUrl: previousSourceUrl,
+          sourceEvidence: { url: previousSourceUrl },
+          proposedRecord: previousPolicy,
+        },
+        {
+          ...common,
+          id: 'source-review-published-source-migration',
+          sourceUrl: replacementSourceUrl,
+          targetPolicyPreviousSourceUrl: previousSourceUrl,
+          sourceEvidence: { url: replacementSourceUrl },
+          proposedRecord: currentPolicy,
+        },
+      ],
+      { policies: [currentPolicy], timelineEvents: [] },
+    );
+
+    expect(report.errors).not.toContain(
+      'source-review-published-original-source: sourceUrl does not match the target policy source',
+    );
+  });
+
   it('rejects source reviews without a usable sourceEvidence object', () => {
     const policy = buildPolicy();
     const malformedReview = {

@@ -443,6 +443,35 @@ function isTrackedCandidate(
   );
 }
 
+function headlineIdentity(title: string): string {
+  return title
+    .split(/\s+\|\s+/, 1)[0]
+    .toLowerCase()
+    .replace(/^government\s+(?:sets|announces|launches|releases)\s+/, '')
+    .replace(/^whole[-\s]+of[-\s]+government\s+/, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
+function headlineMonthKey(
+  title: string,
+  publishedAt: string | undefined,
+  fallbackDate: string,
+): string | null {
+  const identity = headlineIdentity(title);
+  if (identity.length < 12) return null;
+  const month = (publishedAt ?? fallbackDate).slice(0, 7);
+  return `${identity}:${month}`;
+}
+
+function candidateHeadlineKey(
+  candidate: Candidate,
+  fallbackDate: string,
+): string | null {
+  if (candidate.changeFingerprint) return null;
+  return headlineMonthKey(candidate.title, candidate.dateHint, fallbackDate);
+}
+
 function isSourceDue(
   source: WatchSource,
   state: WatchState,
@@ -911,6 +940,17 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     ),
     ...(options.trackedUrls ?? []).map(sourceUrlIdentity),
   ]);
+  const knownHeadlineKeys = new Set(
+    options.existingDevelopments
+      .map((development) =>
+        headlineMonthKey(
+          development.title,
+          development.publishedAt,
+          development.detectedAt,
+        ),
+      )
+      .filter((value): value is string => Boolean(value)),
+  );
   const trackedPoliciesByUrl = new Map(
     (options.trackedPolicies ?? []).map((policy) => [
       sourceUrlIdentity(policy.sourceUrl),
@@ -1224,6 +1264,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
             const key = candidateStateKey(candidate);
             return (
               !isTrackedCandidate(candidate, knownPublishedUrls) &&
+              !knownHeadlineKeys.has(candidateHeadlineKey(candidate, nowIso) ?? '') &&
               !state.seen[key]
             );
           });
@@ -1247,7 +1288,10 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     }
 
     for (const candidate of pending) {
-      if (isTrackedCandidate(candidate, knownPublishedUrls)) {
+      if (
+        isTrackedCandidate(candidate, knownPublishedUrls) ||
+        knownHeadlineKeys.has(candidateHeadlineKey(candidate, nowIso) ?? '')
+      ) {
         markCandidateComplete(state, candidate, 'dismissed', nowIso);
       }
     }
@@ -1255,7 +1299,8 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
       pending.filter(
         (candidate) =>
           state.seen[candidateStateKey(candidate)]?.status === 'pending' &&
-          !isTrackedCandidate(candidate, knownPublishedUrls),
+          !isTrackedCandidate(candidate, knownPublishedUrls) &&
+          !knownHeadlineKeys.has(candidateHeadlineKey(candidate, nowIso) ?? ''),
       ),
       discovered,
       maxItemsPerSource,
@@ -1266,6 +1311,11 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
 
     let candidateFailureCount = 0;
     for (const candidate of candidates) {
+      const headlineKey = candidateHeadlineKey(candidate, nowIso);
+      if (headlineKey && knownHeadlineKeys.has(headlineKey)) {
+        markCandidateComplete(state, candidate, 'dismissed', nowIso);
+        continue;
+      }
       const attempted = markCandidateAttempt(state, candidate, nowIso);
 
       let pageRetrieval: RetrievedSource;
@@ -1458,6 +1508,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
       );
       upsertDevelopmentResult(developments, development);
       knownPublishedUrls.add(sourceUrlIdentity(development.url));
+      if (headlineKey) knownHeadlineKeys.add(headlineKey);
       markCandidateComplete(state, enrichedCandidate, 'processed', nowIso);
 
       if (
