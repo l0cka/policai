@@ -89,6 +89,15 @@ jobs:
           git config user.email "policai-collector[bot]@users.noreply.github.com"
           git add data/developments.json public/data/meta.json data/watch-state.json data/source-reviews.json
           git commit -m "chore(data): daily collection $(date -u +%F)"
+          # Back-to-back dispatched runs can race this push; rebase the data
+          # commit onto whatever landed in the meantime and retry.
+          for attempt in 1 2 3; do
+            if git push; then
+              exit 0
+            fi
+            echo "Push rejected (attempt ${attempt}); rebasing onto latest main."
+            git pull --rebase origin main
+          done
           git push
 
       - name: Fail after preserving unhealthy collection state
