@@ -328,13 +328,51 @@
         "text": "The official source content for \"Artificial Intelligence Assurance Framework\" changed. Editorial re-verification is required before the register record can be treated as current.",
         "changeFingerprint": "afd9802a203e8782df4f27cf28fad8fe07f58eb8880ee292a815e82bf7e5d456:1"
       }
+    },
+    "https://www.act.gov.au/open/act-government-artificial-intelligence-policy#policai-change=3bdbd8db21249763b2b6668f1d03b6bdb5ccadc8a17925bd1223a262c4622b76:1": {
+      "firstSeenAt": "2026-07-20T12:19:40.243Z",
+      "sourceId": "act-ai-policy",
+      "status": "processed",
+      "processedAt": "2026-07-20T13:03:18.894Z",
+      "candidate": {
+        "title": "ACT Government Artificial Intelligence Policy",
+        "url": "https://www.act.gov.au/open/act-government-artificial-intelligence-policy",
+        "text": "The ACT Government Artificial Intelligence Policy (version 1.0, May 2025) sets governance requirements and is supported by the ACT AI Assurance Framework and self-assessment tools.",
+        "changeFingerprint": "3bdbd8db21249763b2b6668f1d03b6bdb5ccadc8a17925bd1223a262c4622b76:1"
+      }
+    },
+    "https://dcdd.nt.gov.au/publications/artificial-intelligence-assurance-framework#policai-change=882c30e08acf01fbd22aad0500c362e861a3562a9e15ed351f11789dc4a644d4:1": {
+      "firstSeenAt": "2026-07-20T12:19:40.243Z",
+      "sourceId": "nt-ai-assurance",
+      "status": "processed",
+      "processedAt": "2026-07-20T13:04:15.916Z",
+      "candidate": {
+        "title": "Artificial Intelligence Assurance Framework",
+        "url": "https://dcdd.nt.gov.au/publications/artificial-intelligence-assurance-framework",
+        "text": "Northern Territory whole-of-government framework for responsible, risk-based use of AI in public services.",
+        "changeFingerprint": "882c30e08acf01fbd22aad0500c362e861a3562a9e15ed351f11789dc4a644d4:1"
+      }
+    },
+    "https://statements.qld.gov.au/#policai-change=cefc00f932d9336e7b11e605ea9b88454e03832c026bb140686859644fbe62fe:1": {
+      "firstSeenAt": "2026-07-20T20:48:25.497Z",
+      "sourceId": "qld-ministerial-statements",
+      "status": "dismissed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-07-20T20:48:25.497Z",
+      "processedAt": "2026-07-20T20:48:25.497Z",
+      "candidate": {
+        "title": "Media Statements",
+        "url": "https://statements.qld.gov.au/",
+        "text": "Latest Search Yesterday at 03:30 PM Statement from the Attorney-General I have instructed the Office of the Director of Pu... Yesterday at 02:00 PM Uniting communities with $3.75 million major infrastructure investment The Crisafulli Government is bringing Queenslander... Yesterday at 01:00 PM Support to significantly grow grain and cotton production in the North West delivered The Crisafulli Government is delivering the resear... Yesterday at 01:00 PM Central Queensland students get a taste of future careers The Crisafulli Government is delivering the opport... Yesterday at 12:20 PM Six new r",
+        "changeFingerprint": "cefc00f932d9336e7b11e605ea9b88454e03832c026bb140686859644fbe62fe:1"
+      }
     }
   },
   "lastCheckedBySource": {
-    "apra-rss": "2026-07-20T12:19:40.243Z",
+    "apra-rss": "2026-07-20T20:48:25.497Z",
     "csiro-news": "2026-07-18T20:12:16.563Z",
-    "oaic-media": "2026-07-20T12:19:40.243Z",
-    "accc-rss": "2026-07-20T12:19:40.243Z",
+    "oaic-media": "2026-07-20T20:48:25.497Z",
+    "accc-rss": "2026-07-20T20:48:25.497Z",
     "asic-newsroom": "2026-07-18T20:12:16.563Z",
     "pc-media": "2026-07-18T20:12:16.563Z",
     "nsw-sc-practice-notes": "2026-07-18T20:12:16.563Z",
@@ -346,52 +384,52 @@
     "sa-office-for-ai": "2026-07-18T20:12:16.563Z",
     "treasury-publications": "2026-07-16T09:59:08.212Z",
     "qld-courts-news": "2026-07-16T09:59:08.212Z",
-    "pm-media": "2026-07-20T12:19:40.243Z",
-    "pmc-office-ai": "2026-07-20T12:19:40.243Z",
-    "industry-ai-publications": "2026-07-20T12:19:40.243Z",
-    "industry-ministers-media": "2026-07-20T12:19:40.243Z",
-    "dta-media": "2026-07-20T12:19:40.243Z",
-    "digital-gov-ai": "2026-07-20T12:19:40.243Z",
-    "disr-news": "2026-07-20T12:19:40.243Z",
+    "pm-media": "2026-07-20T20:48:25.497Z",
+    "pmc-office-ai": "2026-07-20T20:48:25.497Z",
+    "industry-ai-publications": "2026-07-20T20:48:25.497Z",
+    "industry-ministers-media": "2026-07-20T20:48:25.497Z",
+    "dta-media": "2026-07-20T20:48:25.497Z",
+    "digital-gov-ai": "2026-07-20T20:48:25.497Z",
+    "disr-news": "2026-07-20T20:48:25.497Z",
     "naic-news": "2026-07-20T12:19:40.243Z",
     "finance-news": "2026-07-20T12:19:40.243Z",
-    "agd-ministers-media": "2026-07-20T12:19:40.243Z",
-    "cyber-news": "2026-07-20T12:19:40.243Z",
-    "apsc-latest-news": "2026-07-20T12:19:40.243Z",
+    "agd-ministers-media": "2026-07-20T20:48:25.497Z",
+    "cyber-news": "2026-07-20T20:48:25.497Z",
+    "apsc-latest-news": "2026-07-20T20:48:25.497Z",
     "anao-performance-audits": "2026-07-20T12:19:40.243Z",
     "senate-ai-data-centres": "2026-07-20T12:19:40.243Z",
-    "senate-new-inquiries": "2026-07-20T12:19:40.243Z",
-    "senate-reports": "2026-07-20T12:19:40.243Z",
-    "house-new-inquiries": "2026-07-20T12:19:40.243Z",
-    "joint-new-inquiries": "2026-07-20T12:19:40.243Z",
-    "aph-bills-digests": "2026-07-20T12:19:40.243Z",
-    "legislation-whats-new": "2026-07-20T12:19:40.243Z",
+    "senate-new-inquiries": "2026-07-20T20:48:25.497Z",
+    "senate-reports": "2026-07-20T20:48:25.497Z",
+    "house-new-inquiries": "2026-07-20T20:48:25.497Z",
+    "joint-new-inquiries": "2026-07-20T20:48:25.497Z",
+    "aph-bills-digests": "2026-07-20T20:48:25.497Z",
+    "legislation-whats-new": "2026-07-20T20:48:25.497Z",
     "agd-consultations": "2026-07-20T12:19:40.243Z",
     "industry-consultations": "2026-07-20T12:19:40.243Z",
     "treasury-consultations": "2026-07-20T12:19:40.243Z",
     "aemc-media": "2026-07-20T12:19:40.243Z",
-    "acma-media": "2026-07-20T12:19:40.243Z",
+    "acma-media": "2026-07-20T20:48:25.497Z",
     "tga-media": "2026-07-20T12:19:40.243Z",
     "fwc-news": "2026-07-20T12:19:40.243Z",
     "teqsa-news": "2026-07-20T12:19:40.243Z",
     "aec-media": "2026-07-20T12:19:40.243Z",
-    "esafety-media": "2026-07-20T12:19:40.243Z",
-    "ahrc-media": "2026-07-20T12:19:40.243Z",
+    "esafety-media": "2026-07-20T20:48:25.497Z",
+    "ahrc-media": "2026-07-20T20:48:25.497Z",
     "fedcourt-practice-notes": "2026-07-20T12:19:40.243Z",
-    "nsw-media-releases": "2026-07-20T12:19:40.243Z",
+    "nsw-media-releases": "2026-07-20T20:48:25.497Z",
     "ovic-news": "2026-07-20T12:19:40.243Z",
-    "qld-ministerial-statements": "2026-07-20T12:19:40.243Z",
+    "qld-ministerial-statements": "2026-07-20T20:48:25.497Z",
     "tas-dpac-policies": "2026-07-20T12:19:40.243Z",
     "act-ai-policy": "2026-07-20T12:19:40.243Z",
     "nt-ai-assurance": "2026-07-20T12:19:40.243Z",
     "ipa-news": "2026-07-20T12:26:43.404Z",
-    "wa-media-statements": "2026-07-20T12:30:57.247Z"
+    "wa-media-statements": "2026-07-20T20:48:25.497Z"
   },
   "sourceSnapshots": {
     "pmc-office-ai": {
       "contentHash": "4db862eda78cf3d07a56d47be8a73cd5e283dc189501fe090ad5708d1f55116e",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-07-20T12:19:40.243Z",
+      "lastCheckedAt": "2026-07-20T20:48:25.497Z",
       "changeCount": 0
     },
     "naic-news": {
@@ -409,7 +447,7 @@
     "legislation-whats-new": {
       "contentHash": "6898692b3f969ac4d3f2145dfd6d7a6e061ac9f576b2348763dff65877daed2f",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-07-20T12:19:40.243Z",
+      "lastCheckedAt": "2026-07-20T20:48:25.497Z",
       "changeCount": 0
     },
     "industry-consultations": {
@@ -443,10 +481,11 @@
       "changeCount": 0
     },
     "qld-ministerial-statements": {
-      "contentHash": "7f3b79a0b6c3851b8b46ec10a61ec4e639d78afa1ea471eee034b5729327b598",
+      "contentHash": "cefc00f932d9336e7b11e605ea9b88454e03832c026bb140686859644fbe62fe",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-07-20T12:19:40.243Z",
-      "changeCount": 0
+      "lastCheckedAt": "2026-07-20T20:48:25.497Z",
+      "changeCount": 1,
+      "lastChangedAt": "2026-07-20T20:48:25.497Z"
     },
     "act-ai-policy": {
       "contentHash": "0040e7ec83db2a7430b63de7cf72e581dcc938a3139b85ec32c40aa15dc5f4a0",
