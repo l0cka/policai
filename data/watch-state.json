@@ -366,13 +366,27 @@
         "text": "Latest Search Yesterday at 03:30 PM Statement from the Attorney-General I have instructed the Office of the Director of Pu... Yesterday at 02:00 PM Uniting communities with $3.75 million major infrastructure investment The Crisafulli Government is bringing Queenslander... Yesterday at 01:00 PM Support to significantly grow grain and cotton production in the North West delivered The Crisafulli Government is delivering the resear... Yesterday at 01:00 PM Central Queensland students get a taste of future careers The Crisafulli Government is delivering the opport... Yesterday at 12:20 PM Six new r",
         "changeFingerprint": "cefc00f932d9336e7b11e605ea9b88454e03832c026bb140686859644fbe62fe:1"
       }
+    },
+    "https://statements.qld.gov.au/#policai-change=78379ea3f9ab438e4f2adfd1acb40ec21382acfd32e4a8869a0d6424babd039d:2": {
+      "firstSeenAt": "2026-07-21T20:44:21.049Z",
+      "sourceId": "qld-ministerial-statements",
+      "status": "dismissed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-07-21T20:44:21.049Z",
+      "processedAt": "2026-07-21T20:44:21.049Z",
+      "candidate": {
+        "title": "Media Statements",
+        "url": "https://statements.qld.gov.au/",
+        "text": "Latest Search Yesterday at 03:00 PM Fresh start for 4,500 new construction apprentices The Crisafulli Government is building Queensland's... Yesterday at 12:00 PM Cairns Airport bus service ready to roll The Crisafulli Government is delivering for Far No... Yesterday at 11:00 AM Land Activation Program unlocks more homes in Hervey Bay The Crisafulli Government’s nation-leading Land Ac... Yesterday at 09:48 AM Primary producer loans deliver major economic benefits The Crisafulli Government’s productivity loans for... Mon 20 Jul 26 at 03:30 PM Statement from the Attorney-General I have instructe",
+        "changeFingerprint": "78379ea3f9ab438e4f2adfd1acb40ec21382acfd32e4a8869a0d6424babd039d:2"
+      }
     }
   },
   "lastCheckedBySource": {
-    "apra-rss": "2026-07-20T20:48:25.497Z",
+    "apra-rss": "2026-07-21T20:44:21.049Z",
     "csiro-news": "2026-07-18T20:12:16.563Z",
-    "oaic-media": "2026-07-20T20:48:25.497Z",
-    "accc-rss": "2026-07-20T20:48:25.497Z",
+    "oaic-media": "2026-07-21T20:44:21.049Z",
+    "accc-rss": "2026-07-21T20:44:21.049Z",
     "asic-newsroom": "2026-07-18T20:12:16.563Z",
     "pc-media": "2026-07-18T20:12:16.563Z",
     "nsw-sc-practice-notes": "2026-07-18T20:12:16.563Z",
@@ -384,52 +398,52 @@
     "sa-office-for-ai": "2026-07-18T20:12:16.563Z",
     "treasury-publications": "2026-07-16T09:59:08.212Z",
     "qld-courts-news": "2026-07-16T09:59:08.212Z",
-    "pm-media": "2026-07-20T20:48:25.497Z",
-    "pmc-office-ai": "2026-07-20T20:48:25.497Z",
-    "industry-ai-publications": "2026-07-20T20:48:25.497Z",
-    "industry-ministers-media": "2026-07-20T20:48:25.497Z",
-    "dta-media": "2026-07-20T20:48:25.497Z",
-    "digital-gov-ai": "2026-07-20T20:48:25.497Z",
-    "disr-news": "2026-07-20T20:48:25.497Z",
+    "pm-media": "2026-07-21T20:44:21.049Z",
+    "pmc-office-ai": "2026-07-21T20:44:21.049Z",
+    "industry-ai-publications": "2026-07-21T20:44:21.049Z",
+    "industry-ministers-media": "2026-07-21T20:44:21.049Z",
+    "dta-media": "2026-07-21T20:44:21.049Z",
+    "digital-gov-ai": "2026-07-21T20:44:21.049Z",
+    "disr-news": "2026-07-21T20:44:21.049Z",
     "naic-news": "2026-07-20T12:19:40.243Z",
     "finance-news": "2026-07-20T12:19:40.243Z",
-    "agd-ministers-media": "2026-07-20T20:48:25.497Z",
-    "cyber-news": "2026-07-20T20:48:25.497Z",
-    "apsc-latest-news": "2026-07-20T20:48:25.497Z",
+    "agd-ministers-media": "2026-07-21T20:44:21.049Z",
+    "cyber-news": "2026-07-21T20:44:21.049Z",
+    "apsc-latest-news": "2026-07-21T20:44:21.049Z",
     "anao-performance-audits": "2026-07-20T12:19:40.243Z",
     "senate-ai-data-centres": "2026-07-20T12:19:40.243Z",
-    "senate-new-inquiries": "2026-07-20T20:48:25.497Z",
-    "senate-reports": "2026-07-20T20:48:25.497Z",
-    "house-new-inquiries": "2026-07-20T20:48:25.497Z",
-    "joint-new-inquiries": "2026-07-20T20:48:25.497Z",
-    "aph-bills-digests": "2026-07-20T20:48:25.497Z",
-    "legislation-whats-new": "2026-07-20T20:48:25.497Z",
+    "senate-new-inquiries": "2026-07-21T20:44:21.049Z",
+    "senate-reports": "2026-07-21T20:44:21.049Z",
+    "house-new-inquiries": "2026-07-21T20:44:21.049Z",
+    "joint-new-inquiries": "2026-07-21T20:44:21.049Z",
+    "aph-bills-digests": "2026-07-21T20:44:21.049Z",
+    "legislation-whats-new": "2026-07-21T20:44:21.049Z",
     "agd-consultations": "2026-07-20T12:19:40.243Z",
     "industry-consultations": "2026-07-20T12:19:40.243Z",
     "treasury-consultations": "2026-07-20T12:19:40.243Z",
     "aemc-media": "2026-07-20T12:19:40.243Z",
-    "acma-media": "2026-07-20T20:48:25.497Z",
+    "acma-media": "2026-07-21T20:44:21.049Z",
     "tga-media": "2026-07-20T12:19:40.243Z",
     "fwc-news": "2026-07-20T12:19:40.243Z",
     "teqsa-news": "2026-07-20T12:19:40.243Z",
     "aec-media": "2026-07-20T12:19:40.243Z",
-    "esafety-media": "2026-07-20T20:48:25.497Z",
-    "ahrc-media": "2026-07-20T20:48:25.497Z",
+    "esafety-media": "2026-07-21T20:44:21.049Z",
+    "ahrc-media": "2026-07-21T20:44:21.049Z",
     "fedcourt-practice-notes": "2026-07-20T12:19:40.243Z",
-    "nsw-media-releases": "2026-07-20T20:48:25.497Z",
+    "nsw-media-releases": "2026-07-21T20:44:21.049Z",
     "ovic-news": "2026-07-20T12:19:40.243Z",
-    "qld-ministerial-statements": "2026-07-20T20:48:25.497Z",
+    "qld-ministerial-statements": "2026-07-21T20:44:21.049Z",
     "tas-dpac-policies": "2026-07-20T12:19:40.243Z",
     "act-ai-policy": "2026-07-20T12:19:40.243Z",
     "nt-ai-assurance": "2026-07-20T12:19:40.243Z",
     "ipa-news": "2026-07-20T12:26:43.404Z",
-    "wa-media-statements": "2026-07-20T20:48:25.497Z"
+    "wa-media-statements": "2026-07-21T20:44:21.049Z"
   },
   "sourceSnapshots": {
     "pmc-office-ai": {
       "contentHash": "4db862eda78cf3d07a56d47be8a73cd5e283dc189501fe090ad5708d1f55116e",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-07-20T20:48:25.497Z",
+      "lastCheckedAt": "2026-07-21T20:44:21.049Z",
       "changeCount": 0
     },
     "naic-news": {
@@ -447,7 +461,7 @@
     "legislation-whats-new": {
       "contentHash": "6898692b3f969ac4d3f2145dfd6d7a6e061ac9f576b2348763dff65877daed2f",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-07-20T20:48:25.497Z",
+      "lastCheckedAt": "2026-07-21T20:44:21.049Z",
       "changeCount": 0
     },
     "industry-consultations": {
@@ -481,11 +495,11 @@
       "changeCount": 0
     },
     "qld-ministerial-statements": {
-      "contentHash": "cefc00f932d9336e7b11e605ea9b88454e03832c026bb140686859644fbe62fe",
+      "contentHash": "78379ea3f9ab438e4f2adfd1acb40ec21382acfd32e4a8869a0d6424babd039d",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-07-20T20:48:25.497Z",
-      "changeCount": 1,
-      "lastChangedAt": "2026-07-20T20:48:25.497Z"
+      "lastCheckedAt": "2026-07-21T20:44:21.049Z",
+      "changeCount": 2,
+      "lastChangedAt": "2026-07-21T20:44:21.049Z"
     },
     "act-ai-policy": {
       "contentHash": "0040e7ec83db2a7430b63de7cf72e581dcc938a3139b85ec32c40aa15dc5f4a0",
