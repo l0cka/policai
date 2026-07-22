@@ -979,7 +979,7 @@
     "date": "2026-05-13",
     "datePrecision": "day",
     "title": "Senate opens inquiry into artificial intelligence and data centres",
-    "description": "The Senate refers AI and data-centre regulation, government deals, and community, industry, energy, water and environmental impacts to the Environment and Communications References Committee.",
+    "description": "The Senate inquiry covers AI and data-centre regulation, government deals, and community, industry, energy, water and environmental impacts. The official inquiry page now sets submissions to close on 1 September 2026 and the committee to report on 16 November 2026.",
     "type": "announcement",
     "jurisdiction": "federal",
     "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
@@ -988,31 +988,31 @@
       "source": {
         "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
         "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
-        "title": "Artificial intelligence and data centres",
-        "retrievedAt": "2026-07-20T10:05:51.907Z",
+        "title": "Artificial intelligence and data centres – Parliament of Australia",
+        "retrievedAt": "2026-07-22T12:53:52.556Z",
         "contentType": "text/html",
-        "contentHash": "4d33fd470c456dc2467575a389f27bf53bc420f1a4739a98b017da6d79b9cf74",
+        "contentHash": "b44e482e2878ae213decc03e005ce8051e47aa370a279e03254f6abf9ffe1afc",
         "linkedDocuments": [],
         "browserCapture": {
           "method": "browser",
-          "capturedAt": "2026-07-20T10:05:51.907Z",
+          "capturedAt": "2026-07-22T12:53:52.556Z",
           "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
-          "notes": "Fresh official-source browser verification performed on 20 July 2026 immediately before recording the user approval.",
-          "pageContentHash": "0f42ffbd734bb65572c04e64dbbc0418fdec4482bac60f70d03c1e250307bcde",
-          "characterCount": 217
+          "notes": "Fresh official-source browser revalidation performed immediately before applying the user’s approval on 22 July 2026.",
+          "pageContentHash": "2f808526bda5a6588947b6275fad73f119988add0eeab422f3b9d11dc46778a2",
+          "characterCount": 10628
         },
         "reviewedDate": {
           "date": "2026-05-13",
           "precision": "day",
-          "reviewedAt": "2026-07-20T10:05:51.920Z",
+          "reviewedAt": "2026-07-22T12:54:06.086Z",
           "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
-          "notes": "Inquiry referral date verified on the official Parliament of Australia source."
+          "notes": "The official inquiry page identifies 13 May 2026 as the date referred and currently records submissions closing 1 September 2026 and reporting on 16 November 2026."
         }
       },
-      "checkedAt": "2026-07-20T10:05:51.920Z",
+      "checkedAt": "2026-07-22T12:54:06.086Z",
       "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
       "method": "manual",
-      "notes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source."
+      "notes": "Approved by the user for re-verification after confirming the extended submissions deadline, reporting date and unchanged inquiry identity."
     }
   },
   {
@@ -1300,6 +1300,47 @@
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
       "notes": "Verified as a federal timeline milestone reporting an independent performance audit, not as a policy instrument."
+    }
+  },
+  {
+    "id": "tl-2026-07-02-sddc-ai-recordkeeping-foi",
+    "date": "2026-07-02",
+    "datePrecision": "day",
+    "title": "Digital secretaries clarify AI recordkeeping and FOI obligations",
+    "description": "The Secretaries’ Digital and Data Committee confirmed APS accountability for AI records under National Archives guidance, commissioned practical recordkeeping and FOI guidance, and discussed frontier-model cyber risks and AI in government security operations centres.",
+    "type": "announcement",
+    "jurisdiction": "federal",
+    "sourceUrl": "https://www.digital.gov.au/secretaries-digital-and-data-committee/sddc-communique-02-july-2026",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.digital.gov.au/secretaries-digital-and-data-committee/sddc-communique-02-july-2026",
+        "finalUrl": "https://www.digital.gov.au/secretaries-digital-and-data-committee/sddc-communique-02-july-2026",
+        "title": "SDDC Communique 02 July 2026",
+        "retrievedAt": "2026-07-22T12:53:52.556Z",
+        "contentType": "text/html",
+        "contentHash": "cc3a05bbafbc50e4931c6d5244b9a15f27fbce5b9df468e50d7be1e330504bf5",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-07-22T12:53:52.556Z",
+          "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
+          "notes": "Fresh official-source browser revalidation performed immediately before applying the user’s approval on 22 July 2026.",
+          "pageContentHash": "b045d1e8e8e625af2491484510c459c9820dde5248e434925793698751b5bf27",
+          "characterCount": 4814
+        },
+        "reviewedDate": {
+          "date": "2026-07-02",
+          "precision": "day",
+          "reviewedAt": "2026-07-22T12:54:11.486Z",
+          "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+          "notes": "The official digital.gov.au communiqué displays 02 July 2026 as the meeting and publication date; the page was last updated 17 July 2026."
+        }
+      },
+      "checkedAt": "2026-07-22T12:54:11.486Z",
+      "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
+      "method": "manual",
+      "notes": "Approved by the user after review of the SDDC communiqué’s AI recordkeeping, FOI and cyber-governance content and official date."
     }
   }
 ]

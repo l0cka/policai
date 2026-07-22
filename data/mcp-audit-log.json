@@ -1,5 +1,93 @@
 [
   {
+    "id": "mcp-audit-f7f2ab03-2959-4b41-a54d-4e9595cddd7b",
+    "createdAt": "2026-07-22T12:54:47.542Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-78a49fe0-52fa-4f99-966a-8eaab8602946",
+    "createdAt": "2026-07-22T12:54:43.483Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-a01c3836-301b-4fd1-929b-9b4d449ac49d",
+    "createdAt": "2026-07-22T12:54:38.780Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-dc16c4f4-b622-4682-a8d6-6a167c37d700",
+    "createdAt": "2026-07-22T12:54:32.893Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-828848aa-42a8-45c3-b071-266634bb0a78",
+    "createdAt": "2026-07-22T12:54:11.499Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-98fd802a-5e08-4963-a430-b284d762739f",
+    "createdAt": "2026-07-22T12:54:06.098Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-60b3763c-a0d1-4e00-a152-74cc14651a3a",
+    "createdAt": "2026-07-22T12:54:02.043Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-22757f34-125d-4ea3-a240-865b99b3a94e",
+    "createdAt": "2026-07-22T12:53:57.560Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-80d14c1a-0aa6-4bfd-9878-2e4f986c1b0d",
+    "createdAt": "2026-07-22T12:49:05.301Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.digital.gov.au/secretaries-digital-and-data-committee/sddc-communique-02-july-2026",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-e228102f-dc99-48b6-9cbe-539c07a310a4",
+    "createdAt": "2026-07-22T12:49:01.334Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-0e5c0a25-21cd-4b82-b726-a38fbd87c579",
+    "createdAt": "2026-07-22T12:48:55.285Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-personal-information-with-publicly-available-generative-ai-tools-in-the-victorian-public-sector/",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-8d2c84a6-76da-4777-896c-ed34fd2b134f",
+    "createdAt": "2026-07-22T12:48:50.974Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-enterprise-generative-ai-tools-in-the-victorian-public-sector/",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-1731623d-b769-4c78-9fbb-d4f80e2d595c",
     "createdAt": "2026-07-20T13:04:15.924Z",
     "actor": "local-mcp-admin",

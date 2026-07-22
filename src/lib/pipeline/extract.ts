@@ -92,6 +92,16 @@ export function parseSourceDate(
     return { date: `${isoYear[1]}-01-01`, precision: 'year' };
   }
 
+  const dayMonthYearNumeric = normalized.match(
+    /\b(\d{1,2})\/(\d{1,2})\/(\d{4})\b/,
+  );
+  if (dayMonthYearNumeric) {
+    const date = `${dayMonthYearNumeric[3]}-${dayMonthYearNumeric[2].padStart(2, '0')}-${dayMonthYearNumeric[1].padStart(2, '0')}`;
+    if (isValidCalendarDate(date)) {
+      return { date, precision: 'day' };
+    }
+  }
+
   const dayMonthYear = normalized.match(
     /\b(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})\b/,
   );
@@ -169,6 +179,11 @@ export function extractFromHtml(
     '[class*="publication"]',
     '[class*="media"]',
     '.views-row',
+    '.bu-updates__item',
+    '.bu-link',
+    // The Federal Register of Legislation renders search results with
+    // ngx-datatable rather than semantic table rows.
+    'datatable-body-row[role="row"]',
     // Drupal views tables render one entry per body row; header rows carry
     // th cells only, so sort links never count as entries.
     'tr:has(td[class*="views-field"])',
@@ -206,6 +221,9 @@ export function extractFromHtml(
           '[class*="publication"]',
           '[class*="media"]',
           '.views-row',
+          '.bu-updates__item',
+          '.bu-link',
+          'datatable-body-row[role="row"]',
         ].join(','),
       ).length === 0
     ) {
@@ -242,9 +260,12 @@ export function extractFromHtml(
     }
 
     // Nearby date, if the markup provides one
-    const sourceDate = parseSourceDate(
-      container.find('time[datetime]').first().attr('datetime'),
-    );
+    const sourceDate =
+      parseSourceDate(
+        container.find('time[datetime]').first().attr('datetime'),
+      ) ??
+      parseSourceDate(container.find('time').first().text()) ??
+      parseSourceDate(container.text());
 
     items.push({
       url,

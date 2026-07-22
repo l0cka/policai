@@ -1,7 +1,7 @@
 /* @vitest-environment node */
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { buildPolicy } from '@/test/factories';
+import { buildPolicy, buildTimelineEvent } from '@/test/factories';
 import type { WatchSource } from './sources';
 
 const { hasAiProvider } = vi.hoisted(() => ({
@@ -170,7 +170,7 @@ describe('collect', () => {
       itemCount: 2,
       candidateCount: 2,
     });
-    expect(result.meta.collector.automaticSourceCount).toBe(54);
+    expect(result.meta.collector.automaticSourceCount).toBe(57);
     expect(result.meta.collector.manualSourceCount).toBe(1);
     expect(result.errors).toEqual([]);
   });
@@ -804,6 +804,55 @@ describe('collect', () => {
       changeCount: 1,
       lastChangedAt: '2026-07-10T00:00:00.000Z',
     });
+  });
+
+  it('stages timeline re-verification when a tracked document changes', async () => {
+    const trackedEvent = buildTimelineEvent({
+      id: 'tracked-timeline-event',
+      title: 'Senate inquiry into AI adoption and data centres',
+      description: 'A Senate committee inquiry with a submissions deadline.',
+      sourceUrl: DOCUMENT_SOURCE.url,
+      verification: {
+        status: 'verified',
+        checkedAt: '2026-07-01T00:00:00.000Z',
+        checkedBy: 'reviewer',
+        method: 'manual',
+        source: {
+          url: DOCUMENT_SOURCE.url,
+          contentHash: 'a'.repeat(64),
+        },
+      },
+    });
+
+    const result = await collect({
+      sources: [DOCUMENT_SOURCE],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      trackedUrls: [DOCUMENT_SOURCE.url],
+      trackedTimelineEvents: [trackedEvent],
+      fetchImpl: fakeFetch({
+        [DOCUMENT_SOURCE.url]:
+          '<html><body><main><h1>Senate inquiry</h1><p>Submissions now close on 1 September 2026.</p></main></body></html>',
+      }),
+      now: () => new Date('2026-07-22T00:00:00.000Z'),
+    });
+
+    expect(result.developments).toHaveLength(1);
+    expect(result.reviewCandidates).toEqual([
+      expect.objectContaining({
+        entryKind: 'timeline_event',
+        targetTimelineEventId: trackedEvent.id,
+        targetTimelineRevisionHash: expect.stringMatching(/^[a-f0-9]{64}$/),
+        sourceVersionSequence: 1,
+        proposedRecord: expect.objectContaining({
+          id: trackedEvent.id,
+          sourceUrl: DOCUMENT_SOURCE.url,
+        }),
+      }),
+    ]);
+    expect(result.reviewCandidates[0].proposedRecord).not.toHaveProperty(
+      'verification',
+    );
   });
 
   it('stages re-verification instead of silently baselining a verified policy without a fingerprint', async () => {

@@ -7,6 +7,8 @@ import type {
   SourceEvidence,
   SourceReview,
   SourceRunResult,
+  TimelineEvent,
+  TimelineEventDraft,
 } from '@/types';
 import { normalizeJurisdiction, normalizePolicyType } from '@/types';
 import { classifyCandidate, type Classification } from './classify';
@@ -33,7 +35,10 @@ import {
   sourceUrlIdentity,
   sourceUrlsEqual,
 } from '@/lib/source-url';
-import { policyRevisionHash } from '@/lib/policy-revision';
+import {
+  policyRevisionHash,
+  timelineRevisionHash,
+} from '@/lib/policy-revision';
 
 export type CandidateProcessingStatus =
   | 'pending'
@@ -82,6 +87,8 @@ export interface CollectOptions {
   trackedUrls?: readonly string[];
   /** Canonical policies used to turn changed documents into update reviews. */
   trackedPolicies?: readonly Policy[];
+  /** Canonical timeline events used to turn changed documents into update reviews. */
+  trackedTimelineEvents?: readonly TimelineEvent[];
   /** Persisted reviews used to recover document-version ordering after partial writes. */
   sourceReviews?: readonly SourceReview[];
   previousMeta?: CollectionMeta;
@@ -717,6 +724,97 @@ function buildChangedDocumentReview(
   };
 }
 
+function changedTimelineDocumentReviewSummary(
+  event: TimelineEvent,
+  reason: 'changed' | 'baseline_missing' | 'baseline_reversion',
+): string {
+  if (reason === 'baseline_missing') {
+    return `The verified timeline event for "${event.title}" has no stored source fingerprint. The currently served document requires editorial comparison before it can establish a trusted baseline.`;
+  }
+  if (reason === 'baseline_reversion') {
+    return `The official source for "${event.title}" returned to the last verified fingerprint after an unresolved changed version. Editorial confirmation is required before the obsolete update can be retired.`;
+  }
+  return `The official source content for "${event.title}" changed. Editorial re-verification is required before the timeline event can be treated as current.`;
+}
+
+function buildChangedTimelineDocumentReview(
+  event: TimelineEvent,
+  source: WatchSource,
+  evidence: SourceEvidence,
+  contentHash: string,
+  changeCount: number,
+  nowIso: string,
+  reason: 'changed' | 'baseline_missing' | 'baseline_reversion' = 'changed',
+): {
+  candidate: Candidate;
+  development: Development;
+  review: SourceReview;
+} {
+  const candidate: Candidate = {
+    title: event.title,
+    url: canonicalizeSourceUrl(source.url),
+    text: event.description,
+    changeFingerprint: `${contentHash}:${changeCount}`,
+  };
+  const summary = changedTimelineDocumentReviewSummary(event, reason);
+  const classification: Classification = {
+    isRelevant: true,
+    relevanceScore: 1,
+    classification: 'heuristic',
+    summary,
+    suggestedType: undefined,
+    suggestedJurisdiction: event.jurisdiction,
+    tags: [],
+    agencies: [],
+    assessment: {
+      method: 'heuristic',
+      promptVersion: 'source-hash-change-v1',
+    },
+  };
+  const development = buildDevelopment(
+    candidate,
+    source,
+    classification,
+    evidence,
+    nowIso,
+  );
+  const currentRecord: Partial<TimelineEvent> = { ...event };
+  delete currentRecord.verification;
+
+  return {
+    candidate,
+    development,
+    review: {
+      id: `source-review-${development.id}`,
+      sourceUrl: candidate.url,
+      title: candidate.title,
+      entryKind: 'timeline_event',
+      targetTimelineEventId: event.id,
+      targetTimelineRevisionHash: timelineRevisionHash(event),
+      sourceVersionSequence: changeCount,
+      status: 'pending_review',
+      discoveredAt: nowIso,
+      createdBy: 'collector',
+      notes: `${summary} Re-verify the existing timeline event before treating it as current. Detected by ${source.name} (${development.classification} assessment).`,
+      analysis: {
+        isRelevant: true,
+        relevanceScore: 1,
+        suggestedType: null,
+        suggestedJurisdiction: event.jurisdiction,
+        summary,
+        tags: [],
+        agencies: [],
+      },
+      sourceEvidence: sourceEvidence(evidence, candidate),
+      proposedRecord: {
+        ...(currentRecord as TimelineEventDraft),
+      },
+      linkedDevelopment: development,
+      updatedAt: nowIso,
+    },
+  };
+}
+
 function selectCandidatesForRun(
   pending: Candidate[],
   fresh: Candidate[],
@@ -957,6 +1055,12 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
       policy,
     ]),
   );
+  const trackedTimelineEventsByUrl = new Map(
+    (options.trackedTimelineEvents ?? []).map((event) => [
+      sourceUrlIdentity(event.sourceUrl),
+      event,
+    ]),
+  );
   const existingDevelopmentsById = new Map(
     options.existingDevelopments.map((development) => [
       development.id,
@@ -1110,9 +1214,14 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
           const trackedPolicy = trackedPoliciesByUrl.get(
             sourceUrlIdentity(source.url),
           );
-          const canonicalContentHash =
-            trackedPolicy?.verification.source.contentHash;
-          const reviewReason = trackedPolicy
+          const trackedTimelineEvent = trackedTimelineEventsByUrl.get(
+            sourceUrlIdentity(source.url),
+          );
+          const canonicalContentHash = trackedPolicy
+            ? trackedPolicy.verification.source.contentHash
+            : trackedTimelineEvent?.verification.source.contentHash;
+          const trackedRecord = trackedPolicy ?? trackedTimelineEvent;
+          const reviewReason = trackedRecord
             ? !canonicalContentHash
               ? 'baseline_missing'
               : canonicalContentHash !== contentHash
@@ -1122,7 +1231,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
                   : null
             : null;
 
-          if (trackedPolicy && reviewReason) {
+          if (trackedRecord && reviewReason) {
             const transition = transitionForDocumentHash(
               state,
               source.id,
@@ -1136,22 +1245,32 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
                 nowIso,
               );
             }
-            const staged = buildChangedDocumentReview(
-              trackedPolicy,
-              source,
-              sourceRetrieval.evidence,
-              contentHash,
-              transition.changeCount,
-              nowIso,
-              reviewReason,
-            );
+            const staged = trackedPolicy
+              ? buildChangedDocumentReview(
+                  trackedPolicy,
+                  source,
+                  sourceRetrieval.evidence,
+                  contentHash,
+                  transition.changeCount,
+                  nowIso,
+                  reviewReason,
+                )
+              : buildChangedTimelineDocumentReview(
+                  trackedTimelineEvent as TimelineEvent,
+                  source,
+                  sourceRetrieval.evidence,
+                  contentHash,
+                  transition.changeCount,
+                  nowIso,
+                  reviewReason,
+                );
             discovered = [staged.candidate];
             if (transition.isNew) {
               developments.push(staged.development);
               reviewCandidates.push(staged.review);
             }
             deferSourceSuccess = true;
-          } else if (trackedPolicy) {
+          } else if (trackedRecord) {
             const changeCount = maximumChangeCountForSource(
               state,
               source.id,
@@ -1321,6 +1440,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
       let pageRetrieval: RetrievedSource;
       let document: Awaited<ReturnType<typeof extractRetrievedDocument>>;
       let existingPolicy: Policy | undefined;
+      let existingTimelineEvent: TimelineEvent | undefined;
       try {
         pageRetrieval =
           source.kind === 'document' &&
@@ -1330,6 +1450,9 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
             : await retrievePageWithFallback(candidate.url);
         existingPolicy = candidate.changeFingerprint
           ? trackedPoliciesByUrl.get(sourceUrlIdentity(candidate.url))
+          : undefined;
+        existingTimelineEvent = candidate.changeFingerprint && !existingPolicy
+          ? trackedTimelineEventsByUrl.get(sourceUrlIdentity(candidate.url))
           : undefined;
         const expectedVersion = parseChangeFingerprint(
           candidate.changeFingerprint,
@@ -1425,6 +1548,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         ...candidate,
         title:
           existingPolicy?.title ||
+          existingTimelineEvent?.title ||
           document.title ||
           candidate.title,
         text: document.text.slice(0, 600) || candidate.text,
@@ -1437,7 +1561,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
       if (
         source.kind === 'document' &&
         candidate.changeFingerprint &&
-        existingPolicy
+        (existingPolicy || existingTimelineEvent)
       ) {
         const contentHash = pageRetrieval.evidence.contentHash;
         const parsedFingerprint = parseChangeFingerprint(
@@ -1482,6 +1606,25 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
             tags: existingPolicy.tags,
             agencies: existingPolicy.agencies,
           }
+        : existingTimelineEvent
+          ? {
+              ...initialClassification,
+              isRelevant: true,
+              relevanceScore: 1,
+              summary: changedTimelineDocumentReviewSummary(
+                existingTimelineEvent,
+                !existingTimelineEvent.verification.source.contentHash
+                  ? 'baseline_missing'
+                  : pageRetrieval.evidence.contentHash ===
+                      existingTimelineEvent.verification.source.contentHash
+                    ? 'baseline_reversion'
+                    : 'changed',
+              ),
+              suggestedType: undefined,
+              suggestedJurisdiction: existingTimelineEvent.jurisdiction,
+              tags: [],
+              agencies: [],
+            }
         : initialClassification;
       if (
         !classification.isRelevant ||
@@ -1515,15 +1658,40 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         classification.classification === 'heuristic' ||
         classification.relevanceScore >= minScoreForReview
       ) {
-        let review = buildReviewCandidate(
-          development,
-          enrichedCandidate,
-          source,
-          classification,
-          pageRetrieval.evidence,
-          nowIso,
-          existingPolicy,
+        const parsedFingerprint = parseChangeFingerprint(
+          enrichedCandidate.changeFingerprint,
         );
+        let review = existingTimelineEvent && parsedFingerprint
+          ? {
+              ...buildChangedTimelineDocumentReview(
+                existingTimelineEvent,
+                source,
+                pageRetrieval.evidence,
+                parsedFingerprint.contentHash,
+                parsedFingerprint.changeCount,
+                nowIso,
+                !existingTimelineEvent.verification.source.contentHash
+                  ? 'baseline_missing'
+                  : pageRetrieval.evidence.contentHash ===
+                      existingTimelineEvent.verification.source.contentHash
+                    ? 'baseline_reversion'
+                    : 'changed',
+              ).review,
+              sourceEvidence: sourceEvidence(
+                pageRetrieval.evidence,
+                enrichedCandidate,
+              ),
+              linkedDevelopment: development,
+            }
+          : buildReviewCandidate(
+              development,
+              enrichedCandidate,
+              source,
+              classification,
+              pageRetrieval.evidence,
+              nowIso,
+              existingPolicy,
+            );
         const existingReview = existingReviewsById.get(review.id);
         if (
           existingReview &&

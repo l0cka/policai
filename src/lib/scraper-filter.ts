@@ -50,6 +50,7 @@ const GOVERNANCE_KEYWORDS = [
   'consultation',
   'audit',
   'procurement',
+  'public sector',
   'transparency',
 ];
 

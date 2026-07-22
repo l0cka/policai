@@ -140,6 +140,56 @@ describe('extractCandidatesFromHtml', () => {
     });
   });
 
+  it('extracts Federal Register ngx-datatable result rows', () => {
+    const result = extractFromHtml(
+      `<main>
+        <datatable-body-row role="row" class="datatable-body-row">
+          <div class="title-name">
+            <a href="/F2026L00999/asmade">Artificial Intelligence (Government Assurance) Rules 2026</a>
+          </div>
+        </datatable-body-row>
+        <datatable-body-row role="row" class="datatable-body-row">
+          <div class="title-name">
+            <a href="/F2026N00516/asmade">Approval to hold a stake in a financial sector company</a>
+          </div>
+        </datatable-body-row>
+      </main>`,
+      'https://www.legislation.gov.au/search/registrationdate(today-7,today)',
+    );
+
+    expect(result.itemCount).toBe(2);
+    expect(result.candidates).toEqual([
+      expect.objectContaining({
+        title: 'Artificial Intelligence (Government Assurance) Rules 2026',
+        url: 'https://www.legislation.gov.au/F2026L00999/asmade',
+      }),
+    ]);
+  });
+
+  it('extracts dated OVIC resource cards', () => {
+    const result = extractFromHtml(
+      `<main>
+        <p class="bu-updates__item">
+          <a href="/privacy/resources-for-organisations/use-of-enterprise-generative-ai-tools-in-the-victorian-public-sector/">Use of enterprise Generative AI tools in the Victorian public sector</a>
+          has been published Updated 26/06/2026
+        </p>
+        <div class="bu-link">
+          <p class="bu-link__title"><a href="/privacy/resources-for-organisations/access-policies/">Access policies</a></p>
+        </div>
+      </main>`,
+      'https://ovic.vic.gov.au/privacy/resources-for-organisations/',
+    );
+
+    expect(result.itemCount).toBe(2);
+    expect(result.candidates).toEqual([
+      expect.objectContaining({
+        dateHint: '2026-06-26',
+        dateHintPrecision: 'day',
+        url: 'https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-enterprise-generative-ai-tools-in-the-victorian-public-sector',
+      }),
+    ]);
+  });
+
   it('keeps semantic entry links inside article headers', () => {
     const result = extractFromHtml(
       `<main>

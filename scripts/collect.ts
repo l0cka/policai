@@ -42,6 +42,7 @@ import type {
   Development,
   Policy,
   SourceReview,
+  TimelineEvent,
 } from '../src/types';
 
 const DEVELOPMENTS_FILE = path.join(
@@ -111,16 +112,21 @@ async function main() {
   const browserFetch = await createOptionalBrowserFetch();
 
   const runCollection = async () => {
-    const [state, developments, meta, reviews, policies] = await Promise.all([
-      readJsonFile<WatchState>(WATCH_STATE_FILE, emptyWatchState()),
-      readJsonFile<Development[]>(DEVELOPMENTS_FILE, []),
-      readJsonFile<CollectionMeta | null>(META_FILE, null),
-      readJsonFile<SourceReview[]>(SOURCE_REVIEWS_FILE, []),
-      readJsonFile<Policy[]>(
-        path.join(process.cwd(), 'data', 'policies.json'),
-        [],
-      ),
-    ]);
+    const [state, developments, meta, reviews, policies, timelineEvents] =
+      await Promise.all([
+        readJsonFile<WatchState>(WATCH_STATE_FILE, emptyWatchState()),
+        readJsonFile<Development[]>(DEVELOPMENTS_FILE, []),
+        readJsonFile<CollectionMeta | null>(META_FILE, null),
+        readJsonFile<SourceReview[]>(SOURCE_REVIEWS_FILE, []),
+        readJsonFile<Policy[]>(
+          path.join(process.cwd(), 'data', 'policies.json'),
+          [],
+        ),
+        readJsonFile<TimelineEvent[]>(
+          path.join(process.cwd(), 'data', 'timeline.json'),
+          [],
+        ),
+      ]);
 
     const result = await collect({
       sources,
@@ -135,11 +141,15 @@ async function main() {
         developments,
       ),
       trackedPolicies: policies,
+      trackedTimelineEvents: timelineEvents,
       sourceReviews: reviews,
       browserFetchImpl: browserFetch?.fetchImpl,
       trackedUrls: [
         ...policies.flatMap((policy) =>
           sourceIdentityUrls(policy.sourceUrl, policy.verification.source),
+        ),
+        ...timelineEvents.flatMap((event) =>
+          sourceIdentityUrls(event.sourceUrl, event.verification.source),
         ),
         ...reviews.flatMap((review) =>
           sourceIdentityUrls(review.sourceUrl, review.sourceEvidence),
