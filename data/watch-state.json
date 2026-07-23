@@ -394,13 +394,81 @@
         "text": "Latest Search Yesterday at 04:00 PM 90 more Far North Queensland homes unlocked The Crisafulli Government is continuing to unlock ... Yesterday at 03:00 PM Statement from the Attorney-General I have instructed the Office of the Director of Pu... Yesterday at 02:15 PM Top school musicians ensemble after record year of participation A record number of Queensland State schools’ talen... Yesterday at 02:00 PM Tiaro Bypass milestone reached as procurement now open The Albanese and Crisafulli Governments are gettin... Yesterday at 01:00 PM Western Queensland to be at defence testing forefront The Cr",
         "changeFingerprint": "49de2048e76d38965f0daf98729bb4d9ea9fec1f55961f4f8d33d17d519e1e04:3"
       }
+    },
+    "https://ovic.vic.gov.au/privacy/resources-for-organisations/public-consultation-on-artificial-intelligence-privacy-guidance": {
+      "firstSeenAt": "2026-07-23T20:36:08.370Z",
+      "sourceId": "ovic-privacy-resources",
+      "status": "processed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-07-23T20:36:08.370Z",
+      "processedAt": "2026-07-23T20:36:08.370Z",
+      "candidate": {
+        "url": "https://ovic.vic.gov.au/privacy/resources-for-organisations/public-consultation-on-artificial-intelligence-privacy-guidance",
+        "title": "Public consultation on Artificial Intelligence privacy guidance",
+        "text": "[Document 1: Public consultation on Artificial Intelligence privacy guidance]\nFrom Monday 12 September 2020, OVIC's website will no longer be supported in Internet Explorer (IE). We recommend installing Microsoft Edge, Google Chrome, Safari, Firefox, or Opera to visit the site. Public consultation on Artificial Intelligence privacy guidance Overview The Office of the Victorian Information Commissioner (OVIC) is updating its online resource, Artificial Intelligence – Understanding privacy obligations (OVIC’s AI privacy guidance). The purpose of OVIC’s AI privacy guidance is to assist Victorian "
+      }
+    },
+    "https://ovic.vic.gov.au/wp-content/uploads/2019/08/closer-to-the-machine-web.pdf": {
+      "firstSeenAt": "2026-07-23T20:36:08.370Z",
+      "sourceId": "ovic-privacy-resources",
+      "status": "dismissed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-07-23T20:36:08.370Z",
+      "processedAt": "2026-07-23T20:36:08.370Z",
+      "candidate": {
+        "url": "https://ovic.vic.gov.au/wp-content/uploads/2019/08/closer-to-the-machine-web.pdf",
+        "title": "CLOSER",
+        "text": "CLOSER\nTO THE\nMACHINE\nTechnical, social, and\nlegal aspects of AI\n\nAuthorised by the Victorian Information Commissioner\nPublished by the Office of the Victorian Information Commissioner\nPO Box 24274\nMelbourne, Victoria, 3001\nt: 1300 006 842\ne: enquiries@ovic.vic.gov.au\nw: ovic.vic.gov.au\nISBN 978-0-6486723-0-2 Digital (online resource)\nISBN 978-0-6486723-1-9 Print (paperback)\nISBN 978-0-6486723-2-6 E-Book (electronic book text)\n© State of Victoria 2019 (Office of the Victorian Information Commissioner)\nThis work is copyright. All material published in this book is licensed under a Creative Comm"
+      }
+    },
+    "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-enterprise-generative-ai-tools-in-the-victorian-public-sector#policai-change=37072e411cb2b7d1aad30d3214c4c7738f401b1f1c91770e2fed8948ee1fed4e:1": {
+      "firstSeenAt": "2026-07-23T20:36:08.370Z",
+      "sourceId": "ovic-enterprise-generative-ai",
+      "status": "processed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-07-23T20:36:08.370Z",
+      "processedAt": "2026-07-23T20:36:08.370Z",
+      "candidate": {
+        "title": "Use of enterprise Generative AI tools in the Victorian public sector",
+        "url": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-enterprise-generative-ai-tools-in-the-victorian-public-sector",
+        "text": "[Document 1: Use of enterprise Generative AI tools in the Victorian public sector]\nFrom Monday 12 September 2020, OVIC's website will no longer be supported in Internet Explorer (IE). We recommend installing Microsoft Edge, Google Chrome, Safari, Firefox, or Opera to visit the site. Use of enterprise Generative AI tools in the Victorian public sector Last updated 26 June 2026 This guidance outlines the Office of the Victorian Information Commissioner’s (OVIC) minimum expectations for Victorian public sector organisations (VPS organisations) using enterprise Generative Artificial Intelligence (",
+        "changeFingerprint": "37072e411cb2b7d1aad30d3214c4c7738f401b1f1c91770e2fed8948ee1fed4e:1"
+      }
+    },
+    "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-personal-information-with-publicly-available-generative-ai-tools-in-the-victorian-public-sector#policai-change=f627ac55461182bd006d1a091d3f4efba47cddaf1ca953ac47c4da2ff5fe6965:1": {
+      "firstSeenAt": "2026-07-23T20:36:08.370Z",
+      "sourceId": "ovic-public-generative-ai",
+      "status": "processed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-07-23T20:36:08.370Z",
+      "processedAt": "2026-07-23T20:36:08.370Z",
+      "candidate": {
+        "title": "Use of publicly available Generative AI tools in the Victorian public sector",
+        "url": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-personal-information-with-publicly-available-generative-ai-tools-in-the-victorian-public-sector",
+        "text": "[Document 1: Use of publicly available Generative AI tools in the Victorian public sector]\nFrom Monday 12 September 2020, OVIC's website will no longer be supported in Internet Explorer (IE). We recommend installing Microsoft Edge, Google Chrome, Safari, Firefox, or Opera to visit the site. Use of publicly available Generative AI tools in the Victorian public sector Last updated 26 June 2026 This guidance outlines the Office of the Victorian Information Commissioner’s (OVIC) position on the use of publicly available Generative Artificial Intelligence (Generative AI) tools within Victorian publ",
+        "changeFingerprint": "f627ac55461182bd006d1a091d3f4efba47cddaf1ca953ac47c4da2ff5fe6965:1"
+      }
+    },
+    "https://statements.qld.gov.au/#policai-change=0378c8d360210c90423b243ef972ff6152f98d5577c12351c3136158d8039eca:4": {
+      "firstSeenAt": "2026-07-23T20:36:08.370Z",
+      "sourceId": "qld-ministerial-statements",
+      "status": "dismissed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-07-23T20:36:08.370Z",
+      "processedAt": "2026-07-23T20:36:08.370Z",
+      "candidate": {
+        "title": "Media Statements",
+        "url": "https://statements.qld.gov.au/",
+        "text": "Latest Search Yesterday at 01:30 PM Innovation events funded across Queensland The Crisafulli Government is backing Queenslanders... Yesterday at 01:20 PM Queensland Spirit: A bold new vision for the future of sport on the road to 2032 The Crisafulli Government is delivering a bold new... Yesterday at 01:00 PM New apprentice and trainee intake fuels energy careers across Queensland The Crisafulli Government is delivering more oppor... Yesterday at 11:00 AM Queensland hits a bullseye securing global sporting championship The Crisafulli Government has secured the World Ar... Yesterday at 10:45 A",
+        "changeFingerprint": "0378c8d360210c90423b243ef972ff6152f98d5577c12351c3136158d8039eca:4"
+      }
     }
   },
   "lastCheckedBySource": {
-    "apra-rss": "2026-07-22T20:38:08.787Z",
+    "apra-rss": "2026-07-23T20:36:08.370Z",
     "csiro-news": "2026-07-18T20:12:16.563Z",
-    "oaic-media": "2026-07-22T20:38:08.787Z",
-    "accc-rss": "2026-07-22T20:38:08.787Z",
+    "oaic-media": "2026-07-23T20:36:08.370Z",
+    "accc-rss": "2026-07-23T20:36:08.370Z",
     "asic-newsroom": "2026-07-18T20:12:16.563Z",
     "pc-media": "2026-07-18T20:12:16.563Z",
     "nsw-sc-practice-notes": "2026-07-18T20:12:16.563Z",
@@ -412,52 +480,55 @@
     "sa-office-for-ai": "2026-07-18T20:12:16.563Z",
     "treasury-publications": "2026-07-22T20:38:08.787Z",
     "qld-courts-news": "2026-07-22T20:38:08.787Z",
-    "pm-media": "2026-07-22T20:38:08.787Z",
-    "pmc-office-ai": "2026-07-22T20:38:08.787Z",
-    "industry-ai-publications": "2026-07-22T20:38:08.787Z",
-    "industry-ministers-media": "2026-07-22T20:38:08.787Z",
-    "dta-media": "2026-07-22T20:38:08.787Z",
-    "digital-gov-ai": "2026-07-22T20:38:08.787Z",
-    "disr-news": "2026-07-22T20:38:08.787Z",
+    "pm-media": "2026-07-23T20:36:08.370Z",
+    "pmc-office-ai": "2026-07-23T20:36:08.370Z",
+    "industry-ai-publications": "2026-07-23T20:36:08.370Z",
+    "industry-ministers-media": "2026-07-23T20:36:08.370Z",
+    "dta-media": "2026-07-23T20:36:08.370Z",
+    "digital-gov-ai": "2026-07-23T20:36:08.370Z",
+    "disr-news": "2026-07-23T20:36:08.370Z",
     "naic-news": "2026-07-20T12:19:40.243Z",
     "finance-news": "2026-07-20T12:19:40.243Z",
-    "agd-ministers-media": "2026-07-22T20:38:08.787Z",
-    "cyber-news": "2026-07-22T20:38:08.787Z",
-    "apsc-latest-news": "2026-07-22T20:38:08.787Z",
+    "agd-ministers-media": "2026-07-23T20:36:08.370Z",
+    "cyber-news": "2026-07-23T20:36:08.370Z",
+    "apsc-latest-news": "2026-07-23T20:36:08.370Z",
     "anao-performance-audits": "2026-07-20T12:19:40.243Z",
     "senate-ai-data-centres": "2026-07-20T12:19:40.243Z",
-    "senate-new-inquiries": "2026-07-22T20:38:08.787Z",
-    "senate-reports": "2026-07-22T20:38:08.787Z",
-    "house-new-inquiries": "2026-07-22T20:38:08.787Z",
-    "joint-new-inquiries": "2026-07-22T20:38:08.787Z",
-    "aph-bills-digests": "2026-07-22T20:38:08.787Z",
-    "legislation-whats-new": "2026-07-22T20:38:08.787Z",
+    "senate-new-inquiries": "2026-07-23T20:36:08.370Z",
+    "senate-reports": "2026-07-23T20:36:08.370Z",
+    "house-new-inquiries": "2026-07-23T20:36:08.370Z",
+    "joint-new-inquiries": "2026-07-23T20:36:08.370Z",
+    "aph-bills-digests": "2026-07-23T20:36:08.370Z",
+    "legislation-whats-new": "2026-07-23T20:36:08.370Z",
     "agd-consultations": "2026-07-20T12:19:40.243Z",
     "industry-consultations": "2026-07-20T12:19:40.243Z",
     "treasury-consultations": "2026-07-20T12:19:40.243Z",
     "aemc-media": "2026-07-20T12:19:40.243Z",
-    "acma-media": "2026-07-22T20:38:08.787Z",
+    "acma-media": "2026-07-23T20:36:08.370Z",
     "tga-media": "2026-07-20T12:19:40.243Z",
     "fwc-news": "2026-07-20T12:19:40.243Z",
     "teqsa-news": "2026-07-20T12:19:40.243Z",
     "aec-media": "2026-07-20T12:19:40.243Z",
-    "esafety-media": "2026-07-22T20:38:08.787Z",
-    "ahrc-media": "2026-07-22T20:38:08.787Z",
+    "esafety-media": "2026-07-23T20:36:08.370Z",
+    "ahrc-media": "2026-07-23T20:36:08.370Z",
     "fedcourt-practice-notes": "2026-07-20T12:19:40.243Z",
-    "nsw-media-releases": "2026-07-22T20:38:08.787Z",
+    "nsw-media-releases": "2026-07-23T20:36:08.370Z",
     "ovic-news": "2026-07-20T12:19:40.243Z",
-    "qld-ministerial-statements": "2026-07-22T20:38:08.787Z",
+    "qld-ministerial-statements": "2026-07-23T20:36:08.370Z",
     "tas-dpac-policies": "2026-07-20T12:19:40.243Z",
     "act-ai-policy": "2026-07-20T12:19:40.243Z",
     "nt-ai-assurance": "2026-07-20T12:19:40.243Z",
     "ipa-news": "2026-07-20T12:26:43.404Z",
-    "wa-media-statements": "2026-07-22T20:38:08.787Z"
+    "wa-media-statements": "2026-07-23T20:36:08.370Z",
+    "ovic-privacy-resources": "2026-07-23T20:36:08.370Z",
+    "ovic-enterprise-generative-ai": "2026-07-23T20:36:08.370Z",
+    "ovic-public-generative-ai": "2026-07-23T20:36:08.370Z"
   },
   "sourceSnapshots": {
     "pmc-office-ai": {
       "contentHash": "4db862eda78cf3d07a56d47be8a73cd5e283dc189501fe090ad5708d1f55116e",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-07-22T20:38:08.787Z",
+      "lastCheckedAt": "2026-07-23T20:36:08.370Z",
       "changeCount": 0
     },
     "naic-news": {
@@ -509,11 +580,11 @@
       "changeCount": 0
     },
     "qld-ministerial-statements": {
-      "contentHash": "49de2048e76d38965f0daf98729bb4d9ea9fec1f55961f4f8d33d17d519e1e04",
+      "contentHash": "0378c8d360210c90423b243ef972ff6152f98d5577c12351c3136158d8039eca",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-07-22T20:38:08.787Z",
-      "changeCount": 3,
-      "lastChangedAt": "2026-07-22T20:38:08.787Z"
+      "lastCheckedAt": "2026-07-23T20:36:08.370Z",
+      "changeCount": 4,
+      "lastChangedAt": "2026-07-23T20:36:08.370Z"
     },
     "act-ai-policy": {
       "contentHash": "0040e7ec83db2a7430b63de7cf72e581dcc938a3139b85ec32c40aa15dc5f4a0",
@@ -540,6 +611,20 @@
       "firstCheckedAt": "2026-07-22T20:38:08.787Z",
       "lastCheckedAt": "2026-07-22T20:38:08.787Z",
       "changeCount": 0
+    },
+    "ovic-enterprise-generative-ai": {
+      "contentHash": "37072e411cb2b7d1aad30d3214c4c7738f401b1f1c91770e2fed8948ee1fed4e",
+      "firstCheckedAt": "2026-07-23T20:36:08.370Z",
+      "lastCheckedAt": "2026-07-23T20:36:08.370Z",
+      "lastChangedAt": "2026-07-23T20:36:08.370Z",
+      "changeCount": 1
+    },
+    "ovic-public-generative-ai": {
+      "contentHash": "f627ac55461182bd006d1a091d3f4efba47cddaf1ca953ac47c4da2ff5fe6965",
+      "firstCheckedAt": "2026-07-23T20:36:08.370Z",
+      "lastCheckedAt": "2026-07-23T20:36:08.370Z",
+      "lastChangedAt": "2026-07-23T20:36:08.370Z",
+      "changeCount": 1
     }
   }
 }

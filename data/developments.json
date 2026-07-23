@@ -1,5 +1,152 @@
 [
   {
+    "id": "dev-public-consultation-on-artificial-intelligence-p-17y73hz",
+    "title": "Public consultation on Artificial Intelligence privacy guidance",
+    "url": "https://ovic.vic.gov.au/privacy/resources-for-organisations/public-consultation-on-artificial-intelligence-privacy-guidance",
+    "sourceId": "ovic-privacy-resources",
+    "sourceName": "OVIC — privacy resources for organisations",
+    "jurisdiction": "vic",
+    "detectedAt": "2026-07-23T20:36:08.370Z",
+    "summary": "[Document 1: Public consultation on Artificial Intelligence privacy guidance]\nFrom Monday 12 September 2020, OVIC's website will no longer be supported in Internet Explorer (IE). We recommend installing Microsoft Edge, Google Chrome, Safari, Firefox, or Opera to visit the site. Public consultation on Artificial Intelligence privacy guidance Overview The Office of the Victorian Information Commissioner (OVIC) is updating its online resource, Artificial Intelligence – Understanding privacy obligations (OVIC’s AI privacy guidance). The purpose of OVIC’s AI privacy guidance is to assist Victorian ",
+    "relevanceScore": 0.65,
+    "classification": "heuristic",
+    "assessment": {
+      "method": "heuristic",
+      "promptVersion": "keyword-rules-v1",
+      "assessedAt": "2026-07-23T20:36:08.370Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://ovic.vic.gov.au/privacy/resources-for-organisations/public-consultation-on-artificial-intelligence-privacy-guidance",
+        "finalUrl": "https://ovic.vic.gov.au/privacy/resources-for-organisations/public-consultation-on-artificial-intelligence-privacy-guidance",
+        "retrievedAt": "2026-07-23T20:36:08.370Z",
+        "contentType": "text/html",
+        "contentHash": "061f2dcb61db5a4da6ea8f0343578a2dc3390c8d645d0642979113c796069039",
+        "linkedDocuments": [
+          {
+            "url": "https://ovic.vic.gov.au/wp-content/uploads/2024/09/AI-Privacy-Obligations-Public-consultation-Feedback-received-and-next-steps-August-2024.docx",
+            "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2024/09/AI-Privacy-Obligations-Public-consultation-Feedback-received-and-next-steps-August-2024.docx",
+            "retrievedAt": "2026-07-23T20:36:08.370Z",
+            "contentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "contentHash": "16ff70499e7937fe552d4f0dcbf7ad2b01b1545da936e5dd08aba0452615d961",
+            "etag": "\"2a88e-621d009737e39\"",
+            "lastModified": "Wed, 11 Sep 2024 04:00:55 GMT"
+          },
+          {
+            "url": "https://ovic.vic.gov.au/wp-content/uploads/2024/09/AI-Privacy-Obligations-Public-consultation-Feedback-received-and-next-steps-August-2024.pdf",
+            "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2024/09/AI-Privacy-Obligations-Public-consultation-Feedback-received-and-next-steps-August-2024.pdf",
+            "retrievedAt": "2026-07-23T20:36:08.370Z",
+            "contentType": "application/pdf",
+            "contentHash": "a8cedc42323ec07a38cc2d2c2fb43c9971c721e7feb8553fa591a05ffa6d2ccc",
+            "etag": "\"1f775-621d00a015f88\"",
+            "lastModified": "Wed, 11 Sep 2024 04:01:05 GMT"
+          }
+        ],
+        "title": "Public consultation on Artificial Intelligence privacy guidance"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-use-of-enterprise-generative-ai-tools-in-the-vic-15kcbs1",
+    "title": "Use of enterprise Generative AI tools in the Victorian public sector",
+    "url": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-enterprise-generative-ai-tools-in-the-victorian-public-sector",
+    "sourceId": "ovic-enterprise-generative-ai",
+    "sourceName": "OVIC — enterprise generative AI guidance",
+    "jurisdiction": "vic",
+    "detectedAt": "2026-07-23T20:36:08.370Z",
+    "summary": "The official source content for \"Use of enterprise Generative AI tools in the Victorian public sector\" changed. Editorial re-verification is required before the register record can be treated as current.",
+    "relevanceScore": 1,
+    "classification": "heuristic",
+    "assessment": {
+      "method": "heuristic",
+      "promptVersion": "keyword-rules-v1",
+      "assessedAt": "2026-07-23T20:36:08.370Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-enterprise-generative-ai-tools-in-the-victorian-public-sector",
+        "finalUrl": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-enterprise-generative-ai-tools-in-the-victorian-public-sector",
+        "retrievedAt": "2026-07-23T20:36:08.370Z",
+        "contentType": "text/html",
+        "contentHash": "37072e411cb2b7d1aad30d3214c4c7738f401b1f1c91770e2fed8948ee1fed4e",
+        "linkedDocuments": [
+          {
+            "url": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-enterprise-Generative-AI-tools-in-the-Victorian-public-sector.docx",
+            "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-enterprise-Generative-AI-tools-in-the-Victorian-public-sector.docx",
+            "retrievedAt": "2026-07-23T20:36:08.370Z",
+            "contentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "contentHash": "21b91a6beef29d79cac96e4834954a9080bdd0baed484d7e75dffa8c5d1c9774",
+            "etag": "\"2fd30-65522f10ab252\"",
+            "lastModified": "Fri, 26 Jun 2026 07:20:21 GMT"
+          },
+          {
+            "url": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-enterprise-Generative-AI-tools-in-the-Victorian-public-sector.pdf",
+            "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-enterprise-Generative-AI-tools-in-the-Victorian-public-sector.pdf",
+            "retrievedAt": "2026-07-23T20:36:08.370Z",
+            "contentType": "application/pdf",
+            "contentHash": "8c676d11fc2790c5030db7d76ccf723c4a270370784fc71cd696783661ce5910",
+            "etag": "\"2d1ce-65522ef7bfb50\"",
+            "lastModified": "Fri, 26 Jun 2026 07:19:55 GMT"
+          }
+        ],
+        "title": "Use of enterprise Generative AI tools in the Victorian public sector"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-use-of-publicly-available-generative-ai-tools-in-1nbqxl0",
+    "title": "Use of publicly available Generative AI tools in the Victorian public sector",
+    "url": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-personal-information-with-publicly-available-generative-ai-tools-in-the-victorian-public-sector",
+    "sourceId": "ovic-public-generative-ai",
+    "sourceName": "OVIC — publicly available generative AI guidance",
+    "jurisdiction": "vic",
+    "detectedAt": "2026-07-23T20:36:08.370Z",
+    "summary": "The official source content for \"Use of publicly available Generative AI tools in the Victorian public sector\" changed. Editorial re-verification is required before the register record can be treated as current.",
+    "relevanceScore": 1,
+    "classification": "heuristic",
+    "assessment": {
+      "method": "heuristic",
+      "promptVersion": "keyword-rules-v1",
+      "assessedAt": "2026-07-23T20:36:08.370Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-personal-information-with-publicly-available-generative-ai-tools-in-the-victorian-public-sector",
+        "finalUrl": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-personal-information-with-publicly-available-generative-ai-tools-in-the-victorian-public-sector",
+        "retrievedAt": "2026-07-23T20:36:08.370Z",
+        "contentType": "text/html",
+        "contentHash": "f627ac55461182bd006d1a091d3f4efba47cddaf1ca953ac47c4da2ff5fe6965",
+        "linkedDocuments": [
+          {
+            "url": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-publicly-available-Generative-AI-tools-in-the-Victorian-public-sector.docx",
+            "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-publicly-available-Generative-AI-tools-in-the-Victorian-public-sector.docx",
+            "retrievedAt": "2026-07-23T20:36:08.370Z",
+            "contentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "contentHash": "5bc1239c17aa4eb1607da37aca7c2e60db694e721f04f487af0d62485d6ffe39",
+            "etag": "\"2f32d-655233e362291\"",
+            "lastModified": "Fri, 26 Jun 2026 07:41:56 GMT"
+          },
+          {
+            "url": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-publicly-available-Generative-AI-tools-in-the-Victorian-public-sector.pdf",
+            "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-publicly-available-Generative-AI-tools-in-the-Victorian-public-sector.pdf",
+            "retrievedAt": "2026-07-23T20:36:08.370Z",
+            "contentType": "application/pdf",
+            "contentHash": "678bb1b621b2965102be1656046c009fa72249cb0d394b169b8124022559658f",
+            "etag": "\"2573e-655233d17d633\"",
+            "lastModified": "Fri, 26 Jun 2026 07:41:37 GMT"
+          }
+        ],
+        "title": "Use of publicly available Generative AI tools in the Victorian public sector"
+      }
+    },
+    "status": "detected"
+  },
+  {
     "id": "dev-overview-of-the-memorandum-of-understanding-on-a-ngfygo",
     "title": "Overview of the memorandum of understanding on artificial intelligence safety and security collaboration between Australia and the UK",
     "url": "https://www.industry.gov.au/publications/overview-memorandum-understanding-artificial-intelligence-safety-and-security-collaboration-between-australia-and-uk",
