@@ -10,8 +10,8 @@ Started: 16 July 2026
 - [x] Collector drafts invent `effectiveDate` from detection time when the
   source supplies no date.
 - [x] Pending reviews can be published without an explicit approval gate.
-- [x] High-confidence AI classification is conflated with trust, while model
-  and prompt provenance are discarded.
+- [x] Automated classification was previously conflated with trust; current
+  deterministic scores are capped below the promotion threshold.
 - [x] Heuristic detections are public but are not staged under the default
   review threshold.
 - [x] New URLs are marked seen before reliable retrieval and verification.
@@ -44,7 +44,8 @@ Started: 16 July 2026
 - [x] Add document-change monitoring for instrument pages.
 - [x] Extract text from official PDFs before analysis or review staging.
 - [x] Replace known broken URLs and prefer official feeds or primary documents.
-- [x] Record assessment provider, model, and prompt version.
+- [x] Record the assessment method and ruleset version while retaining legacy
+  provider/model metadata for historical entries.
 - [x] Hash linked instrument bytes so same-URL replacements are detected.
 - [x] Validate semantic HTML readability and extensionless document signatures.
 

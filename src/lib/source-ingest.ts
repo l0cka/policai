@@ -652,7 +652,11 @@ async function analyseExtractedSource(
 	document: ExtractedDocument,
 ): Promise<SourceAnalysisResult> {
 	const cleanContent = document.text;
-	const analysis = await analyseContentRelevance(cleanContent, canonicalUrl);
+	const analysis = await analyseContentRelevance(
+		cleanContent,
+		canonicalUrl,
+		document.title,
+	);
 	return {
 		url: canonicalUrl,
 		title: document.title,

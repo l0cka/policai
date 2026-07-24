@@ -1,20 +1,86 @@
-import { extractJsonFromResponse } from '@/lib/utils';
-import { runAnalysisPrompt } from '@/lib/ai-client';
-import { z } from 'zod';
+import { isRelevantScrapedCandidate } from '@/lib/scraper-filter';
 
-export const RELEVANCE_PROMPT_VERSION = 'australian-ai-policy-relevance-v2';
+export const RELEVANCE_RULESET_VERSION = 'keyword-rules-v1';
 
-const contentAnalysisSchema = z.object({
-  isRelevant: z.boolean(),
-  relevanceScore: z.number().min(0).max(1),
-  summary: z.string(),
-  tags: z.array(z.string()).default([]),
-  policyType: z.string().nullable().optional(),
-  jurisdiction: z.string().nullable().optional(),
-  agencies: z.array(z.string()).default([]),
-  keyDates: z.array(z.string()).default([]),
-  relatedTopics: z.array(z.string()).default([]),
-});
+const GOVERNANCE_TITLE_KEYWORDS = [
+  'policy',
+  'framework',
+  'guideline',
+  'guidance',
+  'standard',
+  'regulation',
+  'practice note',
+  'practice direction',
+  'assurance',
+];
+
+const POLICY_TYPE_RULES = [
+  ['practice note', 'practice_note'],
+  ['practice direction', 'practice_note'],
+  ['legislation', 'legislation'],
+  [' bill ', 'legislation'],
+  [' act ', 'legislation'],
+  ['regulation', 'regulation'],
+  ['guideline', 'guideline'],
+  ['guidance', 'guideline'],
+  ['framework', 'framework'],
+  ['standard', 'standard'],
+  ['policy', 'policy'],
+] as const;
+
+const JURISDICTION_RULES = [
+  ['.nsw.gov.au', 'nsw'],
+  ['new south wales', 'nsw'],
+  ['.vic.gov.au', 'vic'],
+  ['victoria', 'vic'],
+  ['.qld.gov.au', 'qld'],
+  ['queensland', 'qld'],
+  ['.wa.gov.au', 'wa'],
+  ['western australia', 'wa'],
+  ['.sa.gov.au', 'sa'],
+  ['south australia', 'sa'],
+  ['.tas.gov.au', 'tas'],
+  ['tasmania', 'tas'],
+  ['.act.gov.au', 'act'],
+  ['australian capital territory', 'act'],
+  ['.nt.gov.au', 'nt'],
+  ['northern territory', 'nt'],
+] as const;
+
+function compactText(value: string): string {
+  return value.replace(/\s+/g, ' ').trim();
+}
+
+function summarizeText(content: string, maxLength = 600): string {
+  const compact = compactText(content);
+  if (compact.length <= maxLength) return compact;
+  const excerpt = compact.slice(0, maxLength + 1);
+  const sentenceEnd = Math.max(
+    excerpt.lastIndexOf('. '),
+    excerpt.lastIndexOf('? '),
+    excerpt.lastIndexOf('! '),
+  );
+  if (sentenceEnd >= Math.floor(maxLength * 0.6)) {
+    return excerpt.slice(0, sentenceEnd + 1);
+  }
+  const wordEnd = excerpt.lastIndexOf(' ', maxLength);
+  return `${excerpt.slice(0, wordEnd > 0 ? wordEnd : maxLength)}…`;
+}
+
+function inferPolicyType(context: string): string | null {
+  const padded = ` ${context.toLowerCase()} `;
+  return (
+    POLICY_TYPE_RULES.find(([keyword]) => padded.includes(keyword))?.[1] ?? null
+  );
+}
+
+function inferJurisdiction(context: string): string | null {
+  const normalized = context.toLowerCase();
+  return (
+    JURISDICTION_RULES.find(([keyword]) => normalized.includes(keyword))?.[1] ??
+    (normalized.includes('.gov.au') ? 'federal' : null)
+  );
+}
 
 export interface ContentAnalysis {
   isRelevant: boolean;
@@ -35,78 +101,69 @@ export interface PolicySummary {
   affectedSectors: string[];
 }
 
-// Analyse web content for AI policy relevance
+// Deterministically analyse web content for AI policy relevance. Confidence is
+// deliberately capped below the automatic-promotion band so editorial review
+// remains mandatory.
 export async function analyseContentRelevance(
   content: string,
-  sourceUrl: string
+  sourceUrl: string,
+  title = '',
 ): Promise<ContentAnalysis> {
-  const responseText = await runAnalysisPrompt(
-    `Analyse the following web content and determine if it's relevant to Australian AI policy, regulation, or governance.
-
-Only mark content as relevant when the page itself materially discusses AI or automated decision-making policy, regulation, standards, frameworks, guidance, assurance, safety, ethics, procurement, or government adoption.
-
-Do NOT mark content as relevant if it is primarily:
-- generic site navigation or landing-page content
-- privacy policies, accessibility statements, cookie notices, terms, or copyright pages
-- generic "mission", "commitments", or organisational strategy pages unless they explicitly govern AI
-- a general policy hub that is not specifically about AI policy/governance
-
-Source URL: ${sourceUrl}
-
-Content:
-${content.slice(0, 4000)}
-
-Please respond in JSON format with the following structure:
-{
-  "isRelevant": boolean,
-  "relevanceScore": number between 0 and 1,
-  "summary": "brief summary if relevant",
-  "tags": ["relevant", "tags"],
-  "policyType": "legislation|regulation|guideline|framework|standard|practice_note|null",
-  "jurisdiction": "federal|nsw|vic|qld|wa|sa|tas|act|nt|null",
-  "agencies": ["mentioned agencies"],
-  "keyDates": ["any important dates mentioned"],
-  "relatedTopics": ["AI ethics", "data privacy", etc]
-}`,
-    { maxTokens: 1024 },
+  const cleanContent = compactText(content);
+  const fallbackTitle = new URL(sourceUrl).pathname
+    .split('/')
+    .filter(Boolean)
+    .at(-1)
+    ?.replace(/[-_]+/g, ' ');
+  const resolvedTitle = compactText(title || fallbackTitle || sourceUrl);
+  const context = `${resolvedTitle} ${sourceUrl} ${cleanContent.slice(0, 8000)}`;
+  const isRelevant = isRelevantScrapedCandidate({
+    title: resolvedTitle,
+    url: sourceUrl,
+    text: cleanContent.slice(0, 8000),
+  });
+  const strongTitle = GOVERNANCE_TITLE_KEYWORDS.some((keyword) =>
+    resolvedTitle.toLowerCase().includes(keyword),
   );
+  const normalized = context.toLowerCase();
+  const tags = [
+    normalized.includes('generative ai') || normalized.includes('gen ai')
+      ? 'generative-ai'
+      : null,
+    normalized.includes('automated decision') ? 'automated-decision-making' : null,
+    normalized.includes('assurance') ? 'assurance' : null,
+    normalized.includes('procurement') ? 'procurement' : null,
+    normalized.includes('public sector') || normalized.includes('government')
+      ? 'public-sector'
+      : null,
+  ].filter((tag): tag is string => Boolean(tag));
 
-  const parsed = contentAnalysisSchema.safeParse(
-    extractJsonFromResponse<unknown>(responseText, null),
-  );
-  if (!parsed.success) {
-    throw new Error('AI relevance analysis returned invalid structured data');
-  }
-  return parsed.data;
+  return {
+    isRelevant,
+    relevanceScore: isRelevant ? (strongTitle ? 0.65 : 0.55) : 0,
+    summary: isRelevant ? summarizeText(cleanContent) : '',
+    tags,
+    policyType: isRelevant ? inferPolicyType(context) : null,
+    jurisdiction: isRelevant ? inferJurisdiction(context) : null,
+    agencies: [],
+    keyDates: [],
+    relatedTopics: tags,
+  };
 }
 
-// Generate a detailed summary of a policy document
+// Generate a deterministic extractive summary. This remains async to preserve
+// the existing call contract without introducing an external service.
 export async function summarizePolicy(
-  title: string,
+  _title: string,
   content: string
 ): Promise<PolicySummary> {
-  const responseText = await runAnalysisPrompt(
-    `Summarize the following Australian AI policy document:
-
-Title: ${title}
-
-Content:
-${content.slice(0, 6000)}
-
-Please respond in JSON format:
-{
-  "summary": "2-3 sentence summary",
-  "keyPoints": ["key point 1", "key point 2", ...],
-  "implications": ["implication for AI use", ...],
-  "affectedSectors": ["healthcare", "finance", etc]
-}`,
-    { maxTokens: 1024 },
-  );
-
-  return extractJsonFromResponse<PolicySummary>(responseText, {
-    summary: 'Unable to generate summary',
-    keyPoints: [],
+  const sentences = compactText(content)
+    .split(/(?<=[.!?])\s+/)
+    .filter(Boolean);
+  return {
+    summary: summarizeText(content),
+    keyPoints: sentences.slice(0, 4),
     implications: [],
     affectedSectors: [],
-  });
+  };
 }

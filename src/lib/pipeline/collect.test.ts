@@ -1,14 +1,8 @@
 /* @vitest-environment node */
 
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { buildPolicy, buildTimelineEvent } from '@/test/factories';
 import type { WatchSource } from './sources';
-
-const { hasAiProvider } = vi.hoisted(() => ({
-  hasAiProvider: vi.fn(),
-}));
-
-vi.mock('@/lib/ai-client', () => ({ hasAiProvider }));
 
 import { collect, collectionRunFailed, emptyWatchState } from './collect';
 
@@ -116,10 +110,6 @@ function fakeFetch(routes: Record<string, FakeRoute>) {
 }
 
 describe('collect', () => {
-  beforeEach(() => {
-    hasAiProvider.mockReturnValue(false);
-  });
-
   it('detects new items, skips seen URLs, and updates state', async () => {
     const state = emptyWatchState();
     state.seen['https://www.example.gov.au/news/seen-before'] = {
@@ -1922,10 +1912,6 @@ describe('collect', () => {
 });
 
 describe('collect browser fallback', () => {
-  beforeEach(() => {
-    hasAiProvider.mockReturnValue(false);
-  });
-
   it('retries a blocked source through the browser retriever', async () => {
     const fetchImpl = fakeFetch({
       'https://www.example.gov.au/news': 403,

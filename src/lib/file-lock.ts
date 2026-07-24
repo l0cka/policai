@@ -29,6 +29,9 @@ const DEFAULT_POLL_MS = 50;
 const DEFAULT_TIMEOUT_MS = 120_000;
 const PROCESS_START_TOLERANCE_MS = 2_000;
 const execFileAsync = promisify(execFile);
+const CURRENT_PROCESS_STARTED_AT = new Date(
+  Date.now() - process.uptime() * 1_000,
+).toISOString();
 
 function hasCode(error: unknown, code: string): boolean {
   return (
@@ -85,6 +88,10 @@ function isLocalProcessAlive(pid: number): boolean {
 }
 
 async function localProcessStartedAt(pid: number): Promise<string | null> {
+  // The current process identity is available without spawning `ps`. Besides
+  // being cheaper for every local write, this remains reliable when the host
+  // is temporarily unable to create another process.
+  if (pid === process.pid) return CURRENT_PROCESS_STARTED_AT;
   try {
     const { stdout } = await execFileAsync(
       '/bin/ps',

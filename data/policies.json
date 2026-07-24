@@ -1,5 +1,254 @@
 [
   {
+    "id": "sa-summary-offences-ai-generated-depictions",
+    "title": "Summary Offences (Humiliating, Degrading or Invasive Depictions) Amendment Act 2025",
+    "description": "South Australian legislation creating offences for AI- or digitally generated humiliating, degrading, or invasive depictions of simulated real people.",
+    "jurisdiction": "sa",
+    "type": "legislation",
+    "status": "active",
+    "effectiveDate": "2025-11-03",
+    "dates": [
+      {
+        "type": "published",
+        "date": "2025-05-22",
+        "precision": "day"
+      },
+      {
+        "type": "commenced",
+        "date": "2025-11-03",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/a/2025/summary-offences-humiliating-degrading-or-invasive-depictions-amendment-act-2025_19/2025.19.un.pdf",
+          "finalUrl": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/a/2025/summary-offences-humiliating-degrading-or-invasive-depictions-amendment-act-2025_19/2025.19.un.pdf",
+          "title": "Summary Offences (Humiliating, Degrading or Invasive Depictions)Amendment Act 2025",
+          "retrievedAt": "2026-07-24T02:50:27.827Z",
+          "contentType": "text/html",
+          "contentHash": "6a503b2e0ce6684bf15635c6ae1804bc3a7383237e97a04f47dce4f6d0150748",
+          "linkedDocuments": [
+            {
+              "url": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/a/2025/summary-offences-humiliating-degrading-or-invasive-depictions-amendment-act-2025_19/2025.19.un.pdf",
+              "finalUrl": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/a/2025/summary-offences-humiliating-degrading-or-invasive-depictions-amendment-act-2025_19/2025.19.un.pdf",
+              "retrievedAt": "2026-07-24T02:50:27.827Z",
+              "contentType": "application/pdf",
+              "contentHash": "b25e08b21de4766c94002cae46ceeb889670932889184fc551b0b41a3eb2c802"
+            },
+            {
+              "url": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/p/2025/summary-offences-humiliating-degrading-or-invasive-depictions-amendment-act-commencement-proclamation-2025_30.10.2025-p-4242/30.10.2025-p-4242.un.pdf",
+              "finalUrl": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/p/2025/summary-offences-humiliating-degrading-or-invasive-depictions-amendment-act-commencement-proclamation-2025_30.10.2025-p-4242/30.10.2025-p-4242.un.pdf",
+              "retrievedAt": "2026-07-24T02:50:27.827Z",
+              "contentType": "application/pdf",
+              "contentHash": "e27cfc6f47eccfaee1be570ec7c73edbcaec1ae5194d47bd6f24c9b76036cacf"
+            }
+          ],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-07-24T02:50:27.827Z",
+            "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
+            "notes": "Fresh browser-backed revalidation immediately before approved publication on 24 July 2026; exact official Act and commencement proclamation bytes are fingerprinted.",
+            "pageContentHash": "67b061515aff50bdc77b48c491129e2aa21ab06ddeb50a9124dd5aa8648683b7",
+            "characterCount": 8513
+          },
+          "reviewedDate": {
+            "date": "2025-11-03",
+            "precision": "day",
+            "reviewedAt": "2026-07-24T02:50:30.765Z",
+            "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+            "notes": "The official commencement proclamation fixes 3 November 2025 as the commencement date for the amending Act."
+          }
+        }
+      }
+    ],
+    "agencies": [
+      "Attorney-General's Department (South Australia)",
+      "South Australia Police",
+      "Parliament of South Australia"
+    ],
+    "sourceUrl": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/a/2025/summary-offences-humiliating-degrading-or-invasive-depictions-amendment-act-2025_19/2025.19.un.pdf",
+    "content": "The Summary Offences (Humiliating, Degrading or Invasive Depictions) Amendment Act 2025 inserts Part 5B, sections 26F to 26J, into the Summary Offences Act 1953. It covers audiovisual, audio, or visual content generated wholly by artificial intelligence or created solely using digital technology that depicts a simulated real person. The Act creates offences for creating, distributing, or threatening to distribute humiliating, degrading, or invasive depictions, with consent-based and specified law-enforcement, legal-proceeding, and artistic-merit exceptions. Penalties vary by conduct and whether a purported real person is under 17, reaching $20,000 or four years imprisonment for creating or distributing an invasive depiction of a simulated person purporting to be a child. The Act was assented to on 22 May 2025 and commenced on 3 November 2025 under the official proclamation.",
+    "aiSummary": "South Australian legislation creating offences for AI- or digitally generated humiliating, degrading, or invasive depictions of simulated real people.",
+    "tags": [
+      "South Australia",
+      "artificial intelligence",
+      "deepfakes",
+      "image-based abuse",
+      "criminal law"
+    ],
+    "createdAt": "2026-07-24T02:37:40.240Z",
+    "updatedAt": "2026-07-24T02:50:30.765Z",
+    "lastReviewedAt": "2026-07-24T02:50:30.765Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/a/2025/summary-offences-humiliating-degrading-or-invasive-depictions-amendment-act-2025_19/2025.19.un.pdf",
+        "finalUrl": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/a/2025/summary-offences-humiliating-degrading-or-invasive-depictions-amendment-act-2025_19/2025.19.un.pdf",
+        "title": "Summary Offences (Humiliating, Degrading or Invasive Depictions)Amendment Act 2025",
+        "retrievedAt": "2026-07-24T02:50:27.827Z",
+        "contentType": "text/html",
+        "contentHash": "6a503b2e0ce6684bf15635c6ae1804bc3a7383237e97a04f47dce4f6d0150748",
+        "linkedDocuments": [
+          {
+            "url": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/a/2025/summary-offences-humiliating-degrading-or-invasive-depictions-amendment-act-2025_19/2025.19.un.pdf",
+            "finalUrl": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/a/2025/summary-offences-humiliating-degrading-or-invasive-depictions-amendment-act-2025_19/2025.19.un.pdf",
+            "retrievedAt": "2026-07-24T02:50:27.827Z",
+            "contentType": "application/pdf",
+            "contentHash": "b25e08b21de4766c94002cae46ceeb889670932889184fc551b0b41a3eb2c802"
+          },
+          {
+            "url": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/p/2025/summary-offences-humiliating-degrading-or-invasive-depictions-amendment-act-commencement-proclamation-2025_30.10.2025-p-4242/30.10.2025-p-4242.un.pdf",
+            "finalUrl": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/p/2025/summary-offences-humiliating-degrading-or-invasive-depictions-amendment-act-commencement-proclamation-2025_30.10.2025-p-4242/30.10.2025-p-4242.un.pdf",
+            "retrievedAt": "2026-07-24T02:50:27.827Z",
+            "contentType": "application/pdf",
+            "contentHash": "e27cfc6f47eccfaee1be570ec7c73edbcaec1ae5194d47bd6f24c9b76036cacf"
+          }
+        ],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-07-24T02:50:27.827Z",
+          "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
+          "notes": "Fresh browser-backed revalidation immediately before approved publication on 24 July 2026; exact official Act and commencement proclamation bytes are fingerprinted.",
+          "pageContentHash": "67b061515aff50bdc77b48c491129e2aa21ab06ddeb50a9124dd5aa8648683b7",
+          "characterCount": 8513
+        },
+        "reviewedDate": {
+          "date": "2025-11-03",
+          "precision": "day",
+          "reviewedAt": "2026-07-24T02:50:30.765Z",
+          "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+          "notes": "The official commencement proclamation fixes 3 November 2025 as the commencement date for the amending Act."
+        }
+      },
+      "checkedAt": "2026-07-24T02:50:30.765Z",
+      "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
+      "method": "manual",
+      "notes": "Approved after fresh review of the assented Act and official commencement proclamation. The proposed record accurately describes the AI- and digitally generated depiction offences and commencement."
+    }
+  },
+  {
+    "id": "sa-electoral-ai-generated-advertisements",
+    "title": "Electoral (Miscellaneous) Amendment Act 2024 — AI-generated electoral advertisements",
+    "description": "South Australian legislation regulating AI-generated electoral advertising, including simulated depictions of real people, disclosure statements, and withdrawal or correction powers.",
+    "jurisdiction": "sa",
+    "type": "legislation",
+    "status": "active",
+    "effectiveDate": "2025-10-10",
+    "dates": [
+      {
+        "type": "published",
+        "date": "2024-12-05",
+        "precision": "day"
+      },
+      {
+        "type": "commenced",
+        "date": "2025-10-10",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/a/2024/electoral-miscellaneous-amendment-act-2024_67/2024.67.un.pdf",
+          "finalUrl": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/a/2024/electoral-miscellaneous-amendment-act-2024_67/2024.67.un.pdf",
+          "title": "Electoral (Miscellaneous) Amendment Act 2024",
+          "retrievedAt": "2026-07-24T02:49:25.384Z",
+          "contentType": "text/html",
+          "contentHash": "84f0b942eebc7f1256cf96fcd82ddd5556d0001f53bdaa38b6a1f860eb112dce",
+          "linkedDocuments": [
+            {
+              "url": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/a/2024/electoral-miscellaneous-amendment-act-2024_67/2024.67.un.pdf",
+              "finalUrl": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/a/2024/electoral-miscellaneous-amendment-act-2024_67/2024.67.un.pdf",
+              "retrievedAt": "2026-07-24T02:49:25.384Z",
+              "contentType": "application/pdf",
+              "contentHash": "9f536e1982f56f2a6f62bf949dff0f2b6ad53fb1052f723dffc32e57e796e41b"
+            },
+            {
+              "url": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/p/2025/electoral-miscellaneous-amendment-act-commencement-proclamation-2025_10.10.2025-p-4059/10.10.2025-p-4059.un.pdf",
+              "finalUrl": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/p/2025/electoral-miscellaneous-amendment-act-commencement-proclamation-2025_10.10.2025-p-4059/10.10.2025-p-4059.un.pdf",
+              "retrievedAt": "2026-07-24T02:49:25.384Z",
+              "contentType": "application/pdf",
+              "contentHash": "217ec51405351f4dbc3aaf37415c9aa4581cf1d2c4ea9388e2b6bd0f39e340de"
+            }
+          ],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-07-24T02:49:25.384Z",
+            "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
+            "notes": "Fresh browser-backed revalidation immediately before approved publication on 24 July 2026; exact official Act and commencement proclamation bytes are fingerprinted.",
+            "pageContentHash": "c197a34c3150fbdf3a4b20a56af336bd0ad5447430940c3b9eb1598d2fef362b",
+            "characterCount": 39645
+          },
+          "reviewedDate": {
+            "date": "2025-10-10",
+            "precision": "day",
+            "reviewedAt": "2026-07-24T02:49:28.151Z",
+            "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+            "notes": "The official commencement proclamation fixes 10 October 2025 for Part 2, including the AI-generated electoral advertising provisions."
+          }
+        }
+      }
+    ],
+    "agencies": [
+      "Electoral Commission of South Australia",
+      "Parliament of South Australia"
+    ],
+    "sourceUrl": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/a/2024/electoral-miscellaneous-amendment-act-2024_67/2024.67.un.pdf",
+    "content": "Section 32 of the Electoral (Miscellaneous) Amendment Act 2024 inserts sections 115B to 115D into the Electoral Act 1985. The provisions prohibit distribution of an AI-generated electoral advertisement depicting a simulated real person performing an act they did not perform, subject to stated defences. They require prescribed AI-generated electoral advertisements to carry clear spoken or displayed disclosure statements, and empower the Electoral Commissioner to request withdrawal or a corrective statement and the Supreme Court to make corresponding orders. Maximum penalties for the principal prohibition and disclosure offences are $5,000 for a natural person and $10,000 for a body corporate. The Act was assented to on 5 December 2024; Part 2, including section 32, commenced on 10 October 2025 under the official commencement proclamation.",
+    "aiSummary": "South Australian legislation regulating AI-generated electoral advertising, including simulated depictions of real people, disclosure statements, and withdrawal or correction powers.",
+    "tags": [
+      "South Australia",
+      "elections",
+      "artificial intelligence",
+      "political advertising",
+      "deepfakes"
+    ],
+    "createdAt": "2026-07-24T02:37:40.240Z",
+    "updatedAt": "2026-07-24T02:49:28.151Z",
+    "lastReviewedAt": "2026-07-24T02:49:28.151Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/a/2024/electoral-miscellaneous-amendment-act-2024_67/2024.67.un.pdf",
+        "finalUrl": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/a/2024/electoral-miscellaneous-amendment-act-2024_67/2024.67.un.pdf",
+        "title": "Electoral (Miscellaneous) Amendment Act 2024",
+        "retrievedAt": "2026-07-24T02:49:25.384Z",
+        "contentType": "text/html",
+        "contentHash": "84f0b942eebc7f1256cf96fcd82ddd5556d0001f53bdaa38b6a1f860eb112dce",
+        "linkedDocuments": [
+          {
+            "url": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/a/2024/electoral-miscellaneous-amendment-act-2024_67/2024.67.un.pdf",
+            "finalUrl": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/a/2024/electoral-miscellaneous-amendment-act-2024_67/2024.67.un.pdf",
+            "retrievedAt": "2026-07-24T02:49:25.384Z",
+            "contentType": "application/pdf",
+            "contentHash": "9f536e1982f56f2a6f62bf949dff0f2b6ad53fb1052f723dffc32e57e796e41b"
+          },
+          {
+            "url": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/p/2025/electoral-miscellaneous-amendment-act-commencement-proclamation-2025_10.10.2025-p-4059/10.10.2025-p-4059.un.pdf",
+            "finalUrl": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/p/2025/electoral-miscellaneous-amendment-act-commencement-proclamation-2025_10.10.2025-p-4059/10.10.2025-p-4059.un.pdf",
+            "retrievedAt": "2026-07-24T02:49:25.384Z",
+            "contentType": "application/pdf",
+            "contentHash": "217ec51405351f4dbc3aaf37415c9aa4581cf1d2c4ea9388e2b6bd0f39e340de"
+          }
+        ],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-07-24T02:49:25.384Z",
+          "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
+          "notes": "Fresh browser-backed revalidation immediately before approved publication on 24 July 2026; exact official Act and commencement proclamation bytes are fingerprinted.",
+          "pageContentHash": "c197a34c3150fbdf3a4b20a56af336bd0ad5447430940c3b9eb1598d2fef362b",
+          "characterCount": 39645
+        },
+        "reviewedDate": {
+          "date": "2025-10-10",
+          "precision": "day",
+          "reviewedAt": "2026-07-24T02:49:28.151Z",
+          "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+          "notes": "The official commencement proclamation fixes 10 October 2025 for Part 2, including the AI-generated electoral advertising provisions."
+        }
+      },
+      "checkedAt": "2026-07-24T02:49:28.151Z",
+      "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
+      "method": "manual",
+      "notes": "Approved after fresh review of the assented Act and official commencement proclamation. The proposed record accurately describes sections 115B to 115D and their commencement."
+    }
+  },
+  {
     "id": "vic-ovic-public-generative-ai-guidance",
     "title": "Use of publicly available Generative AI tools in the Victorian public sector",
     "description": "OVIC guidance restricting personal and non-public public-sector information in publicly available generative AI tools and setting minimum controls for Victorian public sector organisations.",

@@ -1342,5 +1342,62 @@
       "method": "manual",
       "notes": "Approved by the user after review of the SDDC communiqué’s AI recordkeeping, FOI and cyber-governance content and official date."
     }
+  },
+  {
+    "id": "tl-2026-06-26-saet-adopts-supreme-court-genai-guidelines",
+    "date": "2026-06-26",
+    "datePrecision": "day",
+    "title": "SAET adopts Supreme Court generative AI guidelines",
+    "description": "The South Australian Employment Tribunal adopted the South Australian Supreme Court's generative AI guidelines and self-represented litigant information sheet for SAET proceedings.",
+    "type": "milestone",
+    "jurisdiction": "sa",
+    "relatedPolicyId": "sa-courts-genai-guidelines",
+    "sourceUrl": "https://www.saet.sa.gov.au/2026/06/25/saet-adopts-supreme-court-gen-ai-guidelines",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.saet.sa.gov.au/2026/06/25/saet-adopts-supreme-court-gen-ai-guidelines",
+        "finalUrl": "https://www.saet.sa.gov.au/2026/06/25/saet-adopts-supreme-court-gen-ai-guidelines",
+        "title": "SAET adopts Supreme Court Gen AI guidelines",
+        "retrievedAt": "2026-07-24T02:50:39.622Z",
+        "contentType": "text/html",
+        "contentHash": "eacecc1ae79302601c4498861b06b02e5d8fa3222480688da20d4997d365f57c",
+        "linkedDocuments": [
+          {
+            "url": "https://www.saet.sa.gov.au/app/uploads/2026/06/Gen-AI-Information-Sheet-for-Self-Represented-Litigants-3.pdf",
+            "finalUrl": "https://www.saet.sa.gov.au/app/uploads/2026/06/Gen-AI-Information-Sheet-for-Self-Represented-Litigants-3.pdf",
+            "retrievedAt": "2026-07-24T02:50:39.622Z",
+            "contentType": "application/pdf",
+            "contentHash": "974fa5eef71ab195d51c387b5db6776f20b7843e6bfb35390940ed2e724bcaf3"
+          },
+          {
+            "url": "https://www.saet.sa.gov.au/app/uploads/2026/06/Generative-AI-Guidelines-3.pdf",
+            "finalUrl": "https://www.saet.sa.gov.au/app/uploads/2026/06/Generative-AI-Guidelines-3.pdf",
+            "retrievedAt": "2026-07-24T02:50:39.622Z",
+            "contentType": "application/pdf",
+            "contentHash": "3bae44872330ebb1ae8d19bb901c00b748188e98bf3a8636e9914e8ae7ab4204"
+          }
+        ],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-07-24T02:50:39.622Z",
+          "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
+          "notes": "Fresh official SAET page revalidation immediately before approved publication on 24 July 2026; exact adopted Guidelines and information-sheet bytes are fingerprinted.",
+          "pageContentHash": "9886104553b563c052bcc314648f4035bcdb5c93ed79a7c258aae825974634c2",
+          "characterCount": 1046
+        },
+        "reviewedDate": {
+          "date": "2026-06-26",
+          "precision": "day",
+          "reviewedAt": "2026-07-24T02:50:46.440Z",
+          "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
+          "notes": "The official SAET announcement is dated 26 June 2026 and records the Tribunal President's adoption decision."
+        }
+      },
+      "checkedAt": "2026-07-24T02:50:46.440Z",
+      "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
+      "method": "manual",
+      "notes": "Approved after fresh review of the official SAET announcement and the exact adopted Guidelines and self-represented litigant information sheet."
+    }
   }
 ]

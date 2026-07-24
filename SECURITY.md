@@ -12,7 +12,7 @@ We will acknowledge receipt within 48 hours and aim to provide a fix or mitigati
 
 ## Scope
 
-This policy covers the Policai application code and its deployment configuration. It does not cover third-party services (Supabase, OpenRouter, Vercel) — please report vulnerabilities in those services to their respective maintainers.
+This policy covers the Policai application code and its deployment configuration. It does not cover third-party services such as Vercel — please report vulnerabilities in those services to their respective maintainers.
 
 ## Supported Versions
 

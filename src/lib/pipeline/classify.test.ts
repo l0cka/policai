@@ -1,29 +1,6 @@
 /* @vitest-environment node */
 
-import { beforeEach, describe, expect, it, vi } from 'vitest';
-
-const {
-  analyseContentRelevance,
-  getAiModel,
-  getAiProvider,
-  hasAiProvider,
-} = vi.hoisted(() => ({
-  hasAiProvider: vi.fn(),
-  analyseContentRelevance: vi.fn(),
-  getAiModel: vi.fn(),
-  getAiProvider: vi.fn(),
-}));
-
-vi.mock('@/lib/ai-client', () => ({
-  getAiModel,
-  getAiProvider,
-  hasAiProvider,
-}));
-vi.mock('@/lib/analysis', () => ({
-  analyseContentRelevance,
-  RELEVANCE_PROMPT_VERSION: 'test-prompt-v1',
-}));
-
+import { describe, expect, it } from 'vitest';
 import { classifyCandidate, heuristicClassification } from './classify';
 
 const CANDIDATE = {
@@ -40,6 +17,10 @@ describe('heuristicClassification', () => {
     expect(result.isRelevant).toBe(true);
     expect(result.relevanceScore).toBeGreaterThanOrEqual(0.5);
     expect(result.relevanceScore).toBeLessThan(0.8);
+    expect(result.assessment).toEqual({
+      method: 'heuristic',
+      promptVersion: 'keyword-rules-v1',
+    });
   });
 
   it('marks non-matching candidates as irrelevant', () => {
@@ -54,61 +35,23 @@ describe('heuristicClassification', () => {
 });
 
 describe('classifyCandidate', () => {
-  beforeEach(() => {
-    hasAiProvider.mockReset();
-    analyseContentRelevance.mockReset();
-    getAiModel.mockReset();
-    getAiProvider.mockReset();
-    getAiProvider.mockReturnValue('anthropic');
-    getAiModel.mockReturnValue('test-model');
-  });
-
-  it('uses AI analysis when a provider and page content are available', async () => {
-    hasAiProvider.mockReturnValue(true);
-    analyseContentRelevance.mockResolvedValue({
-      isRelevant: true,
-      relevanceScore: 0.9,
-      summary: 'A new assurance framework.',
-      tags: ['assurance'],
-      policyType: 'framework',
-      jurisdiction: 'federal',
-      agencies: ['DTA'],
-      keyDates: [],
-      relatedTopics: [],
-    });
-
-    const result = await classifyCandidate(CANDIDATE, '<html>page body</html>');
-
-    expect(result.classification).toBe('ai');
-    expect(result.relevanceScore).toBe(0.9);
-    expect(result.summary).toBe('A new assurance framework.');
-    expect(result.suggestedType).toBe('framework');
-    expect(result.suggestedJurisdiction).toBe('federal');
-    expect(result.assessment).toEqual({
-      method: 'ai',
-      promptVersion: 'test-prompt-v1',
-      provider: 'anthropic',
-      model: 'test-model',
-    });
-  });
-
-  it('falls back to heuristics without a provider', async () => {
-    hasAiProvider.mockReturnValue(false);
-
-    const result = await classifyCandidate(CANDIDATE, '<html>page body</html>');
-
-    expect(analyseContentRelevance).not.toHaveBeenCalled();
-    expect(result.classification).toBe('heuristic');
-    expect(result.isRelevant).toBe(true);
-  });
-
-  it('falls back to heuristics when AI analysis throws', async () => {
-    hasAiProvider.mockReturnValue(true);
-    analyseContentRelevance.mockRejectedValue(new Error('rate limited'));
-
-    const result = await classifyCandidate(CANDIDATE, '<html>page body</html>');
+  it('always uses deterministic heuristics when page content is available', async () => {
+    const result = await classifyCandidate(
+      CANDIDATE,
+      '<html><body>page content cannot change the classification path</body></html>',
+    );
 
     expect(result.classification).toBe('heuristic');
     expect(result.isRelevant).toBe(true);
+    expect(result.relevanceScore).toBe(0.65);
+    expect(result.assessment.method).toBe('heuristic');
+    expect(result.assessment.provider).toBeUndefined();
+    expect(result.assessment.model).toBeUndefined();
+  });
+
+  it('uses the same deterministic path without page content', async () => {
+    const result = await classifyCandidate(CANDIDATE, null);
+
+    expect(result).toEqual(heuristicClassification(CANDIDATE));
   });
 });

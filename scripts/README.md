@@ -13,7 +13,8 @@ npm run collect -- --max-items=3       # cap new items per source
 npm run collect                        # full pass, writes data files
 ```
 
-Optional environment: `ANTHROPIC_API_KEY` or `OPENROUTER_API_KEY` for AI classification (`AI_MODEL` to override the model). Without a key the collector runs in heuristic mode and labels detections "Needs review".
+Classification is deterministic and local. Confidence is capped so collector
+detections are always labelled "Needs review".
 
 Discovered links must remain on allow-listed official HTTPS hosts. Redirects
 are validated before they are followed, and retryable candidate retrieval

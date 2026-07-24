@@ -14,7 +14,7 @@ Policai is an Australian AI policy tracker. It maintains a curated register of A
 - **Visualisations:** D3.js
 - **Data:** public-safe JSON in `public/data/`; editorial and collector JSON in
   `data/`, all canonical and versioned
-- **AI (optional):** Anthropic SDK (preferred) or OpenAI SDK against OpenRouter, selected in `src/lib/ai-client.ts`; without a key the collector uses keyword heuristics
+- **Analysis:** deterministic keyword heuristics with capped confidence; no external AI provider
 - **Scraping:** Cheerio
 - **Testing:** Vitest (+ Testing Library)
 - **Automation:** GitHub Actions (`.github/workflows/collect.yml`)
@@ -52,8 +52,7 @@ src/
 ├── lib/
 │   ├── data-service.ts           # File-backed reads/writes over the repo JSON
 │   ├── validate-data.ts          # Data schema enforcement (used by CI + collector)
-│   ├── ai-client.ts              # Provider selection + runAnalysisPrompt()
-│   ├── analysis.ts               # AI relevance/summary helpers
+│   ├── analysis.ts               # Deterministic relevance/summary helpers
 │   ├── scraper-filter.ts         # Keyword heuristics shared by the pipeline
 │   ├── source-ingest.ts          # Curated publish path (used by the MCP server)
 │   └── pipeline/                 # Collector: sources.ts, extract.ts, classify.ts, collect.ts
@@ -69,7 +68,7 @@ docs/                             # collector.md + docs index
 ## Data Model & Flow
 
 1. **Register** (`data/policies.json`): curated policy records. Changed only through explicit editorial approval (human or MCP-assisted). `/data/policies.json` and API/site reads expose only verified, non-trashed, non-withheld records. The collector never writes it; the workflow fails if it does.
-2. **Developments** (`data/developments.json`): automated radar feed. Each entry has provenance (`sourceId`, `url`), a relevance score, and a `classification` label — `ai`, `heuristic` (capped confidence, shows as "Needs review"), or `curated`. `/data/developments.json` filters dismissed entries.
+2. **Developments** (`data/developments.json`): automated radar feed. Each entry has provenance (`sourceId`, `url`), a relevance score, and a `classification` label — `heuristic` (current collector, capped confidence and shown as "Needs review"), `curated`, or legacy `ai`. `/data/developments.json` filters dismissed entries.
 3. **Editorial directories** (`data/timeline.json`, `data/agencies.json`,
    `data/commonwealth-agencies.json`): may contain records awaiting review and
    are never served statically; `/data/*.json` route handlers apply public
@@ -98,12 +97,9 @@ Use the display-name helpers (`getPolicyTypeName()`, `getPolicyStatusName()`, `g
 
 ## Environment Variables
 
-None are required to run the site. Optional (see `.env.example`):
+None are required to run the site or collector. Optional (see `.env.example`):
 
 ```bash
-ANTHROPIC_API_KEY=        # AI classification (preferred provider)
-OPENROUTER_API_KEY=       # AI classification (fallback provider)
-AI_MODEL=                 # model override for either provider
 POLICAI_MCP_ADMIN_TOKEN=  # local MCP source-ingest writes
 ```
 

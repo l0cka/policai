@@ -1,17 +1,5 @@
-import {
-  getAiModel,
-  getAiProvider,
-  hasAiProvider,
-} from '@/lib/ai-client';
-import {
-  analyseContentRelevance,
-  RELEVANCE_PROMPT_VERSION,
-} from '@/lib/analysis';
 import { isRelevantScrapedCandidate } from '@/lib/scraper-filter';
-import { cleanHtmlContent } from '@/lib/utils';
 import {
-  isJurisdiction,
-  isPolicyType,
   type Jurisdiction,
   type ContentAssessment,
   type PolicyType,
@@ -43,9 +31,8 @@ const GOVERNANCE_TITLE_KEYWORDS = [
 ];
 
 /**
- * Keyword-only scoring for when no AI provider is configured (or AI fails).
- * Confidence is deliberately capped below the auto-confidence band so
- * heuristic detections always read as "needs review".
+ * Deterministic keyword scoring. Confidence is deliberately capped below the
+ * auto-confidence band so detections always read as "needs review".
  */
 export function heuristicClassification(candidate: Candidate): Classification {
   if (!isRelevantScrapedCandidate(candidate)) {
@@ -82,47 +69,14 @@ export function heuristicClassification(candidate: Candidate): Classification {
 }
 
 /**
- * Classify a candidate, preferring AI analysis of the fetched page content
- * and degrading to heuristics when no provider is configured or the AI call
- * fails.
+ * Classify a candidate with the deterministic ruleset. The fetched page is
+ * accepted for call-site compatibility; extraction already supplies the
+ * bounded candidate excerpt used by the rules.
  */
 export async function classifyCandidate(
   candidate: Candidate,
   pageHtml: string | null,
 ): Promise<Classification> {
-  if (!hasAiProvider() || !pageHtml) {
-    return heuristicClassification(candidate);
-  }
-
-  try {
-    const content = cleanHtmlContent(pageHtml);
-    const analysis = await analyseContentRelevance(content, candidate.url);
-    const provider = getAiProvider();
-    return {
-      isRelevant: analysis.isRelevant,
-      relevanceScore: analysis.relevanceScore,
-      classification: 'ai',
-      summary: analysis.summary || candidate.text || undefined,
-      suggestedType: isPolicyType(analysis.policyType)
-        ? analysis.policyType
-        : undefined,
-      suggestedJurisdiction: isJurisdiction(analysis.jurisdiction)
-        ? analysis.jurisdiction
-        : undefined,
-      tags: analysis.tags || [],
-      agencies: analysis.agencies || [],
-      assessment: {
-        method: 'ai',
-        promptVersion: RELEVANCE_PROMPT_VERSION,
-        provider: provider ?? undefined,
-        model: getAiModel(),
-      },
-    };
-  } catch (error) {
-    console.warn(
-      `[classify] AI analysis failed for ${candidate.url}; using heuristics:`,
-      error instanceof Error ? error.message : error,
-    );
-    return heuristicClassification(candidate);
-  }
+  void pageHtml;
+  return heuristicClassification(candidate);
 }

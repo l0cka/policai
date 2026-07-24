@@ -130,12 +130,12 @@ the re-verified record or rejects the change review. Publishing refuses an
 older update when a newer non-rejected source version exists, and publishing
 the newest version rejects older still-active update reviews as superseded.
 
-## Classification modes
+## Classification
 
-| Mode | Trigger | Behaviour |
-|---|---|---|
-| AI | `ANTHROPIC_API_KEY` (preferred) or `OPENROUTER_API_KEY` set | Page content analysed by the model in `src/lib/ai-client.ts` (override with `AI_MODEL`); detections carry the model's relevance score |
-| Heuristic | no key | Keyword scoring only; confidence capped at 0.65 so items always display as "Needs review" |
+The collector uses deterministic keyword rules only. Confidence is capped at
+0.65, so every automated detection displays as "Needs review" and remains
+subject to the same staged editorial process. Collection has no external model
+dependency and does not read provider credentials.
 
 ## Running locally
 
@@ -212,11 +212,7 @@ version cannot be lost merely because its state write completed first.
 
 **Repository configuration:**
 
-- `ANTHROPIC_API_KEY` or `OPENROUTER_API_KEY` secret (optional, enables AI classification)
-- `AI_MODEL` repository variable (optional model override)
 - `COLLECTOR_DEPLOY_KEY` secret — private half of the repo's write deploy key ("collector (collect.yml push)"). Checkout uses it (`ssh-key:`) so the push authenticates as the deploy key, and the "Protect main" ruleset lists **Deploy keys** as a bypass actor (`bypass_mode: always`). Without this pair the push is rejected with `GH013: Repository rule violations` — the default `GITHUB_TOKEN` cannot be a bypass actor on a user-owned repo. The safety story does not depend on the ruleset here: the registry-guard step and CI both enforce that automation never touches `policies.json`.
-
-Without secrets the workflow still runs in heuristic mode.
 
 ## Reviewing detections into the register
 
@@ -253,7 +249,7 @@ existing `targetPolicyId` in place instead of creating another record with the
 same source URL.
 
 If an official page is readable in a real browser but consistently blocks the
-hardened retriever or the configured analysis provider is unavailable, use the MCP
+hardened retriever, use the MCP
 `stage_source_capture` tool instead of editing `data/source-reviews.json`.
 Supply the displayed page title, normalized semantic `main` text, relevant
 official links, a fresh capture timestamp, the human capture reviewer, and the

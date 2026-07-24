@@ -28,7 +28,7 @@ Product surface:
 - `data/source-reviews.json` — detections staged for curated review
 - `data/source-monitoring.json` — the manual-source review ledger
 
-A daily GitHub Actions workflow ([collect.yml](.github/workflows/collect.yml)) runs the collector over the official sources that reliably permit machine retrieval. Sources protected by browser challenges are kept in the same 27-source catalogue but reviewed through the manual coverage ledger. New items are classified with AI when a key is configured (keyword heuristics otherwise), validated, and committed. Vercel redeploys on push, so the site serves static, versioned content — no runtime database.
+A daily GitHub Actions workflow ([collect.yml](.github/workflows/collect.yml)) runs the collector over the official sources that reliably permit machine retrieval. Sources protected by browser challenges are kept in the same source catalogue but reviewed through the manual coverage ledger. New items are classified by deterministic keyword rules with capped confidence, validated, and committed. Vercel redeploys on push, so the site serves static, versioned content — no runtime database.
 
 High-confidence detections are staged in `data/source-reviews.json`; a reviewer uses the local stage → approve → publish workflow before they enter the register. Public register and timeline reads only expose verified records. The collector never writes to `policies.json` directly, and CI enforces that.
 
@@ -36,7 +36,7 @@ High-confidence detections are staged in `data/source-reviews.json`; a reviewer 
 
 - Next.js 16 App Router, React 19, TypeScript 5 (strict)
 - Tailwind CSS 4, shadcn/ui on Radix UI, D3.js
-- Cheerio for scraping; Anthropic or OpenRouter for classification (optional)
+- Cheerio for scraping and deterministic relevance classification
 - Vitest; GitHub Actions for automation; Vercel for hosting
 
 ## Quick Start
@@ -107,7 +107,7 @@ filters as the site.
 
 ## Deployment
 
-Vercel serves the site; pushes to `main` deploy automatically. The only production configuration is optional repository secrets for the collector workflow (`ANTHROPIC_API_KEY` or `OPENROUTER_API_KEY`) — see [docs/collector.md](./docs/collector.md).
+Vercel serves the site; pushes to `main` deploy automatically. The collector does not require an external analysis service or model credential. See [docs/collector.md](./docs/collector.md).
 
 ## Contributing
 

@@ -7,16 +7,13 @@
  * Usage:
  *   npx tsx scripts/collect.ts [--dry-run] [--source=<id>] [--max-items=<n>]
  *
- * Environment:
- *   ANTHROPIC_API_KEY or OPENROUTER_API_KEY — optional; enables AI
- *   classification. Without a key, detection falls back to keyword
- *   heuristics with capped confidence.
+ * Classification is deterministic keyword analysis with capped confidence;
+ * detections always require editorial review.
  */
 
 import path from 'path';
 import { withDataMutationLock } from '../src/lib/data-lock';
 import { readJsonFile, writeJsonFile } from '../src/lib/file-store';
-import { getAiProvider } from '../src/lib/ai-client';
 import {
   createBrowserFetch,
   type BrowserFetch,
@@ -90,9 +87,8 @@ async function createOptionalBrowserFetch(): Promise<BrowserFetch | null> {
 async function main() {
   const options = parseArgs(process.argv.slice(2));
 
-  const provider = getAiProvider();
   console.log(
-    `[collect] AI provider: ${provider ?? 'none (heuristic mode — detections will need review)'}`,
+    '[collect] Analysis mode: deterministic heuristics (detections require review)',
   );
 
   let sources = getAutomaticSources();

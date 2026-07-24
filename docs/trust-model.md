@@ -153,11 +153,11 @@ show:
 
 - the official URL and source catalogue entry;
 - when it was detected and, when available, published;
-- whether it was found by heuristic or model assessment;
+- whether it was found by the current heuristic rules or a legacy assessment;
 - retrieval and assessment provenance for new detections; and
 - an unambiguous “Needs review” state.
 
-An AI relevance score is not a verification score.
+A relevance score is not a verification score.
 
 ### 3. Rejected or dismissed lead
 
@@ -260,9 +260,8 @@ history where useful, but are not shown as current public developments.
 - HTTP 200 browser challenges are retrieval failures, not successful source
   checks, including HTML challenges served with a missing or generic binary
   MIME type.
-- When an official source consistently blocks the hardened retriever or the
-  configured analysis provider is unavailable, the local MCP can accept an
-  explicit browser capture.
+- When an official source consistently blocks the hardened retriever, the
+  local MCP can accept an explicit browser capture.
   This is not a visual-check exception: the capture must include the normalized
   semantic page text, relevant official links, a fresh timestamp, reviewer
   attribution, and the locally downloaded bytes for every canonical instrument

@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed — git-native redesign (July 2026)
 
 - **Git is now the database.** All reads come from versioned JSON in the repo; Supabase, auth, the admin dashboard, and the Vercel cron endpoints were removed (the production database no longer existed and the crons crashed on Vercel's read-only filesystem).
-- **Automation moved to GitHub Actions.** A daily `collect.yml` workflow runs the new collector (`src/lib/pipeline/`) over ~27 verified official sources (departments, regulators, courts, every state and territory), classifies detections with AI when a key is configured (heuristics otherwise), validates the data, and commits the results — which redeploys the site.
+- **Automation moved to GitHub Actions.** A daily `collect.yml` workflow runs the new collector (`src/lib/pipeline/`) over verified official sources (departments, regulators, courts, every state and territory), classifies detections with deterministic heuristics, validates the data, and commits the results — which redeploys the site.
 - **New Developments feed** (`/developments` + home strip) showing detected policy activity with provenance and confidence labels; the curated register is never written by automation, and CI enforces that.
 - **July 2026 data correctness refresh:** Voluntary AI Safety Standard marked superseded by the Guidance for AI Adoption; the mandatory-guardrails proposals paper marked closed per the National AI Plan; court practice-note dates corrected to verified instruments (NSW SC Gen 23, Vic SC GEN 25, Qld PD 5 of 2025, FCFCOA PD-AI, SA courts guidelines); WA/ACT coverage added; timeline backfilled to 48 sourced events; freshness stamps (`lastReviewedAt`, `meta.json`) surfaced in the UI.
 - New statuses `superseded` and `closed` with lifecycle banners; `npm run validate:data` schema enforcement in CI; read-only public API; server-rendered pages with no first-paint fetch.
@@ -39,9 +39,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Sorted policies by date and surfaced the most recent research run in the interface.
 - Continued open source preparation with repository cleanup and contribution-focused documentation.
 - Updated project documentation to follow the HADS standard: honest, actionable, durable, and specific.
-- Updated stale Anthropic/Claude/Codex documentation and admin settings copy to describe the current OpenRouter/OpenAI-compatible implementation.
+- Removed provider-backed analysis from the collection and source-review runtime; deterministic local rules now produce capped-confidence leads that always require editorial review.
 - Routed admin scraper pending-review writes through the unified source-review data service instead of direct legacy JSON writes.
-- Hardened AI JSON response parsing for fenced, nested, and array JSON values.
+- Preserved legacy assessment metadata while making new classifications independent of model credentials.
 
 ### Fixed
 
@@ -53,7 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Removed `CLAUDE.md` so agent guidance lives only in `AGENTS.md`.
 - Removed a tracked generated `docs/superpowers/` network redesign artifact.
-- Removed unused `@anthropic-ai/sdk` and `@xyflow/react` dependencies.
+- Removed the `@anthropic-ai/sdk`, `openai`, and unused `@xyflow/react` dependencies.
 - Removed public application-shell admin navigation links except for admin-route actions.
 
 ### Security

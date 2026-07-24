@@ -49,6 +49,11 @@ describe("source ingest analysis", () => {
 			stageOnly: true,
 		});
 
+		expect(analyseContentRelevance).toHaveBeenCalledWith(
+			"Analysis of Australian AI policy.",
+			"https://policy.example.com/analysis",
+			"Independent AI policy analysis",
+		);
 		expect(retrieveSource).toHaveBeenCalledWith(
 			"https://policy.example.com/analysis",
 			{

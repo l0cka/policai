@@ -54,11 +54,6 @@ jobs:
         id: collector
         continue-on-error: true
         env:
-          # Optional — enables AI classification. Without a key the collector
-          # falls back to keyword heuristics (detections marked for review).
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-          AI_MODEL: ${{ vars.AI_MODEL }}
           SOURCE_ID: ${{ inputs.source }}
         run: |
           if [ -n "$SOURCE_ID" ]; then

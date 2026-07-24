@@ -1,5 +1,95 @@
 [
   {
+    "id": "mcp-audit-2e4e3539-686c-408c-8dc9-fdb261bbd68a",
+    "createdAt": "2026-07-24T02:50:49.959Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-41f3cc22-fd3a-42cf-af1a-4ab149e73092",
+    "createdAt": "2026-07-24T02:50:46.705Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-97115041-1656-4f30-aa37-0224c81f6e04",
+    "createdAt": "2026-07-24T02:50:39.619Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.saet.sa.gov.au/2026/06/25/saet-adopts-supreme-court-gen-ai-guidelines",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-e328e2b0-1b7d-4057-bdaa-421eb6f07da4",
+    "createdAt": "2026-07-24T02:50:34.718Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-3195825e-ef83-4d0a-bbbc-5c0a139b472b",
+    "createdAt": "2026-07-24T02:50:30.982Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-5bcee3dd-3fd3-4e1d-9d12-ddac93929be1",
+    "createdAt": "2026-07-24T02:50:27.824Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/a/2025/summary-offences-humiliating-degrading-or-invasive-depictions-amendment-act-2025_19/2025.19.un.pdf",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-6445742d-785a-4414-8cd8-9282e1f52286",
+    "createdAt": "2026-07-24T02:49:31.694Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-c7806f7e-d062-4c58-9f52-bad803149d0a",
+    "createdAt": "2026-07-24T02:49:28.390Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-28145a0d-8c4a-413d-96e6-035fafa7caf5",
+    "createdAt": "2026-07-24T02:49:25.380Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/a/2024/electoral-miscellaneous-amendment-act-2024_67/2024.67.un.pdf",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-9b041f06-1218-4807-abe9-13b25aa54d7f",
+    "createdAt": "2026-07-24T02:37:51.191Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.saet.sa.gov.au/2026/06/25/saet-adopts-supreme-court-gen-ai-guidelines/",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-a27b97e3-1bb0-4804-9780-f995cee7adcb",
+    "createdAt": "2026-07-24T02:37:48.130Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/a/2025/summary-offences-humiliating-degrading-or-invasive-depictions-amendment-act-2025_19/2025.19.un.pdf",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-90a65d8a-afb6-43a6-8203-5dc54a412f85",
+    "createdAt": "2026-07-24T02:37:45.381Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/a/2024/electoral-miscellaneous-amendment-act-2024_67/2024.67.un.pdf",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-f7f2ab03-2959-4b41-a54d-4e9595cddd7b",
     "createdAt": "2026-07-22T12:54:47.542Z",
     "actor": "local-mcp-admin",

@@ -91,13 +91,11 @@ files to edit.
 
 ## Environment Variables
 
-The site runs with no environment variables at all. Optional:
+The site and collector run with no environment variables. The local editorial
+MCP uses one optional administrative token:
 
 | Variable | Required | Purpose |
 |----------|----------|---------|
-| `ANTHROPIC_API_KEY` | For AI classification | Preferred provider for the collector |
-| `OPENROUTER_API_KEY` | For AI classification | Fallback provider for the collector |
-| `AI_MODEL` | Optional | Model override for either provider |
 | `POLICAI_MCP_ADMIN_TOKEN` | For MCP ingest | Authorises local MCP source-ingest writes |
 
 ## License
