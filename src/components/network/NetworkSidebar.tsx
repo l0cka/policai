@@ -1,89 +1,125 @@
 "use client";
 
-import { X, ExternalLink, ArrowRight } from "lucide-react";
+import { useMemo } from "react";
+import {
+	ArrowLeft,
+	ArrowRight,
+	ExternalLink,
+	X,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import {
 	getJurisdictionName,
 	getPolicyDateTypeName,
 	getPolicyStatusName,
 	getPolicyTypeName,
 } from "@/types";
-import type { NetworkNode } from "@/lib/network-data";
-import { JURISDICTION_COLORS, resolveColor } from "./jurisdiction-colors";
+import type {
+	NetworkConnection,
+	NetworkNode,
+} from "@/lib/network-data";
 import { formatPolicyDate } from "@/lib/format-policy-date";
-
-interface ConnectedPolicy {
-	id: string;
-	title: string;
-	jurisdiction: string;
-}
+import {
+	STATUS_BG_COLORS,
+	STATUS_COLORS,
+} from "@/lib/design-tokens";
+import { cn } from "@/lib/utils";
 
 interface NetworkSidebarProps {
 	policy: NetworkNode | null;
-	connectedPolicies: ConnectedPolicy[];
+	connections: NetworkConnection[];
 	onClose: () => void;
 	onNavigateToNode: (id: string) => void;
 }
 
 export function NetworkSidebar({
 	policy,
-	connectedPolicies,
+	connections,
 	onClose,
 	onNavigateToNode,
 }: NetworkSidebarProps) {
-	return (
-		<div
-			className={`absolute bottom-0 right-0 top-0 z-20 w-full max-w-80 border-l border-border bg-card/95 backdrop-blur-xl transition-transform duration-300 ${
-				policy ? "translate-x-0" : "translate-x-full"
-			}`}
-		>
-			{policy && (
-				<ScrollArea className="h-full">
-					<div className="p-5 space-y-4">
-						{/* Header */}
-						<div className="flex items-center justify-between">
-							<span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground font-semibold">
-								Policy Detail
-							</span>
-							<button
-								onClick={onClose}
-								className="text-muted-foreground hover:text-foreground transition-colors"
-							>
-								<X className="h-4 w-4" />
-							</button>
-						</div>
+	const sharedThemes = useMemo(
+		() =>
+			[
+				...new Set(
+					connections.flatMap((connection) => connection.sharedThemes),
+				),
+			].slice(0, 4),
+		[connections],
+	);
 
-						{/* Badges */}
+	const step = (direction: 1 | -1) => {
+		if (connections.length === 0) return;
+		const nextIndex = direction === 1 ? 0 : connections.length - 1;
+		onNavigateToNode(connections[nextIndex].node.id);
+	};
+
+	return (
+		<aside
+			className={`network-inspector absolute inset-x-0 bottom-0 z-20 flex max-h-[43%] flex-col border-t border-border bg-card/98 shadow-[0_-12px_30px_rgba(16,33,58,0.08)] backdrop-blur-xl transition-transform duration-300 lg:inset-y-0 lg:left-auto lg:right-0 lg:h-full lg:max-h-none lg:w-[22rem] lg:border-l lg:border-t-0 lg:shadow-none ${
+				policy
+					? "translate-y-0 lg:translate-x-0"
+					: "translate-y-full lg:translate-x-full lg:translate-y-0"
+			}`}
+			aria-label="Selected policy relationships"
+			aria-live="polite"
+		>
+			{policy ? (
+				<>
+					<div className="flex shrink-0 justify-center py-2 lg:hidden">
+						<div className="h-1 w-10 rounded-full bg-border" />
+					</div>
+
+					<div className="flex items-center justify-between border-b border-border px-4 pb-3 lg:p-5">
+						<div>
+							<div className="font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-primary">
+								Selected policy
+							</div>
+							<h2 className="mt-1 max-w-[17rem] font-display text-xl leading-tight lg:text-2xl">
+								{policy.title}
+							</h2>
+						</div>
+						<button
+							type="button"
+							onClick={onClose}
+							className="flex size-11 shrink-0 items-center justify-center text-muted-foreground hover:bg-muted hover:text-foreground"
+							aria-label="Close policy relationship details"
+						>
+							<X className="size-4" />
+						</button>
+					</div>
+
+					<div className="min-h-0 flex-1 overflow-y-auto p-4 lg:p-5">
 						<div className="flex flex-wrap gap-1.5">
 							<Badge
-								variant="default"
-								className="text-[10px]"
-								style={{
-									backgroundColor: `var(--status-${policy.status}-bg)`,
-									color: `var(--status-${policy.status})`,
-									border: "none",
-								}}
+								variant="outline"
+								className={cn(
+									"rounded-none border-0 text-[10px]",
+									STATUS_BG_COLORS[policy.status],
+									STATUS_COLORS[policy.status],
+								)}
 							>
 								{getPolicyStatusName(policy.status)}
 							</Badge>
-							<Badge variant="outline" className="text-[10px]">
+							<Badge variant="outline" className="rounded-none text-[10px]">
 								{getPolicyTypeName(policy.type)}
 							</Badge>
-							<Badge variant="secondary" className="text-[10px]">
+							<Badge variant="outline" className="rounded-none text-[10px]">
 								{getJurisdictionName(policy.jurisdiction)}
+							</Badge>
+							<Badge
+								variant="outline"
+								className="rounded-none border-[color-mix(in_srgb,var(--trust)_45%,var(--border))] bg-[var(--status-active-bg)] text-[10px] text-[var(--trust)]"
+							>
+								{policy.verificationStatus === "verified"
+									? "Verified"
+									: "Review state"}
 							</Badge>
 						</div>
 
-						{/* Title */}
-						<h3 className="text-base font-semibold leading-snug">
-							{policy.title}
-						</h3>
-
-						{/* Date */}
-						{policy.effectiveDate && (
-							<p className="text-[11px] text-muted-foreground">
-								{getPolicyDateTypeName(policy.dateType)}:{" "}
+						{policy.effectiveDate ? (
+							<p className="mt-3 font-mono text-[10px] text-muted-foreground">
+								{getPolicyDateTypeName(policy.dateType)}{" "}
 								{formatPolicyDate(
 									{
 										type: policy.dateType,
@@ -93,113 +129,126 @@ export function NetworkSidebar({
 									{ short: true },
 								)}
 							</p>
-						)}
+						) : null}
 
-						<p
-							className={
-								policy.verificationStatus === "verified"
-									? "font-mono text-[11px] text-[var(--status-active)]"
-									: "font-mono text-[11px] text-[var(--status-proposed)]"
-							}
-						>
-							{policy.verificationStatus === "verified"
-								? "Verified"
-								: "Needs review"}
-						</p>
-
-						{/* Description */}
-						<p className="text-sm text-muted-foreground leading-relaxed">
-							{policy.description.length > 250
-								? policy.description.slice(0, 247) + "..."
-								: policy.description}
-						</p>
-
-						{/* Connected policies */}
-						{connectedPolicies.length > 0 && (
-							<div>
-								<span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground font-semibold block mb-2">
-									Connected Policies
-								</span>
-								<div className="space-y-1">
-									{connectedPolicies.map((cp) => (
+						<div className="mt-5 border-t border-border pt-4">
+							<div className="flex items-center justify-between gap-3">
+								<h3 className="font-display text-lg">
+									Why these policies connect
+								</h3>
+								{connections.length > 0 ? (
+									<div className="flex shrink-0 items-center gap-1">
 										<button
-											key={cp.id}
-											onClick={() => onNavigateToNode(cp.id)}
-											className="group flex w-full items-center gap-2 border-b border-border px-2.5 py-2 text-left transition-colors hover:bg-muted"
+											type="button"
+											onClick={() => step(-1)}
+											className="flex size-10 items-center justify-center border border-border hover:bg-muted"
+											aria-label="Previous related policy"
 										>
-											<div
-												className="w-2 h-2 rounded-full flex-shrink-0"
-												style={{
-													backgroundColor: resolveColor(
-														JURISDICTION_COLORS[cp.jurisdiction] ||
-															"var(--chart-1)",
-													),
-												}}
-											/>
-											<span className="text-xs text-foreground truncate flex-1">
-												{cp.title}
-											</span>
-											<ArrowRight className="h-3 w-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+											<ArrowLeft className="size-3.5" />
 										</button>
+										<span className="min-w-14 text-center font-mono text-[10px] text-muted-foreground">
+											{connections.length} related
+										</span>
+										<button
+											type="button"
+											onClick={() => step(1)}
+											className="flex size-10 items-center justify-center border border-border hover:bg-muted"
+											aria-label="Next related policy"
+										>
+											<ArrowRight className="size-3.5" />
+										</button>
+									</div>
+								) : null}
+							</div>
+
+							{sharedThemes.length > 0 ? (
+								<div className="mt-3 flex flex-wrap gap-1.5">
+									{sharedThemes.map((theme) => (
+										<span
+											key={theme}
+											className="border border-[color-mix(in_srgb,var(--trust)_40%,var(--border))] bg-[var(--status-active-bg)] px-2 py-1 text-[10px] text-[var(--trust)]"
+										>
+											{theme}
+										</span>
 									))}
 								</div>
-							</div>
-						)}
+							) : null}
+						</div>
 
-						{/* Agencies */}
-						{policy.agencies.length > 0 && (
-							<div>
-								<span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground font-semibold block mb-2">
-									Agencies
-								</span>
-								<div className="space-y-1">
-									{policy.agencies.map((agency) => (
-										<p key={agency} className="text-xs text-muted-foreground">
-											{agency}
-										</p>
-									))}
-								</div>
-							</div>
-						)}
-
-						{/* Tags */}
-						{policy.tags.length > 0 && (
-							<div className="flex flex-wrap gap-1">
-								{policy.tags.map((tag) => (
-									<span
-										key={tag}
-										className="bg-muted text-muted-foreground px-2 py-0.5 rounded text-[10px]"
-									>
-										{tag}
-									</span>
+						{connections.length > 0 ? (
+							<ol className="mt-4 divide-y divide-border">
+								{connections.map((connection, index) => (
+									<li key={connection.node.id}>
+										<button
+											type="button"
+											onClick={() => onNavigateToNode(connection.node.id)}
+											className="group flex min-h-16 w-full gap-3 py-3 text-left hover:bg-muted/45"
+										>
+											<span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-[var(--trust)] font-mono text-[10px] text-white">
+												{index + 1}
+											</span>
+											<span className="min-w-0 flex-1">
+												<span className="flex items-start justify-between gap-2">
+													<span className="text-sm font-medium leading-snug">
+														{connection.node.shortLabel}
+													</span>
+													<span className="shrink-0 border border-border px-1.5 py-0.5 font-mono text-[9px] uppercase text-muted-foreground">
+														{connection.node.jurisdiction}
+													</span>
+												</span>
+												<span className="mt-1 block text-[11px] leading-relaxed text-muted-foreground">
+													{connection.formalLabel
+														? connection.formalLabel
+														: `Shares ${connection.sharedThemes.length} editorial ${connection.sharedThemes.length === 1 ? "theme" : "themes"}`}
+													{connection.sharedThemes.length > 0
+														? `: ${connection.sharedThemes.slice(0, 3).join(", ")}`
+														: ""}
+												</span>
+											</span>
+										</button>
+									</li>
 								))}
-							</div>
+							</ol>
+						) : (
+							<p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+								This policy has no relationships under the current view.
+								Try showing all relationship types or clearing filters.
+							</p>
 						)}
 
-						{/* Actions */}
-						<div className="flex gap-2 pt-2">
-							<a
-								href={`/policies/${policy.id}`}
-								className="flex flex-1 items-center justify-center gap-1 border border-border bg-muted px-3 py-2 text-xs font-medium transition-colors hover:bg-accent"
-							>
-								View Full Policy
-								<ArrowRight className="h-3 w-3" />
-							</a>
-							{policy.sourceUrl && (
-								<a
-									href={policy.sourceUrl}
-									target="_blank"
-									rel="noopener noreferrer"
-									className="flex items-center gap-1 border border-border bg-muted/50 px-3 py-2 text-xs text-muted-foreground transition-colors hover:bg-muted"
-								>
-									Source
-									<ExternalLink className="h-3 w-3" />
-								</a>
-							)}
+						<div className="mt-5 border-t border-border pt-4">
+							<p className="text-sm leading-relaxed text-muted-foreground">
+								{policy.description}
+							</p>
+							{policy.agencies.length > 0 ? (
+								<p className="mt-3 text-xs text-muted-foreground">
+									<strong className="text-foreground">Published by:</strong>{" "}
+									{policy.agencies.join(", ")}
+								</p>
+							) : null}
 						</div>
 					</div>
-				</ScrollArea>
-			)}
-		</div>
+
+					<div className="grid shrink-0 grid-cols-2 gap-2 border-t border-border bg-background/90 p-3 lg:p-4">
+						<a
+							href={`/policies/${policy.id}`}
+							className="flex min-h-11 items-center justify-center gap-1 border border-primary px-3 text-xs font-medium text-primary hover:bg-accent"
+						>
+							View full policy
+							<ArrowRight className="size-3" />
+						</a>
+						<a
+							href={policy.sourceUrl}
+							target="_blank"
+							rel="noopener noreferrer"
+							className="flex min-h-11 items-center justify-center gap-1 border border-border px-3 text-xs text-muted-foreground hover:bg-muted"
+						>
+							Official source
+							<ExternalLink className="size-3" />
+						</a>
+					</div>
+				</>
+			) : null}
+		</aside>
 	);
 }

@@ -8,6 +8,7 @@ This directory holds the project-facing documentation that should stay in sync w
 - [Architecture](./architecture.md) — system boundaries, data ownership, and non-negotiable invariants.
 - [Information trust model](./trust-model.md) — verification tiers, source rules, date policy, and publication gates.
 - [Authoritative refactor tracker](./refactor-authoritative-policai.md) — baseline findings, workstreams, and completion gates.
+- [Network relationship explorer concept](./design/policai-network-concept-02.md) — the approved desktop/mobile semantic design contract for `/network`.
 
 ## Canonical Sources
 

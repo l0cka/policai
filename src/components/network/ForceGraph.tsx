@@ -1,45 +1,82 @@
 "use client";
 
-import { useRef, useEffect, useState, useCallback, useMemo } from "react";
-import { zoom as d3Zoom, type ZoomBehavior } from "d3-zoom";
+import {
+	useRef,
+	useEffect,
+	useState,
+	useCallback,
+	useMemo,
+} from "react";
+import {
+	zoom as d3Zoom,
+	zoomIdentity,
+	type ZoomBehavior,
+} from "d3-zoom";
 import { select } from "d3-selection";
+import { LocateFixed, Minus, Plus } from "lucide-react";
 import type { NetworkNode, NetworkEdge } from "@/lib/network-data";
+import type {
+	NetworkRelationFilter,
+	NetworkViewMode,
+} from "@/lib/network-view-state";
 import { useForceSimulation, type SimNode } from "./use-force-simulation";
-import { JURISDICTION_COLORS, resolveColor } from "./jurisdiction-colors";
-import { getJurisdictionName } from "@/types";
 
 interface ForceGraphProps {
 	nodes: NetworkNode[];
 	edges: NetworkEdge[];
-	searchQuery: string;
-	activeJurisdictions: Set<string>;
+	visibleNodeIds: Set<string>;
+	relationFilter: NetworkRelationFilter;
+	viewMode: NetworkViewMode;
 	selectedNodeId: string | null;
 	onNodeClick: (id: string) => void;
+	onStepNode: (id: string, direction: 1 | -1) => void;
 }
 
-const STATUS_RING_COLORS: Record<string, string> = {
-	active: "var(--status-active)",
-	proposed: "var(--status-proposed)",
-	amended: "var(--status-amended)",
-	repealed: "var(--status-repealed)",
-};
+function getEdgeIds(edge: {
+	source: string | number | SimNode;
+	target: string | number | SimNode;
+}): [string, string] {
+	const source =
+		typeof edge.source === "object" ? edge.source.id : String(edge.source);
+	const target =
+		typeof edge.target === "object" ? edge.target.id : String(edge.target);
+	return [source, target];
+}
+
+function getNeighbourIds(
+	nodeId: string | null,
+	edges: Array<{
+		source: string | number | SimNode;
+		target: string | number | SimNode;
+	}>,
+): Set<string> {
+	if (!nodeId) return new Set();
+	const ids = new Set<string>([nodeId]);
+	for (const edge of edges) {
+		const [source, target] = getEdgeIds(edge);
+		if (source === nodeId) ids.add(target);
+		if (target === nodeId) ids.add(source);
+	}
+	return ids;
+}
 
 export function ForceGraph({
 	nodes,
 	edges,
-	searchQuery,
-	activeJurisdictions,
+	visibleNodeIds,
+	relationFilter,
+	viewMode,
 	selectedNodeId,
 	onNodeClick,
+	onStepNode,
 }: ForceGraphProps) {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const svgRef = useRef<SVGSVGElement>(null);
-	const gRef = useRef<SVGGElement>(null);
-	const [dimensions, setDimensions] = useState({ width: 800, height: 600 });
+	const zoomRef = useRef<ZoomBehavior<SVGSVGElement, unknown> | null>(null);
+	const [dimensions, setDimensions] = useState({ width: 800, height: 620 });
 	const [hoveredNode, setHoveredNode] = useState<string | null>(null);
 	const [transform, setTransform] = useState({ x: 0, y: 0, k: 1 });
 
-	// Measure container
 	useEffect(() => {
 		if (!containerRef.current) return;
 		const observer = new ResizeObserver((entries) => {
@@ -50,39 +87,39 @@ export function ForceGraph({
 		return () => observer.disconnect();
 	}, []);
 
-	const { simNodes, simEdges, simulation } = useForceSimulation(
-		nodes,
-		edges,
-		dimensions.width,
-		dimensions.height,
+	const filteredEdges = useMemo(
+		() =>
+			edges.filter(
+				(edge) =>
+					relationFilter === "all" || edge.kind === relationFilter,
+			),
+		[edges, relationFilter],
 	);
 
-	// Compute cluster centroids for labels
-	const clusterLabels = useMemo(() => {
-		const groups: Record<string, { xs: number[]; ys: number[] }> = {};
-		for (const node of simNodes) {
-			if (!groups[node.jurisdiction])
-				groups[node.jurisdiction] = { xs: [], ys: [] };
-			groups[node.jurisdiction].xs.push(node.x);
-			groups[node.jurisdiction].ys.push(node.y);
-		}
-		return Object.entries(groups).map(([jurisdiction, { xs, ys }]) => ({
-			jurisdiction,
-			label: getJurisdictionName(jurisdiction),
-			x: xs.reduce((a, b) => a + b, 0) / xs.length,
-			y: ys.reduce((a, b) => a + b, 0) / ys.length - 30,
-		}));
-	}, [simNodes]);
+	const { simNodes, simEdges, renderReady } = useForceSimulation(
+		nodes,
+		filteredEdges,
+		dimensions.width,
+		dimensions.height,
+		selectedNodeId,
+		viewMode,
+	);
 
-	// Zoom behavior
 	useEffect(() => {
 		if (!svgRef.current) return;
 		const svg = select(svgRef.current);
-		const zoomBehavior: ZoomBehavior<SVGSVGElement, unknown> = d3Zoom<
-			SVGSVGElement,
-			unknown
-		>()
-			.scaleExtent([0.3, 3])
+		const zoomBehavior = d3Zoom<SVGSVGElement, unknown>()
+			.scaleExtent([0.45, 3.2])
+			.filter((event) => {
+				if (event.type === "wheel") {
+					const wheelEvent = event as WheelEvent;
+					return wheelEvent.ctrlKey || wheelEvent.metaKey;
+				}
+				if (event.type.startsWith("touch")) {
+					return (event as TouchEvent).touches.length >= 2;
+				}
+				return !(event as MouseEvent).button;
+			})
 			.on("zoom", (event) => {
 				setTransform({
 					x: event.transform.x,
@@ -90,98 +127,177 @@ export function ForceGraph({
 					k: event.transform.k,
 				});
 			});
+		zoomRef.current = zoomBehavior;
 		svg.call(zoomBehavior);
 		return () => {
 			svg.on(".zoom", null);
+			zoomRef.current = null;
 		};
 	}, []);
 
-	// Drag behavior
-	const handleDragStart = useCallback(
-		(nodeId: string) => {
-			const sim = simulation.current;
-			if (sim) sim.alphaTarget(0.3).restart();
-			const node = sim?.nodes().find((n) => (n as SimNode).id === nodeId) as
-				| SimNode
-				| undefined;
-			if (node) node.fx = node.x;
-			if (node) node.fy = node.y;
-		},
-		[simulation],
+	const selectedIds = useMemo(
+		() => getNeighbourIds(selectedNodeId, simEdges),
+		[selectedNodeId, simEdges],
 	);
-
-	const handleDrag = useCallback(
-		(nodeId: string, dx: number, dy: number) => {
-			const sim = simulation.current;
-			const node = sim?.nodes().find((n) => (n as SimNode).id === nodeId) as
-				| SimNode
-				| undefined;
-			if (node) {
-				node.fx = (node.fx ?? node.x) + dx / transform.k;
-				node.fy = (node.fy ?? node.y) + dy / transform.k;
-			}
-		},
-		[simulation, transform.k],
+	const previewIds = useMemo(
+		() => getNeighbourIds(hoveredNode, simEdges),
+		[hoveredNode, simEdges],
 	);
+	const activeIds = hoveredNode ? previewIds : selectedIds;
 
-	const handleDragEnd = useCallback(
-		(nodeId: string) => {
-			const sim = simulation.current;
-			if (sim) sim.alphaTarget(0);
-			const node = sim?.nodes().find((n) => (n as SimNode).id === nodeId) as
-				| SimNode
-				| undefined;
-			if (node) {
-				node.fx = null;
-				node.fy = null;
-			}
-		},
-		[simulation],
-	);
-
-	// Node visibility
-	const isNodeVisible = useCallback(
-		(node: SimNode) => {
-			if (!activeJurisdictions.has(node.jurisdiction)) return false;
-			if (
-				searchQuery &&
-				!node.title.toLowerCase().includes(searchQuery.toLowerCase())
-			)
-				return false;
-			return true;
-		},
-		[activeJurisdictions, searchQuery],
-	);
-
-	// Connected node highlighting
-	const connectedIds = useMemo(() => {
-		if (!hoveredNode) return new Set<string>();
-		const ids = new Set<string>();
-		ids.add(hoveredNode);
-		for (const edge of simEdges) {
-			const src =
-				typeof edge.source === "object"
-					? (edge.source as SimNode).id
-					: String(edge.source);
-			const tgt =
-				typeof edge.target === "object"
-					? (edge.target as SimNode).id
-					: String(edge.target);
-			if (src === hoveredNode) ids.add(tgt);
-			if (tgt === hoveredNode) ids.add(src);
+	const labelledIds = useMemo(() => {
+		if (hoveredNode) return previewIds;
+		if (selectedNodeId) {
+			if (dimensions.width >= 640) return selectedIds;
+			const strongestNeighbours = simEdges
+				.flatMap((edge) => {
+					const [source, target] = getEdgeIds(edge);
+					if (source === selectedNodeId) {
+						return [{ id: target, weight: edge.weight, kind: edge.kind }];
+					}
+					if (target === selectedNodeId) {
+						return [{ id: source, weight: edge.weight, kind: edge.kind }];
+					}
+					return [];
+				})
+				.sort(
+					(a, b) =>
+						Number(b.kind === "formal") -
+							Number(a.kind === "formal") ||
+						b.weight - a.weight ||
+						a.id.localeCompare(b.id, "en-AU"),
+				)
+				.slice(0, 2)
+				.map((entry) => entry.id);
+			return new Set([selectedNodeId, ...strongestNeighbours]);
 		}
-		return ids;
-	}, [hoveredNode, simEdges]);
+		return new Set(
+			[...nodes]
+				.sort(
+					(a, b) =>
+						b.thematicDegree - a.thematicDegree ||
+						a.title.localeCompare(b.title, "en-AU"),
+				)
+				.slice(0, 5)
+				.map((node) => node.id),
+		);
+	}, [
+		dimensions.width,
+		hoveredNode,
+		nodes,
+		previewIds,
+		selectedIds,
+		selectedNodeId,
+		simEdges,
+	]);
+
+	const selectedSimNode = useMemo(
+		() => simNodes.find((node) => node.id === selectedNodeId) ?? null,
+		[selectedNodeId, simNodes],
+	);
+
+	const zoomBy = useCallback((factor: number) => {
+		if (!svgRef.current || !zoomRef.current) return;
+		select(svgRef.current).call(zoomRef.current.scaleBy, factor);
+	}, []);
+
+	const fitSelection = useCallback(() => {
+		if (!svgRef.current || !zoomRef.current) return;
+		const targetNodes = simNodes.filter((node) =>
+			selectedNodeId ? selectedIds.has(node.id) : visibleNodeIds.has(node.id),
+		);
+		if (targetNodes.length === 0) return;
+
+		const minX = Math.min(...targetNodes.map((node) => node.x));
+		const maxX = Math.max(...targetNodes.map((node) => node.x));
+		const minY = Math.min(...targetNodes.map((node) => node.y));
+		const maxY = Math.max(...targetNodes.map((node) => node.y));
+		const selectionWidth = Math.max(120, maxX - minX + 120);
+		const selectionHeight = Math.max(120, maxY - minY + 120);
+		const scale = Math.max(
+			0.6,
+			Math.min(
+				2.25,
+				(dimensions.width * 0.84) / selectionWidth,
+				(dimensions.height * 0.78) / selectionHeight,
+			),
+		);
+		const centreX = (minX + maxX) / 2;
+		const centreY = (minY + maxY) / 2;
+		const nextTransform = zoomIdentity
+			.translate(
+				dimensions.width / 2 - scale * centreX,
+				dimensions.height / 2 - scale * centreY,
+			)
+			.scale(scale);
+		select(svgRef.current).call(zoomRef.current.transform, nextTransform);
+	}, [
+		dimensions.height,
+		dimensions.width,
+		selectedIds,
+		selectedNodeId,
+		simNodes,
+		visibleNodeIds,
+	]);
+
+	const visibleCount = simNodes.filter((node) =>
+		visibleNodeIds.has(node.id),
+	).length;
 
 	return (
-		<div ref={containerRef} className="w-full h-full relative">
+		<div
+			ref={containerRef}
+			className="network-graph relative h-full min-h-[34rem] w-full overflow-hidden bg-background"
+			data-render-ready={renderReady ? "true" : "false"}
+		>
+			<div
+				className="absolute left-3 top-3 z-10 flex flex-col border border-border bg-background/95"
+				data-print-hidden
+			>
+				<button
+					type="button"
+					onClick={() => zoomBy(1.3)}
+					className="flex size-11 items-center justify-center border-b border-border hover:bg-muted"
+					aria-label="Zoom in"
+				>
+					<Plus className="size-4" />
+				</button>
+				<button
+					type="button"
+					onClick={() => zoomBy(1 / 1.3)}
+					className="flex size-11 items-center justify-center border-b border-border hover:bg-muted"
+					aria-label="Zoom out"
+				>
+					<Minus className="size-4" />
+				</button>
+				<button
+					type="button"
+					onClick={fitSelection}
+					className="flex size-11 flex-col items-center justify-center gap-0.5 hover:bg-muted"
+					aria-label="Fit selected policies"
+				>
+					<LocateFixed className="size-4" />
+					<span className="text-[8px] leading-none">Fit</span>
+				</button>
+			</div>
+
 			<svg
 				ref={svgRef}
 				width={dimensions.width}
 				height={dimensions.height}
-				className="cursor-grab active:cursor-grabbing"
+				className="touch-pan-y cursor-grab active:cursor-grabbing"
+				role="group"
+				aria-labelledby="network-graph-title network-graph-description"
 			>
-				{/* Background pattern */}
+				<title id="network-graph-title">
+					Australian AI policy relationship explorer
+				</title>
+				<desc id="network-graph-description">
+					{visibleCount} policies are visible. The selected policy and its
+					direct thematic or formal relationships are emphasized. Thematic
+					proximity is inferred and does not imply legal authority,
+					dependency or endorsement.
+				</desc>
 				<defs>
 					<pattern
 						id="network-dots"
@@ -191,8 +307,19 @@ export function ForceGraph({
 						height="20"
 						patternUnits="userSpaceOnUse"
 					>
-						<circle cx="10" cy="10" r="0.8" className="fill-border" />
+						<circle cx="10" cy="10" r="0.65" className="fill-border" />
 					</pattern>
+					<marker
+						id="network-formal-arrow"
+						viewBox="0 0 10 10"
+						refX="10"
+						refY="5"
+						markerWidth="6"
+						markerHeight="6"
+						orient="auto-start-reverse"
+					>
+						<path d="M 0 0 L 10 5 L 0 10 z" fill="var(--caution)" />
+					</marker>
 				</defs>
 				<rect
 					width={dimensions.width}
@@ -201,150 +328,220 @@ export function ForceGraph({
 				/>
 
 				<g
-					ref={gRef}
 					transform={`translate(${transform.x},${transform.y}) scale(${transform.k})`}
 				>
-					{/* Edges */}
-					{simEdges.map((edge, i) => {
-						const src = edge.source as SimNode;
-						const tgt = edge.target as SimNode;
-						if (!isNodeVisible(src) || !isNodeVisible(tgt)) return null;
+					{simEdges.map((edge, index) => {
+						const source = edge.source as SimNode;
+						const target = edge.target as SimNode;
+						if (
+							!visibleNodeIds.has(source.id) ||
+							!visibleNodeIds.has(target.id)
+						) {
+							return null;
+						}
 
-						const isHighlighted =
-							hoveredNode &&
-							connectedIds.has(src.id) &&
-							connectedIds.has(tgt.id);
-						const jurisdictionColor = resolveColor(
-							JURISDICTION_COLORS[src.jurisdiction] || "var(--chart-1)",
-						);
-
+						const [sourceId, targetId] = getEdgeIds(edge);
+						const active =
+							activeIds.has(sourceId) && activeIds.has(targetId);
+						const isFormal = edge.kind === "formal";
 						return (
 							<line
-								key={`edge-${i}`}
-								x1={src.x}
-								y1={src.y}
-								x2={tgt.x}
-								y2={tgt.y}
-								stroke={edge.crossJurisdiction ? "var(--network-cross-edge)" : jurisdictionColor}
-								strokeWidth={isHighlighted ? 2.5 : 1}
-								strokeDasharray={edge.crossJurisdiction ? "6,3" : undefined}
-								opacity={hoveredNode ? (isHighlighted ? 0.8 : 0.15) : 0.3}
-								className="transition-opacity duration-200"
-							/>
+								key={`${edge.kind}-${sourceId}-${targetId}-${index}`}
+								x1={source.x}
+								y1={source.y}
+								x2={target.x}
+								y2={target.y}
+								stroke={
+									isFormal
+										? "var(--caution)"
+										: active
+											? "var(--trust)"
+											: "var(--network-edge)"
+								}
+								strokeWidth={
+									active
+										? 2.4
+										: isFormal
+											? 1.8
+											: Math.min(1.7, 0.65 + edge.weight * 0.18)
+								}
+								strokeDasharray={isFormal ? undefined : "3 3"}
+								markerEnd={
+									isFormal ? "url(#network-formal-arrow)" : undefined
+								}
+								opacity={
+									activeIds.size > 0 ? (active ? 0.95 : 0.13) : 0.34
+								}
+								vectorEffect="non-scaling-stroke"
+							>
+								<title>
+									{isFormal
+										? "Formal supersession relationship"
+										: `${edge.sharedThemes.length} shared editorial ${edge.sharedThemes.length === 1 ? "theme" : "themes"}: ${edge.sharedThemes.join(", ")}`}
+								</title>
+							</line>
 						);
 					})}
 
-					{/* Cluster labels */}
-					{clusterLabels
-						.filter((cl) => activeJurisdictions.has(cl.jurisdiction))
-						.map((cl) => (
-							<text
-								key={`label-${cl.jurisdiction}`}
-								x={cl.x}
-								y={cl.y}
-								textAnchor="middle"
-								className="fill-muted-foreground font-sans text-[11px] font-medium pointer-events-none select-none"
-								opacity={0.5}
-							>
-								{cl.label}
-							</text>
-						))}
-
-					{/* Nodes */}
 					{simNodes.map((node) => {
-						const visible = isNodeVisible(node);
-						const isHovered = hoveredNode === node.id;
-						const isSelected = selectedNodeId === node.id;
-						const isConnected = connectedIds.has(node.id);
-						const jurisdictionColor = resolveColor(
-							JURISDICTION_COLORS[node.jurisdiction] || "var(--chart-1)",
-						);
-						const statusColor = resolveColor(
-							STATUS_RING_COLORS[node.status] || "var(--status-repealed)",
-						);
-
-						const nodeOpacity = !visible
-							? 0.08
-							: hoveredNode
-								? isConnected
+						const visible = visibleNodeIds.has(node.id);
+						const selected = selectedNodeId === node.id;
+						const hovered = hoveredNode === node.id;
+						const connected = activeIds.has(node.id);
+						const showLabel = labelledIds.has(node.id) && visible;
+						const deltaX = selectedSimNode
+							? node.x - selectedSimNode.x
+							: node.x - dimensions.width / 2;
+						const deltaY = selectedSimNode
+							? node.y - selectedSimNode.y
+							: 0;
+						const verticalLabel =
+							!selected && Math.abs(deltaY) > Math.abs(deltaX) * 1.1;
+						const labelOnLeft =
+							node.x > dimensions.width * 0.68 ||
+							(node.x >= dimensions.width * 0.32 && deltaX < 0);
+						const labelX = selected
+							? 0
+							: verticalLabel
+								? 0
+								: labelOnLeft
+									? -(node.radius + 7)
+									: node.radius + 7;
+						const labelY = selected
+							? node.radius + 17
+							: verticalLabel
+								? deltaY < 0
+									? -(node.radius + 8)
+									: node.radius + 15
+								: 4;
+						const fill = selected
+							? "var(--primary)"
+							: connected
+								? "var(--trust)"
+								: "var(--network-default-bg)";
+						const opacity = !visible
+							? 0.06
+							: activeIds.size > 0
+								? connected
 									? 1
-									: 0.25
-								: 1;
+									: viewMode === "focus"
+										? 0.16
+										: 0.34
+								: 0.8;
 
 						return (
 							<g
 								key={node.id}
 								transform={`translate(${node.x},${node.y})`}
-								opacity={nodeOpacity}
-								className="transition-opacity duration-200 cursor-pointer"
+								opacity={opacity}
+								className="cursor-pointer transition-opacity duration-150 outline-none"
+								role="button"
+								tabIndex={visible ? 0 : -1}
+								aria-label={node.title}
+								aria-pressed={selected}
 								onMouseEnter={() => setHoveredNode(node.id)}
 								onMouseLeave={() => setHoveredNode(null)}
-								onClick={() => onNodeClick(node.id)}
-								onMouseDown={(e) => {
-									const startX = e.clientX;
-									const startY = e.clientY;
-									let dragged = false;
-									handleDragStart(node.id);
-
-									const onMove = (ev: MouseEvent) => {
-										const dx = ev.clientX - startX;
-										const dy = ev.clientY - startY;
-										if (Math.abs(dx) > 3 || Math.abs(dy) > 3) dragged = true;
-										handleDrag(node.id, ev.movementX, ev.movementY);
-									};
-									const onUp = () => {
-										handleDragEnd(node.id);
-										window.removeEventListener("mousemove", onMove);
-										window.removeEventListener("mouseup", onUp);
-										if (!dragged) onNodeClick(node.id);
-									};
-									window.addEventListener("mousemove", onMove);
-									window.addEventListener("mouseup", onUp);
-									e.stopPropagation();
+								onFocus={() => setHoveredNode(node.id)}
+								onBlur={() => setHoveredNode(null)}
+								onClick={(event) => {
+									event.stopPropagation();
+									onNodeClick(node.id);
+								}}
+								onKeyDown={(event) => {
+									if (event.key === "Enter" || event.key === " ") {
+										event.preventDefault();
+										onNodeClick(node.id);
+									}
+									if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+										event.preventDefault();
+										onStepNode(node.id, 1);
+									}
+									if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+										event.preventDefault();
+										onStepNode(node.id, -1);
+									}
 								}}
 							>
-								{/* Status ring */}
 								<circle
-									r={node.radius + 2}
-									fill="none"
-									stroke={statusColor}
-									strokeWidth={isSelected ? 2.5 : 1.5}
-									opacity={isHovered || isSelected ? 1 : 0.6}
+									r={Math.max(22, node.radius + 10)}
+									fill="transparent"
+									pointerEvents="all"
 								/>
-								{/* Node circle */}
+								{selected ? (
+									<circle
+										r={node.radius + 5}
+										fill="none"
+										stroke="var(--primary)"
+										strokeWidth={2}
+										vectorEffect="non-scaling-stroke"
+									/>
+								) : null}
 								<circle
-									r={isHovered ? node.radius * 1.2 : node.radius}
-									fill={jurisdictionColor}
-									className="transition-all duration-150"
+									r={hovered ? node.radius * 1.13 : node.radius}
+									fill={fill}
+									stroke="var(--background)"
+									strokeWidth={2}
+									vectorEffect="non-scaling-stroke"
 								/>
-								{/* Hover label */}
-								{isHovered && (
-									<>
-										<rect
-											x={-node.title.length * 3.2}
-											y={-node.radius - 26}
-											width={node.title.length * 6.4}
-											height={18}
-											rx={4}
-											className="fill-card stroke-border"
-											strokeWidth={0.5}
-										/>
-										<text
-											y={-node.radius - 14}
-											textAnchor="middle"
-											className="fill-foreground font-sans text-[10px] pointer-events-none select-none"
-										>
-											{node.title.length > 40
-												? node.title.slice(0, 37) + "..."
-												: node.title}
-										</text>
-									</>
-								)}
+								{node.formalDegree > 0 ? (
+									<circle
+										cx={node.radius * 0.72}
+										cy={-node.radius * 0.72}
+										r={3.2}
+										fill="var(--caution)"
+										stroke="var(--background)"
+										strokeWidth={1}
+										vectorEffect="non-scaling-stroke"
+									/>
+								) : null}
+								{showLabel ? (
+									<text
+										x={labelX}
+										y={labelY}
+										textAnchor={
+											selected || verticalLabel
+												? "middle"
+												: labelOnLeft
+													? "end"
+													: "start"
+										}
+										className={
+											selected
+												? "fill-primary text-[12px] font-semibold"
+												: "fill-foreground text-[11px] font-medium"
+										}
+										style={{
+											paintOrder: "stroke",
+											stroke: "var(--background)",
+											strokeWidth: 4,
+										}}
+										pointerEvents="none"
+									>
+										{node.shortLabel}
+									</text>
+								) : null}
 							</g>
 						);
 					})}
 				</g>
 			</svg>
+
+			<div className="absolute bottom-3 right-3 hidden border border-border bg-background/95 px-3 py-2 text-[10px] text-muted-foreground sm:block">
+				<div className="mb-1 font-mono text-[9px] uppercase tracking-[0.12em]">
+					Edge key
+				</div>
+				<div className="space-y-1">
+					<div className="flex items-center gap-2">
+						<span className="h-px w-5 border-t border-dashed border-[var(--trust)]" />
+						<span>Thematic proximity</span>
+					</div>
+					<div className="flex items-center gap-2">
+						<span className="h-px w-5 bg-[var(--caution)]" />
+						<span>Formal relationship →</span>
+					</div>
+					<div>Node size reflects relationship count</div>
+				</div>
+			</div>
 		</div>
 	);
 }

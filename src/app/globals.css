@@ -320,3 +320,118 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Network relationship explorer responsive states */
+@media (max-width: 767px) {
+  .network-desktop-title,
+  .network-method-intro,
+  .network-metrics {
+    display: none;
+  }
+
+  .network-mobile-title {
+    display: block;
+  }
+
+  .network-insight-line {
+    display: none;
+  }
+
+  .network-page-intro {
+    padding-bottom: 1rem;
+  }
+
+  .network-workspace {
+    margin-top: 1rem;
+  }
+}
+
+@media (max-width: 1023px) and (orientation: landscape) and (max-height: 600px) {
+  .network-page-intro {
+    padding-bottom: 0.75rem;
+  }
+
+  .network-page-intro > div {
+    display: grid;
+    grid-template-columns: minmax(17rem, 0.9fr) minmax(20rem, 1.1fr);
+    align-items: end;
+    gap: 1.5rem;
+  }
+
+  .network-desktop-title,
+  .network-method-intro,
+  .network-metrics {
+    display: none;
+  }
+
+  .network-mobile-title {
+    display: block;
+    margin-top: 0.25rem;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
+  .network-caveat {
+    margin-top: 0;
+  }
+
+  .network-insight-line {
+    display: none;
+  }
+
+  .network-workspace {
+    min-height: 34rem;
+    margin-top: 0.75rem;
+  }
+
+  .network-main {
+    margin-right: 20rem;
+  }
+
+  .network-mobile-view,
+  .network-toolbar-actions,
+  .network-toolbar-filters {
+    display: none;
+  }
+
+  .network-mobile-filter {
+    display: inline-flex;
+  }
+
+  .network-toolbar > div:last-child {
+    display: none;
+  }
+
+  .network-graph-shell {
+    height: 27rem;
+  }
+
+  .network-inspector {
+    inset: 0 0 0 auto;
+    width: 20rem;
+    max-height: none;
+    border-top: 0;
+    border-left: 1px solid var(--border);
+    box-shadow: none;
+    transform: translate(0, 0);
+  }
+
+  .network-inspector > div:first-child {
+    display: none;
+  }
+}
+
+@media print {
+  .network-workspace {
+    break-inside: avoid;
+  }
+
+  .network-inspector {
+    position: absolute;
+  }
+
+  .network-graph-shell {
+    height: 42rem;
+  }
+}
