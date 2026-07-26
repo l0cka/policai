@@ -26,13 +26,12 @@ import { EmptyState } from '@/components/ui/empty-state';
 import { formatPolicyDate } from '@/lib/format-policy-date';
 import { cn } from '@/lib/utils';
 
-type TabId = 'overview' | 'requirements' | 'content' | 'related';
+type TabId = 'overview' | 'requirements' | 'content';
 
 const tabs: Array<{ id: TabId; label: string }> = [
   { id: 'overview', label: 'Overview' },
   { id: 'requirements', label: 'Key requirements' },
   { id: 'content', label: 'Full text' },
-  { id: 'related', label: 'Related' },
 ];
 
 function humanDate(value: string): string {
@@ -184,11 +183,8 @@ export function PolicyDetailTabs({
 
           {activeTab === 'overview' ? (
             <div className="py-6">
-              <h2 className="text-xl font-semibold">Overview</h2>
-              <p className="mt-3 max-w-3xl text-sm leading-6">{policy.description}</p>
-
               {policy.aiSummary ? (
-                <div className="mt-5 max-w-4xl border border-[var(--trust)]/35 bg-[var(--status-active-bg)]/35 p-4">
+                <div className="max-w-4xl border border-[var(--trust)]/35 bg-[var(--status-active-bg)]/35 p-4">
                   <div className="flex gap-3">
                     <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[var(--trust)] text-white">
                       <Info className="h-4 w-4" />
@@ -265,11 +261,6 @@ export function PolicyDetailTabs({
             </div>
           ) : null}
 
-          {activeTab === 'related' ? (
-            <div className="py-6">
-              <RelatedPolicies policies={relatedPolicies} />
-            </div>
-          ) : null}
         </div>
 
         <aside className="space-y-5 xl:pt-0">

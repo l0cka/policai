@@ -67,6 +67,9 @@ async function runAudit(options: Options) {
       (result) => result.status === 'baseline_missing',
     ).length,
     changed: results.filter((result) => result.status === 'changed').length,
+    comparisonUnavailable: results.filter(
+      (result) => result.status === 'comparison_unavailable',
+    ).length,
     sourceMissing: results.filter(
       (result) => result.status === 'source_missing',
     ).length,
@@ -103,7 +106,7 @@ async function runAudit(options: Options) {
       );
     }
     console.log(
-      `audit-register: ${counts.unchanged} unchanged, ${counts.baselineMissing} baselines missing, ${counts.changed} changed, ${counts.sourceMissing} sources missing, ${counts.retrievalFailed} retrieval failures${options.writeEvidence ? '; evidence written' : ''}`,
+      `audit-register: ${counts.unchanged} unchanged, ${counts.baselineMissing} baselines missing, ${counts.changed} changed, ${counts.comparisonUnavailable} comparisons unavailable, ${counts.sourceMissing} sources missing, ${counts.retrievalFailed} retrieval failures${options.writeEvidence ? '; evidence written' : ''}`,
     );
   }
 

@@ -78,12 +78,7 @@ export function TimelineBrowser({
     <div className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
       <PageIntro
         title="Policy timeline"
-        description={
-          <p>
-          Track the evolution of Australian AI policy through source-linked
-          events. Each event carries its editorial verification state.
-          </p>
-        }
+        description="Source-linked milestones across Australian jurisdictions."
       />
 
       <MetricStrip metrics={[

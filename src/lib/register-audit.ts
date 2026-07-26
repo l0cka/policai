@@ -3,14 +3,24 @@ import {
   SourceFetchError,
   type RetrievedSource,
 } from '@/lib/pipeline/fetch';
-import type { Policy, SourceEvidence } from '@/types';
+import { sourceUrlIdentity } from '@/lib/source-url';
+import type {
+  LinkedDocumentEvidence,
+  Policy,
+  SourceEvidence,
+} from '@/types';
 
 export type RegisterAuditStatus =
   | 'unchanged'
   | 'baseline_missing'
   | 'changed'
+  | 'comparison_unavailable'
   | 'source_missing'
   | 'retrieval_failed';
+
+export type RegisterAuditComparisonBasis =
+  | 'content_hash'
+  | 'linked_documents';
 
 export interface RegisterAuditResult {
   policyId: string;
@@ -20,6 +30,7 @@ export interface RegisterAuditResult {
   checkedAt: string;
   previousHash?: string;
   currentEvidence?: SourceEvidence;
+  comparisonBasis?: RegisterAuditComparisonBasis;
   httpStatus?: number;
   error?: string;
 }
@@ -29,6 +40,98 @@ interface RegisterAuditOptions {
   sourceId?: string;
   retrieve?: (url: string) => Promise<RetrievedSource>;
   now?: () => Date;
+}
+
+interface EvidenceComparison {
+  status: 'unchanged' | 'changed' | 'comparison_unavailable';
+  basis?: RegisterAuditComparisonBasis;
+  error?: string;
+}
+
+function linkedDocumentIdentity(
+  document: LinkedDocumentEvidence,
+): string {
+  return sourceUrlIdentity(document.finalUrl ?? document.url);
+}
+
+/**
+ * Compare exact linked-document bytes only when both evidence sets describe
+ * the same document identities. This makes browser-capture composites
+ * comparable with fresh server retrievals without treating their different
+ * page-hash formats as policy changes.
+ */
+function compareLinkedDocuments(
+  previous: readonly LinkedDocumentEvidence[] | undefined,
+  current: readonly LinkedDocumentEvidence[] | undefined,
+): EvidenceComparison | null {
+  if (!previous?.length || !current?.length) return null;
+
+  const previousByUrl = new Map(
+    previous.map((document) => [
+      linkedDocumentIdentity(document),
+      document.contentHash,
+    ]),
+  );
+  const currentByUrl = new Map(
+    current.map((document) => [
+      linkedDocumentIdentity(document),
+      document.contentHash,
+    ]),
+  );
+  if (
+    previousByUrl.size !== currentByUrl.size ||
+    [...previousByUrl.keys()].some((url) => !currentByUrl.has(url))
+  ) {
+    return {
+      status: 'comparison_unavailable',
+      error:
+        'Stored and current evidence refer to different linked-document sets',
+    };
+  }
+
+  const changed = [...previousByUrl].some(
+    ([url, hash]) => currentByUrl.get(url) !== hash,
+  );
+  return {
+    status: changed ? 'changed' : 'unchanged',
+    basis: 'linked_documents',
+  };
+}
+
+export function compareRegisterSourceEvidence(
+  previous: SourceEvidence,
+  current: SourceEvidence,
+): EvidenceComparison {
+  const linkedComparison = compareLinkedDocuments(
+    previous.linkedDocuments,
+    current.linkedDocuments,
+  );
+  const retrievalMethodsMatch =
+    Boolean(previous.browserCapture) === Boolean(current.browserCapture);
+
+  if (!retrievalMethodsMatch) {
+    return (
+      linkedComparison ?? {
+        status: 'comparison_unavailable',
+        error:
+          'Stored browser-capture evidence is not directly comparable with the current server-retrieval fingerprint',
+      }
+    );
+  }
+
+  if (!previous.contentHash || !current.contentHash) {
+    return {
+      status: 'comparison_unavailable',
+      error: 'Comparable source evidence is missing a content fingerprint',
+    };
+  }
+  return {
+    status:
+      previous.contentHash === current.contentHash
+        ? 'unchanged'
+        : 'changed',
+    basis: 'content_hash',
+  };
 }
 
 async function mapWithConcurrency<T, R>(
@@ -88,12 +191,15 @@ export async function auditRegister(
             ? retrievedAt
             : completedAt;
         const previousHash = policy.verification.source.contentHash;
-        const currentHash = retrieved.evidence.contentHash;
-        const status: RegisterAuditStatus = !previousHash
-          ? 'baseline_missing'
-          : previousHash === currentHash
-            ? 'unchanged'
-            : 'changed';
+        const comparison = previousHash
+          ? compareRegisterSourceEvidence(
+              policy.verification.source,
+              retrieved.evidence,
+            )
+          : null;
+        const status: RegisterAuditStatus = comparison
+          ? comparison.status
+          : 'baseline_missing';
         return {
           policyId: policy.id,
           title: policy.title,
@@ -102,6 +208,8 @@ export async function auditRegister(
           checkedAt,
           previousHash,
           currentEvidence: retrieved.evidence,
+          comparisonBasis: comparison?.basis,
+          error: comparison?.error,
         };
       } catch (error) {
         const checkedAt = now().toISOString();
@@ -158,6 +266,8 @@ export function applyRegisterAuditEvidence(
       };
     }
 
+    if (result.status === 'comparison_unavailable') return policy;
+
     if (!result.currentEvidence) return policy;
 
     const observedSource = {
@@ -170,7 +280,10 @@ export function applyRegisterAuditEvidence(
         ...policy,
         verification: {
           ...policy.verification,
-          source: observedSource,
+          source:
+            result.comparisonBasis === 'linked_documents'
+              ? policy.verification.source
+              : observedSource,
           lastSourceAuditAt: result.checkedAt,
         },
       };

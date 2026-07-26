@@ -31,10 +31,7 @@ export default async function FrameworkPage() {
             Back to Policies
           </Link>
         </div>
-        <PageIntro
-          title="AI in Government framework"
-          description="Explore the structure, obligations and accountability model behind the Australian Government policy for responsible AI use."
-        />
+        <PageIntro title="AI in Government framework" />
         <Card className="rounded-none border-[var(--caution)]/30 bg-[var(--status-proposed-bg)]/25 shadow-none">
           <CardHeader>
             <CardTitle>Framework temporarily unavailable</CardTitle>
@@ -74,25 +71,15 @@ export default async function FrameworkPage() {
       </div>
 
       <div className="mb-8 space-y-6">
-        <PageIntro
-          title="AI in Government framework"
-          description={
-            <p>
-              Explore the structure, obligations, and accountability model behind the Australian Government&apos;s policy for responsible AI use.
-            </p>
-          }
-        />
+        <PageIntro title="AI in Government framework" />
 
         <Card className="rounded-none border-primary/20 bg-primary/5 shadow-none">
           <CardContent className="p-6">
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
               <div className="flex-1">
-                <h2 className="mb-2 text-xl font-semibold">
-                  Australian Government AI Policy Visual Map
-                </h2>
+                <h2 className="mb-2 text-xl font-semibold">Version 2.0 visual map</h2>
                 <p className="text-sm text-muted-foreground">
-                  This interactive visualization breaks down the DTA&apos;s Policy for the Responsible Use of AI
-                  in Government (Version 2.0). Click on pillars to explore principles and requirements.
+                  Select a pillar to view its principles and requirements.
                 </p>
               </div>
               <div className="flex flex-wrap gap-2">
@@ -132,27 +119,8 @@ export default async function FrameworkPage() {
       {/* Framework Visualization */}
       <PolicyFrameworkMap data={frameworkData as FrameworkData} />
 
-      {/* Footer Note */}
       <Card className="mt-10 rounded-none border-border bg-card/35 shadow-none">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-lg">About This Visualization</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <p className="text-sm text-muted-foreground">
-            This visual map represents the structure and requirements of the Australian Government&apos;s
-            AI policy as published by the Digital Transformation Agency. The policy applies to all
-            non-corporate Commonwealth entities and provides a framework for responsible AI adoption.
-            For the authoritative source, please refer to the{' '}
-            <a
-              href={frameworkData.sourceUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary hover:underline"
-            >
-              official DTA website
-            </a>
-            .
-          </p>
+        <CardContent className="p-4">
           <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs text-muted-foreground">
             <div>
               <span className="font-medium">Effective:</span>{' '}
@@ -188,6 +156,14 @@ export default async function FrameworkPage() {
                 ? 'Verified'
                 : 'Needs review'}
             </div>
+            <a
+              href={frameworkData.sourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-primary hover:underline"
+            >
+              Official DTA source
+            </a>
           </div>
         </CardContent>
       </Card>

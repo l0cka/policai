@@ -329,7 +329,11 @@ same content an editor originally reviewed. Changed records and
 confirmed-missing sources are also marked stale. A changed observation never
 replaces the last editorially verified fingerprint; later audits and the
 collector continue comparing against that trusted baseline. The audit never
-promotes a record back to verified.
+promotes a record back to verified. Fingerprints are compared only when their
+retrieval representations are compatible. A browser-capture composite can be
+compared with a server retrieval through an identical set of linked-document
+byte hashes; without that common evidence, the audit reports
+`comparison_unavailable` instead of creating a false policy-change alert.
 Records migrated without a reproducible fingerprint are likewise stale and
 withheld until a successful fingerprinted editorial re-verification. Current
 availability in a browser is not by itself a substitute for canonical hash

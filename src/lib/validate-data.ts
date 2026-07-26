@@ -1520,6 +1520,19 @@ export function validateWatchSources(
       errors.push(`${label}: invalid schedule`);
     if (!isOneOf(['automatic', 'manual'], source.automation))
       errors.push(`${label}: invalid automation mode`);
+    if (
+      source.minimumItemCount !== undefined &&
+      (!Number.isInteger(source.minimumItemCount) ||
+        source.minimumItemCount < 0)
+    ) {
+      errors.push(`${label}: minimumItemCount must be a non-negative integer`);
+    }
+    if (
+      source.minimumItemCount !== undefined &&
+      source.kind === 'document'
+    ) {
+      errors.push(`${label}: document sources cannot set minimumItemCount`);
+    }
   });
 
   return { errors, warnings };

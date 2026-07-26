@@ -167,8 +167,7 @@ export function DevelopmentsBrowser({
       <header className="reveal">
         <h1 className="font-display text-[clamp(2.65rem,4vw,4rem)] leading-none tracking-[-0.035em]">Policy developments</h1>
         <p className="mt-3 max-w-3xl text-sm leading-6 text-muted-foreground">
-          Track updates to AI policies, strategies and frameworks across Australian governments.
-          Verified developments are checked against official sources; automated radar items need review.
+          Official-source updates, separated by editorial verification.
         </p>
       </header>
 
@@ -228,14 +227,6 @@ export function DevelopmentsBrowser({
             </div>
             <p className="mt-3 font-mono text-[9px] uppercase leading-4 text-muted-foreground">{automaticSourceCount} automatic · {manualSourceCount} manual sources</p>
             <Link href="/methodology" className="mt-4 inline-flex items-center gap-1 text-xs text-primary hover:underline">View methodology <ArrowRight className="h-3 w-3" /></Link>
-          </section>
-
-          <section className="mt-7 border-t border-border pt-5">
-            <h2 className="font-display text-2xl">How to read this feed</h2>
-            <div className="mt-4 space-y-5">
-              <div className="flex gap-3"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[var(--trust)]" fill="currentColor" /><div><p className="text-sm font-semibold">Verified</p><p className="mt-1 text-xs leading-5 text-muted-foreground">Checked against the linked official source and confirmed as published.</p></div></div>
-              <div className="flex gap-3 border-t border-border pt-4"><CircleAlert className="mt-0.5 h-4 w-4 shrink-0 text-[var(--caution)]" /><div><p className="text-sm font-semibold">Needs review</p><p className="mt-1 text-xs leading-5 text-muted-foreground">Detected by automated monitoring and not yet checked against an official source.</p></div></div>
-            </div>
           </section>
         </aside>
       </div>

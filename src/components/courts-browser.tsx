@@ -74,15 +74,7 @@ export function CourtsBrowser({ policies }: { policies: Policy[] }) {
 		<div className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
 			<PageIntro
 				title="Courts & Tribunals"
-				description={
-					<p>
-					Practice notes, practice directions, and guidelines issued by
-					Australian courts and tribunals governing the use of AI in
-					proceedings. These instruments operate at the level of procedural
-					rules and directly affect how AI may be used when interacting with the
-					judiciary.
-					</p>
-				}
+				description="Court and tribunal guidance on AI in proceedings."
 			/>
 			<MetricStrip metrics={[
 				{ value: practiceNotes.length, label: "practice notes" },

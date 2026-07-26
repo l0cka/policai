@@ -1345,9 +1345,13 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
             throw new Error('Index source retrieval produced no extraction');
           }
           itemCount = indexExtraction.itemCount;
-          if (itemCount === 0 && !indexExtraction.feedValid) {
+          const minimumItemCount =
+            source.minimumItemCount ?? (indexExtraction.feedValid ? 0 : 1);
+          if (itemCount < minimumItemCount) {
             throw new Error(
-              'Source returned no extractable index or feed items',
+              minimumItemCount === 1
+                ? 'Source returned no usable index or feed items'
+                : `Source returned ${itemCount} usable items; at least ${minimumItemCount} are required`,
             );
           }
           discovered = indexExtraction.candidates;

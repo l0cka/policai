@@ -131,6 +131,158 @@ describe('register audit', () => {
     });
   });
 
+  it('compares matching linked-document bytes across browser and server evidence', async () => {
+    const documentUrl = 'https://example.gov.au/policy.pdf';
+    const policy = buildPolicy({
+      verification: {
+        status: 'verified',
+        source: {
+          url: 'https://example.gov.au/policy',
+          contentHash: 'a'.repeat(64),
+          linkedDocuments: [
+            {
+              url: documentUrl,
+              contentHash: 'c'.repeat(64),
+            },
+          ],
+          browserCapture: {
+            method: 'browser',
+            capturedAt: '2026-07-15T00:00:00.000Z',
+            capturedBy: 'editor',
+            notes: 'Fresh browser capture of the official policy source.',
+            pageContentHash: 'd'.repeat(64),
+            characterCount: 100,
+          },
+        },
+        checkedAt: '2026-07-15T00:00:00.000Z',
+        checkedBy: 'editor',
+        method: 'manual',
+      },
+    });
+    const results = await auditRegister([policy], {
+      retrieve: async () => ({
+        body: '<h1>Server-rendered page representation</h1>',
+        durationMs: 1,
+        evidence: {
+          ...CURRENT_EVIDENCE,
+          contentHash: 'e'.repeat(64),
+          linkedDocuments: [
+            {
+              url: documentUrl,
+              contentHash: 'c'.repeat(64),
+            },
+          ],
+        },
+      }),
+      now: () => new Date('2026-07-16T00:00:00.000Z'),
+    });
+
+    expect(results[0]).toMatchObject({
+      status: 'unchanged',
+      comparisonBasis: 'linked_documents',
+      previousHash: 'a'.repeat(64),
+    });
+    const updated = applyRegisterAuditEvidence([policy], results);
+    expect(updated[0].verification.source).toEqual(
+      policy.verification.source,
+    );
+    expect(updated[0].verification.lastSourceAuditAt).toBe(
+      '2026-07-16T00:00:00.000Z',
+    );
+  });
+
+  it('preserves true change detection when linked-document bytes change', async () => {
+    const documentUrl = 'https://example.gov.au/policy.pdf';
+    const policy = buildPolicy({
+      verification: {
+        status: 'verified',
+        source: {
+          url: 'https://example.gov.au/policy',
+          contentHash: 'a'.repeat(64),
+          linkedDocuments: [
+            {
+              url: documentUrl,
+              contentHash: 'c'.repeat(64),
+            },
+          ],
+          browserCapture: {
+            method: 'browser',
+            capturedAt: '2026-07-15T00:00:00.000Z',
+            capturedBy: 'editor',
+            notes: 'Fresh browser capture of the official policy source.',
+            pageContentHash: 'd'.repeat(64),
+            characterCount: 100,
+          },
+        },
+        checkedAt: '2026-07-15T00:00:00.000Z',
+        checkedBy: 'editor',
+        method: 'manual',
+      },
+    });
+    const results = await auditRegister([policy], {
+      retrieve: async () => ({
+        body: '<h1>Server-rendered page representation</h1>',
+        durationMs: 1,
+        evidence: {
+          ...CURRENT_EVIDENCE,
+          contentHash: 'e'.repeat(64),
+          linkedDocuments: [
+            {
+              url: documentUrl,
+              contentHash: 'f'.repeat(64),
+            },
+          ],
+        },
+      }),
+      now: () => new Date('2026-07-16T00:00:00.000Z'),
+    });
+
+    expect(results[0]).toMatchObject({
+      status: 'changed',
+      comparisonBasis: 'linked_documents',
+    });
+    expect(
+      applyRegisterAuditEvidence([policy], results)[0].verification.status,
+    ).toBe('stale');
+  });
+
+  it('reports incompatible browser and server-only fingerprints without a false change alert', async () => {
+    const policy = buildPolicy({
+      verification: {
+        status: 'verified',
+        source: {
+          url: 'https://example.gov.au/policy',
+          contentHash: 'a'.repeat(64),
+          browserCapture: {
+            method: 'browser',
+            capturedAt: '2026-07-15T00:00:00.000Z',
+            capturedBy: 'editor',
+            notes: 'Fresh browser capture of the official policy source.',
+            pageContentHash: 'd'.repeat(64),
+            characterCount: 100,
+          },
+        },
+        checkedAt: '2026-07-15T00:00:00.000Z',
+        checkedBy: 'editor',
+        method: 'manual',
+      },
+    });
+    const results = await auditRegister([policy], {
+      retrieve: async () => ({
+        body: '<h1>Server-rendered page representation</h1>',
+        durationMs: 1,
+        evidence: CURRENT_EVIDENCE,
+      }),
+      now: () => new Date('2026-07-16T00:00:00.000Z'),
+    });
+
+    expect(results[0]).toMatchObject({
+      status: 'comparison_unavailable',
+      error: expect.stringContaining('not directly comparable'),
+    });
+    expect(applyRegisterAuditEvidence([policy], results)).toEqual([policy]);
+  });
+
   it('reports retrieval failures without changing the record', async () => {
     const policy = buildPolicy();
     const results = await auditRegister([policy], {

@@ -99,7 +99,10 @@ The boundaries are deliberately strict:
   It cannot introduce a new register record or skip the editorial gates.
 - `src/lib/register-audit.ts` compares official-source fingerprints and marks
   changed or confirmed-missing records stale without automatically
-  re-verifying them; temporary retrieval failures remain operational alerts.
+  re-verifying them. Browser and server capture composites are compared only
+  through matching linked-document evidence; incompatible representations are
+  reported without marking the record changed. Temporary retrieval failures
+  remain operational alerts.
 - `src/lib/source-url.ts` and `src/lib/pipeline/fetch.ts` enforce the outbound
   source boundary: HTTPS allow-listing, standard-port restrictions, private
   address blocking, DNS-to-socket pinning with failover across every validated

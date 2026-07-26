@@ -5,7 +5,13 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, ChevronDown, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { PolicaiLogo } from '@/components/layout/PolicaiLogo';
 
@@ -73,12 +79,9 @@ export function Header({ dataCurrentAt }: { dataCurrentAt: string | null }) {
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur-md">
       <div className="bg-[var(--navy)] text-white">
         <div className="container mx-auto flex h-7 items-center justify-between px-4 font-mono text-[9px] uppercase tracking-[0.12em] sm:px-6 lg:px-8 lg:text-[10px]">
-          <span className="hidden sm:inline">Policai — Australian AI policy tracker</span>
-          <span className="sm:hidden">{formatDataDate(dataCurrentAt).replace('DATA CURRENT TO ', 'DATA CURRENT · ')}</span>
+          <span className="hidden sm:inline">{formatDataDate(dataCurrentAt)}</span>
+          <span className="sm:hidden">{formatDataDate(dataCurrentAt).replace('DATA CURRENT TO ', 'CURRENT · ')}</span>
           <div className="hidden items-center gap-5 sm:flex">
-            <span>{formatDataDate(dataCurrentAt)}</span>
-            <span aria-hidden="true">•</span>
-            <Link href="/methodology" className="hover:text-white/75">About</Link>
             <Link href="/api/policies" className="hover:text-white/75">API</Link>
             <a href="https://github.com/l0cka/policai/issues" target="_blank" rel="noopener noreferrer" className="hover:text-white/75">Feedback</a>
           </div>
@@ -156,10 +159,6 @@ export function Header({ dataCurrentAt }: { dataCurrentAt: string | null }) {
           >
             <Search className="h-5 w-5" strokeWidth={1.75} />
           </Link>
-          <span className="hidden h-7 w-px bg-border md:block" />
-          <Link href="/methodology" className="hidden text-sm font-medium hover:text-primary md:block">
-            Methodology
-          </Link>
           <Sheet>
             <SheetTrigger asChild className="md:hidden">
               <Button variant="ghost" size="icon" className="h-8 w-8">
@@ -169,6 +168,9 @@ export function Header({ dataCurrentAt }: { dataCurrentAt: string | null }) {
             </SheetTrigger>
             <SheetContent side="right" className="w-[250px]">
               <SheetTitle className="sr-only">Navigation</SheetTitle>
+              <SheetDescription className="sr-only">
+                Browse Policai sections and resources.
+              </SheetDescription>
               <nav className="mt-8 flex flex-col gap-1">
                 {navItems.map((item) => (
                   <Link

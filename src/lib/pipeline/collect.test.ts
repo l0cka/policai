@@ -429,7 +429,7 @@ describe('collect', () => {
       candidateCount: 0,
     });
     expect(result.errors[0]).toContain(
-      'Source returned no extractable index or feed items',
+      'Source returned no usable index or feed items',
     );
   });
 
@@ -637,7 +637,7 @@ describe('collect', () => {
     expect(result.meta.collector.successRate).toBe(0);
     expect(result.errors).toEqual(
       expect.arrayContaining([
-        expect.stringContaining('no extractable index or feed items'),
+        expect.stringContaining('no usable index or feed items'),
       ]),
     );
     expect(result.meta.lastHealthyAt).toBe(previousMeta.lastHealthyAt);
@@ -2011,6 +2011,38 @@ describe('collect browser fallback', () => {
     expect(result.errors).toEqual([]);
     expect(result.meta.collector.sourceResults[0].status).toBe('success');
     expect(result.developments).toEqual([]);
+  });
+
+  it('treats a valid empty feed as degraded when the source expects retained items', async () => {
+    const emptyFeed = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"><channel>
+  <title>Current committee inquiries</title>
+  <description>This feed should retain current inquiries</description>
+</channel></rss>`;
+
+    const result = await collect({
+      sources: [{ ...RSS_SOURCE, minimumItemCount: 1 }],
+      catalogSources: [{ ...RSS_SOURCE, minimumItemCount: 1 }],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl: fakeFetch({
+        'https://www.example.gov.au/rss': {
+          body: emptyFeed,
+          contentType: 'application/rss+xml',
+        },
+      }),
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+    });
+
+    expect(result.errors).toEqual([
+      'test-rss: Source returned no usable index or feed items',
+    ]);
+    expect(result.meta.collector.sourceResults[0]).toMatchObject({
+      status: 'error',
+      itemCount: 0,
+      candidateCount: 0,
+    });
+    expect(result.meta.collector.health).toBe('failed');
   });
 
   it('does not attempt the browser retriever when none is provided', async () => {

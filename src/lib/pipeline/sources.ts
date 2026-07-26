@@ -35,6 +35,13 @@ export interface WatchSource {
    * default 'http' path still falls back to the browser on failure.
    */
   fetchStrategy?: SourceFetchStrategy;
+  /**
+   * Minimum number of usable entries expected from an index/feed response.
+   * A structurally valid RSS/Atom feed may otherwise be legitimately empty.
+   * Set this only when the official source is expected to retain current
+   * entries and zero items therefore indicates a broken or degraded feed.
+   */
+  minimumItemCount?: number;
   critical?: boolean;
   notes?: string;
 }
@@ -314,8 +321,9 @@ export const WATCH_SOURCES: WatchSource[] = [
     enabled: true,
     automation: 'automatic',
     fetchStrategy: 'browser',
+    minimumItemCount: 1,
     notes:
-      'Official House RSS feed for newly referred committee inquiries; APH returns 403 to plain HTTP clients. The feed is legitimately empty between referrals.',
+      'Official House RSS feed for newly referred committee inquiries; APH returns 403 to plain HTTP clients. The official new-inquiries index retains current referrals, so a zero-item feed is treated as degraded rather than fresh coverage.',
   },
   {
     id: 'joint-new-inquiries',
@@ -328,8 +336,9 @@ export const WATCH_SOURCES: WatchSource[] = [
     enabled: true,
     automation: 'automatic',
     fetchStrategy: 'browser',
+    minimumItemCount: 1,
     notes:
-      'Official joint-committee RSS feed for newly referred inquiries; APH returns 403 to plain HTTP clients. The feed is legitimately empty between referrals.',
+      'Official joint-committee RSS feed for newly referred inquiries; APH returns 403 to plain HTTP clients. The official new-inquiries index retains current referrals, so a zero-item feed is treated as degraded rather than fresh coverage.',
   },
   {
     id: 'aph-bills-digests',

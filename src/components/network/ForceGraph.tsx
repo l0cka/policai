@@ -225,7 +225,7 @@ export function ForceGraph({
 								y1={src.y}
 								x2={tgt.x}
 								y2={tgt.y}
-								stroke={edge.crossJurisdiction ? "#a855f7" : jurisdictionColor}
+								stroke={edge.crossJurisdiction ? "var(--network-cross-edge)" : jurisdictionColor}
 								strokeWidth={isHighlighted ? 2.5 : 1}
 								strokeDasharray={edge.crossJurisdiction ? "6,3" : undefined}
 								opacity={hoveredNode ? (isHighlighted ? 0.8 : 0.15) : 0.3}

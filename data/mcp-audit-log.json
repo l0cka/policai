@@ -90,6 +90,57 @@
     "status": "success"
   },
   {
+    "id": "mcp-audit-5df60234-3df7-4084-94b7-7f94d11b83dc",
+    "createdAt": "2026-07-24T02:36:41.327Z",
+    "actor": "local-mcp-admin",
+    "toolName": "reject_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-f59eb79f-1833-4c82-9660-e2e1afd77454",
+    "createdAt": "2026-07-24T02:36:25.281Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-4dc4eaaa-181b-4c51-a616-74b6970dfd1f",
+    "createdAt": "2026-07-24T02:36:19.443Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-14facd14-0475-4a03-be62-320b7bb1801d",
+    "createdAt": "2026-07-24T02:36:16.185Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-personal-information-with-publicly-available-generative-ai-tools-in-the-victorian-public-sector",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-b004f88b-3837-4fd7-b333-28862d114a3d",
+    "createdAt": "2026-07-24T02:35:53.547Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-39f84ba0-140a-4582-bf3c-7ebf426f7be4",
+    "createdAt": "2026-07-24T02:35:49.678Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-7737a2c6-12e6-4b98-a804-6351c280eb19",
+    "createdAt": "2026-07-24T02:35:46.121Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-enterprise-generative-ai-tools-in-the-victorian-public-sector",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-f7f2ab03-2959-4b41-a54d-4e9595cddd7b",
     "createdAt": "2026-07-22T12:54:47.542Z",
     "actor": "local-mcp-admin",

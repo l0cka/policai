@@ -59,7 +59,6 @@ export function AgenciesBrowser({ agencies }: { agencies: Agency[] }) {
     <div className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
       <PageIntro
         title="Agency transparency"
-        description="Browse Australian Government agency AI transparency statements, public disclosures and their current source-verification state."
       />
       <MetricStrip metrics={[
         { value: stats.total, label: 'agencies' },

@@ -16,7 +16,6 @@ export default function BlogPage() {
     <div className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
       <PageIntro
         title="Research notes"
-        description="Project updates, methodology notes and commentary on Australian AI policy developments."
       />
       {posts.length === 0 ? (
         <p className="py-12 text-sm text-muted-foreground">No posts yet. Check back soon.</p>

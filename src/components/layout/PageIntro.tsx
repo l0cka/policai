@@ -6,7 +6,7 @@ export function PageIntro({
   actions,
 }: {
   title: string;
-  description: ReactNode;
+  description?: ReactNode;
   actions?: ReactNode;
 }) {
   return (
@@ -16,9 +16,11 @@ export function PageIntro({
           <h1 className="font-display text-[clamp(2.65rem,4vw,4rem)] leading-none tracking-[-0.035em]">
             {title}
           </h1>
-          <div className="mt-3 max-w-3xl text-sm leading-6 text-muted-foreground">
-            {description}
-          </div>
+          {description ? (
+            <div className="mt-3 max-w-3xl text-sm leading-6 text-muted-foreground">
+              {description}
+            </div>
+          ) : null}
         </div>
         {actions ? <div className="reveal reveal-1 shrink-0">{actions}</div> : null}
       </div>

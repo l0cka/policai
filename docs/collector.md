@@ -345,6 +345,10 @@ npm run collect -- --dry-run --source=<id>
   homepage, login, and soft-error links do not make a source healthy; inspect
   the source markup and add a durable extraction rule if its real entries are
   not recognised.
+- **A valid feed returns zero items** — a structurally valid RSS/Atom feed may
+  be legitimately empty. Sources whose official index is expected to retain
+  current entries set `minimumItemCount`; a zero-item response for those
+  sources is degraded coverage, not a successful fresh check.
 - **Nothing new detected** — expected on most days; the feed only grows when monitored pages change. Check `watch-state.json` to confirm URLs are being seen.
 - **A candidate cannot be retrieved** — retryable failures remain pending for
   at most five attempts. HTTP 404, bot challenges, unsafe redirect targets, and

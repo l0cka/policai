@@ -55,7 +55,10 @@ Writing evidence stores missing hashes as stale baselines and marks changed
 records `stale`. A first fingerprint cannot prove that the current document is
 the version an editor previously reviewed, so missing baselines exit non-zero
 and require re-verification. The command never auto-verifies a record.
-`--strict` also fails on retrieval unavailability.
+Browser-capture and server-retrieval composites are compared only when they
+share compatible linked-document evidence; otherwise the result is reported as
+`comparison_unavailable` without a false change alert. `--strict` also fails on
+retrieval unavailability.
 
 ## validate-data.ts
 

@@ -259,12 +259,8 @@ export function PolicyBrowser({
             <h1 className="max-w-5xl font-display text-[clamp(2.65rem,4.5vw,4.5rem)] leading-[0.98] tracking-[-0.035em]">
               Australian AI policy, made legible.
             </h1>
-            <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground sm:hidden">
-              Track AI policies, strategies and frameworks across governments.
-            </p>
-            <p className="mt-4 hidden max-w-2xl text-base leading-7 text-muted-foreground sm:block">
-              Track policies, strategies and frameworks across Australian governments.
-              Verified sources, clear status and transparent provenance.
+            <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
+              Track AI policy and governance across Australian governments.
             </p>
           </div>
           <div className="reveal reveal-1 hidden border-l border-border pl-5 lg:mb-1 lg:block">

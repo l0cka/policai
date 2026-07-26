@@ -41,13 +41,7 @@ export default async function MethodologyPage() {
     <article className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
       <PageIntro
         title="Methodology & verification"
-        description={
-          <p>
-          Policai separates automated discovery from editorial verification.
-          The policy register is source-backed; the developments radar can
-          contain unverified leads and labels them accordingly.
-          </p>
-        }
+        description="How records are discovered, verified and published."
       />
       <MetricStrip metrics={[
         { value: publicPolicies.length, label: 'public records' },

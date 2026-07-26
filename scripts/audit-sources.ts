@@ -110,7 +110,11 @@ async function auditSource(
         fetchImpl,
         hashLinkedDocuments: source.kind === 'document',
       });
-      let extraction: { itemCount: number; candidates: unknown[] };
+      let extraction: {
+        itemCount: number;
+        candidates: unknown[];
+        feedValid?: boolean;
+      };
       if (source.kind === 'rss') {
         extraction = extractFromRss(retrieved.body, source.url);
       } else if (source.kind === 'html-index') {
@@ -134,7 +138,13 @@ async function auditSource(
     } else {
       try {
         result = await attempt(undefined, 15_000);
-        if (result.extraction.itemCount === 0 && browserFetchImpl) {
+        const minimumItemCount =
+          source.minimumItemCount ??
+          (result.extraction.feedValid ? 0 : 1);
+        if (
+          result.extraction.itemCount < minimumItemCount &&
+          browserFetchImpl
+        ) {
           result = await attempt(browserFetchImpl, 60_000);
         }
       } catch (error) {
@@ -143,8 +153,14 @@ async function auditSource(
       }
     }
     const { retrieved, extraction } = result;
-    if (extraction.itemCount === 0) {
-      throw new Error('Source returned no extractable index or feed items');
+    const minimumItemCount =
+      source.minimumItemCount ?? (extraction.feedValid ? 0 : 1);
+    if (extraction.itemCount < minimumItemCount) {
+      throw new Error(
+        minimumItemCount === 1
+          ? 'Source returned no usable index or feed items'
+          : `Source returned ${extraction.itemCount} usable items; at least ${minimumItemCount} are required`,
+      );
     }
 
     return {
