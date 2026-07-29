@@ -1,5 +1,396 @@
 [
   {
+    "id": "dev-careful-adoption-of-agentic-ai-in-cyber-defence-td6oyd",
+    "title": "Careful adoption of Agentic AI in cyber defence",
+    "url": "https://www.cyber.gov.au/about-us/view-all-content/news/careful-adoption-of-agentic-ai-in-cyber-defence",
+    "sourceId": "cyber-news",
+    "sourceName": "Australian Cyber Security Centre — news",
+    "jurisdiction": "federal",
+    "publishedAt": "2026-07-24",
+    "publishedAtPrecision": "day",
+    "detectedAt": "2026-07-29T20:30:22.291Z",
+    "summary": "Today, the Australian Signals Directorate (ASD) is highlighting both the significant opportunities and emerging risks associated with increasingly capable agentic AI systems, following recent testing conducted by OpenAI that demonstrated advanced AI-enabled cyber exploitation techniques. ASD is aware of testing conducted by OpenAI involving a combination of models - including GPT-5.6 Sol and an internal prototype - that accessed Hugging Face, a digital library and platform used by the AI research community. During the evaluation, the models were tasked with completing a benchmark test to measu",
+    "relevanceScore": 0.55,
+    "classification": "heuristic",
+    "assessment": {
+      "method": "heuristic",
+      "promptVersion": "keyword-rules-v1",
+      "assessedAt": "2026-07-29T20:30:22.291Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.cyber.gov.au/about-us/view-all-content/news/careful-adoption-of-agentic-ai-in-cyber-defence",
+        "finalUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/careful-adoption-of-agentic-ai-in-cyber-defence",
+        "retrievedAt": "2026-07-29T20:30:22.291Z",
+        "contentType": "text/html",
+        "contentHash": "1cba50156e612f9de1ee3fab8eaa131759947f89b1a232e1296a4c59295cbd8e",
+        "etag": "\"1785290191\"",
+        "lastModified": "Wed, 29 Jul 2026 01:56:31 GMT",
+        "title": "Careful adoption of Agentic AI in cyber defence",
+        "publishedAt": "2026-07-24",
+        "publishedAtPrecision": "day"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-senate-opens-inquiry-into-artificial-intelligenc-dt0ni8",
+    "title": "Senate opens inquiry into artificial intelligence and data centres",
+    "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+    "sourceId": "senate-ai-data-centres",
+    "sourceName": "Senate inquiry — artificial intelligence and data centres",
+    "jurisdiction": "federal",
+    "detectedAt": "2026-07-29T20:30:22.291Z",
+    "summary": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+    "relevanceScore": 1,
+    "classification": "heuristic",
+    "assessment": {
+      "method": "heuristic",
+      "promptVersion": "keyword-rules-v1",
+      "assessedAt": "2026-07-29T20:30:22.291Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+        "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+        "retrievedAt": "2026-07-29T20:30:22.291Z",
+        "contentType": "text/html",
+        "contentHash": "bcf198c1fe1372261707f83d745799d395025fd8b92ca20f28e0a5df9feaff97",
+        "title": "Senate opens inquiry into artificial intelligence and data centres"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-26-092mr-asic-calls-for-urgent-cyber-uplift-as-a-v2vvmh",
+    "title": "26-092MR ASIC calls for urgent cyber uplift as AI accelerates cyber threats | ASIC",
+    "url": "https://asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-092mr-asic-calls-for-urgent-cyber-uplift-as-ai-accelerates-cyber-threats",
+    "sourceId": "asic-newsroom",
+    "sourceName": "ASIC — newsroom",
+    "jurisdiction": "federal",
+    "publishedAt": "2026-05-08",
+    "publishedAtPrecision": "day",
+    "detectedAt": "2026-07-29T20:30:22.291Z",
+    "summary": "Newsroom Print Share X Opens in new window Facebook Opens in new window LinkedIn Opens in new window Email Opens in new window media release (26-092MR) ASIC calls for urgent cyber uplift as AI accelerates cyber threats Published 8 May 2026 ASIC is calling on all licensees and market participants to urgently strengthen their cyber resilience measures, as frontier artificial intelligence (AI) intensifies the global cyber risk environment. While cyber risk has always existed, misuse of frontier AI models such as Anthropic’s Claude Mythos could expose cyber security vulnerabilities at an unprecede",
+    "relevanceScore": 0.55,
+    "classification": "heuristic",
+    "assessment": {
+      "method": "heuristic",
+      "promptVersion": "keyword-rules-v1",
+      "assessedAt": "2026-07-29T20:30:22.291Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-092mr-asic-calls-for-urgent-cyber-uplift-as-ai-accelerates-cyber-threats",
+        "finalUrl": "https://www.asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-092mr-asic-calls-for-urgent-cyber-uplift-as-ai-accelerates-cyber-threats",
+        "retrievedAt": "2026-07-29T20:30:22.291Z",
+        "contentType": "text/html",
+        "contentHash": "2b3e7ea944fdcdf1c2f779cbabf0254ada92cddc4400f89249a67aaf517a8940",
+        "title": "26-092MR ASIC calls for urgent cyber uplift as AI accelerates cyber threats | ASIC",
+        "publishedAt": "2026-05-08",
+        "publishedAtPrecision": "day"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-26-063mr-asic-ramps-up-action-to-protect-consume-14iujxd",
+    "title": "26-063MR ASIC ramps-up action to protect consumers from AI-powered online investment scams | ASIC",
+    "url": "https://asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-063mr-asic-ramps-up-action-to-protect-consumers-from-ai-powered-online-investment-scams",
+    "sourceId": "asic-newsroom",
+    "sourceName": "ASIC — newsroom",
+    "jurisdiction": "federal",
+    "publishedAt": "2026-04-08",
+    "publishedAtPrecision": "day",
+    "detectedAt": "2026-07-29T20:30:22.291Z",
+    "summary": "Newsroom Print Share X Opens in new window Facebook Opens in new window LinkedIn Opens in new window Email Opens in new window media release (26-063MR) ASIC ramps-up action to protect consumers from AI-powered online investment scams Published 8 April 2026 ASIC is removing record numbers of harmful social media phishing and investment scam websites, as it warns Australians that artificial intelligence (AI) is super-charging online scam threats. New data shows between 1 January 2025 and 31 December 2025, ASIC coordinated the removal of 11,964 phishing and investment scam websites - a 90% increa",
+    "relevanceScore": 0.55,
+    "classification": "heuristic",
+    "assessment": {
+      "method": "heuristic",
+      "promptVersion": "keyword-rules-v1",
+      "assessedAt": "2026-07-29T20:30:22.291Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-063mr-asic-ramps-up-action-to-protect-consumers-from-ai-powered-online-investment-scams",
+        "finalUrl": "https://www.asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-063mr-asic-ramps-up-action-to-protect-consumers-from-ai-powered-online-investment-scams",
+        "retrievedAt": "2026-07-29T20:30:22.291Z",
+        "contentType": "text/html",
+        "contentHash": "bf8dc9f20034bb01c19ad29cc2f44b58eb1c86150a3902f90ae7241be6745d39",
+        "title": "26-063MR ASIC ramps-up action to protect consumers from AI-powered online investment scams | ASIC",
+        "publishedAt": "2026-04-08",
+        "publishedAtPrecision": "day"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-moneysmart-publishes-tips-on-using-ai-for-financ-rjkukc",
+    "title": "Moneysmart publishes tips on using AI for financial issues | ASIC",
+    "url": "https://asic.gov.au/about-asic/news-centre/news-items/moneysmart-publishes-tips-on-using-ai-for-financial-issues",
+    "sourceId": "asic-newsroom",
+    "sourceName": "ASIC — newsroom",
+    "jurisdiction": "federal",
+    "publishedAt": "2026-03-23",
+    "publishedAtPrecision": "day",
+    "detectedAt": "2026-07-29T20:30:22.291Z",
+    "summary": "Newsroom Print Share X Opens in new window Facebook Opens in new window LinkedIn Opens in new window Email Opens in new window news Moneysmart publishes tips on using AI for financial issues Published 23 March 2026 ASIC’s Moneysmart website has published guidance to help Australians using publicly available AI tools for information on financial issues. The consumer guidance – published for the first time on Moneysmart – responds to the growing use of publicly available AI tools to answer money questions, alongside social media and other digital sources. New research commissioned by Moneysmart ",
+    "relevanceScore": 0.55,
+    "classification": "heuristic",
+    "assessment": {
+      "method": "heuristic",
+      "promptVersion": "keyword-rules-v1",
+      "assessedAt": "2026-07-29T20:30:22.291Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://asic.gov.au/about-asic/news-centre/news-items/moneysmart-publishes-tips-on-using-ai-for-financial-issues",
+        "finalUrl": "https://www.asic.gov.au/about-asic/news-centre/news-items/moneysmart-publishes-tips-on-using-ai-for-financial-issues",
+        "retrievedAt": "2026-07-29T20:30:22.291Z",
+        "contentType": "text/html",
+        "contentHash": "ebbe167f9fe60087ab2cb9479d082b307c33ec25b7d7d06b3c1d1a9433f5e8d4",
+        "title": "Moneysmart publishes tips on using AI for financial issues | ASIC",
+        "publishedAt": "2026-03-23",
+        "publishedAtPrecision": "day"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-25-263mr-former-ceo-of-ai-marketing-company-meti-1gdyt66",
+    "title": "25-263MR Former CEO of AI marketing company Metigy pleads guilty to misleading investors and dishonestly using his position | ASIC",
+    "url": "https://asic.gov.au/about-asic/news-centre/find-a-media-release/2025-releases/25-263mr-former-ceo-of-ai-marketing-company-metigy-pleads-guilty-to-misleading-investors-and-dishonestly-using-his-position",
+    "sourceId": "asic-newsroom",
+    "sourceName": "ASIC — newsroom",
+    "jurisdiction": "federal",
+    "publishedAt": "2025-11-04",
+    "publishedAtPrecision": "day",
+    "detectedAt": "2026-07-29T20:30:22.291Z",
+    "summary": "Newsroom Print Share X Opens in new window Facebook Opens in new window LinkedIn Opens in new window Email Opens in new window media release (25-263MR) Former CEO of AI marketing company Metigy pleads guilty to misleading investors and dishonestly using his position Published 4 November 2025 The former CEO of Metigy, David Fairfull, has pleaded guilty to one count of making false and misleading statements and one count of dishonestly using his position as a director to gain an advantage contrary to the Corporations Act 2001. During 2018 to 2021, the Metigy group of companies developed a softwa",
+    "relevanceScore": 0.55,
+    "classification": "heuristic",
+    "assessment": {
+      "method": "heuristic",
+      "promptVersion": "keyword-rules-v1",
+      "assessedAt": "2026-07-29T20:30:22.291Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://asic.gov.au/about-asic/news-centre/find-a-media-release/2025-releases/25-263mr-former-ceo-of-ai-marketing-company-metigy-pleads-guilty-to-misleading-investors-and-dishonestly-using-his-position",
+        "finalUrl": "https://www.asic.gov.au/about-asic/news-centre/find-a-media-release/2025-releases/25-263mr-former-ceo-of-ai-marketing-company-metigy-pleads-guilty-to-misleading-investors-and-dishonestly-using-his-position",
+        "retrievedAt": "2026-07-29T20:30:22.291Z",
+        "contentType": "text/html",
+        "contentHash": "361ca2a572fc031e6fb1d8d36b8ee0604aec62577de07e7cc3daabb3adbd6603",
+        "title": "25-263MR Former CEO of AI marketing company Metigy pleads guilty to misleading investors and dishonestly using his position | ASIC",
+        "publishedAt": "2025-11-04",
+        "publishedAtPrecision": "day"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-school-photo-posts-vulnerable-to-emerging-ai-thr-l9snlx",
+    "title": "School photo posts vulnerable to emerging AI threat | eSafety Commissioner",
+    "url": "https://www.esafety.gov.au/newsroom/media-releases/school-photo-posts-vulnerable-to-emerging-ai-threat",
+    "sourceId": "esafety-media",
+    "sourceName": "eSafety Commissioner — media releases",
+    "jurisdiction": "federal",
+    "publishedAt": "2026-07-28",
+    "publishedAtPrecision": "day",
+    "detectedAt": "2026-07-29T20:30:22.291Z",
+    "summary": "Media releases 28/7/26 School photo posts vulnerable to emerging AI threat Share Share Share to Facebook External link Share to X External link 28/7/26 The rapid evolution, deployment and accessibility of AI tools, has significantly escalated safety risks associated with sharing photos and videos online – particularly for school communities, eSafety has warned. Over the past 18 months, eSafety has seen a rise in reports from teachers, staff and students involving school-related image misuse. Powerful AI tools are now widely accessible and prone to weaponisation. They are readily available as s",
+    "relevanceScore": 0.55,
+    "classification": "heuristic",
+    "assessment": {
+      "method": "heuristic",
+      "promptVersion": "keyword-rules-v1",
+      "assessedAt": "2026-07-29T20:30:22.291Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.esafety.gov.au/newsroom/media-releases/school-photo-posts-vulnerable-to-emerging-ai-threat",
+        "finalUrl": "https://www.esafety.gov.au/newsroom/media-releases/school-photo-posts-vulnerable-to-emerging-ai-threat",
+        "retrievedAt": "2026-07-29T20:30:22.291Z",
+        "contentType": "text/html",
+        "contentHash": "cb73941927935a8873166aaa80394d3534083de8ff9e1fb7e24c36a21c1073b7",
+        "etag": "\"1785357253\"",
+        "lastModified": "Wed, 29 Jul 2026 20:34:13 GMT",
+        "title": "School photo posts vulnerable to emerging AI threat | eSafety Commissioner",
+        "publishedAt": "2026-07-28",
+        "publishedAtPrecision": "day"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-nsw-supreme-court-practice-note-sc-gen-23-commen-lk6582",
+    "title": "NSW Supreme Court Practice Note SC Gen 23 commences",
+    "url": "https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html",
+    "sourceId": "nsw-sc-practice-notes",
+    "sourceName": "NSW Supreme Court — practice notes",
+    "jurisdiction": "nsw",
+    "detectedAt": "2026-07-29T20:30:22.291Z",
+    "summary": "The verified timeline event for \"NSW Supreme Court Practice Note SC Gen 23 commences\" has no stored source fingerprint. The currently served document requires editorial comparison before it can establish a trusted baseline.",
+    "relevanceScore": 1,
+    "classification": "heuristic",
+    "assessment": {
+      "method": "heuristic",
+      "promptVersion": "keyword-rules-v1",
+      "assessedAt": "2026-07-29T20:30:22.291Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html",
+        "finalUrl": "https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html",
+        "retrievedAt": "2026-07-29T20:30:22.291Z",
+        "contentType": "text/html",
+        "contentHash": "ca5614f3ecc63e3934ed322eee3e9d77e4ce782db3c00e51284e67253bfaf654",
+        "lastModified": "Wed, 29 Jul 2026 09:08:45 GMT",
+        "title": "NSW Supreme Court Practice Note SC Gen 23 commences"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-administrative-guideline-for-the-safe-and-respon-wo7okk",
+    "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector",
+    "url": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
+    "sourceId": "vic-ai",
+    "sourceName": "vic.gov.au — generative AI guidance",
+    "jurisdiction": "vic",
+    "detectedAt": "2026-07-29T20:30:22.291Z",
+    "summary": "The official source content for \"Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector\" changed. Editorial re-verification is required before the register record can be treated as current.",
+    "relevanceScore": 1,
+    "classification": "heuristic",
+    "assessment": {
+      "method": "heuristic",
+      "promptVersion": "keyword-rules-v1",
+      "assessedAt": "2026-07-29T20:30:22.291Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
+        "finalUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
+        "retrievedAt": "2026-07-29T20:30:22.291Z",
+        "contentType": "text/html",
+        "contentHash": "6013a3f65fd755391a25c8768410318375421342c47621c337baf604fe5abc71",
+        "linkedDocuments": [
+          {
+            "url": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
+            "finalUrl": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
+            "retrievedAt": "2026-07-29T20:30:22.291Z",
+            "contentType": "application/pdf",
+            "contentHash": "ab6aa1576ba4d7cd255e3ddfe6214c6a873ff0ed079346fbc4c6a17892aa08ee",
+            "etag": "\"2e976-612c9a53ad71b\"",
+            "lastModified": "Sun, 03 Mar 2024 23:05:30 GMT"
+          },
+          {
+            "url": "https://www.vic.gov.au/sites/default/files/2024-11/Generative-AI-Guideline-%281%29.pdf",
+            "finalUrl": "https://www.vic.gov.au/sites/default/files/2024-11/Generative-AI-Guideline-%281%29.pdf",
+            "retrievedAt": "2026-07-29T20:30:22.291Z",
+            "contentType": "application/pdf",
+            "contentHash": "eb114ba5e9e8614438dfc291a50aff04baffab52f070c9089f175c80895860bc",
+            "etag": "\"67480ace-1e00c\"",
+            "lastModified": "Thu, 28 Nov 2024 06:16:46 GMT"
+          }
+        ],
+        "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-artificial-intelligence-governance-policy-1oub5xm",
+    "title": "Artificial intelligence governance policy",
+    "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
+    "sourceId": "qld-qgea-ai",
+    "sourceName": "Queensland QGEA — AI governance policy",
+    "jurisdiction": "qld",
+    "detectedAt": "2026-07-29T20:30:22.291Z",
+    "summary": "The official source content for \"Artificial intelligence governance policy\" changed. Editorial re-verification is required before the register record can be treated as current.",
+    "relevanceScore": 1,
+    "classification": "heuristic",
+    "assessment": {
+      "method": "heuristic",
+      "promptVersion": "keyword-rules-v1",
+      "assessedAt": "2026-07-29T20:30:22.291Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
+        "finalUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
+        "retrievedAt": "2026-07-29T20:30:22.291Z",
+        "contentType": "text/html",
+        "contentHash": "9a4acb92c2fdf0fb7c57c051d8f2420baeee642753c10586986664a5d77379ac",
+        "title": "Artificial intelligence governance policy"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-wa-government-artificial-intelligence-policy-and-1ctddce",
+    "title": "WA Government Artificial Intelligence Policy and Assurance Framework",
+    "url": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+    "sourceId": "wa-ai-policy",
+    "sourceName": "WA — AI policy and assurance framework",
+    "jurisdiction": "wa",
+    "publishedAt": "2024-03-05",
+    "publishedAtPrecision": "day",
+    "detectedAt": "2026-07-29T20:30:22.291Z",
+    "summary": "The official source content for \"WA Government Artificial Intelligence Policy and Assurance Framework\" changed. Editorial re-verification is required before the register record can be treated as current.",
+    "relevanceScore": 1,
+    "classification": "heuristic",
+    "assessment": {
+      "method": "heuristic",
+      "promptVersion": "keyword-rules-v1",
+      "assessedAt": "2026-07-29T20:30:22.291Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+        "finalUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+        "retrievedAt": "2026-07-29T20:30:22.291Z",
+        "contentType": "text/html",
+        "contentHash": "ff73feaad957f83ed12c4b1e8b3dcd8b8b05c8703f7507b4779369cc4063359f",
+        "etag": "\"1785357307\"",
+        "lastModified": "Wed, 29 Jul 2026 20:35:07 GMT",
+        "linkedDocuments": [
+          {
+            "url": "https://www.finance.gov.au/sites/default/files/2024-06/National-framework-for-the-assurance-of-AI-in-government.pdf",
+            "finalUrl": "https://www.finance.gov.au/sites/default/files/2024-06/National-framework-for-the-assurance-of-AI-in-government.pdf",
+            "retrievedAt": "2026-07-29T20:30:22.291Z",
+            "contentType": "application/pdf",
+            "contentHash": "92e06dad15c4fc5141ced0ac356a8707f0356683ff7f66c0e30782d222fea167"
+          },
+          {
+            "url": "https://www.wa.gov.au/system/files/2025-07/ai_policyv2.pdf",
+            "finalUrl": "https://www.wa.gov.au/system/files/2025-07/ai_policyv2.pdf",
+            "retrievedAt": "2026-07-29T20:30:22.291Z",
+            "contentType": "application/pdf",
+            "contentHash": "f0474b1616dfdc3f14df3ef170096d99682ec423e15fd631aeedcae03aa542b6",
+            "lastModified": "Fri, 11 Jul 2025 05:16:14 GMT"
+          }
+        ],
+        "title": "WA Government Artificial Intelligence Policy and Assurance Framework",
+        "publishedAt": "2024-03-05",
+        "publishedAtPrecision": "day"
+      }
+    },
+    "status": "detected"
+  },
+  {
     "id": "dev-public-consultation-on-artificial-intelligence-p-17y73hz",
     "title": "Public consultation on Artificial Intelligence privacy guidance",
     "url": "https://ovic.vic.gov.au/privacy/resources-for-organisations/public-consultation-on-artificial-intelligence-privacy-guidance",
