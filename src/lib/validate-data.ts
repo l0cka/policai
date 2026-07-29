@@ -1164,13 +1164,6 @@ export function validateSourceReviews(
           `${label}: approved update review requires a target policy revision hash`,
         );
       }
-      if (
-        review.sourceVersionSequence !== undefined &&
-        (!Number.isInteger(review.sourceVersionSequence) ||
-          review.sourceVersionSequence < 1)
-      ) {
-        errors.push(`${label}: invalid sourceVersionSequence`);
-      }
     } else {
       if (review.targetPolicyPreviousSourceUrl) {
         errors.push(
@@ -1188,8 +1181,21 @@ export function validateSourceReviews(
         );
       }
     }
-    if (review.sourceVersionSequence !== undefined && !review.targetPolicyId) {
-      errors.push(`${label}: sourceVersionSequence requires targetPolicyId`);
+    if (
+      review.sourceVersionSequence !== undefined &&
+      (!Number.isInteger(review.sourceVersionSequence) ||
+        review.sourceVersionSequence < 1)
+    ) {
+      errors.push(`${label}: invalid sourceVersionSequence`);
+    }
+    if (
+      review.sourceVersionSequence !== undefined &&
+      !review.targetPolicyId &&
+      !review.targetTimelineEventId
+    ) {
+      errors.push(
+        `${label}: sourceVersionSequence requires targetPolicyId or targetTimelineEventId`,
+      );
     }
     if (
       review.targetPolicyBaseRevisionHash &&

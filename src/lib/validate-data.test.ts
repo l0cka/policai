@@ -433,6 +433,42 @@ describe('validateSourceReviews', () => {
     );
   });
 
+  it('accepts version sequencing for timeline re-verification reviews', () => {
+    const timelineEvent = buildTimelineEvent({ id: 'target-event' });
+    const report = validateSourceReviews(
+      [
+        {
+          id: 'source-review-timeline-update',
+          sourceUrl: timelineEvent.sourceUrl,
+          title: timelineEvent.title,
+          entryKind: 'timeline_event',
+          targetTimelineEventId: timelineEvent.id,
+          targetTimelineRevisionHash: 'a'.repeat(64),
+          sourceVersionSequence: 1,
+          status: 'pending_review',
+          discoveredAt: '2026-07-16T08:00:00.000Z',
+          createdBy: 'collector',
+          analysis: {
+            isRelevant: true,
+            relevanceScore: 1,
+            suggestedType: null,
+            suggestedJurisdiction: timelineEvent.jurisdiction,
+            summary: 'The tracked timeline source changed.',
+          },
+          sourceEvidence: {
+            url: timelineEvent.sourceUrl,
+            retrievedAt: '2026-07-16T08:00:00.000Z',
+          },
+          proposedRecord: timelineEvent,
+          updatedAt: '2026-07-16T08:00:00.000Z',
+        },
+      ],
+      { policies: [], timelineEvents: [timelineEvent] },
+    );
+
+    expect(report.errors).toEqual([]);
+  });
+
   it('binds review targets to existing canonical records and source URLs', () => {
     const policy = buildPolicy({ id: 'target-policy' });
     const timelineEvent = buildTimelineEvent({ id: 'target-event' });

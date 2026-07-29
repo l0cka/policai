@@ -5,6 +5,7 @@ import { buildPolicy, buildTimelineEvent } from '@/test/factories';
 import type { WatchSource } from './sources';
 
 import { collect, collectionRunFailed, emptyWatchState } from './collect';
+import { validateSourceReviews } from '../validate-data';
 
 describe('collection CLI failure policy', () => {
   it('fails targeted diagnostics when any source error is reported', () => {
@@ -843,6 +844,12 @@ describe('collect', () => {
     expect(result.reviewCandidates[0].proposedRecord).not.toHaveProperty(
       'verification',
     );
+    expect(
+      validateSourceReviews(result.reviewCandidates, {
+        policies: [],
+        timelineEvents: [trackedEvent],
+      }).errors,
+    ).toEqual([]);
   });
 
   it('stages re-verification instead of silently baselining a verified policy without a fingerprint', async () => {
