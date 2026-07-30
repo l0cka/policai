@@ -505,14 +505,13 @@
     "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P#policai-change=bcf198c1fe1372261707f83d745799d395025fd8b92ca20f28e0a5df9feaff97:1": {
       "firstSeenAt": "2026-07-29T20:30:22.291Z",
       "sourceId": "senate-ai-data-centres",
-      "status": "processed",
+      "status": "awaiting_review",
       "attempts": 1,
       "lastAttemptAt": "2026-07-29T20:30:22.291Z",
-      "processedAt": "2026-07-29T20:30:22.291Z",
       "candidate": {
         "title": "Senate opens inquiry into artificial intelligence and data centres",
         "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
-        "text": "Artificial intelligence and data centres In this section Senate CommitteesCommunity AffairsEconomicsEducation and EmploymentEnvironment and CommunicationsUpcoming HearingsAdditional estimates 2025–26Annual Reports (No. 1 of 2026)Budget estimates 2026-27Recent reportsAnnual ReportsAnnual Reports (No. 2 of 2025)Completed inquiries and reportsLapsed inquiriesAdditional Estimates 2024-25Annual Reports (No. 1 of 2025)Budget Estimates 2025-26Annual reports (No. 1 of 2024)Annual Reports (No. 2 of 2024)Additional Estimates 2023-24Budget Estimates 2024-25OLD Lapsed inquiriesProgress ReportAnnual Report",
+        "text": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
         "changeFingerprint": "bcf198c1fe1372261707f83d745799d395025fd8b92ca20f28e0a5df9feaff97:1"
       }
     },
@@ -622,67 +621,77 @@
     "https://asic.gov.au/about-asic/news-centre/speeches/ai-a-blueprint-for-better-banking": {
       "firstSeenAt": "2026-07-29T20:30:22.291Z",
       "sourceId": "asic-newsroom",
-      "status": "pending",
-      "attempts": 0,
+      "status": "processed",
+      "attempts": 1,
       "candidate": {
         "url": "https://asic.gov.au/about-asic/news-centre/speeches/ai-a-blueprint-for-better-banking",
-        "title": "AI: A blueprint for better banking?",
-        "text": "Menu Media releases Reports and Publications ASIC's views Bannings and Alerts Menu Media releases Reports and Publications ASIC's views Bannings and Alerts Search Search Newsroom Trending: crypto-assetsscamsstop orderdesign and distributiongreenwashingreportable situations (breach reporting)cyber an",
-        "dateHint": "2026-07-29",
+        "title": "AI: A blueprint for better banking? | ASIC",
+        "text": "Newsroom Print Share X Opens in new window Facebook Opens in new window LinkedIn Opens in new window Email Opens in new window speech AI: A blueprint for better banking? Keynote address by ASIC Chair Joe Longo at the ABA Banking Conference in Sydney on 23 July 2025. Published 23 July 2025 Key points ASIC won't hold back customer-centric AI innovation, but cutting-edge technology can’t leave your customers bleeding. We all have a duty to harness the technological advances we are seeing - and use them for community and customer benefit. We are not rushing to more AI regulation but acknowledge mo",
+        "dateHint": "2025-07-23",
         "dateHintPrecision": "day"
-      }
+      },
+      "lastAttemptAt": "2026-07-30T20:43:00.867Z",
+      "processedAt": "2026-07-30T20:43:00.867Z"
     },
     "https://asic.gov.au/about-asic/news-centre/speeches/opening-remarks-at-the-asic-uts-ai-regulators-symposium": {
       "firstSeenAt": "2026-07-29T20:30:22.291Z",
       "sourceId": "asic-newsroom",
-      "status": "pending",
-      "attempts": 0,
+      "status": "dismissed",
+      "attempts": 1,
       "candidate": {
         "url": "https://asic.gov.au/about-asic/news-centre/speeches/opening-remarks-at-the-asic-uts-ai-regulators-symposium",
-        "title": "Opening remarks at the ASIC UTS AI Regulators Symposium",
-        "text": "Menu Media releases Reports and Publications ASIC's views Bannings and Alerts Menu Media releases Reports and Publications ASIC's views Bannings and Alerts Search Search Newsroom Trending: crypto-assetsscamsstop orderdesign and distributiongreenwashingreportable situations (breach reporting)cyber an",
-        "dateHint": "2026-07-29",
+        "title": "Opening remarks at the ASIC UTS AI Regulators Symposium | ASIC",
+        "text": "Newsroom Print Share X Opens in new window Facebook Opens in new window LinkedIn Opens in new window Email Opens in new window speech Opening remarks at the ASIC UTS AI Regulators Symposium Address by ASIC Chair Joe Longo on 21 May 2024. Published 22 May 2024 Check against delivery Good evening, everyone: the Assistant Treasurer and Minister for Financial Services Stephen Jones, Commissioners, colleagues and guests. Welcome to the ASIC UTS AI Regulators Symposium. This has been in discussion for quite a while and I take a lot of personal satisfaction from this coming together, and a special th",
+        "dateHint": "2024-05-22",
         "dateHintPrecision": "day"
-      }
+      },
+      "lastAttemptAt": "2026-07-30T20:43:00.867Z",
+      "processedAt": "2026-07-30T20:43:00.867Z"
     },
     "https://asic.gov.au/about-asic/news-centre/speeches/select-committee-on-adopting-artificial-intelligence-21-may-2024": {
       "firstSeenAt": "2026-07-29T20:30:22.291Z",
       "sourceId": "asic-newsroom",
-      "status": "pending",
-      "attempts": 0,
+      "status": "processed",
+      "attempts": 1,
       "candidate": {
         "url": "https://asic.gov.au/about-asic/news-centre/speeches/select-committee-on-adopting-artificial-intelligence-21-may-2024",
-        "title": "Select Committee on Adopting Artificial Intelligence, 21 May 2024",
-        "text": "Menu Media releases Reports and Publications ASIC's views Bannings and Alerts Menu Media releases Reports and Publications ASIC's views Bannings and Alerts Search Search Newsroom Trending: crypto-assetsscamsstop orderdesign and distributiongreenwashingreportable situations (breach reporting)cyber an",
-        "dateHint": "2026-07-29",
+        "title": "Select Committee on Adopting Artificial Intelligence, 21 May 2024 | ASIC",
+        "text": "Newsroom Print Share X Opens in new window Facebook Opens in new window LinkedIn Opens in new window Email Opens in new window speech Select Committee on Adopting Artificial Intelligence, 21 May 2024 Opening Statement by ASIC Chair Joe Longo at the inquiry into the opportunities and impacts for Australia arising out of the uptake of AI technologies in Australia. Published 21 May 2024 I am pleased to appear before the Committee today and to provide this short opening statement. My name is Joseph Longo and I am the Chair of ASIC. I am joined by Executive Director of Markets, Calissa Aldridge and",
+        "dateHint": "2024-05-21",
         "dateHintPrecision": "day"
-      }
+      },
+      "lastAttemptAt": "2026-07-30T20:43:00.867Z",
+      "processedAt": "2026-07-30T20:43:00.867Z"
     },
     "https://asic.gov.au/about-asic/news-centre/speeches/we-re-not-there-yet-current-regulation-around-ai-may-not-be-sufficient": {
       "firstSeenAt": "2026-07-29T20:30:22.291Z",
       "sourceId": "asic-newsroom",
-      "status": "pending",
-      "attempts": 0,
+      "status": "processed",
+      "attempts": 1,
       "candidate": {
         "url": "https://asic.gov.au/about-asic/news-centre/speeches/we-re-not-there-yet-current-regulation-around-ai-may-not-be-sufficient",
-        "title": "We're not there yet: Current regulation around AI may not be sufficient",
-        "text": "Menu Media releases Reports and Publications ASIC's views Bannings and Alerts Menu Media releases Reports and Publications ASIC's views Bannings and Alerts Search Search Newsroom Trending: crypto-assetsscamsstop orderdesign and distributiongreenwashingreportable situations (breach reporting)cyber an",
-        "dateHint": "2026-07-29",
+        "title": "We're not there yet: Current regulation around AI may not be sufficient | ASIC",
+        "text": "Newsroom Print Share X Opens in new window Facebook Opens in new window LinkedIn Opens in new window Email Opens in new window speech We're not there yet: Current regulation around AI may not be sufficient Keynote address by ASIC Chair Joe Longo at the at UTS Human Technology Institute Shaping Our Future Symposium, 31 January 2024 Published 31 January 2024 Key points ASIC Chair Joe Longo spoke at the UTS Human Technology Institute Shaping Our Future Symposium on the current and future state of AI regulation and governance. All participants in the financial system have a duty to balance innovat",
+        "dateHint": "2024-01-31",
         "dateHintPrecision": "day"
-      }
+      },
+      "lastAttemptAt": "2026-07-30T20:43:00.867Z",
+      "processedAt": "2026-07-30T20:43:00.867Z"
     },
     "https://asic.gov.au/about-asic/news-centre/news-items/asic-annual-forum-2023-impact-of-ai-on-financial-services": {
       "firstSeenAt": "2026-07-29T20:30:22.291Z",
       "sourceId": "asic-newsroom",
-      "status": "pending",
-      "attempts": 0,
+      "status": "dismissed",
+      "attempts": 1,
       "candidate": {
         "url": "https://asic.gov.au/about-asic/news-centre/news-items/asic-annual-forum-2023-impact-of-ai-on-financial-services",
-        "title": "ASIC Annual Forum 2023: Impact of AI on financial services",
-        "text": "Menu Media releases Reports and Publications ASIC's views Bannings and Alerts Menu Media releases Reports and Publications ASIC's views Bannings and Alerts Search Search Newsroom Trending: crypto-assetsscamsstop orderdesign and distributiongreenwashingreportable situations (breach reporting)cyber an",
-        "dateHint": "2026-07-29",
+        "title": "ASIC Annual Forum 2023: Impact of AI on financial services | ASIC",
+        "text": "Newsroom Print Share X Opens in new window Facebook Opens in new window LinkedIn Opens in new window Email Opens in new window news ASIC Annual Forum 2023: Impact of AI on financial services Published 21 November 2023 Key points This article follows a session exploring the impact of artificial intelligence (AI) on financial systems at the 2023 ASIC Annual Forum in Melbourne. Through machine-learning models, robo-advice, and scam prevention, AI can be used to leverage good outcomes for consumers – but each new opportunity carries risk. ASIC is closely monitoring the development and application ",
+        "dateHint": "2023-11-21",
         "dateHintPrecision": "day"
-      }
+      },
+      "lastAttemptAt": "2026-07-30T20:43:00.867Z",
+      "processedAt": "2026-07-30T20:43:00.867Z"
     },
     "https://asic.gov.au/about-asic/news-centre/news-items/asic-annual-forum-2022-ai-and-the-data-revolution": {
       "firstSeenAt": "2026-07-29T20:30:22.291Z",
@@ -758,42 +767,39 @@
     "https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html#policai-change=ca5614f3ecc63e3934ed322eee3e9d77e4ce782db3c00e51284e67253bfaf654:1": {
       "firstSeenAt": "2026-07-29T20:30:22.291Z",
       "sourceId": "nsw-sc-practice-notes",
-      "status": "processed",
+      "status": "awaiting_review",
       "attempts": 1,
       "lastAttemptAt": "2026-07-29T20:30:22.291Z",
-      "processedAt": "2026-07-29T20:30:22.291Z",
       "candidate": {
         "title": "NSW Supreme Court Practice Note SC Gen 23 commences",
         "url": "https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html",
-        "text": "Practice Notes Practice Notes set out the steps practitioners and litigants are expected to take to prepare a case for hearing. Generative AI Resources on the responsible use of generative artificial intelligence (Gen AI) in Supreme Court proceedings Practice Note SC Gen 23 Recently issued or reissued practice notes SC EQ 10 - Revenue List east SC EQ 15 - Applications List east SC Gen 22 - Pronunciation of Names, Forms of Address, and Cultural Protocols for Deceased First Nations People in Proceedings east SC EQ 03 - Commercial List and Technology and Construction List east SC EQ 13 - Adoption",
+        "text": "The verified timeline event for \"NSW Supreme Court Practice Note SC Gen 23 commences\" has no stored source fingerprint. The currently served document requires editorial comparison before it can establish a trusted baseline.",
         "changeFingerprint": "ca5614f3ecc63e3934ed322eee3e9d77e4ce782db3c00e51284e67253bfaf654:1"
       }
     },
     "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps#policai-change=6013a3f65fd755391a25c8768410318375421342c47621c337baf604fe5abc71:1": {
       "firstSeenAt": "2026-07-29T20:30:22.291Z",
       "sourceId": "vic-ai",
-      "status": "processed",
+      "status": "awaiting_review",
       "attempts": 1,
       "lastAttemptAt": "2026-07-29T20:30:22.291Z",
-      "processedAt": "2026-07-29T20:30:22.291Z",
       "candidate": {
         "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector",
         "url": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
-        "text": "[Document 1: Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public ]\nOn this pageIntroductionScopeStatementApplying Australia’s AI Ethics PrinciplesConsequences of non-compliance ImplementationReviewFurther informationDefinitionsDownloadIntroductionThe Victorian Government is committed to digital transformation, innovation and community safety. Generative artificial intelligence (Generative AI) tools offer opportunities to enhance public sector productivity and the way the Victorian Public Sector (VPS) delivers policies and serv",
+        "text": "The official source content for \"Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector\" changed. Editorial re-verification is required before the register record can be treated as current.",
         "changeFingerprint": "6013a3f65fd755391a25c8768410318375421342c47621c337baf604fe5abc71:1"
       }
     },
     "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy#policai-change=9a4acb92c2fdf0fb7c57c051d8f2420baeee642753c10586986664a5d77379ac:1": {
       "firstSeenAt": "2026-07-29T20:30:22.291Z",
       "sourceId": "qld-qgea-ai",
-      "status": "processed",
+      "status": "awaiting_review",
       "attempts": 1,
       "lastAttemptAt": "2026-07-29T20:30:22.291Z",
-      "processedAt": "2026-07-29T20:30:22.291Z",
       "candidate": {
         "title": "Artificial intelligence governance policy",
         "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
-        "text": "Artificial intelligence governance policy Subscribe Document type: Policy Version: v1.0.0 Status: CurrentMandated Effective: September 2024–current Security classification: OFFICIAL-Public Category: Artificial intelligence PurposeThis policy ensures that agency strategic planning for artificial intelligence (AI) demonstrates a structured and consistent approach when evaluating AI solutions for transparency, accountability, and risk.Policy statementThe Queensland Government plans the lifecycle of AI investments using structured and consistent methods to support agency, cross-agency, government,",
+        "text": "The official source content for \"Artificial intelligence governance policy\" changed. Editorial re-verification is required before the register record can be treated as current.",
         "changeFingerprint": "9a4acb92c2fdf0fb7c57c051d8f2420baeee642753c10586986664a5d77379ac:1"
       }
     },
@@ -814,25 +820,36 @@
     "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework#policai-change=ff73feaad957f83ed12c4b1e8b3dcd8b8b05c8703f7507b4779369cc4063359f:1": {
       "firstSeenAt": "2026-07-29T20:30:22.291Z",
       "sourceId": "wa-ai-policy",
-      "status": "processed",
+      "status": "awaiting_review",
       "attempts": 1,
       "lastAttemptAt": "2026-07-29T20:30:22.291Z",
-      "processedAt": "2026-07-29T20:30:22.291Z",
       "candidate": {
         "title": "WA Government Artificial Intelligence Policy and Assurance Framework",
         "url": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
-        "text": "[Document 1: WA Government Artificial Intelligence Policy and Assurance Framework]\nWA Government Artificial Intelligence Policy and Assurance Framework Policy The Government of Western Australia’s Artificial Intelligence Policy and Assurance Framework support the safe, secure and reliable use of AI by the Western Australian public sector. Last updated: 15 January 2026 Artificial Intelligence PolicyThe Government of Western Australia’s Artificial Intelligence (AI) Policy (the Policy) sets out the principles which underpin the WA Government’s approach to using AI responsibly. The Policy supports",
-        "changeFingerprint": "ff73feaad957f83ed12c4b1e8b3dcd8b8b05c8703f7507b4779369cc4063359f:1",
-        "dateHint": "2024-03-05",
-        "dateHintPrecision": "day"
+        "text": "The official source content for \"WA Government Artificial Intelligence Policy and Assurance Framework\" changed. Editorial re-verification is required before the register record can be treated as current.",
+        "changeFingerprint": "ff73feaad957f83ed12c4b1e8b3dcd8b8b05c8703f7507b4779369cc4063359f:1"
+      }
+    },
+    "https://statements.qld.gov.au/#policai-change=710e2c1eda97b6ba7a0b1fb509ee7252b8fbbfd08070638b69e37c30e8a23c88:6": {
+      "firstSeenAt": "2026-07-30T20:43:00.867Z",
+      "sourceId": "qld-ministerial-statements",
+      "status": "dismissed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-07-30T20:43:00.867Z",
+      "processedAt": "2026-07-30T20:43:00.867Z",
+      "candidate": {
+        "title": "Media Statements",
+        "url": "https://statements.qld.gov.au/",
+        "text": "Latest Search Yesterday at 02:30 PM Infrastructure boost for country racing clubs The Crisafulli Government has announced the recipi... Yesterday at 12:45 PM Bridge works drive Rockhampton Ring Road project forward A major construction milestone has been reached on... Yesterday at 12:30 PM New technology and smarter systems reduces red tape for teachers The Crisafulli Government is delivering on its com... Yesterday at 12:15 PM Boosting safety to prevent crime on small and family businesses The Crisafulli Government is making Queensland saf... Yesterday at 12:00 PM Regional Queensland powers P",
+        "changeFingerprint": "710e2c1eda97b6ba7a0b1fb509ee7252b8fbbfd08070638b69e37c30e8a23c88:6"
       }
     }
   },
   "lastCheckedBySource": {
-    "apra-rss": "2026-07-29T20:30:22.291Z",
+    "apra-rss": "2026-07-30T20:43:00.867Z",
     "csiro-news": "2026-07-29T20:30:22.291Z",
-    "oaic-media": "2026-07-29T20:30:22.291Z",
-    "accc-rss": "2026-07-29T20:30:22.291Z",
+    "oaic-media": "2026-07-30T20:43:00.867Z",
+    "accc-rss": "2026-07-30T20:43:00.867Z",
     "asic-newsroom": "2026-07-29T20:30:22.291Z",
     "pc-media": "2026-07-29T20:30:22.291Z",
     "nsw-sc-practice-notes": "2026-07-29T20:30:22.291Z",
@@ -844,47 +861,47 @@
     "sa-office-for-ai": "2026-07-18T20:12:16.563Z",
     "treasury-publications": "2026-07-29T20:30:22.291Z",
     "qld-courts-news": "2026-07-29T20:30:22.291Z",
-    "pm-media": "2026-07-29T20:30:22.291Z",
-    "pmc-office-ai": "2026-07-29T20:30:22.291Z",
-    "industry-ai-publications": "2026-07-29T20:30:22.291Z",
-    "industry-ministers-media": "2026-07-29T20:30:22.291Z",
-    "dta-media": "2026-07-29T20:30:22.291Z",
-    "digital-gov-ai": "2026-07-29T20:30:22.291Z",
-    "disr-news": "2026-07-29T20:30:22.291Z",
+    "pm-media": "2026-07-30T20:43:00.867Z",
+    "pmc-office-ai": "2026-07-30T20:43:00.867Z",
+    "industry-ai-publications": "2026-07-30T20:43:00.867Z",
+    "industry-ministers-media": "2026-07-30T20:43:00.867Z",
+    "dta-media": "2026-07-30T20:43:00.867Z",
+    "digital-gov-ai": "2026-07-30T20:43:00.867Z",
+    "disr-news": "2026-07-30T20:43:00.867Z",
     "naic-news": "2026-07-29T20:30:22.291Z",
     "finance-news": "2026-07-29T20:30:22.291Z",
-    "agd-ministers-media": "2026-07-29T20:30:22.291Z",
-    "cyber-news": "2026-07-29T20:30:22.291Z",
-    "apsc-latest-news": "2026-07-29T20:30:22.291Z",
+    "agd-ministers-media": "2026-07-30T20:43:00.867Z",
+    "cyber-news": "2026-07-30T20:43:00.867Z",
+    "apsc-latest-news": "2026-07-30T20:43:00.867Z",
     "anao-performance-audits": "2026-07-29T20:30:22.291Z",
     "senate-ai-data-centres": "2026-07-29T20:30:22.291Z",
-    "senate-new-inquiries": "2026-07-29T20:30:22.291Z",
-    "senate-reports": "2026-07-29T20:30:22.291Z",
+    "senate-new-inquiries": "2026-07-30T20:43:00.867Z",
+    "senate-reports": "2026-07-30T20:43:00.867Z",
     "house-new-inquiries": "2026-07-23T20:36:08.370Z",
     "joint-new-inquiries": "2026-07-29T20:30:22.291Z",
-    "aph-bills-digests": "2026-07-29T20:30:22.291Z",
-    "legislation-whats-new": "2026-07-29T20:30:22.291Z",
+    "aph-bills-digests": "2026-07-30T20:43:00.867Z",
+    "legislation-whats-new": "2026-07-30T20:43:00.867Z",
     "agd-consultations": "2026-07-29T20:30:22.291Z",
     "industry-consultations": "2026-07-29T20:30:22.291Z",
     "treasury-consultations": "2026-07-29T20:30:22.291Z",
     "aemc-media": "2026-07-29T20:30:22.291Z",
-    "acma-media": "2026-07-29T20:30:22.291Z",
+    "acma-media": "2026-07-30T20:43:00.867Z",
     "tga-media": "2026-07-29T20:30:22.291Z",
     "fwc-news": "2026-07-29T20:30:22.291Z",
     "teqsa-news": "2026-07-29T20:30:22.291Z",
     "aec-media": "2026-07-29T20:30:22.291Z",
-    "esafety-media": "2026-07-29T20:30:22.291Z",
-    "ahrc-media": "2026-07-29T20:30:22.291Z",
+    "esafety-media": "2026-07-30T20:43:00.867Z",
+    "ahrc-media": "2026-07-30T20:43:00.867Z",
     "fedcourt-practice-notes": "2026-07-29T20:30:22.291Z",
-    "nsw-media-releases": "2026-07-29T20:30:22.291Z",
+    "nsw-media-releases": "2026-07-30T20:43:00.867Z",
     "ovic-news": "2026-07-29T20:30:22.291Z",
-    "qld-ministerial-statements": "2026-07-29T20:30:22.291Z",
+    "qld-ministerial-statements": "2026-07-30T20:43:00.867Z",
     "tas-dpac-policies": "2026-07-29T20:30:22.291Z",
     "act-ai-policy": "2026-07-20T12:19:40.243Z",
     "nt-ai-assurance": "2026-07-29T20:30:22.291Z",
     "ipa-news": "2026-07-29T20:30:22.291Z",
     "wa-media-statements": "2026-07-29T20:30:22.291Z",
-    "ovic-privacy-resources": "2026-07-23T20:36:08.370Z",
+    "ovic-privacy-resources": "2026-07-30T20:43:00.867Z",
     "ovic-enterprise-generative-ai": "2026-07-23T20:36:08.370Z",
     "ovic-public-generative-ai": "2026-07-23T20:36:08.370Z"
   },
@@ -892,7 +909,7 @@
     "pmc-office-ai": {
       "contentHash": "4db862eda78cf3d07a56d47be8a73cd5e283dc189501fe090ad5708d1f55116e",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-07-29T20:30:22.291Z",
+      "lastCheckedAt": "2026-07-30T20:43:00.867Z",
       "changeCount": 0
     },
     "naic-news": {
@@ -949,11 +966,11 @@
       "lastChangedAt": "2026-07-29T20:30:22.291Z"
     },
     "qld-ministerial-statements": {
-      "contentHash": "acfd03580a32c0ddc5756c1518fe35e4fa63c4e86118fe687801b7a384ee8f8d",
+      "contentHash": "710e2c1eda97b6ba7a0b1fb509ee7252b8fbbfd08070638b69e37c30e8a23c88",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-07-29T20:30:22.291Z",
-      "changeCount": 5,
-      "lastChangedAt": "2026-07-29T20:30:22.291Z"
+      "lastCheckedAt": "2026-07-30T20:43:00.867Z",
+      "changeCount": 6,
+      "lastChangedAt": "2026-07-30T20:43:00.867Z"
     },
     "act-ai-policy": {
       "contentHash": "0040e7ec83db2a7430b63de7cf72e581dcc938a3139b85ec32c40aa15dc5f4a0",

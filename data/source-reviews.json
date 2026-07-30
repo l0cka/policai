@@ -1,5 +1,296 @@
 [
   {
+    "id": "source-review-dev-ai-a-blueprint-for-better-banking-asic-18rgxv3",
+    "sourceUrl": "https://asic.gov.au/about-asic/news-centre/speeches/ai-a-blueprint-for-better-banking",
+    "title": "AI: A blueprint for better banking? | ASIC",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-07-30T20:43:00.867Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from ASIC — newsroom (score 0.55, heuristic).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.55,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "Newsroom Print Share X Opens in new window Facebook Opens in new window LinkedIn Opens in new window Email Opens in new window speech AI: A blueprint for better banking? Keynote address by ASIC Chair Joe Longo at the ABA Banking Conference in Sydney on 23 July 2025. Published 23 July 2025 Key points ASIC won't hold back customer-centric AI innovation, but cutting-edge technology can’t leave your customers bleeding. We all have a duty to harness the technological advances we are seeing - and use them for community and customer benefit. We are not rushing to more AI regulation but acknowledge mo",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://asic.gov.au/about-asic/news-centre/speeches/ai-a-blueprint-for-better-banking",
+      "finalUrl": "https://www.asic.gov.au/about-asic/news-centre/speeches/ai-a-blueprint-for-better-banking",
+      "retrievedAt": "2026-07-30T20:43:00.867Z",
+      "contentType": "text/html",
+      "contentHash": "2c2a4c56a508684865856f4795853cd32b64f35ef82d9146582817bb2752ff73",
+      "title": "AI: A blueprint for better banking? | ASIC",
+      "publishedAt": "2025-07-23",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "ai-a-blueprint-for-better-banking-asic",
+      "title": "AI: A blueprint for better banking? | ASIC",
+      "description": "Newsroom Print Share X Opens in new window Facebook Opens in new window LinkedIn Opens in new window Email Opens in new window speech AI: A blueprint for better banking? Keynote address by ASIC Chair Joe Longo at the ABA Banking Conference in Sydney on 23 July 2025. Published 23 July 2025 Key points ASIC won't hold back customer-centric AI innovation, but cutting-edge technology can’t leave your customers bleeding. We all have a duty to harness the technological advances we are seeing - and use them for community and customer benefit. We are not rushing to more AI regulation but acknowledge mo",
+      "jurisdiction": "federal",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2025-07-23",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2025-07-23",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://asic.gov.au/about-asic/news-centre/speeches/ai-a-blueprint-for-better-banking",
+            "finalUrl": "https://www.asic.gov.au/about-asic/news-centre/speeches/ai-a-blueprint-for-better-banking",
+            "retrievedAt": "2026-07-30T20:43:00.867Z",
+            "contentType": "text/html",
+            "contentHash": "2c2a4c56a508684865856f4795853cd32b64f35ef82d9146582817bb2752ff73",
+            "title": "AI: A blueprint for better banking? | ASIC",
+            "publishedAt": "2025-07-23",
+            "publishedAtPrecision": "day"
+          }
+        }
+      ],
+      "agencies": [],
+      "sourceUrl": "https://asic.gov.au/about-asic/news-centre/speeches/ai-a-blueprint-for-better-banking",
+      "content": "Newsroom Print Share X Opens in new window Facebook Opens in new window LinkedIn Opens in new window Email Opens in new window speech AI: A blueprint for better banking? Keynote address by ASIC Chair Joe Longo at the ABA Banking Conference in Sydney on 23 July 2025. Published 23 July 2025 Key points ASIC won't hold back customer-centric AI innovation, but cutting-edge technology can’t leave your customers bleeding. We all have a duty to harness the technological advances we are seeing - and use them for community and customer benefit. We are not rushing to more AI regulation but acknowledge mo",
+      "aiSummary": "Newsroom Print Share X Opens in new window Facebook Opens in new window LinkedIn Opens in new window Email Opens in new window speech AI: A blueprint for better banking? Keynote address by ASIC Chair Joe Longo at the ABA Banking Conference in Sydney on 23 July 2025. Published 23 July 2025 Key points ASIC won't hold back customer-centric AI innovation, but cutting-edge technology can’t leave your customers bleeding. We all have a duty to harness the technological advances we are seeing - and use them for community and customer benefit. We are not rushing to more AI regulation but acknowledge mo",
+      "tags": [],
+      "createdAt": "2026-07-30T20:43:00.867Z",
+      "updatedAt": "2026-07-30T20:43:00.867Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-ai-a-blueprint-for-better-banking-asic-18rgxv3",
+      "title": "AI: A blueprint for better banking? | ASIC",
+      "url": "https://asic.gov.au/about-asic/news-centre/speeches/ai-a-blueprint-for-better-banking",
+      "sourceId": "asic-newsroom",
+      "sourceName": "ASIC — newsroom",
+      "jurisdiction": "federal",
+      "publishedAt": "2025-07-23",
+      "publishedAtPrecision": "day",
+      "detectedAt": "2026-07-30T20:43:00.867Z",
+      "summary": "Newsroom Print Share X Opens in new window Facebook Opens in new window LinkedIn Opens in new window Email Opens in new window speech AI: A blueprint for better banking? Keynote address by ASIC Chair Joe Longo at the ABA Banking Conference in Sydney on 23 July 2025. Published 23 July 2025 Key points ASIC won't hold back customer-centric AI innovation, but cutting-edge technology can’t leave your customers bleeding. We all have a duty to harness the technological advances we are seeing - and use them for community and customer benefit. We are not rushing to more AI regulation but acknowledge mo",
+      "relevanceScore": 0.55,
+      "classification": "heuristic",
+      "assessment": {
+        "method": "heuristic",
+        "promptVersion": "keyword-rules-v1",
+        "assessedAt": "2026-07-30T20:43:00.867Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://asic.gov.au/about-asic/news-centre/speeches/ai-a-blueprint-for-better-banking",
+          "finalUrl": "https://www.asic.gov.au/about-asic/news-centre/speeches/ai-a-blueprint-for-better-banking",
+          "retrievedAt": "2026-07-30T20:43:00.867Z",
+          "contentType": "text/html",
+          "contentHash": "2c2a4c56a508684865856f4795853cd32b64f35ef82d9146582817bb2752ff73",
+          "title": "AI: A blueprint for better banking? | ASIC",
+          "publishedAt": "2025-07-23",
+          "publishedAtPrecision": "day"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-07-30T20:43:00.867Z"
+  },
+  {
+    "id": "source-review-dev-select-committee-on-adopting-artificial-intellig-1e08te2",
+    "sourceUrl": "https://asic.gov.au/about-asic/news-centre/speeches/select-committee-on-adopting-artificial-intelligence-21-may-2024",
+    "title": "Select Committee on Adopting Artificial Intelligence, 21 May 2024 | ASIC",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-07-30T20:43:00.867Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from ASIC — newsroom (score 0.55, heuristic).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.55,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "Newsroom Print Share X Opens in new window Facebook Opens in new window LinkedIn Opens in new window Email Opens in new window speech Select Committee on Adopting Artificial Intelligence, 21 May 2024 Opening Statement by ASIC Chair Joe Longo at the inquiry into the opportunities and impacts for Australia arising out of the uptake of AI technologies in Australia. Published 21 May 2024 I am pleased to appear before the Committee today and to provide this short opening statement. My name is Joseph Longo and I am the Chair of ASIC. I am joined by Executive Director of Markets, Calissa Aldridge and",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://asic.gov.au/about-asic/news-centre/speeches/select-committee-on-adopting-artificial-intelligence-21-may-2024",
+      "finalUrl": "https://www.asic.gov.au/about-asic/news-centre/speeches/select-committee-on-adopting-artificial-intelligence-21-may-2024",
+      "retrievedAt": "2026-07-30T20:43:00.867Z",
+      "contentType": "text/html",
+      "contentHash": "63ed81acfa642ca7f187734993d04c7e7ab85c1151b7d2e296690c933aa97c0c",
+      "title": "Select Committee on Adopting Artificial Intelligence, 21 May 2024 | ASIC",
+      "publishedAt": "2024-05-21",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "select-committee-on-adopting-artificial-intelligence-21-may-",
+      "title": "Select Committee on Adopting Artificial Intelligence, 21 May 2024 | ASIC",
+      "description": "Newsroom Print Share X Opens in new window Facebook Opens in new window LinkedIn Opens in new window Email Opens in new window speech Select Committee on Adopting Artificial Intelligence, 21 May 2024 Opening Statement by ASIC Chair Joe Longo at the inquiry into the opportunities and impacts for Australia arising out of the uptake of AI technologies in Australia. Published 21 May 2024 I am pleased to appear before the Committee today and to provide this short opening statement. My name is Joseph Longo and I am the Chair of ASIC. I am joined by Executive Director of Markets, Calissa Aldridge and",
+      "jurisdiction": "federal",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2024-05-21",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2024-05-21",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://asic.gov.au/about-asic/news-centre/speeches/select-committee-on-adopting-artificial-intelligence-21-may-2024",
+            "finalUrl": "https://www.asic.gov.au/about-asic/news-centre/speeches/select-committee-on-adopting-artificial-intelligence-21-may-2024",
+            "retrievedAt": "2026-07-30T20:43:00.867Z",
+            "contentType": "text/html",
+            "contentHash": "63ed81acfa642ca7f187734993d04c7e7ab85c1151b7d2e296690c933aa97c0c",
+            "title": "Select Committee on Adopting Artificial Intelligence, 21 May 2024 | ASIC",
+            "publishedAt": "2024-05-21",
+            "publishedAtPrecision": "day"
+          }
+        }
+      ],
+      "agencies": [],
+      "sourceUrl": "https://asic.gov.au/about-asic/news-centre/speeches/select-committee-on-adopting-artificial-intelligence-21-may-2024",
+      "content": "Newsroom Print Share X Opens in new window Facebook Opens in new window LinkedIn Opens in new window Email Opens in new window speech Select Committee on Adopting Artificial Intelligence, 21 May 2024 Opening Statement by ASIC Chair Joe Longo at the inquiry into the opportunities and impacts for Australia arising out of the uptake of AI technologies in Australia. Published 21 May 2024 I am pleased to appear before the Committee today and to provide this short opening statement. My name is Joseph Longo and I am the Chair of ASIC. I am joined by Executive Director of Markets, Calissa Aldridge and",
+      "aiSummary": "Newsroom Print Share X Opens in new window Facebook Opens in new window LinkedIn Opens in new window Email Opens in new window speech Select Committee on Adopting Artificial Intelligence, 21 May 2024 Opening Statement by ASIC Chair Joe Longo at the inquiry into the opportunities and impacts for Australia arising out of the uptake of AI technologies in Australia. Published 21 May 2024 I am pleased to appear before the Committee today and to provide this short opening statement. My name is Joseph Longo and I am the Chair of ASIC. I am joined by Executive Director of Markets, Calissa Aldridge and",
+      "tags": [],
+      "createdAt": "2026-07-30T20:43:00.867Z",
+      "updatedAt": "2026-07-30T20:43:00.867Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-select-committee-on-adopting-artificial-intellig-1e08te2",
+      "title": "Select Committee on Adopting Artificial Intelligence, 21 May 2024 | ASIC",
+      "url": "https://asic.gov.au/about-asic/news-centre/speeches/select-committee-on-adopting-artificial-intelligence-21-may-2024",
+      "sourceId": "asic-newsroom",
+      "sourceName": "ASIC — newsroom",
+      "jurisdiction": "federal",
+      "publishedAt": "2024-05-21",
+      "publishedAtPrecision": "day",
+      "detectedAt": "2026-07-30T20:43:00.867Z",
+      "summary": "Newsroom Print Share X Opens in new window Facebook Opens in new window LinkedIn Opens in new window Email Opens in new window speech Select Committee on Adopting Artificial Intelligence, 21 May 2024 Opening Statement by ASIC Chair Joe Longo at the inquiry into the opportunities and impacts for Australia arising out of the uptake of AI technologies in Australia. Published 21 May 2024 I am pleased to appear before the Committee today and to provide this short opening statement. My name is Joseph Longo and I am the Chair of ASIC. I am joined by Executive Director of Markets, Calissa Aldridge and",
+      "relevanceScore": 0.55,
+      "classification": "heuristic",
+      "assessment": {
+        "method": "heuristic",
+        "promptVersion": "keyword-rules-v1",
+        "assessedAt": "2026-07-30T20:43:00.867Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://asic.gov.au/about-asic/news-centre/speeches/select-committee-on-adopting-artificial-intelligence-21-may-2024",
+          "finalUrl": "https://www.asic.gov.au/about-asic/news-centre/speeches/select-committee-on-adopting-artificial-intelligence-21-may-2024",
+          "retrievedAt": "2026-07-30T20:43:00.867Z",
+          "contentType": "text/html",
+          "contentHash": "63ed81acfa642ca7f187734993d04c7e7ab85c1151b7d2e296690c933aa97c0c",
+          "title": "Select Committee on Adopting Artificial Intelligence, 21 May 2024 | ASIC",
+          "publishedAt": "2024-05-21",
+          "publishedAtPrecision": "day"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-07-30T20:43:00.867Z"
+  },
+  {
+    "id": "source-review-dev-we-re-not-there-yet-current-regulation-around-ai-xf7zzo",
+    "sourceUrl": "https://asic.gov.au/about-asic/news-centre/speeches/we-re-not-there-yet-current-regulation-around-ai-may-not-be-sufficient",
+    "title": "We're not there yet: Current regulation around AI may not be sufficient | ASIC",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-07-30T20:43:00.867Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from ASIC — newsroom (score 0.65, heuristic).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.65,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "Newsroom Print Share X Opens in new window Facebook Opens in new window LinkedIn Opens in new window Email Opens in new window speech We're not there yet: Current regulation around AI may not be sufficient Keynote address by ASIC Chair Joe Longo at the at UTS Human Technology Institute Shaping Our Future Symposium, 31 January 2024 Published 31 January 2024 Key points ASIC Chair Joe Longo spoke at the UTS Human Technology Institute Shaping Our Future Symposium on the current and future state of AI regulation and governance. All participants in the financial system have a duty to balance innovat",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://asic.gov.au/about-asic/news-centre/speeches/we-re-not-there-yet-current-regulation-around-ai-may-not-be-sufficient",
+      "finalUrl": "https://www.asic.gov.au/about-asic/news-centre/speeches/we-re-not-there-yet-current-regulation-around-ai-may-not-be-sufficient",
+      "retrievedAt": "2026-07-30T20:43:00.867Z",
+      "contentType": "text/html",
+      "contentHash": "d5637534480a1b43d66f4e00448e5ffd1f98ebbd0ab0e9e56b5f2b347404c641",
+      "title": "We're not there yet: Current regulation around AI may not be sufficient | ASIC",
+      "publishedAt": "2024-01-31",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "we-re-not-there-yet-current-regulation-around-ai-may-not-be-",
+      "title": "We're not there yet: Current regulation around AI may not be sufficient | ASIC",
+      "description": "Newsroom Print Share X Opens in new window Facebook Opens in new window LinkedIn Opens in new window Email Opens in new window speech We're not there yet: Current regulation around AI may not be sufficient Keynote address by ASIC Chair Joe Longo at the at UTS Human Technology Institute Shaping Our Future Symposium, 31 January 2024 Published 31 January 2024 Key points ASIC Chair Joe Longo spoke at the UTS Human Technology Institute Shaping Our Future Symposium on the current and future state of AI regulation and governance. All participants in the financial system have a duty to balance innovat",
+      "jurisdiction": "federal",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2024-01-31",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2024-01-31",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://asic.gov.au/about-asic/news-centre/speeches/we-re-not-there-yet-current-regulation-around-ai-may-not-be-sufficient",
+            "finalUrl": "https://www.asic.gov.au/about-asic/news-centre/speeches/we-re-not-there-yet-current-regulation-around-ai-may-not-be-sufficient",
+            "retrievedAt": "2026-07-30T20:43:00.867Z",
+            "contentType": "text/html",
+            "contentHash": "d5637534480a1b43d66f4e00448e5ffd1f98ebbd0ab0e9e56b5f2b347404c641",
+            "title": "We're not there yet: Current regulation around AI may not be sufficient | ASIC",
+            "publishedAt": "2024-01-31",
+            "publishedAtPrecision": "day"
+          }
+        }
+      ],
+      "agencies": [],
+      "sourceUrl": "https://asic.gov.au/about-asic/news-centre/speeches/we-re-not-there-yet-current-regulation-around-ai-may-not-be-sufficient",
+      "content": "Newsroom Print Share X Opens in new window Facebook Opens in new window LinkedIn Opens in new window Email Opens in new window speech We're not there yet: Current regulation around AI may not be sufficient Keynote address by ASIC Chair Joe Longo at the at UTS Human Technology Institute Shaping Our Future Symposium, 31 January 2024 Published 31 January 2024 Key points ASIC Chair Joe Longo spoke at the UTS Human Technology Institute Shaping Our Future Symposium on the current and future state of AI regulation and governance. All participants in the financial system have a duty to balance innovat",
+      "aiSummary": "Newsroom Print Share X Opens in new window Facebook Opens in new window LinkedIn Opens in new window Email Opens in new window speech We're not there yet: Current regulation around AI may not be sufficient Keynote address by ASIC Chair Joe Longo at the at UTS Human Technology Institute Shaping Our Future Symposium, 31 January 2024 Published 31 January 2024 Key points ASIC Chair Joe Longo spoke at the UTS Human Technology Institute Shaping Our Future Symposium on the current and future state of AI regulation and governance. All participants in the financial system have a duty to balance innovat",
+      "tags": [],
+      "createdAt": "2026-07-30T20:43:00.867Z",
+      "updatedAt": "2026-07-30T20:43:00.867Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-we-re-not-there-yet-current-regulation-around-ai-xf7zzo",
+      "title": "We're not there yet: Current regulation around AI may not be sufficient | ASIC",
+      "url": "https://asic.gov.au/about-asic/news-centre/speeches/we-re-not-there-yet-current-regulation-around-ai-may-not-be-sufficient",
+      "sourceId": "asic-newsroom",
+      "sourceName": "ASIC — newsroom",
+      "jurisdiction": "federal",
+      "publishedAt": "2024-01-31",
+      "publishedAtPrecision": "day",
+      "detectedAt": "2026-07-30T20:43:00.867Z",
+      "summary": "Newsroom Print Share X Opens in new window Facebook Opens in new window LinkedIn Opens in new window Email Opens in new window speech We're not there yet: Current regulation around AI may not be sufficient Keynote address by ASIC Chair Joe Longo at the at UTS Human Technology Institute Shaping Our Future Symposium, 31 January 2024 Published 31 January 2024 Key points ASIC Chair Joe Longo spoke at the UTS Human Technology Institute Shaping Our Future Symposium on the current and future state of AI regulation and governance. All participants in the financial system have a duty to balance innovat",
+      "relevanceScore": 0.65,
+      "classification": "heuristic",
+      "assessment": {
+        "method": "heuristic",
+        "promptVersion": "keyword-rules-v1",
+        "assessedAt": "2026-07-30T20:43:00.867Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://asic.gov.au/about-asic/news-centre/speeches/we-re-not-there-yet-current-regulation-around-ai-may-not-be-sufficient",
+          "finalUrl": "https://www.asic.gov.au/about-asic/news-centre/speeches/we-re-not-there-yet-current-regulation-around-ai-may-not-be-sufficient",
+          "retrievedAt": "2026-07-30T20:43:00.867Z",
+          "contentType": "text/html",
+          "contentHash": "d5637534480a1b43d66f4e00448e5ffd1f98ebbd0ab0e9e56b5f2b347404c641",
+          "title": "We're not there yet: Current regulation around AI may not be sufficient | ASIC",
+          "publishedAt": "2024-01-31",
+          "publishedAtPrecision": "day"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-07-30T20:43:00.867Z"
+  },
+  {
     "id": "source-review-dev-careful-adoption-of-agentic-ai-in-cyber-defence-td6oyd",
     "sourceUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/careful-adoption-of-agentic-ai-in-cyber-defence",
     "title": "Careful adoption of Agentic AI in cyber defence",
