@@ -696,28 +696,32 @@
     "https://asic.gov.au/about-asic/news-centre/news-items/asic-annual-forum-2022-ai-and-the-data-revolution": {
       "firstSeenAt": "2026-07-29T20:30:22.291Z",
       "sourceId": "asic-newsroom",
-      "status": "pending",
-      "attempts": 0,
+      "status": "dismissed",
+      "attempts": 1,
       "candidate": {
         "url": "https://asic.gov.au/about-asic/news-centre/news-items/asic-annual-forum-2022-ai-and-the-data-revolution",
-        "title": "ASIC Annual Forum 2022: AI and the data revolution",
-        "text": "Menu Media releases Reports and Publications ASIC's views Bannings and Alerts Menu Media releases Reports and Publications ASIC's views Bannings and Alerts Search Search Newsroom Trending: crypto-assetsscamsstop orderdesign and distributiongreenwashingreportable situations (breach reporting)cyber an",
-        "dateHint": "2026-07-29",
+        "title": "ASIC Annual Forum 2022: AI and the data revolution | ASIC",
+        "text": "Newsroom Print Share X Opens in new window Facebook Opens in new window LinkedIn Opens in new window Email Opens in new window news ASIC Annual Forum 2022: AI and the data revolution Published 4 November 2022 This article follows a session on this topic held at the ASIC Annual Forum (AAF), 3-4 November 2022. Catch up on session highlights from the Forum. The session was moderated by Elysse Morgan, Host of ABC’s The Business. Keynote: Dr Catriona Wallace, Founder, Responsible Metaverse Alliance, Executive Director, Gradient Institute, Adjunct Professor, AGSM, University of New South Wales. Pane",
+        "dateHint": "2022-11-04",
         "dateHintPrecision": "day"
-      }
+      },
+      "lastAttemptAt": "2026-07-31T20:42:08.803Z",
+      "processedAt": "2026-07-31T20:42:08.803Z"
     },
     "https://asic.gov.au/about-asic/news-centre/speeches/driving-better-consumer-outcomes-in-the-era-of-big-data-and-artificial-intelligence": {
       "firstSeenAt": "2026-07-29T20:30:22.291Z",
       "sourceId": "asic-newsroom",
-      "status": "pending",
-      "attempts": 0,
+      "status": "processed",
+      "attempts": 1,
       "candidate": {
         "url": "https://asic.gov.au/about-asic/news-centre/speeches/driving-better-consumer-outcomes-in-the-era-of-big-data-and-artificial-intelligence",
-        "title": "Driving better consumer outcomes in the era of big data and artificial intelligence",
-        "text": "Menu Media releases Reports and Publications ASIC's views Bannings and Alerts Menu Media releases Reports and Publications ASIC's views Bannings and Alerts Search Search Newsroom Trending: crypto-assetsscamsstop orderdesign and distributiongreenwashingreportable situations (breach reporting)cyber an",
-        "dateHint": "2026-07-29",
+        "title": "Driving better consumer outcomes in the era of big data and artificial intelligence | ASIC",
+        "text": "Newsroom Print Share X Opens in new window Facebook Opens in new window LinkedIn Opens in new window Email Opens in new window speech Driving better consumer outcomes in the era of big data and artificial intelligence Published 3 November 2016 A speech by Greg Medcraft, Chairman, Australian Securities and Investments Commission, Corporate Governance Discussion Group (Sydney, Australia), 3 November 2016 Introduction Today I would like to speak about how data can be used to drive better consumer and investor outcomes. I have three main points I would like to make today: First, technology is now ",
+        "dateHint": "2016-11-03",
         "dateHintPrecision": "day"
-      }
+      },
+      "lastAttemptAt": "2026-07-31T20:42:08.803Z",
+      "processedAt": "2026-07-31T20:42:08.803Z"
     },
     "https://www.aec.gov.au/media/media-releases.htm#policai-change=160004ef3c45daa559966d4e35862a3e0503eceec89ffc3c94b0e7e658cde269:1": {
       "firstSeenAt": "2026-07-29T20:30:22.291Z",
@@ -843,13 +847,27 @@
         "text": "Latest Search Yesterday at 02:30 PM Infrastructure boost for country racing clubs The Crisafulli Government has announced the recipi... Yesterday at 12:45 PM Bridge works drive Rockhampton Ring Road project forward A major construction milestone has been reached on... Yesterday at 12:30 PM New technology and smarter systems reduces red tape for teachers The Crisafulli Government is delivering on its com... Yesterday at 12:15 PM Boosting safety to prevent crime on small and family businesses The Crisafulli Government is making Queensland saf... Yesterday at 12:00 PM Regional Queensland powers P",
         "changeFingerprint": "710e2c1eda97b6ba7a0b1fb509ee7252b8fbbfd08070638b69e37c30e8a23c88:6"
       }
+    },
+    "https://statements.qld.gov.au/#policai-change=99a797462338478b79c053e4bbd82ba27b0a900741c53503dbc57040f34b36fc:7": {
+      "firstSeenAt": "2026-07-31T20:42:08.803Z",
+      "sourceId": "qld-ministerial-statements",
+      "status": "dismissed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-07-31T20:42:08.803Z",
+      "processedAt": "2026-07-31T20:42:08.803Z",
+      "candidate": {
+        "title": "Media Statements",
+        "url": "https://statements.qld.gov.au/",
+        "text": "Latest Search Yesterday at 03:00 PM Real energy price relief delivered The Crisafulli Government’s Energy Roadmap Price D... Yesterday at 02:00 PM Funding boost for retired racehorse welfare The Crisafulli Government has announced 14 organis... Yesterday at 01:00 PM Direction set for review to support resources investment The Crisafulli Government has released the Terms o... Yesterday at 12:24 PM New East-West transport links to get Gold Coast home sooner and safer The Crisafulli Government will deliver new East-We... Yesterday at 11:45 AM Digital Licence sets a new benchmark as adoption doubl",
+        "changeFingerprint": "99a797462338478b79c053e4bbd82ba27b0a900741c53503dbc57040f34b36fc:7"
+      }
     }
   },
   "lastCheckedBySource": {
-    "apra-rss": "2026-07-30T20:43:00.867Z",
+    "apra-rss": "2026-07-31T20:42:08.803Z",
     "csiro-news": "2026-07-29T20:30:22.291Z",
-    "oaic-media": "2026-07-30T20:43:00.867Z",
-    "accc-rss": "2026-07-30T20:43:00.867Z",
+    "oaic-media": "2026-07-31T20:42:08.803Z",
+    "accc-rss": "2026-07-31T20:42:08.803Z",
     "asic-newsroom": "2026-07-29T20:30:22.291Z",
     "pc-media": "2026-07-29T20:30:22.291Z",
     "nsw-sc-practice-notes": "2026-07-29T20:30:22.291Z",
@@ -861,46 +879,46 @@
     "sa-office-for-ai": "2026-07-18T20:12:16.563Z",
     "treasury-publications": "2026-07-29T20:30:22.291Z",
     "qld-courts-news": "2026-07-29T20:30:22.291Z",
-    "pm-media": "2026-07-30T20:43:00.867Z",
-    "pmc-office-ai": "2026-07-30T20:43:00.867Z",
-    "industry-ai-publications": "2026-07-30T20:43:00.867Z",
-    "industry-ministers-media": "2026-07-30T20:43:00.867Z",
-    "dta-media": "2026-07-30T20:43:00.867Z",
-    "digital-gov-ai": "2026-07-30T20:43:00.867Z",
-    "disr-news": "2026-07-30T20:43:00.867Z",
+    "pm-media": "2026-07-31T20:42:08.803Z",
+    "pmc-office-ai": "2026-07-31T20:42:08.803Z",
+    "industry-ai-publications": "2026-07-31T20:42:08.803Z",
+    "industry-ministers-media": "2026-07-31T20:42:08.803Z",
+    "dta-media": "2026-07-31T20:42:08.803Z",
+    "digital-gov-ai": "2026-07-31T20:42:08.803Z",
+    "disr-news": "2026-07-31T20:42:08.803Z",
     "naic-news": "2026-07-29T20:30:22.291Z",
     "finance-news": "2026-07-29T20:30:22.291Z",
-    "agd-ministers-media": "2026-07-30T20:43:00.867Z",
-    "cyber-news": "2026-07-30T20:43:00.867Z",
-    "apsc-latest-news": "2026-07-30T20:43:00.867Z",
+    "agd-ministers-media": "2026-07-31T20:42:08.803Z",
+    "cyber-news": "2026-07-31T20:42:08.803Z",
+    "apsc-latest-news": "2026-07-31T20:42:08.803Z",
     "anao-performance-audits": "2026-07-29T20:30:22.291Z",
     "senate-ai-data-centres": "2026-07-29T20:30:22.291Z",
-    "senate-new-inquiries": "2026-07-30T20:43:00.867Z",
-    "senate-reports": "2026-07-30T20:43:00.867Z",
+    "senate-new-inquiries": "2026-07-31T20:42:08.803Z",
+    "senate-reports": "2026-07-31T20:42:08.803Z",
     "house-new-inquiries": "2026-07-23T20:36:08.370Z",
     "joint-new-inquiries": "2026-07-29T20:30:22.291Z",
-    "aph-bills-digests": "2026-07-30T20:43:00.867Z",
-    "legislation-whats-new": "2026-07-30T20:43:00.867Z",
+    "aph-bills-digests": "2026-07-31T20:42:08.803Z",
+    "legislation-whats-new": "2026-07-31T20:42:08.803Z",
     "agd-consultations": "2026-07-29T20:30:22.291Z",
     "industry-consultations": "2026-07-29T20:30:22.291Z",
     "treasury-consultations": "2026-07-29T20:30:22.291Z",
     "aemc-media": "2026-07-29T20:30:22.291Z",
-    "acma-media": "2026-07-30T20:43:00.867Z",
+    "acma-media": "2026-07-31T20:42:08.803Z",
     "tga-media": "2026-07-29T20:30:22.291Z",
     "fwc-news": "2026-07-29T20:30:22.291Z",
     "teqsa-news": "2026-07-29T20:30:22.291Z",
     "aec-media": "2026-07-29T20:30:22.291Z",
-    "esafety-media": "2026-07-30T20:43:00.867Z",
-    "ahrc-media": "2026-07-30T20:43:00.867Z",
+    "esafety-media": "2026-07-31T20:42:08.803Z",
+    "ahrc-media": "2026-07-31T20:42:08.803Z",
     "fedcourt-practice-notes": "2026-07-29T20:30:22.291Z",
-    "nsw-media-releases": "2026-07-30T20:43:00.867Z",
+    "nsw-media-releases": "2026-07-31T20:42:08.803Z",
     "ovic-news": "2026-07-29T20:30:22.291Z",
-    "qld-ministerial-statements": "2026-07-30T20:43:00.867Z",
+    "qld-ministerial-statements": "2026-07-31T20:42:08.803Z",
     "tas-dpac-policies": "2026-07-29T20:30:22.291Z",
     "act-ai-policy": "2026-07-20T12:19:40.243Z",
     "nt-ai-assurance": "2026-07-29T20:30:22.291Z",
     "ipa-news": "2026-07-29T20:30:22.291Z",
-    "wa-media-statements": "2026-07-29T20:30:22.291Z",
+    "wa-media-statements": "2026-07-31T20:42:08.803Z",
     "ovic-privacy-resources": "2026-07-30T20:43:00.867Z",
     "ovic-enterprise-generative-ai": "2026-07-23T20:36:08.370Z",
     "ovic-public-generative-ai": "2026-07-23T20:36:08.370Z"
@@ -909,7 +927,7 @@
     "pmc-office-ai": {
       "contentHash": "4db862eda78cf3d07a56d47be8a73cd5e283dc189501fe090ad5708d1f55116e",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-07-30T20:43:00.867Z",
+      "lastCheckedAt": "2026-07-31T20:42:08.803Z",
       "changeCount": 0
     },
     "naic-news": {
@@ -966,11 +984,11 @@
       "lastChangedAt": "2026-07-29T20:30:22.291Z"
     },
     "qld-ministerial-statements": {
-      "contentHash": "710e2c1eda97b6ba7a0b1fb509ee7252b8fbbfd08070638b69e37c30e8a23c88",
+      "contentHash": "99a797462338478b79c053e4bbd82ba27b0a900741c53503dbc57040f34b36fc",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-07-30T20:43:00.867Z",
-      "changeCount": 6,
-      "lastChangedAt": "2026-07-30T20:43:00.867Z"
+      "lastCheckedAt": "2026-07-31T20:42:08.803Z",
+      "changeCount": 7,
+      "lastChangedAt": "2026-07-31T20:42:08.803Z"
     },
     "act-ai-policy": {
       "contentHash": "0040e7ec83db2a7430b63de7cf72e581dcc938a3139b85ec32c40aa15dc5f4a0",

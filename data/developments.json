@@ -1,5 +1,38 @@
 [
   {
+    "id": "dev-driving-better-consumer-outcomes-in-the-era-of-b-14ux582",
+    "title": "Driving better consumer outcomes in the era of big data and artificial intelligence | ASIC",
+    "url": "https://asic.gov.au/about-asic/news-centre/speeches/driving-better-consumer-outcomes-in-the-era-of-big-data-and-artificial-intelligence",
+    "sourceId": "asic-newsroom",
+    "sourceName": "ASIC — newsroom",
+    "jurisdiction": "federal",
+    "publishedAt": "2016-11-03",
+    "publishedAtPrecision": "day",
+    "detectedAt": "2026-07-31T20:42:08.803Z",
+    "summary": "Newsroom Print Share X Opens in new window Facebook Opens in new window LinkedIn Opens in new window Email Opens in new window speech Driving better consumer outcomes in the era of big data and artificial intelligence Published 3 November 2016 A speech by Greg Medcraft, Chairman, Australian Securities and Investments Commission, Corporate Governance Discussion Group (Sydney, Australia), 3 November 2016 Introduction Today I would like to speak about how data can be used to drive better consumer and investor outcomes. I have three main points I would like to make today: First, technology is now ",
+    "relevanceScore": 0.55,
+    "classification": "heuristic",
+    "assessment": {
+      "method": "heuristic",
+      "promptVersion": "keyword-rules-v1",
+      "assessedAt": "2026-07-31T20:42:08.803Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://asic.gov.au/about-asic/news-centre/speeches/driving-better-consumer-outcomes-in-the-era-of-big-data-and-artificial-intelligence",
+        "finalUrl": "https://www.asic.gov.au/about-asic/news-centre/speeches/driving-better-consumer-outcomes-in-the-era-of-big-data-and-artificial-intelligence",
+        "retrievedAt": "2026-07-31T20:42:08.803Z",
+        "contentType": "text/html",
+        "contentHash": "ef9fd61317ce54e97e72c4f49548f0f9e15c7aaee3f3ccc84bb63d4bbab722fc",
+        "title": "Driving better consumer outcomes in the era of big data and artificial intelligence | ASIC",
+        "publishedAt": "2016-11-03",
+        "publishedAtPrecision": "day"
+      }
+    },
+    "status": "detected"
+  },
+  {
     "id": "dev-ai-a-blueprint-for-better-banking-asic-18rgxv3",
     "title": "AI: A blueprint for better banking? | ASIC",
     "url": "https://asic.gov.au/about-asic/news-centre/speeches/ai-a-blueprint-for-better-banking",
