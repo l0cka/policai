@@ -1,5 +1,108 @@
 [
   {
+    "id": "source-review-dev-from-homework-to-heartache-why-children-are-turn-e0tsfo",
+    "sourceUrl": "https://www.esafety.gov.au/newsroom/media-releases/from-homework-to-heartache-why-children-are-turning-to-ai",
+    "title": "​From homework to heartache: why children are turning to AI | eSafety Commissioner",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-08-03T20:44:10.936Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from eSafety Commissioner — media releases (score 0.55, heuristic).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.55,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "Media releases 3/8/26 ​From homework to heartache: why children are turning to AI Share Share Share to Facebook External link Share to X External link 3/8/26 Artificial intelligence is becoming a normal part of growing up, with new eSafety research showing almost four in five Australian children aged 10 to 17 have used an AI assistant. While AI assistants are commonly associated with helping people learn, create content and complete tasks, the research shows children are increasingly using these tools to seek advice, reassurance and to discuss sensitive personal issues. The research found 78% ",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.esafety.gov.au/newsroom/media-releases/from-homework-to-heartache-why-children-are-turning-to-ai",
+      "finalUrl": "https://www.esafety.gov.au/newsroom/media-releases/from-homework-to-heartache-why-children-are-turning-to-ai",
+      "retrievedAt": "2026-08-03T20:44:10.936Z",
+      "contentType": "text/html",
+      "contentHash": "53bd8f715b4d7a2d7be8d097ecdc471701d876b56e456997be73097edd476c0f",
+      "etag": "\"1785789950\"",
+      "lastModified": "Mon, 03 Aug 2026 20:45:50 GMT",
+      "title": "​From homework to heartache: why children are turning to AI | eSafety Commissioner",
+      "publishedAt": "2026-08-03",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "from-homework-to-heartache-why-children-are-turning-to-ai-es",
+      "title": "​From homework to heartache: why children are turning to AI | eSafety Commissioner",
+      "description": "Media releases 3/8/26 ​From homework to heartache: why children are turning to AI Share Share Share to Facebook External link Share to X External link 3/8/26 Artificial intelligence is becoming a normal part of growing up, with new eSafety research showing almost four in five Australian children aged 10 to 17 have used an AI assistant. While AI assistants are commonly associated with helping people learn, create content and complete tasks, the research shows children are increasingly using these tools to seek advice, reassurance and to discuss sensitive personal issues. The research found 78% ",
+      "jurisdiction": "federal",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2026-08-03",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-08-03",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.esafety.gov.au/newsroom/media-releases/from-homework-to-heartache-why-children-are-turning-to-ai",
+            "finalUrl": "https://www.esafety.gov.au/newsroom/media-releases/from-homework-to-heartache-why-children-are-turning-to-ai",
+            "retrievedAt": "2026-08-03T20:44:10.936Z",
+            "contentType": "text/html",
+            "contentHash": "53bd8f715b4d7a2d7be8d097ecdc471701d876b56e456997be73097edd476c0f",
+            "etag": "\"1785789950\"",
+            "lastModified": "Mon, 03 Aug 2026 20:45:50 GMT",
+            "title": "​From homework to heartache: why children are turning to AI | eSafety Commissioner",
+            "publishedAt": "2026-08-03",
+            "publishedAtPrecision": "day"
+          }
+        }
+      ],
+      "agencies": [],
+      "sourceUrl": "https://www.esafety.gov.au/newsroom/media-releases/from-homework-to-heartache-why-children-are-turning-to-ai",
+      "content": "Media releases 3/8/26 ​From homework to heartache: why children are turning to AI Share Share Share to Facebook External link Share to X External link 3/8/26 Artificial intelligence is becoming a normal part of growing up, with new eSafety research showing almost four in five Australian children aged 10 to 17 have used an AI assistant. While AI assistants are commonly associated with helping people learn, create content and complete tasks, the research shows children are increasingly using these tools to seek advice, reassurance and to discuss sensitive personal issues. The research found 78% ",
+      "aiSummary": "Media releases 3/8/26 ​From homework to heartache: why children are turning to AI Share Share Share to Facebook External link Share to X External link 3/8/26 Artificial intelligence is becoming a normal part of growing up, with new eSafety research showing almost four in five Australian children aged 10 to 17 have used an AI assistant. While AI assistants are commonly associated with helping people learn, create content and complete tasks, the research shows children are increasingly using these tools to seek advice, reassurance and to discuss sensitive personal issues. The research found 78% ",
+      "tags": [],
+      "createdAt": "2026-08-03T20:44:10.936Z",
+      "updatedAt": "2026-08-03T20:44:10.936Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-from-homework-to-heartache-why-children-are-turn-e0tsfo",
+      "title": "​From homework to heartache: why children are turning to AI | eSafety Commissioner",
+      "url": "https://www.esafety.gov.au/newsroom/media-releases/from-homework-to-heartache-why-children-are-turning-to-ai",
+      "sourceId": "esafety-media",
+      "sourceName": "eSafety Commissioner — media releases",
+      "jurisdiction": "federal",
+      "publishedAt": "2026-08-03",
+      "publishedAtPrecision": "day",
+      "detectedAt": "2026-08-03T20:44:10.936Z",
+      "summary": "Media releases 3/8/26 ​From homework to heartache: why children are turning to AI Share Share Share to Facebook External link Share to X External link 3/8/26 Artificial intelligence is becoming a normal part of growing up, with new eSafety research showing almost four in five Australian children aged 10 to 17 have used an AI assistant. While AI assistants are commonly associated with helping people learn, create content and complete tasks, the research shows children are increasingly using these tools to seek advice, reassurance and to discuss sensitive personal issues. The research found 78% ",
+      "relevanceScore": 0.55,
+      "classification": "heuristic",
+      "assessment": {
+        "method": "heuristic",
+        "promptVersion": "keyword-rules-v1",
+        "assessedAt": "2026-08-03T20:44:10.936Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.esafety.gov.au/newsroom/media-releases/from-homework-to-heartache-why-children-are-turning-to-ai",
+          "finalUrl": "https://www.esafety.gov.au/newsroom/media-releases/from-homework-to-heartache-why-children-are-turning-to-ai",
+          "retrievedAt": "2026-08-03T20:44:10.936Z",
+          "contentType": "text/html",
+          "contentHash": "53bd8f715b4d7a2d7be8d097ecdc471701d876b56e456997be73097edd476c0f",
+          "etag": "\"1785789950\"",
+          "lastModified": "Mon, 03 Aug 2026 20:45:50 GMT",
+          "title": "​From homework to heartache: why children are turning to AI | eSafety Commissioner",
+          "publishedAt": "2026-08-03",
+          "publishedAtPrecision": "day"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-08-03T20:44:10.936Z"
+  },
+  {
     "id": "source-review-dev-driving-better-consumer-outcomes-in-the-era-of-b-14ux582",
     "sourceUrl": "https://asic.gov.au/about-asic/news-centre/speeches/driving-better-consumer-outcomes-in-the-era-of-big-data-and-artificial-intelligence",
     "title": "Driving better consumer outcomes in the era of big data and artificial intelligence | ASIC",
