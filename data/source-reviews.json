@@ -1,5 +1,75 @@
 [
   {
+    "id": "source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-womqb9",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+    "title": "Senate opens inquiry into artificial intelligence and data centres",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-05-13-senate-ai-data-centres-inquiry",
+    "targetTimelineRevisionHash": "4c0ed8f149934cbd2ad8f641b25ea4de969b1f29131233df752afbdc0c3e138c",
+    "sourceVersionSequence": 2,
+    "status": "pending_review",
+    "discoveredAt": "2026-08-04T20:52:38.882Z",
+    "createdBy": "collector",
+    "notes": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current. Re-verify the existing timeline event before treating it as current. Detected by Senate inquiry — artificial intelligence and data centres (heuristic assessment).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+      "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+      "retrievedAt": "2026-08-04T20:52:38.882Z",
+      "contentType": "text/html",
+      "contentHash": "445d6b17d017ca97a8eb6c839d3bceda6dd2aa6ce716bbd22aedb4881cd6619e",
+      "title": "Senate opens inquiry into artificial intelligence and data centres"
+    },
+    "proposedRecord": {
+      "id": "tl-2026-05-13-senate-ai-data-centres-inquiry",
+      "date": "2026-05-13",
+      "datePrecision": "day",
+      "title": "Senate opens inquiry into artificial intelligence and data centres",
+      "description": "The Senate inquiry covers AI and data-centre regulation, government deals, and community, industry, energy, water and environmental impacts. The official inquiry page now sets submissions to close on 1 September 2026 and the committee to report on 16 November 2026.",
+      "type": "announcement",
+      "jurisdiction": "federal",
+      "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P"
+    },
+    "linkedDevelopment": {
+      "id": "dev-senate-opens-inquiry-into-artificial-intelligenc-womqb9",
+      "title": "Senate opens inquiry into artificial intelligence and data centres",
+      "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+      "sourceId": "senate-ai-data-centres",
+      "sourceName": "Senate inquiry — artificial intelligence and data centres",
+      "jurisdiction": "federal",
+      "detectedAt": "2026-08-04T20:52:38.882Z",
+      "summary": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+      "relevanceScore": 1,
+      "classification": "heuristic",
+      "assessment": {
+        "method": "heuristic",
+        "promptVersion": "keyword-rules-v1",
+        "assessedAt": "2026-08-04T20:52:38.882Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+          "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+          "retrievedAt": "2026-08-04T20:52:38.882Z",
+          "contentType": "text/html",
+          "contentHash": "445d6b17d017ca97a8eb6c839d3bceda6dd2aa6ce716bbd22aedb4881cd6619e",
+          "title": "Senate opens inquiry into artificial intelligence and data centres"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-08-04T20:52:38.882Z"
+  },
+  {
     "id": "source-review-dev-from-homework-to-heartache-why-children-are-turn-e0tsfo",
     "sourceUrl": "https://www.esafety.gov.au/newsroom/media-releases/from-homework-to-heartache-why-children-are-turning-to-ai",
     "title": "​From homework to heartache: why children are turning to AI | eSafety Commissioner",

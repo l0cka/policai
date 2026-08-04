@@ -505,7 +505,7 @@
     "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P#policai-change=bcf198c1fe1372261707f83d745799d395025fd8b92ca20f28e0a5df9feaff97:1": {
       "firstSeenAt": "2026-07-29T20:30:22.291Z",
       "sourceId": "senate-ai-data-centres",
-      "status": "awaiting_review",
+      "status": "dismissed",
       "attempts": 1,
       "lastAttemptAt": "2026-07-29T20:30:22.291Z",
       "candidate": {
@@ -513,7 +513,9 @@
         "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
         "text": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
         "changeFingerprint": "bcf198c1fe1372261707f83d745799d395025fd8b92ca20f28e0a5df9feaff97:1"
-      }
+      },
+      "processedAt": "2026-08-04T20:52:38.882Z",
+      "lastError": "Superseded by source transition 2"
     },
     "https://consult.industry.gov.au/#policai-change=a02c7c9a393a33564bfc46f75ddd341d5a13ef384a869b70732d9bbb9479fbae:1": {
       "firstSeenAt": "2026-07-29T20:30:22.291Z",
@@ -918,64 +920,164 @@
         "text": "Latest Search Yesterday at 12:00 PM New Queensland Housing Code and Modern Homes Standards to make building homes easier The Crisafulli Government is delivering practical ... Yesterday at 11:30 AM Nation-leading child safety training rolls out for early childhood educators The Crisafulli Government is bolstering child safe... Yesterday at 11:00 AM Major upgrades delivered to boost QCAT capacity The Crisafulli Government has invested nearly $4 m... Yesterday at 10:30 AM Queensland secures new major sporting event for Cairns The Crisafulli Government is delivering on its com... Yesterday at 09:5",
         "changeFingerprint": "a4f1ded91f782449bccb549e7226628a118d4dded5d7d244f50eadbc7c7fe3c6:10"
       }
+    },
+    "https://treasury.gov.au/publication#policai-change=1c2a3c4a08e3f116515f5cf18c0c73840c38220b0621c4e62cb54adc549a8d38:1": {
+      "firstSeenAt": "2026-08-04T20:52:38.882Z",
+      "sourceId": "treasury-publications",
+      "status": "dismissed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-08-04T20:52:38.882Z",
+      "processedAt": "2026-08-04T20:52:38.882Z",
+      "candidate": {
+        "title": "Publications",
+        "url": "https://treasury.gov.au/publication",
+        "text": "Skip to main content Toggle navigation Treasury.gov.au Keyword Content type Consultation FOI Disclosure Publication Review Speech Publications Showing results 1 to 10 of 2400 Enterprise Data Strategy 2026–2029 31 July 2026 Competition and firms’ innovation outcomes 21 July 2026 Government response to Senate report on the Treasury Laws Amendment (Financial Market Infrastructure and Other Measures) Bill 2024 13 July 2026 First Nations Economic Partnership Annual Workplan 10 July 2026 First Nations Economic Partnership Working Groups 10 July 2026 Australian Office of Financial Management independ",
+        "changeFingerprint": "1c2a3c4a08e3f116515f5cf18c0c73840c38220b0621c4e62cb54adc549a8d38:1"
+      }
+    },
+    "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P#policai-change=445d6b17d017ca97a8eb6c839d3bceda6dd2aa6ce716bbd22aedb4881cd6619e:2": {
+      "firstSeenAt": "2026-08-04T20:52:38.882Z",
+      "sourceId": "senate-ai-data-centres",
+      "status": "processed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-08-04T20:52:38.882Z",
+      "processedAt": "2026-08-04T20:52:38.882Z",
+      "candidate": {
+        "title": "Senate opens inquiry into artificial intelligence and data centres",
+        "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+        "text": "Artificial intelligence and data centres In this section Senate CommitteesCommunity AffairsEconomicsEducation and EmploymentEnvironment and CommunicationsUpcoming HearingsAdditional estimates 2025–26Annual Reports (No. 1 of 2026)Budget estimates 2026-27Recent reportsAnnual ReportsAnnual Reports (No. 2 of 2025)Completed inquiries and reportsLapsed inquiriesAdditional Estimates 2024-25Annual Reports (No. 1 of 2025)Budget Estimates 2025-26Annual reports (No. 1 of 2024)Annual Reports (No. 2 of 2024)Additional Estimates 2023-24Budget Estimates 2024-25OLD Lapsed inquiriesProgress ReportAnnual Report",
+        "changeFingerprint": "445d6b17d017ca97a8eb6c839d3bceda6dd2aa6ce716bbd22aedb4881cd6619e:2"
+      }
+    },
+    "https://consult.industry.gov.au/#policai-change=e13b5753dfdce9332549b476220082997ee27abe4c7234ced5d8201e5eb0f87d:2": {
+      "firstSeenAt": "2026-08-04T20:52:38.882Z",
+      "sourceId": "industry-consultations",
+      "status": "dismissed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-08-04T20:52:38.882Z",
+      "processedAt": "2026-08-04T20:52:38.882Z",
+      "candidate": {
+        "title": "Department of Industry, Science and Resources",
+        "url": "https://consult.industry.gov.au/",
+        "text": "Menu Home Find consultations Subscribe for consultation alerts Consultation hub Subscribe for consultation alerts Our department has changed. You can now find consultations on emissions reduction and energy on the Department of Climate Change, Energy, the Environment and Water consultation centre. Find consultations from energy ministers on energy.gov.au.Have your sayOur department is committed to engaging with you and gaining your insights.Share your feedback as we plan, develop and consult on policies and projects.Open consultationsIndependent review of the operation of the NRFC Act: discuss",
+        "changeFingerprint": "e13b5753dfdce9332549b476220082997ee27abe4c7234ced5d8201e5eb0f87d:2"
+      }
+    },
+    "https://consult.treasury.gov.au/#policai-change=1ec06774604fac3dc8e74ea3893bb3c0be441ae1b04f777877fb6548b1b5e9d6:2": {
+      "firstSeenAt": "2026-08-04T20:52:38.882Z",
+      "sourceId": "treasury-consultations",
+      "status": "dismissed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-08-04T20:52:38.882Z",
+      "processedAt": "2026-08-04T20:52:38.882Z",
+      "candidate": {
+        "title": "Consult hub",
+        "url": "https://consult.treasury.gov.au/",
+        "text": "Consultations Have your say to shape Australia's economic policies and decision-making through active participation All InterestsAll interestsBanking and financeBusiness and industryConsumers and communityEconomyHousingSuperannuationTaxationStatusPendingOpenClosedYears202620252024202320222021202020192018201720162015ApplyResultsPage 1 of 59. Showing 1 to 20 out of 1173 results.TitleStatusCloseCapital Gains Tax and Negative Gearing – Tranche 2 LegislationWe want your feedback on the draft legislation.Status: OpenClose: 21 August 2026Open21 August 2026Tax Practitioners Board sanctions reformsGet ",
+        "changeFingerprint": "1ec06774604fac3dc8e74ea3893bb3c0be441ae1b04f777877fb6548b1b5e9d6:2"
+      }
+    },
+    "https://www.teqsa.gov.au/latest-news#policai-change=8753aab8c325cfc31b6a6f4bcfd2e50f3d45e83da4220da73b8e61634f529ce9:1": {
+      "firstSeenAt": "2026-08-04T20:52:38.882Z",
+      "sourceId": "teqsa-news",
+      "status": "dismissed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-08-04T20:52:38.882Z",
+      "processedAt": "2026-08-04T20:52:38.882Z",
+      "candidate": {
+        "title": "News and Events",
+        "url": "https://www.teqsa.gov.au/latest-news",
+        "text": "Back to top News and Events Showing 238 results Filter by year 2024 46 2024 46 2025 46 2025 46 2023 43 2023 43 2022 35 2022 35 2026 27 2026 27 2020 22 2020 22 2021 19 2021 19 News Article Student Advisory Panel established TEQSA is pleased to announce the establishment of our first Student Advisory Panel. News Article Amendments to the Threshold Standards The Australian Government has introduced amendments to the Higher Education Standards Framework (Threshold Standards) 2021 , relating to racism and governance. News Article Joint sector alert issued for overseas student transfers TEQSA and th",
+        "changeFingerprint": "8753aab8c325cfc31b6a6f4bcfd2e50f3d45e83da4220da73b8e61634f529ce9:1"
+      }
+    },
+    "https://www.courts.qld.gov.au/newsroom/news#policai-change=77ff10fa78d8fe4d6a0b7f6454a5205b98286a74e02dab8590506c104da477eb:1": {
+      "firstSeenAt": "2026-08-04T20:52:38.882Z",
+      "sourceId": "qld-courts-news",
+      "status": "dismissed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-08-04T20:52:38.882Z",
+      "processedAt": "2026-08-04T20:52:38.882Z",
+      "candidate": {
+        "title": "Latest news",
+        "url": "https://www.courts.qld.gov.au/newsroom/news",
+        "text": "Latest news Most recent 31.07.2026 District Court and Planning and Environment Court Practice Directions – Designation of court holidays 31.07.2026 Supreme Court Practice Direction 2 of 2026 – Designation of court holidays 25.06.2026 District Court and Magistrates Court Practice Directions regarding Bowen Court Closure and Registry Arrangements All news Updated Form 48 - Notice of Alibi (version 4) Form 103 - Notice of intention to apply for grant (version 4 - first published 1 June 2026) Free exhibition - We, the jury Free exhibition - We, the jury Magistrates Court Practice Direction 5 of 20",
+        "dateHint": "2026-06-01",
+        "dateHintPrecision": "day",
+        "changeFingerprint": "77ff10fa78d8fe4d6a0b7f6454a5205b98286a74e02dab8590506c104da477eb:1"
+      }
+    },
+    "https://statements.qld.gov.au/#policai-change=74e3bf48245fee1934d2d4c3a9d22ad4a1e2fdb7fa8f6e2585b2e88ab0dde185:11": {
+      "firstSeenAt": "2026-08-04T20:52:38.882Z",
+      "sourceId": "qld-ministerial-statements",
+      "status": "dismissed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-08-04T20:52:38.882Z",
+      "processedAt": "2026-08-04T20:52:38.882Z",
+      "candidate": {
+        "title": "Media Statements",
+        "url": "https://statements.qld.gov.au/",
+        "text": "Latest Search Yesterday at 02:06 PM Registrations open for Community Cabinet in Goondiwindi Registrations are now open for the Crisafulli Gove... Yesterday at 01:00 PM New retirement homes to ensure Blackall locals can stay local The Crisafulli Government is supporting a 45-year ... Yesterday at 12:00 PM Biosecurity investment backs projects to tackle pests and diseases The Crisafulli Government is backing Queensland co... Yesterday at 11:45 AM Queensland’s energy generators deliver reliability guarantee The Crisafulli Government is delivering affordable... Yesterday at 11:30 AM Central Queens",
+        "changeFingerprint": "74e3bf48245fee1934d2d4c3a9d22ad4a1e2fdb7fa8f6e2585b2e88ab0dde185:11"
+      }
     }
   },
   "lastCheckedBySource": {
-    "apra-rss": "2026-08-03T20:44:10.936Z",
-    "csiro-news": "2026-07-29T20:30:22.291Z",
-    "oaic-media": "2026-08-03T20:44:10.936Z",
-    "accc-rss": "2026-08-03T20:44:10.936Z",
-    "asic-newsroom": "2026-07-29T20:30:22.291Z",
-    "pc-media": "2026-07-29T20:30:22.291Z",
+    "apra-rss": "2026-08-04T20:52:38.882Z",
+    "csiro-news": "2026-08-04T20:52:38.882Z",
+    "oaic-media": "2026-08-04T20:52:38.882Z",
+    "accc-rss": "2026-08-04T20:52:38.882Z",
+    "asic-newsroom": "2026-08-04T20:52:38.882Z",
+    "pc-media": "2026-08-04T20:52:38.882Z",
     "nsw-sc-practice-notes": "2026-07-29T20:30:22.291Z",
-    "vic-sc-practice-notes": "2026-07-29T20:30:22.291Z",
-    "nsw-digital-ai": "2026-07-29T20:30:22.291Z",
+    "vic-sc-practice-notes": "2026-08-04T20:52:38.882Z",
+    "nsw-digital-ai": "2026-08-04T20:52:38.882Z",
     "vic-ai": "2026-07-29T20:30:22.291Z",
     "qld-qgea-ai": "2026-07-29T20:30:22.291Z",
     "wa-ai-policy": "2026-07-29T20:30:22.291Z",
     "sa-office-for-ai": "2026-07-18T20:12:16.563Z",
-    "treasury-publications": "2026-07-29T20:30:22.291Z",
-    "qld-courts-news": "2026-07-29T20:30:22.291Z",
-    "pm-media": "2026-08-03T20:44:10.936Z",
-    "pmc-office-ai": "2026-08-03T20:44:10.936Z",
-    "industry-ai-publications": "2026-08-03T20:44:10.936Z",
-    "industry-ministers-media": "2026-08-03T20:44:10.936Z",
-    "dta-media": "2026-08-03T20:44:10.936Z",
-    "digital-gov-ai": "2026-08-03T20:44:10.936Z",
-    "disr-news": "2026-08-03T20:44:10.936Z",
-    "naic-news": "2026-07-29T20:30:22.291Z",
-    "finance-news": "2026-07-29T20:30:22.291Z",
-    "agd-ministers-media": "2026-08-03T20:44:10.936Z",
-    "cyber-news": "2026-08-03T20:44:10.936Z",
-    "apsc-latest-news": "2026-08-03T20:44:10.936Z",
-    "anao-performance-audits": "2026-07-29T20:30:22.291Z",
-    "senate-ai-data-centres": "2026-07-29T20:30:22.291Z",
-    "senate-new-inquiries": "2026-08-03T20:44:10.936Z",
-    "senate-reports": "2026-08-03T20:44:10.936Z",
+    "treasury-publications": "2026-08-04T20:52:38.882Z",
+    "qld-courts-news": "2026-08-04T20:52:38.882Z",
+    "pm-media": "2026-08-04T20:52:38.882Z",
+    "pmc-office-ai": "2026-08-04T20:52:38.882Z",
+    "industry-ai-publications": "2026-08-04T20:52:38.882Z",
+    "industry-ministers-media": "2026-08-04T20:52:38.882Z",
+    "dta-media": "2026-08-04T20:52:38.882Z",
+    "digital-gov-ai": "2026-08-04T20:52:38.882Z",
+    "disr-news": "2026-08-04T20:52:38.882Z",
+    "naic-news": "2026-08-04T20:52:38.882Z",
+    "finance-news": "2026-08-04T20:52:38.882Z",
+    "agd-ministers-media": "2026-08-04T20:52:38.882Z",
+    "cyber-news": "2026-08-04T20:52:38.882Z",
+    "apsc-latest-news": "2026-08-04T20:52:38.882Z",
+    "anao-performance-audits": "2026-08-04T20:52:38.882Z",
+    "senate-ai-data-centres": "2026-08-04T20:52:38.882Z",
+    "senate-new-inquiries": "2026-08-04T20:52:38.882Z",
+    "senate-reports": "2026-08-04T20:52:38.882Z",
     "house-new-inquiries": "2026-07-23T20:36:08.370Z",
     "joint-new-inquiries": "2026-07-29T20:30:22.291Z",
-    "aph-bills-digests": "2026-08-03T20:44:10.936Z",
-    "legislation-whats-new": "2026-08-03T20:44:10.936Z",
-    "agd-consultations": "2026-07-29T20:30:22.291Z",
-    "industry-consultations": "2026-07-29T20:30:22.291Z",
-    "treasury-consultations": "2026-07-29T20:30:22.291Z",
-    "aemc-media": "2026-07-29T20:30:22.291Z",
-    "acma-media": "2026-08-03T20:44:10.936Z",
-    "tga-media": "2026-07-29T20:30:22.291Z",
-    "fwc-news": "2026-07-29T20:30:22.291Z",
-    "teqsa-news": "2026-07-29T20:30:22.291Z",
-    "aec-media": "2026-07-29T20:30:22.291Z",
-    "esafety-media": "2026-08-03T20:44:10.936Z",
-    "ahrc-media": "2026-08-03T20:44:10.936Z",
-    "fedcourt-practice-notes": "2026-07-29T20:30:22.291Z",
-    "nsw-media-releases": "2026-08-03T20:44:10.936Z",
-    "ovic-news": "2026-07-29T20:30:22.291Z",
-    "qld-ministerial-statements": "2026-08-03T20:44:10.936Z",
-    "tas-dpac-policies": "2026-07-29T20:30:22.291Z",
+    "aph-bills-digests": "2026-08-04T20:52:38.882Z",
+    "legislation-whats-new": "2026-08-04T20:52:38.882Z",
+    "agd-consultations": "2026-08-04T20:52:38.882Z",
+    "industry-consultations": "2026-08-04T20:52:38.882Z",
+    "treasury-consultations": "2026-08-04T20:52:38.882Z",
+    "aemc-media": "2026-08-04T20:52:38.882Z",
+    "acma-media": "2026-08-04T20:52:38.882Z",
+    "tga-media": "2026-08-04T20:52:38.882Z",
+    "fwc-news": "2026-08-04T20:52:38.882Z",
+    "teqsa-news": "2026-08-04T20:52:38.882Z",
+    "aec-media": "2026-08-04T20:52:38.882Z",
+    "esafety-media": "2026-08-04T20:52:38.882Z",
+    "ahrc-media": "2026-08-04T20:52:38.882Z",
+    "fedcourt-practice-notes": "2026-08-04T20:52:38.882Z",
+    "nsw-media-releases": "2026-08-04T20:52:38.882Z",
+    "ovic-news": "2026-08-04T20:52:38.882Z",
+    "qld-ministerial-statements": "2026-08-04T20:52:38.882Z",
+    "tas-dpac-policies": "2026-08-04T20:52:38.882Z",
     "act-ai-policy": "2026-07-20T12:19:40.243Z",
-    "nt-ai-assurance": "2026-07-29T20:30:22.291Z",
-    "ipa-news": "2026-07-29T20:30:22.291Z",
-    "wa-media-statements": "2026-08-03T20:44:10.936Z",
+    "nt-ai-assurance": "2026-08-04T20:52:38.882Z",
+    "ipa-news": "2026-08-04T20:52:38.882Z",
+    "wa-media-statements": "2026-08-04T20:52:38.882Z",
     "ovic-privacy-resources": "2026-07-30T20:43:00.867Z",
     "ovic-enterprise-generative-ai": "2026-07-23T20:36:08.370Z",
     "ovic-public-generative-ai": "2026-07-23T20:36:08.370Z"
@@ -984,21 +1086,21 @@
     "pmc-office-ai": {
       "contentHash": "4db862eda78cf3d07a56d47be8a73cd5e283dc189501fe090ad5708d1f55116e",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-08-03T20:44:10.936Z",
+      "lastCheckedAt": "2026-08-04T20:52:38.882Z",
       "changeCount": 0
     },
     "naic-news": {
       "contentHash": "70c8d05957c9f1642e821d43a90510457390a1e05fd9f7738f6481fd2604a9dd",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-07-29T20:30:22.291Z",
+      "lastCheckedAt": "2026-08-04T20:52:38.882Z",
       "changeCount": 0
     },
     "senate-ai-data-centres": {
-      "contentHash": "bcf198c1fe1372261707f83d745799d395025fd8b92ca20f28e0a5df9feaff97",
+      "contentHash": "445d6b17d017ca97a8eb6c839d3bceda6dd2aa6ce716bbd22aedb4881cd6619e",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-07-29T20:30:22.291Z",
-      "lastChangedAt": "2026-07-29T20:30:22.291Z",
-      "changeCount": 1
+      "lastCheckedAt": "2026-08-04T20:52:38.882Z",
+      "lastChangedAt": "2026-08-04T20:52:38.882Z",
+      "changeCount": 2
     },
     "legislation-whats-new": {
       "contentHash": "6898692b3f969ac4d3f2145dfd6d7a6e061ac9f576b2348763dff65877daed2f",
@@ -1007,45 +1109,46 @@
       "changeCount": 0
     },
     "industry-consultations": {
-      "contentHash": "a02c7c9a393a33564bfc46f75ddd341d5a13ef384a869b70732d9bbb9479fbae",
+      "contentHash": "e13b5753dfdce9332549b476220082997ee27abe4c7234ced5d8201e5eb0f87d",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-07-29T20:30:22.291Z",
-      "changeCount": 1,
-      "lastChangedAt": "2026-07-29T20:30:22.291Z"
+      "lastCheckedAt": "2026-08-04T20:52:38.882Z",
+      "changeCount": 2,
+      "lastChangedAt": "2026-08-04T20:52:38.882Z"
     },
     "treasury-consultations": {
-      "contentHash": "f715c0ae5232515bb928d2b6e40e2ec9b002202d5bdf9ced891e810978bb024f",
+      "contentHash": "1ec06774604fac3dc8e74ea3893bb3c0be441ae1b04f777877fb6548b1b5e9d6",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-07-29T20:30:22.291Z",
-      "changeCount": 1,
-      "lastChangedAt": "2026-07-29T20:30:22.291Z"
+      "lastCheckedAt": "2026-08-04T20:52:38.882Z",
+      "changeCount": 2,
+      "lastChangedAt": "2026-08-04T20:52:38.882Z"
     },
     "teqsa-news": {
-      "contentHash": "dbaecc33f19d0bff339bd04bd440612ab8785638f2bb19b2355606e4257260ce",
+      "contentHash": "8753aab8c325cfc31b6a6f4bcfd2e50f3d45e83da4220da73b8e61634f529ce9",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-07-29T20:30:22.291Z",
-      "changeCount": 0
+      "lastCheckedAt": "2026-08-04T20:52:38.882Z",
+      "changeCount": 1,
+      "lastChangedAt": "2026-08-04T20:52:38.882Z"
     },
     "aec-media": {
       "contentHash": "160004ef3c45daa559966d4e35862a3e0503eceec89ffc3c94b0e7e658cde269",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-07-29T20:30:22.291Z",
+      "lastCheckedAt": "2026-08-04T20:52:38.882Z",
       "changeCount": 1,
       "lastChangedAt": "2026-07-29T20:30:22.291Z"
     },
     "fedcourt-practice-notes": {
       "contentHash": "2f09386f82e2bc6b69d62deca30670a909bf8f5e4199215957e27e87647f3bcc",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-07-29T20:30:22.291Z",
+      "lastCheckedAt": "2026-08-04T20:52:38.882Z",
       "changeCount": 1,
       "lastChangedAt": "2026-07-29T20:30:22.291Z"
     },
     "qld-ministerial-statements": {
-      "contentHash": "a4f1ded91f782449bccb549e7226628a118d4dded5d7d244f50eadbc7c7fe3c6",
+      "contentHash": "74e3bf48245fee1934d2d4c3a9d22ad4a1e2fdb7fa8f6e2585b2e88ab0dde185",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-08-03T20:44:10.936Z",
-      "changeCount": 10,
-      "lastChangedAt": "2026-08-03T20:44:10.936Z"
+      "lastCheckedAt": "2026-08-04T20:52:38.882Z",
+      "changeCount": 11,
+      "lastChangedAt": "2026-08-04T20:52:38.882Z"
     },
     "act-ai-policy": {
       "contentHash": "0040e7ec83db2a7430b63de7cf72e581dcc938a3139b85ec32c40aa15dc5f4a0",
@@ -1057,21 +1160,23 @@
     "nt-ai-assurance": {
       "contentHash": "afd9802a203e8782df4f27cf28fad8fe07f58eb8880ee292a815e82bf7e5d456",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-07-29T20:30:22.291Z",
+      "lastCheckedAt": "2026-08-04T20:52:38.882Z",
       "lastChangedAt": "2026-07-20T12:19:40.243Z",
       "changeCount": 1
     },
     "treasury-publications": {
-      "contentHash": "ce616778a0a4431f55c6544be38532f4723cc90652f55633ff15184d10f87747",
+      "contentHash": "1c2a3c4a08e3f116515f5cf18c0c73840c38220b0621c4e62cb54adc549a8d38",
       "firstCheckedAt": "2026-07-22T20:38:08.787Z",
-      "lastCheckedAt": "2026-07-29T20:30:22.291Z",
-      "changeCount": 0
+      "lastCheckedAt": "2026-08-04T20:52:38.882Z",
+      "changeCount": 1,
+      "lastChangedAt": "2026-08-04T20:52:38.882Z"
     },
     "qld-courts-news": {
-      "contentHash": "e1573bd1f9c5279c496a3348cccc508ea99736a23ff67f9956e22ae59d96516a",
+      "contentHash": "77ff10fa78d8fe4d6a0b7f6454a5205b98286a74e02dab8590506c104da477eb",
       "firstCheckedAt": "2026-07-22T20:38:08.787Z",
-      "lastCheckedAt": "2026-07-29T20:30:22.291Z",
-      "changeCount": 0
+      "lastCheckedAt": "2026-08-04T20:52:38.882Z",
+      "changeCount": 1,
+      "lastChangedAt": "2026-08-04T20:52:38.882Z"
     },
     "ovic-enterprise-generative-ai": {
       "contentHash": "37072e411cb2b7d1aad30d3214c4c7738f401b1f1c91770e2fed8948ee1fed4e",
@@ -1090,7 +1195,7 @@
     "pc-media": {
       "contentHash": "dbf1212703cbdb7df9978df2b12445535952af553cb71fdebed520dabc4643c4",
       "firstCheckedAt": "2026-07-29T20:30:22.291Z",
-      "lastCheckedAt": "2026-07-29T20:30:22.291Z",
+      "lastCheckedAt": "2026-08-04T20:52:38.882Z",
       "changeCount": 0
     },
     "nsw-sc-practice-notes": {
@@ -1103,7 +1208,7 @@
     "nsw-digital-ai": {
       "contentHash": "3a4af035bc1aa11b23824cea805610e8cc04f795b2569ac3f0939f18fa542874",
       "firstCheckedAt": "2026-07-29T20:30:22.291Z",
-      "lastCheckedAt": "2026-07-29T20:30:22.291Z",
+      "lastCheckedAt": "2026-08-04T20:52:38.882Z",
       "changeCount": 0
     },
     "vic-ai": {
