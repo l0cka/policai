@@ -1,5 +1,108 @@
 [
   {
+    "id": "source-review-dev-new-ai-frontier-cyber-threat-guidance-for-boards-gp4ujh",
+    "sourceUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
+    "title": "New AI frontier cyber threat guidance for boards of directors",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-08-05T20:44:21.554Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from Australian Cyber Security Centre — news (score 0.65, heuristic).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.65,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "Boards of directors and senior leaders need to understand how newer frontier AI models are reshaping cyber threats. As advances in frontier AI models make it easier for cybercriminals to identify and exploit vulnerabilities, organisations face a growing threat from AI-enabled cyber attacks. To help boards respond, we have released in partnership with the Australian Institute of Company Directors (AICD), Frontier AI cyber threat considerations for boards of directors. The publication outlines frontier AI cyber threats and provides practical guidance to help organisations strengthen governance, ",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.cyber.gov.au/about-us/view-all-content/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
+      "finalUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
+      "retrievedAt": "2026-08-05T20:44:21.554Z",
+      "contentType": "text/html",
+      "contentHash": "0708311baf079d1f2da8c3e2bae1c5f6febb76599685230bae595b349edcb637",
+      "etag": "\"1785904692\"",
+      "lastModified": "Wed, 05 Aug 2026 04:38:12 GMT",
+      "title": "New AI frontier cyber threat guidance for boards of directors",
+      "publishedAt": "2026-08-05",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "new-ai-frontier-cyber-threat-guidance-for-boards-of-director",
+      "title": "New AI frontier cyber threat guidance for boards of directors",
+      "description": "Boards of directors and senior leaders need to understand how newer frontier AI models are reshaping cyber threats. As advances in frontier AI models make it easier for cybercriminals to identify and exploit vulnerabilities, organisations face a growing threat from AI-enabled cyber attacks. To help boards respond, we have released in partnership with the Australian Institute of Company Directors (AICD), Frontier AI cyber threat considerations for boards of directors. The publication outlines frontier AI cyber threats and provides practical guidance to help organisations strengthen governance, ",
+      "jurisdiction": "federal",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2026-08-05",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-08-05",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.cyber.gov.au/about-us/view-all-content/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
+            "finalUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
+            "retrievedAt": "2026-08-05T20:44:21.554Z",
+            "contentType": "text/html",
+            "contentHash": "0708311baf079d1f2da8c3e2bae1c5f6febb76599685230bae595b349edcb637",
+            "etag": "\"1785904692\"",
+            "lastModified": "Wed, 05 Aug 2026 04:38:12 GMT",
+            "title": "New AI frontier cyber threat guidance for boards of directors",
+            "publishedAt": "2026-08-05",
+            "publishedAtPrecision": "day"
+          }
+        }
+      ],
+      "agencies": [],
+      "sourceUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
+      "content": "Boards of directors and senior leaders need to understand how newer frontier AI models are reshaping cyber threats. As advances in frontier AI models make it easier for cybercriminals to identify and exploit vulnerabilities, organisations face a growing threat from AI-enabled cyber attacks. To help boards respond, we have released in partnership with the Australian Institute of Company Directors (AICD), Frontier AI cyber threat considerations for boards of directors. The publication outlines frontier AI cyber threats and provides practical guidance to help organisations strengthen governance, ",
+      "aiSummary": "Boards of directors and senior leaders need to understand how newer frontier AI models are reshaping cyber threats. As advances in frontier AI models make it easier for cybercriminals to identify and exploit vulnerabilities, organisations face a growing threat from AI-enabled cyber attacks. To help boards respond, we have released in partnership with the Australian Institute of Company Directors (AICD), Frontier AI cyber threat considerations for boards of directors. The publication outlines frontier AI cyber threats and provides practical guidance to help organisations strengthen governance, ",
+      "tags": [],
+      "createdAt": "2026-08-05T20:44:21.554Z",
+      "updatedAt": "2026-08-05T20:44:21.554Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-new-ai-frontier-cyber-threat-guidance-for-boards-gp4ujh",
+      "title": "New AI frontier cyber threat guidance for boards of directors",
+      "url": "https://www.cyber.gov.au/about-us/view-all-content/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
+      "sourceId": "cyber-news",
+      "sourceName": "Australian Cyber Security Centre — news",
+      "jurisdiction": "federal",
+      "publishedAt": "2026-08-05",
+      "publishedAtPrecision": "day",
+      "detectedAt": "2026-08-05T20:44:21.554Z",
+      "summary": "Boards of directors and senior leaders need to understand how newer frontier AI models are reshaping cyber threats. As advances in frontier AI models make it easier for cybercriminals to identify and exploit vulnerabilities, organisations face a growing threat from AI-enabled cyber attacks. To help boards respond, we have released in partnership with the Australian Institute of Company Directors (AICD), Frontier AI cyber threat considerations for boards of directors. The publication outlines frontier AI cyber threats and provides practical guidance to help organisations strengthen governance, ",
+      "relevanceScore": 0.65,
+      "classification": "heuristic",
+      "assessment": {
+        "method": "heuristic",
+        "promptVersion": "keyword-rules-v1",
+        "assessedAt": "2026-08-05T20:44:21.554Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.cyber.gov.au/about-us/view-all-content/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
+          "finalUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
+          "retrievedAt": "2026-08-05T20:44:21.554Z",
+          "contentType": "text/html",
+          "contentHash": "0708311baf079d1f2da8c3e2bae1c5f6febb76599685230bae595b349edcb637",
+          "etag": "\"1785904692\"",
+          "lastModified": "Wed, 05 Aug 2026 04:38:12 GMT",
+          "title": "New AI frontier cyber threat guidance for boards of directors",
+          "publishedAt": "2026-08-05",
+          "publishedAtPrecision": "day"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-08-05T20:44:21.554Z"
+  },
+  {
     "id": "source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-womqb9",
     "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
     "title": "Senate opens inquiry into artificial intelligence and data centres",
