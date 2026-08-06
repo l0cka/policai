@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { PolicaiLogo } from '@/components/layout/PolicaiLogo';
+import { ThemeToggle } from '@/components/layout/ThemeToggle';
 
 const navItems = [
   { href: '/', label: 'Register' },
@@ -32,7 +33,7 @@ const insightItems = [
 ];
 
 function formatDataDate(value: string | null): string {
-  if (!value) return 'SOURCE STATUS AVAILABLE IN METHODOLOGY';
+  if (!value) return 'SOURCE STATUS IN METHODOLOGY';
 
   return `DATA CURRENT TO ${new Date(value).toLocaleString('en-AU', {
     day: '2-digit',
@@ -43,6 +44,37 @@ function formatDataDate(value: string | null): string {
     hour12: false,
     timeZoneName: 'short',
   }).toUpperCase()}`;
+}
+
+/** Nav label whose underline wipes in from the left, and stays for the current page. */
+function NavLink({
+  href,
+  label,
+  active,
+}: {
+  href: string;
+  label: string;
+  active: boolean;
+}) {
+  return (
+    <Link
+      href={href}
+      aria-current={active ? 'page' : undefined}
+      className={cn(
+        'group relative flex h-full items-center px-1 text-[15px] font-medium transition-colors duration-[var(--dur-fast)]',
+        active ? 'text-primary' : 'text-muted-foreground hover:text-foreground',
+      )}
+    >
+      {label}
+      <span
+        aria-hidden="true"
+        className={cn(
+          'absolute inset-x-0 bottom-0 h-[3px] origin-left bg-primary transition-transform duration-[var(--dur-base)] ease-[var(--ease-out-quint)]',
+          active ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100',
+        )}
+      />
+    </Link>
+  );
 }
 
 export function Header({ dataCurrentAt }: { dataCurrentAt: string | null }) {
@@ -76,60 +108,84 @@ export function Header({ dataCurrentAt }: { dataCurrentAt: string | null }) {
   const insightsActive = insightItems.some((item) => isActive(item.href));
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur-md">
+    <header className="rule-masthead sticky top-0 z-50 w-full bg-background/90 backdrop-blur-md">
+      {/* Dateline strip, in the manner of a masthead's edition line. */}
       <div className="bg-[var(--navy)] text-white">
         <div className="container mx-auto flex h-7 items-center justify-between px-4 font-mono text-[9px] uppercase tracking-[0.12em] sm:px-6 lg:px-8 lg:text-[10px]">
           <span className="hidden sm:inline">{formatDataDate(dataCurrentAt)}</span>
-          <span className="sm:hidden">{formatDataDate(dataCurrentAt).replace('DATA CURRENT TO ', 'CURRENT · ')}</span>
+          <span className="sm:hidden">
+            {formatDataDate(dataCurrentAt).replace('DATA CURRENT TO ', 'CURRENT · ')}
+          </span>
           <div className="hidden items-center gap-5 sm:flex">
-            <Link href="/api/policies" className="hover:text-white/75">API</Link>
-            <a href="https://github.com/l0cka/policai/issues" target="_blank" rel="noopener noreferrer" className="hover:text-white/75">Feedback</a>
+            <Link href="/api/policies" className="underline-grow">
+              API
+            </Link>
+            <a
+              href="https://github.com/l0cka/policai/issues"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline-grow"
+            >
+              Feedback
+            </a>
           </div>
         </div>
       </div>
-      <div className="container mx-auto flex h-16 items-center px-4 sm:h-[5.25rem] sm:px-6 lg:px-8">
-        <Link href="/" aria-label="Policai home">
+
+      <div className="container mx-auto flex h-14 items-center px-4 sm:h-[4.25rem] sm:px-6 lg:px-8">
+        <Link href="/" aria-label="Policai home" className="shrink-0">
           <PolicaiLogo
-            className="transition-opacity hover:opacity-80"
-            iconClassName="h-12 w-12 max-sm:h-10 max-sm:w-10"
-            textClassName="text-[1.75rem] tracking-[0.08em] max-sm:text-xl"
+            className="transition-opacity duration-[var(--dur-base)] hover:opacity-75"
+            iconClassName="h-9 w-9 max-sm:h-8 max-sm:w-8"
+            textClassName="text-[1.3rem] tracking-[0.08em] max-sm:text-lg"
           />
         </Link>
 
         <nav className="mx-auto hidden h-full items-center gap-8 md:flex">
           {navItems.map((item) => (
-            <Link
+            <NavLink
               key={item.href}
               href={item.href}
-              className={cn(
-                'flex h-full items-center border-b-[3px] px-1 pt-[3px] text-[15px] font-medium transition-colors',
-                isActive(item.href)
-                  ? 'border-primary text-primary'
-                  : 'border-transparent text-muted-foreground hover:text-foreground'
-              )}
-            >
-              {item.label}
-            </Link>
+              label={item.label}
+              active={isActive(item.href)}
+            />
           ))}
-          {/* Explore dropdown */}
-          <div ref={insightsRef} className="relative">
+
+          <div ref={insightsRef} className="relative h-full">
             <button
               type="button"
               onClick={() => setInsightsOpen(!insightsOpen)}
               aria-haspopup="menu"
               aria-expanded={insightsOpen}
               className={cn(
-                'flex h-full items-center gap-1 border-b-[3px] px-1 pt-[3px] text-[15px] font-medium transition-colors',
+                'group relative flex h-full items-center gap-1 px-1 text-[15px] font-medium transition-colors duration-[var(--dur-fast)]',
                 insightsActive
-                  ? 'border-primary text-primary'
-                  : 'border-transparent text-muted-foreground hover:text-foreground'
+                  ? 'text-primary'
+                  : 'text-muted-foreground hover:text-foreground',
               )}
             >
               Explore
-              <ChevronDown className={cn('h-3 w-3 transition-transform', insightsOpen && 'rotate-180')} />
+              <ChevronDown
+                className={cn(
+                  'h-3 w-3 transition-transform duration-[var(--dur-base)] ease-[var(--ease-out-quint)]',
+                  insightsOpen && 'rotate-180',
+                )}
+              />
+              <span
+                aria-hidden="true"
+                className={cn(
+                  'absolute inset-x-0 bottom-0 h-[3px] origin-left bg-primary transition-transform duration-[var(--dur-base)] ease-[var(--ease-out-quint)]',
+                  insightsActive || insightsOpen
+                    ? 'scale-x-100'
+                    : 'scale-x-0 group-hover:scale-x-100',
+                )}
+              />
             </button>
             {insightsOpen && (
-              <div className="dropdown-in absolute left-0 top-full z-50 min-w-[168px] border border-border bg-popover py-1 shadow-lg" role="menu">
+              <div
+                className="dropdown-in absolute left-0 top-full z-50 min-w-[180px] overflow-hidden rounded-md border border-border bg-popover py-1 shadow-[var(--shadow-lift)]"
+                role="menu"
+              >
                 {insightItems.map((item) => (
                   <Link
                     key={item.href}
@@ -137,10 +193,10 @@ export function Header({ dataCurrentAt }: { dataCurrentAt: string | null }) {
                     onClick={() => setInsightsOpen(false)}
                     role="menuitem"
                     className={cn(
-                      'block px-4 py-2 text-sm transition-colors',
+                      'ink-rail block px-4 py-2 text-sm transition-colors duration-[var(--dur-fast)]',
                       isActive(item.href)
                         ? 'bg-muted text-foreground'
-                        : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                        : 'text-muted-foreground hover:bg-muted hover:text-foreground',
                     )}
                   >
                     {item.label}
@@ -151,22 +207,23 @@ export function Header({ dataCurrentAt }: { dataCurrentAt: string | null }) {
           </div>
         </nav>
 
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto flex items-center gap-1.5 sm:gap-2.5">
           <Link
             href="/#policy-search"
             aria-label="Search the policy register"
-            className="flex h-10 w-10 items-center justify-center text-foreground transition-colors hover:text-primary"
+            className="flex h-10 w-10 items-center justify-center rounded-full text-foreground transition-colors duration-[var(--dur-fast)] hover:bg-muted hover:text-primary"
           >
             <Search className="h-5 w-5" strokeWidth={1.75} />
           </Link>
+          <ThemeToggle className="max-sm:hidden" />
           <Sheet>
             <SheetTrigger asChild className="md:hidden">
-              <Button variant="ghost" size="icon" className="h-8 w-8">
+              <Button variant="ghost" size="icon" className="h-9 w-9">
                 <Menu className="h-5 w-5" />
                 <span className="sr-only">Toggle menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[250px]">
+            <SheetContent side="right" className="w-[270px]">
               <SheetTitle className="sr-only">Navigation</SheetTitle>
               <SheetDescription className="sr-only">
                 Browse Policai sections and resources.
@@ -177,10 +234,10 @@ export function Header({ dataCurrentAt }: { dataCurrentAt: string | null }) {
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      'px-3 py-2 text-sm font-medium rounded transition-colors',
+                      'rounded px-3 py-2 text-sm font-medium transition-colors duration-[var(--dur-fast)]',
                       isActive(item.href)
                         ? 'bg-muted text-foreground'
-                        : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                        : 'text-muted-foreground hover:bg-muted hover:text-foreground',
                     )}
                   >
                     {item.label}
@@ -195,15 +252,22 @@ export function Header({ dataCurrentAt }: { dataCurrentAt: string | null }) {
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      'px-3 py-2 text-sm font-medium rounded transition-colors',
+                      'rounded px-3 py-2 text-sm font-medium transition-colors duration-[var(--dur-fast)]',
                       isActive(item.href)
                         ? 'bg-muted text-foreground'
-                        : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                        : 'text-muted-foreground hover:bg-muted hover:text-foreground',
                     )}
                   >
                     {item.label}
                   </Link>
                 ))}
+                <div className="my-3 border-t border-border" />
+                <div className="flex items-center justify-between px-3">
+                  <span className="font-mono text-[10px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
+                    Theme
+                  </span>
+                  <ThemeToggle />
+                </div>
               </nav>
             </SheetContent>
           </Sheet>

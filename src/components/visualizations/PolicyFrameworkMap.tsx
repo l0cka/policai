@@ -171,7 +171,7 @@ function PillarCard({ pillar, isSelected, onSelect }: { pillar: Pillar; isSelect
         <CardDescription className="text-sm">{pillar.description}</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="flex items-center gap-2 text-sm">
+        <div className="flex flex-wrap items-center gap-2 text-sm">
           <Badge variant="secondary">{pillar.principles.length} Principles</Badge>
           <Badge variant="destructive">{mandatoryCount} Mandatory</Badge>
         </div>
@@ -218,13 +218,13 @@ export function PolicyFrameworkMap({ data, onPillarSelect }: PolicyFrameworkMapP
             <Building2 className="h-6 w-6 text-primary" />
             <h2 className="text-2xl font-bold">{data.title}</h2>
           </div>
-          <div className="flex items-center gap-2 mt-2">
+          <div className="mt-2 flex flex-wrap items-center gap-2">
             <Badge variant="outline">Version {data.version}</Badge>
             <Badge variant="secondary">Effective: {new Date(data.effectiveDate).toLocaleDateString('en-AU')}</Badge>
-            <Badge>{data.authority}</Badge>
+            <Badge className="max-w-full whitespace-normal text-left">{data.authority}</Badge>
           </div>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <Button
             variant={view === 'overview' ? 'default' : 'outline'}
             size="sm"

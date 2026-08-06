@@ -73,7 +73,7 @@ export function CourtsBrowser({ policies }: { policies: Policy[] }) {
 	return (
 		<div className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
 			<PageIntro
-				title="Courts & Tribunals"
+				title="Courts and tribunals"
 				description="Court and tribunal guidance on AI in proceedings."
 			/>
 			<MetricStrip metrics={[
@@ -83,7 +83,7 @@ export function CourtsBrowser({ policies }: { policies: Policy[] }) {
 				{ value: jurisdictionsWithout.length, label: "pending" },
 			]} />
 
-			<div className="mx-auto max-w-5xl pt-8">
+			<div className="max-w-5xl pt-8">
 
 			{/* Jurisdictions with practice notes */}
 			{jurisdictionsWithNotes.map((jurisdiction) => {

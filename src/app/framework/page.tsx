@@ -31,7 +31,7 @@ export default async function FrameworkPage() {
             Back to Policies
           </Link>
         </div>
-        <PageIntro title="AI in Government framework" />
+        <PageIntro title="AI in government framework" />
         <Card className="rounded-none border-[var(--caution)]/30 bg-[var(--status-proposed-bg)]/25 shadow-none">
           <CardHeader>
             <CardTitle>Framework temporarily unavailable</CardTitle>
@@ -71,7 +71,7 @@ export default async function FrameworkPage() {
       </div>
 
       <div className="mb-8 space-y-6">
-        <PageIntro title="AI in Government framework" />
+        <PageIntro title="AI in government framework" />
 
         <Card className="rounded-none border-primary/20 bg-primary/5 shadow-none">
           <CardContent className="p-6">

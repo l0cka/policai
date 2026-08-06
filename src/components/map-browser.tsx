@@ -81,6 +81,10 @@ export function MapBrowser({ policiesData }: { policiesData: Policy[] }) {
 
 	return (
 		<div className="relative flex min-h-[calc(100svh-7rem)] overflow-hidden bg-background">
+			<h1 className="pointer-events-none absolute left-5 top-4 z-10 font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground md:left-8 md:top-6">
+				Policies by jurisdiction
+			</h1>
+
 			{/* Map area — takes full width, panel overlays */}
 			<div className="relative flex flex-1 min-w-0 items-start justify-center px-4 pt-4 pb-28 md:px-8 md:pt-6 md:pb-16">
 				<AustraliaMap
@@ -92,9 +96,20 @@ export function MapBrowser({ policiesData }: { policiesData: Policy[] }) {
 			</div>
 
 			{/* Sliding policy panel */}
+			{/*
+				The panel keeps its border and background only while a jurisdiction is
+				selected. Parked off-canvas it would otherwise leave a sliver of card
+				showing past the right edge, because it slides by its own width from an
+				inset position.
+			*/}
 			<div
 				ref={panelRef}
-				className={`absolute inset-x-0 bottom-0 z-10 flex max-h-[60vh] flex-col overflow-hidden border-t border-border bg-background shadow-xl transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] md:bottom-6 md:left-auto md:right-6 md:top-6 md:h-[calc(100%-3rem)] md:max-h-none md:w-[22rem] md:border md:bg-card/95 md:shadow-lg md:backdrop-blur-sm ${
+				aria-hidden={!selectedJurisdiction}
+				className={`absolute inset-x-0 bottom-0 z-10 flex max-h-[60vh] flex-col overflow-hidden transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] md:bottom-6 md:left-auto md:right-6 md:top-6 md:h-[calc(100%-3rem)] md:max-h-none md:w-[22rem] ${
+					selectedJurisdiction
+						? "border-t border-border bg-background shadow-xl md:border md:bg-card/95 md:shadow-lg md:backdrop-blur-sm"
+						: "invisible"
+				} ${
 					panelVisible
 						? "translate-y-0 md:translate-y-0 md:translate-x-0"
 						: "translate-y-full md:translate-y-0 md:translate-x-full"

@@ -58,7 +58,8 @@ export function AgenciesBrowser({ agencies }: { agencies: Agency[] }) {
   return (
     <div className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
       <PageIntro
-        title="Agency transparency"
+        title="Agencies"
+        description="Australian government agencies and the AI transparency statements located for each."
       />
       <MetricStrip metrics={[
         { value: stats.total, label: 'agencies' },
@@ -109,7 +110,7 @@ export function AgenciesBrowser({ agencies }: { agencies: Agency[] }) {
               <col className="w-32" />
             </colgroup>
             <thead>
-              <tr className="border-y border-foreground/55">
+              <tr className="border-y border-[var(--rule-heavy)]">
                 <th className="py-2 pr-4 text-left font-mono text-[10px] uppercase tracking-[0.1em]">Agency</th>
                 <th className="py-2 pr-4 text-left font-mono text-[10px] uppercase tracking-[0.1em]">Acronym</th>
                 <th className="py-2 pr-4 text-left font-mono text-[10px] uppercase tracking-[0.1em]">Jurisdiction</th>

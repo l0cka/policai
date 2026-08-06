@@ -33,7 +33,7 @@ export function FilterControls({
   return (
     <div className={cn('space-y-6', className)}>
       <div className="flex items-center justify-between">
-        <span className="font-mono text-[11px] font-medium uppercase tracking-[0.12em]">
+        <span className="font-mono text-[11px] font-medium uppercase tracking-[0.14em]">
           Filters
         </span>
         {hasActiveFilters ? (
@@ -49,42 +49,60 @@ export function FilterControls({
       </div>
 
       {groups.map((group) => (
-        <fieldset key={group.id} className="border-t border-border pt-4 first:border-t-0 first:pt-0">
-          <legend className="mb-3 text-sm font-medium">{group.label}</legend>
-          <div className="space-y-2.5">
-            {group.options.map((option) => {
-              const checked = group.selectedValues.includes(option.value);
-              return (
-                <label
-                  key={option.value}
-                  className="group flex min-h-6 cursor-pointer items-start gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  <input
-                    type="checkbox"
-                    checked={checked}
-                    onChange={() => group.onToggle(option.value)}
-                    className="sr-only"
-                  />
-                  <span
+        // The rule sits on a wrapper rather than the fieldset: a <legend> is
+        // painted inside its fieldset's top border and would cut through it.
+        <div
+          key={group.id}
+          className="border-t border-border pt-4 first:border-t-0 first:pt-0"
+        >
+          <fieldset>
+            <legend className="mb-3 text-sm font-medium">{group.label}</legend>
+            <div className="space-y-1">
+              {group.options.map((option) => {
+                const checked = group.selectedValues.includes(option.value);
+                return (
+                  <label
+                    key={option.value}
                     className={cn(
-                      'mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-[3px] border transition-colors',
+                      'group -mx-2 flex min-h-8 cursor-pointer items-start gap-2.5 rounded px-2 py-1 text-sm transition-colors duration-[var(--dur-fast)]',
                       checked
-                        ? 'border-primary bg-primary text-primary-foreground'
-                        : 'border-input bg-background group-hover:border-foreground/50',
+                        ? 'text-foreground'
+                        : 'text-muted-foreground hover:bg-muted/60 hover:text-foreground',
                     )}
-                    aria-hidden="true"
                   >
-                    {checked ? <Check className="h-3 w-3" strokeWidth={2.5} /> : null}
-                  </span>
-                  <span className="flex-1 leading-5">{option.label}</span>
-                  <span className="font-mono text-[10px] tabular-nums text-muted-foreground/75">
-                    {option.count}
-                  </span>
-                </label>
-              );
-            })}
-          </div>
-        </fieldset>
+                    <input
+                      type="checkbox"
+                      checked={checked}
+                      onChange={() => group.onToggle(option.value)}
+                      className="peer sr-only"
+                    />
+                    <span
+                      className={cn(
+                        'mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-[3px] border transition-all duration-[var(--dur-fast)] peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[var(--ring)]',
+                        checked
+                          ? 'border-primary bg-primary text-primary-foreground'
+                          : 'border-input bg-background group-hover:border-foreground/50',
+                      )}
+                      aria-hidden="true"
+                    >
+                      <Check
+                        className={cn(
+                          'h-3 w-3 transition-transform duration-[var(--dur-fast)] ease-[var(--ease-spring)]',
+                          checked ? 'scale-100' : 'scale-0',
+                        )}
+                        strokeWidth={2.5}
+                      />
+                    </span>
+                    <span className="flex-1 leading-5">{option.label}</span>
+                    <span className="mt-0.5 font-mono text-[10px] tabular-nums text-muted-foreground/75">
+                      {option.count}
+                    </span>
+                  </label>
+                );
+              })}
+            </div>
+          </fieldset>
+        </div>
       ))}
     </div>
   );
@@ -92,8 +110,8 @@ export function FilterControls({
 
 export function FilterSidebar(props: FilterControlsProps) {
   return (
-    <aside className="hidden w-64 shrink-0 border-r border-border pr-8 lg:block">
-      <FilterControls {...props} className="sticky top-[8.5rem] py-5" />
+    <aside className="hidden w-64 shrink-0 border-r border-[var(--rule-hair)] pr-8 lg:block">
+      <FilterControls {...props} className="sticky top-[6.75rem] py-5" />
     </aside>
   );
 }

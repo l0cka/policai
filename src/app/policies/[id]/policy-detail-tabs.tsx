@@ -22,6 +22,7 @@ import {
   getPrimaryPolicyDate,
   type Policy,
 } from '@/types';
+import { jurisdictionAccent } from '@/lib/jurisdiction-accent';
 import { EmptyState } from '@/components/ui/empty-state';
 import { formatPolicyDate } from '@/lib/format-policy-date';
 import { cn } from '@/lib/utils';
@@ -126,14 +127,20 @@ export function PolicyDetailTabs({
       <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_23rem]">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-3 font-mono text-[10px] uppercase tracking-[0.12em]">
-            <span className="text-primary">{getJurisdictionName(policy.jurisdiction)}</span>
+            <span
+              className="inline-flex items-center gap-1.5"
+              style={{ color: jurisdictionAccent(policy.jurisdiction) }}
+            >
+              <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-current" />
+              {getJurisdictionName(policy.jurisdiction)}
+            </span>
             <span className="h-4 w-px bg-border" />
             <span>{getPolicyTypeName(policy.type)}</span>
             <span className="h-4 w-px bg-border" />
             <StatusBadge policy={policy} />
           </div>
 
-          <h1 className="mt-5 max-w-5xl font-display text-[clamp(2.5rem,3.8vw,4rem)] leading-[1.02] tracking-[-0.035em]">
+          <h1 className="article-title mt-5 max-w-4xl">
             {policy.title}
           </h1>
           <p className="mt-4 max-w-4xl text-base leading-7 text-muted-foreground">
@@ -200,7 +207,7 @@ export function PolicyDetailTabs({
 
               <div className="mt-7 grid gap-7 lg:grid-cols-[minmax(0,1fr)_17rem]">
                 <div>
-                  <h2 className="text-lg font-semibold">Key requirements</h2>
+                  <h2 className="section-title">Key requirements</h2>
                   <ol className="mt-3 border-y border-border">
                     {requirements.slice(0, 3).map((requirement, index) => (
                       <li key={`${requirement.slice(0, 30)}-${index}`} className="flex gap-3 border-b border-border px-2 py-3 last:border-b-0">
@@ -219,7 +226,7 @@ export function PolicyDetailTabs({
                 </div>
 
                 <div className="border-l border-border pl-5">
-                  <h2 className="text-sm font-semibold">Policy changes</h2>
+                  <h2 className="page-eyebrow">Policy changes</h2>
                   <ol className="mt-4 space-y-5">
                     {policy.dates.slice(0, 4).map((date, index) => (
                       <li key={`${date.type}-${String(date.date)}`} className="relative pl-5">
@@ -236,7 +243,7 @@ export function PolicyDetailTabs({
 
           {activeTab === 'requirements' ? (
             <div className="py-6">
-              <h2 className="text-xl font-semibold">Key requirements</h2>
+              <h2 className="section-title">Key requirements</h2>
               <ol className="mt-4 max-w-4xl border-y border-border">
                 {requirements.map((requirement, index) => (
                   <li key={`${requirement.slice(0, 30)}-${index}`} className="flex gap-4 border-b border-border py-4 last:border-b-0">
@@ -265,7 +272,7 @@ export function PolicyDetailTabs({
 
         <aside className="space-y-5 xl:pt-0">
           <section className="border border-border bg-card/40 p-5">
-            <h2 className="font-display text-2xl">At a glance</h2>
+            <h2 className="section-title">At a glance</h2>
             <dl className="mt-4 space-y-3 text-sm">
               <div className="grid grid-cols-[7rem_1fr] gap-3"><dt className="text-muted-foreground">Status</dt><dd><StatusBadge policy={policy} /></dd></div>
               <div className="grid grid-cols-[7rem_1fr] gap-3"><dt className="text-muted-foreground">Jurisdiction</dt><dd>{getJurisdictionName(policy.jurisdiction)}</dd></div>
@@ -284,7 +291,7 @@ export function PolicyDetailTabs({
           </section>
 
           <section className="border border-border bg-card/40 p-5">
-            <h2 className="font-display text-2xl">Source verification</h2>
+            <h2 className="section-title">Source verification</h2>
             <p className="mt-4 flex items-center gap-2 border-b border-border pb-4 text-sm">
               <CheckCircle2 className="h-5 w-5 text-[var(--trust)]" fill="currentColor" />
               {policy.verification.status === 'verified' ? 'Verified against the official source' : 'Editorial verification required'}
@@ -303,7 +310,7 @@ export function PolicyDetailTabs({
       </div>
 
       <section className="mt-6 border-t border-border pt-5">
-        <h2 className="font-display text-2xl">Related policies</h2>
+        <h2 className="section-title">Related policies</h2>
         <div className="mt-3"><RelatedPolicies policies={relatedPolicies} /></div>
       </section>
     </div>
