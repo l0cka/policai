@@ -1,0 +1,4 @@
+.claude/worktrees/
+.env
+node_modules/
+.next/
