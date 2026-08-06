@@ -17,7 +17,7 @@ const STREAM_LABELS: Record<string, string> = {
 };
 
 const esc = (s: string) =>
-  s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 
 const fmtSydney = (d: Date) =>
   d.toLocaleDateString('en-AU', { timeZone: 'Australia/Sydney', day: 'numeric', month: 'short', year: 'numeric' });
@@ -45,9 +45,9 @@ export function renderDigest(input: DigestInput): string {
       .map((d) => `<li><strong>${esc(d.date)}</strong> — ${esc(d.label)} (${esc(d.itemTitle)})</li>`)
       .join('')}</ul>`);
   }
-  parts.push(`<p><a href="${esc(input.dashboardUrl)}">Open the dashboard</a></p>`);
   if (input.failedSources.length) {
     parts.push(`<p style="color:#a00;font-size:12px">Sources that failed this week: ${input.failedSources.map(esc).join(', ')}</p>`);
   }
+  parts.push(`<p><a href="${esc(input.dashboardUrl)}">Open the dashboard</a></p>`);
   return `<div style="font-family:Georgia,serif;max-width:640px">${parts.join('\n')}</div>`;
 }
