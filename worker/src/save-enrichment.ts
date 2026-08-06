@@ -18,7 +18,7 @@ async function main() {
     data = JSON.parse(await readStdin());
   } catch (err) {
     console.error(`malformed JSON: ${err instanceof Error ? err.message : String(err)}`);
-    process.exit(2);
+    process.exit(2); // exit 2 for validation/usage errors (malformed agent output)
   }
   const parsed = EnrichmentSchema.safeParse(data);
   if (!parsed.success) {
