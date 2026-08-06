@@ -110,8 +110,8 @@ export function FilterControls({
 
 export function FilterSidebar(props: FilterControlsProps) {
   return (
-    <aside className="hidden w-64 shrink-0 border-r border-border pr-8 lg:block">
-      <FilterControls {...props} className="sticky top-[8.5rem] py-5" />
+    <aside className="hidden w-64 shrink-0 border-r border-[var(--rule-hair)] pr-8 lg:block">
+      <FilterControls {...props} className="sticky top-[6.75rem] py-5" />
     </aside>
   );
 }

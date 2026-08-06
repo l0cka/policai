@@ -51,7 +51,7 @@ export default async function BlogPostPage({
       </Link>
 
       <header className="mb-9 border-b border-border pb-7">
-        <h1 className="font-display text-[clamp(2.75rem,6vw,5rem)] leading-[1.02] tracking-[-0.035em]">{post.title}</h1>
+        <h1 className="article-title">{post.title}</h1>
         <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
           {format(new Date(post.date), 'MMMM d, yyyy')}
         </p>

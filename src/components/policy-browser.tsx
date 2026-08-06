@@ -256,38 +256,30 @@ export function PolicyBrowser({
 
   return (
     <div>
-      <section className="container mx-auto px-4 pb-4 pt-6 sm:px-6 sm:pt-8 lg:px-8 lg:pb-6">
-        <div className="grid gap-6 border-b border-border pb-6 lg:grid-cols-[minmax(0,1fr)_23rem] lg:items-end">
-          <div className="reveal">
-            <h1 className="max-w-5xl font-display text-[clamp(2.65rem,4.5vw,4.5rem)] leading-[0.98] tracking-[-0.035em]">
-              The Australian AI policy register
-            </h1>
-            <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
+      {/*
+        No display heading here. The register is what the page is for, so it
+        opens on the data with the title reduced to a label.
+      */}
+      <section className="container mx-auto px-4 pb-2 pt-7 sm:px-6 lg:px-8">
+        <div className="reveal flex flex-col gap-3 sm:flex-row sm:items-baseline sm:justify-between">
+          <div>
+            <h1 className="page-eyebrow">Australian AI policy register</h1>
+            <p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">
               Legislation, guidance and court practice notes from federal, state
-              and territory governments. Every record links to the official
-              source it came from.
+              and territory governments, each linked to its official source.
             </p>
           </div>
-          <div className="reveal reveal-1 hidden border-l border-border pl-5 lg:mb-1 lg:block">
+          <div className="flex shrink-0 items-center gap-3">
             <HealthSignal health={collectionHealth} />
-            <p className="mt-2 text-sm">{freshLabel}</p>
-            {freshnessDate ? (
-              <p className="mt-2 font-mono text-[11px] uppercase text-muted-foreground">
-                {formatDate(freshnessDate)}
-              </p>
-            ) : null}
+            <span className="page-eyebrow">
+              {freshLabel}
+              {freshnessDate ? ` · ${formatDate(freshnessDate)}` : ''}
+            </span>
           </div>
         </div>
 
-        <p className="reveal reveal-1 border-b border-border py-4 text-sm text-muted-foreground md:hidden">
-          <span className="font-display text-2xl text-primary">{policies.length}</span> policies
-          <span className="mx-2">·</span>
-          <span className="font-display text-2xl text-primary">{distinctJurisdictions.size}</span> jurisdictions
-          <span className="mx-2">·</span>
-          <span className="font-display text-2xl text-primary">{developmentCount}</span> developments
-        </p>
         <MetricStrip
-          className="hidden md:grid md:grid-cols-4"
+          className="mt-5"
           metrics={[
             { value: policies.length, label: 'policies' },
             { value: distinctJurisdictions.size, label: 'jurisdictions' },
@@ -303,7 +295,7 @@ export function PolicyBrowser({
 
           <div className="min-w-0 flex-1 py-5 lg:px-8">
             <div className="flex flex-col gap-3 sm:flex-row">
-              <div id="policy-search" className="relative flex-1 scroll-mt-36">
+              <div id="policy-search" className="relative flex-1 scroll-mt-28">
                 <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" strokeWidth={1.75} />
                 <input
                   ref={searchRef}
@@ -330,7 +322,7 @@ export function PolicyBrowser({
                 </SheetTrigger>
                 <SheetContent side="bottom" className="max-h-[88svh] overflow-y-auto p-5">
                   <SheetHeader className="px-0 pt-0">
-                    <SheetTitle className="font-display text-2xl">Filter policies</SheetTitle>
+                    <SheetTitle className="section-title">Filter policies</SheetTitle>
                     <SheetDescription className="sr-only">
                       Filter the policy register by jurisdiction, policy type, and status.
                     </SheetDescription>
@@ -406,7 +398,7 @@ export function PolicyBrowser({
             />
           </div>
 
-          <aside className="hidden w-[19.5rem] shrink-0 border-l border-border py-5 pl-7 xl:block">
+          <aside className="hidden w-[19.5rem] shrink-0 border-l border-[var(--rule-hair)] py-5 pl-7 xl:block">
             <div className="flex items-center justify-between border-b border-border pb-3">
               <h2 className="font-mono text-[11px] font-medium uppercase tracking-[0.12em]">Latest developments</h2>
             </div>

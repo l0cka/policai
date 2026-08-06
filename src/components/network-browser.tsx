@@ -287,10 +287,10 @@ export function NetworkBrowser({
 						<div className="font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
 							Relationship explorer
 						</div>
-						<h1 className="network-desktop-title mt-2 font-display text-[clamp(2.65rem,4vw,4rem)] leading-none tracking-[-0.035em]">
+						<h1 className="network-desktop-title mt-2 page-title">
 							Policy relationships
 						</h1>
-						<h1 className="network-mobile-title mt-2 hidden font-display text-[2.5rem] leading-[0.98] tracking-[-0.03em]">
+						<h1 className="network-mobile-title page-title mt-2 hidden">
 							Policy relationships
 						</h1>
 						<p className="network-insight-line mt-3 flex items-start gap-2 text-sm font-medium">
@@ -349,7 +349,7 @@ export function NetworkBrowser({
 						<dt className="order-2 text-[11px] text-muted-foreground">
 							{metric.label}
 						</dt>
-						<dd className="font-display text-3xl leading-none text-primary">
+						<dd className="font-mono text-xl leading-none tabular">
 							{metric.value}
 						</dd>
 					</div>

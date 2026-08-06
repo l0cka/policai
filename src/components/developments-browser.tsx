@@ -76,7 +76,7 @@ function DevelopmentFeed({ items }: { items: Development[] }) {
   if (items.length === 0) {
     return (
       <div className="border-y border-border py-14 text-center">
-        <p className="font-display text-2xl">No matching developments</p>
+        <p className="section-title">No matching developments</p>
         <p className="mt-2 text-sm text-muted-foreground">Try a broader search or jurisdiction.</p>
       </div>
     );
@@ -171,7 +171,7 @@ export function DevelopmentsBrowser({
   return (
     <div className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
       <header className="reveal">
-        <h1 className="font-display text-[clamp(2.65rem,4vw,4rem)] leading-none tracking-[-0.035em]">Policy developments</h1>
+        <h1 className="page-title">Policy developments</h1>
         <p className="mt-3 max-w-3xl text-sm leading-6 text-muted-foreground">
           Updates found on official sources. Records an editor has checked are
           listed separately from leads that are still unconfirmed.

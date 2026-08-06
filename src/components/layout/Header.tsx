@@ -132,12 +132,12 @@ export function Header({ dataCurrentAt }: { dataCurrentAt: string | null }) {
         </div>
       </div>
 
-      <div className="container mx-auto flex h-16 items-center px-4 sm:h-[5.25rem] sm:px-6 lg:px-8">
+      <div className="container mx-auto flex h-14 items-center px-4 sm:h-[4.25rem] sm:px-6 lg:px-8">
         <Link href="/" aria-label="Policai home" className="shrink-0">
           <PolicaiLogo
             className="transition-opacity duration-[var(--dur-base)] hover:opacity-75"
-            iconClassName="h-12 w-12 max-sm:h-10 max-sm:w-10"
-            textClassName="text-[1.75rem] tracking-[0.08em] max-sm:text-xl"
+            iconClassName="h-9 w-9 max-sm:h-8 max-sm:w-8"
+            textClassName="text-[1.3rem] tracking-[0.08em] max-sm:text-lg"
           />
         </Link>
 

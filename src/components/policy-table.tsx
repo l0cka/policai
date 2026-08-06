@@ -166,7 +166,7 @@ export function PolicyTable({
   if (paged.length === 0) {
     return (
       <div className="border-y border-border py-14 text-center">
-        <p className="font-display text-2xl">Nothing matches those filters</p>
+        <p className="section-title">Nothing matches those filters</p>
         <p className="mt-2 text-sm text-muted-foreground">
           Remove a filter or search for a broader term.
         </p>
