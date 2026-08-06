@@ -9,7 +9,7 @@ docker compose --profile worker run --rm worker src/fetch-all.ts
 
 echo "[ingest] enrichment agent starting $(date -Is)"
 /home/l0cka/.local/bin/claude -p "$(cat RUNBOOK.md)" \
-  --allowedTools "Bash(docker compose --profile worker run --rm*) WebFetch" \
+  --allowedTools "Bash(docker compose --profile worker run --rm worker src/list-unenriched.ts),Bash(docker compose --profile worker run --rm -T worker src/save-enrichment.ts:*),Bash(echo:*),WebFetch" \
   --max-turns 80 \
   --output-format text
 
