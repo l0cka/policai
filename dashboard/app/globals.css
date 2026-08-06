@@ -1,0 +1,33 @@
+:root {
+  --bg: #fbfaf7;
+  --ink: #1f2430;
+  --muted: #6b7280;
+  --accent: #145a52;
+  --card: #ffffff;
+  --line: #e4e1d8;
+  --flag: #9a3412;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #14161c; --ink: #e8e6df; --muted: #9aa0ac; --accent: #4fb3a5; --card: #1c1f27; --line: #2a2e38; --flag: #f0a06c; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.55 Georgia, 'Times New Roman', serif; }
+.site-header { display: flex; justify-content: space-between; align-items: baseline; padding: 14px 22px; border-bottom: 1px solid var(--line); }
+.site-header .brand { font-weight: 700; text-decoration: none; color: var(--ink); }
+.site-header nav { display: flex; gap: 14px; }
+.site-header a, main a { color: var(--accent); }
+main { max-width: 780px; margin: 0 auto; padding: 18px 22px 60px; }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 20px; font-family: system-ui, sans-serif; font-size: 13px; }
+.filters a { text-decoration: none; padding: 3px 10px; border: 1px solid var(--line); border-radius: 999px; color: var(--ink); }
+.filters a.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.filters form { display: flex; gap: 6px; }
+.filters input { border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; background: var(--card); color: var(--ink); }
+.item { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 14px 16px; margin-bottom: 12px; }
+.item h3 { margin: 0 0 4px; font-size: 17px; }
+.item .meta { color: var(--muted); font-family: system-ui, sans-serif; font-size: 12px; letter-spacing: 0.02em; }
+.item .flag { color: var(--flag); font-family: system-ui, sans-serif; font-size: 12px; margin-top: 6px; }
+.stream-pill { font-family: system-ui, sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+table { border-collapse: collapse; width: 100%; font-family: system-ui, sans-serif; font-size: 14px; }
+th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+.status-ok { color: var(--accent); }
+.status-failed { color: var(--flag); font-weight: 600; }
