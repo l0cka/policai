@@ -25,7 +25,7 @@ const MAX_LINKED_DOCUMENTS = 8;
 export type DocumentKind = 'pdf' | 'docx' | 'doc' | 'rtf';
 
 export const COLLECTOR_USER_AGENT =
-  'Mozilla/5.0 (compatible; Policai/1.0; +https://policai.com.au)';
+  'Mozilla/5.0 (compatible; Policai/1.0; +https://policai.org)';
 
 export class SourceFetchError extends Error {
   readonly status?: number;

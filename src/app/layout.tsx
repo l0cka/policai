@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     'government policy',
     'AI governance Australia',
   ],
-  metadataBase: new URL('https://policai.com.au'),
+  metadataBase: new URL('https://policai.org'),
 };
 
 export default async function RootLayout({

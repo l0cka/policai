@@ -4,7 +4,7 @@
 
 Policai is an Australian AI policy tracker. It maintains a curated register of AI policy, regulation, governance and court guidance across federal and state/territory jurisdictions, plus an automated "developments" feed of newly detected policy activity.
 
-**Git is the database.** All canonical data is JSON committed to this repository (`public/data/`, `data/`). The deployed site (Vercel) only reads that data — pages are statically rendered from it at build time. Automation runs in GitHub Actions, which commits new detections; the push triggers a redeploy. There is no runtime database, no auth, and no admin dashboard.
+**Git is the database.** All canonical data is JSON committed to this repository (`public/data/`, `data/`). The deployed site only reads that data. It is self-hosted on the Argus server at [policai.org](https://policai.org), behind a Cloudflare tunnel — see [docs/hosting-argus.md](./docs/hosting-argus.md). Automation runs in GitHub Actions, which commits new detections; the host pulls those commits and serves them through ISR without a rebuild. There is no runtime database, no auth, and no admin dashboard.
 
 ## Tech Stack
 

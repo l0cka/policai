@@ -7,6 +7,7 @@ This directory holds the project-facing documentation that should stay in sync w
 - [Collector operations guide](./collector.md) — how the daily collector works, running it locally, the GitHub Actions workflow, reviewing detections into the register, and adding sources.
 - [Architecture](./architecture.md) — system boundaries, data ownership, and non-negotiable invariants.
 - [Information trust model](./trust-model.md) — verification tiers, source rules, date policy, and publication gates.
+- [Hosting on Argus](./hosting-argus.md) — serving policai.org from the Argus server behind a Cloudflare tunnel: architecture, cutover, rollback, and failure modes.
 - [Authoritative refactor tracker](./refactor-authoritative-policai.md) — baseline findings, workstreams, and completion gates.
 - [Network relationship explorer concept](./design/policai-network-concept-02.md) — the approved desktop/mobile semantic design contract for `/network`.
 
