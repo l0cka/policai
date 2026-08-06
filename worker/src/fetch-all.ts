@@ -12,28 +12,40 @@ type SourceRow = {
   item_link_pattern: string | null;
 };
 
-export async function ingestSource(source: SourceRow, runStartedAt: string) {
+type Fetcher = (source: SourceRow) => Promise<RawItem[]>;
+
+export async function ingestSource(
+  source: SourceRow,
+  runStartedAt: string,
+  fetcher?: Fetcher,
+) {
   const pool = getPool();
   let found = 0;
   let inserted = 0;
   try {
-    const raw: RawItem[] =
-      source.fetch_method === 'rss'
+    const raw: RawItem[] = fetcher
+      ? await fetcher(source)
+      : source.fetch_method === 'rss'
         ? await fetchRss(source.url)
         : await fetchFirecrawl(source.url, source.item_link_pattern ?? '.+');
     found = raw.length;
     for (const item of raw) {
-      const canonical = canonicalizeUrl(item.url);
-      const hash = item.excerpt
-        ? createHash('sha256').update(item.title + item.excerpt).digest('hex')
-        : null;
-      const res = await pool.query(
-        `INSERT INTO items (source_id, url, canonical_url, title, published_at, excerpt, content_hash)
-         VALUES ($1, $2, $3, $4, $5, $6, $7)
-         ON CONFLICT DO NOTHING`,
-        [source.id, item.url, canonical, item.title, item.published_at, item.excerpt, hash],
-      );
-      inserted += res.rowCount ?? 0;
+      try {
+        const canonical = canonicalizeUrl(item.url);
+        const hash = item.excerpt
+          ? createHash('sha256').update(item.title + item.excerpt).digest('hex')
+          : null;
+        const res = await pool.query(
+          `INSERT INTO items (source_id, url, canonical_url, title, published_at, excerpt, content_hash)
+           VALUES ($1, $2, $3, $4, $5, $6, $7)
+           ON CONFLICT DO NOTHING`,
+          [source.id, item.url, canonical, item.title, item.published_at, item.excerpt, hash],
+        );
+        inserted += res.rowCount ?? 0;
+      } catch {
+        // Skip bad item, continue processing remaining items
+        continue;
+      }
     }
     await pool.query(
       `INSERT INTO ingest_runs (run_started_at, source_id, status, items_found, items_new)
