@@ -19,4 +19,25 @@ describe('extractListingLinks', () => {
     expect(items[0].title).toBe('Federal budget boosts legal aid');
     expect(items[0].excerpt).toBeNull();
   });
+
+  it('rejects off-domain URLs where the pattern only matches a substring', () => {
+    const md = `
+[Legit budget story](https://clcs.org.au/news/budget-boost)
+[Spoofed off-domain link](https://evil.example/clcs.org.au/news/x)
+`;
+    const items = extractListingLinks(md, 'https://clcs.org.au/news', 'clcs\\.org\\.au/.+');
+    expect(items.map((i) => i.url)).toEqual(['https://clcs.org.au/news/budget-boost']);
+  });
+
+  it('still allows same-domain and subdomain URLs matching the pattern', () => {
+    const md = `
+[Same domain](https://clcs.org.au/news/budget-boost)
+[Subdomain](https://press.clcs.org.au/news/launch)
+`;
+    const items = extractListingLinks(md, 'https://clcs.org.au/news', 'clcs\\.org\\.au/.+');
+    expect(items.map((i) => i.url)).toEqual([
+      'https://clcs.org.au/news/budget-boost',
+      'https://press.clcs.org.au/news/launch',
+    ]);
+  });
 });

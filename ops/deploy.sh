@@ -12,7 +12,7 @@ rsync -az --delete \
   ./ "$HOST:$DEST/"
 
 echo "== build & start db + dashboard =="
-ssh "$HOST" "cd $DEST && docker compose build && docker compose up -d db dashboard"
+ssh "$HOST" "cd $DEST && docker compose --profile worker build && docker compose up -d db dashboard"
 
 echo "== apply schema + seed =="
 ssh "$HOST" "cd $DEST && docker compose exec -T db psql -U radar -d radar < db/schema.sql && docker compose exec -T db psql -U radar -d radar < db/seed.sql"

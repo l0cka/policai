@@ -7,18 +7,25 @@ export type RawItem = {
 
 const LINK_RE = /\[([^\]]+)\]\(([^)\s]+)\)/g;
 
+function isSameOrSubdomain(candidateHost: string, baseHost: string): boolean {
+  return candidateHost === baseHost || candidateHost.endsWith(`.${baseHost}`);
+}
+
 export function extractListingLinks(markdown: string, baseUrl: string, itemLinkPattern: string): RawItem[] {
   const pattern = new RegExp(itemLinkPattern);
+  const baseHost = new URL(baseUrl).hostname;
   const seen = new Set<string>();
   const items: RawItem[] = [];
   for (const m of markdown.matchAll(LINK_RE)) {
     const title = m[1].trim();
-    let url: string;
+    let resolved: URL;
     try {
-      url = new URL(m[2], baseUrl).toString();
+      resolved = new URL(m[2], baseUrl);
     } catch {
       continue;
     }
+    const url = resolved.toString();
+    if (!isSameOrSubdomain(resolved.hostname, baseHost)) continue;
     if (!pattern.test(url) || seen.has(url) || title.length < 8) continue;
     seen.add(url);
     items.push({ url, title, published_at: null, excerpt: null });

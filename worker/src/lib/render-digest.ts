@@ -22,9 +22,13 @@ const esc = (s: string) =>
 const fmtSydney = (d: Date) =>
   d.toLocaleDateString('en-AU', { timeZone: 'Australia/Sydney', day: 'numeric', month: 'short', year: 'numeric' });
 
+const safeHref = (u: string) => (/^https?:\/\//i.test(u) ? esc(u) : undefined);
+
 function itemHtml(i: DigestItem): string {
+  const href = safeHref(i.url);
+  const title = `<strong>${esc(i.title)}</strong>`;
   return `<li style="margin-bottom:10px">
-    <a href="${esc(i.url)}"><strong>${esc(i.title)}</strong></a>
+    ${href ? `<a href="${href}">${title}</a>` : title}
     <span style="color:#666"> — ${esc(i.source_name)}</span>
     ${i.blurb ? `<br>${esc(i.blurb)}` : ''}
   </li>`;
@@ -48,6 +52,7 @@ export function renderDigest(input: DigestInput): string {
   if (input.failedSources.length) {
     parts.push(`<p style="color:#a00;font-size:12px">Sources that failed this week: ${input.failedSources.map(esc).join(', ')}</p>`);
   }
-  parts.push(`<p><a href="${esc(input.dashboardUrl)}">Open the dashboard</a></p>`);
+  const dashboardHref = safeHref(input.dashboardUrl);
+  parts.push(dashboardHref ? `<p><a href="${dashboardHref}">Open the dashboard</a></p>` : '<p>Open the dashboard</p>');
   return `<div style="font-family:Georgia,serif;max-width:640px">${parts.join('\n')}</div>`;
 }

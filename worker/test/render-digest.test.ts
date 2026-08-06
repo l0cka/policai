@@ -57,4 +57,24 @@ describe('renderDigest', () => {
     expect(dashboardPos).toBeGreaterThan(-1);
     expect(failedPos).toBeLessThan(dashboardPos);
   });
+
+  it('renders an item with a javascript: URL with no href, title as plain text', () => {
+    const html = renderDigest({
+      periodStart: new Date(), periodEnd: new Date(), dashboardUrl: 'http://x',
+      opportunities: [{ id: 1, title: 'Malicious item', url: 'javascript:alert(1)', blurb: null, source_name: 'Test' }],
+      byStream: {}, deadlines: [], failedSources: [],
+    });
+    expect(html).not.toContain('javascript:');
+    expect(html).not.toContain('<a href="javascript');
+    expect(html).toContain('Malicious item');
+  });
+
+  it('renders no href for a javascript: dashboardUrl', () => {
+    const html = renderDigest({
+      periodStart: new Date(), periodEnd: new Date(), dashboardUrl: 'javascript:alert(1)',
+      opportunities: [], byStream: {}, deadlines: [], failedSources: [],
+    });
+    expect(html).not.toContain('javascript:');
+    expect(html).not.toContain('<a href="javascript');
+  });
 });
