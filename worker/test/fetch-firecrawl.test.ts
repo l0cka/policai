@@ -40,4 +40,41 @@ describe('extractListingLinks', () => {
       'https://press.clcs.org.au/news/launch',
     ]);
   });
+
+  it('drops fragment-only links to the listing page itself', () => {
+    const md = `
+[Skip past the header](https://clcs.org.au/news#content)
+[Federal budget boosts legal aid](https://clcs.org.au/news/budget-boost)
+`;
+    const items = extractListingLinks(md, 'https://clcs.org.au/news', 'clcs\\.org\\.au/.+');
+    expect(items.map((i) => i.url)).toEqual(['https://clcs.org.au/news/budget-boost']);
+  });
+
+  it('strips fragments from item URLs', () => {
+    const md = `[Federal budget boosts legal aid](https://clcs.org.au/news/budget-boost#summary)`;
+    const items = extractListingLinks(md, 'https://clcs.org.au/news', 'clcs\\.org\\.au/.+');
+    expect(items.map((i) => i.url)).toEqual(['https://clcs.org.au/news/budget-boost']);
+  });
+
+  it('skips static asset links and image-syntax titles', () => {
+    const md = `
+[![Pro Bono News banner](https://clcs.org.au/uploads/banner.png)](https://clcs.org.au/news/banner-post)
+[A news masthead image](https://clcs.org.au/uploads/news.png)
+[Federal budget boosts legal aid](https://clcs.org.au/news/budget-boost)
+`;
+    const items = extractListingLinks(md, 'https://clcs.org.au/news', 'clcs\\.org\\.au/.+');
+    expect(items.map((i) => i.url)).toEqual(['https://clcs.org.au/news/budget-boost']);
+  });
+
+  it('skips navigation-noise link text', () => {
+    const md = `
+[Read more](https://clcs.org.au/news/budget-boost)
+[See all closed consultations](https://clcs.org.au/news/archive)
+[Subscribe to our newsletter east](https://clcs.org.au/news/newsletter)
+[Make a Submission](https://clcs.org.au/news/submit)
+[Federal budget boosts legal aid](https://clcs.org.au/news/budget-boost-2026)
+`;
+    const items = extractListingLinks(md, 'https://clcs.org.au/news', 'clcs\\.org\\.au/.+');
+    expect(items.map((i) => i.url)).toEqual(['https://clcs.org.au/news/budget-boost-2026']);
+  });
 });

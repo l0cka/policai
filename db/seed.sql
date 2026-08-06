@@ -1,15 +1,15 @@
 INSERT INTO sources (name, url, fetch_method, item_link_pattern, stream_hint) VALUES
   ('ALRC News',                     'https://www.alrc.gov.au/feed/',                'rss',       NULL,                    'law_reform'),
   ('Artificial Lawyer',             'https://www.artificiallawyer.com/feed/',       'rss',       NULL,                    'tech_justice'),
-  ('Australian Pro Bono Centre',    'https://probonocentre.org.au/news/',           'firecrawl', 'probonocentre\.org\.au/(?!news/?$)', 'news'),
-  ('Justice Connect',               'https://justiceconnect.org.au/about-us/news/', 'firecrawl', 'justiceconnect\.org\.au/(news|stories)/.+', 'news'),
-  ('CLCs Australia',                'https://clcs.org.au/news',                     'firecrawl', 'clcs\.org\.au/.+',      'news'),
-  ('AGD Consultations',             'https://consultations.ag.gov.au/',             'firecrawl', 'consultations\.ag\.gov\.au/.+', 'law_reform'),
-  ('Victorian Law Reform Commission','https://www.lawreform.vic.gov.au/news/',      'firecrawl', 'lawreform\.vic\.gov\.au/.+', 'law_reform'),
-  ('NSW Law Reform Commission',     'https://lawreform.nsw.gov.au/',                'firecrawl', 'lawreform\.nsw\.gov\.au/.+', 'law_reform'),
-  ('National Legal Aid',            'https://www.nationallegalaid.org/news/',       'firecrawl', 'nationallegalaid\.org/.+', 'funding'),
-  ('Law Council Media',             'https://lawcouncil.au/media',                  'firecrawl', 'lawcouncil\.au/media/.+', 'news'),
-  ('GrantConnect Forecasts',        'https://www.grants.gov.au/Go/List',            'firecrawl', 'grants\.gov\.au/Go/.+', 'funding')
+  ('Australian Pro Bono Centre',    'https://www.probonocentre.org.au/feed/',       'rss',       NULL,                    'news'),
+  ('Justice Connect',               'https://justiceconnect.org.au/feed/',          'rss',       NULL,                    'news'),
+  ('CLCs Australia',                'https://clcs.org.au/feed/',                    'rss',       NULL,                    'news'),
+  ('Victorian Law Reform Commission','https://www.lawreform.vic.gov.au/feed/',      'rss',       NULL,                    'law_reform'),
+  ('AGD Consultations',             'https://consultations.ag.gov.au/',             'firecrawl', 'consultations\.ag\.gov\.au/[a-z0-9-]+/[a-z0-9-]+/$', 'law_reform'),
+  ('NSW Law Reform Commission',     'https://lawreform.nsw.gov.au/',                'firecrawl', 'lawreform\.nsw\.gov\.au/.+/projects/.+\.html', 'law_reform'),
+  ('National Legal Aid',            'https://nationallegalaid.org.au/news',         'firecrawl', 'nationallegalaid\.org\.au/news/.+', 'funding'),
+  ('Law Council Media',             'https://lawcouncil.au/media/news',             'firecrawl', 'lawcouncil\.au/media/news/.+', 'news'),
+  ('GrantConnect Forecasts',        'https://www.grants.gov.au/Go/List',            'firecrawl', 'grants\.gov\.au/Go/Show', 'funding')
 ON CONFLICT (url) DO NOTHING;
 
 -- Pro Bono News (probonoaustralia.com.au) ceased publication; the domain is now

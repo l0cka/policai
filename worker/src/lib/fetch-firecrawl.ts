@@ -7,13 +7,21 @@ export type RawItem = {
 
 const LINK_RE = /\[([^\]]+)\]\(([^)\s]+)\)/g;
 
+// Link text that marks site chrome, not content: skip links, teaser buttons,
+// section indexes. Matched against the whole normalized title.
+const NAV_NOISE_RE =
+  /^(skip to\b|see all\b|view all\b|read more\b|learn more\b|find out more\b|make a submission\b|subscribe\b|join our\b|back to\b|sign up\b|contact us\b)/i;
+
+// Static assets that sometimes appear as link targets on listing pages.
+const ASSET_RE = /\.(png|jpe?g|gif|svg|webp|ico|css|js|xml)$/i;
+
 function isSameOrSubdomain(candidateHost: string, baseHost: string): boolean {
   return candidateHost === baseHost || candidateHost.endsWith(`.${baseHost}`);
 }
 
 export function extractListingLinks(markdown: string, baseUrl: string, itemLinkPattern: string): RawItem[] {
   const pattern = new RegExp(itemLinkPattern);
-  const baseHost = new URL(baseUrl).hostname;
+  const base = new URL(baseUrl);
   const seen = new Set<string>();
   const items: RawItem[] = [];
   for (const m of markdown.matchAll(LINK_RE)) {
@@ -24,8 +32,13 @@ export function extractListingLinks(markdown: string, baseUrl: string, itemLinkP
     } catch {
       continue;
     }
+    resolved.hash = '';
     const url = resolved.toString();
-    if (!isSameOrSubdomain(resolved.hostname, baseHost)) continue;
+    if (!isSameOrSubdomain(resolved.hostname, base.hostname)) continue;
+    // A fragment link to the listing page itself is navigation, never an item.
+    if (resolved.pathname === base.pathname && resolved.search === base.search) continue;
+    if (ASSET_RE.test(resolved.pathname)) continue;
+    if (title.startsWith('![') || NAV_NOISE_RE.test(title)) continue;
     if (!pattern.test(url) || seen.has(url) || title.length < 8) continue;
     seen.add(url);
     items.push({ url, title, published_at: null, excerpt: null });
@@ -34,7 +47,7 @@ export function extractListingLinks(markdown: string, baseUrl: string, itemLinkP
 }
 
 export async function fetchFirecrawl(url: string, itemLinkPattern: string): Promise<RawItem[]> {
-  const base = process.env.FIRECRAWL_URL ?? 'http://127.0.0.1:3002';
+  const base = process.env.FIRECRAWL_URL ?? 'http://127.0.0.1:3003';
   const res = await fetch(`${base}/v1/scrape`, {
     method: 'POST',
     headers: { 'content-type': 'application/json', authorization: 'Bearer self-hosted' },
