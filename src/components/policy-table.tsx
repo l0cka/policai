@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, ChevronDown, ChevronUp, ChevronsUpDown, CheckCircle2 } from 'lucide-react';
 import {
   getJurisdictionName,
   getPolicyDateTypeName,
@@ -12,6 +12,7 @@ import {
   type Policy,
 } from '@/types';
 import { formatPolicyDate } from '@/lib/format-policy-date';
+import { jurisdictionAccent, jurisdictionRailStyle } from '@/lib/jurisdiction-accent';
 import { cn } from '@/lib/utils';
 
 export type PolicySortField = 'title' | 'jurisdiction' | 'type' | 'status' | 'effectiveDate';
@@ -31,16 +32,36 @@ function comparePolicies(a: Policy, b: Policy, field: PolicySortField): number {
 function StatusPill({ status }: { status: Policy['status'] }) {
   const tone =
     status === 'active'
-      ? 'border-[var(--trust)]/20 bg-[var(--status-active-bg)] text-[var(--status-active)]'
+      ? 'border-[var(--trust)]/25 bg-[var(--status-active-bg)] text-[var(--status-active)]'
       : status === 'proposed'
-        ? 'border-[var(--caution)]/20 bg-[var(--status-proposed-bg)] text-[var(--status-proposed)]'
+        ? 'border-[var(--caution)]/25 bg-[var(--status-proposed-bg)] text-[var(--status-proposed)]'
         : status === 'amended'
-          ? 'border-primary/20 bg-[var(--status-amended-bg)] text-[var(--status-amended)]'
+          ? 'border-primary/25 bg-[var(--status-amended-bg)] text-[var(--status-amended)]'
           : 'border-border bg-[var(--status-repealed-bg)] text-[var(--status-repealed)]';
 
   return (
     <span className={cn('inline-flex rounded-md border px-2 py-1 text-xs font-medium', tone)}>
       {getPolicyStatusName(status)}
+    </span>
+  );
+}
+
+/** Jurisdiction name preceded by its livery colour, so rows group by eye. */
+function JurisdictionMark({
+  jurisdiction,
+  className,
+}: {
+  jurisdiction: string;
+  className?: string;
+}) {
+  return (
+    <span className={cn('inline-flex items-center gap-2', className)}>
+      <span
+        aria-hidden="true"
+        className="h-1.5 w-1.5 shrink-0 rounded-full"
+        style={{ background: jurisdictionAccent(jurisdiction) }}
+      />
+      {getJurisdictionName(jurisdiction)}
     </span>
   );
 }
@@ -67,7 +88,10 @@ function PolicyCard({ policy, compact = false }: { policy: Policy; compact?: boo
   const primaryDate = getPrimaryPolicyDate(policy);
 
   return (
-    <article className="content-auto border border-border bg-card/45 p-4">
+    <article
+      style={jurisdictionRailStyle(policy.jurisdiction)}
+      className="ink-rail hover-lift content-auto border border-border bg-card/45 p-4 pl-5 hover:border-[var(--rule)]"
+    >
       <Link
         href={`/policies/${policy.id}`}
         className="text-[17px] font-semibold leading-snug text-primary hover:underline"
@@ -80,7 +104,7 @@ function PolicyCard({ policy, compact = false }: { policy: Policy; compact?: boo
         </p>
       ) : null}
       <p className="mt-3 text-sm">
-        {getJurisdictionName(policy.jurisdiction)}
+        <JurisdictionMark jurisdiction={policy.jurisdiction} />
         <span className="mx-2 text-border">•</span>
         {getPolicyTypeName(policy.type)}
       </p>
@@ -139,15 +163,12 @@ export function PolicyTable({
     onSort(field);
   };
 
-  const sortLabel = (field: PolicySortField, label: string) =>
-    `${label}${sortField === field ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}`;
-
   if (paged.length === 0) {
     return (
       <div className="border-y border-border py-14 text-center">
-        <p className="font-display text-2xl">No matching policies</p>
+        <p className="font-display text-2xl">Nothing matches those filters</p>
         <p className="mt-2 text-sm text-muted-foreground">
-          Try removing a filter or broadening the search.
+          Remove a filter or search for a broader term.
         </p>
       </div>
     );
@@ -168,25 +189,55 @@ export function PolicyTable({
           <div className="hidden overflow-x-auto md:block">
             <table className="w-full table-fixed">
               <thead>
-                <tr className="border-y border-foreground/55">
+                <tr className="border-y border-[var(--rule-heavy)]">
                   {([
-                    ['title', 'Policy', 'w-[33%]'],
-                    ['jurisdiction', 'Jurisdiction', 'w-[16%]'],
-                    ['type', 'Type', 'w-[11%]'],
+                    ['title', 'Policy', 'w-[32%] pl-3'],
+                    ['jurisdiction', 'Jurisdiction', 'w-[15%]'],
+                    ['type', 'Type', 'w-[10%]'],
                     ['status', 'Status', 'w-[10%]'],
-                    ['effectiveDate', 'Key date', 'w-[11%]'],
-                  ] as const).map(([field, label, width]) => (
-                    <th key={field} className={cn('py-2 pr-3 text-left', width)}>
-                      <button
-                        type="button"
-                        onClick={() => handleSort(field)}
-                        className="font-mono text-[10px] font-medium uppercase tracking-[0.1em] text-muted-foreground hover:text-foreground"
+                    ['effectiveDate', 'Key date', 'w-[13%]'],
+                  ] as const).map(([field, label, width]) => {
+                    const isSorted = sortField === field;
+                    const SortIcon = !isSorted
+                      ? ChevronsUpDown
+                      : sortDirection === 'asc'
+                        ? ChevronUp
+                        : ChevronDown;
+                    return (
+                      <th
+                        key={field}
+                        className={cn('py-2.5 pr-3 text-left', width)}
+                        aria-sort={
+                          isSorted
+                            ? sortDirection === 'asc'
+                              ? 'ascending'
+                              : 'descending'
+                            : 'none'
+                        }
                       >
-                        {sortLabel(field, label)}
-                      </button>
-                    </th>
-                  ))}
-                  <th className="w-[16%] py-2 text-left font-mono text-[10px] font-medium uppercase tracking-[0.1em] text-muted-foreground">
+                        <button
+                          type="button"
+                          onClick={() => handleSort(field)}
+                          className={cn(
+                            'group inline-flex items-center gap-1 whitespace-nowrap font-mono text-[10px] font-medium uppercase tracking-[0.1em] transition-colors duration-[var(--dur-fast)]',
+                            isSorted
+                              ? 'text-foreground'
+                              : 'text-muted-foreground hover:text-foreground',
+                          )}
+                        >
+                          {label}
+                          <SortIcon
+                            className={cn(
+                              'h-3 w-3 transition-opacity duration-[var(--dur-fast)]',
+                              isSorted ? 'opacity-100' : 'opacity-0 group-hover:opacity-60',
+                            )}
+                            strokeWidth={2.2}
+                          />
+                        </button>
+                      </th>
+                    );
+                  })}
+                  <th className="w-[15%] whitespace-nowrap py-2.5 text-left font-mono text-[10px] font-medium uppercase tracking-[0.1em] text-muted-foreground">
                     Source
                   </th>
                   <th className="w-6" />
@@ -196,9 +247,16 @@ export function PolicyTable({
                 {paged.map((policy) => {
                   const primaryDate = getPrimaryPolicyDate(policy);
                   return (
-                    <tr key={policy.id} className="group/row content-auto border-b border-border transition-colors hover:bg-[var(--row-hover)]">
-                      <td className="py-3 pr-5 align-top">
-                        <Link href={`/policies/${policy.id}`} className="text-sm font-semibold leading-5 text-primary hover:underline">
+                    <tr
+                      key={policy.id}
+                      style={jurisdictionRailStyle(policy.jurisdiction)}
+                      className="group/row content-auto border-b border-border transition-colors duration-[var(--dur-fast)] hover:bg-[var(--row-hover)]"
+                    >
+                      <td className="ink-rail py-3 pl-3 pr-5 align-top">
+                        <Link
+                          href={`/policies/${policy.id}`}
+                          className="text-sm font-semibold leading-5 text-primary hover:underline"
+                        >
                           {policy.title}
                         </Link>
                         <p className="mt-1 line-clamp-2 max-w-xl text-xs leading-4 text-muted-foreground">
@@ -206,7 +264,7 @@ export function PolicyTable({
                         </p>
                       </td>
                       <td className="py-3 pr-3 align-top text-xs leading-5 text-muted-foreground">
-                        {getJurisdictionName(policy.jurisdiction)}
+                        <JurisdictionMark jurisdiction={policy.jurisdiction} />
                       </td>
                       <td className="py-3 pr-3 align-top text-xs leading-5 text-muted-foreground">
                         {getPolicyTypeName(policy.type)}
@@ -218,8 +276,12 @@ export function PolicyTable({
                       </td>
                       <td className="py-3 align-top"><SourceState policy={policy} /></td>
                       <td className="py-3 align-top">
-                        <Link href={`/policies/${policy.id}`} aria-label={`View ${policy.title}`} className="text-primary">
-                          <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover/row:translate-x-0.5" />
+                        <Link
+                          href={`/policies/${policy.id}`}
+                          aria-label={`View ${policy.title}`}
+                          className="text-primary"
+                        >
+                          <ArrowRight className="h-4 w-4 transition-transform duration-[var(--dur-base)] ease-[var(--ease-out-quint)] group-hover/row:translate-x-1" />
                         </Link>
                       </td>
                     </tr>
@@ -236,10 +298,20 @@ export function PolicyTable({
             Page {safePage + 1} of {totalPages}
           </span>
           <div className="flex gap-2">
-            <button type="button" onClick={() => setPage(Math.max(0, safePage - 1))} disabled={safePage === 0} className="min-h-10 border border-border px-4 text-xs font-medium hover:bg-muted disabled:opacity-35">
+            <button
+              type="button"
+              onClick={() => setPage(Math.max(0, safePage - 1))}
+              disabled={safePage === 0}
+              className="min-h-10 rounded-md border border-border px-4 text-xs font-medium transition-colors duration-[var(--dur-fast)] hover:bg-muted disabled:opacity-35 disabled:hover:bg-transparent"
+            >
               Previous
             </button>
-            <button type="button" onClick={() => setPage(Math.min(totalPages - 1, safePage + 1))} disabled={safePage >= totalPages - 1} className="min-h-10 border border-border px-4 text-xs font-medium hover:bg-muted disabled:opacity-35">
+            <button
+              type="button"
+              onClick={() => setPage(Math.min(totalPages - 1, safePage + 1))}
+              disabled={safePage >= totalPages - 1}
+              className="min-h-10 rounded-md border border-border px-4 text-xs font-medium transition-colors duration-[var(--dur-fast)] hover:bg-muted disabled:opacity-35 disabled:hover:bg-transparent"
+            >
               Next
             </button>
           </div>

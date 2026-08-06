@@ -46,172 +46,150 @@
   --radius-4xl: calc(var(--radius) + 16px);
 }
 
+/*
+ * Theme tokens.
+ *
+ * Every colour is declared once with light-dark(); the used value follows the
+ * root `color-scheme`. That keeps one source of truth per token and lets the
+ * theme toggle override the system preference by setting `color-scheme` alone.
+ */
 :root {
-  color-scheme: light;
+  color-scheme: light dark;
   --radius: 0.5rem;
-  --background: #f4f1e8;
-  --foreground: #10213a;
-  --card: #faf8f2;
-  --card-foreground: #10213a;
-  --popover: #fffdf8;
-  --popover-foreground: #10213a;
-  --primary: #3157e8;
-  --primary-foreground: #ffffff;
-  --secondary: #e9edf0;
-  --secondary-foreground: #10213a;
-  --muted: #e9edf0;
-  --muted-foreground: #526176;
-  --accent: #e7ecfa;
-  --accent-foreground: #10213a;
-  --destructive: #b42318;
-  --border: #b8c2ca;
-  --input: #aeb9c4;
-  --ring: #3157e8;
-  --chart-1: #3157e8;
-  --chart-2: #146b5a;
-  --chart-3: #b7791f;
-  --chart-4: #7c3aed;
-  --chart-5: #dc2626;
-  --sidebar: #efede5;
-  --sidebar-foreground: #10213a;
-  --sidebar-primary: #3157e8;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #e1e5e5;
-  --sidebar-accent-foreground: #10213a;
-  --sidebar-border: #b8c2ca;
-  --sidebar-ring: #3157e8;
-  --row-hover: #eaece8;
-  --status-active: #146b5a;
-  --status-proposed: #9a6109;
-  --status-amended: #3157e8;
-  --status-repealed: #657181;
-  --status-active-bg: #deeee7;
-  --status-proposed-bg: #f6e8c8;
-  --status-amended-bg: #e4eafa;
-  --status-repealed-bg: #e7e9e8;
-  --navy: #102a43;
-  --ink: #10213a;
-  --paper: #f4f1e8;
-  --paper-raised: #faf8f2;
-  --trust: #146b5a;
-  --caution: #b7791f;
-  --map-fill-0: #e8e5e0;
-  --map-fill-1: #c7d2e0;
-  --map-fill-2: #93aacc;
-  --map-fill-3: #5a7db5;
-  --map-fill-4: #1e40af;
-  --map-hover-0: #d4d0c8;
-  --map-hover-1: #aebdd4;
-  --map-hover-2: #7a96be;
-  --map-hover-3: #4468a0;
-  --map-hover-4: #153296;
-  --map-stroke: #a8a29e;
-  --map-label: #57534e;
-  --map-label-muted: #78716c;
-  --network-jurisdiction-bg: #3157e8;
-  --network-jurisdiction-border: #2345c8;
-  --network-agency-bg: #d9a13b;
-  --network-agency-foreground: #10213a;
-  --network-agency-border: #b7791f;
-  --network-active-bg: #2d8a74;
-  --network-active-border: #146b5a;
-  --network-proposed-bg: #d6a344;
-  --network-proposed-border: #b7791f;
-  --network-amended-bg: #5575e6;
-  --network-amended-border: #3157e8;
-  --network-default-bg: #7b8795;
-  --network-default-border: #657181;
-  --network-edge: #7a8797;
-  --network-cross-edge: #a855f7;
-  --network-minimap-mask: rgba(0, 0, 0, 0.1);
-  --background-pattern: rgba(16, 42, 67, 0.025);
+
+  --background: light-dark(#f4f1e8, #10141b);
+  --foreground: light-dark(#10213a, #edf2f7);
+  --card: light-dark(#faf8f2, #151b24);
+  --card-foreground: light-dark(#10213a, #edf2f7);
+  --popover: light-dark(#fffdf8, #171e28);
+  --popover-foreground: light-dark(#10213a, #edf2f7);
+  --primary: light-dark(#2f4fd8, #8fa8ff);
+  --primary-foreground: light-dark(#ffffff, #09101d);
+  --secondary: light-dark(#e9edf0, #202936);
+  --secondary-foreground: light-dark(#10213a, #edf2f7);
+  --muted: light-dark(#e9edf0, #202936);
+  --muted-foreground: light-dark(#526176, #a7b2c3);
+  --accent: light-dark(#e7ecfa, #222e44);
+  --accent-foreground: light-dark(#10213a, #f4f7fb);
+  --destructive: light-dark(#b42318, #ff8175);
+  --border: light-dark(#c3ccd3, #333f4f);
+  --input: light-dark(#aeb9c4, #4a586b);
+  --ring: light-dark(#2f4fd8, #8fa8ff);
+
+  --chart-1: light-dark(#2f4fd8, #8fa8ff);
+  --chart-2: light-dark(#146b5a, #65d2b4);
+  --chart-3: light-dark(#b7791f, #e7b96c);
+  --chart-4: light-dark(#7c3aed, #b89aff);
+  --chart-5: light-dark(#dc2626, #ff8175);
+
+  --sidebar: light-dark(#efede5, #131923);
+  --sidebar-foreground: light-dark(#10213a, #edf2f7);
+  --sidebar-primary: light-dark(#2f4fd8, #8fa8ff);
+  --sidebar-primary-foreground: light-dark(#ffffff, #09101d);
+  --sidebar-accent: light-dark(#e1e5e5, #222b38);
+  --sidebar-accent-foreground: light-dark(#10213a, #edf2f7);
+  --sidebar-border: light-dark(#c3ccd3, #333f4f);
+  --sidebar-ring: light-dark(#2f4fd8, #8fa8ff);
+
+  --row-hover: light-dark(#ebeae2, #1b232e);
+  --status-active: light-dark(#146b5a, #65d2b4);
+  --status-proposed: light-dark(#9a6109, #e7b96c);
+  --status-amended: light-dark(#2f4fd8, #91aaff);
+  --status-repealed: light-dark(#657181, #a9b4c4);
+  --status-active-bg: light-dark(#deeee7, #18362f);
+  --status-proposed-bg: light-dark(#f6e8c8, #3a2f1c);
+  --status-amended-bg: light-dark(#e4eafa, #1f2d55);
+  --status-repealed-bg: light-dark(#e7e9e8, #28303b);
+
+  --navy: light-dark(#102a43, #09182a);
+  --ink: light-dark(#10213a, #edf2f7);
+  --paper: light-dark(#f4f1e8, #10141b);
+  --paper-raised: light-dark(#faf8f2, #151b24);
+  --paper-sunk: light-dark(#eae7dc, #0c1016);
+  --trust: light-dark(#146b5a, #65d2b4);
+  --caution: light-dark(#b7791f, #e7b96c);
+  --alarm: light-dark(#b42318, #ff8175);
+
+  --map-fill-0: light-dark(#e8e5e0, #242c36);
+  --map-fill-1: light-dark(#c7d2e0, #2e3d53);
+  --map-fill-2: light-dark(#93aacc, #3d5b86);
+  --map-fill-3: light-dark(#5a7db5, #557dbd);
+  --map-fill-4: light-dark(#1e40af, #8fa8ff);
+  --map-hover-0: light-dark(#d4d0c8, #303a46);
+  --map-hover-1: light-dark(#aebdd4, #3a4e6b);
+  --map-hover-2: light-dark(#7a96be, #4d70a4);
+  --map-hover-3: light-dark(#4468a0, #6f94d1);
+  --map-hover-4: light-dark(#153296, #acbdff);
+  --map-stroke: light-dark(#a8a29e, #647287);
+  --map-label: light-dark(#57534e, #dce4ee);
+  --map-label-muted: light-dark(#78716c, #a7b2c3);
+
+  --network-jurisdiction-bg: light-dark(#2f4fd8, #8fa8ff);
+  --network-jurisdiction-border: light-dark(#2345c8, #6f8be8);
+  --network-agency-bg: light-dark(#d9a13b, #e7b96c);
+  --network-agency-foreground: light-dark(#10213a, #10141b);
+  --network-agency-border: light-dark(#b7791f, #c18f3e);
+  --network-active-bg: light-dark(#2d8a74, #65d2b4);
+  --network-active-border: light-dark(#146b5a, #3ca98c);
+  --network-proposed-bg: light-dark(#d6a344, #e7b96c);
+  --network-proposed-border: light-dark(#b7791f, #c18f3e);
+  --network-amended-bg: light-dark(#5575e6, #91aaff);
+  --network-amended-border: light-dark(#2f4fd8, #6f8be8);
+  --network-default-bg: light-dark(#7b8795, #8d9aab);
+  --network-default-border: light-dark(#657181, #6c7888);
+  --network-edge: light-dark(#7a8797, #7f8ca0);
+  --network-cross-edge: light-dark(#a855f7, #c79cff);
+  --network-minimap-mask: light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.35));
+
+  --background-pattern: light-dark(rgba(16, 42, 67, 0.028), rgba(255, 255, 255, 0.022));
+
+  /*
+   * Jurisdiction accents, drawn from each government's own livery — Queensland
+   * maroon, Northern Territory ochre, Tasmanian bottle green. They let a reader
+   * place a row by colour before reading the column.
+   */
+  --jd-federal: light-dark(#1e40af, #8fa8ff);
+  --jd-nsw: light-dark(#0f766e, #5ec8bb);
+  --jd-vic: light-dark(#5b21b6, #b89aff);
+  --jd-qld: light-dark(#9d174d, #f4a0c0);
+  --jd-wa: light-dark(#a16207, #e0b558);
+  --jd-sa: light-dark(#b91c1c, #ff9a8f);
+  --jd-tas: light-dark(#15803d, #6cd08a);
+  --jd-act: light-dark(#0369a1, #6cbde8);
+  --jd-nt: light-dark(#c2410c, #ff9c6b);
+
+  /* Print-style rule weights: hairline, rule, heavy. */
+  --rule-hair: light-dark(rgba(16, 33, 58, 0.14), rgba(237, 242, 247, 0.13));
+  --rule: light-dark(rgba(16, 33, 58, 0.28), rgba(237, 242, 247, 0.24));
+  --rule-heavy: light-dark(rgba(16, 33, 58, 0.62), rgba(237, 242, 247, 0.5));
+
+  /* Depth comes from ink on paper, not from drop shadows. */
+  --shadow-raise: light-dark(0 1px 2px rgba(16, 33, 58, 0.06), 0 1px 2px rgba(0, 0, 0, 0.4));
+  --shadow-lift: light-dark(
+    0 10px 24px -14px rgba(16, 33, 58, 0.4),
+    0 12px 28px -16px rgba(0, 0, 0, 0.8)
+  );
+
+  /* Motion */
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --dur-fast: 130ms;
+  --dur-base: 220ms;
+  --dur-slow: 420ms;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-    --background: #10141b;
-    --foreground: #edf2f7;
-    --card: #151b24;
-    --card-foreground: #edf2f7;
-    --popover: #171e28;
-    --popover-foreground: #edf2f7;
-    --primary: #8fa8ff;
-    --primary-foreground: #09101d;
-    --secondary: #202936;
-    --secondary-foreground: #edf2f7;
-    --muted: #202936;
-    --muted-foreground: #a7b2c3;
-    --accent: #222e44;
-    --accent-foreground: #f4f7fb;
-    --destructive: #ff8175;
-    --border: #3b4758;
-    --input: #4a586b;
-    --ring: #8fa8ff;
-    --chart-1: #8fa8ff;
-    --chart-2: #65d2b4;
-    --chart-3: #e7b96c;
-    --chart-4: #b89aff;
-    --chart-5: #ff8175;
-    --sidebar: #131923;
-    --sidebar-foreground: #edf2f7;
-    --sidebar-primary: #8fa8ff;
-    --sidebar-primary-foreground: #09101d;
-    --sidebar-accent: #222b38;
-    --sidebar-accent-foreground: #edf2f7;
-    --sidebar-border: #3b4758;
-    --sidebar-ring: #8fa8ff;
-    --row-hover: #1b232e;
-    --status-active: #65d2b4;
-    --status-proposed: #e7b96c;
-    --status-amended: #91aaff;
-    --status-repealed: #a9b4c4;
-    --status-active-bg: #18362f;
-    --status-proposed-bg: #3a2f1c;
-    --status-amended-bg: #1f2d55;
-    --status-repealed-bg: #28303b;
-    --navy: #09182a;
-    --ink: #edf2f7;
-    --paper: #10141b;
-    --paper-raised: #151b24;
-    --trust: #65d2b4;
-    --caution: #e7b96c;
-    --map-fill-0: #242c36;
-    --map-fill-1: #2e3d53;
-    --map-fill-2: #3d5b86;
-    --map-fill-3: #557dbd;
-    --map-fill-4: #8fa8ff;
-    --map-hover-0: #303a46;
-    --map-hover-1: #3a4e6b;
-    --map-hover-2: #4d70a4;
-    --map-hover-3: #6f94d1;
-    --map-hover-4: #acbdff;
-    --map-stroke: #647287;
-    --map-label: #dce4ee;
-    --map-label-muted: #a7b2c3;
-    --network-jurisdiction-bg: #8fa8ff;
-    --network-jurisdiction-border: #6f8be8;
-    --network-agency-bg: #e7b96c;
-    --network-agency-foreground: #10141b;
-    --network-agency-border: #c18f3e;
-    --network-active-bg: #65d2b4;
-    --network-active-border: #3ca98c;
-    --network-proposed-bg: #e7b96c;
-    --network-proposed-border: #c18f3e;
-    --network-amended-bg: #91aaff;
-    --network-amended-border: #6f8be8;
-    --network-default-bg: #8d9aab;
-    --network-default-border: #6c7888;
-    --network-edge: #7f8ca0;
-    --network-cross-edge: #c79cff;
-    --network-minimap-mask: rgba(0, 0, 0, 0.35);
-    --background-pattern: rgba(255, 255, 255, 0.025);
-  }
+/* The toggle wins over the system preference by pinning `color-scheme`. */
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
   body {
     @apply bg-background text-foreground font-sans;
@@ -223,6 +201,19 @@
   }
   p {
     text-wrap: pretty;
+  }
+  /*
+   * Keyboard users get a visible ring; pointer users do not. Applied globally
+   * so every control inherits it rather than opting in one at a time.
+   */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+  /* Figures line up in columns wherever they are compared. */
+  th, td, time, .tabular {
+    font-variant-numeric: tabular-nums;
   }
 }
 
@@ -246,11 +237,89 @@
 
   /* Staggered page-load reveal */
   .reveal {
-    animation: reveal-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: reveal-rise 0.6s var(--ease-out-quint) both;
   }
   .reveal-1 { animation-delay: 70ms; }
   .reveal-2 { animation-delay: 140ms; }
   .reveal-3 { animation-delay: 210ms; }
+
+  /* Masthead rule: heavy over hair, the way a broadsheet separates sections. */
+  .rule-masthead {
+    border-bottom: 1px solid var(--rule-heavy);
+    box-shadow: 0 2px 0 -1px var(--rule-hair);
+  }
+
+  .rule-hair {
+    border-color: var(--rule-hair);
+  }
+
+  /* A link that draws its underline on rather than switching it on. */
+  .underline-grow {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 1px;
+    transition: background-size var(--dur-base) var(--ease-out-quint);
+  }
+  .underline-grow:hover,
+  .underline-grow:focus-visible {
+    background-size: 100% 1px;
+  }
+
+  .hover-lift {
+    transition:
+      transform var(--dur-base) var(--ease-out-quint),
+      box-shadow var(--dur-base) var(--ease-out-quint),
+      border-color var(--dur-base) var(--ease-out-quint);
+  }
+  .hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lift);
+  }
+
+  /*
+   * The ink rail: a jurisdiction-tinted spine that wipes down the left edge of
+   * a row or card on hover, so scanning the register feels like running a
+   * finger down a ledger.
+   */
+  .ink-rail {
+    position: relative;
+  }
+  .ink-rail::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--rail-color, var(--primary));
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform var(--dur-base) var(--ease-out-quint);
+  }
+  .ink-rail:hover::before,
+  .ink-rail:focus-within::before {
+    transform: scaleY(1);
+  }
+
+  /*
+   * In a table the rail lives on the first cell, so hovering any other cell
+   * would leave it collapsed. Drive it from the row instead.
+   */
+  tr:hover > .ink-rail::before,
+  tr:focus-within > .ink-rail::before {
+    transform: scaleY(1);
+  }
+
+  /* Slow breathing pulse for a live status dot. */
+  .pulse-live::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    background: currentColor;
+    animation: signal-pulse 2.4s var(--ease-out-quint) infinite;
+  }
 }
 
 @keyframes reveal-rise {
@@ -264,10 +333,16 @@
   }
 }
 
+@keyframes signal-pulse {
+  0% { opacity: 0.55; transform: scale(1); }
+  70% { opacity: 0; transform: scale(2.6); }
+  100% { opacity: 0; transform: scale(2.6); }
+}
+
 @keyframes dropdown-in {
   from {
     opacity: 0;
-    transform: translateY(-0.25rem);
+    transform: translateY(-0.25rem) scale(0.985);
   }
   to {
     opacity: 1;
@@ -276,7 +351,7 @@
 }
 
 .dropdown-in {
-  animation: dropdown-in 0.16s ease-out both;
+  animation: dropdown-in var(--dur-fast) var(--ease-out-quint) both;
 }
 
 .container {
@@ -318,6 +393,19 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+  .hover-lift:hover {
+    transform: none;
+  }
+  .ink-rail::before {
+    transform: scaleY(1);
+    opacity: 0;
+  }
+  .ink-rail:hover::before,
+  .ink-rail:focus-within::before,
+  tr:hover > .ink-rail::before,
+  tr:focus-within > .ink-rail::before {
+    opacity: 1;
   }
 }
 

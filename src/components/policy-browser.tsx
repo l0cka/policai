@@ -35,6 +35,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
+import { HealthSignal } from '@/components/ui/health-signal';
+import { MetricStrip } from '@/components/layout/PageIntro';
+import { jurisdictionRailStyle } from '@/lib/jurisdiction-accent';
 import { formatPolicyDate } from '@/lib/format-policy-date';
 import {
   JURISDICTION_NAMES,
@@ -248,7 +251,7 @@ export function PolicyBrowser({
   const freshnessDate = lastHealthyAt ?? lastCollectedAt ?? lastReviewedAt;
   const freshLabel =
     collectionHealth === 'healthy'
-      ? 'Continuous monitoring of official sources'
+      ? `All ${dueSourceCount} due sources reached`
       : `${successfulSourceCount}/${dueSourceCount} due sources reached`;
 
   return (
@@ -257,17 +260,16 @@ export function PolicyBrowser({
         <div className="grid gap-6 border-b border-border pb-6 lg:grid-cols-[minmax(0,1fr)_23rem] lg:items-end">
           <div className="reveal">
             <h1 className="max-w-5xl font-display text-[clamp(2.65rem,4.5vw,4.5rem)] leading-[0.98] tracking-[-0.035em]">
-              Australian AI policy, made legible.
+              The Australian AI policy register
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-              Track AI policy and governance across Australian governments.
+              Legislation, guidance and court practice notes from federal, state
+              and territory governments. Every record links to the official
+              source it came from.
             </p>
           </div>
           <div className="reveal reveal-1 hidden border-l border-border pl-5 lg:mb-1 lg:block">
-            <p className="flex items-center gap-2 font-mono text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--trust)]">
-              <span className="h-2.5 w-2.5 rounded-full bg-[var(--trust)]" />
-              {collectionHealth === 'healthy' ? 'Live' : collectionHealth}
-            </p>
+            <HealthSignal health={collectionHealth} />
             <p className="mt-2 text-sm">{freshLabel}</p>
             {freshnessDate ? (
               <p className="mt-2 font-mono text-[11px] uppercase text-muted-foreground">
@@ -282,21 +284,17 @@ export function PolicyBrowser({
           <span className="mx-2">·</span>
           <span className="font-display text-2xl text-primary">{distinctJurisdictions.size}</span> jurisdictions
           <span className="mx-2">·</span>
-          <span className="text-[var(--trust)]">Verified sources</span>
+          <span className="font-display text-2xl text-primary">{developmentCount}</span> developments
         </p>
-        <dl className="reveal reveal-1 hidden grid-cols-2 border-b border-border md:grid md:grid-cols-4">
-          {[
-            [policies.length, 'policies'],
-            [distinctJurisdictions.size, 'jurisdictions'],
-            [developmentCount, 'developments'],
-            [automaticSourceCount, 'sources monitored'],
-          ].map(([value, label], index) => (
-            <div key={label} className={cn('flex items-baseline justify-center gap-2 py-4 md:py-5', index % 2 === 1 ? 'border-l border-border' : '', index > 1 ? 'border-t border-border md:border-t-0 md:border-l' : '', index === 1 ? 'md:border-l' : '')}>
-              <dt className="order-2 text-xs text-muted-foreground">{label}</dt>
-              <dd className="font-display text-4xl leading-none text-primary">{value}</dd>
-            </div>
-          ))}
-        </dl>
+        <MetricStrip
+          className="hidden md:grid md:grid-cols-4"
+          metrics={[
+            { value: policies.length, label: 'policies' },
+            { value: distinctJurisdictions.size, label: 'jurisdictions' },
+            { value: developmentCount, label: 'developments' },
+            { value: automaticSourceCount, label: 'sources monitored' },
+          ]}
+        />
       </section>
 
       <section className="reveal reveal-2 container mx-auto px-4 pb-10 sm:px-6 lg:px-8">
@@ -313,7 +311,7 @@ export function PolicyBrowser({
                   placeholder="Search policies, agencies and topics"
                   value={search}
                   onChange={(event) => setSearch(event.target.value)}
-                  className="h-11 w-full border border-input bg-background pl-11 pr-14 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/15"
+                  className="h-11 w-full rounded-md border border-input bg-background pl-11 pr-14 text-sm outline-none transition-[border-color,box-shadow] duration-[var(--dur-base)] placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
                 />
                 <kbd className="absolute right-3 top-1/2 hidden -translate-y-1/2 border border-border px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground sm:block">
                   ⌘K
@@ -374,7 +372,7 @@ export function PolicyBrowser({
                         if (types.includes(value)) toggleFilter(value, setTypes);
                         if (statuses.includes(value)) toggleFilter(value, setStatuses);
                       }}
-                      className="inline-flex min-h-9 items-center gap-2 rounded-md border border-primary/30 bg-accent px-3 text-xs font-medium text-primary transition-colors hover:border-primary/60"
+                      className="group inline-flex min-h-9 items-center gap-2 rounded-full border border-primary/30 bg-accent px-3 text-xs font-medium text-primary transition-colors duration-[var(--dur-fast)] hover:border-primary/60 hover:bg-primary hover:text-primary-foreground"
                     >
                       {label}
                       <span aria-hidden="true">×</span>
@@ -414,7 +412,11 @@ export function PolicyBrowser({
             </div>
             <div>
               {developments.slice(0, 5).map((development) => (
-                <article key={development.id} className="content-auto border-b border-border py-4">
+                <article
+                  key={development.id}
+                  style={jurisdictionRailStyle(development.jurisdiction)}
+                  className="ink-rail content-auto border-b border-border py-4 pl-3"
+                >
                   <p className="font-mono text-[10px] uppercase text-muted-foreground">{formatDevelopmentDate(development)}</p>
                   <a href={development.url} target="_blank" rel="noopener noreferrer" className="group mt-2 inline-flex items-start gap-1.5 text-sm font-semibold leading-5 hover:text-primary">
                     {development.title}
@@ -429,7 +431,7 @@ export function PolicyBrowser({
               ))}
               {developments.length === 0 ? (
                 <p className="border-b border-border py-5 text-xs leading-5 text-muted-foreground">
-                  No newly verified developments are published. Automated leads remain available in the radar.
+                  Nothing verified yet. Unconfirmed leads are still listed on the radar.
                 </p>
               ) : null}
             </div>

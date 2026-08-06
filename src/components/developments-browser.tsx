@@ -10,6 +10,8 @@ import {
   Filter,
   Search,
 } from 'lucide-react';
+import { HealthSignal } from '@/components/ui/health-signal';
+import { jurisdictionRailStyle } from '@/lib/jurisdiction-accent';
 import { formatPolicyDate } from '@/lib/format-policy-date';
 import {
   JURISDICTION_NAMES,
@@ -84,13 +86,17 @@ function DevelopmentFeed({ items }: { items: Development[] }) {
     <div>
       {Array.from(grouped.entries()).map(([month, developments]) => (
         <section key={month} className="mb-4">
-          <h2 className="border-b border-foreground/55 py-2 font-mono text-[10px] font-medium uppercase tracking-[0.12em]">{month}</h2>
+          <h2 className="border-b border-[var(--rule-heavy)] py-2 font-mono text-[10px] font-medium uppercase tracking-[0.12em]">{month}</h2>
           <div>
             {developments.map((development) => {
               const verified = development.verification.status === 'verified';
               const label = eventType(development);
               return (
-                <article key={development.id} className="content-auto grid gap-2 border-b border-border py-4 sm:grid-cols-[6.5rem_7rem_minmax(0,1fr)] lg:grid-cols-[6.5rem_7rem_minmax(0,1fr)_9rem_10rem]">
+                <article
+                  key={development.id}
+                  style={jurisdictionRailStyle(development.jurisdiction)}
+                  className="ink-rail content-auto grid gap-2 border-b border-border py-4 pl-3 transition-colors duration-[var(--dur-fast)] hover:bg-[var(--row-hover)] sm:grid-cols-[6.5rem_7rem_minmax(0,1fr)] lg:grid-cols-[6.5rem_7rem_minmax(0,1fr)_9rem_10rem]"
+                >
                   <time className="font-mono text-[10px] uppercase text-muted-foreground">{developmentDate(development)}</time>
                   <div>
                     <span className={cn('inline-flex rounded px-2 py-1 font-mono text-[9px] uppercase tracking-[0.08em]', label === 'Consultation' || !verified ? 'bg-[var(--status-proposed-bg)] text-[var(--status-proposed)]' : 'bg-[var(--status-active-bg)] text-[var(--trust)]')}>
@@ -167,7 +173,8 @@ export function DevelopmentsBrowser({
       <header className="reveal">
         <h1 className="font-display text-[clamp(2.65rem,4vw,4rem)] leading-none tracking-[-0.035em]">Policy developments</h1>
         <p className="mt-3 max-w-3xl text-sm leading-6 text-muted-foreground">
-          Official-source updates, separated by editorial verification.
+          Updates found on official sources. Records an editor has checked are
+          listed separately from leads that are still unconfirmed.
         </p>
       </header>
 
@@ -208,9 +215,9 @@ export function DevelopmentsBrowser({
         <aside className="border-l border-border pl-6">
           <section>
             <h2 className="text-sm font-semibold">Collection status</h2>
-            <div className="mt-3 border border-[var(--trust)]/30 bg-[var(--status-active-bg)]/30 p-4">
-              <p className="flex items-center gap-2 font-medium text-[var(--trust)]"><span className="h-2.5 w-2.5 rounded-full bg-[var(--trust)]" />{collectionHealth === 'healthy' ? 'Healthy' : collectionHealth}</p>
-              {lastCollectedAt ? <p className="mt-3 border-t border-[var(--trust)]/20 pt-3 font-mono text-[9px] uppercase text-muted-foreground">Last checked {formatDate(lastCollectedAt)}</p> : null}
+            <div className="mt-3 rounded-md border border-border bg-card/50 p-4">
+              <HealthSignal health={collectionHealth} className="text-[12px]" />
+              {lastCollectedAt ? <p className="mt-3 border-t border-border pt-3 font-mono text-[9px] uppercase text-muted-foreground">Last checked {formatDate(lastCollectedAt)}</p> : null}
             </div>
             <div className="mt-4 space-y-3">
               {[

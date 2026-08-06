@@ -78,7 +78,7 @@ export function TimelineBrowser({
     <div className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
       <PageIntro
         title="Policy timeline"
-        description="Source-linked milestones across Australian jurisdictions."
+        description="Dated events from the register, each linked to the source that recorded it."
       />
 
       <MetricStrip metrics={[

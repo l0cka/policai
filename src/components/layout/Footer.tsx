@@ -1,23 +1,41 @@
 import Link from 'next/link';
 
+const links = [
+  { href: '/methodology', label: 'Methodology', external: false },
+  { href: '/api/policies', label: 'API', external: false },
+  { href: 'https://github.com/l0cka/policai', label: 'GitHub', external: true },
+];
+
 export function Footer() {
   return (
-    <footer className="border-t border-border">
-      <div className="container mx-auto flex flex-col gap-4 px-4 py-5 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
-        <p className="max-w-3xl font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground lg:text-[10px]">
-          Public-interest research · official sources · human review
+    <footer className="border-t border-[var(--rule-heavy)]">
+      <div className="container mx-auto flex flex-col gap-4 px-4 py-6 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+        <p className="max-w-3xl text-xs leading-5 text-muted-foreground">
+          An open register of Australian AI policy. Every record is checked
+          against its official source, and the data is versioned in Git.
         </p>
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-muted-foreground">
-          <Link href="/methodology" className="transition-colors hover:text-foreground">Methodology</Link>
-          <Link href="/api/policies" className="transition-colors hover:text-foreground">API</Link>
-          <a
-            href="https://github.com/l0cka/policai"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-foreground transition-colors"
-          >
-            GitHub
-          </a>
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-muted-foreground">
+          {links.map((link) =>
+            link.external ? (
+              <a
+                key={link.href}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline-grow transition-colors duration-[var(--dur-fast)] hover:text-foreground"
+              >
+                {link.label}
+              </a>
+            ) : (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="underline-grow transition-colors duration-[var(--dur-fast)] hover:text-foreground"
+              >
+                {link.label}
+              </Link>
+            ),
+          )}
         </div>
       </div>
     </footer>

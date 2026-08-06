@@ -288,10 +288,10 @@ export function NetworkBrowser({
 							Relationship explorer
 						</div>
 						<h1 className="network-desktop-title mt-2 font-display text-[clamp(2.65rem,4vw,4rem)] leading-none tracking-[-0.035em]">
-							Where Australian AI policy converges
+							Policy relationships
 						</h1>
 						<h1 className="network-mobile-title mt-2 hidden font-display text-[2.5rem] leading-[0.98] tracking-[-0.03em]">
-							Court guidance crosses jurisdictions
+							Policy relationships
 						</h1>
 						<p className="network-insight-line mt-3 flex items-start gap-2 text-sm font-medium">
 							<span className="mt-1.5 size-2.5 shrink-0 rounded-full bg-[var(--trust)]" />

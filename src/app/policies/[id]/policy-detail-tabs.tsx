@@ -22,6 +22,7 @@ import {
   getPrimaryPolicyDate,
   type Policy,
 } from '@/types';
+import { jurisdictionAccent } from '@/lib/jurisdiction-accent';
 import { EmptyState } from '@/components/ui/empty-state';
 import { formatPolicyDate } from '@/lib/format-policy-date';
 import { cn } from '@/lib/utils';
@@ -126,7 +127,13 @@ export function PolicyDetailTabs({
       <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_23rem]">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-3 font-mono text-[10px] uppercase tracking-[0.12em]">
-            <span className="text-primary">{getJurisdictionName(policy.jurisdiction)}</span>
+            <span
+              className="inline-flex items-center gap-1.5"
+              style={{ color: jurisdictionAccent(policy.jurisdiction) }}
+            >
+              <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-current" />
+              {getJurisdictionName(policy.jurisdiction)}
+            </span>
             <span className="h-4 w-px bg-border" />
             <span>{getPolicyTypeName(policy.type)}</span>
             <span className="h-4 w-px bg-border" />

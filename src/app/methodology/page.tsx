@@ -50,7 +50,7 @@ export default async function MethodologyPage() {
         { value: manualCoverage.total, label: 'manual sources' },
       ]} />
 
-      <div className="mx-auto max-w-4xl space-y-10 py-9 text-sm leading-6">
+      <div className="max-w-4xl space-y-10 py-9 text-sm leading-6">
         <section>
           <h2 className="font-display text-3xl">Trust levels</h2>
           <dl className="space-y-4">

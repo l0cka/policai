@@ -18,9 +18,9 @@ export default function BlogPage() {
         title="Research notes"
       />
       {posts.length === 0 ? (
-        <p className="py-12 text-sm text-muted-foreground">No posts yet. Check back soon.</p>
+        <p className="py-12 text-sm text-muted-foreground">No posts yet.</p>
       ) : (
-        <div className="mx-auto max-w-5xl py-7">
+        <div className="max-w-5xl py-7">
           {posts.map((post) => (
             <Link
               key={post.slug}
