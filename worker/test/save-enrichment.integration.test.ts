@@ -44,11 +44,50 @@ describe('save-enrichment CLI (integration)', () => {
 
   it('exits 2 on an invalid stream', () => {
     const bad = JSON.stringify({ stream: 'sport', blurb: 'x'.repeat(30), opportunity: false, opportunity_reason: null, entities: { organisations: [], deadlines: [], amounts: [] }, excerpt: null });
-    expect(() =>
+    try {
       execFileSync('npx', ['tsx', 'src/save-enrichment.ts', String(itemId)], {
         cwd: new URL('..', import.meta.url).pathname, input: bad,
         env: { ...process.env, DATABASE_URL: DB },
-      }),
-    ).toThrow();
+      });
+      expect.fail('expected exit code 2');
+    } catch (err: unknown) {
+      const error = err as { status?: number };
+      expect(error.status).toBe(2);
+    }
+  });
+
+  it('exits 2 on malformed JSON', () => {
+    const malformed = 'not valid json {';
+    try {
+      execFileSync('npx', ['tsx', 'src/save-enrichment.ts', String(itemId)], {
+        cwd: new URL('..', import.meta.url).pathname, input: malformed,
+        env: { ...process.env, DATABASE_URL: DB },
+      });
+      expect.fail('expected exit code 2');
+    } catch (err: unknown) {
+      const error = err as { status?: number };
+      expect(error.status).toBe(2);
+    }
+  });
+
+  it('exits 2 on nonexistent item id with valid payload', () => {
+    const payload = JSON.stringify({
+      stream: 'tech_justice',
+      blurb: 'A court digitisation pilot expands to two more registries this quarter.',
+      opportunity: false,
+      opportunity_reason: null,
+      entities: { organisations: ['Federal Court'], deadlines: [], amounts: [] },
+      excerpt: 'Pilot expands to two more registries.',
+    });
+    try {
+      execFileSync('npx', ['tsx', 'src/save-enrichment.ts', '999999'], {
+        cwd: new URL('..', import.meta.url).pathname, input: payload,
+        env: { ...process.env, DATABASE_URL: DB },
+      });
+      expect.fail('expected exit code 2');
+    } catch (err: unknown) {
+      const error = err as { status?: number };
+      expect(error.status).toBe(2);
+    }
   });
 });

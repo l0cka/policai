@@ -13,7 +13,14 @@ async function main() {
     console.error('usage: tsx src/save-enrichment.ts <item_id>  (JSON Enrichment on stdin)');
     process.exit(2);
   }
-  const parsed = EnrichmentSchema.safeParse(JSON.parse(await readStdin()));
+  let data: unknown;
+  try {
+    data = JSON.parse(await readStdin());
+  } catch (err) {
+    console.error(`malformed JSON: ${err instanceof Error ? err.message : String(err)}`);
+    process.exit(2);
+  }
+  const parsed = EnrichmentSchema.safeParse(data);
   if (!parsed.success) {
     console.error(`validation failed: ${parsed.error.message}`);
     process.exit(2);
