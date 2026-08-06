@@ -47,6 +47,8 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
           <input name="q" placeholder="Search…" defaultValue={q ?? ''} />
         </form>
       </div>
+      {/* upcoming deadlines from enriched entities */}
+      <Deadlines />
       {rows.length === 0 ? <p>No items yet. The next ingest run will populate the feed.</p> : null}
       {rows.map((i) => (
         <article className="item" key={i.id}>
@@ -60,5 +62,25 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
         </article>
       ))}
     </>
+  );
+}
+
+async function Deadlines() {
+  const { rows } = await getPool().query(
+    `SELECT i.title, d->>'date' AS date, d->>'label' AS label
+     FROM items i, jsonb_array_elements(i.entities->'deadlines') d
+     WHERE (d->>'date') >= to_char(now() AT TIME ZONE 'Australia/Sydney', 'YYYY-MM-DD')
+     ORDER BY d->>'date' ASC LIMIT 8`,
+  );
+  if (!rows.length) return null;
+  return (
+    <div className="item">
+      <span className="stream-pill">Upcoming deadlines</span>
+      <ul style={{ margin: '6px 0 0', paddingLeft: 18 }}>
+        {rows.map((r, n) => (
+          <li key={n}><strong>{r.date}</strong> — {r.label} ({r.title})</li>
+        ))}
+      </ul>
+    </div>
   );
 }
