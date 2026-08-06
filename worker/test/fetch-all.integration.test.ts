@@ -39,6 +39,26 @@ describe('ingest pipeline (integration)', () => {
     expect(items[0].excerpt).toContain('top-up round');
   });
 
+  it('falls back to guid when the feed link is a malformed domainless URL', async () => {
+    const xml = `<?xml version="1.0"?><rss version="2.0"><channel><title>t</title>
+      <item>
+        <title>Allens: Upholding the right to personal liberty</title>
+        <link>http://voco-11-allens-detention?utm_source=rss</link>
+        <guid isPermaLink="false">https://www.probonocentre.org.au/?p=28047</guid>
+      </item>
+      <item>
+        <title>Working link wins over guid</title>
+        <link>https://www.probonocentre.org.au/real-post/</link>
+        <guid isPermaLink="false">https://www.probonocentre.org.au/?p=99</guid>
+      </item>
+    </channel></rss>`;
+    const items = await parseRssString(xml);
+    expect(items.map((i) => i.url)).toEqual([
+      'https://www.probonocentre.org.au/?p=28047',
+      'https://www.probonocentre.org.au/real-post/',
+    ]);
+  });
+
   it('dedupes on canonical_url via ON CONFLICT DO NOTHING', async () => {
     const pool = getPool();
     const canonical = canonicalizeUrl('https://fixture.test/news/one/?utm_source=rss');

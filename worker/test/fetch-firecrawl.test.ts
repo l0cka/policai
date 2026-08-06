@@ -66,6 +66,22 @@ describe('extractListingLinks', () => {
     expect(items.map((i) => i.url)).toEqual(['https://clcs.org.au/news/budget-boost']);
   });
 
+  it('extracts card-style links with a nested image inside the anchor', () => {
+    const md = `[![News thumbnail](https://clcs.org.au/uploads/thumb.jpg)\\
+\\
+Federal budget boosts legal aid](https://clcs.org.au/news/budget-boost)`;
+    const items = extractListingLinks(md, 'https://clcs.org.au/news', 'clcs\\.org\\.au/news/.+');
+    expect(items).toHaveLength(1);
+    expect(items[0].url).toBe('https://clcs.org.au/news/budget-boost');
+    expect(items[0].title).toBe('Federal budget boosts legal aid');
+  });
+
+  it('strips markdown heading prefixes from titles', () => {
+    const md = `[### Administrative Review Council Inquiry](https://clcs.org.au/news/arc-inquiry)`;
+    const items = extractListingLinks(md, 'https://clcs.org.au/news', 'clcs\\.org\\.au/news/.+');
+    expect(items[0].title).toBe('Administrative Review Council Inquiry');
+  });
+
   it('skips navigation-noise link text', () => {
     const md = `
 [Read more](https://clcs.org.au/news/budget-boost)

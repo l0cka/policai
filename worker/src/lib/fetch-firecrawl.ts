@@ -24,8 +24,12 @@ export function extractListingLinks(markdown: string, baseUrl: string, itemLinkP
   const base = new URL(baseUrl);
   const seen = new Set<string>();
   const items: RawItem[] = [];
-  for (const m of markdown.matchAll(LINK_RE)) {
-    const title = m[1].trim();
+  // Card-style listings nest an image inside the anchor —
+  // [![alt](img.jpg)\ Title](url) — which defeats a flat link regex.
+  // Remove image syntax first so the anchor reads [Title](url).
+  const flattened = markdown.replace(/!\[[^\]]*\]\([^)]*\)/g, '');
+  for (const m of flattened.matchAll(LINK_RE)) {
+    const title = m[1].replace(/^[\s\\#>*]+/, '').replace(/\s+/g, ' ').trim();
     let resolved: URL;
     try {
       resolved = new URL(m[2], baseUrl);
@@ -38,7 +42,7 @@ export function extractListingLinks(markdown: string, baseUrl: string, itemLinkP
     // A fragment link to the listing page itself is navigation, never an item.
     if (resolved.pathname === base.pathname && resolved.search === base.search) continue;
     if (ASSET_RE.test(resolved.pathname)) continue;
-    if (title.startsWith('![') || NAV_NOISE_RE.test(title)) continue;
+    if (NAV_NOISE_RE.test(title)) continue;
     if (!pattern.test(url) || seen.has(url) || title.length < 8) continue;
     seen.add(url);
     items.push({ url, title, published_at: null, excerpt: null });

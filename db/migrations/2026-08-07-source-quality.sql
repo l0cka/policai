@@ -27,4 +27,13 @@ UPDATE sources SET item_link_pattern = 'grants\.gov\.au/Go/Show'
 -- fetch run under the corrected config; enriched items are untouched.
 DELETE FROM items WHERE stream IS NULL;
 
+-- Round 2 follow-ups (see seed.sql comments): CLCs' feeds are empty and its
+-- listings are not crawlable; GrantConnect's Angular list exposes no hrefs.
+UPDATE sources SET active = false
+  WHERE url IN ('https://clcs.org.au/feed/', 'https://www.grants.gov.au/Go/List');
+
+-- Purge items saved from probonocentre.org.au's malformed feed <link> values
+-- ("http://voco-11-…"); the guid fallback re-ingests them with working URLs.
+DELETE FROM items WHERE url LIKE 'http://voco-%' AND stream IS NULL;
+
 COMMIT;
