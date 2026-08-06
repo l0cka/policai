@@ -203,7 +203,7 @@ force the selected source regardless of its normal daily/weekly due time.
 6. On any failure: open (or comment on) an issue labelled `collector-failure`
    so scheduled breakage is never silent
 
-The push triggers a Vercel deployment, so the site republishes with the new data. Manual runs: Actions → "Collect AI policy developments" → Run workflow (optionally with a single source id).
+The host pulls the push on its timer. Because pages read the JSON from disk at request time and revalidate hourly, the new data appears without a rebuild or a restart. Manual runs: Actions → "Collect AI policy developments" → Run workflow (optionally with a single source id).
 
 The CLI persists source reviews and developments before advancing
 `watch-state.json`. Stable review/development ids make a retry idempotent if an

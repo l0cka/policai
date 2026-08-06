@@ -37,7 +37,7 @@ High-confidence detections are staged in `data/source-reviews.json`; a reviewer 
 - Next.js 16 App Router, React 19, TypeScript 5 (strict)
 - Tailwind CSS 4, shadcn/ui on Radix UI, D3.js
 - Cheerio for scraping and deterministic relevance classification
-- Vitest; GitHub Actions for automation; Vercel for hosting
+- Vitest; GitHub Actions for automation; self-hosted on Argus behind a Cloudflare tunnel
 
 ## Quick Start
 
@@ -107,7 +107,7 @@ filters as the site.
 
 ## Deployment
 
-Vercel serves the site; pushes to `main` deploy automatically. The collector does not require an external analysis service or model credential. See [docs/collector.md](./docs/collector.md).
+The site is self-hosted at [policai.org](https://policai.org) on the Argus server, served by `next start` behind a Cloudflare tunnel. The host pulls `main` on a timer: data-only commits are picked up by ISR within the hour, and code changes trigger a rebuild and restart. See [docs/hosting-argus.md](./docs/hosting-argus.md). The collector does not require an external analysis service or model credential. See [docs/collector.md](./docs/collector.md).
 
 ## Contributing
 

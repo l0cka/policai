@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { getPolicies } from '@/lib/data-service';
 
-const BASE_URL = 'https://policai.com.au';
+const BASE_URL = 'https://policai.org';
 export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

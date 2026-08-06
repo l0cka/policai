@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/admin/', '/api/'],
       },
     ],
-    sitemap: 'https://policai.com.au/sitemap.xml',
+    sitemap: 'https://policai.org/sitemap.xml',
   };
 }
