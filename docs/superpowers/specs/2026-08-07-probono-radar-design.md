@@ -26,7 +26,7 @@ One repo. Deployed to `/home/l0cka/services/probono-radar/` on Argus, following 
 
 | Unit | What it does | Runs |
 |---|---|---|
-| Ingest worker | Fetch sources, dedupe, enrich via Claude API, write items | systemd user timer, daily ~06:00 AEST |
+| Ingest agent routine | Claude Code headless run: fetch sources, dedupe, enrich, write items | systemd user timer, daily ~06:00 AEST |
 | Postgres | Storage (Docker container, volume-backed) | always |
 | Dashboard | Next.js: filterable feed, search, per-stream history, deadline list | always, bound to `127.0.0.1`, reached over Tailscale |
 | Digest job | Compile week's items, send email | systemd user timer, Sunday 18:00 AEST |
@@ -39,16 +39,14 @@ The dashboard never scrapes; the ingester never renders. Chat-over-data and publ
 - Dedupe by canonical URL and content hash.
 - Per-source failure isolation: one dead source never blocks the run.
 
-### Enrichment (Claude API)
+### Enrichment (Claude Code agent routine — no API key)
 
-One call pipeline per new item:
+The daily run is a Claude Code headless invocation (`claude -p`) on Argus, launched by the systemd timer and billed to Daniel's existing Claude subscription — no Anthropic API key on the server, no per-call cost. The Claude CLI is already installed on Argus (`/home/l0cka/.local/bin/claude`); it must be authenticated once during deployment.
 
-- Classify into the four streams (Haiku).
-- Two-sentence briefing blurb, written to be pasteable into an email to a partner (Sonnet).
-- Opportunity score: could G+T's pro bono / T+I practice act on this? (flag + one-line reason).
-- Entity extraction: organisations, deadlines, dollar amounts — feeds the track-over-time views.
-
-Estimated cost $5–15/month at this volume. Retries with backoff; an item that fails enrichment stays visible unclassified rather than disappearing.
+- The agent follows a checked-in runbook (`RUNBOOK.md`): fetch due sources, dedupe, then for each new item classify into the four streams, write a two-sentence briefing blurb (pasteable into an email to a partner), set an opportunity flag with a one-line reason (could G+T's pro bono / T+I practice act on this?), and extract entities — organisations, deadlines, dollar amounts — for the track-over-time views.
+- Deterministic steps (fetching, dedupe, database reads/writes) are helper scripts the agent calls, so they stay testable code; the agent supplies only the judgement.
+- Guardrails against agent variance: a unique constraint on canonical URL/content hash makes inserts idempotent, and every run must write an `ingest_runs` row per source — a run that can't is a failed run.
+- An item that fails enrichment stays visible unclassified rather than disappearing; a run that fails entirely is visible in `ingest_runs` and journald.
 
 ## Data model
 
@@ -78,13 +76,13 @@ History kept indefinitely (disk is not a constraint on Argus).
 
 - Argus path: `/home/l0cka/services/probono-radar/` with `docker-compose.yaml` (convention: firecrawl et al.).
 - Dashboard port bound to `127.0.0.1`, reached via Tailscale (`100.87.255.67`).
-- Secrets (Claude API key, Gmail app password) in `.env` on Argus, never committed.
+- Secrets (Gmail app password; database password) in `.env` on Argus, never committed. No Claude API key — enrichment runs through the authenticated Claude CLI.
 - Going public later: add a Cloudflare Tunnel (established Argus pattern) + editorial pass. No architectural change.
 
 ## Error handling
 
 - Source failures land in `ingest_runs` and surface in the digest footer.
-- Claude API calls retry with exponential backoff; enrichment failure leaves the item visible but unclassified.
+- Enrichment failure (CLI unavailable, usage limit hit) leaves the item visible but unclassified; the next run retries unclassified items.
 - Digest job aborts loudly (non-zero exit → journald) rather than sending a partial email silently.
 
 ## Testing
