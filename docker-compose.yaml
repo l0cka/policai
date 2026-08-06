@@ -40,7 +40,10 @@ services:
     network_mode: host
     environment:
       DATABASE_URL: postgres://radar:${POSTGRES_PASSWORD}@127.0.0.1:5433/radar
-      FIRECRAWL_URL: ${FIRECRAWL_URL:-http://127.0.0.1:3002}
+      # 3003 is Argus's firecrawl-proxy.socket — socket-activated entry point
+      # that wakes the idle-stopped Firecrawl stack on demand (3002 is the raw
+      # API and stays dead until something connects to 3003).
+      FIRECRAWL_URL: ${FIRECRAWL_URL:-http://127.0.0.1:3003}
       SMTP_USER: ${SMTP_USER:-}
       SMTP_PASS: ${SMTP_PASS:-}
       DIGEST_TO: ${DIGEST_TO:-}
