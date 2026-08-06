@@ -13,7 +13,7 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
   const { stream, q, opp } = await searchParams;
   const cond: string[] = [];
   const args: unknown[] = [];
-  if (stream && stream in STREAMS) { args.push(stream); cond.push(`i.stream = $${args.length}`); }
+  if (stream && Object.prototype.hasOwnProperty.call(STREAMS, stream)) { args.push(stream); cond.push(`i.stream = $${args.length}`); }
   if (opp === '1') cond.push(`i.opportunity`);
   if (q) { args.push(q); cond.push(`i.search @@ websearch_to_tsquery('english', $${args.length})`); }
   const where = cond.length ? `WHERE ${cond.join(' AND ')}` : '';
@@ -24,6 +24,8 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
      ${where} ORDER BY coalesce(i.published_at, i.created_at) DESC LIMIT 100`,
     args,
   );
+
+  const safeHref = (u: string) => /^https?:\/\//i.test(u) ? u : undefined;
 
   const linkFor = (params: Record<string, string | undefined>) => {
     const merged = { stream, q, opp, ...params };
@@ -41,6 +43,7 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
         <Link href={linkFor({ opp: opp === '1' ? undefined : '1' })} className={opp === '1' ? 'active' : ''}>⚑ Opportunities</Link>
         <form action="/" method="get">
           {stream ? <input type="hidden" name="stream" value={stream} /> : null}
+          {opp === '1' ? <input type="hidden" name="opp" value="1" /> : null}
           <input name="q" placeholder="Search…" defaultValue={q ?? ''} />
         </form>
       </div>
@@ -48,7 +51,7 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
       {rows.map((i) => (
         <article className="item" key={i.id}>
           <span className="stream-pill">{i.stream ? STREAMS[i.stream] : 'unclassified'} · {i.source_name}</span>
-          <h3><a href={i.url}>{i.title}</a></h3>
+          <h3><a href={safeHref(i.url)}>{i.title}</a></h3>
           {i.blurb ? <p>{i.blurb}</p> : i.excerpt ? <p>{i.excerpt}</p> : null}
           {i.opportunity ? <p className="flag">⚑ {i.opportunity_reason}</p> : null}
           <p className="meta">
