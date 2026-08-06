@@ -1,5 +1,4 @@
 INSERT INTO sources (name, url, fetch_method, item_link_pattern, stream_hint) VALUES
-  ('Pro Bono Australia',            'https://probonoaustralia.com.au/feed/',        'rss',       NULL,                    'news'),
   ('ALRC News',                     'https://www.alrc.gov.au/feed/',                'rss',       NULL,                    'law_reform'),
   ('Artificial Lawyer',             'https://www.artificiallawyer.com/feed/',       'rss',       NULL,                    'tech_justice'),
   ('Australian Pro Bono Centre',    'https://probonocentre.org.au/news/',           'firecrawl', 'probonocentre\.org\.au/(?!news/?$)', 'news'),
@@ -12,3 +11,10 @@ INSERT INTO sources (name, url, fetch_method, item_link_pattern, stream_hint) VA
   ('Law Council Media',             'https://lawcouncil.au/media',                  'firecrawl', 'lawcouncil\.au/media/.+', 'news'),
   ('GrantConnect Forecasts',        'https://www.grants.gov.au/Go/List',            'firecrawl', 'grants\.gov\.au/Go/.+', 'funding')
 ON CONFLICT (url) DO NOTHING;
+
+-- Pro Bono News (probonoaustralia.com.au) ceased publication; the domain is now
+-- a Shopify storefront with no news feed. Seeded inactive pending a replacement
+-- sector-news source.
+INSERT INTO sources (name, url, fetch_method, item_link_pattern, stream_hint, active) VALUES
+  ('Pro Bono Australia', 'https://probonoaustralia.com.au/feed/', 'rss', NULL, 'news', false)
+ON CONFLICT (url) DO UPDATE SET active = false;
