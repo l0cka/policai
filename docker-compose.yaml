@@ -1,0 +1,51 @@
+name: probono-radar
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: radar
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set in .env}
+      POSTGRES_DB: radar
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U radar -d radar"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  dashboard:
+    build: ./dashboard
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://radar:${POSTGRES_PASSWORD}@db:5432/radar
+      TZ: Australia/Sydney
+    ports:
+      - "127.0.0.1:8850:3000"
+
+  # Worker is run on demand (systemd timers / manual), never long-running.
+  # network_mode host lets it reach Postgres (127.0.0.1:5433) and the
+  # existing Firecrawl instance on the Argus host. On macOS dev, skip the
+  # container and run scripts directly with tsx.
+  worker:
+    build: ./worker
+    profiles: ["worker"]
+    network_mode: host
+    environment:
+      DATABASE_URL: postgres://radar:${POSTGRES_PASSWORD}@127.0.0.1:5433/radar
+      FIRECRAWL_URL: ${FIRECRAWL_URL:-http://127.0.0.1:3002}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      DIGEST_TO: ${DIGEST_TO:-}
+      DASHBOARD_URL: ${DASHBOARD_URL:-http://100.87.255.67:8850}
+      TZ: Australia/Sydney
+
+volumes:
+  pgdata:
