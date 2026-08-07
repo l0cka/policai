@@ -13,7 +13,6 @@ import {
   ChevronRight,
   Clock,
   AlertTriangle,
-  FileCheck,
   Users,
   BookOpen,
   Building2,
