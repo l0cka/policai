@@ -5,10 +5,9 @@ import {
 import { getPolicyFrameworkArtifact } from '@/lib/data-service';
 import { parseCalendarDateForDisplay } from '@/lib/format-policy-date';
 import Link from 'next/link';
-import { ArrowLeft, ExternalLink, FileText, Download } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ExternalLink, FileText, Download } from 'lucide-react';
 import { PageIntro } from '@/components/layout';
+import { SourceState } from '@/components/policy-table';
 
 export const revalidate = 3600;
 
@@ -21,37 +20,24 @@ export default async function FrameworkPage() {
   const artifact = await getPolicyFrameworkArtifact();
   if (!artifact) {
     return (
-      <div className="container mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
-        <div className="mb-6">
-          <Link
-            href="/policies"
-            className="inline-flex items-center text-sm text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Policies
-          </Link>
-        </div>
+      <div className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
         <PageIntro title="AI in government framework" />
-        <Card className="rounded-none border-[var(--caution)]/30 bg-[var(--status-proposed-bg)]/25 shadow-none">
-          <CardHeader>
-            <CardTitle>Framework temporarily unavailable</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4 text-sm text-muted-foreground">
-            <p>
-              Policai is withholding this derived visualisation while its
-              source policy and framework data await fingerprinted editorial
-              re-verification. This prevents an older interpretation from
-              being presented as current.
-            </p>
-            <p>
-              See the{' '}
-              <Link href="/methodology" className="text-primary hover:underline">
-                methodology and trust model
-              </Link>{' '}
-              for how records return to public view.
-            </p>
-          </CardContent>
-        </Card>
+        <div className="border-l-2 border-[var(--caution)] bg-[var(--status-proposed-bg)]/30 px-4 py-3 text-sm">
+          <p className="font-medium">Framework temporarily unavailable</p>
+          <p className="mt-2 text-muted-foreground">
+            Policai is withholding this derived visualisation while its
+            source policy and framework data await fingerprinted editorial
+            re-verification. This prevents an older interpretation from
+            being presented as current.
+          </p>
+          <p className="mt-2 text-muted-foreground">
+            See the{' '}
+            <Link href="/methodology" className="text-primary hover:underline">
+              methodology and trust model
+            </Link>{' '}
+            for how records return to public view.
+          </p>
+        </div>
       </div>
     );
   }
@@ -59,114 +45,72 @@ export default async function FrameworkPage() {
 
   return (
     <div className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
-      {/* Breadcrumb */}
-      <div className="mb-6">
-        <Link
-          href="/policies"
-          className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
+      <PageIntro title="AI in government framework" />
+
+      <div className="mb-8 flex flex-wrap items-center gap-1">
+        <a
+          href={frameworkData.sourceUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex min-h-11 items-center gap-2 bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
         >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Policies
+          <ExternalLink className="h-4 w-4" />
+          View official source
+        </a>
+        <Link
+          href={`/policies/${frameworkData.relatedPolicyId}`}
+          className="inline-flex min-h-11 items-center gap-2 px-3 text-sm font-medium hover:text-primary"
+        >
+          <FileText className="h-4 w-4" />
+          Register entry
         </Link>
+        <a
+          href="https://www.digital.gov.au/sites/default/files/documents/2025-12/Policy%20for%20the%20responsible%20use%20of%20AI%20in%20Government%202.0_0.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex min-h-11 items-center gap-2 px-3 text-sm font-medium hover:text-primary"
+        >
+          <Download className="h-4 w-4" />
+          Download PDF
+        </a>
       </div>
 
-      <div className="mb-8 space-y-6">
-        <PageIntro title="AI in government framework" />
+      <PolicyFrameworkMap data={frameworkData} />
 
-        <Card className="rounded-none border-primary/20 bg-primary/5 shadow-none">
-          <CardContent className="p-6">
-            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-              <div className="flex-1">
-                <h2 className="mb-2 text-xl font-semibold">Version 2.0 visual map</h2>
-                <p className="text-sm text-muted-foreground">
-                  Select a pillar to view its principles and requirements.
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                <Button variant="outline" size="sm" asChild>
-                  <Link href={`/policies/${frameworkData.relatedPolicyId}`}>
-                    <FileText className="mr-2 h-4 w-4" />
-                    Register entry
-                  </Link>
-                </Button>
-                <Button variant="outline" size="sm" asChild>
-                  <a
-                    href={frameworkData.sourceUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FileText className="mr-2 h-4 w-4" />
-                    View Original
-                    <ExternalLink className="ml-2 h-3 w-3" />
-                  </a>
-                </Button>
-                <Button variant="outline" size="sm" asChild>
-                  <a
-                    href="https://www.digital.gov.au/sites/default/files/documents/2025-12/Policy%20for%20the%20responsible%20use%20of%20AI%20in%20Government%202.0_0.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Download className="mr-2 h-4 w-4" />
-                    Download PDF
-                  </a>
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Framework Visualization */}
-      <PolicyFrameworkMap data={frameworkData as FrameworkData} />
-
-      <Card className="mt-10 rounded-none border-border bg-card/35 shadow-none">
-        <CardContent className="p-4">
-          <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs text-muted-foreground">
-            <div>
-              <span className="font-medium">Effective:</span>{' '}
+      <div className="mt-10 flex flex-wrap gap-x-10 gap-y-4 border-y border-[var(--rule-hair)] py-4">
+        <div>
+          <p className="page-eyebrow">Effective</p>
+          <p className="mt-1 text-sm">
+            {parseCalendarDateForDisplay(
+              frameworkData.effectiveDate,
+            ).toLocaleDateString('en-AU', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })}
+          </p>
+        </div>
+        {frameworkData.lastUpdated && (
+          <div>
+            <p className="page-eyebrow">Page updated</p>
+            <p className="mt-1 text-sm">
               {parseCalendarDateForDisplay(
-                frameworkData.effectiveDate,
+                frameworkData.lastUpdated,
               ).toLocaleDateString('en-AU', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',
               })}
-            </div>
-            {frameworkData.lastUpdated && (
-              <div>
-                <span className="font-medium">Page Updated:</span>{' '}
-                {parseCalendarDateForDisplay(
-                  frameworkData.lastUpdated,
-                ).toLocaleDateString('en-AU', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                })}
-              </div>
-            )}
-            <div>
-              <span className="font-medium">Version:</span> {frameworkData.version}
-            </div>
-            <div>
-              <span className="font-medium">Authority:</span> {frameworkData.authority}
-            </div>
-            <div>
-              <span className="font-medium">Verification:</span>{' '}
-              {frameworkData.verification.status === 'verified'
-                ? 'Verified'
-                : 'Needs review'}
-            </div>
-            <a
-              href={frameworkData.sourceUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium text-primary hover:underline"
-            >
-              Official DTA source
-            </a>
+            </p>
           </div>
-        </CardContent>
-      </Card>
+        )}
+        <div>
+          <p className="page-eyebrow">Verification</p>
+          <p className="mt-1">
+            <SourceState verification={frameworkData.verification} />
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

@@ -18,10 +18,6 @@ import {
   BookOpen,
   Building2,
 } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
 import type { RecordVerification } from '@/types';
 
 // Types for the framework data
@@ -89,60 +85,107 @@ const iconMap: Record<string, React.ElementType> = {
   refresh: RefreshCw,
 };
 
+/**
+ * Requirement obligation tiers, ordered by emphasis rather than colour —
+ * colour is reserved for verification state elsewhere in the app.
+ */
+const typeStyles: Record<string, string> = {
+  mandatory: 'border-[var(--rule-heavy)] bg-muted text-foreground font-semibold',
+  recommended: 'border-border text-foreground',
+  consideration: 'border-border text-muted-foreground',
+};
+
+const typeLabels: Record<string, string> = {
+  mandatory: 'Mandatory',
+  recommended: 'Recommended',
+  consideration: 'Consider',
+};
+
+/** Overview/Detailed switch, styled like the register's ViewToggle. */
+function ViewSwitch({
+  value,
+  onChange,
+}: {
+  value: 'overview' | 'detailed';
+  onChange: (value: 'overview' | 'detailed') => void;
+}) {
+  return (
+    <div className="inline-flex min-h-10 border border-input" aria-label="Framework detail">
+      <button
+        type="button"
+        onClick={() => onChange('overview')}
+        aria-pressed={value === 'overview'}
+        className={cn(
+          'inline-flex min-w-24 items-center justify-center px-3 text-xs font-medium transition-colors',
+          value === 'overview' ? 'bg-muted text-foreground' : 'text-muted-foreground hover:text-foreground',
+        )}
+      >
+        Overview
+      </button>
+      <button
+        type="button"
+        onClick={() => onChange('detailed')}
+        aria-pressed={value === 'detailed'}
+        className={cn(
+          'inline-flex min-w-24 items-center justify-center border-l border-input px-3 text-xs font-medium transition-colors',
+          value === 'detailed' ? 'bg-muted text-foreground' : 'text-muted-foreground hover:text-foreground',
+        )}
+      >
+        Detailed
+      </button>
+    </div>
+  );
+}
+
 function RequirementCard({ requirement }: { requirement: Requirement }) {
   const [isExpanded, setIsExpanded] = useState(false);
-
-  const typeStyles: Record<string, string> = {
-    mandatory: 'bg-red-100 text-red-800 dark:bg-red-950/40 dark:text-red-300',
-    recommended: 'bg-blue-100 text-blue-800 dark:bg-blue-950/40 dark:text-blue-300',
-    consideration: 'bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-300',
-  };
-
-  const typeLabels: Record<string, string> = {
-    mandatory: 'Mandatory',
-    recommended: 'Recommended',
-    consideration: 'Consider',
-  };
 
   return (
     <div
       className={cn(
-        'border p-3 transition-all cursor-pointer hover:border-primary',
-        isExpanded && 'ring-2 ring-primary/20'
+        'border border-border p-3 transition-colors cursor-pointer hover:border-primary',
+        isExpanded && 'border-primary',
       )}
       onClick={() => setIsExpanded(!isExpanded)}
     >
       <div className="flex items-start justify-between gap-2">
         <div className="flex-1">
-          <div className="flex items-center gap-2 flex-wrap">
-            <h4 className="font-medium text-sm">{requirement.title}</h4>
-            <Badge className={cn('text-xs', typeStyles[requirement.type] || 'bg-gray-100 text-gray-800')}>
+          <div className="flex flex-wrap items-center gap-2">
+            <h4 className="text-sm font-medium">{requirement.title}</h4>
+            <span
+              className={cn(
+                'inline-flex rounded-md border px-2 py-1 text-xs',
+                typeStyles[requirement.type] || 'border-border text-muted-foreground',
+              )}
+            >
               {typeLabels[requirement.type] || requirement.type}
-            </Badge>
+            </span>
             {requirement.deadline && (
-              <Badge variant="outline" className="text-xs">
-                <Clock className="w-3 h-3 mr-1" />
+              <span className="inline-flex items-center gap-1 rounded-md border border-border px-2 py-1 text-xs text-muted-foreground">
+                <Clock className="h-3 w-3" />
                 {requirement.deadline}
-              </Badge>
+              </span>
             )}
           </div>
-          <p className="text-xs text-muted-foreground mt-1">{requirement.description}</p>
+          <p className="mt-1 text-xs text-muted-foreground">{requirement.description}</p>
         </div>
-        <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+        <button
+          type="button"
+          aria-label={isExpanded ? 'Collapse details' : 'Expand details'}
+          className="flex h-6 w-6 shrink-0 items-center justify-center text-muted-foreground hover:text-foreground"
+        >
           {isExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
-        </Button>
+        </button>
       </div>
       {isExpanded && (
-        <div className="mt-3 pt-3 border-t">
-          <ul className="space-y-1">
-            {requirement.details.map((detail, idx) => (
-              <li key={idx} className="text-xs text-muted-foreground flex items-start gap-2">
-                <span className="text-primary mt-0.5">•</span>
-                {detail}
-              </li>
-            ))}
-          </ul>
-        </div>
+        <ul className="mt-3 space-y-1 border-t border-[var(--rule-hair)] pt-3">
+          {requirement.details.map((detail, idx) => (
+            <li key={idx} className="flex items-start gap-2 text-xs text-muted-foreground">
+              <span className="mt-0.5 text-primary">•</span>
+              {detail}
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   );
@@ -153,30 +196,29 @@ function PillarCard({ pillar, isSelected, onSelect }: { pillar: Pillar; isSelect
   const mandatoryCount = pillar.requirements.filter((r) => r.type === 'mandatory').length;
 
   return (
-    <Card
-      className={cn(
-        'cursor-pointer transition-all hover:border-primary',
-        isSelected && 'ring-2 ring-primary'
-      )}
+    <button
+      type="button"
       onClick={onSelect}
+      aria-pressed={isSelected}
+      className={cn(
+        'hover-lift w-full border bg-card/35 p-4 text-left transition-colors hover:border-primary',
+        isSelected ? 'border-primary' : 'border-border',
+      )}
     >
-      <CardHeader className="pb-3">
-        <div
-          className="h-12 w-12 rounded-lg flex items-center justify-center mb-3"
-          style={{ backgroundColor: `${pillar.color}20` }}
-        >
-          <Icon className="h-6 w-6" style={{ color: pillar.color }} />
-        </div>
-        <CardTitle className="text-lg">{pillar.title}</CardTitle>
-        <CardDescription className="text-sm">{pillar.description}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="flex flex-wrap items-center gap-2 text-sm">
-          <Badge variant="secondary">{pillar.principles.length} Principles</Badge>
-          <Badge variant="destructive">{mandatoryCount} Mandatory</Badge>
-        </div>
-      </CardContent>
-    </Card>
+      <div className="mb-3 flex h-11 w-11 items-center justify-center border border-border text-primary">
+        <Icon className="h-5 w-5" />
+      </div>
+      <p className="section-title">{pillar.title}</p>
+      <p className="mt-1 text-sm text-muted-foreground">{pillar.description}</p>
+      <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+        <span>{pillar.principles.length} principles</span>
+        {mandatoryCount > 0 && (
+          <span className="inline-flex rounded-md border border-[var(--rule-heavy)] bg-muted px-2 py-1 font-medium text-foreground">
+            {mandatoryCount} mandatory
+          </span>
+        )}
+      </div>
+    </button>
   );
 }
 
@@ -184,14 +226,11 @@ function PolicyAimCard({ aim }: { aim: PolicyAim }) {
   const Icon = iconMap[aim.icon] || Rocket;
 
   return (
-    <div className="flex-1 border bg-card/35 p-4 transition-colors hover:border-primary">
-      <div
-        className="h-10 w-10 rounded-full flex items-center justify-center mb-3"
-        style={{ backgroundColor: `${aim.color}20` }}
-      >
-        <Icon className="h-5 w-5" style={{ color: aim.color }} />
+    <div className="flex-1 border border-border bg-card/35 p-4 transition-colors hover:border-primary">
+      <div className="mb-3 flex h-10 w-10 items-center justify-center border border-border text-primary">
+        <Icon className="h-5 w-5" />
       </div>
-      <h3 className="font-semibold text-sm mb-1">{aim.title}</h3>
+      <h3 className="mb-1 text-sm font-semibold">{aim.title}</h3>
       <p className="text-xs text-muted-foreground">{aim.description}</p>
     </div>
   );
@@ -210,63 +249,40 @@ export function PolicyFrameworkMap({ data, onPillarSelect }: PolicyFrameworkMapP
   const selectedPillarData = data.pillars.find((p) => p.id === selectedPillar);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
-          <div className="flex items-center gap-2">
-            <Building2 className="h-6 w-6 text-primary" />
-            <h2 className="text-2xl font-bold">{data.title}</h2>
-          </div>
-          <div className="mt-2 flex flex-wrap items-center gap-2">
-            <Badge variant="outline">Version {data.version}</Badge>
-            <Badge variant="secondary">Effective: {new Date(data.effectiveDate).toLocaleDateString('en-AU')}</Badge>
-            <Badge className="max-w-full whitespace-normal text-left">{data.authority}</Badge>
+          <p className="page-eyebrow">
+            Version {data.version} · {data.authority}
+          </p>
+          <div className="mt-1 flex items-center gap-2">
+            <Building2 className="h-5 w-5 text-primary" />
+            <h2 className="section-title">{data.title}</h2>
           </div>
         </div>
-        <div className="flex flex-wrap gap-2">
-          <Button
-            variant={view === 'overview' ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => setView('overview')}
-          >
-            Overview
-          </Button>
-          <Button
-            variant={view === 'detailed' ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => setView('detailed')}
-          >
-            Detailed
-          </Button>
-        </div>
+        <ViewSwitch value={view} onChange={setView} />
       </div>
 
       {/* Policy Aims */}
       <div>
-        <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-          <Rocket className="h-5 w-5 text-primary" />
-          Policy Aims
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <h3 className="page-eyebrow mb-3">Policy aims</h3>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {data.policyAims.map((aim) => (
             <PolicyAimCard key={aim.id} aim={aim} />
           ))}
         </div>
       </div>
 
-      <Separator />
+      <div className="border-t border-[var(--rule-hair)]" />
 
       {/* Three Pillars */}
       <div>
-        <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-          <FileCheck className="h-5 w-5 text-primary" />
-          Principles and Requirements
-        </h3>
-        <p className="text-sm text-muted-foreground mb-4">
-          Click on a pillar to view its principles and requirements
+        <h3 className="page-eyebrow mb-1">Principles and requirements</h3>
+        <p className="mb-4 text-sm text-muted-foreground">
+          Select a pillar to view its principles and requirements.
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {data.pillars.map((pillar) => (
             <PillarCard
               key={pillar.id}
@@ -280,78 +296,73 @@ export function PolicyFrameworkMap({ data, onPillarSelect }: PolicyFrameworkMapP
 
       {/* Selected Pillar Details */}
       {selectedPillarData && (
-        <Card className="mt-6 border-2" style={{ borderColor: selectedPillarData.color }}>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              {(() => {
-                const Icon = iconMap[selectedPillarData.icon] || Globe;
-                return <Icon className="h-5 w-5" style={{ color: selectedPillarData.color }} />;
-              })()}
-              {selectedPillarData.title}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            {/* Principles */}
-            <div>
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <BookOpen className="h-4 w-4" />
-                Principles
-              </h4>
-              <ul className="space-y-2">
-                {selectedPillarData.principles.map((principle, idx) => (
-                  <li key={idx} className="flex items-start gap-2 text-sm">
-                    <span
-                      className="h-5 w-5 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
-                      style={{ backgroundColor: selectedPillarData.color }}
-                    >
-                      {idx + 1}
-                    </span>
-                    {principle}
-                  </li>
-                ))}
-              </ul>
-            </div>
+        <div className="border border-border bg-card/35 p-5">
+          <div className="flex items-center gap-2">
+            {(() => {
+              const Icon = iconMap[selectedPillarData.icon] || Globe;
+              return <Icon className="h-5 w-5 text-primary" />;
+            })()}
+            <h3 className="section-title">{selectedPillarData.title}</h3>
+          </div>
 
-            <Separator />
+          {/* Principles */}
+          <div className="mt-5">
+            <h4 className="mb-3 flex items-center gap-2 text-sm font-semibold">
+              <BookOpen className="h-4 w-4 text-primary" />
+              Principles
+            </h4>
+            <ul className="space-y-2">
+              {selectedPillarData.principles.map((principle, idx) => (
+                <li key={idx} className="flex items-start gap-2 text-sm">
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+                    {idx + 1}
+                  </span>
+                  {principle}
+                </li>
+              ))}
+            </ul>
+          </div>
 
-            {/* Requirements */}
-            <div>
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <Users className="h-4 w-4" />
-                Requirements
-              </h4>
-              <div className="space-y-3">
-                {selectedPillarData.requirements.map((req) => (
-                  <RequirementCard key={req.id} requirement={req} />
-                ))}
-              </div>
+          {/* Requirements */}
+          <div className="mt-6 border-t border-[var(--rule-hair)] pt-6">
+            <h4 className="mb-3 flex items-center gap-2 text-sm font-semibold">
+              <Users className="h-4 w-4 text-primary" />
+              Requirements
+            </h4>
+            <div className="space-y-3">
+              {selectedPillarData.requirements.map((req) => (
+                <RequirementCard key={req.id} requirement={req} />
+              ))}
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       )}
 
       {view === 'detailed' && (
         <>
-          <Separator />
+          <div className="border-t border-[var(--rule-hair)]" />
 
           {/* In-Scope Criteria */}
           <div>
-            <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-              <AlertTriangle className="h-5 w-5 text-amber-500" />
-              In-Scope AI Use Case Criteria
+            <h3 className="mb-3 flex items-center gap-2 page-eyebrow">
+              <AlertTriangle className="h-4 w-4 text-primary" />
+              In-scope AI use case criteria
             </h3>
-            <p className="text-sm text-muted-foreground mb-4">
+            <p className="mb-4 text-sm text-muted-foreground">
               An AI use case is in scope of this policy if any of the following apply:
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
               {data.inScopeCriteria.map((criteria) => (
-                <div key={criteria.id} className="border rounded-lg p-4 bg-amber-50 dark:bg-amber-950/30 dark:border-amber-900/50">
+                <div key={criteria.id} className="border border-border bg-card/35 p-4">
                   <p className="text-sm font-medium">{criteria.description}</p>
-                  <div className="flex flex-wrap gap-1 mt-2">
+                  <div className="mt-2 flex flex-wrap gap-1">
                     {criteria.applicableTo.map((item) => (
-                      <Badge key={item} variant="outline" className="text-xs">
+                      <span
+                        key={item}
+                        className="inline-flex rounded-md border border-border px-2 py-1 text-xs text-muted-foreground"
+                      >
                         {item}
-                      </Badge>
+                      </span>
                     ))}
                   </div>
                 </div>
@@ -361,18 +372,21 @@ export function PolicyFrameworkMap({ data, onPillarSelect }: PolicyFrameworkMapP
 
           {/* Risk Areas */}
           <div>
-            <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-              <Shield className="h-5 w-5 text-red-500" />
-              Areas Requiring Careful Consideration
+            <h3 className="mb-3 flex items-center gap-2 page-eyebrow">
+              <Shield className="h-4 w-4 text-primary" />
+              Areas requiring careful consideration
             </h3>
-            <p className="text-sm text-muted-foreground mb-4">
+            <p className="mb-4 text-sm text-muted-foreground">
               While not automatically high-risk, these areas are more likely to involve risks requiring impact assessment:
             </p>
             <div className="flex flex-wrap gap-2">
               {data.riskAreas.map((area) => (
-                <Badge key={area} variant="secondary" className="text-sm py-1 px-3">
+                <span
+                  key={area}
+                  className="inline-flex rounded-md border border-border px-3 py-1 text-sm text-muted-foreground"
+                >
                   {area}
-                </Badge>
+                </span>
               ))}
             </div>
           </div>
