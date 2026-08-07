@@ -1,5 +1,127 @@
 [
   {
+    "id": "source-review-dev-artificial-intelligence-governance-policy-1oub5xk",
+    "sourceUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
+    "title": "Artificial intelligence governance policy",
+    "entryKind": "policy",
+    "targetPolicyId": "queensland-ai-governance-policy",
+    "targetPolicyBaseRevisionHash": "090331017c57bbce02f68b1bb696a5cc175f4705ee7cde3fa03d8900fe0dc80f",
+    "status": "pending_review",
+    "discoveredAt": "2026-08-07T03:01:55.185Z",
+    "createdBy": "collector",
+    "notes": "The official source content for \"Artificial intelligence governance policy\" changed. Editorial re-verification is required before the register record can be treated as current. Re-verify the existing register record before restoring it to public reads. Detected by Queensland QGEA — AI governance policy (ai assessment).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": "guideline",
+      "suggestedJurisdiction": "qld",
+      "summary": "The official source content for \"Artificial intelligence governance policy\" changed. Editorial re-verification is required before the register record can be treated as current.",
+      "tags": [
+        "Queensland",
+        "AI governance",
+        "QGEA",
+        "public sector"
+      ],
+      "agencies": [
+        "Department of Customer Services, Open Data and Small and Family Business"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
+      "finalUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
+      "retrievedAt": "2026-08-07T03:01:55.185Z",
+      "contentType": "text/html",
+      "contentHash": "9a4acb92c2fdf0fb7c57c051d8f2420baeee642753c10586986664a5d77379ac",
+      "title": "Artificial intelligence governance policy"
+    },
+    "proposedRecord": {
+      "id": "queensland-ai-governance-policy",
+      "title": "Artificial intelligence governance policy",
+      "description": "Queensland whole-of-government policy for AI governance under the Queensland Government Enterprise Architecture.",
+      "jurisdiction": "qld",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2024-09-01",
+      "agencies": [
+        "Department of Customer Services, Open Data and Small and Family Business"
+      ],
+      "sourceUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
+      "content": "Queensland's current QGEA artificial intelligence governance policy is a current mandated policy, version 1.0.0, effective from September 2024. It requires agencies to use a consistent evidence-based process for evaluating AI and to establish AI governance arrangements based on ISO 38507. The page was last updated on 8 August 2025.",
+      "aiSummary": "Current mandated Queensland AI governance policy under QGEA, effective from September 2024.",
+      "tags": [
+        "Queensland",
+        "AI governance",
+        "QGEA",
+        "public sector"
+      ],
+      "createdAt": "2026-04-06T16:50:00Z",
+      "updatedAt": "2026-08-07T03:01:55.185Z",
+      "dates": [
+        {
+          "type": "effective",
+          "date": "2024-09-01",
+          "precision": "month",
+          "primary": true,
+          "source": {
+            "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
+            "finalUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
+            "title": "Artificial intelligence governance policy",
+            "retrievedAt": "2026-07-19T05:44:42.001Z",
+            "contentType": "text/html",
+            "contentHash": "ead68985b9ce5183599947369443503ec8463468a9c0cff6d2803e2bfde6675c",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-07-19T05:44:42.001Z",
+              "capturedBy": "Daniel Alkurdi",
+              "notes": "Fresh controlled Chrome capture for the approved bulk review of Artificial intelligence governance policy; the official page is fingerprinted as the deterministic evidence boundary.",
+              "pageContentHash": "a773cc35e1f63acc1924e2ded27d382b4333dff666ae6bc12c35ad55c56e3181",
+              "characterCount": 5265
+            },
+            "reviewedDate": {
+              "date": "2024-09-01",
+              "precision": "month",
+              "reviewedAt": "2026-07-19T06:14:30.232Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "Verified against the official Queensland Government governance policy, which identifies September 2024; month precision is retained."
+            }
+          }
+        }
+      ]
+    },
+    "linkedDevelopment": {
+      "id": "dev-artificial-intelligence-governance-policy-1oub5xk",
+      "title": "Artificial intelligence governance policy",
+      "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
+      "sourceId": "qld-qgea-ai",
+      "sourceName": "Queensland QGEA — AI governance policy",
+      "jurisdiction": "qld",
+      "detectedAt": "2026-08-07T03:01:55.185Z",
+      "summary": "The official source content for \"Artificial intelligence governance policy\" changed. Editorial re-verification is required before the register record can be treated as current.",
+      "relevanceScore": 1,
+      "classification": "ai",
+      "assessment": {
+        "method": "ai",
+        "promptVersion": "claude-classify-v1",
+        "assessedAt": "2026-08-07T03:01:55.185Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
+          "finalUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
+          "retrievedAt": "2026-08-07T03:01:55.185Z",
+          "contentType": "text/html",
+          "contentHash": "9a4acb92c2fdf0fb7c57c051d8f2420baeee642753c10586986664a5d77379ac",
+          "title": "Artificial intelligence governance policy"
+        }
+      },
+      "status": "detected"
+    },
+    "sourceVersionSequence": 3,
+    "updatedAt": "2026-08-07T03:01:55.185Z"
+  },
+  {
     "id": "source-review-dev-speech-moving-from-ai-pilots-to-whole-of-governm-78k67w",
     "sourceUrl": "https://www.dta.gov.au/articles/speech-moving-ai-pilots-whole-government-scale",
     "title": "Speech: Moving from AI pilots to whole-of-government scale",
