@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { getPool } from '../lib/db';
-import Deadlines from './deadlines';
+import DeadlineTeaser from './deadlines';
 
 export const dynamic = 'force-dynamic';
 
@@ -50,7 +50,7 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
           <input name="q" placeholder="Search…" defaultValue={q ?? ''} />
         </form>
       </div>
-      <Deadlines />
+      <DeadlineTeaser />
       {rows.length === 0 ? <p>No items yet. The next ingest run will populate the feed.</p> : null}
       {rows.map((i) => (
         <article className="item" key={i.id}>

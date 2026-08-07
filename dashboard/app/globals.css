@@ -52,3 +52,12 @@ th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--lin
 .chip.due-near { color: var(--due-near); border-color: var(--due-near); }
 .timeline-item-title { color: var(--muted); font-size: 13px; margin-top: 1px; }
 .timeline-item-title a { color: var(--accent); }
+.deadline-teaser { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 8px 16px; margin-bottom: 12px; font-family: system-ui, sans-serif; font-size: 13px; display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: baseline; }
+.teaser-item strong { font-variant-numeric: tabular-nums; }
+.teaser-item.due-soon strong { color: var(--due-soon); }
+.teaser-item.due-near strong { color: var(--due-near); }
+.teaser-more { margin-left: auto; white-space: nowrap; font-size: 12px; }
+.passed-entry { display: flex; gap: 12px; padding: 5px 0; font-family: system-ui, sans-serif; font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); }
+.passed-entry:first-of-type { margin-top: 8px; }
+.passed-date { min-width: 52px; font-variant-numeric: tabular-nums; }
+.passed-entry a { color: var(--accent); }
