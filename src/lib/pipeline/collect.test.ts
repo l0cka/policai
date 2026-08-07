@@ -1,6 +1,7 @@
 /* @vitest-environment node */
 
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { readFileSync } from 'node:fs';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { buildPolicy, buildTimelineEvent } from '@/test/factories';
 import type { WatchSource } from './sources';
 
@@ -14,6 +15,15 @@ const { scrapeWithFirecrawl } = vi.hoisted(() => ({
 }));
 vi.mock('./firecrawl', () => ({ scrapeWithFirecrawl }));
 
+// Same hoisting requirement as above. classifyBatch is only ever invoked when
+// USE_CLAUDE_CLASSIFIER is stubbed on for a test; every other test leaves it
+// unmocked-but-uncalled, which is fine since the collector never reaches it
+// with the flag off.
+const { classifyBatch } = vi.hoisted(() => ({
+  classifyBatch: vi.fn(),
+}));
+vi.mock('./claude-classify', () => ({ classifyBatch, CLAUDE_BATCH_SIZE: 20 }));
+
 import { collect, collectionRunFailed, emptyWatchState } from './collect';
 import { validateSourceReviews } from '../validate-data';
 
@@ -24,6 +34,7 @@ beforeEach(() => {
     reason: 'unavailable',
     detail: 'not mocked for this test',
   });
+  classifyBatch.mockReset();
 });
 
 describe('collection CLI failure policy', () => {
@@ -2190,5 +2201,118 @@ describe('collect browser fallback', () => {
 
     expect(result.errors).toHaveLength(1);
     expect(result.meta.collector.sourceResults[0].status).toBe('error');
+  });
+});
+
+describe('collect with Claude classifier', () => {
+  // Same fixture as 'detects new items, skips seen URLs, and updates state'
+  // above: one candidate ('seen-before') is already known and filtered out
+  // during dedup, so exactly one surviving candidate reaches classifyBatch.
+  const CANDIDATE_URL = 'https://www.example.gov.au/news/ai-policy-framework';
+
+  function stateWithSeenBefore() {
+    const state = emptyWatchState();
+    state.seen['https://www.example.gov.au/news/seen-before'] = {
+      firstSeenAt: '2026-06-01T00:00:00.000Z',
+      sourceId: 'test-html',
+    };
+    return state;
+  }
+
+  function collectWithOneCandidate() {
+    return collect({
+      sources: [HTML_SOURCE],
+      state: stateWithSeenBefore(),
+      existingDevelopments: [],
+      fetchImpl: fakeFetch({
+        'https://www.example.gov.au/news': INDEX_HTML,
+        [CANDIDATE_URL]:
+          '<html><body><h1>New AI policy framework released</h1></body></html>',
+      }),
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+    });
+  }
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it('never marks a Claude-classified development as verified', async () => {
+    vi.stubEnv('USE_CLAUDE_CLASSIFIER', '1');
+    classifyBatch.mockResolvedValueOnce([
+      {
+        id: CANDIDATE_URL,
+        relevant: true,
+        confidence: 0.99,
+        jurisdiction: 'federal',
+        type: 'guideline',
+        summary: 'A summary.',
+      },
+    ]);
+
+    const result = await collectWithOneCandidate();
+
+    const development = result.developments.find(
+      (d) => d.url === CANDIDATE_URL,
+    );
+    expect(development).toBeDefined();
+    expect(development?.classification).toBe('ai');
+    expect(development?.verification.status).not.toBe('verified');
+  });
+
+  it('leaves the curated register untouched when Claude is enabled', async () => {
+    vi.stubEnv('USE_CLAUDE_CLASSIFIER', '1');
+    classifyBatch.mockResolvedValueOnce([
+      {
+        id: CANDIDATE_URL,
+        relevant: true,
+        confidence: 0.9,
+        jurisdiction: null,
+        type: null,
+        summary: 'Another summary.',
+      },
+    ]);
+    const before = readFileSync('data/policies.json', 'utf8');
+
+    await collectWithOneCandidate();
+
+    expect(readFileSync('data/policies.json', 'utf8')).toBe(before);
+  });
+
+  it('maps Claude verdicts onto the development, calling classifyBatch once for the source', async () => {
+    vi.stubEnv('USE_CLAUDE_CLASSIFIER', '1');
+    classifyBatch.mockResolvedValueOnce([
+      {
+        id: CANDIDATE_URL,
+        relevant: true,
+        confidence: 0.82,
+        jurisdiction: 'nsw',
+        type: 'framework',
+        summary: 'Claude summary.',
+      },
+    ]);
+
+    const result = await collectWithOneCandidate();
+
+    expect(classifyBatch).toHaveBeenCalledTimes(1);
+    const development = result.developments.find(
+      (d) => d.url === CANDIDATE_URL,
+    );
+    expect(development).toMatchObject({
+      classification: 'ai',
+      jurisdiction: 'nsw',
+      relevanceScore: 0.82,
+      summary: 'Claude summary.',
+    });
+  });
+
+  it('keeps the deterministic heuristic path when the flag is unset', async () => {
+    const result = await collectWithOneCandidate();
+
+    expect(classifyBatch).not.toHaveBeenCalled();
+    const development = result.developments.find(
+      (d) => d.url === CANDIDATE_URL,
+    );
+    expect(development?.classification).toBe('heuristic');
   });
 });
