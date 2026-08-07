@@ -27,7 +27,7 @@ INSERT INTO sources (name, url, fetch_method, item_link_pattern, stream_hint) VA
   ('Legal Aid Queensland',          'https://www.legalaid.qld.gov.au/Listings/Media-releases', 'firecrawl', 'legalaid\.qld\.gov\.au/(Listings/Media-releases|For-lawyers/Announcements|About-us/Newsroom)/.+', 'news'),
   ('Legal Aid WA',                  'https://www.legalaid.wa.gov.au/news',          'firecrawl', 'legalaid\.wa\.gov\.au/news/.+', 'news'),
   ('Legal Services Commission SA',  'https://lsc.sa.gov.au/',                       'firecrawl', 'lsc\.sa\.gov\.au/cb_pages/news/.+', 'news'),
-  ('Queensland Law Reform Commission','https://www.qlrc.qld.gov.au/news/releases',  'firecrawl', 'qlrc\.qld\.gov\.au/news/(releases|speeches)/.+', 'law_reform'),
+  ('Queensland Law Reform Commission','https://www.qlrc.qld.gov.au/news',           'firecrawl', 'qlrc\.qld\.gov\.au/news/\?external-uuid=.+', 'law_reform'),
   ('Community Legal Centres NSW',   'https://www.clcnsw.org.au/news',               'firecrawl', 'clcnsw\.org\.au/index\.php/.+', 'news'),
   ('Federation of Community Legal Centres VIC','https://www.fclc.org.au/news',      'firecrawl', 'fclc\.org\.au/[a-z0-9]+(_[a-z0-9]+)+$', 'news'),
   ('Community Legal Centres Queensland','https://communitylegalqld.org.au/news/latest-news/', 'firecrawl', 'communitylegalqld\.org\.au/news/.+/.+', 'news'),

@@ -7,10 +7,14 @@ export type RawItem = {
 
 const LINK_RE = /\[([^\]]*)\]\(([^)\s]+)\)/g;
 
-// Link text that marks site chrome, not content: skip links, teaser buttons,
-// section indexes. Matched against the whole normalized title.
+// Link text that marks site chrome, not content: skip links, section
+// indexes, calls to action. These links never point at an item — skip them.
 const NAV_NOISE_RE =
-  /^(skip to\b|see all\b|view all\b|read more\b|learn more\b|find out more\b|make a submission\b|subscribe\b|join our\b|back to\b|sign up\b|contact us\b)/i;
+  /^(skip to\b|see all\b|view all\b|make a submission\b|subscribe\b|join our\b|back to\b|sign up\b|contact us\b)/i;
+
+// Teaser-button text ("READ MORE") — the link DOES point at an item, the
+// text just isn't a title. Fall through to a slug-derived title instead.
+const TEASER_RE = /^(read more\b|learn more\b|find out more\b|more info\b|continue reading\b)/i;
 
 // Static assets that sometimes appear as link targets on listing pages.
 const ASSET_RE = /\.(png|jpe?g|gif|svg|webp|ico|css|js|xml)$/i;
@@ -59,7 +63,7 @@ export function extractListingLinks(markdown: string, baseUrl: string, itemLinkP
     if (ASSET_RE.test(resolved.pathname)) continue;
     const linkText = m[1].replace(/^[\s\\#>*]+/, '').replace(/[\s\\|–—-]+$/, '').replace(/\s+/g, ' ').trim();
     if (NAV_NOISE_RE.test(linkText)) continue;
-    const title = linkText || titleFromSlug(resolved);
+    const title = !linkText || TEASER_RE.test(linkText) ? titleFromSlug(resolved) : linkText;
     if (!pattern.test(url) || seen.has(url) || title.length < 8) continue;
     seen.add(url);
     items.push({ url, title, published_at: null, excerpt: null });

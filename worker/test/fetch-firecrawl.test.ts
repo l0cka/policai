@@ -115,7 +115,6 @@ Federal budget boosts legal aid](https://clcs.org.au/news/budget-boost)`;
 
   it('skips navigation-noise link text', () => {
     const md = `
-[Read more](https://clcs.org.au/news/budget-boost)
 [See all closed consultations](https://clcs.org.au/news/archive)
 [Subscribe to our newsletter east](https://clcs.org.au/news/newsletter)
 [Make a Submission](https://clcs.org.au/news/submit)
@@ -123,5 +122,18 @@ Federal budget boosts legal aid](https://clcs.org.au/news/budget-boost)`;
 `;
     const items = extractListingLinks(md, 'https://clcs.org.au/news', 'clcs\\.org\\.au/.+');
     expect(items.map((i) => i.url)).toEqual(['https://clcs.org.au/news/budget-boost-2026']);
+  });
+
+  it('keeps teaser-button links, titling them from the slug', () => {
+    const md = `
+[READ MORE](https://clcs.org.au/news/no-air-in-prison-bill)
+[Find out more](https://clcs.org.au/news/ekka-show-day-closures)
+[Read more](https://clcs.org.au/donate-now)
+`;
+    const items = extractListingLinks(md, 'https://clcs.org.au/news', 'clcs\\.org\\.au/news/.+');
+    expect(items.map((i) => i.title)).toEqual([
+      'No air in prison bill',
+      'Ekka show day closures',
+    ]);
   });
 });
