@@ -13,44 +13,42 @@ import {
 
 export const dynamic = 'force-dynamic';
 
+export const metadata = {
+  title: 'The sector — Pro Bono Radar',
+  description:
+    'Every organisation that funds, coordinates, delivers or studies legal assistance in Australia, and the funding and referral structure that connects them.',
+};
+
 const TIER_LABEL = Object.fromEntries(TIERS.map((t) => [t.key, t.label])) as Record<
   TierKey,
   string
 >;
 
-export const metadata = {
-  title: 'The sector — Pro Bono Radar',
-  description:
-    'Every organisation that funds, coordinates, delivers or studies legal assistance in Australia, and how money and pro bono capacity actually reach a person with a legal problem.',
-};
-
-// The gaps worth naming on the page, rather than leaving a reader to count.
-const GAP_TIERS: TierKey[] = ['fvpls', 'atsils', 'clc'];
-
 export default async function SectorPage() {
-  const { rows } = await getPool().query(`SELECT name FROM sources WHERE active`);
+  const { rows } = await getPool().query(`SELECT name, url FROM sources WHERE active`);
   const orgs = markMonitored(
     ORGANISATIONS,
-    rows.map((r) => r.name as string),
+    rows.map((r) => ({ name: r.name as string, url: r.url as string })),
   );
 
   const monitored = orgs.filter((o) => o.monitored).length;
-  const gaps = GAP_TIERS.map((tier) => {
-    const inTier = orgs.filter((o) => o.tier === tier);
-    return { tier, total: inTier.length, monitored: inTier.filter((o) => o.monitored).length };
+  const coverage = TIERS.map((t) => {
+    const inTier = orgs.filter((o) => o.tier === t.key);
+    return {
+      key: t.key,
+      total: inTier.length,
+      monitored: inTier.filter((o) => o.monitored).length,
+    };
   });
 
   return (
     <div className="container page">
       <header className="page-head reveal">
         <p className="page-eyebrow">Sector reference · compiled {COMPILED}</p>
-        <h1 className="page-title">Who actually does access to justice</h1>
+        <h1 className="page-title">The access to justice sector</h1>
         <p className="page-intro">
-          Every organisation that funds, coordinates, delivers or studies legal assistance in
-          Australia — {orgs.length} of them, across eleven kinds of body and nine jurisdictions.
-          The diagram shows how money and unpaid capacity reach a person with a legal problem.
-          The directory lists the whole sector, marking which parts this radar already collects
-          from.
+          Organisations that fund, coordinate, deliver or study legal assistance in Australia,
+          with the funding and referral structure that connects them.
         </p>
       </header>
 
@@ -60,7 +58,7 @@ export default async function SectorPage() {
           <span>organisations</span>
         </span>
         <span className="stat">
-          <b>11</b>
+          <b>{TIERS.length}</b>
           <span>kinds of body</span>
         </span>
         <span className="stat">
@@ -69,7 +67,7 @@ export default async function SectorPage() {
         </span>
         <span className="stat">
           <b>{monitored}</b>
-          <span>already on the radar</span>
+          <span>radar sources</span>
         </span>
         <span className="stat">
           <b>$3.9b</b>
@@ -77,91 +75,110 @@ export default async function SectorPage() {
         </span>
       </div>
 
-      <section aria-label="How help reaches someone">
-        <h2 className="section-heading">How help actually reaches someone</h2>
-        <p className="section-intro">
-          Two channels, and they do not meet until the very end. Public money flows through a
-          single five-year agreement to four delivery arms. Pro bono is not in that agreement at
-          all: it is unpaid capacity from the profession, and it reaches people through clearing
-          houses and court referral schemes rather than directly. The peaks coordinate; they do
-          not deliver.
-        </p>
+      <section aria-label="Funding and referral structure">
+        <h2 className="section-heading">Funding and referral structure</h2>
         <SectorDiagram />
       </section>
 
-      <aside className="sector-callout">
-        <h2>The name everyone still uses is wrong</h2>
-        <p>
-          <strong>NLAP is over.</strong> The National Legal Assistance Partnership 2020–25 expired
-          on 30 June 2025 and was replaced by the{' '}
-          <strong>National Access to Justice Partnership (NAJP) 2025–30</strong> — $3.9 billion
-          over five years, with $833 million for community legal centres and women&rsquo;s legal
-          services, a 74% increase. Sector material still saying &ldquo;NLAP&rdquo; is using
-          historical language. Two renames worth knowing alongside it: the National Association of
-          Community Legal Centres became <strong>Community Legal Centres Australia</strong> in
-          2020, and the National FVPLS Forum is now{' '}
-          <strong>First Nations Advocates Against Family Violence</strong>. Counting either under
-          both names double-counts the sector.
+      <section aria-label="The National Access to Justice Partnership">
+        <h2 className="section-heading">The funding agreement</h2>
+        <div className="table-wrap">
+          <table>
+            <tbody>
+              <tr>
+                <th scope="row">Current agreement</th>
+                <td>National Access to Justice Partnership (NAJP) 2025–30</td>
+              </tr>
+              <tr>
+                <th scope="row">Term</th>
+                <td>1 July 2025 to 30 June 2030</td>
+              </tr>
+              <tr>
+                <th scope="row">Value</th>
+                <td>$3.9 billion over five years</td>
+              </tr>
+              <tr>
+                <th scope="row">CLC and women&rsquo;s legal services share</th>
+                <td>$833 million, a 74% increase on the previous agreement</td>
+              </tr>
+              <tr>
+                <th scope="row">Replaced</th>
+                <td>National Legal Assistance Partnership (NLAP) 2020–25, expired 30 June 2025</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p className="section-note">
+          Recent renames: the National Association of Community Legal Centres became Community
+          Legal Centres Australia in 2020; the National FVPLS Forum became First Nations Advocates
+          Against Family Violence.
         </p>
-      </aside>
+      </section>
 
-      <section aria-label="Where the radar is thin">
-        <h2 className="section-heading">Where this radar is thin</h2>
+      <section aria-label="Radar coverage">
+        <h2 className="section-heading">Radar coverage</h2>
         <p className="section-intro">
-          Coverage is strong at the top of the sector and thin at the delivery edge — the
-          organisations closest to unmet need, and the ones whose closures and funding shortfalls
-          surface first. Use the <em>On the radar</em> filter below to see the difference, then
-          check <Link href="/health">source health</Link> for what is already running.
+          Organisations in each tier that are an active source on this radar. See{' '}
+          <Link href="/health">source health</Link> for run status.
         </p>
         <div className="table-wrap">
           <table>
             <thead>
               <tr>
                 <th>Tier</th>
-                <th>On the radar</th>
-                <th>Total</th>
+                <th>Sources</th>
+                <th>Organisations</th>
               </tr>
             </thead>
             <tbody>
-              {gaps.map((g) => (
-                <tr key={g.tier}>
-                  <td>{TIER_LABEL[g.tier]}</td>
+              {coverage.map((c) => (
+                <tr key={c.key}>
+                  <td>{TIER_LABEL[c.key]}</td>
                   <td>
-                    <span className={g.monitored === 0 ? 'status status-failed' : 'status status-ok'}>
-                      {g.monitored}
+                    <span
+                      className={c.monitored === 0 ? 'status status-failed' : 'status status-ok'}
+                    >
+                      {c.monitored}
                     </span>
                   </td>
-                  <td className="cell-mono">{g.total}</td>
+                  <td className="cell-mono">{c.total}</td>
                 </tr>
               ))}
+              <tr>
+                <td>
+                  <strong>Total</strong>
+                </td>
+                <td className="cell-mono">{monitored}</td>
+                <td className="cell-mono">{orgs.length}</td>
+              </tr>
             </tbody>
           </table>
         </div>
       </section>
 
-      <section aria-label="The directory">
-        <h2 className="section-heading">The directory</h2>
+      <section aria-label="Directory">
+        <h2 className="section-heading">Directory</h2>
         <p className="section-intro">
-          All {orgs.length} organisations, grouped by what they do. A green dot marks one this
-          radar already collects from.
+          All {orgs.length} organisations by tier. A green dot marks an active radar source.
         </p>
         <SectorDirectory orgs={orgs} />
       </section>
 
       <section aria-label="Method" className="sector-method">
-        <h2 className="section-heading">Method, and what this does not claim</h2>
+        <h2 className="section-heading">Method</h2>
         <p className="section-intro">
-          Five researchers worked the sector in parallel, each from real member directories rather
-          than recall — the NATSILS member panel, the FNAAFV service list, the CLC peak directories
-          for every state, the Law Council&rsquo;s constituent-body register and the Australian Pro
-          Bono Centre&rsquo;s scheme directory. 396 records came back, deduplicated to{' '}
-          {orgs.length}. The &ldquo;on the radar&rdquo; mark is fuzzy name-matching against the
-          sources table and errs towards understating coverage. Each researcher&rsquo;s own account
-          of what it could not establish is below — read these before relying on any single row.
+          Compiled {COMPILED} from published member directories: the NATSILS member list, the
+          FNAAFV service directory, the state CLC peak directories, the Law Council&rsquo;s
+          constituent-body register and the Australian Pro Bono Centre&rsquo;s scheme directory.
+          396 records were collected and deduplicated to {orgs.length}. Names, roles and URLs come
+          from each organisation&rsquo;s own site or its peak&rsquo;s directory. Funding
+          attributions are indicative and not audited. An organisation counts as a radar source
+          when an active source shares its website; a few sources publish from a different domain
+          than the one recorded here and are not matched.
         </p>
         {RESEARCH_NOTES.map((n, i) => (
           <details className="sector-note" key={i}>
-            <summary>{n.split(':')[0].slice(0, 60)}</summary>
+            <summary>Limits of the {n.split(':')[0].slice(0, 40)} search</summary>
             <p>{n}</p>
           </details>
         ))}
