@@ -799,7 +799,7 @@
     "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy#policai-change=9a4acb92c2fdf0fb7c57c051d8f2420baeee642753c10586986664a5d77379ac:1": {
       "firstSeenAt": "2026-07-29T20:30:22.291Z",
       "sourceId": "qld-qgea-ai",
-      "status": "awaiting_review",
+      "status": "dismissed",
       "attempts": 1,
       "lastAttemptAt": "2026-07-29T20:30:22.291Z",
       "candidate": {
@@ -807,7 +807,9 @@
         "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
         "text": "The official source content for \"Artificial intelligence governance policy\" changed. Editorial re-verification is required before the register record can be treated as current.",
         "changeFingerprint": "9a4acb92c2fdf0fb7c57c051d8f2420baeee642753c10586986664a5d77379ac:1"
-      }
+      },
+      "processedAt": "2026-08-07T00:47:19.725Z",
+      "lastError": "Superseded by source transition 2"
     },
     "https://statements.qld.gov.au/#policai-change=acfd03580a32c0ddc5756c1518fe35e4fa63c4e86118fe687801b7a384ee8f8d:5": {
       "firstSeenAt": "2026-07-29T20:30:22.291Z",
@@ -1048,13 +1050,56 @@
         "text": "Latest Search Yesterday at 02:00 PM Works to start on Brisbane Valley Highway Safety project Key intersection improvements are now underway to ... Yesterday at 12:48 PM Statement from the Attorney-General The High Court of Australia has unanimously ruled ... Yesterday at 12:45 PM NAPLAN participation peaks with highest rate since 2019 Queensland students have delivered the state’s str... Yesterday at 12:30 PM Major infrastructure upgrades delivered for Queensland state schools The Crisafulli Government has delivered almost $10... Yesterday at 10:30 AM Father-son police Dog Squad team unleashed",
         "changeFingerprint": "d9a6e6023cfe716f28658262f47906a824dcced4f3d13601191b366923d96ceb:12"
       }
+    },
+    "https://www.dta.gov.au/articles/speech-moving-ai-pilots-whole-government-scale": {
+      "firstSeenAt": "2026-08-07T00:47:19.725Z",
+      "sourceId": "dta-media",
+      "status": "processed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-08-07T00:47:19.725Z",
+      "processedAt": "2026-08-07T00:47:19.725Z",
+      "candidate": {
+        "url": "https://www.dta.gov.au/articles/speech-moving-ai-pilots-whole-government-scale",
+        "title": "Speech: Moving from AI pilots to whole-of-government scale",
+        "text": "7 August 2026 Tags Artificial Intelligence Lucy Poole, Deputy CEO, Strategy, Planning and Performance Division - delivered the following address at the 2026 Tech in Gov event. NOTE: This speech was delivered on Tuesday 4 August 2026. Check against delivery. Opening: beyond the pilot graveyard Good morning, and thank you for the invitation to speak with you today. It is a privilege to join Tech in Gov’s AI stream to talk about moving artificial intelligence from promising pilots to whole-of-government scale. When I spoke at this event last year, much of the discussion was about accelerating AI ",
+        "dateHint": "2026-08-06",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy#policai-change=8c919704dfc1fb7f65c92d54f0e124ee89a6fdde96ce3334cb5951887f6ffd45:2": {
+      "firstSeenAt": "2026-08-07T00:47:19.725Z",
+      "sourceId": "qld-qgea-ai",
+      "status": "pending",
+      "attempts": 1,
+      "lastAttemptAt": "2026-08-07T00:47:19.725Z",
+      "lastError": "HTML source contains no readable document text",
+      "candidate": {
+        "title": "Artificial intelligence governance policy",
+        "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
+        "text": "Queensland whole-of-government policy for AI governance under the Queensland Government Enterprise Architecture.",
+        "changeFingerprint": "8c919704dfc1fb7f65c92d54f0e124ee89a6fdde96ce3334cb5951887f6ffd45:2"
+      }
+    },
+    "https://statements.qld.gov.au/#policai-change=41902e50b97262c071530db94c8317423d0f3cf8a516349ee4a5b3645c1f257e:13": {
+      "firstSeenAt": "2026-08-07T00:47:19.725Z",
+      "sourceId": "qld-ministerial-statements",
+      "status": "dismissed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-08-07T00:47:19.725Z",
+      "processedAt": "2026-08-07T00:47:19.725Z",
+      "candidate": {
+        "title": "Media Statements",
+        "url": "https://statements.qld.gov.au/",
+        "text": "Latest Search Today at 10:45 AM New partnership encourages lifesavers to join Queensland's record police ranks Surf lifesavers are swapping patrol caps for polic... Today at 10:15 AM Further investment strengthens North West Queensland's copper processing capacity The Crisafulli Government is delivering the next s... Today at 10:06 AM Prosper 2050 delivering real action for primary industries The Crisafulli Government has unveiled a five-year... Today at 09:30 AM US Consul-General inspects critical minerals corridor ahead of Trade Mission Queensland’s critical minerals corridor and key sh... T",
+        "changeFingerprint": "41902e50b97262c071530db94c8317423d0f3cf8a516349ee4a5b3645c1f257e:13"
+      }
     }
   },
   "lastCheckedBySource": {
-    "apra-rss": "2026-08-05T20:44:21.554Z",
+    "apra-rss": "2026-08-07T00:47:19.725Z",
     "csiro-news": "2026-08-04T20:52:38.882Z",
-    "oaic-media": "2026-08-05T20:44:21.554Z",
-    "accc-rss": "2026-08-05T20:44:21.554Z",
+    "oaic-media": "2026-08-07T00:47:19.725Z",
+    "accc-rss": "2026-08-07T00:47:19.725Z",
     "asic-newsroom": "2026-08-04T20:52:38.882Z",
     "pc-media": "2026-08-04T20:52:38.882Z",
     "nsw-sc-practice-notes": "2026-07-29T20:30:22.291Z",
@@ -1066,46 +1111,46 @@
     "sa-office-for-ai": "2026-07-18T20:12:16.563Z",
     "treasury-publications": "2026-08-04T20:52:38.882Z",
     "qld-courts-news": "2026-08-04T20:52:38.882Z",
-    "pm-media": "2026-08-05T20:44:21.554Z",
-    "pmc-office-ai": "2026-08-05T20:44:21.554Z",
-    "industry-ai-publications": "2026-08-05T20:44:21.554Z",
-    "industry-ministers-media": "2026-08-05T20:44:21.554Z",
-    "dta-media": "2026-08-05T20:44:21.554Z",
-    "digital-gov-ai": "2026-08-05T20:44:21.554Z",
-    "disr-news": "2026-08-05T20:44:21.554Z",
+    "pm-media": "2026-08-07T00:47:19.725Z",
+    "pmc-office-ai": "2026-08-07T00:47:19.725Z",
+    "industry-ai-publications": "2026-08-07T00:47:19.725Z",
+    "industry-ministers-media": "2026-08-07T00:47:19.725Z",
+    "dta-media": "2026-08-07T00:47:19.725Z",
+    "digital-gov-ai": "2026-08-07T00:47:19.725Z",
+    "disr-news": "2026-08-07T00:47:19.725Z",
     "naic-news": "2026-08-04T20:52:38.882Z",
     "finance-news": "2026-08-04T20:52:38.882Z",
-    "agd-ministers-media": "2026-08-05T20:44:21.554Z",
-    "cyber-news": "2026-08-05T20:44:21.554Z",
-    "apsc-latest-news": "2026-08-05T20:44:21.554Z",
+    "agd-ministers-media": "2026-08-07T00:47:19.725Z",
+    "cyber-news": "2026-08-07T00:47:19.725Z",
+    "apsc-latest-news": "2026-08-07T00:47:19.725Z",
     "anao-performance-audits": "2026-08-04T20:52:38.882Z",
     "senate-ai-data-centres": "2026-08-04T20:52:38.882Z",
-    "senate-new-inquiries": "2026-08-05T20:44:21.554Z",
-    "senate-reports": "2026-08-05T20:44:21.554Z",
+    "senate-new-inquiries": "2026-08-07T00:47:19.725Z",
+    "senate-reports": "2026-08-07T00:47:19.725Z",
     "house-new-inquiries": "2026-07-23T20:36:08.370Z",
     "joint-new-inquiries": "2026-07-29T20:30:22.291Z",
-    "aph-bills-digests": "2026-08-05T20:44:21.554Z",
-    "legislation-whats-new": "2026-08-05T20:44:21.554Z",
+    "aph-bills-digests": "2026-08-07T00:47:19.725Z",
+    "legislation-whats-new": "2026-08-07T00:47:19.725Z",
     "agd-consultations": "2026-08-04T20:52:38.882Z",
     "industry-consultations": "2026-08-04T20:52:38.882Z",
     "treasury-consultations": "2026-08-04T20:52:38.882Z",
     "aemc-media": "2026-08-04T20:52:38.882Z",
-    "acma-media": "2026-08-05T20:44:21.554Z",
+    "acma-media": "2026-08-07T00:47:19.725Z",
     "tga-media": "2026-08-04T20:52:38.882Z",
     "fwc-news": "2026-08-04T20:52:38.882Z",
     "teqsa-news": "2026-08-04T20:52:38.882Z",
     "aec-media": "2026-08-04T20:52:38.882Z",
-    "esafety-media": "2026-08-05T20:44:21.554Z",
-    "ahrc-media": "2026-08-05T20:44:21.554Z",
+    "esafety-media": "2026-08-07T00:47:19.725Z",
+    "ahrc-media": "2026-08-07T00:47:19.725Z",
     "fedcourt-practice-notes": "2026-08-04T20:52:38.882Z",
-    "nsw-media-releases": "2026-08-05T20:44:21.554Z",
+    "nsw-media-releases": "2026-08-07T00:47:19.725Z",
     "ovic-news": "2026-08-04T20:52:38.882Z",
-    "qld-ministerial-statements": "2026-08-05T20:44:21.554Z",
+    "qld-ministerial-statements": "2026-08-07T00:47:19.725Z",
     "tas-dpac-policies": "2026-08-04T20:52:38.882Z",
     "act-ai-policy": "2026-07-20T12:19:40.243Z",
     "nt-ai-assurance": "2026-08-04T20:52:38.882Z",
     "ipa-news": "2026-08-04T20:52:38.882Z",
-    "wa-media-statements": "2026-08-05T20:44:21.554Z",
+    "wa-media-statements": "2026-08-07T00:47:19.725Z",
     "ovic-privacy-resources": "2026-08-05T20:44:21.554Z",
     "ovic-enterprise-generative-ai": "2026-07-23T20:36:08.370Z",
     "ovic-public-generative-ai": "2026-07-23T20:36:08.370Z"
@@ -1114,7 +1159,7 @@
     "pmc-office-ai": {
       "contentHash": "4db862eda78cf3d07a56d47be8a73cd5e283dc189501fe090ad5708d1f55116e",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-08-05T20:44:21.554Z",
+      "lastCheckedAt": "2026-08-07T00:47:19.725Z",
       "changeCount": 0
     },
     "naic-news": {
@@ -1172,11 +1217,11 @@
       "lastChangedAt": "2026-07-29T20:30:22.291Z"
     },
     "qld-ministerial-statements": {
-      "contentHash": "d9a6e6023cfe716f28658262f47906a824dcced4f3d13601191b366923d96ceb",
+      "contentHash": "41902e50b97262c071530db94c8317423d0f3cf8a516349ee4a5b3645c1f257e",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-08-05T20:44:21.554Z",
-      "changeCount": 12,
-      "lastChangedAt": "2026-08-05T20:44:21.554Z"
+      "lastCheckedAt": "2026-08-07T00:47:19.725Z",
+      "changeCount": 13,
+      "lastChangedAt": "2026-08-07T00:47:19.725Z"
     },
     "act-ai-policy": {
       "contentHash": "0040e7ec83db2a7430b63de7cf72e581dcc938a3139b85ec32c40aa15dc5f4a0",
