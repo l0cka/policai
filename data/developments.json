@@ -46,7 +46,8 @@
         "publishedAtPrecision": "day"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Duplicate CAA announcement URL for verified register record sa-courts-genai-guidelines; same instrument, effective 1 January 2026 under the UCR/USSR/JCR. No new register record required."
   },
   {
     "id": "dev-artificial-intelligence-governance-policy-1oub5xk",
@@ -124,7 +125,8 @@
         "publishedAtPrecision": "day"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Official speech, not a policy instrument or discrete policy milestone; the whole-of-government AI agenda it describes is already tracked by existing register records."
   },
   {
     "id": "dev-artificial-intelligence-governance-policy-p86jgk",
@@ -288,7 +290,8 @@
         "publishedAtPrecision": "day"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Media release announcing eSafety research findings; not a policy instrument or discrete policy milestone."
   },
   {
     "id": "dev-driving-better-consumer-outcomes-in-the-era-of-b-14ux582",
@@ -321,7 +324,8 @@
         "publishedAtPrecision": "day"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Historic 2016 ASIC chairman's speech; official commentary, not a policy instrument or discrete policy milestone."
   },
   {
     "id": "dev-ai-a-blueprint-for-better-banking-asic-18rgxv3",
@@ -354,7 +358,8 @@
         "publishedAtPrecision": "day"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "ASIC Chair keynote; official commentary, not a policy instrument or discrete policy milestone."
   },
   {
     "id": "dev-select-committee-on-adopting-artificial-intellig-1e08te2",
@@ -387,7 +392,8 @@
         "publishedAtPrecision": "day"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Opening statement to the Adopting AI select committee; official commentary, not an instrument. The inquiry's report and government response are already verified timeline events."
   },
   {
     "id": "dev-we-re-not-there-yet-current-regulation-around-ai-xf7zzo",
@@ -420,7 +426,8 @@
         "publishedAtPrecision": "day"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "ASIC Chair keynote; official commentary, not a policy instrument or discrete policy milestone."
   },
   {
     "id": "dev-careful-adoption-of-agentic-ai-in-cyber-defence-td6oyd",
@@ -455,7 +462,8 @@
         "publishedAtPrecision": "day"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "ASD news statement on agentic-AI risk; official commentary without an accompanying guidance product. ASD's substantive frontier-AI guidance is already a register record."
   },
   {
     "id": "dev-senate-opens-inquiry-into-artificial-intelligenc-dt0ni8",
@@ -465,26 +473,49 @@
     "sourceName": "Senate inquiry — artificial intelligence and data centres",
     "jurisdiction": "federal",
     "detectedAt": "2026-07-29T20:30:22.291Z",
-    "summary": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+    "summary": "The Senate inquiry covers AI and data-centre regulation, government deals, and community, industry, energy, water and environmental impacts. The official inquiry page now sets submissions to close on 1 September 2026 and the committee to report on 16 November 2026.",
     "relevanceScore": 1,
-    "classification": "heuristic",
+    "classification": "curated",
     "assessment": {
-      "method": "heuristic",
-      "promptVersion": "keyword-rules-v1",
-      "assessedAt": "2026-07-29T20:30:22.291Z"
+      "method": "editorial",
+      "assessedAt": "2026-08-07T07:54:56.063Z",
+      "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
         "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
         "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
-        "retrievedAt": "2026-07-29T20:30:22.291Z",
+        "title": "Artificial intelligence and data centres – Parliament of Australia",
+        "retrievedAt": "2026-08-07T07:54:56.014Z",
         "contentType": "text/html",
-        "contentHash": "bcf198c1fe1372261707f83d745799d395025fd8b92ca20f28e0a5df9feaff97",
-        "title": "Senate opens inquiry into artificial intelligence and data centres"
-      }
+        "contentHash": "97121dd9e867987cdbc700f17da8330a476db63b6189bbd63a9853fda73374c3",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-08-07T07:54:56.014Z",
+          "capturedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-07",
+          "notes": "Captured via self-hosted Firecrawl because the host refuses plain HTTP. Duplicate revision of verified timeline event tl-2026-05-13-senate-ai-data-centres-inquiry; aph.gov.au confirms referred 13 May 2026, submissions close 1 September 2026, reporting 16 November 2026.",
+          "pageContentHash": "01883369a08f9061548dc3b53760b173caf63d50dffd03c2b67f374211cd0d2a",
+          "characterCount": 29886
+        },
+        "reviewedDate": {
+          "date": "2026-05-13",
+          "precision": "day",
+          "reviewedAt": "2026-08-07T07:54:56.063Z",
+          "reviewedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-07",
+          "notes": "Date confirmed against the live official source on 2026-08-07. Duplicate revision of verified timeline event tl-2026-05-13-senate-ai-data-centres-inquiry; aph.gov.au confirms referred 13 May 2026, submissions close 1 September 2026, reporting 16 November 2026."
+        }
+      },
+      "checkedAt": "2026-08-07T07:54:56.063Z",
+      "checkedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-07",
+      "method": "manual",
+      "notes": "Duplicate revision of verified timeline event tl-2026-05-13-senate-ai-data-centres-inquiry; aph.gov.au confirms referred 13 May 2026, submissions close 1 September 2026, reporting 16 November 2026."
     },
-    "status": "detected"
+    "status": "promoted",
+    "relatedTimelineEventId": "tl-2026-05-13-senate-ai-data-centres-inquiry",
+    "publishedAt": "2026-05-13",
+    "publishedAtPrecision": "day"
   },
   {
     "id": "dev-26-092mr-asic-calls-for-urgent-cyber-uplift-as-a-v2vvmh",
@@ -517,7 +548,8 @@
         "publishedAtPrecision": "day"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "ASIC media release urging cyber uplift; not a policy instrument or discrete policy milestone."
   },
   {
     "id": "dev-26-063mr-asic-ramps-up-action-to-protect-consume-14iujxd",
@@ -550,7 +582,8 @@
         "publishedAtPrecision": "day"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "ASIC enforcement-operations media release; not a policy instrument or discrete policy milestone."
   },
   {
     "id": "dev-moneysmart-publishes-tips-on-using-ai-for-financ-rjkukc",
@@ -583,7 +616,8 @@
         "publishedAtPrecision": "day"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Consumer-education news item; not a policy instrument or discrete policy milestone."
   },
   {
     "id": "dev-25-263mr-former-ceo-of-ai-marketing-company-meti-1gdyt66",
@@ -652,7 +686,8 @@
         "publishedAtPrecision": "day"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "eSafety awareness media release; not a policy instrument or discrete policy milestone."
   },
   {
     "id": "dev-nsw-supreme-court-practice-note-sc-gen-23-commen-lk6582",
@@ -662,27 +697,42 @@
     "sourceName": "NSW Supreme Court — practice notes",
     "jurisdiction": "nsw",
     "detectedAt": "2026-07-29T20:30:22.291Z",
-    "summary": "The verified timeline event for \"NSW Supreme Court Practice Note SC Gen 23 commences\" has no stored source fingerprint. The currently served document requires editorial comparison before it can establish a trusted baseline.",
+    "summary": "Restrictions on generative AI use in NSW Supreme Court proceedings take effect (issued 21 November 2024).",
     "relevanceScore": 1,
-    "classification": "heuristic",
+    "classification": "curated",
     "assessment": {
-      "method": "heuristic",
-      "promptVersion": "keyword-rules-v1",
-      "assessedAt": "2026-07-29T20:30:22.291Z"
+      "method": "editorial",
+      "assessedAt": "2026-08-07T07:54:05.074Z",
+      "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
         "url": "https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html",
         "finalUrl": "https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html",
-        "retrievedAt": "2026-07-29T20:30:22.291Z",
+        "retrievedAt": "2026-08-07T07:54:05.044Z",
         "contentType": "text/html",
         "contentHash": "ca5614f3ecc63e3934ed322eee3e9d77e4ce782db3c00e51284e67253bfaf654",
-        "lastModified": "Wed, 29 Jul 2026 09:08:45 GMT",
-        "title": "NSW Supreme Court Practice Note SC Gen 23 commences"
-      }
+        "lastModified": "Fri, 07 Aug 2026 07:52:40 GMT",
+        "title": "Practice notes",
+        "reviewedDate": {
+          "date": "2025-02-03",
+          "precision": "day",
+          "reviewedAt": "2026-08-07T07:54:05.074Z",
+          "reviewedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-07",
+          "notes": "Date confirmed against the live official source on 2026-08-07. Duplicate of verified timeline event tl-2025-02-03-nsw-supreme-court-practice-note-sc-gen-23-commence; the live practice-notes index still lists SC Gen 23 (Use of Generative AI), commenced 3 February 2025."
+        }
+      },
+      "checkedAt": "2026-08-07T07:54:05.074Z",
+      "checkedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-07",
+      "method": "manual",
+      "notes": "Duplicate of verified timeline event tl-2025-02-03-nsw-supreme-court-practice-note-sc-gen-23-commence; the live practice-notes index still lists SC Gen 23 (Use of Generative AI), commenced 3 February 2025."
     },
-    "status": "detected"
+    "status": "promoted",
+    "relatedTimelineEventId": "tl-2025-02-03-nsw-supreme-court-practice-note-sc-gen-23-commence",
+    "publishedAt": "2025-02-03",
+    "publishedAtPrecision": "day",
+    "relatedPolicyId": "nsw-supreme-court-sc-gen-23"
   },
   {
     "id": "dev-administrative-guideline-for-the-safe-and-respon-wo7okk",
