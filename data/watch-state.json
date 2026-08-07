@@ -1098,23 +1098,51 @@
     "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy#policai-change=9a4acb92c2fdf0fb7c57c051d8f2420baeee642753c10586986664a5d77379ac:3": {
       "firstSeenAt": "2026-08-07T03:01:55.185Z",
       "sourceId": "qld-qgea-ai",
-      "status": "processed",
+      "status": "awaiting_review",
       "attempts": 1,
       "lastAttemptAt": "2026-08-07T03:01:55.185Z",
-      "processedAt": "2026-08-07T03:01:55.185Z",
       "candidate": {
         "title": "Artificial intelligence governance policy",
         "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
-        "text": "Artificial intelligence governance policy Subscribe Document type: Policy Version: v1.0.0 Status: CurrentMandated Effective: September 2024–current Security classification: OFFICIAL-Public Category: Artificial intelligence PurposeThis policy ensures that agency strategic planning for artificial intelligence (AI) demonstrates a structured and consistent approach when evaluating AI solutions for transparency, accountability, and risk.Policy statementThe Queensland Government plans the lifecycle of AI investments using structured and consistent methods to support agency, cross-agency, government,",
+        "text": "The official source content for \"Artificial intelligence governance policy\" changed. Editorial re-verification is required before the register record can be treated as current.",
         "changeFingerprint": "9a4acb92c2fdf0fb7c57c051d8f2420baeee642753c10586986664a5d77379ac:3"
+      }
+    },
+    "https://www.courts.sa.gov.au/2025/12/24/guidelines-concerning-the-use-of-generative-artificial-intelligence-in-litigation-in-south-australian-courts": {
+      "firstSeenAt": "2026-08-07T04:32:08.175Z",
+      "sourceId": "sa-courts-news",
+      "status": "processed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-08-07T04:32:08.175Z",
+      "processedAt": "2026-08-07T04:32:08.175Z",
+      "candidate": {
+        "url": "https://www.courts.sa.gov.au/2025/12/24/guidelines-concerning-the-use-of-generative-artificial-intelligence-in-litigation-in-south-australian-courts",
+        "title": "Guidelines concerning the use of Generative artificial intelligence in litigation in South Australian Courts - CAA",
+        "text": "[Document 1: Guidelines concerning the use of Generative artificial intelligence in litigation in South Australian Courts - CAA]\nGuidelines concerning the use of Generative artificial intelligence in litigation in South Australian CourtsThese guidelines apply to and in respect of steps taken in proceedings in the Supreme Court, District Court, Magistrates Court, Youth Court, Environment, Resources and Development Court and Court of Disputed Returns governed by the Uniform Civil Rules 2020 (SA) (UCRs), Uniform Special Statutory Rules 2022 (SA) (USSRs) and the Joint Criminal Rules 2022 (SA) (JCR",
+        "dateHint": "2025-12-23",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://statements.qld.gov.au/#policai-change=6e3b3e45b0afd0db139e434c07f3ea3b1591bd78792a6ab061b7573ff7cda827:14": {
+      "firstSeenAt": "2026-08-07T04:32:08.175Z",
+      "sourceId": "qld-ministerial-statements",
+      "status": "dismissed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-08-07T04:32:08.175Z",
+      "processedAt": "2026-08-07T04:32:08.175Z",
+      "candidate": {
+        "title": "Media Statements",
+        "url": "https://statements.qld.gov.au/",
+        "text": "Latest Search Today at 02:00 PM Flooding triggers disaster assistance for Quilpie Shire Crucial disaster assistance has been activated for... Today at 02:00 PM Doors Opening: First Tram Departs Burleigh From 6am on Sunday morning, the first passengers w... Today at 01:30 PM Fallen miners to be honoured with new memorial in Mount Isa Mount Isa will be home to a special miner’s memori... Today at 01:00 PM Bag the fun, dodge the risks this Ekka The Crisafulli Government is keeping the focus on ... Today at 12:30 PM Director-General appointed to lead State Development as QCS Commissioner retires T",
+        "changeFingerprint": "6e3b3e45b0afd0db139e434c07f3ea3b1591bd78792a6ab061b7573ff7cda827:14"
       }
     }
   },
   "lastCheckedBySource": {
-    "apra-rss": "2026-08-07T03:01:55.185Z",
+    "apra-rss": "2026-08-07T04:32:08.175Z",
     "csiro-news": "2026-08-04T20:52:38.882Z",
-    "oaic-media": "2026-08-07T03:01:55.185Z",
-    "accc-rss": "2026-08-07T03:01:55.185Z",
+    "oaic-media": "2026-08-07T04:32:08.175Z",
+    "accc-rss": "2026-08-07T04:32:08.175Z",
     "asic-newsroom": "2026-08-04T20:52:38.882Z",
     "pc-media": "2026-08-04T20:52:38.882Z",
     "nsw-sc-practice-notes": "2026-07-29T20:30:22.291Z",
@@ -1126,55 +1154,61 @@
     "sa-office-for-ai": "2026-07-18T20:12:16.563Z",
     "treasury-publications": "2026-08-04T20:52:38.882Z",
     "qld-courts-news": "2026-08-04T20:52:38.882Z",
-    "pm-media": "2026-08-07T03:01:55.185Z",
-    "pmc-office-ai": "2026-08-07T03:01:55.185Z",
-    "industry-ai-publications": "2026-08-07T03:01:55.185Z",
-    "industry-ministers-media": "2026-08-07T03:01:55.185Z",
-    "dta-media": "2026-08-07T03:01:55.185Z",
-    "digital-gov-ai": "2026-08-07T03:01:55.185Z",
-    "disr-news": "2026-08-07T03:01:55.185Z",
+    "pm-media": "2026-08-07T04:32:08.175Z",
+    "pmc-office-ai": "2026-08-07T04:32:08.175Z",
+    "industry-ai-publications": "2026-08-07T04:32:08.175Z",
+    "industry-ministers-media": "2026-08-07T04:32:08.175Z",
+    "dta-media": "2026-08-07T04:32:08.175Z",
+    "digital-gov-ai": "2026-08-07T04:32:08.175Z",
+    "disr-news": "2026-08-07T04:32:08.175Z",
     "naic-news": "2026-08-04T20:52:38.882Z",
     "finance-news": "2026-08-04T20:52:38.882Z",
-    "agd-ministers-media": "2026-08-07T03:01:55.185Z",
-    "cyber-news": "2026-08-07T03:01:55.185Z",
-    "apsc-latest-news": "2026-08-07T03:01:55.185Z",
+    "agd-ministers-media": "2026-08-07T04:32:08.175Z",
+    "cyber-news": "2026-08-07T04:32:08.175Z",
+    "apsc-latest-news": "2026-08-07T04:32:08.175Z",
     "anao-performance-audits": "2026-08-04T20:52:38.882Z",
     "senate-ai-data-centres": "2026-08-04T20:52:38.882Z",
-    "senate-new-inquiries": "2026-08-07T03:01:55.185Z",
-    "senate-reports": "2026-08-07T03:01:55.185Z",
-    "house-new-inquiries": "2026-07-23T20:36:08.370Z",
-    "joint-new-inquiries": "2026-07-29T20:30:22.291Z",
-    "aph-bills-digests": "2026-08-07T03:01:55.185Z",
-    "legislation-whats-new": "2026-08-07T03:01:55.185Z",
+    "senate-new-inquiries": "2026-08-07T04:32:08.175Z",
+    "senate-reports": "2026-08-07T04:32:08.175Z",
+    "house-new-inquiries": "2026-08-07T04:32:08.175Z",
+    "joint-new-inquiries": "2026-08-07T04:32:08.175Z",
+    "aph-bills-digests": "2026-08-07T04:32:08.175Z",
+    "legislation-whats-new": "2026-08-07T04:32:08.175Z",
     "agd-consultations": "2026-08-04T20:52:38.882Z",
     "industry-consultations": "2026-08-04T20:52:38.882Z",
     "treasury-consultations": "2026-08-04T20:52:38.882Z",
     "aemc-media": "2026-08-04T20:52:38.882Z",
-    "acma-media": "2026-08-07T03:01:55.185Z",
+    "acma-media": "2026-08-07T04:32:08.175Z",
     "tga-media": "2026-08-04T20:52:38.882Z",
     "fwc-news": "2026-08-04T20:52:38.882Z",
     "teqsa-news": "2026-08-04T20:52:38.882Z",
     "aec-media": "2026-08-04T20:52:38.882Z",
-    "esafety-media": "2026-08-07T03:01:55.185Z",
-    "ahrc-media": "2026-08-07T03:01:55.185Z",
+    "esafety-media": "2026-08-07T04:32:08.175Z",
+    "ahrc-media": "2026-08-07T04:32:08.175Z",
     "fedcourt-practice-notes": "2026-08-04T20:52:38.882Z",
-    "nsw-media-releases": "2026-08-07T03:01:55.185Z",
+    "nsw-media-releases": "2026-08-07T04:32:08.175Z",
     "ovic-news": "2026-08-04T20:52:38.882Z",
-    "qld-ministerial-statements": "2026-08-07T00:47:19.725Z",
+    "qld-ministerial-statements": "2026-08-07T04:32:08.175Z",
     "tas-dpac-policies": "2026-08-04T20:52:38.882Z",
     "act-ai-policy": "2026-07-20T12:19:40.243Z",
     "nt-ai-assurance": "2026-08-04T20:52:38.882Z",
     "ipa-news": "2026-08-04T20:52:38.882Z",
-    "wa-media-statements": "2026-08-07T03:01:55.185Z",
+    "wa-media-statements": "2026-08-07T04:32:08.175Z",
     "ovic-privacy-resources": "2026-08-05T20:44:21.554Z",
     "ovic-enterprise-generative-ai": "2026-07-23T20:36:08.370Z",
-    "ovic-public-generative-ai": "2026-07-23T20:36:08.370Z"
+    "ovic-public-generative-ai": "2026-07-23T20:36:08.370Z",
+    "art-practice-directions": "2026-08-07T04:32:08.175Z",
+    "wa-sc-practice-directions": "2026-08-07T04:32:08.175Z",
+    "sa-courts-news": "2026-08-07T04:32:08.175Z",
+    "act-sc-practice-directions": "2026-08-07T04:32:08.175Z",
+    "tas-sc-practice-directions": "2026-08-07T04:32:08.175Z",
+    "nt-sc-practice-directions": "2026-08-07T04:32:08.175Z"
   },
   "sourceSnapshots": {
     "pmc-office-ai": {
       "contentHash": "4db862eda78cf3d07a56d47be8a73cd5e283dc189501fe090ad5708d1f55116e",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-08-07T03:01:55.185Z",
+      "lastCheckedAt": "2026-08-07T04:32:08.175Z",
       "changeCount": 0
     },
     "naic-news": {
@@ -1232,11 +1266,11 @@
       "lastChangedAt": "2026-07-29T20:30:22.291Z"
     },
     "qld-ministerial-statements": {
-      "contentHash": "41902e50b97262c071530db94c8317423d0f3cf8a516349ee4a5b3645c1f257e",
+      "contentHash": "6e3b3e45b0afd0db139e434c07f3ea3b1591bd78792a6ab061b7573ff7cda827",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-08-07T00:47:19.725Z",
-      "changeCount": 13,
-      "lastChangedAt": "2026-08-07T00:47:19.725Z"
+      "lastCheckedAt": "2026-08-07T04:32:08.175Z",
+      "changeCount": 14,
+      "lastChangedAt": "2026-08-07T04:32:08.175Z"
     },
     "act-ai-policy": {
       "contentHash": "0040e7ec83db2a7430b63de7cf72e581dcc938a3139b85ec32c40aa15dc5f4a0",
@@ -1319,6 +1353,48 @@
       "lastCheckedAt": "2026-07-29T20:30:22.291Z",
       "lastChangedAt": "2026-07-29T20:30:22.291Z",
       "changeCount": 1
+    },
+    "house-new-inquiries": {
+      "contentHash": "d2c0cb6c28bee89d19e8c5b8153bbed1305ff717cad53a8815e7b464061db833",
+      "firstCheckedAt": "2026-08-07T04:32:08.175Z",
+      "lastCheckedAt": "2026-08-07T04:32:08.175Z",
+      "changeCount": 0
+    },
+    "joint-new-inquiries": {
+      "contentHash": "33807cbc15207358fdc76b4aebde25e635e4bf6926cfc31a84a174c1864b5c5f",
+      "firstCheckedAt": "2026-08-07T04:32:08.175Z",
+      "lastCheckedAt": "2026-08-07T04:32:08.175Z",
+      "changeCount": 0
+    },
+    "art-practice-directions": {
+      "contentHash": "f766c03dc6d5761b7e6c9ef2bdf9d034892b00a13b64f0124b947f4a7145809b",
+      "firstCheckedAt": "2026-08-07T04:32:08.175Z",
+      "lastCheckedAt": "2026-08-07T04:32:08.175Z",
+      "changeCount": 0
+    },
+    "wa-sc-practice-directions": {
+      "contentHash": "b3f2373a39017ea0c90bc34835feb374134fbd7181b88a6335c1d7587273fe62",
+      "firstCheckedAt": "2026-08-07T04:32:08.175Z",
+      "lastCheckedAt": "2026-08-07T04:32:08.175Z",
+      "changeCount": 0
+    },
+    "act-sc-practice-directions": {
+      "contentHash": "0159d852b7cdc19c91e4ace6e9715c95cf5d273993582529d87d88f1e8fd1c11",
+      "firstCheckedAt": "2026-08-07T04:32:08.175Z",
+      "lastCheckedAt": "2026-08-07T04:32:08.175Z",
+      "changeCount": 0
+    },
+    "tas-sc-practice-directions": {
+      "contentHash": "58f372398ba3b2322f9cf9f688ecca3796c8e375f93c4aeacad4b8e6f93f5bb6",
+      "firstCheckedAt": "2026-08-07T04:32:08.175Z",
+      "lastCheckedAt": "2026-08-07T04:32:08.175Z",
+      "changeCount": 0
+    },
+    "nt-sc-practice-directions": {
+      "contentHash": "497249fa465cbc6ed809cb779a3d74e106fd800ad6d27b405387afa875aa8a35",
+      "firstCheckedAt": "2026-08-07T04:32:08.175Z",
+      "lastCheckedAt": "2026-08-07T04:32:08.175Z",
+      "changeCount": 0
     }
   }
 }

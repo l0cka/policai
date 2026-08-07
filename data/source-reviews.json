@@ -1,5 +1,150 @@
 [
   {
+    "id": "source-review-dev-guidelines-concerning-the-use-of-generative-arti-1qa7cww",
+    "sourceUrl": "https://www.courts.sa.gov.au/2025/12/24/guidelines-concerning-the-use-of-generative-artificial-intelligence-in-litigation-in-south-australian-courts",
+    "title": "Guidelines concerning the use of Generative artificial intelligence in litigation in South Australian Courts - CAA",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-08-07T04:32:08.175Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from SA Courts Administration Authority — news (score 0.65, ai).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.65,
+      "suggestedType": "guideline",
+      "suggestedJurisdiction": "sa",
+      "summary": "South Australian courts issued guidelines on generative AI use in litigation, applying to proceedings in the Supreme, District, Magistrates, Youth, and ERD Courts under the Uniform Civil Rules 2020.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.courts.sa.gov.au/2025/12/24/guidelines-concerning-the-use-of-generative-artificial-intelligence-in-litigation-in-south-australian-courts",
+      "finalUrl": "https://www.courts.sa.gov.au/2025/12/24/guidelines-concerning-the-use-of-generative-artificial-intelligence-in-litigation-in-south-australian-courts",
+      "retrievedAt": "2026-08-07T04:32:08.175Z",
+      "contentType": "text/html",
+      "contentHash": "c6791ccee119cf67426b62642c41a82af78ee6607915b345b1e539dbb2fc6dcb",
+      "linkedDocuments": [
+        {
+          "url": "https://www.courts.sa.gov.au/download/generative-ai-guidelines-and-information-sheet-for-self-represented-litigants?filename=Gen+AI+Information+Sheet+for+Self-Represented+Litigants.pdf&ind=1766530873177&refresh=6a75601f6d1971786077215&wpdmdl=25796",
+          "finalUrl": "https://www.courts.sa.gov.au/download/generative-ai-guidelines-and-information-sheet-for-self-represented-litigants?filename=Gen+AI+Information+Sheet+for+Self-Represented+Litigants.pdf&ind=1766530873177&refresh=6a75601f6d1971786077215&wpdmdl=25796",
+          "retrievedAt": "2026-08-07T04:32:08.175Z",
+          "contentType": "application/pdf",
+          "contentHash": "974fa5eef71ab195d51c387b5db6776f20b7843e6bfb35390940ed2e724bcaf3"
+        },
+        {
+          "url": "https://www.courts.sa.gov.au/download/generative-ai-guidelines-and-information-sheet-for-self-represented-litigants?filename=Generative+AI+Guidelines.pdf&ind=1766530847811&refresh=6a75601f6d1461786077215&wpdmdl=25796",
+          "finalUrl": "https://www.courts.sa.gov.au/download/generative-ai-guidelines-and-information-sheet-for-self-represented-litigants?filename=Generative+AI+Guidelines.pdf&ind=1766530847811&refresh=6a75601f6d1461786077215&wpdmdl=25796",
+          "retrievedAt": "2026-08-07T04:32:08.175Z",
+          "contentType": "application/pdf",
+          "contentHash": "3bae44872330ebb1ae8d19bb901c00b748188e98bf3a8636e9914e8ae7ab4204"
+        }
+      ],
+      "title": "Guidelines concerning the use of Generative artificial intelligence in litigation in South Australian Courts - CAA",
+      "publishedAt": "2025-12-23",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "guidelines-concerning-the-use-of-generative-artificial-intel",
+      "title": "Guidelines concerning the use of Generative artificial intelligence in litigation in South Australian Courts - CAA",
+      "description": "South Australian courts issued guidelines on generative AI use in litigation, applying to proceedings in the Supreme, District, Magistrates, Youth, and ERD Courts under the Uniform Civil Rules 2020.",
+      "jurisdiction": "sa",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2025-12-23",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2025-12-23",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.courts.sa.gov.au/2025/12/24/guidelines-concerning-the-use-of-generative-artificial-intelligence-in-litigation-in-south-australian-courts",
+            "finalUrl": "https://www.courts.sa.gov.au/2025/12/24/guidelines-concerning-the-use-of-generative-artificial-intelligence-in-litigation-in-south-australian-courts",
+            "retrievedAt": "2026-08-07T04:32:08.175Z",
+            "contentType": "text/html",
+            "contentHash": "c6791ccee119cf67426b62642c41a82af78ee6607915b345b1e539dbb2fc6dcb",
+            "linkedDocuments": [
+              {
+                "url": "https://www.courts.sa.gov.au/download/generative-ai-guidelines-and-information-sheet-for-self-represented-litigants?filename=Gen+AI+Information+Sheet+for+Self-Represented+Litigants.pdf&ind=1766530873177&refresh=6a75601f6d1971786077215&wpdmdl=25796",
+                "finalUrl": "https://www.courts.sa.gov.au/download/generative-ai-guidelines-and-information-sheet-for-self-represented-litigants?filename=Gen+AI+Information+Sheet+for+Self-Represented+Litigants.pdf&ind=1766530873177&refresh=6a75601f6d1971786077215&wpdmdl=25796",
+                "retrievedAt": "2026-08-07T04:32:08.175Z",
+                "contentType": "application/pdf",
+                "contentHash": "974fa5eef71ab195d51c387b5db6776f20b7843e6bfb35390940ed2e724bcaf3"
+              },
+              {
+                "url": "https://www.courts.sa.gov.au/download/generative-ai-guidelines-and-information-sheet-for-self-represented-litigants?filename=Generative+AI+Guidelines.pdf&ind=1766530847811&refresh=6a75601f6d1461786077215&wpdmdl=25796",
+                "finalUrl": "https://www.courts.sa.gov.au/download/generative-ai-guidelines-and-information-sheet-for-self-represented-litigants?filename=Generative+AI+Guidelines.pdf&ind=1766530847811&refresh=6a75601f6d1461786077215&wpdmdl=25796",
+                "retrievedAt": "2026-08-07T04:32:08.175Z",
+                "contentType": "application/pdf",
+                "contentHash": "3bae44872330ebb1ae8d19bb901c00b748188e98bf3a8636e9914e8ae7ab4204"
+              }
+            ],
+            "title": "Guidelines concerning the use of Generative artificial intelligence in litigation in South Australian Courts - CAA",
+            "publishedAt": "2025-12-23",
+            "publishedAtPrecision": "day"
+          }
+        }
+      ],
+      "agencies": [],
+      "sourceUrl": "https://www.courts.sa.gov.au/2025/12/24/guidelines-concerning-the-use-of-generative-artificial-intelligence-in-litigation-in-south-australian-courts",
+      "content": "[Document 1: Guidelines concerning the use of Generative artificial intelligence in litigation in South Australian Courts - CAA]\nGuidelines concerning the use of Generative artificial intelligence in litigation in South Australian CourtsThese guidelines apply to and in respect of steps taken in proceedings in the Supreme Court, District Court, Magistrates Court, Youth Court, Environment, Resources and Development Court and Court of Disputed Returns governed by the Uniform Civil Rules 2020 (SA) (UCRs), Uniform Special Statutory Rules 2022 (SA) (USSRs) and the Joint Criminal Rules 2022 (SA) (JCR",
+      "aiSummary": "South Australian courts issued guidelines on generative AI use in litigation, applying to proceedings in the Supreme, District, Magistrates, Youth, and ERD Courts under the Uniform Civil Rules 2020.",
+      "tags": [],
+      "createdAt": "2026-08-07T04:32:08.175Z",
+      "updatedAt": "2026-08-07T04:32:08.175Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-guidelines-concerning-the-use-of-generative-arti-1qa7cww",
+      "title": "Guidelines concerning the use of Generative artificial intelligence in litigation in South Australian Courts - CAA",
+      "url": "https://www.courts.sa.gov.au/2025/12/24/guidelines-concerning-the-use-of-generative-artificial-intelligence-in-litigation-in-south-australian-courts",
+      "sourceId": "sa-courts-news",
+      "sourceName": "SA Courts Administration Authority — news",
+      "jurisdiction": "sa",
+      "publishedAt": "2025-12-23",
+      "publishedAtPrecision": "day",
+      "detectedAt": "2026-08-07T04:32:08.175Z",
+      "summary": "South Australian courts issued guidelines on generative AI use in litigation, applying to proceedings in the Supreme, District, Magistrates, Youth, and ERD Courts under the Uniform Civil Rules 2020.",
+      "relevanceScore": 0.65,
+      "classification": "ai",
+      "assessment": {
+        "method": "ai",
+        "promptVersion": "claude-classify-v1",
+        "assessedAt": "2026-08-07T04:32:08.175Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.courts.sa.gov.au/2025/12/24/guidelines-concerning-the-use-of-generative-artificial-intelligence-in-litigation-in-south-australian-courts",
+          "finalUrl": "https://www.courts.sa.gov.au/2025/12/24/guidelines-concerning-the-use-of-generative-artificial-intelligence-in-litigation-in-south-australian-courts",
+          "retrievedAt": "2026-08-07T04:32:08.175Z",
+          "contentType": "text/html",
+          "contentHash": "c6791ccee119cf67426b62642c41a82af78ee6607915b345b1e539dbb2fc6dcb",
+          "linkedDocuments": [
+            {
+              "url": "https://www.courts.sa.gov.au/download/generative-ai-guidelines-and-information-sheet-for-self-represented-litigants?filename=Gen+AI+Information+Sheet+for+Self-Represented+Litigants.pdf&ind=1766530873177&refresh=6a75601f6d1971786077215&wpdmdl=25796",
+              "finalUrl": "https://www.courts.sa.gov.au/download/generative-ai-guidelines-and-information-sheet-for-self-represented-litigants?filename=Gen+AI+Information+Sheet+for+Self-Represented+Litigants.pdf&ind=1766530873177&refresh=6a75601f6d1971786077215&wpdmdl=25796",
+              "retrievedAt": "2026-08-07T04:32:08.175Z",
+              "contentType": "application/pdf",
+              "contentHash": "974fa5eef71ab195d51c387b5db6776f20b7843e6bfb35390940ed2e724bcaf3"
+            },
+            {
+              "url": "https://www.courts.sa.gov.au/download/generative-ai-guidelines-and-information-sheet-for-self-represented-litigants?filename=Generative+AI+Guidelines.pdf&ind=1766530847811&refresh=6a75601f6d1461786077215&wpdmdl=25796",
+              "finalUrl": "https://www.courts.sa.gov.au/download/generative-ai-guidelines-and-information-sheet-for-self-represented-litigants?filename=Generative+AI+Guidelines.pdf&ind=1766530847811&refresh=6a75601f6d1461786077215&wpdmdl=25796",
+              "retrievedAt": "2026-08-07T04:32:08.175Z",
+              "contentType": "application/pdf",
+              "contentHash": "3bae44872330ebb1ae8d19bb901c00b748188e98bf3a8636e9914e8ae7ab4204"
+            }
+          ],
+          "title": "Guidelines concerning the use of Generative artificial intelligence in litigation in South Australian Courts - CAA",
+          "publishedAt": "2025-12-23",
+          "publishedAtPrecision": "day"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-08-07T04:32:08.175Z"
+  },
+  {
     "id": "source-review-dev-artificial-intelligence-governance-policy-1oub5xk",
     "sourceUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
     "title": "Artificial intelligence governance policy",
