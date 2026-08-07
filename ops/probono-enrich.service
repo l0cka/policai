@@ -1,0 +1,8 @@
+[Unit]
+Description=Pro Bono Radar enrichment pass (Claude Code, Haiku)
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/l0cka/services/probono-radar/src
+ExecStart=/home/l0cka/services/probono-radar/src/ops/enrich.sh
+TimeoutStartSec=3600
