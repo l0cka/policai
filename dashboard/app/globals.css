@@ -48,7 +48,7 @@ body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.55 var(
 .site-header nav a:hover { color: var(--ink); background: color-mix(in srgb, var(--line) 45%, transparent); }
 .site-header nav a.active { color: var(--accent); font-weight: 600; }
 main a { color: var(--accent); }
-main { max-width: 780px; margin: 0 auto; padding: 18px 22px 60px; }
+main { max-width: clamp(680px, 72vw, 1080px); margin: 0 auto; padding: 18px 22px 60px; }
 
 /* briefing bar */
 .briefing {
@@ -95,7 +95,7 @@ main { max-width: 780px; margin: 0 auto; padding: 18px 22px 60px; }
 
 /* feed cards */
 .item {
-  background: var(--card); border: 1px solid var(--line); border-left: 3px solid var(--stream, var(--line));
+  background: var(--card); border: 1px solid var(--line);
   border-radius: 8px; padding: 14px 18px; margin-bottom: 12px; box-shadow: var(--shadow);
   transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
   animation: rise 0.35s ease both; animation-delay: calc(min(var(--n, 0), 10) * 30ms);
@@ -164,7 +164,7 @@ tbody tr:hover { background: color-mix(in srgb, var(--line) 30%, transparent); }
 
 /* deadline teaser strip on the feed */
 .deadline-teaser {
-  background: var(--card); border: 1px solid var(--line); border-left: 3px solid var(--due-near);
+  background: var(--card); border: 1px solid var(--line);
   border-radius: 8px; padding: 9px 18px; margin-bottom: 18px; box-shadow: var(--shadow);
   font-family: var(--sans); font-size: 13px;
   display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: baseline;
