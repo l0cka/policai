@@ -80,7 +80,7 @@ function CopyLinkButton() {
         setCopied(true);
         window.setTimeout(() => setCopied(false), 1800);
       }}
-      className="inline-flex min-h-11 items-center gap-2 px-3 text-sm font-medium hover:text-primary"
+      className="inline-flex min-h-11 items-center gap-2 rounded-md px-3 text-sm font-medium hover:text-primary"
     >
       {copied ? <Check className="h-4 w-4 text-[var(--trust)]" /> : <Link2 className="h-4 w-4" />}
       {copied ? 'Copied' : 'Copy link'}
@@ -126,7 +126,7 @@ export function PolicyDetailTabs({
 
       <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_23rem]">
         <div className="min-w-0">
-          <div className="flex flex-wrap items-center gap-3 font-mono text-[10px] uppercase tracking-[0.12em]">
+          <div className="flex flex-wrap items-center gap-3 font-mono text-[11px] uppercase tracking-[0.12em]">
             <span
               className="inline-flex items-center gap-1.5"
               style={{ color: jurisdictionAccent(policy.jurisdiction) }}
@@ -153,14 +153,14 @@ export function PolicyDetailTabs({
                 href={policy.sourceUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-11 items-center gap-2 bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+                className="inline-flex min-h-11 items-center gap-2 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
               >
                 <ExternalLink className="h-4 w-4" />
                 View official source
               </a>
             ) : null}
             <CopyLinkButton />
-            <button type="button" onClick={downloadPolicy} className="inline-flex min-h-11 items-center gap-2 px-3 text-sm font-medium hover:text-primary">
+            <button type="button" onClick={downloadPolicy} className="inline-flex min-h-11 items-center gap-2 rounded-md px-3 text-sm font-medium hover:text-primary">
               <Download className="h-4 w-4" />
               Download data
             </button>
@@ -197,9 +197,9 @@ export function PolicyDetailTabs({
                       <Info className="h-4 w-4" />
                     </span>
                     <div>
-                      <h3 className="font-semibold">What this means</h3>
+                      <h2 className="section-title">What this means</h2>
                       <p className="mt-1 text-sm leading-6 text-muted-foreground">{policy.aiSummary}</p>
-                      <p className="mt-2 font-mono text-[9px] uppercase tracking-[0.1em] text-muted-foreground">Machine-assisted editorial summary</p>
+                      <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.1em] text-muted-foreground">Machine-assisted editorial summary</p>
                     </div>
                   </div>
                 </div>
@@ -231,7 +231,7 @@ export function PolicyDetailTabs({
                     {policy.dates.slice(0, 4).map((date, index) => (
                       <li key={`${date.type}-${String(date.date)}`} className="relative pl-5">
                         <span className={cn('absolute left-0 top-1.5 h-2.5 w-2.5 rounded-full', index === 0 ? 'bg-primary ring-4 ring-primary/15' : 'bg-input')} />
-                        <p className="font-mono text-[9px] uppercase text-muted-foreground">{formatPolicyDate(date, { short: true })}</p>
+                        <p className="font-mono text-[11px] font-medium uppercase text-muted-foreground">{formatPolicyDate(date, { short: true })}</p>
                         <p className="mt-1 text-xs font-semibold">{getPolicyDateTypeName(date.type)}</p>
                       </li>
                     ))}
@@ -298,8 +298,8 @@ export function PolicyDetailTabs({
             </p>
             <dl className="mt-4 space-y-3 text-sm">
               {sourceHost ? <div className="grid grid-cols-[6.5rem_1fr] gap-3"><dt className="text-muted-foreground">Official source</dt><dd>{sourceHost}</dd></div> : null}
-              {policy.verification.checkedAt ? <div className="grid grid-cols-[6.5rem_1fr] gap-3"><dt className="text-muted-foreground">Checked</dt><dd className="font-mono text-[10px] uppercase">{humanDate(policy.verification.checkedAt)}</dd></div> : null}
-              {policy.verification.source.retrievedAt ? <div className="grid grid-cols-[6.5rem_1fr] gap-3"><dt className="text-muted-foreground">Retrieved</dt><dd className="font-mono text-[10px] uppercase">{humanDate(policy.verification.source.retrievedAt)}</dd></div> : null}
+              {policy.verification.checkedAt ? <div className="grid grid-cols-[6.5rem_1fr] gap-3"><dt className="text-muted-foreground">Checked</dt><dd className="font-mono text-[11px] font-medium uppercase">{humanDate(policy.verification.checkedAt)}</dd></div> : null}
+              {policy.verification.source.retrievedAt ? <div className="grid grid-cols-[6.5rem_1fr] gap-3"><dt className="text-muted-foreground">Retrieved</dt><dd className="font-mono text-[11px] font-medium uppercase">{humanDate(policy.verification.source.retrievedAt)}</dd></div> : null}
             </dl>
             <div className="mt-5 flex gap-3 border border-[var(--trust)]/35 bg-[var(--status-active-bg)]/25 p-4 text-sm italic leading-5 text-[var(--trust)]">
               <ShieldCheck className="h-5 w-5 shrink-0" />
@@ -328,7 +328,7 @@ function RelatedPolicies({ policies }: { policies: Policy[] }) {
         <Link key={related.id} href={`/policies/${related.id}`} className="group flex min-h-24 items-center justify-between border border-border bg-card/35 p-4 transition-colors hover:border-primary">
           <span>
             <span className="block text-sm font-semibold group-hover:text-primary">{related.title}</span>
-            <span className="mt-2 block font-mono text-[9px] uppercase text-muted-foreground">{getJurisdictionName(related.jurisdiction)} · {getPolicyTypeName(related.type)}</span>
+            <span className="mt-2 block font-mono text-[11px] uppercase text-muted-foreground">{getJurisdictionName(related.jurisdiction)} · {getPolicyTypeName(related.type)}</span>
           </span>
           <ArrowRight className="h-4 w-4 shrink-0 text-primary" />
         </Link>

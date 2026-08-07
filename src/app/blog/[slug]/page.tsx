@@ -41,7 +41,7 @@ export default async function BlogPostPage({
 
   return (
     <div className="container mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
-      <nav className="mb-6 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+      <nav aria-label="Breadcrumb" className="mb-6 font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
         <Link href="/blog" className="hover:text-primary">Blog</Link>
         <span className="mx-2">/</span>
         <span className="text-foreground">Post</span>
@@ -49,7 +49,7 @@ export default async function BlogPostPage({
 
       <header className="mb-9 border-b border-border pb-7">
         <h1 className="article-title">{post.title}</h1>
-        <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+        <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
           {format(new Date(post.date), 'dd MMMM yyyy')}
         </p>
       </header>

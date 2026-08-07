@@ -52,7 +52,7 @@ export default async function FrameworkPage() {
           href={frameworkData.sourceUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex min-h-11 items-center gap-2 bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+          className="inline-flex min-h-11 items-center gap-2 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
         >
           <ExternalLink className="h-4 w-4" />
           View official source

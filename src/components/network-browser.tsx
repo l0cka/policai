@@ -443,7 +443,7 @@ export function NetworkBrowser({
 										aria-pressed={effectiveSelectedNodeId === node.id}
 									>
 										<span className="text-sm font-medium">{node.title}</span>
-										<span className="font-mono text-[10px] text-muted-foreground">
+										<span className="font-mono text-[11px] font-medium text-muted-foreground">
 											{getJurisdictionName(node.jurisdiction)} ·{" "}
 											{node.thematicDegree} thematic · {node.formalDegree} formal
 										</span>

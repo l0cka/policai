@@ -229,12 +229,12 @@ export function AgenciesBrowser({ agencies }: { agencies: Agency[] }) {
             placeholder="Search agencies"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="h-11 w-full border border-input bg-background pl-10 pr-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/15"
+            className="h-11 w-full rounded-md border border-input bg-background pl-10 pr-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
           />
         </label>
 
         <Select value={statementFilter} onValueChange={setStatementFilter}>
-          <SelectTrigger className="h-11 w-full text-sm">
+          <SelectTrigger aria-label="Filter agencies by statement status" className="!h-11 w-full text-sm">
             <SelectValue placeholder="Filter" />
           </SelectTrigger>
           <SelectContent>
@@ -247,7 +247,7 @@ export function AgenciesBrowser({ agencies }: { agencies: Agency[] }) {
       </aside>
 
       {/* Main area */}
-      <main className="min-w-0 flex-1 py-6 md:pl-8">
+      <div className="min-w-0 flex-1 py-6 md:pl-8">
         {filteredAgencies.length === 0 ? (
           <div className="border-y border-border py-14 text-center">
             <p className="section-title">No agencies match those filters</p>
@@ -278,10 +278,10 @@ export function AgenciesBrowser({ agencies }: { agencies: Agency[] }) {
                 </colgroup>
                 <thead>
                   <tr className="border-y border-[var(--rule-heavy)]">
-                    <th className="py-2 pr-4 pl-3 text-left font-mono text-[10px] uppercase tracking-[0.1em]">Agency</th>
-                    <th className="py-2 pr-4 text-left font-mono text-[10px] uppercase tracking-[0.1em]">Acronym</th>
-                    <th className="py-2 pr-4 text-left font-mono text-[10px] uppercase tracking-[0.1em]">Jurisdiction</th>
-                    <th className="py-2 text-left font-mono text-[10px] uppercase tracking-[0.1em]">Statement</th>
+                    <th className="py-2 pr-4 pl-3 text-left font-mono text-[11px] uppercase tracking-[0.1em]">Agency</th>
+                    <th className="py-2 pr-4 text-left font-mono text-[11px] uppercase tracking-[0.1em]">Acronym</th>
+                    <th className="py-2 pr-4 text-left font-mono text-[11px] uppercase tracking-[0.1em]">Jurisdiction</th>
+                    <th className="py-2 text-left font-mono text-[11px] uppercase tracking-[0.1em]">Statement</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -333,7 +333,7 @@ export function AgenciesBrowser({ agencies }: { agencies: Agency[] }) {
             </div>
           </>
         )}
-      </main>
+      </div>
       </div>
     </div>
   );

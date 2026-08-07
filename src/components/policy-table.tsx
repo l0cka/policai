@@ -114,7 +114,7 @@ function PolicyCard({ policy, compact = false }: { policy: Policy; compact?: boo
       </p>
       <div className="mt-3 grid grid-cols-[auto_1fr] items-center gap-3 border-t border-border pt-3 sm:grid-cols-[auto_auto_1fr_auto]">
         <StatusPill status={policy.status} />
-        <span className="font-mono text-[10px] uppercase leading-4 text-muted-foreground">
+        <span className="font-mono text-[11px] font-medium uppercase leading-4 text-muted-foreground">
           {formatPolicyDate(primaryDate, { short: true })}
           <span className="block">{getPolicyDateTypeName(primaryDate.type)}</span>
         </span>
@@ -223,7 +223,7 @@ export function PolicyTable({
                           type="button"
                           onClick={() => handleSort(field)}
                           className={cn(
-                            'group inline-flex items-center gap-1 whitespace-nowrap font-mono text-[10px] font-medium uppercase tracking-[0.1em] transition-colors duration-[var(--dur-fast)]',
+                            'group inline-flex items-center gap-1 whitespace-nowrap font-mono text-[11px] font-medium uppercase tracking-[0.1em] transition-colors duration-[var(--dur-fast)]',
                             isSorted
                               ? 'text-foreground'
                               : 'text-muted-foreground hover:text-foreground',
@@ -241,10 +241,10 @@ export function PolicyTable({
                       </th>
                     );
                   })}
-                  <th className="w-[15%] whitespace-nowrap py-2.5 text-left font-mono text-[10px] font-medium uppercase tracking-[0.1em] text-muted-foreground">
+                  <th className="w-[15%] whitespace-nowrap py-2.5 text-left font-mono text-[11px] font-medium uppercase tracking-[0.1em] text-muted-foreground">
                     Source
                   </th>
-                  <th className="w-6" />
+                  <th className="w-6"><span className="sr-only">Open</span></th>
                 </tr>
               </thead>
               <tbody>
@@ -274,7 +274,7 @@ export function PolicyTable({
                         {getPolicyTypeName(policy.type)}
                       </td>
                       <td className="py-3 pr-3 align-top"><StatusPill status={policy.status} /></td>
-                      <td className="py-3 pr-3 align-top font-mono text-[10px] uppercase leading-4 text-muted-foreground">
+                      <td className="py-3 pr-3 align-top font-mono text-[11px] font-medium uppercase leading-4 text-muted-foreground">
                         {formatPolicyDate(primaryDate, { short: true })}
                         <span className="block">{getPolicyDateTypeName(primaryDate.type)}</span>
                       </td>

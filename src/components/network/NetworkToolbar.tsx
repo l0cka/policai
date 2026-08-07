@@ -107,7 +107,7 @@ export function NetworkToolbar({
             placeholder="Search policies"
             value={searchQuery}
             onChange={(event) => onSearchChange(event.target.value)}
-            className="h-11 w-full border border-input bg-background pl-9 pr-9 text-sm outline-none transition-shadow placeholder:text-muted-foreground focus:border-ring focus:ring-2 focus:ring-ring/20"
+            className="h-11 w-full rounded-md border border-input bg-background pl-9 pr-9 text-sm outline-none transition-shadow placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
           />
           {searchQuery ? (
             <button
@@ -382,7 +382,7 @@ function NetworkFilterSheet({
                   }`}
                 >
                   <span>{jurisdiction.label}</span>
-                  <span className="font-mono text-[10px]">
+                  <span className="font-mono text-[11px] font-medium">
                     {jurisdiction.count}
                   </span>
                 </button>

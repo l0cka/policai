@@ -106,7 +106,7 @@ function ViewToggle({
   onChange: (value: PolicyViewMode) => void;
 }) {
   return (
-    <div className="inline-flex min-h-10 border border-input" aria-label="Policy view">
+    <div className="inline-flex h-11 rounded-md border border-input" aria-label="Policy view">
       <button
         type="button"
         onClick={() => onChange('table')}
@@ -305,7 +305,7 @@ export function PolicyBrowser({
                   onChange={(event) => setSearch(event.target.value)}
                   className="h-11 w-full rounded-md border border-input bg-background pl-11 pr-14 text-sm outline-none transition-[border-color,box-shadow] duration-[var(--dur-base)] placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
                 />
-                <kbd className="absolute right-3 top-1/2 hidden -translate-y-1/2 border border-border px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground sm:block">
+                <kbd className="absolute right-3 top-1/2 hidden -translate-y-1/2 border border-border px-1.5 py-0.5 font-mono text-[11px] text-muted-foreground sm:block">
                   ⌘K
                 </kbd>
               </div>
@@ -315,7 +315,7 @@ export function PolicyBrowser({
             <div className="mt-3 grid grid-cols-2 gap-3 lg:hidden">
               <Sheet>
                 <SheetTrigger asChild>
-                  <button type="button" className="inline-flex min-h-11 items-center justify-center gap-2 border border-input text-sm font-medium">
+                  <button type="button" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-input text-sm font-medium">
                     <SlidersHorizontal className="h-4 w-4" />
                     Filters{activeFilterCount > 0 ? ` (${activeFilterCount})` : ''}
                   </button>
@@ -336,7 +336,7 @@ export function PolicyBrowser({
                 <select
                   value={`${sortField}:${sortDirection}`}
                   onChange={(event) => handleMobileSort(event.target.value)}
-                  className="h-11 w-full appearance-none border border-input bg-background pl-10 pr-3 text-sm font-medium"
+                  className="h-11 w-full rounded-md appearance-none border border-input bg-background pl-10 pr-3 text-sm font-medium"
                 >
                   <option value="effectiveDate:desc">Sort: Key date</option>
                   <option value="title:asc">Sort: A–Z</option>
@@ -375,7 +375,7 @@ export function PolicyBrowser({
             ) : null}
 
             {developments.length > 0 ? (
-              <Link href="/developments" className="mt-3 flex min-h-11 items-center justify-between border border-primary/25 px-4 text-sm text-primary xl:hidden">
+              <Link href="/developments" className="mt-3 flex min-h-11 items-center justify-between rounded-md border border-primary/25 px-4 text-sm text-primary xl:hidden">
                 <span>{developments.length} new verified developments</span>
                 <ArrowRight className="h-4 w-4" />
               </Link>
@@ -398,7 +398,7 @@ export function PolicyBrowser({
             />
           </div>
 
-          <aside className="hidden w-[19.5rem] shrink-0 border-l border-[var(--rule-hair)] py-5 pl-7 xl:block">
+          <div className="hidden w-[19.5rem] shrink-0 border-l border-[var(--rule-hair)] py-5 pl-7 xl:block">
             <div className="flex items-center justify-between border-b border-border pb-3">
               <h2 className="font-mono text-[11px] font-medium uppercase tracking-[0.12em]">Latest developments</h2>
             </div>
@@ -409,7 +409,7 @@ export function PolicyBrowser({
                   style={jurisdictionRailStyle(development.jurisdiction)}
                   className="ink-rail content-auto border-b border-border py-4 pl-3"
                 >
-                  <p className="font-mono text-[10px] uppercase text-muted-foreground">{formatDevelopmentDate(development)}</p>
+                  <p className="font-mono text-[11px] font-medium uppercase text-muted-foreground">{formatDevelopmentDate(development)}</p>
                   <a href={development.url} target="_blank" rel="noopener noreferrer" className="group mt-2 inline-flex items-start gap-1.5 text-sm font-semibold leading-5 hover:text-primary">
                     {development.title}
                     <ArrowUpRight className="mt-0.5 h-3.5 w-3.5 shrink-0 opacity-55 transition duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:opacity-100" />
@@ -431,12 +431,12 @@ export function PolicyBrowser({
               View all developments <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
             </Link>
 
-            <div className="mt-7 border-t border-border pt-5 font-mono text-[10px] leading-5 text-muted-foreground">
+            <div className="mt-7 border-t border-border pt-5 font-mono text-[11px] leading-5 text-muted-foreground">
               <p>{automaticSourceCount} automatic sources</p>
               <p>{currentManualSourceCount}/{manualSourceCount} manual sources checked</p>
               {unavailableManualSourceCount > 0 ? <p>{unavailableManualSourceCount} currently unavailable</p> : null}
             </div>
-          </aside>
+          </div>
         </div>
       </section>
     </div>

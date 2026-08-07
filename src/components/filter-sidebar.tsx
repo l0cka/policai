@@ -94,7 +94,7 @@ export function FilterControls({
                       />
                     </span>
                     <span className="flex-1 leading-5">{option.label}</span>
-                    <span className="mt-0.5 font-mono text-[10px] tabular-nums text-muted-foreground/75">
+                    <span className="mt-0.5 font-mono text-[11px] font-medium tabular-nums text-muted-foreground/75">
                       {option.count}
                     </span>
                   </label>
@@ -110,8 +110,8 @@ export function FilterControls({
 
 export function FilterSidebar(props: FilterControlsProps) {
   return (
-    <aside className="hidden w-64 shrink-0 border-r border-[var(--rule-hair)] pr-8 lg:block">
+    <div className="hidden w-64 shrink-0 border-r border-[var(--rule-hair)] pr-8 lg:block">
       <FilterControls {...props} className="sticky top-[6.75rem] py-5" />
-    </aside>
+    </div>
   );
 }

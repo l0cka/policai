@@ -87,16 +87,16 @@ export function NetworkSidebar({
 							<SourceState verification={{ status: policy.verificationStatus }} />
 						</div>
 						<div className="mt-2 flex flex-wrap gap-1.5">
-							<Badge variant="outline" className="rounded-none text-[10px]">
+							<Badge variant="outline" className="rounded-none text-[11px]">
 								{getPolicyTypeName(policy.type)}
 							</Badge>
-							<Badge variant="outline" className="rounded-none text-[10px]">
+							<Badge variant="outline" className="rounded-none text-[11px]">
 								<JurisdictionMark jurisdiction={policy.jurisdiction} />
 							</Badge>
 						</div>
 
 						{policy.effectiveDate ? (
-							<p className="mt-3 font-mono text-[10px] text-muted-foreground">
+							<p className="mt-3 font-mono text-[11px] text-muted-foreground">
 								{getPolicyDateTypeName(policy.dateType)}{" "}
 								{formatPolicyDate(
 									{
@@ -124,7 +124,7 @@ export function NetworkSidebar({
 										>
 											<ArrowLeft className="size-3.5" />
 										</button>
-										<span className="min-w-14 text-center font-mono text-[10px] text-muted-foreground">
+										<span className="min-w-14 text-center font-mono text-[11px] text-muted-foreground">
 											{connections.length} related
 										</span>
 										<button
@@ -144,7 +144,7 @@ export function NetworkSidebar({
 									{sharedThemes.map((theme) => (
 										<span
 											key={theme}
-											className="border border-primary/30 bg-accent px-2 py-1 text-[10px] text-primary"
+											className="border border-primary/30 bg-accent px-2 py-1 text-[11px] text-primary"
 										>
 											{theme}
 										</span>
@@ -162,7 +162,7 @@ export function NetworkSidebar({
 											onClick={() => onNavigateToNode(connection.node.id)}
 											className="group flex min-h-16 w-full gap-3 py-3 text-left hover:bg-muted/45"
 										>
-											<span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary font-mono text-[10px] text-primary-foreground">
+											<span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary font-mono text-[11px] text-primary-foreground">
 												{index + 1}
 											</span>
 											<span className="min-w-0 flex-1">
@@ -170,7 +170,7 @@ export function NetworkSidebar({
 													<span className="text-sm font-medium leading-snug">
 														{connection.node.shortLabel}
 													</span>
-													<span className="shrink-0 border border-border px-1.5 py-0.5 font-mono text-[9px] uppercase text-muted-foreground">
+													<span className="shrink-0 border border-border px-1.5 py-0.5 font-mono text-[11px] font-medium uppercase text-muted-foreground">
 														{connection.node.jurisdiction}
 													</span>
 												</span>

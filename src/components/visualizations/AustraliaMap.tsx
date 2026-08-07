@@ -163,7 +163,7 @@ export function AustraliaMap({
       <svg
         viewBox="-603 -163 1955 1795"
         className="h-auto w-full max-w-[1040px] max-h-[62svh] md:max-h-[68svh]"
-        role="img"
+        role="group"
         aria-label="Interactive map of Australian jurisdictions showing AI policy density"
         preserveAspectRatio="xMidYMid meet"
       >

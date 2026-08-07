@@ -173,7 +173,7 @@ export function TimelineBrowser({
           <div className="space-y-4">
             <div className="flex flex-wrap items-center gap-2">
               {selectedEvent ? (
-                <span className={cn('inline-flex rounded px-2 py-1 font-mono text-[9px] uppercase tracking-[0.08em]', EVENT_TYPE_CONFIG[selectedEvent.type].tone)}>
+                <span className={cn('inline-flex rounded-md px-2 py-1 font-mono text-[11px] uppercase tracking-[0.08em]', EVENT_TYPE_CONFIG[selectedEvent.type].tone)}>
                   {EVENT_TYPE_CONFIG[selectedEvent.type].label}
                 </span>
               ) : null}

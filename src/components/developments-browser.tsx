@@ -86,7 +86,7 @@ function DevelopmentFeed({ items }: { items: Development[] }) {
     <div>
       {Array.from(grouped.entries()).map(([month, developments]) => (
         <section key={month} className="mb-4">
-          <h2 className="border-b border-[var(--rule-heavy)] py-2 font-mono text-[10px] font-medium uppercase tracking-[0.12em]">{month}</h2>
+          <h2 className="border-b border-[var(--rule-heavy)] py-2 font-mono text-[11px] font-medium uppercase tracking-[0.12em]">{month}</h2>
           <div>
             {developments.map((development) => {
               const verified = development.verification.status === 'verified';
@@ -97,9 +97,9 @@ function DevelopmentFeed({ items }: { items: Development[] }) {
                   style={jurisdictionRailStyle(development.jurisdiction)}
                   className="ink-rail grid gap-2 border-b border-border py-4 pl-3 transition-colors duration-[var(--dur-fast)] hover:bg-[var(--row-hover)] sm:grid-cols-[6.5rem_7rem_minmax(0,1fr)] lg:grid-cols-[6.5rem_7rem_minmax(0,1fr)_9rem_10rem]"
                 >
-                  <time className="font-mono text-[10px] uppercase text-muted-foreground">{developmentDate(development)}</time>
+                  <time className="font-mono text-[11px] font-medium uppercase text-muted-foreground">{developmentDate(development)}</time>
                   <div>
-                    <span className={cn('inline-flex rounded px-2 py-1 font-mono text-[9px] uppercase tracking-[0.08em]', label === 'Consultation' || !verified ? 'bg-[var(--status-proposed-bg)] text-[var(--status-proposed)]' : 'bg-[var(--status-active-bg)] text-[var(--trust)]')}>
+                    <span className={cn('inline-flex rounded-md px-2 py-1 font-mono text-[11px] uppercase tracking-[0.08em]', label === 'Consultation' || !verified ? 'bg-[var(--status-proposed-bg)] text-[var(--status-proposed)]' : 'bg-[var(--status-active-bg)] text-[var(--trust)]')}>
                       {label}
                     </span>
                   </div>
@@ -198,12 +198,12 @@ export function DevelopmentsBrowser({
             <label className="relative flex-1">
               <span className="sr-only">Search developments</span>
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <input type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search developments" className="h-11 w-full border border-input bg-background pl-10 pr-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/15" />
+              <input type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search developments" className="h-11 w-full rounded-md border border-input bg-background pl-10 pr-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" />
             </label>
             <label className="relative sm:w-60">
               <span className="sr-only">Filter by jurisdiction</span>
               <Filter className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
-              <select value={jurisdiction} onChange={(event) => setJurisdiction(event.target.value)} className="h-11 w-full appearance-none border border-input bg-background pl-10 pr-3 text-sm">
+              <select value={jurisdiction} onChange={(event) => setJurisdiction(event.target.value)} className="h-11 w-full rounded-md appearance-none border border-input bg-background pl-10 pr-3 text-sm">
                 <option value="all">All jurisdictions</option>
                 {Object.entries(JURISDICTION_NAMES).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
               </select>
@@ -217,7 +217,7 @@ export function DevelopmentsBrowser({
             <h2 className="text-sm font-semibold">Collection status</h2>
             <div className="mt-3 rounded-md border border-border bg-card/50 p-4">
               <HealthSignal health={collectionHealth} className="text-[12px]" />
-              {lastCollectedAt ? <p className="mt-3 border-t border-border pt-3 font-mono text-[9px] uppercase text-muted-foreground">Last checked {formatDate(lastCollectedAt)}</p> : null}
+              {lastCollectedAt ? <p className="mt-3 border-t border-border pt-3 font-mono text-[11px] uppercase text-muted-foreground">Last checked {formatDate(lastCollectedAt)}</p> : null}
             </div>
             <div className="mt-4 space-y-3">
               {[
@@ -228,11 +228,11 @@ export function DevelopmentsBrowser({
                 <div key={label as string} className="grid grid-cols-[5rem_1fr_2.25rem] items-center gap-2 text-xs">
                   <span>{label}</span>
                   <span className="h-1.5 overflow-hidden rounded-full bg-muted"><span className="block h-full rounded-full bg-[var(--trust)]" style={{ width: `${value}%` }} /></span>
-                  <span className="font-mono text-[9px] text-muted-foreground">{value}%</span>
+                  <span className="font-mono text-[11px] font-medium text-muted-foreground">{value}%</span>
                 </div>
               ))}
             </div>
-            <p className="mt-3 font-mono text-[9px] uppercase leading-4 text-muted-foreground">{automaticSourceCount} automatic · {manualSourceCount} manual sources</p>
+            <p className="mt-3 font-mono text-[11px] uppercase leading-4 text-muted-foreground">{automaticSourceCount} automatic · {manualSourceCount} manual sources</p>
             <Link href="/methodology" className="mt-4 inline-flex items-center gap-1 text-xs text-primary hover:underline">View methodology <ArrowRight className="h-3 w-3" /></Link>
           </section>
         </aside>

@@ -48,7 +48,7 @@ export default async function PolicyDetailPage({ params }: { params: Promise<{ i
 
   return (
     <div className="container mx-auto px-4 py-6 sm:px-6 lg:px-8">
-      <nav className="mb-6 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+      <nav aria-label="Breadcrumb" className="mb-6 font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
         <Link href="/" className="hover:text-primary">Register</Link>
         <span className="mx-2">/</span>
         <span>{policy.jurisdiction}</span>

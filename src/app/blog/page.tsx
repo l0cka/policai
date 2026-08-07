@@ -27,7 +27,7 @@ export default function BlogPage() {
               href={`/blog/${post.slug}`}
               className="group grid gap-3 border-b border-border py-6 transition-colors hover:bg-[var(--row-hover)] sm:grid-cols-[9rem_minmax(0,1fr)_auto] sm:px-3"
             >
-              <time className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+              <time className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
                 {format(new Date(post.date), 'dd MMMM yyyy')}
               </time>
               <span>

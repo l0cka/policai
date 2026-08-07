@@ -277,7 +277,7 @@ export function ForceGraph({
 					aria-label="Fit selected policies"
 				>
 					<LocateFixed className="size-4" />
-					<span className="text-[8px] leading-none">Fit</span>
+					<span className="text-[11px] leading-none text-muted-foreground">Fit</span>
 				</button>
 			</div>
 
@@ -526,7 +526,7 @@ export function ForceGraph({
 				</g>
 			</svg>
 
-			<div className="absolute bottom-3 right-3 hidden border border-border bg-background/95 px-3 py-2 text-[10px] text-muted-foreground sm:block">
+			<div className="absolute bottom-3 right-3 hidden border border-border bg-background/95 px-3 py-2 text-[11px] text-muted-foreground sm:block">
 				<div className="page-eyebrow mb-1">Edge key</div>
 				<div className="space-y-1">
 					<div className="flex items-center gap-2">

@@ -93,9 +93,9 @@
 
   --row-hover: light-dark(#ebeae2, #1b232e);
   --status-active: light-dark(#146b5a, #65d2b4);
-  --status-proposed: light-dark(#9a6109, #e7b96c);
+  --status-proposed: light-dark(#8a5400, #e7b96c);
   --status-amended: light-dark(#2f4fd8, #91aaff);
-  --status-repealed: light-dark(#657181, #a9b4c4);
+  --status-repealed: light-dark(#525d6b, #a9b4c4);
   --status-active-bg: light-dark(#deeee7, #18362f);
   --status-proposed-bg: light-dark(#f6e8c8, #3a2f1c);
   --status-amended-bg: light-dark(#e4eafa, #1f2d55);
@@ -268,7 +268,7 @@
    */
   .page-eyebrow {
     font-family: var(--font-mono);
-    font-size: 0.625rem;
+    font-size: 0.6875rem;
     font-weight: 500;
     letter-spacing: 0.16em;
     text-transform: uppercase;

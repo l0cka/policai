@@ -111,7 +111,7 @@ export function Header({ dataCurrentAt }: { dataCurrentAt: string | null }) {
     <header className="rule-masthead sticky top-0 z-50 w-full bg-background/90 backdrop-blur-md">
       {/* Dateline strip, in the manner of a masthead's edition line. */}
       <div className="bg-[var(--navy)] text-white">
-        <div className="container mx-auto flex h-7 items-center justify-between px-4 font-mono text-[9px] uppercase tracking-[0.12em] sm:px-6 lg:px-8 lg:text-[10px]">
+        <div className="container mx-auto flex h-7 items-center justify-between px-4 font-mono text-[11px] uppercase tracking-[0.12em] sm:px-6 lg:px-8 lg:text-[11px]">
           <span className="hidden sm:inline">{formatDataDate(dataCurrentAt)}</span>
           <span className="sm:hidden">
             {formatDataDate(dataCurrentAt).replace('DATA CURRENT TO ', 'CURRENT · ')}
@@ -141,7 +141,7 @@ export function Header({ dataCurrentAt }: { dataCurrentAt: string | null }) {
           />
         </Link>
 
-        <nav className="mx-auto hidden h-full items-center gap-8 md:flex">
+        <nav aria-label="Primary" className="mx-auto hidden h-full items-center gap-8 md:flex">
           {navItems.map((item) => (
             <NavLink
               key={item.href}
@@ -225,6 +225,12 @@ export function Header({ dataCurrentAt }: { dataCurrentAt: string | null }) {
           <Link
             href="/#policy-search"
             aria-label="Search the policy register"
+            onClick={() => {
+              // If the register search box is on this page, focus it directly
+              // instead of only scrolling to it via the hash.
+              const input = document.querySelector<HTMLInputElement>('#policy-search input');
+              if (input) input.focus();
+            }}
             className="flex h-10 w-10 items-center justify-center rounded-full text-foreground transition-colors duration-[var(--dur-fast)] hover:bg-muted hover:text-primary"
           >
             <Search className="h-5 w-5" strokeWidth={1.75} />
@@ -242,7 +248,7 @@ export function Header({ dataCurrentAt }: { dataCurrentAt: string | null }) {
               <SheetDescription className="sr-only">
                 Browse Policai sections and resources.
               </SheetDescription>
-              <nav className="mt-8 flex flex-col gap-1">
+              <nav aria-label="Mobile" className="mt-8 flex flex-col gap-1">
                 {navItems.map((item) => (
                   <Link
                     key={item.href}
@@ -258,7 +264,7 @@ export function Header({ dataCurrentAt }: { dataCurrentAt: string | null }) {
                   </Link>
                 ))}
                 <div className="my-2 border-t border-border" />
-                <div className="px-3 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
+                <div className="px-3 py-1 font-mono text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
                   Explore
                 </div>
                 {insightItems.map((item) => (
@@ -285,7 +291,7 @@ export function Header({ dataCurrentAt }: { dataCurrentAt: string | null }) {
                 </a>
                 <div className="my-3 border-t border-border" />
                 <div className="flex items-center justify-between px-3">
-                  <span className="font-mono text-[10px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
+                  <span className="font-mono text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
                     Theme
                   </span>
                   <ThemeToggle />

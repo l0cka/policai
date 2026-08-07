@@ -177,7 +177,7 @@ export function CourtsBrowser({ policies }: { policies: Policy[] }) {
 															.map((tag) => (
 																<span
 																	key={tag}
-																	className="font-mono text-[10px] uppercase tracking-wider px-2 py-0.5 bg-muted rounded text-muted-foreground"
+																	className="font-mono text-[11px] uppercase tracking-wider px-2 py-0.5 bg-muted rounded text-muted-foreground"
 																>
 																	{tag}
 																</span>

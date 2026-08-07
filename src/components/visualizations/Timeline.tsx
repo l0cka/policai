@@ -66,7 +66,7 @@ export function Timeline({ events, selectedJurisdiction, onEventClick }: Timelin
     <div>
       {years.map((year) => (
         <section key={year} className="mb-4">
-          <h2 className="border-b border-[var(--rule-heavy)] py-2 font-mono text-[10px] font-medium uppercase tracking-[0.12em]">
+          <h2 className="border-b border-[var(--rule-heavy)] py-2 font-mono text-[11px] font-medium uppercase tracking-[0.12em]">
             {year}
           </h2>
           <div>
@@ -79,14 +79,14 @@ export function Timeline({ events, selectedJurisdiction, onEventClick }: Timelin
                   onClick={() => onEventClick?.(event)}
                   className="ink-rail group grid cursor-pointer gap-2 border-b border-border py-4 pl-3 transition-colors duration-[var(--dur-fast)] hover:bg-[var(--row-hover)] sm:grid-cols-[6.5rem_7rem_minmax(0,1fr)] lg:grid-cols-[6.5rem_7rem_minmax(0,1fr)_9rem_9rem]"
                 >
-                  <time className="font-mono text-[10px] uppercase text-muted-foreground">
+                  <time className="font-mono text-[11px] font-medium uppercase text-muted-foreground">
                     {formatPolicyDate(
                       { type: 'published', date: event.date, precision: event.datePrecision ?? 'day' },
                       { short: true },
                     )}
                   </time>
                   <div>
-                    <span className={cn('inline-flex rounded px-2 py-1 font-mono text-[9px] uppercase tracking-[0.08em]', config.tone)}>
+                    <span className={cn('inline-flex rounded-md px-2 py-1 font-mono text-[11px] uppercase tracking-[0.08em]', config.tone)}>
                       {config.label}
                     </span>
                   </div>
