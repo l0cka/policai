@@ -18,7 +18,10 @@ export default async function DeadlinesPage() {
       </header>
 
       <div className="workspace reveal reveal-1" style={{ gridTemplateColumns: 'minmax(0, 1fr)' }}>
-        <section className="workspace-main" aria-label="Upcoming deadlines">
+        <section className="workspace-main" aria-labelledby="upcoming-deadlines-heading">
+          <h2 id="upcoming-deadlines-heading" className="day-heading">
+            Upcoming deadlines
+          </h2>
           <DeadlineTimeline rows={upcoming} />
 
           {passed.length > 0 ? (

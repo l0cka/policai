@@ -90,12 +90,27 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         </a>
 
         <header className="site-header rule-masthead">
+          <div className="container masthead">
+            <Link href="/" aria-label="Policai A2J home" className="brand">
+              <RadarMark />
+              <span className="brand-wordmark">Policai A2J</span>
+            </Link>
+            <Nav />
+            <div className="header-actions">
+              <ThemeToggle />
+            </div>
+          </div>
+
           <div className="dateline">
             <div className="container">
-              <span>{formatDataDate(dataCurrentAt)}</span>
+              <span className="dateline-desktop">{formatDataDate(dataCurrentAt)}</span>
+              <span className="dateline-mobile">
+                {formatDataDate(dataCurrentAt).replace('DATA CURRENT TO ', 'CURRENT · ')}
+              </span>
               <div className="dateline-links">
+                <span className="live-status"><i /> Live</span>
                 <Link href="/health" className="underline-grow">
-                  Sources
+                  Source health
                 </Link>
                 <a
                   href="https://github.com/l0cka/probono-radar"
@@ -106,17 +121,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                   GitHub
                 </a>
               </div>
-            </div>
-          </div>
-
-          <div className="container masthead">
-            <Link href="/" aria-label="Policai A2J home" className="brand">
-              <RadarMark />
-              <span className="brand-wordmark">Policai A2J</span>
-            </Link>
-            <Nav />
-            <div className="header-actions">
-              <ThemeToggle />
             </div>
           </div>
         </header>

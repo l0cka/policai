@@ -51,36 +51,42 @@ export default async function Health() {
         </p>
       </header>
 
-      <div className="stat-strip reveal reveal-1">
-        <span className="stat">
-          <b>{rows.length}</b>
-          <span>active sources</span>
-        </span>
-        <span className="stat">
-          <b>{ok}</b>
-          <span>reporting</span>
-        </span>
-        <span className="stat stat-flag">
-          <b>{failed}</b>
-          <span>failed</span>
-        </span>
-        <span className="stat">
-          <b>{never}</b>
-          <span>never run</span>
-        </span>
-      </div>
+      <dl className="stat-strip reveal reveal-1">
+        <div className="stat">
+          <dd>{rows.length}</dd>
+          <dt>active sources</dt>
+        </div>
+        <div className="stat">
+          <dd>{ok}</dd>
+          <dt>reporting</dt>
+        </div>
+        <div className="stat stat-flag">
+          <dd>{failed}</dd>
+          <dt>failed</dt>
+        </div>
+        <div className="stat">
+          <dd>{never}</dd>
+          <dt>never run</dt>
+        </div>
+      </dl>
 
-      <div className="table-wrap reveal reveal-2">
+      <div
+        className="table-wrap reveal reveal-2"
+        role="region"
+        aria-label="Source health table"
+        tabIndex={0}
+      >
         <table>
+          <caption className="sr-only">Most recent collection run for each active source</caption>
           <thead>
             <tr>
-              <th>Source</th>
-              <th>Method</th>
-              <th>Last run</th>
-              <th>Status</th>
-              <th>Found</th>
-              <th>New</th>
-              <th>Error</th>
+              <th scope="col">Source</th>
+              <th scope="col">Method</th>
+              <th scope="col">Last run</th>
+              <th scope="col">Status</th>
+              <th scope="col">Found</th>
+              <th scope="col">New</th>
+              <th scope="col">Error</th>
             </tr>
           </thead>
           <tbody>

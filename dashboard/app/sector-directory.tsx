@@ -23,6 +23,7 @@ export default function SectorDirectory({ orgs }: { orgs: ScoredOrg[] }) {
   const [jurs, setJurs] = useState<Set<Jurisdiction>>(new Set());
   const [tiers, setTiers] = useState<Set<TierKey>>(new Set());
   const [onlyMonitored, setOnlyMonitored] = useState(false);
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const deferredQ = useDeferredValue(q.trim().toLowerCase());
 
   // Built once: the searchable haystack per row, so typing does not re-lowercase
@@ -79,10 +80,17 @@ export default function SectorDirectory({ orgs }: { orgs: ScoredOrg[] }) {
     return m;
   }, [visible]);
 
+  const activeFilterCount = jurs.size + tiers.size + (onlyMonitored ? 1 : 0);
+  const clearFilters = () => {
+    setJurs(new Set());
+    setTiers(new Set());
+    setOnlyMonitored(false);
+  };
+
   return (
     <>
       <div className="sector-controls">
-        <div className="ctrl-row">
+        <div className="ctrl-row sector-primary-row">
           <span className="ctrl-label">Search</span>
           <label className="sector-search">
             <Search />
@@ -96,47 +104,81 @@ export default function SectorDirectory({ orgs }: { orgs: ScoredOrg[] }) {
           </label>
           <button
             type="button"
-            className="pill"
+            className="pill desktop-filter-only"
             aria-pressed={onlyMonitored}
-            onClick={() => setOnlyMonitored((v) => !v)}
+            onClick={() => setOnlyMonitored((value) => !value)}
           >
             On the radar<span className="pill-n">{monitoredTotal}</span>
           </button>
-          <span className="sector-count">
+          <button
+            type="button"
+            className="sector-filter-trigger"
+            aria-expanded={filtersOpen}
+            aria-controls="sector-filter-groups"
+            onClick={() => setFiltersOpen((value) => !value)}
+          >
+            Filters{activeFilterCount ? ` (${activeFilterCount})` : ''}
+          </button>
+          <span className="sector-count" aria-live="polite">
             {visible.length} of {orgs.length} shown
           </span>
         </div>
 
-        <div className="ctrl-row">
-          <span className="ctrl-label">Where</span>
-          {JURISDICTIONS.map((j) => (
+        <div
+          id="sector-filter-groups"
+          className={`sector-filter-groups ${filtersOpen ? 'open' : ''}`}
+        >
+          <div className="ctrl-row mobile-filter-only" role="group" aria-labelledby="show-label">
+            <span className="ctrl-label" id="show-label">Show</span>
             <button
-              key={j}
               type="button"
               className="pill"
-              aria-pressed={jurs.has(j)}
-              onClick={() => setJurs((s) => toggle(s, j))}
+              aria-pressed={onlyMonitored}
+              onClick={() => setOnlyMonitored((value) => !value)}
             >
-              {jurisdictionLabel(j)}
-              <span className="pill-n">{jurCounts.get(j) ?? 0}</span>
+              On the radar<span className="pill-n">{monitoredTotal}</span>
             </button>
-          ))}
-        </div>
+          </div>
 
-        <div className="ctrl-row">
-          <span className="ctrl-label">Kind</span>
-          {TIERS.map((t) => (
-            <button
-              key={t.key}
-              type="button"
-              className="pill"
-              aria-pressed={tiers.has(t.key)}
-              onClick={() => setTiers((s) => toggle(s, t.key))}
-            >
-              {t.label}
-              <span className="pill-n">{tierCounts.get(t.key) ?? 0}</span>
-            </button>
-          ))}
+          <div className="ctrl-row" role="group" aria-labelledby="where-label">
+            <span className="ctrl-label" id="where-label">Where</span>
+            {JURISDICTIONS.map((jurisdiction) => (
+              <button
+                key={jurisdiction}
+                type="button"
+                className="pill"
+                aria-pressed={jurs.has(jurisdiction)}
+                onClick={() => setJurs((current) => toggle(current, jurisdiction))}
+              >
+                {jurisdictionLabel(jurisdiction)}
+                <span className="pill-n">{jurCounts.get(jurisdiction) ?? 0}</span>
+              </button>
+            ))}
+          </div>
+
+          <div className="ctrl-row" role="group" aria-labelledby="kind-label">
+            <span className="ctrl-label" id="kind-label">Kind</span>
+            {TIERS.map((tier) => (
+              <button
+                key={tier.key}
+                type="button"
+                className="pill"
+                aria-pressed={tiers.has(tier.key)}
+                onClick={() => setTiers((current) => toggle(current, tier.key))}
+              >
+                {tier.label}
+                <span className="pill-n">{tierCounts.get(tier.key) ?? 0}</span>
+              </button>
+            ))}
+          </div>
+
+          {activeFilterCount ? (
+            <div className="sector-clear-row">
+              <button type="button" className="sector-clear" onClick={clearFilters}>
+                Clear all filters
+              </button>
+            </div>
+          ) : null}
         </div>
       </div>
 
@@ -154,10 +196,10 @@ export default function SectorDirectory({ orgs }: { orgs: ScoredOrg[] }) {
         return (
           <section className="sector-tier" key={t.key} aria-label={t.label}>
             <header className="sector-tier-head">
-              <h2 className="day-heading">
+              <h3 className="day-heading">
                 {t.label}
                 <span className="day-count">{rows.length}</span>
-              </h2>
+              </h3>
               <p className="sector-tier-blurb">{t.blurb}</p>
               <p className="sector-tier-cov">
                 {mon} of {rows.length} on the radar
@@ -170,7 +212,7 @@ export default function SectorDirectory({ orgs }: { orgs: ScoredOrg[] }) {
                     <span className={`jur jur-${o.jurisdiction}`}>
                       {jurisdictionLabel(o.jurisdiction)}
                     </span>
-                    <h3>
+                    <h4>
                       {o.url ? (
                         <a href={o.url} target="_blank" rel="noopener noreferrer">
                           {o.name}
@@ -188,7 +230,7 @@ export default function SectorDirectory({ orgs }: { orgs: ScoredOrg[] }) {
                           ●
                         </span>
                       ) : null}
-                    </h3>
+                    </h4>
                   </div>
                   <p className="sector-role">{o.role}</p>
                   {o.funded_by ? (

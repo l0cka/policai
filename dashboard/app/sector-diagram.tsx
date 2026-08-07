@@ -13,7 +13,12 @@
 export default function SectorDiagram() {
   return (
     <figure className="diagram">
-      <div className="diagram-frame">
+      <div
+        className="diagram-frame"
+        role="region"
+        aria-label="Scrollable funding and referral structure diagram"
+        tabIndex={0}
+      >
         <svg
           viewBox="0 0 1280 590"
           role="img"
@@ -194,6 +199,7 @@ export default function SectorDiagram() {
         </svg>
       </div>
       <figcaption>
+        <span className="diagram-hint">Scroll horizontally to explore the full diagram.</span>
         <span className="legend">
           <span className="legend-key legend-funded" /> funding under the Partnership
         </span>

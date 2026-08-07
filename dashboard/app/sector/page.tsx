@@ -52,28 +52,28 @@ export default async function SectorPage() {
         </p>
       </header>
 
-      <div className="stat-strip reveal reveal-1">
-        <span className="stat">
-          <b>{orgs.length}</b>
-          <span>organisations</span>
-        </span>
-        <span className="stat">
-          <b>{TIERS.length}</b>
-          <span>kinds of body</span>
-        </span>
-        <span className="stat">
-          <b>9</b>
-          <span>jurisdictions</span>
-        </span>
-        <span className="stat">
-          <b>{monitored}</b>
-          <span>radar sources</span>
-        </span>
-        <span className="stat">
-          <b>$3.9b</b>
-          <span>NAJP 2025–30</span>
-        </span>
-      </div>
+      <dl className="stat-strip reveal reveal-1">
+        <div className="stat">
+          <dd>{orgs.length}</dd>
+          <dt>organisations</dt>
+        </div>
+        <div className="stat">
+          <dd>{TIERS.length}</dd>
+          <dt>kinds of body</dt>
+        </div>
+        <div className="stat">
+          <dd>9</dd>
+          <dt>jurisdictions</dt>
+        </div>
+        <div className="stat">
+          <dd>{monitored}</dd>
+          <dt>radar sources</dt>
+        </div>
+        <div className="stat">
+          <dd>$3.9b</dd>
+          <dt>NAJP 2025–30</dt>
+        </div>
+      </dl>
 
       <section aria-label="Funding and referral structure">
         <h2 className="section-heading">Funding and referral structure</h2>
@@ -82,7 +82,12 @@ export default async function SectorPage() {
 
       <section aria-label="The National Access to Justice Partnership">
         <h2 className="section-heading">The funding agreement</h2>
-        <div className="table-wrap">
+        <div
+          className="table-wrap"
+          role="region"
+          aria-label="National Access to Justice Partnership facts"
+          tabIndex={0}
+        >
           <table>
             <tbody>
               <tr>
@@ -121,13 +126,18 @@ export default async function SectorPage() {
           Organisations in each tier that are an active source on this radar. See{' '}
           <Link href="/health">source health</Link> for run status.
         </p>
-        <div className="table-wrap">
+        <div
+          className="table-wrap"
+          role="region"
+          aria-label="Radar coverage by sector tier"
+          tabIndex={0}
+        >
           <table>
             <thead>
               <tr>
-                <th>Tier</th>
-                <th>Sources</th>
-                <th>Organisations</th>
+                <th scope="col">Tier</th>
+                <th scope="col">Sources</th>
+                <th scope="col">Organisations</th>
               </tr>
             </thead>
             <tbody>

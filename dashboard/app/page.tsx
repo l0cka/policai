@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { getPool } from '../lib/db';
 import { RailDeadlines } from './deadlines';
-import { countdown, daysUntil, getUpcomingDeadlines, sydneyToday } from '../lib/deadline-data';
+import { daysUntil, getUpcomingDeadlines, sydneyToday } from '../lib/deadline-data';
 import { ArrowRight, ArrowUpRight, Flag, Search } from './icons';
 
 export const dynamic = 'force-dynamic';
@@ -51,6 +51,115 @@ function streamVars(stream: string | null): React.CSSProperties | undefined {
 
 type Stats = { new_week: number; opps: number; tracked: number };
 type SourceStats = { total: number; ok: number };
+type RadarRow = {
+  id: string | number;
+  title: string;
+  url: string;
+  blurb: string | null;
+  excerpt: string | null;
+  stream: string | null;
+  opportunity: boolean;
+  opportunity_reason: string | null;
+  published_at: string | Date | null;
+  created_at: string | Date;
+  source_name: string;
+};
+
+const DAY_MS = 86_400_000;
+
+function shortDate(value: string | Date): string {
+  return new Date(value).toLocaleDateString('en-AU', {
+    timeZone: 'Australia/Sydney',
+    day: 'numeric',
+    month: 'short',
+    year: '2-digit',
+  });
+}
+
+function RadarField({ rows, today }: { rows: RadarRow[]; today: string }) {
+  const datedRows = rows.map((row) => ({
+    ...row,
+    at: Date.parse(`${sydneyDateOf(row.published_at ?? row.created_at)}T00:00:00Z`),
+  }));
+  const hasUnclassified = datedRows.some(
+    (row) => !row.stream || !Object.prototype.hasOwnProperty.call(STREAMS, row.stream),
+  );
+  const fieldStreams = [
+    ...Object.entries(STREAMS),
+    ...(hasUnclassified ? [['unclassified', 'Unclassified']] : []),
+  ];
+  const todayAt = Date.parse(`${today}T00:00:00Z`);
+  const oldestAt = datedRows.length ? Math.min(...datedRows.map((row) => row.at)) : todayAt;
+  const newestAt = datedRows.length ? Math.max(...datedRows.map((row) => row.at)) : todayAt;
+  const domainEnd = Math.max(todayAt, newestAt);
+  const domainStart = Math.min(oldestAt, domainEnd - 90 * DAY_MS);
+  const domainRange = Math.max(DAY_MS, domainEnd - domainStart);
+  const ticks = Array.from({ length: 5 }, (_, index) => domainStart + (domainRange * index) / 4);
+
+  const xFor = (at: number) => 2 + ((at - domainStart) / domainRange) * 96;
+  const yFor = (id: string | number) => {
+    const hash = String(id)
+      .split('')
+      .reduce((sum, character) => sum + character.charCodeAt(0), 0);
+    return 20 + ((hash * 37) % 61);
+  };
+
+  return (
+    <figure className="radar-field" aria-labelledby="radar-field-title">
+      <figcaption className="radar-field-head">
+        <span id="radar-field-title">Radar field</span>
+        <span className="radar-legend"><i className="radar-legend-dot" /> Signal</span>
+        <span className="radar-legend"><i className="radar-legend-dot opportunity" /> Opportunity</span>
+      </figcaption>
+
+      <div className="radar-field-body">
+        {fieldStreams.map(([key, label]) => {
+          const streamRows = datedRows.filter((row) =>
+            key === 'unclassified'
+              ? !row.stream || !Object.prototype.hasOwnProperty.call(STREAMS, row.stream)
+              : row.stream === key,
+          );
+          return (
+            <div className="radar-field-row" key={key}>
+              <div className="radar-field-label">
+                <span>{label}</span>
+                <small>{streamRows.length}</small>
+              </div>
+              <div className="radar-field-track">
+                {streamRows.map((row) => {
+                  const href = /^https?:\/\//i.test(row.url) ? row.url : undefined;
+                  const className = `radar-point${row.opportunity ? ' is-opportunity' : ''}`;
+                  const style = { left: `${xFor(row.at)}%`, top: `${yFor(row.id)}%` };
+                  const labelText = `${row.title}, ${shortDate(row.published_at ?? row.created_at)}`;
+                  return href ? (
+                    <a
+                      key={row.id}
+                      className={className}
+                      style={style}
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={labelText}
+                      title={labelText}
+                    />
+                  ) : (
+                    <span key={row.id} className={className} style={style} title={labelText} />
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+        <div className="radar-axis" aria-hidden="true">
+          <span />
+          {ticks.map((tick) => (
+            <time key={tick}>{shortDate(new Date(tick))}</time>
+          ))}
+        </div>
+      </div>
+    </figure>
+  );
+}
 
 async function getStats(): Promise<Stats> {
   const { rows } = await getPool().query(
@@ -91,13 +200,20 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
   }
   const where = cond.length ? `WHERE ${cond.join(' AND ')}` : '';
 
-  const [{ rows }, stats, sources, deadlines] = await Promise.all([
+  const [{ rows }, { rows: radarItems }, stats, sources, deadlines] = await Promise.all([
     getPool().query(
       `SELECT i.id, i.title, i.url, i.blurb, i.excerpt, i.stream, i.opportunity, i.opportunity_reason,
               i.published_at, i.created_at, s.name AS source_name
        FROM items i JOIN sources s ON s.id = i.source_id
        ${where} ORDER BY coalesce(i.published_at, i.created_at) DESC LIMIT 100`,
       args,
+    ),
+    getPool().query<RadarRow>(
+      `SELECT i.id, i.title, i.url, i.blurb, i.excerpt, i.stream, i.opportunity, i.opportunity_reason,
+              i.published_at, i.created_at, s.name AS source_name
+       FROM items i JOIN sources s ON s.id = i.source_id
+       WHERE i.relevant
+       ORDER BY coalesce(i.published_at, i.created_at) DESC LIMIT 160`,
     ),
     getStats(),
     getSourceStats(),
@@ -124,61 +240,97 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
     else groups.push({ date, rows: [r] });
   }
 
-  const next = deadlines[0];
+  const latestItems = radarItems.slice(0, 3);
 
   return (
-    <div className="container page">
-      <header className="page-head reveal">
-        <p className="page-eyebrow">
-          {new Date().toLocaleDateString('en-AU', {
-            ...SYDNEY_DATE,
-            weekday: 'long',
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric',
-          })}
-        </p>
-        <h1 className="page-title">Pro bono radar</h1>
-        <p className="page-intro">
-          Access to justice, pro bono, law reform and legal-assistance funding, collected from the
-          sector&rsquo;s own sources each morning. Every item links to where it was found.
-        </p>
-      </header>
+    <>
+      <section className="observatory-hero">
+        <div className="container observatory-grid">
+          <div className="observatory-copy reveal">
+            <p className="observatory-eyebrow">The access to justice observatory</p>
+            <h1>See access to justice as it changes.</h1>
+            <p className="observatory-intro">
+              Policai A2J tracks pro bono, law reform, legal-assistance funding and justice
+              technology across Australia, with every signal linked to its source.
+            </p>
 
-      <div className="stat-strip reveal reveal-1">
-        <span className="stat">
-          <b>{stats.new_week}</b>
-          <span>new this week</span>
-        </span>
-        <span className="stat stat-flag">
-          <b>{stats.opps}</b>
-          <span>opportunities</span>
-        </span>
-        <span className="stat">
-          <b>{stats.tracked}</b>
-          <span>items tracked</span>
-        </span>
-        <span className="stat">
-          <b>{sources.total}</b>
-          <span>sources monitored</span>
-        </span>
-        {next ? (
-          <span className="stat">
-            <b>
-              <Link href="/deadlines">
-                {new Date(`${next.date}T00:00:00`).toLocaleDateString('en-AU', {
-                  day: 'numeric',
-                  month: 'short',
-                })}
+            <form id="hero-radar-search" action="/#radar-feed" method="get" className="hero-search">
+              {stream ? <input type="hidden" name="stream" value={stream} /> : null}
+              {opp === '1' ? <input type="hidden" name="opp" value="1" /> : null}
+              {filtered === '1' ? <input type="hidden" name="filtered" value="1" /> : null}
+              <Search />
+              <label className="sr-only" htmlFor="hero-search">Search the radar</label>
+              <input id="hero-search" name="q" placeholder="Search signals, sources or topics" defaultValue={q ?? ''} />
+            </form>
+
+            <div className="observatory-actions">
+              <button type="submit" form="hero-radar-search" className="button-primary">
+                Search the radar <ArrowRight />
+              </button>
+              <Link href="/deadlines" className="button-quiet">
+                View deadlines <ArrowRight />
               </Link>
-            </b>
-            <span>next deadline · {countdown(daysUntil(next.date, today))}</span>
-          </span>
-        ) : null}
-      </div>
+            </div>
 
-      <div className="filters reveal reveal-2">
-        <Link href={linkFor({ stream: undefined })} className={!stream ? 'active' : ''}>
+            <dl className="observatory-stats">
+              <div><dd>{stats.new_week}</dd><dt>new this week</dt></div>
+              <div><dd>{stats.opps}</dd><dt>opportunities</dt></div>
+              <div><dd>{stats.tracked}</dd><dt>items tracked</dt></div>
+              <div><dd>{sources.total}</dd><dt>sources monitored</dt></div>
+            </dl>
+          </div>
+
+          <div className="observatory-visual reveal reveal-1">
+            <RadarField rows={radarItems} today={today} />
+          </div>
+        </div>
+      </section>
+
+      {latestItems.length ? (
+        <section className="recent-signals">
+          <div className="container">
+            <div className="recent-signals-head">
+              <p>What changed recently</p>
+              <a href="#radar-feed">View the full radar <ArrowRight /></a>
+            </div>
+            <div className="recent-signals-grid">
+              {latestItems.map((item) => {
+                const href = safeHref(item.url);
+                return (
+                  <article key={item.id}>
+                    <time>{shortDate(item.published_at ?? item.created_at)}</time>
+                    <h2>
+                      {href ? <a href={href} target="_blank" rel="noopener noreferrer">{item.title} <ArrowUpRight /></a> : item.title}
+                    </h2>
+                    <p>{item.blurb ?? item.excerpt ?? 'Open the source record for more detail.'}</p>
+                    <span className="recent-source"><i /> {item.stream ? STREAMS[item.stream] : 'Unclassified'} <b /> {item.source_name}</span>
+                  </article>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      <section className="radar-register" id="radar-feed">
+        <div className="container page">
+          <header className="register-heading reveal">
+            <div>
+              <p className="page-eyebrow">Source-linked signals</p>
+              <h2 className="register-title">Radar feed</h2>
+            </div>
+            <p className={`signal ${sources.ok === sources.total ? 'signal-ok' : 'signal-warn'}`}>
+              <span className="signal-dot" />
+              {sources.ok} of {sources.total} sources reporting
+            </p>
+          </header>
+
+          <div className="filters reveal reveal-1">
+        <Link
+          href={linkFor({ stream: undefined })}
+          className={!stream ? 'active' : ''}
+          aria-current={!stream ? 'true' : undefined}
+        >
           All
         </Link>
         {Object.entries(STREAMS).map(([key, label]) => (
@@ -186,6 +338,7 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
             key={key}
             href={linkFor({ stream: key })}
             className={stream === key ? 'active' : ''}
+            aria-current={stream === key ? 'true' : undefined}
           >
             {label}
           </Link>
@@ -193,6 +346,7 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
         <Link
           href={linkFor({ opp: opp === '1' ? undefined : '1' })}
           className={opp === '1' ? 'active' : ''}
+          aria-current={opp === '1' ? 'true' : undefined}
         >
           <Flag />
           Opportunities
@@ -200,11 +354,12 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
         <Link
           href={linkFor({ filtered: filtered === '1' ? undefined : '1' })}
           className={filtered === '1' ? 'active' : ''}
+          aria-current={filtered === '1' ? 'true' : undefined}
           title="Items the enrichment agent screened out as not radar material"
         >
           Screened out
         </Link>
-        <form action="/" method="get" className="search">
+        <form action="/#radar-feed" method="get" className="search">
           {stream ? <input type="hidden" name="stream" value={stream} /> : null}
           {opp === '1' ? <input type="hidden" name="opp" value="1" /> : null}
           {filtered === '1' ? <input type="hidden" name="filtered" value="1" /> : null}
@@ -214,9 +369,9 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
           </label>
           <input id="feed-search" name="q" placeholder="Search the radar" defaultValue={q ?? ''} />
         </form>
-      </div>
+          </div>
 
-      <div className="workspace">
+          <div className="workspace">
         <div className="workspace-main">
           {rows.length === 0 ? (
             <div className="empty-state">
@@ -239,19 +394,21 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
                       <span className="badge">{i.stream ? STREAMS[i.stream] : 'Unclassified'}</span>
                     </div>
                     <div className="item-body">
-                      {href ? (
-                        <a
-                          className="item-title"
-                          href={href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {i.title}
-                          <ArrowUpRight />
-                        </a>
-                      ) : (
-                        <span className="item-title">{i.title}</span>
-                      )}
+                      <h3>
+                        {href ? (
+                          <a
+                            className="item-title"
+                            href={href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {i.title}
+                            <ArrowUpRight />
+                          </a>
+                        ) : (
+                          <span className="item-title">{i.title}</span>
+                        )}
+                      </h3>
                       {i.blurb || i.excerpt ? (
                         <p className="item-blurb">{i.blurb ?? i.excerpt}</p>
                       ) : null}
@@ -312,7 +469,9 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
             </Link>
           </section>
         </aside>
-      </div>
-    </div>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }

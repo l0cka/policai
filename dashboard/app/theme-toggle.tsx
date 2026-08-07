@@ -71,7 +71,20 @@ export default function ThemeToggle() {
           aria-checked={choice === value}
           aria-label={label}
           title={label}
+          tabIndex={choice === value ? 0 : -1}
           onClick={() => select(value)}
+          onKeyDown={(event) => {
+            if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) return;
+            event.preventDefault();
+            const direction = event.key === 'ArrowRight' || event.key === 'ArrowDown' ? 1 : -1;
+            const currentIndex = OPTIONS.findIndex((option) => option.value === value);
+            const next = OPTIONS[(currentIndex + direction + OPTIONS.length) % OPTIONS.length];
+            select(next.value);
+            const radios = event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>(
+              '[role="radio"]',
+            );
+            radios?.[(currentIndex + direction + OPTIONS.length) % OPTIONS.length]?.focus();
+          }}
         >
           <Icon />
         </button>
