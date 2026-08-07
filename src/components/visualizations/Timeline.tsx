@@ -77,7 +77,7 @@ export function Timeline({ events, selectedJurisdiction, onEventClick }: Timelin
                   key={event.id}
                   style={jurisdictionRailStyle(event.jurisdiction)}
                   onClick={() => onEventClick?.(event)}
-                  className="ink-rail content-auto group grid cursor-pointer gap-2 border-b border-border py-4 pl-3 transition-colors duration-[var(--dur-fast)] hover:bg-[var(--row-hover)] sm:grid-cols-[6.5rem_7rem_minmax(0,1fr)] lg:grid-cols-[6.5rem_7rem_minmax(0,1fr)_9rem_9rem]"
+                  className="ink-rail group grid cursor-pointer gap-2 border-b border-border py-4 pl-3 transition-colors duration-[var(--dur-fast)] hover:bg-[var(--row-hover)] sm:grid-cols-[6.5rem_7rem_minmax(0,1fr)] lg:grid-cols-[6.5rem_7rem_minmax(0,1fr)_9rem_9rem]"
                 >
                   <time className="font-mono text-[10px] uppercase text-muted-foreground">
                     {formatPolicyDate(
