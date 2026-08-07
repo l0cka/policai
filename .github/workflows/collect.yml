@@ -1,9 +1,8 @@
 name: Collect AI policy developments
 
+# Scheduling moved to Argus server (systemd timer policai-collect.timer);
+# this workflow remains as a manual fallback.
 on:
-  schedule:
-    # Daily at ~05:30 Australia/Sydney (19:30 UTC previous day)
-    - cron: "30 19 * * *"
   workflow_dispatch:
     inputs:
       source:

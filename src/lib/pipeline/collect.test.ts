@@ -1,11 +1,42 @@
 /* @vitest-environment node */
 
-import { describe, expect, it, vi } from 'vitest';
+import { readFileSync } from 'node:fs';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { buildPolicy, buildTimelineEvent } from '@/test/factories';
 import type { WatchSource } from './sources';
 
+// vi.mock is hoisted above every import, including plain top-level const
+// declarations in this file, so the mock fn must come from vi.hoisted().
+// Every test gets a resolved default of ok:false so unrelated
+// browser-fallback tests keep exercising Playwright without needing to know
+// Firecrawl exists; tests about Firecrawl routing override this per-case.
+const { scrapeWithFirecrawl } = vi.hoisted(() => ({
+  scrapeWithFirecrawl: vi.fn(),
+}));
+vi.mock('./firecrawl', () => ({ scrapeWithFirecrawl }));
+
+// Same hoisting requirement as above. classifyBatch is only ever invoked when
+// USE_CLAUDE_CLASSIFIER is stubbed on for a test; every other test leaves it
+// unmocked-but-uncalled, which is fine since the collector never reaches it
+// with the flag off.
+const { classifyBatch } = vi.hoisted(() => ({
+  classifyBatch: vi.fn(),
+}));
+vi.mock('./claude-classify', () => ({ classifyBatch, CLAUDE_BATCH_SIZE: 20 }));
+
 import { collect, collectionRunFailed, emptyWatchState } from './collect';
+import { MACHINE_CONFIDENCE_CAP } from './classify';
 import { validateSourceReviews } from '../validate-data';
+
+beforeEach(() => {
+  scrapeWithFirecrawl.mockReset();
+  scrapeWithFirecrawl.mockResolvedValue({
+    ok: false,
+    reason: 'unavailable',
+    detail: 'not mocked for this test',
+  });
+  classifyBatch.mockReset();
+});
 
 describe('collection CLI failure policy', () => {
   it('fails targeted diagnostics when any source error is reported', () => {
@@ -1979,6 +2010,112 @@ describe('collect browser fallback', () => {
     expect(result.meta.collector.sourceResults[0].status).toBe('success');
   });
 
+  it('tries Firecrawl before the headless browser for a browser-strategy candidate page', async () => {
+    const browserSource: WatchSource = {
+      ...HTML_SOURCE,
+      fetchStrategy: 'browser',
+    };
+    const fetchImpl = fakeFetch({});
+    // The index itself is still retrieved through the headless browser —
+    // Firecrawl only stands in for the per-candidate page fetch — so the
+    // index route must resolve for the source to discover any candidates.
+    const browserFetchImpl = fakeFetch({
+      'https://www.example.gov.au/news': INDEX_HTML,
+    });
+    scrapeWithFirecrawl.mockImplementation(async (url: string) => ({
+      ok: true,
+      markdown: `# New AI policy framework released\n\nFirecrawl-sourced content for ${url}.`,
+      title: 'New AI policy framework released',
+      sourceUrl: url,
+    }));
+
+    const result = await collect({
+      sources: [browserSource],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl,
+      browserFetchImpl,
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+    });
+
+    expect(scrapeWithFirecrawl).toHaveBeenCalledWith(
+      'https://www.example.gov.au/news/ai-policy-framework',
+    );
+    expect(browserFetchImpl).toHaveBeenCalledWith(
+      'https://www.example.gov.au/news',
+      expect.anything(),
+    );
+    expect(browserFetchImpl).not.toHaveBeenCalledWith(
+      'https://www.example.gov.au/news/ai-policy-framework',
+      expect.anything(),
+    );
+    expect(result.errors).toEqual([]);
+    expect(result.meta.collector.sourceResults[0].status).toBe('success');
+    expect(
+      result.developments.map((development) => development.url),
+    ).toContain('https://www.example.gov.au/news/ai-policy-framework');
+  });
+
+  it('falls through to the headless browser when Firecrawl cannot serve a candidate page', async () => {
+    const browserSource: WatchSource = {
+      ...HTML_SOURCE,
+      fetchStrategy: 'browser',
+    };
+    const fetchImpl = fakeFetch({});
+    const browserFetchImpl = fakeFetch({
+      'https://www.example.gov.au/news': INDEX_HTML,
+      'https://www.example.gov.au/news/ai-policy-framework':
+        '<html><body><h1>New AI policy framework released</h1></body></html>',
+      'https://www.example.gov.au/news/seen-before':
+        '<html><body><h1>Existing AI governance standard update</h1></body></html>',
+    });
+    scrapeWithFirecrawl.mockResolvedValue({
+      ok: false,
+      reason: 'unavailable',
+      detail: 'connection refused',
+    });
+
+    const result = await collect({
+      sources: [browserSource],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl,
+      browserFetchImpl,
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+    });
+
+    expect(scrapeWithFirecrawl).toHaveBeenCalledWith(
+      'https://www.example.gov.au/news/ai-policy-framework',
+    );
+    expect(browserFetchImpl).toHaveBeenCalledWith(
+      'https://www.example.gov.au/news/ai-policy-framework',
+      expect.anything(),
+    );
+    expect(result.errors).toEqual([]);
+    expect(result.meta.collector.sourceResults[0].status).toBe('success');
+  });
+
+  it('does not consult Firecrawl for default http-strategy sources', async () => {
+    const fetchImpl = fakeFetch({
+      'https://www.example.gov.au/news': INDEX_HTML,
+      'https://www.example.gov.au/news/ai-policy-framework':
+        '<html><body><h1>New AI policy framework released</h1></body></html>',
+      'https://www.example.gov.au/news/seen-before':
+        '<html><body><h1>Existing AI governance standard update</h1></body></html>',
+    });
+
+    const result = await collect({
+      sources: [HTML_SOURCE],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl,
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+    });
+
+    expect(scrapeWithFirecrawl).not.toHaveBeenCalled();
+    expect(result.errors).toEqual([]);
+  });
+
   it('still reports failure when both retrievers fail', async () => {
     const result = await collect({
       sources: [HTML_SOURCE],
@@ -2065,5 +2202,160 @@ describe('collect browser fallback', () => {
 
     expect(result.errors).toHaveLength(1);
     expect(result.meta.collector.sourceResults[0].status).toBe('error');
+  });
+});
+
+describe('collect with Claude classifier', () => {
+  // Same fixture as 'detects new items, skips seen URLs, and updates state'
+  // above: one candidate ('seen-before') is already known and filtered out
+  // during dedup, so exactly one surviving candidate reaches classifyBatch.
+  const CANDIDATE_URL = 'https://www.example.gov.au/news/ai-policy-framework';
+
+  function stateWithSeenBefore() {
+    const state = emptyWatchState();
+    state.seen['https://www.example.gov.au/news/seen-before'] = {
+      firstSeenAt: '2026-06-01T00:00:00.000Z',
+      sourceId: 'test-html',
+    };
+    return state;
+  }
+
+  function collectWithOneCandidate() {
+    return collect({
+      sources: [HTML_SOURCE],
+      state: stateWithSeenBefore(),
+      existingDevelopments: [],
+      fetchImpl: fakeFetch({
+        'https://www.example.gov.au/news': INDEX_HTML,
+        [CANDIDATE_URL]:
+          '<html><body><h1>New AI policy framework released</h1></body></html>',
+      }),
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+    });
+  }
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it('never marks a Claude-classified development as verified', async () => {
+    vi.stubEnv('USE_CLAUDE_CLASSIFIER', '1');
+    classifyBatch.mockResolvedValueOnce([
+      {
+        id: CANDIDATE_URL,
+        relevant: true,
+        confidence: 0.99,
+        jurisdiction: 'federal',
+        type: 'guideline',
+        summary: 'A summary.',
+      },
+    ]);
+
+    const result = await collectWithOneCandidate();
+
+    const development = result.developments.find(
+      (d) => d.url === CANDIDATE_URL,
+    );
+    expect(development).toBeDefined();
+    expect(development?.classification).toBe('ai');
+    expect(development?.verification.status).not.toBe('verified');
+  });
+
+  it('leaves the curated register untouched when Claude is enabled', async () => {
+    vi.stubEnv('USE_CLAUDE_CLASSIFIER', '1');
+    classifyBatch.mockResolvedValueOnce([
+      {
+        id: CANDIDATE_URL,
+        relevant: true,
+        confidence: 0.9,
+        jurisdiction: null,
+        type: null,
+        summary: 'Another summary.',
+      },
+    ]);
+    const before = readFileSync('data/policies.json', 'utf8');
+
+    await collectWithOneCandidate();
+
+    expect(readFileSync('data/policies.json', 'utf8')).toBe(before);
+  });
+
+  it('maps Claude verdicts onto the development, calling classifyBatch once for the source', async () => {
+    vi.stubEnv('USE_CLAUDE_CLASSIFIER', '1');
+    // Confidence deliberately at-or-below MACHINE_CONFIDENCE_CAP here so this
+    // test pins the straightforward field mapping; the high-confidence
+    // capping behaviour has its own dedicated regression test below.
+    classifyBatch.mockResolvedValueOnce([
+      {
+        id: CANDIDATE_URL,
+        relevant: true,
+        confidence: 0.6,
+        jurisdiction: 'nsw',
+        type: 'framework',
+        summary: 'Claude summary.',
+      },
+    ]);
+
+    const result = await collectWithOneCandidate();
+
+    expect(classifyBatch).toHaveBeenCalledTimes(1);
+    const development = result.developments.find(
+      (d) => d.url === CANDIDATE_URL,
+    );
+    expect(development).toMatchObject({
+      classification: 'ai',
+      jurisdiction: 'nsw',
+      relevanceScore: 0.6,
+      summary: 'Claude summary.',
+    });
+  });
+
+  it('caps a high-confidence Claude verdict for storage while still gating it for review', async () => {
+    // Regression pin: confidence must do two separate jobs. 0.99 is far
+    // above minScoreForReview (0.7), so the item must still reach the review
+    // queue (the collector must not silently drop a confident detection) —
+    // but the score written into Development/SourceReview must never exceed
+    // MACHINE_CONFIDENCE_CAP, matching the deterministic path's convention
+    // that stored machine confidence always reads as needs-review, not as a
+    // near-certain verification.
+    vi.stubEnv('USE_CLAUDE_CLASSIFIER', '1');
+    classifyBatch.mockResolvedValueOnce([
+      {
+        id: CANDIDATE_URL,
+        relevant: true,
+        confidence: 0.99,
+        jurisdiction: 'federal',
+        type: 'guideline',
+        summary: 'High-confidence Claude summary.',
+      },
+    ]);
+
+    const result = await collectWithOneCandidate();
+
+    const development = result.developments.find(
+      (d) => d.url === CANDIDATE_URL,
+    );
+    expect(development).toBeDefined();
+    expect(development?.relevanceScore).toBeLessThanOrEqual(
+      MACHINE_CONFIDENCE_CAP,
+    );
+
+    const review = result.reviewCandidates.find(
+      (r) => r.sourceUrl === CANDIDATE_URL,
+    );
+    expect(review).toBeDefined();
+    expect(review?.analysis.relevanceScore).toBeLessThanOrEqual(
+      MACHINE_CONFIDENCE_CAP,
+    );
+  });
+
+  it('keeps the deterministic heuristic path when the flag is unset', async () => {
+    const result = await collectWithOneCandidate();
+
+    expect(classifyBatch).not.toHaveBeenCalled();
+    const development = result.developments.find(
+      (d) => d.url === CANDIDATE_URL,
+    );
+    expect(development?.classification).toBe('heuristic');
   });
 });

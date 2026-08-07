@@ -214,13 +214,14 @@ Recorded here so the next phase starts from evidence rather than a fresh survey:
   ruleset. Whether `l0cka` can push to `main` directly is unverified and is a
   precondition for Phase 2.
 - Claude Code 2.1.221 is installed on Argus with credentials present.
-  `ANTHROPIC_API_KEY` is not set in a non-interactive environment, so the auth
-  model for an unattended run is an open question.
+  `ANTHROPIC_API_KEY` is not set in a non-interactive environment; the auth
+  model for an unattended run is decided — it reuses the host's Claude Code
+  credentials already present on Argus, rather than an API key.
 - The collector needs headless Chromium; the workflow installs it with
   `playwright-core install --with-deps chromium`.
 - `collect.yml` contains two guards worth preserving: `npm run validate:data`,
   and a check that the collector never modifies `data/policies.json`. Both
   matter more, not less, once a model is involved.
-- Phase 2 must rewrite the methodology page, `AGENTS.md` and the trust model,
-  which currently state that analysis is deterministic with no external AI
-  provider.
+- The methodology page, `AGENTS.md` and the trust model have been rewritten on
+  this branch to describe the Claude-assisted analysis; they previously stated
+  that analysis was deterministic with no external AI provider.

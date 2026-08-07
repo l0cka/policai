@@ -11,7 +11,14 @@ import type {
   TimelineEventDraft,
 } from '@/types';
 import { normalizeJurisdiction, normalizePolicyType } from '@/types';
-import { classifyCandidate, type Classification } from './classify';
+import {
+  classifyCandidate,
+  classifyCandidatesWithClaude,
+  classificationFromVerdict,
+  isClaudeClassifierEnabled,
+  type Classification,
+} from './classify';
+import type { ClaudeVerdict } from './claude-classify';
 import { extractRetrievedDocument } from './content';
 import {
   extractFromHtml,
@@ -23,6 +30,7 @@ import {
   SourceFetchError,
   type RetrievedSource,
 } from './fetch';
+import { scrapeWithFirecrawl } from './firecrawl';
 import {
   getAutomaticSources,
   WATCH_SOURCES,
@@ -143,6 +151,31 @@ function isBrowserFallbackFutile(error: unknown): boolean {
     error instanceof SourceFetchError &&
     error.code === 'destination_mismatch'
   );
+}
+
+/**
+ * Wraps already-fetched Firecrawl markdown in a synthetic Response and
+ * replays it through retrieveSource(), instead of re-deriving evidence
+ * (content hash, canonicalized URL, bot-challenge checks) by hand. This
+ * keeps a Firecrawl-sourced RetrievedSource identical in shape and
+ * provenance rules to one fetched over HTTP or through Playwright.
+ */
+async function retrievedSourceFromFirecrawl(
+  markdown: string,
+  url: string,
+  now: () => Date,
+): Promise<RetrievedSource> {
+  const replayFetch: typeof fetch = async () =>
+    // text/plain, not text/markdown: extractRetrievedDocument only knows how
+    // to read HTML, XML, or plain text bodies. Markdown reads fine as plain
+    // text — cheerio treats it as one untagged text node — but a
+    // text/markdown content type would hit the "unsupported content type"
+    // guard and fail every Firecrawl-sourced candidate.
+    new Response(markdown, {
+      status: 200,
+      headers: { 'content-type': 'text/plain; charset=utf-8' },
+    });
+  return retrieveSource(url, { fetchImpl: replayFetch, now });
 }
 
 export function emptyWatchState(): WatchState {
@@ -1021,6 +1054,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     options.minScoreForReview ?? DEFAULT_MIN_SCORE_FOR_REVIEW;
   const minHealthySourceRate =
     options.minHealthySourceRate ?? DEFAULT_MIN_HEALTHY_SOURCE_RATE;
+  const useClaudeClassifier = isClaudeClassifierEnabled();
 
   const state: WatchState = {
     seen: { ...options.state.seen },
@@ -1086,6 +1120,23 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
       url: string,
     ): Promise<RetrievedSource> => {
       if (preferBrowser) {
+        // Firecrawl runs on the self-hosted Argus stack ahead of the
+        // in-process headless browser: it's cheaper per page and avoids
+        // spinning up Playwright for hosts we already know need a real
+        // browser. Any ok:false — timeout, unavailable, http_error, empty —
+        // falls through to Playwright rather than failing the candidate, so
+        // this stays reversible while Firecrawl reliability is proven out.
+        const firecrawled = await scrapeWithFirecrawl(url);
+        if (firecrawled.ok) {
+          return retrievedSourceFromFirecrawl(
+            firecrawled.markdown,
+            url,
+            () => now,
+          );
+        }
+        log(
+          `[collect] ${source.id}: Firecrawl unavailable for ${url} (${firecrawled.reason}), retrying with the browser retriever`,
+        );
         return retrieveSource(url, {
           fetchImpl: browserFetchImpl,
           now: () => now,
@@ -1432,6 +1483,24 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
       `[collect] ${source.id}: ${candidateCount} candidates, ${newCandidateCount} new, ${pending.length} pending`,
     );
 
+    // Claude classification runs once for this source's surviving (deduped)
+    // candidates rather than inside the per-candidate loop below — see
+    // classifyCandidatesWithClaude's doc comment for why per-candidate calls
+    // would be a real cost regression. A ClaudeAuthError here is intentionally
+    // not caught: it propagates out of collect() and fails the run, since a
+    // human needs to re-authenticate rather than the collector papering over it.
+    const claudeVerdictsById: Map<string, ClaudeVerdict> | null =
+      useClaudeClassifier
+        ? await classifyCandidatesWithClaude(
+            candidates.map((candidate) => ({
+              id: candidateStateKey(candidate),
+              title: candidate.title,
+              text: candidate.text,
+            })),
+            source.name,
+          )
+        : null;
+
     let candidateFailureCount = 0;
     for (const candidate of candidates) {
       const headlineKey = candidateHeadlineKey(candidate, nowIso);
@@ -1587,10 +1656,12 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         state.lastCheckedBySource[source.id] = nowIso;
       }
 
-      const initialClassification = await classifyCandidate(
-        enrichedCandidate,
-        document.text,
-      );
+      const initialClassification = useClaudeClassifier
+        ? classificationFromVerdict(
+            claudeVerdictsById?.get(candidateStateKey(candidate)),
+            enrichedCandidate,
+          )
+        : await classifyCandidate(enrichedCandidate, document.text);
       const classification: Classification = existingPolicy
         ? {
             ...initialClassification,
@@ -1660,7 +1731,12 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
 
       if (
         classification.classification === 'heuristic' ||
-        classification.relevanceScore >= minScoreForReview
+        // Claude's relevanceScore is capped for storage (see
+        // MACHINE_CONFIDENCE_CAP in classify.ts), so the capped value would
+        // never clear minScoreForReview. rawConfidence carries the
+        // uncapped verdict for this decision only; it is never persisted.
+        (classification.rawConfidence ?? classification.relevanceScore) >=
+          minScoreForReview
       ) {
         const parsedFingerprint = parseChangeFingerprint(
           enrichedCandidate.changeFingerprint,
