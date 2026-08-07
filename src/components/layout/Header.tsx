@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, ChevronDown, Search } from 'lucide-react';
+import { ArrowUpRight, Menu, ChevronDown, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Sheet,
@@ -205,6 +205,20 @@ export function Header({ dataCurrentAt }: { dataCurrentAt: string | null }) {
               </div>
             )}
           </div>
+
+          {/* Sibling property, not a register route: no active state, and the
+              arrow signals leaving this app. */}
+          <a
+            href="https://probono.policai.org"
+            className="group relative flex h-full items-center gap-1 px-1 text-[15px] font-medium text-muted-foreground transition-colors duration-[var(--dur-fast)] hover:text-foreground"
+          >
+            A2J
+            <ArrowUpRight className="h-3.5 w-3.5 opacity-55 transition duration-[var(--dur-base)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:opacity-100" />
+            <span
+              aria-hidden="true"
+              className="absolute inset-x-0 bottom-0 h-[3px] origin-left scale-x-0 bg-primary transition-transform duration-[var(--dur-base)] ease-[var(--ease-out-quint)] group-hover:scale-x-100"
+            />
+          </a>
         </nav>
 
         <div className="ml-auto flex items-center gap-1.5 sm:gap-2.5">
@@ -261,6 +275,14 @@ export function Header({ dataCurrentAt }: { dataCurrentAt: string | null }) {
                     {item.label}
                   </Link>
                 ))}
+                <div className="my-2 border-t border-border" />
+                <a
+                  href="https://probono.policai.org"
+                  className="flex items-center gap-1.5 rounded px-3 py-2 text-sm font-medium text-muted-foreground transition-colors duration-[var(--dur-fast)] hover:bg-muted hover:text-foreground"
+                >
+                  A2J
+                  <ArrowUpRight className="h-3.5 w-3.5 opacity-55" />
+                </a>
                 <div className="my-3 border-t border-border" />
                 <div className="flex items-center justify-between px-3">
                   <span className="font-mono text-[10px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
