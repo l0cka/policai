@@ -938,6 +938,426 @@ main {
   color: var(--muted-foreground);
 }
 
+/* ---------------------------------------------------------------- sector -- */
+
+.section-heading {
+  margin-top: 3rem;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.5rem;
+  letter-spacing: -0.015em;
+}
+
+.section-intro {
+  margin-top: 0.65rem;
+  max-width: 68ch;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--muted-foreground);
+}
+
+.section-intro a {
+  color: var(--primary);
+}
+
+.section-intro a:hover {
+  text-decoration: underline;
+}
+
+/* The diagram scrolls inside its own frame so the page never scrolls sideways. */
+.diagram {
+  margin: 1.5rem 0 0;
+}
+
+.diagram-frame {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--card);
+  padding: 1.25rem;
+}
+
+.diagram-frame svg {
+  display: block;
+  min-width: 900px;
+  width: 100%;
+  height: auto;
+  color: var(--foreground);
+}
+
+.d-box {
+  fill: var(--background);
+  stroke: var(--rule);
+  stroke-width: 1.25;
+}
+
+.d-box-key {
+  fill: var(--status-amended-bg);
+  stroke: var(--primary);
+  stroke-width: 1.5;
+}
+
+.d-box-pb {
+  fill: var(--status-proposed-bg);
+  stroke: var(--caution);
+  stroke-width: 1.5;
+}
+
+.d-box-out {
+  fill: var(--status-active-bg);
+  stroke: var(--trust);
+  stroke-width: 1.5;
+}
+
+.d-t {
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 600;
+  fill: currentColor;
+}
+
+.d-s {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  fill: var(--muted-foreground);
+}
+
+.d-n {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  fill: var(--muted-foreground);
+}
+
+.d-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  fill: var(--muted-foreground);
+}
+
+.d-flow {
+  stroke: var(--primary);
+  stroke-width: 1.6;
+  fill: none;
+}
+
+.d-flow-pb {
+  stroke: var(--caution);
+}
+
+.d-flow-by {
+  stroke: var(--muted-foreground);
+  stroke-width: 1.4;
+  stroke-dasharray: 5 4;
+}
+
+.diagram figcaption {
+  margin-top: 0.9rem;
+  max-width: 72ch;
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  color: var(--muted-foreground);
+}
+
+.sector-callout {
+  margin-top: 2rem;
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--alarm);
+  border-radius: 0 0 6px 6px;
+  background: var(--card);
+  padding: 1.35rem 1.5rem;
+}
+
+.sector-callout h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.3rem;
+}
+
+.sector-callout p {
+  margin-top: 0.6rem;
+  max-width: 74ch;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--muted-foreground);
+}
+
+.sector-callout strong {
+  color: var(--foreground);
+  font-weight: 600;
+}
+
+/* Filter bar. Three rows tall, so it only sticks where there is room for it. */
+.sector-controls {
+  position: sticky;
+  top: 5.75rem;
+  z-index: 20;
+  margin-top: 1.25rem;
+  padding: 0.75rem 0;
+  background: color-mix(in srgb, var(--background) 94%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--rule-heavy);
+}
+
+@media (max-height: 820px), (max-width: 719px) {
+  .sector-controls {
+    position: static;
+  }
+}
+
+.ctrl-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ctrl-row + .ctrl-row {
+  margin-top: 0.55rem;
+}
+
+.ctrl-label {
+  width: 4.5rem;
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted-foreground);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  height: 2rem;
+  padding-inline: 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  transition: color var(--dur-fast), background-color var(--dur-fast),
+    border-color var(--dur-fast);
+}
+
+.pill:hover {
+  color: var(--foreground);
+  background: var(--row-hover);
+}
+
+.pill[aria-pressed='true'] {
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.pill-n {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  opacity: 0.7;
+}
+
+.sector-search {
+  position: relative;
+  flex: 1 1 14rem;
+  min-width: 11rem;
+  display: flex;
+  align-items: center;
+}
+
+.sector-search svg {
+  position: absolute;
+  left: 0.7rem;
+  height: 1rem;
+  width: 1rem;
+  color: var(--muted-foreground);
+  pointer-events: none;
+}
+
+.sector-search input {
+  height: 2rem;
+  width: 100%;
+  border: 1px solid var(--input);
+  border-radius: 0;
+  background: var(--background);
+  color: inherit;
+  font: inherit;
+  font-size: 0.875rem;
+  padding: 0 0.7rem 0 2.2rem;
+  outline: none;
+  transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
+}
+
+.sector-search input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 15%, transparent);
+}
+
+.sector-count {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted-foreground);
+}
+
+.sector-tier {
+  margin-top: 2.5rem;
+  scroll-margin-top: 12rem;
+}
+
+.sector-tier-head {
+  padding-bottom: 0.5rem;
+}
+
+.sector-tier-blurb {
+  margin-top: 0.4rem;
+  max-width: 72ch;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+
+.sector-tier-cov {
+  margin-top: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted-foreground);
+}
+
+.sector-orgs {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0;
+}
+
+@media (min-width: 860px) {
+  .sector-orgs {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 2.5rem;
+  }
+}
+
+.sector-org {
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--rule-hair);
+}
+
+.sector-org-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+}
+
+.sector-org h3 {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.sector-org h3 a:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.sector-abbr {
+  margin-left: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+}
+
+.radar-dot {
+  margin-left: 0.4rem;
+  font-size: 0.7rem;
+  vertical-align: 0.12em;
+  color: var(--trust);
+}
+
+.jur {
+  flex-shrink: 0;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  background: var(--muted);
+  color: var(--muted-foreground);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.jur-national {
+  background: var(--status-amended-bg);
+  color: var(--primary);
+}
+
+.sector-role {
+  margin-top: 0.3rem;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--muted-foreground);
+}
+
+.sector-funded {
+  margin-top: 0.3rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+  opacity: 0.78;
+}
+
+.sector-funded span {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.sector-method {
+  margin-top: 1rem;
+}
+
+.sector-note {
+  border-bottom: 1px solid var(--rule-hair);
+}
+
+.sector-note summary {
+  padding-block: 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+}
+
+.sector-note summary:hover {
+  color: var(--primary);
+}
+
+.sector-note p {
+  margin-bottom: 1rem;
+  max-width: 82ch;
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  color: var(--muted-foreground);
+}
+
 /* ------------------------------------------------------------- deadlines -- */
 
 .timeline-month + .timeline-month {
