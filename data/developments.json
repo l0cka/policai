@@ -8,26 +8,57 @@
     "jurisdiction": "federal",
     "publishedAt": "2026-08-06",
     "publishedAtPrecision": "day",
-    "detectedAt": "2026-08-07T02:13:54.722Z",
-    "summary": "Keynote by DTA Deputy CEO Lucy Poole on scaling AI from pilots to whole-of-government adoption across the Australian Public Service.",
-    "relevanceScore": 0.65,
-    "classification": "ai",
+    "detectedAt": "2026-08-07T00:47:19.725Z",
+    "summary": "7 August 2026 Tags Artificial Intelligence Lucy Poole, Deputy CEO, Strategy, Planning and Performance Division - delivered the following address at the 2026 Tech in Gov event. NOTE: This speech was delivered on Tuesday 4 August 2026. Check against delivery. Opening: beyond the pilot graveyard Good morning, and thank you for the invitation to speak with you today. It is a privilege to join Tech in Gov’s AI stream to talk about moving artificial intelligence from promising pilots to whole-of-government scale. When I spoke at this event last year, much of the discussion was about accelerating AI ",
+    "relevanceScore": 0.55,
+    "classification": "heuristic",
     "assessment": {
-      "method": "ai",
-      "promptVersion": "claude-classify-v1",
-      "assessedAt": "2026-08-07T02:13:54.722Z"
+      "method": "heuristic",
+      "promptVersion": "keyword-rules-v1",
+      "assessedAt": "2026-08-07T00:47:19.725Z"
     },
     "verification": {
       "status": "needs_review",
       "source": {
         "url": "https://www.dta.gov.au/articles/speech-moving-ai-pilots-whole-government-scale",
         "finalUrl": "https://www.dta.gov.au/articles/speech-moving-ai-pilots-whole-government-scale",
-        "retrievedAt": "2026-08-07T02:13:54.722Z",
-        "contentType": "text/plain",
-        "contentHash": "f7453f4572d23450dd3ad43ef74914ad04387f3fbcfc54122489f89d44eb27d2",
+        "retrievedAt": "2026-08-07T00:47:19.725Z",
+        "contentType": "text/html",
+        "contentHash": "2aa47d2d2fbf32032932fdc64f6e25b891f4da014213e6752db4e7f039eae118",
+        "etag": "\"1786062048\"",
+        "lastModified": "Fri, 07 Aug 2026 00:20:48 GMT",
         "title": "Speech: Moving from AI pilots to whole-of-government scale",
         "publishedAt": "2026-08-06",
         "publishedAtPrecision": "day"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-artificial-intelligence-governance-policy-p86jgk",
+    "title": "Artificial intelligence governance policy",
+    "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
+    "sourceId": "qld-qgea-ai",
+    "sourceName": "Queensland QGEA — AI governance policy",
+    "jurisdiction": "qld",
+    "detectedAt": "2026-08-07T00:47:19.725Z",
+    "summary": "The official source content for \"Artificial intelligence governance policy\" changed. Editorial re-verification is required before the register record can be treated as current.",
+    "relevanceScore": 1,
+    "classification": "heuristic",
+    "assessment": {
+      "method": "heuristic",
+      "promptVersion": "source-hash-change-v1",
+      "assessedAt": "2026-08-07T00:47:19.725Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
+        "finalUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
+        "retrievedAt": "2026-08-07T00:47:19.725Z",
+        "contentType": "text/html",
+        "contentHash": "8c919704dfc1fb7f65c92d54f0e124ee89a6fdde96ce3334cb5951887f6ffd45",
+        "title": "Artificial intelligence governance policy"
       }
     },
     "status": "detected"
