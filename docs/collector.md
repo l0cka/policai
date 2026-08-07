@@ -132,10 +132,23 @@ the newest version rejects older still-active update reviews as superseded.
 
 ## Classification
 
-The collector uses deterministic keyword rules only. Confidence is capped at
-0.65, so every automated detection displays as "Needs review" and remains
-subject to the same staged editorial process. Collection has no external model
-dependency and does not read provider credentials.
+Candidates that survive dedup are classified by keyword heuristic by default.
+When `USE_CLAUDE_CLASSIFIER` is set (it is, on the Argus timer), they are
+classified by Claude, an Anthropic model, instead, invoked in batches of
+`CLAUDE_BATCH_SIZE` (20) candidates per call through the Claude Code CLI
+already installed and authenticated on the host (`CLAUDE_BIN`, default
+`claude` on `PATH`). For each candidate Claude returns whether it is relevant,
+a confidence score, a jurisdiction/type guess, and a short draft summary. A
+verdict that fails schema validation is dropped, and that candidate falls back
+to the keyword heuristic rather than being persisted unchecked.
+
+Confidence from either path is capped at 0.65 (`MACHINE_CONFIDENCE_CAP`)
+before it is stored or shown, so every automated detection displays as "Needs
+review" and goes through the same staged editorial process regardless of
+which path produced it. `data/policies.json` is never written by either path:
+a Vitest test asserts the file is byte-identical before and after a
+Claude-enabled collection run, and a separate guard step fails the run if the
+file changed on disk (see Production automation below).
 
 ## Running locally
 
@@ -161,11 +174,22 @@ The source catalogue deliberately separates:
 
 Most previously-manual sources are automatic again since the collector gained
 a headless-browser retriever (`src/lib/pipeline/browser-fetch.ts`, Playwright
-Chromium). Sources marked `fetchStrategy: 'browser'` are retrieved through the
-browser directly; every other source falls back to the browser when the plain
-HTTP client is blocked or an index renders no extractable items. CI installs
-the browser with `npx playwright-core install --with-deps chromium` (cached
-between runs); without it the collector still runs, minus the fallback.
+Chromium). For sources marked `fetchStrategy: 'browser'`, the index or RSS
+listing page is still retrieved through the browser directly, because
+Firecrawl returns markdown and index parsing needs the page's HTML links.
+Candidate pages discovered from those sources are retrieved through a
+self-hosted Firecrawl instance on Argus first (`src/lib/pipeline/firecrawl.ts`),
+falling back to the browser when Firecrawl is unavailable, times out, or
+returns no usable markdown. Every other source falls back to the browser when
+the plain HTTP client is blocked or an index renders no extractable items. CI
+installs the browser with `npx playwright-core install --with-deps chromium`
+(cached between runs); without it the collector still runs, minus the
+fallback.
+
+Firecrawl is demand-started on Argus: a proxy on port 3003 wakes the stack on
+the first request and an idle timer stops it again, so the first candidate
+fetch after idle takes longer (around 17.5 seconds observed) than a warm one.
+`FIRECRAWL_URL` overrides the default `http://127.0.0.1:3003`.
 
 Manual sources remain enabled. Review them with a browser and record the result
 through the MCP `record_manual_source_review` tool, supplying the human
@@ -191,19 +215,29 @@ force the selected source regardless of its normal daily/weekly due time.
 
 ## Production automation
 
-[`.github/workflows/collect.yml`](../.github/workflows/collect.yml) runs daily at 19:30 UTC (~05:30 Sydney):
+Collection runs on a systemd timer on the Argus server
+(`policai-collect.timer`, 19:30 UTC daily / ~05:30 Sydney), from a checkout
+dedicated to the collector (`~/live/policai-collector`), separate from the
+checkout that serves the site. Each run:
 
 1. `npm run collect`
 2. `npm run validate:data`
 3. Guard: fail if `data/policies.json` changed
 4. Commit `developments.json`, `meta.json`, `watch-state.json`,
-   `source-reviews.json` and push, including failed-health and retry state
-5. If collection reported failed coverage, fail the job only after that
+   `source-reviews.json` and push to `main`, including failed-health and retry
+   state
+5. If collection reported failed coverage, fail the run only after that
    operational state is preserved
-6. On any failure: open (or comment on) an issue labelled `collector-failure`
-   so scheduled breakage is never silent
 
-The host pulls the push on its timer. Because pages read the JSON from disk at request time and revalidate hourly, the new data appears without a rebuild or a restart. Manual runs: Actions → "Collect AI policy developments" → Run workflow (optionally with a single source id).
+[`.github/workflows/collect.yml`](../.github/workflows/collect.yml) no longer
+schedules collection; it is kept as a manual fallback
+(Actions → "Collect AI policy developments" → Run workflow, optionally with a
+single source id) and runs the same steps, including opening or commenting on
+an issue labelled `collector-failure` on any failure.
+
+The site's own checkout pulls the push on its timer. Because pages read the
+JSON from disk at request time and revalidate hourly, the new data appears
+without a rebuild or a restart.
 
 The CLI persists source reviews and developments before advancing
 `watch-state.json`. Stable review/development ids make a retry idempotent if an
@@ -212,7 +246,7 @@ version cannot be lost merely because its state write completed first.
 
 **Repository configuration:**
 
-- `COLLECTOR_DEPLOY_KEY` secret — private half of the repo's write deploy key ("collector (collect.yml push)"). Checkout uses it (`ssh-key:`) so the push authenticates as the deploy key, and the "Protect main" ruleset lists **Deploy keys** as a bypass actor (`bypass_mode: always`). Without this pair the push is rejected with `GH013: Repository rule violations` — the default `GITHUB_TOKEN` cannot be a bypass actor on a user-owned repo. The safety story does not depend on the ruleset here: the registry-guard step and CI both enforce that automation never touches `policies.json`.
+- `COLLECTOR_DEPLOY_KEY` secret — private half of the repo's write deploy key ("collector (collect.yml push)"), used only by the GitHub Actions fallback run. Checkout uses it (`ssh-key:`) so the push authenticates as the deploy key, and the "Protect main" ruleset lists **Deploy keys** as a bypass actor (`bypass_mode: always`). Without this pair the fallback push is rejected with `GH013: Repository rule violations` — the default `GITHUB_TOKEN` cannot be a bypass actor on a user-owned repo. The Argus timer pushes over its own SSH-authenticated git remote and does not use this secret. The safety story does not depend on the ruleset here: the registry-guard step runs on both paths and enforces that automation never touches `policies.json`.
 
 ## Reviewing detections into the register
 

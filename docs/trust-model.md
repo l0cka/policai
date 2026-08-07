@@ -153,7 +153,7 @@ show:
 
 - the official URL and source catalogue entry;
 - when it was detected and, when available, published;
-- whether it was found by the current heuristic rules or a legacy assessment;
+- whether it was assessed by the keyword heuristic or by a model;
 - retrieval and assessment provenance for new detections; and
 - an unambiguous “Needs review” state.
 
