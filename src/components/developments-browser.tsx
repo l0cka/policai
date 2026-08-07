@@ -95,7 +95,7 @@ function DevelopmentFeed({ items }: { items: Development[] }) {
                 <article
                   key={development.id}
                   style={jurisdictionRailStyle(development.jurisdiction)}
-                  className="ink-rail content-auto grid gap-2 border-b border-border py-4 pl-3 transition-colors duration-[var(--dur-fast)] hover:bg-[var(--row-hover)] sm:grid-cols-[6.5rem_7rem_minmax(0,1fr)] lg:grid-cols-[6.5rem_7rem_minmax(0,1fr)_9rem_10rem]"
+                  className="ink-rail grid gap-2 border-b border-border py-4 pl-3 transition-colors duration-[var(--dur-fast)] hover:bg-[var(--row-hover)] sm:grid-cols-[6.5rem_7rem_minmax(0,1fr)] lg:grid-cols-[6.5rem_7rem_minmax(0,1fr)_9rem_10rem]"
                 >
                   <time className="font-mono text-[10px] uppercase text-muted-foreground">{developmentDate(development)}</time>
                   <div>

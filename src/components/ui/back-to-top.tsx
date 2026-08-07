@@ -37,7 +37,7 @@ export function BackToTop() {
           onClick={scrollToTop}
           size="icon"
           data-print-hidden
-          className="fixed bottom-8 right-8 z-50 rounded-full shadow-lg hover:shadow-xl transition-all"
+          className="fixed bottom-8 right-8 z-50 rounded-full shadow-[var(--shadow-raise)] hover:shadow-[var(--shadow-lift)] transition-all"
           aria-label="Scroll to top"
         >
           <ArrowUp className="h-5 w-5" />
