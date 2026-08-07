@@ -126,7 +126,7 @@ async function main() {
       const record = review.proposedRecord as PolicyDraft | TimelineEventDraft;
       const { date, precision } = recordDate(record);
       const sourceUrl =
-        ('sourceUrl' in record ? record.sourceUrl : undefined) ?? review.url;
+        ('sourceUrl' in record ? record.sourceUrl : undefined) ?? review.sourceUrl;
 
       const capture = decision.capture
         ? await firecrawlCapture(sourceUrl, decision.note)
