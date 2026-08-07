@@ -56,26 +56,40 @@
     "sourceName": "Queensland QGEA — AI governance policy",
     "jurisdiction": "qld",
     "detectedAt": "2026-08-07T03:01:55.185Z",
-    "summary": "The official source content for \"Artificial intelligence governance policy\" changed. Editorial re-verification is required before the register record can be treated as current.",
+    "summary": "Queensland whole-of-government policy for AI governance under the Queensland Government Enterprise Architecture.",
     "relevanceScore": 1,
-    "classification": "ai",
+    "classification": "curated",
     "assessment": {
-      "method": "ai",
-      "promptVersion": "claude-classify-v1",
-      "assessedAt": "2026-08-07T03:01:55.185Z"
+      "method": "editorial",
+      "assessedAt": "2026-08-07T05:11:55.571Z",
+      "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
         "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
         "finalUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
-        "retrievedAt": "2026-08-07T03:01:55.185Z",
+        "retrievedAt": "2026-08-07T05:11:55.521Z",
         "contentType": "text/html",
         "contentHash": "9a4acb92c2fdf0fb7c57c051d8f2420baeee642753c10586986664a5d77379ac",
-        "title": "Artificial intelligence governance policy"
-      }
+        "title": "Artificial intelligence governance policy",
+        "reviewedDate": {
+          "date": "2024-09-01",
+          "precision": "month",
+          "reviewedAt": "2026-08-07T05:11:55.571Z",
+          "reviewedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-08",
+          "notes": "Date confirmed against the live official source on 2026-08-08. QGEA AI governance policy — source states Policy, v1.0.0, Current/Mandated, Effective September 2024–current."
+        }
+      },
+      "checkedAt": "2026-08-07T05:11:55.571Z",
+      "checkedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-08",
+      "method": "manual",
+      "notes": "QGEA AI governance policy — source states Policy, v1.0.0, Current/Mandated, Effective September 2024–current."
     },
-    "status": "detected"
+    "status": "promoted",
+    "publishedAt": "2024-09-01",
+    "publishedAtPrecision": "month",
+    "relatedPolicyId": "queensland-ai-governance-policy"
   },
   {
     "id": "dev-speech-moving-from-ai-pilots-to-whole-of-governm-78k67w",
@@ -139,7 +153,8 @@
         "title": "Artificial intelligence governance policy"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Superseded by newer source update source-review-dev-artificial-intelligence-governance-policy-1oub5xk"
   },
   {
     "id": "dev-new-ai-frontier-cyber-threat-guidance-for-boards-gp4ujh",
@@ -152,29 +167,41 @@
     "publishedAtPrecision": "day",
     "detectedAt": "2026-08-05T20:44:21.554Z",
     "summary": "Boards of directors and senior leaders need to understand how newer frontier AI models are reshaping cyber threats. As advances in frontier AI models make it easier for cybercriminals to identify and exploit vulnerabilities, organisations face a growing threat from AI-enabled cyber attacks. To help boards respond, we have released in partnership with the Australian Institute of Company Directors (AICD), Frontier AI cyber threat considerations for boards of directors. The publication outlines frontier AI cyber threats and provides practical guidance to help organisations strengthen governance, ",
-    "relevanceScore": 0.65,
-    "classification": "heuristic",
+    "relevanceScore": 1,
+    "classification": "curated",
     "assessment": {
-      "method": "heuristic",
-      "promptVersion": "keyword-rules-v1",
-      "assessedAt": "2026-08-05T20:44:21.554Z"
+      "method": "editorial",
+      "assessedAt": "2026-08-07T05:11:57.484Z",
+      "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
         "url": "https://www.cyber.gov.au/about-us/view-all-content/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
         "finalUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
-        "retrievedAt": "2026-08-05T20:44:21.554Z",
+        "title": "New AI frontier cyber threat guidance for boards of directors | Cyber.gov.au",
+        "retrievedAt": "2026-08-07T05:11:57.458Z",
         "contentType": "text/html",
-        "contentHash": "0708311baf079d1f2da8c3e2bae1c5f6febb76599685230bae595b349edcb637",
-        "etag": "\"1785904692\"",
-        "lastModified": "Wed, 05 Aug 2026 04:38:12 GMT",
-        "title": "New AI frontier cyber threat guidance for boards of directors",
+        "contentHash": "ef74328d7eb33db4174de10c39a6a0ca467818f47da0673bd16a608675736daa",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-08-07T05:11:57.458Z",
+          "capturedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-08",
+          "notes": "Captured via self-hosted Firecrawl because the host refuses plain HTTP. ACSC frontier-AI guidance for boards — cyber.gov.au states First published 05 Aug 2026, AICD partnership confirmed.",
+          "pageContentHash": "81c152ac2f2d14064d1380c8386d13288b894b20aac56d2deefbda1e374c66df",
+          "characterCount": 21322
+        },
         "publishedAt": "2026-08-05",
         "publishedAtPrecision": "day"
-      }
+      },
+      "checkedAt": "2026-08-07T05:11:57.484Z",
+      "checkedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-08",
+      "method": "manual",
+      "notes": "ACSC frontier-AI guidance for boards — cyber.gov.au states First published 05 Aug 2026, AICD partnership confirmed."
     },
-    "status": "detected"
+    "status": "promoted",
+    "relatedPolicyId": "new-ai-frontier-cyber-threat-guidance-for-boards-of-director"
   },
   {
     "id": "dev-senate-opens-inquiry-into-artificial-intelligenc-womqb9",
@@ -184,26 +211,49 @@
     "sourceName": "Senate inquiry — artificial intelligence and data centres",
     "jurisdiction": "federal",
     "detectedAt": "2026-08-04T20:52:38.882Z",
-    "summary": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+    "summary": "The Senate inquiry covers AI and data-centre regulation, government deals, and community, industry, energy, water and environmental impacts. The official inquiry page now sets submissions to close on 1 September 2026 and the committee to report on 16 November 2026.",
     "relevanceScore": 1,
-    "classification": "heuristic",
+    "classification": "curated",
     "assessment": {
-      "method": "heuristic",
-      "promptVersion": "keyword-rules-v1",
-      "assessedAt": "2026-08-04T20:52:38.882Z"
+      "method": "editorial",
+      "assessedAt": "2026-08-07T05:12:26.678Z",
+      "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
         "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
         "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
-        "retrievedAt": "2026-08-04T20:52:38.882Z",
+        "title": "Artificial intelligence and data centres – Parliament of Australia",
+        "retrievedAt": "2026-08-07T05:12:26.630Z",
         "contentType": "text/html",
-        "contentHash": "445d6b17d017ca97a8eb6c839d3bceda6dd2aa6ce716bbd22aedb4881cd6619e",
-        "title": "Senate opens inquiry into artificial intelligence and data centres"
-      }
+        "contentHash": "9d851e0a221605c0a98ba2a6b62dfde9953c30df07612e1c1aca82dd12e27e99",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-08-07T05:12:26.630Z",
+          "capturedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-08",
+          "notes": "Captured via self-hosted Firecrawl because the host refuses plain HTTP. Senate AI and data centres inquiry — aph.gov.au states referred 13 May 2026, submissions close 1 Sep 2026, reporting 16 Nov 2026.",
+          "pageContentHash": "b889f363a2fe24088413342e1a7e514c14a5d44a531ed6891e1861e9107469a7",
+          "characterCount": 30089
+        },
+        "reviewedDate": {
+          "date": "2026-05-13",
+          "precision": "day",
+          "reviewedAt": "2026-08-07T05:12:26.678Z",
+          "reviewedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-08",
+          "notes": "Date confirmed against the live official source on 2026-08-08. Senate AI and data centres inquiry — aph.gov.au states referred 13 May 2026, submissions close 1 Sep 2026, reporting 16 Nov 2026."
+        }
+      },
+      "checkedAt": "2026-08-07T05:12:26.678Z",
+      "checkedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-08",
+      "method": "manual",
+      "notes": "Senate AI and data centres inquiry — aph.gov.au states referred 13 May 2026, submissions close 1 Sep 2026, reporting 16 Nov 2026."
     },
-    "status": "detected"
+    "status": "promoted",
+    "relatedTimelineEventId": "tl-2026-05-13-senate-ai-data-centres-inquiry",
+    "publishedAt": "2026-05-13",
+    "publishedAtPrecision": "day"
   },
   {
     "id": "dev-from-homework-to-heartache-why-children-are-turn-e0tsfo",
@@ -566,7 +616,8 @@
         "publishedAtPrecision": "day"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Out of scope: a securities-fraud prosecution of a company that used AI in its product, not an AI policy or governance development."
   },
   {
     "id": "dev-school-photo-posts-vulnerable-to-emerging-ai-thr-l9snlx",
@@ -641,27 +692,27 @@
     "sourceName": "vic.gov.au — generative AI guidance",
     "jurisdiction": "vic",
     "detectedAt": "2026-07-29T20:30:22.291Z",
-    "summary": "The official source content for \"Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector\" changed. Editorial re-verification is required before the register record can be treated as current.",
+    "summary": "Current Victorian public-sector guidance on the safe and responsible use of generative AI.",
     "relevanceScore": 1,
-    "classification": "heuristic",
+    "classification": "curated",
     "assessment": {
-      "method": "heuristic",
-      "promptVersion": "keyword-rules-v1",
-      "assessedAt": "2026-07-29T20:30:22.291Z"
+      "method": "editorial",
+      "assessedAt": "2026-08-07T05:10:38.082Z",
+      "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
         "url": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
         "finalUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
-        "retrievedAt": "2026-07-29T20:30:22.291Z",
+        "retrievedAt": "2026-08-07T05:10:37.597Z",
         "contentType": "text/html",
         "contentHash": "6013a3f65fd755391a25c8768410318375421342c47621c337baf604fe5abc71",
         "linkedDocuments": [
           {
             "url": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
             "finalUrl": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
-            "retrievedAt": "2026-07-29T20:30:22.291Z",
+            "retrievedAt": "2026-08-07T05:10:37.989Z",
             "contentType": "application/pdf",
             "contentHash": "ab6aa1576ba4d7cd255e3ddfe6214c6a873ff0ed079346fbc4c6a17892aa08ee",
             "etag": "\"2e976-612c9a53ad71b\"",
@@ -670,17 +721,32 @@
           {
             "url": "https://www.vic.gov.au/sites/default/files/2024-11/Generative-AI-Guideline-%281%29.pdf",
             "finalUrl": "https://www.vic.gov.au/sites/default/files/2024-11/Generative-AI-Guideline-%281%29.pdf",
-            "retrievedAt": "2026-07-29T20:30:22.291Z",
+            "retrievedAt": "2026-08-07T05:10:38.082Z",
             "contentType": "application/pdf",
             "contentHash": "eb114ba5e9e8614438dfc291a50aff04baffab52f070c9089f175c80895860bc",
             "etag": "\"67480ace-1e00c\"",
             "lastModified": "Thu, 28 Nov 2024 06:16:46 GMT"
           }
         ],
-        "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector"
-      }
+        "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector",
+        "reviewedDate": {
+          "date": "2024-11-27",
+          "precision": "day",
+          "reviewedAt": "2026-08-07T05:10:38.082Z",
+          "reviewedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-08",
+          "notes": "Date confirmed against the live official source on 2026-08-08. VIC Gen-AI VPS guideline — endorsed VSB 24 Sep 2024, made by Secretary DPC 27 Nov 2024, updated 12 Feb 2025; all three dates confirmed on vic.gov.au."
+        }
+      },
+      "checkedAt": "2026-08-07T05:10:38.082Z",
+      "checkedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-08",
+      "method": "manual",
+      "notes": "VIC Gen-AI VPS guideline — endorsed VSB 24 Sep 2024, made by Secretary DPC 27 Nov 2024, updated 12 Feb 2025; all three dates confirmed on vic.gov.au.",
+      "lastSourceAuditAt": "2026-07-16T10:00:09.144Z"
     },
-    "status": "detected"
+    "status": "promoted",
+    "publishedAt": "2024-11-27",
+    "publishedAtPrecision": "day",
+    "relatedPolicyId": "victoria-genai-guideline-vps"
   },
   {
     "id": "dev-artificial-intelligence-governance-policy-1oub5xm",
@@ -709,7 +775,8 @@
         "title": "Artificial intelligence governance policy"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Superseded by newer source update source-review-dev-artificial-intelligence-governance-policy-1oub5xk"
   },
   {
     "id": "dev-wa-government-artificial-intelligence-policy-and-1ctddce",
@@ -721,47 +788,48 @@
     "publishedAt": "2024-03-05",
     "publishedAtPrecision": "day",
     "detectedAt": "2026-07-29T20:30:22.291Z",
-    "summary": "The official source content for \"WA Government Artificial Intelligence Policy and Assurance Framework\" changed. Editorial re-verification is required before the register record can be treated as current.",
+    "summary": "Western Australia’s whole-of-government AI policy and assurance framework (first published 5 March 2024; policy version 2 released July 2025), with AI Accountable Officers, mandatory risk self-assessments and an AI Advisory Board review of higher-risk projects.",
     "relevanceScore": 1,
-    "classification": "heuristic",
+    "classification": "curated",
     "assessment": {
-      "method": "heuristic",
-      "promptVersion": "keyword-rules-v1",
-      "assessedAt": "2026-07-29T20:30:22.291Z"
+      "method": "editorial",
+      "assessedAt": "2026-08-07T05:11:58.525Z",
+      "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
         "url": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
         "finalUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
-        "retrievedAt": "2026-07-29T20:30:22.291Z",
-        "contentType": "text/html",
-        "contentHash": "ff73feaad957f83ed12c4b1e8b3dcd8b8b05c8703f7507b4779369cc4063359f",
-        "etag": "\"1785357307\"",
-        "lastModified": "Wed, 29 Jul 2026 20:35:07 GMT",
-        "linkedDocuments": [
-          {
-            "url": "https://www.finance.gov.au/sites/default/files/2024-06/National-framework-for-the-assurance-of-AI-in-government.pdf",
-            "finalUrl": "https://www.finance.gov.au/sites/default/files/2024-06/National-framework-for-the-assurance-of-AI-in-government.pdf",
-            "retrievedAt": "2026-07-29T20:30:22.291Z",
-            "contentType": "application/pdf",
-            "contentHash": "92e06dad15c4fc5141ced0ac356a8707f0356683ff7f66c0e30782d222fea167"
-          },
-          {
-            "url": "https://www.wa.gov.au/system/files/2025-07/ai_policyv2.pdf",
-            "finalUrl": "https://www.wa.gov.au/system/files/2025-07/ai_policyv2.pdf",
-            "retrievedAt": "2026-07-29T20:30:22.291Z",
-            "contentType": "application/pdf",
-            "contentHash": "f0474b1616dfdc3f14df3ef170096d99682ec423e15fd631aeedcae03aa542b6",
-            "lastModified": "Fri, 11 Jul 2025 05:16:14 GMT"
-          }
-        ],
         "title": "WA Government Artificial Intelligence Policy and Assurance Framework",
-        "publishedAt": "2024-03-05",
-        "publishedAtPrecision": "day"
-      }
+        "retrievedAt": "2026-08-07T05:11:58.501Z",
+        "contentType": "text/html",
+        "contentHash": "f338e6b4ba3763fca7be2df1a873e74cb90e0a504198c9edb4810c3cde13ee98",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-08-07T05:11:58.501Z",
+          "capturedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-08",
+          "notes": "Captured via self-hosted Firecrawl because the host refuses plain HTTP. WA AI Policy and Assurance Framework — wa.gov.au page confirmed; current instrument PDF is ai_policyv2.pdf under 2025-07.",
+          "pageContentHash": "81c813b3764a56e70e11261b36416adf6178e8c9b238de4e0f6031960143e3cf",
+          "characterCount": 31555
+        },
+        "reviewedDate": {
+          "date": "2024-03-05",
+          "precision": "day",
+          "reviewedAt": "2026-08-07T05:11:58.525Z",
+          "reviewedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-08",
+          "notes": "Date confirmed against the live official source on 2026-08-08. WA AI Policy and Assurance Framework — wa.gov.au page confirmed; current instrument PDF is ai_policyv2.pdf under 2025-07."
+        }
+      },
+      "checkedAt": "2026-08-07T05:11:58.525Z",
+      "checkedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-08",
+      "method": "manual",
+      "notes": "WA AI Policy and Assurance Framework — wa.gov.au page confirmed; current instrument PDF is ai_policyv2.pdf under 2025-07.",
+      "lastSourceAuditAt": "2026-07-16T10:00:33.646Z"
     },
-    "status": "detected"
+    "status": "promoted",
+    "relatedPolicyId": "wa-ai-policy-assurance-framework"
   },
   {
     "id": "dev-public-consultation-on-artificial-intelligence-p-17y73hz",
