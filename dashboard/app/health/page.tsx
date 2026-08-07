@@ -12,6 +12,7 @@ export default async function Health() {
   return (
     <>
       <h2>Source health</h2>
+      <div className="health-card">
       <table>
         <thead><tr><th>Source</th><th>Method</th><th>Last run</th><th>Status</th><th>Found</th><th>New</th><th>Error</th></tr></thead>
         <tbody>
@@ -28,6 +29,7 @@ export default async function Health() {
           ))}
         </tbody>
       </table>
+      </div>
     </>
   );
 }
