@@ -9,9 +9,7 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
-	getJurisdictionName,
 	getPolicyDateTypeName,
-	getPolicyStatusName,
 	getPolicyTypeName,
 } from "@/types";
 import type {
@@ -19,11 +17,7 @@ import type {
 	NetworkNode,
 } from "@/lib/network-data";
 import { formatPolicyDate } from "@/lib/format-policy-date";
-import {
-	STATUS_BG_COLORS,
-	STATUS_COLORS,
-} from "@/lib/design-tokens";
-import { cn } from "@/lib/utils";
+import { JurisdictionMark, SourceState, StatusPill } from "@/components/policy-table";
 
 interface NetworkSidebarProps {
 	policy: NetworkNode | null;
@@ -56,7 +50,7 @@ export function NetworkSidebar({
 
 	return (
 		<aside
-			className={`network-inspector absolute inset-x-0 bottom-0 z-20 flex max-h-[43%] flex-col border-t border-border bg-card/98 shadow-[0_-12px_30px_rgba(16,33,58,0.08)] backdrop-blur-xl transition-transform duration-300 lg:inset-y-0 lg:left-auto lg:right-0 lg:h-full lg:max-h-none lg:w-[22rem] lg:border-l lg:border-t-0 lg:shadow-none ${
+			className={`network-inspector absolute inset-x-0 bottom-0 z-20 flex max-h-[43%] flex-col border-t border-border bg-card/98 shadow-[var(--shadow-lift)] backdrop-blur-xl transition-transform duration-300 lg:inset-y-0 lg:left-auto lg:right-0 lg:h-full lg:max-h-none lg:w-[22rem] lg:border-l lg:border-t-0 lg:shadow-none ${
 				policy
 					? "translate-y-0 lg:translate-x-0"
 					: "translate-y-full lg:translate-x-full lg:translate-y-0"
@@ -72,10 +66,8 @@ export function NetworkSidebar({
 
 					<div className="flex items-center justify-between border-b border-border px-4 pb-3 lg:p-5">
 						<div>
-							<div className="font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-primary">
-								Selected policy
-							</div>
-							<h2 className="mt-1 max-w-[17rem] font-display text-xl leading-tight lg:text-2xl">
+							<p className="page-eyebrow">Selected policy</p>
+							<h2 className="section-title mt-1 max-w-[17rem] leading-tight">
 								{policy.title}
 							</h2>
 						</div>
@@ -90,30 +82,16 @@ export function NetworkSidebar({
 					</div>
 
 					<div className="min-h-0 flex-1 overflow-y-auto p-4 lg:p-5">
-						<div className="flex flex-wrap gap-1.5">
-							<Badge
-								variant="outline"
-								className={cn(
-									"rounded-none border-0 text-[10px]",
-									STATUS_BG_COLORS[policy.status],
-									STATUS_COLORS[policy.status],
-								)}
-							>
-								{getPolicyStatusName(policy.status)}
-							</Badge>
+						<div className="flex flex-wrap items-center gap-3">
+							<StatusPill status={policy.status} />
+							<SourceState verification={{ status: policy.verificationStatus }} />
+						</div>
+						<div className="mt-2 flex flex-wrap gap-1.5">
 							<Badge variant="outline" className="rounded-none text-[10px]">
 								{getPolicyTypeName(policy.type)}
 							</Badge>
 							<Badge variant="outline" className="rounded-none text-[10px]">
-								{getJurisdictionName(policy.jurisdiction)}
-							</Badge>
-							<Badge
-								variant="outline"
-								className="rounded-none border-[color-mix(in_srgb,var(--trust)_45%,var(--border))] bg-[var(--status-active-bg)] text-[10px] text-[var(--trust)]"
-							>
-								{policy.verificationStatus === "verified"
-									? "Verified"
-									: "Review state"}
+								<JurisdictionMark jurisdiction={policy.jurisdiction} />
 							</Badge>
 						</div>
 
@@ -133,7 +111,7 @@ export function NetworkSidebar({
 
 						<div className="mt-5 border-t border-border pt-4">
 							<div className="flex items-center justify-between gap-3">
-								<h3 className="font-display text-lg">
+								<h3 className="section-title">
 									Why these policies connect
 								</h3>
 								{connections.length > 0 ? (
@@ -166,7 +144,7 @@ export function NetworkSidebar({
 									{sharedThemes.map((theme) => (
 										<span
 											key={theme}
-											className="border border-[color-mix(in_srgb,var(--trust)_40%,var(--border))] bg-[var(--status-active-bg)] px-2 py-1 text-[10px] text-[var(--trust)]"
+											className="border border-primary/30 bg-accent px-2 py-1 text-[10px] text-primary"
 										>
 											{theme}
 										</span>
@@ -184,7 +162,7 @@ export function NetworkSidebar({
 											onClick={() => onNavigateToNode(connection.node.id)}
 											className="group flex min-h-16 w-full gap-3 py-3 text-left hover:bg-muted/45"
 										>
-											<span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-[var(--trust)] font-mono text-[10px] text-white">
+											<span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary font-mono text-[10px] text-primary-foreground">
 												{index + 1}
 											</span>
 											<span className="min-w-0 flex-1">

@@ -2,17 +2,17 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
-import { ExternalLink, Scale, ChevronDown, ChevronRight } from "lucide-react";
+import { ExternalLink, ChevronDown, ChevronRight } from "lucide-react";
 import {
 	JURISDICTION_NAMES,
 	getPolicyDateTypeName,
 	getPrimaryPolicyDate,
-	getPolicyStatusName,
 	type Policy,
 	type Jurisdiction,
 } from "@/types";
-import { STATUS_COLORS } from "@/lib/design-tokens";
 import { formatPolicyDate } from "@/lib/format-policy-date";
+import { jurisdictionAccent, jurisdictionRailStyle } from "@/lib/jurisdiction-accent";
+import { StatusPill, SourceState } from "@/components/policy-table";
 import { MetricStrip, PageIntro } from "@/components/layout";
 
 /** Group practice notes by jurisdiction, ordered with federal first. */
@@ -90,24 +90,29 @@ export function CourtsBrowser({ policies }: { policies: Policy[] }) {
 				const notes = grouped.get(jurisdiction)!;
 				return (
 					<section key={jurisdiction} className="mb-8">
-						<h2 className="font-mono text-xs font-medium uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-2">
-							<Scale className="h-3.5 w-3.5" />
+						<h2 className="page-eyebrow mb-3 flex items-center gap-2">
+							<span
+								aria-hidden="true"
+								className="h-1.5 w-1.5 shrink-0 rounded-full"
+								style={{ background: jurisdictionAccent(jurisdiction) }}
+							/>
 							{JURISDICTION_NAMES[jurisdiction]}
-							<span className="text-muted-foreground/60">({notes.length})</span>
+							<span className="text-muted-foreground">({notes.length})</span>
 						</h2>
 
-						<div className="border-t-2 border-foreground">
+						<div className="border-t-2 border-[var(--rule-heavy)]">
 							{notes.map((note) => {
 								const isExpanded = expandedId === note.id;
 								const primaryDate = getPrimaryPolicyDate(note);
 								return (
 									<div
 										key={note.id}
-										className="border-b border-border/30 transition-colors hover:bg-[var(--row-hover)]"
+										style={jurisdictionRailStyle(note.jurisdiction)}
+										className="ink-rail content-auto border-b border-border pl-3 transition-colors hover:bg-[var(--row-hover)]"
 									>
 										<button
 											onClick={() => setExpandedId(isExpanded ? null : note.id)}
-											className="w-full text-left py-3 px-1 flex items-start gap-3"
+											className="w-full text-left py-3 pl-2 pr-1 flex items-start gap-3"
 										>
 											{isExpanded ? (
 												<ChevronDown className="h-4 w-4 mt-0.5 shrink-0 text-muted-foreground" />
@@ -117,7 +122,7 @@ export function CourtsBrowser({ policies }: { policies: Policy[] }) {
 											<div className="flex-1 min-w-0">
 												<div className="flex items-start justify-between gap-4">
 													<div className="min-w-0">
-														<div className="text-sm font-medium text-foreground">
+														<div className="text-sm font-semibold text-foreground">
 															{note.title}
 														</div>
 														<div className="text-xs text-muted-foreground mt-0.5">
@@ -125,11 +130,7 @@ export function CourtsBrowser({ policies }: { policies: Policy[] }) {
 														</div>
 													</div>
 													<div className="flex items-center gap-4 shrink-0">
-														<span
-															className={`text-xs font-medium ${STATUS_COLORS[note.status] || "text-muted-foreground"}`}
-														>
-															{getPolicyStatusName(note.status)}
-														</span>
+														<StatusPill status={note.status} />
 														<span className="font-mono text-xs text-muted-foreground hidden sm:block">
 															{getPolicyDateTypeName(primaryDate.type)}{" "}
 															{formatPolicyDate(primaryDate)}
@@ -160,7 +161,7 @@ export function CourtsBrowser({ policies }: { policies: Policy[] }) {
 												{note.content && (
 													<div>
 														<span className="font-mono text-xs font-medium uppercase tracking-wider text-foreground">
-															Key Details
+															Key details
 														</span>
 														<p className="text-sm text-muted-foreground mt-1">
 															{note.content}
@@ -186,17 +187,7 @@ export function CourtsBrowser({ policies }: { policies: Policy[] }) {
 
 												{/* Links */}
 												<div className="flex items-center gap-4 pt-1">
-													<span
-														className={
-															note.verification.status === "verified"
-																? "font-mono text-xs text-[var(--status-active)]"
-																: "font-mono text-xs text-[var(--status-proposed)]"
-														}
-													>
-														{note.verification.status === "verified"
-															? "Verified"
-															: "Needs review"}
-													</span>
+													<SourceState verification={note.verification} />
 													<Link
 														href={`/policies/${note.id}`}
 														className="text-xs text-primary hover:underline font-medium"
@@ -228,7 +219,7 @@ export function CourtsBrowser({ policies }: { policies: Policy[] }) {
 			{/* Jurisdictions without practice notes */}
 			{jurisdictionsWithout.length > 0 && (
 			<section className="mt-10">
-					<h2 className="font-mono text-xs font-medium uppercase tracking-wider text-muted-foreground mb-3">
+					<h2 className="page-eyebrow mb-3">
 						No currently verified practice notes
 					</h2>
 					<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
@@ -241,7 +232,7 @@ export function CourtsBrowser({ policies }: { policies: Policy[] }) {
 							</div>
 						))}
 					</div>
-					<p className="text-xs text-muted-foreground/60 mt-3">
+					<p className="text-xs text-muted-foreground mt-3">
 						Policai does not currently have a verified public AI practice note
 						for these jurisdictions. Records awaiting re-verification are
 						withheld until their official source evidence is current.

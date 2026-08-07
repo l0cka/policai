@@ -31,7 +31,7 @@ export default function BlogPage() {
                 {format(new Date(post.date), 'dd MMMM yyyy')}
               </time>
               <span>
-                <span className="block font-display text-2xl group-hover:text-primary">{post.title}</span>
+                <span className="block text-lg font-semibold leading-snug group-hover:text-primary">{post.title}</span>
                 <span className="mt-2 block text-sm leading-6 text-muted-foreground">{post.description}</span>
               </span>
               <ArrowRight className="h-5 w-5 self-center text-primary" />

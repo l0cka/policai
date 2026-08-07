@@ -307,7 +307,7 @@ export function AustraliaMap({
         onMouseLeave={handleMouseLeave}
         className={cn(
           'absolute bottom-10 left-1/2 flex w-[min(1040px,calc(100%-2rem))] -translate-x-1/2 items-center justify-between px-5 py-3',
-          'border rounded font-mono text-sm transition-all duration-300',
+          'border rounded-md font-mono text-sm transition-all duration-300',
           selectedJurisdiction === 'federal'
             ? 'bg-primary text-primary-foreground border-primary'
             : hoveredJurisdiction === 'federal'
@@ -334,7 +334,7 @@ export function AustraliaMap({
             opacity: tooltipData ? 1 : 0,
           }}
         >
-          <div className="bg-card border border-border rounded px-3 py-2 shadow-lg min-w-[160px]">
+          <div className="bg-card border border-border rounded-md px-3 py-2 shadow-[var(--shadow-lift)] min-w-[160px]">
             <div className="font-sans text-sm font-semibold text-foreground">
               {jurisdictionFullNames[hoveredJurisdiction]}
             </div>

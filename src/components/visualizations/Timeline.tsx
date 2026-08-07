@@ -6,16 +6,10 @@ import {
   formatPolicyDate,
   parseCalendarDateForDisplay,
 } from '@/lib/format-policy-date';
-import { Badge } from '@/components/ui/badge';
-import { JURISDICTION_NAMES, type Jurisdiction, type TimelineEvent } from '@/types';
-import {
-  FileText,
-  Edit,
-  Trash2,
-  Megaphone,
-  Flag,
-  Circle,
-} from 'lucide-react';
+import { JurisdictionMark, SourceState } from '@/components/policy-table';
+import { jurisdictionRailStyle } from '@/lib/jurisdiction-accent';
+import { type Jurisdiction, type TimelineEvent, type TimelineEventType } from '@/types';
+import { ArrowUpRight } from 'lucide-react';
 
 interface TimelineProps {
   events: TimelineEvent[];
@@ -23,41 +17,21 @@ interface TimelineProps {
   onEventClick?: (event: TimelineEvent) => void;
 }
 
-const eventTypeConfig = {
-  policy_introduced: {
-    icon: FileText,
-    color: 'bg-green-500',
-    label: 'Policy Introduced',
-  },
-  policy_amended: {
-    icon: Edit,
-    color: 'bg-blue-500',
-    label: 'Policy Amended',
-  },
-  policy_repealed: {
-    icon: Trash2,
-    color: 'bg-red-500',
-    label: 'Policy Repealed',
-  },
-  policy_superseded: {
-    icon: Trash2,
-    color: 'bg-orange-500',
-    label: 'Policy Superseded',
-  },
-  announcement: {
-    icon: Megaphone,
-    color: 'bg-yellow-500',
-    label: 'Announcement',
-  },
-  milestone: {
-    icon: Flag,
-    color: 'bg-purple-500',
-    label: 'Milestone',
-  },
+/**
+ * Event-type labels and tones, reusing the same status token pairs as the
+ * register: `tone` is the subdued badge fill, `dot` is the same colour at
+ * full strength for the legend swatch.
+ */
+export const EVENT_TYPE_CONFIG: Record<TimelineEventType, { label: string; tone: string; dot: string }> = {
+  policy_introduced: { label: 'Introduced', tone: 'bg-[var(--status-active-bg)] text-[var(--status-active)]', dot: 'bg-[var(--status-active)]' },
+  policy_amended: { label: 'Amended', tone: 'bg-[var(--status-amended-bg)] text-[var(--status-amended)]', dot: 'bg-[var(--status-amended)]' },
+  policy_repealed: { label: 'Repealed', tone: 'bg-[var(--status-repealed-bg)] text-[var(--status-repealed)]', dot: 'bg-[var(--status-repealed)]' },
+  policy_superseded: { label: 'Superseded', tone: 'bg-[var(--status-repealed-bg)] text-[var(--status-repealed)]', dot: 'bg-[var(--status-repealed)]' },
+  announcement: { label: 'Announcement', tone: 'bg-[var(--status-proposed-bg)] text-[var(--status-proposed)]', dot: 'bg-[var(--status-proposed)]' },
+  milestone: { label: 'Milestone', tone: 'bg-accent text-primary', dot: 'bg-primary' },
 };
 
 export function Timeline({ events, selectedJurisdiction, onEventClick }: TimelineProps) {
-  // Group events by year
   const eventsByYear = useMemo(() => {
     const filtered = selectedJurisdiction
       ? events.filter((e) => e.jurisdiction === selectedJurisdiction)
@@ -66,123 +40,85 @@ export function Timeline({ events, selectedJurisdiction, onEventClick }: Timelin
     const sorted = [...filtered].sort(
       (a, b) =>
         parseCalendarDateForDisplay(b.date).getTime() -
-        parseCalendarDateForDisplay(a.date).getTime()
+        parseCalendarDateForDisplay(a.date).getTime(),
     );
 
-    const grouped: Record<string, TimelineEvent[]> = {};
-    sorted.forEach((event) => {
-      const year = parseCalendarDateForDisplay(event.date)
-        .getFullYear()
-        .toString();
-      if (!grouped[year]) {
-        grouped[year] = [];
-      }
-      grouped[year].push(event);
-    });
-
+    const grouped = new Map<string, TimelineEvent[]>();
+    for (const event of sorted) {
+      const year = parseCalendarDateForDisplay(event.date).getFullYear().toString();
+      grouped.set(year, [...(grouped.get(year) ?? []), event]);
+    }
     return grouped;
   }, [events, selectedJurisdiction]);
 
-  const years = Object.keys(eventsByYear).sort((a, b) => parseInt(b) - parseInt(a));
+  const years = Array.from(eventsByYear.keys()).sort((a, b) => Number(b) - Number(a));
 
   if (years.length === 0) {
     return (
-      <div className="text-center py-12">
-        <Circle className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-        <p className="text-muted-foreground">No events found</p>
+      <div className="border-y border-border py-14 text-center">
+        <p className="section-title">No matching events</p>
+        <p className="mt-2 text-sm text-muted-foreground">Try a broader search or jurisdiction.</p>
       </div>
     );
   }
 
   return (
-    <div className="relative">
-      {/* Timeline line */}
-      <div className="absolute left-[23px] top-0 bottom-0 w-0.5 bg-border" />
-
+    <div>
       {years.map((year) => (
-        <div key={year} className="mb-8">
-          {/* Year header */}
-          <div className="flex items-center mb-4">
-            <div className="h-12 w-12 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold z-10">
-              {year.slice(2)}
-            </div>
-            <span className="ml-4 text-xl font-bold">{year}</span>
-          </div>
-
-          {/* Events for this year */}
-          <div className="ml-6 border-l-2 border-border pl-8 space-y-6">
-            {eventsByYear[year].map((event) => {
-              const config = eventTypeConfig[event.type];
-              const Icon = config.icon;
-
+        <section key={year} className="mb-4">
+          <h2 className="border-b border-[var(--rule-heavy)] py-2 font-mono text-[10px] font-medium uppercase tracking-[0.12em]">
+            {year}
+          </h2>
+          <div>
+            {eventsByYear.get(year)!.map((event) => {
+              const config = EVENT_TYPE_CONFIG[event.type];
               return (
-                <div
+                <article
                   key={event.id}
-                  className={cn(
-                    'relative group cursor-pointer',
-                    onEventClick && 'hover:bg-muted/50 -ml-4 pl-4 py-2 rounded-lg transition-colors'
-                  )}
+                  style={jurisdictionRailStyle(event.jurisdiction)}
                   onClick={() => onEventClick?.(event)}
+                  className="ink-rail group grid cursor-pointer gap-2 border-b border-border py-4 pl-3 transition-colors duration-[var(--dur-fast)] hover:bg-[var(--row-hover)] sm:grid-cols-[6.5rem_7rem_minmax(0,1fr)] lg:grid-cols-[6.5rem_7rem_minmax(0,1fr)_9rem_9rem]"
                 >
-                  {/* Event dot */}
-                  <div
-                    className={cn(
-                      'absolute -left-[42px] top-1 h-4 w-4 rounded-full border-2 border-background z-10',
-                      config.color
+                  <time className="font-mono text-[10px] uppercase text-muted-foreground">
+                    {formatPolicyDate(
+                      { type: 'published', date: event.date, precision: event.datePrecision ?? 'day' },
+                      { short: true },
                     )}
-                  />
-
-                  {/* Event content */}
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <Badge variant="outline" className="flex items-center gap-1">
-                        <Icon className="h-3 w-3" />
-                        {config.label}
-                      </Badge>
-                      <Badge variant="secondary">
-                        {JURISDICTION_NAMES[event.jurisdiction]}
-                      </Badge>
-                      <Badge
-                        variant={
-                          event.verification.status === 'verified'
-                            ? 'secondary'
-                            : 'outline'
-                        }
-                      >
-                        {event.verification.status === 'verified'
-                          ? 'Verified'
-                          : 'Needs review'}
-                      </Badge>
-                      <span className="text-xs text-muted-foreground">
-                        {formatPolicyDate({
-                          type: 'published',
-                          date: event.date,
-                          precision: event.datePrecision ?? 'day',
-                        })}
-                      </span>
-                    </div>
-
-                    <h3 className="font-semibold group-hover:text-primary transition-colors">
-                      {event.title}
-                    </h3>
-
-                    <p className="text-sm text-muted-foreground">{event.description}</p>
-
-                    <a
-                      href={event.sourceUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs text-primary hover:underline"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      View source →
-                    </a>
+                  </time>
+                  <div>
+                    <span className={cn('inline-flex rounded px-2 py-1 font-mono text-[9px] uppercase tracking-[0.08em]', config.tone)}>
+                      {config.label}
+                    </span>
                   </div>
-                </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold leading-5 group-hover:text-primary">{event.title}</p>
+                    <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">{event.description}</p>
+                    <p className="mt-2 text-[11px] text-muted-foreground lg:hidden">
+                      <JurisdictionMark jurisdiction={event.jurisdiction} />
+                    </p>
+                  </div>
+                  <div className="hidden text-xs leading-5 text-muted-foreground lg:block">
+                    <JurisdictionMark jurisdiction={event.jurisdiction} />
+                  </div>
+                  <div className="hidden lg:block">
+                    <SourceState verification={event.verification} />
+                    {event.sourceUrl ? (
+                      <a
+                        href={event.sourceUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="mt-2 inline-flex items-center gap-1 text-[11px] text-primary hover:underline"
+                      >
+                        Source <ArrowUpRight className="h-3 w-3" />
+                      </a>
+                    ) : null}
+                  </div>
+                </article>
               );
             })}
           </div>
-        </div>
+        </section>
       ))}
     </div>
   );

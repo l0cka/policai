@@ -284,9 +284,7 @@ export function NetworkBrowser({
 			<header className="network-page-intro border-b border-border pb-6">
 				<div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-end">
 					<div>
-						<div className="font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-							Relationship explorer
-						</div>
+						<p className="page-eyebrow">Relationship explorer</p>
 						<h1 className="network-desktop-title mt-2 page-title">
 							Policy relationships
 						</h1>
@@ -323,7 +321,7 @@ export function NetworkBrowser({
 				</div>
 			</header>
 
-			<dl className="network-metrics grid grid-cols-2 border-b border-border lg:grid-cols-4">
+			<dl className="network-metrics grid grid-cols-2 gap-y-4 border-b border-[var(--rule-hair)] py-4 lg:grid-cols-4">
 				{[
 					{ value: summary.policyCount, label: "policies" },
 					{
@@ -335,23 +333,15 @@ export function NetworkBrowser({
 						value: summary.crossJurisdictionLinkCount,
 						label: "cross-jurisdiction links",
 					},
-				].map((metric, index) => (
+				].map((metric) => (
 					<div
 						key={metric.label}
-						className={`flex items-baseline justify-center gap-2 py-4 ${
-							index % 2 === 1 ? "border-l border-border" : ""
-						} ${
-							index > 1
-								? "border-t border-border lg:border-l lg:border-t-0"
-								: ""
-						}`}
+						className="flex items-baseline justify-center gap-2"
 					>
-						<dt className="order-2 text-[11px] text-muted-foreground">
-							{metric.label}
-						</dt>
 						<dd className="font-mono text-xl leading-none tabular">
 							{metric.value}
 						</dd>
+						<dt className="page-eyebrow">{metric.label}</dt>
 					</div>
 				))}
 			</dl>
@@ -396,7 +386,7 @@ export function NetworkBrowser({
 						{visibleNodeIds.size === 0 ? (
 							<div className="absolute inset-0 flex items-center justify-center bg-background/75 px-6 text-center">
 								<div>
-									<p className="font-display text-2xl">
+									<p className="section-title">
 										No policies match this view
 									</p>
 									<button

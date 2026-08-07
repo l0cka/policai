@@ -54,7 +54,7 @@ export default async function MethodologyPage() {
         <section>
           <h2 className="section-title">Trust levels</h2>
           <dl className="space-y-4">
-            <div className="mt-4 border-l-2 border-[var(--trust)] bg-[var(--status-active-bg)]/25 px-4 py-3">
+            <div className="border-l-2 border-[var(--trust)] bg-[var(--status-active-bg)]/25 px-4 py-3">
               <dt className="font-medium">Verified register record</dt>
               <dd className="text-muted-foreground">
                 Title, jurisdiction, issuer, type, status, displayed date, and

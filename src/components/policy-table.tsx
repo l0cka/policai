@@ -29,7 +29,7 @@ function comparePolicies(a: Policy, b: Policy, field: PolicySortField): number {
   return String(a[field]).localeCompare(String(b[field]));
 }
 
-function StatusPill({ status }: { status: Policy['status'] }) {
+export function StatusPill({ status }: { status: Policy['status'] }) {
   const tone =
     status === 'active'
       ? 'border-[var(--trust)]/25 bg-[var(--status-active-bg)] text-[var(--status-active)]'
@@ -47,7 +47,7 @@ function StatusPill({ status }: { status: Policy['status'] }) {
 }
 
 /** Jurisdiction name preceded by its livery colour, so rows group by eye. */
-function JurisdictionMark({
+export function JurisdictionMark({
   jurisdiction,
   className,
 }: {
@@ -66,8 +66,12 @@ function JurisdictionMark({
   );
 }
 
-function SourceState({ policy }: { policy: Policy }) {
-  const verified = policy.verification.status === 'verified';
+export function SourceState({
+  verification,
+}: {
+  verification: Pick<Policy['verification'], 'status'>;
+}) {
+  const verified = verification.status === 'verified';
 
   return (
     <span
@@ -114,7 +118,7 @@ function PolicyCard({ policy, compact = false }: { policy: Policy; compact?: boo
           {formatPolicyDate(primaryDate, { short: true })}
           <span className="block">{getPolicyDateTypeName(primaryDate.type)}</span>
         </span>
-        <SourceState policy={policy} />
+        <SourceState verification={policy.verification} />
         <Link
           href={`/policies/${policy.id}`}
           aria-label={`View ${policy.title}`}
@@ -274,7 +278,7 @@ export function PolicyTable({
                         {formatPolicyDate(primaryDate, { short: true })}
                         <span className="block">{getPolicyDateTypeName(primaryDate.type)}</span>
                       </td>
-                      <td className="py-3 align-top"><SourceState policy={policy} /></td>
+                      <td className="py-3 align-top"><SourceState verification={policy.verification} /></td>
                       <td className="py-3 align-top">
                         <Link
                           href={`/policies/${policy.id}`}

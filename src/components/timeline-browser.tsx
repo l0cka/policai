@@ -3,16 +3,6 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { Filter, ArrowRight, Calendar } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import {
   Dialog,
   DialogContent,
@@ -20,16 +10,19 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Timeline } from '@/components/visualizations/Timeline';
+import { StatusPill, SourceState } from '@/components/policy-table';
+import { Timeline, EVENT_TYPE_CONFIG } from '@/components/visualizations/Timeline';
 import { formatPolicyDate } from '@/lib/format-policy-date';
 import { parseCalendarDateForDisplay } from '@/lib/format-policy-date';
 import {
   JURISDICTION_NAMES,
+  TIMELINE_EVENT_TYPES,
   getPolicyTypeName,
   type Policy,
   type TimelineEvent,
 } from '@/types';
 import { MetricStrip, PageIntro } from '@/components/layout';
+import { cn } from '@/lib/utils';
 
 export function TimelineBrowser({
   timelineData,
@@ -74,6 +67,12 @@ export function TimelineBrowser({
     };
   }, [timelineData]);
 
+  const hasActiveFilters = jurisdictionFilter !== 'all' || typeFilter !== 'all';
+  const clearFilters = () => {
+    setJurisdictionFilter('all');
+    setTypeFilter('all');
+  };
+
   return (
     <div className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
       <PageIntro
@@ -88,119 +87,71 @@ export function TimelineBrowser({
         { value: stats.verifiedEvents, label: 'verified events' },
       ]} />
 
-      <div className="mt-8 grid gap-8 lg:grid-cols-4">
-        {/* Filters Sidebar */}
-        <div className="space-y-4 lg:col-span-1 lg:sticky lg:top-24 lg:self-start">
-          <Card className="rounded-none border-border bg-card/35 shadow-none">
-            <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Filter className="h-4 w-4" />
-                Filters
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <label className="text-sm font-medium mb-2 block">Jurisdiction</label>
-                <Select value={jurisdictionFilter} onValueChange={setJurisdictionFilter}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="All Jurisdictions" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Jurisdictions</SelectItem>
-                    {Object.entries(JURISDICTION_NAMES).map(([key, name]) => (
-                      <SelectItem key={key} value={key}>
-                        {name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+      <div className="mt-3 grid gap-8 xl:grid-cols-[minmax(0,1fr)_19rem]">
+        <div className="min-w-0">
+          <div className="mb-3 flex flex-col gap-2 sm:flex-row">
+            <label className="relative sm:w-60">
+              <span className="sr-only">Filter by jurisdiction</span>
+              <Filter className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
+              <select
+                value={jurisdictionFilter}
+                onChange={(event) => setJurisdictionFilter(event.target.value)}
+                className="h-11 w-full appearance-none border border-input bg-background pl-10 pr-3 text-sm"
+              >
+                <option value="all">All jurisdictions</option>
+                {Object.entries(JURISDICTION_NAMES).map(([value, label]) => (
+                  <option key={value} value={value}>{label}</option>
+                ))}
+              </select>
+            </label>
+            <label className="relative sm:w-60">
+              <span className="sr-only">Filter by event type</span>
+              <Filter className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
+              <select
+                value={typeFilter}
+                onChange={(event) => setTypeFilter(event.target.value)}
+                className="h-11 w-full appearance-none border border-input bg-background pl-10 pr-3 text-sm"
+              >
+                <option value="all">All event types</option>
+                {TIMELINE_EVENT_TYPES.map((type) => (
+                  <option key={type} value={type}>{EVENT_TYPE_CONFIG[type].label}</option>
+                ))}
+              </select>
+            </label>
+          </div>
 
-              <div>
-                <label className="text-sm font-medium mb-2 block">Event Type</label>
-                <Select value={typeFilter} onValueChange={setTypeFilter}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="All Types" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Types</SelectItem>
-                    <SelectItem value="policy_introduced">Policy Introduced</SelectItem>
-                    <SelectItem value="policy_amended">Policy Amended</SelectItem>
-                    <SelectItem value="policy_repealed">Policy Repealed</SelectItem>
-                    <SelectItem value="policy_superseded">Policy Superseded</SelectItem>
-                    <SelectItem value="announcement">Announcement</SelectItem>
-                    <SelectItem value="milestone">Milestone</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+          <div className="mb-3 flex items-center justify-between">
+            <p className="font-mono text-[11px] text-muted-foreground" aria-live="polite">
+              {filteredEvents.length} of {timelineData.length} events
+            </p>
+            {hasActiveFilters ? (
+              <button
+                type="button"
+                onClick={clearFilters}
+                className="inline-flex min-h-8 items-center gap-1 text-xs text-primary hover:underline"
+              >
+                Clear filters
+              </button>
+            ) : null}
+          </div>
 
-              <div className="pt-4 border-t">
-                <p className="text-sm text-muted-foreground">
-                  Showing {filteredEvents.length} of {timelineData.length} events
-                </p>
-              </div>
-
-              {(jurisdictionFilter !== 'all' || typeFilter !== 'all') && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    setJurisdictionFilter('all');
-                    setTypeFilter('all');
-                  }}
-                  className="w-full"
-                >
-                  Clear Filters
-                </Button>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* Legend */}
-          <Card className="rounded-none border-border bg-card/35 shadow-none">
-            <CardHeader>
-              <CardTitle className="text-lg">Legend</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex items-center gap-2">
-                <div className="h-3 w-3 rounded-full bg-green-500" />
-                <span className="text-sm">Policy Introduced</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="h-3 w-3 rounded-full bg-blue-500" />
-                <span className="text-sm">Policy Amended</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="h-3 w-3 rounded-full bg-red-500" />
-                <span className="text-sm">Policy Repealed</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="h-3 w-3 rounded-full bg-yellow-500" />
-                <span className="text-sm">Announcement</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="h-3 w-3 rounded-full bg-purple-500" />
-                <span className="text-sm">Milestone</span>
-              </div>
-            </CardContent>
-          </Card>
+          <Timeline
+            events={filteredEvents}
+            onEventClick={(event) => setSelectedEvent(event as TimelineEvent)}
+          />
         </div>
 
-        {/* Timeline */}
-        <div className="lg:col-span-3">
-          <Card className="rounded-none border-border bg-card/35 shadow-none">
-            <CardHeader className="pb-4">
-              <CardTitle>Timeline</CardTitle>
-              <CardDescription>Click on an event to see more details</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Timeline
-                events={filteredEvents}
-                onEventClick={(event) => setSelectedEvent(event as TimelineEvent)}
-              />
-            </CardContent>
-          </Card>
-        </div>
+        <aside className="border-l border-border pl-6">
+          <h2 className="text-sm font-semibold">Legend</h2>
+          <div className="mt-3 space-y-2.5">
+            {TIMELINE_EVENT_TYPES.map((type) => (
+              <div key={type} className="flex items-center gap-2 text-sm">
+                <span className={cn('inline-flex h-2 w-2 shrink-0 rounded-full', EVENT_TYPE_CONFIG[type].dot)} />
+                {EVENT_TYPE_CONFIG[type].label}
+              </div>
+            ))}
+          </div>
+        </aside>
       </div>
 
       {/* Event Detail Dialog */}
@@ -220,52 +171,39 @@ export function TimelineBrowser({
           </DialogHeader>
 
           <div className="space-y-4">
-            <div className="flex gap-2">
-              <Badge variant="secondary">
-                {selectedEvent && JURISDICTION_NAMES[selectedEvent.jurisdiction]}
-              </Badge>
-              <Badge variant="outline">
-                {selectedEvent?.type.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase())}
-              </Badge>
-              <Badge
-                variant={
-                  selectedEvent?.verification.status === 'verified'
-                    ? 'secondary'
-                    : 'outline'
-                }
-              >
-                {selectedEvent?.verification.status === 'verified'
-                  ? 'Verified'
-                  : 'Needs review'}
-              </Badge>
+            <div className="flex flex-wrap items-center gap-2">
+              {selectedEvent ? (
+                <span className={cn('inline-flex rounded px-2 py-1 font-mono text-[9px] uppercase tracking-[0.08em]', EVENT_TYPE_CONFIG[selectedEvent.type].tone)}>
+                  {EVENT_TYPE_CONFIG[selectedEvent.type].label}
+                </span>
+              ) : null}
+              <span className="text-xs text-muted-foreground">
+                {selectedEvent ? JURISDICTION_NAMES[selectedEvent.jurisdiction] : null}
+              </span>
+              {selectedEvent ? <SourceState verification={selectedEvent.verification} /> : null}
             </div>
 
             <p className="text-muted-foreground">{selectedEvent?.description}</p>
 
             {relatedPolicy && (
-              <Card className="bg-muted/50">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm">Related Policy</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <h4 className="font-medium">{relatedPolicy.title}</h4>
-                  <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
-                    {relatedPolicy.description}
-                  </p>
-                  <div className="mt-2 flex gap-2">
-                    <Badge variant="secondary">
-                      {getPolicyTypeName(relatedPolicy.type)}
-                    </Badge>
-                    <Link
-                      href={`/policies/${relatedPolicy.id}`}
-                      className="text-sm text-primary hover:underline inline-flex items-center gap-1"
-                    >
-                      View Policy
-                      <ArrowRight className="h-3 w-3" />
-                    </Link>
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="border border-border bg-muted/50 p-4">
+                <p className="text-sm font-semibold">Related policy</p>
+                <h4 className="mt-2 text-sm font-medium">{relatedPolicy.title}</h4>
+                <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
+                  {relatedPolicy.description}
+                </p>
+                <div className="mt-3 flex items-center gap-3">
+                  <StatusPill status={relatedPolicy.status} />
+                  <span className="text-xs text-muted-foreground">{getPolicyTypeName(relatedPolicy.type)}</span>
+                  <Link
+                    href={`/policies/${relatedPolicy.id}`}
+                    className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
+                  >
+                    View policy
+                    <ArrowRight className="h-3 w-3" />
+                  </Link>
+                </div>
+              </div>
             )}
 
             {selectedEvent?.sourceUrl && (
@@ -273,7 +211,7 @@ export function TimelineBrowser({
                 href={selectedEvent.sourceUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-primary hover:underline inline-flex items-center gap-1"
+                className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
               >
                 View source
                 <ArrowRight className="h-3 w-3" />
