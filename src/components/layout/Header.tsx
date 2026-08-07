@@ -15,6 +15,7 @@ import {
 import { cn } from '@/lib/utils';
 import { PolicaiLogo } from '@/components/layout/PolicaiLogo';
 import { ThemeToggle } from '@/components/layout/ThemeToggle';
+import type { CollectionHealthStatus } from '@/types';
 
 const navItems = [
   { href: '/', label: 'Register' },
@@ -51,10 +52,12 @@ function NavLink({
   href,
   label,
   active,
+  inverted = false,
 }: {
   href: string;
   label: string;
   active: boolean;
+  inverted?: boolean;
 }) {
   return (
     <Link
@@ -62,14 +65,21 @@ function NavLink({
       aria-current={active ? 'page' : undefined}
       className={cn(
         'group relative flex h-full items-center px-1 text-[15px] font-medium transition-colors duration-[var(--dur-fast)]',
-        active ? 'text-primary' : 'text-muted-foreground hover:text-foreground',
+        inverted
+          ? active
+            ? 'text-white'
+            : 'text-white/58 hover:text-white'
+          : active
+            ? 'text-primary'
+            : 'text-muted-foreground hover:text-foreground',
       )}
     >
       {label}
       <span
         aria-hidden="true"
         className={cn(
-          'absolute inset-x-0 bottom-0 h-[3px] origin-left bg-primary transition-transform duration-[var(--dur-base)] ease-[var(--ease-out-quint)]',
+          'absolute inset-x-0 bottom-0 h-[3px] origin-left transition-transform duration-[var(--dur-base)] ease-[var(--ease-out-quint)]',
+          inverted ? 'bg-[#77dcc2]' : 'bg-primary',
           active ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100',
         )}
       />
@@ -77,8 +87,19 @@ function NavLink({
   );
 }
 
-export function Header({ dataCurrentAt }: { dataCurrentAt: string | null }) {
+export function Header({
+  dataCurrentAt,
+  collectionHealth,
+  successfulSourceCount,
+  dueSourceCount,
+}: {
+  dataCurrentAt: string | null;
+  collectionHealth: CollectionHealthStatus;
+  successfulSourceCount: number;
+  dueSourceCount: number;
+}) {
   const pathname = usePathname();
+  const isObservatoryHome = pathname === '/';
   const [insightsOpen, setInsightsOpen] = useState(false);
   const insightsRef = useRef<HTMLDivElement>(null);
 
@@ -108,9 +129,14 @@ export function Header({ dataCurrentAt }: { dataCurrentAt: string | null }) {
   const insightsActive = insightItems.some((item) => isActive(item.href));
 
   return (
-    <header className="rule-masthead sticky top-0 z-50 w-full bg-background/90 backdrop-blur-md">
+    <header
+      className={cn(
+        'rule-masthead sticky top-0 z-50 w-full backdrop-blur-md',
+        isObservatoryHome ? 'bg-[#071b2e]/95 text-white' : 'bg-background/90',
+      )}
+    >
       {/* Dateline strip, in the manner of a masthead's edition line. */}
-      <div className="bg-[var(--navy)] text-white">
+      <div className={cn('bg-[var(--navy)] text-white', isObservatoryHome && 'hidden')}>
         <div className="container mx-auto flex h-7 items-center justify-between px-4 font-mono text-[11px] uppercase tracking-[0.12em] sm:px-6 lg:px-8 lg:text-[11px]">
           <span className="hidden sm:inline">{formatDataDate(dataCurrentAt)}</span>
           <span className="sm:hidden">
@@ -132,12 +158,21 @@ export function Header({ dataCurrentAt }: { dataCurrentAt: string | null }) {
         </div>
       </div>
 
-      <div className="container mx-auto flex h-14 items-center px-4 sm:h-[4.25rem] sm:px-6 lg:px-8">
+      <div
+        className={cn(
+          'container mx-auto flex h-14 items-center px-4 sm:px-6 lg:px-8',
+          isObservatoryHome ? 'sm:h-[4.6rem]' : 'sm:h-[4.25rem]',
+        )}
+      >
         <Link href="/" aria-label="Policai home" className="shrink-0">
           <PolicaiLogo
             className="transition-opacity duration-[var(--dur-base)] hover:opacity-75"
             iconClassName="h-9 w-9 max-sm:h-8 max-sm:w-8"
-            textClassName="text-[1.3rem] tracking-[0.08em] max-sm:text-lg"
+            imageClassName={isObservatoryHome ? 'brightness-0 invert' : undefined}
+            textClassName={cn(
+              'text-[1.3rem] tracking-[0.08em] max-sm:text-lg',
+              isObservatoryHome && 'text-white',
+            )}
           />
         </Link>
 
@@ -148,6 +183,7 @@ export function Header({ dataCurrentAt }: { dataCurrentAt: string | null }) {
               href={item.href}
               label={item.label}
               active={isActive(item.href)}
+              inverted={isObservatoryHome}
             />
           ))}
 
@@ -159,9 +195,13 @@ export function Header({ dataCurrentAt }: { dataCurrentAt: string | null }) {
               aria-expanded={insightsOpen}
               className={cn(
                 'group relative flex h-full items-center gap-1 px-1 text-[15px] font-medium transition-colors duration-[var(--dur-fast)]',
-                insightsActive
-                  ? 'text-primary'
-                  : 'text-muted-foreground hover:text-foreground',
+                isObservatoryHome
+                  ? insightsActive
+                    ? 'text-white'
+                    : 'text-white/58 hover:text-white'
+                  : insightsActive
+                    ? 'text-primary'
+                    : 'text-muted-foreground hover:text-foreground',
               )}
             >
               Explore
@@ -174,7 +214,8 @@ export function Header({ dataCurrentAt }: { dataCurrentAt: string | null }) {
               <span
                 aria-hidden="true"
                 className={cn(
-                  'absolute inset-x-0 bottom-0 h-[3px] origin-left bg-primary transition-transform duration-[var(--dur-base)] ease-[var(--ease-out-quint)]',
+                  'absolute inset-x-0 bottom-0 h-[3px] origin-left transition-transform duration-[var(--dur-base)] ease-[var(--ease-out-quint)]',
+                  isObservatoryHome ? 'bg-[#77dcc2]' : 'bg-primary',
                   insightsActive || insightsOpen
                     ? 'scale-x-100'
                     : 'scale-x-0 group-hover:scale-x-100',
@@ -210,18 +251,39 @@ export function Header({ dataCurrentAt }: { dataCurrentAt: string | null }) {
               arrow signals leaving this app. */}
           <a
             href="https://probono.policai.org"
-            className="group relative flex h-full items-center gap-1 px-1 text-[15px] font-medium text-muted-foreground transition-colors duration-[var(--dur-fast)] hover:text-foreground"
+            className={cn(
+              'group relative flex h-full items-center gap-1 px-1 text-[15px] font-medium transition-colors duration-[var(--dur-fast)]',
+              isObservatoryHome
+                ? 'text-white/58 hover:text-white'
+                : 'text-muted-foreground hover:text-foreground',
+            )}
           >
             A2J
             <ArrowUpRight className="h-3.5 w-3.5 opacity-55 transition duration-[var(--dur-base)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:opacity-100" />
             <span
               aria-hidden="true"
-              className="absolute inset-x-0 bottom-0 h-[3px] origin-left scale-x-0 bg-primary transition-transform duration-[var(--dur-base)] ease-[var(--ease-out-quint)] group-hover:scale-x-100"
+              className={cn(
+                'absolute inset-x-0 bottom-0 h-[3px] origin-left scale-x-0 transition-transform duration-[var(--dur-base)] ease-[var(--ease-out-quint)] group-hover:scale-x-100',
+                isObservatoryHome ? 'bg-[#77dcc2]' : 'bg-primary',
+              )}
             />
           </a>
         </nav>
 
         <div className="ml-auto flex items-center gap-1.5 sm:gap-2.5">
+          {isObservatoryHome ? (
+            <div className="hidden items-center gap-5 text-xs text-white/70 sm:flex">
+              <Link href="/api/policies" className="underline-grow hover:text-white">API</Link>
+              <a
+                href="https://github.com/l0cka/policai/issues"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline-grow hover:text-white"
+              >
+                Feedback
+              </a>
+            </div>
+          ) : null}
           <Link
             href="/#policy-search"
             aria-label="Search the policy register"
@@ -231,14 +293,23 @@ export function Header({ dataCurrentAt }: { dataCurrentAt: string | null }) {
               const input = document.querySelector<HTMLInputElement>('#policy-search input');
               if (input) input.focus();
             }}
-            className="flex h-10 w-10 items-center justify-center rounded-full text-foreground transition-colors duration-[var(--dur-fast)] hover:bg-muted hover:text-primary"
+            className={cn(
+              'flex h-10 w-10 items-center justify-center rounded-full transition-colors duration-[var(--dur-fast)]',
+              isObservatoryHome
+                ? 'hidden'
+                : 'text-foreground hover:bg-muted hover:text-primary',
+            )}
           >
             <Search className="h-5 w-5" strokeWidth={1.75} />
           </Link>
-          <ThemeToggle className="max-sm:hidden" />
+          {!isObservatoryHome ? <ThemeToggle className="max-sm:hidden" /> : null}
           <Sheet>
             <SheetTrigger asChild className="md:hidden">
-              <Button variant="ghost" size="icon" className="h-9 w-9">
+              <Button
+                variant="ghost"
+                size="icon"
+                className={cn('h-9 w-9', isObservatoryHome && 'text-white hover:bg-white/10 hover:text-white')}
+              >
                 <Menu className="h-5 w-5" />
                 <span className="sr-only">Toggle menu</span>
               </Button>
@@ -301,6 +372,34 @@ export function Header({ dataCurrentAt }: { dataCurrentAt: string | null }) {
           </Sheet>
         </div>
       </div>
+
+      {isObservatoryHome ? (
+        <div className="border-t border-white/18 bg-[#061727] text-white">
+          <div className="container mx-auto flex h-[3.35rem] items-center justify-between gap-6 px-4 font-mono text-[10px] tracking-[0.04em] sm:px-6 lg:px-8">
+            <span className="text-white/62">{formatDataDate(dataCurrentAt)}</span>
+            <div className="hidden items-center gap-3 sm:flex">
+              <span
+                className={cn(
+                  'inline-flex items-center gap-2 uppercase tracking-[0.12em]',
+                  collectionHealth === 'healthy' ? 'text-[#77dcc2]' : 'text-[#efb65e]',
+                )}
+              >
+                <span aria-hidden="true" className="h-2 w-2 rounded-full bg-current" />
+                {collectionHealth === 'healthy' ? 'Live' : collectionHealth}
+              </span>
+              <span className="text-white/58">
+                {collectionHealth === 'healthy'
+                  ? `All ${dueSourceCount} due sources reached`
+                  : `${successfulSourceCount}/${dueSourceCount} due sources reached`}
+              </span>
+              <span className="text-white/25">·</span>
+              <Link href="/methodology" className="underline-grow text-[#9bb6ff] hover:text-white">
+                Source health
+              </Link>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </header>
   );
 }

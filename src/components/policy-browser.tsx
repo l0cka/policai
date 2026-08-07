@@ -21,6 +21,7 @@ import {
   Table2,
 } from 'lucide-react';
 import { FilterControls, FilterSidebar, type FilterGroup } from '@/components/filter-sidebar';
+import { PolicyObservatory } from '@/components/policy-observatory';
 import {
   PolicyTable,
   type PolicySortDirection,
@@ -35,8 +36,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { HealthSignal } from '@/components/ui/health-signal';
-import { MetricStrip } from '@/components/layout/PageIntro';
 import { jurisdictionRailStyle } from '@/lib/jurisdiction-accent';
 import { formatPolicyDate } from '@/lib/format-policy-date';
 import {
@@ -254,60 +253,182 @@ export function PolicyBrowser({
       ? `All ${dueSourceCount} due sources reached`
       : `${successfulSourceCount}/${dueSourceCount} due sources reached`;
 
+  const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    document.getElementById('policy-register')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div>
-      {/*
-        No display heading here. The register is what the page is for, so it
-        opens on the data with the title reduced to a label.
-      */}
-      <section className="container mx-auto px-4 pb-2 pt-7 sm:px-6 lg:px-8">
-        <div className="reveal flex flex-col gap-3 sm:flex-row sm:items-baseline sm:justify-between">
-          <div>
-            <h1 className="page-eyebrow">Australian AI policy register</h1>
-            <p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">
-              Legislation, guidance and court practice notes from federal, state
-              and territory governments, each linked to its official source.
+      <section className="relative overflow-hidden bg-[#071b2e] text-white">
+        <div className="container relative mx-auto grid min-h-[38rem] gap-12 px-4 sm:px-6 md:grid-cols-[0.72fr_1.28fr] md:gap-0 lg:px-8">
+          <div className="reveal flex max-w-[34rem] flex-col justify-center py-12 pr-0 md:py-10 md:pr-8 lg:pr-10">
+            <p className="font-mono text-[11px] font-medium uppercase tracking-[0.08em] text-[#82a7ff]">
+              The policy observatory
             </p>
+            <h1 className="mt-5 max-w-[29rem] font-sans text-[clamp(2.7rem,4.25vw,4.25rem)] font-semibold leading-[1.03] tracking-[-0.035em] text-white">
+              See Australian AI policy as it changes.
+            </h1>
+            <p className="mt-5 max-w-[29rem] text-[14px] leading-6 text-white/64">
+              Policai tracks official AI policy across Australia in real time and
+              links every record to its source.
+            </p>
+
+            <form
+              id="policy-search"
+              onSubmit={handleSearchSubmit}
+              className="mt-8 scroll-mt-28"
+              role="search"
+            >
+              <label className="sr-only" htmlFor="observatory-search">
+                Search the Australian AI policy register
+              </label>
+              <div className="group flex max-w-[31rem] items-center border border-white/30 bg-transparent transition-colors focus-within:border-[#82a7ff] focus-within:bg-white/[0.035]">
+                <Search className="ml-4 h-[18px] w-[18px] shrink-0 text-white/45" strokeWidth={1.7} />
+                <input
+                  id="observatory-search"
+                  ref={searchRef}
+                  type="search"
+                  placeholder="Search policies, agencies or topics"
+                  value={search}
+                  onChange={(event) => setSearch(event.target.value)}
+                  className="h-[3.35rem] min-w-0 flex-1 bg-transparent px-3 text-sm text-white outline-none placeholder:text-white/48"
+                />
+                <kbd className="mr-3 border border-white/24 px-1.5 py-1 font-mono text-[9px] text-white/42">⌘K</kbd>
+              </div>
+
+              <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3 text-xs">
+                <button
+                  type="submit"
+                  className="group inline-flex h-12 items-center gap-4 rounded-[2px] bg-gradient-to-r from-[#435ee6] to-[#6178ea] px-6 font-semibold text-white transition-[filter] hover:brightness-110"
+                >
+                  Search the register
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" strokeWidth={2} />
+                </button>
+                <Link href="/developments" className="group inline-flex items-center gap-3 font-medium text-[#9bb6ff] hover:text-white">
+                  View developments
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Link>
+              </div>
+            </form>
+
+            <div className="mt-9 grid max-w-[31rem] grid-cols-4">
+              {[
+                [policies.length, 'verified policies'],
+                [distinctJurisdictions.size, 'jurisdictions'],
+                [developmentCount, 'developments'],
+                [automaticSourceCount, 'sources monitored'],
+              ].map(([value, label], index) => (
+                <div key={label} className={cn('pr-3', index > 0 && 'border-l border-white/20 pl-5')}>
+                  <strong className="block text-[1.55rem] font-medium leading-none text-white">
+                    {value}
+                  </strong>
+                  <span className="mt-2 block text-[10px] leading-4 text-white/55">
+                    {label}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="flex shrink-0 items-center gap-3">
-            <HealthSignal health={collectionHealth} />
-            <span className="page-eyebrow">
-              {freshLabel}
-              {freshnessDate ? ` · ${formatDate(freshnessDate)}` : ''}
-            </span>
+
+          <div className="reveal reveal-2 flex min-w-0 items-center border-t border-white/18 py-10 md:border-l md:border-t-0 md:pl-8 lg:pl-9">
+            <PolicyObservatory policies={policies} currentAt={freshnessDate} />
+          </div>
+        </div>
+      </section>
+
+      <section className="border-y border-white/16 bg-[#071b2e] text-white">
+        <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between gap-6 pb-4">
+            <h2 className="font-mono text-[11px] font-medium uppercase tracking-[0.08em] text-[#82a7ff]">
+              What changed recently
+            </h2>
+            <Link href="/developments" className="group hidden items-center gap-3 text-xs font-medium text-[#9bb6ff] hover:text-white sm:inline-flex">
+              View all developments
+              <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </div>
+
+          <div className="grid md:grid-cols-3">
+            {developments.slice(0, 3).map((development, index) => (
+              <article
+                key={development.id}
+                style={jurisdictionRailStyle(development.jurisdiction)}
+                className={cn(
+                  'ink-rail py-6 md:px-6',
+                  index > 0 && 'border-t border-white/18 md:border-l md:border-t-0',
+                  index === 0 && 'md:pl-0',
+                )}
+              >
+                <p className="font-mono text-[9px] font-medium uppercase tracking-[0.1em] text-white/58">
+                  {formatDevelopmentDate(development)}
+                </p>
+                <a
+                  href={development.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group mt-3 inline-flex max-w-[23rem] items-start gap-2 text-[15px] font-semibold leading-6 hover:text-[#9bb6ff]"
+                >
+                  {development.title}
+                  <ArrowUpRight className="mt-1 h-4 w-4 shrink-0 opacity-45 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:opacity-100" />
+                </a>
+                {development.summary ? (
+                  <p className="mt-2 line-clamp-2 max-w-[25rem] text-xs leading-5 text-white/58">
+                    {development.summary}
+                  </p>
+                ) : null}
+                <p className="mt-4 flex items-center gap-2 text-[11px] text-white/60">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-[#77dcc2]" fill="currentColor" />
+                  {getJurisdictionName(development.jurisdiction)}
+                  <span className="text-white/24">|</span>
+                  Verified source
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="policy-register" className="reveal reveal-2 container mx-auto scroll-mt-28 px-4 pb-10 pt-12 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-3 border-b border-[var(--rule-heavy)] pb-5 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="page-eyebrow">Source-linked records</p>
+            <h2 className="mt-2 font-display text-[2rem] leading-none tracking-[-0.025em]">Policy register</h2>
+          </div>
+          <div className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.11em] text-muted-foreground">
+            <span
+              aria-hidden="true"
+              className={cn(
+                'h-1.5 w-1.5 rounded-full',
+                collectionHealth === 'healthy' ? 'bg-[var(--trust)]' : 'bg-[var(--caution)]',
+              )}
+            />
+            {freshLabel}{freshnessDate ? ` · ${formatDate(freshnessDate)}` : ''}
           </div>
         </div>
 
-        <MetricStrip
-          className="mt-5"
-          metrics={[
-            { value: policies.length, label: 'policies' },
-            { value: distinctJurisdictions.size, label: 'jurisdictions' },
-            { value: developmentCount, label: 'developments' },
-            { value: automaticSourceCount, label: 'sources monitored' },
-          ]}
-        />
-      </section>
-
-      <section className="reveal reveal-2 container mx-auto px-4 pb-10 sm:px-6 lg:px-8">
         <div className="flex items-stretch">
           <FilterSidebar groups={filterGroups} onClear={clearFilters} hasActiveFilters={hasActiveFilters} />
 
           <div className="min-w-0 flex-1 py-5 lg:px-8">
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <div id="policy-search" className="relative flex-1 scroll-mt-28">
-                <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" strokeWidth={1.75} />
-                <input
-                  ref={searchRef}
-                  type="search"
-                  placeholder="Search policies, agencies and topics"
-                  value={search}
-                  onChange={(event) => setSearch(event.target.value)}
-                  className="h-11 w-full rounded-md border border-input bg-background pl-11 pr-14 text-sm outline-none transition-[border-color,box-shadow] duration-[var(--dur-base)] placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
-                />
-                <kbd className="absolute right-3 top-1/2 hidden -translate-y-1/2 border border-border px-1.5 py-0.5 font-mono text-[11px] text-muted-foreground sm:block">
-                  ⌘K
-                </kbd>
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="min-w-0">
+                <p className="font-mono text-[11px] text-muted-foreground" aria-live="polite">
+                  {filteredPolicies.length} {filteredPolicies.length === 1 ? 'policy' : 'policies'}
+                  {search ? ` matching “${search}”` : ''}
+                </p>
+                {search ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSearch('');
+                      searchRef.current?.focus();
+                    }}
+                    className="mt-1 text-xs font-medium text-primary hover:underline"
+                  >
+                    Clear search
+                  </button>
+                ) : null}
               </div>
               <div className="hidden md:block"><ViewToggle value={viewMode} onChange={setViewMode} /></div>
             </div>
@@ -374,17 +495,7 @@ export function PolicyBrowser({
               </div>
             ) : null}
 
-            {developments.length > 0 ? (
-              <Link href="/developments" className="mt-3 flex min-h-11 items-center justify-between rounded-md border border-primary/25 px-4 text-sm text-primary xl:hidden">
-                <span>{developments.length} new verified developments</span>
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            ) : null}
-
-            <div className="mb-3 mt-5 flex items-center justify-between">
-              <p className="font-mono text-[11px] text-muted-foreground" aria-live="polite">
-                {filteredPolicies.length} {filteredPolicies.length === 1 ? 'policy' : 'policies'}
-              </p>
+            <div className="mb-3 mt-5 flex items-center justify-end">
               <div className="md:hidden"><ViewToggle value={mobileViewMode} onChange={setMobileViewMode} /></div>
             </div>
 
@@ -398,45 +509,12 @@ export function PolicyBrowser({
             />
           </div>
 
-          <div className="hidden w-[19.5rem] shrink-0 border-l border-[var(--rule-hair)] py-5 pl-7 xl:block">
-            <div className="flex items-center justify-between border-b border-border pb-3">
-              <h2 className="font-mono text-[11px] font-medium uppercase tracking-[0.12em]">Latest developments</h2>
-            </div>
-            <div>
-              {developments.slice(0, 5).map((development) => (
-                <article
-                  key={development.id}
-                  style={jurisdictionRailStyle(development.jurisdiction)}
-                  className="ink-rail content-auto border-b border-border py-4 pl-3"
-                >
-                  <p className="font-mono text-[11px] font-medium uppercase text-muted-foreground">{formatDevelopmentDate(development)}</p>
-                  <a href={development.url} target="_blank" rel="noopener noreferrer" className="group mt-2 inline-flex items-start gap-1.5 text-sm font-semibold leading-5 hover:text-primary">
-                    {development.title}
-                    <ArrowUpRight className="mt-0.5 h-3.5 w-3.5 shrink-0 opacity-55 transition duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:opacity-100" />
-                  </a>
-                  {development.summary ? <p className="mt-1.5 line-clamp-2 text-xs leading-4 text-muted-foreground">{development.summary}</p> : null}
-                  <p className="mt-2 flex items-center gap-1.5 text-[11px] text-muted-foreground">
-                    <CheckCircle2 className="h-3.5 w-3.5 text-[var(--trust)]" fill="currentColor" />
-                    {getJurisdictionName(development.jurisdiction)}
-                  </p>
-                </article>
-              ))}
-              {developments.length === 0 ? (
-                <p className="border-b border-border py-5 text-xs leading-5 text-muted-foreground">
-                  Nothing verified yet. Unconfirmed leads are still listed on the radar.
-                </p>
-              ) : null}
-            </div>
-            <Link href="/developments" className="group mt-4 inline-flex items-center gap-2 text-xs font-medium text-primary hover:underline">
-              View all developments <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
-            </Link>
+        </div>
 
-            <div className="mt-7 border-t border-border pt-5 font-mono text-[11px] leading-5 text-muted-foreground">
-              <p>{automaticSourceCount} automatic sources</p>
-              <p>{currentManualSourceCount}/{manualSourceCount} manual sources checked</p>
-              {unavailableManualSourceCount > 0 ? <p>{unavailableManualSourceCount} currently unavailable</p> : null}
-            </div>
-          </div>
+        <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1 border-t border-[var(--rule-hair)] pt-4 font-mono text-[9px] uppercase tracking-[0.1em] text-muted-foreground">
+          <span>{automaticSourceCount} automatic sources</span>
+          <span>{currentManualSourceCount}/{manualSourceCount} manual sources checked</span>
+          {unavailableManualSourceCount > 0 ? <span>{unavailableManualSourceCount} unavailable</span> : null}
         </div>
       </section>
     </div>

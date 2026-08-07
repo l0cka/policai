@@ -70,7 +70,12 @@ export default async function RootLayout({
           Skip to content
         </a>
         <TooltipProvider>
-          <Header dataCurrentAt={dataCurrentAt} />
+          <Header
+            dataCurrentAt={dataCurrentAt}
+            collectionHealth={collectionMeta.collector.health}
+            successfulSourceCount={collectionMeta.collector.successfulSourceCount}
+            dueSourceCount={collectionMeta.collector.dueSourceCount}
+          />
           <main id="main-content" className="flex-1">{children}</main>
           <Footer />
           <BackToTop />

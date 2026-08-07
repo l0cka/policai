@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 type PolicaiLogoProps = {
   className?: string;
   iconClassName?: string;
+  imageClassName?: string;
   textClassName?: string;
   withWordmark?: boolean;
 };
@@ -11,6 +12,7 @@ type PolicaiLogoProps = {
 export function PolicaiLogo({
   className,
   iconClassName,
+  imageClassName,
   textClassName,
   withWordmark = true,
 }: PolicaiLogoProps) {
@@ -23,7 +25,7 @@ export function PolicaiLogo({
           aria-hidden="true"
           width={128}
           height={128}
-          className="block h-full w-full object-contain"
+          className={cn('block h-full w-full object-contain', imageClassName)}
           priority
         />
       </span>
