@@ -352,12 +352,29 @@
     "jurisdiction": "nsw",
     "relatedPolicyId": "nsw-supreme-court-sc-gen-23",
     "sourceUrl": "https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html",
+    "datePrecision": "day",
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
-        "url": "https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html"
+        "url": "https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html",
+        "finalUrl": "https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html",
+        "retrievedAt": "2026-08-07T07:54:05.044Z",
+        "contentType": "text/html",
+        "contentHash": "ca5614f3ecc63e3934ed322eee3e9d77e4ce782db3c00e51284e67253bfaf654",
+        "lastModified": "Fri, 07 Aug 2026 07:52:40 GMT",
+        "title": "Practice notes",
+        "reviewedDate": {
+          "date": "2025-02-03",
+          "precision": "day",
+          "reviewedAt": "2026-08-07T07:54:05.074Z",
+          "reviewedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-07",
+          "notes": "Date confirmed against the live official source on 2026-08-07. Duplicate of verified timeline event tl-2025-02-03-nsw-supreme-court-practice-note-sc-gen-23-commence; the live practice-notes index still lists SC Gen 23 (Use of Generative AI), commenced 3 February 2025."
+        }
       },
-      "notes": "Legacy timeline entry; its date and description require editorial re-checking against the source."
+      "checkedAt": "2026-08-07T07:54:05.074Z",
+      "checkedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-07",
+      "method": "manual",
+      "notes": "Duplicate of verified timeline event tl-2025-02-03-nsw-supreme-court-practice-note-sc-gen-23-commence; the live practice-notes index still lists SC Gen 23 (Use of Generative AI), commenced 3 February 2025."
     }
   },
   {
@@ -989,30 +1006,30 @@
         "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
         "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
         "title": "Artificial intelligence and data centres – Parliament of Australia",
-        "retrievedAt": "2026-08-07T05:12:26.630Z",
+        "retrievedAt": "2026-08-07T07:54:56.014Z",
         "contentType": "text/html",
-        "contentHash": "9d851e0a221605c0a98ba2a6b62dfde9953c30df07612e1c1aca82dd12e27e99",
+        "contentHash": "97121dd9e867987cdbc700f17da8330a476db63b6189bbd63a9853fda73374c3",
         "linkedDocuments": [],
         "browserCapture": {
           "method": "browser",
-          "capturedAt": "2026-08-07T05:12:26.630Z",
-          "capturedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-08",
-          "notes": "Captured via self-hosted Firecrawl because the host refuses plain HTTP. Senate AI and data centres inquiry — aph.gov.au states referred 13 May 2026, submissions close 1 Sep 2026, reporting 16 Nov 2026.",
-          "pageContentHash": "b889f363a2fe24088413342e1a7e514c14a5d44a531ed6891e1861e9107469a7",
-          "characterCount": 30089
+          "capturedAt": "2026-08-07T07:54:56.014Z",
+          "capturedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-07",
+          "notes": "Captured via self-hosted Firecrawl because the host refuses plain HTTP. Duplicate revision of verified timeline event tl-2026-05-13-senate-ai-data-centres-inquiry; aph.gov.au confirms referred 13 May 2026, submissions close 1 September 2026, reporting 16 November 2026.",
+          "pageContentHash": "01883369a08f9061548dc3b53760b173caf63d50dffd03c2b67f374211cd0d2a",
+          "characterCount": 29886
         },
         "reviewedDate": {
           "date": "2026-05-13",
           "precision": "day",
-          "reviewedAt": "2026-08-07T05:12:26.678Z",
-          "reviewedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-08",
-          "notes": "Date confirmed against the live official source on 2026-08-08. Senate AI and data centres inquiry — aph.gov.au states referred 13 May 2026, submissions close 1 Sep 2026, reporting 16 Nov 2026."
+          "reviewedAt": "2026-08-07T07:54:56.063Z",
+          "reviewedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-07",
+          "notes": "Date confirmed against the live official source on 2026-08-07. Duplicate revision of verified timeline event tl-2026-05-13-senate-ai-data-centres-inquiry; aph.gov.au confirms referred 13 May 2026, submissions close 1 September 2026, reporting 16 November 2026."
         }
       },
-      "checkedAt": "2026-08-07T05:12:26.678Z",
-      "checkedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-08",
+      "checkedAt": "2026-08-07T07:54:56.063Z",
+      "checkedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-07",
       "method": "manual",
-      "notes": "Senate AI and data centres inquiry — aph.gov.au states referred 13 May 2026, submissions close 1 Sep 2026, reporting 16 Nov 2026."
+      "notes": "Duplicate revision of verified timeline event tl-2026-05-13-senate-ai-data-centres-inquiry; aph.gov.au confirms referred 13 May 2026, submissions close 1 September 2026, reporting 16 November 2026."
     }
   },
   {
