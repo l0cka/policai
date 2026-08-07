@@ -182,8 +182,8 @@ export default function SectorDirectory({ orgs }: { orgs: ScoredOrg[] }) {
                       {o.monitored ? (
                         <span
                           className="radar-dot"
-                          title="Already a Pro Bono Radar source"
-                          aria-label="Already a Pro Bono Radar source"
+                          title="Already a Policai A2J source"
+                          aria-label="Already a Policai A2J source"
                         >
                           ●
                         </span>

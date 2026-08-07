@@ -30,7 +30,7 @@ const metadataMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Pro Bono Radar',
+  title: 'Policai A2J',
   description:
     'A monitor of Australian pro bono, access-to-justice and legal assistance news, law reform, funding and deadlines, each item linked to its source.',
 };
@@ -110,9 +110,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           </div>
 
           <div className="container masthead">
-            <Link href="/" aria-label="Pro Bono Radar home" className="brand">
+            <Link href="/" aria-label="Policai A2J home" className="brand">
               <RadarMark />
-              <span className="brand-wordmark">Pro Bono Radar</span>
+              <span className="brand-wordmark">Policai A2J</span>
             </Link>
             <Nav />
             <div className="header-actions">

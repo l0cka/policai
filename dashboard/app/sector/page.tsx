@@ -14,7 +14,7 @@ import {
 export const dynamic = 'force-dynamic';
 
 export const metadata = {
-  title: 'The sector — Pro Bono Radar',
+  title: 'The sector — Policai A2J',
   description:
     'Every organisation that funds, coordinates, delivers or studies legal assistance in Australia, and the funding and referral structure that connects them.',
 };
