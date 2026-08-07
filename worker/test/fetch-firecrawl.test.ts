@@ -91,6 +91,18 @@ Federal budget boosts legal aid](https://clcs.org.au/news/budget-boost)`;
     expect(items[0].title).toBe('Administrative review bill 2026');
   });
 
+  it('survives malformed percent-encoding in an empty-anchor slug', () => {
+    const md = `
+[](https://clcs.org.au/news/broken-encoding-%E0%A4%A)
+[](https://clcs.org.au/news/administrative-review-bill-2026)
+`;
+    const items = extractListingLinks(md, 'https://clcs.org.au/news', 'clcs\\.org\\.au/news/.+');
+    expect(items.map((i) => i.title)).toEqual([
+      'Broken encoding %E0%A4%A',
+      'Administrative review bill 2026',
+    ]);
+  });
+
   it('strips markdown heading prefixes from titles', () => {
     const md = `[### Administrative Review Council Inquiry](https://clcs.org.au/news/arc-inquiry)`;
     const items = extractListingLinks(md, 'https://clcs.org.au/news', 'clcs\\.org\\.au/news/.+');

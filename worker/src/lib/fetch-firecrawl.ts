@@ -24,7 +24,14 @@ function isSameOrSubdomain(candidateHost: string, baseHost: string): boolean {
 // the enrichment pass writes the real briefing text later.
 function titleFromSlug(u: URL): string {
   const segment = u.pathname.split('/').filter(Boolean).pop() ?? '';
-  const words = decodeURIComponent(segment).replace(/\.html?$/i, '').replace(/[-_]+/g, ' ').trim();
+  let decoded = segment;
+  try {
+    decoded = decodeURIComponent(segment);
+  } catch {
+    // Malformed percent-encoding in a scraped link (page content is
+    // attacker-influenced); the raw segment still makes a usable title.
+  }
+  const words = decoded.replace(/\.html?$/i, '').replace(/[-_]+/g, ' ').trim();
   return words ? words[0].toUpperCase() + words.slice(1) : '';
 }
 
