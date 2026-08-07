@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS items (
   blurb              TEXT,
   opportunity        BOOLEAN NOT NULL DEFAULT FALSE,
   opportunity_reason TEXT,
+  relevant           BOOLEAN NOT NULL DEFAULT TRUE,
   entities           JSONB,                       -- {organisations:[], deadlines:[{date,label}], amounts:[]}
   enriched_at        TIMESTAMPTZ,
   created_at         TIMESTAMPTZ NOT NULL DEFAULT now(),

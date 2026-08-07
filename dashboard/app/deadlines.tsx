@@ -37,7 +37,8 @@ export default async function Deadlines() {
   const { rows } = await getPool().query<Row>(
     `SELECT DISTINCT ON (d->>'date', d->>'label') i.title, i.url, d->>'date' AS date, d->>'label' AS label
      FROM items i, jsonb_array_elements(i.entities->'deadlines') d
-     WHERE d->>'date' ~ '^\\d{4}-\\d{2}-\\d{2}$'
+     WHERE i.relevant
+       AND d->>'date' ~ '^\\d{4}-\\d{2}-\\d{2}$'
        AND (d->>'date') >= to_char(now() AT TIME ZONE 'Australia/Sydney', 'YYYY-MM-DD')
      ORDER BY d->>'date' ASC, d->>'label' ASC
      LIMIT 12`,

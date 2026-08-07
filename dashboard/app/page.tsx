@@ -8,11 +8,11 @@ const STREAMS: Record<string, string> = {
   news: 'News', law_reform: 'Law reform', funding: 'Funding', tech_justice: 'Tech & justice',
 };
 
-type Search = { stream?: string; q?: string; opp?: string };
+type Search = { stream?: string; q?: string; opp?: string; filtered?: string };
 
 export default async function Feed({ searchParams }: { searchParams: Promise<Search> }) {
-  const { stream, q, opp } = await searchParams;
-  const cond: string[] = [];
+  const { stream, q, opp, filtered } = await searchParams;
+  const cond: string[] = [filtered === '1' ? 'NOT i.relevant' : 'i.relevant'];
   const args: unknown[] = [];
   if (stream && Object.prototype.hasOwnProperty.call(STREAMS, stream)) { args.push(stream); cond.push(`i.stream = $${args.length}`); }
   if (opp === '1') cond.push(`i.opportunity`);
@@ -29,7 +29,7 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
   const safeHref = (u: string) => /^https?:\/\//i.test(u) ? u : undefined;
 
   const linkFor = (params: Record<string, string | undefined>) => {
-    const merged = { stream, q, opp, ...params };
+    const merged = { stream, q, opp, filtered, ...params };
     const qs = Object.entries(merged).filter(([, v]) => v).map(([k, v]) => `${k}=${encodeURIComponent(v!)}`).join('&');
     return qs ? `/?${qs}` : '/';
   };
@@ -42,9 +42,11 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
           <Link key={key} href={linkFor({ stream: key })} className={stream === key ? 'active' : ''}>{label}</Link>
         ))}
         <Link href={linkFor({ opp: opp === '1' ? undefined : '1' })} className={opp === '1' ? 'active' : ''}>⚑ Opportunities</Link>
+        <Link href={linkFor({ filtered: filtered === '1' ? undefined : '1' })} className={filtered === '1' ? 'active' : ''} title="Items the enrichment agent screened out as not radar material">Filtered</Link>
         <form action="/" method="get">
           {stream ? <input type="hidden" name="stream" value={stream} /> : null}
           {opp === '1' ? <input type="hidden" name="opp" value="1" /> : null}
+          {filtered === '1' ? <input type="hidden" name="filtered" value="1" /> : null}
           <input name="q" placeholder="Search…" defaultValue={q ?? ''} />
         </form>
       </div>

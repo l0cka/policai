@@ -5,6 +5,7 @@ export type Stream = (typeof STREAMS)[number];
 
 export const EnrichmentSchema = z.object({
   stream: z.enum(STREAMS),
+  relevant: z.boolean(),
   blurb: z.string().min(20).max(600),
   opportunity: z.boolean(),
   opportunity_reason: z.string().max(300).nullable(),

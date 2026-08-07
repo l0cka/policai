@@ -28,10 +28,10 @@ async function main() {
   const e = parsed.data;
   const pool = getPool();
   const res = await pool.query(
-    `UPDATE items SET stream = $2, blurb = $3, opportunity = $4, opportunity_reason = $5,
-       entities = $6, excerpt = COALESCE($7, excerpt), enriched_at = now()
+    `UPDATE items SET stream = $2, relevant = $3, blurb = $4, opportunity = $5, opportunity_reason = $6,
+       entities = $7, excerpt = COALESCE($8, excerpt), enriched_at = now()
      WHERE id = $1`,
-    [itemId, e.stream, e.blurb, e.opportunity, e.opportunity_reason, JSON.stringify(e.entities), e.excerpt],
+    [itemId, e.stream, e.relevant, e.blurb, e.opportunity, e.opportunity_reason, JSON.stringify(e.entities), e.excerpt],
   );
   if (res.rowCount === 0) {
     console.error(`no item with id ${itemId}`);

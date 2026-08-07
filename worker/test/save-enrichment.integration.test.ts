@@ -27,6 +27,7 @@ describe('save-enrichment CLI (integration)', () => {
   it('saves a valid payload and stamps enriched_at', async () => {
     const payload = JSON.stringify({
       stream: 'tech_justice',
+      relevant: true,
       blurb: 'A court digitisation pilot expands to two more registries this quarter.',
       opportunity: false,
       opportunity_reason: null,
@@ -37,13 +38,53 @@ describe('save-enrichment CLI (integration)', () => {
       cwd: new URL('..', import.meta.url).pathname, input: payload,
       env: { ...process.env, DATABASE_URL: DB },
     });
-    const { rows } = await getPool().query(`SELECT stream, enriched_at FROM items WHERE id = $1`, [itemId]);
+    const { rows } = await getPool().query(`SELECT stream, relevant, enriched_at FROM items WHERE id = $1`, [itemId]);
     expect(rows[0].stream).toBe('tech_justice');
+    expect(rows[0].relevant).toBe(true);
     expect(rows[0].enriched_at).not.toBeNull();
   });
 
+  it('persists relevant=false for screened-out items', async () => {
+    const payload = JSON.stringify({
+      stream: 'news',
+      relevant: false,
+      blurb: 'Practitioner profile piece; no bearing on sector developments.',
+      opportunity: false,
+      opportunity_reason: null,
+      entities: { organisations: [], deadlines: [], amounts: [] },
+      excerpt: null,
+    });
+    execFileSync('npx', ['tsx', 'src/save-enrichment.ts', String(itemId)], {
+      cwd: new URL('..', import.meta.url).pathname, input: payload,
+      env: { ...process.env, DATABASE_URL: DB },
+    });
+    const { rows } = await getPool().query(`SELECT relevant FROM items WHERE id = $1`, [itemId]);
+    expect(rows[0].relevant).toBe(false);
+  });
+
+  it('exits 2 when relevant is missing from the payload', () => {
+    const missing = JSON.stringify({
+      stream: 'news',
+      blurb: 'A payload from before the relevance gate existed, thirty chars.',
+      opportunity: false,
+      opportunity_reason: null,
+      entities: { organisations: [], deadlines: [], amounts: [] },
+      excerpt: null,
+    });
+    try {
+      execFileSync('npx', ['tsx', 'src/save-enrichment.ts', String(itemId)], {
+        cwd: new URL('..', import.meta.url).pathname, input: missing,
+        env: { ...process.env, DATABASE_URL: DB },
+      });
+      expect.fail('expected exit code 2');
+    } catch (err: unknown) {
+      const error = err as { status?: number };
+      expect(error.status).toBe(2);
+    }
+  });
+
   it('exits 2 on an invalid stream', () => {
-    const bad = JSON.stringify({ stream: 'sport', blurb: 'x'.repeat(30), opportunity: false, opportunity_reason: null, entities: { organisations: [], deadlines: [], amounts: [] }, excerpt: null });
+    const bad = JSON.stringify({ stream: 'sport', relevant: true, blurb: 'x'.repeat(30), opportunity: false, opportunity_reason: null, entities: { organisations: [], deadlines: [], amounts: [] }, excerpt: null });
     try {
       execFileSync('npx', ['tsx', 'src/save-enrichment.ts', String(itemId)], {
         cwd: new URL('..', import.meta.url).pathname, input: bad,
@@ -73,6 +114,7 @@ describe('save-enrichment CLI (integration)', () => {
   it('exits 2 on nonexistent item id with valid payload', () => {
     const payload = JSON.stringify({
       stream: 'tech_justice',
+      relevant: true,
       blurb: 'A court digitisation pilot expands to two more registries this quarter.',
       opportunity: false,
       opportunity_reason: null,

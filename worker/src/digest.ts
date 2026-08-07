@@ -12,7 +12,7 @@ async function main() {
   const { rows: items } = await pool.query(
     `SELECT i.id, i.title, i.url, i.blurb, i.stream, i.opportunity, i.entities, s.name AS source_name
      FROM items i JOIN sources s ON s.id = i.source_id
-     WHERE i.created_at >= $1 ORDER BY i.opportunity DESC, i.created_at DESC`,
+     WHERE i.created_at >= $1 AND i.relevant ORDER BY i.opportunity DESC, i.created_at DESC`,
     [periodStart.toISOString()],
   );
   const { rows: failures } = await pool.query(
