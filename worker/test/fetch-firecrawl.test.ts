@@ -103,10 +103,14 @@ Federal budget boosts legal aid](https://clcs.org.au/news/budget-boost)`;
     ]);
   });
 
-  it('strips markdown heading prefixes from titles', () => {
-    const md = `[### Administrative Review Council Inquiry](https://clcs.org.au/news/arc-inquiry)`;
+  it('strips markdown heading prefixes and trailing separator junk from titles', () => {
+    const md = `
+[### Administrative Review Council Inquiry](https://clcs.org.au/news/arc-inquiry)
+[NDIS reforms\\ ----------------](https://clcs.org.au/news/ndis-reforms)
+`;
     const items = extractListingLinks(md, 'https://clcs.org.au/news', 'clcs\\.org\\.au/news/.+');
     expect(items[0].title).toBe('Administrative Review Council Inquiry');
+    expect(items[1].title).toBe('NDIS reforms');
   });
 
   it('skips navigation-noise link text', () => {

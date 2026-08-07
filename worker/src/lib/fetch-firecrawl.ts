@@ -57,7 +57,7 @@ export function extractListingLinks(markdown: string, baseUrl: string, itemLinkP
     // A fragment link to the listing page itself is navigation, never an item.
     if (resolved.pathname === base.pathname && resolved.search === base.search) continue;
     if (ASSET_RE.test(resolved.pathname)) continue;
-    const linkText = m[1].replace(/^[\s\\#>*]+/, '').replace(/\s+/g, ' ').trim();
+    const linkText = m[1].replace(/^[\s\\#>*]+/, '').replace(/[\s\\|–—-]+$/, '').replace(/\s+/g, ' ').trim();
     if (NAV_NOISE_RE.test(linkText)) continue;
     const title = linkText || titleFromSlug(resolved);
     if (!pattern.test(url) || seen.has(url) || title.length < 8) continue;
