@@ -11,7 +11,14 @@ import type {
   TimelineEventDraft,
 } from '@/types';
 import { normalizeJurisdiction, normalizePolicyType } from '@/types';
-import { classifyCandidate, type Classification } from './classify';
+import {
+  classifyCandidate,
+  classifyCandidatesWithClaude,
+  classificationFromVerdict,
+  isClaudeClassifierEnabled,
+  type Classification,
+} from './classify';
+import type { ClaudeVerdict } from './claude-classify';
 import { extractRetrievedDocument } from './content';
 import {
   extractFromHtml,
@@ -1047,6 +1054,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     options.minScoreForReview ?? DEFAULT_MIN_SCORE_FOR_REVIEW;
   const minHealthySourceRate =
     options.minHealthySourceRate ?? DEFAULT_MIN_HEALTHY_SOURCE_RATE;
+  const useClaudeClassifier = isClaudeClassifierEnabled();
 
   const state: WatchState = {
     seen: { ...options.state.seen },
@@ -1475,6 +1483,24 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
       `[collect] ${source.id}: ${candidateCount} candidates, ${newCandidateCount} new, ${pending.length} pending`,
     );
 
+    // Claude classification runs once for this source's surviving (deduped)
+    // candidates rather than inside the per-candidate loop below — see
+    // classifyCandidatesWithClaude's doc comment for why per-candidate calls
+    // would be a real cost regression. A ClaudeAuthError here is intentionally
+    // not caught: it propagates out of collect() and fails the run, since a
+    // human needs to re-authenticate rather than the collector papering over it.
+    const claudeVerdictsById: Map<string, ClaudeVerdict> | null =
+      useClaudeClassifier
+        ? await classifyCandidatesWithClaude(
+            candidates.map((candidate) => ({
+              id: candidateStateKey(candidate),
+              title: candidate.title,
+              text: candidate.text,
+            })),
+            source.name,
+          )
+        : null;
+
     let candidateFailureCount = 0;
     for (const candidate of candidates) {
       const headlineKey = candidateHeadlineKey(candidate, nowIso);
@@ -1630,10 +1656,12 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         state.lastCheckedBySource[source.id] = nowIso;
       }
 
-      const initialClassification = await classifyCandidate(
-        enrichedCandidate,
-        document.text,
-      );
+      const initialClassification = useClaudeClassifier
+        ? classificationFromVerdict(
+            claudeVerdictsById?.get(candidateStateKey(candidate)),
+            enrichedCandidate,
+          )
+        : await classifyCandidate(enrichedCandidate, document.text);
       const classification: Classification = existingPolicy
         ? {
             ...initialClassification,

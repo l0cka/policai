@@ -1,10 +1,17 @@
 import { isRelevantScrapedCandidate } from '@/lib/scraper-filter';
 import {
+  normalizeJurisdiction,
+  normalizePolicyType,
   type Jurisdiction,
   type ContentAssessment,
   type PolicyType,
 } from '@/types';
 import type { Candidate } from './extract';
+import {
+  classifyBatch,
+  type ClaudeCandidate,
+  type ClaudeVerdict,
+} from './claude-classify';
 
 export interface Classification {
   isRelevant: boolean;
@@ -79,4 +86,80 @@ export async function classifyCandidate(
 ): Promise<Classification> {
   void pageHtml;
   return heuristicClassification(candidate);
+}
+
+/**
+ * Reads the collector's Claude-classifier opt-in. Unset (the default) keeps
+ * the deterministic heuristic path byte-for-byte unchanged; the Argus timer
+ * sets this once the Claude path is trusted enough to run unattended.
+ */
+export function isClaudeClassifierEnabled(): boolean {
+  return Boolean(process.env.USE_CLAUDE_CLASSIFIER);
+}
+
+/**
+ * Scores a whole batch of candidates with Claude in a single `classifyBatch`
+ * call (which itself chunks at CLAUDE_BATCH_SIZE). Batching — rather than one
+ * call per candidate — is the entire reason Task 3's classifier is cheap
+ * (~$13/month vs. ~$375/month); calling it in a per-candidate loop would
+ * silently reintroduce that cost. Excerpts come from the cheap pre-fetch
+ * extraction text so this can run once per source ahead of the collector's
+ * per-candidate document-fetch loop, rather than needing the deep fetch to
+ * complete first.
+ *
+ * A ClaudeAuthError (or any other error) from `classifyBatch` propagates to
+ * the caller unchanged — an expired credential is an operational failure
+ * distinct from a source outage, and must fail the run rather than being
+ * absorbed into a per-candidate fallback.
+ */
+export async function classifyCandidatesWithClaude(
+  candidates: { id: string; title: string; text: string }[],
+  sourceName: string,
+): Promise<Map<string, ClaudeVerdict>> {
+  const claudeCandidates: ClaudeCandidate[] = candidates.map((candidate) => ({
+    id: candidate.id,
+    title: candidate.title,
+    sourceName,
+    excerpt: candidate.text,
+  }));
+  const verdicts = await classifyBatch(claudeCandidates);
+  return new Map(verdicts.map((verdict) => [verdict.id, verdict]));
+}
+
+/**
+ * Maps a Claude verdict onto the same Classification shape the deterministic
+ * path produces. `confidence` is passed straight through as `relevanceScore`
+ * — both already live on the same 0-1 scale, so there is nothing to rescale
+ * or cap; unlike the heuristic path (whose score is deliberately capped
+ * below the review threshold because the "heuristic" tag alone forces
+ * review), an 'ai' classification's score is the real gate for whether a
+ * review candidate gets created, so it must reflect Claude's actual
+ * confidence unmodified.
+ *
+ * A missing verdict (Claude dropped the item, e.g. it failed schema
+ * validation) falls back to the deterministic heuristic rather than
+ * discarding the candidate — consistent with claude-classify.ts's own
+ * convention that a malformed entry is a skipped item, never lost data.
+ */
+export function classificationFromVerdict(
+  verdict: ClaudeVerdict | undefined,
+  candidate: Candidate,
+): Classification {
+  if (!verdict) return heuristicClassification(candidate);
+  return {
+    isRelevant: verdict.relevant,
+    relevanceScore: verdict.confidence,
+    classification: 'ai',
+    summary: verdict.summary,
+    suggestedType: verdict.type ? normalizePolicyType(verdict.type) : undefined,
+    suggestedJurisdiction: verdict.jurisdiction
+      ? normalizeJurisdiction(verdict.jurisdiction)
+      : undefined,
+    tags: [],
+    agencies: [],
+    assessment: {
+      method: 'ai',
+      promptVersion: 'claude-classify-v1',
+    },
+  };
 }
