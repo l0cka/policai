@@ -3,6 +3,7 @@ import { getPool } from '../lib/db';
 import { RailDeadlines } from './deadlines';
 import { daysUntil, getUpcomingDeadlines, sydneyToday } from '../lib/deadline-data';
 import { ArrowRight, ArrowUpRight, Flag, Search } from './icons';
+import { SignalNetwork, type SignalNetworkRow } from './signal-network';
 
 export const dynamic = 'force-dynamic';
 
@@ -51,7 +52,7 @@ function streamVars(stream: string | null): React.CSSProperties | undefined {
 
 type Stats = { new_week: number; opps: number; tracked: number };
 type SourceStats = { total: number; ok: number };
-type RadarRow = {
+type RadarRow = SignalNetworkRow & {
   id: string | number;
   title: string;
   url: string;
@@ -65,8 +66,6 @@ type RadarRow = {
   source_name: string;
 };
 
-const DAY_MS = 86_400_000;
-
 function shortDate(value: string | Date): string {
   return new Date(value).toLocaleDateString('en-AU', {
     timeZone: 'Australia/Sydney',
@@ -76,90 +75,6 @@ function shortDate(value: string | Date): string {
   });
 }
 
-function RadarField({ rows, today }: { rows: RadarRow[]; today: string }) {
-  const datedRows = rows.map((row) => ({
-    ...row,
-    at: Date.parse(`${sydneyDateOf(row.published_at ?? row.created_at)}T00:00:00Z`),
-  }));
-  const hasUnclassified = datedRows.some(
-    (row) => !row.stream || !Object.prototype.hasOwnProperty.call(STREAMS, row.stream),
-  );
-  const fieldStreams = [
-    ...Object.entries(STREAMS),
-    ...(hasUnclassified ? [['unclassified', 'Unclassified']] : []),
-  ];
-  const todayAt = Date.parse(`${today}T00:00:00Z`);
-  const oldestAt = datedRows.length ? Math.min(...datedRows.map((row) => row.at)) : todayAt;
-  const newestAt = datedRows.length ? Math.max(...datedRows.map((row) => row.at)) : todayAt;
-  const domainEnd = Math.max(todayAt, newestAt);
-  const domainStart = Math.min(oldestAt, domainEnd - 90 * DAY_MS);
-  const domainRange = Math.max(DAY_MS, domainEnd - domainStart);
-  const ticks = Array.from({ length: 5 }, (_, index) => domainStart + (domainRange * index) / 4);
-
-  const xFor = (at: number) => 2 + ((at - domainStart) / domainRange) * 96;
-  const yFor = (id: string | number) => {
-    const hash = String(id)
-      .split('')
-      .reduce((sum, character) => sum + character.charCodeAt(0), 0);
-    return 20 + ((hash * 37) % 61);
-  };
-
-  return (
-    <figure className="radar-field" aria-labelledby="radar-field-title">
-      <figcaption className="radar-field-head">
-        <span id="radar-field-title">Radar field</span>
-        <span className="radar-legend"><i className="radar-legend-dot" /> Signal</span>
-        <span className="radar-legend"><i className="radar-legend-dot opportunity" /> Opportunity</span>
-      </figcaption>
-
-      <div className="radar-field-body">
-        {fieldStreams.map(([key, label]) => {
-          const streamRows = datedRows.filter((row) =>
-            key === 'unclassified'
-              ? !row.stream || !Object.prototype.hasOwnProperty.call(STREAMS, row.stream)
-              : row.stream === key,
-          );
-          return (
-            <div className="radar-field-row" key={key}>
-              <div className="radar-field-label">
-                <span>{label}</span>
-                <small>{streamRows.length}</small>
-              </div>
-              <div className="radar-field-track">
-                {streamRows.map((row) => {
-                  const href = /^https?:\/\//i.test(row.url) ? row.url : undefined;
-                  const className = `radar-point${row.opportunity ? ' is-opportunity' : ''}`;
-                  const style = { left: `${xFor(row.at)}%`, top: `${yFor(row.id)}%` };
-                  const labelText = `${row.title}, ${shortDate(row.published_at ?? row.created_at)}`;
-                  return href ? (
-                    <a
-                      key={row.id}
-                      className={className}
-                      style={style}
-                      href={href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={labelText}
-                      title={labelText}
-                    />
-                  ) : (
-                    <span key={row.id} className={className} style={style} title={labelText} />
-                  );
-                })}
-              </div>
-            </div>
-          );
-        })}
-        <div className="radar-axis" aria-hidden="true">
-          <span />
-          {ticks.map((tick) => (
-            <time key={tick}>{shortDate(new Date(tick))}</time>
-          ))}
-        </div>
-      </div>
-    </figure>
-  );
-}
 
 async function getStats(): Promise<Stats> {
   const { rows } = await getPool().query(
@@ -210,10 +125,14 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
     ),
     getPool().query<RadarRow>(
       `SELECT i.id, i.title, i.url, i.blurb, i.excerpt, i.stream, i.opportunity, i.opportunity_reason,
-              i.published_at, i.created_at, s.name AS source_name
+              i.published_at, i.created_at, s.name AS source_name, s.url AS source_url,
+              count(*) OVER (PARTITION BY s.id)::int AS source_signal_count,
+              count(*) OVER (PARTITION BY coalesce(i.stream, 'unclassified'))::int AS collection_signal_count,
+              count(*) OVER ()::int AS total_signals
        FROM items i JOIN sources s ON s.id = i.source_id
        WHERE i.relevant
-       ORDER BY coalesce(i.published_at, i.created_at) DESC LIMIT 160`,
+         AND coalesce(i.published_at, i.created_at) >= now() - interval '30 days'
+       ORDER BY coalesce(i.published_at, i.created_at) DESC LIMIT 320`,
     ),
     getStats(),
     getSourceStats(),
@@ -281,7 +200,7 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
           </div>
 
           <div className="observatory-visual reveal reveal-1">
-            <RadarField rows={radarItems} today={today} />
+            <SignalNetwork rows={radarItems} />
           </div>
         </div>
       </section>

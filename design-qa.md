@@ -1,67 +1,63 @@
-# Design QA — Policai A2J observatory redesign
+# Design QA — source → signal → collection network
 
 ## Comparison target
 
-- Source visual truth: `docs/design/policai-observatory-reference-current.jpg`
-- Rendered implementation: `docs/design/probono-radar-observatory-implementation.jpg`
-- Source URL/state: Policai home, dark theme, default route
-- Implementation URL/state: Pro Bono Radar home, dark theme, default route with local fixture data
-- Viewport: 1579 x 1301 CSS px
-- Source pixels: 1579 x 1301
-- Implementation pixels: 1579 x 1301
-- Device density: 1x for both captures; no density normalization required
+- Source visual truth: `docs/design/probono-radar-signal-network-option-2.png`
+- Rendered implementation: `docs/design/probono-radar-signal-network-implementation.png`
+- Full-view comparison: `docs/design/probono-radar-signal-network-comparison.png`
+- Focused network comparison: `docs/design/probono-radar-signal-network-focused-comparison.png`
+- Mobile implementation: `docs/design/probono-radar-signal-network-mobile.png`
+- Viewport: 1279 x 721 CSS px for the final desktop capture
+- Source pixels: 1672 x 941
+- Implementation pixels: 1487 x 837 raw capture; cropped to the 1279 x 721 CSS viewport and normalized to 1672 x 941 for comparison
+- Device density: browser-reported 0.86 for the normalized desktop capture
+- State: dark theme, default route, local fixture database
 - Browser: Codex in-app browser
 
 ## Full-view comparison evidence
 
-The source and implementation were opened together in one same-viewport comparison input. The final implementation preserves the source hierarchy and proportions: civic masthead, live data strip, split observatory hero, left search/actions/metrics, right time field, recent-change band, and the source-linked register below.
+The approved mock and normalized implementation were combined into one same-state comparison image. The implementation preserves the existing site shell and left hero while replacing only the right panel. It matches the approved left-to-right reading path, title, legend, source nodes, central signal column, curved provenance links, collection hubs, inline selected-signal annotation and five-part summary strip.
 
-The Radar intentionally substitutes its own product vocabulary and real data model: stream rows replace jurisdictions, signals/opportunities replace policy statuses, and the Radar feed replaces the policy register.
+The visible density differs intentionally: the approved mock illustrates 30 representative signals from five sources, while the local fixture database contains six current signals from two sources. The component selects up to 30 real rows from the five most active sources and therefore reaches the approved density automatically on production data without inventing records.
 
 ## Focused region evidence
 
-A separate crop was not needed. At 1579 x 1301 the full captures keep the masthead, hero typography, search controls, chart labels/points, recent-signal cards and register transition legible at native density. The primary search and the Deadlines navigation were additionally exercised in the browser.
+The right-hand data panels were also cropped and compared together at native normalized scale. Node roles, restrained edge treatment, mint signal encoding, amber opportunity ring, periwinkle collection hubs, direct labels and the selected-signal annotation all retain the approved visual hierarchy. Fixture data contains no opportunities, so the local comparison correctly shows zero amber signal nodes while retaining the legend encoding.
 
 ## Findings
 
 No actionable P0, P1 or P2 findings remain.
 
-- Typography: Public Sans, IBM Plex Mono and Newsreader preserve the source's sans/mono/editorial hierarchy. The hero scale and wrapping were reduced during QA to restore the source's above-the-fold rhythm.
-- Spacing and layout: the split grid, divider, hero depth and recent-signal transition now track the source proportions. The responsive rules retain stacked hero/chart and full-width controls below 720 px.
-- Colors and tokens: navy civic surfaces, mint live states, periwinkle labels/actions and restrained hairline rules map directly to the Policai palette.
-- Image and asset fidelity: the reference is a data-led interface with no hero imagery. No placeholder imagery was introduced; the Radar field uses live application data and the existing product mark/icon set.
-- Copy and content: all permanent copy is specific to Australian access to justice, while feed titles, counts, statuses and sources remain database-driven.
-- Accessibility and behavior: semantic headings, labelled search fields, keyboard focus styles, reduced-motion rules, source link safety and native buttons/links are retained. Search resolved to `/?q=digitisation#radar-feed`; the primary Deadlines link resolved to `/deadlines`.
-- Browser diagnostics: the final clean preview produced no console errors. `npm run build` passed after the final visual changes.
+- Typography: the existing Public Sans and IBM Plex Mono hierarchy is preserved; labels and counts remain readable at desktop scale and match the approved editorial/technical contrast.
+- Spacing and layout: the network fills the right hero panel, retains the vertical divider and summary baseline, and does not change the left hero or downstream sections.
+- Colors and tokens: source, signal, opportunity and collection roles use the approved mint, amber and periwinkle palette on the existing navy surface. Role shape and labels make color non-essential.
+- Image and asset fidelity: the target is a live data visualization rather than a raster asset. The implementation recreates its semantic geometry with server-rendered SVG and real records; no placeholder art or decorative imagery was introduced.
+- Copy and content: the approved title, 30-day scope and role names are retained. Labels, counts, titles, dates and URLs are database-driven.
+- Accessibility and behavior: the figure has a text summary and hidden relationship list; all real source, signal and collection nodes are links; signal hit areas are enlarged; keyboard focus mirrors hover; mobile uses a labelled horizontal focus view with a visible scroll instruction.
+- Browser diagnostics: signal, source and collection links were present and correctly labelled; the internal collection link resolved to `/?stream=tech_justice#radar-feed`; no console warnings or errors were recorded.
 
 ## Comparison history
 
 ### Pass 1
 
-- [P2] The chart omitted five fixture records with no stream classification, so the field showed 1 signal while the hero metric showed 6.
-- Fix: added a conditional Unclassified row and plotted all source-linked signals.
-- Post-fix evidence: the field count now reconciles to the six tracked signals and all records remain available as interactive points.
+- [P2] On mobile, the 30-day label competed with the network title and was clipped at the right edge.
+- Fix: moved the range and legend into their own stacked rows and added a concise mobile scroll instruction.
+- Post-fix evidence: `docs/design/probono-radar-signal-network-mobile.png` shows the title, range, legend and focus view without page-level horizontal overflow.
 
 ### Pass 2
 
-- [P2] The initial hero was taller and the left/right split sat farther right than the Policai source, changing above-the-fold density.
-- Fix: reduced desktop headline scale and hero padding, and tightened the grid ratio/gap.
-- Post-fix evidence: the recent-change band and register transition now enter the same viewport while preserving the Policai composition.
-
-### Pass 3
-
-- No P0/P1/P2 differences remained. The final screenshot was captured after the clean production build and preview restart.
+- No P0/P1/P2 differences remained. Desktop and mobile captures were made after the responsive fix, with working node links and a clean browser console.
 
 ## Implementation checklist
 
-- [x] Preserve real Radar data and existing routes.
-- [x] Match Policai masthead, live strip, hero hierarchy and recent-change band.
-- [x] Make the hero chart source-linked and data-driven.
-- [x] Verify search and Deadlines navigation.
-- [x] Pass production build and clean browser diagnostics.
+- [x] Use real 30-day database rows and truthful aggregate counts.
+- [x] Preserve source provenance and collection filters as working links.
+- [x] Limit the hero to 30 representative signals for legibility.
+- [x] Provide keyboard, screen-reader and mobile reading paths.
+- [x] Match the approved Option 2 hierarchy and palette.
 
 ## Follow-up polish
 
-- [P3] Production data should naturally improve field density as enriched items fill the four named streams; the Unclassified row is intentionally retained as an honest fallback.
+- [P3] Production data will provide the dense five-source, multi-collection composition shown in the approved mock; the sparse local fixture state is intentionally honest.
 
 final result: passed
