@@ -1,11 +1,30 @@
 /* @vitest-environment node */
 
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { buildPolicy, buildTimelineEvent } from '@/test/factories';
 import type { WatchSource } from './sources';
 
+// vi.mock is hoisted above every import, including plain top-level const
+// declarations in this file, so the mock fn must come from vi.hoisted().
+// Every test gets a resolved default of ok:false so unrelated
+// browser-fallback tests keep exercising Playwright without needing to know
+// Firecrawl exists; tests about Firecrawl routing override this per-case.
+const { scrapeWithFirecrawl } = vi.hoisted(() => ({
+  scrapeWithFirecrawl: vi.fn(),
+}));
+vi.mock('./firecrawl', () => ({ scrapeWithFirecrawl }));
+
 import { collect, collectionRunFailed, emptyWatchState } from './collect';
 import { validateSourceReviews } from '../validate-data';
+
+beforeEach(() => {
+  scrapeWithFirecrawl.mockReset();
+  scrapeWithFirecrawl.mockResolvedValue({
+    ok: false,
+    reason: 'unavailable',
+    detail: 'not mocked for this test',
+  });
+});
 
 describe('collection CLI failure policy', () => {
   it('fails targeted diagnostics when any source error is reported', () => {
@@ -1977,6 +1996,112 @@ describe('collect browser fallback', () => {
     expect(browserFetchImpl).toHaveBeenCalled();
     expect(result.errors).toEqual([]);
     expect(result.meta.collector.sourceResults[0].status).toBe('success');
+  });
+
+  it('tries Firecrawl before the headless browser for a browser-strategy candidate page', async () => {
+    const browserSource: WatchSource = {
+      ...HTML_SOURCE,
+      fetchStrategy: 'browser',
+    };
+    const fetchImpl = fakeFetch({});
+    // The index itself is still retrieved through the headless browser —
+    // Firecrawl only stands in for the per-candidate page fetch — so the
+    // index route must resolve for the source to discover any candidates.
+    const browserFetchImpl = fakeFetch({
+      'https://www.example.gov.au/news': INDEX_HTML,
+    });
+    scrapeWithFirecrawl.mockImplementation(async (url: string) => ({
+      ok: true,
+      markdown: `# New AI policy framework released\n\nFirecrawl-sourced content for ${url}.`,
+      title: 'New AI policy framework released',
+      sourceUrl: url,
+    }));
+
+    const result = await collect({
+      sources: [browserSource],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl,
+      browserFetchImpl,
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+    });
+
+    expect(scrapeWithFirecrawl).toHaveBeenCalledWith(
+      'https://www.example.gov.au/news/ai-policy-framework',
+    );
+    expect(browserFetchImpl).toHaveBeenCalledWith(
+      'https://www.example.gov.au/news',
+      expect.anything(),
+    );
+    expect(browserFetchImpl).not.toHaveBeenCalledWith(
+      'https://www.example.gov.au/news/ai-policy-framework',
+      expect.anything(),
+    );
+    expect(result.errors).toEqual([]);
+    expect(result.meta.collector.sourceResults[0].status).toBe('success');
+    expect(
+      result.developments.map((development) => development.url),
+    ).toContain('https://www.example.gov.au/news/ai-policy-framework');
+  });
+
+  it('falls through to the headless browser when Firecrawl cannot serve a candidate page', async () => {
+    const browserSource: WatchSource = {
+      ...HTML_SOURCE,
+      fetchStrategy: 'browser',
+    };
+    const fetchImpl = fakeFetch({});
+    const browserFetchImpl = fakeFetch({
+      'https://www.example.gov.au/news': INDEX_HTML,
+      'https://www.example.gov.au/news/ai-policy-framework':
+        '<html><body><h1>New AI policy framework released</h1></body></html>',
+      'https://www.example.gov.au/news/seen-before':
+        '<html><body><h1>Existing AI governance standard update</h1></body></html>',
+    });
+    scrapeWithFirecrawl.mockResolvedValue({
+      ok: false,
+      reason: 'unavailable',
+      detail: 'connection refused',
+    });
+
+    const result = await collect({
+      sources: [browserSource],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl,
+      browserFetchImpl,
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+    });
+
+    expect(scrapeWithFirecrawl).toHaveBeenCalledWith(
+      'https://www.example.gov.au/news/ai-policy-framework',
+    );
+    expect(browserFetchImpl).toHaveBeenCalledWith(
+      'https://www.example.gov.au/news/ai-policy-framework',
+      expect.anything(),
+    );
+    expect(result.errors).toEqual([]);
+    expect(result.meta.collector.sourceResults[0].status).toBe('success');
+  });
+
+  it('does not consult Firecrawl for default http-strategy sources', async () => {
+    const fetchImpl = fakeFetch({
+      'https://www.example.gov.au/news': INDEX_HTML,
+      'https://www.example.gov.au/news/ai-policy-framework':
+        '<html><body><h1>New AI policy framework released</h1></body></html>',
+      'https://www.example.gov.au/news/seen-before':
+        '<html><body><h1>Existing AI governance standard update</h1></body></html>',
+    });
+
+    const result = await collect({
+      sources: [HTML_SOURCE],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl,
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+    });
+
+    expect(scrapeWithFirecrawl).not.toHaveBeenCalled();
+    expect(result.errors).toEqual([]);
   });
 
   it('still reports failure when both retrievers fail', async () => {
