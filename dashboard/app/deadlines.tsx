@@ -1,8 +1,6 @@
-import Link from 'next/link';
 import {
   countdown,
   daysUntil,
-  getUpcomingDeadlines,
   monthHeading,
   safeHref,
   sydneyToday,
@@ -12,7 +10,15 @@ import {
 
 // Month-grouped agenda timeline, rendered from rows the caller fetched.
 export function DeadlineTimeline({ rows }: { rows: DeadlineRow[] }) {
-  if (!rows.length) return <p>No upcoming deadlines extracted yet.</p>;
+  if (!rows.length) {
+    return (
+      <div className="empty-state">
+        <p className="section-title">No upcoming deadlines</p>
+        <p>None have been extracted from the sources yet.</p>
+      </div>
+    );
+  }
+
   const today = sydneyToday();
   const months = new Map<string, DeadlineRow[]>();
   for (const r of rows) {
@@ -26,7 +32,7 @@ export function DeadlineTimeline({ rows }: { rows: DeadlineRow[] }) {
     <>
       {[...months.entries()].map(([month, entries]) => (
         <div className="timeline-month" key={month}>
-          <h4>{monthHeading(entries[0].date)}</h4>
+          <h3>{monthHeading(entries[0].date)}</h3>
           {entries.map((r, n) => {
             const days = daysUntil(r.date, today);
             const href = safeHref(r.url);
@@ -35,14 +41,24 @@ export function DeadlineTimeline({ rows }: { rows: DeadlineRow[] }) {
                 <div className={`date-block ${urgency(days)}`}>
                   <span className="day">{Number(r.date.slice(8, 10))}</span>
                   <span className="mon">
-                    {new Date(`${r.date}T00:00:00`).toLocaleDateString('en-AU', { month: 'short' })}
+                    {new Date(`${r.date}T00:00:00`).toLocaleDateString('en-AU', {
+                      month: 'short',
+                    })}
                   </span>
                 </div>
                 <div className="timeline-body">
-                  <strong>{r.label}</strong>
-                  <span className={`chip ${urgency(days)}`}>{countdown(days)}</span>
-                  <div className="timeline-item-title">
-                    {href ? <a href={href}>{r.title}</a> : r.title}
+                  <div className="timeline-label">
+                    <strong>{r.label}</strong>
+                    <span className={`chip ${urgency(days)}`}>{countdown(days)}</span>
+                  </div>
+                  <div className="timeline-title">
+                    {href ? (
+                      <a href={href} target="_blank" rel="noopener noreferrer">
+                        {r.title}
+                      </a>
+                    ) : (
+                      r.title
+                    )}
                   </div>
                 </div>
               </div>
@@ -54,26 +70,35 @@ export function DeadlineTimeline({ rows }: { rows: DeadlineRow[] }) {
   );
 }
 
-// One-line strip on the feed: the next few deadlines, linking to /deadlines.
-export default async function DeadlineTeaser() {
-  const rows = await getUpcomingDeadlines(3);
-  if (!rows.length) return null;
-  const today = sydneyToday();
+/*
+ * The compact list in the feed's right rail. It takes rows the feed already
+ * fetched rather than querying again, so the page issues one round trip for
+ * deadlines whichever component renders them.
+ */
+export function RailDeadlines({ rows, today }: { rows: DeadlineRow[]; today: string }) {
+  if (!rows.length) {
+    return <p className="rail-note">None extracted yet.</p>;
+  }
+
   return (
-    <div className="deadline-teaser">
-      <span className="stream-pill">Deadlines</span>
+    <div className="rail-card">
       {rows.map((r, n) => {
         const days = daysUntil(r.date, today);
         return (
-          <span className={`teaser-item ${urgency(days)}`} key={n}>
-            <strong>
-              {new Date(`${r.date}T00:00:00`).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
-            </strong>{' '}
-            — {r.label}
-          </span>
+          <div className="rail-deadline" key={`${r.date}-${n}`}>
+            <time dateTime={r.date}>
+              {new Date(`${r.date}T00:00:00`).toLocaleDateString('en-AU', {
+                day: 'numeric',
+                month: 'short',
+              })}
+            </time>
+            <span className="rail-deadline-label">
+              {r.label}
+              <span className={`rail-deadline-count ${urgency(days)}`}>{countdown(days)}</span>
+            </span>
+          </div>
         );
       })}
-      <Link href="/deadlines" className="teaser-more">view all →</Link>
     </div>
   );
 }

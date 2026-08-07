@@ -4,36 +4,56 @@ import { getRecentlyPassed, getUpcomingDeadlines, safeHref } from '../../lib/dea
 export const dynamic = 'force-dynamic';
 
 export default async function DeadlinesPage() {
-  const [upcoming, passed] = await Promise.all([
-    getUpcomingDeadlines(),
-    getRecentlyPassed(30),
-  ]);
+  const [upcoming, passed] = await Promise.all([getUpcomingDeadlines(), getRecentlyPassed(30)]);
 
   return (
-    <>
-      <section className="timeline" aria-label="Upcoming deadlines">
-        <span className="stream-pill">Upcoming deadlines</span>
-        <DeadlineTimeline rows={upcoming} />
-      </section>
+    <div className="container page">
+      <header className="page-head reveal">
+        <p className="page-eyebrow">Consultations · submissions · grants</p>
+        <h1 className="page-title">Deadlines</h1>
+        <p className="page-intro">
+          Closing dates extracted from the items on the radar, newest deadline first. Each entry
+          links back to the source it was read from.
+        </p>
+      </header>
 
-      {passed.length > 0 ? (
-        <section className="timeline passed" aria-label="Recently passed">
-          <span className="stream-pill">Recently passed (last 30 days)</span>
-          {passed.map((r, n) => {
-            const href = safeHref(r.url);
-            return (
-              <div className="passed-entry" key={n}>
-                <span className="passed-date">
-                  {new Date(`${r.date}T00:00:00`).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
-                </span>
-                <span>
-                  {r.label} — {href ? <a href={href}>{r.title}</a> : r.title}
-                </span>
-              </div>
-            );
-          })}
+      <div className="workspace reveal reveal-1" style={{ gridTemplateColumns: 'minmax(0, 1fr)' }}>
+        <section className="workspace-main" aria-label="Upcoming deadlines">
+          <DeadlineTimeline rows={upcoming} />
+
+          {passed.length > 0 ? (
+            <section aria-label="Recently passed" style={{ marginTop: '2.5rem' }}>
+              <h2 className="day-heading">
+                Recently passed
+                <span className="day-count">last 30 days</span>
+              </h2>
+              {passed.map((r, n) => {
+                const href = safeHref(r.url);
+                return (
+                  <div className="passed-entry" key={`${r.date}-${n}`}>
+                    <time dateTime={r.date}>
+                      {new Date(`${r.date}T00:00:00`).toLocaleDateString('en-AU', {
+                        day: 'numeric',
+                        month: 'short',
+                      })}
+                    </time>
+                    <span>
+                      {r.label} —{' '}
+                      {href ? (
+                        <a href={href} target="_blank" rel="noopener noreferrer">
+                          {r.title}
+                        </a>
+                      ) : (
+                        r.title
+                      )}
+                    </span>
+                  </div>
+                );
+              })}
+            </section>
+          ) : null}
         </section>
-      ) : null}
-    </>
+      </div>
+    </div>
   );
 }
