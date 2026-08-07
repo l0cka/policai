@@ -5,13 +5,12 @@ import Link from "next/link";
 import { AustraliaMap } from "@/components/visualizations/AustraliaMap";
 import {
 	JURISDICTION_NAMES,
-	getPolicyStatusName,
 	getPolicyTypeName,
 	type Jurisdiction,
 	type Policy,
 } from "@/types";
-
-import { STATUS_COLORS } from "@/lib/design-tokens";
+import { StatusPill } from "@/components/policy-table";
+import { jurisdictionRailStyle } from "@/lib/jurisdiction-accent";
 
 export function MapBrowser({ policiesData }: { policiesData: Policy[] }) {
 	const [selectedJurisdiction, setSelectedJurisdiction] =
@@ -81,7 +80,7 @@ export function MapBrowser({ policiesData }: { policiesData: Policy[] }) {
 
 	return (
 		<div className="relative flex min-h-[calc(100svh-7rem)] overflow-hidden bg-background">
-			<h1 className="pointer-events-none absolute left-5 top-4 z-10 font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground md:left-8 md:top-6">
+			<h1 className="page-eyebrow pointer-events-none absolute left-5 top-4 z-10 md:left-8 md:top-6">
 				Policies by jurisdiction
 			</h1>
 
@@ -107,7 +106,7 @@ export function MapBrowser({ policiesData }: { policiesData: Policy[] }) {
 				aria-hidden={!selectedJurisdiction}
 				className={`absolute inset-x-0 bottom-0 z-10 flex max-h-[60vh] flex-col overflow-hidden transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] md:bottom-6 md:left-auto md:right-6 md:top-6 md:h-[calc(100%-3rem)] md:max-h-none md:w-[22rem] ${
 					selectedJurisdiction
-						? "border-t border-border bg-background shadow-xl md:border md:bg-card/95 md:shadow-lg md:backdrop-blur-sm"
+						? "border-t border-border bg-background shadow-[var(--shadow-lift)] md:border md:bg-card/95 md:backdrop-blur-sm"
 						: "invisible"
 				} ${
 					panelVisible
@@ -124,7 +123,7 @@ export function MapBrowser({ policiesData }: { policiesData: Policy[] }) {
 						{/* Panel header */}
 						<div className="flex-shrink-0 border-b border-border bg-muted/30 p-5 md:p-6">
 							<div className="flex items-center justify-between mb-1">
-								<h2 className="font-sans text-xl font-bold tracking-tight">
+								<h2 className="section-title">
 									{JURISDICTION_NAMES[selectedJurisdiction]}
 								</h2>
 								<button
@@ -158,13 +157,14 @@ export function MapBrowser({ policiesData }: { policiesData: Policy[] }) {
 									No policies found for this jurisdiction.
 								</div>
 							) : (
-								<div className="divide-y divide-border/80">
+								<div className="divide-y divide-border">
 									{selectedPolicies.map((policy, idx) => (
 										<Link
 											key={policy.id}
 											href={`/policies/${policy.id}`}
-											className="block p-4 transition-colors hover:bg-muted/40 md:px-6 md:py-5"
+											className="ink-rail block p-4 pl-5 transition-colors hover:bg-[var(--row-hover)] md:px-7 md:py-5"
 											style={{
+												...jurisdictionRailStyle(policy.jurisdiction),
 												opacity: panelVisible ? 1 : 0,
 												transform: panelVisible
 													? "translateX(0)"
@@ -175,17 +175,11 @@ export function MapBrowser({ policiesData }: { policiesData: Policy[] }) {
 											<div className="text-base font-medium leading-snug text-foreground">
 												{policy.title}
 											</div>
-											<div className="mt-2 flex items-center gap-2 font-mono text-xs text-muted-foreground">
-												<span
-													className={
-														STATUS_COLORS[policy.status] ||
-														"text-muted-foreground"
-													}
-												>
-													{getPolicyStatusName(policy.status)}
+											<div className="mt-2 flex items-center gap-2">
+												<StatusPill status={policy.status} />
+												<span className="font-mono text-xs text-muted-foreground">
+													{getPolicyTypeName(policy.type)}
 												</span>
-												<span>&middot;</span>
-												<span>{getPolicyTypeName(policy.type)}</span>
 											</div>
 										</Link>
 									))}

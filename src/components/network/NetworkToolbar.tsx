@@ -250,7 +250,7 @@ export function NetworkToolbar({
           <button
             type="button"
             onClick={() => onThemeChange(null)}
-            className="inline-flex min-h-7 items-center gap-1 border border-[color-mix(in_srgb,var(--trust)_45%,var(--border))] bg-[var(--status-active-bg)] px-2 text-[var(--trust)]"
+            className="inline-flex min-h-7 items-center gap-1 border border-primary/40 bg-accent px-2 text-primary"
           >
             {selectedThemeLabel}
             <X className="size-3" />

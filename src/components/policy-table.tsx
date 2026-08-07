@@ -66,7 +66,11 @@ export function JurisdictionMark({
   );
 }
 
-export function SourceState({ verification }: { verification: Policy['verification'] }) {
+export function SourceState({
+  verification,
+}: {
+  verification: Pick<Policy['verification'], 'status'>;
+}) {
   const verified = verification.status === 'verified';
 
   return (
