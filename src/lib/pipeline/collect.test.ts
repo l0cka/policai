@@ -25,6 +25,7 @@ const { classifyBatch } = vi.hoisted(() => ({
 vi.mock('./claude-classify', () => ({ classifyBatch, CLAUDE_BATCH_SIZE: 20 }));
 
 import { collect, collectionRunFailed, emptyWatchState } from './collect';
+import { MACHINE_CONFIDENCE_CAP } from './classify';
 import { validateSourceReviews } from '../validate-data';
 
 beforeEach(() => {
@@ -2281,11 +2282,14 @@ describe('collect with Claude classifier', () => {
 
   it('maps Claude verdicts onto the development, calling classifyBatch once for the source', async () => {
     vi.stubEnv('USE_CLAUDE_CLASSIFIER', '1');
+    // Confidence deliberately at-or-below MACHINE_CONFIDENCE_CAP here so this
+    // test pins the straightforward field mapping; the high-confidence
+    // capping behaviour has its own dedicated regression test below.
     classifyBatch.mockResolvedValueOnce([
       {
         id: CANDIDATE_URL,
         relevant: true,
-        confidence: 0.82,
+        confidence: 0.6,
         jurisdiction: 'nsw',
         type: 'framework',
         summary: 'Claude summary.',
@@ -2301,9 +2305,48 @@ describe('collect with Claude classifier', () => {
     expect(development).toMatchObject({
       classification: 'ai',
       jurisdiction: 'nsw',
-      relevanceScore: 0.82,
+      relevanceScore: 0.6,
       summary: 'Claude summary.',
     });
+  });
+
+  it('caps a high-confidence Claude verdict for storage while still gating it for review', async () => {
+    // Regression pin: confidence must do two separate jobs. 0.99 is far
+    // above minScoreForReview (0.7), so the item must still reach the review
+    // queue (the collector must not silently drop a confident detection) —
+    // but the score written into Development/SourceReview must never exceed
+    // MACHINE_CONFIDENCE_CAP, matching the deterministic path's convention
+    // that stored machine confidence always reads as needs-review, not as a
+    // near-certain verification.
+    vi.stubEnv('USE_CLAUDE_CLASSIFIER', '1');
+    classifyBatch.mockResolvedValueOnce([
+      {
+        id: CANDIDATE_URL,
+        relevant: true,
+        confidence: 0.99,
+        jurisdiction: 'federal',
+        type: 'guideline',
+        summary: 'High-confidence Claude summary.',
+      },
+    ]);
+
+    const result = await collectWithOneCandidate();
+
+    const development = result.developments.find(
+      (d) => d.url === CANDIDATE_URL,
+    );
+    expect(development).toBeDefined();
+    expect(development?.relevanceScore).toBeLessThanOrEqual(
+      MACHINE_CONFIDENCE_CAP,
+    );
+
+    const review = result.reviewCandidates.find(
+      (r) => r.sourceUrl === CANDIDATE_URL,
+    );
+    expect(review).toBeDefined();
+    expect(review?.analysis.relevanceScore).toBeLessThanOrEqual(
+      MACHINE_CONFIDENCE_CAP,
+    );
   });
 
   it('keeps the deterministic heuristic path when the flag is unset', async () => {

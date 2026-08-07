@@ -1731,7 +1731,12 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
 
       if (
         classification.classification === 'heuristic' ||
-        classification.relevanceScore >= minScoreForReview
+        // Claude's relevanceScore is capped for storage (see
+        // MACHINE_CONFIDENCE_CAP in classify.ts), so the capped value would
+        // never clear minScoreForReview. rawConfidence carries the
+        // uncapped verdict for this decision only; it is never persisted.
+        (classification.rawConfidence ?? classification.relevanceScore) >=
+          minScoreForReview
       ) {
         const parsedFingerprint = parseChangeFingerprint(
           enrichedCandidate.changeFingerprint,
