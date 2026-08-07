@@ -17,6 +17,9 @@ const verdictSchema = z.object({
   confidence: z.number().min(0).max(1),
   jurisdiction: z.string().nullable(),
   type: z.string().nullable(),
+  // Prompt asks Claude for summaries of 200 chars or fewer; schema accepts up to
+  // 400 as deliberate tolerance so a slightly long summary is accepted rather
+  // than silently dropped (validation failure = skipped entry, not corruption).
   summary: z.string().max(400),
 });
 

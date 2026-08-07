@@ -6,6 +6,15 @@ const execFileAsync = promisify(execFile);
 export class ClaudeAuthError extends Error {}
 
 /**
+ * Regex pattern to detect authentication errors from the Claude CLI.
+ * Matches realistic phrasings like "Please authenticate", "Invalid API key",
+ * "401 Unauthorized", etc. This is a heuristic over CLI text because the CLI
+ * gives no structured auth signal, so it errs toward catching auth failures
+ * (false positives matter less than false negatives).
+ */
+const AUTH_ERROR_PATTERN = /authenticate|authentication|unauthenticated|unauthorized|not logged in|log in|login|credential|expired|invalid api key|401|403/i;
+
+/**
  * Invokes Claude Code headlessly and returns its text result.
  *
  * Auth comes from the Claude Code credentials already on the host. An expired
@@ -25,7 +34,7 @@ export async function runClaude(prompt: string, timeoutMs = 180_000): Promise<st
     return parsed.result ?? '';
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
-    if (/not logged in|authentication|credential|401/i.test(message)) {
+    if (AUTH_ERROR_PATTERN.test(message)) {
       throw new ClaudeAuthError(message);
     }
     throw error;
