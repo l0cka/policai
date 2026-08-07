@@ -60,7 +60,14 @@ describe('runClaude success path', () => {
     await expect(runClaude('test')).resolves.toBe('');
   });
 
-  it('invokes the CLI binary with headless JSON output flags', async () => {
+  // Regression pin for the security property: scraped-page content is
+  // untrusted, so the invocation itself — not model behavior — must make
+  // tool access unreachable. `--max-turns` does not exist on the installed
+  // Claude Code CLI (verified via `claude --help` on Argus, v2.1.221); the
+  // equivalent-or-stronger guarantee used here is `--tools ""`, which removes
+  // every built-in tool from the session entirely, plus an explicit
+  // `--disallowedTools` denylist as a second, independent layer.
+  it('invokes the CLI binary with headless JSON output flags and no tool access', async () => {
     mockStdout(JSON.stringify({ result: 'ok' }));
     await runClaude('classify this');
     // Binary name comes from process.env.CLAUDE_BIN, which vitest.setup.ts
@@ -68,7 +75,16 @@ describe('runClaude success path', () => {
     // rather than a hardcoded 'claude' so the test doesn't fight the guard.
     expect(execMock).toHaveBeenCalledWith(
       process.env.CLAUDE_BIN,
-      ['-p', 'classify this', '--output-format', 'json'],
+      [
+        '-p',
+        'classify this',
+        '--output-format',
+        'json',
+        '--tools',
+        '',
+        '--disallowedTools',
+        'Read,Glob,Grep,Bash,Edit,Write,WebFetch,WebSearch,Task',
+      ],
       expect.objectContaining({ timeout: 180_000 }),
     );
   });

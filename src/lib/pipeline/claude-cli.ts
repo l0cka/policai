@@ -47,12 +47,36 @@ export function setExecForTesting(fn: ExecLike): void {
  * credential is raised as ClaudeAuthError because the remedy is a human
  * logging in, which is a different operational response to a source failing.
  */
+/**
+ * Tools explicitly denied to the invocation. Scraped pages are untrusted
+ * input: a prompt injection embedded in a page must not be able to reach
+ * Read/Bash/Edit/etc, so isolation is enforced here at the invocation site,
+ * not left to the design assumption that Claude "just" returns JSON.
+ */
+const DISALLOWED_TOOLS = 'Read,Glob,Grep,Bash,Edit,Write,WebFetch,WebSearch,Task';
+
 export async function runClaude(prompt: string, timeoutMs = 180_000): Promise<string> {
   const binary = process.env.CLAUDE_BIN || 'claude';
   try {
     const { stdout } = await exec(
       binary,
-      ['-p', prompt, '--output-format', 'json'],
+      [
+        '-p',
+        prompt,
+        '--output-format',
+        'json',
+        // Defence in depth against prompt injection in scraped page content:
+        // `--tools ""` strips every built-in tool from the session (no Read,
+        // Bash, Edit, etc. are even registered, so there is nothing for an
+        // injected instruction to invoke), and `--disallowedTools` is a
+        // second, explicit denylist in case a future Claude Code version
+        // changes what an empty --tools list means. Neither flag depends on
+        // the model behaving — the CLI itself refuses the tool call.
+        '--tools',
+        '',
+        '--disallowedTools',
+        DISALLOWED_TOOLS,
+      ],
       { timeout: timeoutMs, maxBuffer: 32 * 1024 * 1024 },
     );
     const parsed = JSON.parse(stdout) as { is_error?: boolean; result?: string };
