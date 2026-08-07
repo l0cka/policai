@@ -1,8 +1,6 @@
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 
-const execFileAsync = promisify(execFile);
-
 export class ClaudeAuthError extends Error {}
 
 /**
@@ -14,6 +12,34 @@ export class ClaudeAuthError extends Error {}
  */
 const AUTH_ERROR_PATTERN = /authenticate|authentication|unauthenticated|unauthorized|not logged in|log in|login|credential|expired|invalid api key|401|403/i;
 
+/** The subset of promisified execFile's shape that runClaude depends on. */
+type ExecLike = (
+  file: string,
+  args: string[],
+  options: { timeout: number; maxBuffer: number },
+) => Promise<{ stdout: string; stderr: string }>;
+
+/**
+ * Module-level indirection point for the exec call, defaulting to the real
+ * promisified execFile.
+ *
+ * WHY this exists instead of `vi.mock('node:child_process', …)` in tests:
+ * that builtin mock was verified NOT to intercept calls in this project's
+ * Vitest setup — Argus test runs showed the REAL execFile still running
+ * (`Command failed: /bin/false -p test --output-format json`), meaning
+ * before the CLAUDE_BIN guard existed, unit tests spawned the real `claude`
+ * binary nine times in parallel, making paid API calls and crashing the
+ * host. Dependency injection removes the failure class entirely: there is no
+ * builtin to intercept, so a test either injects a fake exec or it doesn't
+ * run at all — there's no silent fallthrough to the real binary.
+ */
+let exec: ExecLike = promisify(execFile);
+
+/** Test-only seam for replacing the exec implementation. See `exec` above for why. */
+export function setExecForTesting(fn: ExecLike): void {
+  exec = fn;
+}
+
 /**
  * Invokes Claude Code headlessly and returns its text result.
  *
@@ -24,7 +50,7 @@ const AUTH_ERROR_PATTERN = /authenticate|authentication|unauthenticated|unauthor
 export async function runClaude(prompt: string, timeoutMs = 180_000): Promise<string> {
   const binary = process.env.CLAUDE_BIN || 'claude';
   try {
-    const { stdout } = await execFileAsync(
+    const { stdout } = await exec(
       binary,
       ['-p', prompt, '--output-format', 'json'],
       { timeout: timeoutMs, maxBuffer: 32 * 1024 * 1024 },

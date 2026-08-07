@@ -1,49 +1,29 @@
-import { promisify } from 'node:util';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { ClaudeAuthError, runClaude, setExecForTesting } from './claude-cli';
 
-// vi.hoisted, because the vi.mock factory below is hoisted above this file's
-// own initialisation and would otherwise read execFileMock in its TDZ.
-const { execFileMock } = vi.hoisted(() => ({ execFileMock: vi.fn() }));
+// Test-only DI seam instead of vi.mock('node:child_process', …): that builtin
+// mock was verified on Argus NOT to intercept calls in this project's Vitest
+// setup — the real execFile ran regardless (`Command failed: /bin/false -p
+// test --output-format json`), which before the CLAUDE_BIN guard existed
+// meant this test file spawned the real `claude` binary nine times in
+// parallel, making paid API calls and crashing the host. claude-cli.ts now
+// takes its exec call via `setExecForTesting`, so a fake is injected directly
+// — there is no builtin to miss, and a broken seam fails the test instantly
+// instead of silently falling through to the real binary.
+const execMock = vi.fn();
 
-// Mock execFile callback-style so the real promisify() in claude-cli wraps it.
-// The promisify.custom hook is required: real execFile carries one that yields
-// { stdout, stderr }, and promisify's generic path would yield stdout alone.
-vi.mock('node:child_process', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('node:child_process')>();
-  const execFile = (...args: unknown[]) => execFileMock(...args);
-  Object.defineProperty(execFile, promisify.custom, {
-    value: (...args: unknown[]) =>
-      new Promise((resolve, reject) => {
-        execFileMock(...args, (error: Error | null, stdout = '', stderr = '') => {
-          if (error) reject(error);
-          else resolve({ stdout, stderr });
-        });
-      }),
-  });
-  return { ...actual, default: actual, execFile };
+beforeEach(() => {
+  execMock.mockReset();
+  setExecForTesting(execMock);
 });
 
-import { ClaudeAuthError, runClaude } from './claude-cli';
-
-function callback(args: unknown[]) {
-  return args[args.length - 1] as (error: Error | null, stdout?: string, stderr?: string) => void;
-}
-
 function mockFailure(message: string) {
-  execFileMock.mockImplementationOnce((...args: unknown[]) => {
-    callback(args)(new Error(message));
-  });
+  execMock.mockRejectedValueOnce(new Error(message));
 }
 
 function mockStdout(stdout: string) {
-  execFileMock.mockImplementationOnce((...args: unknown[]) => {
-    callback(args)(null, stdout, '');
-  });
+  execMock.mockResolvedValueOnce({ stdout, stderr: '' });
 }
-
-beforeEach(() => {
-  execFileMock.mockReset();
-});
 
 describe('runClaude auth error detection', () => {
   it.each([
@@ -83,11 +63,10 @@ describe('runClaude success path', () => {
   it('invokes the CLI binary with headless JSON output flags', async () => {
     mockStdout(JSON.stringify({ result: 'ok' }));
     await runClaude('classify this');
-    expect(execFileMock).toHaveBeenCalledWith(
+    expect(execMock).toHaveBeenCalledWith(
       'claude',
       ['-p', 'classify this', '--output-format', 'json'],
       expect.objectContaining({ timeout: 180_000 }),
-      expect.any(Function),
     );
   });
 });
