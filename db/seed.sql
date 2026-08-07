@@ -27,7 +27,6 @@ INSERT INTO sources (name, url, fetch_method, item_link_pattern, stream_hint) VA
   ('Legal Aid Queensland',          'https://www.legalaid.qld.gov.au/Listings/Media-releases', 'firecrawl', 'legalaid\.qld\.gov\.au/(Listings/Media-releases|For-lawyers/Announcements|About-us/Newsroom)/.+', 'news'),
   ('Legal Aid WA',                  'https://www.legalaid.wa.gov.au/news',          'firecrawl', 'legalaid\.wa\.gov\.au/news/.+', 'news'),
   ('Legal Services Commission SA',  'https://lsc.sa.gov.au/',                       'firecrawl', 'lsc\.sa\.gov\.au/cb_pages/news/.+', 'news'),
-  ('Queensland Law Reform Commission','https://www.qlrc.qld.gov.au/news',           'firecrawl', 'qlrc\.qld\.gov\.au/news/\?external-uuid=.+', 'law_reform'),
   ('Community Legal Centres NSW',   'https://www.clcnsw.org.au/news',               'firecrawl', 'clcnsw\.org\.au/index\.php/.+', 'news'),
   ('Federation of Community Legal Centres VIC','https://www.fclc.org.au/news',      'firecrawl', 'fclc\.org\.au/[a-z0-9]+(_[a-z0-9]+)+$', 'news'),
   ('Community Legal Centres Queensland','https://communitylegalqld.org.au/news/latest-news/', 'firecrawl', 'communitylegalqld\.org\.au/news/.+/.+', 'news'),
@@ -51,7 +50,8 @@ ON CONFLICT (url) DO NOTHING;
 -- Tasmania Law Reform Institute (page 404s); Youth Law Australia,
 -- Community Legal Centres SA (no item links on news/publications pages);
 -- Clayton Utz, Hall & Wilcox, HSF Kramer, KWM, Corrs (JS listings expose
--- no article links even rendered).
+-- no article links even rendered); Queensland Law Reform Commission (news
+-- pages render only section indexes — item links never appear in markdown).
 
 -- Seeded inactive, pending a workable ingestion path:
 -- * Pro Bono Australia: Pro Bono News ceased publication; the domain is now a

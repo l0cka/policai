@@ -1,6 +1,5 @@
--- QLRC news items live behind query-string URLs (/news/?external-uuid=<uuid>),
--- not path slugs; the /news/releases page has no item links. seed.sql (applied
--- by deploy) inserts the corrected row; deactivate the superseded one.
--- Idempotent.
+-- QLRC's news pages render only section indexes in markdown — item links
+-- never appear, at /news or /news/releases. Uncrawlable today; deactivate
+-- both rows. Idempotent.
 UPDATE sources SET active = false
-WHERE url = 'https://www.qlrc.qld.gov.au/news/releases';
+WHERE url IN ('https://www.qlrc.qld.gov.au/news/releases', 'https://www.qlrc.qld.gov.au/news');
