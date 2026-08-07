@@ -63,8 +63,11 @@ describe('runClaude success path', () => {
   it('invokes the CLI binary with headless JSON output flags', async () => {
     mockStdout(JSON.stringify({ result: 'ok' }));
     await runClaude('classify this');
+    // Binary name comes from process.env.CLAUDE_BIN, which vitest.setup.ts
+    // pins to /bin/false for every test run — assert against that env var
+    // rather than a hardcoded 'claude' so the test doesn't fight the guard.
     expect(execMock).toHaveBeenCalledWith(
-      'claude',
+      process.env.CLAUDE_BIN,
       ['-p', 'classify this', '--output-format', 'json'],
       expect.objectContaining({ timeout: 180_000 }),
     );
