@@ -5,9 +5,11 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-public-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  /* One face site-wide (matching A2J): sans, mono and display all resolve to
+     IBM Plex Mono, so existing font-sans/font-display usage needs no edits. */
+  --font-sans: var(--font-plex-mono), 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
   --font-mono: var(--font-plex-mono), 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
-  --font-display: var(--font-newsreader), 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
+  --font-display: var(--font-plex-mono), 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -289,24 +291,24 @@
 
   .page-title {
     font-family: var(--font-display);
-    font-size: clamp(1.6rem, 2.2vw, 2rem);
-    line-height: 1.15;
-    letter-spacing: -0.02em;
+    font-size: clamp(1.5rem, 2.1vw, 1.9rem);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
   }
 
   .article-title {
     font-family: var(--font-display);
-    font-size: clamp(1.9rem, 3vw, 2.6rem);
-    line-height: 1.1;
-    letter-spacing: -0.025em;
+    font-size: clamp(1.7rem, 2.7vw, 2.3rem);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
   }
 
   /* A clear step below .page-title, so sections never rival the page name. */
   .section-title {
     font-family: var(--font-display);
-    font-size: 1.15rem;
-    line-height: 1.3;
-    letter-spacing: -0.01em;
+    font-size: 1.1rem;
+    line-height: 1.35;
+    letter-spacing: 0;
   }
 
   /* Hide scrollbars on horizontal tab strips without disabling scroll */

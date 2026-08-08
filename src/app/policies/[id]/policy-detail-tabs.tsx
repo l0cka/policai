@@ -206,7 +206,8 @@ export function PolicyDetailTabs({
               ) : null}
 
               <div className="mt-7 grid gap-7 lg:grid-cols-[minmax(0,1fr)_17rem]">
-                <div>
+                {/* Grid items default to min-width auto and refuse to shrink. */}
+                <div className="min-w-0">
                   <h2 className="section-title">Key requirements</h2>
                   <ol className="mt-3 border-y border-border">
                     {requirements.slice(0, 3).map((requirement, index) => (
@@ -214,7 +215,7 @@ export function PolicyDetailTabs({
                         <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[var(--status-active-bg)] text-xs font-semibold text-[var(--trust)]">
                           {index + 1}
                         </span>
-                        <p className="text-sm leading-6">{requirement}</p>
+                        <p className="min-w-0 flex-1 break-words text-sm leading-6">{requirement}</p>
                       </li>
                     ))}
                   </ol>
@@ -225,7 +226,7 @@ export function PolicyDetailTabs({
                   ) : null}
                 </div>
 
-                <div className="border-l border-border pl-5">
+                <div className="min-w-0 border-l border-border pl-5">
                   <h2 className="page-eyebrow">Policy changes</h2>
                   <ol className="mt-4 space-y-5">
                     {policy.dates.slice(0, 4).map((date, index) => (
@@ -248,7 +249,7 @@ export function PolicyDetailTabs({
                 {requirements.map((requirement, index) => (
                   <li key={`${requirement.slice(0, 30)}-${index}`} className="flex gap-4 border-b border-border py-4 last:border-b-0">
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--status-active-bg)] text-sm font-semibold text-[var(--trust)]">{index + 1}</span>
-                    <p className="text-sm leading-6">{requirement}</p>
+                    <p className="min-w-0 flex-1 break-words text-sm leading-6">{requirement}</p>
                   </li>
                 ))}
               </ol>

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { IBM_Plex_Mono, Newsreader, Public_Sans } from 'next/font/google';
+import { IBM_Plex_Mono } from 'next/font/google';
 import './globals.css';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
@@ -8,22 +8,12 @@ import { BackToTop } from '@/components/ui/back-to-top';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { getCollectionMeta } from '@/lib/data-service';
 
-const displaySerif = Newsreader({
+// One face for the whole site, matching the A2J property: IBM Plex Mono
+// carries body, headings and data alike, and `ch` becomes an exact unit.
+const plexMono = IBM_Plex_Mono({
   subsets: ['latin'],
-  variable: '--font-newsreader',
+  weight: ['400', '500', '600', '700'],
   style: ['normal', 'italic'],
-  display: 'swap',
-});
-
-const interfaceSans = Public_Sans({
-  subsets: ['latin'],
-  variable: '--font-public-sans',
-  display: 'swap',
-});
-
-const metadataMono = IBM_Plex_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500'],
   variable: '--font-plex-mono',
   display: 'swap',
 });
@@ -54,7 +44,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en-AU"
-      className={`${displaySerif.variable} ${interfaceSans.variable} ${metadataMono.variable}`}
+      className={plexMono.variable}
       suppressHydrationWarning
     >
       <head>
