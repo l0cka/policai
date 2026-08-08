@@ -20,9 +20,9 @@ const jurisdictionLabel: Record<Jurisdiction, string> = {
 };
 
 const legendItems = [
-  { label: 'Active', className: 'bg-[#69c5a3]' },
-  { label: 'Amended', className: 'bg-[#efb65e]' },
-  { label: 'New (last 30 days)', className: 'bg-[#6693ff]' },
+  { label: 'Active', className: 'bg-[var(--hero-trust)]' },
+  { label: 'Amended', className: 'bg-[var(--hero-amended)]' },
+  { label: 'New (last 30 days)', className: 'bg-[var(--hero-new)]' },
   { label: 'Planned / Draft', className: 'border border-white/65 bg-transparent' },
   { label: 'Inactive', className: 'bg-white/28' },
 ];
@@ -43,11 +43,11 @@ function formatAxisDate(date: Date): string {
 function pointClass(policy: Policy, date: Date, currentDate: Date): string {
   const thirtyDays = 30 * 24 * 60 * 60 * 1000;
   if (currentDate.getTime() - date.getTime() <= thirtyDays && date <= currentDate) {
-    return 'bg-[#6693ff]';
+    return 'bg-[var(--hero-new)]';
   }
-  if (policy.status === 'proposed') return 'border border-white/65 bg-[#071b2e]';
-  if (policy.status === 'amended') return 'bg-[#efb65e]';
-  if (policy.status === 'active') return 'bg-[#69c5a3]';
+  if (policy.status === 'proposed') return 'border border-white/65 bg-[var(--hero-bg)]';
+  if (policy.status === 'amended') return 'bg-[var(--hero-amended)]';
+  if (policy.status === 'active') return 'bg-[var(--hero-trust)]';
   return 'bg-white/28';
 }
 
@@ -118,7 +118,7 @@ export function PolicyObservatory({
                   key={jurisdiction}
                   className="grid h-[3.15rem] grid-cols-[9.5rem_1fr] items-center"
                 >
-                  <span className="pr-4 text-[12px] font-medium text-[#82a7ff]">
+                  <span className="pr-4 text-[12px] font-medium text-[var(--hero-accent)]">
                     {jurisdictionLabel[jurisdiction]}
                     <span className="ml-2 font-mono text-[10px] text-white/48">
                       {jurisdictionPolicies.length}
@@ -135,7 +135,7 @@ export function PolicyObservatory({
                           title={`${policy.title} — ${formatAxisDate(date)}`}
                           aria-label={`Open ${policy.title}`}
                           className={cn(
-                            'absolute z-20 block h-[9px] w-[9px] -translate-x-1/2 -translate-y-1/2 rounded-full ring-1 ring-[#071b2e] transition duration-150 hover:z-30 hover:scale-[1.75] focus:z-30 focus:scale-[1.75]',
+                            'absolute z-20 block h-[9px] w-[9px] -translate-x-1/2 -translate-y-1/2 rounded-full ring-1 ring-[var(--hero-bg)] transition duration-150 hover:z-30 hover:scale-[1.75] focus:z-30 focus:scale-[1.75]',
                             pointClass(policy, date, currentDate),
                           )}
                           style={{
