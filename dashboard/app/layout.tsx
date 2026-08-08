@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { IBM_Plex_Mono, Newsreader, Public_Sans } from 'next/font/google';
+import { IBM_Plex_Mono } from 'next/font/google';
 import Link from 'next/link';
 import Nav from './nav';
 import ThemeToggle, { themeInitScript } from './theme-toggle';
@@ -9,22 +9,18 @@ import './globals.css';
 
 export const dynamic = 'force-dynamic';
 
-const displaySerif = Newsreader({
+/*
+ * One face for the whole site. The display, interface and metadata roles still
+ * exist in the stylesheet as --font-display / --font-sans / --font-mono; they
+ * simply all resolve here now, so the distinction survives if the site ever
+ * takes a second face back.
+ *
+ * 600 and 700 are carried because headings and table keys ask for them, and a
+ * weight the file does not contain gets synthesised into a smeared faux bold.
+ */
+const plexMono = IBM_Plex_Mono({
   subsets: ['latin'],
-  variable: '--font-newsreader',
-  style: ['normal', 'italic'],
-  display: 'swap',
-});
-
-const interfaceSans = Public_Sans({
-  subsets: ['latin'],
-  variable: '--font-public-sans',
-  display: 'swap',
-});
-
-const metadataMono = IBM_Plex_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500'],
+  weight: ['400', '500', '600', '700'],
   variable: '--font-plex-mono',
   display: 'swap',
 });
@@ -73,7 +69,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html
       lang="en-AU"
-      className={`${displaySerif.variable} ${interfaceSans.variable} ${metadataMono.variable}`}
+      className={plexMono.variable}
       suppressHydrationWarning
     >
       <head>

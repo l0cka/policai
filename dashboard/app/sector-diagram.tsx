@@ -150,18 +150,22 @@ export default function SectorDiagram() {
             peaks
           </text>
 
-          {/* funding outside the agreement */}
-          <rect className="d-box" x="20" y="284" width="170" height="66" rx="4" />
-          <text x="105" y="308" textAnchor="middle" className="d-t">
+          {/*
+            Funding outside the agreement. Widened for the monospaced face:
+            "funds · philanthropy" is 20 characters, which is exactly 180px at
+            this size, so the old 170px box cut it off at both ends.
+          */}
+          <rect className="d-box" x="2" y="284" width="196" height="66" rx="4" />
+          <text x="100" y="308" textAnchor="middle" className="d-t">
             Public purpose
           </text>
-          <text x="105" y="326" textAnchor="middle" className="d-t">
+          <text x="100" y="326" textAnchor="middle" className="d-t">
             funds &middot; philanthropy
           </text>
-          <text x="105" y="343" textAnchor="middle" className="d-n">
+          <text x="100" y="343" textAnchor="middle" className="d-n">
             outside NAJP
           </text>
-          <path className="d-flow d-flow-by" d="M190 317 H213" markerEnd="url(#sd-arrow)" />
+          <path className="d-flow d-flow-by" d="M198 317 H213" markerEnd="url(#sd-arrow)" />
 
           {/* pro bono channel */}
           <path className="d-flow d-flow-pb" d="M1075 92 V250" markerEnd="url(#sd-arrow)" />

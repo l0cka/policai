@@ -89,11 +89,15 @@
   --dur-base: 220ms;
   --dur-slow: 420ms;
 
-  --font-sans: var(--font-public-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica,
-    Arial, sans-serif;
-  --font-mono: var(--font-plex-mono), 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
-  --font-display: var(--font-newsreader), 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua',
-    Georgia, serif;
+  /*
+   * The site is set entirely in IBM Plex Mono. The three role names are kept
+   * because the stylesheet reasons in them — display, interface, metadata —
+   * and because pointing them all at one stack is a one-line change to undo.
+   */
+  --font-stack: var(--font-plex-mono), 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  --font-sans: var(--font-stack);
+  --font-mono: var(--font-stack);
+  --font-display: var(--font-stack);
 }
 
 /* The toggle wins over the system preference by pinning `color-scheme`. */
@@ -679,14 +683,21 @@ main {
   color: #91aaff;
 }
 
+/*
+ * `ch` was a loose measure under a proportional face; under a monospaced one it
+ * is exact, and 9ch meant nine characters a line. Left wide enough not to bind
+ * so the column sets the break, which in Plex Mono is about ten characters at
+ * this size — a taller headline than the serif gave, and the honest cost of
+ * setting display type in a monospace.
+ */
 .observatory-copy h1 {
-  max-width: 9ch;
+  max-width: 13ch;
   margin-top: 1.25rem;
   font-family: var(--font-sans);
   font-size: clamp(3rem, 4.6vw, 4.5rem);
   font-weight: 600;
-  line-height: 0.98;
-  letter-spacing: -0.052em;
+  line-height: 1.02;
+  letter-spacing: -0.045em;
 }
 
 .observatory-intro {
@@ -2323,7 +2334,8 @@ tbody th[scope='row'] {
   margin: 0;
   font-family: var(--font-sans);
   font-size: 0.9375rem;
-  font-weight: 550;
+  /* Plex Mono ships discrete weights; 550 would snap unpredictably. */
+  font-weight: 600;
   line-height: 1.4;
   letter-spacing: -0.005em;
   text-wrap: pretty;
@@ -2739,7 +2751,7 @@ tbody td:first-child {
   }
 
   .observatory-copy h1 {
-    max-width: 10ch;
+    max-width: 13ch;
     font-size: clamp(3rem, 14vw, 4rem);
   }
 
