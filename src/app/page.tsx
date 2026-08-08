@@ -28,7 +28,13 @@ export default async function HomePage() {
         development.verification.status === 'verified',
     )
     .slice(0, 6);
-  const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+  // Anchored to the data's own currency rather than the wall clock, so the
+  // figure is deterministic for a given collection state (and satisfies the
+  // render-purity rule).
+  const dataCurrentAt = meta.lastHealthyAt ?? meta.lastCollectedAt;
+  const weekAgo = dataCurrentAt
+    ? new Date(dataCurrentAt).getTime() - 7 * 24 * 60 * 60 * 1000
+    : Number.POSITIVE_INFINITY;
   const weeklyDevelopmentCount = allDevelopments.filter(
     (development) =>
       development.status !== 'dismissed' &&
