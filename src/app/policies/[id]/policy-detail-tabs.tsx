@@ -206,7 +206,8 @@ export function PolicyDetailTabs({
               ) : null}
 
               <div className="mt-7 grid gap-7 lg:grid-cols-[minmax(0,1fr)_17rem]">
-                <div>
+                {/* Grid items default to min-width auto and refuse to shrink. */}
+                <div className="min-w-0">
                   <h2 className="section-title">Key requirements</h2>
                   <ol className="mt-3 border-y border-border">
                     {requirements.slice(0, 3).map((requirement, index) => (
@@ -225,7 +226,7 @@ export function PolicyDetailTabs({
                   ) : null}
                 </div>
 
-                <div className="border-l border-border pl-5">
+                <div className="min-w-0 border-l border-border pl-5">
                   <h2 className="page-eyebrow">Policy changes</h2>
                   <ol className="mt-4 space-y-5">
                     {policy.dates.slice(0, 4).map((date, index) => (
