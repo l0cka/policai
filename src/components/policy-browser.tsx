@@ -269,7 +269,7 @@ export function PolicyBrowser({
             <p className="font-mono text-[11px] font-medium uppercase tracking-[0.08em] text-[var(--hero-accent)]">
               The policy observatory
             </p>
-            <h1 className="mt-5 max-w-[29rem] font-sans text-[clamp(2.7rem,4.25vw,4.25rem)] font-semibold leading-[1.03] tracking-[-0.035em] text-white">
+            <h1 className="mt-5 max-w-[29rem] font-sans text-[clamp(2.3rem,3.6vw,3.5rem)] font-semibold leading-[1.08] tracking-[-0.01em] text-white">
               See Australian AI policy as it changes.
             </h1>
             <p className="mt-5 max-w-[29rem] text-[14px] leading-6 text-white/64">
@@ -414,7 +414,7 @@ export function PolicyBrowser({
         <div className="flex flex-col gap-3 border-b border-[var(--rule-heavy)] pb-5 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="page-eyebrow">Source-linked records</p>
-            <h2 className="mt-2 font-display text-[2rem] leading-none tracking-[-0.025em]">Policy register</h2>
+            <h2 className="mt-2 font-display text-[1.8rem] leading-tight tracking-[-0.01em]">Policy register</h2>
           </div>
           <div className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.11em] text-muted-foreground">
             <span
