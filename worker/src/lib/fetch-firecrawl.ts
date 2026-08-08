@@ -23,10 +23,25 @@ function isSameOrSubdomain(candidateHost: string, baseHost: string): boolean {
   return candidateHost === baseHost || candidateHost.endsWith(`.${baseHost}`);
 }
 
+/*
+ * Acronyms a slug flattens to lowercase. Sentence-casing alone turns
+ * `un-arbitrary-detention` into "Un arbitrary detention", which reads as a
+ * typo now that the title is the headline on the deadlines page.
+ *
+ * Deliberately excludes anything that is also an ordinary word — ACT, aid, sa
+ * as a Spanish article and so on — because restoring those would corrupt more
+ * titles than it repairs.
+ */
+const SLUG_ACRONYMS = new Set([
+  'un', 'unhcr', 'nsw', 'qld', 'wa', 'nt', 'tas', 'vic', 'sa',
+  'ndis', 'naidoc', 'alrc', 'vlrc', 'atsils', 'naaja', 'fvpls',
+  'clc', 'clcs', 'eoi', 'rap', 'icl', 'dfv', 'fdv', 'agd', 'ai', 'nda',
+]);
+
 // Some listings render items as image-only anchors, leaving the markdown link
 // text empty ([](…/media/news/some-slug)). The slug is the only title we have;
 // the enrichment pass writes the real briefing text later.
-function titleFromSlug(u: URL): string {
+export function titleFromSlug(u: URL): string {
   const segment = u.pathname.split('/').filter(Boolean).pop() ?? '';
   let decoded = segment;
   try {
@@ -36,7 +51,17 @@ function titleFromSlug(u: URL): string {
     // attacker-influenced); the raw segment still makes a usable title.
   }
   const words = decoded.replace(/\.html?$/i, '').replace(/[-_]+/g, ' ').trim();
-  return words ? words[0].toUpperCase() + words.slice(1) : '';
+  if (!words) return '';
+
+  const cased = words
+    .split(' ')
+    .map((word) => (SLUG_ACRONYMS.has(word.toLowerCase()) ? word.toUpperCase() : word))
+    .join(' ');
+
+  // Sentence case, unless the first word was restored as an acronym.
+  return SLUG_ACRONYMS.has(cased.split(' ')[0].toLowerCase())
+    ? cased
+    : cased[0].toUpperCase() + cased.slice(1);
 }
 
 export function extractListingLinks(markdown: string, baseUrl: string, itemLinkPattern: string): RawItem[] {

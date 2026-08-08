@@ -1,9 +1,8 @@
-import { DeadlineTimeline } from '../deadlines';
+import { DeadlineList, DeadlineTimeline } from '../deadlines';
 import {
   getRecentlyPassed,
   getUpcomingDeadlines,
   getUpcomingMilestones,
-  safeHref,
 } from '../../lib/deadline-data';
 
 export const dynamic = 'force-dynamic';
@@ -28,75 +27,34 @@ export default async function DeadlinesPage() {
       </header>
 
       <div className="workspace reveal reveal-1" style={{ gridTemplateColumns: 'minmax(0, 1fr)' }}>
-        <section className="workspace-main" aria-labelledby="upcoming-deadlines-heading">
-          <h2 id="upcoming-deadlines-heading" className="day-heading">
+        <section className="workspace-main" aria-labelledby="closing-heading">
+          <h2 id="closing-heading" className="day-heading">
             Closing soon
-            <span className="day-count">{upcoming.length}</span>
+            {upcoming.length ? <span className="day-count">{upcoming.length}</span> : null}
           </h2>
           <DeadlineTimeline rows={upcoming} />
 
           {milestones.length > 0 ? (
-            <section aria-label="Sector calendar" style={{ marginTop: '2.5rem' }}>
-              <h2 className="day-heading">
+            <section className="dated-section" aria-labelledby="calendar-heading">
+              <h2 id="calendar-heading" className="day-heading">
                 Sector calendar
                 <span className="day-count">nothing to lodge</span>
               </h2>
-              {milestones.map((r, n) => {
-                const href = safeHref(r.url);
-                return (
-                  <div className="passed-entry" key={`m-${r.date}-${n}`}>
-                    <time dateTime={r.date}>
-                      {new Date(`${r.date}T00:00:00`).toLocaleDateString('en-AU', {
-                        day: 'numeric',
-                        month: 'short',
-                        year: 'numeric',
-                      })}
-                    </time>
-                    <span>
-                      {r.label} —{' '}
-                      {href ? (
-                        <a href={href} target="_blank" rel="noopener noreferrer">
-                          {r.title}
-                        </a>
-                      ) : (
-                        r.title
-                      )}
-                    </span>
-                  </div>
-                );
-              })}
+              <p className="dated-note">
+                Dates worth knowing that carry no action: inquiries reporting, schemes commencing,
+                plans concluding.
+              </p>
+              <DeadlineList rows={milestones} />
             </section>
           ) : null}
 
           {passed.length > 0 ? (
-            <section aria-label="Recently passed" style={{ marginTop: '2.5rem' }}>
-              <h2 className="day-heading">
+            <section className="dated-section" aria-labelledby="closed-heading">
+              <h2 id="closed-heading" className="day-heading">
                 Recently closed
                 <span className="day-count">last 30 days</span>
               </h2>
-              {passed.map((r, n) => {
-                const href = safeHref(r.url);
-                return (
-                  <div className="passed-entry" key={`${r.date}-${n}`}>
-                    <time dateTime={r.date}>
-                      {new Date(`${r.date}T00:00:00`).toLocaleDateString('en-AU', {
-                        day: 'numeric',
-                        month: 'short',
-                      })}
-                    </time>
-                    <span>
-                      {r.label} —{' '}
-                      {href ? (
-                        <a href={href} target="_blank" rel="noopener noreferrer">
-                          {r.title}
-                        </a>
-                      ) : (
-                        r.title
-                      )}
-                    </span>
-                  </div>
-                );
-              })}
+              <DeadlineList rows={passed} showYear={false} />
             </section>
           ) : null}
         </section>

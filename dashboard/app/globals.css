@@ -2239,25 +2239,28 @@ tbody th[scope='row'] {
 /* ------------------------------------------------------------- deadlines -- */
 
 .timeline-month + .timeline-month {
-  margin-top: 1.5rem;
+  margin-top: 1.25rem;
 }
 
+/* A quiet chronological marker. The date stamp on every row already carries
+   the month, so this only has to say when one month hands over to the next. */
 .timeline-month > h3 {
-  padding-block: 0.5rem;
-  border-bottom: 1px solid var(--rule-heavy);
+  padding-block: 0.4rem;
+  border-bottom: 1px solid var(--rule-hair);
+  color: var(--muted-foreground);
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
 }
 
 .timeline-entry {
   display: grid;
-  grid-template-columns: 3.25rem minmax(0, 1fr);
-  gap: 1rem;
+  grid-template-columns: 3.25rem minmax(0, 1fr) auto;
+  gap: 0 1.125rem;
   align-items: start;
-  padding: 0.875rem 0 0.875rem 0.75rem;
+  padding: 1.05rem 0.5rem 1.05rem 0.75rem;
   border-bottom: 1px solid var(--border);
   transition: background-color var(--dur-fast);
 }
@@ -2311,21 +2314,47 @@ tbody th[scope='row'] {
   min-width: 0;
 }
 
-.timeline-label {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem;
+/*
+ * The headline leads. Deadline labels repeat — three rows running all read
+ * "Submissions close" — so the subject is what tells them apart and it gets
+ * the size, the weight and the full foreground colour.
+ */
+.timeline-subject {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 550;
+  line-height: 1.4;
+  letter-spacing: -0.005em;
+  text-wrap: pretty;
 }
 
-.timeline-label strong {
-  font-size: 0.875rem;
-  font-weight: 600;
+.timeline-subject a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.timeline-subject a:hover,
+.timeline-subject a:focus-visible {
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
+}
+
+.timeline-kind {
+  margin: 0.3rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
 }
 
 .chip {
   display: inline-flex;
   align-items: center;
+  justify-self: end;
+  margin-top: 0.1rem;
   border-radius: 6px;
   padding: 0.15rem 0.45rem;
   font-family: var(--font-mono);
@@ -2350,16 +2379,68 @@ tbody th[scope='row'] {
   color: var(--muted-foreground);
 }
 
-.timeline-title {
-  margin-top: 0.25rem;
-  font-size: 0.75rem;
-  line-height: 1.6;
+/* ---- the quieter dated lists: sector calendar, recently closed ---------- */
+
+.dated-section {
+  margin-top: 2.75rem;
+}
+
+.dated-note {
+  margin: 0.6rem 0 0.35rem;
+  max-width: 58ch;
+  font-size: 0.8125rem;
+  line-height: 1.55;
   color: var(--muted-foreground);
 }
 
-.timeline-title a:hover {
+.dated-row {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  gap: 0 1.125rem;
+  align-items: baseline;
+  padding-block: 0.8rem;
+  border-bottom: 1px solid var(--rule-hair);
+}
+
+.dated-when {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Same grammar as the timeline at a lower volume: nothing here is chaseable,
+   so nothing carries an urgency colour. */
+.dated-subject {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+.dated-subject a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.dated-subject a:hover,
+.dated-subject a:focus-visible {
   color: var(--primary);
   text-decoration: underline;
+  text-underline-offset: 0.16em;
+}
+
+.dated-kind {
+  margin: 0.25rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
 }
 
 /* Compact deadline list used in the feed rail. */
@@ -2385,15 +2466,27 @@ tbody th[scope='row'] {
 }
 
 .rail-deadline-label {
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   line-height: 1.45;
+}
+
+.rail-deadline-label a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.rail-deadline-label a:hover,
+.rail-deadline-label a:focus-visible {
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
 }
 
 .rail-deadline-count {
   display: block;
-  margin-top: 0.15rem;
+  margin-top: 0.2rem;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -2411,28 +2504,8 @@ tbody th[scope='row'] {
   color: var(--muted-foreground);
 }
 
-.passed-entry {
-  display: grid;
-  grid-template-columns: 4.5rem minmax(0, 1fr);
-  gap: 1rem;
-  padding-block: 0.625rem;
-  border-bottom: 1px solid var(--rule-hair);
-  font-size: 0.8125rem;
-  color: var(--muted-foreground);
-}
-
-.passed-entry time {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-.passed-entry a:hover {
-  color: var(--primary);
-  text-decoration: underline;
-}
+/* .passed-entry retired: the sector calendar and the recently-closed list now
+   share .dated-row with the rest of the dated lists. */
 
 /* ---------------------------------------------------------------- health -- */
 
@@ -2593,6 +2666,24 @@ tbody td:first-child {
 /* --------------------------------------------------------------- narrow -- */
 
 @media (max-width: 719px) {
+  /* The countdown column has nowhere to go at this width, so it tucks under
+     the subject rather than squeezing it to a two-word column. */
+  .timeline-entry {
+    grid-template-columns: 3.25rem minmax(0, 1fr);
+    padding-inline: 0 0.25rem;
+  }
+
+  .timeline-entry .chip {
+    grid-column: 2;
+    justify-self: start;
+    margin-top: 0.5rem;
+  }
+
+  .dated-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.3rem 0;
+  }
+
   .dateline > .container {
     justify-content: flex-start;
   }
