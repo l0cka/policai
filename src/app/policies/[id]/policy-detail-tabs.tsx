@@ -214,7 +214,7 @@ export function PolicyDetailTabs({
                         <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[var(--status-active-bg)] text-xs font-semibold text-[var(--trust)]">
                           {index + 1}
                         </span>
-                        <p className="text-sm leading-6">{requirement}</p>
+                        <p className="min-w-0 flex-1 break-words text-sm leading-6">{requirement}</p>
                       </li>
                     ))}
                   </ol>
@@ -248,7 +248,7 @@ export function PolicyDetailTabs({
                 {requirements.map((requirement, index) => (
                   <li key={`${requirement.slice(0, 30)}-${index}`} className="flex gap-4 border-b border-border py-4 last:border-b-0">
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--status-active-bg)] text-sm font-semibold text-[var(--trust)]">{index + 1}</span>
-                    <p className="text-sm leading-6">{requirement}</p>
+                    <p className="min-w-0 flex-1 break-words text-sm leading-6">{requirement}</p>
                   </li>
                 ))}
               </ol>
