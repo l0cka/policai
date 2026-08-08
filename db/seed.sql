@@ -1,5 +1,6 @@
 INSERT INTO sources (name, url, fetch_method, item_link_pattern, stream_hint) VALUES
-  ('ALRC News',                     'https://www.alrc.gov.au/feed/',                'rss',       NULL,                    'law_reform'),
+  -- /feed/ is valid RSS but permanently empty; /news/feed/ carries the items.
+  ('ALRC News',                     'https://www.alrc.gov.au/news/feed/',           'rss',       NULL,                    'law_reform'),
   ('Artificial Lawyer',             'https://www.artificiallawyer.com/feed/',       'rss',       NULL,                    'tech_justice'),
   ('Australian Pro Bono Centre',    'https://www.probonocentre.org.au/feed/',       'rss',       NULL,                    'news'),
   ('Justice Connect',               'https://justiceconnect.org.au/feed/',          'rss',       NULL,                    'news'),
@@ -95,7 +96,9 @@ INSERT INTO sources (name, url, fetch_method, item_link_pattern, stream_hint) VA
   ('Environmental Justice Australia', 'https://envirojustice.org.au/feed/', 'rss', NULL, 'news'),
   ('Financial Rights Legal Centre', 'https://financialrights.org.au/feed/', 'rss', NULL, 'news'),
   ('Fitzroy Legal Service', 'https://fls.org.au/feed/', 'rss', NULL, 'news'),
-  ('Fremantle Community Legal Centre', 'https://www.fremantle.wa.gov.au/feed/', 'rss', NULL, 'news'),
+  -- fremantle.wa.gov.au is the City of Fremantle council, not the community
+  -- legal centre — the feed carries playground upgrades and football ovals.
+  -- Wrong organisation; the centre publishes no feed we could find.
   ('Gold Coast Community Legal Centre', 'https://www.gcclc.org.au/feed/', 'rss', NULL, 'news'),
   ('Hobart Community Legal Service', 'https://hobartlegal.org.au/news/feed/', 'rss', NULL, 'news'),
   ('Hume Riverina Community Legal Service', 'https://hrcls.org.au/feed/', 'rss', NULL, 'news'),
@@ -103,7 +106,9 @@ INSERT INTO sources (name, url, fetch_method, item_link_pattern, stream_hint) VA
   ('Immigration Advice and Rights Centre', 'https://iarc.org.au/feed/', 'rss', NULL, 'news'),
   ('Intellectual Disability Rights Service', 'https://idrs.org.au/feed/', 'rss', NULL, 'news'),
   ('JobWatch', 'https://jobwatch.org.au/feed/', 'rss', NULL, 'news'),
-  ('John Curtin Law Clinic', 'https://www.curtin.edu.au/news/feed/', 'rss', NULL, 'news'),
+  -- John Curtin Law Clinic: curtin.edu.au/news/feed/ is the whole university's
+  -- news feed (gaming research, open days, health month) and the clinic has no
+  -- feed of its own. Dropped rather than kept as noise.
   ('Just Reinvest NSW', 'https://www.justreinvest.org.au/feed/', 'rss', NULL, 'news'),
   ('Katherine Women''s Information and Legal Service', 'https://www.kwils.com.au/feed/rss2', 'rss', NULL, 'news'),
   ('LGBTI Legal Service', 'https://lgbtilegalservice.org.au/feed/', 'rss', NULL, 'news'),
@@ -133,7 +138,9 @@ INSERT INTO sources (name, url, fetch_method, item_link_pattern, stream_hint) VA
   ('Tenants'' Union of NSW', 'https://www.tenants.org.au/rss.xml', 'rss', NULL, 'news'),
   ('Tenants'' Union of Tasmania', 'https://tutas.org.au/feed/', 'rss', NULL, 'news'),
   ('Townsville Community Law', 'https://townsvillecommunity.law/feed/', 'rss', NULL, 'news'),
-  ('University of Melbourne Student Union Legal Service', 'https://umsu.unimelb.edu.au/news/rss/6013/', 'rss', NULL, 'news'),
+  -- UMSU Legal Service: the configured feed is the whole student union's news
+  -- (club notices, "Whats on sf", nav links scraped as items) — 419 items, none
+  -- about the legal service. The service page publishes no feed.
   ('West Heidelberg Community Legal Service', 'https://www.holstephealth.org.au/feed/', 'rss', NULL, 'news'),
   ('Western NSW Community Legal Centre', 'https://www.wnswclc.org.au/blog-feed.xml', 'rss', NULL, 'news'),
   ('Western Sydney Community Legal Centre', 'https://www.wsclc.org.au/feed/', 'rss', NULL, 'news'),
@@ -156,7 +163,9 @@ INSERT INTO sources (name, url, fetch_method, item_link_pattern, stream_hint) VA
   ('Dusseldorp Forum', 'https://dusseldorp.org.au/feed/', 'rss', NULL, 'funding'),
   ('Ecstra Foundation', 'https://ecstra.org.au/feed/', 'rss', NULL, 'funding'),
   ('Reichstein Foundation', 'https://reichstein.org.au/feed/', 'rss', NULL, 'funding'),
-  ('The Ian Potter Foundation', 'https://www.ianpotter.org.au/news/rss', 'rss', NULL, 'funding'),
+  -- The Ian Potter Foundation funds across arts, science, health and nature;
+  -- its news feed is overwhelmingly non-legal and reaches back to 2021. A real
+  -- funder, but not a usable A2J signal at this granularity.
   ('Djirra', 'https://djirra.org.au/feed/', 'rss', NULL, 'news'),
   ('Family Violence Legal Service Aboriginal Corporation', 'https://www.fvlsac.org.au/feed/', 'rss', NULL, 'news'),
   ('North Australian Aboriginal Family Legal Service', 'https://naafls.com.au/feed/', 'rss', NULL, 'news'),
