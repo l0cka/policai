@@ -11,8 +11,20 @@ export const EnrichmentSchema = z.object({
   opportunity_reason: z.string().max(300).nullable(),
   entities: z.object({
     organisations: z.array(z.string()).default([]),
+    /*
+     * `kind` separates dates a reader must act on from dates that merely
+     * arrive. Optional rather than required: a missed field falls back to a
+     * label heuristic in the dashboard query, where an omission costs us a
+     * misfiled date — making it required would cost us a stalled item.
+     */
     deadlines: z
-      .array(z.object({ date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/), label: z.string() }))
+      .array(
+        z.object({
+          date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+          label: z.string(),
+          kind: z.enum(['action', 'milestone']).optional(),
+        }),
+      )
       .default([]),
     amounts: z.array(z.string()).default([]),
   }),

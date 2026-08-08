@@ -8,7 +8,7 @@ describe('EnrichmentSchema', () => {
       relevant: true,
       blurb: 'The Commonwealth opened a new NLAP top-up round for community legal centres.',
       opportunity: true,
-      opportunity_reason: 'G+T could assist CLC applicants with grant agreements.',
+      opportunity_reason: 'Applications for the grant round close 2 October 2026.',
       entities: {
         organisations: ["Attorney-General's Department"],
         deadlines: [{ date: '2026-09-30', label: 'Applications close' }],

@@ -1,10 +1,19 @@
 import { DeadlineTimeline } from '../deadlines';
-import { getRecentlyPassed, getUpcomingDeadlines, safeHref } from '../../lib/deadline-data';
+import {
+  getRecentlyPassed,
+  getUpcomingDeadlines,
+  getUpcomingMilestones,
+  safeHref,
+} from '../../lib/deadline-data';
 
 export const dynamic = 'force-dynamic';
 
 export default async function DeadlinesPage() {
-  const [upcoming, passed] = await Promise.all([getUpcomingDeadlines(), getRecentlyPassed(30)]);
+  const [upcoming, milestones, passed] = await Promise.all([
+    getUpcomingDeadlines(),
+    getUpcomingMilestones(),
+    getRecentlyPassed(30),
+  ]);
 
   return (
     <div className="container page">
@@ -12,22 +21,57 @@ export default async function DeadlinesPage() {
         <p className="page-eyebrow">Consultations · submissions · grants</p>
         <h1 className="page-title">Deadlines</h1>
         <p className="page-intro">
-          Closing dates extracted from the items on the radar, newest deadline first. Each entry
-          links back to the source it was read from.
+          Closing dates extracted from the items on the radar, soonest first. Each entry links back
+          to the source it was read from. Dates that simply arrive — reports handed down, schemes
+          starting — are listed separately below.
         </p>
       </header>
 
       <div className="workspace reveal reveal-1" style={{ gridTemplateColumns: 'minmax(0, 1fr)' }}>
         <section className="workspace-main" aria-labelledby="upcoming-deadlines-heading">
           <h2 id="upcoming-deadlines-heading" className="day-heading">
-            Upcoming deadlines
+            Closing soon
+            <span className="day-count">{upcoming.length}</span>
           </h2>
           <DeadlineTimeline rows={upcoming} />
+
+          {milestones.length > 0 ? (
+            <section aria-label="Sector calendar" style={{ marginTop: '2.5rem' }}>
+              <h2 className="day-heading">
+                Sector calendar
+                <span className="day-count">nothing to lodge</span>
+              </h2>
+              {milestones.map((r, n) => {
+                const href = safeHref(r.url);
+                return (
+                  <div className="passed-entry" key={`m-${r.date}-${n}`}>
+                    <time dateTime={r.date}>
+                      {new Date(`${r.date}T00:00:00`).toLocaleDateString('en-AU', {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric',
+                      })}
+                    </time>
+                    <span>
+                      {r.label} —{' '}
+                      {href ? (
+                        <a href={href} target="_blank" rel="noopener noreferrer">
+                          {r.title}
+                        </a>
+                      ) : (
+                        r.title
+                      )}
+                    </span>
+                  </div>
+                );
+              })}
+            </section>
+          ) : null}
 
           {passed.length > 0 ? (
             <section aria-label="Recently passed" style={{ marginTop: '2.5rem' }}>
               <h2 className="day-heading">
-                Recently passed
+                Recently closed
                 <span className="day-count">last 30 days</span>
               </h2>
               {passed.map((r, n) => {

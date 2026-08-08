@@ -1,7 +1,12 @@
 import Link from 'next/link';
 import { getPool } from '../lib/db';
 import { RailDeadlines } from './deadlines';
-import { daysUntil, getUpcomingDeadlines, sydneyToday } from '../lib/deadline-data';
+import {
+  daysUntil,
+  getUpcomingDeadlines,
+  sydneyToday,
+  OPEN_OPPORTUNITY_SQL,
+} from '../lib/deadline-data';
 import { ArrowRight, ArrowUpRight, Flag, Search } from './icons';
 import { SignalNetwork, type NetworkPair, type NetworkSignal } from './signal-network';
 
@@ -76,12 +81,17 @@ function shortDate(value: string | Date): string {
 }
 
 
+/*
+ * "Opportunities" counts the ones still open. A consultation whose submissions
+ * closed last month is no longer something anyone can act on, and leaving it in
+ * the figure makes the number grow forever while meaning less each week.
+ */
 async function getStats(): Promise<Stats> {
   const { rows } = await getPool().query(
-    `SELECT count(*) FILTER (WHERE coalesce(published_at, created_at) >= now() - interval '7 days') AS new_week,
-            count(*) FILTER (WHERE opportunity) AS opps,
+    `SELECT count(*) FILTER (WHERE coalesce(i.published_at, i.created_at) >= now() - interval '7 days') AS new_week,
+            count(*) FILTER (WHERE ${OPEN_OPPORTUNITY_SQL}) AS opps,
             count(*) AS tracked
-     FROM items WHERE relevant`,
+     FROM items i WHERE i.relevant`,
   );
   return rows[0];
 }
@@ -108,7 +118,7 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
     args.push(stream);
     cond.push(`i.stream = $${args.length}`);
   }
-  if (opp === '1') cond.push(`i.opportunity`);
+  if (opp === '1') cond.push(OPEN_OPPORTUNITY_SQL);
   if (q) {
     args.push(q);
     cond.push(`i.search @@ websearch_to_tsquery('english', $${args.length})`);
@@ -119,6 +129,7 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
     await Promise.all([
       getPool().query(
         `SELECT i.id, i.title, i.url, i.blurb, i.excerpt, i.stream, i.opportunity, i.opportunity_reason,
+                ${OPEN_OPPORTUNITY_SQL} AS opportunity_open,
                 i.published_at, i.created_at, s.name AS source_name
          FROM items i JOIN sources s ON s.id = i.source_id
          ${where} ORDER BY coalesce(i.published_at, i.created_at) DESC LIMIT 100`,
@@ -133,7 +144,7 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
         `SELECT s.name AS source_name, s.url AS source_url,
                 coalesce(i.stream, 'unclassified') AS collection,
                 count(*)::int AS n,
-                count(*) FILTER (WHERE i.opportunity)::int AS opportunities
+                count(*) FILTER (WHERE ${OPEN_OPPORTUNITY_SQL})::int AS opportunities
          FROM items i JOIN sources s ON s.id = i.source_id
          WHERE i.relevant
            AND coalesce(i.published_at, i.created_at) >= now() - interval '30 days'
@@ -352,7 +363,7 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
                       {i.blurb || i.excerpt ? (
                         <p className="item-blurb">{i.blurb ?? i.excerpt}</p>
                       ) : null}
-                      {i.opportunity ? (
+                      {i.opportunity_open ? (
                         <p className="item-flag">
                           <Flag />
                           {i.opportunity_reason}

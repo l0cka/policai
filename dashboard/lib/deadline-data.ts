@@ -1,6 +1,34 @@
 import { getPool } from './db';
 
-export type DeadlineRow = { title: string; url: string; date: string; label: string };
+export type DeadlineKind = 'action' | 'milestone';
+export type DeadlineRow = { title: string; url: string; date: string; label: string; kind: DeadlineKind };
+
+/*
+ * Enrichment records `kind` on each deadline, but rows written before that
+ * field existed have none. Fall back to reading the label: dates a reader must
+ * act on almost always say so in the verb. "UN report due" is the known
+ * misfire — it reads as an action and is a milestone — and it corrects itself
+ * once the item is re-enriched.
+ */
+const KIND_SQL = `
+  coalesce(
+    d->>'kind',
+    CASE WHEN d->>'label' ~* '(clos|due|deadline|appl|submi|register|registration|nominat|expression of interest|\\mEOI\\M|tender)'
+         THEN 'action' ELSE 'milestone' END
+  )`;
+
+/* An opportunity stays open until every action date it carries has passed. */
+export const OPEN_OPPORTUNITY_SQL = `
+  (i.opportunity AND NOT EXISTS (
+     SELECT 1 FROM jsonb_array_elements(coalesce(i.entities->'deadlines', '[]'::jsonb)) d
+     WHERE ${KIND_SQL} = 'action'
+       AND d->>'date' ~ '^\\d{4}-\\d{2}-\\d{2}$'
+   ) OR EXISTS (
+     SELECT 1 FROM jsonb_array_elements(coalesce(i.entities->'deadlines', '[]'::jsonb)) d
+     WHERE ${KIND_SQL} = 'action'
+       AND d->>'date' ~ '^\\d{4}-\\d{2}-\\d{2}$'
+       AND (d->>'date') >= to_char(now() AT TIME ZONE 'Australia/Sydney', 'YYYY-MM-DD')
+   ))`;
 
 export function sydneyToday(): string {
   return new Date().toLocaleDateString('en-CA', { timeZone: 'Australia/Sydney' });
@@ -34,15 +62,36 @@ export function monthHeading(date: string): string {
 export const safeHref = (u: string) => (/^https?:\/\//i.test(u) ? u : undefined);
 
 const BASE_QUERY = `
-  SELECT DISTINCT ON (d->>'date', d->>'label') i.title, i.url, d->>'date' AS date, d->>'label' AS label
+  SELECT DISTINCT ON (d->>'date', d->>'label')
+         i.title, i.url, d->>'date' AS date, d->>'label' AS label, ${KIND_SQL} AS kind
   FROM items i, jsonb_array_elements(i.entities->'deadlines') d
   WHERE i.relevant AND d->>'date' ~ '^\\d{4}-\\d{2}-\\d{2}$'`;
 
+const TODAY_SQL = `to_char(now() AT TIME ZONE 'Australia/Sydney', 'YYYY-MM-DD')`;
+
+/*
+ * Things a reader can still act on. This is what the page leads with, and what
+ * the phrase "deadline" is reserved for.
+ */
 export async function getUpcomingDeadlines(limit?: number): Promise<DeadlineRow[]> {
   const { rows } = await getPool().query<DeadlineRow>(
-    `${BASE_QUERY}
-       AND (d->>'date') >= to_char(now() AT TIME ZONE 'Australia/Sydney', 'YYYY-MM-DD')
-     ORDER BY d->>'date' ASC, d->>'label' ASC
+    `SELECT * FROM (${BASE_QUERY}
+       AND (d->>'date') >= ${TODAY_SQL}) q
+     WHERE q.kind = 'action'
+     ORDER BY q.date ASC, q.label ASC
+     ${limit ? `LIMIT ${Math.floor(limit)}` : ''}`,
+  );
+  return rows;
+}
+
+/* Dates that will simply arrive: reports handed down, schemes starting, plans
+ * concluding. Worth knowing, never worth chasing. */
+export async function getUpcomingMilestones(limit?: number): Promise<DeadlineRow[]> {
+  const { rows } = await getPool().query<DeadlineRow>(
+    `SELECT * FROM (${BASE_QUERY}
+       AND (d->>'date') >= ${TODAY_SQL}) q
+     WHERE q.kind = 'milestone'
+     ORDER BY q.date ASC, q.label ASC
      ${limit ? `LIMIT ${Math.floor(limit)}` : ''}`,
   );
   return rows;
@@ -50,10 +99,11 @@ export async function getUpcomingDeadlines(limit?: number): Promise<DeadlineRow[
 
 export async function getRecentlyPassed(days: number): Promise<DeadlineRow[]> {
   const { rows } = await getPool().query<DeadlineRow>(
-    `${BASE_QUERY}
-       AND (d->>'date') < to_char(now() AT TIME ZONE 'Australia/Sydney', 'YYYY-MM-DD')
-       AND (d->>'date') >= to_char((now() AT TIME ZONE 'Australia/Sydney') - interval '${Math.floor(days)} days', 'YYYY-MM-DD')
-     ORDER BY d->>'date' DESC, d->>'label' ASC`,
+    `SELECT * FROM (${BASE_QUERY}
+       AND (d->>'date') < ${TODAY_SQL}
+       AND (d->>'date') >= to_char((now() AT TIME ZONE 'Australia/Sydney') - interval '${Math.floor(days)} days', 'YYYY-MM-DD')) q
+     WHERE q.kind = 'action'
+     ORDER BY q.date DESC, q.label ASC`,
   );
   return rows;
 }
