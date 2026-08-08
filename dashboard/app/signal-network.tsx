@@ -58,6 +58,8 @@ const GRAPH = {
  * column still totals the real population. */
 const TOP_SOURCES = 5;
 const DOT_GAP = 7;
+const MIN_DOT_GAP = 3;
+const MAX_BAND_WIDTH = 154;
 const MAX_RIBBON = 26;
 
 function isSafeUrl(value: string): boolean {
@@ -96,6 +98,36 @@ function pathBetween(x1: number, y1: number, x2: number, y2: number): string {
 }
 
 /*
+ * How tall the dot band actually turns out to be. The grid takes as many rows
+ * as fit and then as many columns as it needs, so the last row is rarely full
+ * and the band almost never reaches GRAPH.bottom. Ribbons must aim at where the
+ * dots really end, not at the space that was available for them — at 247
+ * signals those two agreed to within 3px and the difference was invisible; at
+ * 252 the column count ticked up, the band lost eight rows, and the bottom
+ * ribbons started in mid-air below it.
+ */
+function bandGeometry(total: number) {
+  const span = GRAPH.bottom - GRAPH.top;
+  const n = Math.max(total, 1);
+
+  // One dot per signal is the promise, so as volume grows the spacing gives way
+  // before the lane does. At present volumes this exits on the first iteration
+  // and the band keeps its full DOT_GAP.
+  let gap = DOT_GAP;
+  while (gap > MIN_DOT_GAP) {
+    const rows = Math.floor(span / gap) + 1;
+    const columns = Math.floor(MAX_BAND_WIDTH / gap) + 1;
+    if (rows * columns >= n) break;
+    gap -= 0.5;
+  }
+
+  const maxRows = Math.max(1, Math.floor(span / gap) + 1);
+  const columns = Math.max(1, Math.ceil(n / maxRows));
+  const usedRows = Math.max(1, Math.ceil(n / columns));
+  return { gap, columns, usedRows, bottom: GRAPH.top + (usedRows - 1) * gap };
+}
+
+/*
  * Lay a column out top-to-bottom in descending order and give each node the
  * vertical centre of its own share of the band. Because both orders match, the
  * ribbons fan out without crossing.
@@ -105,8 +137,10 @@ function layout(
   x: number,
   maxRadius: number,
   total: number,
+  bandBottom: number,
 ): Node[] {
   const span = GRAPH.bottom - GRAPH.top;
+  const bandSpan = bandBottom - GRAPH.top;
   const largest = Math.max(...entries.map((e) => e.count), 1);
   const step = entries.length > 1 ? span / (entries.length - 1) : 0;
   let cumulative = 0;
@@ -120,7 +154,7 @@ function layout(
       y: entries.length === 1 ? GRAPH.top + span / 2 : GRAPH.top + index * step,
       // Area, not radius, carries the count: r scales with the square root.
       r: entry.aggregate ? 13 : Math.max(4, maxRadius * Math.sqrt(entry.count / largest)),
-      bandY: GRAPH.top + share * span,
+      bandY: GRAPH.top + share * bandSpan,
     };
   });
 }
@@ -173,9 +207,12 @@ function buildGraph(pairs: NetworkPair[]) {
       href: key === 'unclassified' ? '/#radar-feed' : `/?stream=${key}#radar-feed`,
     }));
 
+  const band = bandGeometry(total);
+
   return {
-    sources: layout(sourceEntries, GRAPH.sourceX, 11, total),
-    collections: layout(collectionEntries, GRAPH.collectionX, 18, total),
+    sources: layout(sourceEntries, GRAPH.sourceX, 11, total, band.bottom),
+    collections: layout(collectionEntries, GRAPH.collectionX, 18, total, band.bottom),
+    band,
     total,
     opportunities,
     sourceCount: bySource.size,
@@ -183,7 +220,7 @@ function buildGraph(pairs: NetworkPair[]) {
 }
 
 export function SignalNetwork({ pairs, signals }: { pairs: NetworkPair[]; signals: NetworkSignal[] }) {
-  const { sources, collections, total, opportunities, sourceCount } = buildGraph(pairs);
+  const { sources, collections, band, total, opportunities, sourceCount } = buildGraph(pairs);
 
   if (!total) {
     return (
@@ -198,10 +235,9 @@ export function SignalNetwork({ pairs, signals }: { pairs: NetworkPair[]; signal
   const largest = Math.max(...sources.map((s) => s.count), ...collections.map((c) => c.count), 1);
   const ribbon = (count: number) => Math.max(1.2, (MAX_RIBBON * count) / largest);
 
-  const rows = Math.max(1, Math.floor((GRAPH.bottom - GRAPH.top) / DOT_GAP) + 1);
-  const columns = Math.max(1, Math.ceil(total / rows));
-  const bandLeft = GRAPH.bandX - ((columns - 1) * DOT_GAP) / 2;
-  const bandRight = bandLeft + (columns - 1) * DOT_GAP;
+  const { columns, gap } = band;
+  const bandLeft = GRAPH.bandX - ((columns - 1) * gap) / 2;
+  const bandRight = bandLeft + (columns - 1) * gap;
 
   const featured =
     signals.find((signal) => signal.opportunity && isSafeUrl(signal.url)) ??
@@ -217,8 +253,8 @@ export function SignalNetwork({ pairs, signals }: { pairs: NetworkPair[]; signal
       index,
       signal,
       opportunity: Boolean(signal?.opportunity),
-      x: bandLeft + (index % columns) * DOT_GAP,
-      y: GRAPH.top + Math.floor(index / columns) * DOT_GAP,
+      x: bandLeft + (index % columns) * gap,
+      y: GRAPH.top + Math.floor(index / columns) * gap,
     };
   });
 
