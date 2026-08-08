@@ -113,7 +113,7 @@ export async function classifyCandidate(
 
 /**
  * Reads the collector's Claude-classifier opt-in. Unset (the default) keeps
- * the deterministic heuristic path byte-for-byte unchanged; the Argus timer
+ * the deterministic heuristic path byte-for-byte unchanged; the scheduled collection run
  * sets this once the Claude path is trusted enough to run unattended.
  */
 export function isClaudeClassifierEnabled(): boolean {

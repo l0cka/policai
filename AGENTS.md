@@ -4,7 +4,7 @@
 
 Policai is an Australian AI policy tracker. It maintains a curated register of AI policy, regulation, governance and court guidance across federal and state/territory jurisdictions, plus an automated "developments" feed of newly detected policy activity.
 
-**Git is the database.** All canonical data is JSON committed to this repository (`public/data/`, `data/`). The deployed site only reads that data. It is self-hosted on the Argus server at [policai.org](https://policai.org), behind a Cloudflare tunnel — see [docs/hosting-argus.md](./docs/hosting-argus.md). Collection runs on a systemd timer on the Argus server (`policai-collect.timer`, 19:30 UTC daily), in its own checkout (`~/live/policai-collector`) separate from the checkout that serves the site, and pushes new detections to GitHub; the site's checkout pulls those commits and serves them through ISR without a rebuild. GitHub Actions no longer schedules collection; `.github/workflows/collect.yml` is kept as a manual fallback. There is no runtime database, no auth, and no admin dashboard.
+**Git is the database.** All canonical data is JSON committed to this repository (`public/data/`, `data/`). The deployed site only reads that data. It is self-hosted at [policai.org](https://policai.org) behind a Cloudflare tunnel. Collection runs daily on the maintainer's server, in a checkout separate from the one that serves the site, and pushes new detections to GitHub; the serving checkout pulls those commits and serves them through ISR without a rebuild. GitHub Actions no longer schedules collection; `.github/workflows/collect.yml` is kept as a manual fallback. There is no runtime database, no auth, and no admin dashboard.
 
 ## Tech Stack
 
@@ -15,10 +15,10 @@ Policai is an Australian AI policy tracker. It maintains a curated register of A
 - **Data:** public-safe JSON in `public/data/`; editorial and collector JSON in
   `data/`, all canonical and versioned
 - **Retrieval:** plain HTTP first; self-hosted Firecrawl for candidate pages on browser-strategy sources, falling back to headless Chromium (Playwright); index and RSS listing pages always use headless Chromium directly
-- **Analysis:** keyword heuristic by default; Claude, an Anthropic model, batched through the Claude Code CLI on Argus when `USE_CLAUDE_CLASSIFIER` is set — both paths cap stored/displayed confidence at 0.65 (`MACHINE_CONFIDENCE_CAP`)
+- **Analysis:** keyword heuristic by default; Claude, an Anthropic model, batched through the Claude Code CLI on the collection host when `USE_CLAUDE_CLASSIFIER` is set — both paths cap stored/displayed confidence at 0.65 (`MACHINE_CONFIDENCE_CAP`)
 - **Scraping:** Cheerio
 - **Testing:** Vitest (+ Testing Library)
-- **Automation:** systemd timer on Argus (`policai-collect.timer`); GitHub Actions (`.github/workflows/collect.yml`) kept as a manual fallback
+- **Automation:** a daily scheduled run on the maintainer's server; GitHub Actions (`.github/workflows/collect.yml`) kept as a manual fallback
 
 ## Commands
 
@@ -102,12 +102,12 @@ None are required to run the site or collector. Optional (see `.env.example`):
 
 ```bash
 POLICAI_MCP_ADMIN_TOKEN=  # local MCP source-ingest writes
-USE_CLAUDE_CLASSIFIER=    # opt into Claude classification instead of the keyword heuristic (set on Argus)
+USE_CLAUDE_CLASSIFIER=    # opt into Claude classification instead of the keyword heuristic (set on the collection host)
 FIRECRAWL_URL=            # self-hosted Firecrawl base URL, defaults to http://127.0.0.1:3003
 CLAUDE_BIN=               # path to the Claude Code CLI, defaults to `claude` on PATH
 ```
 
-Claude classification does not read a model API key from the environment; it runs through the Claude Code CLI's own authenticated session on the Argus host.
+Claude classification does not read a model API key from the environment; it runs through the Claude Code CLI's own authenticated session on the collection host.
 
 ## Editing Data
 

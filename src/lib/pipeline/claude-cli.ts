@@ -25,7 +25,7 @@ type ExecLike = (
  *
  * WHY this exists instead of `vi.mock('node:child_process', …)` in tests:
  * that builtin mock was verified NOT to intercept calls in this project's
- * Vitest setup — Argus test runs showed the REAL execFile still running
+ * Vitest setup — CI test runs showed the REAL execFile still running
  * (`Command failed: /bin/false -p test --output-format json`), meaning
  * before the CLAUDE_BIN guard existed, unit tests spawned the real `claude`
  * binary nine times in parallel, making paid API calls and crashing the

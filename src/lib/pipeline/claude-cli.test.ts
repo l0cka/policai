@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ClaudeAuthError, runClaude, setExecForTesting } from './claude-cli';
 
 // Test-only DI seam instead of vi.mock('node:child_process', …): that builtin
-// mock was verified on Argus NOT to intercept calls in this project's Vitest
+// mock was verified in this project's CI environment NOT to intercept calls in this project's Vitest
 // setup — the real execFile ran regardless (`Command failed: /bin/false -p
 // test --output-format json`), which before the CLAUDE_BIN guard existed
 // meant this test file spawned the real `claude` binary nine times in
@@ -63,7 +63,7 @@ describe('runClaude success path', () => {
   // Regression pin for the security property: scraped-page content is
   // untrusted, so the invocation itself — not model behavior — must make
   // tool access unreachable. `--max-turns` does not exist on the installed
-  // Claude Code CLI (verified via `claude --help` on Argus, v2.1.221); the
+  // Claude Code CLI (verified against the installed CLI, v2.1.221); the
   // equivalent-or-stronger guarantee used here is `--tools ""`, which removes
   // every built-in tool from the session entirely, plus an explicit
   // `--disallowedTools` denylist as a second, independent layer.

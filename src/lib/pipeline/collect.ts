@@ -1120,7 +1120,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
       url: string,
     ): Promise<RetrievedSource> => {
       if (preferBrowser) {
-        // Firecrawl runs on the self-hosted Argus stack ahead of the
+        // Firecrawl runs on the collection host ahead of the
         // in-process headless browser: it's cheaper per page and avoids
         // spinning up Playwright for hosts we already know need a real
         // browser. Any ok:false — timeout, unavailable, http_error, empty —
