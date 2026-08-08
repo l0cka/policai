@@ -27,9 +27,10 @@ const legendItems = [
   { label: 'Inactive', className: 'bg-white/28' },
 ];
 
-function safePolicyDate(policy: Policy): Date | null {
-  const date = new Date(getPrimaryPolicyDate(policy).date);
-  return Number.isNaN(date.getTime()) ? null : date;
+function safePolicyDate(policy: Policy): { date: Date; dateType: string } | null {
+  const primary = getPrimaryPolicyDate(policy);
+  const date = new Date(primary.date);
+  return Number.isNaN(date.getTime()) ? null : { date, dateType: primary.type };
 }
 
 function formatAxisDate(date: Date): string {
@@ -40,13 +41,21 @@ function formatAxisDate(date: Date): string {
   });
 }
 
-function pointClass(policy: Policy, date: Date, currentDate: Date): string {
+function pointClass(
+  policy: Policy,
+  date: Date,
+  dateType: string,
+  currentDate: Date,
+): string {
   const thirtyDays = 30 * 24 * 60 * 60 * 1000;
   if (currentDate.getTime() - date.getTime() <= thirtyDays && date <= currentDate) {
     return 'bg-[var(--hero-new)]';
   }
   if (policy.status === 'proposed') return 'border border-white/65 bg-[var(--hero-bg)]';
-  if (policy.status === 'amended') return 'bg-[var(--hero-amended)]';
+  // Amendment is an event in this register, not a status: an amended policy
+  // stays active and carries an 'amended' date. Colour by the event, or the
+  // legend's amber can never occur.
+  if (dateType === 'amended') return 'bg-[var(--hero-amended)]';
   if (policy.status === 'active') return 'bg-[var(--hero-trust)]';
   return 'bg-white/28';
 }
@@ -59,8 +68,12 @@ export function PolicyObservatory({
   currentAt: string | null;
 }) {
   const datedPolicies = policies
-    .map((policy) => ({ policy, date: safePolicyDate(policy) }))
-    .filter((item): item is { policy: Policy; date: Date } => item.date !== null);
+    .map((policy) => ({ policy, dated: safePolicyDate(policy) }))
+    .filter(
+      (item): item is { policy: Policy; dated: { date: Date; dateType: string } } =>
+        item.dated !== null,
+    )
+    .map(({ policy, dated }) => ({ policy, date: dated.date, dateType: dated.dateType }));
   const timestamps = datedPolicies.map(({ date }) => date.getTime());
   const fallbackCurrent = Math.max(...timestamps);
   const parsedCurrent = currentAt ? new Date(currentAt) : new Date(fallbackCurrent);
@@ -125,7 +138,7 @@ export function PolicyObservatory({
                     </span>
                   </span>
                   <div className="relative h-full border-b border-white/20">
-                    {jurisdictionPolicies.map(({ policy, date }, index) => {
+                    {jurisdictionPolicies.map(({ policy, date, dateType }, index) => {
                       const left = ((date.getTime() - start.getTime()) / span) * 100;
                       const y = 50 + ((index % 3) - 1) * 11;
                       return (
@@ -136,7 +149,7 @@ export function PolicyObservatory({
                           aria-label={`Open ${policy.title}`}
                           className={cn(
                             'absolute z-20 block h-[9px] w-[9px] -translate-x-1/2 -translate-y-1/2 rounded-full ring-1 ring-[var(--hero-bg)] transition duration-150 hover:z-30 hover:scale-[1.75] focus:z-30 focus:scale-[1.75]',
-                            pointClass(policy, date, currentDate),
+                            pointClass(policy, date, dateType, currentDate),
                           )}
                           style={{
                             left: `${Math.min(Math.max(left, 0.6), 99.4).toFixed(3)}%`,
