@@ -53,6 +53,8 @@ interface PolicyBrowserProps {
   policies: Policy[];
   developments: Development[];
   developmentCount: number;
+  /** Developments first detected in the last seven days, dismissed excluded. */
+  weeklyDevelopmentCount: number;
   lastCollectedAt: string | null;
   lastHealthyAt: string | null;
   lastReviewedAt: string | null;
@@ -138,6 +140,7 @@ export function PolicyBrowser({
   policies,
   developments,
   developmentCount,
+  weeklyDevelopmentCount,
   lastCollectedAt,
   lastHealthyAt,
   lastReviewedAt,
@@ -260,18 +263,18 @@ export function PolicyBrowser({
 
   return (
     <div>
-      <section className="relative overflow-hidden bg-[#071b2e] text-white">
+      <section className="relative overflow-hidden bg-[var(--hero-bg)] text-white">
         <div className="container relative mx-auto grid min-h-[38rem] gap-12 px-4 sm:px-6 md:grid-cols-[0.72fr_1.28fr] md:gap-0 lg:px-8">
           <div className="reveal flex max-w-[34rem] flex-col justify-center py-12 pr-0 md:py-10 md:pr-8 lg:pr-10">
-            <p className="font-mono text-[11px] font-medium uppercase tracking-[0.08em] text-[#82a7ff]">
+            <p className="font-mono text-[11px] font-medium uppercase tracking-[0.08em] text-[var(--hero-accent)]">
               The policy observatory
             </p>
             <h1 className="mt-5 max-w-[29rem] font-sans text-[clamp(2.7rem,4.25vw,4.25rem)] font-semibold leading-[1.03] tracking-[-0.035em] text-white">
               See Australian AI policy as it changes.
             </h1>
             <p className="mt-5 max-w-[29rem] text-[14px] leading-6 text-white/64">
-              Policai tracks official AI policy across Australia in real time and
-              links every record to its source.
+              Policai tracks official AI policy across Australia, checked daily,
+              with every record linked to its source.
             </p>
 
             <form
@@ -283,7 +286,7 @@ export function PolicyBrowser({
               <label className="sr-only" htmlFor="observatory-search">
                 Search the Australian AI policy register
               </label>
-              <div className="group flex max-w-[31rem] items-center border border-white/30 bg-transparent transition-colors focus-within:border-[#82a7ff] focus-within:bg-white/[0.035]">
+              <div className="group flex max-w-[31rem] items-center border border-white/30 bg-transparent transition-colors focus-within:border-[var(--hero-accent)] focus-within:bg-white/[0.035]">
                 <Search className="ml-4 h-[18px] w-[18px] shrink-0 text-white/45" strokeWidth={1.7} />
                 <input
                   id="observatory-search"
@@ -300,34 +303,52 @@ export function PolicyBrowser({
               <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3 text-xs">
                 <button
                   type="submit"
-                  className="group inline-flex h-12 items-center gap-4 rounded-[2px] bg-gradient-to-r from-[#435ee6] to-[#6178ea] px-6 font-semibold text-white transition-[filter] hover:brightness-110"
+                  className="group inline-flex h-12 items-center gap-4 rounded-[2px] bg-[var(--hero-cta)] px-6 font-semibold text-white transition-[filter] hover:brightness-110"
                 >
                   Search the register
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" strokeWidth={2} />
                 </button>
-                <Link href="/developments" className="group inline-flex items-center gap-3 font-medium text-[#9bb6ff] hover:text-white">
+                <Link href="/developments" className="group inline-flex items-center gap-3 font-medium text-[var(--hero-accent)] hover:text-white">
                   View developments
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </div>
             </form>
 
+            {/* Each figure is a doorway, not a decoration. */}
             <div className="mt-9 grid max-w-[31rem] grid-cols-4">
-              {[
-                [policies.length, 'verified policies'],
-                [distinctJurisdictions.size, 'jurisdictions'],
-                [developmentCount, 'developments'],
-                [automaticSourceCount, 'sources monitored'],
-              ].map(([value, label], index) => (
-                <div key={label} className={cn('pr-3', index > 0 && 'border-l border-white/20 pl-5')}>
-                  <strong className="block text-[1.55rem] font-medium leading-none text-white">
-                    {value}
-                  </strong>
-                  <span className="mt-2 block text-[10px] leading-4 text-white/55">
-                    {label}
-                  </span>
-                </div>
-              ))}
+              {(
+                [
+                  { value: policies.length, label: 'verified policies', href: '#policy-register', delta: null },
+                  { value: distinctJurisdictions.size, label: 'jurisdictions', href: '/map', delta: null },
+                  { value: developmentCount, label: 'developments', href: '/developments', delta: weeklyDevelopmentCount },
+                  { value: automaticSourceCount, label: 'sources monitored', href: '/methodology', delta: null },
+                ] as const
+              ).map((stat, index) => {
+                const StatLink = stat.href.startsWith('#') ? 'a' : Link;
+                return (
+                  <StatLink
+                    key={stat.label}
+                    href={stat.href}
+                    className={cn(
+                      'group/stat block pr-3 transition-colors duration-[var(--dur-fast)]',
+                      index > 0 && 'border-l border-white/20 pl-5',
+                    )}
+                  >
+                    <strong className="block text-[1.55rem] font-medium leading-none text-white transition-colors duration-[var(--dur-fast)] group-hover/stat:text-[var(--hero-accent)]">
+                      {stat.value}
+                    </strong>
+                    <span className="mt-2 block text-[10px] leading-4 text-white/55 transition-colors duration-[var(--dur-fast)] group-hover/stat:text-white/80">
+                      {stat.label}
+                    </span>
+                    {stat.delta ? (
+                      <span className="mt-1 block text-[10px] leading-4 text-[var(--hero-trust)]">
+                        +{stat.delta} this week
+                      </span>
+                    ) : null}
+                  </StatLink>
+                );
+              })}
             </div>
           </div>
 
@@ -337,13 +358,13 @@ export function PolicyBrowser({
         </div>
       </section>
 
-      <section className="border-y border-white/16 bg-[#071b2e] text-white">
+      <section className="border-y border-white/16 bg-[var(--hero-bg)] text-white">
         <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between gap-6 pb-4">
-            <h2 className="font-mono text-[11px] font-medium uppercase tracking-[0.08em] text-[#82a7ff]">
+            <h2 className="font-mono text-[11px] font-medium uppercase tracking-[0.08em] text-[var(--hero-accent)]">
               What changed recently
             </h2>
-            <Link href="/developments" className="group hidden items-center gap-3 text-xs font-medium text-[#9bb6ff] hover:text-white sm:inline-flex">
+            <Link href="/developments" className="group hidden items-center gap-3 text-xs font-medium text-[var(--hero-accent)] hover:text-white sm:inline-flex">
               View all developments
               <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
             </Link>
@@ -367,7 +388,7 @@ export function PolicyBrowser({
                   href={development.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group mt-3 inline-flex max-w-[23rem] items-start gap-2 text-[15px] font-semibold leading-6 hover:text-[#9bb6ff]"
+                  className="group mt-3 inline-flex max-w-[23rem] items-start gap-2 text-[15px] font-semibold leading-6 hover:text-[var(--hero-accent)]"
                 >
                   {development.title}
                   <ArrowUpRight className="mt-1 h-4 w-4 shrink-0 opacity-45 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:opacity-100" />
@@ -378,7 +399,7 @@ export function PolicyBrowser({
                   </p>
                 ) : null}
                 <p className="mt-4 flex items-center gap-2 text-[11px] text-white/60">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-[#77dcc2]" fill="currentColor" />
+                  <CheckCircle2 className="h-3.5 w-3.5 text-[var(--hero-trust)]" fill="currentColor" />
                   {getJurisdictionName(development.jurisdiction)}
                   <span className="text-white/24">|</span>
                   Verified source

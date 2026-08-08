@@ -28,12 +28,19 @@ export default async function HomePage() {
         development.verification.status === 'verified',
     )
     .slice(0, 6);
+  const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+  const weeklyDevelopmentCount = allDevelopments.filter(
+    (development) =>
+      development.status !== 'dismissed' &&
+      new Date(development.detectedAt).getTime() >= weekAgo,
+  ).length;
 
   return (
     <PolicyBrowser
       policies={policies}
       developments={developments}
       developmentCount={allDevelopments.filter((development) => development.status !== 'dismissed').length}
+      weeklyDevelopmentCount={weeklyDevelopmentCount}
       lastCollectedAt={meta.lastCollectedAt}
       lastHealthyAt={meta.lastHealthyAt}
       lastReviewedAt={meta.lastReviewedAt}
