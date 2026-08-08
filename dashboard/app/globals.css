@@ -886,6 +886,11 @@ main {
   background: transparent;
 }
 
+.network-key.aggregate {
+  border: 1.5px dashed #8193a6;
+  background: transparent;
+}
+
 .network-key.collection {
   border: 1.5px solid #91aaff;
   background: rgba(82, 114, 232, 0.35);
@@ -911,15 +916,51 @@ main {
   overflow: visible;
 }
 
-.network-edges path {
+/*
+ * Ribbon width is data: it is the signal count on a shared scale, so it must
+ * scale with the drawing. No non-scaling-stroke here.
+ */
+.network-ribbons path {
   fill: none;
-  stroke: rgba(185, 204, 222, 0.27);
-  stroke-width: 1;
-  vector-effect: non-scaling-stroke;
+  stroke: rgba(185, 204, 222, 0.3);
+  stroke-linecap: round;
 }
 
-.network-edges .is-opportunity path {
-  stroke: rgba(231, 185, 108, 0.52);
+.network-ribbons .is-aggregate {
+  stroke: rgba(185, 204, 222, 0.19);
+}
+
+.network-ribbons .is-collection {
+  stroke: rgba(145, 170, 255, 0.34);
+}
+
+.network-band circle {
+  fill: #65d2b4;
+  fill-opacity: 0.82;
+}
+
+.network-band-label {
+  fill: #8193a6;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.network-balance line {
+  stroke: rgba(101, 210, 180, 0.32);
+}
+
+.network-balance-num {
+  fill: #65d2b4;
+  font-family: var(--font-mono);
+  font-size: 15px;
+}
+
+.network-balance-eq {
+  fill: #6f8399;
+  font-family: var(--font-mono);
+  font-size: 12px;
 }
 
 .network-sources circle {
@@ -928,9 +969,15 @@ main {
   stroke-width: 2;
 }
 
+/* The residual node is an aggregate of many sources, not a peer of the five.
+   The dash says so before the label has to. */
+.network-sources circle.is-aggregate {
+  stroke: #8193a6;
+  stroke-dasharray: 4 3;
+}
+
 .network-sources text,
-.network-collections text,
-.network-annotation text {
+.network-collections text {
   fill: #dbe6f0;
   font-family: var(--font-sans);
   font-size: 12px;
@@ -988,27 +1035,50 @@ main {
   stroke-width: 2;
 }
 
-.network-annotation path {
-  fill: none;
-  stroke: #e7b96c;
-  stroke-width: 1;
+/* Was an SVG callout floating over the signal column, where it collided with
+   the marks it pointed at. As real text below the drawing it can wrap, it can
+   be a proper link, and it cannot overlap anything. */
+.signal-network-featured {
+  display: grid;
+  gap: 0.15rem;
+  margin-top: 0.7rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid rgba(185, 204, 222, 0.22);
+  border-left: 2px solid #e7b96c;
+  background: #0b2137;
+  color: #dbe6f0;
+  text-decoration: none;
+  transition: border-color var(--dur-fast), background var(--dur-fast);
 }
 
-.network-annotation rect {
-  fill: #0b2137;
-  stroke: rgba(185, 204, 222, 0.38);
+.signal-network-featured:hover,
+.signal-network-featured:focus-visible {
+  border-color: rgba(231, 185, 108, 0.6);
+  background: #0d2740;
 }
 
-.network-annotation-meta {
-  fill: #9fb0c2;
+.signal-network-featured-tag {
+  color: #e7b96c;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.signal-network-featured-title {
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+
+.signal-network-featured-meta {
+  color: #8395a8;
   font-family: var(--font-mono);
   font-size: 9px;
-  text-transform: uppercase;
 }
 
 .signal-network-summary {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   margin-top: 0.25rem;
   border-top: 1px solid rgba(185, 204, 222, 0.18);
 }
@@ -2636,16 +2706,17 @@ tbody td:first-child {
     width: 46rem;
   }
 
+  /* Four figures read as a 2x2 block here rather than 3 + 1 orphan. */
   .signal-network-summary {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .signal-network-summary > div:nth-child(4) {
+  .signal-network-summary > div:nth-child(odd) {
     border-left: 0;
     padding-left: 0;
   }
 
-  .signal-network-summary > div:nth-child(n + 4) {
+  .signal-network-summary > div:nth-child(n + 3) {
     margin-top: 0.75rem;
   }
 

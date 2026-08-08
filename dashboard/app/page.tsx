@@ -3,7 +3,7 @@ import { getPool } from '../lib/db';
 import { RailDeadlines } from './deadlines';
 import { daysUntil, getUpcomingDeadlines, sydneyToday } from '../lib/deadline-data';
 import { ArrowRight, ArrowUpRight, Flag, Search } from './icons';
-import { SignalNetwork, type SignalNetworkRow } from './signal-network';
+import { SignalNetwork, type NetworkPair, type NetworkSignal } from './signal-network';
 
 export const dynamic = 'force-dynamic';
 
@@ -52,7 +52,7 @@ function streamVars(stream: string | null): React.CSSProperties | undefined {
 
 type Stats = { new_week: number; opps: number; tracked: number };
 type SourceStats = { total: number; ok: number };
-type RadarRow = SignalNetworkRow & {
+type RadarRow = {
   id: string | number;
   title: string;
   url: string;
@@ -115,29 +115,52 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
   }
   const where = cond.length ? `WHERE ${cond.join(' AND ')}` : '';
 
-  const [{ rows }, { rows: radarItems }, stats, sources, deadlines] = await Promise.all([
-    getPool().query(
-      `SELECT i.id, i.title, i.url, i.blurb, i.excerpt, i.stream, i.opportunity, i.opportunity_reason,
-              i.published_at, i.created_at, s.name AS source_name
-       FROM items i JOIN sources s ON s.id = i.source_id
-       ${where} ORDER BY coalesce(i.published_at, i.created_at) DESC LIMIT 100`,
-      args,
-    ),
-    getPool().query<RadarRow>(
-      `SELECT i.id, i.title, i.url, i.blurb, i.excerpt, i.stream, i.opportunity, i.opportunity_reason,
-              i.published_at, i.created_at, s.name AS source_name, s.url AS source_url,
-              count(*) OVER (PARTITION BY s.id)::int AS source_signal_count,
-              count(*) OVER (PARTITION BY coalesce(i.stream, 'unclassified'))::int AS collection_signal_count,
-              count(*) OVER ()::int AS total_signals
-       FROM items i JOIN sources s ON s.id = i.source_id
-       WHERE i.relevant
-         AND coalesce(i.published_at, i.created_at) >= now() - interval '30 days'
-       ORDER BY coalesce(i.published_at, i.created_at) DESC LIMIT 320`,
-    ),
-    getStats(),
-    getSourceStats(),
-    getUpcomingDeadlines(5),
-  ]);
+  const [{ rows }, { rows: networkPairs }, { rows: networkSignals }, { rows: latestItems }, stats, sources, deadlines] =
+    await Promise.all([
+      getPool().query(
+        `SELECT i.id, i.title, i.url, i.blurb, i.excerpt, i.stream, i.opportunity, i.opportunity_reason,
+                i.published_at, i.created_at, s.name AS source_name
+         FROM items i JOIN sources s ON s.id = i.source_id
+         ${where} ORDER BY coalesce(i.published_at, i.created_at) DESC LIMIT 100`,
+        args,
+      ),
+      /*
+       * The diagram's arithmetic lives here. Aggregating source x collection
+       * over the whole window means every count it prints is a property of the
+       * population, not of however many rows we later draw.
+       */
+      getPool().query<NetworkPair>(
+        `SELECT s.name AS source_name, s.url AS source_url,
+                coalesce(i.stream, 'unclassified') AS collection,
+                count(*)::int AS n,
+                count(*) FILTER (WHERE i.opportunity)::int AS opportunities
+         FROM items i JOIN sources s ON s.id = i.source_id
+         WHERE i.relevant
+           AND coalesce(i.published_at, i.created_at) >= now() - interval '30 days'
+         GROUP BY s.name, s.url, coalesce(i.stream, 'unclassified')`,
+      ),
+      /* One mark per signal in the band. The ceiling is well clear of current
+       * volume; if it is ever reached the band under-draws rather than lying. */
+      getPool().query<NetworkSignal>(
+        `SELECT i.id, i.title, i.url, i.stream, i.opportunity,
+                i.published_at, i.created_at, s.name AS source_name
+         FROM items i JOIN sources s ON s.id = i.source_id
+         WHERE i.relevant
+           AND coalesce(i.published_at, i.created_at) >= now() - interval '30 days'
+         ORDER BY coalesce(i.published_at, i.created_at) DESC LIMIT 2000`,
+      ),
+      getPool().query<RadarRow>(
+        `SELECT i.id, i.title, i.url, i.blurb, i.excerpt, i.stream, i.opportunity, i.opportunity_reason,
+                i.published_at, i.created_at, s.name AS source_name
+         FROM items i JOIN sources s ON s.id = i.source_id
+         WHERE i.relevant
+           AND coalesce(i.published_at, i.created_at) >= now() - interval '30 days'
+         ORDER BY coalesce(i.published_at, i.created_at) DESC LIMIT 3`,
+      ),
+      getStats(),
+      getSourceStats(),
+      getUpcomingDeadlines(5),
+    ]);
 
   const safeHref = (u: string) => (/^https?:\/\//i.test(u) ? u : undefined);
 
@@ -158,8 +181,6 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
     if (last && last.date === date) last.rows.push(r);
     else groups.push({ date, rows: [r] });
   }
-
-  const latestItems = radarItems.slice(0, 3);
 
   return (
     <>
@@ -200,7 +221,7 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
           </div>
 
           <div className="observatory-visual reveal reveal-1">
-            <SignalNetwork rows={radarItems} />
+            <SignalNetwork pairs={networkPairs} signals={networkSignals} />
           </div>
         </div>
       </section>
