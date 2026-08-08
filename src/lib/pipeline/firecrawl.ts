@@ -1,5 +1,5 @@
 /**
- * Client for the Firecrawl stack self-hosted on Argus.
+ * Client for the self-hosted Firecrawl stack on the collection host.
  *
  * The stack is demand-started: `firecrawl-proxy.socket` listens on 3003 and
  * wakes the compose stack on first connection, and an idle timer stops it

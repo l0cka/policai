@@ -28,7 +28,7 @@ Product surface:
 - `data/source-reviews.json` — detections staged for curated review
 - `data/source-monitoring.json` — the manual-source review ledger
 
-A systemd timer on the Argus server runs the collector daily, from its own checkout, over the official sources that reliably permit machine retrieval. The GitHub Actions workflow ([collect.yml](.github/workflows/collect.yml)) no longer schedules collection and is kept as a manual fallback. Sources protected by browser challenges are kept in the same source catalogue but reviewed through the manual coverage ledger. Candidate pages from browser-only sources are retrieved through a self-hosted Firecrawl instance, falling back to headless Chromium when Firecrawl is unavailable. New items are classified by keyword heuristic by default, or by Claude, an Anthropic model, in batches when the collector's Claude classifier is enabled (it is enabled in production). Either path caps stored confidence at 0.65, so an automated detection never reads as more certain than an editor's review. Detections are validated and committed. The site reads that data from disk and revalidates hourly; there is no runtime database.
+The maintainer's server runs the collector daily, from its own checkout, over the official sources that reliably permit machine retrieval. The GitHub Actions workflow ([collect.yml](.github/workflows/collect.yml)) no longer schedules collection and is kept as a manual fallback. Sources protected by browser challenges are kept in the same source catalogue but reviewed through the manual coverage ledger. Candidate pages from browser-only sources are retrieved through a self-hosted Firecrawl instance, falling back to headless Chromium when Firecrawl is unavailable. New items are classified by keyword heuristic by default, or by Claude, an Anthropic model, in batches when the collector's Claude classifier is enabled (it is enabled in production). Either path caps stored confidence at 0.65, so an automated detection never reads as more certain than an editor's review. Detections are validated and committed. The site reads that data from disk and revalidates hourly; there is no runtime database.
 
 High-confidence detections are staged in `data/source-reviews.json`; a reviewer uses the local stage → approve → publish workflow before they enter the register. Public register and timeline reads only expose verified records. The collector never writes to `policies.json` directly, and CI enforces that.
 
@@ -37,7 +37,7 @@ High-confidence detections are staged in `data/source-reviews.json`; a reviewer 
 - Next.js 16 App Router, React 19, TypeScript 5 (strict)
 - Tailwind CSS 4, shadcn/ui on Radix UI, D3.js
 - Cheerio for scraping; keyword heuristic or Claude (Anthropic) for relevance classification
-- Vitest; a systemd timer on Argus for scheduled collection (GitHub Actions kept as a manual fallback); self-hosted on Argus behind a Cloudflare tunnel
+- Vitest; daily scheduled collection on the maintainer's server (GitHub Actions kept as a manual fallback); self-hosted behind a Cloudflare tunnel
 
 ## Quick Start
 
@@ -88,9 +88,9 @@ content/blog/       MDX blog posts
 
 Everything the site shows is also available as plain JSON, for example:
 
-- `https://policai.com.au/data/policies.json`
-- `https://policai.com.au/data/developments.json`
-- `https://policai.com.au/data/timeline.json`
+- `https://policai.org/data/policies.json`
+- `https://policai.org/data/developments.json`
+- `https://policai.org/data/timeline.json`
 
 Policy, agency, and timeline JSON is served through read-only route handlers so
 unverified, stale, or withheld editorial records cannot bypass the same public
@@ -107,7 +107,7 @@ filters as the site.
 
 ## Deployment
 
-The site is self-hosted at [policai.org](https://policai.org) on the Argus server, served by `next start` behind a Cloudflare tunnel. The host pulls `main` on a timer: data-only commits are picked up by ISR within the hour, and code changes trigger a rebuild and restart. See [docs/hosting-argus.md](./docs/hosting-argus.md). The collector also runs on Argus, in a separate checkout on its own systemd timer, and pushes its commits to the same repository. It retrieves browser-only candidate pages through a self-hosted Firecrawl instance and, in production, classifies candidates with Claude through the Claude Code CLI already installed on the host. See [docs/collector.md](./docs/collector.md).
+The site is self-hosted at [policai.org](https://policai.org), served by `next start` behind a Cloudflare tunnel. The host pulls `main` on a timer: data-only commits are picked up by ISR within the hour, and code changes trigger a rebuild and restart. See [docs/hosting-argus.md](./docs/hosting-argus.md). The collector runs on the same host, in a separate checkout on a daily schedule, and pushes its commits to the same repository. It retrieves browser-only candidate pages through a self-hosted Firecrawl instance and, in production, classifies candidates with Claude through the Claude Code CLI already installed on the host. See [docs/collector.md](./docs/collector.md).
 
 ## Contributing
 

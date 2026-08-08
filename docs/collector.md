@@ -133,7 +133,7 @@ the newest version rejects older still-active update reviews as superseded.
 ## Classification
 
 Candidates that survive dedup are classified by keyword heuristic by default.
-When `USE_CLAUDE_CLASSIFIER` is set (it is, on the Argus timer), they are
+When `USE_CLAUDE_CLASSIFIER` is set (it is, on the scheduled collection host), they are
 classified by Claude, an Anthropic model, instead, invoked in batches of
 `CLAUDE_BATCH_SIZE` (20) candidates per call through the Claude Code CLI
 already installed and authenticated on the host (`CLAUDE_BIN`, default
@@ -178,7 +178,7 @@ Chromium). For sources marked `fetchStrategy: 'browser'`, the index or RSS
 listing page is still retrieved through the browser directly, because
 Firecrawl returns markdown and index parsing needs the page's HTML links.
 Candidate pages discovered from those sources are retrieved through a
-self-hosted Firecrawl instance on Argus first (`src/lib/pipeline/firecrawl.ts`),
+self-hosted Firecrawl instance first (`src/lib/pipeline/firecrawl.ts`),
 falling back to the browser when Firecrawl is unavailable, times out, or
 returns no usable markdown. Every other source falls back to the browser when
 the plain HTTP client is blocked or an index renders no extractable items. CI
@@ -186,7 +186,7 @@ installs the browser with `npx playwright-core install --with-deps chromium`
 (cached between runs); without it the collector still runs, minus the
 fallback.
 
-Firecrawl is demand-started on Argus: a proxy on port 3003 wakes the stack on
+Firecrawl is demand-started on the collection host: a proxy on port 3003 wakes the stack on
 the first request and an idle timer stops it again, so the first candidate
 fetch after idle takes longer (around 17.5 seconds observed) than a warm one.
 `FIRECRAWL_URL` overrides the default `http://127.0.0.1:3003`.
@@ -215,10 +215,9 @@ force the selected source regardless of its normal daily/weekly due time.
 
 ## Production automation
 
-Collection runs on a systemd timer on the Argus server
-(`policai-collect.timer`, 19:30 UTC daily / ~05:30 Sydney), from a checkout
-dedicated to the collector (`~/live/policai-collector`), separate from the
-checkout that serves the site. Each run:
+Collection runs daily (~05:30 Sydney) on the maintainer's server, from a
+checkout dedicated to the collector, separate from the checkout that serves
+the site. Each run:
 
 1. `npm run collect`
 2. `npm run validate:data`
@@ -246,7 +245,7 @@ version cannot be lost merely because its state write completed first.
 
 **Repository configuration:**
 
-- `COLLECTOR_DEPLOY_KEY` secret — private half of the repo's write deploy key ("collector (collect.yml push)"), used only by the GitHub Actions fallback run. Checkout uses it (`ssh-key:`) so the push authenticates as the deploy key, and the "Protect main" ruleset lists **Deploy keys** as a bypass actor (`bypass_mode: always`). Without this pair the fallback push is rejected with `GH013: Repository rule violations` — the default `GITHUB_TOKEN` cannot be a bypass actor on a user-owned repo. The Argus timer pushes over its own SSH-authenticated git remote and does not use this secret. The safety story does not depend on the ruleset here: the registry-guard step runs on both paths and enforces that automation never touches `policies.json`.
+- `COLLECTOR_DEPLOY_KEY` secret — private half of the repo's write deploy key ("collector (collect.yml push)"), used only by the GitHub Actions fallback run. Checkout uses it (`ssh-key:`) so the push authenticates as the deploy key, and the "Protect main" ruleset lists **Deploy keys** as a bypass actor (`bypass_mode: always`). Without this pair the fallback push is rejected with `GH013: Repository rule violations` — the default `GITHUB_TOKEN` cannot be a bypass actor on a user-owned repo. The scheduled collection run pushes over its own SSH-authenticated git remote and does not use this secret. The safety story does not depend on the ruleset here: the registry-guard step runs on both paths and enforces that automation never touches `policies.json`.
 
 ## Reviewing detections into the register
 
