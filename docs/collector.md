@@ -228,11 +228,11 @@ the site. Each run:
 5. If collection reported failed coverage, fail the run only after that
    operational state is preserved
 
-[`.github/workflows/collect.yml`](../.github/workflows/collect.yml) no longer
-schedules collection; it is kept as a manual fallback
-(Actions → "Collect AI policy developments" → Run workflow, optionally with a
-single source id) and runs the same steps, including opening or commenting on
-an issue labelled `collector-failure` on any failure.
+The GitHub Actions collection workflow has been retired after the scheduled
+run on the maintainer's server produced a clean cycle. Failures still open or
+comment on an issue labelled `collector-failure`, now raised by the scheduled
+run itself. A manual pass can be run from any checkout with
+`npm run collect -- --source=<id>`.
 
 The site's own checkout pulls the push on its timer. Because pages read the
 JSON from disk at request time and revalidate hourly, the new data appears
@@ -245,7 +245,12 @@ version cannot be lost merely because its state write completed first.
 
 **Repository configuration:**
 
-- `COLLECTOR_DEPLOY_KEY` secret — private half of the repo's write deploy key ("collector (collect.yml push)"), used only by the GitHub Actions fallback run. Checkout uses it (`ssh-key:`) so the push authenticates as the deploy key, and the "Protect main" ruleset lists **Deploy keys** as a bypass actor (`bypass_mode: always`). Without this pair the fallback push is rejected with `GH013: Repository rule violations` — the default `GITHUB_TOKEN` cannot be a bypass actor on a user-owned repo. The scheduled collection run pushes over its own SSH-authenticated git remote and does not use this secret. The safety story does not depend on the ruleset here: the registry-guard step runs on both paths and enforces that automation never touches `policies.json`.
+- The retired Actions workflow used a write deploy key (`COLLECTOR_DEPLOY_KEY`
+  secret) as a ruleset bypass actor; both the key and the secret can be
+  deleted now that the workflow is gone. The scheduled collection run pushes
+  over its own SSH-authenticated git remote. The safety story does not depend
+  on the ruleset: the registry guard enforces that automation never touches
+  `policies.json`.
 
 ## Reviewing detections into the register
 

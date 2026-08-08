@@ -4,7 +4,7 @@
 
 Policai is an Australian AI policy tracker. It maintains a curated register of AI policy, regulation, governance and court guidance across federal and state/territory jurisdictions, plus an automated "developments" feed of newly detected policy activity.
 
-**Git is the database.** All canonical data is JSON committed to this repository (`public/data/`, `data/`). The deployed site only reads that data. It is self-hosted at [policai.org](https://policai.org) behind a Cloudflare tunnel. Collection runs daily on the maintainer's server, in a checkout separate from the one that serves the site, and pushes new detections to GitHub; the serving checkout pulls those commits and serves them through ISR without a rebuild. GitHub Actions no longer schedules collection; `.github/workflows/collect.yml` is kept as a manual fallback. There is no runtime database, no auth, and no admin dashboard.
+**Git is the database.** All canonical data is JSON committed to this repository (`public/data/`, `data/`). The deployed site only reads that data. It is self-hosted at [policai.org](https://policai.org) behind a Cloudflare tunnel. Collection runs daily on the maintainer's server, in a checkout separate from the one that serves the site, and pushes new detections to GitHub; the serving checkout pulls those commits and serves them through ISR without a rebuild. There is no runtime database, no auth, and no admin dashboard.
 
 ## Tech Stack
 
@@ -18,7 +18,7 @@ Policai is an Australian AI policy tracker. It maintains a curated register of A
 - **Analysis:** keyword heuristic by default; Claude, an Anthropic model, batched through the Claude Code CLI on the collection host when `USE_CLAUDE_CLASSIFIER` is set — both paths cap stored/displayed confidence at 0.65 (`MACHINE_CONFIDENCE_CAP`)
 - **Scraping:** Cheerio
 - **Testing:** Vitest (+ Testing Library)
-- **Automation:** a daily scheduled run on the maintainer's server; GitHub Actions (`.github/workflows/collect.yml`) kept as a manual fallback
+- **Automation:** a daily scheduled run on the maintainer's server
 
 ## Commands
 
