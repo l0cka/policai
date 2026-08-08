@@ -1,6 +1,5 @@
 # Policai
 
-[![Daily collection](https://github.com/l0cka/policai/actions/workflows/collect.yml/badge.svg)](https://github.com/l0cka/policai/actions/workflows/collect.yml)
 
 Policai is an Australian AI policy tracker. It maintains a curated register of AI policy, regulation, governance and court guidance across federal and state/territory jurisdictions, and automatically detects new developments from official government sources every day.
 
@@ -28,7 +27,7 @@ Product surface:
 - `data/source-reviews.json` — detections staged for curated review
 - `data/source-monitoring.json` — the manual-source review ledger
 
-The maintainer's server runs the collector daily, from its own checkout, over the official sources that reliably permit machine retrieval. The GitHub Actions workflow ([collect.yml](.github/workflows/collect.yml)) no longer schedules collection and is kept as a manual fallback. Sources protected by browser challenges are kept in the same source catalogue but reviewed through the manual coverage ledger. Candidate pages from browser-only sources are retrieved through a self-hosted Firecrawl instance, falling back to headless Chromium when Firecrawl is unavailable. New items are classified by keyword heuristic by default, or by Claude, an Anthropic model, in batches when the collector's Claude classifier is enabled (it is enabled in production). Either path caps stored confidence at 0.65, so an automated detection never reads as more certain than an editor's review. Detections are validated and committed. The site reads that data from disk and revalidates hourly; there is no runtime database.
+The maintainer's server runs the collector daily, from its own checkout, over the official sources that reliably permit machine retrieval. Sources protected by browser challenges are kept in the same source catalogue but reviewed through the manual coverage ledger. Candidate pages from browser-only sources are retrieved through a self-hosted Firecrawl instance, falling back to headless Chromium when Firecrawl is unavailable. New items are classified by keyword heuristic by default, or by Claude, an Anthropic model, in batches when the collector's Claude classifier is enabled (it is enabled in production). Either path caps stored confidence at 0.65, so an automated detection never reads as more certain than an editor's review. Detections are validated and committed. The site reads that data from disk and revalidates hourly; there is no runtime database.
 
 High-confidence detections are staged in `data/source-reviews.json`; a reviewer uses the local stage → approve → publish workflow before they enter the register. Public register and timeline reads only expose verified records. The collector never writes to `policies.json` directly, and CI enforces that.
 
