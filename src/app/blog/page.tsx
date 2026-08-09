@@ -5,7 +5,7 @@ import { ArrowRight } from 'lucide-react';
 import { PageIntro } from '@/components/layout';
 
 export const metadata = {
-  title: 'Blog — Policai',
+  title: 'Blog - Policai',
   description: 'Project updates and AI policy commentary from Policai.',
 };
 

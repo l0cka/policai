@@ -11,7 +11,7 @@ import { summarizeManualSourceCoverage } from '@/lib/source-monitoring';
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: 'Developments — Policai',
+  title: 'Developments - Policai',
   description: 'Verified and emerging Australian AI policy developments from official government sources.',
 };
 

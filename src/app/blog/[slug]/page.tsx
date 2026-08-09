@@ -22,7 +22,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${post.title} — Policai Blog`,
+    title: `${post.title} - Policai Blog`,
     description: post.description,
   };
 }

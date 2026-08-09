@@ -5,7 +5,7 @@ import { getCommonwealthAgencies } from '@/lib/data-service';
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: 'Agency AI Transparency Statements — Policai',
+  title: 'Agency AI Transparency Statements - Policai',
   description:
     'Browse Australian Government agency AI transparency statements and public disclosures.',
 };
