@@ -1,8 +1,18 @@
+import { fetchPageTitle, mapWithConcurrency } from './page-title.js';
+
 export type RawItem = {
   url: string;
   title: string;
   published_at: string | null;
   excerpt: string | null;
+  /*
+   * Set when the listing gave us no usable link text and the title had to be
+   * derived from the URL slug. Such a title has lost its capitalisation and,
+   * on most CMSs, its stopwords; `resolveSlugTitles` trades it for the real
+   * headline off the item's own page. Absent on RSS items, which carry a
+   * publisher-written title already.
+   */
+  title_from_slug?: boolean;
 };
 
 const LINK_RE = /\[([^\]]*)\]\(([^)\s]+)\)/g;
@@ -88,11 +98,30 @@ export function extractListingLinks(markdown: string, baseUrl: string, itemLinkP
     if (ASSET_RE.test(resolved.pathname)) continue;
     const linkText = m[1].replace(/^[\s\\#>*]+/, '').replace(/[\s\\|–—-]+$/, '').replace(/\s+/g, ' ').trim();
     if (NAV_NOISE_RE.test(linkText)) continue;
-    const title = !linkText || TEASER_RE.test(linkText) ? titleFromSlug(resolved) : linkText;
+    const fromSlug = !linkText || TEASER_RE.test(linkText);
+    const title = fromSlug ? titleFromSlug(resolved) : linkText;
     if (!pattern.test(url) || seen.has(url) || title.length < 8) continue;
     seen.add(url);
-    items.push({ url, title, published_at: null, excerpt: null });
+    items.push({ url, title, published_at: null, excerpt: null, title_from_slug: fromSlug });
   }
+  return items;
+}
+
+/**
+ * Replace slug-derived titles with the headline from each item's own page.
+ * A page that will not answer keeps its slug title — a lossy title beats none.
+ */
+export async function resolveSlugTitles(
+  items: RawItem[],
+  lookup: (url: string) => Promise<string | null> = fetchPageTitle,
+): Promise<RawItem[]> {
+  const pending = items.filter((i) => i.title_from_slug);
+  if (pending.length === 0) return items;
+  const titles = await mapWithConcurrency(pending, 4, (item) => lookup(item.url));
+  pending.forEach((item, index) => {
+    const real = titles[index];
+    if (real) item.title = real;
+  });
   return items;
 }
 
@@ -108,5 +137,5 @@ export async function fetchFirecrawl(url: string, itemLinkPattern: string): Prom
   const body = (await res.json()) as { data?: { markdown?: string } };
   const markdown = body.data?.markdown;
   if (!markdown) throw new Error(`firecrawl returned no markdown for ${url}`);
-  return extractListingLinks(markdown, url, itemLinkPattern);
+  return resolveSlugTitles(extractListingLinks(markdown, url, itemLinkPattern));
 }

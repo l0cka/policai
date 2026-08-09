@@ -25,10 +25,23 @@ const plexMono = IBM_Plex_Mono({
   display: 'swap',
 });
 
+/*
+ * The site answers on two hostnames: a2j.policai.org, and probono.policai.org
+ * from before the rename. Both serve the same pages, so a canonical is what
+ * stops the pair reading as duplicated content — and it names which of the two
+ * is the address.
+ *
+ * The favicon is `app/favicon.ico`, picked up by the App Router's file
+ * convention; it is Policai's own mark, copied byte-for-byte from the register.
+ */
 export const metadata: Metadata = {
+  metadataBase: new URL('https://a2j.policai.org'),
   title: 'Policai A2J',
   description:
     'A monitor of Australian pro bono, access-to-justice and legal assistance news, law reform, funding and deadlines, each item linked to its source.',
+  // './' resolves against metadataBase *and* the current path, so every page
+  // gets its own canonical rather than all four claiming the home page.
+  alternates: { canonical: './' },
 };
 
 /**
