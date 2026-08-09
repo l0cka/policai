@@ -5,7 +5,7 @@ import { getPolicies } from '@/lib/data-service';
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: 'Australian AI Policy Map — Policai',
+  title: 'Australian AI Policy Map - Policai',
   description:
     'Explore verified and review-pending Australian AI policy records by jurisdiction.',
 };

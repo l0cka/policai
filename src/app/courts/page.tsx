@@ -5,7 +5,7 @@ import { getPolicies } from '@/lib/data-service';
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: 'Courts & Tribunals — Policai',
+  title: 'Courts & Tribunals - Policai',
   description:
     'Verified Australian court practice notes, directions, and guidance governing the use of artificial intelligence in proceedings.',
 };

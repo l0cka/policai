@@ -31,9 +31,9 @@ async function getRelatedPolicies(currentPolicy: Policy): Promise<Policy[]> {
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const policy = await getPolicyById(id);
-  if (!policy) return { title: 'Policy Not Found — Policai' };
+  if (!policy) return { title: 'Policy Not Found - Policai' };
   return {
-    title: `${policy.title} — Policai`,
+    title: `${policy.title} - Policai`,
     description: policy.description,
     keywords: policy.tags,
   };

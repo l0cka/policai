@@ -7,7 +7,7 @@ import { parseNetworkViewState } from '@/lib/network-view-state';
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: 'Australian AI Policy Network — Policai',
+  title: 'Australian AI Policy Network - Policai',
   description:
     'Explore source-backed relationships among Australian AI policy instruments.',
 };

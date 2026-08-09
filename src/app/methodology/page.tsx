@@ -12,7 +12,7 @@ import { MetricStrip, PageIntro } from '@/components/layout';
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: 'Methodology & Verification — Policai',
+  title: 'Methodology & Verification - Policai',
   description:
     'How Policai discovers, verifies, reviews, and publishes Australian AI policy information.',
 };
