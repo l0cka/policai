@@ -10,32 +10,36 @@
  * longer a candidate, so a repaired title is never touched again.
  */
 import { closePool, getPool } from './lib/db.js';
-import { titleFromSlug } from './lib/fetch-firecrawl.js';
+import { slugTitleVariants } from './lib/fetch-firecrawl.js';
 import { fetchPageTitle, mapWithConcurrency } from './lib/page-title.js';
 
 type Row = { id: number; url: string; title: string };
 
 /*
- * A title is slug-derived when re-deriving it from the URL reproduces it.
- * That is an exact test, so it cannot mistake a publisher's own lowercase
- * headline for slug damage.
+ * A title is slug-derived when re-deriving it from the URL reproduces it
+ * exactly, in any shape that derivation has ever produced.
  *
- * The loose comparison exists for one narrow case: titles written before the
- * acronym restore landed ("Un arbitrary detention" where today's derivation
- * yields "UN arbitrary detention"). Comparing on letters alone still requires
- * every word to match, so it stays a same-slug test, not a similarity test.
+ * The comparison must stay case-sensitive. Case is the whole signal: a
+ * publisher's own headline capitalises its proper nouns, and a slug title
+ * cannot. Comparing on letters alone — which an earlier draft of this did —
+ * makes "Federal Budget misses opportunity…" indistinguishable from the slug
+ * that was built out of it, and offers up an undamaged title for replacement.
  */
 export function isSlugDerived(url: string, title: string): boolean {
-  let derived: string;
+  let segment: string;
   try {
-    derived = titleFromSlug(new URL(url));
+    segment = new URL(url).pathname.split('/').filter(Boolean).pop() ?? '';
+    if (!slugTitleVariants(new URL(url)).includes(title)) return false;
   } catch {
     return false;
   }
-  if (!derived) return false;
-  if (derived === title) return true;
-  const flatten = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '');
-  return flatten(derived) === flatten(title);
+  /*
+   * Some sites keep case in their URLs, so their "slug" is the headline
+   * already — "/Brisbane-Ekka-Show-Day-closures-…" derives back to a title
+   * with nothing missing from it. An uppercase letter in the segment is proof
+   * that case was never flattened, and so nothing here needs repairing.
+   */
+  return segment === segment.toLowerCase();
 }
 
 async function main() {
@@ -59,11 +63,17 @@ async function main() {
   let replaced = 0;
   let unreachable = 0;
   let unchanged = 0;
+  // Which sites we could not read a title from. Reported rather than swallowed:
+  // a site behind a bot check keeps its slug titles indefinitely, and that
+  // should be visible as a known gap, not look like nothing needed doing.
+  const unreadable = new Map<string, number>();
 
   await mapWithConcurrency(candidates, 4, async (row) => {
     const real = await fetchPageTitle(row.url);
     if (!real) {
       unreachable += 1;
+      const host = URL.canParse(row.url) ? new URL(row.url).hostname : row.url;
+      unreadable.set(host, (unreadable.get(host) ?? 0) + 1);
       return;
     }
     if (real === row.title) {
@@ -84,6 +94,9 @@ async function main() {
       replaced,
       unchanged,
       unreachable,
+      unreadable_hosts: Object.fromEntries(
+        [...unreadable.entries()].sort((a, b) => b[1] - a[1]).slice(0, 10),
+      ),
     }),
   );
   await closePool();

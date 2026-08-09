@@ -33,8 +33,23 @@ const NAMED_ENTITIES: Record<string, string> = {
   bull: '•', deg: '°', trade: '™', copy: '©', reg: '®', eacute: 'é',
 };
 
+const ENTITY_RE = /&(#x?[0-9a-f]+|[a-z][a-z0-9]*);/gi;
+// Separate, non-global: `test` on a /g regex advances lastIndex between calls.
+const HAS_ENTITY_RE = /&(#x?[0-9a-f]+|[a-z][a-z0-9]*);/i;
+
+/*
+ * Decoded twice, because double-encoded markup is common enough to matter:
+ * a CMS that writes `&amp;nbsp;` leaves a literal `&nbsp;` in the title after
+ * one pass. Two is the cap — this is text bound for a database column and an
+ * escaping renderer, so there is nothing to gain by chasing the fixed point.
+ */
 export function decodeEntities(text: string): string {
-  return text.replace(/&(#x?[0-9a-f]+|[a-z][a-z0-9]*);/gi, (whole, body: string) => {
+  const once = decodeOnce(text);
+  return HAS_ENTITY_RE.test(once) ? decodeOnce(once) : once;
+}
+
+function decodeOnce(text: string): string {
+  return text.replace(ENTITY_RE, (whole, body: string) => {
     if (body[0] === '#') {
       const code = body[1] === 'x' || body[1] === 'X'
         ? Number.parseInt(body.slice(2), 16)
@@ -68,31 +83,104 @@ function meta(html: string, property: string): string | null {
   return null;
 }
 
+const flatten = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '');
+
+// A dangling separator left behind by a CMS that appended an empty site name.
+const trimSeparators = (s: string) => s.replace(/^[\s|·•‑–—-]+|[\s|·•‑–—-]+$/g, '');
+
 /*
- * A <title> is usually "Headline | Site Name". Strip that tail, but only when
- * the evidence is strong: og:site_name matching, or the registrable domain
- * name matching. A blind "drop everything after the last pipe" rule truncates
- * titles that legitimately contain one.
+ * The significant words of a URL slug. Short words are dropped because a slug
+ * builder has already dropped most of them, and a four-character floor keeps
+ * accidental substring matches down.
  */
-function stripSiteSuffix(title: string, siteName: string | null, host: string): string {
+export function slugWords(pageUrl: string): string[] {
+  let segment = '';
+  try {
+    segment = new URL(pageUrl).pathname.split('/').filter(Boolean).pop() ?? '';
+  } catch {
+    return [];
+  }
+  return segment
+    .replace(/\.html?$/i, '')
+    .split(/[^A-Za-z0-9]+/)
+    .map((w) => w.toLowerCase())
+    .filter((w) => w.length >= 4 && !/^\d+$/.test(w));
+}
+
+/*
+ * A slug is built *from* the headline, so every word in it should still be in
+ * the headline. That one invariant does three jobs at once:
+ *
+ *   - it rejects a title the CMS truncated for sharing ("…with privacy…",
+ *     where the slug still knows the sentence ended in "census");
+ *   - it rejects a page that answers with its own name ("Legal Aid
+ *     Queensland") instead of the article's;
+ *   - it rejects a page whose content has moved on since we linked it.
+ *
+ * Matching is on the flattened string rather than word by word, so
+ * "non-disclosure" still covers the slug's "disclosure" and "VLSB+C" still
+ * covers "vlsbc".
+ */
+export function coversSlug(candidate: string, words: string[]): boolean {
+  if (words.length === 0) return true;
+  const flat = flatten(candidate);
+  return words.every((w) => flat.includes(w));
+}
+
+/*
+ * A <title> is usually "Headline | Site Name". Strip that tail, but only on
+ * evidence: og:site_name or the registrable domain matches it, or the head
+ * alone already accounts for every word of the slug — which makes whatever
+ * follows furniture by definition. A blind "drop everything after the last
+ * pipe" rule truncates titles that legitimately contain one.
+ */
+function stripSiteSuffix(
+  title: string,
+  siteName: string | null,
+  host: string,
+  words: string[],
+): string {
   const domainWord = host.replace(/^www\./, '').split('.')[0].toLowerCase();
-  const candidates = [siteName?.toLowerCase(), domainWord].filter(Boolean) as string[];
+  const names = [siteName?.toLowerCase(), domainWord].filter(Boolean) as string[];
 
-  const parts = title.split(/\s+[|·•‑–—-]\s+/);
-  if (parts.length < 2) return title;
+  /*
+   * Looped, because sites stack furniture: RACS ends its titles
+   * "… — RACS | Refugee Advice & Casework Service", and taking one segment off
+   * leaves the other behind.
+   */
+  let current = trimSeparators(title);
+  for (let pass = 0; pass < 3; pass += 1) {
+    const parts = current.split(/\s+[|·•‑–—-]\s+/);
+    if (parts.length < 2) break;
 
-  const tail = parts[parts.length - 1];
-  const flat = tail.toLowerCase().replace(/[^a-z0-9]/g, '');
-  const matches = candidates.some((c) => {
-    const cf = c.replace(/[^a-z0-9]/g, '');
-    return cf.length > 2 && (flat === cf || flat.includes(cf) || cf.includes(flat));
-  });
+    const flatTail = flatten(parts[parts.length - 1]);
+    const namesTail = names.some((c) => {
+      const cf = flatten(c);
+      return cf.length > 2 && (flatTail === cf || flatTail.includes(cf) || cf.includes(flatTail));
+    });
 
-  if (!matches) return title;
-  const head = parts.slice(0, -1).join(' | ').trim();
-  // Never trade a real headline for nothing: a page titled only with its site
-  // name has no headline to recover.
-  return head.length >= 8 ? head : title;
+    const head = trimSeparators(parts.slice(0, -1).join(' | '));
+    // Never trade a real headline for nothing: a page titled only with its
+    // site name has no headline to recover.
+    if (head.length < 3) break;
+    if (!namesTail && !(words.length > 0 && coversSlug(head, words))) break;
+    current = head;
+  }
+  return current;
+}
+
+/*
+ * Some CMSs put a share-length excerpt in og:title, so the headline arrives
+ * with a sentence and a half after it and an ellipsis on the end. Keep whole
+ * sentences and drop the fragment — but only if what is left still accounts
+ * for the slug, which is what says the headline itself survived the cut.
+ */
+function dropTruncatedTail(title: string, words: string[]): string | null {
+  if (!/(…|\.\.\.)$/.test(title)) return title;
+  // Greedy up to the last sentence terminator; the rest is the cut fragment.
+  const whole = /^(.*[.?!])[^.?!]*(?:…|\.\.\.)$/.exec(title)?.[1]?.trim();
+  if (!whole || whole.length < 8) return null;
+  return coversSlug(whole, words) ? whole : null;
 }
 
 /*
@@ -102,37 +190,51 @@ function stripSiteSuffix(title: string, siteName: string | null, host: string): 
 const JUNK_TITLE_RE =
   /^(home|news|untitled|article|blog|insights?|page not found|404|access denied|just a moment|attention required)\b/i;
 
-export function extractPageTitle(html: string, pageUrl: string): string | null {
+/**
+ * @param pageUrl the URL we asked for — the slug we are repairing lives here
+ * @param finalUrl where the request landed, for host-based suffix matching
+ *
+ * The two are kept apart deliberately. A dead article often redirects to the
+ * site root, and reading the slug off *that* would leave nothing to check the
+ * answer against — which is how "Community Legal Centres Queensland" nearly
+ * became the title of four separate articles.
+ */
+export function extractPageTitle(
+  html: string,
+  pageUrl: string,
+  finalUrl: string = pageUrl,
+): string | null {
   let host = '';
   try {
-    host = new URL(pageUrl).hostname;
+    host = new URL(finalUrl).hostname;
   } catch {
     // A malformed URL only costs us the site-suffix check.
   }
   const siteName = meta(html, 'og:site_name');
+  const words = slugWords(pageUrl);
 
   const og = meta(html, 'og:title') ?? meta(html, 'twitter:title');
   const h1 = clean(/<h1\b[^>]*>([\s\S]*?)<\/h1>/i.exec(html)?.[1] ?? '');
   const docTitle = clean(/<title\b[^>]*>([\s\S]*?)<\/title>/i.exec(html)?.[1] ?? '');
 
   /*
-   * og:title first — publishers write it for sharing, so it is the headline
-   * without the site furniture. <title> outranks <h1> because an <h1> is often
-   * the site's own wordmark in a header, and the suffix strip handles the
-   * furniture that <title> does carry.
+   * og:title first — publishers write it for sharing, so it is usually the
+   * headline alone. Usually, not always: some CMSs fill og:title from the
+   * document title, suffix and all, so it gets the same strip. <title>
+   * outranks <h1> because an <h1> is often the site's own wordmark.
    */
-  const ordered = [
-    og,
-    docTitle ? stripSiteSuffix(docTitle, siteName, host) : null,
-    h1,
-  ];
+  const strip = (t: string) => stripSiteSuffix(t, siteName, host, words);
+  const ordered = [og && strip(og), docTitle && strip(docTitle), h1 && trimSeparators(h1)];
 
   for (const candidate of ordered) {
     if (!candidate) continue;
-    const value = candidate.trim();
+    const trimmed = dropTruncatedTail(candidate.trim(), words);
+    if (!trimmed) continue;
+    const value = trimmed.trim();
     if (value.length < 8 || value.length > 300) continue;
     if (JUNK_TITLE_RE.test(value)) continue;
     if (siteName && value.toLowerCase() === siteName.toLowerCase()) continue;
+    if (!coversSlug(value, words)) continue;
     return value;
   }
   return null;
@@ -173,7 +275,7 @@ export async function fetchPageTitle(url: string): Promise<string | null> {
     if (!res.ok) return null;
     const type = res.headers.get('content-type') ?? '';
     if (type && !/text\/html|application\/xhtml/i.test(type)) return null;
-    return extractPageTitle(await readCapped(res), res.url || url);
+    return extractPageTitle(await readCapped(res), url, res.url || url);
   } catch {
     // Unreachable, slow, or hostile page: the slug title stands.
     return null;

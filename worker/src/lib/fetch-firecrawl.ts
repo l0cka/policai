@@ -51,7 +51,7 @@ const SLUG_ACRONYMS = new Set([
 // Some listings render items as image-only anchors, leaving the markdown link
 // text empty ([](…/media/news/some-slug)). The slug is the only title we have;
 // the enrichment pass writes the real briefing text later.
-export function titleFromSlug(u: URL): string {
+export function titleFromSlug(u: URL, acronyms: ReadonlySet<string> = SLUG_ACRONYMS): string {
   const segment = u.pathname.split('/').filter(Boolean).pop() ?? '';
   let decoded = segment;
   try {
@@ -65,13 +65,24 @@ export function titleFromSlug(u: URL): string {
 
   const cased = words
     .split(' ')
-    .map((word) => (SLUG_ACRONYMS.has(word.toLowerCase()) ? word.toUpperCase() : word))
+    .map((word) => (acronyms.has(word.toLowerCase()) ? word.toUpperCase() : word))
     .join(' ');
 
   // Sentence case, unless the first word was restored as an acronym.
-  return SLUG_ACRONYMS.has(cased.split(' ')[0].toLowerCase())
+  return acronyms.has(cased.split(' ')[0].toLowerCase())
     ? cased
     : cased[0].toUpperCase() + cased.slice(1);
+}
+
+/*
+ * Every shape this derivation has produced, for recognising its own past
+ * output. Titles stored before the acronym restore landed read "Un arbitrary
+ * detention" where today's derivation gives "UN arbitrary detention"; both are
+ * this function's work and both should be repaired.
+ */
+export function slugTitleVariants(u: URL): string[] {
+  const variants = [titleFromSlug(u), titleFromSlug(u, new Set<string>())];
+  return [...new Set(variants)].filter(Boolean);
 }
 
 export function extractListingLinks(markdown: string, baseUrl: string, itemLinkPattern: string): RawItem[] {

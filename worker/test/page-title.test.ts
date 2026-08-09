@@ -1,24 +1,52 @@
 import { describe, expect, it } from 'vitest';
-import { decodeEntities, extractPageTitle, mapWithConcurrency } from '../src/lib/page-title.js';
+import {
+  coversSlug,
+  decodeEntities,
+  extractPageTitle,
+  mapWithConcurrency,
+  slugWords,
+} from '../src/lib/page-title.js';
 import { extractListingLinks, resolveSlugTitles } from '../src/lib/fetch-firecrawl.js';
 import { isSlugDerived } from '../src/retitle.js';
 
-const URL_ = 'https://www.maddocks.com.au/insights/native-title-future-acts';
+/*
+ * The item that prompted this module. A slug is built from the headline, so a
+ * fixture URL and its title have to correspond — the coverage check depends on
+ * exactly that relationship.
+ */
+const URL_ =
+  'https://www.maddocks.com.au/insights/native-title-future-acts-and-the-implications-of-yindjibarndi-ngurra-aboriginal-corporation-v-state-of-western-australia-no-2-2026-fca-585';
+const HEADLINE =
+  'Native title future acts and the implications of Yindjibarndi Ngurra Aboriginal Corporation v State of Western Australia (No 2) [2026] FCA 585';
 
 describe('extractPageTitle', () => {
   it('prefers og:title, which publishers write without site furniture', () => {
     const html = `<head>
-      <meta property="og:title" content="Yindjibarndi Ngurra Aboriginal Corporation v State of Western Australia (No 2) [2026] FCA 585">
-      <title>Native title future acts | Maddocks</title>
+      <meta property="og:title" content="${HEADLINE}">
+      <title>${HEADLINE} | Maddocks</title>
     </head>`;
-    expect(extractPageTitle(html, URL_)).toBe(
-      'Yindjibarndi Ngurra Aboriginal Corporation v State of Western Australia (No 2) [2026] FCA 585',
+    expect(extractPageTitle(html, URL_)).toBe(HEADLINE);
+  });
+
+  it('restores the case a slug flattened, which is the whole point', () => {
+    const html = `<title>${HEADLINE} | Maddocks</title>`;
+    const stored =
+      'Native title future acts and the implications of yindjibarndi ngurra aboriginal corporation v state of western australia no 2 2026 fca 585';
+    expect(isSlugDerived(URL_, stored)).toBe(true);
+    expect(extractPageTitle(html, URL_)).toBe(HEADLINE);
+  });
+
+  it('strips the site suffix from og:title too, when the CMS put one there', () => {
+    const html = `<meta property="og:title" content="Federal Budget misses opportunity to unlock billions | Justice Connect">`;
+    expect(extractPageTitle(html, 'https://justiceconnect.org.au/news/federal-budget')).toBe(
+      'Federal Budget misses opportunity to unlock billions',
     );
   });
 
   it('falls back to <title> and strips a site suffix matching the domain', () => {
     const html = '<title>Native title future acts and their implications | Maddocks</title>';
-    expect(extractPageTitle(html, URL_)).toBe('Native title future acts and their implications');
+    const url = 'https://www.maddocks.com.au/insights/native-title-future-acts-and-their-implications';
+    expect(extractPageTitle(html, url)).toBe('Native title future acts and their implications');
   });
 
   it('strips a suffix matching og:site_name even when it is not the domain', () => {
@@ -49,18 +77,127 @@ describe('extractPageTitle', () => {
 
   it('uses <h1> only when the head offers nothing', () => {
     const html = '<h1>Prisoners need urgent access to lawyers</h1>';
-    expect(extractPageTitle(html, URL_)).toBe('Prisoners need urgent access to lawyers');
+    expect(extractPageTitle(html, 'https://example.org/news/prisoners-need-access-lawyers')).toBe(
+      'Prisoners need urgent access to lawyers',
+    );
   });
 
   it('reads content regardless of attribute order or quoting', () => {
     const html = `<meta content='Submission: review of the Anti-Discrimination Act 1977 (NSW)' property="og:title">`;
-    expect(extractPageTitle(html, URL_)).toBe(
-      'Submission: review of the Anti-Discrimination Act 1977 (NSW)',
-    );
+    expect(
+      extractPageTitle(html, 'https://example.org/news/submission-review-anti-discrimination-act-1977-nsw'),
+    ).toBe('Submission: review of the Anti-Discrimination Act 1977 (NSW)');
   });
 
   it('returns null when there is no title at all', () => {
     expect(extractPageTitle('<html><body><p>hi</p></body></html>', URL_)).toBeNull();
+  });
+
+  /*
+   * Each of these was found by dry-running the backfill over the live table;
+   * every one of them replaced a lossy title with a worse one.
+   */
+  describe('candidates the slug proves wrong', () => {
+    const census =
+      'https://www.maddocks.com.au/insights/maddocks-supports-australian-bureau-of-statistics-with-2026-census';
+
+    it('rejects a title the CMS truncated for sharing', () => {
+      const html =
+        '<meta property="og:title" content="Maddocks supports Australian Bureau of Statistics with privacy…">';
+      // The slug still knows the sentence ended in "census".
+      expect(extractPageTitle(html, census)).toBeNull();
+    });
+
+    it('rejects a page that answers with its own name', () => {
+      const html = '<title>Legal Aid Queensland</title>';
+      expect(
+        extractPageTitle(html, 'https://legalaid.qld.gov.au/news/brisbane-ekka-show-day-closures'),
+      ).toBeNull();
+    });
+
+    it('rejects a page whose content has moved on since we linked it', () => {
+      const html = '<title>Statement of Rights Webinar Event</title>';
+      expect(
+        extractPageTitle(html, 'https://example.org/news/advocates-call-out-guardianship-misuse'),
+      ).toBeNull();
+    });
+
+    it('drops a site suffix the head already makes redundant, without a name match', () => {
+      const html = "<title>Update on the sexual assault legal service - Women’s Legal Centre</title>";
+      expect(
+        extractPageTitle(html, 'https://wlc.org.au/news/update-on-the-sexual-assault-legal-service'),
+      ).toBe('Update on the sexual assault legal service');
+    });
+
+    it('trims a dangling separator left by an empty site name', () => {
+      const html = '<title>Community forum on family violence |</title>';
+      expect(
+        extractPageTitle(html, 'https://example.org/events/community-forum-on-family-violence'),
+      ).toBe('Community forum on family violence');
+    });
+
+    it('checks the slug we asked for, not the root a dead article redirects to', () => {
+      const html = '<title>Community Legal Centres Queensland</title>';
+      const asked = 'https://communitylegalqld.org.au/news/what-to-do-if-you-need-help-over-the-holiday-season/';
+      expect(extractPageTitle(html, asked, 'https://www.clcq.org.au/')).toBeNull();
+    });
+
+    it('strips stacked site furniture, not just the last segment', () => {
+      // RACS ends every title "… — RACS | Refugee Advice & Casework Service".
+      const html = `<meta property="og:site_name" content="RACS &#124; Refugee Advice &amp; Casework Service">
+        <title>Author Shankari Chandran announced as RACS Ambassador &mdash; RACS | Refugee Advice &amp; Casework Service</title>`;
+      expect(
+        extractPageTitle(html, 'https://www.racs.org.au/news/racs-ambassador-shankari-chandran'),
+      ).toBe('Author Shankari Chandran announced as RACS Ambassador');
+    });
+
+    it('keeps the whole sentences of a title that trails off', () => {
+      const html =
+        '<meta property="og:title" content="Will you be caught by an expanded SOCI for a new era? Your chance to…">';
+      expect(
+        extractPageTitle(html, 'https://www.maddocks.com.au/insights/will-you-be-caught-by-an-expanded-soci-for-a-new-era'),
+      ).toBe('Will you be caught by an expanded SOCI for a new era?');
+    });
+
+    it('rejects a trailing-off title with no whole sentence to keep', () => {
+      const html = '<meta property="og:title" content="Maddocks supports Australian Bureau of…">';
+      expect(extractPageTitle(html, census)).toBeNull();
+    });
+
+    it('decodes double-encoded entities a CMS left in the title', () => {
+      const html = '<title>Aunty McRose available for comment on North West Gas Shelf approval&amp;nbsp;</title>';
+      expect(
+        extractPageTitle(html, 'https://www.gratafund.org.au/north-west-gas-shelf-approval'),
+      ).toBe('Aunty McRose available for comment on North West Gas Shelf approval');
+    });
+
+    it('matches across punctuation the slug could not carry', () => {
+      const html = '<meta property="og:title" content="Updated guidance on non-disclosure agreements">';
+      // slug word "disclosure" vs "non-disclosure"; "vlsbc" vs "VLSB+C".
+      expect(
+        extractPageTitle(html, 'https://example.org/news/updated-guidance-non-disclosure-agreements'),
+      ).toBe('Updated guidance on non-disclosure agreements');
+      expect(
+        extractPageTitle(
+          '<title>VLSB+C statement: Gold Migration Lawyers</title>',
+          'https://example.org/news/vlsbc-statement-gold-migration-lawyers',
+        ),
+      ).toBe('VLSB+C statement: Gold Migration Lawyers');
+    });
+  });
+});
+
+describe('coversSlug', () => {
+  it('is satisfied when every significant slug word survives', () => {
+    expect(coversSlug('New Act to restrict use of NDAs in workplace matters', ['restrict', 'ndas', 'workplace', 'matters'])).toBe(true);
+  });
+
+  it('fails on a single missing word', () => {
+    expect(coversSlug('Students are improving justice outcomes', ['student', 'criminal'])).toBe(false);
+  });
+
+  it('accepts anything when the slug carries no significant words', () => {
+    expect(coversSlug('Who we are', slugWords('https://example.org/who-we-are'))).toBe(true);
   });
 });
 
@@ -121,6 +258,38 @@ describe('isSlugDerived', () => {
       isSlugDerived(
         'https://clcs.org.au/news/budget-boost',
         'Law reform built without evidence is fundamentally flawed',
+      ),
+    ).toBe(false);
+  });
+
+  /*
+   * The case that caught an over-loose earlier draft: the slug is built from
+   * these exact words, so any case-insensitive comparison calls it damaged.
+   * "Budget" is capitalised, which a slug title never is.
+   */
+  it('leaves a real headline alone when its slug was built from the same words', () => {
+    expect(
+      isSlugDerived(
+        'https://justiceconnect.org.au/news/federal-budget-misses-opportunity-to-unlock-billions-for-charities-under-pressure',
+        'Federal Budget misses opportunity to unlock billions for charities under pressure',
+      ),
+    ).toBe(false);
+  });
+
+  it('leaves a headline alone when punctuation the slug cannot hold survives', () => {
+    expect(
+      isSlugDerived(
+        'https://justiceconnect.org.au/news/raising-giving-fund-distributions-wont-fix-a-broken-dgr-system',
+        'Raising giving fund distributions won’t fix a broken DGR system',
+      ),
+    ).toBe(false);
+  });
+
+  it('leaves a case-preserving URL alone, since nothing was flattened', () => {
+    expect(
+      isSlugDerived(
+        'https://legalaid.qld.gov.au/news/Brisbane-Ekka-Show-Day-closures-and-service-changes',
+        'Brisbane Ekka Show Day closures and service changes',
       ),
     ).toBe(false);
   });
