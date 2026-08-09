@@ -124,16 +124,33 @@ export function extractListingLinks(markdown: string, baseUrl: string, itemLinkP
  */
 export async function resolveSlugTitles(
   items: RawItem[],
-  lookup: (url: string) => Promise<string | null> = fetchPageTitle,
+  lookup: (url: string) => Promise<string | null> = (url) =>
+    fetchPageTitle(url, { firecrawl: true }),
 ): Promise<RawItem[]> {
   const pending = items.filter((i) => i.title_from_slug);
   if (pending.length === 0) return items;
-  const titles = await mapWithConcurrency(pending, 4, (item) => lookup(item.url));
+  // Two at a time, not four: a listing whose links are all image anchors would
+  // otherwise arrive at one site as a burst of rendered scrapes.
+  const titles = await mapWithConcurrency(pending, 2, (item) => lookup(item.url));
+  const repeated = countRepeats(titles);
   pending.forEach((item, index) => {
     const real = titles[index];
-    if (real) item.title = real;
+    if (real && !repeated.has(real)) item.title = real;
   });
   return items;
+}
+
+/**
+ * Titles proposed for more than one item. A headline belongs to its article;
+ * a string that arrives for two of them is the site's own name or a listing
+ * page's, and taking it would file both articles under the same title.
+ */
+export function countRepeats(titles: (string | null)[]): Set<string> {
+  const seen = new Map<string, number>();
+  for (const t of titles) {
+    if (t) seen.set(t, (seen.get(t) ?? 0) + 1);
+  }
+  return new Set([...seen.entries()].filter(([, n]) => n > 1).map(([t]) => t));
 }
 
 export async function fetchFirecrawl(url: string, itemLinkPattern: string): Promise<RawItem[]> {

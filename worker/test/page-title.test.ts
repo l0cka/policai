@@ -1,12 +1,13 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
   coversSlug,
   decodeEntities,
   extractPageTitle,
+  fetchPageTitle,
   mapWithConcurrency,
   slugWords,
 } from '../src/lib/page-title.js';
-import { extractListingLinks, resolveSlugTitles } from '../src/lib/fetch-firecrawl.js';
+import { countRepeats, extractListingLinks, resolveSlugTitles } from '../src/lib/fetch-firecrawl.js';
 import { isSlugDerived } from '../src/retitle.js';
 
 /*
@@ -18,6 +19,9 @@ const URL_ =
   'https://www.maddocks.com.au/insights/native-title-future-acts-and-the-implications-of-yindjibarndi-ngurra-aboriginal-corporation-v-state-of-western-australia-no-2-2026-fca-585';
 const HEADLINE =
   'Native title future acts and the implications of Yindjibarndi Ngurra Aboriginal Corporation v State of Western Australia (No 2) [2026] FCA 585';
+// How Maddocks actually sets it, recovered from the page's <h1>.
+const HEADLINE_CASED =
+  'Native Title, Future Acts and the implications of Yindjibarndi Ngurra Aboriginal Corporation v State of Western Australia (No 2) [2026] FCA 585';
 
 describe('extractPageTitle', () => {
   it('prefers og:title, which publishers write without site furniture', () => {
@@ -171,6 +175,54 @@ describe('extractPageTitle', () => {
       ).toBe('Aunty McRose available for comment on North West Gas Shelf approval');
     });
 
+    /*
+     * Maddocks truncates both <title> and og:title for sharing and keeps the
+     * whole headline only in the <h1> — the exact shape behind the screenshot
+     * that started this. Neither truncated form ends in a sentence, so both
+     * are dropped and the <h1> is what answers.
+     */
+    it('falls through two truncated candidates to the h1 that has it all', () => {
+      const html = `<head>
+        <title>Maddocks | Native Title, Future Acts and the implications of…</title>
+        <meta property="og:title" content="Native Title, Future Acts and the implications of Yindjibarndi Ngurra…">
+        </head><body><h1>${HEADLINE_CASED}</h1>`;
+      expect(extractPageTitle(html, URL_)).toBe(HEADLINE_CASED);
+    });
+
+    /*
+     * Some sites file a piece under a hand-written handle rather than a slug
+     * generated from its headline. Holding those to coverage keeps a label
+     * that can actively mislead — "Ban mass protests" reads as if Grata wants
+     * protests banned.
+     */
+    it('accepts a headline that a hand-written handle shares no words with', () => {
+      const html =
+        '<title>Minns attempt to outlaw protest and usurp the courts will make us all unsafe</title>';
+      expect(extractPageTitle(html, 'https://www.gratafund.org.au/ban_mass_protests')).toBe(
+        'Minns attempt to outlaw protest and usurp the courts will make us all unsafe',
+      );
+    });
+
+    it('still holds a generated slug to coverage, however tempting the answer', () => {
+      // Four significant words: long enough to have been generated.
+      const html = '<title>Statement of Rights Webinar Event</title>';
+      expect(
+        extractPageTitle(html, 'https://example.org/news/advocates-call-out-guardianship-misuse'),
+      ).toBeNull();
+    });
+
+    it('holds even a short handle to coverage once the request has moved', () => {
+      const html = '<title>Community Legal Centres Queensland</title>';
+      expect(
+        extractPageTitle(html, 'https://communitylegalqld.org.au/news/wunya-2026', 'https://www.clcq.org.au/'),
+      ).toBeNull();
+    });
+
+    it('rejects a bare site name reached without any redirect', () => {
+      const html = '<title>Legal Aid Queensland</title>';
+      expect(extractPageTitle(html, 'https://legalaid.qld.gov.au/news/ekka-closures')).toBeNull();
+    });
+
     it('matches across punctuation the slug could not carry', () => {
       const html = '<meta property="og:title" content="Updated guidance on non-disclosure agreements">';
       // slug word "disclosure" vs "non-disclosure"; "vlsbc" vs "VLSB+C".
@@ -234,6 +286,37 @@ describe('resolveSlugTitles', () => {
     const items = extractListingLinks(MD, 'https://clcs.org.au/news', 'clcs\\.org\\.au/news/.+');
     const resolved = await resolveSlugTitles(items, async () => null);
     expect(resolved[0].title).toBe('Building confidence courtroom one volunteer time');
+  });
+});
+
+describe('countRepeats', () => {
+  it('flags a title proposed for more than one item', () => {
+    const repeats = countRepeats([
+      'Community Legal Centres Queensland',
+      'Minns attempt to outlaw protest',
+      'Community Legal Centres Queensland',
+      null,
+    ]);
+    expect([...repeats]).toEqual(['Community Legal Centres Queensland']);
+  });
+
+  it('leaves unique titles and nulls alone', () => {
+    expect([...countRepeats(['a headline', 'another headline', null, null])]).toEqual([]);
+  });
+});
+
+describe('resolveSlugTitles, on a listing that answers with its own name', () => {
+  it('keeps both slug titles rather than filing two items under one headline', async () => {
+    const md = `
+[](https://clcq.org.au/news/wunya-2026)
+[](https://clcq.org.au/news/advocating-for-autonomy-and-independence)
+`;
+    const items = extractListingLinks(md, 'https://clcq.org.au/news', 'clcq\\.org\\.au/news/.+');
+    const resolved = await resolveSlugTitles(items, async () => 'Community Legal Centres Queensland');
+    expect(resolved.map((i) => i.title)).toEqual([
+      'Wunya 2026',
+      'Advocating for autonomy and independence',
+    ]);
   });
 });
 
@@ -301,6 +384,71 @@ describe('isSlugDerived', () => {
         'Building confidence in the courtroom, one volunteer at a time',
       ),
     ).toBe(false);
+  });
+});
+
+describe('fetchPageTitle', () => {
+  const HTML = (body: string) => new Response(body, {
+    status: 200,
+    headers: { 'content-type': 'text/html' },
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it('does not reach for the scraper when a plain GET answers', async () => {
+    const calls: string[] = [];
+    vi.stubGlobal('fetch', async (input: string | URL) => {
+      calls.push(String(input));
+      return HTML('<title>New resources for corporate lawyers</title>');
+    });
+    const url = 'https://example.org/news/new-resources-corporate-lawyers';
+    expect(await fetchPageTitle(url, { firecrawl: true })).toBe(
+      'New resources for corporate lawyers',
+    );
+    expect(calls).toEqual([url]);
+  });
+
+  it('falls back to the scraper when the front door turns us away', async () => {
+    const calls: string[] = [];
+    vi.stubGlobal('fetch', async (input: string | URL) => {
+      const target = String(input);
+      calls.push(target);
+      if (target.includes('/v1/scrape')) {
+        return new Response(
+          JSON.stringify({ data: { rawHtml: `<h1>${HEADLINE_CASED}</h1>` } }),
+          { status: 200, headers: { 'content-type': 'application/json' } },
+        );
+      }
+      return HTML('<title>Just a moment...</title>');
+    });
+    expect(await fetchPageTitle(URL_, { firecrawl: true })).toBe(HEADLINE_CASED);
+    expect(calls).toHaveLength(2);
+    expect(calls[1]).toContain('/v1/scrape');
+  });
+
+  it('leaves the scraper alone unless asked', async () => {
+    const calls: string[] = [];
+    vi.stubGlobal('fetch', async (input: string | URL) => {
+      calls.push(String(input));
+      return HTML('<title>Just a moment...</title>');
+    });
+    expect(await fetchPageTitle(URL_)).toBeNull();
+    expect(calls).toHaveLength(1);
+  });
+
+  it('still holds the slug to its word when the scraper answers', async () => {
+    vi.stubGlobal('fetch', async (input: string | URL) => {
+      if (String(input).includes('/v1/scrape')) {
+        return new Response(
+          JSON.stringify({ data: { rawHtml: '<h1>Maddocks</h1>' } }),
+          { status: 200, headers: { 'content-type': 'application/json' } },
+        );
+      }
+      return HTML('<title>Just a moment...</title>');
+    });
+    expect(await fetchPageTitle(URL_, { firecrawl: true })).toBeNull();
   });
 });
 

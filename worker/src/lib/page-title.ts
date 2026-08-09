@@ -25,6 +25,9 @@ const UA =
 // </head> are the reason this is a cap and not a whole-body read.
 const MAX_BYTES = 256 * 1024;
 const TIMEOUT_MS = 10_000;
+// A scrape renders the page, so it is slow by nature — and slower still on the
+// first call, which wakes the socket-activated stack.
+const FIRECRAWL_TIMEOUT_MS = 120_000;
 
 const NAMED_ENTITIES: Record<string, string> = {
   amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ',
@@ -128,6 +131,42 @@ export function coversSlug(candidate: string, words: string[]): boolean {
 }
 
 /*
+ * The coverage rule assumes the slug was generated from the headline. Plenty
+ * of sites write theirs by hand instead — Grata files a piece under
+ * `ban_mass_protests` and heads it "Minns attempt to outlaw protest and usurp
+ * the courts will make us all unsafe"; RACS files one under `socceroos-oped`.
+ * Held to coverage, those lose a real headline to keep a misleading label.
+ *
+ * A handle is short and a generated slug is not, so length is the tell. Four
+ * significant words is where the two stop overlapping in this collection: the
+ * shortest generated slug seen carries four, and the longest hand-written one
+ * carries three.
+ */
+const GENERATED_SLUG_MIN_WORDS = 4;
+
+/*
+ * A candidate that is just the site's own name, which is what a listing page
+ * or a homepage hands back. Bounded by word count so that a headline merely
+ * containing the organisation's name is not mistaken for one.
+ */
+function isBareSiteName(candidate: string, siteName: string | null, host: string): boolean {
+  if (candidate.trim().split(/\s+/).length > 4) return false;
+  const flat = flatten(candidate);
+  const domainWord = flatten(host.replace(/^www\./, '').split('.')[0]);
+  if (siteName && flat === flatten(siteName)) return true;
+  return domainWord.length > 4 && flat.startsWith(domainWord);
+}
+
+/** The last path segment, for comparing where we asked against where we landed. */
+function lastSegment(url: string): string {
+  try {
+    return (new URL(url).pathname.split('/').filter(Boolean).pop() ?? '').toLowerCase();
+  } catch {
+    return '';
+  }
+}
+
+/*
  * A <title> is usually "Headline | Site Name". Strip that tail, but only on
  * evidence: og:site_name or the registrable domain matches it, or the head
  * alone already accounts for every word of the slug — which makes whatever
@@ -175,12 +214,16 @@ function stripSiteSuffix(
  * sentences and drop the fragment — but only if what is left still accounts
  * for the slug, which is what says the headline itself survived the cut.
  */
-function dropTruncatedTail(title: string, words: string[]): string | null {
+function dropTruncatedTail(
+  title: string,
+  words: string[],
+  requireCoverage: boolean,
+): string | null {
   if (!/(…|\.\.\.)$/.test(title)) return title;
   // Greedy up to the last sentence terminator; the rest is the cut fragment.
   const whole = /^(.*[.?!])[^.?!]*(?:…|\.\.\.)$/.exec(title)?.[1]?.trim();
   if (!whole || whole.length < 8) return null;
-  return coversSlug(whole, words) ? whole : null;
+  return !requireCoverage || coversSlug(whole, words) ? whole : null;
 }
 
 /*
@@ -213,6 +256,16 @@ export function extractPageTitle(
   const siteName = meta(html, 'og:site_name');
   const words = slugWords(pageUrl);
 
+  /*
+   * Coverage is the strong check, and it is applied when it can be trusted:
+   * when the slug is long enough to have been generated from the headline, or
+   * when the request did not land where it was sent. A dead article commonly
+   * redirects to the site root, and there the answer must be held to the slug
+   * however short that slug is.
+   */
+  const moved = lastSegment(pageUrl) !== lastSegment(finalUrl);
+  const requireCoverage = moved || words.length >= GENERATED_SLUG_MIN_WORDS;
+
   const og = meta(html, 'og:title') ?? meta(html, 'twitter:title');
   const h1 = clean(/<h1\b[^>]*>([\s\S]*?)<\/h1>/i.exec(html)?.[1] ?? '');
   const docTitle = clean(/<title\b[^>]*>([\s\S]*?)<\/title>/i.exec(html)?.[1] ?? '');
@@ -228,13 +281,13 @@ export function extractPageTitle(
 
   for (const candidate of ordered) {
     if (!candidate) continue;
-    const trimmed = dropTruncatedTail(candidate.trim(), words);
+    const trimmed = dropTruncatedTail(candidate.trim(), words, requireCoverage);
     if (!trimmed) continue;
     const value = trimmed.trim();
     if (value.length < 8 || value.length > 300) continue;
     if (JUNK_TITLE_RE.test(value)) continue;
-    if (siteName && value.toLowerCase() === siteName.toLowerCase()) continue;
-    if (!coversSlug(value, words)) continue;
+    if (isBareSiteName(value, siteName, host)) continue;
+    if (requireCoverage && !coversSlug(value, words)) continue;
     return value;
   }
   return null;
@@ -253,9 +306,12 @@ async function readCapped(res: Response): Promise<string> {
       if (done) break;
       size += value.byteLength;
       html += decoder.decode(value, { stream: true });
-      // </head> is enough for og:title and <title>; <h1> may follow, so allow
-      // a little of the body before giving up on it.
-      if (size >= MAX_BYTES || /<\/head>/i.test(html)) break;
+      /*
+       * Read on past </head> until the first <h1> closes. Sites that truncate
+       * og:title and <title> for sharing usually still carry the whole
+       * headline in the <h1>, and stopping at the head threw that away.
+       */
+      if (size >= MAX_BYTES || /<\/h1>/i.test(html)) break;
     }
   } finally {
     await reader.cancel().catch(() => {});
@@ -263,7 +319,7 @@ async function readCapped(res: Response): Promise<string> {
   return html;
 }
 
-export async function fetchPageTitle(url: string): Promise<string | null> {
+async function fetchPageTitleDirect(url: string): Promise<string | null> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
   try {
@@ -282,6 +338,48 @@ export async function fetchPageTitle(url: string): Promise<string | null> {
   } finally {
     clearTimeout(timer);
   }
+}
+
+/*
+ * The same read, through the Firecrawl instance that already fetches these
+ * sources' listing pages. It renders the page rather than reading the wire, so
+ * it reaches two kinds of page a plain GET cannot: those that build their
+ * markup client-side, and those whose front door turns away a bare HTTP client.
+ *
+ * It is a fallback, not the default — a scrape costs seconds and a socket-woken
+ * service, against a few milliseconds for a GET that usually works.
+ */
+export async function fetchPageTitleViaFirecrawl(url: string): Promise<string | null> {
+  const base = process.env.FIRECRAWL_URL ?? 'http://127.0.0.1:3003';
+  try {
+    const res = await fetch(`${base}/v1/scrape`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', authorization: 'Bearer self-hosted' },
+      body: JSON.stringify({ url, formats: ['rawHtml'] }),
+      signal: AbortSignal.timeout(FIRECRAWL_TIMEOUT_MS),
+    });
+    if (!res.ok) return null;
+    const body = (await res.json()) as {
+      data?: { rawHtml?: string; metadata?: { sourceURL?: string } };
+    };
+    const html = body.data?.rawHtml;
+    if (!html) return null;
+    return extractPageTitle(html, url, body.data?.metadata?.sourceURL || url);
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * A page's real headline. Tries a plain GET, then — when asked — the scraper.
+ */
+export async function fetchPageTitle(
+  url: string,
+  { firecrawl = false }: { firecrawl?: boolean } = {},
+): Promise<string | null> {
+  const direct = await fetchPageTitleDirect(url);
+  if (direct || !firecrawl) return direct;
+  return fetchPageTitleViaFirecrawl(url);
 }
 
 /**
