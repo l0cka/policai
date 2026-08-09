@@ -142,10 +142,18 @@ a confidence score, a jurisdiction/type guess, and a short draft summary. A
 verdict that fails schema validation is dropped, and that candidate falls back
 to the keyword heuristic rather than being persisted unchecked.
 
-Confidence from either path is capped at 0.65 (`MACHINE_CONFIDENCE_CAP`)
-before it is stored or shown, so every automated detection displays as "Needs
-review" and goes through the same staged editorial process regardless of
-which path produced it. `data/policies.json` is never written by either path:
+Confidence from either classifier path is capped at 0.65
+(`MACHINE_CONFIDENCE_CAP`) before it is stored or shown, so every automated
+discovery displays as "Needs review" and goes through the same staged
+editorial process regardless of which path produced it.
+
+The cap applies to classifier confidence only. Direct-document change
+detections — a monitored record's page whose content fingerprint moved —
+store `relevanceScore: 1` by design: relevance is not in question for an
+instrument the register already tracks, so the score records certainty that
+the page changed, not a classifier's judgement. These detections land as
+`needs_review` and pass through the identical editorial gate; the cap and
+the score-1 path never let an automated detection publish anything. `data/policies.json` is never written by either path:
 a Vitest test asserts the file is byte-identical before and after a
 Claude-enabled collection run, and a separate guard step fails the run if the
 file changed on disk (see Production automation below).
