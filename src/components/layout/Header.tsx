@@ -196,7 +196,7 @@ export function Header({
           {/* Sibling property, not a register route: no active state, and the
               arrow signals leaving this app. */}
           <a
-            href="https://probono.policai.org"
+            href="https://a2j.policai.org"
             className="group relative flex h-full items-center gap-1 px-1 text-[15px] font-medium text-white/58 transition-colors duration-[var(--dur-fast)] hover:text-white"
           >
             A2J
@@ -273,7 +273,7 @@ export function Header({
                 ))}
                 <div className="my-2 border-t border-border" />
                 <a
-                  href="https://probono.policai.org"
+                  href="https://a2j.policai.org"
                   className="flex items-center gap-1.5 rounded px-3 py-2 text-sm font-medium text-muted-foreground transition-colors duration-[var(--dur-fast)] hover:bg-muted hover:text-foreground"
                 >
                   A2J
