@@ -15,7 +15,7 @@ Policai is an Australian AI policy tracker. It maintains a curated register of A
 - **Data:** public-safe JSON in `public/data/`; editorial and collector JSON in
   `data/`, all canonical and versioned
 - **Retrieval:** plain HTTP first; self-hosted Firecrawl for candidate pages on browser-strategy sources, falling back to headless Chromium (Playwright); index and RSS listing pages always use headless Chromium directly
-- **Analysis:** keyword heuristic by default; Claude, an Anthropic model, batched through the Claude Code CLI on the collection host when `USE_CLAUDE_CLASSIFIER` is set — both paths cap stored/displayed confidence at 0.65 (`MACHINE_CONFIDENCE_CAP`)
+- **Analysis:** keyword heuristic by default; Claude, an Anthropic model, batched through the Claude Code CLI on the collection host when `USE_CLAUDE_CLASSIFIER` is set — both classifier paths cap stored/displayed confidence at 0.65 (`MACHINE_CONFIDENCE_CAP`); direct-document change detections on tracked records store `relevanceScore: 1` by design (change-certainty, not classifier confidence) and stay editor-gated
 - **Scraping:** Cheerio
 - **Testing:** Vitest (+ Testing Library)
 - **Automation:** a daily scheduled run on the maintainer's server
@@ -69,7 +69,7 @@ docs/                             # collector.md + docs index
 ## Data Model & Flow
 
 1. **Register** (`data/policies.json`): curated policy records. Changed only through explicit editorial approval (human or MCP-assisted). `/data/policies.json` and API/site reads expose only verified, non-trashed, non-withheld records. The collector never writes it; the workflow fails if it does.
-2. **Developments** (`data/developments.json`): automated radar feed. Each entry has provenance (`sourceId`, `url`), a relevance score, and a `classification` label — `heuristic` (deterministic keyword rules, the default) or `ai` (Claude classification, active when `USE_CLAUDE_CLASSIFIER` is set), plus `curated` for promoted register entries. Both machine paths cap confidence at 0.65 (`MACHINE_CONFIDENCE_CAP`) and show as "Needs review". `/data/developments.json` filters dismissed entries.
+2. **Developments** (`data/developments.json`): automated radar feed. Each entry has provenance (`sourceId`, `url`), a relevance score, and a `classification` label — `heuristic` (deterministic keyword rules, the default) or `ai` (Claude classification, active when `USE_CLAUDE_CLASSIFIER` is set), plus `curated` for promoted register entries. Both classifier paths cap confidence at 0.65 (`MACHINE_CONFIDENCE_CAP`) and show as "Needs review". Direct-document change detections on tracked records carry `relevanceScore: 1` — the score records change-certainty for a known instrument, not classifier confidence — and are equally editor-gated. `/data/developments.json` filters dismissed entries.
 3. **Editorial directories** (`data/timeline.json`, `data/agencies.json`,
    `data/commonwealth-agencies.json`): may contain records awaiting review and
    are never served statically; `/data/*.json` route handlers apply public
