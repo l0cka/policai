@@ -1,5 +1,199 @@
 [
   {
+    "id": "source-review-dev-report-explores-risks-and-controls-for-artificia-grmboo",
+    "sourceUrl": "https://www.industry.gov.au/news/report-explores-risks-and-controls-artificial-intelligence-ai-agents",
+    "title": "Report explores risks and controls for artificial intelligence (AI) agents",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-08-10T19:34:34.140Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from Department of Industry, Science and Resources — news (score 0.65, ai).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.65,
+      "suggestedType": "guideline",
+      "suggestedJurisdiction": "federal",
+      "summary": "The Australian Government, via the AI Safety Institute, commissioned a report examining emerging risks from AI agents in Australia and possible controls.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.industry.gov.au/news/report-explores-risks-and-controls-artificial-intelligence-ai-agents",
+      "finalUrl": "https://www.industry.gov.au/news/report-explores-risks-and-controls-artificial-intelligence-ai-agents",
+      "retrievedAt": "2026-08-10T19:34:34.140Z",
+      "contentType": "text/plain",
+      "contentHash": "7ac92ce35a773e9bb0e178209b8f1c13552c056ae388cec7d2589e88e7f6bbac",
+      "title": "Report explores risks and controls for artificial intelligence (AI) agents",
+      "publishedAt": "2026-08-10",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "report-explores-risks-and-controls-for-artificial-intelligen",
+      "title": "Report explores risks and controls for artificial intelligence (AI) agents",
+      "description": "The Australian Government, via the AI Safety Institute, commissioned a report examining emerging risks from AI agents in Australia and possible controls.",
+      "jurisdiction": "federal",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2026-08-10",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-08-10",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.industry.gov.au/news/report-explores-risks-and-controls-artificial-intelligence-ai-agents",
+            "finalUrl": "https://www.industry.gov.au/news/report-explores-risks-and-controls-artificial-intelligence-ai-agents",
+            "retrievedAt": "2026-08-10T19:34:34.140Z",
+            "contentType": "text/plain",
+            "contentHash": "7ac92ce35a773e9bb0e178209b8f1c13552c056ae388cec7d2589e88e7f6bbac",
+            "title": "Report explores risks and controls for artificial intelligence (AI) agents",
+            "publishedAt": "2026-08-10",
+            "publishedAtPrecision": "day"
+          }
+        }
+      ],
+      "agencies": [],
+      "sourceUrl": "https://www.industry.gov.au/news/report-explores-risks-and-controls-artificial-intelligence-ai-agents",
+      "content": "Report explores risks and controls for artificial intelligence (AI) agents ========================================================================== The Australian Government has commissioned a report to better understand emerging AI agent risks in Australia. 10 August 2026 * News 2 min read * [Artificial intelligence](https://www.industry.gov.au/news?news-topic[2964]=2964#filter-results) * [Science, technology and innovation](https://www.industry.gov.au/news?news-topic[2945]=2945#filter-results) * [Technology](https://www.industry.gov.au/news?news-topic[2963]=2963#filter-results) * [AI Safet",
+      "aiSummary": "The Australian Government, via the AI Safety Institute, commissioned a report examining emerging risks from AI agents in Australia and possible controls.",
+      "tags": [],
+      "createdAt": "2026-08-10T19:34:34.140Z",
+      "updatedAt": "2026-08-10T19:34:34.140Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-report-explores-risks-and-controls-for-artificia-grmboo",
+      "title": "Report explores risks and controls for artificial intelligence (AI) agents",
+      "url": "https://www.industry.gov.au/news/report-explores-risks-and-controls-artificial-intelligence-ai-agents",
+      "sourceId": "disr-news",
+      "sourceName": "Department of Industry, Science and Resources — news",
+      "jurisdiction": "federal",
+      "publishedAt": "2026-08-10",
+      "publishedAtPrecision": "day",
+      "detectedAt": "2026-08-10T19:34:34.140Z",
+      "summary": "The Australian Government, via the AI Safety Institute, commissioned a report examining emerging risks from AI agents in Australia and possible controls.",
+      "relevanceScore": 0.65,
+      "classification": "ai",
+      "assessment": {
+        "method": "ai",
+        "promptVersion": "claude-classify-v1",
+        "assessedAt": "2026-08-10T19:34:34.140Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.industry.gov.au/news/report-explores-risks-and-controls-artificial-intelligence-ai-agents",
+          "finalUrl": "https://www.industry.gov.au/news/report-explores-risks-and-controls-artificial-intelligence-ai-agents",
+          "retrievedAt": "2026-08-10T19:34:34.140Z",
+          "contentType": "text/plain",
+          "contentHash": "7ac92ce35a773e9bb0e178209b8f1c13552c056ae388cec7d2589e88e7f6bbac",
+          "title": "Report explores risks and controls for artificial intelligence (AI) agents",
+          "publishedAt": "2026-08-10",
+          "publishedAtPrecision": "day"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-08-10T19:34:34.140Z"
+  },
+  {
+    "id": "source-review-dev-minns-government-examines-measures-to-halt-ai-s--1d5zchc",
+    "sourceUrl": "https://www.nsw.gov.au/ministerial-releases/minns-government-examines-measures-to-halt-ais-impact-on-cognitive-development-of-a-generation-of-nsw-students",
+    "title": "Minns Government examines measures to halt AI’s impact on cognitive development of a generation of NSW students",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-08-10T19:34:34.140Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from NSW Government — media releases (score 0.65, ai).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.65,
+      "suggestedType": "guideline",
+      "suggestedJurisdiction": "nsw",
+      "summary": "NSW ministerial release stating the Minns Government is examining measures on AI's impact on school students' cognitive development; supplied excerpt is unrelated index-page text.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.nsw.gov.au/ministerial-releases/minns-government-examines-measures-to-halt-ais-impact-on-cognitive-development-of-a-generation-of-nsw-students",
+      "finalUrl": "https://www.nsw.gov.au/ministerial-releases/minns-government-examines-measures-to-halt-ais-impact-on-cognitive-development-of-a-generation-of-nsw-students",
+      "retrievedAt": "2026-08-10T19:34:34.140Z",
+      "contentType": "text/plain",
+      "contentHash": "56b057b5b23706613fc9a8a3fe980709b87f424e9379d1d48f03692f3814104a",
+      "title": "Minns Government examines measures to halt AI’s impact on cognitive development of a generation of NSW students",
+      "publishedAt": "2026-08-10",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "minns-government-examines-measures-to-halt-ai-s-impact-on-co",
+      "title": "Minns Government examines measures to halt AI’s impact on cognitive development of a generation of NSW students",
+      "description": "NSW ministerial release stating the Minns Government is examining measures on AI's impact on school students' cognitive development; supplied excerpt is unrelated index-page text.",
+      "jurisdiction": "nsw",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2026-08-10",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-08-10",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.nsw.gov.au/ministerial-releases/minns-government-examines-measures-to-halt-ais-impact-on-cognitive-development-of-a-generation-of-nsw-students",
+            "finalUrl": "https://www.nsw.gov.au/ministerial-releases/minns-government-examines-measures-to-halt-ais-impact-on-cognitive-development-of-a-generation-of-nsw-students",
+            "retrievedAt": "2026-08-10T19:34:34.140Z",
+            "contentType": "text/plain",
+            "contentHash": "56b057b5b23706613fc9a8a3fe980709b87f424e9379d1d48f03692f3814104a",
+            "title": "Minns Government examines measures to halt AI’s impact on cognitive development of a generation of NSW students",
+            "publishedAt": "2026-08-10",
+            "publishedAtPrecision": "day"
+          }
+        }
+      ],
+      "agencies": [],
+      "sourceUrl": "https://www.nsw.gov.au/ministerial-releases/minns-government-examines-measures-to-halt-ais-impact-on-cognitive-development-of-a-generation-of-nsw-students",
+      "content": "Ministerial media release Minns Government examines measures to halt AI’s impact on cognitive development of a generation of NSW students =============================================================================================================== Published: 10 August 2026 Released by: Deputy Premier, Minister for Education and Early Learning [Listen](https://app-oc.readspeaker.com/cgi-bin/rsent?customerid=11246&lang=en_au&readclass=dcs-readspeaker-target%2crs_read&url=https://www.nsw.gov.au/ministerial-releases/minns-government-examines-measures-to-halt-ais-impact-on-cognitive-development-o",
+      "aiSummary": "NSW ministerial release stating the Minns Government is examining measures on AI's impact on school students' cognitive development; supplied excerpt is unrelated index-page text.",
+      "tags": [],
+      "createdAt": "2026-08-10T19:34:34.140Z",
+      "updatedAt": "2026-08-10T19:34:34.140Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-minns-government-examines-measures-to-halt-ai-s--1d5zchc",
+      "title": "Minns Government examines measures to halt AI’s impact on cognitive development of a generation of NSW students",
+      "url": "https://www.nsw.gov.au/ministerial-releases/minns-government-examines-measures-to-halt-ais-impact-on-cognitive-development-of-a-generation-of-nsw-students",
+      "sourceId": "nsw-media-releases",
+      "sourceName": "NSW Government — media releases",
+      "jurisdiction": "nsw",
+      "publishedAt": "2026-08-10",
+      "publishedAtPrecision": "day",
+      "detectedAt": "2026-08-10T19:34:34.140Z",
+      "summary": "NSW ministerial release stating the Minns Government is examining measures on AI's impact on school students' cognitive development; supplied excerpt is unrelated index-page text.",
+      "relevanceScore": 0.65,
+      "classification": "ai",
+      "assessment": {
+        "method": "ai",
+        "promptVersion": "claude-classify-v1",
+        "assessedAt": "2026-08-10T19:34:34.140Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.nsw.gov.au/ministerial-releases/minns-government-examines-measures-to-halt-ais-impact-on-cognitive-development-of-a-generation-of-nsw-students",
+          "finalUrl": "https://www.nsw.gov.au/ministerial-releases/minns-government-examines-measures-to-halt-ais-impact-on-cognitive-development-of-a-generation-of-nsw-students",
+          "retrievedAt": "2026-08-10T19:34:34.140Z",
+          "contentType": "text/plain",
+          "contentHash": "56b057b5b23706613fc9a8a3fe980709b87f424e9379d1d48f03692f3814104a",
+          "title": "Minns Government examines measures to halt AI’s impact on cognitive development of a generation of NSW students",
+          "publishedAt": "2026-08-10",
+          "publishedAtPrecision": "day"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-08-10T19:34:34.140Z"
+  },
+  {
     "id": "source-review-dev-guidelines-concerning-the-use-of-generative-arti-1qa7cww",
     "sourceUrl": "https://www.courts.sa.gov.au/2025/12/24/guidelines-concerning-the-use-of-generative-artificial-intelligence-in-litigation-in-south-australian-courts",
     "title": "Guidelines concerning the use of Generative artificial intelligence in litigation in South Australian Courts - CAA",
