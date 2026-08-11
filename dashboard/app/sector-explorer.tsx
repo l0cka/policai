@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState, type CSSProperties } from 'react';
+import { useMemo, useRef, useState, type CSSProperties } from 'react';
 import {
   AUSTRALIA_MAP_SOURCE,
   AUSTRALIA_MAP_SOURCE_URL,
@@ -12,7 +12,12 @@ import {
   RELATIONSHIP_LABELS,
   type RelationshipType,
 } from '../lib/sector-relationships';
-import { TIERS, type ScoredOrg, type TierKey } from '../lib/sector-data';
+import {
+  TIERS,
+  isWomensLegalService,
+  type ScoredOrg,
+  type TierKey,
+} from '../lib/sector-data';
 import SectorDiagram from './sector-diagram';
 
 type View = 'map' | 'system';
@@ -20,12 +25,44 @@ type View = 'map' | 'system';
 const MAP_JURISDICTIONS = ['WA', 'NT', 'SA', 'QLD', 'NSW', 'VIC', 'TAS', 'ACT'] as const;
 type MapJurisdiction = (typeof MAP_JURISDICTIONS)[number];
 
-const SERVICE_CATEGORIES: Array<{ key: TierKey; label: string }> = [
-  { key: 'legal_aid', label: 'Legal Aid' },
-  { key: 'clc', label: 'CLCs + Women’s Legal Services' },
-  { key: 'atsils', label: 'ATSILS' },
-  { key: 'fvpls', label: 'FVPLS' },
+/*
+ * Explorer categories are finer than the data's tiers: women's legal services
+ * sit inside the CLC tier in every source directory and are split here by
+ * their own names (see isWomensLegalService).
+ */
+type CategoryKey = 'legal_aid' | 'clc' | 'wls' | 'atsils' | 'fvpls';
+
+const SERVICE_CATEGORIES: Array<{
+  key: CategoryKey;
+  label: string;
+  match: (org: ScoredOrg) => boolean;
+}> = [
+  { key: 'legal_aid', label: 'Legal Aid', match: (org) => org.tier === 'legal_aid' },
+  {
+    key: 'clc',
+    label: 'Community Legal Centres',
+    match: (org) => org.tier === 'clc' && !isWomensLegalService(org),
+  },
+  { key: 'wls', label: 'Women’s Legal Services', match: (org) => isWomensLegalService(org) },
+  { key: 'atsils', label: 'ATSILS', match: (org) => org.tier === 'atsils' },
+  { key: 'fvpls', label: 'FVPLS', match: (org) => org.tier === 'fvpls' },
 ];
+
+const categoryLabel = Object.fromEntries(
+  SERVICE_CATEGORIES.map((c) => [c.key, c.label]),
+) as Record<CategoryKey, string>;
+
+function categoryOf(org: ScoredOrg): CategoryKey | null {
+  return SERVICE_CATEGORIES.find((c) => c.match(org))?.key ?? null;
+}
+
+/* The System diagram's delivery groups map onto explorer categories. */
+const CATEGORY_FOR_TIER: Partial<Record<TierKey, CategoryKey>> = {
+  legal_aid: 'legal_aid',
+  clc: 'clc',
+  atsils: 'atsils',
+  fvpls: 'fvpls',
+};
 
 /*
  * The ACT is a dozen viewBox units wide, so its label moves offshore on a
@@ -48,14 +85,20 @@ const tierLabel = Object.fromEntries(TIERS.map((tier) => [tier.key, tier.label])
   string
 >;
 
+type ZoomTransform = { k: number; tx: number; ty: number };
+
 function orgsFor(
   orgs: ScoredOrg[],
   jurisdiction: MapJurisdiction,
-  focusTier: TierKey | null,
+  category: CategoryKey | null,
 ) {
   return orgs
     .filter((org) => org.jurisdiction === jurisdiction)
-    .filter((org) => (focusTier ? org.tier === focusTier : SERVICE_CATEGORIES.some((c) => c.key === org.tier)))
+    .filter((org) =>
+      category
+        ? SERVICE_CATEGORIES.find((c) => c.key === category)!.match(org)
+        : SERVICE_CATEGORIES.some((c) => c.match(org)),
+    )
     .sort((a, b) => a.name.localeCompare(b.name));
 }
 
@@ -68,10 +111,10 @@ function evidenceFor(name: string, relationship: RelationshipType) {
 function firstOrgFor(
   orgs: ScoredOrg[],
   jurisdiction: MapJurisdiction,
-  focusTier: TierKey | null,
+  category: CategoryKey | null,
   relationship: RelationshipType,
 ) {
-  const visible = orgsFor(orgs, jurisdiction, focusTier);
+  const visible = orgsFor(orgs, jurisdiction, category);
   const evidenced = visible.find((org) => evidenceFor(org.name, relationship).length);
   const monitored = visible.find((org) => org.monitored);
   return evidenced ?? monitored ?? visible[0] ?? null;
@@ -80,11 +123,38 @@ function firstOrgFor(
 export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
   const [view, setView] = useState<View>('map');
   const [jurisdiction, setJurisdiction] = useState<MapJurisdiction>('VIC');
-  const [focusTier, setFocusTier] = useState<TierKey | null>('clc');
+  const [category, setCategory] = useState<CategoryKey | null>('clc');
   const [relationship, setRelationship] = useState<RelationshipType>('secondment');
   const [selectedName, setSelectedName] = useState(
     () => firstOrgFor(orgs, 'VIC', 'clc', 'secondment')?.name ?? '',
   );
+  const [zoom, setZoom] = useState<ZoomTransform | null>(null);
+
+  const svgRef = useRef<SVGSVGElement>(null);
+  const bboxCache = useRef<Partial<Record<MapJurisdiction, DOMRect>>>({});
+
+  const zoomFor = (key: MapJurisdiction): ZoomTransform | null => {
+    let box = bboxCache.current[key];
+    if (!box) {
+      const path = svgRef.current?.querySelector<SVGPathElement>(
+        `[data-jurisdiction="${key}"] path`,
+      );
+      if (!path) return null;
+      box = path.getBBox();
+      bboxCache.current[key] = box;
+    }
+    const pad = 0.14;
+    const bw = box.width * (1 + pad);
+    const bh = box.height * (1 + pad);
+    const bx = box.x - (box.width * pad) / 2;
+    const by = box.y - (box.height * pad) / 2;
+    const k = Math.min(AUSTRALIA_MAP_VIEWBOX.width / bw, AUSTRALIA_MAP_VIEWBOX.height / bh, 6);
+    return {
+      k,
+      tx: (AUSTRALIA_MAP_VIEWBOX.width - k * bw) / 2 - k * bx,
+      ty: (AUSTRALIA_MAP_VIEWBOX.height - k * bh) / 2 - k * by,
+    };
+  };
 
   const totals = useMemo(
     () =>
@@ -97,20 +167,20 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
     [orgs],
   );
 
-  // The map recounts under the active category filter, so selecting a tier
+  // The map recounts under the active category filter, so selecting a category
   // redraws the density shading rather than only the side panel.
   const mapCounts = useMemo(
     () =>
       Object.fromEntries(
-        MAP_JURISDICTIONS.map((key) => [key, orgsFor(orgs, key, focusTier).length]),
+        MAP_JURISDICTIONS.map((key) => [key, orgsFor(orgs, key, category).length]),
       ) as Record<MapJurisdiction, number>,
-    [orgs, focusTier],
+    [orgs, category],
   );
   const maxMapCount = Math.max(1, ...MAP_JURISDICTIONS.map((key) => mapCounts[key]));
 
   const visibleOrgs = useMemo(
-    () => orgsFor(orgs, jurisdiction, focusTier),
-    [orgs, jurisdiction, focusTier],
+    () => orgsFor(orgs, jurisdiction, category),
+    [orgs, jurisdiction, category],
   );
   const selectedOrg = visibleOrgs.find((org) => org.name === selectedName) ?? visibleOrgs[0] ?? null;
   const selectedIndex = selectedOrg ? visibleOrgs.indexOf(selectedOrg) : -1;
@@ -118,17 +188,15 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
 
   const serviceCounts = useMemo(
     () =>
-      SERVICE_CATEGORIES.map((category) => ({
-        ...category,
-        count: orgs.filter(
-          (org) => org.jurisdiction === jurisdiction && org.tier === category.key,
-        ).length,
+      SERVICE_CATEGORIES.map((entry) => ({
+        ...entry,
+        count: orgs.filter((org) => org.jurisdiction === jurisdiction && entry.match(org)).length,
       })),
     [orgs, jurisdiction],
   );
-  const frontlineTotal = serviceCounts.reduce((sum, category) => sum + category.count, 0);
+  const frontlineTotal = serviceCounts.reduce((sum, entry) => sum + entry.count, 0);
 
-  // Sourced-evidence counts within the current jurisdiction and tier scope.
+  // Sourced-evidence counts within the current jurisdiction and category scope.
   // Funding counts directory attributions; the other types count named links.
   const relationshipCounts = useMemo(
     () =>
@@ -144,12 +212,18 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
   );
 
   const selectJurisdiction = (next: MapJurisdiction) => {
+    if (next === jurisdiction) {
+      // A second click on the selected state toggles the zoom.
+      setZoom(zoom ? null : zoomFor(next));
+      return;
+    }
     setJurisdiction(next);
-    setSelectedName(firstOrgFor(orgs, next, focusTier, relationship)?.name ?? '');
+    if (zoom) setZoom(zoomFor(next));
+    setSelectedName(firstOrgFor(orgs, next, category, relationship)?.name ?? '');
   };
 
-  const selectTier = (next: TierKey | null) => {
-    setFocusTier(next);
+  const selectCategory = (next: CategoryKey | null) => {
+    setCategory(next);
     setSelectedName(firstOrgFor(orgs, jurisdiction, next, relationship)?.name ?? '');
   };
 
@@ -160,10 +234,13 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
   };
 
   const drillFromSystem = (tier: TierKey) => {
-    setFocusTier(tier);
-    setSelectedName(firstOrgFor(orgs, jurisdiction, tier, relationship)?.name ?? '');
+    const next = CATEGORY_FOR_TIER[tier] ?? null;
+    setCategory(next);
+    setSelectedName(firstOrgFor(orgs, jurisdiction, next, relationship)?.name ?? '');
     setView('map');
   };
+
+  const k = zoom?.k ?? 1;
 
   return (
     <div className="sector-explorer">
@@ -216,11 +293,25 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
               </div>
             </div>
 
+            <div className="sector-zoom-toggle" role="group" aria-label="Map zoom">
+              <button type="button" aria-pressed={!zoom} onClick={() => setZoom(null)}>
+                Australia
+              </button>
+              <button
+                type="button"
+                aria-pressed={Boolean(zoom)}
+                onClick={() => setZoom(zoomFor(jurisdiction))}
+              >
+                {STATE_NAMES[jurisdiction]}
+              </button>
+            </div>
+
             <svg
+              ref={svgRef}
               className="australia-sector-map"
               viewBox={`0 0 ${AUSTRALIA_MAP_VIEWBOX.width} ${AUSTRALIA_MAP_VIEWBOX.height}`}
               role="img"
-              aria-label={`Australian access to justice organisations by jurisdiction. ${STATE_NAMES[jurisdiction]} selected.`}
+              aria-label={`Australian access to justice organisations by jurisdiction. ${STATE_NAMES[jurisdiction]} selected${zoom ? ' and zoomed' : ''}.`}
             >
               <defs>
                 <pattern
@@ -228,61 +319,80 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
                   width="6"
                   height="6"
                   patternUnits="userSpaceOnUse"
-                  patternTransform="rotate(45)"
+                  patternTransform={`rotate(45) scale(${1 / k})`}
                 >
                   <rect width="6" height="6" fill="var(--status-active-bg)" />
                   <line x1="0" y1="0" x2="0" y2="6" stroke="var(--trust)" strokeOpacity="0.5" strokeWidth="1.1" />
                 </pattern>
               </defs>
-              {AUSTRALIA_STATES.map((state) => {
-                const key = state.jurisdiction as MapJurisdiction;
-                const selected = key === jurisdiction;
-                const isAct = key === 'ACT';
-                const labelX = state.labelX + (LABEL_NUDGES[key]?.dx ?? 0);
-                const labelY = state.labelY + (LABEL_NUDGES[key]?.dy ?? 0);
-                return (
-                  <g
-                    className={`sector-state ${selected ? 'selected' : ''}`}
-                    style={{ '--map-density': mapCounts[key] / maxMapCount } as CSSProperties}
-                    key={key}
-                    role="button"
-                    tabIndex={0}
-                    aria-label={`${state.name}, ${mapCounts[key]} ${focusTier ? `${tierLabel[focusTier]} organisations` : 'organisations'}`}
-                    onClick={() => selectJurisdiction(key)}
-                    onKeyDown={(event) => {
-                      if (event.key === 'Enter' || event.key === ' ') {
-                        event.preventDefault();
-                        selectJurisdiction(key);
-                      }
-                    }}
-                  >
-                    <path d={state.path} fillRule="evenodd" />
-                    {isAct ? (
-                      <>
-                        <circle className="sector-state-hit" cx={state.labelX} cy={state.labelY + 4} r="15" />
-                        <line
-                          className="sector-state-leader"
-                          x1={state.labelX + 8}
-                          y1={state.labelY + 6}
-                          x2={labelX - 7}
-                          y2={labelY - 5}
-                        />
-                      </>
-                    ) : null}
-                    <text x={labelX} y={labelY} textAnchor={isAct ? 'start' : 'middle'}>
-                      {key}
-                    </text>
-                    <text
-                      className="sector-state-count"
-                      x={labelX}
-                      y={labelY + 22}
-                      textAnchor={isAct ? 'start' : 'middle'}
+              <g
+                className="sector-map-states"
+                style={{ transform: `translate(${zoom?.tx ?? 0}px, ${zoom?.ty ?? 0}px) scale(${k})` }}
+              >
+                {AUSTRALIA_STATES.map((state) => {
+                  const key = state.jurisdiction as MapJurisdiction;
+                  const selected = key === jurisdiction;
+                  const isAct = key === 'ACT';
+                  // Label metrics divide by the zoom scale so type and offsets
+                  // hold a constant on-screen size at any zoom level.
+                  const labelX = state.labelX + (LABEL_NUDGES[key]?.dx ?? 0) / k;
+                  const labelY = state.labelY + (LABEL_NUDGES[key]?.dy ?? 0) / k;
+                  return (
+                    <g
+                      className={`sector-state ${selected ? 'selected' : ''}`}
+                      style={{ '--map-density': mapCounts[key] / maxMapCount } as CSSProperties}
+                      key={key}
+                      data-jurisdiction={key}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`${state.name}, ${mapCounts[key]} ${category ? `${categoryLabel[category]} organisations` : 'organisations'}`}
+                      onClick={() => selectJurisdiction(key)}
+                      onKeyDown={(event) => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                          event.preventDefault();
+                          selectJurisdiction(key);
+                        }
+                      }}
                     >
-                      {mapCounts[key]}
-                    </text>
-                  </g>
-                );
-              })}
+                      <path d={state.path} fillRule="evenodd" />
+                      {isAct ? (
+                        <>
+                          <circle
+                            className="sector-state-hit"
+                            cx={state.labelX}
+                            cy={state.labelY + 4 / k}
+                            r={15 / k}
+                          />
+                          <line
+                            className="sector-state-leader"
+                            x1={state.labelX + 8 / k}
+                            y1={state.labelY + 6 / k}
+                            x2={labelX - 7 / k}
+                            y2={labelY - 5 / k}
+                          />
+                        </>
+                      ) : null}
+                      <text
+                        x={labelX}
+                        y={labelY}
+                        textAnchor={isAct ? 'start' : 'middle'}
+                        style={{ fontSize: 20 / k, strokeWidth: 4 / k }}
+                      >
+                        {key}
+                      </text>
+                      <text
+                        className="sector-state-count"
+                        x={labelX}
+                        y={labelY + 22 / k}
+                        textAnchor={isAct ? 'start' : 'middle'}
+                        style={{ fontSize: 16 / k, strokeWidth: 4 / k }}
+                      >
+                        {mapCounts[key]}
+                      </text>
+                    </g>
+                  );
+                })}
+              </g>
             </svg>
 
             <div className="sector-map-foot">
@@ -291,7 +401,7 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
                 <span className="sector-map-scale-ramp" />
                 <span>{maxMapCount}</span>
                 <span className="sector-map-scale-what">
-                  {focusTier ? tierLabel[focusTier] : 'frontline'} records per jurisdiction
+                  {category ? categoryLabel[category] : 'frontline'} records per jurisdiction
                 </span>
               </div>
               <p className="sector-map-source">
@@ -302,7 +412,7 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
           </div>
 
           <aside className="sector-map-detail" aria-live="polite">
-            <div className="sector-detail-swap" key={`${jurisdiction}-${focusTier ?? 'all'}`}>
+            <div className="sector-detail-swap" key={`${jurisdiction}-${category ?? 'all'}`}>
               <header className="sector-jurisdiction-head">
                 <p>{jurisdiction}</p>
                 <span className="sector-jurisdiction-name">{STATE_NAMES[jurisdiction]}</span>
@@ -313,23 +423,23 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
                 <p className="sector-panel-label">Filter by service category</p>
                 <button
                   type="button"
-                  aria-pressed={focusTier === null}
-                  onClick={() => selectTier(null)}
+                  aria-pressed={category === null}
+                  onClick={() => selectCategory(null)}
                 >
                   <span className="sector-key-dot sector-key-all" />
                   <span>All frontline services</span>
                   <strong>{frontlineTotal}</strong>
                 </button>
-                {serviceCounts.map((category) => (
+                {serviceCounts.map((entry) => (
                   <button
                     type="button"
-                    key={category.key}
-                    aria-pressed={focusTier === category.key}
-                    onClick={() => selectTier(category.key)}
+                    key={entry.key}
+                    aria-pressed={category === entry.key}
+                    onClick={() => selectCategory(entry.key)}
                   >
-                    <span className={`sector-key-dot sector-key-${category.key}`} />
-                    <span>{category.label}</span>
-                    <strong>{category.count}</strong>
+                    <span className={`sector-key-dot sector-key-${entry.key}`} />
+                    <span>{entry.label}</span>
+                    <strong>{entry.count}</strong>
                   </button>
                 ))}
               </div>
@@ -337,7 +447,7 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
               <div className="sector-org-picker">
                 <div className="sector-org-picker-head">
                   <label htmlFor="sector-org-select">
-                    {focusTier ? tierLabel[focusTier] : 'Frontline services'} in {jurisdiction}
+                    {category ? categoryLabel[category] : 'Frontline services'} in {jurisdiction}
                   </label>
                   <div className="sector-org-step" role="group" aria-label="Step through organisations">
                     <button
@@ -378,13 +488,17 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
               {selectedOrg ? (
                 <div className="sector-selected-org">
                   <div className="sector-selected-name">
-                    <span className={`sector-key-dot sector-key-${selectedOrg.tier}`} />
+                    <span className={`sector-key-dot sector-key-${categoryOf(selectedOrg) ?? 'all'}`} />
                     <h3>{selectedOrg.name}</h3>
                   </div>
                   <dl>
                     <div>
                       <dt>Type</dt>
-                      <dd>{tierLabel[selectedOrg.tier]}</dd>
+                      <dd>
+                        {categoryOf(selectedOrg) === 'wls'
+                          ? 'Women’s Legal Services'
+                          : tierLabel[selectedOrg.tier]}
+                      </dd>
                     </div>
                     <div>
                       <dt>Jurisdiction</dt>

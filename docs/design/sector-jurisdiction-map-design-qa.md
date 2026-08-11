@@ -87,6 +87,30 @@
   dashed pro bono flow it annotates.
 - Both captures above were retaken after this pass (dark, 1530 px).
 
+### Pass 6 — category split and state zoom
+
+- "CLCs + Women's Legal Services" split into two explorer categories.
+  Women's legal services sit inside the CLC tier in every source directory,
+  so the split is derived from each organisation's own name
+  (`isWomensLegalService` in `lib/sector-data.ts`; 19 of 157 CLC-tier
+  records). The underlying tier and the System diagram's combined
+  "154 represented" node are unchanged — that figure is sourced to CLCs
+  Australia describing both groups together.
+- Women's Legal Services get a rose key dot; map counts, density shading,
+  the scale row and the detail column all recount under the new category.
+- Map zoom: an Australia / selected-state toggle above the map, and a second
+  click on the selected state, zoom into that state's boundary (animated CSS
+  transform, capped at 6×). Clicking another state while zoomed re-zooms to
+  it. Labels, counts, halos, the ACT leader and the selection hatch
+  counter-scale so they hold a constant on-screen size at any zoom level.
+- Limit stated for the record: the directory has no address or coordinate
+  data, so precise service locations cannot be plotted honestly yet.
+  Geocoding the directory is the follow-up that would enable point-level
+  coverage analysis; the map keeps its "counts are directory records, not
+  service locations" caveat.
+- The map capture above was retaken after this pass (Women's Legal Services
+  filter, Australia view).
+
 ## Functionality and accessibility
 
 - Map and System tabs switch panels.

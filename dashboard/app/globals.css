@@ -2106,6 +2106,10 @@ main {
   background: var(--caution);
 }
 
+.sector-key-wls {
+  background: light-dark(#be185d, #f5a0c8);
+}
+
 .sector-key-atsils {
   background: light-dark(#6d28d9, #b89aff);
 }
@@ -2160,6 +2164,47 @@ main {
   margin: auto;
 }
 
+/* The zoom is a CSS transform on the state group, so it animates. Label
+   metrics counter-divide by the scale inline to hold their on-screen size. */
+.sector-map-states {
+  transform-box: view-box;
+  transform-origin: 0 0;
+  transition: transform var(--dur-slow) var(--ease-out-quint);
+}
+
+.sector-zoom-toggle {
+  display: inline-flex;
+  align-self: flex-end;
+  margin-bottom: -0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.sector-zoom-toggle button {
+  min-height: 1.9rem;
+  padding: 0.25rem 0.7rem;
+  border: 0;
+  background: transparent;
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 0.6875rem;
+  cursor: pointer;
+}
+
+.sector-zoom-toggle button + button {
+  border-left: 1px solid var(--border);
+}
+
+.sector-zoom-toggle button:hover {
+  background: var(--row-hover);
+}
+
+.sector-zoom-toggle button[aria-pressed='true'] {
+  background: var(--status-amended-bg);
+  color: var(--primary);
+}
+
 .sector-state {
   cursor: pointer;
 }
@@ -2210,6 +2255,7 @@ main {
 .sector-state-leader {
   stroke: var(--rule-heavy);
   stroke-width: 1;
+  vector-effect: non-scaling-stroke;
   pointer-events: none;
 }
 
@@ -2224,6 +2270,11 @@ main {
   stroke: var(--background);
   stroke-width: 4px;
   stroke-linejoin: round;
+  /* Inline font-size/stroke-width counter-scale with the zoom; animating
+     them alongside the group transform keeps the two in step. */
+  transition:
+    font-size var(--dur-slow) var(--ease-out-quint),
+    stroke-width var(--dur-slow) var(--ease-out-quint);
 }
 
 .sector-state .sector-state-count {
