@@ -1,5 +1,67 @@
 [
   {
+    "id": "dev-11-aug-2026-news-when-ai-agents-take-unexpected--qhac98",
+    "title": "11 Aug 2026 News When AI agents take unexpected actions Learn how AI agents can take unexpected actions, understand the risks of goal misalignment, and apply practical safeguards for safer AI adoption.",
+    "url": "https://www.cyber.gov.au/about-us/view-all-content/news/when-ai-agents-take-unexpected-actions",
+    "sourceId": "cyber-news",
+    "sourceName": "Australian Cyber Security Centre — news",
+    "jurisdiction": "federal",
+    "publishedAt": "2026-08-11",
+    "publishedAtPrecision": "day",
+    "detectedAt": "2026-08-11T19:31:43.104Z",
+    "summary": "ACSC news article on risks of AI agents taking unexpected actions from goal misalignment, with safeguards recommended for organisations adopting AI agents.",
+    "relevanceScore": 0.65,
+    "classification": "ai",
+    "assessment": {
+      "method": "ai",
+      "promptVersion": "claude-classify-v1",
+      "assessedAt": "2026-08-11T19:31:43.104Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.cyber.gov.au/about-us/view-all-content/news/when-ai-agents-take-unexpected-actions",
+        "finalUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/when-ai-agents-take-unexpected-actions",
+        "retrievedAt": "2026-08-11T19:31:43.104Z",
+        "contentType": "text/plain",
+        "contentHash": "feb997ed004cd663c127293b82dfe575ef9f1ebdbcec582214fe5df474cbcc54",
+        "title": "11 Aug 2026 News When AI agents take unexpected actions Learn how AI agents can take unexpected actions, understand the risks of goal misalignment, and apply practical safeguards for safer AI adoption.",
+        "publishedAt": "2026-08-11",
+        "publishedAtPrecision": "day"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-senate-opens-inquiry-into-artificial-intelligenc-1ipifwe",
+    "title": "Senate opens inquiry into artificial intelligence and data centres",
+    "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+    "sourceId": "senate-ai-data-centres",
+    "sourceName": "Senate inquiry — artificial intelligence and data centres",
+    "jurisdiction": "federal",
+    "detectedAt": "2026-08-11T19:31:43.104Z",
+    "summary": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+    "relevanceScore": 1,
+    "classification": "ai",
+    "assessment": {
+      "method": "ai",
+      "promptVersion": "claude-classify-v1",
+      "assessedAt": "2026-08-11T19:31:43.104Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+        "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+        "retrievedAt": "2026-08-11T19:31:43.104Z",
+        "contentType": "text/html",
+        "contentHash": "fea77000805ae4640a1f31b5105e68917245f7e08816ed0063cb02bacc153392",
+        "title": "Senate opens inquiry into artificial intelligence and data centres"
+      }
+    },
+    "status": "detected"
+  },
+  {
     "id": "dev-report-explores-risks-and-controls-for-artificia-grmboo",
     "title": "Report explores risks and controls for artificial intelligence (AI) agents",
     "url": "https://www.industry.gov.au/news/report-explores-risks-and-controls-artificial-intelligence-ai-agents",
