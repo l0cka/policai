@@ -2044,43 +2044,23 @@ main {
   padding: 0;
 }
 
+/*
+ * Two panes, natural height: the map is the dominant object and the page
+ * scrolls normally. Every filter lives in the detail column, next to what
+ * it changes, so there is one reading order: state, category, organisation.
+ */
 .sector-map-layout {
   display: grid;
-  grid-template-columns: minmax(13rem, 0.7fr) minmax(31rem, 2fr) minmax(20rem, 1fr);
-  height: 38rem;
+  grid-template-columns: minmax(0, 1.6fr) minmax(21rem, 1fr);
+  align-items: stretch;
 }
 
-.sector-map-key,
 .sector-map-detail {
   min-width: 0;
   background: var(--card);
-  overflow-y: auto;
-  scrollbar-width: none;
-}
-
-.sector-map-key::-webkit-scrollbar,
-.sector-map-detail::-webkit-scrollbar {
-  display: none;
-}
-
-.sector-map-key {
-  padding: 1.25rem;
-  border-right: 1px solid var(--rule);
-}
-
-.sector-map-detail {
   border-left: 1px solid var(--rule);
 }
 
-.sector-category-list,
-.sector-relationship-list {
-  display: grid;
-  gap: 0.25rem;
-  margin-top: 0.75rem;
-}
-
-.sector-category-list button,
-.sector-relationship-list button,
 .sector-breakdown button {
   display: grid;
   grid-template-columns: 0.75rem 1fr auto;
@@ -2098,15 +2078,13 @@ main {
   cursor: pointer;
 }
 
-.sector-category-list button[aria-pressed='true'],
-.sector-relationship-list button[aria-pressed='true'],
+.sector-breakdown button:hover {
+  background: var(--row-hover);
+}
+
 .sector-breakdown button[aria-pressed='true'] {
   border-color: var(--primary);
   background: var(--status-amended-bg);
-}
-
-.sector-key-section {
-  margin-top: 1.5rem;
 }
 
 .sector-key-dot {
@@ -2134,48 +2112,11 @@ main {
   background: light-dark(#c2410c, #fb923c);
 }
 
-.sector-line-key {
-  display: inline-block;
-  width: 0.75rem;
-  border-top: 2px solid var(--primary);
-}
-
-.sector-line-referral {
-  border-color: var(--trust);
-  border-top-style: dashed;
-}
-
-.sector-line-secondment {
-  border-color: var(--caution);
-  border-top-style: dashed;
-}
-
-.sector-line-clinic {
-  border-color: light-dark(#6d28d9, #b89aff);
-  border-top-style: dotted;
-}
-
-.sector-line-project_support {
-  border-color: var(--muted-foreground);
-  border-top-style: dotted;
-}
-
-.sector-map-note {
-  margin-top: 1.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--rule-hair);
-  font-size: 0.7rem;
-  line-height: 1.65;
-  color: var(--muted-foreground);
-}
-
 .sector-map-canvas {
   display: flex;
   flex-direction: column;
+  gap: 1rem;
   min-width: 0;
-  /* A grid item's implicit min-height would let the column overflow the
-     bounded explorer and clip Tasmania; 0 lets the SVG shrink to fit. */
-  min-height: 0;
   padding: 1.25rem;
   background: var(--background);
 }
@@ -2212,9 +2153,9 @@ main {
 
 .australia-sector-map {
   display: block;
-  flex: 1 1 0%;
-  min-height: 0;
   width: 100%;
+  height: auto;
+  aspect-ratio: 760 / 600;
   margin: auto;
 }
 
@@ -2236,10 +2177,20 @@ main {
     stroke var(--dur-base) var(--ease-out-quint);
 }
 
-.sector-state:hover path,
-.sector-state:focus-visible path {
+/* Focus follows the coastline, not a bounding box. */
+.sector-state:focus,
+.sector-state:focus-visible {
+  outline: none;
+}
+
+.sector-state:hover path {
   fill: color-mix(in oklab, var(--trust) calc(var(--map-density, 0) * 34%), var(--row-hover));
   stroke: var(--ring);
+}
+
+.sector-state:focus-visible path {
+  stroke: var(--ring);
+  stroke-width: 2.4;
 }
 
 /* The selected state reads as a print hatch, not a fourth density step. */
@@ -2284,6 +2235,11 @@ main {
   fill: var(--trust);
 }
 
+.sector-map-foot {
+  display: grid;
+  gap: 0.4rem;
+}
+
 .sector-map-source {
   font-size: 0.6875rem;
   line-height: 1.55;
@@ -2316,10 +2272,6 @@ main {
   margin-top: 0.2rem;
   font-size: 0.8125rem;
   font-weight: 400;
-}
-
-.sector-breakdown button {
-  padding-inline: 0;
 }
 
 .sector-breakdown .sector-panel-label {
@@ -2441,20 +2393,56 @@ main {
   font-size: 0.75rem;
 }
 
-/* Sourced-evidence counts on the relationship filters. */
-.sector-count {
-  justify-self: end;
-  font-weight: 400;
+/*
+ * Relationship chips sit inside the evidence section, next to the block they
+ * change. Each carries the sourced-evidence count for the current map view.
+ */
+.sector-relationship-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.6rem;
+}
+
+.sector-relationship-chips button {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  min-height: 1.9rem;
+  padding: 0.25rem 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  font-size: 0.6875rem;
+  cursor: pointer;
+}
+
+.sector-relationship-chips button:hover {
+  background: var(--row-hover);
+}
+
+.sector-relationship-chips button[aria-pressed='true'] {
+  border-color: var(--primary);
+  background: var(--status-amended-bg);
+  color: var(--primary);
+}
+
+.sector-relationship-chips button span {
   font-variant-numeric: tabular-nums;
   color: var(--muted-foreground);
 }
 
-.sector-relationship-list button[aria-pressed='true'] .sector-count {
-  color: var(--foreground);
+.sector-relationship-chips .sector-chip-empty {
+  opacity: 0.55;
 }
 
-.sector-relationship-empty {
-  opacity: 0.55;
+.sector-evidence-note {
+  margin-top: 0.75rem;
+  font-size: 0.65rem;
+  line-height: 1.6;
+  color: var(--muted-foreground);
 }
 
 /* Density scale under the map. */
@@ -2462,7 +2450,6 @@ main {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 0.5rem;
   font-size: 0.6875rem;
   font-variant-numeric: tabular-nums;
   color: var(--muted-foreground);
@@ -2564,37 +2551,15 @@ main {
   }
 }
 
-@media (max-width: 1100px) {
+/* One breakpoint: map above, detail below, page keeps scrolling naturally. */
+@media (max-width: 960px) {
   .sector-map-layout {
-    height: auto;
-    grid-template-columns: minmax(12rem, 0.65fr) minmax(28rem, 1.7fr);
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .sector-map-detail {
-    grid-column: 1 / -1;
     border-top: 1px solid var(--rule);
     border-left: 0;
-  }
-
-  .sector-detail-swap {
-    display: grid;
-    grid-template-columns: 0.6fr 1fr 1fr;
-  }
-
-  /* Unbounded layouts size the map from its own aspect ratio again. */
-  .australia-sector-map {
-    flex: none;
-    aspect-ratio: 760 / 600;
-  }
-
-  .sector-jurisdiction-head,
-  .sector-breakdown,
-  .sector-org-picker {
-    border-right: 1px solid var(--rule);
-  }
-
-  .sector-selected-org {
-    grid-column: 1 / -1;
   }
 }
 
@@ -2604,31 +2569,8 @@ main {
     flex-direction: column;
   }
 
-  .sector-map-layout {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .sector-map-key {
-    order: 2;
-    border-top: 1px solid var(--rule);
-    border-right: 0;
-  }
-
   .sector-map-canvas {
-    order: 1;
     padding: 0.75rem;
-  }
-
-  .sector-map-detail {
-    order: 3;
-    display: block;
-  }
-
-  .sector-jurisdiction-head,
-  .sector-breakdown,
-  .sector-org-picker {
-    border-right: 0;
   }
 
   .sector-map-government {
@@ -2638,10 +2580,6 @@ main {
   .sector-map-government > div:first-child {
     border-right: 0;
     border-bottom: 1px solid var(--border);
-  }
-
-  .australia-sector-map {
-    min-height: 23rem;
   }
 
   .diagram-action-hint {

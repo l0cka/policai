@@ -49,6 +49,27 @@
   the FVPLS node was widened to contain its title.
 - Implementation captures above were retaken after this pass (1490 px, dark).
 
+### Pass 4 — layout restructure (squashed / hard to navigate feedback)
+
+- The bounded three-column explorer was replaced with a two-pane spread at
+  natural height: dominant map left, one detail column right, normal page
+  scrolling, no hidden internal scrollbars.
+- The duplicate left filter sidebar was removed. The service-category filter
+  lives only in the detail column (with an "All frontline services" row), so
+  there is a single reading order: state on the map, category, organisation.
+- The relationship picker moved into the evidence section as chips with
+  sourced-evidence counts, directly above the block it changes; the
+  evidence-gating note sits under the evidence items.
+- The rectangular keyboard-focus outline on states was replaced with a
+  coastline-following ring stroke (`outline: none` on the group, thicker
+  `--ring` stroke on the path for `:focus-visible`).
+- Responsive: one stack breakpoint at 960 px (map above detail); the 760 px
+  rules keep the stacked government context and compact canvas padding.
+- Known pre-existing issue, out of scope: the site header's theme toggle
+  overflows the viewport by ~3 px at in-between widths (~720 px).
+- The map capture above was retaken after this pass; the System capture is
+  unchanged from pass 3.
+
 ## Functionality and accessibility
 
 - Map and System tabs switch panels.

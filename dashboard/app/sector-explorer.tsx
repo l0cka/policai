@@ -126,6 +126,7 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
       })),
     [orgs, jurisdiction],
   );
+  const frontlineTotal = serviceCounts.reduce((sum, category) => sum + category.count, 0);
 
   // Sourced-evidence counts within the current jurisdiction and tier scope.
   // Funding counts directory attributions; the other types count named links.
@@ -152,11 +153,6 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
     setSelectedName(firstOrgFor(orgs, jurisdiction, next, relationship)?.name ?? '');
   };
 
-  const selectRelationship = (next: RelationshipType) => {
-    setRelationship(next);
-    setSelectedName(firstOrgFor(orgs, jurisdiction, focusTier, next)?.name ?? '');
-  };
-
   const stepOrg = (delta: number) => {
     if (!visibleOrgs.length) return;
     const next = Math.min(Math.max(selectedIndex + delta, 0), visibleOrgs.length - 1);
@@ -178,7 +174,7 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
           </p>
           <p className="sector-explorer-summary">
             {view === 'map'
-              ? 'Select a state or territory, then inspect organisations and sourced relationships.'
+              ? 'Select a state or territory on the map, then narrow to a service category and organisation.'
               : 'Select a delivery group to open its organisations on the map.'}
           </p>
         </div>
@@ -208,55 +204,6 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
         </div>
       ) : (
         <div role="tabpanel" aria-label="Map view" className="sector-map-layout">
-          <aside className="sector-map-key" aria-label="Map filters and legend">
-            <p className="sector-panel-label">Service categories</p>
-            <div className="sector-category-list">
-              <button
-                type="button"
-                aria-pressed={focusTier === null}
-                onClick={() => selectTier(null)}
-              >
-                <span className="sector-key-dot sector-key-all" />
-                All frontline services
-              </button>
-              {SERVICE_CATEGORIES.map((category) => (
-                <button
-                  type="button"
-                  key={category.key}
-                  aria-pressed={focusTier === category.key}
-                  onClick={() => selectTier(category.key)}
-                >
-                  <span className={`sector-key-dot sector-key-${category.key}`} />
-                  {category.label}
-                </button>
-              ))}
-            </div>
-
-            <p className="sector-panel-label sector-key-section">Relationship type</p>
-            <div className="sector-relationship-list">
-              {RELATIONSHIPS.map((type) => (
-                <button
-                  type="button"
-                  key={type}
-                  className={relationshipCounts[type] === 0 ? 'sector-relationship-empty' : undefined}
-                  aria-pressed={relationship === type}
-                  onClick={() => selectRelationship(type)}
-                >
-                  <span className={`sector-line-key sector-line-${type}`} />
-                  {RELATIONSHIP_LABELS[type]}
-                  <strong className="sector-count" aria-label={`${relationshipCounts[type]} sourced in this view`}>
-                    {relationshipCounts[type]}
-                  </strong>
-                </button>
-              ))}
-            </div>
-
-            <p className="sector-map-note">
-              Named links appear only when a published source describes that relationship. Historical
-              examples are labelled; general support is not converted into a specific link.
-            </p>
-          </aside>
-
           <div className="sector-map-canvas">
             <div className="sector-map-government" aria-label="National funding context">
               <div>
@@ -338,19 +285,20 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
               })}
             </svg>
 
-            <div className="sector-map-scale" aria-hidden="true">
-              <span>0</span>
-              <span className="sector-map-scale-ramp" />
-              <span>{maxMapCount}</span>
-              <span className="sector-map-scale-what">
-                {focusTier ? tierLabel[focusTier] : 'frontline'} records per jurisdiction
-              </span>
+            <div className="sector-map-foot">
+              <div className="sector-map-scale" aria-hidden="true">
+                <span>0</span>
+                <span className="sector-map-scale-ramp" />
+                <span>{maxMapCount}</span>
+                <span className="sector-map-scale-what">
+                  {focusTier ? tierLabel[focusTier] : 'frontline'} records per jurisdiction
+                </span>
+              </div>
+              <p className="sector-map-source">
+                Map: <a href={AUSTRALIA_MAP_SOURCE_URL}>{AUSTRALIA_MAP_SOURCE}</a>. Counts are
+                directory records, not service locations.
+              </p>
             </div>
-
-            <p className="sector-map-source">
-              Map: <a href={AUSTRALIA_MAP_SOURCE_URL}>{AUSTRALIA_MAP_SOURCE}</a>. Counts are directory
-              records, not service locations.
-            </p>
           </div>
 
           <aside className="sector-map-detail" aria-live="polite">
@@ -358,11 +306,20 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
               <header className="sector-jurisdiction-head">
                 <p>{jurisdiction}</p>
                 <span className="sector-jurisdiction-name">{STATE_NAMES[jurisdiction]}</span>
-                <strong>{totals[jurisdiction]} organisations</strong>
+                <strong>{totals[jurisdiction]} organisations in the directory</strong>
               </header>
 
               <div className="sector-breakdown">
-                <p className="sector-panel-label">Frontline service records</p>
+                <p className="sector-panel-label">Filter by service category</p>
+                <button
+                  type="button"
+                  aria-pressed={focusTier === null}
+                  onClick={() => selectTier(null)}
+                >
+                  <span className="sector-key-dot sector-key-all" />
+                  <span>All frontline services</span>
+                  <strong>{frontlineTotal}</strong>
+                </button>
                 {serviceCounts.map((category) => (
                   <button
                     type="button"
@@ -447,9 +404,27 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
                   <p className="sector-selected-role">{selectedOrg.role}</p>
 
                   <div className="sector-evidence">
-                    <p className="sector-panel-label">
-                      {RELATIONSHIP_LABELS[relationship]} evidence
-                    </p>
+                    <p className="sector-panel-label">Sourced relationships</p>
+                    <div
+                      className="sector-relationship-chips"
+                      role="group"
+                      aria-label="Relationship type"
+                    >
+                      {RELATIONSHIPS.map((type) => (
+                        <button
+                          type="button"
+                          key={type}
+                          className={relationshipCounts[type] === 0 ? 'sector-chip-empty' : undefined}
+                          aria-pressed={relationship === type}
+                          onClick={() => setRelationship(type)}
+                        >
+                          {RELATIONSHIP_LABELS[type]}
+                          <span aria-label={`${relationshipCounts[type]} sourced in this view`}>
+                            {relationshipCounts[type]}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
                     {relationship === 'funding' ? (
                       <div className="sector-evidence-item">
                         <p>{selectedOrg.funded_by || 'No funding attribution recorded.'}</p>
@@ -475,6 +450,11 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
                         sourced for this organisation yet.
                       </div>
                     )}
+                    <p className="sector-evidence-note">
+                      Named links appear only when a published source describes that relationship.
+                      Historical examples are labelled; general support is not converted into a
+                      specific link. Counts cover the current map view.
+                    </p>
                   </div>
 
                   {selectedOrg.url ? (
