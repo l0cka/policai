@@ -70,6 +70,23 @@
 - The map capture above was retaken after this pass; the System capture is
   unchanged from pass 3.
 
+### Pass 5 — deframe (both tabs still felt squashed)
+
+- The explorer card frame was removed entirely. Both tabs are open spreads on
+  the page: the kicker/tab header row closes with a print rule, the map and
+  the System diagram sit directly on the page background, and the detail
+  column is separated by a vertical rule with hairlines between its sections
+  instead of a card.
+- The System diagram lost its second frame (`.diagram-frame` border, card
+  background and padding are neutralised inside the explorer) and now uses
+  the full 1536 px container width.
+- The duplicated "Explore by jurisdiction." hero intro line was removed; the
+  explorer's own kicker carries it.
+- The "National Pro Bono Target" caption in the System diagram overlapped the
+  NAJP node's right edge; it moved below the node into clear space beside the
+  dashed pro bono flow it annotates.
+- Both captures above were retaken after this pass (dark, 1530 px).
+
 ## Functionality and accessibility
 
 - Map and System tabs switch panels.

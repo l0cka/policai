@@ -144,8 +144,8 @@ export default function SectorDiagram({
           <path className="d-flow d-flow-by" d="M140 335 H148" markerEnd="url(#sd-arrow)" />
 
           <path className="d-flow d-flow-pb" d="M1120 98 V278" markerEnd="url(#sd-arrow)" />
-          <text x="1102" y="151" textAnchor="end" className="d-n">National Pro Bono Target</text>
-          <text x="1102" y="170" textAnchor="end" className="d-n">35 hrs · 20 hrs in-house</text>
+          <text x="1102" y="243" textAnchor="end" className="d-n">National Pro Bono Target</text>
+          <text x="1102" y="262" textAnchor="end" className="d-n">35 hrs · 20 hrs in-house</text>
 
           <rect className="d-box d-box-pb" x="980" y="280" width="280" height="112" rx="4" />
           <text x="1120" y="308" textAnchor="middle" className="d-t">Pro bono pathways</text>

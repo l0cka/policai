@@ -52,7 +52,6 @@ export default async function SectorPage() {
         <header className="sector-hero-head">
           <p className="page-eyebrow">Sector reference · compiled {COMPILED}</p>
           <h1 id="sector-explorer-title" className="section-heading">Funding and referral structure</h1>
-          <p className="section-intro">Explore by jurisdiction.</p>
         </header>
         <SectorExplorer orgs={orgs} />
       </section>
