@@ -1,5 +1,117 @@
 [
   {
+    "id": "mcp-audit-3db793a8-2467-453a-8cf7-a14843624ca6",
+    "createdAt": "2026-08-11T23:18:34.734Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-3d5eb8f1-41ff-4916-a0b3-8df37566ee44",
+    "createdAt": "2026-08-11T23:18:25.837Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-d681e870-1e65-401f-85da-a40e1a51902b",
+    "createdAt": "2026-08-11T23:18:19.358Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-698066fe-3897-4036-8390-162778709ad3",
+    "createdAt": "2026-08-11T23:18:07.095Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-50003f49-f2b6-4d42-b35b-6e12f9f3a536",
+    "createdAt": "2026-08-11T23:18:01.528Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-e67379f0-4917-41d3-b594-d2ccfb55cb4e",
+    "createdAt": "2026-08-11T23:17:52.795Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-f02440d6-f99d-4140-87af-2a018b9c0554",
+    "createdAt": "2026-08-11T23:17:26.190Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "error",
+    "errorSummary": "Browser capture contains unsupported stable metadata"
+  },
+  {
+    "id": "mcp-audit-335a77e1-d864-4e99-9393-816c980772b8",
+    "createdAt": "2026-08-11T23:17:20.153Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-40bf0ca4-858c-4117-9209-a10b8d27de22",
+    "createdAt": "2026-08-11T23:16:58.483Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "error",
+    "errorSummary": "A browser capture changes the retrieval method and must be staged before approval"
+  },
+  {
+    "id": "mcp-audit-716d425d-c799-492e-935e-62fc06cfc896",
+    "createdAt": "2026-08-11T23:16:22.109Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.industry.gov.au/news/report-explores-risks-and-controls-artificial-intelligence-ai-agents",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-2db96903-2cda-4c5c-9871-a77d5afb3ded",
+    "createdAt": "2026-08-11T23:16:09.409Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.industry.gov.au/news/report-explores-risks-and-controls-artificial-intelligence-ai-agents",
+    "status": "error",
+    "errorSummary": "Browser capture contains unsupported stable metadata"
+  },
+  {
+    "id": "mcp-audit-4ca59a80-3a1b-40f8-8270-1497432d48ac",
+    "createdAt": "2026-08-11T23:14:22.961Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.nsw.gov.au/ministerial-releases/minns-government-examines-measures-to-halt-ais-impact-on-cognitive-development-of-a-generation-of-nsw-students",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-c909a1d9-0b7b-4268-86e5-13ba16df2709",
+    "createdAt": "2026-08-11T23:14:06.787Z",
+    "actor": "local-mcp-admin",
+    "toolName": "reject_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-9a77fa6f-a49d-4a0f-9db6-d83ca9c866a7",
+    "createdAt": "2026-08-11T23:14:00.143Z",
+    "actor": "local-mcp-admin",
+    "toolName": "reject_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-53c31704-e150-4932-b0a9-1639a5c3aaed",
+    "createdAt": "2026-08-11T23:13:51.806Z",
+    "actor": "local-mcp-admin",
+    "toolName": "reject_staged_source",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-2e4e3539-686c-408c-8dc9-fdb261bbd68a",
     "createdAt": "2026-07-24T02:50:49.959Z",
     "actor": "local-mcp-admin",

@@ -30,7 +30,8 @@
         "publishedAtPrecision": "day"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Duplicate commentary on the existing verified guideline asd-careful-adoption-agentic-ai-services-2026; not a distinct policy instrument. The generated title and partial extract are also unsuitable for publication."
   },
   {
     "id": "dev-senate-opens-inquiry-into-artificial-intelligenc-1ipifwe",
@@ -40,26 +41,49 @@
     "sourceName": "Senate inquiry — artificial intelligence and data centres",
     "jurisdiction": "federal",
     "detectedAt": "2026-08-11T19:31:43.104Z",
-    "summary": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+    "summary": "The Senate inquiry covers AI and data-centre regulation, government deals, and community, industry, energy, water and environmental impacts. The official inquiry page now sets submissions to close on 1 September 2026 and the committee to report on 16 November 2026.",
     "relevanceScore": 1,
-    "classification": "ai",
+    "classification": "curated",
     "assessment": {
-      "method": "ai",
-      "promptVersion": "claude-classify-v1",
-      "assessedAt": "2026-08-11T19:31:43.104Z"
+      "method": "editorial",
+      "assessedAt": "2026-08-11T23:17:52.774Z",
+      "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
         "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
         "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
-        "retrievedAt": "2026-08-11T19:31:43.104Z",
+        "title": "Artificial intelligence and data centres – Parliament of Australia",
+        "retrievedAt": "2026-08-11T23:07:42Z",
         "contentType": "text/html",
-        "contentHash": "fea77000805ae4640a1f31b5105e68917245f7e08816ed0063cb02bacc153392",
-        "title": "Senate opens inquiry into artificial intelligence and data centres"
-      }
+        "contentHash": "19bbf766e99a03a9841d66abcd62fa8f79531b9fa8c7582d5714c31d2eed7407",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-08-11T23:07:42Z",
+          "capturedBy": "Daniel Alkurdi (Codex-assisted official-source review)",
+          "notes": "Fresh official Parliament source review after the hardened retriever returned HTTP 403. Material inquiry details match the existing timeline record.",
+          "pageContentHash": "2be2c70b71d4be32c0d7b9beee6362d1d86d27a03dcd9b6554123aefdf186a0d",
+          "characterCount": 587
+        },
+        "reviewedDate": {
+          "date": "2026-05-13",
+          "precision": "day",
+          "reviewedAt": "2026-08-11T23:17:52.774Z",
+          "reviewedBy": "Daniel Alkurdi (Codex-assisted official-source review)",
+          "notes": "The current Parliament of Australia inquiry page identifies 13 May 2026 as the referral date."
+        }
+      },
+      "checkedAt": "2026-08-11T23:17:52.774Z",
+      "checkedBy": "Daniel Alkurdi (Codex-assisted official-source review)",
+      "method": "manual",
+      "notes": "Approved by the user on 12 August 2026 after fresh official-source review. The inquiry remains the same timeline event: referred 13 May 2026, submissions close 1 September 2026, and the committee is due to report 16 November 2026."
     },
-    "status": "detected"
+    "status": "promoted",
+    "relatedTimelineEventId": "tl-2026-05-13-senate-ai-data-centres-inquiry",
+    "publishedAt": "2026-05-13",
+    "publishedAtPrecision": "day"
   },
   {
     "id": "dev-report-explores-risks-and-controls-for-artificia-grmboo",
@@ -92,7 +116,8 @@
         "publishedAtPrecision": "day"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Relevant AI Safety Institute research milestone, but the proposed policy record incorrectly classifies a commissioned research report as an active guideline. Replace with a timeline event."
   },
   {
     "id": "dev-minns-government-examines-measures-to-halt-ai-s--1d5zchc",
@@ -125,7 +150,8 @@
         "publishedAtPrecision": "day"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Relevant NSW policy-development milestone, but no guideline or measure has been adopted. Replace the proposed active policy with a timeline event recording NESA's requested examination."
   },
   {
     "id": "dev-guidelines-concerning-the-use-of-generative-arti-1qa7cww",

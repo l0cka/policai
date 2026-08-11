@@ -1006,30 +1006,30 @@
         "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
         "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
         "title": "Artificial intelligence and data centres – Parliament of Australia",
-        "retrievedAt": "2026-08-07T07:54:56.014Z",
+        "retrievedAt": "2026-08-11T23:07:42Z",
         "contentType": "text/html",
-        "contentHash": "97121dd9e867987cdbc700f17da8330a476db63b6189bbd63a9853fda73374c3",
+        "contentHash": "19bbf766e99a03a9841d66abcd62fa8f79531b9fa8c7582d5714c31d2eed7407",
         "linkedDocuments": [],
         "browserCapture": {
           "method": "browser",
-          "capturedAt": "2026-08-07T07:54:56.014Z",
-          "capturedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-07",
-          "notes": "Captured via self-hosted Firecrawl because the host refuses plain HTTP. Duplicate revision of verified timeline event tl-2026-05-13-senate-ai-data-centres-inquiry; aph.gov.au confirms referred 13 May 2026, submissions close 1 September 2026, reporting 16 November 2026.",
-          "pageContentHash": "01883369a08f9061548dc3b53760b173caf63d50dffd03c2b67f374211cd0d2a",
-          "characterCount": 29886
+          "capturedAt": "2026-08-11T23:07:42Z",
+          "capturedBy": "Daniel Alkurdi (Codex-assisted official-source review)",
+          "notes": "Fresh official Parliament source review after the hardened retriever returned HTTP 403. Material inquiry details match the existing timeline record.",
+          "pageContentHash": "2be2c70b71d4be32c0d7b9beee6362d1d86d27a03dcd9b6554123aefdf186a0d",
+          "characterCount": 587
         },
         "reviewedDate": {
           "date": "2026-05-13",
           "precision": "day",
-          "reviewedAt": "2026-08-07T07:54:56.063Z",
-          "reviewedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-07",
-          "notes": "Date confirmed against the live official source on 2026-08-07. Duplicate revision of verified timeline event tl-2026-05-13-senate-ai-data-centres-inquiry; aph.gov.au confirms referred 13 May 2026, submissions close 1 September 2026, reporting 16 November 2026."
+          "reviewedAt": "2026-08-11T23:17:52.774Z",
+          "reviewedBy": "Daniel Alkurdi (Codex-assisted official-source review)",
+          "notes": "The current Parliament of Australia inquiry page identifies 13 May 2026 as the referral date."
         }
       },
-      "checkedAt": "2026-08-07T07:54:56.063Z",
-      "checkedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-07",
+      "checkedAt": "2026-08-11T23:17:52.774Z",
+      "checkedBy": "Daniel Alkurdi (Codex-assisted official-source review)",
       "method": "manual",
-      "notes": "Duplicate revision of verified timeline event tl-2026-05-13-senate-ai-data-centres-inquiry; aph.gov.au confirms referred 13 May 2026, submissions close 1 September 2026, reporting 16 November 2026."
+      "notes": "Approved by the user on 12 August 2026 after fresh official-source review. The inquiry remains the same timeline event: referred 13 May 2026, submissions close 1 September 2026, and the committee is due to report 16 November 2026."
     }
   },
   {
@@ -1415,6 +1415,71 @@
       "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
       "method": "manual",
       "notes": "Approved after fresh review of the official SAET announcement and the exact adopted Guidelines and self-represented litigant information sheet."
+    }
+  },
+  {
+    "id": "tl-2026-08-10-aisi-ai-agent-risks-controls-report",
+    "date": "2026-08-10",
+    "datePrecision": "day",
+    "title": "Australian AI Safety Institute publishes first report on cross-organisation AI-agent risks",
+    "description": "The Australian AI Safety Institute published its first report, commissioned from Gradient Institute, offering a three-tier framework for understanding risks, failure types, controls and governance gaps when AI agents interact across organisational boundaries and the open internet.",
+    "type": "announcement",
+    "jurisdiction": "federal",
+    "sourceUrl": "https://www.industry.gov.au/news/report-explores-risks-and-controls-artificial-intelligence-ai-agents",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.industry.gov.au/news/report-explores-risks-and-controls-artificial-intelligence-ai-agents",
+        "finalUrl": "https://www.industry.gov.au/news/report-explores-risks-and-controls-artificial-intelligence-ai-agents",
+        "title": "Report explores risks and controls for artificial intelligence (AI) agents | Department of Industry Science and Resources",
+        "retrievedAt": "2026-08-11T23:15:36.479Z",
+        "contentType": "text/html",
+        "contentHash": "850e81ec22a49a9cce8fb176cd3cc0b36cb5197090add5f5fcea67d817d96a98",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-08-11T23:15:36.479Z",
+          "capturedBy": "Daniel Alkurdi (Codex-assisted official-source review)",
+          "notes": "Fresh visible-text capture from the official Department of Industry page after the hardened retriever timed out. The capture supports the publication date, first-publication status and report scope.",
+          "pageContentHash": "337d076427584d81484752a5dc295bf02002a7baab5fbaff74a882b767fb05a5",
+          "characterCount": 1229
+        },
+        "publishedAt": "2026-08-10",
+        "publishedAtPrecision": "day"
+      },
+      "checkedAt": "2026-08-11T23:18:01.510Z",
+      "checkedBy": "Daniel Alkurdi (Codex-assisted official-source review)",
+      "method": "manual",
+      "notes": "Approved by the user on 12 August 2026 as a timeline event, not a policy instrument. Fresh official browser evidence confirms the 10 August 2026 publication date, first-publication status and three-tier risk framework."
+    }
+  },
+  {
+    "id": "tl-2026-08-10-nsw-nesa-ai-school-safeguards-review",
+    "date": "2026-08-10",
+    "datePrecision": "day",
+    "title": "NSW asks NESA to examine AI safeguards for student learning and HSC integrity",
+    "description": "The NSW Deputy Premier asked the NSW Education Standards Authority to urgently examine measures to protect student learning and maintain the integrity of the Higher School Certificate as AI use accelerates in schools. No measure had been adopted at the time of the announcement.",
+    "type": "announcement",
+    "jurisdiction": "nsw",
+    "sourceUrl": "https://www.nsw.gov.au/ministerial-releases/minns-government-examines-measures-to-halt-ais-impact-on-cognitive-development-of-a-generation-of-nsw-students",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.nsw.gov.au/ministerial-releases/minns-government-examines-measures-to-halt-ais-impact-on-cognitive-development-of-a-generation-of-nsw-students",
+        "finalUrl": "https://www.nsw.gov.au/ministerial-releases/minns-government-examines-measures-to-halt-ais-impact-on-cognitive-development-of-a-generation-of-nsw-students",
+        "retrievedAt": "2026-08-11T23:18:07.033Z",
+        "contentType": "text/html",
+        "contentHash": "e01fe5810cae95cb0175a5c98a55f35a3fdb4235cf39f1589f42f3bc83d2c4be",
+        "etag": "\"1786488987\"",
+        "lastModified": "Tue, 11 Aug 2026 22:56:27 GMT",
+        "title": "Minns Government examines measures to halt AI’s impact on cognitive development of a generation of NSW students",
+        "publishedAt": "2026-08-10",
+        "publishedAtPrecision": "day"
+      },
+      "checkedAt": "2026-08-11T23:18:07.058Z",
+      "checkedBy": "Daniel Alkurdi (Codex-assisted official-source review)",
+      "method": "manual",
+      "notes": "Approved by the user on 12 August 2026 as a timeline event, not an adopted policy. The official NSW source confirms that NESA was asked to examine possible measures; it does not announce a completed guideline or rule."
     }
   }
 ]
