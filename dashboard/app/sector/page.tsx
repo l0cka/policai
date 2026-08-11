@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { getPool } from '../../lib/db';
-import SectorDiagram from '../sector-diagram';
 import SectorDirectory from '../sector-directory';
+import SectorExplorer from '../sector-explorer';
 import {
   COMPILED,
   ORGANISATIONS,
@@ -25,7 +25,12 @@ const TIER_LABEL = Object.fromEntries(TIERS.map((t) => [t.key, t.label])) as Rec
 >;
 
 export default async function SectorPage() {
-  const { rows } = await getPool().query(`SELECT name, url FROM sources WHERE active`);
+  // The sector reference is file-backed and remains useful in a local checkout
+  // without Postgres. Production still fails loudly if a configured database
+  // cannot be queried; only an intentionally absent DATABASE_URL falls back.
+  const rows = process.env.DATABASE_URL
+    ? (await getPool().query(`SELECT name, url FROM sources WHERE active`)).rows
+    : [];
   const orgs = markMonitored(
     ORGANISATIONS,
     rows.map((r) => ({ name: r.name as string, url: r.url as string })),
@@ -43,16 +48,16 @@ export default async function SectorPage() {
 
   return (
     <div className="container page">
-      <header className="page-head reveal">
-        <p className="page-eyebrow">Sector reference · compiled {COMPILED}</p>
-        <h1 className="page-title">The access to justice sector</h1>
-        <p className="page-intro">
-          Organisations that fund, coordinate, deliver or study legal assistance in Australia,
-          with the funding and referral structure that connects them.
-        </p>
-      </header>
+      <section aria-labelledby="sector-explorer-title" className="sector-hero reveal">
+        <header className="sector-hero-head">
+          <p className="page-eyebrow">Sector reference · compiled {COMPILED}</p>
+          <h1 id="sector-explorer-title" className="section-heading">Funding and referral structure</h1>
+          <p className="section-intro">Explore by jurisdiction.</p>
+        </header>
+        <SectorExplorer orgs={orgs} />
+      </section>
 
-      <dl className="stat-strip reveal reveal-1">
+      <dl className="stat-strip reveal reveal-1" aria-label="Sector snapshot">
         <div className="stat">
           <dd>{orgs.length}</dd>
           <dt>organisations</dt>
@@ -74,11 +79,6 @@ export default async function SectorPage() {
           <dt>NAJP 2025–30</dt>
         </div>
       </dl>
-
-      <section aria-label="Funding and referral structure">
-        <h2 className="section-heading">Funding and referral structure</h2>
-        <SectorDiagram />
-      </section>
 
       <section aria-label="The National Access to Justice Partnership">
         <h2 className="section-heading">The funding agreement</h2>

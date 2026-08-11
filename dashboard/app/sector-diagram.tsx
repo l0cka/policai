@@ -1,28 +1,34 @@
-/*
- * Funding and referral structure of the legal assistance sector.
- *
- * Type is sized for reading at the rendered scale, not for fitting more words
- * in: every label is a name or a number, and anything that needed a sentence
- * was cut. Colour is the only encoding — blue for funding under the Partnership,
- * amber for pro bono capacity, dashed for funding outside it.
- *
- * Each delivery arm carries its own peak body inside its box. They were a
- * separate row below the boxes at first, which put the names directly on the
- * lines running down to the outcome bar.
- */
-export default function SectorDiagram() {
+'use client';
+
+import type { KeyboardEvent } from 'react';
+import type { TierKey } from '../lib/sector-data';
+
+function activateOnKeyboard(event: KeyboardEvent<SVGGElement>, action: () => void) {
+  if (event.key === 'Enter' || event.key === ' ') {
+    event.preventDefault();
+    action();
+  }
+}
+
+export default function SectorDiagram({
+  onSelectTier,
+}: {
+  onSelectTier?: (tier: TierKey) => void;
+}) {
+  const selectable = Boolean(onSelectTier);
+
   return (
-    <figure className="diagram">
+    <figure className="diagram diagram-interactive">
       <div
         className="diagram-frame"
         role="region"
-        aria-label="Scrollable funding and referral structure diagram"
+        aria-label="Interactive funding, administration and pro bono capacity diagram"
         tabIndex={0}
       >
         <svg
-          viewBox="0 0 1280 590"
+          viewBox="0 0 1280 620"
           role="img"
-          aria-label="The Commonwealth Attorney-General's Department and the eight state and territory Attorneys-General fund the National Access to Justice Partnership 2025-30, worth $3.9 billion over five years. The Partnership funds four delivery arms: 8 Legal Aid Commissions, peak body National Legal Aid; about 154 Community Legal Centres, peak body CLCs Australia; 7 ATSILS, peak body NATSILS; and 15 FVPLS, peak body FNAAFV. Public purpose funds and philanthropy fund those arms outside the Partnership. Separately, the legal profession provides pro bono capacity under the National Pro Bono Target of 35 hours per lawyer per year, routed through clearing houses and court referral schemes. Both channels reach people with legal need."
+          aria-label="The Australian Government provides 3.9 billion dollars over five years through the National Access to Justice Partnership 2025 to 2030. State and territory governments are agreement parties and administrators, and may provide separate co-funding. The Partnership funds Legal Aid Commissions, Community Legal Centres and Women's Legal Services, Aboriginal and Torres Strait Islander Legal Services, and Family Violence Prevention Legal Services. The private profession contributes capacity through referrals, clinics, secondments and project support. These channels help people and communities with legal need."
         >
           <defs>
             <marker
@@ -38,181 +44,142 @@ export default function SectorDiagram() {
             </marker>
           </defs>
 
-          <text x="215" y="20" className="d-label">
-            Funded
-          </text>
-          <text x="900" y="20" className="d-label">
-            Pro bono
-          </text>
+          <text x="150" y="20" className="d-label">Public funding</text>
+          <text x="980" y="20" className="d-label">Professional capacity</text>
 
-          {/* funders */}
-          <rect className="d-box" x="215" y="32" width="300" height="60" rx="4" />
-          <text x="365" y="58" textAnchor="middle" className="d-t">
-            Commonwealth
-          </text>
-          <text x="365" y="78" textAnchor="middle" className="d-t">
-            Attorney-General&rsquo;s Dept
-          </text>
+          <rect className="d-box" x="150" y="32" width="380" height="66" rx="4" />
+          <text x="340" y="61" textAnchor="middle" className="d-t">Australian Government</text>
+          <text x="340" y="82" textAnchor="middle" className="d-n">provides the $3.9b NAJP funding</text>
 
-          <rect className="d-box" x="535" y="32" width="300" height="60" rx="4" />
-          <text x="685" y="58" textAnchor="middle" className="d-t">
-            State &amp; Territory
-          </text>
-          <text x="685" y="78" textAnchor="middle" className="d-t">
-            Attorneys-General (8)
-          </text>
+          <rect className="d-box" x="550" y="32" width="400" height="66" rx="4" />
+          <text x="750" y="61" textAnchor="middle" className="d-t">State &amp; territory governments</text>
+          <text x="750" y="82" textAnchor="middle" className="d-n">agreement parties · administrators · separate co-funders</text>
 
-          <rect className="d-box d-box-pb" x="900" y="32" width="350" height="60" rx="4" />
-          <text x="1075" y="58" textAnchor="middle" className="d-t">
-            The legal profession
-          </text>
-          <text x="1075" y="79" textAnchor="middle" className="d-n">
-            333 Target signatories
-          </text>
+          <rect className="d-box d-box-pb" x="980" y="32" width="280" height="66" rx="4" />
+          <text x="1120" y="59" textAnchor="middle" className="d-t">Private profession</text>
+          <text x="1120" y="80" textAnchor="middle" className="d-n">firms · barristers · in-house teams</text>
 
-          <path className="d-flow" d="M365 92 V116" />
-          <path className="d-flow" d="M685 92 V116" />
-          <path className="d-flow" d="M365 116 H685" />
-          <path className="d-flow" d="M525 116 V140" markerEnd="url(#sd-arrow)" />
+          <path className="d-flow" d="M340 98 V136" markerEnd="url(#sd-arrow)" />
+          <path className="d-flow d-flow-by" d="M750 98 V116 H700 V136" markerEnd="url(#sd-arrow)" />
+          <text x="758" y="122" className="d-n">agreement</text>
 
-          {/* the agreement */}
-          <rect className="d-box d-box-key" x="215" y="142" width="620" height="72" rx="4" />
-          <text x="525" y="172" textAnchor="middle" className="d-t d-t-lg">
+          <rect className="d-box d-box-key" x="150" y="138" width="800" height="76" rx="4" />
+          <text x="550" y="169" textAnchor="middle" className="d-t d-t-lg">
             National Access to Justice Partnership
           </text>
-          <text x="525" y="196" textAnchor="middle" className="d-n">
-            2025&ndash;30 &middot; $3.9 billion over five years
+          <text x="550" y="194" textAnchor="middle" className="d-n">
+            2025–30 · $3.9 billion in Australian Government funding over five years
           </text>
 
-          <path className="d-flow" d="M525 214 V244" />
-          <path className="d-flow" d="M290 244 H761" />
-          <path className="d-flow" d="M290 244 V274" markerEnd="url(#sd-arrow)" />
-          <path className="d-flow" d="M447 244 V274" markerEnd="url(#sd-arrow)" />
-          <path className="d-flow" d="M604 244 V274" markerEnd="url(#sd-arrow)" />
-          <path className="d-flow" d="M761 244 V274" markerEnd="url(#sd-arrow)" />
+          <path className="d-flow" d="M550 214 V244" />
+          <path className="d-flow" d="M225 244 H865" />
+          <path className="d-flow" d="M225 244 V278" markerEnd="url(#sd-arrow)" />
+          <path className="d-flow" d="M435 244 V278" markerEnd="url(#sd-arrow)" />
+          <path className="d-flow" d="M655 244 V278" markerEnd="url(#sd-arrow)" />
+          <path className="d-flow" d="M805 244 V278" markerEnd="url(#sd-arrow)" />
 
-          {/* delivery arms, each with its peak body */}
-          <rect className="d-box" x="215" y="276" width="149" height="104" rx="4" />
-          <text x="290" y="302" textAnchor="middle" className="d-t">
-            Legal Aid
-          </text>
-          <text x="290" y="320" textAnchor="middle" className="d-t">
-            Commissions
-          </text>
-          <text x="290" y="346" textAnchor="middle" className="d-num">
-            8
-          </text>
-          <line className="d-rule" x1="231" y1="356" x2="348" y2="356" />
-          <text x="290" y="372" textAnchor="middle" className="d-peak">
-            National Legal Aid
-          </text>
+          <g
+            className={selectable ? 'd-node d-node-selectable' : 'd-node'}
+            role={selectable ? 'button' : undefined}
+            tabIndex={selectable ? 0 : undefined}
+            onClick={() => onSelectTier?.('legal_aid')}
+            onKeyDown={(event) => activateOnKeyboard(event, () => onSelectTier?.('legal_aid'))}
+          >
+            <rect className="d-box" x="150" y="280" width="150" height="112" rx="4" />
+            <text x="225" y="308" textAnchor="middle" className="d-t">Legal Aid</text>
+            <text x="225" y="328" textAnchor="middle" className="d-t">Commissions</text>
+            <text x="225" y="355" textAnchor="middle" className="d-num">8</text>
+            <line className="d-rule" x1="166" y1="366" x2="284" y2="366" />
+            <text x="225" y="384" textAnchor="middle" className="d-peak">National Legal Aid</text>
+          </g>
 
-          <rect className="d-box" x="372" y="276" width="149" height="104" rx="4" />
-          <text x="447" y="302" textAnchor="middle" className="d-t">
-            Community
-          </text>
-          <text x="447" y="320" textAnchor="middle" className="d-t">
-            Legal Centres
-          </text>
-          <text x="447" y="346" textAnchor="middle" className="d-num">
-            ~154
-          </text>
-          <line className="d-rule" x1="388" y1="356" x2="505" y2="356" />
-          <text x="447" y="372" textAnchor="middle" className="d-peak">
-            CLCs Australia
-          </text>
+          <g
+            className={selectable ? 'd-node d-node-selectable' : 'd-node'}
+            role={selectable ? 'button' : undefined}
+            tabIndex={selectable ? 0 : undefined}
+            onClick={() => onSelectTier?.('clc')}
+            onKeyDown={(event) => activateOnKeyboard(event, () => onSelectTier?.('clc'))}
+          >
+            <rect className="d-box" x="310" y="280" width="250" height="112" rx="4" />
+            <text x="435" y="307" textAnchor="middle" className="d-t">Community Legal Centres</text>
+            <text x="435" y="327" textAnchor="middle" className="d-t">+ Women&rsquo;s Legal Services</text>
+            <text x="435" y="355" textAnchor="middle" className="d-num">154 represented*</text>
+            <line className="d-rule" x1="326" y1="366" x2="544" y2="366" />
+            <text x="435" y="384" textAnchor="middle" className="d-peak d-peak-compact">Community Legal Centres Australia</text>
+          </g>
 
-          <rect className="d-box" x="529" y="276" width="149" height="104" rx="4" />
-          <text x="604" y="311" textAnchor="middle" className="d-t">
-            ATSILS
-          </text>
-          <text x="604" y="346" textAnchor="middle" className="d-num">
-            7
-          </text>
-          <line className="d-rule" x1="545" y1="356" x2="662" y2="356" />
-          <text x="604" y="372" textAnchor="middle" className="d-peak">
-            NATSILS
-          </text>
+          <g
+            className={selectable ? 'd-node d-node-selectable' : 'd-node'}
+            role={selectable ? 'button' : undefined}
+            tabIndex={selectable ? 0 : undefined}
+            onClick={() => onSelectTier?.('atsils')}
+            onKeyDown={(event) => activateOnKeyboard(event, () => onSelectTier?.('atsils'))}
+          >
+            <rect className="d-box" x="570" y="280" width="170" height="112" rx="4" />
+            <text x="655" y="318" textAnchor="middle" className="d-t">ATSILS</text>
+            <text x="655" y="355" textAnchor="middle" className="d-num">7</text>
+            <line className="d-rule" x1="586" y1="366" x2="724" y2="366" />
+            <text x="655" y="384" textAnchor="middle" className="d-peak">NATSILS</text>
+          </g>
 
-          <rect className="d-box" x="686" y="276" width="149" height="104" rx="4" />
-          <text x="761" y="311" textAnchor="middle" className="d-t">
-            FVPLS
-          </text>
-          <text x="761" y="346" textAnchor="middle" className="d-num">
-            15
-          </text>
-          <line className="d-rule" x1="702" y1="356" x2="819" y2="356" />
-          <text x="761" y="372" textAnchor="middle" className="d-peak">
-            FNAAFV
-          </text>
+          <g
+            className={selectable ? 'd-node d-node-selectable' : 'd-node'}
+            role={selectable ? 'button' : undefined}
+            tabIndex={selectable ? 0 : undefined}
+            onClick={() => onSelectTier?.('fvpls')}
+            onKeyDown={(event) => activateOnKeyboard(event, () => onSelectTier?.('fvpls'))}
+          >
+            <rect className="d-box" x="750" y="280" width="200" height="112" rx="4" />
+            <text x="850" y="309" textAnchor="middle" className="d-t d-t-compact">Family Violence Prevention</text>
+            <text x="850" y="329" textAnchor="middle" className="d-t">Legal Services</text>
+            <text x="850" y="355" textAnchor="middle" className="d-num">15</text>
+            <line className="d-rule" x1="766" y1="366" x2="934" y2="366" />
+            <text x="850" y="384" textAnchor="middle" className="d-peak">FNAAFV</text>
+          </g>
 
-          <text x="200" y="376" textAnchor="end" className="d-label">
-            peaks
-          </text>
+          <rect className="d-box" x="2" y="296" width="138" height="78" rx="4" />
+          <text x="71" y="320" textAnchor="middle" className="d-t">Other funding</text>
+          <text x="71" y="340" textAnchor="middle" className="d-n">state · statutory</text>
+          <text x="71" y="358" textAnchor="middle" className="d-n">philanthropic</text>
+          <path className="d-flow d-flow-by" d="M140 335 H148" markerEnd="url(#sd-arrow)" />
 
-          {/*
-            Funding outside the agreement. Widened for the monospaced face:
-            "funds · philanthropy" is 20 characters, which is exactly 180px at
-            this size, so the old 170px box cut it off at both ends.
-          */}
-          <rect className="d-box" x="2" y="284" width="196" height="66" rx="4" />
-          <text x="100" y="308" textAnchor="middle" className="d-t">
-            Public purpose
-          </text>
-          <text x="100" y="326" textAnchor="middle" className="d-t">
-            funds &middot; philanthropy
-          </text>
-          <text x="100" y="343" textAnchor="middle" className="d-n">
-            outside NAJP
-          </text>
-          <path className="d-flow d-flow-by" d="M198 317 H213" markerEnd="url(#sd-arrow)" />
+          <path className="d-flow d-flow-pb" d="M1120 98 V278" markerEnd="url(#sd-arrow)" />
+          <text x="1102" y="151" textAnchor="end" className="d-n">National Pro Bono Target</text>
+          <text x="1102" y="170" textAnchor="end" className="d-n">35 hrs · 20 hrs in-house</text>
 
-          {/* pro bono channel */}
-          <path className="d-flow d-flow-pb" d="M1075 92 V250" markerEnd="url(#sd-arrow)" />
-          <text x="1057" y="160" textAnchor="end" className="d-n">
-            National Pro Bono Target
-          </text>
-          <text x="1057" y="180" textAnchor="end" className="d-n">
-            35 hrs / lawyer / year
-          </text>
+          <rect className="d-box d-box-pb" x="980" y="280" width="280" height="112" rx="4" />
+          <text x="1120" y="308" textAnchor="middle" className="d-t">Pro bono pathways</text>
+          <text x="1120" y="334" textAnchor="middle" className="d-n">referrals · clinics</text>
+          <text x="1120" y="353" textAnchor="middle" className="d-n">secondments · project support</text>
+          <text x="1120" y="379" textAnchor="middle" className="d-peak d-peak-compact">some pathways coordinated by referral bodies</text>
 
-          <rect className="d-box d-box-pb" x="900" y="252" width="350" height="88" rx="4" />
-          <text x="1075" y="280" textAnchor="middle" className="d-t">
-            Clearing houses &amp;
-          </text>
-          <text x="1075" y="300" textAnchor="middle" className="d-t">
-            court referral schemes
-          </text>
-          <text x="1075" y="324" textAnchor="middle" className="d-n">
-            Justice Connect &middot; LawRight &middot; JusticeNet SA
+          <path className="d-flow" d="M225 392 V452" />
+          <path className="d-flow" d="M435 392 V452" />
+          <path className="d-flow" d="M655 392 V452" />
+          <path className="d-flow" d="M850 392 V452" />
+          <path className="d-flow" d="M225 452 H850" />
+          <path className="d-flow" d="M550 452 V516" markerEnd="url(#sd-arrow)" />
+
+          <path className="d-flow d-flow-pb" d="M980 336 H960 V430 H435 V394" markerEnd="url(#sd-arrow)" />
+          <path className="d-flow d-flow-pb" d="M1120 392 V480 H920 V516" markerEnd="url(#sd-arrow)" />
+          <text x="736" y="424" textAnchor="middle" className="d-n">capacity can flow into legal assistance organisations</text>
+
+          <rect className="d-box d-box-out" x="150" y="518" width="1110" height="64" rx="4" />
+          <text x="705" y="556" textAnchor="middle" className="d-t d-t-lg">
+            People and communities with legal need
           </text>
 
-          {/* both channels reach the same place */}
-          <path className="d-flow" d="M290 380 V440" />
-          <path className="d-flow" d="M447 380 V440" />
-          <path className="d-flow" d="M604 380 V440" />
-          <path className="d-flow" d="M761 380 V440" />
-          <path className="d-flow" d="M290 440 H761" />
-          <path className="d-flow" d="M525 440 V488" markerEnd="url(#sd-arrow)" />
-          <path className="d-flow d-flow-pb" d="M1075 340 V464 H800 V488" markerEnd="url(#sd-arrow)" />
-
-          <rect className="d-box d-box-out" x="215" y="490" width="1035" height="62" rx="4" />
-          <text x="732" y="527" textAnchor="middle" className="d-t d-t-lg">
-            People with legal need
+          <text x="150" y="608" className="d-n">
+            * CLCs Australia describes 154 community legal centres and women&rsquo;s legal services together.
           </text>
         </svg>
       </div>
       <figcaption>
         <span className="diagram-hint">Scroll horizontally to explore the full diagram.</span>
-        <span className="legend">
-          <span className="legend-key legend-funded" /> funding under the Partnership
-        </span>
-        <span className="legend">
-          <span className="legend-key legend-outside" /> funding outside it
-        </span>
-        <span className="legend">
-          <span className="legend-key legend-pb" /> pro bono capacity
-        </span>
+        <span className="legend"><span className="legend-key legend-funded" /> Australian Government funding</span>
+        <span className="legend"><span className="legend-key legend-outside" /> administration / other funding</span>
+        <span className="legend"><span className="legend-key legend-pb" /> pro bono capacity</span>
+        {selectable ? <span className="diagram-action-hint">Select a delivery group to open the map.</span> : null}
       </figcaption>
     </figure>
   );
