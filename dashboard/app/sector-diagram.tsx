@@ -129,11 +129,11 @@ export default function SectorDiagram({
             onClick={() => onSelectTier?.('fvpls')}
             onKeyDown={(event) => activateOnKeyboard(event, () => onSelectTier?.('fvpls'))}
           >
-            <rect className="d-box" x="750" y="280" width="200" height="112" rx="4" />
+            <rect className="d-box" x="744" y="280" width="212" height="112" rx="4" />
             <text x="850" y="309" textAnchor="middle" className="d-t d-t-compact">Family Violence Prevention</text>
             <text x="850" y="329" textAnchor="middle" className="d-t">Legal Services</text>
             <text x="850" y="355" textAnchor="middle" className="d-num">15</text>
-            <line className="d-rule" x1="766" y1="366" x2="934" y2="366" />
+            <line className="d-rule" x1="760" y1="366" x2="940" y2="366" />
             <text x="850" y="384" textAnchor="middle" className="d-peak">FNAAFV</text>
           </g>
 
@@ -151,7 +151,7 @@ export default function SectorDiagram({
           <text x="1120" y="308" textAnchor="middle" className="d-t">Pro bono pathways</text>
           <text x="1120" y="334" textAnchor="middle" className="d-n">referrals · clinics</text>
           <text x="1120" y="353" textAnchor="middle" className="d-n">secondments · project support</text>
-          <text x="1120" y="379" textAnchor="middle" className="d-peak d-peak-compact">some pathways coordinated by referral bodies</text>
+          <text x="1120" y="379" textAnchor="middle" className="d-peak d-peak-compact">some coordinated by referral bodies</text>
 
           <path className="d-flow" d="M225 392 V452" />
           <path className="d-flow" d="M435 392 V452" />
