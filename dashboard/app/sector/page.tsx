@@ -14,14 +14,15 @@ export const dynamic = 'force-dynamic';
 export const metadata = {
   title: 'The sector — Policai A2J',
   description:
-    'Every organisation that funds, coordinates, delivers or studies legal assistance in Australia, and the funding and referral structure that connects them.',
+    'A researched directory of organisations and programs that fund, coordinate, deliver or study legal assistance in Australia, with the funding and referral structure that connects them.',
 };
 
 export default async function SectorPage() {
   // The sector reference is file-backed and remains useful in a local checkout
   // without Postgres. Production still fails loudly if a configured database
   // cannot be queried; only an intentionally absent DATABASE_URL falls back.
-  const rows = process.env.DATABASE_URL
+  const monitoringAvailable = Boolean(process.env.DATABASE_URL);
+  const rows = monitoringAvailable
     ? (await getPool().query(`SELECT name, url FROM sources WHERE active`)).rows
     : [];
   const orgs = markMonitored(
@@ -38,24 +39,24 @@ export default async function SectorPage() {
           <p className="page-eyebrow">Sector reference · compiled {COMPILED}</p>
           <h1 id="sector-explorer-title" className="section-heading">Funding and referral structure</h1>
         </header>
-        <SectorExplorer orgs={orgs} />
+        <SectorExplorer orgs={orgs} monitoringAvailable={monitoringAvailable} />
       </section>
 
       <dl className="stat-strip reveal reveal-1" aria-label="Sector snapshot">
         <div className="stat">
           <dd>{orgs.length}</dd>
-          <dt>organisations</dt>
+          <dt>directory records</dt>
         </div>
         <div className="stat">
           <dd>{locations.locations.length}</dd>
-          <dt>offices mapped</dt>
+          <dt>primary offices mapped</dt>
         </div>
         <div className="stat">
           <dd>9</dd>
           <dt>jurisdictions</dt>
         </div>
         <div className="stat">
-          <dd>{monitored}</dd>
+          <dd>{monitoringAvailable ? monitored : '—'}</dd>
           <dt>radar sources</dt>
         </div>
         <div className="stat">
@@ -84,7 +85,7 @@ export default async function SectorPage() {
               </tr>
               <tr>
                 <th scope="row">Value</th>
-                <td>$3.9 billion over five years</td>
+                <td>Estimated $3.863790 billion GST exclusive; publicly rounded to $3.9 billion</td>
               </tr>
               <tr>
                 <th scope="row">CLC and women&rsquo;s legal services share</th>
@@ -93,6 +94,13 @@ export default async function SectorPage() {
               <tr>
                 <th scope="row">Replaced</th>
                 <td>National Legal Assistance Partnership (NLAP) 2020–25, expired 30 June 2025</td>
+              </tr>
+              <tr>
+                <th scope="row">Separate Commonwealth program</th>
+                <td>
+                  Community Legal Services Program 2025–30: $67.5 million for national peaks,
+                  national services and self-representation services outside the NAJP
+                </td>
               </tr>
             </tbody>
           </table>
@@ -107,19 +115,24 @@ export default async function SectorPage() {
       <section aria-label="Directory">
         <h2 className="section-heading">Directory</h2>
         <p className="section-intro">
-          All {orgs.length} organisations by tier. A green dot marks an active radar source.
+          {orgs.length} researched organisation and program records by primary tier. Core provider
+          networks are directory-based; contextual ecosystem tiers are selective rather than an
+          exhaustive census.{' '}
+          {monitoringAvailable
+            ? 'A green dot marks an active radar source.'
+            : 'Live radar-source coverage is unavailable in this local preview.'}
         </p>
-        <SectorDirectory orgs={orgs} />
+        <SectorDirectory orgs={orgs} monitoringAvailable={monitoringAvailable} />
       </section>
 
       <section aria-label="Method" className="sector-method">
         <h2 className="section-heading">Method</h2>
         <p className="section-intro">
-          Compiled {COMPILED} from published member directories: the NATSILS member list, the
-          FNAAFV service directory, the state CLC peak directories, the Law Council&rsquo;s
-          constituent-body register and the Australian Pro Bono Centre&rsquo;s scheme directory.
-          396 records were collected and deduplicated to {orgs.length}. Names, roles and URLs come
-          from each organisation&rsquo;s own site or its peak&rsquo;s directory.
+          Compiled {COMPILED} from published member and service directories: National Legal Aid,
+          CLCs Australia and its state and territory associations, WLSA, NATSILS, FNAAFV, the Law
+          Council&rsquo;s constituent-body register and the Australian Pro Bono Centre&rsquo;s scheme
+          directory. Names, roles and URLs come from each organisation&rsquo;s own site or its
+          peak&rsquo;s directory where available.
         </p>
         <p className="section-intro">
           Funding attributions are indicative and not audited. An organisation counts as a radar
@@ -129,7 +142,9 @@ export default async function SectorPage() {
         <p className="section-intro">
           Primary-office locations on the map were compiled {locations.checked} from each
           organisation&rsquo;s own website or its peak body&rsquo;s directory (the source page is
-          linked on each record) and geocoded with OpenStreetMap Nominatim.{' '}
+          linked on each record) and geocoded with OpenStreetMap Nominatim. The map is not a
+          representation of every branch, outreach site, national or online service, cross-border
+          service footprint or overlapping funded program.{' '}
           {locations.unresolved.length} organisations publish no verifiable address and are not
           mapped.
         </p>
