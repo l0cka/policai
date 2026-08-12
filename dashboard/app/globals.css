@@ -2172,13 +2172,70 @@ main {
   transition: transform var(--dur-slow) var(--ease-out-quint);
 }
 
+/* Wheel, pinch and drag track the pointer directly. */
+.australia-sector-map.is-live .sector-map-states,
+.australia-sector-map.is-live .sector-state text {
+  transition-duration: 0ms;
+}
+
+.australia-sector-map.is-zoomed {
+  cursor: grab;
+  touch-action: none;
+}
+
+.australia-sector-map.is-zoomed:active {
+  cursor: grabbing;
+}
+
+/* Deep in, the jurisdiction codes step back and the pins name themselves. */
+.sector-map-states.is-deep > .sector-state > text {
+  opacity: 0.25;
+}
+
+.sector-pin-label {
+  pointer-events: none;
+  font-family: var(--font-mono);
+  fill: var(--foreground);
+  paint-order: stroke;
+  stroke: var(--background);
+  stroke-linejoin: round;
+}
+
+.sector-map-kmscale line {
+  stroke: var(--muted-foreground);
+  stroke-width: 1;
+}
+
+.sector-map-kmscale text {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  fill: var(--muted-foreground);
+}
+
+.sector-zoom-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: -0.5rem;
+}
+
+.sector-zoom-hint {
+  font-size: 0.65rem;
+  color: var(--muted-foreground);
+}
+
 .sector-zoom-toggle {
   display: inline-flex;
-  align-self: flex-end;
-  margin-bottom: -0.5rem;
+  flex: 0 0 auto;
   border: 1px solid var(--border);
   border-radius: 3px;
   overflow: hidden;
+}
+
+.sector-zoom-toggle button:disabled {
+  opacity: 0.45;
+  cursor: default;
 }
 
 .sector-zoom-toggle button {
@@ -2318,7 +2375,8 @@ main {
      them alongside the group transform keeps the two in step. */
   transition:
     font-size var(--dur-slow) var(--ease-out-quint),
-    stroke-width var(--dur-slow) var(--ease-out-quint);
+    stroke-width var(--dur-slow) var(--ease-out-quint),
+    opacity var(--dur-slow) var(--ease-out-quint);
 }
 
 .sector-state .sector-state-count {

@@ -135,6 +135,26 @@
 - The map capture above was retaken (Victoria zoom, CLC pins, Allied
   Justice selected from its Ballarat pin).
 
+### Pass 8 — continuous zoom and progressive detail
+
+- Free zoom to 24×: pinch or ⌘/ctrl-scroll (anchored under the pointer;
+  plain scrolling still scrolls the page), double-click to zoom in, drag to
+  pan, − / + buttons, and the existing Australia / state-fit shortcuts. Fit
+  and reset actions ease; pointer-driven zooming and panning suppress the
+  transition so the map tracks the hand. Drag movement suppresses the
+  click that would otherwise change the selection.
+- Progressive detail: past 3× the map swaps in high-resolution ABS
+  coastlines (scripts/build-sector-map-detail.mjs, maxAllowableOffset
+  0.005°, lazy-loaded 252 KB chunk that never enters the base bundle);
+  past 8× pins name themselves, decluttered by a nearest-neighbour rule
+  (~18 px clearance) so metro clusters stay clean until the zoom separates
+  them; jurisdiction codes fade back at 10×; and a km scale bar
+  (≈, computed at the view-centre latitude) updates continuously.
+- The second-click-to-zoom shortcut on the selected state was removed —
+  it conflicted with double-click zoom and the free-zoom model.
+- The map capture above was retaken (~50 km scale over Port Phillip,
+  decluttered labels, high-detail coastline).
+
 ## Functionality and accessibility
 
 - Map and System tabs switch panels.

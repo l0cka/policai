@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useRef, useState, type CSSProperties } from 'react';
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import {
   AUSTRALIA_MAP_SOURCE,
   AUSTRALIA_MAP_SOURCE_URL,
@@ -156,9 +156,41 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
     () => firstOrgFor(orgs, 'VIC', 'clc', 'secondment')?.name ?? '',
   );
   const [zoom, setZoom] = useState<ZoomTransform | null>(null);
+  // Fit/reset actions ease over the slow duration; wheel, pinch and drag
+  // track the pointer with the transition suppressed.
+  const [smooth, setSmooth] = useState(true);
+  const [detailPaths, setDetailPaths] = useState<Record<string, string> | null>(null);
 
   const svgRef = useRef<SVGSVGElement>(null);
   const bboxCache = useRef<Partial<Record<MapJurisdiction, DOMRect>>>({});
+  const dragRef = useRef<{ x: number; y: number; moved: boolean } | null>(null);
+  const suppressClickRef = useRef(false);
+
+  const MAX_ZOOM = 24;
+
+  const svgPoint = (clientX: number, clientY: number): [number, number] => {
+    const rect = svgRef.current?.getBoundingClientRect();
+    if (!rect) return [AUSTRALIA_MAP_VIEWBOX.width / 2, AUSTRALIA_MAP_VIEWBOX.height / 2];
+    return [
+      ((clientX - rect.left) / rect.width) * AUSTRALIA_MAP_VIEWBOX.width,
+      ((clientY - rect.top) / rect.height) * AUSTRALIA_MAP_VIEWBOX.height,
+    ];
+  };
+
+  // Multiply the scale by `factor`, keeping the map point under the anchor
+  // (in base viewBox coordinates) fixed on screen.
+  const zoomAt = (anchorX: number, anchorY: number, factor: number) => {
+    setZoom((prev) => {
+      const k0 = prev?.k ?? 1;
+      const tx0 = prev?.tx ?? 0;
+      const ty0 = prev?.ty ?? 0;
+      const nextK = Math.min(Math.max(k0 * factor, 1), MAX_ZOOM);
+      if (nextK <= 1.001) return null;
+      const preX = (anchorX - tx0) / k0;
+      const preY = (anchorY - ty0) / k0;
+      return { k: nextK, tx: anchorX - nextK * preX, ty: anchorY - nextK * preY };
+    });
+  };
 
   const zoomFor = (key: MapJurisdiction): ZoomTransform | null => {
     let box = bboxCache.current[key];
@@ -239,13 +271,13 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
   );
 
   const selectJurisdiction = (next: MapJurisdiction) => {
-    if (next === jurisdiction) {
-      // A second click on the selected state toggles the zoom.
-      setZoom(zoom ? null : zoomFor(next));
+    if (suppressClickRef.current) {
+      // The pointer was dragging the map; this click is the drag's tail.
+      suppressClickRef.current = false;
       return;
     }
+    if (next === jurisdiction) return;
     setJurisdiction(next);
-    if (zoom) setZoom(zoomFor(next));
     setSelectedName(firstOrgFor(orgs, next, category, relationship)?.name ?? '');
   };
 
@@ -268,6 +300,89 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
   };
 
   const k = zoom?.k ?? 1;
+
+  // Pinch gestures arrive as ctrl-modified wheel events; plain scrolling is
+  // left to the page. Attached natively because React's wheel listener is
+  // passive and cannot preventDefault.
+  useEffect(() => {
+    const svg = svgRef.current;
+    if (!svg) return;
+    const onWheel = (event: WheelEvent) => {
+      if (!event.ctrlKey && !event.metaKey) return;
+      event.preventDefault();
+      setSmooth(false);
+      const [x, y] = svgPoint(event.clientX, event.clientY);
+      zoomAt(x, y, Math.exp(-event.deltaY * 0.008));
+    };
+    svg.addEventListener('wheel', onWheel, { passive: false });
+    return () => svg.removeEventListener('wheel', onWheel);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [view]);
+
+  // The high-detail coastlines load once, the first time the map is close
+  // enough for the base generalization to look blocky.
+  useEffect(() => {
+    if (k >= 3 && !detailPaths) {
+      import('../lib/australia-map-detail')
+        .then((module) => setDetailPaths(module.AUSTRALIA_STATE_DETAIL_PATHS))
+        .catch(() => {});
+    }
+  }, [k, detailPaths]);
+
+  const onMapPointerDown = (event: React.PointerEvent<SVGSVGElement>) => {
+    if (!zoom || event.button !== 0) return;
+    dragRef.current = { x: event.clientX, y: event.clientY, moved: false };
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+
+  const onMapPointerMove = (event: React.PointerEvent<SVGSVGElement>) => {
+    const drag = dragRef.current;
+    if (!drag) return;
+    const rect = event.currentTarget.getBoundingClientRect();
+    const dx = ((event.clientX - drag.x) / rect.width) * AUSTRALIA_MAP_VIEWBOX.width;
+    const dy = ((event.clientY - drag.y) / rect.height) * AUSTRALIA_MAP_VIEWBOX.height;
+    if (Math.abs(event.clientX - drag.x) + Math.abs(event.clientY - drag.y) > 3) {
+      drag.moved = true;
+      suppressClickRef.current = true;
+    }
+    drag.x = event.clientX;
+    drag.y = event.clientY;
+    if (drag.moved) {
+      setSmooth(false);
+      setZoom((prev) => (prev ? { ...prev, tx: prev.tx + dx, ty: prev.ty + dy } : prev));
+    }
+  };
+
+  const onMapPointerUp = () => {
+    dragRef.current = null;
+    // The suppressed click (if any) fires right after pointerup; clear the
+    // flag on the next tick so future clicks land normally.
+    setTimeout(() => {
+      suppressClickRef.current = false;
+    }, 0);
+  };
+
+  const onMapDoubleClick = (event: React.MouseEvent<SVGSVGElement>) => {
+    setSmooth(true);
+    const [x, y] = svgPoint(event.clientX, event.clientY);
+    zoomAt(x, y, 1.8);
+  };
+
+  // Approximate km scale at the centre of the current view, drawn in base
+  // viewBox units so it is deterministic for server rendering.
+  const centrePreY = (AUSTRALIA_MAP_VIEWBOX.height / 2 - (zoom?.ty ?? 0)) / k;
+  const centreLat =
+    MAP_BOUNDS.maxLat -
+    (centrePreY / AUSTRALIA_MAP_VIEWBOX.height) * (MAP_BOUNDS.maxLat - MAP_BOUNDS.minLat);
+  const kmPerUnit =
+    Math.cos((centreLat * Math.PI) / 180) *
+    111.32 *
+    ((MAP_BOUNDS.maxLon - MAP_BOUNDS.minLon) / AUSTRALIA_MAP_VIEWBOX.width);
+  const scaleKm =
+    [2000, 1000, 500, 200, 100, 50, 20, 10, 5, 2].find(
+      (km) => (km / kmPerUnit) * k <= 150,
+    ) ?? 2;
+  const scaleUnits = (scaleKm / kmPerUnit) * k;
 
   // Pins: every located organisation in the current category scope, across all
   // jurisdictions. Co-located pins fan out on a small ring so none hide.
@@ -296,13 +411,32 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
   }, [orgs, category]);
 
   const selectPin = (pin: (typeof pins)[number]) => {
-    const next = pin.org.jurisdiction as MapJurisdiction;
-    if (next !== jurisdiction) {
-      setJurisdiction(next);
-      if (zoom) setZoom(zoomFor(next));
+    if (suppressClickRef.current) {
+      suppressClickRef.current = false;
+      return;
     }
+    const next = pin.org.jurisdiction as MapJurisdiction;
+    if (next !== jurisdiction) setJurisdiction(next);
     setSelectedName(pin.org.name);
   };
+
+  // Labels reveal progressively: a pin is named once no neighbour is within
+  // ~18 on-screen px of it, so dense metro clusters stay clean until the
+  // zoom separates them. The selected organisation is always named.
+  const labelledPins = useMemo(() => {
+    if (k < 8) return new Set<string>();
+    const named = new Set<string>();
+    for (const pin of pins) {
+      let nearest = Infinity;
+      for (const other of pins) {
+        if (other === pin) continue;
+        const d = Math.hypot(other.x - pin.x, other.y - pin.y);
+        if (d < nearest) nearest = d;
+      }
+      if (nearest * k >= 18) named.add(pin.org.name);
+    }
+    return named;
+  }, [pins, k]);
 
   return (
     <div className="sector-explorer">
@@ -355,25 +489,67 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
               </div>
             </div>
 
-            <div className="sector-zoom-toggle" role="group" aria-label="Map zoom">
-              <button type="button" aria-pressed={!zoom} onClick={() => setZoom(null)}>
-                Australia
-              </button>
-              <button
-                type="button"
-                aria-pressed={Boolean(zoom)}
-                onClick={() => setZoom(zoomFor(jurisdiction))}
-              >
-                {STATE_NAMES[jurisdiction]}
-              </button>
+            <div className="sector-zoom-row">
+              <span className="sector-zoom-hint">
+                Pinch or ⌘-scroll to zoom · double-click to zoom in · drag to pan
+              </span>
+              <div className="sector-zoom-toggle" role="group" aria-label="Map zoom">
+                <button
+                  type="button"
+                  aria-pressed={!zoom}
+                  onClick={() => {
+                    setSmooth(true);
+                    setZoom(null);
+                  }}
+                >
+                  Australia
+                </button>
+                <button
+                  type="button"
+                  aria-pressed={Boolean(zoom)}
+                  onClick={() => {
+                    setSmooth(true);
+                    setZoom(zoomFor(jurisdiction));
+                  }}
+                >
+                  {STATE_NAMES[jurisdiction]}
+                </button>
+                <button
+                  type="button"
+                  aria-label="Zoom out"
+                  disabled={!zoom}
+                  onClick={() => {
+                    setSmooth(true);
+                    zoomAt(AUSTRALIA_MAP_VIEWBOX.width / 2, AUSTRALIA_MAP_VIEWBOX.height / 2, 1 / 1.6);
+                  }}
+                >
+                  −
+                </button>
+                <button
+                  type="button"
+                  aria-label="Zoom in"
+                  disabled={k >= MAX_ZOOM}
+                  onClick={() => {
+                    setSmooth(true);
+                    zoomAt(AUSTRALIA_MAP_VIEWBOX.width / 2, AUSTRALIA_MAP_VIEWBOX.height / 2, 1.6);
+                  }}
+                >
+                  +
+                </button>
+              </div>
             </div>
 
             <svg
               ref={svgRef}
-              className="australia-sector-map"
+              className={`australia-sector-map ${zoom ? 'is-zoomed' : ''} ${smooth ? '' : 'is-live'}`}
               viewBox={`0 0 ${AUSTRALIA_MAP_VIEWBOX.width} ${AUSTRALIA_MAP_VIEWBOX.height}`}
               role="img"
               aria-label={`Australian access to justice organisations by jurisdiction. ${STATE_NAMES[jurisdiction]} selected${zoom ? ' and zoomed' : ''}.`}
+              onPointerDown={onMapPointerDown}
+              onPointerMove={onMapPointerMove}
+              onPointerUp={onMapPointerUp}
+              onPointerCancel={onMapPointerUp}
+              onDoubleClick={onMapDoubleClick}
             >
               <defs>
                 <pattern
@@ -388,7 +564,7 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
                 </pattern>
               </defs>
               <g
-                className="sector-map-states"
+                className={`sector-map-states ${k >= 10 ? 'is-deep' : ''}`}
                 style={{ transform: `translate(${zoom?.tx ?? 0}px, ${zoom?.ty ?? 0}px) scale(${k})` }}
               >
                 {AUSTRALIA_STATES.map((state) => {
@@ -416,7 +592,10 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
                         }
                       }}
                     >
-                      <path d={state.path} fillRule="evenodd" />
+                      <path
+                        d={k >= 3 && detailPaths?.[key] ? detailPaths[key] : state.path}
+                        fillRule="evenodd"
+                      />
                       {isAct ? (
                         <>
                           <circle
@@ -484,7 +663,33 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
                       </circle>
                     );
                   })}
+                  {/* Close enough, the pins name themselves. */}
+                  {pins
+                    .filter(
+                      (pin) =>
+                        labelledPins.has(pin.org.name) ||
+                        (k >= 8 && selectedOrg?.name === pin.org.name),
+                    )
+                    .map((pin) => (
+                      <text
+                        key={`label-${pin.org.name}`}
+                        className="sector-pin-label"
+                        x={pin.x + 6 / k}
+                        y={pin.y + 3 / k}
+                        style={{ fontSize: 9.5 / k, strokeWidth: 3 / k }}
+                      >
+                        {pin.org.name.length > 30 ? `${pin.org.name.slice(0, 29)}…` : pin.org.name}
+                      </text>
+                    ))}
                 </g>
+              </g>
+              <g className="sector-map-kmscale" aria-hidden="true">
+                <line x1="16" y1="584" x2={16 + scaleUnits} y2="584" />
+                <line x1="16" y1="580" x2="16" y2="588" />
+                <line x1={16 + scaleUnits} y1="580" x2={16 + scaleUnits} y2="588" />
+                <text x={16 + scaleUnits / 2} y="574" textAnchor="middle">
+                  {`≈ ${scaleKm} km`}
+                </text>
               </g>
             </svg>
 
