@@ -217,6 +217,23 @@
   and neighbouring organisations labelled by the collision engine. The
   capture above is that state.
 
+### Pass 12 — system diagram rebuild and page cleanup
+
+- The System diagram was re-laid on a strict grid: sources → NAJP → funding
+  bus → four equal-height delivery groups → bus → people, with the capacity
+  rail straight down the right and joining the delivery bus exactly once,
+  below the boxes. No connector crosses a node, no label sits on a line,
+  and every count uses the display face (154* footnoted). "Other funding"
+  feeds the delivery layer with a dotted arrow from the left margin.
+  Sub-lines that overflowed their boxes were shortened or their boxes
+  widened. The whole diagram fits without horizontal scroll at desktop
+  widths. System capture retaken.
+- Page cleanup: the stat strip trades "kinds of body" for "offices mapped"
+  (from sector-locations.json); the Method section now records the office
+  location compilation date, per-record source links, Nominatim geocoding
+  and the unmapped count; research-note summaries use the note's own first
+  clause instead of a truncated mid-word slice.
+
 ## Functionality and accessibility
 
 - Map and System tabs switch panels.

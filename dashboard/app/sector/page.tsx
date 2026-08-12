@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { getPool } from '../../lib/db';
+import locations from '../../lib/sector-locations.json';
 import SectorDirectory from '../sector-directory';
 import SectorExplorer from '../sector-explorer';
 import {
@@ -62,8 +63,8 @@ export default async function SectorPage() {
           <dt>organisations</dt>
         </div>
         <div className="stat">
-          <dd>{TIERS.length}</dd>
-          <dt>kinds of body</dt>
+          <dd>{locations.locations.length}</dd>
+          <dt>offices mapped</dt>
         </div>
         <div className="stat">
           <dd>9</dd>
@@ -183,14 +184,21 @@ export default async function SectorPage() {
           from each organisation&rsquo;s own site or its peak&rsquo;s directory. Funding
           attributions are indicative and not audited. An organisation counts as a radar source
           when an active source shares its website; a few sources publish from a different domain
-          than the one recorded here and are not matched.
+          than the one recorded here and are not matched. Primary-office locations on the map were
+          compiled {locations.checked} from each organisation&rsquo;s own website or its peak
+          body&rsquo;s directory (the source page is linked on each record) and geocoded with
+          OpenStreetMap Nominatim; {locations.unresolved.length} organisations publish no
+          verifiable address and are not mapped.
         </p>
-        {RESEARCH_NOTES.map((n, i) => (
-          <details className="sector-note" key={i}>
-            <summary>Limits of the {n.split(':')[0].slice(0, 40)} search</summary>
-            <p>{n}</p>
-          </details>
-        ))}
+        {RESEARCH_NOTES.map((n, i) => {
+          const title = n.split(':')[0];
+          return (
+            <details className="sector-note" key={i}>
+              <summary>{title.length > 72 ? `${title.slice(0, 71)}…` : title}</summary>
+              <p>{n}</p>
+            </details>
+          );
+        })}
       </section>
     </div>
   );
