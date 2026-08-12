@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { getPool } from '../../lib/db';
 import locations from '../../lib/sector-locations.json';
 import SectorDirectory from '../sector-directory';
@@ -7,9 +6,7 @@ import {
   COMPILED,
   ORGANISATIONS,
   RESEARCH_NOTES,
-  TIERS,
   markMonitored,
-  type TierKey,
 } from '../../lib/sector-data';
 
 export const dynamic = 'force-dynamic';
@@ -19,11 +16,6 @@ export const metadata = {
   description:
     'Every organisation that funds, coordinates, delivers or studies legal assistance in Australia, and the funding and referral structure that connects them.',
 };
-
-const TIER_LABEL = Object.fromEntries(TIERS.map((t) => [t.key, t.label])) as Record<
-  TierKey,
-  string
->;
 
 export default async function SectorPage() {
   // The sector reference is file-backed and remains useful in a local checkout
@@ -38,14 +30,6 @@ export default async function SectorPage() {
   );
 
   const monitored = orgs.filter((o) => o.monitored).length;
-  const coverage = TIERS.map((t) => {
-    const inTier = orgs.filter((o) => o.tier === t.key);
-    return {
-      key: t.key,
-      total: inTier.length,
-      monitored: inTier.filter((o) => o.monitored).length,
-    };
-  });
 
   return (
     <div className="container page">
@@ -120,52 +104,6 @@ export default async function SectorPage() {
         </p>
       </section>
 
-      <section aria-label="Radar coverage">
-        <h2 className="section-heading">Radar coverage</h2>
-        <p className="section-intro">
-          Organisations in each tier that are an active source on this radar. See{' '}
-          <Link href="/health">source health</Link> for run status.
-        </p>
-        <div
-          className="table-wrap"
-          role="region"
-          aria-label="Radar coverage by sector tier"
-          tabIndex={0}
-        >
-          <table>
-            <thead>
-              <tr>
-                <th scope="col">Tier</th>
-                <th scope="col">Sources</th>
-                <th scope="col">Organisations</th>
-              </tr>
-            </thead>
-            <tbody>
-              {coverage.map((c) => (
-                <tr key={c.key}>
-                  <td>{TIER_LABEL[c.key]}</td>
-                  <td>
-                    <span
-                      className={c.monitored === 0 ? 'status status-failed' : 'status status-ok'}
-                    >
-                      {c.monitored}
-                    </span>
-                  </td>
-                  <td className="cell-mono">{c.total}</td>
-                </tr>
-              ))}
-              <tr>
-                <td>
-                  <strong>Total</strong>
-                </td>
-                <td className="cell-mono">{monitored}</td>
-                <td className="cell-mono">{orgs.length}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
       <section aria-label="Directory">
         <h2 className="section-heading">Directory</h2>
         <p className="section-intro">
@@ -181,14 +119,19 @@ export default async function SectorPage() {
           FNAAFV service directory, the state CLC peak directories, the Law Council&rsquo;s
           constituent-body register and the Australian Pro Bono Centre&rsquo;s scheme directory.
           396 records were collected and deduplicated to {orgs.length}. Names, roles and URLs come
-          from each organisation&rsquo;s own site or its peak&rsquo;s directory. Funding
-          attributions are indicative and not audited. An organisation counts as a radar source
-          when an active source shares its website; a few sources publish from a different domain
-          than the one recorded here and are not matched. Primary-office locations on the map were
-          compiled {locations.checked} from each organisation&rsquo;s own website or its peak
-          body&rsquo;s directory (the source page is linked on each record) and geocoded with
-          OpenStreetMap Nominatim; {locations.unresolved.length} organisations publish no
-          verifiable address and are not mapped.
+          from each organisation&rsquo;s own site or its peak&rsquo;s directory.
+        </p>
+        <p className="section-intro">
+          Funding attributions are indicative and not audited. An organisation counts as a radar
+          source when an active source shares its website; a few sources publish from a different
+          domain than the one recorded here and are not matched.
+        </p>
+        <p className="section-intro">
+          Primary-office locations on the map were compiled {locations.checked} from each
+          organisation&rsquo;s own website or its peak body&rsquo;s directory (the source page is
+          linked on each record) and geocoded with OpenStreetMap Nominatim.{' '}
+          {locations.unresolved.length} organisations publish no verifiable address and are not
+          mapped.
         </p>
         {RESEARCH_NOTES.map((n, i) => {
           const title = n.split(':')[0];

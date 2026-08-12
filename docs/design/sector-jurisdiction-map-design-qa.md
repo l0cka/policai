@@ -234,6 +234,22 @@
   and the unmapped count; research-note summaries use the note's own first
   clause instead of a truncated mid-word slice.
 
+### Pass 13 — density feedback (diagram, directory, method)
+
+- The System diagram was re-laid once more with an airier rhythm: a
+  narrower viewBox (1180×690) so it renders ~10% larger, taller rows and
+  wider gaps between them, and the capacity-join caption moved clear of the
+  centre bus arrow. System capture retaken.
+- The Radar coverage section was removed; its numbers survive in the stat
+  strip and the per-tier "n of m on the radar" lines in the directory.
+- The Directory's Where/Kind chip matrix now collapses behind the Filters
+  trigger at every width — the section opens with one row: search, the
+  radar pill, Filters and the shown count. A specificity fix keeps the
+  mobile-only Show row off desktop.
+- The Method paragraph was split into three short paragraphs on a wider
+  (86ch) measure with spacing between them, and the research notes gained a
+  rule above the first item.
+
 ## Functionality and accessibility
 
 - Map and System tabs switch panels.

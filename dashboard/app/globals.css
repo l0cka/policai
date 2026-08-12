@@ -2617,13 +2617,38 @@ tbody th[scope='row'] {
   vertical-align: top;
 }
 
-/* Filter bar. Desktop keeps the full matrix; mobile collapses it behind a 44px trigger. */
-.sector-filter-trigger,
-.mobile-filter-only {
+/* Filter bar. The chip matrix stays behind the Filters trigger at every
+   width; the primary row keeps search, the radar pill and the count. */
+.sector-controls .mobile-filter-only {
   display: none;
 }
 
+.sector-filter-trigger {
+  display: inline-flex;
+  min-height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--input);
+  border-radius: 6px;
+  background: var(--background);
+  color: var(--foreground);
+  padding-inline: 0.9rem;
+  font: inherit;
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+.sector-filter-trigger[aria-expanded='true'] {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
 .sector-filter-groups {
+  display: none;
+  padding-top: 0.75rem;
+}
+
+.sector-filter-groups.open {
   display: block;
 }
 
@@ -2892,6 +2917,20 @@ tbody th[scope='row'] {
 
 .sector-method {
   margin-top: 1rem;
+}
+
+/* The method reads as short paragraphs on a wider measure, not one wall. */
+.sector-method .section-intro {
+  max-width: 86ch;
+}
+
+.sector-method .section-intro + .section-intro {
+  margin-top: 0.9rem;
+}
+
+.sector-method .sector-note:first-of-type {
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--rule-hair);
 }
 
 .sector-note {
@@ -3530,19 +3569,7 @@ tbody td:first-child {
   }
 
   .sector-filter-trigger {
-    display: inline-flex;
     min-height: 2.75rem;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid var(--input);
-    border-radius: 6px;
-    background: var(--background);
-    color: var(--foreground);
-    padding-inline: 0.9rem;
-    font: inherit;
-    font-size: 0.875rem;
-    font-weight: 500;
-    cursor: pointer;
   }
 
   .sector-count {
@@ -3550,16 +3577,7 @@ tbody td:first-child {
     margin: 0.25rem 0 0;
   }
 
-  .sector-filter-groups {
-    display: none;
-    padding-top: 0.65rem;
-  }
-
-  .sector-filter-groups.open {
-    display: block;
-  }
-
-  .mobile-filter-only {
+  .sector-controls .mobile-filter-only {
     display: flex;
   }
 
