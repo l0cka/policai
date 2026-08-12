@@ -1,5 +1,880 @@
 [
   {
+    "id": "source-review-b4d619e2-4372-4b36-8e66-5bd8c2d86ec2",
+    "sourceUrl": "https://www.esafety.gov.au/industry/codes",
+    "title": "eSafety industry codes take effect",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-03-09-esafety-industry-codes-take-effect",
+    "targetTimelineRevisionHash": "479417ed2269f267714907c0ab51bdcc0d81f8e9252b199defb40a78e059f2ac",
+    "status": "published",
+    "discoveredAt": "2026-08-12T01:20:02.928Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Approved by Daniel Alkurdi for explicit editorial re-verification on 12 August 2026. Staging preserves the approval boundary pending proposal confirmation.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "Codes covering generative AI services and AI companion chatbots become enforceable, with penalties up to $49.5m.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.esafety.gov.au/industry/codes",
+      "finalUrl": "https://www.esafety.gov.au/industry/codes",
+      "title": "Industry codes | eSafety Commissioner with linked official detail",
+      "retrievedAt": "2026-08-12T01:21:16.342Z",
+      "contentType": "text/html",
+      "contentHash": "faf8960c595045d574e1407249d107a69231fff81d781f9cbeade16a17ddda01",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-08-12T01:21:16.342Z",
+        "capturedBy": "Daniel Alkurdi",
+        "notes": "Fresh approval-time browser revalidation of the staged official evidence by Daniel Alkurdi. Linked official detail pages are included where the legacy record points to a catalogue URL.",
+        "pageContentHash": "9e9c4002458614a8389f20bcc1c37c60714be5044c155e3df964643d1fb1924f",
+        "characterCount": 15777
+      },
+      "reviewedDate": {
+        "date": "2026-03-09",
+        "precision": "day",
+        "reviewedAt": "2026-08-12T01:22:24.370Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The official codes page states the remaining six Age-Restricted Material Codes came into effect on 9 March 2026; the linked eSafety release confirms application to AI chatbots and enforceability."
+      }
+    },
+    "proposedRecord": {
+      "id": "tl-2026-03-09-esafety-industry-codes-take-effect",
+      "date": "2026-03-09",
+      "title": "eSafety industry codes take effect",
+      "description": "Codes covering generative AI services and AI companion chatbots become enforceable, with penalties up to $49.5m.",
+      "type": "policy_introduced",
+      "jurisdiction": "federal",
+      "relatedPolicyId": "esafety-genai-industry-codes",
+      "sourceUrl": "https://www.esafety.gov.au/industry/codes",
+      "datePrecision": "day",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.esafety.gov.au/industry/codes",
+          "finalUrl": "https://www.esafety.gov.au/industry/codes",
+          "title": "Industry codes | eSafety Commissioner with linked official detail",
+          "retrievedAt": "2026-08-12T01:21:16.342Z",
+          "contentType": "text/html",
+          "contentHash": "faf8960c595045d574e1407249d107a69231fff81d781f9cbeade16a17ddda01",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-08-12T01:21:16.342Z",
+            "capturedBy": "Daniel Alkurdi",
+            "notes": "Fresh approval-time browser revalidation of the staged official evidence by Daniel Alkurdi. Linked official detail pages are included where the legacy record points to a catalogue URL.",
+            "pageContentHash": "9e9c4002458614a8389f20bcc1c37c60714be5044c155e3df964643d1fb1924f",
+            "characterCount": 15777
+          },
+          "reviewedDate": {
+            "date": "2026-03-09",
+            "precision": "day",
+            "reviewedAt": "2026-08-12T01:22:24.370Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The official codes page states the remaining six Age-Restricted Material Codes came into effect on 9 March 2026; the linked eSafety release confirms application to AI chatbots and enforceability."
+          }
+        },
+        "checkedAt": "2026-08-12T01:22:24.370Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Daniel Alkurdi verified the commencement date against the official codes page and the AI-chatbot application and enforceability claims against the linked official eSafety release."
+      }
+    },
+    "updatedAt": "2026-08-12T01:24:05.056Z",
+    "reviewedAt": "2026-08-12T01:22:24.370Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Daniel Alkurdi verified the commencement date against the official codes page and the AI-chatbot application and enforceability claims against the linked official eSafety release.",
+    "publishedAt": "2026-08-12T01:24:05.052Z"
+  },
+  {
+    "id": "source-review-84e0c273-8750-4fc6-8e60-a08fc7d5e3dd",
+    "sourceUrl": "https://www.esafety.gov.au/newsroom/media-releases/esafety-report-shows-ai-companions-are-putting-children-at-risk",
+    "title": "eSafety reports on AI companion risks to children",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-03-24-esafety-reports-on-ai-companion-risks-to-children",
+    "targetTimelineRevisionHash": "0f522bb618a024d28b2999121b71c86135ee0de1d9eb25b5239d9808c0cd6f7b",
+    "status": "published",
+    "discoveredAt": "2026-08-12T01:20:00.593Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Approved by Daniel Alkurdi for explicit editorial re-verification on 12 August 2026. Staging preserves the approval boundary pending proposal confirmation.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "Report follows transparency notices to four AI companion providers; Character.AI adds age assurance, Chub AI geo-blocks Australia.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.esafety.gov.au/newsroom/media-releases/esafety-report-shows-ai-companions-are-putting-children-at-risk",
+      "finalUrl": "https://www.esafety.gov.au/newsroom/media-releases/esafety-report-shows-ai-companions-are-putting-children-at-risk",
+      "title": "eSafety report shows AI companions are putting children at risk | eSafety Commissioner",
+      "retrievedAt": "2026-08-12T01:21:16.128Z",
+      "contentType": "text/html",
+      "contentHash": "dc5b758f543de44313c4b54be2a2084fcea4aab4954bf9f0bbbaa0791c761da7",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-08-12T01:21:16.128Z",
+        "capturedBy": "Daniel Alkurdi",
+        "notes": "Fresh approval-time browser revalidation of the staged official evidence by Daniel Alkurdi. Linked official detail pages are included where the legacy record points to a catalogue URL.",
+        "pageContentHash": "06f407cc3eaf887c697d2da1dfc5bb1d8aacf5a6145fd89002b086c3851c02ba",
+        "characterCount": 8005
+      },
+      "reviewedDate": {
+        "date": "2026-03-24",
+        "precision": "day",
+        "reviewedAt": "2026-08-12T01:22:21.074Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The official eSafety media release is dated 24 March 2026."
+      }
+    },
+    "proposedRecord": {
+      "id": "tl-2026-03-24-esafety-reports-on-ai-companion-risks-to-children",
+      "date": "2026-03-24",
+      "title": "eSafety reports on AI companion risks to children",
+      "description": "Report follows transparency notices to four AI companion providers; Character.AI adds age assurance, Chub AI geo-blocks Australia.",
+      "type": "announcement",
+      "jurisdiction": "federal",
+      "sourceUrl": "https://www.esafety.gov.au/newsroom/media-releases/esafety-report-shows-ai-companions-are-putting-children-at-risk",
+      "datePrecision": "day",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.esafety.gov.au/newsroom/media-releases/esafety-report-shows-ai-companions-are-putting-children-at-risk",
+          "finalUrl": "https://www.esafety.gov.au/newsroom/media-releases/esafety-report-shows-ai-companions-are-putting-children-at-risk",
+          "title": "eSafety report shows AI companions are putting children at risk | eSafety Commissioner",
+          "retrievedAt": "2026-08-12T01:21:16.128Z",
+          "contentType": "text/html",
+          "contentHash": "dc5b758f543de44313c4b54be2a2084fcea4aab4954bf9f0bbbaa0791c761da7",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-08-12T01:21:16.128Z",
+            "capturedBy": "Daniel Alkurdi",
+            "notes": "Fresh approval-time browser revalidation of the staged official evidence by Daniel Alkurdi. Linked official detail pages are included where the legacy record points to a catalogue URL.",
+            "pageContentHash": "06f407cc3eaf887c697d2da1dfc5bb1d8aacf5a6145fd89002b086c3851c02ba",
+            "characterCount": 8005
+          },
+          "reviewedDate": {
+            "date": "2026-03-24",
+            "precision": "day",
+            "reviewedAt": "2026-08-12T01:22:21.074Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The official eSafety media release is dated 24 March 2026."
+          }
+        },
+        "checkedAt": "2026-08-12T01:22:21.074Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Daniel Alkurdi verified the date, transparency notices and provider responses against the official eSafety media release."
+      }
+    },
+    "updatedAt": "2026-08-12T01:24:01.311Z",
+    "reviewedAt": "2026-08-12T01:22:21.074Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Daniel Alkurdi verified the date, transparency notices and provider responses against the official eSafety media release.",
+    "publishedAt": "2026-08-12T01:24:01.307Z"
+  },
+  {
+    "id": "source-review-eff593a2-db40-4afd-9fb8-a460a99e8acf",
+    "sourceUrl": "https://www.industry.gov.au/publications/australian-government-response-senate-select-committee-adopting-artificial-intelligence-ai-report",
+    "title": "Government responds to the Senate Adopting AI report",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-04-01-government-responds-to-the-senate-adopting-ai-repo",
+    "targetTimelineRevisionHash": "e5afa9c5f1a01e0fb4ecab87adf5b27728b225f828c621477d306036756d7eee",
+    "status": "published",
+    "discoveredAt": "2026-08-12T01:19:57.594Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Approved by Daniel Alkurdi for explicit editorial re-verification on 12 August 2026. Staging preserves the approval boundary pending proposal confirmation.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "Response to the Senate Select Committee tabled, consistent with the National AI Plan’s existing-frameworks approach.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.industry.gov.au/publications/australian-government-response-senate-select-committee-adopting-artificial-intelligence-ai-report",
+      "finalUrl": "https://www.industry.gov.au/publications/australian-government-response-senate-select-committee-adopting-artificial-intelligence-ai-report",
+      "title": "Australian Government response: Senate Select Committee on Adopting Artificial Intelligence (AI) report | Department of Industry Science and Resources",
+      "retrievedAt": "2026-08-12T01:21:13.687Z",
+      "contentType": "text/html",
+      "contentHash": "8d1c32bbb211c65bee5172588484c1e7122a20e7046eaeaa405ce022d18a40c3",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-08-12T01:21:13.687Z",
+        "capturedBy": "Daniel Alkurdi",
+        "notes": "Fresh approval-time browser revalidation of the staged official evidence by Daniel Alkurdi. Linked official detail pages are included where the legacy record points to a catalogue URL.",
+        "pageContentHash": "5992c975ea70ddbc733d53306dee672cd0be8c54c37e27b022c183769599cf12",
+        "characterCount": 41146
+      },
+      "publishedAt": "2026-04-01",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "tl-2026-04-01-government-responds-to-the-senate-adopting-ai-repo",
+      "date": "2026-04-01",
+      "title": "Government responds to the Senate Adopting AI report",
+      "description": "Response to the Senate Select Committee tabled, consistent with the National AI Plan’s existing-frameworks approach.",
+      "type": "announcement",
+      "jurisdiction": "federal",
+      "sourceUrl": "https://www.industry.gov.au/publications/australian-government-response-senate-select-committee-adopting-artificial-intelligence-ai-report",
+      "datePrecision": "day",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.industry.gov.au/publications/australian-government-response-senate-select-committee-adopting-artificial-intelligence-ai-report",
+          "finalUrl": "https://www.industry.gov.au/publications/australian-government-response-senate-select-committee-adopting-artificial-intelligence-ai-report",
+          "title": "Australian Government response: Senate Select Committee on Adopting Artificial Intelligence (AI) report | Department of Industry Science and Resources",
+          "retrievedAt": "2026-08-12T01:21:13.687Z",
+          "contentType": "text/html",
+          "contentHash": "8d1c32bbb211c65bee5172588484c1e7122a20e7046eaeaa405ce022d18a40c3",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-08-12T01:21:13.687Z",
+            "capturedBy": "Daniel Alkurdi",
+            "notes": "Fresh approval-time browser revalidation of the staged official evidence by Daniel Alkurdi. Linked official detail pages are included where the legacy record points to a catalogue URL.",
+            "pageContentHash": "5992c975ea70ddbc733d53306dee672cd0be8c54c37e27b022c183769599cf12",
+            "characterCount": 41146
+          },
+          "publishedAt": "2026-04-01",
+          "publishedAtPrecision": "day"
+        },
+        "checkedAt": "2026-08-12T01:22:15.227Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Daniel Alkurdi verified the publication date and the government response's National AI Plan and existing-frameworks approach against the official department page."
+      }
+    },
+    "updatedAt": "2026-08-12T01:23:58.096Z",
+    "reviewedAt": "2026-08-12T01:22:15.227Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Daniel Alkurdi verified the publication date and the government response's National AI Plan and existing-frameworks approach against the official department page.",
+    "publishedAt": "2026-08-12T01:23:58.091Z"
+  },
+  {
+    "id": "source-review-2c6d9318-0dd1-43bb-8750-805f7fcadffb",
+    "sourceUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-ai",
+    "title": "Federal Court issues GPN-AI practice note",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-04-16-federal-court-issues-gpn-ai-practice-note",
+    "targetTimelineRevisionHash": "789686c688ec1abb44871dc05a6ba9d86848d093057585fe58f51b4c1f2425d6",
+    "status": "published",
+    "discoveredAt": "2026-08-12T01:19:54.209Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Approved by Daniel Alkurdi for explicit editorial re-verification on 12 August 2026. Staging preserves the approval boundary pending proposal confirmation.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "First Federal Court practice note on generative AI in proceedings, with verification and disclosure duties.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-ai",
+      "finalUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-ai",
+      "title": "Use of Generative Artificial Intelligence Practice Note (GPN-AI)",
+      "retrievedAt": "2026-08-12T01:21:10.088Z",
+      "contentType": "text/html",
+      "contentHash": "4cbc2533a3953cd02e0b5185479d02b6e151b62cd9d1e1f8cfb28f451a113f82",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-08-12T01:21:10.088Z",
+        "capturedBy": "Daniel Alkurdi",
+        "notes": "Fresh approval-time browser revalidation of the staged official evidence by Daniel Alkurdi. Linked official detail pages are included where the legacy record points to a catalogue URL.",
+        "pageContentHash": "8754fe1ca55a12d7d9c06784795dbb2b6cdf5a92bb4803ffaebdb2f00e220341",
+        "characterCount": 14916
+      },
+      "reviewedDate": {
+        "date": "2026-04-16",
+        "precision": "day",
+        "reviewedAt": "2026-08-12T01:22:12.562Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The official GPN-AI page identifies the Chief Justice and 16 April 2026."
+      }
+    },
+    "proposedRecord": {
+      "id": "tl-2026-04-16-federal-court-issues-gpn-ai-practice-note",
+      "date": "2026-04-16",
+      "title": "Federal Court issues GPN-AI practice note",
+      "description": "First Federal Court practice note on generative AI in proceedings, with verification and disclosure duties.",
+      "type": "policy_introduced",
+      "jurisdiction": "federal",
+      "relatedPolicyId": "federal-court-gpn-ai",
+      "sourceUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-ai",
+      "datePrecision": "day",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-ai",
+          "finalUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-ai",
+          "title": "Use of Generative Artificial Intelligence Practice Note (GPN-AI)",
+          "retrievedAt": "2026-08-12T01:21:10.088Z",
+          "contentType": "text/html",
+          "contentHash": "4cbc2533a3953cd02e0b5185479d02b6e151b62cd9d1e1f8cfb28f451a113f82",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-08-12T01:21:10.088Z",
+            "capturedBy": "Daniel Alkurdi",
+            "notes": "Fresh approval-time browser revalidation of the staged official evidence by Daniel Alkurdi. Linked official detail pages are included where the legacy record points to a catalogue URL.",
+            "pageContentHash": "8754fe1ca55a12d7d9c06784795dbb2b6cdf5a92bb4803ffaebdb2f00e220341",
+            "characterCount": 14916
+          },
+          "reviewedDate": {
+            "date": "2026-04-16",
+            "precision": "day",
+            "reviewedAt": "2026-08-12T01:22:12.562Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The official GPN-AI page identifies the Chief Justice and 16 April 2026."
+          }
+        },
+        "checkedAt": "2026-08-12T01:22:12.562Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Daniel Alkurdi verified the GPN-AI date, verification and disclosure duties, and possible costs consequences against the official Federal Court page."
+      }
+    },
+    "updatedAt": "2026-08-12T01:23:54.887Z",
+    "reviewedAt": "2026-08-12T01:22:12.562Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Daniel Alkurdi verified the GPN-AI date, verification and disclosure duties, and possible costs consequences against the official Federal Court page.",
+    "publishedAt": "2026-08-12T01:23:54.884Z"
+  },
+  {
+    "id": "source-review-5b388d38-1389-4837-ac78-7533c0ed8de8",
+    "sourceUrl": "https://www.apra.gov.au/apra-letter-to-industry-on-artificial-intelligence-ai",
+    "title": "APRA Calls for Step-Change in AI Risk Management",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-04-30-apra-calls-for-step-change-in-ai-risk-management",
+    "targetTimelineRevisionHash": "5ef2eb7f5ac3a767249d9507d3aa4828e85f28846d15b5995960368c8bb92868",
+    "status": "published",
+    "discoveredAt": "2026-08-12T01:19:50.943Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Approved by Daniel Alkurdi for explicit editorial re-verification on 12 August 2026. Staging preserves the approval boundary pending proposal confirmation.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "APRA publishes an industry letter warning banks, insurers and superannuation trustees that AI governance, assurance and operational resilience practices are not keeping pace with AI adoption and frontier-model cyber risks.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.apra.gov.au/apra-letter-to-industry-on-artificial-intelligence-ai",
+      "finalUrl": "https://www.apra.gov.au/apra-letter-to-industry-on-artificial-intelligence-ai",
+      "title": "APRA Letter to Industry on Artificial Intelligence (AI) | APRA",
+      "retrievedAt": "2026-08-12T01:21:06.920Z",
+      "contentType": "text/html",
+      "contentHash": "1bb9f8799c76043bfcce55ccf6b17e8ee63118a9df83acfde76f5964aa59e656",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-08-12T01:21:06.920Z",
+        "capturedBy": "Daniel Alkurdi",
+        "notes": "Fresh approval-time browser revalidation of the staged official evidence by Daniel Alkurdi. Linked official detail pages are included where the legacy record points to a catalogue URL.",
+        "pageContentHash": "276081eb57f63923913b55707ac8709f5ff063238c35771db0bf72db4169c43e",
+        "characterCount": 15214
+      },
+      "publishedAt": "2026-04-30",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "tl-2026-04-30-apra-calls-for-step-change-in-ai-risk-management",
+      "date": "2026-04-30",
+      "title": "APRA Calls for Step-Change in AI Risk Management",
+      "description": "APRA publishes an industry letter warning banks, insurers and superannuation trustees that AI governance, assurance and operational resilience practices are not keeping pace with AI adoption and frontier-model cyber risks.",
+      "type": "policy_introduced",
+      "jurisdiction": "federal",
+      "relatedPolicyId": "apra-ai-industry-letter-2026",
+      "sourceUrl": "https://www.apra.gov.au/apra-letter-to-industry-on-artificial-intelligence-ai",
+      "datePrecision": "day",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.apra.gov.au/apra-letter-to-industry-on-artificial-intelligence-ai",
+          "finalUrl": "https://www.apra.gov.au/apra-letter-to-industry-on-artificial-intelligence-ai",
+          "title": "APRA Letter to Industry on Artificial Intelligence (AI) | APRA",
+          "retrievedAt": "2026-08-12T01:21:06.920Z",
+          "contentType": "text/html",
+          "contentHash": "1bb9f8799c76043bfcce55ccf6b17e8ee63118a9df83acfde76f5964aa59e656",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-08-12T01:21:06.920Z",
+            "capturedBy": "Daniel Alkurdi",
+            "notes": "Fresh approval-time browser revalidation of the staged official evidence by Daniel Alkurdi. Linked official detail pages are included where the legacy record points to a catalogue URL.",
+            "pageContentHash": "276081eb57f63923913b55707ac8709f5ff063238c35771db0bf72db4169c43e",
+            "characterCount": 15214
+          },
+          "publishedAt": "2026-04-30",
+          "publishedAtPrecision": "day"
+        },
+        "checkedAt": "2026-08-12T01:22:09.565Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Daniel Alkurdi verified the APRA industry letter, date and governance, assurance, operational-resilience and board-capability claims against the official page."
+      }
+    },
+    "updatedAt": "2026-08-12T01:23:48.846Z",
+    "reviewedAt": "2026-08-12T01:22:09.565Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Daniel Alkurdi verified the APRA industry letter, date and governance, assurance, operational-resilience and board-capability claims against the official page.",
+    "publishedAt": "2026-08-12T01:23:48.842Z"
+  },
+  {
+    "id": "source-review-cff59845-2ef7-4cfc-ba6a-992b6a9d0377",
+    "sourceUrl": "https://asic.gov.au/newsroom",
+    "title": "ASIC open letter on AI-era cyber resilience",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-05-08-asic-open-letter-on-ai-era-cyber-resilience",
+    "targetTimelineRevisionHash": "2e8be69dccaa2e05f8c348a8fae9774329ac34cd4b66d702a2ff85a5dbcc9358",
+    "status": "published",
+    "discoveredAt": "2026-08-12T01:19:48.354Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Approved by Daniel Alkurdi for explicit editorial re-verification on 12 August 2026. Staging preserves the approval boundary pending proposal confirmation.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "ASIC writes to AFS licensees and market participants on AI-driven cyber threats.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://asic.gov.au/newsroom",
+      "finalUrl": "https://asic.gov.au/newsroom",
+      "title": "Newsroom | ASIC with linked official detail",
+      "retrievedAt": "2026-08-12T01:21:03.384Z",
+      "contentType": "text/html",
+      "contentHash": "e95a04ee2655ada6d9b2b51f62189b7a28ad756dd39d51891effdff1f20cdbdc",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-08-12T01:21:03.384Z",
+        "capturedBy": "Daniel Alkurdi",
+        "notes": "Fresh approval-time browser revalidation of the staged official evidence by Daniel Alkurdi. Linked official detail pages are included where the legacy record points to a catalogue URL.",
+        "pageContentHash": "0f081346c6dcf8faaafb14fd38c2aedcedf62df477c7b34a0eb16ec0a6112030",
+        "characterCount": 9776
+      },
+      "publishedAt": "2026-05-08",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "tl-2026-05-08-asic-open-letter-on-ai-era-cyber-resilience",
+      "date": "2026-05-08",
+      "title": "ASIC open letter on AI-era cyber resilience",
+      "description": "ASIC writes to AFS licensees and market participants on AI-driven cyber threats.",
+      "type": "announcement",
+      "jurisdiction": "federal",
+      "sourceUrl": "https://asic.gov.au/newsroom",
+      "datePrecision": "day",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://asic.gov.au/newsroom",
+          "finalUrl": "https://asic.gov.au/newsroom",
+          "title": "Newsroom | ASIC with linked official detail",
+          "retrievedAt": "2026-08-12T01:21:03.384Z",
+          "contentType": "text/html",
+          "contentHash": "e95a04ee2655ada6d9b2b51f62189b7a28ad756dd39d51891effdff1f20cdbdc",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-08-12T01:21:03.384Z",
+            "capturedBy": "Daniel Alkurdi",
+            "notes": "Fresh approval-time browser revalidation of the staged official evidence by Daniel Alkurdi. Linked official detail pages are included where the legacy record points to a catalogue URL.",
+            "pageContentHash": "0f081346c6dcf8faaafb14fd38c2aedcedf62df477c7b34a0eb16ec0a6112030",
+            "characterCount": 9776
+          },
+          "publishedAt": "2026-05-08",
+          "publishedAtPrecision": "day"
+        },
+        "checkedAt": "2026-08-12T01:22:07.078Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Daniel Alkurdi verified the newsroom entry and linked permanent ASIC release 26-092MR, including the date, audience and cyber-resilience expectations."
+      }
+    },
+    "updatedAt": "2026-08-12T01:23:40.554Z",
+    "reviewedAt": "2026-08-12T01:22:07.078Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Daniel Alkurdi verified the newsroom entry and linked permanent ASIC release 26-092MR, including the date, audience and cyber-resilience expectations.",
+    "publishedAt": "2026-08-12T01:23:40.550Z"
+  },
+  {
+    "id": "source-review-ea462174-27bb-47b6-b286-0bd10d778934",
+    "sourceUrl": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes",
+    "title": "Victorian Supreme Court Practice Note SC GEN 25",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-05-14-victorian-supreme-court-practice-note-sc-gen-25",
+    "targetTimelineRevisionHash": "5b975dae3fd2dbc4740359158d71880ef7f21a3c0107bacb3e718c05493d932e",
+    "status": "published",
+    "discoveredAt": "2026-08-12T01:19:45.440Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Approved by Daniel Alkurdi for explicit editorial re-verification on 12 August 2026. Staging preserves the approval boundary pending proposal confirmation.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "vic",
+      "summary": "New practice note on AI use by court users replaces the 2024 guidelines.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes",
+      "finalUrl": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes",
+      "title": "Practice notes | The Supreme Court of Victoria with linked official detail",
+      "retrievedAt": "2026-08-12T01:20:57.469Z",
+      "contentType": "text/html",
+      "contentHash": "0209a1483c496a40b1123b2ae31ab96ec219846afda6b19cce00eeae751f5549",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-08-12T01:20:57.469Z",
+        "capturedBy": "Daniel Alkurdi",
+        "notes": "Fresh approval-time browser revalidation of the staged official evidence by Daniel Alkurdi. Linked official detail pages are included where the legacy record points to a catalogue URL.",
+        "pageContentHash": "d6987579a4da4249e40ee56eea88f153bf8d2237db47fbf0bf5776144e67f9e3",
+        "characterCount": 13738
+      },
+      "reviewedDate": {
+        "date": "2026-05-14",
+        "precision": "day",
+        "reviewedAt": "2026-08-12T01:22:04.540Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The linked official SC GEN 25 detail states the practice note was issued and commenced on 14 May 2026 and replaced the May 2024 guidelines."
+      }
+    },
+    "proposedRecord": {
+      "id": "tl-2026-05-14-victorian-supreme-court-practice-note-sc-gen-25",
+      "date": "2026-05-14",
+      "title": "Victorian Supreme Court Practice Note SC GEN 25",
+      "description": "New practice note on AI use by court users replaces the 2024 guidelines.",
+      "type": "policy_introduced",
+      "jurisdiction": "vic",
+      "relatedPolicyId": "vic-supreme-court-sc-gen-25",
+      "sourceUrl": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes",
+      "datePrecision": "day",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes",
+          "finalUrl": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes",
+          "title": "Practice notes | The Supreme Court of Victoria with linked official detail",
+          "retrievedAt": "2026-08-12T01:20:57.469Z",
+          "contentType": "text/html",
+          "contentHash": "0209a1483c496a40b1123b2ae31ab96ec219846afda6b19cce00eeae751f5549",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-08-12T01:20:57.469Z",
+            "capturedBy": "Daniel Alkurdi",
+            "notes": "Fresh approval-time browser revalidation of the staged official evidence by Daniel Alkurdi. Linked official detail pages are included where the legacy record points to a catalogue URL.",
+            "pageContentHash": "d6987579a4da4249e40ee56eea88f153bf8d2237db47fbf0bf5776144e67f9e3",
+            "characterCount": 13738
+          },
+          "reviewedDate": {
+            "date": "2026-05-14",
+            "precision": "day",
+            "reviewedAt": "2026-08-12T01:22:04.540Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The linked official SC GEN 25 detail states the practice note was issued and commenced on 14 May 2026 and replaced the May 2024 guidelines."
+          }
+        },
+        "checkedAt": "2026-08-12T01:22:04.540Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Daniel Alkurdi verified the catalogue entry and linked permanent SC GEN 25 detail page, including issue, commencement and replacement of the May 2024 guidelines."
+      }
+    },
+    "updatedAt": "2026-08-12T01:23:37.719Z",
+    "reviewedAt": "2026-08-12T01:22:04.540Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Daniel Alkurdi verified the catalogue entry and linked permanent SC GEN 25 detail page, including issue, commencement and replacement of the May 2024 guidelines.",
+    "publishedAt": "2026-08-12T01:23:37.716Z"
+  },
+  {
+    "id": "source-review-1036bfff-a462-42f8-99be-fce9cfb3e458",
+    "sourceUrl": "https://www.oaic.gov.au/engage-with-us/consultations/consultation-on-guidance-for-transparency-in-automated-decision-making",
+    "title": "OAIC consults on automated decision-making transparency",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-05-18-oaic-consults-on-automated-decision-making-transpa",
+    "targetTimelineRevisionHash": "f8c199318794141435af6719ed7414bb5d4c366e499eb519f95f6c5265a7804e",
+    "status": "published",
+    "discoveredAt": "2026-08-12T01:19:42.429Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Approved by Daniel Alkurdi for explicit editorial re-verification on 12 August 2026. Staging preserves the approval boundary pending proposal confirmation.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "Issues paper on ADM transparency guidance ahead of Privacy Act obligations commencing 10 December 2026; submissions closed 15 June 2026.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.oaic.gov.au/engage-with-us/consultations/consultation-on-guidance-for-transparency-in-automated-decision-making",
+      "finalUrl": "https://www.oaic.gov.au/engage-with-us/consultations/consultation-on-guidance-for-transparency-in-automated-decision-making",
+      "title": "Consultation on Guidance for Transparency in Automated Decision Making | OAIC",
+      "retrievedAt": "2026-08-12T01:20:53.610Z",
+      "contentType": "text/html",
+      "contentHash": "e0b391b18f30ff86594f5270b15c97cfcf7305aa7eb01792d3f6cdb20fb7e6a1",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-08-12T01:20:53.610Z",
+        "capturedBy": "Daniel Alkurdi",
+        "notes": "Fresh approval-time browser revalidation of the staged official evidence by Daniel Alkurdi. Linked official detail pages are included where the legacy record points to a catalogue URL.",
+        "pageContentHash": "ce80f627349ad7597e1d35b22988ed2f26a32ba136e2d7a7599af6f0e30805cf",
+        "characterCount": 3448
+      },
+      "publishedAt": "2026-05-18",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "tl-2026-05-18-oaic-consults-on-automated-decision-making-transpa",
+      "date": "2026-05-18",
+      "title": "OAIC consults on automated decision-making transparency",
+      "description": "Issues paper on ADM transparency guidance ahead of Privacy Act obligations commencing 10 December 2026; submissions closed 15 June 2026.",
+      "type": "announcement",
+      "jurisdiction": "federal",
+      "sourceUrl": "https://www.oaic.gov.au/engage-with-us/consultations/consultation-on-guidance-for-transparency-in-automated-decision-making",
+      "datePrecision": "day",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.oaic.gov.au/engage-with-us/consultations/consultation-on-guidance-for-transparency-in-automated-decision-making",
+          "finalUrl": "https://www.oaic.gov.au/engage-with-us/consultations/consultation-on-guidance-for-transparency-in-automated-decision-making",
+          "title": "Consultation on Guidance for Transparency in Automated Decision Making | OAIC",
+          "retrievedAt": "2026-08-12T01:20:53.610Z",
+          "contentType": "text/html",
+          "contentHash": "e0b391b18f30ff86594f5270b15c97cfcf7305aa7eb01792d3f6cdb20fb7e6a1",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-08-12T01:20:53.610Z",
+            "capturedBy": "Daniel Alkurdi",
+            "notes": "Fresh approval-time browser revalidation of the staged official evidence by Daniel Alkurdi. Linked official detail pages are included where the legacy record points to a catalogue URL.",
+            "pageContentHash": "ce80f627349ad7597e1d35b22988ed2f26a32ba136e2d7a7599af6f0e30805cf",
+            "characterCount": 3448
+          },
+          "publishedAt": "2026-05-18",
+          "publishedAtPrecision": "day"
+        },
+        "checkedAt": "2026-08-12T01:22:01.994Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Daniel Alkurdi verified the publication date, consultation close date and 10 December 2026 ADM transparency commencement statement against the official OAIC page."
+      }
+    },
+    "updatedAt": "2026-08-12T01:23:35.084Z",
+    "reviewedAt": "2026-08-12T01:22:01.994Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Daniel Alkurdi verified the publication date, consultation close date and 10 December 2026 ADM transparency commencement statement against the official OAIC page.",
+    "publishedAt": "2026-08-12T01:23:35.080Z"
+  },
+  {
+    "id": "source-review-309c25c6-970d-4ca9-8fc9-030d0a963157",
+    "sourceUrl": "https://www.fcfcoa.gov.au/pd/pd-ai",
+    "title": "FCFCOA issues Practice Direction on AI (PD-AI)",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-05-29-fcfcoa-issues-practice-direction-on-ai-pd-ai",
+    "targetTimelineRevisionHash": "5eb98ac4820f003f1b711bf2d69e1d8f9eacb9f5d12309c4f0d659bd837c88e7",
+    "status": "published",
+    "discoveredAt": "2026-08-12T01:19:38.918Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Approved by Daniel Alkurdi for explicit editorial re-verification on 12 August 2026. Staging preserves the approval boundary pending proposal confirmation.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "Federal Circuit and Family Court practice direction applies to proceedings commenced on or after 1 December 2025.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.fcfcoa.gov.au/pd/pd-ai",
+      "finalUrl": "https://www.fcfcoa.gov.au/pd/pd-ai",
+      "title": "FCFCOA Practice Direction: Use of Artificial Intelligence | Federal Circuit and Family Court of Australia",
+      "retrievedAt": "2026-08-12T01:20:50.317Z",
+      "contentType": "text/html",
+      "contentHash": "3888da141a5e98b737f86a1125a13ef669792722660c10f449cab30036a33e89",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-08-12T01:20:50.317Z",
+        "capturedBy": "Daniel Alkurdi",
+        "notes": "Fresh approval-time browser revalidation of the staged official evidence by Daniel Alkurdi. Linked official detail pages are included where the legacy record points to a catalogue URL.",
+        "pageContentHash": "0e308c0e770fd66514c531f468726e377ba137ea4712e292d5e36c2fa7816bea",
+        "characterCount": 19353
+      },
+      "reviewedDate": {
+        "date": "2026-05-29",
+        "precision": "day",
+        "reviewedAt": "2026-08-12T01:21:59.609Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The official practice direction states Issued: 29 May 2026 and applies to all proceedings in Divisions 1 and 2."
+      }
+    },
+    "proposedRecord": {
+      "id": "tl-2026-05-29-fcfcoa-issues-practice-direction-on-ai-pd-ai",
+      "date": "2026-05-29",
+      "title": "FCFCOA issues Practice Direction on AI (PD-AI)",
+      "description": "Federal Circuit and Family Court practice direction applies to all proceedings in Divisions 1 and 2 and sets responsibilities for litigants, lawyers, experts and other court users.",
+      "type": "policy_introduced",
+      "jurisdiction": "federal",
+      "relatedPolicyId": "family-court-ai-practice-direction",
+      "sourceUrl": "https://www.fcfcoa.gov.au/pd/pd-ai",
+      "datePrecision": "day",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.fcfcoa.gov.au/pd/pd-ai",
+          "finalUrl": "https://www.fcfcoa.gov.au/pd/pd-ai",
+          "title": "FCFCOA Practice Direction: Use of Artificial Intelligence | Federal Circuit and Family Court of Australia",
+          "retrievedAt": "2026-08-12T01:20:50.317Z",
+          "contentType": "text/html",
+          "contentHash": "3888da141a5e98b737f86a1125a13ef669792722660c10f449cab30036a33e89",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-08-12T01:20:50.317Z",
+            "capturedBy": "Daniel Alkurdi",
+            "notes": "Fresh approval-time browser revalidation of the staged official evidence by Daniel Alkurdi. Linked official detail pages are included where the legacy record points to a catalogue URL.",
+            "pageContentHash": "0e308c0e770fd66514c531f468726e377ba137ea4712e292d5e36c2fa7816bea",
+            "characterCount": 19353
+          },
+          "reviewedDate": {
+            "date": "2026-05-29",
+            "precision": "day",
+            "reviewedAt": "2026-08-12T01:21:59.609Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The official practice direction states Issued: 29 May 2026 and applies to all proceedings in Divisions 1 and 2."
+          }
+        },
+        "checkedAt": "2026-08-12T01:21:59.609Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Daniel Alkurdi approved the corrected scope: PD-AI applies to all proceedings in FCFCOA Divisions 1 and 2, not only proceedings commenced after 1 December 2025."
+      }
+    },
+    "updatedAt": "2026-08-12T01:23:31.925Z",
+    "reviewedAt": "2026-08-12T01:21:59.609Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Daniel Alkurdi approved the corrected scope: PD-AI applies to all proceedings in FCFCOA Divisions 1 and 2, not only proceedings commenced after 1 December 2025.",
+    "publishedAt": "2026-08-12T01:23:31.921Z"
+  },
+  {
+    "id": "source-review-ad294c39-f2ff-4132-b8d7-73761cd2e0da",
+    "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
+    "title": "First new mandatory requirement under the AI in government policy v2 commences",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-06-15-first-new-mandatory-requirement-under-the-ai-in-go",
+    "targetTimelineRevisionHash": "08931fa2f8f78027d96cb06e1742594b4fd067024b5542d4ffcb81edec86d98f",
+    "status": "published",
+    "discoveredAt": "2026-08-12T01:19:36.158Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Approved by Daniel Alkurdi for explicit editorial re-verification on 12 August 2026. Staging preserves the approval boundary pending proposal confirmation.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "Phased commencement of version 2 requirements begins; all requirements apply from December 2026.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.digital.gov.au/ai/ai-in-government-policy",
+      "finalUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
+      "title": "Policy for the responsible use of AI in government - Version 2.0 | digital.gov.au",
+      "retrievedAt": "2026-08-12T01:20:47.961Z",
+      "contentType": "text/html",
+      "contentHash": "4f93900b14912ff4ae5da8e92fa5d5fb7dbfd401e578c9bef26877bc51cf9595",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-08-12T01:20:47.961Z",
+        "capturedBy": "Daniel Alkurdi",
+        "notes": "Fresh approval-time browser revalidation of the staged official evidence by Daniel Alkurdi. Linked official detail pages are included where the legacy record points to a catalogue URL.",
+        "pageContentHash": "51c24e4364971eb2a5c069920431d59eff8b1e1a2fe6120d0b6c062f32dd153a",
+        "characterCount": 4366
+      },
+      "reviewedDate": {
+        "date": "2026-06-15",
+        "precision": "day",
+        "reviewedAt": "2026-08-12T01:21:55.591Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "Confirmed from the official v2.0 policy: effective 15 December 2025; the first new strategic-position requirement is due within six months and remaining 12-month requirements by December 2026."
+      }
+    },
+    "proposedRecord": {
+      "id": "tl-2026-06-15-first-new-mandatory-requirement-under-the-ai-in-go",
+      "date": "2026-06-15",
+      "title": "First new mandatory requirement under the AI in government policy v2 commences",
+      "description": "Phased commencement of version 2 requirements begins; all requirements apply from December 2026.",
+      "type": "milestone",
+      "jurisdiction": "federal",
+      "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
+      "datePrecision": "day",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.digital.gov.au/ai/ai-in-government-policy",
+          "finalUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
+          "title": "Policy for the responsible use of AI in government - Version 2.0 | digital.gov.au",
+          "retrievedAt": "2026-08-12T01:20:47.961Z",
+          "contentType": "text/html",
+          "contentHash": "4f93900b14912ff4ae5da8e92fa5d5fb7dbfd401e578c9bef26877bc51cf9595",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-08-12T01:20:47.961Z",
+            "capturedBy": "Daniel Alkurdi",
+            "notes": "Fresh approval-time browser revalidation of the staged official evidence by Daniel Alkurdi. Linked official detail pages are included where the legacy record points to a catalogue URL.",
+            "pageContentHash": "51c24e4364971eb2a5c069920431d59eff8b1e1a2fe6120d0b6c062f32dd153a",
+            "characterCount": 4366
+          },
+          "reviewedDate": {
+            "date": "2026-06-15",
+            "precision": "day",
+            "reviewedAt": "2026-08-12T01:21:55.591Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "Confirmed from the official v2.0 policy: effective 15 December 2025; the first new strategic-position requirement is due within six months and remaining 12-month requirements by December 2026."
+          }
+        },
+        "checkedAt": "2026-08-12T01:21:55.591Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Daniel Alkurdi verified the milestone against the official DTA landing page and linked version 2.0 policy PDF, including the six-month and 12-month implementation periods."
+      }
+    },
+    "updatedAt": "2026-08-12T01:23:26.109Z",
+    "reviewedAt": "2026-08-12T01:21:55.591Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Daniel Alkurdi verified the milestone against the official DTA landing page and linked version 2.0 policy PDF, including the six-month and 12-month implementation periods.",
+    "publishedAt": "2026-08-12T01:23:26.105Z"
+  },
+  {
     "id": "source-review-649a85d0-ace0-4e6f-a5b4-3a0c8f34b637",
     "sourceUrl": "https://www.industry.gov.au/news/report-explores-risks-and-controls-artificial-intelligence-ai-agents",
     "title": "Australian AI Safety Institute publishes first report on cross-organisation AI-agent risks",

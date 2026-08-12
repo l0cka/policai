@@ -1,5 +1,242 @@
 [
   {
+    "id": "mcp-audit-820a50e7-e414-40c5-aa56-27d2ea9c2472",
+    "createdAt": "2026-08-12T01:24:05.062Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-f6b91185-34b1-465c-a652-27892ec1a19d",
+    "createdAt": "2026-08-12T01:24:01.319Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-1253afaf-9599-4e29-9c1a-30ac54e76813",
+    "createdAt": "2026-08-12T01:23:58.103Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-0e63b4ce-aa42-4641-9ae0-f1b2b5841b28",
+    "createdAt": "2026-08-12T01:23:54.897Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-461b118e-3078-481c-b20b-b129960477c5",
+    "createdAt": "2026-08-12T01:23:48.853Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-9841aae5-5619-4fc4-9246-774596dbc7f4",
+    "createdAt": "2026-08-12T01:23:40.561Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-b11ad7ba-b129-4142-9f56-05705e1070a1",
+    "createdAt": "2026-08-12T01:23:37.726Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-5dc08d02-c249-49ec-a5c2-71719a5ef2a2",
+    "createdAt": "2026-08-12T01:23:35.095Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-7d3b1d67-25eb-40a9-ace6-f8d70e9da798",
+    "createdAt": "2026-08-12T01:23:31.935Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-c059c3ed-ac97-4640-a720-8499cee5e859",
+    "createdAt": "2026-08-12T01:23:26.124Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-ff4b1ac0-4a2d-4329-882d-a627c5256cd7",
+    "createdAt": "2026-08-12T01:22:24.391Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-a91394df-28b1-4f5f-a8f8-60a48a033039",
+    "createdAt": "2026-08-12T01:22:21.091Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-1c897637-2369-4ac2-b3fa-c8e266fb25e6",
+    "createdAt": "2026-08-12T01:22:15.250Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-539b3b07-3e68-4210-92a5-f1fd09a1f0a8",
+    "createdAt": "2026-08-12T01:22:12.582Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-4ca7cd55-6a21-4761-a8d1-f43073d6738a",
+    "createdAt": "2026-08-12T01:22:09.584Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-28556b21-847e-495e-b2a9-1cccd142968b",
+    "createdAt": "2026-08-12T01:22:07.094Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-31199d4b-5332-46da-90d4-66327dc2779a",
+    "createdAt": "2026-08-12T01:22:04.558Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-c9521e80-4b73-4b91-9ea0-b8470b58576f",
+    "createdAt": "2026-08-12T01:22:02.008Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-0c83dab9-459c-4c5b-acf9-3c4e9e602fc8",
+    "createdAt": "2026-08-12T01:21:59.632Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-59c61209-ee6e-4eb1-b75c-60a7239d119f",
+    "createdAt": "2026-08-12T01:21:55.613Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-18df5502-e325-43cf-99c4-753add358bd0",
+    "createdAt": "2026-08-12T01:21:19.870Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "error",
+    "errorSummary": "Timeline event date precision is required and must come from the source"
+  },
+  {
+    "id": "mcp-audit-735cd13a-c748-4155-a032-0c351b4ea002",
+    "createdAt": "2026-08-12T01:20:02.935Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.esafety.gov.au/industry/codes",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-3f15bc5f-95df-4188-a62b-0ae5e21fac3c",
+    "createdAt": "2026-08-12T01:20:00.601Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.esafety.gov.au/newsroom/media-releases/esafety-report-shows-ai-companions-are-putting-children-at-risk",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-485f0b1b-152d-4ef8-8a5d-b247e022e8f6",
+    "createdAt": "2026-08-12T01:19:57.603Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.industry.gov.au/publications/australian-government-response-senate-select-committee-adopting-artificial-intelligence-ai-report",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-e17c1bbc-837b-4b7c-8cd9-68bede4ba969",
+    "createdAt": "2026-08-12T01:19:54.217Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-ai",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-ac973bbc-9ee5-438c-828c-c5b1c99999ac",
+    "createdAt": "2026-08-12T01:19:50.950Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.apra.gov.au/apra-letter-to-industry-on-artificial-intelligence-ai",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-45d3eb54-15b9-43c5-b02a-c9bc5eb5bace",
+    "createdAt": "2026-08-12T01:19:48.361Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://asic.gov.au/newsroom",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-9dd166ce-f9a0-4841-b016-807a64955e54",
+    "createdAt": "2026-08-12T01:19:45.450Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-1f38f07c-d580-44e2-b7ee-ba3b770aa203",
+    "createdAt": "2026-08-12T01:19:42.435Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.oaic.gov.au/engage-with-us/consultations/consultation-on-guidance-for-transparency-in-automated-decision-making",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-23626120-4469-4c68-bd74-219f25516191",
+    "createdAt": "2026-08-12T01:19:38.925Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.fcfcoa.gov.au/pd/pd-ai",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-62c93c59-f734-438c-8912-1afb45fbd80f",
+    "createdAt": "2026-08-12T01:19:36.174Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-b48bae10-80c7-4c05-a820-294a95545c5e",
+    "createdAt": "2026-08-12T01:19:15.721Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
+    "status": "error",
+    "errorSummary": "Browser capture contains unsupported stable metadata"
+  },
+  {
     "id": "mcp-audit-3db793a8-2467-453a-8cf7-a14843624ca6",
     "createdAt": "2026-08-11T23:18:34.734Z",
     "actor": "local-mcp-admin",
