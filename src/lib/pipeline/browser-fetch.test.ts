@@ -2,10 +2,13 @@
 
 import { describe, expect, it, vi } from 'vitest';
 import {
-  createBrowserFetch,
+  createBrowserFetch as createBrowserFetchRaw,
   type BrowserLike,
   type BrowserPageLike,
   type BrowserResponseLike,
+  type BrowserRouteLike,
+  type BrowserWebSocketRouteLike,
+  type CreateBrowserFetchOptions,
 } from './browser-fetch';
 import { retrieveSource } from './fetch';
 
@@ -21,11 +24,27 @@ interface FakePageScript {
   bodyBytes?: Buffer;
   /** Overrides the navigation response body (e.g. empty for PDF downloads). */
   navigationBodyBytes?: Buffer;
+  contentLength?: number;
+  /** Redirect and subresource requests issued before goto resolves. */
+  extraRequestUrls?: string[];
+  webSocketUrls?: string[];
+  gotoDelayMs?: number;
   gotoResult?: 'null' | 'abort';
   /** Makes the context request API fail, as Akamai does to non-browser TLS. */
   requestGetResult?: 'timeout';
   /** Status the context request API returns (WAFs 403 non-browser TLS). */
   requestGetStatus?: number;
+}
+
+function createBrowserFetch(options: CreateBrowserFetchOptions = {}) {
+  return createBrowserFetchRaw({
+    resolveHost: async () => ['93.184.216.34'],
+    egressProxyFactory: async () => ({
+      serverUrl: 'http://127.0.0.1:1',
+      close: async () => {},
+    }),
+    ...options,
+  });
 }
 
 function fakeBrowser(
@@ -37,9 +56,19 @@ function fakeBrowser(
     closedBrowser: false,
     closedContexts: 0,
     waits: [] as number[],
-    contextOptions: [] as Array<{ userAgent?: string } | undefined>,
+    contextOptions: [] as Array<
+      {
+        userAgent?: string;
+        serviceWorkers?: 'block';
+        proxy?: { server: string };
+      } | undefined
+    >,
     requestGets: [] as string[],
     inPageFetches: [] as string[],
+    routedRequests: [] as string[],
+    blockedRequests: [] as string[],
+    connectedWebSockets: [] as string[],
+    blockedWebSockets: [] as string[],
     loadStateWaits: [] as string[],
     rejectLoadStateWaits: false,
   };
@@ -48,9 +77,57 @@ function fakeBrowser(
     state.launches++;
     return {
       ...(browserVersion ? { version: () => browserVersion } : {}),
-      newContext: async (contextOptions?: { userAgent?: string }) => {
+      newContext: async (contextOptions?: {
+        userAgent?: string;
+        serviceWorkers?: 'block';
+        proxy?: { server: string };
+      }) => {
         state.contextOptions.push(contextOptions);
+        let routeHandler:
+          | ((route: BrowserRouteLike) => Promise<void>)
+          | undefined;
+        let webSocketHandler:
+          | ((route: BrowserWebSocketRouteLike) => Promise<void>)
+          | undefined;
+        const dispatchRequest = async (requestUrl: string) => {
+          state.routedRequests.push(requestUrl);
+          if (!routeHandler) return;
+          let blocked = false;
+          await routeHandler({
+            request: () => ({ url: () => requestUrl }),
+            continue: async () => {},
+            abort: async () => {
+              blocked = true;
+              state.blockedRequests.push(requestUrl);
+            },
+          });
+          if (blocked) {
+            throw new Error(`net::ERR_BLOCKED_BY_CLIENT at ${requestUrl}`);
+          }
+        };
+        const dispatchWebSocket = async (socketUrl: string) => {
+          if (!webSocketHandler) return;
+          await webSocketHandler({
+            url: () => socketUrl,
+            connectToServer: () => {
+              state.connectedWebSockets.push(socketUrl);
+              return {};
+            },
+            close: async () => {
+              state.blockedWebSockets.push(socketUrl);
+            },
+          });
+        };
         return {
+        route: async (_pattern: string, handler: (route: BrowserRouteLike) => Promise<void>) => {
+          routeHandler = handler;
+        },
+        routeWebSocket: async (
+          _pattern: string,
+          handler: (route: BrowserWebSocketRouteLike) => Promise<void>,
+        ) => {
+          webSocketHandler = handler;
+        },
         newPage: async (): Promise<BrowserPageLike> => {
           let script: FakePageScript = {};
           let gotoIndex = 0;
@@ -61,6 +138,19 @@ function fakeBrowser(
               script = routes[url] ?? {};
               currentUrl = script.finalUrl ?? url;
               readsInNavigation = 0;
+              await dispatchRequest(url);
+              if (currentUrl !== url) await dispatchRequest(currentUrl);
+              for (const requestUrl of script.extraRequestUrls ?? []) {
+                await dispatchRequest(requestUrl);
+              }
+              for (const socketUrl of script.webSocketUrls ?? []) {
+                await dispatchWebSocket(socketUrl);
+              }
+              if (script.gotoDelayMs) {
+                await new Promise((resolve) =>
+                  setTimeout(resolve, script.gotoDelayMs),
+                );
+              }
               if (script.gotoResult === 'null') return null;
               if (script.gotoResult === 'abort') {
                 throw new Error(
@@ -76,34 +166,50 @@ function fakeBrowser(
                 url: () => currentUrl,
                 headers: () => ({
                   'content-type': script.contentType ?? 'text/html',
+                  ...(script.contentLength === undefined
+                    ? {}
+                    : { 'content-length': String(script.contentLength) }),
                 }),
-                body: async () =>
-                  script.navigationBodyBytes ??
-                  script.bodyBytes ??
-                  Buffer.from(script.contents?.[0] ?? ''),
               };
-            },
-            // Content reflects the last navigation, advancing again when the
-            // page re-renders between reads (challenge settling).
-            content: async () => {
-              const contents = script.contents ?? [''];
-              const index = Math.max(0, gotoIndex - 1) + readsInNavigation;
-              readsInNavigation++;
-              return contents[Math.min(index, contents.length - 1)];
             },
             url: () => currentUrl,
             // Stands in for an in-page same-origin fetch of the arg URL.
             evaluate: async (_fn: unknown, arg: unknown) => {
-              const target = String(arg);
-              state.inPageFetches.push(target);
-              const targetScript = routes[target] ?? {};
-              return {
-                status: targetScript.status ?? 200,
-                contentType: targetScript.contentType ?? 'text/html',
-                base64: (targetScript.bodyBytes ?? Buffer.alloc(0)).toString(
-                  'base64',
-                ),
-              } as never;
+              const options = arg as {
+                target?: string;
+                byteLimit: number;
+              };
+              if (options.target) {
+                const target = options.target;
+                state.inPageFetches.push(target);
+                await dispatchRequest(target);
+                const targetScript = routes[target] ?? {};
+                const payload = targetScript.bodyBytes ?? Buffer.alloc(0);
+                if (
+                  (targetScript.contentLength ?? payload.byteLength) >
+                  options.byteLimit
+                ) {
+                  throw new Error(
+                    `Source response exceeds ${options.byteLimit} byte limit`,
+                  );
+                }
+                return {
+                  status: targetScript.status ?? 200,
+                  contentType: targetScript.contentType ?? 'text/html',
+                  finalUrl: targetScript.finalUrl ?? target,
+                  base64Chunks: [payload.toString('base64')],
+                } as never;
+              }
+              const contents = script.contents ?? [''];
+              const index = Math.max(0, gotoIndex - 1) + readsInNavigation;
+              readsInNavigation++;
+              const content = contents[Math.min(index, contents.length - 1)];
+              if (Buffer.byteLength(content, 'utf8') > options.byteLimit) {
+                throw new Error(
+                  `Source response exceeds ${options.byteLimit} byte limit`,
+                );
+              }
+              return content as never;
             },
             waitForTimeout: async (ms: number) => {
               state.waits.push(ms);
@@ -275,9 +381,79 @@ describe('createBrowserFetch', () => {
     const userAgent = state.contextOptions[0]?.userAgent ?? '';
     expect(userAgent).toContain('Chrome/149.0.0.0');
     expect(userAgent).not.toContain('Headless');
+    expect(state.contextOptions[0]?.serviceWorkers).toBe('block');
+    expect(state.contextOptions[0]?.proxy?.server).toBe(
+      'http://127.0.0.1:1',
+    );
   });
 
-  it('retrieves document payloads through the context request API when navigation aborts', async () => {
+  it.each([
+    '127.0.0.1',
+    '10.0.0.1',
+    '169.254.169.254',
+    '::ffff:127.0.0.1',
+    'fc00::1',
+  ])('rejects an official hostname resolving to blocked address %s before launch', async (address) => {
+    const { launch, state } = fakeBrowser({});
+    const browserFetch = createBrowserFetch({
+      launch,
+      resolveHost: async () => [address],
+    });
+
+    await expect(
+      browserFetch.fetchImpl('https://www.example.gov.au/news'),
+    ).rejects.toThrow(/blocked network address/i);
+    expect(state.launches).toBe(0);
+  });
+
+  it('blocks private redirects and subresources before Chromium continues them', async () => {
+    const sourceUrl = 'https://www.example.gov.au/news';
+    const privateUrl = 'https://metadata.example.gov.au/latest/meta-data';
+    const { launch, state } = fakeBrowser({
+      [sourceUrl]: {
+        extraRequestUrls: [privateUrl],
+        contents: ['<html><body>never returned</body></html>'],
+      },
+    });
+    const browserFetch = createBrowserFetch({
+      launch,
+      resolveHost: async (hostname) =>
+        hostname === 'metadata.example.gov.au'
+          ? ['169.254.169.254']
+          : ['93.184.216.34'],
+    });
+
+    await expect(browserFetch.fetchImpl(sourceUrl)).rejects.toThrow(
+      /blocked_by_client/i,
+    );
+    expect(state.blockedRequests).toEqual([privateUrl]);
+  });
+
+  it('blocks private WebSocket destinations and permits public secure sockets', async () => {
+    const sourceUrl = 'https://www.example.gov.au/news';
+    const privateSocket = 'wss://internal.example.gov.au/events';
+    const publicSocket = 'wss://updates.example.gov.au/events';
+    const { launch, state } = fakeBrowser({
+      [sourceUrl]: {
+        webSocketUrls: [privateSocket, publicSocket],
+        contents: ['<html><body>ok</body></html>'],
+      },
+    });
+    const browserFetch = createBrowserFetch({
+      launch,
+      resolveHost: async (hostname) =>
+        hostname === 'internal.example.gov.au'
+          ? ['10.0.0.5']
+          : ['93.184.216.34'],
+    });
+
+    await browserFetch.fetchImpl(sourceUrl);
+
+    expect(state.blockedWebSockets).toEqual([privateSocket]);
+    expect(state.connectedWebSockets).toEqual([publicSocket]);
+  });
+
+  it('retrieves document payloads through a bounded in-page stream when navigation aborts', async () => {
     const pdfBytes = Buffer.from('%PDF-1.7 fake body');
     const { launch, state } = fakeBrowser({
       'https://www.example.gov.au/files/policy.pdf': {
@@ -295,12 +471,12 @@ describe('createBrowserFetch', () => {
     expect(response.status).toBe(200);
     expect(Buffer.from(await response.arrayBuffer())).toEqual(pdfBytes);
     expect(response.headers.get('content-type')).toContain('application/pdf');
-    expect(state.requestGets).toEqual([
+    expect(state.inPageFetches).toEqual([
       'https://www.example.gov.au/files/policy.pdf',
     ]);
   });
 
-  it('retries an empty non-HTML navigation body through the request API', async () => {
+  it('retrieves raw non-HTML bytes through the bounded in-page stream', async () => {
     const pdfBytes = Buffer.from('%PDF-1.7 nav-empty');
     const { launch, state } = fakeBrowser({
       'https://www.example.gov.au/files/empty.pdf': {
@@ -316,9 +492,72 @@ describe('createBrowserFetch', () => {
     );
 
     expect(Buffer.from(await response.arrayBuffer())).toEqual(pdfBytes);
-    expect(state.requestGets).toEqual([
+    expect(state.inPageFetches).toEqual([
       'https://www.example.gov.au/files/empty.pdf',
     ]);
+  });
+
+  it('rejects an oversized declared browser response before reading its body', async () => {
+    const url = 'https://www.example.gov.au/files/large.pdf';
+    const { launch, state } = fakeBrowser({
+      [url]: {
+        contentType: 'application/pdf',
+        contentLength: 11,
+        bodyBytes: Buffer.from('small'),
+      },
+    });
+    const browserFetch = createBrowserFetch({ launch, maxResponseBytes: 10 });
+
+    await expect(browserFetch.fetchImpl(url)).rejects.toThrow(
+      /exceeds 10 byte limit/i,
+    );
+    expect(state.inPageFetches).toEqual([]);
+  });
+
+  it('aborts a chunked browser payload once streamed bytes exceed the limit', async () => {
+    const url = 'https://www.example.gov.au/files/chunked.pdf';
+    const { launch } = fakeBrowser({
+      [url]: {
+        contentType: 'application/pdf',
+        bodyBytes: Buffer.from('eleven-byte'),
+      },
+    });
+    const browserFetch = createBrowserFetch({ launch, maxResponseBytes: 10 });
+
+    await expect(browserFetch.fetchImpl(url)).rejects.toThrow(
+      /exceeds 10 byte limit/i,
+    );
+  });
+
+  it('rejects rendered HTML that exceeds the response budget', async () => {
+    const url = 'https://www.example.gov.au/news';
+    const { launch } = fakeBrowser({
+      [url]: { contents: ['<html><body>too large</body></html>'] },
+    });
+    const browserFetch = createBrowserFetch({ launch, maxResponseBytes: 12 });
+
+    await expect(browserFetch.fetchImpl(url)).rejects.toThrow(
+      /exceeds 12 byte limit/i,
+    );
+  });
+
+  it('propagates an AbortSignal and closes the active browser context', async () => {
+    const url = 'https://www.example.gov.au/news';
+    const { launch, state } = fakeBrowser({
+      [url]: {
+        gotoDelayMs: 100,
+        contents: ['<html><body>late response</body></html>'],
+      },
+    });
+    const browserFetch = createBrowserFetch({ launch });
+    const controller = new AbortController();
+    const pending = browserFetch.fetchImpl(url, { signal: controller.signal });
+
+    await vi.waitFor(() => expect(state.launches).toBe(1));
+    controller.abort();
+
+    await expect(pending).rejects.toMatchObject({ name: 'AbortError' });
+    expect(state.closedContexts).toBeGreaterThan(0);
   });
 
   it('re-fetches when the PDF viewer shell masquerades as the document', async () => {
@@ -339,7 +578,7 @@ describe('createBrowserFetch', () => {
     );
 
     expect(Buffer.from(await response.arrayBuffer())).toEqual(pdfBytes);
-    expect(state.requestGets).toEqual([
+    expect(state.inPageFetches).toEqual([
       'https://www.example.gov.au/files/viewer.pdf',
     ]);
   });

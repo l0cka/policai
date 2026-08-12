@@ -31,6 +31,7 @@
 /tmp/
 /plans/
 docs/superpowers/
+/artifacts/fix_report.md
 
 # debug
 npm-debug.log*

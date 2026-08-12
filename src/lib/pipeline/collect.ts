@@ -162,20 +162,24 @@ function isBrowserFallbackFutile(error: unknown): boolean {
  */
 async function retrievedSourceFromFirecrawl(
   markdown: string,
-  url: string,
+  requestedUrl: string,
+  finalUrl: string,
   now: () => Date,
 ): Promise<RetrievedSource> {
-  const replayFetch: typeof fetch = async () =>
+  const replayFetch: typeof fetch = async () => {
     // text/plain, not text/markdown: extractRetrievedDocument only knows how
     // to read HTML, XML, or plain text bodies. Markdown reads fine as plain
     // text — cheerio treats it as one untagged text node — but a
     // text/markdown content type would hit the "unsupported content type"
     // guard and fail every Firecrawl-sourced candidate.
-    new Response(markdown, {
+    const response = new Response(markdown, {
       status: 200,
       headers: { 'content-type': 'text/plain; charset=utf-8' },
     });
-  return retrieveSource(url, { fetchImpl: replayFetch, now });
+    Object.defineProperty(response, 'url', { value: finalUrl });
+    return response;
+  };
+  return retrieveSource(requestedUrl, { fetchImpl: replayFetch, now });
 }
 
 export function emptyWatchState(): WatchState {
@@ -1131,6 +1135,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
           return retrievedSourceFromFirecrawl(
             firecrawled.markdown,
             url,
+            firecrawled.finalUrl,
             () => now,
           );
         }
