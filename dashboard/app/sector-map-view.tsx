@@ -8,7 +8,7 @@
  * a cluster badge expands as the zoom separates its members.
  */
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import * as maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
@@ -137,8 +137,34 @@ export default function SectorMapView({
     return { top: 32, left: 32, bottom: 32, right: wide ? 400 : 32 };
   };
 
+  // Deferred init: a map created while the tab is hidden or the container is
+  // off-screen can wedge before its first frame (animation frames are paused
+  // in background tabs), so creation waits until the container is actually
+  // visible in a visible document.
+  const [canInit, setCanInit] = useState(false);
+
   useEffect(() => {
-    if (!containerRef.current || mapRef.current) return;
+    const container = containerRef.current;
+    if (!container || canInit) return;
+    let intersecting = false;
+    const tryInit = () => {
+      if (intersecting && document.visibilityState === 'visible') setCanInit(true);
+    };
+    const observer = new IntersectionObserver((entries) => {
+      intersecting = entries.some((entry) => entry.isIntersecting);
+      tryInit();
+    });
+    observer.observe(container);
+    document.addEventListener('visibilitychange', tryInit);
+    tryInit();
+    return () => {
+      observer.disconnect();
+      document.removeEventListener('visibilitychange', tryInit);
+    };
+  }, [canInit]);
+
+  useEffect(() => {
+    if (!canInit || !containerRef.current || mapRef.current) return;
 
     const map = new maplibregl.Map({
       container: containerRef.current,
@@ -358,16 +384,26 @@ export default function SectorMapView({
     const media = window.matchMedia('(prefers-color-scheme: dark)');
     media.addEventListener('change', applyTheme);
 
+    // Returning from a background tab, nudge the render loop back to life.
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') {
+        map.resize();
+        map.triggerRepaint();
+      }
+    };
+    document.addEventListener('visibilitychange', onVisible);
+
     return () => {
       observer.disconnect();
       media.removeEventListener('change', applyTheme);
+      document.removeEventListener('visibilitychange', onVisible);
       map.remove();
       mapRef.current = null;
       readyRef.current = false;
       stateMarkersRef.current = {};
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [canInit]);
 
   // Data + selection updates.
   useEffect(() => {
