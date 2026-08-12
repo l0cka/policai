@@ -155,6 +155,31 @@
 - The map capture above was retaken (~50 km scale over Port Phillip,
   decluttered labels, high-detail coastline).
 
+### Pass 9 — real slippy map (street-level detail, no shading)
+
+- The custom SVG map was replaced by MapLibre GL over OpenFreeMap vector
+  tiles (dark style in dark theme, Positron in light; no API key). The map
+  now zooms to true street level with native pan/zoom/inertia, pinch or
+  ⌘-scroll (cooperative gestures keep plain scrolling on the page), and
+  built-in label collision. Choropleth shading and the selection hatch are
+  gone; the selected state is a boundary outline only, per feedback.
+- Clustering replaced the co-located pin fan-out that had pushed CBD
+  organisations visually into Port Phillip Bay (a ~15 km artificial ring
+  offset — the placement fault reported). Numbered cluster badges expand as
+  the zoom separates members; faded pins mark suburb-level geocodes.
+- Layout: full-width map (up to 74vh) with the detail column floating over
+  the right edge like a map application's side panel; it drops below the map
+  under 960 px. Jurisdiction code + count chips are HTML markers in the
+  site's monospace face, hidden past ~6.5×; ABS state boundaries ship as
+  public/data/australia-states.geojson (scripts/build-sector-geo.mjs) with
+  per-state bboxes for the Australia/state fit buttons.
+- Attribution: OpenFreeMap © OpenMapTiles, © OpenStreetMap contributors,
+  ABS ASGS 2021, in the map's attribution control.
+- Verified at runtime: style + tiles + sprites load, overlays and cluster
+  sources attach, markers place, console clean. Final visual pass pended in
+  this session only because the browser tab was backgrounded (rAF paused);
+  the SVG passes 1–8 remain documented above for history.
+
 ## Functionality and accessibility
 
 - Map and System tabs switch panels.
