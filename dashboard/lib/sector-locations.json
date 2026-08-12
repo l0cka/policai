@@ -1,0 +1,1581 @@
+{
+ "checked": "2026-08-12",
+ "geocoder": "OpenStreetMap Nominatim",
+ "locations": [
+  {
+   "name": "Victoria Legal Aid",
+   "suburb": "Melbourne",
+   "state": "VIC",
+   "lat": -37.81556,
+   "lon": 144.95678,
+   "precision": "street",
+   "source_url": "https://www.legalaid.vic.gov.au/our-offices"
+  },
+  {
+   "name": "Victorian Aboriginal Legal Service",
+   "suburb": "Preston",
+   "state": "VIC",
+   "lat": -37.74377,
+   "lon": 145.00285,
+   "precision": "street",
+   "source_url": "https://www.vals.org.au/contact-us/"
+  },
+  {
+   "name": "Djirra",
+   "suburb": "Abbotsford",
+   "state": "VIC",
+   "lat": -37.79758,
+   "lon": 144.99385,
+   "precision": "street",
+   "source_url": "https://djirra.org.au/contact/"
+  },
+  {
+   "name": "Eastern Community Legal Centre",
+   "suburb": "Box Hill",
+   "state": "VIC",
+   "lat": -37.81961,
+   "lon": 145.12662,
+   "precision": "street",
+   "source_url": "https://eclc.org.au/contact-us/"
+  },
+  {
+   "name": "Fitzroy Legal Service",
+   "suburb": "Fitzroy",
+   "state": "VIC",
+   "lat": -37.80209,
+   "lon": 144.97972,
+   "precision": "street",
+   "source_url": "https://fls.org.au/contact-us/"
+  },
+  {
+   "name": "WEstjustice",
+   "suburb": "Sunshine",
+   "state": "VIC",
+   "lat": -37.78618,
+   "lon": 144.83337,
+   "precision": "street",
+   "source_url": "https://www.westjustice.org.au/about-us"
+  },
+  {
+   "name": "Peninsula Community Legal Centre",
+   "suburb": "Frankston",
+   "state": "VIC",
+   "lat": -38.14262,
+   "lon": 145.12156,
+   "precision": "street",
+   "source_url": "https://www.pclc.org.au/contact-us"
+  },
+  {
+   "name": "Inner Melbourne Community Legal",
+   "suburb": "North Melbourne",
+   "state": "VIC",
+   "lat": -37.80269,
+   "lon": 144.94675,
+   "precision": "street",
+   "source_url": "https://imcl.org.au/contact-us/"
+  },
+  {
+   "name": "Northern Community Legal Centre",
+   "suburb": "Broadmeadows",
+   "state": "VIC",
+   "lat": -37.68311,
+   "lon": 144.91914,
+   "precision": "street",
+   "source_url": "https://www.northernclc.org.au/contact"
+  },
+  {
+   "name": "Barwon Community Legal Service",
+   "suburb": "Belmont",
+   "state": "VIC",
+   "lat": -38.17451,
+   "lon": 144.34226,
+   "precision": "street",
+   "source_url": "https://www.barwoncommunitylegal.org.au/contact-us/"
+  },
+  {
+   "name": "ARC Justice",
+   "suburb": "Bendigo",
+   "state": "VIC",
+   "lat": -36.7575,
+   "lon": 144.28431,
+   "precision": "street",
+   "source_url": "https://arcjustice.org.au/contact-us/"
+  },
+  {
+   "name": "Gippsland Community Legal Service",
+   "suburb": "Morwell",
+   "state": "VIC",
+   "lat": -38.23742,
+   "lon": 146.39695,
+   "precision": "street",
+   "source_url": "https://www.gcls.org.au/contact/"
+  },
+  {
+   "name": "Mallee Family Care Community Legal Centre",
+   "suburb": "Mildura",
+   "state": "VIC",
+   "lat": -34.18698,
+   "lon": 142.16189,
+   "precision": "street",
+   "source_url": "https://mfclegalcentre.com.au/Contact-us.aspx"
+  },
+  {
+   "name": "South-East Monash Legal Service",
+   "suburb": "Springvale",
+   "state": "VIC",
+   "lat": -37.94594,
+   "lon": 145.14025,
+   "precision": "street",
+   "source_url": "https://www.smls.com.au/contact-us"
+  },
+  {
+   "name": "Monash Law Clinics",
+   "suburb": "Clayton",
+   "state": "VIC",
+   "lat": -37.91212,
+   "lon": 145.12817,
+   "precision": "street",
+   "source_url": "https://studentvip.com.au/monash/clayton/maps/129471"
+  },
+  {
+   "name": "Southside Justice",
+   "suburb": "St Kilda",
+   "state": "VIC",
+   "lat": -37.86783,
+   "lon": 144.98795,
+   "precision": "street",
+   "source_url": "https://southsidejustice.org.au/contact-us/"
+  },
+  {
+   "name": "Moonee Valley Legal Service",
+   "suburb": "Ascot Vale",
+   "state": "VIC",
+   "lat": -37.7795,
+   "lon": 144.91942,
+   "precision": "street",
+   "source_url": "https://mvls.org.au/contact-us/"
+  },
+  {
+   "name": "West Heidelberg Community Legal Service",
+   "suburb": "Heidelberg West",
+   "state": "VIC",
+   "lat": -37.73957,
+   "lon": 145.0405,
+   "precision": "street",
+   "source_url": "https://www.holstephealth.org.au/services/community-legal/west-heidelberg-community-legal/"
+  },
+  {
+   "name": "Whittlesea Community Connections",
+   "suburb": "Epping",
+   "state": "VIC",
+   "lat": -37.6539,
+   "lon": 145.01963,
+   "precision": "street",
+   "source_url": "https://www.whittleseacommunityconnections.org.au/contact-us/"
+  },
+  {
+   "name": "commUnity+ Legal",
+   "suburb": "Keilor Downs",
+   "state": "VIC",
+   "lat": -37.72797,
+   "lon": 144.80469,
+   "precision": "street",
+   "source_url": "https://comm-unityplus.org.au/contact-us/"
+  },
+  {
+   "name": "Allied Justice",
+   "suburb": "Ballarat",
+   "state": "VIC",
+   "lat": -37.56343,
+   "lon": 143.8568,
+   "precision": "street",
+   "source_url": "https://alliedjustice.org.au/"
+  },
+  {
+   "name": "Southport Community Legal Service",
+   "suburb": "Port Melbourne",
+   "state": "VIC",
+   "lat": -37.83793,
+   "lon": 144.94158,
+   "precision": "street",
+   "source_url": "https://www.southportcls.com.au/about-us.html"
+  },
+  {
+   "name": "Consumer Action Law Centre",
+   "suburb": "Melbourne",
+   "state": "VIC",
+   "lat": -37.81451,
+   "lon": 144.96028,
+   "precision": "street",
+   "source_url": "https://consumeraction.org.au/wp-content/uploads/2016/11/Retirement-Housing-Submission-2016.pdf"
+  },
+  {
+   "name": "Social Security Rights Victoria",
+   "suburb": "West Heidelberg",
+   "state": "VIC",
+   "lat": -37.73957,
+   "lon": 145.0405,
+   "precision": "street",
+   "source_url": "https://www.ssrv.org.au/contact-us"
+  },
+  {
+   "name": "Tenants Victoria",
+   "suburb": "Melbourne",
+   "state": "VIC",
+   "lat": -37.81425,
+   "lon": 144.96317,
+   "precision": "locality",
+   "source_url": "https://tenantsvic.org.au/feedback/complaints-and-feedback-process/"
+  },
+  {
+   "name": "Mortgage Stress Victoria",
+   "suburb": "Melbourne",
+   "state": "VIC",
+   "lat": -37.81293,
+   "lon": 144.9566,
+   "precision": "street",
+   "source_url": "https://www.mortgagestress.org.au/contact-us"
+  },
+  {
+   "name": "Mental Health Legal Centre",
+   "suburb": "North Melbourne",
+   "state": "VIC",
+   "lat": -37.80335,
+   "lon": 144.94985,
+   "precision": "street",
+   "source_url": "https://mhlc.org.au/contact/"
+  },
+  {
+   "name": "Villamanta Disability Rights Legal Service",
+   "suburb": "Geelong West",
+   "state": "VIC",
+   "lat": -38.13708,
+   "lon": 144.3527,
+   "precision": "street",
+   "source_url": "https://daru.org.au/organisation/villamanta-disability-rights-legal-service/"
+  },
+  {
+   "name": "Disability Discrimination Legal Service",
+   "suburb": "Melbourne",
+   "state": "VIC",
+   "lat": -37.81699,
+   "lon": 144.96618,
+   "precision": "street",
+   "source_url": "https://ddls.org.au/"
+  },
+  {
+   "name": "AED Legal Centre",
+   "suburb": "Melbourne",
+   "state": "VIC",
+   "lat": -37.81859,
+   "lon": 144.95909,
+   "precision": "street",
+   "source_url": "https://www.aed.org.au/contact/"
+  },
+  {
+   "name": "Seniors Rights Victoria",
+   "suburb": "Melbourne",
+   "state": "VIC",
+   "lat": -37.83614,
+   "lon": 144.97462,
+   "precision": "street",
+   "source_url": "https://cotavic.org.au/about/contact-us/"
+  },
+  {
+   "name": "Youthlaw",
+   "suburb": "Carlton",
+   "state": "VIC",
+   "lat": -37.80646,
+   "lon": 144.96388,
+   "precision": "street",
+   "source_url": "https://youthlaw.asn.au/"
+  },
+  {
+   "name": "Women's Legal Service Victoria",
+   "suburb": "Melbourne",
+   "state": "VIC",
+   "lat": -37.81259,
+   "lon": 144.95654,
+   "precision": "street",
+   "source_url": "https://firmania.biz/melbourne/womens-legal-service-victoria-307930"
+  },
+  {
+   "name": "inTouch Women's Legal Centre",
+   "suburb": "Melbourne",
+   "state": "VIC",
+   "lat": -37.81425,
+   "lon": 144.96317,
+   "precision": "locality",
+   "source_url": "https://intouch.org.au/contact-us/"
+  },
+  {
+   "name": "Law and Advocacy Centre for Women",
+   "suburb": "Carlton",
+   "state": "VIC",
+   "lat": -37.80646,
+   "lon": 144.96388,
+   "precision": "street",
+   "source_url": "https://lacw.com.au/contact-us/"
+  },
+  {
+   "name": "Refugee Legal",
+   "suburb": "Melbourne",
+   "state": "VIC",
+   "lat": -37.81155,
+   "lon": 144.97039,
+   "precision": "street",
+   "source_url": "https://refugeelegal.org.au/"
+  },
+  {
+   "name": "Asylum Seeker Resource Centre (Human Rights Law Program)",
+   "suburb": "Footscray",
+   "state": "VIC",
+   "lat": -37.8047,
+   "lon": 144.89869,
+   "precision": "street",
+   "source_url": "https://asrc.org.au/contact/"
+  },
+  {
+   "name": "Migrant Workers Centre",
+   "suburb": "Carlton",
+   "state": "VIC",
+   "lat": -37.80643,
+   "lon": 144.9664,
+   "precision": "street",
+   "source_url": "https://www.migrantworkers.org.au/"
+  },
+  {
+   "name": "JobWatch",
+   "suburb": "Melbourne",
+   "state": "VIC",
+   "lat": -37.80736,
+   "lon": 144.96795,
+   "precision": "street",
+   "source_url": "https://jobwatch.org.au/privacy-security-statement/"
+  },
+  {
+   "name": "Young Workers Centre",
+   "suburb": "Carlton South",
+   "state": "VIC",
+   "lat": -37.8064,
+   "lon": 144.97122,
+   "precision": "locality",
+   "source_url": "https://www.megaphone.org.au/partnerships/ywc"
+  },
+  {
+   "name": "Environmental Justice Australia",
+   "suburb": "Carlton",
+   "state": "VIC",
+   "lat": -37.80489,
+   "lon": 144.96071,
+   "precision": "street",
+   "source_url": "https://www.envirojustice.org.au/"
+  },
+  {
+   "name": "Q+ Law",
+   "suburb": "Fitzroy",
+   "state": "VIC",
+   "lat": -37.80104,
+   "lon": 144.97926,
+   "precision": "locality",
+   "source_url": "https://www.qlaw.org.au/contact"
+  },
+  {
+   "name": "First Step Legal",
+   "suburb": "St Kilda",
+   "state": "VIC",
+   "lat": -37.87181,
+   "lon": 144.98183,
+   "precision": "street",
+   "source_url": "https://www.firststep.org.au/the_perfect_solution"
+  },
+  {
+   "name": "Emma House Legal Program",
+   "suburb": "Warrnambool",
+   "state": "VIC",
+   "lat": -38.38171,
+   "lon": 142.48174,
+   "precision": "street",
+   "source_url": "https://www.emmahouse.org.au/contact"
+  },
+  {
+   "name": "University of Melbourne Student Union Legal Service",
+   "suburb": "Parkville",
+   "state": "VIC",
+   "lat": -37.78711,
+   "lon": 144.95155,
+   "precision": "locality",
+   "source_url": "https://umsu.unimelb.edu.au/about/umsu/contact/"
+  },
+  {
+   "name": "Legal Aid NSW (Legal Aid Commission of New South Wales)",
+   "suburb": "Haymarket",
+   "state": "NSW",
+   "lat": -33.87994,
+   "lon": 151.20808,
+   "precision": "street",
+   "source_url": "https://www.legalaid.nsw.gov.au/contact-us/our-offices"
+  },
+  {
+   "name": "Aboriginal Legal Service (NSW/ACT) Limited",
+   "suburb": "Redfern",
+   "state": "NSW",
+   "lat": -33.8946,
+   "lon": 151.20491,
+   "precision": "street",
+   "source_url": "https://www.alsnswact.org.au/als_redfern"
+  },
+  {
+   "name": "Binaal Billa Family Violence Prevention Legal Service",
+   "suburb": "Forbes",
+   "state": "NSW",
+   "lat": -33.38404,
+   "lon": 148.0094,
+   "precision": "street",
+   "source_url": "https://www.binaalbilla.com.au/"
+  },
+  {
+   "name": "Many Rivers Family Violence Prevention Legal Service",
+   "suburb": "Grafton",
+   "state": "NSW",
+   "lat": -29.68168,
+   "lon": 152.93364,
+   "precision": "locality",
+   "source_url": "https://www.gurehlgam.com.au/reach-out"
+  },
+  {
+   "name": "Thiyama-li Family Violence Service Inc.",
+   "suburb": "Moree",
+   "state": "NSW",
+   "lat": -29.47002,
+   "lon": 149.84272,
+   "precision": "street",
+   "source_url": "https://thiyamali.com.au/contact-us/"
+  },
+  {
+   "name": "Warra-Warra Legal Service",
+   "suburb": "Broken Hill",
+   "state": "NSW",
+   "lat": -31.94938,
+   "lon": 141.48028,
+   "precision": "street",
+   "source_url": "https://www.warrawarra.org.au/contact"
+  },
+  {
+   "name": "Just Reinvest NSW",
+   "suburb": "Redfern",
+   "state": "NSW",
+   "lat": -33.89098,
+   "lon": 151.20272,
+   "precision": "street",
+   "source_url": "https://www.justreinvest.org.au/contact/"
+  },
+  {
+   "name": "Deadly Connections Community & Justice Services Limited",
+   "suburb": "Marrickville",
+   "state": "NSW",
+   "lat": -33.9104,
+   "lon": 151.15608,
+   "precision": "locality",
+   "source_url": "https://deadlyconnections.org.au/contact/"
+  },
+  {
+   "name": "Wirringa Baiya Aboriginal Women's Legal Centre",
+   "suburb": "Marrickville",
+   "state": "NSW",
+   "lat": -33.90252,
+   "lon": 151.16144,
+   "precision": "street",
+   "source_url": "https://www.wirringabaiya.org.au/"
+  },
+  {
+   "name": "Redfern Legal Centre",
+   "suburb": "Redfern",
+   "state": "NSW",
+   "lat": -33.89516,
+   "lon": 151.20346,
+   "precision": "street",
+   "source_url": "https://rlc.org.au/contact-us"
+  },
+  {
+   "name": "Kingsford Legal Centre",
+   "suburb": "Kensington",
+   "state": "NSW",
+   "lat": -33.91172,
+   "lon": 151.21951,
+   "precision": "locality",
+   "source_url": "https://servicedirectory.cesphn.org.au/service/kingsford-legal-centre/"
+  },
+  {
+   "name": "Marrickville Legal Centre",
+   "suburb": "Marrickville",
+   "state": "NSW",
+   "lat": -33.9156,
+   "lon": 151.15012,
+   "precision": "street",
+   "source_url": "https://www.mlc.org.au/office-locations/"
+  },
+  {
+   "name": "Inner City Legal Centre",
+   "suburb": "Kings Cross",
+   "state": "NSW",
+   "lat": -33.87449,
+   "lon": 151.22223,
+   "precision": "locality",
+   "source_url": "https://iclc.org.au/contact/"
+  },
+  {
+   "name": "Illawarra Legal Centre",
+   "suburb": "Wollongong",
+   "state": "NSW",
+   "lat": -34.43733,
+   "lon": 150.89152,
+   "precision": "street",
+   "source_url": "https://www.illawarralegalcentre.org.au/contact-us"
+  },
+  {
+   "name": "Hunter Community Legal Centre",
+   "suburb": "Newcastle",
+   "state": "NSW",
+   "lat": -32.92786,
+   "lon": 151.78435,
+   "precision": "street",
+   "source_url": "https://huntercommunityhub.org.au/community/directory/hunter-community-legal-centre/"
+  },
+  {
+   "name": "University of Newcastle Legal Centre",
+   "suburb": "Newcastle",
+   "state": "NSW",
+   "lat": -32.9274,
+   "lon": 151.77128,
+   "precision": "street",
+   "source_url": "https://directory.wayahead.org.au/service/1454/"
+  },
+  {
+   "name": "Central Coast Community Legal Centre",
+   "suburb": "Wyong",
+   "state": "NSW",
+   "lat": -33.27586,
+   "lon": 151.4055,
+   "precision": "street",
+   "source_url": "http://www.centralcoastclc.org.au/"
+  },
+  {
+   "name": "Central Tablelands and Blue Mountains Community Legal Centre",
+   "suburb": "Katoomba",
+   "state": "NSW",
+   "lat": -33.71,
+   "lon": 150.31295,
+   "precision": "street",
+   "source_url": "https://ctbmclc.org.au/contact-us/"
+  },
+  {
+   "name": "Hume Riverina Community Legal Service",
+   "suburb": "Wodonga",
+   "state": "VIC",
+   "lat": -36.12249,
+   "lon": 146.88682,
+   "precision": "street",
+   "source_url": "https://www.hrcls.org.au/contact-us"
+  },
+  {
+   "name": "Justice Support Centre",
+   "suburb": "Bankstown",
+   "state": "NSW",
+   "lat": -33.91545,
+   "lon": 151.03163,
+   "precision": "street",
+   "source_url": "https://jsc.org.au/contact-us/"
+  },
+  {
+   "name": "Macarthur Legal Centre",
+   "suburb": "Campbelltown",
+   "state": "NSW",
+   "lat": -34.07086,
+   "lon": 150.81018,
+   "precision": "street",
+   "source_url": "https://maclegal.net.au/contact/"
+  },
+  {
+   "name": "Western Sydney Community Legal Centre",
+   "suburb": "Parramatta",
+   "state": "NSW",
+   "lat": -33.81372,
+   "lon": 151.00874,
+   "precision": "street",
+   "source_url": "https://www.yellowpages.com.au/nsw/parramatta/western-sydney-community-legal-centre-limited-14872137-listing.html"
+  },
+  {
+   "name": "Western NSW Community Legal Centre",
+   "suburb": "Dubbo",
+   "state": "NSW",
+   "lat": -32.2526,
+   "lon": 148.61195,
+   "precision": "street",
+   "source_url": "https://www.wnswclc.org.au/contact"
+  },
+  {
+   "name": "Northern Rivers Community Legal Centre",
+   "suburb": "Lismore",
+   "state": "NSW",
+   "lat": -28.812,
+   "lon": 153.27497,
+   "precision": "street",
+   "source_url": "http://www.northernriversclc.org.au/contact-us/"
+  },
+  {
+   "name": "Mid North Coast Legal Centre",
+   "suburb": "Port Macquarie",
+   "state": "NSW",
+   "lat": -31.42962,
+   "lon": 152.90719,
+   "precision": "street",
+   "source_url": "https://mnclegal.org.au/contact/"
+  },
+  {
+   "name": "North and North West Community Legal Service",
+   "suburb": "Armidale",
+   "state": "NSW",
+   "lat": -30.50738,
+   "lon": 151.64451,
+   "precision": "street",
+   "source_url": "http://www.nnwcls.org.au/contact-us/"
+  },
+  {
+   "name": "South Coast and Country Community Law",
+   "suburb": "Nowra",
+   "state": "NSW",
+   "lat": -34.86846,
+   "lon": 150.60143,
+   "precision": "street",
+   "source_url": "https://www.scclaw.org.au/contact/"
+  },
+  {
+   "name": "Australian Centre for Disability Law",
+   "suburb": "Strawberry Hills",
+   "state": "NSW",
+   "lat": -33.88921,
+   "lon": 151.20841,
+   "precision": "locality",
+   "source_url": "https://disabilitylaw.org.au/contact/"
+  },
+  {
+   "name": "Intellectual Disability Rights Service",
+   "suburb": "Redfern",
+   "state": "NSW",
+   "lat": -33.89494,
+   "lon": 151.19937,
+   "precision": "street",
+   "source_url": "https://www.whereis.com/nsw/redfern-2016/yellowId-15768986"
+  },
+  {
+   "name": "Financial Rights Legal Centre",
+   "suburb": "Surry Hills",
+   "state": "NSW",
+   "lat": -33.88451,
+   "lon": 151.21003,
+   "precision": "locality",
+   "source_url": "https://financialrights.org.au/contact/"
+  },
+  {
+   "name": "Welfare Rights Centre (NSW)",
+   "suburb": "Surry Hills",
+   "state": "NSW",
+   "lat": -33.88606,
+   "lon": 151.20927,
+   "precision": "street",
+   "source_url": "https://welfarerightscentre.org.au/contact-us/"
+  },
+  {
+   "name": "Tenants' Union of NSW",
+   "suburb": "Sydney",
+   "state": "NSW",
+   "lat": -33.87165,
+   "lon": 151.2054,
+   "precision": "street",
+   "source_url": "https://www.tenants.org.au/contact-us"
+  },
+  {
+   "name": "Seniors Rights Service",
+   "suburb": "Surry Hills",
+   "state": "NSW",
+   "lat": -33.88451,
+   "lon": 151.21003,
+   "precision": "locality",
+   "source_url": "https://seniorsrightsservice.org.au/contact/"
+  },
+  {
+   "name": "HIV/AIDS Legal Centre",
+   "suburb": "Surry Hills",
+   "state": "NSW",
+   "lat": -33.88618,
+   "lon": 151.20837,
+   "precision": "street",
+   "source_url": "https://halc.org.au/contact-halc/"
+  },
+  {
+   "name": "Immigration Advice and Rights Centre",
+   "suburb": "Sydney",
+   "state": "NSW",
+   "lat": -33.87721,
+   "lon": 151.20442,
+   "precision": "street",
+   "source_url": "https://iarc.org.au/contact/"
+  },
+  {
+   "name": "Justice and Equity Centre",
+   "suburb": "Sydney",
+   "state": "NSW",
+   "lat": -33.87715,
+   "lon": 151.21067,
+   "precision": "street",
+   "source_url": "https://jec.org.au/about/contact-us/"
+  },
+  {
+   "name": "Women's Legal Service NSW",
+   "suburb": "Lidcombe",
+   "state": "NSW",
+   "lat": -33.86306,
+   "lon": 151.04568,
+   "precision": "locality",
+   "source_url": "https://www.wlsnsw.org.au/contact-us/"
+  },
+  {
+   "name": "Legal Aid Queensland",
+   "suburb": "Brisbane",
+   "state": "QLD",
+   "lat": -27.46739,
+   "lon": 153.01904,
+   "precision": "street",
+   "source_url": "https://www.qls.com.au/register-of-solicitors/legal-aid-queensland"
+  },
+  {
+   "name": "Aboriginal and Torres Strait Islander Legal Service (Qld) Ltd",
+   "suburb": "Brisbane",
+   "state": "QLD",
+   "lat": -27.46828,
+   "lon": 153.01915,
+   "precision": "street",
+   "source_url": "https://www.qld.gov.au/community/women/support-for-women/find-a-support-service/view?title=Aboriginal+and+Torres+Strait+Islander+Legal+Service-+Brisbane+Head+Office"
+  },
+  {
+   "name": "Aboriginal Family Legal Services Queensland (Maruma-li-mari)",
+   "suburb": "Toowoomba",
+   "state": "QLD",
+   "lat": -27.56172,
+   "lon": 151.95832,
+   "precision": "street",
+   "source_url": "https://www.aflssq.org.au/"
+  },
+  {
+   "name": "Queensland Indigenous Family Violence Legal Service",
+   "suburb": "Cairns",
+   "state": "QLD",
+   "lat": -16.92302,
+   "lon": 145.77828,
+   "precision": "street",
+   "source_url": "https://qifvls.com.au/"
+  },
+  {
+   "name": "Caxton Legal Centre",
+   "suburb": "Brisbane",
+   "state": "QLD",
+   "lat": -27.46707,
+   "lon": 153.02391,
+   "precision": "street",
+   "source_url": "https://caxton.org.au/"
+  },
+  {
+   "name": "Women's Legal Service Queensland",
+   "suburb": "Milton",
+   "state": "QLD",
+   "lat": -27.47486,
+   "lon": 153.00291,
+   "precision": "street",
+   "source_url": "https://wlsq.org.au/contact-us/"
+  },
+  {
+   "name": "North Queensland Women's Legal Service",
+   "suburb": "Townsville",
+   "state": "QLD",
+   "lat": -19.26984,
+   "lon": 146.80375,
+   "precision": "street",
+   "source_url": "https://www.nqwls.com.au/contact-us"
+  },
+  {
+   "name": "Tenants Queensland",
+   "suburb": "Spring Hill",
+   "state": "QLD",
+   "lat": -27.46428,
+   "lon": 153.02663,
+   "precision": "street",
+   "source_url": "https://tenantsqld.org.au/"
+  },
+  {
+   "name": "Prisoners' Legal Service",
+   "suburb": "Brisbane",
+   "state": "QLD",
+   "lat": -27.46743,
+   "lon": 153.0252,
+   "precision": "street",
+   "source_url": "https://www.qls.com.au/register-of-solicitors/prisoners-legal-service-inc"
+  },
+  {
+   "name": "Queensland Advocacy for Inclusion",
+   "suburb": "South Brisbane",
+   "state": "QLD",
+   "lat": -27.47321,
+   "lon": 153.01494,
+   "precision": "street",
+   "source_url": "https://qai.org.au/"
+  },
+  {
+   "name": "ADA Law",
+   "suburb": "Geebung",
+   "state": "QLD",
+   "lat": -27.37029,
+   "lon": 153.03911,
+   "precision": "street",
+   "source_url": "https://adalaw.com.au/about-us/"
+  },
+  {
+   "name": "Basic Rights Queensland",
+   "suburb": "Fortitude Valley",
+   "state": "QLD",
+   "lat": -27.45727,
+   "lon": 153.03627,
+   "precision": "locality",
+   "source_url": "https://www.yellowpages.com.au/qld/fortitude-valley/basic-rights-queensland-inc-1000001715030-listing.html"
+  },
+  {
+   "name": "Refugee and Immigration Legal Service",
+   "suburb": "South Brisbane",
+   "state": "QLD",
+   "lat": -27.47321,
+   "lon": 153.01494,
+   "precision": "street",
+   "source_url": "https://www.rails.org.au/contact"
+  },
+  {
+   "name": "LGBTI Legal Service",
+   "suburb": "West End",
+   "state": "QLD",
+   "lat": -27.4833,
+   "lon": 153.0075,
+   "precision": "locality",
+   "source_url": "https://www.lgbtilegalservice.org.au/contact"
+  },
+  {
+   "name": "Youth Advocacy Centre",
+   "suburb": "South Brisbane",
+   "state": "QLD",
+   "lat": -27.47274,
+   "lon": 153.01694,
+   "precision": "street",
+   "source_url": "https://yac.net.au/contact-us/"
+  },
+  {
+   "name": "YFS Legal",
+   "suburb": "Slacks Creek",
+   "state": "QLD",
+   "lat": -27.63774,
+   "lon": 153.11878,
+   "precision": "street",
+   "source_url": "https://www.yfs.org.au/contact-us/"
+  },
+  {
+   "name": "Townsville Community Law",
+   "suburb": "Townsville",
+   "state": "QLD",
+   "lat": -19.26641,
+   "lon": 146.80819,
+   "precision": "street",
+   "source_url": "https://townsvillecommunity.law/contact/"
+  },
+  {
+   "name": "Cairns Community Legal Centre",
+   "suburb": "Cairns",
+   "state": "QLD",
+   "lat": -16.91835,
+   "lon": 145.77096,
+   "precision": "street",
+   "source_url": "https://www.cclc.org.au/"
+  },
+  {
+   "name": "Central Queensland Community Legal Centre",
+   "suburb": "Rockhampton",
+   "state": "QLD",
+   "lat": -23.37674,
+   "lon": 150.51388,
+   "precision": "street",
+   "source_url": "https://www.cqclc.org.au/contact-us/"
+  },
+  {
+   "name": "Mackay Regional Community Legal Centre",
+   "suburb": "Mackay",
+   "state": "QLD",
+   "lat": -21.14086,
+   "lon": 149.18535,
+   "precision": "street",
+   "source_url": "https://mrclc.com.au/contacts/"
+  },
+  {
+   "name": "Wide Bay Burnett Community Legal Service",
+   "suburb": "Pialba",
+   "state": "QLD",
+   "lat": -25.28019,
+   "lon": 152.83766,
+   "precision": "street",
+   "source_url": "https://www.wbbcls.com.au/contact-us"
+  },
+  {
+   "name": "Suncoast Community Legal Service",
+   "suburb": "Maroochydore",
+   "state": "QLD",
+   "lat": -26.65439,
+   "lon": 153.09466,
+   "precision": "street",
+   "source_url": "https://www.suncoastcommunitylegal.org/suncoast-community-legal-our-locations-sunshine-coast-queensland/"
+  },
+  {
+   "name": "Gold Coast Community Legal Centre",
+   "suburb": "Southport",
+   "state": "QLD",
+   "lat": -27.96355,
+   "lon": 153.40976,
+   "precision": "street",
+   "source_url": "https://www.gcclc.org.au/contact-us"
+  },
+  {
+   "name": "My Community Legal",
+   "suburb": "Robina",
+   "state": "QLD",
+   "lat": -28.07664,
+   "lon": 153.38213,
+   "precision": "street",
+   "source_url": "https://www.mycommunitylegal.org.au/contact-us/"
+  },
+  {
+   "name": "TASC Legal and Social Justice Services",
+   "suburb": "Toowoomba",
+   "state": "QLD",
+   "lat": -27.57707,
+   "lon": 151.95505,
+   "precision": "street",
+   "source_url": "https://www.tascnational.org.au/contact"
+  },
+  {
+   "name": "HUB Community Legal",
+   "suburb": "Inala",
+   "state": "QLD",
+   "lat": -27.59804,
+   "lon": 152.96555,
+   "precision": "street",
+   "source_url": "https://www.hubcommunity.org.au/contact-us"
+  },
+  {
+   "name": "Brisbane North Community Legal Centre (Northside Connect)",
+   "suburb": "Nundah",
+   "state": "QLD",
+   "lat": -27.40135,
+   "lon": 153.0604,
+   "precision": "street",
+   "source_url": "https://www.northsideconnect.org.au/contact/"
+  },
+  {
+   "name": "Bayside Community Legal Service",
+   "suburb": "Wynnum",
+   "state": "QLD",
+   "lat": -27.43772,
+   "lon": 153.16597,
+   "precision": "locality",
+   "source_url": "https://bcls.org.au/"
+  },
+  {
+   "name": "Pine Rivers Community Legal Service (Encircle)",
+   "suburb": "Strathpine",
+   "state": "QLD",
+   "lat": -27.30999,
+   "lon": 152.99053,
+   "precision": "locality",
+   "source_url": "https://encircle.org.au/pine-rivers-community-legal-service/"
+  },
+  {
+   "name": "First Nations Women's Legal Service Queensland",
+   "suburb": "Townsville",
+   "state": "QLD",
+   "lat": -19.26984,
+   "lon": 146.80375,
+   "precision": "street",
+   "source_url": "https://www.atsiwlsnq.org.au/contact-us"
+  },
+  {
+   "name": "Legal Aid Western Australia (Legal Aid Commission of Western Australia)",
+   "suburb": "Perth",
+   "state": "WA",
+   "lat": -31.95623,
+   "lon": 115.86247,
+   "precision": "street",
+   "source_url": "https://www.legalaid.wa.gov.au/about-us/contact-us/our-offices"
+  },
+  {
+   "name": "Aboriginal Legal Service of Western Australia Limited",
+   "suburb": "Perth",
+   "state": "WA",
+   "lat": -31.9508,
+   "lon": 115.86683,
+   "precision": "street",
+   "source_url": "https://als.org.au/contact/perth-head-office/"
+  },
+  {
+   "name": "Aboriginal Family Legal Services",
+   "suburb": "Rivervale",
+   "state": "WA",
+   "lat": -31.96833,
+   "lon": 115.91521,
+   "precision": "street",
+   "source_url": "https://afls.org.au/pages/contact"
+  },
+  {
+   "name": "Southern Aboriginal Corporation Family Violence Prevention Legal Service",
+   "suburb": "Albany",
+   "state": "WA",
+   "lat": -35.02478,
+   "lon": 117.88361,
+   "precision": "locality",
+   "source_url": "https://www.sacorp.com.au/fvpls"
+  },
+  {
+   "name": "Marninwarntikura Fitzroy Women's Resource Centre",
+   "suburb": "Fitzroy Crossing",
+   "state": "WA",
+   "lat": -18.18986,
+   "lon": 125.56484,
+   "precision": "street",
+   "source_url": "https://mwrc.com.au/pages/contact-us"
+  },
+  {
+   "name": "Circle Green Community Legal",
+   "suburb": "Perth",
+   "state": "WA",
+   "lat": -31.95118,
+   "lon": 115.84969,
+   "precision": "street",
+   "source_url": "https://circlegreen.org.au/get-help"
+  },
+  {
+   "name": "Women's Legal Service WA",
+   "suburb": "Perth",
+   "state": "WA",
+   "lat": -31.95118,
+   "lon": 115.84969,
+   "precision": "street",
+   "source_url": "https://www.wlswa.org.au/contact/"
+  },
+  {
+   "name": "Consumer Credit Legal Service WA",
+   "suburb": "Perth",
+   "state": "WA",
+   "lat": -31.95118,
+   "lon": 115.84969,
+   "precision": "street",
+   "source_url": "https://cclswa.org.au/contact/"
+  },
+  {
+   "name": "Welfare Rights & Advocacy Service",
+   "suburb": "Perth",
+   "state": "WA",
+   "lat": -31.9474,
+   "lon": 115.86927,
+   "precision": "street",
+   "source_url": "https://wraswa.org.au/contact/"
+  },
+  {
+   "name": "Sussex Street Community Law Service",
+   "suburb": "East Victoria Park",
+   "state": "WA",
+   "lat": -31.98462,
+   "lon": 115.89976,
+   "precision": "street",
+   "source_url": "https://sussexstreet.org.au/contact-us/"
+  },
+  {
+   "name": "Street Law Centre WA",
+   "suburb": "East Perth",
+   "state": "WA",
+   "lat": -31.94395,
+   "lon": 115.87707,
+   "precision": "locality",
+   "source_url": "https://streetlawcentre.org.au/contact-us/"
+  },
+  {
+   "name": "SCALES Community Legal Centre",
+   "suburb": "Rockingham",
+   "state": "WA",
+   "lat": -32.29076,
+   "lon": 115.74647,
+   "precision": "street",
+   "source_url": "https://scales.org.au/"
+  },
+  {
+   "name": "John Curtin Law Clinic",
+   "suburb": "Perth",
+   "state": "WA",
+   "lat": -31.95466,
+   "lon": 115.8635,
+   "precision": "street",
+   "source_url": "https://communitylegalwa.org.au/our-members/john-curin-law-clinic/"
+  },
+  {
+   "name": "Midlas (Midland Information Debt and Legal Advocacy Service)",
+   "suburb": "Midland",
+   "state": "WA",
+   "lat": -31.88788,
+   "lon": 116.00379,
+   "precision": "street",
+   "source_url": "https://midlas.org.au/"
+  },
+  {
+   "name": "Ruah Legal Services (incorporating Mental Health Law Centre)",
+   "suburb": "Perth",
+   "state": "WA",
+   "lat": -31.9516,
+   "lon": 115.85099,
+   "precision": "street",
+   "source_url": "https://communitylegalwa.org.au/our-members/ruah-legal-services-mental-health-law-centre/"
+  },
+  {
+   "name": "Youth Legal Service WA",
+   "suburb": "Perth",
+   "state": "WA",
+   "lat": -31.95699,
+   "lon": 115.86507,
+   "precision": "street",
+   "source_url": "https://youthlegalserviceinc.com.au/"
+  },
+  {
+   "name": "Kimberley Community Legal Services",
+   "suburb": "Kununurra",
+   "state": "WA",
+   "lat": -15.7736,
+   "lon": 128.73929,
+   "precision": "street",
+   "source_url": "https://communitylegalwa.org.au/our-members/kimberley-community-legal-services/"
+  },
+  {
+   "name": "Pilbara Community Legal Service",
+   "suburb": "Karratha",
+   "state": "WA",
+   "lat": -20.73507,
+   "lon": 116.84475,
+   "precision": "street",
+   "source_url": "https://pcls.net.au/contact/"
+  },
+  {
+   "name": "Goldfields Community Legal Centre",
+   "suburb": "Kalgoorlie",
+   "state": "WA",
+   "lat": -30.74244,
+   "lon": 121.47596,
+   "precision": "street",
+   "source_url": "https://communitylegalwa.org.au/our-members/goldfields-community-legal-centre/"
+  },
+  {
+   "name": "Great Southern Community Legal Services",
+   "suburb": "Albany",
+   "state": "WA",
+   "lat": -35.02586,
+   "lon": 117.88447,
+   "precision": "street",
+   "source_url": "https://communitylegalwa.org.au/our-members/great-southern-community-legal-services/"
+  },
+  {
+   "name": "South West Community Legal Centre",
+   "suburb": "Bunbury",
+   "state": "WA",
+   "lat": -33.32712,
+   "lon": 115.64483,
+   "precision": "street",
+   "source_url": "https://swclc.org.au/contactus"
+  },
+  {
+   "name": "Peel Community Legal Services",
+   "suburb": "Mandurah",
+   "state": "WA",
+   "lat": -32.53473,
+   "lon": 115.7199,
+   "precision": "street",
+   "source_url": "https://peelcls.com.au/contact/"
+  },
+  {
+   "name": "Wheatbelt Community Legal Centre",
+   "suburb": "Northam",
+   "state": "WA",
+   "lat": -31.6613,
+   "lon": 116.66114,
+   "precision": "street",
+   "source_url": "https://communitylegalwa.org.au/our-members/wheatbelt-community-legal-centre/"
+  },
+  {
+   "name": "Fremantle Community Legal Centre",
+   "suburb": "Fremantle",
+   "state": "WA",
+   "lat": -32.0505,
+   "lon": 115.77853,
+   "precision": "street",
+   "source_url": "https://www.fremantle.wa.gov.au/your-city-and-council/news-and-media/new-address-for-fremantle-community-legal-centre/"
+  },
+  {
+   "name": "Citizens Advice Bureau of WA",
+   "suburb": "Perth",
+   "state": "WA",
+   "lat": -31.95701,
+   "lon": 115.85909,
+   "precision": "street",
+   "source_url": "https://cabwa.com.au/contact-us/"
+  },
+  {
+   "name": "Encompass Legal & Community Services",
+   "suburb": "Mirrabooka",
+   "state": "WA",
+   "lat": -31.87383,
+   "lon": 115.86251,
+   "precision": "street",
+   "source_url": "https://elcs.org.au/contact/"
+  },
+  {
+   "name": "Redgum Justice",
+   "suburb": "Gosnells",
+   "state": "WA",
+   "lat": -32.07103,
+   "lon": 116.00178,
+   "precision": "street",
+   "source_url": "https://redgumjustice.org.au/contact/"
+  },
+  {
+   "name": "Regional Alliance West",
+   "suburb": "Geraldton",
+   "state": "WA",
+   "lat": -28.77731,
+   "lon": 114.60895,
+   "precision": "street",
+   "source_url": "https://raw.org.au/contact-us/"
+  },
+  {
+   "name": "Marninwarntikura Women's Resource Centre",
+   "suburb": "Fitzroy Crossing",
+   "state": "WA",
+   "lat": -18.18986,
+   "lon": 125.56484,
+   "precision": "street",
+   "source_url": "https://mwrc.com.au/pages/contact-us"
+  },
+  {
+   "name": "Legal Services Commission of South Australia",
+   "suburb": "Adelaide",
+   "state": "SA",
+   "lat": -34.92566,
+   "lon": 138.60206,
+   "precision": "street",
+   "source_url": "https://lsc.sa.gov.au/contact-us"
+  },
+  {
+   "name": "Tasmania Legal Aid",
+   "suburb": "Hobart",
+   "state": "TAS",
+   "lat": -42.88337,
+   "lon": 147.32529,
+   "precision": "street",
+   "source_url": "https://www.legalaid.tas.gov.au/contact-us/"
+  },
+  {
+   "name": "Legal Aid ACT (Legal Aid Commission (A.C.T.))",
+   "suburb": "Canberra City",
+   "state": "ACT",
+   "lat": -35.27864,
+   "lon": 149.12513,
+   "precision": "street",
+   "source_url": "https://www.legalaidact.org.au/contact-legal-aid"
+  },
+  {
+   "name": "Legal Aid NT (Northern Territory Legal Aid Commission)",
+   "suburb": "Darwin",
+   "state": "NT",
+   "lat": -12.46404,
+   "lon": 130.84464,
+   "precision": "street",
+   "source_url": "https://www.legalaid.nt.gov.au/contact-us/where-are-we/"
+  },
+  {
+   "name": "Aboriginal Legal Rights Movement Inc.",
+   "suburb": "Adelaide",
+   "state": "SA",
+   "lat": -34.9317,
+   "lon": 138.59979,
+   "precision": "street",
+   "source_url": "https://www.alrm.org.au/contact-us/"
+  },
+  {
+   "name": "North Australian Aboriginal Justice Agency",
+   "suburb": "Darwin",
+   "state": "NT",
+   "lat": -12.45747,
+   "lon": 130.83594,
+   "precision": "street",
+   "source_url": "https://www.naaja.org.au/contact-us"
+  },
+  {
+   "name": "Tasmanian Aboriginal Legal Service",
+   "suburb": "Hobart",
+   "state": "TAS",
+   "lat": -42.88536,
+   "lon": 147.32718,
+   "precision": "street",
+   "source_url": "https://www.tals.net.au/our-locations"
+  },
+  {
+   "name": "North Australian Aboriginal Family Legal Service",
+   "suburb": "Casuarina",
+   "state": "NT",
+   "lat": -12.37697,
+   "lon": 130.88039,
+   "precision": "street",
+   "source_url": "https://www.ntcommunity.org.au/location/north-australian-aboriginal-family-legal-service-darwin-naafls-casuarina/"
+  },
+  {
+   "name": "Central Australian Aboriginal Family Legal Unit Aboriginal Corporation",
+   "suburb": "Alice Springs",
+   "state": "NT",
+   "lat": -23.69983,
+   "lon": 133.88111,
+   "precision": "street",
+   "source_url": "https://www.caaflu.com.au/contact/"
+  },
+  {
+   "name": "Ngaanyatjarra Pitjantjatjara Yankunytjatjara Women's Council Domestic and Family Violence Service",
+   "suburb": "Alice Springs",
+   "state": "NT",
+   "lat": -23.69839,
+   "lon": 133.88129,
+   "precision": "locality",
+   "source_url": "https://www.npywc.org.au/contact/"
+  },
+  {
+   "name": "Community Justice Services SA",
+   "suburb": "Noarlunga Centre",
+   "state": "SA",
+   "lat": -35.14128,
+   "lon": 138.49547,
+   "precision": "locality",
+   "source_url": "https://www.communityjusticesa.org.au/contact-us/"
+  },
+  {
+   "name": "Uniting Communities Law Centre",
+   "suburb": "Adelaide",
+   "state": "SA",
+   "lat": -34.92765,
+   "lon": 138.59739,
+   "precision": "street",
+   "source_url": "https://lsc.sa.gov.au/organisation_details.php?organisation_id=719"
+  },
+  {
+   "name": "Northern Community Legal Service",
+   "suburb": "Salisbury",
+   "state": "SA",
+   "lat": -34.76119,
+   "lon": 138.64902,
+   "precision": "street",
+   "source_url": "https://northernlegal.org.au/contact-us/"
+  },
+  {
+   "name": "WestSide Community Lawyers",
+   "suburb": "Port Adelaide",
+   "state": "SA",
+   "lat": -34.84713,
+   "lon": 138.50775,
+   "precision": "street",
+   "source_url": "https://westsidelawyers.com.au/contact-us/"
+  },
+  {
+   "name": "Women's Legal Service SA",
+   "suburb": "Adelaide",
+   "state": "SA",
+   "lat": -34.92405,
+   "lon": 138.60735,
+   "precision": "street",
+   "source_url": "https://www.wlssa.org.au/contact-us"
+  },
+  {
+   "name": "Working Women's Centre SA",
+   "suburb": "Adelaide",
+   "state": "SA",
+   "lat": -34.92719,
+   "lon": 138.60393,
+   "precision": "street",
+   "source_url": "https://wwcsa.org.au/contact/"
+  },
+  {
+   "name": "Roma Mitchell Community Legal Centre",
+   "suburb": "Norwood",
+   "state": "SA",
+   "lat": -34.92105,
+   "lon": 138.63883,
+   "precision": "street",
+   "source_url": "https://sacommunity.org/org/201644-Roma_Mitchell_Community_Legal_Centre_Inc."
+  },
+  {
+   "name": "Hobart Community Legal Service",
+   "suburb": "Hobart",
+   "state": "TAS",
+   "lat": -42.88575,
+   "lon": 147.32654,
+   "precision": "street",
+   "source_url": "https://clctas.org.au/centres/hobart/"
+  },
+  {
+   "name": "Launceston Community Legal Centre",
+   "suburb": "Launceston",
+   "state": "TAS",
+   "lat": -41.44322,
+   "lon": 147.1435,
+   "precision": "street",
+   "source_url": "https://www.lclc.net.au/about/contact.html"
+  },
+  {
+   "name": "North West Community Legal Centre",
+   "suburb": "Devonport",
+   "state": "TAS",
+   "lat": -41.19003,
+   "lon": 146.36174,
+   "precision": "street",
+   "source_url": "https://clctas.org.au/centres/burnie/"
+  },
+  {
+   "name": "Women's Legal Service Tasmania",
+   "suburb": "North Hobart",
+   "state": "TAS",
+   "lat": -42.86832,
+   "lon": 147.31193,
+   "precision": "street",
+   "source_url": "https://clctas.org.au/centres/womens-legal-service/"
+  },
+  {
+   "name": "Tenants' Union of Tasmania",
+   "suburb": "Hobart",
+   "state": "TAS",
+   "lat": -42.88575,
+   "lon": 147.32654,
+   "precision": "street",
+   "source_url": "https://clctas.org.au/centres/tenants-union-of-tasmania/"
+  },
+  {
+   "name": "Tasmanian Refugee Legal Service",
+   "suburb": "Hobart",
+   "state": "TAS",
+   "lat": -42.88667,
+   "lon": 147.32099,
+   "precision": "street",
+   "source_url": "https://www.clctas.org.au/centres/tasmanian-refugee-legal-service/"
+  },
+  {
+   "name": "Worker Assist Tasmania",
+   "suburb": "Hobart",
+   "state": "TAS",
+   "lat": -42.8861,
+   "lon": 147.32192,
+   "precision": "street",
+   "source_url": "https://www.yellowpages.com.au/tas/hobart/worker-assist-14994710-listing.html"
+  },
+  {
+   "name": "Canberra Community Law",
+   "suburb": "Canberra City",
+   "state": "ACT",
+   "lat": -35.27693,
+   "lon": 149.12775,
+   "precision": "street",
+   "source_url": "https://www.canberracommunitylaw.org.au/contact-us/"
+  },
+  {
+   "name": "Women's Legal Centre ACT",
+   "suburb": "Canberra City",
+   "state": "ACT",
+   "lat": -35.29759,
+   "lon": 149.10127,
+   "precision": "locality",
+   "source_url": "https://wlc.org.au/contact-us/"
+  },
+  {
+   "name": "Care Consumer Law",
+   "suburb": "Turner",
+   "state": "ACT",
+   "lat": -35.27283,
+   "lon": 149.12875,
+   "precision": "street",
+   "source_url": "https://www.carefcs.org/consumer-law-centre"
+  },
+  {
+   "name": "Darwin Community Legal Service",
+   "suburb": "Parap",
+   "state": "NT",
+   "lat": -12.43264,
+   "lon": 130.84314,
+   "precision": "street",
+   "source_url": "https://www.dcls.org.au/contact"
+  },
+  {
+   "name": "Top End Women's Legal Service",
+   "suburb": "Darwin",
+   "state": "NT",
+   "lat": -12.45833,
+   "lon": 130.8409,
+   "precision": "street",
+   "source_url": "https://tewls.org.au/contact/"
+  },
+  {
+   "name": "Central Australian Women's Legal Service",
+   "suburb": "Alice Springs",
+   "state": "NT",
+   "lat": -23.70182,
+   "lon": 133.87976,
+   "precision": "street",
+   "source_url": "https://cawls.org.au/contact/"
+  },
+  {
+   "name": "Katherine Women's Information and Legal Service",
+   "suburb": "Katherine",
+   "state": "NT",
+   "lat": -14.46624,
+   "lon": 132.26454,
+   "precision": "street",
+   "source_url": "https://kwils.com.au/"
+  },
+  {
+   "name": "NT Working Women's Centre",
+   "suburb": "Darwin City",
+   "state": "NT",
+   "lat": -12.4603,
+   "lon": 130.84077,
+   "precision": "street",
+   "source_url": "https://www.ntwwc.com.au/contact"
+  }
+ ],
+ "unresolved": [
+  {
+   "name": "Working Women's Centre Victoria",
+   "note": "The program's own page on smls.com.au states it has 'multiple physical locations in Victoria' and outreach services, but lists no street address, only a phone line (1800 992 842). Not assumed to be SMLS's Springvale or Narre Warren office since the program page does not confirm which, if any, applies."
+  },
+  {
+   "name": "Refugee Advice and Casework Service",
+   "note": "Current RACS contact pages list only phone/email and outreach clinic locations (e.g. Auburn Centre for Community, JRS Women's Space by appointment); no head-office street address is published. Third-party directories cite older/conflicting addresses (Randwick, Phillip St Sydney) not confirmed on RACS's own current site, so not reported."
+  },
+  {
+   "name": "Family Violence Legal Service Aboriginal Corporation",
+   "note": "FVLSAC operates three regional SA offices (Ceduna, Port Augusta, Port Lincoln) with street addresses found via the LSC SA directory, but no source confirms which (if any) is the head/registered office, and fvlsac.org.au was unreachable (repeated timeouts) to check directly, so no single head-office address could be verified."
+  },
+  {
+   "name": "SiS Tasmania",
+   "note": "SiS Tasmania describes itself as 'a service of the Tasmanian Aboriginal Legal Service (TALS)' and lists only city-level presence (Hobart, Launceston, Burnie) with no street address published on its own site or via search, likely deliberate given it supports family-violence/sexual-assault victims-survivors; could not verify an independent head-office street address."
+  }
+ ]
+}

@@ -111,6 +111,30 @@
 - The map capture above was retaken after this pass (Women's Legal Services
   filter, Australia view).
 
+### Pass 7 — office location pins
+
+- `dashboard/lib/sector-locations.json` records the primary-office location
+  of 173 of the 177 frontline organisations. Addresses were compiled from
+  each organisation's own website or its peak body's directory (a source URL
+  is stored per record; nothing was guessed), then geocoded with
+  OpenStreetMap Nominatim under state-boundary sanity checks. 151 records
+  are street-precision; 22 are suburb-level (the organisation publishes only
+  a PO Box). The 4 unresolved organisations are listed in the file with the
+  reason each address could not be verified — one deliberately publishes no
+  address as a family-violence service.
+- The map renders every located organisation in the current category scope
+  as a category-coloured pin inside the zoom transform: constant on-screen
+  size at any zoom, hollow for suburb-level records, dimmed outside the
+  selected jurisdiction, co-located pins fanned on a small ring, and a
+  hover tooltip naming the organisation. Selecting a pin opens that
+  organisation's record in the detail column; the accessible path to the
+  same records remains the picker, so the pin layer is aria-hidden.
+- The map footer discloses the compilation method and OSM attribution.
+- Fixed during this pass: an SVG title hydration mismatch from multiple
+  adjacent text expressions.
+- The map capture above was retaken (Victoria zoom, CLC pins, Allied
+  Justice selected from its Ballarat pin).
+
 ## Functionality and accessibility
 
 - Map and System tabs switch panels.

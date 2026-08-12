@@ -2252,6 +2252,50 @@ main {
   pointer-events: all;
 }
 
+/*
+ * Office pins. Fill matches the category key dots; hollow pins mark
+ * suburb-level geocoding. Sizes counter-scale with the zoom inline.
+ */
+.sector-pin {
+  stroke: var(--background);
+  cursor: pointer;
+  transition: r var(--dur-fast) ease;
+}
+
+.sector-pin-legal_aid,
+.sector-pin-all {
+  fill: var(--trust);
+}
+
+.sector-pin-clc {
+  fill: var(--caution);
+}
+
+.sector-pin-wls {
+  fill: light-dark(#be185d, #f5a0c8);
+}
+
+.sector-pin-atsils {
+  fill: light-dark(#6d28d9, #b89aff);
+}
+
+.sector-pin-fvpls {
+  fill: light-dark(#c2410c, #fb923c);
+}
+
+.sector-pin.is-locality {
+  fill-opacity: 0.35;
+}
+
+.sector-pin.is-dim {
+  opacity: 0.55;
+}
+
+.sector-pin.is-current {
+  stroke: var(--trust);
+  opacity: 1;
+}
+
 .sector-state-leader {
   stroke: var(--rule-heavy);
   stroke-width: 1;

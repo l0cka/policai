@@ -18,7 +18,34 @@ import {
   type ScoredOrg,
   type TierKey,
 } from '../lib/sector-data';
+import locationsRaw from '../lib/sector-locations.json';
 import SectorDiagram from './sector-diagram';
+
+type OrgLocation = {
+  name: string;
+  suburb: string | null;
+  state: string;
+  lat: number;
+  lon: number;
+  precision: 'street' | 'locality';
+  source_url: string | null;
+};
+
+const ORG_LOCATIONS = new Map(
+  (locationsRaw.locations as OrgLocation[]).map((loc) => [loc.name, loc]),
+);
+
+/* Keep in sync with the projection in scripts/build-sector-map.mjs. */
+const MAP_BOUNDS = { minLon: 112, maxLon: 154, minLat: -44, maxLat: -9 };
+
+function projectPoint(lon: number, lat: number): [number, number] {
+  return [
+    ((lon - MAP_BOUNDS.minLon) / (MAP_BOUNDS.maxLon - MAP_BOUNDS.minLon)) *
+      AUSTRALIA_MAP_VIEWBOX.width,
+    ((MAP_BOUNDS.maxLat - lat) / (MAP_BOUNDS.maxLat - MAP_BOUNDS.minLat)) *
+      AUSTRALIA_MAP_VIEWBOX.height,
+  ];
+}
 
 type View = 'map' | 'system';
 
@@ -242,6 +269,41 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
 
   const k = zoom?.k ?? 1;
 
+  // Pins: every located organisation in the current category scope, across all
+  // jurisdictions. Co-located pins fan out on a small ring so none hide.
+  const pins = useMemo(() => {
+    const scoped = MAP_JURISDICTIONS.flatMap((key) => orgsFor(orgs, key, category));
+    const located = scoped.flatMap((org) => {
+      const loc = ORG_LOCATIONS.get(org.name);
+      if (!loc) return [];
+      const [x, y] = projectPoint(loc.lon, loc.lat);
+      return [{ org, loc, x, y }];
+    });
+    const byCoord = new Map<string, typeof located>();
+    for (const pin of located) {
+      const coordKey = `${pin.x.toFixed(0)},${pin.y.toFixed(0)}`;
+      byCoord.set(coordKey, [...(byCoord.get(coordKey) ?? []), pin]);
+    }
+    for (const group of byCoord.values()) {
+      if (group.length < 2) continue;
+      group.forEach((pin, index) => {
+        const angle = (2 * Math.PI * index) / group.length;
+        pin.x += Math.cos(angle) * 3;
+        pin.y += Math.sin(angle) * 3;
+      });
+    }
+    return located;
+  }, [orgs, category]);
+
+  const selectPin = (pin: (typeof pins)[number]) => {
+    const next = pin.org.jurisdiction as MapJurisdiction;
+    if (next !== jurisdiction) {
+      setJurisdiction(next);
+      if (zoom) setZoom(zoomFor(next));
+    }
+    setSelectedName(pin.org.name);
+  };
+
   return (
     <div className="sector-explorer">
       <header className="sector-explorer-head">
@@ -392,6 +454,37 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
                     </g>
                   );
                 })}
+                {/* Pins are a pointer shortcut; the same organisations remain
+                    reachable through the accessible picker in the detail column. */}
+                <g className="sector-map-pins" aria-hidden="true">
+                  {pins.map((pin) => {
+                    const isSelectedOrg = selectedOrg?.name === pin.org.name;
+                    const inState = pin.org.jurisdiction === jurisdiction;
+                    return (
+                      <circle
+                        key={pin.org.name}
+                        className={[
+                          'sector-pin',
+                          `sector-pin-${categoryOf(pin.org) ?? 'all'}`,
+                          pin.loc.precision === 'locality' ? 'is-locality' : '',
+                          inState ? '' : 'is-dim',
+                          isSelectedOrg ? 'is-current' : '',
+                        ]
+                          .filter(Boolean)
+                          .join(' ')}
+                        cx={pin.x}
+                        cy={pin.y}
+                        r={(isSelectedOrg ? 5 : 3.4) / k}
+                        style={{ strokeWidth: (isSelectedOrg ? 1.6 : 1) / k }}
+                        onClick={() => selectPin(pin)}
+                      >
+                        <title>
+                          {`${pin.org.name}${pin.loc.suburb ? ` — ${pin.loc.suburb}` : ''}${pin.loc.precision === 'locality' ? ' (suburb-level)' : ''}`}
+                        </title>
+                      </circle>
+                    );
+                  })}
+                </g>
               </g>
             </svg>
 
@@ -406,7 +499,10 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
               </div>
               <p className="sector-map-source">
                 Map: <a href={AUSTRALIA_MAP_SOURCE_URL}>{AUSTRALIA_MAP_SOURCE}</a>. Counts are
-                directory records, not service locations.
+                directory records.
+                {pins.length
+                  ? ` Pins mark ${pins.length} primary-office locations compiled from organisation and peak-body pages, geocoded with OpenStreetMap Nominatim (© OpenStreetMap contributors); hollow pins are suburb-level. Select a pin to open its record.`
+                  : ' Counts are not service locations.'}
               </p>
             </div>
           </div>
