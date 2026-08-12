@@ -1558,6 +1558,24 @@
    "lon": 130.84077,
    "precision": "street",
    "source_url": "https://www.ntwwc.com.au/contact"
+  },
+  {
+   "name": "LawRight",
+   "suburb": "Brisbane",
+   "state": "QLD",
+   "lat": -27.4698,
+   "lon": 153.0251,
+   "precision": "locality",
+   "source_url": "https://lawright.org.au/about/contact-us/"
+  },
+  {
+   "name": "JusticeNet SA",
+   "suburb": "Adelaide",
+   "state": "SA",
+   "lat": -34.9285,
+   "lon": 138.6007,
+   "precision": "locality",
+   "source_url": "https://justicenet.org.au/contact-us"
   }
  ],
  "unresolved": [

@@ -9,6 +9,7 @@
     "prebuild": "mkdir -p public/maplibre && cp node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs node_modules/maplibre-gl/dist/maplibre-gl-shared.mjs public/maplibre/"
   },
   "dependencies": {
+    "lucide-react": "^1.31.0",
     "maplibre-gl": "^6.3.0",
     "next": "^15.1.0",
     "pg": "^8.12.0",

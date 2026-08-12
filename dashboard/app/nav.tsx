@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import ThemeToggle from './theme-toggle';
+import { ArrowUpRight } from './icons';
 
 const LINKS: Array<[string, string]> = [
   ['/', 'Feed'],
@@ -52,6 +53,9 @@ export default function Nav() {
     <>
       <nav className="site-nav" aria-label="Primary">
         <NavLinks path={path} />
+        <a href="https://policai.org" className="property-link">
+          Policai <ArrowUpRight />
+        </a>
       </nav>
 
       <button
@@ -71,6 +75,9 @@ export default function Nav() {
         <div id="mobile-navigation" className="mobile-nav-panel">
           <nav className="mobile-nav-links" aria-label="Mobile">
             <NavLinks path={path} onNavigate={() => setOpen(false)} />
+            <a href="https://policai.org" className="property-link" onClick={() => setOpen(false)}>
+              Policai <ArrowUpRight />
+            </a>
           </nav>
           <div className="mobile-theme-row">
             <span>Theme</span>

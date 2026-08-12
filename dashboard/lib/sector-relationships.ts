@@ -2,15 +2,13 @@ export type RelationshipType =
   | 'funding'
   | 'referral'
   | 'secondment'
-  | 'clinic'
-  | 'project_support';
+  | 'clinic';
 
 export const RELATIONSHIP_LABELS: Record<RelationshipType, string> = {
   funding: 'Funding',
   referral: 'Referral',
   secondment: 'Secondment',
   clinic: 'Clinic',
-  project_support: 'Project support',
 };
 
 export type RelationshipEvidence = {
@@ -86,17 +84,6 @@ export const RELATIONSHIP_EVIDENCE: RelationshipEvidence[] = [
     status: 'documented-example',
   },
   {
-    organisations: ['WEstjustice'],
-    type: 'project_support',
-    summary:
-      'WEstjustice identifies pro bono assistance as crucial to its services and separately names private-firm support for specific community projects.',
-    sourceLabel: 'WEstjustice — About us',
-    sourceUrl: 'https://www.westjustice.org.au/about-us',
-    evidenceDate: 'current page',
-    checkedAt: '2026-08-12',
-    status: 'current-description',
-  },
-  {
     organisations: ['Kingsford Legal Centre'],
     type: 'secondment',
     summary:
@@ -110,16 +97,60 @@ export const RELATIONSHIP_EVIDENCE: RelationshipEvidence[] = [
 ];
 
 export const SYSTEM_EVIDENCE = {
-  najp: {
-    label: 'Attorney-General’s Department — NAJP 2025–30',
+  najpOverview: {
+    label: 'AGD NAJP overview',
     url: 'https://www.ag.gov.au/legal-system/legal-assistance-services/national-access-justice-partnership-2025-30',
   },
+  najpAgreement: {
+    label: 'Signed NAJP agreement',
+    url: 'https://federalfinancialrelations.gov.au/sites/federalfinancialrelations.gov.au/files/2024-12/agreement-national-access-to-justice-partnership-signed.pdf',
+  },
+  clsp: {
+    label: 'Community Legal Services Program grants',
+    url: 'https://ministers.ag.gov.au/media-centre/community-legal-service-grants-improve-access-justice-30-06-2025',
+  },
+  legalAidNetwork: {
+    label: 'National Legal Aid',
+    url: 'https://nationallegalaid.org.au/about-us',
+  },
   clcNetwork: {
-    label: 'Community Legal Centres Australia — About us',
-    url: 'https://clcs.org.au/about-us/',
+    label: 'CLCs Australia network',
+    url: 'https://clcs.org.au/about-us/community-legal-centres/',
+  },
+  wlsNetwork: {
+    label: 'WLSA service directory',
+    url: 'https://wlsa.org.au/members/',
+  },
+  atsilsNetwork: {
+    label: 'NATSILS members',
+    url: 'https://www.natsils.org.au/',
+  },
+  fvplsNetwork: {
+    label: 'FNAAFV service directory',
+    url: 'https://fnaafv.org.au/fvpls-services/',
+  },
+  privateProfession: {
+    label: 'National Legal Aid private-practitioner census',
+    url: 'https://nationallegalaid.org.au/policy-and-advocacy/reports/nla-private-practitioner-census-2024-report',
+  },
+  proBonoTarget: {
+    label: 'National Pro Bono Target',
+    url: 'https://www.probonocentre.org.au/provide-pro-bono/target/',
   },
   proBonoModels: {
-    label: 'Australian Pro Bono Centre — Models of pro bono legal assistance',
-    url: 'https://www.probonocentre.org.au/whatworks/part-4/',
+    label: 'Models of pro bono work',
+    url: 'https://www.probonocentre.org.au/aus-pro-bono-manual/part-1/chap-1-7/',
+  },
+  proBonoLimits: {
+    label: 'Role and limits of pro bono',
+    url: 'https://www.probonocentre.org.au/final-report-pro-bono/',
+  },
+  proBonoReferrals: {
+    label: 'Pro bono referral schemes',
+    url: 'https://www.probonocentre.org.au/aus-pro-bono-manual/part-3/chap-3-3/',
+  },
+  highCourtProtocol: {
+    label: 'High Court pro bono protocol',
+    url: 'https://www.hcourt.gov.au/assets/registry/High_Court_of_Australia_Pro_Bono_Protocol_20_December_2024.pdf',
   },
 } as const;
