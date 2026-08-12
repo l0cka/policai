@@ -1,3 +1,12 @@
+import { sourceUrlsEqual } from '@/lib/source-url';
+import {
+  assertSafeSourceUrl,
+  DEFAULT_MAX_RESPONSE_BYTES,
+  readResponseBytes,
+  resolveHostAddresses,
+  SourceFetchError,
+} from './fetch';
+
 /**
  * Client for the self-hosted Firecrawl stack on the collection host.
  *
@@ -18,13 +27,22 @@ let hasCompletedACall = false;
 
 export interface FirecrawlOptions {
   timeoutMs?: number;
+  maxResponseBytes?: number;
+  resolveHost?: (hostname: string) => Promise<string[]>;
 }
 
 export type FirecrawlResult =
-  | { ok: true; markdown: string; title: string | null; sourceUrl: string }
+  | { ok: true; markdown: string; title: string | null; finalUrl: string }
   | {
       ok: false;
-      reason: 'timeout' | 'unavailable' | 'http_error' | 'empty';
+      reason:
+        | 'timeout'
+        | 'unavailable'
+        | 'http_error'
+        | 'empty'
+        | 'invalid_response'
+        | 'response_too_large'
+        | 'invalid_provenance';
       detail: string;
     };
 
@@ -44,6 +62,8 @@ export async function scrapeWithFirecrawl(
   const timeoutMs =
     options.timeoutMs ??
     (hasCompletedACall ? WARM_TIMEOUT_MS : COLD_START_TIMEOUT_MS);
+  const maxResponseBytes =
+    options.maxResponseBytes ?? DEFAULT_MAX_RESPONSE_BYTES;
 
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
@@ -64,22 +84,81 @@ export async function scrapeWithFirecrawl(
       };
     }
 
-    const payload = (await response.json()) as {
+    let payload: {
       success?: boolean;
-      data?: { markdown?: string; metadata?: { title?: string } };
+      data?: {
+        markdown?: string;
+        metadata?: { title?: string; sourceURL?: string; url?: string };
+      };
     };
+    try {
+      const responseBytes = await readResponseBytes(response, maxResponseBytes);
+      payload = JSON.parse(responseBytes.toString('utf8')) as typeof payload;
+    } catch (error) {
+      if (
+        error instanceof SourceFetchError &&
+        error.message.includes('byte limit')
+      ) {
+        return {
+          ok: false,
+          reason: 'response_too_large',
+          detail: error.message,
+        };
+      }
+      return {
+        ok: false,
+        reason: 'invalid_response',
+        detail: error instanceof Error ? error.message : String(error),
+      };
+    }
     const markdown = payload.data?.markdown?.trim() ?? '';
 
     if (!payload.success || markdown.length === 0) {
       return { ok: false, reason: 'empty', detail: 'no markdown returned' };
+    }
+    if (Buffer.byteLength(markdown, 'utf8') > maxResponseBytes) {
+      return {
+        ok: false,
+        reason: 'response_too_large',
+        detail: `firecrawl markdown exceeds ${maxResponseBytes} byte limit`,
+      };
+    }
+
+    const metadata = payload.data?.metadata;
+    const finalUrl = metadata?.sourceURL?.trim() ?? '';
+    const alternateUrl = metadata?.url?.trim();
+    if (
+      !finalUrl ||
+      (alternateUrl && !sourceUrlsEqual(finalUrl, alternateUrl))
+    ) {
+      return {
+        ok: false,
+        reason: 'invalid_provenance',
+        detail: !finalUrl
+          ? 'firecrawl omitted final source URL metadata'
+          : 'firecrawl returned conflicting final URL metadata',
+      };
+    }
+    try {
+      await assertSafeSourceUrl(
+        finalUrl,
+        options.resolveHost ?? resolveHostAddresses,
+        'official',
+      );
+    } catch (error) {
+      return {
+        ok: false,
+        reason: 'invalid_provenance',
+        detail: error instanceof Error ? error.message : String(error),
+      };
     }
 
     hasCompletedACall = true;
     return {
       ok: true,
       markdown,
-      title: payload.data?.metadata?.title ?? null,
-      sourceUrl: url,
+      title: metadata?.title ?? null,
+      finalUrl,
     };
   } catch (error) {
     const detail = error instanceof Error ? error.message : String(error);

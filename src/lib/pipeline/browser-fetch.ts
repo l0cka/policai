@@ -1,4 +1,15 @@
-import { looksLikeBotChallenge } from './fetch';
+import {
+  assertContentLengthWithinLimit,
+  assertSafeSourceUrl,
+  DEFAULT_MAX_RESPONSE_BYTES,
+  looksLikeBotChallenge,
+  resolveHostAddresses,
+  SourceFetchError,
+} from './fetch';
+import {
+  createBrowserEgressProxy,
+  type BrowserEgressProxy,
+} from './browser-egress-proxy';
 
 /**
  * Headless-browser retriever with the fetch signature, so `retrieveSource`
@@ -14,7 +25,6 @@ export interface BrowserResponseLike {
   status(): number;
   url(): string;
   headers(): Record<string, string>;
-  body(): Promise<Buffer>;
 }
 
 export interface BrowserPageLike {
@@ -22,7 +32,6 @@ export interface BrowserPageLike {
     url: string,
     options?: { waitUntil?: 'load' | 'domcontentloaded'; timeout?: number },
   ): Promise<BrowserResponseLike | null>;
-  content(): Promise<string>;
   url(): string;
   evaluate<Arg, Result>(
     fn: (arg: Arg) => Result | Promise<Result>,
@@ -36,15 +45,28 @@ export interface BrowserPageLike {
   close(): Promise<void>;
 }
 
+export interface BrowserRouteLike {
+  request(): { url(): string };
+  continue(): Promise<void>;
+  abort(errorCode?: string): Promise<void>;
+}
+
+export interface BrowserWebSocketRouteLike {
+  url(): string;
+  connectToServer(): unknown;
+  close(options?: { code?: number; reason?: string }): Promise<void>;
+}
+
 export interface BrowserContextLike {
   newPage(): Promise<BrowserPageLike>;
-  /** Non-rendering HTTP client sharing the context's cookies and identity. */
-  request: {
-    get(
-      url: string,
-      options?: { timeout?: number },
-    ): Promise<BrowserResponseLike>;
-  };
+  route(
+    pattern: string,
+    handler: (route: BrowserRouteLike) => Promise<void>,
+  ): Promise<unknown>;
+  routeWebSocket?(
+    pattern: string,
+    handler: (route: BrowserWebSocketRouteLike) => Promise<void>,
+  ): Promise<unknown>;
   close(): Promise<void>;
 }
 
@@ -52,6 +74,8 @@ export interface BrowserLike {
   newContext(options?: {
     userAgent?: string;
     locale?: string;
+    serviceWorkers?: 'block';
+    proxy?: { server: string };
   }): Promise<BrowserContextLike>;
   version?(): string;
   close(): Promise<void>;
@@ -67,6 +91,11 @@ export interface CreateBrowserFetchOptions {
   /** How long to let a bot-challenge interstitial settle before re-reading. */
   challengeSettleMs?: number;
   navigationTimeoutMs?: number;
+  maxResponseBytes?: number;
+  resolveHost?: (hostname: string) => Promise<string[]>;
+  egressProxyFactory?: (
+    maxTunnelBytes: number,
+  ) => Promise<BrowserEgressProxy>;
 }
 
 const DEFAULT_CHALLENGE_SETTLE_MS = 5_000;
@@ -76,6 +105,7 @@ const DEFAULT_NAVIGATION_TIMEOUT_MS = 45_000;
  * hardware widens that window; bounded so long-polling pages cannot stall.
  */
 const NETWORK_IDLE_SETTLE_MS = 5_000;
+const BROWSER_TRAFFIC_OVERHEAD_BYTES = 4 * 1024 * 1024;
 
 const BROWSER_LOCALE = 'en-AU';
 /** Statuses WAF interstitials return before a challenge cookie is granted. */
@@ -85,11 +115,19 @@ async function launchPlaywrightChromium(): Promise<BrowserLike> {
   const playwright = await import('playwright-core');
   // Full Chromium in new-headless mode: the lighter headless shell trips
   // HTTP2 protocol errors and WAF blocks on Akamai-fronted GovCMS hosts.
-  return playwright.chromium.launch({
+  const browser = await playwright.chromium.launch({
     headless: true,
     channel: 'chromium',
-    args: ['--disable-blink-features=AutomationControlled'],
+    args: [
+      '--disable-background-networking',
+      '--disable-blink-features=AutomationControlled',
+    ],
   });
+  return {
+    newContext: (options) => browser.newContext(options),
+    version: () => browser.version(),
+    close: () => browser.close(),
+  };
 }
 
 function userAgentPlatform(): string {
@@ -132,29 +170,11 @@ function responseHeaderSubset(
   const headers: Record<string, string> = {
     'content-type': responseHeaders['content-type'] ?? 'text/html',
   };
-  for (const key of ['etag', 'last-modified'] as const) {
+  for (const key of ['content-length', 'etag', 'last-modified'] as const) {
     const value = responseHeaders[key];
     if (value) headers[key] = value;
   }
   return headers;
-}
-
-/** Fail fast so blocked hosts fall through to the in-page fetch. */
-const CONTEXT_REQUEST_TIMEOUT_MS = 15_000;
-
-async function fetchViaContextRequest(
-  context: BrowserContextLike,
-  url: string,
-): Promise<Response> {
-  const apiResponse = await context.request.get(url, {
-    timeout: CONTEXT_REQUEST_TIMEOUT_MS,
-  });
-  return toFetchResponse(
-    apiResponse.status(),
-    apiResponse.url(),
-    new Uint8Array(await apiResponse.body()),
-    responseHeaderSubset(apiResponse.headers()),
-  );
 }
 
 /**
@@ -167,6 +187,7 @@ async function fetchViaPage(
   page: BrowserPageLike,
   url: string,
   navigationTimeoutMs: number,
+  maxResponseBytes: number,
 ): Promise<Response> {
   const origin = new URL(url).origin;
   if (!page.url().startsWith(origin)) {
@@ -175,47 +196,151 @@ async function fetchViaPage(
       timeout: navigationTimeoutMs,
     });
   }
-  const result = await page.evaluate(async (target: string) => {
-    const response = await fetch(target, { credentials: 'include' });
-    const buffer = new Uint8Array(await response.arrayBuffer());
-    let binary = '';
-    const chunkSize = 0x8000;
-    for (let index = 0; index < buffer.length; index += chunkSize) {
-      binary += String.fromCharCode(
-        ...buffer.subarray(index, index + chunkSize),
+  let result: {
+    status: number;
+    contentType: string;
+    finalUrl: string;
+    base64Chunks: string[];
+  };
+  try {
+    result = await page.evaluate(async ({ target, byteLimit }) => {
+      const response = await fetch(target, {
+        credentials: 'include',
+        redirect: 'follow',
+      });
+      const declaredLength = Number(response.headers.get('content-length'));
+      if (Number.isFinite(declaredLength) && declaredLength > byteLimit) {
+        await response.body?.cancel();
+        throw new Error(`Source response exceeds ${byteLimit} byte limit`);
+      }
+      if (!response.body) {
+        return {
+          status: response.status,
+          contentType: response.headers.get('content-type') ?? '',
+          finalUrl: response.url || target,
+          base64Chunks: [],
+        };
+      }
+
+      const reader = response.body.getReader();
+      const base64Chunks: string[] = [];
+      let received = 0;
+      try {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          received += value.byteLength;
+          if (received > byteLimit) {
+            await reader.cancel();
+            throw new Error(`Source response exceeds ${byteLimit} byte limit`);
+          }
+          let binary = '';
+          const chunkSize = 0x8000;
+          for (let index = 0; index < value.length; index += chunkSize) {
+            binary += String.fromCharCode(
+              ...value.subarray(index, index + chunkSize),
+            );
+          }
+          base64Chunks.push(btoa(binary));
+        }
+      } finally {
+        reader.releaseLock();
+      }
+      return {
+        status: response.status,
+        contentType: response.headers.get('content-type') ?? '',
+        finalUrl: response.url || target,
+        base64Chunks,
+      };
+    }, { target: url, byteLimit: maxResponseBytes });
+  } catch (error) {
+    if (
+      error instanceof Error &&
+      error.message.includes(`exceeds ${maxResponseBytes} byte limit`)
+    ) {
+      throw new SourceFetchError(
+        `Source response exceeds ${maxResponseBytes} byte limit`,
+        { retryable: false, cause: error },
       );
     }
-    return {
-      status: response.status,
-      contentType: response.headers.get('content-type') ?? '',
-      base64: btoa(binary),
-    };
-  }, url);
+    throw error;
+  }
+  const chunks = result.base64Chunks.map((chunk) => Buffer.from(chunk, 'base64'));
+  const payload = Buffer.concat(chunks);
   return toFetchResponse(
     result.status,
-    url,
-    new Uint8Array(Buffer.from(result.base64, 'base64')),
+    result.finalUrl,
+    new Uint8Array(payload),
     {
       'content-type': result.contentType || 'application/octet-stream',
+      'content-length': String(payload.byteLength),
     },
   );
 }
 
 async function fetchDocumentPayload(
-  context: BrowserContextLike,
   page: BrowserPageLike,
   url: string,
   navigationTimeoutMs: number,
+  maxResponseBytes: number,
 ): Promise<Response> {
+  return await fetchViaPage(
+    page,
+    url,
+    navigationTimeoutMs,
+    maxResponseBytes,
+  );
+}
+
+async function readBoundedPageContent(
+  page: BrowserPageLike,
+  maxResponseBytes: number,
+): Promise<string> {
   try {
-    const response = await fetchViaContextRequest(context, url);
-    // WAFs that block the request client's non-browser TLS answer with a
-    // challenge status; only the in-page fetch presents as the real browser.
-    if (!CHALLENGE_STATUSES.has(response.status)) return response;
-  } catch {
-    // Timeouts and protocol failures fall through to the in-page fetch.
+    return await page.evaluate(({ byteLimit }) => {
+      const html = document.documentElement?.outerHTML ?? '';
+      if (new TextEncoder().encode(html).byteLength > byteLimit) {
+        throw new Error(`Source response exceeds ${byteLimit} byte limit`);
+      }
+      return html;
+    }, { byteLimit: maxResponseBytes });
+  } catch (error) {
+    if (
+      error instanceof Error &&
+      error.message.includes(`exceeds ${maxResponseBytes} byte limit`)
+    ) {
+      throw new SourceFetchError(
+        `Source response exceeds ${maxResponseBytes} byte limit`,
+        { retryable: false, cause: error },
+      );
+    }
+    throw error;
   }
-  return await fetchViaPage(page, url, navigationTimeoutMs);
+}
+
+function abortReason(signal: AbortSignal): unknown {
+  return signal.reason ?? new DOMException('The operation was aborted', 'AbortError');
+}
+
+async function raceWithAbort<T>(
+  operation: Promise<T>,
+  signal: AbortSignal | null | undefined,
+  abort: () => Promise<void>,
+): Promise<T> {
+  if (!signal) return operation;
+  if (signal.aborted) {
+    await abort();
+    throw abortReason(signal);
+  }
+  return await new Promise<T>((resolve, reject) => {
+    const onAbort = () => {
+      void abort().finally(() => reject(abortReason(signal)));
+    };
+    signal.addEventListener('abort', onAbort, { once: true });
+    operation.then(resolve, reject).finally(() => {
+      signal.removeEventListener('abort', onAbort);
+    });
+  });
 }
 
 function toFetchResponse(
@@ -242,6 +367,13 @@ export function createBrowserFetch(
     options.challengeSettleMs ?? DEFAULT_CHALLENGE_SETTLE_MS;
   const navigationTimeoutMs =
     options.navigationTimeoutMs ?? DEFAULT_NAVIGATION_TIMEOUT_MS;
+  const maxResponseBytes =
+    options.maxResponseBytes ?? DEFAULT_MAX_RESPONSE_BYTES;
+  const resolveHost = options.resolveHost ?? resolveHostAddresses;
+  const egressProxyFactory =
+    options.egressProxyFactory ??
+    ((maxTunnelBytes: number) =>
+      createBrowserEgressProxy({ maxTunnelBytes }));
 
   let browserPromise: Promise<BrowserLike> | null = null;
   const getBrowser = (): Promise<BrowserLike> => {
@@ -249,92 +381,136 @@ export function createBrowserFetch(
     return browserPromise;
   };
 
-  const fetchImpl = (async (input: RequestInfo | URL) => {
+  const fetchImpl = (async (
+    input: RequestInfo | URL,
+    init?: RequestInit,
+  ) => {
     const url = String(input);
+    await assertSafeSourceUrl(url, resolveHost, 'official');
+    if (init?.signal?.aborted) throw abortReason(init.signal);
     const browser = await getBrowser();
-    const context = await browser.newContext({
-      userAgent: browserUserAgent(browser),
-      locale: BROWSER_LOCALE,
-    });
+    const egressProxy = await egressProxyFactory(
+      maxResponseBytes + BROWSER_TRAFFIC_OVERHEAD_BYTES,
+    );
+    let context: BrowserContextLike | undefined;
     try {
-      const page = await context.newPage();
-      let navigation: BrowserResponseLike | null;
-      try {
-        navigation = await page.goto(url, {
-          waitUntil: 'load',
-          timeout: navigationTimeoutMs,
-        });
-      } catch (error) {
-        if (!isDownloadNavigationError(error)) throw error;
-        // Chromium aborts navigations it treats as downloads (PDFs, Word
-        // documents); retrieve those without rendering.
-        return await fetchDocumentPayload(context, page, url, navigationTimeoutMs);
-      }
-      if (!navigation) {
-        throw new Error(`Browser navigation to ${url} produced no response`);
-      }
-      if (
-        CHALLENGE_STATUSES.has(navigation.status()) &&
-        isHtmlContentType(navigation.headers()['content-type'] ?? '') &&
-        challengeSettleMs > 0
-      ) {
-        // WAF interstitials run JS, set a clearance cookie, and only then
-        // serve content; give that a beat and re-navigate once.
-        await page.waitForTimeout(challengeSettleMs);
-        navigation =
-          (await page.goto(url, {
+      context = await browser.newContext({
+        userAgent: browserUserAgent(browser),
+        locale: BROWSER_LOCALE,
+        serviceWorkers: 'block',
+        proxy: { server: egressProxy.serverUrl },
+      });
+      await context.route('**/*', async (route) => {
+        try {
+          await assertSafeSourceUrl(
+            route.request().url(),
+            resolveHost,
+            'public-https',
+          );
+          await route.continue();
+        } catch {
+          await route.abort('blockedbyclient');
+        }
+      });
+      await context.routeWebSocket?.('**/*', async (route) => {
+        const socketUrl = route.url();
+        const validationUrl = socketUrl.replace(/^wss:/i, 'https:');
+        try {
+          await assertSafeSourceUrl(
+            validationUrl,
+            resolveHost,
+            'public-https',
+          );
+          route.connectToServer();
+        } catch {
+          await route.close({ code: 1008, reason: 'Blocked destination' });
+        }
+      });
+
+      const operation = (async () => {
+        const page = await context.newPage();
+        let navigation: BrowserResponseLike | null;
+        try {
+          navigation = await page.goto(url, {
             waitUntil: 'load',
             timeout: navigationTimeoutMs,
-          })) ?? navigation;
-      }
-
-      const status = navigation.status();
-      const headers = responseHeaderSubset(navigation.headers());
-      const contentType = headers['content-type'];
-
-      if (!isHtmlContentType(contentType)) {
-        const payload = await navigation.body();
-        const declaresBinaryDocument =
-          /pdf|msword|wordprocessingml|rtf|octet-stream/.test(
-            contentType.toLowerCase(),
-          );
-        const looksLikeMarkup = payload
-          .toString('utf8', 0, Math.min(payload.length, 64))
-          .trimStart()
-          .startsWith('<');
-        if (payload.length === 0 || (declaresBinaryDocument && looksLikeMarkup)) {
-          // Chromium substitutes its own viewer shell (or an empty body via
-          // the download manager) for document navigations; re-fetch the raw
-          // bytes without rendering.
+          });
+        } catch (error) {
+          if (!isDownloadNavigationError(error)) throw error;
+          // Chromium aborts navigations it treats as downloads; retrieve the
+          // bytes through a same-origin streamed fetch with the same cookies.
           return await fetchDocumentPayload(
-            context,
             page,
             url,
             navigationTimeoutMs,
+            maxResponseBytes,
           );
         }
-        return toFetchResponse(
-          status,
-          navigation.url(),
-          new Uint8Array(payload),
-          headers,
-        );
-      }
+        if (!navigation) {
+          throw new Error(`Browser navigation to ${url} produced no response`);
+        }
+        if (
+          CHALLENGE_STATUSES.has(navigation.status()) &&
+          isHtmlContentType(navigation.headers()['content-type'] ?? '') &&
+          challengeSettleMs > 0
+        ) {
+          // WAF interstitials run JS, set a clearance cookie, and only then
+          // serve content; give that a beat and re-navigate once.
+          await page.waitForTimeout(challengeSettleMs);
+          navigation =
+            (await page.goto(url, {
+              waitUntil: 'load',
+              timeout: navigationTimeoutMs,
+            })) ?? navigation;
+        }
 
-      await page
-        .waitForLoadState?.('networkidle', { timeout: NETWORK_IDLE_SETTLE_MS })
-        .catch(() => {
-          // Pages that never go idle (long polling, analytics beacons) are
-          // read as-is after the bounded settle window.
-        });
-      let body = await page.content();
-      if (looksLikeBotChallenge(body) && challengeSettleMs > 0) {
-        await page.waitForTimeout(challengeSettleMs);
-        body = await page.content();
-      }
-      return toFetchResponse(status, page.url(), body, headers);
+        await assertSafeSourceUrl(
+          navigation.url(),
+          resolveHost,
+          'public-https',
+        );
+        const status = navigation.status();
+        const headers = responseHeaderSubset(navigation.headers());
+        assertContentLengthWithinLimit(
+          headers['content-length'],
+          maxResponseBytes,
+        );
+        const contentType = headers['content-type'];
+
+        if (!isHtmlContentType(contentType)) {
+          return await fetchDocumentPayload(
+            page,
+            navigation.url(),
+            navigationTimeoutMs,
+            maxResponseBytes,
+          );
+        }
+
+        await page
+          .waitForLoadState?.('networkidle', { timeout: NETWORK_IDLE_SETTLE_MS })
+          .catch(() => {
+            // Pages that never go idle (long polling, analytics beacons) are
+            // read as-is after the bounded settle window.
+          });
+        let body = await readBoundedPageContent(page, maxResponseBytes);
+        if (looksLikeBotChallenge(body) && challengeSettleMs > 0) {
+          await page.waitForTimeout(challengeSettleMs);
+          body = await readBoundedPageContent(page, maxResponseBytes);
+        }
+        return toFetchResponse(status, page.url(), body, headers);
+      })();
+      return await raceWithAbort(
+        operation,
+        init?.signal,
+        () => context?.close() ?? Promise.resolve(),
+      );
     } finally {
-      await context.close();
+      if (context) {
+        await context.close().catch(() => {
+          // Abort-driven closure can race normal cleanup.
+        });
+      }
+      await egressProxy.close();
     }
   }) as typeof fetch;
 

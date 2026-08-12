@@ -18,7 +18,7 @@ import type {
 const DEFAULT_TIMEOUT_MS = 20_000;
 const DEFAULT_ATTEMPTS = 2;
 const DEFAULT_RETRY_DELAY_MS = 250;
-const DEFAULT_MAX_RESPONSE_BYTES = 20 * 1024 * 1024;
+export const DEFAULT_MAX_RESPONSE_BYTES = 20 * 1024 * 1024;
 const DEFAULT_MAX_LINKED_DOCUMENT_BYTES = 32 * 1024 * 1024;
 const MAX_REDIRECTS = 5;
 const MAX_LINKED_DOCUMENTS = 8;
@@ -160,7 +160,7 @@ for (const [network, prefix] of [
 const GLOBAL_IPV6_UNICAST = new BlockList();
 GLOBAL_IPV6_UNICAST.addSubnet('2000::', 3, 'ipv6');
 
-async function resolveHostAddresses(hostname: string): Promise<string[]> {
+export async function resolveHostAddresses(hostname: string): Promise<string[]> {
   const addresses = await lookup(hostname, {
     all: true,
     verbatim: true,
@@ -721,7 +721,7 @@ function normalizedAddress(address: string): string {
     : address;
 }
 
-function assertContentLengthWithinLimit(
+export function assertContentLengthWithinLimit(
   value: string | string[] | undefined,
   maxResponseBytes: number,
 ): void {
@@ -739,7 +739,7 @@ function assertContentLengthWithinLimit(
   }
 }
 
-async function readResponseBytes(
+export async function readResponseBytes(
   response: Response,
   maxResponseBytes: number,
 ): Promise<Buffer> {

@@ -2026,7 +2026,7 @@ describe('collect browser fallback', () => {
       ok: true,
       markdown: `# New AI policy framework released\n\nFirecrawl-sourced content for ${url}.`,
       title: 'New AI policy framework released',
-      sourceUrl: url,
+      finalUrl: `${url}/canonical`,
     }));
 
     const result = await collect({
@@ -2054,6 +2054,13 @@ describe('collect browser fallback', () => {
     expect(
       result.developments.map((development) => development.url),
     ).toContain('https://www.example.gov.au/news/ai-policy-framework');
+    expect(
+      result.developments.find((development) =>
+        development.url.endsWith('/ai-policy-framework'),
+      )?.verification.source.finalUrl,
+    ).toBe(
+      'https://www.example.gov.au/news/ai-policy-framework/canonical',
+    );
   });
 
   it('falls through to the headless browser when Firecrawl cannot serve a candidate page', async () => {
