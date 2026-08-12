@@ -180,6 +180,26 @@
   this session only because the browser tab was backgrounded (rAF paused);
   the SVG passes 1–8 remain documented above for history.
 
+### Pass 10 — blank-canvas root cause: the bundled worker
+
+- The blank map was not a tab-visibility artifact. MapLibre's web worker,
+  when bundled into the Next chunk graph, crashed silently on startup:
+  workers received messages and never replied (17 pending actor requests,
+  zero responses), so every source stalled and the style never completed —
+  with no error surfaced anywhere.
+- Fix: the worker loads as a plain served file. predev/prebuild copy
+  maplibre-gl-worker.mjs and its self-contained shared chunk into
+  public/maplibre/ (gitignored), and the map view calls
+  `maplibregl.setWorkerUrl('/maplibre/maplibre-gl-worker.mjs')`.
+- Verified live with the tab visible: style and 16+ vector tiles load,
+  basemap renders with place labels, cluster badges split on click through
+  country → state → regional zoom (500 km → 50 km scales observed), the
+  selected-state outline and pins draw, and the attribution control shows
+  OpenFreeMap/OpenMapTiles/OSM/ABS.
+- A deferred-init gate from the visibility investigation was kept: the map
+  is only created once its container is visible, which remains the correct
+  behaviour for background-tab loads.
+
 ## Functionality and accessibility
 
 - Map and System tabs switch panels.

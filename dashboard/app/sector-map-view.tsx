@@ -12,6 +12,15 @@ import { useEffect, useRef, useState } from 'react';
 import * as maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
+/*
+ * MapLibre's worker must load from a plain served file: the copy webpack
+ * bundles into the Next chunk graph crashes silently on startup, leaving the
+ * map wedged before its first frame (workers received messages, never
+ * replied). predev/prebuild copy the worker and its shared chunk into
+ * public/maplibre/.
+ */
+maplibregl.setWorkerUrl('/maplibre/maplibre-gl-worker.mjs');
+
 export type MapOrg = {
   name: string;
   jurisdiction: string;

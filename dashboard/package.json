@@ -4,7 +4,9 @@
   "scripts": {
     "dev": "next dev -p 8850",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "predev": "mkdir -p public/maplibre && cp node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs node_modules/maplibre-gl/dist/maplibre-gl-shared.mjs public/maplibre/",
+    "prebuild": "mkdir -p public/maplibre && cp node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs node_modules/maplibre-gl/dist/maplibre-gl-shared.mjs public/maplibre/"
   },
   "dependencies": {
     "maplibre-gl": "^6.3.0",
