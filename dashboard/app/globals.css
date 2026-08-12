@@ -1831,6 +1831,10 @@ main {
   font-size: 18px;
 }
 
+.d-t-compact {
+  font-size: 13px;
+}
+
 /* The counts are the figures a reader scans for, so they get the display face. */
 .d-num {
   font-family: var(--font-display);
@@ -1852,6 +1856,10 @@ main {
   font-size: 12.5px;
   fill: var(--foreground);
   opacity: 0.7;
+}
+
+.d-peak-compact {
+  font-size: 11px;
 }
 
 .d-rule {
@@ -1926,6 +1934,671 @@ main {
   border-top-style: dotted;
 }
 
+.diagram-action-hint {
+  margin-left: auto;
+}
+
+.d-node-selectable {
+  cursor: pointer;
+}
+
+.d-node-selectable .d-box {
+  transition:
+    fill var(--dur-fast) ease,
+    stroke var(--dur-fast) ease;
+}
+
+.d-node-selectable:hover .d-box,
+.d-node-selectable:focus-visible .d-box {
+  fill: var(--row-hover);
+  stroke: var(--ring);
+  stroke-width: 2;
+}
+
+/*
+ * The explorer is an open spread on the page, not a card: print rules divide
+ * it from the page and the detail column, and nothing else frames it.
+ */
+.sector-explorer {
+  margin-top: 1.5rem;
+}
+
+.sector-hero-head .section-heading {
+  margin-top: 0.75rem;
+  margin-bottom: 0.35rem;
+}
+
+.sector-hero-head + .sector-explorer {
+  margin-top: 1rem;
+}
+
+.sector-explorer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.sector-explorer-head > div:first-child {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.sector-explorer-kicker,
+.sector-panel-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+.sector-explorer-summary {
+  margin-top: 0.25rem;
+  font-size: 0.8125rem;
+  color: var(--muted-foreground);
+}
+
+.sector-view-tabs {
+  flex: 0 0 auto;
+  display: inline-grid;
+  grid-template-columns: repeat(2, minmax(7rem, 1fr));
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.sector-view-tabs button {
+  min-height: 2.5rem;
+  padding: 0.5rem 1rem;
+  border: 0;
+  border-right: 1px solid var(--border);
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  cursor: pointer;
+}
+
+.sector-view-tabs button:last-child {
+  border-right: 0;
+}
+
+.sector-view-tabs button[aria-selected='true'] {
+  background: var(--status-amended-bg);
+  color: var(--primary);
+  box-shadow: inset 0 0 0 1px var(--primary);
+}
+
+.sector-system-panel {
+  padding-top: 1.5rem;
+}
+
+.sector-system-panel .diagram {
+  margin: 0;
+}
+
+/* The diagram sits directly on the page; the tabbed spread is its frame. */
+.sector-system-panel .diagram-frame {
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+}
+
+/*
+ * The map is a full-width MapLibre canvas; the detail column floats over its
+ * right edge like a map application's side panel, and the page still scrolls
+ * normally because zooming needs a pinch or a modifier key.
+ */
+.sector-map-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem 0 0.75rem;
+}
+
+/* Map and detail sit side by side; the map stays put while the page scrolls
+   the panel, so neither ever covers or scrolls inside the other. */
+.sector-map-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 23rem;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.sector-map-stage {
+  position: sticky;
+  top: 1rem;
+}
+
+.sector-maplibre {
+  width: 100%;
+  height: clamp(32rem, 74vh, 50rem);
+  border: 1px solid var(--rule);
+  background: var(--card);
+}
+
+.sector-maplibre.is-loading {
+  display: grid;
+}
+
+.sector-maplibre canvas:focus-visible {
+  outline: none;
+}
+
+.sector-maplibre-state-label {
+  padding: 0.15rem 0.45rem;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--card);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--foreground);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.sector-maplibre-state-label.is-current {
+  border-color: var(--trust);
+  color: var(--trust);
+}
+
+.sector-maplibre-state-label.is-hidden {
+  display: none;
+}
+
+.sector-map-detail {
+  min-width: 0;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: var(--card);
+}
+
+.sector-map-foot {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.sector-breakdown button {
+  display: grid;
+  grid-template-columns: 0.75rem 1fr auto;
+  align-items: center;
+  gap: 0.625rem;
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  font-size: 0.75rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.sector-breakdown button:hover {
+  background: var(--row-hover);
+}
+
+.sector-breakdown button[aria-pressed='true'] {
+  border-color: var(--primary);
+  background: var(--status-amended-bg);
+}
+
+.sector-key-dot {
+  display: inline-block;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--muted-foreground);
+}
+
+.sector-key-all,
+.sector-key-legal_aid {
+  background: var(--trust);
+}
+
+.sector-key-clc {
+  background: var(--caution);
+}
+
+.sector-key-wls {
+  background: light-dark(#be185d, #f5a0c8);
+}
+
+.sector-key-atsils {
+  background: light-dark(#6d28d9, #b89aff);
+}
+
+.sector-key-fvpls {
+  background: light-dark(#c2410c, #fb923c);
+}
+
+.sector-map-government {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.sector-map-government > div {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.75rem 1rem;
+}
+
+.sector-map-government > div:first-child {
+  border-right: 1px solid var(--border);
+  background: var(--status-amended-bg);
+  box-shadow: inset 0 0 0 1px var(--primary);
+}
+
+.sector-map-government span {
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.sector-map-government small {
+  font-size: 0.6875rem;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+}
+
+.sector-zoom-toggle {
+  display: inline-flex;
+  flex: 0 0 auto;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.sector-zoom-toggle button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.sector-zoom-toggle button {
+  min-height: 1.9rem;
+  padding: 0.25rem 0.7rem;
+  border: 0;
+  background: transparent;
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 0.6875rem;
+  cursor: pointer;
+}
+
+.sector-zoom-toggle button + button {
+  border-left: 1px solid var(--border);
+}
+
+.sector-zoom-toggle button:hover {
+  background: var(--row-hover);
+}
+
+.sector-zoom-toggle button[aria-pressed='true'] {
+  background: var(--status-amended-bg);
+  color: var(--primary);
+}
+
+.sector-map-source {
+  font-size: 0.6875rem;
+  line-height: 1.55;
+  color: var(--muted-foreground);
+}
+
+.sector-map-source a,
+.sector-evidence a,
+.sector-org-source-link {
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.sector-jurisdiction-head,
+.sector-breakdown,
+.sector-org-picker,
+.sector-selected-org {
+  padding: 1.1rem 1.25rem;
+  border-bottom: 1px solid var(--rule-hair);
+}
+
+.sector-detail-swap > :last-child {
+  border-bottom: 0;
+}
+
+.sector-jurisdiction-head p {
+  font-size: 1.25rem;
+  color: var(--trust);
+}
+
+.sector-jurisdiction-head strong {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.8125rem;
+  font-weight: 400;
+}
+
+.sector-breakdown .sector-panel-label {
+  margin-bottom: 0.5rem;
+}
+
+.sector-breakdown button strong {
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+.sector-org-picker label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+.sector-org-picker select {
+  width: 100%;
+  min-height: 2.5rem;
+  padding: 0.45rem 2rem 0.45rem 0.6rem;
+  border: 1px solid var(--input);
+  border-radius: 3px;
+  background: var(--background);
+  color: var(--foreground);
+  font: inherit;
+  font-size: 0.75rem;
+}
+
+.sector-org-picker > span {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 0.6875rem;
+  color: var(--muted-foreground);
+}
+
+.sector-selected-name {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+}
+
+.sector-selected-name .sector-key-dot {
+  flex: 0 0 auto;
+  margin-top: 0.4rem;
+}
+
+.sector-selected-name h3 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.sector-selected-org dl {
+  display: grid;
+  gap: 0.35rem;
+  margin-top: 1rem;
+}
+
+.sector-selected-org dl > div {
+  display: grid;
+  grid-template-columns: 5.75rem 1fr;
+  gap: 0.5rem;
+  font-size: 0.7rem;
+}
+
+.sector-selected-org dt {
+  color: var(--muted-foreground);
+}
+
+.sector-selected-org dd {
+  text-align: right;
+}
+
+.sector-selected-role {
+  margin-top: 1rem;
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+
+.sector-evidence {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule-hair);
+}
+
+.sector-evidence-item,
+.sector-evidence-empty {
+  margin-top: 0.65rem;
+  padding: 0.75rem;
+  border-left: 2px solid var(--caution);
+  background: var(--status-proposed-bg);
+  font-size: 0.7rem;
+  line-height: 1.55;
+}
+
+.sector-evidence-item a,
+.sector-evidence-item small {
+  display: block;
+  margin-top: 0.5rem;
+}
+
+.sector-evidence-item small {
+  color: var(--muted-foreground);
+}
+
+.sector-evidence-empty {
+  border-color: var(--muted-foreground);
+  background: var(--muted);
+  color: var(--muted-foreground);
+}
+
+.sector-org-source-link {
+  display: inline-block;
+  font-size: 0.75rem;
+}
+
+/* Action row on the selected organisation. */
+.sector-org-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  margin-top: 1rem;
+}
+
+.sector-org-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 1.9rem;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.sector-org-actions button:hover {
+  background: var(--row-hover);
+  border-color: var(--trust);
+}
+
+/*
+ * Relationship chips sit inside the evidence section, next to the block they
+ * change. Each carries the sourced-evidence count for the current map view.
+ */
+.sector-relationship-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.6rem;
+}
+
+.sector-relationship-chips button {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  min-height: 1.9rem;
+  padding: 0.25rem 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  font-size: 0.6875rem;
+  cursor: pointer;
+}
+
+.sector-relationship-chips button:hover {
+  background: var(--row-hover);
+}
+
+.sector-relationship-chips button[aria-pressed='true'] {
+  border-color: var(--primary);
+  background: var(--status-amended-bg);
+  color: var(--primary);
+}
+
+.sector-relationship-chips button span {
+  font-variant-numeric: tabular-nums;
+  color: var(--muted-foreground);
+}
+
+.sector-relationship-chips .sector-chip-empty {
+  opacity: 0.55;
+}
+
+.sector-evidence-note {
+  margin-top: 0.75rem;
+  font-size: 0.65rem;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+
+.sector-jurisdiction-name {
+  display: block;
+  margin-top: 0.1rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+.sector-org-picker-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.sector-org-step {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.sector-org-step button {
+  min-width: 1.75rem;
+  min-height: 1.5rem;
+  padding: 0 0.4rem;
+  border: 0;
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.sector-org-step button + button {
+  border-left: 1px solid var(--border);
+}
+
+.sector-org-step button:hover:not(:disabled) {
+  background: var(--row-hover);
+}
+
+.sector-org-step button:disabled {
+  color: var(--muted-foreground);
+  opacity: 0.5;
+  cursor: default;
+}
+
+.sector-radar-dot {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-right: 0.35rem;
+  border-radius: 50%;
+  background: var(--muted-foreground);
+  opacity: 0.5;
+  vertical-align: 0.02rem;
+}
+
+.sector-radar-dot.is-on {
+  background: var(--trust);
+  opacity: 1;
+}
+
+/* The detail column re-enters when the jurisdiction or category changes. */
+.sector-detail-swap {
+  animation: sector-swap-in var(--dur-base) var(--ease-out-quint) both;
+}
+
+@keyframes sector-swap-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.35rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* One breakpoint: map above, detail below, page keeps scrolling naturally. */
+/* Narrow screens: one column, map first, nothing sticky. */
+@media (max-width: 960px) {
+  .sector-map-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sector-map-stage {
+    position: static;
+  }
+
+  .sector-maplibre {
+    height: clamp(24rem, 60vh, 34rem);
+  }
+}
+
+@media (max-width: 760px) {
+  .sector-explorer-head {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .sector-map-government {
+    grid-template-columns: 1fr;
+  }
+
+  .sector-map-government > div:first-child {
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .diagram-action-hint {
+    flex-basis: 100%;
+    margin-left: 0;
+  }
+}
+
 .section-note {
   margin-top: 0.75rem;
   max-width: 74ch;
@@ -1944,13 +2617,38 @@ tbody th[scope='row'] {
   vertical-align: top;
 }
 
-/* Filter bar. Desktop keeps the full matrix; mobile collapses it behind a 44px trigger. */
-.sector-filter-trigger,
-.mobile-filter-only {
+/* Filter bar. The chip matrix stays behind the Filters trigger at every
+   width; the primary row keeps search, the radar pill and the count. */
+.sector-controls .mobile-filter-only {
   display: none;
 }
 
+.sector-filter-trigger {
+  display: inline-flex;
+  min-height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--input);
+  border-radius: 6px;
+  background: var(--background);
+  color: var(--foreground);
+  padding-inline: 0.9rem;
+  font: inherit;
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+.sector-filter-trigger[aria-expanded='true'] {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
 .sector-filter-groups {
+  display: none;
+  padding-top: 0.75rem;
+}
+
+.sector-filter-groups.open {
   display: block;
 }
 
@@ -2219,6 +2917,20 @@ tbody th[scope='row'] {
 
 .sector-method {
   margin-top: 1rem;
+}
+
+/* The method reads as short paragraphs on a wider measure, not one wall. */
+.sector-method .section-intro {
+  max-width: 86ch;
+}
+
+.sector-method .section-intro + .section-intro {
+  margin-top: 0.9rem;
+}
+
+.sector-method .sector-note:first-of-type {
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--rule-hair);
 }
 
 .sector-note {
@@ -2857,19 +3569,7 @@ tbody td:first-child {
   }
 
   .sector-filter-trigger {
-    display: inline-flex;
     min-height: 2.75rem;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid var(--input);
-    border-radius: 6px;
-    background: var(--background);
-    color: var(--foreground);
-    padding-inline: 0.9rem;
-    font: inherit;
-    font-size: 0.875rem;
-    font-weight: 500;
-    cursor: pointer;
   }
 
   .sector-count {
@@ -2877,16 +3577,7 @@ tbody td:first-child {
     margin: 0.25rem 0 0;
   }
 
-  .sector-filter-groups {
-    display: none;
-    padding-top: 0.65rem;
-  }
-
-  .sector-filter-groups.open {
-    display: block;
-  }
-
-  .mobile-filter-only {
+  .sector-controls .mobile-filter-only {
     display: flex;
   }
 

@@ -163,6 +163,17 @@ export function markMonitored(orgs: Org[], sources: Array<{ name: string; url: s
   });
 }
 
+/*
+ * Women's legal services sit inside the CLC tier in every source directory,
+ * so the split is made from each organisation's own name — the one place the
+ * classification is self-declared. CLCs Australia's "154 represented" figure
+ * still describes both groups together; that combined framing is kept where
+ * the figure is cited.
+ */
+export function isWomensLegalService(org: Org): boolean {
+  return org.tier === 'clc' && /women|wls/i.test(`${org.name} ${org.abbrev}`);
+}
+
 export function countBy<T extends string>(rows: Array<Record<string, unknown>>, key: string) {
   const out = {} as Record<T, number>;
   for (const r of rows) {
