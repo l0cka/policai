@@ -7,12 +7,12 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: 'Australian AI Policy Timeline - Policai',
   description:
-    'A source-backed timeline of Australian artificial intelligence policy, governance, and court developments.',
+    'A source-backed timeline of lifecycle events for policies in the Australian AI policy register.',
 };
 
 export default async function TimelinePage() {
   const [timelineData, policiesData] = await Promise.all([
-    getTimelineEvents(),
+    getTimelineEvents(undefined, { scope: 'policy-register' }),
     getPolicies(),
   ]);
 

@@ -364,6 +364,77 @@ describe("data-service file store", () => {
 		);
 	});
 
+	it("limits register timeline reads to lifecycle events linked to visible policies", async () => {
+		const policy = buildPolicy({ id: "registered-policy" });
+		const linkedLifecycleEvent = buildTimelineEvent({
+			id: "linked-lifecycle-event",
+			type: "policy_amended",
+			relatedPolicyId: policy.id,
+		});
+		const linkedMilestone = buildTimelineEvent({
+			id: "linked-milestone",
+			type: "milestone",
+			relatedPolicyId: policy.id,
+		});
+		const unlinkedAnnouncement = buildTimelineEvent({
+			id: "unlinked-announcement",
+			relatedPolicyId: undefined,
+		});
+
+		readJsonFile.mockImplementation(
+			async (filePath: string, fallback: unknown) => {
+				if (filePath.endsWith("policies.json")) return [policy];
+				if (filePath.endsWith("timeline.json")) {
+					return [
+						linkedLifecycleEvent,
+						linkedMilestone,
+						unlinkedAnnouncement,
+					];
+				}
+				if (filePath.endsWith("source-reviews.json")) return [];
+				return fallback;
+			},
+		);
+
+		const { getTimelineEvents } = await loadDataServiceModule();
+		const result = await getTimelineEvents(undefined, {
+			scope: "policy-register",
+		});
+
+		expect(result).toEqual([linkedLifecycleEvent]);
+	});
+
+	it("generates a policy lifecycle event when a linked milestone moves to developments", async () => {
+		const policy = buildPolicy({ id: "registered-policy" });
+		const linkedMilestone = buildTimelineEvent({
+			id: "linked-milestone",
+			type: "milestone",
+			relatedPolicyId: policy.id,
+		});
+
+		readJsonFile.mockImplementation(
+			async (filePath: string, fallback: unknown) => {
+				if (filePath.endsWith("policies.json")) return [policy];
+				if (filePath.endsWith("timeline.json")) return [linkedMilestone];
+				if (filePath.endsWith("source-reviews.json")) return [];
+				return fallback;
+			},
+		);
+
+		const { getTimelineEvents } = await loadDataServiceModule();
+		const result = await getTimelineEvents(undefined, {
+			scope: "policy-register",
+		});
+
+		expect(result).toEqual([
+			expect.objectContaining({
+				id: `policy-timeline-${policy.id}`,
+				relatedPolicyId: policy.id,
+				type: "policy_introduced",
+			}),
+		]);
+	});
+
 	it("derives generated timeline types from structured dates and lifecycle status", async () => {
 		const amendedPolicy = buildPolicy({
 			id: "amended-policy",
@@ -1039,6 +1110,126 @@ describe("data-service file store", () => {
 
 		expect(result).toHaveLength(1);
 		expect(result[0].id).toBe("dev-newer");
+	});
+
+	it("projects non-register editorial timeline records into developments without duplicates", async () => {
+		const policy = buildPolicy({ id: "registered-policy" });
+		const announcement = buildTimelineEvent({
+			id: "timeline-announcement",
+			title: "Government announces AI review",
+			relatedPolicyId: undefined,
+		});
+		const alreadyMigrated = buildTimelineEvent({
+			id: "timeline-existing-development",
+			title: "Existing development",
+			sourceUrl: "https://example.gov.au/timeline/existing-development",
+			relatedPolicyId: undefined,
+		});
+		const existingDevelopment = {
+			id: "dev-existing",
+			title: alreadyMigrated.title,
+			url: alreadyMigrated.sourceUrl,
+			sourceId: "test-source",
+			sourceName: "Test source",
+			jurisdiction: "federal" as const,
+			publishedAt: "2025-02-01",
+			publishedAtPrecision: "day" as const,
+			detectedAt: "2026-07-10T00:00:00.000Z",
+			summary: alreadyMigrated.description,
+			relevanceScore: 1,
+			classification: "curated" as const,
+			assessment: {
+				method: "editorial" as const,
+				assessedAt: "2026-07-10T00:00:00.000Z",
+				promptVersion: "test",
+			},
+			verification: alreadyMigrated.verification,
+			status: "promoted" as const,
+			relatedTimelineEventId: alreadyMigrated.id,
+		};
+
+		readJsonFile.mockImplementation(
+			async (filePath: string, fallback: unknown) => {
+				if (filePath.endsWith("policies.json")) return [policy];
+				if (filePath.endsWith("timeline.json")) {
+					return [announcement, alreadyMigrated];
+				}
+				if (filePath.endsWith("developments.json")) {
+					return [existingDevelopment];
+				}
+				if (filePath.endsWith("source-reviews.json")) return [];
+				return fallback;
+			},
+		);
+
+		const { getDevelopments } = await loadDataServiceModule();
+		const result = await getDevelopments();
+
+		expect(result).toHaveLength(2);
+		expect(result).toEqual(
+			expect.arrayContaining([
+				existingDevelopment,
+				expect.objectContaining({
+					id: "dev-timeline-announcement",
+					classification: "curated",
+					status: "promoted",
+					relatedTimelineEventId: announcement.id,
+				}),
+			]),
+		);
+	});
+
+	it("projects an approved timeline development over a dismissed machine detection", async () => {
+		const announcement = buildTimelineEvent({
+			id: "approved-announcement",
+			title: "Approved AI announcement",
+			relatedPolicyId: undefined,
+		});
+		const dismissedDetection = {
+			id: "dismissed-detection",
+			title: announcement.title,
+			url: announcement.sourceUrl,
+			sourceId: "test-source",
+			sourceName: "Test source",
+			jurisdiction: "federal" as const,
+			detectedAt: "2026-07-10T00:00:00.000Z",
+			relevanceScore: 0.65,
+			classification: "heuristic" as const,
+			assessment: {
+				method: "heuristic" as const,
+				assessedAt: "2026-07-10T00:00:00.000Z",
+				promptVersion: "test",
+			},
+			verification: {
+				status: "needs_review" as const,
+				source: { url: announcement.sourceUrl },
+			},
+			status: "dismissed" as const,
+			dismissalReason: "Not a policy instrument; retain as a development.",
+		};
+
+		readJsonFile.mockImplementation(
+			async (filePath: string, fallback: unknown) => {
+				if (filePath.endsWith("policies.json")) return [];
+				if (filePath.endsWith("timeline.json")) return [announcement];
+				if (filePath.endsWith("developments.json")) {
+					return [dismissedDetection];
+				}
+				if (filePath.endsWith("source-reviews.json")) return [];
+				return fallback;
+			},
+		);
+
+		const { getDevelopments } = await loadDataServiceModule();
+		const result = await getDevelopments();
+
+		expect(result).toEqual([
+			expect.objectContaining({
+				id: "dev-approved-announcement",
+				verification: announcement.verification,
+				relatedTimelineEventId: announcement.id,
+			}),
+		]);
 	});
 
 	it("exposes radar leads but withholds dismissed developments publicly", async () => {

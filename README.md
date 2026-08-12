@@ -18,7 +18,8 @@ Product surface:
 **Git is the database.** The canonical data lives in this repository:
 
 - `data/policies.json` — the curated policy register (only changed by reviewed commits; served through a filtered route)
-- `data/developments.json` — the automated radar feed, served through a filtered route
+- `data/developments.json` — the automated radar feed, combined at read time
+  with verified legacy announcements from the editorial chronology
 - `public/data/meta.json` — public collection health metadata
 - `data/dta-ai-policy-framework.json` — editorial visualization artifact gated by its related policy
 - `data/timeline.json`, `agencies.json`, `commonwealth-agencies.json` —
@@ -29,7 +30,7 @@ Product surface:
 
 The maintainer's server runs the collector daily, from its own checkout, over the official sources that reliably permit machine retrieval. Sources protected by browser challenges are kept in the same source catalogue but reviewed through the manual coverage ledger. Candidate pages from browser-only sources are retrieved through a self-hosted Firecrawl instance, falling back to headless Chromium when Firecrawl is unavailable. New items are classified by keyword heuristic by default, or by Claude, an Anthropic model, in batches when the collector's Claude classifier is enabled (it is enabled in production). Either classifier path caps stored confidence at 0.65, so an automated discovery never reads as more certain than an editor's review. Change detections on already-tracked records are different: they store a relevance score of 1 because the score there records certainty that a known instrument's page changed, not classifier confidence — those detections are still editor-gated before anything publishes. Detections are validated and committed. The site reads that data from disk and revalidates hourly; there is no runtime database.
 
-High-confidence detections are staged in `data/source-reviews.json`; a reviewer uses the local stage → approve → publish workflow before they enter the register. Public register and timeline reads only expose verified records. The collector never writes to `policies.json` directly, and CI enforces that.
+High-confidence detections are staged in `data/source-reviews.json`; a reviewer uses the local stage → approve → publish workflow before they enter the register. The public policy timeline exposes only verified lifecycle events linked to visible register records. Verified announcements and milestones belong in Developments; legacy examples still stored in `data/timeline.json` are projected there without duplicating their evidence. The collector never writes to `policies.json` directly, and CI enforces that.
 
 ## Stack
 

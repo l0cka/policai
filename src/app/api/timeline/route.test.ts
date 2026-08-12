@@ -24,7 +24,10 @@ describe('/api/timeline', () => {
 
     const response = await GET(new Request('https://example.com/api/timeline?jurisdiction=federal'))
 
-    expect(getTimelineEvents).toHaveBeenCalledWith({ jurisdiction: 'federal' })
+    expect(getTimelineEvents).toHaveBeenCalledWith(
+      { jurisdiction: 'federal' },
+      { scope: 'policy-register' },
+    )
     await expect(response.json()).resolves.toEqual({
       data: events,
       total: 1,

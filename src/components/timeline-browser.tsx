@@ -16,7 +16,7 @@ import { formatPolicyDate } from '@/lib/format-policy-date';
 import { parseCalendarDateForDisplay } from '@/lib/format-policy-date';
 import {
   JURISDICTION_NAMES,
-  TIMELINE_EVENT_TYPES,
+  POLICY_LIFECYCLE_TIMELINE_EVENT_TYPES,
   getPolicyTypeName,
   type Policy,
   type TimelineEvent,
@@ -113,7 +113,7 @@ export function TimelineBrowser({
                 className="h-11 w-full appearance-none border border-input bg-background pl-10 pr-3 text-sm"
               >
                 <option value="all">All event types</option>
-                {TIMELINE_EVENT_TYPES.map((type) => (
+                {POLICY_LIFECYCLE_TIMELINE_EVENT_TYPES.map((type) => (
                   <option key={type} value={type}>{EVENT_TYPE_CONFIG[type].label}</option>
                 ))}
               </select>
@@ -144,7 +144,7 @@ export function TimelineBrowser({
         <aside className="border-l border-border pl-6">
           <h2 className="text-sm font-semibold">Legend</h2>
           <div className="mt-3 space-y-2.5">
-            {TIMELINE_EVENT_TYPES.map((type) => (
+            {POLICY_LIFECYCLE_TIMELINE_EVENT_TYPES.map((type) => (
               <div key={type} className="flex items-center gap-2 text-sm">
                 <span className={cn('inline-flex h-2 w-2 shrink-0 rounded-full', EVENT_TYPE_CONFIG[type].dot)} />
                 {EVENT_TYPE_CONFIG[type].label}

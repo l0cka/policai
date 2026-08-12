@@ -24,13 +24,9 @@ const navItems = [
 ];
 
 const insightItems = [
-  { href: '/map', label: 'Map' },
-  { href: '/agencies', label: 'Agencies' },
   { href: '/timeline', label: 'Timeline' },
   { href: '/network', label: 'Network' },
-  { href: '/framework', label: 'Framework' },
   { href: '/methodology', label: 'Methodology' },
-  { href: '/blog', label: 'Blog' },
 ];
 
 function formatDataDate(value: string | null): string {
