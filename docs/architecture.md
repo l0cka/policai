@@ -53,9 +53,9 @@ The boundaries are deliberately strict:
 | Data | Owner | Publication rule |
 |---|---|---|
 | `data/policies.json` | Editorial register | Explicitly approved; public route applies verification and update-review filters |
-| `data/developments.json` | Automated radar + editorial annotations | Public route hides dismissed items and leads linked to terminal rejected reviews |
+| `data/developments.json` | Automated radar + editorial annotations | Public route hides dismissed items and leads linked to terminal rejected reviews; verified legacy announcements are projected from the editorial chronology |
 | `data/dta-ai-policy-framework.json` | Editorial visualization artifact | Public page/route requires its related policy to remain publicly verified |
-| `data/timeline.json` | Editorial chronology | May await review; public route emits only verified records |
+| `data/timeline.json` | Editorial chronology | May await review; the public policy timeline emits only verified register-linked lifecycle events |
 | `data/agencies.json`, `data/commonwealth-agencies.json` | Editorial directory | Public route removes unverified claims and narrative |
 | `public/data/meta.json` | Collector/editorial operations | Records coverage and health, not just timestamps |
 | `data/source-reviews.json` | Review workflow | Drafts only; never displayed as canonical facts |
@@ -136,6 +136,10 @@ The boundaries are deliberately strict:
   a newer one.
 - Public data-service reads also withhold unverified policies, unverified
   timeline events, dismissed developments, and unverified agency narrative.
+  Policy timeline reads are further limited to introduced, amended, repealed,
+  or superseded events linked to a visible register policy. Verified legacy
+  announcements and milestones are projected into Developments and deduplicated
+  against existing development records.
   Development `relatedPolicyId` values and agency policy associations are
   projected only when their target policy is also public.
   Supersession references are projected only when the successor policy is

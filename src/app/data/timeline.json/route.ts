@@ -6,6 +6,9 @@ export const revalidate = 3600;
 
 export async function GET() {
   return NextResponse.json(
-    await getTimelineEvents(undefined, { includeGenerated: false }),
+    await getTimelineEvents(undefined, {
+      includeGenerated: false,
+      scope: 'policy-register',
+    }),
   );
 }

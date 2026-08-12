@@ -41,9 +41,15 @@ import {
 	type TimelineEvent,
 	type TimelineEventDraft,
 	type TimelineEventType,
+	POLICY_LIFECYCLE_TIMELINE_EVENT_TYPES,
+	TIMELINE_EVENT_TYPES,
 } from "@/types";
 
 type DataAccess = "public" | "admin";
+
+const POLICY_LIFECYCLE_TIMELINE_TYPES = new Set<TimelineEventType>(
+	POLICY_LIFECYCLE_TIMELINE_EVENT_TYPES,
+);
 
 interface DataServiceOptions {
 	access?: DataAccess;
@@ -844,11 +850,13 @@ export async function getTimelineEvents(
 	},
 	options: {
 		includeGenerated?: boolean;
+		scope?: "all" | "policy-register";
 		access?: DataAccess;
 		now?: Date;
 	} = {},
 ): Promise<TimelineEvent[]> {
 	const includeGenerated = options.includeGenerated ?? true;
+	const scope = options.scope ?? "all";
 	const access = options.access ?? "public";
 	const now = options.now ?? new Date();
 	// Generate timeline events from policies + merge with manual curated events
@@ -864,7 +872,7 @@ export async function getTimelineEvents(
 		access === "public"
 			? await getWithheldTimelineEventIds(allManualEvents)
 			: new Set<string>();
-	const manualEvents = allManualEvents
+	let manualEvents = allManualEvents
 		.filter(
 			(event) =>
 			access === "admin" ||
@@ -878,6 +886,14 @@ export async function getTimelineEvents(
 				? { ...event, relatedPolicyId: undefined }
 				: event,
 		);
+	if (scope === "policy-register") {
+		manualEvents = manualEvents.filter(
+			(event) =>
+				Boolean(event.relatedPolicyId) &&
+				publicPolicyIds.has(event.relatedPolicyId!) &&
+				POLICY_LIFECYCLE_TIMELINE_TYPES.has(event.type),
+		);
+	}
 
 	// Build a set of relatedPolicyIds from manual events for dedup
 	const manualPolicyIds = new Set(
@@ -924,6 +940,67 @@ export async function getTimelineEvents(
 // Developments feed + collection metadata
 // ---------------------------------------------------------------------------
 
+function timelineEventAsDevelopment(event: TimelineEvent): Development {
+	const date =
+		typeof event.date === "string"
+			? event.date.slice(0, 10)
+			: event.date.toISOString().slice(0, 10);
+	const assessedAt =
+		event.verification.checkedAt ??
+		event.verification.source.retrievedAt ??
+		`${date}T00:00:00.000Z`;
+	const sourceName =
+		event.verification.source.publisher?.trim() ||
+		new URL(event.sourceUrl).hostname.replace(/^www\./, "");
+
+	return {
+		id: `dev-${event.id.replace(/^tl-/, "")}`,
+		title: event.title,
+		url: event.sourceUrl,
+		sourceId: "editorial-timeline",
+		sourceName,
+		jurisdiction: event.jurisdiction,
+		publishedAt: date,
+		publishedAtPrecision: event.datePrecision ?? "day",
+		detectedAt: assessedAt,
+		summary: event.description,
+		relevanceScore: 1,
+		classification: "curated",
+		assessment: {
+			method: "editorial",
+			assessedAt,
+			promptVersion: "editorial-timeline-projection-v1",
+		},
+		verification: event.verification,
+		status: "promoted",
+		...(event.relatedPolicyId
+			? { relatedPolicyId: event.relatedPolicyId }
+			: {}),
+		relatedTimelineEventId: event.id,
+	};
+}
+
+async function getLegacyTimelineDevelopments(now: Date): Promise<Development[]> {
+	const [events, policies] = await Promise.all([
+		getTimelineEvents(undefined, { includeGenerated: false, now }),
+		getPolicies(undefined, { now }),
+	]);
+	const publicPolicyIds = new Set(policies.map((policy) => policy.id));
+	const timelineTypes = new Set<TimelineEventType>(TIMELINE_EVENT_TYPES);
+
+	return events
+		.filter(
+			(event) =>
+				timelineTypes.has(event.type) &&
+				!(
+					event.relatedPolicyId &&
+					publicPolicyIds.has(event.relatedPolicyId) &&
+					POLICY_LIFECYCLE_TIMELINE_TYPES.has(event.type)
+				),
+		)
+		.map(timelineEventAsDevelopment);
+}
+
 export async function getDevelopments(filters?: {
 	jurisdiction?: string;
 	status?: string;
@@ -933,6 +1010,20 @@ export async function getDevelopments(filters?: {
 	const now = options.now ?? new Date();
 	let developments = await readJsonFile<Development[]>(DEVELOPMENTS_FILE, []);
 	if (access === "public") {
+		const legacyTimelineDevelopments = await getLegacyTimelineDevelopments(now);
+		for (const development of legacyTimelineDevelopments) {
+			if (
+				!developments.some(
+					(existing) =>
+						existing.status !== "dismissed" &&
+						(existing.relatedTimelineEventId ===
+							development.relatedTimelineEventId ||
+							sourceUrlsEqual(existing.url, development.url)),
+				)
+			) {
+				developments.push(development);
+			}
+		}
 		// Terminal review state is authoritative even if a recoverable development
 		// side-effect write failed. Derive the safe public projection from both
 		// files so an editorial rejection can never remain visible.

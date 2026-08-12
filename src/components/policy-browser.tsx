@@ -320,7 +320,7 @@ export function PolicyBrowser({
               {(
                 [
                   { value: policies.length, label: 'verified policies', href: '#policy-register', delta: null },
-                  { value: distinctJurisdictions.size, label: 'jurisdictions', href: '/map', delta: null },
+                  { value: distinctJurisdictions.size, label: 'jurisdictions', href: '#policy-register', delta: null },
                   { value: developmentCount, label: 'developments', href: '/developments', delta: weeklyDevelopmentCount },
                   { value: automaticSourceCount, label: 'sources monitored', href: '/methodology', delta: null },
                 ] as const

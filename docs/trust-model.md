@@ -32,7 +32,9 @@ leaves the official-source allow-list. A timeout, bot challenge, or access
 denial is recorded as a retrieval failure for manual follow-up rather than
 treated as proof that the official source no longer exists.
 Public register and timeline reads withhold non-verified records until that
-state is resolved.
+state is resolved. The public policy timeline also requires a visible register
+link and a policy lifecycle event type. Verified announcements and milestones
+surface in Developments instead.
 
 For direct documents monitored by the collector, a changed content fingerprint
 creates an update review linked to the existing policy. While that review is

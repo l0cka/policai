@@ -97,6 +97,7 @@ describe('/data editorial JSON routes', () => {
     await expect((await getTimelineJson()).json()).resolves.toEqual(events);
     expect(getTimelineEvents).toHaveBeenCalledWith(undefined, {
       includeGenerated: false,
+      scope: 'policy-register',
     });
   });
 });

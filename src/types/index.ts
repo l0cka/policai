@@ -143,6 +143,13 @@ export const TIMELINE_EVENT_TYPES = [
 
 export type TimelineEventType = (typeof TIMELINE_EVENT_TYPES)[number];
 
+export const POLICY_LIFECYCLE_TIMELINE_EVENT_TYPES = [
+	"policy_introduced",
+	"policy_amended",
+	"policy_repealed",
+	"policy_superseded",
+] as const satisfies readonly TimelineEventType[];
+
 export type AgencyLevel = "federal" | "state";
 
 export const POLICY_DATE_TYPES = [
