@@ -200,6 +200,23 @@
   is only created once its container is visible, which remains the correct
   behaviour for background-tab loads.
 
+### Pass 11 — panel beside the map
+
+- The detail panel moved out of the map: map and panel are side-by-side
+  columns (map sticky while the page scrolls the panel), so neither covers
+  nor scrolls inside the other and the double scrollbar is gone. Under
+  960 px they stack, map first, sticky off.
+- Map fit padding is symmetric again now that nothing overlays the canvas.
+- Panel polish: an Office row shows the geocoded suburb (marked
+  suburb-level where applicable); the selected organisation gains an action
+  row — "⌖ Show on map" flies the map to its pin (national → street level),
+  plus "Organisation site ↗" and "Address source ↗" links.
+- Verified live in the light theme (which also proved the theme-swap
+  restyle path): Positron tiles, sticky map, panel scroll, and Show on map
+  landing at 600 m scale over North Melbourne with the selected pin ringed
+  and neighbouring organisations labelled by the collision engine. The
+  capture above is that state.
+
 ## Functionality and accessibility
 
 - Map and System tabs switch panels.

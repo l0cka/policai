@@ -2058,8 +2058,18 @@ main {
   padding: 1rem 0 0.75rem;
 }
 
+/* Map and detail sit side by side; the map stays put while the page scrolls
+   the panel, so neither ever covers or scrolls inside the other. */
+.sector-map-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 23rem;
+  gap: 1.5rem;
+  align-items: start;
+}
+
 .sector-map-stage {
-  position: relative;
+  position: sticky;
+  top: 1rem;
 }
 
 .sector-maplibre {
@@ -2100,17 +2110,10 @@ main {
 }
 
 .sector-map-detail {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  bottom: 1rem;
-  width: 22.5rem;
-  max-width: calc(100% - 2rem);
-  overflow-y: auto;
-  border: 1px solid var(--border);
+  min-width: 0;
+  border: 1px solid var(--rule);
   border-radius: 4px;
   background: var(--card);
-  box-shadow: var(--shadow-lift);
 }
 
 .sector-map-foot {
@@ -2394,8 +2397,36 @@ main {
 
 .sector-org-source-link {
   display: inline-block;
-  margin-top: 1rem;
   font-size: 0.75rem;
+}
+
+/* Action row on the selected organisation. */
+.sector-org-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  margin-top: 1rem;
+}
+
+.sector-org-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 1.9rem;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.sector-org-actions button:hover {
+  background: var(--row-hover);
+  border-color: var(--trust);
 }
 
 /*
@@ -2532,18 +2563,18 @@ main {
 }
 
 /* One breakpoint: map above, detail below, page keeps scrolling naturally. */
-/* Narrow screens: the panel drops below the map instead of floating. */
+/* Narrow screens: one column, map first, nothing sticky. */
 @media (max-width: 960px) {
-  .sector-maplibre {
-    height: clamp(24rem, 60vh, 34rem);
+  .sector-map-columns {
+    grid-template-columns: minmax(0, 1fr);
   }
 
-  .sector-map-detail {
+  .sector-map-stage {
     position: static;
-    width: auto;
-    max-width: none;
-    margin-top: 1rem;
-    box-shadow: none;
+  }
+
+  .sector-maplibre {
+    height: clamp(24rem, 60vh, 34rem);
   }
 }
 

@@ -32,6 +32,7 @@ export type MapOrg = {
 };
 
 export type FitSignal = { seq: number; target: 'australia' | string };
+export type FlySignal = { seq: number; lon: number; lat: number };
 
 const STYLE_URLS = {
   dark: 'https://tiles.openfreemap.org/styles/dark',
@@ -119,6 +120,7 @@ export default function SectorMapView({
   selectedName,
   jurisdiction,
   fit,
+  fly,
   onSelectOrg,
   onSelectJurisdiction,
 }: {
@@ -127,6 +129,7 @@ export default function SectorMapView({
   selectedName: string;
   jurisdiction: string;
   fit: FitSignal;
+  fly: FlySignal;
   onSelectOrg: (name: string, jurisdiction: string) => void;
   onSelectJurisdiction: (jurisdiction: string) => void;
 }) {
@@ -141,10 +144,7 @@ export default function SectorMapView({
   const propsRef = useRef({ orgs, stateCounts, selectedName, jurisdiction, onSelectOrg, onSelectJurisdiction });
   propsRef.current = { orgs, stateCounts, selectedName, jurisdiction, onSelectOrg, onSelectJurisdiction };
 
-  const fitPadding = () => {
-    const wide = (containerRef.current?.clientWidth ?? 0) >= 1000;
-    return { top: 32, left: 32, bottom: 32, right: wide ? 400 : 32 };
-  };
+  const fitPadding = () => ({ top: 40, left: 40, bottom: 40, right: 40 });
 
   // Deferred init: a map created while the tab is hidden or the container is
   // off-screen can wedge before its first frame (animation frames are paused
@@ -469,6 +469,12 @@ export default function SectorMapView({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fit]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || fly.seq === 0) return;
+    map.flyTo({ center: [fly.lon, fly.lat], zoom: Math.max(map.getZoom(), 13.5) });
+  }, [fly]);
 
   return <div ref={containerRef} className="sector-maplibre" />;
 }

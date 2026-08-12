@@ -14,7 +14,7 @@ import {
   type TierKey,
 } from '../lib/sector-data';
 import locationsRaw from '../lib/sector-locations.json';
-import type { FitSignal, MapOrg } from './sector-map-view';
+import type { FitSignal, FlySignal, MapOrg } from './sector-map-view';
 import SectorDiagram from './sector-diagram';
 
 /* MapLibre needs the browser; the map pane loads client-side only. */
@@ -140,6 +140,7 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
     () => firstOrgFor(orgs, 'VIC', 'clc', 'secondment')?.name ?? '',
   );
   const [fit, setFit] = useState<FitSignal>({ seq: 0, target: 'australia' });
+  const [fly, setFly] = useState<FlySignal>({ seq: 0, lon: 0, lat: 0 });
 
   const totals = useMemo(
     () =>
@@ -296,21 +297,24 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
             </div>
           </div>
 
-          <div className="sector-map-stage">
-            <SectorMapView
-              orgs={mapOrgs}
-              stateCounts={mapCounts}
-              selectedName={selectedOrg?.name ?? ''}
-              jurisdiction={jurisdiction}
-              fit={fit}
-              onSelectOrg={(name, orgJurisdiction) => {
-                if (orgJurisdiction !== jurisdiction) {
-                  setJurisdiction(orgJurisdiction as MapJurisdiction);
-                }
-                setSelectedName(name);
-              }}
-              onSelectJurisdiction={(next) => selectJurisdiction(next as MapJurisdiction)}
-            />
+          <div className="sector-map-columns">
+            <div className="sector-map-stage">
+              <SectorMapView
+                orgs={mapOrgs}
+                stateCounts={mapCounts}
+                selectedName={selectedOrg?.name ?? ''}
+                jurisdiction={jurisdiction}
+                fit={fit}
+                fly={fly}
+                onSelectOrg={(name, orgJurisdiction) => {
+                  if (orgJurisdiction !== jurisdiction) {
+                    setJurisdiction(orgJurisdiction as MapJurisdiction);
+                  }
+                  setSelectedName(name);
+                }}
+                onSelectJurisdiction={(next) => selectJurisdiction(next as MapJurisdiction)}
+              />
+            </div>
 
             <aside className="sector-map-detail" aria-live="polite">
               <div className="sector-detail-swap" key={`${jurisdiction}-${category ?? 'all'}`}>
@@ -415,6 +419,17 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
                           {selectedOrg.monitored ? 'Active source' : 'Not currently monitored'}
                         </dd>
                       </div>
+                      {ORG_LOCATIONS.has(selectedOrg.name) ? (
+                        <div>
+                          <dt>Office</dt>
+                          <dd>
+                            {ORG_LOCATIONS.get(selectedOrg.name)!.suburb ?? 'Located'}
+                            {ORG_LOCATIONS.get(selectedOrg.name)!.precision === 'locality'
+                              ? ' · suburb-level'
+                              : ''}
+                          </dd>
+                        </div>
+                      ) : null}
                     </dl>
                     <p className="sector-selected-role">{selectedOrg.role}</p>
 
@@ -472,16 +487,39 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
                       </p>
                     </div>
 
-                    {selectedOrg.url ? (
-                      <a
-                        className="sector-org-source-link"
-                        href={selectedOrg.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Open organisation source
-                      </a>
-                    ) : null}
+                    <div className="sector-org-actions">
+                      {ORG_LOCATIONS.has(selectedOrg.name) ? (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const loc = ORG_LOCATIONS.get(selectedOrg.name)!;
+                            setFly((prev) => ({ seq: prev.seq + 1, lon: loc.lon, lat: loc.lat }));
+                          }}
+                        >
+                          ⌖ Show on map
+                        </button>
+                      ) : null}
+                      {selectedOrg.url ? (
+                        <a
+                          className="sector-org-source-link"
+                          href={selectedOrg.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Organisation site ↗
+                        </a>
+                      ) : null}
+                      {ORG_LOCATIONS.get(selectedOrg.name)?.source_url ? (
+                        <a
+                          className="sector-org-source-link"
+                          href={ORG_LOCATIONS.get(selectedOrg.name)!.source_url!}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Address source ↗
+                        </a>
+                      ) : null}
+                    </div>
                   </div>
                 ) : (
                   <p className="sector-evidence-empty">No organisations match this view.</p>
