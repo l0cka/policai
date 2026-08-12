@@ -376,9 +376,9 @@ export function PolicyBrowser({
                 key={development.id}
                 style={jurisdictionRailStyle(development.jurisdiction)}
                 className={cn(
-                  'ink-rail py-6 md:px-6',
+                  'ink-rail py-6 pl-4 md:px-6',
                   index > 0 && 'border-t border-white/18 md:border-l md:border-t-0',
-                  index === 0 && 'md:pl-0',
+                  index === 0 && 'md:pl-4',
                 )}
               >
                 <p className="font-mono text-[9px] font-medium uppercase tracking-[0.1em] text-white/58">

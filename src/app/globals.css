@@ -333,6 +333,25 @@
     box-shadow: 0 2px 0 -1px var(--rule-hair);
   }
 
+  /* The desktop theme control sits on the navy masthead, like A2J's control. */
+  .rule-masthead .theme-toggle {
+    border-color: rgba(185, 204, 222, 0.25);
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .rule-masthead .theme-toggle button {
+    color: #9fb0c2;
+  }
+
+  .rule-masthead .theme-toggle button:hover {
+    color: #f4f8fc;
+  }
+
+  .rule-masthead .theme-toggle button[aria-checked='true'] {
+    background: #5272e8;
+    color: #fff;
+  }
+
   .rule-hair {
     border-color: var(--rule-hair);
   }

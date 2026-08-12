@@ -3,15 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ArrowUpRight, Menu, ChevronDown } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetTitle,
-  SheetTrigger,
-} from '@/components/ui/sheet';
+import { ArrowUpRight, ChevronDown, Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { PolicaiLogo } from '@/components/layout/PolicaiLogo';
 import { ThemeToggle } from '@/components/layout/ThemeToggle';
@@ -87,6 +79,7 @@ export function Header({
 }) {
   const pathname = usePathname();
   const [insightsOpen, setInsightsOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const insightsRef = useRef<HTMLDivElement>(null);
 
   // Close dropdown on outside click or Escape
@@ -97,7 +90,10 @@ export function Header({
       }
     };
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setInsightsOpen(false);
+      if (e.key === 'Escape') {
+        setInsightsOpen(false);
+        setMobileOpen(false);
+      }
     };
     document.addEventListener('mousedown', handleClickOutside);
     document.addEventListener('keydown', handleEscape);
@@ -218,79 +214,88 @@ export function Header({
               Feedback
             </a>
           </div>
-          <Sheet>
-            <SheetTrigger asChild className="md:hidden">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-9 w-9 text-white hover:bg-white/10 hover:text-white"
-              >
-                <Menu className="h-5 w-5" />
-                <span className="sr-only">Toggle menu</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="w-[270px]">
-              <SheetTitle className="sr-only">Navigation</SheetTitle>
-              <SheetDescription className="sr-only">
-                Browse Policai sections and resources.
-              </SheetDescription>
-              <nav aria-label="Mobile" className="mt-8 flex flex-col gap-1">
-                {navItems.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={cn(
-                      'rounded px-3 py-2 text-sm font-medium transition-colors duration-[var(--dur-fast)]',
-                      isActive(item.href)
-                        ? 'bg-muted text-foreground'
-                        : 'text-muted-foreground hover:bg-muted hover:text-foreground',
-                    )}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-                <div className="my-2 border-t border-border" />
-                <div className="px-3 py-1 font-mono text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
-                  Explore
-                </div>
-                {insightItems.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={cn(
-                      'rounded px-3 py-2 text-sm font-medium transition-colors duration-[var(--dur-fast)]',
-                      isActive(item.href)
-                        ? 'bg-muted text-foreground'
-                        : 'text-muted-foreground hover:bg-muted hover:text-foreground',
-                    )}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-                <div className="my-2 border-t border-border" />
-                <a
-                  href="https://a2j.policai.org"
-                  className="flex items-center gap-1.5 rounded px-3 py-2 text-sm font-medium text-muted-foreground transition-colors duration-[var(--dur-fast)] hover:bg-muted hover:text-foreground"
-                >
-                  A2J
-                  <ArrowUpRight className="h-3.5 w-3.5 opacity-55" />
-                </a>
-                <div className="my-3 border-t border-border" />
-                <div className="flex items-center justify-between px-3">
-                  <span className="font-mono text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
-                    Theme
-                  </span>
-                  <ThemeToggle />
-                </div>
-              </nav>
-            </SheetContent>
-          </Sheet>
+          <ThemeToggle className="theme-toggle hidden md:inline-flex" />
+          <button
+            type="button"
+            className="flex h-10 w-10 items-center justify-center rounded-full text-white transition-colors hover:bg-white/10 md:hidden"
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-navigation"
+            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+            onClick={() => setMobileOpen((open) => !open)}
+          >
+            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
         </div>
+
+        {mobileOpen && (
+          <div
+            id="mobile-navigation"
+            className="dropdown-in absolute inset-x-0 top-full z-50 max-h-[calc(100dvh-4.5rem)] overflow-y-auto border border-border bg-popover shadow-[var(--shadow-lift)] md:hidden"
+          >
+            <nav aria-label="Mobile" className="flex flex-col gap-1 p-2">
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileOpen(false)}
+                  className={cn(
+                    'rounded px-3 py-2 text-sm font-medium transition-colors duration-[var(--dur-fast)]',
+                    isActive(item.href)
+                      ? 'bg-muted text-foreground'
+                      : 'text-muted-foreground hover:bg-muted hover:text-foreground',
+                  )}
+                >
+                  {item.label}
+                </Link>
+              ))}
+              <div className="my-2 border-t border-border" />
+              <div className="px-3 py-1 font-mono text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
+                Explore
+              </div>
+              {insightItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileOpen(false)}
+                  className={cn(
+                    'rounded px-3 py-2 text-sm font-medium transition-colors duration-[var(--dur-fast)]',
+                    isActive(item.href)
+                      ? 'bg-muted text-foreground'
+                      : 'text-muted-foreground hover:bg-muted hover:text-foreground',
+                  )}
+                >
+                  {item.label}
+                </Link>
+              ))}
+              <div className="my-2 border-t border-border" />
+              <a
+                href="https://a2j.policai.org"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-1.5 rounded px-3 py-2 text-sm font-medium text-muted-foreground transition-colors duration-[var(--dur-fast)] hover:bg-muted hover:text-foreground"
+              >
+                A2J
+                <ArrowUpRight className="h-3.5 w-3.5 opacity-55" />
+              </a>
+              <div className="my-3 border-t border-border" />
+              <div className="flex items-center justify-between px-3">
+                <span className="font-mono text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
+                  Theme
+                </span>
+                <ThemeToggle />
+              </div>
+            </nav>
+          </div>
+        )}
       </div>
 
       <div className="border-t border-white/18 bg-[#061727] text-white">
-        <div className="container mx-auto flex h-[3.35rem] items-center justify-between gap-6 px-4 font-mono text-[10px] tracking-[0.04em] sm:px-6 lg:px-8">
-          <span className="text-white/62">{formatDataDate(dataCurrentAt)}</span>
+        <div className="container mx-auto flex h-[2.35rem] items-center justify-between gap-6 px-4 font-mono text-[10px] tracking-[0.04em] sm:h-[3.35rem] sm:px-6 lg:px-8">
+          <span className="text-white/62 sm:inline">
+            <span className="hidden sm:inline">{formatDataDate(dataCurrentAt)}</span>
+            <span className="sm:hidden">
+              {formatDataDate(dataCurrentAt).replace('DATA CURRENT TO ', 'CURRENT · ')}
+            </span>
+          </span>
           <div className="hidden items-center gap-3 sm:flex">
             <span
               className={cn(

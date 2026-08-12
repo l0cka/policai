@@ -108,7 +108,7 @@ export function PolicyObservatory({
         </div>
       </div>
 
-      <div className="overflow-x-auto pb-2">
+      <div className="no-scrollbar overflow-x-auto pb-2">
         <div className="w-full min-w-[650px] lg:min-w-0">
           <div className="relative">
             <div

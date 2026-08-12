@@ -26,6 +26,7 @@
 *.pem
 .forge/
 .playwright-mcp/
+.claude/worktrees/
 .superpowers/
 /output/
 /tmp/
