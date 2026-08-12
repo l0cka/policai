@@ -731,7 +731,7 @@ main {
   max-width: 13ch;
   margin-top: 1.25rem;
   font-family: var(--font-sans);
-  font-size: clamp(3rem, 4.6vw, 4.5rem);
+  font-size: clamp(3rem, 3.6vw, 3.5rem);
   font-weight: 600;
   line-height: 1.02;
   letter-spacing: -0.045em;
@@ -1081,47 +1081,6 @@ main {
   fill-opacity: 0.55;
   stroke: #91aaff;
   stroke-width: 2;
-}
-
-/* Was an SVG callout floating over the signal column, where it collided with
-   the marks it pointed at. As real text below the drawing it can wrap, it can
-   be a proper link, and it cannot overlap anything. */
-.signal-network-featured {
-  display: grid;
-  gap: 0.15rem;
-  margin-top: 0.7rem;
-  padding: 0.6rem 0.75rem;
-  border: 1px solid rgba(185, 204, 222, 0.22);
-  border-left: 2px solid #e7b96c;
-  background: #0b2137;
-  color: #dbe6f0;
-  text-decoration: none;
-  transition: border-color var(--dur-fast), background var(--dur-fast);
-}
-
-.signal-network-featured:hover,
-.signal-network-featured:focus-visible {
-  border-color: rgba(231, 185, 108, 0.6);
-  background: #0d2740;
-}
-
-.signal-network-featured-tag {
-  color: #e7b96c;
-  font-family: var(--font-mono);
-  font-size: 8px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.signal-network-featured-title {
-  font-size: 0.8rem;
-  line-height: 1.35;
-}
-
-.signal-network-featured-meta {
-  color: #8395a8;
-  font-family: var(--font-mono);
-  font-size: 9px;
 }
 
 .signal-network-summary {
@@ -3942,7 +3901,7 @@ tbody td:first-child {
 
   .observatory-copy h1 {
     max-width: 13ch;
-    font-size: clamp(3rem, 14vw, 4rem);
+    font-size: clamp(2.75rem, 12vw, 3.5rem);
   }
 
   .observatory-intro {

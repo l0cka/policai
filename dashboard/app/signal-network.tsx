@@ -239,11 +239,6 @@ export function SignalNetwork({ pairs, signals }: { pairs: NetworkPair[]; signal
   const bandLeft = GRAPH.bandX - ((columns - 1) * gap) / 2;
   const bandRight = bandLeft + (columns - 1) * gap;
 
-  const featured =
-    signals.find((signal) => signal.opportunity && isSafeUrl(signal.url)) ??
-    signals.find((signal) => isSafeUrl(signal.url));
-  const [featuredOne, featuredTwo] = splitLabel(featured?.title ?? '', 46);
-
   /* The band is a quantity display: one mark per signal in the window. Marks
    * are decorative, but the opportunities among them stay individually
    * reachable because those are the ones worth acting on. */
@@ -429,25 +424,6 @@ export function SignalNetwork({ pairs, signals }: { pairs: NetworkPair[]; signal
           </g>
         </svg>
       </div>
-
-      {featured ? (
-        <a
-          className="signal-network-featured"
-          href={featured.url}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <span className="signal-network-featured-tag">
-            {featured.opportunity ? 'Opportunity' : 'Latest'}
-          </span>
-          <span className="signal-network-featured-title">
-            {featuredTwo ? `${featuredOne} ${featuredTwo}` : featuredOne}
-          </span>
-          <span className="signal-network-featured-meta">
-            {featured.source_name} &middot; {shortDate(featured.published_at ?? featured.created_at)}
-          </span>
-        </a>
-      ) : null}
 
       <dl className="signal-network-summary">
         <div>

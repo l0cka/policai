@@ -1,56 +1,48 @@
-# Design QA — aligned map legend
+# Design QA — homepage hero annotation
 
 ## Comparison target
 
-- Source visual truth: user annotation on the left `How to read this map` panel, captured in `/Users/l0cka/.codex/visualizations/2026/08/11/019ff2f0-22f9-7253-aa2e-9fd0b865b782/sector-map-guide-height-final.png`.
-- Rendered implementation: `/Users/l0cka/.codex/visualizations/2026/08/11/019ff2f0-22f9-7253-aa2e-9fd0b865b782/sector-map-legend-aligned-final.png`.
-- Desktop viewport: 1742 x 1552 CSS px; capture: 1727 x 1539 pixels; browser density-normalized capture.
+- Source visual truth: user annotation on the production homepage, captured at `/Users/l0cka/.codex/visualizations/2026/08/11/019ff2f0-22f9-7253-aa2e-9fd0b865b782/homepage-hero-production-reference.png`.
+- Rendered implementation: `/Users/l0cka/.codex/visualizations/2026/08/11/019ff2f0-22f9-7253-aa2e-9fd0b865b782/homepage-hero-updated-desktop.png`.
+- Combined comparison: `/Users/l0cka/.codex/visualizations/2026/08/11/019ff2f0-22f9-7253-aa2e-9fd0b865b782/homepage-hero-before-after.png`.
+- Mobile implementation: `/Users/l0cka/.codex/visualizations/2026/08/11/019ff2f0-22f9-7253-aa2e-9fd0b865b782/homepage-hero-updated-mobile.png`.
+- Desktop viewport: 1647 x 1552 CSS px; both captures are 1632 x 1538 pixels at density 1.
 - Mobile viewport: 390 x 844 CSS px.
-- State: Map / VIC / Community Legal Centres / Inner Melbourne Community Legal.
+- State: live homepage data, dark theme, feed hero.
 - Browser: Codex in-app browser.
 
 ## Full-view comparison evidence
 
-The revised rail and map canvas share the same 800 px height and the same top and bottom edges. The explanatory block is now visually recognizable as a legend rather than a prose note.
+The implementation preserves the hero grid, introduction, search, actions, statistics, signal network and recent-items region. The requested copy and scale change reduces the heading from 72 px to 56 px and the removed opportunity card allows the graph summary to sit directly beneath the visualization.
 
 ## Focused region evidence
 
-The focused left rail shows four distinct legend marks: the active category office dot, a numbered cluster badge, a map-location icon for the selected jurisdiction and a muted map-pin-off icon for coverage that is not represented. The dot and cluster match the live map palette and geometry; Lucide provides the two semantic icons.
+The hero heading measures 56 px with a 57.12 px line height at the annotated desktop viewport and wraps across three lines without clipping. The featured opportunity selector has zero rendered instances. The summary begins 4 px below the graph, so the removed card leaves no dead space.
 
 ## Findings
 
 No actionable P0, P1 or P2 findings remain.
 
-- Typography: existing mono family, weights and label hierarchy are preserved; legend terms remain scannable at the narrow rail width.
-- Spacing and layout: rail and map are exactly 800 px high at the desktop test viewport. The guide content ends 1 px above the inner edge with no clipping or internal scrolling.
-- Colors and tokens: office and cluster marks reuse active category, card, trust, foreground and muted tokens.
-- Image and icon fidelity: Lucide React supplies the semantic map icons; the office and cluster samples reproduce the actual MapLibre layer symbols.
-- Copy and content: all four map-reading concepts remain, with shorter labels and descriptions suitable for a legend.
-- Responsive behavior: the 390 x 844 CSS px check has no horizontal overflow and no guide clipping.
+- Typography: IBM Plex Mono, weight, tracking and 1.02 line height are preserved; desktop maximum is 56 px. Mobile follows the existing fluid rule and measures 46.8 px at 390 px width.
+- Spacing and layout: all existing grid tracks and region spacing remain; removing the card closes its occupied space naturally.
+- Colors and tokens: unchanged.
+- Image and asset fidelity: the live SVG signal network is unchanged; no image or icon assets were added or replaced.
+- Copy and content: heading is `Monitor access to justice developments.`; the featured opportunity card and its link are removed.
+- Responsive behavior: 390 x 844 CSS px has no page-level horizontal overflow and the heading remains fully visible.
 
 ## Comparison history
 
 ### Pass 1
 
-- [P2] Natural content height left the rail 22.48 px below the 800 px map.
-- Fix: tied the desktop rail to the same responsive height expression as the map and allowed the guide to occupy the remaining space.
-
-### Pass 2
-
-- [P2] The guide content itself exceeded the aligned rail by 21.48 px.
-- Fix: tightened only the legend's internal vertical rhythm while retaining 1.45 line height.
-
-### Pass 3
-
-- Passed: rail and map both measure exactly 800 px; guide ends 1 px inside the rail; no clipping, scrolling or horizontal overflow.
+- Passed: the requested 56 px desktop size is exact, the new copy wraps cleanly, the card is absent, and desktop/mobile have no horizontal overflow.
 
 ## Above-the-fold copy diff
 
-- `How to read this map` became `Map legend`.
-- `Primary offices`, `Clusters`, `Outlined state` and `Not shown` became concise singular legend labels with their meaning preserved.
+- `See access to justice as it changes.` became `Monitor access to justice developments.`
+- Removed the dynamic featured opportunity/latest card under the signal network.
 
 ## Intentional deviations
 
-The map dot and cluster are direct visual samples rather than library icons because they intentionally reproduce the symbols rendered by MapLibre. The map-location and excluded-coverage symbols use Lucide React.
+- The 56 px requirement is the desktop cap. The existing mobile breakpoint remains fluid and resolves to 46.8 px at a 390 px viewport to prevent overflow.
 
 final result: passed
