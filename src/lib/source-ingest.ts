@@ -1,5 +1,6 @@
 import { createHash, randomUUID } from "node:crypto";
-import { lstat, readFile, realpath, stat } from "node:fs/promises";
+import { constants as fsConstants } from "node:fs";
+import { open, realpath, stat } from "node:fs/promises";
 import { homedir, tmpdir } from "node:os";
 import { isAbsolute, relative, resolve } from "node:path";
 import { analyseContentRelevance } from "@/lib/analysis";
@@ -132,52 +133,102 @@ function capturePathIsWithin(root: string, filePath: string): boolean {
 	return child === "" || (!child.startsWith("..") && !isAbsolute(child));
 }
 
-async function readCapturedDocument(
+export interface CapturedDocumentReadOptions {
+	/** Test seam used to replace the pathname after the descriptor is open. */
+	afterOpen?: () => Promise<void>;
+}
+
+async function openedFilePath(
 	filePath: string,
+	fd: number,
+	details: Awaited<ReturnType<Awaited<ReturnType<typeof open>>["stat"]>>,
+): Promise<string> {
+	try {
+		return await realpath(`/proc/self/fd/${fd}`);
+	} catch {
+		// Non-Linux fallback: bind the resolved pathname back to the object that
+		// is already open. A rename/replacement fails closed instead of changing
+		// which bytes are read.
+		const resolvedPath = await realpath(filePath);
+		const current = await stat(resolvedPath);
+		if (current.dev !== details.dev || current.ino !== details.ino) {
+			throw new Error("Browser capture document changed while it was being opened");
+		}
+		return resolvedPath;
+	}
+}
+
+async function readBoundedFile(
+	handle: Awaited<ReturnType<typeof open>>,
+	expectedSize: number,
+): Promise<Uint8Array> {
+	const bytes = Buffer.alloc(expectedSize);
+	let offset = 0;
+	while (offset < expectedSize) {
+		const { bytesRead } = await handle.read(
+			bytes, offset, expectedSize - offset, offset,
+		);
+		if (bytesRead === 0) break;
+		offset += bytesRead;
+	}
+	const extra = Buffer.alloc(1);
+	const { bytesRead: extraBytes } = await handle.read(extra, 0, 1, offset);
+	if (offset !== expectedSize || extraBytes !== 0) {
+		throw new Error("Browser capture document changed while it was being read");
+	}
+	return bytes;
+}
+
+export async function readCapturedDocument(
+	filePath: string,
+	options: CapturedDocumentReadOptions = {},
 ): Promise<{ bytes: Uint8Array; contentType: string }> {
 	if (!isAbsolute(filePath)) {
 		throw new Error("Browser capture document paths must be absolute");
 	}
-	const original = await lstat(filePath);
-	if (original.isSymbolicLink()) {
-		throw new Error("Browser capture document paths cannot be symbolic links");
-	}
-	const resolvedPath = await realpath(filePath);
-	const allowedRoots = await Promise.all(
-		[resolve(tmpdir()), resolve("/tmp"), resolve(homedir(), "Downloads")].map(
-			async (root) => realpath(root).catch(() => root),
-		),
-	);
-	if (!allowedRoots.some((root) => capturePathIsWithin(root, resolvedPath))) {
-		throw new Error(
-			"Browser capture documents must be in the system temporary directory or the reviewer's Downloads directory",
+	const noFollow = fsConstants.O_NOFOLLOW ?? 0;
+	const handle = await open(filePath, fsConstants.O_RDONLY | noFollow);
+	try {
+		await options.afterOpen?.();
+		const details = await handle.stat();
+		if (!details.isFile()) {
+			throw new Error("Browser capture document path must identify a regular file");
+		}
+		if (details.size <= 0 || details.size > MAX_CAPTURED_DOCUMENT_BYTES) {
+			throw new Error(
+				`Browser capture document must be between 1 and ${MAX_CAPTURED_DOCUMENT_BYTES} bytes`,
+			);
+		}
+		const resolvedPath = await openedFilePath(filePath, handle.fd, details);
+		const allowedRoots = await Promise.all(
+			[resolve(tmpdir()), resolve("/tmp"), resolve(homedir(), "Downloads")].map(
+				async (root) => realpath(root).catch(() => root),
+			),
 		);
+		if (!allowedRoots.some((root) => capturePathIsWithin(root, resolvedPath))) {
+			throw new Error(
+				"Browser capture documents must be in the system temporary directory or the reviewer's Downloads directory",
+			);
+		}
+		const bytes = await readBoundedFile(handle, details.size);
+		const kind = documentKindFromBytes(bytes);
+		if (!kind) {
+			throw new Error(
+				"Browser capture document must be a recognised PDF, Word, or RTF file",
+			);
+		}
+		const contentType =
+			kind === "pdf"
+				? "application/pdf"
+				: kind === "docx"
+					? "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+					: kind === "doc"
+						? "application/msword"
+						: "application/rtf";
+		return { bytes, contentType };
+	} finally {
+		await handle.close();
 	}
-	const details = await stat(resolvedPath);
-	if (!details.isFile()) {
-		throw new Error("Browser capture document path must identify a regular file");
-	}
-	if (details.size <= 0 || details.size > MAX_CAPTURED_DOCUMENT_BYTES) {
-		throw new Error(
-			`Browser capture document must be between 1 and ${MAX_CAPTURED_DOCUMENT_BYTES} bytes`,
-		);
-	}
-	const bytes = await readFile(resolvedPath);
-	const kind = documentKindFromBytes(bytes);
-	if (!kind) {
-		throw new Error(
-			"Browser capture document must be a recognised PDF, Word, or RTF file",
-		);
-	}
-	const contentType =
-		kind === "pdf"
-			? "application/pdf"
-			: kind === "docx"
-				? "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-				: kind === "doc"
-					? "application/msword"
-					: "application/rtf";
-	return { bytes, contentType };
 }
 
 function escapeCapturedHtml(value: string): string {
