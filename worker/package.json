@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "test": "vitest run",
+    "test:security": "node --test security-test/enrich-boundary.test.mjs",
     "fetch": "tsx src/fetch-all.ts",
     "digest": "tsx src/digest.ts"
   },
