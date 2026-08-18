@@ -1,5 +1,67 @@
 [
   {
+    "id": "dev-senate-opens-inquiry-into-artificial-intelligenc-1bgog2q",
+    "title": "Senate opens inquiry into artificial intelligence and data centres",
+    "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+    "sourceId": "senate-ai-data-centres",
+    "sourceName": "Senate inquiry — artificial intelligence and data centres",
+    "jurisdiction": "federal",
+    "detectedAt": "2026-08-18T19:30:14.785Z",
+    "summary": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+    "relevanceScore": 1,
+    "classification": "ai",
+    "assessment": {
+      "method": "ai",
+      "promptVersion": "claude-classify-v1",
+      "assessedAt": "2026-08-18T19:30:14.785Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+        "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+        "retrievedAt": "2026-08-18T19:30:14.785Z",
+        "contentType": "text/html",
+        "contentHash": "3164fe756aa8be628a15253d7c352e09ca4b1c7d5ea6869cf7987c5c24d1ae99",
+        "title": "Senate opens inquiry into artificial intelligence and data centres"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-asic-warns-scammers-are-using-ai-to-spin-vast-we-18zuo5g",
+    "title": "ASIC warns scammers are using AI to spin vast webs of deception",
+    "url": "https://asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-195mr-asic-warns-scammers-are-using-ai-to-spin-vast-webs-of-deception",
+    "sourceId": "asic-newsroom",
+    "sourceName": "ASIC — newsroom",
+    "jurisdiction": "federal",
+    "publishedAt": "2026-08-17",
+    "publishedAtPrecision": "day",
+    "detectedAt": "2026-08-18T19:30:14.785Z",
+    "summary": "ASIC media release warning that scammers are using AI to generate deceptive investment scam material, issued by the federal corporate and financial services regulator.",
+    "relevanceScore": 0.65,
+    "classification": "ai",
+    "assessment": {
+      "method": "ai",
+      "promptVersion": "claude-classify-v1",
+      "assessedAt": "2026-08-18T19:30:14.785Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-195mr-asic-warns-scammers-are-using-ai-to-spin-vast-webs-of-deception",
+        "finalUrl": "https://asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-195mr-asic-warns-scammers-are-using-ai-to-spin-vast-webs-of-deception",
+        "retrievedAt": "2026-08-18T19:30:14.785Z",
+        "contentType": "text/plain",
+        "contentHash": "a0d3e756fff8bd8d1a1f9d035f2653544afb72e33dd397e06a3731a820d94c0d",
+        "title": "ASIC warns scammers are using AI to spin vast webs of deception",
+        "publishedAt": "2026-08-17",
+        "publishedAtPrecision": "day"
+      }
+    },
+    "status": "detected"
+  },
+  {
     "id": "dev-artificial-intelligence-governance-policy-e7r3p4",
     "title": "Artificial intelligence governance policy",
     "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
