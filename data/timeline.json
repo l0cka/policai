@@ -1206,30 +1206,22 @@
         "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
         "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
         "title": "Artificial intelligence and data centres – Parliament of Australia",
-        "retrievedAt": "2026-08-11T23:07:42Z",
+        "retrievedAt": "2026-08-21T12:51:46.000Z",
         "contentType": "text/html",
-        "contentHash": "19bbf766e99a03a9841d66abcd62fa8f79531b9fa8c7582d5714c31d2eed7407",
+        "contentHash": "3979b405f11a651a66ccdfe86384d2f47f8eaff9f860364ef0d12344ee20d11b",
         "linkedDocuments": [],
-        "browserCapture": {
-          "method": "browser",
-          "capturedAt": "2026-08-11T23:07:42Z",
-          "capturedBy": "Daniel Alkurdi (Codex-assisted official-source review)",
-          "notes": "Fresh official Parliament source review after the hardened retriever returned HTTP 403. Material inquiry details match the existing timeline record.",
-          "pageContentHash": "2be2c70b71d4be32c0d7b9beee6362d1d86d27a03dcd9b6554123aefdf186a0d",
-          "characterCount": 587
-        },
         "reviewedDate": {
           "date": "2026-05-13",
           "precision": "day",
-          "reviewedAt": "2026-08-11T23:17:52.774Z",
-          "reviewedBy": "Daniel Alkurdi (Codex-assisted official-source review)",
+          "reviewedAt": "2026-08-21T12:51:46.000Z",
+          "reviewedBy": "l0cka — editorial re-verification against live official source, 2026-08-21",
           "notes": "The current Parliament of Australia inquiry page identifies 13 May 2026 as the referral date."
         }
       },
-      "checkedAt": "2026-08-11T23:17:52.774Z",
-      "checkedBy": "Daniel Alkurdi (Codex-assisted official-source review)",
+      "checkedAt": "2026-08-21T12:51:46.000Z",
+      "checkedBy": "l0cka — editorial re-verification against live official source, 2026-08-21",
       "method": "manual",
-      "notes": "Approved by the user on 12 August 2026 after fresh official-source review. The inquiry remains the same timeline event: referred 13 May 2026, submissions close 1 September 2026, and the committee is due to report 16 November 2026."
+      "notes": "Re-verified 21 Aug 2026 by direct HTTPS retrieval of the official inquiry page (no 403 this time). Page confirms referral 13 May 2026, submissions close 1 September 2026 (now under an explicit \"Extension of time\" heading), and reporting date 16 November 2026. Existing description remains accurate."
     }
   },
   {

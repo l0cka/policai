@@ -2635,29 +2635,29 @@
       "public sector"
     ],
     "createdAt": "2026-04-06T16:50:00Z",
-    "updatedAt": "2026-08-07T05:11:55.571Z",
-    "lastReviewedAt": "2026-08-07T05:11:55.571Z",
+    "updatedAt": "2026-08-21T12:51:46.000Z",
+    "lastReviewedAt": "2026-08-21T12:51:46.000Z",
     "verification": {
       "status": "verified",
       "source": {
         "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
         "finalUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
-        "retrievedAt": "2026-08-07T05:11:55.521Z",
+        "retrievedAt": "2026-08-21T12:51:46.000Z",
         "contentType": "text/html",
-        "contentHash": "9a4acb92c2fdf0fb7c57c051d8f2420baeee642753c10586986664a5d77379ac",
+        "contentHash": "9ef77701a4b64b9fe68c9741aa77abf5e2198318c63ff75198d63aaa678f7c34",
         "title": "Artificial intelligence governance policy",
         "reviewedDate": {
           "date": "2024-09-01",
           "precision": "month",
-          "reviewedAt": "2026-08-07T05:11:55.571Z",
-          "reviewedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-08",
+          "reviewedAt": "2026-08-21T12:51:46.000Z",
+          "reviewedBy": "l0cka — editorial re-verification against live official source, 2026-08-21",
           "notes": "Date confirmed against the live official source on 2026-08-08. QGEA AI governance policy — source states Policy, v1.0.0, Current/Mandated, Effective September 2024–current."
         }
       },
-      "checkedAt": "2026-08-07T05:11:55.571Z",
-      "checkedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-08",
+      "checkedAt": "2026-08-21T12:51:46.000Z",
+      "checkedBy": "l0cka — editorial re-verification against live official source, 2026-08-21",
       "method": "manual",
-      "notes": "QGEA AI governance policy — source states Policy, v1.0.0, Current/Mandated, Effective September 2024–current."
+      "notes": "Re-verified 21 Aug 2026 after change detection. Live source still states Policy v1.0.0, Status Current/Mandated, Effective September 2024–current; requirements unchanged. No substantive content change since the 7 Aug review."
     },
     "dates": [
       {
