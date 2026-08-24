@@ -23,6 +23,7 @@ import {
   type Policy,
 } from '@/types';
 import { jurisdictionAccent } from '@/lib/jurisdiction-accent';
+import { parseSourceUrl } from '@/lib/source-url';
 import { EmptyState } from '@/components/ui/empty-state';
 import { formatPolicyDate } from '@/lib/format-policy-date';
 import { cn } from '@/lib/utils';
@@ -99,7 +100,7 @@ export function PolicyDetailTabs({
   const requirements = useMemo(() => getRequirements(policy), [policy]);
   const primaryDate = getPrimaryPolicyDate(policy);
   const sourceHost = policy.sourceUrl
-    ? new URL(policy.sourceUrl).hostname.replace(/^www\./, '')
+    ? parseSourceUrl(policy.sourceUrl).hostname.replace(/^www\./, '')
     : null;
 
   const downloadPolicy = () => {

@@ -12,6 +12,7 @@ import {
 	canonicalizeRecordVerification,
 	canonicalizeSourceEvidence,
 	canonicalizeSourceUrl,
+	parseSourceUrl,
 	sourceUrlsEqual,
 } from "@/lib/source-url";
 import {
@@ -951,7 +952,7 @@ function timelineEventAsDevelopment(event: TimelineEvent): Development {
 		`${date}T00:00:00.000Z`;
 	const sourceName =
 		event.verification.source.publisher?.trim() ||
-		new URL(event.sourceUrl).hostname.replace(/^www\./, "");
+		parseSourceUrl(event.sourceUrl).hostname.replace(/^www\./, "");
 
 	return {
 		id: `dev-${event.id.replace(/^tl-/, "")}`,

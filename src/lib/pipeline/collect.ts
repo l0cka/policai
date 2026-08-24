@@ -40,6 +40,7 @@ import {
   canonicalizeSourceEvidence,
   canonicalizeSourceUrl,
   isAllowedSourceHost,
+  parseSourceUrl,
   sourceUrlIdentity,
   sourceUrlsEqual,
 } from '@/lib/source-url';
@@ -206,7 +207,7 @@ function hashUrl(url: string): string {
 function candidateStateKey(candidate: Candidate): string {
   const canonicalUrl = canonicalizeSourceUrl(candidate.url);
   if (!candidate.changeFingerprint) return canonicalUrl;
-  const key = new URL(canonicalUrl);
+  const key = parseSourceUrl(canonicalUrl);
   key.hash = `policai-change=${candidate.changeFingerprint}`;
   return key.toString();
 }

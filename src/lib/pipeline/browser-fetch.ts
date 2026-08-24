@@ -10,6 +10,7 @@ import {
   createBrowserEgressProxy,
   type BrowserEgressProxy,
 } from './browser-egress-proxy';
+import { parseSourceUrl } from '@/lib/source-url';
 
 /**
  * Headless-browser retriever with the fetch signature, so `retrieveSource`
@@ -53,7 +54,7 @@ export interface BrowserRouteLike {
 
 export interface BrowserWebSocketRouteLike {
   url(): string;
-  connectToServer(): unknown;
+  connectToServer(): void;
   close(options?: { code?: number; reason?: string }): Promise<void>;
 }
 
@@ -189,7 +190,7 @@ async function fetchViaPage(
   navigationTimeoutMs: number,
   maxResponseBytes: number,
 ): Promise<Response> {
-  const origin = new URL(url).origin;
+  const origin = parseSourceUrl(url).origin;
   if (!page.url().startsWith(origin)) {
     await page.goto(origin, {
       waitUntil: 'domcontentloaded',
@@ -204,6 +205,7 @@ async function fetchViaPage(
   };
   try {
     result = await page.evaluate(async ({ target, byteLimit }) => {
+      // pi-lens-ignore: ts-ssrf
       const response = await fetch(target, {
         credentials: 'include',
         redirect: 'follow',
@@ -318,8 +320,10 @@ async function readBoundedPageContent(
   }
 }
 
-function abortReason(signal: AbortSignal): unknown {
-  return signal.reason ?? new DOMException('The operation was aborted', 'AbortError');
+function abortReason(signal: AbortSignal): Error {
+  return signal.reason instanceof Error
+    ? signal.reason
+    : new DOMException('The operation was aborted', 'AbortError');
 }
 
 async function raceWithAbort<T>(

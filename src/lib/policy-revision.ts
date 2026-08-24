@@ -1,7 +1,15 @@
 import { createHash } from 'node:crypto';
 import type { Policy, SourceEvidence, TimelineEvent } from '@/types';
 
-function stableJsonValue(value: unknown): unknown {
+type StableJsonValue =
+  | string
+  | number
+  | boolean
+  | null
+  | (StableJsonValue | undefined)[]
+  | { [key: string]: StableJsonValue | undefined };
+
+function stableJsonValue(value: unknown): StableJsonValue | undefined {
   if (value instanceof Date) return value.toISOString();
   if (Array.isArray(value)) return value.map(stableJsonValue);
   if (value && typeof value === 'object') {
@@ -12,7 +20,15 @@ function stableJsonValue(value: unknown): unknown {
         .map(([key, child]) => [key, stableJsonValue(child)]),
     );
   }
-  return value;
+  if (
+    value === null ||
+    typeof value === 'string' ||
+    typeof value === 'number' ||
+    typeof value === 'boolean'
+  ) {
+    return value;
+  }
+  return undefined;
 }
 
 function revisionHash(value: unknown): string {
@@ -21,7 +37,7 @@ function revisionHash(value: unknown): string {
     .digest('hex');
 }
 
-function editorialSourceEvidence(source: SourceEvidence): unknown {
+function editorialSourceEvidence(source: SourceEvidence): object {
   return {
     url: source.url,
     title: source.title,

@@ -13,6 +13,7 @@ import { ForceGraph } from "@/components/network/ForceGraph";
 import { NetworkToolbar } from "@/components/network/NetworkToolbar";
 import { NetworkSidebar } from "@/components/network/NetworkSidebar";
 import { getJurisdictionName } from "@/types";
+import { parseSourceUrl } from "@/lib/source-url";
 import {
 	getNetworkConnections,
 	nodeMatchesTheme,
@@ -59,7 +60,7 @@ export function NetworkBrowser({
 	useEffect(() => {
 		const handlePopState = () => {
 			const next = parseNetworkViewState(
-				new URL(window.location.href).searchParams,
+				parseSourceUrl(window.location.href).searchParams,
 				parserOptions,
 			);
 			viewStateRef.current = next;

@@ -1,4 +1,5 @@
 import { isRelevantScrapedCandidate } from '@/lib/scraper-filter';
+import { parseSourceUrl } from '@/lib/source-url';
 
 export const RELEVANCE_RULESET_VERSION = 'keyword-rules-v1';
 
@@ -110,7 +111,7 @@ export async function analyseContentRelevance(
   title = '',
 ): Promise<ContentAnalysis> {
   const cleanContent = compactText(content);
-  const fallbackTitle = new URL(sourceUrl).pathname
+  const fallbackTitle = parseSourceUrl(sourceUrl).pathname
     .split('/')
     .filter(Boolean)
     .at(-1)

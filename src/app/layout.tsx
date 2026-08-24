@@ -7,6 +7,7 @@ import { themeInitScript } from '@/components/layout/ThemeToggle';
 import { BackToTop } from '@/components/ui/back-to-top';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { getCollectionMeta } from '@/lib/data-service';
+import { parseSourceUrl } from '@/lib/source-url';
 
 // One face for the whole site, matching the A2J property: IBM Plex Mono
 // carries body, headings and data alike, and `ch` becomes an exact unit.
@@ -29,7 +30,7 @@ export const metadata: Metadata = {
     'government policy',
     'AI governance Australia',
   ],
-  metadataBase: new URL('https://policai.org'),
+  metadataBase: parseSourceUrl('https://policai.org'),
 };
 
 export default async function RootLayout({
@@ -53,7 +54,7 @@ export default async function RootLayout({
           the stored theme before first paint so the page never flashes the
           system theme on the way to the chosen one.
         */}
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <script>{themeInitScript}</script>
       </head>
       <body className="antialiased min-h-screen flex flex-col">
         <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md focus:text-sm focus:font-medium">

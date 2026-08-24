@@ -7,6 +7,7 @@ import {
   DEFAULT_MAX_RESPONSE_BYTES,
   resolveHostAddresses,
 } from './fetch';
+import { parseSourceUrl } from '@/lib/source-url';
 
 const UPSTREAM_CONNECT_TIMEOUT_MS = 10_000;
 
@@ -23,7 +24,7 @@ export interface BrowserEgressProxyOptions {
 
 function parseConnectAuthority(authority: string | undefined): URL {
   if (!authority) throw new Error('Missing CONNECT authority');
-  const target = new URL(`https://${authority}`);
+  const target = parseSourceUrl(`https://${authority}`);
   if (
     target.protocol !== 'https:' ||
     (target.port && target.port !== '443') ||

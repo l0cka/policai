@@ -20,6 +20,7 @@ import {
 	canonicalizeSourceEvidence,
 	canonicalizeSourceUrl,
 	isAllowedSourceHost,
+	parseSourceUrl,
 	sourceIdentityUrls,
 	sourceUrlsEqual,
 } from "@/lib/source-url";
@@ -284,7 +285,7 @@ async function buildBrowserCapturedSource(
 		new Set(
 			input.references.map((value) => {
 				const canonical = canonicalizeSourceUrl(value);
-				const parsed = new URL(canonical);
+				const parsed = parseSourceUrl(canonical);
 				if (
 					parsed.protocol !== "https:" ||
 					parsed.username ||
@@ -740,7 +741,7 @@ export async function analyseSourceUrl(
 	const document = await extractRetrievedDocument(
 		retrieved,
 		canonicalUrl,
-		new URL(canonicalUrl).hostname,
+		parseSourceUrl(canonicalUrl).hostname,
 	);
 	return analyseExtractedSource(retrieved, canonicalUrl, document);
 }
@@ -759,7 +760,7 @@ export function buildProposedRecord(
 ): PolicyDraft | TimelineEventDraft {
 	const now = new Date().toISOString();
 	const baseId =
-		slugify(analysisResult.title || new URL(analysisResult.url).hostname) ||
+		slugify(analysisResult.title || parseSourceUrl(analysisResult.url).hostname) ||
 		randomUUID();
 	const jurisdiction = normalizeJurisdiction(
 		analysisResult.analysis.jurisdiction,
@@ -997,7 +998,7 @@ async function stageSourceUrlUnlocked(input: {
 			document = await extractRetrievedDocument(
 				retrieved,
 				canonicalUrl,
-				new URL(canonicalUrl).hostname,
+				parseSourceUrl(canonicalUrl).hostname,
 			);
 		} catch {
 			requiresManualExtraction = true;
