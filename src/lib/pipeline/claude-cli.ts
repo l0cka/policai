@@ -65,6 +65,14 @@ export async function runClaude(prompt: string, timeoutMs = 180_000): Promise<st
         prompt,
         '--output-format',
         'json',
+        // Explicit model pin: the host-wide user-scope ~/.claude/settings.json
+        // sets `model: opus[1m]`, and a headless claude call inherits it. The
+        // collector classifies 20-item batches daily, so pinning here keeps
+        // cost and verdict behavior a property of this repo, not of whatever
+        // model the host defaults to (sonnet: mid-tier, no 1m-context need
+        // for 20 x 600-char excerpts).
+        '--model',
+        'sonnet',
         // Defence in depth against prompt injection in scraped page content:
         // `--tools ""` strips every built-in tool from the session (no Read,
         // Bash, Edit, etc. are even registered, so there is nothing for an
