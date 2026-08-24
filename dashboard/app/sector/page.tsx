@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { getPool } from '../../lib/db';
 import locations from '../../lib/sector-locations.json';
 import SectorDirectory from '../sector-directory';
@@ -11,7 +12,7 @@ import {
 
 export const dynamic = 'force-dynamic';
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'The sector — Policai A2J',
   description:
     'A researched directory of organisations and programs that fund, coordinate, deliver or study legal assistance in Australia, with the funding and referral structure that connects them.',
@@ -22,9 +23,9 @@ export default async function SectorPage() {
   // without Postgres. Production still fails loudly if a configured database
   // cannot be queried; only an intentionally absent DATABASE_URL falls back.
   const monitoringAvailable = Boolean(process.env.DATABASE_URL);
-  const rows = monitoringAvailable
-    ? (await getPool().query(`SELECT name, url FROM sources WHERE active`)).rows
-    : [];
+  const { rows } = monitoringAvailable
+    ? await getPool().query<{ name: string; url: string }>(`SELECT name, url FROM sources WHERE active`)
+    : { rows: [] };
   const orgs = markMonitored(
     ORGANISATIONS,
     rows.map((r) => ({ name: r.name as string, url: r.url as string })),

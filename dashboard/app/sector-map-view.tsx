@@ -12,6 +12,12 @@ import { useEffect, useRef, useState } from 'react';
 import * as maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
+declare global {
+  interface Window {
+    __sectorMap?: maplibregl.Map;
+  }
+}
+
 /*
  * MapLibre's worker must load from a plain served file: the copy webpack
  * bundles into the Next chunk graph crashes silently on startup, leaving the
@@ -111,7 +117,7 @@ function categoryMatch(theme: 'light' | 'dark'): maplibregl.ExpressionSpecificat
     'fvpls',
     palette.fvpls,
     palette.clc,
-  ] as unknown as maplibregl.ExpressionSpecification;
+  ] as maplibregl.ExpressionSpecification;
 }
 
 export default function SectorMapView({
@@ -121,8 +127,8 @@ export default function SectorMapView({
   jurisdiction,
   fit,
   fly,
-  onSelectOrg,
-  onSelectJurisdiction,
+  onSelectOrgAction,
+  onSelectJurisdictionAction,
 }: {
   orgs: MapOrg[];
   stateCounts: Record<string, number>;
@@ -130,8 +136,8 @@ export default function SectorMapView({
   jurisdiction: string;
   fit: FitSignal;
   fly: FlySignal;
-  onSelectOrg: (name: string, jurisdiction: string) => void;
-  onSelectJurisdiction: (jurisdiction: string) => void;
+  onSelectOrgAction: (name: string, jurisdiction: string) => void;
+  onSelectJurisdictionAction: (jurisdiction: string) => void;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
@@ -141,8 +147,8 @@ export default function SectorMapView({
 
   // Callback and data props are read through refs so map event handlers and
   // the style rebuild never need re-registration.
-  const propsRef = useRef({ orgs, stateCounts, selectedName, jurisdiction, onSelectOrg, onSelectJurisdiction });
-  propsRef.current = { orgs, stateCounts, selectedName, jurisdiction, onSelectOrg, onSelectJurisdiction };
+  const propsRef = useRef({ orgs, stateCounts, selectedName, jurisdiction, onSelectOrgAction, onSelectJurisdictionAction });
+  propsRef.current = { orgs, stateCounts, selectedName, jurisdiction, onSelectOrgAction, onSelectJurisdictionAction };
 
   const fitPadding = () => ({ top: 40, left: 40, bottom: 40, right: 40 });
 
@@ -189,7 +195,7 @@ export default function SectorMapView({
     map.touchZoomRotate.disableRotation();
     mapRef.current = map;
     if (process.env.NODE_ENV !== 'production') {
-      (window as unknown as Record<string, unknown>).__sectorMap = map;
+      window.__sectorMap = map;
     }
 
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-left');
@@ -322,7 +328,7 @@ export default function SectorMapView({
       const top = features[0];
       if (!top) return;
       if (top.layer.id === 'org-circles') {
-        propsRef.current.onSelectOrg(
+        propsRef.current.onSelectOrgAction(
           top.properties.name as string,
           top.properties.jurisdiction as string,
         );
@@ -340,7 +346,7 @@ export default function SectorMapView({
         return;
       }
       if (map.getZoom() < 7) {
-        propsRef.current.onSelectJurisdiction(top.properties.jurisdiction as string);
+        propsRef.current.onSelectJurisdictionAction(top.properties.jurisdiction as string);
       }
     });
 
@@ -358,7 +364,7 @@ export default function SectorMapView({
     for (const [code, point] of Object.entries(STATE_LABEL_POINTS)) {
       const el = document.createElement('div');
       el.className = 'sector-maplibre-state-label';
-      el.addEventListener('click', () => propsRef.current.onSelectJurisdiction(code));
+      el.addEventListener('click', () => propsRef.current.onSelectJurisdictionAction(code));
       const marker = new maplibregl.Marker({ element: el }).setLngLat(point).addTo(map);
       stateMarkersRef.current[code] = marker;
     }

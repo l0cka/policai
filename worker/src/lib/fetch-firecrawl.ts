@@ -86,8 +86,15 @@ export function slugTitleVariants(u: URL): string[] {
 }
 
 export function extractListingLinks(markdown: string, baseUrl: string, itemLinkPattern: string): RawItem[] {
-  const pattern = new RegExp(itemLinkPattern);
-  const base = new URL(baseUrl);
+  let pattern: RegExp;
+  try {
+    // nosemgrep: javascript.lang.security.audit.detect-non-literal-regexp.detect-non-literal-regexp
+    pattern = new RegExp(itemLinkPattern);
+  } catch {
+    return [];
+  }
+  const base = URL.parse(baseUrl);
+  if (!base) return [];
   const seen = new Set<string>();
   const items: RawItem[] = [];
   // Card-style listings nest an image inside the anchor —
@@ -95,12 +102,8 @@ export function extractListingLinks(markdown: string, baseUrl: string, itemLinkP
   // Remove image syntax first so the anchor reads [Title](url).
   const flattened = markdown.replace(/!\[[^\]]*\]\([^)]*\)/g, '');
   for (const m of flattened.matchAll(LINK_RE)) {
-    let resolved: URL;
-    try {
-      resolved = new URL(m[2], baseUrl);
-    } catch {
-      continue;
-    }
+    const resolved = URL.parse(m[2], baseUrl);
+    if (!resolved) continue;
     resolved.hash = '';
     const url = resolved.toString();
     if (!isSameOrSubdomain(resolved.hostname, base.hostname)) continue;
@@ -150,7 +153,9 @@ export function countRepeats(titles: (string | null)[]): Set<string> {
   for (const t of titles) {
     if (t) seen.set(t, (seen.get(t) ?? 0) + 1);
   }
-  return new Set([...seen.entries()].filter(([, n]) => n > 1).map(([t]) => t));
+  const repeated = new Set<string>();
+  for (const [title, count] of seen) if (count > 1) repeated.add(title);
+  return repeated;
 }
 
 export async function fetchFirecrawl(url: string, itemLinkPattern: string): Promise<RawItem[]> {

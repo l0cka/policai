@@ -192,7 +192,7 @@ function stripSiteSuffix(
     const parts = current.split(/\s+[|·•‑–—-]\s+/);
     if (parts.length < 2) break;
 
-    const flatTail = flatten(parts[parts.length - 1]);
+    const flatTail = flatten(parts.at(-1) ?? '');
     const namesTail = names.some((c) => {
       const cf = flatten(c);
       return cf.length > 2 && (flatTail === cf || flatTail.includes(cf) || cf.includes(flatTail));
@@ -314,7 +314,11 @@ async function readCapped(res: Response): Promise<string> {
       if (size >= MAX_BYTES || /<\/h1>/i.test(html)) break;
     }
   } finally {
-    await reader.cancel().catch(() => {});
+    try {
+      await reader.cancel();
+    } catch {
+      // The read already ended; cancellation is best-effort cleanup.
+    }
   }
   return html;
 }
@@ -394,13 +398,16 @@ export async function mapWithConcurrency<T, R>(
 ): Promise<R[]> {
   const results = new Array<R>(items.length);
   let next = 0;
-  const workers = Array.from({ length: Math.min(limit, items.length) }, async () => {
-    for (;;) {
-      const index = next++;
-      if (index >= items.length) return;
-      results[index] = await fn(items[index], index);
-    }
-  });
+  const workers: Promise<void>[] = [];
+  for (let worker = 0; worker < Math.min(limit, items.length); worker += 1) {
+    workers.push((async () => {
+      for (;;) {
+        const index = next++;
+        if (index >= items.length) return;
+        results[index] = await fn(items[index], index);
+      }
+    })());
+  }
   await Promise.all(workers);
   return results;
 }

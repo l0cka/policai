@@ -270,15 +270,6 @@ const WLSA_MEMBER_NAMES = new Set([
 ]);
 
 /* The map's WLS filter follows WLSA's current 13-service directory exactly. */
-export function isWomensLegalService(org: Org): boolean {
+export function isWomenLegalService(org: Org): boolean {
   return WLSA_MEMBER_NAMES.has(org.name);
-}
-
-export function countBy<T extends string>(rows: Array<Record<string, unknown>>, key: string) {
-  const out = {} as Record<T, number>;
-  for (const r of rows) {
-    const k = r[key] as T;
-    out[k] = (out[k] ?? 0) + 1;
-  }
-  return out;
 }

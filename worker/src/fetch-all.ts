@@ -23,11 +23,10 @@ export async function ingestSource(
   let found = 0;
   let inserted = 0;
   try {
-    const raw: RawItem[] = fetcher
-      ? await fetcher(source)
-      : source.fetch_method === 'rss'
-        ? await fetchRss(source.url)
-        : await fetchFirecrawl(source.url, source.item_link_pattern ?? '.+');
+    let raw: RawItem[];
+    if (fetcher) raw = await fetcher(source);
+    else if (source.fetch_method === 'rss') raw = await fetchRss(source.url);
+    else raw = await fetchFirecrawl(source.url, source.item_link_pattern ?? '.+');
     found = raw.length;
     for (const item of raw) {
       try {

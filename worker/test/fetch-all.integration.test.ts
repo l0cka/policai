@@ -8,8 +8,9 @@ import type { RawItem } from '../src/lib/fetch-firecrawl.js';
 
 // Requires: docker compose up -d db && schema applied.
 // DATABASE_URL=postgres://radar:dev-only-password@127.0.0.1:5433/radar
+const describeWithDatabase = process.env.DATABASE_URL ? describe : describe.skip;
 
-describe('ingest pipeline (integration)', () => {
+describeWithDatabase('ingest pipeline (integration)', () => {
   let sourceId: number;
   let badSourceId: number;
 

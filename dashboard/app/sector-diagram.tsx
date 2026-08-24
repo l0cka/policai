@@ -81,20 +81,20 @@ function activateOnKeyboard(event: KeyboardEvent<SVGGElement>, action: () => voi
 }
 
 export default function SectorDiagram({
-  onSelectGroup,
+  onSelectGroupAction,
 }: {
-  onSelectGroup?: (group: SystemGroup) => void;
+  onSelectGroupAction?: (group: SystemGroup) => void;
 }) {
-  const selectable = Boolean(onSelectGroup);
+  const selectable = Boolean(onSelectGroupAction);
 
   const node = (group: DeliveryGroup) => ({
     className: selectable ? 'd-node d-node-selectable' : 'd-node',
     role: selectable ? ('button' as const) : undefined,
     tabIndex: selectable ? 0 : undefined,
     'aria-label': selectable ? `${group.label}. Open this group on the map.` : group.label,
-    onClick: () => onSelectGroup?.(group.key),
+    onClick: () => onSelectGroupAction?.(group.key),
     onKeyDown: (event: KeyboardEvent<SVGGElement>) =>
-      activateOnKeyboard(event, () => onSelectGroup?.(group.key)),
+      activateOnKeyboard(event, () => onSelectGroupAction?.(group.key)),
   });
 
   return (
@@ -296,7 +296,7 @@ export default function SectorDiagram({
                 <button
                   type="button"
                   key={group.key}
-                  onClick={() => onSelectGroup?.(group.key)}
+                  onClick={() => onSelectGroupAction?.(group.key)}
                   disabled={!selectable}
                 >
                   <strong>{group.label}</strong>

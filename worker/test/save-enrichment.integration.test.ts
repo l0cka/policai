@@ -2,9 +2,10 @@ import { execFileSync } from 'node:child_process';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { closePool, getPool } from '../src/lib/db.js';
 
-const DB = process.env.DATABASE_URL ?? 'postgres://radar:dev-only-password@127.0.0.1:5433/radar';
+const DB = process.env.DATABASE_URL;
+const describeWithDatabase = DB ? describe : describe.skip;
 
-describe('save-enrichment CLI (integration)', () => {
+describeWithDatabase('save-enrichment CLI (integration)', () => {
   let itemId: number;
 
   beforeAll(async () => {
