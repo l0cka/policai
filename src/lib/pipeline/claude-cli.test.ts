@@ -80,6 +80,8 @@ describe('runClaude success path', () => {
         'classify this',
         '--output-format',
         'json',
+        '--model',
+        'sonnet',
         '--tools',
         '',
         '--disallowedTools',
