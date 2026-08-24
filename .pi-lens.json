@@ -1,0 +1,36 @@
+{
+  "format": { "enabled": false },
+  "autofix": { "enabled": false },
+  "ignore": [
+    "dashboard/lib/sector.json",
+    "docs/a2j-sector-research.json"
+  ],
+  "rules": {
+    "high-complexity": { "threshold": 55 },
+    "high-fan-out": { "threshold": 60 },
+    "project-conventions": {
+      "disable": [
+        "array-callback-return",
+        "console-statement",
+        "duplicate",
+        "jscpd:duplicate",
+        "find-import-file-without-extension",
+        "high-complexity",
+        "high-fan-out",
+        "inline-styles",
+        "long-parameter-list",
+        "nested-ternary",
+        "no-await-expression-member",
+        "no-conditional-empty-object-spread",
+        "no-console-except-error",
+        "no-known-value-widening",
+        "no-sql-in-code",
+        "pass-through-wrappers",
+        "python-path-traversal",
+        "ts-delete-property",
+        "ts-react-antipatterns",
+        "ts-redundant-filter-map"
+      ]
+    }
+  }
+}

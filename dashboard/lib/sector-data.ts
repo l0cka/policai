@@ -170,15 +170,6 @@ export function markMonitored(orgs: Org[], sources: Array<{ name: string; url: s
  * still describes both groups together; that combined framing is kept where
  * the figure is cited.
  */
-export function isWomensLegalService(org: Org): boolean {
+export function isWomenLegalService(org: Org): boolean {
   return org.tier === 'clc' && /women|wls/i.test(`${org.name} ${org.abbrev}`);
-}
-
-export function countBy<T extends string>(rows: Array<Record<string, unknown>>, key: string) {
-  const out = {} as Record<T, number>;
-  for (const r of rows) {
-    const k = r[key] as T;
-    out[k] = (out[k] ?? 0) + 1;
-  }
-  return out;
 }

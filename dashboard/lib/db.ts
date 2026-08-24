@@ -1,6 +1,6 @@
 import pg from 'pg';
 
-const globalForPg = globalThis as unknown as { pgPool?: pg.Pool };
+const globalForPg = globalThis as typeof globalThis & { pgPool?: pg.Pool };
 
 export function getPool(): pg.Pool {
   if (!globalForPg.pgPool) {

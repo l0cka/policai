@@ -89,7 +89,7 @@ async function main() {
     const real = proposed[index];
     if (!real) {
       unreachable += 1;
-      const host = URL.canParse(row.url) ? new URL(row.url).hostname : row.url;
+      const host = URL.parse(row.url)?.hostname ?? row.url;
       unreadable.set(host, (unreadable.get(host) ?? 0) + 1);
       continue;
     }

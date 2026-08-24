@@ -66,10 +66,6 @@ function isSafeUrl(value: string): boolean {
   return /^https?:\/\//i.test(value);
 }
 
-function collectionKey(stream: string | null): string {
-  return stream && Object.prototype.hasOwnProperty.call(COLLECTIONS, stream) ? stream : 'unclassified';
-}
-
 function shortDate(value: string | Date): string {
   return new Date(value).toLocaleDateString('en-AU', {
     timeZone: 'Australia/Sydney',

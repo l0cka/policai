@@ -19,19 +19,19 @@ function activateOnKeyboard(event: KeyboardEvent<SVGGElement>, action: () => voi
  * to breathe rather than packed.
  */
 export default function SectorDiagram({
-  onSelectTier,
+  onSelectTierAction,
 }: {
-  onSelectTier?: (tier: TierKey) => void;
+  onSelectTierAction?: (tier: TierKey) => void;
 }) {
-  const selectable = Boolean(onSelectTier);
+  const selectable = Boolean(onSelectTierAction);
 
   const node = (tier: TierKey) => ({
     className: selectable ? 'd-node d-node-selectable' : 'd-node',
     role: selectable ? ('button' as const) : undefined,
     tabIndex: selectable ? 0 : undefined,
-    onClick: () => onSelectTier?.(tier),
+    onClick: () => onSelectTierAction?.(tier),
     onKeyDown: (event: KeyboardEvent<SVGGElement>) =>
-      activateOnKeyboard(event, () => onSelectTier?.(tier)),
+      activateOnKeyboard(event, () => onSelectTierAction?.(tier)),
   });
 
   return (

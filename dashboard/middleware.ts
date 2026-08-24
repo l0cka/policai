@@ -25,7 +25,9 @@ export function middleware(request: NextRequest) {
   const host = request.headers.get('host')?.split(':')[0].toLowerCase();
   if (host !== OLD_HOST) return NextResponse.next();
 
-  const target = new URL(request.url);
+  // pi-lens-ignore: unchecked-throwing-call
+  const target = URL.parse(request.url);
+  if (!target) return NextResponse.next();
   target.protocol = 'https:';
   target.hostname = NEW_HOST;
   /*

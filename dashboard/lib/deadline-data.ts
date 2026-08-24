@@ -13,7 +13,7 @@ export type DeadlineRow = { title: string; url: string; date: string; label: str
 const KIND_SQL = `
   coalesce(
     d->>'kind',
-    CASE WHEN d->>'label' ~* '(clos|due|deadline|appl|submi|register|registration|nominat|expression of interest|\\mEOI\\M|tender)'
+    CASE WHEN d->>'label' ~* '(close|closed|closes|closing|due|deadline|appl|submi|register|registration|nominat|expression of interest|\\mEOI\\M|tender)'
          THEN 'action' ELSE 'milestone' END
   )`;
 

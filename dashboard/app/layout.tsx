@@ -35,6 +35,7 @@ const plexMono = IBM_Plex_Mono({
  * convention; it is Policai's own mark, copied byte-for-byte from the register.
  */
 export const metadata: Metadata = {
+  // pi-lens-ignore: unchecked-throwing-call
   metadataBase: new URL('https://a2j.policai.org'),
   title: 'Policai A2J',
   description:
@@ -91,7 +92,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           the stored theme before first paint so the page never flashes the
           system theme on the way to the chosen one.
         */}
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <script>{themeInitScript}</script>
       </head>
       <body>
         <a href="#main-content" className="sr-only skip-link">

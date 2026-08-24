@@ -9,7 +9,7 @@ import {
 } from '../lib/sector-relationships';
 import {
   TIERS,
-  isWomensLegalService,
+  isWomenLegalService,
   type ScoredOrg,
   type TierKey,
 } from '../lib/sector-data';
@@ -42,7 +42,7 @@ const STATE_NAMES: Record<MapJurisdiction, string> = {
 /*
  * Explorer categories are finer than the data's tiers: women's legal services
  * sit inside the CLC tier in every source directory and are split here by
- * their own names (see isWomensLegalService).
+ * their own names (see isWomenLegalService).
  */
 type CategoryKey = 'legal_aid' | 'clc' | 'wls' | 'atsils' | 'fvpls';
 
@@ -55,9 +55,9 @@ const SERVICE_CATEGORIES: Array<{
   {
     key: 'clc',
     label: 'Community Legal Centres',
-    match: (org) => org.tier === 'clc' && !isWomensLegalService(org),
+    match: (org) => org.tier === 'clc' && !isWomenLegalService(org),
   },
-  { key: 'wls', label: 'Women’s Legal Services', match: (org) => isWomensLegalService(org) },
+  { key: 'wls', label: 'Women’s Legal Services', match: (org) => isWomenLegalService(org) },
   { key: 'atsils', label: 'ATSILS', match: (org) => org.tier === 'atsils' },
   { key: 'fvpls', label: 'FVPLS', match: (org) => org.tier === 'fvpls' },
 ];
@@ -107,8 +107,8 @@ function orgsFor(
     .filter((org) => org.jurisdiction === jurisdiction)
     .filter((org) =>
       category
-        ? SERVICE_CATEGORIES.find((c) => c.key === category)!.match(org)
-        : SERVICE_CATEGORIES.some((c) => c.match(org)),
+        ? SERVICE_CATEGORIES.some((entry) => entry.key === category && entry.match(org))
+        : SERVICE_CATEGORIES.some((entry) => entry.match(org)),
     )
     .sort((a, b) => a.name.localeCompare(b.name));
 }
@@ -170,6 +170,7 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
   const selectedOrg = visibleOrgs.find((org) => org.name === selectedName) ?? visibleOrgs[0] ?? null;
   const selectedIndex = selectedOrg ? visibleOrgs.indexOf(selectedOrg) : -1;
   const selectedEvidence = selectedOrg ? evidenceFor(selectedOrg.name, relationship) : [];
+  const selectedLocation = selectedOrg ? ORG_LOCATIONS.get(selectedOrg.name) : undefined;
 
   const serviceCounts = useMemo(
     () =>
@@ -276,7 +277,7 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
 
       {view === 'system' ? (
         <div role="tabpanel" aria-label="System view" className="sector-system-panel">
-          <SectorDiagram onSelectTier={drillFromSystem} />
+          <SectorDiagram onSelectTierAction={drillFromSystem} />
         </div>
       ) : (
         <div role="tabpanel" aria-label="Map view" className="sector-map-layout">
@@ -306,13 +307,13 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
                 jurisdiction={jurisdiction}
                 fit={fit}
                 fly={fly}
-                onSelectOrg={(name, orgJurisdiction) => {
+                onSelectOrgAction={(name, orgJurisdiction) => {
                   if (orgJurisdiction !== jurisdiction) {
                     setJurisdiction(orgJurisdiction as MapJurisdiction);
                   }
                   setSelectedName(name);
                 }}
-                onSelectJurisdiction={(next) => selectJurisdiction(next as MapJurisdiction)}
+                onSelectJurisdictionAction={(next) => selectJurisdiction(next as MapJurisdiction)}
               />
             </div>
 
@@ -419,14 +420,12 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
                           {selectedOrg.monitored ? 'Active source' : 'Not currently monitored'}
                         </dd>
                       </div>
-                      {ORG_LOCATIONS.has(selectedOrg.name) ? (
+                      {selectedLocation ? (
                         <div>
                           <dt>Office</dt>
                           <dd>
-                            {ORG_LOCATIONS.get(selectedOrg.name)!.suburb ?? 'Located'}
-                            {ORG_LOCATIONS.get(selectedOrg.name)!.precision === 'locality'
-                              ? ' · suburb-level'
-                              : ''}
+                            {selectedLocation.suburb ?? 'Located'}
+                            {selectedLocation.precision === 'locality' ? ' · suburb-level' : ''}
                           </dd>
                         </div>
                       ) : null}
@@ -488,12 +487,11 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
                     </div>
 
                     <div className="sector-org-actions">
-                      {ORG_LOCATIONS.has(selectedOrg.name) ? (
+                      {selectedLocation ? (
                         <button
                           type="button"
                           onClick={() => {
-                            const loc = ORG_LOCATIONS.get(selectedOrg.name)!;
-                            setFly((prev) => ({ seq: prev.seq + 1, lon: loc.lon, lat: loc.lat }));
+                            setFly((prev) => ({ seq: prev.seq + 1, lon: selectedLocation.lon, lat: selectedLocation.lat }));
                           }}
                         >
                           ⌖ Show on map
@@ -509,10 +507,10 @@ export default function SectorExplorer({ orgs }: { orgs: ScoredOrg[] }) {
                           Organisation site ↗
                         </a>
                       ) : null}
-                      {ORG_LOCATIONS.get(selectedOrg.name)?.source_url ? (
+                      {selectedLocation?.source_url ? (
                         <a
                           className="sector-org-source-link"
-                          href={ORG_LOCATIONS.get(selectedOrg.name)!.source_url!}
+                          href={selectedLocation.source_url}
                           target="_blank"
                           rel="noopener noreferrer"
                         >

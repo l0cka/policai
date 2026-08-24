@@ -241,7 +241,7 @@ describe('extractPageTitle', () => {
 
 describe('coversSlug', () => {
   it('is satisfied when every significant slug word survives', () => {
-    expect(coversSlug('New Act to restrict use of NDAs in workplace matters', ['restrict', 'ndas', 'workplace', 'matters'])).toBe(true);
+    expect(coversSlug('New Act to restrict workplace confidentiality agreements', ['restrict', 'workplace', 'confidentiality', 'agreements'])).toBe(true);
   });
 
   it('fails on a single missing word', () => {

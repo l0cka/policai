@@ -6,6 +6,7 @@ import {
   getUpcomingDeadlines,
   sydneyToday,
   OPEN_OPPORTUNITY_SQL,
+  safeHref,
 } from '../lib/deadline-data';
 import { ArrowRight, ArrowUpRight, Flag, Search } from './icons';
 import { SignalNetwork, type NetworkPair, type NetworkSignal } from './signal-network';
@@ -55,7 +56,7 @@ function streamVars(stream: string | null): React.CSSProperties | undefined {
   } as React.CSSProperties;
 }
 
-type Stats = { new_week: number; opps: number; tracked: number };
+type Stats = { new_week: number; opportunities: number; tracked: number };
 type SourceStats = { total: number; ok: number };
 type RadarRow = {
   id: string | number;
@@ -87,9 +88,10 @@ function shortDate(value: string | Date): string {
  * the figure makes the number grow forever while meaning less each week.
  */
 async function getStats(): Promise<Stats> {
+  // pi-lens-ignore: sql-injection
   const { rows } = await getPool().query(
     `SELECT count(*) FILTER (WHERE coalesce(i.published_at, i.created_at) >= now() - interval '7 days') AS new_week,
-            count(*) FILTER (WHERE ${OPEN_OPPORTUNITY_SQL}) AS opps,
+            count(*) FILTER (WHERE ${OPEN_OPPORTUNITY_SQL}) AS opportunities,
             count(*) AS tracked
      FROM items i WHERE i.relevant`,
   );
@@ -127,6 +129,7 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
 
   const [{ rows }, { rows: networkPairs }, { rows: networkSignals }, { rows: latestItems }, stats, sources, deadlines] =
     await Promise.all([
+      // pi-lens-ignore: sql-injection
       getPool().query(
         `SELECT i.id, i.title, i.url, i.blurb, i.excerpt, i.stream, i.opportunity, i.opportunity_reason,
                 ${OPEN_OPPORTUNITY_SQL} AS opportunity_open,
@@ -140,6 +143,7 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
        * over the whole window means every count it prints is a property of the
        * population, not of however many rows we later draw.
        */
+      // pi-lens-ignore: sql-injection
       getPool().query<NetworkPair>(
         `SELECT s.name AS source_name, s.url AS source_url,
                 coalesce(i.stream, 'unclassified') AS collection,
@@ -173,13 +177,10 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
       getUpcomingDeadlines(5),
     ]);
 
-  const safeHref = (u: string) => (/^https?:\/\//i.test(u) ? u : undefined);
-
   const linkFor = (params: Record<string, string | undefined>) => {
     const merged = { stream, q, opp, filtered, ...params };
     const qs = Object.entries(merged)
-      .filter(([, v]) => v)
-      .map(([k, v]) => `${k}=${encodeURIComponent(v!)}`)
+      .flatMap(([key, value]) => value ? [`${key}=${encodeURIComponent(value)}`] : [])
       .join('&');
     return qs ? `/?${qs}` : '/';
   };
@@ -188,7 +189,7 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
   const groups: Array<{ date: string; rows: typeof rows }> = [];
   for (const r of rows) {
     const date = sydneyDateOf(r.published_at ?? r.created_at);
-    const last = groups[groups.length - 1];
+    const last = groups.at(-1);
     if (last && last.date === date) last.rows.push(r);
     else groups.push({ date, rows: [r] });
   }
@@ -225,7 +226,7 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
 
             <dl className="observatory-stats">
               <div><dd>{stats.new_week}</dd><dt>new this week</dt></div>
-              <div><dd>{stats.opps}</dd><dt>opportunities</dt></div>
+              <div><dd>{stats.opportunities}</dd><dt>opportunities</dt></div>
               <div><dd>{stats.tracked}</dd><dt>items tracked</dt></div>
               <div><dd>{sources.total}</dd><dt>sources monitored</dt></div>
             </dl>

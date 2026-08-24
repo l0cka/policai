@@ -92,7 +92,7 @@
 - "CLCs + Women's Legal Services" split into two explorer categories.
   Women's legal services sit inside the CLC tier in every source directory,
   so the split is derived from each organisation's own name
-  (`isWomensLegalService` in `lib/sector-data.ts`; 19 of 157 CLC-tier
+  (`isWomenLegalService` in `lib/sector-data.ts`; 19 of 157 CLC-tier
   records). The underlying tier and the System diagram's combined
   "154 represented" node are unchanged — that figure is sourced to CLCs
   Australia describing both groups together.
