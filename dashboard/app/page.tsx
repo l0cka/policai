@@ -200,7 +200,7 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
         <div className="container observatory-grid">
           <div className="observatory-copy reveal">
             <p className="observatory-eyebrow">The access to justice observatory</p>
-            <h1>See access to justice as it changes.</h1>
+            <h1>Monitor access to justice developments.</h1>
             <p className="observatory-intro">
               Policai A2J tracks pro bono, law reform, legal-assistance funding and justice
               technology across Australia, with every signal linked to its source.

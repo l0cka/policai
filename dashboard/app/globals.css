@@ -475,6 +475,31 @@ time,
   transform: scaleX(1);
 }
 
+.site-nav .property-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.site-nav .property-link::after,
+.mobile-nav-links .property-link::after {
+  display: none;
+}
+
+.site-nav .property-link svg,
+.mobile-nav-links .property-link svg {
+  width: 0.875rem;
+  height: 0.875rem;
+  opacity: 0.55;
+  transition: transform var(--dur-base) var(--ease-out-quint), opacity var(--dur-base);
+}
+
+.site-nav .property-link:hover svg,
+.mobile-nav-links .property-link:hover svg {
+  opacity: 1;
+  transform: translate(0.1rem, -0.1rem);
+}
+
 .mobile-menu-toggle,
 .mobile-nav-panel {
   display: none;
@@ -540,6 +565,18 @@ time,
 .mobile-nav-links a.active {
   background: var(--muted);
   color: var(--foreground);
+}
+
+.mobile-nav-links .property-link {
+  display: flex;
+  min-height: 2.75rem;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 4px;
+  padding-inline: 0.75rem;
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 
 .mobile-theme-row {
@@ -694,7 +731,7 @@ main {
   max-width: 13ch;
   margin-top: 1.25rem;
   font-family: var(--font-sans);
-  font-size: clamp(3rem, 4.6vw, 4.5rem);
+  font-size: clamp(3rem, 3.6vw, 3.5rem);
   font-weight: 600;
   line-height: 1.02;
   letter-spacing: -0.045em;
@@ -1044,47 +1081,6 @@ main {
   fill-opacity: 0.55;
   stroke: #91aaff;
   stroke-width: 2;
-}
-
-/* Was an SVG callout floating over the signal column, where it collided with
-   the marks it pointed at. As real text below the drawing it can wrap, it can
-   be a proper link, and it cannot overlap anything. */
-.signal-network-featured {
-  display: grid;
-  gap: 0.15rem;
-  margin-top: 0.7rem;
-  padding: 0.6rem 0.75rem;
-  border: 1px solid rgba(185, 204, 222, 0.22);
-  border-left: 2px solid #e7b96c;
-  background: #0b2137;
-  color: #dbe6f0;
-  text-decoration: none;
-  transition: border-color var(--dur-fast), background var(--dur-fast);
-}
-
-.signal-network-featured:hover,
-.signal-network-featured:focus-visible {
-  border-color: rgba(231, 185, 108, 0.6);
-  background: #0d2740;
-}
-
-.signal-network-featured-tag {
-  color: #e7b96c;
-  font-family: var(--font-mono);
-  font-size: 8px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.signal-network-featured-title {
-  font-size: 0.8rem;
-  line-height: 1.35;
-}
-
-.signal-network-featured-meta {
-  color: #8395a8;
-  font-family: var(--font-mono);
-  font-size: 9px;
 }
 
 .signal-network-summary {
@@ -1783,7 +1779,7 @@ main {
  */
 .diagram-frame svg {
   display: block;
-  min-width: 1040px;
+  min-width: 1320px;
   width: 100%;
   height: auto;
   color: var(--foreground);
@@ -1807,6 +1803,39 @@ main {
   stroke-width: 1.5;
 }
 
+.d-box-profession {
+  fill: var(--card);
+  stroke: var(--foreground);
+  stroke-width: 1.25;
+}
+
+.d-group-box {
+  fill: transparent;
+  stroke: var(--rule);
+  stroke-width: 1;
+}
+
+.d-note-box {
+  fill: transparent;
+  stroke: var(--muted-foreground);
+  stroke-width: 1;
+  stroke-dasharray: 2 4;
+}
+
+.d-referral-box {
+  fill: var(--card);
+  stroke: var(--status-proposed);
+  stroke-width: 1.25;
+  stroke-dasharray: 6 4;
+}
+
+.d-peak-box {
+  fill: var(--card);
+  stroke: var(--muted-foreground);
+  stroke-width: 1;
+  stroke-dasharray: 2 4;
+}
+
 .d-box-out {
   fill: var(--status-active-bg);
   stroke: var(--trust);
@@ -1814,9 +1843,9 @@ main {
 }
 
 /*
- * Diagram type. Sizes are in viewBox units against a 1240-unit width, so at the
- * ~1250px the frame gets on a desktop they land near 1:1 — 15px for a name is
- * 15px on screen. Labels sit on --foreground rather than the muted token:
+ * Diagram type. Sizes are in viewBox units against a 1440-unit width. The SVG
+ * keeps a 1320px floor so labels remain readable while the roomier canvas can
+ * scroll inside its own frame on narrower desktop layouts.
  * muted is right for body prose beside full-size text, but too faint for small
  * type on the card fill.
  */
@@ -1862,6 +1891,23 @@ main {
   font-size: 11px;
 }
 
+.d-callout,
+.d-node-action {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  fill: var(--foreground);
+}
+
+.d-callout {
+  opacity: 0.7;
+}
+
+.d-node-action {
+  fill: var(--primary);
+}
+
 .d-rule {
   stroke: var(--rule-hair);
   stroke-width: 1;
@@ -1884,6 +1930,10 @@ main {
 .d-flow-pb {
   stroke: var(--status-proposed);
   stroke-dasharray: 9 5;
+}
+
+.d-flow-profession {
+  stroke: var(--foreground);
 }
 
 .d-flow-by {
@@ -1929,6 +1979,10 @@ main {
   border-top-style: dashed;
 }
 
+.legend-profession {
+  color: var(--foreground);
+}
+
 .legend-outside {
   color: var(--muted-foreground);
   border-top-style: dotted;
@@ -1949,10 +2003,33 @@ main {
 }
 
 .d-node-selectable:hover .d-box,
-.d-node-selectable:focus-visible .d-box {
+.d-node-selectable:focus-visible .d-box,
+.d-node-selectable:hover .d-peak-box,
+.d-node-selectable:focus-visible .d-peak-box {
   fill: var(--row-hover);
   stroke: var(--ring);
   stroke-width: 2;
+}
+
+.diagram-mobile {
+  display: none;
+}
+
+.diagram-source-note {
+  margin-top: 0.85rem;
+  max-width: 112ch;
+  font-size: 0.75rem;
+  line-height: 1.7;
+  color: var(--muted-foreground);
+}
+
+.diagram-source-note a {
+  color: var(--primary);
+  text-underline-offset: 0.16em;
+}
+
+.diagram-source-note a:hover {
+  text-decoration: underline;
 }
 
 /*
@@ -2058,18 +2135,17 @@ main {
   padding: 1rem 0 0.75rem;
 }
 
-/* Map and detail sit side by side; the map stays put while the page scrolls
-   the panel, so neither ever covers or scrolls inside the other. */
+/* Controls sit to the left of the map. Organisation detail spans the full
+   explorer width below, so a long evidence panel cannot create dead space. */
 .sector-map-columns {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 23rem;
+  grid-template-columns: 18rem minmax(0, 1fr);
   gap: 1.5rem;
-  align-items: start;
+  align-items: stretch;
 }
 
 .sector-map-stage {
-  position: sticky;
-  top: 1rem;
+  min-width: 0;
 }
 
 .sector-maplibre {
@@ -2109,11 +2185,27 @@ main {
   display: none;
 }
 
+.sector-map-controls,
 .sector-map-detail {
   min-width: 0;
   border: 1px solid var(--rule);
   border-radius: 4px;
   background: var(--card);
+}
+
+.sector-map-controls {
+  align-self: stretch;
+  height: clamp(32rem, 74vh, 50rem);
+}
+
+.sector-map-controls .sector-detail-swap {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+}
+
+.sector-map-detail {
+  margin-top: 1.5rem;
 }
 
 .sector-map-foot {
@@ -2259,14 +2351,104 @@ main {
 }
 
 .sector-jurisdiction-head,
-.sector-breakdown,
-.sector-org-picker,
-.sector-selected-org {
+.sector-breakdown {
   padding: 1.1rem 1.25rem;
   border-bottom: 1px solid var(--rule-hair);
 }
 
-.sector-detail-swap > :last-child {
+.sector-map-guide {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 0.55rem 1.25rem;
+  border-top: 1px solid var(--rule-hair);
+}
+
+.sector-map-guide h3 {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.sector-map-guide dl {
+  display: grid;
+  gap: 0.55rem;
+  margin-top: 0.65rem;
+}
+
+.sector-map-guide dl > div {
+  display: grid;
+  grid-template-columns: 1.4rem minmax(0, 1fr);
+  gap: 0.65rem;
+  align-items: start;
+}
+
+.sector-map-guide dt {
+  display: inline;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.sector-map-guide dt::after {
+  content: " — ";
+  color: var(--muted-foreground);
+}
+
+.sector-map-guide dd,
+.sector-map-guide > p {
+  display: inline;
+  font-size: 0.6875rem;
+  line-height: 1.45;
+  color: var(--muted-foreground);
+}
+
+.sector-map-guide > p {
+  display: block;
+  margin-top: 0.65rem;
+  padding-top: 0.6rem;
+  border-top: 1px dashed var(--rule-hair);
+}
+
+.sector-map-legend-mark,
+.sector-map-legend-icon {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin-top: 0.05rem;
+  color: var(--trust);
+}
+
+.sector-map-legend-office {
+  display: block;
+  width: 0.7rem;
+  height: 0.7rem;
+  margin: 0.18rem 0 0 0.18rem;
+  border: 1.5px solid var(--card);
+  border-radius: 50%;
+}
+
+.sector-map-legend-cluster {
+  display: grid;
+  place-items: center;
+  border: 1.5px solid var(--trust);
+  border-radius: 50%;
+  background: var(--card);
+  color: var(--foreground);
+  font-size: 0.55rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.sector-map-legend-icon {
+  stroke-width: 1.75;
+}
+
+.sector-map-legend-icon.is-muted {
+  color: var(--muted-foreground);
+  opacity: 0.7;
+}
+
+.sector-map-controls .sector-detail-swap > :last-child {
   border-bottom: 0;
 }
 
@@ -2319,20 +2501,28 @@ main {
   color: var(--muted-foreground);
 }
 
-.sector-selected-name {
+.sector-selected-org {
+  display: grid;
+  grid-template-columns: minmax(16rem, 0.8fr) minmax(0, 1.7fr);
+  column-gap: 2rem;
+  padding: 1.25rem;
+}
+
+.sector-org-picker-detail {
+  grid-column: 1 / -1;
+  padding: 0 0 0.85rem;
+  border-bottom: 1px solid var(--rule-hair);
+}
+
+.sector-org-picker-control {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 0.625rem;
+  max-width: 30rem;
 }
 
-.sector-selected-name .sector-key-dot {
+.sector-org-picker-control .sector-key-dot {
   flex: 0 0 auto;
-  margin-top: 0.4rem;
-}
-
-.sector-selected-name h3 {
-  font-size: 1rem;
-  font-weight: 600;
 }
 
 .sector-selected-org dl {
@@ -2364,9 +2554,11 @@ main {
 }
 
 .sector-evidence {
+  grid-column: 2;
+  grid-row: 2 / span 3;
   margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--rule-hair);
+  padding-left: 2rem;
+  border-left: 1px solid var(--rule-hair);
 }
 
 .sector-evidence-item,
@@ -2402,6 +2594,7 @@ main {
 
 /* Action row on the selected organisation. */
 .sector-org-actions {
+  grid-column: 1;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -2562,15 +2755,27 @@ main {
   }
 }
 
-/* One breakpoint: map above, detail below, page keeps scrolling naturally. */
-/* Narrow screens: one column, map first, nothing sticky. */
+/* Narrow screens keep the same reading order: controls, map, detail. */
 @media (max-width: 960px) {
   .sector-map-columns {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .sector-map-stage {
-    position: static;
+  .sector-map-controls .sector-detail-swap {
+    display: grid;
+    grid-template-columns: minmax(12rem, 0.7fr) minmax(16rem, 1fr);
+  }
+
+  .sector-map-controls {
+    height: auto;
+  }
+
+  .sector-map-guide {
+    grid-column: 1 / -1;
+  }
+
+  .sector-selected-org {
+    grid-template-columns: minmax(14rem, 0.8fr) minmax(0, 1.4fr);
   }
 
   .sector-maplibre {
@@ -2582,6 +2787,138 @@ main {
   .sector-explorer-head {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .sector-map-controls .sector-detail-swap,
+  .sector-selected-org {
+    display: block;
+  }
+
+  .sector-evidence {
+    margin-top: 1rem;
+    padding: 1rem 0 0;
+    border-top: 1px solid var(--rule-hair);
+    border-left: 0;
+  }
+
+  .diagram-desktop {
+    display: none;
+  }
+
+  .diagram-mobile {
+    display: grid;
+    gap: 0;
+  }
+
+  .diagram-mobile-step {
+    display: grid;
+    grid-template-columns: 2rem minmax(0, 1fr);
+    gap: 0.75rem;
+    padding: 1.15rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .diagram-mobile-step > span {
+    display: grid;
+    width: 1.75rem;
+    height: 1.75rem;
+    place-items: center;
+    border: 1px solid var(--primary);
+    border-radius: 50%;
+    color: var(--primary);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .diagram-mobile-step h3 {
+    margin: 0.12rem 0 0;
+    font-size: 0.9375rem;
+    font-weight: 600;
+  }
+
+  .diagram-mobile-step p {
+    margin: 0.45rem 0 0;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    color: var(--muted-foreground);
+  }
+
+  .diagram-mobile-groups {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 0.8rem;
+  }
+
+  .diagram-mobile-groups button {
+    display: grid;
+    min-height: 4rem;
+    gap: 0.18rem;
+    width: 100%;
+    padding: 0.7rem 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--background);
+    color: var(--foreground);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .diagram-mobile-groups button:hover,
+  .diagram-mobile-groups button:focus-visible {
+    border-color: var(--ring);
+    background: var(--row-hover);
+  }
+
+  .diagram-mobile-groups strong {
+    font-size: 0.8125rem;
+  }
+
+  .diagram-mobile-groups small {
+    color: var(--muted-foreground);
+    font-size: 0.6875rem;
+    line-height: 1.45;
+  }
+
+  .diagram-mobile-groups em {
+    margin-top: 0.2rem;
+    color: var(--primary);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  .diagram-mobile-profession dl {
+    display: grid;
+    gap: 0.5rem;
+    margin: 0.8rem 0 0;
+  }
+
+  .diagram-mobile-profession dl > div {
+    padding: 0.65rem 0.75rem;
+    border-left: 2px solid var(--foreground);
+    background: var(--card);
+  }
+
+  .diagram-mobile-profession dl > div:last-child {
+    border-left-color: var(--status-proposed);
+  }
+
+  .diagram-mobile-profession dt {
+    font-size: 0.8125rem;
+    font-weight: 600;
+  }
+
+  .diagram-mobile-profession dd {
+    margin: 0.2rem 0 0;
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+
+  .diagram-mobile-outcome {
+    border-bottom: 0;
   }
 
   .sector-map-government {
@@ -2617,10 +2954,26 @@ tbody th[scope='row'] {
   vertical-align: top;
 }
 
-/* Filter bar. The chip matrix stays behind the Filters trigger at every
-   width; the primary row keeps search, the radar pill and the count. */
-.sector-controls .mobile-filter-only {
-  display: none;
+/* Directory search and filter rail. */
+.sector-directory-search-row {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 1.25rem;
+}
+
+.sector-directory-layout {
+  display: grid;
+  grid-template-columns: 15rem minmax(0, 1fr);
+  gap: 2.5rem;
+  align-items: start;
+  margin-top: 1.5rem;
+}
+
+.sector-directory-sidebar,
+.sector-directory-results {
+  min-width: 0;
 }
 
 .sector-filter-trigger {
@@ -2645,7 +2998,7 @@ tbody th[scope='row'] {
 
 .sector-filter-groups {
   display: none;
-  padding-top: 0.75rem;
+  padding-top: 1rem;
 }
 
 .sector-filter-groups.open {
@@ -2654,7 +3007,7 @@ tbody th[scope='row'] {
 
 .sector-clear-row {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   margin-top: 0.55rem;
 }
 
@@ -2677,16 +3030,100 @@ tbody th[scope='row'] {
   position: sticky;
   top: 6.75rem;
   z-index: 20;
-  margin-top: 1.25rem;
-  padding: 0.75rem 0;
+  max-height: calc(100vh - 8rem);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  margin: 0;
+  padding: 0 1.25rem 1rem 0;
   background: color-mix(in srgb, var(--background) 94%, transparent);
   backdrop-filter: blur(10px);
+  border-right: 1px solid var(--rule-heavy);
+}
+
+.sector-sidebar-summary {
+  display: grid;
+  gap: 0.25rem;
+  padding-bottom: 0.75rem;
   border-bottom: 1px solid var(--rule-heavy);
 }
 
-@media (max-height: 820px), (max-width: 719px) {
+.sector-sidebar-summary .sector-count {
+  margin: 0;
+}
+
+.sector-sidebar-actions {
+  display: grid;
+  gap: 0.5rem;
+  padding-top: 0.75rem;
+}
+
+.sector-sidebar-actions .pill,
+.sector-sidebar-actions .sector-filter-trigger {
+  width: 100%;
+  min-height: 2.5rem;
+  justify-content: space-between;
+  border-radius: 6px;
+}
+
+.sector-monitoring-unavailable {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.sector-filter-groups .ctrl-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: stretch;
+  gap: 0.35rem;
+}
+
+.sector-filter-groups .ctrl-label {
+  width: auto;
+  margin-bottom: 0.2rem;
+}
+
+.sector-filter-groups .pill {
+  width: 100%;
+  height: auto;
+  min-height: 2.25rem;
+  justify-content: space-between;
+  border-radius: 4px;
+  text-align: left;
+}
+
+.sector-directory-results .sector-tier:first-of-type {
+  margin-top: 0;
+}
+
+@media (max-height: 820px), (max-width: 960px) {
   .sector-controls {
     position: static;
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+@media (max-width: 960px) {
+  .sector-directory-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+
+  .sector-controls {
+    padding: 0 0 1rem;
+    border-right: 0;
+    border-bottom: 1px solid var(--rule-heavy);
+  }
+
+  .sector-sidebar-actions {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .sector-sidebar-actions .pill,
+  .sector-sidebar-actions .sector-filter-trigger {
+    width: auto;
   }
 }
 
@@ -3464,7 +3901,7 @@ tbody td:first-child {
 
   .observatory-copy h1 {
     max-width: 13ch;
-    font-size: clamp(3rem, 14vw, 4rem);
+    font-size: clamp(2.75rem, 12vw, 3.5rem);
   }
 
   .observatory-intro {
@@ -3554,13 +3991,11 @@ tbody td:first-child {
     margin-left: 0;
   }
 
-  .sector-primary-row {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+  .sector-directory-search-row {
+    grid-template-columns: minmax(0, 1fr);
   }
 
-  .sector-primary-row > .ctrl-label,
-  .desktop-filter-only {
+  .sector-directory-search-row > .ctrl-label {
     display: none;
   }
 
@@ -3568,24 +4003,17 @@ tbody td:first-child {
     min-width: 0;
   }
 
-  .sector-filter-trigger {
-    min-height: 2.75rem;
+  .sector-sidebar-actions {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
 
-  .sector-count {
+  .sector-monitoring-unavailable {
     grid-column: 1 / -1;
-    margin: 0.25rem 0 0;
   }
 
-  .sector-controls .mobile-filter-only {
-    display: flex;
-  }
-
-  .sector-filter-groups .ctrl-label {
-    width: 100%;
-  }
-
-  .pill {
+  .sector-filter-groups .pill,
+  .sector-sidebar-actions .pill,
+  .sector-sidebar-actions .sector-filter-trigger {
     min-height: 2.75rem;
   }
 

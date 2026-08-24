@@ -36,12 +36,84 @@ export type Jurisdiction =
   | 'ACT'
   | 'NT';
 
+/*
+ * Verified 2026-08-12 against current first-party directories and program
+ * pages. Keeping the corrections here makes them reviewable without rewriting
+ * the generated, minified source file. The next full sector-data regeneration
+ * should fold these changes into sector.json and retire this block.
+ */
+const VERIFIED_REMOVALS = new Set([
+  // Historical name of Law Firms Australia, not a second constituent body.
+  'Large Law Firm Group',
+  // Same legal entity and website as the FVPLS record retained below.
+  "Marninwarntikura Women's Resource Centre",
+]);
+
+const VERIFIED_OVERRIDES: Record<string, Partial<Org>> = {
+  'Legal Aid Queensland': {
+    funded_by: 'Commonwealth NAJP 2025–30 funding and Queensland Government funding',
+  },
+  'Community Legal Centres Australia': {
+    funded_by: 'Commonwealth Community Legal Services Program 2025–30 grant (outside the NAJP)',
+  },
+  'National Aboriginal and Torres Strait Islander Legal Services': {
+    funded_by: 'Commonwealth Community Legal Services Program 2025–30 grant (outside the NAJP)',
+  },
+  'First Nations Advocates Against Family Violence': {
+    funded_by: 'Commonwealth Community Legal Services Program 2025–30 grant (outside the NAJP)',
+  },
+  "Women's Legal Services Australia": {
+    funded_by: 'Commonwealth Community Legal Services Program 2025–30 grant (outside the NAJP)',
+  },
+  LawRight: {
+    tier: 'clc',
+    role:
+      "Accredited Queensland community legal centre and pro bono clearing house; operates Pro Bono Connect and court and tribunal self-representation services.",
+    funded_by:
+      'Commonwealth Community Legal Services Program 2025–30, Commonwealth and Queensland legal-assistance funding, and private or philanthropic support',
+  },
+  'JusticeNet SA': {
+    tier: 'clc',
+    role:
+      "Accredited South Australian community legal centre and pro bono clearing house; operates referral, discrete-assistance and self-representation services.",
+    funded_by:
+      'Commonwealth Community Legal Services Program 2025–30, South Australian Government, member and philanthropic support',
+  },
+  'High Court of Australia': {
+    role:
+      'Australia\'s apex court. Its December 2024 protocol permits the Court to refer requests for pro bono assistance or appoint an amicus curiae through the Australian Bar Association.',
+  },
+};
+
+const VERIFIED_ADDITIONS: Org[] = [
+  {
+    name: 'ACT Association of Community Legal Centres',
+    abbrev: 'ACTACLC',
+    tier: 'peak',
+    jurisdiction: 'ACT',
+    role:
+      'Territory association recognised by Community Legal Centres Australia as the ACT peak for the community legal sector.',
+    url: 'https://www.actlawsociety.asn.au/for-the-public/legal-help/community-legal-centres',
+    funded_by: 'Member and sector support',
+  },
+  {
+    name: 'Northern Territory Association of Community Legal Centres',
+    abbrev: 'NTACLC',
+    tier: 'peak',
+    jurisdiction: 'NT',
+    role:
+      'Territory peak strengthening the community legal sector through collaboration, training, policy work and access-to-justice advocacy.',
+    url: 'https://www.dcls.org.au/about-ntaclc',
+    funded_by: 'Member and sector support',
+  },
+];
+
 // Ordered by function: coordination, delivery, supply, funding, research.
 export const TIERS: Array<{ key: TierKey; label: string; blurb: string }> = [
   {
     key: 'peak',
     label: 'Peak & coordinating bodies',
-    blurb: 'National and state representative bodies. Policy, accreditation and advocacy; no casework.',
+    blurb: 'National and jurisdictional representative and coordinating bodies; some also host sector-support projects.',
   },
   {
     key: 'legal_aid',
@@ -55,7 +127,7 @@ export const TIERS: Array<{ key: TierKey; label: string; blurb: string }> = [
   },
   {
     key: 'fvpls',
-    label: 'Family Violence Prevention Legal Services',
+    label: 'Family Violence Prevention and Legal Services',
     blurb: 'Community-controlled services for First Nations victim-survivors of family violence. Around 40 sites.',
   },
   {
@@ -71,7 +143,7 @@ export const TIERS: Array<{ key: TierKey; label: string; blurb: string }> = [
   {
     key: 'court',
     label: 'Courts & tribunals',
-    blurb: 'Courts and tribunals with a pro bono referral rule or a self-represented litigant service.',
+    blurb: 'Selected courts and tribunals relevant to pro bono referrals or self-represented litigant support; arrangements vary.',
   },
   {
     key: 'government',
@@ -81,12 +153,12 @@ export const TIERS: Array<{ key: TierKey; label: string; blurb: string }> = [
   {
     key: 'funder',
     label: 'Funders',
-    blurb: 'Philanthropic and statutory funders of legal assistance.',
+    blurb: 'Selected philanthropic and statutory funders with documented legal-assistance or justice support.',
   },
   {
     key: 'academic',
     label: 'Research & clinical education',
-    blurb: 'University law clinics and access-to-justice research centres.',
+    blurb: 'Selected university clinics and access-to-justice research centres; not a census of Australian law schools.',
   },
   {
     key: 'tech_justice',
@@ -109,9 +181,27 @@ export const JURISDICTIONS: Jurisdiction[] = [
 
 export const jurisdictionLabel = (j: Jurisdiction) => (j === 'national' ? 'National' : j);
 
-export const ORGANISATIONS = raw.organisations as Org[];
-export const COMPILED = raw.compiled as string;
-export const RESEARCH_NOTES = raw.notes as string[];
+const RAW_ORGANISATIONS = raw.organisations as Org[];
+
+export const ORGANISATIONS = [
+  ...RAW_ORGANISATIONS.filter((org) => !VERIFIED_REMOVALS.has(org.name)).map((org) => ({
+    ...org,
+    ...VERIFIED_OVERRIDES[org.name],
+  })),
+  ...VERIFIED_ADDITIONS,
+];
+export const COMPILED = '2026-08-12';
+const STALE_NOTE_MARKERS = [
+  'NATIONAL PRO BONO TARGET (as requested)',
+  'SOURCES WORKED THROUGH (real member directories, not recall)',
+];
+
+export const RESEARCH_NOTES = [
+  'ACCURACY PASS 2026-08-12: Core NAJP claims were checked against the signed agreement and Attorney-General\'s Department material. Provider categories were checked against National Legal Aid, CLCs Australia, WLSA, NATSILS and FNAAFV. The WLS map filter now follows WLSA\'s 13-service directory; ACT and NT CLC peaks are included; historical or duplicate Law Firms Australia and Marninwarntikura records are consolidated; selected funding and High Court descriptions are corrected. The directory remains a researched reference, not an exhaustive census of every access-to-justice organisation, program, office or service footprint.',
+  ...(raw.notes as string[]).filter(
+    (note) => !STALE_NOTE_MARKERS.some((marker) => note.startsWith(marker)),
+  ),
+];
 
 /*
  * A source is an organisation's own website, so the website is what identifies
@@ -163,13 +253,23 @@ export function markMonitored(orgs: Org[], sources: Array<{ name: string; url: s
   });
 }
 
-/*
- * Women's legal services sit inside the CLC tier in every source directory,
- * so the split is made from each organisation's own name — the one place the
- * classification is self-declared. CLCs Australia's "154 represented" figure
- * still describes both groups together; that combined framing is kept where
- * the figure is cited.
- */
+const WLSA_MEMBER_NAMES = new Set([
+  "Women's Legal Centre ACT",
+  "Women's Legal Service NSW",
+  "Wirringa Baiya Aboriginal Women's Legal Centre",
+  "Central Australian Women's Legal Service",
+  "Katherine Women's Information and Legal Service",
+  "Top End Women's Legal Service",
+  "First Nations Women's Legal Service Queensland",
+  "North Queensland Women's Legal Service",
+  "Women's Legal Service Queensland",
+  "Women's Legal Service SA",
+  "Women's Legal Service Tasmania",
+  "Women's Legal Service Victoria",
+  "Women's Legal Service WA",
+]);
+
+/* The map's WLS filter follows WLSA's current 13-service directory exactly. */
 export function isWomenLegalService(org: Org): boolean {
-  return org.tier === 'clc' && /women|wls/i.test(`${org.name} ${org.abbrev}`);
+  return WLSA_MEMBER_NAMES.has(org.name);
 }
