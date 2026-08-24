@@ -21,8 +21,16 @@ const TRACKING_QUERY_PARAMETERS = new Set([
  * removed. Sorting the remaining query parameters and normalising a non-root
  * trailing slash prevents cosmetic URL variants from bypassing deduplication.
  */
+export function parseSourceUrl(value: string, base?: string | URL): URL {
+	try {
+		return new URL(value, base);
+	} catch (error) {
+		throw new TypeError(`Invalid source URL: ${value}`, { cause: error });
+	}
+}
+
 export function canonicalizeSourceUrl(value: string): string {
-	const url = new URL(value.trim());
+	const url = parseSourceUrl(value.trim());
 	url.hash = "";
 	for (const key of Array.from(url.searchParams.keys())) {
 		const normalizedKey = key.toLowerCase();

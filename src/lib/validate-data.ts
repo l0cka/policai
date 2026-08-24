@@ -32,6 +32,7 @@ import {
   canonicalizeSourceUrl,
   isAllowedSourceHost,
   isSafePublicHttpsUrl,
+  parseSourceUrl,
   sourceUrlIdentity,
   sourceUrlsEqual,
 } from '@/lib/source-url';
@@ -278,6 +279,7 @@ function validateVerification(
       warnings,
     };
   }
+  // SAFETY: isRecord establishes the object boundary; fields are validated below.
   const source = isRecord(verification.source)
     ? (verification.source as unknown as SourceEvidence)
     : undefined;
@@ -470,6 +472,7 @@ export function validatePolicies(policies: Policy[]): ValidationReport {
       errors.push(`policies[${index}]: policy must be an object`);
       return;
     }
+    // SAFETY: isRecord establishes the object boundary; fields are validated below.
     const policy = candidate as unknown as Policy;
     const label = isNonEmptyString(policy.id)
       ? policy.id
@@ -542,6 +545,7 @@ export function validatePolicies(policies: Policy[]): ValidationReport {
           ) {
             errors.push(`${dateLabel}: source is not an allowed official host`);
           } else {
+            // SAFETY: isRecord establishes the object boundary; fields are validated below.
             const dateSource = date.source as unknown as SourceEvidence;
             validateManualExtractionEvidence(dateLabel, dateSource, errors);
             validateBrowserCaptureEvidence(dateLabel, dateSource, errors);
@@ -576,6 +580,7 @@ export function validatePolicies(policies: Policy[]): ValidationReport {
         isCalendarDateString(primaryDate.date) &&
         isOneOf(DATE_PRECISIONS, primaryDate.precision)
       ) {
+        // SAFETY: isRecord establishes the object boundary; source fields were validated above.
         const primarySource = isRecord(primaryDate.source)
           ? (primaryDate.source as unknown as SourceEvidence)
           : undefined;
@@ -736,6 +741,7 @@ export function validateTimeline(
       errors.push(`timeline[${index}]: event must be an object`);
       return;
     }
+    // SAFETY: isRecord establishes the object boundary; fields are validated below.
     const event = candidate as unknown as TimelineEvent;
     const label = isNonEmptyString(event.id)
       ? event.id
@@ -1262,6 +1268,7 @@ export function validateSourceReviews(
     if (!isTimestampString(review.updatedAt))
       errors.push(`${label}: invalid updatedAt`);
     const rawSourceEvidence = review.sourceEvidence as unknown;
+    // SAFETY: isRecord establishes the object boundary; fields are validated below.
     const sourceEvidence = isRecord(rawSourceEvidence)
       ? (rawSourceEvidence as unknown as SourceEvidence)
       : undefined;
@@ -1458,7 +1465,7 @@ export function validateWatchState(state: WatchState): ValidationReport {
         entry.candidate.url,
         errors,
       );
-      const expectedKey = new URL(
+      const expectedKey = parseSourceUrl(
         canonicalizeSourceUrl(entry.candidate.url),
       );
       if (entry.candidate.changeFingerprint) {

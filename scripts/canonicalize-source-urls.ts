@@ -8,7 +8,7 @@
 import path from "node:path";
 import { withDataMutationLock } from "../src/lib/data-lock";
 import { readJsonFile, writeJsonFile } from "../src/lib/file-store";
-import { canonicalizeSourceUrl } from "../src/lib/source-url";
+import { canonicalizeSourceUrl, parseSourceUrl } from "../src/lib/source-url";
 import type { WatchState } from "../src/lib/pipeline/collect";
 
 const DATA_FILES = [
@@ -71,7 +71,7 @@ function canonicalizeWatchStateKeys(state: WatchState): boolean {
 	for (const [legacyKey, entry] of Object.entries(state.seen)) {
 		let key = legacyKey;
 		if (entry.candidate) {
-			const canonical = new URL(
+			const canonical = parseSourceUrl(
 				canonicalizeSourceUrl(entry.candidate.url),
 			);
 			if (entry.candidate.changeFingerprint) {

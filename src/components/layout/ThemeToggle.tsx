@@ -12,8 +12,8 @@ const THEME_EVENT = 'policai:theme';
 
 /**
  * Runs before first paint so a stored choice is applied without a flash of the
- * system theme. Kept as a string because it is injected via
- * `dangerouslySetInnerHTML` in the root layout.
+ * system theme. Kept as a string because the root layout renders it in a
+ * script element.
  */
 export const themeInitScript = `(function(){try{var t=localStorage.getItem('${THEME_STORAGE_KEY}');if(t==='light'||t==='dark'){document.documentElement.dataset.theme=t}}catch(e){}})();`;
 

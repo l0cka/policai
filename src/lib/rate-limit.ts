@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { parseSourceUrl } from '@/lib/source-url';
 
 /**
  * Simple in-memory sliding-window rate limiter.
@@ -49,7 +50,7 @@ export function checkRateLimit(
     request.headers.get('x-real-ip') ||
     'unknown';
 
-  const key = `${ip}:${new URL(request.url).pathname}`;
+  const key = `${ip}:${parseSourceUrl(request.url).pathname}`;
   const now = Date.now();
   const entry = store.get(key);
 

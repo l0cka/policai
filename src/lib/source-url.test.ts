@@ -1,11 +1,16 @@
 import { describe, expect, it } from "vitest";
 import {
 	canonicalizeSourceUrl,
+	parseSourceUrl,
 	sourceIdentityUrls,
 	sourceUrlsEqual,
 } from "@/lib/source-url";
 
 describe("source URL identity", () => {
+	it("rejects malformed URLs with a stable error", () => {
+		expect(() => parseSourceUrl("not a URL")).toThrow("Invalid source URL");
+	});
+
 	it("removes cosmetic and tracking variants while retaining meaningful query parameters", () => {
 		expect(
 			canonicalizeSourceUrl(

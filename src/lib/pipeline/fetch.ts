@@ -7,6 +7,7 @@ import {
   canonicalizeSourceUrl,
   isAllowedSourceHost,
   isSafePublicHttpsUrl,
+  parseSourceUrl,
   sourceUrlsEqual,
 } from '@/lib/source-url';
 import { cleanHtmlContent } from '@/lib/utils';
@@ -211,7 +212,7 @@ export async function assertSafeSourceUrl(
   }
 
   if (!resolveHost) return [];
-  const hostname = new URL(url).hostname;
+  const hostname = parseSourceUrl(url).hostname;
   let addresses: string[];
   try {
     addresses = await resolveHost(hostname);
@@ -472,7 +473,7 @@ function linkedDocumentUrls(body: string, baseUrl: string): string[] {
       }
       try {
         const resolved = canonicalizeSourceUrl(
-          new URL(value, baseUrl).toString(),
+          parseSourceUrl(value, baseUrl).toString(),
         );
         if (!isSafePublicHttpsUrl(resolved)) {
           throw new SourceFetchError(
@@ -501,7 +502,7 @@ function linkedDocumentKind(
   url: string,
   contentType: string,
 ): DocumentKind | null {
-  const pathname = new URL(url).pathname.toLowerCase();
+  const pathname = parseSourceUrl(url).pathname.toLowerCase();
   const pathKind: DocumentKind | null = pathname.endsWith('.pdf')
     ? 'pdf'
     : pathname.endsWith('.docx')
@@ -776,8 +777,8 @@ export function assertExpectedSourceDestination(
   requestedUrl: string,
   retrieved: RetrievedSource,
 ): void {
-  const requested = new URL(requestedUrl);
-  const finalUrl = new URL(
+  const requested = parseSourceUrl(requestedUrl);
+  const finalUrl = parseSourceUrl(
     retrieved.evidence.finalUrl ?? requestedUrl,
   );
 	if (sourceUrlsEqual(requestedUrl, finalUrl.toString())) return;
@@ -872,7 +873,7 @@ export async function retrieveSourceOverHttp1(
   }
   const maxResponseBytes =
     options.maxResponseBytes ?? DEFAULT_MAX_RESPONSE_BYTES;
-  const parsed = new URL(url);
+  const parsed = parseSourceUrl(url);
   const requestImpl = options.requestImpl ?? https.get;
 
   const attemptAddress = (

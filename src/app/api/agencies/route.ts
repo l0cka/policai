@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
 import { getAgencies, getCommonwealthAgencies } from '@/lib/data-service';
+import { parseSourceUrl } from '@/lib/source-url';
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
+  const { searchParams } = parseSourceUrl(request.url);
   const level = searchParams.get('level') || undefined;
   const jurisdiction = searchParams.get('jurisdiction') || undefined;
   const commonwealth = searchParams.get('commonwealth');
