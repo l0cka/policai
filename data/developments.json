@@ -1,5 +1,34 @@
 [
   {
+    "id": "dev-senate-opens-inquiry-into-artificial-intelligenc-cpttns",
+    "title": "Senate opens inquiry into artificial intelligence and data centres",
+    "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+    "sourceId": "senate-ai-data-centres",
+    "sourceName": "Senate inquiry — artificial intelligence and data centres",
+    "jurisdiction": "federal",
+    "detectedAt": "2026-08-24T19:30:50.891Z",
+    "summary": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+    "relevanceScore": 1,
+    "classification": "ai",
+    "assessment": {
+      "method": "ai",
+      "promptVersion": "claude-classify-v1",
+      "assessedAt": "2026-08-24T19:30:50.891Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+        "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+        "retrievedAt": "2026-08-24T19:30:50.891Z",
+        "contentType": "text/html",
+        "contentHash": "4198aa00cf97d068acb3fb22446f7c38d5300ed63f2412716509798ef11ad256",
+        "title": "Senate opens inquiry into artificial intelligence and data centres"
+      }
+    },
+    "status": "detected"
+  },
+  {
     "id": "dev-current-joint-inquiries-13wjirv",
     "title": "Current Joint Inquiries",
     "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Joint/Current_Inquiries",
