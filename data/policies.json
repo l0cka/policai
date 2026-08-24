@@ -5007,5 +5007,172 @@
         }
       }
     ]
+  },
+  {
+    "id": "art-generative-ai-practice-direction",
+    "title": "Administrative Review Tribunal (Generative AI) Practice Direction 2026",
+    "description": "Administrative Review Tribunal practice direction governing the use of generative AI by all persons involved in Tribunal proceedings, in every jurisdictional area.",
+    "jurisdiction": "federal",
+    "type": "practice_note",
+    "status": "active",
+    "effectiveDate": "2026-08-20",
+    "agencies": [
+      "Administrative Review Tribunal"
+    ],
+    "sourceUrl": "https://www.art.gov.au/sites/default/files/2026-08/Administrative%20Review%20Tribunal%20%28Generative%20AI%29%20Practice%20Direction.pdf",
+    "content": "Made under section 36(1) of the Administrative Review Tribunal Act 2024 and signed by the President, the Hon Justice Emilios Kyrou AO, on 20 August 2026. It commences and has effect from the date it is signed, applies to applications lodged before, on or after that date, and remains in effect until superseded or revoked. It was adapted from the Federal Court of Australia's Use of Generative Artificial Intelligence Practice Note (GPN-AI) dated 16 April 2026 with the permission of the Chief Justice. The direction applies to all persons involved in proceedings — parties, legal and other representatives, litigation supporters, expert and non-expert witnesses, interpreters, translators, and persons producing documents under summons — across all jurisdictional areas, and covers material provided to the Tribunal rather than the Tribunal's own internal administration. Part 2 sets six expectations: users must have a basic understanding of the technology's capabilities, limitations and risks; use must not adversely affect the administration of justice; use must be disclosed and certified where the Tribunal requires it; generative AI-assisted material must be verified and the user remains responsible for it; the user must be able to explain how the tool was used and how the output was checked; and a person must not rely only on a generative AI tool to verify that tool's own output. Part 3 identifies higher-risk areas — statements of facts, issues and contentions, written submissions, statutory declarations, expert reports and other evidentiary material — and lists the checks required for authorities, evidence, chronologies and country information. Disclosure is mandatory where generative AI was used to summarise or analyse information a witness relies on, to translate a document relied on as evidence, to create multimedia presented to the Tribunal, or in any other way that might reasonably affect the relevance of evidence; disclosure must appear prominently at or near the start of the document and state the tool used, where it was used and how the output was checked. Confidential, private, privileged or otherwise protected information must not be entered into a publicly available tool unless doing so is lawful and authorised, and must not be entered into a privately available tool without adequate safeguards. Non-compliance may lead the Tribunal to direct correction, replacement or withdrawal of material, require further evidence or submissions, give affected material less or no weight, or decline to rely on it, and conduct by a representative may be referred to a regulatory body. The direction is to be read with the Administrative Review Tribunal (Common Procedures) Practice Direction 2026 and the Administrative Review Tribunal (Expert Evidence) Practice Direction 2026, and the Tribunal has published a companion checklist. It is the Tribunal's eighth practice direction. The running header of the signed PDF uses the variant title 'Administrative Review Tribunal (Use of Generative AI) Practice Direction 2026'.",
+    "aiSummary": "Administrative Review Tribunal practice direction setting verification, explanation and disclosure obligations for generative AI use in Tribunal proceedings, in effect from 20 August 2026.",
+    "tags": [
+      "practice note",
+      "practice direction",
+      "generative AI",
+      "Administrative Review Tribunal",
+      "tribunals",
+      "disclosure",
+      "courts",
+      "judicial"
+    ],
+    "createdAt": "2026-08-20T00:00:00Z",
+    "updatedAt": "2026-08-24T23:32:02.000Z",
+    "lastReviewedAt": "2026-08-24T23:32:02.000Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.art.gov.au/sites/default/files/2026-08/Administrative%20Review%20Tribunal%20%28Generative%20AI%29%20Practice%20Direction.pdf",
+        "finalUrl": "https://www.art.gov.au/sites/default/files/2026-08/Administrative%20Review%20Tribunal%20%28Generative%20AI%29%20Practice%20Direction.pdf",
+        "title": "Administrative Review Tribunal (Generative AI) Practice Direction 2026",
+        "publisher": "Administrative Review Tribunal",
+        "retrievedAt": "2026-08-24T23:30:00.000Z",
+        "publishedAt": "2026-08-20",
+        "publishedAtPrecision": "day",
+        "contentType": "application/pdf",
+        "contentHash": "0c870bd4ff1236cd4747703e46aa7fa2bb8ef7caee265461c18448887769f051"
+      },
+      "checkedAt": "2026-08-24T23:32:02.000Z",
+      "checkedBy": "Policai editorial source review",
+      "method": "manual",
+      "notes": "Retrieved the signed practice direction PDF from the Tribunal's official site, fingerprinted it, and read it in full against the Tribunal's announcement of 24 August 2026 before creating this record."
+    },
+    "dates": [
+      {
+        "type": "issued",
+        "date": "2026-08-20",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://www.art.gov.au/sites/default/files/2026-08/Administrative%20Review%20Tribunal%20%28Generative%20AI%29%20Practice%20Direction.pdf",
+          "finalUrl": "https://www.art.gov.au/sites/default/files/2026-08/Administrative%20Review%20Tribunal%20%28Generative%20AI%29%20Practice%20Direction.pdf",
+          "title": "Administrative Review Tribunal (Generative AI) Practice Direction 2026",
+          "publisher": "Administrative Review Tribunal",
+          "retrievedAt": "2026-08-24T23:30:00.000Z",
+          "publishedAt": "2026-08-20",
+          "publishedAtPrecision": "day",
+          "contentType": "application/pdf",
+          "contentHash": "0c870bd4ff1236cd4747703e46aa7fa2bb8ef7caee265461c18448887769f051",
+          "reviewedDate": {
+            "date": "2026-08-20",
+            "precision": "day",
+            "reviewedAt": "2026-08-24T23:32:02.000Z",
+            "reviewedBy": "Policai editorial source review",
+            "notes": "The signed practice direction is dated 20 August 2026 and paragraph 1.3 states that it commences and has effect from the date it is signed, supporting the issued date at day precision."
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "fwc-genai-guidance-note",
+    "title": "Guidance Note: Use of Generative Artificial Intelligence in Commission Cases",
+    "description": "Fair Work Commission guidance note setting mandatory disclosure and verification requirements for generative AI used to prepare documents lodged in Commission cases, commencing 20 October 2026.",
+    "jurisdiction": "federal",
+    "type": "practice_note",
+    "status": "active",
+    "effectiveDate": "2026-10-20",
+    "agencies": [
+      "Fair Work Commission"
+    ],
+    "sourceUrl": "https://www.fwc.gov.au/documents/resources/guidance-note-use-of-generative-ai-in-commission-cases.pdf",
+    "content": "Published on 24 August 2026 and commencing on 20 October 2026, following an exposure draft released for consultation on 24 March 2026. The guidance note applies whenever generative AI is used to create, write, edit, modify or otherwise prepare an application to the Commission or any other document to be lodged in a Commission case; using generative AI only to check spelling or grammar, or to format a document, is excluded. Three requirements apply. Requirement 1: the document must state that generative AI was used and how it was used. Requirement 2: the person must check the document and make any necessary changes so that all details are correct and relevant, and must state in the document that this was done — the checks cover whether references to facts and evidence are correct and the facts and evidence exist, whether cases, legislation, textbooks and articles cited exist and support the legal positions claimed, and whether extracts and quotes are accurate and come from the stated sources. The Commission states the checking must be done by a person and cannot be delegated to the same or a different generative AI tool. Requirement 3: where the document is a witness statement or declaration, the witness or declarant must check that it is based on their own knowledge, reflects their own words and is true to the best of their knowledge, and must state that in the document. Professional representatives — lawyers, paid agents, employed human resources advisers, and union or employer organisation officers — must additionally include hyperlinks to all case law referred to in a document prepared using generative AI, where hyperlinks are available. Personal information about other people involved in a case and confidential case information should not be given to public generative AI tools. Non-compliance may result in documents being given less weight or disregarded, costs orders against the non-complying party, or dismissal of the case. The guidance note records that knowingly giving false or misleading information to the Commission is an offence under section 137.1 of the Criminal Code and that giving false or misleading sworn evidence is an offence under section 678 of the Fair Work Act, each punishable by up to 12 months' imprisonment. The Commission states the guidance note will be amended from time to time and that users are responsible for keeping up to date with its requirements. From 20 October 2026 some Commission forms will include a question about generative AI use.",
+    "aiSummary": "Fair Work Commission guidance note requiring disclosure of generative AI use, human verification of every document detail, and witness-statement attestations in all Commission matters from 20 October 2026.",
+    "tags": [
+      "practice note",
+      "guidance note",
+      "generative AI",
+      "Fair Work Commission",
+      "tribunals",
+      "disclosure",
+      "employment",
+      "courts"
+    ],
+    "createdAt": "2026-08-24T00:00:00Z",
+    "updatedAt": "2026-08-24T23:32:02.000Z",
+    "lastReviewedAt": "2026-08-24T23:32:02.000Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.fwc.gov.au/documents/resources/guidance-note-use-of-generative-ai-in-commission-cases.pdf",
+        "finalUrl": "https://www.fwc.gov.au/documents/resources/guidance-note-use-of-generative-ai-in-commission-cases.pdf",
+        "title": "Guidance note - Use of generative artificial intelligence in Commission cases",
+        "publisher": "Fair Work Commission",
+        "retrievedAt": "2026-08-24T23:30:00.000Z",
+        "publishedAt": "2026-08-24",
+        "publishedAtPrecision": "day",
+        "contentType": "application/pdf",
+        "contentHash": "2715d2249a14946d6a931856b9c8adb5a3cf8fb4c5c8a68ef4a4f7073a378e55"
+      },
+      "checkedAt": "2026-08-24T23:32:02.000Z",
+      "checkedBy": "Policai editorial source review",
+      "method": "manual",
+      "notes": "Retrieved the published guidance note PDF from the Commission's official site, fingerprinted it, and read it in full against the Commission's GenAI landing page at fwc.gov.au/genai before creating this record."
+    },
+    "dates": [
+      {
+        "type": "effective",
+        "date": "2026-10-20",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://www.fwc.gov.au/documents/resources/guidance-note-use-of-generative-ai-in-commission-cases.pdf",
+          "finalUrl": "https://www.fwc.gov.au/documents/resources/guidance-note-use-of-generative-ai-in-commission-cases.pdf",
+          "title": "Guidance note - Use of generative artificial intelligence in Commission cases",
+          "publisher": "Fair Work Commission",
+          "retrievedAt": "2026-08-24T23:30:00.000Z",
+          "publishedAt": "2026-08-24",
+          "publishedAtPrecision": "day",
+          "contentType": "application/pdf",
+          "contentHash": "2715d2249a14946d6a931856b9c8adb5a3cf8fb4c5c8a68ef4a4f7073a378e55",
+          "reviewedDate": {
+            "date": "2026-10-20",
+            "precision": "day",
+            "reviewedAt": "2026-08-24T23:32:02.000Z",
+            "reviewedBy": "Policai editorial source review",
+            "notes": "Paragraph 5 of the guidance note states that it commences on 20 October 2026, and the Commission's GenAI page states the requirements apply to all Commission matters from that date."
+          }
+        }
+      },
+      {
+        "type": "published",
+        "date": "2026-08-24",
+        "precision": "day",
+        "source": {
+          "url": "https://www.fwc.gov.au/documents/resources/guidance-note-use-of-generative-ai-in-commission-cases.pdf",
+          "finalUrl": "https://www.fwc.gov.au/documents/resources/guidance-note-use-of-generative-ai-in-commission-cases.pdf",
+          "title": "Guidance note - Use of generative artificial intelligence in Commission cases",
+          "publisher": "Fair Work Commission",
+          "retrievedAt": "2026-08-24T23:30:00.000Z",
+          "publishedAt": "2026-08-24",
+          "publishedAtPrecision": "day",
+          "contentType": "application/pdf",
+          "contentHash": "2715d2249a14946d6a931856b9c8adb5a3cf8fb4c5c8a68ef4a4f7073a378e55",
+          "reviewedDate": {
+            "date": "2026-08-24",
+            "precision": "day",
+            "reviewedAt": "2026-08-24T23:32:02.000Z",
+            "reviewedBy": "Policai editorial source review",
+            "notes": "Every page footer of the guidance note PDF carries the line 'Published: 24 August 2026', supporting the publication date at day precision."
+          }
+        }
+      }
+    ]
   }
 ]

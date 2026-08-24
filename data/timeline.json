@@ -1673,5 +1673,63 @@
       "method": "manual",
       "notes": "Approved by the user on 12 August 2026 as a timeline event, not an adopted policy. The official NSW source confirms that NESA was asked to examine possible measures; it does not announce a completed guideline or rule."
     }
+  },
+  {
+    "id": "tl-2026-08-20-art-issues-generative-ai-practice-direction",
+    "date": "2026-08-20",
+    "datePrecision": "day",
+    "title": "Administrative Review Tribunal issues its Generative AI Practice Direction",
+    "description": "President Justice Emilios Kyrou AO signed the Administrative Review Tribunal (Generative AI) Practice Direction 2026, which commenced on signing and applies to all persons involved in Tribunal proceedings across every jurisdictional area. It was adapted from the Federal Court's GPN-AI and sets verification, explanation and disclosure duties.",
+    "type": "policy_introduced",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "art-generative-ai-practice-direction",
+    "sourceUrl": "https://www.art.gov.au/sites/default/files/2026-08/Administrative%20Review%20Tribunal%20%28Generative%20AI%29%20Practice%20Direction.pdf",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.art.gov.au/sites/default/files/2026-08/Administrative%20Review%20Tribunal%20%28Generative%20AI%29%20Practice%20Direction.pdf",
+        "finalUrl": "https://www.art.gov.au/sites/default/files/2026-08/Administrative%20Review%20Tribunal%20%28Generative%20AI%29%20Practice%20Direction.pdf",
+        "title": "Administrative Review Tribunal (Generative AI) Practice Direction 2026",
+        "publisher": "Administrative Review Tribunal",
+        "retrievedAt": "2026-08-24T23:30:00.000Z",
+        "publishedAt": "2026-08-20",
+        "publishedAtPrecision": "day",
+        "contentType": "application/pdf",
+        "contentHash": "0c870bd4ff1236cd4747703e46aa7fa2bb8ef7caee265461c18448887769f051"
+      },
+      "checkedAt": "2026-08-24T23:32:02.000Z",
+      "checkedBy": "Policai editorial source review",
+      "method": "manual",
+      "notes": "The signed practice direction is dated 20 August 2026 and paragraph 1.3 states it commences and has effect from the date it is signed. The Tribunal announced it on 24 August 2026."
+    }
+  },
+  {
+    "id": "tl-2026-08-24-fwc-publishes-genai-guidance-note",
+    "date": "2026-08-24",
+    "datePrecision": "day",
+    "title": "Fair Work Commission publishes its generative AI guidance note",
+    "description": "The Commission published the Guidance Note: Use of Generative Artificial Intelligence in Commission Cases, following consultation on an exposure draft released in March 2026. It requires disclosure of generative AI use, human verification of every document detail, and witness-statement attestations, and commences on 20 October 2026.",
+    "type": "policy_introduced",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "fwc-genai-guidance-note",
+    "sourceUrl": "https://www.fwc.gov.au/documents/resources/guidance-note-use-of-generative-ai-in-commission-cases.pdf",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.fwc.gov.au/documents/resources/guidance-note-use-of-generative-ai-in-commission-cases.pdf",
+        "finalUrl": "https://www.fwc.gov.au/documents/resources/guidance-note-use-of-generative-ai-in-commission-cases.pdf",
+        "title": "Guidance note - Use of generative artificial intelligence in Commission cases",
+        "publisher": "Fair Work Commission",
+        "retrievedAt": "2026-08-24T23:30:00.000Z",
+        "publishedAt": "2026-08-24",
+        "publishedAtPrecision": "day",
+        "contentType": "application/pdf",
+        "contentHash": "2715d2249a14946d6a931856b9c8adb5a3cf8fb4c5c8a68ef4a4f7073a378e55"
+      },
+      "checkedAt": "2026-08-24T23:32:02.000Z",
+      "checkedBy": "Policai editorial source review",
+      "method": "manual",
+      "notes": "Every page footer of the guidance note PDF carries 'Published: 24 August 2026', and paragraph 5 states the guidance note commences on 20 October 2026."
+    }
   }
 ]
