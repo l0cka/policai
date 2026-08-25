@@ -30,10 +30,10 @@ function normalizePdfText(value) {
 }
 
 (async () => {
-  let pdf;
+  let loadingTask;
   try {
     const { getDocument } = await import('pdfjs-dist/legacy/build/pdf.mjs');
-    const loadingTask = getDocument({
+    loadingTask = getDocument({
       data: new Uint8Array(workerData.bytes),
       isEvalSupported: false,
       useSystemFonts: true,
@@ -73,11 +73,11 @@ function normalizePdfText(value) {
       0,
       workerData.maxCharacters,
     );
-    await pdf.destroy();
-    pdf = undefined;
+    await loadingTask.destroy();
+    loadingTask = undefined;
     parentPort.postMessage({ ok: true, metadataTitle, text });
   } catch (error) {
-    if (pdf) await pdf.destroy().catch(() => undefined);
+    if (loadingTask) await loadingTask.destroy().catch(() => undefined);
     parentPort.postMessage({
       ok: false,
       error: error instanceof Error ? error.message : String(error),
