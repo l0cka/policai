@@ -1675,7 +1675,7 @@
       }
     },
     "status": "dismissed",
-    "dismissalReason": "Duplicate Attorney-General URL for verified timeline event tl-2026-07-20-ai-consumer-safety-priorities."
+    "dismissalReason": "Duplicate: same joint ministerial release cross-published on AGD site; kept industry.gov.au copy (dev-ai-consumer-safety-priorities-senator-the-hon-ti-m7lhj1)."
   },
   {
     "id": "dev-ai-in-recruitment-1ho92xc",
@@ -1811,7 +1811,7 @@
       }
     },
     "status": "dismissed",
-    "dismissalReason": "False positive: Aids to Navigation (AtoN) is maritime navigation infrastructure, not artificial intelligence."
+    "dismissalReason": "False positive: ANAO performance audit of aids-to-navigation procurement, no AI policy relevance."
   },
   {
     "id": "dev-human-rights-belong-at-the-centre-of-australia-s-1fzy4pq",
