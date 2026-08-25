@@ -1005,6 +1005,8 @@ async function getLegacyTimelineDevelopments(now: Date): Promise<Development[]> 
 export async function getDevelopments(filters?: {
 	jurisdiction?: string;
 	status?: string;
+	search?: string;
+	since?: string;
 	limit?: number;
 }, options: DataServiceOptions = {}): Promise<Development[]> {
 	const access = options.access ?? "public";
@@ -1105,6 +1107,20 @@ export async function getDevelopments(filters?: {
 	}
 	if (filters?.status) {
 		developments = developments.filter((d) => d.status === filters.status);
+	}
+	if (filters?.search) {
+		const search = filters.search.toLowerCase();
+		developments = developments.filter((d) =>
+			[d.title, d.summary, d.sourceName].some((value) =>
+				value?.toLowerCase().includes(search),
+			),
+		);
+	}
+	if (filters?.since) {
+		const since = new Date(filters.since).getTime();
+		developments = developments.filter(
+			(d) => new Date(d.publishedAt || d.detectedAt).getTime() >= since,
+		);
 	}
 
 	developments = developments.sort(

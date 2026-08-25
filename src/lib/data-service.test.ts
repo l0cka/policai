@@ -1287,6 +1287,49 @@ describe("data-service file store", () => {
 		).resolves.toHaveLength(3);
 	});
 
+	it("filters developments by search text and date", async () => {
+		const base = {
+			url: "https://example.gov.au/development",
+			sourceId: "s",
+			sourceName: "Example agency",
+			jurisdiction: "federal" as const,
+			relevanceScore: 0.55,
+			classification: "heuristic" as const,
+			assessment: {
+				method: "heuristic" as const,
+				assessedAt: "2026-08-02T00:00:00.000Z",
+				promptVersion: "test",
+			},
+			verification: {
+				status: "needs_review" as const,
+				source: { url: "https://example.gov.au/development" },
+			},
+			status: "detected" as const,
+		};
+		const matching = {
+			...base,
+			id: "matching",
+			title: "AI assurance guidance",
+			detectedAt: "2026-08-02T00:00:00.000Z",
+		};
+		const old = {
+			...base,
+			id: "old",
+			title: "AI assurance framework",
+			detectedAt: "2026-07-01T00:00:00.000Z",
+		};
+		readJsonFile.mockResolvedValue([old, matching]);
+
+		const { getDevelopments } = await loadDataServiceModule();
+
+		await expect(
+			getDevelopments(
+				{ search: "assurance", since: "2026-08-01", limit: 1 },
+				{ access: "admin" },
+			),
+		).resolves.toEqual([matching]);
+	});
+
 	it("withholds a lead when its rejected review outlives a failed dismissal write", async () => {
 		const development = {
 			id: "dev-rejected-partial-write",

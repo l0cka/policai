@@ -1,13 +1,20 @@
-import { NextResponse } from "next/server";
 import {
 	getCollectionMeta,
 	getDevelopments,
 	getSourceMonitoring,
 } from "@/lib/data-service";
 import { WATCH_SOURCES } from "@/lib/pipeline/sources";
+import {
+	checkPublicApiRequest,
+	publicApiJson,
+	publicApiOptions,
+} from "@/lib/public-api";
 import { summarizeManualSourceCoverage } from "@/lib/source-monitoring";
 
-export async function GET() {
+export async function GET(request?: Request) {
+	const limited = checkPublicApiRequest(request);
+	if (limited) return limited;
+
 	const [meta, recentDevelopments, monitoring] = await Promise.all([
 		getCollectionMeta(),
 		getDevelopments({ limit: 1 }),
@@ -20,7 +27,7 @@ export async function GET() {
 
 	const latest = recentDevelopments[0];
 
-	return NextResponse.json({
+	return publicApiJson({
 		lastCollectedAt: meta.lastCollectedAt,
 		lastHealthyAt: meta.lastHealthyAt,
 		lastReviewedAt: meta.lastReviewedAt,
@@ -46,4 +53,8 @@ export async function GET() {
 			: null,
 		success: true,
 	});
+}
+
+export function OPTIONS() {
+	return publicApiOptions();
 }

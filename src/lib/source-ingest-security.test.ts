@@ -13,14 +13,21 @@ describe("captured-document security", () => {
 		const replacement = Buffer.from("not a recognised document");
 		await writeFile(sourcePath, original);
 
+		const options = {
+			afterOpen: async () => {
+				await rename(sourcePath, movedPath);
+				await writeFile(sourcePath, replacement);
+			},
+		};
 		try {
-			const result = await readCapturedDocument(sourcePath, {
-				afterOpen: async () => {
-					await rename(sourcePath, movedPath);
-					await writeFile(sourcePath, replacement);
-				},
-			});
-			expect(Buffer.from(result.bytes)).toEqual(original);
+			if (process.platform === "linux") {
+				const result = await readCapturedDocument(sourcePath, options);
+				expect(Buffer.from(result.bytes)).toEqual(original);
+			} else {
+				await expect(readCapturedDocument(sourcePath, options)).rejects.toThrow(
+					"Browser capture document changed while it was being opened",
+				);
+			}
 		} finally {
 			await unlink(sourcePath).catch(() => undefined);
 			await unlink(movedPath).catch(() => undefined);

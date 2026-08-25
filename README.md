@@ -1,6 +1,5 @@
 # Policai
 
-
 Policai is an Australian AI policy tracker. It maintains a curated register of AI policy, regulation, governance and court guidance across federal and state/territory jurisdictions, and automatically detects new developments from official government sources every day.
 
 Product surface:
@@ -65,7 +64,8 @@ npm run check          # lint + strict typecheck + test + validate + build
 npm run collect        # run one collection pass (add -- --dry-run to preview)
 npm run audit:sources  # live health check of automatic discovery sources
 npm run audit:register # compare curated source fingerprints
-npm run mcp            # run the local MCP source-ingest server
+npm run mcp            # run the local editorial MCP server
+npm run mcp:public     # run the read-only public MCP server
 ```
 
 ## Repository Layout
@@ -75,7 +75,7 @@ src/app/            App Router pages and read-only API routes
 src/components/     UI, layout, network, and visualisation components
 src/lib/            data service, validation, analysis helpers
 src/lib/pipeline/   collector: sources, extract, classify, orchestrate
-src/mcp/            local MCP source-ingest server (curated publishing)
+src/mcp/            local editorial and public read-only MCP servers
 src/types/          shared domain types
 public/data/        public-safe canonical data served directly as open JSON
 data/               editorial register/data, collector state, reviews, coverage
@@ -92,13 +92,16 @@ Everything the site shows is also available as plain JSON, for example:
 - `https://policai.org/data/developments.json`
 - `https://policai.org/data/timeline.json`
 
-Policy, agency, and timeline JSON is served through read-only route handlers so
-unverified, stale, or withheld editorial records cannot bypass the same public
-filters as the site.
+Read-only route handlers serve policy, agency, and timeline JSON. They apply the
+same public verification filters as the site.
+
+The [public API and MCP guide](./docs/api.md) lists the supported endpoints,
+filters, response formats, and MCP tools.
 
 ## Operations Docs
 
 - [Documentation index](./docs/README.md)
+- [Public API and MCP](./docs/api.md)
 - [Collector operations guide](./docs/collector.md)
 - [Information trust model](./docs/trust-model.md)
 - [Architecture](./docs/architecture.md)

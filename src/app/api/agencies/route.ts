@@ -1,18 +1,53 @@
-import { NextResponse } from 'next/server';
-import { getAgencies, getCommonwealthAgencies } from '@/lib/data-service';
-import { parseSourceUrl } from '@/lib/source-url';
+import { getAgencies, getCommonwealthAgencies } from "@/lib/data-service";
+import {
+  checkPublicApiRequest,
+  publicApiError,
+  publicApiJson,
+  publicApiOptions,
+} from "@/lib/public-api";
+import { parseSourceUrl } from "@/lib/source-url";
+import { JURISDICTIONS } from "@/types";
 
 export async function GET(request: Request) {
-  const { searchParams } = parseSourceUrl(request.url);
-  const level = searchParams.get('level') || undefined;
-  const jurisdiction = searchParams.get('jurisdiction') || undefined;
-  const commonwealth = searchParams.get('commonwealth');
+  const limited = checkPublicApiRequest(request);
+  if (limited) return limited;
 
-  if (commonwealth === 'true') {
+  const { searchParams } = parseSourceUrl(request.url);
+  const level = searchParams.get("level") || undefined;
+  const jurisdiction = searchParams.get("jurisdiction") || undefined;
+  const commonwealth = searchParams.get("commonwealth");
+
+  if (level && !["federal", "state"].includes(level)) {
+    return publicApiError("Invalid level. Allowed values: federal, state");
+  }
+  if (jurisdiction && !JURISDICTIONS.includes(jurisdiction as never)) {
+    return publicApiError(
+      `Invalid jurisdiction. Allowed values: ${JURISDICTIONS.join(", ")}`,
+    );
+  }
+  if (commonwealth && !["true", "false"].includes(commonwealth)) {
+    return publicApiError(
+      "Invalid commonwealth value. Allowed values: true, false",
+    );
+  }
+
+  if (commonwealth === "true") {
     const agencies = await getCommonwealthAgencies();
-    return NextResponse.json({ data: agencies, total: agencies.length, success: true });
+    return publicApiJson({
+      data: agencies,
+      total: agencies.length,
+      success: true,
+    });
   }
 
   const agencies = await getAgencies({ level, jurisdiction });
-  return NextResponse.json({ data: agencies, total: agencies.length, success: true });
+  return publicApiJson({
+    data: agencies,
+    total: agencies.length,
+    success: true,
+  });
+}
+
+export function OPTIONS() {
+  return publicApiOptions();
 }
