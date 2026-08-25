@@ -18,6 +18,7 @@
     "audit:sources": "tsx scripts/audit-sources.ts",
     "validate:data": "tsx scripts/validate-data.ts",
     "mcp": "tsx src/mcp/server.ts",
+    "mcp:public": "tsx src/mcp/public-server.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage"
