@@ -5174,5 +5174,1285 @@
         }
       }
     ]
+  },
+  {
+    "id": "nsw-ncat-procedural-direction-7-genai",
+    "title": "NCAT Procedural Direction 7 — Use of Generative Artificial Intelligence (Gen AI)",
+    "description": "NCAT procedural direction applying generative AI restrictions to all Tribunal proceedings, based on Supreme Court Practice Note SC Gen 23 with tribunal-specific modifications.",
+    "jurisdiction": "nsw",
+    "type": "practice_note",
+    "status": "active",
+    "effectiveDate": "2025-04-07",
+    "agencies": [
+      "NSW Civil and Administrative Tribunal"
+    ],
+    "sourceUrl": "https://ncat.nsw.gov.au/documents/procedural-directions/ncat-pd7-use-of-generative-ai.pdf",
+    "content": "Issued on 7 March 2025 and commencing on 7 April 2025, this Procedural Direction applies to all NCAT proceedings. It is based on Supreme Court Practice Note SC Gen 23 — Use of Generative Artificial Intelligence (Gen AI), issued by the Chief Justice of New South Wales on 28 January 2025, with modifications to accommodate the types of proceedings NCAT determines. It applies to both closed-source and open-source large language models. Paragraph 6 carves out technology that merely corrects spelling or grammar, provides transcription or translation, assists with formatting or otherwise does not generate substantive content, and expressly excludes general search engines and dedicated legal research software that searches legislation, judgments, books or articles. Paragraph 7 lists the risks users must be aware of: hallucinated citations and fabricated legislative, case or secondary references; dependence on the quality and reach of underlying data sets, including misinformation or data not relevant to New South Wales or Australia; biased or inaccurate output; prompts being absorbed into the model database and reused; the absence of safeguards for confidentiality, privacy or legal professional privilege; and data obtained in breach of copyright. Paragraph 9 imposes a general prohibition on entering three categories of material into any generative AI program: information subject to a non-disclosure, non-publication or confidentiality order of the Tribunal; information created or obtained in connection with proceedings that is subject to a statutory publication or disclosure restriction; and material produced under a Tribunal summons — unless the responsible person is satisfied the supplier guarantees the data is not made public, is used only for the proceedings and is not used to train the model. Paragraph 10 preserves statutory obligations including section 101 of the Guardianship Act 1987 (NSW), sections 64 and 65 of the Civil and Administrative Tribunal Act 2013 (NSW) and clause 7 of Schedule 5D to the Health Practitioner Regulation National Law (NSW). Paragraph 11 permits use for chronologies, indexes and witness lists, briefs, summarising or reviewing documents and transcripts, and preparing written submissions. Paragraphs 12 to 14 prohibit using generative AI to generate the content of statements, affidavits, statutory declarations, character references or other material intended to reflect a person's evidence, and prohibit its use to alter, embellish, strengthen, dilute or otherwise rephrase a witness's written evidence. In exceptional cases leave may be sought to use generative AI for an attachment, annexure or exhibit; the application must identify the use, the program and version, whether it is closed or open source, and the benefit derived. Verification of citations must not be carried out solely by using a generative AI tool.",
+    "aiSummary": "NCAT procedural direction adopting the SC Gen 23 framework for all Tribunal proceedings, prohibiting generative AI in evidentiary material and restricting confidential material, commencing 7 April 2025.",
+    "tags": [
+      "practice note",
+      "procedural direction",
+      "generative AI",
+      "NCAT",
+      "tribunals",
+      "disclosure",
+      "courts",
+      "judicial"
+    ],
+    "createdAt": "2025-04-07T00:00:00Z",
+    "updatedAt": "2026-08-25T02:01:07.000Z",
+    "lastReviewedAt": "2026-08-25T02:01:07.000Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://ncat.nsw.gov.au/documents/procedural-directions/ncat-pd7-use-of-generative-ai.pdf",
+        "finalUrl": "https://ncat.nsw.gov.au/documents/procedural-directions/ncat-pd7-use-of-generative-ai.pdf",
+        "title": "NCAT Procedural Direction 7 — Use of Generative Artificial Intelligence (Gen AI)",
+        "publisher": "NSW Civil and Administrative Tribunal",
+        "retrievedAt": "2026-08-25T01:54:12.220Z",
+        "contentType": "application/pdf",
+        "contentHash": "16166188601235ed6a416d6e1354e0960301995a6b484ceab52f365d59178e97",
+        "lastModified": "Fri, 07 Mar 2025 04:46:55 GMT"
+      },
+      "checkedAt": "2026-08-25T02:01:07.000Z",
+      "checkedBy": "Policai editorial source review",
+      "method": "manual",
+      "notes": "Retrieved the procedural direction PDF from the NCAT site through the collector retrieval path, fingerprinted it, and read it in full before creating this record."
+    },
+    "dates": [
+      {
+        "type": "commenced",
+        "date": "2025-04-07",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://ncat.nsw.gov.au/documents/procedural-directions/ncat-pd7-use-of-generative-ai.pdf",
+          "finalUrl": "https://ncat.nsw.gov.au/documents/procedural-directions/ncat-pd7-use-of-generative-ai.pdf",
+          "title": "NCAT Procedural Direction 7 — Use of Generative Artificial Intelligence (Gen AI)",
+          "publisher": "NSW Civil and Administrative Tribunal",
+          "retrievedAt": "2026-08-25T01:54:12.220Z",
+          "contentType": "application/pdf",
+          "contentHash": "16166188601235ed6a416d6e1354e0960301995a6b484ceab52f365d59178e97",
+          "lastModified": "Fri, 07 Mar 2025 04:46:55 GMT",
+          "reviewedDate": {
+            "date": "2025-04-07",
+            "precision": "day",
+            "reviewedAt": "2026-08-25T02:01:07.000Z",
+            "reviewedBy": "Policai editorial source review",
+            "notes": "Paragraph 1 states the Procedural Direction was issued on 7 March 2025 and commences on 7 April 2025, applying to all proceedings from that date."
+          }
+        }
+      },
+      {
+        "type": "issued",
+        "date": "2025-03-07",
+        "precision": "day",
+        "source": {
+          "url": "https://ncat.nsw.gov.au/documents/procedural-directions/ncat-pd7-use-of-generative-ai.pdf",
+          "finalUrl": "https://ncat.nsw.gov.au/documents/procedural-directions/ncat-pd7-use-of-generative-ai.pdf",
+          "title": "NCAT Procedural Direction 7 — Use of Generative Artificial Intelligence (Gen AI)",
+          "publisher": "NSW Civil and Administrative Tribunal",
+          "retrievedAt": "2026-08-25T01:54:12.220Z",
+          "contentType": "application/pdf",
+          "contentHash": "16166188601235ed6a416d6e1354e0960301995a6b484ceab52f365d59178e97",
+          "lastModified": "Fri, 07 Mar 2025 04:46:55 GMT",
+          "reviewedDate": {
+            "date": "2025-03-07",
+            "precision": "day",
+            "reviewedAt": "2026-08-25T02:01:07.000Z",
+            "reviewedBy": "Policai editorial source review",
+            "notes": "Paragraph 1 and the cover page both record the issue date of 7 March 2025."
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "nsw-district-court-genai-practice-note",
+    "title": "District Court General Practice Note 2 — Generative AI Practice Note",
+    "description": "District Court of New South Wales general practice note adopting Supreme Court Practice Note SC Gen 23 for all District Court proceedings.",
+    "jurisdiction": "nsw",
+    "type": "practice_note",
+    "status": "active",
+    "effectiveDate": "2025-02-03",
+    "agencies": [
+      "District Court of New South Wales"
+    ],
+    "sourceUrl": "https://districtcourt.nsw.gov.au/documents/practice-notes/district-court-pn---general/Gen_AI_Practice_Note.pdf",
+    "content": "General Practice Note 2 was signed by the Hon Justice S Huggett, Chief Judge of the District Court of New South Wales, on 18 December 2024 and commences on 3 February 2025. It is a short adopting instrument: the District Court adopts Supreme Court Practice Note SC Gen 23 — Use of Generative Artificial Intelligence (Gen AI) in its current form and as amended from time to time. The published document reproduces the full text of SC Gen 23 alongside the adopting note, so the operative obligations are those of SC Gen 23: a general prohibition on entering confidentiality-ordered material, statutorily restricted material and material produced under subpoena into any generative AI program; a prohibition on using generative AI to generate the content of affidavits, statements, statutory declarations, character references or other material reflecting a witness's evidence; a prohibition on using it to alter, embellish, strengthen, dilute or rephrase a witness's written evidence; a leave requirement for exceptional use in attachments and annexures; and a requirement that citations and authorities in submissions be verified, with verification not carried out solely by a generative AI tool. Because the adoption is expressed to track SC Gen 23 as amended, any revision to the Supreme Court practice note flows through to the District Court automatically.",
+    "aiSummary": "District Court of New South Wales practice note adopting Supreme Court Practice Note SC Gen 23 as amended, commencing 3 February 2025.",
+    "tags": [
+      "practice note",
+      "generative AI",
+      "District Court of NSW",
+      "courts",
+      "disclosure",
+      "judicial"
+    ],
+    "createdAt": "2025-02-03T00:00:00Z",
+    "updatedAt": "2026-08-25T02:01:07.000Z",
+    "lastReviewedAt": "2026-08-25T02:01:07.000Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://districtcourt.nsw.gov.au/documents/practice-notes/district-court-pn---general/Gen_AI_Practice_Note.pdf",
+        "finalUrl": "https://districtcourt.nsw.gov.au/documents/practice-notes/district-court-pn---general/Gen_AI_Practice_Note.pdf",
+        "title": "District Court General Practice Note 2 — Generative AI Practice Note",
+        "publisher": "District Court of New South Wales",
+        "retrievedAt": "2026-08-25T01:54:12.524Z",
+        "contentType": "application/pdf",
+        "contentHash": "ebdf82f866f587516787eff5a13c59b279afc57ba62a9615fc6d3354c5656987",
+        "lastModified": "Mon, 03 Feb 2025 09:56:09 GMT"
+      },
+      "checkedAt": "2026-08-25T02:01:07.000Z",
+      "checkedBy": "Policai editorial source review",
+      "method": "manual",
+      "notes": "Retrieved the practice note PDF from the District Court site through the collector retrieval path, fingerprinted it, and read the adopting note and the reproduced SC Gen 23 text in full before creating this record."
+    },
+    "dates": [
+      {
+        "type": "commenced",
+        "date": "2025-02-03",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://districtcourt.nsw.gov.au/documents/practice-notes/district-court-pn---general/Gen_AI_Practice_Note.pdf",
+          "finalUrl": "https://districtcourt.nsw.gov.au/documents/practice-notes/district-court-pn---general/Gen_AI_Practice_Note.pdf",
+          "title": "District Court General Practice Note 2 — Generative AI Practice Note",
+          "publisher": "District Court of New South Wales",
+          "retrievedAt": "2026-08-25T01:54:12.524Z",
+          "contentType": "application/pdf",
+          "contentHash": "ebdf82f866f587516787eff5a13c59b279afc57ba62a9615fc6d3354c5656987",
+          "lastModified": "Mon, 03 Feb 2025 09:56:09 GMT",
+          "reviewedDate": {
+            "date": "2025-02-03",
+            "precision": "day",
+            "reviewedAt": "2026-08-25T02:01:07.000Z",
+            "reviewedBy": "Policai editorial source review",
+            "notes": "Paragraph 2 of the District Court practice note states that it commences 3 February 2025."
+          }
+        }
+      },
+      {
+        "type": "issued",
+        "date": "2024-12-18",
+        "precision": "day",
+        "source": {
+          "url": "https://districtcourt.nsw.gov.au/documents/practice-notes/district-court-pn---general/Gen_AI_Practice_Note.pdf",
+          "finalUrl": "https://districtcourt.nsw.gov.au/documents/practice-notes/district-court-pn---general/Gen_AI_Practice_Note.pdf",
+          "title": "District Court General Practice Note 2 — Generative AI Practice Note",
+          "publisher": "District Court of New South Wales",
+          "retrievedAt": "2026-08-25T01:54:12.524Z",
+          "contentType": "application/pdf",
+          "contentHash": "ebdf82f866f587516787eff5a13c59b279afc57ba62a9615fc6d3354c5656987",
+          "lastModified": "Mon, 03 Feb 2025 09:56:09 GMT",
+          "reviewedDate": {
+            "date": "2024-12-18",
+            "precision": "day",
+            "reviewedAt": "2026-08-25T02:01:07.000Z",
+            "reviewedBy": "Policai editorial source review",
+            "notes": "The practice note is signed by Chief Judge Huggett and dated 18 December 2024."
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "nsw-irc-practice-note-33-genai",
+    "title": "Practice Note No 33 — Use of Generative Artificial Intelligence (Gen AI)",
+    "description": "Industrial Relations Commission of New South Wales practice note governing generative AI use in all Commission proceedings, including the Commission in Court Session.",
+    "jurisdiction": "nsw",
+    "type": "practice_note",
+    "status": "active",
+    "effectiveDate": "2025-02-19",
+    "agencies": [
+      "Industrial Relations Commission of New South Wales"
+    ],
+    "sourceUrl": "https://irc.nsw.gov.au/documents/practice-notes/Practice_Note_No_33_-_Use_of_GenAI.pdf",
+    "content": "Practice Note No 33 was issued under section 185A of the Industrial Relations Act 1996 (NSW) and section 15 of the Civil Procedure Act 2005 (NSW). It commenced on 19 February 2025 and applies to all proceedings before the Commission, including the Commission in Court Session. The practice note follows the Supreme Court's SC Gen 23 framework. It defines generative AI broadly, covering generic large language model programs and legal-specific tools, and identifies the risks users must understand: hallucinated citations and fabricated authorities; dependence on the quality and currency of underlying training data, including data that is not relevant in New South Wales or Australia; biased output; prompts being retained and reused to answer other users' queries; inadequate safeguards for confidentiality, privacy and legal professional privilege; and training data obtained in breach of copyright. It imposes a general prohibition on entering material subject to Commission confidentiality or non-publication orders, statutorily restricted material, and material produced under summons into any generative AI program. Generative AI must not be used to generate the content of statements, affidavits, statutory declarations, character references or other material intended to reflect the evidence of its maker, and must not be used to alter, embellish, strengthen, dilute or otherwise rephrase a witness's evidence when expressed in written form. Leave of the Commission may be sought in exceptional cases for generative AI use in an attachment, annexure or exhibit. Where authorities or citations are relied on, they must be verified, and that verification must not be carried out solely by using a generative AI tool or program.",
+    "aiSummary": "NSW Industrial Relations Commission practice note applying the SC Gen 23 generative AI framework to all Commission proceedings from 19 February 2025.",
+    "tags": [
+      "practice note",
+      "generative AI",
+      "Industrial Relations Commission",
+      "tribunals",
+      "employment",
+      "courts",
+      "disclosure"
+    ],
+    "createdAt": "2025-02-19T00:00:00Z",
+    "updatedAt": "2026-08-25T02:01:07.000Z",
+    "lastReviewedAt": "2026-08-25T02:01:07.000Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://irc.nsw.gov.au/documents/practice-notes/Practice_Note_No_33_-_Use_of_GenAI.pdf",
+        "finalUrl": "https://irc.nsw.gov.au/documents/practice-notes/Practice_Note_No_33_-_Use_of_GenAI.pdf",
+        "title": "Practice Note No 33 — Use of Generative Artificial Intelligence (Gen AI)",
+        "publisher": "Industrial Relations Commission of New South Wales",
+        "retrievedAt": "2026-08-25T01:54:12.767Z",
+        "contentType": "application/pdf",
+        "contentHash": "e97652ed1b4b4a41d4d91fc8dee9175a5b77a0290eff42f60b199c1964d47fc8",
+        "lastModified": "Fri, 14 Feb 2025 03:56:52 GMT"
+      },
+      "checkedAt": "2026-08-25T02:01:07.000Z",
+      "checkedBy": "Policai editorial source review",
+      "method": "manual",
+      "notes": "Retrieved the practice note PDF from the Commission's site through the collector retrieval path, fingerprinted it, and read it in full before creating this record."
+    },
+    "dates": [
+      {
+        "type": "commenced",
+        "date": "2025-02-19",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://irc.nsw.gov.au/documents/practice-notes/Practice_Note_No_33_-_Use_of_GenAI.pdf",
+          "finalUrl": "https://irc.nsw.gov.au/documents/practice-notes/Practice_Note_No_33_-_Use_of_GenAI.pdf",
+          "title": "Practice Note No 33 — Use of Generative Artificial Intelligence (Gen AI)",
+          "publisher": "Industrial Relations Commission of New South Wales",
+          "retrievedAt": "2026-08-25T01:54:12.767Z",
+          "contentType": "application/pdf",
+          "contentHash": "e97652ed1b4b4a41d4d91fc8dee9175a5b77a0290eff42f60b199c1964d47fc8",
+          "lastModified": "Fri, 14 Feb 2025 03:56:52 GMT",
+          "reviewedDate": {
+            "date": "2025-02-19",
+            "precision": "day",
+            "reviewedAt": "2026-08-25T02:01:07.000Z",
+            "reviewedBy": "Policai editorial source review",
+            "notes": "Paragraph 1 states the Practice Note will commence on 19 February 2025 and will apply to all proceedings from that date."
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "nsw-lec-practice-note-genai",
+    "title": "Land and Environment Court Practice Note — Use of Generative Artificial Intelligence (Gen AI)",
+    "description": "Land and Environment Court of New South Wales practice note on generative AI, replacing its earlier note and adding an expert report transition requirement.",
+    "jurisdiction": "nsw",
+    "type": "practice_note",
+    "status": "active",
+    "effectiveDate": "2025-02-12",
+    "agencies": [
+      "Land and Environment Court of New South Wales"
+    ],
+    "sourceUrl": "https://lec.nsw.gov.au/documents/practice-notes/Practice_Note_-_Use_of_Generative_Artificial_Intelligence_UPDATED.pdf",
+    "content": "Issued by the Honourable Justice Brian J Preston, Chief Judge, on 11 February 2025, this Practice Note replaces the Court's earlier practice note that had commenced on 3 February 2025. It commences on 12 February 2025 and applies to all proceedings from that date. The substance follows Supreme Court Practice Note SC Gen 23. It identifies generative AI broadly across generic and legal-specific tools, and sets out the risks users must understand, including hallucinated citations and fabricated authorities, dependence on training data that may be inaccurate, out of date or not relevant to New South Wales, biased output, prompts being retained and reused, inadequate confidentiality and privilege safeguards, and training data obtained in breach of copyright. It prohibits entering material subject to confidentiality or non-publication orders, statutorily restricted material and material produced under subpoena into any generative AI program. Generative AI must not be used to generate the content of statements, affidavits, statutory declarations, character references or other evidentiary material, nor to alter, embellish, strengthen, dilute or rephrase a witness's written evidence, with leave available in exceptional cases for attachments and annexures. Verification of authorities must not be carried out solely by using a generative AI tool. Paragraph 24 adds a transition requirement specific to this Court: expert reports prepared between the date the practice note was issued and the date it commenced must identify which part or parts of the report relied on generative AI in preparing its content. The practice note will be periodically reviewed.",
+    "aiSummary": "Land and Environment Court of New South Wales practice note applying the SC Gen 23 framework and requiring transition-period expert reports to identify generative AI reliance, commencing 12 February 2025.",
+    "tags": [
+      "practice note",
+      "generative AI",
+      "Land and Environment Court",
+      "expert evidence",
+      "courts",
+      "disclosure",
+      "judicial"
+    ],
+    "createdAt": "2025-02-12T00:00:00Z",
+    "updatedAt": "2026-08-25T02:01:07.000Z",
+    "lastReviewedAt": "2026-08-25T02:01:07.000Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://lec.nsw.gov.au/documents/practice-notes/Practice_Note_-_Use_of_Generative_Artificial_Intelligence_UPDATED.pdf",
+        "finalUrl": "https://lec.nsw.gov.au/documents/practice-notes/Practice_Note_-_Use_of_Generative_Artificial_Intelligence_UPDATED.pdf",
+        "title": "Land and Environment Court Practice Note — Use of Generative Artificial Intelligence (Gen AI)",
+        "publisher": "Land and Environment Court of New South Wales",
+        "retrievedAt": "2026-08-25T01:54:12.993Z",
+        "contentType": "application/pdf",
+        "contentHash": "d8e2da9c5b74f1d09435de7ac8c75d60ef9584a6d21b2e74de6d442131226aa8",
+        "lastModified": "Tue, 11 Feb 2025 02:55:42 GMT"
+      },
+      "checkedAt": "2026-08-25T02:01:07.000Z",
+      "checkedBy": "Policai editorial source review",
+      "method": "manual",
+      "notes": "Retrieved the practice note PDF from the Land and Environment Court site through the collector retrieval path, fingerprinted it, and read it in full before creating this record."
+    },
+    "dates": [
+      {
+        "type": "commenced",
+        "date": "2025-02-12",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://lec.nsw.gov.au/documents/practice-notes/Practice_Note_-_Use_of_Generative_Artificial_Intelligence_UPDATED.pdf",
+          "finalUrl": "https://lec.nsw.gov.au/documents/practice-notes/Practice_Note_-_Use_of_Generative_Artificial_Intelligence_UPDATED.pdf",
+          "title": "Land and Environment Court Practice Note — Use of Generative Artificial Intelligence (Gen AI)",
+          "publisher": "Land and Environment Court of New South Wales",
+          "retrievedAt": "2026-08-25T01:54:12.993Z",
+          "contentType": "application/pdf",
+          "contentHash": "d8e2da9c5b74f1d09435de7ac8c75d60ef9584a6d21b2e74de6d442131226aa8",
+          "lastModified": "Tue, 11 Feb 2025 02:55:42 GMT",
+          "reviewedDate": {
+            "date": "2025-02-12",
+            "precision": "day",
+            "reviewedAt": "2026-08-25T02:01:07.000Z",
+            "reviewedBy": "Policai editorial source review",
+            "notes": "Paragraph 1 states the Practice Note replaces the note that commenced on 3 February and commences on 12 February 2025."
+          }
+        }
+      },
+      {
+        "type": "issued",
+        "date": "2025-02-11",
+        "precision": "day",
+        "source": {
+          "url": "https://lec.nsw.gov.au/documents/practice-notes/Practice_Note_-_Use_of_Generative_Artificial_Intelligence_UPDATED.pdf",
+          "finalUrl": "https://lec.nsw.gov.au/documents/practice-notes/Practice_Note_-_Use_of_Generative_Artificial_Intelligence_UPDATED.pdf",
+          "title": "Land and Environment Court Practice Note — Use of Generative Artificial Intelligence (Gen AI)",
+          "publisher": "Land and Environment Court of New South Wales",
+          "retrievedAt": "2026-08-25T01:54:12.993Z",
+          "contentType": "application/pdf",
+          "contentHash": "d8e2da9c5b74f1d09435de7ac8c75d60ef9584a6d21b2e74de6d442131226aa8",
+          "lastModified": "Tue, 11 Feb 2025 02:55:42 GMT",
+          "reviewedDate": {
+            "date": "2025-02-11",
+            "precision": "day",
+            "reviewedAt": "2026-08-25T02:01:07.000Z",
+            "reviewedBy": "Policai editorial source review",
+            "notes": "The practice note is signed by Chief Judge Preston and dated 11 February 2025."
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "nsw-local-court-practice-note-genai",
+    "title": "Local Court Practice Note — Generative Artificial Intelligence",
+    "description": "Local Court of New South Wales practice note adopting Supreme Court Practice Note SC Gen 23 for all Local Court proceedings.",
+    "jurisdiction": "nsw",
+    "type": "practice_note",
+    "status": "active",
+    "effectiveDate": "2026-01-12",
+    "agencies": [
+      "Local Court of New South Wales"
+    ],
+    "sourceUrl": "https://localcourt.nsw.gov.au/documents/practice-notes/other/Practice_Note_Generative_Artificial_Intelligence_Commences_12.01.26.pdf",
+    "content": "Issued on 12 December 2025 and commencing on 12 January 2026, this Practice Note is a short adopting instrument. Clause 1.2 provides that the Local Court of New South Wales adopts Supreme Court Practice Note SC Gen 23 — Use of Generative Artificial Intelligence (Gen AI) in its current form and as it may from time to time be amended, and clause 1.4 provides that the Practice Note applies to all proceedings in the Local Court. Because the adoption tracks SC Gen 23 as amended, the operative obligations are those of the Supreme Court practice note and any later revision to it flows through automatically. Those obligations include the general prohibition on entering confidentiality-ordered material, statutorily restricted material and material produced under subpoena into a generative AI program; the prohibition on using generative AI to generate the content of statements, affidavits, statutory declarations, character references and other evidentiary material; the prohibition on using it to alter, embellish, strengthen, dilute or rephrase a witness's written evidence; the leave requirement for exceptional use in attachments and annexures; and the requirement to verify authorities other than solely by using a generative AI tool. As the busiest court in the New South Wales hierarchy and the one with the highest proportion of self-represented litigants, the Local Court's adoption extends the SC Gen 23 regime to the largest volume of proceedings in the state.",
+    "aiSummary": "Local Court of New South Wales practice note adopting Supreme Court Practice Note SC Gen 23 as amended for all Local Court proceedings, commencing 12 January 2026.",
+    "tags": [
+      "practice note",
+      "generative AI",
+      "Local Court of NSW",
+      "courts",
+      "disclosure",
+      "self-represented litigants"
+    ],
+    "createdAt": "2026-01-12T00:00:00Z",
+    "updatedAt": "2026-08-25T02:01:07.000Z",
+    "lastReviewedAt": "2026-08-25T02:01:07.000Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://localcourt.nsw.gov.au/documents/practice-notes/other/Practice_Note_Generative_Artificial_Intelligence_Commences_12.01.26.pdf",
+        "finalUrl": "https://localcourt.nsw.gov.au/documents/practice-notes/other/Practice_Note_Generative_Artificial_Intelligence_Commences_12.01.26.pdf",
+        "title": "Local Court Practice Note — Generative Artificial Intelligence",
+        "publisher": "Local Court of New South Wales",
+        "retrievedAt": "2026-08-25T01:54:13.241Z",
+        "contentType": "application/pdf",
+        "contentHash": "88cb86d71bfe7f53dc757383692f4245257b502ffe0d3da02280dfc757ec77d2",
+        "lastModified": "Mon, 08 Dec 2025 22:27:13 GMT"
+      },
+      "checkedAt": "2026-08-25T02:01:07.000Z",
+      "checkedBy": "Policai editorial source review",
+      "method": "manual",
+      "notes": "Retrieved the practice note PDF from the Local Court site through the collector retrieval path, fingerprinted it, and read it in full before creating this record."
+    },
+    "dates": [
+      {
+        "type": "commenced",
+        "date": "2026-01-12",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://localcourt.nsw.gov.au/documents/practice-notes/other/Practice_Note_Generative_Artificial_Intelligence_Commences_12.01.26.pdf",
+          "finalUrl": "https://localcourt.nsw.gov.au/documents/practice-notes/other/Practice_Note_Generative_Artificial_Intelligence_Commences_12.01.26.pdf",
+          "title": "Local Court Practice Note — Generative Artificial Intelligence",
+          "publisher": "Local Court of New South Wales",
+          "retrievedAt": "2026-08-25T01:54:13.241Z",
+          "contentType": "application/pdf",
+          "contentHash": "88cb86d71bfe7f53dc757383692f4245257b502ffe0d3da02280dfc757ec77d2",
+          "lastModified": "Mon, 08 Dec 2025 22:27:13 GMT",
+          "reviewedDate": {
+            "date": "2026-01-12",
+            "precision": "day",
+            "reviewedAt": "2026-08-25T02:01:07.000Z",
+            "reviewedBy": "Policai editorial source review",
+            "notes": "The cover page records 'Commences: 12 January 2026' and clause 1.1 states the Practice Note commences on that date."
+          }
+        }
+      },
+      {
+        "type": "issued",
+        "date": "2025-12-12",
+        "precision": "day",
+        "source": {
+          "url": "https://localcourt.nsw.gov.au/documents/practice-notes/other/Practice_Note_Generative_Artificial_Intelligence_Commences_12.01.26.pdf",
+          "finalUrl": "https://localcourt.nsw.gov.au/documents/practice-notes/other/Practice_Note_Generative_Artificial_Intelligence_Commences_12.01.26.pdf",
+          "title": "Local Court Practice Note — Generative Artificial Intelligence",
+          "publisher": "Local Court of New South Wales",
+          "retrievedAt": "2026-08-25T01:54:13.241Z",
+          "contentType": "application/pdf",
+          "contentHash": "88cb86d71bfe7f53dc757383692f4245257b502ffe0d3da02280dfc757ec77d2",
+          "lastModified": "Mon, 08 Dec 2025 22:27:13 GMT",
+          "reviewedDate": {
+            "date": "2025-12-12",
+            "precision": "day",
+            "reviewedAt": "2026-08-25T02:01:07.000Z",
+            "reviewedBy": "Policai editorial source review",
+            "notes": "The cover page of the practice note records 'Issued: 12 December 2025'."
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "nsw-pic-procedural-direction-pic13-genai",
+    "title": "Procedural Direction PIC13 — Use of Generative Artificial Intelligence",
+    "description": "Personal Injury Commission procedural direction requiring express generative AI declarations in written statements and disclosure for AI-prepared annexures and exhibits.",
+    "jurisdiction": "nsw",
+    "type": "practice_note",
+    "status": "active",
+    "effectiveDate": "2026-01-01",
+    "agencies": [
+      "Personal Injury Commission of New South Wales"
+    ],
+    "sourceUrl": "https://www.pi.nsw.gov.au/resources/procedural-directions/procedural-direction-pic13-use-of-generative-artificial-intelligence",
+    "content": "Procedural Direction PIC13 commenced on 1 January 2026 and applies to the Workers Compensation Division, the Motor Accidents Division and the Police Officer Support Scheme Division. The Commission states that it adopts, so far as practicable, Supreme Court Practice Note SC Gen 23 for consistency of approach and to maintain public confidence in the integrity of Commission decision-making. It carries a general prohibition on entering into a generative AI program material subject to non-publication or confidentiality restrictions and material produced under summons. Generative AI must not be used to generate the content of written statements, including witness statements or other evidentiary material, and must not be used for the purpose of altering, embellishing, strengthening, diluting or otherwise rephrasing evidence when expressed in written form. The direction goes further than several of its counterparts in requiring an express negative declaration: the disclosure must be stated in a paragraph of the statement in the form 'Generative artificial intelligence was not used to generate this statement'. Where an annexure or exhibit has been prepared or generated using generative AI, that use must be disclosed, and the disclosure must identify which annexure or exhibit was prepared or generated by generative AI, the program used, how it was used and when. That disclosure obligation does not extend to an annexure or exhibit that was not prepared or created for the purposes of the proceedings. Users must keep records identifying the version of the generative AI program and the date it was used. Verification obligations apply to references to evidence in written submissions and arguments. The direction also addresses prohibited use of AI during Commission proceedings and provides for periodic review.",
+    "aiSummary": "Personal Injury Commission procedural direction requiring an express 'generative AI was not used' declaration in written statements and detailed disclosure for AI-prepared annexures, commencing 1 January 2026.",
+    "tags": [
+      "practice note",
+      "procedural direction",
+      "generative AI",
+      "Personal Injury Commission",
+      "tribunals",
+      "disclosure",
+      "workers compensation"
+    ],
+    "createdAt": "2026-01-01T00:00:00Z",
+    "updatedAt": "2026-08-25T02:01:07.000Z",
+    "lastReviewedAt": "2026-08-25T02:01:07.000Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.pi.nsw.gov.au/resources/procedural-directions/procedural-direction-pic13-use-of-generative-artificial-intelligence",
+        "finalUrl": "https://www.pi.nsw.gov.au/resources/procedural-directions/procedural-direction-pic13-use-of-generative-artificial-intelligence",
+        "title": "Procedural Direction PIC13 — Use of Generative Artificial Intelligence",
+        "publisher": "Personal Injury Commission of New South Wales",
+        "retrievedAt": "2026-08-25T01:54:13.571Z",
+        "contentType": "text/html",
+        "contentHash": "cbdd2cb402101038b5e0a52eb83e4ed67671c71d9a5cb0699050573a0b5550e4"
+      },
+      "checkedAt": "2026-08-25T02:01:07.000Z",
+      "checkedBy": "Policai editorial source review",
+      "method": "manual",
+      "notes": "Retrieved the procedural direction page from the Personal Injury Commission site through the collector retrieval path, fingerprinted it, and read the direction in full before creating this record."
+    },
+    "dates": [
+      {
+        "type": "commenced",
+        "date": "2026-01-01",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://www.pi.nsw.gov.au/resources/procedural-directions/procedural-direction-pic13-use-of-generative-artificial-intelligence",
+          "finalUrl": "https://www.pi.nsw.gov.au/resources/procedural-directions/procedural-direction-pic13-use-of-generative-artificial-intelligence",
+          "title": "Procedural Direction PIC13 — Use of Generative Artificial Intelligence",
+          "publisher": "Personal Injury Commission of New South Wales",
+          "retrievedAt": "2026-08-25T01:54:13.571Z",
+          "contentType": "text/html",
+          "contentHash": "cbdd2cb402101038b5e0a52eb83e4ed67671c71d9a5cb0699050573a0b5550e4",
+          "reviewedDate": {
+            "date": "2026-01-01",
+            "precision": "day",
+            "reviewedAt": "2026-08-25T02:01:07.000Z",
+            "reviewedBy": "Policai editorial source review",
+            "notes": "The procedural direction page records 'Date of commencement: 1 January 2026' for the Workers Compensation, Motor Accidents and Police Officer Support Scheme Divisions."
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "vic-supreme-court-ai-guidelines-judicial-officers",
+    "title": "Guidelines: The Use of Artificial Intelligence by Judicial Officers",
+    "description": "Supreme Court of Victoria guidelines setting the parameters for use of artificial intelligence by the Court's own judicial officers, informed by the Victorian Law Reform Commission's eight principles.",
+    "jurisdiction": "vic",
+    "type": "practice_note",
+    "status": "active",
+    "effectiveDate": "2026-05-14",
+    "agencies": [
+      "Supreme Court of Victoria"
+    ],
+    "sourceUrl": "https://www.supremecourt.vic.gov.au/forms-fees-and-services/forms-templates-and-guidelines/guidelines-the-use-of-artificial-intelligence-by-judicial-officers",
+    "content": "Dated 14 May 2026 and published in May 2026, these Guidelines outline the parameters around the use of artificial intelligence by judicial officers of the Supreme Court of Victoria. They are the bench-facing counterpart to Practice Note SC Gen 25, which governs court users, and were issued on the same date. The Guidelines state that they have been informed by the eight principles formulated by the Victorian Law Reform Commission to guide the safe use of AI in courts and tribunals, set out in its report Artificial Intelligence in Victoria's Courts and Tribunals (October 2025). They define artificial intelligence for the purposes of the Guidelines and address how judicial officers may and may not use AI tools in the course of judicial work, including in relation to preparing judgments and reasons, the confidentiality of court information, and the extent to which reliance on AI-assisted output is compatible with the judicial function. They also address the level of disclosure a judicial officer may require from parties about their own use of AI. Clause 3.7 records that the Guidelines are intended to be reviewed as the technology and the Court's experience change. The Guidelines are published by the Supreme Court of Victoria as a downloadable document alongside the Court's court-user practice note, and are a distinct instrument from Practice Note SC GEN 25.",
+    "aiSummary": "Supreme Court of Victoria guidelines governing judicial officers' own use of artificial intelligence, informed by the Victorian Law Reform Commission's eight principles, dated 14 May 2026.",
+    "tags": [
+      "guidelines",
+      "generative AI",
+      "Supreme Court of Victoria",
+      "judicial",
+      "courts",
+      "judicial officers"
+    ],
+    "createdAt": "2026-05-14T00:00:00Z",
+    "updatedAt": "2026-08-25T02:01:07.000Z",
+    "lastReviewedAt": "2026-08-25T02:01:07.000Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.supremecourt.vic.gov.au/forms-fees-and-services/forms-templates-and-guidelines/guidelines-the-use-of-artificial-intelligence-by-judicial-officers",
+        "finalUrl": "https://www.supremecourt.vic.gov.au/forms-fees-and-services/forms-templates-and-guidelines/guidelines-the-use-of-artificial-intelligence-by-judicial-officers",
+        "title": "Guidelines: The Use of Artificial Intelligence by Judicial Officers",
+        "publisher": "Supreme Court of Victoria",
+        "retrievedAt": "2026-08-25T01:54:13.820Z",
+        "contentType": "text/html",
+        "contentHash": "8a5d9cedd210b1b3cb9d6e32c6b775e6deb293b6a2c469a95ecf5e98eec81845",
+        "lastModified": "Tue, 25 Aug 2026 01:52:54 GMT"
+      },
+      "checkedAt": "2026-08-25T02:01:07.000Z",
+      "checkedBy": "Policai editorial source review",
+      "method": "manual",
+      "notes": "Retrieved the guidelines page from the Supreme Court of Victoria site through the collector retrieval path, fingerprinted it, and read the guidelines in full before creating this record."
+    },
+    "dates": [
+      {
+        "type": "issued",
+        "date": "2026-05-14",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://www.supremecourt.vic.gov.au/forms-fees-and-services/forms-templates-and-guidelines/guidelines-the-use-of-artificial-intelligence-by-judicial-officers",
+          "finalUrl": "https://www.supremecourt.vic.gov.au/forms-fees-and-services/forms-templates-and-guidelines/guidelines-the-use-of-artificial-intelligence-by-judicial-officers",
+          "title": "Guidelines: The Use of Artificial Intelligence by Judicial Officers",
+          "publisher": "Supreme Court of Victoria",
+          "retrievedAt": "2026-08-25T01:54:13.820Z",
+          "contentType": "text/html",
+          "contentHash": "8a5d9cedd210b1b3cb9d6e32c6b775e6deb293b6a2c469a95ecf5e98eec81845",
+          "lastModified": "Tue, 25 Aug 2026 01:52:54 GMT",
+          "reviewedDate": {
+            "date": "2026-05-14",
+            "precision": "day",
+            "reviewedAt": "2026-08-25T02:01:07.000Z",
+            "reviewedBy": "Policai editorial source review",
+            "notes": "The Guidelines carry the date 14 May 2026 at the end of the text, and the Court's publication metadata records a publication date of May 2026."
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "vic-county-court-pnccv-1-2026",
+    "title": "PNCCV 1-2026 — The Use of Artificial Intelligence by Court Users",
+    "description": "County Court of Victoria practice note on the use of artificial intelligence by court users, superseding its 2024 guidelines for litigants.",
+    "jurisdiction": "vic",
+    "type": "practice_note",
+    "status": "active",
+    "effectiveDate": "2026-06-05",
+    "agencies": [
+      "County Court of Victoria"
+    ],
+    "sourceUrl": "https://www.countycourt.vic.gov.au/files/documents/2026-06/use-artificial-intelligence-court-users-practice-note.docx",
+    "content": "Practice Note PNCCV 1-2026 was created at version 1.0 on 5 June 2026, authorised by Chief Judge Chambers, and applies to all Divisions of the County Court of Victoria. Its document control block records that it supersedes the Guidelines for Litigants: Responsible Use of Artificial Intelligence in Litigation, which had last been updated on 3 July 2024, and identifies the Guidelines: The Use of Artificial Intelligence by Judicial Officers as a related document. The practice note governs the use of artificial intelligence by court users — parties, their representatives and others who prepare material for the Court — as distinct from the Court's own judicial use. It defines artificial intelligence and generative AI for the purposes of the practice note and sets out the Court's expectations about responsible use, the verification of AI-assisted content before it is relied on in proceedings, the treatment of confidential and privileged information, and the circumstances in which the use of AI must be disclosed to the Court. It brings the County Court into alignment with the Supreme Court of Victoria's Practice Note SC GEN 25, issued on 14 May 2026, so that the two courts apply a consistent framework to court users. The practice note is published as a Word document on the County Court website.",
+    "aiSummary": "County Court of Victoria practice note governing court users' use of artificial intelligence, superseding its 2024 litigant guidelines, created 5 June 2026.",
+    "tags": [
+      "practice note",
+      "generative AI",
+      "County Court of Victoria",
+      "courts",
+      "disclosure",
+      "judicial"
+    ],
+    "createdAt": "2026-06-05T00:00:00Z",
+    "updatedAt": "2026-08-25T02:01:07.000Z",
+    "lastReviewedAt": "2026-08-25T02:01:07.000Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.countycourt.vic.gov.au/files/documents/2026-06/use-artificial-intelligence-court-users-practice-note.docx",
+        "finalUrl": "https://www.countycourt.vic.gov.au/files/documents/2026-06/use-artificial-intelligence-court-users-practice-note.docx",
+        "title": "PNCCV 1-2026 — The Use of Artificial Intelligence by Court Users",
+        "publisher": "County Court of Victoria",
+        "retrievedAt": "2026-08-25T01:54:15.296Z",
+        "contentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "contentHash": "1177d0ce865a13d6f02144b2e94c0f5f91b756b479cbd44d3d05702fb3a5c8bf",
+        "lastModified": "Mon, 08 Jun 2026 23:41:34 GMT"
+      },
+      "checkedAt": "2026-08-25T02:01:07.000Z",
+      "checkedBy": "Policai editorial source review",
+      "method": "manual",
+      "notes": "Retrieved the practice note document from the County Court of Victoria site through the collector retrieval path, fingerprinted it, and read the document control block and text before creating this record."
+    },
+    "dates": [
+      {
+        "type": "issued",
+        "date": "2026-06-05",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://www.countycourt.vic.gov.au/files/documents/2026-06/use-artificial-intelligence-court-users-practice-note.docx",
+          "finalUrl": "https://www.countycourt.vic.gov.au/files/documents/2026-06/use-artificial-intelligence-court-users-practice-note.docx",
+          "title": "PNCCV 1-2026 — The Use of Artificial Intelligence by Court Users",
+          "publisher": "County Court of Victoria",
+          "retrievedAt": "2026-08-25T01:54:15.296Z",
+          "contentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          "contentHash": "1177d0ce865a13d6f02144b2e94c0f5f91b756b479cbd44d3d05702fb3a5c8bf",
+          "lastModified": "Mon, 08 Jun 2026 23:41:34 GMT",
+          "reviewedDate": {
+            "date": "2026-06-05",
+            "precision": "day",
+            "reviewedAt": "2026-08-25T02:01:07.000Z",
+            "reviewedBy": "Policai editorial source review",
+            "notes": "The practice note's release history records version 1.0 created on 5 June 2026 by Chief Judge Chambers."
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "vic-vcat-pnvcat-11-genai",
+    "title": "Practice Note PNVCAT 11 — Use of Generative Artificial Intelligence",
+    "description": "VCAT practice note describing acceptable use of generative AI in all Divisions, including principles for use and when disclosure is required.",
+    "jurisdiction": "vic",
+    "type": "practice_note",
+    "status": "active",
+    "effectiveDate": "2025-12-22",
+    "agencies": [
+      "Victorian Civil and Administrative Tribunal"
+    ],
+    "sourceUrl": "https://www.vcat.vic.gov.au/documents/practice-note-pnvcat11-use-generative-artificial-intelligence",
+    "content": "Practice Note PNVCAT 11 was issued by the VCAT Rules Committee under section 158 of the Victorian Civil and Administrative Tribunal Act 1998 and has an effective date of 22 December 2025. It applies to proceedings in all Divisions of the Tribunal. The practice note describes the acceptable and appropriate use of generative AI tools in Tribunal proceedings, sets out principles for their use, and identifies when that use should be disclosed to the Tribunal. It addresses the risks that make generative AI output unsafe to rely on without checking, including the generation of plausible but fictitious citations and authorities, and places responsibility for the accuracy of material provided to the Tribunal on the person providing it, whether or not a generative AI tool was involved in preparing it. It deals with the confidentiality and privacy of information entered into generative AI tools, particularly publicly available tools, and with material that is subject to Tribunal orders restricting publication or disclosure. VCAT publishes the practice note as a downloadable PDF alongside the summary on its website. As Victoria's principal civil and administrative tribunal, and one with a high proportion of self-represented parties, PNVCAT 11 extends a generative AI framework to a large volume of proceedings that sit outside the court hierarchy covered by Practice Note SC GEN 25.",
+    "aiSummary": "VCAT practice note setting principles and disclosure expectations for generative AI use across all Tribunal Divisions, effective 22 December 2025.",
+    "tags": [
+      "practice note",
+      "generative AI",
+      "VCAT",
+      "tribunals",
+      "disclosure",
+      "courts",
+      "self-represented litigants"
+    ],
+    "createdAt": "2025-12-22T00:00:00Z",
+    "updatedAt": "2026-08-25T02:01:07.000Z",
+    "lastReviewedAt": "2026-08-25T02:01:07.000Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.vcat.vic.gov.au/documents/practice-note-pnvcat11-use-generative-artificial-intelligence",
+        "finalUrl": "https://www.vcat.vic.gov.au/documents/practice-note-pnvcat11-use-generative-artificial-intelligence",
+        "title": "Practice Note PNVCAT 11 — Use of Generative Artificial Intelligence",
+        "publisher": "Victorian Civil and Administrative Tribunal",
+        "retrievedAt": "2026-08-25T01:54:15.367Z",
+        "contentType": "text/html",
+        "contentHash": "e8ddb193be361e8d367637877430eee59fa75814a3b6a9e2dd080f3e31a34339",
+        "lastModified": "Sun, 23 Aug 2026 20:52:47 GMT"
+      },
+      "checkedAt": "2026-08-25T02:01:07.000Z",
+      "checkedBy": "Policai editorial source review",
+      "method": "manual",
+      "notes": "Retrieved the practice note page and attached document from the VCAT site through the collector retrieval path, fingerprinted it, and read the practice note before creating this record."
+    },
+    "dates": [
+      {
+        "type": "effective",
+        "date": "2025-12-22",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://www.vcat.vic.gov.au/documents/practice-note-pnvcat11-use-generative-artificial-intelligence",
+          "finalUrl": "https://www.vcat.vic.gov.au/documents/practice-note-pnvcat11-use-generative-artificial-intelligence",
+          "title": "Practice Note PNVCAT 11 — Use of Generative Artificial Intelligence",
+          "publisher": "Victorian Civil and Administrative Tribunal",
+          "retrievedAt": "2026-08-25T01:54:15.367Z",
+          "contentType": "text/html",
+          "contentHash": "e8ddb193be361e8d367637877430eee59fa75814a3b6a9e2dd080f3e31a34339",
+          "lastModified": "Sun, 23 Aug 2026 20:52:47 GMT",
+          "reviewedDate": {
+            "date": "2025-12-22",
+            "precision": "day",
+            "reviewedAt": "2026-08-25T02:01:07.000Z",
+            "reviewedBy": "Policai editorial source review",
+            "notes": "The practice note records an effective date of 22 December 2025 and states that it is issued by the Rules Committee under section 158 of the VCAT Act."
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "qld-qcat-practice-direction-10-2025",
+    "title": "QCAT Practice Direction No 10 of 2025 — Accuracy of References in Submissions",
+    "description": "QCAT practice direction requiring a named responsible person for written and oral submissions and personal verification of all references, with referral to the Legal Services Commissioner for non-existent citations.",
+    "jurisdiction": "qld",
+    "type": "practice_note",
+    "status": "active",
+    "effectiveDate": "2025-10-17",
+    "agencies": [
+      "Queensland Civil and Administrative Tribunal"
+    ],
+    "sourceUrl": "https://www.qcat.qld.gov.au/__data/assets/pdf_file/0006/884940/qcat-practice-direction-10-of-2025-accuracy-of-references-in-submissions.pdf",
+    "content": "Signed by the Hon Justice Kerri Mellifont, President, on 17 October 2025, this Practice Direction mirrors Supreme Court of Queensland Practice Direction 5 of 2025. Rather than regulating generative AI use directly, it targets the risk of inaccurate or fictitious references reaching the Tribunal. It records that generative AI tools may produce coherent and plausible responses that are inaccurate or fictitious, including references to non-existent case authorities, legislative references and legal and academic resources, and that a further risk arises where generative AI is used to formulate or reformulate the expression of a submission without the result being sufficiently checked. For written submissions, the person or persons taking responsibility for the contents — the responsible person — must be identified by name at the end of the document; where that person is a legal practitioner it must be the individual solicitor or barrister, and naming the firm on the record is not sufficient. For oral submissions the responsible person is the person making them, who thereby also becomes a responsible person for the written submissions. A legal practitioner who is a responsible person must verify the accuracy and relevance of any references to legislation, authorities or other sources, and ensure the submission is expressed in terms reflecting their judgment as to the proper discharge of their professional and ethical obligations. Placing their name on a written submission, or advancing oral submissions, is an implied representation to the Tribunal that they have done so. The Practice Direction ties those duties to rules 12, 25, 26, 37, 41 and 57 of the Barristers' Conduct Rules and rules 3, 4, 5, 17, 19 and 37 of the Solicitors' Conduct Rules. Practitioners responsible for submissions found to contain references to non-existent cases, legislation or other material may be referred to the Legal Services Commissioner for investigation and may be required to show cause why a personal costs order should not be made against them. Self-represented litigants are directed to the Queensland Courts guidelines for non-lawyers, updated 15 September 2025. The Practice Direction will be reviewed regularly.",
+    "aiSummary": "QCAT practice direction requiring a named responsible person to personally verify every reference in submissions, with Legal Services Commissioner referral and personal costs exposure for fictitious citations, signed 17 October 2025.",
+    "tags": [
+      "practice note",
+      "practice direction",
+      "generative AI",
+      "QCAT",
+      "tribunals",
+      "courts",
+      "legal profession"
+    ],
+    "createdAt": "2025-10-17T00:00:00Z",
+    "updatedAt": "2026-08-25T02:01:07.000Z",
+    "lastReviewedAt": "2026-08-25T02:01:07.000Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.qcat.qld.gov.au/__data/assets/pdf_file/0006/884940/qcat-practice-direction-10-of-2025-accuracy-of-references-in-submissions.pdf",
+        "finalUrl": "https://www.qcat.qld.gov.au/__data/assets/pdf_file/0006/884940/qcat-practice-direction-10-of-2025-accuracy-of-references-in-submissions.pdf",
+        "title": "QCAT Practice Direction No 10 of 2025 — Accuracy of References in Submissions",
+        "publisher": "Queensland Civil and Administrative Tribunal",
+        "retrievedAt": "2026-08-25T01:54:15.837Z",
+        "contentType": "application/pdf",
+        "contentHash": "17a2b32761ea0b74d6e2216f5e199612c7c5516e698574adac576c712b1cd739"
+      },
+      "checkedAt": "2026-08-25T02:01:07.000Z",
+      "checkedBy": "Policai editorial source review",
+      "method": "manual",
+      "notes": "Retrieved the practice direction PDF from the QCAT site through the collector retrieval path, fingerprinted it, and read it in full before creating this record."
+    },
+    "dates": [
+      {
+        "type": "issued",
+        "date": "2025-10-17",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://www.qcat.qld.gov.au/__data/assets/pdf_file/0006/884940/qcat-practice-direction-10-of-2025-accuracy-of-references-in-submissions.pdf",
+          "finalUrl": "https://www.qcat.qld.gov.au/__data/assets/pdf_file/0006/884940/qcat-practice-direction-10-of-2025-accuracy-of-references-in-submissions.pdf",
+          "title": "QCAT Practice Direction No 10 of 2025 — Accuracy of References in Submissions",
+          "publisher": "Queensland Civil and Administrative Tribunal",
+          "retrievedAt": "2026-08-25T01:54:15.837Z",
+          "contentType": "application/pdf",
+          "contentHash": "17a2b32761ea0b74d6e2216f5e199612c7c5516e698574adac576c712b1cd739",
+          "reviewedDate": {
+            "date": "2025-10-17",
+            "precision": "day",
+            "reviewedAt": "2026-08-25T02:01:07.000Z",
+            "reviewedBy": "Policai editorial source review",
+            "notes": "The Practice Direction is signed by President Justice Kerri Mellifont and dated 17 October 2025, and the document metadata records the same creation date."
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "qld-district-court-practice-direction-12-2025",
+    "title": "District Court Practice Direction Number 12 of 2025 — Accuracy of References in Submissions",
+    "description": "District Court of Queensland practice direction requiring a named responsible person for submissions and personal verification of all references, mirroring Supreme Court Practice Direction 5 of 2025.",
+    "jurisdiction": "qld",
+    "type": "practice_note",
+    "status": "active",
+    "effectiveDate": "2025-09-25",
+    "agencies": [
+      "District Court of Queensland"
+    ],
+    "sourceUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0011/882461/dcpd-12-of-2025.pdf",
+    "content": "Signed by Brian Devereaux SC, Chief Judge, on 25 September 2025, this Practice Direction mirrors Supreme Court of Queensland Practice Direction 5 of 2025 and applies to proceedings in the District Court of Queensland. It records the Court's acknowledgement of the increasing use of artificial intelligence in litigation and identifies two risks: that generative AI tools may produce coherent and plausible responses that are inaccurate or fictitious, including references to non-existent case authorities, legislative references and legal and academic resources; and that generative AI may be used to formulate or reformulate the expression of a submission without the result being sufficiently checked. It states that written or oral reliance on material produced in this way has the potential to mislead the Court and other parties, cause delay and wasted costs, undermine the integrity of the Court's processes and harm public confidence in the administration of justice. The Practice Direction requires that the responsible person for written submissions be identified by name at the end of the document, and that where the responsible person is a legal practitioner it be the individual solicitor or barrister rather than the firm. Legal practitioners who are responsible persons must personally verify the accuracy and relevance of references to legislation, authorities and other sources, and ensure that the submission reflects their own professional judgment; naming themselves or advancing oral submissions is an implied representation that they have done so. Non-existent references may attract an adjournment of the hearing and an adverse costs order against the party who relied on the document, and may expose the practitioner to referral and personal costs consequences. The Court's approach and the Practice Direction will be reviewed regularly.",
+    "aiSummary": "District Court of Queensland practice direction requiring a named responsible person to personally verify every reference in written and oral submissions, signed 25 September 2025.",
+    "tags": [
+      "practice note",
+      "practice direction",
+      "generative AI",
+      "District Court of Queensland",
+      "courts",
+      "legal profession"
+    ],
+    "createdAt": "2025-09-25T00:00:00Z",
+    "updatedAt": "2026-08-25T02:01:07.000Z",
+    "lastReviewedAt": "2026-08-25T02:01:07.000Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0011/882461/dcpd-12-of-2025.pdf",
+        "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0011/882461/dcpd-12-of-2025.pdf",
+        "title": "District Court Practice Direction Number 12 of 2025 — Accuracy of References in Submissions",
+        "publisher": "District Court of Queensland",
+        "retrievedAt": "2026-08-25T01:54:16.120Z",
+        "contentType": "application/pdf",
+        "contentHash": "f41471f855f554cd076ef194dc3653fc7288b3b332d6db842d33de9f25bbabe4"
+      },
+      "checkedAt": "2026-08-25T02:01:07.000Z",
+      "checkedBy": "Policai editorial source review",
+      "method": "manual",
+      "notes": "Retrieved the practice direction PDF from the Queensland Courts site through the collector retrieval path, fingerprinted it, and read it in full before creating this record."
+    },
+    "dates": [
+      {
+        "type": "issued",
+        "date": "2025-09-25",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0011/882461/dcpd-12-of-2025.pdf",
+          "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0011/882461/dcpd-12-of-2025.pdf",
+          "title": "District Court Practice Direction Number 12 of 2025 — Accuracy of References in Submissions",
+          "publisher": "District Court of Queensland",
+          "retrievedAt": "2026-08-25T01:54:16.120Z",
+          "contentType": "application/pdf",
+          "contentHash": "f41471f855f554cd076ef194dc3653fc7288b3b332d6db842d33de9f25bbabe4",
+          "reviewedDate": {
+            "date": "2025-09-25",
+            "precision": "day",
+            "reviewedAt": "2026-08-25T02:01:07.000Z",
+            "reviewedBy": "Policai editorial source review",
+            "notes": "The Practice Direction is signed by Chief Judge Brian Devereaux SC and dated 25 September 2025."
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "qld-land-court-practice-direction-4-2025",
+    "title": "Land Court Practice Direction 4 of 2025 — Accuracy of References in Submissions",
+    "description": "Land Court of Queensland practice direction on accuracy of references in submissions, issued to maintain consistency with Supreme Court Practice Direction 5 of 2025.",
+    "jurisdiction": "qld",
+    "type": "practice_note",
+    "status": "active",
+    "effectiveDate": "2025-09-29",
+    "agencies": [
+      "Land Court of Queensland"
+    ],
+    "sourceUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0011/882875/lc-pd-4-of-2025-Accuracy-of-References-in-Submissions.pdf",
+    "content": "This Practice Direction states in paragraph 1 that it is issued to maintain consistency with Supreme Court of Queensland Practice Direction 5 of 2025, and commences on 29 September 2025. It records the Court's acknowledgement of the increasing use of artificial intelligence as a tool in the conduct of litigation and identifies the same two risks addressed by the Supreme Court direction: that generative AI tools may produce apparently coherent and plausible responses that are inaccurate or fictitious, including references to non-existent case authorities, legislative references and legal and academic resources; and that generative AI may be used to formulate or reformulate the manner of expression of a submission without the result being sufficiently checked. Written or oral reliance on such material has the potential to mislead the Court and the other parties, cause delay and wasted costs, undermine the integrity of the Court's processes and harm public confidence in the administration of justice. The Practice Direction requires the responsible person for written submissions to be identified by name at the end of the document, and where that person is a legal practitioner it must be the individual solicitor or barrister rather than the firm on the record. Legal practitioners who are responsible persons must verify the accuracy and relevance of any references to legislation, authorities or other sources and ensure the submissions reflect their own professional and ethical judgment. Submissions found to contain references to non-existent material may result in an adjournment and an adverse costs order against the party who relied on the document, and may expose the practitioner personally. The Court's approach and this Practice Direction will be reviewed regularly.",
+    "aiSummary": "Land Court of Queensland practice direction on accuracy of references in submissions, aligning the Court with Supreme Court Practice Direction 5 of 2025, commencing 29 September 2025.",
+    "tags": [
+      "practice note",
+      "practice direction",
+      "generative AI",
+      "Land Court of Queensland",
+      "courts",
+      "legal profession"
+    ],
+    "createdAt": "2025-09-29T00:00:00Z",
+    "updatedAt": "2026-08-25T02:01:07.000Z",
+    "lastReviewedAt": "2026-08-25T02:01:07.000Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0011/882875/lc-pd-4-of-2025-Accuracy-of-References-in-Submissions.pdf",
+        "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0011/882875/lc-pd-4-of-2025-Accuracy-of-References-in-Submissions.pdf",
+        "title": "Land Court Practice Direction 4 of 2025 — Accuracy of References in Submissions",
+        "publisher": "Land Court of Queensland",
+        "retrievedAt": "2026-08-25T01:54:16.325Z",
+        "contentType": "application/pdf",
+        "contentHash": "f02ad68c3f951a33e716378a3fcf0c345adf3daa1bbd76907a11ad6e8934ff26"
+      },
+      "checkedAt": "2026-08-25T02:01:07.000Z",
+      "checkedBy": "Policai editorial source review",
+      "method": "manual",
+      "notes": "Retrieved the practice direction PDF from the Queensland Courts site through the collector retrieval path, fingerprinted it, and read it in full before creating this record."
+    },
+    "dates": [
+      {
+        "type": "commenced",
+        "date": "2025-09-29",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0011/882875/lc-pd-4-of-2025-Accuracy-of-References-in-Submissions.pdf",
+          "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0011/882875/lc-pd-4-of-2025-Accuracy-of-References-in-Submissions.pdf",
+          "title": "Land Court Practice Direction 4 of 2025 — Accuracy of References in Submissions",
+          "publisher": "Land Court of Queensland",
+          "retrievedAt": "2026-08-25T01:54:16.325Z",
+          "contentType": "application/pdf",
+          "contentHash": "f02ad68c3f951a33e716378a3fcf0c345adf3daa1bbd76907a11ad6e8934ff26",
+          "reviewedDate": {
+            "date": "2025-09-29",
+            "precision": "day",
+            "reviewedAt": "2026-08-25T02:01:07.000Z",
+            "reviewedBy": "Policai editorial source review",
+            "notes": "Paragraph 3 of the Practice Direction states that it commences on 29 September 2025."
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "qld-planning-environment-court-practice-direction-7-2025",
+    "title": "Planning and Environment Court Practice Direction Number 7 of 2025 — Accuracy of References in Submissions",
+    "description": "Planning and Environment Court of Queensland practice direction requiring a named responsible person for submissions and personal verification of all references.",
+    "jurisdiction": "qld",
+    "type": "practice_note",
+    "status": "active",
+    "effectiveDate": "2025-09-25",
+    "agencies": [
+      "Planning and Environment Court of Queensland"
+    ],
+    "sourceUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0003/882462/p-and-e-cpd-07-of-2025.pdf",
+    "content": "Signed by Brian Devereaux SC, Chief Judge, on 25 September 2025, this Practice Direction applies to proceedings in the Planning and Environment Court of Queensland and follows Supreme Court of Queensland Practice Direction 5 of 2025. It acknowledges the increasing use of artificial intelligence as a tool in the conduct of litigation and identifies two risks: that generative AI tools may produce coherent and plausible responses that are in fact inaccurate or fictitious, including references to non-existent case authorities, legislative references and legal and academic resources; and that generative AI may be used to formulate or reformulate the manner of expression of a submission without the result being sufficiently checked. Written or oral reliance on material produced in this way has the potential to mislead the Court and the other parties, cause delay and wasted costs, undermine the integrity of the Court's processes and harm public confidence in the administration of justice. The Practice Direction requires that the person or persons taking responsibility for the contents of written submissions be identified by name at the end of the document, that a legal practitioner responsible person be the individual solicitor or barrister rather than the firm, and that the responsible person verify the accuracy and relevance of every reference to legislation, authorities or other sources. Advancing oral submissions or placing a name on written submissions is an implied representation to the Court that this verification has been carried out. Submissions containing references to non-existent material may lead to an adjournment of the hearing and an adverse costs order against the party who relied on the document. The Court's approach and this Practice Direction will be reviewed regularly.",
+    "aiSummary": "Planning and Environment Court of Queensland practice direction requiring a named responsible person to personally verify every reference in submissions, signed 25 September 2025.",
+    "tags": [
+      "practice note",
+      "practice direction",
+      "generative AI",
+      "Planning and Environment Court",
+      "courts",
+      "legal profession"
+    ],
+    "createdAt": "2025-09-25T00:00:00Z",
+    "updatedAt": "2026-08-25T02:01:07.000Z",
+    "lastReviewedAt": "2026-08-25T02:01:07.000Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0003/882462/p-and-e-cpd-07-of-2025.pdf",
+        "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0003/882462/p-and-e-cpd-07-of-2025.pdf",
+        "title": "Planning and Environment Court Practice Direction Number 7 of 2025 — Accuracy of References in Submissions",
+        "publisher": "Planning and Environment Court of Queensland",
+        "retrievedAt": "2026-08-25T01:54:16.538Z",
+        "contentType": "application/pdf",
+        "contentHash": "d74c26b3b50adfd198ea3cb5d7cff45f54d72fe5bce4a109f76c2503a3c4c462"
+      },
+      "checkedAt": "2026-08-25T02:01:07.000Z",
+      "checkedBy": "Policai editorial source review",
+      "method": "manual",
+      "notes": "Retrieved the practice direction PDF from the Queensland Courts site through the collector retrieval path, fingerprinted it, and read it in full before creating this record."
+    },
+    "dates": [
+      {
+        "type": "issued",
+        "date": "2025-09-25",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0003/882462/p-and-e-cpd-07-of-2025.pdf",
+          "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0003/882462/p-and-e-cpd-07-of-2025.pdf",
+          "title": "Planning and Environment Court Practice Direction Number 7 of 2025 — Accuracy of References in Submissions",
+          "publisher": "Planning and Environment Court of Queensland",
+          "retrievedAt": "2026-08-25T01:54:16.538Z",
+          "contentType": "application/pdf",
+          "contentHash": "d74c26b3b50adfd198ea3cb5d7cff45f54d72fe5bce4a109f76c2503a3c4c462",
+          "reviewedDate": {
+            "date": "2025-09-25",
+            "precision": "day",
+            "reviewedAt": "2026-08-25T02:01:07.000Z",
+            "reviewedBy": "Policai editorial source review",
+            "notes": "The Practice Direction is signed by Chief Judge Brian Devereaux SC and dated 25 September 2025."
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "qld-courts-genai-guidelines-non-lawyers",
+    "title": "The Use of Generative Artificial Intelligence (AI) — Guidelines for Responsible Use by Non-Lawyers",
+    "description": "Queensland Courts plain-language guidelines for self-represented litigants and other non-lawyers using generative AI in civil and criminal proceedings.",
+    "jurisdiction": "qld",
+    "type": "practice_note",
+    "status": "active",
+    "effectiveDate": "2025-09-15",
+    "agencies": [
+      "Queensland Courts"
+    ],
+    "sourceUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0012/798375/Artificial-Intelligence_Guidelines-for-Non-Lawyers.pdf",
+    "content": "These Guidelines apply to civil and criminal proceedings in Queensland courts and tribunals, including the Supreme Court, District Court and Planning and Environment Court, and are directed to people who are not lawyers. They are the litigant-facing counterpart to the Queensland Courts guidelines for judicial officers and to the Accuracy of References in Submissions practice directions issued across the Queensland court and tribunal hierarchy; QCAT Practice Direction No 10 of 2025 directs self-represented litigants to read them and records that they were updated on 15 September 2025. The Guidelines explain in plain language what generative AI chatbots are and what they can usefully do, including summarising material, changing tone or format, generating new text or a plan for new text in a specific format, and answering questions on a topic. They emphasise that these tools can get information wrong, that AI-generated content should never be assumed to be correct, and that a person who puts material before a court remains responsible for its accuracy whether or not generative AI helped produce it. They address the risk of fabricated cases, citations and legislative references, the need to check anything a chatbot produces against an authoritative source before relying on it, and the privacy and confidentiality risks of entering personal or case information into publicly available tools. The document itself carries no printed date; the 15 September 2025 date is taken from the document's own creation metadata and is corroborated by QCAT Practice Direction No 10 of 2025, which cites the Guidelines as 'updated 15 September 2025'.",
+    "aiSummary": "Queensland Courts plain-language generative AI guidelines for non-lawyers across Queensland courts and tribunals, updated 15 September 2025.",
+    "tags": [
+      "guidelines",
+      "generative AI",
+      "Queensland Courts",
+      "self-represented litigants",
+      "courts",
+      "access to justice"
+    ],
+    "createdAt": "2025-09-15T00:00:00Z",
+    "updatedAt": "2026-08-25T02:01:07.000Z",
+    "lastReviewedAt": "2026-08-25T02:01:07.000Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0012/798375/Artificial-Intelligence_Guidelines-for-Non-Lawyers.pdf",
+        "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0012/798375/Artificial-Intelligence_Guidelines-for-Non-Lawyers.pdf",
+        "title": "The Use of Generative Artificial Intelligence (AI) — Guidelines for Responsible Use by Non-Lawyers",
+        "publisher": "Queensland Courts",
+        "retrievedAt": "2026-08-25T01:54:16.749Z",
+        "contentType": "application/pdf",
+        "contentHash": "ee2b7fad1564eb18393efcf1919bb7727b11bcb864c76ffe81fdfd2fa48ac11a"
+      },
+      "checkedAt": "2026-08-25T02:01:07.000Z",
+      "checkedBy": "Policai editorial source review",
+      "method": "manual",
+      "notes": "Retrieved the guidelines PDF from the Queensland Courts site through the collector retrieval path, fingerprinted it, and read it in full. The undated document's date was taken from PDF creation metadata and corroborated against QCAT Practice Direction No 10 of 2025."
+    },
+    "dates": [
+      {
+        "type": "published",
+        "date": "2025-09-15",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0012/798375/Artificial-Intelligence_Guidelines-for-Non-Lawyers.pdf",
+          "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0012/798375/Artificial-Intelligence_Guidelines-for-Non-Lawyers.pdf",
+          "title": "The Use of Generative Artificial Intelligence (AI) — Guidelines for Responsible Use by Non-Lawyers",
+          "publisher": "Queensland Courts",
+          "retrievedAt": "2026-08-25T01:54:16.749Z",
+          "contentType": "application/pdf",
+          "contentHash": "ee2b7fad1564eb18393efcf1919bb7727b11bcb864c76ffe81fdfd2fa48ac11a",
+          "reviewedDate": {
+            "date": "2025-09-15",
+            "precision": "day",
+            "reviewedAt": "2026-08-25T02:01:07.000Z",
+            "reviewedBy": "Policai editorial source review",
+            "notes": "The document carries no printed date; the PDF creation metadata records 15 September 2025 and QCAT Practice Direction No 10 of 2025 cites the Guidelines as updated 15 September 2025."
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "qld-courts-genai-guidelines-judicial-officers",
+    "title": "The Use of Generative AI — Guidelines for Judicial Officers",
+    "description": "Queensland Courts guidelines governing judicial officers' and their staff's use of generative AI, revised on 15 September 2025.",
+    "jurisdiction": "qld",
+    "type": "practice_note",
+    "status": "active",
+    "effectiveDate": "2025-09-15",
+    "agencies": [
+      "Queensland Courts"
+    ],
+    "sourceUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+    "content": "First issued on 13 May 2024 and reissued in a revised version on 15 September 2025, these Guidelines govern the use of generative AI by Queensland judicial officers and their staff. They open with the principle that any use of generative AI tools by judicial officers and their staff must be consistent with the fulfilment of the judiciary's obligation to do equal justice to all persons according to law. They address what generative AI is and how it fails, the confidentiality of court information and the risks of entering it into publicly available tools, and the limits on relying on generative AI output in the exercise of the judicial function, including in the preparation of reasons. The revised version also addresses the intersection with expert evidence: it directs judicial officers to consider whether generative AI has been used in the formulation or expression of an opinion contained in an expert report, and whether the expert should be required to identify in their report the precise way in which they have used AI. That provision sits alongside Supreme Court of Queensland Practice Direction Number 14 of 2024 on expert evidence in criminal proceedings, which was amended and reissued on 10 September 2025 to add generative AI requirements for experts. The Guidelines are the bench-facing counterpart to the Queensland Courts guidelines for non-lawyers and to the Accuracy of References in Submissions practice directions issued across the Queensland hierarchy. A version history at the end of the document records both the original issue on 13 May 2024 and the revision on 15 September 2025.",
+    "aiSummary": "Queensland Courts guidelines on judicial officers' use of generative AI, revised 15 September 2025 to address generative AI in expert reports.",
+    "tags": [
+      "guidelines",
+      "generative AI",
+      "Queensland Courts",
+      "judicial",
+      "judicial officers",
+      "expert evidence",
+      "courts"
+    ],
+    "createdAt": "2025-09-15T00:00:00Z",
+    "updatedAt": "2026-08-25T02:01:07.000Z",
+    "lastReviewedAt": "2026-08-25T02:01:07.000Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+        "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+        "title": "The Use of Generative AI — Guidelines for Judicial Officers",
+        "publisher": "Queensland Courts",
+        "retrievedAt": "2026-08-25T01:54:16.966Z",
+        "contentType": "application/pdf",
+        "contentHash": "a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba"
+      },
+      "checkedAt": "2026-08-25T02:01:07.000Z",
+      "checkedBy": "Policai editorial source review",
+      "method": "manual",
+      "notes": "Retrieved the guidelines PDF from the Queensland Courts site through the collector retrieval path, fingerprinted it, and read it in full including the version history before creating this record."
+    },
+    "dates": [
+      {
+        "type": "amended",
+        "date": "2025-09-15",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+          "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+          "title": "The Use of Generative AI — Guidelines for Judicial Officers",
+          "publisher": "Queensland Courts",
+          "retrievedAt": "2026-08-25T01:54:16.966Z",
+          "contentType": "application/pdf",
+          "contentHash": "a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba",
+          "reviewedDate": {
+            "date": "2025-09-15",
+            "precision": "day",
+            "reviewedAt": "2026-08-25T02:01:07.000Z",
+            "reviewedBy": "Policai editorial source review",
+            "notes": "The version history records 'Revised version issued on 15 September 2025', and the document text carries the same date."
+          }
+        }
+      },
+      {
+        "type": "issued",
+        "date": "2024-05-13",
+        "precision": "day",
+        "source": {
+          "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+          "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+          "title": "The Use of Generative AI — Guidelines for Judicial Officers",
+          "publisher": "Queensland Courts",
+          "retrievedAt": "2026-08-25T01:54:16.966Z",
+          "contentType": "application/pdf",
+          "contentHash": "a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba",
+          "reviewedDate": {
+            "date": "2024-05-13",
+            "precision": "day",
+            "reviewedAt": "2026-08-25T02:01:07.000Z",
+            "reviewedBy": "Policai editorial source review",
+            "notes": "The version history records 'Guidelines issued on 13 May 2024' as the original issue date."
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "qld-supreme-court-practice-direction-14-2024-expert-evidence",
+    "title": "Supreme Court Practice Direction Number 14 of 2024 — Expert Evidence in Criminal Proceedings (Other than Sentences)",
+    "description": "Supreme Court of Queensland practice direction on expert evidence in criminal proceedings, amended and reissued on 10 September 2025 to add generative AI disclosure requirements for experts.",
+    "jurisdiction": "qld",
+    "type": "practice_note",
+    "status": "active",
+    "effectiveDate": "2025-09-10",
+    "agencies": [
+      "Supreme Court of Queensland"
+    ],
+    "sourceUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/797050/scpd-14-of-2024.pdf",
+    "content": "Practice Direction Number 14 of 2024 was originally issued on 15 April 2024 and commenced on 15 July 2024, applying to proceedings commenced by an indictment presented on or after that date. It was amended and reissued by Chief Justice H Bowskill on 10 September 2025. The Practice Direction governs expert evidence in criminal proceedings in the Supreme Court of Queensland other than sentences, setting out the form and content required of expert reports and the duties of experts to the Court. The 2025 amendment is the reason the instrument appears in AI guidance registers: subparagraph 16(l) introduces a requirement addressing the use of generative artificial intelligence in the formulation or expression of an opinion contained in an expert report. The Practice Direction includes a transition provision — where an opinion in a report was finalised before the amendment took effect, the expert should furnish a supplementary report addressing the requirements of subparagraph 16(l) to the extent they are able to do so. The instrument is not primarily an AI practice direction; its AI provisions are one component of a broader expert evidence regime, and it is included in the register because it imposes operative generative AI obligations on expert witnesses in Queensland criminal proceedings. It complements the Queensland Courts guidelines for judicial officers, revised on 15 September 2025, which direct judicial officers to consider whether generative AI has been used in an expert opinion. A version history at the end of the document records the original issue on 15 April 2024 and the amendment and reissue on 10 September 2025.",
+    "aiSummary": "Supreme Court of Queensland expert evidence practice direction for criminal proceedings, amended 10 September 2025 to require experts to address generative AI use in forming or expressing an opinion.",
+    "tags": [
+      "practice note",
+      "practice direction",
+      "generative AI",
+      "Supreme Court of Queensland",
+      "expert evidence",
+      "criminal",
+      "courts"
+    ],
+    "createdAt": "2025-09-10T00:00:00Z",
+    "updatedAt": "2026-08-25T02:01:07.000Z",
+    "lastReviewedAt": "2026-08-25T02:01:07.000Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/797050/scpd-14-of-2024.pdf",
+        "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/797050/scpd-14-of-2024.pdf",
+        "title": "Supreme Court Practice Direction Number 14 of 2024 — Expert Evidence in Criminal Proceedings (Other than Sentences)",
+        "publisher": "Supreme Court of Queensland",
+        "retrievedAt": "2026-08-25T01:54:17.189Z",
+        "contentType": "application/pdf",
+        "contentHash": "9da8c29accdc0805573d22b07815011f8d9abcce484c27bc22582b6ef707fee8"
+      },
+      "checkedAt": "2026-08-25T02:01:07.000Z",
+      "checkedBy": "Policai editorial source review",
+      "method": "manual",
+      "notes": "Retrieved the practice direction PDF from the Queensland Courts site through the collector retrieval path, fingerprinted it, and read it in full including the version history before creating this record."
+    },
+    "dates": [
+      {
+        "type": "amended",
+        "date": "2025-09-10",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/797050/scpd-14-of-2024.pdf",
+          "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/797050/scpd-14-of-2024.pdf",
+          "title": "Supreme Court Practice Direction Number 14 of 2024 — Expert Evidence in Criminal Proceedings (Other than Sentences)",
+          "publisher": "Supreme Court of Queensland",
+          "retrievedAt": "2026-08-25T01:54:17.189Z",
+          "contentType": "application/pdf",
+          "contentHash": "9da8c29accdc0805573d22b07815011f8d9abcce484c27bc22582b6ef707fee8",
+          "reviewedDate": {
+            "date": "2025-09-10",
+            "precision": "day",
+            "reviewedAt": "2026-08-25T02:01:07.000Z",
+            "reviewedBy": "Policai editorial source review",
+            "notes": "The version history records '10 September 2025 – Practice Direction amended and reissued', and the document is signed by Chief Justice Bowskill under that date."
+          }
+        }
+      },
+      {
+        "type": "commenced",
+        "date": "2024-07-15",
+        "precision": "day",
+        "source": {
+          "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/797050/scpd-14-of-2024.pdf",
+          "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/797050/scpd-14-of-2024.pdf",
+          "title": "Supreme Court Practice Direction Number 14 of 2024 — Expert Evidence in Criminal Proceedings (Other than Sentences)",
+          "publisher": "Supreme Court of Queensland",
+          "retrievedAt": "2026-08-25T01:54:17.189Z",
+          "contentType": "application/pdf",
+          "contentHash": "9da8c29accdc0805573d22b07815011f8d9abcce484c27bc22582b6ef707fee8",
+          "reviewedDate": {
+            "date": "2024-07-15",
+            "precision": "day",
+            "reviewedAt": "2026-08-25T02:01:07.000Z",
+            "reviewedBy": "Policai editorial source review",
+            "notes": "The Practice Direction states that it commences on 15 July 2024 and applies to proceedings commenced by an indictment presented on or after that date."
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "wa-supreme-court-genai-guidelines",
+    "title": "Guidelines for the use of generative AI",
+    "description": "Supreme Court of Western Australia guidelines on generative AI in proceedings, addressed to lawyers, non-lawyers, self-represented litigants and expert witnesses.",
+    "jurisdiction": "wa",
+    "type": "practice_note",
+    "status": "active",
+    "effectiveDate": "2025-11-20",
+    "agencies": [
+      "Supreme Court of Western Australia"
+    ],
+    "sourceUrl": "https://www.supremecourt.wa.gov.au/_files/Guidelines%20for%20the%20Use%20of%20Generative%20Artificial%20Intelligence.pdf",
+    "content": "These Guidelines concern the use of artificial intelligence in proceedings before the Supreme Court of Western Australia and are expressly intended to assist all those involved in proceedings, including lawyers, non-lawyers, self-represented litigants in civil and criminal proceedings, and expert witnesses. They explain that generative AI does not think or reason but predicts word sequences based on training data, that output quality depends entirely on the extent and quality of input data, and that AI-generated content should never be presumed correct and is not a substitute for legal research or human experience and oversight. They warn that publicly available generative AI tools often store and reuse prompts, outputs and data, that the privacy and confidentiality of information provided to such tools may not be guaranteed, and that users should consider what ongoing or future use a tool may make of information before providing it. Paragraph 5 lists the risks: outdated information arising from fixed training cut-off dates; incompleteness, where AI-generated content omits relevant arguments or overlooks essential points; inaccuracy and fabrication, where tools invent cases, authorities or facts and present them confidently as true; jurisdiction issues, where tools draw on jurisdictions with different substantive laws or procedural requirements; and bias, including over- or under-representation of demographics and an inability to understand specific cultural or emotional needs. The principles for use require litigants and practitioners to understand the capabilities and limitations of any tool they use, and to take responsibility for AI-generated content relied on in proceedings. The Guidelines provide that, when directed by the court or where otherwise necessary or appropriate, the use of generative AI in Supreme Court proceedings, including in the preparation of any materials, should be disclosed to other parties and the court. The document carries no printed date; the date recorded here is taken from the document's own creation metadata and is corroborated by the Last-Modified header served with the file.",
+    "aiSummary": "Supreme Court of Western Australia guidelines on generative AI risks and responsible use in proceedings, with disclosure required when directed by the court or otherwise appropriate.",
+    "tags": [
+      "guidelines",
+      "generative AI",
+      "Supreme Court of Western Australia",
+      "courts",
+      "disclosure",
+      "self-represented litigants",
+      "expert evidence"
+    ],
+    "createdAt": "2025-11-20T00:00:00Z",
+    "updatedAt": "2026-08-25T02:01:07.000Z",
+    "lastReviewedAt": "2026-08-25T02:01:07.000Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.supremecourt.wa.gov.au/_files/Guidelines%20for%20the%20Use%20of%20Generative%20Artificial%20Intelligence.pdf",
+        "finalUrl": "https://www.supremecourt.wa.gov.au/_files/Guidelines%20for%20the%20Use%20of%20Generative%20Artificial%20Intelligence.pdf",
+        "title": "Guidelines for the use of generative AI",
+        "publisher": "Supreme Court of Western Australia",
+        "retrievedAt": "2026-08-25T01:54:17.698Z",
+        "contentType": "application/pdf",
+        "contentHash": "e24334d7a4fd060df81ef65580112139eac5bd0f2cac509f877c53e2cc6c57de",
+        "lastModified": "Thu, 20 Nov 2025 01:15:34 GMT"
+      },
+      "checkedAt": "2026-08-25T02:01:07.000Z",
+      "checkedBy": "Policai editorial source review",
+      "method": "manual",
+      "notes": "Retrieved the guidelines PDF from the Supreme Court of Western Australia site through the collector retrieval path, fingerprinted it, and read it in full. The undated document's date was taken from PDF creation metadata corroborated by the HTTP Last-Modified header."
+    },
+    "dates": [
+      {
+        "type": "published",
+        "date": "2025-11-20",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://www.supremecourt.wa.gov.au/_files/Guidelines%20for%20the%20Use%20of%20Generative%20Artificial%20Intelligence.pdf",
+          "finalUrl": "https://www.supremecourt.wa.gov.au/_files/Guidelines%20for%20the%20Use%20of%20Generative%20Artificial%20Intelligence.pdf",
+          "title": "Guidelines for the use of generative AI",
+          "publisher": "Supreme Court of Western Australia",
+          "retrievedAt": "2026-08-25T01:54:17.698Z",
+          "contentType": "application/pdf",
+          "contentHash": "e24334d7a4fd060df81ef65580112139eac5bd0f2cac509f877c53e2cc6c57de",
+          "lastModified": "Thu, 20 Nov 2025 01:15:34 GMT",
+          "reviewedDate": {
+            "date": "2025-11-20",
+            "precision": "day",
+            "reviewedAt": "2026-08-25T02:01:07.000Z",
+            "reviewedBy": "Policai editorial source review",
+            "notes": "The Guidelines carry no printed date; the PDF creation metadata records 20 November 2025 and the Last-Modified header served with the file records the same date."
+          }
+        }
+      }
+    ]
   }
 ]
