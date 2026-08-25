@@ -2318,5 +2318,149 @@
       "method": "manual",
       "notes": "Retrieved the guidelines PDF from the Supreme Court of Western Australia site through the collector retrieval path, fingerprinted it, and read it in full. The undated document's date was taken from PDF creation metadata corroborated by the HTTP Last-Modified header."
     }
+  },
+  {
+    "id": "tl-2024-11-21-nsw-judicial-gen-ai-guidelines",
+    "date": "2024-11-21",
+    "datePrecision": "day",
+    "title": "Chief Justice of NSW issues generative AI guidelines for judges",
+    "description": "Issued on 21 November 2024 alongside Practice Note SC Gen 23, the guidelines apply to all NSW courts and prohibit judges from using generative AI to formulate reasons, analyse evidence or proof draft judgments. They also set out red flags for detecting undisclosed Gen AI use in court documents.",
+    "type": "policy_introduced",
+    "jurisdiction": "nsw",
+    "relatedPolicyId": "nsw-judicial-gen-ai-guidelines",
+    "sourceUrl": "https://supremecourt.nsw.gov.au/content/dam/dcj/ctsd/supreme-court/documents/About-the-Court/policies/Guidelines_Gen_AI.pdf",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://supremecourt.nsw.gov.au/content/dam/dcj/ctsd/supreme-court/documents/About-the-Court/policies/Guidelines_Gen_AI.pdf",
+        "finalUrl": "https://supremecourt.nsw.gov.au/documents/About-the-Court/policies/Guidelines_Gen_AI.pdf",
+        "title": "Guidelines for New South Wales Judges in respect of Use of Generative AI",
+        "publisher": "Supreme Court of New South Wales",
+        "retrievedAt": "2026-08-25T13:30:09.000Z",
+        "publishedAt": "2024-11-21",
+        "publishedAtPrecision": "day",
+        "contentType": "application/pdf",
+        "contentHash": "044419c46de275247f265f3d53036b2178c94939a77f43c398a633e05999d4ee",
+        "reviewedDate": {
+          "date": "2024-11-21",
+          "precision": "day",
+          "reviewedAt": "2026-08-25T13:30:09.000Z",
+          "reviewedBy": "Policai editorial source review",
+          "notes": "The document has no commencement clause; it is signed by the Hon. A S Bell, Chief Justice of New South Wales, and dated 21 November 2024 on page 3, matching the Supreme Court's announcement of the same date."
+        }
+      },
+      "checkedAt": "2026-08-25T13:30:09.000Z",
+      "checkedBy": "Policai editorial source review",
+      "method": "manual",
+      "notes": "The document has no commencement clause; it is signed by the Hon. A S Bell, Chief Justice of New South Wales, and dated 21 November 2024 on page 3, matching the Supreme Court's announcement of the same date."
+    }
+  },
+  {
+    "id": "tl-2026-06-05-vic-county-court-judicial-ai-guidelines",
+    "date": "2026-06-05",
+    "datePrecision": "day",
+    "title": "County Court of Victoria issues guidelines on judicial officers' use of AI",
+    "description": "The County Court of Victoria created guidelines on 5 June 2026 prohibiting judicial officers from using generative AI to make judicial decisions, announced on 9 June 2026 with Practice Note PNCCV 1-2026. Supportive uses are permitted only with Court-approved AI tools, and judicial officers must direct staff on use and disclosure.",
+    "type": "policy_introduced",
+    "jurisdiction": "vic",
+    "relatedPolicyId": "vic-county-court-judicial-ai-guidelines",
+    "sourceUrl": "https://www.countycourt.vic.gov.au/files/documents/2026-06/guidelines-use-ai-judicial-officers.docx",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.countycourt.vic.gov.au/files/documents/2026-06/guidelines-use-ai-judicial-officers.docx",
+        "finalUrl": "https://www.countycourt.vic.gov.au/files/documents/2026-06/guidelines-use-ai-judicial-officers.docx",
+        "title": "Guidelines: The Use of Artificial Intelligence by Judicial Officers (County Court of Victoria)",
+        "publisher": "County Court of Victoria",
+        "retrievedAt": "2026-08-25T13:30:09.000Z",
+        "publishedAt": "2026-06-05",
+        "publishedAtPrecision": "day",
+        "contentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "contentHash": "080410f7f572d1fb1a331fb3048ae04bb858a268717c912942f2600bd32a729f",
+        "reviewedDate": {
+          "date": "2026-06-05",
+          "precision": "day",
+          "reviewedAt": "2026-08-25T13:30:09.000Z",
+          "reviewedBy": "Policai editorial source review",
+          "notes": "The header block states 'Date created 5 June 2026' and 'Authorised by Chief Judge Chambers'; the Court announced the Guidelines on 9 June 2026 and no separate commencement date is stated."
+        }
+      },
+      "checkedAt": "2026-08-25T13:30:09.000Z",
+      "checkedBy": "Policai editorial source review",
+      "method": "manual",
+      "notes": "The header block states 'Date created 5 June 2026' and 'Authorised by Chief Judge Chambers'; the Court announced the Guidelines on 9 June 2026 and no separate commencement date is stated."
+    }
+  },
+  {
+    "id": "tl-2026-03-05-federal-court-gpn-lip-ai",
+    "date": "2026-03-05",
+    "datePrecision": "day",
+    "title": "Federal Court GPN-LIP directs litigants in person on generative AI use",
+    "description": "On 5 March 2026 Chief Justice Mortimer issued the Federal Court's Litigants in Person Practice Note (GPN-LIP), which warns self-represented litigants not to use generative AI to decide whether they have a case. It allows AI to help explain a case based on real law and evidence, subject to disclosure on request and full verification, and foreshadows the GPN-AI practice note issued the following month.",
+    "type": "policy_introduced",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "federal-court-gpn-lip-ai",
+    "sourceUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
+        "finalUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
+        "title": "Litigants in Person Practice Note (GPN-LIP)",
+        "publisher": "Federal Court of Australia",
+        "retrievedAt": "2026-08-25T13:30:09.000Z",
+        "publishedAt": "2026-03-05",
+        "publishedAtPrecision": "day",
+        "contentType": "text/html",
+        "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+        "reviewedDate": {
+          "date": "2026-03-05",
+          "precision": "day",
+          "reviewedAt": "2026-08-25T13:30:09.000Z",
+          "reviewedBy": "Policai editorial source review",
+          "notes": "The practice note is headed 'D S Mortimer, Chief Justice 05 March 2026' and is signed and dated 5 March 2026 at its end; page metadata gives DCTERMS.date 2026-03-05."
+        }
+      },
+      "checkedAt": "2026-08-25T13:30:09.000Z",
+      "checkedBy": "Policai editorial source review",
+      "method": "manual",
+      "notes": "The practice note is headed 'D S Mortimer, Chief Justice 05 March 2026' and is signed and dated 5 March 2026 at its end; page metadata gives DCTERMS.date 2026-03-05."
+    }
+  },
+  {
+    "id": "tl-2026-01-19-sa-courts-gen-ai-self-represented-info",
+    "date": "2026-01-19",
+    "datePrecision": "day",
+    "title": "South Australian courts publish generative AI information sheet for self-represented litigants",
+    "description": "On 19 January 2026 the Courts Administration Authority published an information sheet for self-represented litigants alongside the Supreme Court's Generative AI Guidelines adopted from 1 January 2026. It explains the Harman obligation and contempt risk of uploading litigation documents to open AI tools and how to verify AI-generated legal references.",
+    "type": "policy_introduced",
+    "jurisdiction": "sa",
+    "relatedPolicyId": "sa-courts-gen-ai-self-represented-info",
+    "sourceUrl": "https://www.courts.sa.gov.au/download/generative-ai-guidelines-and-information-sheet-for-self-represented-litigants?filename=Gen+AI+Information+Sheet+for+Self-Represented+Litigants.pdf&ind=1766530873177&refresh=694b263004da61766532656&wpdmdl=25796",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.courts.sa.gov.au/download/generative-ai-guidelines-and-information-sheet-for-self-represented-litigants?filename=Gen+AI+Information+Sheet+for+Self-Represented+Litigants.pdf&ind=1766530873177&refresh=694b263004da61766532656&wpdmdl=25796",
+        "finalUrl": "https://www.courts.sa.gov.au/download/generative-ai-guidelines-and-information-sheet-for-self-represented-litigants?filename=Gen+AI+Information+Sheet+for+Self-Represented+Litigants.pdf&ind=1766530873177&refresh=694b263004da61766532656&wpdmdl=25796",
+        "title": "Information for self-represented litigants regarding the use of Generative artificial intelligence in litigation",
+        "publisher": "Courts Administration Authority of South Australia",
+        "retrievedAt": "2026-08-25T13:30:09.000Z",
+        "publishedAt": "2026-01-19",
+        "publishedAtPrecision": "day",
+        "contentType": "application/pdf",
+        "contentHash": "974fa5eef71ab195d51c387b5db6776f20b7843e6bfb35390940ed2e724bcaf3",
+        "reviewedDate": {
+          "date": "2026-01-19",
+          "precision": "day",
+          "reviewedAt": "2026-08-25T13:30:09.000Z",
+          "reviewedBy": "Policai editorial source review",
+          "notes": "The information sheet itself is undated; the Courts Administration Authority news item publishing it, together with the Generative AI Guidelines adopted from 1 January 2026, is dated 19 January 2026."
+        }
+      },
+      "checkedAt": "2026-08-25T13:30:09.000Z",
+      "checkedBy": "Policai editorial source review",
+      "method": "manual",
+      "notes": "The information sheet itself is undated; the Courts Administration Authority news item publishing it, together with the Generative AI Guidelines adopted from 1 January 2026, is dated 19 January 2026."
+    }
   }
 ]

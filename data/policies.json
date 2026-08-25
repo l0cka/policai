@@ -6454,5 +6454,291 @@
         }
       }
     ]
+  },
+  {
+    "id": "nsw-judicial-gen-ai-guidelines",
+    "title": "Guidelines for New South Wales Judges in respect of Use of Generative AI",
+    "description": "Guidelines issued by the Chief Justice of New South Wales on 21 November 2024, developed with Heads of Jurisdiction, governing how judges of all NSW courts may and may not use generative AI.",
+    "jurisdiction": "nsw",
+    "type": "practice_note",
+    "status": "active",
+    "effectiveDate": "2024-11-21",
+    "agencies": [
+      "Supreme Court of New South Wales"
+    ],
+    "sourceUrl": "https://supremecourt.nsw.gov.au/content/dam/dcj/ctsd/supreme-court/documents/About-the-Court/policies/Guidelines_Gen_AI.pdf",
+    "content": "The Guidelines for New South Wales Judges in respect of Use of Generative AI apply to all courts in New South Wales and were developed after consultation with Heads of Jurisdiction and review of guidelines from other common law courts (para 1). They define Gen AI and give examples of generic and legal-specific large language model programs (paras 2–3). Judges should not use Gen AI in formulating reasons for judgment or in assessing or analysing evidence preparatory to delivering reasons (para 4), and Gen AI should not be used to edit or proof draft judgments; no part of a draft judgment may be submitted to a Gen AI program (para 5). If Gen AI is used for secondary legal research or other purposes, judges must understand its limits, including hallucinated citations, incomplete or non-Australian data, bias, retention of prompts, confidentiality risks, copyright and the risk of granting device permissions (para 6). All Gen AI research output must be closely scrutinised and verified for accuracy, completeness, currency and suitability, and must not substitute for personal research (para 7). Judges should require associates, tipstaves and researchers to disclose any Gen AI use and to verify output separately (para 8). Judges may require litigants and legal representatives to disclose Gen AI use in written submissions and to give an assurance of verification, including for compliance with Practice Note SC Gen 23 (para 9), and should be astute to identify undisclosed use (para 10). Paragraph 11 lists red flags such as non-existent citations, out-of-date or inapplicable case law, obvious substantive errors, repetitive language and foreign spelling. The guidelines will be reviewed regularly (para 12). The Land and Environment Court applies them to its Judges, Commissioners, Acting Commissioners and Registrars.",
+    "aiSummary": "The Chief Justice's guidelines bar NSW judges from using generative AI to write, analyse evidence for, or edit judgments and set verification and disclosure expectations for chambers and litigants.",
+    "tags": [
+      "judicial guidelines",
+      "generative AI",
+      "courts",
+      "supreme court",
+      "nsw",
+      "judiciary",
+      "sc gen 23"
+    ],
+    "createdAt": "2024-11-21T00:00:00Z",
+    "updatedAt": "2026-08-25T13:30:09.000Z",
+    "lastReviewedAt": "2026-08-25T13:30:09.000Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://supremecourt.nsw.gov.au/content/dam/dcj/ctsd/supreme-court/documents/About-the-Court/policies/Guidelines_Gen_AI.pdf",
+        "finalUrl": "https://supremecourt.nsw.gov.au/documents/About-the-Court/policies/Guidelines_Gen_AI.pdf",
+        "title": "Guidelines for New South Wales Judges in respect of Use of Generative AI",
+        "publisher": "Supreme Court of New South Wales",
+        "retrievedAt": "2026-08-25T13:30:09.000Z",
+        "publishedAt": "2024-11-21",
+        "publishedAtPrecision": "day",
+        "contentType": "application/pdf",
+        "contentHash": "044419c46de275247f265f3d53036b2178c94939a77f43c398a633e05999d4ee"
+      },
+      "checkedAt": "2026-08-25T13:30:09.000Z",
+      "checkedBy": "Policai editorial source review",
+      "method": "manual",
+      "notes": "Located the guidelines PDF via the Supreme Court's Generative AI resources page, read the full 3-page document and confirmed the 21 November 2024 signature date and its cross-reference to SC Gen 23."
+    },
+    "dates": [
+      {
+        "type": "issued",
+        "date": "2024-11-21",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://supremecourt.nsw.gov.au/content/dam/dcj/ctsd/supreme-court/documents/About-the-Court/policies/Guidelines_Gen_AI.pdf",
+          "finalUrl": "https://supremecourt.nsw.gov.au/documents/About-the-Court/policies/Guidelines_Gen_AI.pdf",
+          "title": "Guidelines for New South Wales Judges in respect of Use of Generative AI",
+          "publisher": "Supreme Court of New South Wales",
+          "retrievedAt": "2026-08-25T13:30:09.000Z",
+          "publishedAt": "2024-11-21",
+          "publishedAtPrecision": "day",
+          "contentType": "application/pdf",
+          "contentHash": "044419c46de275247f265f3d53036b2178c94939a77f43c398a633e05999d4ee",
+          "reviewedDate": {
+            "date": "2024-11-21",
+            "precision": "day",
+            "reviewedAt": "2026-08-25T13:30:09.000Z",
+            "reviewedBy": "Policai editorial source review",
+            "notes": "The document has no commencement clause; it is signed by the Hon. A S Bell, Chief Justice of New South Wales, and dated 21 November 2024 on page 3, matching the Supreme Court's announcement of the same date."
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "vic-county-court-judicial-ai-guidelines",
+    "title": "Guidelines: The Use of Artificial Intelligence by Judicial Officers (County Court of Victoria)",
+    "description": "County Court of Victoria guidelines, created 5 June 2026 and authorised by Chief Judge Chambers, setting the parameters for the use of artificial intelligence by the Court's judges and judicial registrars.",
+    "jurisdiction": "vic",
+    "type": "practice_note",
+    "status": "active",
+    "effectiveDate": "2026-06-05",
+    "agencies": [
+      "County Court of Victoria"
+    ],
+    "sourceUrl": "https://www.countycourt.vic.gov.au/files/documents/2026-06/guidelines-use-ai-judicial-officers.docx",
+    "content": "The Guidelines outline the parameters around the use of Artificial Intelligence by Judicial Officers of the County Court of Victoria, defined as Judges and Judicial Registrars of the Court, including Reserve Judges. They were issued alongside Practice Note PNCCV 1-2026 on the use of AI by Court users, which lists them as a related document, and closely mirror the Supreme Court of Victoria's guidelines of 14 May 2026. The Guidelines state they were informed by the eight principles formulated by the Victorian Law Reform Commission to guide the safe use of AI in courts and tribunals. They define AI as a machine-based system that infers from input how to generate outputs such as predictions, content, recommendations or decisions, and distinguish generative AI, public AI (openly accessible tools trained on broad, often public datasets) and closed AI (tools kept within a controlled environment with confidentiality protections). The operative rules provide that Judicial Officers must not use GenAI for judicial decision-making; they consider each matter, exercise their own judgment to reach a decision and give reasons where appropriate. This does not prevent supportive uses of AI by Judicial Officers or Court staff, such as organising and locating case materials, producing summaries and chronologies, assisting legal research and proof-reading, provided these are not a substitute for reading or listening to evidence and submissions or for fact-finding. For case-related matters, Judicial Officers and Court staff must only use AI tools approved by the Court, with approval given having regard to confidentiality and amelioration of other risks. Judicial Officers should give staff clear directions on appropriate AI use and the level of disclosure required. The Guidelines are to be reviewed as technology and the Court's experience change.",
+    "aiSummary": "County Court of Victoria judicial officers must not use generative AI for judicial decision-making and may use only Court-approved tools for supportive tasks such as summaries, chronologies, research and proof-reading.",
+    "tags": [
+      "generative AI",
+      "courts",
+      "judicial guidelines",
+      "judicial officers",
+      "county court of victoria",
+      "victorian law reform commission",
+      "decision-making"
+    ],
+    "createdAt": "2026-06-05T00:00:00Z",
+    "updatedAt": "2026-08-25T13:30:09.000Z",
+    "lastReviewedAt": "2026-08-25T13:30:09.000Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.countycourt.vic.gov.au/files/documents/2026-06/guidelines-use-ai-judicial-officers.docx",
+        "finalUrl": "https://www.countycourt.vic.gov.au/files/documents/2026-06/guidelines-use-ai-judicial-officers.docx",
+        "title": "Guidelines: The Use of Artificial Intelligence by Judicial Officers (County Court of Victoria)",
+        "publisher": "County Court of Victoria",
+        "retrievedAt": "2026-08-25T13:30:09.000Z",
+        "publishedAt": "2026-06-05",
+        "publishedAtPrecision": "day",
+        "contentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "contentHash": "080410f7f572d1fb1a331fb3048ae04bb858a268717c912942f2600bd32a729f"
+      },
+      "checkedAt": "2026-08-25T13:30:09.000Z",
+      "checkedBy": "Policai editorial source review",
+      "method": "manual",
+      "notes": "Downloaded the .docx from the County Court site and read the full text; confirmed the title, creation date, authorising officer and all provisions, and checked that no PDF version exists at the equivalent URL."
+    },
+    "dates": [
+      {
+        "type": "issued",
+        "date": "2026-06-05",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://www.countycourt.vic.gov.au/files/documents/2026-06/guidelines-use-ai-judicial-officers.docx",
+          "finalUrl": "https://www.countycourt.vic.gov.au/files/documents/2026-06/guidelines-use-ai-judicial-officers.docx",
+          "title": "Guidelines: The Use of Artificial Intelligence by Judicial Officers (County Court of Victoria)",
+          "publisher": "County Court of Victoria",
+          "retrievedAt": "2026-08-25T13:30:09.000Z",
+          "publishedAt": "2026-06-05",
+          "publishedAtPrecision": "day",
+          "contentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          "contentHash": "080410f7f572d1fb1a331fb3048ae04bb858a268717c912942f2600bd32a729f",
+          "reviewedDate": {
+            "date": "2026-06-05",
+            "precision": "day",
+            "reviewedAt": "2026-08-25T13:30:09.000Z",
+            "reviewedBy": "Policai editorial source review",
+            "notes": "The header block states 'Date created 5 June 2026' and 'Authorised by Chief Judge Chambers'; the Court announced the Guidelines on 9 June 2026 and no separate commencement date is stated."
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "federal-court-gpn-lip-ai",
+    "title": "Litigants in Person Practice Note (GPN-LIP)",
+    "description": "Federal Court of Australia general practice note for litigants in person, issued by Chief Justice Mortimer on 5 March 2026, which at paragraphs 2.8 to 2.11 directs self-represented litigants on when they may and may not use generative AI programs.",
+    "jurisdiction": "federal",
+    "type": "practice_note",
+    "status": "active",
+    "effectiveDate": "2026-03-05",
+    "agencies": [
+      "Federal Court of Australia"
+    ],
+    "sourceUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
+    "content": "GPN-LIP is a General Practice Note of the Federal Court of Australia written in plain language for litigants in person, that is, parties who have a legal case in the Court without a lawyer. It is issued under the Federal Court of Australia Act 1976 (Cth) and litigants are asked to sign an acknowledgement form confirming they have read it. Its generative AI provisions sit in Part 2 (Getting legal help). Paragraph 2.8 directs litigants not to use generative AI programs such as ChatGPT, Claude, Microsoft Copilot or Google Gemini to obtain legal help about whether they have a case they can win, because such programs are not reliable, are not trained like lawyers, may give answers based on American law and can give false answers to legal questions. Paragraph 2.9 similarly warns against social media and pseudolaw sites, noting a litigant can be in serious trouble for making arguments not based on real law. Paragraph 2.10 permits litigants who start or defend a case based on real law and evidence to use AI programs to help explain their case to the Court, but requires them to tell the Court they have done so if asked, to check that all facts from AI programs are correct and complete and that the law is correct, preferably with a lawyer or otherwise using the free legal research databases listed in Attachment D, and warns of serious consequences for giving the Court false information about facts or law. Paragraph 2.11 states the Court will soon publish more about what litigants can and cannot do with AI programs in their cases; that further guidance was issued as GPN-AI on 16 April 2026. The remainder of the practice note covers interpreters, the Court's expectations of litigants in person, the registry, hearings and costs, and includes four attachments on definitions, sections 37M and 37N of the Act, other practice notes and legal research databases.",
+    "aiSummary": "The Federal Court's litigants in person practice note tells self-represented parties not to rely on generative AI to assess whether they have a winnable case, permits AI to help explain a case founded on real law and evidence, and requires them to disclose AI use on request and verify every fact and legal proposition.",
+    "tags": [
+      "generative AI",
+      "courts",
+      "practice note",
+      "federal court of australia",
+      "litigants in person",
+      "self-represented litigants",
+      "verification",
+      "disclosure"
+    ],
+    "createdAt": "2026-03-05T00:00:00Z",
+    "updatedAt": "2026-08-25T13:30:09.000Z",
+    "lastReviewedAt": "2026-08-25T13:30:09.000Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
+        "finalUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
+        "title": "Litigants in Person Practice Note (GPN-LIP)",
+        "publisher": "Federal Court of Australia",
+        "retrievedAt": "2026-08-25T13:30:09.000Z",
+        "publishedAt": "2026-03-05",
+        "publishedAtPrecision": "day",
+        "contentType": "text/html",
+        "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e"
+      },
+      "checkedAt": "2026-08-25T13:30:09.000Z",
+      "checkedBy": "Policai editorial source review",
+      "method": "manual",
+      "notes": "Read the full HTML practice note including the header, introduction, paragraphs 2.8-2.11, the signature block and attachment list; the AI provisions are confined to paragraphs 2.8-2.11 and no separate commencement date is stated. Direct HTTP retrieval of the Federal Court page is blocked (HTTP 403), so the fingerprint is the SHA-256 of the raw HTML captured through the browser-rendering scraper on 25 August 2026."
+    },
+    "dates": [
+      {
+        "type": "issued",
+        "date": "2026-03-05",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
+          "finalUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
+          "title": "Litigants in Person Practice Note (GPN-LIP)",
+          "publisher": "Federal Court of Australia",
+          "retrievedAt": "2026-08-25T13:30:09.000Z",
+          "publishedAt": "2026-03-05",
+          "publishedAtPrecision": "day",
+          "contentType": "text/html",
+          "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+          "reviewedDate": {
+            "date": "2026-03-05",
+            "precision": "day",
+            "reviewedAt": "2026-08-25T13:30:09.000Z",
+            "reviewedBy": "Policai editorial source review",
+            "notes": "The practice note is headed 'D S Mortimer, Chief Justice 05 March 2026' and is signed and dated 5 March 2026 at its end; page metadata gives DCTERMS.date 2026-03-05."
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "sa-courts-gen-ai-self-represented-info",
+    "title": "Information for self-represented litigants regarding the use of Generative artificial intelligence in litigation",
+    "description": "South Australian courts information sheet supplementing the Supreme Court's Generative AI Guidelines, explaining to self-represented litigants the restrictions on uploading litigation documents to AI tools and the need to verify AI-provided legal sources.",
+    "jurisdiction": "sa",
+    "type": "practice_note",
+    "status": "active",
+    "effectiveDate": "2026-01-19",
+    "agencies": [
+      "Courts Administration Authority of South Australia"
+    ],
+    "sourceUrl": "https://www.courts.sa.gov.au/download/generative-ai-guidelines-and-information-sheet-for-self-represented-litigants?filename=Gen+AI+Information+Sheet+for+Self-Represented+Litigants.pdf&ind=1766530873177&refresh=694b263004da61766532656&wpdmdl=25796",
+    "content": "The information sheet accompanies the Generative AI Guidelines approved by the Judges of the Supreme Court of South Australia, adopted from 1 January 2026 and applying to the Supreme, District, Magistrates, Youth and Environment, Resources and Development Courts and the Court of Disputed Returns. It gives self-represented litigants additional guidance on two issues highlighted in those Guidelines: restrictions on uploading documents received in litigation into a Gen AI product, and the need to verify legal sources and references produced by Gen AI. It explains the Harman obligation, under which documents obtained through discovery, disclosure or subpoena may be used only for the proceeding, and notes other restrictions arising from confidentiality, privilege, suppression orders and copyright. Uploading such documents to open Gen AI systems such as the free version of ChatGPT risks their use in training or disclosure, and a breach of the Harman obligation may amount to contempt of court, exposing the litigant to a fine, custody, costs, compensation or other orders. Litigants should not upload documents from another party unless satisfied the system is closed and will not release or train on the material, and are given questions to ask about data use, retention, paid tiers and access. The sheet warns that Gen AI hallucinates cases, references, laws and section numbers, that litigants remain responsible for wrong information given to the court, and that AI output can never be treated as legal advice. It offers prompting tips, such as specifying the court, jurisdiction, year, case type and applicable rules (Uniform Civil Rules 2020, Joint Criminal Rules 2022 or Uniform Special Statutory Rules 2022), and directs litigants to AustLII, BarNet JADE, SA Legislation, the Law Handbook, the Courts Administration Authority website, the Legal Services Commission, the Law Society and JusticeNet SA for verification and help. It closes by describing what court staff can and cannot assist with.",
+    "aiSummary": "South Australian courts advise self-represented litigants not to upload discovered, subpoenaed, privileged or suppressed documents to open generative AI tools, warn that doing so may be contempt of court, and require them to verify every AI-provided legal source before relying on it.",
+    "tags": [
+      "generative AI",
+      "courts",
+      "south australia",
+      "self-represented litigants",
+      "harman obligation",
+      "verification",
+      "confidentiality",
+      "guidance"
+    ],
+    "createdAt": "2026-01-19T00:00:00Z",
+    "updatedAt": "2026-08-25T13:30:09.000Z",
+    "lastReviewedAt": "2026-08-25T13:30:09.000Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.courts.sa.gov.au/download/generative-ai-guidelines-and-information-sheet-for-self-represented-litigants?filename=Gen+AI+Information+Sheet+for+Self-Represented+Litigants.pdf&ind=1766530873177&refresh=694b263004da61766532656&wpdmdl=25796",
+        "finalUrl": "https://www.courts.sa.gov.au/download/generative-ai-guidelines-and-information-sheet-for-self-represented-litigants?filename=Gen+AI+Information+Sheet+for+Self-Represented+Litigants.pdf&ind=1766530873177&refresh=694b263004da61766532656&wpdmdl=25796",
+        "title": "Information for self-represented litigants regarding the use of Generative artificial intelligence in litigation",
+        "publisher": "Courts Administration Authority of South Australia",
+        "retrievedAt": "2026-08-25T13:30:09.000Z",
+        "publishedAt": "2026-01-19",
+        "publishedAtPrecision": "day",
+        "contentType": "application/pdf",
+        "contentHash": "974fa5eef71ab195d51c387b5db6776f20b7843e6bfb35390940ed2e724bcaf3"
+      },
+      "checkedAt": "2026-08-25T13:30:09.000Z",
+      "checkedBy": "Policai editorial source review",
+      "method": "manual",
+      "notes": "Read the full five-page PDF from both the SAET mirror and the courts.sa.gov.au download link and confirmed the two copies are textually identical, so the courts.sa.gov.au copy linked from the 19 January 2026 news item is used as canonical; the sheet itself carries no date."
+    },
+    "dates": [
+      {
+        "type": "published",
+        "date": "2026-01-19",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://www.courts.sa.gov.au/download/generative-ai-guidelines-and-information-sheet-for-self-represented-litigants?filename=Gen+AI+Information+Sheet+for+Self-Represented+Litigants.pdf&ind=1766530873177&refresh=694b263004da61766532656&wpdmdl=25796",
+          "finalUrl": "https://www.courts.sa.gov.au/download/generative-ai-guidelines-and-information-sheet-for-self-represented-litigants?filename=Gen+AI+Information+Sheet+for+Self-Represented+Litigants.pdf&ind=1766530873177&refresh=694b263004da61766532656&wpdmdl=25796",
+          "title": "Information for self-represented litigants regarding the use of Generative artificial intelligence in litigation",
+          "publisher": "Courts Administration Authority of South Australia",
+          "retrievedAt": "2026-08-25T13:30:09.000Z",
+          "publishedAt": "2026-01-19",
+          "publishedAtPrecision": "day",
+          "contentType": "application/pdf",
+          "contentHash": "974fa5eef71ab195d51c387b5db6776f20b7843e6bfb35390940ed2e724bcaf3",
+          "reviewedDate": {
+            "date": "2026-01-19",
+            "precision": "day",
+            "reviewedAt": "2026-08-25T13:30:09.000Z",
+            "reviewedBy": "Policai editorial source review",
+            "notes": "The information sheet itself is undated; the Courts Administration Authority news item publishing it, together with the Generative AI Guidelines adopted from 1 January 2026, is dated 19 January 2026."
+          }
+        }
+      }
+    ]
   }
 ]
