@@ -1,5 +1,110 @@
 [
   {
+    "id": "dev-wa-government-artificial-intelligence-policy-and-1oqfaja",
+    "title": "WA Government Artificial Intelligence Policy and Assurance Framework",
+    "url": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+    "sourceId": "wa-ai-policy",
+    "sourceName": "WA — AI policy and assurance framework",
+    "jurisdiction": "wa",
+    "publishedAt": "2024-03-05",
+    "publishedAtPrecision": "day",
+    "detectedAt": "2026-08-25T19:33:13.119Z",
+    "summary": "The official source content for \"WA Government Artificial Intelligence Policy and Assurance Framework\" changed. Editorial re-verification is required before the register record can be treated as current.",
+    "relevanceScore": 1,
+    "classification": "ai",
+    "assessment": {
+      "method": "ai",
+      "promptVersion": "claude-classify-v1",
+      "assessedAt": "2026-08-25T19:33:13.119Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+        "finalUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+        "retrievedAt": "2026-08-25T19:33:13.119Z",
+        "contentType": "text/html",
+        "contentHash": "04c37a49e533e968a593dd48555e0d5be6a34f54f3b85f628b0df3ab8894b765",
+        "etag": "\"1787686553\"",
+        "lastModified": "Tue, 25 Aug 2026 19:35:53 GMT",
+        "linkedDocuments": [
+          {
+            "url": "https://www.finance.gov.au/sites/default/files/2024-06/National-framework-for-the-assurance-of-AI-in-government.pdf",
+            "finalUrl": "https://www.finance.gov.au/sites/default/files/2024-06/National-framework-for-the-assurance-of-AI-in-government.pdf",
+            "retrievedAt": "2026-08-25T19:33:13.119Z",
+            "contentType": "application/pdf",
+            "contentHash": "92e06dad15c4fc5141ced0ac356a8707f0356683ff7f66c0e30782d222fea167"
+          },
+          {
+            "url": "https://www.wa.gov.au/system/files/2025-07/ai_policyv2.pdf",
+            "finalUrl": "https://www.wa.gov.au/system/files/2025-07/ai_policyv2.pdf",
+            "retrievedAt": "2026-08-25T19:33:13.119Z",
+            "contentType": "application/pdf",
+            "contentHash": "f0474b1616dfdc3f14df3ef170096d99682ec423e15fd631aeedcae03aa542b6"
+          }
+        ],
+        "title": "WA Government Artificial Intelligence Policy and Assurance Framework",
+        "publishedAt": "2024-03-05",
+        "publishedAtPrecision": "day"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-practice-directions-and-other-guidance-administr-1kqo5av",
+    "title": "Practice directions and other guidance | Administrative Review Tribunal",
+    "url": "https://www.art.gov.au/help-and-resources/professionals-and-practitioners/practice-directions-and-other-guidance",
+    "sourceId": "art-practice-directions",
+    "sourceName": "Administrative Review Tribunal — practice directions",
+    "jurisdiction": "federal",
+    "detectedAt": "2026-08-25T19:33:13.119Z",
+    "summary": "Administrative Review Tribunal practice directions and guidance page for parties/representatives on Tribunal review processes.",
+    "relevanceScore": 0.6,
+    "classification": "ai",
+    "assessment": {
+      "method": "ai",
+      "promptVersion": "claude-classify-v1",
+      "assessedAt": "2026-08-25T19:33:13.119Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.art.gov.au/help-and-resources/professionals-and-practitioners/practice-directions-and-other-guidance",
+        "finalUrl": "https://www.art.gov.au/help-and-resources/professionals-and-practitioners/practice-directions-and-other-guidance",
+        "retrievedAt": "2026-08-25T19:33:13.119Z",
+        "contentType": "text/html",
+        "contentHash": "4b68d0ccf77794390152d126d540f0a8b34eae661123a135b4157c2aeff59a7f",
+        "etag": "\"1787686475\"",
+        "lastModified": "Tue, 25 Aug 2026 19:34:35 GMT",
+        "linkedDocuments": [
+          {
+            "url": "https://www.art.gov.au/sites/default/files/2024-10/Administrative%20Review%20Tribunal%20%28Guidance%20and%20Appeals%20Panel%29%20Practice%20Direction.pdf",
+            "finalUrl": "https://www.art.gov.au/sites/default/files/2024-10/Administrative%20Review%20Tribunal%20%28Guidance%20and%20Appeals%20Panel%29%20Practice%20Direction.pdf",
+            "retrievedAt": "2026-08-25T19:33:13.119Z",
+            "contentType": "application/pdf",
+            "contentHash": "7eeca24c0efa55f71fc50c24ca41a58a928ed1d05a7f5d5a13d262303376e93a"
+          },
+          {
+            "url": "https://www.art.gov.au/sites/default/files/2024-12/2024-001-026_Decision_on_application_for_referral_to_Guidance_and_Appeals_Panel.pdf",
+            "finalUrl": "https://www.art.gov.au/sites/default/files/2024-12/2024-001-026_Decision_on_application_for_referral_to_Guidance_and_Appeals_Panel.pdf",
+            "retrievedAt": "2026-08-25T19:33:13.119Z",
+            "contentType": "application/pdf",
+            "contentHash": "54a17dc4b07c6490e4f6e2e7c425659b60954682b116dadcf9891bd62396b5fc"
+          },
+          {
+            "url": "https://www.art.gov.au/sites/default/files/2026-08/Administrative%20Review%20Tribunal%20%28Generative%20AI%29%20Practice%20Direction.pdf",
+            "finalUrl": "https://www.art.gov.au/sites/default/files/2026-08/Administrative%20Review%20Tribunal%20%28Generative%20AI%29%20Practice%20Direction.pdf",
+            "retrievedAt": "2026-08-25T19:33:13.119Z",
+            "contentType": "application/pdf",
+            "contentHash": "0c870bd4ff1236cd4747703e46aa7fa2bb8ef7caee265461c18448887769f051"
+          }
+        ],
+        "title": "Practice directions and other guidance | Administrative Review Tribunal"
+      }
+    },
+    "status": "detected"
+  },
+  {
     "id": "dev-senate-opens-inquiry-into-artificial-intelligenc-cpttns",
     "title": "Senate opens inquiry into artificial intelligence and data centres",
     "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
@@ -1675,7 +1780,7 @@
       }
     },
     "status": "dismissed",
-    "dismissalReason": "Duplicate: same joint ministerial release cross-published on AGD site; kept industry.gov.au copy (dev-ai-consumer-safety-priorities-senator-the-hon-ti-m7lhj1)."
+    "dismissalReason": "Duplicate Attorney-General URL for verified timeline event tl-2026-07-20-ai-consumer-safety-priorities."
   },
   {
     "id": "dev-ai-in-recruitment-1ho92xc",
@@ -1811,7 +1916,7 @@
       }
     },
     "status": "dismissed",
-    "dismissalReason": "False positive: ANAO performance audit of aids-to-navigation procurement, no AI policy relevance."
+    "dismissalReason": "False positive: Aids to Navigation (AtoN) is maritime navigation infrastructure, not artificial intelligence."
   },
   {
     "id": "dev-human-rights-belong-at-the-centre-of-australia-s-1fzy4pq",
