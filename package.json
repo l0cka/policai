@@ -1,6 +1,6 @@
 {
   "name": "policai",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "engines": {
     "node": ">=20.19.0"
@@ -45,7 +45,7 @@
     "lucide-react": "^1.7.0",
     "next": "^16.2.10",
     "next-mdx-remote": "^6.0.0",
-    "pdfjs-dist": "^5.6.205",
+    "pdfjs-dist": "^6.2.108",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "tailwind-merge": "^3.5.0",
