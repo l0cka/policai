@@ -6,6 +6,7 @@ import { Footer } from '@/components/layout/Footer';
 import { themeInitScript } from '@/components/layout/ThemeToggle';
 import { BackToTop } from '@/components/ui/back-to-top';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { WebMcpTools } from '@/components/webmcp-tools';
 import { getCollectionMeta } from '@/lib/data-service';
 import { parseSourceUrl } from '@/lib/source-url';
 
@@ -57,6 +58,7 @@ export default async function RootLayout({
         <script>{themeInitScript}</script>
       </head>
       <body className="antialiased min-h-screen flex flex-col">
+        <WebMcpTools />
         <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md focus:text-sm focus:font-medium">
           Skip to content
         </a>
