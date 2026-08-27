@@ -132,6 +132,62 @@ export interface RecordVerification {
 	notes?: string;
 }
 
+export const COURT_REQUIREMENT_MODALITIES = [
+	"must",
+	"must_not",
+	"should",
+	"should_not",
+	"may",
+	"will",
+] as const;
+
+export type CourtRequirementModality =
+	(typeof COURT_REQUIREMENT_MODALITIES)[number];
+
+export const COURT_REQUIREMENT_STATUSES = [
+	"pending_review",
+	"verified",
+	"rejected",
+] as const;
+
+export type CourtRequirementStatus =
+	(typeof COURT_REQUIREMENT_STATUSES)[number];
+
+export interface CourtRequirement {
+	id: string;
+	policyId: string;
+	actor: string;
+	modality: CourtRequirementModality;
+	action: string;
+	conditions: string[];
+	exceptions: string[];
+	topics: string[];
+	source: {
+		url: string;
+		contentHash: string;
+		locator: string;
+		quote: string;
+	};
+	extraction: {
+		method: "ai" | "manual";
+		extractedAt: string;
+		extractedBy: string;
+	};
+	verification: {
+		status: CourtRequirementStatus;
+		reviewedAt?: string;
+		reviewedBy?: string;
+		notes?: string;
+	};
+}
+
+export interface PublicCourtRequirement extends CourtRequirement {
+	policy: Pick<
+		Policy,
+		"id" | "title" | "jurisdiction" | "agencies" | "status" | "lastReviewedAt"
+	>;
+}
+
 export const TIMELINE_EVENT_TYPES = [
 	"policy_introduced",
 	"policy_amended",

@@ -9,6 +9,8 @@ const {
   rejectStagedSource,
   stageSourceCapture,
   stageSourceUrl,
+  getCourtRequirementsForReview,
+  reviewCourtRequirement,
 } = vi.hoisted(() => ({
   approveStagedSource: vi.fn(),
   stageSourceUrl: vi.fn(),
@@ -16,6 +18,8 @@ const {
   publishStagedSource: vi.fn(),
   recordManualSourceReview: vi.fn(),
   rejectStagedSource: vi.fn(),
+  getCourtRequirementsForReview: vi.fn(),
+  reviewCourtRequirement: vi.fn(),
 }))
 
 vi.mock('@/lib/source-ingest', () => ({
@@ -35,13 +39,20 @@ vi.mock('@/lib/data-service', () => ({
   getSourceReviews: vi.fn(),
 }))
 
+vi.mock('@/lib/court-requirements', () => ({
+  getCourtRequirementsForReview,
+  reviewCourtRequirement,
+}))
+
 import {
   handleApproveStagedSource,
   handlePublishStagedSource,
+  handleListCourtRequirementCandidates,
   handleRecordManualSourceReview,
   handleRejectStagedSource,
   handleStageSourceCapture,
   handleStageSourceUrl,
+  handleReviewCourtRequirement,
 } from './tool-handlers'
 
 const originalToken = process.env.POLICAI_MCP_ADMIN_TOKEN
@@ -55,6 +66,8 @@ describe('MCP tool handlers', () => {
     publishStagedSource.mockReset()
     recordManualSourceReview.mockReset()
     rejectStagedSource.mockReset()
+    getCourtRequirementsForReview.mockReset()
+    reviewCourtRequirement.mockReset()
   })
 
   afterEach(() => {
@@ -89,12 +102,52 @@ describe('MCP tool handlers', () => {
       }),
     ).rejects.toThrow('Invalid POLICAI_MCP_ADMIN_TOKEN')
 
+    await expect(
+      handleReviewCourtRequirement({
+        id: 'requirement-1',
+        decision: 'verified',
+        reviewer: 'Jane Reviewer',
+        adminToken: 'wrong',
+      }),
+    ).rejects.toThrow('Invalid POLICAI_MCP_ADMIN_TOKEN')
+
     expect(stageSourceUrl).not.toHaveBeenCalled()
     expect(stageSourceCapture).not.toHaveBeenCalled()
     expect(approveStagedSource).not.toHaveBeenCalled()
     expect(publishStagedSource).not.toHaveBeenCalled()
     expect(rejectStagedSource).not.toHaveBeenCalled()
     expect(recordManualSourceReview).not.toHaveBeenCalled()
+    expect(reviewCourtRequirement).not.toHaveBeenCalled()
+  })
+
+  it('lists and reviews court requirement candidates', async () => {
+    getCourtRequirementsForReview.mockResolvedValue({
+      total: 1,
+      requirements: [{ id: 'requirement-1' }],
+    })
+    reviewCourtRequirement.mockResolvedValue({ id: 'requirement-1' })
+
+    await expect(
+      handleListCourtRequirementCandidates({ status: 'pending_review' }),
+    ).resolves.toEqual({
+      total: 1,
+      requirements: [{ id: 'requirement-1' }],
+    })
+    await handleReviewCourtRequirement({
+      id: 'requirement-1',
+      decision: 'verified',
+      reviewer: ' Jane Reviewer ',
+      notes: 'Compared against paragraph 4.',
+      adminToken: 'secret-token',
+    })
+
+    expect(reviewCourtRequirement).toHaveBeenCalledWith({
+      id: 'requirement-1',
+      decision: 'verified',
+      reviewer: 'Jane Reviewer',
+      notes: 'Compared against paragraph 4.',
+      revision: undefined,
+    })
   })
 
   it('forwards the official replacement URL during approval', async () => {

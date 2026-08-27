@@ -14,7 +14,14 @@ import {
   stageSourceUrl,
 } from '@/lib/source-ingest';
 import { getSourceReviews } from '@/lib/data-service';
+import {
+  getCourtRequirementsForReview,
+  reviewCourtRequirement,
+  type CourtRequirementReviewDecision,
+  type CourtRequirementRevision,
+} from '@/lib/court-requirements';
 import type {
+  CourtRequirementStatus,
   PolicyDraft,
   SourceEvidence,
   SourceReviewEntryKind,
@@ -139,6 +146,37 @@ export async function handleStageSourceCapture(input: {
 export async function handleListStagedSources(input: { status?: string }) {
   const status = normalizeReviewStatus(input.status);
   return getSourceReviews(status ? { status } : undefined);
+}
+
+export async function handleListCourtRequirementCandidates(input: {
+  status?: CourtRequirementStatus;
+  policyId?: string;
+}) {
+  return getCourtRequirementsForReview(input);
+}
+
+export async function handleReviewCourtRequirement(input: {
+  id: string;
+  decision: CourtRequirementReviewDecision;
+  reviewer?: string;
+  notes?: string;
+  revision?: CourtRequirementRevision;
+  adminToken?: string;
+}) {
+  return audited('review_court_requirement', {}, () => {
+    requireMcpAdminToken(input.adminToken);
+    const reviewer = input.reviewer?.trim();
+    if (!reviewer) throw new Error('A human reviewer identity is required');
+    const notes = input.notes?.trim();
+    if (!notes) throw new Error('Review notes are required');
+    return reviewCourtRequirement({
+      id: input.id,
+      decision: input.decision,
+      reviewer,
+      notes,
+      revision: input.revision,
+    });
+  });
 }
 
 export async function handleApproveStagedSource(input: {

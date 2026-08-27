@@ -12,6 +12,7 @@ import {
   mergeReports,
   validateAgencies,
   validateCollectionMeta,
+  validateCourtRequirements,
   validateDevelopments,
   validatePolicies,
   validatePolicyFrameworkArtifact,
@@ -29,6 +30,7 @@ import { WATCH_SOURCES } from '../src/lib/pipeline/sources';
 import type {
   Agency,
   CollectionMeta,
+  CourtRequirement,
   Development,
   Policy,
   SourceReview,
@@ -51,6 +53,7 @@ async function main() {
     sourceReviews,
     sourceMonitoring,
     watchState,
+    courtRequirements,
   ] = await Promise.all([
       readJsonFile<Policy[]>(
         path.join(STATE_DIR, 'policies.json'),
@@ -107,6 +110,10 @@ async function main() {
         path.join(STATE_DIR, 'watch-state.json'),
         emptyWatchState(),
       ),
+      readJsonFile<CourtRequirement[]>(
+        path.join(STATE_DIR, 'court-requirements.json'),
+        [],
+      ),
     ]);
 
   if (policies.length === 0) {
@@ -119,6 +126,7 @@ async function main() {
   const timelineEventIds = new Set(timeline.map((event) => event.id));
   const report = mergeReports(
     validatePolicies(policies),
+    validateCourtRequirements(courtRequirements, policies),
     validateAgencies(agencies, 'agencies'),
     validateAgencies(commonwealthAgencies, 'commonwealth-agencies'),
     validateTimeline(timeline, policyIds),
@@ -144,6 +152,7 @@ async function main() {
   console.log(
     `validate-data: ${policies.length} policies, ${agencies.length}+${commonwealthAgencies.length} agencies, ` +
       `${timeline.length} timeline events, ${developments.length} developments, ` +
+      `${courtRequirements.length} court requirements, ` +
       `${sourceReviews.length} source reviews, ${sourceMonitoring.manualReviews.length} manual source checks, ` +
       `${WATCH_SOURCES.length} watch sources — ` +
       `${report.errors.length} errors, ${report.warnings.length} warnings`,

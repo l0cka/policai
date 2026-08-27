@@ -4,6 +4,7 @@ import { describe, expect, it, vi } from "vitest";
 import { buildPolicy } from "@/test/factories";
 import {
   handleSearchDevelopments,
+  handleSearchCourtRequirements,
   handleSearchPolicies,
 } from "./public-tool-handlers";
 
@@ -83,6 +84,41 @@ describe("public MCP tool handlers", () => {
         verificationStatus: "needs_review",
       }),
     ]);
+  });
+
+  it("returns source-anchored court requirements", async () => {
+    const requirement = {
+      id: "requirement-a",
+      policyId: "policy-a",
+      actor: "Judicial officers",
+      modality: "must_not",
+      action: "Use generative AI to formulate reasons.",
+      source: {
+        url: "https://example.gov.au/guidance",
+        contentHash: "a".repeat(64),
+        locator: "paragraph 4",
+        quote: "Judicial officers must not use generative AI.",
+      },
+    };
+    const { fetch, options } = client({
+      data: [requirement],
+      total: 1,
+      success: true,
+    });
+
+    const result = await handleSearchCourtRequirements(
+      { jurisdiction: "nsw", actor: "judicial", limit: 10 },
+      options,
+    );
+
+    expect(String(fetch.mock.calls[0]?.[0])).toBe(
+      "https://example.test/api/court-requirements?jurisdiction=nsw&actor=judicial&limit=10",
+    );
+    expect(result).toEqual({
+      total: 1,
+      count: 1,
+      requirements: [requirement],
+    });
   });
 
   it("reports public API errors without leaking response bodies", async () => {

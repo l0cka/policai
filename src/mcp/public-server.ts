@@ -8,6 +8,7 @@ import {
   handleListAgencies,
   handleListTimeline,
   handleSearchDevelopments,
+  handleSearchCourtRequirements,
   handleSearchPolicies,
   toPublicToolText,
 } from "./public-tool-handlers";
@@ -83,6 +84,29 @@ server.registerTool(
     annotations: readOnlyAnnotations,
   },
   async (input) => toPublicToolText(await handleGetPolicy(input)),
+);
+
+server.registerTool(
+  "search_court_requirements",
+  {
+    title: "Search verified Australian court AI requirements",
+    description:
+      "Search reviewer-verified requirements extracted from court and tribunal AI instruments, with actor, modality, pinpoint quote and source hash.",
+    inputSchema: {
+      query: z.string().max(200).optional(),
+      jurisdiction: jurisdiction.optional(),
+      policyId: z.string().max(200).optional(),
+      actor: z.string().max(200).optional(),
+      modality: z
+        .enum(["must", "must_not", "should", "should_not", "may", "will"])
+        .optional(),
+      topic: z.string().max(200).optional(),
+      limit,
+    },
+    annotations: readOnlyAnnotations,
+  },
+  async (input) =>
+    toPublicToolText(await handleSearchCourtRequirements(input)),
 );
 
 server.registerTool(

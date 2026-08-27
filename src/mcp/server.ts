@@ -6,10 +6,12 @@ import {
   handleAnalyseSourceUrl,
   handleApproveStagedSource,
   handleCheckCoverage,
+  handleListCourtRequirementCandidates,
   handleListStagedSources,
   handlePublishStagedSource,
   handleRecordManualSourceReview,
   handleRejectStagedSource,
+  handleReviewCourtRequirement,
   handleStageSourceCapture,
   handleStageSourceUrl,
   toToolText,
@@ -136,6 +138,56 @@ server.registerTool(
     },
   },
   async (input) => toToolText(await handleListStagedSources(input)),
+);
+
+server.registerTool(
+  'list_court_requirement_candidates',
+  {
+    title: 'List court requirement candidates',
+    description:
+      'Read-only list of source-anchored court requirement candidates and their review status. Pending and rejected records remain editorial and are never returned by the public API or WebMCP.',
+    inputSchema: {
+      status: z.enum(['pending_review', 'verified', 'rejected']).optional(),
+      policyId: z.string().min(1).max(200).optional(),
+    },
+    annotations: {
+      readOnlyHint: true,
+      idempotentHint: true,
+      destructiveHint: false,
+    },
+  },
+  async (input) =>
+    toToolText(await handleListCourtRequirementCandidates(input)),
+);
+
+server.registerTool(
+  'review_court_requirement',
+  {
+    title: 'Review a court requirement candidate',
+    description:
+      'Verifies or rejects one pending court requirement after human comparison with its exact quote and pinpoint. Verification re-checks the candidate against the current policy source fingerprint. Requires a human reviewer identity and POLICAI_MCP_ADMIN_TOKEN.',
+    inputSchema: {
+      id: z.string().min(1).max(200),
+      decision: z.enum(['verified', 'rejected']),
+      reviewer: z.string().min(1).max(200),
+      notes: z.string().min(20).max(2_000),
+      revision: z.object({
+        actor: z.string().min(1).max(500).optional(),
+        modality: z.enum(['must', 'must_not', 'should', 'should_not', 'may', 'will']).optional(),
+        action: z.string().min(1).max(2_000).optional(),
+        conditions: z.array(z.string().min(1).max(1_000)).max(20).optional(),
+        exceptions: z.array(z.string().min(1).max(1_000)).max(20).optional(),
+        topics: z.array(z.string().min(1).max(200)).max(20).optional(),
+      }).optional(),
+      adminToken: z.string(),
+    },
+    annotations: {
+      readOnlyHint: false,
+      idempotentHint: false,
+      destructiveHint: true,
+    },
+  },
+  async (input) => toToolText(await handleReviewCourtRequirement(input)),
 );
 
 server.registerTool(

@@ -2,11 +2,13 @@
 
 import { useEffect } from 'react';
 import {
+  COURT_REQUIREMENT_MODALITIES,
   JURISDICTIONS,
   POLICY_STATUSES,
   POLICY_TYPES,
   type Development,
   type Policy,
+  type PublicCourtRequirement,
 } from '@/types';
 
 type ToolInput = Record<string, unknown>;
@@ -201,6 +203,64 @@ function createTools(fetchImpl: Fetch): WebMcpTool[] {
           fetchImpl,
           options?.signal,
         );
+      },
+    },
+    {
+      name: 'search_court_requirements',
+      title: 'Search verified Australian court AI requirements',
+      description:
+        'Search reviewer-verified requirements extracted from Australian court and tribunal AI instruments. Each result includes the actor, modality, source quote, pinpoint and source hash.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          search: { type: 'string', maxLength: 200 },
+          jurisdiction: { type: 'string', enum: [...JURISDICTIONS] },
+          policyId: { type: 'string', maxLength: 200 },
+          actor: { type: 'string', maxLength: 200 },
+          modality: {
+            type: 'string',
+            enum: [...COURT_REQUIREMENT_MODALITIES],
+          },
+          topic: { type: 'string', maxLength: 200 },
+          limit: { type: 'integer', minimum: 1, maximum: 100, default: 50 },
+        },
+        additionalProperties: false,
+      },
+      annotations: { readOnlyHint: true, untrustedContentHint: true },
+      execute: async (input, options) => {
+        assertAllowedKeys(input, [
+          'search',
+          'jurisdiction',
+          'policyId',
+          'actor',
+          'modality',
+          'topic',
+          'limit',
+        ]);
+        const params = new URLSearchParams();
+        const filters = {
+          search: optionalString(input, 'search', 200),
+          jurisdiction: optionalEnum(input, 'jurisdiction', JURISDICTIONS),
+          policyId: optionalString(input, 'policyId', 200),
+          actor: optionalString(input, 'actor', 200),
+          modality: optionalEnum(
+            input,
+            'modality',
+            COURT_REQUIREMENT_MODALITIES,
+          ),
+          topic: optionalString(input, 'topic', 200),
+        };
+        for (const [key, value] of Object.entries(filters)) {
+          if (value) params.set(key, value);
+        }
+        params.set('limit', String(optionalInteger(input, 'limit', 1, 100) ?? 50));
+
+        const requirements = await fetchApi<PublicCourtRequirement[]>(
+          `/api/court-requirements?${params}`,
+          fetchImpl,
+          options?.signal,
+        );
+        return { total: requirements.length, requirements };
       },
     },
     {

@@ -3655,8 +3655,8 @@
   },
   {
     "id": "vic-supreme-court-ai-guidelines",
-    "title": "Guidelines on the Use of Artificial Intelligence in Court Proceedings",
-    "description": "Guidelines for litigants on responsible AI use in Victorian Supreme Court proceedings, published in May 2024. Replaced on 14 May 2026 by Practice Note SC GEN 25.",
+    "title": "Guidelines for Litigants: Responsible Use of Artificial Intelligence in Litigation",
+    "description": "Supreme Court of Victoria guidelines, published in May 2024, to assist legal practitioners and self-represented litigants with the responsible use of artificial intelligence in litigation. Replaced on 14 May 2026 by Practice Note SC GEN 25.",
     "jurisdiction": "vic",
     "type": "practice_note",
     "status": "superseded",
@@ -3665,8 +3665,8 @@
       "Supreme Court of Victoria"
     ],
     "sourceUrl": "https://www.supremecourt.vic.gov.au/sites/default/files/2024-05/AI%20Guidelines%20SCV.pdf",
-    "content": "The Supreme Court of Victoria issued guidelines on the use of artificial intelligence in court proceedings. The guidelines require practitioners and self-represented litigants to disclose the use of AI tools in the preparation of documents filed with the Court. They emphasise that responsibility for the accuracy and completeness of all court documents remains with the person filing them, regardless of whether AI was used. The guidelines address specific risks including hallucinated case citations and fabricated legal propositions.",
-    "aiSummary": "Victorian Supreme Court guidelines on AI use in proceedings, requiring disclosure and placing verification responsibility on practitioners.",
+    "content": "The Supreme Court of Victoria published these guidelines in May 2024 to assist legal practitioners and self-represented litigants conducting litigation in the Court. The guidelines set out principles for the use of AI by litigants, explain how those principles apply, note the position on use of AI by judicial officers, and include a glossary of terms. Under the principles, parties and practitioners using AI tools should understand how the tools work and their limitations, and should be aware that information provided to external AI programs may not be private, confidential or secure. The use of AI programs by a party must not indirectly mislead another participant in the litigation (including the Court) as to the nature of the work undertaken or the content produced. Disclosure is framed as a recommendation rather than a mandatory duty: ordinarily parties and their practitioners should disclose to each other the assistance provided by AI programs, and where appropriate (for example, where necessary to understand the provenance of a document or the weight to be placed on its contents) the use of AI should be disclosed to other parties and the Court. The use of AI must be subject to practitioners' existing obligations, including candour to the Court and, where applicable, Civil Procedure Act 2010 obligations that documents and submissions have a proper basis. Self-represented litigants and witnesses who use generative AI to prepare documents are encouraged to identify this by including a statement of the AI tool used; the guidelines state this will not detract from the document being considered on its merits. The guidelines observe that closed-category AI such as Technology Assisted Review is already used with good effect, and practitioners should consider such options to improve productivity and efficiency. They caution that generative AI and large language models do not reason and are not a legal research tool, that general-purpose tools such as ChatGPT and Google Gemini are more likely to produce inaccurate results for litigation, and that generative AI does not relieve the responsible practitioner of the need to exercise judgment and professional skill in reviewing the final product. AI generated text should be checked so that it is not out of date, incomplete, inaccurate or incorrect (including reliance on made-up cases or incorrect legal propositions), inapplicable to the jurisdiction, or biased. A party or practitioner signing, certifying, filing or relying on a document remains responsible for the accuracy of its content, and reliance on the fact that generative AI assisted in preparing the document is unlikely to be an adequate response to errors or omissions. Particular caution is needed where generative AI is used to prepare affidavits, witness statements or other documents representing a witness's evidence or opinion, and the witness should ensure the document reflects their own knowledge and words; similar considerations arise for expert reports and compliance with the Expert Witness Code of Conduct. The guidelines record that AI is not presently used by the Court for decision making or to prepare reasons for decision.",
+    "aiSummary": "Superseded Supreme Court of Victoria guidelines (May 2024) for litigants and practitioners on responsible AI use: AI use must not mislead other participants or the Court, AI assistance should ordinarily be disclosed between parties and, where appropriate, to the Court, self-represented litigants are encouraged to identify generative AI use, and those signing, filing or relying on documents remain responsible for their accuracy.",
     "tags": [
       "practice note",
       "AI",
@@ -3677,9 +3677,9 @@
       "judicial"
     ],
     "createdAt": "2026-04-16T00:00:00Z",
-    "updatedAt": "2026-07-19T06:14:30.054Z",
+    "updatedAt": "2026-08-26T14:35:44Z",
     "supersededBy": "vic-supreme-court-sc-gen-25",
-    "lastReviewedAt": "2026-07-19T06:14:30.054Z",
+    "lastReviewedAt": "2026-08-26T14:35:44Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -3717,7 +3717,7 @@
       "checkedAt": "2026-07-19T06:14:30.054Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026.",
+      "notes": "Source evidence approved by Daniel Alkurdi after browser review on 19 July 2026. Claude Fable corrected the title, summary and content wording against the same manually verified linked PDF on 27 August 2026; the source fingerprint and supersession history are unchanged.",
       "lastSourceAuditAt": "2026-07-16T10:00:12.928Z"
     },
     "dates": [

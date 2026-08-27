@@ -128,6 +128,7 @@ Use the command, arguments, and repository path in your MCP client configuration
 | --- | --- |
 | `search_policies` | Search compact policy summaries. |
 | `get_policy` | Get one complete policy record. |
+| `search_court_requirements` | Search reviewer-verified court requirements with source anchors. |
 | `search_developments` | Search compact development summaries. |
 | `list_timeline` | List compact timeline events. |
 | `list_agencies` | List compact agency records. |
@@ -137,6 +138,6 @@ All tools are read-only and idempotent. Search and list tools return compact rec
 
 ## Editorial boundary
 
-`npm run mcp` starts the separate editorial source-ingest server. Keep that server local. It can access staged reviews and contains mutation tools that require `POLICAI_MCP_ADMIN_TOKEN`.
+`npm run mcp` starts the separate editorial source-ingest server. Keep that server local. It can access staged reviews and contains mutation tools that require `POLICAI_MCP_ADMIN_TOKEN`. Use `list_court_requirement_candidates` to inspect extracted propositions and `review_court_requirement` to verify or reject one with a named human reviewer and review notes. A reviewer may correct the actor, modality, action, conditions, exceptions or topics; the source URL, hash, quote and pinpoint remain immutable. Reject and re-extract a candidate when its source anchor is wrong. Verified requirements flow to the Courts page and public agent tools; pending and rejected candidates remain editorial.
 
 The public server does not expose these editorial tools or staged records.

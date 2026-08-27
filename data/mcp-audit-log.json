@@ -1,5 +1,97 @@
 [
   {
+    "id": "mcp-audit-0be7aac0-92dd-44cf-84c4-4fb28be44527",
+    "createdAt": "2026-08-26T11:59:21.020Z",
+    "actor": "local-mcp-admin",
+    "toolName": "review_court_requirement",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-28f747d3-d7e3-458a-beaa-89a9236f36f2",
+    "createdAt": "2026-08-26T11:59:21.018Z",
+    "actor": "local-mcp-admin",
+    "toolName": "review_court_requirement",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-0e2dbcee-85ab-4a96-a91e-e74146a9b2f9",
+    "createdAt": "2026-08-26T11:59:21.014Z",
+    "actor": "local-mcp-admin",
+    "toolName": "review_court_requirement",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-a07d2b99-f45f-444f-a0f2-6e270c24772f",
+    "createdAt": "2026-08-26T11:56:42.143Z",
+    "actor": "local-mcp-admin",
+    "toolName": "review_court_requirement",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-097d1527-6ea1-4fcf-8be2-b84574eadb17",
+    "createdAt": "2026-08-26T11:56:42.140Z",
+    "actor": "local-mcp-admin",
+    "toolName": "review_court_requirement",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-0c73ffe0-7edd-4454-addf-f0f447b8fb9e",
+    "createdAt": "2026-08-26T11:56:42.137Z",
+    "actor": "local-mcp-admin",
+    "toolName": "review_court_requirement",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-e4544871-3d1a-4c48-9f94-cedd9e9fbe42",
+    "createdAt": "2026-08-26T11:56:42.134Z",
+    "actor": "local-mcp-admin",
+    "toolName": "review_court_requirement",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-4642297b-103d-4b21-a729-f979330597cd",
+    "createdAt": "2026-08-26T11:56:42.131Z",
+    "actor": "local-mcp-admin",
+    "toolName": "review_court_requirement",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-5336db48-5390-4ff6-b2c4-803c1652ad23",
+    "createdAt": "2026-08-26T11:56:16.453Z",
+    "actor": "local-mcp-admin",
+    "toolName": "review_court_requirement",
+    "status": "error",
+    "errorSummary": "Court requirement not found: nsw-judicial-gen-ai-guidelines-p6-limits"
+  },
+  {
+    "id": "mcp-audit-4408d579-944a-41e7-a4b2-f43e8c9303ac",
+    "createdAt": "2026-08-26T11:52:41.540Z",
+    "actor": "local-mcp-admin",
+    "toolName": "review_court_requirement",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-7ce6e693-8134-4e8a-aaa4-7f6cd785c01f",
+    "createdAt": "2026-08-26T11:52:41.538Z",
+    "actor": "local-mcp-admin",
+    "toolName": "review_court_requirement",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-d8105f4f-c3be-4e35-b520-c625b656adfb",
+    "createdAt": "2026-08-26T11:52:41.535Z",
+    "actor": "local-mcp-admin",
+    "toolName": "review_court_requirement",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-29313ad9-94a6-491a-9bc0-e237725e0d2d",
+    "createdAt": "2026-08-26T11:52:41.531Z",
+    "actor": "local-mcp-admin",
+    "toolName": "review_court_requirement",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-820a50e7-e414-40c5-aa56-27d2ea9c2472",
     "createdAt": "2026-08-12T01:24:05.062Z",
     "actor": "local-mcp-admin",

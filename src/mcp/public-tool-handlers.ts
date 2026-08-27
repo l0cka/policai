@@ -1,4 +1,11 @@
-import type { Agency, Development, Policy, TimelineEvent } from "@/types";
+import type {
+  Agency,
+  CourtRequirementModality,
+  Development,
+  Policy,
+  PublicCourtRequirement,
+  TimelineEvent,
+} from "@/types";
 
 interface ApiListResponse<T> {
   data: T[];
@@ -142,6 +149,38 @@ export async function handleGetPolicy(
     options,
   );
   return response.data;
+}
+
+export async function handleSearchCourtRequirements(
+  input: {
+    query?: string;
+    jurisdiction?: string;
+    policyId?: string;
+    actor?: string;
+    modality?: CourtRequirementModality;
+    topic?: string;
+    limit?: number;
+  },
+  options: PublicClientOptions = {},
+) {
+  const response = await requestApi<ApiListResponse<PublicCourtRequirement>>(
+    "/api/court-requirements",
+    {
+      search: input.query,
+      jurisdiction: input.jurisdiction,
+      policyId: input.policyId,
+      actor: input.actor,
+      modality: input.modality,
+      topic: input.topic,
+      limit: input.limit ?? 50,
+    },
+    options,
+  );
+  return {
+    total: response.total,
+    count: response.data.length,
+    requirements: response.data,
+  };
 }
 
 export async function handleSearchDevelopments(

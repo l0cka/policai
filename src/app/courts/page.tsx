@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { CourtsBrowser } from '@/components/courts-browser';
+import { getPublicCourtRequirements } from '@/lib/court-requirements';
 import { getPolicies } from '@/lib/data-service';
 
 export const revalidate = 3600;
@@ -11,6 +12,9 @@ export const metadata: Metadata = {
 };
 
 export default async function CourtsPage() {
-  const policies = await getPolicies({ type: 'practice_note' });
-  return <CourtsBrowser policies={policies} />;
+  const [policies, requirements] = await Promise.all([
+    getPolicies({ type: 'practice_note' }),
+    getPublicCourtRequirements(),
+  ]);
+  return <CourtsBrowser policies={policies} requirements={requirements} />;
 }
