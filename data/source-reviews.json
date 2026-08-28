@@ -1,5 +1,77 @@
 [
   {
+    "id": "source-review-dev-buy-australian-ai-partnership-to-boost-homegrown-1ayciio",
+    "sourceUrl": "https://www.minister.industry.gov.au/charlton/media/buy-australian-ai-partnership-boost-homegrown-ai-adoption",
+    "title": "Buy Australian AI Partnership to boost homegrown AI adoption",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-08-28T19:32:56.949Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from Industry, Science and Resources ministers — media centre (score 0.65, ai).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.65,
+      "suggestedType": "policy",
+      "suggestedJurisdiction": "federal",
+      "summary": "Federal government launches Buy Australian AI Partnership to connect domestic AI firms with large Australian companies and boost AI adoption.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.minister.industry.gov.au/charlton/media/buy-australian-ai-partnership-boost-homegrown-ai-adoption",
+      "finalUrl": "https://www.minister.industry.gov.au/charlton/media/buy-australian-ai-partnership-boost-homegrown-ai-adoption",
+      "retrievedAt": "2026-08-28T19:32:56.949Z",
+      "contentType": "text/plain",
+      "contentHash": "2a4ce7b3b9d90d34020cddb1c5ff75eae191a2e59dd3abbb7f7ef451aba2080a",
+      "title": "Buy Australian AI Partnership to boost homegrown AI adoption"
+    },
+    "proposedRecord": {
+      "id": "buy-australian-ai-partnership-to-boost-homegrown-ai-adoption",
+      "title": "Buy Australian AI Partnership to boost homegrown AI adoption",
+      "description": "Federal government launches Buy Australian AI Partnership to connect domestic AI firms with large Australian companies and boost AI adoption.",
+      "jurisdiction": "federal",
+      "type": "policy",
+      "status": "active",
+      "agencies": [],
+      "sourceUrl": "https://www.minister.industry.gov.au/charlton/media/buy-australian-ai-partnership-boost-homegrown-ai-adoption",
+      "content": "[Skip to main content](https://www.minister.industry.gov.au/charlton/media/buy-australian-ai-partnership-boost-homegrown-ai-adoption#content) [Skip to search](https://www.minister.industry.gov.au/charlton/media/buy-australian-ai-partnership-boost-homegrown-ai-adoption#search) The Hon Dr Andrew Charlton MP Assistant Minister for Science, Technology and the Digital Economy Buy Australian AI Partnership to boost homegrown AI adoption ============================================================ 28 August 2026 Media release Approx. 3 minutes read Australian AI companies will now have the opportunit",
+      "aiSummary": "Federal government launches Buy Australian AI Partnership to connect domestic AI firms with large Australian companies and boost AI adoption.",
+      "tags": [],
+      "createdAt": "2026-08-28T19:32:56.949Z",
+      "updatedAt": "2026-08-28T19:32:56.949Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-buy-australian-ai-partnership-to-boost-homegrown-1ayciio",
+      "title": "Buy Australian AI Partnership to boost homegrown AI adoption",
+      "url": "https://www.minister.industry.gov.au/charlton/media/buy-australian-ai-partnership-boost-homegrown-ai-adoption",
+      "sourceId": "industry-ministers-media",
+      "sourceName": "Industry, Science and Resources ministers — media centre",
+      "jurisdiction": "federal",
+      "detectedAt": "2026-08-28T19:32:56.949Z",
+      "summary": "Federal government launches Buy Australian AI Partnership to connect domestic AI firms with large Australian companies and boost AI adoption.",
+      "relevanceScore": 0.65,
+      "classification": "ai",
+      "assessment": {
+        "method": "ai",
+        "promptVersion": "claude-classify-v1",
+        "assessedAt": "2026-08-28T19:32:56.949Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.minister.industry.gov.au/charlton/media/buy-australian-ai-partnership-boost-homegrown-ai-adoption",
+          "finalUrl": "https://www.minister.industry.gov.au/charlton/media/buy-australian-ai-partnership-boost-homegrown-ai-adoption",
+          "retrievedAt": "2026-08-28T19:32:56.949Z",
+          "contentType": "text/plain",
+          "contentHash": "2a4ce7b3b9d90d34020cddb1c5ff75eae191a2e59dd3abbb7f7ef451aba2080a",
+          "title": "Buy Australian AI Partnership to boost homegrown AI adoption"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-08-28T19:32:56.949Z"
+  },
+  {
     "id": "source-review-dev-wa-government-artificial-intelligence-policy-and-1oqfaja",
     "sourceUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
     "title": "WA Government Artificial Intelligence Policy and Assurance Framework",
