@@ -1,5 +1,248 @@
 [
   {
+    "id": "source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-17ecvjj",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+    "title": "Senate opens inquiry into artificial intelligence and data centres",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-05-13-senate-ai-data-centres-inquiry",
+    "targetTimelineRevisionHash": "6f078fe76c17b91c68b43ead59c72755c7f5339a72941af693b85b354af7c50a",
+    "sourceVersionSequence": 6,
+    "status": "pending_review",
+    "discoveredAt": "2026-08-30T19:31:14.972Z",
+    "createdBy": "collector",
+    "notes": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current. Re-verify the existing timeline event before treating it as current. Detected by Senate inquiry — artificial intelligence and data centres (heuristic assessment).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+      "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+      "retrievedAt": "2026-08-30T19:31:14.972Z",
+      "contentType": "text/html",
+      "contentHash": "c2816698468cb1de448080d614e3499696c0254f8749c88f02420d4845b35e31",
+      "title": "Senate opens inquiry into artificial intelligence and data centres"
+    },
+    "proposedRecord": {
+      "id": "tl-2026-05-13-senate-ai-data-centres-inquiry",
+      "date": "2026-05-13",
+      "datePrecision": "day",
+      "title": "Senate opens inquiry into artificial intelligence and data centres",
+      "description": "The Senate inquiry covers AI and data-centre regulation, government deals, and community, industry, energy, water and environmental impacts. The official inquiry page now sets submissions to close on 1 September 2026 and the committee to report on 16 November 2026.",
+      "type": "announcement",
+      "jurisdiction": "federal",
+      "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P"
+    },
+    "linkedDevelopment": {
+      "id": "dev-senate-opens-inquiry-into-artificial-intelligenc-17ecvjj",
+      "title": "Senate opens inquiry into artificial intelligence and data centres",
+      "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+      "sourceId": "senate-ai-data-centres",
+      "sourceName": "Senate inquiry — artificial intelligence and data centres",
+      "jurisdiction": "federal",
+      "detectedAt": "2026-08-30T19:31:14.972Z",
+      "summary": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+      "relevanceScore": 1,
+      "classification": "ai",
+      "assessment": {
+        "method": "ai",
+        "promptVersion": "claude-classify-v1",
+        "assessedAt": "2026-08-30T19:31:14.972Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+          "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+          "retrievedAt": "2026-08-30T19:31:14.972Z",
+          "contentType": "text/html",
+          "contentHash": "c2816698468cb1de448080d614e3499696c0254f8749c88f02420d4845b35e31",
+          "title": "Senate opens inquiry into artificial intelligence and data centres"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-08-30T19:31:14.972Z"
+  },
+  {
+    "id": "source-review-dev-asic-and-apra-warn-frontier-ai-awareness-must-tu-1bdj011",
+    "sourceUrl": "https://asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-201mr-asic-and-apra-warn-frontier-ai-awareness-must-turn-to-action",
+    "title": "ASIC and APRA warn frontier AI awareness must turn to action",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-08-30T19:31:14.972Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from ASIC — newsroom (score 0.65, ai).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.65,
+      "suggestedType": "guideline",
+      "suggestedJurisdiction": "federal",
+      "summary": "ASIC and APRA jointly urge Australian financial firms to move from awareness of frontier AI risks to concrete governance action.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-201mr-asic-and-apra-warn-frontier-ai-awareness-must-turn-to-action",
+      "finalUrl": "https://asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-201mr-asic-and-apra-warn-frontier-ai-awareness-must-turn-to-action",
+      "retrievedAt": "2026-08-30T19:31:14.972Z",
+      "contentType": "text/plain",
+      "contentHash": "85e6e7a58ef84d2903dffcf3aefdbc92e7e680fe51d7940e09be19683b051fff",
+      "title": "ASIC and APRA warn frontier AI awareness must turn to action",
+      "publishedAt": "2026-08-27",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "asic-and-apra-warn-frontier-ai-awareness-must-turn-to-action",
+      "title": "ASIC and APRA warn frontier AI awareness must turn to action",
+      "description": "ASIC and APRA jointly urge Australian financial firms to move from awareness of frontier AI risks to concrete governance action.",
+      "jurisdiction": "federal",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2026-08-27",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-08-27",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-201mr-asic-and-apra-warn-frontier-ai-awareness-must-turn-to-action",
+            "finalUrl": "https://asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-201mr-asic-and-apra-warn-frontier-ai-awareness-must-turn-to-action",
+            "retrievedAt": "2026-08-30T19:31:14.972Z",
+            "contentType": "text/plain",
+            "contentHash": "85e6e7a58ef84d2903dffcf3aefdbc92e7e680fe51d7940e09be19683b051fff",
+            "title": "ASIC and APRA warn frontier AI awareness must turn to action",
+            "publishedAt": "2026-08-27",
+            "publishedAtPrecision": "day"
+          }
+        }
+      ],
+      "agencies": [],
+      "sourceUrl": "https://asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-201mr-asic-and-apra-warn-frontier-ai-awareness-must-turn-to-action",
+      "content": "* [Newsroom](https://asic.gov.au/newsroom) Print Share * [X Opens in new window](https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.asic.gov.au%2Fabout-asic%2Fnews-centre%2Ffind-a-media-release%2F2026-releases%2F26-201mr-asic-and-apra-warn-frontier-ai-awareness-must-turn-to-action&text=26-201MR%20ASIC%20and%20APRA%20warn%20frontier%20AI%20awareness%20must%20turn%20to%20action) * [Facebook Opens in new window](https://www.facebook.com/sharer.php?u=https%3A%2F%2Fwww.asic.gov.au%2Fabout-asic%2Fnews-centre%2Ffind-a-media-release%2F2026-releases%2F26-201mr-asic-and-apra-warn-frontier-ai-awarene",
+      "aiSummary": "ASIC and APRA jointly urge Australian financial firms to move from awareness of frontier AI risks to concrete governance action.",
+      "tags": [],
+      "createdAt": "2026-08-30T19:31:14.972Z",
+      "updatedAt": "2026-08-30T19:31:14.972Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-asic-and-apra-warn-frontier-ai-awareness-must-tu-1bdj011",
+      "title": "ASIC and APRA warn frontier AI awareness must turn to action",
+      "url": "https://asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-201mr-asic-and-apra-warn-frontier-ai-awareness-must-turn-to-action",
+      "sourceId": "asic-newsroom",
+      "sourceName": "ASIC — newsroom",
+      "jurisdiction": "federal",
+      "publishedAt": "2026-08-27",
+      "publishedAtPrecision": "day",
+      "detectedAt": "2026-08-30T19:31:14.972Z",
+      "summary": "ASIC and APRA jointly urge Australian financial firms to move from awareness of frontier AI risks to concrete governance action.",
+      "relevanceScore": 0.65,
+      "classification": "ai",
+      "assessment": {
+        "method": "ai",
+        "promptVersion": "claude-classify-v1",
+        "assessedAt": "2026-08-30T19:31:14.972Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-201mr-asic-and-apra-warn-frontier-ai-awareness-must-turn-to-action",
+          "finalUrl": "https://asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-201mr-asic-and-apra-warn-frontier-ai-awareness-must-turn-to-action",
+          "retrievedAt": "2026-08-30T19:31:14.972Z",
+          "contentType": "text/plain",
+          "contentHash": "85e6e7a58ef84d2903dffcf3aefdbc92e7e680fe51d7940e09be19683b051fff",
+          "title": "ASIC and APRA warn frontier AI awareness must turn to action",
+          "publishedAt": "2026-08-27",
+          "publishedAtPrecision": "day"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-08-30T19:31:14.972Z"
+  },
+  {
+    "id": "source-review-dev-artificial-intelligence-ai-13zsr5k",
+    "sourceUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence",
+    "title": "Artificial Intelligence (AI)",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-08-30T19:31:14.972Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from Digital NSW — artificial intelligence (score 0.65, ai).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.65,
+      "suggestedType": "policy",
+      "suggestedJurisdiction": "nsw",
+      "summary": "NSW Government AI page outlining strategy, policy resources and the NSW AI Assessment Framework for responsible AI use in government.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence",
+      "finalUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence",
+      "retrievedAt": "2026-08-30T19:31:14.972Z",
+      "contentType": "text/html",
+      "contentHash": "d64deafd7a714cb7f65ee246e1637e29bfc1bea77f77021ea7262ae6f7750073",
+      "etag": "\"1788118483\"",
+      "lastModified": "Sun, 30 Aug 2026 19:34:43 GMT",
+      "title": "Artificial Intelligence (AI)"
+    },
+    "proposedRecord": {
+      "id": "artificial-intelligence-ai",
+      "title": "Artificial Intelligence (AI)",
+      "description": "NSW Government AI page outlining strategy, policy resources and the NSW AI Assessment Framework for responsible AI use in government.",
+      "jurisdiction": "nsw",
+      "type": "policy",
+      "status": "active",
+      "agencies": [],
+      "sourceUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence",
+      "content": "Artificial Intelligence (AI) Strategy, policy and practical resources guiding Artificial Intelligence in government. On this page Message from the MinisterAbout NSW GovAINSW GovAI prioritiesSupporting the responsible use of AINSW AI Assessment Framework (AIAF)Contact us Message from the Minister “Artificial intelligence offers the opportunity to create a safer and more productive world, and we must do so responsibly, safely, and ethically.” - Minister Dib Artificial Intelligence (AI) is transforming how we work and the government services we provide for the people of NSW. It presents significa",
+      "aiSummary": "NSW Government AI page outlining strategy, policy resources and the NSW AI Assessment Framework for responsible AI use in government.",
+      "tags": [],
+      "createdAt": "2026-08-30T19:31:14.972Z",
+      "updatedAt": "2026-08-30T19:31:14.972Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-artificial-intelligence-ai-13zsr5k",
+      "title": "Artificial Intelligence (AI)",
+      "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence",
+      "sourceId": "nsw-digital-ai",
+      "sourceName": "Digital NSW — artificial intelligence",
+      "jurisdiction": "nsw",
+      "detectedAt": "2026-08-30T19:31:14.972Z",
+      "summary": "NSW Government AI page outlining strategy, policy resources and the NSW AI Assessment Framework for responsible AI use in government.",
+      "relevanceScore": 0.65,
+      "classification": "ai",
+      "assessment": {
+        "method": "ai",
+        "promptVersion": "claude-classify-v1",
+        "assessedAt": "2026-08-30T19:31:14.972Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence",
+          "finalUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence",
+          "retrievedAt": "2026-08-30T19:31:14.972Z",
+          "contentType": "text/html",
+          "contentHash": "d64deafd7a714cb7f65ee246e1637e29bfc1bea77f77021ea7262ae6f7750073",
+          "etag": "\"1788118483\"",
+          "lastModified": "Sun, 30 Aug 2026 19:34:43 GMT",
+          "title": "Artificial Intelligence (AI)"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-08-30T19:31:14.972Z"
+  },
+  {
     "id": "source-review-dev-buy-australian-ai-partnership-to-boost-homegrown-1ayciio",
     "sourceUrl": "https://www.minister.industry.gov.au/charlton/media/buy-australian-ai-partnership-boost-homegrown-ai-adoption",
     "title": "Buy Australian AI Partnership to boost homegrown AI adoption",
