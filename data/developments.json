@@ -1,5 +1,118 @@
 [
   {
+    "id": "dev-new-rules-for-schools-on-ai-in-take-home-hsc-ass-pzjzcz",
+    "title": "New rules for schools on AI in take-home HSC assessments",
+    "url": "https://www.nsw.gov.au/ministerial-releases/new-rules-ai-education",
+    "sourceId": "nsw-media-releases",
+    "sourceName": "NSW Government — media releases",
+    "jurisdiction": "nsw",
+    "publishedAt": "2026-09-01",
+    "publishedAtPrecision": "day",
+    "detectedAt": "2026-09-01T19:30:31.586Z",
+    "summary": "NSW Government media release announcing new rules for schools governing AI use in take-home HSC assessments.",
+    "relevanceScore": 0.65,
+    "classification": "ai",
+    "assessment": {
+      "method": "ai",
+      "promptVersion": "claude-classify-v1",
+      "assessedAt": "2026-09-01T19:30:31.586Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.nsw.gov.au/ministerial-releases/new-rules-ai-education",
+        "finalUrl": "https://www.nsw.gov.au/ministerial-releases/new-rules-ai-education",
+        "retrievedAt": "2026-09-01T19:30:31.586Z",
+        "contentType": "text/plain",
+        "contentHash": "c23230067b0fecafaca94ee7a3b429ead476dd9c4a4ec2f367144d4670588617",
+        "title": "New rules for schools on AI in take-home HSC assessments",
+        "publishedAt": "2026-09-01",
+        "publishedAtPrecision": "day"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-wa-government-artificial-intelligence-policy-and-qppmsw",
+    "title": "WA Government Artificial Intelligence Policy and Assurance Framework",
+    "url": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+    "sourceId": "wa-ai-policy",
+    "sourceName": "WA — AI policy and assurance framework",
+    "jurisdiction": "wa",
+    "publishedAt": "2024-03-05",
+    "publishedAtPrecision": "day",
+    "detectedAt": "2026-09-01T19:30:31.586Z",
+    "summary": "The official source content for \"WA Government Artificial Intelligence Policy and Assurance Framework\" changed. Editorial re-verification is required before the register record can be treated as current.",
+    "relevanceScore": 1,
+    "classification": "ai",
+    "assessment": {
+      "method": "ai",
+      "promptVersion": "claude-classify-v1",
+      "assessedAt": "2026-09-01T19:30:31.586Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+        "finalUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+        "retrievedAt": "2026-09-01T19:30:31.586Z",
+        "contentType": "text/html",
+        "contentHash": "9b6a110f2ae22111caff3be599b1da34dbac7af8aba1a1a42f0fc11b224431a7",
+        "etag": "\"1788291068\"",
+        "lastModified": "Tue, 01 Sep 2026 19:31:08 GMT",
+        "linkedDocuments": [
+          {
+            "url": "https://www.finance.gov.au/sites/default/files/2024-06/National-framework-for-the-assurance-of-AI-in-government.pdf",
+            "finalUrl": "https://www.finance.gov.au/sites/default/files/2024-06/National-framework-for-the-assurance-of-AI-in-government.pdf",
+            "retrievedAt": "2026-09-01T19:30:31.586Z",
+            "contentType": "application/pdf",
+            "contentHash": "92e06dad15c4fc5141ced0ac356a8707f0356683ff7f66c0e30782d222fea167"
+          },
+          {
+            "url": "https://www.wa.gov.au/system/files/2025-07/ai_policyv2.pdf",
+            "finalUrl": "https://www.wa.gov.au/system/files/2025-07/ai_policyv2.pdf",
+            "retrievedAt": "2026-09-01T19:30:31.586Z",
+            "contentType": "application/pdf",
+            "contentHash": "f0474b1616dfdc3f14df3ef170096d99682ec423e15fd631aeedcae03aa542b6"
+          }
+        ],
+        "title": "WA Government Artificial Intelligence Policy and Assurance Framework",
+        "publishedAt": "2024-03-05",
+        "publishedAtPrecision": "day"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-current-joint-inquiries-m0kht9",
+    "title": "Current Joint Inquiries",
+    "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Joint/Current_Inquiries",
+    "sourceId": "joint-new-inquiries",
+    "sourceName": "Parliamentary joint committees — new inquiries",
+    "jurisdiction": "federal",
+    "detectedAt": "2026-09-01T19:30:31.586Z",
+    "summary": "Australian Parliament joint committees page listing current inquiries, including one on Artificial Intelligence.",
+    "relevanceScore": 0.55,
+    "classification": "ai",
+    "assessment": {
+      "method": "ai",
+      "promptVersion": "claude-classify-v1",
+      "assessedAt": "2026-09-01T19:30:31.586Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Joint/Current_Inquiries",
+        "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Joint/Current_Inquiries",
+        "retrievedAt": "2026-09-01T19:30:31.586Z",
+        "contentType": "text/html",
+        "contentHash": "af23d015369ed4e7aa7776ada11b0d8828768984d0acd5d168b2adbe007775a5",
+        "title": "Current Joint Inquiries"
+      }
+    },
+    "status": "detected"
+  },
+  {
     "id": "dev-senate-opens-inquiry-into-artificial-intelligenc-17ecvjj",
     "title": "Senate opens inquiry into artificial intelligence and data centres",
     "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",

@@ -1,5 +1,270 @@
 [
   {
+    "id": "source-review-dev-new-rules-for-schools-on-ai-in-take-home-hsc-ass-pzjzcz",
+    "sourceUrl": "https://www.nsw.gov.au/ministerial-releases/new-rules-ai-education",
+    "title": "New rules for schools on AI in take-home HSC assessments",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-09-01T19:30:31.586Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from NSW Government — media releases (score 0.65, ai).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.65,
+      "suggestedType": "policy",
+      "suggestedJurisdiction": "nsw",
+      "summary": "NSW Government media release announcing new rules for schools governing AI use in take-home HSC assessments.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.nsw.gov.au/ministerial-releases/new-rules-ai-education",
+      "finalUrl": "https://www.nsw.gov.au/ministerial-releases/new-rules-ai-education",
+      "retrievedAt": "2026-09-01T19:30:31.586Z",
+      "contentType": "text/plain",
+      "contentHash": "c23230067b0fecafaca94ee7a3b429ead476dd9c4a4ec2f367144d4670588617",
+      "title": "New rules for schools on AI in take-home HSC assessments",
+      "publishedAt": "2026-09-01",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "new-rules-for-schools-on-ai-in-take-home-hsc-assessments",
+      "title": "New rules for schools on AI in take-home HSC assessments",
+      "description": "NSW Government media release announcing new rules for schools governing AI use in take-home HSC assessments.",
+      "jurisdiction": "nsw",
+      "type": "policy",
+      "status": "active",
+      "effectiveDate": "2026-09-01",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-09-01",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.nsw.gov.au/ministerial-releases/new-rules-ai-education",
+            "finalUrl": "https://www.nsw.gov.au/ministerial-releases/new-rules-ai-education",
+            "retrievedAt": "2026-09-01T19:30:31.586Z",
+            "contentType": "text/plain",
+            "contentHash": "c23230067b0fecafaca94ee7a3b429ead476dd9c4a4ec2f367144d4670588617",
+            "title": "New rules for schools on AI in take-home HSC assessments",
+            "publishedAt": "2026-09-01",
+            "publishedAtPrecision": "day"
+          }
+        }
+      ],
+      "agencies": [],
+      "sourceUrl": "https://www.nsw.gov.au/ministerial-releases/new-rules-ai-education",
+      "content": "Ministerial media release New rules for schools on AI in take-home HSC assessments ======================================================== Published: 1 September 2026 Released by: The Premier, Minister for Education and Early Learning [Listen](https://app-oc.readspeaker.com/cgi-bin/rsent?customerid=11246&lang=en_au&readclass=dcs-readspeaker-target%2crs_read&url=https://www.nsw.gov.au/ministerial-releases/new-rules-ai-education \"Listen to this page using ReadSpeaker webReader\") * * * Schools will be limited to a maximum of one take-home assessment task worth no more than 15 per cent of the sch",
+      "aiSummary": "NSW Government media release announcing new rules for schools governing AI use in take-home HSC assessments.",
+      "tags": [],
+      "createdAt": "2026-09-01T19:30:31.586Z",
+      "updatedAt": "2026-09-01T19:30:31.586Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-new-rules-for-schools-on-ai-in-take-home-hsc-ass-pzjzcz",
+      "title": "New rules for schools on AI in take-home HSC assessments",
+      "url": "https://www.nsw.gov.au/ministerial-releases/new-rules-ai-education",
+      "sourceId": "nsw-media-releases",
+      "sourceName": "NSW Government — media releases",
+      "jurisdiction": "nsw",
+      "publishedAt": "2026-09-01",
+      "publishedAtPrecision": "day",
+      "detectedAt": "2026-09-01T19:30:31.586Z",
+      "summary": "NSW Government media release announcing new rules for schools governing AI use in take-home HSC assessments.",
+      "relevanceScore": 0.65,
+      "classification": "ai",
+      "assessment": {
+        "method": "ai",
+        "promptVersion": "claude-classify-v1",
+        "assessedAt": "2026-09-01T19:30:31.586Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.nsw.gov.au/ministerial-releases/new-rules-ai-education",
+          "finalUrl": "https://www.nsw.gov.au/ministerial-releases/new-rules-ai-education",
+          "retrievedAt": "2026-09-01T19:30:31.586Z",
+          "contentType": "text/plain",
+          "contentHash": "c23230067b0fecafaca94ee7a3b429ead476dd9c4a4ec2f367144d4670588617",
+          "title": "New rules for schools on AI in take-home HSC assessments",
+          "publishedAt": "2026-09-01",
+          "publishedAtPrecision": "day"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-09-01T19:30:31.586Z"
+  },
+  {
+    "id": "source-review-dev-wa-government-artificial-intelligence-policy-and-qppmsw",
+    "sourceUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+    "title": "WA Government Artificial Intelligence Policy and Assurance Framework",
+    "entryKind": "policy",
+    "targetPolicyId": "wa-ai-policy-assurance-framework",
+    "targetPolicyBaseRevisionHash": "c554e2d8ff8091d7ea6a2ad806b8435376cfdcf798aa0821cb4d07f7632b6fd4",
+    "status": "pending_review",
+    "discoveredAt": "2026-09-01T19:30:31.586Z",
+    "createdBy": "collector",
+    "notes": "The official source content for \"WA Government Artificial Intelligence Policy and Assurance Framework\" changed. Editorial re-verification is required before the register record can be treated as current. Re-verify the existing register record before restoring it to public reads. Detected by WA — AI policy and assurance framework (ai assessment).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": "framework",
+      "suggestedJurisdiction": "wa",
+      "summary": "The official source content for \"WA Government Artificial Intelligence Policy and Assurance Framework\" changed. Editorial re-verification is required before the register record can be treated as current.",
+      "tags": [
+        "assurance",
+        "framework",
+        "WA",
+        "risk assessment",
+        "accountability"
+      ],
+      "agencies": [
+        "Office of Digital Government",
+        "Department of the Premier and Cabinet"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+      "finalUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+      "retrievedAt": "2026-09-01T19:30:31.586Z",
+      "contentType": "text/html",
+      "contentHash": "9b6a110f2ae22111caff3be599b1da34dbac7af8aba1a1a42f0fc11b224431a7",
+      "etag": "\"1788291068\"",
+      "lastModified": "Tue, 01 Sep 2026 19:31:08 GMT",
+      "linkedDocuments": [
+        {
+          "url": "https://www.finance.gov.au/sites/default/files/2024-06/National-framework-for-the-assurance-of-AI-in-government.pdf",
+          "finalUrl": "https://www.finance.gov.au/sites/default/files/2024-06/National-framework-for-the-assurance-of-AI-in-government.pdf",
+          "retrievedAt": "2026-09-01T19:30:31.586Z",
+          "contentType": "application/pdf",
+          "contentHash": "92e06dad15c4fc5141ced0ac356a8707f0356683ff7f66c0e30782d222fea167"
+        },
+        {
+          "url": "https://www.wa.gov.au/system/files/2025-07/ai_policyv2.pdf",
+          "finalUrl": "https://www.wa.gov.au/system/files/2025-07/ai_policyv2.pdf",
+          "retrievedAt": "2026-09-01T19:30:31.586Z",
+          "contentType": "application/pdf",
+          "contentHash": "f0474b1616dfdc3f14df3ef170096d99682ec423e15fd631aeedcae03aa542b6"
+        }
+      ],
+      "title": "WA Government Artificial Intelligence Policy and Assurance Framework",
+      "publishedAt": "2024-03-05",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "wa-ai-policy-assurance-framework",
+      "title": "WA Government Artificial Intelligence Policy and Assurance Framework",
+      "description": "Western Australia’s whole-of-government AI policy and assurance framework (first published 5 March 2024; policy version 2 released July 2025), with AI Accountable Officers, mandatory risk self-assessments and an AI Advisory Board review of higher-risk projects.",
+      "jurisdiction": "wa",
+      "type": "framework",
+      "status": "active",
+      "effectiveDate": "2024-03-05",
+      "agencies": [
+        "Office of Digital Government",
+        "Department of the Premier and Cabinet"
+      ],
+      "sourceUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+      "content": "The WA Government Artificial Intelligence Policy and Assurance Framework was first published on 5 March 2024 by the Office of Digital Government. It requires agencies to appoint AI Accountable Officers, complete risk self-assessments for AI use cases, and refer higher-risk projects to the WA AI Advisory Board. Version 2 of the policy was released in July 2025.",
+      "aiSummary": "WA’s mandatory AI policy and assurance framework with accountable officers and risk-based review.",
+      "tags": [
+        "assurance",
+        "framework",
+        "WA",
+        "risk assessment",
+        "accountability"
+      ],
+      "createdAt": "2026-07-10T00:00:00.000Z",
+      "updatedAt": "2026-09-01T19:30:31.586Z",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2024-03-05",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+            "finalUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+            "title": "WA Government Artificial Intelligence Policy and Assurance Framework",
+            "retrievedAt": "2026-08-07T05:11:58.501Z",
+            "contentType": "text/html",
+            "contentHash": "f338e6b4ba3763fca7be2df1a873e74cb90e0a504198c9edb4810c3cde13ee98",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-08-07T05:11:58.501Z",
+              "capturedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-08",
+              "notes": "Captured via self-hosted Firecrawl because the host refuses plain HTTP. WA AI Policy and Assurance Framework — wa.gov.au page confirmed; current instrument PDF is ai_policyv2.pdf under 2025-07.",
+              "pageContentHash": "81c813b3764a56e70e11261b36416adf6178e8c9b238de4e0f6031960143e3cf",
+              "characterCount": 31555
+            },
+            "reviewedDate": {
+              "date": "2024-03-05",
+              "precision": "day",
+              "reviewedAt": "2026-08-07T05:11:58.525Z",
+              "reviewedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-08",
+              "notes": "Date confirmed against the live official source on 2026-08-08. WA AI Policy and Assurance Framework — wa.gov.au page confirmed; current instrument PDF is ai_policyv2.pdf under 2025-07."
+            }
+          }
+        }
+      ]
+    },
+    "linkedDevelopment": {
+      "id": "dev-wa-government-artificial-intelligence-policy-and-qppmsw",
+      "title": "WA Government Artificial Intelligence Policy and Assurance Framework",
+      "url": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+      "sourceId": "wa-ai-policy",
+      "sourceName": "WA — AI policy and assurance framework",
+      "jurisdiction": "wa",
+      "publishedAt": "2024-03-05",
+      "publishedAtPrecision": "day",
+      "detectedAt": "2026-09-01T19:30:31.586Z",
+      "summary": "The official source content for \"WA Government Artificial Intelligence Policy and Assurance Framework\" changed. Editorial re-verification is required before the register record can be treated as current.",
+      "relevanceScore": 1,
+      "classification": "ai",
+      "assessment": {
+        "method": "ai",
+        "promptVersion": "claude-classify-v1",
+        "assessedAt": "2026-09-01T19:30:31.586Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+          "finalUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+          "retrievedAt": "2026-09-01T19:30:31.586Z",
+          "contentType": "text/html",
+          "contentHash": "9b6a110f2ae22111caff3be599b1da34dbac7af8aba1a1a42f0fc11b224431a7",
+          "etag": "\"1788291068\"",
+          "lastModified": "Tue, 01 Sep 2026 19:31:08 GMT",
+          "linkedDocuments": [
+            {
+              "url": "https://www.finance.gov.au/sites/default/files/2024-06/National-framework-for-the-assurance-of-AI-in-government.pdf",
+              "finalUrl": "https://www.finance.gov.au/sites/default/files/2024-06/National-framework-for-the-assurance-of-AI-in-government.pdf",
+              "retrievedAt": "2026-09-01T19:30:31.586Z",
+              "contentType": "application/pdf",
+              "contentHash": "92e06dad15c4fc5141ced0ac356a8707f0356683ff7f66c0e30782d222fea167"
+            },
+            {
+              "url": "https://www.wa.gov.au/system/files/2025-07/ai_policyv2.pdf",
+              "finalUrl": "https://www.wa.gov.au/system/files/2025-07/ai_policyv2.pdf",
+              "retrievedAt": "2026-09-01T19:30:31.586Z",
+              "contentType": "application/pdf",
+              "contentHash": "f0474b1616dfdc3f14df3ef170096d99682ec423e15fd631aeedcae03aa542b6"
+            }
+          ],
+          "title": "WA Government Artificial Intelligence Policy and Assurance Framework",
+          "publishedAt": "2024-03-05",
+          "publishedAtPrecision": "day"
+        }
+      },
+      "status": "detected"
+    },
+    "sourceVersionSequence": 3,
+    "updatedAt": "2026-09-01T19:30:31.586Z"
+  },
+  {
     "id": "source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-17ecvjj",
     "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
     "title": "Senate opens inquiry into artificial intelligence and data centres",
