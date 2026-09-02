@@ -2312,25 +2312,64 @@
     "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework#policai-change=9b6a110f2ae22111caff3be599b1da34dbac7af8aba1a1a42f0fc11b224431a7:3": {
       "firstSeenAt": "2026-09-01T19:30:31.586Z",
       "sourceId": "wa-ai-policy",
-      "status": "processed",
+      "status": "awaiting_review",
       "attempts": 1,
       "lastAttemptAt": "2026-09-01T19:30:31.586Z",
-      "processedAt": "2026-09-01T19:30:31.586Z",
       "candidate": {
         "title": "WA Government Artificial Intelligence Policy and Assurance Framework",
         "url": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
-        "text": "[Document 1: WA Government Artificial Intelligence Policy and Assurance Framework]\nWA Government Artificial Intelligence Policy and Assurance Framework Policy The Government of Western Australia’s Artificial Intelligence Policy and Assurance Framework support the safe, secure and reliable use of AI by the Western Australian public sector. First published: 5 March 2024 Last updated: 25 August 2026 Artificial Intelligence PolicyThe Government of Western Australia’s Artificial Intelligence (AI) Policy (the Policy) sets out the principles which underpin the WA Government’s approach to using AI res",
-        "changeFingerprint": "9b6a110f2ae22111caff3be599b1da34dbac7af8aba1a1a42f0fc11b224431a7:3",
-        "dateHint": "2024-03-05",
-        "dateHintPrecision": "day"
+        "text": "The official source content for \"WA Government Artificial Intelligence Policy and Assurance Framework\" changed. Editorial re-verification is required before the register record can be treated as current.",
+        "changeFingerprint": "9b6a110f2ae22111caff3be599b1da34dbac7af8aba1a1a42f0fc11b224431a7:3"
+      }
+    },
+    "https://www.aph.gov.au/Parliamentary_Business/Committees/House/Current_Inquiries#policai-change=9b37222b4b078986245f84c886640325d62780c6c07fe48970bc8439bc131d70:7": {
+      "firstSeenAt": "2026-09-02T19:34:28.075Z",
+      "sourceId": "house-new-inquiries",
+      "status": "dismissed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-09-02T19:34:28.075Z",
+      "processedAt": "2026-09-02T19:34:28.075Z",
+      "candidate": {
+        "title": "Current House Inquiries",
+        "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/House/Current_Inquiries",
+        "text": "Current House Inquiries In this section Bills and LegislationTabled documentsChamber documentsHansardSenate estimatesCommitteesLodge my submissionSenate CommitteesHouse of Representatives CommitteesAppropriations and AdministrationClimate Change, Energy, Environment and WaterCommunications, the Arts and SportCyber Security for Small to Medium Sized Businesses and OrganisationsEconomicsEducationEmployment, Workplace Relations, Skills and TrainingHealth, Aged Care and DisabilityIndustry, Innovation and SciencePetitionsPrimary IndustriesPrivileges and Members' InterestsProcedurePublicationsRegion",
+        "changeFingerprint": "9b37222b4b078986245f84c886640325d62780c6c07fe48970bc8439bc131d70:7"
+      }
+    },
+    "https://www.aph.gov.au/Parliamentary_Business/Committees/Joint/Current_Inquiries#policai-change=df9e1b120a720bd4fefba63d24a816b7b53445763e6b123a67ba6b4727d1c86c:16": {
+      "firstSeenAt": "2026-09-02T19:34:28.075Z",
+      "sourceId": "joint-new-inquiries",
+      "status": "dismissed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-09-02T19:34:28.075Z",
+      "processedAt": "2026-09-02T19:34:28.075Z",
+      "candidate": {
+        "title": "Current Joint Inquiries",
+        "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Joint/Current_Inquiries",
+        "text": "Current Joint Inquiries In this section Bills and LegislationTabled documentsChamber documentsHansardSenate estimatesCommitteesLodge my submissionSenate CommitteesHouse of Representatives CommitteesJoint CommitteesAboriginal and Torres Strait Islander AffairsArtificial IntelligenceBroadcasting of Parliamentary ProceedingsCentenary of Parliament in CanberraDefenceCorporations and Financial ServicesForeign Affairs, Defence and TradeImplementation of the National Redress Scheme (Standing)Electoral MattersIntelligence and SecurityHuman RightsMigrationNational Capital and External TerritoriesLaw En",
+        "changeFingerprint": "df9e1b120a720bd4fefba63d24a816b7b53445763e6b123a67ba6b4727d1c86c:16"
+      }
+    },
+    "https://statements.qld.gov.au/#policai-change=5e578f92e1de867bde91d1db3c62111ed4257d6615687f9a37f7fe07a6af51d2:39": {
+      "firstSeenAt": "2026-09-02T19:34:28.075Z",
+      "sourceId": "qld-ministerial-statements",
+      "status": "dismissed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-09-02T19:34:28.075Z",
+      "processedAt": "2026-09-02T19:34:28.075Z",
+      "candidate": {
+        "title": "Media Statements",
+        "url": "https://statements.qld.gov.au/",
+        "text": "Latest Search Yesterday at 01:15 PM Consultation open on resources industry Financial Provisioning Scheme The Crisafulli Government has invited Queenslander... Yesterday at 11:01 AM Major new energy security pipeline unlocked The Crisafulli Government is unlocking a major new... Yesterday at 11:00 AM New leadership program for Free Kindy services to boost Queensland’s workforce The Crisafulli Government is delivering for the ea... Yesterday at 10:30 AM Standing up for regional Queenslanders against the Albanese Labor Government's disaster betrayal The Crisafulli Government is continuing to tak",
+        "changeFingerprint": "5e578f92e1de867bde91d1db3c62111ed4257d6615687f9a37f7fe07a6af51d2:39"
       }
     }
   },
   "lastCheckedBySource": {
-    "apra-rss": "2026-09-01T19:30:31.586Z",
+    "apra-rss": "2026-09-02T19:34:28.075Z",
     "csiro-news": "2026-08-30T19:31:14.972Z",
-    "oaic-media": "2026-09-01T19:30:31.586Z",
-    "accc-rss": "2026-09-01T19:30:31.586Z",
+    "oaic-media": "2026-09-02T19:34:28.075Z",
+    "accc-rss": "2026-09-02T19:34:28.075Z",
     "asic-newsroom": "2026-08-30T19:31:14.972Z",
     "pc-media": "2026-08-30T19:31:14.972Z",
     "nsw-sc-practice-notes": "2026-09-01T19:30:31.586Z",
@@ -2342,52 +2381,52 @@
     "sa-office-for-ai": "2026-07-18T20:12:16.563Z",
     "treasury-publications": "2026-08-30T19:31:14.972Z",
     "qld-courts-news": "2026-08-30T19:31:14.972Z",
-    "pm-media": "2026-09-01T19:30:31.586Z",
-    "pmc-office-ai": "2026-09-01T19:30:31.586Z",
-    "industry-ai-publications": "2026-09-01T19:30:31.586Z",
-    "industry-ministers-media": "2026-09-01T19:30:31.586Z",
-    "dta-media": "2026-09-01T19:30:31.586Z",
-    "digital-gov-ai": "2026-09-01T19:30:31.586Z",
-    "disr-news": "2026-09-01T19:30:31.586Z",
+    "pm-media": "2026-09-02T19:34:28.075Z",
+    "pmc-office-ai": "2026-09-02T19:34:28.075Z",
+    "industry-ai-publications": "2026-09-02T19:34:28.075Z",
+    "industry-ministers-media": "2026-09-02T19:34:28.075Z",
+    "dta-media": "2026-09-02T19:34:28.075Z",
+    "digital-gov-ai": "2026-09-02T19:34:28.075Z",
+    "disr-news": "2026-09-02T19:34:28.075Z",
     "naic-news": "2026-08-30T19:31:14.972Z",
     "finance-news": "2026-08-30T19:31:14.972Z",
-    "agd-ministers-media": "2026-09-01T19:30:31.586Z",
-    "cyber-news": "2026-09-01T19:30:31.586Z",
-    "apsc-latest-news": "2026-09-01T19:30:31.586Z",
+    "agd-ministers-media": "2026-09-02T19:34:28.075Z",
+    "cyber-news": "2026-09-02T19:34:28.075Z",
+    "apsc-latest-news": "2026-09-02T19:34:28.075Z",
     "anao-performance-audits": "2026-08-30T19:31:14.972Z",
     "senate-ai-data-centres": "2026-08-30T19:31:14.972Z",
-    "senate-new-inquiries": "2026-09-01T19:30:31.586Z",
-    "senate-reports": "2026-09-01T19:30:31.586Z",
-    "house-new-inquiries": "2026-09-01T19:30:31.586Z",
-    "joint-new-inquiries": "2026-09-01T19:30:31.586Z",
-    "aph-bills-digests": "2026-09-01T19:30:31.586Z",
-    "legislation-whats-new": "2026-09-01T19:30:31.586Z",
+    "senate-new-inquiries": "2026-09-02T19:34:28.075Z",
+    "senate-reports": "2026-09-02T19:34:28.075Z",
+    "house-new-inquiries": "2026-09-02T19:34:28.075Z",
+    "joint-new-inquiries": "2026-09-02T19:34:28.075Z",
+    "aph-bills-digests": "2026-09-02T19:34:28.075Z",
+    "legislation-whats-new": "2026-09-02T19:34:28.075Z",
     "agd-consultations": "2026-08-30T19:31:14.972Z",
     "industry-consultations": "2026-08-30T19:31:14.972Z",
     "treasury-consultations": "2026-08-30T19:31:14.972Z",
     "aemc-media": "2026-08-30T19:31:14.972Z",
-    "acma-media": "2026-09-01T19:30:31.586Z",
+    "acma-media": "2026-09-02T19:34:28.075Z",
     "tga-media": "2026-08-30T19:31:14.972Z",
     "fwc-news": "2026-08-30T19:31:14.972Z",
     "teqsa-news": "2026-08-30T19:31:14.972Z",
     "aec-media": "2026-08-30T19:31:14.972Z",
-    "esafety-media": "2026-09-01T19:30:31.586Z",
-    "ahrc-media": "2026-09-01T19:30:31.586Z",
+    "esafety-media": "2026-09-02T19:34:28.075Z",
+    "ahrc-media": "2026-09-02T19:34:28.075Z",
     "fedcourt-practice-notes": "2026-08-30T19:31:14.972Z",
-    "nsw-media-releases": "2026-09-01T19:30:31.586Z",
+    "nsw-media-releases": "2026-09-02T19:34:28.075Z",
     "ovic-news": "2026-08-30T19:31:14.972Z",
-    "qld-ministerial-statements": "2026-09-01T19:30:31.586Z",
+    "qld-ministerial-statements": "2026-09-02T19:34:28.075Z",
     "tas-dpac-policies": "2026-08-30T19:31:14.972Z",
     "act-ai-policy": "2026-07-20T12:19:40.243Z",
     "nt-ai-assurance": "2026-08-30T19:31:14.972Z",
     "ipa-news": "2026-08-30T19:31:14.972Z",
-    "wa-media-statements": "2026-09-01T19:30:31.586Z",
+    "wa-media-statements": "2026-09-02T19:34:28.075Z",
     "ovic-privacy-resources": "2026-09-01T19:30:31.586Z",
     "ovic-enterprise-generative-ai": "2026-07-23T20:36:08.370Z",
     "ovic-public-generative-ai": "2026-07-23T20:36:08.370Z",
     "art-practice-directions": "2026-09-01T19:30:31.586Z",
     "wa-sc-practice-directions": "2026-09-01T19:30:31.586Z",
-    "sa-courts-news": "2026-09-01T19:30:31.586Z",
+    "sa-courts-news": "2026-09-02T19:34:28.075Z",
     "act-sc-practice-directions": "2026-09-01T19:30:31.586Z",
     "tas-sc-practice-directions": "2026-09-01T19:30:31.586Z",
     "nt-sc-practice-directions": "2026-09-01T19:30:31.586Z"
@@ -2396,7 +2435,7 @@
     "pmc-office-ai": {
       "contentHash": "4db862eda78cf3d07a56d47be8a73cd5e283dc189501fe090ad5708d1f55116e",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-09-01T19:30:31.586Z",
+      "lastCheckedAt": "2026-09-02T19:34:28.075Z",
       "changeCount": 0
     },
     "naic-news": {
@@ -2454,11 +2493,11 @@
       "lastChangedAt": "2026-07-29T20:30:22.291Z"
     },
     "qld-ministerial-statements": {
-      "contentHash": "44c86daebeb6810fdeee855155d6bc342012f67da3914946b54407f0bc9e2501",
+      "contentHash": "5e578f92e1de867bde91d1db3c62111ed4257d6615687f9a37f7fe07a6af51d2",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-09-01T19:30:31.586Z",
-      "changeCount": 38,
-      "lastChangedAt": "2026-09-01T19:30:31.586Z"
+      "lastCheckedAt": "2026-09-02T19:34:28.075Z",
+      "changeCount": 39,
+      "lastChangedAt": "2026-09-02T19:34:28.075Z"
     },
     "act-ai-policy": {
       "contentHash": "0040e7ec83db2a7430b63de7cf72e581dcc938a3139b85ec32c40aa15dc5f4a0",
@@ -2512,7 +2551,7 @@
     "nsw-sc-practice-notes": {
       "contentHash": "ca5614f3ecc63e3934ed322eee3e9d77e4ce782db3c00e51284e67253bfaf654",
       "firstCheckedAt": "2026-07-29T20:30:22.291Z",
-      "lastCheckedAt": "2026-09-01T19:30:31.586Z",
+      "lastCheckedAt": "2026-08-07T07:54:05.044Z",
       "lastChangedAt": "2026-08-07T07:54:05.074Z",
       "changeCount": 1
     },
@@ -2526,7 +2565,7 @@
     "vic-ai": {
       "contentHash": "6013a3f65fd755391a25c8768410318375421342c47621c337baf604fe5abc71",
       "firstCheckedAt": "2026-07-29T20:30:22.291Z",
-      "lastCheckedAt": "2026-09-01T19:30:31.586Z",
+      "lastCheckedAt": "2026-08-07T05:10:37.597Z",
       "lastChangedAt": "2026-08-07T05:10:38.082Z",
       "changeCount": 1
     },
@@ -2545,18 +2584,18 @@
       "changeCount": 3
     },
     "house-new-inquiries": {
-      "contentHash": "26e353c709d62b40f2705f94dcbca6a506e48f103200ce57908295737f6a89e2",
+      "contentHash": "9b37222b4b078986245f84c886640325d62780c6c07fe48970bc8439bc131d70",
       "firstCheckedAt": "2026-08-07T04:32:08.175Z",
-      "lastCheckedAt": "2026-09-01T19:30:31.586Z",
-      "changeCount": 6,
-      "lastChangedAt": "2026-08-31T19:30:11.626Z"
+      "lastCheckedAt": "2026-09-02T19:34:28.075Z",
+      "changeCount": 7,
+      "lastChangedAt": "2026-09-02T19:34:28.075Z"
     },
     "joint-new-inquiries": {
-      "contentHash": "af23d015369ed4e7aa7776ada11b0d8828768984d0acd5d168b2adbe007775a5",
+      "contentHash": "df9e1b120a720bd4fefba63d24a816b7b53445763e6b123a67ba6b4727d1c86c",
       "firstCheckedAt": "2026-08-07T04:32:08.175Z",
-      "lastCheckedAt": "2026-09-01T19:30:31.586Z",
-      "changeCount": 15,
-      "lastChangedAt": "2026-09-01T19:30:31.586Z"
+      "lastCheckedAt": "2026-09-02T19:34:28.075Z",
+      "changeCount": 16,
+      "lastChangedAt": "2026-09-02T19:34:28.075Z"
     },
     "art-practice-directions": {
       "contentHash": "4b68d0ccf77794390152d126d540f0a8b34eae661123a135b4157c2aeff59a7f",
