@@ -1,5 +1,34 @@
 [
   {
+    "id": "dev-current-joint-inquiries-12rtqhs",
+    "title": "Current Joint Inquiries",
+    "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Joint/Current_Inquiries",
+    "sourceId": "joint-new-inquiries",
+    "sourceName": "Parliamentary joint committees — new inquiries",
+    "jurisdiction": "federal",
+    "detectedAt": "2026-09-04T19:32:06.818Z",
+    "summary": "Lists current joint parliamentary committees including a Joint Committee on Artificial Intelligence, but page gives no inquiry-specific detail.",
+    "relevanceScore": 0.55,
+    "classification": "ai",
+    "assessment": {
+      "method": "ai",
+      "promptVersion": "claude-classify-v1",
+      "assessedAt": "2026-09-04T19:32:06.818Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Joint/Current_Inquiries",
+        "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Joint/Current_Inquiries",
+        "retrievedAt": "2026-09-04T19:32:06.818Z",
+        "contentType": "text/html",
+        "contentHash": "5b02ff362863ff0fda1933642d1670136e32b8ad53e9da925d4f628e858dcb32",
+        "title": "Current Joint Inquiries"
+      }
+    },
+    "status": "detected"
+  },
+  {
     "id": "dev-artificial-intelligence-governance-policy-1j2eo9g",
     "title": "Artificial intelligence governance policy",
     "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
