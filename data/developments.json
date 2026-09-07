@@ -1,5 +1,67 @@
 [
   {
+    "id": "dev-senate-opens-inquiry-into-artificial-intelligenc-138akxo",
+    "title": "Senate opens inquiry into artificial intelligence and data centres",
+    "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+    "sourceId": "senate-ai-data-centres",
+    "sourceName": "Senate inquiry — artificial intelligence and data centres",
+    "jurisdiction": "federal",
+    "detectedAt": "2026-09-07T15:15:00.078Z",
+    "summary": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+    "relevanceScore": 1,
+    "classification": "ai",
+    "assessment": {
+      "method": "ai",
+      "promptVersion": "claude-classify-v1",
+      "assessedAt": "2026-09-07T15:15:00.078Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+        "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+        "retrievedAt": "2026-09-07T15:15:00.078Z",
+        "contentType": "text/html",
+        "contentHash": "a249368e7c6fc854846cb593cb0ae34336229e7ff7458d173bd1ae1963056b5e",
+        "title": "Senate opens inquiry into artificial intelligence and data centres"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-asic-and-apra-host-super-ceos-to-discuss-frontie-wh4ka1",
+    "title": "ASIC and APRA host super CEOs to discuss frontier AI, cyber and operational resilience",
+    "url": "https://asic.gov.au/about-asic/news-centre/news-items/asic-and-apra-host-super-ceos-to-discuss-frontier-ai-cyber-and-operational-resilience",
+    "sourceId": "asic-newsroom",
+    "sourceName": "ASIC — newsroom",
+    "jurisdiction": "federal",
+    "publishedAt": "2026-09-01",
+    "publishedAtPrecision": "day",
+    "detectedAt": "2026-09-07T15:15:00.078Z",
+    "summary": "ASIC and APRA convened superannuation fund CEOs to discuss frontier AI risks alongside cyber and operational resilience.",
+    "relevanceScore": 0.65,
+    "classification": "ai",
+    "assessment": {
+      "method": "ai",
+      "promptVersion": "claude-classify-v1",
+      "assessedAt": "2026-09-07T15:15:00.078Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://asic.gov.au/about-asic/news-centre/news-items/asic-and-apra-host-super-ceos-to-discuss-frontier-ai-cyber-and-operational-resilience",
+        "finalUrl": "https://asic.gov.au/about-asic/news-centre/news-items/asic-and-apra-host-super-ceos-to-discuss-frontier-ai-cyber-and-operational-resilience",
+        "retrievedAt": "2026-09-07T15:15:00.078Z",
+        "contentType": "text/plain",
+        "contentHash": "db3213228f4553508801d7a4146b69070c25fe4437b383f57a45903a519574b8",
+        "title": "ASIC and APRA host super CEOs to discuss frontier AI, cyber and operational resilience",
+        "publishedAt": "2026-09-01",
+        "publishedAtPrecision": "day"
+      }
+    },
+    "status": "detected"
+  },
+  {
     "id": "dev-current-joint-inquiries-12rtqhs",
     "title": "Current Joint Inquiries",
     "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Joint/Current_Inquiries",
