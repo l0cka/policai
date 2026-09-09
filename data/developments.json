@@ -7,26 +7,49 @@
     "sourceName": "Senate inquiry — artificial intelligence and data centres",
     "jurisdiction": "federal",
     "detectedAt": "2026-09-07T15:15:00.078Z",
-    "summary": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+    "summary": "The Senate inquiry covers AI and data-centre regulation, government deals, and community, industry, energy, water and environmental impacts. Submissions closed on 1 September 2026, and the committee is due to report on 16 November 2026.",
     "relevanceScore": 1,
-    "classification": "ai",
+    "classification": "curated",
     "assessment": {
-      "method": "ai",
-      "promptVersion": "claude-classify-v1",
-      "assessedAt": "2026-09-07T15:15:00.078Z"
+      "method": "editorial",
+      "assessedAt": "2026-09-09T23:39:04.677Z",
+      "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
         "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
         "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
-        "retrievedAt": "2026-09-07T15:15:00.078Z",
+        "title": "Artificial intelligence and data centres – Parliament of Australia",
+        "retrievedAt": "2026-09-09T23:25:36.819Z",
         "contentType": "text/html",
-        "contentHash": "a249368e7c6fc854846cb593cb0ae34336229e7ff7458d173bd1ae1963056b5e",
-        "title": "Senate opens inquiry into artificial intelligence and data centres"
-      }
+        "contentHash": "8f4f337a9cf131bc510a2c0f2b1a1a1d7e3d5a45ba9bcdeb93bc768c67745a9a",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-09-09T23:25:36.819Z",
+          "capturedBy": "Daniel Alkurdi",
+          "notes": "Daniel Alkurdi approved this browser capture after review of the official APH inquiry dates, status and terms of reference. The hardened retriever returned HTTP 403.",
+          "pageContentHash": "92a9cb6ba1a6f80ce57d20012f664c75a0ba151a23376998db9dd8b382ee0740",
+          "characterCount": 4080
+        },
+        "reviewedDate": {
+          "date": "2026-05-13",
+          "precision": "day",
+          "reviewedAt": "2026-09-09T23:39:04.677Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The current Parliament of Australia inquiry page identifies 13 May 2026 as the referral date."
+        }
+      },
+      "checkedAt": "2026-09-09T23:39:04.677Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Re-verified against the current Parliament of Australia inquiry page. The page confirms referral on 13 May 2026, that submissions closed on 1 September 2026, and a reporting date of 16 November 2026. The description was updated to reflect that the submissions deadline has passed."
     },
-    "status": "detected"
+    "status": "promoted",
+    "relatedTimelineEventId": "tl-2026-05-13-senate-ai-data-centres-inquiry",
+    "publishedAt": "2026-05-13",
+    "publishedAtPrecision": "day"
   },
   {
     "id": "dev-asic-and-apra-host-super-ceos-to-discuss-frontie-wh4ka1",
@@ -59,7 +82,8 @@
         "publishedAtPrecision": "day"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Roundtable notes are discussion records, not a distinct policy or guidance instrument; the substantive joint information paper was published instead."
   },
   {
     "id": "dev-current-joint-inquiries-12rtqhs",
@@ -98,26 +122,49 @@
     "sourceName": "Queensland QGEA — AI governance policy",
     "jurisdiction": "qld",
     "detectedAt": "2026-09-03T19:34:47.270Z",
-    "summary": "The official source content for \"Artificial intelligence governance policy\" changed. Editorial re-verification is required before the register record can be treated as current.",
+    "summary": "Queensland’s mandated whole-of-government AI governance policy, version 2.0.0, requiring covered agencies to establish AI governance with regard to ISO 38507 and apply FAIRA, FAIRA LITE or an agreed equivalent to assess AI transparency, accountability and risk.",
     "relevanceScore": 1,
-    "classification": "ai",
+    "classification": "curated",
     "assessment": {
-      "method": "ai",
-      "promptVersion": "claude-classify-v1",
-      "assessedAt": "2026-09-03T19:34:47.270Z"
+      "method": "editorial",
+      "assessedAt": "2026-09-09T23:40:12.513Z",
+      "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
         "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
         "finalUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
-        "retrievedAt": "2026-09-03T19:34:47.270Z",
+        "title": "Artificial intelligence governance policy | For government | Queensland Government",
+        "retrievedAt": "2026-09-09T23:33:41.619839Z",
         "contentType": "text/html",
-        "contentHash": "ede3b6a0769dd88360c3cd46231040c81207b6262ae184a735db6c2f96314e4d",
-        "title": "Artificial intelligence governance policy"
-      }
+        "contentHash": "96998680821df71560957914185af04ecd7ba3b7411d7976b392d82a24f3686c",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-09-09T23:33:41.619839Z",
+          "capturedBy": "Daniel Alkurdi",
+          "notes": "Daniel Alkurdi approved this Firecrawl-backed controlled capture after plain HTTP and direct browser rendering were blocked by the official host. The current official page was reviewed for version, status, effective month and policy requirements.",
+          "pageContentHash": "d419eeb33bb8d28872b24ab2b348516c2ec7393fd5bcc4f3c01116264b5e6e78",
+          "characterCount": 7829
+        },
+        "reviewedDate": {
+          "date": "2026-08-01",
+          "precision": "month",
+          "reviewedAt": "2026-09-09T23:40:12.513Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The official Queensland Government page identifies Policy v2.0.0 as Current/Mandated and effective August 2026–current. Month precision is retained because no day-level effective date is stated."
+        }
+      },
+      "checkedAt": "2026-09-09T23:40:12.513Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved after reviewing the current official Queensland Government source. The source now identifies Policy v2.0.0, effective August 2026, and adds mandatory FAIRA or agreed-equivalent lifecycle assessment, with FAIRA LITE available for low-risk use cases. The record type, version, primary date and summary were corrected; August 2026 is the sole structured effective date and the superseded 2024 version remains in Git history."
     },
-    "status": "detected"
+    "status": "promoted",
+    "publishedAt": "2026-08-01",
+    "publishedAtPrecision": "month",
+    "relatedPolicyId": "queensland-ai-governance-policy"
   },
   {
     "id": "dev-new-rules-for-schools-on-ai-in-take-home-hsc-ass-pzjzcz",
@@ -150,7 +197,8 @@
         "publishedAtPrecision": "day"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "The ministerial release is not the instrument and used its announcement date as an effective date; replaced by the reviewed NESA 29/26 notice."
   },
   {
     "id": "dev-wa-government-artificial-intelligence-policy-and-qppmsw",
@@ -162,46 +210,51 @@
     "publishedAt": "2024-03-05",
     "publishedAtPrecision": "day",
     "detectedAt": "2026-09-01T19:30:31.586Z",
-    "summary": "The official source content for \"WA Government Artificial Intelligence Policy and Assurance Framework\" changed. Editorial re-verification is required before the register record can be treated as current.",
+    "summary": "Western Australia’s whole-of-government AI policy and assurance framework, first published 5 March 2024 and with the current policy document updated June 2025, requiring AI Accountable Officers and lifecycle self-assessment of AI and automated-decision-making projects.",
     "relevanceScore": 1,
-    "classification": "ai",
+    "classification": "curated",
     "assessment": {
-      "method": "ai",
-      "promptVersion": "claude-classify-v1",
-      "assessedAt": "2026-09-01T19:30:31.586Z"
+      "method": "editorial",
+      "assessedAt": "2026-09-09T23:40:12.610Z",
+      "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
         "url": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
         "finalUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
-        "retrievedAt": "2026-09-01T19:30:31.586Z",
+        "title": "WA Government Artificial Intelligence Policy and Assurance Framework",
+        "retrievedAt": "2026-09-09T23:27:30.699Z",
         "contentType": "text/html",
-        "contentHash": "9b6a110f2ae22111caff3be599b1da34dbac7af8aba1a1a42f0fc11b224431a7",
-        "etag": "\"1788291068\"",
-        "lastModified": "Tue, 01 Sep 2026 19:31:08 GMT",
+        "contentHash": "d3a1cf61f79987a4b84e3dd1814cf66322584932d194b880d81a20734645d58e",
         "linkedDocuments": [
-          {
-            "url": "https://www.finance.gov.au/sites/default/files/2024-06/National-framework-for-the-assurance-of-AI-in-government.pdf",
-            "finalUrl": "https://www.finance.gov.au/sites/default/files/2024-06/National-framework-for-the-assurance-of-AI-in-government.pdf",
-            "retrievedAt": "2026-09-01T19:30:31.586Z",
-            "contentType": "application/pdf",
-            "contentHash": "92e06dad15c4fc5141ced0ac356a8707f0356683ff7f66c0e30782d222fea167"
-          },
           {
             "url": "https://www.wa.gov.au/system/files/2025-07/ai_policyv2.pdf",
             "finalUrl": "https://www.wa.gov.au/system/files/2025-07/ai_policyv2.pdf",
-            "retrievedAt": "2026-09-01T19:30:31.586Z",
+            "retrievedAt": "2026-09-09T23:27:30.699Z",
             "contentType": "application/pdf",
             "contentHash": "f0474b1616dfdc3f14df3ef170096d99682ec423e15fd631aeedcae03aa542b6"
           }
         ],
-        "title": "WA Government Artificial Intelligence Policy and Assurance Framework",
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-09-09T23:27:30.699Z",
+          "capturedBy": "Daniel Alkurdi",
+          "notes": "Daniel Alkurdi approved this controlled browser capture after reviewing the current official policy page. The hardened retriever was blocked by the host.",
+          "pageContentHash": "45822a32ac5a834887419662c9db20b637d77abae958319c541c18cead84b47e",
+          "characterCount": 5104
+        },
         "publishedAt": "2024-03-05",
         "publishedAtPrecision": "day"
-      }
+      },
+      "checkedAt": "2026-09-09T23:40:12.610Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved after reviewing the current official WA Government page and linked policy PDF. The page remains first published 5 March 2024 and was last updated 25 August 2026; the unchanged current PDF states Updated June 2025. The record now captures the mandatory lifecycle self-assessment scope and explicit AI Advisory Board referral thresholds. Unsupported day precision and the prior released July 2025 wording were not retained.",
+      "lastSourceAuditAt": "2026-07-16T10:00:33.646Z"
     },
-    "status": "detected"
+    "status": "promoted",
+    "relatedPolicyId": "wa-ai-policy-assurance-framework"
   },
   {
     "id": "dev-current-joint-inquiries-m0kht9",
@@ -259,7 +312,8 @@
         "title": "Senate opens inquiry into artificial intelligence and data centres"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Superseded by newer source update source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-138akxo"
   },
   {
     "id": "dev-asic-and-apra-warn-frontier-ai-awareness-must-tu-1bdj011",
@@ -292,7 +346,8 @@
         "publishedAtPrecision": "day"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "The media release is an announcement, not the instrument; replaced by the reviewed joint APRA–ASIC information paper."
   },
   {
     "id": "dev-artificial-intelligence-ai-13zsr5k",
@@ -323,7 +378,8 @@
         "title": "Artificial Intelligence (AI)"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "The general Digital NSW AI landing page is navigation, not a discrete instrument; replaced by the reviewed NSW AI Operational Policy."
   },
   {
     "id": "dev-buy-australian-ai-partnership-to-boost-homegrown-1ayciio",
@@ -352,7 +408,8 @@
         "title": "Buy Australian AI Partnership to boost homegrown AI adoption"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "This procurement-readiness program is an implementation activity under the National AI Plan, not a policy, governance instrument, entitlement or regulator guidance."
   },
   {
     "id": "dev-wa-government-artificial-intelligence-policy-and-1oqfaja",
@@ -403,7 +460,8 @@
         "publishedAtPrecision": "day"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Superseded by newer source update source-review-dev-wa-government-artificial-intelligence-policy-and-qppmsw"
   },
   {
     "id": "dev-practice-directions-and-other-guidance-administr-1kqo5av",
@@ -486,7 +544,8 @@
         "title": "Senate opens inquiry into artificial intelligence and data centres"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Superseded by newer source update source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-138akxo"
   },
   {
     "id": "dev-current-joint-inquiries-13wjirv",
@@ -573,7 +632,8 @@
         "title": "Senate opens inquiry into artificial intelligence and data centres"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Superseded by newer source update source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-138akxo"
   },
   {
     "id": "dev-asic-warns-scammers-are-using-ai-to-spin-vast-we-18zuo5g",
@@ -606,7 +666,8 @@
         "publishedAtPrecision": "day"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "This is a consumer scam warning, not an AI policy, regulatory expectation or governance instrument."
   },
   {
     "id": "dev-artificial-intelligence-governance-policy-e7r3p4",
@@ -635,7 +696,8 @@
         "title": "Artificial intelligence governance policy"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Superseded by newer source update source-review-dev-artificial-intelligence-governance-policy-1j2eo9g"
   },
   {
     "id": "dev-11-aug-2026-news-when-ai-agents-take-unexpected--qhac98",

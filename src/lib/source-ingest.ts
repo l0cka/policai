@@ -2257,11 +2257,15 @@ async function publishStagedSourceUnlocked(
 	}
 
 	let relatedUpdateReviews: SourceReview[] = [];
-	if (review.targetPolicyId) {
+	const targetTimelineEventId = timelineReviewTargetId(review);
+	if (review.targetPolicyId || targetTimelineEventId) {
 		relatedUpdateReviews = (await getSourceReviews()).filter(
 			(candidate) =>
 				candidate.id !== review.id &&
-				candidate.targetPolicyId === review.targetPolicyId &&
+				((review.targetPolicyId &&
+					candidate.targetPolicyId === review.targetPolicyId) ||
+					(targetTimelineEventId &&
+						timelineReviewTargetId(candidate) === targetTimelineEventId)) &&
 				candidate.status !== "rejected",
 		);
 		const newerReview = relatedUpdateReviews.find(
@@ -2296,7 +2300,6 @@ async function publishStagedSourceUnlocked(
 			throw new Error("Timeline reviews cannot target an existing policy");
 		}
 		const event = review.proposedRecord as TimelineEvent;
-		const targetTimelineEventId = timelineReviewTargetId(review);
 		if (
 			targetTimelineEventId &&
 			(event.id !== targetTimelineEventId ||
@@ -2443,22 +2446,6 @@ async function publishStagedSourceUnlocked(
 					throw new Error("Failed to update target policy");
 				}
 			}
-			for (const olderReview of relatedUpdateReviews) {
-				if (
-					(olderReview.status === "pending_review" ||
-						olderReview.status === "approved") &&
-					compareSourceReviewVersions(olderReview, review) < 0
-				) {
-					await reconcileLinkedDevelopment(olderReview, {
-						status: "dismissed",
-						dismissalReason: `Superseded by newer source update ${review.id}`,
-					});
-					await updateSourceReview(olderReview.id, {
-						status: "rejected",
-						rejectionReason: `Superseded by newer source update ${review.id}`,
-					});
-				}
-			}
 		} else {
 			const existingPolicies = await getPolicies(undefined, {
 				access: "admin",
@@ -2481,6 +2468,22 @@ async function publishStagedSourceUnlocked(
 				}
 				await createPolicy(policy);
 			}
+		}
+	}
+	for (const olderReview of relatedUpdateReviews) {
+		if (
+			(olderReview.status === "pending_review" ||
+				olderReview.status === "approved") &&
+			compareSourceReviewVersions(olderReview, review) < 0
+		) {
+			await reconcileLinkedDevelopment(olderReview, {
+				status: "dismissed",
+				dismissalReason: `Superseded by newer source update ${review.id}`,
+			});
+			await updateSourceReview(olderReview.id, {
+				status: "rejected",
+				rejectionReason: `Superseded by newer source update ${review.id}`,
+			});
 		}
 	}
 

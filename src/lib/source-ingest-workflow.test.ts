@@ -1493,6 +1493,82 @@ describe('source ingest approval workflow', () => {
     );
   });
 
+  it('retires older timeline update reviews when the newest version is published', async () => {
+    const targetEvent = {
+      id: 'existing-timeline-event',
+      date: '2026-07-01',
+      datePrecision: 'day' as const,
+      title: 'Existing AI policy announcement',
+      description: 'Existing source-backed timeline description.',
+      type: 'announcement' as const,
+      jurisdiction: 'federal' as const,
+      sourceUrl: SOURCE_URL,
+      verification: {
+        status: 'verified' as const,
+        source: { url: SOURCE_URL, contentHash: 'b'.repeat(64) },
+        checkedAt: '2026-07-16T00:00:00.000Z',
+        checkedBy: 'reviewer',
+        method: 'manual' as const,
+      },
+    };
+    const newestReview = buildReview({
+      id: 'source-review-timeline-newest',
+      entryKind: 'timeline_event',
+      targetTimelineEventId: targetEvent.id,
+      targetTimelineRevisionHash: timelineRevisionHash(targetEvent),
+      sourceVersionSequence: 3,
+      status: 'approved',
+      reviewedAt: '2026-07-16T00:00:00.000Z',
+      reviewedBy: 'reviewer',
+      sourceEvidence: {
+        url: SOURCE_URL,
+        retrievedAt: '2026-07-16T00:00:00.000Z',
+        contentHash: 'a'.repeat(64),
+      },
+      proposedRecord: {
+        ...targetEvent,
+        verification: {
+          ...targetEvent.verification,
+          source: {
+            url: SOURCE_URL,
+            contentHash: 'a'.repeat(64),
+            publishedAt: '2026-07-01',
+            publishedAtPrecision: 'day' as const,
+          },
+        },
+      },
+    });
+    const olderReview = buildReview({
+      id: 'source-review-timeline-older',
+      entryKind: 'timeline_event',
+      targetTimelineEventId: targetEvent.id,
+      targetTimelineRevisionHash: timelineRevisionHash(targetEvent),
+      sourceVersionSequence: 2,
+      linkedDevelopment: buildLinkedDevelopment({ id: 'dev-timeline-older' }),
+      proposedRecord: targetEvent,
+    });
+    getSourceReviewById.mockResolvedValue(newestReview);
+    getSourceReviews.mockResolvedValue([olderReview, newestReview]);
+    getTimelineEvents.mockResolvedValue([targetEvent]);
+
+    await publishStagedSource(newestReview.id);
+
+    expect(updateSourceReview).toHaveBeenCalledWith(
+      olderReview.id,
+      expect.objectContaining({
+        status: 'rejected',
+        rejectionReason: `Superseded by newer source update ${newestReview.id}`,
+      }),
+    );
+    expect(updateDevelopment).toHaveBeenCalledWith(
+      olderReview.linkedDevelopment?.id,
+      expect.objectContaining({
+        status: 'dismissed',
+        dismissalReason: `Superseded by newer source update ${newestReview.id}`,
+      }),
+    );
+  });
+
   it('keeps a timeline re-verification review bound to its staged event', async () => {
     const replacementUrl = 'https://example.gov.au/replacement-timeline-source';
     const review = buildReview({

@@ -1196,7 +1196,7 @@
     "date": "2026-05-13",
     "datePrecision": "day",
     "title": "Senate opens inquiry into artificial intelligence and data centres",
-    "description": "The Senate inquiry covers AI and data-centre regulation, government deals, and community, industry, energy, water and environmental impacts. The official inquiry page now sets submissions to close on 1 September 2026 and the committee to report on 16 November 2026.",
+    "description": "The Senate inquiry covers AI and data-centre regulation, government deals, and community, industry, energy, water and environmental impacts. Submissions closed on 1 September 2026, and the committee is due to report on 16 November 2026.",
     "type": "announcement",
     "jurisdiction": "federal",
     "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
@@ -1206,22 +1206,30 @@
         "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
         "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
         "title": "Artificial intelligence and data centres – Parliament of Australia",
-        "retrievedAt": "2026-08-21T12:51:46.000Z",
+        "retrievedAt": "2026-09-09T23:25:36.819Z",
         "contentType": "text/html",
-        "contentHash": "3979b405f11a651a66ccdfe86384d2f47f8eaff9f860364ef0d12344ee20d11b",
+        "contentHash": "8f4f337a9cf131bc510a2c0f2b1a1a1d7e3d5a45ba9bcdeb93bc768c67745a9a",
         "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-09-09T23:25:36.819Z",
+          "capturedBy": "Daniel Alkurdi",
+          "notes": "Daniel Alkurdi approved this browser capture after review of the official APH inquiry dates, status and terms of reference. The hardened retriever returned HTTP 403.",
+          "pageContentHash": "92a9cb6ba1a6f80ce57d20012f664c75a0ba151a23376998db9dd8b382ee0740",
+          "characterCount": 4080
+        },
         "reviewedDate": {
           "date": "2026-05-13",
           "precision": "day",
-          "reviewedAt": "2026-08-21T12:51:46.000Z",
-          "reviewedBy": "l0cka — editorial re-verification against live official source, 2026-08-21",
+          "reviewedAt": "2026-09-09T23:39:04.677Z",
+          "reviewedBy": "Daniel Alkurdi",
           "notes": "The current Parliament of Australia inquiry page identifies 13 May 2026 as the referral date."
         }
       },
-      "checkedAt": "2026-08-21T12:51:46.000Z",
-      "checkedBy": "l0cka — editorial re-verification against live official source, 2026-08-21",
+      "checkedAt": "2026-09-09T23:39:04.677Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Re-verified 21 Aug 2026 by direct HTTPS retrieval of the official inquiry page (no 403 this time). Page confirms referral 13 May 2026, submissions close 1 September 2026 (now under an explicit \"Extension of time\" heading), and reporting date 16 November 2026. Existing description remains accurate."
+      "notes": "Re-verified against the current Parliament of Australia inquiry page. The page confirms referral on 13 May 2026, that submissions closed on 1 September 2026, and a reporting date of 16 November 2026. The description was updated to reflect that the submissions deadline has passed."
     }
   },
   {
