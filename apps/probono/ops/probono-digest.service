@@ -1,0 +1,8 @@
+[Unit]
+Description=Pro Bono Radar weekly digest email
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/l0cka/services/probono-radar/src
+ExecStart=/usr/bin/docker compose --profile worker run --rm worker src/digest.ts
+TimeoutStartSec=600

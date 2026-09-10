@@ -1,0 +1,8 @@
+[Unit]
+Description=Pro Bono Radar daily ingest (fetch + Claude enrichment)
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/l0cka/services/probono-radar/src
+ExecStart=/home/l0cka/services/probono-radar/src/ops/ingest.sh
+TimeoutStartSec=3600

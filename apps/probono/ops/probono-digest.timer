@@ -1,0 +1,9 @@
+[Unit]
+Description=Send Pro Bono Radar digest Sundays 18:00 Sydney
+
+[Timer]
+OnCalendar=Sun *-*-* 18:00:00 Australia/Sydney
+Persistent=true
+
+[Install]
+WantedBy=timers.target

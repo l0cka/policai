@@ -1,0 +1,413 @@
+/*
+ * Recovering a real headline for items whose title came from a URL slug.
+ *
+ * `titleFromSlug` exists because some listings render items as image-only or
+ * "READ MORE" anchors, leaving no link text. A slug is lossy in two directions
+ * at once, and only one of them looks like a bug:
+ *
+ *   - case is flattened, so "Yindjibarndi Ngurra Aboriginal Corporation v
+ *     State of Western Australia (No 2) [2026] FCA 585" comes back as prose;
+ *   - most CMSs strip stopwords when they build the slug, so words are simply
+ *     gone — "in the courtroom, one volunteer at a time" becomes "courtroom
+ *     one volunteer time".
+ *
+ * No transformation of the slug can put those words back. The only copy of the
+ * real title is on the item's own page, so that is where we go and get it.
+ *
+ * This is a plain HTTP GET, not a Firecrawl call: we want one element out of
+ * the document head, not a rendered page, and it should cost nothing.
+ */
+
+const UA =
+  'Mozilla/5.0 (compatible; ProBonoRadar/1.0; +https://a2j.policai.org) title-resolver';
+
+// The head is all we need. Sites that put megabytes of inline script before
+// </head> are the reason this is a cap and not a whole-body read.
+const MAX_BYTES = 256 * 1024;
+const TIMEOUT_MS = 10_000;
+// A scrape renders the page, so it is slow by nature — and slower still on the
+// first call, which wakes the socket-activated stack.
+const FIRECRAWL_TIMEOUT_MS = 120_000;
+
+const NAMED_ENTITIES: Record<string, string> = {
+  amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ',
+  hellip: '…', mdash: '—', ndash: '–', lsquo: '‘', rsquo: '’',
+  ldquo: '“', rdquo: '”', laquo: '«', raquo: '»', middot: '·',
+  bull: '•', deg: '°', trade: '™', copy: '©', reg: '®', eacute: 'é',
+};
+
+const ENTITY_RE = /&(#x?[0-9a-f]+|[a-z][a-z0-9]*);/gi;
+// Separate, non-global: `test` on a /g regex advances lastIndex between calls.
+const HAS_ENTITY_RE = /&(#x?[0-9a-f]+|[a-z][a-z0-9]*);/i;
+
+/*
+ * Decoded twice, because double-encoded markup is common enough to matter:
+ * a CMS that writes `&amp;nbsp;` leaves a literal `&nbsp;` in the title after
+ * one pass. Two is the cap — this is text bound for a database column and an
+ * escaping renderer, so there is nothing to gain by chasing the fixed point.
+ */
+export function decodeEntities(text: string): string {
+  const once = decodeOnce(text);
+  return HAS_ENTITY_RE.test(once) ? decodeOnce(once) : once;
+}
+
+function decodeOnce(text: string): string {
+  return text.replace(ENTITY_RE, (whole, body: string) => {
+    if (body[0] === '#') {
+      const code = body[1] === 'x' || body[1] === 'X'
+        ? Number.parseInt(body.slice(2), 16)
+        : Number.parseInt(body.slice(1), 10);
+      // Lone surrogates and out-of-range code points throw in fromCodePoint.
+      if (!Number.isFinite(code) || code <= 0 || code > 0x10ffff) return whole;
+      if (code >= 0xd800 && code <= 0xdfff) return whole;
+      return String.fromCodePoint(code);
+    }
+    return NAMED_ENTITIES[body.toLowerCase()] ?? whole;
+  });
+}
+
+function clean(text: string): string {
+  return decodeEntities(text)
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function meta(html: string, property: string): string | null {
+  // Attribute order varies, so match the tag first and read its content after.
+  const tags = html.matchAll(/<meta\b[^>]*>/gi);
+  for (const [tag] of tags) {
+    const key = /\b(?:property|name)\s*=\s*["']?([^"'\s>]+)/i.exec(tag)?.[1];
+    if (key?.toLowerCase() !== property) continue;
+    const content = /\bcontent\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/i.exec(tag);
+    const value = content?.[1] ?? content?.[2] ?? content?.[3];
+    if (value) return clean(value);
+  }
+  return null;
+}
+
+const flatten = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '');
+
+// A dangling separator left behind by a CMS that appended an empty site name.
+const trimSeparators = (s: string) => s.replace(/^[\s|·•‑–—-]+|[\s|·•‑–—-]+$/g, '');
+
+/*
+ * The significant words of a URL slug. Short words are dropped because a slug
+ * builder has already dropped most of them, and a four-character floor keeps
+ * accidental substring matches down.
+ */
+export function slugWords(pageUrl: string): string[] {
+  let segment = '';
+  try {
+    segment = new URL(pageUrl).pathname.split('/').filter(Boolean).pop() ?? '';
+  } catch {
+    return [];
+  }
+  return segment
+    .replace(/\.html?$/i, '')
+    .split(/[^A-Za-z0-9]+/)
+    .map((w) => w.toLowerCase())
+    .filter((w) => w.length >= 4 && !/^\d+$/.test(w));
+}
+
+/*
+ * A slug is built *from* the headline, so every word in it should still be in
+ * the headline. That one invariant does three jobs at once:
+ *
+ *   - it rejects a title the CMS truncated for sharing ("…with privacy…",
+ *     where the slug still knows the sentence ended in "census");
+ *   - it rejects a page that answers with its own name ("Legal Aid
+ *     Queensland") instead of the article's;
+ *   - it rejects a page whose content has moved on since we linked it.
+ *
+ * Matching is on the flattened string rather than word by word, so
+ * "non-disclosure" still covers the slug's "disclosure" and "VLSB+C" still
+ * covers "vlsbc".
+ */
+export function coversSlug(candidate: string, words: string[]): boolean {
+  if (words.length === 0) return true;
+  const flat = flatten(candidate);
+  return words.every((w) => flat.includes(w));
+}
+
+/*
+ * The coverage rule assumes the slug was generated from the headline. Plenty
+ * of sites write theirs by hand instead — Grata files a piece under
+ * `ban_mass_protests` and heads it "Minns attempt to outlaw protest and usurp
+ * the courts will make us all unsafe"; RACS files one under `socceroos-oped`.
+ * Held to coverage, those lose a real headline to keep a misleading label.
+ *
+ * A handle is short and a generated slug is not, so length is the tell. Four
+ * significant words is where the two stop overlapping in this collection: the
+ * shortest generated slug seen carries four, and the longest hand-written one
+ * carries three.
+ */
+const GENERATED_SLUG_MIN_WORDS = 4;
+
+/*
+ * A candidate that is just the site's own name, which is what a listing page
+ * or a homepage hands back. Bounded by word count so that a headline merely
+ * containing the organisation's name is not mistaken for one.
+ */
+function isBareSiteName(candidate: string, siteName: string | null, host: string): boolean {
+  if (candidate.trim().split(/\s+/).length > 4) return false;
+  const flat = flatten(candidate);
+  const domainWord = flatten(host.replace(/^www\./, '').split('.')[0]);
+  if (siteName && flat === flatten(siteName)) return true;
+  return domainWord.length > 4 && flat.startsWith(domainWord);
+}
+
+/** The last path segment, for comparing where we asked against where we landed. */
+function lastSegment(url: string): string {
+  try {
+    return (new URL(url).pathname.split('/').filter(Boolean).pop() ?? '').toLowerCase();
+  } catch {
+    return '';
+  }
+}
+
+/*
+ * A <title> is usually "Headline | Site Name". Strip that tail, but only on
+ * evidence: og:site_name or the registrable domain matches it, or the head
+ * alone already accounts for every word of the slug — which makes whatever
+ * follows furniture by definition. A blind "drop everything after the last
+ * pipe" rule truncates titles that legitimately contain one.
+ */
+function stripSiteSuffix(
+  title: string,
+  siteName: string | null,
+  host: string,
+  words: string[],
+): string {
+  const domainWord = host.replace(/^www\./, '').split('.')[0].toLowerCase();
+  const names = [siteName?.toLowerCase(), domainWord].filter(Boolean) as string[];
+
+  /*
+   * Looped, because sites stack furniture: RACS ends its titles
+   * "… — RACS | Refugee Advice & Casework Service", and taking one segment off
+   * leaves the other behind.
+   */
+  let current = trimSeparators(title);
+  for (let pass = 0; pass < 3; pass += 1) {
+    const parts = current.split(/\s+[|·•‑–—-]\s+/);
+    if (parts.length < 2) break;
+
+    const flatTail = flatten(parts.at(-1) ?? '');
+    const namesTail = names.some((c) => {
+      const cf = flatten(c);
+      return cf.length > 2 && (flatTail === cf || flatTail.includes(cf) || cf.includes(flatTail));
+    });
+
+    const head = trimSeparators(parts.slice(0, -1).join(' | '));
+    // Never trade a real headline for nothing: a page titled only with its
+    // site name has no headline to recover.
+    if (head.length < 3) break;
+    if (!namesTail && !(words.length > 0 && coversSlug(head, words))) break;
+    current = head;
+  }
+  return current;
+}
+
+/*
+ * Some CMSs put a share-length excerpt in og:title, so the headline arrives
+ * with a sentence and a half after it and an ellipsis on the end. Keep whole
+ * sentences and drop the fragment — but only if what is left still accounts
+ * for the slug, which is what says the headline itself survived the cut.
+ */
+function dropTruncatedTail(
+  title: string,
+  words: string[],
+  requireCoverage: boolean,
+): string | null {
+  if (!/(…|\.\.\.)$/.test(title)) return title;
+  // Greedy up to the last sentence terminator; the rest is the cut fragment.
+  const whole = /^(.*[.?!])[^.?!]*(?:…|\.\.\.)$/.exec(title)?.[1]?.trim();
+  if (!whole || whole.length < 8) return null;
+  return !requireCoverage || coversSlug(whole, words) ? whole : null;
+}
+
+/*
+ * Boilerplate a CMS emits when it has nothing better. Accepting one of these
+ * would replace a lossy title with a useless one.
+ */
+const JUNK_TITLE_RE =
+  /^(home|news|untitled|article|blog|insights?|page not found|404|access denied|just a moment|attention required)\b/i;
+
+/**
+ * @param pageUrl the URL we asked for — the slug we are repairing lives here
+ * @param finalUrl where the request landed, for host-based suffix matching
+ *
+ * The two are kept apart deliberately. A dead article often redirects to the
+ * site root, and reading the slug off *that* would leave nothing to check the
+ * answer against — which is how "Community Legal Centres Queensland" nearly
+ * became the title of four separate articles.
+ */
+export function extractPageTitle(
+  html: string,
+  pageUrl: string,
+  finalUrl: string = pageUrl,
+): string | null {
+  let host = '';
+  try {
+    host = new URL(finalUrl).hostname;
+  } catch {
+    // A malformed URL only costs us the site-suffix check.
+  }
+  const siteName = meta(html, 'og:site_name');
+  const words = slugWords(pageUrl);
+
+  /*
+   * Coverage is the strong check, and it is applied when it can be trusted:
+   * when the slug is long enough to have been generated from the headline, or
+   * when the request did not land where it was sent. A dead article commonly
+   * redirects to the site root, and there the answer must be held to the slug
+   * however short that slug is.
+   */
+  const moved = lastSegment(pageUrl) !== lastSegment(finalUrl);
+  const requireCoverage = moved || words.length >= GENERATED_SLUG_MIN_WORDS;
+
+  const og = meta(html, 'og:title') ?? meta(html, 'twitter:title');
+  const h1 = clean(/<h1\b[^>]*>([\s\S]*?)<\/h1>/i.exec(html)?.[1] ?? '');
+  const docTitle = clean(/<title\b[^>]*>([\s\S]*?)<\/title>/i.exec(html)?.[1] ?? '');
+
+  /*
+   * og:title first — publishers write it for sharing, so it is usually the
+   * headline alone. Usually, not always: some CMSs fill og:title from the
+   * document title, suffix and all, so it gets the same strip. <title>
+   * outranks <h1> because an <h1> is often the site's own wordmark.
+   */
+  const strip = (t: string) => stripSiteSuffix(t, siteName, host, words);
+  const ordered = [og && strip(og), docTitle && strip(docTitle), h1 && trimSeparators(h1)];
+
+  for (const candidate of ordered) {
+    if (!candidate) continue;
+    const trimmed = dropTruncatedTail(candidate.trim(), words, requireCoverage);
+    if (!trimmed) continue;
+    const value = trimmed.trim();
+    if (value.length < 8 || value.length > 300) continue;
+    if (JUNK_TITLE_RE.test(value)) continue;
+    if (isBareSiteName(value, siteName, host)) continue;
+    if (requireCoverage && !coversSlug(value, words)) continue;
+    return value;
+  }
+  return null;
+}
+
+/** Read at most MAX_BYTES of the response, then stop pulling. */
+async function readCapped(res: Response): Promise<string> {
+  if (!res.body) return '';
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder('utf-8', { fatal: false });
+  let html = '';
+  let size = 0;
+  try {
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      size += value.byteLength;
+      html += decoder.decode(value, { stream: true });
+      /*
+       * Read on past </head> until the first <h1> closes. Sites that truncate
+       * og:title and <title> for sharing usually still carry the whole
+       * headline in the <h1>, and stopping at the head threw that away.
+       */
+      if (size >= MAX_BYTES || /<\/h1>/i.test(html)) break;
+    }
+  } finally {
+    try {
+      await reader.cancel();
+    } catch {
+      // The read already ended; cancellation is best-effort cleanup.
+    }
+  }
+  return html;
+}
+
+async function fetchPageTitleDirect(url: string): Promise<string | null> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+  try {
+    const res = await fetch(url, {
+      redirect: 'follow',
+      signal: controller.signal,
+      headers: { 'user-agent': UA, accept: 'text/html,application/xhtml+xml' },
+    });
+    if (!res.ok) return null;
+    const type = res.headers.get('content-type') ?? '';
+    if (type && !/text\/html|application\/xhtml/i.test(type)) return null;
+    return extractPageTitle(await readCapped(res), url, res.url || url);
+  } catch {
+    // Unreachable, slow, or hostile page: the slug title stands.
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+/*
+ * The same read, through the Firecrawl instance that already fetches these
+ * sources' listing pages. It renders the page rather than reading the wire, so
+ * it reaches two kinds of page a plain GET cannot: those that build their
+ * markup client-side, and those whose front door turns away a bare HTTP client.
+ *
+ * It is a fallback, not the default — a scrape costs seconds and a socket-woken
+ * service, against a few milliseconds for a GET that usually works.
+ */
+export async function fetchPageTitleViaFirecrawl(url: string): Promise<string | null> {
+  const base = process.env.FIRECRAWL_URL ?? 'http://127.0.0.1:3003';
+  try {
+    const res = await fetch(`${base}/v1/scrape`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', authorization: 'Bearer self-hosted' },
+      body: JSON.stringify({ url, formats: ['rawHtml'] }),
+      signal: AbortSignal.timeout(FIRECRAWL_TIMEOUT_MS),
+    });
+    if (!res.ok) return null;
+    const body = (await res.json()) as {
+      data?: { rawHtml?: string; metadata?: { sourceURL?: string } };
+    };
+    const html = body.data?.rawHtml;
+    if (!html) return null;
+    return extractPageTitle(html, url, body.data?.metadata?.sourceURL || url);
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * A page's real headline. Tries a plain GET, then — when asked — the scraper.
+ */
+export async function fetchPageTitle(
+  url: string,
+  { firecrawl = false }: { firecrawl?: boolean } = {},
+): Promise<string | null> {
+  const direct = await fetchPageTitleDirect(url);
+  if (direct || !firecrawl) return direct;
+  return fetchPageTitleViaFirecrawl(url);
+}
+
+/**
+ * Resolve `fn` over `items` with a small concurrency cap, so a listing of
+ * forty slug-titled links does not arrive at one site as forty simultaneous
+ * requests.
+ */
+export async function mapWithConcurrency<T, R>(
+  items: T[],
+  limit: number,
+  fn: (item: T, index: number) => Promise<R>,
+): Promise<R[]> {
+  const results = new Array<R>(items.length);
+  let next = 0;
+  const workers: Promise<void>[] = [];
+  for (let worker = 0; worker < Math.min(limit, items.length); worker += 1) {
+    workers.push((async () => {
+      for (;;) {
+        const index = next++;
+        if (index >= items.length) return;
+        results[index] = await fn(items[index], index);
+      }
+    })());
+  }
+  await Promise.all(workers);
+  return results;
+}
