@@ -22,6 +22,9 @@ can automatically deploy `main`.
 - The Host dispatcher CI job checks the source manifest before running its
   offline tests and retains the verification report. Host fixtures no longer
   require the production `policai` and `l0cka` accounts.
+- The dashboard has its own PostCSS config boundary. It uses Next.js's default
+  pipeline, as its standalone Docker build does, instead of discovering the root
+  Policai Tailwind config and requiring dependencies from the parent package.
 - `ops/host/install.py` now provides a preview and a first-install file transaction
   for the 11 explicit helper/unit targets. It retains original files and supports
   rollback before dispatcher initialisation. Protected configuration, clean clones
@@ -60,9 +63,11 @@ These observations are a baseline, not permission to skip fresh preflight:
   security tests passed. The expanded host and compatibility suite passed all
   55 tests, including installation interruption and rollback fixtures. Actionlint,
   Ruff and syntax verification of the four candidate systemd services passed.
-- PR #99 had no successful remote checks at head `6c0d9e3`. Actions rejected the
-  original workflow before starting any jobs. The CI repair needs publication
-  and a successful run against the updated PR head.
+- Actions rejected the original workflow at `6c0d9e3` before starting any jobs.
+  The repair in `ea9174c` ran all six jobs: root lint, tests and build, worker
+  database integration and host verification passed. The dashboard's clean CI
+  build exposed inherited root PostCSS configuration, addressed by the package
+  config boundary above. Require all six checks to pass at the latest PR head.
 - Argus is now `argus-omarchy`. Older skill references describing a separate
   Ubuntu server are historical; the `argus` SSH alias points to this machine.
 - Policai runs from `/var/lib/policai/app`. Its pull timer is enabled and waiting;
@@ -78,8 +83,8 @@ These observations are a baseline, not permission to skip fresh preflight:
 
 ## Remaining sequence
 
-1. Publish the reviewed source fixes to PR #99 and obtain passing checks at that
-   exact head, including the disposable database integration suite and host tests.
+1. Confirm passing checks at the latest PR #99 head, including the disposable
+   database integration suite and host tests.
 2. Complete review of the host implementation and the new file installer. Stage
    the exact reviewed commit into its protected source snapshot, and prepare the
    external config, clean release clones and stable lock files. Preserve effective
