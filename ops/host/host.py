@@ -297,7 +297,7 @@ class Host:
 
     def inspect_container(self, name):
         # Deliberately omit Config.Env, commands and health logs.
-        fmt = '[{"Id":{{json .Id}},"Image":{{json .Image}},"State":{"Status":{{json .State.Status}},"Health":{"Status":{{if .State.Health}}{{json .State.Health.Status}}{{else}}null{{end}}}},"Mounts":{{json .Mounts}},"Config":{"Labels":{{json .Config.Labels}}},"NetworkSettings":{"Ports":{{json .NetworkSettings.Ports}}}}]'
+        fmt = '[{"Id":{{json .Id}},"Image":{{json .Image}},"State":{"Status":{{json .State.Status}},"Health":{"Status":{{if (index .State "Health")}}{{json .State.Health.Status}}{{else}}null{{end}}}},"Mounts":{{json .Mounts}},"Config":{"Labels":{{json .Config.Labels}}},"NetworkSettings":{"Ports":{{json .NetworkSettings.Ports}}}}]'
         return json.loads(self.docker("inspect", "--format", fmt, name))[0]
 
     def verify_database(self):
