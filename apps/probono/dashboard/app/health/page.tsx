@@ -70,6 +70,7 @@ export default async function Health() {
         </div>
       </dl>
 
+      <p className="table-scroll-hint">Scroll horizontally to view all columns.</p>
       <div
         className="table-wrap reveal reveal-2"
         role="region"

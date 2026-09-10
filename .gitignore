@@ -2,6 +2,11 @@
 
 # dependencies
 /node_modules
+# Independent Pro Bono package artifacts (lockfiles remain tracked).
+/apps/probono/**/node_modules/
+/apps/probono/**/.next/
+/apps/probono/**/coverage/
+/apps/probono/dashboard/public/maplibre/
 /.pnp
 .pnp.*
 .yarn/*

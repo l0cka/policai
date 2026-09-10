@@ -810,12 +810,12 @@ main {
 }
 
 .button-primary {
-  background: #5272e8;
+  background: #4a68e0;
   color: #fff;
 }
 
 .button-primary:hover {
-  background: #6581eb;
+  background: #5c79e6;
 }
 
 .button-quiet {
@@ -1958,6 +1958,13 @@ main {
   color: var(--muted-foreground);
 }
 
+@media (min-width: 761px) and (max-width: 1100px) {
+  .diagram-hint {
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+}
+
 .legend {
   display: inline-flex;
   align-items: center;
@@ -2163,6 +2170,11 @@ main {
   outline: none;
 }
 
+.sector-maplibre .maplibregl-ctrl-attrib-inner a {
+  text-decoration: underline !important;
+  text-underline-offset: 0.12em;
+}
+
 .sector-maplibre-state-label {
   padding: 0.15rem 0.45rem;
   border: 1px solid var(--border);
@@ -2363,7 +2375,7 @@ main {
   border-top: 1px solid var(--rule-hair);
 }
 
-.sector-map-guide h3 {
+.sector-map-guide h2 {
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -2378,29 +2390,27 @@ main {
 
 .sector-map-guide dl > div {
   display: grid;
-  grid-template-columns: 1.4rem minmax(0, 1fr);
-  gap: 0.65rem;
-  align-items: start;
+  gap: 0.15rem;
 }
 
 .sector-map-guide dt {
-  display: inline;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
   font-size: 0.75rem;
   font-weight: 600;
   color: var(--foreground);
 }
 
-.sector-map-guide dt::after {
-  content: " — ";
-  color: var(--muted-foreground);
-}
-
 .sector-map-guide dd,
 .sector-map-guide > p {
-  display: inline;
   font-size: 0.6875rem;
   line-height: 1.45;
   color: var(--muted-foreground);
+}
+
+.sector-map-guide dd {
+  margin-left: 2.05rem;
 }
 
 .sector-map-guide > p {
@@ -2831,7 +2841,7 @@ main {
     font-weight: 600;
   }
 
-  .diagram-mobile-step h3 {
+  .diagram-mobile-step h2 {
     margin: 0.12rem 0 0;
     font-size: 0.9375rem;
     font-weight: 600;
@@ -3670,6 +3680,10 @@ tbody th[scope='row'] {
 
 /* ---------------------------------------------------------------- health -- */
 
+.table-scroll-hint {
+  display: none;
+}
+
 .table-wrap {
   overflow-x: auto;
   margin-top: 1rem;
@@ -3824,29 +3838,12 @@ tbody td:first-child {
   }
 }
 
-/* --------------------------------------------------------------- narrow -- */
-
-@media (max-width: 719px) {
-  /* The countdown column has nowhere to go at this width, so it tucks under
-     the subject rather than squeezing it to a two-word column. */
-  .timeline-entry {
-    grid-template-columns: 3.25rem minmax(0, 1fr);
-    padding-inline: 0 0.25rem;
-  }
-
-  .timeline-entry .chip {
-    grid-column: 2;
-    justify-self: start;
-    margin-top: 0.5rem;
-  }
-
-  .dated-row {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0.3rem 0;
-  }
-
+/* The full masthead needs 829px; switch before it can push the theme controls
+   beyond the viewport. Content keeps its narrower breakpoint below. */
+@media (max-width: 839px) {
   .dateline > .container {
     justify-content: flex-start;
+    height: 2.35rem;
   }
 
   .dateline-desktop,
@@ -3868,10 +3865,6 @@ tbody td:first-child {
     height: 3.5rem;
   }
 
-  .dateline > .container {
-    height: 2.35rem;
-  }
-
   .brand svg {
     height: 1.75rem;
     width: 1.75rem;
@@ -3888,6 +3881,28 @@ tbody td:first-child {
 
   .mobile-nav-panel {
     display: block;
+  }
+}
+
+/* --------------------------------------------------------------- narrow -- */
+
+@media (max-width: 719px) {
+  /* The countdown column has nowhere to go at this width, so it tucks under
+     the subject rather than squeezing it to a two-word column. */
+  .timeline-entry {
+    grid-template-columns: 3.25rem minmax(0, 1fr);
+    padding-inline: 0 0.25rem;
+  }
+
+  .timeline-entry .chip {
+    grid-column: 2;
+    justify-self: start;
+    margin-top: 0.5rem;
+  }
+
+  .dated-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.3rem 0;
   }
 
   .filters a {
@@ -4021,8 +4036,19 @@ tbody td:first-child {
     min-height: 2.75rem;
   }
 
-  .diagram-hint {
+  .table-scroll-hint {
     display: block;
+    margin-top: 1rem;
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+  }
+
+  .table-scroll-hint + .table-wrap {
+    margin-top: 0.5rem;
+  }
+
+  tbody th[scope='row'] {
+    white-space: normal;
   }
 }
 

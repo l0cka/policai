@@ -332,40 +332,40 @@ export default function SectorExplorer({
                 </div>
 
                 <section className="sector-map-guide" aria-labelledby="sector-map-guide-title">
-                  <h3 id="sector-map-guide-title">Map legend</h3>
+                  <h2 id="sector-map-guide-title">Map legend</h2>
                   <dl>
                     <div>
-                      <span
-                        className={`sector-map-legend-mark sector-map-legend-office sector-key-${category ?? 'all'}`}
-                        aria-hidden="true"
-                      />
-                      <span>
-                        <dt>Primary office</dt>
-                        <dd>Mapped location.</dd>
-                      </span>
+                      <dt>
+                        <span
+                          className={`sector-map-legend-mark sector-map-legend-office sector-key-${category ?? 'all'}`}
+                          aria-hidden="true"
+                        />
+                        Primary office
+                      </dt>
+                      <dd>Mapped location.</dd>
                     </div>
                     <div>
-                      <span className="sector-map-legend-mark sector-map-legend-cluster" aria-hidden="true">
-                        8
-                      </span>
-                      <span>
-                        <dt>Cluster</dt>
-                        <dd>Zoom in to split nearby offices.</dd>
-                      </span>
+                      <dt>
+                        <span className="sector-map-legend-mark sector-map-legend-cluster" aria-hidden="true">
+                          8
+                        </span>
+                        Cluster
+                      </dt>
+                      <dd>Zoom in to split nearby offices.</dd>
                     </div>
                     <div>
-                      <MapPinned className="sector-map-legend-icon" aria-hidden="true" />
-                      <span>
-                        <dt>Outlined state</dt>
-                        <dd>Jurisdiction in view.</dd>
-                      </span>
+                      <dt>
+                        <MapPinned className="sector-map-legend-icon" aria-hidden="true" />
+                        Outlined state
+                      </dt>
+                      <dd>Jurisdiction in view.</dd>
                     </div>
                     <div>
-                      <MapPinOff className="sector-map-legend-icon is-muted" aria-hidden="true" />
-                      <span>
-                        <dt>Not mapped</dt>
-                        <dd>Service areas, branches, outreach and online coverage.</dd>
-                      </span>
+                      <dt>
+                        <MapPinOff className="sector-map-legend-icon is-muted" aria-hidden="true" />
+                        Not mapped
+                      </dt>
+                      <dd>Service areas, branches, outreach and online coverage.</dd>
                     </div>
                   </dl>
                   <p>

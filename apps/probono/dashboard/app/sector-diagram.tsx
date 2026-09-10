@@ -115,6 +115,7 @@ export default function SectorDiagram({
         wider access-to-justice ecosystem sit outside the core NAJP spine.
       </p>
 
+      <p className="diagram-hint">Scroll horizontally to explore the full diagram.</p>
       <div
         className="diagram-frame diagram-desktop"
         role="region"
@@ -274,7 +275,7 @@ export default function SectorDiagram({
         <section className="diagram-mobile-step">
           <span>1</span>
           <div>
-            <h3>Government funding</h3>
+            <h2>Government funding</h2>
             <p>
               The Australian Government makes estimated $3.864b in indexed, GST-exclusive NAJP
               payments over five years (publicly rounded to $3.9b). States and territories
@@ -286,7 +287,7 @@ export default function SectorDiagram({
         <section className="diagram-mobile-step">
           <span>2</span>
           <div>
-            <h3>Funded provider streams</h3>
+            <h2>Funded provider streams</h2>
             <p>
               These are separate funding and reporting categories. Organisational memberships and
               service models may still overlap.
@@ -311,7 +312,7 @@ export default function SectorDiagram({
         <section className="diagram-mobile-step diagram-mobile-profession">
           <span>3</span>
           <div>
-            <h3>Legal profession: two different routes</h3>
+            <h2>Legal profession: two different routes</h2>
             <dl>
               <div>
                 <dt>Paid legal-aid work</dt>
@@ -339,7 +340,7 @@ export default function SectorDiagram({
         <section className="diagram-mobile-step diagram-mobile-outcome">
           <span>4</span>
           <div>
-            <h3>People and communities</h3>
+            <h2>People and communities</h2>
             <p>
               Publicly funded services focus on people experiencing legal need and disadvantage.
               Pro bono adds capacity and may also assist eligible organisations and public-interest

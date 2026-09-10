@@ -277,11 +277,11 @@ export function SignalNetwork({ pairs, signals }: { pairs: NetworkPair[]; signal
         signals, and the counts on each side total {total}.
       </p>
 
-      <div className="signal-network-scroll" tabIndex={0} aria-label="Scrollable signal network">
+      <div className="signal-network-scroll" role="region" tabIndex={0} aria-label="Scrollable signal network">
         <svg
           className="signal-network-svg"
           viewBox={`0 0 ${GRAPH.width} ${GRAPH.height}`}
-          role="img"
+          role="group"
           aria-label={`${total} signals flowing from ${sourceCount} sources into ${collections.length} collections`}
         >
           <g className="network-ribbons" aria-hidden="true">
