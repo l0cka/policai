@@ -1,6 +1,8 @@
+import os
 import tempfile
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import Mock, patch
 
 import host
@@ -40,6 +42,9 @@ class RuntimeTransitions(unittest.TestCase):
             with (
                 patch.object(host, "BASES", {"policai": root}),
                 patch.object(host, "secure_path"),
+                patch.object(
+                    host.pwd, "getpwnam", return_value=SimpleNamespace(pw_uid=os.getuid())
+                ),
                 patch.object(host.time, "sleep") as sleep,
             ):
                 if fail:

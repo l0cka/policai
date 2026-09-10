@@ -124,8 +124,17 @@ volumes:
             obj = h.Host.__new__(h.Host)
             obj.runner = h.Runner()
             obj.config = {"compose_sha256": hashlib.sha256(source.encode()).hexdigest()}
-            with patch.object(h, "STATE", base), patch.object(h, "ENV_FILE", env):
+            # Parse real Compose configuration as the test runner. No daemon,
+            # production account or identity transition is needed for this check.
+            with (
+                patch.object(h, "STATE", base),
+                patch.object(h, "ENV_FILE", env),
+                patch.object(
+                    obj.runner, "identity_argv", side_effect=lambda identity, argv, extra_env: argv
+                ) as identity,
+            ):
                 obj.validate_compose(app, "candidate")
+            self.assertEqual(identity.call_args.args[0], "l0cka")
 
     def test_candidate_revision_and_source_digest_checks(self):
         h = self.module()

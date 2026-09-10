@@ -1,0 +1,7 @@
+[Unit]
+Description=Nightly pg_dump backup of the probono-radar database (TD01)
+
+[Service]
+Type=oneshot
+WorkingDirectory=/var/lib/probono-radar/app/apps/probono
+ExecStart=/usr/bin/python3 -I /usr/local/libexec/policai-host/cli.py worker backup

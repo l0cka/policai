@@ -76,3 +76,19 @@ The agent session remains unable to elevate privileges under NoNewPrivs.
 No bypass is authorized or attempted. No production unit, timer, checkout,
 container, database, network or access configuration was changed by this work.
 Only review artifacts and tests were edited; no main merge or deployment ran.
+
+## Subsequent source work: 11 September 2026
+
+The earlier acceptance snapshot above is preserved. The current candidate adds
+`install.py` and three guarded worker service files, with a preview and an
+executable transaction for the 11 public helper/unit files. Installation rollback
+is available before dispatcher initialisation; protected config, release clones,
+backup/restore proof and actual sandbox verification remain separate gates.
+See `INSTALL-REVIEW.txt` for the exact staging and invocation procedure.
+
+The expanded offline suite passes 55 tests. Fixtures cover interrupted file
+replacement/restoration, original absence, changed backups and unrelated edits,
+plus retained directory descriptors when an ancestor is replaced. Host tests no
+longer require production accounts. The candidate units pass systemd syntax
+verification. The repaired GitHub workflow includes the host suite, but remote CI
+and privileged installation/activation evidence remain outstanding.

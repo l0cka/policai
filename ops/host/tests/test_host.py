@@ -5,6 +5,8 @@ import tempfile
 import time
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
+from unittest.mock import patch
 
 
 class AdapterTests(unittest.TestCase):
@@ -64,7 +66,10 @@ class AdapterTests(unittest.TestCase):
     def test_identity_is_explicit_and_no_root_npm(self):
         h = self.host()
         r = h.Runner()
-        root = r.identity_argv("policai", ["/usr/bin/npm", "run", "build"])
+        # Exercise the identity transition without requiring production accounts
+        # on the CI runner or developer machine.
+        with patch.object(h.pwd, "getpwnam", return_value=SimpleNamespace(pw_uid=os.geteuid() + 1)):
+            root = r.identity_argv("policai", ["/usr/bin/npm", "run", "build"])
         self.assertIn("policai", root)
         self.assertEqual(root[0], "/usr/bin/runuser")
         with self.assertRaises(h.Refused):
@@ -94,12 +99,12 @@ class AdapterTests(unittest.TestCase):
         self.assertIn("credential.helper=", calls[0][0])
         self.assertIn("http.extraHeader=", calls[0][0])
         # Claude workers still use their existing authenticated user context.
-        worker = h.Runner().identity_argv("l0cka", ["/usr/bin/true"])
+        with patch.object(h.pwd, "getpwnam", return_value=SimpleNamespace(pw_uid=os.geteuid())):
+            worker = h.Runner().identity_argv("l0cka", ["/usr/bin/true"])
+        self.assertEqual(worker[0], "/usr/bin/env")
         self.assertIn("HOME=/home/l0cka", worker)
 
     def test_user_unit_observation_uses_service_private_alias(self):
-        from unittest.mock import patch
-
         h = self.host()
         self.assertTrue(hasattr(h, "user_unit_directory"), "sandbox unit observation missing")
         with tempfile.TemporaryDirectory() as tmp:

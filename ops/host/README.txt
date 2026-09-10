@@ -2,12 +2,22 @@ TWO-RUNTIME HOST DISPATCHER — REVIEW BUNDLE, NOT INSTALLED
 
 Entry point: cli.py
 Safe local demonstration: ./cli.py --help
+Installation preview: python3 -I install.py plan
 Tests: python3 -B verify.py
+CI: the Host dispatcher job checks MANIFEST.sha256 before running verify.py.
+Tests need Python >=3.11, Git and the Docker Compose plugin; Compose configuration
+is parsed locally without a daemon. No production accounts or root access are needed.
+verify.py regenerates MANIFEST.sha256; review its diff when changing this bundle.
 Detailed window and rollback procedure: INSTALL-REVIEW.txt
 No invocation from this user-owned bundle can pass the CLI installation guard.
 Do not run this bundle as root. Review and install a fixed snapshot first.
 
 WHAT EXISTS
+  install.py: first-install file transaction with protected source-manifest checks,
+  held-job preflight, original-file backups and repeatable pre-initialization rollback.
+  It installs 11 explicit files only. It does not provision release clones, environment,
+  config, state directories or locks, reload managers, start jobs, or activate runtimes.
+  units/probono-*.service: guarded worker entrypoints; existing timers remain separate.
   dispatcher.py: four-class routing, stable flock exclusion, fsynced journals,
   retained-directory activation and rollback, persistent failure gate, reviewed
   recovery with preserved prior failure records.
@@ -42,6 +52,8 @@ INSTALLATION CONTRACT — ONLY IN THE SEPARATELY APPROVED WINDOW
      /usr/local/libexec/policai-host, root-owned. Directories 0755, modules 0644,
      entrypoints 0755. Replace /usr/local/libexec/policai-deploy with the new
      delegate only after the old oneshot is idle. Preserve rollback copies.
+     The executable file transaction and its protected snapshot staging procedure
+     are specified in INSTALL-REVIEW.txt. Complete directory/lock provisioning first.
   3. Provision root-owned 0755 /var/lib/policai-deploy-state and, beneath it,
      artifacts/policai/candidates, artifacts/policai/retained,
      artifacts/probono/candidates, artifacts/probono/retained.
@@ -131,6 +143,10 @@ FAILURE / RECOVERY
   restore an ungated legacy helper or force-push to bypass recovery.
 
 LIMITATIONS / REMAINING CUTOVER GATES
+  Installer tests prove file recovery at the tested preparation/replacement/restore
+  checkpoints and refusal of unrelated edits. They do not prove live systemd or
+  database cutover. Installation rollback is refused after dispatcher initialization;
+  use the separately reviewed application recovery procedure from that point onward.
   Offline tests exercise real processes, locks, filesystem swaps, CLI refusal and
   Compose config parsing against isolated fixtures. Git/Docker/systemd mutations
   are command-recording/failure fixtures, NOT a live full-stack rehearsal.

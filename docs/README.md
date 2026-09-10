@@ -9,6 +9,7 @@ This directory holds the project-facing documentation that should stay in sync w
 - [Architecture](./architecture.md) — system boundaries, data ownership, and non-negotiable invariants.
 - [Information trust model](./trust-model.md) — verification tiers, source rules, date policy, and publication gates.
 - [Hosting](./hosting-argus.md) — how the deployed site relates to this repository; the operational runbook is private.
+- [Amalgamation status](./amalgamation.md) — source integration, verification and remaining Pro Bono cutover steps.
 - [Collector hosting](./collector-argus.md) — where scheduled collection runs; retrieval and classification behaviour is in collector.md.
 - [Authoritative refactor tracker](./refactor-authoritative-policai.md) — baseline findings, workstreams, and completion gates.
 - [Network relationship explorer concept](./design/policai-network-concept-02.md) — the approved desktop/mobile semantic design contract for `/network`.

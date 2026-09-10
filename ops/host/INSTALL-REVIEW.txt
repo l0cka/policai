@@ -184,3 +184,78 @@ Open approval boundaries
   new sudo rules, general service-sandbox weakening, schema migrations or email resumption.
   If non-interactive deploy Git authentication cannot be retained without such a grant,
   stop for that exact decision; do not embed a token or copy a private key into this draft.
+
+Executable file installation (new candidate; not executed on the host)
+  Preview from the source checkout:
+
+    python3 -I ops/host/install.py plan
+
+  This lists exactly 11 file replacements: five dispatcher files, the system helper,
+  the compatibility helper, the system pull service and three user worker services.
+  No digest or timer file is an installation target. The installer does not change
+  secrets, databases, containers, release checkouts or scheduler state.
+
+  Before apply, complete the earlier review, backup/restore and trigger-hold steps.
+  Provision absent destination directories with the documented owner/mode; refuse
+  unexpected existing ownership or aliases instead of recursively changing them:
+
+    /usr/local/libexec/policai-host          root:root 0755
+    /usr/local/libexec/policai-host/bin      root:root 0755
+    /var/lib/policai-deploy-state            root:root 0755
+    /home/l0cka/.local/bin                  existing l0cka directory
+
+  Provision deploy.lock and worker.lock ONCE as root-owned regular 0644 files under
+  the state directory. Never replace existing lock inodes. The installer acquires
+  deploy.lock exclusively. Artifact directories, release clones, external environment,
+  config and baseline retain their separate provisioning requirements above; installation
+  success does not establish a valid application baseline.
+
+  In the approved terminal, export the exact reviewed COMMIT's ops/host tree. Do not
+  copy a dirty worktree. AMALGAMATION_COMMIT is the reviewed full Git SHA; record the
+  manifest digest from that commit in the approval record before staging:
+
+    git show "$AMALGAMATION_COMMIT:ops/host/MANIFEST.sha256" | sha256sum
+    git archive --format=tar "$AMALGAMATION_COMMIT:ops/host" > /tmp/policai-host-reviewed.tar
+
+  Stage that archive under a NEW /usr/local/libexec/policai-host-review directory,
+  root-owned with non-writable ancestors. All directories must be 0755, files 0644
+  or 0755, root-owned, regular and not hardlinked; no symlinks are accepted. Never
+  overwrite an existing review snapshot. Compare its MANIFEST.sha256 digest with
+  the independently recorded digest, then run sha256sum --check inside the snapshot.
+  This protected snapshot is the only location from which apply/rollback can run.
+
+    sudo /usr/bin/python3 -I /usr/local/libexec/policai-host-review/install.py apply \
+      --manifest-sha256 "$AMALGAMATION_MANIFEST_SHA256"
+
+  apply validates every manifest entry, observes all affected timers/services inactive,
+  rejects drop-ins and active legacy worker containers/processes, and checks both digest
+  masks. Missing or incomplete observations refuse the operation. A pre-existing
+  dispatcher active/failure/recovery record also refuses first installation.
+
+  Before replacing any file, it records original bytes, modes, ownership and absence
+  in /var/lib/policai-deploy-state/installation (root-only 0700; backups/journal 0600).
+  Each replacement uses an atomic rename through an open directory descriptor and
+  is checked against its recorded digest. Unrelated edits are never overwritten by
+  recovery. Retain this directory and the protected source snapshot; do not clean
+  either as temporary files.
+
+  Inspect installed hashes and the exact effective units, then reload the system and
+  user managers in the approved window. Timers must remain held throughout. Verify
+  all new effective ExecStart/WorkingDirectory values before dispatcher initialize.
+  The installer does not perform daemon-reload, initialize, deploy or timer restoration.
+
+  If installation fails, preserve the journal. BEFORE dispatcher initialize only:
+
+    sudo /usr/bin/python3 -I /usr/local/libexec/policai-host-review/install.py rollback \
+      --manifest-sha256 "$AMALGAMATION_MANIFEST_SHA256"
+
+  Rollback checks all current files and backups before restoring any, can resume after
+  a tested interrupted restoration, and restores absent files to absence. Reload both
+  managers after restoration and verify original effective units before restoring any
+  timer. The journal is retained; this installer refuses a second apply rather than
+  overwriting recovery evidence. A crash before the first journal was persisted needs
+  operator inspection; no destination replacement precedes that journal write.
+
+  Once dispatcher initialize has written state, this installer refuses rollback.
+  Follow the guarded application recovery path and the separately reviewed installation
+  recovery procedure; never restore the legacy helper to bypass a persistent gate.
