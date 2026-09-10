@@ -1475,8 +1475,7 @@
         "text": "The official source content for \"Artificial intelligence governance policy\" changed. Editorial re-verification is required before the register record can be treated as current.",
         "changeFingerprint": "3dd0df2375c4ce5b5b35cb3fd805a1472877a415abfdc6a7643f7f4478b6acb3:4"
       },
-      "processedAt": "2026-09-03T19:34:47.270Z",
-      "lastError": "Superseded by source transition 5"
+      "processedAt": "2026-09-09T23:40:12.577Z"
     },
     "https://statements.qld.gov.au/#policai-change=1b5576773e6e47dbbd16e1ad38530d7ebec29ca8aae3d9ceb0b4409d6612c55c:19": {
       "firstSeenAt": "2026-08-13T19:30:14.552Z",
@@ -1589,8 +1588,7 @@
         "text": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
         "changeFingerprint": "3164fe756aa8be628a15253d7c352e09ca4b1c7d5ea6869cf7987c5c24d1ae99:4"
       },
-      "processedAt": "2026-08-24T19:30:50.891Z",
-      "lastError": "Superseded by source transition 5"
+      "processedAt": "2026-09-09T23:39:04.768Z"
     },
     "https://www.aph.gov.au/Parliamentary_Business/Committees/Joint/Current_Inquiries#policai-change=e9ab28b1fb926f57c4de430c4e9b5464eadc2282de34bdc0638a4f0be7e7709a:4": {
       "firstSeenAt": "2026-08-18T19:30:14.785Z",
@@ -1843,8 +1841,7 @@
         "text": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
         "changeFingerprint": "4198aa00cf97d068acb3fb22446f7c38d5300ed63f2412716509798ef11ad256:5"
       },
-      "processedAt": "2026-08-30T19:31:14.972Z",
-      "lastError": "Superseded by source transition 6"
+      "processedAt": "2026-09-09T23:39:04.756Z"
     },
     "https://www.aph.gov.au/Parliamentary_Business/Committees/House/Current_Inquiries#policai-change=26e353c709d62b40f2705f94dcbca6a506e48f103200ce57908295737f6a89e2:4": {
       "firstSeenAt": "2026-08-24T19:30:50.891Z",
@@ -1998,8 +1995,7 @@
         "text": "The official source content for \"WA Government Artificial Intelligence Policy and Assurance Framework\" changed. Editorial re-verification is required before the register record can be treated as current.",
         "changeFingerprint": "04c37a49e533e968a593dd48555e0d5be6a34f54f3b85f628b0df3ab8894b765:2"
       },
-      "processedAt": "2026-09-01T19:30:31.586Z",
-      "lastError": "Superseded by source transition 3"
+      "processedAt": "2026-09-09T23:40:12.906Z"
     },
     "https://statements.qld.gov.au/#policai-change=5ec67e6a8ec9756dd21cd10db62a40eeb8c42079f4a510f2aca0a37e0694e1af:32": {
       "firstSeenAt": "2026-08-26T19:32:56.434Z",
@@ -2124,8 +2120,7 @@
         "text": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
         "changeFingerprint": "c2816698468cb1de448080d614e3499696c0254f8749c88f02420d4845b35e31:6"
       },
-      "processedAt": "2026-09-07T15:15:00.078Z",
-      "lastError": "Superseded by source transition 7"
+      "processedAt": "2026-09-09T23:39:04.744Z"
     },
     "https://www.aph.gov.au/Parliamentary_Business/Committees/House/Current_Inquiries#policai-change=a178179637f89a2ab438a8b9473221c20bc604f6801ab6c981ae6a0bbe02ca27:5": {
       "firstSeenAt": "2026-08-30T19:31:14.972Z",
@@ -2648,13 +2643,63 @@
         "text": "Latest Search Yesterday at 11:53 AM Contractor appointed to deliver 600-bed Coomera Hospital The Crisafulli Government has appointed Multiplex ... Yesterday at 10:00 AM Safer overtaking and stronger flood resilience for the Bruce at Goorganga The Albanese and Crisafulli Governments are progre... Tue 08 Sep 26 at 12:30 PM Cleveland-Redland Bay Road upgrades to get locals home sooner and safer The Crisafulli Government is delivering on a key R... Tue 08 Sep 26 at 10:48 AM Daniel's Law making Queensland children safer The Crisafulli Government is making Queensland chi... Tue 08 Sep 26 at 10:30 AM",
         "changeFingerprint": "37c2cc9ae64b4bf7437fdb978b4b4bb424e908688e76a44c21733f6519c624be:44"
       }
+    },
+    "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P#policai-change=8f4f337a9cf131bc510a2c0f2b1a1a1d7e3d5a45ba9bcdeb93bc768c67745a9a:7": {
+      "firstSeenAt": "2026-09-07T15:15:00.078Z",
+      "sourceId": "senate-ai-data-centres",
+      "status": "processed",
+      "processedAt": "2026-09-09T23:39:04.734Z",
+      "candidate": {
+        "title": "Senate opens inquiry into artificial intelligence and data centres",
+        "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+        "text": "The Senate inquiry covers AI and data-centre regulation, government deals, and community, industry, energy, water and environmental impacts. The official inquiry page now sets submissions to close on 1 September 2026 and the committee to report on 16 November 2026.",
+        "changeFingerprint": "8f4f337a9cf131bc510a2c0f2b1a1a1d7e3d5a45ba9bcdeb93bc768c67745a9a:7"
+      }
+    },
+    "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy#policai-change=96998680821df71560957914185af04ecd7ba3b7411d7976b392d82a24f3686c:5": {
+      "firstSeenAt": "2026-09-03T19:34:47.270Z",
+      "sourceId": "qld-qgea-ai",
+      "status": "processed",
+      "processedAt": "2026-09-09T23:40:12.569Z",
+      "candidate": {
+        "title": "Artificial intelligence governance policy",
+        "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
+        "text": "Queensland whole-of-government policy for AI governance under the Queensland Government Enterprise Architecture.",
+        "changeFingerprint": "96998680821df71560957914185af04ecd7ba3b7411d7976b392d82a24f3686c:5"
+      }
+    },
+    "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework#policai-change=d3a1cf61f79987a4b84e3dd1814cf66322584932d194b880d81a20734645d58e:3": {
+      "firstSeenAt": "2026-09-01T19:30:31.586Z",
+      "sourceId": "wa-ai-policy",
+      "status": "processed",
+      "processedAt": "2026-09-09T23:40:12.897Z",
+      "candidate": {
+        "title": "WA Government Artificial Intelligence Policy and Assurance Framework",
+        "url": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+        "text": "Western Australia’s whole-of-government AI policy and assurance framework (first published 5 March 2024; policy version 2 released July 2025), with AI Accountable Officers, mandatory risk self-assessments and an AI Advisory Board review of higher-risk projects.",
+        "changeFingerprint": "d3a1cf61f79987a4b84e3dd1814cf66322584932d194b880d81a20734645d58e:3"
+      }
+    },
+    "https://statements.qld.gov.au/#policai-change=800aee0c5757ef61566fd0283d96a441f34c2721617094323d60db6e27a699ee:45": {
+      "firstSeenAt": "2026-09-10T19:32:44.607Z",
+      "sourceId": "qld-ministerial-statements",
+      "status": "dismissed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-09-10T19:32:44.607Z",
+      "processedAt": "2026-09-10T19:32:44.607Z",
+      "candidate": {
+        "title": "Media Statements",
+        "url": "https://statements.qld.gov.au/",
+        "text": "Latest Search Yesterday at 12:00 PM Three new dams join Queensland's fish stocking scheme The Crisafulli Government is delivering better ser... Yesterday at 11:15 AM Everyday Foundation upgrades open to serve Sunshine Coast Affordable groceries are now a reality for more vu... Yesterday at 11:00 AM Insurance data confirms positive impact of Adult Crime Adult Time New national property crime data released today by... Yesterday at 10:45 AM Record-breaking hazard reduction burns prepare protected areas for bushfire season The Crisafulli Government is delivering More Range... Yesterday at 10:30 AM",
+        "changeFingerprint": "800aee0c5757ef61566fd0283d96a441f34c2721617094323d60db6e27a699ee:45"
+      }
     }
   },
   "lastCheckedBySource": {
-    "apra-rss": "2026-09-09T19:32:38.765Z",
+    "apra-rss": "2026-09-10T19:32:44.607Z",
     "csiro-news": "2026-09-05T19:31:47.640Z",
-    "oaic-media": "2026-09-09T19:32:38.765Z",
-    "accc-rss": "2026-09-09T19:32:38.765Z",
+    "oaic-media": "2026-09-10T19:32:44.607Z",
+    "accc-rss": "2026-09-10T19:32:44.607Z",
     "asic-newsroom": "2026-09-07T15:15:00.078Z",
     "pc-media": "2026-09-05T19:31:47.640Z",
     "nsw-sc-practice-notes": "2026-09-07T19:35:01.565Z",
@@ -2666,52 +2711,52 @@
     "sa-office-for-ai": "2026-07-18T20:12:16.563Z",
     "treasury-publications": "2026-09-05T19:31:47.640Z",
     "qld-courts-news": "2026-09-05T19:31:47.640Z",
-    "pm-media": "2026-09-09T19:32:38.765Z",
-    "pmc-office-ai": "2026-09-09T19:32:38.765Z",
-    "industry-ai-publications": "2026-09-09T19:32:38.765Z",
-    "industry-ministers-media": "2026-09-09T19:32:38.765Z",
-    "dta-media": "2026-09-09T19:32:38.765Z",
-    "digital-gov-ai": "2026-09-09T19:32:38.765Z",
-    "disr-news": "2026-09-09T19:32:38.765Z",
+    "pm-media": "2026-09-10T19:32:44.607Z",
+    "pmc-office-ai": "2026-09-10T19:32:44.607Z",
+    "industry-ai-publications": "2026-09-10T19:32:44.607Z",
+    "industry-ministers-media": "2026-09-10T19:32:44.607Z",
+    "dta-media": "2026-09-10T19:32:44.607Z",
+    "digital-gov-ai": "2026-09-10T19:32:44.607Z",
+    "disr-news": "2026-09-10T19:32:44.607Z",
     "naic-news": "2026-09-07T15:15:00.078Z",
     "finance-news": "2026-09-07T15:15:00.078Z",
-    "agd-ministers-media": "2026-09-09T19:32:38.765Z",
-    "cyber-news": "2026-09-09T19:32:38.765Z",
-    "apsc-latest-news": "2026-09-09T19:32:38.765Z",
+    "agd-ministers-media": "2026-09-10T19:32:44.607Z",
+    "cyber-news": "2026-09-10T19:32:44.607Z",
+    "apsc-latest-news": "2026-09-10T19:32:44.607Z",
     "anao-performance-audits": "2026-09-07T15:15:00.078Z",
     "senate-ai-data-centres": "2026-09-07T15:15:00.078Z",
-    "senate-new-inquiries": "2026-09-09T19:32:38.765Z",
-    "senate-reports": "2026-09-09T19:32:38.765Z",
+    "senate-new-inquiries": "2026-09-10T19:32:44.607Z",
+    "senate-reports": "2026-09-10T19:32:44.607Z",
     "house-new-inquiries": "2026-09-09T19:32:38.765Z",
     "joint-new-inquiries": "2026-09-09T19:32:38.765Z",
-    "aph-bills-digests": "2026-09-09T19:32:38.765Z",
-    "legislation-whats-new": "2026-09-09T19:32:38.765Z",
+    "aph-bills-digests": "2026-09-10T19:32:44.607Z",
+    "legislation-whats-new": "2026-09-10T19:32:44.607Z",
     "agd-consultations": "2026-09-07T15:15:00.078Z",
     "industry-consultations": "2026-09-07T15:15:00.078Z",
     "treasury-consultations": "2026-09-07T15:15:00.078Z",
     "aemc-media": "2026-09-05T19:31:47.640Z",
-    "acma-media": "2026-09-09T19:32:38.765Z",
+    "acma-media": "2026-09-10T19:32:44.607Z",
     "tga-media": "2026-09-07T15:15:00.078Z",
     "fwc-news": "2026-09-07T15:15:00.078Z",
     "teqsa-news": "2026-09-07T15:15:00.078Z",
     "aec-media": "2026-09-07T15:15:00.078Z",
-    "esafety-media": "2026-09-09T19:32:38.765Z",
-    "ahrc-media": "2026-09-09T19:32:38.765Z",
+    "esafety-media": "2026-09-10T19:32:44.607Z",
+    "ahrc-media": "2026-09-10T19:32:44.607Z",
     "fedcourt-practice-notes": "2026-09-07T15:15:00.078Z",
-    "nsw-media-releases": "2026-09-09T19:32:38.765Z",
+    "nsw-media-releases": "2026-09-10T19:32:44.607Z",
     "ovic-news": "2026-09-05T19:31:47.640Z",
-    "qld-ministerial-statements": "2026-09-09T19:32:38.765Z",
+    "qld-ministerial-statements": "2026-09-10T19:32:44.607Z",
     "tas-dpac-policies": "2026-09-07T15:15:00.078Z",
     "act-ai-policy": "2026-07-20T12:19:40.243Z",
     "nt-ai-assurance": "2026-09-07T15:15:00.078Z",
     "ipa-news": "2026-09-07T15:15:00.078Z",
-    "wa-media-statements": "2026-09-09T19:32:38.765Z",
+    "wa-media-statements": "2026-09-10T19:32:44.607Z",
     "ovic-privacy-resources": "2026-09-07T19:35:01.565Z",
     "ovic-enterprise-generative-ai": "2026-07-23T20:36:08.370Z",
     "ovic-public-generative-ai": "2026-07-23T20:36:08.370Z",
     "art-practice-directions": "2026-09-07T19:35:01.565Z",
     "wa-sc-practice-directions": "2026-09-07T19:35:01.565Z",
-    "sa-courts-news": "2026-09-09T19:32:38.765Z",
+    "sa-courts-news": "2026-09-10T19:32:44.607Z",
     "act-sc-practice-directions": "2026-09-07T19:35:01.565Z",
     "tas-sc-practice-directions": "2026-09-07T19:35:01.565Z",
     "nt-sc-practice-directions": "2026-09-07T19:35:01.565Z"
@@ -2720,7 +2765,7 @@
     "pmc-office-ai": {
       "contentHash": "4db862eda78cf3d07a56d47be8a73cd5e283dc189501fe090ad5708d1f55116e",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-09-09T19:32:38.765Z",
+      "lastCheckedAt": "2026-09-10T19:32:44.607Z",
       "changeCount": 0
     },
     "naic-news": {
@@ -2778,11 +2823,11 @@
       "lastChangedAt": "2026-09-07T15:15:00.078Z"
     },
     "qld-ministerial-statements": {
-      "contentHash": "37c2cc9ae64b4bf7437fdb978b4b4bb424e908688e76a44c21733f6519c624be",
+      "contentHash": "800aee0c5757ef61566fd0283d96a441f34c2721617094323d60db6e27a699ee",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-09-09T19:32:38.765Z",
-      "changeCount": 44,
-      "lastChangedAt": "2026-09-09T19:32:38.765Z"
+      "lastCheckedAt": "2026-09-10T19:32:44.607Z",
+      "changeCount": 45,
+      "lastChangedAt": "2026-09-10T19:32:44.607Z"
     },
     "act-ai-policy": {
       "contentHash": "0040e7ec83db2a7430b63de7cf72e581dcc938a3139b85ec32c40aa15dc5f4a0",
