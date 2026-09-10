@@ -1,0 +1,9 @@
+[Unit]
+Description=Run Pro Bono Radar ingest daily at 06:00 Sydney
+
+[Timer]
+OnCalendar=*-*-* 06:00:00 Australia/Sydney
+Persistent=true
+
+[Install]
+WantedBy=timers.target

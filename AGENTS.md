@@ -1,5 +1,21 @@
 # AGENTS.md - Policai Codebase Guide
 
+## Repository boundaries
+
+This repository contains two independent applications. The guide below describes
+the root Policai application. Pro Bono Radar lives in `apps/probono`; read
+`apps/probono/AGENTS.md` before working there. Its dashboard and worker retain
+separate manifests and lockfiles. Do not install them as root npm workspaces.
+
+Policai's canonical data remains Git-backed JSON. Pro Bono Radar uses PostgreSQL;
+its database, credentials, and backups must never enter Git. Sharing a repository
+does not merge their publication rules, processes, or deployment authority.
+
+Run the root `npm run check` and the affected child checks before handing off a
+cross-application change. Keep production runtimes independent. Never push a
+production-targeted branch without checking the current automatic deployment
+timer: a source push can trigger an installed host deployment job.
+
 ## Project Overview
 
 Policai is an Australian AI policy tracker. It maintains a curated register of AI policy, regulation, governance and court guidance across federal and state/territory jurisdictions, plus an automated "developments" feed of newly detected policy activity.

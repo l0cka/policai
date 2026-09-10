@@ -1,0 +1,24 @@
+{
+  "approved_target": "REPLACE_WITH_REVIEWED_FULL_LOWERCASE_GIT_SHA",
+  "follow_main": false,
+  "recovery_authorization": null,
+  "remote": "https://github.com/l0cka/policai.git",
+  "compose_sha256": "REPLACE_WITH_REVIEWED_CHILD_COMPOSE_FILE_SHA256",
+  "min_free_bytes": 8000000000,
+  "db": {
+    "id": "REPLACE_WITH_CURRENT_FULL_CONTAINER_ID",
+    "image": "sha256:REPLACE_WITH_CURRENT_FULL_IMAGE_ID",
+    "cluster": "REPLACE_WITH_VERIFIED_POSTGRES_CLUSTER_IDENTIFIER"
+  },
+  "installed_hashes": {
+    "/usr/local/libexec/policai-host/cli.py": "REPLACE_WITH_REVIEWED_INSTALLED_SHA256",
+    "/usr/local/libexec/policai-host/host.py": "REPLACE_WITH_REVIEWED_INSTALLED_SHA256",
+    "/usr/local/libexec/policai-host/dispatcher.py": "REPLACE_WITH_REVIEWED_INSTALLED_SHA256",
+    "/usr/local/libexec/policai-host/bin/docker": "REPLACE_WITH_REVIEWED_INSTALLED_SHA256",
+    "/usr/local/libexec/policai-host/backup.sh": "REPLACE_WITH_REVIEWED_INSTALLED_SHA256",
+    "/etc/systemd/system/policai-pull.service": "REPLACE_WITH_REVIEWED_INSTALLED_SHA256",
+    "/home/l0cka/.config/systemd/user/probono-ingest.service": "REPLACE_WITH_REVIEWED_INSTALLED_SHA256",
+    "/home/l0cka/.config/systemd/user/probono-enrich.service": "REPLACE_WITH_REVIEWED_INSTALLED_SHA256",
+    "/home/l0cka/.config/systemd/user/probono-backup.service": "REPLACE_WITH_REVIEWED_INSTALLED_SHA256"
+  }
+}

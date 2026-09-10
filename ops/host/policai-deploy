@@ -1,0 +1,7 @@
+#!/bin/sh
+# New delegate, not the retired root-only deployment implementation.
+if [ "$#" -ne 0 ]; then
+    printf 'This entrypoint accepts no arguments.\n' >&2
+    exit 64
+fi
+exec /usr/bin/python3 -I /usr/local/libexec/policai-host/cli.py deploy

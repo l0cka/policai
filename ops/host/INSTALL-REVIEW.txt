@@ -1,0 +1,261 @@
+Two-runtime deployment: installation and rollback review
+STATUS: uninstalled draft. This file is a procedure for a later approved window,
+not permission to execute it. Dispatcher implementation/CLI README is authoritative
+for exact invocations. Do not run an unreviewed artifact from a user-owned directory
+as root. Review and copy a fixed snapshot into root-owned installed paths first.
+
+Boundary
+  One source repository; independent Policai and Pro Bono runtimes.
+  Policai full release clone: /var/lib/policai/app, identity policai.
+  Pro Bono full release clone: /var/lib/probono-radar/app; apps/probono below it.
+  Pro Bono execution identity remains l0cka. Do not create another Docker-group user.
+  Origins remain 127.0.0.1:8794, 127.0.0.1:8850 and Postgres 127.0.0.1:5433.
+  Tunnel config, DNS, Access, and policai.service database environment stay unchanged.
+  No migration, schema, seed, volume creation/removal or database restart is included.
+
+1. Review and preserve
+  Read current root AGENTS.md, topology contract, generated topology, and both app
+  AGENTS.md files. Run the live checker before changing anything. Preserve unrelated
+  changes and use Bob's reviewed target SHA. Check origin/main and release cleanliness
+  as each release owner. Check worktrees, timers, active processes, cron, and Docker
+  references, not historical path names. Inspect candidate available disk and retain
+  enough space for current source + dependencies + built artifacts + candidate + rollback.
+
+  Archive the installed /usr/local/libexec/policai-deploy and exact installed system
+  policai-pull.service/timer plus user Pro Bono ingest/enrich/backup units and drop-ins.
+  Archive the backup helper's source separately. Capture non-secret unit state,
+  permissions, and hashes. Record absence of the old compatibility wrapper; restoration
+  of that absence is different from replacing an existing command. Never copy `.env`
+  values into the source/code archive. Secrets require their existing protected route.
+
+  Record the DB full container ID, image ID, volume name/mount and cluster identifier;
+  do not accept the historical ID as a current live observation. Record current dashboard
+  and worker image IDs with retention tags or another verified retention route. Do not
+  prune images/volumes. Confirm the current network is probono-radar_default and the
+  named volume is probono-radar_pgdata. Record old/new release SHA independently.
+
+  Require a fresh consistent pg_dump and a disposable restore drill with aggregate
+  row/table parity. A gzip-integrity check is not a restore drill. The fixture test suite
+  cannot substitute for this gate. Preserve the pre-cutover dump from nightly rotation.
+
+2. Freeze triggers, not the database
+  Stop policai-pull.timer before main publication. Read it back inactive but still
+  enabled. If its oneshot is active, let it finish and inspect its result; never kill
+  a fetch/build/activation halfway. Verify the oneshot is idle AFTER the timer stop,
+  because checking first alone leaves a race. Do not disable/mask this timer.
+
+  Stop the user ingest, enrich and backup timers temporarily. Wait for their oneshots
+  and any manual legacy worker/enrichment processes to finish. Record original active
+  and enabled states for exact restoration. Preserve both digest masks. Verify no
+  legacy worker containers remain. Existing entrypoints do not honor the new global
+  lock, so installation cannot assume the new lock has quiesced legacy jobs.
+
+  Do not use only /tmp/probono-enrich.lock: it is an enrichment-only lock, and systemd
+  PrivateTmp changes its namespace. The new exclusion inode lives in protected stable
+  state visible to deploy and worker identities; never rotate/delete it while in use.
+  Acquire deployment exclusion before installing/swapping active configuration.
+
+3. Install trusted code and establish a baseline
+  Version-control the reviewed helper, worker gate, schemas/config examples and unit
+  sources in Bob's chosen ops path. Install copies root-owned, not writable by either
+  app identity. Do not execute Python from l0cka-writable source as root. Use isolated
+  Python mode and fixed executables. Only fixtures may inject executable paths.
+
+  Create/protect dispatcher state before enabling any entrypoint. Gate and lock files
+  must be visible to the worker identity but only deploy state authority may replace
+  them. A worker must not be able to unlink/recreate the lock or clear the failure gate.
+  Review all ancestor permissions, not just the leaf file. Refuse existing unsafe paths.
+
+  Create Pro Bono's clean full release clone from the unified repository at the reviewed
+  revision. Do not overwrite dirty /home/l0cka/Work/Argus/services/probono-radar/src.
+  Keep that checkout and its local changes intact for source/recovery reconciliation.
+  Do not share .git/worktrees or node_modules between independent releases.
+
+  External environment file: /etc/probono-radar/runtime.env. Keep outside all Git and
+  Docker build contexts, regular non-symlink, narrowly readable by the existing Pro Bono
+  principal. Provision through an operator-approved secret path without showing values.
+  Test permissions as the runtime identity. Every Compose invocation, including backup
+  and worker calls made by nested scripts, must specify the external environment file,
+  exact project name, reviewed base file and overlays. A shell variable that is not
+  inherited by nested scripts does not meet this requirement.
+
+  Pin the existing external volume in installed Compose overrides. Verify the resolved
+  model in memory without printing environment values. Reject wildcard ports, unexpected
+  mounts/privilege, new services/networks, changed DB identity, or unreviewed build contexts.
+  Build candidates under unique tags; building must not retag a worker image that an old
+  timer could consume before activation.
+
+  Replace the system pull helper/service route only after its entrypoint is idle.
+  Keep existing service hardening. The draft unit retains ProtectHome=true and
+  binds the user-unit directory read-only to /run/policai-deploy-observation/user-units.
+  Bind destinations under /home do not work with ProtectHome=yes (systemd.exec).
+  Verify the effective read-only alias and all expected unit hashes/mask symlinks.
+  Both clean release clones must use https://github.com/l0cka/policai.git; Git
+  credentials/helpers/SSH keys are not needed. Deployment Git/Docker client HOME
+  is /var/lib/probono-radar, with its .docker directory l0cka-owned mode0700.
+  Verify clean HTTPS Git and Docker build-client state inside the final namespace.
+  Do not expose the full home or run Git/npm as root. User workers retain their
+  existing home/Claude context and do not execute in the system deploy namespace.
+
+  Install guarded ingest/enrich/backup units. The lock covers an entire ingest -> enrich
+  operation; child enrichment must not reacquire an incompatible lock. Preserve the
+  existing model capability boundary and authenticated Claude user home. Backup must
+  retain its existing protected output directory and rotation semantics. Never copy
+  wildcards over masked digest symlinks; exclude both digest units entirely.
+
+  Install the new compatibility/policai-deploy.sh delegate at the mandated home-bin path
+  only after review. It delegates to the installed system oneshot, accepts no arbitrary
+  command/target arguments, and does not duplicate deployment logic. Its sudo timeout
+  does not cancel the system service; inspect that service before any retry. No password
+  or blanket sudo policy belongs in the wrapper. Reconcile root AGENTS.md documentation
+  without resurrecting the old user-service deployment.
+
+  Bootstrap baseline must describe what is actually RUNNING, not just checkout HEAD.
+  The Pro Bono imported SHA is not proof that the old Docker images match that SHA.
+  First activation must explicitly build/deploy the imported child even if candidate
+  and release HEAD happen to match. Keep the failure gate latched until identities,
+  runtime health, and rollback evidence prove the baseline.
+
+4. Activate and verify
+  Only now publish the reviewed target through normal Git history. The pull timer stays
+  stopped. Use the implementation's exact reviewed CLI; a request to main and a target
+  SHA must agree with fetched main. Do not pass an arbitrary shell command or change
+  target formats. Build every affected lane before modifying either active lane.
+
+  Policai code activation: stop service only after candidate build succeeds; verify
+  stopped; perform the journaled source/dependencies/.next swap with retained old files;
+  restart and read back service state. Do not copy recursively over a running .next tree.
+  Data-only updates require no npm build or restart, but validate data health afterwards.
+
+  Pro Bono: activate reviewed dashboard image with no-deps/no-build/pull-never. Keep DB
+  untouched. Publish active worker image selection only under the global lock. Verify
+  image IDs and unchanged DB container ID, cluster identifier, volume mount and loopback
+  bindings after activation. Do not run an ingestion job simply to prove the worker image.
+
+  Root /api/status must parse as expected and assert success, not merely return 200.
+  Pro Bono /health is HTML from a force-dynamic DB query, not a JSON health API. Check its
+  expected content and read-only DB readiness; streamed HTML 200 alone is insufficient.
+  Validate local/public page and redirect behavior without dumping page bodies or rows.
+  Verify external policai.org, www redirect, a2j.policai.org and probono redirect. Do not
+  change/restart cloudflared. Compare the exact existing tunnel route map and config hash.
+
+  Run topology fixture suite, regenerate topology documentation, and reconcile installed
+  source/unit paths in the topology/registry in the same approved change. Temporary
+  maintenance timer drift must be explained, not silently reclassified as healthy.
+
+  Restore only the original scheduler states, except digest remains masked. Resume pull
+  timer last after both releases/main and persistent state are known-good. This timer
+  uses OnBootSec/OnUnitActiveSec; Persistent=true applies to OnCalendar timers, not these
+  monotonic triggers. An elapsed OnBootSec may still make a start trigger promptly.
+  Read back timer enabled/active/waiting, worker guards, digest masks and topology OK.
+
+5. Failure and rollback
+  A crash, timeout, partial swap, failed health or inconsistent identity must leave the
+  persistent gate present. Preserve state and rollback artifacts. Never delete a malformed
+  marker as housekeeping. Neither a changed target nor timer restart clears the gate.
+  Keep all worker/deploy entrypoints blocked until reviewed recovery completes.
+
+  Do not restore the legacy helper or ungated worker paths simply to bypass the gate.
+  Before-source-publish abort: restore exact saved code/config/unit files and original timer
+  states only if no runtime activation occurred; verify topology and original health.
+
+  After activation: use the implementation's journaled rollback against retained previous
+  artifacts/images. Stop affected root runtime before swapping its dependencies and .next;
+  restore both source and built artifacts coherently. Restore Pro Bono's previous selected
+  dashboard/worker images without touching Postgres. Keep the gate after rollback until
+  health, identities and origin/main disposition are reviewed. Do not overwrite data-only
+  changes or unrelated edits during rollback. Interrupted recovery must remain repeatable
+  from its journal, not from guesswork about which rename completed.
+
+  A previous local release with bad code still on origin/main is not safe for resumption.
+  Use a normal revert/fix commit or an explicitly reviewed hold/recovery workflow. Prove
+  healthy runtime SHAs/artifacts separately from repository HEAD. Restore automation only
+  through the implementation's guarded, audited recovery completion path.
+
+  Installation rollback and application rollback are different operations. Restoring the
+  old helper can remove the persistent gate enforcement; it is allowed only with timers
+  stopped, approved main state, all retained old paths available, and independent health
+  proof. Never restore its timer blindly. No force-push, reset --hard, git clean, DB
+  replacement, Compose down, or volume removal is part of this procedure.
+
+Open approval boundaries
+  Bob reviews/integrates the code; Daniel authorizes the concrete installed changes and
+  production window. Broad repo amalgamation does not authorize new credential grants,
+  new sudo rules, general service-sandbox weakening, schema migrations or email resumption.
+  If non-interactive deploy Git authentication cannot be retained without such a grant,
+  stop for that exact decision; do not embed a token or copy a private key into this draft.
+
+Executable file installation (new candidate; not executed on the host)
+  Preview from the source checkout:
+
+    python3 -I ops/host/install.py plan
+
+  This lists exactly 11 file replacements: five dispatcher files, the system helper,
+  the compatibility helper, the system pull service and three user worker services.
+  No digest or timer file is an installation target. The installer does not change
+  secrets, databases, containers, release checkouts or scheduler state.
+
+  Before apply, complete the earlier review, backup/restore and trigger-hold steps.
+  Provision absent destination directories with the documented owner/mode; refuse
+  unexpected existing ownership or aliases instead of recursively changing them:
+
+    /usr/local/libexec/policai-host          root:root 0755
+    /usr/local/libexec/policai-host/bin      root:root 0755
+    /var/lib/policai-deploy-state            root:root 0755
+    /home/l0cka/.local/bin                  existing l0cka directory
+
+  Provision deploy.lock and worker.lock ONCE as root-owned regular 0644 files under
+  the state directory. Never replace existing lock inodes. The installer acquires
+  deploy.lock exclusively. Artifact directories, release clones, external environment,
+  config and baseline retain their separate provisioning requirements above; installation
+  success does not establish a valid application baseline.
+
+  In the approved terminal, export the exact reviewed COMMIT's ops/host tree. Do not
+  copy a dirty worktree. AMALGAMATION_COMMIT is the reviewed full Git SHA; record the
+  manifest digest from that commit in the approval record before staging:
+
+    git show "$AMALGAMATION_COMMIT:ops/host/MANIFEST.sha256" | sha256sum
+    git archive --format=tar "$AMALGAMATION_COMMIT:ops/host" > /tmp/policai-host-reviewed.tar
+
+  Stage that archive under a NEW /usr/local/libexec/policai-host-review directory,
+  root-owned with non-writable ancestors. All directories must be 0755, files 0644
+  or 0755, root-owned, regular and not hardlinked; no symlinks are accepted. Never
+  overwrite an existing review snapshot. Compare its MANIFEST.sha256 digest with
+  the independently recorded digest, then run sha256sum --check inside the snapshot.
+  This protected snapshot is the only location from which apply/rollback can run.
+
+    sudo /usr/bin/python3 -I /usr/local/libexec/policai-host-review/install.py apply \
+      --manifest-sha256 "$AMALGAMATION_MANIFEST_SHA256"
+
+  apply validates every manifest entry, observes all affected timers/services inactive,
+  rejects drop-ins and active legacy worker containers/processes, and checks both digest
+  masks. Missing or incomplete observations refuse the operation. A pre-existing
+  dispatcher active/failure/recovery record also refuses first installation.
+
+  Before replacing any file, it records original bytes, modes, ownership and absence
+  in /var/lib/policai-deploy-state/installation (root-only 0700; backups/journal 0600).
+  Each replacement uses an atomic rename through an open directory descriptor and
+  is checked against its recorded digest. Unrelated edits are never overwritten by
+  recovery. Retain this directory and the protected source snapshot; do not clean
+  either as temporary files.
+
+  Inspect installed hashes and the exact effective units, then reload the system and
+  user managers in the approved window. Timers must remain held throughout. Verify
+  all new effective ExecStart/WorkingDirectory values before dispatcher initialize.
+  The installer does not perform daemon-reload, initialize, deploy or timer restoration.
+
+  If installation fails, preserve the journal. BEFORE dispatcher initialize only:
+
+    sudo /usr/bin/python3 -I /usr/local/libexec/policai-host-review/install.py rollback \
+      --manifest-sha256 "$AMALGAMATION_MANIFEST_SHA256"
+
+  Rollback checks all current files and backups before restoring any, can resume after
+  a tested interrupted restoration, and restores absent files to absence. Reload both
+  managers after restoration and verify original effective units before restoring any
+  timer. The journal is retained; this installer refuses a second apply rather than
+  overwriting recovery evidence. A crash before the first journal was persisted needs
+  operator inspection; no destination replacement precedes that journal write.
+
+  Once dispatcher initialize has written state, this installer refuses rollback.
+  Follow the guarded application recovery path and the separately reviewed installation
+  recovery procedure; never restore the legacy helper to bypass a persistent gate.

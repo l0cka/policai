@@ -1,0 +1,8 @@
+[Unit]
+Description=Pro Bono Radar daily ingest (fetch + Claude enrichment)
+
+[Service]
+Type=oneshot
+WorkingDirectory=/var/lib/probono-radar/app/apps/probono
+ExecStart=/usr/bin/python3 -I /usr/local/libexec/policai-host/cli.py worker ingest
+TimeoutStartSec=3600

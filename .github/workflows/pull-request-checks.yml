@@ -20,14 +20,18 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20.19.0
+          node-version: 24
           cache: npm
+          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
         run: npm ci
 
       - name: Run lint
         run: npm run lint
+
+      - name: Typecheck root application
+        run: npm run typecheck
 
   test:
     name: test
@@ -40,8 +44,9 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20.19.0
+          node-version: 24
           cache: npm
+          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
         run: npm ci
@@ -63,11 +68,117 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20.19.0
+          node-version: 24
           cache: npm
+          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
         run: npm ci
 
       - name: Build application
         run: npm run build
+
+  probono-dashboard:
+    name: Pro Bono dashboard
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/probono/dashboard
+    # Build is database-free; never inherit production connection settings.
+    env:
+      DATABASE_URL: ''
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: apps/probono/dashboard/package-lock.json
+      - name: Install dashboard dependencies
+        run: npm ci
+      - name: Typecheck dashboard
+        run: npm run typecheck
+      - name: Build dashboard
+        run: npm run build
+
+  probono-worker:
+    name: Pro Bono worker
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/probono/worker
+    # Integration fixtures DELETE table contents. Only this disposable service
+    # may be used: no repository secrets, production Compose, or data volumes.
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: probono_ci
+          POSTGRES_PASSWORD: probono_ci
+          POSTGRES_DB: probono_ci_test
+        ports:
+          - 5432/tcp
+        options: >-
+          --health-cmd "pg_isready -U probono_ci -d probono_ci_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: apps/probono/worker/package-lock.json
+      - name: Install worker dependencies
+        run: npm ci
+      - name: Typecheck worker
+        run: npm run typecheck
+      - name: Initialize disposable test database
+        env:
+          DATABASE_URL: postgres://probono_ci:probono_ci@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/probono_ci_test
+        run: |
+          node --input-type=module <<'JS'
+          import { readFileSync } from 'node:fs';
+          import pg from 'pg';
+          const url = new URL(process.env.DATABASE_URL);
+          if (url.hostname !== '127.0.0.1' || url.pathname !== '/probono_ci_test' || url.username !== 'probono_ci') {
+            throw new Error('Refusing to initialize a non-CI database');
+          }
+          const client = new pg.Client({ connectionString: url.href });
+          await client.connect();
+          try {
+            await client.query(readFileSync('../db/schema.sql', 'utf8'));
+          } finally {
+            await client.end();
+          }
+          JS
+      - name: Run unit and database integration tests
+        env:
+          DATABASE_URL: postgres://probono_ci:probono_ci@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/probono_ci_test
+        run: npm test
+      - name: Run enrichment security tests
+        run: npm run test:security
+
+  host-dispatcher:
+    name: Host dispatcher
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify reviewed host source manifest
+        working-directory: ops/host
+        run: sha256sum --check MANIFEST.sha256
+      - name: Check Docker Compose parser availability
+        run: docker compose version
+      - name: Run offline deployment and rollback tests
+        run: python3 -B ops/host/verify.py
+      - name: Retain host verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: host-verification
+          path: ops/host/logs/FINAL-VERIFICATION.json
+          if-no-files-found: error

@@ -1,0 +1,11 @@
+{
+  "heads": {
+    "policai": "REPLACE_WITH_CURRENT_ROOT_RELEASE_HEAD",
+    "probono": "REPLACE_WITH_NEW_UNIFIED_CHILD_RELEASE_HEAD"
+  },
+  "root_build": "REPLACE_WITH_RUNNING_ROOT_NEXT_BUILD_ID",
+  "images": {
+    "dashboard": "sha256:REPLACE_WITH_CURRENT_DASHBOARD_IMAGE_ID",
+    "worker": "sha256:REPLACE_WITH_RETAINED_OLD_WORKER_IMAGE_ID"
+  }
+}

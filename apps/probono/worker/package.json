@@ -1,0 +1,29 @@
+{
+  "name": "probono-radar-worker",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:security": "node --test security-test/enrich-boundary.test.mjs",
+    "fetch": "tsx src/fetch-all.ts",
+    "digest": "tsx src/digest.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "nodemailer": "9.1.1",
+    "pg": "^8.12.0",
+    "rss-parser": "^3.13.0",
+    "tsx": "^4.19.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.0",
+    "@types/nodemailer": "8.0.1",
+    "@types/pg": "^8.11.6",
+    "typescript": "^5.5.4",
+    "vitest": "4.1.11"
+  },
+  "overrides": {
+    "vite": "6.4.3"
+  }
+}

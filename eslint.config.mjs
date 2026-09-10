@@ -7,6 +7,8 @@ const eslintConfig = defineConfig([
   ...nextTs,
   // Override default ignores of eslint-config-next.
   globalIgnores([
+    // Pro Bono has independent dependencies and checks.
+    "apps/probono/**",
     // Default ignores of eslint-config-next:
     ".next/**",
     ".vercel/**",
