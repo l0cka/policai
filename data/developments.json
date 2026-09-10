@@ -780,10 +780,11 @@
       "method": "manual",
       "notes": "Approved by the user on 12 August 2026 after fresh official-source review. The inquiry remains the same timeline event: referred 13 May 2026, submissions close 1 September 2026, and the committee is due to report 16 November 2026."
     },
-    "status": "promoted",
+    "status": "dismissed",
     "relatedTimelineEventId": "tl-2026-05-13-senate-ai-data-centres-inquiry",
     "publishedAt": "2026-05-13",
-    "publishedAtPrecision": "day"
+    "publishedAtPrecision": "day",
+    "dismissalReason": "Superseded by newer source update source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-138akxo"
   },
   {
     "id": "dev-report-explores-risks-and-controls-for-artificia-grmboo",
@@ -1106,10 +1107,11 @@
       "method": "manual",
       "notes": "Senate AI and data centres inquiry — aph.gov.au states referred 13 May 2026, submissions close 1 Sep 2026, reporting 16 Nov 2026."
     },
-    "status": "promoted",
+    "status": "dismissed",
     "relatedTimelineEventId": "tl-2026-05-13-senate-ai-data-centres-inquiry",
     "publishedAt": "2026-05-13",
-    "publishedAtPrecision": "day"
+    "publishedAtPrecision": "day",
+    "dismissalReason": "Superseded by newer source update source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-138akxo"
   },
   {
     "id": "dev-from-homework-to-heartache-why-children-are-turn-e0tsfo",
@@ -1366,10 +1368,11 @@
       "method": "manual",
       "notes": "Duplicate revision of verified timeline event tl-2026-05-13-senate-ai-data-centres-inquiry; aph.gov.au confirms referred 13 May 2026, submissions close 1 September 2026, reporting 16 November 2026."
     },
-    "status": "promoted",
+    "status": "dismissed",
     "relatedTimelineEventId": "tl-2026-05-13-senate-ai-data-centres-inquiry",
     "publishedAt": "2026-05-13",
-    "publishedAtPrecision": "day"
+    "publishedAtPrecision": "day",
+    "dismissalReason": "Superseded by newer source update source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-138akxo"
   },
   {
     "id": "dev-26-092mr-asic-calls-for-urgent-cyber-uplift-as-a-v2vvmh",

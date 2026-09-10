@@ -1547,8 +1547,25 @@ describe('source ingest approval workflow', () => {
       linkedDevelopment: buildLinkedDevelopment({ id: 'dev-timeline-older' }),
       proposedRecord: targetEvent,
     });
+    const olderPublishedReview = buildReview({
+      id: 'source-review-timeline-already-published',
+      entryKind: 'timeline_event',
+      targetTimelineEventId: targetEvent.id,
+      targetTimelineRevisionHash: timelineRevisionHash(targetEvent),
+      sourceVersionSequence: 1,
+      status: 'published',
+      linkedDevelopment: buildLinkedDevelopment({
+        id: 'dev-timeline-already-published',
+        status: 'promoted',
+      }),
+      proposedRecord: targetEvent,
+    });
     getSourceReviewById.mockResolvedValue(newestReview);
-    getSourceReviews.mockResolvedValue([olderReview, newestReview]);
+    getSourceReviews.mockResolvedValue([
+      olderPublishedReview,
+      olderReview,
+      newestReview,
+    ]);
     getTimelineEvents.mockResolvedValue([targetEvent]);
 
     await publishStagedSource(newestReview.id);
@@ -1566,6 +1583,80 @@ describe('source ingest approval workflow', () => {
         status: 'dismissed',
         dismissalReason: `Superseded by newer source update ${newestReview.id}`,
       }),
+    );
+    expect(updateDevelopment).toHaveBeenCalledWith(
+      olderPublishedReview.linkedDevelopment?.id,
+      expect.objectContaining({
+        status: 'dismissed',
+        dismissalReason: `Superseded by newer source update ${newestReview.id}`,
+      }),
+    );
+    expect(updateSourceReview).not.toHaveBeenCalledWith(
+      olderPublishedReview.id,
+      expect.objectContaining({ status: 'rejected' }),
+    );
+  });
+
+  it('dismisses older published timeline developments when publication is retried', async () => {
+    const targetEvent = {
+      id: 'existing-timeline-event',
+      date: '2026-07-01',
+      datePrecision: 'day' as const,
+      title: 'Existing AI policy announcement',
+      description: 'Current source-backed timeline description.',
+      type: 'announcement' as const,
+      jurisdiction: 'federal' as const,
+      sourceUrl: SOURCE_URL,
+      verification: {
+        status: 'verified' as const,
+        source: { url: SOURCE_URL, contentHash: 'a'.repeat(64) },
+        checkedAt: '2026-07-16T00:00:00.000Z',
+        checkedBy: 'reviewer',
+        method: 'manual' as const,
+      },
+    };
+    const newestReview = buildReview({
+      id: 'source-review-timeline-newest',
+      entryKind: 'timeline_event',
+      targetTimelineEventId: targetEvent.id,
+      targetTimelineRevisionHash: timelineRevisionHash(targetEvent),
+      sourceVersionSequence: 3,
+      status: 'published',
+      publishedAt: '2026-07-16T00:00:00.000Z',
+      linkedDevelopment: buildLinkedDevelopment({
+        id: 'dev-timeline-newest',
+        status: 'promoted',
+      }),
+      proposedRecord: targetEvent,
+    });
+    const olderPublishedReview = buildReview({
+      id: 'source-review-timeline-older-published',
+      entryKind: 'timeline_event',
+      targetTimelineEventId: targetEvent.id,
+      targetTimelineRevisionHash: timelineRevisionHash(targetEvent),
+      sourceVersionSequence: 2,
+      status: 'published',
+      linkedDevelopment: buildLinkedDevelopment({
+        id: 'dev-timeline-older-published',
+        status: 'promoted',
+      }),
+      proposedRecord: targetEvent,
+    });
+    getSourceReviewById.mockResolvedValue(newestReview);
+    getSourceReviews.mockResolvedValue([olderPublishedReview, newestReview]);
+
+    await publishStagedSource(newestReview.id);
+
+    expect(updateDevelopment).toHaveBeenCalledWith(
+      olderPublishedReview.linkedDevelopment?.id,
+      expect.objectContaining({
+        status: 'dismissed',
+        dismissalReason: `Superseded by newer source update ${newestReview.id}`,
+      }),
+    );
+    expect(updateSourceReview).not.toHaveBeenCalledWith(
+      olderPublishedReview.id,
+      expect.anything(),
     );
   });
 

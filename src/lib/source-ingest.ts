@@ -2230,7 +2230,23 @@ async function publishStagedSourceUnlocked(
 	if (!review) {
 		throw new Error("Staged source not found");
 	}
+	const targetTimelineEventId = timelineReviewTargetId(review);
 	if (review.status === "published") {
+		if (targetTimelineEventId) {
+			const olderPublishedReviews = (await getSourceReviews()).filter(
+				(candidate) =>
+					candidate.id !== review.id &&
+					candidate.status === "published" &&
+					timelineReviewTargetId(candidate) === targetTimelineEventId &&
+					compareSourceReviewVersions(candidate, review) < 0,
+			);
+			for (const olderReview of olderPublishedReviews) {
+				await reconcileLinkedDevelopment(olderReview, {
+					status: "dismissed",
+					dismissalReason: `Superseded by newer source update ${review.id}`,
+				});
+			}
+		}
 		await reconcilePublicationSideEffects(
 			review,
 			review.publishedAt ?? review.reviewedAt ?? new Date().toISOString(),
@@ -2257,7 +2273,6 @@ async function publishStagedSourceUnlocked(
 	}
 
 	let relatedUpdateReviews: SourceReview[] = [];
-	const targetTimelineEventId = timelineReviewTargetId(review);
 	if (review.targetPolicyId || targetTimelineEventId) {
 		relatedUpdateReviews = (await getSourceReviews()).filter(
 			(candidate) =>
@@ -2471,18 +2486,26 @@ async function publishStagedSourceUnlocked(
 		}
 	}
 	for (const olderReview of relatedUpdateReviews) {
+		if (compareSourceReviewVersions(olderReview, review) >= 0) {
+			continue;
+		}
+		const supersessionReason = `Superseded by newer source update ${review.id}`;
 		if (
-			(olderReview.status === "pending_review" ||
-				olderReview.status === "approved") &&
-			compareSourceReviewVersions(olderReview, review) < 0
+			olderReview.status === "pending_review" ||
+			olderReview.status === "approved"
 		) {
 			await reconcileLinkedDevelopment(olderReview, {
 				status: "dismissed",
-				dismissalReason: `Superseded by newer source update ${review.id}`,
+				dismissalReason: supersessionReason,
 			});
 			await updateSourceReview(olderReview.id, {
 				status: "rejected",
-				rejectionReason: `Superseded by newer source update ${review.id}`,
+				rejectionReason: supersessionReason,
+			});
+		} else if (olderReview.status === "published" && targetTimelineEventId) {
+			await reconcileLinkedDevelopment(olderReview, {
+				status: "dismissed",
+				dismissalReason: supersessionReason,
 			});
 		}
 	}
