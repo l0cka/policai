@@ -1,0 +1,17 @@
+#!/usr/bin/python3 -I
+"""Only the installed guarded dispatcher may interpret scheduled Docker calls."""
+
+import os
+import sys
+
+os.execv(
+    "/usr/bin/python3",
+    [
+        "/usr/bin/python3",
+        "-I",
+        "/usr/local/libexec/policai-host/cli.py",
+        "compose",
+        "--",
+        *sys.argv[1:],
+    ],
+)
