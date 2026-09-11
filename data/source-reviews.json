@@ -1,5 +1,102 @@
 [
   {
+    "id": "source-review-dev-11-sep-2026-news-asd-releases-new-guidance-on-th-g92csn",
+    "sourceUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/asd-releases-new-guidance-on-the-agentic-ai-harnesses",
+    "title": "11 Sep 2026 News ASD releases new guidance on the agentic AI harnesses Understand how the agentic AI harness influences security, governance and operational risk in agentic AI systems.",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-09-11T19:30:44.408Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from Australian Cyber Security Centre — news (score 0.65, ai).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.65,
+      "suggestedType": "guideline",
+      "suggestedJurisdiction": "federal",
+      "summary": "ASD published new guidance on agentic AI harnesses covering security, governance and operational risk in agentic AI systems.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.cyber.gov.au/about-us/view-all-content/news/asd-releases-new-guidance-on-the-agentic-ai-harnesses",
+      "finalUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/asd-releases-new-guidance-on-the-agentic-ai-harnesses",
+      "retrievedAt": "2026-09-11T19:30:44.408Z",
+      "contentType": "text/plain",
+      "contentHash": "03537c1800fe61a61caf6bb6edd42c2dd1d07ff53dc9b2f3917b5e2ea8ebc0b0",
+      "title": "11 Sep 2026 News ASD releases new guidance on the agentic AI harnesses Understand how the agentic AI harness influences security, governance and operational risk in agentic AI systems.",
+      "publishedAt": "2026-09-11",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "11-sep-2026-news-asd-releases-new-guidance-on-the-agentic-ai",
+      "title": "11 Sep 2026 News ASD releases new guidance on the agentic AI harnesses Understand how the agentic AI harness influences security, governance and operational risk in agentic AI systems.",
+      "description": "ASD published new guidance on agentic AI harnesses covering security, governance and operational risk in agentic AI systems.",
+      "jurisdiction": "federal",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2026-09-11",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-09-11",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.cyber.gov.au/about-us/view-all-content/news/asd-releases-new-guidance-on-the-agentic-ai-harnesses",
+            "finalUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/asd-releases-new-guidance-on-the-agentic-ai-harnesses",
+            "retrievedAt": "2026-09-11T19:30:44.408Z",
+            "contentType": "text/plain",
+            "contentHash": "03537c1800fe61a61caf6bb6edd42c2dd1d07ff53dc9b2f3917b5e2ea8ebc0b0",
+            "title": "11 Sep 2026 News ASD releases new guidance on the agentic AI harnesses Understand how the agentic AI harness influences security, governance and operational risk in agentic AI systems.",
+            "publishedAt": "2026-09-11",
+            "publishedAtPrecision": "day"
+          }
+        }
+      ],
+      "agencies": [],
+      "sourceUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/asd-releases-new-guidance-on-the-agentic-ai-harnesses",
+      "content": "[Skip to main content](https://www.cyber.gov.au/about-us/view-all-content/news/asd-releases-new-guidance-on-the-agentic-ai-harnesses#site-content) ASD releases new guidance on the agentic AI harnesses ===================================================== ![](https://www.cyber.gov.au/themes/custom/custom/cga/src/images/pattern-blue-min.png) First published: 11 Sep 2026 Last updated: 11 Sep 2026 #### Content written for Large organisations & infrastructure Government We have released a new publication, Agentic AI Harnesses, to help organisations better understand the security, governance and ope",
+      "aiSummary": "ASD published new guidance on agentic AI harnesses covering security, governance and operational risk in agentic AI systems.",
+      "tags": [],
+      "createdAt": "2026-09-11T19:30:44.408Z",
+      "updatedAt": "2026-09-11T19:30:44.408Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-11-sep-2026-news-asd-releases-new-guidance-on-th-g92csn",
+      "title": "11 Sep 2026 News ASD releases new guidance on the agentic AI harnesses Understand how the agentic AI harness influences security, governance and operational risk in agentic AI systems.",
+      "url": "https://www.cyber.gov.au/about-us/view-all-content/news/asd-releases-new-guidance-on-the-agentic-ai-harnesses",
+      "sourceId": "cyber-news",
+      "sourceName": "Australian Cyber Security Centre — news",
+      "jurisdiction": "federal",
+      "publishedAt": "2026-09-11",
+      "publishedAtPrecision": "day",
+      "detectedAt": "2026-09-11T19:30:44.408Z",
+      "summary": "ASD published new guidance on agentic AI harnesses covering security, governance and operational risk in agentic AI systems.",
+      "relevanceScore": 0.65,
+      "classification": "ai",
+      "assessment": {
+        "method": "ai",
+        "promptVersion": "claude-classify-v1",
+        "assessedAt": "2026-09-11T19:30:44.408Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.cyber.gov.au/about-us/view-all-content/news/asd-releases-new-guidance-on-the-agentic-ai-harnesses",
+          "finalUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/asd-releases-new-guidance-on-the-agentic-ai-harnesses",
+          "retrievedAt": "2026-09-11T19:30:44.408Z",
+          "contentType": "text/plain",
+          "contentHash": "03537c1800fe61a61caf6bb6edd42c2dd1d07ff53dc9b2f3917b5e2ea8ebc0b0",
+          "title": "11 Sep 2026 News ASD releases new guidance on the agentic AI harnesses Understand how the agentic AI harness influences security, governance and operational risk in agentic AI systems.",
+          "publishedAt": "2026-09-11",
+          "publishedAtPrecision": "day"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-09-11T19:30:44.408Z"
+  },
+  {
     "id": "source-review-2c6879c3-ff74-4e14-b998-bf68a9cac828",
     "sourceUrl": "https://www.nsw.gov.au/education-and-training/nesa/news/all/new-take-home-assessment-rules",
     "title": "NESA Stage 6 take-home assessment and generative AI rules",
