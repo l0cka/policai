@@ -1,5 +1,78 @@
 [
   {
+    "id": "source-review-dev-nsw-supreme-court-practice-note-sc-gen-23-commen-1b1ap38",
+    "sourceUrl": "https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html",
+    "title": "NSW Supreme Court Practice Note SC Gen 23 commences",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2025-02-03-nsw-supreme-court-practice-note-sc-gen-23-commence",
+    "targetTimelineRevisionHash": "88502686429cfd53fc56d2ba3f5a9f003e4c3056db8f907060dabd7a3149a91b",
+    "sourceVersionSequence": 2,
+    "status": "pending_review",
+    "discoveredAt": "2026-09-14T19:33:56.948Z",
+    "createdBy": "collector",
+    "notes": "The official source content for \"NSW Supreme Court Practice Note SC Gen 23 commences\" changed. Editorial re-verification is required before the timeline event can be treated as current. Re-verify the existing timeline event before treating it as current. Detected by NSW Supreme Court — practice notes (heuristic assessment).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "nsw",
+      "summary": "The official source content for \"NSW Supreme Court Practice Note SC Gen 23 commences\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html",
+      "finalUrl": "https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html",
+      "retrievedAt": "2026-09-14T19:33:56.948Z",
+      "contentType": "text/html",
+      "contentHash": "a14959306b9195ee884cfa02d91201b0377664ee8eb07851723a249e713bc725",
+      "lastModified": "Mon, 14 Sep 2026 16:42:57 GMT",
+      "title": "NSW Supreme Court Practice Note SC Gen 23 commences"
+    },
+    "proposedRecord": {
+      "id": "tl-2025-02-03-nsw-supreme-court-practice-note-sc-gen-23-commence",
+      "date": "2025-02-03",
+      "title": "NSW Supreme Court Practice Note SC Gen 23 commences",
+      "description": "Restrictions on generative AI use in NSW Supreme Court proceedings take effect (issued 21 November 2024).",
+      "type": "policy_introduced",
+      "jurisdiction": "nsw",
+      "relatedPolicyId": "nsw-supreme-court-sc-gen-23",
+      "sourceUrl": "https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html",
+      "datePrecision": "day"
+    },
+    "linkedDevelopment": {
+      "id": "dev-nsw-supreme-court-practice-note-sc-gen-23-commen-1b1ap38",
+      "title": "NSW Supreme Court Practice Note SC Gen 23 commences",
+      "url": "https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html",
+      "sourceId": "nsw-sc-practice-notes",
+      "sourceName": "NSW Supreme Court — practice notes",
+      "jurisdiction": "nsw",
+      "detectedAt": "2026-09-14T19:33:56.948Z",
+      "summary": "The official source content for \"NSW Supreme Court Practice Note SC Gen 23 commences\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+      "relevanceScore": 1,
+      "classification": "ai",
+      "assessment": {
+        "method": "ai",
+        "promptVersion": "claude-classify-v1",
+        "assessedAt": "2026-09-14T19:33:56.948Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html",
+          "finalUrl": "https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html",
+          "retrievedAt": "2026-09-14T19:33:56.948Z",
+          "contentType": "text/html",
+          "contentHash": "a14959306b9195ee884cfa02d91201b0377664ee8eb07851723a249e713bc725",
+          "lastModified": "Mon, 14 Sep 2026 16:42:57 GMT",
+          "title": "NSW Supreme Court Practice Note SC Gen 23 commences"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-09-14T19:33:56.948Z"
+  },
+  {
     "id": "source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-ahco06",
     "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
     "title": "Senate opens inquiry into artificial intelligence and data centres",

@@ -1,5 +1,35 @@
 [
   {
+    "id": "dev-nsw-supreme-court-practice-note-sc-gen-23-commen-1b1ap38",
+    "title": "NSW Supreme Court Practice Note SC Gen 23 commences",
+    "url": "https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html",
+    "sourceId": "nsw-sc-practice-notes",
+    "sourceName": "NSW Supreme Court — practice notes",
+    "jurisdiction": "nsw",
+    "detectedAt": "2026-09-14T19:33:56.948Z",
+    "summary": "The official source content for \"NSW Supreme Court Practice Note SC Gen 23 commences\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+    "relevanceScore": 1,
+    "classification": "ai",
+    "assessment": {
+      "method": "ai",
+      "promptVersion": "claude-classify-v1",
+      "assessedAt": "2026-09-14T19:33:56.948Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html",
+        "finalUrl": "https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html",
+        "retrievedAt": "2026-09-14T19:33:56.948Z",
+        "contentType": "text/html",
+        "contentHash": "a14959306b9195ee884cfa02d91201b0377664ee8eb07851723a249e713bc725",
+        "lastModified": "Mon, 14 Sep 2026 16:42:57 GMT",
+        "title": "NSW Supreme Court Practice Note SC Gen 23 commences"
+      }
+    },
+    "status": "detected"
+  },
+  {
     "id": "dev-senate-opens-inquiry-into-artificial-intelligenc-ahco06",
     "title": "Senate opens inquiry into artificial intelligence and data centres",
     "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
