@@ -2939,14 +2939,13 @@
     "https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html#policai-change=a14959306b9195ee884cfa02d91201b0377664ee8eb07851723a249e713bc725:2": {
       "firstSeenAt": "2026-09-14T19:33:56.948Z",
       "sourceId": "nsw-sc-practice-notes",
-      "status": "processed",
+      "status": "awaiting_review",
       "attempts": 1,
       "lastAttemptAt": "2026-09-14T19:33:56.948Z",
-      "processedAt": "2026-09-14T19:33:56.948Z",
       "candidate": {
         "title": "NSW Supreme Court Practice Note SC Gen 23 commences",
         "url": "https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html",
-        "text": "Practice Notes Practice Notes set out the steps practitioners and litigants are expected to take to prepare a case for hearing. Recently issued or reissued practice notes SC CL 01 - General Civil List east SC EQ 10 - Revenue List east Court of Appeal east Court of Criminal Appeal east Common Law Division east Equity Division east General east Last updated: 14 September 2026",
+        "text": "The official source content for \"NSW Supreme Court Practice Note SC Gen 23 commences\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
         "changeFingerprint": "a14959306b9195ee884cfa02d91201b0377664ee8eb07851723a249e713bc725:2"
       }
     },
@@ -2978,13 +2977,54 @@
         "text": "Latest Search Yesterday at 01:31 PM Dangerous illegal e-bikes destroyed under tough new laws The Crisafulli Government's nation-leading e-mobil... Yesterday at 10:00 AM 710 new homes fast tracked across South Burnett and Somerset regions The Crisafulli Government is delivering a place to... Sun 13 Sep 26 at 10:30 AM Birthing services returning to Cooktown and Biloela The Crisafulli Government is delivering on another... Fri 11 Sep 26 at 02:45 PM Statement from the Treasurer regarding S&P Global Ratings From the moment the Crisafulli Government was elec... Fri 11 Sep 26 at 01:00 PM G’day to Ips",
         "changeFingerprint": "10acbf0a5579d8b149bbf1cdbd7869c2ac134929fff6ca366b28a05a328cd95d:49"
       }
+    },
+    "https://www.minister.industry.gov.au/t-ayres/media/remarks-the-australian-strategic-policy-institutes-sydney-dialogue-ai-masterclass": {
+      "firstSeenAt": "2026-09-15T19:32:20.299Z",
+      "sourceId": "industry-ministers-media",
+      "status": "processed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-09-15T19:32:20.299Z",
+      "processedAt": "2026-09-15T19:32:20.299Z",
+      "candidate": {
+        "url": "https://www.minister.industry.gov.au/t-ayres/media/remarks-the-australian-strategic-policy-institutes-sydney-dialogue-ai-masterclass",
+        "title": "Remarks to the Australian Strategic Policy Institute's Sydney Dialogue AI Masterclass",
+        "text": "[Skip to main content](https://www.minister.industry.gov.au/t-ayres/media/remarks-the-australian-strategic-policy-institutes-sydney-dialogue-ai-masterclass#content) [Skip to search](https://www.minister.industry.gov.au/t-ayres/media/remarks-the-australian-strategic-policy-institutes-sydney-dialogue-ai-masterclass#search) Senator the Hon Tim Ayres Minister for Industry and Innovation Minister for Science Remarks to the Australian Strategic Policy Institute's Sydney Dialogue AI Masterclass ===================================================================================== 14 September 2026 Spe"
+      }
+    },
+    "https://www.aph.gov.au/Parliamentary_Business/Committees/Joint/Current_Inquiries#policai-change=2d5c7ef88966dbb3cc2752a6f94813836e09970ee8f0d230ee0fce20d2be06bf:26": {
+      "firstSeenAt": "2026-09-15T19:32:20.299Z",
+      "sourceId": "joint-new-inquiries",
+      "status": "dismissed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-09-15T19:32:20.299Z",
+      "processedAt": "2026-09-15T19:32:20.299Z",
+      "candidate": {
+        "title": "Current Joint Inquiries",
+        "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Joint/Current_Inquiries",
+        "text": "Current Joint Inquiries In this section Bills and LegislationTabled documentsChamber documentsHansardSenate estimatesCommitteesLodge my submissionSenate CommitteesHouse of Representatives CommitteesJoint CommitteesAboriginal and Torres Strait Islander AffairsArtificial IntelligenceBroadcasting of Parliamentary ProceedingsCentenary of Parliament in CanberraCorporations and Financial ServicesForeign Affairs, Defence and TradeDefenceImplementation of the National Redress Scheme (Standing)Electoral MattersHuman RightsMigrationIntelligence and SecurityLaw EnforcementNational Anti-Corruption Commiss",
+        "changeFingerprint": "2d5c7ef88966dbb3cc2752a6f94813836e09970ee8f0d230ee0fce20d2be06bf:26"
+      }
+    },
+    "https://statements.qld.gov.au/#policai-change=507b7b6889ad747dd7bd3a4ac73464fd895f52243e0027fbed975c46aa5f2c47:50": {
+      "firstSeenAt": "2026-09-15T19:32:20.299Z",
+      "sourceId": "qld-ministerial-statements",
+      "status": "dismissed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-09-15T19:32:20.299Z",
+      "processedAt": "2026-09-15T19:32:20.299Z",
+      "candidate": {
+        "title": "Media Statements",
+        "url": "https://statements.qld.gov.au/",
+        "text": "Latest Search Yesterday at 03:00 PM Pathway forward delivered for central Queensland town The Crisafulli Government is delivering a plan for... Yesterday at 02:32 PM Strongest parole laws in the nation to keep dangerous prisoners behind bars The Crisafulli Government is delivering the strong... Yesterday at 02:30 PM Thousands more Queenslanders getting skilled for work The Crisafulli Government is delivering opportunit... Yesterday at 01:30 PM First of 22 new schools officially named ahead of 2027 school year The Crisafulli Government has officially named the... Yesterday at 01:25 PM Mining le",
+        "changeFingerprint": "507b7b6889ad747dd7bd3a4ac73464fd895f52243e0027fbed975c46aa5f2c47:50"
+      }
     }
   },
   "lastCheckedBySource": {
-    "apra-rss": "2026-09-14T19:33:56.948Z",
+    "apra-rss": "2026-09-15T19:32:20.299Z",
     "csiro-news": "2026-09-13T09:48:29.654Z",
-    "oaic-media": "2026-09-14T19:33:56.948Z",
-    "accc-rss": "2026-09-14T19:33:56.948Z",
+    "oaic-media": "2026-09-15T19:32:20.299Z",
+    "accc-rss": "2026-09-15T19:32:20.299Z",
     "asic-newsroom": "2026-09-13T19:30:31.171Z",
     "pc-media": "2026-09-13T09:48:29.654Z",
     "nsw-sc-practice-notes": "2026-09-14T19:33:56.948Z",
@@ -2996,52 +3036,52 @@
     "sa-office-for-ai": "2026-07-18T20:12:16.563Z",
     "treasury-publications": "2026-09-13T09:48:29.654Z",
     "qld-courts-news": "2026-09-13T09:48:29.654Z",
-    "pm-media": "2026-09-14T19:33:56.948Z",
-    "pmc-office-ai": "2026-09-14T19:33:56.948Z",
-    "industry-ai-publications": "2026-09-14T19:33:56.948Z",
-    "industry-ministers-media": "2026-09-14T19:33:56.948Z",
-    "dta-media": "2026-09-14T19:33:56.948Z",
-    "digital-gov-ai": "2026-09-14T19:33:56.948Z",
-    "disr-news": "2026-09-14T19:33:56.948Z",
+    "pm-media": "2026-09-15T19:32:20.299Z",
+    "pmc-office-ai": "2026-09-15T19:32:20.299Z",
+    "industry-ai-publications": "2026-09-15T19:32:20.299Z",
+    "industry-ministers-media": "2026-09-15T19:32:20.299Z",
+    "dta-media": "2026-09-15T19:32:20.299Z",
+    "digital-gov-ai": "2026-09-15T19:32:20.299Z",
+    "disr-news": "2026-09-15T19:32:20.299Z",
     "naic-news": "2026-09-13T19:30:31.171Z",
     "finance-news": "2026-09-13T19:30:31.171Z",
-    "agd-ministers-media": "2026-09-14T19:33:56.948Z",
-    "cyber-news": "2026-09-14T19:33:56.948Z",
-    "apsc-latest-news": "2026-09-14T19:33:56.948Z",
+    "agd-ministers-media": "2026-09-15T19:32:20.299Z",
+    "cyber-news": "2026-09-15T19:32:20.299Z",
+    "apsc-latest-news": "2026-09-15T19:32:20.299Z",
     "anao-performance-audits": "2026-09-13T19:30:31.171Z",
     "senate-ai-data-centres": "2026-09-13T19:30:31.171Z",
-    "senate-new-inquiries": "2026-09-14T19:33:56.948Z",
-    "senate-reports": "2026-09-14T19:33:56.948Z",
-    "house-new-inquiries": "2026-09-14T19:33:56.948Z",
-    "joint-new-inquiries": "2026-09-14T19:33:56.948Z",
-    "aph-bills-digests": "2026-09-14T19:33:56.948Z",
-    "legislation-whats-new": "2026-09-14T19:33:56.948Z",
+    "senate-new-inquiries": "2026-09-15T19:32:20.299Z",
+    "senate-reports": "2026-09-15T19:32:20.299Z",
+    "house-new-inquiries": "2026-09-15T19:32:20.299Z",
+    "joint-new-inquiries": "2026-09-15T19:32:20.299Z",
+    "aph-bills-digests": "2026-09-15T19:32:20.299Z",
+    "legislation-whats-new": "2026-09-15T19:32:20.299Z",
     "agd-consultations": "2026-09-13T19:30:31.171Z",
     "industry-consultations": "2026-09-13T19:30:31.171Z",
     "treasury-consultations": "2026-09-13T19:30:31.171Z",
     "aemc-media": "2026-09-13T09:48:29.654Z",
-    "acma-media": "2026-09-14T19:33:56.948Z",
+    "acma-media": "2026-09-15T19:32:20.299Z",
     "tga-media": "2026-09-13T19:30:31.171Z",
     "fwc-news": "2026-09-13T19:30:31.171Z",
     "teqsa-news": "2026-09-13T19:30:31.171Z",
     "aec-media": "2026-09-13T19:30:31.171Z",
-    "esafety-media": "2026-09-14T19:33:56.948Z",
-    "ahrc-media": "2026-09-14T19:33:56.948Z",
+    "esafety-media": "2026-09-15T19:32:20.299Z",
+    "ahrc-media": "2026-09-15T19:32:20.299Z",
     "fedcourt-practice-notes": "2026-09-13T19:30:31.171Z",
-    "nsw-media-releases": "2026-09-14T19:33:56.948Z",
+    "nsw-media-releases": "2026-09-15T19:32:20.299Z",
     "ovic-news": "2026-09-13T09:48:29.654Z",
-    "qld-ministerial-statements": "2026-09-14T19:33:56.948Z",
+    "qld-ministerial-statements": "2026-09-15T19:32:20.299Z",
     "tas-dpac-policies": "2026-09-13T19:30:31.171Z",
     "act-ai-policy": "2026-07-20T12:19:40.243Z",
     "nt-ai-assurance": "2026-09-14T19:33:56.948Z",
     "ipa-news": "2026-09-14T19:33:56.948Z",
-    "wa-media-statements": "2026-09-14T19:33:56.948Z",
+    "wa-media-statements": "2026-09-15T19:32:20.299Z",
     "ovic-privacy-resources": "2026-09-14T19:33:56.948Z",
     "ovic-enterprise-generative-ai": "2026-07-23T20:36:08.370Z",
     "ovic-public-generative-ai": "2026-07-23T20:36:08.370Z",
     "art-practice-directions": "2026-09-14T19:33:56.948Z",
     "wa-sc-practice-directions": "2026-09-14T19:33:56.948Z",
-    "sa-courts-news": "2026-09-14T19:33:56.948Z",
+    "sa-courts-news": "2026-09-15T19:32:20.299Z",
     "act-sc-practice-directions": "2026-09-14T19:33:56.948Z",
     "tas-sc-practice-directions": "2026-09-14T19:33:56.948Z",
     "nt-sc-practice-directions": "2026-09-14T19:33:56.948Z"
@@ -3050,7 +3090,7 @@
     "pmc-office-ai": {
       "contentHash": "4db862eda78cf3d07a56d47be8a73cd5e283dc189501fe090ad5708d1f55116e",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-09-14T19:33:56.948Z",
+      "lastCheckedAt": "2026-09-15T19:32:20.299Z",
       "changeCount": 0
     },
     "naic-news": {
@@ -3108,11 +3148,11 @@
       "lastChangedAt": "2026-09-07T15:15:00.078Z"
     },
     "qld-ministerial-statements": {
-      "contentHash": "10acbf0a5579d8b149bbf1cdbd7869c2ac134929fff6ca366b28a05a328cd95d",
+      "contentHash": "507b7b6889ad747dd7bd3a4ac73464fd895f52243e0027fbed975c46aa5f2c47",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-09-14T19:33:56.948Z",
-      "changeCount": 49,
-      "lastChangedAt": "2026-09-14T19:33:56.948Z"
+      "lastCheckedAt": "2026-09-15T19:32:20.299Z",
+      "changeCount": 50,
+      "lastChangedAt": "2026-09-15T19:32:20.299Z"
     },
     "act-ai-policy": {
       "contentHash": "0040e7ec83db2a7430b63de7cf72e581dcc938a3139b85ec32c40aa15dc5f4a0",
@@ -3180,7 +3220,7 @@
     "vic-ai": {
       "contentHash": "6013a3f65fd755391a25c8768410318375421342c47621c337baf604fe5abc71",
       "firstCheckedAt": "2026-07-29T20:30:22.291Z",
-      "lastCheckedAt": "2026-09-14T19:33:56.948Z",
+      "lastCheckedAt": "2026-08-07T05:10:37.597Z",
       "lastChangedAt": "2026-08-07T05:10:38.082Z",
       "changeCount": 1
     },
@@ -3201,16 +3241,16 @@
     "house-new-inquiries": {
       "contentHash": "17fa2581adc527c181088f75ffea4548e949bc97d0b5ff4c98f792b9b2c69f69",
       "firstCheckedAt": "2026-08-07T04:32:08.175Z",
-      "lastCheckedAt": "2026-09-14T19:33:56.948Z",
+      "lastCheckedAt": "2026-09-15T19:32:20.299Z",
       "changeCount": 11,
       "lastChangedAt": "2026-09-14T19:33:56.948Z"
     },
     "joint-new-inquiries": {
-      "contentHash": "1dd2cfdc10ccf0877bbe3fcfebc19ba7d40fdd01525dbbc66f03b5be47775ed7",
+      "contentHash": "2d5c7ef88966dbb3cc2752a6f94813836e09970ee8f0d230ee0fce20d2be06bf",
       "firstCheckedAt": "2026-08-07T04:32:08.175Z",
-      "lastCheckedAt": "2026-09-14T19:33:56.948Z",
-      "changeCount": 25,
-      "lastChangedAt": "2026-09-14T19:33:56.948Z"
+      "lastCheckedAt": "2026-09-15T19:32:20.299Z",
+      "changeCount": 26,
+      "lastChangedAt": "2026-09-15T19:32:20.299Z"
     },
     "art-practice-directions": {
       "contentHash": "4b68d0ccf77794390152d126d540f0a8b34eae661123a135b4157c2aeff59a7f",

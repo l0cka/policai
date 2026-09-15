@@ -1,5 +1,77 @@
 [
   {
+    "id": "source-review-dev-remarks-to-the-australian-strategic-policy-insti-o8aiyl",
+    "sourceUrl": "https://www.minister.industry.gov.au/t-ayres/media/remarks-the-australian-strategic-policy-institutes-sydney-dialogue-ai-masterclass",
+    "title": "Remarks to the Australian Strategic Policy Institute's Sydney Dialogue AI Masterclass",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-09-15T19:32:20.299Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from Industry, Science and Resources ministers — media centre (score 0.65, ai).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.65,
+      "suggestedType": "guideline",
+      "suggestedJurisdiction": "federal",
+      "summary": "Federal minister's remarks on AI policy delivered at the Australian Strategic Policy Institute's Sydney Dialogue AI Masterclass.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.minister.industry.gov.au/t-ayres/media/remarks-the-australian-strategic-policy-institutes-sydney-dialogue-ai-masterclass",
+      "finalUrl": "https://www.minister.industry.gov.au/t-ayres/media/remarks-the-australian-strategic-policy-institutes-sydney-dialogue-ai-masterclass",
+      "retrievedAt": "2026-09-15T19:32:20.299Z",
+      "contentType": "text/plain",
+      "contentHash": "82370bfe62ea229262b2c158072e08d1be4206064f2f611a7bd11d90e2dcea47",
+      "title": "Remarks to the Australian Strategic Policy Institute's Sydney Dialogue AI Masterclass"
+    },
+    "proposedRecord": {
+      "id": "remarks-to-the-australian-strategic-policy-institute-s-sydne",
+      "title": "Remarks to the Australian Strategic Policy Institute's Sydney Dialogue AI Masterclass",
+      "description": "Federal minister's remarks on AI policy delivered at the Australian Strategic Policy Institute's Sydney Dialogue AI Masterclass.",
+      "jurisdiction": "federal",
+      "type": "guideline",
+      "status": "active",
+      "agencies": [],
+      "sourceUrl": "https://www.minister.industry.gov.au/t-ayres/media/remarks-the-australian-strategic-policy-institutes-sydney-dialogue-ai-masterclass",
+      "content": "[Skip to main content](https://www.minister.industry.gov.au/t-ayres/media/remarks-the-australian-strategic-policy-institutes-sydney-dialogue-ai-masterclass#content) [Skip to search](https://www.minister.industry.gov.au/t-ayres/media/remarks-the-australian-strategic-policy-institutes-sydney-dialogue-ai-masterclass#search) Senator the Hon Tim Ayres Minister for Industry and Innovation Minister for Science Remarks to the Australian Strategic Policy Institute's Sydney Dialogue AI Masterclass ===================================================================================== 14 September 2026 Spe",
+      "aiSummary": "Federal minister's remarks on AI policy delivered at the Australian Strategic Policy Institute's Sydney Dialogue AI Masterclass.",
+      "tags": [],
+      "createdAt": "2026-09-15T19:32:20.299Z",
+      "updatedAt": "2026-09-15T19:32:20.299Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-remarks-to-the-australian-strategic-policy-insti-o8aiyl",
+      "title": "Remarks to the Australian Strategic Policy Institute's Sydney Dialogue AI Masterclass",
+      "url": "https://www.minister.industry.gov.au/t-ayres/media/remarks-the-australian-strategic-policy-institutes-sydney-dialogue-ai-masterclass",
+      "sourceId": "industry-ministers-media",
+      "sourceName": "Industry, Science and Resources ministers — media centre",
+      "jurisdiction": "federal",
+      "detectedAt": "2026-09-15T19:32:20.299Z",
+      "summary": "Federal minister's remarks on AI policy delivered at the Australian Strategic Policy Institute's Sydney Dialogue AI Masterclass.",
+      "relevanceScore": 0.65,
+      "classification": "ai",
+      "assessment": {
+        "method": "ai",
+        "promptVersion": "claude-classify-v1",
+        "assessedAt": "2026-09-15T19:32:20.299Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.minister.industry.gov.au/t-ayres/media/remarks-the-australian-strategic-policy-institutes-sydney-dialogue-ai-masterclass",
+          "finalUrl": "https://www.minister.industry.gov.au/t-ayres/media/remarks-the-australian-strategic-policy-institutes-sydney-dialogue-ai-masterclass",
+          "retrievedAt": "2026-09-15T19:32:20.299Z",
+          "contentType": "text/plain",
+          "contentHash": "82370bfe62ea229262b2c158072e08d1be4206064f2f611a7bd11d90e2dcea47",
+          "title": "Remarks to the Australian Strategic Policy Institute's Sydney Dialogue AI Masterclass"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-09-15T19:32:20.299Z"
+  },
+  {
     "id": "source-review-dev-nsw-supreme-court-practice-note-sc-gen-23-commen-1b1ap38",
     "sourceUrl": "https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html",
     "title": "NSW Supreme Court Practice Note SC Gen 23 commences",
