@@ -1,5 +1,77 @@
 [
   {
+    "id": "source-review-dev-office-of-ai-ohz9pi",
+    "sourceUrl": "https://www.pmc.gov.au/domestic-policy/office-ai",
+    "title": "Office of AI",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-09-17T19:32:40.681Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from Department of the Prime Minister and Cabinet — Office of AI (score 0.65, ai).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.65,
+      "suggestedType": "guideline",
+      "suggestedJurisdiction": "federal",
+      "summary": "PM&C's Office of AI will coordinate agencies to develop a mandatory Australian AI standard covering data centre energy, water and copyright protections.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.pmc.gov.au/domestic-policy/office-ai",
+      "finalUrl": "https://www.pmc.gov.au/domestic-policy/office-ai",
+      "retrievedAt": "2026-09-17T19:32:40.681Z",
+      "contentType": "text/html",
+      "contentHash": "323af0296ecec3b23060d62b35977feb3e146f734320f9a6d5df6da1f6b663c3",
+      "title": "Office of AI"
+    },
+    "proposedRecord": {
+      "id": "office-of-ai",
+      "title": "Office of AI",
+      "description": "PM&C's Office of AI will coordinate agencies to develop a mandatory Australian AI standard covering data centre energy, water and copyright protections.",
+      "jurisdiction": "federal",
+      "type": "guideline",
+      "status": "active",
+      "agencies": [],
+      "sourceUrl": "https://www.pmc.gov.au/domestic-policy/office-ai",
+      "content": "Listen The office will coordinate across Australian Government agencies to design and legislate the new Australia artificial intelligence (AI) standard and unlock AI training in Australia. These standards will include mandatory requirements for large AI data centres, including setting standards for energy and water, with strong copyright protections for Australian creators.Working closely with the Minister for Industry and Innovation, Assistant Minister for Science, Technology and the Digital Economy, and the Department of Industry, Science and Resources, the Office of AI will bring together t",
+      "aiSummary": "PM&C's Office of AI will coordinate agencies to develop a mandatory Australian AI standard covering data centre energy, water and copyright protections.",
+      "tags": [],
+      "createdAt": "2026-09-17T19:32:40.681Z",
+      "updatedAt": "2026-09-17T19:32:40.681Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-office-of-ai-ohz9pi",
+      "title": "Office of AI",
+      "url": "https://www.pmc.gov.au/domestic-policy/office-ai",
+      "sourceId": "pmc-office-ai",
+      "sourceName": "Department of the Prime Minister and Cabinet — Office of AI",
+      "jurisdiction": "federal",
+      "detectedAt": "2026-09-17T19:32:40.681Z",
+      "summary": "PM&C's Office of AI will coordinate agencies to develop a mandatory Australian AI standard covering data centre energy, water and copyright protections.",
+      "relevanceScore": 0.65,
+      "classification": "ai",
+      "assessment": {
+        "method": "ai",
+        "promptVersion": "claude-classify-v1",
+        "assessedAt": "2026-09-17T19:32:40.681Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.pmc.gov.au/domestic-policy/office-ai",
+          "finalUrl": "https://www.pmc.gov.au/domestic-policy/office-ai",
+          "retrievedAt": "2026-09-17T19:32:40.681Z",
+          "contentType": "text/html",
+          "contentHash": "323af0296ecec3b23060d62b35977feb3e146f734320f9a6d5df6da1f6b663c3",
+          "title": "Office of AI"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-09-17T19:32:40.681Z"
+  },
+  {
     "id": "source-review-dev-remarks-to-the-australian-strategic-policy-insti-o8aiyl",
     "sourceUrl": "https://www.minister.industry.gov.au/t-ayres/media/remarks-the-australian-strategic-policy-institutes-sydney-dialogue-ai-masterclass",
     "title": "Remarks to the Australian Strategic Policy Institute's Sydney Dialogue AI Masterclass",
