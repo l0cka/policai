@@ -32,6 +32,11 @@ export const metadata: Metadata = {
     'AI governance Australia',
   ],
   metadataBase: parseSourceUrl('https://policai.org'),
+  alternates: {
+    types: {
+      'application/atom+xml': 'https://policai.org/feed.xml',
+    },
+  },
 };
 
 export default async function RootLayout({

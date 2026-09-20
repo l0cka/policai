@@ -2,6 +2,7 @@ import Link from 'next/link';
 
 const links = [
   { href: '/methodology', label: 'Methodology', external: false },
+  { href: '/feed.xml', label: 'RSS', external: false },
   { href: '/api/policies', label: 'API', external: false },
   { href: 'https://github.com/l0cka/policai', label: 'GitHub', external: true },
 ];

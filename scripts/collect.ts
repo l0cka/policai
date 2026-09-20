@@ -88,7 +88,9 @@ async function main() {
   const options = parseArgs(process.argv.slice(2));
 
   console.log(
-    '[collect] Analysis mode: deterministic heuristics (detections require review)',
+    process.env.USE_CLAUDE_CLASSIFIER
+      ? '[collect] Analysis mode: Claude classifier (detections require review)'
+      : '[collect] Analysis mode: deterministic heuristics (detections require review)',
   );
 
   let sources = getAutomaticSources();
