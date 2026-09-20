@@ -134,13 +134,22 @@ the newest version rejects older still-active update reviews as superseded.
 
 Candidates that survive dedup are classified by keyword heuristic by default.
 When `USE_CLAUDE_CLASSIFIER` is set (it is, on the scheduled collection host), they are
-classified by Claude, an Anthropic model, instead, invoked in batches of
-`CLAUDE_BATCH_SIZE` (20) candidates per call through the Claude Code CLI
-already installed and authenticated on the host (`CLAUDE_BIN`, default
-`claude` on `PATH`). For each candidate Claude returns whether it is relevant,
-a confidence score, a jurisdiction/type guess, and a short draft summary. A
-verdict that fails schema validation is dropped, and that candidate falls back
-to the keyword heuristic rather than being persisted unchecked.
+classified by the configured AI model instead, invoked in batches of
+`CLAUDE_BATCH_SIZE` (20) candidates per call through
+`src/lib/pipeline/classifier-cli.ts`: one OpenAI-compatible
+`POST {CLASSIFIER_BASE_URL}chat/completions` per batch, authenticated with
+`CLASSIFIER_API_KEY` and pinned to `CLASSIFIER_MODEL`. On the scheduled
+collection host (`~/.local/bin/policai-collect.sh`) these resolve to Ollama
+Cloud and `deepseek-v4.1-flash`, with the key read at run time from the
+Hermes secrets file and never logged or committed. The request carries no
+tools, so scraped page text cannot invoke anything. For each candidate the
+model returns whether it is relevant, a confidence score, a
+jurisdiction/type guess, and a short draft summary. A verdict that fails
+schema validation is dropped, and that candidate falls back to the keyword
+heuristic rather than being persisted unchecked. Legacy naming: the opt-in
+flag, the `ClaudeAuthError` class and the `claude-classify-v1` prompt
+version date from the original Claude Code CLI transport and are kept for
+log, data and call-site stability.
 
 Confidence from either classifier path is capped at 0.65
 (`MACHINE_CONFIDENCE_CAP`) before it is stored or shown, so every automated

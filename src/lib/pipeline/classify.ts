@@ -112,9 +112,11 @@ export async function classifyCandidate(
 }
 
 /**
- * Reads the collector's Claude-classifier opt-in. Unset (the default) keeps
- * the deterministic heuristic path byte-for-byte unchanged; the scheduled collection run
- * sets this once the Claude path is trusted enough to run unattended.
+ * Reads the collector's AI-classifier opt-in. Unset (the default) keeps the
+ * deterministic heuristic path byte-for-byte unchanged; the scheduled
+ * collection run sets this once the configured classifier is trusted enough
+ * to run unattended. The name predates the pluggable HTTP transport and is
+ * kept for log and call-site stability.
  */
 export function isClaudeClassifierEnabled(): boolean {
   return Boolean(process.env.USE_CLAUDE_CLASSIFIER);

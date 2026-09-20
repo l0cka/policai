@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { runClaude } from './claude-cli';
+import { runClassifier } from './classifier-cli';
 
 export const CLAUDE_BATCH_SIZE = 20;
 const EXCERPT_LIMIT = 600;
@@ -17,14 +17,21 @@ const verdictSchema = z.object({
   confidence: z.number().min(0).max(1),
   jurisdiction: z.string().nullable(),
   type: z.string().nullable(),
-  // Prompt asks Claude for summaries of 200 chars or fewer; schema accepts up to
-  // 400 as deliberate tolerance so a slightly long summary is accepted rather
+  // Prompt asks the model for summaries of 200 chars or fewer; schema accepts up
+  // to 400 as deliberate tolerance so a slightly long summary is accepted rather
   // than silently dropped (validation failure = skipped entry, not corruption).
   summary: z.string().max(400),
 });
 
 export type ClaudeVerdict = z.infer<typeof verdictSchema>;
 
+/**
+ * Builds the classifier prompt. The model receives batched candidate metadata
+ * only (id, title, source name, bounded excerpt) and must answer with a JSON
+ * array matching verdictSchema; the schema parse, not the prompt, is the
+ * guarantee. The classifier backend has no tools and no network access of its
+ * own, so untrusted excerpt text cannot do anything except influence text.
+ */
 function buildPrompt(batch: ClaudeCandidate[]): string {
   const items = batch.map((c) => ({
     id: c.id,
@@ -64,7 +71,7 @@ export async function classifyBatch(
   const verdicts: ClaudeVerdict[] = [];
   for (let i = 0; i < candidates.length; i += CLAUDE_BATCH_SIZE) {
     const batch = candidates.slice(i, i + CLAUDE_BATCH_SIZE);
-    const reply = await runClaude(buildPrompt(batch));
+    const reply = await runClassifier(buildPrompt(batch));
     for (const entry of extractArray(reply)) {
       const parsed = verdictSchema.safeParse(entry);
       // A malformed entry is a skipped item, never a corrupt record.
