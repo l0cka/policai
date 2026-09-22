@@ -120,9 +120,11 @@ def assert_clean(tree):
 
 
 def changed_paths(tree):
-    # No porcelain parsing: handle spaces and renames with Git NUL-delimited paths.
+    # HEAD-to-worktree alone hides staged changes cancelled in the worktree.
+    # Disable rename folding so both old and new paths meet the exact allowlist.
     paths = set()
-    for args in [('diff', '--name-only', '-z', 'HEAD'),
+    for args in [('diff', '--cached', '--no-renames', '--name-only', '-z', 'HEAD'),
+                 ('diff', '--no-renames', '--name-only', '-z'),
                  ('ls-files', '--others', '--exclude-standard', '-z')]:
         paths.update(p for p in git(*args, cwd=tree).split('\0') if p)
     return paths
@@ -224,6 +226,11 @@ def collect(run):
         save(run)
         return run['collection_exit']
     git('add', '--', *ALLOWED, cwd=tree)
+    # Commit consumes the entire index, not merely the preceding add's paths.
+    staged = set(git('diff', '--cached', '--no-renames', '--name-only', '-z',
+                     'HEAD', cwd=tree).split('\0')) - {''}
+    if not staged or staged - set(ALLOWED):
+        raise Refused('staged output paths empty or outside explicit allowlist; index retained, no commit')
     git('-c', 'user.name=policai-collector[bot]',
         '-c', 'user.email=policai-collector[bot]@users.noreply.github.com',
         'commit', '-m', 'chore(data): daily collection ' + run['started_at'][:10], cwd=tree)

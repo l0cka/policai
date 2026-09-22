@@ -122,6 +122,79 @@ else:
         self.assertFalse((self.home / 'pr.json').exists())
         self.assertEqual((Path(self.receipt()['tree']) / 'data/unexpected.json').read_text(), 'private')
 
+    def assert_index_cancellation_refused(self, path, collected):
+        self.set_collector(
+            f'path = pathlib.Path({path!r})\n'
+            'original = path.read_bytes()\n'
+            'path.write_text("unexpected staged content")\n'
+            f'subprocess.check_call(["git", "add", "--", {path!r}])\n'
+            'path.write_bytes(original)\n'
+            + ('pathlib.Path("data/developments.json").write_text("collected")'
+               if collected else 'pass'))
+        result = self.run_workflow()
+        run = self.receipt()
+        tree = Path(run['tree'])
+        self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+        self.assertEqual(subprocess.check_output(
+            ['git', 'rev-parse', 'HEAD'], cwd=tree, text=True).strip(), self.base,
+            'unexpected staged bytes must not enter even a local commit')
+        self.assertEqual(run['phase'], 'collecting')
+        self.assertIn(path, run['changed_paths'])
+        self.assertIn('unexpected output paths', run['message'])
+        self.assertEqual(subprocess.check_output(
+            ['git', 'show', ':' + path], cwd=tree, text=True), 'unexpected staged content')
+        self.assertEqual((tree / path).read_text(), '{}\n')
+        self.assertEqual(run['register_before'], run['register_after'])
+        evidence = Path(run['evidence'])
+        for phase in ['before', 'after']:
+            self.assertEqual((evidence / phase / 'data/policies.json').read_text(), '{}\n')
+        if collected:
+            self.assertEqual((evidence / 'after/data/developments.json').read_text(), 'collected')
+        self.assertFalse((self.home / 'pr.json').exists())
+        self.assertEqual(self.git('ls-remote', 'origin', 'refs/heads/' + run['branch']), '')
+        self.assertEqual(self.git('ls-remote', 'origin', 'refs/heads/main').split()[0], self.base)
+
+    def test_index_only_unexpected_change_never_committed(self):
+        self.assert_index_cancellation_refused('package-lock.json', collected=True)
+
+    def test_index_only_unexpected_change_not_no_changes_success(self):
+        self.assert_index_cancellation_refused('package-lock.json', collected=False)
+
+    def test_index_only_curated_register_change_refused(self):
+        self.assert_index_cancellation_refused('data/policies.json', collected=True)
+
+    def test_final_staged_allowlist_refuses_index_change_after_add(self):
+        # Exercise the last gate with real Git: inject an index-only change
+        # after the wrapper's allowlisted add, without changing working bytes.
+        real_git = subprocess.check_output(['which', 'git'], text=True).strip()
+        git_shim = self.home / '.local/bin/git'
+        git_shim.write_text(
+            '#!/usr/bin/env python3\nimport pathlib,subprocess,sys\n'
+            f'real_git = {real_git!r}\n'
+            'args = sys.argv[1:]\n'
+            'subprocess.check_call([real_git, *args])\n'
+            'if args[:2] == ["add", "--"] and "public/data/meta.json" in args:\n'
+            '    path = pathlib.Path("package-lock.json")\n'
+            '    original = path.read_bytes()\n'
+            '    path.write_text("late staged content")\n'
+            '    subprocess.check_call([real_git, "add", "--", str(path)])\n'
+            '    path.write_bytes(original)\n')
+        git_shim.chmod(0o755)
+        result = self.run_workflow()
+        run = self.receipt()
+        tree = Path(run['tree'])
+        self.assertEqual(result.returncode, 1, result.stderr)
+        self.assertEqual(subprocess.check_output(
+            [real_git, 'rev-parse', 'HEAD'], cwd=tree, text=True).strip(), self.base,
+            'final staged allowlist must refuse before committing')
+        self.assertIn('staged output paths', run['message'])
+        self.assertEqual(run['phase'], 'collecting')
+        self.assertEqual(subprocess.check_output(
+            [real_git, 'show', ':package-lock.json'], cwd=tree, text=True), 'late staged content')
+        self.assertEqual((tree / 'package-lock.json').read_text(), '{}\n')
+        self.assertFalse((self.home / 'pr.json').exists())
+        self.assertEqual(self.git('ls-remote', 'origin', 'refs/heads/' + run['branch']), '')
+
     def test_pending_pr_blocks_without_new_collection(self):
         self.assertEqual(self.run_workflow().returncode, 0)
         first = (self.home / 'pr.json').read_text()
@@ -193,6 +266,31 @@ else:
         gh.write_text(original)
         self.assertEqual(self.run_workflow('--retry-publication').returncode, 0)
         self.assertEqual(self.receipt()['head'], run['head'])
+
+    def test_lost_pr_readback_then_merge_requires_manual_recovery(self):
+        gh = self.home / '.local/bin/gh'
+        original = gh.read_text()
+        gh.write_text(original.replace("elif a[:2] == ['pr','view']:",
+                                       "elif a[:2] == ['pr','view']:\n    sys.exit(7)"))
+        self.assertEqual(self.run_workflow().returncode, 1)
+        first = self.receipt()
+        self.assertEqual(first['phase'], 'ready')
+        self.assertTrue((self.home / 'pr.json').exists())
+        self.git('fetch', 'origin', first['branch'])
+        self.git('merge', '--ff-only', 'FETCH_HEAD')
+        self.git('push', 'origin', 'main')
+        (self.home / 'pr.json').unlink()  # merged PR leaves the OPEN inventory
+        gh.write_text(original)
+        ordinary = self.run_workflow()
+        self.assertEqual(ordinary.returncode, 1)
+        self.assertIn('previous incomplete run retained', ordinary.stderr)
+        retry = self.run_workflow('--retry-publication')
+        self.assertEqual(retry.returncode, 1)
+        self.assertIn('main advanced', retry.stderr)
+        self.assertEqual(self.receipt()['head'], first['head'])
+        self.assertEqual(self.receipt()['phase'], 'ready')
+        self.assertTrue((Path(first['evidence']) / 'after/data/developments.json').is_file())
+        self.assertEqual(len(list((self.home / 'Work/Argus/src/policai-collection-runs').iterdir())), 1)
 
     def test_remote_collection_branch_changed_never_overwritten(self):
         gh = self.home / '.local/bin/gh'
