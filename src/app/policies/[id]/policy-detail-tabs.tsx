@@ -17,15 +17,17 @@ import {
 import {
   getJurisdictionName,
   getPolicyDateTypeName,
-  getPolicyStatusName,
   getPolicyTypeName,
   getPrimaryPolicyDate,
   type Policy,
+  type PublicCourtRequirement,
 } from '@/types';
 import { jurisdictionAccent } from '@/lib/jurisdiction-accent';
 import { parseSourceUrl } from '@/lib/source-url';
 import { EmptyState } from '@/components/ui/empty-state';
 import { formatPolicyDate } from '@/lib/format-policy-date';
+import { CourtRequirementsList } from "@/components/court-requirements-list";
+import { StatusPill } from "@/components/policy-table";
 import { cn } from '@/lib/utils';
 
 type TabId = 'overview' | 'requirements' | 'content';
@@ -56,19 +58,7 @@ function getRequirements(policy: Policy): string[] {
 }
 
 function StatusBadge({ policy }: { policy: Policy }) {
-  const active = policy.status === 'active';
-  return (
-    <span
-      className={cn(
-        'inline-flex rounded-md border px-2.5 py-1 text-xs font-medium',
-        active
-          ? 'border-[var(--trust)]/25 bg-[var(--status-active-bg)] text-[var(--trust)]'
-          : 'border-border bg-muted text-muted-foreground',
-      )}
-    >
-      {getPolicyStatusName(policy.status)}
-    </span>
-  );
+  return <StatusPill status={policy.status} dates={policy.dates} />;
 }
 
 function CopyLinkButton() {
@@ -92,9 +82,11 @@ function CopyLinkButton() {
 export function PolicyDetailTabs({
   policy,
   relatedPolicies,
+  courtRequirements = [],
 }: {
   policy: Policy;
   relatedPolicies: Policy[];
+  courtRequirements?: PublicCourtRequirement[];
 }) {
   const [activeTab, setActiveTab] = useState<TabId>('overview');
   const requirements = useMemo(() => getRequirements(policy), [policy]);
@@ -209,7 +201,7 @@ export function PolicyDetailTabs({
               <div className="mt-7 grid gap-7 lg:grid-cols-[minmax(0,1fr)_17rem]">
                 {/* Grid items default to min-width auto and refuse to shrink. */}
                 <div className="min-w-0">
-                  <h2 className="section-title">Key requirements</h2>
+                  <h2 className="section-title">Editorial summary</h2>
                   <ol className="mt-3 border-y border-border">
                     {requirements.slice(0, 3).map((requirement, index) => (
                       <li key={`${requirement.slice(0, 30)}-${index}`} className="flex gap-3 border-b border-border px-2 py-3 last:border-b-0">
@@ -220,7 +212,7 @@ export function PolicyDetailTabs({
                       </li>
                     ))}
                   </ol>
-                  {requirements.length > 3 ? (
+                  {courtRequirements.length > 0 || requirements.length > 3 ? (
                     <button type="button" onClick={() => setActiveTab('requirements')} className="mt-3 inline-flex items-center gap-2 text-sm text-primary hover:underline">
                       View all requirements <ArrowRight className="h-4 w-4" />
                     </button>
@@ -245,7 +237,8 @@ export function PolicyDetailTabs({
 
           {activeTab === 'requirements' ? (
             <div className="py-6">
-              <h2 className="section-title">Key requirements</h2>
+              <CourtRequirementsList title={policy.title} requirements={courtRequirements} />
+              <h2 className="section-title">Editorial summary</h2>
               <ol className="mt-4 max-w-4xl border-y border-border">
                 {requirements.map((requirement, index) => (
                   <li key={`${requirement.slice(0, 30)}-${index}`} className="flex gap-4 border-b border-border py-4 last:border-b-0">

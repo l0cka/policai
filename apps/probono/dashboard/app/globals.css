@@ -28,19 +28,19 @@
   color-scheme: light dark;
   --radius: 0.5rem;
 
-  --background: light-dark(#f4f1e8, #10141b);
-  --foreground: light-dark(#10213a, #edf2f7);
-  --card: light-dark(#faf8f2, #151b24);
-  --popover: light-dark(#fffdf8, #171e28);
-  --primary: light-dark(#2f4fd8, #8fa8ff);
-  --primary-foreground: light-dark(#ffffff, #09101d);
-  --muted: light-dark(#e9edf0, #202936);
-  --muted-foreground: light-dark(#526176, #a7b2c3);
-  --border: light-dark(#c3ccd3, #333f4f);
-  --input: light-dark(#aeb9c4, #4a586b);
-  --ring: light-dark(#2f4fd8, #8fa8ff);
+  --background: light-dark(#f8f7f3, #151b18);
+  --foreground: light-dark(#202822, #eef0e9);
+  --card: light-dark(#fffefa, #1b231e);
+  --popover: light-dark(#fffefa, #1b231e);
+  --primary: light-dark(#245847, #a3cfb3);
+  --primary-foreground: light-dark(#ffffff, #151b18);
+  --muted: light-dark(#eeeee7, #27302a);
+  --muted-foreground: light-dark(#606760, #b0bbb1);
+  --border: light-dark(#dcded6, #38443b);
+  --input: light-dark(#9da89c, #6b796e);
+  --ring: light-dark(#245847, #a3cfb3);
 
-  --row-hover: light-dark(#ebeae2, #1b232e);
+  --row-hover: light-dark(#eeeee7, #27302a);
   --navy: light-dark(#102a43, #09182a);
   --trust: light-dark(#146b5a, #65d2b4);
   --caution: light-dark(#b7791f, #e7b96c);
@@ -89,15 +89,10 @@
   --dur-base: 220ms;
   --dur-slow: 420ms;
 
-  /*
-   * The site is set entirely in IBM Plex Mono. The three role names are kept
-   * because the stylesheet reasons in them — display, interface, metadata —
-   * and because pointing them all at one stack is a one-line change to undo.
-   */
-  --font-stack: var(--font-plex-mono), 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
-  --font-sans: var(--font-stack);
-  --font-mono: var(--font-stack);
-  --font-display: var(--font-stack);
+  /* Editorial index 02: interface, metadata, and reading roles. */
+  --font-sans: Arial, Helvetica, sans-serif;
+  --font-mono: 'Courier New', monospace;
+  --font-display: Georgia, 'Times New Roman', serif;
 }
 
 /* The toggle wins over the system preference by pinning `color-scheme`. */
@@ -120,8 +115,7 @@ body {
   display: flex;
   flex-direction: column;
   background: var(--background);
-  background-image: radial-gradient(var(--background-pattern) 0.7px, transparent 0.7px);
-  background-size: 6px 6px;
+  background-image: none;
   color: var(--foreground);
   font-family: var(--font-sans);
   font-size: 15px;

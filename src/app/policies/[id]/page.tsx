@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { type Policy } from '@/types';
 import { getPolicyById, getPolicies } from '@/lib/data-service';
+import { getPublicCourtRequirements } from '@/lib/court-requirements';
 import { PolicyDetailTabs } from './policy-detail-tabs';
 
 export const revalidate = 3600;
@@ -45,6 +46,7 @@ export default async function PolicyDetailPage({ params }: { params: Promise<{ i
   if (!policy) notFound();
 
   const relatedPolicies = await getRelatedPolicies(policy);
+  const courtRequirements = policy.type === "practice_note" ? await getPublicCourtRequirements({ policyId: id }) : [];
 
   return (
     <div className="container mx-auto px-4 py-6 sm:px-6 lg:px-8">
@@ -56,7 +58,7 @@ export default async function PolicyDetailPage({ params }: { params: Promise<{ i
         <span className="text-foreground">Policy</span>
       </nav>
 
-      <PolicyDetailTabs policy={policy} relatedPolicies={relatedPolicies} />
+      <PolicyDetailTabs policy={policy} relatedPolicies={relatedPolicies} courtRequirements={courtRequirements} />
     </div>
   );
 }

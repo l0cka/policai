@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useSyncExternalStore, useMemo, useEffect, useRef } from "react";
 import Link from "next/link";
+import { CourtRequirementsList } from "./court-requirements-list";
 import {
 	ExternalLink,
 	ChevronDown,
@@ -44,14 +45,6 @@ interface CourtNote extends Policy {
 type AudienceFilter = "all" | "judicial" | "self-represented" | "profession";
 type SortMode = "jurisdiction" | "newest";
 
-const MODALITY_LABELS: Record<PublicCourtRequirement["modality"], string> = {
-	must: "Must",
-	must_not: "Must not",
-	should: "Should",
-	should_not: "Should not",
-	may: "May",
-	will: "Will",
-};
 
 const AUDIENCE_TAGS: Record<Exclude<AudienceFilter, "all">, string[]> = {
 	judicial: ["judicial officers", "judicial guidelines", "judiciary"],
@@ -67,10 +60,18 @@ function extractCourtName(policy: Policy): string {
 	return policy.agencies[0] || "Unknown Court";
 }
 
-function matchesAudience(note: CourtNote, audience: AudienceFilter): boolean {
+function matchesAudience(note: CourtNote, audience: AudienceFilter, requirements: PublicCourtRequirement[] = []): boolean {
 	if (audience === "all") return true;
 	const tags = note.tags.map((tag) => tag.toLowerCase());
-	return AUDIENCE_TAGS[audience].some((tag) => tags.includes(tag));
+	if (AUDIENCE_TAGS[audience].some((tag) => tags.includes(tag))) return true;
+	// Use the published actor field, not incidental mentions in quotations.
+	// Mixed audiences remain eligible for each applicable audience.
+	const actorPatterns = {
+		profession: /\b(?:legal practitioners?|practitioners?|lawyers?|legal representatives?|professional representatives?)\b/i,
+		judicial: /\b(?:judicial officers?|judges?|judiciary)\b/i,
+		"self-represented": /\b(?:self[- ]represented|unrepresented|litigants in person|non[- ]lawyers)\b/i,
+	};
+	return requirements.some(({ actor }) => actorPatterns[audience].test(actor.replace(/\bnon[- ]lawyers?\b/gi, audience === "profession" ? "" : "$&")));
 }
 
 function instrumentLabel(note: CourtNote): string {
@@ -94,6 +95,30 @@ function newestFirst(a: CourtNote, b: CourtNote): number {
 	);
 }
 
+function subscribeToCourtUrl(onChange: () => void) {
+	window.addEventListener("popstate", onChange);
+	window.addEventListener("courts-state", onChange);
+	return () => {
+		window.removeEventListener("popstate", onChange);
+		window.removeEventListener("courts-state", onChange);
+	};
+}
+const courtUrlSnapshot = () => window.location.search;
+const serverCourtUrlSnapshot = () => "";
+
+function updateCourtUrl(values: Record<string, string | null>) {
+	const url = new URL(window.location.href);
+	for (const [key, value] of Object.entries(values)) {
+		const isDefault = ((key === "jurisdiction" || key === "audience") && value === "all") || (key === "sort" && value === "jurisdiction");
+		if (value && !isDefault) url.searchParams.set(key, value);
+		else url.searchParams.delete(key);
+	}
+	// Replace this research state without a history entry per keystroke.
+	// Preserve Next's history metadata so Back retains its scroll restoration.
+	window.history.replaceState(window.history.state, "", url);
+	window.dispatchEvent(new Event("courts-state"));
+}
+
 export function CourtsBrowser({
 	policies,
 	requirements = [],
@@ -101,11 +126,40 @@ export function CourtsBrowser({
 	policies: Policy[];
 	requirements?: PublicCourtRequirement[];
 }) {
-	const [expandedId, setExpandedId] = useState<string | null>(null);
-	const [search, setSearch] = useState("");
-	const [jurisdiction, setJurisdiction] = useState<Jurisdiction | "all">("all");
-	const [audience, setAudience] = useState<AudienceFilter>("all");
-	const [sortMode, setSortMode] = useState<SortMode>("jurisdiction");
+	const queryString = useSyncExternalStore(subscribeToCourtUrl, courtUrlSnapshot, serverCourtUrlSnapshot);
+	const restoredScroll = useRef(false);
+	const containerRef = useRef<HTMLDivElement>(null);
+	useEffect(() => {
+		if (restoredScroll.current || queryString !== window.location.search) return;
+		const top = window.history.state?.courtsScroll;
+		if (typeof top !== "number" || !Number.isFinite(top)) {
+			restoredScroll.current = true;
+			return;
+		}
+		const container = containerRef.current;
+		if (!container) return;
+		// App Router can mount this tree while its Activity is still hidden.
+		// Wait for a real layout, rather than scrolling a viewport-height page.
+		const restore = () => {
+			if (!container.getClientRects().length || restoredScroll.current || document.documentElement.scrollHeight < window.innerHeight + top) return;
+			window.scrollTo({ top, behavior: "instant" });
+			restoredScroll.current = true;
+			observer.disconnect();
+		};
+		const observer = new ResizeObserver(restore);
+		observer.observe(container);
+		observer.observe(document.body);
+		const frame = requestAnimationFrame(restore);
+		return () => { cancelAnimationFrame(frame); observer.disconnect(); };
+	}, [queryString]);
+	const params = new URLSearchParams(queryString);
+	const expandedId = params.get("expanded");
+	const search = params.get("q") ?? "";
+	const jurisdictionParam = params.get("jurisdiction") as Jurisdiction;
+	const jurisdiction = JURISDICTION_ORDER.includes(jurisdictionParam) ? jurisdictionParam : "all";
+	const audienceParam = params.get("audience") as AudienceFilter;
+	const audience = ["judicial", "self-represented", "profession"].includes(audienceParam) ? audienceParam : "all";
+	const sortMode: SortMode = params.get("sort") === "newest" ? "newest" : "jurisdiction";
 
 	const practiceNotes: CourtNote[] = useMemo(() => {
 		return policies
@@ -126,7 +180,7 @@ export function CourtsBrowser({
 		const query = search.trim().toLowerCase();
 		return practiceNotes.filter((note) => {
 			if (jurisdiction !== "all" && note.jurisdiction !== jurisdiction) return false;
-			if (!matchesAudience(note, audience)) return false;
+			if (!matchesAudience(note, audience, requirementsByPolicy.get(note.id))) return false;
 			if (!query) return true;
 			return [
 				note.title,
@@ -135,13 +189,17 @@ export function CourtsBrowser({
 				note.description,
 				note.aiSummary,
 				...note.tags,
+				...(requirementsByPolicy.get(note.id) ?? []).flatMap((requirement) => [
+					requirement.actor, requirement.action, requirement.source.quote, requirement.source.locator,
+					...requirement.conditions, ...requirement.exceptions, ...requirement.topics,
+				]),
 			]
 				.filter(Boolean)
 				.join(" ")
 				.toLowerCase()
 				.includes(query);
 		});
-	}, [audience, jurisdiction, practiceNotes, search]);
+	}, [audience, jurisdiction, practiceNotes, search, requirementsByPolicy]);
 
 	const grouped = useMemo(() => {
 		const map = new Map<Jurisdiction, CourtNote[]>();
@@ -165,9 +223,10 @@ export function CourtsBrowser({
 	const jurisdictionsWithout = JURISDICTION_ORDER.filter(
 		(jurisdiction) => !allJurisdictionsWithNotes.includes(jurisdiction),
 	);
+	const coverageGap = jurisdiction !== "all" && jurisdictionsWithout.includes(jurisdiction);
 	const hasActiveFilters = search.trim() !== "" || jurisdiction !== "all" || audience !== "all";
 	const judicialGuidanceCount = practiceNotes.filter((note) =>
-		matchesAudience(note, "judicial"),
+		matchesAudience(note, "judicial", requirementsByPolicy.get(note.id)),
 	).length;
 	const sections = sortMode === "newest"
 		? [{ id: "newest", title: "Newest guidance", notes: [...filteredNotes].sort(newestFirst) }]
@@ -178,13 +237,11 @@ export function CourtsBrowser({
 			}));
 
 	function clearFilters() {
-		setSearch("");
-		setJurisdiction("all");
-		setAudience("all");
+		updateCourtUrl({ q: null, jurisdiction: null, audience: null, expanded: null });
 	}
 
 	return (
-		<div className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
+		<div ref={containerRef} className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
 			<PageIntro
 				title="Courts and tribunals"
 				description="Verified practice notes, directions and guidance on AI use in Australian courts and tribunals."
@@ -205,7 +262,7 @@ export function CourtsBrowser({
 							<input
 								type="search"
 								value={search}
-								onChange={(event) => setSearch(event.target.value)}
+								onChange={(event) => updateCourtUrl({ q: event.target.value })}
 								placeholder="Search court, instrument or topic"
 								className="h-11 w-full rounded-md border border-input bg-background pl-10 pr-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
 							/>
@@ -215,7 +272,7 @@ export function CourtsBrowser({
 							<SlidersHorizontal className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
 							<select
 								value={jurisdiction}
-								onChange={(event) => setJurisdiction(event.target.value as Jurisdiction | "all")}
+								onChange={(event) => updateCourtUrl({ jurisdiction: event.target.value })}
 								className="h-11 w-full appearance-none rounded-md border border-input bg-background pl-10 pr-3 text-sm"
 							>
 								<option value="all">All jurisdictions</option>
@@ -228,7 +285,7 @@ export function CourtsBrowser({
 							<span className="sr-only">Filter by audience</span>
 							<select
 								value={audience}
-								onChange={(event) => setAudience(event.target.value as AudienceFilter)}
+								onChange={(event) => updateCourtUrl({ audience: event.target.value })}
 								className="h-11 w-full appearance-none rounded-md border border-input bg-background px-3 text-sm"
 							>
 								<option value="all">All audiences</option>
@@ -241,7 +298,7 @@ export function CourtsBrowser({
 							<span className="sr-only">Sort guidance</span>
 							<select
 								value={sortMode}
-								onChange={(event) => setSortMode(event.target.value as SortMode)}
+								onChange={(event) => updateCourtUrl({ sort: event.target.value })}
 								className="h-11 w-full appearance-none rounded-md border border-input bg-background px-3 text-sm"
 							>
 								<option value="jurisdiction">By jurisdiction</option>
@@ -259,7 +316,7 @@ export function CourtsBrowser({
 					</div>
 				</section>
 
-			{filteredNotes.length === 0 ? (
+			{filteredNotes.length === 0 && !coverageGap ? (
 				<NoResultsState query={search.trim() || undefined} className="border-b border-border" />
 			) : sections.map((section) => {
 				const sectionJurisdiction = section.id === "newest" ? null : section.id as Jurisdiction;
@@ -287,7 +344,11 @@ export function CourtsBrowser({
 										className="ink-rail content-auto border-b border-border pl-3 transition-colors hover:bg-[var(--row-hover)]"
 									>
 										<button
-											onClick={() => setExpandedId(isExpanded ? null : note.id)}
+											type="button"
+											id={`court-toggle-${note.id}`}
+											aria-expanded={isExpanded}
+											aria-controls={`court-panel-${note.id}`}
+											onClick={() => updateCourtUrl({ expanded: isExpanded ? null : note.id })}
 											className="w-full text-left py-3 pl-2 pr-1 flex items-start gap-3"
 										>
 											{isExpanded ? (
@@ -306,7 +367,7 @@ export function CourtsBrowser({
 														</div>
 													</div>
 													<div className="mt-2 flex items-center gap-3 sm:mt-0 sm:shrink-0 sm:gap-4">
-														<StatusPill status={note.status} />
+														<StatusPill status={note.status} dates={note.dates} />
 														<span className="font-mono text-[11px] text-muted-foreground sm:text-xs">
 															{getPolicyDateTypeName(primaryDate.type)}{" "}
 															{formatPolicyDate(primaryDate)}
@@ -316,6 +377,7 @@ export function CourtsBrowser({
 											</div>
 										</button>
 
+										<div id={`court-panel-${note.id}`} role="region" aria-labelledby={`court-toggle-${note.id}`} hidden={!isExpanded}>
 										{isExpanded && (
 											<div className="pl-8 pr-4 pb-4 space-y-3">
 												{(note.aiSummary || note.description) && (
@@ -344,45 +406,17 @@ export function CourtsBrowser({
 													)}
 													<Link
 														href={`/policies/${note.id}`}
+														onClick={() => window.history.replaceState({ ...window.history.state, courtsScroll: window.scrollY }, "")}
 														className="text-xs font-medium text-primary hover:underline"
 													>
 														View full record
 													</Link>
 												</div>
 
-												{noteRequirements.length > 0 && (
-													<section aria-label={`Verified requirements from ${note.title}`}>
-														<h3 className="font-mono text-xs font-medium uppercase tracking-wider text-foreground">
-															Verified requirements ({noteRequirements.length})
-														</h3>
-														<div className="mt-2 divide-y divide-border border-y border-border">
-															{noteRequirements.map((requirement) => (
-																<article key={requirement.id} className="py-3">
-																	<p className="text-sm text-foreground">
-																		<span className="mr-2 inline-flex rounded border border-primary/25 bg-primary/10 px-1.5 py-0.5 font-mono text-[11px] font-medium uppercase tracking-wide text-primary">
-																			{MODALITY_LABELS[requirement.modality]}
-																		</span>
-																		{requirement.action}
-																	</p>
-																	<p className="mt-1 text-xs text-muted-foreground">
-																		Applies to: {requirement.actor}
-																	</p>
-																	{requirement.conditions.map((condition) => (
-																		<p key={condition} className="mt-1 text-xs text-muted-foreground">
-																			Condition: {condition}
-																		</p>
-																	))}
-																	<blockquote className="mt-2 border-l-2 border-[var(--rule-heavy)] pl-3 text-xs leading-5 text-muted-foreground">
-																		“{requirement.source.quote}”
-																		<cite className="mt-1 block not-italic text-foreground">
-																			{requirement.source.locator}
-																		</cite>
-																	</blockquote>
-																</article>
-															))}
-														</div>
-													</section>
+												{note.verification.checkedAt && (
+													<p className="text-xs leading-5 text-muted-foreground">Record source checked: {new Date(note.verification.checkedAt).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric", timeZone: "Australia/Sydney" })}. Collection freshness is not a new editorial review of this record. Always check the official source.</p>
 												)}
+												<CourtRequirementsList title={note.title} requirements={noteRequirements} />
 
 												{/* Key requirements */}
 												{note.content && (
@@ -414,6 +448,7 @@ export function CourtsBrowser({
 
 											</div>
 										)}
+										</div>
 									</div>
 								);
 							})}
@@ -422,13 +457,13 @@ export function CourtsBrowser({
 				);
 			})}
 
-			{sortMode === "jurisdiction" && !hasActiveFilters && jurisdictionsWithout.length > 0 && (
+			{((sortMode === "jurisdiction" && !hasActiveFilters && jurisdictionsWithout.length > 0) || coverageGap) && (
 			<section className="mt-10">
 						<h2 className="page-eyebrow mb-3">
 							No currently verified instruments
 					</h2>
 					<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-						{jurisdictionsWithout.map((j) => (
+						{(coverageGap ? [jurisdiction as Jurisdiction] : jurisdictionsWithout).map((j) => (
 							<div
 								key={j}
 								className="px-3 py-2 border border-dashed border-border rounded text-sm text-muted-foreground"

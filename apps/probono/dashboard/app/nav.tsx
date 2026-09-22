@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import ThemeToggle from './theme-toggle';
@@ -40,14 +40,18 @@ function NavLinks({
 export default function Nav() {
   const path = usePathname();
   const [open, setOpen] = useState(false);
+  const menuButton = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setOpen(false);
+      if (event.key === 'Escape' && open) {
+        menuButton.current?.focus();
+        setOpen(false);
+      }
     };
     document.addEventListener('keydown', closeOnEscape);
     return () => document.removeEventListener('keydown', closeOnEscape);
-  }, []);
+  }, [open]);
 
   return (
     <>
@@ -61,6 +65,7 @@ export default function Nav() {
       <button
         type="button"
         className="mobile-menu-toggle"
+        ref={menuButton}
         aria-expanded={open}
         aria-controls="mobile-navigation"
         aria-label={open ? 'Close menu' : 'Open menu'}

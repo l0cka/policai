@@ -199,8 +199,8 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
       <section className="observatory-hero">
         <div className="container observatory-grid">
           <div className="observatory-copy reveal">
-            <p className="observatory-eyebrow">The access to justice observatory</p>
-            <h1>Monitor access to justice developments.</h1>
+            <p className="observatory-eyebrow">The Australian access-to-justice radar</p>
+            <h1>Access to justice.</h1>
             <p className="observatory-intro">
               Policai A2J tracks pro bono, law reform, legal-assistance funding and justice
               technology across Australia, with every signal linked to its source.
@@ -232,9 +232,12 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Sea
             </dl>
           </div>
 
-          <div className="observatory-visual reveal reveal-1">
-            <SignalNetwork pairs={networkPairs} signals={networkSignals} />
-          </div>
+          <details className="signal-disclosure">
+            <summary>Explore the signal network <span>Sources, signals and collections · last 30 days</span></summary>
+            <div className="observatory-visual">
+              <SignalNetwork pairs={networkPairs} signals={networkSignals} />
+            </div>
+          </details>
         </div>
       </section>
 

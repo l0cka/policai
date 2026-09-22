@@ -24,7 +24,7 @@ const insightItems = [
 function formatDataDate(value: string | null): string {
   if (!value) return 'SOURCE STATUS IN METHODOLOGY';
 
-  return `DATA CURRENT TO ${new Date(value).toLocaleString('en-AU', {
+  return `COLLECTION AS AT ${new Date(value).toLocaleString('en-AU', {
     day: '2-digit',
     month: 'short',
     year: 'numeric',
@@ -297,7 +297,7 @@ export function Header({
           <span className="text-muted-foreground sm:inline">
             <span className="hidden sm:inline">{formatDataDate(dataCurrentAt)}</span>
             <span className="sm:hidden">
-              {formatDataDate(dataCurrentAt).replace('DATA CURRENT TO ', 'CURRENT · ')}
+              {formatDataDate(dataCurrentAt)}
             </span>
           </span>
           <div className="hidden items-center gap-3 sm:flex">
