@@ -3247,13 +3247,55 @@
         "text": "Latest Search Today at 01:55 PM World-class sport precinct backed for Mackay The Crisafulli Government is calling on the Federa... Today at 01:00 PM New Bruce Highway Granite Creek Rest Area now open The Albanese and Crisafulli Governments have deliv... Today at 12:30 PM Registrations open for small business AI training The Crisafulli Government is delivering better ser... Today at 12:00 PM Community safety improved for Moreton Bay The Crisafulli Government is making Queensland saf... Today at 11:30 AM Queensland welcomes new national critical metals research centre The Crisafulli Government h",
         "changeFingerprint": "6702fc0659af23d8ef4bfb9aa6524cae60ec8b5695262fd40d4abb496a0874a9:55"
       }
+    },
+    "https://www.aph.gov.au/Parliamentary_Business/Committees/House/Current_Inquiries#policai-change=7e7b2881985ed7f8e83cf47d6debff6f636e59597c6f52f321994a3dc6ddd6d6:13": {
+      "firstSeenAt": "2026-09-22T19:33:26.230Z",
+      "sourceId": "house-new-inquiries",
+      "status": "dismissed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-09-22T19:33:26.230Z",
+      "processedAt": "2026-09-22T19:33:26.230Z",
+      "candidate": {
+        "title": "Current House Inquiries",
+        "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/House/Current_Inquiries",
+        "text": "Current House Inquiries In this section Bills and LegislationTabled documentsChamber documentsHansardSenate estimatesCommitteesLodge my submissionSenate CommitteesHouse of Representatives CommitteesAppropriations and AdministrationClimate Change, Energy, Environment and WaterCommunications, the Arts and SportCyber Security for Small to Medium Sized Businesses and OrganisationsEconomicsEducationEmployment, Workplace Relations, Skills and TrainingHealth, Aged Care and DisabilityIndustry, Innovation and SciencePetitionsPrimary IndustriesPrivileges and Members' InterestsProcedurePublicationsRegion",
+        "changeFingerprint": "7e7b2881985ed7f8e83cf47d6debff6f636e59597c6f52f321994a3dc6ddd6d6:13"
+      }
+    },
+    "https://www.aph.gov.au/Parliamentary_Business/Committees/Joint/Current_Inquiries#policai-change=005db9e16bdf78c15275e7b59f591c2301dbbcb17626d26fa737f9037f2ce89c:31": {
+      "firstSeenAt": "2026-09-22T19:33:26.230Z",
+      "sourceId": "joint-new-inquiries",
+      "status": "dismissed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-09-22T19:33:26.230Z",
+      "processedAt": "2026-09-22T19:33:26.230Z",
+      "candidate": {
+        "title": "Current Joint Inquiries",
+        "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Joint/Current_Inquiries",
+        "text": "Current Joint Inquiries In this section Bills and LegislationTabled documentsChamber documentsHansardSenate estimatesCommitteesLodge my submissionSenate CommitteesHouse of Representatives CommitteesJoint CommitteesAboriginal and Torres Strait Islander AffairsArtificial IntelligenceBroadcasting of Parliamentary ProceedingsCentenary of Parliament in CanberraCorporations and Financial ServicesForeign Affairs, Defence and TradeDefenceImplementation of the National Redress Scheme (Standing)Electoral MattersHuman RightsMigrationIntelligence and SecurityLaw EnforcementNational Anti-Corruption Commiss",
+        "changeFingerprint": "005db9e16bdf78c15275e7b59f591c2301dbbcb17626d26fa737f9037f2ce89c:31"
+      }
+    },
+    "https://statements.qld.gov.au/#policai-change=1942ea3ec738f110084695ddd80e453efb840948f36e2c66a353ac40cc669fba:56": {
+      "firstSeenAt": "2026-09-22T19:33:26.230Z",
+      "sourceId": "qld-ministerial-statements",
+      "status": "dismissed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-09-22T19:33:26.230Z",
+      "processedAt": "2026-09-22T19:33:26.230Z",
+      "candidate": {
+        "title": "Media Statements",
+        "url": "https://statements.qld.gov.au/",
+        "text": "Latest Search Yesterday at 01:55 PM World-class sport precinct backed for Mackay The Crisafulli Government is calling on the Federa... Yesterday at 01:00 PM New Bruce Highway Granite Creek Rest Area now open The Albanese and Crisafulli Governments have deliv... Yesterday at 12:30 PM Registrations open for small business AI training The Crisafulli Government is delivering better ser... Yesterday at 12:00 PM Community safety improved for Moreton Bay The Crisafulli Government is making Queensland saf... Yesterday at 11:30 AM Queensland welcomes new national critical metals research centre The Cri",
+        "changeFingerprint": "1942ea3ec738f110084695ddd80e453efb840948f36e2c66a353ac40cc669fba:56"
+      }
     }
   },
   "lastCheckedBySource": {
-    "apra-rss": "2026-09-22T08:23:23.603Z",
+    "apra-rss": "2026-09-22T19:33:26.230Z",
     "csiro-news": "2026-09-19T19:32:17.507Z",
-    "oaic-media": "2026-09-22T08:23:23.603Z",
-    "accc-rss": "2026-09-22T08:23:23.603Z",
+    "oaic-media": "2026-09-22T19:33:26.230Z",
+    "accc-rss": "2026-09-22T19:33:26.230Z",
     "asic-newsroom": "2026-09-19T19:32:17.507Z",
     "pc-media": "2026-09-19T19:32:17.507Z",
     "nsw-sc-practice-notes": "2026-09-14T19:33:56.948Z",
@@ -3265,52 +3307,52 @@
     "sa-office-for-ai": "2026-07-18T20:12:16.563Z",
     "treasury-publications": "2026-09-19T19:32:17.507Z",
     "qld-courts-news": "2026-09-19T19:32:17.507Z",
-    "pm-media": "2026-09-22T08:23:23.603Z",
-    "pmc-office-ai": "2026-09-22T08:23:23.603Z",
-    "industry-ai-publications": "2026-09-22T08:23:23.603Z",
-    "industry-ministers-media": "2026-09-22T08:23:23.603Z",
-    "dta-media": "2026-09-22T08:23:23.603Z",
-    "digital-gov-ai": "2026-09-22T08:23:23.603Z",
-    "disr-news": "2026-09-22T08:23:23.603Z",
+    "pm-media": "2026-09-22T19:33:26.230Z",
+    "pmc-office-ai": "2026-09-22T19:33:26.230Z",
+    "industry-ai-publications": "2026-09-22T19:33:26.230Z",
+    "industry-ministers-media": "2026-09-22T19:33:26.230Z",
+    "dta-media": "2026-09-22T19:33:26.230Z",
+    "digital-gov-ai": "2026-09-22T19:33:26.230Z",
+    "disr-news": "2026-09-22T19:33:26.230Z",
     "naic-news": "2026-09-19T19:32:17.507Z",
     "finance-news": "2026-09-19T19:32:17.507Z",
-    "agd-ministers-media": "2026-09-22T08:23:23.603Z",
-    "cyber-news": "2026-09-22T08:23:23.603Z",
-    "apsc-latest-news": "2026-09-22T08:23:23.603Z",
+    "agd-ministers-media": "2026-09-22T19:33:26.230Z",
+    "cyber-news": "2026-09-22T19:33:26.230Z",
+    "apsc-latest-news": "2026-09-22T19:33:26.230Z",
     "anao-performance-audits": "2026-09-19T19:32:17.507Z",
     "senate-ai-data-centres": "2026-09-19T19:32:17.507Z",
-    "senate-new-inquiries": "2026-09-22T08:23:23.603Z",
-    "senate-reports": "2026-09-22T08:23:23.603Z",
-    "house-new-inquiries": "2026-09-22T08:23:23.603Z",
-    "joint-new-inquiries": "2026-09-22T08:23:23.603Z",
-    "aph-bills-digests": "2026-09-22T08:23:23.603Z",
-    "legislation-whats-new": "2026-09-22T08:23:23.603Z",
+    "senate-new-inquiries": "2026-09-22T19:33:26.230Z",
+    "senate-reports": "2026-09-22T19:33:26.230Z",
+    "house-new-inquiries": "2026-09-22T19:33:26.230Z",
+    "joint-new-inquiries": "2026-09-22T19:33:26.230Z",
+    "aph-bills-digests": "2026-09-22T19:33:26.230Z",
+    "legislation-whats-new": "2026-09-22T19:33:26.230Z",
     "agd-consultations": "2026-09-19T19:32:17.507Z",
     "industry-consultations": "2026-09-19T19:32:17.507Z",
     "treasury-consultations": "2026-09-19T19:32:17.507Z",
     "aemc-media": "2026-09-19T19:32:17.507Z",
-    "acma-media": "2026-09-22T08:23:23.603Z",
+    "acma-media": "2026-09-22T19:33:26.230Z",
     "tga-media": "2026-09-19T19:32:17.507Z",
     "fwc-news": "2026-09-19T19:32:17.507Z",
     "teqsa-news": "2026-09-19T19:32:17.507Z",
     "aec-media": "2026-09-19T19:32:17.507Z",
-    "esafety-media": "2026-09-22T08:23:23.603Z",
-    "ahrc-media": "2026-09-22T08:23:23.603Z",
+    "esafety-media": "2026-09-22T19:33:26.230Z",
+    "ahrc-media": "2026-09-22T19:33:26.230Z",
     "fedcourt-practice-notes": "2026-09-19T19:32:17.507Z",
-    "nsw-media-releases": "2026-09-22T08:23:23.603Z",
+    "nsw-media-releases": "2026-09-22T19:33:26.230Z",
     "ovic-news": "2026-09-19T19:32:17.507Z",
-    "qld-ministerial-statements": "2026-09-22T08:23:23.603Z",
+    "qld-ministerial-statements": "2026-09-22T19:33:26.230Z",
     "tas-dpac-policies": "2026-09-19T19:32:17.507Z",
     "act-ai-policy": "2026-07-20T12:19:40.243Z",
     "nt-ai-assurance": "2026-09-22T08:23:23.603Z",
     "ipa-news": "2026-09-22T08:23:23.603Z",
-    "wa-media-statements": "2026-09-22T08:23:23.603Z",
+    "wa-media-statements": "2026-09-22T19:33:26.230Z",
     "ovic-privacy-resources": "2026-09-22T08:23:23.603Z",
     "ovic-enterprise-generative-ai": "2026-07-23T20:36:08.370Z",
     "ovic-public-generative-ai": "2026-07-23T20:36:08.370Z",
     "art-practice-directions": "2026-09-22T08:23:23.603Z",
     "wa-sc-practice-directions": "2026-09-22T08:23:23.603Z",
-    "sa-courts-news": "2026-09-22T08:23:23.603Z",
+    "sa-courts-news": "2026-09-22T19:33:26.230Z",
     "act-sc-practice-directions": "2026-09-22T08:23:23.603Z",
     "tas-sc-practice-directions": "2026-09-22T08:23:23.603Z",
     "nt-sc-practice-directions": "2026-09-22T08:23:23.603Z"
@@ -3319,7 +3361,7 @@
     "pmc-office-ai": {
       "contentHash": "323af0296ecec3b23060d62b35977feb3e146f734320f9a6d5df6da1f6b663c3",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-09-22T08:23:23.603Z",
+      "lastCheckedAt": "2026-09-22T19:33:26.230Z",
       "changeCount": 1,
       "lastChangedAt": "2026-09-17T19:32:40.681Z"
     },
@@ -3378,11 +3420,11 @@
       "lastChangedAt": "2026-09-07T15:15:00.078Z"
     },
     "qld-ministerial-statements": {
-      "contentHash": "6702fc0659af23d8ef4bfb9aa6524cae60ec8b5695262fd40d4abb496a0874a9",
+      "contentHash": "1942ea3ec738f110084695ddd80e453efb840948f36e2c66a353ac40cc669fba",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-09-22T08:23:23.603Z",
-      "changeCount": 55,
-      "lastChangedAt": "2026-09-22T08:23:23.603Z"
+      "lastCheckedAt": "2026-09-22T19:33:26.230Z",
+      "changeCount": 56,
+      "lastChangedAt": "2026-09-22T19:33:26.230Z"
     },
     "act-ai-policy": {
       "contentHash": "0040e7ec83db2a7430b63de7cf72e581dcc938a3139b85ec32c40aa15dc5f4a0",
@@ -3450,7 +3492,7 @@
     "vic-ai": {
       "contentHash": "6013a3f65fd755391a25c8768410318375421342c47621c337baf604fe5abc71",
       "firstCheckedAt": "2026-07-29T20:30:22.291Z",
-      "lastCheckedAt": "2026-09-22T08:23:23.603Z",
+      "lastCheckedAt": "2026-08-07T05:10:37.597Z",
       "lastChangedAt": "2026-08-07T05:10:38.082Z",
       "changeCount": 1
     },
@@ -3469,18 +3511,18 @@
       "changeCount": 3
     },
     "house-new-inquiries": {
-      "contentHash": "856cd6fce0e27801dc2d6e630cb8749344e110167a3fad622277d2370b52da94",
+      "contentHash": "7e7b2881985ed7f8e83cf47d6debff6f636e59597c6f52f321994a3dc6ddd6d6",
       "firstCheckedAt": "2026-08-07T04:32:08.175Z",
-      "lastCheckedAt": "2026-09-22T08:23:23.603Z",
-      "changeCount": 12,
-      "lastChangedAt": "2026-09-22T08:23:23.603Z"
+      "lastCheckedAt": "2026-09-22T19:33:26.230Z",
+      "changeCount": 13,
+      "lastChangedAt": "2026-09-22T19:33:26.230Z"
     },
     "joint-new-inquiries": {
-      "contentHash": "b88638056fb2fba422e888d98c7ecf28334106e2ebe1e0c1f4c4079c31679e88",
+      "contentHash": "005db9e16bdf78c15275e7b59f591c2301dbbcb17626d26fa737f9037f2ce89c",
       "firstCheckedAt": "2026-08-07T04:32:08.175Z",
-      "lastCheckedAt": "2026-09-22T08:23:23.603Z",
-      "changeCount": 30,
-      "lastChangedAt": "2026-09-22T08:23:23.603Z"
+      "lastCheckedAt": "2026-09-22T19:33:26.230Z",
+      "changeCount": 31,
+      "lastChangedAt": "2026-09-22T19:33:26.230Z"
     },
     "art-practice-directions": {
       "contentHash": "4b68d0ccf77794390152d126d540f0a8b34eae661123a135b4157c2aeff59a7f",
