@@ -133,15 +133,15 @@ the newest version rejects older still-active update reviews as superseded.
 ## Classification
 
 Candidates that survive dedup are classified by keyword heuristic by default.
-When `USE_CLAUDE_CLASSIFIER` is set (it is, on the scheduled collection host), they are
+When `USE_CLAUDE_CLASSIFIER` is set, candidates are
 classified by the configured AI model instead, invoked in batches of
 `CLAUDE_BATCH_SIZE` (20) candidates per call through
 `src/lib/pipeline/classifier-cli.ts`: one OpenAI-compatible
 `POST {CLASSIFIER_BASE_URL}chat/completions` per batch, authenticated with
-`CLASSIFIER_API_KEY` and pinned to `CLASSIFIER_MODEL`. On the scheduled
-collection host (`~/.local/bin/policai-collect.sh`) these resolve to Ollama
-Cloud and `deepseek-v4.1-flash`, with the key read at run time from the
-Hermes secrets file and never logged or committed. The request carries no
+`CLASSIFIER_API_KEY` and pinned to `CLASSIFIER_MODEL`. The scheduled wrapper
+uses the keyword heuristic: it does not read cloud credentials and refuses a
+nonempty `USE_CLAUDE_CLASSIFIER` until that mode is separately reviewed.
+The optional AI request carries no
 tools, so scraped page text cannot invoke anything. For each candidate the
 model returns whether it is relevant, a confidence score, a
 jurisdiction/type guess, and a short draft summary. A verdict that fails
@@ -232,28 +232,30 @@ force the selected source regardless of its normal daily/weekly due time.
 
 ## Production automation
 
-Collection runs daily (~05:30 Sydney) on the maintainer's server, from a
-checkout dedicated to the collector, separate from the checkout that serves
-the site. Each run:
+Collection runs daily (~05:30 Sydney) on the maintainer's server through
+[`ops/collector/policai-collect.sh`](../ops/collector/policai-collect.sh), installed
+at `~/.local/bin/policai-collect.sh`. See the
+[wrapper runbook](../ops/collector/README.md) for installation, tests and recovery.
+Each run holds the existing concurrency lock and:
 
-1. `npm run collect`
-2. `npm run validate:data`
-3. Guard: fail if `data/policies.json` changed
-4. Commit `developments.json`, `meta.json`, `watch-state.json`,
-   `source-reviews.json` and push to `main`, including failed-health and retry
-   state
-5. If collection reported failed coverage, fail the run only after that
-   operational state is preserved
+1. Refuses source-checkout dirt, incomplete prior runs, or an open collection PR.
+2. Creates a unique branch/worktree from fetched main, installs dependencies,
+   and runs the full `npm run collect` with a bounded deadline.
+3. Preserves before/after outputs and checks `data/policies.json` even after a
+   nonzero exit or timeout. Mutated evidence is never silently restored.
+4. Validates data and commits only `data/developments.json`,
+   `public/data/meta.json`, `data/watch-state.json`, `data/source-reviews.json`.
+5. Pushes only its unique collection branch, opens a draft PR, and reads back
+   the head/base/state. No direct-main push, force, merge, or automatic approval.
+6. Returns failed source health as a failure even if structurally valid retry
+   and coverage data reached a PR. Other failures retain local evidence.
 
-The GitHub Actions collection workflow has been retired after the scheduled
-run on the maintainer's server produced a clean cycle. Failures still open or
-comment on an issue labelled `collector-failure`, now raised by the scheduled
-run itself. A manual pass can be run from any checkout with
-`npm run collect -- --source=<id>`.
-
-The site's own checkout pulls the push on its timer. Because pages read the
-JSON from disk at request time and revalidate hourly, the new data appears
-without a rebuild or a restart.
+The next scheduled collection is deliberately blocked until a pending collection
+PR is reviewed/merged/closed; it never overwrites a reviewer's pending data.
+The existing main-following deployment timer can consume merged data through
+ISR without a rebuild. A draft branch push does not activate it, and a PR alone
+is not evidence of current public freshness. The existing scheduled failure
+alert and nonzero job receipt remain in use.
 
 The CLI persists source reviews and developments before advancing
 `watch-state.json`. Stable review/development ids make a retry idempotent if an
@@ -262,12 +264,10 @@ version cannot be lost merely because its state write completed first.
 
 **Repository configuration:**
 
-- The retired Actions workflow used a write deploy key (`COLLECTOR_DEPLOY_KEY`
-  secret) as a ruleset bypass actor; both the key and the secret can be
-  deleted now that the workflow is gone. The scheduled collection run pushes
-  over its own SSH-authenticated git remote. The safety story does not depend
-  on the ruleset: the registry guard enforces that automation never touches
-  `policies.json`.
+- Main requires a PR with an independent approving review, resolved threads,
+  linear history and `lint`, `test`, `build` checks. Retired deploy-key bypass
+  advice is not a recovery path. Data merge and editorial register publication
+  are separate reviewer decisions; neither is performed by the wrapper.
 
 ## Reviewing detections into the register
 
@@ -389,7 +389,12 @@ npm run collect -- --dry-run --source=<id>
 
 ## Troubleshooting
 
-- **The workflow fails at `git push` with `GH013: Repository rule violations`** — the deploy-key bypass is broken: either the `COLLECTOR_DEPLOY_KEY` secret / write deploy key was removed, or "Deploy keys" is missing from the "Protect main" ruleset bypass list (Settings → Rules → Rulesets → Protect main → Bypass list, or `gh api -X PUT repos/l0cka/policai/rulesets/<id>` with `{"actor_type": "DeployKey", "bypass_mode": "always"}` in `bypass_actors`).
+- **Publication fails with `GH013`** — retain the run and inspect its branch and
+  applicable rules. The wrapper must only push `automation/collection-*`, never
+  main. Do not add a bypass actor. After an authorised connectivity/rules fix,
+  `~/.local/bin/policai-collect.sh --retry-publication` reuses the exact validated
+  commit without recollection. A changed remote main or run branch needs manual
+  reconciliation, not a forced push.
 - **A source keeps failing** — check `meta.json` → `collector.sourceResults`.
   If the endpoint consistently requires a browser, keep it enabled but change
   it to `automation: manual` with an explanation. Do not count a challenge page
