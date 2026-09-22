@@ -39,9 +39,20 @@ function comparePolicies(a: Policy, b: Policy, field: PolicySortField): number {
   return String(a[field]).localeCompare(String(b[field]));
 }
 
-export function StatusPill({ status }: { status: Policy['status'] }) {
+export function StatusPill({ status, dates = [] }: { status: Policy['status']; dates?: Policy['dates'] }) {
+  const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Australia/Sydney' });
+  const commencementDates = dates.filter(({ type }) => type === 'effective' || type === 'commenced');
+  // All known commencement dates must be future. Do not infer a day from a
+  // month/year date, or mistake publication/the legacy alias for commencement.
+  const notYetEffective = (status === 'active' || status === 'amended') && commencementDates.length > 0 && commencementDates.every(({ date, precision }) => {
+    const length = precision === 'year' ? 4 : precision === 'month' ? 7 : 10;
+    const value = date instanceof Date ? date.toISOString() : date;
+    return value.slice(0, length) > today.slice(0, length);
+  });
   const tone =
-    status === 'active'
+    notYetEffective
+      ? 'border-[var(--caution)]/25 bg-[var(--status-proposed-bg)] text-[var(--status-proposed)]'
+      : status === 'active'
       ? 'border-[var(--trust)]/25 bg-[var(--status-active-bg)] text-[var(--status-active)]'
       : status === 'proposed'
         ? 'border-[var(--caution)]/25 bg-[var(--status-proposed-bg)] text-[var(--status-proposed)]'
@@ -52,11 +63,12 @@ export function StatusPill({ status }: { status: Policy['status'] }) {
   return (
     <span
       className={cn(
-        'inline-flex rounded-md border px-2 py-1 text-xs font-medium',
+        'inline-flex flex-col rounded-md border px-2 py-1 text-xs font-medium',
         tone,
       )}
     >
-      {getPolicyStatusName(status)}
+      <span>{getPolicyStatusName(status)}</span>
+      {notYetEffective ? <span>Not yet in effect</span> : null}
     </span>
   );
 }
@@ -147,7 +159,7 @@ function PolicyCard({
         </div>
       </div>
       <div className="flex max-w-28 flex-col items-end gap-3 text-right">
-        <StatusPill status={policy.status} />
+        <StatusPill status={policy.status} dates={policy.dates} />
         <span className="mt-1 text-[11px] leading-5">
           {formatPolicyDate(primaryDate, { short: true })}
           <span className="block text-[10px] text-muted-foreground">
@@ -321,7 +333,7 @@ export function PolicyTable({
                       {getPolicyTypeName(policy.type)}
                     </td>
                     <td className="py-3 pr-3 align-top">
-                      <StatusPill status={policy.status} />
+                      <StatusPill status={policy.status} dates={policy.dates} />
                     </td>
                     <td className="py-3 pr-3 align-top font-mono text-[11px] font-medium uppercase leading-4 text-muted-foreground">
                       {formatPolicyDate(primaryDate, { short: true })}

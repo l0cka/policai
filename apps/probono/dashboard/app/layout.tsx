@@ -1,29 +1,14 @@
 import type { Metadata } from 'next';
-import { IBM_Plex_Mono } from 'next/font/google';
 import Link from 'next/link';
 import Nav from './nav';
 import ThemeToggle, { themeInitScript } from './theme-toggle';
-import { RadarMark } from './icons';
+import CompanionMark from './companion-mark';
 import { getPool } from '../lib/db';
 import './globals.css';
+import './editorial.css';
 
 export const dynamic = 'force-dynamic';
 
-/*
- * One face for the whole site. The display, interface and metadata roles still
- * exist in the stylesheet as --font-display / --font-sans / --font-mono; they
- * simply all resolve here now, so the distinction survives if the site ever
- * takes a second face back.
- *
- * 600 and 700 are carried because headings and table keys ask for them, and a
- * weight the file does not contain gets synthesised into a smeared faux bold.
- */
-const plexMono = IBM_Plex_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-plex-mono',
-  display: 'swap',
-});
 
 /*
  * The site answers on two hostnames: a2j.policai.org, and probono.policai.org
@@ -83,7 +68,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html
       lang="en-AU"
-      className={plexMono.variable}
       suppressHydrationWarning
     >
       <head>
@@ -102,8 +86,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <header className="site-header rule-masthead">
           <div className="container masthead">
             <Link href="/" aria-label="Policai A2J home" className="brand">
-              <RadarMark />
-              <span className="brand-wordmark">Policai A2J</span>
+              <CompanionMark />
+              <span className="brand-wordmark">policai<span className="brand-edition">A2J</span></span>
             </Link>
             <Nav />
             <div className="header-actions">

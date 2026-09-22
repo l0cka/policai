@@ -5,6 +5,11 @@ import { Header } from './Header';
 vi.mock('next/navigation', () => ({ usePathname: () => '/' }));
 
 describe('Editorial identity and navigation', () => {
+  it('labels collection freshness separately from record verification', () => {
+    render(<Header dataCurrentAt="2026-09-21T02:00:00Z" collectionHealth="healthy" successfulSourceCount={10} dueSourceCount={10} />);
+    expect(screen.getAllByText(/COLLECTION AS AT/)).toHaveLength(2);
+    expect(screen.queryByText(/DATA CURRENT TO/)).not.toBeInTheDocument();
+  });
   it('uses the companion vector mark and lowercase wordmark', () => {
     const { container } = render(<PolicaiLogo />);
     expect(container.querySelector('svg')).toHaveAttribute(
