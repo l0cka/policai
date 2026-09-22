@@ -17,7 +17,7 @@ import type {
 	NetworkNode,
 } from "@/lib/network-data";
 import { formatPolicyDate } from "@/lib/format-policy-date";
-import { JurisdictionMark, SourceState, StatusPill } from "@/components/policy-table";
+import { JurisdictionMark, SourceState, StatusPill } from "@/components/policy-indicators";
 
 interface NetworkSidebarProps {
 	policy: NetworkNode | null;

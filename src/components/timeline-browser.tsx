@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { StatusPill, SourceState } from '@/components/policy-table';
+import { StatusPill, SourceState } from '@/components/policy-indicators';
 import { Timeline, EVENT_TYPE_CONFIG } from '@/components/visualizations/Timeline';
 import { formatPolicyDate } from '@/lib/format-policy-date';
 import { parseCalendarDateForDisplay } from '@/lib/format-policy-date';

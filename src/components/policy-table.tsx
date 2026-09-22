@@ -1,119 +1,29 @@
 'use client';
 
-import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import {
   ArrowRight,
   ChevronDown,
   ChevronUp,
   ChevronsUpDown,
-  CheckCircle2,
 } from 'lucide-react';
 import {
   getJurisdictionName,
   getPolicyDateTypeName,
-  getPolicyStatusName,
   getPolicyTypeName,
   getPrimaryPolicyDate,
   type Policy,
 } from '@/types';
 import { formatPolicyDate } from '@/lib/format-policy-date';
 import {
-  jurisdictionAccent,
   jurisdictionRailStyle,
 } from '@/lib/jurisdiction-accent';
 import { cn } from '@/lib/utils';
 
-export type PolicySortField =
-  'title' | 'jurisdiction' | 'type' | 'status' | 'effectiveDate';
-export type PolicySortDirection = 'asc' | 'desc';
-export type PolicyViewMode = 'table' | 'list';
+import { REGISTER_PAGE_SIZE, type PolicySortField, type PolicySortDirection, type PolicyViewMode } from '@/lib/policy-register';
 
-function comparePolicies(a: Policy, b: Policy, field: PolicySortField): number {
-  if (field === 'effectiveDate') {
-    return String(getPrimaryPolicyDate(a).date).localeCompare(
-      String(getPrimaryPolicyDate(b).date),
-    );
-  }
+import { JurisdictionMark, SourceState, StatusPill } from './policy-indicators';
 
-  return String(a[field]).localeCompare(String(b[field]));
-}
-
-export function StatusPill({ status, dates = [] }: { status: Policy['status']; dates?: Policy['dates'] }) {
-  const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Australia/Sydney' });
-  const commencementDates = dates.filter(({ type }) => type === 'effective' || type === 'commenced');
-  // All known commencement dates must be future. Do not infer a day from a
-  // month/year date, or mistake publication/the legacy alias for commencement.
-  const notYetEffective = (status === 'active' || status === 'amended') && commencementDates.length > 0 && commencementDates.every(({ date, precision }) => {
-    const length = precision === 'year' ? 4 : precision === 'month' ? 7 : 10;
-    const value = date instanceof Date ? date.toISOString() : date;
-    return value.slice(0, length) > today.slice(0, length);
-  });
-  const tone =
-    notYetEffective
-      ? 'border-[var(--caution)]/25 bg-[var(--status-proposed-bg)] text-[var(--status-proposed)]'
-      : status === 'active'
-      ? 'border-[var(--trust)]/25 bg-[var(--status-active-bg)] text-[var(--status-active)]'
-      : status === 'proposed'
-        ? 'border-[var(--caution)]/25 bg-[var(--status-proposed-bg)] text-[var(--status-proposed)]'
-        : status === 'amended'
-          ? 'border-primary/25 bg-[var(--status-amended-bg)] text-[var(--status-amended)]'
-          : 'border-border bg-[var(--status-repealed-bg)] text-[var(--status-repealed)]';
-
-  return (
-    <span
-      className={cn(
-        'inline-flex flex-col rounded-md border px-2 py-1 text-xs font-medium',
-        tone,
-      )}
-    >
-      <span>{getPolicyStatusName(status)}</span>
-      {notYetEffective ? <span>Not yet in effect</span> : null}
-    </span>
-  );
-}
-
-/** Jurisdiction name preceded by its livery colour, so rows group by eye. */
-export function JurisdictionMark({
-  jurisdiction,
-  className,
-}: {
-  jurisdiction: string;
-  className?: string;
-}) {
-  return (
-    <span className={cn('inline-flex items-center gap-2', className)}>
-      <span
-        aria-hidden="true"
-        className="h-1.5 w-1.5 shrink-0 rounded-full"
-        style={{ background: jurisdictionAccent(jurisdiction) }}
-      />
-      {getJurisdictionName(jurisdiction)}
-    </span>
-  );
-}
-
-export function SourceState({
-  verification,
-}: {
-  verification: Pick<Policy['verification'], 'status'>;
-}) {
-  const verified = verification.status === 'verified';
-
-  return (
-    <span
-      className={cn(
-        'inline-flex items-center gap-1.5 text-xs',
-        verified ? 'text-[var(--trust)]' : 'text-[var(--caution)]',
-      )}
-    >
-      <CheckCircle2 className="h-4 w-4" strokeWidth={1.8} />
-      <span className="text-muted-foreground">
-        {verified ? 'Verified source' : 'Needs review'}
-      </span>
-    </span>
-  );
-}
 
 function PolicyCard({
   policy,
@@ -141,7 +51,7 @@ function PolicyCard({
           </Link>
         </h2>
         {!compact && (
-          <p className="mt-2 line-clamp-2 text-xs leading-6 text-muted-foreground">
+          <p className="mt-2 line-clamp-2 text-sm leading-6 text-muted-foreground">
             {policy.description}
           </p>
         )}
@@ -178,6 +88,9 @@ export function PolicyTable({
   sortField,
   sortDirection,
   onSort,
+  page,
+  onPageChange,
+  onReset,
 }: {
   policies: Policy[];
   viewMode: PolicyViewMode;
@@ -185,33 +98,17 @@ export function PolicyTable({
   sortField: PolicySortField;
   sortDirection: PolicySortDirection;
   onSort: (field: PolicySortField) => void;
+  page: number;
+  onPageChange: (page: number) => void;
+  onReset: () => void;
 }) {
-  const [page, setPage] = useState(0);
-  const sortKey = `${sortField}:${sortDirection}`;
-  const [previousSort, setPreviousSort] = useState(sortKey);
-  // Reset either sort control before rendering rows, without replacing focused DOM.
-  if (previousSort !== sortKey) {
-    setPreviousSort(sortKey);
-    setPage(0);
-  }
-  const pageSize = 8;
-
-  const sorted = useMemo(
-    () =>
-      [...policies].sort((a, b) => {
-        const comparison = comparePolicies(a, b, sortField);
-        return sortDirection === 'asc' ? comparison : -comparison;
-      }),
-    [policies, sortDirection, sortField],
-  );
-
-  const totalPages = Math.ceil(sorted.length / pageSize);
-  const safePage = totalPages > 0 ? Math.min(page, totalPages - 1) : 0;
-  const paged = sorted.slice(safePage * pageSize, (safePage + 1) * pageSize);
-
-  const handleSort = (field: PolicySortField) => {
-    setPage(0);
-    onSort(field);
+  const totalPages = Math.ceil(policies.length / REGISTER_PAGE_SIZE);
+  const safePage = Math.max(1, Math.min(page, totalPages));
+  const paged = policies.slice((safePage - 1) * REGISTER_PAGE_SIZE, safePage * REGISTER_PAGE_SIZE);
+  const changePage = (next: number) => {
+    onPageChange(next);
+    document.getElementById('register-results')?.focus();
+    document.getElementById('register-results')?.scrollIntoView?.({ block: 'start' });
   };
 
   if (paged.length === 0) {
@@ -221,6 +118,7 @@ export function PolicyTable({
         <p className="mt-2 text-sm text-muted-foreground">
           Remove a filter or search for a broader term.
         </p>
+        <button type="button" onClick={onReset} className="mt-4 min-h-11 rounded border border-input px-4 text-sm text-primary">Reset the register</button>
       </div>
     );
   }
@@ -276,7 +174,7 @@ export function PolicyTable({
                     >
                       <button
                         type="button"
-                        onClick={() => handleSort(field)}
+                        onClick={() => onSort(field)}
                         className={cn(
                           'group inline-flex items-center gap-1 whitespace-nowrap font-mono text-[11px] font-medium uppercase tracking-[0.1em] transition-colors duration-[var(--dur-fast)]',
                           isSorted
@@ -364,21 +262,21 @@ export function PolicyTable({
       {totalPages > 1 ? (
         <div className="mt-5 flex items-center justify-between border-t border-border pt-4">
           <span className="font-mono text-[11px] text-muted-foreground">
-            Page {safePage + 1} of {totalPages}
+            Page {safePage} of {totalPages}
           </span>
           <div className="flex gap-2">
             <button
               type="button"
-              onClick={() => setPage(Math.max(0, safePage - 1))}
-              disabled={safePage === 0}
+              onClick={() => changePage(safePage - 1)}
+              disabled={safePage === 1}
               className="min-h-11 rounded-md border border-border px-4 text-xs font-medium transition-colors duration-[var(--dur-fast)] hover:bg-muted disabled:opacity-35 disabled:hover:bg-transparent"
             >
               Previous
             </button>
             <button
               type="button"
-              onClick={() => setPage(Math.min(totalPages - 1, safePage + 1))}
-              disabled={safePage >= totalPages - 1}
+              onClick={() => changePage(safePage + 1)}
+              disabled={safePage >= totalPages}
               className="min-h-11 rounded-md border border-border px-4 text-xs font-medium transition-colors duration-[var(--dur-fast)] hover:bg-muted disabled:opacity-35 disabled:hover:bg-transparent"
             >
               Next

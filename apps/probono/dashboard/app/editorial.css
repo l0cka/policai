@@ -38,6 +38,28 @@
 .item-title { font-family: var(--font-display); font-size: 1.25rem; font-weight: 400; }
 .item-blurb { max-width: 75ch; }
 .filters a { min-height: 44px; }
+/* Productive, flat research controls: one search row, visible context, clear recovery. */
+.research-heading { padding-block: 2rem 0; }
+.research-heading h1 { margin: .75rem 0; font: 400 2.25rem/1.2 var(--font-display); }
+.research-heading > p:last-child { color: var(--muted-foreground); }
+.radar-controls { padding-block: 1.25rem; border-bottom: 1px solid var(--border); }
+.radar-search label { display: block; margin-bottom: .5rem; font-size: .875rem; }
+.radar-search-row { display: flex; gap: .5rem; }
+.radar-search input { min-width: 0; flex: 1; min-height: 48px; padding: .75rem; border: 1px solid var(--input); border-radius: 4px; background: var(--card); color: var(--foreground); font: inherit; }
+.radar-search input:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+.radar-search-row button { min-height: 48px; }
+.radar-controls .filters { margin-block: 1rem 0; padding: 0; border: 0; }
+.radar-context { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem 1rem; margin-top: 1rem; font-size: .875rem; }
+.radar-context p { color: var(--muted-foreground); overflow-wrap: anywhere; }
+.radar-context a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; text-underline-offset: 3px; }
+.radar-pagination { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem 1rem; padding-block: 1rem; border-bottom: 1px solid var(--border); font-size: .875rem; color: var(--muted-foreground); }
+.radar-pagination nav { display: flex; gap: .5rem; }
+.radar-pagination a, .radar-pagination nav span { display: inline-flex; min-height: 44px; align-items: center; gap: .5rem; padding: .5rem 1rem; border: 1px solid var(--border); border-radius: 4px; }
+.radar-pagination a:hover { background: var(--muted); }
+.radar-pagination [aria-disabled] { color: var(--muted-foreground); border-color: transparent; }
+.radar-pagination svg { width: 1rem; height: 1rem; }
+.empty-state .button-primary { margin-top: 1rem; }
+
 @media (max-width: 767px) {
   .observatory-grid { padding-block: 1.75rem 1rem; }
   .observatory-copy { display: block; }

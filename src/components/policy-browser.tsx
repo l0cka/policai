@@ -5,19 +5,13 @@ import {
   useEffect,
   useMemo,
   useRef,
-  useState,
-  type Dispatch,
-  type SetStateAction,
 } from 'react';
 import Link from 'next/link';
 import { ArrowUpRight, ChevronDown, List, Search, Table2 } from 'lucide-react';
 import { FilterControls, type FilterGroup } from '@/components/filter-sidebar';
-import {
-  PolicyTable,
-  type PolicySortDirection,
-  type PolicySortField,
-  type PolicyViewMode,
-} from '@/components/policy-table';
+import { PolicyTable } from '@/components/policy-table';
+import { selectRegisterPolicies, type PolicySortDirection, type PolicySortField, type PolicyViewMode } from '@/lib/policy-register';
+import { useRegisterState } from '@/hooks/use-register-state';
 import { formatPolicyDate } from '@/lib/format-policy-date';
 import {
   JURISDICTION_NAMES,
@@ -69,15 +63,8 @@ function formatDevelopmentDate(development: Development): string {
   );
 }
 
-function toggleFilter(
-  value: string,
-  setter: Dispatch<SetStateAction<string[]>>,
-) {
-  setter((current) =>
-    current.includes(value)
-      ? current.filter((item) => item !== value)
-      : [...current, value],
-  );
+function toggleFilter(value: string, current: string[], setter: (values: string[]) => void) {
+  setter(current.includes(value) ? current.filter(item => item !== value) : [...current, value]);
 }
 
 function ViewToggle({
@@ -141,17 +128,15 @@ export function PolicyBrowser({
   currentManualSourceCount,
   unavailableManualSourceCount,
 }: PolicyBrowserProps) {
-  const [search, setSearch] = useState('');
-  const deferredSearch = useDeferredValue(search.trim().toLowerCase());
+  const [state, updateState] = useRegisterState();
+  const { search, jurisdictions, types, statuses, viewMode, sortField, sortDirection, page } = state;
+  const setSearch = (search: string) => updateState({ search });
+  const setJurisdictions = (jurisdictions: string[]) => updateState({ jurisdictions });
+  const setTypes = (types: string[]) => updateState({ types });
+  const setStatuses = (statuses: string[]) => updateState({ statuses });
+  const setViewMode = (viewMode: PolicyViewMode) => updateState({ viewMode });
+  const deferredState = useDeferredValue(state);
   const searchRef = useRef<HTMLInputElement>(null);
-  const [jurisdictions, setJurisdictions] = useState<string[]>([]);
-  const [types, setTypes] = useState<string[]>([]);
-  const [statuses, setStatuses] = useState<string[]>([]);
-  const [viewMode, setViewMode] = useState<PolicyViewMode>('list');
-  const [mobileViewMode, setMobileViewMode] = useState<PolicyViewMode>('list');
-  const [sortField, setSortField] = useState<PolicySortField>('effectiveDate');
-  const [sortDirection, setSortDirection] =
-    useState<PolicySortDirection>('desc');
 
   useEffect(() => {
     const handleSearchShortcut = (event: KeyboardEvent) => {
@@ -164,31 +149,7 @@ export function PolicyBrowser({
     return () => window.removeEventListener('keydown', handleSearchShortcut);
   }, []);
 
-  const filteredPolicies = useMemo(
-    () =>
-      policies.filter((policy) => {
-        const matchesSearch =
-          deferredSearch.length === 0 ||
-          policy.title.toLowerCase().includes(deferredSearch) ||
-          policy.description.toLowerCase().includes(deferredSearch) ||
-          policy.tags.some((tag) =>
-            tag.toLowerCase().includes(deferredSearch),
-          ) ||
-          policy.agencies.some((agency) =>
-            agency.toLowerCase().includes(deferredSearch),
-          );
-        const matchesJurisdiction =
-          jurisdictions.length === 0 ||
-          jurisdictions.includes(policy.jurisdiction);
-        const matchesType = types.length === 0 || types.includes(policy.type);
-        const matchesStatus =
-          statuses.length === 0 || statuses.includes(policy.status);
-        return (
-          matchesSearch && matchesJurisdiction && matchesType && matchesStatus
-        );
-      }),
-    [deferredSearch, jurisdictions, policies, statuses, types],
-  );
+  const filteredPolicies = useMemo(() => selectRegisterPolicies(policies, deferredState), [policies, deferredState]);
 
   const countFor = (
     key: keyof Pick<Policy, 'jurisdiction' | 'type' | 'status'>,
@@ -200,7 +161,7 @@ export function PolicyBrowser({
       id: 'jurisdiction',
       label: 'Jurisdiction',
       selectedValues: jurisdictions,
-      onToggle: (value) => toggleFilter(value, setJurisdictions),
+      onToggle: (value) => toggleFilter(value, jurisdictions, setJurisdictions),
       options: Object.entries(JURISDICTION_NAMES)
         .map(([value, label]) => ({
           value,
@@ -213,7 +174,7 @@ export function PolicyBrowser({
       id: 'type',
       label: 'Policy type',
       selectedValues: types,
-      onToggle: (value) => toggleFilter(value, setTypes),
+      onToggle: (value) => toggleFilter(value, types, setTypes),
       options: Object.entries(POLICY_TYPE_NAMES)
         .map(([value, label]) => ({
           value,
@@ -226,7 +187,7 @@ export function PolicyBrowser({
       id: 'status',
       label: 'Status',
       selectedValues: statuses,
-      onToggle: (value) => toggleFilter(value, setStatuses),
+      onToggle: (value) => toggleFilter(value, statuses, setStatuses),
       options: Object.entries(POLICY_STATUS_NAMES)
         .filter(([value]) => value !== 'trashed')
         .map(([value, label]) => ({
@@ -241,28 +202,18 @@ export function PolicyBrowser({
   const activeFilterCount =
     jurisdictions.length + types.length + statuses.length;
   const hasActiveFilters = activeFilterCount > 0;
-  const clearFilters = () => {
-    setJurisdictions([]);
-    setTypes([]);
-    setStatuses([]);
+  const clearFilters = () => updateState({ jurisdictions: [], types: [], statuses: [] });
+  const resetSearch = () => {
+    updateState({ search: '', jurisdictions: [], types: [], statuses: [] });
+    searchRef.current?.focus();
   };
-
-  const handleSort = (field: PolicySortField) => {
-    if (sortField === field) {
-      setSortDirection((current) => (current === 'asc' ? 'desc' : 'asc'));
-      return;
-    }
-    setSortField(field);
-    setSortDirection(field === 'effectiveDate' ? 'desc' : 'asc');
-  };
-
+  const handleSort = (field: PolicySortField) => updateState({
+    sortField: field,
+    sortDirection: sortField === field ? (sortDirection === 'asc' ? 'desc' : 'asc') : field === 'effectiveDate' ? 'desc' : 'asc',
+  });
   const handleMobileSort = (value: string) => {
-    const [field, direction] = value.split(':') as [
-      PolicySortField,
-      PolicySortDirection,
-    ];
-    setSortField(field);
-    setSortDirection(direction);
+    const [sortField, sortDirection] = value.split(':') as [PolicySortField, PolicySortDirection];
+    updateState({ sortField, sortDirection });
   };
 
   const freshnessDate = lastHealthyAt ?? lastCollectedAt ?? lastReviewedAt;
@@ -365,11 +316,7 @@ export function PolicyBrowser({
             {(hasActiveFilters || search) && (
               <button
                 type="button"
-                onClick={() => {
-                  clearFilters();
-                  setSearch('');
-                  searchRef.current?.focus();
-                }}
+                onClick={resetSearch}
                 className="min-h-11 px-2 text-xs text-primary underline underline-offset-4"
               >
                 Clear search and filters
@@ -399,7 +346,7 @@ export function PolicyBrowser({
             </div>
           )}
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-3">
-            <p role="status" className="text-xs text-muted-foreground">
+            <p id="register-results" tabIndex={-1} role="status" className="scroll-mt-32 text-sm text-muted-foreground">
               {filteredPolicies.length}{' '}
               {filteredPolicies.length === 1 ? 'policy' : 'policies'}
               {search ? ` matching “${search}”` : ' in the register'}
@@ -429,17 +376,19 @@ export function PolicyBrowser({
               </div>
               <div className="md:hidden">
                 <ViewToggle
-                  value={mobileViewMode}
-                  onChange={setMobileViewMode}
+                  value={viewMode}
+                  onChange={setViewMode}
                 />
               </div>
             </div>
           </div>
           <PolicyTable
-            key={`${deferredSearch}|${jurisdictions.join(',')}|${types.join(',')}|${statuses.join(',')}`}
             policies={filteredPolicies}
             viewMode={viewMode}
-            mobileViewMode={mobileViewMode}
+            mobileViewMode={viewMode}
+            page={page}
+            onPageChange={(page) => updateState({ page })}
+            onReset={resetSearch}
             sortField={sortField}
             sortDirection={sortDirection}
             onSort={handleSort}
@@ -457,7 +406,7 @@ export function PolicyBrowser({
                   key={option.value}
                   type="button"
                   aria-pressed={jurisdictions.includes(option.value)}
-                  onClick={() => toggleFilter(option.value, setJurisdictions)}
+                  onClick={() => toggleFilter(option.value, jurisdictions, setJurisdictions)}
                   className="flex min-h-11 items-center justify-between gap-3 text-left text-xs text-muted-foreground hover:text-primary aria-pressed:font-semibold aria-pressed:text-primary"
                 >
                   <span>{option.label}</span>

@@ -27,7 +27,7 @@ import { parseSourceUrl } from '@/lib/source-url';
 import { EmptyState } from '@/components/ui/empty-state';
 import { formatPolicyDate } from '@/lib/format-policy-date';
 import { CourtRequirementsList } from "@/components/court-requirements-list";
-import { StatusPill } from "@/components/policy-table";
+import { StatusPill } from "@/components/policy-indicators";
 import { cn } from '@/lib/utils';
 
 type TabId = 'overview' | 'requirements' | 'content';

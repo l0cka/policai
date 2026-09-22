@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
-import { StatusPill } from './policy-table';
+import { StatusPill } from './policy-indicators';
 import { CourtsBrowser } from './courts-browser';
 import { PolicyDetailTabs } from '@/app/policies/[id]/policy-detail-tabs';
 import type { Jurisdiction, Policy, PublicCourtRequirement } from '@/types';

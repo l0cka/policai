@@ -9,7 +9,7 @@ import {
 	type Jurisdiction,
 	type Policy,
 } from "@/types";
-import { StatusPill } from "@/components/policy-table";
+import { StatusPill } from "@/components/policy-indicators";
 import { jurisdictionRailStyle } from "@/lib/jurisdiction-accent";
 
 export function MapBrowser({ policiesData }: { policiesData: Policy[] }) {

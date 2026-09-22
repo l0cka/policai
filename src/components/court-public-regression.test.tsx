@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { getPublicCourtRequirements } from '@/lib/court-requirements';
 import { getPolicies } from '@/lib/data-service';
 import { CourtsBrowser } from './courts-browser';
-import { StatusPill } from './policy-table';
+import { StatusPill } from './policy-indicators';
 import type { PolicyDate, PolicyStatus } from '@/types';
 
 beforeEach(() => {
