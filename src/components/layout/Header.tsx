@@ -11,6 +11,7 @@ import type { CollectionHealthStatus } from '@/types';
 
 const navItems = [
   { href: '/', label: 'Register' },
+  { href: '/this-week', label: 'This week' },
   { href: '/developments', label: 'Developments' },
   { href: '/courts', label: 'Courts' },
 ];

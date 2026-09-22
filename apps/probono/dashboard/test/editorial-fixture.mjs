@@ -25,6 +25,19 @@ for (let i = 0; i < archiveCount; i++) {
     VALUES(3,$1,$1,$2,now()-interval '40 days','Synthetic archive record — not published news.','funding',true)`,
     [`https://example.org/archive-${i}`, `Archive funding signal ${String(i).padStart(3,'0')}`]);
 }
+if (process.env.FIXTURE_WEEKLY === '1') {
+  for (const [name, age, opportunity, deadlineDays, url] of [
+    ['Older open grant', 60, true, 2, 'https://example.org/old-open'],
+    ['Closed grant', 1, true, -1, 'https://example.org/closed'],
+    ['Future publication', -3, false, null, 'https://example.org/future'],
+    ['Older sector news', 9, false, null, 'https://example.org/old-news'],
+    ['Unsafe source link', 1, false, null, 'javascript:alert(1)'],
+  ]) {
+    const deadlines = deadlineDays === null ? [] : [{ date: new Date(Date.now() + deadlineDays * 86400000).toISOString().slice(0,10), label: 'Fixture applications close', kind: 'action' }];
+    await db.query(`INSERT INTO items(source_id,url,canonical_url,title,published_at,relevant,opportunity,entities,stream) VALUES (1,$1,$1,$2,now()-$3 * interval '1 day',true,$4,$5,'funding')`, [url,name,age,opportunity,JSON.stringify({deadlines})]);
+  }
+}
+if (process.env.FIXTURE_EMPTY === '1') await db.exec('DELETE FROM items');
 const server=new PGLiteSocketServer({db,host:'127.0.0.1',port:8897,maxConnections:10});
 await server.start();console.log('Fixture ready at 127.0.0.1:8897 (in-memory only)');
 for(const sig of ['SIGTERM','SIGINT']) process.on(sig,async()=>{await server.stop();await db.close();process.exit(0);});
