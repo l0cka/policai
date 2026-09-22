@@ -17,6 +17,14 @@ for(const [i,stream] of ['news','law_reform','funding','tech_justice'].entries()
  await db.query(`INSERT INTO items(source_id,url,canonical_url,title,published_at,excerpt,stream,blurb,opportunity,opportunity_reason,entities,relevant) VALUES ($1,$2,$2,$3,now()-($4 * interval '1 day'),$5,$6,$5,$7,$8,$9,true)`,[i%2+1,`https://example.org/fixture-${i}`,['Community legal support expands','Consultation on access to justice','Legal assistance funding round','Digital justice service update'][i],i,'Synthetic test record — not published news. Verify details at the linked source.',stream,i===1,i===1?'Submissions invited for the fixture consultation':null,JSON.stringify({deadlines:i===1?[{date:deadline,label:'Fixture submissions close'}]:[]})]);
 }
 await db.exec(`INSERT INTO items(source_id,url,canonical_url,title,excerpt,stream,relevant) VALUES(1,'https://example.org/screened','https://example.org/screened','Screened fixture item','Synthetic screened record','news',false);`);
+// Opt-in archive volume for pagination tests; the original four-record fixture remains the default.
+const archiveCount = Number(process.env.FIXTURE_ARCHIVE_COUNT ?? 0);
+if (!Number.isInteger(archiveCount) || archiveCount < 0 || archiveCount > 200) throw new Error('Invalid fixture archive count');
+for (let i = 0; i < archiveCount; i++) {
+  await db.query(`INSERT INTO items(source_id,url,canonical_url,title,published_at,excerpt,stream,relevant)
+    VALUES(3,$1,$1,$2,now()-interval '40 days','Synthetic archive record — not published news.','funding',true)`,
+    [`https://example.org/archive-${i}`, `Archive funding signal ${String(i).padStart(3,'0')}`]);
+}
 const server=new PGLiteSocketServer({db,host:'127.0.0.1',port:8897,maxConnections:10});
 await server.start();console.log('Fixture ready at 127.0.0.1:8897 (in-memory only)');
 for(const sig of ['SIGTERM','SIGINT']) process.on(sig,async()=>{await server.stop();await db.close();process.exit(0);});

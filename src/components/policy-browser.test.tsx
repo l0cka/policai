@@ -1,5 +1,7 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
+
+beforeEach(() => window.history.replaceState({}, '', '/'));
 import { PolicyBrowser } from './policy-browser';
 import type { Policy } from '@/types';
 
@@ -53,6 +55,18 @@ const paginatedPolicies = Array.from({ length: 24 }, (_, index) => ({
 }));
 
 describe('Editorial register', () => {
+  it('restores a shared view and keeps search, sort and pagination in the address', () => {
+    window.history.replaceState({ marker: 'preserve' }, '', '/?q=Policy&jurisdiction=federal&view=table&page=2&sort=title:asc');
+    render(<PolicyBrowser {...props} policies={paginatedPolicies} />);
+    expect(screen.getByRole('searchbox')).toHaveValue('Policy');
+    expect(screen.getByText('Page 2 of 2')).toBeInTheDocument();
+    expect(screen.getByRole('table')).toBeInTheDocument();
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'all' } });
+    expect(new URLSearchParams(window.location.search).get('q')).toBe('all');
+    expect(new URLSearchParams(window.location.search).has('page')).toBe(false);
+    expect(window.history.state.marker).toBe('preserve');
+  });
+
   it.each([
     ['jurisdiction', 'Jurisdiction'],
     ['type', 'Type'],

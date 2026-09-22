@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { JurisdictionMark } from '@/components/policy-table';
+import { JurisdictionMark } from '@/components/policy-indicators';
 import { jurisdictionRailStyle } from '@/lib/jurisdiction-accent';
 import { type Agency } from '@/types';
 import { MetricStrip, PageIntro } from '@/components/layout';

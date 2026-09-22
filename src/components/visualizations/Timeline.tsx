@@ -6,7 +6,7 @@ import {
   formatPolicyDate,
   parseCalendarDateForDisplay,
 } from '@/lib/format-policy-date';
-import { JurisdictionMark, SourceState } from '@/components/policy-table';
+import { JurisdictionMark, SourceState } from '@/components/policy-indicators';
 import { jurisdictionRailStyle } from '@/lib/jurisdiction-accent';
 import { type Jurisdiction, type TimelineEvent, type TimelineEventType } from '@/types';
 import { ArrowUpRight } from 'lucide-react';

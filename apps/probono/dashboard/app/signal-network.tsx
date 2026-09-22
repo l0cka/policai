@@ -1,36 +1,8 @@
-const COLLECTIONS: Record<string, string> = {
-  news: 'News',
-  law_reform: 'Law reform',
-  funding: 'Funding',
-  tech_justice: 'Tech & justice',
-  unclassified: 'Unclassified',
-};
+import { STREAMS } from '../lib/radar-state';
 
-/*
- * One row per source x collection across the window. Every figure the diagram
- * states is derived from this aggregate rather than from the rows we happen to
- * draw, so the counts cannot drift away from the population the way they did
- * when they were window functions over a LIMITed row set.
- */
-export type NetworkPair = {
-  source_name: string;
-  source_url: string;
-  collection: string;
-  n: number;
-  opportunities: number;
-};
+const COLLECTIONS: Record<string, string> = { ...STREAMS, unclassified: 'Unclassified' };
 
-/* The individual signals, used for the density band and the featured item. */
-export type NetworkSignal = {
-  id: string | number;
-  title: string;
-  url: string;
-  stream: string | null;
-  opportunity: boolean;
-  published_at: string | Date | null;
-  created_at: string | Date;
-  source_name: string;
-};
+import type { NetworkPair, NetworkSignal } from '../lib/radar-data';
 
 type Node = {
   key: string;

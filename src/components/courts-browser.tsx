@@ -21,7 +21,7 @@ import {
 } from "@/types";
 import { formatPolicyDate } from "@/lib/format-policy-date";
 import { jurisdictionAccent, jurisdictionRailStyle } from "@/lib/jurisdiction-accent";
-import { StatusPill, SourceState } from "@/components/policy-table";
+import { StatusPill, SourceState } from "@/components/policy-indicators";
 import { MetricStrip, PageIntro } from "@/components/layout";
 import { NoResultsState } from "@/components/ui/empty-state";
 
