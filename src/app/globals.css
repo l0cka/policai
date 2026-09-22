@@ -5,11 +5,10 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  /* One face site-wide (matching A2J): sans, mono and display all resolve to
-     IBM Plex Mono, so existing font-sans/font-display usage needs no edits. */
-  --font-sans: var(--font-plex-mono), 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
-  --font-mono: var(--font-plex-mono), 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
-  --font-display: var(--font-plex-mono), 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  /* Editorial index: readable interface, serif headings, mono only for data. */
+  --font-sans: Arial, Helvetica, sans-serif;
+  --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  --font-display: Georgia, 'Times New Roman', serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -59,24 +58,24 @@
   color-scheme: light dark;
   --radius: 0.5rem;
 
-  --background: light-dark(#f4f1e8, #10141b);
-  --foreground: light-dark(#10213a, #edf2f7);
-  --card: light-dark(#faf8f2, #151b24);
-  --card-foreground: light-dark(#10213a, #edf2f7);
-  --popover: light-dark(#fffdf8, #171e28);
-  --popover-foreground: light-dark(#10213a, #edf2f7);
-  --primary: light-dark(#2f4fd8, #8fa8ff);
-  --primary-foreground: light-dark(#ffffff, #09101d);
-  --secondary: light-dark(#e9edf0, #202936);
-  --secondary-foreground: light-dark(#10213a, #edf2f7);
-  --muted: light-dark(#e9edf0, #202936);
-  --muted-foreground: light-dark(#526176, #a7b2c3);
-  --accent: light-dark(#e7ecfa, #222e44);
-  --accent-foreground: light-dark(#10213a, #f4f7fb);
+  --background: light-dark(#f8f7f3, #151b18);
+  --foreground: light-dark(#202822, #eef0e9);
+  --card: light-dark(#fffefa, #1b231e);
+  --card-foreground: light-dark(#202822, #eef0e9);
+  --popover: light-dark(#fffefa, #1b231e);
+  --popover-foreground: light-dark(#202822, #eef0e9);
+  --primary: light-dark(#245847, #a3cfb3);
+  --primary-foreground: light-dark(#ffffff, #151b18);
+  --secondary: light-dark(#e8eee8, #273a2e);
+  --secondary-foreground: light-dark(#202822, #eef0e9);
+  --muted: light-dark(#eeeee7, #27302a);
+  --muted-foreground: light-dark(#606760, #b0bbb1);
+  --accent: light-dark(#e8eee8, #273a2e);
+  --accent-foreground: light-dark(#202822, #eef0e9);
   --destructive: light-dark(#b42318, #ff8175);
-  --border: light-dark(#c3ccd3, #333f4f);
-  --input: light-dark(#aeb9c4, #4a586b);
-  --ring: light-dark(#2f4fd8, #8fa8ff);
+  --border: light-dark(#dcded6, #38443b);
+  --input: light-dark(#9da89c, #6b796e);
+  --ring: light-dark(#245847, #a3cfb3);
 
   --chart-1: light-dark(#2f4fd8, #8fa8ff);
   --chart-2: light-dark(#146b5a, #65d2b4);
@@ -93,7 +92,7 @@
   --sidebar-border: light-dark(#c3ccd3, #333f4f);
   --sidebar-ring: light-dark(#2f4fd8, #8fa8ff);
 
-  --row-hover: light-dark(#ebeae2, #1b232e);
+  --row-hover: light-dark(#eeeee7, #202c23);
   --status-active: light-dark(#146b5a, #65d2b4);
   --status-proposed: light-dark(#8a5400, #e7b96c);
   --status-amended: light-dark(#2f4fd8, #91aaff);
@@ -104,10 +103,10 @@
   --status-repealed-bg: light-dark(#e7e9e8, #28303b);
 
   --navy: light-dark(#102a43, #09182a);
-  --ink: light-dark(#10213a, #edf2f7);
-  --paper: light-dark(#f4f1e8, #10141b);
-  --paper-raised: light-dark(#faf8f2, #151b24);
-  --paper-sunk: light-dark(#eae7dc, #0c1016);
+  --ink: light-dark(#202822, #eef0e9);
+  --paper: light-dark(#f8f7f3, #151b18);
+  --paper-raised: light-dark(#fffefa, #1b231e);
+  --paper-sunk: light-dark(#eeeee7, #111713);
   --trust: light-dark(#146b5a, #65d2b4);
   --caution: light-dark(#b7791f, #e7b96c);
   --alarm: light-dark(#b42318, #ff8175);
@@ -207,8 +206,7 @@
   }
   body {
     @apply bg-background text-foreground font-sans;
-    background-image: radial-gradient(var(--background-pattern) 0.7px, transparent 0.7px);
-    background-size: 6px 6px;
+
   }
   h1, h2, h3 {
     text-wrap: balance;
@@ -625,4 +623,29 @@
   .network-graph-shell {
     height: 42rem;
   }
+}
+
+/* Compact, multi-select disclosures retain the register’s existing filter logic. */
+.editorial-filter-options {
+  position: absolute;
+  left: 0;
+  z-index: 20;
+  width: min(22rem, 100%);
+  margin-top: .5rem;
+  max-height: 55svh;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: .25rem;
+  padding: 1rem;
+  background: var(--popover);
+  box-shadow: var(--shadow-lift);
+}
+.editorial-filter[open] > summary { background: var(--accent); color: var(--primary); }
+.editorial-filter-options label { min-height: 44px; align-items: center; }
+.editorial-filter-options > div > div:first-child { display: none; }
+.editorial-filter-options fieldset { border: 0; }
+.editorial-filter-options label span:last-child { color: var(--muted-foreground); }
+.editorial-register article { overflow-wrap: anywhere; }
+@media (min-width: 1280px) {
+  .editorial-register, header > .container, header > div > .container, footer > .container { max-width: 1240px; }
 }

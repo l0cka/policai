@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { IBM_Plex_Mono } from 'next/font/google';
 import './globals.css';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
@@ -9,16 +8,6 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { WebMcpTools } from '@/components/webmcp-tools';
 import { getCollectionMeta } from '@/lib/data-service';
 import { parseSourceUrl } from '@/lib/source-url';
-
-// One face for the whole site, matching the A2J property: IBM Plex Mono
-// carries body, headings and data alike, and `ch` becomes an exact unit.
-const plexMono = IBM_Plex_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  style: ['normal', 'italic'],
-  variable: '--font-plex-mono',
-  display: 'swap',
-});
 
 export const metadata: Metadata = {
   title: 'Policai - Australian AI Policy and Governance Tracker',
@@ -51,7 +40,6 @@ export default async function RootLayout({
   return (
     <html
       lang="en-AU"
-      className={plexMono.variable}
       suppressHydrationWarning
     >
       <head>

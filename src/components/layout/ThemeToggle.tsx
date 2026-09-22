@@ -1,6 +1,6 @@
 'use client';
 
-import { useSyncExternalStore } from 'react';
+import { useRef, useSyncExternalStore } from 'react';
 import { Monitor, Moon, Sun } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -17,11 +17,12 @@ const THEME_EVENT = 'policai:theme';
  */
 export const themeInitScript = `(function(){try{var t=localStorage.getItem('${THEME_STORAGE_KEY}');if(t==='light'||t==='dark'){document.documentElement.dataset.theme=t}}catch(e){}})();`;
 
-const OPTIONS: Array<{ value: ThemeChoice; label: string; Icon: typeof Sun }> = [
-  { value: 'light', label: 'Light', Icon: Sun },
-  { value: 'system', label: 'System', Icon: Monitor },
-  { value: 'dark', label: 'Dark', Icon: Moon },
-];
+const OPTIONS: Array<{ value: ThemeChoice; label: string; Icon: typeof Sun }> =
+  [
+    { value: 'light', label: 'Light', Icon: Sun },
+    { value: 'system', label: 'System', Icon: Monitor },
+    { value: 'dark', label: 'Dark', Icon: Moon },
+  ];
 
 /**
  * The `<html>` element is the single source of truth: the init script sets it
@@ -60,7 +61,12 @@ function select(value: ThemeChoice) {
 }
 
 export function ThemeToggle({ className }: { className?: string }) {
-  const choice = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const choice = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot,
+  );
+  const buttons = useRef<Array<HTMLButtonElement | null>>([]);
 
   return (
     <div
@@ -71,7 +77,7 @@ export function ThemeToggle({ className }: { className?: string }) {
       role="radiogroup"
       aria-label="Colour theme"
     >
-      {OPTIONS.map(({ value, label, Icon }) => {
+      {OPTIONS.map(({ value, label, Icon }, index) => {
         const active = choice === value;
         return (
           <button
@@ -81,9 +87,29 @@ export function ThemeToggle({ className }: { className?: string }) {
             aria-checked={active}
             aria-label={label}
             title={label}
+            ref={(element) => {
+              buttons.current[index] = element;
+            }}
+            tabIndex={active ? 0 : -1}
+            onKeyDown={(event) => {
+              const next =
+                event.key === 'Home'
+                  ? 0
+                  : event.key === 'End'
+                    ? OPTIONS.length - 1
+                    : ['ArrowRight', 'ArrowDown'].includes(event.key)
+                      ? (index + 1) % OPTIONS.length
+                      : ['ArrowLeft', 'ArrowUp'].includes(event.key)
+                        ? (index + OPTIONS.length - 1) % OPTIONS.length
+                        : null;
+              if (next === null) return;
+              event.preventDefault();
+              select(OPTIONS[next].value);
+              buttons.current[next]?.focus();
+            }}
             onClick={() => select(value)}
             className={cn(
-              'flex h-7 w-7 items-center justify-center rounded-full transition-colors duration-[var(--dur-fast)]',
+              'flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-[var(--dur-fast)]',
               active
                 ? 'bg-primary text-primary-foreground'
                 : 'text-muted-foreground hover:text-foreground',

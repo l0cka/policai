@@ -2,7 +2,13 @@
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, ChevronDown, ChevronUp, ChevronsUpDown, CheckCircle2 } from 'lucide-react';
+import {
+  ArrowRight,
+  ChevronDown,
+  ChevronUp,
+  ChevronsUpDown,
+  CheckCircle2,
+} from 'lucide-react';
 import {
   getJurisdictionName,
   getPolicyDateTypeName,
@@ -12,10 +18,14 @@ import {
   type Policy,
 } from '@/types';
 import { formatPolicyDate } from '@/lib/format-policy-date';
-import { jurisdictionAccent, jurisdictionRailStyle } from '@/lib/jurisdiction-accent';
+import {
+  jurisdictionAccent,
+  jurisdictionRailStyle,
+} from '@/lib/jurisdiction-accent';
 import { cn } from '@/lib/utils';
 
-export type PolicySortField = 'title' | 'jurisdiction' | 'type' | 'status' | 'effectiveDate';
+export type PolicySortField =
+  'title' | 'jurisdiction' | 'type' | 'status' | 'effectiveDate';
 export type PolicySortDirection = 'asc' | 'desc';
 export type PolicyViewMode = 'table' | 'list';
 
@@ -40,7 +50,12 @@ export function StatusPill({ status }: { status: Policy['status'] }) {
           : 'border-border bg-[var(--status-repealed-bg)] text-[var(--status-repealed)]';
 
   return (
-    <span className={cn('inline-flex rounded-md border px-2 py-1 text-xs font-medium', tone)}>
+    <span
+      className={cn(
+        'inline-flex rounded-md border px-2 py-1 text-xs font-medium',
+        tone,
+      )}
+    >
       {getPolicyStatusName(status)}
     </span>
   );
@@ -80,7 +95,7 @@ export function SourceState({
         verified ? 'text-[var(--trust)]' : 'text-[var(--caution)]',
       )}
     >
-      <CheckCircle2 className="h-4 w-4" fill="currentColor" strokeWidth={1.8} />
+      <CheckCircle2 className="h-4 w-4" strokeWidth={1.8} />
       <span className="text-muted-foreground">
         {verified ? 'Verified source' : 'Needs review'}
       </span>
@@ -88,44 +103,57 @@ export function SourceState({
   );
 }
 
-function PolicyCard({ policy, compact = false }: { policy: Policy; compact?: boolean }) {
+function PolicyCard({
+  policy,
+  compact = false,
+}: {
+  policy: Policy;
+  compact?: boolean;
+}) {
   const primaryDate = getPrimaryPolicyDate(policy);
 
   return (
-    <article
-      style={jurisdictionRailStyle(policy.jurisdiction)}
-      className="ink-rail hover-lift content-auto border border-border bg-card/45 p-4 pl-5 hover:border-[var(--rule)]"
-    >
-      <Link
-        href={`/policies/${policy.id}`}
-        className="text-[17px] font-semibold leading-snug text-primary hover:underline"
-      >
-        {policy.title}
-      </Link>
-      {!compact ? (
-        <p className="mt-1.5 line-clamp-2 text-sm leading-5 text-muted-foreground">
-          {policy.description}
+    <article className="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 border-b border-border py-5 sm:gap-x-6">
+      <div className="min-w-0">
+        <p className="mb-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-muted-foreground">
+          <span>{getJurisdictionName(policy.jurisdiction)}</span>
+          <span aria-hidden="true">/</span>
+          <span>{getPolicyTypeName(policy.type)}</span>
         </p>
-      ) : null}
-      <p className="mt-3 text-sm">
-        <JurisdictionMark jurisdiction={policy.jurisdiction} />
-        <span className="mx-2 text-border">•</span>
-        {getPolicyTypeName(policy.type)}
-      </p>
-      <div className="mt-3 grid grid-cols-[auto_1fr] items-center gap-3 border-t border-border pt-3 sm:grid-cols-[auto_auto_1fr_auto]">
+        <h2 className="text-[15px] font-semibold leading-6 sm:text-base">
+          <Link
+            href={`/policies/${policy.id}`}
+            className="text-foreground hover:text-primary hover:underline"
+          >
+            {policy.title}
+          </Link>
+        </h2>
+        {!compact && (
+          <p className="mt-2 line-clamp-2 text-xs leading-6 text-muted-foreground">
+            {policy.description}
+          </p>
+        )}
+        <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1">
+          <SourceState verification={policy.verification} />
+          <a
+            href={policy.sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Official source for ${policy.title}`}
+            className="inline-flex min-h-11 items-center text-xs text-primary underline underline-offset-4"
+          >
+            Official source ↗
+          </a>
+        </div>
+      </div>
+      <div className="flex max-w-28 flex-col items-end gap-3 text-right">
         <StatusPill status={policy.status} />
-        <span className="font-mono text-[11px] font-medium uppercase leading-4 text-muted-foreground">
+        <span className="mt-1 text-[11px] leading-5">
           {formatPolicyDate(primaryDate, { short: true })}
-          <span className="block">{getPolicyDateTypeName(primaryDate.type)}</span>
+          <span className="block text-[10px] text-muted-foreground">
+            {getPolicyDateTypeName(primaryDate.type)}
+          </span>
         </span>
-        <SourceState verification={policy.verification} />
-        <Link
-          href={`/policies/${policy.id}`}
-          aria-label={`View ${policy.title}`}
-          className="ml-auto hidden text-primary sm:inline-flex"
-        >
-          <ArrowRight className="h-4 w-4" />
-        </Link>
       </div>
     </article>
   );
@@ -147,7 +175,14 @@ export function PolicyTable({
   onSort: (field: PolicySortField) => void;
 }) {
   const [page, setPage] = useState(0);
-  const pageSize = 20;
+  const sortKey = `${sortField}:${sortDirection}`;
+  const [previousSort, setPreviousSort] = useState(sortKey);
+  // Reset either sort control before rendering rows, without replacing focused DOM.
+  if (previousSort !== sortKey) {
+    setPreviousSort(sortKey);
+    setPage(0);
+  }
+  const pageSize = 8;
 
   const sorted = useMemo(
     () =>
@@ -180,120 +215,138 @@ export function PolicyTable({
 
   return (
     <div>
-      <div className="space-y-3 md:hidden">
+      <div className="md:hidden">
         {paged.map((policy) => (
-          <PolicyCard key={policy.id} policy={policy} compact={mobileViewMode === 'table'} />
+          <PolicyCard
+            key={policy.id}
+            policy={policy}
+            compact={mobileViewMode === 'table'}
+          />
         ))}
       </div>
       {viewMode === 'list' ? (
-        <div className="hidden space-y-3 md:block">
-          {paged.map((policy) => <PolicyCard key={policy.id} policy={policy} />)}
+        <div className="hidden md:block">
+          {paged.map((policy) => (
+            <PolicyCard key={policy.id} policy={policy} />
+          ))}
         </div>
       ) : (
-          <div className="hidden overflow-x-auto md:block">
-            <table className="w-full table-fixed">
-              <thead>
-                <tr className="border-y border-[var(--rule-heavy)]">
-                  {([
+        <div className="hidden overflow-x-auto md:block">
+          <table className="w-full table-fixed">
+            <thead>
+              <tr className="border-y border-[var(--rule-heavy)]">
+                {(
+                  [
                     ['title', 'Policy', 'w-[32%] pl-3'],
                     ['jurisdiction', 'Jurisdiction', 'w-[15%]'],
                     ['type', 'Type', 'w-[10%]'],
                     ['status', 'Status', 'w-[10%]'],
                     ['effectiveDate', 'Key date', 'w-[13%]'],
-                  ] as const).map(([field, label, width]) => {
-                    const isSorted = sortField === field;
-                    const SortIcon = !isSorted
-                      ? ChevronsUpDown
-                      : sortDirection === 'asc'
-                        ? ChevronUp
-                        : ChevronDown;
-                    return (
-                      <th
-                        key={field}
-                        className={cn('py-2.5 pr-3 text-left', width)}
-                        aria-sort={
-                          isSorted
-                            ? sortDirection === 'asc'
-                              ? 'ascending'
-                              : 'descending'
-                            : 'none'
-                        }
-                      >
-                        <button
-                          type="button"
-                          onClick={() => handleSort(field)}
-                          className={cn(
-                            'group inline-flex items-center gap-1 whitespace-nowrap font-mono text-[11px] font-medium uppercase tracking-[0.1em] transition-colors duration-[var(--dur-fast)]',
-                            isSorted
-                              ? 'text-foreground'
-                              : 'text-muted-foreground hover:text-foreground',
-                          )}
-                        >
-                          {label}
-                          <SortIcon
-                            className={cn(
-                              'h-3 w-3 transition-opacity duration-[var(--dur-fast)]',
-                              isSorted ? 'opacity-100' : 'opacity-0 group-hover:opacity-60',
-                            )}
-                            strokeWidth={2.2}
-                          />
-                        </button>
-                      </th>
-                    );
-                  })}
-                  <th className="w-[15%] whitespace-nowrap py-2.5 text-left font-mono text-[11px] font-medium uppercase tracking-[0.1em] text-muted-foreground">
-                    Source
-                  </th>
-                  <th className="w-6"><span className="sr-only">Open</span></th>
-                </tr>
-              </thead>
-              <tbody>
-                {paged.map((policy) => {
-                  const primaryDate = getPrimaryPolicyDate(policy);
+                  ] as const
+                ).map(([field, label, width]) => {
+                  const isSorted = sortField === field;
+                  const SortIcon = !isSorted
+                    ? ChevronsUpDown
+                    : sortDirection === 'asc'
+                      ? ChevronUp
+                      : ChevronDown;
                   return (
-                    <tr
-                      key={policy.id}
-                      style={jurisdictionRailStyle(policy.jurisdiction)}
-                      className="group/row content-auto border-b border-border transition-colors duration-[var(--dur-fast)] hover:bg-[var(--row-hover)]"
+                    <th
+                      key={field}
+                      className={cn('py-2.5 pr-3 text-left', width)}
+                      aria-sort={
+                        isSorted
+                          ? sortDirection === 'asc'
+                            ? 'ascending'
+                            : 'descending'
+                          : 'none'
+                      }
                     >
-                      <td className="ink-rail py-3 pl-3 pr-5 align-top">
-                        <Link
-                          href={`/policies/${policy.id}`}
-                          className="text-sm font-semibold leading-5 text-primary hover:underline"
-                        >
-                          {policy.title}
-                        </Link>
-                        <p className="mt-1 line-clamp-2 max-w-xl text-xs leading-4 text-muted-foreground">
-                          {policy.description}
-                        </p>
-                      </td>
-                      <td className="py-3 pr-3 align-top text-xs leading-5 text-muted-foreground">
-                        <JurisdictionMark jurisdiction={policy.jurisdiction} />
-                      </td>
-                      <td className="py-3 pr-3 align-top text-xs leading-5 text-muted-foreground">
-                        {getPolicyTypeName(policy.type)}
-                      </td>
-                      <td className="py-3 pr-3 align-top"><StatusPill status={policy.status} /></td>
-                      <td className="py-3 pr-3 align-top font-mono text-[11px] font-medium uppercase leading-4 text-muted-foreground">
-                        {formatPolicyDate(primaryDate, { short: true })}
-                        <span className="block">{getPolicyDateTypeName(primaryDate.type)}</span>
-                      </td>
-                      <td className="py-3 align-top"><SourceState verification={policy.verification} /></td>
-                      <td className="py-3 align-top">
-                        <Link
-                          href={`/policies/${policy.id}`}
-                          aria-label={`View ${policy.title}`}
-                          className="text-primary"
-                        >
-                          <ArrowRight className="h-4 w-4 transition-transform duration-[var(--dur-base)] ease-[var(--ease-out-quint)] group-hover/row:translate-x-1" />
-                        </Link>
-                      </td>
-                    </tr>
+                      <button
+                        type="button"
+                        onClick={() => handleSort(field)}
+                        className={cn(
+                          'group inline-flex items-center gap-1 whitespace-nowrap font-mono text-[11px] font-medium uppercase tracking-[0.1em] transition-colors duration-[var(--dur-fast)]',
+                          isSorted
+                            ? 'text-foreground'
+                            : 'text-muted-foreground hover:text-foreground',
+                        )}
+                      >
+                        {label}
+                        <SortIcon
+                          className={cn(
+                            'h-3 w-3 transition-opacity duration-[var(--dur-fast)]',
+                            isSorted
+                              ? 'opacity-100'
+                              : 'opacity-0 group-hover:opacity-60',
+                          )}
+                          strokeWidth={2.2}
+                        />
+                      </button>
+                    </th>
                   );
                 })}
-              </tbody>
-            </table>
-          </div>
+                <th className="w-[15%] whitespace-nowrap py-2.5 text-left font-mono text-[11px] font-medium uppercase tracking-[0.1em] text-muted-foreground">
+                  Source
+                </th>
+                <th className="w-6">
+                  <span className="sr-only">Open</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {paged.map((policy) => {
+                const primaryDate = getPrimaryPolicyDate(policy);
+                return (
+                  <tr
+                    key={policy.id}
+                    style={jurisdictionRailStyle(policy.jurisdiction)}
+                    className="group/row content-auto border-b border-border transition-colors duration-[var(--dur-fast)] hover:bg-[var(--row-hover)]"
+                  >
+                    <td className="ink-rail py-3 pl-3 pr-5 align-top">
+                      <Link
+                        href={`/policies/${policy.id}`}
+                        className="text-sm font-semibold leading-5 text-primary hover:underline"
+                      >
+                        {policy.title}
+                      </Link>
+                      <p className="mt-1 line-clamp-2 max-w-xl text-xs leading-4 text-muted-foreground">
+                        {policy.description}
+                      </p>
+                    </td>
+                    <td className="py-3 pr-3 align-top text-xs leading-5 text-muted-foreground">
+                      <JurisdictionMark jurisdiction={policy.jurisdiction} />
+                    </td>
+                    <td className="py-3 pr-3 align-top text-xs leading-5 text-muted-foreground">
+                      {getPolicyTypeName(policy.type)}
+                    </td>
+                    <td className="py-3 pr-3 align-top">
+                      <StatusPill status={policy.status} />
+                    </td>
+                    <td className="py-3 pr-3 align-top font-mono text-[11px] font-medium uppercase leading-4 text-muted-foreground">
+                      {formatPolicyDate(primaryDate, { short: true })}
+                      <span className="block">
+                        {getPolicyDateTypeName(primaryDate.type)}
+                      </span>
+                    </td>
+                    <td className="py-3 align-top">
+                      <SourceState verification={policy.verification} />
+                    </td>
+                    <td className="py-3 align-top">
+                      <Link
+                        href={`/policies/${policy.id}`}
+                        aria-label={`View ${policy.title}`}
+                        className="text-primary"
+                      >
+                        <ArrowRight className="h-4 w-4 transition-transform duration-[var(--dur-base)] ease-[var(--ease-out-quint)] group-hover/row:translate-x-1" />
+                      </Link>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       )}
 
       {totalPages > 1 ? (
@@ -306,7 +359,7 @@ export function PolicyTable({
               type="button"
               onClick={() => setPage(Math.max(0, safePage - 1))}
               disabled={safePage === 0}
-              className="min-h-10 rounded-md border border-border px-4 text-xs font-medium transition-colors duration-[var(--dur-fast)] hover:bg-muted disabled:opacity-35 disabled:hover:bg-transparent"
+              className="min-h-11 rounded-md border border-border px-4 text-xs font-medium transition-colors duration-[var(--dur-fast)] hover:bg-muted disabled:opacity-35 disabled:hover:bg-transparent"
             >
               Previous
             </button>
@@ -314,7 +367,7 @@ export function PolicyTable({
               type="button"
               onClick={() => setPage(Math.min(totalPages - 1, safePage + 1))}
               disabled={safePage >= totalPages - 1}
-              className="min-h-10 rounded-md border border-border px-4 text-xs font-medium transition-colors duration-[var(--dur-fast)] hover:bg-muted disabled:opacity-35 disabled:hover:bg-transparent"
+              className="min-h-11 rounded-md border border-border px-4 text-xs font-medium transition-colors duration-[var(--dur-fast)] hover:bg-muted disabled:opacity-35 disabled:hover:bg-transparent"
             >
               Next
             </button>
