@@ -18,6 +18,17 @@ conventions still apply, but root Policai data/runtime assumptions do not.
   outside Git. Do not copy them from existing checkouts or expose them in logs.
   Use an isolated test database; tests must not mutate production data.
 
+## Shared design tokens
+
+- `dashboard/app/design-tokens.css` is a generated copy of the repository's
+  `design/tokens.css`, kept in the package so the dashboard's standalone Docker
+  build needs nothing outside `dashboard/`. Do not edit it. Change
+  `design/tokens.css`, run `node scripts/sync-design-tokens.mjs` from the
+  repository root, and commit both copies. The root test suite fails on drift.
+- Use the shared tokens (`--space-*`, `--type-*`, `--radius-*`,
+  `--focus-ring-*`) for new CSS. Declare A2J-only tokens and deliberate
+  overrides in `dashboard/app/globals.css` after the import.
+
 ## Release and operational safety
 
 - Pro Bono has a separate release, rollback, runtime and verification lane from

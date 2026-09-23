@@ -16,6 +16,21 @@ cross-application change. Keep production runtimes independent. Never push a
 production-targeted branch without checking the current automatic deployment
 timer: a source push can trigger an installed host deployment job.
 
+## Shared design tokens
+
+`design/tokens.css` is the single source for values both sites share: type
+scale (`--type-*`, `--tracking-eyebrow`), spacing (`--space-*`), radii
+(`--radius`, `--radius-control`, `--radius-pill`), focus ring
+(`--focus-ring-*`), core and status colours, rules, shadows and motion. The
+A2J Docker build sees only `apps/probono/dashboard`, so neither app imports
+across that boundary. `node scripts/sync-design-tokens.mjs` writes
+byte-identical copies to `src/app/design-tokens.css` and
+`apps/probono/dashboard/app/design-tokens.css`; both apps import their copy
+from `globals.css`. Never edit a copy. `src/lib/design-tokens-sync.test.ts`
+(in `npm run test`, so `npm run check`) fails when a copy drifts. Keep
+app-only values, and deliberate overrides such as A2J's current `--caution`,
+in each app's `globals.css`.
+
 ## Project Overview
 
 Policai is an Australian AI policy tracker. It maintains a curated register of AI policy, regulation, governance and court guidance across federal and state/territory jurisdictions, plus an automated "developments" feed of newly detected policy activity.
