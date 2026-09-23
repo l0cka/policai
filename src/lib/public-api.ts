@@ -27,6 +27,17 @@ export function publicApiError(error: string, status = 400) {
   return publicApiJson({ error, success: false }, { status });
 }
 
+export function publicApiText(
+  body: string,
+  contentType: string,
+  headers: Record<string, string> = {},
+) {
+  const response = new NextResponse(body, {
+    headers: { "Content-Type": contentType, ...headers },
+  });
+  return addPublicHeaders(response);
+}
+
 export function publicApiOptions() {
   return new NextResponse(null, {
     status: 204,

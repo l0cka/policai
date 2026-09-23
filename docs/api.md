@@ -82,6 +82,13 @@ curl 'https://policai.org/api/developments?since=2026-08-01&limit=20'
 
 `GET /api/timeline` accepts `jurisdiction`.
 
+`GET /api/policies/{id}/markdown` returns one public register record as
+`text/markdown`. The document carries its own provenance: the official source
+URL, verification status and check date, last editorial review, and the
+Policai record URL. A record with no editorial review since publication says
+so explicitly. Records that are not public return the same JSON 404 as
+`GET /api/policies/{id}`.
+
 ### Status fields
 
 `GET /api/status` returns the last run's health in `collection`. It also returns two per-source freshness counts, computed from each source's last *completed* check in `data/watch-state.json`:
