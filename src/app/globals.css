@@ -1,5 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+/* Shared with Policai A2J; generated from design/tokens.css. */
+@import "./design-tokens.css";
 @plugin "@tailwindcss/typography";
 
 @theme inline {
@@ -56,26 +58,18 @@
  */
 :root {
   color-scheme: light dark;
-  --radius: 0.5rem;
 
-  --background: light-dark(#f8f7f3, #151b18);
-  --foreground: light-dark(#202822, #eef0e9);
-  --card: light-dark(#fffefa, #1b231e);
+  /*
+   * Shared tokens (core colour, status, rules, type, spacing, radii, focus,
+   * motion) come from design-tokens.css. Only Policai-specific values live here.
+   */
   --card-foreground: light-dark(#202822, #eef0e9);
-  --popover: light-dark(#fffefa, #1b231e);
   --popover-foreground: light-dark(#202822, #eef0e9);
-  --primary: light-dark(#245847, #a3cfb3);
-  --primary-foreground: light-dark(#ffffff, #151b18);
   --secondary: light-dark(#e8eee8, #273a2e);
   --secondary-foreground: light-dark(#202822, #eef0e9);
-  --muted: light-dark(#eeeee7, #27302a);
-  --muted-foreground: light-dark(#606760, #b0bbb1);
   --accent: light-dark(#e8eee8, #273a2e);
   --accent-foreground: light-dark(#202822, #eef0e9);
   --destructive: light-dark(#b42318, #ff8175);
-  --border: light-dark(#dcded6, #38443b);
-  --input: light-dark(#9da89c, #6b796e);
-  --ring: light-dark(#245847, #a3cfb3);
 
   --chart-1: light-dark(#2f4fd8, #8fa8ff);
   --chart-2: light-dark(#146b5a, #65d2b4);
@@ -93,23 +87,10 @@
   --sidebar-ring: light-dark(#2f4fd8, #8fa8ff);
 
   --row-hover: light-dark(#eeeee7, #202c23);
-  --status-active: light-dark(#146b5a, #65d2b4);
-  --status-proposed: light-dark(#8a5400, #e7b96c);
-  --status-amended: light-dark(#2f4fd8, #91aaff);
-  --status-repealed: light-dark(#525d6b, #a9b4c4);
-  --status-active-bg: light-dark(#deeee7, #18362f);
-  --status-proposed-bg: light-dark(#f6e8c8, #3a2f1c);
-  --status-amended-bg: light-dark(#e4eafa, #1f2d55);
-  --status-repealed-bg: light-dark(#e7e9e8, #28303b);
-
-  --navy: light-dark(#102a43, #09182a);
   --ink: light-dark(#202822, #eef0e9);
   --paper: light-dark(#f8f7f3, #151b18);
   --paper-raised: light-dark(#fffefa, #1b231e);
   --paper-sunk: light-dark(#eeeee7, #111713);
-  --trust: light-dark(#146b5a, #65d2b4);
-  --caution: light-dark(#8f5d12, #e7b96c);
-  --alarm: light-dark(#b42318, #ff8175);
 
   --map-fill-0: light-dark(#e8e5e0, #242c36);
   --map-fill-1: light-dark(#c7d2e0, #2e3d53);
@@ -142,8 +123,6 @@
   --network-cross-edge: light-dark(#a855f7, #c79cff);
   --network-minimap-mask: light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.35));
 
-  --background-pattern: light-dark(rgba(16, 42, 67, 0.028), rgba(255, 255, 255, 0.022));
-
   /*
    * Jurisdiction accents, drawn from each government's own livery — Queensland
    * maroon, Northern Territory ochre, Tasmanian bottle green. They let a reader
@@ -159,18 +138,6 @@
   --jd-act: light-dark(#0369a1, #6cbde8);
   --jd-nt: light-dark(#c2410c, #ff9c6b);
 
-  /* Print-style rule weights: hairline, rule, heavy. */
-  --rule-hair: light-dark(rgba(16, 33, 58, 0.14), rgba(237, 242, 247, 0.13));
-  --rule: light-dark(rgba(16, 33, 58, 0.28), rgba(237, 242, 247, 0.24));
-  --rule-heavy: light-dark(rgba(16, 33, 58, 0.62), rgba(237, 242, 247, 0.5));
-
-  /* Depth comes from ink on paper, not from drop shadows. */
-  --shadow-raise: light-dark(0 1px 2px rgba(16, 33, 58, 0.06), 0 1px 2px rgba(0, 0, 0, 0.4));
-  --shadow-lift: light-dark(
-    0 10px 24px -14px rgba(16, 33, 58, 0.4),
-    0 12px 28px -16px rgba(0, 0, 0, 0.8)
-  );
-
   /*
    * Observatory hero. The panel is deliberately single-look: navy in both
    * themes, so these are constants rather than light-dark() pairs. Values
@@ -184,11 +151,7 @@
   --hero-new: #6693ff;
 
   /* Motion */
-  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
-  --dur-fast: 130ms;
-  --dur-base: 220ms;
-  --dur-slow: 420ms;
 }
 
 /* The toggle wins over the system preference by pinning `color-scheme`. */
@@ -233,9 +196,9 @@
    * so every control inherits it rather than opting in one at a time.
    */
   :focus-visible {
-    outline: 2px solid var(--ring);
-    outline-offset: 2px;
-    border-radius: 2px;
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--focus-ring-offset);
+    border-radius: var(--focus-ring-radius);
   }
   /* Figures line up in columns wherever they are compared. */
   th, td, time, .tabular {
@@ -294,23 +257,23 @@
    */
   .page-eyebrow {
     font-family: var(--font-mono);
-    font-size: 0.6875rem;
+    font-size: var(--type-label);
     font-weight: 500;
-    letter-spacing: 0.16em;
+    letter-spacing: var(--tracking-eyebrow);
     text-transform: uppercase;
     color: var(--muted-foreground);
   }
 
   .page-title {
     font-family: var(--font-display);
-    font-size: clamp(1.5rem, 2.1vw, 1.9rem);
+    font-size: var(--type-page-title);
     line-height: 1.2;
     letter-spacing: -0.01em;
   }
 
   .article-title {
     font-family: var(--font-display);
-    font-size: clamp(1.7rem, 2.7vw, 2.3rem);
+    font-size: var(--type-article-title);
     line-height: 1.2;
     letter-spacing: -0.01em;
   }
@@ -318,7 +281,7 @@
   /* A clear step below .page-title, so sections never rival the page name. */
   .section-title {
     font-family: var(--font-display);
-    font-size: 1.1rem;
+    font-size: var(--type-section-title);
     line-height: 1.35;
     letter-spacing: 0;
   }
@@ -431,7 +394,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    border-radius: 9999px;
+    border-radius: var(--radius-pill);
     background: currentColor;
     animation: signal-pulse 2.4s var(--ease-out-quint) infinite;
   }
@@ -551,24 +514,24 @@
   }
 
   .network-page-intro {
-    padding-bottom: 1rem;
+    padding-bottom: var(--space-4);
   }
 
   .network-workspace {
-    margin-top: 1rem;
+    margin-top: var(--space-4);
   }
 }
 
 @media (max-width: 1023px) and (orientation: landscape) and (max-height: 600px) {
   .network-page-intro {
-    padding-bottom: 0.75rem;
+    padding-bottom: var(--space-3);
   }
 
   .network-page-intro > div {
     display: grid;
     grid-template-columns: minmax(17rem, 0.9fr) minmax(20rem, 1.1fr);
     align-items: end;
-    gap: 1.5rem;
+    gap: var(--space-6);
   }
 
   .network-method-intro,
@@ -577,7 +540,7 @@
   }
 
   .network-title {
-    margin-top: 0.25rem;
+    margin-top: var(--space-1);
     font-family: var(--font-display);
     font-size: 1.5rem;
     line-height: 1;
@@ -593,7 +556,7 @@
 
   .network-workspace {
     min-height: 34rem;
-    margin-top: 0.75rem;
+    margin-top: var(--space-3);
   }
 
   .network-main {
@@ -653,12 +616,12 @@
   left: 0;
   z-index: 20;
   width: min(22rem, 100%);
-  margin-top: .5rem;
+  margin-top: var(--space-2);
   max-height: 55svh;
   overflow-y: auto;
   border: 1px solid var(--border);
   border-radius: .25rem;
-  padding: 1rem;
+  padding: var(--space-4);
   background: var(--popover);
   box-shadow: var(--shadow-lift);
 }
