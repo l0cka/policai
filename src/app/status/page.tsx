@@ -40,6 +40,8 @@ const STATE_LABEL: Record<SourceFreshnessState, string> = {
 
 const HEADER_CELL =
   'py-2.5 pr-3 text-left font-mono text-[11px] font-medium uppercase tracking-[0.1em] text-muted-foreground';
+// Secondary columns drop out on narrow screens so the state stays visible.
+const WIDE_ONLY = 'hidden sm:table-cell';
 
 function age(days: number | null): string {
   if (days === null) return '—';
@@ -112,8 +114,8 @@ export default async function StatusPage() {
               <thead>
                 <tr className="border-y border-[var(--rule-heavy)]">
                   <th scope="col" className={HEADER_CELL}>Source</th>
-                  <th scope="col" className={HEADER_CELL}>Jurisdiction</th>
-                  <th scope="col" className={HEADER_CELL}>Cadence</th>
+                  <th scope="col" className={`${HEADER_CELL} ${WIDE_ONLY}`}>Jurisdiction</th>
+                  <th scope="col" className={`${HEADER_CELL} ${WIDE_ONLY}`}>Cadence</th>
                   <th scope="col" className={HEADER_CELL}>Last completed check</th>
                   <th scope="col" className={HEADER_CELL}>State</th>
                 </tr>
@@ -127,10 +129,10 @@ export default async function StatusPage() {
                         {row.sourceId}
                       </code>
                     </td>
-                    <td className="py-2.5 pr-3 align-top text-muted-foreground">
+                    <td className={`py-2.5 pr-3 align-top text-muted-foreground ${WIDE_ONLY}`}>
                       {getJurisdictionName(row.jurisdiction)}
                     </td>
-                    <td className="py-2.5 pr-3 align-top text-muted-foreground">
+                    <td className={`py-2.5 pr-3 align-top text-muted-foreground ${WIDE_ONLY}`}>
                       {row.schedule}
                     </td>
                     <td className="py-2.5 pr-3 align-top text-muted-foreground">
