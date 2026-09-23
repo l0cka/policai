@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { isRelevantScrapedCandidate } from './scraper-filter';
+import { countAiMentions, isRelevantScrapedCandidate } from './scraper-filter';
 
 describe('isRelevantScrapedCandidate', () => {
   it('does not treat Aids to Navigation as an AI signal', () => {
@@ -27,5 +27,23 @@ describe('isRelevantScrapedCandidate', () => {
         text: 'Consultation on compute infrastructure governance.',
       }),
     ).toBe(true);
+  });
+});
+
+describe('countAiMentions', () => {
+  it('counts AI terms in body text, including standalone AI', () => {
+    expect(
+      countAiMentions(
+        'Artificial intelligence will change work. Generative AI tools and machine learning need rules; AI is here.',
+      ),
+    ).toBe(4);
+  });
+
+  it('does not count words that merely contain the letters ai', () => {
+    expect(countAiMentions('The aid package and the airline said again that the rain maintained.')).toBe(0);
+  });
+
+  it('returns zero for empty text', () => {
+    expect(countAiMentions('')).toBe(0);
   });
 });

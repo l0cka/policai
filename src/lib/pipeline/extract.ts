@@ -296,10 +296,21 @@ export function extractFromHtml(
 /**
  * Extract AI-policy-relevant items from an RSS/Atom feed.
  */
+export interface RssExtractionOptions {
+  maxCandidates?: number;
+  /**
+   * Keep items whose title matches this pattern instead of applying the
+   * title-and-URL AI filter. For feeds whose query already matches AI in full
+   * text but whose titles never carry the signal (Hansard debate titles name
+   * the bill); relevance is then judged from the fetched body.
+   */
+  titlePattern?: RegExp;
+}
+
 export function extractCandidatesFromRss(
   xml: string,
   baseUrl: string,
-  options: { maxCandidates?: number } = {},
+  options: RssExtractionOptions = {},
 ): Candidate[] {
   return extractFromRss(xml, baseUrl, options).candidates;
 }
@@ -307,7 +318,7 @@ export function extractCandidatesFromRss(
 export function extractFromRss(
   xml: string,
   baseUrl: string,
-  options: { maxCandidates?: number } = {},
+  options: RssExtractionOptions = {},
 ): ExtractionResult {
   const maxCandidates = options.maxCandidates ?? DEFAULT_MAX_CANDIDATES;
   const $ = cheerio.load(xml, { xmlMode: true });
@@ -351,7 +362,11 @@ export function extractFromRss(
   return {
     itemCount: deduped.length,
     candidates: deduped
-      .filter(isRelevantScrapedCandidate)
+      .filter((candidate) =>
+        options.titlePattern
+          ? options.titlePattern.test(candidate.title)
+          : isRelevantScrapedCandidate(candidate),
+      )
       .slice(0, maxCandidates),
     feedValid: $('channel, feed').length > 0,
   };
