@@ -60,3 +60,67 @@ export function summarizeReviewQueue(
         : Math.floor((now.getTime() - Math.min(...times)) / DAY_MS),
   };
 }
+
+/**
+ * Days since editorial re-verification before a public record counts as
+ * overdue. Binding law changes fastest in effect; guidance slowest. This is
+ * reported, never enforced: nothing fails because a record is old.
+ */
+export const RECORD_REVIEW_MAX_AGE_DAYS = {
+  binding: 90,
+  courtAndStandard: 180,
+  other: 365,
+} as const;
+
+const COURT_AND_STANDARD_TYPES: ReadonlySet<PolicyType> = new Set([
+  'practice_note',
+  'standard',
+]);
+
+function recordReviewLimitDays(type: PolicyType): number {
+  if (BINDING_TYPES.has(type)) return RECORD_REVIEW_MAX_AGE_DAYS.binding;
+  if (COURT_AND_STANDARD_TYPES.has(type)) {
+    return RECORD_REVIEW_MAX_AGE_DAYS.courtAndStandard;
+  }
+  return RECORD_REVIEW_MAX_AGE_DAYS.other;
+}
+
+export interface RecordFreshnessSummary {
+  reviewed: number;
+  overdue: number;
+  overdueIds: string[];
+  oldestAgeDays: number | null;
+}
+
+/**
+ * Time since each public record was last re-verified against its source,
+ * using `lastReviewedAt` and falling back to the verification check time.
+ * Complements `audit:register`, which detects content drift, not age.
+ */
+export function summarizeRecordFreshness(
+  policies: readonly Pick<
+    Policy,
+    'id' | 'type' | 'lastReviewedAt' | 'verification'
+  >[],
+  now: Date = new Date(),
+): RecordFreshnessSummary {
+  const overdueIds: string[] = [];
+  let reviewed = 0;
+  let oldestAgeDays: number | null = null;
+  for (const policy of policies) {
+    const reviewedAt = Date.parse(
+      policy.lastReviewedAt ?? policy.verification.checkedAt ?? '',
+    );
+    if (Number.isNaN(reviewedAt)) {
+      overdueIds.push(policy.id);
+      continue;
+    }
+    reviewed += 1;
+    const ageDays = Math.floor((now.getTime() - reviewedAt) / DAY_MS);
+    oldestAgeDays = Math.max(oldestAgeDays ?? ageDays, ageDays);
+    if (ageDays > recordReviewLimitDays(policy.type)) {
+      overdueIds.push(policy.id);
+    }
+  }
+  return { reviewed, overdue: overdueIds.length, overdueIds, oldestAgeDays };
+}

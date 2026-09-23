@@ -3,6 +3,8 @@ import { buildPolicy } from '@/test/factories';
 import type { WatchSource } from '@/lib/pipeline/sources';
 import {
   buildJurisdictionCoverage,
+  RECORD_REVIEW_MAX_AGE_DAYS,
+  summarizeRecordFreshness,
   summarizeReviewQueue,
 } from '@/lib/coverage-report';
 
@@ -58,5 +60,45 @@ describe('summarizeReviewQueue', () => {
 
   it('reports an empty queue without an age', () => {
     expect(summarizeReviewQueue([])).toEqual({ pending: 0, oldestAgeDays: null });
+  });
+});
+
+describe('summarizeRecordFreshness', () => {
+  const now = new Date('2026-10-20T00:00:00.000Z');
+
+  it('uses stricter limits for binding law than for guidance', () => {
+    expect(RECORD_REVIEW_MAX_AGE_DAYS).toEqual({
+      binding: 90,
+      courtAndStandard: 180,
+      other: 365,
+    });
+  });
+
+  it('counts records past the limit for their class', () => {
+    const summary = summarizeRecordFreshness(
+      [
+        buildPolicy({ id: 'law', type: 'legislation', lastReviewedAt: '2026-07-20T00:00:00.000Z' }),
+        buildPolicy({ id: 'reg', type: 'regulation', lastReviewedAt: '2026-08-01T00:00:00.000Z' }),
+        buildPolicy({ id: 'note', type: 'practice_note', lastReviewedAt: '2026-04-01T00:00:00.000Z' }),
+        buildPolicy({ id: 'guide', type: 'guideline', lastReviewedAt: '2026-05-01T00:00:00.000Z' }),
+      ],
+      now,
+    );
+
+    expect(summary).toEqual({
+      reviewed: 4,
+      overdue: 2,
+      overdueIds: ['law', 'note'],
+      oldestAgeDays: 202,
+    });
+  });
+
+  it('falls back to the verification check time when no review is stamped', () => {
+    const policy = buildPolicy({ id: 'unstamped', type: 'legislation', lastReviewedAt: undefined });
+    policy.verification.checkedAt = '2026-06-01T00:00:00.000Z';
+    expect(summarizeRecordFreshness([policy], now)).toMatchObject({
+      overdue: 1,
+      overdueIds: ['unstamped'],
+    });
   });
 });
