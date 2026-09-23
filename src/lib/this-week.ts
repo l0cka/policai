@@ -149,7 +149,9 @@ export function selectUpcomingPolicyDates(
   const today = new Date(window.end).toLocaleDateString('en-CA', { timeZone: 'Australia/Sydney' });
   const seen = new Set<string>();
   for (const policy of policies) {
-    if (policy.verification.status !== 'verified') continue;
+    // Public reads return only once-verified records; 'stale' means a
+    // re-check is due, not that the date is unverified.
+    if (policy.verification.status !== 'verified' && policy.verification.status !== 'stale') continue;
     if (!UPCOMING_POLICY_STATUSES.includes(policy.status)) continue;
     for (const policyDate of policy.dates) {
       if (!UPCOMING_DATE_TYPES.includes(policyDate.type)) continue;

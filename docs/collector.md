@@ -455,8 +455,11 @@ npm run collect -- --dry-run --source=<id>
   first fingerprint but marks the record `stale`; an editor must compare the
   current source and republish it. The audit exits non-zero while any baseline
   is missing.
-- **A record has not been reviewed for 90 days** — public reads treat its
-  verification as stale until an editor re-verifies and republishes it.
+- **A record has not been reviewed for 90 days** — it stays public, labelled
+  "Review due", with its verification projected as `stale` until an editor
+  re-verifies and republishes it. `/status` lists due and overdue records;
+  `npm run check:freshness` fails when the overdue count exceeds
+  `data/freshness-budget.json`.
 - **A manual review timestamp is in the future** — validation fails outside the
   five-minute clock-skew allowance, and coverage never counts it as current.
 - **Validation fails in CI** — run `npm run validate:data` locally; it prints every structural error with the offending record id.

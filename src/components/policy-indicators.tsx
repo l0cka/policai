@@ -68,6 +68,7 @@ export function SourceState({
   verification: Pick<Policy['verification'], 'status'>;
 }) {
   const verified = verification.status === 'verified';
+  const reviewDue = verification.status === 'stale';
 
   return (
     <span
@@ -78,7 +79,7 @@ export function SourceState({
     >
       <CheckCircle2 className="h-4 w-4" strokeWidth={1.8} />
       <span className="text-muted-foreground">
-        {verified ? 'Verified source' : 'Needs review'}
+        {verified ? 'Verified source' : reviewDue ? 'Review due' : 'Needs review'}
       </span>
     </span>
   );

@@ -20,10 +20,16 @@ A register record is verified only when:
 - the record passes structural and cross-reference validation.
 
 Verification is point-in-time. The editorial review interval is 90 days,
-measured from `verification.checkedAt`. Public projections treat older
-verification as stale even if the canonical record has not yet been rewritten.
-Rendered public pages revalidate at least hourly so a statically generated view
-cannot continue displaying a record after that interval expires.
+measured from `verification.checkedAt`. A record past the interval stays public:
+public projections mark its verification `stale` and the site labels it
+"Review due" until an editor re-verifies it. The canonical record is not
+rewritten. Rendered public pages revalidate at least hourly so the label
+appears within an hour of the interval expiring. Only records that were once
+verified manually, by a named reviewer, against a fingerprinted source are
+eligible to stay public this way (`isPubliclyEstablished` in
+`src/lib/verification.ts`); anything else is never published.
+`npm run check:freshness` fails CI when overdue records exceed the ratchet
+budget in `data/freshness-budget.json`.
 A later automated fingerprint check is recorded separately as
 `verification.lastSourceAuditAt`; it does not renew the editorial review.
 A record also becomes stale when its source content changes or its source is
