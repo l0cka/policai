@@ -167,12 +167,12 @@ change gates (npm run check + the review workflow is sufficient here).
 | Phase | Work | Effort | Verification |
 |---|---|---|---|
 | 0 | Clean tree: merge editorial-index, integrate This week, pull origin/main (done: #102, #107) | Half day | `npm run check` green on merged main |
-| 1 | Quick wins: `/status` health page; per-record `.md` provenance export; explicit "never confirmed" wording in API + exports | 1–2 days | New Vitest tests; `npm run check`; manual API spot-check |
+| 1 | Quick wins: `/status` health page (shipped on `feat/status-coverage`, with overdue-source counts in `/api/status`); per-record `.md` provenance export; explicit "never confirmed" wording in API + exports | 1–2 days | New Vitest tests; `npm run check`; manual API spot-check |
 | 2 | `datePrecision` field + validator support + backfill annotation on existing 79 records (annotate, never invent) | 1–2 days | `npm run validate:data` extended; 0 errors |
 | 3 | Structured `deadlines` on register records + homepage rail (A2J pattern) | 3–4 days | Type + validator changes, rail tests, ISR verified on serving checkout |
-| 4 | Source expansion Tier 1 (state legislation registers), then Tier 2/3 | 1 day per source incl. verification | `npm run collect -- --dry-run --source=<id>`, then `npm run audit:sources` |
+| 4 | Source expansion Tier 1 (state legislation registers), then Tier 2/3. Done on `feat/status-coverage`: `vic-legislation-whats-new`, `fcfcoa-practice-directions`. NSW and SA registers refuse automated clients; QLD, ACT and TAS listing URLs are unverified | 1 day per source incl. verification | `npm run collect -- --dry-run --source=<id>`, then `npm run audit:sources` |
 | 5 | Freshness gate + completeness checks in `validate:data`; publish both counts on `/status` | 2–3 days | Gate runs in CI; budget seeded from the measured backlog, lowered only |
-| 6 | Coverage hygiene: lift the 20 coverage-ineligible sources or document why each cannot be | 1 day | `public/data/meta.json` coverage counts rise; `npm run audit:sources` |
+| 6 | Coverage hygiene: superseded by the Tier 4 correction. Fix the fingerprint mismatch that stalls tracked documents | 1 day | `public/data/meta.json` coverage counts rise; `npm run audit:sources` |
 
 Each phase ships independently; phases 1–3 are data/UI-only and deploy through
 the standard data/ISR path, phases 4–6 touch the collector and need the
