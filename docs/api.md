@@ -82,6 +82,32 @@ curl 'https://policai.org/api/developments?since=2026-08-01&limit=20'
 
 `GET /api/timeline` accepts `jurisdiction`.
 
+`GET /api/policies/{id}/markdown` returns one public register record as
+`text/markdown`. The document carries its own provenance: the official source
+URL, verification status and check date, last editorial review, and the
+Policai record URL. A record with no editorial review since publication says
+so explicitly. Records that are not public return the same JSON 404 as
+`GET /api/policies/{id}`.
+
+### Status fields
+
+`GET /api/status` returns the last run's health in `collection`. It also returns two per-source freshness counts, computed from each source's last *completed* check in `data/watch-state.json`:
+
+| Field | Meaning |
+| --- | --- |
+| `overdueSourceCount` | Automatic sources whose last completed check is older than 3 days (daily sources) or 10 days (weekly sources). |
+| `neverCheckedSourceCount` | Automatic sources with no recorded completed check. |
+
+A run can reach a source without completing its check, for example while a changed document waits for editorial review. When that happens, `collection.health` can be `healthy` while `overdueSourceCount` is above zero. The per-source detail is at [`/status`](https://policai.org/status).
+
+The `records` object reports how long ago public register records were re-verified. It uses `lastReviewedAt`, and falls back to `verification.checkedAt` when a record has no review stamp. It is information only; no build or deploy fails because a record is old.
+
+| Field | Meaning |
+| --- | --- |
+| `publicCount` | Public register records. |
+| `overdueReviewCount` | Public records re-verified longer ago than their limit: 90 days for legislation and regulations, 180 days for practice notes and standards, 365 days for everything else. |
+| `oldestReviewAgeDays` | Days since the least recently re-verified public record, or `null` when there are none. |
+
 ### HTTP behavior
 
 All API endpoints have these controls:

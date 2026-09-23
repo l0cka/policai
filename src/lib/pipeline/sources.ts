@@ -599,6 +599,20 @@ export const WATCH_SOURCES: WatchSource[] = [
   },
   // --- Courts ---
   {
+    id: 'fcfcoa-practice-directions',
+    name: 'Federal Circuit and Family Court — practice directions',
+    jurisdiction: 'federal',
+    category: 'court',
+    url: 'https://www.fcfcoa.gov.au/resources/practice-directions',
+    kind: 'html-index',
+    schedule: 'weekly',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    notes:
+      'Practice directions index, including the court’s AI practice direction. Rendered listing checked 2026-09-23: 15 entries extracted.',
+  },
+  {
     id: 'fedcourt-practice-notes',
     name: 'Federal Court — practice notes',
     jurisdiction: 'federal',
@@ -625,6 +639,34 @@ export const WATCH_SOURCES: WatchSource[] = [
     fetchStrategy: 'browser',
     notes:
       'The federal merits-review tribunal, successor to the AAT and a likely venue for automated-decision-making guidance. The host resets plain HTTP/2 clients, so retrieval goes through the browser path.',
+  },
+  {
+    id: 'ncat-procedural-directions',
+    name: 'NCAT — procedural directions and guidelines',
+    jurisdiction: 'nsw',
+    category: 'court',
+    url: 'https://ncat.nsw.gov.au/publications-and-resources/procedural-directions-and-guidelines.html',
+    kind: 'document',
+    schedule: 'weekly',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    notes:
+      'NSW Civil and Administrative Tribunal directions index. Its entries are PDF links the index extractor cannot read, so the page is watched for content changes. Checked 2026-09-23.',
+  },
+  {
+    id: 'qcat-practice-directions',
+    name: 'QCAT — practice directions',
+    jurisdiction: 'qld',
+    category: 'court',
+    url: 'https://www.qcat.qld.gov.au/resources/practice-directions',
+    kind: 'document',
+    schedule: 'weekly',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    notes:
+      'Queensland Civil and Administrative Tribunal practice directions, watched for content changes. Checked 2026-09-23. VCAT practice notes link more than eight documents and cannot be watched this way; SACAT, ACAT and NTCAT listing URLs are unverified.',
   },
   {
     id: 'wa-sc-practice-directions',
@@ -756,6 +798,20 @@ export const WATCH_SOURCES: WatchSource[] = [
     fetchStrategy: 'browser',
     notes:
       'Whole-of-government NSW announcements, including AI policy and digital government decisions.',
+  },
+  {
+    id: 'vic-legislation-whats-new',
+    name: 'Victorian legislation — what’s new',
+    jurisdiction: 'vic',
+    category: 'government',
+    url: 'https://www.legislation.vic.gov.au/whats-new',
+    kind: 'html-index',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    notes:
+      'Acts and statutory rules lodged in the current week, rendered as a Ripple data table. Checked 2026-09-23: 7 entries extracted; 1 of 6 dry runs returned the table before it rendered, so an occasional empty-index failure is expected. The first state legislation register watched; NSW and SA registers refuse automated clients.',
   },
   {
     id: 'vic-ai',

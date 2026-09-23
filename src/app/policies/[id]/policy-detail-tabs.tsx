@@ -157,6 +157,13 @@ export function PolicyDetailTabs({
               <Download className="h-4 w-4" />
               Download data
             </button>
+            <a
+              href={`/api/policies/${encodeURIComponent(policy.id)}/markdown`}
+              className="inline-flex min-h-11 items-center gap-2 rounded-md px-3 text-sm font-medium hover:text-primary"
+            >
+              <FileText className="h-4 w-4" />
+              Markdown with sources
+            </a>
           </div>
 
           <div className="no-scrollbar mt-5 overflow-x-auto border-b border-border">

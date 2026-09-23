@@ -2,19 +2,35 @@
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const { getCollectionMeta, getDevelopments, getSourceMonitoring } = vi.hoisted(() => ({
+const {
+	getCollectionMeta,
+	getDevelopments,
+	getPolicies,
+	getSourceCheckTimes,
+	getSourceMonitoring,
+} = vi.hoisted(() => ({
 	getCollectionMeta: vi.fn(),
 	getDevelopments: vi.fn(),
+	getPolicies: vi.fn(),
+	getSourceCheckTimes: vi.fn(),
 	getSourceMonitoring: vi.fn(),
 }));
 
 vi.mock("@/lib/data-service", () => ({
 	getCollectionMeta,
 	getDevelopments,
+	getPolicies,
+	getSourceCheckTimes,
 	getSourceMonitoring,
 }));
 
+import { buildPolicy } from "@/test/factories";
+import { WATCH_SOURCES } from "@/lib/pipeline/sources";
 import { GET } from "./route";
+
+const AUTOMATIC_SOURCE_COUNT = WATCH_SOURCES.filter(
+	(source) => source.enabled && source.automation === "automatic",
+).length;
 
 describe("/api/status", () => {
 	beforeEach(() => {
@@ -22,6 +38,10 @@ describe("/api/status", () => {
 		getDevelopments.mockReset();
 		getSourceMonitoring.mockReset();
 		getSourceMonitoring.mockResolvedValue({ manualReviews: [] });
+		getSourceCheckTimes.mockReset();
+		getSourceCheckTimes.mockResolvedValue({});
+		getPolicies.mockReset();
+		getPolicies.mockResolvedValue([]);
 	});
 
 	it("returns null freshness data before the collector has ever run", async () => {
@@ -62,6 +82,13 @@ describe("/api/status", () => {
 				manualSourceCount: 14,
 				manualCurrentCount: 0,
 				manualUnavailableCount: 0,
+				overdueSourceCount: 0,
+				neverCheckedSourceCount: AUTOMATIC_SOURCE_COUNT,
+			},
+			records: {
+				publicCount: 0,
+				overdueReviewCount: 0,
+				oldestReviewAgeDays: null,
 			},
 			latestDevelopment: null,
 			success: true,
@@ -128,6 +155,13 @@ describe("/api/status", () => {
 				manualSourceCount: 14,
 				manualCurrentCount: 0,
 				manualUnavailableCount: 0,
+				overdueSourceCount: 0,
+				neverCheckedSourceCount: AUTOMATIC_SOURCE_COUNT,
+			},
+			records: {
+				publicCount: 0,
+				overdueReviewCount: 0,
+				oldestReviewAgeDays: null,
 			},
 			latestDevelopment: {
 				id: "dev-1",
@@ -140,5 +174,89 @@ describe("/api/status", () => {
 		});
 
 		expect(getDevelopments).toHaveBeenCalledWith({ limit: 1 });
+	});
+
+	it("counts an automatic source with a stale completed check as overdue", async () => {
+		getCollectionMeta.mockResolvedValue({
+			lastCollectedAt: null,
+			lastHealthyAt: null,
+			lastReviewedAt: null,
+			collector: {
+				runCount: 0,
+				lastRunSources: [],
+				lastRunErrors: [],
+				health: "healthy",
+				dueSourceCount: 0,
+				successfulSourceCount: 0,
+				failedSourceCount: 0,
+				skippedSourceCount: 0,
+				successRate: 1,
+				automaticSourceCount: 0,
+				manualSourceCount: 0,
+				sourceResults: [],
+			},
+		});
+		getDevelopments.mockResolvedValue([]);
+		getSourceCheckTimes.mockResolvedValue({
+			"act-ai-policy": "2000-01-01T00:00:00.000Z",
+		});
+
+		const body = await (await GET()).json();
+
+		expect(body.collection.overdueSourceCount).toBe(1);
+		expect(body.collection.neverCheckedSourceCount).toBe(
+			AUTOMATIC_SOURCE_COUNT - 1,
+		);
+	});
+
+	it("reports public records past their re-verification limit without failing", async () => {
+		vi.useFakeTimers();
+		vi.setSystemTime(new Date("2026-10-20T00:00:00.000Z"));
+		try {
+			getCollectionMeta.mockResolvedValue({
+				lastCollectedAt: null,
+				lastHealthyAt: null,
+				lastReviewedAt: null,
+				collector: {
+					runCount: 0,
+					lastRunSources: [],
+					lastRunErrors: [],
+					health: "healthy",
+					dueSourceCount: 0,
+					successfulSourceCount: 0,
+					failedSourceCount: 0,
+					skippedSourceCount: 0,
+					successRate: 1,
+					automaticSourceCount: 0,
+					manualSourceCount: 0,
+					sourceResults: [],
+				},
+			});
+			getDevelopments.mockResolvedValue([]);
+			getPolicies.mockResolvedValue([
+				buildPolicy({
+					id: "law",
+					type: "legislation",
+					lastReviewedAt: "2026-07-01T00:00:00.000Z",
+				}),
+				buildPolicy({
+					id: "guide",
+					type: "guideline",
+					lastReviewedAt: "2026-07-01T00:00:00.000Z",
+				}),
+			]);
+
+			const response = await GET();
+			const body = await response.json();
+
+			expect(response.status).toBe(200);
+			expect(body.records).toEqual({
+				publicCount: 2,
+				overdueReviewCount: 1,
+				oldestReviewAgeDays: 111,
+			});
+		} finally {
+			vi.useRealTimers();
+		}
 	});
 });

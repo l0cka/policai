@@ -192,7 +192,7 @@ describe('collect', () => {
       itemCount: 2,
       candidateCount: 2,
     });
-    expect(result.meta.collector.automaticSourceCount).toBe(63);
+    expect(result.meta.collector.automaticSourceCount).toBe(67);
     expect(result.meta.collector.manualSourceCount).toBe(1);
     expect(result.errors).toEqual([]);
   });
@@ -1012,6 +1012,119 @@ describe('collect', () => {
       lastCheckedAt: '2026-07-03T00:00:00.000Z',
       lastChangedAt: '2026-07-03T00:00:00.000Z',
     });
+  });
+
+  it('adopts its own reading of a version an editor published from a different capture', async () => {
+    const versionABody =
+      '<html><body><main><h1>AI governance policy</h1><p>Version A source.</p></main></body></html>';
+    const versionBBody =
+      '<html><body><main><h1>AI governance policy</h1><p>Version B source.</p></main></body></html>';
+    const initial = await collect({
+      sources: [DOCUMENT_SOURCE],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl: fakeFetch({ [DOCUMENT_SOURCE.url]: versionABody }),
+      now: () => new Date('2026-07-01T00:00:00.000Z'),
+    });
+    const trackedPolicy = buildPolicy({
+      id: 'tracked-document-policy',
+      sourceUrl: DOCUMENT_SOURCE.url,
+      verification: {
+        status: 'verified',
+        checkedAt: '2026-07-01T00:00:00.000Z',
+        checkedBy: 'reviewer',
+        method: 'manual',
+        source: {
+          url: DOCUMENT_SOURCE.url,
+          contentHash: initial.state.sourceSnapshots[DOCUMENT_SOURCE.id].contentHash,
+        },
+      },
+    });
+    const changed = await collect({
+      sources: [DOCUMENT_SOURCE],
+      state: initial.state,
+      existingDevelopments: [],
+      trackedUrls: [DOCUMENT_SOURCE.url],
+      trackedPolicies: [trackedPolicy],
+      force: true,
+      fetchImpl: fakeFetch({ [DOCUMENT_SOURCE.url]: versionBBody }),
+      now: () => new Date('2026-07-02T00:00:00.000Z'),
+    });
+    expect(changed.reviewCandidates).toHaveLength(1);
+    const collectorHash = changed.reviewCandidates[0].sourceEvidence.contentHash;
+
+    // The editor re-captures the page while publishing. The capture pipeline
+    // fingerprints the same version differently from the collector.
+    const editorialHash = 'e'.repeat(64);
+    const publishedReview = {
+      ...changed.reviewCandidates[0],
+      status: 'published' as const,
+      sourceEvidence: {
+        ...changed.reviewCandidates[0].sourceEvidence,
+        contentHash: editorialHash,
+      },
+      reviewedAt: '2026-07-02T01:00:00.000Z',
+      reviewedBy: 'reviewer',
+      publishedAt: '2026-07-02T02:00:00.000Z',
+      updatedAt: '2026-07-02T02:00:00.000Z',
+    };
+    const republishedPolicy = {
+      ...trackedPolicy,
+      verification: {
+        ...trackedPolicy.verification,
+        checkedAt: '2026-07-02T01:00:00.000Z',
+        source: { url: DOCUMENT_SOURCE.url, contentHash: editorialHash },
+      },
+    };
+
+    const followUp = await collect({
+      sources: [DOCUMENT_SOURCE],
+      state: changed.state,
+      sourceReviews: [publishedReview],
+      existingDevelopments: changed.developments,
+      trackedUrls: [DOCUMENT_SOURCE.url],
+      trackedPolicies: [republishedPolicy],
+      force: true,
+      fetchImpl: fakeFetch({ [DOCUMENT_SOURCE.url]: versionBBody }),
+      now: () => new Date('2026-07-09T00:00:00.000Z'),
+    });
+
+    expect(followUp.errors).toEqual([]);
+    expect(followUp.developments).toEqual([]);
+    expect(followUp.reviewCandidates).toEqual([]);
+    expect(followUp.state.lastCheckedBySource[DOCUMENT_SOURCE.id]).toBe(
+      '2026-07-09T00:00:00.000Z',
+    );
+    expect(followUp.state.sourceSnapshots[DOCUMENT_SOURCE.id]).toMatchObject({
+      contentHash: collectorHash,
+      changeCount: 1,
+      lastCheckedAt: '2026-07-09T00:00:00.000Z',
+    });
+    const collectorTransition = Object.values(followUp.state.seen).find(
+      (entry) => entry.candidate?.changeFingerprint === `${collectorHash}:1`,
+    );
+    expect(collectorTransition?.status).toBe('processed');
+
+    // A genuine change after adoption is still staged for review.
+    const versionCBody =
+      '<html><body><main><h1>AI governance policy</h1><p>Version C source.</p></main></body></html>';
+    const laterChange = await collect({
+      sources: [DOCUMENT_SOURCE],
+      state: followUp.state,
+      sourceReviews: [publishedReview],
+      existingDevelopments: [],
+      trackedUrls: [DOCUMENT_SOURCE.url],
+      trackedPolicies: [republishedPolicy],
+      force: true,
+      fetchImpl: fakeFetch({ [DOCUMENT_SOURCE.url]: versionCBody }),
+      now: () => new Date('2026-07-16T00:00:00.000Z'),
+    });
+    expect(laterChange.reviewCandidates).toEqual([
+      expect.objectContaining({
+        targetPolicyId: trackedPolicy.id,
+        sourceVersionSequence: 2,
+      }),
+    ]);
   });
 
   it('keeps the previous direct-document snapshot when changed content cannot be extracted', async () => {

@@ -331,6 +331,11 @@ const SOURCE_MONITORING_FILE = path.join(
 	"data",
 	"source-monitoring.json",
 );
+const WATCH_STATE_FILE = path.join(
+	process.cwd(),
+	"data",
+	"watch-state.json",
+);
 const LEGACY_PENDING_CONTENT_FILE = path.join(
 	process.cwd(),
 	"public",
@@ -1246,6 +1251,17 @@ export async function getSourceMonitoring(): Promise<SourceMonitoringState> {
 	return readJsonFile<SourceMonitoringState>(SOURCE_MONITORING_FILE, {
 		manualReviews: [],
 	});
+}
+
+/**
+ * Per-source last completed check. Only timestamps leave this function;
+ * seen-candidate state and snapshots stay server-side.
+ */
+export async function getSourceCheckTimes(): Promise<Record<string, string>> {
+	const state = await readJsonFile<{
+		lastCheckedBySource?: Record<string, string>;
+	}>(WATCH_STATE_FILE, {});
+	return state.lastCheckedBySource ?? {};
 }
 
 export async function upsertManualSourceReview(

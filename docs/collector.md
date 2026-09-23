@@ -90,6 +90,14 @@ leaving the policy withheld indefinitely. Publication marks the transition
 processed. Snapshot sequence checks prevent an older persisted
 review from replacing a newer reviewed baseline. Rejected transitions are
 reconciled as dismissed rather than retried against an editorial decision.
+Publication may re-capture the source and record a canonical fingerprint that
+differs from the collector's own reading of the same version. When the live
+bytes match the reading the collector staged as the latest sequence, and that
+sequence was published under the canonical fingerprint, the collector adopts
+its reading as that published version: it marks the transition processed,
+completes the check, and stages nothing. Any other mismatch still stages a
+review. Without this rule such a source never completes a check, and
+`/status` reports it overdue.
 An unreadable changed version that later returns to the verified baseline also
 creates a new sequenced `baseline_reversion` review. This prevents the obsolete
 changed-version review from withholding a valid baseline forever while still

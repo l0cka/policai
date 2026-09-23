@@ -188,6 +188,11 @@ export function extractFromHtml(
     // th cells only, so sort links never count as entries.
     'tr:has(td[class*="views-field"])',
   ].join(',');
+  // Victorian Ripple design-system data tables (legislation.vic.gov.au) wrap
+  // each result row in its own tbody. Their title links carry a
+  // "...listing..." class, so the row must win over the generic selector,
+  // which would otherwise treat the link as its own container.
+  const rippleTableRowSelector = 'tbody[class*="rpl-data-table__row"] > tr';
   const semanticListSelector = [
     'ul[class*="result"]',
     'ol[class*="result"]',
@@ -240,11 +245,14 @@ export function extractFromHtml(
     if (!title || title.length < 8) return;
 
     const listItem = link.closest('li');
+    const rippleTableRow = link.closest(rippleTableRowSelector);
     const container =
-      listItem.length > 0 &&
-      listItem.closest(semanticListSelector).length > 0
-        ? listItem
-        : link.closest(entryContainerSelector);
+      rippleTableRow.length > 0
+        ? rippleTableRow
+        : listItem.length > 0 &&
+            listItem.closest(semanticListSelector).length > 0
+          ? listItem
+          : link.closest(entryContainerSelector);
     if (container.length === 0) return;
 
     // One primary link represents one publication/result entry. Related tags
