@@ -56,4 +56,45 @@ describe('Editorial identity and navigation', () => {
     ).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Open menu' })).toHaveFocus();
   });
+  it('closes the Explore menu when keyboard focus leaves it', () => {
+    render(
+      <Header
+        dataCurrentAt={null}
+        collectionHealth="healthy"
+        successfulSourceCount={10}
+        dueSourceCount={10}
+      />,
+    );
+    const explore = screen.getByRole('button', { name: 'Explore' });
+    fireEvent.click(explore);
+    expect(explore).toHaveAttribute('aria-expanded', 'true');
+    const timeline = screen.getByRole('link', { name: 'Timeline' });
+    fireEvent.blur(explore, { relatedTarget: timeline });
+    expect(explore).toHaveAttribute('aria-expanded', 'true');
+    const a2j = within(
+      screen.getByRole('navigation', { name: 'Primary' }),
+    ).getByRole('link', { name: 'A2J' });
+    fireEvent.blur(timeline, { relatedTarget: a2j });
+    expect(explore).toHaveAttribute('aria-expanded', 'false');
+  });
+  it('keeps the mobile menu open when focus returns to its toggle', () => {
+    render(
+      <Header
+        dataCurrentAt={null}
+        collectionHealth="healthy"
+        successfulSourceCount={10}
+        dueSourceCount={10}
+      />,
+    );
+    const toggle = screen.getByRole('button', { name: 'Open menu' });
+    fireEvent.click(toggle);
+    const mobile = screen.getByRole('navigation', { name: 'Mobile' });
+    const register = within(mobile).getByRole('link', { name: 'Register' });
+    fireEvent.blur(register, { relatedTarget: toggle });
+    expect(screen.getByRole('navigation', { name: 'Mobile' })).toBeInTheDocument();
+    fireEvent.blur(register, { relatedTarget: document.body });
+    expect(
+      screen.queryByRole('navigation', { name: 'Mobile' }),
+    ).not.toBeInTheDocument();
+  });
 });

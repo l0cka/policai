@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, type FocusEvent } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ArrowUpRight, ChevronDown, Menu, X } from 'lucide-react';
@@ -114,6 +114,17 @@ export function Header({
 
   const insightsActive = insightItems.some((item) => isActive(item.href));
 
+  // Tabbing out of an open menu closes it, so the overlay never hides the
+  // control that receives focus next.
+  const closeOnFocusLeave =
+    (close: () => void, keepOpenFor?: HTMLElement | null) =>
+    (event: FocusEvent<HTMLElement>) => {
+      const next = event.relatedTarget as Node | null;
+      if (!next || event.currentTarget.contains(next)) return;
+      if (keepOpenFor && keepOpenFor.contains(next)) return;
+      close();
+    };
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background text-foreground">
       <div className="container mx-auto flex h-14 items-center px-4 sm:h-24 sm:px-6 lg:px-8">
@@ -135,7 +146,11 @@ export function Header({
             />
           ))}
 
-          <div ref={insightsRef} className="relative h-full">
+          <div
+            ref={insightsRef}
+            className="relative h-full"
+            onBlur={closeOnFocusLeave(() => setInsightsOpen(false))}
+          >
             <button
               type="button"
               onClick={() => setInsightsOpen(!insightsOpen)}
@@ -233,6 +248,12 @@ export function Header({
         {mobileOpen && (
           <div
             id="mobile-navigation"
+            onBlur={(event) =>
+              closeOnFocusLeave(
+                () => setMobileOpen(false),
+                mobileButtonRef.current,
+              )(event)
+            }
             className="dropdown-in absolute inset-x-0 top-full z-50 max-h-[calc(100dvh-4.5rem)] overflow-y-auto border border-border bg-popover shadow-[var(--shadow-lift)] lg:hidden"
           >
             <nav aria-label="Mobile" className="flex flex-col gap-1 p-2">
