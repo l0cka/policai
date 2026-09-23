@@ -1,9 +1,11 @@
 import {
 	getCollectionMeta,
 	getDevelopments,
+	getPolicies,
 	getSourceCheckTimes,
 	getSourceMonitoring,
 } from "@/lib/data-service";
+import { summarizeRecordFreshness } from "@/lib/coverage-report";
 import { WATCH_SOURCES } from "@/lib/pipeline/sources";
 import {
 	checkPublicApiRequest,
@@ -20,12 +22,14 @@ export async function GET(request?: Request) {
 	const limited = checkPublicApiRequest(request);
 	if (limited) return limited;
 
-	const [meta, recentDevelopments, monitoring, checkTimes] = await Promise.all([
-		getCollectionMeta(),
-		getDevelopments({ limit: 1 }),
-		getSourceMonitoring(),
-		getSourceCheckTimes(),
-	]);
+	const [meta, recentDevelopments, monitoring, checkTimes, policies] =
+		await Promise.all([
+			getCollectionMeta(),
+			getDevelopments({ limit: 1 }),
+			getSourceMonitoring(),
+			getSourceCheckTimes(),
+			getPolicies(),
+		]);
 	const manualCoverage = summarizeManualSourceCoverage(
 		WATCH_SOURCES,
 		monitoring,
@@ -35,6 +39,7 @@ export async function GET(request?: Request) {
 		assessSourceFreshness(WATCH_SOURCES, checkTimes),
 	);
 
+	const recordFreshness = summarizeRecordFreshness(policies);
 	const latest = recentDevelopments[0];
 
 	return publicApiJson({
@@ -53,6 +58,11 @@ export async function GET(request?: Request) {
 			manualUnavailableCount: manualCoverage.unavailable,
 			overdueSourceCount: freshness.overdue,
 			neverCheckedSourceCount: freshness.neverChecked,
+		},
+		records: {
+			publicCount: policies.length,
+			overdueReviewCount: recordFreshness.overdue,
+			oldestReviewAgeDays: recordFreshness.oldestAgeDays,
 		},
 		latestDevelopment: latest
 			? {

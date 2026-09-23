@@ -17,6 +17,8 @@ import {
 } from '@/lib/source-freshness';
 import {
   buildJurisdictionCoverage,
+  RECORD_REVIEW_MAX_AGE_DAYS,
+  summarizeRecordFreshness,
   summarizeReviewQueue,
 } from '@/lib/coverage-report';
 import { MetricStrip, PageIntro } from '@/components/layout';
@@ -62,6 +64,7 @@ export default async function StatusPage() {
   const manual = summarizeManualSourceCoverage(WATCH_SOURCES, monitoring);
   const queue = summarizeReviewQueue(pendingReviews);
   const jurisdictions = buildJurisdictionCoverage(policies, WATCH_SOURCES);
+  const records = summarizeRecordFreshness(policies);
 
   return (
     <article className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
@@ -96,6 +99,25 @@ export default async function StatusPage() {
             {manual.total > 0
               ? `${manual.current} of ${manual.total} manual ${manual.total === 1 ? 'source' : 'sources'} reviewed within cadence.`
               : null}
+          </p>
+        </section>
+
+        <section className="border-t border-border pt-7">
+          <h2 className="section-title">Record review</h2>
+          <p className="text-muted-foreground">
+            {records.overdue} of {policies.length} public{' '}
+            {policies.length === 1 ? 'record' : 'records'}{' '}
+            {records.overdue === 1 ? 'is' : 'are'} past{' '}
+            {records.overdue === 1 ? 'its' : 'their'} re-verification limit
+            {records.oldestAgeDays !== null
+              ? `; oldest review ${age(records.oldestAgeDays)} ago.`
+              : '.'}{' '}
+            Limits are {RECORD_REVIEW_MAX_AGE_DAYS.binding} days for
+            legislation and regulations,{' '}
+            {RECORD_REVIEW_MAX_AGE_DAYS.courtAndStandard} days for practice
+            notes and standards, and {RECORD_REVIEW_MAX_AGE_DAYS.other} days
+            for everything else. An overdue record is still published; it
+            has not been re-checked against its source recently.
           </p>
         </section>
 

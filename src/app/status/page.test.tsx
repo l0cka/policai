@@ -87,3 +87,17 @@ it('states the limit of what coverage counts mean', async () => {
     screen.getByText(/not a measure of how much Australian AI policy exists/),
   ).toBeInTheDocument();
 });
+
+it('reports record re-verification age as information, not a failure', async () => {
+  vi.mocked(getPolicies).mockResolvedValue([
+    buildPolicy({ id: 'law', type: 'legislation', lastReviewedAt: '2026-06-01T00:00:00.000Z' }),
+    buildPolicy({ id: 'guide', type: 'guideline', lastReviewedAt: '2026-06-01T00:00:00.000Z' }),
+  ]);
+  render(await StatusPage());
+  const section = screen.getByRole('heading', { name: 'Record review' }).closest('section');
+  expect(section).toHaveTextContent(
+    '1 of 2 public records is past its re-verification limit',
+  );
+  expect(section).toHaveTextContent('oldest review 114 days ago');
+  expect(section).toHaveTextContent('90 days for legislation and regulations');
+});
