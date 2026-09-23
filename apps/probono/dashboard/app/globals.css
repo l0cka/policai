@@ -3665,6 +3665,13 @@ tbody th[scope='row'] {
   color: var(--primary);
 }
 
+.deadline-checked {
+  margin: 0.25rem 0 0;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--muted-foreground);
+}
+
 /* Compact deadline list used in the feed rail. */
 .rail-deadline {
   display: grid;

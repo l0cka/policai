@@ -92,7 +92,8 @@ export const safeHref = (u: string) => (/^https?:\/\//i.test(u) ? u : undefined)
 async function getDeadlineItems(closedDays: number): Promise<DeadlineItem[]> {
   const days = Math.max(0, Math.floor(closedDays));
   const { rows } = await getPool().query<DeadlineItem>(
-    `SELECT i.id, i.title, i.url, i.published_at, i.entities->'deadlines' AS deadlines
+    `SELECT i.id, i.title, i.url, i.published_at, i.entities->'deadlines' AS deadlines,
+            i.entities->>'deadlines_verified_at' AS verified_at
      FROM items i
      WHERE i.relevant
        AND jsonb_typeof(i.entities->'deadlines') = 'array'

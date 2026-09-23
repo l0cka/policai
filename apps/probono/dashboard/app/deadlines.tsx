@@ -60,6 +60,16 @@ function AlsoReported({ row }: { row: DeadlineCard }) {
   );
 }
 
+/* When the verifier last re-read the source for this date. */
+function Checked({ row }: { row: DeadlineCard }) {
+  if (!row.checkedOn) return null;
+  return (
+    <p className="deadline-checked">
+      Checked against the source <time dateTime={row.checkedOn}>{formatDeadlineDate(row.checkedOn, 'day', false)}</time>
+    </p>
+  );
+}
+
 /* Other dates from the same item, beneath its headline deadline. */
 function SecondaryDates({ dates }: { dates: SecondaryDate[] }) {
   if (!dates.length) return null;
@@ -122,6 +132,7 @@ export function DeadlineTimeline({ rows }: { rows: DeadlineCard[] }) {
                     {r.label}
                   </p>
                   <SecondaryDates dates={r.secondary} />
+                  <Checked row={r} />
                   <AlsoReported row={r} />
                 </div>
 
@@ -160,6 +171,7 @@ export function DeadlineList({ rows, showYear = true }: { rows: DeadlineCard[]; 
             </p>
             <p className="dated-kind">{r.label}</p>
             <AlsoReported row={r} />
+            <Checked row={r} />
           </div>
         </article>
       ))}
