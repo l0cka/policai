@@ -123,6 +123,19 @@ function hasAiSignalInTitleOrUrl(title: string, url: string): boolean {
   return hasAiSignal(`${title} ${url}`);
 }
 
+const AI_MENTION_PATTERN =
+  /\b(?:artificial intelligence|generative ai|gen ai|machine learning)\b|(?:^|[^a-z0-9])ai(?=[^a-z0-9]|$)/gi;
+
+/**
+ * Counts explicit AI mentions in body text. Used for sources whose titles
+ * never carry the AI signal (Hansard debate titles name the bill), where
+ * sustained discussion in the body is the evidence of relevance.
+ */
+export function countAiMentions(text: string): number {
+  if (!text) return 0;
+  return text.match(AI_MENTION_PATTERN)?.length ?? 0;
+}
+
 function hasGovernanceSignal(text: string): boolean {
   return hasAnyKeyword(normalize(text), GOVERNANCE_KEYWORDS);
 }

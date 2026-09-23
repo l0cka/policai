@@ -1,4 +1,4 @@
-import { isRelevantScrapedCandidate } from '@/lib/scraper-filter';
+import { countAiMentions, isRelevantScrapedCandidate } from '@/lib/scraper-filter';
 import {
   normalizeJurisdiction,
   normalizePolicyType,
@@ -94,6 +94,37 @@ export function heuristicClassification(candidate: Candidate): Classification {
     assessment: {
       method: 'heuristic',
       promptVersion: 'keyword-rules-v1',
+    },
+  };
+}
+
+/**
+ * Deterministic relevance for sources whose titles never carry the AI signal
+ * (see WatchSource.bodyRelevance). Relevance is sustained AI discussion in the
+ * fetched body; the score stays below MACHINE_CONFIDENCE_CAP's review band so
+ * the detection always needs editorial judgement.
+ */
+export function classifyByBodyMentions(
+  candidate: Candidate,
+  bodyText: string,
+  minAiMentions: number,
+): Classification {
+  const mentions = countAiMentions(bodyText);
+  const isRelevant = mentions >= minAiMentions;
+  return {
+    isRelevant,
+    relevanceScore: isRelevant ? 0.55 : 0,
+    classification: 'heuristic',
+    // The page excerpt is ParlInfo chrome, not speech, so the summary states
+    // only the evidence the rule relied on.
+    summary: isRelevant
+      ? `${mentions} explicit AI mentions in the debate text for "${candidate.title}".`
+      : undefined,
+    tags: [],
+    agencies: [],
+    assessment: {
+      method: 'heuristic',
+      promptVersion: 'body-mentions-v1',
     },
   };
 }

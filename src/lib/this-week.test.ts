@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import type { Development, Policy } from '@/types';
 import {
   selectUpcomingPolicyDates,
+  upcomingDateCountdown,
   selectWeeklyDevelopments,
   weekWindowEndingAt,
   weeklyEvidenceLabel,
@@ -278,5 +279,22 @@ describe('selectUpcomingPolicyDates', () => {
     const selected = selectUpcomingPolicyDates(items, upcomingWindow);
     expect(selected.map((item) => item.policyId)).toEqual(['sooner', 'later']);
     expect(selected[0].date).toBe('2026-11-05');
+  });
+});
+
+describe('upcomingDateCountdown', () => {
+  const today = '2026-09-23';
+
+  it('counts whole days for day-precision dates', () => {
+    expect(upcomingDateCountdown({ date: '2026-09-23', precision: 'day' }, today)).toBe('today');
+    expect(upcomingDateCountdown({ date: '2026-09-24', precision: 'day' }, today)).toBe('tomorrow');
+    expect(upcomingDateCountdown({ date: '2026-10-20', precision: 'day' }, today)).toBe('in 27 days');
+  });
+
+  it('never invents a day count for month or year precision', () => {
+    expect(upcomingDateCountdown({ date: '2026-09-01', precision: 'month' }, today)).toBe('this month');
+    expect(upcomingDateCountdown({ date: '2026-12-01', precision: 'month' }, today)).toBeNull();
+    expect(upcomingDateCountdown({ date: '2026-01-01', precision: 'year' }, today)).toBe('this year');
+    expect(upcomingDateCountdown({ date: '2027-01-01', precision: 'year' }, today)).toBeNull();
   });
 });

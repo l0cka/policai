@@ -201,4 +201,35 @@ describe('Editorial register', () => {
     expect(screen.getAllByText('2026').length).toBeGreaterThan(0);
     expect(screen.queryByText('01 Jan 2026')).not.toBeInTheDocument();
   });
+
+  it('lists upcoming recorded dates with an honest countdown', () => {
+    const upcoming = (policyId: string, policyTitle: string, dateType: 'effective' | 'consultation_closed' | 'commenced', date: string, precision: 'day' | 'month') => ({
+      policyId, policyTitle, dateType, date, precision,
+      jurisdiction: 'federal' as const, type: 'guideline' as const, status: 'active' as const,
+      sourceUrl: 'https://example.gov.au/policy',
+    });
+    render(
+      <PolicyBrowser
+        {...props}
+        today="2026-09-23"
+        upcomingDates={[
+          upcoming('record-1', 'NSW guidance', 'consultation_closed', '2026-09-23', 'day'),
+          upcoming('record-0', 'Federal framework', 'effective', '2026-10-20', 'day'),
+          upcoming('record-2', 'Month rule', 'commenced', '2026-12-01', 'month'),
+        ]}
+      />,
+    );
+    const section = screen.getByRole('heading', { name: 'Coming up' }).closest('section') as HTMLElement;
+    expect(within(section).getByRole('link', { name: 'Federal framework' })).toHaveAttribute('href', '/policies/record-0');
+    expect(section).toHaveTextContent('Effective · 20 October 2026 · in 27 days');
+    expect(section).toHaveTextContent('Consultation closed · 23 September 2026 · today');
+    expect(section).toHaveTextContent('Commenced · December 2026');
+    expect(section).not.toHaveTextContent(/December 2026 ·/);
+    expect(within(section).getByRole('link', { name: /All upcoming dates/ })).toHaveAttribute('href', '/this-week');
+  });
+
+  it('omits the upcoming panel when nothing is scheduled', () => {
+    render(<PolicyBrowser {...props} today="2026-09-23" upcomingDates={[]} />);
+    expect(screen.queryByRole('heading', { name: 'Coming up' })).not.toBeInTheDocument();
+  });
 });

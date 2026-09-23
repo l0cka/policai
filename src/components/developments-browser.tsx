@@ -20,9 +20,16 @@ import {
   type Development,
 } from '@/types';
 import { cn } from '@/lib/utils';
+import {
+  DEVELOPMENT_STREAMS,
+  getDevelopmentStreamName,
+  type DevelopmentStream,
+} from '@/lib/development-streams';
 
 interface DevelopmentsBrowserProps {
   developments: Development[];
+  /** Reader stream per development id, derived on the server. */
+  streamById: Record<string, DevelopmentStream>;
   collectionHealth: CollectionHealthStatus;
   lastCollectedAt: string | null;
   successfulSourceCount: number;
@@ -134,6 +141,7 @@ function DevelopmentFeed({ items }: { items: Development[] }) {
 
 export function DevelopmentsBrowser({
   developments,
+  streamById,
   collectionHealth,
   lastCollectedAt,
   successfulSourceCount,
@@ -150,6 +158,7 @@ export function DevelopmentsBrowser({
   const [search, setSearch] = useState('');
   const deferredSearch = useDeferredValue(search.trim().toLowerCase());
   const [jurisdiction, setJurisdiction] = useState('all');
+  const [stream, setStream] = useState<'all' | DevelopmentStream>('all');
 
   const verified = developments.filter((item) => item.verification.status === 'verified');
   const radar = developments.filter((item) => item.verification.status !== 'verified');
@@ -159,9 +168,10 @@ export function DevelopmentsBrowser({
       activeItems.filter((item) => {
         const matchesSearch = deferredSearch.length === 0 || item.title.toLowerCase().includes(deferredSearch) || item.summary?.toLowerCase().includes(deferredSearch) || item.sourceName.toLowerCase().includes(deferredSearch);
         const matchesJurisdiction = jurisdiction === 'all' || item.jurisdiction === jurisdiction;
-        return matchesSearch && matchesJurisdiction;
+        const matchesStream = stream === 'all' || streamById[item.id] === stream;
+        return matchesSearch && matchesJurisdiction && matchesStream;
       }),
-    [activeItems, deferredSearch, jurisdiction],
+    [activeItems, deferredSearch, jurisdiction, stream, streamById],
   );
 
   const automaticCoverage = dueSourceCount > 0 ? Math.round((successfulSourceCount / dueSourceCount) * 100) : 100;
@@ -206,6 +216,14 @@ export function DevelopmentsBrowser({
               <select value={jurisdiction} onChange={(event) => setJurisdiction(event.target.value)} className="h-11 w-full rounded-md appearance-none border border-input bg-background pl-10 pr-3 text-sm">
                 <option value="all">All jurisdictions</option>
                 {Object.entries(JURISDICTION_NAMES).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
+              </select>
+            </label>
+            <label className="relative sm:w-60">
+              <span className="sr-only">Filter by stream</span>
+              <Filter className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
+              <select value={stream} onChange={(event) => setStream(event.target.value as 'all' | DevelopmentStream)} className="h-11 w-full rounded-md appearance-none border border-input bg-background pl-10 pr-3 text-sm">
+                <option value="all">All streams</option>
+                {DEVELOPMENT_STREAMS.map((value) => <option key={value} value={value}>{getDevelopmentStreamName(value)}</option>)}
               </select>
             </label>
           </div>

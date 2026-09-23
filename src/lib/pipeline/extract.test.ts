@@ -477,3 +477,35 @@ describe('extractDocumentCandidate', () => {
     expect(candidate.text).not.toContain('Related framework');
   });
 });
+
+describe('extractFromRss with a title pattern', () => {
+  const HANSARD_XML = `<?xml version="1.0"?>
+<rss version="2.0"><channel>
+  <item><title>BILLS : Copyright Amendment Bill 2026 : Second Reading</title>
+    <link>https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F1%2F0001%22</link></item>
+  <item><title>Federation Chamber : BILLS : Universities Accord Bill 2026 : Second Reading</title>
+    <link>https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F2%2F0002%22</link></item>
+  <item><title>STATEMENTS BY MEMBERS : Artificial Intelligence</title>
+    <link>https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F3%2F0003%22</link></item>
+  <item><title>PETITIONS : Road safety</title>
+    <link>https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F4%2F0004%22</link></item>
+</channel></rss>`;
+
+  it('keeps items matching the pattern even when their titles carry no AI signal', () => {
+    const result = extractFromRss(HANSARD_XML, 'https://parlinfo.aph.gov.au/feed', {
+      titlePattern: /^(?:Federation Chamber : )?BILLS : /,
+    });
+    expect(result.itemCount).toBe(4);
+    expect(result.candidates.map((c) => c.title)).toEqual([
+      'BILLS : Copyright Amendment Bill 2026 : Second Reading',
+      'Federation Chamber : BILLS : Universities Accord Bill 2026 : Second Reading',
+    ]);
+  });
+
+  it('applies the title-only AI filter when no pattern is given', () => {
+    const result = extractFromRss(HANSARD_XML, 'https://parlinfo.aph.gov.au/feed');
+    expect(result.candidates.map((c) => c.title)).toEqual([
+      'STATEMENTS BY MEMBERS : Artificial Intelligence',
+    ]);
+  });
+});

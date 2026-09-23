@@ -159,6 +159,15 @@ flag, the `ClaudeAuthError` class and the `claude-classify-v1` prompt
 version date from the original Claude Code CLI transport and are kept for
 log, data and call-site stability.
 
+Sources with `bodyRelevance` (currently `aph-hansard-bill-debates`) use a
+third deterministic rule instead of either path above. Their feed items are
+kept when the title matches `bodyRelevance.titlePattern`, because Hansard debate
+titles name the bill, not AI. After the page is fetched, a candidate is
+relevant only when its body has at least `bodyRelevance.minAiMentions` explicit
+AI mentions (`countAiMentions` in `src/lib/scraper-filter.ts`). Relevant items
+score 0.55 with `promptVersion: 'body-mentions-v1'` and a summary that states
+the mention count. These sources are not sent to the AI classifier.
+
 Confidence from either classifier path is capped at 0.65
 (`MACHINE_CONFIDENCE_CAP`) before it is stored or shown, so every automated
 discovery displays as "Needs review" and goes through the same staged
@@ -388,7 +397,10 @@ Edit [`src/lib/pipeline/sources.ts`](../src/lib/pipeline/sources.ts). Each sourc
 needs an id, name, jurisdiction, category (`government | regulator | court`),
 URL, kind (`html-index | rss | document`), schedule (`daily | weekly`), and
 automation mode (`automatic | manual`). Prefer dated index/news pages or RSS
-feeds for discovery and primary instrument pages for verification. Verify with:
+feeds for discovery and primary instrument pages for verification. For a feed
+whose titles never carry the AI signal, set `bodyRelevance` (see
+Classification) and choose `minAiMentions` from a probe of real items, not a
+guess. Verify with:
 
 ```bash
 npm run audit:sources -- --source=<id>

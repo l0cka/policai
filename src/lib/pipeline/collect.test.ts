@@ -192,9 +192,60 @@ describe('collect', () => {
       itemCount: 2,
       candidateCount: 2,
     });
-    expect(result.meta.collector.automaticSourceCount).toBe(67);
+    expect(result.meta.collector.automaticSourceCount).toBe(68);
     expect(result.meta.collector.manualSourceCount).toBe(1);
     expect(result.errors).toEqual([]);
+  });
+
+  it('judges title-blind feed items by AI mentions in the fetched body', async () => {
+    const HANSARD_SOURCE: WatchSource = {
+      id: 'test-hansard',
+      name: 'Test Hansard',
+      jurisdiction: 'federal',
+      category: 'government',
+      url: 'https://parlinfo.aph.gov.au/feed',
+      kind: 'rss',
+      schedule: 'daily',
+      enabled: true,
+      automation: 'automatic',
+      bodyRelevance: { titlePattern: /^BILLS : /, minAiMentions: 10 },
+    };
+    const item = (id: string, title: string) =>
+      `<item><title>${title}</title><link>https://parlinfo.aph.gov.au/debate/${id}</link><pubDate>Thu, 09 Jul 2026 01:00:00 GMT</pubDate></item>`;
+    const page = (title: string, mentions: number) =>
+      `<html><body><main><h1>${title}</h1><p>Mr SPEAKER: ${'Artificial intelligence changes creative work. '.repeat(mentions)}Other remarks.</p></main></body></html>`;
+
+    const result = await collect({
+      sources: [HANSARD_SOURCE],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl: fakeFetch({
+        'https://parlinfo.aph.gov.au/feed': {
+          contentType: 'application/rss+xml',
+          body: `<?xml version="1.0"?><rss version="2.0"><channel>
+            ${item('copyright', 'BILLS : Copyright Amendment Bill 2026 : Second Reading')}
+            ${item('levy', 'BILLS : Student Levy Bill 2026 : Second Reading')}
+            ${item('petition', 'PETITIONS : Road safety')}
+          </channel></rss>`,
+        },
+        'https://parlinfo.aph.gov.au/debate/copyright': page('Copyright Amendment Bill 2026', 12),
+        'https://parlinfo.aph.gov.au/debate/levy': page('Student Levy Bill 2026', 2),
+      }),
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+    });
+
+    expect(result.errors).toEqual([]);
+    expect(result.developments.map((d) => d.url)).toEqual([
+      'https://parlinfo.aph.gov.au/debate/copyright',
+    ]);
+    const [development] = result.developments;
+    expect(development.classification).toBe('heuristic');
+    expect(development.relevanceScore).toBeLessThanOrEqual(MACHINE_CONFIDENCE_CAP);
+    expect(development.summary).toBe(
+      '12 explicit AI mentions in the debate text for "Copyright Amendment Bill 2026".',
+    );
+    expect(result.state.seen['https://parlinfo.aph.gov.au/debate/levy']?.status).toBe('dismissed');
+    expect(result.state.seen['https://parlinfo.aph.gov.au/debate/petition']).toBeUndefined();
   });
 
   it('suppresses same-month alternate government release URLs by headline', async () => {

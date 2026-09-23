@@ -46,6 +46,18 @@ export interface WatchSource {
    * entries and zero items therefore indicates a broken or degraded feed.
    */
   minimumItemCount?: number;
+  /**
+   * For feeds whose query already matches AI in full text but whose item
+   * titles never carry the signal (Hansard debate titles name the bill).
+   * Items are kept when their title matches `titlePattern`; after the page is
+   * fetched, a candidate counts as relevant only with at least
+   * `minAiMentions` explicit AI mentions in its body. Classification stays
+   * deterministic and capped, so every detection still needs review.
+   */
+  bodyRelevance?: {
+    titlePattern: RegExp;
+    minAiMentions: number;
+  };
   critical?: boolean;
   notes?: string;
 }
@@ -355,6 +367,24 @@ export const WATCH_SOURCES: WatchSource[] = [
     fetchStrategy: 'browser',
     notes:
       'Official ParlInfo feed of Parliamentary Library bills digests — the leading indicator for bills before parliament, including AI legislation; APH rejects plain HTTP clients.',
+  },
+  {
+    id: 'aph-hansard-bill-debates',
+    name: 'Hansard — bill debates discussing AI',
+    jurisdiction: 'federal',
+    category: 'government',
+    url: 'https://parlinfo.aph.gov.au/parlInfo/feeds/rss.w3p;adv=yes;orderBy=date-eFirst;page=0;query=%22artificial%20intelligence%22%20Date%3AthisYear%20Dataset%3Ahansardr,hansards;resCount=100',
+    kind: 'rss',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    bodyRelevance: {
+      titlePattern: /^(?:Federation Chamber : )?BILLS : /,
+      minAiMentions: 10,
+    },
+    notes:
+      'House and Senate Hansard items matching "artificial intelligence" in full text, restricted to bill debates. Debate titles name the bill, not AI, so relevance is 10+ explicit AI mentions in the speech body (set 2026-09-23 from a probe of 40 debates: incidental mentions ran 1–9, substantive AI debates 10–27). APH rejects plain HTTP clients.',
   },
   {
     id: 'legislation-whats-new',

@@ -12,6 +12,7 @@ import type {
 } from '@/types';
 import { normalizeJurisdiction, normalizePolicyType } from '@/types';
 import {
+  classifyByBodyMentions,
   classifyCandidate,
   classifyCandidatesWithClaude,
   classificationFromVerdict,
@@ -1254,7 +1255,9 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
             source.kind === 'document'
               ? null
               : source.kind === 'rss'
-                ? extractFromRss(retrieval.body, source.url)
+                ? extractFromRss(retrieval.body, source.url, {
+                    titlePattern: source.bodyRelevance?.titlePattern,
+                  })
                 : extractFromHtml(retrieval.body, source.url);
           return { retrieval, extracted };
         };
@@ -1552,7 +1555,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     // not caught: it propagates out of collect() and fails the run, since a
     // human needs to re-authenticate rather than the collector papering over it.
     const claudeVerdictsById: Map<string, ClaudeVerdict> | null =
-      useClaudeClassifier
+      useClaudeClassifier && !source.bodyRelevance
         ? await classifyCandidatesWithClaude(
             candidates.map((candidate) => ({
               id: candidateStateKey(candidate),
@@ -1718,12 +1721,18 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         state.lastCheckedBySource[source.id] = nowIso;
       }
 
-      const initialClassification = useClaudeClassifier
-        ? classificationFromVerdict(
-            claudeVerdictsById?.get(candidateStateKey(candidate)),
+      const initialClassification = source.bodyRelevance
+        ? classifyByBodyMentions(
             enrichedCandidate,
+            document.text,
+            source.bodyRelevance.minAiMentions,
           )
-        : await classifyCandidate(enrichedCandidate, document.text);
+        : useClaudeClassifier
+          ? classificationFromVerdict(
+              claudeVerdictsById?.get(candidateStateKey(candidate)),
+              enrichedCandidate,
+            )
+          : await classifyCandidate(enrichedCandidate, document.text);
       const classification: Classification = existingPolicy
         ? {
             ...initialClassification,
