@@ -73,7 +73,13 @@ function eventType(development: Development): string {
   return development.classification === 'heuristic' ? 'Radar' : 'Development';
 }
 
-function DevelopmentFeed({ items }: { items: Development[] }) {
+function DevelopmentFeed({
+  items,
+  onReset,
+}: {
+  items: Development[];
+  onReset?: () => void;
+}) {
   const grouped = new Map<string, Development[]>();
   for (const development of items) {
     const key = monthKey(development);
@@ -82,9 +88,18 @@ function DevelopmentFeed({ items }: { items: Development[] }) {
 
   if (items.length === 0) {
     return (
-      <div className="border-y border-border py-14 text-center">
+      <div role="status" className="border-y border-border py-14 text-center">
         <p className="section-title">No matching developments</p>
         <p className="mt-2 text-sm text-muted-foreground">Try a broader search or jurisdiction.</p>
+        {onReset ? (
+          <button
+            type="button"
+            onClick={onReset}
+            className="mt-4 min-h-11 border border-primary px-4 text-sm text-primary hover:bg-accent"
+          >
+            Clear search and filters
+          </button>
+        ) : null}
       </div>
     );
   }
@@ -208,7 +223,7 @@ export function DevelopmentsBrowser({
             <label className="relative flex-1">
               <span className="sr-only">Search developments</span>
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <input type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search developments" className="h-11 w-full rounded-md border border-input bg-background pl-10 pr-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" />
+              <input type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search developments" className="h-11 w-full rounded-md border border-input bg-background pl-10 pr-3 text-sm focus:border-primary" />
             </label>
             <label className="relative sm:w-60">
               <span className="sr-only">Filter by jurisdiction</span>
@@ -227,7 +242,18 @@ export function DevelopmentsBrowser({
               </select>
             </label>
           </div>
-          <DevelopmentFeed items={filteredItems} />
+          <DevelopmentFeed
+            items={filteredItems}
+            onReset={
+              search || jurisdiction !== 'all' || stream !== 'all'
+                ? () => {
+                    setSearch('');
+                    setJurisdiction('all');
+                    setStream('all');
+                  }
+                : undefined
+            }
+          />
         </div>
 
         <aside className="self-start border-border xl:sticky xl:top-28 xl:border-l xl:pl-6">
