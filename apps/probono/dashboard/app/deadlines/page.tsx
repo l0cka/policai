@@ -1,10 +1,6 @@
 import type { Metadata } from 'next';
 import { DeadlineList, DeadlineTimeline } from '../deadlines';
-import {
-  getRecentlyPassed,
-  getUpcomingDeadlines,
-  getUpcomingMilestones,
-} from '../../lib/deadline-data';
+import { getDeadlineView } from '../../lib/deadline-data';
 
 export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
@@ -13,11 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default async function DeadlinesPage() {
-  const [upcoming, milestones, passed] = await Promise.all([
-    getUpcomingDeadlines(),
-    getUpcomingMilestones(),
-    getRecentlyPassed(30),
-  ]);
+  const { closing: upcoming, calendar: milestones, closed: passed } = await getDeadlineView(30);
 
   return (
     <div className="container page">
@@ -26,8 +18,8 @@ export default async function DeadlinesPage() {
         <h1 className="page-title">Deadlines</h1>
         <p className="page-intro">
           Closing dates extracted from the items on the radar, soonest first. Each entry links back
-          to the source it was read from. Dates that simply arrive — reports handed down, schemes
-          starting — are listed separately below.
+          to the source it was read from; a deadline reported by several items appears once. Dates
+          that simply arrive — reports handed down, schemes starting — are listed separately below.
         </p>
       </header>
 
@@ -47,7 +39,7 @@ export default async function DeadlinesPage() {
               </h2>
               <p className="dated-note">
                 Dates worth knowing that carry no action: inquiries reporting, schemes commencing,
-                plans concluding.
+                events and openings, and dates a source gives only as a month or a year.
               </p>
               <DeadlineList rows={milestones} />
             </section>

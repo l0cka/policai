@@ -42,7 +42,37 @@ if (process.env.FIXTURE_MARKDOWN_TITLE === '1') {
   await db.query(`INSERT INTO items(source_id,url,canonical_url,title,published_at,stream,relevant) VALUES (3,$1,$1,$2,now()-interval '2 days','funding',true)`,
     ['https://example.org/markdown-title', 'Fixture News\\ \\ August 27, 2026\\ \\ ##### Fixture consultant sought for a data fund']);
 }
+// Opt-in deadline accuracy rows: one consultation reported by an official page and a
+// law-firm write-up (merged into one card), a non-primary secondary date, a
+// month-precision report date and a legacy "Applications open" row that must not
+// read as a deadline. Checked by test/deadlines-browser.mjs.
+if (process.env.FIXTURE_DEADLINES === '1') {
+  const day = (n) => new Date(Date.now() + n * 86400000).toISOString().slice(0, 10);
+  const inTwoMonths = new Date(); inTwoMonths.setUTCDate(1); inTwoMonths.setUTCMonth(inTwoMonths.getUTCMonth() + 2);
+  const monthStart = inTwoMonths.toISOString().slice(0, 8) + '01';
+  const official = 'https://consult.example.gov.au/fixture-consultation';
+  const q = (date) => `Submissions close ${Number(date.slice(8))} ${new Date(date + 'T00:00:00Z').toLocaleDateString('en-AU', { month: 'long', timeZone: 'UTC' })}`;
+  for (const [url, title, published, deadlines] of [
+    [official, 'Fixture official consultation on legal help', 6, [
+      { date: day(40), label: 'Submissions close', kind: 'action', precision: 'day', primary: true, quote: q(day(40)), target_url: null },
+      { date: day(12), label: 'Ask for an alternative submission format', kind: 'action', precision: 'day', primary: false, quote: q(day(12)), target_url: null },
+    ]],
+    ['https://lawfirm.example.org/fixture-write-up', 'Fixture law firm write-up of the consultation', 3, [
+      { date: day(40), label: 'Have your say on the legal help consultation', kind: 'action', precision: 'day', primary: true, quote: q(day(40)), target_url: official },
+    ]],
+    ['https://example.org/fixture-inquiry', 'Fixture inquiry report timetable', 4, [
+      { date: monthStart, label: 'Final report expected', kind: 'milestone', precision: 'month', primary: false, quote: 'final report expected later in the year', target_url: null },
+    ]],
+    ['https://example.org/fixture-internship', 'Fixture internship program launches', 2, [
+      { date: day(5), label: 'Applications open', kind: 'action' },
+    ]],
+  ]) {
+    await db.query(`INSERT INTO items(source_id,url,canonical_url,title,published_at,excerpt,stream,blurb,relevant,entities) VALUES (2,$1,$1,$2,now()-$3 * interval '1 day','Synthetic deadline record — not published news.','law_reform','Synthetic deadline record — not published news.',true,$4)`, [url, title, published, JSON.stringify({ deadlines })]);
+  }
+}
 if (process.env.FIXTURE_EMPTY === '1') await db.exec('DELETE FROM items');
-const server=new PGLiteSocketServer({db,host:'127.0.0.1',port:8897,maxConnections:10});
-await server.start();console.log('Fixture ready at 127.0.0.1:8897 (in-memory only)');
+const port=Number(process.env.FIXTURE_PORT ?? 8897);
+if (!Number.isInteger(port) || port < 1024 || port > 65535) throw new Error('Invalid FIXTURE_PORT');
+const server=new PGLiteSocketServer({db,host:'127.0.0.1',port,maxConnections:10});
+await server.start();console.log(`Fixture ready at 127.0.0.1:${port} (in-memory only)`);
 for(const sig of ['SIGTERM','SIGINT']) process.on(sig,async()=>{await server.stop();await db.close();process.exit(0);});

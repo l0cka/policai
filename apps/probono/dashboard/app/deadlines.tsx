@@ -5,8 +5,9 @@ import {
   safeHref,
   sydneyToday,
   urgency,
-  type DeadlineRow,
+  type DeadlineCard,
 } from '../lib/deadline-data';
+import { deadlineDateTime, formatDeadlineDate, type SecondaryDate } from '../lib/deadline-model';
 
 /*
  * Every dated list on the site uses one row grammar: the subject leads, the
@@ -18,15 +19,7 @@ import {
  * is the headline that tells you which consultation you are looking at.
  */
 
-function longDate(date: string, withYear: boolean): string {
-  return new Date(`${date}T00:00:00`).toLocaleDateString('en-AU', {
-    day: 'numeric',
-    month: 'short',
-    ...(withYear ? { year: 'numeric' } : {}),
-  });
-}
-
-function Subject({ row }: { row: DeadlineRow }) {
+function Subject({ row }: { row: DeadlineCard }) {
   const href = safeHref(row.url);
   return href ? (
     <a href={href} target="_blank" rel="noopener noreferrer">
@@ -37,8 +30,53 @@ function Subject({ row }: { row: DeadlineRow }) {
   );
 }
 
+/*
+ * The same deadline reported by other items (a law-firm write-up of an
+ * official consultation, say). The card links to the preferred source; the
+ * others stay reachable here.
+ */
+function AlsoReported({ row }: { row: DeadlineCard }) {
+  const others = row.alsoReportedBy;
+  if (!others.length) return null;
+  return (
+    <p className="deadline-also">
+      Also reported by {others.length}:{' '}
+      {others.map((o, n) => {
+        const href = safeHref(o.url);
+        return (
+          <span key={o.itemId}>
+            {n ? '; ' : ''}
+            {href ? (
+              <a href={href} target="_blank" rel="noopener noreferrer">
+                {o.title}
+              </a>
+            ) : (
+              o.title
+            )}
+          </span>
+        );
+      })}
+    </p>
+  );
+}
+
+/* Other dates from the same item, beneath its headline deadline. */
+function SecondaryDates({ dates }: { dates: SecondaryDate[] }) {
+  if (!dates.length) return null;
+  return (
+    <ul className="deadline-secondary" aria-label="Other dates in this item">
+      {dates.map((d) => (
+        <li key={`${d.date}-${d.label}`}>
+          <time dateTime={deadlineDateTime(d.date, d.precision)}>{formatDeadlineDate(d.date, d.precision)}</time>{' '}
+          {d.label}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 // Month-grouped agenda timeline, rendered from rows the caller fetched.
-export function DeadlineTimeline({ rows }: { rows: DeadlineRow[] }) {
+export function DeadlineTimeline({ rows }: { rows: DeadlineCard[] }) {
   if (!rows.length) {
     return (
       <div className="empty-state">
@@ -49,7 +87,7 @@ export function DeadlineTimeline({ rows }: { rows: DeadlineRow[] }) {
   }
 
   const today = sydneyToday();
-  const months = new Map<string, DeadlineRow[]>();
+  const months = new Map<string, DeadlineCard[]>();
   for (const r of rows) {
     const key = r.date.slice(0, 7);
     const bucket = months.get(key);
@@ -65,7 +103,7 @@ export function DeadlineTimeline({ rows }: { rows: DeadlineRow[] }) {
           {entries.map((r, n) => {
             const days = daysUntil(r.date, today);
             return (
-              <article className="timeline-entry" key={`${r.date}-${n}`}>
+              <article className="timeline-entry" key={`${r.key}-${n}`}>
                 <div className={`date-block ${urgency(days)}`} aria-hidden="true">
                   <span className="day">{Number(r.date.slice(8, 10))}</span>
                   <span className="mon">
@@ -77,7 +115,14 @@ export function DeadlineTimeline({ rows }: { rows: DeadlineRow[] }) {
                   <h4 className="timeline-subject">
                     <Subject row={r} />
                   </h4>
-                  <p className="timeline-kind">{r.label}</p>
+                  <p className="timeline-kind">
+                    <span className="sr-only">
+                      {formatDeadlineDate(r.date, 'day')}:{' '}
+                    </span>
+                    {r.label}
+                  </p>
+                  <SecondaryDates dates={r.secondary} />
+                  <AlsoReported row={r} />
                 </div>
 
                 <span className={`chip ${urgency(days)}`}>
@@ -96,23 +141,25 @@ export function DeadlineTimeline({ rows }: { rows: DeadlineRow[] }) {
 /*
  * The quieter list used for the sector calendar and for dates that have just
  * passed. Same grammar, no urgency colour: nothing here is chaseable, so
- * nothing should look like it is.
+ * nothing should look like it is. Dates keep the precision the source gave:
+ * "Sep 2026" or "2027", never an invented day.
  */
-export function DeadlineList({ rows, showYear = true }: { rows: DeadlineRow[]; showYear?: boolean }) {
+export function DeadlineList({ rows, showYear = true }: { rows: DeadlineCard[]; showYear?: boolean }) {
   if (!rows.length) return null;
 
   return (
     <div className="dated-list">
       {rows.map((r, n) => (
-        <article className="dated-row" key={`${r.date}-${n}`}>
-          <time className="dated-when" dateTime={r.date}>
-            {longDate(r.date, showYear)}
+        <article className="dated-row" key={`${r.key}-${n}`}>
+          <time className="dated-when" dateTime={deadlineDateTime(r.date, r.precision)}>
+            {formatDeadlineDate(r.date, r.precision, showYear)}
           </time>
           <div className="dated-body">
             <p className="dated-subject">
               <Subject row={r} />
             </p>
             <p className="dated-kind">{r.label}</p>
+            <AlsoReported row={r} />
           </div>
         </article>
       ))}
@@ -125,7 +172,7 @@ export function DeadlineList({ rows, showYear = true }: { rows: DeadlineRow[]; s
  * fetched rather than querying again, so the page issues one round trip for
  * deadlines whichever component renders them.
  */
-export function RailDeadlines({ rows, today }: { rows: DeadlineRow[]; today: string }) {
+export function RailDeadlines({ rows, today }: { rows: DeadlineCard[]; today: string }) {
   if (!rows.length) {
     return <p className="rail-note">None extracted yet.</p>;
   }
@@ -136,8 +183,8 @@ export function RailDeadlines({ rows, today }: { rows: DeadlineRow[]; today: str
         const days = daysUntil(r.date, today);
         const href = safeHref(r.url);
         return (
-          <div className="rail-deadline" key={`${r.date}-${n}`}>
-            <time dateTime={r.date}>{longDate(r.date, false)}</time>
+          <div className="rail-deadline" key={`${r.key}-${n}`}>
+            <time dateTime={r.date}>{formatDeadlineDate(r.date, 'day', false)}</time>
             <span className="rail-deadline-label">
               {href ? (
                 <a href={href} target="_blank" rel="noopener noreferrer">

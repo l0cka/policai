@@ -73,6 +73,18 @@ light/dark/system theme and keyboard interaction. It saves screenshots and full
 axe violations **and incomplete results**. PGlite proves rendering and ordinary
 queries, not production PostgreSQL concurrency or correctness of live records.
 
+### Deadline accuracy fixture
+
+`FIXTURE_DEADLINES=1` adds synthetic deadline rows: one consultation reported by an
+official page and a law-firm write-up, a non-primary secondary date, a
+month-precision date and a legacy "Applications open" row. `FIXTURE_PORT`
+overrides the fixture port (default `8897`). With the preview pointed at that
+fixture, `node test/deadlines-browser.mjs` checks that the duplicates merge into one
+card with "Also reported by 1", the secondary date sits under its card, the month
+date and the opening appear only in the calendar, and the feed rail and
+`/this-week` use the same list. The display rules live in `lib/deadline-model.ts`
+and are unit-tested by `test/deadline-model.test.mjs`.
+
 ## Evidence and integration boundary
 
 Executed evidence: `/home/l0cka/Reports/2026-09-22-a2j-editorial-index/`.

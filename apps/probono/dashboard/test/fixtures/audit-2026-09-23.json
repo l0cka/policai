@@ -1,0 +1,393 @@
+{
+ "note": "Public source rows /deadlines rendered on 2026-09-23 (legacy shape: date, label, kind). Audit: 15 of 31 wrong.",
+ "today": "2026-09-23",
+ "items": [
+  {
+   "id": 4201,
+   "title": "Have your say on coercive control",
+   "url": "https://www.wnswclc.org.au/post/have-your-say-on-coercive-control",
+   "published_at": "2026-07-15",
+   "deadlines": [
+    {
+     "date": "2026-08-28",
+     "label": "Coercive control law review submissions close",
+     "kind": "action"
+    }
+   ]
+  },
+  {
+   "id": 31356,
+   "title": "One week left to have your say on Australia’s water laws",
+   "url": "https://envirojustice.org.au/one-week-left-australias-water-laws/",
+   "published_at": "2026-08-24",
+   "deadlines": [
+    {
+     "date": "2026-08-31",
+     "label": "Submissions on Water Act 2007 review close",
+     "kind": "action"
+    }
+   ]
+  },
+  {
+   "id": 24011,
+   "title": "The Water Act is under review, make a submission now",
+   "url": "https://envirojustice.org.au/water-act-review-make-a-submission/",
+   "published_at": "2026-08-19",
+   "deadlines": [
+    {
+     "date": "2026-08-31",
+     "label": "Submissions on Water Act review close",
+     "kind": "action"
+    }
+   ]
+  },
+  {
+   "id": 12079,
+   "title": "What is the Water Act + why does it matter?",
+   "url": "https://envirojustice.org.au/water-act-review-submissions-webinar/",
+   "published_at": "2026-08-11",
+   "deadlines": [
+    {
+     "date": "2026-08-31",
+     "label": "Water Act review submissions close",
+     "kind": "action"
+    }
+   ]
+  },
+  {
+   "id": 37286,
+   "title": "Webinar: Australia’s new nature standards and what’s next",
+   "url": "https://envirojustice.org.au/webinar-australias-new-nature-standards-and-whats-next/",
+   "published_at": "2026-08-28",
+   "deadlines": [
+    {
+     "date": "2026-09-03",
+     "label": "Register for webinar on national environmental standards",
+     "kind": "action"
+    }
+   ]
+  },
+  {
+   "id": 25891,
+   "title": "Notice of Special General Meeting",
+   "url": "https://townsvillecommunity.law/notice-of-special-general-meeting/",
+   "published_at": "2026-08-20",
+   "deadlines": [
+    {
+     "date": "2026-09-06",
+     "label": "Special General Meeting to appoint auditor",
+     "kind": "action"
+    }
+   ]
+  },
+  {
+   "id": 51794,
+   "title": "Submission guide: Safeguard Mechanism Review",
+   "url": "https://envirojustice.org.au/submission-guide-safeguard-mechanism/",
+   "published_at": "2026-09-07",
+   "deadlines": [
+    {
+     "date": "2026-09-18",
+     "label": "Safeguard Mechanism Review submissions close",
+     "kind": "action"
+    }
+   ]
+  },
+  {
+   "id": 66121,
+   "title": "What’s the Safeguard Mechanism actually delivering?",
+   "url": "https://envirojustice.org.au/whats-the-safeguard-mechanism-actually-delivering/",
+   "published_at": "2026-09-17",
+   "deadlines": [
+    {
+     "date": "2026-09-18",
+     "label": "Safeguard Mechanism review submissions close",
+     "kind": "action"
+    }
+   ]
+  },
+  {
+   "id": 41159,
+   "title": "Privacy Reform – Consultation on Exposure Draft legislation",
+   "url": "https://consultations.ag.gov.au/rights-and-protections/privacy-reform/",
+   "published_at": null,
+   "deadlines": [
+    {
+     "date": "2026-09-18",
+     "label": "Submissions close",
+     "kind": "action"
+    }
+   ]
+  },
+  {
+   "id": 30759,
+   "title": "Australia’s draft seventh periodic report under the Convention against Torture and other Cruel...",
+   "url": "https://consultations.ag.gov.au/rights-and-protections/cat/",
+   "published_at": null,
+   "deadlines": [
+    {
+     "date": "2026-09-18",
+     "label": "Submissions on Australia's CAT periodic report close",
+     "kind": "action"
+    }
+   ]
+  },
+  {
+   "id": 47297,
+   "title": "A new era for privacy: What the proposed Privacy Act reforms mean in practice",
+   "url": "https://www.allens.com.au/insights-news/insights/2026/09/a-new-era-for-privacy-what-the-proposed-privacy-act-reforms-mean-in-practice/",
+   "published_at": null,
+   "deadlines": [
+    {
+     "date": "2026-09-18",
+     "label": "Submissions on Privacy Amendment (Personal Data Protection) Bill 2026 close",
+     "kind": "action"
+    }
+   ]
+  },
+  {
+   "id": 41366,
+   "title": "Legal Aid NSW launches regional justice internship program",
+   "url": "https://www.legalaid.nsw.gov.au/about-us/news/media-releases/2026-08-31-UNSW-internship-media-release",
+   "published_at": null,
+   "deadlines": [
+    {
+     "date": "2026-09-21",
+     "label": "Applications open",
+     "kind": "action"
+    }
+   ]
+  },
+  {
+   "id": 35580,
+   "title": "PRF News\\ \\ \\ \\ August 27, 2026\\ \\ August 27, 2026\\ \\ ##### PRF seeking experienced consultant for a",
+   "url": "https://www.paulramsayfoundation.org.au/news-resources/prf-seeking-experienced-consultant-for-a-request-for-services-on-a-data-ai-fund",
+   "published_at": null,
+   "deadlines": [
+    {
+     "date": "2026-09-25",
+     "label": "Consultant proposals close",
+     "kind": "action"
+    }
+   ]
+  },
+  {
+   "id": 66841,
+   "title": "Government opens consultation on modern slavery reforms",
+   "url": "https://hwlebsworth.com.au/government-opens-consultation-on-modern-slavery-reforms/?utm_source=rss&utm_medium=rss&utm_campaign=government-opens-consultation-on-modern-slavery-reforms",
+   "published_at": "2026-09-17",
+   "deadlines": [
+    {
+     "date": "2026-09-25",
+     "label": "Modern Slavery Act reforms consultation submissions close",
+     "kind": "action"
+    }
+   ]
+  },
+  {
+   "id": 26376,
+   "title": "Strengthening Australia’s response to modern slavery in supply chains",
+   "url": "https://consultations.ag.gov.au/crime/modern-slavery/",
+   "published_at": null,
+   "deadlines": [
+    {
+     "date": "2026-09-25",
+     "label": "Submissions on modern slavery law reform consultation close",
+     "kind": "action"
+    }
+   ]
+  },
+  {
+   "id": 42292,
+   "title": "Knowmore Beyond Redress Forum 29 October, 2026 at Parliament House",
+   "url": "https://knowmore.org.au/knowmore-beyond-redress-forum-29-october-2026-at-parliament-house/",
+   "published_at": "2026-08-31",
+   "deadlines": [
+    {
+     "date": "2026-09-30",
+     "label": "Early bird pricing closes",
+     "kind": "milestone"
+    },
+    {
+     "date": "2026-10-29",
+     "label": "Forum date",
+     "kind": "milestone"
+    }
+   ]
+  },
+  {
+   "id": 733,
+   "title": "Offshore Inquiry adds to evidence of the harm caused by offshore detention, but leaves secrets burie",
+   "url": "https://www.racs.org.au/news/offshore-inquiry-2026",
+   "published_at": null,
+   "deadlines": [
+    {
+     "date": "2026-09-30",
+     "label": "Final report due",
+     "kind": "milestone"
+    }
+   ]
+  },
+  {
+   "id": 4587,
+   "title": "TIPS FOR ADVOCATES: From the Bar to the Gavel – Wednesday, 30 September 2026",
+   "url": "https://lawsocietynt.asn.au/index.php/2026/06/26/tips-for-advocates-from-the-bar-to-the-gavel-wednesday-30-september-2026/",
+   "published_at": "2026-06-26",
+   "deadlines": [
+    {
+     "date": "2026-09-30",
+     "label": "Tips for Advocates CPD",
+     "kind": "milestone"
+    }
+   ]
+  },
+  {
+   "id": 57332,
+   "title": "Legal development\\ \\ \\ \\ ### A free for all? Consultation opens on new laws to ban non-compete and s",
+   "url": "https://www.ashurst.com/en/insights/proposed-bans-on-post-employment-restraints-wage-fixing-non-poaching-cartel-conduct/",
+   "published_at": null,
+   "deadlines": [
+    {
+     "date": "2026-10-02",
+     "label": "Consultation on draft Competition and Fair Work Legislation Amendment (Banning Unfair Non-Competes) Bill 2026 closes",
+     "kind": "action"
+    }
+   ]
+  },
+  {
+   "id": 61587,
+   "title": "Help us develop our Consumer Strategy",
+   "url": "https://lsbc.vic.gov.au/news-updates/news/help-us-develop-our-consumer-strategy",
+   "published_at": null,
+   "deadlines": [
+    {
+     "date": "2026-10-02",
+     "label": "Feedback submissions (alternative formats)",
+     "kind": "action"
+    },
+    {
+     "date": "2026-10-16",
+     "label": "Email submissions on consumer strategy",
+     "kind": "action"
+    }
+   ]
+  },
+  {
+   "id": 64018,
+   "title": "Upcoming CPD: Cross-Examination of Child Witnesses",
+   "url": "https://sabar.org.au/upcoming-cpd-cross-examination-of-child-witnesses/",
+   "published_at": "2026-07-02",
+   "deadlines": [
+    {
+     "date": "2026-10-07",
+     "label": "CPD event: cross-examination of child witnesses",
+     "kind": "milestone"
+    }
+   ]
+  },
+  {
+   "id": 161,
+   "title": "Media Release: Issues paper and call for submissions on how children and young people participate in",
+   "url": "https://www.lawreform.vic.gov.au/media-releases/media-release-issues-paper-and-call-for-submissions-on-how-children-and-young-people-participate-in-fvio-proceedings/",
+   "published_at": "2026-07-30",
+   "deadlines": [
+    {
+     "date": "2026-10-16",
+     "label": "Submissions close",
+     "kind": "action"
+    }
+   ]
+  },
+  {
+   "id": 21416,
+   "title": "Victorian renters using improved right to repairs",
+   "url": "https://tenantsvic.org.au/news/victorian-renters-using-improved-right-to-repairs/",
+   "published_at": "2026-08-16",
+   "deadlines": [
+    {
+     "date": "2026-11-28",
+     "label": "Victorian state election",
+     "kind": "milestone"
+    }
+   ]
+  },
+  {
+   "id": 4307,
+   "title": "Legal learning exchange with Magistrate Pauline Spencer",
+   "url": "https://www.comm-unityplus.org.au/learning-exchange-wyndham/",
+   "published_at": "2026-03-02",
+   "deadlines": [
+    {
+     "date": "2027-01-01",
+     "label": "Specialist Family Violence Court opening",
+     "kind": "milestone"
+    }
+   ]
+  },
+  {
+   "id": 12963,
+   "title": "Relativity Develops claiR Conversational AI System",
+   "url": "https://www.artificiallawyer.com/2026/08/12/relativity-develops-clair-conversational-ai-system/",
+   "published_at": "2026-08-12",
+   "deadlines": [
+    {
+     "date": "2027-01-01",
+     "label": "claiR general availability",
+     "kind": "milestone"
+    }
+   ]
+  },
+  {
+   "id": 54198,
+   "title": "JOINT RELEASE – Justice experts suspend partnership – calls for genuine collaboration",
+   "url": "https://www.naaja.org.au/justice-experts-suspend-partnership-calls-for-genuine-collaboration/",
+   "published_at": "2026-09-03",
+   "deadlines": [
+    {
+     "date": "2027-03-03",
+     "label": "NT Justice Policy Partnership six-month suspension period ends",
+     "kind": "milestone"
+    }
+   ]
+  },
+  {
+   "id": 4327,
+   "title": "Child abuse survivors risk missing out as redress scheme deadline approaches",
+   "url": "https://knowmore.org.au/child-abuse-survivors-risk-missing-out-as-redress-scheme-deadline-approaches/",
+   "published_at": "2026-06-26",
+   "deadlines": [
+    {
+     "date": "2027-06-30",
+     "label": "Application deadline for National Redress Scheme",
+     "kind": "action"
+    }
+   ]
+  },
+  {
+   "id": 4326,
+   "title": "Share your views on the end of the National Redress Scheme and the future of redress",
+   "url": "https://knowmore.org.au/share-your-views-on-the-end-of-the-national-redress-scheme-and-the-future-of-redress/",
+   "published_at": "2026-07-01",
+   "deadlines": [
+    {
+     "date": "2027-06-30",
+     "label": "Estimated deadline for scheme applications",
+     "kind": "action"
+    }
+   ]
+  },
+  {
+   "id": 25501,
+   "title": "Legal explainer: The risk of new logging loopholes",
+   "url": "https://envirojustice.org.au/legal-explainer-the-risk-of-new-logging-loopholes/",
+   "published_at": "2026-08-16",
+   "deadlines": [
+    {
+     "date": "2027-07-01",
+     "label": "Regional Forest Agreement exemption ends",
+     "kind": "milestone"
+    }
+   ]
+  }
+ ]
+}
