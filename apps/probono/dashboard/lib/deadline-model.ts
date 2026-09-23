@@ -21,6 +21,8 @@ export type StoredDeadline = {
   primary?: boolean;
   quote?: string;
   target_url?: string | null;
+  /* Set by the worker's deadline verifier (entities.deadlines_verified_at). */
+  status?: 'open' | 'closed' | 'extended' | 'not_found';
 };
 
 export type DeadlineItem = {
@@ -29,6 +31,8 @@ export type DeadlineItem = {
   url: string;
   published_at?: string | Date | null;
   deadlines: unknown;
+  /* ISO timestamp of the last deadline verification, when there was one. */
+  verified_at?: string | null;
 };
 
 export type SecondaryDate = { date: string; label: string; kind: DeadlineKind; precision: Precision };
@@ -46,6 +50,8 @@ export type DeadlineCard = {
   precision: Precision;
   alsoReportedBy: ReportLink[];
   secondary: SecondaryDate[];
+  /* Sydney date (YYYY-MM-DD) the source was last re-checked, or null. */
+  checkedOn: string | null;
 };
 
 export type DeadlineView = { closing: DeadlineCard[]; calendar: DeadlineCard[]; closed: DeadlineCard[] };
@@ -115,6 +121,21 @@ export function primaryIndex(deadlines: StoredDeadline[]): number {
     if (isDayAction(d) && (best < 0 || d.date > deadlines[best].date)) best = i;
   });
   return best;
+}
+
+/*
+ * The verifier found the date gone from the source, or the page says it
+ * closed before its date. Neither belongs in Closing soon or the calendar.
+ */
+export function isWithdrawn(d: StoredDeadline): boolean {
+  return d.status === 'not_found' || d.status === 'closed';
+}
+
+export function checkedOn(verifiedAt: string | null | undefined): string | null {
+  if (!verifiedAt) return null;
+  const t = new Date(verifiedAt);
+  if (Number.isNaN(t.getTime())) return null;
+  return t.toLocaleDateString('en-CA', { timeZone: 'Australia/Sydney' });
 }
 
 /* ---------- merging duplicates across items ---------- */
@@ -189,6 +210,7 @@ export type DeadlineEntry = {
   target: string | null;
   tokens: Set<string>;
   secondary: SecondaryDate[];
+  checkedOn: string | null;
 };
 
 function entryFor(item: DeadlineItem, d: StoredDeadline, secondary: SecondaryDate[] = []): DeadlineEntry {
@@ -209,6 +231,7 @@ function entryFor(item: DeadlineItem, d: StoredDeadline, secondary: SecondaryDat
     target: canonicalUrl(d.target_url),
     tokens,
     secondary,
+    checkedOn: checkedOn(item.verified_at),
   };
 }
 
@@ -288,6 +311,7 @@ export function mergeEntries(entries: DeadlineEntry[]): DeadlineCard[] {
         .filter((e, i, all) => all.findIndex((o) => o.itemId === e.itemId) === i)
         .map((e) => ({ itemId: e.itemId, title: e.title, url: e.url })),
       secondary: [...secondary.values()].sort((a, b) => a.date.localeCompare(b.date)),
+      checkedOn: lead.checkedOn,
     });
   }
   return cards;
@@ -321,9 +345,9 @@ export function buildDeadlineView(items: DeadlineItem[], today: string, closedDa
     const primary = p >= 0 ? deadlines[p] : undefined;
     const future = deadlines
       .map((d, i) => ({ d, i }))
-      .filter(({ d, i }) => i !== p && effectiveEnd(d.date, effectivePrecision(d)) >= today);
+      .filter(({ d, i }) => i !== p && !isWithdrawn(d) && effectiveEnd(d.date, effectivePrecision(d)) >= today);
 
-    if (primary && primary.date >= today) {
+    if (primary && primary.date >= today && !isWithdrawn(primary)) {
       // Day-precision dates ride under the closing card; vaguer dates belong
       // to the calendar only.
       const secondary = future
@@ -333,7 +357,7 @@ export function buildDeadlineView(items: DeadlineItem[], today: string, closedDa
       for (const { d } of future) if (effectivePrecision(d) !== 'day') calendar.push(entryFor(item, d));
       continue;
     }
-    if (primary && primary.date < today && primary.date >= closedFrom) closed.push(entryFor(item, primary));
+    if (primary && primary.date < today && primary.date >= closedFrom && primary.status !== 'not_found') closed.push(entryFor(item, primary));
     for (const { d } of future) calendar.push(entryFor(item, d));
   }
 

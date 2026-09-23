@@ -129,3 +129,20 @@ describe('new-shape rows', () => {
     assert.deepEqual(ids(v.calendar), [1]);
   });
 });
+
+describe('verified rows', () => {
+  it('drops closed and not_found dates from closing and the calendar, and carries the check date', () => {
+    const v = buildDeadlineView([
+      item(1, 'https://a.example/1', [d('2026-10-16', 'Submissions close', { primary: true, precision: 'day', quote: 'close 16 October 2026', status: 'open' })], { verified_at: '2026-09-22T21:30:00Z' }),
+      item(2, 'https://a.example/2', [d('2026-10-20', 'Applications close', { primary: false, precision: 'day', quote: 'x', status: 'closed' })], { verified_at: '2026-09-22T01:00:00Z' }),
+      item(3, 'https://a.example/3', [d('2026-11-01', 'Suspension ends', { kind: 'milestone', primary: false, precision: 'day', status: 'not_found' })]),
+      item(4, 'https://a.example/4', [d('2026-09-18', 'Lodgement closes', { primary: true, precision: 'day', quote: '18 September', status: 'closed' })], { verified_at: '2026-09-23T00:00:00Z' }),
+    ], '2026-09-23');
+    assert.deepEqual(ids(v.closing), [1]);
+    // 21:30 UTC on 22 Sep is 23 Sep in Sydney.
+    assert.equal(v.closing[0].checkedOn, '2026-09-23');
+    assert.deepEqual(v.calendar, []);
+    assert.deepEqual(ids(v.closed), [4]);
+    assert.equal(card(view.closing, 26376).checkedOn, null);
+  });
+});
