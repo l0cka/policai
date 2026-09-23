@@ -264,7 +264,7 @@ export function CourtsBrowser({
 								value={search}
 								onChange={(event) => updateCourtUrl({ q: event.target.value })}
 								placeholder="Search court, instrument or topic"
-								className="h-11 w-full rounded-md border border-input bg-background pl-10 pr-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+								className="h-11 w-full rounded-md border border-input bg-background pl-10 pr-3 text-sm focus:border-primary"
 							/>
 						</label>
 						<label className="relative">

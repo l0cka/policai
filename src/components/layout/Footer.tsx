@@ -10,7 +10,9 @@ const links = [
 export function Footer() {
   return (
     <footer className="border-t border-[var(--rule-heavy)]">
-      <div className="container mx-auto flex flex-col gap-4 px-4 py-6 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+      {/* Bottom padding keeps the last links clear of the fixed back-to-top
+          button, so they are never hidden when focused. */}
+      <div className="container mx-auto flex flex-col gap-4 px-4 pb-24 pt-6 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
         <p className="max-w-3xl text-xs leading-5 text-muted-foreground">
           An open register of Australian AI policy. Every record is checked
           against its official source, and the data is versioned in Git.
