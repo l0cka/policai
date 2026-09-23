@@ -32,6 +32,8 @@ Secrets, environment files and SMTP credentials must remain outside Git. Never
 copy live database contents or secret files into this subtree.
 
 Spec: docs/superpowers/specs/2026-08-07-probono-radar-design.md
+Deadline verifier (second pass over upcoming and recently closed deadlines):
+docs/deadline-verifier.md
 
 ## Local dev
 
