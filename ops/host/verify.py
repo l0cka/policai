@@ -73,6 +73,7 @@ checks = [
     "units/probono-ingest.service",
     "units/probono-enrich.service",
     "units/probono-backup.service",
+    "units/probono-verify-deadlines.service",
     "ruff.toml",
     "run_tests.py",
     "verify.py",

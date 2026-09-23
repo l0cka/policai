@@ -89,6 +89,41 @@ class WorkerTests(unittest.TestCase):
         self.assertIn("/usr/local/libexec/policai-host/bin", kwargs["extra_env"]["PATH"])
         with self.assertRaises(d.Refused):
             obj.run_worker("digest", (99,))
+        obj.run_worker("verify-deadlines", (99,))
+        argv, cwd, kwargs = events[1]
+        self.assertEqual(argv, ["/usr/bin/bash", "ops/verify-deadlines.sh"])
+        self.assertEqual(
+            kwargs["extra_env"]["PROBONO_DOCKER_BIN"], "/usr/local/libexec/policai-host/bin/docker"
+        )
+        for name in ("verify", "verify_deadlines", "ops/verify-deadlines", "../verify-deadlines"):
+            with self.assertRaises(d.Refused):
+                obj.run_worker(name, (99,))
+
+    def test_worker_stdin_only_reaches_reviewed_savers(self):
+        obj = h.Host.__new__(h.Host)
+        events = []
+
+        class Run:
+            def execute(self, argv, cwd, **kwargs):
+                events.append((argv, kwargs))
+                return "ok"
+
+        obj.runner = Run()
+        obj.check_worker_identity = lambda: None
+        obj.check_worker_release = lambda: None
+        run = ["compose", "--profile", "worker", "run", "--rm"]
+        for saver in ("src/save-enrichment.ts", "src/save-deadline-verification.ts"):
+            obj.worker_compose([*run, "-T", "worker", saver, "7"], (), b"{}")
+            argv, kwargs = events[-1]
+            self.assertEqual(argv[-3:], ["worker", saver, "7"])
+            self.assertEqual(kwargs["stdin_data"], b"{}")
+        obj.worker_compose([*run, "worker", "src/verify-deadlines.ts"], ())
+        self.assertIsNone(events[-1][1]["stdin_data"])
+        count = len(events)
+        for task in ("src/verify-deadlines.ts", "src/list-unenriched.ts", "src/fetch-all.ts"):
+            with self.assertRaises(d.Refused):
+                obj.worker_compose([*run, "worker", task], (), b"{}")
+        self.assertEqual(len(events), count)
 
 
 if __name__ == "__main__":

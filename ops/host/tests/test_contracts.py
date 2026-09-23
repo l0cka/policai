@@ -70,6 +70,30 @@ class HostContractTests(unittest.TestCase):
                 "src/list-unenriched.ts",
             ],
         )
+        run = ["compose", "--profile", "worker", "run", "--rm"]
+        self.assertEqual(
+            h.worker_arguments([*run, "worker", "src/verify-deadlines.ts"])[-2:],
+            ["worker", "src/verify-deadlines.ts"],
+        )
+        self.assertEqual(
+            h.worker_arguments([*run, "-T", "worker", "src/save-deadline-verification.ts", "42"])[
+                -3:
+            ],
+            ["worker", "src/save-deadline-verification.ts", "42"],
+        )
+        for cmd in (
+            [*run, "worker", "src/verify-deadlines.ts", "25"],
+            [*run, "worker", "src/verify-deadlines.ts", "--batch"],
+            [*run, "-T", "worker", "src/save-deadline-verification.ts"],
+            [*run, "-T", "worker", "src/save-deadline-verification.ts", "0"],
+            [*run, "-T", "worker", "src/save-deadline-verification.ts", "042"],
+            [*run, "-T", "worker", "src/save-deadline-verification.ts", "-1"],
+            [*run, "-T", "worker", "src/save-deadline-verification.ts", "1" * 14],
+            [*run, "-T", "worker", "src/save-deadline-verification.ts", "1", "2"],
+            [*run, "-T", "worker", "src/list-deadlines-to-verify.ts"],
+        ):
+            with self.assertRaises(h.Refused):
+                h.worker_arguments(cmd)
         for cmd in (
             ["compose", "down", "-v"],
             ["compose", "run", "worker", "src/digest.ts"],

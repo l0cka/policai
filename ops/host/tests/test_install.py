@@ -124,7 +124,7 @@ class InstallationTests(unittest.TestCase):
             [sys.executable, "-I", str(script), "plan"], capture_output=True, text=True, check=True
         )
         plan = json.loads(result.stdout)
-        self.assertEqual(len(plan["files"]), 11)
+        self.assertEqual(len(plan["files"]), 12)
         self.assertFalse(plan["activates_runtimes"])
         self.assertFalse(plan["changes_timers"])
         for item in plan["files"]:

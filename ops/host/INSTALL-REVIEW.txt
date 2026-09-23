@@ -190,8 +190,8 @@ Executable file installation (new candidate; not executed on the host)
 
     python3 -I ops/host/install.py plan
 
-  This lists exactly 11 file replacements: five dispatcher files, the system helper,
-  the compatibility helper, the system pull service and three user worker services.
+  This lists exactly 12 file replacements: five dispatcher files, the system helper,
+  the compatibility helper, the system pull service and four user worker services.
   No digest or timer file is an installation target. The installer does not change
   secrets, databases, containers, release checkouts or scheduler state.
 
