@@ -317,7 +317,7 @@ export function Header({
                 : `${successfulSourceCount}/${dueSourceCount} due sources reached`}
             </span>
             <span className="text-muted-foreground">·</span>
-            <Link href="/methodology" className="underline-grow text-primary hover:text-foreground">
+            <Link href="/status" className="underline-grow text-primary hover:text-foreground">
               Source health
             </Link>
           </div>

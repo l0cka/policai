@@ -121,6 +121,14 @@ export default async function MethodologyPage() {
             itself completed.
           </p>
           <p className="mt-2 text-muted-foreground">
+            Per-source detail, including sources whose last completed check is
+            overdue, is on the{' '}
+            <Link href="/status" className="text-primary hover:underline">
+              source status page
+            </Link>
+            .
+          </p>
+          <p className="mt-2 text-muted-foreground">
             The catalogue contains {meta.collector.automaticSourceCount}{' '}
             automatic sources and {manualCoverage.total} sources requiring an
             explicit browser-based review because their publishers block
