@@ -6,6 +6,7 @@ import {
   getSourceMonitoring,
 } from '@/lib/data-service';
 import { WATCH_SOURCES } from '@/lib/pipeline/sources';
+import { selectUpcomingPolicyDates, weekWindowEndingAt } from '@/lib/this-week';
 import { summarizeManualSourceCoverage } from '@/lib/source-monitoring';
 
 export const revalidate = 3600;
@@ -41,9 +42,17 @@ export default async function HomePage() {
       new Date(development.detectedAt).getTime() >= weekAgo,
   ).length;
 
+  // Coming up is measured from the Sydney calendar day of this render; the page
+  // revalidates hourly, so a countdown is at most an hour behind.
+  const renderedAt = new Date();
+  const today = renderedAt.toLocaleDateString('en-CA', { timeZone: 'Australia/Sydney' });
+  const upcomingDates = selectUpcomingPolicyDates(policies, weekWindowEndingAt(renderedAt)!);
+
   return (
     <PolicyBrowser
       policies={policies}
+      upcomingDates={upcomingDates}
+      today={today}
       developments={developments}
       developmentCount={allDevelopments.filter((development) => development.status !== 'dismissed').length}
       weeklyDevelopmentCount={weeklyDevelopmentCount}

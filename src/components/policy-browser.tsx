@@ -13,11 +13,13 @@ import { PolicyTable } from '@/components/policy-table';
 import { selectRegisterPolicies, type PolicySortDirection, type PolicySortField, type PolicyViewMode } from '@/lib/policy-register';
 import { useRegisterState } from '@/hooks/use-register-state';
 import { formatPolicyDate } from '@/lib/format-policy-date';
+import { upcomingDateCountdown, type UpcomingPolicyDate } from '@/lib/this-week';
 import {
   JURISDICTION_NAMES,
   POLICY_STATUS_NAMES,
   POLICY_TYPE_NAMES,
   getJurisdictionName,
+  getPolicyDateTypeName,
   type CollectionHealthStatus,
   type Development,
   type Policy,
@@ -26,6 +28,10 @@ import { cn } from '@/lib/utils';
 
 interface PolicyBrowserProps {
   policies: Policy[];
+  /** Upcoming recorded dates from public records, soonest first. */
+  upcomingDates?: UpcomingPolicyDate[];
+  /** The Sydney calendar day (YYYY-MM-DD) countdowns are measured from. */
+  today?: string;
   developments: Development[];
   developmentCount: number;
   /** Developments first detected in the last seven days, dismissed excluded. */
@@ -114,6 +120,8 @@ function ViewToggle({
 
 export function PolicyBrowser({
   policies,
+  upcomingDates = [],
+  today,
   developments,
   developmentCount,
   weeklyDevelopmentCount,
@@ -415,6 +423,37 @@ export function PolicyBrowser({
               ))}
             </div>
           </section>
+          {upcomingDates.length > 0 && today ? (
+            <section className="border-t border-border pt-6">
+              <h2 className="text-sm font-semibold">Coming up</h2>
+              <ul className="mt-3 space-y-3">
+                {upcomingDates.slice(0, 5).map((item) => {
+                  const countdown = upcomingDateCountdown(item, today);
+                  return (
+                    <li key={`${item.policyId}-${item.dateType}-${item.date}`}>
+                      <p className="text-[11px] text-muted-foreground">
+                        {getPolicyDateTypeName(item.dateType)} ·{' '}
+                        {formatPolicyDate({ type: item.dateType, date: item.date, precision: item.precision })}
+                        {countdown ? ` · ${countdown}` : ''}
+                      </p>
+                      <Link
+                        href={`/policies/${item.policyId}`}
+                        className="mt-1 inline-block text-xs leading-5 text-primary underline underline-offset-4"
+                      >
+                        {item.policyTitle}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+              <Link
+                href="/this-week"
+                className="mt-2 inline-flex min-h-11 items-center gap-2 text-xs text-primary"
+              >
+                All upcoming dates <ArrowUpRight className="h-3.5 w-3.5" />
+              </Link>
+            </section>
+          ) : null}
           <section className="border-t border-border pt-6">
             <h2 className="text-sm font-semibold">
               A register, not legal advice.

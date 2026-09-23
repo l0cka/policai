@@ -154,3 +154,28 @@ export function selectUpcomingPolicyDates(
   }
   return upcoming.sort((a, b) => a.date.localeCompare(b.date) || a.policyId.localeCompare(b.policyId));
 }
+
+/**
+ * A reader-facing countdown for an upcoming date, measured from `today`
+ * (a Sydney calendar day, YYYY-MM-DD). Day counts appear only for
+ * day-precision dates; a month or year date is described by its period and
+ * otherwise gets no countdown, so no day-level precision is invented.
+ */
+export function upcomingDateCountdown(
+  item: Pick<UpcomingPolicyDate, 'date' | 'precision'>,
+  today: string,
+): string | null {
+  if (item.precision === 'year') {
+    return item.date.slice(0, 4) === today.slice(0, 4) ? 'this year' : null;
+  }
+  if (item.precision === 'month') {
+    return item.date.slice(0, 7) === today.slice(0, 7) ? 'this month' : null;
+  }
+  const days = Math.round(
+    (Date.parse(`${item.date}T00:00:00Z`) - Date.parse(`${today}T00:00:00Z`)) /
+      (24 * 60 * 60 * 1000),
+  );
+  if (days <= 0) return 'today';
+  if (days === 1) return 'tomorrow';
+  return `in ${days} days`;
+}
