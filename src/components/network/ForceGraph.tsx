@@ -220,6 +220,56 @@ export function ForceGraph({
 		select(svgRef.current).call(zoomRef.current.scaleBy, factor);
 	}, []);
 
+	// Keyboard focus can land on a node panned or zoomed out of view; bring it
+	// back so the focused control is never hidden (WCAG 2.4.11).
+	const revealNode = useCallback((node: SimNode, element: SVGGElement) => {
+		const svg = svgRef.current;
+		if (!svg || !zoomRef.current) return;
+		// The sticky site header covers the top of the viewport.
+		const headerBottom = Math.max(
+			0,
+			document.querySelector("header.sticky")
+				?.getBoundingClientRect().bottom ?? 0,
+		);
+		let frame = svg.getBoundingClientRect();
+		if (frame.top < headerBottom || frame.top > window.innerHeight / 2) {
+			// Bring the graph itself into view first; scrollIntoView would also
+			// scroll the clipped workspace container.
+			window.scrollBy({ top: frame.top - headerBottom - 8, behavior: "instant" });
+			frame = svg.getBoundingClientRect();
+		}
+		// On narrow screens the inspector sheet overlays the bottom of the graph;
+		// on wide screens it sits beside it.
+		const sheet = svg
+			.closest(".network-workspace")
+			?.querySelector<HTMLElement>(".network-inspector")
+			?.getBoundingClientRect();
+		const overlaps =
+			sheet &&
+			sheet.left < frame.right &&
+			sheet.right > frame.left &&
+			sheet.top > frame.top &&
+			sheet.top < frame.bottom;
+		const top = Math.max(frame.top, headerBottom);
+		const bottom = Math.min(
+			overlaps ? sheet.top : frame.bottom,
+			window.innerHeight,
+		);
+		const box = element.getBoundingClientRect();
+		// Clear the zoom controls pinned to the top-left corner.
+		const margin = 72;
+		const clear =
+			box.left >= frame.left + margin &&
+			box.right <= frame.right - margin / 2 &&
+			box.top >= top + 8 &&
+			box.bottom <= bottom - 8;
+		if (clear) return;
+		select(svg).call(zoomRef.current.translateTo, node.x, node.y, [
+			frame.width / 2,
+			(top + bottom) / 2 - frame.top,
+		]);
+	}, []);
+
 	const fitSelection = useCallback(() => {
 		if (!svgRef.current || !zoomRef.current) return;
 		const targetNodes = simNodes.filter((node) =>
@@ -431,14 +481,18 @@ export function ForceGraph({
 								key={node.id}
 								transform={`translate(${node.x},${node.y})`}
 								opacity={opacity}
-								className="cursor-pointer transition-opacity duration-150 outline-none"
+								className="network-node cursor-pointer transition-opacity duration-150 outline-none"
 								role="button"
 								tabIndex={visible ? 0 : -1}
 								aria-label={node.title}
 								aria-pressed={selected}
 								onMouseEnter={() => setHoveredNode(node.id)}
 								onMouseLeave={() => setHoveredNode(null)}
-								onFocus={() => setHoveredNode(node.id)}
+								onFocus={(event) => {
+									setHoveredNode(node.id);
+									if (event.currentTarget.matches(":focus-visible"))
+										revealNode(node, event.currentTarget);
+								}}
 								onBlur={() => setHoveredNode(null)}
 								onClick={(event) => {
 									event.stopPropagation();
@@ -463,6 +517,14 @@ export function ForceGraph({
 									r={Math.max(22, node.radius + 10)}
 									fill="transparent"
 									pointerEvents="all"
+								/>
+								<circle
+									className="network-node-focus"
+									r={node.radius + 9}
+									fill="none"
+									stroke="var(--ring)"
+									strokeWidth={2.5}
+									vectorEffect="non-scaling-stroke"
 								/>
 								{selected ? (
 									<circle

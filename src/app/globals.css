@@ -204,6 +204,20 @@
   * {
     @apply border-border;
   }
+  /*
+   * The header is sticky. Keep keyboard-focused controls and anchor targets
+   * clear of it (WCAG 2.4.11); heights follow Header.tsx (h-14/sm:h-24 plus
+   * the status strip).
+   */
+  html {
+    scroll-padding-top: 6.5rem;
+    scroll-padding-bottom: 5.5rem;
+  }
+  @media (min-width: 40rem) {
+    html {
+      scroll-padding-top: 9rem;
+    }
+  }
   body {
     @apply bg-background text-foreground font-sans;
 
@@ -468,6 +482,20 @@
 /* Utility: explicit focus ring for custom interactive elements */
 .focus-ring {
   @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+}
+
+/*
+ * SVG graph nodes cannot take a CSS outline box, so the node draws its own
+ * ring and shows it only for keyboard focus.
+ */
+.network-node:focus-visible {
+  opacity: 1;
+}
+.network-node .network-node-focus {
+  visibility: hidden;
+}
+.network-node:focus-visible .network-node-focus {
+  visibility: visible;
 }
 
 @media print {

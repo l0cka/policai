@@ -229,7 +229,7 @@ export function AgenciesBrowser({ agencies }: { agencies: Agency[] }) {
             placeholder="Search agencies"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="h-11 w-full rounded-md border border-input bg-background pl-10 pr-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+            className="h-11 w-full rounded-md border border-input bg-background pl-10 pr-3 text-sm focus:border-primary"
           />
         </label>
 
