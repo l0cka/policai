@@ -1,0 +1,13 @@
+[Unit]
+Description=Run Pro Bono Radar deadline verification daily
+
+[Timer]
+# 07:10 Sydney: after the 06:00 ingest and its enrichment tail, and clear of
+# the 04:20/08:20 enrichment ticks. The lock in verify-deadlines.sh is the
+# real guard. The T-7 re-check is handled by the worker's list query.
+OnCalendar=*-*-* 07:10:00 Australia/Sydney
+Persistent=true
+RandomizedDelaySec=300
+
+[Install]
+WantedBy=timers.target
