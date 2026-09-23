@@ -141,7 +141,7 @@ export function TimelineBrowser({
           />
         </div>
 
-        <aside className="border-l border-border pl-6">
+        <aside className="self-start border-border xl:sticky xl:top-28 xl:border-l xl:pl-6">
           <h2 className="text-sm font-semibold">Legend</h2>
           <div className="mt-3 space-y-2.5">
             {POLICY_LIFECYCLE_TIMELINE_EVENT_TYPES.map((type) => (

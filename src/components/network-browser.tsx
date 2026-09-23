@@ -286,13 +286,10 @@ export function NetworkBrowser({
 				<div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-end">
 					<div>
 						<p className="page-eyebrow">Relationship explorer</p>
-						<h1 className="network-desktop-title mt-2 page-title">
+						<h1 className="network-title mt-2 page-title">
 							Policy relationships
 						</h1>
-						<h1 className="network-mobile-title page-title mt-2 hidden">
-							Policy relationships
-						</h1>
-						<p className="network-insight-line mt-3 flex items-start gap-2 text-sm font-medium">
+												<p className="network-insight-line mt-3 flex items-start gap-2 text-sm font-medium">
 							<span className="mt-1.5 size-2.5 shrink-0 rounded-full bg-[var(--trust)]" />
 							{summary.insight}
 						</p>

@@ -20,6 +20,7 @@ import type {
 	NetworkViewMode,
 } from "@/lib/network-view-state";
 import { useForceSimulation, type SimNode } from "./use-force-simulation";
+import { placeLabels, type LabelCandidate } from "./label-layout";
 
 interface ForceGraphProps {
 	nodes: NetworkNode[];
@@ -195,6 +196,24 @@ export function ForceGraph({
 		() => simNodes.find((node) => node.id === selectedNodeId) ?? null,
 		[selectedNodeId, simNodes],
 	);
+
+	const labelPlacements = useMemo(() => {
+		const candidates: LabelCandidate[] = simNodes
+			.filter((node) => labelledIds.has(node.id) && visibleNodeIds.has(node.id))
+			.map((node) => ({
+				id: node.id,
+				x: node.x,
+				y: node.y,
+				radius: node.radius,
+				text: node.shortLabel,
+				priority: (hoveredNode === node.id ? 1000 : 0) + node.thematicDegree,
+				selected: selectedNodeId === node.id,
+			}));
+		const discs = simNodes
+			.filter((node) => visibleNodeIds.has(node.id))
+			.map((node) => ({ id: node.id, x: node.x, y: node.y, radius: node.radius }));
+		return placeLabels(candidates, selectedSimNode, dimensions.width, discs);
+	}, [simNodes, labelledIds, visibleNodeIds, hoveredNode, selectedNodeId, selectedSimNode, dimensions.width]);
 
 	const zoomBy = useCallback((factor: number) => {
 		if (!svgRef.current || !zoomRef.current) return;
@@ -388,32 +407,10 @@ export function ForceGraph({
 						const selected = selectedNodeId === node.id;
 						const hovered = hoveredNode === node.id;
 						const connected = activeIds.has(node.id);
-						const showLabel = labelledIds.has(node.id) && visible;
-						const deltaX = selectedSimNode
-							? node.x - selectedSimNode.x
-							: node.x - dimensions.width / 2;
-						const deltaY = selectedSimNode
-							? node.y - selectedSimNode.y
-							: 0;
-						const verticalLabel =
-							!selected && Math.abs(deltaY) > Math.abs(deltaX) * 1.1;
-						const labelOnLeft =
-							node.x > dimensions.width * 0.68 ||
-							(node.x >= dimensions.width * 0.32 && deltaX < 0);
-						const labelX = selected
-							? 0
-							: verticalLabel
-								? 0
-								: labelOnLeft
-									? -(node.radius + 7)
-									: node.radius + 7;
-						const labelY = selected
-							? node.radius + 17
-							: verticalLabel
-								? deltaY < 0
-									? -(node.radius + 8)
-									: node.radius + 15
-								: 4;
+						const placedLabel = labelPlacements.get(node.id);
+						const showLabel = Boolean(placedLabel) && visible;
+						const labelX = placedLabel?.x ?? 0;
+						const labelY = placedLabel?.y ?? 0;
 						const fill = selected
 							? "var(--primary)"
 							: connected
@@ -498,13 +495,7 @@ export function ForceGraph({
 									<text
 										x={labelX}
 										y={labelY}
-										textAnchor={
-											selected || verticalLabel
-												? "middle"
-												: labelOnLeft
-													? "end"
-													: "start"
-										}
+										textAnchor={placedLabel?.anchor ?? "start"}
 										className={
 											selected
 												? "fill-primary text-[12px] font-semibold"

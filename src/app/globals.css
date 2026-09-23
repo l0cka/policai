@@ -108,7 +108,7 @@
   --paper-raised: light-dark(#fffefa, #1b231e);
   --paper-sunk: light-dark(#eeeee7, #111713);
   --trust: light-dark(#146b5a, #65d2b4);
-  --caution: light-dark(#b7791f, #e7b96c);
+  --caution: light-dark(#8f5d12, #e7b96c);
   --alarm: light-dark(#b42318, #ff8175);
 
   --map-fill-0: light-dark(#e8e5e0, #242c36);
@@ -457,7 +457,8 @@
 
 .container {
   width: 100%;
-  max-width: 1536px;
+  /* One page width for every route, matching the header and register. */
+  max-width: 1240px;
 }
 
 ::selection {
@@ -512,14 +513,9 @@
 
 /* Network relationship explorer responsive states */
 @media (max-width: 767px) {
-  .network-desktop-title,
   .network-method-intro,
   .network-metrics {
     display: none;
-  }
-
-  .network-mobile-title {
-    display: block;
   }
 
   .network-insight-line {
@@ -547,14 +543,12 @@
     gap: 1.5rem;
   }
 
-  .network-desktop-title,
   .network-method-intro,
   .network-metrics {
     display: none;
   }
 
-  .network-mobile-title {
-    display: block;
+  .network-title {
     margin-top: 0.25rem;
     font-family: var(--font-display);
     font-size: 1.5rem;
@@ -647,5 +641,5 @@
 .editorial-filter-options label span:last-child { color: var(--muted-foreground); }
 .editorial-register article { overflow-wrap: anywhere; }
 @media (min-width: 1280px) {
-  .editorial-register, header > .container, header > div > .container, footer > .container { max-width: 1240px; }
+  .editorial-register { max-width: 1240px; }
 }
