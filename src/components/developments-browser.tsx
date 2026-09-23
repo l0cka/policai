@@ -188,12 +188,12 @@ export function DevelopmentsBrowser({
         </p>
       </header>
 
-      <div className="no-scrollbar mt-5 flex gap-8 overflow-x-auto border-b border-border" role="tablist" aria-label="Development verification state">
-        <button type="button" role="tab" aria-selected={activeTab === 'verified'} onClick={() => setActiveTab('verified')} className={cn('-mb-px min-h-14 whitespace-nowrap border-b-[3px] px-2 text-lg transition-colors', activeTab === 'verified' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground')}>
-          Verified developments <span className="ml-2 font-mono text-sm">{verified.length}</span>
+      <div className="mt-5 flex gap-4 border-b border-border sm:gap-8" role="tablist" aria-label="Development verification state">
+        <button type="button" role="tab" aria-selected={activeTab === 'verified'} onClick={() => setActiveTab('verified')} className={cn('-mb-px min-h-12 whitespace-nowrap border-b-[3px] px-1 text-base transition-colors sm:min-h-14 sm:px-2 sm:text-lg', activeTab === 'verified' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground')}>
+          Verified<span className="hidden sm:inline"> developments</span> <span className="ml-1.5 font-mono text-sm">{verified.length}</span>
         </button>
-        <button type="button" role="tab" aria-selected={activeTab === 'radar'} onClick={() => setActiveTab('radar')} className={cn('-mb-px min-h-14 whitespace-nowrap border-b-[3px] px-2 text-lg transition-colors', activeTab === 'radar' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground')}>
-          Automated radar <span className="ml-2 font-mono text-sm">{radar.length}</span>
+        <button type="button" role="tab" aria-selected={activeTab === 'radar'} onClick={() => setActiveTab('radar')} className={cn('-mb-px min-h-12 whitespace-nowrap border-b-[3px] px-1 text-base transition-colors sm:min-h-14 sm:px-2 sm:text-lg', activeTab === 'radar' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground')}>
+          <span className="sm:hidden">Unconfirmed</span><span className="hidden sm:inline">Automated radar</span> <span className="ml-1.5 font-mono text-sm">{radar.length}</span>
         </button>
       </div>
 
@@ -230,7 +230,7 @@ export function DevelopmentsBrowser({
           <DevelopmentFeed items={filteredItems} />
         </div>
 
-        <aside className="border-l border-border pl-6">
+        <aside className="self-start border-border xl:sticky xl:top-28 xl:border-l xl:pl-6">
           <section>
             <h2 className="text-sm font-semibold">Collection status</h2>
             <div className="mt-3 rounded-md border border-border bg-card/50 p-4">

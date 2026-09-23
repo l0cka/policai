@@ -27,12 +27,17 @@ export function StatusPill({ status, dates = [] }: { status: Policy['status']; d
   return (
     <span
       className={cn(
-        'inline-flex flex-col rounded-md border px-2 py-1 text-xs font-medium',
+        'inline-flex items-center whitespace-nowrap rounded-md border px-2 py-1 text-xs font-medium',
         tone,
       )}
     >
-      <span>{getPolicyStatusName(status)}</span>
-      {notYetEffective ? <span>Not yet in effect</span> : null}
+      {getPolicyStatusName(status)}
+      {notYetEffective ? (
+        <>
+          <span aria-hidden="true" className="mx-1.5 opacity-50">·</span>
+          <span className="font-normal">Not yet in effect</span>
+        </>
+      ) : null}
     </span>
   );
 }

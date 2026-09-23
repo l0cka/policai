@@ -3,6 +3,7 @@
 import { describe, expect, it } from 'vitest';
 import type { Development, Policy } from '@/types';
 import {
+  selectRecentVerifiedBefore,
   selectUpcomingPolicyDates,
   upcomingDateCountdown,
   selectWeeklyDevelopments,
@@ -296,5 +297,26 @@ describe('upcomingDateCountdown', () => {
     expect(upcomingDateCountdown({ date: '2026-12-01', precision: 'month' }, today)).toBeNull();
     expect(upcomingDateCountdown({ date: '2026-01-01', precision: 'year' }, today)).toBe('this year');
     expect(upcomingDateCountdown({ date: '2027-01-01', precision: 'year' }, today)).toBeNull();
+  });
+});
+
+describe('selectRecentVerifiedBefore', () => {
+  const window = weekWindowEndingAt(ANCHOR)!;
+  const before = (days: number) => new Date(window.start - days * 86_400_000).toISOString();
+
+  it('returns the newest verified, non-dismissed items from before the window', () => {
+    const items = [
+      development({ id: 'old', detectedAt: before(10) }),
+      development({ id: 'newer', detectedAt: before(1) }),
+      development({ id: 'in-window', detectedAt: ANCHOR }),
+      development({ id: 'dismissed', detectedAt: before(2), status: 'dismissed' }),
+      development({ id: 'unverified', detectedAt: before(3), verification: { status: 'needs_review', source: { url: 'https://www.example.gov.au/' } } }),
+    ];
+    expect(selectRecentVerifiedBefore(items, window).map((item) => item.id)).toEqual(['newer', 'old']);
+  });
+
+  it('honours the limit', () => {
+    const items = [1, 2, 3, 4, 5].map((day) => development({ id: `d${day}`, detectedAt: before(day) }));
+    expect(selectRecentVerifiedBefore(items, window, 2).map((item) => item.id)).toEqual(['d1', 'd2']);
   });
 });

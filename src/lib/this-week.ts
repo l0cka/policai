@@ -74,6 +74,27 @@ export function selectWeeklyDevelopments(
 }
 
 /**
+ * The most recent verified, non-dismissed developments detected before the
+ * window opened. Shown only when the window itself is empty, so the page never
+ * reads as blank; callers must label them as older than the window.
+ */
+export function selectRecentVerifiedBefore(
+  developments: readonly Development[],
+  window: WeekWindow,
+  limit = 3,
+): Development[] {
+  return developments
+    .filter((development) => {
+      if (development.status === "dismissed") return false;
+      if (development.verification.status !== "verified") return false;
+      const detectedAt = new Date(development.detectedAt).getTime();
+      return Number.isFinite(detectedAt) && detectedAt < window.start;
+    })
+    .sort((a, b) => new Date(b.detectedAt).getTime() - new Date(a.detectedAt).getTime())
+    .slice(0, limit);
+}
+
+/**
  * Human-readable evidence label for a weekly item, following the AGENTS.md
  * confidence rules: machine classifications cap at 0.65 and read as
  * "needs review"; relevanceScore 1 on a tracked record records

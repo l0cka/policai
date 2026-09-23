@@ -9,6 +9,7 @@ import {
 import { formatPolicyDate } from '@/lib/format-policy-date';
 import { jurisdictionRailStyle } from '@/lib/jurisdiction-accent';
 import {
+  selectRecentVerifiedBefore,
   selectUpcomingPolicyDates,
   selectWeeklyDevelopments,
   weekWindowEndingAt,
@@ -190,6 +191,10 @@ export default async function ThisWeekPage() {
   const weeklyDevelopments = window
     ? selectWeeklyDevelopments(allDevelopments, window)
     : [];
+  const recentBefore =
+    window && weeklyDevelopments.length === 0
+      ? selectRecentVerifiedBefore(allDevelopments, window)
+      : [];
   const upcoming = selectUpcomingPolicyDates(policies, weekWindowEndingAt(now)!);
   const stale = window && now.getTime() - window.end > WEEK_MS;
   const dateLabel = (stamp: number) => new Date(stamp).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Australia/Sydney' });
@@ -203,8 +208,7 @@ export default async function ThisWeekPage() {
         <h1 className="page-title">This week</h1>
         <p className="mt-3 max-w-3xl text-sm leading-6 text-muted-foreground">
           Verified developments from the latest collected week, and dates to
-          watch in the register. Every entry links to its source. This is an
-          index of recorded activity, not an assessment of its legal significance.
+          watch in the register. Every entry links to its source.
         </p>
         <p className="mt-2 flex flex-wrap gap-x-4 font-mono text-[11px] uppercase text-muted-foreground">
           {lastCollected ? <span>Last collected {lastCollected}</span> : null}
@@ -217,11 +221,9 @@ export default async function ThisWeekPage() {
         <h2 className="border-b border-[var(--rule-heavy)] py-2 font-mono text-[11px] font-medium uppercase tracking-[0.12em]">
           Verified developments
         </h2>
-        <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
-          {window ? `Detected ${dateLabel(window.start)}–${dateLabel(window.end)}, ending at ${formatTimestamp(new Date(window.end).toISOString())}. ` : 'No usable collection timestamp is available. '}
-          The window ends at the last fully healthy collection when recorded,
-          otherwise the latest collection. Only editorially verified, non-dismissed
-          entries appear. Detection does not mean the instrument changed that day.
+        <p className="mt-2 max-w-3xl text-xs leading-5 text-muted-foreground">
+          {window ? `Detected ${dateLabel(window.start)} – ${dateLabel(window.end)}. ` : 'No usable collection timestamp is available. '}
+          Editorially verified entries only. A detection date is not the date the instrument changed.
         </p>
         {weeklyDevelopments.length > 0 ? (
           <div>
@@ -233,16 +235,27 @@ export default async function ThisWeekPage() {
             ))}
           </div>
         ) : (
-          <div className="border-b border-border py-10 text-center">
-            <p className="text-sm font-medium">{window ? 'No verified developments in this window' : 'Weekly coverage unavailable'}</p>
-            <p className="mt-2 text-xs text-muted-foreground">
-              Detections are only listed once they pass editorial verification.
-              Unverified leads stay in the{' '}
-              <Link href="/developments" className="text-primary hover:underline">
-                <span className="underline underline-offset-4">developments feed</span>
-              </Link>
-              .
-            </p>
+          <div>
+            <div className="border-b border-border py-6">
+              <p className="text-sm font-medium">{window ? 'No verified developments in this window' : 'Weekly coverage unavailable'}</p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Detections appear here once an editor has verified them. Unverified leads stay in the{' '}
+                <Link href="/developments" className="text-primary underline underline-offset-4 hover:no-underline">
+                  developments feed
+                </Link>
+                .
+              </p>
+            </div>
+            {recentBefore.length > 0 ? (
+              <div className="mt-6">
+                <h3 className="font-mono text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
+                  Most recent verified, before this window
+                </h3>
+                {recentBefore.map((development) => (
+                  <DevelopmentRow key={development.id} development={development} />
+                ))}
+              </div>
+            ) : null}
           </div>
         )}
         <p className="mt-3 text-xs text-muted-foreground">

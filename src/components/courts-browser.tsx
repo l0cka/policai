@@ -253,7 +253,7 @@ export function CourtsBrowser({
 				{ value: requirements.length, label: "verified requirements" },
 			]} />
 
-			<div className="max-w-5xl pt-7">
+			<div className="pt-7">
 				<section aria-label="Find court guidance" className="border-y border-border bg-muted/30 px-3 py-3 sm:px-4">
 					<div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-[minmax(16rem,1fr)_13rem_13rem_11rem]">
 						<label className="relative">

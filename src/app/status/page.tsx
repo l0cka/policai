@@ -131,7 +131,7 @@ export default async function StatusPage() {
             changed document waits for editorial review. This table can
             therefore disagree with the last-run figure above.
           </p>
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto" role="region" aria-label="Source freshness table" tabIndex={0}>
             <table className="w-full">
               <thead>
                 <tr className="border-y border-[var(--rule-heavy)]">
@@ -183,7 +183,7 @@ export default async function StatusPage() {
             measure of what Policai tracks, not a measure of how much
             Australian AI policy exists in each jurisdiction.
           </p>
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto" role="region" aria-label="Coverage by jurisdiction table" tabIndex={0}>
             <table className="w-full">
               <thead>
                 <tr className="border-y border-[var(--rule-heavy)]">
@@ -217,11 +217,11 @@ export default async function StatusPage() {
 
         <p className="text-muted-foreground">
           Machine-readable:{' '}
-          <a href="/api/status" className="text-primary hover:underline">
+          <a href="/api/status" className="text-primary underline underline-offset-4 hover:no-underline">
             /api/status
           </a>
           . How sources are chosen and verified:{' '}
-          <Link href="/methodology" className="text-primary hover:underline">
+          <Link href="/methodology" className="text-primary underline underline-offset-4 hover:no-underline">
             methodology
           </Link>
           .
