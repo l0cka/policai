@@ -61,12 +61,26 @@ rules against real pages, and dry-run before adding (`npm run collect -- --dry-r
   that is exactly what the register's `courts` view is for. Add as news/practice-listing
   sources; expect infrequent hits.
 
+  **Status 2026-09-23:** `fcfcoa-practice-directions` (listing),
+  `ncat-procedural-directions` and `qcat-practice-directions` (watched for
+  content changes; their entries are PDF links) are added. VCAT practice notes
+  link more than eight documents, so the page cannot be watched as a document
+  and yields no index entries. SACAT, ACAT and NTCAT listing URLs are unverified.
+
 ### Tier 3 — parliamentary record
 
 - **Hansard** via `parlinfo.aph.gov.au` (the host is already tracked for bills
   digests and inquiries) — second-reading speeches and committee exchanges on AI
   are where ministerial intent is stated. Pair with the existing QLD
   ministerial-statements pattern for NSW/VIC if volume permits.
+
+  **Status 2026-09-23: not added.** A ParlInfo Hansard RSS query for
+  "artificial intelligence" this year returns 346 items and 25 title matches,
+  mostly duplicated senators' statement fragments. Restricting to second-reading
+  or bills debates returns 42–44 items but no candidates, because debate titles
+  name the bill, not AI, and the relevance filter reads titles. A useful Hansard
+  source needs a full-text AI match restricted to bill debates, which is a
+  collector change, not a source entry.
 
 ### Tier 4 — hygiene, not expansion
 
