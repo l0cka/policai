@@ -3,7 +3,8 @@ import { buildPolicy } from '@/test/factories';
 import type { WatchSource } from '@/lib/pipeline/sources';
 import {
   buildJurisdictionCoverage,
-  RECORD_REVIEW_MAX_AGE_DAYS,
+  buildRecordReviewSchedule,
+  summarizeRecordCompleteness,
   summarizeRecordFreshness,
   summarizeReviewQueue,
 } from '@/lib/coverage-report';
@@ -65,40 +66,65 @@ describe('summarizeReviewQueue', () => {
 
 describe('summarizeRecordFreshness', () => {
   const now = new Date('2026-10-20T00:00:00.000Z');
+  const checkedOn = (id: string, checkedAt: string) => {
+    const policy = buildPolicy({ id });
+    policy.verification.checkedAt = checkedAt;
+    return policy;
+  };
 
-  it('uses stricter limits for binding law than for guidance', () => {
-    expect(RECORD_REVIEW_MAX_AGE_DAYS).toEqual({
-      binding: 90,
-      courtAndStandard: 180,
-      other: 365,
-    });
-  });
-
-  it('counts records past the limit for their class', () => {
+  it('uses the editorial review interval for every record type', () => {
     const summary = summarizeRecordFreshness(
       [
-        buildPolicy({ id: 'law', type: 'legislation', lastReviewedAt: '2026-07-20T00:00:00.000Z' }),
-        buildPolicy({ id: 'reg', type: 'regulation', lastReviewedAt: '2026-08-01T00:00:00.000Z' }),
-        buildPolicy({ id: 'note', type: 'practice_note', lastReviewedAt: '2026-04-01T00:00:00.000Z' }),
-        buildPolicy({ id: 'guide', type: 'guideline', lastReviewedAt: '2026-05-01T00:00:00.000Z' }),
+        checkedOn('recent', '2026-09-01T00:00:00.000Z'),
+        checkedOn('edge', '2026-07-22T00:00:00.000Z'),
+        checkedOn('old', '2026-07-01T00:00:00.000Z'),
       ],
       now,
     );
-
     expect(summary).toEqual({
-      reviewed: 4,
-      overdue: 2,
-      overdueIds: ['law', 'note'],
-      oldestAgeDays: 202,
+      reviewed: 3,
+      overdue: 1,
+      overdueIds: ['old'],
+      oldestAgeDays: 111,
     });
   });
 
-  it('falls back to the verification check time when no review is stamped', () => {
-    const policy = buildPolicy({ id: 'unstamped', type: 'legislation', lastReviewedAt: undefined });
-    policy.verification.checkedAt = '2026-06-01T00:00:00.000Z';
+  it('counts a record with no review time as overdue', () => {
+    const policy = buildPolicy({ id: 'never', lastReviewedAt: undefined });
+    policy.verification.checkedAt = undefined;
     expect(summarizeRecordFreshness([policy], now)).toMatchObject({
+      reviewed: 0,
       overdue: 1,
-      overdueIds: ['unstamped'],
+      overdueIds: ['never'],
     });
+  });
+});
+
+describe('buildRecordReviewSchedule', () => {
+  it('sorts soonest-due first with days left', () => {
+    const now = new Date('2026-10-01T00:00:00.000Z');
+    const a = buildPolicy({ id: 'a' });
+    a.verification.checkedAt = '2026-09-01T00:00:00.000Z';
+    const b = buildPolicy({ id: 'b' });
+    b.verification.checkedAt = '2026-07-15T00:00:00.000Z';
+    const rows = buildRecordReviewSchedule([a, b], now);
+    expect(rows.map((row) => [row.id, row.daysLeft, row.overdue])).toEqual([
+      ['b', 12, false],
+      ['a', 60, false],
+    ]);
+    expect(rows[0].dueAt).toBe('2026-10-13T00:00:00.000Z');
+  });
+});
+
+describe('summarizeRecordCompleteness', () => {
+  it('reports each missing expected field without failing the record', () => {
+    const full = buildPolicy({ id: 'full', lastReviewedAt: '2026-09-01T00:00:00.000Z' });
+    const thin = buildPolicy({ id: 'thin', agencies: [], tags: [' '], lastReviewedAt: undefined });
+    const summary = summarizeRecordCompleteness([full, thin]);
+    expect(summary.total).toBe(2);
+    expect(summary.missing.agencies).toEqual(['thin']);
+    expect(summary.missing.tags).toEqual(['thin']);
+    expect(summary.missing.reviewStamp).toEqual(['thin']);
+    expect(summary.complete).toBe(1);
   });
 });

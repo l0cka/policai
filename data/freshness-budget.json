@@ -1,0 +1,4 @@
+{
+  "maxOverdueRecords": 0,
+  "note": "Ratchet: lower only. Raising this needs a stated reason in the pull request. Checked by npm run check:freshness."
+}

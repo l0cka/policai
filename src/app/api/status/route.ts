@@ -5,7 +5,10 @@ import {
 	getSourceCheckTimes,
 	getSourceMonitoring,
 } from "@/lib/data-service";
-import { summarizeRecordFreshness } from "@/lib/coverage-report";
+import {
+	summarizeRecordCompleteness,
+	summarizeRecordFreshness,
+} from "@/lib/coverage-report";
 import { WATCH_SOURCES } from "@/lib/pipeline/sources";
 import {
 	checkPublicApiRequest,
@@ -40,6 +43,7 @@ export async function GET(request?: Request) {
 	);
 
 	const recordFreshness = summarizeRecordFreshness(policies);
+	const completeness = summarizeRecordCompleteness(policies);
 	const latest = recentDevelopments[0];
 
 	return publicApiJson({
@@ -63,6 +67,13 @@ export async function GET(request?: Request) {
 			publicCount: policies.length,
 			overdueReviewCount: recordFreshness.overdue,
 			oldestReviewAgeDays: recordFreshness.oldestAgeDays,
+			completeCount: completeness.complete,
+			missingExpectedFields: Object.fromEntries(
+				Object.entries(completeness.missing).map(([field, ids]) => [
+					field,
+					ids.length,
+				]),
+			),
 		},
 		latestDevelopment: latest
 			? {

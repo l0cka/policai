@@ -44,6 +44,7 @@ npm run build          # production build
 npm run lint           # ESLint (flat config)
 npm run test           # Vitest
 npm run validate:data  # structural validation of the data files
+npm run check:freshness # overdue-review ratchet (data/freshness-budget.json)
 npm run check          # lint + typecheck + test + validate:data + build — run before handing off
 npm run collect        # one collection pass (-- --dry-run to preview, -- --source=<id> for one source)
 npm run audit:sources  # live audit of automatic watch sources
@@ -97,7 +98,7 @@ docs/                             # collector.md + docs index
 4. **Collector** (`src/lib/pipeline/collect.ts`): pure orchestrator — fetch sources → extract candidates → diff against `data/watch-state.json` → classify → return developments/review candidates/state/meta. The CLI (`scripts/collect.ts`) persists them.
 5. **Review**: high-confidence detections are staged in `data/source-reviews.json`; a separate approval action is required before publishing creates a register record. Changed direct-document sources stage a version-specific review with `targetPolicyId`, temporarily withhold the existing policy publicly, and update that policy in place after approval.
 6. **Coverage**: automatic sources report usable-content health in `public/data/meta.json`; protected sources are tracked in `data/source-monitoring.json`.
-7. **Freshness**: register source fingerprints are checked with `npm run audit:register`; changed content marks a record stale until editorial re-verification.
+7. **Freshness**: register source fingerprints are checked with `npm run audit:register`; changed content marks a record stale until editorial re-verification. Separately, a record whose manual verification is older than 90 days stays public but is shown as "Review due"; `npm run check:freshness` (CI, weekly) fails when overdue records exceed the ratchet in `data/freshness-budget.json`.
 
 See [docs/collector.md](./docs/collector.md) for operations.
 

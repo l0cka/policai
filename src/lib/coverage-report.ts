@@ -1,6 +1,7 @@
 import { JURISDICTIONS } from '@/types';
 import type { Jurisdiction, Policy, PolicyType, SourceReview } from '@/types';
 import type { WatchSource } from '@/lib/pipeline/sources';
+import { EDITORIAL_REVIEW_INTERVAL_DAYS } from '@/lib/verification';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const BINDING_TYPES: ReadonlySet<PolicyType> = new Set([
@@ -61,30 +62,6 @@ export function summarizeReviewQueue(
   };
 }
 
-/**
- * Days since editorial re-verification before a public record counts as
- * overdue. Binding law changes fastest in effect; guidance slowest. This is
- * reported, never enforced: nothing fails because a record is old.
- */
-export const RECORD_REVIEW_MAX_AGE_DAYS = {
-  binding: 90,
-  courtAndStandard: 180,
-  other: 365,
-} as const;
-
-const COURT_AND_STANDARD_TYPES: ReadonlySet<PolicyType> = new Set([
-  'practice_note',
-  'standard',
-]);
-
-function recordReviewLimitDays(type: PolicyType): number {
-  if (BINDING_TYPES.has(type)) return RECORD_REVIEW_MAX_AGE_DAYS.binding;
-  if (COURT_AND_STANDARD_TYPES.has(type)) {
-    return RECORD_REVIEW_MAX_AGE_DAYS.courtAndStandard;
-  }
-  return RECORD_REVIEW_MAX_AGE_DAYS.other;
-}
-
 export interface RecordFreshnessSummary {
   reviewed: number;
   overdue: number;
@@ -93,34 +70,147 @@ export interface RecordFreshnessSummary {
 }
 
 /**
- * Time since each public record was last re-verified against its source,
- * using `lastReviewedAt` and falling back to the verification check time.
- * Complements `audit:register`, which detects content drift, not age.
+ * Time since each public record was last verified by an editor. A record past
+ * EDITORIAL_REVIEW_INTERVAL_DAYS stays published but is shown as "Review due"
+ * (see projectVerificationForPublic); this is the same rule. Complements
+ * `audit:register`, which detects content drift, not age.
  */
 export function summarizeRecordFreshness(
   policies: readonly Pick<
     Policy,
-    'id' | 'type' | 'lastReviewedAt' | 'verification'
+    'id' | 'title' | 'type' | 'lastReviewedAt' | 'verification'
   >[],
   now: Date = new Date(),
 ): RecordFreshnessSummary {
-  const overdueIds: string[] = [];
-  let reviewed = 0;
-  let oldestAgeDays: number | null = null;
+  const schedule = buildRecordReviewSchedule(policies, now);
+  const overdueIds = schedule
+    .filter((row) => row.overdue)
+    .map((row) => row.id)
+    .sort();
+  const ages = schedule
+    .filter((row) => row.daysLeft !== null)
+    .map((row) => EDITORIAL_REVIEW_INTERVAL_DAYS - row.daysLeft!);
+  return {
+    reviewed: ages.length,
+    overdue: overdueIds.length,
+    overdueIds,
+    oldestAgeDays: ages.length ? Math.max(...ages) : null,
+  };
+}
+
+export interface RecordReviewRow {
+  id: string;
+  title: string;
+  type: PolicyType;
+  /** ISO time of the last editorial re-verification, or null if none. */
+  reviewedAt: string | null;
+  /** ISO date the record becomes overdue, or null if never reviewed. */
+  dueAt: string | null;
+  /** Days until due; negative when overdue, null if never reviewed. */
+  daysLeft: number | null;
+  overdue: boolean;
+}
+
+/**
+ * Every public record with its re-verification due date, soonest first.
+ * Never-reviewed records sort first and count as overdue.
+ */
+export function buildRecordReviewSchedule(
+  policies: readonly Pick<
+    Policy,
+    'id' | 'title' | 'type' | 'lastReviewedAt' | 'verification'
+  >[],
+  now: Date = new Date(),
+): RecordReviewRow[] {
+  const rows = policies.map((policy): RecordReviewRow => {
+    // The public "Review due" projection keys off verification.checkedAt, so
+    // the schedule does too; lastReviewedAt is only a fallback.
+    const reviewedAt = policy.verification.checkedAt ?? policy.lastReviewedAt ?? null;
+    const reviewedTime = Date.parse(reviewedAt ?? '');
+    if (Number.isNaN(reviewedTime)) {
+      return {
+        id: policy.id,
+        title: policy.title,
+        type: policy.type,
+        reviewedAt: null,
+        dueAt: null,
+        daysLeft: null,
+        overdue: true,
+      };
+    }
+    const limitDays = EDITORIAL_REVIEW_INTERVAL_DAYS;
+    const dueTime = reviewedTime + limitDays * DAY_MS;
+    const ageDays = Math.floor((now.getTime() - reviewedTime) / DAY_MS);
+    return {
+      id: policy.id,
+      title: policy.title,
+      type: policy.type,
+      reviewedAt,
+      dueAt: new Date(dueTime).toISOString(),
+      daysLeft: limitDays - ageDays,
+      overdue: ageDays > limitDays,
+    };
+  });
+  return rows.sort(
+    (a, b) =>
+      (a.daysLeft ?? Number.NEGATIVE_INFINITY) -
+        (b.daysLeft ?? Number.NEGATIVE_INFINITY) || a.id.localeCompare(b.id),
+  );
+}
+
+/**
+ * Fields a public record must carry (gated by `validate:data`) versus fields
+ * it is expected to carry (reported only). Completeness measures the records
+ * that exist, not how much of Australian AI policy the register covers.
+ */
+export const EXPECTED_RECORD_FIELDS = [
+  'agencies',
+  'tags',
+  'primaryDateSource',
+  'reviewStamp',
+] as const;
+
+export type ExpectedRecordField = (typeof EXPECTED_RECORD_FIELDS)[number];
+
+export const EXPECTED_RECORD_FIELD_LABELS: Record<ExpectedRecordField, string> = {
+  agencies: 'Responsible agency',
+  tags: 'Topic tags',
+  primaryDateSource: 'Source evidence for the primary date',
+  reviewStamp: 'Editorial review stamp',
+};
+
+export interface RecordCompletenessSummary {
+  total: number;
+  complete: number;
+  missing: Record<ExpectedRecordField, string[]>;
+}
+
+function missingExpectedFields(
+  policy: Pick<Policy, 'agencies' | 'tags' | 'dates' | 'lastReviewedAt'>,
+): ExpectedRecordField[] {
+  const missing: ExpectedRecordField[] = [];
+  if (!policy.agencies?.some((agency) => agency.trim())) missing.push('agencies');
+  if (!policy.tags?.some((tag) => tag.trim())) missing.push('tags');
+  const primary = policy.dates?.find((date) => date.primary) ?? policy.dates?.[0];
+  if (!primary?.source?.url) missing.push('primaryDateSource');
+  if (!policy.lastReviewedAt) missing.push('reviewStamp');
+  return missing;
+}
+
+export function summarizeRecordCompleteness(
+  policies: readonly Pick<
+    Policy,
+    'id' | 'agencies' | 'tags' | 'dates' | 'lastReviewedAt'
+  >[],
+): RecordCompletenessSummary {
+  const missing = Object.fromEntries(
+    EXPECTED_RECORD_FIELDS.map((field) => [field, [] as string[]]),
+  ) as Record<ExpectedRecordField, string[]>;
+  let complete = 0;
   for (const policy of policies) {
-    const reviewedAt = Date.parse(
-      policy.lastReviewedAt ?? policy.verification.checkedAt ?? '',
-    );
-    if (Number.isNaN(reviewedAt)) {
-      overdueIds.push(policy.id);
-      continue;
-    }
-    reviewed += 1;
-    const ageDays = Math.floor((now.getTime() - reviewedAt) / DAY_MS);
-    oldestAgeDays = Math.max(oldestAgeDays ?? ageDays, ageDays);
-    if (ageDays > recordReviewLimitDays(policy.type)) {
-      overdueIds.push(policy.id);
-    }
+    const gaps = missingExpectedFields(policy);
+    if (gaps.length === 0) complete += 1;
+    for (const field of gaps) missing[field].push(policy.id);
   }
-  return { reviewed, overdue: overdueIds.length, overdueIds, oldestAgeDays };
+  return { total: policies.length, complete, missing };
 }

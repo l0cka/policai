@@ -17,6 +17,7 @@
     "audit:register": "tsx scripts/audit-register.ts",
     "audit:sources": "tsx scripts/audit-sources.ts",
     "validate:data": "tsx scripts/validate-data.ts",
+    "check:freshness": "tsx scripts/check-freshness.ts",
     "mcp": "tsx src/mcp/server.ts",
     "mcp:public": "tsx src/mcp/public-server.ts",
     "test": "vitest run",

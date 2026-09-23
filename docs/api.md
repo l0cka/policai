@@ -105,8 +105,10 @@ The `records` object reports how long ago public register records were re-verifi
 | Field | Meaning |
 | --- | --- |
 | `publicCount` | Public register records. |
-| `overdueReviewCount` | Public records re-verified longer ago than their limit: 90 days for legislation and regulations, 180 days for practice notes and standards, 365 days for everything else. |
-| `oldestReviewAgeDays` | Days since the least recently re-verified public record, or `null` when there are none. |
+| `overdueReviewCount` | Public records last verified more than 90 days ago. They stay public with verification status `stale` ("Review due"). |
+| `oldestReviewAgeDays` | Days since the least recently verified public record, or `null` when there are none. |
+| `completeCount` | Public records carrying every expected (not required) field. |
+| `missingExpectedFields` | Per expected field (`agencies`, `tags`, `primaryDateSource`, `reviewStamp`), how many public records lack it. |
 
 ### HTTP behavior
 

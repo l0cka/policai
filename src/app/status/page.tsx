@@ -17,13 +17,17 @@ import {
 } from '@/lib/source-freshness';
 import {
   buildJurisdictionCoverage,
-  RECORD_REVIEW_MAX_AGE_DAYS,
+  buildRecordReviewSchedule,
+  EXPECTED_RECORD_FIELDS,
+  EXPECTED_RECORD_FIELD_LABELS,
+  summarizeRecordCompleteness,
   summarizeRecordFreshness,
   summarizeReviewQueue,
 } from '@/lib/coverage-report';
 import { MetricStrip, PageIntro } from '@/components/layout';
 import { HealthSignal } from '@/components/ui/health-signal';
 import { getJurisdictionName } from '@/types';
+import { EDITORIAL_REVIEW_INTERVAL_DAYS } from '@/lib/verification';
 
 export const revalidate = 3600;
 
@@ -45,6 +49,16 @@ const HEADER_CELL =
 // Secondary columns drop out on narrow screens so the state stays visible.
 const WIDE_ONLY = 'hidden sm:table-cell';
 
+/** Records due within this many days are listed under Record review. */
+const REVIEW_SOON_DAYS = 30;
+
+function dueLabel(daysLeft: number | null): string {
+  if (daysLeft === null) return 'Never reviewed';
+  if (daysLeft < 0) return `Overdue ${age(-daysLeft)}`;
+  if (daysLeft === 0) return 'Due today';
+  return `Due in ${age(daysLeft)}`;
+}
+
 function age(days: number | null): string {
   if (days === null) return '—';
   return days === 1 ? '1 day' : `${days} days`;
@@ -65,6 +79,10 @@ export default async function StatusPage() {
   const queue = summarizeReviewQueue(pendingReviews);
   const jurisdictions = buildJurisdictionCoverage(policies, WATCH_SOURCES);
   const records = summarizeRecordFreshness(policies);
+  const reviewSchedule = buildRecordReviewSchedule(policies).filter(
+    (row) => row.overdue || (row.daysLeft !== null && row.daysLeft <= REVIEW_SOON_DAYS),
+  );
+  const completeness = summarizeRecordCompleteness(policies);
 
   return (
     <article className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
@@ -107,18 +125,80 @@ export default async function StatusPage() {
           <p className="text-muted-foreground">
             {records.overdue} of {policies.length} public{' '}
             {policies.length === 1 ? 'record' : 'records'}{' '}
-            {records.overdue === 1 ? 'is' : 'are'} past{' '}
-            {records.overdue === 1 ? 'its' : 'their'} re-verification limit
+            {records.overdue === 1 ? 'is' : 'are'} due for editorial
+            re-verification
             {records.oldestAgeDays !== null
               ? `; oldest review ${age(records.oldestAgeDays)} ago.`
               : '.'}{' '}
-            Limits are {RECORD_REVIEW_MAX_AGE_DAYS.binding} days for
-            legislation and regulations,{' '}
-            {RECORD_REVIEW_MAX_AGE_DAYS.courtAndStandard} days for practice
-            notes and standards, and {RECORD_REVIEW_MAX_AGE_DAYS.other} days
-            for everything else. An overdue record is still published; it
-            has not been re-checked against its source recently.
+            An editor re-checks each record against its official source every{' '}
+            {EDITORIAL_REVIEW_INTERVAL_DAYS} days. A record past that point
+            stays published and is labelled &ldquo;Review due&rdquo; until it
+            is re-checked.
           </p>
+          {reviewSchedule.length > 0 ? (
+            <div className="mt-4 overflow-x-auto" role="region" aria-label="Records due for re-verification" tabIndex={0}>
+              <table className="w-full">
+                <thead>
+                  <tr className="border-y border-[var(--rule-heavy)]">
+                    <th scope="col" className={HEADER_CELL}>Record</th>
+                    <th scope="col" className={`${HEADER_CELL} ${WIDE_ONLY}`}>Last verified</th>
+                    <th scope="col" className={HEADER_CELL}>Re-check</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {reviewSchedule.map((row) => (
+                    <tr key={row.id} className="border-b border-border">
+                      <td className="py-2.5 pr-3 align-top">
+                        <Link href={`/policies/${row.id}`} className="hover:underline">
+                          {row.title}
+                        </Link>
+                      </td>
+                      <td className={`py-2.5 pr-3 align-top font-mono text-xs text-muted-foreground ${WIDE_ONLY}`}>
+                        {row.reviewedAt?.slice(0, 10) ?? '—'}
+                      </td>
+                      <td
+                        className={
+                          row.overdue
+                            ? 'py-2.5 align-top font-medium text-[var(--caution)]'
+                            : 'py-2.5 align-top text-muted-foreground'
+                        }
+                      >
+                        {dueLabel(row.daysLeft)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p className="mt-3 text-muted-foreground">
+              No record is due for re-verification in the next {REVIEW_SOON_DAYS} days.
+            </p>
+          )}
+        </section>
+
+        <section className="border-t border-border pt-7">
+          <h2 className="section-title">Record completeness</h2>
+          <p className="text-muted-foreground">
+            {completeness.complete} of {completeness.total} public{' '}
+            {completeness.total === 1 ? 'record carries' : 'records carry'}{' '}
+            every expected field. Required fields are enforced before
+            publication; the fields below are expected but not required. This
+            measures the records that exist, not how much Australian AI policy
+            the register covers.
+          </p>
+          <dl className="mt-4 grid gap-x-8 gap-y-2 sm:grid-cols-2">
+            {EXPECTED_RECORD_FIELDS.map((field) => (
+              <div key={field} className="flex justify-between gap-4 border-b border-border py-2">
+                <dt>{EXPECTED_RECORD_FIELD_LABELS[field]}</dt>
+                <dd className="font-mono text-xs text-muted-foreground">
+                  {completeness.missing[field].length === 0
+                    ? 'All present'
+                    : `${completeness.missing[field].length} missing`}
+                </dd>
+              </div>
+            ))}
+          </dl>
         </section>
 
         <section className="border-t border-border pt-7">
