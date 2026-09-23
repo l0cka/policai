@@ -140,6 +140,32 @@ describe('extractCandidatesFromHtml', () => {
     });
   });
 
+  it('extracts Victorian legislation whats-new table rows with their effective dates', () => {
+    const row = (href: string, title: string, date: string) =>
+      `<tbody class="rpl-data-table__row rpl-data-table__row--odd"><tr>
+        <td data-label="Title"><div class="rpl-data-table__mobile-label">Title</div>
+          <a href="${href}" class="rpl-text-link tide-search-listing__table-titles"><span>${title}</span></a></td>
+        <td data-label="Type"><span class="tide-search-listing__table-type">SR as made</span></td>
+        <td data-label="Effective date"><span class="tide-search-listing__table-latest--date">${date}</span></td>
+      </tr></tbody>`;
+    const result = extractFromHtml(
+      `<main><table><thead><tr><th scope="col">Title</th><th scope="col">Type</th><th scope="col">Effective date</th></tr></thead>
+        ${row('/as-made/statutory-rules/artificial-intelligence-transparency-regulations-2026', 'Artificial Intelligence Transparency Regulations 2026', '16/09/2026')}
+        ${row('/in-force/acts/building-act-1993', 'Building Act 1993', '15/09/2026')}
+      </table></main>`,
+      'https://www.legislation.vic.gov.au/whats-new',
+    );
+
+    expect(result.itemCount).toBe(2);
+    expect(result.candidates).toEqual([
+      expect.objectContaining({
+        title: 'Artificial Intelligence Transparency Regulations 2026',
+        url: 'https://www.legislation.vic.gov.au/as-made/statutory-rules/artificial-intelligence-transparency-regulations-2026',
+        dateHint: '2026-09-16',
+      }),
+    ]);
+  });
+
   it('extracts Federal Register ngx-datatable result rows', () => {
     const result = extractFromHtml(
       `<main>
