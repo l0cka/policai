@@ -11,7 +11,7 @@ const LINKS: Array<[string, string]> = [
   ['/this-week', 'This week'],
   ['/deadlines', 'Deadlines'],
   ['/sector', 'Sector'],
-  ['/health', 'Sources'],
+  ['/health', 'Source health'],
 ];
 
 function NavLinks({

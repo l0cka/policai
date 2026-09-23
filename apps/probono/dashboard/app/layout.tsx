@@ -22,7 +22,8 @@ export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
   // pi-lens-ignore: unchecked-throwing-call
   metadataBase: new URL('https://a2j.policai.org'),
-  title: 'Policai A2J',
+  // Same separator as the Policai register: "Page - Policai A2J".
+  title: { default: 'Policai A2J', template: '%s - Policai A2J' },
   description:
     'A monitor of Australian pro bono, access-to-justice and legal assistance news, law reform, funding and deadlines, each item linked to its source.',
   // './' resolves against metadataBase *and* the current path, so every page
@@ -103,9 +104,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               </span>
               <div className="dateline-links">
                 <span className="live-status"><i /> Live</span>
-                <Link href="/health" className="underline-grow">
-                  Source health
-                </Link>
                 <a
                   href="https://github.com/l0cka/probono-radar"
                   target="_blank"

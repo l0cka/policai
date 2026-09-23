@@ -19,7 +19,7 @@
 .observatory-stats { grid-column: 2; grid-row: 3 / 5; align-self: center; margin-top: 1.5rem; grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .observatory-stats > div + div { border-color: var(--border); }
 .observatory-stats dd { font-family: var(--font-display); font-size: 2rem; }
-.observatory-stats dt { color: var(--muted-foreground); font-size: 10px; }
+.observatory-stats dt { color: var(--muted-foreground); font-size: 11px; }
 .signal-disclosure { border-top: 1px solid var(--border); padding-top: 1rem; }
 .signal-disclosure > summary { cursor: pointer; min-height: 44px; padding-block: .6rem; color: var(--primary); font-size: .875rem; }
 .signal-disclosure > summary span { margin-left: .75rem; color: var(--muted-foreground); font: .6875rem var(--font-mono); }
@@ -84,7 +84,7 @@
 .site-nav a:hover, .site-nav a.active { color: var(--foreground); }
 .site-nav a::after { background: var(--primary); }
 .dateline { background: var(--muted); color: var(--muted-foreground); border-color: var(--border); }
-.dateline > .container { min-height: 2.25rem; height: auto; padding-block: .6rem; font-size: 10px; letter-spacing: .04em; }
+.dateline > .container { min-height: 2.25rem; height: auto; padding-block: .6rem; font-size: 11px; letter-spacing: .04em; }
 .live-status { color: var(--primary); }
 .site-header .theme-toggle { border-color: var(--border); background: var(--background); }
 .site-header .theme-toggle button { color: var(--muted-foreground); }
@@ -101,3 +101,23 @@
   .brand-wordmark { font-size: 1.5rem; }
   .site-header .mobile-menu-toggle { color: var(--foreground); }
 }
+
+/* Signal network panel: the panel is always dark green, whatever the theme, so
+   its text uses fixed light tones instead of the page foreground. */
+.signal-disclosure .observatory-visual { color: #eef3f0; }
+.signal-network-summary dd { color: #eef3f0; }
+.signal-network-summary dt { color: #b9c8d6; font-size: 11px; }
+.signal-network .network-band-label, .signal-network .network-count { fill: #b9c8d6; }
+
+/* Match the Policai register's page-title scale so the two editions read as one family. */
+.page-title { font-size: clamp(1.75rem, 3vw, 2.25rem); }
+.research-heading h1 { font-size: clamp(1.75rem, 3vw, 2.25rem); }
+
+/* Not-found page */
+.not-found-links { max-width: 42rem; margin-top: 2rem; border-top: 1px solid var(--border); list-style: none; padding: 0; }
+.not-found-links li { border-bottom: 1px solid var(--border); }
+.not-found-links a { display: flex; min-height: 3.5rem; align-items: center; justify-content: space-between; gap: 1rem; padding-block: .75rem; color: var(--foreground); text-decoration: none; }
+.not-found-links a:hover { color: var(--primary); }
+.not-found-links strong { display: block; font-size: .875rem; }
+.not-found-links span span { display: block; color: var(--muted-foreground); font-size: .75rem; }
+.not-found-links svg { width: 1rem; height: 1rem; flex-shrink: 0; opacity: .6; }

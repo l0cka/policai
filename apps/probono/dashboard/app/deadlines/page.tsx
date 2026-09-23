@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { DeadlineList, DeadlineTimeline } from '../deadlines';
 import {
   getRecentlyPassed,
@@ -6,6 +7,10 @@ import {
 } from '../../lib/deadline-data';
 
 export const dynamic = 'force-dynamic';
+export const metadata: Metadata = {
+  title: 'Deadlines',
+  description: 'Consultation, submission and grant closing dates from the radar, soonest first, each linked to its source.',
+};
 
 export default async function DeadlinesPage() {
   const [upcoming, milestones, passed] = await Promise.all([

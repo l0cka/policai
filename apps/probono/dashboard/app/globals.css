@@ -853,7 +853,7 @@ main {
   margin-top: 0.5rem;
   color: #8395a8;
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -901,7 +901,7 @@ main {
   align-items: center;
   gap: 0.45rem 1rem;
   min-height: 1rem;
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 0;
   text-transform: none;
 }
@@ -984,7 +984,7 @@ main {
 .network-band-label {
   fill: #8193a6;
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -1028,7 +1028,7 @@ main {
 .network-count {
   fill: #8193a6;
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: 10px;
 }
 
 .network-signals circle {
@@ -1104,7 +1104,7 @@ main {
   margin-top: 0.4rem;
   color: #8395a8;
   font-family: var(--font-mono);
-  font-size: 8px;
+  font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -1162,7 +1162,7 @@ main {
 
 .recent-signals time {
   color: #7f91a3;
-  font-size: 9px;
+  font-size: 10px;
 }
 
 .recent-signals h2 {
@@ -1205,7 +1205,7 @@ main {
   gap: 0.5rem;
   margin-top: 1rem;
   color: #8fa0b1;
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 0;
   text-transform: none;
 }
@@ -2438,7 +2438,7 @@ main {
   border-radius: 50%;
   background: var(--card);
   color: var(--foreground);
-  font-size: 0.55rem;
+  font-size: 0.625rem;
   font-weight: 600;
   line-height: 1;
 }
@@ -2583,6 +2583,7 @@ main {
 
 .sector-evidence-item small {
   color: var(--muted-foreground);
+  font-size: 0.75rem;
 }
 
 .sector-evidence-empty {
@@ -3952,7 +3953,7 @@ tbody td:first-child {
     display: block;
     grid-row: 4;
     color: #91aaff;
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 0.04em;
     text-transform: none;
   }
