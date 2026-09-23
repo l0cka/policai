@@ -82,6 +82,15 @@ rules against real pages, and dry-run before adding (`npm run collect -- --dry-r
   source needs a full-text AI match restricted to bill debates, which is a
   collector change, not a source entry.
 
+  **Status 2026-09-23 (later): added as `aph-hansard-bill-debates`.** The
+  collector gained a per-source `bodyRelevance` option: feed items are kept by
+  title pattern (bill debates only), and a fetched debate counts as relevant
+  only with 10 or more explicit AI mentions in its body. A probe of 40 debates
+  found incidental mentions at 1–9 and substantive AI debates at 10–27. A dry
+  run over 25 debates kept 3 (AI Kill Switch and Data Centre Control Bill,
+  News Journalism Payments Bill, My Face, My Rights Bill) and dismissed 22.
+  Detections stay heuristic, capped and editor-gated.
+
 ### Tier 4 — hygiene, not expansion
 
 **Correction (2026-09-23).** Every `coverageEligible: false` result in
@@ -116,12 +125,25 @@ withholding) rather than adopting A2J's runtime model:
    the timeline. Add a structured `deadlines` array to register records
    (title, date, precision, status) and render the same rail on the homepage —
    forward-looking dates are what a practitioner actually checks.
+
+   **Status 2026-09-23:** built from existing data rather than a new schema.
+   Register records already carry verified, precision-tagged `dates`
+   (`effective`, `commenced`, `consultation_closed`), and `/this-week` already
+   selects upcoming ones. The homepage now shows a "Coming up" panel from the
+   same selector, with day counts only for day-precision dates. A separate
+   `deadlines` array would duplicate `dates`; add one only if editors need
+   deadlines that are not instrument dates.
 2. **Stream taxonomy for the developments feed.** A2J splits its feed into
    named streams (news / law reform / funding / tech & justice) with per-stream
    accents. Root developments is one undifferentiated list. A lighter
    classification (consultation / regulation / guidance / funding / incident)
    — already half-derivable from the existing classifier labels — would let
    readers filter by intent.
+
+   **Status 2026-09-23:** `/developments` has a stream filter (Consultations
+   and inquiries, Courts and tribunals, Regulators, Government policy). The
+   stream is derived when the page is read, from the source category and a
+   consultation/inquiry title pattern; nothing new is stored.
 3. **A public health page.** A2J ships `/health` showing per-source status with
    ok/failed/never-run states. Root Policai publishes the same data only as
    raw `public/data/meta.json`. A small server-rendered `/status` page over the
