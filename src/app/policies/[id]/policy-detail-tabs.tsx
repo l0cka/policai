@@ -295,8 +295,15 @@ export function PolicyDetailTabs({
           <section className="border border-border bg-card/40 p-5">
             <h2 className="section-title">Source verification</h2>
             <p className="mt-4 flex items-center gap-2 border-b border-border pb-4 text-sm">
-              <CheckCircle2 className="h-5 w-5 text-[var(--trust)]" fill="currentColor" />
-              {policy.verification.status === 'verified' ? 'Verified against the official source' : 'Editorial verification required'}
+              <CheckCircle2
+                className={policy.verification.status === 'verified' ? 'h-5 w-5 text-[var(--trust)]' : 'h-5 w-5 text-[var(--caution)]'}
+                fill="currentColor"
+              />
+              {policy.verification.status === 'verified'
+                ? 'Verified against the official source'
+                : policy.verification.status === 'stale'
+                  ? 'Verified earlier; editorial re-check due'
+                  : 'Editorial verification required'}
             </p>
             <dl className="mt-4 space-y-3 text-sm">
               {sourceHost ? <div className="grid grid-cols-[6.5rem_1fr] gap-3"><dt className="text-muted-foreground">Official source</dt><dd>{sourceHost}</dd></div> : null}

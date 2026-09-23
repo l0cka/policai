@@ -101,7 +101,7 @@ describe("data-service file store", () => {
 					url: "https://example.gov.au/policies/successor",
 					contentHash: "a".repeat(64),
 				},
-				checkedAt: "2026-04-01T00:00:00.000Z",
+				status: "needs_review",
 			},
 		});
 		const predecessor = buildPolicy({
@@ -720,7 +720,7 @@ describe("data-service file store", () => {
 		await expect(getPolicies()).resolves.toEqual([existing]);
 	});
 
-	it("withholds policies after the 90-day editorial review interval expires", async () => {
+	it("keeps policies public as review-due after the 90-day editorial review interval", async () => {
 		const expired = buildPolicy({
 			id: "expired-policy",
 			verification: {
@@ -732,10 +732,38 @@ describe("data-service file store", () => {
 
 		const { getPolicies } = await loadDataServiceModule();
 
-		await expect(getPolicies()).resolves.toEqual([]);
+		const [publicPolicy] = await getPolicies();
+		expect(publicPolicy.id).toBe(expired.id);
+		expect(publicPolicy.verification.status).toBe("stale");
+		expect(publicPolicy.verification.notes).toContain(
+			"Editorial review interval of 90 days expired",
+		);
 		await expect(
 			getPolicies(undefined, { access: "admin" }),
 		).resolves.toEqual([expired]);
+	});
+
+	it("never publishes records without attributable, fingerprinted verification", async () => {
+		const unattributed = buildPolicy({
+			id: "unattributed",
+			verification: { ...buildPolicy().verification, checkedBy: " " },
+		});
+		const unfingerprinted = buildPolicy({
+			id: "unfingerprinted",
+			verification: {
+				...buildPolicy().verification,
+				source: { url: "https://example.gov.au/x" },
+			},
+		});
+		const pending = buildPolicy({
+			id: "pending",
+			verification: { ...buildPolicy().verification, status: "needs_review" },
+		});
+		readJsonFile.mockResolvedValue([unattributed, unfingerprinted, pending]);
+
+		const { getPolicies } = await loadDataServiceModule();
+
+		await expect(getPolicies()).resolves.toEqual([]);
 	});
 
 	it("withholds a verified policy while a changed-source update awaits review", async () => {

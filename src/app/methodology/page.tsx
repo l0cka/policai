@@ -107,7 +107,7 @@ export default async function MethodologyPage() {
             {publicPolicies.length} records are currently publishable in the
             public register.
             {withheldCount > 0
-              ? ` ${withheldCount} additional editorial records are withheld because they are awaiting review, have changed at source, or their verification has expired.`
+              ? ` ${withheldCount} additional editorial records are withheld because they are awaiting review or have changed at source. Records past their 90-day review interval stay published and are labelled “Review due”.`
               : ' No non-trashed editorial records are currently withheld.'}
           </p>
         </section>

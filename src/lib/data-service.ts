@@ -20,7 +20,7 @@ import {
 	timelineRevisionHash,
 } from "@/lib/policy-revision";
 import {
-	isVerificationCurrent,
+	isPubliclyEstablished,
 	projectVerificationForPublic,
 } from "@/lib/verification";
 import { reconcileLinkedDevelopments } from "@/lib/source-review";
@@ -135,11 +135,15 @@ function canonicalizeSourceReviewRecord(review: SourceReview): SourceReview {
 	};
 }
 
-/** Public register reads contain only records that passed editorial verification. */
+/**
+ * Public register reads contain only records that passed attributable
+ * editorial verification. A record past its review interval stays public and
+ * is projected as stale ("Review due") rather than withdrawn.
+ */
 function isPublicPolicy(policy: Policy, now: Date): boolean {
 	return (
 		policy.status !== "trashed" &&
-		isVerificationCurrent(policy.verification, now)
+		isPubliclyEstablished(policy.verification, now)
 	);
 }
 
@@ -153,11 +157,15 @@ function applyPublicPolicyFilter(
 			isPublicPolicy(policy, now) && !withheldPolicyIds.has(policy.id),
 	);
 	const visibleIds = new Set(visible.map((policy) => policy.id));
-	return visible.map((policy) =>
-		policy.supersededBy && !visibleIds.has(policy.supersededBy)
-			? { ...policy, supersededBy: undefined }
-			: policy,
-	);
+	return visible.map((policy) => {
+		const projected = {
+			...policy,
+			verification: projectVerificationForPublic(policy.verification, now),
+		};
+		return policy.supersededBy && !visibleIds.has(policy.supersededBy)
+			? { ...projected, supersededBy: undefined }
+			: projected;
+	});
 }
 
 async function getWithheldPolicyIds(
@@ -882,16 +890,20 @@ export async function getTimelineEvents(
 		.filter(
 			(event) =>
 			access === "admin" ||
-			(isVerificationCurrent(event.verification, now) &&
+			(isPubliclyEstablished(event.verification, now) &&
 				!withheldEventIds.has(event.id)),
 		)
-		.map((event) =>
-			access === "public" &&
-			event.relatedPolicyId &&
-			!publicPolicyIds.has(event.relatedPolicyId)
-				? { ...event, relatedPolicyId: undefined }
-				: event,
-		);
+		.map((event) => {
+			if (access !== "public") return event;
+			const projected = {
+				...event,
+				verification: projectVerificationForPublic(event.verification, now),
+			};
+			return event.relatedPolicyId &&
+				!publicPolicyIds.has(event.relatedPolicyId)
+				? { ...projected, relatedPolicyId: undefined }
+				: projected;
+		});
 	if (scope === "policy-register") {
 		manualEvents = manualEvents.filter(
 			(event) =>
@@ -1195,7 +1207,7 @@ export async function getPolicyFrameworkArtifact(
 		artifact.verification as RecordVerification | undefined;
 	if (
 		!artifactVerification ||
-		!isVerificationCurrent(
+		!isPubliclyEstablished(
 			artifactVerification,
 			options.now ?? new Date(),
 		)
@@ -1220,7 +1232,13 @@ export async function getPolicyFrameworkArtifact(
 	if (artifactHash && policyHash && artifactHash !== policyHash) {
 		return null;
 	}
-	return artifact;
+	return {
+		...artifact,
+		verification: projectVerificationForPublic(
+			artifactVerification,
+			options.now ?? new Date(),
+		),
+	};
 }
 
 const EMPTY_META: CollectionMeta = {
