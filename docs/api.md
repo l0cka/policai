@@ -82,6 +82,17 @@ curl 'https://policai.org/api/developments?since=2026-08-01&limit=20'
 
 `GET /api/timeline` accepts `jurisdiction`.
 
+### Status fields
+
+`GET /api/status` returns the last run's health in `collection`. It also returns two per-source freshness counts, computed from each source's last *completed* check in `data/watch-state.json`:
+
+| Field | Meaning |
+| --- | --- |
+| `overdueSourceCount` | Automatic sources whose last completed check is older than 3 days (daily sources) or 10 days (weekly sources). |
+| `neverCheckedSourceCount` | Automatic sources with no recorded completed check. |
+
+A run can reach a source without completing its check, for example while a changed document waits for editorial review. When that happens, `collection.health` can be `healthy` while `overdueSourceCount` is above zero. The per-source detail is at [`/status`](https://policai.org/status).
+
 ### HTTP behavior
 
 All API endpoints have these controls:

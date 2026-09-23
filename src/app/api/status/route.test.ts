@@ -2,19 +2,31 @@
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const { getCollectionMeta, getDevelopments, getSourceMonitoring } = vi.hoisted(() => ({
+const {
+	getCollectionMeta,
+	getDevelopments,
+	getSourceCheckTimes,
+	getSourceMonitoring,
+} = vi.hoisted(() => ({
 	getCollectionMeta: vi.fn(),
 	getDevelopments: vi.fn(),
+	getSourceCheckTimes: vi.fn(),
 	getSourceMonitoring: vi.fn(),
 }));
 
 vi.mock("@/lib/data-service", () => ({
 	getCollectionMeta,
 	getDevelopments,
+	getSourceCheckTimes,
 	getSourceMonitoring,
 }));
 
+import { WATCH_SOURCES } from "@/lib/pipeline/sources";
 import { GET } from "./route";
+
+const AUTOMATIC_SOURCE_COUNT = WATCH_SOURCES.filter(
+	(source) => source.enabled && source.automation === "automatic",
+).length;
 
 describe("/api/status", () => {
 	beforeEach(() => {
@@ -22,6 +34,8 @@ describe("/api/status", () => {
 		getDevelopments.mockReset();
 		getSourceMonitoring.mockReset();
 		getSourceMonitoring.mockResolvedValue({ manualReviews: [] });
+		getSourceCheckTimes.mockReset();
+		getSourceCheckTimes.mockResolvedValue({});
 	});
 
 	it("returns null freshness data before the collector has ever run", async () => {
@@ -62,6 +76,8 @@ describe("/api/status", () => {
 				manualSourceCount: 14,
 				manualCurrentCount: 0,
 				manualUnavailableCount: 0,
+				overdueSourceCount: 0,
+				neverCheckedSourceCount: AUTOMATIC_SOURCE_COUNT,
 			},
 			latestDevelopment: null,
 			success: true,
@@ -128,6 +144,8 @@ describe("/api/status", () => {
 				manualSourceCount: 14,
 				manualCurrentCount: 0,
 				manualUnavailableCount: 0,
+				overdueSourceCount: 0,
+				neverCheckedSourceCount: AUTOMATIC_SOURCE_COUNT,
 			},
 			latestDevelopment: {
 				id: "dev-1",
@@ -140,5 +158,38 @@ describe("/api/status", () => {
 		});
 
 		expect(getDevelopments).toHaveBeenCalledWith({ limit: 1 });
+	});
+
+	it("counts an automatic source with a stale completed check as overdue", async () => {
+		getCollectionMeta.mockResolvedValue({
+			lastCollectedAt: null,
+			lastHealthyAt: null,
+			lastReviewedAt: null,
+			collector: {
+				runCount: 0,
+				lastRunSources: [],
+				lastRunErrors: [],
+				health: "healthy",
+				dueSourceCount: 0,
+				successfulSourceCount: 0,
+				failedSourceCount: 0,
+				skippedSourceCount: 0,
+				successRate: 1,
+				automaticSourceCount: 0,
+				manualSourceCount: 0,
+				sourceResults: [],
+			},
+		});
+		getDevelopments.mockResolvedValue([]);
+		getSourceCheckTimes.mockResolvedValue({
+			"act-ai-policy": "2000-01-01T00:00:00.000Z",
+		});
+
+		const body = await (await GET()).json();
+
+		expect(body.collection.overdueSourceCount).toBe(1);
+		expect(body.collection.neverCheckedSourceCount).toBe(
+			AUTOMATIC_SOURCE_COUNT - 1,
+		);
 	});
 });

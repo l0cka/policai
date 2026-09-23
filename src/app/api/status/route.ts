@@ -1,6 +1,7 @@
 import {
 	getCollectionMeta,
 	getDevelopments,
+	getSourceCheckTimes,
 	getSourceMonitoring,
 } from "@/lib/data-service";
 import { WATCH_SOURCES } from "@/lib/pipeline/sources";
@@ -9,20 +10,29 @@ import {
 	publicApiJson,
 	publicApiOptions,
 } from "@/lib/public-api";
+import {
+	assessSourceFreshness,
+	summarizeSourceFreshness,
+} from "@/lib/source-freshness";
 import { summarizeManualSourceCoverage } from "@/lib/source-monitoring";
 
 export async function GET(request?: Request) {
 	const limited = checkPublicApiRequest(request);
 	if (limited) return limited;
 
-	const [meta, recentDevelopments, monitoring] = await Promise.all([
+	const [meta, recentDevelopments, monitoring, checkTimes] = await Promise.all([
 		getCollectionMeta(),
 		getDevelopments({ limit: 1 }),
 		getSourceMonitoring(),
+		getSourceCheckTimes(),
 	]);
 	const manualCoverage = summarizeManualSourceCoverage(
 		WATCH_SOURCES,
 		monitoring,
+	);
+
+	const freshness = summarizeSourceFreshness(
+		assessSourceFreshness(WATCH_SOURCES, checkTimes),
 	);
 
 	const latest = recentDevelopments[0];
@@ -41,6 +51,8 @@ export async function GET(request?: Request) {
 			manualSourceCount: meta.collector.manualSourceCount,
 			manualCurrentCount: manualCoverage.current,
 			manualUnavailableCount: manualCoverage.unavailable,
+			overdueSourceCount: freshness.overdue,
+			neverCheckedSourceCount: freshness.neverChecked,
 		},
 		latestDevelopment: latest
 			? {
