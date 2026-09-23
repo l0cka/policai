@@ -1,0 +1,38 @@
+name: Record freshness
+
+# Fails when overdue public records exceed data/freshness-budget.json.
+# Time-based, so it also runs weekly: records go stale without any push.
+# Kept out of `npm run check` so unrelated local work is not blocked by the
+# calendar.
+on:
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: "0 22 * * 0" # Monday 08:00 AEST
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  freshness:
+    name: record freshness
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check record freshness budget
+        run: npm run check:freshness

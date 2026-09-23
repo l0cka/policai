@@ -89,6 +89,13 @@ describe("/api/status", () => {
 				publicCount: 0,
 				overdueReviewCount: 0,
 				oldestReviewAgeDays: null,
+				completeCount: 0,
+				missingExpectedFields: {
+					agencies: 0,
+					tags: 0,
+					primaryDateSource: 0,
+					reviewStamp: 0,
+				},
 			},
 			latestDevelopment: null,
 			success: true,
@@ -162,6 +169,13 @@ describe("/api/status", () => {
 				publicCount: 0,
 				overdueReviewCount: 0,
 				oldestReviewAgeDays: null,
+				completeCount: 0,
+				missingExpectedFields: {
+					agencies: 0,
+					tags: 0,
+					primaryDateSource: 0,
+					reviewStamp: 0,
+				},
 			},
 			latestDevelopment: {
 				id: "dev-1",
@@ -233,18 +247,11 @@ describe("/api/status", () => {
 				},
 			});
 			getDevelopments.mockResolvedValue([]);
-			getPolicies.mockResolvedValue([
-				buildPolicy({
-					id: "law",
-					type: "legislation",
-					lastReviewedAt: "2026-07-01T00:00:00.000Z",
-				}),
-				buildPolicy({
-					id: "guide",
-					type: "guideline",
-					lastReviewedAt: "2026-07-01T00:00:00.000Z",
-				}),
-			]);
+			const old = buildPolicy({ id: "old" });
+			old.verification.checkedAt = "2026-07-01T00:00:00.000Z";
+			const recent = buildPolicy({ id: "recent" });
+			recent.verification.checkedAt = "2026-09-01T00:00:00.000Z";
+			getPolicies.mockResolvedValue([old, recent]);
 
 			const response = await GET();
 			const body = await response.json();
@@ -254,6 +261,13 @@ describe("/api/status", () => {
 				publicCount: 2,
 				overdueReviewCount: 1,
 				oldestReviewAgeDays: 111,
+				completeCount: 0,
+				missingExpectedFields: {
+					agencies: 0,
+					tags: 0,
+					primaryDateSource: 0,
+					reviewStamp: 2,
+				},
 			});
 		} finally {
 			vi.useRealTimers();

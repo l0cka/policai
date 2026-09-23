@@ -89,15 +89,15 @@ it('states the limit of what coverage counts mean', async () => {
 });
 
 it('reports record re-verification age as information, not a failure', async () => {
-  vi.mocked(getPolicies).mockResolvedValue([
-    buildPolicy({ id: 'law', type: 'legislation', lastReviewedAt: '2026-06-01T00:00:00.000Z' }),
-    buildPolicy({ id: 'guide', type: 'guideline', lastReviewedAt: '2026-06-01T00:00:00.000Z' }),
-  ]);
+  const old = buildPolicy({ id: 'old' });
+  old.verification.checkedAt = '2026-06-01T00:00:00.000Z';
+  vi.mocked(getPolicies).mockResolvedValue([old, buildPolicy({ id: 'recent' })]);
   render(await StatusPage());
   const section = screen.getByRole('heading', { name: 'Record review' }).closest('section');
   expect(section).toHaveTextContent(
-    '1 of 2 public records is past its re-verification limit',
+    '1 of 2 public records is due for editorial re-verification',
   );
   expect(section).toHaveTextContent('oldest review 114 days ago');
-  expect(section).toHaveTextContent('90 days for legislation and regulations');
+  expect(section).toHaveTextContent('every 90 days');
+  expect(section).toHaveTextContent('stays published and is labelled “Review due”');
 });
