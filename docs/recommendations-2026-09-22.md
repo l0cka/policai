@@ -94,7 +94,9 @@ QLD QGEA AI, WA AI policy). The cause: each editorial publish recorded an
 editorial-capture fingerprint that differs from the fingerprint the collector
 computes. The collector then treats its own observation as an unreviewed
 change and defers completion on every run. `/status` now reports these
-sources as overdue. The collector fix is a separate decision.
+sources as overdue. Fixed on `feat/status-coverage`: the collector now adopts
+its own reading of a version an editor published (see `docs/collector.md`).
+A live run against all five completed each check with no new reviews.
 
 **What not to do:** do not add generic news aggregators, think tanks, law-firm
 commentary or international sources. Policai's differentiator is official-source

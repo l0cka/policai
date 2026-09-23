@@ -316,6 +316,40 @@ function hasUnresolvedDocumentTransition(
   );
 }
 
+/**
+ * Editorial publication re-captures the source, and that capture can
+ * fingerprint the same version differently from the collector. When the
+ * collector's current reading is the reading it staged as version N, and an
+ * editor has since published version N under the canonical fingerprint, the
+ * collector's reading is that published version, not an unreviewed change.
+ * Returns the adopted transition, or null when the reading needs review.
+ */
+function adoptablePublishedReading(
+  state: WatchState,
+  sourceId: string,
+  contentHash: string,
+  canonicalContentHash: string,
+): { key: string; changeCount: number } | null {
+  const latestChangeCount = maximumChangeCountForSource(state, sourceId);
+  let reading: { key: string; changeCount: number } | null = null;
+  let published = false;
+  for (const [key, entry] of Object.entries(state.seen)) {
+    if (entry.sourceId !== sourceId) continue;
+    const parsed = parseChangeFingerprint(entry.candidate?.changeFingerprint);
+    if (!parsed || parsed.changeCount !== latestChangeCount) continue;
+    if (parsed.contentHash === contentHash && entry.status !== 'dismissed') {
+      reading = { key, changeCount: parsed.changeCount };
+    }
+    if (
+      parsed.contentHash === canonicalContentHash &&
+      entry.status === 'processed'
+    ) {
+      published = true;
+    }
+  }
+  return published ? reading : null;
+}
+
 function recoverPersistedDocumentTransitions(
   state: WatchState,
   reviews: readonly SourceReview[],
@@ -1278,15 +1312,37 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
             ? trackedPolicy.verification.source.contentHash
             : trackedTimelineEvent?.verification.source.contentHash;
           const trackedRecord = trackedPolicy ?? trackedTimelineEvent;
+          const adoptedReading =
+            trackedRecord &&
+            canonicalContentHash &&
+            canonicalContentHash !== contentHash
+              ? adoptablePublishedReading(
+                  state,
+                  source.id,
+                  contentHash,
+                  canonicalContentHash,
+                )
+              : null;
           const reviewReason = trackedRecord
             ? !canonicalContentHash
               ? 'baseline_missing'
-              : canonicalContentHash !== contentHash
+              : canonicalContentHash !== contentHash && !adoptedReading
                 ? 'changed'
-                : hasUnresolvedDocumentTransition(state, source.id)
+                : hasUnresolvedDocumentTransition(state, source.id) &&
+                    !adoptedReading
                   ? 'baseline_reversion'
                   : null
             : null;
+
+          if (adoptedReading) {
+            const entry = state.seen[adoptedReading.key];
+            state.seen[adoptedReading.key] = {
+              ...entry,
+              status: 'processed',
+              processedAt: entry.processedAt ?? nowIso,
+            };
+            delete state.seen[adoptedReading.key].lastError;
+          }
 
           if (trackedRecord && reviewReason) {
             const transition = transitionForDocumentHash(
