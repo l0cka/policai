@@ -3609,6 +3609,46 @@ tbody th[scope='row'] {
   color: var(--muted-foreground);
 }
 
+/* Other dates from the same item, and other items reporting the same
+ * deadline. Quieter than the label: context, not a second headline. */
+.deadline-secondary {
+  margin: 0.35rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--muted-foreground);
+}
+
+.deadline-secondary li + li {
+  margin-top: 0.15rem;
+}
+
+.deadline-secondary time {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--foreground);
+}
+
+.deadline-also {
+  margin: 0.35rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--muted-foreground);
+}
+
+.deadline-also a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
+}
+
+.deadline-also a:hover,
+.deadline-also a:focus-visible {
+  color: var(--primary);
+}
+
 /* Compact deadline list used in the feed rail. */
 .rail-deadline {
   display: grid;
