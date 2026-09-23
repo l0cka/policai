@@ -39,6 +39,25 @@ describe("data-service file store", () => {
 		vi.useRealTimers();
 	});
 
+	it("reads only lastCheckedBySource from watch-state", async () => {
+		readJsonFile.mockResolvedValue({
+			seen: { "https://x.gov.au/": { status: "processed" } },
+			lastCheckedBySource: { "pm-media": "2026-09-22T08:23:23.603Z" },
+			sourceSnapshots: {},
+		});
+		const { getSourceCheckTimes } = await loadDataServiceModule();
+		await expect(getSourceCheckTimes()).resolves.toEqual({
+			"pm-media": "2026-09-22T08:23:23.603Z",
+		});
+		expect(readJsonFile.mock.calls[0][0]).toMatch(/data[\\/]watch-state\.json$/);
+	});
+
+	it("returns no check times when watch-state is absent", async () => {
+		readJsonFile.mockImplementation(async (_path: string, fallback: unknown) => fallback);
+		const { getSourceCheckTimes } = await loadDataServiceModule();
+		await expect(getSourceCheckTimes()).resolves.toEqual({});
+	});
+
 	it("filters and sorts policies from the JSON fallback", async () => {
 		const older = buildPolicy({
 			id: "older-policy",
