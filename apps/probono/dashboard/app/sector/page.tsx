@@ -13,7 +13,7 @@ import {
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'The sector — Policai A2J',
+  title: 'The sector',
   description:
     'A researched directory of organisations and programs that fund, coordinate, deliver or study legal assistance in Australia, with the funding and referral structure that connects them.',
 };

@@ -7,7 +7,7 @@ import { ArrowRight, ArrowUpRight, Flag } from '../icons';
 
 export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
-  title: 'This week — Policai A2J',
+  title: 'This week',
   description: 'A rolling seven-day radar brief, potential opportunities and upcoming deadlines, linked to their sources.',
 };
 

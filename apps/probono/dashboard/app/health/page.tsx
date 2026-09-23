@@ -1,7 +1,15 @@
+import type { Metadata } from 'next';
 import { getPool } from '../../lib/db';
 import { CheckCircle, CircleAlert, CircleDash } from '../icons';
 
 export const dynamic = 'force-dynamic';
+export const metadata: Metadata = {
+  title: 'Source health',
+  description: 'The most recent collection run for every active Policai A2J source, with failures and their last error.',
+};
+
+/** Failures first, then sources that have never run, then the rest by name. */
+const STATUS_ORDER: Record<string, number> = { failed: 0, never: 1, ok: 2 };
 
 function StatusCell({ status }: { status: string | null }) {
   if (!status) {
@@ -36,6 +44,11 @@ export default async function Health() {
      ORDER BY s.id, r.created_at DESC NULLS LAST`,
   );
 
+  rows.sort(
+    (a, b) =>
+      STATUS_ORDER[a.status ?? 'never'] - STATUS_ORDER[b.status ?? 'never'] ||
+      String(a.name).localeCompare(String(b.name), 'en-AU'),
+  );
   const failed = rows.filter((r) => r.status === 'failed').length;
   const never = rows.filter((r) => !r.status).length;
   const ok = rows.length - failed - never;
@@ -46,8 +59,8 @@ export default async function Health() {
         <p className="page-eyebrow">Collection</p>
         <h1 className="page-title">Source health</h1>
         <p className="page-intro">
-          The most recent collection run for every active source. A source that fails keeps its last
-          error so the cause is visible without opening the logs.
+          The most recent collection run for every active source. Failures are listed first, and a
+          source that fails keeps its last error so the cause is visible without opening the logs.
         </p>
       </header>
 
@@ -93,7 +106,7 @@ export default async function Health() {
           <tbody>
             {rows.map((r) => (
               <tr key={r.name}>
-                <td>{r.name}</td>
+                <th scope="row">{r.name}</th>
                 <td className="cell-mono">{r.fetch_method}</td>
                 <td className="cell-mono">
                   {r.created_at
