@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { vetDeadlines, type DroppedDeadline } from './deadline-rules.js';
 
 export const STREAMS = ['news', 'law_reform', 'funding', 'tech_justice'] as const;
 export type Stream = (typeof STREAMS)[number];
@@ -12,22 +13,30 @@ export const EnrichmentSchema = z.object({
   entities: z.object({
     organisations: z.array(z.string()).default([]),
     /*
-     * `kind` separates dates a reader must act on from dates that merely
-     * arrive. Optional rather than required: a missed field falls back to a
-     * label heuristic in the dashboard query, where an omission costs us a
-     * misfiled date — making it required would cost us a stalled item.
+     * Each date is checked on its own by `prepareEnrichment` against
+     * `DeadlineSchema` and the save-time rules in deadline-rules.ts. A bad date
+     * is dropped with a logged reason; it must not stall the whole item.
      */
-    deadlines: z
-      .array(
-        z.object({
-          date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-          label: z.string(),
-          kind: z.enum(['action', 'milestone']).optional(),
-        }),
-      )
-      .default([]),
+    deadlines: z.array(z.unknown()).default([]),
     amounts: z.array(z.string()).default([]),
   }),
   excerpt: z.string().max(700).nullable(),
 });
 export type Enrichment = z.infer<typeof EnrichmentSchema>;
+
+export type PreparedEnrichment =
+  | { ok: true; enrichment: Enrichment; dropped: DroppedDeadline[]; notes: string[] }
+  | { ok: false; error: string };
+
+/* Validate the item, then vet each deadline against the save-time rules. */
+export function prepareEnrichment(data: unknown, now: Date = new Date()): PreparedEnrichment {
+  const parsed = EnrichmentSchema.safeParse(data);
+  if (!parsed.success) return { ok: false, error: parsed.error.message };
+  const { kept, dropped, notes } = vetDeadlines(parsed.data.entities.deadlines, now);
+  return {
+    ok: true,
+    enrichment: { ...parsed.data, entities: { ...parsed.data.entities, deadlines: kept } },
+    dropped,
+    notes,
+  };
+}

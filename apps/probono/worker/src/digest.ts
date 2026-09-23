@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer';
 import { closePool, getPool } from './lib/db.js';
 import { renderDigest, type DigestItem } from './lib/render-digest.js';
+import { selectDigestDeadlines, sydneyToday } from './lib/deadline-rules.js';
 import { STREAMS } from './lib/types.js';
 
 async function main() {
@@ -27,11 +28,9 @@ async function main() {
   const unclassified = items.filter((i) => !i.opportunity && !i.stream);
   if (unclassified.length) byStream['news'] = [...(byStream['news'] ?? []), ...unclassified];
 
-  const deadlines = items
-    .flatMap((i) => ((i.entities?.deadlines ?? []) as { date: string; label: string }[])
-      .map((d) => ({ ...d, itemTitle: i.title as string })))
-    .filter((d) => d.date >= periodEnd.toISOString().slice(0, 10))
-    .sort((a, b) => a.date.localeCompare(b.date));
+  // Same rules as the dashboard's "Closing soon": one primary, day-precision
+  // action date per item, no openings or events, no duplicate date/label pairs.
+  const deadlines = selectDigestDeadlines(items, sydneyToday(periodEnd));
 
   const html = renderDigest({
     periodStart, periodEnd,

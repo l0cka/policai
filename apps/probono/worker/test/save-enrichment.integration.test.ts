@@ -1,4 +1,4 @@
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { closePool, getPool } from '../src/lib/db.js';
 
@@ -43,6 +43,34 @@ describeWithDatabase('save-enrichment CLI (integration)', () => {
     expect(rows[0].stream).toBe('tech_justice');
     expect(rows[0].relevant).toBe(true);
     expect(rows[0].enriched_at).not.toBeNull();
+  });
+
+  it('drops an invalid deadline, logs why, and still saves the item', async () => {
+    const payload = JSON.stringify({
+      stream: 'law_reform',
+      relevant: true,
+      blurb: 'A regulator seeks feedback on its consumer strategy before a mid-October close.',
+      opportunity: true,
+      opportunity_reason: 'Submissions close 16 October 2099.',
+      entities: {
+        organisations: [],
+        amounts: [],
+        deadlines: [
+          { date: '2099-10-16', label: 'Submissions close', kind: 'action', precision: 'day', primary: true, quote: 'Submissions close Friday 16 October 2099', target_url: null },
+          { date: '2099-03-03', label: 'Suspension ends', kind: 'milestone', precision: 'day', primary: false, quote: 'for a period of six months', target_url: null },
+        ],
+      },
+      excerpt: null,
+    });
+    const result = spawnSync('npx', ['tsx', 'src/save-enrichment.ts', String(itemId)], {
+      cwd: new URL('..', import.meta.url).pathname, input: payload, encoding: 'utf8',
+      env: { ...process.env, DATABASE_URL: DB },
+    });
+    expect(result.status).toBe(0);
+    expect(result.stderr).toMatch(/dropped deadline .*day precision/);
+    const { rows } = await getPool().query(`SELECT entities FROM items WHERE id = $1`, [itemId]);
+    expect(rows[0].entities.deadlines).toHaveLength(1);
+    expect(rows[0].entities.deadlines[0]).toMatchObject({ date: '2099-10-16', primary: true, precision: 'day' });
   });
 
   it('persists relevant=false for screened-out items', async () => {

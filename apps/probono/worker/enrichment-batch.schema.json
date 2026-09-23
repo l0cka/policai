@@ -57,17 +57,24 @@
                 "items": {
                   "type": "object",
                   "additionalProperties": false,
-                  "required": ["date", "label"],
+                  "required": ["date", "label", "kind", "precision", "primary", "quote", "target_url"],
                   "properties": {
                     "date": {
                       "type": "string",
                       "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
                     },
-                    "label": { "type": "string" },
+                    "label": { "type": "string", "minLength": 1, "maxLength": 300 },
                     "kind": {
                       "type": "string",
                       "enum": ["action", "milestone"]
-                    }
+                    },
+                    "precision": {
+                      "type": "string",
+                      "enum": ["day", "month", "year"]
+                    },
+                    "primary": { "type": "boolean" },
+                    "quote": { "type": "string", "minLength": 1, "maxLength": 300 },
+                    "target_url": { "type": ["string", "null"], "maxLength": 2000 }
                   }
                 }
               },
