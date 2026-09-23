@@ -83,12 +83,11 @@ Base: `c53d782724372ad7c7647fc24574170fb56af7b2`, fetched `origin/main`.
 Development worktree: `/home/l0cka/Work/Argus/src/policai-a2j-editorial-index`.
 Branch: `feat/a2j-editorial-index-02`. No commit, push, deploy or restart authority.
 
-The separate dirty home checkout has a pending `/this-week` A2J page and a
-one-line `This week` entry in `app/nav.tsx`, plus root Policai feature work. Those
-changes were deliberately not copied into this worktree. Reconcile its nav hunk
-with this branch's focus-restoration change when the coordinator integrates the
-feature; never replace that dirty file wholesale. Review the This week page under
-the new shared typography before releasing both features. Production runtimes
-are release clones under `/var/lib`, not the dirty home checkout. A push to a
-production-tracked branch may trigger the guarded two-lane deployment timer;
+The editorial release originally excluded the parked `/this-week` work. The
+feature is now integrated in source, preserving the mobile focus-restoration
+behaviour. Its content rules, test fixtures and verification commands are in
+[`docs/this-week.md`](../../../docs/this-week.md). This does not imply publication
+or deployment. The original dirty home checkout remains preserved. Production
+runtimes are release clones under `/var/lib`, not that home checkout. A push to
+a production-tracked branch may trigger the guarded two-lane deployment timer;
 source publication and deployment each require separate approval.

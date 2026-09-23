@@ -8,6 +8,7 @@ import { ArrowUpRight } from './icons';
 
 const LINKS: Array<[string, string]> = [
   ['/', 'Feed'],
+  ['/this-week', 'This week'],
   ['/deadlines', 'Deadlines'],
   ['/sector', 'Sector'],
   ['/health', 'Sources'],
