@@ -2160,11 +2160,27 @@ main {
   display: grid;
 }
 
+/* MapLibre's canvas takes keyboard focus for panning; ring the frame instead
+   of the canvas, whose own outline the map clips. */
+.sector-maplibre:has(canvas:focus-visible) {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
 .sector-maplibre canvas:focus-visible {
   outline: none;
 }
 
+/* MapLibre paints its attribution strip white in both themes; use the theme
+   surface so link text and focus rings keep their contrast in dark mode. */
+.sector-maplibre .maplibregl-ctrl.maplibregl-ctrl-attrib,
+.sector-maplibre .maplibregl-ctrl.maplibregl-ctrl-attrib.maplibregl-compact {
+  background: var(--card);
+  color: var(--foreground);
+}
+
 .sector-maplibre .maplibregl-ctrl-attrib-inner a {
+  color: var(--foreground);
   text-decoration: underline !important;
   text-underline-offset: 0.12em;
 }
