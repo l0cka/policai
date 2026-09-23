@@ -1,0 +1,105 @@
+/* GENERATED from design/tokens.css by scripts/sync-design-tokens.mjs. Do not edit. */
+/*
+ * Policai shared design tokens — canonical source.
+ *
+ * Both sites consume these values: Policai (repository root, Tailwind 4) and
+ * Policai A2J (apps/probono/dashboard, plain CSS). The two apps build in
+ * separate contexts (the A2J Docker build sees only apps/probono/dashboard),
+ * so each app receives a byte-identical copy:
+ *
+ *   src/app/design-tokens.css
+ *   apps/probono/dashboard/app/design-tokens.css
+ *
+ * Edit this file only, then run `node scripts/sync-design-tokens.mjs`.
+ * `node scripts/sync-design-tokens.mjs --check` (part of the root test suite)
+ * fails when a copy drifts.
+ *
+ * Values here are the ones both sites already render. App-specific tokens,
+ * and deliberate local differences, stay in each app's globals.css.
+ */
+:root {
+  /* ------------------------------------------------------------- type -- */
+  /* Nothing renders smaller than the floor. */
+  --type-floor: 10px;
+  /* Eyebrows, metadata labels and small-caps data. */
+  --type-label: 0.6875rem;
+  --type-small: 0.75rem;
+  --type-ui: 0.875rem;
+  --type-body: 1rem;
+  --tracking-eyebrow: 0.16em;
+
+  /* Policai heading scale: h1 page title, article h1, h3 section title. */
+  --type-page-title: clamp(1.5rem, 2.1vw, 1.9rem);
+  --type-article-title: clamp(1.7rem, 2.7vw, 2.3rem);
+  --type-section-title: 1.1rem;
+
+  /* ---------------------------------------------------------- spacing -- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+
+  /* ------------------------------------------------------------ radii -- */
+  --radius: 0.5rem;
+  --radius-control: 4px;
+  --radius-pill: 9999px;
+
+  /* ------------------------------------------------------------ focus -- */
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+  --focus-ring-radius: 2px;
+  --focus-ring-color: var(--ring);
+
+  /* -------------------------------------------------- semantic colour -- */
+  --background: light-dark(#f8f7f3, #151b18);
+  --foreground: light-dark(#202822, #eef0e9);
+  --card: light-dark(#fffefa, #1b231e);
+  --popover: light-dark(#fffefa, #1b231e);
+  --primary: light-dark(#245847, #a3cfb3);
+  --primary-foreground: light-dark(#ffffff, #151b18);
+  --muted: light-dark(#eeeee7, #27302a);
+  --muted-foreground: light-dark(#606760, #b0bbb1);
+  --border: light-dark(#dcded6, #38443b);
+  --input: light-dark(#9da89c, #6b796e);
+  --ring: light-dark(#245847, #a3cfb3);
+
+  --navy: light-dark(#102a43, #09182a);
+  --trust: light-dark(#146b5a, #65d2b4);
+  /* AA-contrast caution ink (4.5:1 on paper). */
+  --caution: light-dark(#8f5d12, #e7b96c);
+  --alarm: light-dark(#b42318, #ff8175);
+
+  --status-active: light-dark(#146b5a, #65d2b4);
+  --status-proposed: light-dark(#8a5400, #e7b96c);
+  --status-amended: light-dark(#2f4fd8, #91aaff);
+  --status-repealed: light-dark(#525d6b, #a9b4c4);
+  --status-active-bg: light-dark(#deeee7, #18362f);
+  --status-proposed-bg: light-dark(#f6e8c8, #3a2f1c);
+  --status-amended-bg: light-dark(#e4eafa, #1f2d55);
+  --status-repealed-bg: light-dark(#e7e9e8, #28303b);
+
+  --background-pattern: light-dark(rgba(16, 42, 67, 0.028), rgba(255, 255, 255, 0.022));
+
+  /* Print-style rule weights: hairline, rule, heavy. */
+  --rule-hair: light-dark(rgba(16, 33, 58, 0.14), rgba(237, 242, 247, 0.13));
+  --rule: light-dark(rgba(16, 33, 58, 0.28), rgba(237, 242, 247, 0.24));
+  --rule-heavy: light-dark(rgba(16, 33, 58, 0.62), rgba(237, 242, 247, 0.5));
+
+  /* Depth comes from ink on paper, not from drop shadows. */
+  --shadow-raise: light-dark(0 1px 2px rgba(16, 33, 58, 0.06), 0 1px 2px rgba(0, 0, 0, 0.4));
+  --shadow-lift: light-dark(
+    0 10px 24px -14px rgba(16, 33, 58, 0.4),
+    0 12px 28px -16px rgba(0, 0, 0, 0.8)
+  );
+
+  /* ----------------------------------------------------------- motion -- */
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 130ms;
+  --dur-base: 220ms;
+  --dur-slow: 420ms;
+}
