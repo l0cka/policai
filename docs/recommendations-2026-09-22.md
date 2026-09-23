@@ -29,20 +29,20 @@ The real gaps, in priority order:
 
 ### Tier 1 — state/territory legislation registers and gazettes (highest value)
 
-Only the **federal** register (`legislation-whats-new`) is tracked today. Every
+As of 2026-09-23 the federal, VIC, QLD, TAS and WA registers are watched (see the table). Every
 state and territory has a legislation register that publishes new and amended
 regulations — the exact instrument class the register tracks as `regulation`:
 
 | Jurisdiction | Candidate source | Notes |
 |---|---|---|
-| NSW | `legislation.nsw.gov.au` (new/amended + NSW Government Gazette) | Register search pages may need the browser strategy |
-| VIC | `legislation.vic.gov.au` (includes the Victorian Government Gazette) | Verify the whats-new surface |
-| QLD | `legislation.qld.gov.au` | Queensland legislation register |
-| WA | `legislation.wa.gov.au` | Western Australian legislation register |
-| SA | `legislation.sa.gov.au` (+ SA Gazette) | Verify URL stability |
-| TAS | `legislation.gov.tas.gov.au` | Smaller corpus, cheap to add |
-| ACT | `legislation.act.gov.au` | ACT legislation register |
-| NT | `legislation.nt.gov.au` | Verify availability |
+| NSW | `legislation.nsw.gov.au` (new/amended + NSW Government Gazette) | Refuses automated clients; not watched |
+| VIC | `legislation.vic.gov.au` (includes the Victorian Government Gazette) | Watched: `vic-legislation-whats-new` (`/whats-new`, browser) |
+| QLD | `legislation.qld.gov.au` | 2026-09-23: watched as `qld-legislation-new` (Atom `/feed?id=newlegislation`, 5 entries, plain HTTP). `/whats-new` is 404; `feed?id=whatsnew` includes reprints |
+| WA | `legislation.wa.gov.au` | 2026-09-23: watched as `wa-legislation-as-made` (`statutes.nsf/asmade.atom`) and `wa-legislation-as-passed` (`statutes.nsf/aspassed.atom`), 200 entries each, plain HTTP |
+| SA | `legislation.sa.gov.au` (+ SA Gazette) | Refuses automated clients; not watched |
+| TAS | `legislation.tas.gov.au` | 2026-09-23: watched as `tas-legislation-statutory-rules` (Atom `/feed?id=sr-month`, 8 entries) and `tas-legislation-acts` (`/feed?id=act-month`, 3 entries), plain HTTP |
+| ACT | `legislation.act.gov.au` | 2026-09-23: rejected for now. `/WhatsNew/Index` (7-day report) renders behind an F5 challenge via the browser path, but its data tables yield 1 extractable item. Needs a table rule in `extract.ts` |
+| NT | `legislation.nt.gov.au` | 2026-09-23: rejected. No feed or what's-new page (`/en/LegislationPortal/Recent` 404); `Subordinate-Legislation/By-Year` is a 2 MB page with 0 extractable items |
 
 Why this beats adding more media feeds: register records at `regulation` level
 are the thin end of the 79-record corpus, and state regulations are where AI
@@ -208,7 +208,7 @@ change gates (npm run check + the review workflow is sufficient here).
 | 1 | Quick wins: `/status` health page (shipped on `feat/status-coverage`, with overdue-source counts in `/api/status`); per-record `.md` provenance export; explicit "never confirmed" wording in API + exports | 1–2 days | New Vitest tests; `npm run check`; manual API spot-check |
 | 2 | `datePrecision` field + validator support + backfill annotation on existing 79 records (annotate, never invent) | 1–2 days | `npm run validate:data` extended; 0 errors |
 | 3 | Structured `deadlines` on register records + homepage rail (A2J pattern) | 3–4 days | Type + validator changes, rail tests, ISR verified on serving checkout |
-| 4 | Source expansion Tier 1 (state legislation registers), then Tier 2/3. Done on `feat/status-coverage`: `vic-legislation-whats-new`, `fcfcoa-practice-directions`. NSW and SA registers refuse automated clients; QLD, ACT and TAS listing URLs are unverified | 1 day per source incl. verification | `npm run collect -- --dry-run --source=<id>`, then `npm run audit:sources` |
+| 4 | Source expansion Tier 1 (state legislation registers), then Tier 2/3. Done on `feat/status-coverage`: `vic-legislation-whats-new`, `fcfcoa-practice-directions`. Done on `feat/state-sources` (2026-09-23): `qld-legislation-new`, `tas-legislation-statutory-rules`, `tas-legislation-acts`, `wa-legislation-as-made`, `wa-legislation-as-passed` (official Atom feeds, verified by dry run and audit). NSW and SA registers refuse automated clients. ACT needs an extractor rule for its what's-new tables. NT has no change listing | 1 day per source incl. verification | `npm run collect -- --dry-run --source=<id>`, then `npm run audit:sources` |
 | 5 | Freshness gate + completeness checks in `validate:data`; publish both counts on `/status` | 2–3 days | Gate runs in CI; budget seeded from the measured backlog, lowered only |
 | 6 | Coverage hygiene: superseded by the Tier 4 correction. Fix the fingerprint mismatch that stalls tracked documents | 1 day | `public/data/meta.json` coverage counts rise; `npm run audit:sources` |
 
