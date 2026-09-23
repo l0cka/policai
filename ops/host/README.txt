@@ -15,7 +15,7 @@ Do not run this bundle as root. Review and install a fixed snapshot first.
 WHAT EXISTS
   install.py: first-install file transaction with protected source-manifest checks,
   held-job preflight, original-file backups and repeatable pre-initialization rollback.
-  It installs 11 explicit files only. It does not provision release clones, environment,
+  It installs 12 explicit files only. It does not provision release clones, environment,
   config, state directories or locks, reload managers, start jobs, or activate runtimes.
   units/probono-*.service: guarded worker entrypoints; existing timers remain separate.
   dispatcher.py: four-class routing, stable flock exclusion, fsynced journals,
@@ -24,7 +24,8 @@ WHAT EXISTS
   host.py: bounded subprocess/identity adapters; fixed Git, systemd, Compose,
   database identity and HTTP health checks; worker/backup guard.
   cli.py: initialize / deploy / rollback / status / worker / compose.
-  bin/docker: allowlisted nested Compose adapter for ingest and enrichment.
+  bin/docker: allowlisted nested Compose adapter for ingest, enrichment and
+  deadline verification.
   backup.sh: canonical-path variant of the existing backup helper; same dump,
   gzip/content/size checks and 14-day/newest-five retention semantics.
   policai-deploy: new delegate for /usr/local/libexec/policai-deploy.
@@ -88,6 +89,7 @@ SERVICE ROUTING (REVIEW EXISTING HARDENING; NOT BLIND DROP-INS)
     /usr/bin/python3 -I /usr/local/libexec/policai-host/cli.py worker ingest
     /usr/bin/python3 -I /usr/local/libexec/policai-host/cli.py worker enrich
     /usr/bin/python3 -I /usr/local/libexec/policai-host/cli.py worker backup
+    /usr/bin/python3 -I /usr/local/libexec/policai-host/cli.py worker verify-deadlines
   Working directory: /var/lib/probono-radar/app/apps/probono.
   Preserve original schedules, principal and Claude capability restrictions.
   Ingest holds one guard through its exec into enrichment. Nested Docker calls

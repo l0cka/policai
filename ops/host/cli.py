@@ -36,7 +36,7 @@ def parser():
     worker = commands.add_parser(
         "worker", help="run exactly one guarded scheduled operation as l0cka"
     )
-    worker.add_argument("operation", choices=("ingest", "enrich", "backup"))
+    worker.add_argument("operation", choices=("ingest", "enrich", "backup", "verify-deadlines"))
     compose = commands.add_parser(
         "compose", help="internal allowlisted worker adapter; never arbitrary docker"
     )
@@ -180,7 +180,7 @@ def main():
             command = args.arguments[1:] if args.arguments[:1] == ["--"] else args.arguments
             h.worker_arguments(command)
             payload = None
-            if "src/save-enrichment.ts" in command:
+            if any(saver in command for saver in h.STDIN_TASKS):
                 payload = sys.stdin.buffer.read(262145)
                 if len(payload) > 262144:
                     raise Refused("worker input exceeds bound")

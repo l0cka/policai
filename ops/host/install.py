@@ -41,7 +41,7 @@ FILES = {
             0o644,
             "l0cka",
         )
-        for name in ("ingest", "enrich", "backup")
+        for name in ("ingest", "enrich", "backup", "verify-deadlines")
     },
 }
 

@@ -1,0 +1,9 @@
+[Unit]
+Description=Pro Bono Radar deadline verification pass (OpenAI-compatible verifier, no tools)
+
+[Service]
+Type=oneshot
+WorkingDirectory=/var/lib/probono-radar/app/apps/probono
+# Requires the host dispatcher allowlist change in docs/deadline-verifier.md.
+ExecStart=/usr/bin/python3 -I /usr/local/libexec/policai-host/cli.py worker verify-deadlines
+TimeoutStartSec=3600

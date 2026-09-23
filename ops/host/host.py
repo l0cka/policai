@@ -97,6 +97,10 @@ def check_compose_source(app, digest):
         raise Refused("Compose source requires new review")
 
 
+# Worker tasks that read one bounded JSON payload from stdin.
+STDIN_TASKS = ("src/save-enrichment.ts", "src/save-deadline-verification.ts")
+
+
 def worker_arguments(args):
     backup = [
         "compose",
@@ -121,13 +125,12 @@ def worker_arguments(args):
     if len(rest) < 2 or rest[0] != "worker":
         raise Refused("worker service required")
     task, params = rest[1], rest[2:]
-    if task in ("src/fetch-all.ts", "src/list-unenriched.ts") and not params:
-        pass
-    elif (
-        task == "src/save-enrichment.ts"
-        and len(params) == 1
-        and re.fullmatch("[1-9][0-9]{0,12}", params[0])
+    if (
+        task in ("src/fetch-all.ts", "src/list-unenriched.ts", "src/verify-deadlines.ts")
+        and not params
     ):
+        pass
+    elif task in STDIN_TASKS and len(params) == 1 and re.fullmatch("[1-9][0-9]{0,12}", params[0]):
         pass
     else:
         raise Refused("worker task not allowlisted")
@@ -390,6 +393,7 @@ class Host:
             "/home/l0cka/.config/systemd/user/probono-ingest.service",
             "/home/l0cka/.config/systemd/user/probono-enrich.service",
             "/home/l0cka/.config/systemd/user/probono-backup.service",
+            "/home/l0cka/.config/systemd/user/probono-verify-deadlines.service",
         }
         if not required.issubset(self.config["installed_hashes"]):
             raise Refused("guarded entrypoint installation proof missing")
@@ -746,7 +750,7 @@ class Host:
         )
 
     def run_worker(self, name, lockfds):
-        if name not in ("ingest", "enrich", "backup"):
+        if name not in ("ingest", "enrich", "backup", "verify-deadlines"):
             raise Refused("scheduled command out of scope")
         self.check_worker_identity()
         self.check_worker_release()
@@ -773,7 +777,7 @@ class Host:
         allowed = worker_arguments(args)
         backup = allowed[0] == "exec"
 
-        if stdin_data is not None and "src/save-enrichment.ts" not in allowed:
+        if stdin_data is not None and not any(saver in allowed for saver in STDIN_TASKS):
             raise Refused("unexpected worker stdin")
         app = BASES["probono"] / "app/apps/probono"
         return self.runner.execute(
