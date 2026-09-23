@@ -1,5 +1,5 @@
 import { closePool, getPool } from './lib/db.js';
-import { EnrichmentSchema } from './lib/types.js';
+import { prepareEnrichment } from './lib/types.js';
 
 async function readStdin(): Promise<string> {
   const chunks: Buffer[] = [];
@@ -20,12 +20,17 @@ async function main() {
     console.error(`malformed JSON: ${err instanceof Error ? err.message : String(err)}`);
     process.exit(2); // exit 2 for validation/usage errors (malformed agent output)
   }
-  const parsed = EnrichmentSchema.safeParse(data);
-  if (!parsed.success) {
-    console.error(`validation failed: ${parsed.error.message}`);
+  const prepared = prepareEnrichment(data);
+  if (!prepared.ok) {
+    console.error(`validation failed: ${prepared.error}`);
     process.exit(2);
   }
-  const e = parsed.data;
+  // Invalid dates are dropped, not fatal: the rest of the item still lands.
+  for (const d of prepared.dropped) {
+    console.error(`item ${itemId}: dropped deadline ${JSON.stringify(d.deadline)}: ${d.reason}`);
+  }
+  for (const note of prepared.notes) console.error(`item ${itemId}: ${note}`);
+  const e = prepared.enrichment;
   const pool = getPool();
   const res = await pool.query(
     `UPDATE items SET stream = $2, relevant = $3, blurb = $4, opportunity = $5, opportunity_reason = $6,
