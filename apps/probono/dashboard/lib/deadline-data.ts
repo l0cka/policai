@@ -1,4 +1,5 @@
 import { getPool } from './db';
+import { withCleanTitles } from './display-title';
 
 export type DeadlineKind = 'action' | 'milestone';
 export type DeadlineRow = { title: string; url: string; date: string; label: string; kind: DeadlineKind };
@@ -81,7 +82,7 @@ export async function getUpcomingDeadlines(limit?: number): Promise<DeadlineRow[
      ORDER BY q.date ASC, q.label ASC
      ${limit ? `LIMIT ${Math.floor(limit)}` : ''}`,
   );
-  return rows;
+  return withCleanTitles(rows);
 }
 
 /* Dates that will simply arrive: reports handed down, schemes starting, plans
@@ -94,7 +95,7 @@ export async function getUpcomingMilestones(limit?: number): Promise<DeadlineRow
      ORDER BY q.date ASC, q.label ASC
      ${limit ? `LIMIT ${Math.floor(limit)}` : ''}`,
   );
-  return rows;
+  return withCleanTitles(rows);
 }
 
 export async function getRecentlyPassed(days: number): Promise<DeadlineRow[]> {
@@ -105,5 +106,5 @@ export async function getRecentlyPassed(days: number): Promise<DeadlineRow[]> {
      WHERE q.kind = 'action'
      ORDER BY q.date DESC, q.label ASC`,
   );
-  return rows;
+  return withCleanTitles(rows);
 }

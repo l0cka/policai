@@ -37,6 +37,11 @@ if (process.env.FIXTURE_WEEKLY === '1') {
     await db.query(`INSERT INTO items(source_id,url,canonical_url,title,published_at,relevant,opportunity,entities,stream) VALUES (1,$1,$1,$2,now()-$3 * interval '1 day',true,$4,$5,'funding')`, [url,name,age,opportunity,JSON.stringify({deadlines})]);
   }
 }
+// Opt-in: a title stored before the listing-title fix, to prove display cleanup.
+if (process.env.FIXTURE_MARKDOWN_TITLE === '1') {
+  await db.query(`INSERT INTO items(source_id,url,canonical_url,title,published_at,stream,relevant) VALUES (3,$1,$1,$2,now()-interval '2 days','funding',true)`,
+    ['https://example.org/markdown-title', 'Fixture News\\ \\ August 27, 2026\\ \\ ##### Fixture consultant sought for a data fund']);
+}
 if (process.env.FIXTURE_EMPTY === '1') await db.exec('DELETE FROM items');
 const server=new PGLiteSocketServer({db,host:'127.0.0.1',port:8897,maxConnections:10});
 await server.start();console.log('Fixture ready at 127.0.0.1:8897 (in-memory only)');

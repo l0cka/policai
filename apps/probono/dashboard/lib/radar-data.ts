@@ -1,6 +1,7 @@
 import { getPool } from './db';
 import { OPEN_OPPORTUNITY_SQL } from './deadline-data';
 import { RADAR_PAGE_SIZE, radarPage, type RadarState } from './radar-state';
+import { withCleanTitles } from './display-title';
 /*
  * One row per source x collection across the window. Every figure the diagram
  * states is derived from this aggregate rather than from the rows we happen to
@@ -77,7 +78,7 @@ export async function getRadarPage(state: RadarState) {
      LIMIT $${args.length + 1} OFFSET $${args.length + 2}`,
     [...args, RADAR_PAGE_SIZE, pagination.offset],
   );
-  return { rows, pagination };
+  return { rows: withCleanTitles(rows), pagination };
 }
 
 export async function getRadarStats() {
@@ -128,5 +129,9 @@ export async function getRadarOverview() {
        ORDER BY coalesce(i.published_at, i.created_at) DESC, i.id DESC LIMIT 3`,
     ),
   ]);
-  return { networkPairs, networkSignals, latestItems };
+  return {
+    networkPairs,
+    networkSignals: withCleanTitles(networkSignals),
+    latestItems: withCleanTitles(latestItems),
+  };
 }
