@@ -194,9 +194,19 @@ export default function SectorDirectory({
 
         <div className="sector-directory-results">
           {visible.length === 0 ? (
-            <div className="empty-state">
+            <div className="empty-state" role="status">
               <p className="section-title">Nothing matches</p>
-              <p>Clear a filter and try again.</p>
+              <p>Try a broader search or fewer filters.</p>
+              <button
+                type="button"
+                className="button-primary"
+                onClick={() => {
+                  setQ('');
+                  clearFilters();
+                }}
+              >
+                Clear search and filters
+              </button>
             </div>
           ) : null}
 
