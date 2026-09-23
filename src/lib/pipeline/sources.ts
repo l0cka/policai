@@ -599,6 +599,20 @@ export const WATCH_SOURCES: WatchSource[] = [
   },
   // --- Courts ---
   {
+    id: 'fcfcoa-practice-directions',
+    name: 'Federal Circuit and Family Court — practice directions',
+    jurisdiction: 'federal',
+    category: 'court',
+    url: 'https://www.fcfcoa.gov.au/resources/practice-directions',
+    kind: 'html-index',
+    schedule: 'weekly',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    notes:
+      'Practice directions index, including the court’s AI practice direction. Rendered listing checked 2026-09-23: 15 entries extracted.',
+  },
+  {
     id: 'fedcourt-practice-notes',
     name: 'Federal Court — practice notes',
     jurisdiction: 'federal',
@@ -756,6 +770,20 @@ export const WATCH_SOURCES: WatchSource[] = [
     fetchStrategy: 'browser',
     notes:
       'Whole-of-government NSW announcements, including AI policy and digital government decisions.',
+  },
+  {
+    id: 'vic-legislation-whats-new',
+    name: 'Victorian legislation — what’s new',
+    jurisdiction: 'vic',
+    category: 'government',
+    url: 'https://www.legislation.vic.gov.au/whats-new',
+    kind: 'html-index',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    notes:
+      'Acts and statutory rules lodged in the current week, rendered as a Ripple data table. Checked 2026-09-23: 7 entries extracted; 1 of 6 dry runs returned the table before it rendered, so an occasional empty-index failure is expected. The first state legislation register watched; NSW and SA registers refuse automated clients.',
   },
   {
     id: 'vic-ai',
