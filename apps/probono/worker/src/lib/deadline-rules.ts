@@ -34,6 +34,8 @@ export type StoredDeadline = {
   primary?: boolean;
   quote?: string;
   target_url?: string | null;
+  /* Set by the deadline verifier: closed/not_found dates are not chaseable. */
+  status?: 'open' | 'closed' | 'extended' | 'not_found';
 };
 
 const MONTHS: Record<string, number> = {
@@ -134,7 +136,12 @@ const describe = (raw: unknown) => {
  * Check each extracted date on its own. A bad date is dropped with a reason;
  * it never fails the item, so the rest of the enrichment still lands.
  */
-export function vetDeadlines(raw: unknown[], now: Date = new Date()): VettedDeadlines {
+export function vetDeadlines(
+  raw: unknown[],
+  now: Date = new Date(),
+  /* The verifier re-reads items whose deadline has passed; enrichment never keeps one. */
+  { allowPast = false }: { allowPast?: boolean } = {},
+): VettedDeadlines {
   const today = sydneyToday(now);
   const kept: Deadline[] = [];
   const dropped: DroppedDeadline[] = [];
@@ -160,7 +167,7 @@ export function vetDeadlines(raw: unknown[], now: Date = new Date()): VettedDead
       dropped.push({ deadline: item, reason: `day precision but the quote does not name ${d.date}` });
       continue;
     }
-    if (effectiveEnd(d.date, d.precision) < today) {
+    if (!allowPast && effectiveEnd(d.date, d.precision) < today) {
       dropped.push({ deadline: item, reason: `date already passed at enrichment (${today})` });
       continue;
     }
@@ -217,7 +224,7 @@ export function selectDigestDeadlines(items: DigestSourceItem[], today: string):
   const out: DigestDeadline[] = [];
   for (const item of items) {
     const primary = primaryAction(storedDeadlines(item.entities?.deadlines));
-    if (!primary || primary.date < today) continue;
+    if (!primary || primary.date < today || primary.status === 'closed' || primary.status === 'not_found') continue;
     const key = `${primary.date}|${primary.label.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()}`;
     if (seen.has(key)) continue;
     seen.add(key);
