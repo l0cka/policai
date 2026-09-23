@@ -58,10 +58,12 @@ src/
 ├── app/
 │   ├── page.tsx                  # Policy register (server component → client PolicyBrowser)
 │   ├── developments/page.tsx     # Automated developments feed
+│   ├── this-week/page.tsx        # Weekly verified developments + upcoming dates
 │   ├── courts/page.tsx           # Court AI guidance view
-│   ├── agencies/page.tsx         # Agency directory
-│   ├── map|network|framework|timeline/  # Visualisations
-│   ├── blog/                     # MDX blog
+│   ├── network|timeline/         # Visualisations
+│   ├── methodology|status/       # Verification method and source health
+│   ├── not-found.tsx             # Site 404 with onward links
+│   ├── agencies|map|framework|blog/  # Retired: each page calls notFound()
 │   ├── policies/[id]/            # Policy detail (server) + client tabs
 │   └── api/                      # READ-ONLY public JSON API (policies, agencies,
 │                                 #   timeline, network, status)
