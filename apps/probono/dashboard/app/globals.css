@@ -262,6 +262,10 @@ time,
   animation-delay: 140ms;
 }
 
+.reveal-3 {
+  animation-delay: 210ms;
+}
+
 @keyframes reveal-rise {
   from {
     opacity: 0;
@@ -3794,6 +3798,31 @@ tbody td:first-child {
 
 .status-none {
   color: var(--muted-foreground);
+}
+
+/* Overdue reuses the caution ink the way the register marks "Review due". */
+.status-overdue {
+  color: var(--caution);
+}
+
+/* ---------------------------------------------------------------- health -- */
+
+.completeness {
+  margin-top: var(--space-8);
+}
+
+.completeness-list {
+  margin-top: var(--space-4);
+  border-top: 1px solid var(--rule-hair);
+}
+
+.completeness-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-4);
+  padding-block: var(--space-2);
+  border-bottom: 1px solid var(--rule-hair);
 }
 
 /* ---------------------------------------------------------------- footer -- */

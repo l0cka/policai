@@ -3,7 +3,7 @@ import { createRequire } from 'node:module';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import assert from 'node:assert/strict';
-import { WEEKLY_DEVELOPMENTS_SQL } from '../lib/weekly-query.ts';
+import { WEEKLY_ANCHOR_SQL, WEEKLY_DEVELOPMENTS_SQL, isStaleSnapshot, weekWindow } from '../lib/weekly-query.ts';
 if (!process.env.FIXTURE_DEPENDENCIES) throw new Error('Set FIXTURE_DEPENDENCIES');
 const require = createRequire(resolve(process.env.FIXTURE_DEPENDENCIES, 'package.json'));
 const { PGlite } = require('@electric-sql/pglite');
@@ -33,7 +33,46 @@ try {
   const boundary = new Date(dstEnd.getTime() - 7 * 86400000);
   await db.query(`INSERT INTO items(source_id,url,canonical_url,title,published_at,relevant) VALUES (1,'https://example.org/dst','https://example.org/dst','DST boundary',$1,true)`, [boundary]);
   assert.equal((await db.query(WEEKLY_DEVELOPMENTS_SQL, [dstEnd])).rows.length, 1, 'seven elapsed days across DST');
+  await db.exec('DELETE FROM items');
+
+  // --- P8: the window anchors to collection (max ok ingest_runs.created_at),
+  // not the wall clock, and an old anchor renders as a historical snapshot. ---
+  // No successful run yet: no anchor, so the page cannot invent a window.
+  const { rows: [{ anchor: emptyAnchor }] } = await db.query(WEEKLY_ANCHOR_SQL);
+  assert.equal(emptyAnchor, null, 'no anchor before any successful run');
+  // An ok run eight days ago anchors the week; an item from just before that
+  // run sits in the anchored window while the wall-clock week would exclude it.
+  await db.query(`INSERT INTO ingest_runs(run_started_at,created_at,source_id,status) VALUES ($1,$1,1,'ok')`,
+    [new Date(Date.now() - 8 * 86_400_000).toISOString()]);
+  const { rows: [{ anchor }] } = await db.query(WEEKLY_ANCHOR_SQL);
+  const anchorMs = new Date(anchor).getTime();
+  const window = weekWindow(anchorMs);
+  assert.equal(window.endMs, anchorMs, 'the window ends at the collection anchor');
+  assert.equal(window.endMs - window.startMs, 168 * 3_600_000, '168-hour window');
+  // The page's stale rule: the anchor itself ages out after a week.
+  assert.equal(isStaleSnapshot(anchorMs, Date.now()), true, 'anchor eight days old is a historical snapshot');
+  assert.equal(isStaleSnapshot(anchorMs - 3 * 86_400_000, Date.now()), true, 'anchor eleven days old is stale');
+  assert.equal(isStaleSnapshot(Date.now(), Date.now()), false, 'a fresh anchor is not stale');
+  // Boundary: exactly seven days old is not yet stale.
+  const justInside = Date.now() - 7 * 86_400_000;
+  assert.equal(isStaleSnapshot(justInside, Date.now()), false, 'exactly seven days is the boundary, not stale');
+  assert.equal(isStaleSnapshot(justInside - 1, Date.now()), true, 'a second past seven days is stale');
+  // A window anchored eight days back still selects its own last 168 hours —
+  // items the wall-clock week would miss — and nothing older.
+  await db.query(`INSERT INTO items(source_id,url,canonical_url,title,published_at,relevant)
+    VALUES (1,$1,$1,'Anchor-week item',$2,true)`,
+    ['https://example.org/anchor-week', new Date(anchorMs - 2 * 3_600_000)]);
+  await db.query(`INSERT INTO items(source_id,url,canonical_url,title,published_at,relevant)
+    VALUES (1,$1,$1,'Older wall-clock item',$2,true)`,
+    ['https://example.org/wallclock', new Date(anchorMs - 3 * 3_600_000)]);
+  await db.query(`INSERT INTO items(source_id,url,canonical_url,title,published_at,relevant)
+    VALUES (1,$1,$1,'Before the anchor window',$2,true)`,
+    ['https://example.org/before-window', new Date(anchorMs - 169 * 3_600_000)]);
+  const historic = await db.query(WEEKLY_DEVELOPMENTS_SQL, [new Date(anchorMs).toISOString()]);
+  assert.deepEqual(historic.rows.map(r => r.title), ['Anchor-week item', 'Older wall-clock item'],
+    'the window follows collection, not the wall clock');
   console.log('PASS: seven-day window excludes old/future/screened items');
+  console.log('PASS: weekly window anchors to the last ok run and flags a stale snapshot');
 } catch (error) {
   console.error(error.message);
   process.exitCode = 1;

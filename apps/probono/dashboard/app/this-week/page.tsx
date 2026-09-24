@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { countdown, daysUntil, safeHref, urgency } from '../../lib/deadline-data';
 import { getWeeklyBrief, type WeeklySignal } from '../../lib/this-week-data';
+import { isStaleSnapshot, weekWindow } from '../../lib/weekly-query';
 import { STREAMS } from '../../lib/radar-state';
 import { ArrowRight, ArrowUpRight, Flag } from '../icons';
 
@@ -40,15 +41,37 @@ function Signal({ item, opportunity = false }: { item: WeeklySignal; opportunity
 export default async function ThisWeek() {
   const now = new Date();
   const today = now.toLocaleDateString('en-CA', { timeZone: 'Australia/Sydney' });
-  const start = new Date(now.getTime() - 7 * 86400000);
-  const { opportunities, deadlines, developments, totalDevelopments } = await getWeeklyBrief(now);
+  const { anchor, opportunities, deadlines, developments, totalDevelopments } = await getWeeklyBrief(now);
+  // The brief follows collection, not the wall clock: the window ends at the
+  // most recent successful run, so a stalled collector reads as a historical
+  // snapshot rather than a quiet week.
+  const window = anchor ? weekWindow(anchor.getTime()) : null;
+  const stale = Boolean(window && isStaleSnapshot(window.endMs, now.getTime()));
+  const start = window ? new Date(window.startMs) : now;
+  const end = window ? new Date(window.endMs) : now;
   return (
     <div className="container page">
       <header className="page-head reveal">
         <p className="page-eyebrow">The rolling brief</p>
         <h1 className="page-title">This week</h1>
         <p className="page-intro">What to read and what to check next: recent sector signals, potential opportunities and upcoming closing dates. These are machine-selected leads, not editorially verified advice. Check each linked source before acting.</p>
-        <p className="page-intro">Seven-day window: {shortDate(start)}–{shortDate(now)}, ending at {now.toLocaleTimeString('en-AU', { timeZone: 'Australia/Sydney', hour: '2-digit', minute: '2-digit', timeZoneName: 'short' })}. Dates use Sydney time. <Link href="/health">Check source coverage</Link>.</p>
+        {stale ? (
+          <p role="status" className="page-intro">
+            Collection is more than seven days old. This is a historical snapshot, not current
+            weekly coverage. <Link href="/health">Check source coverage</Link>.
+          </p>
+        ) : null}
+        {window ? (
+          <p className="page-intro">
+            Seven-day window: {shortDate(start)}–{shortDate(end)}, ending at{' '}
+            {end.toLocaleTimeString('en-AU', { timeZone: 'Australia/Sydney', hour: '2-digit', minute: '2-digit', timeZoneName: 'short' })}. Dates use Sydney time. <Link href="/health">Check source coverage</Link>.
+          </p>
+        ) : (
+          <p role="status" className="page-intro">
+            No successful collection run is recorded yet, so there is no weekly window to report.{' '}
+            <Link href="/health">Check source coverage</Link>.
+          </p>
+        )}
         <nav className="filters" aria-label="Weekly sections">
           <a href="#week-opportunities">Opportunities</a><a href="#week-deadlines">Deadlines</a><a href="#week-developments">Recent signals</a>
         </nav>
