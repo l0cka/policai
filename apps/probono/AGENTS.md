@@ -34,11 +34,15 @@ conventions still apply, but root Policai data/runtime assumptions do not.
 - Pro Bono has a separate release, rollback, runtime and verification lane from
   Policai even though both share source history. A Policai deployment must not
   implicitly deploy Pro Bono or change its database, timers or email delivery.
-- The new child deployment location
-  `/var/lib/probono-radar/app/apps/probono` is **planned, not active until cutover**.
-  Importing source is not a cutover. Existing runtime files under
-  `/home/l0cka/Work/Argus/services/probono-radar/src` remain untouched; verify
-  actual systemd working directories and container ownership before operations.
+- The A2J cutover has been executed (2026-09-23 22:19 AEST). The live child
+  release is `/var/lib/probono-radar/app/apps/probono`; the probono
+  ingest/enrich/backup/backup-mirror/verify-deadlines user units run from that
+  tree through the root-owned guarded dispatcher
+  `/usr/local/libexec/policai-host/cli.py`, whose allowlist is installed and
+  hash-pinned in the root config `installed_hashes`. The legacy checkout
+  `/home/l0cka/Work/Argus/services/probono-radar/src` is retained as historical
+  reference, not a runtime; verify actual systemd working directories and
+  container ownership before operations.
 - Do not use the old `ops/deploy.sh` rsync deployment (`rsync --delete`). Legacy
   runbooks and unit paths are historical until an approved release procedure
   replaces them. Never sync a dirty checkout over another checkout.
