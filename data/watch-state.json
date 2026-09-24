@@ -306,7 +306,7 @@
     "https://www.act.gov.au/open/act-government-artificial-intelligence-policy#policai-change=0040e7ec83db2a7430b63de7cf72e581dcc938a3139b85ec32c40aa15dc5f4a0:1": {
       "firstSeenAt": "2026-07-20T12:19:40.243Z",
       "sourceId": "act-ai-policy",
-      "status": "awaiting_review",
+      "status": "processed",
       "attempts": 1,
       "lastAttemptAt": "2026-07-20T12:19:40.243Z",
       "candidate": {
@@ -314,7 +314,8 @@
         "url": "https://www.act.gov.au/open/act-government-artificial-intelligence-policy",
         "text": "The official source content for \"ACT Government Artificial Intelligence Policy\" changed. Editorial re-verification is required before the register record can be treated as current.",
         "changeFingerprint": "0040e7ec83db2a7430b63de7cf72e581dcc938a3139b85ec32c40aa15dc5f4a0:1"
-      }
+      },
+      "processedAt": "2026-09-24T19:32:58.402Z"
     },
     "https://digitalterritory.nt.gov.au/digital-government/strategies-and-guidance/policies-standards-and-guidance/artificial-intelligence-assurance-framework#policai-change=afd9802a203e8782df4f27cf28fad8fe07f58eb8880ee292a815e82bf7e5d456:1": {
       "firstSeenAt": "2026-07-20T12:19:40.243Z",
@@ -2311,7 +2312,7 @@
     "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework#policai-change=9b6a110f2ae22111caff3be599b1da34dbac7af8aba1a1a42f0fc11b224431a7:3": {
       "firstSeenAt": "2026-09-01T19:30:31.586Z",
       "sourceId": "wa-ai-policy",
-      "status": "awaiting_review",
+      "status": "processed",
       "attempts": 1,
       "lastAttemptAt": "2026-09-01T19:30:31.586Z",
       "candidate": {
@@ -2319,7 +2320,8 @@
         "url": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
         "text": "The official source content for \"WA Government Artificial Intelligence Policy and Assurance Framework\" changed. Editorial re-verification is required before the register record can be treated as current.",
         "changeFingerprint": "9b6a110f2ae22111caff3be599b1da34dbac7af8aba1a1a42f0fc11b224431a7:3"
-      }
+      },
+      "processedAt": "2026-09-24T19:32:58.402Z"
     },
     "https://www.aph.gov.au/Parliamentary_Business/Committees/House/Current_Inquiries#policai-change=9b37222b4b078986245f84c886640325d62780c6c07fe48970bc8439bc131d70:7": {
       "firstSeenAt": "2026-09-02T19:34:28.075Z",
@@ -2394,7 +2396,7 @@
     "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy#policai-change=ede3b6a0769dd88360c3cd46231040c81207b6262ae184a735db6c2f96314e4d:5": {
       "firstSeenAt": "2026-09-03T19:34:47.270Z",
       "sourceId": "qld-qgea-ai",
-      "status": "awaiting_review",
+      "status": "processed",
       "attempts": 1,
       "lastAttemptAt": "2026-09-03T19:34:47.270Z",
       "candidate": {
@@ -2402,7 +2404,8 @@
         "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
         "text": "The official source content for \"Artificial intelligence governance policy\" changed. Editorial re-verification is required before the register record can be treated as current.",
         "changeFingerprint": "ede3b6a0769dd88360c3cd46231040c81207b6262ae184a735db6c2f96314e4d:5"
-      }
+      },
+      "processedAt": "2026-09-24T19:32:58.402Z"
     },
     "https://statements.qld.gov.au/#policai-change=72677aecfc95549b7e93d1c1122db3ae0002bb9ea0cc198578c44f6e9d1a4013:40": {
       "firstSeenAt": "2026-09-03T19:34:47.270Z",
@@ -3289,79 +3292,456 @@
         "text": "Latest Search Yesterday at 01:55 PM World-class sport precinct backed for Mackay The Crisafulli Government is calling on the Federa... Yesterday at 01:00 PM New Bruce Highway Granite Creek Rest Area now open The Albanese and Crisafulli Governments have deliv... Yesterday at 12:30 PM Registrations open for small business AI training The Crisafulli Government is delivering better ser... Yesterday at 12:00 PM Community safety improved for Moreton Bay The Crisafulli Government is making Queensland saf... Yesterday at 11:30 AM Queensland welcomes new national critical metals research centre The Cri",
         "changeFingerprint": "1942ea3ec738f110084695ddd80e453efb840948f36e2c66a353ac40cc669fba:56"
       }
+    },
+    "https://www.aph.gov.au/Parliamentary_Business/Committees/Joint/Current_Inquiries#policai-change=54f040714db8419e0591b77364fc4fe45de2cf6fa1303dd922de391403415bf7:32": {
+      "firstSeenAt": "2026-09-24T19:32:58.402Z",
+      "sourceId": "joint-new-inquiries",
+      "status": "dismissed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-09-24T19:32:58.402Z",
+      "processedAt": "2026-09-24T19:32:58.402Z",
+      "candidate": {
+        "title": "Current Joint Inquiries",
+        "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Joint/Current_Inquiries",
+        "text": "Current Joint Inquiries In this section Bills and LegislationTabled documentsChamber documentsHansardSenate estimatesCommitteesLodge my submissionSenate CommitteesHouse of Representatives CommitteesJoint CommitteesAboriginal and Torres Strait Islander AffairsArtificial IntelligenceBroadcasting of Parliamentary ProceedingsCentenary of Parliament in CanberraCorporations and Financial ServicesForeign Affairs, Defence and TradeDefenceImplementation of the National Redress Scheme (Standing)Electoral MattersHuman RightsMigrationIntelligence and SecurityLaw EnforcementNational Anti-Corruption Commiss",
+        "changeFingerprint": "54f040714db8419e0591b77364fc4fe45de2cf6fa1303dd922de391403415bf7:32"
+      }
+    },
+    "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29184%2F0031%22": {
+      "firstSeenAt": "2026-09-24T19:32:58.402Z",
+      "sourceId": "aph-hansard-bill-debates",
+      "status": "dismissed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-09-24T19:32:58.402Z",
+      "processedAt": "2026-09-24T19:32:58.402Z",
+      "candidate": {
+        "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29184%2F0031%22",
+        "title": "BILLS : National Student Ombudsman Levy Bill 2026 : Second Reading",
+        "text": "[Skip all navigation links](https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29184%2F0031%22#startContent) [Permalink](https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29184%2F0031%22) Prev Next [Return to results list](https://parlinfo.aph.gov.au/parlInfo/search/summary/summary.w3p;query=Id%3A%22chamber%2Fhansardr%2F29184%2F0031%22#1) (1 results) [![Print List](https://parlinfo.aph.gov.au/images/print.jpg \"Print Document\")](https://parlinfo.aph.gov.au/parlInfo/search/display/displayPrint.w3p;qu",
+        "dateHint": "2026-09-15",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29240%2F0142%22": {
+      "firstSeenAt": "2026-09-24T19:32:58.402Z",
+      "sourceId": "aph-hansard-bill-debates",
+      "status": "dismissed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-09-24T19:32:58.402Z",
+      "processedAt": "2026-09-24T19:32:58.402Z",
+      "candidate": {
+        "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29240%2F0142%22",
+        "title": "BILLS : Environment and Other Legislation Amendment (Fast Tracking Coal, Gas and Oil Projects) Bill 2026 : Second Reading",
+        "text": "[Skip all navigation links](https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29240%2F0142%22#startContent) [Permalink](https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29240%2F0142%22) Prev Next [Return to results list](https://parlinfo.aph.gov.au/parlInfo/search/summary/summary.w3p;query=Id%3A%22chamber%2Fhansards%2F29240%2F0142%22#1) (1 results) [![Print List](https://parlinfo.aph.gov.au/images/print.jpg \"Print Document\")](https://parlinfo.aph.gov.au/parlInfo/search/display/displayPrint.w3p;qu",
+        "dateHint": "2026-09-14",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29182%2F0227%22": {
+      "firstSeenAt": "2026-09-24T19:32:58.402Z",
+      "sourceId": "aph-hansard-bill-debates",
+      "status": "dismissed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-09-24T19:32:58.402Z",
+      "processedAt": "2026-09-24T19:32:58.402Z",
+      "candidate": {
+        "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29182%2F0227%22",
+        "title": "Federation Chamber : BILLS : Passenger Movement Charge Amendment Bill 2026 : Second Reading",
+        "text": "[Skip all navigation links](https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29182%2F0227%22#startContent) [Permalink](https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29182%2F0227%22) Prev Next [Return to results list](https://parlinfo.aph.gov.au/parlInfo/search/summary/summary.w3p;query=Id%3A%22chamber%2Fhansardr%2F29182%2F0227%22#1) (1 results) [![Print List](https://parlinfo.aph.gov.au/images/print.jpg \"Print Document\")](https://parlinfo.aph.gov.au/parlInfo/search/display/displayPrint.w3p;qu",
+        "dateHint": "2026-09-10",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29181%2F0173%22": {
+      "firstSeenAt": "2026-09-24T19:32:58.402Z",
+      "sourceId": "aph-hansard-bill-debates",
+      "status": "dismissed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-09-24T19:32:58.402Z",
+      "processedAt": "2026-09-24T19:32:58.402Z",
+      "candidate": {
+        "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29181%2F0173%22",
+        "title": "BILLS : Anti-Money Laundering and Counter-Terrorism Financing Amendment Bill 2026 : Second Reading",
+        "text": "[Skip all navigation links](https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29181%2F0173%22#startContent) [Permalink](https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29181%2F0173%22) Prev Next [Return to results list](https://parlinfo.aph.gov.au/parlInfo/search/summary/summary.w3p;query=Id%3A%22chamber%2Fhansardr%2F29181%2F0173%22#1) (1 results) [![Print List](https://parlinfo.aph.gov.au/images/print.jpg \"Print Document\")](https://parlinfo.aph.gov.au/parlInfo/search/display/displayPrint.w3p;qu",
+        "dateHint": "2026-09-09",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29181%2F0180%22": {
+      "firstSeenAt": "2026-09-24T19:32:58.402Z",
+      "sourceId": "aph-hansard-bill-debates",
+      "status": "dismissed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-09-24T19:32:58.402Z",
+      "processedAt": "2026-09-24T19:32:58.402Z",
+      "candidate": {
+        "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29181%2F0180%22",
+        "title": "BILLS : Anti-Money Laundering and Counter-Terrorism Financing Amendment Bill 2026 : Second Reading",
+        "text": "[Skip all navigation links](https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29181%2F0180%22#startContent) [Permalink](https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29181%2F0180%22) Prev Next [Return to results list](https://parlinfo.aph.gov.au/parlInfo/search/summary/summary.w3p;query=Id%3A%22chamber%2Fhansardr%2F29181%2F0180%22#1) (1 results) [![Print List](https://parlinfo.aph.gov.au/images/print.jpg \"Print Document\")](https://parlinfo.aph.gov.au/parlInfo/search/display/displayPrint.w3p;qu",
+        "dateHint": "2026-09-09",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29237%2F0201%22": {
+      "firstSeenAt": "2026-09-24T19:32:58.402Z",
+      "sourceId": "aph-hansard-bill-debates",
+      "status": "pending",
+      "attempts": 0,
+      "candidate": {
+        "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29237%2F0201%22",
+        "title": "BILLS : Online Safety Amendment (Strengthening Enforcement for the Social Media Minimum Age) Bill 2026 : Second Reading",
+        "text": "",
+        "dateHint": "2026-09-08",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29179%2F0033%22": {
+      "firstSeenAt": "2026-09-24T19:32:58.402Z",
+      "sourceId": "aph-hansard-bill-debates",
+      "status": "pending",
+      "attempts": 0,
+      "candidate": {
+        "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29179%2F0033%22",
+        "title": "BILLS : AI Kill Switch and Data Centre Control Bill 2026 : Second Reading",
+        "text": "",
+        "dateHint": "2026-09-07",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29235%2F0018%22": {
+      "firstSeenAt": "2026-09-24T19:32:58.402Z",
+      "sourceId": "aph-hansard-bill-debates",
+      "status": "pending",
+      "attempts": 0,
+      "candidate": {
+        "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29235%2F0018%22",
+        "title": "BILLS : News Journalism Payments Bill 2026, News Journalism Payments (Consequential Amendments) Bill 2026, News Media Bargaining (Administration) Bill 2026, News Media Bargaining Charge Bill 2026, Treasury Laws Amendment (News Media Bargaining) (Consequential) Bill 2026 : Second Reading",
+        "text": "",
+        "dateHint": "2026-08-20",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29177%2F0213%22": {
+      "firstSeenAt": "2026-09-24T19:32:58.402Z",
+      "sourceId": "aph-hansard-bill-debates",
+      "status": "pending",
+      "attempts": 0,
+      "candidate": {
+        "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29177%2F0213%22",
+        "title": "BILLS : Universities Accord (Opening the Doors of Opportunity) Bill 2026 : Second Reading",
+        "text": "",
+        "dateHint": "2026-08-19",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29177%2F0215%22": {
+      "firstSeenAt": "2026-09-24T19:32:58.402Z",
+      "sourceId": "aph-hansard-bill-debates",
+      "status": "pending",
+      "attempts": 0,
+      "candidate": {
+        "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29177%2F0215%22",
+        "title": "BILLS : Universities Accord (Opening the Doors of Opportunity) Bill 2026 : Second Reading",
+        "text": "",
+        "dateHint": "2026-08-19",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29177%2F0220%22": {
+      "firstSeenAt": "2026-09-24T19:32:58.402Z",
+      "sourceId": "aph-hansard-bill-debates",
+      "status": "pending",
+      "attempts": 0,
+      "candidate": {
+        "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29177%2F0220%22",
+        "title": "BILLS : Universities Accord (Opening the Doors of Opportunity) Bill 2026 : Second Reading",
+        "text": "",
+        "dateHint": "2026-08-19",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29176%2F0163%22": {
+      "firstSeenAt": "2026-09-24T19:32:58.402Z",
+      "sourceId": "aph-hansard-bill-debates",
+      "status": "pending",
+      "attempts": 0,
+      "candidate": {
+        "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29176%2F0163%22",
+        "title": "BILLS : News Journalism Payments Bill 2026, News Journalism Payments (Consequential Amendments) Bill 2026 : Second Reading",
+        "text": "",
+        "dateHint": "2026-08-18",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29176%2F0164%22": {
+      "firstSeenAt": "2026-09-24T19:32:58.402Z",
+      "sourceId": "aph-hansard-bill-debates",
+      "status": "pending",
+      "attempts": 0,
+      "candidate": {
+        "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29176%2F0164%22",
+        "title": "BILLS : News Journalism Payments Bill 2026, News Journalism Payments (Consequential Amendments) Bill 2026 : Second Reading",
+        "text": "",
+        "dateHint": "2026-08-18",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29176%2F0187%22": {
+      "firstSeenAt": "2026-09-24T19:32:58.402Z",
+      "sourceId": "aph-hansard-bill-debates",
+      "status": "pending",
+      "attempts": 0,
+      "candidate": {
+        "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29176%2F0187%22",
+        "title": "BILLS : News Journalism Payments Bill 2026, News Journalism Payments (Consequential Amendments) Bill 2026, News Media Bargaining (Administration) Bill 2026, News Media Bargaining Charge Bill 2026, Treasury Laws Amendment (News Media Bargaining) (Consequential) Bill 2026 : Second Reading",
+        "text": "",
+        "dateHint": "2026-08-18",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29175%2F0391%22": {
+      "firstSeenAt": "2026-09-24T19:32:58.402Z",
+      "sourceId": "aph-hansard-bill-debates",
+      "status": "pending",
+      "attempts": 0,
+      "candidate": {
+        "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29175%2F0391%22",
+        "title": "BILLS : Universities Accord (Opening the Doors of Opportunity) Bill 2026 : Second Reading",
+        "text": "",
+        "dateHint": "2026-08-17",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29174%2F0035%22": {
+      "firstSeenAt": "2026-09-24T19:32:58.402Z",
+      "sourceId": "aph-hansard-bill-debates",
+      "status": "pending",
+      "attempts": 0,
+      "candidate": {
+        "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29174%2F0035%22",
+        "title": "BILLS : Interactive Gambling Amendment (Gambling Reform) Bill 2026, National Self-exclusion Register (Cost Recovery Levy) Amendment Bill 2026 : Second Reading",
+        "text": "",
+        "dateHint": "2026-08-13",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29174%2F0158%22": {
+      "firstSeenAt": "2026-09-24T19:32:58.402Z",
+      "sourceId": "aph-hansard-bill-debates",
+      "status": "pending",
+      "attempts": 0,
+      "candidate": {
+        "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29174%2F0158%22",
+        "title": "BILLS : Universities Accord (Opening the Doors of Opportunity) Bill 2026 : Second Reading",
+        "text": "",
+        "dateHint": "2026-08-13",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29229%2F0204%22": {
+      "firstSeenAt": "2026-09-24T19:32:58.402Z",
+      "sourceId": "aph-hansard-bill-debates",
+      "status": "pending",
+      "attempts": 0,
+      "candidate": {
+        "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29229%2F0204%22",
+        "title": "BILLS : Crimes and Other Legislation Amendment (Omnibus No. 1) Bill 2026 : Second Reading",
+        "text": "",
+        "dateHint": "2026-08-11",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29171%2F0099%22": {
+      "firstSeenAt": "2026-09-24T19:32:58.402Z",
+      "sourceId": "aph-hansard-bill-debates",
+      "status": "pending",
+      "attempts": 0,
+      "candidate": {
+        "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29171%2F0099%22",
+        "title": "BILLS : Universities Accord (Opening the Doors of Opportunity) Bill 2026 : Second Reading",
+        "text": "",
+        "dateHint": "2026-07-02",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29169%2F0151%22": {
+      "firstSeenAt": "2026-09-24T19:32:58.402Z",
+      "sourceId": "aph-hansard-bill-debates",
+      "status": "pending",
+      "attempts": 0,
+      "candidate": {
+        "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29169%2F0151%22",
+        "title": "BILLS : Online Safety Amendment (Strengthening Enforcement for the Social Media Minimum Age) Bill 2026 : Second Reading",
+        "text": "",
+        "dateHint": "2026-06-30",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29169%2F0159%22": {
+      "firstSeenAt": "2026-09-24T19:32:58.402Z",
+      "sourceId": "aph-hansard-bill-debates",
+      "status": "pending",
+      "attempts": 0,
+      "candidate": {
+        "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29169%2F0159%22",
+        "title": "BILLS : Online Safety Amendment (Strengthening Enforcement for the Social Media Minimum Age) Bill 2026 : Second Reading",
+        "text": "",
+        "dateHint": "2026-06-30",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29225%2F0161%22": {
+      "firstSeenAt": "2026-09-24T19:32:58.402Z",
+      "sourceId": "aph-hansard-bill-debates",
+      "status": "pending",
+      "attempts": 0,
+      "candidate": {
+        "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29225%2F0161%22",
+        "title": "BILLS : Workplace Relations Legislation Amendment (Building Cooperative Workplaces No. 1) Bill 2026 : Second Reading",
+        "text": "",
+        "dateHint": "2026-06-29",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22": {
+      "firstSeenAt": "2026-09-24T19:32:58.402Z",
+      "sourceId": "aph-hansard-bill-debates",
+      "status": "pending",
+      "attempts": 0,
+      "candidate": {
+        "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22",
+        "title": "BILLS : Online Safety and Other Legislation Amendment (My Face, My Rights) Bill 2025 : Second Reading",
+        "text": "",
+        "dateHint": "2026-06-25",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29166%2F0020%22": {
+      "firstSeenAt": "2026-09-24T19:32:58.402Z",
+      "sourceId": "aph-hansard-bill-debates",
+      "status": "pending",
+      "attempts": 0,
+      "candidate": {
+        "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29166%2F0020%22",
+        "title": "BILLS : Workplace Relations Legislation Amendment (Building Cooperative Workplaces No. 1) Bill 2026 : Second Reading",
+        "text": "",
+        "dateHint": "2026-06-24",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29166%2F0023%22": {
+      "firstSeenAt": "2026-09-24T19:32:58.402Z",
+      "sourceId": "aph-hansard-bill-debates",
+      "status": "pending",
+      "attempts": 0,
+      "candidate": {
+        "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29166%2F0023%22",
+        "title": "BILLS : Workplace Relations Legislation Amendment (Building Cooperative Workplaces No. 1) Bill 2026 : Second Reading",
+        "text": "",
+        "dateHint": "2026-06-24",
+        "dateHintPrecision": "day"
+      }
+    },
+    "https://statements.qld.gov.au/#policai-change=93bffab6e7333350aa41d496d27b7fb85ef0cbacc1265f1cf7854028bb88ba50:57": {
+      "firstSeenAt": "2026-09-24T19:32:58.402Z",
+      "sourceId": "qld-ministerial-statements",
+      "status": "dismissed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-09-24T19:32:58.402Z",
+      "processedAt": "2026-09-24T19:32:58.402Z",
+      "candidate": {
+        "title": "Media Statements",
+        "url": "https://statements.qld.gov.au/",
+        "text": "Latest Search Yesterday at 03:19 PM The Star Gold Coast licence suspension deferred to 2027 The Crisafulli Government has extended the deferra... Yesterday at 11:25 AM Brazil and Socceroos superstars to train in front of fans Queensland football fans will get a rare, free cha... Yesterday at 11:00 AM Transforming Queensland Manufacturing Grant helps Brisbane business soar to new heights A Brisbane-based manufacturer of towbars will tran... Yesterday at 10:00 AM Fight against electric ants bolstered with paws on the ground in the Far North The Crisafulli Government is backing Queensland's ... Y",
+        "changeFingerprint": "93bffab6e7333350aa41d496d27b7fb85ef0cbacc1265f1cf7854028bb88ba50:57"
+      }
     }
   },
   "lastCheckedBySource": {
-    "apra-rss": "2026-09-22T19:33:26.230Z",
+    "apra-rss": "2026-09-24T19:32:58.402Z",
     "csiro-news": "2026-09-19T19:32:17.507Z",
-    "oaic-media": "2026-09-22T19:33:26.230Z",
-    "accc-rss": "2026-09-22T19:33:26.230Z",
+    "oaic-media": "2026-09-24T19:32:58.402Z",
+    "accc-rss": "2026-09-24T19:32:58.402Z",
     "asic-newsroom": "2026-09-19T19:32:17.507Z",
     "pc-media": "2026-09-19T19:32:17.507Z",
     "nsw-sc-practice-notes": "2026-09-14T19:33:56.948Z",
     "vic-sc-practice-notes": "2026-09-19T19:32:17.507Z",
     "nsw-digital-ai": "2026-09-19T19:32:17.507Z",
     "vic-ai": "2026-09-22T08:23:23.603Z",
-    "qld-qgea-ai": "2026-09-03T19:34:47.270Z",
-    "wa-ai-policy": "2026-09-01T19:30:31.586Z",
+    "qld-qgea-ai": "2026-09-24T19:32:58.402Z",
+    "wa-ai-policy": "2026-09-24T19:32:58.402Z",
     "sa-office-for-ai": "2026-07-18T20:12:16.563Z",
     "treasury-publications": "2026-09-19T19:32:17.507Z",
     "qld-courts-news": "2026-09-19T19:32:17.507Z",
-    "pm-media": "2026-09-22T19:33:26.230Z",
-    "pmc-office-ai": "2026-09-22T19:33:26.230Z",
-    "industry-ai-publications": "2026-09-22T19:33:26.230Z",
-    "industry-ministers-media": "2026-09-22T19:33:26.230Z",
-    "dta-media": "2026-09-22T19:33:26.230Z",
-    "digital-gov-ai": "2026-09-22T19:33:26.230Z",
-    "disr-news": "2026-09-22T19:33:26.230Z",
+    "pm-media": "2026-09-24T19:32:58.402Z",
+    "pmc-office-ai": "2026-09-24T19:32:58.402Z",
+    "industry-ai-publications": "2026-09-24T19:32:58.402Z",
+    "industry-ministers-media": "2026-09-24T19:32:58.402Z",
+    "dta-media": "2026-09-24T19:32:58.402Z",
+    "digital-gov-ai": "2026-09-24T19:32:58.402Z",
+    "disr-news": "2026-09-24T19:32:58.402Z",
     "naic-news": "2026-09-19T19:32:17.507Z",
     "finance-news": "2026-09-19T19:32:17.507Z",
-    "agd-ministers-media": "2026-09-22T19:33:26.230Z",
-    "cyber-news": "2026-09-22T19:33:26.230Z",
-    "apsc-latest-news": "2026-09-22T19:33:26.230Z",
+    "agd-ministers-media": "2026-09-24T19:32:58.402Z",
+    "cyber-news": "2026-09-24T19:32:58.402Z",
+    "apsc-latest-news": "2026-09-24T19:32:58.402Z",
     "anao-performance-audits": "2026-09-19T19:32:17.507Z",
     "senate-ai-data-centres": "2026-09-19T19:32:17.507Z",
-    "senate-new-inquiries": "2026-09-22T19:33:26.230Z",
-    "senate-reports": "2026-09-22T19:33:26.230Z",
-    "house-new-inquiries": "2026-09-22T19:33:26.230Z",
-    "joint-new-inquiries": "2026-09-22T19:33:26.230Z",
-    "aph-bills-digests": "2026-09-22T19:33:26.230Z",
-    "legislation-whats-new": "2026-09-22T19:33:26.230Z",
+    "senate-new-inquiries": "2026-09-24T19:32:58.402Z",
+    "senate-reports": "2026-09-24T19:32:58.402Z",
+    "house-new-inquiries": "2026-09-24T19:32:58.402Z",
+    "joint-new-inquiries": "2026-09-24T19:32:58.402Z",
+    "aph-bills-digests": "2026-09-24T19:32:58.402Z",
+    "legislation-whats-new": "2026-09-24T19:32:58.402Z",
     "agd-consultations": "2026-09-19T19:32:17.507Z",
     "industry-consultations": "2026-09-19T19:32:17.507Z",
     "treasury-consultations": "2026-09-19T19:32:17.507Z",
     "aemc-media": "2026-09-19T19:32:17.507Z",
-    "acma-media": "2026-09-22T19:33:26.230Z",
+    "acma-media": "2026-09-24T19:32:58.402Z",
     "tga-media": "2026-09-19T19:32:17.507Z",
     "fwc-news": "2026-09-19T19:32:17.507Z",
     "teqsa-news": "2026-09-19T19:32:17.507Z",
     "aec-media": "2026-09-19T19:32:17.507Z",
-    "esafety-media": "2026-09-22T19:33:26.230Z",
+    "esafety-media": "2026-09-24T19:32:58.402Z",
     "ahrc-media": "2026-09-22T19:33:26.230Z",
     "fedcourt-practice-notes": "2026-09-19T19:32:17.507Z",
-    "nsw-media-releases": "2026-09-22T19:33:26.230Z",
+    "nsw-media-releases": "2026-09-24T19:32:58.402Z",
     "ovic-news": "2026-09-19T19:32:17.507Z",
-    "qld-ministerial-statements": "2026-09-22T19:33:26.230Z",
+    "qld-ministerial-statements": "2026-09-24T19:32:58.402Z",
     "tas-dpac-policies": "2026-09-19T19:32:17.507Z",
-    "act-ai-policy": "2026-07-20T12:19:40.243Z",
+    "act-ai-policy": "2026-09-24T19:32:58.402Z",
     "nt-ai-assurance": "2026-09-22T08:23:23.603Z",
     "ipa-news": "2026-09-22T08:23:23.603Z",
-    "wa-media-statements": "2026-09-22T19:33:26.230Z",
+    "wa-media-statements": "2026-09-24T19:32:58.402Z",
     "ovic-privacy-resources": "2026-09-22T08:23:23.603Z",
-    "ovic-enterprise-generative-ai": "2026-07-23T20:36:08.370Z",
-    "ovic-public-generative-ai": "2026-07-23T20:36:08.370Z",
+    "ovic-enterprise-generative-ai": "2026-09-24T19:32:58.402Z",
+    "ovic-public-generative-ai": "2026-09-24T19:32:58.402Z",
     "art-practice-directions": "2026-09-22T08:23:23.603Z",
     "wa-sc-practice-directions": "2026-09-22T08:23:23.603Z",
-    "sa-courts-news": "2026-09-22T19:33:26.230Z",
+    "sa-courts-news": "2026-09-24T19:32:58.402Z",
     "act-sc-practice-directions": "2026-09-22T08:23:23.603Z",
     "tas-sc-practice-directions": "2026-09-22T08:23:23.603Z",
-    "nt-sc-practice-directions": "2026-09-22T08:23:23.603Z"
+    "nt-sc-practice-directions": "2026-09-22T08:23:23.603Z",
+    "aph-hansard-bill-debates": "2026-09-24T19:32:58.402Z",
+    "fcfcoa-practice-directions": "2026-09-24T19:32:58.402Z",
+    "ncat-procedural-directions": "2026-09-24T19:32:58.402Z",
+    "qcat-practice-directions": "2026-09-24T19:32:58.402Z",
+    "ntcat-procedural-directions": "2026-09-24T19:32:58.402Z",
+    "nsw-gazette-recent": "2026-09-24T19:32:58.402Z",
+    "vcat-rss": "2026-09-24T19:32:58.402Z",
+    "vcat-pnvcat11-generative-ai": "2026-09-24T19:32:58.402Z",
+    "vic-legislation-whats-new": "2026-09-24T19:32:58.402Z",
+    "qld-legislation-new": "2026-09-24T19:32:58.402Z",
+    "tas-legislation-statutory-rules": "2026-09-24T19:32:58.402Z",
+    "tas-legislation-acts": "2026-09-24T19:32:58.402Z",
+    "wa-legislation-as-made": "2026-09-24T19:32:58.402Z",
+    "wa-legislation-as-passed": "2026-09-24T19:32:58.402Z"
   },
   "sourceSnapshots": {
     "pmc-office-ai": {
       "contentHash": "323af0296ecec3b23060d62b35977feb3e146f734320f9a6d5df6da1f6b663c3",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-09-22T19:33:26.230Z",
+      "lastCheckedAt": "2026-09-24T19:32:58.402Z",
       "changeCount": 1,
       "lastChangedAt": "2026-09-17T19:32:40.681Z"
     },
@@ -3420,16 +3800,16 @@
       "lastChangedAt": "2026-09-07T15:15:00.078Z"
     },
     "qld-ministerial-statements": {
-      "contentHash": "1942ea3ec738f110084695ddd80e453efb840948f36e2c66a353ac40cc669fba",
+      "contentHash": "93bffab6e7333350aa41d496d27b7fb85ef0cbacc1265f1cf7854028bb88ba50",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-09-22T19:33:26.230Z",
-      "changeCount": 56,
-      "lastChangedAt": "2026-09-22T19:33:26.230Z"
+      "lastCheckedAt": "2026-09-24T19:32:58.402Z",
+      "changeCount": 57,
+      "lastChangedAt": "2026-09-24T19:32:58.402Z"
     },
     "act-ai-policy": {
       "contentHash": "0040e7ec83db2a7430b63de7cf72e581dcc938a3139b85ec32c40aa15dc5f4a0",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-07-20T12:19:40.243Z",
+      "lastCheckedAt": "2026-09-24T19:32:58.402Z",
       "lastChangedAt": "2026-07-20T12:19:40.243Z",
       "changeCount": 1
     },
@@ -3457,14 +3837,14 @@
     "ovic-enterprise-generative-ai": {
       "contentHash": "37072e411cb2b7d1aad30d3214c4c7738f401b1f1c91770e2fed8948ee1fed4e",
       "firstCheckedAt": "2026-07-23T20:36:08.370Z",
-      "lastCheckedAt": "2026-07-23T20:36:08.370Z",
+      "lastCheckedAt": "2026-09-24T19:32:58.402Z",
       "lastChangedAt": "2026-07-23T20:36:08.370Z",
       "changeCount": 1
     },
     "ovic-public-generative-ai": {
       "contentHash": "f627ac55461182bd006d1a091d3f4efba47cddaf1ca953ac47c4da2ff5fe6965",
       "firstCheckedAt": "2026-07-23T20:36:08.370Z",
-      "lastCheckedAt": "2026-07-23T20:36:08.370Z",
+      "lastCheckedAt": "2026-09-24T19:32:58.402Z",
       "lastChangedAt": "2026-07-23T20:36:08.370Z",
       "changeCount": 1
     },
@@ -3499,30 +3879,30 @@
     "qld-qgea-ai": {
       "contentHash": "ede3b6a0769dd88360c3cd46231040c81207b6262ae184a735db6c2f96314e4d",
       "firstCheckedAt": "2026-07-29T20:30:22.291Z",
-      "lastCheckedAt": "2026-09-03T19:34:47.270Z",
+      "lastCheckedAt": "2026-09-24T19:32:58.402Z",
       "lastChangedAt": "2026-09-03T19:34:47.270Z",
       "changeCount": 5
     },
     "wa-ai-policy": {
       "contentHash": "9b6a110f2ae22111caff3be599b1da34dbac7af8aba1a1a42f0fc11b224431a7",
       "firstCheckedAt": "2026-07-29T20:30:22.291Z",
-      "lastCheckedAt": "2026-09-01T19:30:31.586Z",
+      "lastCheckedAt": "2026-09-24T19:32:58.402Z",
       "lastChangedAt": "2026-09-01T19:30:31.586Z",
       "changeCount": 3
     },
     "house-new-inquiries": {
       "contentHash": "7e7b2881985ed7f8e83cf47d6debff6f636e59597c6f52f321994a3dc6ddd6d6",
       "firstCheckedAt": "2026-08-07T04:32:08.175Z",
-      "lastCheckedAt": "2026-09-22T19:33:26.230Z",
+      "lastCheckedAt": "2026-09-24T19:32:58.402Z",
       "changeCount": 13,
       "lastChangedAt": "2026-09-22T19:33:26.230Z"
     },
     "joint-new-inquiries": {
-      "contentHash": "005db9e16bdf78c15275e7b59f591c2301dbbcb17626d26fa737f9037f2ce89c",
+      "contentHash": "54f040714db8419e0591b77364fc4fe45de2cf6fa1303dd922de391403415bf7",
       "firstCheckedAt": "2026-08-07T04:32:08.175Z",
-      "lastCheckedAt": "2026-09-22T19:33:26.230Z",
-      "changeCount": 31,
-      "lastChangedAt": "2026-09-22T19:33:26.230Z"
+      "lastCheckedAt": "2026-09-24T19:32:58.402Z",
+      "changeCount": 32,
+      "lastChangedAt": "2026-09-24T19:32:58.402Z"
     },
     "art-practice-directions": {
       "contentHash": "4b68d0ccf77794390152d126d540f0a8b34eae661123a135b4157c2aeff59a7f",
@@ -3556,6 +3936,36 @@
       "lastCheckedAt": "2026-09-22T08:23:23.603Z",
       "changeCount": 1,
       "lastChangedAt": "2026-09-01T19:30:31.586Z"
+    },
+    "ncat-procedural-directions": {
+      "contentHash": "26622a791471dd3bd451c039b0d7b2299cabf8a3e0378d1537b3408523cba7e2",
+      "firstCheckedAt": "2026-09-24T19:32:58.402Z",
+      "lastCheckedAt": "2026-09-24T19:32:58.402Z",
+      "changeCount": 0
+    },
+    "qcat-practice-directions": {
+      "contentHash": "35314e0de73b43a8e4234ea32abd91d48b1f92e3f2e3d905dc29462368a6667b",
+      "firstCheckedAt": "2026-09-24T19:32:58.402Z",
+      "lastCheckedAt": "2026-09-24T19:32:58.402Z",
+      "changeCount": 0
+    },
+    "ntcat-procedural-directions": {
+      "contentHash": "02511bf3240e61cf16478bbf36c66d13e9afba6c8fcf352feb374e6ffe762e09",
+      "firstCheckedAt": "2026-09-24T19:32:58.402Z",
+      "lastCheckedAt": "2026-09-24T19:32:58.402Z",
+      "changeCount": 0
+    },
+    "nsw-gazette-recent": {
+      "contentHash": "efecce6135d622df20c9ee46e89896773116e2eb0ed2e5e77f8e60c9a6b0b55e",
+      "firstCheckedAt": "2026-09-24T19:32:58.402Z",
+      "lastCheckedAt": "2026-09-24T19:32:58.402Z",
+      "changeCount": 0
+    },
+    "vcat-pnvcat11-generative-ai": {
+      "contentHash": "e8ddb193be361e8d367637877430eee59fa75814a3b6a9e2dd080f3e31a34339",
+      "firstCheckedAt": "2026-09-24T19:32:58.402Z",
+      "lastCheckedAt": "2026-09-24T19:32:58.402Z",
+      "changeCount": 0
     }
   }
 }
