@@ -3,11 +3,20 @@
  * errors; prints warnings without failing. Runs in CI and after every
  * collector pass.
  *
+ * Secondary (non-primary) structured dates on verified records are gated as a
+ * lower-only budget ratchet instead of hard errors, so historical records stay
+ * valid while any growth in unevidenced dates fails validation. The count of
+ * secondary dates without matching source evidence must not exceed
+ * `maxUnevidencedSecondaryDates` in data/record-evidence-budget.json.
+ *
  * Usage: npx tsx scripts/validate-data.ts
  */
 
 import path from 'path';
+import { execFile } from 'child_process';
+import { promisify } from 'util';
 import { readJsonFile } from '../src/lib/file-store';
+import { countUnsubstantiatedSecondaryDates } from '../src/lib/validate-data';
 import {
   mergeReports,
   validateAgencies,
@@ -40,6 +49,38 @@ import type {
 
 const PUBLIC_DATA_DIR = path.join(process.cwd(), 'public', 'data');
 const STATE_DIR = path.join(process.cwd(), 'data');
+
+const execFileAsync = promisify(execFile);
+
+/**
+ * Ratchet guard: on a pull request that touches the budget file, its
+ * `maxUnevidencedSecondaryDates` may only decrease relative to the merge base.
+ * Raising it needs a stated reason in the pull request, so this guard fails
+ * validation when an increase is detected. Outside a pull request (local
+ * runs, scheduled collector runs) the base value is unknown and the guard is
+ * skipped — the growth gate in main() still applies.
+ */
+async function budgetIncreaseCommittedOnBranch(): Promise<number | undefined> {
+  if (process.env.GITHUB_BASE_SHA === undefined) {
+    return undefined;
+  }
+  try {
+    const { stdout } = await execFileAsync('git', [
+      'show',
+      `${process.env.GITHUB_BASE_SHA}:data/record-evidence-budget.json`,
+    ]);
+    const base = JSON.parse(stdout) as {
+      maxUnevidencedSecondaryDates?: unknown;
+    };
+    return Number.isInteger(base.maxUnevidencedSecondaryDates)
+      ? (base.maxUnevidencedSecondaryDates as number)
+      : undefined;
+  } catch {
+    // The file is new on this branch or the base SHA is unavailable: the
+    // guard has no baseline to compare against.
+    return undefined;
+  }
+}
 
 async function main() {
   const [
@@ -147,6 +188,55 @@ async function main() {
   }
   for (const error of report.errors) {
     console.error(`ERROR ${error}`);
+  }
+
+  // Secondary-date evidence gate: a lower-only budget ratchet mirroring
+  // scripts/check-freshness.ts. The budget file is seeded from the current
+  // measured state; the check passes at or below budget and fails when the
+  // count grows.
+  const unevidencedSecondaryDates =
+    countUnsubstantiatedSecondaryDates(policies);
+  const evidenceBudget = await readJsonFile<{
+    maxUnevidencedSecondaryDates?: unknown;
+    note?: string;
+  }>(path.join(STATE_DIR, 'record-evidence-budget.json'), {});
+  if (
+    !Number.isInteger(evidenceBudget.maxUnevidencedSecondaryDates) ||
+    (evidenceBudget.maxUnevidencedSecondaryDates as number) < 0
+  ) {
+    console.error(
+      'ERROR data/record-evidence-budget.json must contain a non-negative integer "maxUnevidencedSecondaryDates".',
+    );
+    process.exitCode = 1;
+  } else {
+    const budget = evidenceBudget.maxUnevidencedSecondaryDates as number;
+    for (const entry of unevidencedSecondaryDates) {
+      console.error(
+        `UNEVIDENCED-SECONDARY-DATE ${entry.policyId}:dates[${entry.dateIndex}] — secondary date has no matching source publication metadata or reviewedDate evidence`,
+      );
+    }
+    const passed = unevidencedSecondaryDates.length <= budget;
+    console.log(
+      `validate-data: ${unevidencedSecondaryDates.length} secondary dates without per-entry source evidence (budget ${budget}, lower-only ratchet — see data/record-evidence-budget.json).`,
+    );
+    if (!passed) {
+      console.error(
+        `ERROR Record evidence budget exceeded: add reviewedDate or publication-metadata evidence for the listed dates, ` +
+          `or raise maxUnevidencedSecondaryDates with a stated reason.`,
+      );
+      process.exitCode = 1;
+    } else if (unevidencedSecondaryDates.length < budget) {
+      console.log(
+        `Secondary-date evidence backlog is below budget: lower maxUnevidencedSecondaryDates to ${unevidencedSecondaryDates.length}.`,
+      );
+    }
+    const baseBudget = await budgetIncreaseCommittedOnBranch();
+    if (baseBudget !== undefined && budget > baseBudget) {
+      console.error(
+        `ERROR record-evidence-budget ratchet: maxUnevidencedSecondaryDates rose from ${baseBudget} to ${budget} without a stated reason. Lower it back, or argue the increase in the pull request.`,
+      );
+      process.exitCode = 1;
+    }
   }
 
   console.log(

@@ -40,6 +40,13 @@ interface RegisterAuditOptions {
   sourceId?: string;
   retrieve?: (url: string) => Promise<RetrievedSource>;
   now?: () => Date;
+  timeoutMs?: number;
+  attempts?: number;
+  retryDelayMs?: number;
+  /** Environment overrides; defaults to process.env. */
+  env?: Record<string, string | undefined>;
+  /** Injectable backoff clock, primarily for tests. */
+  sleep?: (milliseconds: number) => Promise<void>;
 }
 
 interface EvidenceComparison {
@@ -134,6 +141,79 @@ export function compareRegisterSourceEvidence(
   };
 }
 
+/**
+ * Register-audit retrieval defaults. Government hosts are frequently slow, so
+ * the audit gives each attempt a generous deadline and performs exactly one
+ * retry for transient failures (timeouts, DNS/socket errors, HTTP 408/429/5xx)
+ * with a short backoff. Client errors such as HTTP 403 bot walls are never
+ * retried, and a retried-then-failed source still reports `retrieval_failed`;
+ * no failures are silently swallowed.
+ *
+ * Trade-off: the raised timeout roughly doubles the audit's wall-clock upper
+ * bound for slow sources (2 attempts x 45s) and the 2026-09-24 sweep showed
+ * most retrieval failures were 20s timeouts against slow hosts, not content
+ * changes. `AUDIT_REGISTER_TIMEOUT_MS`, `AUDIT_REGISTER_ATTEMPTS` and
+ * `AUDIT_REGISTER_RETRY_DELAY_MS` override the defaults for one run.
+ */
+export const AUDIT_REGISTER_DEFAULT_TIMEOUT_MS = 45_000;
+export const AUDIT_REGISTER_DEFAULT_ATTEMPTS = 2;
+export const AUDIT_REGISTER_DEFAULT_RETRY_DELAY_MS = 1_000;
+
+function positiveIntegerEnv(
+  value: string | undefined,
+): number | undefined {
+  if (value === undefined || value.trim() === '') return undefined;
+  const parsed = Number(value);
+  if (!Number.isInteger(parsed) || parsed <= 0) {
+    throw new Error(
+      `Invalid audit register environment override: "${value}" must be a positive integer`,
+    );
+  }
+  return parsed;
+}
+
+export function registerAuditRetrievalOptions(
+  env: Record<string, string | undefined> = process.env,
+): { timeoutMs: number; attempts: number; retryDelayMs: number } {
+  const timeoutMs =
+    positiveIntegerEnv(env.AUDIT_REGISTER_TIMEOUT_MS) ??
+    AUDIT_REGISTER_DEFAULT_TIMEOUT_MS;
+  const attempts =
+    positiveIntegerEnv(env.AUDIT_REGISTER_ATTEMPTS) ??
+    AUDIT_REGISTER_DEFAULT_ATTEMPTS;
+  const retryDelayMs =
+    positiveIntegerEnv(env.AUDIT_REGISTER_RETRY_DELAY_MS) ??
+    AUDIT_REGISTER_DEFAULT_RETRY_DELAY_MS;
+  return { timeoutMs, attempts, retryDelayMs };
+}
+
+const auditSleep = (milliseconds: number) =>
+  new Promise<void>((resolve) => setTimeout(resolve, milliseconds));
+
+/**
+ * Run one retrieval attempt, retrying exactly once for transient failures
+ * (timeouts, DNS/socket errors, HTTP 408/429/5xx). Non-retryable errors —
+ * HTTP 403, bot challenges, destination mismatches, and other client errors —
+ * are rethrown immediately. A retried-then-failed source keeps reporting its
+ * failure; nothing is silently swallowed.
+ */
+export async function retrieveWithAuditRetry(
+  retrieve: (url: string) => Promise<RetrievedSource>,
+  url: string,
+  retryDelayMs: number,
+  sleep: (milliseconds: number) => Promise<void> = auditSleep,
+): Promise<RetrievedSource> {
+  try {
+    return await retrieve(url);
+  } catch (firstError) {
+    if (!(firstError instanceof SourceFetchError && firstError.retryable)) {
+      throw firstError;
+    }
+    await sleep(Math.max(0, retryDelayMs));
+    return await retrieve(url);
+  }
+}
+
 async function mapWithConcurrency<T, R>(
   items: T[],
   concurrency: number,
@@ -162,13 +242,20 @@ export async function auditRegister(
   policies: Policy[],
   options: RegisterAuditOptions = {},
 ): Promise<RegisterAuditResult[]> {
-  const retrieve =
+  const resolved = options.retrieve
+    ? undefined
+    : registerAuditRetrievalOptions(options.env);
+  const retrieve: (url: string) => Promise<RetrievedSource> =
     options.retrieve ??
     ((url: string) =>
       retrieveSource(url, {
+        // The retry lives in this module (retrieveWithAuditRetry), so custom
+        // injected retrievers — including test fake fetches — retry identically.
         attempts: 1,
-        timeoutMs: 20_000,
+        timeoutMs: options.timeoutMs ?? resolved!.timeoutMs,
       }));
+  const retryDelayMs =
+    options.retryDelayMs ?? resolved?.retryDelayMs ?? AUDIT_REGISTER_DEFAULT_RETRY_DELAY_MS;
   const now = options.now ?? (() => new Date());
   const auditable = policies.filter(
     (policy) =>
@@ -181,7 +268,12 @@ export async function auditRegister(
     options.concurrency ?? 4,
     async (policy) => {
       try {
-        const retrieved = await retrieve(policy.sourceUrl);
+        const retrieved = await retrieveWithAuditRetry(
+          retrieve,
+          policy.sourceUrl,
+          retryDelayMs,
+          options.sleep,
+        );
         const completedAt = now().toISOString();
         const retrievedAt = retrieved.evidence.retrievedAt;
         const checkedAt =

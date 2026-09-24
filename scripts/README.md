@@ -60,6 +60,25 @@ share compatible linked-document evidence; otherwise the result is reported as
 `comparison_unavailable` without a false change alert. `--strict` also fails on
 retrieval unavailability.
 
+Retrieval gives each source a generous per-attempt timeout (45s by default) and
+exactly one retry for transient failures — timeouts, DNS/socket errors, and
+HTTP 408/429/5xx — after a short backoff. Client errors such as HTTP 403 bot
+walls are never retried. A retried-then-failed source still reports
+`retrieval_failed`; no failures are silently swallowed. The raised timeout
+trades roughly double the worst-case wall clock per slow source (2 x 45s) for
+confirming sources that merely answer slowly: the 2026-09-24 sweep showed most
+of the 42 retrieval failures were 20s timeouts against slow government hosts,
+not content changes.
+
+Environment overrides (per run):
+
+```bash
+AUDIT_REGISTER_TIMEOUT_MS=45000      # per-attempt timeout in ms
+AUDIT_REGISTER_ATTEMPTS=2            # 2 = exactly one retry
+AUDIT_REGISTER_RETRY_DELAY_MS=1000   # backoff before the retry in ms
+npm run audit:register
+```
+
 ## validate-data.ts
 
 Structural validation for the repo data files (enums, ISO dates, unique ids, https government source hosts, cross-references). Runs in `npm run check`, PR CI, and the collector workflow.
@@ -69,6 +88,18 @@ npm run validate:data
 ```
 
 Exit code 1 on errors; warnings print without failing.
+
+Secondary (non-primary) structured dates on verified records are gated as a
+lower-only budget ratchet rather than hard errors, mirroring
+`scripts/check-freshness.ts`: the count of secondary dates without matching
+source publication metadata or `reviewedDate` evidence must not exceed
+`maxUnevidencedSecondaryDates` in `data/record-evidence-budget.json`. Lower the
+budget whenever the backlog shrinks; raising it needs a stated reason in the
+pull request that changes the file, and an unargued raise fails validation in
+CI (the script compares against the merge base when `GITHUB_BASE_SHA` is set).
+Unevidenced dates are listed in the output so the new value is never guessed.
+The ratchet keeps historical records valid while any growth in unevidenced
+secondary dates fails validation.
 
 ## canonicalize-source-urls.ts
 

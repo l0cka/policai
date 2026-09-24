@@ -7,6 +7,22 @@
  *   npm run audit:register -- --write-evidence
  *   npm run audit:register -- --strict --json
  *
+ * Each source is retrieved with a generous per-attempt timeout and exactly one
+ * retry for transient failures (timeouts, DNS/socket errors, HTTP 408/429/5xx)
+ * with a short backoff. Client errors such as HTTP 403 bot walls are NOT
+ * retried. Honesty rule: a retried-then-failed source still reports
+ * `retrieval_failed`; no failures are silently swallowed.
+ *
+ * Retrieval settings (defaults in parentheses):
+ *   AUDIT_REGISTER_TIMEOUT_MS       per-attempt timeout in ms (45000)
+ *   AUDIT_REGISTER_ATTEMPTS         attempts per source (2 = one retry)
+ *   AUDIT_REGISTER_RETRY_DELAY_MS   backoff before the retry in ms (1000)
+ *
+ * Trade-off: the raised timeout roughly doubles the worst-case wall clock per
+ * slow source (2 x 45s) in exchange for confirming sources that merely answer
+ * slowly; the 2026-09-24 sweep showed most retrieval failures were 20s
+ * timeouts against slow government hosts, not content changes.
+ *
  * `--write-evidence` records missing fingerprints as stale baselines and marks
  * changed or confirmed-missing sources stale. It never turns an unverified or
  * stale record back into verified.
@@ -18,6 +34,7 @@ import { readJsonFile, writeJsonFile } from '../src/lib/file-store';
 import {
   applyRegisterAuditEvidence,
   auditRegister,
+  registerAuditRetrievalOptions,
 } from '../src/lib/register-audit';
 import type { Policy } from '../src/types';
 
@@ -58,8 +75,10 @@ async function runAudit(options: Options) {
     throw new Error(`Unknown policy id: ${options.sourceId}`);
   }
 
+  const retrieval = registerAuditRetrievalOptions();
   const results = await auditRegister(policies, {
     sourceId: options.sourceId,
+    ...retrieval,
   });
   const counts = {
     unchanged: results.filter((result) => result.status === 'unchanged').length,
@@ -91,6 +110,7 @@ async function runAudit(options: Options) {
         {
           auditedAt: new Date().toISOString(),
           wroteEvidence: options.writeEvidence,
+          retrieval,
           counts,
           results,
         },
@@ -106,7 +126,7 @@ async function runAudit(options: Options) {
       );
     }
     console.log(
-      `audit-register: ${counts.unchanged} unchanged, ${counts.baselineMissing} baselines missing, ${counts.changed} changed, ${counts.comparisonUnavailable} comparisons unavailable, ${counts.sourceMissing} sources missing, ${counts.retrievalFailed} retrieval failures${options.writeEvidence ? '; evidence written' : ''}`,
+      `audit-register: ${counts.unchanged} unchanged, ${counts.baselineMissing} baselines missing, ${counts.changed} changed, ${counts.comparisonUnavailable} comparisons unavailable, ${counts.sourceMissing} sources missing, ${counts.retrievalFailed} retrieval failures (timeout ${retrieval.timeoutMs}ms, attempts ${retrieval.attempts}, retry delay ${retrieval.retryDelayMs}ms${options.writeEvidence ? '; evidence written' : ''})`,
     );
   }
 

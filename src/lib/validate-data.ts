@@ -246,6 +246,67 @@ function sourceBacksRecordDate(
   );
 }
 
+/**
+ * Count verified records whose secondary (non-primary) structured dates lack
+ * the same per-entry evidence the primary gate requires. Secondary dates are
+ * not blocked by this count — the budget ratchet is the gate, so historical
+ * records stay valid while any growth in unevidenced dates fails validation.
+ *
+ * A date counts as evidenced when its source carries a SHA-256 fingerprint and
+ * either matching publication metadata (`publishedAt` equal to the date; the
+ * optional `publishedAtPrecision` must match the structured precision when it
+ * is present) or a matching `reviewedDate` record. Malformed dates are
+ * reported by the structural gates and are not counted here.
+ */
+export function countUnsubstantiatedSecondaryDates(
+  policies: Policy[],
+): Array<{ policyId: string; dateIndex: number }> {
+  const unevidenced: Array<{ policyId: string; dateIndex: number }> = [];
+  policies.forEach((policy) => {
+    if (!isRecord(policy)) return;
+    // SAFETY: isRecord establishes the object boundary; fields are read below.
+    if (policy.verification?.status !== 'verified') return;
+    const policyId = isNonEmptyString(policy.id)
+      ? policy.id
+      : `policies[${unevidenced.length}]`;
+    (policy.dates ?? []).forEach((candidateDate, dateIndex) => {
+      if (!isRecord(candidateDate)) return;
+      // SAFETY: isRecord establishes the object boundary; fields are read below.
+      if (candidateDate.primary === true) return;
+      if (
+        !isCalendarDateString(candidateDate.date) ||
+        !isOneOf(DATE_PRECISIONS, candidateDate.precision)
+      ) {
+        return; // Malformed dates are reported by the structural gate.
+      }
+      // SAFETY: isRecord establishes the object boundary; fields are read below.
+      const source = isRecord(candidateDate.source)
+        ? (candidateDate.source as unknown as SourceEvidence)
+        : undefined;
+      const normalizedDate = dateOnly(candidateDate.date);
+      const publicationBacked = Boolean(
+        source &&
+          source.publishedAt === normalizedDate &&
+          (!source.publishedAtPrecision ||
+            source.publishedAtPrecision === candidateDate.precision),
+      );
+      const reviewedBacked = Boolean(
+        source?.reviewedDate?.date === normalizedDate &&
+          source.reviewedDate.precision === candidateDate.precision,
+      );
+      if (
+        !(
+          SHA256.test(source?.contentHash ?? '') &&
+          (publicationBacked || reviewedBacked)
+        )
+      ) {
+        unevidenced.push({ policyId, dateIndex });
+      }
+    });
+  });
+  return unevidenced;
+}
+
 function isHttpsUrl(url: string): boolean {
   try {
     return new URL(url).protocol === 'https:';

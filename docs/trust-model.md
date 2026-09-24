@@ -337,7 +337,11 @@ same content an editor originally reviewed. Changed records and
 confirmed-missing sources are also marked stale. A changed observation never
 replaces the last editorially verified fingerprint; later audits and the
 collector continue comparing against that trusted baseline. The audit never
-promotes a record back to verified. Fingerprints are compared only when their
+promotes a record back to verified. Retrieval uses a generous per-attempt
+timeout and exactly one retry for transient failures (timeouts, DNS/socket
+errors, HTTP 408/429/5xx); client errors such as HTTP 403 are never retried,
+and a retried-then-failed source still reports `retrieval_failed`.
+Fingerprints are compared only when their
 retrieval representations are compatible. A browser-capture composite can be
 compared with a server retrieval through an identical set of linked-document
 byte hashes; without that common evidence, the audit reports

@@ -444,7 +444,11 @@ npm run collect -- --dry-run --source=<id>
 - **A verified source changed** — run
   `npm run audit:register -- --write-evidence`; the record is marked `stale`
   and withheld publicly until reviewed. Re-running the audit never restores
-  verification automatically.
+  verification automatically. Register-audit retrievals use a generous
+  per-attempt timeout (45s, overridable with `AUDIT_REGISTER_TIMEOUT_MS`) and
+  exactly one retry for transient failures (timeouts, DNS/socket errors, HTTP
+  408/429/5xx) with a short backoff; client errors such as HTTP 403 are never
+  retried, and a retried-then-failed source still reports `retrieval_failed`.
 - **A changed direct document is unreadable** — the hash mismatch still stages
   a pending update review immediately, so the existing policy is withheld. The
   previous readable fingerprint remains the baseline and extraction is retried.
@@ -460,6 +464,12 @@ npm run collect -- --dry-run --source=<id>
   re-verifies and republishes it. `/status` lists due and overdue records;
   `npm run check:freshness` fails when the overdue count exceeds
   `data/freshness-budget.json`.
+- **A verified record's secondary structured date has no source evidence** —
+  historical records are tolerated within a lower-only budget ratchet:
+  `npm run validate:data` fails when the count of verified secondary dates
+  without matching source publication metadata or `reviewedDate` evidence
+  exceeds `maxUnevidencedSecondaryDates` in `data/record-evidence-budget.json`.
+  Lower the budget as evidence is added; raising it needs a stated reason.
 - **A manual review timestamp is in the future** — validation fails outside the
   five-minute clock-skew allowance, and coverage never counts it as current.
 - **Validation fails in CI** — run `npm run validate:data` locally; it prints every structural error with the offending record id.

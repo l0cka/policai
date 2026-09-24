@@ -1,13 +1,21 @@
 /* @vitest-environment node */
 
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { buildPolicy } from '@/test/factories';
-import { SourceFetchError } from '@/lib/pipeline/fetch';
+import { retrieveSource, SourceFetchError } from '@/lib/pipeline/fetch';
 import { validatePolicies } from '@/lib/validate-data';
 import {
   applyRegisterAuditEvidence,
   auditRegister,
+  registerAuditRetrievalOptions,
 } from './register-audit';
+
+async function retrieveSourceForAudit(
+  url: string,
+  options: Parameters<typeof retrieveSource>[1],
+) {
+  return retrieveSource(url, options);
+}
 
 const CURRENT_EVIDENCE = {
   url: 'https://example.gov.au/policy',
@@ -370,5 +378,230 @@ describe('register audit', () => {
     expect(
       applyRegisterAuditEvidence([policy], results)[0].verification.status,
     ).toBe('stale');
+  });
+});
+
+describe('register audit retrieval retry', () => {
+  it('retries a transient timeout once and still reports retrieval_failed when the retry also fails', async () => {
+    const policy = buildPolicy();
+    const calls: number[] = [];
+    const sleep = vi.fn(async () => undefined);
+    const results = await auditRegister([policy], {
+      retrieve: async () => {
+        calls.push(Date.now());
+        throw new SourceFetchError('Timed out after 45000ms', {
+          retryable: true,
+        });
+      },
+      sleep,
+      retryDelayMs: 1_000,
+      now: () => new Date('2026-07-16T00:00:00.000Z'),
+    });
+
+    expect(calls).toHaveLength(2);
+    expect(sleep).toHaveBeenCalledWith(1_000);
+    expect(results[0]).toMatchObject({
+      status: 'retrieval_failed',
+      error: 'Timed out after 45000ms',
+    });
+    expect(applyRegisterAuditEvidence([policy], results)).toEqual([policy]);
+  });
+
+  it('recovers a source when the first attempt times out and the retry succeeds', async () => {
+    const policy = buildPolicy();
+    let calls = 0;
+    const sleep = vi.fn(async () => undefined);
+    const results = await auditRegister([policy], {
+      retrieve: async () => {
+        calls += 1;
+        if (calls === 1) {
+          throw new SourceFetchError('Timed out after 45000ms', {
+            retryable: true,
+          });
+        }
+        return {
+          body: '<h1>Recovered on retry</h1>',
+          durationMs: 1,
+          evidence: {
+            ...CURRENT_EVIDENCE,
+            contentHash: policy.verification.source.contentHash,
+          },
+        };
+      },
+      sleep,
+      retryDelayMs: 1_000,
+      now: () => new Date('2026-07-16T00:00:00.000Z'),
+    });
+
+    expect(calls).toBe(2);
+    expect(sleep).toHaveBeenCalledTimes(1);
+    expect(results[0]).toMatchObject({ status: 'unchanged' });
+  });
+
+  it('recovers a source when the first attempt fails with a transient 5xx and the retry succeeds', async () => {
+    const policy = buildPolicy();
+    let calls = 0;
+    const results = await auditRegister([policy], {
+      retrieve: async () => {
+        calls += 1;
+        if (calls === 1) {
+          throw new SourceFetchError('HTTP 503', {
+            status: 503,
+            retryable: true,
+          });
+        }
+        return {
+          body: '<h1>Recovered after 503</h1>',
+          durationMs: 1,
+          evidence: {
+            ...CURRENT_EVIDENCE,
+            contentHash: policy.verification.source.contentHash,
+          },
+        };
+      },
+      sleep: async () => undefined,
+      retryDelayMs: 1_000,
+      now: () => new Date('2026-07-16T00:00:00.000Z'),
+    });
+
+    expect(calls).toBe(2);
+    expect(results[0]).toMatchObject({ status: 'unchanged' });
+  });
+
+  it('never retries client errors such as HTTP 403', async () => {
+    const policy = buildPolicy();
+    const fetchImpl = vi
+      .fn<(input: string) => Promise<Response>>()
+      .mockResolvedValue(new Response('forbidden', { status: 403 }));
+    const error = await retrieveSourceForAudit(
+      'https://example.gov.au/walled',
+      { fetchImpl: fetchImpl as unknown as typeof fetch },
+    ).catch((caught: unknown) => caught);
+
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+    expect(error).toMatchObject({
+      name: 'SourceFetchError',
+      status: 403,
+      retryable: false,
+    });
+
+    let calls = 0;
+    const results = await auditRegister([policy], {
+      retrieve: async () => {
+        calls += 1;
+        throw new SourceFetchError('HTTP 403', {
+          status: 403,
+          retryable: false,
+        });
+      },
+      sleep: async () => undefined,
+      retryDelayMs: 1_000,
+      now: () => new Date('2026-07-16T00:00:00.000Z'),
+    });
+    expect(calls).toBe(1);
+    expect(results[0]).toMatchObject({
+      status: 'retrieval_failed',
+      httpStatus: 403,
+      error: 'HTTP 403',
+    });
+  });
+
+  it('retries a fake transient failure via a custom retrieve exactly once', async () => {
+    const policy = buildPolicy();
+    let calls = 0;
+    const sleep = vi.fn(async () => undefined);
+    const results = await auditRegister([policy], {
+      retrieve: async () => {
+        calls += 1;
+        if (calls === 1) {
+          throw new SourceFetchError('read ETIMEDOUT', { retryable: true });
+        }
+        return {
+          body: '<h1>Recovered on retry</h1>',
+          durationMs: 1,
+          evidence: {
+            ...CURRENT_EVIDENCE,
+            contentHash: policy.verification.source.contentHash,
+          },
+        };
+      },
+      sleep,
+      retryDelayMs: 500,
+      now: () => new Date('2026-07-16T00:00:00.000Z'),
+    });
+
+    expect(calls).toBe(2);
+    expect(sleep).toHaveBeenCalledWith(500);
+    expect(results[0]).toMatchObject({ status: 'unchanged' });
+  });
+
+  it('defaults to a 45s timeout, exactly one retry, and a 1s backoff', () => {
+    expect(registerAuditRetrievalOptions({})).toEqual({
+      timeoutMs: 45_000,
+      attempts: 2,
+      retryDelayMs: 1_000,
+    });
+  });
+
+  it('resolves retrieval options from environment overrides and rejects invalid values', () => {
+    expect(
+      registerAuditRetrievalOptions({
+        AUDIT_REGISTER_TIMEOUT_MS: '90000',
+        AUDIT_REGISTER_ATTEMPTS: '1',
+        AUDIT_REGISTER_RETRY_DELAY_MS: '250',
+      }),
+    ).toEqual({ timeoutMs: 90_000, attempts: 1, retryDelayMs: 250 });
+    expect(
+      registerAuditRetrievalOptions({
+        AUDIT_REGISTER_TIMEOUT_MS: '',
+      }),
+    ).toEqual({ timeoutMs: 45_000, attempts: 2, retryDelayMs: 1_000 });
+
+    expect(() =>
+      registerAuditRetrievalOptions({
+        AUDIT_REGISTER_ATTEMPTS: '0',
+      }),
+    ).toThrow('must be a positive integer');
+    expect(() =>
+      registerAuditRetrievalOptions({
+        AUDIT_REGISTER_TIMEOUT_MS: 'fast',
+      }),
+    ).toThrow('must be a positive integer');
+    expect(() =>
+      registerAuditRetrievalOptions({
+        AUDIT_REGISTER_ATTEMPTS: '3.5',
+      }),
+    ).toThrow('must be a positive integer');
+  });
+
+  it('passes resolved timeout and single-retry settings to retrieveSource', async () => {
+    const policy = buildPolicy();
+    const retrieveSource = await import('./pipeline/fetch');
+    const spy = vi.spyOn(retrieveSource, 'retrieveSource');
+    try {
+      spy.mockImplementation(
+        (async () => ({
+          body: '<h1>Unchanged policy</h1>',
+          durationMs: 1,
+          evidence: {
+            ...CURRENT_EVIDENCE,
+            contentHash: policy.verification.source.contentHash,
+          },
+        })) as unknown as typeof retrieveSource.retrieveSource,
+      );
+      const results = await auditRegister([policy], {
+        timeoutMs: 45_000,
+      });
+      expect(spy).toHaveBeenCalledWith(
+        policy.sourceUrl,
+        expect.objectContaining({
+          timeoutMs: 45_000,
+          attempts: 1,
+        }),
+      );
+      expect(results[0]).toMatchObject({ status: 'unchanged' });
+    } finally {
+      spy.mockRestore();
+    }
   });
 });
