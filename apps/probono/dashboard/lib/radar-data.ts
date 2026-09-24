@@ -1,5 +1,6 @@
 import { getPool } from './db';
 import { OPEN_OPPORTUNITY_SQL } from './deadline-data';
+import { getRadarSourceStats as readSourceHealthStats } from './health-data';
 import { RADAR_PAGE_SIZE, radarPage, type RadarState } from './radar-state';
 import { withCleanTitles } from './display-title';
 /*
@@ -91,15 +92,7 @@ export async function getRadarStats() {
 }
 
 export async function getRadarSourceStats() {
-  const { rows } = await getPool().query<{ total: number; ok: number }>(
-    `SELECT count(*)::int AS total, count(*) FILTER (WHERE last_status = 'ok')::int AS ok
-     FROM (
-       SELECT DISTINCT ON (s.id) s.id, r.status AS last_status
-       FROM sources s LEFT JOIN ingest_runs r ON r.source_id = s.id
-       WHERE s.active ORDER BY s.id, r.created_at DESC NULLS LAST
-     ) latest`,
-  );
-  return rows[0];
+  return readSourceHealthStats(getPool());
 }
 
 /** Landing-page context is separate from the filtered archive and not loaded during research. */
