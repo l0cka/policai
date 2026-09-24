@@ -61,10 +61,17 @@ export default async function ThisWeek() {
             weekly coverage. <Link href="/health">Check source coverage</Link>.
           </p>
         ) : null}
-        <p className="page-intro">
-          Seven-day window: {shortDate(start)}–{shortDate(end)}, ending at{' '}
-          {end.toLocaleTimeString('en-AU', { timeZone: 'Australia/Sydney', hour: '2-digit', minute: '2-digit', timeZoneName: 'short' })}. Dates use Sydney time. <Link href="/health">Check source coverage</Link>.
-        </p>
+        {window ? (
+          <p className="page-intro">
+            Seven-day window: {shortDate(start)}–{shortDate(end)}, ending at{' '}
+            {end.toLocaleTimeString('en-AU', { timeZone: 'Australia/Sydney', hour: '2-digit', minute: '2-digit', timeZoneName: 'short' })}. Dates use Sydney time. <Link href="/health">Check source coverage</Link>.
+          </p>
+        ) : (
+          <p role="status" className="page-intro">
+            No successful collection run is recorded yet, so there is no weekly window to report.{' '}
+            <Link href="/health">Check source coverage</Link>.
+          </p>
+        )}
         <nav className="filters" aria-label="Weekly sections">
           <a href="#week-opportunities">Opportunities</a><a href="#week-deadlines">Deadlines</a><a href="#week-developments">Recent signals</a>
         </nav>
