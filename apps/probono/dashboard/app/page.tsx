@@ -57,6 +57,12 @@ function shortDate(value: string | Date): string {
   });
 }
 
+/* The same instant for <time dateTime>; null stays a plain display date. */
+function toDateTimeString(value: string | Date | null): string | undefined {
+  if (!value) return undefined;
+  return new Date(value).toISOString();
+}
+
 
 export default async function Feed({ searchParams }: { searchParams: Promise<RadarSearchParams> }) {
   const state = parseRadarState(await searchParams);
@@ -108,11 +114,13 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Rad
               </Link>
             </div>
 
+            {/* dt before dd for valid description-list markup; CSS
+                column-reverse keeps the number visually above the label. */}
             <dl className="observatory-stats">
-              <div><dd>{stats.new_week}</dd><dt>new this week</dt></div>
-              <div><dd>{stats.opportunities}</dd><dt>opportunities</dt></div>
-              <div><dd>{stats.tracked}</dd><dt>items tracked</dt></div>
-              <div><dd>{sources.total}</dd><dt>sources monitored</dt></div>
+              <div><dt>new this week</dt><dd>{stats.new_week}</dd></div>
+              <div><dt>opportunities</dt><dd>{stats.opportunities}</dd></div>
+              <div><dt>items tracked</dt><dd>{stats.tracked}</dd></div>
+              <div><dt>sources monitored</dt><dd>{sources.total}</dd></div>
             </dl>
           </div>
 
@@ -143,7 +151,7 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Rad
                 const href = safeHref(item.url);
                 return (
                   <article key={item.id}>
-                    <time>{shortDate(item.published_at ?? item.created_at)}</time>
+                    <time dateTime={toDateTimeString(item.published_at ?? item.created_at)}>{shortDate(item.published_at ?? item.created_at)}</time>
                     <h2>
                       {href ? <a href={href} target="_blank" rel="noopener noreferrer">{item.title} <ArrowUpRight /></a> : item.title}
                     </h2>

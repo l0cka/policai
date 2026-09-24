@@ -393,22 +393,24 @@ export function SignalNetwork({ pairs, signals }: { pairs: NetworkPair[]; signal
         </svg>
       </div>
 
+      {/* dt before dd for valid description-list markup; CSS column-reverse
+          keeps the count visually above the label. */}
       <dl className="signal-network-summary">
         <div>
-          <dd>{sourceCount}</dd>
           <dt>sources</dt>
+          <dd>{sourceCount}</dd>
         </div>
         <div>
-          <dd>{total}</dd>
           <dt>signals</dt>
+          <dd>{total}</dd>
         </div>
         <div>
-          <dd>{opportunities}</dd>
           <dt>opportunities</dt>
+          <dd>{opportunities}</dd>
         </div>
         <div>
-          <dd>{collections.length}</dd>
           <dt>collections</dt>
+          <dd>{collections.length}</dd>
         </div>
       </dl>
 

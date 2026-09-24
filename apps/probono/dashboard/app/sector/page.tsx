@@ -45,24 +45,24 @@ export default async function SectorPage() {
 
       <dl className="stat-strip reveal reveal-1" aria-label="Sector snapshot">
         <div className="stat">
-          <dd>{orgs.length}</dd>
           <dt>directory records</dt>
+          <dd>{orgs.length}</dd>
         </div>
         <div className="stat">
-          <dd>{locations.locations.length}</dd>
           <dt>primary offices mapped</dt>
+          <dd>{locations.locations.length}</dd>
         </div>
         <div className="stat">
-          <dd>9</dd>
           <dt>jurisdictions</dt>
+          <dd>9</dd>
         </div>
         <div className="stat">
-          <dd>{monitoringAvailable ? monitored : '—'}</dd>
           <dt>radar sources</dt>
+          <dd>{monitoringAvailable ? monitored : '—'}</dd>
         </div>
         <div className="stat">
-          <dd>$3.9b</dd>
           <dt>NAJP 2025–30</dt>
+          <dd>$3.9b</dd>
         </div>
       </dl>
 

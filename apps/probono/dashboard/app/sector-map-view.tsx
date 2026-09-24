@@ -85,6 +85,14 @@ function themeNow(): 'light' | 'dark' {
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
+/*
+ * Map camera animations are skipped entirely when the reader asks for
+ * reduced motion; read once per map lifetime, matching how the theme is read.
+ */
+function reducedMotion(): boolean {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
 function orgsToGeoJSON(orgs: MapOrg[]): GeoJSON.FeatureCollection {
   return {
     type: 'FeatureCollection',
@@ -341,6 +349,8 @@ export default function SectorMapView({
           map.easeTo({
             center: (top.geometry as GeoJSON.Point).coordinates as [number, number],
             zoom: zoom + 0.3,
+            duration: reducedMotion() ? 0 : undefined,
+            essential: true,
           });
         });
         return;
@@ -360,10 +370,14 @@ export default function SectorMapView({
     }
 
     // Jurisdiction code + count labels are HTML markers so they render in the
-    // site's monospace face; they hide once the map is close.
+    // site's monospace face; they hide once the map is close. They are real
+    // buttons: the same action exists as the Australia/state zoom buttons in
+    // the explorer panel, but a button keeps the marker itself reachable.
     for (const [code, point] of Object.entries(STATE_LABEL_POINTS)) {
-      const el = document.createElement('div');
+      const el = document.createElement('button');
       el.className = 'sector-maplibre-state-label';
+      el.type = 'button';
+      el.setAttribute('aria-label', `Zoom to ${code}`);
       el.addEventListener('click', () => propsRef.current.onSelectJurisdictionAction(code));
       const marker = new maplibregl.Marker({ element: el }).setLngLat(point).addTo(map);
       stateMarkersRef.current[code] = marker;
@@ -460,7 +474,11 @@ export default function SectorMapView({
     const map = mapRef.current;
     if (!map || fit.seq === 0) return;
     if (fit.target === 'australia') {
-      map.fitBounds(AUSTRALIA_BOUNDS, { padding: fitPadding() });
+      map.fitBounds(AUSTRALIA_BOUNDS, {
+        padding: fitPadding(),
+        duration: reducedMotion() ? 0 : undefined,
+        essential: true,
+      });
       return;
     }
     const bbox = bboxesRef.current[fit.target];
@@ -470,7 +488,11 @@ export default function SectorMapView({
           [bbox[0], bbox[1]],
           [bbox[2], bbox[3]],
         ],
-        { padding: fitPadding() },
+        {
+          padding: fitPadding(),
+          duration: reducedMotion() ? 0 : undefined,
+          essential: true,
+        },
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -479,7 +501,12 @@ export default function SectorMapView({
   useEffect(() => {
     const map = mapRef.current;
     if (!map || fly.seq === 0) return;
-    map.flyTo({ center: [fly.lon, fly.lat], zoom: Math.max(map.getZoom(), 13.5) });
+    map.flyTo({
+      center: [fly.lon, fly.lat],
+      zoom: Math.max(map.getZoom(), 13.5),
+      duration: reducedMotion() ? 0 : undefined,
+      essential: true,
+    });
   }, [fly]);
 
   return <div ref={containerRef} className="sector-maplibre" />;

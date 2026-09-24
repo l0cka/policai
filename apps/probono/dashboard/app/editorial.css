@@ -10,7 +10,9 @@
 .hero-search svg { color: var(--muted-foreground); }
 .hero-search input:not([type='hidden']) { background: var(--card); color: var(--foreground); border-color: var(--input); height: 3rem; }
 .hero-search input::placeholder { color: var(--muted-foreground); }
-.hero-search input:focus { background: var(--card); border-color: var(--primary); outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
+.hero-search input:focus { background: var(--card); border-color: var(--primary); }
+/* Shared focus ring on :focus-visible only, so mouse clicks stay quiet. */
+.hero-search input:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
 .observatory-actions { grid-column: 1; margin-top: var(--space-3); }
 .button-primary { background: var(--primary); color: var(--primary-foreground); }
 .button-primary:hover { background: var(--foreground); color: var(--background); }

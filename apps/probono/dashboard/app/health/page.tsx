@@ -75,24 +75,24 @@ export default async function Health() {
 
       <dl className="stat-strip reveal reveal-1">
         <div className="stat">
-          <dd>{rows.length}</dd>
           <dt>active sources</dt>
+          <dd>{rows.length}</dd>
         </div>
         <div className="stat">
-          <dd>{ok}</dd>
           <dt>reporting</dt>
+          <dd>{ok}</dd>
         </div>
         <div className="stat stat-flag">
-          <dd>{overdue}</dd>
           <dt>overdue</dt>
+          <dd>{overdue}</dd>
         </div>
         <div className="stat stat-flag">
-          <dd>{failed}</dd>
           <dt>failed</dt>
+          <dd>{failed}</dd>
         </div>
         <div className="stat">
-          <dd>{never}</dd>
           <dt>never run</dt>
+          <dd>{never}</dd>
         </div>
       </dl>
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type KeyboardEvent } from 'react';
 import dynamic from 'next/dynamic';
 import { MapPinOff, MapPinned } from 'lucide-react';
 import {
@@ -241,6 +241,24 @@ export default function SectorExplorer({
     setView('map');
   };
 
+  /* Roving tabindex + selection follows focus, as the tablist pattern
+     expects: the two views are the only tabs, so arrows move both focus and
+     selection; Home/End land on the first/last tab. */
+  const handleTablistKeys = (
+    event: KeyboardEvent<HTMLButtonElement>,
+    self: View,
+    other: View,
+  ) => {
+    const go = (target: View) => {
+      event.preventDefault();
+      setView(target);
+      document.getElementById(`sector-view-tab-${target}`)?.focus();
+    };
+    if (event.key === 'ArrowRight' || event.key === 'ArrowDown' || event.key === 'Home') go(self === 'map' ? 'system' : 'map');
+    else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') go(other);
+    else if (event.key === 'End') go(self === 'map' ? 'map' : 'system');
+  };
+
   return (
     <div className="sector-explorer">
       <header className="sector-explorer-head">
@@ -258,16 +276,24 @@ export default function SectorExplorer({
           <button
             type="button"
             role="tab"
+            id="sector-view-tab-map"
+            aria-controls="sector-view-panel-map"
             aria-selected={view === 'map'}
+            tabIndex={view === 'map' ? 0 : -1}
             onClick={() => setView('map')}
+            onKeyDown={(event) => handleTablistKeys(event, 'map', 'system')}
           >
             Map
           </button>
           <button
             type="button"
             role="tab"
+            id="sector-view-tab-system"
+            aria-controls="sector-view-panel-system"
             aria-selected={view === 'system'}
+            tabIndex={view === 'system' ? 0 : -1}
             onClick={() => setView('system')}
+            onKeyDown={(event) => handleTablistKeys(event, 'system', 'map')}
           >
             System
           </button>
@@ -275,11 +301,25 @@ export default function SectorExplorer({
       </header>
 
       {view === 'system' ? (
-        <div role="tabpanel" aria-label="System view" className="sector-system-panel">
+        <div
+          role="tabpanel"
+          id="sector-view-panel-system"
+          aria-labelledby="sector-view-tab-system"
+          aria-label="System view"
+          tabIndex={0}
+          className="sector-system-panel"
+        >
           <SectorDiagram onSelectGroupAction={drillFromSystem} />
         </div>
       ) : (
-        <div role="tabpanel" aria-label="Map view" className="sector-map-layout">
+        <div
+          role="tabpanel"
+          id="sector-view-panel-map"
+          aria-labelledby="sector-view-tab-map"
+          aria-label="Map view"
+          tabIndex={0}
+          className="sector-map-layout"
+        >
           <div className="sector-map-toolbar">
             <div className="sector-zoom-toggle" role="group" aria-label="Fit map to">
               <button
@@ -395,7 +435,12 @@ export default function SectorExplorer({
             </div>
           </div>
 
-          <aside className="sector-map-detail" aria-live="polite">
+          {/* Live announcements stay short: the full detail panel is read by
+              navigation, not re-announced on every selection change. */}
+          <aside className="sector-map-detail">
+            <p className="sr-only" role="status">
+              {selectedOrg ? `${selectedOrg.name} selected` : 'No organisations match this view.'}
+            </p>
             {selectedOrg ? (
               <div className="sector-selected-org sector-detail-swap" key={selectedOrg.name}>
                 <div className="sector-org-picker sector-org-picker-detail">
@@ -582,7 +627,7 @@ export default function SectorExplorer({
           </aside>
 
           <div className="sector-map-foot">
-            <div className="sector-map-government" aria-label="National funding context">
+            <div className="sector-map-government" role="group" aria-label="National funding context">
               <div>
                 <span>Australian Government</span>
                 <small>NAJP 2025–30 · estimated $3.864b GST exclusive · publicly rounded to $3.9b</small>
