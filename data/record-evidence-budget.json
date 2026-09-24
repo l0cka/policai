@@ -1,0 +1,4 @@
+{
+  "maxUnevidencedSecondaryDates": 8,
+  "note": "Ratchet: lower only. Raising this needs a stated reason in the pull request. Checked by npm run validate:data; counted by countUnsubstantiatedSecondaryDates in src/lib/validate-data.ts. Seeded 2026-09-24 from the measured count of verified secondary dates without matching source evidence (7 day-precision + 1 month-precision)."
+}

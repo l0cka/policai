@@ -464,6 +464,12 @@ npm run collect -- --dry-run --source=<id>
   re-verifies and republishes it. `/status` lists due and overdue records;
   `npm run check:freshness` fails when the overdue count exceeds
   `data/freshness-budget.json`.
+- **A verified record's secondary structured date has no source evidence** —
+  historical records are tolerated within a lower-only budget ratchet:
+  `npm run validate:data` fails when the count of verified secondary dates
+  without matching source publication metadata or `reviewedDate` evidence
+  exceeds `maxUnevidencedSecondaryDates` in `data/record-evidence-budget.json`.
+  Lower the budget as evidence is added; raising it needs a stated reason.
 - **A manual review timestamp is in the future** — validation fails outside the
   five-minute clock-skew allowance, and coverage never counts it as current.
 - **Validation fails in CI** — run `npm run validate:data` locally; it prints every structural error with the offending record id.

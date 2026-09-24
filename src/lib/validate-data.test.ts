@@ -3,6 +3,7 @@
 import { describe, expect, it } from 'vitest';
 import { buildPolicy, buildTimelineEvent } from '@/test/factories';
 import {
+  countUnsubstantiatedSecondaryDates,
   isAllowedSourceHost,
   validateDevelopments,
   validatePolicyFrameworkArtifact,
@@ -1005,5 +1006,187 @@ describe('validateDevelopments', () => {
     expect(report.errors).toContain(
       'dev-timeline: relatedTimelineEventId "missing-event" does not match a timeline event',
     );
+  });
+});
+
+describe('countUnsubstantiatedSecondaryDates', () => {
+  function secondaryDate(
+    overrides: Partial<Policy['dates'][number]> = {},
+  ): Policy['dates'][number] {
+    return {
+      type: 'amended',
+      date: '2026-03-01',
+      precision: 'day',
+      ...overrides,
+    };
+  }
+
+  it('counts verified secondary dates without any source evidence', () => {
+    const policy = buildPolicy({
+      dates: [
+        {
+          type: 'effective',
+          date: '2025-01-01',
+          precision: 'day',
+          primary: true,
+          source: {
+            url: 'https://example.gov.au/policies/national-ai-ethics-framework',
+            contentHash: 'a'.repeat(64),
+            reviewedDate: {
+              date: '2025-01-01',
+              precision: 'day',
+              reviewedAt: '2026-07-10T00:00:00.000Z',
+              reviewedBy: 'reviewer',
+              notes: 'Confirmed the effective date in the official source.',
+            },
+          },
+        },
+        secondaryDate(),
+      ],
+    });
+
+    expect(countUnsubstantiatedSecondaryDates([policy])).toEqual([
+      { policyId: 'policy-1', dateIndex: 1 },
+    ]);
+  });
+
+  it('counts secondary dates whose source lacks a SHA-256 fingerprint or matching date', () => {
+    const noHash = buildPolicy({
+      dates: [
+        {
+          type: 'effective',
+          date: '2025-01-01',
+          precision: 'day',
+          primary: true,
+        },
+        secondaryDate({
+          source: {
+            url: 'https://example.gov.au/x',
+            reviewedDate: {
+              date: '2026-03-01',
+              precision: 'day',
+              reviewedAt: '2026-07-10T00:00:00.000Z',
+              reviewedBy: 'reviewer',
+              notes: 'Date confirmed without a fingerprint.',
+            },
+          },
+        }),
+      ],
+    });
+    const mismatched = buildPolicy({
+      id: 'policy-2',
+      dates: [
+        {
+          type: 'effective',
+          date: '2025-01-01',
+          precision: 'day',
+          primary: true,
+        },
+        secondaryDate({
+          source: {
+            url: 'https://example.gov.au/y',
+            contentHash: 'a'.repeat(64),
+            reviewedDate: {
+              date: '2025-12-31',
+              precision: 'day',
+              reviewedAt: '2026-07-10T00:00:00.000Z',
+              reviewedBy: 'reviewer',
+              notes: 'Evidence describes a different date.',
+            },
+          },
+        }),
+      ],
+    });
+    const publishedWithHash = buildPolicy({
+      id: 'policy-3',
+      dates: [
+        {
+          type: 'effective',
+          date: '2025-01-01',
+          precision: 'day',
+          primary: true,
+        },
+        secondaryDate({
+          type: 'published',
+          source: {
+            url: 'https://example.gov.au/z',
+            contentHash: 'a'.repeat(64),
+            publishedAt: '2026-03-01',
+            publishedAtPrecision: 'day',
+          },
+        }),
+      ],
+    });
+
+    const report = countUnsubstantiatedSecondaryDates([
+      noHash,
+      mismatched,
+      publishedWithHash,
+    ]);
+    expect(report).toEqual([
+      { policyId: 'policy-1', dateIndex: 1 },
+      { policyId: 'policy-2', dateIndex: 1 },
+    ]);
+  });
+
+  it('accepts publication metadata without an explicit publishedAtPrecision key', () => {
+    const policy = buildPolicy({
+      dates: [
+        {
+          type: 'issued',
+          date: '2025-01-01',
+          precision: 'day',
+          primary: true,
+        },
+        secondaryDate({
+          type: 'issued',
+          source: {
+            url: 'https://example.gov.au/pdf',
+            contentHash: 'a'.repeat(64),
+            publishedAt: '2026-03-01',
+          },
+        }),
+      ],
+    });
+
+    expect(countUnsubstantiatedSecondaryDates([policy])).toEqual([]);
+  });
+
+  it('ignores unverified records and counts only secondary dates', () => {
+    const unverified = buildPolicy({
+      id: 'unverified-1',
+      verification: {
+        status: 'stale',
+        checkedAt: '2026-07-10T00:00:00.000Z',
+        checkedBy: 'reviewer',
+        method: 'manual',
+        source: { url: 'https://example.gov.au/stale' },
+      },
+      dates: [
+        {
+          type: 'effective',
+          date: '2025-01-01',
+          precision: 'day',
+          primary: true,
+        },
+        secondaryDate(),
+      ],
+    });
+    const secondaryOnly = buildPolicy({
+      id: 'secondary-only',
+      dates: [
+        {
+          type: 'effective',
+          date: '2025-01-01',
+          precision: 'day',
+          primary: true,
+        },
+        secondaryDate(),
+      ],
+    });
+
+    expect(
+      countUnsubstantiatedSecondaryDates([unverified, secondaryOnly]),
+    ).toEqual([{ policyId: 'secondary-only', dateIndex: 1 }]);
   });
 });

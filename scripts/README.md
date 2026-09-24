@@ -89,6 +89,18 @@ npm run validate:data
 
 Exit code 1 on errors; warnings print without failing.
 
+Secondary (non-primary) structured dates on verified records are gated as a
+lower-only budget ratchet rather than hard errors, mirroring
+`scripts/check-freshness.ts`: the count of secondary dates without matching
+source publication metadata or `reviewedDate` evidence must not exceed
+`maxUnevidencedSecondaryDates` in `data/record-evidence-budget.json`. Lower the
+budget whenever the backlog shrinks; raising it needs a stated reason in the
+pull request that changes the file, and an unargued raise fails validation in
+CI (the script compares against the merge base when `GITHUB_BASE_SHA` is set).
+Unevidenced dates are listed in the output so the new value is never guessed.
+The ratchet keeps historical records valid while any growth in unevidenced
+secondary dates fails validation.
+
 ## canonicalize-source-urls.ts
 
 Idempotently migrates legacy or manually edited source-bearing URLs to the
