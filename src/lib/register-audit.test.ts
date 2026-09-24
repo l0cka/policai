@@ -1,7 +1,7 @@
 /* @vitest-environment node */
 
 import { describe, expect, it, vi } from 'vitest';
-import { buildPolicy, buildTimelineEvent } from '@/test/factories';
+import { buildPolicy } from '@/test/factories';
 import { retrieveSource, SourceFetchError } from '@/lib/pipeline/fetch';
 import { validatePolicies } from '@/lib/validate-data';
 import {
