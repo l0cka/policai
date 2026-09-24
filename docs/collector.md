@@ -444,7 +444,11 @@ npm run collect -- --dry-run --source=<id>
 - **A verified source changed** — run
   `npm run audit:register -- --write-evidence`; the record is marked `stale`
   and withheld publicly until reviewed. Re-running the audit never restores
-  verification automatically.
+  verification automatically. Register-audit retrievals use a generous
+  per-attempt timeout (45s, overridable with `AUDIT_REGISTER_TIMEOUT_MS`) and
+  exactly one retry for transient failures (timeouts, DNS/socket errors, HTTP
+  408/429/5xx) with a short backoff; client errors such as HTTP 403 are never
+  retried, and a retried-then-failed source still reports `retrieval_failed`.
 - **A changed direct document is unreadable** — the hash mismatch still stages
   a pending update review immediately, so the existing policy is withheld. The
   previous readable fingerprint remains the baseline and extraction is retried.
