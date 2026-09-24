@@ -696,7 +696,7 @@ export const WATCH_SOURCES: WatchSource[] = [
     automation: 'automatic',
     fetchStrategy: 'browser',
     notes:
-      'Queensland Civil and Administrative Tribunal practice directions, watched for content changes. Checked 2026-09-23. VCAT practice notes link more than eight documents and cannot be watched this way; SACAT, ACAT and NTCAT listing URLs are unverified.',
+      'Queensland Civil and Administrative Tribunal practice directions, watched for content changes. Checked 2026-09-23. VCAT practice notes link more than eight documents and cannot be watched this way; SACAT and ACAT listing URLs are unverified. NTCAT procedural directions are now watched directly (ntcat-procedural-directions).',
   },
   {
     id: 'wa-sc-practice-directions',
@@ -765,6 +765,19 @@ export const WATCH_SOURCES: WatchSource[] = [
       'Practice directions index, watched for content changes. The host returns 403 to plain HTTP clients, so retrieval goes through the browser path.',
   },
   {
+    id: 'ntcat-procedural-directions',
+    name: 'NTCAT — procedural directions',
+    jurisdiction: 'nt',
+    category: 'court',
+    url: 'https://ntcat.nt.gov.au/publications?type=11',
+    kind: 'document',
+    schedule: 'weekly',
+    enabled: true,
+    automation: 'automatic',
+    notes:
+      'NT Civil and Administrative Tribunal procedural directions: a Drupal views listing with the type=11 practice-directions filter applied as a stable GET parameter. Titles carry no AI signal, so the page and its linked PDFs are watched for content changes instead of being parsed as an index. Plain HTTP verified 2026-09-24: the filtered list exposes exactly the three practice directions as linked PDFs (18 document links on the unfiltered publications list).',
+  },
+  {
     id: 'nsw-sc-practice-notes',
     name: 'NSW Supreme Court — practice notes',
     jurisdiction: 'nsw',
@@ -776,6 +789,19 @@ export const WATCH_SOURCES: WatchSource[] = [
     automation: 'automatic',
     notes:
       'Practice notes including the generative-AI practice note; the directory markup exposes no extractable entries, so the page is watched for content changes.',
+  },
+  {
+    id: 'nsw-gazette-recent',
+    name: 'NSW Government Gazette — recent issues',
+    jurisdiction: 'nsw',
+    category: 'government',
+    url: 'https://gazette.nsw.gov.au/',
+    kind: 'document',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    notes:
+      'Official NSW Gazette register, server-rendered and open to plain HTTP clients since 1 July 2024. Recent issues such as “No 389 of 21 September 2026” carry no AI signal in their titles, so the listing is watched for content changes rather than parsed as an index. Plain HTTP verified 2026-09-24.',
   },
   {
     id: 'vic-sc-practice-notes',
@@ -800,6 +826,32 @@ export const WATCH_SOURCES: WatchSource[] = [
     automation: 'automatic',
     notes:
       'Court announcements including AI practice directions; the news index markup exposes no extractable entries, so the page is watched for content changes.',
+  },
+  {
+    id: 'vcat-rss',
+    name: 'VCAT — news feed',
+    jurisdiction: 'vic',
+    category: 'court',
+    url: 'https://www.vcat.vic.gov.au/rss.xml',
+    kind: 'rss',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    notes:
+      'Victorian Civil and Administrative Tribunal sitewide news RSS; verified 2026-09-24 with 10 items and pubDates over plain HTTP. Catches AI-related tribunal announcements rather than practice notes; the practice note itself is watched separately.',
+  },
+  {
+    id: 'vcat-pnvcat11-generative-ai',
+    name: 'VCAT — practice note PNVCAT11 (generative AI)',
+    jurisdiction: 'vic',
+    category: 'court',
+    url: 'https://www.vcat.vic.gov.au/documents/practice-note-pnvcat11-use-generative-artificial-intelligence',
+    kind: 'document',
+    schedule: 'weekly',
+    enabled: true,
+    automation: 'automatic',
+    notes:
+      'Direct-document monitor for the VCAT practice note on the use of generative artificial intelligence; the content hash covers the landing page and its single linked PDF, detecting edits or reissue of the note. Plain HTTP verified 2026-09-24.',
   },
   // --- States and territories ---
   {
