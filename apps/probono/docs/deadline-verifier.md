@@ -53,52 +53,82 @@ Configuration, all from the external environment file, never Git:
 `docker-compose.yaml` passes the three variables through to the worker
 container. The worker exits 3 on a credential error and never logs the key.
 
-## Host dispatcher change required (not made)
+## Host dispatcher (installed)
 
 Scheduled worker tasks run through the root-owned guarded dispatcher, which
-allowlists them. Nothing here is installed or enabled. To run the verifier, a
-root operator would make these changes and re-record the installation hashes:
+allowlists them. The change below **is installed** — the A2J cutover on
+2026-09-23 22:19 AEST put the verifier on the daily schedule. The dispatcher
+allowlist (`cli.py worker verify-deadlines`, the saver's stdin path, the
+`host.py` worker arguments and permitted names, and the stdin permission) is
+installed and its file hashes are recorded, hash-pinned, in the root config
+`installed_hashes`. The unit files
+`/home/l0cka/.config/systemd/user/probono-verify-deadlines.service` and
+`.timer` (daily 07:10 Sydney) are installed and active; the service unit's
+hash is in `installed_hashes`. The release running the verifier is the live
+tree `/var/lib/probono-radar/app/apps/probono`. The three verifier variables
+(`VERIFIER_BASE_URL`, `VERIFIER_MODEL`, `VERIFIER_API_KEY`) are in
+`/etc/probono-radar/runtime.env` (names only here; never print their values).
+The sections below record what was installed, as the reviewed record of the
+change:
 
-1. `/usr/local/libexec/policai-host/cli.py`, the `worker` sub-command:
+1. `/usr/local/libexec/policai-host/cli.py`, the `worker` sub-command —
+   installed:
 
    ```python
    worker.add_argument("operation", choices=("ingest", "enrich", "backup", "verify-deadlines"))
    ```
 
-   and in the `compose` branch accept the saver's stdin (same 256 KiB bound):
+   and in the `compose` branch the saver's stdin is accepted (same 256 KiB
+   bound):
 
    ```python
    if "src/save-enrichment.ts" in command or "src/save-deadline-verification.ts" in command:
    ```
 
-2. `/usr/local/libexec/policai-host/host.py`:
-   - `worker_arguments`: allow `src/verify-deadlines.ts` with no parameters
+2. `/usr/local/libexec/policai-host/host.py` — installed:
+   - `worker_arguments`: allows `src/verify-deadlines.ts` with no parameters
      (beside `src/fetch-all.ts` and `src/list-unenriched.ts`), and
      `src/save-deadline-verification.ts` with exactly one item ID matching
      `[1-9][0-9]{0,12}` (as `src/save-enrichment.ts`).
-     `src/list-deadlines-to-verify.ts` is a manual inspection tool; allowlist it
-     only if wanted.
-   - `run_worker`: add `"verify-deadlines"` to the permitted names (the script
-     is `ops/verify-deadlines.sh`). `PROBONO_CLAUDE_BIN` is not used by it.
-   - `worker_compose`: permit stdin when the allowed command contains
+     `src/list-deadlines-to-verify.ts` is a manual inspection tool; it is not
+     allowlisted.
+   - `run_worker`: has `"verify-deadlines"` among the permitted names (the
+     script is `ops/verify-deadlines.sh`). `PROBONO_CLAUDE_BIN` is not used
+     by it.
+   - `worker_compose`: permits stdin when the allowed command contains
      `src/save-deadline-verification.ts`.
-   - Installation proof (`required` set in the preflight): add
-     `/home/l0cka/.config/systemd/user/probono-verify-deadlines.service` once it
-     is installed, and record its hash in the root config `installed_hashes`.
+   - Installation proof: the preflight `required` set includes
+     `/home/l0cka/.config/systemd/user/probono-verify-deadlines.service` and
+     its hash is recorded in the root config `installed_hashes`.
 
 3. `/etc/probono-radar/runtime.env` (root-controlled, mode not world- or
-   group-writable): add `VERIFIER_BASE_URL`, `VERIFIER_MODEL` and
+   group-writable): contains `VERIFIER_BASE_URL`, `VERIFIER_MODEL` and
    `VERIFIER_API_KEY`. The key is the Ollama Cloud key; copy it without
    printing it.
 
-4. User units: install `ops/probono-verify-deadlines.service` and
-   `ops/probono-verify-deadlines.timer` (daily 07:10 Sydney) in
+4. User units: `ops/probono-verify-deadlines.service` and
+   `ops/probono-verify-deadlines.timer` (daily 07:10 Sydney) are installed in
    `/home/l0cka/.config/systemd/user/`, matching the existing enrich unit
    (`ExecStart=/usr/bin/python3 -I /usr/local/libexec/policai-host/cli.py worker verify-deadlines`).
 
 5. A worker image built from a release that contains these files. The
    container needs outbound HTTPS to `ollama.com` (it uses host networking, as
    enrichment's fetches do) and the existing Firecrawl entry point.
+
+## Open incident: 2026-09-24 Refused runs
+
+All three guarded probono jobs refused on 2026-09-24 — `worker ingest`
+(06:00), `worker backup` (02:35) and `worker verify-deadlines` (07:10) each
+logged "Refused: guarded operation failed. Inspect status and reviewed
+prerequisites; no automatic retry." and exited 1, so the systemd units
+`probono-ingest.service`, `probono-backup.service` and
+`probono-verify-deadlines.service` show failed results. The root cause is
+unknown: the documented diagnostic route is the dispatcher's nonsecret
+transaction view, `sudo /usr/local/libexec/policai-host/cli.py status`, which
+has deliberately not been run yet (root operator action; nothing in the
+dispatcher or units may be changed or retried automatically). Next scheduled
+runs are the observation points if the incident is still open: ingest 06:00,
+backup 02:30, verify-deadlines 07:10 (all Sydney time, next morning).
 
 Each save is its own `docker compose run` like enrichment, so a batch of 25
 starts up to 26 containers; the verify step itself takes about 3–5 minutes,
