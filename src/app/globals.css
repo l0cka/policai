@@ -4,6 +4,22 @@
 @import "./design-tokens.css";
 @plugin "@tailwindcss/typography";
 
+/*
+ * `dark:` follows the theme toggle, not just the OS: an explicit
+ * `data-theme="dark"` on <html> wins, and the system preference applies only
+ * when no `data-theme="light"` override is set.
+ */
+@custom-variant dark {
+  &:where([data-theme='dark'], [data-theme='dark'] *) {
+    @slot;
+  }
+  @media (prefers-color-scheme: dark) {
+    &:where(:root:not([data-theme='light']), :root:not([data-theme='light']) *) {
+      @slot;
+    }
+  }
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
