@@ -22,7 +22,7 @@ export function RadarControls({ state }: { state: RadarState }) {
           <Link key={key} href={radarHref(state, { stream: key })} className={state.stream === key ? 'active' : ''} aria-current={state.stream === key ? 'true' : undefined}>{label}</Link>
         ))}
         <Link href={radarHref(state, { opp: state.opp ? undefined : '1' })} className={state.opp ? 'active' : ''} aria-current={state.opp ? 'true' : undefined}><Flag /> Opportunities</Link>
-        <Link href={radarHref(state, { filtered: state.filtered ? undefined : '1' })} className={state.filtered ? 'active' : ''} aria-current={state.filtered ? 'true' : undefined} title="Items the enrichment agent screened out as not radar material">Screened out</Link>
+        <Link href={radarHref(state, { filtered: state.filtered ? undefined : '1' })} className={state.filtered ? 'active' : ''} aria-current={state.filtered ? 'true' : undefined} title="Items the enrichment agent screened out as not radar material">Screened out<span className="sr-only"> — items the enrichment agent screened out as not radar material</span></Link>
       </nav>
       {filtered ? <div className="radar-context">
         <p>{state.filtered ? 'Screened-out items' : 'Relevant signals'}{state.stream ? ` · ${STREAMS[state.stream]}` : ''}{state.opp ? ' · Open opportunities' : ''}{state.q ? ` · “${state.q}”` : ''}</p>

@@ -739,7 +739,6 @@ main {
 .hero-search input:focus {
   border-color: #91aaff;
   background: rgba(3, 16, 29, 0.45);
-  outline: 0;
 }
 
 .observatory-actions {
@@ -805,6 +804,13 @@ main {
   padding-left: var(--space-4);
 }
 
+/* The description-list children are dt-then-dd for valid markup; flipping the
+   visual order is presentation only, so it stays here. */
+.observatory-stats > div {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
 .observatory-stats dd {
   font-size: 1.65rem;
   line-height: 1;
@@ -813,7 +819,6 @@ main {
 }
 
 .observatory-stats dt {
-  margin-top: var(--space-2);
   color: #8395a8;
   font-family: var(--font-mono);
   font-size: var(--type-floor);
@@ -1057,6 +1062,12 @@ main {
   padding-left: 0.8rem;
 }
 
+/* dt-then-dd markup; column-reverse keeps the count visually above. */
+.signal-network-summary > div {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
 .signal-network-summary dd {
   font-family: var(--font-mono);
   font-size: 1.15rem;
@@ -1064,7 +1075,6 @@ main {
 }
 
 .signal-network-summary dt {
-  margin-top: 0.4rem;
   color: #8395a8;
   font-family: var(--font-mono);
   font-size: 11px;
@@ -1257,6 +1267,7 @@ main {
   display: inline-flex;
   align-items: baseline;
   gap: 0.4rem;
+  flex-direction: row-reverse; /* dt-then-dd markup; the count still sits left. */
 }
 
 .stat dd {
@@ -2149,6 +2160,7 @@ main {
 }
 
 .sector-maplibre-state-label {
+  appearance: none;
   padding: 0.15rem 0.45rem;
   border: 1px solid var(--border);
   border-radius: 3px;
