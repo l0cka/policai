@@ -41,7 +41,7 @@ interface DevelopmentsBrowserProps {
 
 function formatDate(value: string): string {
   return new Date(value).toLocaleDateString('en-AU', {
-    day: '2-digit',
+    day: 'numeric',
     month: 'short',
     year: 'numeric',
   });
@@ -119,14 +119,14 @@ function DevelopmentFeed({
                   style={jurisdictionRailStyle(development.jurisdiction)}
                   className="ink-rail grid gap-2 border-b border-border py-4 pl-3 transition-colors duration-[var(--dur-fast)] hover:bg-[var(--row-hover)] sm:grid-cols-[6.5rem_7rem_minmax(0,1fr)] lg:grid-cols-[6.5rem_7rem_minmax(0,1fr)_9rem_10rem]"
                 >
-                  <time className="font-mono text-[11px] font-medium uppercase text-muted-foreground">{developmentDate(development)}</time>
+                  <time className="text-xs font-medium text-muted-foreground tabular">{developmentDate(development)}</time>
                   <div>
                     <span className={cn('inline-flex rounded-md px-2 py-1 font-mono text-[11px] uppercase tracking-[0.08em]', label === 'Consultation' || !verified ? 'bg-[var(--status-proposed-bg)] text-[var(--status-proposed)]' : 'bg-[var(--status-active-bg)] text-[var(--trust)]')}>
                       {label}
                     </span>
                   </div>
                   <div className="min-w-0">
-                    <a href={development.url} target="_blank" rel="noopener noreferrer" className="group inline-flex items-start gap-1.5 text-sm font-semibold leading-5 hover:text-primary">
+                    <a href={development.url} target="_blank" rel="noopener noreferrer" className="group inline-flex items-start gap-1.5 record-title hover:text-primary">
                       {development.title}
                       <ArrowUpRight className="mt-0.5 h-3.5 w-3.5 shrink-0 opacity-50 group-hover:opacity-100" />
                     </a>

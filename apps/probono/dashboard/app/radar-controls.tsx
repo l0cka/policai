@@ -13,7 +13,7 @@ export function RadarControls({ state }: { state: RadarState }) {
         <label htmlFor="feed-search">Search signals, sources or topics</label>
         <div className="radar-search-row">
           <input key={state.q ?? ''} id="feed-search" type="search" name="q" maxLength={300} placeholder="For example, legal assistance or a source name" defaultValue={state.q ?? ''} />
-          <button type="submit" className="button-primary"><Search /> Search</button>
+          <button type="submit" className="button-quiet"><Search /> Search</button>
         </div>
       </form>
       <nav className="filters" aria-label="Radar filters">

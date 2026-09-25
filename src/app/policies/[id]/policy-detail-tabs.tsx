@@ -40,9 +40,10 @@ const tabs: Array<{ id: TabId; label: string }> = [
 
 function humanDate(value: string): string {
   return new Date(value).toLocaleDateString('en-AU', {
-    day: '2-digit',
+    day: 'numeric',
     month: 'short',
     year: 'numeric',
+    timeZone: 'Australia/Sydney',
   });
 }
 
@@ -193,7 +194,7 @@ export function PolicyDetailTabs({
               {policy.aiSummary ? (
                 <div className="max-w-4xl border border-[var(--trust)]/35 bg-[var(--status-active-bg)]/35 p-4">
                   <div className="flex gap-3">
-                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[var(--trust)] text-white">
+                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[var(--trust)] text-[var(--background)]">
                       <Info className="h-4 w-4" />
                     </span>
                     <div>
@@ -232,7 +233,7 @@ export function PolicyDetailTabs({
                     {policy.dates.slice(0, 4).map((date, index) => (
                       <li key={`${date.type}-${String(date.date)}`} className="relative pl-5">
                         <span className={cn('absolute left-0 top-1.5 h-2.5 w-2.5 rounded-full', index === 0 ? 'bg-primary ring-4 ring-primary/15' : 'bg-input')} />
-                        <p className="font-mono text-[11px] font-medium uppercase text-muted-foreground">{formatPolicyDate(date, { short: true })}</p>
+                        <p className="text-xs font-medium text-muted-foreground tabular">{formatPolicyDate(date, { short: true })}</p>
                         <p className="mt-1 text-xs font-semibold">{getPolicyDateTypeName(date.type)}</p>
                       </li>
                     ))}
@@ -285,10 +286,10 @@ export function PolicyDetailTabs({
               {policy.dates.map((date) => (
                 <div key={`${date.type}-${String(date.date)}`} className="grid grid-cols-[7rem_1fr] gap-3">
                   <dt className="text-muted-foreground">{getPolicyDateTypeName(date.type)}</dt>
-                  <dd className="font-mono text-xs uppercase">{formatPolicyDate(date)}</dd>
+                  <dd className="tabular">{formatPolicyDate(date, { short: true })}</dd>
                 </div>
               ))}
-              <div className="grid grid-cols-[7rem_1fr] gap-3"><dt className="text-muted-foreground">Key date</dt><dd className="font-mono text-xs uppercase">{formatPolicyDate(primaryDate)}</dd></div>
+              <div className="grid grid-cols-[7rem_1fr] gap-3"><dt className="text-muted-foreground">Key date</dt><dd className="tabular">{formatPolicyDate(primaryDate, { short: true })}</dd></div>
             </dl>
           </section>
 
@@ -307,8 +308,8 @@ export function PolicyDetailTabs({
             </p>
             <dl className="mt-4 space-y-3 text-sm">
               {sourceHost ? <div className="grid grid-cols-[6.5rem_1fr] gap-3"><dt className="text-muted-foreground">Official source</dt><dd>{sourceHost}</dd></div> : null}
-              {policy.verification.checkedAt ? <div className="grid grid-cols-[6.5rem_1fr] gap-3"><dt className="text-muted-foreground">Checked</dt><dd className="font-mono text-[11px] font-medium uppercase">{humanDate(policy.verification.checkedAt)}</dd></div> : null}
-              {policy.verification.source.retrievedAt ? <div className="grid grid-cols-[6.5rem_1fr] gap-3"><dt className="text-muted-foreground">Retrieved</dt><dd className="font-mono text-[11px] font-medium uppercase">{humanDate(policy.verification.source.retrievedAt)}</dd></div> : null}
+              {policy.verification.checkedAt ? <div className="grid grid-cols-[6.5rem_1fr] gap-3"><dt className="text-muted-foreground">Checked</dt><dd className="tabular">{humanDate(policy.verification.checkedAt)}</dd></div> : null}
+              {policy.verification.source.retrievedAt ? <div className="grid grid-cols-[6.5rem_1fr] gap-3"><dt className="text-muted-foreground">Retrieved</dt><dd className="tabular">{humanDate(policy.verification.source.retrievedAt)}</dd></div> : null}
             </dl>
             <div className="mt-5 flex gap-3 border border-[var(--trust)]/35 bg-[var(--status-active-bg)]/25 p-4 text-sm italic leading-5 text-[var(--trust)]">
               <ShieldCheck className="h-5 w-5 shrink-0" />
@@ -336,7 +337,7 @@ function RelatedPolicies({ policies }: { policies: Policy[] }) {
       {policies.map((related) => (
         <Link key={related.id} href={`/policies/${related.id}`} className="group flex min-h-24 items-center justify-between border border-border bg-card/35 p-4 transition-colors hover:border-primary">
           <span>
-            <span className="block text-sm font-semibold group-hover:text-primary">{related.title}</span>
+            <span className="block record-title group-hover:text-primary">{related.title}</span>
             <span className="mt-2 block font-mono text-[11px] uppercase text-muted-foreground">{getJurisdictionName(related.jurisdiction)} · {getPolicyTypeName(related.type)}</span>
           </span>
           <ArrowRight className="h-4 w-4 shrink-0 text-primary" />

@@ -244,7 +244,7 @@ export function PolicyBrowser({
           <p className="page-eyebrow text-primary">
             The Australian AI policy register
           </p>
-          <h1 className="mt-2 font-display text-[clamp(2.25rem,4vw,3rem)] leading-tight tracking-[-0.035em]">
+          <h1 className="register-title mt-2">
             Australian AI policy.
           </h1>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">

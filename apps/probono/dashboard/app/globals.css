@@ -34,9 +34,6 @@
    * from design-tokens.css, imported above. Only A2J-specific values and
    * deliberate local overrides are declared here.
    */
-  --row-hover: light-dark(#eeeee7, #27302a);
-  /* Local override: A2J still uses the lighter caution ink (not yet AA-aligned). */
-  --caution: light-dark(#b7791f, #e7b96c);
 
   /*
    * Stream accents, drawn from the Policai chart ramp. They let a reader place
@@ -52,10 +49,6 @@
   --s-tech_justice: light-dark(#6d28d9, #b89aff);
   --s-tech_justice-bg: light-dark(#ece3fb, #2a1f45);
 
-  /* Editorial index 02: interface, metadata, and reading roles. */
-  --font-sans: Arial, Helvetica, sans-serif;
-  --font-mono: 'Courier New', monospace;
-  --font-display: Georgia, 'Times New Roman', serif;
 }
 
 /* The toggle wins over the system preference by pinning `color-scheme`. */
@@ -81,7 +74,7 @@ body {
   background-image: none;
   color: var(--foreground);
   font-family: var(--font-sans);
-  font-size: 15px;
+  font-size: var(--type-body);
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
 }
@@ -187,20 +180,20 @@ time,
 
 .page-title {
   font-family: var(--font-display);
-  font-size: clamp(1.6rem, 2.2vw, 2rem);
+  font-size: var(--type-page-title);
   font-weight: 400;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
   margin-top: 0.625rem;
 }
 
 /* A clear step below .page-title, so sections never rival the page name. */
 .section-title {
   font-family: var(--font-display);
-  font-size: 1.15rem;
+  font-size: var(--type-section-title);
   font-weight: 400;
-  line-height: 1.3;
-  letter-spacing: -0.01em;
+  line-height: 1.35;
+  letter-spacing: 0;
 }
 
 /* Masthead rule: heavy over hair, the way a broadsheet separates sections. */
@@ -310,7 +303,7 @@ time,
 
 /* Dateline strip, in the manner of a masthead's edition line. */
 .dateline {
-  border-top: 1px solid rgba(185, 204, 222, 0.2);
+  border-top: 1px solid var(--border);
   background: rgba(5, 20, 35, 0.38);
   color: #9fb0c2;
 }
@@ -567,7 +560,7 @@ time,
 }
 
 .site-header .theme-toggle {
-  border-color: rgba(185, 204, 222, 0.25);
+  border-color: var(--border);
   background: rgba(255, 255, 255, 0.04);
 }
 
@@ -652,7 +645,7 @@ main {
 }
 
 .observatory-hero {
-  border-bottom: 1px solid rgba(185, 204, 222, 0.2);
+  border-bottom: 1px solid var(--border);
 }
 
 .observatory-grid {
@@ -678,7 +671,7 @@ main {
 }
 
 .observatory-eyebrow {
-  color: #91aaff;
+  color: var(--primary);
 }
 
 /*
@@ -726,7 +719,7 @@ main {
 .hero-search input:not([type='hidden']) {
   width: 100%;
   height: 3.35rem;
-  border: 1px solid rgba(185, 204, 222, 0.3);
+  border: 1px solid var(--border);
   border-radius: 0;
   background: rgba(3, 16, 29, 0.2);
   padding-inline: 2.9rem 1rem;
@@ -741,7 +734,7 @@ main {
 }
 
 .hero-search input:focus {
-  border-color: #91aaff;
+  border-color: var(--primary);
   background: rgba(3, 16, 29, 0.45);
 }
 
@@ -779,7 +772,8 @@ main {
 }
 
 .button-quiet {
-  color: #aebfff;
+  background: transparent;
+  color: var(--primary);
 }
 
 .button-quiet:hover {
@@ -804,7 +798,7 @@ main {
 }
 
 .observatory-stats > div + div {
-  border-left: 1px solid rgba(185, 204, 222, 0.2);
+  border-left: 1px solid var(--border);
   padding-left: var(--space-4);
 }
 
@@ -1095,7 +1089,7 @@ main {
 }
 
 .recent-signals {
-  border-bottom: 1px solid rgba(185, 204, 222, 0.2);
+  border-bottom: 1px solid var(--border);
 }
 
 .recent-signals > .container {
@@ -1107,7 +1101,7 @@ main {
   align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
-  color: #91aaff;
+  color: var(--muted-foreground);
 }
 
 .recent-signals-head a {
@@ -1153,7 +1147,7 @@ main {
 }
 
 .recent-signals h2 a:hover {
-  color: #91aaff;
+  color: var(--primary);
 }
 
 .recent-signals h2 svg {
@@ -1197,7 +1191,7 @@ main {
 .recent-source b {
   width: 1px;
   height: 0.75rem;
-  background: rgba(185, 204, 222, 0.3);
+  background: var(--border);
 }
 
 .radar-register {
@@ -1239,7 +1233,7 @@ main {
   }
 
   .recent-signals article + article {
-    border-left: 1px solid rgba(185, 204, 222, 0.2);
+    border-left: 1px solid var(--border);
   }
 }
 
@@ -3060,7 +3054,7 @@ tbody th[scope='row'] {
 .sector-sidebar-actions .pill,
 .sector-sidebar-actions .sector-filter-trigger {
   width: 100%;
-  min-height: 2.5rem;
+  min-height: 44px;
   justify-content: space-between;
   border-radius: 6px;
 }
@@ -3987,12 +3981,12 @@ tbody td:first-child {
 
   .observatory-stats > div {
     border-left: 0;
-    border-top: 1px solid rgba(185, 204, 222, 0.18);
+    border-top: 1px solid var(--border);
     padding-block: var(--space-4);
   }
 
   .observatory-stats > div:nth-child(even) {
-    border-left: 1px solid rgba(185, 204, 222, 0.18);
+    border-left: 1px solid var(--border);
     padding-left: var(--space-4);
   }
 
@@ -4054,7 +4048,7 @@ tbody td:first-child {
   }
 
   .recent-signals article + article {
-    border-top: 1px solid rgba(185, 204, 222, 0.18);
+    border-top: 1px solid var(--border);
   }
 
   .register-heading {

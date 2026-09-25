@@ -79,7 +79,7 @@ export function Timeline({ events, selectedJurisdiction, onEventClick }: Timelin
                   onClick={() => onEventClick?.(event)}
                   className="ink-rail group grid cursor-pointer gap-2 border-b border-border py-4 pl-3 transition-colors duration-[var(--dur-fast)] hover:bg-[var(--row-hover)] sm:grid-cols-[6.5rem_7rem_minmax(0,1fr)] lg:grid-cols-[6.5rem_7rem_minmax(0,1fr)_9rem_9rem]"
                 >
-                  <time className="font-mono text-[11px] font-medium uppercase text-muted-foreground">
+                  <time className="text-xs font-medium text-muted-foreground tabular">
                     {formatPolicyDate(
                       { type: 'published', date: event.date, precision: event.datePrecision ?? 'day' },
                       { short: true },
@@ -91,7 +91,7 @@ export function Timeline({ events, selectedJurisdiction, onEventClick }: Timelin
                     </span>
                   </div>
                   <div className="min-w-0">
-                    <p className="text-sm font-semibold leading-5 group-hover:text-primary">{event.title}</p>
+                    <p className="record-title group-hover:text-primary">{event.title}</p>
                     <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">{event.description}</p>
                     <p className="mt-2 text-[11px] text-muted-foreground lg:hidden">
                       <JurisdictionMark jurisdiction={event.jurisdiction} />

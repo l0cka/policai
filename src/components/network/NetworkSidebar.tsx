@@ -119,7 +119,7 @@ export function NetworkSidebar({
 										<button
 											type="button"
 											onClick={() => step(-1)}
-											className="flex size-10 items-center justify-center border border-border hover:bg-muted"
+											className="flex size-11 items-center justify-center border border-border hover:bg-muted"
 											aria-label="Previous related policy"
 										>
 											<ArrowLeft className="size-3.5" />
@@ -130,7 +130,7 @@ export function NetworkSidebar({
 										<button
 											type="button"
 											onClick={() => step(1)}
-											className="flex size-10 items-center justify-center border border-border hover:bg-muted"
+											className="flex size-11 items-center justify-center border border-border hover:bg-muted"
 											aria-label="Next related policy"
 										>
 											<ArrowRight className="size-3.5" />

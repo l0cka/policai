@@ -42,7 +42,7 @@ function PolicyCard({
           <span aria-hidden="true">/</span>
           <span>{getPolicyTypeName(policy.type)}</span>
         </p>
-        <h2 className="text-[15px] font-semibold leading-6 sm:text-base">
+        <h2 className="record-title">
           <Link
             href={`/policies/${policy.id}`}
             className="text-foreground hover:text-primary hover:underline"
@@ -216,7 +216,7 @@ export function PolicyTable({
                     <td className="ink-rail py-3 pl-3 pr-5 align-top">
                       <Link
                         href={`/policies/${policy.id}`}
-                        className="text-sm font-semibold leading-5 text-primary hover:underline"
+                        className="font-display text-base leading-6 text-primary hover:underline"
                       >
                         {policy.title}
                       </Link>

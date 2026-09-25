@@ -309,7 +309,7 @@ export function CourtsBrowser({
 					<div className="mt-2 flex min-h-8 items-center justify-between gap-3 text-xs text-muted-foreground" aria-live="polite">
 						<span>{filteredNotes.length} of {practiceNotes.length} instruments</span>
 						{hasActiveFilters ? (
-							<button type="button" onClick={clearFilters} className="inline-flex min-h-8 items-center gap-1 text-primary hover:underline">
+							<button type="button" onClick={clearFilters} className="inline-flex min-h-11 items-center gap-1 text-primary hover:underline">
 								<X className="h-3.5 w-3.5" /> Clear filters
 							</button>
 						) : null}
@@ -359,7 +359,7 @@ export function CourtsBrowser({
 											<div className="flex-1 min-w-0">
 												<div className="sm:flex sm:items-start sm:justify-between sm:gap-4">
 													<div className="min-w-0">
-														<div className="text-sm font-semibold text-foreground">
+														<div className="record-title text-foreground">
 															{note.title}
 														</div>
 														<div className="text-xs text-muted-foreground mt-0.5">
