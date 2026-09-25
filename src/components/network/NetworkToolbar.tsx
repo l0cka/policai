@@ -113,7 +113,7 @@ export function NetworkToolbar({
             <button
               type="button"
               onClick={() => onSearchChange('')}
-              className="absolute right-1 top-1/2 flex size-9 -translate-y-1/2 items-center justify-center text-muted-foreground hover:text-foreground"
+              className="absolute right-0 top-1/2 flex size-11 -translate-y-1/2 items-center justify-center text-muted-foreground hover:text-foreground"
               aria-label="Clear policy search"
             >
               <X className="size-4" />
@@ -126,6 +126,7 @@ export function NetworkToolbar({
             type="button"
             variant="ghost"
             size="icon"
+            className="size-11"
             onClick={onReset}
             aria-label="Reset network view"
           >
@@ -250,7 +251,7 @@ export function NetworkToolbar({
           <button
             type="button"
             onClick={() => onThemeChange(null)}
-            className="inline-flex min-h-7 items-center gap-1 border border-primary/40 bg-accent px-2 text-primary"
+            className="inline-flex min-h-11 items-center gap-1 border border-primary/40 bg-accent px-2 text-primary"
           >
             {selectedThemeLabel}
             <X className="size-3" />
@@ -260,7 +261,7 @@ export function NetworkToolbar({
           <button
             type="button"
             onClick={() => onRelationFilterChange('all')}
-            className="inline-flex min-h-7 items-center gap-1 border border-border bg-muted px-2 capitalize text-muted-foreground"
+            className="inline-flex min-h-11 items-center gap-1 border border-border bg-muted px-2 capitalize text-muted-foreground"
           >
             {relationFilter}
             <X className="size-3" />

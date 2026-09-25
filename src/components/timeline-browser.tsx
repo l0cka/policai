@@ -128,7 +128,7 @@ export function TimelineBrowser({
               <button
                 type="button"
                 onClick={clearFilters}
-                className="inline-flex min-h-8 items-center gap-1 text-xs text-primary hover:underline"
+                className="inline-flex min-h-11 items-center gap-1 text-xs text-primary hover:underline"
               >
                 Clear filters
               </button>

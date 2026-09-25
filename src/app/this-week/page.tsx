@@ -72,10 +72,11 @@ function DevelopmentRow({ development }: { development: Development }) {
       style={jurisdictionRailStyle(development.jurisdiction)}
       className="ink-rail grid gap-2 border-b border-border py-4 pl-3 transition-colors duration-[var(--dur-fast)] hover:bg-[var(--row-hover)] sm:grid-cols-[7rem_minmax(0,1fr)]"
     >
-      <time dateTime={new Date(development.detectedAt).toISOString()} className="font-mono text-[11px] font-medium uppercase text-muted-foreground">
+      <time dateTime={new Date(development.detectedAt).toISOString()} className="text-xs font-medium text-muted-foreground tabular">
         {new Date(development.detectedAt).toLocaleDateString('en-AU', {
-          day: '2-digit',
+          day: 'numeric',
           month: 'short',
+          year: 'numeric',
           timeZone: 'Australia/Sydney',
         })}
       </time>
@@ -91,7 +92,7 @@ function DevelopmentRow({ development }: { development: Development }) {
           href={development.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="group mt-1 inline-flex items-start gap-1.5 text-sm font-semibold leading-5 hover:text-primary"
+          className="group mt-1 inline-flex items-start gap-1.5 record-title hover:text-primary"
         >
           {development.title}
           <ArrowUpRight className="mt-0.5 h-3.5 w-3.5 shrink-0 opacity-50 group-hover:opacity-100" />
@@ -159,7 +160,7 @@ function UpcomingRow({ item }: { item: UpcomingDate }) {
           href={item.sourceUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="group mt-1 inline-flex items-start gap-1.5 text-sm font-semibold leading-5 hover:text-primary"
+          className="group mt-1 inline-flex items-start gap-1.5 record-title hover:text-primary"
         >
           {item.policyTitle}
           <ArrowUpRight className="mt-0.5 h-3.5 w-3.5 shrink-0 opacity-50 group-hover:opacity-100" />

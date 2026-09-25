@@ -27,6 +27,12 @@
   --type-body: 1rem;
   --tracking-eyebrow: 0.16em;
 
+  /* Font roles: Georgia for titles, Arial for the interface, mono only for
+     uppercase metadata. System faces only; no web fonts are loaded. */
+  --font-sans: Arial, Helvetica, sans-serif;
+  --font-display: Georgia, 'Times New Roman', serif;
+  --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+
   /* Policai heading scale: h1 page title, article h1, h3 section title. */
   --type-page-title: clamp(1.5rem, 2.1vw, 1.9rem);
   --type-article-title: clamp(1.7rem, 2.7vw, 2.3rem);
@@ -66,6 +72,8 @@
   --border: light-dark(#dcded6, #38443b);
   --input: light-dark(#9da89c, #6b796e);
   --ring: light-dark(#245847, #a3cfb3);
+  /* Hover fill for list and table rows. */
+  --row-hover: light-dark(#eeeee7, #202c23);
 
   --navy: light-dark(#102a43, #09182a);
   --trust: light-dark(#146b5a, #65d2b4);

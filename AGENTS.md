@@ -19,17 +19,20 @@ timer: a source push can trigger an installed host deployment job.
 ## Shared design tokens
 
 `design/tokens.css` is the single source for values both sites share: type
-scale (`--type-*`, `--tracking-eyebrow`), spacing (`--space-*`), radii
+scale (`--type-*`, `--tracking-eyebrow`), font roles (`--font-sans`,
+`--font-display`, `--font-mono`), spacing (`--space-*`), radii
 (`--radius`, `--radius-control`, `--radius-pill`), focus ring
-(`--focus-ring-*`), core and status colours, rules, shadows and motion. The
+(`--focus-ring-*`), core, status and row-hover colours, rules, shadows and
+motion. The
 A2J Docker build sees only `apps/probono/dashboard`, so neither app imports
 across that boundary. `node scripts/sync-design-tokens.mjs` writes
 byte-identical copies to `src/app/design-tokens.css` and
 `apps/probono/dashboard/app/design-tokens.css`; both apps import their copy
 from `globals.css`. Never edit a copy. `src/lib/design-tokens-sync.test.ts`
 (in `npm run test`, so `npm run check`) fails when a copy drifts. Keep
-app-only values, and deliberate overrides such as A2J's current `--caution`,
-in each app's `globals.css`.
+app-only values (Policai's `--jd-*` and chart colours, A2J's `--s-*` stream
+colours) in each app's `globals.css`, and don't redeclare a shared token
+there.
 
 ## Project Overview
 
@@ -128,7 +131,7 @@ Defined in `src/types/index.ts` — always import from `@/types`:
 - **Development**, **CollectionMeta** — feed + collector metadata
 - **TimelineEvent**, **Agency**, **SourceReview**, **McpAuditLog**
 
-Use the display-name helpers (`getPolicyTypeName()`, `getPolicyStatusName()`, `getJurisdictionName()`) for untrusted strings, and status colours from `src/lib/design-tokens.ts`.
+Use the display-name helpers (`getPolicyTypeName()`, `getPolicyStatusName()`, `getJurisdictionName()`) for untrusted strings, and the `--status-*` colour tokens from `design/tokens.css` (the `StatusPill` in `src/components/policy-indicators.tsx` applies them).
 
 ## Environment Variables
 

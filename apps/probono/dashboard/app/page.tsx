@@ -53,7 +53,7 @@ function shortDate(value: string | Date): string {
     timeZone: 'Australia/Sydney',
     day: 'numeric',
     month: 'short',
-    year: '2-digit',
+    year: 'numeric',
   });
 }
 

@@ -42,7 +42,7 @@
 .filters a { min-height: 44px; }
 /* Productive, flat research controls: one search row, visible context, clear recovery. */
 .research-heading { padding-block: var(--space-8) 0; }
-.research-heading h1 { margin: var(--space-3) 0; font: 400 2.25rem/1.2 var(--font-display); }
+.research-heading h1 { margin: var(--space-3) 0; font: 400 var(--type-page-title)/1.2 var(--font-display); letter-spacing: -0.01em; }
 .research-heading > p:last-child { color: var(--muted-foreground); }
 .radar-controls { padding-block: var(--space-5); border-bottom: 1px solid var(--border); }
 .radar-search label { display: block; margin-bottom: var(--space-2); font-size: var(--type-ui); }
@@ -94,7 +94,6 @@
 .site-header .theme-toggle button[aria-checked='true'] { background: var(--primary); color: var(--primary-foreground); }
 .mobile-menu-toggle { min-width: 44px; min-height: 44px; }
 .mobile-nav-panel { max-height: calc(100dvh - 5rem); overflow-y: auto; border-radius: 0; }
-.page-title { font-size: clamp(2rem, 4vw, 3rem); }
 .section-heading, .register-title { font-family: var(--font-display); font-weight: 400; }
 .site-footer { border-color: var(--border); }
 @media (max-width: 1023px) {
@@ -111,9 +110,6 @@
 .signal-network-summary dt { color: #b9c8d6; font-size: 11px; }
 .signal-network .network-band-label, .signal-network .network-count { fill: #b9c8d6; }
 
-/* Match the Policai register's page-title scale so the two editions read as one family. */
-.page-title { font-size: clamp(1.75rem, 3vw, 2.25rem); }
-.research-heading h1 { font-size: clamp(1.75rem, 3vw, 2.25rem); }
 
 /* Not-found page */
 .not-found-links { max-width: 42rem; margin-top: var(--space-8); border-top: 1px solid var(--border); list-style: none; padding: 0; }
@@ -123,3 +119,16 @@
 .not-found-links strong { display: block; font-size: var(--type-ui); }
 .not-found-links span span { display: block; color: var(--muted-foreground); font-size: var(--type-small); }
 .not-found-links svg { width: 1rem; height: 1rem; flex-shrink: 0; opacity: .6; }
+
+/* Touch targets: every control is at least 44px (the shared touch-target), matching Policai. */
+.theme-toggle button { width: 2.75rem; height: 2.75rem; }
+.sector-view-tabs button, .sector-zoom-toggle button, .sector-org-picker select, .sector-org-actions button,
+.sector-relationship-chips button, .sector-org-step button, .sector-filter-trigger, .sector-breakdown button { min-height: 44px; }
+.maplibregl-ctrl.maplibregl-ctrl-group button { width: 44px; height: 44px; }
+
+/* One filled primary button per view: the feed's own Search is the outlined quiet style. */
+.radar-search-row .button-quiet { border-color: var(--input); background: transparent; }
+.radar-search-row .button-quiet:hover { border-color: var(--foreground); }
+
+/* Dates outside the dateline read as "20 Oct 2026" in interface text, as on Policai. */
+.recent-signals time { font-family: var(--font-sans); font-size: var(--type-small); font-weight: 400; letter-spacing: 0; text-transform: none; }
