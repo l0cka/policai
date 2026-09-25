@@ -5,9 +5,9 @@
 @plugin "@tailwindcss/typography";
 
 /*
- * `dark:` follows the theme the page resolves to, not the OS alone: an
- * explicit data-theme wins, and with none set the system preference applies.
- * Without this, Tailwind's default media-query variant ignores the toggle.
+ * `dark:` follows the theme toggle, not just the OS: an explicit
+ * `data-theme="dark"` on <html> wins, and the system preference applies only
+ * when no `data-theme="light"` override is set.
  */
 @custom-variant dark {
   &:where([data-theme='dark'], [data-theme='dark'] *) {
