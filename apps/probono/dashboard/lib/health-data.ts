@@ -86,6 +86,19 @@ export function sourceHealthLabel(state: SourceHealthState): string {
   return STATE_LABELS[state];
 }
 
+/**
+ * Public label for a source's fetch method. The stored value names the
+ * retrieval tool; the page describes the kind of retrieval instead.
+ */
+const FETCH_METHOD_LABELS: Record<string, string> = {
+  rss: 'Feed',
+  firecrawl: 'Web page',
+};
+
+export function fetchMethodLabel(method: string): string {
+  return FETCH_METHOD_LABELS[method] ?? 'Other';
+}
+
 export type SourceHealthSummary = {
   total: number;
   ok: number;
