@@ -57,6 +57,27 @@ CREATE TABLE IF NOT EXISTS digests (
   sent_at      TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+-- Some sources' terms of use forbid reproducing their content on another site
+-- (docs/source-terms.md). For those, items keep headline, link and date only:
+-- this trigger drops the excerpt on every write, whichever path writes it
+-- (listing fetch, RSS, or the enrichment agent).
+ALTER TABLE sources ADD COLUMN IF NOT EXISTS allow_excerpt BOOLEAN NOT NULL DEFAULT TRUE;
+
+CREATE OR REPLACE FUNCTION items_enforce_excerpt_terms() RETURNS trigger AS $$
+BEGIN
+  IF NEW.excerpt IS NOT NULL
+     AND EXISTS (SELECT 1 FROM sources s WHERE s.id = NEW.source_id AND NOT s.allow_excerpt) THEN
+    NEW.excerpt := NULL;
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS items_enforce_excerpt_terms ON items;
+CREATE TRIGGER items_enforce_excerpt_terms
+  BEFORE INSERT OR UPDATE OF excerpt, source_id ON items
+  FOR EACH ROW EXECUTE FUNCTION items_enforce_excerpt_terms();
+
 CREATE TABLE IF NOT EXISTS tags (
   id   SERIAL PRIMARY KEY,
   name TEXT NOT NULL UNIQUE

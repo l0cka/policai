@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { getPool } from '../../lib/db';
-import { getItemCompleteness, getSourceHealth, sourceHealthState, ITEM_EXPECTED_FIELDS, ITEM_EXPECTED_FIELD_LABELS, type SourceHealthState } from '../../lib/health-data';
+import { fetchMethodLabel, getItemCompleteness, getSourceHealth, sourceHealthState, ITEM_EXPECTED_FIELDS, ITEM_EXPECTED_FIELD_LABELS, type SourceHealthState } from '../../lib/health-data';
 import { CheckCircle, CircleAlert, CircleDash } from '../icons';
 
 export const dynamic = 'force-dynamic';
@@ -122,7 +122,7 @@ export default async function Health() {
               return (
                 <tr key={r.name}>
                   <th scope="row">{r.name}</th>
-                  <td className="cell-mono">{r.fetch_method}</td>
+                  <td>{fetchMethodLabel(r.fetch_method)}</td>
                   <td className="cell-mono">
                     {r.next_run_at
                       ? new Date(r.next_run_at).toLocaleString('en-AU', {

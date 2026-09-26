@@ -186,3 +186,23 @@ INSERT INTO sources (name, url, fetch_method, item_link_pattern, stream_hint) VA
   ('The Tasmanian Bar', 'https://tasbar.com.au/feed/', 'rss', NULL, 'news'),
   ('Australian Legal Technology Association', 'https://alta.law/feed/', 'rss', NULL, 'tech_justice')
 ON CONFLICT (url) DO NOTHING;
+
+-- Terms-of-use policy, 2026-09-26 (docs/source-terms.md). Re-applied on every
+-- seed so a fresh database starts with the same restrictions as production.
+UPDATE sources SET active = false WHERE url IN (
+  'https://www.ashurst.com/en/insights/all-insights/',  -- terms forbid scraping
+  'https://www.fclc.org.au/news',                       -- bot challenge
+  'https://www.alsnswact.org.au/news',                  -- bot challenge
+  'https://www.gratafund.org.au/media',                 -- bot challenge
+  'https://www.maddocks.com.au/insights',               -- bot challenge
+  'https://lawfoundation.net.au/'                       -- bot challenge
+);
+-- Terms forbid reproduction: headline, link and date only.
+UPDATE sources SET allow_excerpt = false WHERE url IN (
+  'https://www.ashurst.com/en/insights/all-insights/',
+  'https://www.allens.com.au/insights-news/',
+  'https://www.minterellison.com/media-centre',
+  'https://www.legalaid.qld.gov.au/Listings/Media-releases',
+  'https://lawcouncil.au/media/news',
+  'https://lawcouncil.au/media'
+);

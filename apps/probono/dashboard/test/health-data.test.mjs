@@ -9,6 +9,7 @@ import {
   sourceHealthState,
   sourceHealthLabel,
   summarizeSourceHealth,
+  fetchMethodLabel,
 } from '../lib/health-data.ts';
 import { statusPayload, statusUnavailable } from '../lib/status-payload.ts';
 
@@ -75,6 +76,14 @@ describe('source overdue threshold (P1)', () => {
     assert.match(SOURCE_HEALTH_SQL, /ORDER BY r3\.created_at DESC LIMIT 1/);
     assert.match(SOURCE_HEALTH_SQL, /r2\.status = 'ok'/);
     assert.doesNotMatch(SOURCE_HEALTH_SQL, /\bINSERT\b|\bUPDATE\b|\bDELETE\b/);
+  });
+});
+
+describe('fetch method label', () => {
+  it('describes the retrieval kind, not the tool', () => {
+    assert.equal(fetchMethodLabel('rss'), 'Feed');
+    assert.equal(fetchMethodLabel('firecrawl'), 'Web page');
+    assert.equal(fetchMethodLabel('unknown'), 'Other');
   });
 });
 
