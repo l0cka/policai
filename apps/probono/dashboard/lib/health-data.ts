@@ -22,7 +22,8 @@ export type Queryable = {
   ) => Promise<{ rows: R[] }>;
 };
 
-export type SourceHealthState = 'ok' | 'overdue' | 'failed' | 'never';
+/** `retired`: deactivated on purpose (dead, blocked, or terms forbid it). */
+export type SourceHealthState = 'ok' | 'overdue' | 'failed' | 'never' | 'retired';
 
 export type SourceHealthRow = {
   id: number;
@@ -67,7 +68,7 @@ export function sourceHealthState(
   row: Pick<SourceHealthRow, 'active' | 'last_status' | 'last_ok_at'>,
   now: Date = new Date(),
 ): SourceHealthState {
-  if (!row.active) return 'never';
+  if (!row.active) return 'retired';
   if (row.last_status === 'failed') return 'failed';
   if (!row.last_ok_at) return 'never';
   const lastOk = new Date(row.last_ok_at).getTime();
@@ -80,6 +81,7 @@ const STATE_LABELS: Record<SourceHealthState, string> = {
   overdue: 'Overdue',
   failed: 'Failed',
   never: 'Never run',
+  retired: 'Retired',
 };
 
 export function sourceHealthLabel(state: SourceHealthState): string {
@@ -97,6 +99,18 @@ const FETCH_METHOD_LABELS: Record<string, string> = {
 
 export function fetchMethodLabel(method: string): string {
   return FETCH_METHOD_LABELS[method] ?? 'Other';
+}
+
+/**
+ * A source's last error as shown on /health. Stored errors name the
+ * retrieval tool; the page names the kind of retrieval instead.
+ */
+export function sourceErrorLabel(error: string | null): string {
+  if (!error) return '';
+  return error
+    .replace(/\bfirecrawl returned no markdown\b/gi, 'page fetch returned no text')
+    .replace(/\bfirecrawl\b/gi, 'page fetch')
+    .slice(0, 160);
 }
 
 export type SourceHealthSummary = {
@@ -128,12 +142,12 @@ export function summarizeSourceHealth(
 
 /**
  * Sources and their health, ordered the way /health lists them: failures
- * first, then sources that have never run, then overdue, then the rest by
- * name.
+ * first, then sources that have never run, then overdue, then the rest, with
+ * retired sources last; by name within each group.
  */
 export async function getSourceHealth(db: Queryable): Promise<SourceHealthRow[]> {
   const { rows } = await db.query<SourceHealthRow>(SOURCE_HEALTH_SQL);
-  const order: Record<SourceHealthState, number> = { failed: 0, never: 1, overdue: 2, ok: 3 };
+  const order: Record<SourceHealthState, number> = { failed: 0, never: 1, overdue: 2, ok: 3, retired: 4 };
   return rows.sort(
     (a, b) =>
       order[sourceHealthState(a)] - order[sourceHealthState(b)] ||
