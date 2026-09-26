@@ -167,9 +167,9 @@ export async function fetchFirecrawl(url: string, itemLinkPattern: string): Prom
     body: JSON.stringify({ url, formats: ['markdown'] }),
     signal: AbortSignal.timeout(60_000),
   });
-  if (!res.ok) throw new Error(`firecrawl ${res.status} for ${url}`);
+  if (!res.ok) throw new Error(`page fetch ${res.status} for ${url}`);
   const body = (await res.json()) as { data?: { markdown?: string } };
   const markdown = body.data?.markdown;
-  if (!markdown) throw new Error(`firecrawl returned no markdown for ${url}`);
+  if (!markdown) throw new Error(`page fetch returned no text for ${url}`);
   return resolveSlugTitles(extractListingLinks(markdown, url, itemLinkPattern));
 }

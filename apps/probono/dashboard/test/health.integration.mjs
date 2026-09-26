@@ -49,7 +49,7 @@ try {
   assert.equal(sourceHealthState(byName['New source']), 'never');
   assert.equal(byName['Fresh source'].last_status, 'ok');
   assert.equal(byName['Stale source'].last_status, 'ok', 'stale means an old ok run, not a failed one');
-  assert.equal(sourceHealthState(byName['Retired source']), 'never');
+  assert.equal(sourceHealthState(byName['Retired source']), 'retired');
   const summary = summarizeSourceHealth(health);
   assert.deepEqual(
     { total: summary.total, ok: summary.ok, overdue: summary.overdue, failed: summary.failed, never: summary.never },

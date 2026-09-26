@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { getPool } from '../../lib/db';
-import { fetchMethodLabel, getItemCompleteness, getSourceHealth, sourceHealthState, ITEM_EXPECTED_FIELDS, ITEM_EXPECTED_FIELD_LABELS, type SourceHealthState } from '../../lib/health-data';
+import { fetchMethodLabel, getItemCompleteness, sourceErrorLabel, getSourceHealth, sourceHealthState, ITEM_EXPECTED_FIELDS, ITEM_EXPECTED_FIELD_LABELS, type SourceHealthState } from '../../lib/health-data';
 import { CheckCircle, CircleAlert, CircleDash } from '../icons';
 
 export const dynamic = 'force-dynamic';
@@ -10,6 +10,14 @@ export const metadata: Metadata = {
 };
 
 function StatusCell({ state }: { state: SourceHealthState }) {
+  if (state === 'retired') {
+    return (
+      <span className="status status-none">
+        <CircleDash />
+        Retired
+      </span>
+    );
+  }
   if (state === 'never') {
     return (
       <span className="status status-none">
@@ -58,7 +66,8 @@ export default async function Health() {
   const failed = rows.filter((r) => sourceHealthState(r) === 'failed').length;
   const never = rows.filter((r) => sourceHealthState(r) === 'never').length;
   const overdue = rows.filter((r) => sourceHealthState(r) === 'overdue').length;
-  const ok = rows.length - failed - never - overdue;
+  const retired = rows.filter((r) => sourceHealthState(r) === 'retired').length;
+  const ok = rows.length - failed - never - overdue - retired;
 
   return (
     <div className="container page">
@@ -69,14 +78,15 @@ export default async function Health() {
           The most recent collection run for every active source. Failures are listed first, and a
           source that fails keeps its last error so the cause is visible without opening the logs. A
           source with no successful run for more than three days counts as overdue; the collector
-          runs daily, so one missed run stays within the limit.
+          runs daily, so one missed run stays within the limit. Retired sources are no longer
+          collected and are listed last.
         </p>
       </header>
 
       <dl className="stat-strip reveal reveal-1">
         <div className="stat">
           <dt>active sources</dt>
-          <dd>{rows.length}</dd>
+          <dd>{rows.length - retired}</dd>
         </div>
         <div className="stat">
           <dt>reporting</dt>
@@ -141,7 +151,7 @@ export default async function Health() {
                   </td>
                   <td className="cell-mono">{r.items_found ?? '—'}</td>
                   <td className="cell-mono">{r.items_new ?? '—'}</td>
-                  <td className="cell-error">{r.error ? r.error.slice(0, 160) : ''}</td>
+                  <td className="cell-error">{sourceErrorLabel(r.error)}</td>
                 </tr>
               );
             })}

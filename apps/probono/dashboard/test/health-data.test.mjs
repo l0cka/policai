@@ -10,6 +10,8 @@ import {
   sourceHealthLabel,
   summarizeSourceHealth,
   fetchMethodLabel,
+  getSourceHealth,
+  sourceErrorLabel,
 } from '../lib/health-data.ts';
 import { statusPayload, statusUnavailable } from '../lib/status-payload.ts';
 
@@ -49,8 +51,18 @@ describe('source overdue threshold (P1)', () => {
     assert.equal(sourceHealthState(row({ last_status: null, last_ok_at: null }), NOW), 'never');
   });
 
-  it('ignores inactive sources entirely', () => {
-    assert.equal(sourceHealthState(row({ active: false }), NOW), 'never');
+  it('labels an inactive source retired, whatever its last run', () => {
+    assert.equal(sourceHealthState(row({ active: false }), NOW), 'retired');
+    assert.equal(sourceHealthState(row({ active: false, last_status: 'failed' }), NOW), 'retired');
+    assert.equal(sourceHealthLabel('retired'), 'Retired');
+  });
+
+  it('keeps retired sources out of every count', () => {
+    const summary = summarizeSourceHealth([row(), row({ id: 2, active: false, last_status: 'failed' })], NOW);
+    assert.deepEqual(
+      { total: summary.total, ok: summary.ok, failed: summary.failed, never: summary.never },
+      { total: 1, ok: 1, failed: 0, never: 0 },
+    );
   });
 
   it('orders failures, never-run, overdue and reporting, then by name', () => {
@@ -69,6 +81,16 @@ describe('source overdue threshold (P1)', () => {
     assert.equal(sourceHealthLabel('overdue'), 'Overdue');
   });
 
+  it('lists retired sources after every active source', async () => {
+    const rows = [
+      row({ id: 1, name: 'Alpha retired', active: false }),
+      row({ id: 2, name: 'Zulu', last_ok_at: hoursAgo(2) }),
+      row({ id: 3, name: 'Beta', last_status: 'failed' }),
+    ];
+    const sorted = await getSourceHealth({ query: async () => ({ rows }) });
+    assert.deepEqual(sorted.map((r) => r.name), ['Beta', 'Zulu', 'Alpha retired']);
+  });
+
   it('selects one latest run per source and computes the last ok run in SQL', () => {
     // The shared SQL must stay a per-source latest run plus a last-ok lookup,
     // so /health and /api/status read the same population.
@@ -76,6 +98,19 @@ describe('source overdue threshold (P1)', () => {
     assert.match(SOURCE_HEALTH_SQL, /ORDER BY r3\.created_at DESC LIMIT 1/);
     assert.match(SOURCE_HEALTH_SQL, /r2\.status = 'ok'/);
     assert.doesNotMatch(SOURCE_HEALTH_SQL, /\bINSERT\b|\bUPDATE\b|\bDELETE\b/);
+  });
+});
+
+describe('source error display', () => {
+  it('names the kind of retrieval, not the tool', () => {
+    assert.equal(sourceErrorLabel('firecrawl 500 for https://example.org/'), 'page fetch 500 for https://example.org/');
+    assert.equal(sourceErrorLabel('firecrawl returned no markdown for https://x.test'), 'page fetch returned no text for https://x.test');
+    assert.equal(sourceErrorLabel('Request timed out after 30000ms'), 'Request timed out after 30000ms');
+    assert.equal(sourceErrorLabel(null), '');
+  });
+
+  it('truncates to 160 characters', () => {
+    assert.equal(sourceErrorLabel('x'.repeat(300)).length, 160);
   });
 });
 
