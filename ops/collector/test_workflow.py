@@ -1,4 +1,5 @@
 """Integration tests: real temporary Git repositories; only npm/GitHub are fakes."""
+import datetime
 import fcntl
 import json
 import os
@@ -51,7 +52,7 @@ if a[:2] == ['pr','list']:
 elif a[:2] == ['pr','create']:
     branch=a[a.index('--head')+1]
     sha=subprocess.check_output(['git','rev-parse',branch], text=True).strip()
-    p.write_text(json.dumps(dict(url='https://github.com/l0cka/policai/pull/999',headRefName=branch,headRefOid=sha,baseRefName='main',state='OPEN',isDraft=True)))
+    p.write_text(json.dumps(dict(url='https://github.com/l0cka/policai/pull/999',headRefName=branch,headRefOid=sha,baseRefName='main',state='OPEN',isDraft=True,createdAt=os.environ.get('FAKE_PR_CREATED_AT','2099-01-01T00:00:00Z'))))
     print('https://github.com/l0cka/policai/pull/999')
 elif a[:2] == ['pr','view']:
     print(p.read_text())
@@ -196,11 +197,35 @@ else:
         self.assertEqual(self.git('ls-remote', 'origin', 'refs/heads/' + run['branch']), '')
 
     def test_pending_pr_blocks_without_new_collection(self):
+        # A fresh pending PR is a normal wait: skip with exit 0, never recollect.
+        self.env['FAKE_PR_CREATED_AT'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
         self.assertEqual(self.run_workflow().returncode, 0)
         first = (self.home / 'pr.json').read_text()
-        self.assertNotEqual(self.run_workflow().returncode, 0)
+        result = self.run_workflow()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('skipped: collection PR awaiting review', result.stderr)
+        self.assertEqual(self.receipt()['skipped'], 'awaiting-review')
+        self.assertEqual(self.receipt()['exit_code'], 0)
         self.assertEqual((self.home / 'pr.json').read_text(), first)
         self.assertEqual(len(list((self.home / 'Work/Argus/src/policai-collection-runs').iterdir())), 1)
+
+    def test_stale_pending_pr_fails_visibly(self):
+        self.env['FAKE_PR_CREATED_AT'] = '2000-01-01T00:00:00Z'
+        self.assertEqual(self.run_workflow().returncode, 0)
+        result = self.run_workflow()
+        self.assertEqual(result.returncode, 1)
+        self.assertIn('grace 72h', result.stderr)
+        self.assertEqual(self.receipt()['skipped'], 'awaiting-review')
+        self.assertEqual(len(list((self.home / 'Work/Argus/src/policai-collection-runs').iterdir())), 1)
+
+    def test_pending_pr_without_age_fails_closed(self):
+        self.assertEqual(self.run_workflow().returncode, 0)
+        data = json.loads((self.home / 'pr.json').read_text())
+        data.pop('createdAt')
+        (self.home / 'pr.json').write_text(json.dumps(data))
+        result = self.run_workflow()
+        self.assertEqual(result.returncode, 1)
+        self.assertIn('age unreadable', result.stderr)
 
     def test_push_failure_retry_idempotent_no_recollection(self):
         hook = self.remote / 'hooks/pre-receive'
