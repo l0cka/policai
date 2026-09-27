@@ -1,5 +1,366 @@
 [
   {
+    "id": "source-review-dev-artificial-intelligence-and-medicare-benefits-in-9hprh2",
+    "sourceUrl": "https://www.anao.gov.au/work/performance-audit/artificial-intelligence-and-medicare-benefits-integrity",
+    "title": "Artificial Intelligence and Medicare Benefits Integrity",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-09-27T19:30:42.931Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from Australian National Audit Office — performance audit reports (score 0.55, heuristic).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.55,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "[Skip to main content](https://www.anao.gov.au/work/performance-audit/artificial-intelligence-and-medicare-benefits-integrity#main-content) Reports and publications ------------------------ Browse our range of reports and publications including performance and financial statement audit reports, assurance review reports, information reports and annual reports. [View reports and publications](https://www.anao.gov.au/pubs) Insights -------- Through _Insights_, the ANAO aims to contribute to improved public sector performance. [View Insights](https://www.anao.gov.au/pubs/audit-insights) Work progr",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.anao.gov.au/work/performance-audit/artificial-intelligence-and-medicare-benefits-integrity",
+      "finalUrl": "https://www.anao.gov.au/work/performance-audit/artificial-intelligence-and-medicare-benefits-integrity",
+      "retrievedAt": "2026-09-27T19:30:42.931Z",
+      "contentType": "text/plain",
+      "contentHash": "cb9ebbf06b23cebd742a51400a82845b3eb3506c026e885c18a0d5986449fcab",
+      "title": "Artificial Intelligence and Medicare Benefits Integrity",
+      "publishedAt": "2026-09-21",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "artificial-intelligence-and-medicare-benefits-integrity",
+      "title": "Artificial Intelligence and Medicare Benefits Integrity",
+      "description": "[Skip to main content](https://www.anao.gov.au/work/performance-audit/artificial-intelligence-and-medicare-benefits-integrity#main-content) Reports and publications ------------------------ Browse our range of reports and publications including performance and financial statement audit reports, assurance review reports, information reports and annual reports. [View reports and publications](https://www.anao.gov.au/pubs) Insights -------- Through _Insights_, the ANAO aims to contribute to improved public sector performance. [View Insights](https://www.anao.gov.au/pubs/audit-insights) Work progr",
+      "jurisdiction": "federal",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2026-09-21",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-09-21",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.anao.gov.au/work/performance-audit/artificial-intelligence-and-medicare-benefits-integrity",
+            "finalUrl": "https://www.anao.gov.au/work/performance-audit/artificial-intelligence-and-medicare-benefits-integrity",
+            "retrievedAt": "2026-09-27T19:30:42.931Z",
+            "contentType": "text/plain",
+            "contentHash": "cb9ebbf06b23cebd742a51400a82845b3eb3506c026e885c18a0d5986449fcab",
+            "title": "Artificial Intelligence and Medicare Benefits Integrity",
+            "publishedAt": "2026-09-21",
+            "publishedAtPrecision": "day"
+          }
+        }
+      ],
+      "agencies": [],
+      "sourceUrl": "https://www.anao.gov.au/work/performance-audit/artificial-intelligence-and-medicare-benefits-integrity",
+      "content": "[Skip to main content](https://www.anao.gov.au/work/performance-audit/artificial-intelligence-and-medicare-benefits-integrity#main-content) Reports and publications ------------------------ Browse our range of reports and publications including performance and financial statement audit reports, assurance review reports, information reports and annual reports. [View reports and publications](https://www.anao.gov.au/pubs) Insights -------- Through _Insights_, the ANAO aims to contribute to improved public sector performance. [View Insights](https://www.anao.gov.au/pubs/audit-insights) Work progr",
+      "aiSummary": "[Skip to main content](https://www.anao.gov.au/work/performance-audit/artificial-intelligence-and-medicare-benefits-integrity#main-content) Reports and publications ------------------------ Browse our range of reports and publications including performance and financial statement audit reports, assurance review reports, information reports and annual reports. [View reports and publications](https://www.anao.gov.au/pubs) Insights -------- Through _Insights_, the ANAO aims to contribute to improved public sector performance. [View Insights](https://www.anao.gov.au/pubs/audit-insights) Work progr",
+      "tags": [],
+      "createdAt": "2026-09-27T19:30:42.931Z",
+      "updatedAt": "2026-09-27T19:30:42.931Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-artificial-intelligence-and-medicare-benefits-in-9hprh2",
+      "title": "Artificial Intelligence and Medicare Benefits Integrity",
+      "url": "https://www.anao.gov.au/work/performance-audit/artificial-intelligence-and-medicare-benefits-integrity",
+      "sourceId": "anao-performance-audits",
+      "sourceName": "Australian National Audit Office — performance audit reports",
+      "jurisdiction": "federal",
+      "publishedAt": "2026-09-21",
+      "publishedAtPrecision": "day",
+      "detectedAt": "2026-09-27T19:30:42.931Z",
+      "summary": "[Skip to main content](https://www.anao.gov.au/work/performance-audit/artificial-intelligence-and-medicare-benefits-integrity#main-content) Reports and publications ------------------------ Browse our range of reports and publications including performance and financial statement audit reports, assurance review reports, information reports and annual reports. [View reports and publications](https://www.anao.gov.au/pubs) Insights -------- Through _Insights_, the ANAO aims to contribute to improved public sector performance. [View Insights](https://www.anao.gov.au/pubs/audit-insights) Work progr",
+      "relevanceScore": 0.55,
+      "classification": "heuristic",
+      "assessment": {
+        "method": "heuristic",
+        "promptVersion": "keyword-rules-v1",
+        "assessedAt": "2026-09-27T19:30:42.931Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.anao.gov.au/work/performance-audit/artificial-intelligence-and-medicare-benefits-integrity",
+          "finalUrl": "https://www.anao.gov.au/work/performance-audit/artificial-intelligence-and-medicare-benefits-integrity",
+          "retrievedAt": "2026-09-27T19:30:42.931Z",
+          "contentType": "text/plain",
+          "contentHash": "cb9ebbf06b23cebd742a51400a82845b3eb3506c026e885c18a0d5986449fcab",
+          "title": "Artificial Intelligence and Medicare Benefits Integrity",
+          "publishedAt": "2026-09-21",
+          "publishedAtPrecision": "day"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-09-27T19:30:42.931Z"
+  },
+  {
+    "id": "source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-13okn3i",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+    "title": "Senate opens inquiry into artificial intelligence and data centres",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-05-13-senate-ai-data-centres-inquiry",
+    "targetTimelineRevisionHash": "394805a3025881be199174a44aac0a84d039284f78bbb7734db329324275960d",
+    "sourceVersionSequence": 10,
+    "status": "pending_review",
+    "discoveredAt": "2026-09-27T19:30:42.931Z",
+    "createdBy": "collector",
+    "notes": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current. Re-verify the existing timeline event before treating it as current. Detected by Senate inquiry — artificial intelligence and data centres (heuristic assessment).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+      "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+      "retrievedAt": "2026-09-27T19:30:42.931Z",
+      "contentType": "text/html",
+      "contentHash": "04f873da32a78b595c35d9420e13f230ec429aa0c13190da25cb77506e380338",
+      "title": "Senate opens inquiry into artificial intelligence and data centres"
+    },
+    "proposedRecord": {
+      "id": "tl-2026-05-13-senate-ai-data-centres-inquiry",
+      "date": "2026-05-13",
+      "datePrecision": "day",
+      "title": "Senate opens inquiry into artificial intelligence and data centres",
+      "description": "The Senate inquiry covers AI and data-centre regulation, government deals, and community, industry, energy, water and environmental impacts. Submissions closed on 1 September 2026, and the committee is due to report on 16 November 2026.",
+      "type": "announcement",
+      "jurisdiction": "federal",
+      "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P"
+    },
+    "linkedDevelopment": {
+      "id": "dev-senate-opens-inquiry-into-artificial-intelligenc-13okn3i",
+      "title": "Senate opens inquiry into artificial intelligence and data centres",
+      "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+      "sourceId": "senate-ai-data-centres",
+      "sourceName": "Senate inquiry — artificial intelligence and data centres",
+      "jurisdiction": "federal",
+      "detectedAt": "2026-09-27T19:30:42.931Z",
+      "summary": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+      "relevanceScore": 1,
+      "classification": "heuristic",
+      "assessment": {
+        "method": "heuristic",
+        "promptVersion": "keyword-rules-v1",
+        "assessedAt": "2026-09-27T19:30:42.931Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+          "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+          "retrievedAt": "2026-09-27T19:30:42.931Z",
+          "contentType": "text/html",
+          "contentHash": "04f873da32a78b595c35d9420e13f230ec429aa0c13190da25cb77506e380338",
+          "title": "Senate opens inquiry into artificial intelligence and data centres"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-09-27T19:30:42.931Z"
+  },
+  {
+    "id": "source-review-dev-bills-ai-kill-switch-and-data-centre-control-bil-10hrre5",
+    "sourceUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29179%2F0033%22",
+    "title": "BILLS : AI Kill Switch and Data Centre Control Bill 2026 : Second Reading",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-09-27T19:30:42.931Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from Hansard — bill debates discussing AI (score 0.55, heuristic).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.55,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "27 explicit AI mentions in the debate text for \"BILLS : AI Kill Switch and Data Centre Control Bill 2026 : Second Reading\".",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29179%2F0033%22",
+      "finalUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29179%2F0033%22",
+      "retrievedAt": "2026-09-27T19:30:42.931Z",
+      "contentType": "text/plain",
+      "contentHash": "f48e5f069ed9ce991a4147f17cb9fddf50778f36ea08d4dbf3e46dc8e49b4059",
+      "title": "BILLS : AI Kill Switch and Data Centre Control Bill 2026 : Second Reading",
+      "publishedAt": "2026-09-07",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "bills-ai-kill-switch-and-data-centre-control-bill-2026-secon",
+      "title": "BILLS : AI Kill Switch and Data Centre Control Bill 2026 : Second Reading",
+      "description": "27 explicit AI mentions in the debate text for \"BILLS : AI Kill Switch and Data Centre Control Bill 2026 : Second Reading\".",
+      "jurisdiction": "federal",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2026-09-07",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-09-07",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29179%2F0033%22",
+            "finalUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29179%2F0033%22",
+            "retrievedAt": "2026-09-27T19:30:42.931Z",
+            "contentType": "text/plain",
+            "contentHash": "f48e5f069ed9ce991a4147f17cb9fddf50778f36ea08d4dbf3e46dc8e49b4059",
+            "title": "BILLS : AI Kill Switch and Data Centre Control Bill 2026 : Second Reading",
+            "publishedAt": "2026-09-07",
+            "publishedAtPrecision": "day"
+          }
+        }
+      ],
+      "agencies": [],
+      "sourceUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29179%2F0033%22",
+      "content": "[Skip all navigation links](https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29179%2F0033%22#startContent) [Permalink](https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29179%2F0033%22) Prev Next [Return to results list](https://parlinfo.aph.gov.au/parlInfo/search/summary/summary.w3p;query=Id%3A%22chamber%2Fhansardr%2F29179%2F0033%22#1) (1 results) [![Print List](https://parlinfo.aph.gov.au/images/print.jpg \"Print Document\")](https://parlinfo.aph.gov.au/parlInfo/search/display/displayPrint.w3p;qu",
+      "aiSummary": "27 explicit AI mentions in the debate text for \"BILLS : AI Kill Switch and Data Centre Control Bill 2026 : Second Reading\".",
+      "tags": [],
+      "createdAt": "2026-09-27T19:30:42.931Z",
+      "updatedAt": "2026-09-27T19:30:42.931Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-bills-ai-kill-switch-and-data-centre-control-bil-10hrre5",
+      "title": "BILLS : AI Kill Switch and Data Centre Control Bill 2026 : Second Reading",
+      "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29179%2F0033%22",
+      "sourceId": "aph-hansard-bill-debates",
+      "sourceName": "Hansard — bill debates discussing AI",
+      "jurisdiction": "federal",
+      "publishedAt": "2026-09-07",
+      "publishedAtPrecision": "day",
+      "detectedAt": "2026-09-27T19:30:42.931Z",
+      "summary": "27 explicit AI mentions in the debate text for \"BILLS : AI Kill Switch and Data Centre Control Bill 2026 : Second Reading\".",
+      "relevanceScore": 0.55,
+      "classification": "heuristic",
+      "assessment": {
+        "method": "heuristic",
+        "promptVersion": "body-mentions-v1",
+        "assessedAt": "2026-09-27T19:30:42.931Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29179%2F0033%22",
+          "finalUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansardr%2F29179%2F0033%22",
+          "retrievedAt": "2026-09-27T19:30:42.931Z",
+          "contentType": "text/plain",
+          "contentHash": "f48e5f069ed9ce991a4147f17cb9fddf50778f36ea08d4dbf3e46dc8e49b4059",
+          "title": "BILLS : AI Kill Switch and Data Centre Control Bill 2026 : Second Reading",
+          "publishedAt": "2026-09-07",
+          "publishedAtPrecision": "day"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-09-27T19:30:42.931Z"
+  },
+  {
+    "id": "source-review-dev-bills-news-journalism-payments-bill-2026-news-jo-mkgqj2",
+    "sourceUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29235%2F0018%22",
+    "title": "BILLS : News Journalism Payments Bill 2026, News Journalism Payments (Consequential Amendments) Bill 2026, News Media Bargaining (Administration) Bill 2026, News Media Bargaining Charge Bill 2026, Treasury Laws Amendment (News Media Bargaining) (Consequential) Bill 2026 : Second Reading",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-09-27T19:30:42.931Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from Hansard — bill debates discussing AI (score 0.55, heuristic).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.55,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "17 explicit AI mentions in the debate text for \"BILLS : News Journalism Payments Bill 2026, News Journalism Payments (Consequential Amendments) Bill 2026, News Media Bargaining (Administration) Bill 2026, News Media Bargaining Charge Bill 2026, Treasury Laws Amendment (News Media Bargaining) (Consequential) Bill 2026 : Second Reading\".",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29235%2F0018%22",
+      "finalUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29235%2F0018%22",
+      "retrievedAt": "2026-09-27T19:30:42.931Z",
+      "contentType": "text/plain",
+      "contentHash": "41b204c17d5b39a2103ee8166b234143d183f6445242159b87a4f9a7522aec43",
+      "title": "BILLS : News Journalism Payments Bill 2026, News Journalism Payments (Consequential Amendments) Bill 2026, News Media Bargaining (Administration) Bill 2026, News Media Bargaining Charge Bill 2026, Treasury Laws Amendment (News Media Bargaining) (Consequential) Bill 2026 : Second Reading",
+      "publishedAt": "2026-08-20",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "bills-news-journalism-payments-bill-2026-news-journalism-pay",
+      "title": "BILLS : News Journalism Payments Bill 2026, News Journalism Payments (Consequential Amendments) Bill 2026, News Media Bargaining (Administration) Bill 2026, News Media Bargaining Charge Bill 2026, Treasury Laws Amendment (News Media Bargaining) (Consequential) Bill 2026 : Second Reading",
+      "description": "17 explicit AI mentions in the debate text for \"BILLS : News Journalism Payments Bill 2026, News Journalism Payments (Consequential Amendments) Bill 2026, News Media Bargaining (Administration) Bill 2026, News Media Bargaining Charge Bill 2026, Treasury Laws Amendment (News Media Bargaining) (Consequential) Bill 2026 : Second Reading\".",
+      "jurisdiction": "federal",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2026-08-20",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-08-20",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29235%2F0018%22",
+            "finalUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29235%2F0018%22",
+            "retrievedAt": "2026-09-27T19:30:42.931Z",
+            "contentType": "text/plain",
+            "contentHash": "41b204c17d5b39a2103ee8166b234143d183f6445242159b87a4f9a7522aec43",
+            "title": "BILLS : News Journalism Payments Bill 2026, News Journalism Payments (Consequential Amendments) Bill 2026, News Media Bargaining (Administration) Bill 2026, News Media Bargaining Charge Bill 2026, Treasury Laws Amendment (News Media Bargaining) (Consequential) Bill 2026 : Second Reading",
+            "publishedAt": "2026-08-20",
+            "publishedAtPrecision": "day"
+          }
+        }
+      ],
+      "agencies": [],
+      "sourceUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29235%2F0018%22",
+      "content": "[Skip all navigation links](https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29235%2F0018%22#startContent) [Permalink](https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29235%2F0018%22) Prev Next [Return to results list](https://parlinfo.aph.gov.au/parlInfo/search/summary/summary.w3p;query=Id%3A%22chamber%2Fhansards%2F29235%2F0018%22#1) (1 results) [![Print List](https://parlinfo.aph.gov.au/images/print.jpg \"Print Document\")](https://parlinfo.aph.gov.au/parlInfo/search/display/displayPrint.w3p;qu",
+      "aiSummary": "17 explicit AI mentions in the debate text for \"BILLS : News Journalism Payments Bill 2026, News Journalism Payments (Consequential Amendments) Bill 2026, News Media Bargaining (Administration) Bill 2026, News Media Bargaining Charge Bill 2026, Treasury Laws Amendment (News Media Bargaining) (Consequential) Bill 2026 : Second Reading\".",
+      "tags": [],
+      "createdAt": "2026-09-27T19:30:42.931Z",
+      "updatedAt": "2026-09-27T19:30:42.931Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-bills-news-journalism-payments-bill-2026-news-jo-mkgqj2",
+      "title": "BILLS : News Journalism Payments Bill 2026, News Journalism Payments (Consequential Amendments) Bill 2026, News Media Bargaining (Administration) Bill 2026, News Media Bargaining Charge Bill 2026, Treasury Laws Amendment (News Media Bargaining) (Consequential) Bill 2026 : Second Reading",
+      "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29235%2F0018%22",
+      "sourceId": "aph-hansard-bill-debates",
+      "sourceName": "Hansard — bill debates discussing AI",
+      "jurisdiction": "federal",
+      "publishedAt": "2026-08-20",
+      "publishedAtPrecision": "day",
+      "detectedAt": "2026-09-27T19:30:42.931Z",
+      "summary": "17 explicit AI mentions in the debate text for \"BILLS : News Journalism Payments Bill 2026, News Journalism Payments (Consequential Amendments) Bill 2026, News Media Bargaining (Administration) Bill 2026, News Media Bargaining Charge Bill 2026, Treasury Laws Amendment (News Media Bargaining) (Consequential) Bill 2026 : Second Reading\".",
+      "relevanceScore": 0.55,
+      "classification": "heuristic",
+      "assessment": {
+        "method": "heuristic",
+        "promptVersion": "body-mentions-v1",
+        "assessedAt": "2026-09-27T19:30:42.931Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29235%2F0018%22",
+          "finalUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29235%2F0018%22",
+          "retrievedAt": "2026-09-27T19:30:42.931Z",
+          "contentType": "text/plain",
+          "contentHash": "41b204c17d5b39a2103ee8166b234143d183f6445242159b87a4f9a7522aec43",
+          "title": "BILLS : News Journalism Payments Bill 2026, News Journalism Payments (Consequential Amendments) Bill 2026, News Media Bargaining (Administration) Bill 2026, News Media Bargaining Charge Bill 2026, Treasury Laws Amendment (News Media Bargaining) (Consequential) Bill 2026 : Second Reading",
+          "publishedAt": "2026-08-20",
+          "publishedAtPrecision": "day"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-09-27T19:30:42.931Z"
+  },
+  {
     "id": "source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-5i9413",
     "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
     "title": "Senate opens inquiry into artificial intelligence and data centres",
