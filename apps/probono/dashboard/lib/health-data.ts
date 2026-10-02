@@ -169,23 +169,14 @@ export async function getRadarSourceStats(db: Queryable) {
             count(*) FILTER (WHERE state = 'ok')::int AS ok,
             count(*) FILTER (WHERE state = 'overdue')::int AS overdue
      FROM (
-       SELECT s.id,
-              CASE
-                WHEN r.status = 'failed' THEN 'failed'
-                WHEN ok_run.last_ok_at IS NULL THEN 'never'
-                WHEN ok_run.last_ok_at < now() - interval '${SOURCE_OVERDUE_DAYS} days' THEN 'overdue'
+       SELECT CASE
+                WHEN last_status = 'failed' THEN 'failed'
+                WHEN last_ok_at IS NULL THEN 'never'
+                WHEN last_ok_at < now() - interval '${SOURCE_OVERDUE_DAYS} days' THEN 'overdue'
                 ELSE 'ok'
               END AS state
-       FROM sources s
-       LEFT JOIN LATERAL (
-         SELECT * FROM ingest_runs r3 WHERE r3.source_id = s.id
-         ORDER BY r3.created_at DESC LIMIT 1
-       ) r ON TRUE
-       LEFT JOIN LATERAL (
-         SELECT max(r2.created_at) AS last_ok_at FROM ingest_runs r2
-         WHERE r2.source_id = s.id AND r2.status = 'ok'
-       ) ok_run ON TRUE
-       WHERE s.active
+       FROM (${SOURCE_HEALTH_SQL}) source_health
+       WHERE active
      ) latest`,
   );
   return rows[0];

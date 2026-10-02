@@ -9,6 +9,7 @@ import {
   SOURCE_HEALTH_SQL,
   sourceHealthState,
   summarizeSourceHealth,
+  getRadarSourceStats,
 } from '../lib/health-data.ts';
 import { statusPayload } from '../lib/status-payload.ts';
 if (!process.env.FIXTURE_DEPENDENCIES) throw new Error('Set FIXTURE_DEPENDENCIES');
@@ -56,6 +57,24 @@ try {
     { total: 4, ok: 1, overdue: 1, failed: 1, never: 1 },
   );
   assert.equal(summary.reporting, 1, 'overdue and failed sources do not count as reporting');
+  assert.deepEqual(await getRadarSourceStats(db), {
+    total: summary.total, ok: summary.ok, overdue: summary.overdue,
+  }, 'the landing rail matches the health-page population');
+
+  // Check the exact threshold in a transaction: Postgres now() is fixed.
+  await db.exec('BEGIN');
+  await db.exec(`INSERT INTO sources(name,url,fetch_method,active) VALUES
+    ('Boundary source','https://example.org/boundary','rss',true);
+    INSERT INTO ingest_runs(run_started_at,created_at,source_id,status,items_found,items_new)
+    SELECT now(), now() - interval '3 days', id, 'ok', 0, 0
+    FROM sources WHERE name = 'Boundary source'`);
+  assert.deepEqual(await getRadarSourceStats(db), { total: 5, ok: 2, overdue: 1 });
+  await db.exec('ROLLBACK');
+
+  await db.exec('BEGIN');
+  await db.exec('UPDATE sources SET active = false');
+  assert.deepEqual(await getRadarSourceStats(db), { total: 0, ok: 0, overdue: 0 });
+  await db.exec('ROLLBACK');
 
   // --- P2: fixture items missing each expected field, one SQL, same population. ---
   // Seven relevant items, each carrying every expected field except the one
