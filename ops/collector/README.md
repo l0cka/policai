@@ -65,6 +65,11 @@ worktree remain; manually inspect them before any retry.
 
 One open `automation/collection-*` PR deliberately blocks new scheduled runs.
 Review/merge/close that PR before collecting again. No pending JSON is overwritten.
+While the oldest pending PR is younger than `POLICAI_COLLECT_REVIEW_GRACE_HOURS`
+(default 72), a blocked run is a normal wait: it exits 0 and its receipt records
+`"skipped": "awaiting-review"`, so `OnFailure=` alerts and topology drift stay
+reserved for real faults. Past the grace period, or when the PR age cannot be
+read, the blocked run exits 1 so a forgotten review surfaces.
 Main requires an approving review and lint/test/build checks. Merging collected
 data and approving register entries are separate decisions; neither happens here.
 The wrapper uses only unique collection branches, so a branch push cannot activate

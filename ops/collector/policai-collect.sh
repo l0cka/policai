@@ -9,6 +9,7 @@ import fcntl
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import signal
@@ -108,10 +109,36 @@ def snapshot(run, phase):
 
 def pending(tree=SOURCE):
     prs = json.loads(command(['gh', 'pr', 'list', '--repo', REPO, '--state', 'open',
-                              '--limit', '1000', '--json', 'url,headRefName,headRefOid,baseRefName'], tree))
+                              '--limit', '1000', '--json', 'url,headRefName,headRefOid,baseRefName,createdAt'], tree))
     if len(prs) >= 1000:
         raise Refused('PR inventory truncated; manual review required')
     return [pr for pr in prs if pr['headRefName'].startswith(PREFIX)]
+
+
+def review_wait(prs):
+    """A pending collection PR is a normal wait, not a failure, until it goes stale.
+
+    Returns (exit_code, message). Within the grace period the skipped run exits 0
+    so OnFailure alerts and topology drift stay reserved for real faults. After it,
+    or when the PR age is unreadable, exit 1 so a forgotten review surfaces.
+    """
+    value = os.environ.get('POLICAI_COLLECT_REVIEW_GRACE_HOURS', '72')
+    if not re.fullmatch(r'[0-9]+', value):
+        raise Refused('review grace must be a non-negative whole number of hours')
+    urls = ' '.join(pr['url'] for pr in prs)
+    now = datetime.datetime.now(datetime.timezone.utc)
+    ages = []
+    for pr in prs:
+        try:
+            created = datetime.datetime.fromisoformat(pr['createdAt'].replace('Z', '+00:00'))
+        except (KeyError, AttributeError, ValueError):
+            return 1, f'collection PR awaiting review (age unreadable); no new run or overwrite: {urls}'
+        ages.append((now - created).total_seconds() / 3600)
+    oldest = max(ages)
+    if oldest >= int(value):
+        return 1, (f'collection PR awaiting review for {oldest:.0f}h (grace {value}h); '
+                   f'no new run or overwrite: {urls}')
+    return 0, f'skipped: collection PR awaiting review ({oldest:.0f}h old); no new run or overwrite: {urls}'
 
 
 def assert_clean(tree):
@@ -257,6 +284,7 @@ def main():
         run = None
         rc = 1
         message = ''
+        skipped = None
         try:
             if os.environ.get('POLICAI_COLLECT_BRANCH', 'main') != 'main':
                 raise Refused('branch override retired; collection base must be main')
@@ -282,8 +310,11 @@ def main():
             else:
                 if previous and previous['phase'] not in ('published', 'no-changes'):
                     raise Refused('previous incomplete run retained; review active receipt before another collection')
-                if pending():
-                    raise Refused('collection PR awaiting review; no new run or overwrite')
+                waiting = pending()
+                if waiting:
+                    skipped = 'awaiting-review'
+                    rc, message = review_wait(waiting)
+                    return rc
                 git('fetch', 'origin', 'main')
                 base = git('rev-parse', 'refs/remotes/origin/main')
                 run_id = datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%SZ-') + uuid.uuid4().hex[:8]
@@ -302,6 +333,8 @@ def main():
             rc, message = 1, str(exc)
         finally:
             receipt = dict(finished_at=utc(), exit_code=rc, message=message)
+            if skipped:
+                receipt['skipped'] = skipped
             if run:
                 run.update(receipt)
                 save(run)
