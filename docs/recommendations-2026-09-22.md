@@ -1,7 +1,9 @@
 # Policai improvement recommendations — 2026-09-22
 
-Status: proposal for implementation. Nothing here is merged, staged or deployed.
-Scope: root Policai application (`/home/l0cka/Work/Argus/live/policai`). Pro Bono
+Status: historical proposal with dated implementation updates. Section 6 records
+the 2026-10-02 maintenance review and takes precedence for current process work.
+Its source changes form a tested maintenance candidate, not a deployed release.
+Original scope: root Policai application (`/home/l0cka/Work/Argus/live/policai`). Pro Bono
 Radar (`apps/probono`) is referenced as a pattern donor, not modified.
 
 Evidence base: live repo state, `public/data/meta.json` (collection run 70),
@@ -228,3 +230,73 @@ production-targeted branch without checking the automatic deployment timer.
 - Collector never writes `data/policies.json`; register changes stay
   editor-gated.
 - `npm run check` before any handoff; docs updated with the change, not after.
+
+## 6. Maintenance review — 2026-10-02
+
+This review covers Policai and the A2J dashboard and worker. The original audit
+used base `19d781a`. The PR candidate now uses `813f98b`, after PRs #123 and
+#126 merged. The service observations below remain a dated audit, not live status.
+It does not authorize deployment, database changes, collection publication or
+source retirement. The maintainer retains the detailed service evidence privately.
+
+### Local changes
+
+- Policai now uses one access-aware policy reader for list, ID and source-URL
+  queries. The public verification rules, withheld relationships and editor access
+  remain unchanged. Lookups retain file order rather than sorting the register.
+- A2J now reuses `SOURCE_HEALTH_SQL` for the landing-page aggregate. The source
+  population no longer has two separate SQL definitions. SQL still computes the
+  counts in one query. This change makes no performance claim.
+- The dashboard CI job now runs `npm test`, in addition to typecheck and build.
+  Previously, that job skipped the existing dashboard unit tests.
+- The child README now records the completed cutover and the separate package
+  checks. Its unit-test command clears `DATABASE_URL` to prevent accidental
+  database integration tests against an inherited connection.
+
+### Verification
+
+The table records the original verification. After the base update, the root
+check, dashboard typecheck and tests, both SQL harnesses, worker typecheck and
+security tests passed again. The A2J source and dependencies did not change
+between the two bases, so its earlier build, worker integration and browser
+evidence remains applicable. Data validation on `813f98b` reports zero errors
+and 79 warnings, down from 80 after the collection update.
+
+| Check | Result |
+|---|---|
+| Root `npm run check` | Passed: lint, typecheck, 641 tests, data validation and production build |
+| Data validation | 0 errors, 80 warnings on unchanged canonical data. The secondary-date evidence budget remains 8 |
+| Dashboard | Typecheck, 50 unit tests and production build passed |
+| Dashboard SQL | Health and weekly-query integration harnesses passed against disposable PGlite databases |
+| Worker | Typecheck, all 147 tests and 5 security tests passed. Database tests used only an in-memory fixture |
+| Browser checks | 16 route/viewport cases passed across both production builds, at 1440 and 390 pixels. HTTP 200, one H1, no horizontal overflow or page errors |
+
+The browser checks are smoke tests, not a complete accessibility audit.
+The initial audit review was inline. An independent read-only reviewer later
+approved the updated candidate for PR publication without blocking findings.
+No public API, stored schema, editorial data or dependency changed.
+
+### Next work, in priority order
+
+| Priority | Work and evidence | Effort | Verification and release boundary |
+|---|---|---|---|
+| 1 | Verify publication after the collection review. PR #126 merged on 2026-10-02, which resolved the pending-review blocker found during the audit | 15–60 min | Confirm the next scheduled receipt and published collection timestamp. A merged PR alone does not prove deployment or a new collection |
+| 2 | Reconcile the remaining installed collector changes with versioned source. PR #123 brought the review-grace behavior into `main`. The installed wrapper still has a different digest and storage-admission code | 1–4 h | Preserve both versions. Review and test the remaining differences in isolation, then use a separately approved installation. Never overwrite the installed guards from an older checkout |
+| 3 | Triage the four active A2J source failures shown on `/health` | 15–60 min per source | Check feed identity and source terms. Re-test permitted retrieval. Source changes and production SQL need separate approval |
+| 4 | Add a standard disposable-database test launcher and an explicit test-only connection guard | 1–4 h | Integration tests currently accept any nonempty `DATABASE_URL`. Prove that a production-shaped URL is refused before any connection or deletion. Keep package lockfiles independent |
+| 5 | Add the health and weekly SQL harnesses to CI with locked fixture dependencies | 1–4 h | Run the actual exported queries against the tracked schema. Keep fixtures synthetic and database-free builds independent |
+| 6 | Treat review backlog, source health and HTTP availability as separate monitoring signals | 1–4 h | A successful status response can contain degraded collection health. Check overdue counts, last successful collection and pending-review age, not only HTTP 200 |
+| 7 | Correct the A2J landing-page status wording in a separate UI change | 15–60 min | The fixture displayed “Some sources overdue” with zero overdue sources. Test failed-only, never-run, overdue and fully reporting cases before changing copy |
+| 8 | Schedule editorial work against the existing data-warning and evidence budgets | >4 h | Re-verify records against official sources. Do not silence warnings, invent dates or lower publication safeguards |
+| 9 | Document and rehearse database restoration, including loss of the host | 1–4 h | A checksum match and gzip check do not prove restoration. Use a separately approved isolated restore and confirm an off-host recovery copy |
+
+Assign the collection-review queue a named owner and a daily review window.
+Keep review waiting distinct from a collection failure, but escalate overdue
+reviews before they stop publication for several days. Preserve the approval
+gate rather than replacing it with automatic publication.
+
+Large, frequently changed modules remain candidates for later work:
+`src/lib/source-ingest.ts`, `src/lib/pipeline/collect.ts` and
+`src/lib/validate-data.ts`. A file split alone does not simplify their rules.
+Characterize publication transactions and shared invariants before extracting
+cohesive modules. Do not combine that work with service recovery or data review.

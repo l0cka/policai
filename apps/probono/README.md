@@ -18,15 +18,20 @@ Run their installs, checks and builds separately from the root package:
 # From the repository root
 npm --prefix apps/probono/dashboard ci
 npm --prefix apps/probono/worker ci
-(cd apps/probono/dashboard && npx tsc --noEmit --incremental false)
+npm --prefix apps/probono/dashboard run typecheck
+npm --prefix apps/probono/dashboard test
 npm --prefix apps/probono/dashboard run build
-npm --prefix apps/probono/worker test
+npm --prefix apps/probono/worker run typecheck
+DATABASE_URL='' npm --prefix apps/probono/worker test
 npm --prefix apps/probono/worker run test:security
 ```
 
-Builds require the child dependencies and appropriate non-production configuration;
-integration tests may require an isolated test database. Do not point tests at
-production. `db/` holds schema, seeds and migrations, not the live database.
+The worker command above clears `DATABASE_URL` and skips database integration
+tests. Those tests delete rows. Run the full worker suite only with an explicit
+connection to a disposable database, as the pull-request workflow does.
+Never use a production connection. Dashboard builds do not need a database.
+
+`db/` holds schema, seeds and migrations, not the live database.
 Postgres state and backups remain external to Git and application releases.
 Secrets, environment files and SMTP credentials must remain outside Git. Never
 copy live database contents or secret files into this subtree.
@@ -52,19 +57,21 @@ Apply schema/seed:
 `docker compose exec -T db psql -U radar -d radar < db/schema.sql`
 `docker compose exec -T db psql -U radar -d radar < db/seed.sql`
 
-## Production boundary and planned cutover (Argus)
+## Production boundary (Argus)
 
-The existing runtime checkout is
-`/home/l0cka/Work/Argus/services/probono-radar/src`; importing source does not
-change the running services. Verify unit working directories before operational work.
+The cutover completed on 2026-09-23. The active child release is
+`/var/lib/probono-radar/app/apps/probono`. The guarded host dispatcher runs
+scheduled jobs from that tree. The former checkout at
+`/home/l0cka/Work/Argus/services/probono-radar/src` is historical, not a runtime.
+Verify unit working directories and container ownership before operational work.
 
-**Planned, not active until an explicitly approved cutover:** deploy the child at
-`/var/lib/probono-radar/app/apps/probono`. Pro Bono must have its own release,
-rollback and health verification, separate from Policai. Preserve the existing
-Postgres volume, external backups and secret configuration across releases.
-Do not use the old `ops/deploy.sh` rsync deployment (`rsync --delete`); it is not
-the amalgamated release procedure. Historical runbooks/unit paths are not proof
-that cutover has happened.
+Pro Bono retains its own release, rollback and health checks, separate from
+Policai. Keep the existing Postgres volume, external backups and secret
+configuration outside release trees. The database container can retain its
+original Compose labels after the application cutover. Those labels alone do
+not establish which checkout serves the dashboard.
+Do not use the old `ops/deploy.sh` rsync deployment (`rsync --delete`).
+The maintainer keeps the operational runbook privately.
 
 Ingest and enrichment use `probono-ingest.timer` and `probono-enrich.timer`;
 backups remain a separate operational responsibility. Preserve masks on both

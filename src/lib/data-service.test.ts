@@ -91,6 +91,42 @@ describe("data-service file store", () => {
 		]);
 	});
 
+	it.each(["public", "admin"] as const)(
+		"preserves file-order source lookup for %s access without sorting the register",
+		async (access) => {
+			const older = buildPolicy({ id: "older", effectiveDate: "2024-01-01" });
+			const newer = buildPolicy({ id: "newer", effectiveDate: "2025-01-01" });
+			readJsonFile.mockImplementation(async (filePath: string, fallback: unknown) =>
+				filePath.endsWith("policies.json") ? [older, newer] : fallback,
+			);
+			const { getPolicyBySourceUrl } = await loadDataServiceModule();
+
+			await expect(getPolicyBySourceUrl(older.sourceUrl, { access })).resolves.toEqual(older);
+			expect(writeJsonFile).not.toHaveBeenCalled();
+			if (access === "admin") expect(readJsonFile).toHaveBeenCalledTimes(1);
+		},
+	);
+
+	it.each(["getPolicyById", "getPolicyBySourceUrl"] as const)(
+		"%s honours the supplied review clock without mutating editorial data",
+		async (lookup) => {
+			const policy = buildPolicy();
+			readJsonFile.mockImplementation(async (filePath: string, fallback: unknown) =>
+				filePath.endsWith("policies.json") ? [policy] : fallback,
+			);
+			const service = await loadDataServiceModule();
+			const key = lookup === "getPolicyById" ? policy.id : policy.sourceUrl;
+			const now = new Date("2027-01-01T00:00:00.000Z");
+
+			const projected = await service[lookup](key, { now });
+			expect(projected?.verification.status).toBe("stale");
+			expect(policy.verification.status).toBe("verified");
+			await expect(service[lookup](key, { access: "admin", now })).resolves.toEqual(policy);
+			await expect(service[lookup]("missing", { now })).resolves.toBeNull();
+			expect(writeJsonFile).not.toHaveBeenCalled();
+		},
+	);
+
 	it("removes supersession links to successor policies withheld from public reads", async () => {
 		const successor = buildPolicy({
 			id: "successor-policy",

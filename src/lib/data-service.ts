@@ -378,21 +378,24 @@ export class DuplicatePolicyError extends Error {
 	}
 }
 
+/** Apply access rules once, before either filtering a list or finding a record. */
+async function readPoliciesForAccess(options: DataServiceOptions): Promise<Policy[]> {
+	const access = options.access ?? "public";
+	const now = options.now ?? new Date();
+	const policies = await readJsonFile<Policy[]>(POLICIES_FILE, []);
+	if (access !== "public") return policies;
+	return applyPublicPolicyFilter(
+		policies,
+		await getWithheldPolicyIds(policies),
+		now,
+	);
+}
+
 export async function getPolicies(
 	filters?: PolicyFilters,
 	options: DataServiceOptions = {},
 ): Promise<Policy[]> {
-	const access = options.access ?? "public";
-	const now = options.now ?? new Date();
-
-	let policies = await readJsonFile<Policy[]>(POLICIES_FILE, []);
-	if (access === "public") {
-		policies = applyPublicPolicyFilter(
-			policies,
-			await getWithheldPolicyIds(policies),
-			now,
-		);
-	}
+	let policies = await readPoliciesForAccess(options);
 
 	if (filters?.jurisdiction) {
 		policies = policies.filter((p) => p.jurisdiction === filters.jurisdiction);
@@ -423,17 +426,7 @@ export async function getPolicyById(
 	id: string,
 	options: DataServiceOptions = {},
 ): Promise<Policy | null> {
-	const access = options.access ?? "public";
-	const now = options.now ?? new Date();
-	const policies = await readJsonFile<Policy[]>(POLICIES_FILE, []);
-	if (access === "public") {
-		const projected = applyPublicPolicyFilter(
-			policies,
-			await getWithheldPolicyIds(policies),
-			now,
-		);
-		return projected.find((policy) => policy.id === id) ?? null;
-	}
+	const policies = await readPoliciesForAccess(options);
 	return policies.find((policy) => policy.id === id) ?? null;
 }
 
@@ -441,21 +434,7 @@ export async function getPolicyBySourceUrl(
 	sourceUrl: string,
 	options: DataServiceOptions = {},
 ): Promise<Policy | null> {
-	const access = options.access ?? "public";
-	const now = options.now ?? new Date();
-	const policies = await readJsonFile<Policy[]>(POLICIES_FILE, []);
-	if (access === "public") {
-		const projected = applyPublicPolicyFilter(
-			policies,
-			await getWithheldPolicyIds(policies),
-			now,
-		);
-		return (
-			projected.find((policy) =>
-				sourceUrlsEqual(policy.sourceUrl, sourceUrl),
-			) ?? null
-		);
-	}
+	const policies = await readPoliciesForAccess(options);
 	return (
 		policies.find((policy) => sourceUrlsEqual(policy.sourceUrl, sourceUrl)) ??
 		null

@@ -11,6 +11,7 @@ import {
   summarizeSourceHealth,
   fetchMethodLabel,
   getSourceHealth,
+  getRadarSourceStats,
   sourceErrorLabel,
 } from '../lib/health-data.ts';
 import { statusPayload, statusUnavailable } from '../lib/status-payload.ts';
@@ -89,6 +90,19 @@ describe('source overdue threshold (P1)', () => {
     ];
     const sorted = await getSourceHealth({ query: async () => ({ rows }) });
     assert.deepEqual(sorted.map((r) => r.name), ['Beta', 'Zulu', 'Alpha retired']);
+  });
+
+  it('uses the shared source population in one aggregate query for the landing rail', async () => {
+    const queries = [];
+    const stats = { total: 4, ok: 1, overdue: 1 };
+    const result = await getRadarSourceStats({ query: async (sql) => {
+      queries.push(sql);
+      return { rows: [stats] };
+    } });
+    assert.deepEqual(result, stats);
+    assert.equal(queries.length, 1);
+    assert.ok(queries[0].includes(SOURCE_HEALTH_SQL), 'reuse the health page source selection');
+    assert.match(queries[0], /WHERE active/);
   });
 
   it('selects one latest run per source and computes the last ok run in SQL', () => {
