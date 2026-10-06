@@ -82,7 +82,9 @@ src/
 │   ├── network|timeline/         # Visualisations
 │   ├── methodology|status/       # Verification method and source health
 │   ├── not-found.tsx             # Site 404 with onward links
-│   ├── agencies|map|framework|blog/  # Retired: each page calls notFound()
+│   ├── map|framework|blog/       # Retired: each page calls notFound()
+│   ├── agencies/                 # Temporary 307 to apsaitracker.app (owner's permission; force-dynamic
+│   │                             #   so no CDN caches it). To withdraw, restore notFound()
 │   ├── policies/[id]/            # Policy detail (server) + client tabs
 │   └── api/                      # READ-ONLY public JSON API (policies, agencies,
 │                                 #   timeline, network, status)
