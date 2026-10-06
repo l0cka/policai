@@ -130,11 +130,37 @@ export function parseSourceDate(
   return null;
 }
 
+/** Unwrap one search hop only; never broaden the fetcher's official-host policy. */
+function unwrapSearchRedirect(url: URL): string {
+  const original = url.toString();
+  if (url.pathname !== '/s/redirect' || !isAllowedSourceHost(original)) {
+    return original;
+  }
+  const targets = url.searchParams.getAll('url');
+  if (targets.length !== 1) return original;
+  const target = targets[0];
+  // URLSearchParams decodes once. Do not repair double encoding, relative
+  // targets, control characters or backslashes that URL() would normalise.
+  if (
+    !/^https:\/\/[^/]/i.test(target) ||
+    /[\s\\\uFFFD]/u.test(target) ||
+    Array.from(target).some((character) => character.charCodeAt(0) <= 0x1f)
+  ) return original;
+  try {
+    decodeURI(target); // Reject malformed escapes (URL() otherwise accepts them).
+    // *.gov.au (including same registrable-host subdomains) and the explicit
+    // extra hosts already share the central allow-list; no new trust is added.
+    return isAllowedSourceHost(target) ? target : original;
+  } catch {
+    return original;
+  }
+}
+
 function toAbsoluteUrl(href: string, baseUrl: string): string | null {
   try {
     const url = new URL(href, baseUrl);
     if (!['http:', 'https:'].includes(url.protocol)) return null;
-    return canonicalizeSourceUrl(url.toString());
+    return canonicalizeSourceUrl(unwrapSearchRedirect(url));
   } catch {
     return null;
   }
