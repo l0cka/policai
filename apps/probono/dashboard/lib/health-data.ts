@@ -159,7 +159,7 @@ export type SourceHealthHeadline = {
 export function sourceHealthHeadline(counts: SourceHealthCounts): SourceHealthHeadline {
   const { total, ok, overdue, failed, never } = counts;
   if (total === 0) {
-    return { tone: 'warn', label: 'No active sources', note: 'Every source is retired, so nothing is being collected' };
+    return { tone: 'warn', label: 'No active sources', note: 'No active sources are configured for collection' };
   }
   if (ok === total) {
     return {

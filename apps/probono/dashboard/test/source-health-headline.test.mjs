@@ -53,13 +53,22 @@ describe('source health headline', () => {
     const h = sourceHealthHeadline(summary);
     assert.equal(h.label, 'No active sources');
     assert.equal(h.tone, 'warn');
-    assert.equal(h.note, 'Every source is retired, so nothing is being collected');
+    assert.equal(h.note, 'No active sources are configured for collection');
   });
 
   it('names every bad state, worst first, in one combined label', () => {
     const h = sourceHealthHeadline(counts({ total: 7, ok: 1, failed: 2, overdue: 1, never: 3 }));
     assert.equal(h.label, '2 sources failed, 1 overdue, 3 never run');
     assert.match(h.note, /^1 of 7 active sources reporting/);
+  });
+
+  it('falls back to a plain label when no state is counted', () => {
+    // Defensive: ok < total with no failed, overdue or never-run count
+    // should not happen, but must not claim a state that is not true.
+    const h = sourceHealthHeadline(counts({ total: 3, ok: 2 }));
+    assert.equal(h.label, 'Some sources not reporting');
+    assert.equal(h.tone, 'warn');
+    assert.equal(h.note, '2 of 3 active sources reporting');
   });
 
   it('is what the landing page renders, not a local overdue guess', () => {
