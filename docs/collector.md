@@ -255,7 +255,8 @@ at `~/.local/bin/policai-collect.sh`. See the
 [wrapper runbook](../ops/collector/README.md) for installation, tests and recovery.
 Each run holds the existing concurrency lock and:
 
-1. Refuses source-checkout dirt, incomplete prior runs, or an open collection PR.
+1. Refuses source-checkout dirt, incomplete prior runs, insufficient storage
+   headroom, or an open collection PR (except the opt-in state-only proposal below).
 2. Creates a unique branch/worktree from fetched main, installs dependencies,
    and runs the full `npm run collect` with a bounded deadline.
 3. Preserves before/after outputs and checks `data/policies.json` even after a
@@ -267,8 +268,22 @@ Each run holds the existing concurrency lock and:
 6. Returns failed source health as a failure even if structurally valid retry
    and coverage data reached a PR. Other failures retain local evidence.
 
-The next scheduled collection is deliberately blocked until a pending collection
+By default, the next scheduled collection is blocked until a pending collection
 PR is reviewed/merged/closed; it never overwrites a reviewer's pending data.
+The opt-in **policy proposal** `POLICAI_COLLECT_SUPERSEDE_STATE_ONLY=1` (default
+`0`, pending Daniel's approval) permits a fresh-main run only when every pending
+collection PR changes solely `data/watch-state.json` and/or
+`public/data/meta.json`, has unchanged register hashes/blobs, and matches a
+retained collector receipt and exact collector-authored branch head. Any
+editorial/feed change or missing provenance retains the ordinary review wait.
+After output/structural validation, the replacement run records superseded URLs,
+comments on and closes those old state-only PRs, and lists them in any new draft
+PR. Branches and all old evidence remain intact. Main/head changes or an old
+PR merged during the run refuse publication for manual reconciliation. See the
+[wrapper policy and recovery details](../ops/collector/README.md#opt-in-state-only-supersession-policy-proposal),
+including no-changes runs and retries after partial publication. Installation
+and enabling the toggle require separate host approval; this proposal is not
+an instruction to modify the installed script or act on any current PR.
 The existing main-following deployment timer can consume merged data through
 ISR without a rebuild. A draft branch push does not activate it, and a PR alone
 is not evidence of current public freshness. The existing scheduled failure

@@ -2,7 +2,7 @@
 """Policai collector entry point: historical .sh name, Python 3 stdlib only.
 
 Never collect in main or a serving checkout. Retain every run until reviewed.
-One pending collection PR at a time; publication retries never recollect.
+Content PRs block collection; state-only supersession is opt-in. Retries never recollect.
 """
 import datetime
 import fcntl
@@ -110,10 +110,127 @@ def snapshot(run, phase):
 
 def pending(tree=SOURCE):
     prs = json.loads(command(['gh', 'pr', 'list', '--repo', REPO, '--state', 'open',
-                              '--limit', '1000', '--json', 'url,headRefName,headRefOid,baseRefName,createdAt'], tree))
+                              '--limit', '1000', '--json', 'url,headRefName,headRefOid,baseRefName,createdAt,isCrossRepository'], tree))
     if len(prs) >= 1000:
         raise Refused('PR inventory truncated; manual review required')
     return [pr for pr in prs if pr['headRefName'].startswith(PREFIX)]
+
+
+def state_only_proposal_enabled():
+    value = os.environ.get('POLICAI_COLLECT_SUPERSEDE_STATE_ONLY', '0')
+    if value not in ('0', '1'):
+        raise Refused('POLICAI_COLLECT_SUPERSEDE_STATE_ONLY must be 0 or 1')
+    return value == '1'
+
+
+def state_only_pr(pr, tree=SOURCE):
+    """Require local collector provenance and an exact, immutable Git diff.
+
+    A branch name or PR description alone is not collector provenance. Missing
+    receipts (including runs from other hosts) keep the ordinary review gate.
+    """
+    if (not pr['headRefName'].startswith(PREFIX) or pr['baseRefName'] != 'main'
+            or pr.get('isCrossRepository') is not False):
+        return False
+    for path in (STATE / 'policai-collection-runs').glob('*/run.json'):
+        if time.monotonic() >= DEADLINE:
+            raise Refused('collector provenance inventory deadline exceeded')
+        if path.is_symlink() or path.parent.is_symlink():
+            continue
+        try:
+            receipt = json.loads(path.read_text())
+        except (OSError, ValueError):
+            continue
+        if not isinstance(receipt, dict):
+            continue
+        if (receipt.get('phase') != 'published' or receipt.get('pr') != pr['url']
+                or receipt.get('branch') != pr['headRefName']
+                or receipt.get('head') != pr['headRefOid']):
+            continue
+        before = receipt.get('register_before')
+        base, head = receipt.get('base'), receipt.get('head')
+        if (not isinstance(before, str) or not re.fullmatch(r'[0-9a-f]{64}', before)
+                or before != receipt.get('register_after')
+                or not all(isinstance(ref, str) and re.fullmatch(r'[0-9a-f]{40}', ref)
+                           for ref in (base, head))):
+            return False
+        git('fetch', 'origin', 'refs/heads/' + pr['headRefName'], cwd=tree)
+        if git('rev-parse', 'FETCH_HEAD', cwd=tree) != head:
+            raise Refused('pending collection branch changed during inspection')
+        if git('rev-list', '--count', base + '..' + head, cwd=tree) != '1':
+            return False
+        author = git('show', '-s', '--format=%an%n%ae', head, cwd=tree)
+        if author != 'policai-collector[bot]\npolicai-collector[bot]@users.noreply.github.com':
+            return False
+        paths = set(git('diff', '--no-renames', '--name-only', '-z', base, head,
+                        cwd=tree).split('\0')) - {''}
+        return (bool(paths) and paths <= {'data/watch-state.json', 'public/data/meta.json'}
+                and git('rev-parse', base + ':' + REGISTER, cwd=tree)
+                == git('rev-parse', head + ':' + REGISTER, cwd=tree))
+    return False
+
+
+def assert_current_main(run):
+    remote = git('ls-remote', '--exit-code', 'origin', 'refs/heads/main',
+                 cwd=Path(run['tree'])).split()[0]
+    if remote != run['base']:
+        raise Refused('main advanced during collection; retained commit needs manual reconciliation')
+
+
+def supersede_state_prs(run):
+    """Close only inspected state PRs, after validation, keeping all evidence.
+
+    Closure prevents an ordinary later approval from merging stale state over
+    the replacement. Concurrent merges/head edits fail closed on read-back.
+    """
+    superseded = run.get('superseded_prs', [])
+    if not superseded:
+        return
+    if not state_only_proposal_enabled():
+        raise Refused('state-only supersession toggle is off; retained run needs review')
+    tree = Path(run['tree'])
+    planned = {pr['url']: pr for pr in superseded}
+    # New editorial/feed PRs or previously closed PRs reopened after success
+    # must not be swept into a supersession planned by an earlier invocation.
+    for pr in pending(tree):
+        if pr['headRefName'] == run['branch']:
+            continue
+        old = planned.get(pr['url'])
+        if (not old or old['status'] == 'closed'
+                or pr['headRefOid'] != old['headRefOid'] or not state_only_pr(pr, tree)):
+            raise Refused('another or changed collection PR is pending; no supersession')
+    assert_current_main(run)
+    comment = (f"State-only supersession by collector run `{run['branch']}` from main `{run['base']}`. "
+               'The new run passed structural validation with an unchanged curated register. '
+               'All prior worktrees, receipts, snapshots and branches are retained. '
+               'This PR is closed, not merged; do not reopen/merge it over the replacement. '
+               'If publication fails or no new output exists, inspect the retained run receipt. '
+               'Any later merge requires manual reconciliation, not an automatic retry.')
+    for old in superseded:
+        def read_back():
+            return json.loads(command(['gh', 'pr', 'view', old['url'], '--repo', REPO,
+                                       '--json', 'url,headRefName,headRefOid,baseRefName,state,isCrossRepository,comments'], tree))
+
+        pr = read_back()
+        if (pr['url'] != old['url'] or pr['headRefName'] != old['headRefName']
+                or pr['headRefOid'] != old['headRefOid'] or pr['baseRefName'] != 'main'
+                or pr.get('isCrossRepository') is not False or pr['state'] not in ('OPEN', 'CLOSED')):
+            raise Refused('superseded PR changed or merged; manual reconciliation required')
+        if pr['state'] == 'OPEN':
+            if old['status'] == 'closed' or not state_only_pr(pr, tree):
+                raise Refused('superseded PR reopened or no longer state-only; manual review required')
+            args = ['gh', 'pr', 'close', old['url'], '--repo', REPO]
+            if not any(item.get('body') == comment for item in pr.get('comments', [])):
+                args.extend(['--comment', comment])
+            command(args, tree)
+            pr = read_back()
+        if (pr['state'] != 'CLOSED' or pr['headRefOid'] != old['headRefOid']
+                or pr['headRefName'] != old['headRefName'] or pr['baseRefName'] != 'main'
+                or not any(item.get('body') == comment for item in pr.get('comments', []))):
+            raise Refused('supersession close/comment read-back mismatch; retained for review')
+        old['status'] = 'closed'
+        save(run)
+    assert_current_main(run)
 
 
 def review_wait(prs):
@@ -174,10 +291,14 @@ def output_gate(run):
 def verify_pr(run, url):
     tree = Path(run['tree'])
     pr = json.loads(command(['gh', 'pr', 'view', url, '--repo', REPO, '--json',
-                             'url,headRefName,headRefOid,baseRefName,state,isDraft'], tree))
+                             'url,headRefName,headRefOid,baseRefName,state,isDraft,body'], tree))
     if (pr['headRefOid'] != run['head'] or pr['headRefName'] != run['branch']
             or pr['baseRefName'] != 'main' or pr['state'] != 'OPEN'):
         raise Refused('PR read-back mismatch; manual review required')
+    if run.get('superseded_prs'):
+        if any(old['url'] not in pr.get('body', '') for old in run['superseded_prs']):
+            raise Refused('PR supersession notice missing; manual review required')
+        assert_current_main(run)
     run['pr'] = pr['url']
     run['phase'] = 'published'
     save(run)
@@ -198,6 +319,7 @@ def publish(run):
         raise Refused('outgoing commit paths outside explicit allowlist')
     if git('rev-list', '--count', run['base'] + '..HEAD', cwd=tree) != '1':
         raise Refused('unexpected outgoing commit history')
+    supersede_state_prs(run)
     prs = pending(tree)
     if any(pr['headRefName'] != branch for pr in prs):
         raise Refused('another collection PR is pending; no accumulation')
@@ -205,9 +327,7 @@ def publish(run):
         verify_pr(run, prs[0]['url'])
         return run['collection_exit']
     # Do not rebase JSON or silently replace newer editorial data.
-    remote_main = git('ls-remote', '--exit-code', 'origin', 'refs/heads/main', cwd=tree).split()[0]
-    if remote_main != run['base']:
-        raise Refused('main advanced during collection; retained commit needs manual reconciliation')
+    assert_current_main(run)
     remote = git('ls-remote', 'origin', 'refs/heads/' + branch, cwd=tree).split()
     if remote and remote[0] != run['head']:
         raise Refused('remote collection branch changed; never force or overwrite')
@@ -215,11 +335,18 @@ def publish(run):
         git('push', 'origin', f'HEAD:refs/heads/{branch}', cwd=tree)
     if git('ls-remote', '--exit-code', 'origin', 'refs/heads/' + branch, cwd=tree).split()[0] != run['head']:
         raise Refused('push read-back mismatch')
+    supersession = ''
+    if run.get('superseded_prs'):
+        supersession = ('\n\nSupersedes state-only PR(s), closed without deleting evidence: '
+                        + ' '.join(pr['url'] for pr in run['superseded_prs'])
+                        + '. Do not reopen/merge these over this replacement; reconcile manually instead.')
+    # Check again after push: a concurrent merge must not silently replace main.
+    assert_current_main(run)
     url = command(['gh', 'pr', 'create', '--repo', REPO, '--base', 'main', '--head', branch,
                    '--draft', '--title', 'chore(data): collection ' + run['started_at'][:10],
                    '--body', f"Collector exit: {run['collection_exit']}. Structural validation passed; curated register unchanged. "
                    'Coverage may be incomplete: review public/data/meta.json. Data publication and editorial approval are separate. '
-                   'Required lint/test/build and independent review remain mandatory. No automatic merge.'], tree)
+                   'Required lint/test/build and independent review remain mandatory. No automatic merge.' + supersession], tree)
     verify_pr(run, url)
     return run['collection_exit']
 
@@ -250,6 +377,7 @@ def collect(run):
     if run['validation_exit']:
         raise Refused('data validation failed; retained, not published')
     if not run['changed_paths']:
+        supersede_state_prs(run)
         run['phase'] = 'no-changes'
         save(run)
         return run['collection_exit']
@@ -374,7 +502,8 @@ def main():
                 if previous and previous['phase'] not in ('published', 'no-changes'):
                     raise Refused('previous incomplete run retained; review active receipt before another collection')
                 waiting = pending()
-                if waiting:
+                supersede = state_only_proposal_enabled() and waiting and all(state_only_pr(pr) for pr in waiting)
+                if waiting and not supersede:
                     skipped = 'awaiting-review'
                     rc, message = review_wait(waiting)
                     return rc
@@ -387,6 +516,10 @@ def main():
                 evidence.mkdir(parents=True)
                 run = dict(started_at=utc(), tree=str(tree), evidence=str(evidence), base=base,
                            branch=PREFIX + run_id, phase='collecting', collection_exit=None)
+                if supersede:
+                    run['superseded_prs'] = [dict(url=pr['url'], headRefName=pr['headRefName'],
+                                                 headRefOid=pr['headRefOid'], status='planned')
+                                            for pr in waiting]
                 save(run)
                 git('worktree', 'add', '-b', run['branch'], str(tree), base)
                 rc = collect(run)

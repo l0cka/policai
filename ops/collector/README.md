@@ -79,7 +79,7 @@ worktree remain; manually inspect them before any retry.
 
 ## Review and recovery policy
 
-One open `automation/collection-*` PR deliberately blocks new scheduled runs.
+By default, one open `automation/collection-*` PR blocks new scheduled runs.
 Review/merge/close that PR before collecting again. No pending JSON is overwritten.
 While the oldest pending PR is younger than `POLICAI_COLLECT_REVIEW_GRACE_HOURS`
 (default 72), a blocked run is a normal wait: it exits 0 and its receipt records
@@ -90,6 +90,59 @@ Main requires an approving review and lint/test/build checks. Merging collected
 data and approving register entries are separate decisions; neither happens here.
 The wrapper uses only unique collection branches, so a branch push cannot activate
 the existing main-following app deployment timer.
+
+### Opt-in state-only supersession (policy proposal)
+
+`POLICAI_COLLECT_SUPERSEDE_STATE_ONLY` defaults to `0`; only the exact value `1`
+enables this proposal. Other values refuse the run. Daniel must approve the
+policy at merge time, and installation/environment activation is a separate
+approved host step. Leaving the toggle off preserves the review wait above.
+
+When every pending collection PR is state-only, an enabled run may start from
+freshly fetched `origin/main`, never from unmerged state. Eligibility requires:
+
+- a same-repository `automation/collection-*` branch targeting `main`;
+- a retained local `published` collector receipt matching the PR URL, branch
+  and exact head, with equal, nonempty `register_before`/`register_after` hashes;
+- fetching that exact remote branch head, a single collector-authored commit,
+  and a complete non-renaming Git diff against its recorded base containing
+  only `data/watch-state.json` and/or `public/data/meta.json`;
+- equal register Git blobs at that base and head as a second check.
+
+Missing provenance, unreadable/mismatched hashes, other paths (including
+`data/developments.json` or `data/source-reviews.json`), forks or another base
+keep the ordinary review wait. Inspection failures refuse rather than assume
+eligibility. Receipts from another host must be reviewed manually; a branch
+prefix or a claim in a PR body is not sufficient provenance.
+
+The new receipt records `superseded_prs` with each URL, branch, head and a
+`planned`/`closed` status. Older run trees, receipts, snapshots and branches are
+never overwritten or deleted. Only after the new run passes the output gate
+and structural validation does it recheck the pending inventory and old heads,
+comment on and close the old PRs **without merging or deleting branches**, and
+verify each closure/comment. Any new draft PR also lists the old URLs. Closure
+prevents an ordinary later approval from merging obsolete state over the new
+run. Even a no-changes run records/comments/closes its superseded state PRs;
+there is then no replacement PR, and its receipt explains the result.
+
+Main is checked before/after closure and around publication. A concurrently
+merged old PR or changed head stops publication for manual reconciliation;
+there is no automatic rebase. A reopened superseded PR blocks publication
+retry. GitHub closure and Git pushes are not one atomic transaction: an
+administrator can still deliberately reopen/merge later. Do not do so without
+reconciling the replacement. This is not a replacement for merge review.
+
+A validation failure leaves old PRs open. A later push/PR failure can leave them
+closed while the validated replacement remains `ready`: retain everything and
+use `--retry-publication` with the toggle still enabled after an authorised
+repair. Retry verifies existing comments/closures without collecting again or
+adding duplicate comments. Ambiguous closures or incomplete no-changes runs
+require the manual recovery procedure below. Storage admission still bounds
+new runs; opt-in supersession does not authorise cleanup or make coverage
+health successful. A failed-health run can still supply structurally valid
+state, but its original nonzero collection exit remains nonzero.
+
+### Incomplete runs
 
 An incomplete prior run also blocks new collection. Read its receipt and logs,
 compare the before/after register, and inspect staged/untracked paths in its exact

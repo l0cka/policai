@@ -46,16 +46,32 @@ if sys.argv[1:] == ['run', 'collect']:
         gh.write_text('''#!/usr/bin/env python3
 import json, os, pathlib, subprocess, sys
 p = pathlib.Path(os.environ['HOME'])/'pr.json'
+archive = p.with_name('old-prs.json')
+old = json.loads(archive.read_text()) if archive.exists() else []
+current = json.loads(p.read_text()) if p.exists() else None
+prs = old + ([current] if current else [])
 a = sys.argv[1:]
 if a[:2] == ['pr','list']:
-    print('['+p.read_text()+']' if p.exists() else '[]')
+    print(json.dumps([pr for pr in prs if pr['state'] == 'OPEN']))
 elif a[:2] == ['pr','create']:
     branch=a[a.index('--head')+1]
     sha=subprocess.check_output(['git','rev-parse',branch], text=True).strip()
-    p.write_text(json.dumps(dict(url='https://github.com/l0cka/policai/pull/999',headRefName=branch,headRefOid=sha,baseRefName='main',state='OPEN',isDraft=True,createdAt=os.environ.get('FAKE_PR_CREATED_AT','2099-01-01T00:00:00Z'))))
-    print('https://github.com/l0cka/policai/pull/999')
+    if current:
+        old.append(current)
+        archive.write_text(json.dumps(old))
+    url = 'https://github.com/l0cka/policai/pull/' + str(999 + len(old))
+    p.write_text(json.dumps(dict(url=url,headRefName=branch,headRefOid=sha,baseRefName='main',state='OPEN',isDraft=True,isCrossRepository=False,comments=[],body=a[a.index('--body')+1],createdAt=os.environ.get('FAKE_PR_CREATED_AT','2099-01-01T00:00:00Z'))))
+    print(url)
 elif a[:2] == ['pr','view']:
-    print(p.read_text())
+    print(json.dumps(next(pr for pr in prs if pr['url'] == a[2])))
+elif a[:2] == ['pr','close']:
+    pr = next(pr for pr in prs if pr['url'] == a[2])
+    pr['state'] = 'CLOSED'
+    if '--comment' in a:
+        pr['comments'].append({'body': a[a.index('--comment')+1]})
+    archive.write_text(json.dumps(old))
+    if current:
+        p.write_text(json.dumps(current))
 else:
     sys.exit(2)
 ''')
@@ -198,6 +214,331 @@ else:
         self.assertEqual((tree / 'package-lock.json').read_text(), '{}\n')
         self.assertFalse((self.home / 'pr.json').exists())
         self.assertEqual(self.git('ls-remote', 'origin', 'refs/heads/' + run['branch']), '')
+
+    def state_only_run(self):
+        self.env['FAKE_PR_CREATED_AT'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+        self.set_collector('pathlib.Path("data/watch-state.json").write_text("state")')
+        result = self.run_workflow()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        return self.receipt()
+
+    def test_state_only_pr_superseded_with_evidence_and_fresh_base(self):
+        first = self.state_only_run()
+        tree = Path(first['tree'])
+        evidence = Path(first['evidence'])
+        retained = {str(p.relative_to(evidence)): p.read_bytes()
+                    for p in evidence.rglob('*') if p.is_file()}
+        original_tree_state = (tree / 'data/watch-state.json').read_bytes()
+        self.git('commit', '--allow-empty', '-m', 'new main')
+        self.git('push', 'origin', 'main')
+        fresh_base = self.git('rev-parse', 'HEAD').strip()
+        self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '1'
+        self.set_collector('pathlib.Path("public/data/meta.json").write_text("fresh")')
+        result = self.run_workflow()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        second = self.receipt()
+        self.assertNotEqual(second.get('tree'), first['tree'])
+        self.assertEqual(second.get('base'), fresh_base)
+        self.assertEqual(second['superseded_prs'][0]['url'], first['pr'])
+        self.assertEqual(second['superseded_prs'][0]['status'], 'closed')
+        old = json.loads((self.home / 'old-prs.json').read_text())[0]
+        new = json.loads((self.home / 'pr.json').read_text())
+        self.assertEqual(old['state'], 'CLOSED')
+        self.assertIn(second['branch'], old['comments'][0]['body'])
+        self.assertIn(first['pr'], new['body'])
+        self.assertTrue(new['isDraft'])
+        self.assertEqual({str(p.relative_to(evidence)): p.read_bytes()
+                          for p in evidence.rglob('*') if p.is_file()}, retained)
+        self.assertEqual((tree / 'data/watch-state.json').read_bytes(), original_tree_state)
+        self.assertEqual(self.git('ls-remote', 'origin', 'refs/heads/'+first['branch']).split()[0], first['head'])
+        self.assertEqual(self.git('ls-remote', 'origin', 'refs/heads/main').split()[0], fresh_base)
+
+    def assert_review_blocked(self, first):
+        before = (self.home / 'pr.json').read_bytes()
+        result = self.run_workflow()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(self.receipt()['skipped'], 'awaiting-review')
+        self.assertEqual((self.home / 'pr.json').read_bytes(), before)
+        self.assertEqual(len(list(Path(first['tree']).parent.iterdir())), 1)
+
+    def test_state_only_toggle_off_keeps_review_wait(self):
+        first = self.state_only_run()
+        self.assert_review_blocked(first)
+        self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '0'
+        self.assert_review_blocked(first)
+
+    def test_state_only_toggle_rejects_invalid_value(self):
+        self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = 'true'
+        result = self.run_workflow()
+        self.assertEqual(result.returncode, 1)
+        self.assertIn('must be 0 or 1', result.stderr)
+        self.assertNotIn('tree', self.receipt())
+
+    def test_mixed_pr_still_blocks_with_toggle_on(self):
+        self.env['FAKE_PR_CREATED_AT'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+        self.set_collector('pathlib.Path("data/watch-state.json").write_text("state")\n'
+                           'pathlib.Path("data/source-reviews.json").write_text("review")')
+        self.assertEqual(self.run_workflow().returncode, 0)
+        self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '1'
+        self.assert_review_blocked(self.receipt())
+
+    def test_developments_only_pr_still_blocks_with_toggle_on(self):
+        self.env['FAKE_PR_CREATED_AT'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+        self.assertEqual(self.run_workflow().returncode, 0)
+        self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '1'
+        self.assert_review_blocked(self.receipt())
+
+    def test_state_only_receipt_register_hash_change_still_blocks(self):
+        first = self.state_only_run()
+        first['register_after'] = '0' * 64
+        (Path(first['evidence']) / 'run.json').write_text(json.dumps(first))
+        self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '1'
+        self.assert_review_blocked(first)
+
+    def test_state_only_requires_matching_local_collector_provenance(self):
+        first = self.state_only_run()
+        receipt_path = Path(first['evidence']) / 'run.json'
+        original = receipt_path.read_bytes()
+        self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '1'
+        for field, value in [('head', '0' * 40), ('pr', 'wrong'),
+                             ('branch', 'automation/collection-unknown'),
+                             ('phase', 'ready')]:
+            with self.subTest(field=field):
+                changed = dict(first, **{field: value})
+                receipt_path.write_text(json.dumps(changed))
+                self.assert_review_blocked(first)
+        receipt_path.unlink()
+        self.assert_review_blocked(first)
+        receipt_path.write_bytes(original)
+        pr_path = self.home / 'pr.json'
+        pr = json.loads(pr_path.read_text())
+        pr['isCrossRepository'] = True
+        pr_path.write_text(json.dumps(pr))
+        self.assert_review_blocked(first)
+
+    def test_actual_register_diff_blocks_even_with_equal_receipt_hashes(self):
+        first = self.state_only_run()
+        tree = Path(first['tree'])
+        (tree / 'data/policies.json').write_text('changed register')
+        subprocess.check_call(['git', 'add', 'data/policies.json'], cwd=tree,
+                              stdout=subprocess.DEVNULL)
+        # Manufacture a one-commit fixture with misleading equal receipt hashes.
+        subprocess.check_call(['git', 'commit', '--amend', '--no-edit'], cwd=tree,
+                              stdout=subprocess.DEVNULL)
+        head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=tree, text=True).strip()
+        subprocess.check_call(['git', '--git-dir', str(self.remote), 'fetch',
+                               '--no-write-fetch-head', str(self.repo), head],
+                              stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        subprocess.check_call(['git', '--git-dir', str(self.remote), 'update-ref',
+                               'refs/heads/' + first['branch'], head], stdout=subprocess.DEVNULL)
+        first['head'] = head
+        (Path(first['evidence']) / 'run.json').write_text(json.dumps(first))
+        pr_path = self.home / 'pr.json'
+        pr = json.loads(pr_path.read_text())
+        pr['headRefOid'] = head
+        pr_path.write_text(json.dumps(pr))
+        self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '1'
+        self.assert_review_blocked(first)
+
+    def test_state_only_no_changes_still_records_and_comments_supersession(self):
+        first = self.state_only_run()
+        self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '1'
+        self.set_collector('pass')
+        result = self.run_workflow()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        run = self.receipt()
+        self.assertEqual(run['phase'], 'no-changes')
+        self.assertEqual(run['superseded_prs'][0]['url'], first['pr'])
+        pr = json.loads((self.home / 'pr.json').read_text())
+        self.assertEqual(pr['state'], 'CLOSED')
+        self.assertIn(run['branch'], pr['comments'][0]['body'])
+        self.assertNotIn('pr', run)
+
+    def test_state_only_validation_failure_does_not_close_old_pr(self):
+        first = self.state_only_run()
+        self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '1'
+        npm = self.home / '.local/bin/npm'
+        npm.write_text(npm.read_text() + '\nif sys.argv[1:] == ["run", "validate:data"]: sys.exit(3)\n')
+        result = self.run_workflow()
+        self.assertEqual(result.returncode, 1)
+        self.assertEqual(self.receipt()['superseded_prs'][0]['status'], 'planned')
+        self.assertEqual(json.loads((self.home / 'pr.json').read_text())['state'], 'OPEN')
+        self.assertTrue(Path(first['evidence']).exists())
+
+    def test_state_only_close_failure_retries_without_recollection(self):
+        self.state_only_run()
+        self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '1'
+        gh = self.home / '.local/bin/gh'
+        original = gh.read_text()
+        gh.write_text(original.replace("elif a[:2] == ['pr','close']:",
+                                       "elif a[:2] == ['pr','close']:\n    sys.exit(7)"))
+        result = self.run_workflow()
+        self.assertEqual(result.returncode, 1)
+        run = self.receipt()
+        self.assertEqual(run['phase'], 'ready')
+        self.assertEqual(json.loads((self.home / 'pr.json').read_text())['state'], 'OPEN')
+        gh.write_text(original)
+        self.set_collector('sys.exit(99)')
+        self.assertEqual(self.run_workflow('--retry-publication').returncode, 0)
+        self.assertEqual(self.receipt()['head'], run['head'])
+        self.assertEqual(self.run_workflow('--retry-publication').returncode, 0)
+        self.assertEqual(len(list(Path(run['tree']).parent.iterdir())), 2)
+        old = json.loads((self.home / 'old-prs.json').read_text())[0]
+        self.assertEqual(len(old['comments']), 1)
+
+    def test_state_only_merged_during_collection_refuses_publication(self):
+        first = self.state_only_run()
+        self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '1'
+        self.set_collector(
+            'import json\n'
+            'pathlib.Path("public/data/meta.json").write_text("new state")\n'
+            f'subprocess.check_call(["git", "push", "origin", "{first["head"]}:refs/heads/main"])\n'
+            f'p = pathlib.Path({str(self.home / "pr.json")!r})\n'
+            'pr = json.loads(p.read_text())\npr["state"] = "MERGED"\np.write_text(json.dumps(pr))')
+        result = self.run_workflow()
+        self.assertEqual(result.returncode, 1, result.stderr)
+        self.assertIn('main advanced', result.stderr)
+        run = self.receipt()
+        self.assertEqual(run['phase'], 'ready')
+        self.assertEqual(self.git('ls-remote', 'origin', 'refs/heads/' + run['branch']), '')
+        self.assertEqual(json.loads((self.home / 'pr.json').read_text())['state'], 'MERGED')
+        self.assertEqual(self.run_workflow('--retry-publication').returncode, 1)
+
+    def test_state_only_multiple_pending_prs_all_superseded(self):
+        first = self.state_only_run()
+        pr_path = self.home / 'pr.json'
+        first_pr = json.loads(pr_path.read_text())
+        first_pr['state'] = 'CLOSED'
+        pr_path.write_text(json.dumps(first_pr))
+        second = self.state_only_run()
+        archive_path = self.home / 'old-prs.json'
+        old = json.loads(archive_path.read_text())
+        old[0]['state'] = 'OPEN'
+        archive_path.write_text(json.dumps(old))
+        self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '1'
+        result = self.run_workflow()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        run = self.receipt()
+        self.assertEqual({pr['url'] for pr in run['superseded_prs']}, {first['pr'], second['pr']})
+        self.assertTrue(all(pr['status'] == 'closed' for pr in run['superseded_prs']))
+        old = json.loads(archive_path.read_text())
+        self.assertEqual(len(old), 2)
+        self.assertTrue(all(pr['state'] == 'CLOSED' and len(pr['comments']) == 1 for pr in old))
+        self.assertEqual(len(list(Path(run['tree']).parent.iterdir())), 3)
+
+    def test_state_only_inventory_with_content_pr_blocks_all(self):
+        first = self.state_only_run()
+        pr_path = self.home / 'pr.json'
+        content_pr = json.loads(pr_path.read_text())
+        content_pr.update(url='https://github.com/l0cka/policai/pull/888',
+                          headRefName='automation/collection-other')
+        (self.home / 'old-prs.json').write_text(json.dumps([content_pr]))
+        self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '1'
+        self.assert_review_blocked(first)
+        self.assertEqual(json.loads((self.home / 'old-prs.json').read_text())[0]['state'], 'OPEN')
+
+    def test_state_only_changed_pr_during_run_is_not_closed(self):
+        self.state_only_run()
+        self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '1'
+        self.set_collector(
+            'import json\n'
+            'pathlib.Path("public/data/meta.json").write_text("new state")\n'
+            f'p = pathlib.Path({str(self.home / "pr.json")!r})\n'
+            'pr = json.loads(p.read_text())\npr["headRefOid"] = "0" * 40\np.write_text(json.dumps(pr))')
+        result = self.run_workflow()
+        self.assertEqual(result.returncode, 1, result.stderr)
+        self.assertIn('changed collection PR', result.stderr)
+        pr = json.loads((self.home / 'pr.json').read_text())
+        self.assertEqual(pr['state'], 'OPEN')
+        self.assertEqual(pr['comments'], [])
+        self.assertEqual(self.receipt()['phase'], 'ready')
+
+    def test_state_only_publication_retry_after_closure_is_idempotent(self):
+        self.state_only_run()
+        self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '1'
+        gh = self.home / '.local/bin/gh'
+        original = gh.read_text()
+        gh.write_text(original.replace("elif a[:2] == ['pr','create']:",
+                                       "elif a[:2] == ['pr','create']:\n    sys.exit(7)"))
+        self.assertEqual(self.run_workflow().returncode, 1)
+        run = self.receipt()
+        self.assertEqual(run['phase'], 'ready')
+        self.assertEqual(run['superseded_prs'][0]['status'], 'closed')
+        self.set_collector('sys.exit(99)')
+        gh.write_text(original)
+        self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '0'
+        self.assertEqual(self.run_workflow('--retry-publication').returncode, 1)
+        self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '1'
+        result = self.run_workflow('--retry-publication')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(self.receipt()['head'], run['head'])
+        self.assertEqual(len(json.loads((self.home / 'old-prs.json').read_text())[0]['comments']), 1)
+        # A deliberate reopen is not silently closed again by retry.
+        archive = self.home / 'old-prs.json'
+        old = json.loads(archive.read_text())
+        old[0]['state'] = 'OPEN'
+        archive.write_text(json.dumps(old))
+        self.assertEqual(self.run_workflow('--retry-publication').returncode, 1)
+        self.assertEqual(json.loads(archive.read_text())[0]['state'], 'OPEN')
+
+    def test_state_only_closure_readback_failure_retries_without_duplicate_comment(self):
+        self.state_only_run()
+        self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '1'
+        gh = self.home / '.local/bin/gh'
+        original = gh.read_text()
+        gh.write_text(original.replace("elif a[:2] == ['pr','view']:",
+            "elif a[:2] == ['pr','view']:\n    if current['state'] == 'CLOSED': sys.exit(7)"))
+        self.assertEqual(self.run_workflow().returncode, 1)
+        run = self.receipt()
+        self.assertEqual(run['phase'], 'ready')
+        self.assertEqual(run['superseded_prs'][0]['status'], 'planned')
+        self.assertEqual(json.loads((self.home / 'pr.json').read_text())['state'], 'CLOSED')
+        gh.write_text(original)
+        self.set_collector('sys.exit(99)')
+        result = self.run_workflow('--retry-publication')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(len(json.loads((self.home / 'old-prs.json').read_text())[0]['comments']), 1)
+
+    def test_state_only_partial_comment_then_close_failure_does_not_duplicate(self):
+        self.state_only_run()
+        self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '1'
+        gh = self.home / '.local/bin/gh'
+        original = gh.read_text()
+        gh.write_text(original.replace("    pr['state'] = 'CLOSED'", "    pr['state'] = 'OPEN'")
+                      .replace("        p.write_text(json.dumps(current))",
+                               "        p.write_text(json.dumps(current))\n    sys.exit(7)"))
+        self.assertEqual(self.run_workflow().returncode, 1)
+        pr = json.loads((self.home / 'pr.json').read_text())
+        self.assertEqual(pr['state'], 'OPEN')
+        self.assertEqual(len(pr['comments']), 1)
+        gh.write_text(original)
+        self.set_collector('sys.exit(99)')
+        result = self.run_workflow('--retry-publication')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(len(json.loads((self.home / 'old-prs.json').read_text())[0]['comments']), 1)
+
+    def test_state_only_concurrent_merge_at_closure_fails_readback(self):
+        self.state_only_run()
+        self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '1'
+        gh = self.home / '.local/bin/gh'
+        gh.write_text(gh.read_text().replace("    pr['state'] = 'CLOSED'",
+                                            "    pr['state'] = 'MERGED'"))
+        result = self.run_workflow()
+        self.assertEqual(result.returncode, 1, result.stderr)
+        self.assertIn('read-back mismatch', result.stderr)
+        run = self.receipt()
+        self.assertEqual(run['phase'], 'ready')
+        self.assertEqual(self.git('ls-remote', 'origin', 'refs/heads/' + run['branch']), '')
+
+    def test_state_only_replacement_with_failed_health_keeps_nonzero_exit(self):
+        self.state_only_run()
+        self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '1'
+        self.set_collector('pathlib.Path("public/data/meta.json").write_text("unhealthy")\nsys.exit(1)')
+        result = self.run_workflow()
+        self.assertEqual(result.returncode, 1)
+        self.assertEqual(self.receipt()['phase'], 'published')
+        self.assertEqual(self.receipt()['collection_exit'], 1)
+        self.assertEqual(json.loads((self.home / 'old-prs.json').read_text())[0]['state'], 'CLOSED')
 
     def test_pending_pr_blocks_without_new_collection(self):
         # A fresh pending PR is a normal wait: skip with exit 0, never recollect.
