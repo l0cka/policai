@@ -42,7 +42,7 @@ export function UpcomingDeadlinesRail({
             const countdown = upcomingDateCountdown(item, today);
             return (
               <li key={`${item.policyId}-${item.dateType}-${item.date}`}>
-                <p className="text-[11px] text-muted-foreground">
+                <p className="text-[length:var(--type-label)] text-muted-foreground">
                   {getPolicyDateTypeName(item.dateType)} ·{' '}
                   <time dateTime={precisionDateTime(item.date, item.precision)}>
                     {formatPolicyDate({
@@ -59,7 +59,7 @@ export function UpcomingDeadlinesRail({
                 >
                   {item.policyTitle}
                 </Link>
-                <p className="text-[11px] text-muted-foreground">
+                <p className="text-[length:var(--type-label)] text-muted-foreground">
                   {getJurisdictionName(item.jurisdiction)}
                   {item.precision !== 'day' ? ' · exact day not recorded' : ''}
                 </p>
