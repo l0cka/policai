@@ -11,7 +11,7 @@ The collector is the automation behind the Developments feed: it watches officia
     mislabelled as generic binary content,
    - extracts readable text from HTML and text-bearing PDFs before assessment,
    - counts all extractable items separately from AI-policy candidates,
-   - extracts AI-relevant link candidates ([`extract.ts`](../src/lib/pipeline/extract.ts)),
+   - extracts AI-relevant link candidates ([`extract.ts`](../src/lib/pipeline/extract.ts)), unwrapping exact `/s/redirect` links only from allow-listed HTTPS hosts to a single, valid, once-decoded HTTPS `url` target on the existing official-host allow-list before canonicalisation and deduplication,
    - selects both new candidates and retryable pending candidates so repeated
      failures cannot monopolise a source's per-run limit,
    - fetches each new page and classifies it ([`classify.ts`](../src/lib/pipeline/classify.ts)).
