@@ -474,6 +474,40 @@ else:
         old = json.loads((self.home / 'old-prs.json').read_text())[0]
         self.assertEqual(len(old['comments']), 1)
 
+    def test_published_supersession_retry_failure_keeps_timer_unblocked(self):
+        self.state_only_run()
+        self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '1'
+        self.set_collector('pathlib.Path("data/developments.json").write_text("replacement")')
+        result = self.run_workflow()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        completed = self.receipt()
+        self.assertEqual(completed['phase'], 'published')
+        self.assertEqual(completed['superseded_prs'][0]['status'], 'closed')
+        archive = self.home / 'old-prs.json'
+        original = json.loads(archive.read_text())
+        replacement = (self.home / 'pr.json').read_bytes()
+        self.set_collector('sys.exit(99)')
+        for mutation in [dict(isDraft=False), dict(reviews=[{'state': 'COMMENTED'}])]:
+            with self.subTest(mutation=mutation):
+                archive.write_text(json.dumps([dict(original[0], **mutation)]))
+                before = archive.read_bytes()
+                retry = self.run_workflow('--retry-publication')
+                self.assertEqual(retry.returncode, 1, retry.stderr)
+                self.assertIn('superseded PR changed or merged', retry.stderr)
+                self.assertEqual(self.receipt()['phase'], 'published')
+                self.assertEqual(self.receipt()['head'], completed['head'])
+                self.assertEqual(self.receipt()['superseded_prs'], completed['superseded_prs'])
+                self.assertEqual(archive.read_bytes(), before)
+                self.assertEqual((self.home / 'pr.json').read_bytes(), replacement)
+                active = self.home / '.local/state/argus-jobs/policai-collection-active.json'
+                self.assertEqual(json.loads(active.read_text())['phase'], 'published')
+                self.assertEqual(json.loads((Path(completed['evidence']) / 'run.json').read_text())['phase'],
+                                 'published')
+                scheduled = self.run_workflow()
+                self.assertEqual(scheduled.returncode, 0, scheduled.stderr)
+                self.assertEqual(self.receipt().get('skipped'), 'awaiting-review')
+                self.assertEqual(len(list(Path(completed['tree']).parent.iterdir())), 2)
+
     def test_state_only_merged_during_collection_refuses_publication(self):
         first = self.state_only_run()
         self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '1'
@@ -691,6 +725,11 @@ else:
         self.assertEqual(self.receipt()['phase'], 'published')
         self.assertEqual(self.receipt()['collection_exit'], 1)
         self.assertEqual(json.loads((self.home / 'old-prs.json').read_text())[0]['state'], 'CLOSED')
+        retry = self.run_workflow('--retry-publication')
+        self.assertEqual(retry.returncode, 1, retry.stderr)
+        self.assertEqual(self.receipt()['phase'], 'published')
+        self.assertEqual(self.receipt()['collection_exit'], 1)
+        self.assertEqual(self.receipt()['message'], '')
 
     def test_pending_pr_blocks_without_new_collection(self):
         # A fresh pending PR is a normal wait: skip with exit 0, never recollect.

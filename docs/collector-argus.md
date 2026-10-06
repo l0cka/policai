@@ -19,10 +19,15 @@ After output/structural validation, the wrapper pushes the replacement branch,
 creates its draft PR and verifies read-back before commenting on and closing old
 state-only PRs. Their branches, run trees and evidence remain intact; the receipt
 and replacement name the old URLs. No-changes runs, including failures without
-output, leave old PRs open. A failed closure returns nonzero and retains the
+output, leave old PRs open; `superseded_prs` stays `planned` as an unused plan,
+not pending closure work. A failed closure returns nonzero and retains the
 verified replacement alongside any old PRs not yet closed. The `superseding`
 receipt requires `--retry-publication` or manual reconciliation, not recollection.
-A concurrent merge, changed head or review requires manual reconciliation.
+Retry never lowers an already `published` phase, even if rechecking fails.
+A concurrent merge, changed head or review, or a reopened PR whose closure was
+recorded, requires manual reconciliation for retry. A later scheduled run may
+supersede a reopened PR again unless it is reviewed or taken out of draft; mark
+it ready or review it to keep it.
 With the toggle on and no merges, changed output can cause daily PR churn while
 main's watch state and freshness remain unchanged.
 No automatic merge or deletion occurs. Installing this source and changing

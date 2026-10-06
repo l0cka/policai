@@ -135,16 +135,18 @@ not intentionally closed. Closure prevents an ordinary later approval from
 merging obsolete state over the replacement.
 
 A no-changes run, successful or failed, leaves all old PRs open and adds no
-closing comment. Its receipt keeps the plan but there is no replacement and no
-supersession; the original collection exit is returned. A later run with changed
-output can replace the pending state. With the toggle on and no merges, changed
-output can cause daily PR churn while main's watch state/freshness remains unchanged.
+closing comment. Its receipt keeps `superseded_prs` entries as `planned`, but
+there is no replacement and no supersession. These entries record the unused
+plan, not pending closure work; the original collection exit is returned. A later
+run with changed output can replace the pending state. With the toggle on and
+no merges, changed output can cause daily PR churn while main's watch
+state/freshness remains unchanged.
 
 Main is checked before/after closure and around publication. A concurrently
 merged old PR or changed head stops further publication/closure for manual reconciliation;
-there is no automatic rebase. A reopened superseded PR blocks publication
-retry. GitHub closure and Git pushes are not one atomic transaction: an
-administrator can still deliberately reopen/merge later. Do not do so without
+there is no automatic rebase. A reopened PR whose closure was recorded blocks
+publication retry. GitHub closure and Git pushes are not one atomic transaction:
+an administrator can still deliberately reopen/merge later. Do not do so without
 reconciling the replacement. This is not a replacement for merge review.
 
 Validation, push, create or replacement read-back failure leaves old PRs open;
@@ -154,16 +156,23 @@ closure is verified. A close failure returns nonzero: both the replacement and
 any old PR not yet closed remain visible, never an empty review queue. For
 multiple old PRs, earlier successful closures remain recorded. A failed closure
 read-back can mean the old PR closed remotely even though its receipt still says
-`planned`; inspect both PRs and the receipt.
+`planned`; inspect both PRs and the receipt. If that PR is reopened before
+closure is recorded, retry can close it again. Partial-comment recovery is
+unchanged: an existing exact supersession comment is not duplicated.
 
 New collection refuses an incomplete `ready` or `superseding` run. After an
 authorised repair, use `--retry-publication` with the toggle still enabled. Retry
 reuses the exact commit and existing replacement, re-verifies it before closure,
 and checks existing comments/closures without recollection or duplicate comments.
-Only complete verified closure changes the phase to `published`. A replacement
-that was merged, closed or marked ready, or an old PR that was reviewed/reopened,
-requires manual reconciliation. Storage admission still bounds
-new runs; opt-in supersession does not authorise cleanup or make coverage
+Only complete verified closure changes the phase to `published`. Retry of an
+already `published` run retains that phase even if rechecking fails, so it does
+not create an incomplete-run blocker for the timer. The failed retry still
+returns nonzero, and the normal pending-PR gate still applies. A replacement
+that was merged, closed or marked ready, a reviewed old PR, or a reopened PR
+whose closure was recorded requires manual reconciliation for retry. A later
+scheduled run may supersede a reopened PR again unless it is reviewed or taken
+out of draft; mark it ready or review it to keep it. Storage admission still
+bounds new runs; opt-in supersession does not authorise cleanup or make coverage
 health successful. A failed-health run can still supply structurally valid
 state, but its original nonzero collection exit remains nonzero.
 

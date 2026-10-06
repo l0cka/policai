@@ -282,12 +282,17 @@ PRs retain the ordinary review wait.
 After output/structural validation, the wrapper pushes and creates the replacement
 draft, verifies its read-back and superseded URL notices, then comments on and
 closes the old state-only PRs. Branches and all old evidence remain intact.
-No-changes runs (including failures without output) leave the old PRs open.
+No-changes runs (including failures without output) leave the old PRs open;
+their `superseded_prs` entries stay `planned` as an unused plan, not pending work.
 A close failure is nonzero and leaves the verified replacement visible alongside
 any old PRs not yet closed. Its `superseding` receipt blocks new collection;
 `--retry-publication` re-verifies the existing replacement without recollecting.
-Main/head/review changes require manual reconciliation. With the toggle on and
-no merges, changed output can cause daily PR churn without advancing main's state.
+A retry of an already `published` run never lowers that phase, even if rechecking
+fails. Main/head/review changes, or a reopened PR whose closure was recorded,
+require manual reconciliation for retry. A later scheduled run may supersede a
+reopened PR again unless it is reviewed or taken out of draft; mark it ready or
+review it to keep it. With the toggle on and no merges, changed output can cause
+daily PR churn without advancing main's state.
 See the [wrapper policy and recovery details](../ops/collector/README.md#opt-in-state-only-supersession-policy-proposal).
 Installation and enabling the toggle require separate host approval; this proposal
 is not an instruction to modify the installed script or act on any current PR.

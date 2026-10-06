@@ -216,7 +216,7 @@ def supersede_state_prs(run):
     superseded = run.get('superseded_prs', [])
     if not superseded:
         return
-    if not run.get('pr') or run['phase'] != 'superseding':
+    if not run.get('pr') or run['phase'] not in ('superseding', 'published'):
         raise Refused('no verified replacement available for supersession')
     check_supersession_inventory(run)
     tree = Path(run['tree'])
@@ -333,7 +333,9 @@ def verify_pr(run, url):
             raise Refused('PR supersession notice missing; manual review required')
         assert_current_main(run)
     run['pr'] = pr['url']
-    run['phase'] = 'superseding' if run.get('superseded_prs') else 'published'
+    # A failed recheck must not turn completed publication into a timer blocker.
+    if run['phase'] != 'published':
+        run['phase'] = 'superseding' if run.get('superseded_prs') else 'published'
     save(run)
 
 
