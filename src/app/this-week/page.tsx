@@ -9,6 +9,7 @@ import {
 import { formatPolicyDate } from '@/lib/format-policy-date';
 import { jurisdictionRailStyle } from '@/lib/jurisdiction-accent';
 import {
+  precisionDateTime,
   selectRecentVerifiedBefore,
   selectUpcomingPolicyDates,
   selectWeeklyDevelopments,
@@ -137,7 +138,7 @@ function UpcomingRow({ item }: { item: UpcomingDate }) {
     >
       <div className="font-mono text-[11px] font-medium uppercase text-muted-foreground">
         <CalendarClock className="mb-1 h-3.5 w-3.5" />
-        <time dateTime={item.date.slice(0, item.precision === 'year' ? 4 : item.precision === 'month' ? 7 : 10)}>
+        <time dateTime={precisionDateTime(item.date, item.precision)}>
           {formatPolicyDate(
             {
               type: item.dateType,
@@ -268,15 +269,16 @@ export default async function ThisWeekPage() {
         </p>
       </section>
 
-      <section className="mt-10">
+      <section id="coming-up" className="mt-10 scroll-mt-32">
         <h2 className="border-b border-[var(--rule-heavy)] py-2 font-mono text-[11px] font-medium uppercase tracking-[0.12em]">
           Coming up
         </h2>
         <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
-          From today, {dateLabel(now.getTime())} (Sydney): commencement and consultation
-          dates recorded for verified proposed, active or amended instruments.
-          Month- and year-only dates remain approximate; an exact day is not implied.
-          Check the linked source before acting.
+          From today, {dateLabel(now.getTime())} (Sydney): commencement dates
+          and deadlines (consultation closing, compliance due and scheduled
+          review dates) recorded for verified proposed, active or amended
+          instruments. Month- and year-only dates remain approximate; an exact
+          day is not implied. Check the linked source before acting.
         </p>
         {upcoming.length > 0 ? (
           <div>
@@ -293,8 +295,8 @@ export default async function ThisWeekPage() {
               No upcoming dates in the register
             </p>
             <p className="mt-2 text-xs text-muted-foreground">
-              When a tracked instrument records a future commencement or
-              consultation deadline, it appears here.
+              When a tracked instrument records a future commencement date or
+              deadline, it appears here.
             </p>
           </div>
         )}

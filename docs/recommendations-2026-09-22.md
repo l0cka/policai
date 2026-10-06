@@ -135,6 +135,10 @@ withholding) rather than adopting A2J's runtime model:
    same selector, with day counts only for day-precision dates. A separate
    `deadlines` array would duplicate `dates`; add one only if editors need
    deadlines that are not instrument dates.
+
+   **Status 2026-10-06:** deadline date types added to `PolicyDate` (phase 3
+   below). The homepage now shows deadlines in an "Upcoming deadlines" rail
+   and keeps commencements in "Coming up".
 2. **Stream taxonomy for the developments feed.** A2J splits its feed into
    named streams (news / law reform / funding / tech & justice) with per-stream
    accents. Root developments is one undifferentiated list. A lighter
@@ -209,7 +213,7 @@ change gates (npm run check + the review workflow is sufficient here).
 | 0 | Clean tree: merge editorial-index, integrate This week, pull origin/main (done: #102, #107) | Half day | `npm run check` green on merged main |
 | 1 | Quick wins: `/status` health page (shipped on `feat/status-coverage`, with overdue-source counts in `/api/status`); per-record `.md` provenance export; explicit "never confirmed" wording in API + exports | 1–2 days | New Vitest tests; `npm run check`; manual API spot-check |
 | 2 | `datePrecision` field + validator support + backfill annotation on existing 79 records (annotate, never invent) | 1–2 days | `npm run validate:data` extended; 0 errors |
-| 3 | Structured `deadlines` on register records + homepage rail (A2J pattern) | 3–4 days | Type + validator changes, rail tests, ISR verified on serving checkout |
+| 3 | Structured `deadlines` on register records + homepage rail (A2J pattern). Shipped on `feat/register-deadlines` (2026-10-06) as an extension of `PolicyDate`, not a parallel array: new date types `compliance_due` and `scheduled_review`, grouped with `consultation_closed` as `DEADLINE_DATE_TYPES`; the validator rejects a deadline as the primary date; a server-rendered homepage "Upcoming deadlines" rail with an empty state; `/this-week` and policy pages show the new types. No deadline values were added; the rail ships empty until an editor records source-verified deadlines. See `docs/this-week.md` | 3–4 days | Type + validator changes, rail tests, ISR verified on serving checkout |
 | 4 | Source expansion Tier 1 (state legislation registers), then Tier 2/3. Done on `feat/status-coverage`: `vic-legislation-whats-new`, `fcfcoa-practice-directions`. Done on `feat/state-sources` (2026-09-23): `qld-legislation-new`, `tas-legislation-statutory-rules`, `tas-legislation-acts`, `wa-legislation-as-made`, `wa-legislation-as-passed` (official Atom feeds, verified by dry run and audit). NSW and SA registers refuse automated clients. ACT needs an extractor rule for its what's-new tables. NT has no change listing | 1 day per source incl. verification | `npm run collect -- --dry-run --source=<id>`, then `npm run audit:sources` |
 | 5 | Freshness gate + completeness checks in `validate:data`; publish both counts on `/status` | 2–3 days | Gate runs in CI; budget seeded from the measured backlog, lowered only |
 | 6 | Coverage hygiene: superseded by the Tier 4 correction. Fix the fingerprint mismatch that stalls tracked documents | 1 day | `public/data/meta.json` coverage counts rise; `npm run audit:sources` |

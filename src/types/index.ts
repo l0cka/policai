@@ -219,9 +219,27 @@ export const POLICY_DATE_TYPES = [
 	"consultation_closed",
 	"superseded",
 	"repealed",
+	"compliance_due",
+	"scheduled_review",
 ] as const;
 
 export type PolicyDateType = (typeof POLICY_DATE_TYPES)[number];
+
+/**
+ * Date types that mark something falling due on a tracked instrument rather
+ * than a change to the instrument itself: submissions closing, an obligation
+ * that regulated entities must meet, or a review the instrument schedules.
+ * They feed the upcoming-deadlines rail and can never be a record's primary
+ * date, because the primary date backs `effectiveDate` and the register's key
+ * date.
+ */
+export const DEADLINE_DATE_TYPES = [
+	"consultation_closed",
+	"compliance_due",
+	"scheduled_review",
+] as const satisfies readonly PolicyDateType[];
+
+export type DeadlineDateType = (typeof DEADLINE_DATE_TYPES)[number];
 
 export const DATE_PRECISIONS = ["day", "month", "year"] as const;
 
@@ -578,6 +596,8 @@ export const POLICY_DATE_TYPE_NAMES: Record<PolicyDateType, string> = {
 	consultation_closed: "Consultation closed",
 	superseded: "Superseded",
 	repealed: "Repealed",
+	compliance_due: "Compliance due",
+	scheduled_review: "Scheduled review",
 };
 
 function isOneOf<T extends readonly string[]>(
@@ -688,6 +708,12 @@ export function getPrimaryPolicyDate(
 
 export function getPolicyDateTypeName(type: PolicyDateType): string {
 	return POLICY_DATE_TYPE_NAMES[type];
+}
+
+export function isDeadlineDateType(
+	value: string | null | undefined,
+): value is DeadlineDateType {
+	return isOneOf(DEADLINE_DATE_TYPES, value);
 }
 
 export const POLICY_STATUS_NAMES: Record<PolicyStatus, string> = {
