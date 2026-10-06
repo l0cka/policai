@@ -25,6 +25,8 @@ const { classifyBatch } = vi.hoisted(() => ({
 vi.mock('./claude-classify', () => ({ classifyBatch, CLAUDE_BATCH_SIZE: 20 }));
 
 import { collect, collectionRunFailed, emptyWatchState } from './collect';
+import type { SourceSnapshot, WatchState } from './collect';
+import type { SourceReview } from '@/types';
 import { MACHINE_CONFIDENCE_CAP } from './classify';
 import { validateSourceReviews } from '../validate-data';
 
@@ -1999,6 +2001,250 @@ describe('collect', () => {
     expect(recovered.state.lastCheckedBySource[weeklyDocument.id]).toBe(
       persistedReview.sourceEvidence.retrievedAt,
     );
+  });
+
+  describe('recoverPersistedDocumentTransitions snapshot monotonicity', () => {
+    const weeklyDocument = {
+      ...DOCUMENT_SOURCE,
+      schedule: 'weekly' as const,
+    };
+
+    /**
+     * Runs the recovery path directly: an approved review for version 1 of a
+     * tracked document is replayed against an incoming state that already
+     * carries a fresher direct-document observation. Mirrors the live
+     * run 20260922T193320Z-8dfcdae7 shape where the collector observed the
+     * source on 09-22 but the staged review's evidence is dated 08-07.
+     */
+    async function recoverWithSnapshot(input: {
+      previousSnapshot?: SourceSnapshot;
+      lastCheckedBySource?: string;
+      retrievedAt: string;
+      reviewedAt: string;
+    }): Promise<WatchState> {
+      const trackedPolicy = buildPolicy({
+        id: 'tracked-document-policy',
+        sourceUrl: weeklyDocument.url,
+        verification: {
+          status: 'verified',
+          checkedAt: input.lastCheckedBySource ?? input.retrievedAt,
+          checkedBy: 'reviewer',
+          method: 'manual',
+          source: {
+            url: weeklyDocument.url,
+            contentHash: input.previousSnapshot?.contentHash ?? 'a'.repeat(64),
+          },
+        },
+      });
+      const linkedDevelopment = {
+        id: 'dev-recovery-regression',
+        title: trackedPolicy.title,
+        url: weeklyDocument.url,
+        sourceId: weeklyDocument.id,
+        sourceName: weeklyDocument.name,
+        jurisdiction: weeklyDocument.jurisdiction,
+        detectedAt: '2026-08-07T05:10:36.000Z',
+        relevanceScore: 1,
+        classification: 'heuristic' as const,
+        assessment: {
+          method: 'heuristic' as const,
+          assessedAt: '2026-08-07T05:10:36.000Z',
+          promptVersion: 'source-hash-change-v1',
+        },
+        verification: {
+          status: 'needs_review' as const,
+          source: {
+            url: weeklyDocument.url,
+            contentHash: input.previousSnapshot?.contentHash ?? 'a'.repeat(64),
+          },
+        },
+        status: 'detected' as const,
+      };
+      const review: SourceReview = {
+        linkedDevelopment,
+        id: 'source-review-recovery-regression',
+        sourceUrl: weeklyDocument.url,
+        title: trackedPolicy.title,
+        entryKind: 'policy',
+        targetPolicyId: trackedPolicy.id,
+        sourceVersionSequence: 1,
+        status: 'published',
+        discoveredAt: '2026-08-07T05:10:36.000Z',
+        createdBy: 'collector',
+        analysis: {
+          isRelevant: true,
+          relevanceScore: 1,
+          suggestedType: trackedPolicy.type,
+          suggestedJurisdiction: trackedPolicy.jurisdiction,
+          summary: 'Recovered version 1 transition for the tracked document.',
+        },
+        sourceEvidence: {
+          url: weeklyDocument.url,
+          retrievedAt: input.retrievedAt,
+          contentHash: input.previousSnapshot?.contentHash ?? 'a'.repeat(64),
+        },
+        proposedRecord: {
+          id: trackedPolicy.id,
+          title: trackedPolicy.title,
+          description: trackedPolicy.description,
+          sourceUrl: trackedPolicy.sourceUrl,
+          jurisdiction: trackedPolicy.jurisdiction,
+          type: trackedPolicy.type,
+          status: trackedPolicy.status,
+          agencies: trackedPolicy.agencies,
+          content: trackedPolicy.content,
+          aiSummary: trackedPolicy.aiSummary,
+          tags: trackedPolicy.tags,
+          createdAt: trackedPolicy.createdAt,
+          updatedAt: trackedPolicy.updatedAt,
+        },
+        reviewedAt: input.reviewedAt,
+        reviewedBy: 'reviewer',
+        updatedAt: input.reviewedAt,
+      };
+
+      const result = await collect({
+        sources: [weeklyDocument],
+        state: {
+          seen: {},
+          lastCheckedBySource: input.lastCheckedBySource
+            ? { [weeklyDocument.id]: input.lastCheckedBySource }
+            : {},
+          sourceSnapshots: input.previousSnapshot
+            ? { [weeklyDocument.id]: input.previousSnapshot }
+            : {},
+        },
+        sourceReviews: [review],
+        existingDevelopments: [],
+        trackedUrls: [weeklyDocument.url],
+        trackedPolicies: [trackedPolicy],
+        fetchImpl: fakeFetch({}),
+        now: () => new Date('2026-09-22T08:23:23.603Z'),
+      });
+      return result.state;
+    }
+    it('does not regress lastCheckedAt when the review evidence is older than the observed state', async () => {
+      const state = await recoverWithSnapshot({
+        previousSnapshot: {
+          contentHash: 'a'.repeat(64),
+          firstCheckedAt: '2026-07-29T20:30:22.291Z',
+          lastCheckedAt: '2026-09-22T08:23:23.603Z',
+          lastChangedAt: '2026-09-01T00:00:00.000Z',
+          changeCount: 1,
+        },
+        lastCheckedBySource: '2026-09-22T08:23:23.603Z',
+        retrievedAt: '2026-08-07T05:10:37.597Z',
+        reviewedAt: '2026-09-01T00:00:00.000Z',
+      });
+
+      // The observed timestamp wins: recovery is re-derivation, not an
+      // observation, so it can never move lastCheckedAt backwards.
+      expect(state.sourceSnapshots[weeklyDocument.id]).toMatchObject({
+        contentHash: 'a'.repeat(64),
+        firstCheckedAt: '2026-07-29T20:30:22.291Z',
+        lastCheckedAt: '2026-09-22T08:23:23.603Z',
+        lastChangedAt: '2026-09-01T00:00:00.000Z',
+        changeCount: 1,
+      });
+      expect(state.lastCheckedBySource[weeklyDocument.id]).toBe(
+        '2026-09-22T08:23:23.603Z',
+      );
+    });
+
+    it('adopts a newer review-derived timestamp without forward-blocking', async () => {
+      const state = await recoverWithSnapshot({
+        previousSnapshot: {
+          contentHash: 'a'.repeat(64),
+          firstCheckedAt: '2026-07-29T20:30:22.291Z',
+          lastCheckedAt: '2026-08-07T05:10:37.597Z',
+          lastChangedAt: '2026-08-07T05:10:38.082Z',
+          changeCount: 1,
+        },
+        lastCheckedBySource: '2026-08-07T05:10:37.597Z',
+        retrievedAt: '2026-09-22T08:23:23.603Z',
+        reviewedAt: '2026-09-22T08:00:00.000Z',
+      });
+
+      expect(state.sourceSnapshots[weeklyDocument.id]).toMatchObject({
+        contentHash: 'a'.repeat(64),
+        firstCheckedAt: '2026-07-29T20:30:22.291Z',
+        lastCheckedAt: '2026-09-22T08:23:23.603Z',
+        changeCount: 1,
+      });
+      expect(state.lastCheckedBySource[weeklyDocument.id]).toBe(
+        '2026-09-22T08:23:23.603Z',
+      );
+    });
+
+    it('behaves as before when the incoming state has no previous snapshot', async () => {
+      const state = await recoverWithSnapshot({
+        retrievedAt: '2026-08-07T05:10:37.597Z',
+        reviewedAt: '2026-08-07T05:10:38.082Z',
+      });
+
+      expect(state.sourceSnapshots[weeklyDocument.id]).toEqual({
+        contentHash: 'a'.repeat(64),
+        firstCheckedAt: '2026-08-07T05:10:37.597Z',
+        lastCheckedAt: '2026-08-07T05:10:37.597Z',
+        lastChangedAt: '2026-08-07T05:10:38.082Z',
+        changeCount: 1,
+      });
+      expect(state.lastCheckedBySource[weeklyDocument.id]).toBe(
+        '2026-08-07T05:10:37.597Z',
+      );
+    });
+
+    it('fills a missing lastCheckedBySource entry from the fresher snapshot timestamp', async () => {
+      const state = await recoverWithSnapshot({
+        previousSnapshot: {
+          contentHash: 'a'.repeat(64),
+          firstCheckedAt: '2026-07-29T20:30:22.291Z',
+          lastCheckedAt: '2026-09-22T08:23:23.603Z',
+          lastChangedAt: '2026-08-07T05:10:38.082Z',
+          changeCount: 1,
+        },
+        retrievedAt: '2026-08-07T05:10:37.597Z',
+        reviewedAt: '2026-08-07T05:10:38.082Z',
+      });
+
+      expect(state.sourceSnapshots[weeklyDocument.id].lastCheckedAt).toBe(
+        '2026-09-22T08:23:23.603Z',
+      );
+      expect(state.lastCheckedBySource[weeklyDocument.id]).toBe(
+        '2026-09-22T08:23:23.603Z',
+      );
+    });
+
+    it('preserves the 2026-09-22 vic-ai snapshot against the 2026-08-07 review evidence', async () => {
+      // Exact regressed field shape from live run
+      // 20260922T193320Z-8dfcdae7 (PR #106, dc8f6e0).
+      const state = await recoverWithSnapshot({
+        previousSnapshot: {
+          contentHash:
+            '6013a3f65fd755391a25c8768410318375421342c47621c337baf604fe5abc71',
+          firstCheckedAt: '2026-07-29T20:30:22.291Z',
+          lastCheckedAt: '2026-09-22T08:23:23.603Z',
+          lastChangedAt: '2026-08-07T05:10:38.082Z',
+          changeCount: 1,
+        },
+        lastCheckedBySource: '2026-09-22T08:23:23.603Z',
+        retrievedAt: '2026-08-07T05:10:37.597Z',
+        reviewedAt: '2026-08-07T05:10:38.082Z',
+      });
+
+      expect(state.sourceSnapshots[weeklyDocument.id]).toMatchObject({
+        contentHash:
+          '6013a3f65fd755391a25c8768410318375421342c47621c337baf604fe5abc71',
+        firstCheckedAt: '2026-07-29T20:30:22.291Z',
+        // The regressed value must stay at the observed 09-22 timestamp.
+        lastCheckedAt: '2026-09-22T08:23:23.603Z',
+        lastChangedAt: '2026-08-07T05:10:38.082Z',
+        changeCount: 1,
+      });
+      expect(state.lastCheckedBySource[weeklyDocument.id]).toBe(
+        '2026-09-22T08:23:23.603Z',
+      );
+    });
   });
 
   it('does not baseline an unreadable direct document', async () => {
