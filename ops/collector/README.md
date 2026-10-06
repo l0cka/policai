@@ -40,6 +40,22 @@ source commit/PR and installed digest in the change report.
   local/remote heads and PR identity, never reruns collection, rebases JSON,
   overwrites a branch or bypasses a refusal.
 
+- `~/.local/bin/policai-collect.sh --storage-status`: read-only JSON inventory
+  of retained worktrees and evidence. It takes the existing lock (without
+  creating it), exits 0 for a completed inventory even when `admitted` is false,
+  75 for lock contention, and 1 for an invalid cap, missing lock or unsafe/
+  unreadable inventory. It never writes a receipt or runs collection.
+
+`POLICAI_COLLECT_CAP_BYTES` is a positive decimal byte count (default
+10737418240, 10 GiB). A new run is refused when retained apparent bytes plus
+1073741824 bytes (1 GiB headroom) reach or exceed the cap. This is an admission
+check, not a hard disk quota; a running collection can grow beyond its headroom.
+Publication retries do not create another worktree and bypass admission.
+Inventory counts inode sizes, including directory and symlink sizes, without
+following symlinks. Aliased/symlinked roots, special files and mount/device/owner
+boundaries refuse inventory. No automatic cleanup is performed; evidence and
+run trees require separate manual retention review.
+
 Latest attempt: `~/.local/state/argus-jobs/policai-collect.json`.
 Retained active run: `~/.local/state/argus-jobs/policai-collection-active.json`.
 Evidence: `~/.local/state/argus-jobs/policai-collection-runs/<run-id>/`.

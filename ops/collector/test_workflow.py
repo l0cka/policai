@@ -65,6 +65,9 @@ else:
         ca.touch()
         self.env = dict(os.environ, HOME=str(self.home), PATH=str(bin_dir)+':'+os.environ['PATH'])
         self.env.pop('USE_CLAUDE_CLASSIFIER', None)
+        for name in list(self.env):
+            if name.startswith('POLICAI_COLLECT_'):
+                self.env.pop(name)
 
     def git(self, *args):
         return subprocess.check_output(['git', *args], cwd=self.repo, stderr=subprocess.DEVNULL, text=True)
@@ -248,6 +251,112 @@ else:
         self.assertNotEqual(self.run_workflow().returncode, 0)
         self.assertFalse((self.home / 'pr.json').exists())
         self.assertEqual(self.receipt()['phase'], 'ready')
+
+    def storage_fixture(self):
+        state = self.home / '.local/state/argus-jobs'
+        state.mkdir(parents=True, exist_ok=True)
+        (state / 'policai-collect.lock').touch()
+        return state
+
+    def test_storage_status_reports_without_writing(self):
+        state = self.storage_fixture()
+        before = {p.name: p.read_bytes() for p in state.iterdir()}
+        result = self.run_workflow('--storage-status')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(json.loads(result.stdout), dict(
+            apparent_bytes=0, cap_bytes=10737418240, headroom_bytes=1073741824,
+            admitted=True, automatic_cleanup=False))
+        self.assertEqual({p.name: p.read_bytes() for p in state.iterdir()}, before)
+        self.assertFalse((self.home / 'Work/Argus/src/policai-collection-runs').exists())
+
+    def test_storage_status_lock_contention(self):
+        state = self.storage_fixture()
+        with (state / 'policai-collect.lock').open('r') as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            result = self.run_workflow('--storage-status')
+        self.assertEqual(result.returncode, 75)
+        self.assertEqual(result.stdout, '')
+        self.assertFalse((state / 'policai-collect.json').exists())
+
+    def test_storage_status_bad_caps(self):
+        self.storage_fixture()
+        for cap in ['0', '-1', '1.5', '10GiB', '', ' 100']:
+            with self.subTest(cap=cap):
+                self.env['POLICAI_COLLECT_CAP_BYTES'] = cap
+                result = self.run_workflow('--storage-status')
+                self.assertEqual(result.returncode, 1, result.stderr)
+                self.assertIn('positive decimal byte count', result.stderr)
+
+    def test_storage_status_missing_lock_does_not_create_state(self):
+        result = self.run_workflow('--storage-status')
+        self.assertEqual(result.returncode, 1)
+        self.assertFalse((self.home / '.local/state').exists())
+
+    def test_storage_admission_boundary_preserves_retained_bytes(self):
+        state = self.storage_fixture()
+        roots = [self.home / 'Work/Argus/src/policai-collection-runs',
+                 state / 'policai-collection-runs']
+        for root in roots:
+            root.mkdir(parents=True)
+            (root / 'retained').write_bytes(b'evidence')
+        used = sum(root.stat().st_size + (root / 'retained').stat().st_size
+                   for root in roots)
+        for margin in [0, -1, 1]:
+            with self.subTest(margin=margin):
+                self.env['POLICAI_COLLECT_CAP_BYTES'] = str(used + 1073741824 + margin)
+                result = self.run_workflow('--storage-status')
+                self.assertEqual(result.returncode, 0, result.stderr)
+                status = json.loads(result.stdout)
+                self.assertEqual(status['apparent_bytes'], used)
+                self.assertEqual(status['admitted'], margin > 0)
+                if margin <= 0:
+                    result = self.run_workflow()
+                    self.assertEqual(result.returncode, 1, result.stderr)
+                    self.assertIn('storage admission refused', result.stderr)
+                    self.assertFalse((self.home / 'pr.json').exists())
+                    self.assertNotIn('tree', self.receipt())
+                for root in roots:
+                    self.assertEqual((root / 'retained').read_bytes(), b'evidence')
+                    self.assertEqual([p.name for p in root.iterdir()], ['retained'])
+
+    def test_storage_status_refuses_symlinked_and_aliased_roots(self):
+        state = self.storage_fixture()
+        target = self.home / 'target'
+        target.mkdir()
+        # Direct root symlink, then an aliased parent of the evidence root.
+        runs = self.home / 'Work/Argus/src/policai-collection-runs'
+        runs.parent.mkdir(parents=True)
+        runs.symlink_to(target, target_is_directory=True)
+        result = self.run_workflow('--storage-status')
+        self.assertEqual(result.returncode, 1)
+        self.assertIn('storage root alias', result.stderr)
+        runs.unlink()
+        state.rename(target / 'state')
+        state.symlink_to(target / 'state', target_is_directory=True)
+        result = self.run_workflow('--storage-status')
+        self.assertEqual(result.returncode, 1)
+        self.assertIn('storage root alias', result.stderr)
+
+    def test_storage_status_refuses_special_file(self):
+        state = self.storage_fixture()
+        root = state / 'policai-collection-runs'
+        root.mkdir()
+        os.mkfifo(root / 'pipe')
+        result = self.run_workflow('--storage-status')
+        self.assertEqual(result.returncode, 1)
+        self.assertIn('storage inventory special file', result.stderr)
+        self.assertTrue((root / 'pipe').exists())
+
+    def test_storage_status_does_not_follow_inner_symlinks(self):
+        state = self.storage_fixture()
+        root = state / 'policai-collection-runs'
+        root.mkdir()
+        link = root / 'link'
+        link.symlink_to(self.repo, target_is_directory=True)
+        result = self.run_workflow('--storage-status')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(json.loads(result.stdout)['apparent_bytes'],
+                         root.stat().st_size + link.lstat().st_size)
 
     def test_lock_contention(self):
         state = self.home / '.local/state/argus-jobs'

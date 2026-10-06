@@ -9,10 +9,11 @@ import fcntl
 import hashlib
 import json
 import os
-import re
 from pathlib import Path
 import shutil
 import signal
+import stat
+import re
 import subprocess
 import sys
 import time
@@ -267,11 +268,72 @@ def collect(run):
     return publish(run)
 
 
+def retained_bytes():
+    """Apparent inode sizes, all runs/evidence; never traverse symlinks."""
+    total = 0
+    for root in (RUNS, STATE / 'policai-collection-runs'):
+        if root.resolve() != root:
+            raise Refused('storage root alias; inventory unknown')
+        try:
+            root_info = root.lstat()
+        except FileNotFoundError:
+            continue
+        if not stat.S_ISDIR(root_info.st_mode):
+            raise Refused('storage root is not a directory')
+        stack = [root]
+        while stack:
+            if DEADLINE and time.monotonic() >= DEADLINE:
+                raise Refused('storage inventory deadline exceeded')
+            path = stack.pop()
+            info = path.lstat()
+            if info.st_dev != root_info.st_dev or info.st_uid != os.getuid():
+                raise Refused('storage inventory device/owner boundary')
+            if stat.S_ISDIR(info.st_mode):
+                if path.is_mount():
+                    raise Refused('storage inventory mount boundary')
+                stack.extend(path.iterdir())
+            elif not (stat.S_ISREG(info.st_mode) or stat.S_ISLNK(info.st_mode)):
+                raise Refused('storage inventory special file')
+            total += info.st_size
+    return total
+
+
+def storage_status():
+    value = os.environ.get('POLICAI_COLLECT_CAP_BYTES', str(10 * 1024**3))
+    if not re.fullmatch(r'[0-9]+', value) or int(value) <= 0:
+        raise Refused('storage cap must be a positive decimal byte count')
+    cap = int(value)
+    used = retained_bytes()
+    headroom = 1024**3
+    return dict(apparent_bytes=used, cap_bytes=cap, headroom_bytes=headroom,
+                admitted=used + headroom < cap, automatic_cleanup=False)
+
+
+def admission_guard():
+    status = storage_status()
+    if not status['admitted']:
+        raise Refused('storage admission refused: retained bytes plus one GiB headroom '
+                      'reach cap; all evidence retained; manual cleanup review required')
+
+
 def main():
     global DEADLINE
     os.umask(0o077)
+    if sys.argv[1:] == ['--storage-status']:
+        DEADLINE = time.monotonic() + 120
+        try:
+            # Existing lock only: status never creates or rewrites runtime files.
+            with (STATE / 'policai-collect.lock').open('r') as lock:
+                fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                print(json.dumps(storage_status(), indent=2))
+            return 0
+        except BlockingIOError:
+            return 75
+        except (OSError, ValueError, Refused) as exc:
+            print(str(exc), file=sys.stderr)
+            return 1
     if sys.argv[1:] not in ([], ['--preflight'], ['--retry-publication']):
-        print('Usage: policai-collect.sh [--preflight|--retry-publication]', file=sys.stderr)
+        print('Usage: policai-collect.sh [--preflight|--retry-publication|--storage-status]', file=sys.stderr)
         return 2
     DEADLINE = time.monotonic() + min(3500, max(1, int(os.environ.get('POLICAI_COLLECT_MAX_SECONDS', '3500'))))
     STATE.mkdir(parents=True, exist_ok=True)
@@ -308,6 +370,7 @@ def main():
                 run = previous
                 rc = publish(run)
             else:
+                admission_guard()
                 if previous and previous['phase'] not in ('published', 'no-changes'):
                     raise Refused('previous incomplete run retained; review active receipt before another collection')
                 waiting = pending()
