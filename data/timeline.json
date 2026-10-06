@@ -783,13 +783,38 @@
     "type": "policy_introduced",
     "jurisdiction": "federal",
     "relatedPolicyId": "asd-frontier-ai-models-cyber-security-2026",
-    "sourceUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/frontier-models-and-their-impact-on-cyber-security",
+    "sourceUrl": "https://www.cyber.gov.au/blog/frontier-models-and-their-impact-on-cyber-security",
+    "datePrecision": "day",
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
-        "url": "https://www.cyber.gov.au/about-us/view-all-content/news/frontier-models-and-their-impact-on-cyber-security"
+        "url": "https://www.cyber.gov.au/blog/frontier-models-and-their-impact-on-cyber-security",
+        "finalUrl": "https://www.cyber.gov.au/blog/frontier-models-and-their-impact-on-cyber-security",
+        "title": "Frontier models and their impact on cyber security",
+        "retrievedAt": "2026-10-06T23:37:17.058Z",
+        "contentType": "text/html",
+        "contentHash": "8e0357750e7de57bb00e5783e72162c39298fa834edf8c3c55a992f4f4f6c542",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-10-06T23:37:17.058Z",
+          "capturedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+          "notes": "Official ASD page captured in a browser on 7 October 2026 (AEDT) after cyber.gov.au retired the /about-us/view-all-content path; the Policai collector user agent is refused by cyber.gov.au, so plain HTTP retrieval was not available.",
+          "pageContentHash": "5ce2c0d3901424ad51b48c9c2a6b2904cc14e0e5f21344087ed4005ffb7ca046",
+          "characterCount": 8801
+        },
+        "reviewedDate": {
+          "date": "2026-04-09",
+          "precision": "day",
+          "reviewedAt": "2026-10-06T23:39:50.000Z",
+          "reviewedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+          "notes": "The current page shows only 'Last reviewed 19 Sep 2026'. ASD's follow-up news item (https://www.cyber.gov.au/news/frontier-ai-models-and-their-impact-on-cyber-security) states 'On 9 April 2026, ASD published information on the cyber security implications of increasingly capable frontier artificial intelligence (AI) models' and links back to this page as the original information."
+        }
       },
-      "notes": "Legacy timeline entry; its date and description require editorial re-checking against the source."
+      "checkedAt": "2026-10-06T23:39:50.000Z",
+      "checkedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+      "method": "manual",
+      "notes": "Verified by Daniel Alkurdi on 7 October 2026 against the ASD article at its current /blog path (the original cyber.gov.au URL under /about-us/view-all-content returns 404). The article covers Anthropic's 7 April 2026 Claude Mythos Preview announcement, faster vulnerability discovery and exploitation, and defensive remediation; ASD's follow-up news item confirms publication on 9 April 2026."
     }
   },
   {

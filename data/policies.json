@@ -254,59 +254,69 @@
         "precision": "day",
         "primary": true,
         "source": {
-          "url": "https://www.cyber.gov.au/about-us/view-all-content/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
-          "finalUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
-          "title": "New AI frontier cyber threat guidance for boards of directors | Cyber.gov.au",
-          "retrievedAt": "2026-08-07T05:11:57.458Z",
+          "url": "https://www.cyber.gov.au/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
+          "finalUrl": "https://www.cyber.gov.au/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
+          "title": "New AI frontier cyber threat guidance for boards of directors",
+          "retrievedAt": "2026-10-06T23:37:03.283Z",
           "contentType": "text/html",
-          "contentHash": "ef74328d7eb33db4174de10c39a6a0ca467818f47da0673bd16a608675736daa",
+          "contentHash": "31f68dcf967fa7d7dc76626d85b3bf6646eb5b1d56d9627c54ee836d0743550b",
           "linkedDocuments": [],
           "browserCapture": {
             "method": "browser",
-            "capturedAt": "2026-08-07T05:11:57.458Z",
-            "capturedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-08",
-            "notes": "Captured via self-hosted Firecrawl because the host refuses plain HTTP. ACSC frontier-AI guidance for boards — cyber.gov.au states First published 05 Aug 2026, AICD partnership confirmed.",
-            "pageContentHash": "81c152ac2f2d14064d1380c8386d13288b894b20aac56d2deefbda1e374c66df",
-            "characterCount": 21322
+            "capturedAt": "2026-10-06T23:37:03.283Z",
+            "capturedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+            "notes": "Official ASD page captured in a browser on 7 October 2026 (AEDT) after cyber.gov.au retired the /about-us/view-all-content path; the Policai collector user agent is refused by cyber.gov.au, so plain HTTP retrieval was not available.",
+            "pageContentHash": "eef4e9dda0e6cb9a3185309d69897aa4244b0da0edb2bfd82359d6c1ff7ce756",
+            "characterCount": 1520
           },
-          "publishedAt": "2026-08-05",
-          "publishedAtPrecision": "day"
+          "reviewedDate": {
+            "date": "2026-08-05",
+            "precision": "day",
+            "reviewedAt": "2026-10-06T23:39:50.000Z",
+            "reviewedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+            "notes": "Date retained, not re-confirmed on the current page. The 7 August 2026 capture of the original news item showed 'First published 05 Aug 2026', and Policai detected the item on 5 August 2026. After the site restructure the same news item now displays 'Published 02 Sep 2026'; this discrepancy is flagged for editorial decision."
+          }
         }
       }
     ],
     "agencies": [],
-    "sourceUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
+    "sourceUrl": "https://www.cyber.gov.au/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
     "content": "Boards of directors and senior leaders need to understand how newer frontier AI models are reshaping cyber threats. As advances in frontier AI models make it easier for cybercriminals to identify and exploit vulnerabilities, organisations face a growing threat from AI-enabled cyber attacks. To help boards respond, we have released in partnership with the Australian Institute of Company Directors (AICD), Frontier AI cyber threat considerations for boards of directors. The publication outlines frontier AI cyber threats and provides practical guidance to help organisations strengthen governance, ",
     "aiSummary": "Boards of directors and senior leaders need to understand how newer frontier AI models are reshaping cyber threats. As advances in frontier AI models make it easier for cybercriminals to identify and exploit vulnerabilities, organisations face a growing threat from AI-enabled cyber attacks. To help boards respond, we have released in partnership with the Australian Institute of Company Directors (AICD), Frontier AI cyber threat considerations for boards of directors. The publication outlines frontier AI cyber threats and provides practical guidance to help organisations strengthen governance, ",
     "tags": [],
     "createdAt": "2026-08-05T20:44:21.554Z",
-    "updatedAt": "2026-08-07T05:11:57.484Z",
-    "lastReviewedAt": "2026-08-07T05:11:57.484Z",
+    "updatedAt": "2026-10-06T23:39:50.000Z",
+    "lastReviewedAt": "2026-10-06T23:39:50.000Z",
     "verification": {
       "status": "verified",
       "source": {
-        "url": "https://www.cyber.gov.au/about-us/view-all-content/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
-        "finalUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
-        "title": "New AI frontier cyber threat guidance for boards of directors | Cyber.gov.au",
-        "retrievedAt": "2026-08-07T05:11:57.458Z",
+        "url": "https://www.cyber.gov.au/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
+        "finalUrl": "https://www.cyber.gov.au/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
+        "title": "New AI frontier cyber threat guidance for boards of directors",
+        "retrievedAt": "2026-10-06T23:37:03.283Z",
         "contentType": "text/html",
-        "contentHash": "ef74328d7eb33db4174de10c39a6a0ca467818f47da0673bd16a608675736daa",
+        "contentHash": "31f68dcf967fa7d7dc76626d85b3bf6646eb5b1d56d9627c54ee836d0743550b",
         "linkedDocuments": [],
         "browserCapture": {
           "method": "browser",
-          "capturedAt": "2026-08-07T05:11:57.458Z",
-          "capturedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-08",
-          "notes": "Captured via self-hosted Firecrawl because the host refuses plain HTTP. ACSC frontier-AI guidance for boards — cyber.gov.au states First published 05 Aug 2026, AICD partnership confirmed.",
-          "pageContentHash": "81c152ac2f2d14064d1380c8386d13288b894b20aac56d2deefbda1e374c66df",
-          "characterCount": 21322
+          "capturedAt": "2026-10-06T23:37:03.283Z",
+          "capturedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+          "notes": "Official ASD page captured in a browser on 7 October 2026 (AEDT) after cyber.gov.au retired the /about-us/view-all-content path; the Policai collector user agent is refused by cyber.gov.au, so plain HTTP retrieval was not available.",
+          "pageContentHash": "eef4e9dda0e6cb9a3185309d69897aa4244b0da0edb2bfd82359d6c1ff7ce756",
+          "characterCount": 1520
         },
-        "publishedAt": "2026-08-05",
-        "publishedAtPrecision": "day"
+        "reviewedDate": {
+          "date": "2026-08-05",
+          "precision": "day",
+          "reviewedAt": "2026-10-06T23:39:50.000Z",
+          "reviewedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+          "notes": "Date retained, not re-confirmed on the current page. The 7 August 2026 capture of the original news item showed 'First published 05 Aug 2026', and Policai detected the item on 5 August 2026. After the site restructure the same news item now displays 'Published 02 Sep 2026'; this discrepancy is flagged for editorial decision."
+        }
       },
-      "checkedAt": "2026-08-07T05:11:57.484Z",
-      "checkedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-08",
+      "checkedAt": "2026-10-06T23:39:50.000Z",
+      "checkedBy": "Daniel Alkurdi (Hermes-assisted web review)",
       "method": "manual",
-      "notes": "ACSC frontier-AI guidance for boards — cyber.gov.au states First published 05 Aug 2026, AICD partnership confirmed."
+      "notes": "Re-verified by Daniel Alkurdi on 7 October 2026. The original cyber.gov.au URL under /about-us/view-all-content returns 404 after the site restructure; the same ASD news item (same title and text, AICD partnership) is now at its current /news path. The publication it announces is at https://www.cyber.gov.au/publication/frontier-ai-cyber-threat-considerations-for-boards-of-directors. The current page displays 'Published 02 Sep 2026'; the 5 August 2026 date is retained from the original capture pending editorial decision."
     }
   },
   {
@@ -902,27 +912,27 @@
         "precision": "day",
         "primary": true,
         "source": {
-          "url": "https://www.cyber.gov.au/about-us/view-all-content/news/new-joint-guidance-provides-mitigations-for-cautious-adoption-of-agentic-ai",
-          "finalUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/new-joint-guidance-provides-mitigations-for-cautious-adoption-of-agentic-ai",
-          "title": "New joint guidance provides mitigations for careful adoption of agentic AI services",
-          "retrievedAt": "2026-07-20T10:05:51.978Z",
+          "url": "https://www.cyber.gov.au/publication/careful-adoption-of-agentic-ai-services",
+          "finalUrl": "https://www.cyber.gov.au/publication/careful-adoption-of-agentic-ai-services",
+          "title": "Careful adoption of agentic AI services",
+          "retrievedAt": "2026-10-06T23:37:10.143Z",
           "contentType": "text/html",
-          "contentHash": "a171019164b913d952ef542ce78850548bf29655333c5facf7ccbcd01f6e6d9d",
+          "contentHash": "2aba9ff8b3843a75ba8115fc53a06e363aeca814e0e97d3ede4bd4b4735d666d",
           "linkedDocuments": [],
           "browserCapture": {
             "method": "browser",
-            "capturedAt": "2026-07-20T10:05:51.978Z",
-            "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
-            "notes": "Fresh official-source browser verification performed on 20 July 2026 immediately before recording the user approval.",
-            "pageContentHash": "020e3085cfc9b77306f5364fb0c1098a6938d93d8979ec08c627e135761b1e78",
-            "characterCount": 217
+            "capturedAt": "2026-10-06T23:37:10.143Z",
+            "capturedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+            "notes": "Official ASD page captured in a browser on 7 October 2026 (AEDT) after cyber.gov.au retired the /about-us/view-all-content path; the Policai collector user agent is refused by cyber.gov.au, so plain HTTP retrieval was not available.",
+            "pageContentHash": "471e95b932f3f98bfe2a900a24a655709909fd8724bb11a8d6dacaba51a70538",
+            "characterCount": 60836
           },
           "reviewedDate": {
             "date": "2026-05-01",
             "precision": "day",
-            "reviewedAt": "2026-07-20T10:05:51.989Z",
-            "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
-            "notes": "Guidance publication date verified on the official ASD and ACSC source."
+            "reviewedAt": "2026-10-06T23:39:50.000Z",
+            "reviewedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+            "notes": "The publication page shows 'Published 01 May 2026'; the ASD news item announcing it shows the same date."
           }
         }
       }
@@ -931,7 +941,7 @@
       "Australian Signals Directorate",
       "Australian Cyber Security Centre"
     ],
-    "sourceUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/new-joint-guidance-provides-mitigations-for-cautious-adoption-of-agentic-ai",
+    "sourceUrl": "https://www.cyber.gov.au/publication/careful-adoption-of-agentic-ai-services",
     "content": "Published on 1 May 2026 with international cyber-security partners, the guidance addresses the autonomy, interconnected architecture and large-language-model dependencies of agentic AI. Organisations are advised to introduce agentic systems incrementally and begin with low-risk tasks; enforce least privilege and strong identity management; monitor actions and system state continuously; retain effective human oversight; constrain tools, data and network access; and align deployments with existing cyber-security and risk-management frameworks. The guidance is directed to government, critical infrastructure and large organisations.",
     "aiSummary": "Joint ASD-led cyber-security guidance for organisations designing, deploying or operating agentic AI systems.",
     "tags": [
@@ -942,38 +952,38 @@
       "human oversight"
     ],
     "createdAt": "2026-07-20T09:54:59.076Z",
-    "updatedAt": "2026-07-20T10:05:51.989Z",
-    "lastReviewedAt": "2026-07-20T10:05:51.989Z",
+    "updatedAt": "2026-10-06T23:39:50.000Z",
+    "lastReviewedAt": "2026-10-06T23:39:50.000Z",
     "verification": {
       "status": "verified",
       "source": {
-        "url": "https://www.cyber.gov.au/about-us/view-all-content/news/new-joint-guidance-provides-mitigations-for-cautious-adoption-of-agentic-ai",
-        "finalUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/new-joint-guidance-provides-mitigations-for-cautious-adoption-of-agentic-ai",
-        "title": "New joint guidance provides mitigations for careful adoption of agentic AI services",
-        "retrievedAt": "2026-07-20T10:05:51.978Z",
+        "url": "https://www.cyber.gov.au/publication/careful-adoption-of-agentic-ai-services",
+        "finalUrl": "https://www.cyber.gov.au/publication/careful-adoption-of-agentic-ai-services",
+        "title": "Careful adoption of agentic AI services",
+        "retrievedAt": "2026-10-06T23:37:10.143Z",
         "contentType": "text/html",
-        "contentHash": "a171019164b913d952ef542ce78850548bf29655333c5facf7ccbcd01f6e6d9d",
+        "contentHash": "2aba9ff8b3843a75ba8115fc53a06e363aeca814e0e97d3ede4bd4b4735d666d",
         "linkedDocuments": [],
         "browserCapture": {
           "method": "browser",
-          "capturedAt": "2026-07-20T10:05:51.978Z",
-          "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
-          "notes": "Fresh official-source browser verification performed on 20 July 2026 immediately before recording the user approval.",
-          "pageContentHash": "020e3085cfc9b77306f5364fb0c1098a6938d93d8979ec08c627e135761b1e78",
-          "characterCount": 217
+          "capturedAt": "2026-10-06T23:37:10.143Z",
+          "capturedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+          "notes": "Official ASD page captured in a browser on 7 October 2026 (AEDT) after cyber.gov.au retired the /about-us/view-all-content path; the Policai collector user agent is refused by cyber.gov.au, so plain HTTP retrieval was not available.",
+          "pageContentHash": "471e95b932f3f98bfe2a900a24a655709909fd8724bb11a8d6dacaba51a70538",
+          "characterCount": 60836
         },
         "reviewedDate": {
           "date": "2026-05-01",
           "precision": "day",
-          "reviewedAt": "2026-07-20T10:05:51.989Z",
-          "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
-          "notes": "Guidance publication date verified on the official ASD and ACSC source."
+          "reviewedAt": "2026-10-06T23:39:50.000Z",
+          "reviewedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+          "notes": "The publication page shows 'Published 01 May 2026'; the ASD news item announcing it shows the same date."
         }
       },
-      "checkedAt": "2026-07-20T10:05:51.989Z",
-      "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
+      "checkedAt": "2026-10-06T23:39:50.000Z",
+      "checkedBy": "Daniel Alkurdi (Hermes-assisted web review)",
       "method": "manual",
-      "notes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source."
+      "notes": "Re-verified by Daniel Alkurdi on 7 October 2026. The original cyber.gov.au URL under /about-us/view-all-content returns 404 after the site restructure; the record now cites the publication itself. The announcing news item is at https://www.cyber.gov.au/news/new-joint-guidance-provides-mitigations-for-careful-adoptions-of-agentic-ai-services."
     }
   },
   {
