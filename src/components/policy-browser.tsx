@@ -5,6 +5,7 @@ import {
   useEffect,
   useMemo,
   useRef,
+  type ReactNode,
 } from 'react';
 import Link from 'next/link';
 import { ArrowUpRight, ChevronDown, List, Search, Table2 } from 'lucide-react';
@@ -30,6 +31,8 @@ interface PolicyBrowserProps {
   policies: Policy[];
   /** Upcoming recorded dates from public records, soonest first. */
   upcomingDates?: UpcomingPolicyDate[];
+  /** Server-rendered upcoming-deadlines rail, placed in the overview column. */
+  deadlinesRail?: ReactNode;
   /** The Sydney calendar day (YYYY-MM-DD) countdowns are measured from. */
   today?: string;
   developments: Development[];
@@ -121,6 +124,7 @@ function ViewToggle({
 export function PolicyBrowser({
   policies,
   upcomingDates = [],
+  deadlinesRail,
   today,
   developments,
   developmentCount,
@@ -423,6 +427,7 @@ export function PolicyBrowser({
               ))}
             </div>
           </section>
+          {deadlinesRail}
           {upcomingDates.length > 0 && today ? (
             <section className="border-t border-border pt-6">
               <h2 className="text-sm font-semibold">Coming up</h2>

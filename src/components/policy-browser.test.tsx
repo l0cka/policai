@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 
 beforeEach(() => window.history.replaceState({}, '', '/'));
 import { PolicyBrowser } from './policy-browser';
+import { UpcomingDeadlinesRail } from './upcoming-deadlines-rail';
 import type { Policy } from '@/types';
 
 const policies: Policy[] = ['federal', 'nsw'].map((jurisdiction, index) => ({
@@ -231,5 +232,18 @@ describe('Editorial register', () => {
   it('omits the upcoming panel when nothing is scheduled', () => {
     render(<PolicyBrowser {...props} today="2026-09-23" upcomingDates={[]} />);
     expect(screen.queryByRole('heading', { name: 'Coming up' })).not.toBeInTheDocument();
+  });
+
+  it('places the server-rendered deadlines rail in the register overview', () => {
+    render(
+      <PolicyBrowser
+        {...props}
+        today="2026-09-23"
+        deadlinesRail={<UpcomingDeadlinesRail items={[]} today="2026-09-23" />}
+      />,
+    );
+    const overview = screen.getByRole('complementary', { name: 'Register overview' });
+    expect(within(overview).getByRole('heading', { name: 'Upcoming deadlines' })).toBeInTheDocument();
+    expect(overview).toHaveTextContent('No upcoming deadlines recorded');
   });
 });

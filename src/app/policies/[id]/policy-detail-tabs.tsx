@@ -19,6 +19,7 @@ import {
   getPolicyDateTypeName,
   getPolicyTypeName,
   getPrimaryPolicyDate,
+  isDeadlineDateType,
   type Policy,
   type PublicCourtRequirement,
 } from '@/types';
@@ -26,6 +27,7 @@ import { jurisdictionAccent } from '@/lib/jurisdiction-accent';
 import { parseSourceUrl } from '@/lib/source-url';
 import { EmptyState } from '@/components/ui/empty-state';
 import { formatPolicyDate } from '@/lib/format-policy-date';
+import { precisionDateTime } from '@/lib/this-week';
 import { CourtRequirementsList } from "@/components/court-requirements-list";
 import { StatusPill } from "@/components/policy-indicators";
 import { cn } from '@/lib/utils';
@@ -92,6 +94,9 @@ export function PolicyDetailTabs({
   const [activeTab, setActiveTab] = useState<TabId>('overview');
   const requirements = useMemo(() => getRequirements(policy), [policy]);
   const primaryDate = getPrimaryPolicyDate(policy);
+  // Deadlines fall due on the instrument; they are not changes to it.
+  const instrumentDates = policy.dates.filter((date) => !isDeadlineDateType(date.type));
+  const deadlineDates = policy.dates.filter((date) => isDeadlineDateType(date.type));
   const sourceHost = policy.sourceUrl
     ? parseSourceUrl(policy.sourceUrl).hostname.replace(/^www\./, '')
     : null;
@@ -230,7 +235,7 @@ export function PolicyDetailTabs({
                 <div className="min-w-0 border-l border-border pl-5">
                   <h2 className="page-eyebrow">Policy changes</h2>
                   <ol className="mt-4 space-y-5">
-                    {policy.dates.slice(0, 4).map((date, index) => (
+                    {instrumentDates.slice(0, 4).map((date, index) => (
                       <li key={`${date.type}-${String(date.date)}`} className="relative pl-5">
                         <span className={cn('absolute left-0 top-1.5 h-2.5 w-2.5 rounded-full', index === 0 ? 'bg-primary ring-4 ring-primary/15' : 'bg-input')} />
                         <p className="text-xs font-medium text-muted-foreground tabular">{formatPolicyDate(date, { short: true })}</p>
@@ -283,7 +288,7 @@ export function PolicyDetailTabs({
               <div className="grid grid-cols-[7rem_1fr] gap-3"><dt className="text-muted-foreground">Agency</dt><dd>{policy.agencies.join(', ') || 'Not specified'}</dd></div>
             </dl>
             <dl className="mt-5 space-y-3 border-t border-border pt-4 text-sm">
-              {policy.dates.map((date) => (
+              {instrumentDates.map((date) => (
                 <div key={`${date.type}-${String(date.date)}`} className="grid grid-cols-[7rem_1fr] gap-3">
                   <dt className="text-muted-foreground">{getPolicyDateTypeName(date.type)}</dt>
                   <dd className="tabular">{formatPolicyDate(date, { short: true })}</dd>
@@ -291,6 +296,26 @@ export function PolicyDetailTabs({
               ))}
               <div className="grid grid-cols-[7rem_1fr] gap-3"><dt className="text-muted-foreground">Key date</dt><dd className="tabular">{formatPolicyDate(primaryDate, { short: true })}</dd></div>
             </dl>
+            {deadlineDates.length > 0 ? (
+              <div className="mt-5 border-t border-border pt-4">
+                <h3 className="text-xs font-semibold">Deadlines</h3>
+                <dl className="mt-3 space-y-3 text-sm">
+                  {deadlineDates.map((date) => (
+                    <div key={`${date.type}-${String(date.date)}`} className="grid grid-cols-[7rem_1fr] gap-3">
+                      <dt className="text-muted-foreground">{getPolicyDateTypeName(date.type)}</dt>
+                      <dd className="tabular">
+                        <time dateTime={precisionDateTime(date.date, date.precision)}>
+                          {formatPolicyDate(date, { short: true })}
+                        </time>
+                        {date.precision !== 'day' ? (
+                          <span className="block text-xs text-muted-foreground">Exact day not recorded</span>
+                        ) : null}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            ) : null}
           </section>
 
           <section className="border border-border bg-card/40 p-5">

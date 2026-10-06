@@ -5,14 +5,16 @@
 // uses) rather than the wall clock, so the rendered page is deterministic for
 // a given collection state.
 
-import type {
-  DatePrecision,
-  Development,
-  Policy,
-  PolicyDateType,
-  PolicyStatus,
-  PolicyType,
-  Jurisdiction,
+import {
+  DEADLINE_DATE_TYPES,
+  isDeadlineDateType,
+  type DatePrecision,
+  type Development,
+  type Policy,
+  type PolicyDateType,
+  type PolicyStatus,
+  type PolicyType,
+  type Jurisdiction,
 } from "@/types";
 
 export const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
@@ -109,7 +111,7 @@ export function weeklyEvidenceLabel(development: Development): string {
 const UPCOMING_DATE_TYPES: readonly PolicyDateType[] = [
   "effective",
   "commenced",
-  "consultation_closed",
+  ...DEADLINE_DATE_TYPES,
 ];
 
 const UPCOMING_POLICY_STATUSES: readonly PolicyStatus[] = ["proposed", "active", "amended"];
@@ -135,10 +137,11 @@ function calendarDay(value: Date | string): string | null {
 }
 
 /**
- * Upcoming commencement or consultation-closure dates carried in the register
- * records themselves, on or after the reference day in Sydney. The page passes
- * today's window, independently of the historical collection window. A current
- * month/year stays visible with its original precision, never an invented day.
+ * Upcoming commencement, consultation-closure and other deadline dates carried
+ * in the register records themselves, on or after the reference day in Sydney.
+ * The page passes today's window, independently of the historical collection
+ * window. A current month/year stays visible with its original precision,
+ * never an invented day.
  * Call with public getPolicies() output; this helper cannot resolve withholding.
  */
 export function selectUpcomingPolicyDates(
@@ -176,6 +179,36 @@ export function selectUpcomingPolicyDates(
     }
   }
   return upcoming.sort((a, b) => a.date.localeCompare(b.date) || a.policyId.localeCompare(b.policyId));
+}
+
+/**
+ * Splits upcoming dates into deadlines (DEADLINE_DATE_TYPES) and the rest
+ * (commencements), keeping the soonest-first order of each. The homepage shows
+ * the two lists separately so one date never appears twice.
+ */
+export function splitUpcomingDeadlines(items: readonly UpcomingPolicyDate[]): {
+  deadlines: UpcomingPolicyDate[];
+  other: UpcomingPolicyDate[];
+} {
+  const deadlines: UpcomingPolicyDate[] = [];
+  const other: UpcomingPolicyDate[] = [];
+  for (const item of items) {
+    (isDeadlineDateType(item.dateType) ? deadlines : other).push(item);
+  }
+  return { deadlines, other };
+}
+
+/**
+ * The machine-readable value for a <time> element at the date's real
+ * precision: YYYY, YYYY-MM or YYYY-MM-DD. A month or year date never carries
+ * the anchor day it is stored with.
+ */
+export function precisionDateTime(
+  date: Date | string,
+  precision: DatePrecision,
+): string {
+  const day = date instanceof Date ? date.toISOString().slice(0, 10) : date.slice(0, 10);
+  return day.slice(0, precision === 'year' ? 4 : precision === 'month' ? 7 : 10);
 }
 
 /**

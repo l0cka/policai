@@ -3,8 +3,10 @@
 import { describe, expect, it } from 'vitest';
 import type { Development, Policy } from '@/types';
 import {
+  precisionDateTime,
   selectRecentVerifiedBefore,
   selectUpcomingPolicyDates,
+  splitUpcomingDeadlines,
   upcomingDateCountdown,
   selectWeeklyDevelopments,
   weekWindowEndingAt,
@@ -280,6 +282,90 @@ describe('selectUpcomingPolicyDates', () => {
     const selected = selectUpcomingPolicyDates(items, upcomingWindow);
     expect(selected.map((item) => item.policyId)).toEqual(['sooner', 'later']);
     expect(selected[0].date).toBe('2026-11-05');
+  });
+
+  it('includes compliance and scheduled-review deadlines', () => {
+    const items = [
+      policy({
+        id: 'compliance',
+        dates: [{ type: 'compliance_due', date: '2027-07-01', precision: 'month' }],
+      }),
+      policy({
+        id: 'review',
+        dates: [{ type: 'scheduled_review', date: '2028-01-01', precision: 'year' }],
+      }),
+    ];
+    expect(
+      selectUpcomingPolicyDates(items, upcomingWindow).map((item) => item.dateType),
+    ).toEqual(['compliance_due', 'scheduled_review']);
+  });
+});
+
+describe('splitUpcomingDeadlines', () => {
+  const upcomingWindow = weekWindowEndingAt(ANCHOR)!;
+
+  it('keeps future deadlines from public records only, soonest first', () => {
+    const items = [
+      policy({
+        id: 'review-later',
+        dates: [{ type: 'scheduled_review', date: '2028-01-01', precision: 'year' }],
+      }),
+      policy({
+        id: 'compliance-sooner',
+        dates: [
+          { type: 'effective', date: '2026-10-20', precision: 'day', primary: true },
+          { type: 'compliance_due', date: '2027-07-01', precision: 'month' },
+        ],
+      }),
+      policy({
+        id: 'submissions-soonest',
+        status: 'proposed',
+        dates: [{ type: 'consultation_closed', date: '2026-11-14', precision: 'day' }],
+      }),
+      policy({
+        id: 'past-deadline',
+        dates: [{ type: 'compliance_due', date: '2026-07-01', precision: 'day' }],
+      }),
+      policy({
+        id: 'unverified',
+        dates: [{ type: 'compliance_due', date: '2027-01-01', precision: 'day' }],
+        verification: { status: 'needs_review', source: { url: 'https://www.example.gov.au/' } },
+      }),
+      policy({
+        id: 'trashed',
+        status: 'trashed',
+        dates: [{ type: 'compliance_due', date: '2027-01-01', precision: 'day' }],
+      }),
+      policy({
+        id: 'closed-consultation',
+        status: 'closed',
+        dates: [{ type: 'consultation_closed', date: '2027-01-01', precision: 'day' }],
+      }),
+    ];
+    const { deadlines, other } = splitUpcomingDeadlines(
+      selectUpcomingPolicyDates(items, upcomingWindow),
+    );
+    expect(deadlines.map((item) => `${item.policyId}:${item.dateType}`)).toEqual([
+      'submissions-soonest:consultation_closed',
+      'compliance-sooner:compliance_due',
+      'review-later:scheduled_review',
+    ]);
+    expect(other.map((item) => `${item.policyId}:${item.dateType}`)).toEqual([
+      'compliance-sooner:effective',
+    ]);
+  });
+
+  it('returns empty lists when nothing is upcoming', () => {
+    expect(splitUpcomingDeadlines([])).toEqual({ deadlines: [], other: [] });
+  });
+});
+
+describe('precisionDateTime', () => {
+  it('drops the stored anchor day for month and year precision', () => {
+    expect(precisionDateTime('2027-07-01', 'month')).toBe('2027-07');
+    expect(precisionDateTime('2028-01-01', 'year')).toBe('2028');
+    expect(precisionDateTime('2026-11-14', 'day')).toBe('2026-11-14');
+    expect(precisionDateTime(new Date('2026-11-14T00:00:00.000Z'), 'day')).toBe('2026-11-14');
   });
 });
 
