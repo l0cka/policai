@@ -255,7 +255,8 @@ at `~/.local/bin/policai-collect.sh`. See the
 [wrapper runbook](../ops/collector/README.md) for installation, tests and recovery.
 Each run holds the existing concurrency lock and:
 
-1. Refuses source-checkout dirt, incomplete prior runs, or an open collection PR.
+1. Refuses source-checkout dirt, incomplete prior runs, insufficient storage
+   headroom, or an open collection PR (except the opt-in state-only proposal below).
 2. Creates a unique branch/worktree from fetched main, installs dependencies,
    and runs the full `npm run collect` with a bounded deadline.
 3. Preserves before/after outputs and checks `data/policies.json` even after a
@@ -267,8 +268,29 @@ Each run holds the existing concurrency lock and:
 6. Returns failed source health as a failure even if structurally valid retry
    and coverage data reached a PR. Other failures retain local evidence.
 
-The next scheduled collection is deliberately blocked until a pending collection
+By default, the next scheduled collection is blocked until a pending collection
 PR is reviewed/merged/closed; it never overwrites a reviewer's pending data.
+The opt-in **policy proposal** `POLICAI_COLLECT_SUPERSEDE_STATE_ONLY=1` defaults
+to `0` and requires maintainer approval to enable (host environment change).
+It permits a fresh-main run only when every pending collection PR is an
+unreviewed draft, changes solely `data/watch-state.json` and/or
+`public/data/meta.json`, has unchanged register hashes/blobs, and matches a
+retained collector receipt and exact branch head. The receipt base must be an
+ancestor of freshly fetched main; the author-string check is consistency only,
+not independent provenance. Ready/reviewed, editorial/feed or unknown-provenance
+PRs retain the ordinary review wait.
+After output/structural validation, the wrapper pushes and creates the replacement
+draft, verifies its read-back and superseded URL notices, then comments on and
+closes the old state-only PRs. Branches and all old evidence remain intact.
+No-changes runs (including failures without output) leave the old PRs open.
+A close failure is nonzero and leaves the verified replacement visible alongside
+any old PRs not yet closed. Its `superseding` receipt blocks new collection;
+`--retry-publication` re-verifies the existing replacement without recollecting.
+Main/head/review changes require manual reconciliation. With the toggle on and
+no merges, changed output can cause daily PR churn without advancing main's state.
+See the [wrapper policy and recovery details](../ops/collector/README.md#opt-in-state-only-supersession-policy-proposal).
+Installation and enabling the toggle require separate host approval; this proposal
+is not an instruction to modify the installed script or act on any current PR.
 The existing main-following deployment timer can consume merged data through
 ISR without a rebuild. A draft branch push does not activate it, and a PR alone
 is not evidence of current public freshness. The existing scheduled failure
