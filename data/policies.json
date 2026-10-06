@@ -7021,5 +7021,127 @@
         }
       }
     ]
+  },
+  {
+    "id": "pmc-ai-infrastructure-consultation-2026",
+    "title": "Getting it right: Building AI infrastructure that works for Australia",
+    "description": "Office of AI (PM&C) public consultation on proposed national requirements for large data centres and AI training, informing Australia's AI standards. Submissions close 5 pm AEDT on 9 October 2026.",
+    "jurisdiction": "federal",
+    "type": "standard",
+    "status": "proposed",
+    "effectiveDate": "2026-09-18",
+    "dates": [
+      {
+        "type": "consultation_opened",
+        "date": "2026-09-18",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://www.pmc.gov.au/domestic-policy/office-ai/getting-it-right-building-ai-infrastructure-works-australia",
+          "finalUrl": "https://www.pmc.gov.au/domestic-policy/office-ai/getting-it-right-building-ai-infrastructure-works-australia",
+          "title": "Getting it right: Building AI infrastructure that works for Australia | PM&C",
+          "publisher": "Department of the Prime Minister and Cabinet",
+          "retrievedAt": "2026-10-06T23:06:36.117Z",
+          "contentType": "text/html",
+          "contentHash": "4772b2a6ba2d2cd68f8e14ee19163cd9c88435d654be1a578adedf87f334b648",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-06T23:06:36.117Z",
+            "capturedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+            "notes": "Rendered-page capture of the official PM&C consultation page through the Argus self-hosted Firecrawl renderer on 7 October 2026 AEDT. PM&C's bot protection blocked both the hardened retriever and the controlled Chrome session, so the rendered page text is the fingerprinted evidence boundary.",
+            "pageContentHash": "96ae3e2386fcd3725adb9065809771d4cca11c443ab3ee7fe94b83df2cf2aa4a",
+            "characterCount": 7098
+          },
+          "reviewedDate": {
+            "date": "2026-09-18",
+            "precision": "day",
+            "reviewedAt": "2026-10-06T23:07:28.376Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The official consultation page states: \"Opens: 6 am AEST (Australian Eastern Standard Time) Friday 18 September 2026.\""
+          }
+        }
+      },
+      {
+        "type": "consultation_closed",
+        "date": "2026-10-09",
+        "precision": "day",
+        "source": {
+          "url": "https://www.pmc.gov.au/domestic-policy/office-ai/getting-it-right-building-ai-infrastructure-works-australia",
+          "finalUrl": "https://www.pmc.gov.au/domestic-policy/office-ai/getting-it-right-building-ai-infrastructure-works-australia",
+          "title": "Getting it right: Building AI infrastructure that works for Australia | PM&C",
+          "publisher": "Department of the Prime Minister and Cabinet",
+          "retrievedAt": "2026-10-06T23:06:36.117Z",
+          "contentType": "text/html",
+          "contentHash": "4772b2a6ba2d2cd68f8e14ee19163cd9c88435d654be1a578adedf87f334b648",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-06T23:06:36.117Z",
+            "capturedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+            "notes": "Rendered-page capture of the official PM&C consultation page through the Argus self-hosted Firecrawl renderer on 7 October 2026 AEDT. PM&C's bot protection blocked both the hardened retriever and the controlled Chrome session, so the rendered page text is the fingerprinted evidence boundary.",
+            "pageContentHash": "96ae3e2386fcd3725adb9065809771d4cca11c443ab3ee7fe94b83df2cf2aa4a",
+            "characterCount": 7098
+          },
+          "reviewedDate": {
+            "date": "2026-10-09",
+            "precision": "day",
+            "reviewedAt": "2026-10-06T23:07:28.376Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The official consultation page states: \"Closes: 5 pm AEDT (Australian Eastern Daylight Time) Friday 9 October 2026.\""
+          }
+        }
+      }
+    ],
+    "agencies": [
+      "Department of the Prime Minister and Cabinet",
+      "Office of AI"
+    ],
+    "sourceUrl": "https://www.pmc.gov.au/domestic-policy/office-ai/getting-it-right-building-ai-infrastructure-works-australia",
+    "content": "The Office of AI in the Department of the Prime Minister and Cabinet is consulting on how Australia should manage the growth of large data centres and AI training. The consultation asks about requirements for large data centres, including their energy, water and land use, transparency and reporting, and community impacts, and about the conditions that should apply to AI training in Australia, including safety and security safeguards, contributions to Australian research and skills, and barriers to investment. Copyright is out of scope; the Attorney-General is consulting on it separately. Responses will inform Australia's AI standards, which the Government announced on 15 July 2026 and plans to develop with the states and territories and then legislate. The consultation opened at 6 am AEST on Friday 18 September 2026 and closes at 5 pm AEDT on Friday 9 October 2026.",
+    "aiSummary": "Open federal consultation on mandatory requirements for large AI data centres and AI training, informing the planned Australian AI standards; closes 9 October 2026.",
+    "tags": [
+      "consultation",
+      "AI standards",
+      "data centres",
+      "AI infrastructure",
+      "AI training",
+      "Office of AI"
+    ],
+    "createdAt": "2026-10-06T23:07:28.376Z",
+    "updatedAt": "2026-10-06T23:07:28.376Z",
+    "lastReviewedAt": "2026-10-06T23:07:28.376Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.pmc.gov.au/domestic-policy/office-ai/getting-it-right-building-ai-infrastructure-works-australia",
+        "finalUrl": "https://www.pmc.gov.au/domestic-policy/office-ai/getting-it-right-building-ai-infrastructure-works-australia",
+        "title": "Getting it right: Building AI infrastructure that works for Australia | PM&C",
+        "publisher": "Department of the Prime Minister and Cabinet",
+        "retrievedAt": "2026-10-06T23:06:36.117Z",
+        "contentType": "text/html",
+        "contentHash": "4772b2a6ba2d2cd68f8e14ee19163cd9c88435d654be1a578adedf87f334b648",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-10-06T23:06:36.117Z",
+          "capturedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+          "notes": "Rendered-page capture of the official PM&C consultation page through the Argus self-hosted Firecrawl renderer on 7 October 2026 AEDT. PM&C's bot protection blocked both the hardened retriever and the controlled Chrome session, so the rendered page text is the fingerprinted evidence boundary.",
+          "pageContentHash": "96ae3e2386fcd3725adb9065809771d4cca11c443ab3ee7fe94b83df2cf2aa4a",
+          "characterCount": 7098
+        },
+        "reviewedDate": {
+          "date": "2026-09-18",
+          "precision": "day",
+          "reviewedAt": "2026-10-06T23:07:28.376Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The official consultation page states: \"Opens: 6 am AEST (Australian Eastern Standard Time) Friday 18 September 2026.\""
+        }
+      },
+      "checkedAt": "2026-10-06T23:07:28.376Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi for addition to the register on 7 October 2026 after review of the official PM&C consultation page, which states the opening and closing times; the PM&C news item of 17 September 2026 states the same period."
+    }
   }
 ]

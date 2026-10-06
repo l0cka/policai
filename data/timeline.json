@@ -2470,5 +2470,48 @@
       "method": "manual",
       "notes": "The information sheet itself is undated; the Courts Administration Authority news item publishing it, together with the Generative AI Guidelines adopted from 1 January 2026, is dated 19 January 2026."
     }
+  },
+  {
+    "id": "tl-2026-09-18-pmc-ai-infrastructure-consultation-opens",
+    "date": "2026-09-18",
+    "datePrecision": "day",
+    "title": "Office of AI opens consultation on AI infrastructure and AI training",
+    "description": "PM&C's Office of AI opens public consultation on requirements for large data centres and AI training to inform Australia's AI standards. Submissions close 5 pm AEDT on 9 October 2026.",
+    "type": "announcement",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "pmc-ai-infrastructure-consultation-2026",
+    "sourceUrl": "https://www.pmc.gov.au/domestic-policy/office-ai/getting-it-right-building-ai-infrastructure-works-australia",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.pmc.gov.au/domestic-policy/office-ai/getting-it-right-building-ai-infrastructure-works-australia",
+        "finalUrl": "https://www.pmc.gov.au/domestic-policy/office-ai/getting-it-right-building-ai-infrastructure-works-australia",
+        "title": "Getting it right: Building AI infrastructure that works for Australia | PM&C",
+        "publisher": "Department of the Prime Minister and Cabinet",
+        "retrievedAt": "2026-10-06T23:06:36.117Z",
+        "contentType": "text/html",
+        "contentHash": "4772b2a6ba2d2cd68f8e14ee19163cd9c88435d654be1a578adedf87f334b648",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-10-06T23:06:36.117Z",
+          "capturedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+          "notes": "Rendered-page capture of the official PM&C consultation page through the Argus self-hosted Firecrawl renderer on 7 October 2026 AEDT. PM&C's bot protection blocked both the hardened retriever and the controlled Chrome session, so the rendered page text is the fingerprinted evidence boundary.",
+          "pageContentHash": "96ae3e2386fcd3725adb9065809771d4cca11c443ab3ee7fe94b83df2cf2aa4a",
+          "characterCount": 7098
+        },
+        "reviewedDate": {
+          "date": "2026-09-18",
+          "precision": "day",
+          "reviewedAt": "2026-10-06T23:07:28.376Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The official consultation page states: \"Opens: 6 am AEST (Australian Eastern Standard Time) Friday 18 September 2026.\""
+        }
+      },
+      "checkedAt": "2026-10-06T23:07:28.376Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi on 7 October 2026; opening time verified on the official PM&C consultation page."
+    }
   }
 ]
