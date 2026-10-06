@@ -141,7 +141,11 @@ function unwrapSearchRedirect(url: URL): string {
   const target = targets[0];
   // URLSearchParams decodes once. Do not repair double encoding, relative
   // targets, control characters or backslashes that URL() would normalise.
-  if (!/^https:\/\//i.test(target) || /[\s\\\uFFFD]/u.test(target)) return original;
+  if (
+    !/^https:\/\/[^/]/i.test(target) ||
+    /[\s\\\uFFFD]/u.test(target) ||
+    Array.from(target).some((character) => character.charCodeAt(0) <= 0x1f)
+  ) return original;
   try {
     decodeURI(target); // Reject malformed escapes (URL() otherwise accepts them).
     // *.gov.au (including same registrable-host subdomains) and the explicit
