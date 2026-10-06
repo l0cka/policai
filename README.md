@@ -16,12 +16,15 @@ Policai is an Australian AI policy tracker. It maintains a curated register of A
 Product surface:
 
 - searchable policy register with status lifecycle (active, superseded, closed, …)
+- weekly view of verified developments and upcoming deadlines
 - developments feed of newly detected policy activity, with provenance and confidence labels
 - court AI guidance view
-- agencies directory
-- interactive Australia map
-- timeline, network, and DTA framework visualisations
-- MDX-backed blog
+- timeline and network visualisations
+- methodology and source-status pages covering verification and collection health
+
+`/agencies` is a temporary redirect to the APS AI tracker at
+[apsaitracker.app](https://apsaitracker.app/), with its owner's permission. `/map`,
+`/framework` and `/blog` are retired and return 404.
 
 ## How it stays current
 
