@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { isAllowedSourceHost } from '@/lib/source-url';
-import { WATCH_SOURCES } from './sources';
+import { WATCH_SOURCES, getAutomaticSources, getManualSources } from './sources';
 
 const STATE_LEGISLATION_SOURCES: Record<string, string> = {
   'vic-legislation-whats-new': 'vic',
@@ -34,5 +34,18 @@ describe('WATCH_SOURCES', () => {
       expect(source?.enabled).toBe(true);
       expect(new URL(source!.url).hostname).toMatch(/^(www\.)?legislation\./);
     }
+  });
+
+  it('tracks cyber.gov.au by hand and never fetches it automatically', () => {
+    const cyberSources = WATCH_SOURCES.filter(
+      (source) => new URL(source.url).hostname === 'www.cyber.gov.au',
+    );
+    expect(cyberSources.map((source) => source.id)).toEqual(['cyber-news']);
+    const [source] = cyberSources;
+    expect(source.url).toBe('https://www.cyber.gov.au/news');
+    expect(source.automation).toBe('manual');
+    expect(source.fetchStrategy).toBeUndefined();
+    expect(getManualSources().map((s) => s.id)).toContain('cyber-news');
+    expect(getAutomaticSources().map((s) => s.id)).not.toContain('cyber-news');
   });
 });
