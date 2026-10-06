@@ -110,6 +110,61 @@ describe('validatePolicies', () => {
     );
   });
 
+  it('accepts deadline date types as secondary dates at any precision', () => {
+    const policy = buildPolicy();
+    policy.dates = [
+      ...policy.dates,
+      { type: 'consultation_closed', date: '2026-11-14', precision: 'day' },
+      { type: 'compliance_due', date: '2027-07-01', precision: 'month' },
+      { type: 'scheduled_review', date: '2028-01-01', precision: 'year' },
+    ];
+
+    expect(validatePolicies([policy]).errors).toEqual([]);
+  });
+
+  it('rejects an unknown date type', () => {
+    const policy = buildPolicy();
+    policy.dates = [
+      ...policy.dates,
+      { type: 'submissions_due', date: '2026-11-14', precision: 'day' },
+    ] as unknown as Policy['dates'];
+
+    expect(validatePolicies([policy]).errors).toContain(
+      `${policy.id}:dates[1]: invalid date type`,
+    );
+  });
+
+  it('requires precision on deadline dates and keeps month/year anchors honest', () => {
+    const policy = buildPolicy();
+    policy.dates = [
+      ...policy.dates,
+      { type: 'compliance_due', date: '2027-07-15', precision: 'month' },
+      { type: 'scheduled_review', date: '2028-03-01', precision: 'year' },
+      { type: 'consultation_closed', date: '2026-11-14' },
+    ] as unknown as Policy['dates'];
+
+    expect(validatePolicies([policy]).errors).toEqual(
+      expect.arrayContaining([
+        `${policy.id}:dates[1]: month precision must use the first day`,
+        `${policy.id}:dates[2]: year precision must use 1 January`,
+        `${policy.id}:dates[3]: invalid precision`,
+      ]),
+    );
+  });
+
+  it('rejects a deadline as the primary date', () => {
+    const base = buildPolicy();
+    const policy = buildPolicy({
+      dates: [
+        { ...base.dates[0], type: 'compliance_due' },
+      ],
+    });
+
+    expect(validatePolicies([policy]).errors).toContain(
+      `${policy.id}:dates[0]: a deadline date cannot be the primary date`,
+    );
+  });
+
   it('rejects non-string policy list values and malformed date entries', () => {
     const policy = buildPolicy();
     policy.tags = [null] as unknown as string[];

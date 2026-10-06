@@ -3,6 +3,7 @@ import {
   COURT_REQUIREMENT_MODALITIES,
   COURT_REQUIREMENT_STATUSES,
   DATE_PRECISIONS,
+  DEADLINE_DATE_TYPES,
   DEVELOPMENT_STATUSES,
   JURISDICTIONS,
   MANUAL_SOURCE_REVIEW_STATUSES,
@@ -599,6 +600,11 @@ export function validatePolicies(policies: Policy[]): ValidationReport {
         }
         if (date.primary !== undefined && typeof date.primary !== 'boolean') {
           errors.push(`${dateLabel}: primary must be boolean`);
+        }
+        // The primary date backs effectiveDate and the register key date; a
+        // deadline belongs to the instrument but is not its own date.
+        if (date.primary === true && isOneOf(DEADLINE_DATE_TYPES, date.type)) {
+          errors.push(`${dateLabel}: a deadline date cannot be the primary date`);
         }
         if (date.source !== undefined) {
           if (!isRecord(date.source)) {
