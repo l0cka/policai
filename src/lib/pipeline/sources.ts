@@ -251,11 +251,11 @@ export const WATCH_SOURCES: WatchSource[] = [
     category: 'government',
     url: 'https://www.cyber.gov.au/news',
     kind: 'html-index',
-    schedule: 'daily',
+    schedule: 'weekly',
     enabled: true,
     automation: 'manual',
     notes:
-      'ASD/ACSC news index covering AI cyber guidance and joint statements. Tracked by hand: the host resets connections that identify as the Policai collector and rejects plain HTTP clients. The user agent is not disguised or bypassed (decision of 2026-10-07). The previous URL (/about-us/view-all-content/news) returns 404.',
+      'ASD/ACSC news index covering AI cyber guidance and joint statements. Tracked by hand: the host resets connections that identify as the Policai collector (a default curl request gets 200, verified 2026-10-07). The user agent is not disguised or bypassed (decision of 2026-10-07). The previous URL (/about-us/view-all-content/news) returns 404.',
   },
   {
     id: 'apsc-latest-news',
