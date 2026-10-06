@@ -1,5 +1,248 @@
 [
   {
+    "id": "source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-1hv6bwa",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+    "title": "Senate opens inquiry into artificial intelligence and data centres",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-05-13-senate-ai-data-centres-inquiry",
+    "targetTimelineRevisionHash": "394805a3025881be199174a44aac0a84d039284f78bbb7734db329324275960d",
+    "sourceVersionSequence": 11,
+    "status": "pending_review",
+    "discoveredAt": "2026-10-06T19:33:28.224Z",
+    "createdBy": "collector",
+    "notes": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current. Re-verify the existing timeline event before treating it as current. Detected by Senate inquiry — artificial intelligence and data centres (heuristic assessment).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+      "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+      "retrievedAt": "2026-10-06T19:33:28.224Z",
+      "contentType": "text/html",
+      "contentHash": "0acbbd21f739be7b282c501105213664cbea252b6c5d774ab59720a411ed5899",
+      "title": "Senate opens inquiry into artificial intelligence and data centres"
+    },
+    "proposedRecord": {
+      "id": "tl-2026-05-13-senate-ai-data-centres-inquiry",
+      "date": "2026-05-13",
+      "datePrecision": "day",
+      "title": "Senate opens inquiry into artificial intelligence and data centres",
+      "description": "The Senate inquiry covers AI and data-centre regulation, government deals, and community, industry, energy, water and environmental impacts. Submissions closed on 1 September 2026, and the committee is due to report on 16 November 2026.",
+      "type": "announcement",
+      "jurisdiction": "federal",
+      "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P"
+    },
+    "linkedDevelopment": {
+      "id": "dev-senate-opens-inquiry-into-artificial-intelligenc-1hv6bwa",
+      "title": "Senate opens inquiry into artificial intelligence and data centres",
+      "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+      "sourceId": "senate-ai-data-centres",
+      "sourceName": "Senate inquiry — artificial intelligence and data centres",
+      "jurisdiction": "federal",
+      "detectedAt": "2026-10-06T19:33:28.224Z",
+      "summary": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+      "relevanceScore": 1,
+      "classification": "heuristic",
+      "assessment": {
+        "method": "heuristic",
+        "promptVersion": "keyword-rules-v1",
+        "assessedAt": "2026-10-06T19:33:28.224Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+          "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+          "retrievedAt": "2026-10-06T19:33:28.224Z",
+          "contentType": "text/html",
+          "contentHash": "0acbbd21f739be7b282c501105213664cbea252b6c5d774ab59720a411ed5899",
+          "title": "Senate opens inquiry into artificial intelligence and data centres"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-10-06T19:33:28.224Z"
+  },
+  {
+    "id": "source-review-dev-new-resources-on-transparency-for-use-of-ai-and--68u2j7",
+    "sourceUrl": "https://www.oaic.gov.au/news/media-centre/new-resources-on-transparency-for-use-of-ai-and-automated-decision-making",
+    "title": "New resources on transparency for use of AI and automated decision-making",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-10-06T19:33:28.224Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from OAIC — media centre (score 0.55, heuristic).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.55,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "New resources on transparency for use of AI and automated decision-making Published: 30 September 2026 On 10 December 2026, APP entities must include information in their privacy policy where they have arranged for a computer program to make or inform decisions that significantly affect individuals’ rights or interests.This transparency obligation was introduced by the Privacy and Other Legislation Amendment Act 2024 within APP 1 of the Australian Privacy Principles (APPs) to include information about computer program usage in an APP entities’ privacy policy.APP 1.7 requires APP entities to in",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.oaic.gov.au/news/media-centre/new-resources-on-transparency-for-use-of-ai-and-automated-decision-making",
+      "finalUrl": "https://www.oaic.gov.au/news/media-centre/new-resources-on-transparency-for-use-of-ai-and-automated-decision-making",
+      "retrievedAt": "2026-10-06T19:33:28.224Z",
+      "contentType": "text/html",
+      "contentHash": "78275aeacc6cb60300dcdacd0f18d06331c8b1c5a2aa739c857839c1eb42919a",
+      "title": "New resources on transparency for use of AI and automated decision-making",
+      "publishedAt": "2026-09-30",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "new-resources-on-transparency-for-use-of-ai-and-automated-de",
+      "title": "New resources on transparency for use of AI and automated decision-making",
+      "description": "New resources on transparency for use of AI and automated decision-making Published: 30 September 2026 On 10 December 2026, APP entities must include information in their privacy policy where they have arranged for a computer program to make or inform decisions that significantly affect individuals’ rights or interests.This transparency obligation was introduced by the Privacy and Other Legislation Amendment Act 2024 within APP 1 of the Australian Privacy Principles (APPs) to include information about computer program usage in an APP entities’ privacy policy.APP 1.7 requires APP entities to in",
+      "jurisdiction": "federal",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2026-09-30",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-09-30",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.oaic.gov.au/news/media-centre/new-resources-on-transparency-for-use-of-ai-and-automated-decision-making",
+            "finalUrl": "https://www.oaic.gov.au/news/media-centre/new-resources-on-transparency-for-use-of-ai-and-automated-decision-making",
+            "retrievedAt": "2026-10-06T19:33:28.224Z",
+            "contentType": "text/html",
+            "contentHash": "78275aeacc6cb60300dcdacd0f18d06331c8b1c5a2aa739c857839c1eb42919a",
+            "title": "New resources on transparency for use of AI and automated decision-making",
+            "publishedAt": "2026-09-30",
+            "publishedAtPrecision": "day"
+          }
+        }
+      ],
+      "agencies": [],
+      "sourceUrl": "https://www.oaic.gov.au/news/media-centre/new-resources-on-transparency-for-use-of-ai-and-automated-decision-making",
+      "content": "New resources on transparency for use of AI and automated decision-making Published: 30 September 2026 On 10 December 2026, APP entities must include information in their privacy policy where they have arranged for a computer program to make or inform decisions that significantly affect individuals’ rights or interests.This transparency obligation was introduced by the Privacy and Other Legislation Amendment Act 2024 within APP 1 of the Australian Privacy Principles (APPs) to include information about computer program usage in an APP entities’ privacy policy.APP 1.7 requires APP entities to in",
+      "aiSummary": "New resources on transparency for use of AI and automated decision-making Published: 30 September 2026 On 10 December 2026, APP entities must include information in their privacy policy where they have arranged for a computer program to make or inform decisions that significantly affect individuals’ rights or interests.This transparency obligation was introduced by the Privacy and Other Legislation Amendment Act 2024 within APP 1 of the Australian Privacy Principles (APPs) to include information about computer program usage in an APP entities’ privacy policy.APP 1.7 requires APP entities to in",
+      "tags": [],
+      "createdAt": "2026-10-06T19:33:28.224Z",
+      "updatedAt": "2026-10-06T19:33:28.224Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-new-resources-on-transparency-for-use-of-ai-and--68u2j7",
+      "title": "New resources on transparency for use of AI and automated decision-making",
+      "url": "https://www.oaic.gov.au/news/media-centre/new-resources-on-transparency-for-use-of-ai-and-automated-decision-making",
+      "sourceId": "oaic-media",
+      "sourceName": "OAIC — media centre",
+      "jurisdiction": "federal",
+      "publishedAt": "2026-09-30",
+      "publishedAtPrecision": "day",
+      "detectedAt": "2026-10-06T19:33:28.224Z",
+      "summary": "New resources on transparency for use of AI and automated decision-making Published: 30 September 2026 On 10 December 2026, APP entities must include information in their privacy policy where they have arranged for a computer program to make or inform decisions that significantly affect individuals’ rights or interests.This transparency obligation was introduced by the Privacy and Other Legislation Amendment Act 2024 within APP 1 of the Australian Privacy Principles (APPs) to include information about computer program usage in an APP entities’ privacy policy.APP 1.7 requires APP entities to in",
+      "relevanceScore": 0.55,
+      "classification": "heuristic",
+      "assessment": {
+        "method": "heuristic",
+        "promptVersion": "keyword-rules-v1",
+        "assessedAt": "2026-10-06T19:33:28.224Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.oaic.gov.au/news/media-centre/new-resources-on-transparency-for-use-of-ai-and-automated-decision-making",
+          "finalUrl": "https://www.oaic.gov.au/news/media-centre/new-resources-on-transparency-for-use-of-ai-and-automated-decision-making",
+          "retrievedAt": "2026-10-06T19:33:28.224Z",
+          "contentType": "text/html",
+          "contentHash": "78275aeacc6cb60300dcdacd0f18d06331c8b1c5a2aa739c857839c1eb42919a",
+          "title": "New resources on transparency for use of AI and automated decision-making",
+          "publishedAt": "2026-09-30",
+          "publishedAtPrecision": "day"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-10-06T19:33:28.224Z"
+  },
+  {
+    "id": "source-review-dev-artificial-intelligence-ai-5jf2zt",
+    "sourceUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence",
+    "title": "Artificial Intelligence (AI)",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-10-06T19:33:28.224Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from Digital NSW — artificial intelligence (score 0.55, heuristic).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.55,
+      "suggestedType": null,
+      "suggestedJurisdiction": "nsw",
+      "summary": "Artificial Intelligence (AI) Strategy, policy and practical resources guiding Artificial Intelligence in government. On this page Message from the MinisterAbout NSW GovAINSW GovAI prioritiesSupporting the responsible use of AINSW AI Assessment Framework (AIAF)Contact us Message from the Minister “Artificial intelligence offers the opportunity to create a safer and more productive world, and we must do so responsibly, safely, and ethically.” - Minister Dib Artificial Intelligence (AI) is transforming how we work and the government services we provide for the people of NSW. It presents significa",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence",
+      "finalUrl": "https://digital.nsw.gov.au/policy/artificial-intelligence",
+      "retrievedAt": "2026-10-06T19:33:28.224Z",
+      "contentType": "text/html",
+      "contentHash": "c424976b26fe65798c8fcd338bbc0229b2c653e81aab5a537c6b70c652dea57e",
+      "etag": "\"cfca7cefed832b19d3bb174fcfa98f56\"",
+      "lastModified": "Mon, 05 Oct 2026 09:05:47 GMT",
+      "title": "Artificial Intelligence (AI)"
+    },
+    "proposedRecord": {
+      "id": "artificial-intelligence-ai",
+      "title": "Artificial Intelligence (AI)",
+      "description": "Artificial Intelligence (AI) Strategy, policy and practical resources guiding Artificial Intelligence in government. On this page Message from the MinisterAbout NSW GovAINSW GovAI prioritiesSupporting the responsible use of AINSW AI Assessment Framework (AIAF)Contact us Message from the Minister “Artificial intelligence offers the opportunity to create a safer and more productive world, and we must do so responsibly, safely, and ethically.” - Minister Dib Artificial Intelligence (AI) is transforming how we work and the government services we provide for the people of NSW. It presents significa",
+      "jurisdiction": "nsw",
+      "type": "guideline",
+      "status": "active",
+      "agencies": [],
+      "sourceUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence",
+      "content": "Artificial Intelligence (AI) Strategy, policy and practical resources guiding Artificial Intelligence in government. On this page Message from the MinisterAbout NSW GovAINSW GovAI prioritiesSupporting the responsible use of AINSW AI Assessment Framework (AIAF)Contact us Message from the Minister “Artificial intelligence offers the opportunity to create a safer and more productive world, and we must do so responsibly, safely, and ethically.” - Minister Dib Artificial Intelligence (AI) is transforming how we work and the government services we provide for the people of NSW. It presents significa",
+      "aiSummary": "Artificial Intelligence (AI) Strategy, policy and practical resources guiding Artificial Intelligence in government. On this page Message from the MinisterAbout NSW GovAINSW GovAI prioritiesSupporting the responsible use of AINSW AI Assessment Framework (AIAF)Contact us Message from the Minister “Artificial intelligence offers the opportunity to create a safer and more productive world, and we must do so responsibly, safely, and ethically.” - Minister Dib Artificial Intelligence (AI) is transforming how we work and the government services we provide for the people of NSW. It presents significa",
+      "tags": [],
+      "createdAt": "2026-10-06T19:33:28.224Z",
+      "updatedAt": "2026-10-06T19:33:28.224Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-artificial-intelligence-ai-5jf2zt",
+      "title": "Artificial Intelligence (AI)",
+      "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence",
+      "sourceId": "nsw-digital-ai",
+      "sourceName": "Digital NSW — artificial intelligence",
+      "jurisdiction": "nsw",
+      "detectedAt": "2026-10-06T19:33:28.224Z",
+      "summary": "Artificial Intelligence (AI) Strategy, policy and practical resources guiding Artificial Intelligence in government. On this page Message from the MinisterAbout NSW GovAINSW GovAI prioritiesSupporting the responsible use of AINSW AI Assessment Framework (AIAF)Contact us Message from the Minister “Artificial intelligence offers the opportunity to create a safer and more productive world, and we must do so responsibly, safely, and ethically.” - Minister Dib Artificial Intelligence (AI) is transforming how we work and the government services we provide for the people of NSW. It presents significa",
+      "relevanceScore": 0.55,
+      "classification": "heuristic",
+      "assessment": {
+        "method": "heuristic",
+        "promptVersion": "keyword-rules-v1",
+        "assessedAt": "2026-10-06T19:33:28.224Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence",
+          "finalUrl": "https://digital.nsw.gov.au/policy/artificial-intelligence",
+          "retrievedAt": "2026-10-06T19:33:28.224Z",
+          "contentType": "text/html",
+          "contentHash": "c424976b26fe65798c8fcd338bbc0229b2c653e81aab5a537c6b70c652dea57e",
+          "etag": "\"cfca7cefed832b19d3bb174fcfa98f56\"",
+          "lastModified": "Mon, 05 Oct 2026 09:05:47 GMT",
+          "title": "Artificial Intelligence (AI)"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-10-06T19:33:28.224Z"
+  },
+  {
     "id": "source-review-dev-artificial-intelligence-and-medicare-benefits-in-9hprh2",
     "sourceUrl": "https://www.anao.gov.au/work/performance-audit/artificial-intelligence-and-medicare-benefits-integrity",
     "title": "Artificial Intelligence and Medicare Benefits Integrity",
