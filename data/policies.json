@@ -4828,6 +4828,97 @@
     ]
   },
   {
+    "id": "oaic-app-1-7-adm-transparency-guidance",
+    "title": "OAIC guidance on APP 1.7–1.9 transparency for automated decision-making",
+    "description": "OAIC guidance published 30 September 2026 on the Australian Privacy Principle 1.7–1.9 transparency obligation: from 10 December 2026 an APP entity must describe in its privacy policy the computer programs it has arranged to make, or to do something substantially and directly related to making, decisions that could reasonably be expected to significantly affect an individual's rights or interests.",
+    "jurisdiction": "federal",
+    "type": "guideline",
+    "status": "active",
+    "effectiveDate": "2026-09-30",
+    "agencies": [
+      "Office of the Australian Information Commissioner"
+    ],
+    "sourceUrl": "https://www.oaic.gov.au/__data/assets/pdf_file/0021/269013/APP-1.7-1.9-Transparency-Obligation-Fact-Sheet.PDF",
+    "content": "The transparency obligation was inserted into Australian Privacy Principle 1 by the Privacy and Other Legislation Amendment Act 2024 (Cth) and applies from 10 December 2026. APP 1.7 brings an APP entity into scope where it has arranged for a computer program to make a decision, or to do a thing substantially and directly related to making one; where that decision could reasonably be expected to significantly affect an individual's rights or interests; and where personal information about the individual is used in the program's operation. APP 1.8 then sets out what the entity's privacy policy must say: the kinds of personal information used in those programs, the kinds of decisions made solely by them, and the kinds of decisions for which the program does a thing substantially and directly related to the decision. The OAIC treats 'computer program' broadly, covering rule-based automation, machine learning, ordinary software and generative AI tools, and notes that human review of an output does not by itself take a decision out of scope. On 30 September 2026 the OAIC published three compliance resources — the APP 1.7-1.9 Transparency Obligation Fact Sheet (the record's cited source), a supplementary fact sheet for government agencies, and a flowchart — together with an update to its APP 1 Guidelines, after 90 written submissions to its earlier consultation. That consultation is tracked as the timeline event tl-2026-05-18-oaic-consults-on-automated-decision-making-transparency; the OAIC's other register guidance sits at oaic-guidance-developing-training-genai and oaic-guidance-commercial-ai-products.",
+    "aiSummary": "OAIC guidance on the APP 1.7–1.9 privacy-policy transparency obligation for computer-assisted decisions, which applies from 10 December 2026.",
+    "tags": [
+      "privacy",
+      "OAIC",
+      "automated decision-making",
+      "transparency",
+      "Privacy Act"
+    ],
+    "createdAt": "2026-10-06T23:09:42.833Z",
+    "updatedAt": "2026-10-06T23:09:42.833Z",
+    "lastReviewedAt": "2026-10-06T23:09:42.833Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.oaic.gov.au/__data/assets/pdf_file/0021/269013/APP-1.7-1.9-Transparency-Obligation-Fact-Sheet.PDF",
+        "finalUrl": "https://www.oaic.gov.au/__data/assets/pdf_file/0021/269013/APP-1.7-1.9-Transparency-Obligation-Fact-Sheet.PDF",
+        "title": "APP 1.7-1.9 Transparency Obligation Fact Sheet",
+        "publisher": "Office of the Australian Information Commissioner",
+        "retrievedAt": "2026-10-06T23:09:42.438Z",
+        "contentType": "application/pdf",
+        "contentHash": "a6b01db6ba23d8d261250dce50d26bcfdd3ba994a9d822786fa20b63aa0dc206",
+        "linkedDocuments": []
+      },
+      "checkedAt": "2026-10-06T23:09:42.833Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi on the oaic-transparency editorial lane. Both OAIC sources were retrieved read-only over plain HTTPS and fingerprinted: the cited fact sheet (the instrument) and the media-centre announcement that carries the publication date. The fact sheet states the obligation comes into effect on 10 December 2026; the announcement states 'Published: 30 September 2026'."
+    },
+    "dates": [
+      {
+        "type": "published",
+        "date": "2026-09-30",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://www.oaic.gov.au/news/media-centre/new-resources-on-transparency-for-use-of-ai-and-automated-decision-making",
+          "finalUrl": "https://www.oaic.gov.au/news/media-centre/new-resources-on-transparency-for-use-of-ai-and-automated-decision-making",
+          "title": "New resources on transparency for use of AI and automated decision-making",
+          "publisher": "Office of the Australian Information Commissioner",
+          "retrievedAt": "2026-10-06T23:09:42.554Z",
+          "publishedAt": "2026-09-30",
+          "publishedAtPrecision": "day",
+          "contentType": "text/html",
+          "contentHash": "9c0a1ef41a559364f6d8ded0207bc298e8111a2ecf676dcaae864d9b6f4841cb",
+          "linkedDocuments": [],
+          "reviewedDate": {
+            "date": "2026-09-30",
+            "precision": "day",
+            "reviewedAt": "2026-10-06T23:09:42.833Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The OAIC media-centre announcement for these resources carries 'Published: 30 September 2026', which supports the publication date at day precision. The fact sheet itself is dated only 'September 2026', so the day comes from the announcement."
+          }
+        }
+      },
+      {
+        "type": "compliance_due",
+        "date": "2026-12-10",
+        "precision": "day",
+        "source": {
+          "url": "https://www.oaic.gov.au/__data/assets/pdf_file/0021/269013/APP-1.7-1.9-Transparency-Obligation-Fact-Sheet.PDF",
+          "finalUrl": "https://www.oaic.gov.au/__data/assets/pdf_file/0021/269013/APP-1.7-1.9-Transparency-Obligation-Fact-Sheet.PDF",
+          "title": "APP 1.7-1.9 Transparency Obligation Fact Sheet",
+          "publisher": "Office of the Australian Information Commissioner",
+          "retrievedAt": "2026-10-06T23:09:42.438Z",
+          "contentType": "application/pdf",
+          "contentHash": "a6b01db6ba23d8d261250dce50d26bcfdd3ba994a9d822786fa20b63aa0dc206",
+          "linkedDocuments": [],
+          "reviewedDate": {
+            "date": "2026-12-10",
+            "precision": "day",
+            "reviewedAt": "2026-10-06T23:09:42.833Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The fact sheet states 'Changes to privacy obligations for APP entities come into effect on 10 December 2026', and the announcement states 'On 10 December 2026, APP entities must include information in their privacy policy...'. Day precision is on the face of both."
+          }
+        }
+      }
+    ]
+  },
+  {
     "id": "esafety-genai-industry-codes",
     "title": "Online safety industry codes covering generative AI and AI companions",
     "description": "Enforceable eSafety industry codes registered in September 2025 — including for generative AI services and AI companion chatbots — in effect from 9 March 2026, with age-assurance obligations and penalties up to $49.5m.",
