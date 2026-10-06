@@ -94,7 +94,7 @@ describe('source overdue threshold (P1)', () => {
 
   it('uses the shared source population in one aggregate query for the landing rail', async () => {
     const queries = [];
-    const stats = { total: 4, ok: 1, overdue: 1 };
+    const stats = { total: 4, ok: 1, overdue: 1, failed: 1, never: 1 };
     const result = await getRadarSourceStats({ query: async (sql) => {
       queries.push(sql);
       return { rows: [stats] };
