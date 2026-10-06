@@ -9,6 +9,7 @@ import {
   sydneyToday,
   safeHref,
 } from '../lib/deadline-data';
+import { sourceHealthHeadline } from '../lib/health-data';
 import { ArrowRight, ArrowUpRight, Flag, Search } from './icons';
 import { SignalNetwork } from './signal-network';
 
@@ -75,7 +76,7 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Rad
   const { networkPairs = [], networkSignals = [], latestItems = [] } = overview ?? {};
 
   const today = sydneyToday();
-  const staleSources = sources.overdue > 0 || sources.ok < sources.total;
+  const sourceHeadline = sourceHealthHeadline(sources);
   const groups: Array<{ date: string; rows: typeof rows }> = [];
   for (const r of rows) {
     const date = sydneyDateOf(r.published_at ?? r.created_at);
@@ -252,15 +253,11 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Rad
           <section style={{ marginTop: '2rem' }}>
             <h2>Collection status</h2>
             <div className="rail-card">
-              <p className={`signal ${staleSources ? 'signal-warn' : 'signal-ok'}`}>
+              <p className={`signal signal-${sourceHeadline.tone}`}>
                 <span className="signal-dot" />
-                {sources.ok === sources.total ? 'All sources reporting' : staleSources ? 'Some sources overdue' : 'Some sources stale'}
+                {sourceHeadline.label}
               </p>
-              <p className="rail-note">
-                {sources.ok === sources.total
-                  ? `${sources.ok} of ${sources.total} sources returned on their last run`
-                  : `${sources.overdue} of ${sources.total} sources have not returned a run within three days`}
-              </p>
+              <p className="rail-note">{sourceHeadline.note}</p>
             </div>
             <div style={{ marginTop: '1rem' }}>
               <div className="meter">

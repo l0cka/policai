@@ -10,6 +10,7 @@ import {
   sourceHealthState,
   summarizeSourceHealth,
   getRadarSourceStats,
+  sourceHealthHeadline,
 } from '../lib/health-data.ts';
 import { statusPayload } from '../lib/status-payload.ts';
 if (!process.env.FIXTURE_DEPENDENCIES) throw new Error('Set FIXTURE_DEPENDENCIES');
@@ -58,8 +59,13 @@ try {
   );
   assert.equal(summary.reporting, 1, 'overdue and failed sources do not count as reporting');
   assert.deepEqual(await getRadarSourceStats(db), {
-    total: summary.total, ok: summary.ok, overdue: summary.overdue,
+    total: summary.total, ok: summary.ok, overdue: summary.overdue, failed: summary.failed, never: summary.never,
   }, 'the landing rail matches the health-page population');
+  assert.equal(
+    sourceHealthHeadline(await getRadarSourceStats(db)).label,
+    '1 source failed, 1 overdue, 1 never run',
+    'the landing label names each state separately',
+  );
 
   // Check the exact threshold in a transaction: Postgres now() is fixed.
   await db.exec('BEGIN');
@@ -68,13 +74,43 @@ try {
     INSERT INTO ingest_runs(run_started_at,created_at,source_id,status,items_found,items_new)
     SELECT now(), now() - interval '3 days', id, 'ok', 0, 0
     FROM sources WHERE name = 'Boundary source'`);
-  assert.deepEqual(await getRadarSourceStats(db), { total: 5, ok: 2, overdue: 1 });
+  assert.deepEqual(await getRadarSourceStats(db), { total: 5, ok: 2, overdue: 1, failed: 1, never: 1 });
   await db.exec('ROLLBACK');
 
   await db.exec('BEGIN');
   await db.exec('UPDATE sources SET active = false');
-  assert.deepEqual(await getRadarSourceStats(db), { total: 0, ok: 0, overdue: 0 });
+  assert.deepEqual(await getRadarSourceStats(db), { total: 0, ok: 0, overdue: 0, failed: 0, never: 0 });
+  assert.equal(sourceHealthHeadline(await getRadarSourceStats(db)).label, 'No active sources');
   await db.exec('ROLLBACK');
+
+  // Landing-label cases over the shared SQL (audit 2026-10-02: the fixture
+  // read "Some sources overdue" with zero overdue). Each case rewrites the run
+  // history inside a rolled-back transaction.
+  const labelCase = async (name, setup, expected) => {
+    await db.exec('BEGIN');
+    await db.exec('DELETE FROM ingest_runs');
+    await db.exec(setup);
+    const stats = await getRadarSourceStats(db);
+    const summary = summarizeSourceHealth((await db.query(SOURCE_HEALTH_SQL)).rows);
+    assert.deepEqual(stats, {
+      total: summary.total, ok: summary.ok, overdue: summary.overdue, failed: summary.failed, never: summary.never,
+    }, `${name}: rail and summary agree`);
+    assert.equal(sourceHealthHeadline(stats).label, expected, name);
+    await db.exec('ROLLBACK');
+  };
+  const run = (id, status, age) =>
+    `INSERT INTO ingest_runs(run_started_at,created_at,source_id,status,items_found,items_new)
+     VALUES (now() - interval '${age}', now() - interval '${age}', ${id}, '${status}', 0, 0);`;
+  await labelCase('0 overdue + 1 failed',
+    run(1, 'ok', '1 hour') + run(2, 'ok', '1 hour') + run(3, 'failed', '1 hour') + run(4, 'ok', '1 hour'),
+    '1 source failed');
+  await labelCase('0 failed + 2 overdue',
+    run(1, 'ok', '1 hour') + run(2, 'ok', '8 days') + run(3, 'ok', '5 days') + run(4, 'ok', '1 hour'),
+    '2 sources overdue');
+  await labelCase('never-run only', 'SELECT 1;', '4 sources never run');
+  await labelCase('all reporting',
+    run(1, 'ok', '1 hour') + run(2, 'ok', '1 hour') + run(3, 'ok', '1 hour') + run(4, 'ok', '1 hour'),
+    'All sources reporting');
 
   // --- P2: fixture items missing each expected field, one SQL, same population. ---
   // Seven relevant items, each carrying every expected field except the one

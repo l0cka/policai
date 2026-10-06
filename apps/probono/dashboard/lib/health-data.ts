@@ -140,6 +140,49 @@ export function summarizeSourceHealth(
   return { total: active.length, ok, overdue, failed, never, reporting: ok };
 }
 
+export type SourceHealthCounts = Pick<SourceHealthSummary, 'total' | 'ok' | 'overdue' | 'failed' | 'never'>;
+
+export type SourceHealthHeadline = {
+  tone: 'ok' | 'warn';
+  /** Short status line, naming every state that is not reporting. */
+  label: string;
+  /** Supporting sentence with the reporting count. */
+  note: string;
+};
+
+/**
+ * The landing-page status line. Failed, overdue and never-run sources are
+ * separate states, so each is named with its own count, worst first
+ * (failed, then overdue, then never run), with the /health column names.
+ * Counts are over active sources; retired sources are already excluded.
+ */
+export function sourceHealthHeadline(counts: SourceHealthCounts): SourceHealthHeadline {
+  const { total, ok, overdue, failed, never } = counts;
+  if (total === 0) {
+    return { tone: 'warn', label: 'No active sources', note: 'Every source is retired, so nothing is being collected' };
+  }
+  if (ok === total) {
+    return {
+      tone: 'ok',
+      label: 'All sources reporting',
+      note: `${ok} of ${total} active sources returned on their last run`,
+    };
+  }
+  const parts = (
+    [
+      [failed, 'failed'],
+      [overdue, 'overdue'],
+      [never, 'never run'],
+    ] as const
+  )
+    .filter(([count]) => count > 0)
+    // Only the first part carries the noun: "2 sources failed, 1 overdue".
+    .map(([count, state], i) => (i === 0 ? `${count} ${count === 1 ? 'source' : 'sources'} ${state}` : `${count} ${state}`));
+  const label = parts.length ? parts.join(', ') : 'Some sources not reporting';
+  const overdueNote = overdue > 0 ? `. Overdue means no successful run in ${SOURCE_OVERDUE_DAYS} days` : '';
+  return { tone: 'warn', label, note: `${ok} of ${total} active sources reporting${overdueNote}` };
+}
+
 /**
  * Sources and their health, ordered the way /health lists them: failures
  * first, then sources that have never run, then overdue, then the rest, with
@@ -159,15 +202,13 @@ export async function getSourceHealth(db: Queryable): Promise<SourceHealthRow[]>
  * The rail figure for the landing page: per-source totals over active
  * sources, one aggregate query rather than shipping every row to the page.
  */
-export async function getRadarSourceStats(db: Queryable) {
-  const { rows } = await db.query<{
-    total: number;
-    ok: number;
-    overdue: number;
-  }>(
+export async function getRadarSourceStats(db: Queryable): Promise<SourceHealthCounts> {
+  const { rows } = await db.query<SourceHealthCounts>(
     `SELECT count(*)::int AS total,
             count(*) FILTER (WHERE state = 'ok')::int AS ok,
-            count(*) FILTER (WHERE state = 'overdue')::int AS overdue
+            count(*) FILTER (WHERE state = 'overdue')::int AS overdue,
+            count(*) FILTER (WHERE state = 'failed')::int AS failed,
+            count(*) FILTER (WHERE state = 'never')::int AS never
      FROM (
        SELECT CASE
                 WHEN last_status = 'failed' THEN 'failed'
