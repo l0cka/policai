@@ -977,6 +977,96 @@
     }
   },
   {
+    "id": "asd-agentic-ai-harnesses-2026",
+    "title": "Agentic AI harnesses",
+    "description": "Australian Signals Directorate guidance on the security, governance and operational risks of the agentic AI harness, the software layer that connects large language models to organisational data, tools and systems.",
+    "jurisdiction": "federal",
+    "type": "guideline",
+    "status": "active",
+    "effectiveDate": "2026-09-11",
+    "dates": [
+      {
+        "type": "published",
+        "date": "2026-09-11",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://www.cyber.gov.au/advisory/agentic-ai-harnesses",
+          "finalUrl": "https://www.cyber.gov.au/advisory/agentic-ai-harnesses",
+          "title": "Agentic AI harnesses",
+          "retrievedAt": "2026-10-06T23:23:14.085Z",
+          "contentType": "text/html",
+          "contentHash": "cc83a3bd8320f3d779a1315beb96ed16c2a610e7fc9e4fa525ba09f092f83144",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-06T23:23:14.085Z",
+            "capturedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+            "notes": "Official ASD publication page captured in a browser on 7 October 2026 (AEDT); the Policai collector user agent is refused by cyber.gov.au, so plain HTTP retrieval was not available.",
+            "pageContentHash": "7ce3cf92ecd21a9a48fb3d75a4a2c37078680f0e5b6e971f96c739b9dce69fda",
+            "characterCount": 20638
+          },
+          "reviewedDate": {
+            "date": "2026-09-11",
+            "precision": "day",
+            "reviewedAt": "2026-10-06T23:23:49.530Z",
+            "reviewedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+            "notes": "The publication page shows 'Published 11 Sep 2026'; the ASD news item announcing it and the cyber.gov.au news listing show the same date."
+          }
+        }
+      }
+    ],
+    "agencies": [
+      "Australian Signals Directorate",
+      "Australian Cyber Security Centre"
+    ],
+    "sourceUrl": "https://www.cyber.gov.au/advisory/agentic-ai-harnesses",
+    "content": "Published by ASD on 11 September 2026 and announced in the ASD news item 'ASD releases new guidance on the agentic AI harnesses' (https://www.cyber.gov.au/news/asd-releases-new-guidance-on-the-agentic-ai-harnesses). The publication treats the harness, rather than the model, as the part of an agentic AI system an organisation can most directly govern and secure. It describes the harness components (user interface, prompt and policy layer, context manager, model interface, tool registry, permission system, execution environment, connector layer, memory and session store, audit and observability, and the update and supply-chain path) and explains that prompt injection cannot be reliably fixed in the model, so controls must be enforced in the harness. Recommended controls include least-privilege access and a hardened, organisation-controlled execution environment; human approval for sensitive or high-impact actions; validation of tool parameters, outputs and agent work before operational use; logging of prompts, responses, tool invocations, approvals and configuration changes; cost monitoring to detect misuse or runaway agents; careful model selection; focused context and bounded sub-agents; and a persistent organisational rules file. It closes with governance questions for executives and advises a phased adoption that starts with low-risk use cases. It is written for executive decision-makers, CISOs and IT leaders, and complements ASD's 'Careful adoption of agentic AI services' guidance.",
+    "aiSummary": "ASD guidance on securing and governing the agentic AI harness: least privilege, human approval of high-impact actions, audit logging, monitoring and executive governance questions.",
+    "tags": [
+      "agentic AI",
+      "cyber security",
+      "risk management",
+      "human oversight",
+      "governance",
+      "prompt injection"
+    ],
+    "createdAt": "2026-10-06T23:23:49.530Z",
+    "updatedAt": "2026-10-06T23:23:49.530Z",
+    "lastReviewedAt": "2026-10-06T23:23:49.530Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.cyber.gov.au/advisory/agentic-ai-harnesses",
+        "finalUrl": "https://www.cyber.gov.au/advisory/agentic-ai-harnesses",
+        "title": "Agentic AI harnesses",
+        "retrievedAt": "2026-10-06T23:23:14.085Z",
+        "contentType": "text/html",
+        "contentHash": "cc83a3bd8320f3d779a1315beb96ed16c2a610e7fc9e4fa525ba09f092f83144",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-10-06T23:23:14.085Z",
+          "capturedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+          "notes": "Official ASD publication page captured in a browser on 7 October 2026 (AEDT); the Policai collector user agent is refused by cyber.gov.au, so plain HTTP retrieval was not available.",
+          "pageContentHash": "7ce3cf92ecd21a9a48fb3d75a4a2c37078680f0e5b6e971f96c739b9dce69fda",
+          "characterCount": 20638
+        },
+        "reviewedDate": {
+          "date": "2026-09-11",
+          "precision": "day",
+          "reviewedAt": "2026-10-06T23:23:49.530Z",
+          "reviewedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+          "notes": "The publication page shows 'Published 11 Sep 2026'; the ASD news item announcing it and the cyber.gov.au news listing show the same date."
+        }
+      },
+      "checkedAt": "2026-10-06T23:23:49.530Z",
+      "checkedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+      "method": "manual",
+      "notes": "Publication approved by Daniel Alkurdi on 7 October 2026 after the radar review (item 13). The staged cyber.gov.au/about-us/view-all-content news URL returns 404; the record cites the publication at its current path and the announcement at https://www.cyber.gov.au/news/asd-releases-new-guidance-on-the-agentic-ai-harnesses."
+    }
+  },
+  {
     "id": "expectations-data-centres-ai-infrastructure-2026",
     "title": "Expectations of data centres and AI infrastructure developers",
     "description": "Australian Government framework setting national-interest, energy, water, workforce and innovation expectations for large data-centre and AI-infrastructure developments.",
