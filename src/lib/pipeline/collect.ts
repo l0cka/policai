@@ -431,20 +431,33 @@ function recoverPersistedDocumentTransitions(
     if (!canAdvanceSnapshot) continue;
 
     const checkedAt = review.sourceEvidence.retrievedAt ?? processedAt;
+    // Recovery re-derives knowledge from a persisted review; it is not an
+    // observation of the source. A review's retrievedAt can be older than the
+    // last time the collector actually observed the source (e.g. a review
+    // staged weeks ago is approved today), so a re-derived snapshot must
+    // never regress the observed timestamps of the incoming state. Keep the
+    // fresher value; the review-derived timestamp still wins when it is
+    // newer (regression-only guard, never forward-blocking).
+    const recoveredCheckedAt =
+      checkedAt &&
+      previous?.lastCheckedAt &&
+      new Date(previous.lastCheckedAt).getTime() > new Date(checkedAt).getTime()
+        ? previous.lastCheckedAt
+        : checkedAt;
     state.sourceSnapshots[sourceId] = {
       contentHash,
       firstCheckedAt: previous?.firstCheckedAt ?? checkedAt,
-      lastCheckedAt: checkedAt,
+      lastCheckedAt: recoveredCheckedAt,
       lastChangedAt: review.reviewedAt ?? processedAt,
       changeCount,
     };
     const previousSourceCheck = state.lastCheckedBySource[sourceId];
     if (
       !previousSourceCheck ||
-      new Date(checkedAt).getTime() >=
+      new Date(recoveredCheckedAt).getTime() >=
         new Date(previousSourceCheck).getTime()
     ) {
-      state.lastCheckedBySource[sourceId] = checkedAt;
+      state.lastCheckedBySource[sourceId] = recoveredCheckedAt;
     }
   }
 }
