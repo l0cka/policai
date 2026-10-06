@@ -51,8 +51,10 @@ old = json.loads(archive.read_text()) if archive.exists() else []
 current = json.loads(p.read_text()) if p.exists() else None
 prs = old + ([current] if current else [])
 a = sys.argv[1:]
+def fields(pr):
+    return {key: pr[key] for key in a[a.index('--json')+1].split(',') if key in pr}
 if a[:2] == ['pr','list']:
-    print(json.dumps([pr for pr in prs if pr['state'] == 'OPEN']))
+    print(json.dumps([fields(pr) for pr in prs if pr['state'] == 'OPEN']))
 elif a[:2] == ['pr','create']:
     branch=a[a.index('--head')+1]
     sha=subprocess.check_output(['git','rev-parse',branch], text=True).strip()
@@ -60,10 +62,10 @@ elif a[:2] == ['pr','create']:
         old.append(current)
         archive.write_text(json.dumps(old))
     url = 'https://github.com/l0cka/policai/pull/' + str(999 + len(old))
-    p.write_text(json.dumps(dict(url=url,headRefName=branch,headRefOid=sha,baseRefName='main',state='OPEN',isDraft=True,isCrossRepository=False,comments=[],body=a[a.index('--body')+1],createdAt=os.environ.get('FAKE_PR_CREATED_AT','2099-01-01T00:00:00Z'))))
+    p.write_text(json.dumps(dict(url=url,headRefName=branch,headRefOid=sha,baseRefName='main',state='OPEN',isDraft=True,reviewDecision='',reviews=[],isCrossRepository=False,comments=[],body=a[a.index('--body')+1],createdAt=os.environ.get('FAKE_PR_CREATED_AT','2099-01-01T00:00:00Z'))))
     print(url)
 elif a[:2] == ['pr','view']:
-    print(json.dumps(next(pr for pr in prs if pr['url'] == a[2])))
+    print(json.dumps(fields(next(pr for pr in prs if pr['url'] == a[2]))))
 elif a[:2] == ['pr','close']:
     pr = next(pr for pr in prs if pr['url'] == a[2])
     pr['state'] = 'CLOSED'
@@ -224,6 +226,10 @@ else:
 
     def test_state_only_pr_superseded_with_evidence_and_fresh_base(self):
         first = self.state_only_run()
+        pr_path = self.home / 'pr.json'
+        pr = json.loads(pr_path.read_text())
+        pr['reviewDecision'] = 'REVIEW_REQUIRED'
+        pr_path.write_text(json.dumps(pr))
         tree = Path(first['tree'])
         evidence = Path(first['evidence'])
         retained = {str(p.relative_to(evidence)): p.read_bytes()
@@ -257,7 +263,7 @@ else:
         before = (self.home / 'pr.json').read_bytes()
         result = self.run_workflow()
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertEqual(self.receipt()['skipped'], 'awaiting-review')
+        self.assertEqual(self.receipt().get('skipped'), 'awaiting-review')
         self.assertEqual((self.home / 'pr.json').read_bytes(), before)
         self.assertEqual(len(list(Path(first['tree']).parent.iterdir())), 1)
 
@@ -266,6 +272,41 @@ else:
         self.assert_review_blocked(first)
         self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '0'
         self.assert_review_blocked(first)
+
+    def test_ready_or_reviewed_state_pr_keeps_ordinary_gate(self):
+        first = self.state_only_run()
+        p = self.home / 'pr.json'
+        original = json.loads(p.read_text())
+        self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '1'
+        for draft, decision, reviews in [
+                (False, '', []), (False, 'APPROVED', []),
+                (True, 'APPROVED', []), (True, 'CHANGES_REQUESTED', []),
+                (True, 'REVIEW_REQUIRED', [{'state': 'APPROVED'}]),
+                (True, '', [{'state': 'COMMENTED'}])]:
+            with self.subTest(draft=draft, decision=decision, reviews=reviews):
+                pr = dict(original, isDraft=draft, reviewDecision=decision, reviews=reviews)
+                p.write_text(json.dumps(pr))
+                self.assert_review_blocked(first)
+
+    def test_state_pr_promoted_after_readback_is_not_closed(self):
+        first = self.state_only_run()
+        self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '1'
+        gh = self.home / '.local/bin/gh'
+        original = gh.read_text()
+        view = "    print(json.dumps(fields(next(pr for pr in prs if pr['url'] == a[2]))))"
+        gh.write_text(original.replace(view, view + '\n' +
+            f"    if a[2] == {first['pr']!r}:\n"
+            "        pr = next(pr for pr in prs if pr['url'] == a[2])\n"
+            "        pr.update(isDraft=False, reviewDecision='APPROVED')\n"
+            "        archive.write_text(json.dumps(old))\n"
+            "        p.write_text(json.dumps(current))"))
+        result = self.run_workflow()
+        self.assertEqual(result.returncode, 1, result.stderr)
+        old = json.loads((self.home / 'old-prs.json').read_text())[0]
+        self.assertEqual(old['state'], 'OPEN')
+        self.assertEqual(old['comments'], [])
+        self.assertEqual(self.receipt()['phase'], 'superseding')
+        self.assertEqual(json.loads((self.home / 'pr.json').read_text())['state'], 'OPEN')
 
     def test_state_only_toggle_rejects_invalid_value(self):
         self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = 'true'
@@ -316,6 +357,42 @@ else:
         pr_path.write_text(json.dumps(pr))
         self.assert_review_blocked(first)
 
+    def test_forged_off_main_receipt_base_keeps_review_gate(self):
+        first = self.state_only_run()
+        tree = Path(first['tree'])
+        def g(*args):
+            return subprocess.check_output(['git', *args], cwd=tree,
+                                           stderr=subprocess.DEVNULL, text=True).strip()
+        g('checkout', '-q', '--detach', first['base'])
+        (tree / 'data/developments.json').write_text('{"smuggled":true}\n')
+        g('commit', '-qam', 'off-main content')
+        off_main = g('rev-parse', 'HEAD')
+        (tree / 'data/watch-state.json').write_text('state2')
+        g('-c', 'user.name=policai-collector[bot]',
+          '-c', 'user.email=policai-collector[bot]@users.noreply.github.com',
+          'commit', '-qam', 'state')
+        head = g('rev-parse', 'HEAD')
+        g('push', '-q', '-f', 'origin', head + ':refs/heads/' + first['branch'])
+        first.update(head=head, base=off_main)
+        (Path(first['evidence']) / 'run.json').write_text(json.dumps(first))
+        p = self.home / 'pr.json'
+        pr = json.loads(p.read_text())
+        pr['headRefOid'] = head
+        p.write_text(json.dumps(pr))
+        self.assertEqual(set(g('diff', '--name-only', g('merge-base', head, 'origin/main'), head).split()),
+                         {'data/developments.json', 'data/watch-state.json'})
+        self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '1'
+        self.assert_review_blocked(first)
+
+    def test_symlinked_receipt_keeps_review_gate(self):
+        first = self.state_only_run()
+        receipt = Path(first['evidence']) / 'run.json'
+        moved = self.home / 'moved-run.json'
+        receipt.rename(moved)
+        receipt.symlink_to(moved)
+        self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '1'
+        self.assert_review_blocked(first)
+
     def test_actual_register_diff_blocks_even_with_equal_receipt_hashes(self):
         first = self.state_only_run()
         tree = Path(first['tree'])
@@ -340,19 +417,27 @@ else:
         self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '1'
         self.assert_review_blocked(first)
 
-    def test_state_only_no_changes_still_records_and_comments_supersession(self):
+    def assert_no_changes_preserves_pending_pr(self, exit_code):
         first = self.state_only_run()
+        before = (self.home / 'pr.json').read_bytes()
         self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '1'
-        self.set_collector('pass')
+        self.set_collector(f'sys.exit({exit_code})')
         result = self.run_workflow()
-        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.returncode, exit_code, result.stderr)
         run = self.receipt()
         self.assertEqual(run['phase'], 'no-changes')
+        self.assertEqual(run['collection_exit'], exit_code)
         self.assertEqual(run['superseded_prs'][0]['url'], first['pr'])
-        pr = json.loads((self.home / 'pr.json').read_text())
-        self.assertEqual(pr['state'], 'CLOSED')
-        self.assertIn(run['branch'], pr['comments'][0]['body'])
+        self.assertEqual(run['superseded_prs'][0]['status'], 'planned')
+        self.assertEqual((self.home / 'pr.json').read_bytes(), before)
+        self.assertEqual(json.loads(before)['state'], 'OPEN')
         self.assertNotIn('pr', run)
+
+    def test_state_only_no_changes_preserves_pending_pr(self):
+        self.assert_no_changes_preserves_pending_pr(0)
+
+    def test_state_only_failed_collection_no_output_preserves_pending_pr(self):
+        self.assert_no_changes_preserves_pending_pr(1)
 
     def test_state_only_validation_failure_does_not_close_old_pr(self):
         first = self.state_only_run()
@@ -375,8 +460,11 @@ else:
         result = self.run_workflow()
         self.assertEqual(result.returncode, 1)
         run = self.receipt()
-        self.assertEqual(run['phase'], 'ready')
+        self.assertEqual(run['phase'], 'superseding')
+        self.assertEqual(json.loads((self.home / 'pr.json').read_text())['url'], run['pr'])
         self.assertEqual(json.loads((self.home / 'pr.json').read_text())['state'], 'OPEN')
+        self.assertEqual(json.loads((self.home / 'old-prs.json').read_text())[0]['state'], 'OPEN')
+        self.assertIn('previous incomplete run', self.run_workflow().stderr)
         gh.write_text(original)
         self.set_collector('sys.exit(99)')
         self.assertEqual(self.run_workflow('--retry-publication').returncode, 0)
@@ -453,7 +541,52 @@ else:
         self.assertEqual(pr['comments'], [])
         self.assertEqual(self.receipt()['phase'], 'ready')
 
-    def test_state_only_publication_retry_after_closure_is_idempotent(self):
+    def assert_replacement_readback_failure_preserves_old(self, mutation):
+        first = self.state_only_run()
+        self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '1'
+        gh = self.home / '.local/bin/gh'
+        original = gh.read_text()
+        gh.write_text(original.replace("elif a[:2] == ['pr','view']:",
+            "elif a[:2] == ['pr','view']:\n"
+            f"    if a[2] != {first['pr']!r}: {mutation}"))
+        result = self.run_workflow()
+        self.assertEqual(result.returncode, 1, result.stderr)
+        run = self.receipt()
+        self.assertEqual(run['phase'], 'ready')
+        old = json.loads((self.home / 'old-prs.json').read_text())[0]
+        self.assertEqual(old['state'], 'OPEN')
+        self.assertEqual(old['comments'], [])
+        self.assertEqual(json.loads((self.home / 'pr.json').read_text())['state'], 'OPEN')
+        gh.write_text(original)
+        self.set_collector('sys.exit(99)')
+        retry = self.run_workflow('--retry-publication')
+        self.assertEqual(retry.returncode, 0, retry.stderr)
+        self.assertEqual(self.receipt()['head'], run['head'])
+        self.assertEqual(len(json.loads((self.home / 'old-prs.json').read_text())), 1)
+
+    def test_replacement_readback_failure_keeps_both_prs_open(self):
+        self.assert_replacement_readback_failure_preserves_old('sys.exit(7)')
+
+    def test_replacement_must_be_draft_before_closing_old(self):
+        self.assert_replacement_readback_failure_preserves_old("current['isDraft'] = False")
+
+    def test_state_only_push_failure_keeps_old_open(self):
+        first = self.state_only_run()
+        self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '1'
+        before = (self.home / 'pr.json').read_bytes()
+        hook = self.remote / 'hooks/pre-receive'
+        hook.write_text('#!/bin/sh\nexit 1\n')
+        hook.chmod(0o755)
+        result = self.run_workflow()
+        self.assertEqual(result.returncode, 1, result.stderr)
+        self.assertEqual((self.home / 'pr.json').read_bytes(), before)
+        self.assertEqual(json.loads(before)['url'], first['pr'])
+        self.assertEqual(self.receipt()['phase'], 'ready')
+        hook.unlink()
+        self.set_collector('sys.exit(99)')
+        self.assertEqual(self.run_workflow('--retry-publication').returncode, 0)
+
+    def test_state_only_create_failure_keeps_old_open_and_retry_is_idempotent(self):
         self.state_only_run()
         self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '1'
         gh = self.home / '.local/bin/gh'
@@ -463,7 +596,8 @@ else:
         self.assertEqual(self.run_workflow().returncode, 1)
         run = self.receipt()
         self.assertEqual(run['phase'], 'ready')
-        self.assertEqual(run['superseded_prs'][0]['status'], 'closed')
+        self.assertEqual(run['superseded_prs'][0]['status'], 'planned')
+        self.assertEqual(json.loads((self.home / 'pr.json').read_text())['state'], 'OPEN')
         self.set_collector('sys.exit(99)')
         gh.write_text(original)
         self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '0'
@@ -487,12 +621,13 @@ else:
         gh = self.home / '.local/bin/gh'
         original = gh.read_text()
         gh.write_text(original.replace("elif a[:2] == ['pr','view']:",
-            "elif a[:2] == ['pr','view']:\n    if current['state'] == 'CLOSED': sys.exit(7)"))
+            "elif a[:2] == ['pr','view']:\n    if next(pr for pr in prs if pr['url'] == a[2])['state'] == 'CLOSED': sys.exit(7)"))
         self.assertEqual(self.run_workflow().returncode, 1)
         run = self.receipt()
-        self.assertEqual(run['phase'], 'ready')
+        self.assertEqual(run['phase'], 'superseding')
         self.assertEqual(run['superseded_prs'][0]['status'], 'planned')
-        self.assertEqual(json.loads((self.home / 'pr.json').read_text())['state'], 'CLOSED')
+        self.assertEqual(json.loads((self.home / 'old-prs.json').read_text())[0]['state'], 'CLOSED')
+        self.assertEqual(json.loads((self.home / 'pr.json').read_text())['state'], 'OPEN')
         gh.write_text(original)
         self.set_collector('sys.exit(99)')
         result = self.run_workflow('--retry-publication')
@@ -508,7 +643,7 @@ else:
                       .replace("        p.write_text(json.dumps(current))",
                                "        p.write_text(json.dumps(current))\n    sys.exit(7)"))
         self.assertEqual(self.run_workflow().returncode, 1)
-        pr = json.loads((self.home / 'pr.json').read_text())
+        pr = json.loads((self.home / 'old-prs.json').read_text())[0]
         self.assertEqual(pr['state'], 'OPEN')
         self.assertEqual(len(pr['comments']), 1)
         gh.write_text(original)
@@ -527,8 +662,25 @@ else:
         self.assertEqual(result.returncode, 1, result.stderr)
         self.assertIn('read-back mismatch', result.stderr)
         run = self.receipt()
-        self.assertEqual(run['phase'], 'ready')
-        self.assertEqual(self.git('ls-remote', 'origin', 'refs/heads/' + run['branch']), '')
+        self.assertEqual(run['phase'], 'superseding')
+        self.assertEqual(self.git('ls-remote', 'origin', 'refs/heads/' + run['branch']).split()[0], run['head'])
+        self.assertEqual(json.loads((self.home / 'pr.json').read_text())['state'], 'OPEN')
+
+    def test_replacement_notice_requires_whole_url_tokens(self):
+        first = self.state_only_run()
+        self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '1'
+        gh = self.home / '.local/bin/gh'
+        original = gh.read_text()
+        gh.write_text(original.replace("elif a[:2] == ['pr','view']:",
+            "elif a[:2] == ['pr','view']:\n"
+            f"    if a[2] != {first['pr']!r}: current['body'] = current['body'].replace({first['pr']!r}, {first['pr'] + '8'!r})"))
+        result = self.run_workflow()
+        self.assertEqual(result.returncode, 1, result.stderr)
+        self.assertIn('supersession notice missing', result.stderr)
+        self.assertEqual(json.loads((self.home / 'old-prs.json').read_text())[0]['state'], 'OPEN')
+        self.assertEqual(self.receipt()['phase'], 'ready')
+        gh.write_text(original)
+        self.assertEqual(self.run_workflow('--retry-publication').returncode, 0)
 
     def test_state_only_replacement_with_failed_health_keeps_nonzero_exit(self):
         self.state_only_run()
@@ -548,7 +700,7 @@ else:
         result = self.run_workflow()
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn('skipped: collection PR awaiting review', result.stderr)
-        self.assertEqual(self.receipt()['skipped'], 'awaiting-review')
+        self.assertEqual(self.receipt().get('skipped'), 'awaiting-review')
         self.assertEqual(self.receipt()['exit_code'], 0)
         self.assertEqual((self.home / 'pr.json').read_text(), first)
         self.assertEqual(len(list((self.home / 'Work/Argus/src/policai-collection-runs').iterdir())), 1)
@@ -559,7 +711,7 @@ else:
         result = self.run_workflow()
         self.assertEqual(result.returncode, 1)
         self.assertIn('grace 72h', result.stderr)
-        self.assertEqual(self.receipt()['skipped'], 'awaiting-review')
+        self.assertEqual(self.receipt().get('skipped'), 'awaiting-review')
         self.assertEqual(len(list((self.home / 'Work/Argus/src/policai-collection-runs').iterdir())), 1)
 
     def test_pending_pr_without_age_fails_closed(self):
@@ -585,6 +737,41 @@ else:
         self.assertEqual(self.receipt()['head'], before['head'])
         self.assertEqual(self.run_workflow('--retry-publication').returncode, 0)
         self.assertEqual(len(list((self.home / 'Work/Argus/src/policai-collection-runs').iterdir())), 1)
+
+    def advance_main_after_next_push(self):
+        real_git = subprocess.check_output(['which', 'git'], text=True).strip()
+        shim = self.home / '.local/bin/git'
+        shim.write_text(
+            '#!/usr/bin/env python3\nimport subprocess,sys\n'
+            f'real_git = {real_git!r}\n'
+            'args = sys.argv[1:]\n'
+            'subprocess.check_call([real_git, *args])\n'
+            'if args[:1] == ["push"]:\n'
+            f'    subprocess.check_call([real_git, "-C", {str(self.repo)!r}, "commit", "--allow-empty", "-m", "main moved"])\n'
+            f'    subprocess.check_call([real_git, "-C", {str(self.repo)!r}, "push", "origin", "main"])\n')
+        shim.chmod(0o755)
+
+    def test_toggle_off_main_advances_after_push_still_opens_pr(self):
+        self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '0'
+        self.advance_main_after_next_push()
+        result = self.run_workflow()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(self.receipt()['phase'], 'published')
+        self.assertEqual(json.loads((self.home / 'pr.json').read_text())['state'], 'OPEN')
+        self.assertNotEqual(self.git('ls-remote', 'origin', 'refs/heads/main').split()[0], self.base)
+
+    def test_supersession_main_advances_after_push_keeps_old_open(self):
+        first = self.state_only_run()
+        self.env['POLICAI_COLLECT_SUPERSEDE_STATE_ONLY'] = '1'
+        self.advance_main_after_next_push()
+        result = self.run_workflow()
+        self.assertEqual(result.returncode, 1, result.stderr)
+        self.assertIn('main advanced', result.stderr)
+        pr = json.loads((self.home / 'pr.json').read_text())
+        self.assertEqual(pr['url'], first['pr'])
+        self.assertEqual(pr['state'], 'OPEN')
+        self.assertEqual(pr['comments'], [])
+        self.assertEqual(self.receipt()['phase'], 'ready')
 
     def test_main_advancement_during_run_fails_closed(self):
         # Use a second actual commit on main to reproduce a concurrent remote update.

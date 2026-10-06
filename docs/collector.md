@@ -270,20 +270,27 @@ Each run holds the existing concurrency lock and:
 
 By default, the next scheduled collection is blocked until a pending collection
 PR is reviewed/merged/closed; it never overwrites a reviewer's pending data.
-The opt-in **policy proposal** `POLICAI_COLLECT_SUPERSEDE_STATE_ONLY=1` (default
-`0`, pending Daniel's approval) permits a fresh-main run only when every pending
-collection PR changes solely `data/watch-state.json` and/or
+The opt-in **policy proposal** `POLICAI_COLLECT_SUPERSEDE_STATE_ONLY=1` defaults
+to `0` and requires maintainer approval to enable (host environment change).
+It permits a fresh-main run only when every pending collection PR is an
+unreviewed draft, changes solely `data/watch-state.json` and/or
 `public/data/meta.json`, has unchanged register hashes/blobs, and matches a
-retained collector receipt and exact collector-authored branch head. Any
-editorial/feed change or missing provenance retains the ordinary review wait.
-After output/structural validation, the replacement run records superseded URLs,
-comments on and closes those old state-only PRs, and lists them in any new draft
-PR. Branches and all old evidence remain intact. Main/head changes or an old
-PR merged during the run refuse publication for manual reconciliation. See the
-[wrapper policy and recovery details](../ops/collector/README.md#opt-in-state-only-supersession-policy-proposal),
-including no-changes runs and retries after partial publication. Installation
-and enabling the toggle require separate host approval; this proposal is not
-an instruction to modify the installed script or act on any current PR.
+retained collector receipt and exact branch head. The receipt base must be an
+ancestor of freshly fetched main; the author-string check is consistency only,
+not independent provenance. Ready/reviewed, editorial/feed or unknown-provenance
+PRs retain the ordinary review wait.
+After output/structural validation, the wrapper pushes and creates the replacement
+draft, verifies its read-back and superseded URL notices, then comments on and
+closes the old state-only PRs. Branches and all old evidence remain intact.
+No-changes runs (including failures without output) leave the old PRs open.
+A close failure is nonzero and leaves the verified replacement visible alongside
+any old PRs not yet closed. Its `superseding` receipt blocks new collection;
+`--retry-publication` re-verifies the existing replacement without recollecting.
+Main/head/review changes require manual reconciliation. With the toggle on and
+no merges, changed output can cause daily PR churn without advancing main's state.
+See the [wrapper policy and recovery details](../ops/collector/README.md#opt-in-state-only-supersession-policy-proposal).
+Installation and enabling the toggle require separate host approval; this proposal
+is not an instruction to modify the installed script or act on any current PR.
 The existing main-following deployment timer can consume merged data through
 ISR without a rebuild. A draft branch push does not activate it, and a PR alone
 is not evidence of current public freshness. The existing scheduled failure
