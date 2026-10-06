@@ -128,6 +128,8 @@ Defined in `src/types/index.ts` — always import from `@/types`:
 - **PolicyType:** `legislation | regulation | guideline | framework | standard | practice_note | policy | tool | funding_program`
 - **PolicyStatus:** `proposed | active | amended | superseded | closed | repealed | trashed` (unverified and `trashed` records are hidden from public register reads; `superseded` records carry `supersededBy`)
 - **Policy** — register entity (with optional `supersededBy`, `lastReviewedAt`)
+- **PolicyDate** — `Policy.dates[]` entries: `type` (`POLICY_DATE_TYPES`), calendar `date`, required `precision` (`day | month | year`; month/year dates anchor on the first day and never render a day), optional `primary` and `source`. Exactly one date is primary and backs `effectiveDate`.
+- **Deadline date types** (`DEADLINE_DATE_TYPES`): `consultation_closed | compliance_due | scheduled_review` — dates that fall due on an instrument rather than change it. They cannot be primary; future ones feed the homepage "Upcoming deadlines" rail and `/this-week` (`src/lib/this-week.ts`). Values are editorial, source-verified entries like any other date.
 - **Development**, **CollectionMeta** — feed + collector metadata
 - **TimelineEvent**, **Agency**, **SourceReview**, **McpAuditLog**
 

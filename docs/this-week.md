@@ -17,11 +17,40 @@ public access. That preserves withholding, stale-verification projection and
 related-record filtering. Selection helpers are not replacements for these gates.
 
 Coming up uses today's Sydney date, independently of collection freshness. It
-includes verified proposed, active and amended policies with effective,
-commenced or consultation-closed dates today or later. Current month/year-only
+includes verified proposed, active and amended policies with effective or
+commenced dates, or a deadline date, today or later. Current month/year-only
 dates remain visible with their original precision and an exact-day warning.
 Impossible dates and duplicate entries are excluded. Calendar dates use the
 register's normalized YYYY-MM-DD storage with separate precision metadata.
+
+### Deadlines
+
+Deadlines are ordinary `Policy.dates` entries whose type is in
+`DEADLINE_DATE_TYPES` (`src/types/index.ts`):
+
+| Type | Display name | Use for |
+|---|---|---|
+| `consultation_closed` | Consultation closed | Submissions to a consultation or inquiry close |
+| `compliance_due` | Compliance due | Regulated entities must meet an obligation (end of a transition period, a reporting or registration date) |
+| `scheduled_review` | Scheduled review | The instrument names a date by which it will be reviewed |
+
+There is no separate deadlines array. `npm run validate:data` applies the usual
+date rules (known type, one entry per type, required precision, month/year
+anchors on the first day, source evidence on verified records) and rejects a
+deadline as the primary date, because the primary date backs `effectiveDate`
+and the register key date.
+
+The homepage `src/app/page.tsx` splits the same selection with
+`splitUpcomingDeadlines()`. Deadlines render in the server-rendered "Upcoming
+deadlines" rail (`src/components/upcoming-deadlines-rail.tsx`); commencements
+stay in "Coming up", so no date appears twice. The rail stays visible with an
+empty state when no deadline is recorded. It links each item to its policy page
+and shows month/year dates as a month or year, with no day count. Policy pages
+list deadline dates under "Deadlines" in the "At a glance" panel, not under
+"Policy changes".
+
+Adding deadline values is an editorial step: record the date with its source
+evidence like any other verified date.
 
 The route is dynamic so deadlines advance even when collection stalls. No
 canonical JSON is modified. The page does not generate legal significance claims
