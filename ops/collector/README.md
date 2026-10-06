@@ -169,8 +169,10 @@ already `published` run retains that phase even if rechecking fails, so it does
 not create an incomplete-run blocker for the timer. The failed retry still
 returns nonzero, and the normal pending-PR gate still applies. A replacement
 that was merged, closed or marked ready, a reviewed old PR, or a reopened PR
-whose closure was recorded requires manual reconciliation. Storage admission
-still bounds new runs; opt-in supersession does not authorise cleanup or make coverage
+whose closure was recorded requires manual reconciliation for retry. A later
+scheduled run may supersede a reopened PR again unless it is reviewed or taken
+out of draft; mark it ready or review it to keep it. Storage admission still
+bounds new runs; opt-in supersession does not authorise cleanup or make coverage
 health successful. A failed-health run can still supply structurally valid
 state, but its original nonzero collection exit remains nonzero.
 

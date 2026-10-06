@@ -25,7 +25,9 @@ verified replacement alongside any old PRs not yet closed. The `superseding`
 receipt requires `--retry-publication` or manual reconciliation, not recollection.
 Retry never lowers an already `published` phase, even if rechecking fails.
 A concurrent merge, changed head or review, or a reopened PR whose closure was
-recorded, requires manual reconciliation.
+recorded, requires manual reconciliation for retry. A later scheduled run may
+supersede a reopened PR again unless it is reviewed or taken out of draft; mark
+it ready or review it to keep it.
 With the toggle on and no merges, changed output can cause daily PR churn while
 main's watch state and freshness remain unchanged.
 No automatic merge or deletion occurs. Installing this source and changing
