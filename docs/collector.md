@@ -237,7 +237,10 @@ How each path presents it (`src/lib/pipeline/identity.ts` holds the token):
 
 - Plain HTTP (Node fetch and the HTTP/1.1 fallback):
   `Mozilla/5.0 (compatible; Policai/1.0 (+https://policai.org))`, for every
-  source, including the exempt ones.
+  source, including the exempt ones. Format change: before E24 this string
+  was `Mozilla/5.0 (compatible; Policai/1.0; +https://policai.org)`, so
+  server-log or WAF rules that match the old string exactly need updating;
+  rules that match `Policai/1.0` still match.
 - Headless browser: the reduced Chrome UA of the launched build with the
   token appended, e.g. `... Chrome/149.0.0.0 Safari/537.36 Policai/1.0
   (+https://policai.org)`. Never `HeadlessChrome`.
@@ -258,7 +261,13 @@ used, the run log says `identity exception expired`, the source's
 `sourceResults` entry in `meta.json` carries `identityException: "expired"`
 (`"active"` while it applies), and a refusal is reported as an ordinary source
 failure. `npm run validate:data` prints a warning, not an error, for each
-expired exception, so the expiry is visible without failing CI. To end the
+expired exception, so the expiry is visible without failing CI.
+`npm run audit:sources` resolves identity the same way
+(`resolveSourceIdentity`), so it audits with the declared identity except for
+exempt sources while their exception is live, and tags each exempt source's
+line with `[identity exception active until 2026-10-21]` or
+`[identity exception expired on 2026-10-21]` (`identityException` and
+`identityNote` in `--json`). To end the
 exception, remove the field from the source, or move a source that still
 refuses to manual tracking.
 

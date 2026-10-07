@@ -19,6 +19,10 @@ import {
 } from '../src/lib/pipeline/browser-fetch';
 import { retrieveSource } from '../src/lib/pipeline/fetch';
 import {
+  resolveSourceIdentity,
+  type IdentityExceptionState,
+} from '../src/lib/pipeline/identity';
+import {
   getAutomaticSources,
   getManualSources,
   getSourceById,
@@ -46,6 +50,9 @@ interface SourceAuditResult {
   contentType?: string;
   contentHash?: string;
   error?: string;
+  /** Present when the source carries a time-boxed identity exception (E24). */
+  identityException?: Exclude<IdentityExceptionState, 'none'>;
+  identityNote?: string;
 }
 
 function parseArgs(argv: string[]): AuditOptions {
@@ -96,9 +103,17 @@ async function createOptionalBrowserFetch(): Promise<BrowserFetch | null> {
 
 async function auditSource(
   source: WatchSource,
-  browserFetchImpl?: typeof fetch,
+  browserFetchImpl: typeof fetch | undefined,
+  now: Date,
 ): Promise<SourceAuditResult> {
   const startedAt = Date.now();
+  // Mirror the collector: the declared Policai identity unless the source's
+  // time-boxed exception is still live.
+  const { identity, state, note } = resolveSourceIdentity(source, now);
+  const identityFields =
+    state === 'none' || note === null
+      ? {}
+      : { identityException: state, identityNote: note };
   try {
     const attempt = async (
       fetchImpl: typeof fetch | undefined,
@@ -109,6 +124,7 @@ async function auditSource(
         timeoutMs,
         fetchImpl,
         hashLinkedDocuments: source.kind === 'document',
+        identity,
       });
       let extraction: {
         itemCount: number;
@@ -177,6 +193,7 @@ async function auditSource(
       finalUrl: retrieved.evidence.finalUrl,
       contentType: retrieved.evidence.contentType,
       contentHash: retrieved.evidence.contentHash,
+      ...identityFields,
     };
   } catch (error) {
     return {
@@ -191,6 +208,7 @@ async function auditSource(
       itemCount: null,
       candidateCount: 0,
       error: error instanceof Error ? error.message : String(error),
+      ...identityFields,
     };
   }
 }
@@ -209,10 +227,11 @@ async function main() {
   }
 
   const browserFetch = await createOptionalBrowserFetch();
+  const now = new Date();
   let results: SourceAuditResult[];
   try {
     results = await mapWithConcurrency(sources, 4, (source) =>
-      auditSource(source, browserFetch?.fetchImpl),
+      auditSource(source, browserFetch?.fetchImpl, now),
     );
   } finally {
     await browserFetch?.close();
@@ -245,7 +264,8 @@ async function main() {
       const detail = result.ok
         ? `${result.itemCount} items, ${result.candidateCount} AI-policy candidates, ${result.durationMs}ms`
         : result.error;
-      console.log(`${outcome} ${result.sourceId}: ${detail}`);
+      const identityNote = result.identityNote ? ` [${result.identityNote}]` : '';
+      console.log(`${outcome} ${result.sourceId}: ${detail}${identityNote}`);
     }
     console.log(
       `audit-sources: ${successes}/${results.length} sources reachable (${Math.round(

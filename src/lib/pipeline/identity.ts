@@ -72,6 +72,41 @@ export function collectorIdentityFor(
     : 'declared';
 }
 
+export interface ResolvedSourceIdentity {
+  identity: CollectorIdentity;
+  state: IdentityExceptionState;
+  /** One-line operator note, or null when the source has no exception. */
+  note: string | null;
+}
+
+/**
+ * Identity a source retrieves with on `now`, plus the operator note that
+ * `npm run audit:sources` prints beside it. Built on `identityExceptionState`,
+ * the same rule the collector applies.
+ */
+export function resolveSourceIdentity(
+  source: Pick<WatchSource, 'identityException'>,
+  now: Date,
+): ResolvedSourceIdentity {
+  const state = identityExceptionState(source, now);
+  const until = source.identityException?.until;
+  if (state === 'active') {
+    return {
+      identity: 'exempt',
+      state,
+      note: `identity exception active until ${until}`,
+    };
+  }
+  if (state === 'expired') {
+    return {
+      identity: 'declared',
+      state,
+      note: `identity exception expired on ${until}`,
+    };
+  }
+  return { identity: 'declared', state, note: null };
+}
+
 /** Identity requested through a fetch init; anything unrecognised declares. */
 export function requestedCollectorIdentity(
   init?: RequestInit,

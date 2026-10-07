@@ -9,6 +9,7 @@ import {
   firecrawlRequestHeaders,
   identityExceptionState,
   requestedCollectorIdentity,
+  resolveSourceIdentity,
 } from './identity';
 
 const EXCEPTION = { until: '2026-10-21', reason: 'allow-list request pending' };
@@ -98,5 +99,39 @@ describe('identity exceptions', () => {
       expect(identityExceptionState(source, now)).toBe('expired');
       expect(collectorIdentityFor(source, now)).toBe('declared');
     }
+  });
+});
+
+describe('resolveSourceIdentity (collector and audit:sources)', () => {
+  it('declares the identity with no note for a source without an exception', () => {
+    expect(
+      resolveSourceIdentity({}, new Date('2026-10-07T00:00:00.000Z')),
+    ).toEqual({ identity: 'declared', state: 'none', note: null });
+  });
+
+  it('exempts a source while its exception is live and says until when', () => {
+    expect(
+      resolveSourceIdentity(
+        { identityException: EXCEPTION },
+        new Date('2026-10-21T12:59:00.000Z'),
+      ),
+    ).toEqual({
+      identity: 'exempt',
+      state: 'active',
+      note: 'identity exception active until 2026-10-21',
+    });
+  });
+
+  it('declares the identity once the exception has expired and says so', () => {
+    expect(
+      resolveSourceIdentity(
+        { identityException: EXCEPTION },
+        new Date('2026-10-21T13:00:00.000Z'),
+      ),
+    ).toEqual({
+      identity: 'declared',
+      state: 'expired',
+      note: 'identity exception expired on 2026-10-21',
+    });
   });
 });
