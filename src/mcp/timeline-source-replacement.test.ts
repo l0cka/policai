@@ -20,6 +20,7 @@ vi.mock('@/lib/data-lock', () => ({
 import { handleStageSourceCapture, handleApproveStagedSource, handlePublishStagedSource } from './tool-handlers';
 import { getSourceReviews, getTimelineEvents } from '@/lib/data-service';
 import { validateSourceReviews } from '@/lib/validate-data';
+import { timelineRevisionHash } from '@/lib/policy-revision';
 
 const oldUrl = 'https://example.gov.au/index';
 const newUrl = 'https://example.gov.au/instrument';
@@ -65,13 +66,15 @@ describe('timeline source replacement through real MCP handlers', () => {
   });
 
   it.each([
-    { replaceTargetSource: false }, { targetRecordId: undefined },
-    { proposedRecord: undefined }, { targetRecordId: 'missing' },
-    { url: oldUrl },
-    { proposedRecord: { ...event(), id: 'different', sourceUrl: newUrl } },
-    { proposedRecord: { ...event(), sourceUrl: oldUrl } },
-  ])('refuses incomplete or mismatched replacement staging %j', async (override) => {
-    await expect(stage(override)).rejects.toThrow();
+    [{ replaceTargetSource: false }, 'targetRecordId "tracked-event" does not identify a tracked timeline event with this source URL'],
+    [{ targetRecordId: undefined }, 'Replacing a tracked source requires a different official browser capture, the target record id, and an explicit proposedRecord'],
+    [{ proposedRecord: undefined }, 'Replacing a tracked source requires a different official browser capture, the target record id, and an explicit proposedRecord'],
+    [{ targetRecordId: 'missing' }, 'targetRecordId "missing" does not identify a tracked timeline event with this source URL'],
+    [{ url: oldUrl }, 'Replacing a tracked source requires a different official browser capture, the target record id, and an explicit proposedRecord'],
+    [{ proposedRecord: { ...event(), id: 'different', sourceUrl: newUrl } }, 'Source replacement proposedRecord must preserve the target record id and use the captured source URL'],
+    [{ proposedRecord: { ...event(), sourceUrl: oldUrl } }, 'Source replacement proposedRecord must preserve the target record id and use the captured source URL'],
+  ] satisfies Array<[Record<string, unknown>, string]>)('refuses incomplete or mismatched replacement staging %j', async (override, message) => {
+    await expect(stage(override)).rejects.toThrow(message);
     expect(await getSourceReviews()).toEqual([]);
     expect((await readEvent()).sourceUrl).toBe(oldUrl);
   });
@@ -129,17 +132,68 @@ describe('timeline source replacement through real MCP handlers', () => {
     await expect(stage({ proposedRecord: { ...event(), sourceUrl: newUrl, relatedPolicyId: policy.id } })).rejects.toThrow('identity owned');
   });
 
+  it('refuses policy B source when the event is already related to policy A', async () => {
+    const policyA = buildPolicy({ id: 'policy-a', sourceUrl: 'https://example.gov.au/a' });
+    const policyB = buildPolicy({ id: 'policy-b', sourceUrl: newUrl });
+    const target = { ...event(), relatedPolicyId: policyA.id };
+    files.set('policies.json', [policyA, policyB]);
+    files.set('timeline.json', [target]);
+    await expect(stage({ proposedRecord: { ...target, sourceUrl: newUrl } })).rejects.toThrow('Tracked source redirected to an identity owned by another record or review');
+    expect(await getSourceReviews()).toEqual([]);
+    expect(await readEvent()).toEqual(target);
+  });
+
+  it('refuses dropping the existing relationship at staging', async () => {
+    const policy = buildPolicy({ id: 'related-policy', sourceUrl: newUrl });
+    const target = { ...event(), relatedPolicyId: policy.id };
+    files.set('policies.json', [policy]);
+    files.set('timeline.json', [target]);
+    await expect(stage({ proposedRecord: { ...target, relatedPolicyId: undefined, sourceUrl: newUrl } })).rejects.toThrow('Tracked source redirected to an identity owned by another record or review');
+    expect(await getSourceReviews()).toEqual([]);
+    expect(await readEvent()).toEqual(target);
+  });
+
+  it('refuses changing the relationship at approval even with the current revision hash', async () => {
+    const policy = buildPolicy({ id: 'related-policy', sourceUrl: newUrl });
+    const other = buildPolicy({ id: 'other-policy', sourceUrl: 'https://example.gov.au/other' });
+    const target = { ...event(), relatedPolicyId: policy.id };
+    files.set('policies.json', [policy, other]);
+    files.set('timeline.json', [target]);
+    const staged = await stage({ proposedRecord: { ...target, sourceUrl: newUrl } });
+    await expect(approve(staged.id, {
+      proposedRecord: { ...staged.proposedRecord, relatedPolicyId: other.id },
+      expectedTargetRevisionHash: timelineRevisionHash(await readEvent()),
+    })).rejects.toThrow('already used');
+    expect(await readEvent()).toEqual(target);
+    expect((await getSourceReviews()).find((review) => review.id === staged.id)?.status).toBe('pending_review');
+  });
+
+  it('refuses an approved but unpublished review of the related policy', async () => {
+    const policy = buildPolicy({ id: 'related-policy', sourceUrl: newUrl });
+    const target = { ...event(), relatedPolicyId: policy.id };
+    const approvedReview = {
+      id: 'approved-policy-review', entryKind: 'policy', status: 'approved',
+      sourceUrl: newUrl, sourceEvidence: { url: newUrl }, proposedRecord: policy,
+    };
+    files.set('policies.json', [policy]);
+    files.set('timeline.json', [target]);
+    files.set('source-reviews.json', [approvedReview]);
+    await expect(stage({ proposedRecord: { ...target, sourceUrl: newUrl } })).rejects.toThrow('Tracked source redirected to an identity owned by another record or review');
+    expect(await getSourceReviews()).toEqual([approvedReview]);
+    expect(await readEvent()).toEqual(target);
+  });
+
   it('keeps target revisions and capture fingerprints binding at approval and publication', async () => {
     const staged = await stage();
     files.set('timeline.json', [{ ...event(), title: 'Edited since staging' }]);
     await expect(approve(staged.id)).rejects.toThrow('changed after');
     files.set('timeline.json', [event()]);
-    await expect(approve(staged.id, { reviewer: 'Someone else' })).rejects.toThrow();
+    await expect(approve(staged.id, { reviewer: 'Someone else' })).rejects.toThrow('The approving reviewer must be the named browser-capture reviewer');
     await approve(staged.id);
     files.set('timeline.json', [{ ...event(), title: 'Edited after approval' }]);
     await expect(publish(staged.id)).rejects.toThrow('already exists');
     files.set('timeline.json', [event()]);
-    await expect(handlePublishStagedSource({ id: staged.id, adminToken, browserCapture: { ...capture(), pageText: 'Changed official source text that must require a new review.' } })).rejects.toThrow();
+    await expect(handlePublishStagedSource({ id: staged.id, adminToken, browserCapture: { ...capture(), pageText: 'Changed official source text that must require a new review.' } })).rejects.toThrow('Official source changed after approval; re-approve it before publication');
     expect((await readEvent()).sourceUrl).toBe(oldUrl);
   });
 

@@ -374,7 +374,8 @@ dates (use `reviewedDate` for a commencement date not provided by page metadata)
 A timeline replacement may adopt its **already-related** policy's canonical source
 URL. The proposed event must preserve that `relatedPolicyId`. This narrow exception
 also recognises published reviews of that policy, but does not permit collisions
-with unrelated policies, other events, pending reviews, or redirect aliases.
+with unrelated policies, other events, pending or approved (unpublished) reviews,
+or redirect aliases.
 Staging, approval and publication each enforce identity ownership; this does not
 relax the policy replacement path.
 

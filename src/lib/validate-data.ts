@@ -1469,6 +1469,7 @@ export function validateSourceReviews(
           errors.push(`${label}: invalid target timeline event source replacement`);
         }
       } else if (!sourceUrlsEqual(targetTimelineEvent.sourceUrl, review.sourceUrl)) {
+        // Unlike the policy rule, retain rejected old-URL history because timeline publication rejects older unresolved reviews.
         const supersededByPublishedSourceReplacement =
           (review.status === 'published' || review.status === 'rejected') &&
           reviews.some((candidate) =>

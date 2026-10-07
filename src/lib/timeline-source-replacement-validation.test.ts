@@ -33,6 +33,12 @@ describe('timeline source replacement validation', () => {
     expect(errors([review()])).toContain('historical: sourceUrl does not match the target timeline event source');
     expect(errors([review(), replacement({ status: 'approved' })])).toContain('historical: sourceUrl does not match the target timeline event source');
   });
+  it('accepts rejected old-URL history only with a published replacement link', () => {
+    const rejected = review({ status: 'rejected', rejectionReason: 'Superseded by newer source update replacement' });
+    expect(errors([rejected, replacement()])).toEqual([]);
+    expect(errors([rejected])).toContain('historical: sourceUrl does not match the target timeline event source');
+    expect(errors([rejected, replacement({ status: 'approved' })])).toContain('historical: sourceUrl does not match the target timeline event source');
+  });
   it('accepts staged replacements and approved partial publication', () => {
     expect(errors([replacement({ status: 'pending_review' })], previous)).toEqual([]);
     expect(errors([replacement({ status: 'approved' })])).toEqual([]);
