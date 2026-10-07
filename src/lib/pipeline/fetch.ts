@@ -17,7 +17,8 @@ import type {
 } from '@/types';
 import {
   COLLECTOR_USER_AGENT,
-  type CollectorIdentity,
+  destinationCollectorIdentity,
+  type IdentityAuthority,
   type CollectorRequestInit,
 } from './identity';
 
@@ -112,11 +113,8 @@ export interface RetrieveSourceOptions {
   destinationPolicy?: 'official' | 'public-https';
   /** Internal escape hatch used when hashing a linked document itself. */
   hashLinkedDocuments?: boolean;
-  /**
-   * Identity the browser retriever presents (see `./identity`). Plain HTTP
-   * always sends the declared identity; defaults to 'declared'.
-   */
-  identity?: CollectorIdentity;
+  /** Source-bound browser permission; plain HTTP always declares identity. */
+  identityAuthority?: IdentityAuthority;
   http1Fallback?: (
     url: string,
     options: {
@@ -1167,7 +1165,11 @@ export async function retrieveSource(
           },
           redirect: 'manual',
           signal: deadlineSignal,
-          collectorIdentity: options.identity ?? 'declared',
+          collectorIdentity: destinationCollectorIdentity(
+            options.identityAuthority,
+            currentUrl,
+          ),
+          identityAuthority: options.identityAuthority,
         };
         response = await fetchImpl(currentUrl, init);
         const location = response.headers.get('location');

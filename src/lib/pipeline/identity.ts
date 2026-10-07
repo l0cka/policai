@@ -1,8 +1,8 @@
 import { isValidCalendarDate } from '@/lib/calendar-date';
-import type { WatchSource } from './sources';
+import { WATCH_SOURCES, type WatchSource } from './sources';
 
 /**
- * The collector's declared identity (E24, 2026-10-06): every retrieval path
+ * The collector's declared identity (E24, 2026-10-07): every retrieval path
  * (plain HTTP, the headless browser and Firecrawl) presents this token. A
  * source that refuses it is treated as blocked and moves to manual tracking;
  * the only opt-out is a time-boxed `identityException` on the source.
@@ -15,7 +15,7 @@ export const COLLECTOR_USER_AGENT = `Mozilla/5.0 (compatible; ${COLLECTOR_IDENTI
 /**
  * Chrome version used when the rendering browser's own version is unknown:
  * Firecrawl's renderer, and a launched browser that does not report one.
- * Matches the playwright-core Chromium build audited on 2026-10-06.
+ * Matches the playwright-core Chromium build audited on 2026-10-07.
  */
 export const REFERENCE_CHROME_VERSION = '149.0.0.0';
 
@@ -26,7 +26,7 @@ export const REFERENCE_CHROME_VERSION = '149.0.0.0';
 export type CollectorIdentity = 'declared' | 'exempt';
 
 export interface SourceIdentityException {
-  /** Last calendar day (Australia/Sydney, YYYY-MM-DD) the exception applies. */
+  /** Exclusive expiry: START of this Australia/Sydney calendar day. */
   until: string;
   /** Why the source may not identify itself, with the decision reference. */
   reason: string;
@@ -36,11 +36,13 @@ export type IdentityExceptionState = 'none' | 'active' | 'expired';
 
 /**
  * Fetch init accepted by the collector's fetch implementations. The browser
- * retriever reads `collectorIdentity` to choose its user agent; Node fetch
- * ignores the unknown key, so it never reaches the network.
+ * rechecks `identityAuthority` for every destination; Node fetch ignores
+ * these keys. `collectorIdentity` is an assessment for diagnostics/tests only.
  */
 export interface CollectorRequestInit extends RequestInit {
+  /** Diagnostic only: never grants authority. */
   collectorIdentity?: CollectorIdentity;
+  identityAuthority?: IdentityAuthority;
 }
 
 /** The collector's calendar day; the collection host runs in Sydney. */
@@ -50,8 +52,9 @@ export function collectorCalendarDate(now: Date): string {
 
 /**
  * Whether a source's identity exception applies on `now`. An exception is
- * honoured through its `until` day and ignored afterwards; a malformed
- * `until` is never honoured.
+ * honoured only BEFORE its `until` day starts in Sydney; a malformed
+ * date or clock is never honoured. Outgoing permission additionally requires
+ * a registered source and matching destination (destinationCollectorIdentity).
  */
 export function identityExceptionState(
   source: Pick<WatchSource, 'identityException'>,
@@ -59,8 +62,8 @@ export function identityExceptionState(
 ): IdentityExceptionState {
   const exception = source.identityException;
   if (!exception) return 'none';
-  if (!isValidCalendarDate(exception.until)) return 'expired';
-  return collectorCalendarDate(now) <= exception.until ? 'active' : 'expired';
+  if (!Number.isFinite(now.getTime()) || !isValidCalendarDate(exception.until)) return 'expired';
+  return collectorCalendarDate(now) < exception.until ? 'active' : 'expired';
 }
 
 export function collectorIdentityFor(
@@ -70,6 +73,52 @@ export function collectorIdentityFor(
   return identityExceptionState(source, now) === 'active'
     ? 'exempt'
     : 'declared';
+}
+
+/** Source-bound permission; every transport rechecks destination and wall clock. */
+export interface IdentityAuthority {
+  sourceId: string;
+  sourceUrl: string;
+  until: string;
+}
+
+export function identityAuthorityFor(
+  source: WatchSource,
+): IdentityAuthority | undefined {
+  if (!source.identityException) return undefined;
+  return {
+    sourceId: source.id,
+    sourceUrl: source.url,
+    until: source.identityException.until,
+  };
+}
+
+export function destinationCollectorIdentity(
+  authority: IdentityAuthority | undefined,
+  destination: string,
+  now: Date = new Date(),
+): CollectorIdentity {
+  if (!authority || !Number.isFinite(now.getTime())) return 'declared';
+  const registered = WATCH_SOURCES.find(
+    source => source.id === authority.sourceId,
+  );
+  if (
+    !registered?.identityException ||
+    registered.url !== authority.sourceUrl ||
+    registered.identityException.until !== authority.until ||
+    identityExceptionState(registered, now) !== 'active'
+  ) return 'declared';
+  try {
+    const target = new URL(destination);
+    const origin = new URL(authority.sourceUrl);
+    if (
+      target.protocol !== 'https:' || target.username || target.password ||
+      target.origin !== origin.origin
+    ) return 'declared';
+    return 'exempt';
+  } catch {
+    return 'declared';
+  }
 }
 
 export interface ResolvedSourceIdentity {
@@ -110,11 +159,12 @@ export function resolveSourceIdentity(
 /** Identity requested through a fetch init; anything unrecognised declares. */
 export function requestedCollectorIdentity(
   init?: RequestInit,
+  destination = '',
 ): CollectorIdentity {
-  return (init as CollectorRequestInit | undefined)?.collectorIdentity ===
-    'exempt'
-    ? 'exempt'
-    : 'declared';
+  return destinationCollectorIdentity(
+    (init as CollectorRequestInit | undefined)?.identityAuthority,
+    destination,
+  );
 }
 
 function userAgentPlatform(): string {
@@ -137,15 +187,7 @@ export function browserUserAgent(
   return identity === 'exempt' ? chrome : `${chrome} ${COLLECTOR_IDENTITY_TOKEN}`;
 }
 
-/**
- * Headers for a Firecrawl scrape request. Self-hosted Firecrawl forwards
- * `headers` to every engine and applies `User-Agent` at the browser-context
- * level. An exempt source sends none, so Firecrawl keeps choosing its own
- * user agent as it did before E24.
- */
-export function firecrawlRequestHeaders(
-  identity: CollectorIdentity,
-): Record<string, string> | undefined {
-  if (identity === 'exempt') return undefined;
+/** Firecrawl has no per-hop exception support: always declare its identity. */
+export function firecrawlRequestHeaders(): Record<string, string> {
   return { 'User-Agent': browserUserAgent(REFERENCE_CHROME_VERSION) };
 }

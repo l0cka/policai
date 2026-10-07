@@ -1,3 +1,4 @@
+import type { CDPSession, Page } from 'playwright-core';
 import {
   assertContentLengthWithinLimit,
   assertSafeSourceUrl,
@@ -15,6 +16,7 @@ import {
   browserUserAgent,
   REFERENCE_CHROME_VERSION,
   requestedCollectorIdentity,
+  type CollectorRequestInit,
 } from './identity';
 
 /**
@@ -65,6 +67,7 @@ export interface BrowserWebSocketRouteLike {
 
 export interface BrowserContextLike {
   newPage(): Promise<BrowserPageLike>;
+  newCDPSession?(page: Page): Promise<Pick<CDPSession, 'send' | 'on'>>;
   route(
     pattern: string,
     handler: (route: BrowserRouteLike) => Promise<void>,
@@ -398,10 +401,9 @@ export function createBrowserFetch(
     let context: BrowserContextLike | undefined;
     try {
       context = await browser.newContext({
-        userAgent: browserUserAgent(
-          chromeVersionOf(browser),
-          requestedCollectorIdentity(init),
-        ),
+        // Never exempt the context: popups, workers, sockets and any traffic
+        // outside the page interceptor must still declare the identity.
+        userAgent: browserUserAgent(chromeVersionOf(browser)),
         locale: BROWSER_LOCALE,
         serviceWorkers: 'block',
         proxy: { server: egressProxy.serverUrl },
@@ -435,6 +437,36 @@ export function createBrowserFetch(
 
       const operation = (async () => {
         const page = await context.newPage();
+        if ((init as CollectorRequestInit | undefined)?.identityAuthority) {
+          if (!context.newCDPSession) {
+            throw new SourceFetchError('Scoped identity interception unavailable', {
+              retryable: false,
+            });
+          }
+          const session = await context.newCDPSession(page as Page);
+          // Playwright route.continue headers persist across redirects, and
+          // routing alone does not intercept every redirect hop. CDP Fetch
+          // pauses each hop; its header override applies to this request only.
+          session.on('Fetch.requestPaused', async (event) => {
+            try {
+              await assertSafeSourceUrl(event.request.url, resolveHost, 'public-https');
+              const headers = Object.entries(event.request.headers)
+                .filter(([name]) => name.toLowerCase() !== 'user-agent')
+                .map(([name, value]) => ({ name, value }));
+              headers.push({ name: 'User-Agent', value: browserUserAgent(
+                chromeVersionOf(browser), requestedCollectorIdentity(init, event.request.url),
+              ) });
+              await session.send('Fetch.continueRequest', { requestId: event.requestId, headers });
+            } catch {
+              await session.send('Fetch.failRequest', {
+                requestId: event.requestId, errorReason: 'BlockedByClient',
+              }).catch(() => context?.close());
+            }
+          });
+          await session.send('Fetch.enable', {
+            patterns: [{ urlPattern: '*', requestStage: 'Request' }],
+          });
+        }
         let navigation: BrowserResponseLike | null;
         try {
           navigation = await page.goto(url, {

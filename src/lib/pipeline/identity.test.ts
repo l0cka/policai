@@ -36,11 +36,8 @@ describe('collector identity', () => {
     expect(userAgent).not.toContain('Policai');
   });
 
-  it('sends the declared identity to Firecrawl unless the source is exempt', () => {
-    expect(firecrawlRequestHeaders('declared')?.['User-Agent']).toMatch(
-      / Policai\/1\.0 \(\+https:\/\/policai\.org\)$/,
-    );
-    expect(firecrawlRequestHeaders('exempt')).toBeUndefined();
+  it('always supplies the declared identity to Firecrawl', () => {
+    expect(firecrawlRequestHeaders()['User-Agent']).toContain(COLLECTOR_IDENTITY_TOKEN);
   });
 
   it('reads the requested identity from the fetch init, declared by default', () => {
@@ -50,7 +47,7 @@ describe('collector identity', () => {
       requestedCollectorIdentity({
         collectorIdentity: 'exempt',
       } as RequestInit),
-    ).toBe('exempt');
+    ).toBe('declared');
     expect(
       requestedCollectorIdentity({
         collectorIdentity: 'anything-else',
@@ -66,12 +63,12 @@ describe('identity exceptions', () => {
     expect(collectorIdentityFor({}, now)).toBe('declared');
   });
 
-  it('honours an exception up to and including its until date (Sydney)', () => {
+  it('honours an exception only before its until date (Sydney)', () => {
     const source = { identityException: EXCEPTION };
     for (const iso of [
       '2026-10-07T00:00:00.000Z',
-      // 2026-10-21 23:59 in Sydney (AEDT, UTC+11).
-      '2026-10-21T12:59:00.000Z',
+      // One millisecond before 2026-10-21 in Sydney (AEDT, UTC+11).
+      '2026-10-20T12:59:59.999Z',
     ]) {
       const now = new Date(iso);
       expect(identityExceptionState(source, now)).toBe('active');
@@ -82,8 +79,8 @@ describe('identity exceptions', () => {
   it('ignores an exception after its until date', () => {
     const source = { identityException: EXCEPTION };
     for (const iso of [
-      // 2026-10-22 00:00 in Sydney, still 21 Oct in UTC.
-      '2026-10-21T13:00:00.000Z',
+      // Start of 2026-10-21 in Sydney, still 20 Oct in UTC.
+      '2026-10-20T13:00:00.000Z',
       '2026-11-01T00:00:00.000Z',
     ]) {
       const now = new Date(iso);
@@ -113,7 +110,7 @@ describe('resolveSourceIdentity (collector and audit:sources)', () => {
     expect(
       resolveSourceIdentity(
         { identityException: EXCEPTION },
-        new Date('2026-10-21T12:59:00.000Z'),
+        new Date('2026-10-20T12:59:59.999Z'),
       ),
     ).toEqual({
       identity: 'exempt',
@@ -126,7 +123,7 @@ describe('resolveSourceIdentity (collector and audit:sources)', () => {
     expect(
       resolveSourceIdentity(
         { identityException: EXCEPTION },
-        new Date('2026-10-21T13:00:00.000Z'),
+        new Date('2026-10-20T13:00:00.000Z'),
       ),
     ).toEqual({
       identity: 'declared',

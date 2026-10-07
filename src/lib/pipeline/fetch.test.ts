@@ -32,7 +32,7 @@ describe('retrieveSource', () => {
       expect((init?.headers as Record<string, string>)['User-Agent']).toBe(
         'Mozilla/5.0 (compatible; Policai/1.0 (+https://policai.org))',
       );
-      expect(init?.collectorIdentity).toBe(identity ?? 'declared');
+      expect(init?.collectorIdentity).toBe('declared');
     }
   });
 

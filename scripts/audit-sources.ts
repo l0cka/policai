@@ -19,6 +19,7 @@ import {
 } from '../src/lib/pipeline/browser-fetch';
 import { retrieveSource } from '../src/lib/pipeline/fetch';
 import {
+  identityAuthorityFor,
   resolveSourceIdentity,
   type IdentityExceptionState,
 } from '../src/lib/pipeline/identity';
@@ -109,7 +110,7 @@ async function auditSource(
   const startedAt = Date.now();
   // Mirror the collector: the declared Policai identity unless the source's
   // time-boxed exception is still live.
-  const { identity, state, note } = resolveSourceIdentity(source, now);
+  const { state, note } = resolveSourceIdentity(source, now);
   const identityFields =
     state === 'none' || note === null
       ? {}
@@ -124,7 +125,7 @@ async function auditSource(
         timeoutMs,
         fetchImpl,
         hashLinkedDocuments: source.kind === 'document',
-        identity,
+        identityAuthority: identityAuthorityFor(source),
       });
       let extraction: {
         itemCount: number;

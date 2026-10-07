@@ -42,9 +42,10 @@ export interface WatchSource {
   fetchStrategy?: SourceFetchStrategy;
   /**
    * Time-boxed permission to retrieve without the declared Policai identity
-   * (see `./identity`). Honoured through `until` and ignored afterwards, so a
-   * refusal then surfaces as a normal source failure. Only the E24 sources
-   * below may carry one.
+   * (see `./identity`). Expires at the START of `until` (Australia/Sydney).
+   * Only the exact source origin is exempt; candidates use the scoped browser,
+   * never Firecrawl while this field remains. Only the E24 sources below
+   * may carry one. A refusal after expiry is a normal source failure.
    */
   identityException?: SourceIdentityException;
   /**
@@ -71,11 +72,11 @@ export interface WatchSource {
 }
 
 /**
- * E24 time-boxed identity exception (Daniel, 2026-10-06, option c): "The
+ * E24 time-boxed identity exception (Daniel, 2026-10-07, option c): "The
  * collector identifies itself. A refusal of that identity is a block we
  * respect, apart from the time-boxed exception."
  *
- * The honest-UA audit of 2026-10-06 (47 browser sources) found 31 accept the
+ * The honest-UA audit of 2026-10-07 (47 browser sources) found 31 accept the
  * declared Policai identity and 16 refuse it with net::ERR_HTTP2_PROTOCOL_ERROR
  * while serving a plain Chrome UA: industry-ai-publications,
  * industry-ministers-media, dta-media, digital-gov-ai, disr-news, naic-news,
@@ -83,13 +84,14 @@ export interface WatchSource {
  * anao-performance-audits, acma-media, tga-media, teqsa-news, esafety-media,
  * fcfcoa-practice-directions and art-practice-directions. Those 16 keep a
  * plain browser UA until 2026-10-21 while an allow-list request is pending.
- * After that the exception is ignored and a refusal is a normal source
- * failure (then manual tracking). No other source may carry an exception.
+ * It expires at the START of that Sydney calendar day (E25). Afterwards
+ * a refusal is a normal source failure; manual retirement needs separate
+ * approval. No other source may carry an exception.
  */
 const E24_IDENTITY_EXCEPTION: SourceIdentityException = {
   until: '2026-10-21',
   reason:
-    'E24: refuses the declared Policai identity (HTTP/2 reset, honest-UA audit 2026-10-06); allow-list request pending.',
+    'E24: refuses the declared Policai identity (HTTP/2 reset, honest-UA audit 2026-10-07); allow-list request pending.',
 };
 
 export const WATCH_SOURCES: WatchSource[] = [

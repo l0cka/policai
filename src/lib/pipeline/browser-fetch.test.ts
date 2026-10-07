@@ -390,7 +390,7 @@ describe('createBrowserFetch', () => {
     );
   });
 
-  it('presents the plain Chrome user agent only when the request is exempt', async () => {
+  it('ignores a bare exempt flag without source authority', async () => {
     const { launch, state } = fakeBrowser(
       {
         'https://www.example.gov.au/news': {
@@ -406,17 +406,17 @@ describe('createBrowserFetch', () => {
     } as RequestInit);
 
     const userAgent = state.contextOptions[0]?.userAgent ?? '';
-    expect(userAgent).toMatch(/Chrome\/149\.0\.0\.0 Safari\/537\.36$/);
-    expect(userAgent).not.toContain('Policai');
+    expect(userAgent).toContain('Chrome/149.0.0.0 Safari/537.36');
+    expect(userAgent).toContain('Policai');
     expect(userAgent).not.toContain('Headless');
   });
 
-  it('carries the requested identity from retrieveSource into the browser context', async () => {
+  it('always declares the context identity, ignoring legacy bare flags', async () => {
     const page = '<html><body><h1>Index</h1><p>' + 'x'.repeat(400) + '</p></body></html>';
     for (const [identity, expectsToken] of [
       [undefined, true],
       ['declared', true],
-      ['exempt', false],
+      ['exempt', true],
     ] as const) {
       const { launch, state } = fakeBrowser(
         { 'https://www.example.gov.au/news': { contents: [page] } },

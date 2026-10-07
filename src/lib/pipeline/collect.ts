@@ -32,7 +32,7 @@ import {
   type RetrievedSource,
 } from './fetch';
 import { scrapeWithFirecrawl } from './firecrawl';
-import { identityExceptionState, type CollectorIdentity } from './identity';
+import { identityAuthorityFor, identityExceptionState } from './identity';
 import {
   getAutomaticSources,
   WATCH_SOURCES,
@@ -1173,8 +1173,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     // E24: every path declares the Policai identity unless the source's
     // time-boxed exception is still current; an expired one is ignored.
     const identityState = identityExceptionState(source, now);
-    const identity: CollectorIdentity =
-      identityState === 'active' ? 'exempt' : 'declared';
+    const identityAuthority = identityAuthorityFor(source);
     const retrievePageWithFallback = async (
       url: string,
     ): Promise<RetrievedSource> => {
@@ -1185,7 +1184,11 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         // browser. Any ok:false — timeout, unavailable, http_error, empty —
         // falls through to Playwright rather than failing the candidate, so
         // this stays reversible while Firecrawl reliability is proven out.
-        const firecrawled = await scrapeWithFirecrawl(url, { identity });
+        // Firecrawl cannot enforce source-bound exceptions on each hop. Even
+        // unrelated candidates from these sources use the scoped browser.
+        const firecrawled = source.identityException
+          ? { ok: false as const, reason: 'identity_scope' }
+          : await scrapeWithFirecrawl(url, { identity: 'declared' });
         if (firecrawled.ok) {
           return retrievedSourceFromFirecrawl(
             firecrawled.markdown,
@@ -1201,11 +1204,11 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
           fetchImpl: browserFetchImpl,
           now: () => now,
           timeoutMs: BROWSER_RETRIEVAL_TIMEOUT_MS,
-          identity,
+          identityAuthority,
         });
       }
       try {
-        return await retrieveSource(url, { fetchImpl, now: () => now, identity });
+        return await retrieveSource(url, { fetchImpl, now: () => now, identityAuthority });
       } catch (error) {
         if (!browserFetchImpl || isBrowserFallbackFutile(error)) throw error;
         log(`[collect] ${source.id}: retrying ${url} with the browser retriever`);
@@ -1213,7 +1216,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
           fetchImpl: browserFetchImpl,
           now: () => now,
           timeoutMs: BROWSER_RETRIEVAL_TIMEOUT_MS,
-          identity,
+          identityAuthority,
         });
       }
     };
@@ -1281,7 +1284,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
             fetchImpl: impl,
             now: () => now,
             hashLinkedDocuments: source.kind === 'document',
-            identity,
+            identityAuthority,
             ...(timeoutMs !== undefined ? { timeoutMs } : {}),
           });
           const extracted =

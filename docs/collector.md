@@ -214,7 +214,8 @@ Firecrawl returns markdown and index parsing needs the page's HTML links.
 Candidate pages discovered from those sources are retrieved through a
 self-hosted Firecrawl instance first (`src/lib/pipeline/firecrawl.ts`),
 falling back to the browser when Firecrawl is unavailable, times out, or
-returns no usable markdown. Every other source falls back to the browser when
+returns no usable markdown. Sources carrying an identity exception bypass
+Firecrawl and use the scoped browser (see Collector identity below). Every other source falls back to the browser when
 the plain HTTP client is blocked or an index renders no extractable items. CI
 installs the browser with `npx playwright-core install --with-deps chromium`
 (cached between runs); without it the collector still runs, minus the
@@ -249,27 +250,56 @@ How each path presents it (`src/lib/pipeline/identity.ts` holds the token):
   `REFERENCE_CHROME_VERSION`, because Firecrawl's renderer does not report
   its own). Self-hosted Firecrawl forwards `headers` to its fetch, Playwright
   and document engines; the Playwright service applies `User-Agent` at the
-  browser-context level.
+  browser-context level. Custom request headers disable Firecrawl's URL-index
+  cache reads and writes; this is not a guarantee about every upstream cache.
 
 The exception is the optional `identityException: { until, reason }` field on
 a `WatchSource`, set only on the 16 sources listed in the E24 comment in
-`src/lib/pipeline/sources.ts` (pinned by `sources.test.ts`). Through `until`
-(an Australia/Sydney calendar day) those sources present the plain Chrome UA
-in the browser and send no `User-Agent` to Firecrawl, which is the behaviour
-before E24. After `until` the exception is ignored: the declared identity is
-used, the run log says `identity exception expired`, the source's
-`sourceResults` entry in `meta.json` carries `identityException: "expired"`
-(`"active"` while it applies), and a refusal is reported as an ordinary source
-failure. `npm run validate:data` prints a warning, not an error, for each
-expired exception, so the expiry is visible without failing CI.
-`npm run audit:sources` resolves identity the same way
-(`resolveSourceIdentity`), so it audits with the declared identity except for
-exempt sources while their exception is live, and tags each exempt source's
-line with `[identity exception active until 2026-10-21]` or
+`src/lib/pipeline/sources.ts` (pinned by `sources.test.ts`). It expires at the
+START of `until` in Australia/Sydney: for E24, 2026-10-21 00:00 AEDT,
+which is 2026-10-20T13:00:00.000Z. There is no exception on 21 October.
+
+Retrieval carries the registered source ID, exact listing URL and expiry,
+not a transferable exempt flag. Before each request the authority is checked
+against the registry, the current wall clock and the destination's exact HTTPS
+origin. No sibling subdomain, other approved source, redirect destination or
+third-party document inherits permission merely because its referring source
+is exempt. Same-origin candidates and documents retain the authorised behavior.
+Plain HTTP always declares the identity.
+
+Browser contexts always declare the identity. For sources carrying exception
+authority, a page-scoped Chromium CDP Fetch interceptor sets the UA before each
+outgoing request, including browser-managed redirect hops, subrequests and
+in-page document downloads. It rechecks the wall clock on every hop; a long run
+cannot carry an active run-start exemption past expiry. Playwright routing alone
+is insufficient: route header overrides persist across redirects. If scoped
+interception cannot be installed, retrieval fails before navigation. Traffic
+outside that page interceptor (including workers, popups and WebSockets) keeps
+the declared context UA. Existing destination checks and the pinned egress proxy
+remain in place.
+
+Firecrawl cannot enforce this per-hop exception. All candidate pages belonging
+to a source with `identityException` bypass Firecrawl and use the scoped browser,
+even cross-origin candidates (which declare identity) and even after expiry,
+until the exception field is removed. The Firecrawl client also rejects a bare
+exempt request before contacting the service. Other sources retain the declared
+Firecrawl path and browser fallback. No Firecrawl installation is changed.
+
+After expiry the declared identity is used, the run log says `identity exception
+expired`, and the source's `sourceResults` entry in `meta.json` carries
+`identityException: "expired"` (`"active"` at assessment while it applies).
+These operator labels describe the assessment, not permission carried to later
+requests. A refusal is reported as an ordinary source failure.
+`npm run validate:data` prints a warning, not an error, for each expired
+exception, so expiry remains visible without failing CI.
+`npm run audit:sources` carries the same source-bound authority to retrieval
+and tags each exception source's line with
+`[identity exception active until 2026-10-21]` (exclusive, Sydney) or
 `[identity exception expired on 2026-10-21]` (`identityException` and
-`identityNote` in `--json`). To end the
-exception, remove the field from the source, or move a source that still
-refuses to manual tracking.
+`identityNote` in `--json`). Source retirement is a separate editorial approval:
+remove the exception after allow-listing, or move a still-refusing source to
+manual tracking. The collector never automatically changes canonical source
+status; `cyber-news` remains manual without an exception.
 
 Manual sources remain enabled. Review them with a browser and record the result
 through the MCP `record_manual_source_review` tool, supplying the human

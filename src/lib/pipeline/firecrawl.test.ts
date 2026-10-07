@@ -82,17 +82,11 @@ describe('scrapeWithFirecrawl', () => {
     );
   });
 
-  it('leaves the Firecrawl user agent unset only for an exempt source', async () => {
-    const fetchMock = vi.fn(async () => new Response(
-      JSON.stringify({ success: true, data: { markdown: 'x', metadata: {} } }), { status: 200 },
-    ));
+  it('refuses exempt requests before calling Firecrawl', async () => {
+    const fetchMock = vi.fn();
     vi.stubGlobal('fetch', fetchMock);
-    await scrapeWithFirecrawl('https://example.test/', { identity: 'exempt' });
-    const calls = fetchMock.mock.calls as unknown as Array<[string, RequestInit]>;
-    const body = JSON.parse(String(calls[0]?.[1]?.body)) as {
-      headers?: Record<string, string>;
-    };
-    expect(body.headers).toBeUndefined();
+    await expect(scrapeWithFirecrawl('https://example.test/', { identity: 'exempt' })).resolves.toMatchObject({ ok: false, reason: 'identity_scope' });
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 
   it('reports empty rather than success when markdown is blank', async () => {

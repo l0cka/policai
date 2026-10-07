@@ -3,7 +3,7 @@
 import { readFileSync } from 'node:fs';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { buildPolicy, buildTimelineEvent } from '@/test/factories';
-import type { WatchSource } from './sources';
+import { WATCH_SOURCES, type WatchSource } from './sources';
 
 // vi.mock is hoisted above every import, including plain top-level const
 // declarations in this file, so the mock fn must come from vi.hoisted().
@@ -2536,18 +2536,19 @@ describe('collect browser fallback', () => {
   });
 
   describe('collector identity', () => {
+    afterEach(() => vi.useRealTimers());
     const exemptSource: WatchSource = {
-      ...HTML_SOURCE,
-      fetchStrategy: 'browser',
-      identityException: {
-        until: '2026-10-21',
-        reason: 'E24 allow-list request pending',
-      },
+      ...WATCH_SOURCES.find(source => source.id === 'industry-ai-publications')!,
+      kind: 'document',
     };
 
     async function runWithClock(source: WatchSource, iso: string) {
+      vi.useFakeTimers({ toFake: ['Date'] });
+      vi.setSystemTime(new Date(iso));
       const browserFetchImpl = fakeFetch({
-        'https://www.example.gov.au/news': INDEX_HTML,
+        [source.url]: source.kind === 'document'
+          ? '<html><body><main><h1>AI policy</h1><p>Government AI guidance.</p></main></body></html>'
+          : INDEX_HTML,
       });
       scrapeWithFirecrawl.mockImplementation(async (url: string) => ({
         ok: true,
@@ -2591,16 +2592,13 @@ describe('collect browser fallback', () => {
       ).toBeUndefined();
     });
 
-    it('honours an identity exception on or before its until date', async () => {
+    it('honours an identity exception before its exclusive until date', async () => {
       const { result, logs, browserFetchImpl } = await runWithClock(
         exemptSource,
-        '2026-10-21T12:00:00.000Z',
+        '2026-10-20T12:00:00.000Z',
       );
       expect(requestedIdentities(browserFetchImpl)).toEqual(['exempt']);
-      expect(scrapeWithFirecrawl).toHaveBeenCalled();
-      for (const call of scrapeWithFirecrawl.mock.calls) {
-        expect(call[1]).toEqual({ identity: 'exempt' });
-      }
+      expect(scrapeWithFirecrawl).not.toHaveBeenCalled();
       expect(result.meta.collector.sourceResults[0].identityException).toBe(
         'active',
       );
@@ -2613,10 +2611,7 @@ describe('collect browser fallback', () => {
         '2026-10-22T00:00:00.000Z',
       );
       expect(requestedIdentities(browserFetchImpl)).toEqual(['declared']);
-      expect(scrapeWithFirecrawl).toHaveBeenCalled();
-      for (const call of scrapeWithFirecrawl.mock.calls) {
-        expect(call[1]).toEqual({ identity: 'declared' });
-      }
+      expect(scrapeWithFirecrawl).not.toHaveBeenCalled();
       expect(result.meta.collector.sourceResults[0].identityException).toBe(
         'expired',
       );
@@ -2626,6 +2621,8 @@ describe('collect browser fallback', () => {
     });
 
     it('reports a refusal after expiry as an ordinary source failure', async () => {
+      vi.useFakeTimers({ toFake: ['Date'] });
+      vi.setSystemTime(new Date('2026-10-22T00:00:00.000Z'));
       const refusingBrowser = vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) => {
         if ((init as { collectorIdentity?: string } | undefined)?.collectorIdentity !== 'exempt') {
           throw new TypeError('page.goto: net::ERR_HTTP2_PROTOCOL_ERROR');

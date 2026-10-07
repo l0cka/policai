@@ -39,6 +39,7 @@ export type FirecrawlResult =
   | {
       ok: false;
       reason:
+        | 'identity_scope'
         | 'timeout'
         | 'unavailable'
         | 'http_error'
@@ -62,6 +63,13 @@ export async function scrapeWithFirecrawl(
   url: string,
   options: FirecrawlOptions = {},
 ): Promise<FirecrawlResult> {
+  if (options.identity === 'exempt') {
+    return {
+      ok: false,
+      reason: 'identity_scope',
+      detail: 'Firecrawl cannot enforce a per-hop identity exception; use the scoped browser',
+    };
+  }
   const timeoutMs =
     options.timeoutMs ??
     (hasCompletedACall ? WARM_TIMEOUT_MS : COLD_START_TIMEOUT_MS);
@@ -72,7 +80,7 @@ export async function scrapeWithFirecrawl(
   const timer = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
-    const headers = firecrawlRequestHeaders(options.identity ?? 'declared');
+    const headers = firecrawlRequestHeaders();
     const response = await fetch(`${firecrawlBaseUrl()}/v2/scrape`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

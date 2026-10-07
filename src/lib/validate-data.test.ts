@@ -1268,7 +1268,7 @@ describe('validateWatchSources identity exceptions', () => {
   it('stays silent while an identity exception is current', () => {
     const report = validateWatchSources(
       [exempt],
-      new Date('2026-10-21T12:00:00.000Z'),
+      new Date('2026-10-20T12:59:59.999Z'),
     );
     expect(report.errors).toEqual([]);
     expect(report.warnings).toEqual([]);
@@ -1277,7 +1277,7 @@ describe('validateWatchSources identity exceptions', () => {
   it('warns, without an error, once an identity exception has expired', () => {
     const report = validateWatchSources(
       [exempt],
-      new Date('2026-10-22T00:00:00.000Z'),
+      new Date('2026-10-20T13:00:00.000Z'),
     );
     expect(report.errors).toEqual([]);
     expect(report.warnings).toHaveLength(1);
