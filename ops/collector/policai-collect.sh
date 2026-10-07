@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Policai collector entry point: historical .sh name, Python 3 stdlib only.
 
-Never collect in main or a serving checkout. Retain every run until reviewed.
+Never collect in main or a serving checkout. Retain every run until reviewed;
+only node_modules of merged/closed published runs may be pruned, by explicit opt-in.
 Content PRs block collection; state-only supersession is opt-in. Retries never recollect.
 """
 import datetime
@@ -482,6 +483,208 @@ def storage_status():
                 admitted=used + headroom < cap, automatic_cleanup=False)
 
 
+RUN_ID = re.compile(r'\d{8}T\d{6}Z-[0-9a-f]{8}')
+PROC = Path('/proc')
+TERMINAL_PR = ('MERGED', 'CLOSED')
+
+
+def decimal_env(name, default):
+    value = os.environ.get(name, default)
+    if not re.fullmatch(r'[0-9]+', value):
+        raise Refused(f'{name} must be a non-negative whole number')
+    return int(value)
+
+
+def prune_enabled():
+    value = os.environ.get('POLICAI_COLLECT_PRUNE_DEPENDENCIES', '0')
+    if value not in ('0', '1'):
+        raise Refused('POLICAI_COLLECT_PRUNE_DEPENDENCIES must be 0 or 1')
+    return value == '1'
+
+
+def owned_dir(path):
+    """A real directory we own, reached without any symlink component."""
+    if path != path.absolute() or path.resolve() != path:
+        raise Refused('symlink or path alias')
+    info = path.lstat()
+    if not stat.S_ISDIR(info.st_mode) or info.st_uid != os.getuid():
+        raise Refused('not an owned directory')
+    return info
+
+
+def dependency_bytes(target):
+    """Apparent size of node_modules; refuses foreign owners, mounts and specials."""
+    root_info = owned_dir(target)
+    total = 0
+    stack = [target]
+    while stack:
+        if time.monotonic() >= DEADLINE:
+            raise Refused('dependency inventory deadline exceeded')
+        path = stack.pop()
+        info = path.lstat()
+        if info.st_dev != root_info.st_dev or info.st_uid != os.getuid():
+            raise Refused('dependency device/owner boundary')
+        if stat.S_ISDIR(info.st_mode):
+            if path.is_mount():
+                raise Refused('mount inside dependencies')
+            stack.extend(path.iterdir())
+        elif not (stat.S_ISREG(info.st_mode) or stat.S_ISLNK(info.st_mode)):
+            raise Refused('special file in dependencies')
+        total += info.st_size
+    return total
+
+
+def tree_in_use(tree):
+    """Best-effort Linux scan. Returns (referenced, unreadable_process_count).
+
+    A positive hit (cwd, root, exe, open descriptor or argument inside the tree)
+    keeps the run. A process that cannot be inspected is counted and reported,
+    not treated as proof of inactivity; see the README for that residual risk.
+    """
+    prefix = str(tree)
+    needle = prefix.encode()
+    unreadable = 0
+    for pid in PROC.iterdir():
+        if not pid.name.isdecimal():
+            continue
+        try:
+            targets = [os.readlink(pid / name) for name in ('cwd', 'root', 'exe')]
+            targets.extend(os.readlink(fd) for fd in (pid / 'fd').iterdir())
+            if any(t == prefix or t.startswith(prefix + '/') for t in targets):
+                return True, unreadable
+            if needle in (pid / 'cmdline').read_bytes():
+                return True, unreadable
+        except PermissionError:
+            unreadable += 1
+        except OSError:
+            continue  # exited while scanning
+    return False, unreadable
+
+
+def active_run_id():
+    if not ACTIVE.exists():
+        return None
+    active = json.loads(ACTIVE.read_text())
+    if not isinstance(active, dict) or not isinstance(active.get('evidence'), str):
+        raise Refused('active pointer unreadable; every run retained')
+    return Path(active['evidence']).name
+
+
+def assess_run(evidence, open_branches, active_id, days):
+    """Return (reason_to_keep or None, apparent dependency bytes, unreadable processes)."""
+    run_id = evidence.name
+    if not RUN_ID.fullmatch(run_id):
+        return 'not a run directory', 0, 0
+    owned_dir(evidence)
+    receipt_path = evidence / 'run.json'
+    if receipt_path.is_symlink() or not receipt_path.is_file():
+        return 'receipt missing or not a regular file', 0, 0
+    run = json.loads(receipt_path.read_text())
+    tree = RUNS / run_id
+    if (not isinstance(run, dict) or run.get('tree') != str(tree)
+            or run.get('evidence') != str(evidence) or run.get('branch') != PREFIX + run_id):
+        return 'receipt identity does not match its path', 0, 0
+    if run_id == active_id:
+        return 'active run pointer references it', 0, 0
+    if run.get('phase') != 'published' or not isinstance(run.get('pr'), str):
+        return f"phase {run.get('phase')!r}: only published runs are pruned", 0, 0
+    if run['branch'] in open_branches:
+        return 'collection PR is open', 0, 0
+    finished = datetime.datetime.fromisoformat(run.get('finished_at') or '')
+    age = (datetime.datetime.now(datetime.timezone.utc) - finished).total_seconds()
+    if age < days * 86400:
+        return f'finished less than {days} day(s) ago', 0, 0
+    if (evidence / 'retention-pruned.json').exists():
+        return 'already pruned', 0, 0
+    if (evidence / 'retention-intent.json').exists():
+        return 'earlier prune interrupted; manual review', 0, 0
+    owned_dir(tree)
+    target = tree / 'node_modules'
+    if not target.is_symlink() and not target.exists():
+        return 'no dependencies present', 0, 0
+    if git('--no-optional-locks', 'status', '--porcelain=v1', '--untracked-files=all', cwd=tree):
+        return 'worktree has staged, unstaged or untracked files', 0, 0
+    if (git('branch', '--show-current', cwd=tree) != run['branch']
+            or git('rev-parse', 'HEAD', cwd=tree) != run.get('head')):
+        return 'worktree branch or HEAD differs from receipt', 0, 0
+    if git('ls-files', '--', 'node_modules', cwd=tree):
+        return 'tracked files under node_modules', 0, 0
+    registered = git('worktree', 'list', '--porcelain').split('\n\n')
+    if not any(('worktree ' + str(tree)) in r.splitlines()
+               and ('branch refs/heads/' + run['branch']) in r.splitlines() for r in registered):
+        return 'not a registered collector worktree', 0, 0
+    pr = json.loads(command(['gh', 'pr', 'view', run['pr'], '--repo', REPO, '--json',
+                             'url,state,headRefName,headRefOid,baseRefName'], tree))
+    if (pr['url'] != run['pr'] or pr['state'] not in TERMINAL_PR
+            or pr['headRefName'] != run['branch'] or pr['headRefOid'] != run.get('head')
+            or pr['baseRefName'] != 'main'):
+        return f"PR is {pr['state']} or differs from receipt", 0, 0
+    size = dependency_bytes(target)
+    used, unreadable = tree_in_use(tree)
+    if used:
+        return 'a process references the run tree', size, unreadable
+    return None, size, unreadable
+
+
+def prune_run(evidence, size):
+    run = json.loads((evidence / 'run.json').read_text())
+    tree = RUNS / evidence.name
+    intent = dict(run=evidence.name, tree=str(tree), head=run['head'], pr=run['pr'],
+                  apparent_dependency_bytes=size, recorded_at=utc())
+    # Exclusive create: evidence from an earlier attempt is never replaced.
+    with (evidence / 'retention-intent.json').open('x') as handle:
+        handle.write(json.dumps(intent, indent=2) + '\n')
+        handle.flush()
+        os.fsync(handle.fileno())
+    target = tree / 'node_modules'
+    if not shutil.rmtree.avoids_symlink_attacks:
+        raise Refused('platform lacks fd-based safe removal')
+    shutil.rmtree(target)
+    if target.exists() or target.is_symlink():
+        raise Refused('dependency removal incomplete')
+    with (evidence / 'retention-pruned.json').open('x') as handle:
+        handle.write(json.dumps(dict(intent, finished_at=utc()), indent=2) + '\n')
+
+
+def retention(apply=False):
+    """Plan, or apply, removal of node_modules from finished, merged/closed runs.
+
+    Only node_modules is ever deleted: run trees, source, Git history, logs,
+    snapshots and receipts stay. Any doubt keeps the run.
+    """
+    days = decimal_env('POLICAI_COLLECT_RETENTION_DAYS', '7')
+    root = STATE / 'policai-collection-runs'
+    rows = []
+    if root.exists():
+        owned_dir(root)
+        open_branches = {pr['headRefName'] for pr in pending()}
+        active_id = active_run_id()
+        for evidence in sorted(root.iterdir()):
+            row = dict(run=evidence.name, status='kept', reason='', apparent_dependency_bytes=0)
+            try:
+                reason, size, unreadable = assess_run(evidence, open_branches, active_id, days)
+                row['apparent_dependency_bytes'] = size
+                row['unreadable_processes'] = unreadable
+                if reason:
+                    row['reason'] = reason
+                else:
+                    row['status'] = 'eligible'
+                    if apply:
+                        prune_run(evidence, size)
+                        row['status'] = 'pruned'
+            except (Refused, OSError, ValueError, KeyError, TypeError,
+                    subprocess.TimeoutExpired) as exc:
+                row['reason'] = f'unverifiable: {exc}'
+                if apply and row['status'] == 'eligible':
+                    row['status'] = 'failed'
+            rows.append(row)
+            if row['status'] == 'failed':
+                break
+    total = lambda status: sum(r['apparent_dependency_bytes'] for r in rows if r['status'] == status)
+    return dict(runs=rows, eligible_bytes=total('eligible'), pruned_bytes=total('pruned'),
+                failed=sum(r['status'] == 'failed' for r in rows))
+
+
 def admission_guard():
     status = storage_status()
     if not status['admitted']:
@@ -505,8 +708,23 @@ def main():
         except (OSError, ValueError, Refused) as exc:
             print(str(exc), file=sys.stderr)
             return 1
+    if sys.argv[1:] in (['--retention-plan'], ['--retention-apply']):
+        DEADLINE = time.monotonic() + 600
+        try:
+            # Existing lock only: neither mode creates state; plan writes nothing.
+            with (STATE / 'policai-collect.lock').open('r') as lock:
+                fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                report = retention(apply=sys.argv[1:] == ['--retention-apply'])
+                print(json.dumps(report, indent=2))
+            return 1 if report['failed'] else 0
+        except BlockingIOError:
+            return 75
+        except (OSError, ValueError, Refused, subprocess.TimeoutExpired) as exc:
+            print(str(exc), file=sys.stderr)
+            return 1
     if sys.argv[1:] not in ([], ['--preflight'], ['--retry-publication']):
-        print('Usage: policai-collect.sh [--preflight|--retry-publication|--storage-status]', file=sys.stderr)
+        print('Usage: policai-collect.sh [--preflight|--retry-publication|--storage-status'
+              '|--retention-plan|--retention-apply]', file=sys.stderr)
         return 2
     DEADLINE = time.monotonic() + min(3500, max(1, int(os.environ.get('POLICAI_COLLECT_MAX_SECONDS', '3500'))))
     STATE.mkdir(parents=True, exist_ok=True)
@@ -543,6 +761,15 @@ def main():
                 run = previous
                 rc = publish(run)
             else:
+                if prune_enabled():
+                    # Best effort: a prune problem keeps evidence and never blocks
+                    # or fails the run; the admission cap below still applies.
+                    try:
+                        report = retention(apply=True)
+                        print('Retention:', json.dumps(report), file=sys.stderr)
+                    except (Refused, OSError, ValueError, KeyError, TypeError,
+                            subprocess.TimeoutExpired) as exc:
+                        print(f'Retention skipped: {exc}', file=sys.stderr)
                 admission_guard()
                 if previous and previous['phase'] not in ('published', 'no-changes'):
                     raise Refused('previous incomplete run retained; review active receipt before another collection')

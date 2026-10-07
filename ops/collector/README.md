@@ -53,8 +53,16 @@ check, not a hard disk quota; a running collection can grow beyond its headroom.
 Publication retries do not create another worktree and bypass admission.
 Inventory counts inode sizes, including directory and symlink sizes, without
 following symlinks. Aliased/symlinked roots, special files and mount/device/owner
-boundaries refuse inventory. No automatic cleanup is performed; evidence and
-run trees require separate manual retention review.
+boundaries refuse inventory. Nothing but `node_modules` is ever deleted (see
+Dependency retention below); evidence and run trees need manual retention review.
+
+- `~/.local/bin/policai-collect.sh --retention-plan`: read-only JSON report of
+  which finished runs could have `node_modules` removed, and why every other run
+  is kept. It reads GitHub (read-only) but writes nothing. Existing lock only:
+  exit 75 on contention, 1 for a missing lock or any unverifiable global state.
+- `~/.local/bin/policai-collect.sh --retention-apply`: removes the `node_modules`
+  of the runs the plan calls `eligible`, re-checking each one first. Exit 1 if a
+  removal fails (the rest of the pass stops). Never starts a collection.
 
 Latest attempt: `~/.local/state/argus-jobs/policai-collect.json`.
 Retained active run: `~/.local/state/argus-jobs/policai-collection-active.json`.
@@ -197,7 +205,57 @@ Do not archive a normal `published` pointer just because its PR was merged:
 a successfully recorded publication resumes normally once no collection PR is
 open. No automatic merged/closed-PR reconciliation is implemented.
 
-Worktree/evidence retention is explicit and may consume disk. No retention job or
-cleanup policy is installed by this workflow. Restoring a preserved original
-wrapper requires separate authority and verification; the old direct-main
-publisher must not be resumed unattended merely as a rollback convenience.
+## Dependency retention
+
+Each run tree holds about 0.9 GB of `node_modules`, and nothing else in a tree
+is large. Retention removes **only** `<tree>/node_modules`. The tree, its Git
+branch and history, `run.json`, before/after snapshots and the install, collect
+and validate logs stay, so the receipts the wrapper relies on (including the
+state-only supersession check) are untouched. To rebuild, run
+`npm ci --no-audit --no-fund` in the tree; its `package-lock.json` is part of the
+retained commit.
+
+A run's `node_modules` is eligible only when **all** of these hold; anything
+else, or any check that cannot be completed, keeps it:
+
+- the receipt is `published`, with a parseable `finished_at` at least
+  `POLICAI_COLLECT_RETENTION_DAYS` days ago (whole number, default 7);
+- it is not the run named by `policai-collection-active.json`, and that pointer
+  is readable (an unreadable pointer keeps every run);
+- its branch has no open collection PR, and `gh pr view` reports the exact URL,
+  branch, head and base from the receipt as `MERGED` or `CLOSED`;
+- the receipt's tree, evidence and branch names match the run id and path, the
+  tree is an owned real directory without symlinked components and a registered
+  collector worktree, `HEAD` and branch equal the receipt, and `git status` is
+  clean;
+- `node_modules` is an owned real directory with no tracked files, no mounts,
+  foreign owners, device changes or special files, and no scan hit below;
+- no `retention-intent.json` or `retention-pruned.json` exists (an interrupted
+  earlier attempt needs manual review, not an automatic second deletion).
+
+Failed, incomplete, no-change, pending and unfinished runs are never pruned.
+Removal writes `retention-intent.json`, then deletes with `shutil.rmtree`
+(descriptor-based, symlinks are unlinked and never followed), then writes
+`retention-pruned.json`. Both files are created exclusively and never replaced.
+
+**Process check, and its limit.** A Linux `/proc` scan keeps a run when any
+visible process has the tree as cwd, root, exe, an open descriptor or in its
+arguments. Processes the wrapper cannot inspect are counted as
+`unreadable_processes` in the report; they are **not** proof of inactivity (on a
+busy host some same-user processes deny inspection, so refusing on them would
+block every prune). The remaining risk is a process
+outside the scan reading a tree that finished at least a week ago with a terminal
+PR; the loss is a reproducible `node_modules`.
+
+**Scheduled runs.** `POLICAI_COLLECT_PRUNE_DEPENDENCIES` (`0` default, `1` to
+enable; other values refuse the run) makes each scheduled run apply retention
+before the storage admission check, including a run that then waits for an open
+review PR. Retention errors are printed (`Retention skipped:`) and never block
+the collection; the admission cap still applies. `--retry-publication` and
+`--preflight` never prune. With the toggle at `0` the wrapper deletes nothing.
+
+Installing the wrapper, enabling the toggle and the first prune of the existing
+run trees are separate host decisions, not part of the source change. Restoring
+a preserved original wrapper requires separate authority and verification; the
+old direct-main publisher must not be resumed unattended merely as a rollback
+convenience.
