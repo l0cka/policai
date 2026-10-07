@@ -11,6 +11,27 @@ const STATE_LEGISLATION_SOURCES: Record<string, string> = {
   'wa-legislation-as-passed': 'wa',
 };
 
+// Pinned from the 2026-10-06 honest-UA audit; Daniel's E24 decision allows
+// no other source to opt out of the declared identity.
+const E24_IDENTITY_EXCEPTION_IDS = [
+  'industry-ai-publications',
+  'industry-ministers-media',
+  'dta-media',
+  'digital-gov-ai',
+  'disr-news',
+  'naic-news',
+  'finance-news',
+  'agd-ministers-media',
+  'apsc-latest-news',
+  'anao-performance-audits',
+  'acma-media',
+  'tga-media',
+  'teqsa-news',
+  'esafety-media',
+  'fcfcoa-practice-directions',
+  'art-practice-directions',
+] as const;
+
 describe('WATCH_SOURCES', () => {
   it('uses unique source ids', () => {
     const ids = WATCH_SOURCES.map((source) => source.id);
@@ -47,5 +68,18 @@ describe('WATCH_SOURCES', () => {
     expect(source.fetchStrategy).toBeUndefined();
     expect(getManualSources().map((s) => s.id)).toContain('cyber-news');
     expect(getAutomaticSources().map((s) => s.id)).not.toContain('cyber-news');
+  });
+
+  it('grants the time-boxed E24 identity exception to exactly the 16 refusing sources', () => {
+    const exempt = WATCH_SOURCES.filter((source) => source.identityException);
+    expect(exempt.map((source) => source.id).sort()).toEqual(
+      [...E24_IDENTITY_EXCEPTION_IDS].sort(),
+    );
+    for (const source of exempt) {
+      expect(source.identityException?.until, source.id).toBe('2026-10-21');
+      expect(source.identityException?.reason, source.id).toMatch(/E24/);
+      expect(source.fetchStrategy, source.id).toBe('browser');
+      expect(source.automation, source.id).toBe('automatic');
+    }
   });
 });

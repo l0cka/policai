@@ -453,6 +453,12 @@ export interface SourceRunResult {
 	candidateCount: number;
 	newCandidateCount: number;
 	error?: string;
+	/**
+	 * Present when the source carries a time-boxed identity exception:
+	 * 'active' (plain browser UA presented) or 'expired' (ignored, so the
+	 * declared Policai identity was presented).
+	 */
+	identityException?: "active" | "expired";
 }
 
 export interface CollectionMeta {

@@ -365,7 +365,7 @@ describe('createBrowserFetch', () => {
     expect(await response.text()).toContain('Unblocked index');
   });
 
-  it('presents a non-headless user agent matching the browser version', async () => {
+  it('presents a non-headless user agent matching the browser version, with the Policai identity', async () => {
     const { launch, state } = fakeBrowser(
       {
         'https://www.example.gov.au/news': {
@@ -381,10 +381,59 @@ describe('createBrowserFetch', () => {
     const userAgent = state.contextOptions[0]?.userAgent ?? '';
     expect(userAgent).toContain('Chrome/149.0.0.0');
     expect(userAgent).not.toContain('Headless');
+    expect(userAgent).toMatch(
+      /Safari\/537\.36 Policai\/1\.0 \(\+https:\/\/policai\.org\)$/,
+    );
     expect(state.contextOptions[0]?.serviceWorkers).toBe('block');
     expect(state.contextOptions[0]?.proxy?.server).toBe(
       'http://127.0.0.1:1',
     );
+  });
+
+  it('ignores a bare exempt flag without source authority', async () => {
+    const { launch, state } = fakeBrowser(
+      {
+        'https://www.example.gov.au/news': {
+          contents: ['<html><body>ok</body></html>'],
+        },
+      },
+      '149.0.7827.55',
+    );
+    const browserFetch = createBrowserFetch({ launch });
+
+    await browserFetch.fetchImpl('https://www.example.gov.au/news', {
+      collectorIdentity: 'exempt',
+    } as RequestInit);
+
+    const userAgent = state.contextOptions[0]?.userAgent ?? '';
+    expect(userAgent).toContain('Chrome/149.0.0.0 Safari/537.36');
+    expect(userAgent).toContain('Policai');
+    expect(userAgent).not.toContain('Headless');
+  });
+
+  it('always declares the context identity, ignoring legacy bare flags', async () => {
+    const page = '<html><body><h1>Index</h1><p>' + 'x'.repeat(400) + '</p></body></html>';
+    for (const [identity, expectsToken] of [
+      [undefined, true],
+      ['declared', true],
+      ['exempt', true],
+    ] as const) {
+      const { launch, state } = fakeBrowser(
+        { 'https://www.example.gov.au/news': { contents: [page] } },
+        '149.0.7827.55',
+      );
+      const browserFetch = createBrowserFetch({ launch });
+      await retrieveSource('https://www.example.gov.au/news', {
+        fetchImpl: browserFetch.fetchImpl,
+        resolveHost: async () => ['93.184.216.34'],
+        hashLinkedDocuments: false,
+        ...(identity ? { identity } : {}),
+      });
+      const userAgent = state.contextOptions[0]?.userAgent ?? '';
+      expect(userAgent.endsWith('Policai/1.0 (+https://policai.org)')).toBe(
+        expectsToken,
+      );
+    }
   });
 
   it.each([

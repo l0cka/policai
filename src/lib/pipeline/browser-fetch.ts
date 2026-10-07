@@ -1,3 +1,4 @@
+import type { CDPSession, Page } from 'playwright-core';
 import {
   assertContentLengthWithinLimit,
   assertSafeSourceUrl,
@@ -11,6 +12,12 @@ import {
   type BrowserEgressProxy,
 } from './browser-egress-proxy';
 import { parseSourceUrl } from '@/lib/source-url';
+import {
+  browserUserAgent,
+  REFERENCE_CHROME_VERSION,
+  requestedCollectorIdentity,
+  type CollectorRequestInit,
+} from './identity';
 
 /**
  * Headless-browser retriever with the fetch signature, so `retrieveSource`
@@ -60,6 +67,7 @@ export interface BrowserWebSocketRouteLike {
 
 export interface BrowserContextLike {
   newPage(): Promise<BrowserPageLike>;
+  newCDPSession?(page: Page): Promise<Pick<CDPSession, 'send' | 'on'>>;
   route(
     pattern: string,
     handler: (route: BrowserRouteLike) => Promise<void>,
@@ -131,24 +139,18 @@ async function launchPlaywrightChromium(): Promise<BrowserLike> {
   };
 }
 
-function userAgentPlatform(): string {
-  if (process.platform === 'darwin') return 'Macintosh; Intel Mac OS X 10_15_7';
-  if (process.platform === 'win32') return 'Windows NT 10.0; Win64; x64';
-  return 'X11; Linux x86_64';
-}
-
 /**
  * Official sources serve identical public content to any modern browser; the
  * default headless user agent advertises "HeadlessChrome", which host-side
  * heuristics reject. Present the reduced Chrome user agent for the same
- * browser build so client-hint headers stay consistent with the UA string.
+ * browser build so client-hint headers stay consistent with the UA string,
+ * with the Policai identity token appended unless the request is exempt.
  */
-function browserUserAgent(browser: BrowserLike): string {
+function chromeVersionOf(browser: BrowserLike): string {
   const majorVersion = Number.parseInt(browser.version?.() ?? '', 10);
-  const chromeVersion = Number.isFinite(majorVersion)
+  return Number.isFinite(majorVersion)
     ? `${majorVersion}.0.0.0`
-    : '126.0.0.0';
-  return `Mozilla/5.0 (${userAgentPlatform()}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${chromeVersion} Safari/537.36`;
+    : REFERENCE_CHROME_VERSION;
 }
 
 function isHtmlContentType(contentType: string): boolean {
@@ -399,7 +401,9 @@ export function createBrowserFetch(
     let context: BrowserContextLike | undefined;
     try {
       context = await browser.newContext({
-        userAgent: browserUserAgent(browser),
+        // Never exempt the context: popups, workers, sockets and any traffic
+        // outside the page interceptor must still declare the identity.
+        userAgent: browserUserAgent(chromeVersionOf(browser)),
         locale: BROWSER_LOCALE,
         serviceWorkers: 'block',
         proxy: { server: egressProxy.serverUrl },
@@ -433,6 +437,36 @@ export function createBrowserFetch(
 
       const operation = (async () => {
         const page = await context.newPage();
+        if ((init as CollectorRequestInit | undefined)?.identityAuthority) {
+          if (!context.newCDPSession) {
+            throw new SourceFetchError('Scoped identity interception unavailable', {
+              retryable: false,
+            });
+          }
+          const session = await context.newCDPSession(page as Page);
+          // Playwright route.continue headers persist across redirects, and
+          // routing alone does not intercept every redirect hop. CDP Fetch
+          // pauses each hop; its header override applies to this request only.
+          session.on('Fetch.requestPaused', async (event) => {
+            try {
+              await assertSafeSourceUrl(event.request.url, resolveHost, 'public-https');
+              const headers = Object.entries(event.request.headers)
+                .filter(([name]) => name.toLowerCase() !== 'user-agent')
+                .map(([name, value]) => ({ name, value }));
+              headers.push({ name: 'User-Agent', value: browserUserAgent(
+                chromeVersionOf(browser), requestedCollectorIdentity(init, event.request.url),
+              ) });
+              await session.send('Fetch.continueRequest', { requestId: event.requestId, headers });
+            } catch {
+              await session.send('Fetch.failRequest', {
+                requestId: event.requestId, errorReason: 'BlockedByClient',
+              }).catch(() => context?.close());
+            }
+          });
+          await session.send('Fetch.enable', {
+            patterns: [{ urlPattern: '*', requestStage: 'Request' }],
+          });
+        }
         let navigation: BrowserResponseLike | null;
         try {
           navigation = await page.goto(url, {

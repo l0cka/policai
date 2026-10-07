@@ -6,6 +6,7 @@ import {
   resolveHostAddresses,
   SourceFetchError,
 } from './fetch';
+import { type CollectorIdentity, firecrawlRequestHeaders } from './identity';
 
 /**
  * Client for the self-hosted Firecrawl stack on the collection host.
@@ -29,6 +30,8 @@ export interface FirecrawlOptions {
   timeoutMs?: number;
   maxResponseBytes?: number;
   resolveHost?: (hostname: string) => Promise<string[]>;
+  /** Identity Firecrawl presents to the source; defaults to 'declared'. */
+  identity?: CollectorIdentity;
 }
 
 export type FirecrawlResult =
@@ -36,6 +39,7 @@ export type FirecrawlResult =
   | {
       ok: false;
       reason:
+        | 'identity_scope'
         | 'timeout'
         | 'unavailable'
         | 'http_error'
@@ -59,6 +63,13 @@ export async function scrapeWithFirecrawl(
   url: string,
   options: FirecrawlOptions = {},
 ): Promise<FirecrawlResult> {
+  if (options.identity === 'exempt') {
+    return {
+      ok: false,
+      reason: 'identity_scope',
+      detail: 'Firecrawl cannot enforce a per-hop identity exception; use the scoped browser',
+    };
+  }
   const timeoutMs =
     options.timeoutMs ??
     (hasCompletedACall ? WARM_TIMEOUT_MS : COLD_START_TIMEOUT_MS);
@@ -69,10 +80,16 @@ export async function scrapeWithFirecrawl(
   const timer = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
+    const headers = firecrawlRequestHeaders();
     const response = await fetch(`${firecrawlBaseUrl()}/v2/scrape`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ url, formats: ['markdown'], onlyMainContent: true }),
+      body: JSON.stringify({
+        url,
+        formats: ['markdown'],
+        onlyMainContent: true,
+        ...(headers ? { headers } : {}),
+      }),
       signal: controller.signal,
     });
 

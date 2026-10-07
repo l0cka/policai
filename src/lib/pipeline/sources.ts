@@ -1,4 +1,5 @@
 import type { Jurisdiction } from '@/types';
+import type { SourceIdentityException } from './identity';
 
 /**
  * Watch-source registry — the official pages and feeds the collector monitors.
@@ -40,6 +41,14 @@ export interface WatchSource {
    */
   fetchStrategy?: SourceFetchStrategy;
   /**
+   * Time-boxed permission to retrieve without the declared Policai identity
+   * (see `./identity`). Expires at the START of `until` (Australia/Sydney).
+   * Only the exact source origin is exempt; candidates use the scoped browser,
+   * never Firecrawl while this field remains. Only the E24 sources below
+   * may carry one. A refusal after expiry is a normal source failure.
+   */
+  identityException?: SourceIdentityException;
+  /**
    * Minimum number of usable entries expected from an index/feed response.
    * A structurally valid RSS/Atom feed may otherwise be legitimately empty.
    * Set this only when the official source is expected to retain current
@@ -61,6 +70,29 @@ export interface WatchSource {
   critical?: boolean;
   notes?: string;
 }
+
+/**
+ * E24 time-boxed identity exception (Daniel, 2026-10-07, option c): "The
+ * collector identifies itself. A refusal of that identity is a block we
+ * respect, apart from the time-boxed exception."
+ *
+ * The honest-UA audit of 2026-10-07 (47 browser sources) found 31 accept the
+ * declared Policai identity and 16 refuse it with net::ERR_HTTP2_PROTOCOL_ERROR
+ * while serving a plain Chrome UA: industry-ai-publications,
+ * industry-ministers-media, dta-media, digital-gov-ai, disr-news, naic-news,
+ * finance-news, agd-ministers-media, apsc-latest-news,
+ * anao-performance-audits, acma-media, tga-media, teqsa-news, esafety-media,
+ * fcfcoa-practice-directions and art-practice-directions. Those 16 keep a
+ * plain browser UA until 2026-10-21 while an allow-list request is pending.
+ * It expires at the START of that Sydney calendar day (E25). Afterwards
+ * a refusal is a normal source failure; manual retirement needs separate
+ * approval. No other source may carry an exception.
+ */
+const E24_IDENTITY_EXCEPTION: SourceIdentityException = {
+  until: '2026-10-21',
+  reason:
+    'E24: refuses the declared Policai identity (HTTP/2 reset, honest-UA audit 2026-10-07); allow-list request pending.',
+};
 
 export const WATCH_SOURCES: WatchSource[] = [
   // --- Federal: policy owners ---
@@ -104,6 +136,7 @@ export const WATCH_SOURCES: WatchSource[] = [
     enabled: true,
     automation: 'automatic',
     fetchStrategy: 'browser',
+    identityException: E24_IDENTITY_EXCEPTION, // www.industry.gov.au refused the declared UA
     critical: true,
     notes:
       'AI-topic filtered publications index (Drupal views table) for formal policy, standards, frameworks and agreements; GovCMS rejects plain HTTP clients.',
@@ -119,6 +152,7 @@ export const WATCH_SOURCES: WatchSource[] = [
     enabled: true,
     automation: 'automatic',
     fetchStrategy: 'browser',
+    identityException: E24_IDENTITY_EXCEPTION, // www.minister.industry.gov.au refused the declared UA
     critical: true,
     notes:
       'Official all-ministers RSS feed covering AI announcements, international agreements and infrastructure commitments; GovCMS rejects plain HTTP clients.',
@@ -134,6 +168,7 @@ export const WATCH_SOURCES: WatchSource[] = [
     enabled: true,
     automation: 'automatic',
     fetchStrategy: 'browser',
+    identityException: E24_IDENTITY_EXCEPTION, // www.dta.gov.au refused the declared UA
     critical: true,
     notes:
       'Official DTA news RSS feed; GovCMS/Akamai rejects plain HTTP clients.',
@@ -149,6 +184,7 @@ export const WATCH_SOURCES: WatchSource[] = [
     enabled: true,
     automation: 'automatic',
     fetchStrategy: 'browser',
+    identityException: E24_IDENTITY_EXCEPTION, // www.digital.gov.au refused the declared UA
     critical: true,
     notes: 'GovCMS/Akamai rejects plain HTTP clients.',
   },
@@ -163,6 +199,7 @@ export const WATCH_SOURCES: WatchSource[] = [
     enabled: true,
     automation: 'automatic',
     fetchStrategy: 'browser',
+    identityException: E24_IDENTITY_EXCEPTION, // www.industry.gov.au refused the declared UA
     notes:
       'Departmental news and media-release index; GovCMS rejects plain HTTP clients.',
   },
@@ -177,6 +214,7 @@ export const WATCH_SOURCES: WatchSource[] = [
     enabled: true,
     automation: 'automatic',
     fetchStrategy: 'browser',
+    identityException: E24_IDENTITY_EXCEPTION, // www.ai.gov.au refused the declared UA
     notes:
       'The page is now a curated hub rather than a dated index, so it is watched for content changes; GovCMS/Akamai rejects plain HTTP clients.',
   },
@@ -191,6 +229,7 @@ export const WATCH_SOURCES: WatchSource[] = [
     enabled: true,
     automation: 'automatic',
     fetchStrategy: 'browser',
+    identityException: E24_IDENTITY_EXCEPTION, // www.finance.gov.au refused the declared UA
     notes: 'GovCMS/Akamai rejects plain HTTP clients.',
   },
   {
@@ -217,6 +256,7 @@ export const WATCH_SOURCES: WatchSource[] = [
     enabled: true,
     automation: 'automatic',
     fetchStrategy: 'browser',
+    identityException: E24_IDENTITY_EXCEPTION, // ministers.ag.gov.au refused the declared UA
     notes:
       'Whole-of-government AI safety, privacy, copyright and automated-decision announcements; the host rejects plain HTTP clients.',
   },
@@ -268,6 +308,7 @@ export const WATCH_SOURCES: WatchSource[] = [
     enabled: true,
     automation: 'automatic',
     fetchStrategy: 'browser',
+    identityException: E24_IDENTITY_EXCEPTION, // www.apsc.gov.au refused the declared UA
     notes:
       'APS-wide AI workforce, recruitment, capability and governance guidance; the host rejects plain HTTP clients.',
   },
@@ -282,6 +323,7 @@ export const WATCH_SOURCES: WatchSource[] = [
     enabled: true,
     automation: 'automatic',
     fetchStrategy: 'browser',
+    identityException: E24_IDENTITY_EXCEPTION, // www.anao.gov.au refused the declared UA
     notes:
       'Commonwealth governance audits, including agency use and oversight of AI; the host rejects plain HTTP clients.',
   },
@@ -514,6 +556,7 @@ export const WATCH_SOURCES: WatchSource[] = [
     enabled: true,
     automation: 'automatic',
     fetchStrategy: 'browser',
+    identityException: E24_IDENTITY_EXCEPTION, // www.acma.gov.au refused the declared UA
     notes:
       'Communications and media regulation, including misinformation, deepfakes and online platforms; GovCMS rejects plain HTTP clients.',
   },
@@ -528,6 +571,7 @@ export const WATCH_SOURCES: WatchSource[] = [
     enabled: true,
     automation: 'automatic',
     fetchStrategy: 'browser',
+    identityException: E24_IDENTITY_EXCEPTION, // www.tga.gov.au refused the declared UA
     notes:
       'Therapeutic goods regulation, including AI as a medical device and software-as-medical-device guidance; GovCMS rejects plain HTTP clients.',
   },
@@ -570,6 +614,7 @@ export const WATCH_SOURCES: WatchSource[] = [
     enabled: true,
     automation: 'automatic',
     fetchStrategy: 'browser',
+    identityException: E24_IDENTITY_EXCEPTION, // www.teqsa.gov.au refused the declared UA
     notes:
       'Higher-education regulation including generative AI and academic integrity; the news index markup exposes no extractable entries, so the page is watched for content changes.',
   },
@@ -598,6 +643,7 @@ export const WATCH_SOURCES: WatchSource[] = [
     enabled: true,
     automation: 'automatic',
     fetchStrategy: 'browser',
+    identityException: E24_IDENTITY_EXCEPTION, // www.esafety.gov.au refused the declared UA
     notes: 'GovCMS/Akamai rejects plain HTTP clients.',
   },
   {
@@ -638,6 +684,7 @@ export const WATCH_SOURCES: WatchSource[] = [
     enabled: true,
     automation: 'automatic',
     fetchStrategy: 'browser',
+    identityException: E24_IDENTITY_EXCEPTION, // www.fcfcoa.gov.au refused the declared UA
     notes:
       'Practice directions index, including the court’s AI practice direction. Rendered listing checked 2026-09-23: 15 entries extracted.',
   },
@@ -666,6 +713,7 @@ export const WATCH_SOURCES: WatchSource[] = [
     enabled: true,
     automation: 'automatic',
     fetchStrategy: 'browser',
+    identityException: E24_IDENTITY_EXCEPTION, // www.art.gov.au refused the declared UA
     notes:
       'The federal merits-review tribunal, successor to the AAT and a likely venue for automated-decision-making guidance. The host resets plain HTTP/2 clients, so retrieval goes through the browser path.',
   },
