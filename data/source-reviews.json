@@ -247,7 +247,7 @@
     "sourceUrl": "https://www.anao.gov.au/work/performance-audit/artificial-intelligence-and-medicare-benefits-integrity",
     "title": "Artificial Intelligence and Medicare Benefits Integrity",
     "entryKind": "policy",
-    "status": "pending_review",
+    "status": "rejected",
     "discoveredAt": "2026-09-27T19:30:42.931Z",
     "createdBy": "collector",
     "notes": "Detected by the collector from Australian National Audit Office — performance audit reports (score 0.55, heuristic).",
@@ -337,7 +337,8 @@
       },
       "status": "detected"
     },
-    "updatedAt": "2026-09-27T19:30:42.931Z"
+    "updatedAt": "2026-10-07T00:30:46.494Z",
+    "rejectionReason": "Re-typed during editorial review: an ANAO performance audit report is not a policy instrument. Following the register's treatment of earlier ANAO AI audits, it is recorded instead as the timeline milestone tl-2026-09-21-anao-audit-ai-medicare-benefits-integrity (21 September 2026) with an editorial description; the staged description was site navigation text. Pending Daniel Alkurdi's approval (escalation E14)."
   },
   {
     "id": "source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-13okn3i",
