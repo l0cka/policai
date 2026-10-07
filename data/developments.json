@@ -215,7 +215,8 @@
         "publishedAtPrecision": "day"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Not a policy instrument: the staged record is a Hansard debate fragment typed as an active guideline. The bill is an unprogressed private member's bill (introduced and second reading moved 7 September 2026; status Before Reps on the bill's APH page), so it is recorded instead as the timeline milestone tl-2026-09-07-ai-kill-switch-data-centre-control-bill-introduced, which cites the bill page rather than the Hansard fragment. Pending Daniel Alkurdi's approval (escalation E15)."
   },
   {
     "id": "dev-bills-news-journalism-payments-bill-2026-news-jo-mkgqj2",

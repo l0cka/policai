@@ -1258,6 +1258,47 @@
     }
   },
   {
+    "id": "tl-2026-09-07-ai-kill-switch-data-centre-control-bill-introduced",
+    "date": "2026-09-07",
+    "datePrecision": "day",
+    "title": "AI Kill Switch and Data Centre Control Bill 2026 introduced as a private member's bill",
+    "description": "Independent MP Andrew Gee introduces the AI Kill Switch and Data Centre Control Bill 2026 in the House of Representatives and moves its second reading. It is a private member's bill, not a government bill, and when last checked on 7 October 2026 it had not progressed beyond the second reading being moved and remained before the House.",
+    "type": "milestone",
+    "jurisdiction": "federal",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7537",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7537",
+        "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7537",
+        "title": "AI Kill Switch and Data Centre Control Bill 2026",
+        "retrievedAt": "2026-10-07T00:32:59.569Z",
+        "contentType": "text/html",
+        "contentHash": "c372d1d00d3a70d677c43f5591febed79c17ef823f33aa358917749793675b34",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-10-07T00:32:59.569Z",
+          "capturedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+          "notes": "Browser review of the bill's official Parliament of Australia bill page on 7 October 2026 (AEDT). The fingerprinted text is the bill summary and progress block (type, sponsor, originating house, status, progress and document list); site navigation and help text are excluded.",
+          "pageContentHash": "27ff010991298823ef95e7c645019dcd5bccc26772114037fe56e7df2ed86495",
+          "characterCount": 609
+        },
+        "reviewedDate": {
+          "date": "2026-09-07",
+          "precision": "day",
+          "reviewedAt": "2026-10-07T00:33:18.137Z",
+          "reviewedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+          "notes": "The official bill page records 'Introduced and read a first time 07 Sep 2026' and 'Second reading moved 07 Sep 2026', with type 'Private', sponsor 'GEE, Andrew, MP' and status 'Before Reps'."
+        }
+      },
+      "checkedAt": "2026-10-07T00:33:18.137Z",
+      "checkedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+      "method": "manual",
+      "notes": "Drafted for approval by Daniel Alkurdi (pending his decision, escalation E15) as a timeline milestone, not a register record: the bill is an unprogressed private member's bill. Its stage is taken from the bill page; the Hansard record of the second-reading speech was not re-read because ParlInfo returned a web application firewall block page, which was not bypassed."
+    }
+  },
+  {
     "id": "tl-2026-04-01-australia-anthropic-ai-mou",
     "date": "2026-04-01",
     "datePrecision": "day",
