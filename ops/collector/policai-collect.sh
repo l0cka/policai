@@ -490,6 +490,8 @@ def storage_status():
 
 
 RUN_ID = re.compile(r'\d{8}T\d{6}Z-[0-9a-f]{8}')
+# Every phase the wrapper writes (main, collect, verify_pr, finish_publication).
+PHASES = ('collecting', 'ready', 'superseding', 'published', 'no-changes')
 PROC = Path('/proc')
 MOUNTINFO = Path('/proc/self/mountinfo')
 FDINFO = Path('/proc/self/fdinfo')
@@ -626,6 +628,9 @@ def walk_dependencies(root_fd, remove=False, messages=DEPENDENCY_WALK):
     root = os.fstat(root_fd)
     root_mount = mount_id(root_fd)
     total = root.st_size
+    # On entry too: an empty root never reaches the per-entry check below.
+    if time.monotonic() >= DEADLINE:
+        raise Refused(messages['deadline'])
     with os.scandir(root_fd) as entries:
         names = [entry.name for entry in entries]
     stack = [(root_fd, names, None)]
@@ -724,7 +729,7 @@ def read_active():
     The one strict reader for collection, publication retry, preflight and
     retention. Only FileNotFoundError from lstat means absent. A symlink
     (dangling or not), non-regular file, unparseable content, a receipt
-    identity that does not match the wrapper's layout or a missing phase
+    identity that does not match the wrapper's layout or a missing or unknown phase
     refuses; callers add what that refusal stops.
     """
     try:
@@ -749,8 +754,8 @@ def read_active():
             or active.get('tree') != str(RUNS / run_id)
             or active.get('branch') != PREFIX + run_id):
         raise Refused('active pointer identity invalid')
-    if not isinstance(active.get('phase'), str):
-        raise Refused('active pointer phase missing')
+    if active.get('phase') not in PHASES:
+        raise Refused('active pointer phase missing or unknown')
     return active
 
 

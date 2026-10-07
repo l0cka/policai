@@ -82,7 +82,9 @@ dependency retention read the pointer through one strict reader. Only a pointer
 that genuinely does not exist (`lstat` reports `FileNotFoundError`) means "no
 active run". A symlink (dangling or not), a directory or other non-regular
 file, unparseable JSON, a non-object, evidence/tree/branch values that do not
-match the wrapper's own layout for one run id, or a missing phase stops the
+match the wrapper's own layout for one run id, or a phase that is missing or
+not one the wrapper writes (`collecting`, `ready`, `superseding`, `published`,
+`no-changes`) stops the
 invocation with exit 1 and a message naming the pointer, before retention, a
 new run, a publication retry or a passing preflight. The invalid pointer is
 left exactly as found: it is not followed, rewritten or replaced. Investigate

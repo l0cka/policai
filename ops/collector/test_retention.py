@@ -751,6 +751,16 @@ class RetentionTest(unittest.TestCase):
             result = self.inventory(deadline=-1, MOUNTINFO=self.mountinfo())
             self.assertEqual(result, 'storage inventory deadline exceeded')
 
+    def test_storage_inventory_deadline_applies_to_empty_roots(self):
+        """Regression: an empty root never reached the walk's per-entry deadline check."""
+        for root in (self.home / 'Work/Argus/src/policai-collection-runs',
+                     self.state / 'policai-collection-runs'):
+            root.mkdir(parents=True)
+        self.assertEqual(self.inventory(deadline=-1, MOUNTINFO=self.mountinfo()),
+                         'storage inventory deadline exceeded')
+        # With time left, the same empty roots count just their directory inodes.
+        self.assertIsInstance(self.inventory(MOUNTINFO=self.mountinfo()), int)
+
     # -- budget (F5) ------------------------------------------------------
 
     def slow_gh_view(self, url, seconds):

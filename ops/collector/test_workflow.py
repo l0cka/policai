@@ -1047,7 +1047,10 @@ else:
         elif state == 'phase missing':
             pointer.write_text(json.dumps({k: v for k, v in run.items() if k != 'phase'}))
         else:
-            change = {'evidence elsewhere': dict(evidence=str(self.home / 'elsewhere' / run_id)),
+            change = {'phase unknown': dict(phase='not-a-real-phase'),
+                      'phase empty': dict(phase=''),
+                      'phase not a string': dict(phase=['published']),
+                      'evidence elsewhere': dict(evidence=str(self.home / 'elsewhere' / run_id)),
                       'evidence not a run id': dict(evidence=str(Path(run['evidence']).parent / 'x')),
                       'tree elsewhere': dict(tree=str(self.home / 'elsewhere' / run_id)),
                       'branch differs': dict(branch='automation/collection-other')}[state]
@@ -1059,7 +1062,10 @@ else:
                       'directory': 'not a regular file',
                       'not JSON': 'active pointer unreadable',
                       'not an object': 'active pointer unreadable',
-                      'phase missing': 'active pointer phase missing',
+                      'phase missing': 'active pointer phase missing or unknown',
+                      'phase unknown': 'active pointer phase missing or unknown',
+                      'phase empty': 'active pointer phase missing or unknown',
+                      'phase not a string': 'active pointer phase missing or unknown',
                       'evidence elsewhere': 'identity invalid',
                       'evidence not a run id': 'identity invalid',
                       'tree elsewhere': 'identity invalid',
@@ -1132,6 +1138,36 @@ else:
         self.assertEqual(result.returncode, 1)
         self.assertIn('no validated commit available', result.stderr)
         self.assertEqual(self.run_workflow('--preflight').returncode, 0)
+
+    def test_every_written_phase_stays_readable(self):
+        """Every phase the wrapper writes (including interrupted ones) passes the reader,
+        and each mode then behaves exactly as it did before the strict check."""
+        self.assertEqual(self.run_workflow().returncode, 0)
+        run = json.loads(self.pointer().read_text())
+        runs = self.run_names()
+        for phase in ('collecting', 'ready', 'superseding', 'published', 'no-changes'):
+            with self.subTest(phase=phase):
+                self.pointer().write_text(json.dumps(dict(run, phase=phase)))
+                result = self.run_workflow('--preflight')
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertIn('Preflight passed', result.stdout)
+                result = self.run_workflow('--retry-publication')
+                self.assertNotIn('active pointer', result.stderr)
+                if phase in ('ready', 'superseding', 'published'):
+                    self.assertEqual(result.returncode, 0, result.stderr)
+                else:
+                    self.assertEqual(result.returncode, 1)
+                    self.assertIn('no validated commit available', result.stderr)
+                self.pointer().write_text(json.dumps(dict(run, phase=phase)))
+                result = self.run_workflow()
+                self.assertNotIn('active pointer', result.stderr)
+                if phase in ('published', 'no-changes'):
+                    self.assertEqual(result.returncode, 0, result.stderr)
+                    self.assertEqual(self.receipt().get('skipped'), 'awaiting-review')
+                else:
+                    self.assertEqual(result.returncode, 1)
+                    self.assertIn('previous incomplete run retained', result.stderr)
+                self.assertEqual(self.run_names(), runs)
 
     def test_branch_override_cannot_push_main(self):
         self.env['POLICAI_COLLECT_BRANCH'] = 'other'
