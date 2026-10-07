@@ -1,5 +1,157 @@
 [
   {
+    "id": "source-review-2b920dd7-0656-4e00-b751-c44c053e730b",
+    "sourceUrl": "https://www.cyber.gov.au/blog/frontier-models-and-their-impact-on-cyber-security",
+    "title": "Frontier AI models and their impact on cyber security",
+    "entryKind": "policy",
+    "targetPolicyId": "asd-frontier-ai-models-cyber-security-2026",
+    "targetPolicyBaseRevisionHash": "45df65e857618002bc8693ceb19a90caf47f8f5b921b12c374a250f45cf3576a",
+    "targetPolicyPreviousSourceUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/frontier-models-and-their-impact-on-cyber-security",
+    "targetPolicyRevisionHash": "45df65e857618002bc8693ceb19a90caf47f8f5b921b12c374a250f45cf3576a",
+    "status": "published",
+    "discoveredAt": "2026-10-07T00:39:50.271Z",
+    "createdBy": "Daniel Alkurdi (Hermes-assisted web review)",
+    "notes": "Source replacement for a tracked register record whose cited cyber.gov.au URL was retired. Written in the shape stage_source_capture (replaceTargetSource) followed by approve and publish produces; the MCP handlers refuse it because the replacement URL is already cited by the related timeline event.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": "guideline",
+      "suggestedJurisdiction": "federal",
+      "summary": "Australian Signals Directorate guidance on the cyber security implications of increasingly capable frontier AI models, including Claude Mythos Preview.",
+      "tags": [
+        "frontier AI",
+        "Claude Mythos",
+        "cyber security",
+        "AI risk",
+        "Essential Eight",
+        "financial system resilience"
+      ],
+      "agencies": [
+        "Australian Signals Directorate",
+        "Australian Cyber Security Centre"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://www.cyber.gov.au/blog/frontier-models-and-their-impact-on-cyber-security",
+      "finalUrl": "https://www.cyber.gov.au/blog/frontier-models-and-their-impact-on-cyber-security",
+      "title": "Frontier models and their impact on cyber security",
+      "retrievedAt": "2026-10-07T00:38:58.943Z",
+      "contentType": "text/html",
+      "contentHash": "8e0357750e7de57bb00e5783e72162c39298fa834edf8c3c55a992f4f4f6c542",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-10-07T00:38:58.943Z",
+        "capturedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+        "notes": "Official ASD article captured in a browser at its current /blog path on 7 October 2026 (AEDT); the original /about-us/view-all-content URL returns 404 and cyber.gov.au is checked by hand rather than by the Policai collector.",
+        "pageContentHash": "5ce2c0d3901424ad51b48c9c2a6b2904cc14e0e5f21344087ed4005ffb7ca046",
+        "characterCount": 8801
+      },
+      "reviewedDate": {
+        "date": "2026-04-09",
+        "precision": "day",
+        "reviewedAt": "2026-10-07T00:39:50.272Z",
+        "reviewedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+        "notes": "The current page shows only 'Last reviewed 19 Sep 2026'. ASD's follow-up news item (https://www.cyber.gov.au/news/frontier-ai-models-and-their-impact-on-cyber-security) states 'On 9 April 2026, ASD published information on the cyber security implications of increasingly capable frontier artificial intelligence (AI) models' and links to this page as the original information."
+      }
+    },
+    "proposedRecord": {
+      "id": "asd-frontier-ai-models-cyber-security-2026",
+      "title": "Frontier AI models and their impact on cyber security",
+      "description": "Australian Signals Directorate guidance on the cyber security implications of increasingly capable frontier AI models, including Claude Mythos Preview.",
+      "jurisdiction": "federal",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2026-04-09",
+      "agencies": [
+        "Australian Signals Directorate",
+        "Australian Cyber Security Centre"
+      ],
+      "sourceUrl": "https://www.cyber.gov.au/blog/frontier-models-and-their-impact-on-cyber-security",
+      "content": "ASD published guidance on 9 April 2026 about the cyber security implications of increasingly capable frontier AI models, following Anthropic's 7 April 2026 announcement of Claude Mythos Preview. The guidance says frontier models reduce the cost, effort and expertise required to discover and exploit software vulnerabilities, while also creating opportunities for defenders to identify and remediate vulnerabilities before exploitation. ASD advises organisations to maintain strong cyber security baselines aligned to the Information Security Manual and Essential Eight, reduce exposed attack paths, patch more frequently, use AI defensively where appropriate, and implement layered security. APRA's 30 April 2026 AI industry letter points regulated entities to ASD advice on frontier AI models.",
+      "aiSummary": "ASD guidance on frontier AI cyber risks, defensive use of AI, patching tempo, attack-surface reduction, and layered cyber resilience.",
+      "tags": [
+        "frontier AI",
+        "Claude Mythos",
+        "cyber security",
+        "AI risk",
+        "Essential Eight",
+        "financial system resilience"
+      ],
+      "createdAt": "2026-05-01T00:00:00Z",
+      "updatedAt": "2026-10-07T00:39:50.272Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.cyber.gov.au/blog/frontier-models-and-their-impact-on-cyber-security",
+          "finalUrl": "https://www.cyber.gov.au/blog/frontier-models-and-their-impact-on-cyber-security",
+          "title": "Frontier models and their impact on cyber security",
+          "retrievedAt": "2026-10-07T00:38:58.943Z",
+          "contentType": "text/html",
+          "contentHash": "8e0357750e7de57bb00e5783e72162c39298fa834edf8c3c55a992f4f4f6c542",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-07T00:38:58.943Z",
+            "capturedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+            "notes": "Official ASD article captured in a browser at its current /blog path on 7 October 2026 (AEDT); the original /about-us/view-all-content URL returns 404 and cyber.gov.au is checked by hand rather than by the Policai collector.",
+            "pageContentHash": "5ce2c0d3901424ad51b48c9c2a6b2904cc14e0e5f21344087ed4005ffb7ca046",
+            "characterCount": 8801
+          },
+          "reviewedDate": {
+            "date": "2026-04-09",
+            "precision": "day",
+            "reviewedAt": "2026-10-07T00:39:50.272Z",
+            "reviewedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+            "notes": "The current page shows only 'Last reviewed 19 Sep 2026'. ASD's follow-up news item (https://www.cyber.gov.au/news/frontier-ai-models-and-their-impact-on-cyber-security) states 'On 9 April 2026, ASD published information on the cyber security implications of increasingly capable frontier artificial intelligence (AI) models' and links to this page as the original information."
+          }
+        },
+        "checkedAt": "2026-10-07T00:39:50.272Z",
+        "checkedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+        "method": "manual",
+        "notes": "Source replacement drafted for approval by Daniel Alkurdi (pending his decision, escalation E13). The record's cited URL under /about-us/view-all-content returns 404; the same ASD article is at its current /blog path, which the related timeline event already cites. Record prose, type, status, agencies, tags and dates are unchanged."
+      },
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-04-09",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.cyber.gov.au/blog/frontier-models-and-their-impact-on-cyber-security",
+            "finalUrl": "https://www.cyber.gov.au/blog/frontier-models-and-their-impact-on-cyber-security",
+            "title": "Frontier models and their impact on cyber security",
+            "retrievedAt": "2026-10-07T00:38:58.943Z",
+            "contentType": "text/html",
+            "contentHash": "8e0357750e7de57bb00e5783e72162c39298fa834edf8c3c55a992f4f4f6c542",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-10-07T00:38:58.943Z",
+              "capturedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+              "notes": "Official ASD article captured in a browser at its current /blog path on 7 October 2026 (AEDT); the original /about-us/view-all-content URL returns 404 and cyber.gov.au is checked by hand rather than by the Policai collector.",
+              "pageContentHash": "5ce2c0d3901424ad51b48c9c2a6b2904cc14e0e5f21344087ed4005ffb7ca046",
+              "characterCount": 8801
+            },
+            "reviewedDate": {
+              "date": "2026-04-09",
+              "precision": "day",
+              "reviewedAt": "2026-10-07T00:39:50.272Z",
+              "reviewedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+              "notes": "The current page shows only 'Last reviewed 19 Sep 2026'. ASD's follow-up news item (https://www.cyber.gov.au/news/frontier-ai-models-and-their-impact-on-cyber-security) states 'On 9 April 2026, ASD published information on the cyber security implications of increasingly capable frontier artificial intelligence (AI) models' and links to this page as the original information."
+            }
+          }
+        }
+      ],
+      "lastReviewedAt": "2026-10-07T00:39:50.272Z"
+    },
+    "reviewedAt": "2026-10-07T00:39:50.272Z",
+    "reviewedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+    "approvalNotes": "Source replacement drafted for approval by Daniel Alkurdi (pending his decision, escalation E13). The record's cited URL under /about-us/view-all-content returns 404; the same ASD article is at its current /blog path, which the related timeline event already cites. Record prose, type, status, agencies, tags and dates are unchanged.",
+    "publishedAt": "2026-10-07T00:39:50.273Z",
+    "updatedAt": "2026-10-07T00:39:50.273Z"
+  },
+  {
     "id": "source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-1hv6bwa",
     "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
     "title": "Senate opens inquiry into artificial intelligence and data centres",
