@@ -34,7 +34,9 @@ source commit/PR and installed digest in the change report.
   source health, pending-PR readiness or that a previous failed run is resolved.
 - `~/.local/bin/policai-collect.sh`: full scheduled path. The total subprocess
   budget is 3500 seconds within the unchanged one-hour service timeout.
-  `POLICAI_COLLECT_MAX_SECONDS` can shorten, never extend, the budget.
+  `POLICAI_COLLECT_MAX_SECONDS` can shorten, never extend, the budget. Opt-in
+  dependency retention runs first on its own budget of at most 60 seconds; the
+  collection budget starts after it (see Dependency retention).
 - `~/.local/bin/policai-collect.sh --retry-publication`: only a previously
   validated committed run in `ready`, `superseding` or `published` phase. It
   verifies exact local/remote heads and PR identity, never reruns collection, rebases JSON,
@@ -53,8 +55,16 @@ check, not a hard disk quota; a running collection can grow beyond its headroom.
 Publication retries do not create another worktree and bypass admission.
 Inventory counts inode sizes, including directory and symlink sizes, without
 following symlinks. Aliased/symlinked roots, special files and mount/device/owner
-boundaries refuse inventory. No automatic cleanup is performed; evidence and
-run trees require separate manual retention review.
+boundaries refuse inventory. Nothing but `node_modules` is ever deleted (see
+Dependency retention below); evidence and run trees need manual retention review.
+
+- `~/.local/bin/policai-collect.sh --retention-plan`: read-only JSON report of
+  which finished runs could have `node_modules` removed, and why every other run
+  is kept. It reads GitHub (read-only) but writes nothing. Existing lock only:
+  exit 75 on contention, 1 for a missing lock or any unverifiable global state.
+- `~/.local/bin/policai-collect.sh --retention-apply`: removes the `node_modules`
+  of the runs the plan calls `eligible`, re-checking each one first. Exit 1 if a
+  removal fails (the rest of the pass stops). Never starts a collection.
 
 Latest attempt: `~/.local/state/argus-jobs/policai-collect.json`.
 Retained active run: `~/.local/state/argus-jobs/policai-collection-active.json`.
@@ -197,7 +207,94 @@ Do not archive a normal `published` pointer just because its PR was merged:
 a successfully recorded publication resumes normally once no collection PR is
 open. No automatic merged/closed-PR reconciliation is implemented.
 
-Worktree/evidence retention is explicit and may consume disk. No retention job or
-cleanup policy is installed by this workflow. Restoring a preserved original
-wrapper requires separate authority and verification; the old direct-main
-publisher must not be resumed unattended merely as a rollback convenience.
+## Dependency retention
+
+Each run tree holds about 0.9 GB of `node_modules`, and nothing else in a tree
+is large. Retention removes **only** `<tree>/node_modules`. The tree, its Git
+branch and history, `run.json`, before/after snapshots and the install, collect
+and validate logs stay, so the receipts the wrapper relies on (including the
+state-only supersession check) are untouched. To rebuild, run
+`npm ci --no-audit --no-fund` in the tree; its `package-lock.json` is part of the
+retained commit.
+
+A run's `node_modules` is eligible only when **all** of these hold; anything
+else, or any check that cannot be completed, keeps it:
+
+- the receipt is `published`, with a parseable `finished_at` at least
+  `POLICAI_COLLECT_RETENTION_DAYS` days ago (whole number, default and minimum
+  7; a smaller value refuses retention, so the week cannot be configured away);
+- it is not the run named by `policai-collection-active.json`. Only a pointer
+  that genuinely does not exist means "no active run". A symlink (dangling or
+  not), a non-regular file, unparseable JSON, or evidence/tree/branch values that
+  do not match the wrapper's own layout for one run id keep every run;
+- its branch has no open collection PR, and `gh pr view` reports the exact URL,
+  branch, head and base from the receipt as `MERGED` or `CLOSED`;
+- the receipt's tree, evidence and branch names match the run id and path, the
+  tree is an owned real directory and a registered collector worktree, `HEAD`
+  and branch equal the receipt, and `git status` is clean;
+- no mount point is at or under the tree in `/proc/self/mountinfo`. That table
+  also shows bind mounts of directories on the same filesystem, which device
+  numbers and `Path.is_mount` miss. An unreadable or unparseable table keeps;
+- `node_modules` is an owned real directory with no tracked files, and every
+  directory below it has the same device and kernel mount id
+  (`/proc/self/fdinfo`) as the tree, no foreign owners and no special files;
+- no `retention-intent.json` or `retention-pruned.json` exists, including as a
+  dangling symlink (an interrupted earlier attempt needs manual review, not an
+  automatic second deletion);
+- no process scan hit (below).
+
+Failed, incomplete, no-change, pending and unfinished runs are never pruned.
+
+**Descriptor-anchored removal.** Assessment opens the tree from `/` one path
+component at a time with `O_NOFOLLOW | O_DIRECTORY`, and records the
+`(st_dev, st_ino)` identities of the tree and its `node_modules`. Removal
+re-opens both the same way and refuses unless the identities match, rechecks the
+mount table, then writes `retention-intent.json`. It deletes relative to the
+held descriptors only: each subdirectory is opened with `O_NOFOLLOW`, must be
+the entry just inspected, on the same device and mount; symlinks are unlinked,
+never followed; nothing is deleted through an absolute path. Then it removes the
+empty `node_modules` from the tree descriptor, verifies it is gone and writes
+`retention-pruned.json`. Both marker files are created exclusively and never
+replaced. A renamed or symlinked tree, parent directory or `node_modules`
+between assessment and removal therefore removes nothing (the run is reported
+`failed` and the pass stops). A change detected part-way through removal also
+stops it; the intent marker then keeps that run for manual review. Removal is
+not transactional.
+
+**Process check, and its limit.** A Linux `/proc` scan keeps a run when any
+visible process has the tree as cwd, root, exe, an open descriptor or in its
+arguments. The wrapper's own process is skipped, because it holds descriptors
+on the tree it assesses. Each link is judged as soon as it is read, so a
+reference already seen is never lost when another descriptor of the same
+process closes mid-scan. Processes the wrapper could not fully inspect
+(permission denied, or a descriptor that vanished while the process lives) are
+counted as `unreadable_processes` in the report; they are **not** proof of
+inactivity (on a busy host some same-user processes deny inspection, so refusing
+on them would block every prune). The remaining risk is a process outside the
+scan reading a tree that finished at least a week ago with a terminal PR; the
+loss is a reproducible `node_modules`.
+
+**Time budget.** `--retention-plan` and `--retention-apply` have 600 seconds.
+In a scheduled run, retention has its own budget of at most 60 seconds
+(`POLICAI_COLLECT_RETENTION_SECONDS` can shorten, never extend, it), covering
+GitHub and Git calls, the process scan and removal. The collection's full
+budget (3500 seconds, or `POLICAI_COLLECT_MAX_SECONDS`) starts only after
+retention ends, so slow retention cannot shorten collection or publication.
+60 + 3500 seconds stays inside the one-hour service timeout. Removal that hits
+its deadline stops and leaves the intent marker (manual review). Make the first
+cleanup of existing trees with `--retention-apply`, not the scheduled run.
+
+**Scheduled runs.** `POLICAI_COLLECT_PRUNE_DEPENDENCIES` (`0` default, `1` to
+enable; other values refuse the run) makes each scheduled run apply retention
+before the storage admission check, including a run that then waits for an open
+review PR. Retention errors are printed (`Retention skipped:`) and never block
+the collection; the admission cap still applies. `--retry-publication` and
+`--preflight` never prune. With the toggle at `0`, scheduled runs delete
+nothing; only an explicit `--retention-apply` (itself an opt-in) can remove
+`node_modules`.
+
+Installing the wrapper, enabling the toggle and the first prune of the existing
+run trees are separate host decisions, not part of the source change. Restoring
+a preserved original wrapper requires separate authority and verification; the
+old direct-main publisher must not be resumed unattended merely as a rollback
+convenience.

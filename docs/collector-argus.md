@@ -30,6 +30,10 @@ supersede a reopened PR again unless it is reviewed or taken out of draft; mark
 it ready or review it to keep it.
 With the toggle on and no merges, changed output can cause daily PR churn while
 main's watch state and freshness remain unchanged.
-No automatic merge or deletion occurs. Installing this source and changing
+No automatic merge occurs, and the only deletion the wrapper can perform is
+opt-in removal of `node_modules` from merged or closed runs that finished at
+least a week ago (`POLICAI_COLLECT_PRUNE_DEPENDENCIES`, default off;
+`--retention-apply` is a separate explicit opt-in; `--retention-plan` shows
+what either would do). Installing this source and changing
 the scheduled environment are separate approved host operations; a source
 PR does neither. The existing private host runbook covers host-specific access.

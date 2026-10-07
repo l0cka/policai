@@ -267,6 +267,11 @@ Each run holds the existing concurrency lock and:
    the head/base/state. No direct-main push, force, merge, or automatic approval.
 6. Returns failed source health as a failure even if structurally valid retry
    and coverage data reached a PR. Other failures retain local evidence.
+7. Optionally (`POLICAI_COLLECT_PRUNE_DEPENDENCIES=1`, off by default) removes
+   `node_modules` from runs that finished at least a week ago and whose PR is
+   merged or closed, before the storage check and on its own bounded time
+   budget. Trees, receipts and logs are kept; see the wrapper runbook's
+   dependency retention section.
 
 By default, the next scheduled collection is blocked until a pending collection
 PR is reviewed/merged/closed; it never overwrites a reviewer's pending data.
