@@ -349,6 +349,8 @@ export interface SourceReview {
 	targetPolicyRevisionHash?: string;
 	/** Stable id of the tracked timeline event being re-verified. */
 	targetTimelineEventId?: string;
+	/** Prior canonical URL when an explicitly reviewed timeline update replaces its source. */
+	targetTimelineEventPreviousSourceUrl?: string;
 	/**
 	 * Canonical timeline revision captured when staging an existing event or
 	 * recovering a partial publication.

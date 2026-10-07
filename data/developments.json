@@ -346,32 +346,63 @@
   {
     "id": "dev-nsw-supreme-court-practice-note-sc-gen-23-commen-1b1ap38",
     "title": "NSW Supreme Court Practice Note SC Gen 23 commences",
-    "url": "https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html",
+    "url": "https://supremecourt.nsw.gov.au/documents/Practice-and-Procedure/Practice-Notes/general/current/PN_SC_Gen_23.pdf",
     "sourceId": "nsw-sc-practice-notes",
     "sourceName": "NSW Supreme Court — practice notes",
     "jurisdiction": "nsw",
     "detectedAt": "2026-09-14T19:33:56.948Z",
-    "summary": "The official source content for \"NSW Supreme Court Practice Note SC Gen 23 commences\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+    "summary": "Restrictions on generative AI use in NSW Supreme Court proceedings take effect (issued 21 November 2024).",
     "relevanceScore": 1,
-    "classification": "ai",
+    "classification": "curated",
     "assessment": {
-      "method": "ai",
-      "promptVersion": "claude-classify-v1",
-      "assessedAt": "2026-09-14T19:33:56.948Z"
+      "method": "editorial",
+      "assessedAt": "2026-10-07T01:34:55.607Z",
+      "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
-        "url": "https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html",
-        "finalUrl": "https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html",
-        "retrievedAt": "2026-09-14T19:33:56.948Z",
+        "url": "https://supremecourt.nsw.gov.au/documents/Practice-and-Procedure/Practice-Notes/general/current/PN_SC_Gen_23.pdf",
+        "finalUrl": "https://supremecourt.nsw.gov.au/documents/Practice-and-Procedure/Practice-Notes/general/current/PN_SC_Gen_23.pdf",
+        "title": "SUPREME COURT PRACTICE NOTE SC GEN 23",
+        "retrievedAt": "2026-10-07T01:34:49.708Z",
         "contentType": "text/html",
-        "contentHash": "a14959306b9195ee884cfa02d91201b0377664ee8eb07851723a249e713bc725",
-        "lastModified": "Mon, 14 Sep 2026 16:42:57 GMT",
-        "title": "NSW Supreme Court Practice Note SC Gen 23 commences"
-      }
+        "contentHash": "9a44f5167b757df27c09b976b05ff1a951f2a1b3b962816cc8a1ceedd4a46d55",
+        "linkedDocuments": [
+          {
+            "url": "https://supremecourt.nsw.gov.au/documents/Practice-and-Procedure/Practice-Notes/general/current/PN_SC_Gen_23.pdf",
+            "finalUrl": "https://supremecourt.nsw.gov.au/documents/Practice-and-Procedure/Practice-Notes/general/current/PN_SC_Gen_23.pdf",
+            "retrievedAt": "2026-10-07T01:34:49.708Z",
+            "contentType": "application/pdf",
+            "contentHash": "8e87e71ecfcd9d3ada6cd1cf3ec8b3abd36e9dd2f51e68cc5c649db6eb01bbab"
+          }
+        ],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-10-07T01:34:49.708Z",
+          "capturedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+          "notes": "Hermes-assisted normal-browser fetch of the official instrument PDF, authorised by Daniel Alkurdi (E18). Text extracted from the downloaded PDF with pdftotext; the referenced artifact is that same PDF, preserved as linked-document bytes. Paragraph 1 and amendment history verify commencement on 3 February 2025. The PDF byte fingerprint matches the existing policy evidence.",
+          "pageContentHash": "8503e7c698663bbde0f83b59ee413d92f5d78ce52611a8745912c93ff47d63b2",
+          "characterCount": 12123
+        },
+        "reviewedDate": {
+          "date": "2025-02-03",
+          "precision": "day",
+          "reviewedAt": "2026-10-07T01:34:55.607Z",
+          "reviewedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+          "notes": "Paragraph 1: This Practice Note was issued on 28 January 2025, commences on 3 February 2025 and will apply to all proceedings from that date. The amendment history confirms the original 21 November 2024 issue date."
+        }
+      },
+      "checkedAt": "2026-10-07T01:34:55.607Z",
+      "checkedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+      "method": "manual",
+      "notes": "Daniel Alkurdi (Hermes-assisted web review), E18: verified the official SC Gen 23 instrument PDF and its commencement paragraph. Replace only the volatile index source and verification evidence; preserve the event date and prose."
     },
-    "status": "detected"
+    "status": "promoted",
+    "relatedTimelineEventId": "tl-2025-02-03-nsw-supreme-court-practice-note-sc-gen-23-commence",
+    "publishedAt": "2025-02-03",
+    "publishedAtPrecision": "day",
+    "relatedPolicyId": "nsw-supreme-court-sc-gen-23"
   },
   {
     "id": "dev-senate-opens-inquiry-into-artificial-intelligenc-ahco06",
@@ -2047,11 +2078,12 @@
       "method": "manual",
       "notes": "Duplicate of verified timeline event tl-2025-02-03-nsw-supreme-court-practice-note-sc-gen-23-commence; the live practice-notes index still lists SC Gen 23 (Use of Generative AI), commenced 3 February 2025."
     },
-    "status": "promoted",
+    "status": "dismissed",
     "relatedTimelineEventId": "tl-2025-02-03-nsw-supreme-court-practice-note-sc-gen-23-commence",
     "publishedAt": "2025-02-03",
     "publishedAtPrecision": "day",
-    "relatedPolicyId": "nsw-supreme-court-sc-gen-23"
+    "relatedPolicyId": "nsw-supreme-court-sc-gen-23",
+    "dismissalReason": "Superseded by newer source update source-review-dev-nsw-supreme-court-practice-note-sc-gen-23-commen-1b1ap38"
   },
   {
     "id": "dev-administrative-guideline-for-the-safe-and-respon-wo7okk",

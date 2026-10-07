@@ -351,30 +351,46 @@
     "type": "policy_introduced",
     "jurisdiction": "nsw",
     "relatedPolicyId": "nsw-supreme-court-sc-gen-23",
-    "sourceUrl": "https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html",
+    "sourceUrl": "https://supremecourt.nsw.gov.au/documents/Practice-and-Procedure/Practice-Notes/general/current/PN_SC_Gen_23.pdf",
     "datePrecision": "day",
     "verification": {
       "status": "verified",
       "source": {
-        "url": "https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html",
-        "finalUrl": "https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html",
-        "retrievedAt": "2026-08-07T07:54:05.044Z",
+        "url": "https://supremecourt.nsw.gov.au/documents/Practice-and-Procedure/Practice-Notes/general/current/PN_SC_Gen_23.pdf",
+        "finalUrl": "https://supremecourt.nsw.gov.au/documents/Practice-and-Procedure/Practice-Notes/general/current/PN_SC_Gen_23.pdf",
+        "title": "SUPREME COURT PRACTICE NOTE SC GEN 23",
+        "retrievedAt": "2026-10-07T01:34:49.708Z",
         "contentType": "text/html",
-        "contentHash": "ca5614f3ecc63e3934ed322eee3e9d77e4ce782db3c00e51284e67253bfaf654",
-        "lastModified": "Fri, 07 Aug 2026 07:52:40 GMT",
-        "title": "Practice notes",
+        "contentHash": "9a44f5167b757df27c09b976b05ff1a951f2a1b3b962816cc8a1ceedd4a46d55",
+        "linkedDocuments": [
+          {
+            "url": "https://supremecourt.nsw.gov.au/documents/Practice-and-Procedure/Practice-Notes/general/current/PN_SC_Gen_23.pdf",
+            "finalUrl": "https://supremecourt.nsw.gov.au/documents/Practice-and-Procedure/Practice-Notes/general/current/PN_SC_Gen_23.pdf",
+            "retrievedAt": "2026-10-07T01:34:49.708Z",
+            "contentType": "application/pdf",
+            "contentHash": "8e87e71ecfcd9d3ada6cd1cf3ec8b3abd36e9dd2f51e68cc5c649db6eb01bbab"
+          }
+        ],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-10-07T01:34:49.708Z",
+          "capturedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+          "notes": "Hermes-assisted normal-browser fetch of the official instrument PDF, authorised by Daniel Alkurdi (E18). Text extracted from the downloaded PDF with pdftotext; the referenced artifact is that same PDF, preserved as linked-document bytes. Paragraph 1 and amendment history verify commencement on 3 February 2025. The PDF byte fingerprint matches the existing policy evidence.",
+          "pageContentHash": "8503e7c698663bbde0f83b59ee413d92f5d78ce52611a8745912c93ff47d63b2",
+          "characterCount": 12123
+        },
         "reviewedDate": {
           "date": "2025-02-03",
           "precision": "day",
-          "reviewedAt": "2026-08-07T07:54:05.074Z",
-          "reviewedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-07",
-          "notes": "Date confirmed against the live official source on 2026-08-07. Duplicate of verified timeline event tl-2025-02-03-nsw-supreme-court-practice-note-sc-gen-23-commence; the live practice-notes index still lists SC Gen 23 (Use of Generative AI), commenced 3 February 2025."
+          "reviewedAt": "2026-10-07T01:34:55.607Z",
+          "reviewedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+          "notes": "Paragraph 1: This Practice Note was issued on 28 January 2025, commences on 3 February 2025 and will apply to all proceedings from that date. The amendment history confirms the original 21 November 2024 issue date."
         }
       },
-      "checkedAt": "2026-08-07T07:54:05.074Z",
-      "checkedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-07",
+      "checkedAt": "2026-10-07T01:34:55.607Z",
+      "checkedBy": "Daniel Alkurdi (Hermes-assisted web review)",
       "method": "manual",
-      "notes": "Duplicate of verified timeline event tl-2025-02-03-nsw-supreme-court-practice-note-sc-gen-23-commence; the live practice-notes index still lists SC Gen 23 (Use of Generative AI), commenced 3 February 2025."
+      "notes": "Daniel Alkurdi (Hermes-assisted web review), E18: verified the official SC Gen 23 instrument PDF and its commencement paragraph. Replace only the volatile index source and verification evidence; preserve the event date and prose."
     }
   },
   {

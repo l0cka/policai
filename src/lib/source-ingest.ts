@@ -842,6 +842,36 @@ function withProspectiveTimelineEvent(
 	);
 }
 
+// A timeline replacement may share only its already-related policy's canonical
+// URL. Do not exempt that policy's redirect aliases, other records, or drafts.
+function timelineReplacementRelatedPolicy(
+	target: TimelineEvent | undefined,
+	proposed: TimelineEventDraft | undefined,
+	sourceUrl: string,
+	replacesSource: boolean,
+	policies: Policy[],
+): Policy | undefined {
+	if (!replacesSource || !target?.relatedPolicyId ||
+		proposed?.relatedPolicyId !== target.relatedPolicyId) return undefined;
+	return policies.find((policy) => policy.id === target.relatedPolicyId &&
+		sourceUrlsEqual(policy.sourceUrl, sourceUrl));
+}
+
+function collisionUrlsForPolicyOwner(
+	urls: string[],
+	relatedPolicy: Policy | undefined,
+	ownerPolicyId: string | undefined,
+): string[] {
+	return relatedPolicy && ownerPolicyId === relatedPolicy.id
+		? urls.filter((url) => !sourceUrlsEqual(url, relatedPolicy.sourceUrl))
+		: urls;
+}
+
+function publishedPolicyReviewOwner(review: SourceReview): string | undefined {
+	return review.entryKind === "policy" && review.status === "published"
+		? review.proposedRecord.id : undefined;
+}
+
 async function stageSourceUrlUnlocked(input: {
 	url: string;
 	entryKind: SourceReviewEntryKind;
@@ -890,7 +920,9 @@ async function stageSourceUrlUnlocked(input: {
 			: undefined;
 	const targetTimelineEvent =
 		input.entryKind === "timeline_event"
-			? matchingTimelineEvents.find(
+			? input.replaceTargetSource && input.targetRecordId
+				? trackedTimelineEvents.find((event) => event.id === input.targetRecordId)
+				: matchingTimelineEvents.find(
 					(event) =>
 						!input.targetRecordId || event.id === input.targetRecordId,
 				)
@@ -901,22 +933,24 @@ async function stageSourceUrlUnlocked(input: {
 		);
 	}
 	if (input.replaceTargetSource) {
+		const target = targetPolicy ?? targetTimelineEvent;
 		if (
 			!input.browserCapture ||
 			!input.proposedRecord ||
-			!targetPolicy ||
-			sourceUrlsEqual(targetPolicy.sourceUrl, canonicalUrl)
+			!input.targetRecordId ||
+			!target ||
+			sourceUrlsEqual(target.sourceUrl, canonicalUrl)
 		) {
 			throw new Error(
-				"Replacing a tracked source requires a different official browser capture, the target policy id, and an explicit proposedRecord",
+				"Replacing a tracked source requires a different official browser capture, the target record id, and an explicit proposedRecord",
 			);
 		}
 		if (
-			input.proposedRecord.id !== targetPolicy.id ||
+			input.proposedRecord.id !== target.id ||
 			!sourceUrlsEqual(input.proposedRecord.sourceUrl, canonicalUrl)
 		) {
 			throw new Error(
-				"Source replacement proposedRecord must preserve the target policy id and use the captured source URL",
+				"Source replacement proposedRecord must preserve the target record id and use the captured source URL",
 			);
 		}
 	}
@@ -943,7 +977,7 @@ async function stageSourceUrlUnlocked(input: {
 			(review) =>
 				(review.status === "pending_review" || review.status === "approved") &&
 				timelineReviewTargetId(review) === targetTimelineEvent.id &&
-				sourceUrlsEqual(review.sourceUrl, canonicalUrl),
+				(input.replaceTargetSource || sourceUrlsEqual(review.sourceUrl, canonicalUrl)),
 		);
 	} else {
 		existingReview = sourceReviews.find(
@@ -1071,6 +1105,10 @@ async function stageSourceUrlUnlocked(input: {
 					retrieved.evidence.retrievedAt ?? new Date().toISOString(),
 				};
 			}
+		const relatedPolicy = timelineReplacementRelatedPolicy(
+			targetTimelineEvent, input.proposedRecord as TimelineEventDraft | undefined,
+			canonicalUrl, Boolean(input.replaceTargetSource), trackedPolicies,
+		);
 		const targetRecord = targetPolicy ?? targetTimelineEvent;
 		const candidateIdentityUrls = sourceIdentityUrls(
 			canonicalUrl,
@@ -1088,7 +1126,7 @@ async function stageSourceUrlUnlocked(input: {
 				(policy) =>
 					policy.id !== targetPolicy?.id &&
 					sourceIdentityMatches(
-						collisionIdentityUrls,
+						collisionUrlsForPolicyOwner(collisionIdentityUrls, relatedPolicy, policy.id),
 						policy.sourceUrl,
 						policy.verification.source,
 					),
@@ -1107,7 +1145,7 @@ async function stageSourceUrlUnlocked(input: {
 					review.status !== "rejected" &&
 					review.id !== existingReview?.id &&
 					sourceIdentityMatches(
-						collisionIdentityUrls,
+						collisionUrlsForPolicyOwner(collisionIdentityUrls, relatedPolicy, publishedPolicyReviewOwner(review)),
 						review.sourceUrl,
 						review.sourceEvidence,
 					),
@@ -1197,6 +1235,9 @@ async function stageSourceUrlUnlocked(input: {
 		...(targetTimelineEvent
 			? {
 				targetTimelineEventId: targetTimelineEvent.id,
+				...(input.replaceTargetSource
+					? { targetTimelineEventPreviousSourceUrl: targetTimelineEvent.sourceUrl }
+					: {}),
 				targetTimelineRevisionHash:
 					timelineRevisionHash(targetTimelineEvent),
 			}
@@ -1545,11 +1586,22 @@ async function approveStagedSourceUnlocked(input: {
 		const timelineCollision = timelineEvents.find(
 			(existing) => existing.id === event.id,
 		);
+		const relatedPolicy = timelineReplacementRelatedPolicy(
+			timelineCollision, event, review.sourceUrl,
+			Boolean(review.targetTimelineEventPreviousSourceUrl), policies,
+		);
 		let targetTimelineRevisionHash: string | undefined;
 		if (targetTimelineEventId && !timelineCollision) {
 			throw new Error("Target timeline event for update review was not found");
 		}
 		if (timelineCollision) {
+			if (targetTimelineEventId &&
+				!sourceUrlsEqual(timelineCollision.sourceUrl, review.sourceUrl) &&
+				!(review.targetTimelineEventPreviousSourceUrl && sourceUrlsEqual(
+					timelineCollision.sourceUrl, review.targetTimelineEventPreviousSourceUrl,
+				))) {
+				throw new Error("Timeline update review source URL does not match the target event");
+			}
 			const previousApproved = review.proposedRecord as TimelineEvent;
 			const currentTimelineRevisionHash =
 				timelineRevisionHash(timelineCollision);
@@ -1610,7 +1662,7 @@ async function approveStagedSourceUnlocked(input: {
 					);
 			const policySourceUrlCollision = policies.find((existing) =>
 						sourceIdentityMatches(
-					collisionIdentityUrls,
+					collisionUrlsForPolicyOwner(collisionIdentityUrls, relatedPolicy, existing.id),
 					existing.sourceUrl,
 					existing.verification.source,
 				),
@@ -1620,7 +1672,7 @@ async function approveStagedSourceUnlocked(input: {
 							existing.id !== review.id &&
 							existing.status !== "rejected" &&
 							sourceIdentityMatches(
-								collisionIdentityUrls,
+								collisionUrlsForPolicyOwner(collisionIdentityUrls, relatedPolicy, publishedPolicyReviewOwner(existing)),
 								existing.sourceUrl,
 								existing.sourceEvidence,
 							),
@@ -2141,6 +2193,11 @@ async function assertTargetSourceIdentityIsUncontested(
 	if (!target) {
 		throw new Error("Target record for update review was not found");
 	}
+	const relatedPolicy = timelineReplacementRelatedPolicy(
+		timelineEvents.find((event) => event.id === targetTimelineEventId),
+		review.proposedRecord as TimelineEventDraft, review.sourceUrl,
+		Boolean(review.targetTimelineEventPreviousSourceUrl), policies,
+	);
 	const newlyAdoptedIdentityUrls = sourceIdentityUrlsNotOwnedBy(
 		sourceIdentityUrls(review.sourceUrl, approvedVerification.source),
 		target.sourceUrl,
@@ -2151,7 +2208,7 @@ async function assertTargetSourceIdentityIsUncontested(
 			(policy) =>
 				policy.id !== review.targetPolicyId &&
 				sourceIdentityMatches(
-					newlyAdoptedIdentityUrls,
+					collisionUrlsForPolicyOwner(newlyAdoptedIdentityUrls, relatedPolicy, policy.id),
 					policy.sourceUrl,
 					policy.verification.source,
 				),
@@ -2170,7 +2227,7 @@ async function assertTargetSourceIdentityIsUncontested(
 				candidate.id !== review.id &&
 				candidate.status !== "rejected" &&
 				sourceIdentityMatches(
-					newlyAdoptedIdentityUrls,
+					collisionUrlsForPolicyOwner(newlyAdoptedIdentityUrls, relatedPolicy, publishedPolicyReviewOwner(candidate)),
 					candidate.sourceUrl,
 					candidate.sourceEvidence,
 				),
@@ -2355,7 +2412,9 @@ async function publishStagedSourceUnlocked(
 		if (existingEvent) {
 			if (
 				targetTimelineEventId &&
-				!sourceUrlsEqual(existingEvent.sourceUrl, review.sourceUrl)
+				!sourceUrlsEqual(existingEvent.sourceUrl, review.sourceUrl) &&
+				!(review.targetTimelineEventPreviousSourceUrl &&
+					sourceUrlsEqual(existingEvent.sourceUrl, review.targetTimelineEventPreviousSourceUrl))
 			) {
 				throw new Error(
 					"Timeline update review source URL does not match the target event",
