@@ -2,7 +2,8 @@
 """Policai collector entry point: historical .sh name, Python 3 stdlib only.
 
 Never collect in main or a serving checkout. Retain every run until reviewed;
-only node_modules of merged/closed published runs may be pruned, by explicit opt-in.
+only node_modules of merged/closed published runs a week old may be pruned, by
+explicit opt-in, through descriptors anchored at / (no absolute-path deletion).
 Content PRs block collection; state-only supersession is opt-in. Retries never recollect.
 """
 import datetime
@@ -485,7 +486,14 @@ def storage_status():
 
 RUN_ID = re.compile(r'\d{8}T\d{6}Z-[0-9a-f]{8}')
 PROC = Path('/proc')
+MOUNTINFO = Path('/proc/self/mountinfo')
+FDINFO = Path('/proc/self/fdinfo')
 TERMINAL_PR = ('MERGED', 'CLOSED')
+MIN_RETENTION_DAYS = 7
+# Scheduled retention runs before, never inside, the 3500 s collection budget:
+# 60 + 3500 s stays within the one-hour service timeout.
+SCHEDULED_RETENTION_SECONDS = 60
+DIR_FLAGS = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC
 
 
 def decimal_env(name, default):
@@ -493,6 +501,19 @@ def decimal_env(name, default):
     if not re.fullmatch(r'[0-9]+', value):
         raise Refused(f'{name} must be a non-negative whole number')
     return int(value)
+
+
+def retention_days():
+    days = decimal_env('POLICAI_COLLECT_RETENTION_DAYS', str(MIN_RETENTION_DAYS))
+    if days < MIN_RETENTION_DAYS:
+        raise Refused(f'POLICAI_COLLECT_RETENTION_DAYS must be at least {MIN_RETENTION_DAYS}')
+    return days
+
+
+def retention_seconds():
+    """Scheduled retention budget; the setting can shorten, never extend, it."""
+    value = decimal_env('POLICAI_COLLECT_RETENTION_SECONDS', str(SCHEDULED_RETENTION_SECONDS))
+    return min(SCHEDULED_RETENTION_SECONDS, max(1, value))
 
 
 def prune_enabled():
@@ -512,138 +533,346 @@ def owned_dir(path):
     return info
 
 
-def dependency_bytes(target):
-    """Apparent size of node_modules; refuses foreign owners, mounts and specials."""
-    root_info = owned_dir(target)
-    total = 0
-    stack = [target]
-    while stack:
-        if time.monotonic() >= DEADLINE:
-            raise Refused('dependency inventory deadline exceeded')
-        path = stack.pop()
-        info = path.lstat()
-        if info.st_dev != root_info.st_dev or info.st_uid != os.getuid():
-            raise Refused('dependency device/owner boundary')
-        if stat.S_ISDIR(info.st_mode):
-            if path.is_mount():
-                raise Refused('mount inside dependencies')
-            stack.extend(path.iterdir())
-        elif not (stat.S_ISREG(info.st_mode) or stat.S_ISLNK(info.st_mode)):
-            raise Refused('special file in dependencies')
-        total += info.st_size
+def identity(info):
+    return [info.st_dev, info.st_ino]
+
+
+def open_dir(path):
+    """Open an absolute directory one component at a time from /, never following a symlink.
+
+    Every later check and removal works relative to the returned descriptor, so
+    replacing any path component afterwards cannot redirect it.
+    """
+    path = Path(path)
+    if not path.is_absolute() or '..' in path.parts:
+        raise Refused('directory path is not absolute and normal')
+    fd = os.open('/', DIR_FLAGS)
+    try:
+        for part in path.parts[1:]:
+            child = os.open(part, DIR_FLAGS, dir_fd=fd)
+            os.close(fd)
+            fd = child
+    except BaseException:
+        os.close(fd)
+        raise
+    return fd
+
+
+def mount_id(fd):
+    """Kernel mount id of a descriptor; a bind mount differs even on the same device."""
+    try:
+        text = (FDINFO / str(fd)).read_text()
+    except OSError:
+        raise Refused('descriptor mount identity unreadable') from None
+    match = re.search(r'^mnt_id:\s*([0-9]+)$', text, re.M)
+    if not match:
+        raise Refused('descriptor mount identity unparseable')
+    return int(match.group(1))
+
+
+def unescape_mount_path(field):
+    return re.sub(rb'\\([0-3][0-7]{2})', lambda m: bytes([int(m.group(1), 8)]), field)
+
+
+def mount_inside(path):
+    """Refuse if any mount point, including a same-device bind mount, is at or under path.
+
+    Device numbers and Path.is_mount cannot see a bind mount of a directory on the
+    same filesystem; the mount table can. An unreadable or unparseable table refuses.
+    """
+    try:
+        lines = MOUNTINFO.read_bytes().splitlines()
+    except OSError:
+        raise Refused('mount table unreadable') from None
+    if not lines:
+        raise Refused('mount table empty')
+    prefix = os.fsencode(str(path))
+    for line in lines:
+        fields = line.split(b' ')
+        if len(fields) < 10 or b'-' not in fields[6:] or not fields[4].startswith(b'/'):
+            raise Refused('mount table unparseable')
+        point = unescape_mount_path(fields[4])
+        if point == prefix or point.startswith(prefix + b'/'):
+            raise Refused('mount at or under the run tree')
+
+
+def walk_dependencies(root_fd, remove=False):
+    """Apparent size of the directory held by root_fd, optionally removing its contents.
+
+    Descriptor-relative throughout: each subdirectory is opened with O_NOFOLLOW,
+    must be the entry just inspected, on the same device and mount, and owned by
+    us. Symlinks are unlinked, never followed. Special files refuse. The caller
+    removes the (then empty) root itself.
+    """
+    root = os.fstat(root_fd)
+    root_mount = mount_id(root_fd)
+    total = root.st_size
+    with os.scandir(root_fd) as entries:
+        names = [entry.name for entry in entries]
+    stack = [(root_fd, names, None)]
+    try:
+        while stack:
+            fd, names, link = stack[-1]
+            if not names:
+                stack.pop()
+                if link:
+                    os.close(fd)
+                if link and remove:
+                    parent_fd, name, info = link
+                    again = os.stat(name, dir_fd=parent_fd, follow_symlinks=False)
+                    if not os.path.samestat(again, info):
+                        raise Refused('dependency directory replaced during removal')
+                    os.rmdir(name, dir_fd=parent_fd)
+                continue
+            if time.monotonic() >= DEADLINE:
+                raise Refused('dependency walk deadline exceeded')
+            name = names.pop()
+            info = os.stat(name, dir_fd=fd, follow_symlinks=False)
+            if info.st_dev != root.st_dev or info.st_uid != os.getuid():
+                raise Refused('dependency device/owner boundary')
+            total += info.st_size
+            if stat.S_ISDIR(info.st_mode):
+                child = os.open(name, DIR_FLAGS, dir_fd=fd)
+                try:
+                    if not os.path.samestat(os.fstat(child), info):
+                        raise Refused('dependency directory replaced during inspection')
+                    if mount_id(child) != root_mount:
+                        raise Refused('mount inside dependencies')
+                    with os.scandir(child) as entries:
+                        children = [entry.name for entry in entries]
+                except BaseException:
+                    os.close(child)
+                    raise
+                stack.append((child, children, (fd, name, info)))
+            elif stat.S_ISREG(info.st_mode) or stat.S_ISLNK(info.st_mode):
+                if remove:
+                    os.unlink(name, dir_fd=fd)
+            else:
+                raise Refused('special file in dependencies')
+    finally:
+        for fd, _names, link in stack:
+            if link:
+                os.close(fd)
     return total
 
 
 def tree_in_use(tree):
-    """Best-effort Linux scan. Returns (referenced, unreadable_process_count).
+    """Best-effort Linux scan. Returns (referenced, incompletely_inspected_process_count).
 
-    A positive hit (cwd, root, exe, open descriptor or argument inside the tree)
-    keeps the run. A process that cannot be inspected is counted and reported,
-    not treated as proof of inactivity; see the README for that residual risk.
+    Each link is judged as soon as it is read, so a positive hit (cwd, root, exe,
+    open descriptor or argument inside the tree) keeps the run even if another
+    field of the same process cannot be read. A process whose inspection was
+    incomplete (denied, or a descriptor vanished mid-scan) is counted and
+    reported, not treated as proof of inactivity; see the README.
     """
     prefix = str(tree)
     needle = prefix.encode()
-    unreadable = 0
+    incomplete = 0
+    me = str(os.getpid())  # the wrapper holds descriptors on the tree it assesses
     for pid in PROC.iterdir():
-        if not pid.name.isdecimal():
+        if time.monotonic() >= DEADLINE:
+            raise Refused('process scan deadline exceeded')
+        if not pid.name.isdecimal() or pid.name == me:
             continue
+        partial = False
+        links = [pid / name for name in ('cwd', 'root', 'exe')]
         try:
-            targets = [os.readlink(pid / name) for name in ('cwd', 'root', 'exe')]
-            targets.extend(os.readlink(fd) for fd in (pid / 'fd').iterdir())
-            if any(t == prefix or t.startswith(prefix + '/') for t in targets):
-                return True, unreadable
-            if needle in (pid / 'cmdline').read_bytes():
-                return True, unreadable
-        except PermissionError:
-            unreadable += 1
+            links.extend(sorted((pid / 'fd').iterdir()))
         except OSError:
-            continue  # exited while scanning
-    return False, unreadable
+            partial = True
+        for link in links:
+            try:
+                target = os.readlink(link)
+            except OSError:
+                partial = True  # this field only; keep checking the others
+                continue
+            if target == prefix or target.startswith(prefix + '/'):
+                return True, incomplete
+        try:
+            if needle in (pid / 'cmdline').read_bytes():
+                return True, incomplete
+        except OSError:
+            partial = True
+        # A vanished /proc entry is a process that exited during the scan.
+        if partial and pid.exists():
+            incomplete += 1
+    return False, incomplete
 
 
 def active_run_id():
-    if not ACTIVE.exists():
+    """The active run's id, or None only when the pointer genuinely does not exist.
+
+    A symlink (dangling or not), non-regular file, unparseable content or a
+    receipt identity that does not match the wrapper's layout keeps every run.
+    """
+    try:
+        info = os.lstat(ACTIVE)
+    except FileNotFoundError:
         return None
-    active = json.loads(ACTIVE.read_text())
+    if not stat.S_ISREG(info.st_mode):
+        raise Refused('active pointer is not a regular file; every run retained')
+    try:
+        fd = os.open(ACTIVE, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK | os.O_CLOEXEC)
+        with os.fdopen(fd) as handle:
+            if not os.path.samestat(os.fstat(handle.fileno()), info):
+                raise Refused('active pointer changed while reading; every run retained')
+            active = json.loads(handle.read())
+    except (OSError, ValueError):
+        raise Refused('active pointer unreadable; every run retained') from None
     if not isinstance(active, dict) or not isinstance(active.get('evidence'), str):
         raise Refused('active pointer unreadable; every run retained')
-    return Path(active['evidence']).name
+    run_id = Path(active['evidence']).name
+    if (not RUN_ID.fullmatch(run_id)
+            or active['evidence'] != str(STATE / 'policai-collection-runs' / run_id)
+            or active.get('tree') != str(RUNS / run_id)
+            or active.get('branch') != PREFIX + run_id):
+        raise Refused('active pointer identity invalid; every run retained')
+    return run_id
 
 
 def assess_run(evidence, open_branches, active_id, days):
-    """Return (reason_to_keep or None, apparent dependency bytes, unreadable processes)."""
+    """Return (reason_to_keep or None, dependency bytes, incomplete processes, identities)."""
     run_id = evidence.name
     if not RUN_ID.fullmatch(run_id):
-        return 'not a run directory', 0, 0
+        return 'not a run directory', 0, 0, None
     owned_dir(evidence)
     receipt_path = evidence / 'run.json'
     if receipt_path.is_symlink() or not receipt_path.is_file():
-        return 'receipt missing or not a regular file', 0, 0
+        return 'receipt missing or not a regular file', 0, 0, None
     run = json.loads(receipt_path.read_text())
     tree = RUNS / run_id
     if (not isinstance(run, dict) or run.get('tree') != str(tree)
             or run.get('evidence') != str(evidence) or run.get('branch') != PREFIX + run_id):
-        return 'receipt identity does not match its path', 0, 0
+        return 'receipt identity does not match its path', 0, 0, None
     if run_id == active_id:
-        return 'active run pointer references it', 0, 0
+        return 'active run pointer references it', 0, 0, None
     if run.get('phase') != 'published' or not isinstance(run.get('pr'), str):
-        return f"phase {run.get('phase')!r}: only published runs are pruned", 0, 0
+        return f"phase {run.get('phase')!r}: only published runs are pruned", 0, 0, None
     if run['branch'] in open_branches:
-        return 'collection PR is open', 0, 0
+        return 'collection PR is open', 0, 0, None
     finished = datetime.datetime.fromisoformat(run.get('finished_at') or '')
     age = (datetime.datetime.now(datetime.timezone.utc) - finished).total_seconds()
     if age < days * 86400:
-        return f'finished less than {days} day(s) ago', 0, 0
-    if (evidence / 'retention-pruned.json').exists():
-        return 'already pruned', 0, 0
-    if (evidence / 'retention-intent.json').exists():
-        return 'earlier prune interrupted; manual review', 0, 0
-    owned_dir(tree)
-    target = tree / 'node_modules'
-    if not target.is_symlink() and not target.exists():
-        return 'no dependencies present', 0, 0
-    if git('--no-optional-locks', 'status', '--porcelain=v1', '--untracked-files=all', cwd=tree):
-        return 'worktree has staged, unstaged or untracked files', 0, 0
-    if (git('branch', '--show-current', cwd=tree) != run['branch']
-            or git('rev-parse', 'HEAD', cwd=tree) != run.get('head')):
-        return 'worktree branch or HEAD differs from receipt', 0, 0
-    if git('ls-files', '--', 'node_modules', cwd=tree):
-        return 'tracked files under node_modules', 0, 0
-    registered = git('worktree', 'list', '--porcelain').split('\n\n')
-    if not any(('worktree ' + str(tree)) in r.splitlines()
-               and ('branch refs/heads/' + run['branch']) in r.splitlines() for r in registered):
-        return 'not a registered collector worktree', 0, 0
-    pr = json.loads(command(['gh', 'pr', 'view', run['pr'], '--repo', REPO, '--json',
-                             'url,state,headRefName,headRefOid,baseRefName'], tree))
-    if (pr['url'] != run['pr'] or pr['state'] not in TERMINAL_PR
-            or pr['headRefName'] != run['branch'] or pr['headRefOid'] != run.get('head')
-            or pr['baseRefName'] != 'main'):
-        return f"PR is {pr['state']} or differs from receipt", 0, 0
-    size = dependency_bytes(target)
-    used, unreadable = tree_in_use(tree)
-    if used:
-        return 'a process references the run tree', size, unreadable
-    return None, size, unreadable
+        return f'finished less than {days} day(s) ago', 0, 0, None
+    # lexists: a dangling marker symlink is still a marker.
+    if os.path.lexists(evidence / 'retention-pruned.json'):
+        return 'already pruned', 0, 0, None
+    if os.path.lexists(evidence / 'retention-intent.json'):
+        return 'earlier prune interrupted; manual review', 0, 0, None
+    tree_fd = open_dir(tree)
+    try:
+        tree_info = os.fstat(tree_fd)
+        if not stat.S_ISDIR(tree_info.st_mode) or tree_info.st_uid != os.getuid():
+            raise Refused('run tree is not an owned directory')
+        try:
+            deps_info = os.stat('node_modules', dir_fd=tree_fd, follow_symlinks=False)
+        except FileNotFoundError:
+            return 'no dependencies present', 0, 0, None
+        if not stat.S_ISDIR(deps_info.st_mode):
+            return 'node_modules is not a real directory', 0, 0, None
+        if git('--no-optional-locks', 'status', '--porcelain=v1', '--untracked-files=all', cwd=tree):
+            return 'worktree has staged, unstaged or untracked files', 0, 0, None
+        if (git('branch', '--show-current', cwd=tree) != run['branch']
+                or git('rev-parse', 'HEAD', cwd=tree) != run.get('head')):
+            return 'worktree branch or HEAD differs from receipt', 0, 0, None
+        if git('ls-files', '--', 'node_modules', cwd=tree):
+            return 'tracked files under node_modules', 0, 0, None
+        registered = git('worktree', 'list', '--porcelain').split('\n\n')
+        if not any(('worktree ' + str(tree)) in r.splitlines()
+                   and ('branch refs/heads/' + run['branch']) in r.splitlines() for r in registered):
+            return 'not a registered collector worktree', 0, 0, None
+        pr = json.loads(command(['gh', 'pr', 'view', run['pr'], '--repo', REPO, '--json',
+                                 'url,state,headRefName,headRefOid,baseRefName'], tree))
+        if (pr['url'] != run['pr'] or pr['state'] not in TERMINAL_PR
+                or pr['headRefName'] != run['branch'] or pr['headRefOid'] != run.get('head')
+                or pr['baseRefName'] != 'main'):
+            return f"PR is {pr['state']} or differs from receipt", 0, 0, None
+        mount_inside(tree)
+        deps_fd = os.open('node_modules', DIR_FLAGS, dir_fd=tree_fd)
+        try:
+            deps_now = os.fstat(deps_fd)
+            if (not os.path.samestat(deps_now, deps_info) or deps_now.st_uid != os.getuid()
+                    or deps_now.st_dev != tree_info.st_dev
+                    or mount_id(deps_fd) != mount_id(tree_fd)):
+                raise Refused('dependency directory replaced, foreign or mounted')
+            size = walk_dependencies(deps_fd)
+        finally:
+            os.close(deps_fd)
+        used, incomplete = tree_in_use(tree)
+        if used:
+            return 'a process references the run tree', size, incomplete, None
+        held = dict(tree=identity(tree_info), deps=identity(deps_info))
+        anchored(tree, held).close()  # the path still names the assessed directories
+        return None, size, incomplete, held
+    finally:
+        os.close(tree_fd)
 
 
-def prune_run(evidence, size):
+class anchored:
+    """Re-open the run tree from / and require the identities assessment saw."""
+
+    def __init__(self, tree, held):
+        self.tree_fd = open_dir(tree)
+        self.deps_fd = None
+        try:
+            if identity(os.fstat(self.tree_fd)) != held['tree']:
+                raise Refused('run tree replaced since assessment; nothing removed')
+            self.deps_fd = os.open('node_modules', DIR_FLAGS, dir_fd=self.tree_fd)
+            if (identity(os.fstat(self.deps_fd)) != held['deps']
+                    or mount_id(self.deps_fd) != mount_id(self.tree_fd)):
+                raise Refused('dependencies replaced or mounted since assessment; nothing removed')
+        except BaseException:
+            self.close()
+            raise
+
+    def close(self):
+        for fd in (self.deps_fd, self.tree_fd):
+            if fd is not None:
+                os.close(fd)
+        self.deps_fd = self.tree_fd = None
+
+
+def write_marker(evidence, name, value):
+    """Exclusive create inside the evidence directory; never replaced or followed."""
+    evidence_fd = open_dir(evidence)
+    try:
+        fd = os.open(name, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW | os.O_CLOEXEC,
+                     0o600, dir_fd=evidence_fd)
+        with os.fdopen(fd, 'w') as handle:
+            handle.write(json.dumps(value, indent=2) + '\n')
+            handle.flush()
+            os.fsync(handle.fileno())
+    finally:
+        os.close(evidence_fd)
+
+
+def prune_run(evidence, size, held):
+    """Remove node_modules relative to the held tree descriptor; no absolute-path deletion."""
     run = json.loads((evidence / 'run.json').read_text())
     tree = RUNS / evidence.name
     intent = dict(run=evidence.name, tree=str(tree), head=run['head'], pr=run['pr'],
+                  tree_identity=held['tree'], dependency_identity=held['deps'],
                   apparent_dependency_bytes=size, recorded_at=utc())
-    # Exclusive create: evidence from an earlier attempt is never replaced.
-    with (evidence / 'retention-intent.json').open('x') as handle:
-        handle.write(json.dumps(intent, indent=2) + '\n')
-        handle.flush()
-        os.fsync(handle.fileno())
-    target = tree / 'node_modules'
-    if not shutil.rmtree.avoids_symlink_attacks:
-        raise Refused('platform lacks fd-based safe removal')
-    shutil.rmtree(target)
-    if target.exists() or target.is_symlink():
-        raise Refused('dependency removal incomplete')
-    with (evidence / 'retention-pruned.json').open('x') as handle:
-        handle.write(json.dumps(dict(intent, finished_at=utc()), indent=2) + '\n')
+    target = anchored(tree, held)
+    try:
+        mount_inside(tree)
+        write_marker(evidence, 'retention-intent.json', intent)
+        walk_dependencies(target.deps_fd, remove=True)
+        os.close(target.deps_fd)
+        target.deps_fd = None
+        again = os.stat('node_modules', dir_fd=target.tree_fd, follow_symlinks=False)
+        if identity(again) != held['deps']:
+            raise Refused('dependency directory replaced during removal')
+        os.rmdir('node_modules', dir_fd=target.tree_fd)
+        try:
+            os.stat('node_modules', dir_fd=target.tree_fd, follow_symlinks=False)
+        except FileNotFoundError:
+            pass
+        else:
+            raise Refused('dependency removal incomplete')
+    finally:
+        target.close()
+    write_marker(evidence, 'retention-pruned.json', dict(intent, finished_at=utc()))
 
 
 def retention(apply=False):
@@ -652,7 +881,7 @@ def retention(apply=False):
     Only node_modules is ever deleted: run trees, source, Git history, logs,
     snapshots and receipts stay. Any doubt keeps the run.
     """
-    days = decimal_env('POLICAI_COLLECT_RETENTION_DAYS', '7')
+    days = retention_days()
     root = STATE / 'policai-collection-runs'
     rows = []
     if root.exists():
@@ -662,7 +891,7 @@ def retention(apply=False):
         for evidence in sorted(root.iterdir()):
             row = dict(run=evidence.name, status='kept', reason='', apparent_dependency_bytes=0)
             try:
-                reason, size, unreadable = assess_run(evidence, open_branches, active_id, days)
+                reason, size, unreadable, held = assess_run(evidence, open_branches, active_id, days)
                 row['apparent_dependency_bytes'] = size
                 row['unreadable_processes'] = unreadable
                 if reason:
@@ -670,7 +899,7 @@ def retention(apply=False):
                 else:
                     row['status'] = 'eligible'
                     if apply:
-                        prune_run(evidence, size)
+                        prune_run(evidence, size, held)
                         row['status'] = 'pruned'
             except (Refused, OSError, ValueError, KeyError, TypeError,
                     subprocess.TimeoutExpired) as exc:
@@ -726,7 +955,8 @@ def main():
         print('Usage: policai-collect.sh [--preflight|--retry-publication|--storage-status'
               '|--retention-plan|--retention-apply]', file=sys.stderr)
         return 2
-    DEADLINE = time.monotonic() + min(3500, max(1, int(os.environ.get('POLICAI_COLLECT_MAX_SECONDS', '3500'))))
+    budget = min(3500, max(1, int(os.environ.get('POLICAI_COLLECT_MAX_SECONDS', '3500'))))
+    DEADLINE = time.monotonic() + budget
     STATE.mkdir(parents=True, exist_ok=True)
     with (STATE / 'policai-collect.lock').open('a') as lock:
         try:
@@ -764,12 +994,18 @@ def main():
                 if prune_enabled():
                     # Best effort: a prune problem keeps evidence and never blocks
                     # or fails the run; the admission cap below still applies.
+                    # Retention has its own bounded budget; the collection's full
+                    # budget starts only afterwards, so slow retention cannot
+                    # shorten collection or publication.
                     try:
+                        DEADLINE = time.monotonic() + retention_seconds()
                         report = retention(apply=True)
                         print('Retention:', json.dumps(report), file=sys.stderr)
                     except (Refused, OSError, ValueError, KeyError, TypeError,
                             subprocess.TimeoutExpired) as exc:
                         print(f'Retention skipped: {exc}', file=sys.stderr)
+                    finally:
+                        DEADLINE = time.monotonic() + budget
                 admission_guard()
                 if previous and previous['phase'] not in ('published', 'no-changes'):
                     raise Refused('previous incomplete run retained; review active receipt before another collection')

@@ -3,6 +3,8 @@
 Real temporary Git repositories and worktrees; only npm and GitHub are fakes.
 Nothing here touches the host's real run trees or state.
 """
+import contextlib
+import datetime
 import fcntl
 import importlib.machinery
 import importlib.util
@@ -11,6 +13,7 @@ import os
 from pathlib import Path
 import subprocess
 import sys
+import time
 import unittest
 from unittest.mock import patch
 
@@ -29,12 +32,18 @@ class RetentionTest(unittest.TestCase):
         workflow.WorkflowTest.setUp(self)
         # The real repo ignores node_modules; so must the fixture.
         (self.repo / '.git/info/exclude').write_text('node_modules/\n')
-        self.env['POLICAI_COLLECT_RETENTION_DAYS'] = '0'
         self.state = self.home / '.local/state/argus-jobs'
 
     # -- fixtures ---------------------------------------------------------
 
-    def make_run(self):
+    def backdate(self, run, days):
+        """The seven-day minimum is enforced, so tests age receipts instead."""
+        finished = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(days=days)
+        run = dict(run, finished_at=finished.isoformat())
+        (Path(run['evidence']) / 'run.json').write_text(json.dumps(run))
+        return run
+
+    def make_run(self, age_days=8):
         result = self.run_workflow()
         self.assertEqual(result.returncode, 0, result.stderr)
         run = self.receipt()
@@ -43,7 +52,7 @@ class RetentionTest(unittest.TestCase):
         (tree / 'node_modules/pkg/bin').mkdir(parents=True)
         (tree / 'node_modules/pkg/index.js').write_text('x' * 5000)
         (tree / 'node_modules/pkg/bin/link').symlink_to('../index.js')
-        return run
+        return self.backdate(run, age_days)
 
     def set_pr_state(self, url, state):
         for name in ('pr.json', 'old-prs.json'):
@@ -164,8 +173,29 @@ class RetentionTest(unittest.TestCase):
 
     def test_recent_run_is_kept_by_default_age(self):
         first, _second = self.two_runs()
-        del self.env['POLICAI_COLLECT_RETENTION_DAYS']
+        self.backdate(first, 6.9)
         self.assert_kept(first, 'less than 7 day')
+        self.backdate(first, 8)
+        self.env['POLICAI_COLLECT_RETENTION_DAYS'] = '9'
+        self.assert_kept(first, 'less than 9 day')
+
+    def test_age_below_the_seven_day_minimum_refuses(self):
+        first, _second = self.two_runs()
+        self.backdate(first, 0)
+        for value in ['0', '1', '6']:
+            with self.subTest(value=value):
+                self.env['POLICAI_COLLECT_RETENTION_DAYS'] = value
+                result = self.run_workflow('--retention-apply')
+                self.assertEqual(result.returncode, 1)
+                self.assertIn('at least 7', result.stderr)
+                self.assertTrue((Path(first['tree']) / 'node_modules/pkg/index.js').exists())
+        # The scheduled path skips retention but still runs its review gate.
+        self.env['POLICAI_COLLECT_PRUNE_DEPENDENCIES'] = '1'
+        result = self.run_workflow()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('Retention skipped: POLICAI_COLLECT_RETENTION_DAYS must be at least 7',
+                      result.stderr)
+        self.assertTrue((Path(first['tree']) / 'node_modules/pkg/index.js').exists())
 
     def test_unfinished_and_failed_phases_are_kept(self):
         first, _second = self.two_runs()
@@ -320,6 +350,7 @@ class RetentionTest(unittest.TestCase):
 
     def test_process_scan_reports_unreadable_processes_without_claiming_inactivity(self):
         module = self.subject()
+        module.DEADLINE = time.monotonic() + 60
         fake = self.home / 'proc'
         for pid in ('101', '102'):
             (fake / pid).mkdir(parents=True)
@@ -337,6 +368,343 @@ class RetentionTest(unittest.TestCase):
                 self.assertEqual(module.tree_in_use(self.home / 'tree')[0], True)
         finally:
             (fake / '102').chmod(0o700)
+
+    def test_disappearing_descriptor_keeps_known_reference_and_counts_incomplete(self):
+        """F3: a per-fd race neither discards a reference already read nor stops the scan."""
+        module = self.subject()
+        module.DEADLINE = time.monotonic() + 60
+        fake, tree = self.home / 'proc', self.home / 'tree'
+        pid = fake / '101'
+        (pid / 'fd').mkdir(parents=True)
+        (pid / 'cwd').symlink_to(tree / 'node_modules')
+        (pid / 'root').symlink_to('/')
+        (pid / 'exe').symlink_to('/bin/true')
+        (pid / 'fd/3').symlink_to('/dev/null')
+        (pid / 'cmdline').write_bytes(b'sleep\0')
+        real = os.readlink
+
+        def vanishing(path, *args, **kwargs):
+            if str(path).endswith('/fd/3'):
+                raise FileNotFoundError(2, 'descriptor closed', str(path))
+            return real(path, *args, **kwargs)
+
+        with patch.object(module, 'PROC', fake), patch.object(module.os, 'readlink', vanishing):
+            # cwd inside the tree: positive evidence wins despite the vanished fd.
+            self.assertEqual(module.tree_in_use(tree), (True, 0))
+            # A later descriptor still counts after an earlier one vanished.
+            (pid / 'cwd').unlink()
+            (pid / 'cwd').symlink_to(self.home)
+            (pid / 'fd/4').symlink_to(tree / 'x.json')
+            self.assertEqual(module.tree_in_use(tree), (True, 0))
+            # And cmdline is still checked.
+            (pid / 'fd/4').unlink()
+            (pid / 'cmdline').write_bytes(f'node\0{tree}/x.js\0'.encode())
+            self.assertEqual(module.tree_in_use(tree), (True, 0))
+            # No reference anywhere: the process is reported as incompletely inspected.
+            (pid / 'cmdline').write_bytes(b'sleep\0')
+            self.assertEqual(module.tree_in_use(tree), (False, 1))
+            module.DEADLINE = time.monotonic() - 1
+            with self.assertRaisesRegex(module.Refused, 'process scan deadline'):
+                module.tree_in_use(tree)
+
+    # -- active pointer (F4) ----------------------------------------------
+
+    def assert_pointer_refuses(self, first, reason):
+        result = self.run_workflow('--retention-apply')
+        self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+        self.assertIn(reason, result.stderr)
+        self.assertTrue((Path(first['tree']) / 'node_modules/pkg/index.js').exists())
+        self.assertFalse((Path(first['evidence']) / 'retention-intent.json').exists())
+
+    def test_dangling_or_symlinked_active_pointer_refuses_everything(self):
+        first = self.make_run()  # the active run, made eligible but for the pointer
+        self.set_pr_state(first['pr'], 'MERGED')
+        pointer = self.state / 'policai-collection-active.json'
+        pointer.unlink()
+        pointer.symlink_to(self.home / 'missing.json')
+        self.assert_pointer_refuses(first, 'not a regular file')
+        pointer.unlink()
+        (self.home / 'elsewhere.json').write_text(json.dumps(first))
+        pointer.symlink_to(self.home / 'elsewhere.json')
+        self.assert_pointer_refuses(first, 'not a regular file')
+        pointer.unlink()
+        pointer.mkdir()
+        self.assert_pointer_refuses(first, 'not a regular file')
+        pointer.rmdir()
+        # Genuine absence is the only state that means "no active run".
+        report = self.plan('--retention-apply')
+        self.assertEqual(self.row(report, first)['status'], 'pruned')
+
+    def test_malformed_active_pointer_identity_refuses_everything(self):
+        first, second = self.two_runs()
+        pointer = self.state / 'policai-collection-active.json'
+        run_id = Path(second['evidence']).name
+        for change in [dict(evidence=str(self.home / 'elsewhere' / run_id)),
+                       dict(evidence=str(Path(second['evidence']).parent / 'not-a-run')),
+                       dict(tree=str(self.home / 'elsewhere')),
+                       dict(branch='automation/collection-other'),
+                       dict(evidence=None)]:
+            with self.subTest(change=change):
+                pointer.write_text(json.dumps(dict(second, **change)))
+                self.assert_pointer_refuses(first, 'every run retained')
+        pointer.write_text('{not json')
+        self.assert_pointer_refuses(first, 'active pointer unreadable')
+
+    # -- descriptor-anchored removal (F1) ---------------------------------
+
+    def retention_in_process(self, after_assess=None, **patches):
+        """Run retention(apply=True) in-process, optionally mutating between assessment and removal."""
+        module = self.subject()
+        module.DEADLINE = time.monotonic() + 120
+        real = module.assess_run
+
+        def assess(*args):
+            result = real(*args)
+            if after_assess and result[0] is None:
+                after_assess(module)
+            return result
+
+        with contextlib.ExitStack() as stack:
+            stack.enter_context(patch.dict(os.environ, self.env, clear=True))
+            stack.enter_context(patch.object(module, 'assess_run', assess))
+            for name, value in patches.items():
+                stack.enter_context(patch.object(module, name, value))
+            return module, module.retention(apply=True)
+
+    def outside_with_precious(self, run_id=None):
+        outside = self.home / 'outside'
+        precious = outside / (run_id or '') / 'node_modules/precious'
+        precious.mkdir(parents=True)
+        (precious / 'file').write_text('keep')
+        return outside, precious / 'file'
+
+    def assert_swap_refused(self, first, precious, report, moved_tree):
+        row = self.row(report, first)
+        self.assertEqual(row['status'], 'failed', row)
+        self.assertIn('unverifiable', row['reason'])
+        self.assertEqual(report['failed'], 1)
+        self.assertEqual(precious.read_text(), 'keep')
+        self.assertTrue((moved_tree / 'node_modules/pkg/index.js').exists())
+        self.assertFalse((Path(first['evidence']) / 'retention-intent.json').exists())
+
+    def test_tree_replaced_by_symlink_after_assessment_deletes_nothing_outside(self):
+        """The review's counterexample: rename the tree, symlink its path elsewhere."""
+        first, _second = self.two_runs()
+        tree = Path(first['tree'])
+        outside, precious = self.outside_with_precious()
+
+        def swap(_module):
+            tree.rename(tree.with_name(tree.name + '.moved'))
+            tree.symlink_to(outside, target_is_directory=True)
+
+        _module, report = self.retention_in_process(swap)
+        self.assert_swap_refused(first, precious, report, tree.with_name(tree.name + '.moved'))
+
+    def test_tree_replaced_by_real_directory_after_assessment_deletes_nothing(self):
+        first, _second = self.two_runs()
+        tree = Path(first['tree'])
+        outside, precious = self.outside_with_precious()
+
+        def swap(_module):
+            tree.rename(tree.with_name(tree.name + '.moved'))
+            outside.rename(tree)
+
+        _module, report = self.retention_in_process(swap)
+        self.assertIn('replaced since assessment', self.row(report, first)['reason'])
+        self.assert_swap_refused(first, tree / 'node_modules/precious/file', report,
+                                 tree.with_name(tree.name + '.moved'))
+
+    def test_parent_of_runs_replaced_by_symlink_after_assessment_deletes_nothing(self):
+        first, _second = self.two_runs()
+        tree = Path(first['tree'])
+        runs = tree.parent
+        outside, precious = self.outside_with_precious(tree.name)
+
+        def swap(_module):
+            runs.rename(runs.with_name(runs.name + '.moved'))
+            runs.symlink_to(outside, target_is_directory=True)
+
+        _module, report = self.retention_in_process(swap)
+        self.assert_swap_refused(first, precious, report,
+                                 runs.with_name(runs.name + '.moved') / tree.name)
+
+    def test_dependencies_replaced_by_symlink_after_assessment_deletes_nothing(self):
+        first, _second = self.two_runs()
+        tree = Path(first['tree'])
+        outside, precious = self.outside_with_precious()
+
+        def swap(_module):
+            (tree / 'node_modules').rename(tree / 'node_modules.moved')
+            (tree / 'node_modules').symlink_to(outside / 'node_modules', target_is_directory=True)
+
+        _module, report = self.retention_in_process(swap)
+        row = self.row(report, first)
+        self.assertEqual(row['status'], 'failed', row)
+        self.assertEqual(precious.read_text(), 'keep')
+        self.assertTrue((tree / 'node_modules.moved/pkg/index.js').exists())
+        self.assertFalse((Path(first['evidence']) / 'retention-intent.json').exists())
+
+    def test_anchored_open_refuses_any_symlinked_component(self):
+        """Even an alias of the same directory is refused, not just a foreign target."""
+        module = self.subject()
+        inner = self.home / 'real/inner'
+        inner.mkdir(parents=True)
+        (self.home / 'alias').symlink_to(self.home / 'real', target_is_directory=True)
+        os.close(module.open_dir(inner))
+        for path in (self.home / 'alias/inner', self.home / 'alias'):
+            with self.subTest(path=path), self.assertRaises(OSError):
+                module.open_dir(path)
+        with self.assertRaises(module.Refused):
+            module.open_dir(self.home / 'real/../real/inner')
+
+    def test_in_process_prune_without_interference_succeeds(self):
+        first, _second = self.two_runs()
+        _module, report = self.retention_in_process()
+        self.assertEqual(self.row(report, first)['status'], 'pruned')
+        self.assertFalse(os.path.lexists(Path(first['tree']) / 'node_modules'))
+        pruned = json.loads((Path(first['evidence']) / 'retention-pruned.json').read_text())
+        tree_info = Path(first['tree']).lstat()
+        self.assertEqual(pruned['tree_identity'], [tree_info.st_dev, tree_info.st_ino])
+
+    def test_removal_is_bounded_by_the_deadline(self):
+        """F5: removal itself stops at the deadline; the intent marker then forces review."""
+        first, _second = self.two_runs()
+
+        def expire(module):
+            module.DEADLINE = time.monotonic() - 1
+
+        _module, report = self.retention_in_process(expire)
+        row = self.row(report, first)
+        self.assertEqual(row['status'], 'failed', row)
+        self.assertIn('deadline', row['reason'])
+        self.assertTrue((Path(first['tree']) / 'node_modules/pkg/index.js').exists())
+        self.assertTrue((Path(first['evidence']) / 'retention-intent.json').exists())
+        self.assertIn('interrupted', self.row(self.plan(), first)['reason'])
+
+    # -- mounts (F2) ------------------------------------------------------
+
+    BASE_MOUNTS = ('22 1 0:21 / / rw,relatime shared:1 - btrfs /dev/root rw\n'
+                   '23 22 0:22 / /proc rw,nosuid shared:2 - proc proc rw\n')
+
+    def mountinfo(self, extra=''):
+        path = self.home / 'mountinfo'
+        path.write_text(self.BASE_MOUNTS + extra)
+        return path
+
+    def test_same_device_bind_mount_inside_dependencies_keeps(self):
+        first, _second = self.two_runs()
+        tree = Path(first['tree'])
+        (tree / 'node_modules/a b').mkdir()
+        cases = {
+            'bind mount, same device': f'99 22 0:21 /srv {tree}/node_modules/pkg rw shared:1 - btrfs /dev/root rw\n',
+            'escaped mount point': f'99 22 0:21 /srv {tree}/node_modules/a\\040b rw - btrfs /dev/root rw\n',
+            'mount on the tree': f'99 22 0:21 /srv {tree} rw - btrfs /dev/root rw\n',
+        }
+        for name, line in cases.items():
+            with self.subTest(name):
+                _module, report = self.retention_in_process(MOUNTINFO=self.mountinfo(line))
+                row = self.row(report, first)
+                self.assertEqual(row['status'], 'kept', row)
+                self.assertIn('mount at or under the run tree', row['reason'])
+                self.assertTrue((tree / 'node_modules/pkg/index.js').exists())
+        # A mount elsewhere (even a sibling name prefix) does not block.
+        sibling = f'99 22 0:21 /srv {tree}-sibling rw - btrfs /dev/root rw\n'
+        _module, report = self.retention_in_process(MOUNTINFO=self.mountinfo(sibling))
+        self.assertEqual(self.row(report, first)['status'], 'pruned')
+
+    def test_unreadable_or_unparseable_mount_table_keeps(self):
+        first, _second = self.two_runs()
+        for name, path in [('missing', self.home / 'no-mountinfo'),
+                           ('empty', self.mountinfo().with_name('empty')),
+                           ('truncated line', self.mountinfo('99 22 0:21 / /x rw\n')),
+                           ('no separator', self.mountinfo('99 22 0:21 / /x rw a b c d e\n'))]:
+            if name == 'empty':
+                path.write_text('')
+            with self.subTest(name):
+                _module, report = self.retention_in_process(MOUNTINFO=path)
+                row = self.row(report, first)
+                self.assertEqual(row['status'], 'kept', row)
+                self.assertIn('mount table', row['reason'])
+                self.assertTrue((Path(first['tree']) / 'node_modules/pkg/index.js').exists())
+
+    def test_mount_appearing_after_assessment_refuses_removal(self):
+        first, _second = self.two_runs()
+        tree = Path(first['tree'])
+        table = self.mountinfo()
+
+        def mount(_module):
+            table.write_text(self.BASE_MOUNTS
+                             + f'99 22 0:21 /srv {tree}/node_modules/pkg rw - btrfs /dev/root rw\n')
+
+        _module, report = self.retention_in_process(mount, MOUNTINFO=table)
+        row = self.row(report, first)
+        self.assertEqual(row['status'], 'failed', row)
+        self.assertTrue((tree / 'node_modules/pkg/index.js').exists())
+        self.assertFalse((Path(first['evidence']) / 'retention-intent.json').exists())
+
+    def test_descriptor_on_another_mount_inside_dependencies_keeps(self):
+        """Mount ids from /proc/self/fdinfo catch a bind mount the walk opens."""
+        first, _second = self.two_runs()
+        module = self.subject()
+        real = module.mount_id
+        seen = []
+
+        def mount_id(fd):
+            seen.append(fd)
+            # tree and node_modules agree; every deeper directory is "another mount".
+            return real(fd) + (1 if len(seen) > 3 else 0)
+
+        _module, report = self.retention_in_process(mount_id=mount_id)
+        row = self.row(report, first)
+        self.assertEqual(row['status'], 'kept', row)
+        self.assertIn('mount inside dependencies', row['reason'])
+        self.assertTrue((Path(first['tree']) / 'node_modules/pkg/index.js').exists())
+
+    # -- budget (F5) ------------------------------------------------------
+
+    def slow_gh_view(self, url, seconds):
+        bin_dir = self.home / '.local/bin'
+        (bin_dir / 'gh').rename(bin_dir / 'gh-real')
+        (bin_dir / 'gh').write_text(
+            '#!/usr/bin/env python3\nimport os, sys, time\n'
+            f'if sys.argv[1:4] == ["pr", "view", {url!r}]:\n    time.sleep({seconds})\n'
+            f'os.execv({str(bin_dir / "gh-real")!r}, [{str(bin_dir / "gh-real")!r}] + sys.argv[1:])\n')
+        (bin_dir / 'gh').chmod(0o755)
+
+    def test_slow_retention_does_not_consume_the_collection_budget(self):
+        """The review's end-to-end case: 3 s old-PR query, 2 s collection budget."""
+        first, second = self.two_runs()
+        self.slow_gh_view(first['pr'], 3)
+        self.env['POLICAI_COLLECT_PRUNE_DEPENDENCIES'] = '1'
+        self.env['POLICAI_COLLECT_MAX_SECONDS'] = '2'
+        result = self.run_workflow()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('Retention:', result.stderr)
+        self.assertNotIn('deadline exceeded', result.stderr)
+        self.assertEqual(self.receipt().get('skipped'), 'awaiting-review')
+        self.assertFalse((Path(first['tree']) / 'node_modules').exists())
+        self.assertTrue((Path(second['tree']) / 'node_modules/pkg/index.js').exists())
+
+    def test_retention_budget_is_bounded_and_keeps_on_expiry(self):
+        first, _second = self.two_runs()
+        self.slow_gh_view(first['pr'], 5)
+        self.env['POLICAI_COLLECT_PRUNE_DEPENDENCIES'] = '1'
+        self.env['POLICAI_COLLECT_RETENTION_SECONDS'] = '1'
+        self.env['POLICAI_COLLECT_MAX_SECONDS'] = '2'
+        started = time.monotonic()
+        result = self.run_workflow()
+        self.assertLess(time.monotonic() - started, 20)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('Retention:', result.stderr)
+        self.assertEqual(self.receipt().get('skipped'), 'awaiting-review')
+        self.assertTrue((Path(first['tree']) / 'node_modules/pkg/index.js').exists())
+        self.assertFalse((Path(first['evidence']) / 'retention-intent.json').exists())
+        for value in ['x', '-1']:
+            with self.subTest(value=value):
+                self.env['POLICAI_COLLECT_RETENTION_SECONDS'] = value
+                result = self.run_workflow()
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertIn('Retention skipped', result.stderr)
 
 
 if __name__ == '__main__':
