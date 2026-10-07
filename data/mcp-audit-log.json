@@ -1,5 +1,27 @@
 [
   {
+    "id": "mcp-audit-93e8f17c-7445-4968-bd76-08c38e9f6f7b",
+    "createdAt": "2026-10-07T01:35:09.159Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-c188b772-ade6-4f30-8a8d-0fbdcffdfee6",
+    "createdAt": "2026-10-07T01:34:55.840Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-a9591d55-ad5f-4580-ab63-57915db1a2f8",
+    "createdAt": "2026-10-07T01:34:28.811Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://supremecourt.nsw.gov.au/documents/Practice-and-Procedure/Practice-Notes/general/current/PN_SC_Gen_23.pdf",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-97cc9dac-7bba-47a0-91a6-f15327fc2231",
     "createdAt": "2026-10-07T00:37:12.961Z",
     "actor": "local-mcp-admin",
