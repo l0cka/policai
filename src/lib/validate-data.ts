@@ -1432,6 +1432,9 @@ export function validateSourceReviews(
         );
       }
     }
+    if (review.targetTimelineEventPreviousSourceUrl && !review.targetTimelineEventId) {
+      errors.push(`${label}: targetTimelineEventPreviousSourceUrl requires targetTimelineEventId`);
+    }
     if (review.targetTimelineEventId) {
       if (review.entryKind !== 'timeline_event') {
         errors.push(
@@ -1450,12 +1453,36 @@ export function validateSourceReviews(
         errors.push(
           `${label}: targetTimelineEventId does not match a timeline event`,
         );
-      } else if (
-        !sourceUrlsEqual(targetTimelineEvent.sourceUrl, review.sourceUrl)
-      ) {
-        errors.push(
-          `${label}: sourceUrl does not match the target timeline event source`,
+      } else if (review.targetTimelineEventPreviousSourceUrl) {
+        const proposedSourceMatchesReview = sourceUrlsEqual(
+          review.proposedRecord?.sourceUrl, review.sourceUrl,
         );
+        const targetStillUsesPreviousSource = sourceUrlsEqual(
+          targetTimelineEvent.sourceUrl, review.targetTimelineEventPreviousSourceUrl,
+        ) && !sourceUrlsEqual(targetTimelineEvent.sourceUrl, review.sourceUrl);
+        const targetUsesPublishedReplacement =
+          (review.status === 'approved' || review.status === 'published') &&
+          sourceUrlsEqual(targetTimelineEvent.sourceUrl, review.sourceUrl) &&
+          !sourceUrlsEqual(targetTimelineEvent.sourceUrl, review.targetTimelineEventPreviousSourceUrl);
+        if (!proposedSourceMatchesReview ||
+          (!targetStillUsesPreviousSource && !targetUsesPublishedReplacement)) {
+          errors.push(`${label}: invalid target timeline event source replacement`);
+        }
+      } else if (!sourceUrlsEqual(targetTimelineEvent.sourceUrl, review.sourceUrl)) {
+        const supersededByPublishedSourceReplacement =
+          (review.status === 'published' || review.status === 'rejected') &&
+          reviews.some((candidate) =>
+            candidate.id !== review.id &&
+            candidate.status === 'published' &&
+            candidate.entryKind === 'timeline_event' &&
+            candidate.targetTimelineEventId === review.targetTimelineEventId &&
+            typeof candidate.targetTimelineEventPreviousSourceUrl === 'string' &&
+            sourceUrlsEqual(candidate.targetTimelineEventPreviousSourceUrl, review.sourceUrl) &&
+            sourceUrlsEqual(candidate.sourceUrl, targetTimelineEvent.sourceUrl),
+          );
+        if (!supersededByPublishedSourceReplacement) {
+          errors.push(`${label}: sourceUrl does not match the target timeline event source`);
+        }
       }
       if (!review.targetTimelineRevisionHash) {
         errors.push(

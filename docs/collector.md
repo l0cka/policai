@@ -361,10 +361,40 @@ validates document signatures, fingerprints the exact bytes, and never stores
 the local path. Existing records use `targetRecordId`. A new official-source
 proposal must instead include a complete explicit `proposedRecord`; the MCP
 does not synthesize editorial fields from a browser capture. If a tracked URL
-is dead, an explicit replacement additionally sets `replaceTargetSource` and
-supplies a proposed record that preserves the target id while using the new
-official URL. Revision hashes and collision checks bind that migration to the
-current canonical record.
+is dead or is a volatile index rather than the instrument, an explicit replacement
+additionally sets `replaceTargetSource: true` and supplies `entryKind` (`policy`
+or `timeline_event`), `targetRecordId`, and a proposed record that preserves the
+target id while using the new official URL. Revision hashes and collision checks
+bind that migration to the current canonical record. Timeline replacements store
+`targetTimelineEventPreviousSourceUrl` on the review, symmetric with policy
+replacements' `targetPolicyPreviousSourceUrl`; neither staging nor approval changes
+the canonical record. Publish only after separate human approval with source-backed
+dates (use `reviewedDate` for a commencement date not provided by page metadata).
+
+A timeline replacement may adopt its **already-related** policy's canonical source
+URL. The proposed event must preserve that `relatedPolicyId`. This narrow exception
+also recognises published reviews of that policy, but does not permit collisions
+with unrelated policies, other events, pending reviews, or redirect aliases.
+Staging, approval and publication each enforce identity ownership; this does not
+relax the policy replacement path.
+
+Staging refreshes an unresolved review of the target in place, preserving its
+collector sequence and linked development. Publication updates the event in place,
+publishes the refreshed review, and promotes its development. Older unresolved
+reviews become `rejected` with a supersession reason and their developments are
+dismissed. Older published timeline reviews remain published history; their
+associated developments are dismissed. Historical old URLs are valid only when a
+published replacement for the same target links the previous URL to the current
+one. An approved replacement may match an already-written canonical record during
+partial-publication recovery, but does not authorise historical old-URL reviews
+until publication completes.
+
+Check a replacement with `npm run validate:data`; exercise the handler and validator
+fixtures with:
+
+```bash
+npx vitest run src/mcp/timeline-source-replacement.test.ts src/lib/timeline-source-replacement-validation.test.ts src/lib/source-ingest-workflow.test.ts src/lib/validate-data.test.ts src/mcp/tool-handlers.test.ts
+```
 
 A browser-captured review remains subject to the normal gates.
 `approve_staged_source` requires a fresh matching `browserCapture`, and its
