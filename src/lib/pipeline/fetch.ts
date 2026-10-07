@@ -15,6 +15,11 @@ import type {
   LinkedDocumentEvidence,
   SourceEvidence,
 } from '@/types';
+import {
+  COLLECTOR_USER_AGENT,
+  type CollectorIdentity,
+  type CollectorRequestInit,
+} from './identity';
 
 const DEFAULT_TIMEOUT_MS = 20_000;
 const DEFAULT_ATTEMPTS = 2;
@@ -25,8 +30,7 @@ const MAX_REDIRECTS = 5;
 const MAX_LINKED_DOCUMENTS = 8;
 export type DocumentKind = 'pdf' | 'docx' | 'doc' | 'rtf';
 
-export const COLLECTOR_USER_AGENT =
-  'Mozilla/5.0 (compatible; Policai/1.0; +https://policai.org)';
+export { COLLECTOR_USER_AGENT };
 
 export class SourceFetchError extends Error {
   readonly status?: number;
@@ -108,6 +112,11 @@ export interface RetrieveSourceOptions {
   destinationPolicy?: 'official' | 'public-https';
   /** Internal escape hatch used when hashing a linked document itself. */
   hashLinkedDocuments?: boolean;
+  /**
+   * Identity the browser retriever presents (see `./identity`). Plain HTTP
+   * always sends the declared identity; defaults to 'declared'.
+   */
+  identity?: CollectorIdentity;
   http1Fallback?: (
     url: string,
     options: {
@@ -1149,7 +1158,7 @@ export async function retrieveSource(
           deadlineAt,
           timeoutMs,
         );
-        response = await fetchImpl(currentUrl, {
+        const init: CollectorRequestInit = {
           headers: {
             'User-Agent': COLLECTOR_USER_AGENT,
             Accept:
@@ -1158,7 +1167,9 @@ export async function retrieveSource(
           },
           redirect: 'manual',
           signal: deadlineSignal,
-        });
+          collectorIdentity: options.identity ?? 'declared',
+        };
+        response = await fetchImpl(currentUrl, init);
         const location = response.headers.get('location');
         if (
           response.status >= 300 &&

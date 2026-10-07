@@ -32,6 +32,7 @@ import {
   type RetrievedSource,
 } from './fetch';
 import { scrapeWithFirecrawl } from './firecrawl';
+import { identityExceptionState, type CollectorIdentity } from './identity';
 import {
   getAutomaticSources,
   WATCH_SOURCES,
@@ -1169,6 +1170,11 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     const startedAt = Date.now();
     const preferBrowser =
       source.fetchStrategy === 'browser' && Boolean(browserFetchImpl);
+    // E24: every path declares the Policai identity unless the source's
+    // time-boxed exception is still current; an expired one is ignored.
+    const identityState = identityExceptionState(source, now);
+    const identity: CollectorIdentity =
+      identityState === 'active' ? 'exempt' : 'declared';
     const retrievePageWithFallback = async (
       url: string,
     ): Promise<RetrievedSource> => {
@@ -1179,7 +1185,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         // browser. Any ok:false — timeout, unavailable, http_error, empty —
         // falls through to Playwright rather than failing the candidate, so
         // this stays reversible while Firecrawl reliability is proven out.
-        const firecrawled = await scrapeWithFirecrawl(url);
+        const firecrawled = await scrapeWithFirecrawl(url, { identity });
         if (firecrawled.ok) {
           return retrievedSourceFromFirecrawl(
             firecrawled.markdown,
@@ -1195,10 +1201,11 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
           fetchImpl: browserFetchImpl,
           now: () => now,
           timeoutMs: BROWSER_RETRIEVAL_TIMEOUT_MS,
+          identity,
         });
       }
       try {
-        return await retrieveSource(url, { fetchImpl, now: () => now });
+        return await retrieveSource(url, { fetchImpl, now: () => now, identity });
       } catch (error) {
         if (!browserFetchImpl || isBrowserFallbackFutile(error)) throw error;
         log(`[collect] ${source.id}: retrying ${url} with the browser retriever`);
@@ -1206,6 +1213,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
           fetchImpl: browserFetchImpl,
           now: () => now,
           timeoutMs: BROWSER_RETRIEVAL_TIMEOUT_MS,
+          identity,
         });
       }
     };
@@ -1252,6 +1260,17 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     let deferSourceSuccess = false;
     const sourceErrors: string[] = [];
 
+    const exceptionUntil = source.identityException?.until;
+    if (identityState === 'active') {
+      log(
+        `[collect] ${source.id}: identity exception until ${exceptionUntil}; presenting a plain browser user agent (E24)`,
+      );
+    } else if (identityState === 'expired') {
+      log(
+        `[collect] ${source.id}: identity exception expired on ${exceptionUntil}; presenting the declared Policai identity`,
+      );
+    }
+
     if (due) {
       try {
         const attemptIndexRetrieval = async (
@@ -1262,6 +1281,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
             fetchImpl: impl,
             now: () => now,
             hashLinkedDocuments: source.kind === 'document',
+            identity,
             ...(timeoutMs !== undefined ? { timeoutMs } : {}),
           });
           const extracted =
@@ -1886,8 +1906,8 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
       sourceErrors.push(message);
       errors.push(message);
     }
-    sourceResults.push(
-      sourceResult(
+    sourceResults.push({
+      ...sourceResult(
         source.id,
         sourceErrors.length > 0 ? 'error' : 'success',
         nowIso,
@@ -1898,7 +1918,8 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         sourceErrors.length > 0 ? sourceErrors.join('; ') : undefined,
         due,
       ),
-    );
+      ...(identityState === 'none' ? {} : { identityException: identityState }),
+    });
   }
 
   const runHealth = healthForRun(

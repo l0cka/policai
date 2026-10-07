@@ -2450,6 +2450,7 @@ describe('collect browser fallback', () => {
 
     expect(scrapeWithFirecrawl).toHaveBeenCalledWith(
       'https://www.example.gov.au/news/ai-policy-framework',
+      { identity: 'declared' },
     );
     expect(browserFetchImpl).toHaveBeenCalledWith(
       'https://www.example.gov.au/news',
@@ -2503,6 +2504,7 @@ describe('collect browser fallback', () => {
 
     expect(scrapeWithFirecrawl).toHaveBeenCalledWith(
       'https://www.example.gov.au/news/ai-policy-framework',
+      { identity: 'declared' },
     );
     expect(browserFetchImpl).toHaveBeenCalledWith(
       'https://www.example.gov.au/news/ai-policy-framework',
@@ -2531,6 +2533,118 @@ describe('collect browser fallback', () => {
 
     expect(scrapeWithFirecrawl).not.toHaveBeenCalled();
     expect(result.errors).toEqual([]);
+  });
+
+  describe('collector identity', () => {
+    const exemptSource: WatchSource = {
+      ...HTML_SOURCE,
+      fetchStrategy: 'browser',
+      identityException: {
+        until: '2026-10-21',
+        reason: 'E24 allow-list request pending',
+      },
+    };
+
+    async function runWithClock(source: WatchSource, iso: string) {
+      const browserFetchImpl = fakeFetch({
+        'https://www.example.gov.au/news': INDEX_HTML,
+      });
+      scrapeWithFirecrawl.mockImplementation(async (url: string) => ({
+        ok: true,
+        markdown: `# New AI policy framework released\n\nContent for ${url}.`,
+        title: 'New AI policy framework released',
+        finalUrl: url,
+      }));
+      const logs: string[] = [];
+      const result = await collect({
+        sources: [source],
+        state: emptyWatchState(),
+        existingDevelopments: [],
+        fetchImpl: fakeFetch({}),
+        browserFetchImpl,
+        logger: (message) => logs.push(message),
+        now: () => new Date(iso),
+      });
+      return { result, logs, browserFetchImpl };
+    }
+
+    function requestedIdentities(browserFetchImpl: typeof fetch): unknown[] {
+      return (
+        vi.mocked(browserFetchImpl).mock.calls as unknown as Array<
+          [string, { collectorIdentity?: unknown } | undefined]
+        >
+      ).map(([, init]) => init?.collectorIdentity);
+    }
+
+    it('declares the Policai identity on every path for a source without an exception', async () => {
+      const { result, browserFetchImpl } = await runWithClock(
+        { ...HTML_SOURCE, fetchStrategy: 'browser' },
+        '2026-10-07T00:00:00.000Z',
+      );
+      expect(requestedIdentities(browserFetchImpl)).toEqual(['declared']);
+      for (const call of scrapeWithFirecrawl.mock.calls) {
+        expect(call[1]).toEqual({ identity: 'declared' });
+      }
+      expect(scrapeWithFirecrawl).toHaveBeenCalled();
+      expect(
+        result.meta.collector.sourceResults[0].identityException,
+      ).toBeUndefined();
+    });
+
+    it('honours an identity exception on or before its until date', async () => {
+      const { result, logs, browserFetchImpl } = await runWithClock(
+        exemptSource,
+        '2026-10-21T12:00:00.000Z',
+      );
+      expect(requestedIdentities(browserFetchImpl)).toEqual(['exempt']);
+      expect(scrapeWithFirecrawl).toHaveBeenCalled();
+      for (const call of scrapeWithFirecrawl.mock.calls) {
+        expect(call[1]).toEqual({ identity: 'exempt' });
+      }
+      expect(result.meta.collector.sourceResults[0].identityException).toBe(
+        'active',
+      );
+      expect(logs.join('\n')).toMatch(/identity exception until 2026-10-21/);
+    });
+
+    it('ignores an expired identity exception and records the expiry', async () => {
+      const { result, logs, browserFetchImpl } = await runWithClock(
+        exemptSource,
+        '2026-10-22T00:00:00.000Z',
+      );
+      expect(requestedIdentities(browserFetchImpl)).toEqual(['declared']);
+      expect(scrapeWithFirecrawl).toHaveBeenCalled();
+      for (const call of scrapeWithFirecrawl.mock.calls) {
+        expect(call[1]).toEqual({ identity: 'declared' });
+      }
+      expect(result.meta.collector.sourceResults[0].identityException).toBe(
+        'expired',
+      );
+      expect(logs.join('\n')).toMatch(
+        /identity exception expired on 2026-10-21/,
+      );
+    });
+
+    it('reports a refusal after expiry as an ordinary source failure', async () => {
+      const refusingBrowser = vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) => {
+        if ((init as { collectorIdentity?: string } | undefined)?.collectorIdentity !== 'exempt') {
+          throw new TypeError('page.goto: net::ERR_HTTP2_PROTOCOL_ERROR');
+        }
+        return new Response(INDEX_HTML, { status: 200 });
+      }) as unknown as typeof fetch;
+      const result = await collect({
+        sources: [exemptSource],
+        state: emptyWatchState(),
+        existingDevelopments: [],
+        fetchImpl: fakeFetch({}),
+        browserFetchImpl: refusingBrowser,
+        now: () => new Date('2026-10-22T00:00:00.000Z'),
+      });
+      const [sourceResult] = result.meta.collector.sourceResults;
+      expect(sourceResult.status).toBe('error');
+      expect(sourceResult.error).toMatch(/ERR_HTTP2_PROTOCOL_ERROR/);
+      expect(sourceResult.identityException).toBe('expired');
+    });
   });
 
   it('still reports failure when both retrievers fail', async () => {

@@ -11,6 +11,7 @@ import {
   validateSourceMonitoring,
   validateSourceReviews,
   validateTimeline,
+  validateWatchSources,
 } from './validate-data';
 import type { WatchSource } from '@/lib/pipeline/sources';
 import type { Policy } from '@/types';
@@ -1243,5 +1244,53 @@ describe('countUnsubstantiatedSecondaryDates', () => {
     expect(
       countUnsubstantiatedSecondaryDates([unverified, secondaryOnly]),
     ).toEqual([{ policyId: 'secondary-only', dateIndex: 1 }]);
+  });
+});
+
+describe('validateWatchSources identity exceptions', () => {
+  const base: WatchSource = {
+    id: 'example-source',
+    name: 'Example source',
+    jurisdiction: 'federal',
+    category: 'government',
+    url: 'https://www.industry.gov.au/news',
+    kind: 'html-index',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+  };
+  const exempt: WatchSource = {
+    ...base,
+    identityException: { until: '2026-10-21', reason: 'E24 allow-list pending' },
+  };
+
+  it('stays silent while an identity exception is current', () => {
+    const report = validateWatchSources(
+      [exempt],
+      new Date('2026-10-21T12:00:00.000Z'),
+    );
+    expect(report.errors).toEqual([]);
+    expect(report.warnings).toEqual([]);
+  });
+
+  it('warns, without an error, once an identity exception has expired', () => {
+    const report = validateWatchSources(
+      [exempt],
+      new Date('2026-10-22T00:00:00.000Z'),
+    );
+    expect(report.errors).toEqual([]);
+    expect(report.warnings).toHaveLength(1);
+    expect(report.warnings[0]).toMatch(
+      /watchSources:example-source: identity exception expired on 2026-10-21/,
+    );
+  });
+
+  it('does not warn for sources without an exception', () => {
+    const report = validateWatchSources(
+      [base],
+      new Date('2026-12-01T00:00:00.000Z'),
+    );
+    expect(report.warnings).toEqual([]);
   });
 });

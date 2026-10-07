@@ -12,6 +12,30 @@ import {
 } from './fetch';
 
 describe('retrieveSource', () => {
+  it('declares the Policai identity over plain HTTP, exempt or not', async () => {
+    for (const identity of [undefined, 'declared', 'exempt'] as const) {
+      const fetchImpl = vi.fn(
+        async () =>
+          new Response('<html><body><h1>AI policy</h1></body></html>', {
+            status: 200,
+            headers: { 'content-type': 'text/html' },
+          }),
+      ) as unknown as typeof fetch;
+      await retrieveSource('https://example.gov.au/policy', {
+        fetchImpl,
+        hashLinkedDocuments: false,
+        ...(identity ? { identity } : {}),
+      });
+      const init = vi.mocked(fetchImpl).mock.calls[0]?.[1] as
+        | (RequestInit & { collectorIdentity?: string })
+        | undefined;
+      expect((init?.headers as Record<string, string>)['User-Agent']).toBe(
+        'Mozilla/5.0 (compatible; Policai/1.0 (+https://policai.org))',
+      );
+      expect(init?.collectorIdentity).toBe(identity ?? 'declared');
+    }
+  });
+
   it('returns retrieval evidence and a stable content hash', async () => {
     const fetchImpl = vi.fn(
       async () =>

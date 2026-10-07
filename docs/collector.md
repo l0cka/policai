@@ -225,6 +225,43 @@ the first request and an idle timer stops it again, so the first candidate
 fetch after idle takes longer (around 17.5 seconds observed) than a warm one.
 `FIRECRAWL_URL` overrides the default `http://127.0.0.1:3003`.
 
+### Collector identity
+
+The collector identifies itself as `Policai/1.0 (+https://policai.org)`
+on every retrieval path. A refusal of that identity is a block we respect: the
+source moves to manual tracking. Time-boxed exception: 16 Commonwealth
+sources keep a plain browser UA until 2026-10-21 while an allow-list request
+is pending (E24).
+
+How each path presents it (`src/lib/pipeline/identity.ts` holds the token):
+
+- Plain HTTP (Node fetch and the HTTP/1.1 fallback):
+  `Mozilla/5.0 (compatible; Policai/1.0 (+https://policai.org))`, for every
+  source, including the exempt ones.
+- Headless browser: the reduced Chrome UA of the launched build with the
+  token appended, e.g. `... Chrome/149.0.0.0 Safari/537.36 Policai/1.0
+  (+https://policai.org)`. Never `HeadlessChrome`.
+- Firecrawl: the scrape request sends `headers: { "User-Agent": ... }` with
+  the same Chrome-plus-token string (Chrome version from
+  `REFERENCE_CHROME_VERSION`, because Firecrawl's renderer does not report
+  its own). Self-hosted Firecrawl forwards `headers` to its fetch, Playwright
+  and document engines; the Playwright service applies `User-Agent` at the
+  browser-context level.
+
+The exception is the optional `identityException: { until, reason }` field on
+a `WatchSource`, set only on the 16 sources listed in the E24 comment in
+`src/lib/pipeline/sources.ts` (pinned by `sources.test.ts`). Through `until`
+(an Australia/Sydney calendar day) those sources present the plain Chrome UA
+in the browser and send no `User-Agent` to Firecrawl, which is the behaviour
+before E24. After `until` the exception is ignored: the declared identity is
+used, the run log says `identity exception expired`, the source's
+`sourceResults` entry in `meta.json` carries `identityException: "expired"`
+(`"active"` while it applies), and a refusal is reported as an ordinary source
+failure. `npm run validate:data` prints a warning, not an error, for each
+expired exception, so the expiry is visible without failing CI. To end the
+exception, remove the field from the source, or move a source that still
+refuses to manual tracking.
+
 Manual sources remain enabled. Review them with a browser and record the result
 through the MCP `record_manual_source_review` tool, supplying the human
 reviewer's identity separately from the admin token, substantive notes that

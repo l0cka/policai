@@ -65,6 +65,36 @@ describe('scrapeWithFirecrawl', () => {
     expect(calls[0]?.[0]).toBe('http://127.0.0.1:3003/v2/scrape');
   });
 
+  it('asks Firecrawl to present the declared Policai identity by default', async () => {
+    const fetchMock = vi.fn(async () => new Response(
+      JSON.stringify({ success: true, data: { markdown: 'x', metadata: {} } }), { status: 200 },
+    ));
+    vi.stubGlobal('fetch', fetchMock);
+    await scrapeWithFirecrawl('https://example.test/');
+    const calls = fetchMock.mock.calls as unknown as Array<[string, RequestInit]>;
+    const body = JSON.parse(String(calls[0]?.[1]?.body)) as {
+      url: string;
+      headers?: Record<string, string>;
+    };
+    expect(body.url).toBe('https://example.test/');
+    expect(body.headers?.['User-Agent']).toMatch(
+      /Chrome\/[\d.]+ Safari\/537\.36 Policai\/1\.0 \(\+https:\/\/policai\.org\)$/,
+    );
+  });
+
+  it('leaves the Firecrawl user agent unset only for an exempt source', async () => {
+    const fetchMock = vi.fn(async () => new Response(
+      JSON.stringify({ success: true, data: { markdown: 'x', metadata: {} } }), { status: 200 },
+    ));
+    vi.stubGlobal('fetch', fetchMock);
+    await scrapeWithFirecrawl('https://example.test/', { identity: 'exempt' });
+    const calls = fetchMock.mock.calls as unknown as Array<[string, RequestInit]>;
+    const body = JSON.parse(String(calls[0]?.[1]?.body)) as {
+      headers?: Record<string, string>;
+    };
+    expect(body.headers).toBeUndefined();
+  });
+
   it('reports empty rather than success when markdown is blank', async () => {
     vi.stubGlobal('fetch', vi.fn(async () => new Response(
       JSON.stringify({ success: true, data: { markdown: '   ', metadata: {} } }), { status: 200 },

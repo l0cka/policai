@@ -29,6 +29,7 @@ import {
 } from '@/types';
 import type { WatchState } from '@/lib/pipeline/collect';
 import type { WatchSource } from '@/lib/pipeline/sources';
+import { identityExceptionState } from '@/lib/pipeline/identity';
 import { isValidCalendarDate } from '@/lib/calendar-date';
 import { VERIFICATION_CLOCK_SKEW_TOLERANCE_MS } from '@/lib/verification';
 export { isAllowedSourceHost } from '@/lib/source-url';
@@ -1734,6 +1735,7 @@ export function validateWatchState(state: WatchState): ValidationReport {
 
 export function validateWatchSources(
   sources: WatchSource[],
+  now: Date = new Date(),
 ): ValidationReport {
   const errors: string[] = [];
   const warnings: string[] = [];
@@ -1775,6 +1777,12 @@ export function validateWatchSources(
       source.kind === 'document'
     ) {
       errors.push(`${label}: document sources cannot set minimumItemCount`);
+    }
+    // E24: a warning, not an error, so an expiry surfaces without failing CI.
+    if (identityExceptionState(source, now) === 'expired') {
+      warnings.push(
+        `${label}: identity exception expired on ${source.identityException?.until}; the collector now presents its declared identity, so remove the exception or move the source to manual tracking`,
+      );
     }
   });
 

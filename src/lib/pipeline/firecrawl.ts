@@ -6,6 +6,7 @@ import {
   resolveHostAddresses,
   SourceFetchError,
 } from './fetch';
+import { type CollectorIdentity, firecrawlRequestHeaders } from './identity';
 
 /**
  * Client for the self-hosted Firecrawl stack on the collection host.
@@ -29,6 +30,8 @@ export interface FirecrawlOptions {
   timeoutMs?: number;
   maxResponseBytes?: number;
   resolveHost?: (hostname: string) => Promise<string[]>;
+  /** Identity Firecrawl presents to the source; defaults to 'declared'. */
+  identity?: CollectorIdentity;
 }
 
 export type FirecrawlResult =
@@ -69,10 +72,16 @@ export async function scrapeWithFirecrawl(
   const timer = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
+    const headers = firecrawlRequestHeaders(options.identity ?? 'declared');
     const response = await fetch(`${firecrawlBaseUrl()}/v2/scrape`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ url, formats: ['markdown'], onlyMainContent: true }),
+      body: JSON.stringify({
+        url,
+        formats: ['markdown'],
+        onlyMainContent: true,
+        ...(headers ? { headers } : {}),
+      }),
       signal: controller.signal,
     });
 
