@@ -1230,31 +1230,31 @@
       "source": {
         "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
         "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
-        "title": "Artificial intelligence and data centres – Parliament of Australia",
-        "retrievedAt": "2026-09-09T23:25:36.819Z",
+        "title": "Artificial intelligence and data centres",
+        "retrievedAt": "2026-10-07T00:36:24.362Z",
         "contentType": "text/html",
-        "contentHash": "8f4f337a9cf131bc510a2c0f2b1a1a1d7e3d5a45ba9bcdeb93bc768c67745a9a",
+        "contentHash": "a0a47378f173bd61e4b4de560937cb6f8137a166f8a5324ac9f55140eedcdee8",
         "linkedDocuments": [],
         "browserCapture": {
           "method": "browser",
-          "capturedAt": "2026-09-09T23:25:36.819Z",
-          "capturedBy": "Daniel Alkurdi",
-          "notes": "Daniel Alkurdi approved this browser capture after review of the official APH inquiry dates, status and terms of reference. The hardened retriever returned HTTP 403.",
-          "pageContentHash": "92a9cb6ba1a6f80ce57d20012f664c75a0ba151a23376998db9dd8b382ee0740",
-          "characterCount": 4080
+          "capturedAt": "2026-10-07T00:36:24.362Z",
+          "capturedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+          "notes": "Browser capture of the official Senate committee inquiry page on 7 October 2026 (AEDT). The collector's plain HTTP retrieval of aph.gov.au returned HTTP 403, so the rendered page text is the fingerprinted evidence boundary.",
+          "pageContentHash": "67f30b4755e553d775d6fc9d65c016d01fe98999e1990b1737e9375cb06271cc",
+          "characterCount": 1646
         },
         "reviewedDate": {
           "date": "2026-05-13",
           "precision": "day",
-          "reviewedAt": "2026-09-09T23:39:04.677Z",
-          "reviewedBy": "Daniel Alkurdi",
-          "notes": "The current Parliament of Australia inquiry page identifies 13 May 2026 as the referral date."
+          "reviewedAt": "2026-10-07T00:37:12.815Z",
+          "reviewedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+          "notes": "The official Senate committee inquiry page states 'Date referred: 13 May 2026' and 'On 13 May 2026, the following matter was referred for inquiry and report'."
         }
       },
-      "checkedAt": "2026-09-09T23:39:04.677Z",
-      "checkedBy": "Daniel Alkurdi",
+      "checkedAt": "2026-10-07T00:37:12.815Z",
+      "checkedBy": "Daniel Alkurdi (Hermes-assisted web review)",
       "method": "manual",
-      "notes": "Re-verified against the current Parliament of Australia inquiry page. The page confirms referral on 13 May 2026, that submissions closed on 1 September 2026, and a reporting date of 16 November 2026. The description was updated to reflect that the submissions deadline has passed."
+      "notes": "Re-verification of the existing timeline event. The committee page still states the referral date of 13 May 2026, that submissions closed on 1 September 2026 and the reporting date of 16 November 2026, so the event is unchanged. Pending Daniel Alkurdi's approval (escalation E16)."
     }
   },
   {

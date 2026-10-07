@@ -7,59 +7,87 @@
     "sourceName": "Senate inquiry — artificial intelligence and data centres",
     "jurisdiction": "federal",
     "detectedAt": "2026-10-06T19:33:28.224Z",
-    "summary": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+    "summary": "The Senate inquiry covers AI and data-centre regulation, government deals, and community, industry, energy, water and environmental impacts. Submissions closed on 1 September 2026, and the committee is due to report on 16 November 2026.",
     "relevanceScore": 1,
-    "classification": "heuristic",
+    "classification": "curated",
     "assessment": {
-      "method": "heuristic",
-      "promptVersion": "keyword-rules-v1",
-      "assessedAt": "2026-10-06T19:33:28.224Z"
+      "method": "editorial",
+      "assessedAt": "2026-10-07T00:37:12.815Z",
+      "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
         "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
         "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
-        "retrievedAt": "2026-10-06T19:33:28.224Z",
+        "title": "Artificial intelligence and data centres",
+        "retrievedAt": "2026-10-07T00:36:24.362Z",
         "contentType": "text/html",
-        "contentHash": "0acbbd21f739be7b282c501105213664cbea252b6c5d774ab59720a411ed5899",
-        "title": "Senate opens inquiry into artificial intelligence and data centres"
-      }
+        "contentHash": "a0a47378f173bd61e4b4de560937cb6f8137a166f8a5324ac9f55140eedcdee8",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-10-07T00:36:24.362Z",
+          "capturedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+          "notes": "Browser capture of the official Senate committee inquiry page on 7 October 2026 (AEDT). The collector's plain HTTP retrieval of aph.gov.au returned HTTP 403, so the rendered page text is the fingerprinted evidence boundary.",
+          "pageContentHash": "67f30b4755e553d775d6fc9d65c016d01fe98999e1990b1737e9375cb06271cc",
+          "characterCount": 1646
+        },
+        "reviewedDate": {
+          "date": "2026-05-13",
+          "precision": "day",
+          "reviewedAt": "2026-10-07T00:37:12.815Z",
+          "reviewedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+          "notes": "The official Senate committee inquiry page states 'Date referred: 13 May 2026' and 'On 13 May 2026, the following matter was referred for inquiry and report'."
+        }
+      },
+      "checkedAt": "2026-10-07T00:37:12.815Z",
+      "checkedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+      "method": "manual",
+      "notes": "Re-verification of the existing timeline event. The committee page still states the referral date of 13 May 2026, that submissions closed on 1 September 2026 and the reporting date of 16 November 2026, so the event is unchanged. Pending Daniel Alkurdi's approval (escalation E16)."
     },
-    "status": "detected"
+    "status": "promoted",
+    "relatedTimelineEventId": "tl-2026-05-13-senate-ai-data-centres-inquiry",
+    "publishedAt": "2026-05-13",
+    "publishedAtPrecision": "day"
   },
   {
     "id": "dev-new-resources-on-transparency-for-use-of-ai-and--68u2j7",
-    "title": "New resources on transparency for use of AI and automated decision-making",
-    "url": "https://www.oaic.gov.au/news/media-centre/new-resources-on-transparency-for-use-of-ai-and-automated-decision-making",
+    "title": "OAIC guidance on APP 1.7–1.9 transparency for automated decision-making",
+    "url": "https://www.oaic.gov.au/__data/assets/pdf_file/0021/269013/APP-1.7-1.9-Transparency-Obligation-Fact-Sheet.PDF",
     "sourceId": "oaic-media",
     "sourceName": "OAIC — media centre",
     "jurisdiction": "federal",
     "publishedAt": "2026-09-30",
     "publishedAtPrecision": "day",
     "detectedAt": "2026-10-06T19:33:28.224Z",
-    "summary": "New resources on transparency for use of AI and automated decision-making Published: 30 September 2026 On 10 December 2026, APP entities must include information in their privacy policy where they have arranged for a computer program to make or inform decisions that significantly affect individuals’ rights or interests.This transparency obligation was introduced by the Privacy and Other Legislation Amendment Act 2024 within APP 1 of the Australian Privacy Principles (APPs) to include information about computer program usage in an APP entities’ privacy policy.APP 1.7 requires APP entities to in",
-    "relevanceScore": 0.55,
-    "classification": "heuristic",
+    "summary": "OAIC guidance published 30 September 2026 on the Australian Privacy Principle 1.7–1.9 transparency obligation: from 10 December 2026 an APP entity must describe in its privacy policy the computer programs it has arranged to make, or to do something substantially and directly related to making, decisions that could reasonably be expected to significantly affect an individual's rights or interests.",
+    "relevanceScore": 1,
+    "classification": "curated",
     "assessment": {
-      "method": "heuristic",
-      "promptVersion": "keyword-rules-v1",
-      "assessedAt": "2026-10-06T19:33:28.224Z"
+      "method": "editorial",
+      "assessedAt": "2026-10-06T23:09:42.833Z",
+      "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
-        "url": "https://www.oaic.gov.au/news/media-centre/new-resources-on-transparency-for-use-of-ai-and-automated-decision-making",
-        "finalUrl": "https://www.oaic.gov.au/news/media-centre/new-resources-on-transparency-for-use-of-ai-and-automated-decision-making",
-        "retrievedAt": "2026-10-06T19:33:28.224Z",
-        "contentType": "text/html",
-        "contentHash": "78275aeacc6cb60300dcdacd0f18d06331c8b1c5a2aa739c857839c1eb42919a",
-        "title": "New resources on transparency for use of AI and automated decision-making",
-        "publishedAt": "2026-09-30",
-        "publishedAtPrecision": "day"
-      }
+        "url": "https://www.oaic.gov.au/__data/assets/pdf_file/0021/269013/APP-1.7-1.9-Transparency-Obligation-Fact-Sheet.PDF",
+        "finalUrl": "https://www.oaic.gov.au/__data/assets/pdf_file/0021/269013/APP-1.7-1.9-Transparency-Obligation-Fact-Sheet.PDF",
+        "title": "APP 1.7-1.9 Transparency Obligation Fact Sheet",
+        "publisher": "Office of the Australian Information Commissioner",
+        "retrievedAt": "2026-10-06T23:09:42.438Z",
+        "contentType": "application/pdf",
+        "contentHash": "a6b01db6ba23d8d261250dce50d26bcfdd3ba994a9d822786fa20b63aa0dc206",
+        "linkedDocuments": []
+      },
+      "checkedAt": "2026-10-06T23:09:42.833Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi on the oaic-transparency editorial lane. Both OAIC sources were retrieved read-only over plain HTTPS and fingerprinted: the cited fact sheet (the instrument) and the media-centre announcement that carries the publication date. The fact sheet states the obligation comes into effect on 10 December 2026; the announcement states 'Published: 30 September 2026'."
     },
-    "status": "detected"
+    "status": "promoted",
+    "relatedPolicyId": "oaic-app-1-7-adm-transparency-guidance"
   },
   {
     "id": "dev-artificial-intelligence-ai-5jf2zt",
@@ -90,7 +118,8 @@
         "title": "Artificial Intelligence (AI)"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Digital NSW topic hub page, not an instrument: it has no instrument or date of its own, and the NSW AI policy, assessment framework and guidance it links to are already in the register. Pending Daniel Alkurdi's approval (escalation E16)."
   },
   {
     "id": "dev-artificial-intelligence-and-medicare-benefits-in-9hprh2",
@@ -152,7 +181,8 @@
         "title": "Senate opens inquiry into artificial intelligence and data centres"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Superseded by newer source update source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-1hv6bwa"
   },
   {
     "id": "dev-bills-ai-kill-switch-and-data-centre-control-bil-10hrre5",
@@ -218,7 +248,8 @@
         "publishedAtPrecision": "day"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Not an AI instrument: Hansard debate on news journalism payments and media bargaining bills, where AI appears only in a non-binding second-reading amendment. Pending Daniel Alkurdi's approval (escalation E16)."
   },
   {
     "id": "dev-senate-opens-inquiry-into-artificial-intelligenc-5i9413",
@@ -247,7 +278,8 @@
         "title": "Senate opens inquiry into artificial intelligence and data centres"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Superseded by newer source update source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-1hv6bwa"
   },
   {
     "id": "dev-office-of-ai-ohz9pi",
@@ -276,7 +308,8 @@
         "title": "Office of AI"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Duplicate: the PM&C Office of AI page describes an agency, not an instrument, and its establishment on 15 July 2026 is already recorded by the timeline event for the Australian AI Standards announcement. Pending Daniel Alkurdi's approval (escalation E16)."
   },
   {
     "id": "dev-remarks-to-the-australian-strategic-policy-insti-o8aiyl",
@@ -305,7 +338,8 @@
         "title": "Remarks to the Australian Strategic Policy Institute's Sydney Dialogue AI Masterclass"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Ministerial speech (14 September 2026) that restates existing Government AI policy and announces nothing new; the National AI Plan, the AI Safety Institute and the Australian AI Standards it mentions are already in the register. Pending Daniel Alkurdi's approval (escalation E16)."
   },
   {
     "id": "dev-nsw-supreme-court-practice-note-sc-gen-23-commen-1b1ap38",
@@ -364,40 +398,60 @@
         "title": "Senate opens inquiry into artificial intelligence and data centres"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Superseded by newer source update source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-1hv6bwa"
   },
   {
     "id": "dev-11-sep-2026-news-asd-releases-new-guidance-on-th-g92csn",
-    "title": "11 Sep 2026 News ASD releases new guidance on the agentic AI harnesses Understand how the agentic AI harness influences security, governance and operational risk in agentic AI systems.",
-    "url": "https://www.cyber.gov.au/about-us/view-all-content/news/asd-releases-new-guidance-on-the-agentic-ai-harnesses",
+    "title": "Agentic AI harnesses",
+    "url": "https://www.cyber.gov.au/advisory/agentic-ai-harnesses",
     "sourceId": "cyber-news",
     "sourceName": "Australian Cyber Security Centre — news",
     "jurisdiction": "federal",
     "publishedAt": "2026-09-11",
     "publishedAtPrecision": "day",
     "detectedAt": "2026-09-11T19:30:44.408Z",
-    "summary": "ASD published new guidance on agentic AI harnesses covering security, governance and operational risk in agentic AI systems.",
-    "relevanceScore": 0.65,
-    "classification": "ai",
+    "summary": "Australian Signals Directorate guidance on the security, governance and operational risks of the agentic AI harness, the software layer that connects large language models to organisational data, tools and systems.",
+    "relevanceScore": 1,
+    "classification": "curated",
     "assessment": {
-      "method": "ai",
-      "promptVersion": "claude-classify-v1",
-      "assessedAt": "2026-09-11T19:30:44.408Z"
+      "method": "editorial",
+      "assessedAt": "2026-10-06T23:23:49.530Z",
+      "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
-        "url": "https://www.cyber.gov.au/about-us/view-all-content/news/asd-releases-new-guidance-on-the-agentic-ai-harnesses",
-        "finalUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/asd-releases-new-guidance-on-the-agentic-ai-harnesses",
-        "retrievedAt": "2026-09-11T19:30:44.408Z",
-        "contentType": "text/plain",
-        "contentHash": "03537c1800fe61a61caf6bb6edd42c2dd1d07ff53dc9b2f3917b5e2ea8ebc0b0",
-        "title": "11 Sep 2026 News ASD releases new guidance on the agentic AI harnesses Understand how the agentic AI harness influences security, governance and operational risk in agentic AI systems.",
-        "publishedAt": "2026-09-11",
-        "publishedAtPrecision": "day"
-      }
+        "url": "https://www.cyber.gov.au/advisory/agentic-ai-harnesses",
+        "finalUrl": "https://www.cyber.gov.au/advisory/agentic-ai-harnesses",
+        "title": "Agentic AI harnesses",
+        "retrievedAt": "2026-10-06T23:23:14.085Z",
+        "contentType": "text/html",
+        "contentHash": "cc83a3bd8320f3d779a1315beb96ed16c2a610e7fc9e4fa525ba09f092f83144",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-10-06T23:23:14.085Z",
+          "capturedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+          "notes": "Official ASD publication page captured in a browser on 7 October 2026 (AEDT); the Policai collector user agent is refused by cyber.gov.au, so plain HTTP retrieval was not available.",
+          "pageContentHash": "7ce3cf92ecd21a9a48fb3d75a4a2c37078680f0e5b6e971f96c739b9dce69fda",
+          "characterCount": 20638
+        },
+        "reviewedDate": {
+          "date": "2026-09-11",
+          "precision": "day",
+          "reviewedAt": "2026-10-06T23:23:49.530Z",
+          "reviewedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+          "notes": "The publication page shows 'Published 11 Sep 2026'; the ASD news item announcing it and the cyber.gov.au news listing show the same date."
+        }
+      },
+      "checkedAt": "2026-10-06T23:23:49.530Z",
+      "checkedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+      "method": "manual",
+      "notes": "Publication approved by Daniel Alkurdi on 7 October 2026 after the radar review (item 13). The staged cyber.gov.au/about-us/view-all-content news URL returns 404; the record cites the publication at its current path and the announcement at https://www.cyber.gov.au/news/asd-releases-new-guidance-on-the-agentic-ai-harnesses."
     },
-    "status": "detected"
+    "status": "promoted",
+    "relatedPolicyId": "asd-agentic-ai-harnesses-2026"
   },
   {
     "id": "dev-senate-opens-inquiry-into-artificial-intelligenc-138akxo",
@@ -446,10 +500,11 @@
       "method": "manual",
       "notes": "Re-verified against the current Parliament of Australia inquiry page. The page confirms referral on 13 May 2026, that submissions closed on 1 September 2026, and a reporting date of 16 November 2026. The description was updated to reflect that the submissions deadline has passed."
     },
-    "status": "promoted",
+    "status": "dismissed",
     "relatedTimelineEventId": "tl-2026-05-13-senate-ai-data-centres-inquiry",
     "publishedAt": "2026-05-13",
-    "publishedAtPrecision": "day"
+    "publishedAtPrecision": "day",
+    "dismissalReason": "Superseded by newer source update source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-1hv6bwa"
   },
   {
     "id": "dev-asic-and-apra-host-super-ceos-to-discuss-frontie-wh4ka1",
@@ -512,7 +567,8 @@
         "title": "Current Joint Inquiries"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Generic APH listing of current joint committee inquiries, not an AI instrument, with no proposed record; it has produced repeated detections without a publishable item. Pending Daniel Alkurdi's approval (escalation E16)."
   },
   {
     "id": "dev-artificial-intelligence-governance-policy-1j2eo9g",
@@ -683,7 +739,8 @@
         "title": "Current Joint Inquiries"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Generic APH listing of current joint committee inquiries, not an AI instrument, with no proposed record; it has produced repeated detections without a publishable item. Pending Daniel Alkurdi's approval (escalation E16)."
   },
   {
     "id": "dev-senate-opens-inquiry-into-artificial-intelligenc-17ecvjj",
@@ -915,7 +972,8 @@
         "title": "Practice directions and other guidance | Administrative Review Tribunal"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Duplicate: ART listing page of practice directions and guidance; its only AI item, the generative AI practice direction, is already in the register with its timeline event. Pending Daniel Alkurdi's approval (escalation E16)."
   },
   {
     "id": "dev-senate-opens-inquiry-into-artificial-intelligenc-cpttns",
@@ -974,7 +1032,8 @@
         "title": "Current Joint Inquiries"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Generic APH listing of current joint committee inquiries, not an AI instrument, with no proposed record; it has produced repeated detections without a publishable item. Pending Daniel Alkurdi's approval (escalation E16)."
   },
   {
     "id": "dev-current-joint-inquiries-bzvswb",
@@ -1003,7 +1062,8 @@
         "title": "Current Joint Inquiries"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Generic APH listing of current joint committee inquiries, not an AI instrument, with no proposed record; it has produced repeated detections without a publishable item. Pending Daniel Alkurdi's approval (escalation E16)."
   },
   {
     "id": "dev-senate-opens-inquiry-into-artificial-intelligenc-1bgog2q",
@@ -1184,7 +1244,7 @@
     "relatedTimelineEventId": "tl-2026-05-13-senate-ai-data-centres-inquiry",
     "publishedAt": "2026-05-13",
     "publishedAtPrecision": "day",
-    "dismissalReason": "Superseded by newer source update source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-138akxo"
+    "dismissalReason": "Superseded by newer source update source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-1hv6bwa"
   },
   {
     "id": "dev-report-explores-risks-and-controls-for-artificia-grmboo",
@@ -1511,7 +1571,7 @@
     "relatedTimelineEventId": "tl-2026-05-13-senate-ai-data-centres-inquiry",
     "publishedAt": "2026-05-13",
     "publishedAtPrecision": "day",
-    "dismissalReason": "Superseded by newer source update source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-138akxo"
+    "dismissalReason": "Superseded by newer source update source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-1hv6bwa"
   },
   {
     "id": "dev-from-homework-to-heartache-why-children-are-turn-e0tsfo",
@@ -1772,7 +1832,7 @@
     "relatedTimelineEventId": "tl-2026-05-13-senate-ai-data-centres-inquiry",
     "publishedAt": "2026-05-13",
     "publishedAtPrecision": "day",
-    "dismissalReason": "Superseded by newer source update source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-138akxo"
+    "dismissalReason": "Superseded by newer source update source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-1hv6bwa"
   },
   {
     "id": "dev-26-092mr-asic-calls-for-urgent-cyber-uplift-as-a-v2vvmh",
