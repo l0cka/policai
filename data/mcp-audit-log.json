@@ -1,5 +1,55 @@
 [
   {
+    "id": "mcp-audit-97cc9dac-7bba-47a0-91a6-f15327fc2231",
+    "createdAt": "2026-10-07T00:37:12.961Z",
+    "actor": "local-mcp-admin",
+    "toolName": "reject_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-198a2c70-a143-4013-8612-f72105e8bcc7",
+    "createdAt": "2026-10-07T00:37:12.946Z",
+    "actor": "local-mcp-admin",
+    "toolName": "reject_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-78788b48-5777-4869-be24-747703d3ab67",
+    "createdAt": "2026-10-07T00:37:12.930Z",
+    "actor": "local-mcp-admin",
+    "toolName": "reject_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-4e7eb58d-2d71-42b0-ae05-c1d4b920230c",
+    "createdAt": "2026-10-07T00:37:12.915Z",
+    "actor": "local-mcp-admin",
+    "toolName": "reject_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-af59d7c3-f961-4898-ae8d-e79ea893c379",
+    "createdAt": "2026-10-07T00:37:12.901Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-978419f1-c359-4d0c-b097-4725f1eacdd8",
+    "createdAt": "2026-10-07T00:37:12.834Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-ea317cb8-f74c-4819-8192-a7d1111f98d6",
+    "createdAt": "2026-10-07T00:37:12.809Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-0be7aac0-92dd-44cf-84c4-4fb28be44527",
     "createdAt": "2026-08-26T11:59:21.020Z",
     "actor": "local-mcp-admin",
