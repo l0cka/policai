@@ -2579,5 +2579,46 @@
       "method": "manual",
       "notes": "Approved by Daniel Alkurdi on 7 October 2026; opening time verified on the official PM&C consultation page."
     }
+  },
+  {
+    "id": "tl-2026-09-21-anao-audit-ai-medicare-benefits-integrity",
+    "date": "2026-09-21",
+    "datePrecision": "day",
+    "title": "ANAO audits AI use in Medicare benefits integrity",
+    "description": "The Auditor-General found the Department of Health, Disability and Ageing's enterprise-level arrangements for managing AI largely effective, but its management of AI in health provider compliance, including an AI-enabled model used to flag potential Medicare fraud from July 2024 to December 2025, only partly effective. The department agreed to all three recommendations.",
+    "type": "milestone",
+    "jurisdiction": "federal",
+    "sourceUrl": "https://www.anao.gov.au/work/performance-audit/artificial-intelligence-and-medicare-benefits-integrity",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.anao.gov.au/work/performance-audit/artificial-intelligence-and-medicare-benefits-integrity",
+        "finalUrl": "https://www.anao.gov.au/work/performance-audit/artificial-intelligence-and-medicare-benefits-integrity",
+        "title": "Artificial Intelligence and Medicare Benefits Integrity",
+        "retrievedAt": "2026-10-07T00:30:21.898Z",
+        "contentType": "text/html",
+        "contentHash": "e9df53239c741fad31f8af3fdb8d47050e2b61e8b14b7b34405f202fc08342e1",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-10-07T00:30:21.898Z",
+          "capturedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+          "notes": "Browser review of the official ANAO performance-audit page on 7 October 2026 (AEDT). The fingerprinted text is the audit header and snapshot (report number, publication date, portfolio, entity, findings and recommendations), ending at the recommendation outcome; the animated counters and the full report text below it are excluded.",
+          "pageContentHash": "d3cd6190c9c415fafb88edd96fcd18d148d5f364735c50a5eab4a2ef1eba63fb",
+          "characterCount": 2335
+        },
+        "reviewedDate": {
+          "date": "2026-09-21",
+          "precision": "day",
+          "reviewedAt": "2026-10-07T00:31:07.184Z",
+          "reviewedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+          "notes": "The official ANAO audit page displays 'Auditor-General Report No. 5 of 2026–27' and 'Published Monday 21 September 2026'."
+        }
+      },
+      "checkedAt": "2026-10-07T00:31:07.184Z",
+      "checkedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+      "method": "manual",
+      "notes": "Drafted for approval by Daniel Alkurdi (pending his decision, escalation E14) as a federal timeline milestone reporting an independent performance audit, not as a policy instrument."
+    }
   }
 ]

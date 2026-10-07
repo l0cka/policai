@@ -152,7 +152,8 @@
         "publishedAtPrecision": "day"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Re-typed during editorial review: an ANAO performance audit report is not a policy instrument. Following the register's treatment of earlier ANAO AI audits, it is recorded instead as the timeline milestone tl-2026-09-21-anao-audit-ai-medicare-benefits-integrity (21 September 2026) with an editorial description; the staged description was site navigation text. Pending Daniel Alkurdi's approval (escalation E14)."
   },
   {
     "id": "dev-senate-opens-inquiry-into-artificial-intelligenc-13okn3i",
