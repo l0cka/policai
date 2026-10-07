@@ -29,7 +29,8 @@ source commit/PR and installed digest in the change report.
 
 ## Commands and evidence
 
-- `~/.local/bin/policai-collect.sh --preflight`: clean source, readable remote and
+- `~/.local/bin/policai-collect.sh --preflight`: clean source, a valid or
+  absent active pointer (see Active pointer below), readable remote and
   GitHub, lockfile/CA presence; no collection/publication. It does not prove
   source health, pending-PR readiness or that a previous failed run is resolved.
 - `~/.local/bin/policai-collect.sh`: full scheduled path. The total subprocess
@@ -55,7 +56,14 @@ check, not a hard disk quota; a running collection can grow beyond its headroom.
 Publication retries do not create another worktree and bypass admission.
 Inventory counts inode sizes, including directory and symlink sizes, without
 following symlinks. Aliased/symlinked roots, special files and mount/device/owner
-boundaries refuse inventory. Nothing but `node_modules` is ever deleted (see
+boundaries refuse inventory. Mount boundaries use the same rules as dependency
+retention: any mount point at or under a storage root in `/proc/self/mountinfo`
+(including a same-device bind mount, which device numbers and `Path.is_mount`
+miss) refuses, every directory walked must have the root's kernel mount id
+(`/proc/self/fdinfo`), and an unreadable or unparseable mount table refuses.
+A bind-mounted subtree is therefore never counted twice or walked into; the
+refusal names the mount boundary instead of a misleading cap result. The walk
+is descriptor-relative and read-only. Nothing but `node_modules` is ever deleted (see
 Dependency retention below); evidence and run trees need manual retention review.
 
 - `~/.local/bin/policai-collect.sh --retention-plan`: read-only JSON report of
@@ -68,6 +76,21 @@ Dependency retention below); evidence and run trees need manual retention review
 
 Latest attempt: `~/.local/state/argus-jobs/policai-collect.json`.
 Retained active run: `~/.local/state/argus-jobs/policai-collection-active.json`.
+
+**Active pointer.** Collection, `--retry-publication`, `--preflight` and
+dependency retention read the pointer through one strict reader. Only a pointer
+that genuinely does not exist (`lstat` reports `FileNotFoundError`) means "no
+active run". A symlink (dangling or not), a directory or other non-regular
+file, unparseable JSON, a non-object, evidence/tree/branch values that do not
+match the wrapper's own layout for one run id, or a phase that is missing or
+not one the wrapper writes (`collecting`, `ready`, `superseding`, `published`,
+`no-changes`) stops the
+invocation with exit 1 and a message naming the pointer, before retention, a
+new run, a publication retry or a passing preflight. The invalid pointer is
+left exactly as found: it is not followed, rewritten or replaced. Investigate
+it like an incomplete run (below); do not delete it to make the timer pass.
+A valid pointer, and genuine absence, behave as before.
+
 Evidence: `~/.local/state/argus-jobs/policai-collection-runs/<run-id>/`.
 Dedicated worktree: `~/Work/Argus/src/policai-collection-runs/<run-id>/`.
 Each run retains `run.json`, before/after allowed outputs and register hashes,
@@ -226,7 +249,8 @@ else, or any check that cannot be completed, keeps it:
 - it is not the run named by `policai-collection-active.json`. Only a pointer
   that genuinely does not exist means "no active run". A symlink (dangling or
   not), a non-regular file, unparseable JSON, or evidence/tree/branch values that
-  do not match the wrapper's own layout for one run id keep every run;
+  do not match the wrapper's own layout for one run id keep every run (the same
+  strict reader as collection; see Active pointer above);
 - its branch has no open collection PR, and `gh pr view` reports the exact URL,
   branch, head and base from the receipt as `MERGED` or `CLOSED`;
 - the receipt's tree, evidence and branch names match the run id and path, the

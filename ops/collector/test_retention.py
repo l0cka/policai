@@ -586,10 +586,20 @@ class RetentionTest(unittest.TestCase):
     BASE_MOUNTS = ('22 1 0:21 / / rw,relatime shared:1 - btrfs /dev/root rw\n'
                    '23 22 0:22 / /proc rw,nosuid shared:2 - proc proc rw\n')
 
-    def mountinfo(self, extra=''):
-        path = self.home / 'mountinfo'
+    def mountinfo(self, extra='', name='mountinfo'):
+        path = self.home / name
         path.write_text(self.BASE_MOUNTS + extra)
         return path
+
+    def bad_tables(self):
+        """One distinct file per malformed case, so no case overwrites another's fixture."""
+        empty = self.home / 'mountinfo-empty'
+        empty.write_text('')
+        return [('missing', self.home / 'no-mountinfo'),
+                ('empty', empty),
+                ('truncated line', self.mountinfo('99 22 0:21 / /x rw\n', 'mountinfo-truncated')),
+                ('no separator', self.mountinfo('99 22 0:21 / /x rw a b c d e\n',
+                                                'mountinfo-no-separator'))]
 
     def test_same_device_bind_mount_inside_dependencies_keeps(self):
         first, _second = self.two_runs()
@@ -614,12 +624,7 @@ class RetentionTest(unittest.TestCase):
 
     def test_unreadable_or_unparseable_mount_table_keeps(self):
         first, _second = self.two_runs()
-        for name, path in [('missing', self.home / 'no-mountinfo'),
-                           ('empty', self.mountinfo().with_name('empty')),
-                           ('truncated line', self.mountinfo('99 22 0:21 / /x rw\n')),
-                           ('no separator', self.mountinfo('99 22 0:21 / /x rw a b c d e\n'))]:
-            if name == 'empty':
-                path.write_text('')
+        for name, path in self.bad_tables():
             with self.subTest(name):
                 _module, report = self.retention_in_process(MOUNTINFO=path)
                 row = self.row(report, first)
@@ -659,6 +664,102 @@ class RetentionTest(unittest.TestCase):
         self.assertEqual(row['status'], 'kept', row)
         self.assertIn('mount inside dependencies', row['reason'])
         self.assertTrue((Path(first['tree']) / 'node_modules/pkg/index.js').exists())
+
+    # -- storage inventory mounts (admission) -----------------------------
+    # The admission inventory shares retention's mount rules and fixtures.
+
+    def inventory_fixture(self):
+        """A run tree holding a directory that the fake mount table can call a bind mount."""
+        runs = self.home / 'Work/Argus/src/policai-collection-runs'
+        bound = runs / '20990101T000000Z-0000abcd/bound'
+        bound.mkdir(parents=True)
+        (bound / 'aliased.bin').write_bytes(b'x' * 50000)
+        (runs / '20990101T000000Z-0000abcd/own.json').write_text('{}')
+        evidence = self.state / 'policai-collection-runs'
+        evidence.mkdir(parents=True)
+        (evidence / 'receipt').write_text('{}')
+        expected = sum(p.lstat().st_size for root in (runs, evidence)
+                       for p in [root, *root.rglob('*')])
+        return runs, bound, expected
+
+    def inventory(self, deadline=60, **patches):
+        """retained_bytes() and admission_guard() in-process, with patched mount state."""
+        module = self.subject()
+        module.DEADLINE = time.monotonic() + deadline
+        with contextlib.ExitStack() as stack:
+            stack.enter_context(patch.dict(os.environ, self.env, clear=True))
+            for name, value in patches.items():
+                stack.enter_context(patch.object(module, name, value))
+            try:
+                used = module.retained_bytes()
+            except module.Refused as exc:
+                with self.assertRaises(module.Refused):
+                    module.admission_guard()  # the scheduled run refuses too
+                return str(exc)
+            return used
+
+    def test_storage_inventory_never_counts_a_bind_mounted_subtree(self):
+        """A same-device bind mount is invisible to st_dev/is_mount, so the table decides."""
+        runs, bound, expected = self.inventory_fixture()
+        before = self.snapshot_files(runs)
+        cases = {
+            'bind mount inside a run tree': f'99 22 0:21 /srv {bound} rw shared:1 - btrfs /dev/root rw\n',
+            'escaped mount point': f'99 22 0:21 /srv {runs}/a\\040b rw - btrfs /dev/root rw\n',
+            'mount on the storage root': f'99 22 0:21 /srv {runs} rw - btrfs /dev/root rw\n',
+            'mount inside the evidence root':
+                f'99 22 0:21 /srv {self.state}/policai-collection-runs/x rw - btrfs /dev/root rw\n',
+        }
+        for name, line in cases.items():
+            with self.subTest(name):
+                result = self.inventory(MOUNTINFO=self.mountinfo(line))
+                self.assertIsInstance(result, str, 'mounted subtree was counted')
+                self.assertIn('storage inventory mount boundary', result)
+                self.assertIn('mount at or under the storage root', result)
+        # Read-only, and a mount elsewhere (even a sibling name prefix) still counts once.
+        self.assertEqual(self.snapshot_files(runs), before)
+        sibling = f'99 22 0:21 /srv {runs}-sibling rw - btrfs /dev/root rw\n'
+        self.assertEqual(self.inventory(MOUNTINFO=self.mountinfo(sibling)), expected)
+        self.assertEqual(self.inventory(MOUNTINFO=self.mountinfo()), expected)
+
+    def test_storage_inventory_refuses_a_directory_on_another_mount_id(self):
+        """A mount the table did not show (or that appears mid-walk) is caught by fd mnt_id."""
+        runs, bound, _expected = self.inventory_fixture()
+        module = self.subject()
+        real = module.mount_id
+        roots = [runs.lstat(), (self.state / 'policai-collection-runs').lstat()]
+
+        def mount_id(fd):
+            # Each storage root agrees with itself; every deeper directory is "another mount".
+            here = os.fstat(fd)
+            return real(fd) + (0 if any(os.path.samestat(here, root) for root in roots) else 1)
+
+        result = self.inventory(MOUNTINFO=self.mountinfo(), mount_id=mount_id)
+        self.assertEqual(result, 'storage inventory mount boundary')
+        self.assertTrue((bound / 'aliased.bin').exists())
+
+    def test_storage_inventory_fails_closed_on_unknown_mount_state(self):
+        _runs, _bound, _expected = self.inventory_fixture()
+        for name, path in self.bad_tables():
+            with self.subTest(name):
+                result = self.inventory(MOUNTINFO=path)
+                self.assertIsInstance(result, str, 'inventory accepted an unknown mount table')
+                self.assertIn('storage inventory mount boundary: mount table', result)
+        with self.subTest('descriptor mount id unreadable'):
+            result = self.inventory(MOUNTINFO=self.mountinfo(), FDINFO=self.home / 'no-fdinfo')
+            self.assertIn('descriptor mount identity unreadable', result)
+        with self.subTest('deadline'):
+            result = self.inventory(deadline=-1, MOUNTINFO=self.mountinfo())
+            self.assertEqual(result, 'storage inventory deadline exceeded')
+
+    def test_storage_inventory_deadline_applies_to_empty_roots(self):
+        """Regression: an empty root never reached the walk's per-entry deadline check."""
+        for root in (self.home / 'Work/Argus/src/policai-collection-runs',
+                     self.state / 'policai-collection-runs'):
+            root.mkdir(parents=True)
+        self.assertEqual(self.inventory(deadline=-1, MOUNTINFO=self.mountinfo()),
+                         'storage inventory deadline exceeded')
+        # With time left, the same empty roots count just their directory inodes.
+        self.assertIsInstance(self.inventory(MOUNTINFO=self.mountinfo()), int)
 
     # -- budget (F5) ------------------------------------------------------
 
