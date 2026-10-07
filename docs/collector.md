@@ -255,8 +255,11 @@ at `~/.local/bin/policai-collect.sh`. See the
 [wrapper runbook](../ops/collector/README.md) for installation, tests and recovery.
 Each run holds the existing concurrency lock and:
 
-1. Refuses source-checkout dirt, incomplete prior runs, insufficient storage
-   headroom, or an open collection PR (except the opt-in state-only proposal below).
+1. Refuses source-checkout dirt, an invalid active-run pointer (only a pointer
+   that does not exist means "no active run"), incomplete prior runs,
+   insufficient storage headroom (a mount inside the retained-run storage or an
+   unreadable mount table refuses the inventory), or an open collection PR
+   (except the opt-in state-only proposal below).
 2. Creates a unique branch/worktree from fetched main, installs dependencies,
    and runs the full `npm run collect` with a bounded deadline.
 3. Preserves before/after outputs and checks `data/policies.json` even after a

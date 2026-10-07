@@ -444,7 +444,14 @@ def collect(run):
 
 
 def retained_bytes():
-    """Apparent inode sizes, all runs/evidence; never traverse symlinks."""
+    """Apparent inode sizes, all runs/evidence; read-only, never traverses symlinks or mounts.
+
+    Uses retention's mount rules: any mount point at or under a storage root in
+    the mount table (including a same-device bind mount, which device numbers
+    and Path.is_mount miss) or a directory on another kernel mount id refuses,
+    as does an unreadable or unparseable table. A bind-mounted subtree can
+    therefore never be counted twice or walked into.
+    """
     total = 0
     for root in (RUNS, STATE / 'policai-collection-runs'):
         if root.resolve() != root:
@@ -455,21 +462,19 @@ def retained_bytes():
             continue
         if not stat.S_ISDIR(root_info.st_mode):
             raise Refused('storage root is not a directory')
-        stack = [root]
-        while stack:
-            if DEADLINE and time.monotonic() >= DEADLINE:
-                raise Refused('storage inventory deadline exceeded')
-            path = stack.pop()
-            info = path.lstat()
-            if info.st_dev != root_info.st_dev or info.st_uid != os.getuid():
-                raise Refused('storage inventory device/owner boundary')
-            if stat.S_ISDIR(info.st_mode):
-                if path.is_mount():
-                    raise Refused('storage inventory mount boundary')
-                stack.extend(path.iterdir())
-            elif not (stat.S_ISREG(info.st_mode) or stat.S_ISLNK(info.st_mode)):
-                raise Refused('storage inventory special file')
-            total += info.st_size
+        if root_info.st_uid != os.getuid():
+            raise Refused('storage inventory device/owner boundary')
+        try:
+            mount_inside(root, 'storage root')
+        except Refused as exc:
+            raise Refused(f'storage inventory mount boundary: {exc}') from None
+        root_fd = open_dir(root)
+        try:
+            if not os.path.samestat(os.fstat(root_fd), root_info):
+                raise Refused('storage root replaced during inventory')
+            total += walk_dependencies(root_fd, messages=INVENTORY_WALK)
+        finally:
+            os.close(root_fd)
     return total
 
 
@@ -574,7 +579,7 @@ def unescape_mount_path(field):
     return re.sub(rb'\\([0-3][0-7]{2})', lambda m: bytes([int(m.group(1), 8)]), field)
 
 
-def mount_inside(path):
+def mount_inside(path, what='run tree'):
     """Refuse if any mount point, including a same-device bind mount, is at or under path.
 
     Device numbers and Path.is_mount cannot see a bind mount of a directory on the
@@ -593,16 +598,30 @@ def mount_inside(path):
             raise Refused('mount table unparseable')
         point = unescape_mount_path(fields[4])
         if point == prefix or point.startswith(prefix + b'/'):
-            raise Refused('mount at or under the run tree')
+            raise Refused(f'mount at or under the {what}')
 
 
-def walk_dependencies(root_fd, remove=False):
+# Refusal wording per walk; the storage inventory keeps its historical messages.
+DEPENDENCY_WALK = dict(deadline='dependency walk deadline exceeded',
+                       boundary='dependency device/owner boundary',
+                       replaced='dependency directory replaced during inspection',
+                       mount='mount inside dependencies',
+                       special='special file in dependencies')
+INVENTORY_WALK = dict(deadline='storage inventory deadline exceeded',
+                      boundary='storage inventory device/owner boundary',
+                      replaced='storage inventory directory replaced during inspection',
+                      mount='storage inventory mount boundary',
+                      special='storage inventory special file')
+
+
+def walk_dependencies(root_fd, remove=False, messages=DEPENDENCY_WALK):
     """Apparent size of the directory held by root_fd, optionally removing its contents.
 
     Descriptor-relative throughout: each subdirectory is opened with O_NOFOLLOW,
     must be the entry just inspected, on the same device and mount, and owned by
     us. Symlinks are unlinked, never followed. Special files refuse. The caller
-    removes the (then empty) root itself.
+    removes the (then empty) root itself. The storage inventory uses the same
+    walk, read-only, with its own refusal wording.
     """
     root = os.fstat(root_fd)
     root_mount = mount_id(root_fd)
@@ -625,19 +644,19 @@ def walk_dependencies(root_fd, remove=False):
                     os.rmdir(name, dir_fd=parent_fd)
                 continue
             if time.monotonic() >= DEADLINE:
-                raise Refused('dependency walk deadline exceeded')
+                raise Refused(messages['deadline'])
             name = names.pop()
             info = os.stat(name, dir_fd=fd, follow_symlinks=False)
             if info.st_dev != root.st_dev or info.st_uid != os.getuid():
-                raise Refused('dependency device/owner boundary')
+                raise Refused(messages['boundary'])
             total += info.st_size
             if stat.S_ISDIR(info.st_mode):
                 child = os.open(name, DIR_FLAGS, dir_fd=fd)
                 try:
                     if not os.path.samestat(os.fstat(child), info):
-                        raise Refused('dependency directory replaced during inspection')
+                        raise Refused(messages['replaced'])
                     if mount_id(child) != root_mount:
-                        raise Refused('mount inside dependencies')
+                        raise Refused(messages['mount'])
                     with os.scandir(child) as entries:
                         children = [entry.name for entry in entries]
                 except BaseException:
@@ -648,7 +667,7 @@ def walk_dependencies(root_fd, remove=False):
                 if remove:
                     os.unlink(name, dir_fd=fd)
             else:
-                raise Refused('special file in dependencies')
+                raise Refused(messages['special'])
     finally:
         for fd, _names, link in stack:
             if link:
@@ -699,35 +718,49 @@ def tree_in_use(tree):
     return False, incomplete
 
 
-def active_run_id():
-    """The active run's id, or None only when the pointer genuinely does not exist.
+def read_active():
+    """The active run receipt, or None only when the pointer genuinely does not exist.
 
-    A symlink (dangling or not), non-regular file, unparseable content or a
-    receipt identity that does not match the wrapper's layout keeps every run.
+    The one strict reader for collection, publication retry, preflight and
+    retention. Only FileNotFoundError from lstat means absent. A symlink
+    (dangling or not), non-regular file, unparseable content, a receipt
+    identity that does not match the wrapper's layout or a missing phase
+    refuses; callers add what that refusal stops.
     """
     try:
         info = os.lstat(ACTIVE)
     except FileNotFoundError:
         return None
     if not stat.S_ISREG(info.st_mode):
-        raise Refused('active pointer is not a regular file; every run retained')
+        raise Refused('active pointer is not a regular file')
     try:
         fd = os.open(ACTIVE, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK | os.O_CLOEXEC)
         with os.fdopen(fd) as handle:
             if not os.path.samestat(os.fstat(handle.fileno()), info):
-                raise Refused('active pointer changed while reading; every run retained')
+                raise Refused('active pointer changed while reading')
             active = json.loads(handle.read())
     except (OSError, ValueError):
-        raise Refused('active pointer unreadable; every run retained') from None
+        raise Refused('active pointer unreadable') from None
     if not isinstance(active, dict) or not isinstance(active.get('evidence'), str):
-        raise Refused('active pointer unreadable; every run retained')
+        raise Refused('active pointer unreadable')
     run_id = Path(active['evidence']).name
     if (not RUN_ID.fullmatch(run_id)
             or active['evidence'] != str(STATE / 'policai-collection-runs' / run_id)
             or active.get('tree') != str(RUNS / run_id)
             or active.get('branch') != PREFIX + run_id):
-        raise Refused('active pointer identity invalid; every run retained')
-    return run_id
+        raise Refused('active pointer identity invalid')
+    if not isinstance(active.get('phase'), str):
+        raise Refused('active pointer phase missing')
+    return active
+
+
+def active_run_id():
+    """The active run's id for retention; any invalid pointer keeps every run."""
+    try:
+        active = read_active()
+    except Refused as exc:
+        raise Refused(f'{exc}; every run retained') from None
+    return None if active is None else Path(active['evidence']).name
 
 
 def assess_run(evidence, open_branches, active_id, days):
@@ -977,14 +1010,22 @@ def main():
             os.environ['FIRECRAWL_URL'] = 'http://127.0.0.1:3003'
             os.environ['NODE_EXTRA_CA_CERTS'] = str(HOME / '.local/share/policai/geotrust-tls-rsa-ca-g1.pem')
             assert_clean(SOURCE)
+            # Strict pointer read for every mode that acts on it: only a pointer
+            # that genuinely does not exist means "no active run". Anything else
+            # stops here, before preflight passes, retention or a new run starts.
+            try:
+                previous = read_active()
+            except Refused as exc:
+                raise Refused(f'{exc}; nothing collected or published, investigate '
+                              f'{ACTIVE} before any run') from None
             if sys.argv[1:] == ['--preflight']:
                 git('ls-remote', '--exit-code', 'origin', 'refs/heads/main')
                 if not (SOURCE / 'package-lock.json').is_file() or not Path(os.environ['NODE_EXTRA_CA_CERTS']).is_file():
                     raise Refused('lockfile or CA missing')
                 pending()
-                print('Preflight passed: clean source, remote and GitHub readable, lockfile and CA present; no collection/publication.')
+                print('Preflight passed: clean source, active pointer absent or valid, remote and '
+                      'GitHub readable, lockfile and CA present; no collection/publication.')
                 return 0
-            previous = json.loads(ACTIVE.read_text()) if ACTIVE.exists() else None
             if sys.argv[1:] == ['--retry-publication']:
                 if not previous or previous['phase'] not in ('ready', 'superseding', 'published'):
                     raise Refused('no validated commit available for publication retry')

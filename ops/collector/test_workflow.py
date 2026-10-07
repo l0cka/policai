@@ -1015,6 +1015,124 @@ else:
         self.assertFalse((self.home / 'Work/Argus/src/policai-collection-runs').exists())
         self.assertEqual(self.git('status', '--porcelain'), '')
 
+    # -- active pointer: one strict reader for every mode ------------------
+
+    def pointer(self):
+        return self.home / '.local/state/argus-jobs/policai-collection-active.json'
+
+    def run_names(self):
+        root = self.home / 'Work/Argus/src/policai-collection-runs'
+        return sorted(p.name for p in root.iterdir()) if root.exists() else []
+
+    def set_pointer(self, state, valid):
+        """Replace the pointer with one invalid state; `valid` is the real receipt text."""
+        pointer = self.pointer()
+        if pointer.is_dir() and not pointer.is_symlink():
+            pointer.rmdir()
+        elif os.path.lexists(pointer):
+            pointer.unlink()
+        run = json.loads(valid)
+        run_id = Path(run['evidence']).name
+        if state == 'dangling symlink':
+            pointer.symlink_to(self.home / 'missing.json')
+        elif state == 'symlink to a valid copy':
+            (self.home / 'copy.json').write_text(valid)
+            pointer.symlink_to(self.home / 'copy.json')
+        elif state == 'directory':
+            pointer.mkdir()
+        elif state == 'not JSON':
+            pointer.write_text('{not json')
+        elif state == 'not an object':
+            pointer.write_text('[]')
+        elif state == 'phase missing':
+            pointer.write_text(json.dumps({k: v for k, v in run.items() if k != 'phase'}))
+        else:
+            change = {'evidence elsewhere': dict(evidence=str(self.home / 'elsewhere' / run_id)),
+                      'evidence not a run id': dict(evidence=str(Path(run['evidence']).parent / 'x')),
+                      'tree elsewhere': dict(tree=str(self.home / 'elsewhere' / run_id)),
+                      'branch differs': dict(branch='automation/collection-other')}[state]
+            pointer.write_text(json.dumps(dict(run, **change)))
+        return os.path.islink(pointer), pointer.lstat().st_mode
+
+    POINTER_STATES = {'dangling symlink': 'not a regular file',
+                      'symlink to a valid copy': 'not a regular file',
+                      'directory': 'not a regular file',
+                      'not JSON': 'active pointer unreadable',
+                      'not an object': 'active pointer unreadable',
+                      'phase missing': 'active pointer phase missing',
+                      'evidence elsewhere': 'identity invalid',
+                      'evidence not a run id': 'identity invalid',
+                      'tree elsewhere': 'identity invalid',
+                      'branch differs': 'identity invalid'}
+
+    def assert_pointer_stops(self, args, reason, kept):
+        runs, pr = self.run_names(), (self.home / 'pr.json').read_text()
+        result = self.run_workflow(*args)
+        self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+        self.assertIn(reason, result.stderr)
+        self.assertIn('investigate', result.stderr)
+        self.assertNotIn('Preflight passed', result.stdout)
+        self.assertEqual(self.run_names(), runs, 'a new run was started')
+        self.assertEqual((self.home / 'pr.json').read_text(), pr)
+        # The invalid pointer is evidence: never followed, rewritten or replaced.
+        self.assertEqual((os.path.islink(self.pointer()), self.pointer().lstat().st_mode), kept)
+        if args != ('--preflight',):  # preflight never writes a receipt
+            self.assertNotIn('tree', self.receipt())
+
+    def test_invalid_active_pointer_stops_collection_instead_of_starting_a_run(self):
+        """Only a pointer that genuinely does not exist means "no active run"."""
+        self.assertEqual(self.run_workflow().returncode, 0)  # absent pointer: unchanged
+        valid = self.pointer().read_text()
+        pr = json.loads((self.home / 'pr.json').read_text())
+        (self.home / 'pr.json').write_text(json.dumps(dict(pr, state='MERGED')))
+        for state, reason in self.POINTER_STATES.items():
+            for prune in ('0', '1'):
+                with self.subTest(state=state, prune=prune):
+                    self.env['POLICAI_COLLECT_PRUNE_DEPENDENCIES'] = prune
+                    kept = self.set_pointer(state, valid)
+                    self.assert_pointer_stops((), reason, kept)
+        # A valid published pointer behaves exactly as before: the next run collects.
+        self.env.pop('POLICAI_COLLECT_PRUNE_DEPENDENCIES')
+        self.pointer().unlink()
+        self.pointer().write_text(valid)
+        self.set_collector('pathlib.Path("data/developments.json").write_text("{\\"second\\":true}\\n")')
+        result = self.run_workflow()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(len(self.run_names()), 2)
+        self.assertEqual(self.receipt()['phase'], 'published')
+
+    def test_invalid_active_pointer_stops_retry_and_preflight(self):
+        gh = self.home / '.local/bin/gh'
+        original = gh.read_text()
+        gh.write_text(original.replace("elif a[:2] == ['pr','create']:",
+                                       "elif a[:2] == ['pr','create']:\n    sys.exit(7)"))
+        self.assertNotEqual(self.run_workflow().returncode, 0)
+        run = self.receipt()
+        self.assertEqual(run['phase'], 'ready')
+        gh.write_text(original)
+        (self.home / 'pr.json').write_text('null')
+        valid = self.pointer().read_text()
+        self.assertEqual(self.run_workflow('--preflight').returncode, 0)  # valid: unchanged
+        for state, reason in self.POINTER_STATES.items():
+            for args in (('--retry-publication',), ('--preflight',)):
+                with self.subTest(state=state, args=args):
+                    kept = self.set_pointer(state, valid)
+                    self.assert_pointer_stops(args, reason, kept)
+        self.assertEqual(self.git('ls-remote', 'origin', 'refs/heads/' + run['branch']).split()[0],
+                         run['head'])
+        # Restored valid pointer: retry publishes the exact retained commit, as before.
+        self.pointer().unlink()
+        self.pointer().write_text(valid)
+        self.assertEqual(self.run_workflow('--retry-publication').returncode, 0)
+        self.assertEqual(self.receipt()['head'], run['head'])
+        self.assertEqual(self.receipt()['phase'], 'published')
+        # Absent pointer: retry still has nothing to publish; preflight still passes.
+        self.pointer().unlink()
+        result = self.run_workflow('--retry-publication')
+        self.assertEqual(result.returncode, 1)
+        self.assertIn('no validated commit available', result.stderr)
+        self.assertEqual(self.run_workflow('--preflight').returncode, 0)
+
     def test_branch_override_cannot_push_main(self):
         self.env['POLICAI_COLLECT_BRANCH'] = 'other'
         self.assertNotEqual(self.run_workflow().returncode, 0)
