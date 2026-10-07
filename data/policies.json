@@ -1077,6 +1077,96 @@
     }
   },
   {
+    "id": "acsc-opportunities-ai-cyber-defence-2026",
+    "title": "Opportunities for AI in cyber defence",
+    "description": "Australian Cyber Security Centre guidance, co-sealed by the Canadian, New Zealand and United Kingdom cyber security centres, on how organisations can use AI to strengthen cyber defence across the Information Security Manual functions while managing the risks AI introduces.",
+    "jurisdiction": "federal",
+    "type": "guideline",
+    "status": "active",
+    "effectiveDate": "2026-09-01",
+    "dates": [
+      {
+        "type": "published",
+        "date": "2026-09-01",
+        "precision": "month",
+        "primary": true,
+        "source": {
+          "url": "https://www.cyber.gov.au/publication/opportunities-for-ai-in-cyber-defence",
+          "finalUrl": "https://www.cyber.gov.au/publication/opportunities-for-ai-in-cyber-defence",
+          "title": "Opportunities for AI in cyber defence",
+          "retrievedAt": "2026-10-07T00:28:02.686Z",
+          "contentType": "text/html",
+          "contentHash": "7bdcd602242add3a352e86fb63ef9ab694735d29e78b9a028d54c3063616bd74",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-07T00:28:02.686Z",
+            "capturedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+            "notes": "Official ACSC publication page captured in a browser on 7 October 2026 (AEDT); cyber.gov.au is checked by hand rather than by the Policai collector, so the rendered page text is the fingerprinted evidence boundary.",
+            "pageContentHash": "b4d1a6974fd5bf5a29076936257598408ef7903bac3c9156e4a83e7ca6e6bd84",
+            "characterCount": 44728
+          },
+          "reviewedDate": {
+            "date": "2026-09-01",
+            "precision": "month",
+            "reviewedAt": "2026-10-07T00:28:58.122Z",
+            "reviewedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+            "notes": "The publication page shows 'Published 08 Sep 2026', but the ASD news item announcing the publication as already released is dated 02 Sep 2026 on its own page and on the cyber.gov.au news listing. Both sources agree on September 2026, so the date is recorded to month precision."
+          }
+        }
+      }
+    ],
+    "agencies": [
+      "Australian Signals Directorate",
+      "Australian Cyber Security Centre"
+    ],
+    "sourceUrl": "https://www.cyber.gov.au/publication/opportunities-for-ai-in-cyber-defence",
+    "content": "Published by ASD's Australian Cyber Security Centre in September 2026 and announced in the ASD news item 'Using AI to strengthen cyber defence' (https://www.cyber.gov.au/news/using-ai-to-strengthen-cyber-defence), which is dated 2 September 2026. The publication page itself shows a published date of 8 September 2026, so the register records the month only. The guidance was co-sealed by the Canadian Centre for Cyber Security and the national cyber security centres of New Zealand and the United Kingdom. It argues that AI can help defenders prioritise risk, detect threats and vulnerabilities, respond and recover faster and reduce repetitive manual work, but that it supports rather than replaces security fundamentals such as patching, attack-surface reduction, identity and access management and layered defence. It maps AI use cases to the six Information Security Manual functions (Govern, Identify, Protect, Detect, Respond and Recover) and discusses agentic AI and the use of AI by malicious actors. Its principles for secure adoption cover human oversight and accountability; sandboxing, minimal privileges and guardrails against high-impact or irreversible actions; controlled integration with safeguards against prompt injection from ingested logs and artefacts; governance of the data AI tools may access; AI supply-chain visibility, including an AI bill of materials; and testing tools in the organisation's own environment rather than relying on vendor claims. Two appendices list security questions to ask AI vendors and capability questions for cyber security vendors. It is written for CISOs, senior security leaders and cyber defenders.",
+    "aiSummary": "ACSC guidance on using AI for cyber defence across the ISM functions, with secure-adoption principles: human oversight, sandboxing, controlled integration, supply-chain visibility, testing and vendor questions.",
+    "tags": [
+      "cyber security",
+      "AI for cyber defence",
+      "Information Security Manual",
+      "human oversight",
+      "AI supply chain",
+      "governance"
+    ],
+    "createdAt": "2026-10-07T00:28:58.122Z",
+    "updatedAt": "2026-10-07T00:28:58.122Z",
+    "lastReviewedAt": "2026-10-07T00:28:58.122Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.cyber.gov.au/publication/opportunities-for-ai-in-cyber-defence",
+        "finalUrl": "https://www.cyber.gov.au/publication/opportunities-for-ai-in-cyber-defence",
+        "title": "Opportunities for AI in cyber defence",
+        "retrievedAt": "2026-10-07T00:28:02.686Z",
+        "contentType": "text/html",
+        "contentHash": "7bdcd602242add3a352e86fb63ef9ab694735d29e78b9a028d54c3063616bd74",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-10-07T00:28:02.686Z",
+          "capturedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+          "notes": "Official ACSC publication page captured in a browser on 7 October 2026 (AEDT); cyber.gov.au is checked by hand rather than by the Policai collector, so the rendered page text is the fingerprinted evidence boundary.",
+          "pageContentHash": "b4d1a6974fd5bf5a29076936257598408ef7903bac3c9156e4a83e7ca6e6bd84",
+          "characterCount": 44728
+        },
+        "reviewedDate": {
+          "date": "2026-09-01",
+          "precision": "month",
+          "reviewedAt": "2026-10-07T00:28:58.122Z",
+          "reviewedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+          "notes": "The publication page shows 'Published 08 Sep 2026', but the ASD news item announcing the publication as already released is dated 02 Sep 2026 on its own page and on the cyber.gov.au news listing. Both sources agree on September 2026, so the date is recorded to month precision."
+        }
+      },
+      "checkedAt": "2026-10-07T00:28:58.122Z",
+      "checkedBy": "Daniel Alkurdi (Hermes-assisted web review)",
+      "method": "manual",
+      "notes": "Drafted for approval by Daniel Alkurdi (pending his decision) after the first manual cyber.gov.au news check found the 2 September 2026 announcement (https://www.cyber.gov.au/news/using-ai-to-strengthen-cyber-defence). The record cites the publication page; its date is held at month precision because the publication page and the announcement give different days."
+    }
+  },
+  {
     "id": "expectations-data-centres-ai-infrastructure-2026",
     "title": "Expectations of data centres and AI infrastructure developers",
     "description": "Australian Government framework setting national-interest, energy, water, workforce and innovation expectations for large data-centre and AI-infrastructure developments.",
