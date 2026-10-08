@@ -232,10 +232,11 @@ open. No automatic merged/closed-PR reconciliation is implemented.
 
 ## Routine collection review gate — SHADOW ONLY (X60)
 
-`collection_review_gate.py` is a standalone, stdlib-only, offline assessor. It
-has **no merge action**, no model invocation, no network request, and no wrapper,
-CI or timer integration. Exit 0 means `would-merge`, not permission to merge;
-exit 1 means `would-escalate`. Both print structured JSON, with the exact
+`collection_review_gate.py` is a standalone, stdlib-only assessor, offline by
+default. It has **no merge action** and no wrapper, CI or timer integration.
+`--clef-advisory` opts into the local log-only check below. Exit 0 means
+`would-merge`, not permission to merge; exit 1 means `would-escalate`. Both print
+structured JSON, with the exact
 base/head, policy version, evidence manifest path/digest, reasons and a one-line
 `summary` for a digest. This phase does not activate the X60 standing rule or
 bypass the existing pending-PR gate. It cannot approve a PR touching
@@ -405,6 +406,93 @@ reconcile its provenance manually.
 Any future live path must be separately reviewed/approved and use squash via
 `factory merge`, never `--admin`. Three observations do not themselves activate
 anything. This PR stops at source, tests and operating documentation.
+
+### Clef-flash advisory check 5 — opt-in, log-only
+
+Run the trusted gate command above with `--clef-advisory`; retain the entire
+JSON result/ledger, not only its deterministic summary. The `clef_advisory`
+record cannot change checks 1–4, reasons, verdict, exit status or the required
+GLM 5.3 independent review. Flags, skips and errors never approve anything.
+There is no collector trigger, source fetch, cloud fallback or installation.
+
+The request uses only pinned changed candidates, retained digest-checked source
+text/dates and base/head per-source counts, statuses and schedules. It includes
+at most 24 items and 128 source comparisons, with 48,000 bytes of serialized
+state and 64 KiB of request JSON. Field limits and omitted/missing context are
+reported in `coverage`; truncated JSON fragments are data strings, not commands.
+Individual retained artifacts over 4 MiB refuse advisory context. Source text is
+untrusted; prompt boundaries reduce but cannot eliminate model prompt injection.
+
+Before HTTP, bounded telemetry requires at least 13 GB free
+(13,000,000,000 bytes; nvidia-smi MiB converted without rounding up) and no
+known game process. Minecraft is a `java`/`javaw` process with a minecraft/lwjgl
+argument, or the exact `minecraft` process name. Steam reaper/app processes and
+non-helper game descendants block; an idle Steam launcher, desktop/browser
+clients and their helper subtrees do not. No graphics-client inventory is used:
+voxtype-osd, Hyprland and browsers never block merely because they use the GPU.
+
+For other games, set `POLICAI_CLEF_GAME_PROCESSES` per invocation to at most 16
+comma-separated exact process names, case-insensitive, for example
+`POLICAI_CLEF_GAME_PROCESSES=rivet,another-game`. Names must be 1–64 ASCII
+letters/digits/dot/underscore/hyphen, with no spaces, wildcards or paths; use the
+name reported by `ps`'s `comm` field, including any kernel truncation. Empty
+means no extra names; Minecraft/Steam detection remains enabled. This does not
+edit host configuration or read an environment file. Invalid configuration,
+failed/malformed telemetry or an unsupported multiple-GPU result still skips
+safely. Known games/low VRAM record `skipped: gpu busy`; telemetry-only failures
+record `skipped: telemetry unavailable`. Every collected cause is retained in
+`gpu.reasons` and the combined `reason`, including simultaneous game/VRAM/errors.
+Telemetry calls each have a five-second bound. A game starting after inspection
+remains a race; this is not a GPU reservation.
+
+HTTP connects directly to `127.0.0.1:11434`, ignores proxy settings and refuses
+redirects. A bounded `/api/tags` read verifies the installed `clef-flash` digest;
+absence records `skipped: model missing`, never a pull. The only inference path
+is `/v1/systemone`, model `clef-flash`, `keep_alive: "5m"`. One owned client
+process enforces a 30-second total network deadline; overdue client termination
+cannot cancel inference already accepted by Ollama. No games/services are killed.
+
+Three `noul` questions flag off-topic items, implausible dates and anomalous
+counts at P(true) >= 0.5. This is a logging threshold, not a calibrated rule.
+Request/question identity, full input and digest, response and digest, installed
+model digest, exact SHAs, run provenance and coverage are retained. The verified
+[System One schema](https://docs.ollama.com/api/systemone) and
+[clef-flash example](https://ollama.com/library/clef-flash) return `noul` as
+P(true), without requiring a confidence field. We retain both probabilities and
+explicitly label derived concentration `1 - binary_entropy(P(true))` as
+`confidence`; optional provider confidence is separately validated/preserved.
+Neither concentration is calibrated correctness; no provider value is invented.
+
+After an independent human review, write an external comparison JSON containing
+`base`, `head`, `run_id`, `input_sha256`, `response_sha256` from the retained
+completed advisory; `review_complete: true`; `reviewed_questions` containing
+all three question IDs; and `reviewer_findings`, an array of
+`{"question_id":"off_topic","detail":"reviewer finding"}`. Question IDs are
+`off_topic`, `implausible_dates`, `anomalous_counts`, or `other` for findings
+outside these checks. An empty array means the human actually found nothing.
+Keep the comparison/report in the coordinator-controlled evidence directory.
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python3 /trusted/policai/ops/collector/clef_shadow.py compare \
+  --repo "$CANDIDATE_CHECKOUT" --ledger "$EVIDENCE_DIR/shadow-ledger.json" \
+  --comparison "$EVIDENCE_DIR/human-clef-comparison.json"
+PYTHONDONTWRITEBYTECODE=1 python3 /trusted/policai/ops/collector/clef_shadow.py trial \
+  --repo "$CANDIDATE_CHECKOUT" --ledger "$EVIDENCE_DIR/shadow-ledger.json"
+```
+
+Comparison history retains findings, artifact digest and matched/missed/false
+flags by question category, not inferred item-level matches. Replays are
+idempotent. Only three distinct coordinator-verified scheduled run IDs with
+completed, untruncated inference and complete human comparisons complete this
+additional trial. Synthetic/historic fixtures, skips, errors, partial context and
+pending human reviews do not count. The original `scheduled_run_count` still
+counts deterministic observations, not completed clef comparisons; use `trial`
+for the separate count/incomplete list. A missing comparison or valid partial
+context remains incomplete. A malformed stored comparison instead returns
+explicit JSON `status: "error"`, exits 1, identifies the run/head/record index,
+and leaves the ledger unchanged; it is never disguised as incomplete coverage.
+These remain attestations, not signatures. Three comparisons confer no approval
+or activation authority.
 
 ## Dependency retention
 
