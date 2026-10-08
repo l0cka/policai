@@ -11,7 +11,6 @@ from pathlib import Path
 import re
 import subprocess
 import time
-import xml.etree.ElementTree as ET
 
 import collection_review_gate as gate
 
@@ -65,47 +64,63 @@ def command(args):
 
 def process_rows():
     rows = []
-    for line in command(['ps', '-eo', 'pid=,comm=,args=']).splitlines():
-        fields = line.split(None, 2)
-        gate.require(len(fields) == 3 and fields[0].isdigit(), 'unknown process telemetry')
-        rows.append({'pid': int(fields[0]), 'comm': fields[1], 'args': fields[2]})
-    gate.require(bool(rows), 'empty process telemetry')
+    for line in command(['ps', '-ww', '-eo', 'pid=,ppid=,comm=,args=']).splitlines():
+        fields = line.split(None, 3)
+        gate.require(len(fields) == 4 and fields[0].isdigit() and fields[1].isdigit(),
+                     'unknown process telemetry')
+        rows.append({'pid': int(fields[0]), 'ppid': int(fields[1]), 'comm': fields[2], 'args': fields[3]})
+    gate.require(bool(rows) and len({row['pid'] for row in rows}) == len(rows),
+                 'empty or duplicate process telemetry')
     return rows
 
 
-def graphics_pids():
-    raw = command(['nvidia-smi', '-q', '-x'])
-    gate.require('<!ENTITY' not in raw, 'unsupported GPU XML entity')
-    raw = re.sub(r'<!DOCTYPE nvidia_smi_log SYSTEM "nvsmi_device_v\d+\.dtd">', '', raw)
-    gate.require('<!DOCTYPE' not in raw, 'unsupported GPU XML doctype')
-    root = ET.fromstring(raw)
-    gpus = root.findall('gpu')
-    gate.require(len(gpus) == 1, 'unknown or multiple GPU inventory')
-    processes = gpus[0].find('processes')
-    gate.require(processes is not None, 'GPU process telemetry missing')
-    pids = []
-    for row in processes.findall('process_info'):
-        kind, pid = row.findtext('type'), row.findtext('pid')
-        gate.require(kind in ('C', 'G', 'C+G') and pid is not None and pid.isdigit(),
-                     'unknown GPU process telemetry')
-        if 'G' in kind:
-            pids.append(int(pid))
-    return pids
+def configured_games():
+    raw = os.environ.get('POLICAI_CLEF_GAME_PROCESSES', '')
+    names = raw.split(',') if raw else []
+    gate.require(len(names) <= 16 and all(re.fullmatch(r'[A-Za-z0-9_.-]{1,64}', name) for name in names),
+                 'invalid game-process configuration; use at most 16 exact process names')
+    return {'minecraft', *(name.lower() for name in names)}
 
 
 def game_state():
+    games = configured_games()
     rows = process_rows()
-    games = {'java', 'javaw', 'minecraft', 'prismlauncher', 'steam', 'steamwebhelper',
-             'lutris', 'heroic', 'gamescope', 'wine', 'wine64', 'wine-preloader',
-             'wine64-preloader', 'wineserver', 'godot', 'unity', 'unityplayer'}
-    if any(row['comm'].lower() in games or row['comm'].lower().endswith('.exe') for row in rows):
-        return True
-    by_pid = {row['pid']: row for row in rows}
-    compositors = {'hyprland', 'xwayland', 'xorg', 'kwin_wayland', 'gnome-shell'}
-    for pid in graphics_pids():
-        gate.require(pid in by_pid and by_pid[pid]['comm'].lower() in compositors,
-                     'unidentified graphics client; gaming state unknown')
-    return False
+    indexed = {row['pid']: row for row in rows}
+    steam = {row['pid'] for row in rows if row['comm'].lower() in ('steam', 'steam.exe')
+             or re.fullmatch(r'steam_app_\d+', row['comm'].lower())
+             or (row['comm'].lower() == 'reaper' and any(
+                 arg.lower() == 'steamlaunch' or re.fullmatch(r'AppId=\d+', arg, re.IGNORECASE)
+                 for arg in row['args'].split()[1:]))}
+    desktop = {'steamwebhelper', 'voxtype-osd', 'hyprland', 'xwayland', 'xorg',
+               'kwin_wayland', 'gnome-shell', 'firefox', 'chrome', 'chromium', 'brave', 'msedge'}
+    helpers = desktop | {'steam', 'steam.exe', 'steamservice', 'crashhandler',
+                         'steam-runtime-l', 'steam-runtime-s', 'pressure-vessel', 'pv-bwrap', 'bwrap'}
+    reasons = []
+    for row in rows:
+        name = row['comm'].lower()
+        reason = None
+        if name in games:
+            reason = 'configured game process'
+        elif name in ('java', 'javaw', 'java.exe', 'javaw.exe') and any(
+                'minecraft' in arg.lower() or 'lwjgl' in arg.lower() for arg in row['args'].split()[1:]):
+            reason = 'Minecraft java process'
+        elif row['pid'] in steam and name not in ('steam', 'steam.exe'):
+            reason = 'Steam reaper/app process'
+        elif name not in helpers:
+            parent = row['ppid']
+            visited = {row['pid']}
+            while parent in indexed:
+                gate.require(parent not in visited, 'cyclic process telemetry')
+                visited.add(parent)
+                if parent in steam:
+                    reason = 'Steam game child process'
+                    break
+                if indexed[parent]['comm'].lower() in desktop:
+                    break
+                parent = indexed[parent]['ppid']
+        if reason is not None:
+            reasons.append(f'{reason} pid={row["pid"]} name={name}')
+    return reasons
 
 
 def free_vram_mb():
@@ -117,16 +132,22 @@ def free_vram_mb():
 def gpu_guard():
     telemetry = {'checked_at': datetime.datetime.now(datetime.timezone.utc).isoformat(),
                  'minimum_free_bytes': 13000000000}
+    reasons, errors = [], []
     try:
-        if game_state():
-            return dict(telemetry, status='skipped: gpu busy', reason='game or conservative game-process match')
+        reasons.extend(game_state())
+    except (ValueError, OSError, subprocess.SubprocessError) as error:
+        errors.append(f'game telemetry unavailable: {type(error).__name__}: {error}'[:256])
+    try:
         free = free_vram_mb()
         telemetry['free_vram_mb'] = free
         if free < 13000:
-            return dict(telemetry, status='skipped: gpu busy', reason='free VRAM below 13 GB')
-        return dict(telemetry, status='ready')
-    except (ValueError, OSError, subprocess.SubprocessError, ET.ParseError) as error:
-        return dict(telemetry, status='skipped: telemetry unavailable', reason=str(error)[:256])
+            reasons.append('free VRAM below 13 GB')
+    except (ValueError, OSError, subprocess.SubprocessError) as error:
+        errors.append(f'VRAM telemetry unavailable: {type(error).__name__}: {error}'[:256])
+    if reasons or errors:
+        return dict(telemetry, status='skipped: gpu busy' if reasons else 'skipped: telemetry unavailable',
+                    reasons=reasons + errors, reason='; '.join(reasons + errors))
+    return dict(telemetry, status='ready')
 
 
 def request(method, path, body, timeout):
@@ -462,8 +483,9 @@ def trial_summary(runs):
         eligible = False
         history = row.get('clef_comparisons', [])
         gate.require(isinstance(history, list), 'invalid comparison history')
-        for comparison in history:
+        for index, comparison in enumerate(history):
             try:
+                gate.require(isinstance(comparison, dict), 'comparison must be an object')
                 gate.require(comparison_record(row, comparison, comparison.get('artifact')) == comparison,
                              'comparison result mismatch')
                 evaluation = matching_assessment(row, comparison)
@@ -473,8 +495,8 @@ def trial_summary(runs):
                     and advisory['coverage'].get('complete') is True
                     and comparison.get('review_complete') is True
                     and set(comparison.get('reviewed_questions', [])) == set(QUESTIONS))
-            except (ValueError, KeyError, TypeError, AttributeError):
-                pass
+            except (ValueError, KeyError, TypeError, AttributeError) as error:
+                raise ValueError(f'malformed comparison run={row["run_id"]} head={row["head"]} index={index}: {error}') from error
         if eligible:
             completed.add(row['run_id'])
         else:
@@ -520,7 +542,7 @@ def main():
                 gate.atomic_json(args.ledger, ledger)
             print(json.dumps(summary, sort_keys=True))
         return 0
-    except (ValueError, OSError, KeyError, TypeError) as error:
+    except (ValueError, OSError, KeyError, TypeError, AttributeError) as error:
         print(json.dumps({'status': 'error', 'reason': str(error), 'live_action': 'none'}))
         return 1
 

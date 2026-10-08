@@ -423,14 +423,27 @@ reported in `coverage`; truncated JSON fragments are data strings, not commands.
 Individual retained artifacts over 4 MiB refuse advisory context. Source text is
 untrusted; prompt boundaries reduce but cannot eliminate model prompt injection.
 
-Before HTTP, bounded process/GPU telemetry must establish no gaming and at least
-13 GB free (13,000,000,000 bytes; nvidia-smi MiB converted without rounding up).
-Game/launcher/Java/Wine matches conservatively record `skipped: gpu busy`;
-unknown graphics clients, multiple GPUs or failed telemetry skip with a reason.
-A game starting after inspection remains a race; this is not a GPU reservation.
-Only known compositors are excluded from the graphics-client check. XML telemetry
-rejects entities and doctypes except the stripped NVIDIA device-DTD declaration;
-no external DTD is read. Telemetry calls each have a five-second bound.
+Before HTTP, bounded telemetry requires at least 13 GB free
+(13,000,000,000 bytes; nvidia-smi MiB converted without rounding up) and no
+known game process. Minecraft is a `java`/`javaw` process with a minecraft/lwjgl
+argument, or the exact `minecraft` process name. Steam reaper/app processes and
+non-helper game descendants block; an idle Steam launcher, desktop/browser
+clients and their helper subtrees do not. No graphics-client inventory is used:
+voxtype-osd, Hyprland and browsers never block merely because they use the GPU.
+
+For other games, set `POLICAI_CLEF_GAME_PROCESSES` per invocation to at most 16
+comma-separated exact process names, case-insensitive, for example
+`POLICAI_CLEF_GAME_PROCESSES=rivet,another-game`. Names must be 1–64 ASCII
+letters/digits/dot/underscore/hyphen, with no spaces, wildcards or paths; use the
+name reported by `ps`'s `comm` field, including any kernel truncation. Empty
+means no extra names; Minecraft/Steam detection remains enabled. This does not
+edit host configuration or read an environment file. Invalid configuration,
+failed/malformed telemetry or an unsupported multiple-GPU result still skips
+safely. Known games/low VRAM record `skipped: gpu busy`; telemetry-only failures
+record `skipped: telemetry unavailable`. Every collected cause is retained in
+`gpu.reasons` and the combined `reason`, including simultaneous game/VRAM/errors.
+Telemetry calls each have a five-second bound. A game starting after inspection
+remains a race; this is not a GPU reservation.
 
 HTTP connects directly to `127.0.0.1:11434`, ignores proxy settings and refuses
 redirects. A bounded `/api/tags` read verifies the installed `clef-flash` digest;
@@ -474,8 +487,12 @@ completed, untruncated inference and complete human comparisons complete this
 additional trial. Synthetic/historic fixtures, skips, errors, partial context and
 pending human reviews do not count. The original `scheduled_run_count` still
 counts deterministic observations, not completed clef comparisons; use `trial`
-for the separate count/incomplete list. These remain attestations, not signatures.
-Three comparisons confer no approval or activation authority.
+for the separate count/incomplete list. A missing comparison or valid partial
+context remains incomplete. A malformed stored comparison instead returns
+explicit JSON `status: "error"`, exits 1, identifies the run/head/record index,
+and leaves the ledger unchanged; it is never disguised as incomplete coverage.
+These remain attestations, not signatures. Three comparisons confer no approval
+or activation authority.
 
 ## Dependency retention
 

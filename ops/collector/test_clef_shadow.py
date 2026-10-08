@@ -32,31 +32,79 @@ class ClefTest(unittest.TestCase):
 
     def test_games_vram_boundary_and_failed_telemetry(self):
         for free, busy in [(12999, True), (13000, False), (13001, False)]:
-            with self.subTest(free=free), patch.object(clef, 'game_state', return_value=False), \
+            with self.subTest(free=free), patch.object(clef, 'game_state', return_value=[]), \
                     patch.object(clef, 'free_vram_mb', return_value=free):
                 self.assertEqual(clef.gpu_guard()['status'], 'skipped: gpu busy' if busy else 'ready')
-        with patch.object(clef, 'game_state', return_value=True), \
-                patch.object(clef, 'free_vram_mb') as vram:
-            self.assertEqual(clef.gpu_guard()['status'], 'skipped: gpu busy')
-            vram.assert_not_called()
+        with patch.object(clef, 'game_state', return_value=['Minecraft process pid=42']), \
+                patch.object(clef, 'free_vram_mb', return_value=12000):
+            guard = clef.gpu_guard()
+            self.assertEqual(guard['status'], 'skipped: gpu busy')
+            self.assertEqual(guard['reasons'], ['Minecraft process pid=42', 'free VRAM below 13 GB'])
+            self.assertTrue(guard['reason'])
         for error in [OSError('unavailable'), ValueError('unknown'), subprocess.TimeoutExpired('ps', 5)]:
-            with patch.object(clef, 'game_state', side_effect=error):
-                self.assertEqual(clef.gpu_guard()['status'], 'skipped: telemetry unavailable')
-            with patch.object(clef, 'game_state', return_value=False), \
+            with patch.object(clef, 'game_state', side_effect=error), \
+                    patch.object(clef, 'free_vram_mb', return_value=13000):
+                result = clef.gpu_guard()
+                self.assertEqual(result['status'], 'skipped: telemetry unavailable')
+                self.assertTrue(result['reason'])
+            with patch.object(clef, 'game_state', return_value=[]), \
                     patch.object(clef, 'free_vram_mb', side_effect=error):
-                self.assertEqual(clef.gpu_guard()['status'], 'skipped: telemetry unavailable')
+                result = clef.gpu_guard()
+                self.assertEqual(result['status'], 'skipped: telemetry unavailable')
+                self.assertTrue(result['reason'])
+        with patch.object(clef, 'game_state', side_effect=ValueError('bad process snapshot')), \
+                patch.object(clef, 'free_vram_mb', side_effect=OSError('VRAM unavailable')):
+            self.assertEqual(len(clef.gpu_guard()['reasons']), 2)
 
-    def test_game_detection_and_unknown_graphics_clients(self):
-        rows = [{'pid': 1, 'comm': 'java', 'args': 'java net.minecraft.client.main.Main'}]
+    def test_game_detection_ignores_desktop_and_unrelated_java(self):
+        for name in ['voxtype-osd', 'Hyprland', 'firefox', 'chromium', 'chrome', 'steam',
+                     'steamwebhelper', 'java', 'gamescope', 'wine64', 'lutris', 'heroic', 'godot', 'Unity', 'word.exe']:
+            with self.subTest(name=name), patch.dict('os.environ', {'POLICAI_CLEF_GAME_PROCESSES': ''}), \
+                    patch.object(clef, 'process_rows', return_value=[{'pid': 1, 'ppid': 0, 'comm': name, 'args': name}]), \
+                    patch.object(clef, 'free_vram_mb', return_value=13000):
+                self.assertEqual(clef.gpu_guard()['status'], 'ready')
+        for argument in ['net.minecraft.client.main.Main', '-Djava.library.path=/games/lwjgl', '/games/.minecraft/client.jar']:
+            with self.subTest(argument=argument), patch.object(clef, 'process_rows', return_value=[
+                    {'pid': 42, 'ppid': 0, 'comm': 'java', 'args': 'java ' + argument}]):
+                matches = clef.game_state()
+                self.assertTrue(matches)
+                self.assertIn('Minecraft', matches[0])
+                self.assertIn('42', matches[0])
+
+    def test_steam_game_children_reaper_and_app_detection(self):
+        rows = [{'pid': 1, 'ppid': 0, 'comm': 'steam', 'args': '/games/steam/steam'},
+                {'pid': 2, 'ppid': 1, 'comm': 'steamwebhelper', 'args': 'steamwebhelper'},
+                {'pid': 3, 'ppid': 1, 'comm': 'firefox', 'args': 'firefox'},
+                {'pid': 6, 'ppid': 2, 'comm': 'chrome_crashpad', 'args': 'chrome_crashpad'},
+                {'pid': 7, 'ppid': 3, 'comm': 'Web Content', 'args': 'browser-gpu-client'}]
         with patch.object(clef, 'process_rows', return_value=rows):
-            self.assertTrue(clef.game_state())
-        for name in ['steam', 'gamescope', 'wine64', 'lutris', 'heroic', 'godot', 'Unity']:
-            with patch.object(clef, 'process_rows', return_value=[{'pid': 1, 'comm': name, 'args': name}]):
+            self.assertEqual(clef.game_state(), [])
+        for row in [{'pid': 4, 'ppid': 1, 'comm': 'native-game', 'args': '/games/native-game'},
+                    {'pid': 4, 'ppid': 1, 'comm': 'reaper', 'args': '/games/steam/reaper SteamLaunch AppId=123 -- game'},
+                    {'pid': 4, 'ppid': 0, 'comm': 'steam_app_123', 'args': 'game'}]:
+            with self.subTest(row=row), patch.object(clef, 'process_rows', return_value=rows + [row]):
                 self.assertTrue(clef.game_state())
-        with patch.object(clef, 'process_rows', return_value=[]), \
-                patch.object(clef, 'graphics_pids', return_value=[99]):
-            with self.assertRaises(ValueError):
-                clef.game_state()
+        rows.extend([{'pid': 4, 'ppid': 1, 'comm': 'reaper', 'args': 'reaper SteamLaunch AppId=123 -- game'},
+                     {'pid': 5, 'ppid': 4, 'comm': 'game', 'args': '/games/game'}])
+        with patch.object(clef, 'process_rows', return_value=rows):
+            matches = clef.game_state()
+            self.assertTrue(any('pid=5' in reason for reason in matches))
+        with patch.object(clef, 'process_rows', return_value=[{'pid': 1, 'ppid': 0, 'comm': 'reaper', 'args': 'reaper --ordinary-task'}]):
+            self.assertEqual(clef.game_state(), [])
+
+    def test_configured_game_names_are_short_exact_and_fail_safely(self):
+        rows = [{'pid': 42, 'ppid': 0, 'comm': 'rivet', 'args': 'rivet'}]
+        with patch.object(clef, 'process_rows', return_value=rows):
+            with patch.dict('os.environ', {'POLICAI_CLEF_GAME_PROCESSES': 'rivet,another-game'}):
+                self.assertTrue(clef.game_state())
+            with patch.dict('os.environ', {'POLICAI_CLEF_GAME_PROCESSES': 'rive'}):
+                self.assertEqual(clef.game_state(), [])
+            for value in ['rivet,*', 'rivet,', '/path/game', ','.join('game' + str(i) for i in range(17))]:
+                with self.subTest(value=value), patch.dict('os.environ', {'POLICAI_CLEF_GAME_PROCESSES': value}), \
+                        patch.object(clef, 'free_vram_mb', return_value=13000):
+                    result = clef.gpu_guard()
+                    self.assertEqual(result['status'], 'skipped: telemetry unavailable')
+                    self.assertIn('game-process configuration', result['reason'])
 
     def test_protocol_validation_and_binary_concentration(self):
         answers = clef.parse_response(self.response(0.5))
@@ -204,27 +252,31 @@ class ClefTest(unittest.TestCase):
         clef.attach_comparison(row, comparison, proof)
         self.assertEqual(clef.trial_summary([row])['completed_scheduled_comparisons'], 1)
         advisory['coverage']['complete'] = False
-        self.assertEqual(clef.trial_summary([row])['completed_scheduled_comparisons'], 0)
+        with self.assertRaises(ValueError):
+            clef.trial_summary([row])
         advisory['coverage']['complete'] = True
         advisory['status'] = 'skipped: gpu busy'
+        with self.assertRaises(ValueError):
+            clef.trial_summary([row])
+        row['clef_comparisons'] = []
         self.assertEqual(clef.trial_summary([row])['completed_scheduled_comparisons'], 0)
         comparison['head'] = 'f' * 40
         with self.assertRaises(ValueError):
             clef.attach_comparison(row, comparison, proof)
 
-    def test_telemetry_parsers_and_xml_refusal(self):
+    def test_telemetry_parsers_fail_closed(self):
         for mib, expected in [('12397\n', 12999), ('12398\n', 13000)]:
             with patch.object(clef, 'command', return_value=mib):
                 self.assertEqual(clef.free_vram_mb(), expected)
         for raw in ['N/A\n', '100\n100\n', '', '-1\n']:
             with patch.object(clef, 'command', return_value=raw), self.assertRaises(ValueError):
                 clef.free_vram_mb()
-        xml = '<nvidia_smi_log><gpu><processes><process_info><type>G</type><pid>42</pid></process_info></processes></gpu></nvidia_smi_log>'
-        with patch.object(clef, 'command', return_value='<!DOCTYPE nvidia_smi_log SYSTEM "nvsmi_device_v12.dtd">' + xml):
-            self.assertEqual(clef.graphics_pids(), [42])
-        for prefix in ['<!ENTITY x "x">', '<!DOCTYPE evil SYSTEM "https://remote.invalid">']:
-            with patch.object(clef, 'command', return_value=prefix + xml), self.assertRaises(ValueError):
-                clef.graphics_pids()
+        with patch.object(clef, 'command', return_value='42 1 java java net.minecraft.client.main.Main') as command:
+            self.assertEqual(clef.process_rows()[0]['ppid'], 1)
+            self.assertIn('ppid=', command.call_args.args[0][-1])
+        for raw in ['', 'bad process fields', '42 invalid java java', '42 1 java java\n42 1 java java']:
+            with patch.object(clef, 'command', return_value=raw), self.assertRaises(ValueError):
+                clef.process_rows()
         with patch.object(clef.subprocess, 'run', return_value=SimpleNamespace(returncode=0, stdout='ok')) as run:
             self.assertEqual(clef.command(['ps']), 'ok')
             self.assertEqual(run.call_args.kwargs['timeout'], 5)
@@ -291,7 +343,52 @@ class ClefTest(unittest.TestCase):
         self.assertTrue(clef.trial_summary(rows)['trial_complete'])
         self.assertFalse(clef.trial_summary(rows[:-1])['trial_complete'])
         rows[0]['evaluations'][0]['clef_advisory']['flags'] = ['off_topic']
-        self.assertEqual(clef.trial_summary(rows)['completed_scheduled_comparisons'], 2)
+        with self.assertRaises(ValueError):
+            clef.trial_summary(rows)
+
+    def test_malformed_comparison_is_explicit_cli_error_not_incomplete(self):
+        fixture, args = self.fixture()
+        args.clef_advisory = False
+        result = gate.assess(args)
+        row = {'run_id': result['run_id'], 'head': result['head'], 'trial_eligible': False,
+               'evaluations': [result], 'human_decisions': [], 'human_decision': 'pending', 'disagreement': False}
+        ledger = fixture.root / 'ledger.json'
+        argv = ['clef', 'trial', '--repo', str(args.repo), '--ledger', str(ledger)]
+        for record in [None, {}, 'invalid', {'artifact': {'path': 'relative', 'sha256': 'x'}},
+                       {'reviewer_findings': []}]:
+            row['clef_comparisons'] = [record]
+            ledger.write_text(json.dumps({'schema_version': 1, 'runs': [row], 'scheduled_run_count': 0}))
+            before = ledger.read_bytes()
+            with self.subTest(record=record), patch('sys.argv', argv), patch('sys.stdout', new_callable=io.StringIO) as stdout:
+                self.assertEqual(clef.main(), 1)
+                refusal = json.loads(stdout.getvalue())
+                self.assertEqual(refusal['status'], 'error')
+                self.assertIn('malformed comparison', refusal['reason'])
+                self.assertNotIn('incomplete', refusal)
+            self.assertEqual(ledger.read_bytes(), before)
+        row['clef_comparisons'] = []
+        self.assertFalse(clef.trial_summary([row])['trial_complete'])
+
+    def test_valid_partial_comparison_stays_incomplete(self):
+        fixture, args = self.fixture()
+        fixture.evidence['run'].update(kind='scheduled', scheduler='policai-collect.timer')
+        candidate = fixture.add_candidate()
+        candidate['text'] = 'Retained AI policy evidence ' * 1000
+        fixture.revise()
+        args.head = fixture.head
+        args.evidence.write_text(json.dumps(fixture.evidence))
+        with patch.object(clef, 'gpu_guard', return_value={'status': 'ready'}), \
+                patch.object(clef, 'bounded_infer', return_value={'raw': self.response(), 'model_digest': 'a' * 64}):
+            result = gate.assess(args)
+        advisory = result['clef_advisory']
+        row = {'run_id': result['run_id'], 'head': args.head, 'trial_eligible': True, 'evaluations': [result]}
+        comparison = dict(base=args.base, head=args.head, run_id=result['run_id'],
+                          input_sha256=advisory['input_sha256'], response_sha256=advisory['response_sha256'],
+                          review_complete=True, reviewed_questions=list(clef.QUESTIONS), reviewer_findings=[])
+        clef.attach_comparison(row, comparison, {'path': '/synthetic/proof', 'sha256': 'b' * 64})
+        summary = clef.trial_summary([row])
+        self.assertEqual(summary['completed_scheduled_comparisons'], 0)
+        self.assertEqual(len(summary['incomplete']), 1)
 
 
 if __name__ == '__main__':
