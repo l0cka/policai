@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-"""Offline SHADOW assessment. No collection, model invocation or merge action."""
 import argparse
 import datetime
 import calendar
@@ -367,6 +366,9 @@ def assess(args):
         attempt(result, 'coverage', lambda: inspect_coverage(objects, evidence, args, result))
         attempt(result, 'dates', lambda: inspect_dates(objects, evidence, args, result))
     result['verdict'] = 'would-escalate' if result['reasons'] else 'would-merge'
+    if getattr(args, 'clef_advisory', False):
+        from clef_shadow import assess as assess_clef
+        result['clef_advisory'] = assess_clef(objects, evidence, args, result)
     return result
 
 
@@ -526,7 +528,7 @@ def write_outputs(args, result):
 
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(description='SHADOW assessor; offline by default, optional local advisory only.')
     parser.add_argument('--repo', required=True, type=Path)
     parser.add_argument('--base', required=True)
     parser.add_argument('--head', required=True)
@@ -535,6 +537,7 @@ def main():
     parser.add_argument('--ledger', type=Path)
     parser.add_argument('--human-decision', choices=('pending', 'merged', 'escalated', 'rejected'), default='pending')
     parser.add_argument('--human-artifact', type=Path)
+    parser.add_argument('--clef-advisory', action='store_true', help='opt-in local log-only clef-flash assessment')
     args = parser.parse_args()
     result = assess(args)
     write_outputs(args, result)
