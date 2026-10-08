@@ -230,6 +230,182 @@ Do not archive a normal `published` pointer just because its PR was merged:
 a successfully recorded publication resumes normally once no collection PR is
 open. No automatic merged/closed-PR reconciliation is implemented.
 
+## Routine collection review gate — SHADOW ONLY (X60)
+
+`collection_review_gate.py` is a standalone, stdlib-only, offline assessor. It
+has **no merge action**, no model invocation, no network request, and no wrapper,
+CI or timer integration. Exit 0 means `would-merge`, not permission to merge;
+exit 1 means `would-escalate`. Both print structured JSON, with the exact
+base/head, policy version, evidence manifest path/digest, reasons and a one-line
+`summary` for a digest. This phase does not activate the X60 standing rule or
+bypass the existing pending-PR gate. It cannot approve a PR touching
+`data/developments.json`, `data/source-reviews.json`, register content, source
+identity, exceptions or code. In particular, it does not authorise PR #155.
+
+### Trusted acquisition boundary
+
+Run this reviewed script from a trusted checkout, **not the candidate PR's
+copy**. The candidate checkout must be clean and at the exact full head SHA.
+Git reads pinned commit objects; the gate never checks out or executes candidate
+code. A nonempty diff may contain only ordinary `100644` modifications to the
+exact paths `data/watch-state.json` and `public/data/meta.json`. Additions,
+deletions, renames, symlinks, other modes and basename lookalikes refuse.
+
+The collector/coordinator must acquire and retain evidence independently of the
+PR author: capture the scheduled-run receipt and scheduler provenance; inspect
+the approved source inventory and both schedules; obtain actual test, lint,
+build and data-validation receipts at the exact head; arrange the independent
+read; and retain source text for any date checks. Run checks only in the normal
+trusted/sandboxed verification workflow, not through this assessor. Do not copy
+PR-owned claims, comments, model prose or PR artifacts into an apparently trusted
+receipt. The gate accepts **attestations, not authenticated ground truth**:
+`acquired_by`, scheduler and model strings are not signatures, and content
+hashes establish byte identity, not honesty or completeness. It cannot prove
+that CI, a scheduled run or an independent review happened. The coordinator
+must verify those facts and remote base/head immediately before assessment;
+a changed remote SHA invalidates the old result. Never claim external CI ran
+from the presence of an input JSON file.
+
+All input artifacts, manifest, output and ledger must be outside the candidate
+checkout, at absolute non-symlink paths in coordinator-controlled directories.
+The local path restriction is defence in depth, not authentication: copying a
+PR-authored file elsewhere does not make it trustworthy. Keep these directories
+private from PR jobs and source content, including concurrent path replacement.
+The gate reads source text as data only; it does not interpret instructions in it.
+
+### Evidence format, version 1
+
+The coordinator writes one JSON manifest with these required fields (unknown
+fields confer no authority). JSON duplicate keys and non-finite numbers refuse.
+Every `artifact` below is `{"path":"/absolute/retained/file","sha256":"<64 lowercase hex>"}`;
+its bytes must exist and match the digest. Paths are never fetched as URLs.
+
+- `schema_version`: integer `1`; `base`, `head`: full, exact 40-character Git
+  commit SHAs; `acquired_by`: `"coordinator"`; `clean`: boolean `true`.
+- `run`: `id` (1–128 ASCII letters/digits/dot/underscore/hyphen), `kind`
+  (`"scheduled"`, `"historic"` or `"synthetic"`), and `artifact`. For scheduled
+  runs also set `scheduler: "policai-collect.timer"`. The artifact must be the
+  coordinator-verified receipt/scheduler evidence binding this run to base/head;
+  the existing wrapper does not yet generate this manifest.
+- `receipts`: exactly four objects, uniquely named `tests`, `lint`, `build`,
+  `data-validation`; each has `head`, `status: "success"`, integer
+  `data_errors: 0`, and `artifact`. Missing, pending, stale or failed receipts
+  refuse. A local `npm run check` log can support all four if the coordinator
+  actually ran it on that head and verifies all stages and zero data errors.
+- `review`: `base`, `head`, `status: "completed"`, `vendor: "ollama-cloud"`,
+  `model: "glm-5.3"`, `findings: []`, and `artifact`. This initial shadow policy
+  admits GLM 5.3 only while Claude is paused. The coordinator must arrange an
+  actual independent cross-vendor review, retain its report and verify its
+  identity and SHA; the gate does not call the model. Wrong identity/SHA,
+  missing/pending review, any finding or a nonempty `flags` field refuses. Later model-policy changes
+  require review, not a free-text override.
+- `coverage`: `automatic_source_ids` (complete, unique nonempty list),
+  `manual_source_count` (nonnegative integer), `base_due` and `head_due`
+  (objects mapping every automatic source ID to a boolean), and `artifact`
+  retaining the inventory and scheduling calculation at both commits. Do not
+  derive this evidence solely from the candidate's self-reported meta totals.
+- `dates`: an array covering **exactly** new or changed watch-state candidates,
+  keyed by their `seen` map key. Each object has `key`, `source_id`, `url`,
+  `artifact` (retained UTF-8 source text), and nonempty `values`. Each value is
+  `{"kind":"published","value":"7 October 2026"}` or an `updated` value.
+  The raw values must occur in the retained text. Include all relevant,
+  potentially conflicting publication/update hints, not only the convenient
+  one. Normal retry-attempt changes with an identical candidate need no new
+  date proof. Removed candidates or missing new-candidate details refuse.
+
+The synthetic fixture builder in `test_collection_review_gate.py` is an
+executable example of the complete manifest, including date entries. Its
+receipts, sources, scheduler and human decisions are explicitly **synthetic**;
+none establishes actual CI, review or trial progress.
+
+### Coverage and date policy
+
+The gate reconciles per-source rows with the independent inventory, schedule,
+checked IDs, success/failure/skipped totals, error list and rounded success
+rate. Missing rows, duplicate IDs, invalid types/statuses/counts, hidden errors
+and inconsistent eligibility refuse. `coverageEligible: false` retries and
+skipped sources never count as successful coverage or recovery. Comparisons
+label scheduling changes and not-due rows separately. The gate does not treat a
+not-due row as proof of health. Every head error, including explicit new
+success-to-error transitions and continuing failures, escalates for human
+review; making a failure explicit is necessary, not sufficient to pass.
+
+The proposed shadow count-drop limit is **at most 20% for each comparable,
+successful source**, checked with integer arithmetic:
+`(base_count - head_count) * 100 <= base_count * 20`. Positive-to-zero always
+refuses. Known zero baselines permit zero or growth without inventing a
+percentage; missing counts are unknown and refuse when due/successful or
+comparable. Aggregate growth cannot offset another source's drop. This 20%
+number is a **proposal requiring acceptance before live activation**, not a
+number already approved by Daniel.
+
+`src/lib/pipeline/extract.ts:parseSourceDate` preserves the source calendar
+date, including the leading date of an ISO timestamp. Its tests explicitly
+reject rolling that calendar day through UTC. Month/year hints are anchored
+on the first day with `dateHintPrecision: "month"`/`"year"`, never silently
+upgraded to day precision. `collect.ts` carries those hints into candidates and
+publication fields; retrieval/fetch time is not publication evidence.
+
+The gate uses a conservative parser for ISO day, offset-bearing ISO timestamp,
+ISO month/year, English month/day dates and day/month/year numeric dates.
+Unsupported or ambiguous formats escalate instead of guessing. All supplied
+publication and update values must agree on date **and precision**, with at
+least one publication value; updated-only evidence escalates in this shadow
+policy even where extraction accepts an update hint. New/changed candidates
+without source-date evidence, mismatched hints/precision or contradictory
+metadata refuse. A bare `7 October 2026` cannot justify `2026-10-06` by an AEDT
+conversion; even `2026-10-07T00:30:00+11:00` retains `2026-10-07` under the traced
+rule. These are synthetic offline examples, not a conclusion about the
+independent DTA date investigation. No source facts are rewritten by the gate.
+
+### Operator command and three-run comparison
+
+Choose the evidence directory explicitly; the parent directory must already
+exist. Replace the placeholder variables with coordinator-verified paths/SHAs:
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python3 /trusted/policai/ops/collector/collection_review_gate.py \
+  --repo "$CANDIDATE_CHECKOUT" --base "$BASE_SHA" --head "$HEAD_SHA" \
+  --evidence "$EVIDENCE_DIR/manifest.json" \
+  --output "$EVIDENCE_DIR/shadow-result.json" --ledger "$EVIDENCE_DIR/shadow-ledger.json"
+```
+
+Without `--output`/`--ledger`, the assessor writes only stdout. With a ledger,
+it uses a sibling `.lock` file and atomic replacement, with one record per
+run ID/head and deduplicated assessment history. Repeated identical input does
+not add an evaluation or run. Different heads for one run still count once.
+Corrupt/duplicate/inconsistent ledgers refuse and remain untouched; retain
+stdout as evidence of that refusal. Do not discard failed assessments or
+rewrite disagreements to make the trial pass. An unidentified/malformed run
+cannot be placed safely in the ledger; retain its structured stdout and
+reconcile its provenance manually.
+
+1. For each of the next three **genuine scheduled collections**, acquire the
+   above evidence, run the gate and retain stdout/output and the manifest.
+   Historical and synthetic replays never count. Scheduler provenance is
+   coordinator-attested, not inferred from a branch name or timestamp. Tests
+   use temporary ledgers, never the host ledger. Failed scheduled assessments
+   count as observations, not as successes.
+2. A human independently reviews the exact same base/head and records the
+   ordinary decision using the existing approval process. Until known, the
+   ledger's `human_decision` is `pending`. To record the result, repeat the
+   command with `--human-decision merged|escalated|rejected` and
+   `--human-artifact /absolute/retained/decision.txt`. This only records an
+   attestation and its digest: **it does not merge or escalate anything**.
+   Both assessment and human-decision histories are preserved; `disagreement`
+   remains true if any retained assessment disagrees with a human decision.
+3. Compare all three distinct scheduled run IDs, each exact head, every reason,
+   human decision, unresolved failure and disagreement. Pending human decisions
+   do not complete the trial. Carry the output `summary` into the digest, with
+   `live_action=none`; retain artifact links beside it. Raise a new activation
+   **E item** containing the three-run matrix and requesting explicit acceptance
+   of the proposed threshold, trust boundary, reviewer identity and future live
+   design. Do not update standing approvals as live or install anything here.
+
+Any future live path must be separately reviewed/approved and use squash via
+`factory merge`, never `--admin`. Three observations do not themselves activate
+anything. This PR stops at source, tests and operating documentation.
+
 ## Dependency retention
 
 Each run tree holds about 0.9 GB of `node_modules`, and nothing else in a tree
