@@ -6,8 +6,6 @@
     "sourceId": "dta-media",
     "sourceName": "Digital Transformation Agency — media releases",
     "jurisdiction": "federal",
-    "publishedAt": "2026-10-06",
-    "publishedAtPrecision": "day",
     "detectedAt": "2026-10-07T19:33:43.055Z",
     "summary": "7 October 2026 Tags Artificial Intelligence The Australian Government’s Artificial Intelligence (AI) Review Committee has met, marking an important step in strengthening the safe and responsible use of AI across the Australian Public Service (APS). The AI Review Committee agreed to its terms of reference which set out how it will provide expert, non-binding advice on selected AI use cases and review agencies' responses to serious AI incidents. At its initial meeting, the Committee also provided advice to 2 agencies – the Attorney-General's Department and Services Australia – on their upcoming ",
     "relevanceScore": 0.55,
@@ -27,9 +25,7 @@
         "contentHash": "41af4abd6eed2cffecb1acaf977d7c42b12b320c788630f9365021e1db1ab905",
         "etag": "\"1791342795\"",
         "lastModified": "Wed, 07 Oct 2026 03:13:15 GMT",
-        "title": "Inaugural AI Review Committee sets out expert advice on public sector AI use",
-        "publishedAt": "2026-10-06",
-        "publishedAtPrecision": "day"
+        "title": "Inaugural AI Review Committee sets out expert advice on public sector AI use"
       }
     },
     "status": "detected"
