@@ -77,8 +77,11 @@ async function main() {
 
 const isDirectRun = process.argv[1]?.endsWith('fetch-all.ts');
 if (isDirectRun) {
-  main().catch((err) => {
-    console.error(err);
-    process.exit(1);
-  });
+  main().then(
+    () => process.exit(0),
+    (err) => {
+      console.error(err);
+      process.exit(1);
+    },
+  );
 }
