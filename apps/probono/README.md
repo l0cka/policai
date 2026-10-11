@@ -79,3 +79,9 @@ backups remain a separate operational responsibility. Preserve masks on both
 authorise email delivery: unmasking requires explicit approval and verified SMTP
 configuration. Schema changes, timer changes, deployment and live writes also
 require separate approval. See [AGENTS.md](./AGENTS.md) for child-specific rules.
+
+`worker/src/fetch-all.ts` exits explicitly once its run summary is printed and
+the pool is closed. `rss-parser` leaves the response unread when a feed answers
+with a non-2xx status, so that socket keeps Node alive; without the explicit
+exit one blocked feed holds the ingest container open until the host dispatcher
+times out, and a worker left running blocks later deployments and workers.
