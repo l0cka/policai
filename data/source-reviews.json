@@ -1,5 +1,108 @@
 [
   {
+    "id": "source-review-dev-new-report-explores-safe-oversight-of-advanced-a-5uk6ft",
+    "sourceUrl": "https://www.industry.gov.au/news/new-report-explores-safe-oversight-advanced-ai-systems",
+    "title": "New report explores safe oversight of advanced AI systems",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-10-12T19:32:59.811Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from Department of Industry, Science and Resources — news (score 0.55, heuristic).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.55,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "New report explores safe oversight of advanced AI systems Australia’s AI Safety Institute has released new research to better understand emerging risks associated with AI systems. 8 October 2026 News 2 min read Artificial intelligence Science, technology and innovation Technology AI Safety Institute The report looks at how highly capable AI systems may be able to influence an overseers’ beliefs, even while correctly performing tasks. The AI Safety Institute commissioned CSIRO to explore scalable oversight, an aspect of AI alignment. Findings will contribute to international research under the ",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.industry.gov.au/news/new-report-explores-safe-oversight-advanced-ai-systems",
+      "finalUrl": "https://www.industry.gov.au/news/new-report-explores-safe-oversight-advanced-ai-systems",
+      "retrievedAt": "2026-10-12T19:32:59.811Z",
+      "contentType": "text/html",
+      "contentHash": "456ca9c29b976e093c0cedd09c793b2851399537421330386b8125a4565798b1",
+      "etag": "\"1791817067\"",
+      "lastModified": "Mon, 12 Oct 2026 14:57:47 GMT",
+      "title": "New report explores safe oversight of advanced AI systems",
+      "publishedAt": "2026-10-12",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "new-report-explores-safe-oversight-of-advanced-ai-systems",
+      "title": "New report explores safe oversight of advanced AI systems",
+      "description": "New report explores safe oversight of advanced AI systems Australia’s AI Safety Institute has released new research to better understand emerging risks associated with AI systems. 8 October 2026 News 2 min read Artificial intelligence Science, technology and innovation Technology AI Safety Institute The report looks at how highly capable AI systems may be able to influence an overseers’ beliefs, even while correctly performing tasks. The AI Safety Institute commissioned CSIRO to explore scalable oversight, an aspect of AI alignment. Findings will contribute to international research under the ",
+      "jurisdiction": "federal",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2026-10-12",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-10-12",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.industry.gov.au/news/new-report-explores-safe-oversight-advanced-ai-systems",
+            "finalUrl": "https://www.industry.gov.au/news/new-report-explores-safe-oversight-advanced-ai-systems",
+            "retrievedAt": "2026-10-12T19:32:59.811Z",
+            "contentType": "text/html",
+            "contentHash": "456ca9c29b976e093c0cedd09c793b2851399537421330386b8125a4565798b1",
+            "etag": "\"1791817067\"",
+            "lastModified": "Mon, 12 Oct 2026 14:57:47 GMT",
+            "title": "New report explores safe oversight of advanced AI systems",
+            "publishedAt": "2026-10-12",
+            "publishedAtPrecision": "day"
+          }
+        }
+      ],
+      "agencies": [],
+      "sourceUrl": "https://www.industry.gov.au/news/new-report-explores-safe-oversight-advanced-ai-systems",
+      "content": "New report explores safe oversight of advanced AI systems Australia’s AI Safety Institute has released new research to better understand emerging risks associated with AI systems. 8 October 2026 News 2 min read Artificial intelligence Science, technology and innovation Technology AI Safety Institute The report looks at how highly capable AI systems may be able to influence an overseers’ beliefs, even while correctly performing tasks. The AI Safety Institute commissioned CSIRO to explore scalable oversight, an aspect of AI alignment. Findings will contribute to international research under the ",
+      "aiSummary": "New report explores safe oversight of advanced AI systems Australia’s AI Safety Institute has released new research to better understand emerging risks associated with AI systems. 8 October 2026 News 2 min read Artificial intelligence Science, technology and innovation Technology AI Safety Institute The report looks at how highly capable AI systems may be able to influence an overseers’ beliefs, even while correctly performing tasks. The AI Safety Institute commissioned CSIRO to explore scalable oversight, an aspect of AI alignment. Findings will contribute to international research under the ",
+      "tags": [],
+      "createdAt": "2026-10-12T19:32:59.811Z",
+      "updatedAt": "2026-10-12T19:32:59.811Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-new-report-explores-safe-oversight-of-advanced-a-5uk6ft",
+      "title": "New report explores safe oversight of advanced AI systems",
+      "url": "https://www.industry.gov.au/news/new-report-explores-safe-oversight-advanced-ai-systems",
+      "sourceId": "disr-news",
+      "sourceName": "Department of Industry, Science and Resources — news",
+      "jurisdiction": "federal",
+      "publishedAt": "2026-10-12",
+      "publishedAtPrecision": "day",
+      "detectedAt": "2026-10-12T19:32:59.811Z",
+      "summary": "New report explores safe oversight of advanced AI systems Australia’s AI Safety Institute has released new research to better understand emerging risks associated with AI systems. 8 October 2026 News 2 min read Artificial intelligence Science, technology and innovation Technology AI Safety Institute The report looks at how highly capable AI systems may be able to influence an overseers’ beliefs, even while correctly performing tasks. The AI Safety Institute commissioned CSIRO to explore scalable oversight, an aspect of AI alignment. Findings will contribute to international research under the ",
+      "relevanceScore": 0.55,
+      "classification": "heuristic",
+      "assessment": {
+        "method": "heuristic",
+        "promptVersion": "keyword-rules-v1",
+        "assessedAt": "2026-10-12T19:32:59.811Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.industry.gov.au/news/new-report-explores-safe-oversight-advanced-ai-systems",
+          "finalUrl": "https://www.industry.gov.au/news/new-report-explores-safe-oversight-advanced-ai-systems",
+          "retrievedAt": "2026-10-12T19:32:59.811Z",
+          "contentType": "text/html",
+          "contentHash": "456ca9c29b976e093c0cedd09c793b2851399537421330386b8125a4565798b1",
+          "etag": "\"1791817067\"",
+          "lastModified": "Mon, 12 Oct 2026 14:57:47 GMT",
+          "title": "New report explores safe oversight of advanced AI systems",
+          "publishedAt": "2026-10-12",
+          "publishedAtPrecision": "day"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-10-12T19:32:59.811Z"
+  },
+  {
     "id": "source-review-dev-inaugural-ai-review-committee-sets-out-expert-ad-15n6ewq",
     "sourceUrl": "https://www.dta.gov.au/media-releases/inaugural-ai-review-committee-sets-out-expert-advice-public-sector-ai-use",
     "title": "Inaugural AI Review Committee sets out expert advice on public sector AI use",
