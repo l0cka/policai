@@ -82,7 +82,8 @@ src/
 │   ├── this-week/page.tsx        # Weekly verified developments + upcoming dates
 │   ├── courts/page.tsx           # Court AI guidance view
 │   ├── analysis/                 # Analysis index, [slug] pieces and tombstones, feed.xml (Atom)
-│   ├── network|timeline/         # Visualisations
+│   ├── coverage/                 # Coverage map: themes by jurisdiction (see Coverage map)
+│   ├── timeline/                 # Timeline visualisation
 │   ├── methodology|status/       # Verification method and source health
 │   ├── not-found.tsx             # Site 404 with onward links
 │   ├── map|framework|blog/       # Retired: each page calls notFound()
@@ -132,6 +133,40 @@ docs/                             # collector.md + docs index
 8. **Articles** (`data/articles/<slug>.md`): Policai's written analysis. See Articles below.
 
 See [docs/collector.md](./docs/collector.md) for operations.
+
+## Coverage map
+
+`/coverage` answers "who has an instrument on this subject, and where is
+there nothing?" as a table of themes (rows) by jurisdiction (columns). The
+nav calls it Coverage, under Explore. `/network` and any query string on it
+redirect there with a 308 (`next.config.ts`). `/api/network` is unchanged
+and still serves `buildNetworkData` nodes and edges.
+
+- **Data:** `buildCoverageData(policies, THEMES)` in `src/lib/coverage-data.ts`
+  is pure. It counts the public register read (`getPolicies()`: verified,
+  non-trashed, non-withheld) per `policy.themes` entry and jurisdiction, and
+  per `policy.type` for the "By instrument type" axis on the same code path.
+  Each cell holds record ids. Columns follow `COVERAGE_JURISDICTIONS`
+  (Federal, NSW, Vic, Qld, SA, WA, Tas, ACT, NT). Rows are sorted by total,
+  then label. A theme is charted when it has `COVERAGE_MIN_RECORDS` records.
+- **Copy:** every count and sentence on the page (standfirst, footnote, empty
+  state) comes from `coverageStandfirst`, `coverageFootnote` and
+  `coverageEmptySentence`. Do not type numbers into the page.
+- **URL:** `?theme=<key>&j=<jurisdiction>` selects a cell, `theme` alone a row,
+  `j` alone a column, and `by=type` (with `type=<key>`) switches the axis.
+  Unknown values are ignored. Opening and closing use `replaceState`; moving
+  from one selection to another uses `pushState`, so Back restores it.
+- **Markup:** one server-rendered `<table>` from the client component
+  `CoverageMap` (`src/components/coverage-map.tsx`). Count cells are buttons
+  in a roving-tabindex grid: one tab stop, arrows, Home and End, Enter or
+  Space to open the drill-down row under the selection, Escape or "Clear
+  selection" to close it and return focus. Below 768px the same rows are
+  restyled as CSS grid strips. Changing `display` on table elements drops
+  their table semantics in some browsers, so every table element carries its
+  explicit ARIA role (`table`, `rowgroup`, `row`, `columnheader`,
+  `rowheader`, `cell`).
+- **Styling:** `src/app/coverage/coverage.css`. The four cell levels are
+  `color-mix()` of `--primary` into `--background`, local to the page.
 
 ## Articles
 

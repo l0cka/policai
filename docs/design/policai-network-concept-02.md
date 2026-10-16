@@ -1,6 +1,6 @@
 # Policai network relationship explorer — concept 02
 
-Status: approved for implementation on 26 July 2026.
+Status: approved for implementation on 26 July 2026; retired on 17 October 2026, when `/network` became a permanent redirect to the coverage map at `/coverage` (#302).
 
 Approval response: “Yes I approve.”
 

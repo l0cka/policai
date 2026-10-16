@@ -19,7 +19,7 @@ Product surface:
 - weekly view of verified developments and upcoming deadlines
 - developments feed of newly detected policy activity, with provenance and confidence labels
 - court AI guidance view
-- timeline and network visualisations
+- timeline visualisation and a coverage map of themes by jurisdiction
 - methodology and source-status pages covering verification and collection health
 
 `/agencies` is a temporary redirect to the APS AI tracker at
@@ -86,7 +86,7 @@ npm run mcp:public     # run the read-only public MCP server
 
 ```text
 src/app/            App Router pages and read-only API routes
-src/components/     UI, layout, network, and visualisation components
+src/components/     UI, layout, and visualisation components
 src/lib/            data service, validation, analysis helpers
 src/lib/pipeline/   collector: sources, extract, classify, orchestrate
 src/mcp/            local editorial and public read-only MCP servers
