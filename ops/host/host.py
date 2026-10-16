@@ -132,6 +132,19 @@ def check_compose_source(app, digest):
 
 WORKER_LOCK_WAIT_SECONDS = 120
 
+
+class TaskFailed(Refused):
+    pass
+
+
+@contextmanager
+def worker_task(name):
+    try:
+        yield
+    except Refused as error:
+        raise TaskFailed(f"{name}: {error}") from None
+
+
 # Worker tasks that read one bounded JSON payload from stdin.
 STDIN_TASKS = ("src/save-enrichment.ts", "src/save-deadline-verification.ts")
 
@@ -796,15 +809,16 @@ class Host:
         }
         if name == "backup-mirror":
             extra_env.update(mirror_environment(self.config))
-        self.runner.execute(
-            ["/usr/bin/bash", WORKER_SCRIPTS[name]],
-            BASES["probono"] / "app/apps/probono",
-            identity="l0cka",
-            timeout=1800,
-            limit=16_000_000,
-            pass_fds=lockfds,
-            extra_env=extra_env,
-        )
+        with worker_task(name):
+            self.runner.execute(
+                ["/usr/bin/bash", WORKER_SCRIPTS[name]],
+                BASES["probono"] / "app/apps/probono",
+                identity="l0cka",
+                timeout=1800,
+                limit=16_000_000,
+                pass_fds=lockfds,
+                extra_env=extra_env,
+            )
         # Do not return or journal worker output, which can contain article data.
 
     def worker_compose(self, args, lockfds, stdin_data=None):
@@ -816,15 +830,16 @@ class Host:
         if stdin_data is not None and not any(saver in allowed for saver in STDIN_TASKS):
             raise Refused("unexpected worker stdin")
         app = BASES["probono"] / "app/apps/probono"
-        return self.runner.execute(
-            self.compose_argv(app, "active") + allowed,
-            app,
-            identity="l0cka",
-            timeout=1200,
-            limit=134217728 if backup else 4_000_000,
-            pass_fds=lockfds,
-            stdin_data=stdin_data,
-        )
+        with worker_task(allowed[3] if backup else allowed[7]):
+            return self.runner.execute(
+                self.compose_argv(app, "active") + allowed,
+                app,
+                identity="l0cka",
+                timeout=1200,
+                limit=134217728 if backup else 4_000_000,
+                pass_fds=lockfds,
+                stdin_data=stdin_data,
+            )
 
     def compose_argv(self, app, selection):
         if selection not in ("active", "candidate"):
@@ -950,7 +965,7 @@ class Runner:
                             output.extend(data)
                 result = process.wait(timeout=max(0.01, deadline - time.monotonic()))
             if result:
-                raise Refused("command failed")
+                raise Refused(f"command exited with status {result}")
             return output.decode("utf-8", errors="strict")
         except Refused:
             raise

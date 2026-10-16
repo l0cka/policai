@@ -7,6 +7,7 @@ import os
 import re
 import stat
 import sys
+import syslog
 from pathlib import Path
 
 
@@ -75,6 +76,23 @@ def trusted_entrypoint():
         ):
             raise RuntimeError("unsafe installed adapter")
     sys.path.insert(0, str(here.parent))
+
+
+def failure_line(error):
+    import host
+
+    if isinstance(error, host.TaskFailed):
+        return f"Failed: worker task {error}; guards passed. No automatic retry."
+    reason = str(error) if isinstance(error, host.Refused) else "unexpected " + type(error).__name__
+    return f"Refused: {reason}. Inspect status and reviewed prerequisites; no automatic retry."
+
+
+def report(command, error):
+    line = failure_line(error)
+    print(line, file=sys.stderr)
+    if command == "compose":
+        syslog.openlog("policai-host-compose")
+        syslog.syslog(syslog.LOG_ERR, line)
 
 
 def main():
@@ -190,18 +208,14 @@ def main():
                 output = host.worker_compose(command, fds, payload)
             sys.stdout.write(output)
         return 0
-    except (RuntimeError, OSError, ValueError, KeyError, TypeError):
-        # Never print arbitrary command output, exception details, config or env.
+    except (RuntimeError, OSError, ValueError, KeyError, TypeError) as error:
         if Path(__file__).resolve() != Path("/usr/local/libexec/policai-host/cli.py"):
             print(
                 "Refused: use installed root-owned entrypoint; this artifact is uninstalled.",
                 file=sys.stderr,
             )
         else:
-            print(
-                "Refused: guarded operation failed. Inspect status and reviewed prerequisites; no automatic retry.",
-                file=sys.stderr,
-            )
+            report(args.command, error)
         return 1
 
 
