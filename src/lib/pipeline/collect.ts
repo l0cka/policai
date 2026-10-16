@@ -43,6 +43,7 @@ import {
   canonicalizeSourceUrl,
   isAllowedSourceHost,
   parseSourceUrl,
+  sourceIdentityUrls,
   sourceUrlIdentity,
   sourceUrlsEqual,
 } from '@/lib/source-url';
@@ -378,7 +379,7 @@ function recoverPersistedDocumentTransitions(
     if (!sourceId) continue;
     const candidate: Candidate = {
       title: review.title,
-      url: review.sourceUrl,
+      url: review.linkedDevelopment?.url ?? review.sourceUrl,
       text: review.analysis.summary,
       changeFingerprint: `${contentHash}:${changeCount}`,
     };
@@ -461,6 +462,18 @@ function recoverPersistedDocumentTransitions(
       state.lastCheckedBySource[sourceId] = recoveredCheckedAt;
     }
   }
+}
+
+function recordsByIdentityUrl<
+  T extends { sourceUrl: string; verification: { source: SourceEvidence } },
+>(records: readonly T[]): Map<string, T> {
+  return new Map(
+    records.flatMap((record) =>
+      sourceIdentityUrls(record.sourceUrl, record.verification.source).map(
+        (url) => [url, record] as const,
+      ),
+    ),
+  );
 }
 
 function supersedeOlderDocumentCandidates(
@@ -701,7 +714,7 @@ function buildReviewCandidate(
 
   return {
     id: `source-review-${development.id}`,
-    sourceUrl: candidate.url,
+    sourceUrl: existingPolicy?.sourceUrl ?? candidate.url,
     title: candidate.title,
     entryKind: 'policy',
     targetPolicyId: existingPolicy?.id,
@@ -873,7 +886,7 @@ function buildChangedTimelineDocumentReview(
     development,
     review: {
       id: `source-review-${development.id}`,
-      sourceUrl: candidate.url,
+      sourceUrl: event.sourceUrl,
       title: candidate.title,
       entryKind: 'timeline_event',
       targetTimelineEventId: event.id,
@@ -1120,11 +1133,19 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     options.sourceReviews ?? [],
     catalogSources,
   );
+  const trackedPoliciesByUrl = recordsByIdentityUrl(
+    options.trackedPolicies ?? [],
+  );
+  const trackedTimelineEventsByUrl = recordsByIdentityUrl(
+    options.trackedTimelineEvents ?? [],
+  );
   const knownPublishedUrls = new Set([
     ...options.existingDevelopments.map((development) =>
       sourceUrlIdentity(development.url),
     ),
     ...(options.trackedUrls ?? []).map(sourceUrlIdentity),
+    ...trackedPoliciesByUrl.keys(),
+    ...trackedTimelineEventsByUrl.keys(),
   ]);
   const knownHeadlineKeys = new Set(
     options.existingDevelopments
@@ -1136,18 +1157,6 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         ),
       )
       .filter((value): value is string => Boolean(value)),
-  );
-  const trackedPoliciesByUrl = new Map(
-    (options.trackedPolicies ?? []).map((policy) => [
-      sourceUrlIdentity(policy.sourceUrl),
-      policy,
-    ]),
-  );
-  const trackedTimelineEventsByUrl = new Map(
-    (options.trackedTimelineEvents ?? []).map((event) => [
-      sourceUrlIdentity(event.sourceUrl),
-      event,
-    ]),
   );
   const existingDevelopmentsById = new Map(
     options.existingDevelopments.map((development) => [
