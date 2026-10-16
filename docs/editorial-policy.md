@@ -131,39 +131,64 @@ otherwise spend a paragraph on. Use one when it helps the reader understand:
   from register data.
 
 Do not add a figure as decoration, or one that repeats the sentence above
-it. A piece needs no figure when the text is already short and clear.
+it. A piece needs no figure when the text is already short and clear. A
+figure replaces the paragraph or list it summarises. The text around it
+states the conclusion in one sentence, and a section that is only a figure
+keeps its heading.
 
-Every figure has:
+### Writing a figure
 
-- a caption that says what the figure shows;
-- alt text that states the figure's point, not only its type ("Timeline
-  showing consultation closing before commencement" rather than "A
-  timeline"), and does not repeat the caption;
-- the sources it is drawn from. A figure drawn from register data names the
-  records it uses.
+A figure is a fenced `figure` block in the piece's Markdown. It has a `kind`
+(`timeline`, `matrix`, `flow` or `chart`), a `title`, `alt` text and a
+`caption`. The authoring format and its limits are in the Articles section of
+the repository's `AGENTS.md`.
 
-A figure follows the same citation rule as text. Each claim in it cites a
-public, currently verified register record or an official source, and each
-register record and official URL it uses appears in the frontmatter `cites`
-and `sources`. A figure never adds a number the sources do not state, and
-a figure's analysis is marked as analysis like any other.
+- **Title:** at most 100 characters, and it states the point.
+- **Alt text:** one plain sentence of at least 20 characters that states the
+  point, not only the type ("Timeline showing consultation closing before
+  commencement" rather than "A timeline"). For a comparison or chart, it
+  names the standout values. It does not repeat the caption.
+- **Caption:** says what the reader is looking at and the date of the data.
+- **Limits:** a timeline has 2 to 7 entries and an `asAt` date. A comparison
+  has 2 to 9 rows and 2 to 5 columns, with `~` for "Not stated". A process
+  has 3 to 6 steps and at most one branch, taken from a decision step. A
+  chart has 3 to 10 bars.
 
-A chart drawn from register data counts the live public register, so its
-numbers change as the register does. It cites the register as a whole
-("Policai register, N public records, as at <date>"), not a list of records.
-The prose must not restate the chart's exact numbers, so the text cannot go
-stale as the counts change. Say what the chart shows ("most records are
-federal") and leave the figures to the chart. The Writer and the Editorial
-Manager check this.
+### Citing a figure
 
-Figure support is not built yet
-([#270](https://github.com/l0cka/policai/issues/270)). Until it is on
-`main`, each sentence in this section that names the platform or validation
-states a requirement the platform must meet: it must render figures from the
-article Markdown, reject a figure with no caption or alt text, apply the
-citation rule to a figure's records, count the public register live for a
-register chart and show the register-wide citation, and show the "Source
-under review" banner when a record a figure uses becomes withheld or stale.
+A figure follows the same citation rule as text, except for a register chart
+(below). Each claim in it cites a public, currently verified register record
+or an official source. Every record a timeline, comparison or process figure
+cites, and every source it uses, must also be listed in the piece's `cites`
+and `sources`. A figure never adds a number or date its sources do not
+state, and a figure's analysis is marked as analysis like any other.
+
+The platform checks a figure like the text. Validation rejects a figure with
+no title, alt text or caption, an unknown kind, a count outside the limits
+above, and a cited record or source missing from the piece's lists. A figure
+citation is also covered by the added-citation rule and the "Source under
+review" banner.
+
+### Register charts
+
+A chart counts the public register when the page renders, so withheld,
+unverified and trashed records are never counted, and its numbers change as
+the register does. It cites the register as a whole ("Policai register, N
+public records, as at <date>"), not a list of records. It makes no claim
+about any one record's content, so a record that is past its review date is
+counted without raising an error or the banner.
+
+The prose must not restate the chart's numbers, so the text cannot go stale
+as the counts change. Say what the chart shows ("most records are federal")
+and leave the figures to the chart. The Writer and the Editorial Manager check
+this.
+
+The as-at date is the most recent `updatedAt` across all register records.
+This rule is planned: the platform currently shows the collection date the
+page was built from, and the change is tracked in
+[#282](https://github.com/l0cka/policai/issues/282). Until it lands, a chart's
+date can be earlier than the latest register change, so do not write a date
+in the prose or caption that depends on it.
 
 ## Citations
 
