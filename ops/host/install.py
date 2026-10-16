@@ -24,7 +24,15 @@ from pathlib import Path
 REVIEW = Path("/usr/local/libexec/policai-host-review")
 STATE = Path("/var/lib/policai-deploy-state")
 JOURNAL = STATE / "installation"
+CONFIG = Path("/etc/policai-deploy/config.json")
 USER_UNITS = Path("/home/l0cka/.config/systemd/user")
+MIRROR_BLOCK = {
+    "backup_mirror": {
+        "source": "/home/l0cka/Backups/probono-radar",
+        "mount": "/mnt/argus-ssd",
+        "destination": "/mnt/argus-ssd/home/l0cka/backups/probono-radar",
+    }
+}
 FILES = {
     **{
         name: (
@@ -466,7 +474,8 @@ class Upgrade(FileTransaction):
 
 
 def command(argv, user=False):
-    if user:
+    env = {"PATH": "/usr/bin:/bin", "LANG": "C.UTF-8"}
+    if user and os.geteuid() == 0:
         account = pwd.getpwnam("l0cka")
         argv = [
             "/usr/bin/runuser",
@@ -480,12 +489,17 @@ def command(argv, user=False):
             f"XDG_RUNTIME_DIR=/run/user/{account.pw_uid}",
             *argv,
         ]
+    elif user:
+        account = pwd.getpwuid(os.geteuid())
+        if account.pw_name != "l0cka":
+            raise Refused("user preflight runs as l0cka or root")
+        env.update(HOME="/home/l0cka", XDG_RUNTIME_DIR=f"/run/user/{account.pw_uid}")
     result = subprocess.run(
         argv,
         capture_output=True,
         text=True,
         timeout=30,
-        env={"PATH": "/usr/bin:/bin", "LANG": "C.UTF-8"},
+        env=env,
         check=False,
     )
     if result.returncode:
@@ -604,8 +618,46 @@ def dispatcher_ready(state=STATE, check=protected):
     if info.st_size > 65536:
         raise Refused("active record oversized")
     record = json.loads(data)
-    if not isinstance(record, dict) or record.get("bootstrap_pending") is not False:
+    if not isinstance(record, dict) or not {"target", "heads"} <= record.keys():
+        raise Refused("dispatcher not activated; active.json lacks target and heads")
+    if record.get("bootstrap_pending", False) is not False:
         raise Refused("dispatcher activation incomplete")
+
+
+def config_ready(config=CONFIG, check=protected):
+    if not os.path.lexists(config):
+        raise Refused(f"{config} missing")
+    check(config)
+    info, data = read_regular(config)
+    if info.st_size > 65536:
+        raise Refused("config oversized")
+    try:
+        record = json.loads(data)
+    except ValueError:
+        raise Refused("config is not valid JSON") from None
+    if not isinstance(record, dict):
+        raise Refused("config is not a JSON object")
+    if "backup_mirror" not in record:
+        block = "\n".join(json.dumps(MIRROR_BLOCK, indent=2).splitlines()[1:-1])
+        raise Refused(f"{config} has no backup_mirror block; add at the top level:\n{block}")
+    paths = record["backup_mirror"]
+    if not isinstance(paths, dict):
+        raise Refused("backup_mirror is not an object")
+    for key in ("source", "mount", "destination"):
+        value = paths.get(key)
+        if (
+            not isinstance(value, str)
+            or not value.startswith("/")
+            or os.path.normpath(value) != value
+        ):
+            raise Refused(f"backup_mirror {key} is not a normalised absolute path")
+    mount = Path(paths["mount"])
+    if (
+        mount == Path("/")
+        or mount not in Path(paths["destination"]).parents
+        or mount in Path(paths["source"]).parents
+    ):
+        raise Refused("backup_mirror destination must sit beneath a separate mount")
 
 
 def install_entries():
@@ -616,6 +668,48 @@ def install_entries():
     return entries
 
 
+def plan(review, state=STATE, config=CONFIG, entries=None, check=protected):
+    items = Upgrade(review, None, entries or install_entries(), check).plan()
+
+    def manifest():
+        data = (review / "MANIFEST.sha256").read_bytes()
+        verify_manifest(digest(data), review, check)
+        return f"MANIFEST.sha256 {digest(data)}"
+
+    gates = (
+        ("1 protected snapshot as root", None),
+        ("2 reviewed manifest", manifest),
+        ("3 deployment lock", None),
+        ("4 held triggers", held),
+        ("5 dispatcher ready", lambda: dispatcher_ready(state, check)),
+        ("6 config backup_mirror", lambda: config_ready(config, check)),
+    )
+    results = []
+    for label, gate in gates:
+        if gate is None:
+            results.append((label, "not evaluated by plan"))
+            continue
+        try:
+            note = gate()
+            results.append((label, "pass" if note is None else f"pass ({note})"))
+        except Refused as refusal:
+            results.append((label, f"refused: {refusal}"))
+        except (OSError, ValueError, KeyError, subprocess.SubprocessError) as error:
+            results.append((label, f"not evaluated: {type(error).__name__}"))
+    return items, results
+
+
+def render_gates(results):
+    lines = ["gates:"] + [f"  {label}: {outcome}" for label, outcome in results]
+    refused = sum(outcome.startswith("refused") for _, outcome in results)
+    lines.append(
+        f"apply would refuse: {refused} evaluated gate(s) refuse."
+        if refused
+        else "every evaluated gate passes; apply still evaluates gates 1, 3 and 7 itself."
+    )
+    return "\n".join(lines)
+
+
 def upgrade(
     step,
     manifest_sha256,
@@ -624,6 +718,7 @@ def upgrade(
     entries=None,
     check=protected,
     expect_installed=None,
+    config=CONFIG,
 ):
     reviewed = verify_manifest(manifest_sha256, review, check)
     transaction = Upgrade(
@@ -633,6 +728,7 @@ def upgrade(
         held()
         if step == "apply":
             dispatcher_ready(state, check)
+            config_ready(config, check)
             transaction.apply(expect_installed)
         else:
             transaction.rollback()
@@ -675,9 +771,10 @@ def main():
                 if reviewed or not path.is_relative_to(source):
                     protected(path, owner, directory)
 
-            items = Upgrade(source, None, install_entries(), preview).plan()
+            items, results = plan(source, STATE, CONFIG, install_entries(), preview)
             print(render_plan(items, STATE / "upgrades" / "<manifest-sha256>"))
-            return 0
+            print(render_gates(results))
+            return int(any(outcome.startswith("refused") for _, outcome in results))
         if not reviewed or os.geteuid() != 0:
             raise Refused("use protected review snapshot as root")
         protected(Path(__file__))

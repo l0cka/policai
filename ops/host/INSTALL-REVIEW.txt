@@ -259,3 +259,11 @@ Executable file installation (new candidate; not executed on the host)
   Once dispatcher initialize has written state, this installer refuses rollback.
   Follow the guarded application recovery path and the separately reviewed installation
   recovery procedure; never restore the legacy helper to bypass a persistent gate.
+
+  Later file changes go through install.py upgrade (README.txt, UPGRADE CONTRACT).
+  Its apply adds two gates to the ones above: the dispatcher record must show a
+  completed activation (active.json with target and heads, bootstrap_pending absent
+  or false) and /etc/policai-deploy/config.json must already carry a valid
+  backup_mirror block. upgrade plan evaluates both without root and prints the block
+  to add when it is missing; add it before the window, keep a copy of the previous
+  config, and update installed_hashes only after apply (restore both on rollback).

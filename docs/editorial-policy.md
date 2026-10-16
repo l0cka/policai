@@ -40,8 +40,10 @@ policy officer, a compliance lead, a procurement manager or a researcher.
 ## Formats
 
 Each piece sets `type` in its frontmatter to one of the three formats below.
-Lengths count body words only, without frontmatter or the standard notices.
-A piece outside its range needs a reason in the pull request.
+Lengths count body words only. They exclude frontmatter, the standard
+notices, captions and any figure or table that replaces prose. A piece
+outside its range needs a reason in the pull request. Shorter is better:
+the limits are ceilings, not targets.
 
 ### Weekly briefing (`weekly_briefing`)
 
@@ -52,14 +54,15 @@ what falls due next.
   the first paragraph ("the seven days to 14 October 2026"). If `/this-week`
   warns that the window is stale or coverage is unavailable, say so. Never
   describe an empty window as a quiet week.
-- **Length:** 400 to 800 words.
+- **Length:** 250 to 450 words.
 - **Structure:**
   1. A two- or three-sentence lead that states, as fact, the verified change
      the briefing opens with. Why it matters goes in `## Why it matters`.
   2. `## What changed`: each verified development or register change, one
-     short paragraph each, with its citation.
+     or two sentences each, with its citation.
   3. `## Coming up`: deadlines and commencements from the `/this-week`
-     "Coming up" list, with their recorded precision.
+     "Coming up" list, with their recorded precision. Use a short table when
+     there are three or more dates.
   4. `## Why it matters`: analysis, marked as such (see
      [Fact and analysis](#fact-and-analysis)).
   5. Optional `## Detected, not yet verified`: automated leads, worded as
@@ -75,7 +78,7 @@ or materially changes.
 - **Trigger:** a new verified register record, or a published source review
   that changes a record's status, dates or substance. A refreshed fingerprint
   with no change in substance does not justify a note.
-- **Length:** 500 to 900 words.
+- **Length:** 300 to 550 words.
 - **Structure:**
   1. A lead: what the instrument is, who issued it, and what happened.
   2. `## What it says`: the instrument's scope, obligations and dates, each
@@ -93,14 +96,74 @@ or materially changes.
 An evergreen guide to a topic, such as how a type of instrument works or how
 the jurisdictions compare.
 
-- **Length:** 1,200 to 2,500 words.
+- **Length:** 700 to 1,300 words.
 - **Structure:** a lead that states the question the piece answers, then `##`
-  sections that each answer one sub-question. End with `## Where to follow
-  this`, which links to the relevant register views.
+  sections that each answer one sub-question. Use a comparison table or
+  matrix where the reader compares jurisdictions or instruments. End with
+  `## Where to follow this`, which links to the relevant register views.
 - **Upkeep:** an explainer is revised when a record it cites changes. Each
   revision updates `updatedAt`. A revision that changes a factual claim also
   adds a correction or update note (see
   [Corrections, updates and withdrawals](#corrections-updates-and-withdrawals)).
+
+## Tightness
+
+Readers act on these pieces, so they should reach the point at once.
+
+- Open with the point in one or two sentences. Do not warm up to it.
+- Do not restate the summary or the title in the body.
+- One idea per paragraph. Cut a paragraph that repeats another.
+- Cut hedges and throat-clearing ("it is worth noting", "in order to").
+- Prefer a list or table where the reader compares items, and a figure
+  where a paragraph would walk through a sequence.
+- Keep a sentence only if it states a sourced fact, marked analysis, or a
+  date the reader needs.
+
+## Figures
+
+A figure is a diagram, table or chart that carries content the text would
+otherwise spend a paragraph on. Use one when it helps the reader understand:
+
+- **Sequence:** a timeline of an instrument's stages or key dates.
+- **Comparison:** a table or matrix across jurisdictions or instruments.
+- **Process:** a flow of who must do what, in what order.
+- **Distribution:** a chart of counts by jurisdiction, type or status, drawn
+  from register data.
+
+Do not add a figure as decoration, or one that repeats the sentence above
+it. A piece needs no figure when the text is already short and clear.
+
+Every figure has:
+
+- a caption that says what the figure shows;
+- alt text that states the figure's point, not only its type ("Timeline
+  showing consultation closing before commencement" rather than "A
+  timeline"), and does not repeat the caption;
+- the sources it is drawn from. A figure drawn from register data names the
+  records it uses.
+
+A figure follows the same citation rule as text. Each claim in it cites a
+public, currently verified register record or an official source, and each
+register record and official URL it uses appears in the frontmatter `cites`
+and `sources`. A figure never adds a number the sources do not state, and
+a figure's analysis is marked as analysis like any other.
+
+A chart drawn from register data counts the live public register, so its
+numbers change as the register does. It cites the register as a whole
+("Policai register, N public records, as at <date>"), not a list of records.
+The prose must not restate the chart's exact numbers, so the text cannot go
+stale as the counts change. Say what the chart shows ("most records are
+federal") and leave the figures to the chart. The Writer and the Editorial
+Manager check this.
+
+Figure support is not built yet
+([#270](https://github.com/l0cka/policai/issues/270)). Until it is on
+`main`, each sentence in this section that names the platform or validation
+states a requirement the platform must meet: it must render figures from the
+article Markdown, reject a figure with no caption or alt text, apply the
+citation rule to a figure's records, count the public register live for a
+register chart and show the register-wide citation, and show the "Source
+under review" banner when a record a figure uses becomes withheld or stale.
 
 ## Citations
 

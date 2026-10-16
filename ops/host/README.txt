@@ -24,10 +24,12 @@ WHAT EXISTS
   preflight, original-file backups and repeatable pre-initialization rollback.
   upgrade (plan/apply/rollback) replaces only the entries whose bytes, mode or
   owner differ from the reviewed snapshot, under the same manifest and held-job
-  gates plus a healthy-dispatcher gate and a digest that binds apply to the
-  installed tree the plan reviewed; see UPGRADE CONTRACT. Neither mode
-  provisions release clones, environment, config, state directories or locks,
-  reloads managers, starts jobs, or activates runtimes.
+  gates plus a healthy-dispatcher gate, a config gate and a digest that binds
+  apply to the installed tree the plan reviewed; see UPGRADE CONTRACT. Neither
+  mode provisions release clones, environment, config, state directories or
+  locks, reloads managers, starts jobs, or activates runtimes. Config stays
+  operator-owned: the installer reads /etc/policai-deploy/config.json to gate
+  apply and never writes it.
   units/probono-*.service: guarded worker entrypoints; existing timers remain separate.
   dispatcher.py: table-driven lane routing (ROUTES), stable flock exclusion,
   fsynced journals, retained-directory activation and rollback, persistent failure
@@ -107,6 +109,23 @@ UPGRADE CONTRACT — ONLY IN A HOST WINDOW DANIEL APPROVES THROUGH ARGUS DEVOPS
   absent) set it read. Record that digest with the approval. Running plan as
   root is refused outside the protected snapshot.
 
+  plan then evaluates the apply gates it can reach without root and prints one
+  line per gate, so a plan whose evaluated gates all pass means apply passes
+  the same gates:
+    gates 2, 4, 5 and 6 are evaluated (pass, refused: <reason>, or not
+      evaluated: <error> when a file could not be read). Gate 2 reports the
+      checkout's MANIFEST.sha256 digest, which is the --manifest-sha256 value
+      once that exact tree is staged. Gate 4 runs systemctl, docker ps and ps
+      read-only, directly as l0cka (as root it drops to l0cka through runuser),
+      so plan refuses user preflight under any other account.
+    gates 1 and 3 are never evaluated by plan: it does not run from the snapshot
+      and it never takes deploy.lock, because holding the lock would make a
+      concurrent deploy or worker refuse. Gate 7 is the digest plan prints.
+  plan exits 0 when every evaluated gate passes and 1 when one refuses; the file
+  plan is printed either way. Gate 4 refuses until the triggers are held, so
+  run plan once before the window for review and again after holding the
+  triggers, immediately before apply.
+
   Stage the snapshot exactly as INSTALL-REVIEW.txt describes for first install:
   export the reviewed commit's ops/host tree, record its MANIFEST.sha256 digest in
   the approval record, and place it root-owned under
@@ -134,13 +153,50 @@ UPGRADE CONTRACT — ONLY IN A HOST WINDOW DANIEL APPROVES THROUGH ARGUS DEVOPS
     4. held(): policai-pull and every probono service and timer (ingest, enrich,
        backup, backup-mirror, verify-deadlines) inactive with no drop-ins, both
        digest units masked, no legacy worker container or process;
-    5. dispatcher_ready(): no blocked.json, and active.json present with
-       bootstrap_pending exactly false (a missing key refuses). recovery.json
-       and last-success.json are not read;
-    6. the live tree matches --expect-installed when given, and every entry,
+    5. dispatcher_ready(): no blocked.json, and active.json present as a JSON
+       object with target and heads (the record the dispatcher writes after a
+       completed activation) whose bootstrap_pending is absent or exactly
+       false. The dispatcher omits the key when it is false and cli.py status
+       reads it with a false default, so a missing key passes; true, any
+       non-boolean value, or a record without target and heads (such as {})
+       refuses. recovery.json and last-success.json are not read;
+    6. config_ready(): /etc/policai-deploy/config.json is a readable JSON
+       object whose backup_mirror block passes the same rules as host.py
+       mirror_environment (source, mount and destination are normalised
+       absolute paths; mount is not /, contains destination and does not
+       contain source). A missing block is reported with the exact block to
+       add; every other refusal names only the failing key, and no other
+       config content is ever printed. Rollback does not need this gate;
+    7. the live tree matches --expect-installed when given, and every entry,
        unchanged ones included, is at its before or after state.
   Only then does apply create the journal directory and save journal.json, so a
   refused apply or re-apply leaves no journal and no applying phase behind.
+
+  Config step for the 2026-10-16 change set. The new host.py reads the root
+  config key backup_mirror for cli.py worker backup-mirror, and the live config
+  predates it. Add this block to /etc/policai-deploy/config.json (root 0644,
+  paths from the ~/.local/bin/probono-backup-mirror.sh it replaces) before
+  apply; plan prints it verbatim while it is missing:
+    "backup_mirror": {
+      "source": "/home/l0cka/Backups/probono-radar",
+      "mount": "/mnt/argus-ssd",
+      "destination": "/mnt/argus-ssd/home/l0cka/backups/probono-radar"
+    }
+  The block is inert for the installed code, which reads only the keys it
+  knows, so it can be added any time before the window, and leaving it in
+  place after a rollback breaks nothing. installed_hashes is different: the
+  installed host.py preflight refuses an installed_hashes path it does not
+  know, so the new entries (backup-mirror.sh and the backup-mirror unit) and
+  the changed digests go in after apply and come out again on rollback, with
+  the triggers held throughout. Workers never read installed_hashes, so the
+  nightly mirror needs only the block, the new unit and a daemon-reload.
+  Decision: the installer gates on the block and never writes config (the
+  issue's option a). The alternative, apply adding the block through the file
+  transaction, was rejected because config.json is operator-owned and outside
+  the reviewed snapshot (its after bytes could not be bound to the manifest),
+  re-serialising it would rewrite every other key in a file that holds host
+  settings and the recovery authorisation, and it would not have made the
+  window safe on its own, since installed_hashes still needs the operator.
 
   Journal: /var/lib/policai-deploy-state/upgrades/<manifest-sha256>/ (root 0700),
   separate from the first-install journal at .../installation. journal.json holds
@@ -175,20 +231,23 @@ UPGRADE CONTRACT — ONLY IN A HOST WINDOW DANIEL APPROVES THROUGH ARGUS DEVOPS
   restoring that one file is the whole repair. A crash at any point followed
   by a rerun of apply, or a rollback, converges; a second rollback changes
   nothing. Unchanged entries are never written. Rollback requires gates 1 to 4
-  but not 5, so it stays available when the new code blocked the dispatcher. It
+  but not 5 or 6, so it stays available when the new code blocked the
+  dispatcher or the config is wrong. It
   is the file-level counterpart of, and never a substitute for, cli.py rollback
   (release artifacts and images). Re-applying the same snapshot after its
   rollback is allowed and reuses the journal.
 
   apply and rollback install files only. They never touch active.json,
-  blocked.json, last-success.json, recovery.json, release clones, Docker,
-  the database, runtime.env or timers, and they do not daemon-reload. After
-  apply: inspect installed hashes and effective units, update installed_hashes
-  in /etc/policai-deploy/config.json for every changed or added entrypoint
-  (the 2026-10-16 change set adds backup-mirror.sh, which the new host.py
-  checks), reload the system and user managers, verify effective ExecStart
-  values, then restore timers (INSTALL-REVIEW.txt step 4). That change set also
-  moves probono-backup-mirror.service from ~/.local/bin/probono-backup-mirror.sh
+  blocked.json, last-success.json, recovery.json, config.json, release clones,
+  Docker, the database, runtime.env or timers, and they do not daemon-reload.
+  After apply: inspect installed hashes and effective units, update
+  installed_hashes in /etc/policai-deploy/config.json for every changed or
+  added entrypoint (the 2026-10-16 change set adds backup-mirror.sh and the
+  backup-mirror unit, which the new host.py preflight requires), reload the
+  system and user managers, verify effective ExecStart values, then restore
+  timers (INSTALL-REVIEW.txt step 4). Keep a copy of the previous config.json
+  and restore it after a rollback. That change set also moves
+  probono-backup-mirror.service from ~/.local/bin/probono-backup-mirror.sh
   onto cli.py worker backup-mirror; the old script is left in place and its
   removal is an operator act.
 
@@ -303,8 +362,9 @@ LIMITATIONS / REMAINING CUTOVER GATES
   database cutover. First-install rollback is refused after dispatcher initialization;
   from that point file changes go through upgrade and its own rollback, and
   release recovery through the separately reviewed application recovery procedure.
-  Gates 3 to 5 of the upgrade contract are tested with recorded systemctl output
-  and fixture state files, not against live systemd or the installed tree.
+  Gates 4 to 6 of the upgrade contract are tested with recorded systemctl output
+  and fixture state and config files built from the live key shapes, not
+  against live systemd, the installed tree or the live config.
   Offline tests exercise real processes, locks, filesystem swaps, CLI refusal and
   Compose config parsing against isolated fixtures. Git/Docker/systemd mutations
   are command-recording/failure fixtures, NOT a live full-stack rehearsal.
