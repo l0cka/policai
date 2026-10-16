@@ -1,4 +1,6 @@
+import Image from 'next/image';
 import Link from 'next/link';
+import { articleLicenceLabel } from '@/lib/article-licences';
 import {
   ARTICLE_BYLINE,
   ARTICLE_DISCLOSURE,
@@ -7,7 +9,7 @@ import {
 } from '@/lib/articles';
 import { formatPolicyDate } from '@/lib/format-policy-date';
 import type { ArticleCitation } from '@/lib/data-service';
-import { ARTICLE_TYPE_NAMES, type ArticleType } from '@/types';
+import { ARTICLE_TYPE_NAMES, type ArticleImage, type ArticleType } from '@/types';
 
 export function formatArticleDate(date: string): string {
   return formatPolicyDate({ type: 'published', date, precision: 'day' });
@@ -88,5 +90,65 @@ export function CitedRecords({ citations }: { citations: ArticleCitation[] }) {
         </li>
       ))}
     </ul>
+  );
+}
+
+const EXTERNAL_LINK = 'text-primary underline underline-offset-4 hover:no-underline';
+
+function ExternalLink({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" className={EXTERNAL_LINK}>
+      {children}
+    </a>
+  );
+}
+
+export function ArticleImageAttribution({ image }: { image: ArticleImage }) {
+  return (
+    <>
+      <ExternalLink href={image.sourceUrl}>{image.title}</ExternalLink> by{' '}
+      {image.creatorUrl ? (
+        <ExternalLink href={image.creatorUrl}>{image.creator}</ExternalLink>
+      ) : (
+        image.creator
+      )}
+      , licensed under{' '}
+      <ExternalLink href={image.licenceUrl}>{articleLicenceLabel(image.licence)}</ExternalLink>
+      {image.modifications ? <>. Modified: {image.modifications}</> : null}.
+    </>
+  );
+}
+
+export function ArticleLeadImage({ image }: { image: ArticleImage }) {
+  return (
+    <figure className="mt-6">
+      <Image
+        src={image.src}
+        alt={image.alt}
+        width={image.width}
+        height={image.height}
+        sizes="(min-width: 768px) 768px, 100vw"
+        priority
+        className="h-auto w-full rounded-md"
+      />
+      <figcaption className="mt-2 text-xs leading-5 text-muted-foreground">
+        <ArticleImageAttribution image={image} />
+      </figcaption>
+    </figure>
+  );
+}
+
+export function ArticleThumbnail({ image }: { image: ArticleImage }) {
+  return (
+    <div className="aspect-[3/2] w-full max-w-64 overflow-hidden rounded-md sm:w-40">
+      <Image
+        src={image.src}
+        alt={image.alt}
+        width={image.width}
+        height={image.height}
+        sizes="(min-width: 640px) 160px, 256px"
+        className="h-full w-full object-cover"
+      />
+    </div>
   );
 }
