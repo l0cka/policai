@@ -430,10 +430,9 @@ function stableHashContent(
         )
         .digest('hex');
     return {
-      contentHash: hashWith(
-        FINGERPRINT_METADATA_KEYS,
-        detectDateMetaPlatform($) === 'govcms' ? ['date-platform:govcms'] : [],
-      ),
+      contentHash: hashWith(FINGERPRINT_METADATA_KEYS, [
+        `date-platform:${detectDateMetaPlatform($)}`,
+      ]),
       legacyContentHash: hashWith(LEGACY_FINGERPRINT_METADATA_KEYS, []),
     };
   }

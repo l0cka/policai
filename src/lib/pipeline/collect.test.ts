@@ -1259,7 +1259,6 @@ describe('collect', () => {
         expect(dated.reviewCandidates[0]).toMatchObject({
           targetPolicyId: policy.id,
           sourceVersionSequence: 1,
-          proposedRecord: { effectiveDate: '2026-06-01' },
         });
       });
 

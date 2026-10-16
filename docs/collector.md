@@ -123,8 +123,9 @@ has no publication date. Modified-time keys
 whatever the machine's time zone.
 
 HTML fingerprints include every publication-date metadata field used by
-extraction, the date platform (a `date-platform:govcms` entry, not the raw
-generator string, so a Drupal version bump does not read as a change), the
+extraction, the date platform (a `date-platform:govcms` or
+`date-platform:generic` entry, not the raw generator string, so a Drupal
+version bump does not read as a change), the
 modified-time keys `dcterms.modified` and `article:modified_time`
 (`og:updated_time` is neither read nor fingerprinted), `dc.date`, `og:title`,
 `citation_title`, `citation_publication_date`, `time[datetime]` values,
@@ -140,12 +141,25 @@ memory only), and `matchesRetrievedContent` in `src/lib/pipeline/fetch.ts` is
 the one comparison of a fresh retrieval with a stored hash. It accepts either
 fingerprint and is used for watch-state snapshots, verified policy and
 timeline hashes, staged transitions and their pending candidates, the
-change-reason label, the register audit, and the re-staging, approval and
-publication gates. Stored-to-stored comparisons (two staged reviews of one
-transition, the DTA artifact or a court requirement against its policy) compare
-hashes as before and still need both sides re-verified together. Unchanged
-content therefore never reads as changed after the key change, and no stored
-file needs a migration.
+change-reason label, the `discoveredAt` retention of a re-staged review, the
+register audit, and the re-staging, approval and publication gates. The
+current fingerprint always records the date platform and the legacy
+fingerprint never does, so no page has equal current and legacy fingerprints
+and a stored hash that matches a reading's legacy fingerprint was written
+before #195. A page that gains `dcterms.created` or a Drupal generator after
+its current fingerprint was stored therefore reads as changed; before this
+rule its new legacy fingerprint equalled the stored current one (#262).
+Stored-to-stored comparisons (two staged reviews of one transition, the DTA
+artifact or a court requirement against its policy) compare hashes as before
+and still need both sides re-verified together. `transitionForDocumentHash`
+in the pending-candidate loop compares the fresh current fingerprint with the
+latest staged transition and never accepts a legacy match: it runs only after
+that candidate failed `matchesRetrievedContent`, and the candidate it would
+reuse is either that same transition or one dismissed when a later transition
+was staged. Unchanged content therefore never reads as changed after the key
+change, and no stored file needs a migration. The first collection after the
+scheme change rewrites every HTML snapshot in `data/watch-state.json` to the
+current fingerprint without a change count or review.
 
 Legacy acceptance is gated by the watch-state snapshot. The collector writes
 the current fingerprint to the snapshot once it has processed a reading. A
@@ -154,8 +168,9 @@ snapshot has recorded) matches a reading by its legacy fingerprint only while
 the snapshot is absent, equals that stored hash, or equals this reading. A
 pending transition the snapshot has not yet recorded matches by legacy alone.
 Once the snapshot holds the current fingerprint, a later change confined to
-`dcterms.created` or the date platform no longer matches and stages a review,
-on the direct path and on the adoption path alike. A change to those fields
+`dcterms.created` or the date platform, including a field appearing on a page
+that lacked it, no longer matches and stages a review, on the direct path and
+on the adoption path alike. A change to those fields
 between the last verification and the first processed reading cannot be
 detected: the old baseline never recorded them. The register audit has no
 snapshot, so it reports such a record unchanged under a legacy match and, with
