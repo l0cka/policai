@@ -163,8 +163,9 @@ class FileTransaction:
 
     PHASES = {"preparing", "prepared", "installed", "rolled-back"}
 
-    def __init__(self, source, journal, entries, check=protected):
+    def __init__(self, source, journal, entries, check=protected, reviewed=None):
         self.source, self.journal, self.entries, self.check = source, journal, entries, check
+        self.reviewed = reviewed
         self.checkpoint = lambda phase: None
 
     def save(self, record):
@@ -185,6 +186,8 @@ class FileTransaction:
             if before is not None:
                 self.check(path, uid)
             data = (self.source / name).read_bytes()
+            if self.reviewed is not None and digest(data) != self.reviewed[name]:
+                raise Refused("reviewed source changed")
             after = {"sha256": digest(data), "mode": mode, "uid": uid, "gid": gid}
             items.append(
                 {"source": name, "destination": str(path), "before": before, "after": after}
@@ -357,40 +360,31 @@ class Upgrade(FileTransaction):
             )
         return items
 
-    def journaled(self, items):
-        if os.path.lexists(self.journal / "journal.json"):
+    def apply(self, expect_installed=None):
+        items, payloads = self.inventory()
+        journaled = os.path.lexists(self.journal / "journal.json")
+        if journaled:
             record = self.load()
             for item, saved in zip(items, record["files"], strict=True):
                 keys = ("source", "destination", "after")
                 if [saved[key] for key in keys] != [item[key] for key in keys]:
                     raise Refused("upgrade journal records a different change set")
-            return record
-        self.journal.parent.mkdir(mode=0o700, exist_ok=True)
-        self.journal.mkdir(mode=0o700, exist_ok=True)
-        self.check(self.journal, directory=True)
-        sync(self.journal.parent)
-        return {"phase": "applying", "files": items}
-
-    def apply(self, expect_installed=None):
-        items, payloads = self.inventory()
-        if expect_installed is None and not os.path.lexists(self.journal / "journal.json"):
+        elif expect_installed is None:
             raise Refused("first apply needs the reviewed plan digest")
+        else:
+            record = {"phase": "applying", "files": items}
         if expect_installed is not None and installed_digest(items) != expect_installed:
             raise Refused("installed tree differs from the reviewed plan")
-        record = self.journaled(items)
-        record["phase"] = "applying"
-        self.save(record)
-        self.checkpoint("journaled")
-        pending = [
-            index for index, item in enumerate(record["files"]) if item["before"] != item["after"]
-        ]
-        unsaved = []
-        for index in pending:
-            _, path, *_ = self.entries[index]
-            item = record["files"][index]
+        pending, unsaved = [], []
+        for index, ((_, path, *_), item) in enumerate(
+            zip(self.entries, record["files"], strict=True)
+        ):
             current = snapshot(path)
             if current not in (item["before"], item["after"]):
                 raise Refused("destination changed outside the upgrade")
+            if item["before"] == item["after"]:
+                continue
+            pending.append(index)
             if item["before"] is None:
                 continue
             if os.path.lexists(self.journal / f"{index}.before"):
@@ -399,6 +393,15 @@ class Upgrade(FileTransaction):
                 raise Refused("original bytes unavailable for backup")
             else:
                 unsaved.append(index)
+        if not journaled:
+            self.journal.parent.mkdir(mode=0o700, exist_ok=True)
+            self.journal.mkdir(mode=0o700, exist_ok=True)
+            self.check(self.journal, directory=True)
+            sync(self.journal.parent)
+            sync(self.journal.parent.parent)
+        record["phase"] = "applying"
+        self.save(record)
+        self.checkpoint("journaled")
         for index in unsaved:
             self.backup(index, record["files"][index])
         self.checkpoint("backed-up")
@@ -601,7 +604,7 @@ def dispatcher_ready(state=STATE, check=protected):
     if info.st_size > 65536:
         raise Refused("active record oversized")
     record = json.loads(data)
-    if not isinstance(record, dict) or record.get("bootstrap_pending"):
+    if not isinstance(record, dict) or record.get("bootstrap_pending") is not False:
         raise Refused("dispatcher activation incomplete")
 
 
@@ -622,9 +625,9 @@ def upgrade(
     check=protected,
     expect_installed=None,
 ):
-    verify_manifest(manifest_sha256, review, check)
+    reviewed = verify_manifest(manifest_sha256, review, check)
     transaction = Upgrade(
-        review, state / "upgrades" / manifest_sha256, entries or install_entries(), check
+        review, state / "upgrades" / manifest_sha256, entries or install_entries(), check, reviewed
     )
     with deployment_lock(state, check):
         held()
@@ -686,7 +689,7 @@ def main():
                 "reload both managers and restore timers per README.txt."
             )
             return 0
-        verify_manifest(args.manifest_sha256 or "")
+        reviewed = verify_manifest(args.manifest_sha256 or "")
         with deployment_lock():
             held()
             if any(
@@ -694,7 +697,7 @@ def main():
                 for name in ("active.json", "blocked.json", "last-success.json", "recovery.json")
             ):
                 raise Refused("dispatcher already initialised; installation rollback forbidden")
-            transaction = FileTransaction(REVIEW, JOURNAL, install_entries())
+            transaction = FileTransaction(REVIEW, JOURNAL, install_entries(), reviewed=reviewed)
             getattr(transaction, args.operation)()
         print("Installation files verified; timers remain held. No runtime activation performed.")
         return 0
