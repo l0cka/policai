@@ -23,7 +23,7 @@ The collector is the automation behind the Developments feed: it watches officia
      `data/watch-state.json`,
    - coverage health, per-source item/candidate counts, and errors →
      `public/data/meta.json`.
-4. The collector **never writes `data/policies.json`** — the register only changes through reviewed commits, and the GitHub workflow fails if a collector run touches it.
+4. The collector **never writes `data/policies.json`** — the register only changes through reviewed commits. The host wrapper `ops/collector/policai-collect.sh` fails a collection run that changes it. No GitHub workflow checks this, so a hand-made PR that edits the register is caught only by review.
 
 Non-dry-run collection holds the same cross-process data transaction lock as
 the editorial MCP workflow from its initial reads through its final atomic
@@ -134,7 +134,7 @@ When a changed direct document is already the source for a register policy, the
 collector stages a version-specific update review with `targetPolicyId`; it
 does not propose a duplicate policy. Pending and approved update reviews
 temporarily withhold that policy from public reads until an editor publishes
-the re-verified record or rejects the change review. Publishing refuses an
+the re-verified record. These reviews cannot be rejected. Publishing refuses an
 older update when a newer non-rejected source version exists, and publishing
 the newest version rejects older still-active update reviews as superseded.
 
