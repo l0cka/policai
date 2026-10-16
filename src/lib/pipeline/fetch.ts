@@ -11,6 +11,11 @@ import {
   sourceUrlsEqual,
 } from '@/lib/source-url';
 import { cleanHtmlContent } from '@/lib/utils';
+import {
+  detectDateMetaPlatform,
+  FINGERPRINT_METADATA_KEYS,
+  LEGACY_FINGERPRINT_METADATA_KEYS,
+} from './date-metadata';
 import type {
   LinkedDocumentEvidence,
   SourceEvidence,
@@ -96,7 +101,24 @@ export interface RetrievedSource {
    */
   linkedSources?: RetrievedSource[];
   evidence: SourceEvidence;
+  legacyContentHash?: string;
   durationMs: number;
+}
+
+interface ContentFingerprint {
+  contentHash: string;
+  legacyContentHash: string;
+}
+
+export function matchesRetrievedContent(
+  retrieved: Pick<RetrievedSource, 'evidence' | 'legacyContentHash'>,
+  storedHash: string | undefined,
+): boolean {
+  return (
+    storedHash !== undefined &&
+    (storedHash === retrieved.evidence.contentHash ||
+      storedHash === retrieved.legacyContentHash)
+  );
 }
 
 export interface RetrieveSourceOptions {
@@ -321,10 +343,12 @@ function stableHashContent(
   body: Buffer,
   contentType: string,
   baseUrl: string,
-): string {
-  if (documentKindFromBytes(body)) {
-    return createHash('sha256').update(body).digest('hex');
-  }
+): ContentFingerprint {
+  const byteHash = () => {
+    const contentHash = createHash('sha256').update(body).digest('hex');
+    return { contentHash, legacyContentHash: contentHash };
+  };
+  if (documentKindFromBytes(body)) return byteHash();
   if (isHtmlPayload(body, contentType)) {
     const markup = body.toString('utf8');
     const $ = load(markup);
@@ -371,50 +395,55 @@ function stableHashContent(
       });
     }
 
-    const metadata = new Set<string>();
-    const stableMetadataKeys = new Set([
-      'article:published_time',
-      'article:modified_time',
-      'date',
-      'datepublished',
-      'dcterms.date',
-      'dcterms.issued',
-      'dcterms.modified',
-      'dc.date',
-      'og:title',
-      'citation_title',
-      'citation_publication_date',
-    ]);
+    const metadata: Array<[key: string, value: string]> = [];
     $('meta[content]').each((_index, element) => {
       const key =
         $(element).attr('name') ??
         $(element).attr('property') ??
         $(element).attr('itemprop');
       const value = $(element).attr('content')?.trim();
-      if (
-        key &&
-        value &&
-        stableMetadataKeys.has(key.toLowerCase())
-      ) {
-        metadata.add(`${key.toLowerCase()}:${value}`);
-      }
+      if (key && value) metadata.push([key.toLowerCase(), value]);
     });
+    const times: string[] = [];
     semantic.find('time[datetime]').each((_index, element) => {
       const value = $(element).attr('datetime')?.trim();
-      if (value) metadata.add(`time:${value}`);
+      if (value) times.push(`time:${value}`);
     });
-    const normalized = JSON.stringify({
-      text: cleanHtmlContent(semantic.html() ?? semantic.text()),
-      references: Array.from(references).sort(),
-      metadata: Array.from(metadata).sort(),
-    });
-    return createHash('sha256').update(normalized).digest('hex');
+    const text = cleanHtmlContent(semantic.html() ?? semantic.text());
+    const sortedReferences = Array.from(references).sort();
+    const hashWith = (keys: ReadonlySet<string>, platform: string[]) =>
+      createHash('sha256')
+        .update(
+          JSON.stringify({
+            text,
+            references: sortedReferences,
+            metadata: Array.from(
+              new Set([
+                ...metadata
+                  .filter(([key]) => keys.has(key))
+                  .map(([key, value]) => `${key}:${value}`),
+                ...times,
+                ...platform,
+              ]),
+            ).sort(),
+          }),
+        )
+        .digest('hex');
+    return {
+      contentHash: hashWith(
+        FINGERPRINT_METADATA_KEYS,
+        detectDateMetaPlatform($) === 'govcms' ? ['date-platform:govcms'] : [],
+      ),
+      legacyContentHash: hashWith(LEGACY_FINGERPRINT_METADATA_KEYS, []),
+    };
   }
   if (contentType.includes('xml')) {
-    const normalized = cleanHtmlContent(body.toString('utf8'));
-    return createHash('sha256').update(normalized).digest('hex');
+    const contentHash = createHash('sha256')
+      .update(cleanHtmlContent(body.toString('utf8')))
+      .digest('hex');
+    return { contentHash, legacyContentHash: contentHash };
   }
-  return createHash('sha256').update(body).digest('hex');
+  return byteHash();
 }
 
 function linkedDocumentUrls(body: string, baseUrl: string): string[] {
@@ -670,21 +699,24 @@ export async function foldLinkedDocuments(
       { retryable: false },
     );
   }
-  const contentHash = createHash('sha256')
-    .update(
-      JSON.stringify({
-        pageHash,
-        linkedDocuments: linkedDocuments.map(({ url, contentHash }) => ({
-          url,
-          contentHash,
-        })),
-      }),
-    )
-    .digest('hex');
+  const composite = (page: string) =>
+    createHash('sha256')
+      .update(
+        JSON.stringify({
+          pageHash: page,
+          linkedDocuments: linkedDocuments.map(({ url, contentHash }) => ({
+            url,
+            contentHash,
+          })),
+        }),
+      )
+      .digest('hex');
+  const contentHash = composite(pageHash);
 
   return {
     ...retrieved,
     linkedSources: linkedResults.map((result) => result.source),
+    legacyContentHash: composite(retrieved.legacyContentHash ?? pageHash),
     evidence: {
       ...retrieved.evidence,
       contentHash,
@@ -1005,20 +1037,22 @@ export async function retrieveSourceOverHttp1(
               );
               const body = binaryDocument ? '' : bodyBuffer.toString('utf8');
               assertUsableSource(body, normalizedContentType);
+              const fingerprint = stableHashContent(
+                bodyBuffer,
+                normalizedContentType,
+                url,
+              );
               const result: RetrievedSource = {
                 body,
                 bytes: binaryDocument ? bodyBuffer : undefined,
                 durationMs: Date.now() - startedAt,
+                legacyContentHash: fingerprint.legacyContentHash,
                 evidence: {
                   url: canonicalizeSourceUrl(originalUrl),
                   finalUrl: canonicalizeSourceUrl(url),
                   retrievedAt: options.now().toISOString(),
                   contentType: normalizedContentType,
-                  contentHash: stableHashContent(
-                    bodyBuffer,
-                    normalizedContentType,
-                    url,
-                  ),
+                  contentHash: fingerprint.contentHash,
                   etag: headerValue(response.headers.etag),
                   lastModified: headerValue(
                     response.headers['last-modified'],
@@ -1228,20 +1262,22 @@ export async function retrieveSource(
       assertUsableSource(body, normalizedContentType);
       const retrievedAt = now().toISOString();
 
+      const fingerprint = stableHashContent(
+        bodyBuffer,
+        normalizedContentType,
+        finalUrl,
+      );
       const result: RetrievedSource = {
         body,
         bytes: binaryDocument ? bodyBuffer : undefined,
         durationMs: Date.now() - startedAt,
+        legacyContentHash: fingerprint.legacyContentHash,
         evidence: {
           url: canonicalizeSourceUrl(url),
           finalUrl: canonicalizeSourceUrl(finalUrl),
           retrievedAt,
           contentType: normalizedContentType,
-          contentHash: stableHashContent(
-            bodyBuffer,
-            normalizedContentType,
-            finalUrl,
-          ),
+          contentHash: fingerprint.contentHash,
           etag: response.headers.get('etag') || undefined,
           lastModified: response.headers.get('last-modified') || undefined,
         },

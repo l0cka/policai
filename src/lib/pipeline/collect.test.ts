@@ -971,6 +971,105 @@ describe('collect', () => {
     });
   });
 
+  describe('fingerprints stored before dcterms.created and the date platform were fingerprinted', () => {
+    const drupalPage = (created: string) => `
+      <html><head>
+        <meta name="Generator" content="Drupal 10 (https://www.drupal.org)">
+        <meta name="dcterms.created" content="${created}">
+      </head><body><main><h1>AI governance policy</h1><p>Version one.</p></main></body></html>`;
+    const pageAsTheOldKeySetSawIt =
+      '<html><head></head><body><main><h1>AI governance policy</h1><p>Version one.</p></main></body></html>';
+
+    async function storedLegacyFingerprint(): Promise<string> {
+      const baseline = await collect({
+        sources: [DOCUMENT_SOURCE],
+        state: emptyWatchState(),
+        existingDevelopments: [],
+        fetchImpl: fakeFetch({ [DOCUMENT_SOURCE.url]: pageAsTheOldKeySetSawIt }),
+        now: () => new Date('2026-07-01T00:00:00.000Z'),
+      });
+      return baseline.state.sourceSnapshots[DOCUMENT_SOURCE.id].contentHash;
+    }
+
+    it('adopts a legacy verified fingerprint for unchanged content, then detects date metadata changes', async () => {
+      const legacyHash = await storedLegacyFingerprint();
+      const trackedPolicy = buildPolicy({
+        id: 'tracked-document-policy',
+        sourceUrl: DOCUMENT_SOURCE.url,
+        verification: {
+          status: 'verified',
+          checkedAt: '2026-07-01T00:00:00.000Z',
+          checkedBy: 'reviewer',
+          method: 'manual',
+          source: { url: DOCUMENT_SOURCE.url, contentHash: legacyHash },
+        },
+      });
+      const run = (state: WatchState, created: string, day: string) =>
+        collect({
+          sources: [DOCUMENT_SOURCE],
+          state,
+          existingDevelopments: [],
+          trackedUrls: [DOCUMENT_SOURCE.url],
+          trackedPolicies: [trackedPolicy],
+          fetchImpl: fakeFetch({ [DOCUMENT_SOURCE.url]: drupalPage(created) }),
+          now: () => new Date(`${day}T00:00:00.000Z`),
+        });
+
+      const unchanged = await run(emptyWatchState(), '2026-06-01', '2026-07-10');
+      expect(unchanged.developments).toEqual([]);
+      expect(unchanged.reviewCandidates).toEqual([]);
+      const adopted = unchanged.state.sourceSnapshots[DOCUMENT_SOURCE.id];
+      expect(adopted.contentHash).not.toBe(legacyHash);
+      expect(adopted.lastChangedAt).toBeUndefined();
+
+      const repeated = await run(unchanged.state, '2026-06-01', '2026-07-17');
+      expect(repeated.reviewCandidates).toEqual([]);
+
+      const redated = await run(repeated.state, '2026-06-20', '2026-07-24');
+      expect(redated.reviewCandidates).toHaveLength(1);
+      expect(redated.reviewCandidates[0]).toMatchObject({
+        targetPolicyId: trackedPolicy.id,
+        sourceVersionSequence: 1,
+      });
+    });
+
+    it('adopts a legacy snapshot fingerprint for unchanged content, then detects date metadata changes', async () => {
+      const legacyHash = await storedLegacyFingerprint();
+      const state: WatchState = {
+        ...emptyWatchState(),
+        sourceSnapshots: {
+          [DOCUMENT_SOURCE.id]: {
+            contentHash: legacyHash,
+            firstCheckedAt: '2026-07-01T00:00:00.000Z',
+            lastCheckedAt: '2026-07-01T00:00:00.000Z',
+            changeCount: 0,
+          },
+        },
+      };
+      const run = (current: WatchState, created: string, day: string) =>
+        collect({
+          sources: [DOCUMENT_SOURCE],
+          state: current,
+          existingDevelopments: [],
+          fetchImpl: fakeFetch({ [DOCUMENT_SOURCE.url]: drupalPage(created) }),
+          now: () => new Date(`${day}T00:00:00.000Z`),
+        });
+
+      const unchanged = await run(state, '2026-06-01', '2026-07-10');
+      const adopted = unchanged.state.sourceSnapshots[DOCUMENT_SOURCE.id];
+      expect(unchanged.developments).toEqual([]);
+      expect(adopted).toMatchObject({ changeCount: 0 });
+      expect(adopted.contentHash).not.toBe(legacyHash);
+      expect(adopted.lastChangedAt).toBeUndefined();
+
+      const redated = await run(unchanged.state, '2026-06-20', '2026-07-24');
+      expect(redated.state.sourceSnapshots[DOCUMENT_SOURCE.id]).toMatchObject({
+        changeCount: 1,
+        lastChangedAt: '2026-07-24T00:00:00.000Z',
+      });
+    });
+  });
+
   it('stages timeline re-verification when a tracked document changes', async () => {
     const trackedEvent = buildTimelineEvent({
       id: 'tracked-timeline-event',

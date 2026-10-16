@@ -10,8 +10,10 @@ import {
 	extractRetrievedDocument,
 	type ExtractedDocument,
 } from "@/lib/pipeline/content";
+import { FINGERPRINT_METADATA_KEYS } from "@/lib/pipeline/date-metadata";
 import {
 	documentKindFromBytes,
+	matchesRetrievedContent,
 	retrieveSource,
 	type RetrievedSource,
 } from "@/lib/pipeline/fetch";
@@ -119,19 +121,6 @@ function retrieveEditorialSource(
 	});
 }
 
-const STABLE_BROWSER_METADATA_KEYS = new Set([
-	"article:published_time",
-	"article:modified_time",
-	"date",
-	"datepublished",
-	"dcterms.date",
-	"dcterms.issued",
-	"dcterms.modified",
-	"dc.date",
-	"og:title",
-	"citation_title",
-	"citation_publication_date",
-]);
 
 function capturePathIsWithin(root: string, filePath: string): boolean {
 	const child = relative(root, filePath);
@@ -307,7 +296,7 @@ async function buildBrowserCapturedSource(
 				const normalizedKey = key.trim().toLowerCase();
 				const normalizedValue = value.trim();
 				if (
-					!STABLE_BROWSER_METADATA_KEYS.has(normalizedKey) ||
+					!FINGERPRINT_METADATA_KEYS.has(normalizedKey) ||
 					!normalizedValue
 				) {
 					throw new Error("Browser capture contains unsupported stable metadata");
@@ -1435,10 +1424,7 @@ async function approveStagedSourceUnlocked(input: {
 				"Staged source has no content fingerprint and must be re-staged before approval",
 			);
 		}
-		if (
-			review.sourceEvidence.contentHash !==
-			retrieved.evidence.contentHash
-		) {
+		if (!matchesRetrievedContent(retrieved, review.sourceEvidence.contentHash)) {
 			throw new Error(
 				"Official source changed after staging and must be reviewed again before approval",
 			);
@@ -2171,7 +2157,7 @@ async function assertSourceStillMatchesApproval(
 	const retrieved = browserCapture
 		? await buildBrowserCapturedSource(review.sourceUrl, browserCapture)
 		: await retrieveEditorialSource(review.sourceUrl);
-	if (retrieved.evidence.contentHash !== approvedHash) {
+	if (!matchesRetrievedContent(retrieved, approvedHash)) {
 		throw new Error(
 			"Official source changed after approval; re-approve it before publication",
 		);

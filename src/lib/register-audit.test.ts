@@ -139,6 +139,45 @@ describe('register audit', () => {
     });
   });
 
+  it('treats a fingerprint stored before dcterms.created and the date platform were fingerprinted as unchanged', async () => {
+    const url = 'https://example.gov.au/policy';
+    const retrievePage = (head: string) =>
+      retrieveSource(url, {
+        fetchImpl: (async () =>
+          new Response(
+            `<html><head>${head}</head><body><main><h1>AI policy</h1><p>Stable obligations.</p></main></body></html>`,
+            { headers: { 'content-type': 'text/html' } },
+          )) as unknown as typeof fetch,
+        hashLinkedDocuments: false,
+      });
+    const asTheOldKeySetSawIt = await retrievePage('');
+    const current = await retrievePage(
+      '<meta name="Generator" content="Drupal 10 (https://www.drupal.org)"><meta name="dcterms.created" content="2026-06-01">',
+    );
+    const policy = buildPolicy({
+      verification: {
+        status: 'verified',
+        source: { url, contentHash: asTheOldKeySetSawIt.evidence.contentHash },
+        checkedAt: '2026-07-15T00:00:00.000Z',
+        checkedBy: 'editor',
+        method: 'manual',
+      },
+    });
+
+    const results = await auditRegister([policy], {
+      retrieve: async () => current,
+      now: () => new Date('2026-07-16T00:00:00.000Z'),
+    });
+
+    expect(current.evidence.contentHash).not.toBe(
+      asTheOldKeySetSawIt.evidence.contentHash,
+    );
+    expect(results[0].status).toBe('unchanged');
+    expect(
+      applyRegisterAuditEvidence([policy], results)[0].verification.status,
+    ).toBe('verified');
+  });
+
   it('compares matching linked-document bytes across browser and server evidence', async () => {
     const documentUrl = 'https://example.gov.au/policy.pdf';
     const policy = buildPolicy({

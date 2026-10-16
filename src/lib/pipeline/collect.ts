@@ -28,6 +28,7 @@ import {
 } from './extract';
 import {
   foldLinkedDocuments,
+  matchesRetrievedContent,
   retrieveSource,
   SourceFetchError,
   type RetrievedSource,
@@ -1402,6 +1403,17 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
             throw new Error('Document retrieval did not produce a content hash');
           }
           const previous = state.sourceSnapshots[source.id];
+          const reading = sourceRetrieval;
+          const isCurrentReading = (hash: string | undefined) =>
+            matchesRetrievedContent(reading, hash);
+          const latestTransitionHash = latestDocumentTransition(
+            state,
+            source.id,
+          )?.contentHash;
+          const readingHash =
+            latestTransitionHash && isCurrentReading(latestTransitionHash)
+              ? latestTransitionHash
+              : contentHash;
           const trackedPolicy = trackedPoliciesByUrl.get(
             sourceUrlIdentity(source.url),
           );
@@ -1412,21 +1424,27 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
             ? trackedPolicy.verification.source.contentHash
             : trackedTimelineEvent?.verification.source.contentHash;
           const trackedRecord = trackedPolicy ?? trackedTimelineEvent;
+          const canonicalIsCurrent =
+            canonicalContentHash === contentHash ||
+            (isCurrentReading(canonicalContentHash) &&
+              (!previous ||
+                previous.contentHash === canonicalContentHash ||
+                previous.contentHash === contentHash));
           const adoptedReading =
             trackedRecord &&
             canonicalContentHash &&
-            canonicalContentHash !== contentHash
+            !canonicalIsCurrent
               ? adoptablePublishedReading(
                   state,
                   source.id,
-                  contentHash,
+                  readingHash,
                   canonicalContentHash,
                 )
               : null;
           const reviewReason = trackedRecord
             ? !canonicalContentHash
               ? 'baseline_missing'
-              : canonicalContentHash !== contentHash && !adoptedReading
+              : !canonicalIsCurrent && !adoptedReading
                 ? 'changed'
                 : hasUnresolvedDocumentTransition(state, source.id) &&
                     !adoptedReading
@@ -1448,7 +1466,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
             const transition = transitionForDocumentHash(
               state,
               source.id,
-              contentHash,
+              readingHash,
             );
             if (transition.isNew) {
               supersedeOlderDocumentCandidates(
@@ -1463,7 +1481,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
                   trackedPolicy,
                   source,
                   sourceRetrieval.evidence,
-                  contentHash,
+                  readingHash,
                   transition.changeCount,
                   nowIso,
                   reviewReason,
@@ -1472,7 +1490,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
                   trackedTimelineEvent as TimelineEvent,
                   source,
                   sourceRetrieval.evidence,
-                  contentHash,
+                  readingHash,
                   transition.changeCount,
                   nowIso,
                   reviewReason,
@@ -1495,7 +1513,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
               ...(previous?.lastChangedAt
                 ? { lastChangedAt: previous.lastChangedAt }
                 : {}),
-              ...(previous && previous.contentHash !== contentHash
+              ...(previous && !isCurrentReading(previous.contentHash)
                 ? { lastChangedAt: nowIso }
                 : {}),
               changeCount,
@@ -1512,9 +1530,10 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
               lastCheckedAt: nowIso,
               changeCount: 0,
             };
-          } else if (previous.contentHash === contentHash) {
+          } else if (isCurrentReading(previous.contentHash)) {
             state.sourceSnapshots[source.id] = {
               ...previous,
+              contentHash,
               lastCheckedAt: nowIso,
             };
           } else {

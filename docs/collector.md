@@ -122,8 +122,29 @@ publication date. Modified-time keys
 whatever the machine's time zone.
 
 HTML fingerprints include every publication-date metadata field used by
-extraction, relevant instrument links, and visible text. Linked PDF, Word, and RTF documents are retrieved and
-their byte hashes are folded into the landing page's fingerprint. A landing
+extraction, the date platform (a `date-platform:govcms` entry, not the raw
+generator string, so a Drupal version bump does not read as a change),
+modified-time keys, relevant instrument links, and visible text. The date
+selectors and the fingerprint key set come from one table in
+`src/lib/pipeline/date-metadata.ts`, and `date-metadata.test.ts` fails if a
+selector can change the extracted date without changing the fingerprint.
+Browser captures accept the same metadata keys.
+
+Fingerprints stored before #195 omit `dcterms.created` and the date platform.
+Retrieval also computes that legacy fingerprint, and every comparison of a
+fresh retrieval with a stored hash (watch-state snapshots, verified policy and
+timeline hashes, the register audit, and the approval and publication gates)
+accepts either. Unchanged content therefore never reads as changed after the
+key change, and no stored file needs a migration. The collector writes the
+current fingerprint to its watch-state snapshot on first sight. For a tracked
+record whose verified hash is legacy, the snapshot then records that the
+collector has seen the current reading, so a later change confined to the new
+fields still stages a review. A change to those fields between the last
+verification and first sight cannot be detected: the old baseline never
+recorded them. The register audit has no snapshot, so it reports such a record
+unchanged until its next re-verification stores a current fingerprint.
+
+Linked PDF, Word, and RTF documents are retrieved and their byte hashes are folded into the landing page's fingerprint. A landing
 page therefore changes when a document is replaced at the same URL, even if
 both the HTML and the words “Download policy” stay the same. If a linked
 instrument cannot be retrieved as a document, the source check fails rather

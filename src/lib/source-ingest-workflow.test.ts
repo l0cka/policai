@@ -57,8 +57,11 @@ const {
 
 vi.mock('@/lib/analysis', () => ({ analyseContentRelevance }));
 vi.mock('@/lib/pipeline/content', () => ({ extractRetrievedDocument }));
-vi.mock('@/lib/pipeline/fetch', () => ({
+vi.mock('@/lib/pipeline/fetch', async (importOriginal) => ({
   documentKindFromBytes,
+  matchesRetrievedContent: (
+    await importOriginal<typeof import('@/lib/pipeline/fetch')>()
+  ).matchesRetrievedContent,
   retrieveSource,
 }));
 vi.mock('@/lib/data-service', () => ({
@@ -2057,6 +2060,31 @@ describe('source ingest approval workflow', () => {
       }),
     ).rejects.toThrow('changed after staging');
     expect(updateSourceReview).not.toHaveBeenCalled();
+  });
+
+  it('approves a review staged before dcterms.created and the date platform were fingerprinted', async () => {
+    getSourceReviewById.mockResolvedValue(buildReview());
+    retrieveSource.mockResolvedValueOnce({
+      body: '<main>Official AI policy</main>',
+      durationMs: 1,
+      legacyContentHash: 'a'.repeat(64),
+      evidence: {
+        url: SOURCE_URL,
+        finalUrl: SOURCE_URL,
+        retrievedAt: '2026-07-16T00:00:00.000Z',
+        contentType: 'text/html',
+        contentHash: 'c'.repeat(64),
+      },
+    });
+
+    const approved = await approveStagedSource({
+      id: 'source-review-1',
+      actor: 'reviewer',
+      proposedRecord: buildDraft({ effectiveDate: '2026-07-01' }),
+    });
+
+    expect(approved.status).toBe('approved');
+    expect(approved.sourceEvidence.contentHash).toBe('c'.repeat(64));
   });
 
   it('refuses approval when staged evidence has no fingerprint', async () => {
