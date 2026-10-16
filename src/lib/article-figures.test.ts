@@ -206,6 +206,50 @@ describe("figure blocks in article Markdown", () => {
 		expect(errorsOf(inline("Text.\n\n```figure\n" + TIMELINE))).toEqual(["figure 1 is not closed with ```"]);
 	});
 
+	it("rejects a --- line inside a figure instead of dropping the fields after it", () => {
+		const split = TIMELINE.replace("asAt: 2026-10-16", "---\nasAt: 2026-10-16");
+		expect(errorsOf(inline("```figure\n" + split + "\n```"))).toEqual([
+			expect.stringMatching(/^figure 1: is not valid YAML \(expected a single document/),
+		]);
+	});
+
+	it("rejects calendar dates that roll over instead of moving them", () => {
+		expect(errorsOf(inline("```figure\n" + TIMELINE.replace("asAt: 2026-10-16", "asAt: 2026-02-30") + "\n```"))).toEqual([
+			"figure 1: asAt is required and must be a calendar date (YYYY-MM-DD)",
+		]);
+		expect(errorsOf(inline("```figure\n" + TIMELINE.replace("date: 2026-03", "date: 2026-02-30") + "\n```"))).toEqual([
+			"figure 1: entries[0] needs a date (YYYY-MM-DD, YYYY-MM or YYYY) and a title",
+		]);
+		const frame = TIMELINE.split("\nasAt")[0].replace("kind: timeline", "kind: chart").replace("\ncites: [fixture-current]", "");
+		expect(errorsOf(inline("```figure\n" + `${frame}\ngroup: type\nwhere:\n  effectiveDate:\n    from: 2025-02-29\n` + "```"))).toEqual([
+			"figure 1: where.effectiveDate must be { from, to } with calendar dates",
+		]);
+	});
+
+	it("rejects repeated matrix columns and row headers, and repeated timeline entries", () => {
+		const frame = TIMELINE.split("\nasAt")[0].replace("kind: timeline", "kind: matrix");
+		expect(errorsOf(inline("```figure\n" + `${frame}\ncolumns: [Instrument, Status, Status]\nrows:\n  - [One, Active, Active]\n  - [Two, ~, ~]` + "\n```"))).toEqual([
+			"figure 1: columns must not repeat a name",
+		]);
+		expect(errorsOf(inline("```figure\n" + `${frame}\ncolumns: [Instrument, Status]\nrows:\n  - [One, Active]\n  - [One, ~]` + "\n```"))).toEqual([
+			"figure 1: rows must not repeat a header",
+		]);
+		const repeated = TIMELINE.replace("date: 2027\n    title: Fixture instrument reviewed", "date: 2026-03-01\n    title: Fixture instrument issued");
+		expect(errorsOf(inline("```figure\n" + repeated + "\n```"))).toEqual([
+			"figure 1: entries must not repeat a date and title",
+		]);
+	});
+
+	it.each([
+		["indented", "  ```figure\n" + TIMELINE + "\n  ```"],
+		["in a list", "- ```figure\n" + TIMELINE.replace(/^/gm, "  ") + "\n  ```"],
+		["in a quote", "> ```figure\n" + TIMELINE.replace(/^/gm, "> ") + "\n> ```"],
+	])("rejects a figure fence that is %s", (_, body) => {
+		expect(errorsOf(inline(`Text.\n\n${body}`))).toEqual([
+			"line 3: a ```figure fence must start at column 0, outside any list or quote",
+		]);
+	});
+
 	it("gives every prose block the piece's reference definitions", () => {
 		const body = "See the [instrument][src].\n\n```figure\n" + TIMELINE + "\n```\n\nRead the [instrument][src] again.\n\n[src]: https://www.example.gov.au/fixture-instrument";
 		const prose = parsed(inline(body)).blocks.flatMap((block) => (block.kind === "prose" ? [block.markdown] : []));

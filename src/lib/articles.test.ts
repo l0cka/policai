@@ -119,6 +119,17 @@ describe("parseArticle", () => {
 		]);
 	});
 
+	it("rejects a frontmatter date that rolls over", async () => {
+		const entry = await fixture("fixture-weekly-published");
+		const result = parseArticle({
+			...entry,
+			source: entry.source.replace(/^publishedAt: .*$/m, "publishedAt: 2026-02-30"),
+		});
+		expect(result.ok ? [] : result.errors).toContain(
+			"publishedAt must be a calendar date (YYYY-MM-DD)",
+		);
+	});
+
 	it("rejects unknown fields and a bad slug", () => {
 		expect(
 			parseArticle({
