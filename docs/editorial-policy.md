@@ -149,6 +149,7 @@ the repository's `AGENTS.md`.
   commencement" rather than "A timeline"). For a comparison or chart, it
   names the standout values. It does not repeat the caption.
 - **Caption:** says what the reader is looking at and the date of the data.
+  A register chart's caption leaves its date to the chart, which states it.
 - **Limits:** a timeline has 2 to 7 entries and an `asAt` date. A comparison
   has 2 to 9 rows and 2 to 5 columns, with `~` for "Not stated". A process
   has 3 to 6 steps and at most one branch, taken from a decision step. A
@@ -183,12 +184,10 @@ as the counts change. Say what the chart shows ("most records are federal")
 and leave the figures to the chart. The Writer and the Editorial Manager check
 this.
 
-The as-at date is the most recent `updatedAt` across all register records.
-This rule is planned: the platform currently shows the collection date the
-page was built from, and the change is tracked in
-[#282](https://github.com/l0cka/policai/issues/282). Until it lands, a chart's
-date can be earlier than the latest register change, so do not write a date
-in the prose or caption that depends on it.
+The as-at date is the date of the last register change: the most recent
+`updatedAt` across every register record, as a Sydney calendar date. It
+moves when the register changes, not when collection last ran. Do not write a
+date in the prose that depends on it, because the chart states it.
 
 ## Citations
 
