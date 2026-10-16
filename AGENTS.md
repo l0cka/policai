@@ -136,7 +136,10 @@ See [docs/collector.md](./docs/collector.md) for operations.
 
 Pieces are Markdown files with YAML frontmatter, parsed by `parseArticle` in
 `src/lib/articles.ts` into `Article` (`src/types/index.ts`), a union on
-`status`. The rules for voice, formats and citations are in
+`status`. Frontmatter goes through `parseFrontmatter` (`src/lib/frontmatter.ts`),
+which accepts YAML only: any other fence language, such as `---js` or
+`---json`, is a parse error and is never evaluated. Every gray-matter call
+uses it. The rules for voice, formats and citations are in
 `docs/editorial-policy.md`. The tier is described in `docs/trust-model.md`.
 
 - **Frontmatter:** `type` (`weekly_briefing | instrument_note | explainer`),
@@ -158,25 +161,35 @@ Pieces are Markdown files with YAML frontmatter, parsed by `parseArticle` in
   `POLICAI_ARTICLES_DIR` points reads at another directory, for previews
   with fixtures (`src/test/fixtures/articles/`).
 
+- **Body links:** a link is on-site only when it starts with `/` or `#`, or
+  is absolute, and resolves to `https://policai.org`. Protocol-relative
+  (`//host/...`) and backslash (`/\host/...`) forms resolve to another host,
+  so they count as external and must be listed in `sources`.
+
 `npm run validate:data` (`validateArticles`) enforces these rules:
 
-| Rule | New or changed piece | Untouched piece |
-| --- | --- | --- |
-| Frontmatter fails to parse, or a published piece has no `cites` | error | error |
-| Withdrawn piece without `withdrawnAt` or `withdrawnReason` | error | error |
-| Body link to `/policies/<id>` not in `cites`, or external link not in `sources` | error | error |
-| Citation to a missing or trashed record | error | error |
-| Citation to a withheld or unverified record (not in the public read) | error | warning, banner shows |
-| Citation to a public record past its review interval ("Review due") | error | warning, banner shows |
-| Published or withdrawn piece deleted, returned to draft, re-dated, or a withdrawn piece republished | error | n/a |
-| An earlier correction changed or removed (corrections are append-only) | error | n/a |
+| Rule | Result |
+| --- | --- |
+| Frontmatter fails to parse, or a published piece has no `cites` | error |
+| Withdrawn piece without `withdrawnAt` or `withdrawnReason` | error |
+| Body link to `/policies/<id>` not in `cites`, or external link not in `sources` | error |
+| Citation to a missing or trashed record | error |
+| Added citation to a withheld, unverified or review-due record | error |
+| Existing citation to a record that is now withheld, unverified or review-due | warning, banner shows |
+| Published or withdrawn piece deleted, returned to draft, re-dated, or a withdrawn piece republished | error |
+| An earlier correction changed or removed (corrections are append-only) | error |
 
-The approved rule that validation "rejects a citation to a record that is not
-public and verified" applies when a piece is published or changed (PM,
-2026-10-16). A piece is new, changed or untouched by comparison of its file
-with the base revision: `GITHUB_BASE_SHA` when set (CI passes the PR base),
-otherwise the merge-base of `HEAD` and `origin/main`. If no base can be read,
-every piece counts as new.
+Citations are checked one by one (`articleCitationReport` in
+`validate-data.ts`), not per piece (PM, 2026-10-16). A citation is added when
+the piece's `cites` on the base revision lacks it. Every citation of a new
+piece, or of a piece that was a draft on the base, is added. An existing
+citation never blocks an edit, so a correction or update can always be
+appended to a piece whose source went under review. The base revision is
+`GITHUB_BASE_SHA` when set (CI passes the PR base),
+otherwise the merge-base of `HEAD` and `origin/main`. When `GITHUB_BASE_SHA`
+is set but cannot be read, `validate:data` fails, so the transition rules
+never pass silently. When it is unset and no merge-base can be read, every
+piece counts as new.
 
 ### Article images
 

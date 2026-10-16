@@ -190,10 +190,31 @@ A piece publishes only after editorial approval of its pull request. The
 rules, formats and notice wording are in the
 [editorial policy](./editorial-policy.md).
 
-This tier is not live yet. The articles platform that stores, validates and
-serves pieces is in development
-([#213](https://github.com/l0cka/policai/issues/213)), and no piece has been
-published.
+`npm run validate:data` enforces these rules on every pull request,
+comparing each piece with the base revision:
+
+- A citation to a missing or trashed register record is an error.
+- A citation the change adds must point to a public, verified record that is
+  not review-due, or validation fails. Every citation of a new piece, or of a
+  piece that was a draft on the base, counts as added.
+- A citation already on the base whose record has since been withheld,
+  unverified or marked review-due is a warning, not an error. The page shows a
+  "Source under review" banner, and a withheld record appears without its
+  title or link. A correction or update can always be appended.
+- Every body link to a register record is listed in `cites`, and every other
+  off-site link is listed in `sources`, which must be HTTPS URLs on official
+  hosts. A link counts as on-site only when it resolves to
+  `https://policai.org`.
+- A published or withdrawn piece cannot be deleted, returned to draft or
+  re-dated, a withdrawn piece stays withdrawn, and earlier corrections cannot
+  change.
+- Frontmatter is YAML only; any other frontmatter language fails to parse.
+- If the CI base revision (`GITHUB_BASE_SHA`) cannot be read, validation
+  fails rather than skipping these comparisons.
+
+The disclosure, notice, byline and tier label are rendered from code, so a
+published piece cannot lack them. Drafts are never served, and a withdrawn
+piece shows only its tombstone. Pieces are served at `/analysis`.
 
 ## Source policy
 

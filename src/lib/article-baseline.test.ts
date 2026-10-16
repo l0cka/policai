@@ -6,7 +6,6 @@ import os from "os";
 import path from "path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { readArticleBaseline } from "./article-baseline";
-import { articleChanges, readArticleSources } from "./articles";
 
 let repo: string;
 
@@ -43,18 +42,11 @@ afterEach(async () => {
 });
 
 describe("readArticleBaseline", () => {
-	it("reads the merge-base with origin/main and classifies each piece", async () => {
-		const base = await readArticleBaseline({ cwd: repo });
-		expect(base).toEqual([
+	it("reads top-level pieces at the merge-base with origin/main", async () => {
+		expect(await readArticleBaseline({ cwd: repo })).toEqual([
 			{ slug: "edited", source: "before\n" },
 			{ slug: "kept", source: "kept\n" },
 		]);
-		const current = await readArticleSources(path.join(repo, "data/articles"));
-		expect(Object.fromEntries(articleChanges(current, base))).toEqual({
-			added: "new",
-			edited: "changed",
-			kept: "untouched",
-		});
 	});
 
 	it("prefers an explicit base SHA", async () => {
@@ -66,8 +58,18 @@ describe("readArticleBaseline", () => {
 		]);
 	});
 
-	it("returns null when no base can be resolved", async () => {
+	it("returns null when no base is set and no merge-base can be resolved", async () => {
 		git("update-ref", "-d", "refs/remotes/origin/main");
 		expect(await readArticleBaseline({ cwd: repo })).toBeNull();
+		expect(await readArticleBaseline({ cwd: repo, baseSha: " " })).toBeNull();
+	});
+
+	it("fails closed when an explicit base SHA cannot be read", async () => {
+		const missing = "0123456789abcdef0123456789abcdef01234567";
+		await expect(
+			readArticleBaseline({ cwd: repo, baseSha: missing }),
+		).rejects.toThrow(
+			`GITHUB_BASE_SHA "${missing}" cannot be read, so article transitions cannot be checked`,
+		);
 	});
 });

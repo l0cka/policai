@@ -4,7 +4,6 @@ import path from "path";
 import { describe, expect, it } from "vitest";
 import {
 	articleBodyLinks,
-	articleChanges,
 	citationState,
 	parseArticle,
 	readArticleSources,
@@ -28,6 +27,25 @@ async function errorsFor(slug: string): Promise<string[]> {
 }
 
 describe("parseArticle", () => {
+	it.each(["js", "javascript"])(
+		"refuses ---%s frontmatter without evaluating it",
+		(language) => {
+			const probe = globalThis as { policaiFrontmatterEvaluated?: boolean };
+			delete probe.policaiFrontmatterEvaluated;
+			const result = parseArticle({
+				slug: "qa-js",
+				source: `---${language}\n(globalThis.policaiFrontmatterEvaluated = true, { type: 'instrument_note', title: 'T' + String(6 * 7), summary: 'evaluated:' + typeof process, status: 'draft' })\n---\n\nBody.\n`,
+			});
+			expect(probe.policaiFrontmatterEvaluated).toBeUndefined();
+			expect(result).toEqual({
+				ok: false,
+				errors: [
+					`frontmatter is not valid YAML (frontmatter must be YAML, not ${language})`,
+				],
+			});
+		},
+	);
+
 	it("parses a published piece into the typed model", async () => {
 		const result = parseArticle(await fixture("fixture-weekly-published"));
 		expect(result).toMatchObject({
@@ -132,33 +150,44 @@ describe("articleBodyLinks", () => {
 			{ kind: "external", href: "https://www.example.gov.au/r" },
 		]);
 	});
-});
 
-describe("articleChanges", () => {
-	const current = [
-		{ slug: "kept", source: "same" },
-		{ slug: "edited", source: "after" },
-		{ slug: "added", source: "new" },
-	];
-
-	it("marks pieces new, changed or untouched against the base", () => {
-		expect(
-			Object.fromEntries(
-				articleChanges(current, [
-					{ slug: "kept", source: "same" },
-					{ slug: "edited", source: "before" },
-				]),
-			),
-		).toEqual({ kept: "untouched", edited: "changed", added: "new" });
+	it.each([
+		"//news.example.com/story",
+		"/\\evil.example.com/x",
+		"\\\\evil.example.com/y",
+		"/\\/evil.example.com/z",
+		"https://policai.org.evil.example.com/policies/x",
+		"javascript:void",
+		"mailto:editor@example.gov.au",
+		"example.gov.au/missing-scheme",
+	])("classifies %s as external", (href) => {
+		expect(articleBodyLinks(`[a](${href})`)).toEqual([{ kind: "external", href }]);
 	});
 
-	it("treats every piece as new when there is no base", () => {
-		expect(Object.fromEntries(articleChanges(current, null))).toEqual({
-			kept: "new",
-			edited: "new",
-			added: "new",
-		});
+	it.each([
+		["/policies/x?tab=dates", { kind: "policy", policyId: "x" }],
+		["https://policai.org/policies/y#history", { kind: "policy", policyId: "y" }],
+		["/this-week", { kind: "site" }],
+		["#coming-up", { kind: "site" }],
+		["https://policai.org/analysis", { kind: "site" }],
+	])("keeps %s on site", (href, expected) => {
+		expect(articleBodyLinks(`[a](${href})`)).toEqual([{ ...expected, href }]);
 	});
+
+	it.each(["//news.example.com/story", "/\\evil.example.com/x"])(
+		"rejects a published piece that links %s without listing it in sources",
+		async (href) => {
+			const entry = await fixture("fixture-weekly-published");
+			const result = parseArticle({
+				...entry,
+				source: `${entry.source}\nSee [elsewhere](${href}).\n`,
+			});
+			expect(result).toEqual({
+				ok: false,
+				errors: [`body links ${href} but sources does not list it`],
+			});
+		},
+	);
 });
 
 describe("citationState", () => {

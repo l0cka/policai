@@ -1,7 +1,7 @@
 import { readdir, readFile } from "fs/promises";
 import path from "path";
-import matter from "gray-matter";
 import { isValidCalendarDate } from "@/lib/calendar-date";
+import { parseFrontmatter, type FrontmatterFile } from "@/lib/frontmatter";
 import { isAllowedSourceHost, sourceUrlsEqual } from "@/lib/source-url";
 import { articleLicenceTerms } from "@/lib/article-licences";
 import {
@@ -82,22 +82,6 @@ export type ArticleBodyLink =
 	| { kind: "site"; href: string }
 	| { kind: "external"; href: string };
 
-export type ArticleChange = "new" | "changed" | "untouched";
-
-export function articleChanges(
-	current: readonly ArticleSource[],
-	base: readonly ArticleSource[] | null,
-): Map<string, ArticleChange> {
-	const baseBySlug = new Map(base?.map((entry) => [entry.slug, entry.source]));
-	return new Map(
-		current.map(({ slug, source }): [string, ArticleChange] => {
-			const previous = baseBySlug.get(slug);
-			if (base === null || previous === undefined) return [slug, "new"];
-			return [slug, previous === source ? "untouched" : "changed"];
-		}),
-	);
-}
-
 export type CitationState ="current" | "review_due" | "not_public";
 
 export function citationState(
@@ -130,16 +114,21 @@ export async function readArticleSources(dir: string): Promise<ArticleSource[]> 
 	);
 }
 
-function classifyLink(href: string): ArticleBodyLink {
-	const sitePath = href.startsWith("/")
-		? href
-		: href.startsWith(`${SITE_ORIGIN}/`)
-			? href.slice(SITE_ORIGIN.length)
-			: null;
-	if (sitePath === null) {
-		return href.startsWith("#") ? { kind: "site", href } : { kind: "external", href };
+function onSitePath(href: string): string | null {
+	const absolute = /^[a-z][a-z\d+.-]*:/i.test(href);
+	if (!absolute && !/^[/#]/.test(href)) return null;
+	try {
+		const url = new URL(href, SITE_ORIGIN);
+		return url.origin === SITE_ORIGIN ? url.pathname : null;
+	} catch {
+		return null;
 	}
-	const policy = /^\/policies\/([^/?#]+)/.exec(sitePath);
+}
+
+function classifyLink(href: string): ArticleBodyLink {
+	const sitePath = onSitePath(href);
+	if (sitePath === null) return { kind: "external", href };
+	const policy = /^\/policies\/([^/]+)/.exec(sitePath);
 	return policy
 		? { kind: "policy", href, policyId: decodeURIComponent(policy[1]) }
 		: { kind: "site", href };
@@ -269,9 +258,9 @@ function parseArticleImage(
 }
 
 export function parseArticle({ slug, source }: ArticleSource): ArticleParseResult {
-	let file: matter.GrayMatterFile<string>;
+	let file: FrontmatterFile;
 	try {
-		file = matter(source);
+		file = parseFrontmatter(source);
 	} catch (error) {
 		return {
 			ok: false,
