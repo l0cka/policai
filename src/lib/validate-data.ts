@@ -38,6 +38,7 @@ import {
   isAllowedSourceHost,
   isSafePublicHttpsUrl,
   parseSourceUrl,
+  sourceIdentityUrls,
   sourceUrlIdentity,
   sourceUrlsEqual,
 } from '@/lib/source-url';
@@ -230,22 +231,74 @@ function dateOnly(value: Date | string): string {
     : value.slice(0, 10);
 }
 
+export function dateEvidenceMatches(
+  evidence: { date?: string; precision?: string } | undefined,
+  date: Date | string,
+  precision: string,
+): boolean {
+  return evidence?.date === dateOnly(date) && evidence.precision === precision;
+}
+
 function sourceBacksRecordDate(
   source: SourceEvidence | undefined,
   date: Date | string,
   precision: string,
   allowPublishedMetadata: boolean,
 ): boolean {
-  const normalizedDate = dateOnly(date);
   return Boolean(
     source &&
       SHA256.test(source.contentHash ?? '') &&
       ((allowPublishedMetadata &&
-        source.publishedAt === normalizedDate &&
-        source.publishedAtPrecision === precision) ||
-        (source.reviewedDate?.date === normalizedDate &&
-          source.reviewedDate.precision === precision)),
+        dateEvidenceMatches(
+          { date: source.publishedAt, precision: source.publishedAtPrecision },
+          date,
+          precision,
+        )) ||
+        dateEvidenceMatches(source.reviewedDate, date, precision)),
   );
+}
+
+function proposedDateEvidenceErrors(policy: Policy): string[] {
+  if (!Array.isArray(policy.dates)) return [];
+  const errors: string[] = [];
+  policy.dates.forEach((candidateDate, index) => {
+    if (
+      !isRecord(candidateDate) ||
+      !isCalendarDateString(candidateDate.date) ||
+      !isOneOf(DATE_PRECISIONS, candidateDate.precision)
+    ) {
+      return;
+    }
+    const source = isRecord(candidateDate.source)
+      ? (candidateDate.source as unknown as SourceEvidence)
+      : undefined;
+    if (
+      candidateDate.primary === true &&
+      !sourceBacksRecordDate(
+        source,
+        candidateDate.date,
+        candidateDate.precision,
+        candidateDate.type === 'published',
+      )
+    ) {
+      errors.push(
+        'primary date requires matching source publication metadata or reviewed date evidence',
+      );
+    }
+    if (
+      source?.reviewedDate &&
+      !dateEvidenceMatches(
+        source.reviewedDate,
+        candidateDate.date,
+        candidateDate.precision,
+      )
+    ) {
+      errors.push(
+        `dates[${index}] reviewedDate must match the date and precision`,
+      );
+    }
+  });
+  return errors;
 }
 
 /**
@@ -526,7 +579,10 @@ function validateVerification(
   return { errors, warnings };
 }
 
-export function validatePolicies(policies: Policy[]): ValidationReport {
+export function validatePolicies(
+  policies: Policy[],
+  registerIds: ReadonlySet<string> = new Set(),
+): ValidationReport {
   const errors: string[] = [];
   const warnings: string[] = [];
   const ids = new Set<string>();
@@ -729,13 +785,23 @@ export function validatePolicies(policies: Policy[]): ValidationReport {
     if (policy.supersededBy && !isNonEmptyString(policy.supersededBy)) {
       errors.push(`${label}: supersededBy must be a policy id`);
     }
+    if (policy.status === 'superseded' && !policy.supersededBy) {
+      errors.push(`${label}: superseded status requires supersededBy`);
+    }
+    if (policy.supersededBy && policy.status !== 'superseded') {
+      errors.push(
+        `${label}: supersededBy requires superseded status, not "${policy.status}"`,
+      );
+    }
+    if (policy.supersededBy && policy.supersededBy === policy.id) {
+      errors.push(`${label}: supersededBy cannot reference the policy itself`);
+    }
   });
 
-  // Cross-reference supersededBy targets
   policies.forEach((policy) => {
-    if (!isRecord(policy)) return;
-    if (policy.supersededBy && !ids.has(policy.supersededBy)) {
-      warnings.push(
+    if (!isRecord(policy) || !isNonEmptyString(policy.supersededBy)) return;
+    if (!ids.has(policy.supersededBy) && !registerIds.has(policy.supersededBy)) {
+      errors.push(
         `${policy.id}: supersededBy "${policy.supersededBy}" does not match a policy id`,
       );
     }
@@ -1498,6 +1564,20 @@ export function validateSourceReviews(
       errors.push(`${label}: invalid discoveredAt`);
     if (!isTimestampString(review.updatedAt))
       errors.push(`${label}: invalid updatedAt`);
+    const targetRecord = review.targetPolicyId
+      ? policiesById.get(review.targetPolicyId)
+      : review.targetTimelineEventId
+        ? timelineEventsById.get(review.targetTimelineEventId)
+        : undefined;
+    const reviewSourceUrls =
+      targetRecord && sourceUrlsEqual(targetRecord.sourceUrl, review.sourceUrl)
+        ? sourceIdentityUrls(
+            targetRecord.sourceUrl,
+            targetRecord.verification?.source,
+          )
+        : [sourceUrlIdentity(review.sourceUrl)];
+    const identifiesReviewSource = (url: string) =>
+      reviewSourceUrls.includes(sourceUrlIdentity(url));
     const rawSourceEvidence = review.sourceEvidence as unknown;
     // SAFETY: isRecord establishes the object boundary; fields are validated below.
     const sourceEvidence = isRecord(rawSourceEvidence)
@@ -1506,7 +1586,7 @@ export function validateSourceReviews(
     if (!sourceEvidence || !isNonEmptyString(sourceEvidence.url)) {
       errors.push(`${label}: sourceEvidence requires a non-empty URL`);
     } else {
-      if (!sourceUrlsEqual(sourceEvidence.url, review.sourceUrl)) {
+      if (!identifiesReviewSource(sourceEvidence.url)) {
         errors.push(`${label}: source evidence URL must match sourceUrl`);
       }
       validateCanonicalSourceUrl(
@@ -1563,10 +1643,9 @@ export function validateSourceReviews(
         );
       }
       if (
-        !sourceUrlsEqual(review.linkedDevelopment.url, review.sourceUrl) ||
-        !sourceUrlsEqual(
+        !identifiesReviewSource(review.linkedDevelopment.url) ||
+        !identifiesReviewSource(
           review.linkedDevelopment.verification.source.url,
-          review.sourceUrl,
         )
       ) {
         errors.push(
@@ -1618,7 +1697,7 @@ export function validateSourceReviews(
       }
       const proposedRecordReport =
         review.entryKind === 'policy'
-          ? validatePolicies([review.proposedRecord as Policy])
+          ? validatePolicies([review.proposedRecord as Policy], policyIds)
           : validateTimeline(
               [review.proposedRecord as TimelineEvent],
               policyIds ??
@@ -1633,6 +1712,17 @@ export function validateSourceReviews(
             );
       errors.push(
         ...proposedRecordReport.errors.map(
+          (error) => `${label}: proposedRecord: ${error}`,
+        ),
+      );
+    }
+    if (
+      review.status === 'pending_review' &&
+      review.entryKind === 'policy' &&
+      isRecord(review.proposedRecord)
+    ) {
+      errors.push(
+        ...proposedDateEvidenceErrors(review.proposedRecord as Policy).map(
           (error) => `${label}: proposedRecord: ${error}`,
         ),
       );

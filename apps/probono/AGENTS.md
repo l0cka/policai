@@ -48,12 +48,17 @@ conventions still apply, but root Policai data/runtime assumptions do not.
   `/home/l0cka/Work/Argus/services/probono-radar/src` is retained as historical
   reference, not a runtime; verify actual systemd working directories and
   container ownership before operations.
-- Do not use the old `ops/deploy.sh` rsync deployment (`rsync --delete`). Legacy
-  runbooks and unit paths are historical until an approved release procedure
-  replaces them. Never sync a dirty checkout over another checkout.
+- The old `ops/deploy.sh` rsync deployment (`rsync --delete`) is removed; do not
+  recreate it. Installed service units are sourced from `ops/host/units/` at the
+  repository root. Legacy runbooks are historical until an approved release
+  procedure replaces them. Never sync a dirty checkout over another checkout.
 - Preserve masks on `probono-digest.service` and `probono-digest.timer`. Never
   unmask, enable or send a digest without explicit approval and verified SMTP
-  configuration. An included timer schedule is not permission to send email.
+  configuration. Do not add tracked digest unit files.
+- `worker/src/digest.ts` is a dry run unless it gets `--send` and
+  `PROBONO_DIGEST_SEND_APPROVED=yes`, and it refuses a second send in the same
+  Sydney week. Set the variable only on explicit approval; never add it to
+  Compose, env files or units.
 - Database migrations, live writes, deployment, timer changes and destructive
   cleanup need separate approval. Preserve external Postgres state, secrets and
   backups through cutover and rollback. Machine enrichment is not editorial

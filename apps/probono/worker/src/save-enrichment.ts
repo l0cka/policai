@@ -1,4 +1,5 @@
 import { closePool, getPool } from './lib/db.js';
+import { recordRejectedEnrichment } from './lib/reject-enrichment.js';
 import { prepareEnrichment } from './lib/types.js';
 
 async function readStdin(): Promise<string> {
@@ -13,18 +14,20 @@ async function main() {
     console.error('usage: tsx src/save-enrichment.ts <item_id>  (JSON Enrichment on stdin)');
     process.exit(2);
   }
+  const reject = async (reason: string): Promise<never> => {
+    console.error(`item ${itemId}: ${reason}`);
+    await recordRejectedEnrichment(getPool(), itemId, reason);
+    await closePool();
+    process.exit(2);
+  };
   let data: unknown;
   try {
     data = JSON.parse(await readStdin());
   } catch (err) {
-    console.error(`malformed JSON: ${err instanceof Error ? err.message : String(err)}`);
-    process.exit(2); // exit 2 for validation/usage errors (malformed agent output)
+    return reject(`malformed JSON: ${err instanceof Error ? err.message : String(err)}`);
   }
   const prepared = prepareEnrichment(data);
-  if (!prepared.ok) {
-    console.error(`validation failed: ${prepared.error}`);
-    process.exit(2);
-  }
+  if (!prepared.ok) return reject(`validation failed: ${prepared.error}`);
   // Invalid dates are dropped, not fatal: the rest of the item still lands.
   for (const d of prepared.dropped) {
     console.error(`item ${itemId}: dropped deadline ${JSON.stringify(d.deadline)}: ${d.reason}`);

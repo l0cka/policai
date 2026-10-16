@@ -43,6 +43,7 @@ import {
   canonicalizeSourceUrl,
   isAllowedSourceHost,
   parseSourceUrl,
+  sourceIdentityUrls,
   sourceUrlIdentity,
   sourceUrlsEqual,
 } from '@/lib/source-url';
@@ -378,7 +379,7 @@ function recoverPersistedDocumentTransitions(
     if (!sourceId) continue;
     const candidate: Candidate = {
       title: review.title,
-      url: review.sourceUrl,
+      url: review.linkedDevelopment?.url ?? review.sourceUrl,
       text: review.analysis.summary,
       changeFingerprint: `${contentHash}:${changeCount}`,
     };
@@ -461,6 +462,18 @@ function recoverPersistedDocumentTransitions(
       state.lastCheckedBySource[sourceId] = recoveredCheckedAt;
     }
   }
+}
+
+function recordsByIdentityUrl<
+  T extends { sourceUrl: string; verification: { source: SourceEvidence } },
+>(records: readonly T[]): Map<string, T> {
+  return new Map(
+    records.flatMap((record) =>
+      sourceIdentityUrls(record.sourceUrl, record.verification.source).map(
+        (url) => [url, record] as const,
+      ),
+    ),
+  );
 }
 
 function supersedeOlderDocumentCandidates(
@@ -701,7 +714,7 @@ function buildReviewCandidate(
 
   return {
     id: `source-review-${development.id}`,
-    sourceUrl: candidate.url,
+    sourceUrl: existingPolicy?.sourceUrl ?? candidate.url,
     title: candidate.title,
     entryKind: 'policy',
     targetPolicyId: existingPolicy?.id,
@@ -742,9 +755,59 @@ function buildReviewCandidate(
   };
 }
 
+type ChangeDetectionReason = 'changed' | 'baseline_missing' | 'baseline_reversion';
+
+type TrackedChangeTarget =
+  | { kind: 'policy'; record: Policy }
+  | { kind: 'timeline_event'; record: TimelineEvent };
+
+function changeDetectionReason(
+  record: Policy | TimelineEvent,
+  contentHash: string | undefined,
+): ChangeDetectionReason {
+  const verifiedHash = record.verification.source.contentHash;
+  if (!verifiedHash) return 'baseline_missing';
+  return contentHash === verifiedHash ? 'baseline_reversion' : 'changed';
+}
+
+function changeDetectionClassification(
+  target: TrackedChangeTarget,
+  reason: ChangeDetectionReason,
+): Classification {
+  const shared = {
+    isRelevant: true,
+    relevanceScore: 1,
+    classification: 'heuristic',
+    assessment: {
+      method: 'heuristic',
+      promptVersion: 'source-hash-change-v1',
+    },
+  } as const;
+  if (target.kind === 'policy') {
+    const policy = target.record;
+    return {
+      ...shared,
+      summary: changedDocumentReviewSummary(policy, reason),
+      suggestedType: policy.type,
+      suggestedJurisdiction: policy.jurisdiction,
+      tags: policy.tags,
+      agencies: policy.agencies,
+    };
+  }
+  const event = target.record;
+  return {
+    ...shared,
+    summary: changedTimelineDocumentReviewSummary(event, reason),
+    suggestedType: undefined,
+    suggestedJurisdiction: event.jurisdiction,
+    tags: [],
+    agencies: [],
+  };
+}
+
 function changedDocumentReviewSummary(
   policy: Policy,
-  reason: 'changed' | 'baseline_missing' | 'baseline_reversion',
+  reason: ChangeDetectionReason,
 ): string {
   if (reason === 'baseline_missing') {
     return `The verified register record for "${policy.title}" has no stored source fingerprint. The currently served document requires editorial comparison before it can establish a trusted baseline.`;
@@ -762,7 +825,7 @@ function buildChangedDocumentReview(
   contentHash: string,
   changeCount: number,
   nowIso: string,
-  reason: 'changed' | 'baseline_missing' | 'baseline_reversion' = 'changed',
+  reason: ChangeDetectionReason = 'changed',
 ): {
   candidate: Candidate;
   development: Development;
@@ -774,21 +837,10 @@ function buildChangedDocumentReview(
     text: policy.description,
     changeFingerprint: `${contentHash}:${changeCount}`,
   };
-  const summary = changedDocumentReviewSummary(policy, reason);
-  const classification: Classification = {
-    isRelevant: true,
-    relevanceScore: 1,
-    classification: 'heuristic',
-    summary,
-    suggestedType: policy.type,
-    suggestedJurisdiction: policy.jurisdiction,
-    tags: policy.tags,
-    agencies: policy.agencies,
-    assessment: {
-      method: 'heuristic',
-      promptVersion: 'source-hash-change-v1',
-    },
-  };
+  const classification = changeDetectionClassification(
+    { kind: 'policy', record: policy },
+    reason,
+  );
   const development = buildDevelopment(
     candidate,
     source,
@@ -813,7 +865,7 @@ function buildChangedDocumentReview(
 
 function changedTimelineDocumentReviewSummary(
   event: TimelineEvent,
-  reason: 'changed' | 'baseline_missing' | 'baseline_reversion',
+  reason: ChangeDetectionReason,
 ): string {
   if (reason === 'baseline_missing') {
     return `The verified timeline event for "${event.title}" has no stored source fingerprint. The currently served document requires editorial comparison before it can establish a trusted baseline.`;
@@ -831,7 +883,7 @@ function buildChangedTimelineDocumentReview(
   contentHash: string,
   changeCount: number,
   nowIso: string,
-  reason: 'changed' | 'baseline_missing' | 'baseline_reversion' = 'changed',
+  reason: ChangeDetectionReason = 'changed',
 ): {
   candidate: Candidate;
   development: Development;
@@ -844,20 +896,10 @@ function buildChangedTimelineDocumentReview(
     changeFingerprint: `${contentHash}:${changeCount}`,
   };
   const summary = changedTimelineDocumentReviewSummary(event, reason);
-  const classification: Classification = {
-    isRelevant: true,
-    relevanceScore: 1,
-    classification: 'heuristic',
-    summary,
-    suggestedType: undefined,
-    suggestedJurisdiction: event.jurisdiction,
-    tags: [],
-    agencies: [],
-    assessment: {
-      method: 'heuristic',
-      promptVersion: 'source-hash-change-v1',
-    },
-  };
+  const classification = changeDetectionClassification(
+    { kind: 'timeline_event', record: event },
+    reason,
+  );
   const development = buildDevelopment(
     candidate,
     source,
@@ -873,7 +915,7 @@ function buildChangedTimelineDocumentReview(
     development,
     review: {
       id: `source-review-${development.id}`,
-      sourceUrl: candidate.url,
+      sourceUrl: event.sourceUrl,
       title: candidate.title,
       entryKind: 'timeline_event',
       targetTimelineEventId: event.id,
@@ -1120,11 +1162,29 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     options.sourceReviews ?? [],
     catalogSources,
   );
+  const trackedPoliciesByUrl = recordsByIdentityUrl(
+    options.trackedPolicies ?? [],
+  );
+  const trackedTimelineEventsByUrl = recordsByIdentityUrl(
+    options.trackedTimelineEvents ?? [],
+  );
+  const trackedChangeTarget = (
+    candidate: Candidate,
+  ): TrackedChangeTarget | undefined => {
+    if (!candidate.changeFingerprint) return undefined;
+    const identity = sourceUrlIdentity(candidate.url);
+    const policy = trackedPoliciesByUrl.get(identity);
+    if (policy) return { kind: 'policy', record: policy };
+    const event = trackedTimelineEventsByUrl.get(identity);
+    return event ? { kind: 'timeline_event', record: event } : undefined;
+  };
   const knownPublishedUrls = new Set([
     ...options.existingDevelopments.map((development) =>
       sourceUrlIdentity(development.url),
     ),
     ...(options.trackedUrls ?? []).map(sourceUrlIdentity),
+    ...trackedPoliciesByUrl.keys(),
+    ...trackedTimelineEventsByUrl.keys(),
   ]);
   const knownHeadlineKeys = new Set(
     options.existingDevelopments
@@ -1136,18 +1196,6 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         ),
       )
       .filter((value): value is string => Boolean(value)),
-  );
-  const trackedPoliciesByUrl = new Map(
-    (options.trackedPolicies ?? []).map((policy) => [
-      sourceUrlIdentity(policy.sourceUrl),
-      policy,
-    ]),
-  );
-  const trackedTimelineEventsByUrl = new Map(
-    (options.trackedTimelineEvents ?? []).map((event) => [
-      sourceUrlIdentity(event.sourceUrl),
-      event,
-    ]),
   );
   const existingDevelopmentsById = new Map(
     options.existingDevelopments.map((development) => [
@@ -1274,64 +1322,67 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
       );
     }
 
-    if (due) {
+    const attemptIndexRetrieval = async (
+      impl: typeof fetch | undefined,
+      timeoutMs?: number,
+    ) => {
+      const retrieval = await retrieveSource(source.url, {
+        fetchImpl: impl,
+        now: () => now,
+        hashLinkedDocuments: source.kind === 'document',
+        identityAuthority,
+        ...(timeoutMs !== undefined ? { timeoutMs } : {}),
+      });
+      const extracted =
+        source.kind === 'document'
+          ? null
+          : source.kind === 'rss'
+            ? extractFromRss(retrieval.body, source.url, {
+                titlePattern: source.bodyRelevance?.titlePattern,
+              })
+            : extractFromHtml(retrieval.body, source.url);
+      return { retrieval, extracted };
+    };
+    const retrieveSourceIndex = async () => {
+      if (preferBrowser) {
+        return attemptIndexRetrieval(
+          browserFetchImpl,
+          BROWSER_RETRIEVAL_TIMEOUT_MS,
+        );
+      }
       try {
-        const attemptIndexRetrieval = async (
-          impl: typeof fetch | undefined,
-          timeoutMs?: number,
-        ) => {
-          const retrieval = await retrieveSource(source.url, {
-            fetchImpl: impl,
-            now: () => now,
-            hashLinkedDocuments: source.kind === 'document',
-            identityAuthority,
-            ...(timeoutMs !== undefined ? { timeoutMs } : {}),
-          });
-          const extracted =
-            source.kind === 'document'
-              ? null
-              : source.kind === 'rss'
-                ? extractFromRss(retrieval.body, source.url, {
-                    titlePattern: source.bodyRelevance?.titlePattern,
-                  })
-                : extractFromHtml(retrieval.body, source.url);
-          return { retrieval, extracted };
-        };
-        let indexAttempt: Awaited<ReturnType<typeof attemptIndexRetrieval>>;
-        if (preferBrowser) {
-          indexAttempt = await attemptIndexRetrieval(
+        const indexAttempt = await attemptIndexRetrieval(fetchImpl);
+        if (
+          browserFetchImpl &&
+          indexAttempt.extracted?.itemCount === 0 &&
+          !indexAttempt.extracted.feedValid
+        ) {
+          log(
+            `[collect] ${source.id}: empty index, retrying with the browser retriever`,
+          );
+          return await attemptIndexRetrieval(
             browserFetchImpl,
             BROWSER_RETRIEVAL_TIMEOUT_MS,
           );
-        } else {
-          try {
-            indexAttempt = await attemptIndexRetrieval(fetchImpl);
-            if (
-              browserFetchImpl &&
-              indexAttempt.extracted?.itemCount === 0 &&
-              !indexAttempt.extracted.feedValid
-            ) {
-              log(
-                `[collect] ${source.id}: empty index, retrying with the browser retriever`,
-              );
-              indexAttempt = await attemptIndexRetrieval(
-                browserFetchImpl,
-                BROWSER_RETRIEVAL_TIMEOUT_MS,
-              );
-            }
-          } catch (error) {
-            if (!browserFetchImpl || isBrowserFallbackFutile(error)) {
-              throw error;
-            }
-            log(
-              `[collect] ${source.id}: retrying source with the browser retriever`,
-            );
-            indexAttempt = await attemptIndexRetrieval(
-              browserFetchImpl,
-              BROWSER_RETRIEVAL_TIMEOUT_MS,
-            );
-          }
         }
+        return indexAttempt;
+      } catch (error) {
+        if (!browserFetchImpl || isBrowserFallbackFutile(error)) {
+          throw error;
+        }
+        log(
+          `[collect] ${source.id}: retrying source with the browser retriever`,
+        );
+        return attemptIndexRetrieval(
+          browserFetchImpl,
+          BROWSER_RETRIEVAL_TIMEOUT_MS,
+        );
+      }
+    };
+
+    if (due) {
+      try {
+        const indexAttempt = await retrieveSourceIndex();
         sourceRetrieval = indexAttempt.retrieval;
         const indexExtraction = indexAttempt.extracted;
         if (source.kind === 'document') {
@@ -1584,20 +1635,16 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
       `[collect] ${source.id}: ${candidateCount} candidates, ${newCandidateCount} new, ${pending.length} pending`,
     );
 
-    // Claude classification runs once for this source's surviving (deduped)
-    // candidates rather than inside the per-candidate loop below — see
-    // classifyCandidatesWithClaude's doc comment for why per-candidate calls
-    // would be a real cost regression. A ClaudeAuthError here is intentionally
-    // not caught: it propagates out of collect() and fails the run, since a
-    // human needs to re-authenticate rather than the collector papering over it.
     const claudeVerdictsById: Map<string, ClaudeVerdict> | null =
       useClaudeClassifier && !source.bodyRelevance
         ? await classifyCandidatesWithClaude(
-            candidates.map((candidate) => ({
-              id: candidateStateKey(candidate),
-              title: candidate.title,
-              text: candidate.text,
-            })),
+            candidates
+              .filter((candidate) => !trackedChangeTarget(candidate))
+              .map((candidate) => ({
+                id: candidateStateKey(candidate),
+                title: candidate.title,
+                text: candidate.text,
+              })),
             source.name,
           )
         : null;
@@ -1613,21 +1660,19 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
 
       let pageRetrieval: RetrievedSource;
       let document: Awaited<ReturnType<typeof extractRetrievedDocument>>;
-      let existingPolicy: Policy | undefined;
-      let existingTimelineEvent: TimelineEvent | undefined;
+      const changeTarget = trackedChangeTarget(candidate);
+      const existingPolicy =
+        changeTarget?.kind === 'policy' ? changeTarget.record : undefined;
+      const existingTimelineEvent =
+        changeTarget?.kind === 'timeline_event'
+          ? changeTarget.record
+          : undefined;
       try {
         pageRetrieval =
           source.kind === 'document' &&
-          sourceUrlsEqual(candidate.url, source.url) &&
-          sourceRetrieval
-            ? sourceRetrieval
+          sourceUrlsEqual(candidate.url, source.url)
+            ? sourceRetrieval ?? (await retrieveSourceIndex()).retrieval
             : await retrievePageWithFallback(candidate.url);
-        existingPolicy = candidate.changeFingerprint
-          ? trackedPoliciesByUrl.get(sourceUrlIdentity(candidate.url))
-          : undefined;
-        existingTimelineEvent = candidate.changeFingerprint && !existingPolicy
-          ? trackedTimelineEventsByUrl.get(sourceUrlIdentity(candidate.url))
-          : undefined;
         const expectedVersion = parseChangeFingerprint(
           candidate.changeFingerprint,
         );
@@ -1732,11 +1777,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
           candidate.dateHintPrecision,
       };
       state.seen[candidateStateKey(candidate)].candidate = enrichedCandidate;
-      if (
-        source.kind === 'document' &&
-        candidate.changeFingerprint &&
-        (existingPolicy || existingTimelineEvent)
-      ) {
+      if (source.kind === 'document' && changeTarget) {
         const contentHash = pageRetrieval.evidence.contentHash;
         const parsedFingerprint = parseChangeFingerprint(
           candidate.changeFingerprint,
@@ -1757,57 +1798,26 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         state.lastCheckedBySource[source.id] = nowIso;
       }
 
-      const initialClassification = source.bodyRelevance
-        ? classifyByBodyMentions(
-            enrichedCandidate,
-            document.text,
-            source.bodyRelevance.minAiMentions,
-          )
-        : useClaudeClassifier
-          ? classificationFromVerdict(
-              claudeVerdictsById?.get(candidateStateKey(candidate)),
-              enrichedCandidate,
-            )
-          : await classifyCandidate(enrichedCandidate, document.text);
-      const classification: Classification = existingPolicy
-        ? {
-            ...initialClassification,
-            isRelevant: true,
-            relevanceScore: 1,
-            summary: changedDocumentReviewSummary(
-              existingPolicy,
-              !existingPolicy.verification.source.contentHash
-                ? 'baseline_missing'
-                : pageRetrieval.evidence.contentHash ===
-                    existingPolicy.verification.source.contentHash
-                  ? 'baseline_reversion'
-                  : 'changed',
+      const classification: Classification = changeTarget
+        ? changeDetectionClassification(
+            changeTarget,
+            changeDetectionReason(
+              changeTarget.record,
+              pageRetrieval.evidence.contentHash,
             ),
-            suggestedType: existingPolicy.type,
-            suggestedJurisdiction: existingPolicy.jurisdiction,
-            tags: existingPolicy.tags,
-            agencies: existingPolicy.agencies,
-          }
-        : existingTimelineEvent
-          ? {
-              ...initialClassification,
-              isRelevant: true,
-              relevanceScore: 1,
-              summary: changedTimelineDocumentReviewSummary(
-                existingTimelineEvent,
-                !existingTimelineEvent.verification.source.contentHash
-                  ? 'baseline_missing'
-                  : pageRetrieval.evidence.contentHash ===
-                      existingTimelineEvent.verification.source.contentHash
-                    ? 'baseline_reversion'
-                    : 'changed',
-              ),
-              suggestedType: undefined,
-              suggestedJurisdiction: existingTimelineEvent.jurisdiction,
-              tags: [],
-              agencies: [],
-            }
-        : initialClassification;
+          )
+        : source.bodyRelevance
+          ? classifyByBodyMentions(
+              enrichedCandidate,
+              document.text,
+              source.bodyRelevance.minAiMentions,
+            )
+          : useClaudeClassifier
+            ? classificationFromVerdict(
+                claudeVerdictsById?.get(candidateStateKey(candidate)),
+                enrichedCandidate,
+              )
+            : await classifyCandidate(enrichedCandidate, document.text);
       if (
         !classification.isRelevant ||
         classification.relevanceScore < minScoreForDevelopment
@@ -1857,12 +1867,10 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
                 parsedFingerprint.contentHash,
                 parsedFingerprint.changeCount,
                 nowIso,
-                !existingTimelineEvent.verification.source.contentHash
-                  ? 'baseline_missing'
-                  : pageRetrieval.evidence.contentHash ===
-                      existingTimelineEvent.verification.source.contentHash
-                    ? 'baseline_reversion'
-                    : 'changed',
+                changeDetectionReason(
+                  existingTimelineEvent,
+                  pageRetrieval.evidence.contentHash,
+                ),
               ).review,
               sourceEvidence: sourceEvidence(
                 pageRetrieval.evidence,

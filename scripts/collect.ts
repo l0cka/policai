@@ -1,8 +1,8 @@
 /**
  * Collector CLI — runs one collection pass over the watch sources and
- * persists the results to the repo's data files. In production this runs
- * in the daily GitHub Actions workflow, which commits the changes; run it
- * locally with --dry-run to preview.
+ * persists the results to the repo's data files. In production the host
+ * wrapper ops/collector/policai-collect.sh runs it; run it locally with
+ * --dry-run to preview.
  *
  * Usage:
  *   npx tsx scripts/collect.ts [--dry-run] [--source=<id>] [--max-items=<n>]
@@ -142,17 +142,9 @@ async function main() {
       trackedTimelineEvents: timelineEvents,
       sourceReviews: reviews,
       browserFetchImpl: browserFetch?.fetchImpl,
-      trackedUrls: [
-        ...policies.flatMap((policy) =>
-          sourceIdentityUrls(policy.sourceUrl, policy.verification.source),
-        ),
-        ...timelineEvents.flatMap((event) =>
-          sourceIdentityUrls(event.sourceUrl, event.verification.source),
-        ),
-        ...reviews.flatMap((review) =>
-          sourceIdentityUrls(review.sourceUrl, review.sourceEvidence),
-        ),
-      ],
+      trackedUrls: reviews.flatMap((review) =>
+        sourceIdentityUrls(review.sourceUrl, review.sourceEvidence),
+      ),
       previousMeta: meta ?? undefined,
       maxItemsPerSource: options.maxItems,
       force: Boolean(options.sourceId),

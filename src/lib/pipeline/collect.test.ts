@@ -839,6 +839,91 @@ describe('collect', () => {
     ).toBe(3);
   });
 
+  it('stages a targeted review and withholds the policy when a document source is a verification alias', async () => {
+    const canonicalUrl = 'https://www.example.gov.au/policies/ai-governance-current';
+    const trackedPolicy = buildPolicy({
+      id: 'tracked-alias-policy',
+      title: 'Test AI governance policy',
+      sourceUrl: canonicalUrl,
+      verification: {
+        status: 'verified',
+        checkedAt: '2026-10-01T00:00:00.000Z',
+        checkedBy: 'reviewer',
+        method: 'manual',
+        source: {
+          url: canonicalUrl,
+          finalUrl: DOCUMENT_SOURCE.url,
+          contentHash: 'a'.repeat(64),
+        },
+      },
+    });
+
+    const result = await collect({
+      sources: [DOCUMENT_SOURCE],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      trackedPolicies: [trackedPolicy],
+      fetchImpl: fakeFetch({
+        [DOCUMENT_SOURCE.url]:
+          '<html><body><main><h1>AI governance policy</h1><p>Version two adds assurance.</p></main></body></html>',
+      }),
+      now: () => new Date('2026-10-10T00:00:00.000Z'),
+    });
+
+    expect(result.reviewCandidates).toHaveLength(1);
+    expect(result.reviewCandidates[0]).toMatchObject({
+      targetPolicyId: trackedPolicy.id,
+      proposedRecord: { id: trackedPolicy.id, sourceUrl: canonicalUrl },
+    });
+    expect(
+      validateSourceReviews(result.reviewCandidates, {
+        policies: [trackedPolicy],
+        timelineEvents: [],
+      }).errors,
+    ).toEqual([]);
+
+    const rerun = await collect({
+      sources: [DOCUMENT_SOURCE],
+      state: result.state,
+      existingDevelopments: result.developments,
+      trackedPolicies: [trackedPolicy],
+      sourceReviews: result.reviewCandidates,
+      fetchImpl: fakeFetch({
+        [DOCUMENT_SOURCE.url]:
+          '<html><body><main><h1>AI governance policy</h1><p>Version two adds assurance.</p></main></body></html>',
+      }),
+      now: () => new Date('2026-10-17T00:00:00.000Z'),
+    });
+    expect(rerun.reviewCandidates).toEqual([]);
+    expect(
+      Object.values(rerun.state.seen).filter(
+        (entry) => entry.sourceId === DOCUMENT_SOURCE.id,
+      ),
+    ).toHaveLength(1);
+
+    let sourceReviews: SourceReview[] = [];
+    vi.doMock('@/lib/file-store', () => ({
+      readJsonFile: async (filePath: string, fallback: unknown) =>
+        filePath.endsWith('policies.json')
+          ? [trackedPolicy]
+          : filePath.endsWith('source-reviews.json')
+            ? sourceReviews
+            : fallback,
+      writeJsonFile: vi.fn(),
+    }));
+    try {
+      vi.resetModules();
+      const { getPolicies } = await import('../data-service');
+      expect((await getPolicies()).map((policy) => policy.id)).toEqual([
+        trackedPolicy.id,
+      ]);
+      sourceReviews = result.reviewCandidates;
+      expect(await getPolicies()).toEqual([]);
+    } finally {
+      vi.doUnmock('@/lib/file-store');
+    }
+  });
+
   it('compares a first document snapshot with the verified policy fingerprint', async () => {
     const trackedPolicy = buildPolicy({
       id: 'tracked-document-policy',
@@ -1285,6 +1370,95 @@ describe('collect', () => {
     expect(
       exhaustedVersion.state.lastCheckedBySource[DOCUMENT_SOURCE.id],
     ).toBe('2026-07-01T00:00:00.000Z');
+  });
+
+  it('retries a pending browser-strategy document version through the source retriever, not Firecrawl', async () => {
+    const browserDocument: WatchSource = {
+      ...DOCUMENT_SOURCE,
+      fetchStrategy: 'browser',
+    };
+    const baseline = await collect({
+      sources: [browserDocument],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl: fakeFetch({}),
+      browserFetchImpl: fakeFetch({
+        [DOCUMENT_SOURCE.url]:
+          '<html><body><main><h1>AI governance policy</h1><p>Version one.</p></main></body></html>',
+      }),
+      now: () => new Date('2026-07-01T00:00:00.000Z'),
+    });
+    const trackedPolicy = buildPolicy({
+      id: 'tracked-browser-document-policy',
+      sourceUrl: DOCUMENT_SOURCE.url,
+      verification: {
+        status: 'verified',
+        checkedAt: '2026-07-01T00:00:00.000Z',
+        checkedBy: 'reviewer',
+        method: 'manual',
+        source: {
+          url: DOCUMENT_SOURCE.url,
+          contentHash:
+            baseline.state.sourceSnapshots[DOCUMENT_SOURCE.id].contentHash,
+        },
+      },
+    });
+    const unreadableChange = fakeFetch({
+      [DOCUMENT_SOURCE.url]: {
+        body: Uint8Array.from([0x25, 0x50, 0x44, 0x46, 0x2d, 0x00]),
+        contentType: 'application/pdf',
+      },
+    });
+
+    const staged = await collect({
+      sources: [browserDocument],
+      state: baseline.state,
+      existingDevelopments: [],
+      trackedUrls: [DOCUMENT_SOURCE.url],
+      trackedPolicies: [trackedPolicy],
+      fetchImpl: fakeFetch({}),
+      browserFetchImpl: unreadableChange,
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+    });
+    const versionKeys = (state: WatchState) =>
+      Object.keys(state.seen).filter((key) => key.includes('policai-change='));
+    const [pendingVersion] = versionKeys(staged.state);
+    expect(versionKeys(staged.state)).toEqual([pendingVersion]);
+    expect(staged.state.seen[pendingVersion].status).toBe('pending');
+    expect(staged.reviewCandidates).toHaveLength(1);
+
+    const notDueState: WatchState = {
+      ...staged.state,
+      lastCheckedBySource: {
+        ...staged.state.lastCheckedBySource,
+        [DOCUMENT_SOURCE.id]: '2026-07-10T00:00:00.000Z',
+      },
+    };
+    scrapeWithFirecrawl.mockImplementation(async (url: string) => ({
+      ok: true,
+      markdown: '# AI governance policy\n\nFirecrawl markdown rendering.',
+      title: 'AI governance policy',
+      finalUrl: url,
+    }));
+
+    const retried = await collect({
+      sources: [browserDocument],
+      state: notDueState,
+      existingDevelopments: staged.developments,
+      trackedUrls: [DOCUMENT_SOURCE.url],
+      trackedPolicies: [trackedPolicy],
+      fetchImpl: fakeFetch({}),
+      browserFetchImpl: unreadableChange,
+      now: () => new Date('2026-07-11T00:00:00.000Z'),
+    });
+
+    expect(retried.reviewCandidates).toEqual([]);
+    expect(retried.developments).toEqual([]);
+    expect(versionKeys(retried.state)).toEqual([pendingVersion]);
+    expect(retried.state.seen[pendingVersion].status).toBe('pending');
+    expect(retried.state.sourceSnapshots[DOCUMENT_SOURCE.id]).toEqual(
+      staged.state.sourceSnapshots[DOCUMENT_SOURCE.id],
+    );
   });
 
   it('keeps a successfully classified update unresolved until editorial publication', async () => {
@@ -2876,6 +3050,92 @@ describe('collect with Claude classifier', () => {
       MACHINE_CONFIDENCE_CAP,
     );
   });
+
+  it.each([
+    {
+      kind: 'policy',
+      tracked: {
+        trackedPolicies: [
+          buildPolicy({
+            id: 'tracked-ai-path-policy',
+            sourceUrl: DOCUMENT_SOURCE.url,
+            verification: {
+              status: 'verified',
+              checkedAt: '2026-07-01T00:00:00.000Z',
+              checkedBy: 'reviewer',
+              method: 'manual',
+              source: { url: DOCUMENT_SOURCE.url, contentHash: 'a'.repeat(64) },
+            },
+          }),
+        ],
+      },
+      target: { targetPolicyId: 'tracked-ai-path-policy' },
+    },
+    {
+      kind: 'timeline event',
+      tracked: {
+        trackedTimelineEvents: [
+          buildTimelineEvent({
+            id: 'tracked-ai-path-event',
+            sourceUrl: DOCUMENT_SOURCE.url,
+            verification: {
+              status: 'verified',
+              checkedAt: '2026-07-01T00:00:00.000Z',
+              checkedBy: 'reviewer',
+              method: 'manual',
+              source: { url: DOCUMENT_SOURCE.url, contentHash: 'a'.repeat(64) },
+            },
+          }),
+        ],
+      },
+      target: { targetTimelineEventId: 'tracked-ai-path-event' },
+    },
+  ])(
+    'keeps a tracked $kind change detection editor-gated whatever the model says',
+    async ({ tracked, target }) => {
+      vi.stubEnv('USE_CLAUDE_CLASSIFIER', '1');
+      classifyBatch.mockImplementation(async (candidates: { id: string }[]) =>
+        candidates.map((candidate) => ({
+          id: candidate.id,
+          relevant: false,
+          confidence: 0.1,
+          jurisdiction: null,
+          type: null,
+          summary: 'Model says irrelevant.',
+        })),
+      );
+
+      const result = await collect({
+        sources: [DOCUMENT_SOURCE],
+        state: emptyWatchState(),
+        existingDevelopments: [],
+        trackedUrls: [DOCUMENT_SOURCE.url],
+        ...tracked,
+        fetchImpl: fakeFetch({
+          [DOCUMENT_SOURCE.url]:
+            '<html><body><main><h1>AI governance policy</h1><p>Changed since editorial verification.</p></main></body></html>',
+        }),
+        now: () => new Date('2026-07-10T00:00:00.000Z'),
+      });
+
+      expect(result.developments).toHaveLength(1);
+      expect(result.developments[0]).toMatchObject({
+        classification: 'heuristic',
+        relevanceScore: 1,
+        assessment: {
+          method: 'heuristic',
+          promptVersion: 'source-hash-change-v1',
+        },
+      });
+      expect(result.reviewCandidates).toEqual([
+        expect.objectContaining({
+          ...target,
+          analysis: expect.objectContaining({ relevanceScore: 1 }),
+        }),
+      ]);
+      expect(classifyBatch.mock.calls.flat(2)).toEqual([]);
+    },
+  );
 
   it('keeps the deterministic heuristic path when the flag is unset', async () => {
     const result = await collectWithOneCandidate();
