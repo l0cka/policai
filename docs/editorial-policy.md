@@ -148,13 +148,22 @@ register record and official URL it uses appears in the frontmatter `cites`
 and `sources`. A figure never adds a number the sources do not state, and
 a figure's analysis is marked as analysis like any other.
 
+A chart drawn from register data counts the live public register, so its
+numbers change as the register does. It cites the register as a whole
+("Policai register, N public records, as at <date>"), not a list of records.
+The prose must not restate the chart's exact numbers, so the text cannot go
+stale as the counts change. Say what the chart shows ("most records are
+federal") and leave the figures to the chart. The Writer and the Editorial
+Manager check this.
+
 Figure support is not built yet
 ([#270](https://github.com/l0cka/policai/issues/270)). Until it is on
 `main`, each sentence in this section that names the platform or validation
 states a requirement the platform must meet: it must render figures from the
 article Markdown, reject a figure with no caption or alt text, apply the
-citation rule to a figure's records, and show the "Source under review"
-banner when a record a figure uses becomes withheld or stale.
+citation rule to a figure's records, count the public register live for a
+register chart and show the register-wide citation, and show the "Source
+under review" banner when a record a figure uses becomes withheld or stale.
 
 ## Citations
 
