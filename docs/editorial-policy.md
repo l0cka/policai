@@ -205,6 +205,10 @@ requirement the platform must meet.
   Creative Commons, and any image whose licence is unclear.
 - Prefer Wikimedia Commons, Openverse, and government sites that publish under
   CC BY 4.0.
+- A site-wide CC BY notice is not enough. Confirm that the licence covers
+  the image itself; government notices commonly exclude photographs, logos,
+  the Coat of Arms and third-party material. If the image's own licence is
+  not stated, treat it as unclear.
 - Check the licence on the file's own page, not on a search result or an
   aggregator. Record the date of that check as `licenceCheckedAt`. Check it
   again whenever the image is changed.
@@ -213,7 +217,7 @@ requirement the platform must meet.
 
 - The source file is at least 2048 px on its long edge.
 - The repository keeps one master per image, re-encoded to 2048 px on the long
-  edge. The site serves smaller sizes from that master.
+  edge. The platform must serve smaller sizes from that master.
 
 ### Attribution
 
@@ -221,6 +225,9 @@ Each image records its title, creator and creator URL, source page URL,
 licence and licence URL, any modifications (for example "cropped") and
 `licenceCheckedAt`. Copy these from the source page. Never guess a licence
 field.
+
+A modified CC BY-SA image is shared under the same CC BY-SA licence, and its
+attribution says so.
 
 The platform must render a TASL attribution under the image: title, author,
 source and licence, each linked, and the modifications. Validation must
@@ -233,7 +240,8 @@ reject an image whose licence is not on the allowed list.
   official seals as lead images.
 - No identifiable private individuals. Public officials may appear only in
   official images of the public role that the piece discusses.
-- No AI-generated or AI-altered images, apart from cropping and resizing.
+- No AI-generated or AI-altered images. Cropping and resizing are the only
+  permitted changes.
 - Alt text describes what the image shows, in one plain sentence. It does not
   repeat the title or caption, and it does not interpret the image.
 
