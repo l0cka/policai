@@ -124,39 +124,54 @@ describe("data-service articles", () => {
 				updatedAt: "2026-07-01T00:00:00.000Z",
 			}),
 		);
-		const latest = buildPolicy({
-			id: "fixture-latest",
+		const later = buildPolicy({
+			id: "fixture-later",
 			jurisdiction: "qld",
-			sourceUrl: "https://www.example.gov.au/latest",
-			updatedAt: "2026-07-15T14:30:00.000Z",
+			sourceUrl: "https://www.example.gov.au/later",
+			updatedAt: "2026-07-20T00:00:00.000Z",
+		});
+		const now = new Date("2026-07-16T12:00:00.000Z");
+
+		async function chartAt(at: Date) {
+			const { getArticleBySlug } = await load();
+			return (await getArticleBySlug("figure-kinds-published", { now: at }))?.registerCharts[4];
+		}
+
+		it.each([
+			["2026-07-16T13:59:59.000Z", "2026-07-16"],
+			["2026-07-16T14:00:00.000Z", "2026-07-17"],
+			["2027-01-15T12:59:59.000Z", "2027-01-15"],
+			["2027-01-15T13:00:00.000Z", "2027-01-16"],
+		])("is the Sydney calendar day of the render at %s", async (at, day) => {
+			serve(records);
+			expect((await chartAt(new Date(at)))?.asAt).toBe(day);
 		});
 
-		it("comes from the latest updatedAt including a trashed record, which is not counted", async () => {
-			serve([...records, { ...latest, status: "trashed" }]);
-			const { getArticleBySlug } = await load();
-			const chart = (await getArticleBySlug("figure-kinds-published"))?.registerCharts[4];
+		it.each([
+			["a trashed", () => serve([...records, { ...later, status: "trashed" }])],
+			["an unverified", () => serve([...records, { ...later, verification: { ...later.verification, status: "needs_review" } }])],
+			[
+				"a withheld",
+				() =>
+					serve(
+						[...records, later],
+						[
+							{
+								id: "fixture-review",
+								status: "pending_review",
+								entryKind: "policy",
+								targetPolicyId: later.id,
+								sourceUrl: later.sourceUrl,
+							},
+						],
+					),
+			],
+		])("ignores a later edit to %s record, which is not counted", async (_state, arrange) => {
+			arrange();
+			const chart = await chartAt(now);
 			expect(chart?.asAt).toBe("2026-07-16");
 			expect(chart?.total).toBe(3);
 			expect(chart?.bars.map((bar) => bar.value)).not.toContain("qld");
-		});
-
-		it("comes from the latest updatedAt including a withheld record, which is not counted", async () => {
-			serve(
-				[...records, latest],
-				[
-					{
-						id: "fixture-review",
-						status: "pending_review",
-						entryKind: "policy",
-						targetPolicyId: latest.id,
-						sourceUrl: latest.sourceUrl,
-					},
-				],
-			);
-			const { getArticleBySlug } = await load();
-			const chart = (await getArticleBySlug("figure-kinds-published"))?.registerCharts[4];
-			expect(chart?.asAt).toBe("2026-07-16");
-			expect(chart?.total).toBe(3);
 		});
 	});
 });
