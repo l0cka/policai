@@ -49,7 +49,7 @@ Policai is an Australian AI policy tracker. It maintains a curated register of A
 - **Data:** public-safe JSON in `public/data/`; editorial and collector JSON in
   `data/`, all canonical and versioned
 - **Retrieval:** plain HTTP first; self-hosted Firecrawl for candidate pages on browser-strategy sources, falling back to headless Chromium (Playwright); index and RSS listing pages always use headless Chromium directly. Every path sends the collector identity `Policai/1.0 (+https://policai.org)` (`src/lib/pipeline/identity.ts`; see Collector identity below)
-- **Analysis:** keyword heuristic by default; Claude, an Anthropic model, batched through the Claude Code CLI on the collection host when `USE_CLAUDE_CLASSIFIER` is set — both classifier paths cap stored/displayed confidence at 0.65 (`MACHINE_CONFIDENCE_CAP`); direct-document change detections on tracked records store `relevanceScore: 1` by design (change-certainty, not classifier confidence) and stay editor-gated
+- **Analysis:** keyword heuristic by default; Claude, an Anthropic model, batched through an OpenAI-compatible chat-completions endpoint (`src/lib/pipeline/classifier-cli.ts`) when `USE_CLAUDE_CLASSIFIER` is set — both classifier paths cap stored/displayed confidence at 0.65 (`MACHINE_CONFIDENCE_CAP`); direct-document change detections on tracked records store `relevanceScore: 1` by design (change-certainty, not classifier confidence) and stay editor-gated
 - **Scraping:** Cheerio
 - **Testing:** Vitest (+ Testing Library)
 - **Automation:** a daily scheduled run on the maintainer's server
@@ -97,7 +97,7 @@ src/
 │   ├── analysis.ts               # Deterministic relevance/summary helpers
 │   ├── scraper-filter.ts         # Keyword heuristics shared by the pipeline
 │   ├── source-ingest.ts          # Curated publish path (used by the MCP server)
-│   └── pipeline/                 # Collector: sources.ts, extract.ts, classify.ts, claude-classify.ts, firecrawl.ts, collect.ts
+│   └── pipeline/                 # Collector: sources.ts, extract.ts, classify.ts, claude-classify.ts, classifier-cli.ts, firecrawl.ts, collect.ts
 ├── mcp/                          # Local MCP server for staging/publishing records
 └── types/index.ts                # All shared domain types
 
@@ -147,10 +147,12 @@ None are required to run the site or collector. Optional (see `.env.example`):
 POLICAI_MCP_ADMIN_TOKEN=  # local MCP source-ingest writes
 USE_CLAUDE_CLASSIFIER=    # opt into Claude classification instead of the keyword heuristic (set on the collection host)
 FIRECRAWL_URL=            # self-hosted Firecrawl base URL, defaults to http://127.0.0.1:3003
-CLAUDE_BIN=               # path to the Claude Code CLI, defaults to `claude` on PATH
+CLASSIFIER_BASE_URL=      # chat-completions base URL used when USE_CLAUDE_CLASSIFIER is set
+CLASSIFIER_API_KEY=       # bearer token for that endpoint
+CLASSIFIER_MODEL=         # model id sent with each request
 ```
 
-Claude classification does not read a model API key from the environment; it runs through the Claude Code CLI's own authenticated session on the collection host.
+Classification needs all three `CLASSIFIER_*` variables. A missing one raises `ClaudeAuthError` before any request is sent. Keep the key in the host environment, never in the repo. Tests clear all three in `vitest.setup.ts`.
 
 ## Editing Data
 

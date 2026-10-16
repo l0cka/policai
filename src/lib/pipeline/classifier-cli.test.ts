@@ -42,6 +42,14 @@ describe('runClassifier', () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
+  it('sends no request when the classifier environment is unset', async () => {
+    delete process.env.CLASSIFIER_BASE_URL;
+    delete process.env.CLASSIFIER_API_KEY;
+    delete process.env.CLASSIFIER_MODEL;
+    await expect(runClassifier('test')).rejects.toThrow(ClaudeAuthError);
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
   it('raises ClaudeAuthError on a 401 from the endpoint', async () => {
     fetchMock.mockResolvedValueOnce(jsonResponse({ error: { message: 'invalid api key' } }, 401));
     await expect(runClassifier('test')).rejects.toThrow(ClaudeAuthError);
