@@ -12,6 +12,8 @@ import {
   StandardNotices,
 } from '@/components/analysis';
 import { ArticleFigureView } from '@/components/article-figures';
+import { ArticleTable } from '@/components/article-table';
+import { articleMdxOptions } from '@/lib/article-markdown';
 import { getArticleBySlug, type ArticleView } from '@/lib/data-service';
 import { ARTICLE_BYLINE, articleEditorialDate } from '@/lib/articles';
 import { ARTICLE_TYPE_NAMES, type ArticleImage, type PublishedArticle } from '@/types';
@@ -146,7 +148,12 @@ export default async function ArticlePage({ params }: Params) {
       <div className="prose article-body mt-8 max-w-none dark:prose-invert">
         {article.blocks.map((block, index) =>
           block.kind === 'prose' ? (
-            <MDXRemote key={index} source={block.markdown} options={{ mdxOptions: { format: 'md' } }} />
+            <MDXRemote
+              key={index}
+              source={block.markdown}
+              components={{ table: ArticleTable }}
+              options={{ mdxOptions: articleMdxOptions }}
+            />
           ) : (
             <ArticleFigureView
               key={index}
