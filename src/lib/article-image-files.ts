@@ -1,6 +1,6 @@
 import { readdir, stat } from "fs/promises";
 import path from "path";
-import sharp from "sharp";
+import sharp, { type Metadata } from "sharp";
 import type { ArticleImageFile, ArticleImageFiles } from "@/lib/article-images";
 import { ARTICLE_IMAGE_ROOT } from "@/lib/articles";
 
@@ -24,14 +24,20 @@ async function listFiles(dir: string): Promise<string[]> {
 	return nested.flat();
 }
 
+export function orientedSize(
+	metadata: Metadata,
+): { width: number; height: number } | undefined {
+	const { width, height, orientation } = metadata;
+	if (!width || !height) return undefined;
+	return (orientation ?? 1) >= 5
+		? { width: height, height: width }
+		: { width, height };
+}
+
 async function inspect(file: string): Promise<ArticleImageFile> {
 	const { size } = await stat(file);
 	try {
-		const { width, height, orientation } = await sharp(file).metadata();
-		if (!width || !height) return { bytes: size };
-		return (orientation ?? 1) >= 5
-			? { bytes: size, width: height, height: width }
-			: { bytes: size, width, height };
+		return { bytes: size, ...orientedSize(await sharp(file).metadata()) };
 	} catch {
 		return { bytes: size };
 	}
