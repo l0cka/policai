@@ -41,6 +41,9 @@
       "generative AI",
       "academic integrity"
     ],
+    "themes": [
+      "generative-ai"
+    ],
     "createdAt": "2026-09-09T23:26:21.926Z",
     "updatedAt": "2026-09-09T23:41:05.648Z",
     "lastReviewedAt": "2026-09-09T23:41:05.648Z",
@@ -121,6 +124,11 @@
       "AI assurance",
       "risk assessment",
       "public sector"
+    ],
+    "themes": [
+      "ai-governance",
+      "public-sector",
+      "risk-assurance"
     ],
     "createdAt": "2026-09-09T23:26:21.926Z",
     "updatedAt": "2026-09-09T23:40:47.928Z",
@@ -211,6 +219,13 @@
       "AI governance",
       "third-party risk"
     ],
+    "themes": [
+      "ai-governance",
+      "cyber-security",
+      "financial-sector",
+      "frontier-ai",
+      "procurement-supply"
+    ],
     "createdAt": "2026-09-09T23:26:21.926Z",
     "updatedAt": "2026-09-09T23:40:21.561Z",
     "lastReviewedAt": "2026-09-09T23:40:21.561Z",
@@ -284,6 +299,11 @@
     "content": "Boards of directors and senior leaders need to understand how newer frontier AI models are reshaping cyber threats. As advances in frontier AI models make it easier for cybercriminals to identify and exploit vulnerabilities, organisations face a growing threat from AI-enabled cyber attacks. To help boards respond, we have released in partnership with the Australian Institute of Company Directors (AICD), Frontier AI cyber threat considerations for boards of directors. The publication outlines frontier AI cyber threats and provides practical guidance to help organisations strengthen governance, ",
     "aiSummary": "Boards of directors and senior leaders need to understand how newer frontier AI models are reshaping cyber threats. As advances in frontier AI models make it easier for cybercriminals to identify and exploit vulnerabilities, organisations face a growing threat from AI-enabled cyber attacks. To help boards respond, we have released in partnership with the Australian Institute of Company Directors (AICD), Frontier AI cyber threat considerations for boards of directors. The publication outlines frontier AI cyber threats and provides practical guidance to help organisations strengthen governance, ",
     "tags": [],
+    "themes": [
+      "frontier-ai",
+      "cyber-security",
+      "ai-governance"
+    ],
     "createdAt": "2026-08-05T20:44:21.554Z",
     "updatedAt": "2026-10-06T23:39:50.000Z",
     "lastReviewedAt": "2026-10-06T23:39:50.000Z",
@@ -393,6 +413,9 @@
       "deepfakes",
       "image-based abuse",
       "criminal law"
+    ],
+    "themes": [
+      "online-safety"
     ],
     "createdAt": "2026-07-24T02:37:40.240Z",
     "updatedAt": "2026-07-24T02:50:30.765Z",
@@ -518,6 +541,9 @@
       "political advertising",
       "deepfakes"
     ],
+    "themes": [
+      "online-safety"
+    ],
     "createdAt": "2026-07-24T02:37:40.240Z",
     "updatedAt": "2026-07-24T02:49:28.151Z",
     "lastReviewedAt": "2026-10-16T00:00:00.000Z",
@@ -635,6 +661,12 @@
       "privacy",
       "information security",
       "public sector"
+    ],
+    "themes": [
+      "cyber-security",
+      "generative-ai",
+      "privacy-data",
+      "public-sector"
     ],
     "createdAt": "2026-07-22T12:48:46.496Z",
     "updatedAt": "2026-07-24T02:36:19.291Z",
@@ -754,6 +786,12 @@
       "information security",
       "public sector"
     ],
+    "themes": [
+      "cyber-security",
+      "generative-ai",
+      "privacy-data",
+      "public-sector"
+    ],
     "createdAt": "2026-07-22T12:48:46.496Z",
     "updatedAt": "2026-07-24T02:35:49.530Z",
     "lastReviewedAt": "2026-10-16T00:00:00.000Z",
@@ -862,6 +900,12 @@
       "human oversight",
       "merit"
     ],
+    "themes": [
+      "employment",
+      "human-oversight",
+      "public-sector",
+      "responsible-ai"
+    ],
     "createdAt": "2026-07-20T12:19:40.243Z",
     "updatedAt": "2026-07-20T12:50:39.369Z",
     "lastReviewedAt": "2026-10-16T00:00:00.000Z",
@@ -950,6 +994,12 @@
       "risk management",
       "identity",
       "human oversight"
+    ],
+    "themes": [
+      "agentic-ai",
+      "cyber-security",
+      "human-oversight",
+      "risk-assurance"
     ],
     "createdAt": "2026-07-20T09:54:59.076Z",
     "updatedAt": "2026-10-06T23:39:50.000Z",
@@ -1041,6 +1091,13 @@
       "governance",
       "prompt injection"
     ],
+    "themes": [
+      "agentic-ai",
+      "ai-governance",
+      "cyber-security",
+      "human-oversight",
+      "risk-assurance"
+    ],
     "createdAt": "2026-10-06T23:23:49.530Z",
     "updatedAt": "2026-10-06T23:23:49.530Z",
     "lastReviewedAt": "2026-10-06T23:23:49.530Z",
@@ -1130,6 +1187,12 @@
       "human oversight",
       "AI supply chain",
       "governance"
+    ],
+    "themes": [
+      "ai-governance",
+      "cyber-security",
+      "human-oversight",
+      "procurement-supply"
     ],
     "createdAt": "2026-10-07T00:28:58.122Z",
     "updatedAt": "2026-10-07T00:28:58.122Z",
@@ -1221,6 +1284,10 @@
       "national interest",
       "National AI Plan"
     ],
+    "themes": [
+      "infrastructure",
+      "strategy-adoption"
+    ],
     "createdAt": "2026-07-20T09:54:59.076Z",
     "updatedAt": "2026-07-20T10:05:51.845Z",
     "lastReviewedAt": "2026-10-16T00:00:00.000Z",
@@ -1274,6 +1341,11 @@
       "AI identification",
       "AI governance",
       "assurance"
+    ],
+    "themes": [
+      "ai-governance",
+      "risk-assurance",
+      "transparency-disclosure"
     ],
     "createdAt": "2026-07-19T04:19:29.815Z",
     "updatedAt": "2026-10-16T08:58:16.496Z",
@@ -1347,6 +1419,10 @@
       "responsible AI",
       "accountability",
       "AI governance"
+    ],
+    "themes": [
+      "ai-governance",
+      "responsible-ai"
     ],
     "createdAt": "2026-07-19T04:19:31.379Z",
     "updatedAt": "2026-07-19T06:14:28.176Z",
@@ -1435,6 +1511,10 @@
       "risk management",
       "suppliers"
     ],
+    "themes": [
+      "procurement-supply",
+      "risk-assurance"
+    ],
     "createdAt": "2026-07-19T04:19:48.476Z",
     "updatedAt": "2026-07-19T06:14:28.162Z",
     "dates": [
@@ -1521,6 +1601,10 @@
       "recordkeeping",
       "AI governance",
       "public records"
+    ],
+    "themes": [
+      "ai-governance",
+      "privacy-data"
     ],
     "createdAt": "2026-07-19T04:20:10.858Z",
     "updatedAt": "2026-07-19T06:14:28.146Z",
@@ -1609,6 +1693,10 @@
       "self-assessment",
       "risk management"
     ],
+    "themes": [
+      "risk-assurance",
+      "public-sector"
+    ],
     "createdAt": "2026-07-19T04:20:18.566Z",
     "updatedAt": "2026-07-19T06:14:28.131Z",
     "dates": [
@@ -1695,6 +1783,10 @@
       "AI governance",
       "toolkit",
       "public sector"
+    ],
+    "themes": [
+      "ai-governance",
+      "public-sector"
     ],
     "createdAt": "2026-07-19T04:20:26.815Z",
     "updatedAt": "2026-10-16T08:58:16.036Z",
@@ -1803,6 +1895,12 @@
       "security",
       "governance"
     ],
+    "themes": [
+      "agentic-ai",
+      "ai-governance",
+      "cyber-security",
+      "standards"
+    ],
     "createdAt": "2026-07-16T09:56:00.000Z",
     "updatedAt": "2026-07-19T06:14:30.314Z",
     "effectiveDate": "2026-06-04",
@@ -1860,6 +1958,10 @@
       "AI usage policy",
       "cloud security",
       "governance"
+    ],
+    "themes": [
+      "ai-governance",
+      "cyber-security"
     ],
     "createdAt": "2026-04-20T00:00:00Z",
     "updatedAt": "2026-07-19T06:14:28.882Z",
@@ -1947,6 +2049,11 @@
       "governance",
       "transparency",
       "commonwealth"
+    ],
+    "themes": [
+      "ai-governance",
+      "responsible-ai",
+      "transparency-disclosure"
     ],
     "createdAt": "2026-04-06T07:59:40.767Z",
     "updatedAt": "2026-07-19T01:03:17.636Z",
@@ -2051,6 +2158,11 @@
       "capability uplift",
       "procurement"
     ],
+    "themes": [
+      "procurement-supply",
+      "responsible-ai",
+      "strategy-adoption"
+    ],
     "createdAt": "2026-04-06T16:50:00Z",
     "updatedAt": "2026-07-19T01:34:32.759Z",
     "verification": {
@@ -2139,6 +2251,11 @@
       "AI adoption",
       "capability",
       "governance"
+    ],
+    "themes": [
+      "ai-governance",
+      "public-sector",
+      "strategy-adoption"
     ],
     "createdAt": "2026-04-06T16:50:00Z",
     "updatedAt": "2026-07-19T01:54:29.573Z",
@@ -2273,6 +2390,11 @@
       "skills",
       "investment"
     ],
+    "themes": [
+      "infrastructure",
+      "responsible-ai",
+      "strategy-adoption"
+    ],
     "createdAt": "2026-04-06T16:50:00Z",
     "updatedAt": "2026-07-19T02:19:09.583Z",
     "lastReviewedAt": "2026-10-16T00:00:00.000Z",
@@ -2378,6 +2500,13 @@
       "human oversight",
       "transparency"
     ],
+    "themes": [
+      "human-oversight",
+      "responsible-ai",
+      "risk-assurance",
+      "standards",
+      "transparency-disclosure"
+    ],
     "createdAt": "2026-04-06T16:50:00Z",
     "updatedAt": "2026-07-19T02:30:21.275Z",
     "supersededBy": "guidance-for-ai-adoption",
@@ -2466,6 +2595,9 @@
       "responsible AI",
       "principles"
     ],
+    "themes": [
+      "responsible-ai"
+    ],
     "createdAt": "2026-04-06T16:50:00Z",
     "updatedAt": "2026-07-19T06:14:30.301Z",
     "lastReviewedAt": "2026-10-16T00:00:00.000Z",
@@ -2552,6 +2684,11 @@
       "automated decision-making",
       "regulation",
       "Privacy Act"
+    ],
+    "themes": [
+      "ai-governance",
+      "automated-decisions",
+      "privacy-data"
     ],
     "createdAt": "2026-04-06T16:50:00Z",
     "updatedAt": "2026-07-19T06:14:30.287Z",
@@ -2652,6 +2789,10 @@
       "proposals",
       "responsible AI"
     ],
+    "themes": [
+      "responsible-ai",
+      "ai-governance"
+    ],
     "createdAt": "2026-04-06T16:50:00Z",
     "updatedAt": "2026-07-19T06:14:30.274Z",
     "lastReviewedAt": "2026-10-16T00:00:00.000Z",
@@ -2738,6 +2879,10 @@
       "automated decision-making",
       "regulation",
       "AI governance"
+    ],
+    "themes": [
+      "ai-governance",
+      "automated-decisions"
     ],
     "createdAt": "2026-04-06T16:50:00Z",
     "updatedAt": "2026-10-16T08:58:16.224Z",
@@ -2827,6 +2972,10 @@
       "risk management",
       "public sector"
     ],
+    "themes": [
+      "public-sector",
+      "risk-assurance"
+    ],
     "createdAt": "2026-04-06T16:50:00Z",
     "updatedAt": "2026-07-19T06:14:28.866Z",
     "lastReviewedAt": "2026-10-16T00:00:00.000Z",
@@ -2914,6 +3063,10 @@
       "generative AI",
       "guideline",
       "public sector"
+    ],
+    "themes": [
+      "generative-ai",
+      "public-sector"
     ],
     "createdAt": "2026-04-06T16:50:00Z",
     "updatedAt": "2026-08-07T05:10:38.082Z",
@@ -3027,6 +3180,11 @@
       "risk assessment",
       "public sector"
     ],
+    "themes": [
+      "ai-governance",
+      "public-sector",
+      "risk-assurance"
+    ],
     "createdAt": "2026-04-06T16:50:00Z",
     "updatedAt": "2026-09-09T23:40:12.513Z",
     "lastReviewedAt": "2026-09-09T23:40:12.513Z",
@@ -3115,6 +3273,10 @@
       "fact sheet",
       "QGEA",
       "public sector"
+    ],
+    "themes": [
+      "generative-ai",
+      "public-sector"
     ],
     "createdAt": "2026-04-13T02:15:00Z",
     "updatedAt": "2026-07-19T06:14:28.741Z",
@@ -3220,6 +3382,10 @@
       "FAIRA",
       "guideline",
       "AI governance"
+    ],
+    "themes": [
+      "ai-governance",
+      "risk-assurance"
     ],
     "createdAt": "2026-04-13T02:15:00Z",
     "updatedAt": "2026-10-16T08:58:14.486Z",
@@ -3339,6 +3505,11 @@
       "ethical AI",
       "public sector"
     ],
+    "themes": [
+      "public-sector",
+      "responsible-ai",
+      "strategy-adoption"
+    ],
     "createdAt": "2026-04-13T02:15:00Z",
     "updatedAt": "2026-07-19T06:14:30.218Z",
     "lastReviewedAt": "2026-10-16T08:07:00.000Z",
@@ -3420,6 +3591,11 @@
       "policy",
       "public sector",
       "governance"
+    ],
+    "themes": [
+      "ai-governance",
+      "public-sector",
+      "responsible-ai"
     ],
     "createdAt": "2026-04-13T03:05:00Z",
     "updatedAt": "2026-07-19T06:14:28.540Z",
@@ -3527,6 +3703,10 @@
       "guideline",
       "public sector"
     ],
+    "themes": [
+      "generative-ai",
+      "public-sector"
+    ],
     "createdAt": "2026-04-13T03:05:00Z",
     "updatedAt": "2026-07-19T06:14:28.314Z",
     "verification": {
@@ -3632,6 +3812,11 @@
       "AI policy",
       "public sector"
     ],
+    "themes": [
+      "ai-governance",
+      "public-sector",
+      "strategy-adoption"
+    ],
     "createdAt": "2026-04-13T03:05:00Z",
     "updatedAt": "2026-07-19T06:14:30.203Z",
     "verification": {
@@ -3733,6 +3918,10 @@
       "AI assurance",
       "public sector",
       "risk management"
+    ],
+    "themes": [
+      "public-sector",
+      "risk-assurance"
     ],
     "createdAt": "2026-04-13T03:05:00Z",
     "updatedAt": "2026-07-19T06:14:27.954Z",
@@ -3839,6 +4028,10 @@
       "public sector",
       "risk management"
     ],
+    "themes": [
+      "public-sector",
+      "risk-assurance"
+    ],
     "createdAt": "2026-04-13T03:05:00Z",
     "updatedAt": "2026-07-20T13:04:10.601Z",
     "lastReviewedAt": "2026-10-16T00:00:00.000Z",
@@ -3927,6 +4120,11 @@
       "disclosure",
       "courts",
       "judicial"
+    ],
+    "themes": [
+      "courts-tribunals",
+      "generative-ai",
+      "transparency-disclosure"
     ],
     "createdAt": "2026-04-16T00:00:00Z",
     "updatedAt": "2026-07-19T06:14:30.174Z",
@@ -4018,6 +4216,10 @@
       "courts",
       "judicial"
     ],
+    "themes": [
+      "courts-tribunals",
+      "transparency-disclosure"
+    ],
     "createdAt": "2026-04-16T00:00:00Z",
     "updatedAt": "2026-07-16T10:05:00.000Z",
     "lastReviewedAt": "2026-10-16T00:00:00.000Z",
@@ -4107,6 +4309,10 @@
       "guidelines",
       "courts",
       "judicial"
+    ],
+    "themes": [
+      "courts-tribunals",
+      "generative-ai"
     ],
     "createdAt": "2026-04-16T00:00:00Z",
     "updatedAt": "2026-08-26T14:35:44Z",
@@ -4217,6 +4423,11 @@
       "courts",
       "judicial"
     ],
+    "themes": [
+      "courts-tribunals",
+      "privacy-data",
+      "transparency-disclosure"
+    ],
     "createdAt": "2026-04-16T00:00:00Z",
     "updatedAt": "2026-07-19T06:14:29.933Z",
     "lastReviewedAt": "2026-10-16T08:07:00.000Z",
@@ -4307,6 +4518,10 @@
       "courts",
       "judicial"
     ],
+    "themes": [
+      "courts-tribunals",
+      "transparency-disclosure"
+    ],
     "createdAt": "2026-04-16T00:00:00Z",
     "updatedAt": "2026-07-16T10:05:00.000Z",
     "lastReviewedAt": "2026-10-16T00:00:00.000Z",
@@ -4375,6 +4590,12 @@
       "AI risk",
       "Essential Eight",
       "financial system resilience"
+    ],
+    "themes": [
+      "cyber-security",
+      "financial-sector",
+      "frontier-ai",
+      "risk-assurance"
     ],
     "createdAt": "2026-05-01T00:00:00Z",
     "updatedAt": "2026-10-07T00:39:50.272Z",
@@ -4466,6 +4687,12 @@
       "Claude Mythos",
       "prudential supervision"
     ],
+    "themes": [
+      "ai-governance",
+      "cyber-security",
+      "financial-sector",
+      "frontier-ai"
+    ],
     "createdAt": "2026-05-01T00:00:00Z",
     "updatedAt": "2026-07-19T06:14:29.900Z",
     "lastReviewedAt": "2026-10-16T00:00:00.000Z",
@@ -4555,6 +4782,10 @@
       "AI6",
       "National AI Centre",
       "responsible AI"
+    ],
+    "themes": [
+      "responsible-ai",
+      "strategy-adoption"
     ],
     "createdAt": "2026-07-10T00:00:00.000Z",
     "updatedAt": "2026-07-19T06:14:29.881Z",
@@ -4651,6 +4882,10 @@
       "AI lifecycle",
       "government AI",
       "DTA"
+    ],
+    "themes": [
+      "public-sector",
+      "standards"
     ],
     "createdAt": "2026-07-10T00:00:00.000Z",
     "updatedAt": "2026-07-19T06:14:29.590Z",
@@ -4756,6 +4991,11 @@
       "data and digital ministers",
       "intergovernmental"
     ],
+    "themes": [
+      "risk-assurance",
+      "public-sector",
+      "ai-governance"
+    ],
     "createdAt": "2026-07-10T00:00:00.000Z",
     "updatedAt": "2026-07-19T06:14:29.296Z",
     "lastReviewedAt": "2026-10-16T08:07:00.000Z",
@@ -4842,6 +5082,10 @@
       "OAIC",
       "generative AI",
       "training data"
+    ],
+    "themes": [
+      "generative-ai",
+      "privacy-data"
     ],
     "createdAt": "2026-07-10T00:00:00.000Z",
     "updatedAt": "2026-07-19T06:14:29.277Z",
@@ -4931,6 +5175,10 @@
       "AI products",
       "deployment"
     ],
+    "themes": [
+      "privacy-data",
+      "generative-ai"
+    ],
     "createdAt": "2026-07-10T00:00:00.000Z",
     "updatedAt": "2026-07-19T06:14:29.246Z",
     "lastReviewedAt": "2026-10-16T00:00:00.000Z",
@@ -5019,6 +5267,11 @@
       "automated decision-making",
       "transparency",
       "Privacy Act"
+    ],
+    "themes": [
+      "automated-decisions",
+      "privacy-data",
+      "transparency-disclosure"
     ],
     "createdAt": "2026-10-06T23:09:42.833Z",
     "updatedAt": "2026-10-06T23:26:46.980Z",
@@ -5111,6 +5364,10 @@
       "age assurance",
       "AI companions"
     ],
+    "themes": [
+      "online-safety",
+      "generative-ai"
+    ],
     "createdAt": "2026-07-10T00:00:00.000Z",
     "updatedAt": "2026-07-19T06:14:29.219Z",
     "lastReviewedAt": "2026-10-16T00:00:00.000Z",
@@ -5200,6 +5457,11 @@
       "risk assessment",
       "automated decision making",
       "accountability"
+    ],
+    "themes": [
+      "ai-governance",
+      "automated-decisions",
+      "risk-assurance"
     ],
     "createdAt": "2026-07-10T00:00:00.000Z",
     "updatedAt": "2026-09-09T23:40:12.610Z",
@@ -5309,6 +5571,10 @@
       "self-assessment",
       "responsible AI"
     ],
+    "themes": [
+      "responsible-ai",
+      "risk-assurance"
+    ],
     "createdAt": "2026-07-10T00:00:00.000Z",
     "updatedAt": "2026-07-20T13:03:14.316Z",
     "lastReviewedAt": "2026-10-16T00:00:00.000Z",
@@ -5395,6 +5661,10 @@
       "practice note",
       "generative AI",
       "Victoria"
+    ],
+    "themes": [
+      "courts-tribunals",
+      "generative-ai"
     ],
     "createdAt": "2026-07-10T00:00:00.000Z",
     "updatedAt": "2026-07-19T06:14:28.911Z",
@@ -5483,6 +5753,11 @@
       "generative AI",
       "South Australia",
       "litigation"
+    ],
+    "themes": [
+      "courts-tribunals",
+      "generative-ai",
+      "legal-practice"
     ],
     "createdAt": "2026-07-10T00:00:00.000Z",
     "updatedAt": "2026-07-19T06:14:28.896Z",
@@ -5576,6 +5851,11 @@
       "courts",
       "judicial"
     ],
+    "themes": [
+      "courts-tribunals",
+      "generative-ai",
+      "transparency-disclosure"
+    ],
     "createdAt": "2026-08-20T00:00:00Z",
     "updatedAt": "2026-08-24T23:32:02.000Z",
     "lastReviewedAt": "2026-08-24T23:32:02.000Z",
@@ -5647,6 +5927,12 @@
       "disclosure",
       "employment",
       "courts"
+    ],
+    "themes": [
+      "courts-tribunals",
+      "employment",
+      "generative-ai",
+      "transparency-disclosure"
     ],
     "createdAt": "2026-08-24T00:00:00Z",
     "updatedAt": "2026-08-24T23:32:02.000Z",
@@ -5743,6 +6029,11 @@
       "courts",
       "judicial"
     ],
+    "themes": [
+      "courts-tribunals",
+      "generative-ai",
+      "transparency-disclosure"
+    ],
     "createdAt": "2025-04-07T00:00:00Z",
     "updatedAt": "2026-08-25T02:01:07.000Z",
     "lastReviewedAt": "2026-08-25T02:01:07.000Z",
@@ -5832,6 +6123,11 @@
       "courts",
       "disclosure",
       "judicial"
+    ],
+    "themes": [
+      "courts-tribunals",
+      "generative-ai",
+      "transparency-disclosure"
     ],
     "createdAt": "2025-02-03T00:00:00Z",
     "updatedAt": "2026-08-25T02:01:07.000Z",
@@ -5924,6 +6220,12 @@
       "courts",
       "disclosure"
     ],
+    "themes": [
+      "courts-tribunals",
+      "employment",
+      "generative-ai",
+      "transparency-disclosure"
+    ],
     "createdAt": "2025-02-19T00:00:00Z",
     "updatedAt": "2026-08-25T02:01:07.000Z",
     "lastReviewedAt": "2026-08-25T02:01:07.000Z",
@@ -5992,6 +6294,12 @@
       "courts",
       "disclosure",
       "judicial"
+    ],
+    "themes": [
+      "courts-tribunals",
+      "generative-ai",
+      "legal-practice",
+      "transparency-disclosure"
     ],
     "createdAt": "2025-02-12T00:00:00Z",
     "updatedAt": "2026-08-25T02:01:07.000Z",
@@ -6082,6 +6390,12 @@
       "courts",
       "disclosure",
       "self-represented litigants"
+    ],
+    "themes": [
+      "courts-tribunals",
+      "generative-ai",
+      "self-represented-litigants",
+      "transparency-disclosure"
     ],
     "createdAt": "2026-01-12T00:00:00Z",
     "updatedAt": "2026-08-25T02:01:07.000Z",
@@ -6174,6 +6488,12 @@
       "disclosure",
       "workers compensation"
     ],
+    "themes": [
+      "courts-tribunals",
+      "employment",
+      "generative-ai",
+      "transparency-disclosure"
+    ],
     "createdAt": "2026-01-01T00:00:00Z",
     "updatedAt": "2026-08-25T02:01:07.000Z",
     "lastReviewedAt": "2026-08-25T02:01:07.000Z",
@@ -6239,6 +6559,10 @@
       "judicial",
       "courts",
       "judicial officers"
+    ],
+    "themes": [
+      "courts-tribunals",
+      "generative-ai"
     ],
     "createdAt": "2026-05-14T00:00:00Z",
     "updatedAt": "2026-08-25T02:01:07.000Z",
@@ -6307,6 +6631,11 @@
       "courts",
       "disclosure",
       "judicial"
+    ],
+    "themes": [
+      "courts-tribunals",
+      "generative-ai",
+      "transparency-disclosure"
     ],
     "createdAt": "2026-06-05T00:00:00Z",
     "updatedAt": "2026-08-25T02:01:07.000Z",
@@ -6377,6 +6706,12 @@
       "courts",
       "self-represented litigants"
     ],
+    "themes": [
+      "courts-tribunals",
+      "generative-ai",
+      "self-represented-litigants",
+      "transparency-disclosure"
+    ],
     "createdAt": "2025-12-22T00:00:00Z",
     "updatedAt": "2026-08-25T02:01:07.000Z",
     "lastReviewedAt": "2026-08-25T02:01:07.000Z",
@@ -6446,6 +6781,11 @@
       "courts",
       "legal profession"
     ],
+    "themes": [
+      "courts-tribunals",
+      "generative-ai",
+      "legal-practice"
+    ],
     "createdAt": "2025-10-17T00:00:00Z",
     "updatedAt": "2026-08-25T02:01:07.000Z",
     "lastReviewedAt": "2026-08-25T02:01:07.000Z",
@@ -6511,6 +6851,11 @@
       "District Court of Queensland",
       "courts",
       "legal profession"
+    ],
+    "themes": [
+      "courts-tribunals",
+      "generative-ai",
+      "legal-practice"
     ],
     "createdAt": "2025-09-25T00:00:00Z",
     "updatedAt": "2026-08-25T02:01:07.000Z",
@@ -6578,6 +6923,11 @@
       "courts",
       "legal profession"
     ],
+    "themes": [
+      "courts-tribunals",
+      "generative-ai",
+      "legal-practice"
+    ],
     "createdAt": "2025-09-29T00:00:00Z",
     "updatedAt": "2026-08-25T02:01:07.000Z",
     "lastReviewedAt": "2026-08-25T02:01:07.000Z",
@@ -6643,6 +6993,11 @@
       "Planning and Environment Court",
       "courts",
       "legal profession"
+    ],
+    "themes": [
+      "courts-tribunals",
+      "generative-ai",
+      "legal-practice"
     ],
     "createdAt": "2025-09-25T00:00:00Z",
     "updatedAt": "2026-08-25T02:01:07.000Z",
@@ -6710,6 +7065,11 @@
       "courts",
       "access to justice"
     ],
+    "themes": [
+      "courts-tribunals",
+      "generative-ai",
+      "self-represented-litigants"
+    ],
     "createdAt": "2025-09-15T00:00:00Z",
     "updatedAt": "2026-08-25T02:01:07.000Z",
     "lastReviewedAt": "2026-08-25T02:01:07.000Z",
@@ -6776,6 +7136,11 @@
       "judicial officers",
       "expert evidence",
       "courts"
+    ],
+    "themes": [
+      "courts-tribunals",
+      "generative-ai",
+      "legal-practice"
     ],
     "createdAt": "2025-09-15T00:00:00Z",
     "updatedAt": "2026-08-25T02:01:07.000Z",
@@ -6865,6 +7230,11 @@
       "criminal",
       "courts"
     ],
+    "themes": [
+      "courts-tribunals",
+      "generative-ai",
+      "legal-practice"
+    ],
     "createdAt": "2025-09-10T00:00:00Z",
     "updatedAt": "2026-08-25T02:01:07.000Z",
     "lastReviewedAt": "2026-08-25T02:01:07.000Z",
@@ -6953,6 +7323,13 @@
       "self-represented litigants",
       "expert evidence"
     ],
+    "themes": [
+      "courts-tribunals",
+      "generative-ai",
+      "legal-practice",
+      "self-represented-litigants",
+      "transparency-disclosure"
+    ],
     "createdAt": "2025-11-20T00:00:00Z",
     "updatedAt": "2026-08-25T02:01:07.000Z",
     "lastReviewedAt": "2026-08-25T02:01:07.000Z",
@@ -7021,6 +7398,10 @@
       "nsw",
       "judiciary",
       "sc gen 23"
+    ],
+    "themes": [
+      "courts-tribunals",
+      "generative-ai"
     ],
     "createdAt": "2024-11-21T00:00:00Z",
     "updatedAt": "2026-08-25T13:30:09.000Z",
@@ -7092,6 +7473,10 @@
       "county court of victoria",
       "victorian law reform commission",
       "decision-making"
+    ],
+    "themes": [
+      "courts-tribunals",
+      "generative-ai"
     ],
     "createdAt": "2026-06-05T00:00:00Z",
     "updatedAt": "2026-08-25T13:30:09.000Z",
@@ -7165,6 +7550,13 @@
       "verification",
       "disclosure"
     ],
+    "themes": [
+      "courts-tribunals",
+      "generative-ai",
+      "human-oversight",
+      "self-represented-litigants",
+      "transparency-disclosure"
+    ],
     "createdAt": "2026-03-05T00:00:00Z",
     "updatedAt": "2026-08-25T13:30:09.000Z",
     "lastReviewedAt": "2026-08-25T13:30:09.000Z",
@@ -7236,6 +7628,13 @@
       "verification",
       "confidentiality",
       "guidance"
+    ],
+    "themes": [
+      "courts-tribunals",
+      "generative-ai",
+      "human-oversight",
+      "privacy-data",
+      "self-represented-litigants"
     ],
     "createdAt": "2026-01-19T00:00:00Z",
     "updatedAt": "2026-08-25T13:30:09.000Z",
@@ -7370,6 +7769,10 @@
       "AI infrastructure",
       "AI training",
       "Office of AI"
+    ],
+    "themes": [
+      "infrastructure",
+      "standards"
     ],
     "createdAt": "2026-10-06T23:07:28.376Z",
     "updatedAt": "2026-10-16T07:48:57.908Z",
