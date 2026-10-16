@@ -1,6 +1,6 @@
 'use client';
 
-import { useDeferredValue, useMemo, useState } from 'react';
+import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import {
   ArrowRight,
@@ -116,8 +116,9 @@ function DevelopmentFeed({
               return (
                 <article
                   key={development.id}
+                  id={development.id}
                   style={jurisdictionRailStyle(development.jurisdiction)}
-                  className="ink-rail grid gap-2 border-b border-border py-4 pl-3 transition-colors duration-[var(--dur-fast)] hover:bg-[var(--row-hover)] sm:grid-cols-[6.5rem_7rem_minmax(0,1fr)] lg:grid-cols-[6.5rem_7rem_minmax(0,1fr)_9rem_10rem]"
+                  className="ink-rail scroll-mt-28 grid gap-2 border-b border-border py-4 pl-3 transition-colors duration-[var(--dur-fast)] hover:bg-[var(--row-hover)] sm:grid-cols-[6.5rem_7rem_minmax(0,1fr)] lg:grid-cols-[6.5rem_7rem_minmax(0,1fr)_9rem_10rem]"
                 >
                   <time className="text-xs font-medium text-muted-foreground tabular">{developmentDate(development)}</time>
                   <div>
@@ -175,6 +176,35 @@ export function DevelopmentsBrowser({
   const [jurisdiction, setJurisdiction] = useState('all');
   const [stream, setStream] = useState<'all' | DevelopmentStream>('all');
 
+  const pendingAnchor = useRef<string | null>(null);
+  const [revealCount, setRevealCount] = useState(0);
+
+  const revealHash = useCallback(() => {
+    let id: string;
+    try {
+      id = decodeURIComponent(window.location.hash.slice(1));
+    } catch {
+      return;
+    }
+    const target = developments.find((item) => item.id === id);
+    if (!target) return;
+    setActiveTab(target.verification.status === 'verified' ? 'verified' : 'radar');
+    setSearch('');
+    setJurisdiction('all');
+    setStream('all');
+    pendingAnchor.current = id;
+    setRevealCount((count) => count + 1);
+  }, [developments]);
+
+  useEffect(() => {
+    const frame = requestAnimationFrame(revealHash);
+    window.addEventListener('hashchange', revealHash);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener('hashchange', revealHash);
+    };
+  }, [revealHash]);
+
   const verified = developments.filter((item) => item.verification.status === 'verified');
   const radar = developments.filter((item) => item.verification.status !== 'verified');
   const activeItems = activeTab === 'verified' ? verified : radar;
@@ -188,6 +218,13 @@ export function DevelopmentsBrowser({
       }),
     [activeItems, deferredSearch, jurisdiction, stream, streamById],
   );
+
+  useEffect(() => {
+    const id = pendingAnchor.current;
+    if (!id || !filteredItems.some((item) => item.id === id)) return;
+    document.getElementById(id)?.scrollIntoView({ block: 'start' });
+    pendingAnchor.current = null;
+  }, [revealCount, filteredItems]);
 
   const automaticCoverage = dueSourceCount > 0 ? Math.round((successfulSourceCount / dueSourceCount) * 100) : 100;
   const manualCoverage = manualSourceCount > 0 ? Math.round((currentManualSourceCount / manualSourceCount) * 100) : 100;
