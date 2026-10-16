@@ -70,15 +70,17 @@ Policai. Keep the existing Postgres volume, external backups and secret
 configuration outside release trees. The database container can retain its
 original Compose labels after the application cutover. Those labels alone do
 not establish which checkout serves the dashboard.
-Do not use the old `ops/deploy.sh` rsync deployment (`rsync --delete`).
+The old `ops/deploy.sh` rsync deployment is removed; releases go through the
+guarded host dispatcher. The reviewed service units installed on the host are
+`ops/host/units/probono-*.service` at the repository root. `ops/*.timer` here
+record the schedules only.
 The maintainer keeps the operational runbook privately.
 
 Ingest and enrichment use `probono-ingest.timer` and `probono-enrich.timer`;
 backups remain a separate operational responsibility. Preserve masks on both
-`probono-digest.service` and `probono-digest.timer`. A schedule in `ops/` does not
-authorise email delivery: unmasking requires explicit approval and verified SMTP
-configuration. Schema changes, timer changes, deployment and live writes also
-require separate approval. See [AGENTS.md](./AGENTS.md) for child-specific rules.
+`probono-digest.service` and `probono-digest.timer`; no tracked unit file exists
+for them. Unmasking requires explicit approval and verified SMTP configuration. Schema
+changes, timer changes, deployment and live writes also require separate approval. See [AGENTS.md](./AGENTS.md) for child-specific rules.
 
 `worker/src/fetch-all.ts` exits explicitly once its run summary is printed and
 the pool is closed. `rss-parser` leaves the response unread when a feed answers
