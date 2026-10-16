@@ -7,6 +7,7 @@ import {
 } from "@/lib/article-images";
 import { orientedSize } from "@/lib/article-image-files";
 import { ARTICLE_IMAGE_ROOT, isArticleSlug } from "@/lib/articles";
+import { COLLECTOR_USER_AGENT } from "@/lib/pipeline/identity";
 
 export const ARTICLE_IMAGE_FILE_NAME = "lead.jpg";
 
@@ -39,7 +40,9 @@ async function download(url: string, fetchImpl: typeof fetch): Promise<Buffer> {
 	if (new URL(url).protocol !== "https:") {
 		throw new Error("the image URL must be https");
 	}
-	const response = await fetchImpl(url);
+	const response = await fetchImpl(url, {
+		headers: { "User-Agent": COLLECTOR_USER_AGENT },
+	});
 	if (!response.ok) {
 		throw new Error(`download failed with HTTP ${response.status}`);
 	}

@@ -7,6 +7,7 @@ import sharp from "sharp";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ingestArticleImage } from "./article-image-ingest";
 import { parseArticle } from "./articles";
+import { COLLECTOR_USER_AGENT } from "./pipeline/identity";
 
 const URL_OK = "https://upload.example.org/original.jpg";
 
@@ -37,7 +38,6 @@ describe("ingestArticleImage", () => {
 		const fetchImpl = source(await photo(4000, 3000, 1));
 		const result = await ingestArticleImage({ url: URL_OK, slug: "a-piece", publicDir, fetchImpl });
 
-		expect(fetchImpl).toHaveBeenCalledWith(URL_OK);
 		expect(result).toMatchObject({
 			src: "/images/articles/a-piece/lead.jpg",
 			width: 2048,
@@ -55,6 +55,18 @@ describe("ingestArticleImage", () => {
 			expect(result.stub).toContain(`  ${key}: ""`);
 		}
 		expect(result.stub).toContain("  width: 2048\n  height: 1536");
+	});
+
+	it("downloads with the declared Policai identity User-Agent", async () => {
+		const fetchImpl = source(await photo(3000, 2000));
+		await ingestArticleImage({ url: URL_OK, slug: "a-piece", publicDir, fetchImpl });
+
+		expect(fetchImpl).toHaveBeenCalledTimes(1);
+		const [url, init] = fetchImpl.mock.calls[0] as unknown as [string, RequestInit];
+		expect(url).toBe(URL_OK);
+		const userAgent = new Headers(init?.headers).get("user-agent");
+		expect(userAgent).toBe(COLLECTOR_USER_AGENT);
+		expect(userAgent).toContain("Policai/1.0 (+https://policai.org)");
 	});
 
 	it("applies EXIF orientation before measuring and encoding", async () => {

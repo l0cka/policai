@@ -227,7 +227,7 @@ the `og:image` and `twitter:image`, and the Article JSON-LD `image`
 (`ImageObject` with `license` and `creditText`).
 
 `npm run add:article-image -- <url> <slug>` downloads the original over
-https, refuses one under 2048 px on its long edge, applies EXIF orientation,
+https with the collector identity `User-Agent` (`COLLECTOR_USER_AGENT`), refuses one under 2048 px on its long edge, applies EXIF orientation,
 re-encodes at a 2048 px long edge (quality 82, lowered in steps to 70 if the
 file would exceed the size limit), strips metadata and writes
 `public/images/articles/<slug>/lead.jpg`. It prints a frontmatter stub with
