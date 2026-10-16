@@ -15,17 +15,30 @@ allow a few minutes, plus build time for code changes.
 ## Lane routing
 
 Each cycle, the dispatcher compares the new `main` with the deployed
-commit and routes by the paths that changed:
+commit and routes each changed path by the first matching row of `ROUTES`
+in `ops/host/dispatcher.py`. A change set selects the union of its paths'
+lanes. A lane that is not selected fast-forwards to the new commit with
+no build and no restart, so both checkouts hold the new commit after every
+verified cycle.
 
-| Changed paths | Result |
+| Changed paths | Lanes |
 | --- | --- |
-| `data/`, `public/data/` only | Fast-forward with no build or restart. ISR serves the new data. |
-| `src/`, `public/`, `mcp/`, Next.js and shadcn config files | Rebuild and restart Policai. |
+| Test files (`*.test.ts`, `*.test.tsx`, any `__tests__/` directory) | None |
+| `data/`, `public/data/` (ISR serves the new data) | None |
+| Markdown outside any `public/` directory | None |
+| `docs/`, `.github/`, `ops/host/`, `ops/collector/`, `scripts/` | None |
 | `apps/probono/` | Rebuild Pro Bono. Policai is not restarted. |
+| `src/`, `public/`, `mcp/`, `design/` | Rebuild and restart Policai. |
+| `package.json`, `package-lock.json`, `tsconfig.json`, `next.config.ts`, `next.config.js`, `next.config.mjs`, `postcss.config.mjs`, `components.json` | Rebuild and restart Policai. |
 | Any other path | Rebuild both. |
 
-A commit that touches several lanes runs each lane it touches. The
-routing is `classify` in `ops/host/dispatcher.py`.
+This table describes `main`. The host runs a copy of the dispatcher that
+only a reviewed install refreshes, so it routes this way after the next
+install. Until then the installed copy routes `data/` and `public/data/` to
+no lane, `src/`, `public/`, `mcp/` and the Next.js and shadcn config files
+to Policai, `apps/probono/` to Pro Bono, and every other path to both
+lanes. The invariant behind the no-lane rows is in
+[`ops/host/README.txt`](../ops/host/README.txt).
 
 ## Health gate and failure
 

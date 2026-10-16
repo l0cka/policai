@@ -262,6 +262,53 @@ class Transaction:
             # Deliberately leave blocked.json. Resume needs independent review.
 
 
+POLICAI, PROBONO = frozenset({"policai"}), frozenset({"probono"})
+BOTH = POLICAI | PROBONO
+
+
+def prefix(*prefixes):
+    return lambda path: path.startswith(prefixes)
+
+
+def named(*names):
+    return lambda path: path in names
+
+
+def is_test(path):
+    return path.endswith((".test.ts", ".test.tsx")) or "__tests__" in path.split("/")[:-1]
+
+
+def is_markdown(path):
+    return path.endswith(".md") and "public" not in path.split("/")
+
+
+ROUTES = (
+    ("test", is_test, frozenset()),
+    ("data", prefix("data/", "public/data/"), frozenset()),
+    ("markdown", is_markdown, frozenset()),
+    ("docs", prefix("docs/"), frozenset()),
+    ("github", prefix(".github/"), frozenset()),
+    ("ops", prefix("ops/host/", "ops/collector/"), frozenset()),
+    ("scripts", prefix("scripts/"), frozenset()),
+    ("probono", prefix("apps/probono/"), PROBONO),
+    ("policai", prefix("src/", "public/", "mcp/", "design/"), POLICAI),
+    (
+        "policai-config",
+        named(
+            "next.config.ts",
+            "next.config.js",
+            "next.config.mjs",
+            "postcss.config.mjs",
+            "components.json",
+            "package.json",
+            "package-lock.json",
+            "tsconfig.json",
+        ),
+        POLICAI,
+    ),
+)
+
+
 def classify(paths):
     lanes = set()
     for path in paths:
@@ -271,18 +318,5 @@ def classify(paths):
             or any(p in ("", ".", "..") for p in path.split("/"))
         ):
             raise ValueError("invalid repository-relative path")
-        if path.startswith("apps/probono/"):
-            lanes.add("probono")
-        elif path.startswith(("data/", "public/data/")):
-            pass
-        elif path.startswith(("src/", "public/", "mcp/")) or path in {
-            "next.config.ts",
-            "next.config.js",
-            "next.config.mjs",
-            "postcss.config.mjs",
-            "components.json",
-        }:
-            lanes.add("policai")
-        else:
-            lanes.update(("policai", "probono"))
+        lanes.update(next((route for _, matches, route in ROUTES if matches(path)), BOTH))
     return lanes
