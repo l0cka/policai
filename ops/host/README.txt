@@ -24,7 +24,8 @@ WHAT EXISTS
   preflight, original-file backups and repeatable pre-initialization rollback.
   upgrade (plan/apply/rollback) replaces only the entries whose bytes, mode or
   owner differ from the reviewed snapshot, under the same manifest and held-job
-  gates plus a healthy-dispatcher gate; see UPGRADE CONTRACT. Neither mode
+  gates plus a healthy-dispatcher gate and a digest that binds apply to the
+  installed tree the plan reviewed; see UPGRADE CONTRACT. Neither mode
   provisions release clones, environment, config, state directories or locks,
   reloads managers, starts jobs, or activates runtimes.
   units/probono-*.service: guarded worker entrypoints; existing timers remain separate.
@@ -101,8 +102,10 @@ UPGRADE CONTRACT — ONLY IN A HOST WINDOW DANIEL APPROVES THROUGH ARGUS DEVOPS
     python3 -I ops/host/install.py upgrade plan
   It prints one line per install-set entry (changed, added or unchanged, with the
   installed and reviewed sha256/mode/owner), a unified diff for every changed or
-  added file, units included, and the journal location. Running plan as root is
-  refused outside the protected snapshot.
+  added file, units included, the journal location and an expect-installed
+  digest: sha256 over the sorted (destination, installed sha256/mode/uid/gid or
+  absent) set it read. Record that digest with the approval. Running plan as
+  root is refused outside the protected snapshot.
 
   Stage the snapshot exactly as INSTALL-REVIEW.txt describes for first install:
   export the reviewed commit's ops/host tree, record its MANIFEST.sha256 digest in
@@ -111,36 +114,69 @@ UPGRADE CONTRACT — ONLY IN A HOST WINDOW DANIEL APPROVES THROUGH ARGUS DEVOPS
   (never edit a snapshot in place; rollback of an upgrade runs from the snapshot
   that applied it). Then hold the triggers (INSTALL-REVIEW.txt step 2) and run:
     sudo /usr/bin/python3 -I /usr/local/libexec/policai-host-review/install.py \
-      upgrade apply --manifest-sha256 "$MANIFEST_SHA256"
+      upgrade apply --manifest-sha256 "$MANIFEST_SHA256" \
+      --expect-installed "$EXPECT_INSTALLED"
+
+  --expect-installed is the digest the reviewed plan printed. It is required
+  for a first apply (no journal.json for this manifest yet) and optional for a
+  re-apply of an existing journal, which is bound by the journal's own before
+  records instead. Whenever it is given, apply recomputes the digest from the
+  live tree and refuses on a mismatch, so a file replaced between plan and
+  apply never becomes the journalled rollback target. After a crash mid-apply
+  the live tree is mixed, so rerun apply without the digest.
 
   apply runs only when every gate passes, in this order, before any file changes:
     1. install.py is the protected snapshot's copy and the caller is root;
     2. the snapshot's MANIFEST.sha256 digest equals --manifest-sha256 and every
-       listed file matches (verify_manifest);
+       listed file matches (verify_manifest); the bytes apply later reads from
+       the snapshot must hash to the same values or apply refuses;
     3. deploy.lock is held exclusively, so no deploy or worker is running;
     4. held(): policai-pull and every probono service and timer (ingest, enrich,
        backup, backup-mirror, verify-deadlines) inactive with no drop-ins, both
        digest units masked, no legacy worker container or process;
     5. dispatcher_ready(): no blocked.json, and active.json present with
-       bootstrap_pending false. recovery.json and last-success.json are not read.
+       bootstrap_pending exactly false (a missing key refuses). recovery.json
+       and last-success.json are not read;
+    6. the live tree matches --expect-installed when given, and every entry,
+       unchanged ones included, is at its before or after state.
+  Only then does apply create the journal directory and save journal.json, so a
+  refused apply or re-apply leaves no journal and no applying phase behind.
 
   Journal: /var/lib/policai-deploy-state/upgrades/<manifest-sha256>/ (root 0700),
   separate from the first-install journal at .../installation. journal.json holds
   phase (applying, applied, rolling-back, rolled-back) and, per entry, source,
   destination, before (sha256, mode, uid, gid, or null when absent) and after.
   <index>.before holds the original bytes of every changed file. before is
-  written once and never rewritten.
+  written once and never rewritten. The upgrades/ and <manifest-sha256>/
+  directory entries are fsynced, as is the state directory itself, before the
+  first replacement.
+
+  Every file, journal.json included, is written as .install-<hex> in its own
+  directory and renamed into place; the temporary is unlinked on any failure.
+  Only a power loss between create and rename can leave one behind. It is
+  harmless (systemd loads only unit-suffixed names and nothing executes it) and
+  may be removed once no apply or rollback is running. A journal.json that
+  fails to parse, or is oversized, is therefore a media fault, not a crash
+  outcome: apply and rollback both refuse it and write nothing. To recover,
+  move the journal directory aside (never delete it; the <index>.before files
+  are the only copies of the original bytes), run upgrade plan to see which
+  entries are at the installed or reviewed state, then either re-run apply
+  with the approved expect-installed digest if every entry is still installed,
+  or restore each changed entry by hand from its <index>.before file (index is
+  the entry's position in plan output) and confirm with upgrade plan.
 
   State machine: each destination is at before, at after, or foreign. apply
   converges every entry to after; rollback converges every entry to before.
-  Both validate all entries first and refuse on a foreign file before writing
-  anything, back up originals before the first replacement, write each file by
-  atomic rename with fsync through an open directory descriptor, and skip an
-  entry already at its target. A crash at any point followed by a rerun of
-  apply, or a rollback, converges; a second rollback changes nothing.
-  Unchanged entries are never written. Rollback requires gates 1 to 4 but not
-  5, so it stays available when the new code blocked the dispatcher. It is the
-  file-level counterpart of, and never a substitute for, cli.py rollback
+  Both validate all entries first, unchanged ones included, and refuse on a
+  foreign file before writing anything, back up originals before the first
+  replacement, write each file by atomic rename with fsync through an open
+  directory descriptor, and skip an entry already at its target. A foreign
+  file blocks both until the operator restores it; nothing is half-applied, so
+  restoring that one file is the whole repair. A crash at any point followed
+  by a rerun of apply, or a rollback, converges; a second rollback changes
+  nothing. Unchanged entries are never written. Rollback requires gates 1 to 4
+  but not 5, so it stays available when the new code blocked the dispatcher. It
+  is the file-level counterpart of, and never a substitute for, cli.py rollback
   (release artifacts and images). Re-applying the same snapshot after its
   rollback is allowed and reuses the journal.
 
@@ -148,12 +184,13 @@ UPGRADE CONTRACT — ONLY IN A HOST WINDOW DANIEL APPROVES THROUGH ARGUS DEVOPS
   blocked.json, last-success.json, recovery.json, release clones, Docker,
   the database, runtime.env or timers, and they do not daemon-reload. After
   apply: inspect installed hashes and effective units, update installed_hashes
-  in /etc/policai-deploy/config.json for every changed entrypoint, reload the
-  system and user managers, verify effective ExecStart values, then restore
-  timers (INSTALL-REVIEW.txt step 4). The 2026-10-16 change set moves
-  probono-backup-mirror.service from ~/.local/bin/probono-backup-mirror.sh onto
-  cli.py worker backup-mirror; the old script is left in place and its removal
-  is an operator act.
+  in /etc/policai-deploy/config.json for every changed or added entrypoint
+  (the 2026-10-16 change set adds backup-mirror.sh, which the new host.py
+  checks), reload the system and user managers, verify effective ExecStart
+  values, then restore timers (INSTALL-REVIEW.txt step 4). That change set also
+  moves probono-backup-mirror.service from ~/.local/bin/probono-backup-mirror.sh
+  onto cli.py worker backup-mirror; the old script is left in place and its
+  removal is an operator act.
 
   Fixture: tests/fixtures/installed-2026-09-11 holds the installed tree as
   observed on 2026-10-16 (cli.py, host.py, dispatcher.py, backup.sh and the
