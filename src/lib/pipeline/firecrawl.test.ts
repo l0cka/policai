@@ -38,6 +38,7 @@ describe('scrapeWithFirecrawl', () => {
         success: true,
         data: {
           markdown: '# OAIC',
+          rawHtml: '<main><h1>OAIC</h1></main>',
           metadata: {
             title: 'OAIC',
             sourceURL: 'https://www.oaic.gov.au/',
@@ -50,6 +51,7 @@ describe('scrapeWithFirecrawl', () => {
     expect(result).toEqual({
       ok: true,
       markdown: '# OAIC',
+      rawHtml: '<main><h1>OAIC</h1></main>',
       title: 'OAIC',
       finalUrl: 'https://www.oaic.gov.au/',
     });
@@ -201,7 +203,7 @@ describe('scrapeWithFirecrawl', () => {
   it('rejects success payloads without final URL provenance', async () => {
     vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({
       success: true,
-      data: { markdown: '# OAIC', metadata: { title: 'OAIC' } },
+      data: { markdown: '# OAIC', rawHtml: '<main><h1>OAIC</h1></main>', metadata: { title: 'OAIC' } },
     }), { status: 200 })));
 
     const result = await scrapeWithFirecrawl('https://www.oaic.gov.au/');
@@ -217,6 +219,7 @@ describe('scrapeWithFirecrawl', () => {
       success: true,
       data: {
         markdown: '# OAIC',
+        rawHtml: '<main><h1>OAIC</h1></main>',
         metadata: {
           sourceURL: 'https://www.oaic.gov.au/',
           url: 'https://evil.example/',
@@ -237,6 +240,7 @@ describe('scrapeWithFirecrawl', () => {
       success: true,
       data: {
         markdown: '# OAIC',
+        rawHtml: '<main><h1>OAIC</h1></main>',
         metadata: { sourceURL: 'https://internal.example.gov.au/' },
       },
     }), { status: 200 })));
@@ -257,6 +261,7 @@ describe('scrapeWithFirecrawl', () => {
       success: true,
       data: {
         markdown: '# OAIC',
+        rawHtml: '<main><h1>OAIC</h1></main>',
         metadata: {
           sourceURL: 'https://www.oaic.gov.au/privacy/final',
         },

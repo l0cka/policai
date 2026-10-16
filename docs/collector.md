@@ -233,12 +233,32 @@ Candidate pages discovered from those sources (but never a document source's
 own page) are retrieved through a
 self-hosted Firecrawl instance first (`src/lib/pipeline/firecrawl.ts`),
 falling back to the browser when Firecrawl is unavailable, times out, or
-returns no usable markdown. Sources carrying an identity exception bypass
+returns no usable markdown or raw HTML. Sources carrying an identity exception bypass
 Firecrawl and use the scoped browser (see Collector identity below). Every other source falls back to the browser when
 the plain HTTP client is blocked or an index renders no extractable items. CI
 installs the browser with `npx playwright-core install --with-deps chromium`
 (cached between runs); without it the collector still runs, minus the
 fallback.
+
+A Firecrawl scrape requests both `markdown` and `rawHtml`. The markdown is
+replayed through `retrieveSource` as `text/plain` (extraction reads HTML, XML
+or plain text, not `text/markdown`), so a Firecrawl page carries the same
+evidence shape and bot-challenge checks as any other retrieval. The raw HTML
+is used only to find linked instruments with the same rule as other HTML
+pages. Each linked document is then retrieved through the collector's own HTTP
+client and folded into the fingerprint and readability check exactly as for an
+HTTP or browser page. If that HTTP retrieval fails, the candidate is retried
+through the browser retriever (whose linked documents use the browser), except
+after a destination mismatch, which fails the candidate.
+
+| Check on a Firecrawl candidate | Enforced by |
+| --- | --- |
+| Allow-list and public-address check on the requested URL | Collector, before discovery |
+| Redirect hops inside Firecrawl's own fetch | Not checked: Firecrawl follows them internally and does not report them |
+| Allow-list and public-address check on the final URL | Collector, on Firecrawl's reported `sourceURL` |
+| Linked-instrument discovery | Collector, on Firecrawl's `rawHtml` |
+| Each linked document, including every redirect hop | Collector's HTTP client, hop by hop |
+| Linked-document byte signature and readability | Collector, as for HTTP and browser pages |
 
 Firecrawl is demand-started on the collection host: a proxy on port 3003 wakes the stack on
 the first request and an idle timer stops it again, so the first candidate
@@ -596,7 +616,9 @@ npm run collect -- --dry-run --source=<id>
   exhausted retries become terminal `failed` watch-state entries so they do not
   consume collection capacity forever.
 - **A feed links away from an official host** — the candidate is ignored before
-  it enters watch state. Redirects are checked hop-by-hop, and production DNS
+  it enters watch state. Redirects are checked hop-by-hop (except inside a
+  Firecrawl scrape, where only the final URL is checked; see the Firecrawl
+  table above), and production DNS
   resolution must return only public network addresses. The validated address
   is pinned to the TLS connection and checked after connection; each validated
   address is tried within the shared deadline. Each retrieval has one deadline
