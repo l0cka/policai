@@ -174,7 +174,7 @@ history where useful, but are not shown as current public developments.
 
 ### 4. Policai analysis
 
-A written piece in `data/articles/` is Policai's own analysis, signed
+A written piece (`data/articles/<slug>.md`) is Policai's own analysis, signed
 "Policai". It sits above the register and developments and never changes
 either. A piece is trustworthy only when:
 
@@ -189,6 +189,11 @@ either. A piece is trustworthy only when:
 A piece publishes only after editorial approval of its pull request. The
 rules, formats and notice wording are in the
 [editorial policy](./editorial-policy.md).
+
+This tier is not live yet. The articles platform that stores, validates and
+serves pieces is in development
+([#213](https://github.com/l0cka/policai/issues/213)), and no piece has been
+published.
 
 ## Source policy
 
