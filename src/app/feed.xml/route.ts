@@ -1,25 +1,12 @@
 import { getDevelopments } from '@/lib/data-service';
 import { getJurisdictionName } from '@/types';
+import { escapeXml } from '@/lib/xml';
 
 // Served through ISR like the other data routes: at most one regeneration per
 // window, so data-only commits reach the feed without a rebuild.
 export const revalidate = 300;
 
 const SITE_URL = 'https://policai.org';
-
-/**
- * Escapes a value for inclusion in an XML text node. Applied to every
- * interpolated field, including data sourced from third-party pages, so the
- * feed can never emit malformed XML.
- */
-function xmlEscape(value: string): string {
-	return value
-		.replace(/&/g, '&amp;')
-		.replace(/</g, '&lt;')
-		.replace(/>/g, '&gt;')
-		.replace(/"/g, '&quot;')
-		.replace(/'/g, '&apos;');
-}
 
 function xmlDate(value: string): string {
 	return new Date(value).toISOString();
@@ -38,12 +25,12 @@ export async function GET(): Promise<Response> {
 
 	const entries = items
 		.map((development) => {
-			const url = xmlEscape(development.url);
-			const title = xmlEscape(development.title);
+			const url = escapeXml(development.url);
+			const title = escapeXml(development.title);
 			const detected = xmlDate(development.detectedAt);
-			const jurisdiction = xmlEscape(getJurisdictionName(development.jurisdiction));
+			const jurisdiction = escapeXml(getJurisdictionName(development.jurisdiction));
 			const summary = development.summary
-				? xmlEscape(development.summary)
+				? escapeXml(development.summary)
 				: '';
 			const summaryXml = summary
 				? `<summary type="html">${summary}</summary>`

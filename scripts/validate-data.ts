@@ -17,9 +17,13 @@ import { execFile } from 'child_process';
 import { promisify } from 'util';
 import { readJsonFile } from '../src/lib/file-store';
 import { countUnsubstantiatedSecondaryDates } from '../src/lib/validate-data';
+import { readArticleSources } from '../src/lib/articles';
+import { readArticleBaseline } from '../src/lib/article-baseline';
+import { getPolicies } from '../src/lib/data-service';
 import {
   mergeReports,
   validateAgencies,
+  validateArticles,
   validateCollectionMeta,
   validateCourtRequirements,
   validateDevelopments,
@@ -163,6 +167,15 @@ async function main() {
     return;
   }
 
+  const [articles, articleBaseline, publicPolicies] = await Promise.all([
+    readArticleSources(path.join(STATE_DIR, 'articles')),
+    readArticleBaseline({
+      cwd: process.cwd(),
+      baseSha: process.env.GITHUB_BASE_SHA,
+    }),
+    getPolicies(),
+  ]);
+
   const policyIds = new Set(policies.map((policy) => policy.id));
   const timelineEventIds = new Set(timeline.map((event) => event.id));
   const report = mergeReports(
@@ -181,6 +194,7 @@ async function main() {
     validateSourceMonitoring(sourceMonitoring, WATCH_SOURCES),
     validateWatchState(watchState),
     validateWatchSources(WATCH_SOURCES),
+    validateArticles(articles, articleBaseline, { policies, publicPolicies }),
   );
 
   for (const warning of report.warnings) {
@@ -244,6 +258,7 @@ async function main() {
       `${timeline.length} timeline events, ${developments.length} developments, ` +
       `${courtRequirements.length} court requirements, ` +
       `${sourceReviews.length} source reviews, ${sourceMonitoring.manualReviews.length} manual source checks, ` +
+      `${articles.length} articles (${articleBaseline ? 'compared with the base' : 'no base; all treated as new'}), ` +
       `${WATCH_SOURCES.length} watch sources — ` +
       `${report.errors.length} errors, ${report.warnings.length} warnings`,
   );

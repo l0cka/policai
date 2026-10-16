@@ -122,6 +122,14 @@ All API endpoints have these controls:
 
 Set `POLICAI_CORS_ORIGIN` on the server to restrict cross-origin access to one origin. The default permits all origins.
 
+## Feeds
+
+`/feed.xml` is an Atom feed of public developments. `/analysis/feed.xml` is an
+Atom feed of published analysis pieces. Both read through `data-service.ts`,
+so withheld developments and drafts never appear. Every interpolated value is
+escaped with `escapeXml` (`src/lib/xml.ts`), including text from third-party
+pages, so a feed is always well-formed XML.
+
 ## Public MCP server
 
 The public MCP server uses the public API. It does not read editorial files and does not accept an admin token.

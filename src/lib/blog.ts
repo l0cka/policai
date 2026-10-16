@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import matter from 'gray-matter';
+import { parseFrontmatter } from '@/lib/frontmatter';
 
 const BLOG_DIR = path.join(process.cwd(), 'content', 'blog');
 
@@ -12,11 +12,6 @@ export interface BlogPost {
   content: string;
 }
 
-/**
- * Read all MDX blog posts from content/blog/, parse frontmatter,
- * and return them sorted by date descending (newest first).
- * Returns an empty array if the directory does not exist.
- */
 export function getAllPosts(): BlogPost[] {
   if (!fs.existsSync(BLOG_DIR)) {
     return [];
@@ -30,7 +25,7 @@ export function getAllPosts(): BlogPost[] {
     const slug = filename.replace(/\.mdx$/, '');
     const filePath = path.join(BLOG_DIR, filename);
     const raw = fs.readFileSync(filePath, 'utf-8');
-    const { data, content } = matter(raw);
+    const { data, content } = parseFrontmatter(raw);
 
     if (!data.title || !data.date || isNaN(new Date(data.date).getTime())) {
       console.warn(`[blog] Skipping ${filename}: missing or invalid frontmatter (title, date)`);
@@ -51,10 +46,6 @@ export function getAllPosts(): BlogPost[] {
   );
 }
 
-/**
- * Read a single MDX blog post by slug (filename without .mdx extension).
- * Returns undefined if the file does not exist.
- */
 export function getPostBySlug(slug: string): BlogPost | undefined {
   const filePath = path.join(BLOG_DIR, `${slug}.mdx`);
 
@@ -63,7 +54,7 @@ export function getPostBySlug(slug: string): BlogPost | undefined {
   }
 
   const raw = fs.readFileSync(filePath, 'utf-8');
-  const { data, content } = matter(raw);
+  const { data, content } = parseFrontmatter(raw);
 
   if (!data.title || !data.date || isNaN(new Date(data.date).getTime())) {
     return undefined;

@@ -25,9 +25,16 @@ import {
 } from "@/lib/verification";
 import { reconcileLinkedDevelopments } from "@/lib/source-review";
 import {
+	citationState,
+	parseArticle,
+	readArticleSources,
+	type CitationState,
+} from "@/lib/articles";
+import {
 	normalizeJurisdiction,
 	normalizePolicyType,
 	type Agency,
+	type ArticleType,
 	type CollectionMeta,
 	type DatePrecision,
 	type Development,
@@ -35,6 +42,8 @@ import {
 	type ManualSourceReview,
 	type Policy,
 	type PolicyDraft,
+	type PublicArticle,
+	type PublishedArticle,
 	type RecordVerification,
 	type SourceReview,
 	type SourceReviewStatus,
@@ -1218,6 +1227,79 @@ export async function getPolicyFrameworkArtifact(
 			options.now ?? new Date(),
 		),
 	};
+}
+
+export interface ArticleCitation {
+	policyId: string;
+	state: CitationState;
+	title?: string;
+}
+
+export type ArticleView<T extends PublicArticle = PublicArticle> = T & {
+	citations: ArticleCitation[];
+	sourceUnderReview: boolean;
+};
+
+function articlesDir(): string {
+	return (
+		process.env.POLICAI_ARTICLES_DIR ??
+		path.join(process.cwd(), "data", "articles")
+	);
+}
+
+async function readPublicArticles(
+	options: DataServiceOptions,
+): Promise<ArticleView[]> {
+	const [sources, policies] = await Promise.all([
+		readArticleSources(articlesDir()),
+		readPoliciesForAccess({ ...options, access: "public" }),
+	]);
+	const publicPolicies = new Map(policies.map((policy) => [policy.id, policy]));
+	return sources.flatMap((source) => {
+		const result = parseArticle(source);
+		if (!result.ok || result.article.status === "draft") return [];
+		const citations = result.article.cites.map((policyId) => {
+			const state = citationState(publicPolicies, policyId);
+			const title = publicPolicies.get(policyId)?.title;
+			return title ? { policyId, state, title } : { policyId, state };
+		});
+		return [
+			{
+				...result.article,
+				citations,
+				sourceUnderReview: citations.some(
+					(citation) => citation.state !== "current",
+				),
+			},
+		];
+	});
+}
+
+export async function getArticles(
+	filters: { type?: ArticleType; citing?: string } = {},
+	options: DataServiceOptions = {},
+): Promise<ArticleView<PublishedArticle>[]> {
+	const articles = await readPublicArticles(options);
+	return articles
+		.filter(
+			(article): article is ArticleView<PublishedArticle> =>
+				article.status === "published" &&
+				(!filters.type || article.type === filters.type) &&
+				(!filters.citing || article.cites.includes(filters.citing)),
+		)
+		.sort(
+			(a, b) =>
+				b.publishedAt.localeCompare(a.publishedAt) ||
+				a.slug.localeCompare(b.slug),
+		);
+}
+
+export async function getArticleBySlug(
+	slug: string,
+	options: DataServiceOptions = {},
+): Promise<ArticleView | null> {
+	const articles = await readPublicArticles(options);
+	return articles.find((article) => article.slug === slug) ?? null;
 }
 
 const EMPTY_META: CollectionMeta = {

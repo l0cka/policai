@@ -17,6 +17,7 @@ import {
   TIMELINE_EVENT_TYPES,
   VERIFICATION_STATUSES,
   type Agency,
+  type Article,
   type CollectionMeta,
   type CourtRequirement,
   type Development,
@@ -27,6 +28,12 @@ import {
   type SourceReview,
   type TimelineEvent,
 } from '@/types';
+import {
+  citationState,
+  type CitationState,
+  parseArticle,
+  type ArticleSource,
+} from '@/lib/articles';
 import type { WatchState } from '@/lib/pipeline/collect';
 import type { WatchSource } from '@/lib/pipeline/sources';
 import { identityExceptionState } from '@/lib/pipeline/identity';
@@ -2237,6 +2244,146 @@ export function validatePolicyFrameworkArtifact(
   );
   errors.push(...verificationReport.errors);
   warnings.push(...verificationReport.warnings);
+  return { errors, warnings };
+}
+
+export interface ArticleCitationTargets {
+  policies: readonly Policy[];
+  publicPolicies: readonly Policy[];
+}
+
+function articleTransitionErrors(
+  label: string,
+  previous: Article,
+  next: Article | undefined,
+): string[] {
+  if (previous.status === 'draft') return [];
+  if (!next) {
+    return [`${label}: a ${previous.status} piece cannot be deleted; withdraw it instead`];
+  }
+  const errors: string[] = [];
+  if (next.status === 'draft') {
+    errors.push(`${label}: a ${previous.status} piece cannot return to draft`);
+  }
+  if (previous.status === 'withdrawn' && next.status !== 'withdrawn') {
+    errors.push(`${label}: a withdrawn piece stays withdrawn`);
+  }
+  if (next.status !== 'draft' && next.publishedAt !== previous.publishedAt) {
+    errors.push(`${label}: publishedAt cannot change after publication`);
+  }
+  const kept = previous.corrections.every(
+    (correction, index) =>
+      next.corrections[index]?.date === correction.date &&
+      next.corrections[index]?.text === correction.text,
+  );
+  if (!kept) {
+    errors.push(`${label}: corrections are append-only; an earlier correction was changed or removed`);
+  }
+  return errors;
+}
+
+export type CitedRecordState = 'missing' | 'trashed' | CitationState;
+
+const CITATION_PROBLEMS: Record<
+  Exclude<CitedRecordState, 'current'>,
+  { always: boolean; message: (policyId: string) => string }
+> = {
+  missing: {
+    always: true,
+    message: (policyId) => `cites unknown register record "${policyId}"`,
+  },
+  trashed: {
+    always: true,
+    message: (policyId) => `cites trashed register record "${policyId}"`,
+  },
+  not_public: {
+    always: false,
+    message: (policyId) =>
+      `cites "${policyId}", which is withheld or unverified (Source under review)`,
+  },
+  review_due: {
+    always: false,
+    message: (policyId) =>
+      `cites "${policyId}", which is past its review interval (Source under review)`,
+  },
+};
+
+export function articleCitationReport(
+  label: string,
+  baseCites: readonly string[],
+  headCites: readonly string[],
+  states: ReadonlyMap<string, CitedRecordState>,
+): ValidationReport {
+  const errors: string[] = [];
+  const warnings: string[] = [];
+  const existing = new Set(baseCites);
+  for (const policyId of headCites) {
+    const state = states.get(policyId) ?? 'missing';
+    if (state === 'current') continue;
+    const problem = CITATION_PROBLEMS[state];
+    const report = problem.always || !existing.has(policyId) ? errors : warnings;
+    report.push(`${label}: ${problem.message(policyId)}`);
+  }
+  return { errors, warnings };
+}
+
+function citedRecordStates(targets: ArticleCitationTargets): Map<string, CitedRecordState> {
+  const publicPolicies = new Map(
+    targets.publicPolicies.map((policy) => [policy.id, policy]),
+  );
+  return new Map(
+    targets.policies.map((policy): [string, CitedRecordState] => [
+      policy.id,
+      policy.status === 'trashed' ? 'trashed' : citationState(publicPolicies, policy.id),
+    ]),
+  );
+}
+
+export function validateArticles(
+  current: readonly ArticleSource[],
+  base: readonly ArticleSource[] | null,
+  targets: ArticleCitationTargets,
+): ValidationReport {
+  const errors: string[] = [];
+  const warnings: string[] = [];
+  const states = citedRecordStates(targets);
+  const previous = new Map<string, Article>();
+  for (const entry of base ?? []) {
+    const result = parseArticle(entry);
+    if (result.ok) previous.set(entry.slug, result.article);
+  }
+  const parsed = new Map<string, Article>();
+
+  for (const entry of current) {
+    const label = `data/articles/${entry.slug}.md`;
+    const result = parseArticle(entry);
+    if (!result.ok) {
+      errors.push(...result.errors.map((error) => `${label}: ${error}`));
+      continue;
+    }
+    const article = result.article;
+    parsed.set(entry.slug, article);
+    if (article.status !== 'published') continue;
+    const before = previous.get(entry.slug);
+    const report = articleCitationReport(
+      label,
+      before?.status === 'published' ? before.cites : [],
+      article.cites,
+      states,
+    );
+    errors.push(...report.errors);
+    warnings.push(...report.warnings);
+  }
+
+  const currentSlugs = new Set(current.map((entry) => entry.slug));
+  for (const [slug, article] of previous) {
+    const next = parsed.get(slug);
+    if (currentSlugs.has(slug) && !next) continue;
+    errors.push(
+      ...articleTransitionErrors(`data/articles/${slug}.md`, article, next),
+    );
+  }
+
   return { errors, warnings };
 }
 

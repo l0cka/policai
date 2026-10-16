@@ -40,6 +40,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -58,6 +60,8 @@ jobs:
         run: python3 -m unittest discover -s ops/collector -p 'test_*.py' -v
 
       - name: Validate data
+        env:
+          GITHUB_BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: npm run validate:data
 
   build:
