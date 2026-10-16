@@ -196,9 +196,9 @@ this.
 The as-at date is the date the page was generated, as an Australia/Sydney
 calendar date. It is when the count was taken, not when the register last
 changed, and it reveals nothing about withheld, unverified or trashed
-records. The page is rendered on each request, so the count and its date come
-from the same render. A cached copy shows the date it was generated, which is
-still when its count was taken. Do not write a date in the prose that depends
+records. The count and its date come from the same render, and a page served
+from cache shows the date it was generated, which is still when its count was
+taken. Do not write a date in the prose that depends
 on it, because the chart states it.
 
 ## Citations
