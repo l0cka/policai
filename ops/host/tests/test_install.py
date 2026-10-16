@@ -175,17 +175,20 @@ class InstallationTests(unittest.TestCase):
             )
             (root / "MANIFEST.sha256").write_text(manifest)
             expected = install.digest(manifest.encode())
-            with patch.object(install, "REVIEW", root), patch.object(install, "protected"):
-                self.assertEqual(set(install.verify_manifest(expected)), names)
-                with self.assertRaises(install.Refused):
-                    install.verify_manifest("0" * 64)
-                (root / "host.py").write_text("changed")
-                with self.assertRaises(install.Refused):
-                    install.verify_manifest(expected)
-                incomplete = install.digest(b"fixture install.py") + "  install.py\n"
-                (root / "MANIFEST.sha256").write_text(incomplete)
-                with self.assertRaises(install.Refused):
-                    install.verify_manifest(install.digest(incomplete.encode()))
+
+            def verify(digest):
+                return install.verify_manifest(digest, root, lambda *args, **kwargs: None)
+
+            self.assertEqual(set(verify(expected)), names)
+            with self.assertRaises(install.Refused):
+                verify("0" * 64)
+            (root / "host.py").write_text("changed")
+            with self.assertRaises(install.Refused):
+                verify(expected)
+            incomplete = install.digest(b"fixture install.py") + "  install.py\n"
+            (root / "MANIFEST.sha256").write_text(incomplete)
+            with self.assertRaises(install.Refused):
+                verify(install.digest(incomplete.encode()))
 
     def test_held_requires_idle_jobs_no_dropins_and_both_masks(self):
         with tempfile.TemporaryDirectory() as tmp:
