@@ -3051,6 +3051,92 @@ describe('collect with Claude classifier', () => {
     );
   });
 
+  it.each([
+    {
+      kind: 'policy',
+      tracked: {
+        trackedPolicies: [
+          buildPolicy({
+            id: 'tracked-ai-path-policy',
+            sourceUrl: DOCUMENT_SOURCE.url,
+            verification: {
+              status: 'verified',
+              checkedAt: '2026-07-01T00:00:00.000Z',
+              checkedBy: 'reviewer',
+              method: 'manual',
+              source: { url: DOCUMENT_SOURCE.url, contentHash: 'a'.repeat(64) },
+            },
+          }),
+        ],
+      },
+      target: { targetPolicyId: 'tracked-ai-path-policy' },
+    },
+    {
+      kind: 'timeline event',
+      tracked: {
+        trackedTimelineEvents: [
+          buildTimelineEvent({
+            id: 'tracked-ai-path-event',
+            sourceUrl: DOCUMENT_SOURCE.url,
+            verification: {
+              status: 'verified',
+              checkedAt: '2026-07-01T00:00:00.000Z',
+              checkedBy: 'reviewer',
+              method: 'manual',
+              source: { url: DOCUMENT_SOURCE.url, contentHash: 'a'.repeat(64) },
+            },
+          }),
+        ],
+      },
+      target: { targetTimelineEventId: 'tracked-ai-path-event' },
+    },
+  ])(
+    'keeps a tracked $kind change detection editor-gated whatever the model says',
+    async ({ tracked, target }) => {
+      vi.stubEnv('USE_CLAUDE_CLASSIFIER', '1');
+      classifyBatch.mockImplementation(async (candidates: { id: string }[]) =>
+        candidates.map((candidate) => ({
+          id: candidate.id,
+          relevant: false,
+          confidence: 0.1,
+          jurisdiction: null,
+          type: null,
+          summary: 'Model says irrelevant.',
+        })),
+      );
+
+      const result = await collect({
+        sources: [DOCUMENT_SOURCE],
+        state: emptyWatchState(),
+        existingDevelopments: [],
+        trackedUrls: [DOCUMENT_SOURCE.url],
+        ...tracked,
+        fetchImpl: fakeFetch({
+          [DOCUMENT_SOURCE.url]:
+            '<html><body><main><h1>AI governance policy</h1><p>Changed since editorial verification.</p></main></body></html>',
+        }),
+        now: () => new Date('2026-07-10T00:00:00.000Z'),
+      });
+
+      expect(result.developments).toHaveLength(1);
+      expect(result.developments[0]).toMatchObject({
+        classification: 'heuristic',
+        relevanceScore: 1,
+        assessment: {
+          method: 'heuristic',
+          promptVersion: 'source-hash-change-v1',
+        },
+      });
+      expect(result.reviewCandidates).toEqual([
+        expect.objectContaining({
+          ...target,
+          analysis: expect.objectContaining({ relevanceScore: 1 }),
+        }),
+      ]);
+      expect(classifyBatch.mock.calls.flat(2)).toEqual([]);
+    },
+  );
+
   it('keeps the deterministic heuristic path when the flag is unset', async () => {
     const result = await collectWithOneCandidate();
 
