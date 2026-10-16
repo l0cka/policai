@@ -24,6 +24,8 @@ import {
 	projectVerificationForPublic,
 } from "@/lib/verification";
 import { reconcileLinkedDevelopments } from "@/lib/source-review";
+import { registerChart, type RegisterChart } from "@/lib/article-figures";
+import { sydneyCalendarDate } from "@/lib/calendar-date";
 import {
 	citationState,
 	parseArticle,
@@ -1235,9 +1237,14 @@ export interface ArticleCitation {
 	title?: string;
 }
 
+export interface RegisterChartView extends RegisterChart {
+	asAt: string | null;
+}
+
 export type ArticleView<T extends PublicArticle = PublicArticle> = T & {
 	citations: ArticleCitation[];
 	sourceUnderReview: boolean;
+	registerCharts: Record<number, RegisterChartView>;
 };
 
 function articlesDir(): string {
@@ -1250,11 +1257,14 @@ function articlesDir(): string {
 async function readPublicArticles(
 	options: DataServiceOptions,
 ): Promise<ArticleView[]> {
-	const [sources, policies] = await Promise.all([
+	const [sources, policies, meta] = await Promise.all([
 		readArticleSources(articlesDir()),
 		readPoliciesForAccess({ ...options, access: "public" }),
+		getCollectionMeta(),
 	]);
 	const publicPolicies = new Map(policies.map((policy) => [policy.id, policy]));
+	const dataCurrentAt = meta.lastHealthyAt ?? meta.lastCollectedAt;
+	const asAt = dataCurrentAt ? sydneyCalendarDate(new Date(dataCurrentAt)) : null;
 	return sources.flatMap((source) => {
 		const result = parseArticle(source);
 		if (!result.ok || result.article.status === "draft") return [];
@@ -1269,6 +1279,13 @@ async function readPublicArticles(
 				citations,
 				sourceUnderReview: citations.some(
 					(citation) => citation.state !== "current",
+				),
+				registerCharts: Object.fromEntries(
+					result.article.blocks.flatMap((block) =>
+						block.kind === "figure" && block.figure.kind === "chart"
+							? [[block.number, { ...registerChart(block.figure, policies), asAt }]]
+							: [],
+					),
 				),
 			},
 		];

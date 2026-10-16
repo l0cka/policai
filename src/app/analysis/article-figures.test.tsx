@@ -28,10 +28,11 @@ const CITED = {
 
 const cited = Object.entries(CITED).map(([id, title]) => buildPolicy({ id, title }));
 
-function serve(policies: Policy[], reviews: Partial<SourceReview>[] = []) {
+function serve(policies: Policy[], reviews: Partial<SourceReview>[] = [], meta?: object) {
   readJsonFile.mockImplementation(async (file: string, fallback: unknown) => {
     if (file.endsWith('policies.json')) return policies;
     if (file.endsWith('source-reviews.json')) return reviews;
+    if (meta && file.endsWith('meta.json')) return { ...(fallback as object), ...meta };
     return fallback;
   });
 }
@@ -159,5 +160,52 @@ describe('figures in an analysis piece', () => {
     const figure = figureByLabel('Figure 1 · Timeline');
     expect(within(figure).getByText('Register record under review')).toBeInTheDocument();
     expect(within(figure).queryByRole('link')).toBeNull();
+  });
+
+  describe('register chart', () => {
+    const counted = [
+      buildPolicy({ id: 'chart-nsw', jurisdiction: 'nsw' }),
+      buildPolicy({ id: 'chart-vic', jurisdiction: 'vic' }),
+      buildPolicy({ id: 'chart-review-due', jurisdiction: 'qld', verification: { ...cited[0].verification, checkedAt: '2026-01-01T00:00:00.000Z' } }),
+    ];
+    const withheld = buildPolicy({ id: 'chart-withheld', jurisdiction: 'nt' });
+    const withheldReview = {
+      id: 'review-chart-withheld',
+      status: 'pending_review' as const,
+      targetPolicyId: 'chart-withheld',
+      sourceUrl: withheld.sourceUrl,
+    };
+
+    it('counts the public register live, labels the source line and ignores withheld records', async () => {
+      serve([...cited, ...counted, withheld], [withheldReview], { lastCollectedAt: '2026-07-15T20:30:00.000Z' });
+      await renderArticle('figure-kinds-published');
+      const figure = figureByLabel('Figure 4 · Chart');
+      const table = within(figure).getByRole('table');
+      expect(
+        within(table).getAllByRole('row').slice(1).map((row) => [
+          within(row).getByRole('rowheader').textContent,
+          row.querySelector('.figure-chart-value')?.textContent,
+          row.dataset.highlighted ?? null,
+        ]),
+      ).toEqual([
+        ['Federal', '7', 'true'],
+        ['New South Wales', '1', null],
+        ['Victoria', '1', null],
+        ['Queensland', '1', null],
+      ]);
+      expect(within(table).queryByText('Northern Territory')).toBeNull();
+      expect(table.querySelector('.figure-chart-bar')).toHaveAttribute('aria-hidden', 'true');
+      const register = within(figure.querySelector('.figure-sources') as HTMLElement).getByRole('link');
+      expect(register).toHaveTextContent('Policai register, 10 public records, as at 16 July 2026');
+      expect(register).toHaveAttribute('href', '/');
+    });
+
+    it('does not raise the banner for a review-due record the chart counts', async () => {
+      serve([...cited, ...counted]);
+      await renderArticle('figure-kinds-published');
+      expect(within(figureByLabel('Figure 4 · Chart')).getByText('Queensland')).toBeInTheDocument();
+      expect(screen.queryByText('Source under review')).not.toBeInTheDocument();
+      expect(within(figureByLabel('Figure 4 · Chart')).getByRole('link')).toHaveTextContent(/^Policai register, 10 public records$/);
+    });
   });
 });

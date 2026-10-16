@@ -1,10 +1,13 @@
 import type { CSSProperties, ReactNode } from 'react';
 import Link from 'next/link';
 import { formatPolicyDate } from '@/lib/format-policy-date';
-import type { ArticleCitation } from '@/lib/data-service';
+import { formatArticleDate } from '@/components/analysis';
+import type { ArticleCitation, RegisterChartView } from '@/lib/data-service';
 import {
   FIGURE_KIND_NAMES,
   type ArticleFigure,
+  type ChartFigure,
+  type ChartGroup,
   type FlowFigure,
   type FlowStep,
   type MatrixFigure,
@@ -145,7 +148,44 @@ function FlowBody({ figure }: { figure: FlowFigure }) {
   );
 }
 
-function figureBody(figure: ArticleFigure): ReactNode {
+const CHART_GROUP_NAMES: Record<ChartGroup, string> = {
+  jurisdiction: 'Jurisdiction',
+  type: 'Type',
+  status: 'Status',
+};
+
+function ChartBody({ figure, chart }: { figure: ChartFigure; chart: RegisterChartView }) {
+  const max = Math.max(...chart.bars.map((bar) => bar.count), 1);
+  return (
+    <table className="figure-chart" style={{ '--max': max } as CSSProperties}>
+      <caption className="sr-only">{figure.title}</caption>
+      <thead className="sr-only">
+        <tr>
+          <th scope="col">{CHART_GROUP_NAMES[figure.query.group]}</th>
+          <th scope="col">Public records</th>
+        </tr>
+      </thead>
+      <tbody>
+        {chart.bars.map((bar) => (
+          <tr key={bar.value} data-highlighted={bar.highlighted ? 'true' : undefined}>
+            <th scope="row">{bar.label}</th>
+            <td className="figure-chart-value">{bar.count}</td>
+            <td className="figure-chart-bar" aria-hidden="true">
+              <span className="figure-chart-fill" style={{ '--value': bar.count } as CSSProperties} />
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+
+export function registerSourceText(chart: RegisterChartView): string {
+  const records = `Policai register, ${chart.total} public ${chart.total === 1 ? 'record' : 'records'}`;
+  return chart.asAt ? `${records}, as at ${formatArticleDate(chart.asAt)}` : records;
+}
+
+function figureBody(figure: ArticleFigure, chart: RegisterChartView | undefined): ReactNode {
   switch (figure.kind) {
     case 'timeline':
       return <TimelineBody figure={figure} />;
@@ -154,14 +194,24 @@ function figureBody(figure: ArticleFigure): ReactNode {
     case 'flow':
       return <FlowBody figure={figure} />;
     case 'chart':
-      return null;
+      return chart ? <ChartBody figure={figure} chart={chart} /> : null;
   }
 }
 
-function sourceItems(figure: ArticleFigure, citations: readonly ArticleCitation[]): ReactNode[] {
+function sourceItems(
+  figure: ArticleFigure,
+  citations: readonly ArticleCitation[],
+  chart: RegisterChartView | undefined,
+): ReactNode[] {
   const records =
     figure.kind === 'chart'
-      ? []
+      ? chart
+        ? [
+            <Link key="register" href="/" className={FIGURE_LINK}>
+              {registerSourceText(chart)}
+            </Link>,
+          ]
+        : []
       : figure.cites.map((policyId) => <RecordLink key={policyId} policyId={policyId} citations={citations} />);
   return [...records, ...officialSources(figure.sources)];
 }
@@ -170,10 +220,12 @@ export function ArticleFigureView({
   number,
   figure,
   citations,
+  chart,
 }: {
   number: number;
   figure: ArticleFigure;
   citations: readonly ArticleCitation[];
+  chart?: RegisterChartView;
 }) {
   const id = `fig-${number}`;
   const wide = (figure.kind === 'matrix' || figure.kind === 'flow') && figure.wide;
@@ -194,10 +246,10 @@ export function ArticleFigureView({
       <p id={`${id}-alt`} className="sr-only">
         {figure.alt}
       </p>
-      <div className="figure-body">{figureBody(figure)}</div>
+      <div className="figure-body">{figureBody(figure, chart)}</div>
       <figcaption className="figure-caption">
         <span className="figure-caption-text">{figure.caption}</span>
-        <SourceLine items={sourceItems(figure, citations)} />
+        <SourceLine items={sourceItems(figure, citations, chart)} />
       </figcaption>
     </figure>
   );

@@ -750,6 +750,77 @@
   }
 }
 
+.figure .figure-chart {
+  display: block;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.figure .figure-chart tbody {
+  display: block;
+}
+
+.figure .figure-chart tbody tr {
+  display: grid;
+  grid-template-columns: 9rem minmax(0, 1fr) 3rem;
+  grid-template-areas: 'label bar value';
+  column-gap: var(--space-4);
+  align-items: center;
+  min-height: 2rem;
+}
+
+.figure .figure-chart tbody th {
+  grid-area: label;
+  padding: 0;
+  text-align: left;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.3;
+  color: var(--foreground);
+}
+
+.figure .figure-chart-value {
+  grid-area: value;
+  padding: 0;
+  text-align: right;
+  font-weight: 600;
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--foreground);
+}
+
+.figure .figure-chart-bar {
+  grid-area: bar;
+  display: block;
+  height: 10px;
+  padding: 0;
+  border-radius: var(--radius-control);
+  background: var(--muted);
+  overflow: hidden;
+}
+
+.figure .figure-chart-fill {
+  display: block;
+  width: calc(var(--value) / var(--max) * 100%);
+  height: 100%;
+  border-radius: var(--radius-control);
+  background: color-mix(in oklab, var(--primary) 60%, var(--background));
+}
+
+.figure [data-highlighted='true'] .figure-chart-fill {
+  background: var(--primary);
+}
+
+@media (max-width: 479px) {
+  .figure .figure-chart tbody tr {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: 'label value' 'bar bar';
+    row-gap: var(--space-1);
+    min-height: 2.75rem;
+    padding-block: var(--space-1);
+  }
+}
+
 @layer utilities {
   .font-display {
     font-family: var(--font-display);

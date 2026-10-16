@@ -148,7 +148,13 @@ export default async function ArticlePage({ params }: Params) {
           block.kind === 'prose' ? (
             <MDXRemote key={index} source={block.markdown} options={{ mdxOptions: { format: 'md' } }} />
           ) : (
-            <ArticleFigureView key={index} number={block.number} figure={block.figure} citations={article.citations} />
+            <ArticleFigureView
+              key={index}
+              number={block.number}
+              figure={block.figure}
+              citations={article.citations}
+              chart={article.registerCharts[block.number]}
+            />
           ),
         )}
       </div>
