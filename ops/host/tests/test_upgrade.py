@@ -100,7 +100,14 @@ class Host:
     def transaction(self):
         return install.Upgrade(self.review, self.journal, self.entries, check)
 
-    def upgrade(self, step, manifest=None):
+    @property
+    def expected(self):
+        return install.installed_digest(self.transaction().inventory()[0])
+
+    def path(self, name):
+        return next(path for entry, path, *_ in self.entries if entry == name)
+
+    def upgrade(self, step, manifest=None, expect_installed=None):
         with (
             patch.object(install, "USER_UNITS", self.units),
             patch.object(install, "command", side_effect=systemctl()),
@@ -112,6 +119,7 @@ class Host:
                 state=self.state,
                 entries=self.entries,
                 check=check,
+                **({} if expect_installed is None else {"expect_installed": expect_installed}),
             )
 
     def assert_upgraded(self, test):
@@ -255,6 +263,33 @@ class UpgradeTests(unittest.TestCase):
                     getattr(tx, recovery)()
                 self.assertEqual(host.tree(), partial)
 
+    def test_apply_refuses_a_file_replaced_between_plan_and_apply(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            host = Host(tmp)
+            text = install.render_plan(host.transaction().plan(), host.journal)
+            self.assertIn(f"expect-installed: {host.expected}", text)
+            path = host.path("host.py")
+            path.write_bytes(path.read_bytes() + b"\nreplaced between plan and apply\n")
+            tampered = host.tree()
+            with self.assertRaises(install.Refused):
+                host.upgrade("apply", expect_installed=host.expected)
+            self.assertEqual(host.tree(), tampered)
+            self.assertFalse((host.state / "upgrades").exists())
+
+    def test_first_apply_needs_the_plan_digest_and_a_re_apply_does_not(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            host = Host(tmp)
+            with self.assertRaises(install.Refused):
+                host.upgrade("apply")
+            self.assertEqual(host.tree(), host.original)
+            self.assertFalse((host.state / "upgrades").exists())
+            host.upgrade("apply", expect_installed=host.expected)
+            host.assert_upgraded(self)
+            host.upgrade("rollback")
+            self.assertEqual(host.tree(), host.original)
+            host.upgrade("apply")
+            host.assert_upgraded(self)
+
     def test_rollback_without_a_journal_is_refused(self):
         with tempfile.TemporaryDirectory() as tmp:
             host = Host(tmp)
@@ -349,7 +384,17 @@ class UpgradeTests(unittest.TestCase):
         script = str(Path(install.__file__))
         for step in ("apply", "rollback"):
             result = subprocess.run(
-                [sys.executable, "-I", script, "upgrade", step, "--manifest-sha256", "0" * 64],
+                [
+                    sys.executable,
+                    "-I",
+                    script,
+                    "upgrade",
+                    step,
+                    "--manifest-sha256",
+                    "0" * 64,
+                    "--expect-installed",
+                    "0" * 64,
+                ],
                 capture_output=True,
                 text=True,
             )
