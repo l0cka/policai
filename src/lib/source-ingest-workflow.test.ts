@@ -1428,7 +1428,7 @@ describe('source ingest approval workflow', () => {
     retrieveSource.mockResolvedValue({
       body: '<main>Official AI policy</main>',
       durationMs: 1,
-      legacyContentHash: 'a'.repeat(64),
+      earlierContentHashes: ['a'.repeat(64)],
       evidence: {
         url: SOURCE_URL,
         finalUrl: SOURCE_URL,
@@ -2166,7 +2166,7 @@ describe('source ingest approval workflow', () => {
     retrieveSource.mockResolvedValueOnce({
       body: '<main>Official AI policy</main>',
       durationMs: 1,
-      legacyContentHash: 'a'.repeat(64),
+      earlierContentHashes: ['a'.repeat(64)],
       evidence: {
         url: SOURCE_URL,
         finalUrl: SOURCE_URL,
@@ -2204,7 +2204,7 @@ describe('source ingest approval workflow', () => {
     const unchangedPageUnderTheCurrentKeys = {
       body: '<main>Official AI policy</main>',
       durationMs: 1,
-      legacyContentHash: 'a'.repeat(64),
+      earlierContentHashes: ['a'.repeat(64)],
       evidence: {
         url: SOURCE_URL,
         finalUrl: SOURCE_URL,

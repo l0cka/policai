@@ -15,6 +15,7 @@ import {
   detectDateMetaPlatform,
   FINGERPRINT_METADATA_KEYS,
   LEGACY_FINGERPRINT_METADATA_KEYS,
+  publicationDateCandidates,
 } from './date-metadata';
 import type {
   LinkedDocumentEvidence,
@@ -101,23 +102,23 @@ export interface RetrievedSource {
    */
   linkedSources?: RetrievedSource[];
   evidence: SourceEvidence;
-  legacyContentHash?: string;
+  earlierContentHashes?: readonly string[];
   durationMs: number;
 }
 
 interface ContentFingerprint {
   contentHash: string;
-  legacyContentHash: string;
+  earlierContentHashes: readonly string[];
 }
 
 export function matchesRetrievedContent(
-  retrieved: Pick<RetrievedSource, 'evidence' | 'legacyContentHash'>,
+  retrieved: Pick<RetrievedSource, 'evidence' | 'earlierContentHashes'>,
   storedHash: string | undefined,
 ): boolean {
   return (
     storedHash !== undefined &&
     (storedHash === retrieved.evidence.contentHash ||
-      storedHash === retrieved.legacyContentHash)
+      (retrieved.earlierContentHashes ?? []).includes(storedHash))
   );
 }
 
@@ -346,12 +347,13 @@ function stableHashContent(
 ): ContentFingerprint {
   const byteHash = () => {
     const contentHash = createHash('sha256').update(body).digest('hex');
-    return { contentHash, legacyContentHash: contentHash };
+    return { contentHash, earlierContentHashes: [] };
   };
   if (documentKindFromBytes(body)) return byteHash();
   if (isHtmlPayload(body, contentType)) {
     const markup = body.toString('utf8');
     const $ = load(markup);
+    const publicationDates = publicationDateCandidates($);
     let semantic = $('main').first();
     if (semantic.length === 0) semantic = $('[role="main"]').first();
     if (semantic.length === 0) semantic = $('article').first();
@@ -411,36 +413,46 @@ function stableHashContent(
     });
     const text = cleanHtmlContent(semantic.html() ?? semantic.text());
     const sortedReferences = Array.from(references).sort();
-    const hashWith = (keys: ReadonlySet<string>, platform: string[]) =>
-      createHash('sha256')
-        .update(
-          JSON.stringify({
-            text,
-            references: sortedReferences,
-            metadata: Array.from(
-              new Set([
-                ...metadata
-                  .filter(([key]) => keys.has(key))
-                  .map(([key, value]) => `${key}:${value}`),
-                ...times,
-                ...platform,
-              ]),
-            ).sort(),
-          }),
-        )
-        .digest('hex');
+    const metadataSet = (keys: ReadonlySet<string>, extra: string[]) =>
+      Array.from(
+        new Set([
+          ...metadata
+            .filter(([key]) => keys.has(key))
+            .map(([key, value]) => `${key}:${value}`),
+          ...times,
+          ...extra,
+        ]),
+      ).sort();
+    const hashOf = (preimage: object) =>
+      createHash('sha256').update(JSON.stringify(preimage)).digest('hex');
     return {
-      contentHash: hashWith(FINGERPRINT_METADATA_KEYS, [
-        `date-platform:${detectDateMetaPlatform($)}`,
-      ]),
-      legacyContentHash: hashWith(LEGACY_FINGERPRINT_METADATA_KEYS, []),
+      contentHash: hashOf({
+        text,
+        references: sortedReferences,
+        metadata: metadataSet(FINGERPRINT_METADATA_KEYS, []),
+        publicationDates,
+      }),
+      earlierContentHashes: [
+        hashOf({
+          text,
+          references: sortedReferences,
+          metadata: metadataSet(FINGERPRINT_METADATA_KEYS, [
+            `date-platform:${detectDateMetaPlatform($)}`,
+          ]),
+        }),
+        hashOf({
+          text,
+          references: sortedReferences,
+          metadata: metadataSet(LEGACY_FINGERPRINT_METADATA_KEYS, []),
+        }),
+      ],
     };
   }
   if (contentType.includes('xml')) {
     const contentHash = createHash('sha256')
       .update(cleanHtmlContent(body.toString('utf8')))
       .digest('hex');
-    return { contentHash, legacyContentHash: contentHash };
+    return { contentHash, earlierContentHashes: [] };
   }
   return byteHash();
 }
@@ -715,7 +727,7 @@ export async function foldLinkedDocuments(
   return {
     ...retrieved,
     linkedSources: linkedResults.map((result) => result.source),
-    legacyContentHash: composite(retrieved.legacyContentHash ?? pageHash),
+    earlierContentHashes: (retrieved.earlierContentHashes ?? []).map(composite),
     evidence: {
       ...retrieved.evidence,
       contentHash,
@@ -1045,7 +1057,7 @@ export async function retrieveSourceOverHttp1(
                 body,
                 bytes: binaryDocument ? bodyBuffer : undefined,
                 durationMs: Date.now() - startedAt,
-                legacyContentHash: fingerprint.legacyContentHash,
+                earlierContentHashes: fingerprint.earlierContentHashes,
                 evidence: {
                   url: canonicalizeSourceUrl(originalUrl),
                   finalUrl: canonicalizeSourceUrl(url),
@@ -1270,7 +1282,7 @@ export async function retrieveSource(
         body,
         bytes: binaryDocument ? bodyBuffer : undefined,
         durationMs: Date.now() - startedAt,
-        legacyContentHash: fingerprint.legacyContentHash,
+        earlierContentHashes: fingerprint.earlierContentHashes,
         evidence: {
           url: canonicalizeSourceUrl(url),
           finalUrl: canonicalizeSourceUrl(finalUrl),

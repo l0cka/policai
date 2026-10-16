@@ -987,7 +987,7 @@ describe('collect', () => {
         }),
         hashLinkedDocuments: false,
       });
-      return retrieved.legacyContentHash as string;
+      return retrieved.earlierContentHashes?.[1] as string;
     }
 
     const transitionKey = (hash: string) =>
@@ -1299,6 +1299,120 @@ describe('collect', () => {
           lastChangedAt: '2026-07-17T00:00:00.000Z',
         });
         expect(dated.developments).toHaveLength(1);
+      });
+    });
+
+    describe('fingerprints stored under the #244 keyed-set scheme', () => {
+      const footerTimePage = (datetime: string) =>
+        `<html><head></head><body><main><h1>AI governance policy</h1><p>Version one.</p></main><footer>Published <time datetime="${datetime}">x</time></footer></body></html>`;
+      const sharedAttributePage = (published: string) =>
+        plainPage(
+          `<meta name="twitter:label1" property="article:published_time" content="${published}">`,
+        );
+      const storedKeyedSetFingerprint = async (html: string) =>
+        (
+          await retrieveSource(DOCUMENT_SOURCE.url, {
+            fetchImpl: fakeFetch({ [DOCUMENT_SOURCE.url]: html }),
+            hashLinkedDocuments: false,
+          })
+        ).earlierContentHashes?.[0] as string;
+      const run = (
+        state: WatchState,
+        html: string,
+        day: string,
+        policy?: ReturnType<typeof buildPolicy>,
+      ) =>
+        collect({
+          sources: [DOCUMENT_SOURCE],
+          state,
+          existingDevelopments: [],
+          ...(policy
+            ? { trackedUrls: [DOCUMENT_SOURCE.url], trackedPolicies: [policy] }
+            : {}),
+          fetchImpl: fakeFetch({ [DOCUMENT_SOURCE.url]: html }),
+          now: () => new Date(`${day}T00:00:00.000Z`),
+        });
+
+      it('adopts a keyed-set verified fingerprint for unchanged content, then detects a footer publication time change', async () => {
+        const storedHash = await storedKeyedSetFingerprint(footerTimePage('2026-01-01'));
+        expect(storedHash).toMatch(/^[0-9a-f]{64}$/);
+        const policy = buildPolicy({
+          id: 'tracked-document-policy',
+          sourceUrl: DOCUMENT_SOURCE.url,
+          verification: {
+            status: 'verified',
+            checkedAt: '2026-07-01T00:00:00.000Z',
+            checkedBy: 'reviewer',
+            method: 'manual',
+            source: { url: DOCUMENT_SOURCE.url, contentHash: storedHash },
+          },
+        });
+
+        const unchanged = await run(
+          emptyWatchState(),
+          footerTimePage('2026-01-01'),
+          '2026-07-10',
+          policy,
+        );
+        expect(unchanged.developments).toEqual([]);
+        expect(unchanged.reviewCandidates).toEqual([]);
+        const adopted = unchanged.state.sourceSnapshots[DOCUMENT_SOURCE.id];
+        expect(adopted.contentHash).not.toBe(storedHash);
+        expect(adopted.lastChangedAt).toBeUndefined();
+
+        const repeated = await run(
+          unchanged.state,
+          footerTimePage('2026-01-01'),
+          '2026-07-17',
+          policy,
+        );
+        expect(repeated.reviewCandidates).toEqual([]);
+
+        const redated = await run(
+          repeated.state,
+          footerTimePage('2026-03-03'),
+          '2026-07-24',
+          policy,
+        );
+        expect(redated.reviewCandidates).toHaveLength(1);
+        expect(redated.reviewCandidates[0]).toMatchObject({
+          targetPolicyId: policy.id,
+          sourceVersionSequence: 1,
+        });
+      });
+
+      it('adopts a keyed-set snapshot fingerprint for unchanged content, then detects a shared-attribute date change', async () => {
+        const storedHash = await storedKeyedSetFingerprint(sharedAttributePage('2026-01-01'));
+        expect(storedHash).toMatch(/^[0-9a-f]{64}$/);
+        const state: WatchState = {
+          ...emptyWatchState(),
+          sourceSnapshots: {
+            [DOCUMENT_SOURCE.id]: {
+              contentHash: storedHash,
+              firstCheckedAt: '2026-07-01T00:00:00.000Z',
+              lastCheckedAt: '2026-07-01T00:00:00.000Z',
+              changeCount: 0,
+            },
+          },
+        };
+
+        const unchanged = await run(state, sharedAttributePage('2026-01-01'), '2026-07-10');
+        const adopted = unchanged.state.sourceSnapshots[DOCUMENT_SOURCE.id];
+        expect(unchanged.developments).toEqual([]);
+        expect(adopted).toMatchObject({ changeCount: 0 });
+        expect(adopted.contentHash).not.toBe(storedHash);
+        expect(adopted.lastChangedAt).toBeUndefined();
+
+        const redated = await run(
+          unchanged.state,
+          sharedAttributePage('2026-03-03'),
+          '2026-07-24',
+        );
+        expect(redated.state.sourceSnapshots[DOCUMENT_SOURCE.id]).toMatchObject({
+          changeCount: 1,
+          lastChangedAt: '2026-07-24T00:00:00.000Z',
+        });
+        expect(redated.developments).toHaveLength(1);
       });
     });
   });

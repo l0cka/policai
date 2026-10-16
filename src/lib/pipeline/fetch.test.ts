@@ -1268,9 +1268,23 @@ describe('matchesRetrievedContent', () => {
     const current = await retrievePage(
       '<meta name="Generator" content="Drupal 10 (https://www.drupal.org)"><meta name="dcterms.created" content="2026-06-01">',
     );
-    expect(current.legacyContentHash).not.toBe(current.evidence.contentHash);
-    expect(matchesRetrievedContent(current, current.legacyContentHash)).toBe(true);
+    const legacyHash = current.earlierContentHashes?.[1];
+    expect(legacyHash).not.toBe(current.evidence.contentHash);
+    expect(matchesRetrievedContent(current, legacyHash)).toBe(true);
     expect(matchesRetrievedContent(current, current.evidence.contentHash)).toBe(true);
+  });
+
+  it('accepts the fingerprints this page had under the #244 keyed-set and pre-#195 schemes', async () => {
+    const keyedSetHash =
+      '4cac28aebfc4c39e4d08c993f85cfdbee945f54a290e687da4e0b365759ccef6';
+    const legacyHash =
+      '72053fe45226ec77bd9ce2ea8814269ab7424368ff6f0c398534cfcd51c87bfe';
+    const current = await retrievePage('');
+    expect(current.evidence.contentHash).not.toBe(keyedSetHash);
+    expect(current.evidence.contentHash).not.toBe(legacyHash);
+    expect(current.earlierContentHashes).toEqual([keyedSetHash, legacyHash]);
+    expect(matchesRetrievedContent(current, keyedSetHash)).toBe(true);
+    expect(matchesRetrievedContent(current, legacyHash)).toBe(true);
   });
 
   it('rejects the current fingerprint of a page that lacked dcterms.created once the page gains it', async () => {

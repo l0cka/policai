@@ -153,7 +153,7 @@ describe('register audit', () => {
     const current = await retrievePage(
       '<meta name="Generator" content="Drupal 10 (https://www.drupal.org)"><meta name="dcterms.created" content="2026-06-01">',
     );
-    const storedBeforeTheKeyChange = current.legacyContentHash as string;
+    const storedBeforeTheKeyChange = current.earlierContentHashes?.[1] as string;
     const policy = buildPolicy({
       verification: {
         status: 'verified',
@@ -175,6 +175,42 @@ describe('register audit', () => {
     expect(written.verification).toMatchObject({
       status: 'verified',
       source: { contentHash: storedBeforeTheKeyChange },
+    });
+  });
+
+  it('treats a fingerprint stored under the #244 keyed-set scheme as unchanged and keeps it', async () => {
+    const url = 'https://example.gov.au/policy';
+    const current = await retrieveSource(url, {
+      fetchImpl: (async () =>
+        new Response(
+          '<html><head></head><body><main><h1>AI policy</h1><p>Stable obligations.</p></main><footer>Published <time datetime="2026-01-01">x</time></footer></body></html>',
+          { headers: { 'content-type': 'text/html' } },
+        )) as unknown as typeof fetch,
+      hashLinkedDocuments: false,
+    });
+    const storedKeyedSetHash = current.earlierContentHashes?.[0] as string;
+    expect(storedKeyedSetHash).toMatch(/^[0-9a-f]{64}$/);
+    const policy = buildPolicy({
+      verification: {
+        status: 'verified',
+        source: { url, contentHash: storedKeyedSetHash },
+        checkedAt: '2026-07-15T00:00:00.000Z',
+        checkedBy: 'editor',
+        method: 'manual',
+      },
+    });
+
+    const results = await auditRegister([policy], {
+      retrieve: async () => current,
+      now: () => new Date('2026-07-16T00:00:00.000Z'),
+    });
+
+    expect(current.evidence.contentHash).not.toBe(storedKeyedSetHash);
+    expect(results[0].status).toBe('unchanged');
+    const written = applyRegisterAuditEvidence([policy], results)[0];
+    expect(written.verification).toMatchObject({
+      status: 'verified',
+      source: { contentHash: storedKeyedSetHash },
     });
   });
 
