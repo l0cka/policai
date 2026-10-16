@@ -56,10 +56,12 @@ def validate_remote(value):
     return value
 
 
+ENTRYPOINT = Path("/usr/local/libexec/policai-host/cli.py")
+
+
 def trusted_entrypoint():
     here = Path(__file__)
-    expected = Path("/usr/local/libexec/policai-host/cli.py")
-    if here != expected or here.resolve() != expected:
+    if here != ENTRYPOINT or here.resolve() != ENTRYPOINT:
         raise RuntimeError(
             "use installed root-owned entrypoint; uninstalled artifacts cannot operate on production"
         )
@@ -221,7 +223,7 @@ def main():
             sys.stdout.write(output)
         return 0
     except (RuntimeError, OSError, ValueError, KeyError, TypeError) as error:
-        if Path(__file__).resolve() != Path("/usr/local/libexec/policai-host/cli.py"):
+        if Path(__file__).resolve() != ENTRYPOINT:
             print(
                 "Refused: use installed root-owned entrypoint; this artifact is uninstalled.",
                 file=sys.stderr,

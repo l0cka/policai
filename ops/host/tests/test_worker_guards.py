@@ -6,7 +6,7 @@ import sys
 import tempfile
 import time
 import unittest
-from contextlib import redirect_stderr
+from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
 from unittest.mock import patch
 
@@ -346,6 +346,95 @@ class FailureLineTests(unittest.TestCase):
         self.assertEqual(
             err.getvalue(),
             "Refused: worker command not allowlisted."
+            " Inspect status and reviewed prerequisites; no automatic retry.\n",
+        )
+
+    def test_a_spawn_failure_is_a_refusal_and_a_later_os_error_a_task_failure(self):
+        missing = Path(tempfile.mkdtemp()) / "missing"
+
+        class Absent:
+            def execute(self, argv, cwd, **kwargs):
+                return h.Runner().execute([str(missing)], cwd="/")
+
+        class Broken:
+            def execute(self, argv, cwd, **kwargs):
+                argv = [sys.executable, "-c", "raise SystemExit(0)"]
+                with patch.object(h.selectors, "DefaultSelector", side_effect=OSError()):
+                    return h.Runner().execute(argv, cwd="/")
+
+        self.assertEqual(
+            self.failure(lambda: self.worker(Absent()).run_worker("verify-deadlines", ())),
+            "Refused: command unavailable or timed out."
+            " Inspect status and reviewed prerequisites; no automatic retry.",
+        )
+        self.assertEqual(
+            self.failure(lambda: self.worker(Broken()).run_worker("verify-deadlines", ())),
+            "Failed: worker task verify-deadlines: command unavailable or timed out;"
+            " guards passed. No automatic retry.",
+        )
+
+    def test_output_over_the_bound_is_a_task_failure(self):
+        class Loud:
+            def execute(self, argv, cwd, **kwargs):
+                argv = [sys.executable, "-c", "print('x' * 100)"]
+                return h.Runner().execute(argv, cwd="/", limit=10)
+
+        self.assertEqual(
+            self.failure(lambda: self.worker(Loud()).run_worker("verify-deadlines", ())),
+            "Failed: worker task verify-deadlines: command output exceeded bound;"
+            " guards passed. No automatic retry.",
+        )
+
+    def test_report_lets_interrupts_and_exits_through(self):
+        error = d.Refused("worker command not allowlisted")
+
+        class Interrupted:
+            def write(self, text):
+                raise KeyboardInterrupt
+
+            flush = write
+
+        with patch.object(cli, "failure_line", side_effect=KeyboardInterrupt):
+            self.assertRaises(KeyboardInterrupt, cli.report, "worker", error)
+        with patch.object(sys, "stderr", Interrupted()):
+            self.assertRaises(KeyboardInterrupt, cli.report, "worker", error)
+        with (
+            patch.object(cli.syslog, "openlog"),
+            patch.object(cli.syslog, "syslog", side_effect=SystemExit(2)),
+            redirect_stderr(io.StringIO()),
+        ):
+            self.assertRaises(SystemExit, cli.report, "compose", error)
+
+    def test_a_broken_stderr_still_reaches_the_journal(self):
+        error = d.Refused("worker command not allowlisted")
+
+        class Broken:
+            def write(self, text):
+                raise BrokenPipeError
+
+            flush = write
+
+        with patch.object(sys, "stderr", Broken()), patch.object(cli.syslog, "syslog") as journal:
+            cli.report("compose", error)
+        self.assertIn("worker command not allowlisted", journal.call_args.args[1])
+
+    def test_installed_main_exits_1_after_a_journal_failure(self):
+        unsafe = RuntimeError("unsafe installed root-owned entrypoint")
+        with (
+            patch.object(cli, "ENTRYPOINT", Path(cli.__file__).resolve()),
+            patch.object(cli, "trusted_entrypoint", side_effect=unsafe),
+            patch.object(sys, "argv", ["cli.py", "compose", "--", "compose", "down"]),
+            patch.object(cli.syslog, "openlog"),
+            patch.object(cli.syslog, "syslog", side_effect=OSError("journal unavailable")),
+            redirect_stderr(io.StringIO()) as err,
+            redirect_stdout(io.StringIO()) as out,
+        ):
+            code = cli.main()
+        self.assertEqual(code, 1)
+        self.assertEqual(out.getvalue(), "")
+        self.assertEqual(
+            err.getvalue(),
+            "Refused: unexpected RuntimeError."
             " Inspect status and reviewed prerequisites; no automatic retry.\n",
         )
 
