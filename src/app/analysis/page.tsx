@@ -4,6 +4,7 @@ import { PageIntro } from '@/components/layout';
 import {
   AnalysisTierLabel,
   ArticleDate,
+  ArticleThumbnail,
   Byline,
 } from '@/components/analysis';
 import { getArticles } from '@/lib/data-service';
@@ -76,7 +77,10 @@ export default async function AnalysisPage({
           {articles.map((article) => (
             <article
               key={article.slug}
-              className="grid gap-2 border-b border-border py-5 transition-colors duration-[var(--dur-fast)] hover:bg-[var(--row-hover)] sm:grid-cols-[8rem_minmax(0,1fr)]"
+              className={cn(
+                'grid gap-2 border-b border-border py-5 transition-colors duration-[var(--dur-fast)] hover:bg-[var(--row-hover)] sm:grid-cols-[8rem_minmax(0,1fr)]',
+                article.image && 'sm:grid-cols-[8rem_minmax(0,1fr)_10rem]',
+              )}
             >
               <p className="text-xs font-medium text-muted-foreground tabular">
                 <ArticleDate date={article.publishedAt} />
@@ -99,6 +103,11 @@ export default async function AnalysisPage({
                   ) : null}
                 </p>
               </div>
+              {article.image ? (
+                <Link href={`/analysis/${article.slug}`} tabIndex={-1} aria-hidden="true" className="order-first sm:order-last">
+                  <ArticleThumbnail image={article.image} />
+                </Link>
+              ) : null}
             </article>
           ))}
         </div>

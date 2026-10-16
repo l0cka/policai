@@ -768,6 +768,27 @@ export interface ArticleCorrection {
 	text: string;
 }
 
+export type ArticleLicence =
+	| "CC0-1.0"
+	| "PDM-1.0"
+	| `CC-BY-${number}.${number}`
+	| `CC-BY-SA-${number}.${number}`;
+
+export interface ArticleImage {
+	src: string;
+	alt: string;
+	width: number;
+	height: number;
+	title: string;
+	creator: string;
+	creatorUrl?: string;
+	sourceUrl: string;
+	licence: ArticleLicence;
+	licenceUrl: string;
+	modifications?: string;
+	licenceCheckedAt: string;
+}
+
 interface ArticleFields {
 	slug: string;
 	type: ArticleType;
@@ -776,6 +797,7 @@ interface ArticleFields {
 	cites: string[];
 	sources: string[];
 	corrections: ArticleCorrection[];
+	image?: ArticleImage;
 	updatedAt?: string;
 	body: string;
 }
