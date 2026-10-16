@@ -381,6 +381,7 @@ Defined in `src/types/index.ts` — always import from `@/types`:
 - **PolicyType:** `legislation | regulation | guideline | framework | standard | practice_note | policy | tool | funding_program`
 - **PolicyStatus:** `proposed | active | amended | superseded | closed | repealed | trashed` (unverified and `trashed` records are hidden from public register reads; `superseded` records carry `supersededBy`)
 - **Policy** — register entity (with optional `supersededBy`, `lastReviewedAt`)
+- **ThemeId** — `Policy.themes[]` entries: keys of `THEMES` in `src/lib/themes.ts`, the controlled topic vocabulary the Editorial Manager owns (issue #305). Every record, trashed or not, has 1 to 5 unique themes. A listed theme must be on at least 2 non-trashed records (`validate:data` error); fewer than 2 public records is a warning, because a collector withholding can cause it. Adding, renaming or removing a theme is an editorial decision made in a PR that edits `src/lib/themes.ts`. `tags` stay free-form keywords for search, `keywords` metadata, related records and the courts view; they are not themes. `/network` groups and connects records by `themes`.
 - **PolicyDate** — `Policy.dates[]` entries: `type` (`POLICY_DATE_TYPES`), calendar `date`, required `precision` (`day | month | year`; month/year dates anchor on the first day and never render a day), optional `primary` and `source`. Exactly one date is primary and backs `effectiveDate`.
 - **Deadline date types** (`DEADLINE_DATE_TYPES`): `consultation_closed | compliance_due | scheduled_review` — dates that fall due on an instrument rather than change it. They cannot be primary; future ones feed the homepage "Upcoming deadlines" rail and `/this-week` (`src/lib/this-week.ts`). Values are editorial, source-verified entries like any other date.
 - **Development**, **CollectionMeta** — feed + collector metadata
@@ -411,6 +412,7 @@ Classification needs all three `CLASSIFIER_*` variables. A missing one raises `C
 - Every policy needs a real, verified `sourceUrl` (https, `.gov.au` or allow-listed host) and accurate dates — if a day-level date can't be verified, say so in `content` rather than inventing precision.
 - Mark replaced instruments `superseded` (+ `supersededBy`) and dead consultations `closed`; don't delete history.
 - Stamp `lastReviewedAt` when you have verified a record against its source.
+- Give every policy 1 to 5 `themes` from `src/lib/themes.ts`. Collector and staged drafts carry `themes: []`, and approval and publication refuse a policy without themes, so approve a new policy with an explicit `proposedRecord` that sets them. Re-verification drafts keep the record's existing themes.
 
 ## Code Conventions
 

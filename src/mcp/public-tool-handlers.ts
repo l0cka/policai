@@ -132,6 +132,7 @@ export async function handleSearchPolicies(
       sourceUrl: policy.sourceUrl,
       aiSummary: policy.aiSummary,
       tags: policy.tags,
+      themes: policy.themes,
       updatedAt: policy.updatedAt,
       lastReviewedAt: policy.lastReviewedAt,
       verificationStatus: policy.verification.status,

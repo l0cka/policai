@@ -37,6 +37,7 @@ export function buildPolicy(overrides: Partial<Policy> = {}): Policy {
     content: 'Detailed policy content',
     aiSummary: 'Responsible AI guardrails for government use.',
     tags: ['ai', 'ethics'],
+    themes: ['responsible-ai', 'ai-governance'],
     createdAt: '2025-01-01T00:00:00.000Z',
     updatedAt: '2025-01-01T00:00:00.000Z',
     verification: {

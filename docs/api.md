@@ -58,6 +58,12 @@ Example:
 curl 'https://policai.org/api/policies?jurisdiction=federal&type=framework&search=assurance'
 ```
 
+Each policy record has `themes`, 1 to 5 keys from the controlled list in
+`src/lib/themes.ts` (for example `courts-tribunals`), and `tags`, free-form
+keywords. `/data/policies.json`, `/api/policies`, `/api/policies/{id}` and the
+public `search_policies` tool all include `themes`. `/api/network` nodes carry
+`themes`; an edge's `sharedThemes` lists the shared themes' labels.
+
 ### Development filters
 
 `GET /api/developments` accepts these query parameters:

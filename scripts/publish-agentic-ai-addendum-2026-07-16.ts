@@ -60,6 +60,7 @@ const draft: PolicyDraft = {
     'security',
     'governance',
   ],
+  themes: ['agentic-ai', 'ai-governance', 'cyber-security', 'standards'],
   createdAt: DISCOVERED_AT,
   updatedAt: DISCOVERED_AT,
 };

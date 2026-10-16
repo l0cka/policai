@@ -133,6 +133,7 @@ function buildDraft(overrides: Partial<PolicyDraft> = {}): PolicyDraft {
     content: 'Verified key policy details.',
     aiSummary: 'Machine-assisted summary.',
     tags: ['ai'],
+    themes: ['ai-governance'],
     createdAt: '2026-07-16T00:00:00.000Z',
     updatedAt: '2026-07-16T00:00:00.000Z',
     dates,
@@ -1836,6 +1837,19 @@ describe('source ingest approval workflow', () => {
     expect(retrieveSource).toHaveBeenCalledWith(SOURCE_URL, {
       timeoutMs: 60_000,
     });
+  });
+
+  it('refuses approval until the editor assigns themes', async () => {
+    getSourceReviewById.mockResolvedValue(buildReview());
+
+    await expect(
+      approveStagedSource({
+        id: 'source-review-1',
+        actor: 'reviewer',
+        proposedRecord: buildDraft({ effectiveDate: '2026-07-01', themes: [] }),
+      }),
+    ).rejects.toThrow('draft-policy: themes must list 1 to 5 themes, not 0');
+    expect(updateSourceReview).not.toHaveBeenCalled();
   });
 
   it('refuses approval when a new-policy draft id belongs to another policy', async () => {
