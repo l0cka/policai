@@ -24,6 +24,14 @@ export function ArticleDate({ date, label }: { date: string; label?: string }) {
   );
 }
 
+export function ArticleTypeLabel({ type }: { type: ArticleType }) {
+  return (
+    <p className="font-mono text-[length:var(--type-label)] uppercase tracking-[0.08em] text-muted-foreground">
+      {ARTICLE_TYPE_NAMES[type]}
+    </p>
+  );
+}
+
 export function AnalysisTierLabel({ type }: { type: ArticleType }) {
   return (
     <p className="flex flex-wrap items-center gap-2 font-mono text-[11px] uppercase tracking-[0.08em]">
@@ -156,15 +164,15 @@ export function ArticleLeadImage({ image }: { image: ArticleImage }) {
   );
 }
 
-export function ArticleThumbnail({ image }: { image: ArticleImage }) {
+export function ArticleThumbnail({ image, sizes }: { image: ArticleImage; sizes: string }) {
   return (
-    <div className="aspect-[3/2] w-full max-w-64 overflow-hidden rounded-md sm:w-40">
+    <div className="aspect-[3/2] w-full overflow-hidden rounded-md">
       <Image
         src={image.src}
         alt={image.alt}
         width={image.width}
         height={image.height}
-        sizes="(min-width: 640px) 160px, 256px"
+        sizes={sizes}
         className="h-full w-full object-cover"
       />
     </div>
