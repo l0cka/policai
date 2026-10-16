@@ -2123,6 +2123,44 @@ describe('source ingest approval workflow', () => {
     expect(updateSourceReview).not.toHaveBeenCalled();
   });
 
+  it('refuses approval when the page gained dcterms.created after staging under its current fingerprint', async () => {
+    const { retrieveSource: retrieveLive } =
+      await vi.importActual<typeof import('@/lib/pipeline/fetch')>(
+        '@/lib/pipeline/fetch',
+      );
+    const retrievePage = (head: string) =>
+      retrieveLive(SOURCE_URL, {
+        fetchImpl: (async () =>
+          new Response(
+            `<html><head>${head}</head><body><main>Official AI policy</main></body></html>`,
+            { headers: { 'content-type': 'text/html' } },
+          )) as unknown as typeof fetch,
+        hashLinkedDocuments: false,
+      });
+    const staged = await retrievePage('');
+    getSourceReviewById.mockResolvedValue(
+      buildReview({
+        sourceEvidence: {
+          url: SOURCE_URL,
+          retrievedAt: '2026-07-16T00:00:00.000Z',
+          contentHash: staged.evidence.contentHash as string,
+        },
+      }),
+    );
+    retrieveSource.mockResolvedValueOnce(
+      await retrievePage('<meta name="dcterms.created" content="2026-06-01">'),
+    );
+
+    await expect(
+      approveStagedSource({
+        id: 'source-review-1',
+        actor: 'reviewer',
+        proposedRecord: buildDraft({ effectiveDate: '2026-07-01' }),
+      }),
+    ).rejects.toThrow('changed after staging');
+    expect(updateSourceReview).not.toHaveBeenCalled();
+  });
+
   it('approves a review staged before dcterms.created and the date platform were fingerprinted', async () => {
     getSourceReviewById.mockResolvedValue(buildReview());
     retrieveSource.mockResolvedValueOnce({
@@ -3118,6 +3156,60 @@ describe('source ingest approval workflow', () => {
     ).rejects.toThrow('verification has expired');
     expect(createPolicy).not.toHaveBeenCalled();
     expect(updatePolicy).not.toHaveBeenCalled();
+    expect(updateSourceReview).not.toHaveBeenCalled();
+  });
+
+  it('requires re-approval when the page gained dcterms.created after approval under its current fingerprint', async () => {
+    const { retrieveSource: retrieveLive } =
+      await vi.importActual<typeof import('@/lib/pipeline/fetch')>(
+        '@/lib/pipeline/fetch',
+      );
+    const retrievePage = (head: string) =>
+      retrieveLive(SOURCE_URL, {
+        fetchImpl: (async () =>
+          new Response(
+            `<html><head>${head}</head><body><main>Official AI policy</main></body></html>`,
+            { headers: { 'content-type': 'text/html' } },
+          )) as unknown as typeof fetch,
+        hashLinkedDocuments: false,
+      });
+    const approved = await retrievePage('');
+    const approvedPolicy = {
+      ...buildDraft({ effectiveDate: '2026-07-01' }),
+      effectiveDate: '2026-07-01',
+      lastReviewedAt: '2026-07-16T00:00:00.000Z',
+      verification: {
+        status: 'verified' as const,
+        source: {
+          url: SOURCE_URL,
+          contentHash: approved.evidence.contentHash as string,
+        },
+        checkedAt: '2026-07-16T00:00:00.000Z',
+        checkedBy: 'reviewer',
+        method: 'manual' as const,
+      },
+    };
+    getSourceReviewById.mockResolvedValue(
+      buildReview({
+        status: 'approved',
+        reviewedAt: '2026-07-16T00:00:00.000Z',
+        reviewedBy: 'reviewer',
+        sourceEvidence: {
+          url: SOURCE_URL,
+          retrievedAt: '2026-07-16T00:00:00.000Z',
+          contentHash: approved.evidence.contentHash as string,
+        },
+        proposedRecord: approvedPolicy,
+      }),
+    );
+    retrieveSource.mockResolvedValueOnce(
+      await retrievePage('<meta name="dcterms.created" content="2026-06-01">'),
+    );
+
+    await expect(
+      publishStagedSource('source-review-1'),
+    ).rejects.toThrow('changed after approval');
+    expect(createPolicy).not.toHaveBeenCalled();
     expect(updateSourceReview).not.toHaveBeenCalled();
   });
 

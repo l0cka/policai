@@ -3,6 +3,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { buildPolicy, buildTimelineEvent } from '@/test/factories';
 import { WATCH_SOURCES, type WatchSource } from './sources';
+import { retrieveSource } from './fetch';
 
 // vi.mock is hoisted above every import, including plain top-level const
 // declarations in this file, so the mock fn must come from vi.hoisted().
@@ -976,20 +977,17 @@ describe('collect', () => {
         <meta name="Generator" content="Drupal 10 (https://www.drupal.org)">
         <meta name="dcterms.created" content="${created}">
       </head><body><main><h1>AI governance policy</h1><p>${text}</p></main></body></html>`;
-    const pageAsTheOldKeySetSawIt = (text = 'Version one.') =>
-      `<html><head></head><body><main><h1>AI governance policy</h1><p>${text}</p></main></body></html>`;
+    const plainPage = (head = '', text = 'Version one.') =>
+      `<html><head>${head}</head><body><main><h1>AI governance policy</h1><p>${text}</p></main></body></html>`;
 
     async function storedLegacyFingerprint(text?: string): Promise<string> {
-      const baseline = await collect({
-        sources: [DOCUMENT_SOURCE],
-        state: emptyWatchState(),
-        existingDevelopments: [],
+      const retrieved = await retrieveSource(DOCUMENT_SOURCE.url, {
         fetchImpl: fakeFetch({
-          [DOCUMENT_SOURCE.url]: pageAsTheOldKeySetSawIt(text),
+          [DOCUMENT_SOURCE.url]: drupalPage('2026-06-01', text),
         }),
-        now: () => new Date('2026-07-01T00:00:00.000Z'),
+        hashLinkedDocuments: false,
       });
-      return baseline.state.sourceSnapshots[DOCUMENT_SOURCE.id].contentHash;
+      return retrieved.legacyContentHash as string;
     }
 
     const transitionKey = (hash: string) =>
@@ -1206,6 +1204,102 @@ describe('collect', () => {
       expect(redated.state.sourceSnapshots[DOCUMENT_SOURCE.id]).toMatchObject({
         changeCount: 1,
         lastChangedAt: '2026-07-24T00:00:00.000Z',
+      });
+    });
+
+    describe('a page that gains a fingerprinted field after its current fingerprint was stored', () => {
+      const trackedPolicy = (contentHash: string) =>
+        buildPolicy({
+          id: 'tracked-document-policy',
+          sourceUrl: DOCUMENT_SOURCE.url,
+          verification: {
+            status: 'verified',
+            checkedAt: '2026-07-01T00:00:00.000Z',
+            checkedBy: 'reviewer',
+            method: 'manual',
+            source: { url: DOCUMENT_SOURCE.url, contentHash },
+          },
+        });
+      const run = (
+        state: WatchState,
+        html: string,
+        day: string,
+        policy?: ReturnType<typeof buildPolicy>,
+      ) =>
+        collect({
+          sources: [DOCUMENT_SOURCE],
+          state,
+          existingDevelopments: [],
+          ...(policy
+            ? { trackedUrls: [DOCUMENT_SOURCE.url], trackedPolicies: [policy] }
+            : {}),
+          fetchImpl: fakeFetch({ [DOCUMENT_SOURCE.url]: html }),
+          now: () => new Date(`${day}T00:00:00.000Z`),
+        });
+      const currentFingerprint = async (html: string) =>
+        (
+          await retrieveSource(DOCUMENT_SOURCE.url, {
+            fetchImpl: fakeFetch({ [DOCUMENT_SOURCE.url]: html }),
+            hashLinkedDocuments: false,
+          })
+        ).evidence.contentHash as string;
+
+      it('stages a review when a tracked page gains dcterms.created', async () => {
+        const policy = trackedPolicy(await currentFingerprint(plainPage()));
+        const baseline = await run(emptyWatchState(), plainPage(), '2026-07-10', policy);
+        expect(baseline.reviewCandidates).toEqual([]);
+
+        const dated = await run(
+          baseline.state,
+          plainPage('<meta name="dcterms.created" content="2026-06-01">'),
+          '2026-07-17',
+          policy,
+        );
+        expect(dated.reviewCandidates).toHaveLength(1);
+        expect(dated.reviewCandidates[0]).toMatchObject({
+          targetPolicyId: policy.id,
+          sourceVersionSequence: 1,
+          proposedRecord: { effectiveDate: '2026-06-01' },
+        });
+      });
+
+      it('stages a review when a tracked page with dcterms.date becomes a GovCMS page', async () => {
+        const dateOnly = plainPage('<meta name="dcterms.date" content="2025-03-01">');
+        const policy = trackedPolicy(await currentFingerprint(dateOnly));
+        const baseline = await run(emptyWatchState(), dateOnly, '2026-07-10', policy);
+        expect(baseline.reviewCandidates).toEqual([]);
+
+        const govcms = await run(
+          baseline.state,
+          plainPage(
+            '<meta name="Generator" content="Drupal 10 (https://www.drupal.org)"><meta name="dcterms.date" content="2025-03-01">',
+          ),
+          '2026-07-17',
+          policy,
+        );
+        expect(govcms.reviewCandidates).toHaveLength(1);
+        expect(govcms.reviewCandidates[0]).toMatchObject({
+          targetPolicyId: policy.id,
+          sourceVersionSequence: 1,
+        });
+      });
+
+      it('counts an untracked page gaining dcterms.created as a change', async () => {
+        const baseline = await run(emptyWatchState(), plainPage(), '2026-07-10');
+        expect(baseline.state.sourceSnapshots[DOCUMENT_SOURCE.id]).toMatchObject({
+          changeCount: 0,
+        });
+
+        const dated = await run(
+          baseline.state,
+          plainPage('<meta name="dcterms.created" content="2026-06-01">'),
+          '2026-07-17',
+        );
+        expect(dated.state.sourceSnapshots[DOCUMENT_SOURCE.id]).toMatchObject({
+          changeCount: 1,
+          lastChangedAt: '2026-07-17T00:00:00.000Z',
+        });
+        expect(dated.developments).toHaveLength(1);
       });
     });
   });
