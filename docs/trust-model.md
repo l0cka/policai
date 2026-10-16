@@ -219,10 +219,15 @@ comparing each piece with the base revision:
   the register as a whole and makes no claim about any one record's content,
   so a review-due record in the count is neither an error nor a reason for
   the banner (PM, 2026-10-17). Its source line gives the number of public
-  records and the date of the data. Its query must group by jurisdiction,
-  type or status and match at least one public record. The prose does not
-  restate a chart's numbers, so the text cannot go stale against the live
-  count.
+  records "as at" the last register change: the latest `updatedAt` across
+  every record in `data/policies.json`, withheld and trashed records
+  included, because withholding, trashing or publishing a record changes the
+  public count. It is shown as a calendar date in Australia/Sydney, not the
+  collection, build or render date (PM, 2026-10-17). A record without
+  `updatedAt` fails `validate:data`, so the date has no fallback. Its query
+  must group by jurisdiction, type or status and match at least one public
+  record. The prose does not restate a chart's numbers, so the text cannot go
+  stale against the live count.
 - If the CI base revision (`GITHUB_BASE_SHA`) cannot be read, validation
   fails rather than skipping these comparisons.
 

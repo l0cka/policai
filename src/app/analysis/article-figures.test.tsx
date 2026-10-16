@@ -28,11 +28,10 @@ const CITED = {
 
 const cited = Object.entries(CITED).map(([id, title]) => buildPolicy({ id, title }));
 
-function serve(policies: Policy[], reviews: Partial<SourceReview>[] = [], meta?: object) {
+function serve(policies: Policy[], reviews: Partial<SourceReview>[] = []) {
   readJsonFile.mockImplementation(async (file: string, fallback: unknown) => {
     if (file.endsWith('policies.json')) return policies;
     if (file.endsWith('source-reviews.json')) return reviews;
-    if (meta && file.endsWith('meta.json')) return { ...(fallback as object), ...meta };
     return fallback;
   });
 }
@@ -168,7 +167,7 @@ describe('figures in an analysis piece', () => {
       buildPolicy({ id: 'chart-vic', jurisdiction: 'vic' }),
       buildPolicy({ id: 'chart-review-due', jurisdiction: 'qld', verification: { ...cited[0].verification, checkedAt: '2026-01-01T00:00:00.000Z' } }),
     ];
-    const withheld = buildPolicy({ id: 'chart-withheld', jurisdiction: 'nt' });
+    const withheld = buildPolicy({ id: 'chart-withheld', jurisdiction: 'nt', updatedAt: '2026-07-15T20:30:00.000Z' });
     const withheldReview = {
       id: 'review-chart-withheld',
       status: 'pending_review' as const,
@@ -176,8 +175,8 @@ describe('figures in an analysis piece', () => {
       sourceUrl: withheld.sourceUrl,
     };
 
-    it('counts the public register live, labels the source line and ignores withheld records', async () => {
-      serve([...cited, ...counted, withheld], [withheldReview], { lastCollectedAt: '2026-07-15T20:30:00.000Z' });
+    it('counts the public register live, dates it by the latest change including a withheld record, and does not count that record', async () => {
+      serve([...cited, ...counted, withheld], [withheldReview]);
       await renderArticle('figure-kinds-published');
       const figure = figureByLabel('Figure 4 · Chart');
       const table = within(figure).getByRole('table');
@@ -205,7 +204,7 @@ describe('figures in an analysis piece', () => {
       await renderArticle('figure-kinds-published');
       expect(within(figureByLabel('Figure 4 · Chart')).getByText('Queensland')).toBeInTheDocument();
       expect(screen.queryByText('Source under review')).not.toBeInTheDocument();
-      expect(within(figureByLabel('Figure 4 · Chart')).getByRole('link')).toHaveTextContent(/^Policai register, 10 public records$/);
+      expect(within(figureByLabel('Figure 4 · Chart')).getByRole('link')).toHaveTextContent(/^Policai register, 10 public records, as at 1 January 2025$/);
     });
   });
 });

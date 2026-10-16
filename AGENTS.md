@@ -238,8 +238,11 @@ unverified and trashed records are never counted. A chart cites the register
 as a whole, not the records it counts: a review-due record in the count
 raises no error and no banner (PM, 2026-10-17). Its source line reads
 "Policai register, N public records, as at <date>", where the date is the
-collection date the page was built from (`lastHealthyAt`, else
-`lastCollectedAt`). `validateArticles` (`registerChartErrors`) fails a
+last register change (`registerAsAt`): the latest `updatedAt` across every
+record in `data/policies.json`, withheld and trashed included, as an
+Australia/Sydney calendar date (PM, 2026-10-17). `readPublicArticles` reads
+the whole register for this date and counts only the public projection. A
+record without `updatedAt` fails `validate:data`. `validateArticles` (`registerChartErrors`) fails a
 published chart whose query matches no public record, gives fewer than 3 or
 more than 10 bars, or highlights a value with no records. The prose must not
 restate a chart's numbers, since they change as the register changes.

@@ -24,8 +24,7 @@ import {
 	projectVerificationForPublic,
 } from "@/lib/verification";
 import { reconcileLinkedDevelopments } from "@/lib/source-review";
-import { registerChart, type RegisterChart } from "@/lib/article-figures";
-import { sydneyCalendarDate } from "@/lib/calendar-date";
+import { registerAsAt, registerChart, type RegisterChart } from "@/lib/article-figures";
 import {
 	citationState,
 	parseArticle,
@@ -394,12 +393,11 @@ async function readPoliciesForAccess(options: DataServiceOptions): Promise<Polic
 	const access = options.access ?? "public";
 	const now = options.now ?? new Date();
 	const policies = await readJsonFile<Policy[]>(POLICIES_FILE, []);
-	if (access !== "public") return policies;
-	return applyPublicPolicyFilter(
-		policies,
-		await getWithheldPolicyIds(policies),
-		now,
-	);
+	return access === "public" ? publicProjection(policies, now) : policies;
+}
+
+async function publicProjection(policies: Policy[], now: Date): Promise<Policy[]> {
+	return applyPublicPolicyFilter(policies, await getWithheldPolicyIds(policies), now);
 }
 
 export async function getPolicies(
@@ -1257,14 +1255,13 @@ function articlesDir(): string {
 async function readPublicArticles(
 	options: DataServiceOptions,
 ): Promise<ArticleView[]> {
-	const [sources, policies, meta] = await Promise.all([
+	const [sources, register] = await Promise.all([
 		readArticleSources(articlesDir()),
-		readPoliciesForAccess({ ...options, access: "public" }),
-		getCollectionMeta(),
+		readPoliciesForAccess({ ...options, access: "admin" }),
 	]);
+	const policies = await publicProjection(register, options.now ?? new Date());
 	const publicPolicies = new Map(policies.map((policy) => [policy.id, policy]));
-	const dataCurrentAt = meta.lastHealthyAt ?? meta.lastCollectedAt;
-	const asAt = dataCurrentAt ? sydneyCalendarDate(new Date(dataCurrentAt)) : null;
+	const asAt = registerAsAt(register);
 	return sources.flatMap((source) => {
 		const result = parseArticle(source);
 		if (!result.ok || result.article.status === "draft") return [];
