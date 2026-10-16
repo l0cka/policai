@@ -129,9 +129,11 @@ a number, or an event.
   link appears in `cites`. Each external official link appears in `sources`.
   `npm run validate:data` rejects a body link missing from the frontmatter,
   a source off the official allow-list, and a new citation to a record that
-  is withheld, trashed, unverified or marked "Review due". A record already
-  cited by the published piece that later lapses is reported as a warning,
-  and the page shows the "Source under review" banner.
+  is withheld, trashed, unverified or marked "Review due". If a record the
+  published piece already cites later becomes withheld, unverified or
+  "Review due", validation reports a warning and the page shows the "Source
+  under review" banner. A citation to a trashed or unknown record is always
+  an error.
   Links to `/developments` and to Policai views such as `/this-week`,
   `/courts` or `/timeline` support no claim and need no frontmatter entry.
   Every other link does.
@@ -162,9 +164,8 @@ Policai's view.
 An automated development that is not verified may appear only:
 
 - with the words "detected, not yet verified";
-- with a link to `/developments` (once
-  [#213](https://github.com/l0cka/policai/issues/213) gives each entry its own
-  anchor, a link to that entry); and
+- with a link to `/developments` (once entries have their own anchors, a
+  link to that entry); and
 - never as support for a factual claim, and never in a lead or title.
 
 ## Standard notices
