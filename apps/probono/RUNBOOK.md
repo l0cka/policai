@@ -94,8 +94,9 @@ is now a contract entry. Digest stays masked: never unmask or send
 Rollback route: the guarded dispatcher journal — `cli.py rollback` restores
 journaled artifacts with its KEEP failure gate, and `cli.py deploy --recover
 TRANSACTION_ID` is the reviewed redeployment after a verified rollback (root
-operator actions). Dated database dumps are in `/home/l0cka/Backups/probono-radar`
-(mirrored to `/mnt/argus-ssd`); the restore drill is still outstanding, so a
+operator actions). Dated database dumps and their `globals-*` role dumps are in
+`/home/l0cka/Backups/probono-radar` (both mirrored to `/mnt/argus-ssd`;
+restore the globals file first on a fresh cluster); the restore drill is still outstanding, so a
 rollback has never been exercised end to end.
 
 ## Procedure
