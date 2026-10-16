@@ -138,7 +138,14 @@ EXACT CLI (INSTALLED ROOT CODE ONLY)
     transaction, requires both fetched heads to agree, and rejects divergence.
     classify() routes each changed path by the first matching ROUTES row; a
     change set selects the union of its paths' lanes. A lane not selected
-    fast-forwards in place without a build or restart.
+    fast-forwards in place without a build or restart (the merge --ff-only
+    branch of host.py activate()), and health() runs after activation for
+    every change set, including one that selects no lane. Both checkouts
+    therefore hold the new commit after every verified cycle. That invariant
+    makes the Markdown row safe: the enrichment worker reads
+    apps/probono/RUNBOOK.md from the checkout at run time
+    (apps/probono/ops/enrich.sh, prompt="$(cat RUNBOOK.md)"), not from an
+    image, so a no-lane change to it is live on the next cycle.
       no lane: test files (*.test.ts, *.test.tsx, any __tests__/ directory),
         data/ and public/data/ (served through ISR), Markdown outside any
         public/ directory, docs/, .github/, ops/host/ (installed by install.py),
@@ -147,8 +154,8 @@ EXACT CLI (INSTALLED ROOT CODE ONLY)
         apps/probono/dashboard and apps/probono/worker (validate_compose
         enforces this), so no root file reaches its images.
       Policai only: src/, public/, mcp/, design/, package.json,
-        package-lock.json, tsconfig.json, next.config.*, postcss.config.mjs
-        and components.json.
+        package-lock.json, tsconfig.json, next.config.ts, next.config.js,
+        next.config.mjs, postcss.config.mjs and components.json.
       both: every other path, the safe default.
     No scripts/ file runs during `npm run build` or under `next start`: the
     root package.json has no pre/post hooks and only test files import from
