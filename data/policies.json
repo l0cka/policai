@@ -815,8 +815,8 @@
     "dates": [
       {
         "type": "published",
-        "date": "2026-04-20",
-        "precision": "day"
+        "date": "2026-04-01",
+        "precision": "month"
       },
       {
         "type": "effective",
@@ -864,7 +864,7 @@
     ],
     "createdAt": "2026-07-20T12:19:40.243Z",
     "updatedAt": "2026-07-20T12:50:39.369Z",
-    "lastReviewedAt": "2026-07-20T12:50:39.369Z",
+    "lastReviewedAt": "2026-10-16T00:00:00.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -891,10 +891,10 @@
           "notes": "The official APSC page states that APS agencies are expected to implement the Principles for agency use of AI in Recruitment by 1 June 2026; it separately shows publication on 20 April 2026."
         }
       },
-      "checkedAt": "2026-07-20T12:50:39.369Z",
-      "checkedBy": "Daniel Alkurdi",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
+      "checkedBy": "Policai Developer source re-read (issue 161)",
       "method": "manual",
-      "notes": "Verified from the official APSC page and classified as a federal guideline. The implementation date is primary and the publication date is retained separately."
+      "notes": "Verified from the official APSC page and classified as a federal guideline. The implementation date is primary and the publication date is retained separately. Issue 161 correction 2026-10-16: the published date is held at month precision (April 2026). The APSC page states no publication date; the principles and guidance PDFs sit under /sites/default/files/2026-04/. The 1 June 2026 implementation expectation is unchanged."
     }
   },
   {
@@ -1879,7 +1879,7 @@
       "Australian Signals Directorate"
     ],
     "sourceUrl": "https://blueprint.asd.gov.au/security-and-governance/policies",
-    "content": "ASD's Blueprint for Secure Cloud was initially launched on 19 December 2023 and last updated on 20 April 2026. It is better-practice guidance for designing, configuring and deploying secure cloud and hybrid workspaces, with a current focus on Microsoft 365. Its security and governance section links system security planning, the Essential Eight, system security plan annexes, and organisational policies and strategies. The organisational policies checklist explicitly identifies a general-purpose artificial intelligence usage policy as a requirement of ISM control ISM-2074. The Blueprint does not provide a template for this artefact, but positions it as part of the documentation agencies should review, develop and maintain when operating systems built using the Blueprint.",
+    "content": "ASD's Blueprint for Secure Cloud was initially launched on 19 December 2023 and last updated on 18 September 2026 (version 1.4). It is better-practice guidance for designing, configuring and deploying secure cloud and hybrid workspaces, with a current focus on Microsoft 365. Its security and governance section links system security planning, the Essential Eight, system security plan annexes, and organisational policies and strategies. The organisational policies checklist explicitly identifies a general-purpose artificial intelligence usage policy as a requirement of ISM control ISM-2074. The Blueprint does not provide a template for this artefact, but positions it as part of the documentation agencies should review, develop and maintain when operating systems built using the Blueprint.",
     "aiSummary": "ASD Blueprint guidance, first launched in December 2023 and updated in April 2026, identifies a general-purpose AI usage policy as an ISM-2074 organisational policy requirement.",
     "tags": [
       "ASD",
@@ -1917,10 +1917,10 @@
           "notes": "Verified against the official ASD Blueprint changelog, which records the initial release on 19 December 2023."
         }
       },
-      "checkedAt": "2026-07-19T06:14:28.882Z",
-      "checkedBy": "Daniel Alkurdi",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
+      "checkedBy": "Policai Developer source re-read (issue 161)",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026."
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Issue 161 correction 2026-10-16: amended date moved from 20 April 2026 (version 1.3.12) to 18 September 2026 (version 1.4) per the Blueprint change log. The change log does not say the policies page itself changed on that date; launch 19 December 2023 is unchanged."
     },
     "dates": [
       {
@@ -1955,17 +1955,17 @@
       },
       {
         "type": "amended",
-        "date": "2026-04-20",
+        "date": "2026-09-18",
         "precision": "day",
         "source": {
           "url": "https://blueprint.asd.gov.au/changelog",
-          "retrievedAt": "2026-07-16T10:00:00.000Z",
+          "retrievedAt": "2026-10-16T00:00:00.000Z",
           "title": "Change log",
           "publisher": "Australian Signals Directorate"
         }
       }
     ],
-    "lastReviewedAt": "2026-07-19T06:14:28.882Z"
+    "lastReviewedAt": "2026-10-16T00:00:00.000Z"
   },
   {
     "id": "policy-responsible-use-ai-government-v2",
@@ -1989,7 +1989,7 @@
     ],
     "createdAt": "2026-04-06T07:59:40.767Z",
     "updatedAt": "2026-07-19T01:03:17.636Z",
-    "lastReviewedAt": "2026-07-19T01:03:17.636Z",
+    "lastReviewedAt": "2026-10-16T00:00:00.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -2024,10 +2024,10 @@
           "notes": "Confirmed the version 2.0 effective date of 15 December 2025 on the official digital.gov.au policy page and in the linked official PDF."
         }
       },
-      "checkedAt": "2026-07-19T01:03:17.636Z",
-      "checkedBy": "Daniel Alkurdi",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
+      "checkedBy": "Policai Developer source re-read (issue 161)",
       "method": "manual",
-      "notes": "Daniel Alkurdi compared the record against the official digital.gov.au landing page and version 2.0 PDF. Approved corrections: classify the instrument as a policy; retain the Digital Transformation Agency as the supported agency; narrow the scope wording to non-corporate Commonwealth entities; and update the descriptions accordingly. The fresh page and PDF fingerprints matched the staged evidence."
+      "notes": "Daniel Alkurdi compared the record against the official digital.gov.au landing page and version 2.0 PDF. Approved corrections: classify the instrument as a policy; retain the Digital Transformation Agency as the supported agency; narrow the scope wording to non-corporate Commonwealth entities; and update the descriptions accordingly. The fresh page and PDF fingerprints matched the staged evidence. Issue 161 re-read 2026-10-16: version 2.0, the 15 December 2025 effective date and the scope were re-confirmed on the digital.gov.au page and version 2.0 PDF; stamped together with the framework artifact corrections."
     },
     "dates": [
       {
@@ -2858,7 +2858,7 @@
       "Digital NSW"
     ],
     "sourceUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks/nsw-ai-assessment-framework",
-    "content": "The NSW AI Assessment Framework (AIAF) is mandatory for NSW Government agencies’ AI projects. The original framework commenced 1 July 2024. On 27 January 2026 NSW launched a modernised AIAF developed by the NSW Office for AI (established September 2025) with CSIRO’s Data61, aligned with the National framework for the assurance of AI in government and international approaches including the EU AI Act. NSW also published an Australian-first guide to using AI agents in government on 20 October 2025.",
+    "content": "The NSW AI Assessment Framework (AIAF) is mandatory for NSW Government agencies’ AI projects. An updated AI Assessment Framework was launched on 1 July 2024. On 27 January 2026 NSW launched a modernised AIAF developed by the NSW Office for AI (established September 2025) with CSIRO’s Data61, aligned with the National framework for the assurance of AI in government and international approaches including the EU AI Act. NSW also published an Australian-first guide to using AI agents in government on 20 October 2025.",
     "aiSummary": "Current mandatory NSW framework for assessing AI systems under Circular DCS-2024-04.",
     "tags": [
       "NSW",
@@ -2868,7 +2868,7 @@
     ],
     "createdAt": "2026-04-06T16:50:00Z",
     "updatedAt": "2026-07-19T06:14:28.866Z",
-    "lastReviewedAt": "2026-07-19T06:14:28.866Z",
+    "lastReviewedAt": "2026-10-16T00:00:00.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -2895,10 +2895,10 @@
           "notes": "Verified against the NSW Government release for the modernised NSW AI Assessment Framework, published 27 January 2026."
         }
       },
-      "checkedAt": "2026-07-19T06:14:28.866Z",
-      "checkedBy": "Daniel Alkurdi",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
+      "checkedBy": "Policai Developer source re-read (issue 161)",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026.",
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Issue 161 correction 2026-10-16: replaced 'The original framework commenced 1 July 2024' with 'An updated AI Assessment Framework was launched on 1 July 2024', as the NSW release of 1 July 2024 describes the launch as an update to the framework. The 27 January 2026 date is unchanged.",
       "lastSourceAuditAt": "2026-07-16T10:00:09.104Z"
     },
     "dates": [
@@ -3334,13 +3334,13 @@
     "jurisdiction": "vic",
     "type": "framework",
     "status": "active",
-    "effectiveDate": "2026-01-30",
+    "effectiveDate": "2026-01-01",
     "agencies": [
       "Victorian Government",
       "Department of Jobs, Skills, Industry and Regions"
     ],
     "sourceUrl": "https://djsir.vic.gov.au/priorities-and-initiatives/ai-mission-statement",
-    "content": "Victoria's AI Mission Statement was released on 30 January 2026 and sets out the Victorian Government's plan to responsibly develop and adopt AI. It outlines six pillars covering investment and adoption, digital infrastructure, local innovation, talent and workforce, ethical AI use, and public sector adoption.",
+    "content": "Victoria's AI Mission Statement was released in January 2026 and sets out the Victorian Government's plan to responsibly develop and adopt AI. It outlines six pillars covering investment and adoption, digital infrastructure, local innovation, talent and workforce, ethical AI use, and public sector adoption.",
     "aiSummary": "Victorian Government AI strategy statement released on 30 January 2026, outlining six pillars for responsible development and adoption of AI.",
     "tags": [
       "Victoria",
@@ -3351,7 +3351,7 @@
     ],
     "createdAt": "2026-04-13T02:15:00Z",
     "updatedAt": "2026-07-19T06:14:30.218Z",
-    "lastReviewedAt": "2026-07-19T06:14:30.218Z",
+    "lastReviewedAt": "2026-10-16T00:00:00.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -3378,16 +3378,16 @@
           "notes": "Verified against the official Victorian Government announcement, published 30 January 2026."
         }
       },
-      "checkedAt": "2026-07-19T06:14:30.218Z",
-      "checkedBy": "Daniel Alkurdi",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
+      "checkedBy": "Policai Developer source re-read (issue 161)",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026."
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Issue 161 correction 2026-10-16: published date held at month precision (January 2026), which is all the DJSIR page and statement PDF support. The Premier's media release of 30 January 2026 (premier.vic.gov.au) states the statement was launched that day and could support day precision if the editor prefers."
     },
     "dates": [
       {
         "type": "published",
-        "date": "2026-01-30",
-        "precision": "day",
+        "date": "2026-01-01",
+        "precision": "month",
         "primary": true,
         "source": {
           "url": "https://djsir.vic.gov.au/priorities-and-initiatives/ai-mission-statement",
@@ -3406,8 +3406,8 @@
             "characterCount": 6355
           },
           "reviewedDate": {
-            "date": "2026-01-30",
-            "precision": "day",
+            "date": "2026-01-01",
+            "precision": "month",
             "reviewedAt": "2026-07-19T06:14:30.218Z",
             "reviewedBy": "Daniel Alkurdi",
             "notes": "Verified against the official Victorian Government announcement, published 30 January 2026."
@@ -3678,10 +3678,10 @@
           "notes": "Verified by Daniel Alkurdi against the captured official source, which supports the consultation opened date 2026-01-29 at day precision."
         }
       },
-      "checkedAt": "2026-07-19T06:14:30.203Z",
-      "checkedBy": "Daniel Alkurdi",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
+      "checkedBy": "Policai Developer source re-read (issue 161)",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026."
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Issue 161 re-read 2026-10-16: no content change. The consultation dates (opened 29 January 2026, closed 20 February 2026) and the Office for AI discussion paper were confirmed on the official YourSAy page https://yoursay.sa.gov.au/ai-for-sagov; the recorded ai.sa.gov.au sourceUrl returns HTTP 403 to the collector, and repointing it is an editorial choice."
     },
     "dates": [
       {
@@ -3727,7 +3727,7 @@
         }
       }
     ],
-    "lastReviewedAt": "2026-07-19T06:14:30.203Z"
+    "lastReviewedAt": "2026-10-16T00:00:00.000Z"
   },
   {
     "id": "tas-guidance-for-the-use-of-artificial-intelligence-in-government",
@@ -3736,14 +3736,14 @@
     "jurisdiction": "tas",
     "type": "guideline",
     "status": "active",
-    "effectiveDate": "2024-07-23",
+    "effectiveDate": "2024-09-01",
     "agencies": [
       "Department of Premier and Cabinet",
       "Digital Strategy and Services",
       "Tasmanian Government agencies"
     ],
     "sourceUrl": "https://www.dpac.tas.gov.au/__data/assets/pdf_file/0034/497176/Tasmanian-Government-Guidance-Artificial-Intelligence.pdf",
-    "content": "Tasmania's AI guidance, revision 1.4 dated 23 July 2024, provides seven recommendations for agencies on responsible and risk-based use of AI in government. It aligns with the National Framework for the Assurance of Artificial Intelligence in Government and supports Tasmanian agencies with assurance, governance, procurement, capability, and glossary guidance.",
+    "content": "Tasmania's AI guidance (September 2024; revision 1.4 dated 23 July 2024, release approved by the Secretaries Board on 13 September 2024) provides seven recommendations for agencies on responsible and risk-based use of AI in government. It aligns with the National Framework for the Assurance of Artificial Intelligence in Government and supports Tasmanian agencies with assurance, governance, procurement, capability, and glossary guidance.",
     "aiSummary": "Tasmanian Government AI guidance issued on 23 July 2024 for responsible and risk-based use of AI across government agencies.",
     "tags": [
       "Tasmania",
@@ -3754,7 +3754,7 @@
     ],
     "createdAt": "2026-04-13T03:05:00Z",
     "updatedAt": "2026-07-19T06:14:27.954Z",
-    "lastReviewedAt": "2026-07-19T06:14:27.954Z",
+    "lastReviewedAt": "2026-10-16T00:00:00.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -3789,16 +3789,16 @@
           "notes": "Verified against the current official Tasmanian Government guidance PDF; the document identifies 23 July 2024 as the publication date."
         }
       },
-      "checkedAt": "2026-07-19T06:14:27.954Z",
-      "checkedBy": "Daniel Alkurdi",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
+      "checkedBy": "Policai Developer source re-read (issue 161)",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026."
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Issue 161 correction 2026-10-16: published date moved from 23 July 2024 (the draft revision date in the header) to September 2024 at month precision, the date on the title page; release was approved by the Tasmanian Government Secretaries Board on 13 September 2024."
     },
     "dates": [
       {
         "type": "published",
-        "date": "2024-07-23",
-        "precision": "day",
+        "date": "2024-09-01",
+        "precision": "month",
         "primary": true,
         "source": {
           "url": "https://www.dpac.tas.gov.au/__data/assets/pdf_file/0034/497176/Tasmanian-Government-Guidance-Artificial-Intelligence.pdf",
@@ -3825,8 +3825,8 @@
             "characterCount": 43376
           },
           "reviewedDate": {
-            "date": "2024-07-23",
-            "precision": "day",
+            "date": "2024-09-01",
+            "precision": "month",
             "reviewedAt": "2026-07-19T06:14:27.954Z",
             "reviewedBy": "Daniel Alkurdi",
             "notes": "Verified against the current official Tasmanian Government guidance PDF; the document identifies 23 July 2024 as the publication date."
@@ -3848,7 +3848,7 @@
       "Northern Territory Government"
     ],
     "sourceUrl": "https://dcdd.nt.gov.au/publications/artificial-intelligence-assurance-framework",
-    "content": "The Northern Territory Government Artificial Intelligence Assurance Framework, published in November 2025 and last updated on 10 December 2025, outlines ethics principles, a quick risk assessment, and an assurance process for agencies and government-owned corporations using AI-enabled systems. It applies stronger controls to medium and high-risk AI activities while enabling low-risk use with agency-level oversight.",
+    "content": "The Northern Territory Government Artificial Intelligence Assurance Framework, published in November 2025, outlines ethics principles, a quick risk assessment, and an assurance process for agencies and government-owned corporations using AI-enabled systems. It applies stronger controls to medium and high-risk AI activities while enabling low-risk use with agency-level oversight.",
     "aiSummary": "Northern Territory whole-of-government AI assurance framework published in November 2025 for responsible and risk-based AI use in public services.",
     "tags": [
       "Northern Territory",
@@ -3859,7 +3859,7 @@
     ],
     "createdAt": "2026-04-13T03:05:00Z",
     "updatedAt": "2026-07-20T13:04:10.601Z",
-    "lastReviewedAt": "2026-07-20T13:04:10.601Z",
+    "lastReviewedAt": "2026-10-16T00:00:00.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -3886,10 +3886,10 @@
           "notes": "The current official NT Government page identifies the Artificial Intelligence Assurance Framework as November 2025; month precision is retained."
         }
       },
-      "checkedAt": "2026-07-20T13:04:10.601Z",
-      "checkedBy": "Daniel Alkurdi",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
+      "checkedBy": "Policai Developer source re-read (issue 161)",
       "method": "manual",
-      "notes": "Re-verified on the current Department of Corporate and Digital Development page. The canonical URL is updated, while November 2025 remains the framework date; this is a source migration, not a substantive amendment."
+      "notes": "Re-verified on the current Department of Corporate and Digital Development page. The canonical URL is updated, while November 2025 remains the framework date; this is a source migration, not a substantive amendment. Issue 161 correction 2026-10-16: removed the unsupported 'last updated on 10 December 2025'; the NT page names the framework as November 2025 only."
     },
     "dates": [
       {
@@ -4766,7 +4766,7 @@
       "Data and Digital Ministers"
     ],
     "sourceUrl": "https://www.finance.gov.au/government/public-data/data-and-digital-ministers-meeting/national-framework-assurance-artificial-intelligence-government",
-    "content": "The National framework for the assurance of artificial intelligence in government was agreed by Data and Digital Ministers on 21 June 2024. It establishes a nationally consistent approach to AI assurance across the Commonwealth, states and territories, built on five cornerstones with practices mapped to the eight AI Ethics Principles. Jurisdictional frameworks (such as the NSW AIAF and WA framework) align to it.",
+    "content": "The National framework for the assurance of artificial intelligence in government was agreed by Data and Digital Ministers on 21 June 2024. It establishes a nationally consistent approach to AI assurance across the Commonwealth, states and territories, built on five cornerstones with practices mapped to the eight AI Ethics Principles. Jurisdictions develop their own specific policies and guidance within this framework; the NSW Artificial Intelligence Assurance Framework (2022) is one of the sources its practices drew on.",
     "aiSummary": "Cross-jurisdictional assurance framework aligning all Australian governments’ AI oversight to the AI Ethics Principles.",
     "tags": [
       "assurance",
@@ -4776,7 +4776,7 @@
     ],
     "createdAt": "2026-07-10T00:00:00.000Z",
     "updatedAt": "2026-07-19T06:14:29.296Z",
-    "lastReviewedAt": "2026-07-19T06:14:29.296Z",
+    "lastReviewedAt": "2026-10-16T00:00:00.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -4803,10 +4803,10 @@
           "notes": "Verified by Daniel Alkurdi against the captured official source, which supports the published date 2024-06-21 at day precision."
         }
       },
-      "checkedAt": "2026-07-19T06:14:29.296Z",
-      "checkedBy": "Daniel Alkurdi",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
+      "checkedBy": "Policai Developer source re-read (issue 161)",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026."
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Issue 161 correction 2026-10-16: replaced the unsupported sentence that the NSW AIAF and a WA framework align to the national framework. The Finance implementing page says the practices drew on the NSW framework (2022) and that jurisdictions develop their own policies and guidance; no framework page mentions a WA framework."
     },
     "dates": [
       {
