@@ -188,11 +188,6 @@ wording in a piece. Changing it means changing this policy.
 Pieces carry one high-quality lead image. A piece with no image that meets
 these rules publishes without one.
 
-Image support is not built yet
-([#219](https://github.com/l0cka/policai/issues/219)). Until it is on `main`,
-each sentence below that names the platform or validation states a
-requirement the platform must meet.
-
 ### Licences
 
 - **Allowed:** CC0, the Public Domain Mark, CC BY and CC BY-SA, any version.
@@ -214,8 +209,15 @@ requirement the platform must meet.
 ### Quality
 
 - The source file is at least 2048 px on its long edge.
-- The repository keeps one master per image, re-encoded to 2048 px on the long
-  edge. The platform must serve smaller sizes from that master.
+- The repository keeps one master per image.
+  `npm run add:article-image -- <url> <slug>` downloads the source, refuses
+  one under 2048 px on its long edge, and re-encodes it to 2048 px as
+  `public/images/articles/<slug>/lead.jpg`. The site serves smaller sizes
+  from that master.
+- `npm run validate:data` rejects an image file whose long edge is outside
+  2048 to 2560 px, that is larger than 1.2 MB, or that does not match its
+  declared size, and any file under `public/images/articles/` that no piece
+  uses.
 
 ### Attribution
 
@@ -227,9 +229,11 @@ field.
 A modified CC BY-SA image is shared under the same CC BY-SA licence, and its
 attribution says so.
 
-The platform must render a TASL attribution under the image: title, author,
-source and licence, each linked, and the modifications. Validation must
-reject an image whose licence is not on the allowed list.
+The platform renders a TASL attribution under the image: the title linked
+to the source page, the creator (linked when there is a creator URL), the
+licence linked to its deed, and any modifications. Validation rejects a
+licence that is not on the allowed list, a licence URL that does not match
+the licence, and a source or creator URL on Unsplash or Pexels.
 
 ### Editorial limits
 
