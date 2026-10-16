@@ -36,10 +36,15 @@ conventions still apply, but root Policai data/runtime assumptions do not.
   implicitly deploy Pro Bono or change its database, timers or email delivery.
 - The A2J cutover has been executed (2026-09-23 22:19 AEST). The live child
   release is `/var/lib/probono-radar/app/apps/probono`; the probono
-  ingest/enrich/backup/backup-mirror/verify-deadlines user units run from that
-  tree through the root-owned guarded dispatcher
-  `/usr/local/libexec/policai-host/cli.py`, whose allowlist is installed and
-  hash-pinned in the root config `installed_hashes`. The legacy checkout
+  ingest/enrich/backup/verify-deadlines user units run from that tree through
+  the root-owned guarded dispatcher `/usr/local/libexec/policai-host/cli.py`,
+  whose allowlist is installed and hash-pinned in the root config
+  `installed_hashes`. `probono-backup-mirror.service` still runs the untracked
+  `/home/l0cka/.local/bin/probono-backup-mirror.sh` directly, outside the
+  dispatcher. Its reviewed replacement is `ops/host/backup-mirror.sh` with
+  `ops/host/units/probono-backup-mirror.service` (`cli.py worker
+  backup-mirror`); it takes effect only when Argus DevOps installs it with
+  Daniel's approval (#197). The legacy checkout
   `/home/l0cka/Work/Argus/services/probono-radar/src` is retained as historical
   reference, not a runtime; verify actual systemd working directories and
   container ownership before operations.
