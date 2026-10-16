@@ -53,11 +53,9 @@ entire decision-making process or is subject to human review".
 
 **Senate inquiry into artificial intelligence and data centres.** Policai
 verified this inquiry in the window, but it is not new. The Senate referred it
-to the Environment and Communications References Committee on 13 May 2026.
-The [inquiry page](https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P)
-lists past public hearings at Lane Cove on 22 September and Yarraville on
-23 September 2026, a hearing in Darwin on 3 November 2026, and a reporting
-date of 16 November 2026. Submissions have closed.
+on 13 May 2026. Submissions closed on 1 September 2026, and the committee is
+due to report on 16 November 2026
+([inquiry page](https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P)).
 
 ## Coming up
 
@@ -68,12 +66,12 @@ date of 16 November 2026. Submissions have closed.
   [APP 1.7–1.9 transparency obligation](/policies/oaic-app-1-7-adm-transparency-guidance)
   applies.
 
-From 20 October, a person who uses generative AI to prepare a document for a
-Commission case must say so and say how it was used. They must check the
-document and state that they have checked it. Under the
+From 20 October, under the
 [guidance note](https://www.fwc.gov.au/documents/resources/guidance-note-use-of-generative-ai-in-commission-cases.pdf),
-that check "must be done by a person" and cannot be delegated to a generative
-AI tool. Using generative AI only to check spelling or grammar, or to format a
+a person who uses generative AI to prepare a document for a Commission case
+must say so and say how it was used. They must check the document and state
+that they have checked it. That check "must be done by a person" and cannot
+be delegated to a generative AI tool. Using generative AI only to check spelling or grammar, or to format a
 document, is excluded.
 
 ## Why it matters
@@ -86,8 +84,9 @@ only its "AI" systems before 10 December may miss rule-based tools that do the
 same work. The OAIC advises entities in doubt to "take a cautious approach"
 and include the information in their privacy policy.
 
-The Fair Work Commission's rules apply to everyone who lodges documents, not
-only lawyers. Self-represented parties who use a chatbot to draft an
+The [guidance note](https://www.fwc.gov.au/documents/resources/guidance-note-use-of-generative-ai-in-commission-cases.pdf)
+applies to anyone who uses generative AI to prepare a document lodged in a
+Commission case, not only lawyers (clause 6). Self-represented parties who use a chatbot to draft an
 application will need to add the disclosure and the checking statement. The
 exclusion for spelling, grammar and formatting is narrow. A tool that rewrites
 or summarises text is outside it.
