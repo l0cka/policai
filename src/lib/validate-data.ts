@@ -17,6 +17,7 @@ import {
   TIMELINE_EVENT_TYPES,
   VERIFICATION_STATUSES,
   type Agency,
+  type Article,
   type CollectionMeta,
   type CourtRequirement,
   type Development,
@@ -27,6 +28,12 @@ import {
   type SourceReview,
   type TimelineEvent,
 } from '@/types';
+import {
+  articleChanges,
+  citationState,
+  parseArticle,
+  type ArticleSource,
+} from '@/lib/articles';
 import type { WatchState } from '@/lib/pipeline/collect';
 import type { WatchSource } from '@/lib/pipeline/sources';
 import { identityExceptionState } from '@/lib/pipeline/identity';
@@ -2237,6 +2244,103 @@ export function validatePolicyFrameworkArtifact(
   );
   errors.push(...verificationReport.errors);
   warnings.push(...verificationReport.warnings);
+  return { errors, warnings };
+}
+
+export interface ArticleCitationTargets {
+  policies: readonly Policy[];
+  publicPolicies: readonly Policy[];
+}
+
+function articleTransitionErrors(
+  label: string,
+  previous: Article,
+  next: Article | undefined,
+): string[] {
+  if (previous.status === 'draft') return [];
+  if (!next) {
+    return [`${label}: a ${previous.status} piece cannot be deleted; withdraw it instead`];
+  }
+  const errors: string[] = [];
+  if (next.status === 'draft') {
+    errors.push(`${label}: a ${previous.status} piece cannot return to draft`);
+  }
+  if (previous.status === 'withdrawn' && next.status !== 'withdrawn') {
+    errors.push(`${label}: a withdrawn piece stays withdrawn`);
+  }
+  if (next.status !== 'draft' && next.publishedAt !== previous.publishedAt) {
+    errors.push(`${label}: publishedAt cannot change after publication`);
+  }
+  const kept = previous.corrections.every(
+    (correction, index) =>
+      next.corrections[index]?.date === correction.date &&
+      next.corrections[index]?.text === correction.text,
+  );
+  if (!kept) {
+    errors.push(`${label}: corrections are append-only; an earlier correction was changed or removed`);
+  }
+  return errors;
+}
+
+export function validateArticles(
+  current: readonly ArticleSource[],
+  base: readonly ArticleSource[] | null,
+  targets: ArticleCitationTargets,
+): ValidationReport {
+  const errors: string[] = [];
+  const warnings: string[] = [];
+  const canonical = new Map(targets.policies.map((policy) => [policy.id, policy]));
+  const publicPolicies = new Map(
+    targets.publicPolicies.map((policy) => [policy.id, policy]),
+  );
+  const changes = articleChanges(current, base);
+  const parsed = new Map<string, Article>();
+
+  for (const entry of current) {
+    const label = `data/articles/${entry.slug}.md`;
+    const result = parseArticle(entry);
+    if (!result.ok) {
+      errors.push(...result.errors.map((error) => `${label}: ${error}`));
+      continue;
+    }
+    const article = result.article;
+    parsed.set(entry.slug, article);
+    if (article.status !== 'published') continue;
+    const change = changes.get(entry.slug);
+    const report = change === 'untouched' ? warnings : errors;
+    for (const policyId of article.cites) {
+      const policy = canonical.get(policyId);
+      if (!policy) {
+        errors.push(`${label}: cites unknown register record "${policyId}"`);
+        continue;
+      }
+      if (policy.status === 'trashed') {
+        errors.push(`${label}: cites trashed register record "${policyId}"`);
+        continue;
+      }
+      const state = citationState(publicPolicies, policyId);
+      if (state === 'not_public') {
+        report.push(`${label}: cites "${policyId}", which is withheld or unverified (Source under review)`);
+      } else if (state === 'review_due') {
+        report.push(`${label}: cites "${policyId}", which is past its review interval (Source under review)`);
+      }
+    }
+  }
+
+  const currentSlugs = new Set(current.map((entry) => entry.slug));
+  for (const entry of base ?? []) {
+    const previous = parseArticle(entry);
+    const next = parsed.get(entry.slug);
+    if (!previous.ok || (currentSlugs.has(entry.slug) && !next)) continue;
+    errors.push(
+      ...articleTransitionErrors(
+        `data/articles/${entry.slug}.md`,
+        previous.article,
+        next,
+      ),
+    );
+  }
+
   return { errors, warnings };
 }
 
