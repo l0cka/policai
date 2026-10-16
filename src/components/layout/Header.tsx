@@ -13,6 +13,7 @@ const navItems = [
   { href: '/', label: 'Register' },
   { href: '/this-week', label: 'This week' },
   { href: '/developments', label: 'Developments' },
+  { href: '/analysis', label: 'Analysis' },
   { href: '/courts', label: 'Courts' },
 ];
 
