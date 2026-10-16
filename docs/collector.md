@@ -47,6 +47,11 @@ produce a lead only after their initial baseline changes. A changed fingerprint
 is not committed as the new baseline until the revised document is extracted
 successfully. Scanned PDFs without an extractable text layer fail with an
 explicit OCR/manual-review requirement and are retried.
+A pending document version is always re-fingerprinted through the source's own
+retrieval path (plain HTTP or the browser, with linked documents folded in),
+even when the source is not due. Firecrawl markdown never produces a document
+fingerprint: its hash is not comparable with the HTML-plus-attachments hash, so
+using it would stage a false new version and supersede the pending one.
 An unreadable changed-document version that reaches the retry limit remains a
 failed source-health condition on subsequent runs until a reviewer resolves it
 or the publisher serves a new readable version.
@@ -224,7 +229,8 @@ a headless-browser retriever (`src/lib/pipeline/browser-fetch.ts`, Playwright
 Chromium). For sources marked `fetchStrategy: 'browser'`, the index or RSS
 listing page is still retrieved through the browser directly, because
 Firecrawl returns markdown and index parsing needs the page's HTML links.
-Candidate pages discovered from those sources are retrieved through a
+Candidate pages discovered from those sources (but never a document source's
+own page) are retrieved through a
 self-hosted Firecrawl instance first (`src/lib/pipeline/firecrawl.ts`),
 falling back to the browser when Firecrawl is unavailable, times out, or
 returns no usable markdown. Sources carrying an identity exception bypass
