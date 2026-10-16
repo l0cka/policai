@@ -98,6 +98,7 @@ src/
 │   ├── data-service.ts           # File-backed reads/writes over the repo JSON
 │   ├── validate-data.ts          # Data schema enforcement (used by CI + collector)
 │   ├── articles.ts               # Article frontmatter parser, standard notice text, citation state
+│   ├── article-figures.ts        # Figure blocks in article bodies, register chart counts
 │   ├── article-baseline.ts       # Reads the base revision of data/articles/ from Git
 │   ├── analysis.ts               # Deterministic relevance/summary helpers
 │   ├── scraper-filter.ts         # Keyword heuristics shared by the pipeline
@@ -190,6 +191,55 @@ otherwise the merge-base of `HEAD` and `origin/main`. When `GITHUB_BASE_SHA`
 is set but cannot be read, `validate:data` fails, so the transition rules
 never pass silently. When it is unset and no merge-base can be read, every
 piece counts as new.
+
+### Article figures
+
+A piece may carry figures as fenced `figure` blocks in its body, written as
+YAML. `parseArticleBody` in `src/lib/article-figures.ts` (called by
+`parseArticle`) splits the body into prose and figure blocks
+(`Article.blocks`), numbers figures per piece in document order and parses
+each into `ArticleFigure`, a union on `kind`. Only a fence at column 0 that
+opens with exactly ```` ```figure ```` is a figure; one inside another code
+fence, list or blockquote is not. Reference-style link definitions are copied
+to every prose block, because each block renders on its own.
+
+| Field | Kinds | Rule |
+| --- | --- | --- |
+| `kind` | all | `timeline`, `matrix`, `flow` or `chart` |
+| `title` | all | required, at most 100 characters; states the point |
+| `alt` | all | required, at least 20 characters; rendered as the figure's description |
+| `caption` | all | required |
+| `cites` | timeline, matrix, flow | each id must also be in the piece's `cites`; a chart lists none |
+| `sources` | all | each URL must also be in the piece's `sources` |
+| `wide` | matrix, flow | breaks out to 880px at 1024px and wider |
+| `asAt`, `entries` | timeline | data date; 2 to 7 entries of `date` (`YYYY-MM-DD`, `YYYY-MM` or `YYYY`), `title`, optional `detail`, in date order. An entry dated after `asAt` shows as not yet in effect |
+| `columns`, `rows` | matrix | 2 to 5 columns; 2 to 9 rows, each a list with one cell per column. The first cell is the row header. A cell is text, `~` (rendered "Not stated") or `{ text, emphasis: true }`, at most one emphasis per row |
+| `steps`, `branch` | flow | 3 to 6 steps counting the branch. A step is `text`, optional `role` (`step`, `decision`, `end`) and optional `label` on its incoming connector. One optional `branch: { from, label, steps }`, where `from` is the number of a decision step |
+| `group`, `where`, `highlight` | chart | `group` is `jurisdiction`, `type` or `status`. `where` filters on those fields (one value or a list) and `effectiveDate: { from, to }`. `highlight` is one value of the group |
+
+Citations: because figure `cites` must be in the frontmatter `cites`, the
+added-citation rule, the warnings and the "Source under review" banner apply
+to them unchanged. The source line links each cited record by its title (a
+record that is not public shows as "Register record under review") and each
+source by its host name.
+
+Charts count the public register when the page renders (`registerChart`,
+over the same public projection as `/data/policies.json`), so withheld,
+unverified and trashed records are never counted. A chart cites the register
+as a whole, not the records it counts: a review-due record in the count
+raises no error and no banner (PM, 2026-10-17). Its source line reads
+"Policai register, N public records, as at <date>", where the date is the
+collection date the page was built from (`lastHealthyAt`, else
+`lastCollectedAt`). `validateArticles` (`registerChartErrors`) fails a
+published chart whose query matches no public record, gives fewer than 3 or
+more than 10 bars, or highlights a value with no records. The prose must not
+restate a chart's numbers, since they change as the register changes.
+
+`src/components/article-figures.tsx` renders figures as server HTML and CSS
+only, with no SVG, canvas, images or client script. Their styles are the
+`.figure` rules in `src/app/globals.css` and use design tokens only. Fixtures
+for every kind and every validation rule are in `src/test/fixtures/articles/`
+(`figure-*.md`, `invalid-figure-*.md`).
 
 ### Article images
 
