@@ -453,6 +453,7 @@ describe('extractPublishedDate', () => {
     const disrPage = (extraHead = '') => `
       <html>
         <head>
+          <meta name="Generator" content="Drupal 11 (http://drupal.org) + GovCMS (http://govcms.gov.au)">
           <meta name="dcterms.created" content="2026-10-08T09:00:00+11:00">
           <meta name="dcterms.date" content="2026-10-12T12:47:45+1100">
           <meta property="og:updated_time" content="2026-10-12T12:47:45+1100">
@@ -507,12 +508,31 @@ describe('extractPublishedDate', () => {
       ).toBeNull();
     });
 
-    it('keeps dcterms.date as a last resort when nothing better exists', () => {
-      expect(
-        extractPublishedDate(
-          '<html><head><meta name="dcterms.date" content="2026-10-12"></head></html>',
-        ),
-      ).toBe('2026-10-12');
+    const editTimeOnly = (generator = '') => `
+      <html><head>
+        ${generator}
+        <meta name="dcterms.date" content="2026-10-12T12:47:45+1100">
+        <meta property="og:updated_time" content="2026-10-12T12:47:45+1100">
+      </head><body><h1>Report</h1></body></html>
+    `;
+
+    it('never dates a GovCMS or Drupal page by dcterms.date', () => {
+      for (const generator of [
+        '<meta name="Generator" content="Drupal 11 (http://drupal.org) + GovCMS (http://govcms.gov.au)">',
+        '<meta name="generator" content="drupal 10 (https://www.drupal.org)">',
+        '<meta name="Generator" content="GOVCMS">',
+      ]) {
+        expect(extractPublishedDateEvidence(editTimeOnly(generator))).toBeNull();
+      }
+    });
+
+    it('still dates other pages by dcterms.date as a last resort', () => {
+      for (const generator of ['', '<meta name="generator" content="WordPress 6.6">']) {
+        expect(extractPublishedDateEvidence(editTimeOnly(generator))).toEqual({
+          date: '2026-10-12',
+          precision: 'day',
+        });
+      }
     });
   });
 });
