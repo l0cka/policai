@@ -412,10 +412,17 @@ const PUBLICATION_META_SELECTORS = [
   'meta[itemprop="datePublished"]',
 ] as const;
 
-const GENERIC_DATE_META_SELECTORS = [
-  'meta[name="dcterms.date"]',
-  'meta[name="date"]',
-] as const;
+type DateMetaPlatform = 'govcms' | 'generic';
+
+const LAST_RESORT_DATE_META_SELECTORS: Record<DateMetaPlatform, readonly string[]> = {
+  govcms: ['meta[name="date"]'],
+  generic: ['meta[name="dcterms.date"]', 'meta[name="date"]'],
+};
+
+function detectDateMetaPlatform($: cheerio.CheerioAPI): DateMetaPlatform {
+  const generator = $('meta[name="generator" i]').attr('content') ?? '';
+  return /govcms|drupal/i.test(generator) ? 'govcms' : 'generic';
+}
 
 export function extractPublishedDateEvidence(
   html: string,
@@ -477,7 +484,7 @@ export function extractPublishedDateEvidence(
 	});
 	if (published) return published;
 
-	for (const selector of GENERIC_DATE_META_SELECTORS) {
+	for (const selector of LAST_RESORT_DATE_META_SELECTORS[detectDateMetaPlatform($)]) {
 		const value = parseSourceDate($(selector).attr('content'));
 		if (value) return value;
 	}

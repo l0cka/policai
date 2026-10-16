@@ -106,8 +106,12 @@ requiring an editor to confirm the live bytes before public access is restored.
 Page publication dates come from, in order: a visible publication label, then
 `dcterms.created`, `dcterms.issued`, `article:published_time` and
 `itemprop="datePublished"` metadata, then publication-labelled `time` elements,
-then `dcterms.date` and `date`. GovCMS sites set `dcterms.date` to the edit
-time, so it only dates a page when nothing above it exists. Modified-time keys
+then the last-resort keys. The last-resort keys depend on the page's platform.
+A page whose `<meta name="generator">` content contains `GovCMS` or `Drupal`
+(any case) is a GovCMS page; there `dcterms.date` is the edit time, so it never
+sets `publishedAt` and only `date` remains. Every other page falls back to
+`dcterms.date`, then `date`. A GovCMS page with none of these fields has no
+publication date. Modified-time keys
 (`dcterms.modified`, `article:modified_time`, `og:updated_time`) never set
 `publishedAt`. Dates are read as written, so the source's own calendar day wins
 whatever the machine's time zone.
