@@ -297,7 +297,7 @@
   outline-offset: var(--focus-ring-offset);
 }
 
-.article-body table {
+.article-table-scroll table {
   width: 100%;
   margin: 0;
   border-collapse: collapse;
@@ -306,7 +306,7 @@
   line-height: 1.5;
 }
 
-.article-body :is(th, td) {
+.article-table-scroll :is(th, td) {
   padding: var(--space-3) var(--space-4) var(--space-3) 0;
   text-align: left;
   vertical-align: top;
@@ -315,7 +315,7 @@
   font-variant-numeric: tabular-nums;
 }
 
-.article-body th {
+.article-table-scroll th {
   font-family: var(--font-mono);
   font-size: var(--type-label);
   font-weight: 500;
@@ -326,7 +326,7 @@
   border-bottom: 1px solid var(--rule-heavy);
 }
 
-.article-body td {
+.article-table-scroll td {
   min-width: 8rem;
 }
 
