@@ -88,8 +88,10 @@ src/
 │   ├── agencies/                 # Temporary 307 to apsaitracker.app (owner's permission; force-dynamic
 │   │                             #   so no CDN caches it). To withdraw, restore notFound()
 │   ├── policies/[id]/            # Policy detail (server) + client tabs
-│   └── api/                      # READ-ONLY public JSON API (policies, agencies,
-│                                 #   timeline, network, status)
+│   └── api/                      # READ-ONLY public API, one route.ts each:
+│                                 #   policies, policies/[id], agencies, timeline, network,
+│                                 #   status, developments, court-requirements (JSON), and
+│                                 #   policies/[id]/markdown (text/markdown)
 ├── components/                   # UI, layout, visualisation components
 ├── lib/
 │   ├── data-service.ts           # File-backed reads/writes over the repo JSON
