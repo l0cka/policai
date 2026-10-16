@@ -138,7 +138,7 @@ export function ArticleImageAttribution({ image }: { image: ArticleImage }) {
 export function ArticleLeadImage({ image }: { image: ArticleImage }) {
   return (
     <figure className="mt-6">
-      <div className="aspect-[16/10] max-h-[28rem] w-full overflow-hidden rounded-md sm:aspect-[3/2]">
+      <div className="aspect-[16/10] max-h-[28rem] w-full overflow-hidden rounded-md sm:aspect-[5/2]">
         <Image
           src={image.src}
           alt={image.alt}

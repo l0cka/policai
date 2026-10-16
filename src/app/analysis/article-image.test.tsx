@@ -41,7 +41,7 @@ describe('article images', () => {
     expect(image).toHaveAttribute('height', '1365');
     expect(image).toHaveAttribute('sizes', '(min-width: 768px) 768px, 100vw');
     const frame = image.parentElement as HTMLElement;
-    expect(frame).toHaveClass('aspect-[16/10]', 'sm:aspect-[3/2]', 'w-full', 'max-h-[28rem]', 'overflow-hidden');
+    expect(frame).toHaveClass('aspect-[16/10]', 'sm:aspect-[5/2]', 'w-full', 'max-h-[28rem]', 'overflow-hidden');
     expect(image).toHaveClass('h-full', 'w-full', 'object-cover');
     expect(image.getAttribute('src')).toContain(encodeURIComponent(SRC));
 
