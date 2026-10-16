@@ -40,7 +40,10 @@ WHAT EXISTS
   bin/docker: allowlisted nested Compose adapter for ingest, enrichment and
   deadline verification.
   backup.sh: canonical-path variant of the existing backup helper; same dump,
-  gzip/content/size checks and 14-day/newest-five retention semantics.
+  gzip/content/size checks and 14-day/newest-five retention semantics. Its two
+  Docker calls are the only exec forms worker_arguments allows, exactly
+  pg_dump -U radar radar and pg_dumpall -U radar --globals-only (BACKUP_DUMPS).
+  Rotation runs only after both dumps pass their checks.
   backup-mirror.sh: additive copy of the radar-*.sql.gz dumps and their
   globals-*.sql.gz role dumps (needed to restore onto a fresh cluster) onto a second
   physical disk, so one device failure cannot take the database and every backup
@@ -284,6 +287,20 @@ SERVICE ROUTING (REVIEW EXISTING HARDENING; NOT BLIND DROP-INS)
   Ingest holds one guard through its exec into enrichment. Nested Docker calls
   obtain compatible shared deployment locks. Global and serialization lock
   descriptors survive exec. A surviving Docker worker blocks deploy preflight.
+  User services cannot write trusted state: workers open deploy.lock read-only
+  and take it shared, deploy takes it exclusive, and its inode stays stable
+  across every transaction. A worker waits for the shared lock for up to
+  WORKER_LOCK_WAIT_SECONDS (120 s, host.py), retrying a non-blocking flock
+  every LOCK_POLL_SECONDS (0.5 s, dispatcher.py), so a policai-pull run (about
+  6 s) delays a worker instead of refusing it. A deployment still holding the
+  lock when the wait ends refuses the worker with "deploy.lock busy". Deploy,
+  rollback, initialize and status keep one non-blocking attempt, so a pull that
+  arrives while a worker holds the shared lock refuses at once, as before. No
+  wait cycle exists: a waiting worker holds no lock, every holder takes
+  deploy.lock before worker.lock, and the nested Compose call's shared lock is
+  granted at once because its own worker already shares it. worker.lock stays
+  non-blocking: a second worker refuses with "worker.lock busy", since ingest
+  holds it for minutes, longer than any useful wait.
   Do not install/edit/unmask either digest unit. Verify masked AND inactive.
 
   installed_hashes must contain the exact paths shown in config.example.json.
@@ -394,6 +411,20 @@ LIMITATIONS / REMAINING CUTOVER GATES
   DB identity. Source collection failures are not falsely treated as deploy failure.
   Commands suppress raw output deliberately. Diagnostics are phase/identity based;
   investigate failures with separately approved, redacted observations.
+  cli.py exits 1 on every failure and prints one stderr line that never carries
+  command output, exception details, config or environment. A guard refusal
+  prints "Refused: <reason>." with the static Refused reason, for example
+  "deploy.lock busy: a deployment holds it", "worker.lock busy: another
+  scheduled worker is running", "persistent block: reviewed recovery required",
+  "scheduled workers must execute as l0cka" or "worker command not allowlisted".
+  A worker task that started after every guard passed and then failed prints
+  "Failed: worker task <name>: command exited with status <n>; guards passed."
+  (or the Runner's timeout or output-bound reason). <name> is the worker
+  operation, or the allowlisted Compose task such as src/verify-deadlines.ts or
+  pg_dumpall. Any other error prints only its exception type. The parent worker
+  captures and discards the nested Compose adapter's stderr, so the adapter also
+  writes its line to syslog as policai-host-compose; journalctl --user -u
+  probono-<worker> shows it beside the worker's own line.
   Builds run under existing app identities, NOT a hostile-code sandbox. Review
   dependency lifecycle/build scripts; the same UID can access its live checkout.
   State retains old artifacts and candidate images; this bundle never prunes them.

@@ -31,7 +31,7 @@ class AdapterTests(unittest.TestCase):
                 timeout=2,
             )
             self.assertEqual(out.strip(), "absent")
-            with self.assertRaisesRegex(h.Refused, "^command failed$"):
+            with self.assertRaisesRegex(h.Refused, "^command exited with status 7$"):
                 r.execute(
                     [
                         sys.executable,

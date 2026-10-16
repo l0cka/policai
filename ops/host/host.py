@@ -130,24 +130,41 @@ def check_compose_source(app, digest):
         raise Refused("Compose source requires new review")
 
 
+WORKER_LOCK_WAIT_SECONDS = 120
+
+
+class TaskFailed(Refused):
+    pass
+
+
+@contextmanager
+def worker_task(name):
+    try:
+        yield
+    except Refused as error:
+        raise TaskFailed(f"{name}: {error}") from None
+
+
 # Worker tasks that read one bounded JSON payload from stdin.
 STDIN_TASKS = ("src/save-enrichment.ts", "src/save-deadline-verification.ts")
 
 
+BACKUP_EXEC = [
+    "compose",
+    "-f",
+    "/var/lib/probono-radar/app/apps/probono/docker-compose.yaml",
+    "exec",
+    "-T",
+    "db",
+]
+BACKUP_DUMPS = (
+    ["pg_dump", "-U", "radar", "radar"],
+    ["pg_dumpall", "-U", "radar", "--globals-only"],
+)
+
+
 def worker_arguments(args):
-    backup = [
-        "compose",
-        "-f",
-        "/var/lib/probono-radar/app/apps/probono/docker-compose.yaml",
-        "exec",
-        "-T",
-        "db",
-        "pg_dump",
-        "-U",
-        "radar",
-        "radar",
-    ]
-    if args == backup:
+    if args[:6] == BACKUP_EXEC and args[6:] in BACKUP_DUMPS:
         return args[3:]
     prefix = ["compose", "--profile", "worker", "run", "--rm"]
     if args[:5] != prefix:
@@ -792,15 +809,16 @@ class Host:
         }
         if name == "backup-mirror":
             extra_env.update(mirror_environment(self.config))
-        self.runner.execute(
-            ["/usr/bin/bash", WORKER_SCRIPTS[name]],
-            BASES["probono"] / "app/apps/probono",
-            identity="l0cka",
-            timeout=1800,
-            limit=16_000_000,
-            pass_fds=lockfds,
-            extra_env=extra_env,
-        )
+        with worker_task(name):
+            self.runner.execute(
+                ["/usr/bin/bash", WORKER_SCRIPTS[name]],
+                BASES["probono"] / "app/apps/probono",
+                identity="l0cka",
+                timeout=1800,
+                limit=16_000_000,
+                pass_fds=lockfds,
+                extra_env=extra_env,
+            )
         # Do not return or journal worker output, which can contain article data.
 
     def worker_compose(self, args, lockfds, stdin_data=None):
@@ -812,15 +830,16 @@ class Host:
         if stdin_data is not None and not any(saver in allowed for saver in STDIN_TASKS):
             raise Refused("unexpected worker stdin")
         app = BASES["probono"] / "app/apps/probono"
-        return self.runner.execute(
-            self.compose_argv(app, "active") + allowed,
-            app,
-            identity="l0cka",
-            timeout=1200,
-            limit=134217728 if backup else 4_000_000,
-            pass_fds=lockfds,
-            stdin_data=stdin_data,
-        )
+        with worker_task(allowed[3] if backup else allowed[7]):
+            return self.runner.execute(
+                self.compose_argv(app, "active") + allowed,
+                app,
+                identity="l0cka",
+                timeout=1200,
+                limit=134217728 if backup else 4_000_000,
+                pass_fds=lockfds,
+                stdin_data=stdin_data,
+            )
 
     def compose_argv(self, app, selection):
         if selection not in ("active", "candidate"):
@@ -842,10 +861,10 @@ class Host:
 
 
 @contextmanager
-def worker_guard(state, serialize=True):
-    # User services cannot write trusted state. They take read-open SH locks;
-    # deploy takes EX. The inode remains stable across every transaction.
-    with state.lock(exclusive=False) as fd:
+def worker_guard(
+    state, serialize=True, wait=WORKER_LOCK_WAIT_SECONDS, clock=time.monotonic, sleep=time.sleep
+):
+    with state.lock(exclusive=False, wait=wait, clock=clock, sleep=sleep) as fd:
         active = state.require_ready()
         if active.get("bootstrap_pending"):
             raise Refused("initial activation incomplete")
@@ -946,7 +965,7 @@ class Runner:
                             output.extend(data)
                 result = process.wait(timeout=max(0.01, deadline - time.monotonic()))
             if result:
-                raise Refused("command failed")
+                raise Refused(f"command exited with status {result}")
             return output.decode("utf-8", errors="strict")
         except Refused:
             raise
