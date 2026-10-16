@@ -161,6 +161,11 @@ uses it. The rules for voice, formats and citations are in
   `POLICAI_ARTICLES_DIR` points reads at another directory, for previews
   with fixtures (`src/test/fixtures/articles/`).
 
+- **Body links:** a link is on-site only when it starts with `/` or `#`, or
+  is absolute, and resolves to `https://policai.org`. Protocol-relative
+  (`//host/...`) and backslash (`/\host/...`) forms resolve to another host,
+  so they count as external and must be listed in `sources`.
+
 `npm run validate:data` (`validateArticles`) enforces these rules:
 
 | Rule | New or changed piece | Untouched piece |

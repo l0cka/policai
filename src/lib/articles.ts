@@ -108,16 +108,21 @@ export async function readArticleSources(dir: string): Promise<ArticleSource[]> 
 	);
 }
 
-function classifyLink(href: string): ArticleBodyLink {
-	const sitePath = href.startsWith("/")
-		? href
-		: href.startsWith(`${SITE_ORIGIN}/`)
-			? href.slice(SITE_ORIGIN.length)
-			: null;
-	if (sitePath === null) {
-		return href.startsWith("#") ? { kind: "site", href } : { kind: "external", href };
+function onSitePath(href: string): string | null {
+	const absolute = /^[a-z][a-z\d+.-]*:/i.test(href);
+	if (!absolute && !/^[/#]/.test(href)) return null;
+	try {
+		const url = new URL(href, SITE_ORIGIN);
+		return url.origin === SITE_ORIGIN ? url.pathname : null;
+	} catch {
+		return null;
 	}
-	const policy = /^\/policies\/([^/?#]+)/.exec(sitePath);
+}
+
+function classifyLink(href: string): ArticleBodyLink {
+	const sitePath = onSitePath(href);
+	if (sitePath === null) return { kind: "external", href };
+	const policy = /^\/policies\/([^/]+)/.exec(sitePath);
 	return policy
 		? { kind: "policy", href, policyId: decodeURIComponent(policy[1]) }
 		: { kind: "site", href };

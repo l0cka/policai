@@ -151,6 +151,44 @@ describe("articleBodyLinks", () => {
 			{ kind: "external", href: "https://www.example.gov.au/r" },
 		]);
 	});
+
+	it.each([
+		"//news.example.com/story",
+		"/\\evil.example.com/x",
+		"\\\\evil.example.com/y",
+		"/\\/evil.example.com/z",
+		"https://policai.org.evil.example.com/policies/x",
+		"javascript:void",
+		"mailto:editor@example.gov.au",
+		"example.gov.au/missing-scheme",
+	])("classifies %s as external", (href) => {
+		expect(articleBodyLinks(`[a](${href})`)).toEqual([{ kind: "external", href }]);
+	});
+
+	it.each([
+		["/policies/x?tab=dates", { kind: "policy", policyId: "x" }],
+		["https://policai.org/policies/y#history", { kind: "policy", policyId: "y" }],
+		["/this-week", { kind: "site" }],
+		["#coming-up", { kind: "site" }],
+		["https://policai.org/analysis", { kind: "site" }],
+	])("keeps %s on site", (href, expected) => {
+		expect(articleBodyLinks(`[a](${href})`)).toEqual([{ ...expected, href }]);
+	});
+
+	it.each(["//news.example.com/story", "/\\evil.example.com/x"])(
+		"rejects a published piece that links %s without listing it in sources",
+		async (href) => {
+			const entry = await fixture("fixture-weekly-published");
+			const result = parseArticle({
+				...entry,
+				source: `${entry.source}\nSee [elsewhere](${href}).\n`,
+			});
+			expect(result).toEqual({
+				ok: false,
+				errors: [`body links ${href} but sources does not list it`],
+			});
+		},
+	);
 });
 
 describe("articleChanges", () => {
