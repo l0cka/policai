@@ -27,9 +27,9 @@ image:
   licenceCheckedAt: "2026-10-16"
 ---
 
-The NSW Government has rewritten [Identifying AI](/policies/nsw-identifying-ai-guidance),
-its guidance for public servants who need to work out whether a digital
-solution uses artificial intelligence. The
+The NSW Government's [Identifying AI](/policies/nsw-identifying-ai-guidance)
+guidance for public servants who need to work out whether a digital solution
+uses artificial intelligence now directs agencies to the AIAF Platform. The
 [current page](https://www.digital.nsw.gov.au/policy/artificial-intelligence/nsw-artificial-intelligence-assessment-framework/identifying-ai)
 states that "From 30 September 2026, the AIAF Platform is the authoritative
 channel for AI use case registration and assessment across NSW Government",
@@ -68,12 +68,10 @@ cannot be used by preference".
 
 ## What changed
 
-The version of this page that Policai verified on 19 July 2026 left agencies
-to decide whether the AIAF applied. It suggested applying the AIAF wherever
-AI use was possible, and required agencies to document any decision not to
-apply it. The current page moves that
-decision to the platform: the agency registers the use case, and the
-registration process decides whether an assessment is needed.
+The guidance dates from December 2024
+([Identifying AI](/policies/nsw-identifying-ai-guidance)). Its current text
+reflects the AIAF Platform requirement that applies from 30 September 2026
+([NSW AI Assessment Framework page](https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks/nsw-ai-assessment-framework)).
 
 The page now carries no date. The register keeps December 2024, at month
 precision, as the guidance's publication date. That date came from the
@@ -100,14 +98,13 @@ review by the NSW AI Review Committee, according to the
 
 ## Analysis
 
-In Policai's analysis, the practical change is who decides whether an
-assessment is needed. Under the July version, the agency made that call and
-recorded it. Now the agency registers and the platform decides, so every
-use case that may involve AI becomes visible across government. The
-guidance says "Where there is a possibility that a system uses AI,
+In Policai's analysis, the practical effect is that the agency no longer
+decides alone whether an assessment is needed: it registers the use case,
+and the registration process decides. Every use case that may involve AI
+therefore passes through one government-wide channel. The guidance says "Where there is a possibility that a system uses AI,
 register the use case", and a single "yes" to the AI questions points to
 registration. On that test, many everyday products with built-in
-transcription, summarisation or chat features would be registered, even
+transcription, summarisation or chat features could need registering, even
 where the agency treats the AI feature as minor.
 
 Two official pages describe the transition differently. The AIAF page states
