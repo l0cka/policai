@@ -259,8 +259,8 @@ Policai corrects in the open. A published piece never changes silently.
   that starts with "Update:" and names the source change.
 - **Source under review:** when a cited record becomes stale or withheld, the
   platform shows a "Source under review" banner. The editor re-reads the
-  record and the piece. The banner clears within an hour of the record being
-  verified again;
+  record and the piece. The banner clears once the re-verified record is live on
+  the site, within an hour of that deploy;
   if the piece's claims no longer hold, publish a correction or update.
 - **Withdrawal:** for a piece that cannot be corrected, for example because
   its subject was misidentified or its central claim was wrong. Set `status`
