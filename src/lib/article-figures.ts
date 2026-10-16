@@ -25,7 +25,7 @@ import {
 	type TimelineEntry,
 } from "@/types";
 
-export const FIGURE_LIMITS = {
+const FIGURE_LIMITS = {
 	titleMax: 100,
 	altMin: 20,
 	timeline: { min: 2, max: 7 },
@@ -56,8 +56,6 @@ const CHART_LABELS: { [G in ChartGroup]: Record<Policy[G], string> } = {
 	status: POLICY_STATUS_NAMES,
 };
 
-const CHART_ORDERED_GROUPS: ReadonlySet<ChartGroup> = new Set(["status"]);
-
 const FIGURE_OPEN = /^```figure\s*$/;
 const FIGURE_CLOSE = /^```\s*$/;
 const FENCE_OPEN = /^ {0,3}(`{3,}|~{3,})/;
@@ -65,7 +63,7 @@ const REFERENCE_DEFINITION = /^ {0,3}\[[^\]]+\]:\s*\S+.*$/;
 
 type Data = Record<string, unknown>;
 
-export interface FigureContext {
+interface FigureContext {
 	cites: readonly string[];
 	sources: readonly string[];
 }
@@ -74,7 +72,7 @@ type RawBlock =
 	| { kind: "prose"; lines: string[] }
 	| { kind: "figure"; number: number; lines: string[] };
 
-export interface ArticleBodyBlocks {
+interface ArticleBodyBlocks {
 	blocks: ArticleBlock[];
 	errors: string[];
 }
@@ -492,7 +490,7 @@ export function registerChart(chart: ChartFigure, publicPolicies: readonly Polic
 			count: counts.get(value) ?? 0,
 			highlighted: value === chart.highlight,
 		}));
-	if (!CHART_ORDERED_GROUPS.has(group)) bars.sort((a, b) => b.count - a.count);
+	if (group !== "status") bars.sort((a, b) => b.count - a.count);
 	return { total: counted.length, bars };
 }
 

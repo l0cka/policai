@@ -180,7 +180,7 @@ function ChartBody({ figure, chart }: { figure: ChartFigure; chart: RegisterChar
   );
 }
 
-export function registerSourceText(chart: RegisterChartView): string {
+function registerSourceText(chart: RegisterChartView): string {
   const records = `Policai register, ${chart.total} public ${chart.total === 1 ? 'record' : 'records'}`;
   return chart.asAt ? `${records}, as at ${formatArticleDate(chart.asAt)}` : records;
 }
