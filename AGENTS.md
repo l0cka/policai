@@ -375,6 +375,23 @@ Classification needs all three `CLASSIFIER_*` variables. A missing one raises `C
 - Use `readJsonFile`/`writeJsonFile` from `@/lib/file-store`; `cleanHtmlContent`/`extractJsonFromResponse` from `@/lib/utils`.
 - Public pages read via `src/lib/data-service.ts` server-side; keep interactive parts in client components fed by server props.
 - API routes are read-only and export named HTTP methods with `NextResponse.json()`.
+- A server module (one without `'use client'`) imports only components from a
+  `'use client'` module. Any other value it imports, such as a string or a
+  function, becomes a client reference in the RSC payload, which the browser
+  resolves only after that module's chunk loads. Put shared values in a plain
+  module instead. `src/app/client-boundary.test.ts` enforces this. A client
+  reference inside `<head>` caused #284: when it suspended during hydration,
+  React replayed the `<head>` singleton and lost its place in the document, so
+  about 0.2% of loads (several percent under CPU load) failed with React #418.
+- Theme: `src/components/layout/theme-init.ts` holds the storage key and the
+  static init script. The root layout renders the script in `<head>` so a
+  stored light or dark choice applies before first paint, with no flash of the
+  system theme. `<html data-theme>` is the single source of truth: the script
+  sets it, `ThemeToggle` reads it through `useSyncExternalStore` and its
+  selection updates it, so every toggle on the page agrees. The server renders
+  the system option because it cannot know the stored choice. Storage can be
+  unavailable (private mode, blocked cookies); the choice then applies to the
+  current page view only.
 - Run `npm run check` before handing off or committing.
 
 ## Documentation Standard

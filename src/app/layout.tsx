@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
-import { themeInitScript } from '@/components/layout/ThemeToggle';
+import { themeInitScript } from '@/components/layout/theme-init';
 import { BackToTop } from '@/components/ui/back-to-top';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { WebMcpTools } from '@/components/webmcp-tools';
@@ -43,11 +43,6 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        {/*
-          Static, developer-authored string with no interpolated input. It sets
-          the stored theme before first paint so the page never flashes the
-          system theme on the way to the chosen one.
-        */}
         <script>{themeInitScript}</script>
       </head>
       <body className="antialiased min-h-screen flex flex-col">

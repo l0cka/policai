@@ -3,19 +3,11 @@
 import { useRef, useSyncExternalStore } from 'react';
 import { Monitor, Moon, Sun } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { THEME_STORAGE_KEY } from '@/components/layout/theme-init';
 
 export type ThemeChoice = 'light' | 'dark' | 'system';
 
-export const THEME_STORAGE_KEY = 'policai-theme';
-
 const THEME_EVENT = 'policai:theme';
-
-/**
- * Runs before first paint so a stored choice is applied without a flash of the
- * system theme. Kept as a string because the root layout renders it in a
- * script element.
- */
-export const themeInitScript = `(function(){try{var t=localStorage.getItem('${THEME_STORAGE_KEY}');if(t==='light'||t==='dark'){document.documentElement.dataset.theme=t}}catch(e){}})();`;
 
 const OPTIONS: Array<{ value: ThemeChoice; label: string; Icon: typeof Sun }> =
   [
@@ -24,11 +16,6 @@ const OPTIONS: Array<{ value: ThemeChoice; label: string; Icon: typeof Sun }> =
     { value: 'dark', label: 'Dark', Icon: Moon },
   ];
 
-/**
- * The `<html>` element is the single source of truth: the init script sets it
- * before hydration and `select` updates it. Reading from the DOM rather than
- * from component state keeps every toggle on the page in agreement.
- */
 function subscribe(onStoreChange: () => void) {
   window.addEventListener(THEME_EVENT, onStoreChange);
   return () => window.removeEventListener(THEME_EVENT, onStoreChange);
@@ -39,8 +26,6 @@ function getSnapshot(): ThemeChoice {
   return theme === 'light' || theme === 'dark' ? theme : 'system';
 }
 
-// The server cannot know the visitor's stored choice, so it renders the
-// system option; hydration then swaps in the real one.
 function getServerSnapshot(): ThemeChoice {
   return 'system';
 }
@@ -52,10 +37,7 @@ function select(value: ThemeChoice) {
   try {
     if (value === 'system') localStorage.removeItem(THEME_STORAGE_KEY);
     else localStorage.setItem(THEME_STORAGE_KEY, value);
-  } catch {
-    // Storage can be unavailable (private mode, blocked cookies). The choice
-    // still applies for this page view, it just will not persist.
-  }
+  } catch {}
 
   window.dispatchEvent(new Event(THEME_EVENT));
 }
