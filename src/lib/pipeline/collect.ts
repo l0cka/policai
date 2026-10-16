@@ -753,11 +753,13 @@ type TrackedChangeTarget =
 
 function changeDetectionReason(
   record: Policy | TimelineEvent,
-  contentHash: string | undefined,
+  retrieved: Pick<RetrievedSource, 'evidence' | 'legacyContentHash'>,
 ): ChangeDetectionReason {
   const verifiedHash = record.verification.source.contentHash;
   if (!verifiedHash) return 'baseline_missing';
-  return contentHash === verifiedHash ? 'baseline_reversion' : 'changed';
+  return matchesRetrievedContent(retrieved, verifiedHash)
+    ? 'baseline_reversion'
+    : 'changed';
 }
 
 const SOURCE_HASH_CHANGE_PROMPT_VERSION = 'source-hash-change-v1';
@@ -1406,13 +1408,26 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
           const reading = sourceRetrieval;
           const isCurrentReading = (hash: string | undefined) =>
             matchesRetrievedContent(reading, hash);
-          const latestTransitionHash = latestDocumentTransition(
-            state,
-            source.id,
-          )?.contentHash;
+          const isThisReading = (
+            hash: string | undefined,
+            snapshot: SourceSnapshot | undefined,
+          ) =>
+            hash === contentHash ||
+            (isCurrentReading(hash) &&
+              (!snapshot ||
+                snapshot.contentHash === hash ||
+                snapshot.contentHash === contentHash));
+          const latestTransition = latestDocumentTransition(state, source.id);
           const readingHash =
-            latestTransitionHash && isCurrentReading(latestTransitionHash)
-              ? latestTransitionHash
+            latestTransition &&
+            isThisReading(
+              latestTransition.contentHash,
+              previous &&
+                (previous.changeCount ?? 0) >= latestTransition.changeCount
+                ? previous
+                : undefined,
+            )
+              ? latestTransition.contentHash
               : contentHash;
           const trackedPolicy = trackedPoliciesByUrl.get(
             sourceUrlIdentity(source.url),
@@ -1424,12 +1439,10 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
             ? trackedPolicy.verification.source.contentHash
             : trackedTimelineEvent?.verification.source.contentHash;
           const trackedRecord = trackedPolicy ?? trackedTimelineEvent;
-          const canonicalIsCurrent =
-            canonicalContentHash === contentHash ||
-            (isCurrentReading(canonicalContentHash) &&
-              (!previous ||
-                previous.contentHash === canonicalContentHash ||
-                previous.contentHash === contentHash));
+          const canonicalIsCurrent = isThisReading(
+            canonicalContentHash,
+            previous,
+          );
           const adoptedReading =
             trackedRecord &&
             canonicalContentHash &&
@@ -1707,7 +1720,9 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         );
         if (source.kind === 'document' && expectedVersion) {
           const actualHash = pageRetrieval.evidence.contentHash;
-          if (actualHash !== expectedVersion.contentHash) {
+          if (
+            !matchesRetrievedContent(pageRetrieval, expectedVersion.contentHash)
+          ) {
             const transition = actualHash
               ? transitionForDocumentHash(
                   state,
@@ -1733,10 +1748,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
                 actualHash,
                 transition.changeCount,
                 nowIso,
-                actualHash ===
-                  existingPolicy.verification.source.contentHash
-                  ? 'baseline_reversion'
-                  : 'changed',
+                changeDetectionReason(existingPolicy, pageRetrieval),
               );
               markPending(state, staged.candidate, source, nowIso);
               upsertDevelopmentResult(
@@ -1830,10 +1842,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
       const classification: Classification = changeTarget
         ? changeDetectionClassification(
             changeTarget,
-            changeDetectionReason(
-              changeTarget.record,
-              pageRetrieval.evidence.contentHash,
-            ),
+            changeDetectionReason(changeTarget.record, pageRetrieval),
           )
         : source.bodyRelevance
           ? classifyByBodyMentions(
@@ -1888,10 +1897,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
                 parsedFingerprint.contentHash,
                 parsedFingerprint.changeCount,
                 nowIso,
-                changeDetectionReason(
-                  existingTimelineEvent,
-                  pageRetrieval.evidence.contentHash,
-                ),
+                changeDetectionReason(existingTimelineEvent, pageRetrieval),
               ).review,
               sourceEvidence: sourceEvidence(
                 pageRetrieval.evidence,
@@ -1913,8 +1919,10 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
           existingReview &&
           existingReview.sourceVersionSequence ===
             review.sourceVersionSequence &&
-          existingReview.sourceEvidence.contentHash ===
-            review.sourceEvidence.contentHash
+          matchesRetrievedContent(
+            pageRetrieval,
+            existingReview.sourceEvidence.contentHash,
+          )
         ) {
           review = {
             ...review,

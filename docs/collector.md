@@ -124,26 +124,45 @@ whatever the machine's time zone.
 
 HTML fingerprints include every publication-date metadata field used by
 extraction, the date platform (a `date-platform:govcms` entry, not the raw
-generator string, so a Drupal version bump does not read as a change),
-modified-time keys, relevant instrument links, and visible text. The date
-selectors and the fingerprint key set come from one table in
-`src/lib/pipeline/date-metadata.ts`, and `date-metadata.test.ts` fails if a
-selector can change the extracted date without changing the fingerprint.
-Browser captures accept the same metadata keys.
+generator string, so a Drupal version bump does not read as a change), the
+modified-time keys `dcterms.modified` and `article:modified_time`
+(`og:updated_time` is neither read nor fingerprinted), `dc.date`, `og:title`,
+`citation_title`, `citation_publication_date`, `time[datetime]` values,
+relevant instrument links, and visible text. The date selectors and the
+fingerprint key set come from one table in `src/lib/pipeline/date-metadata.ts`,
+and `date-metadata.test.ts` fails if a selector can change the extracted date
+without changing the fingerprint. Browser captures accept the same metadata
+keys.
 
 Fingerprints stored before #195 omit `dcterms.created` and the date platform.
-Retrieval also computes that legacy fingerprint, and every comparison of a
-fresh retrieval with a stored hash (watch-state snapshots, verified policy and
-timeline hashes, the register audit, and the approval and publication gates)
-accepts either. Unchanged content therefore never reads as changed after the
-key change, and no stored file needs a migration. The collector writes the
-current fingerprint to its watch-state snapshot on first sight. For a tracked
-record whose verified hash is legacy, the snapshot then records that the
-collector has seen the current reading, so a later change confined to the new
-fields still stages a review. A change to those fields between the last
-verification and first sight cannot be detected: the old baseline never
-recorded them. The register audit has no snapshot, so it reports such a record
-unchanged until its next re-verification stores a current fingerprint.
+Retrieval also computes that legacy fingerprint (`legacyContentHash`, in
+memory only), and `matchesRetrievedContent` in `src/lib/pipeline/fetch.ts` is
+the one comparison of a fresh retrieval with a stored hash. It accepts either
+fingerprint and is used for watch-state snapshots, verified policy and
+timeline hashes, staged transitions and their pending candidates, the
+change-reason label, the register audit, and the re-staging, approval and
+publication gates. Stored-to-stored comparisons (two staged reviews of one
+transition, the DTA artifact or a court requirement against its policy) compare
+hashes as before and still need both sides re-verified together. Unchanged
+content therefore never reads as changed after the key change, and no stored
+file needs a migration.
+
+Legacy acceptance is gated by the watch-state snapshot. The collector writes
+the current fingerprint to the snapshot once it has processed a reading. A
+stored legacy hash (a verified record hash, or the latest transition the
+snapshot has recorded) matches a reading by its legacy fingerprint only while
+the snapshot is absent, equals that stored hash, or equals this reading. A
+pending transition the snapshot has not yet recorded matches by legacy alone.
+Once the snapshot holds the current fingerprint, a later change confined to
+`dcterms.created` or the date platform no longer matches and stages a review,
+on the direct path and on the adoption path alike. A change to those fields
+between the last verification and the first processed reading cannot be
+detected: the old baseline never recorded them. The register audit has no
+snapshot, so it reports such a record unchanged under a legacy match and, with
+`--write-evidence`, keeps the stored fingerprint while it updates
+`lastSourceAuditAt` and the retrieval details. Register hashes become current
+when a record is next approved or published, and the audit stays blind to the
+new fields until then.
 
 Linked PDF, Word, and RTF documents are retrieved and their byte hashes are folded into the landing page's fingerprint. A landing
 page therefore changes when a document is replaced at the same URL, even if

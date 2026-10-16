@@ -376,7 +376,10 @@ export function applyRegisterAuditEvidence(
           source:
             result.comparisonBasis === 'linked_documents'
               ? policy.verification.source
-              : observedSource,
+              : {
+                  ...observedSource,
+                  contentHash: policy.verification.source.contentHash,
+                },
           lastSourceAuditAt: result.checkedAt,
         },
       };

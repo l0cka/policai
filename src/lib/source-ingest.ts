@@ -1019,8 +1019,9 @@ async function stageSourceUrlUnlocked(input: {
 	}
 	let requiresManualExtraction = false;
 	let analysisResult: SourceAnalysisResult;
+	let retrieved: RetrievedSource | undefined;
 	if (targetPolicy || targetTimelineEvent || input.browserCapture) {
-		const retrieved = input.browserCapture
+		retrieved = input.browserCapture
 			? await buildBrowserCapturedSource(canonicalUrl, input.browserCapture)
 			: await retrieveEditorialSource(
 					canonicalUrl,
@@ -1273,12 +1274,15 @@ async function stageSourceUrlUnlocked(input: {
 		if (existingReview.sourceVersionSequence !== undefined) {
 			const priorHash = existingReview.sourceEvidence.contentHash;
 			const refreshedHash = reviewProposal.sourceEvidence.contentHash;
+			const unchangedSinceStaging = retrieved
+				? matchesRetrievedContent(retrieved, priorHash)
+				: Boolean(priorHash && refreshedHash && priorHash === refreshedHash);
 			const refreshesPendingCollectorEvidenceWithBrowserCapture =
 				Boolean(input.browserCapture) &&
 				existingReview.status === "pending_review" &&
 				Boolean(targetPolicy || targetTimelineEvent);
 			if (
-				(!priorHash || !refreshedHash || priorHash !== refreshedHash) &&
+				!unchangedSinceStaging &&
 				!refreshesPendingCollectorEvidenceWithBrowserCapture
 			) {
 				throw new Error(
@@ -1543,7 +1547,7 @@ async function approveStagedSourceUnlocked(input: {
 			reviewedDate: input.reviewedDate,
 			existingReviewedDate:
 				review.status === "approved" &&
-				review.sourceEvidence.contentHash === sourceEvidence.contentHash
+				matchesRetrievedContent(retrieved, review.sourceEvidence.contentHash)
 					? review.sourceEvidence.reviewedDate
 					: undefined,
 			allowPublishedMetadata: true,
@@ -1894,7 +1898,7 @@ async function approveStagedSourceUnlocked(input: {
 		reviewedDate: input.reviewedDate,
 		existingReviewedDate:
 			review.status === "approved" &&
-			review.sourceEvidence.contentHash === sourceEvidence.contentHash
+			matchesRetrievedContent(retrieved, review.sourceEvidence.contentHash)
 				? review.sourceEvidence.reviewedDate
 				: undefined,
 		allowPublishedMetadata: primaryDate.type === "published",
