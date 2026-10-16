@@ -987,7 +987,7 @@ describe('collect', () => {
         }),
         hashLinkedDocuments: false,
       });
-      return retrieved.legacyContentHash as string;
+      return retrieved.earlierContentHashes?.[1] as string;
     }
 
     const transitionKey = (hash: string) =>

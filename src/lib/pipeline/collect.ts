@@ -753,7 +753,7 @@ type TrackedChangeTarget =
 
 function changeDetectionReason(
   record: Policy | TimelineEvent,
-  retrieved: Pick<RetrievedSource, 'evidence' | 'legacyContentHash'>,
+  retrieved: Pick<RetrievedSource, 'evidence' | 'earlierContentHashes'>,
 ): ChangeDetectionReason {
   const verifiedHash = record.verification.source.contentHash;
   if (!verifiedHash) return 'baseline_missing';

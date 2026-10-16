@@ -1268,8 +1268,9 @@ describe('matchesRetrievedContent', () => {
     const current = await retrievePage(
       '<meta name="Generator" content="Drupal 10 (https://www.drupal.org)"><meta name="dcterms.created" content="2026-06-01">',
     );
-    expect(current.legacyContentHash).not.toBe(current.evidence.contentHash);
-    expect(matchesRetrievedContent(current, current.legacyContentHash)).toBe(true);
+    const legacyHash = current.earlierContentHashes?.[1];
+    expect(legacyHash).not.toBe(current.evidence.contentHash);
+    expect(matchesRetrievedContent(current, legacyHash)).toBe(true);
     expect(matchesRetrievedContent(current, current.evidence.contentHash)).toBe(true);
   });
 

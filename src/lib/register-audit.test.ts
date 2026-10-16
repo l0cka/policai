@@ -153,7 +153,7 @@ describe('register audit', () => {
     const current = await retrievePage(
       '<meta name="Generator" content="Drupal 10 (https://www.drupal.org)"><meta name="dcterms.created" content="2026-06-01">',
     );
-    const storedBeforeTheKeyChange = current.legacyContentHash as string;
+    const storedBeforeTheKeyChange = current.earlierContentHashes?.[1] as string;
     const policy = buildPolicy({
       verification: {
         status: 'verified',

@@ -1,10 +1,6 @@
 import * as cheerio from 'cheerio';
 import { isValidCalendarDate } from '@/lib/calendar-date';
-import {
-  detectDateMetaPlatform,
-  LAST_RESORT_DATE_META_SELECTORS,
-  PUBLICATION_DATE_META_SELECTORS,
-} from './date-metadata';
+import { publicationDateCandidates } from './date-metadata';
 import {
   cleanScrapedLinkTitle,
   isRelevantScrapedCandidate,
@@ -414,67 +410,11 @@ export function extractPublishedDateEvidence(
   html: string,
 ): ParsedSourceDate | null {
   const $ = cheerio.load(html);
-
-  const visibleContainer = $('main, article, [role="main"]').first();
-  const visibleText = (visibleContainer.length > 0 ? visibleContainer : $('body'))
-    .text()
-    .replace(/\s+/g, ' ')
-    .trim();
-  const visiblePublicationLabel = visibleText.match(
-    /\b(?:date\s+published|published(?:\s+on)?|publication\s+date|date\s+issued|issued\s+on|release\s+date)\s*:?\s*(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday)?\s*((?:\d{1,2}\s+[a-z]+\s+\d{4})|(?:[a-z]+\s+\d{4})|(?:\d{4}-\d{2}(?:-\d{2})?))/i,
-  );
-  const visiblePublished = parseSourceDate(visiblePublicationLabel?.[1]);
-  if (visiblePublished) return visiblePublished;
-
-  for (const selector of PUBLICATION_DATE_META_SELECTORS) {
-    const value = parseSourceDate($(selector).attr('content'));
+  for (const candidate of publicationDateCandidates($)) {
+    const value = parseSourceDate(candidate.value);
     if (value) return value;
   }
-
-	let published: ParsedSourceDate | null = null;
-	$('time[datetime]').each((_index, element) => {
-		if (published) return;
-		const time = $(element);
-		const itemProp = time.attr('itemprop')?.toLowerCase();
-		const attributeContext = [
-			time.attr('class'),
-			time.attr('id'),
-			time.attr('aria-label'),
-			time.attr('title'),
-			time.parent().attr('class'),
-			time.parent().attr('id'),
-		]
-			.filter(Boolean)
-			.join(' ');
-		const parentLabel = time
-			.parent()
-			.clone()
-			.children()
-			.remove()
-			.end()
-			.text();
-		const context = `${attributeContext} ${time.prev().text()} ${parentLabel} ${time.text()}`;
-		const explicitlyPublished =
-			itemProp === 'datepublished' ||
-			/\b(?:published|publication|date\s+issued|issued\s+on|release\s+date)\b/i.test(
-				context,
-			);
-		const conflictingLabel =
-			/\b(?:updated|modified|reviewed|deadline|closing|closes?|event\s+date|effective)\b/i.test(
-				context,
-			);
-		if (!explicitlyPublished || (conflictingLabel && itemProp !== 'datepublished')) {
-			return;
-		}
-		published = parseSourceDate(time.attr('datetime'));
-	});
-	if (published) return published;
-
-	for (const selector of LAST_RESORT_DATE_META_SELECTORS[detectDateMetaPlatform($)]) {
-		const value = parseSourceDate($(selector).attr('content'));
-		if (value) return value;
-	}
-	return null;
+  return null;
 }
 
 /**

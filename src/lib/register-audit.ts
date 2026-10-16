@@ -108,7 +108,7 @@ function compareLinkedDocuments(
 
 export function compareRegisterSourceEvidence(
   previous: SourceEvidence,
-  current: Pick<RetrievedSource, 'evidence' | 'legacyContentHash'>,
+  current: Pick<RetrievedSource, 'evidence' | 'earlierContentHashes'>,
 ): EvidenceComparison {
   const linkedComparison = compareLinkedDocuments(
     previous.linkedDocuments,
