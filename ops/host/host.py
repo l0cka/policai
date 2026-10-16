@@ -130,6 +130,8 @@ def check_compose_source(app, digest):
         raise Refused("Compose source requires new review")
 
 
+WORKER_LOCK_WAIT_SECONDS = 120
+
 # Worker tasks that read one bounded JSON payload from stdin.
 STDIN_TASKS = ("src/save-enrichment.ts", "src/save-deadline-verification.ts")
 
@@ -844,10 +846,10 @@ class Host:
 
 
 @contextmanager
-def worker_guard(state, serialize=True):
-    # User services cannot write trusted state. They take read-open SH locks;
-    # deploy takes EX. The inode remains stable across every transaction.
-    with state.lock(exclusive=False) as fd:
+def worker_guard(
+    state, serialize=True, wait=WORKER_LOCK_WAIT_SECONDS, clock=time.monotonic, sleep=time.sleep
+):
+    with state.lock(exclusive=False, wait=wait, clock=clock, sleep=sleep) as fd:
         active = state.require_ready()
         if active.get("bootstrap_pending"):
             raise Refused("initial activation incomplete")

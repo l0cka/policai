@@ -284,6 +284,20 @@ SERVICE ROUTING (REVIEW EXISTING HARDENING; NOT BLIND DROP-INS)
   Ingest holds one guard through its exec into enrichment. Nested Docker calls
   obtain compatible shared deployment locks. Global and serialization lock
   descriptors survive exec. A surviving Docker worker blocks deploy preflight.
+  User services cannot write trusted state: workers open deploy.lock read-only
+  and take it shared, deploy takes it exclusive, and its inode stays stable
+  across every transaction. A worker waits for the shared lock for up to
+  WORKER_LOCK_WAIT_SECONDS (120 s, host.py), retrying a non-blocking flock
+  every LOCK_POLL_SECONDS (0.5 s, dispatcher.py), so a policai-pull run (about
+  6 s) delays a worker instead of refusing it. A deployment still holding the
+  lock when the wait ends refuses the worker with "deploy.lock busy". Deploy,
+  rollback, initialize and status keep one non-blocking attempt, so a pull that
+  arrives while a worker holds the shared lock refuses at once, as before. No
+  wait cycle exists: a waiting worker holds no lock, every holder takes
+  deploy.lock before worker.lock, and the nested Compose call's shared lock is
+  granted at once because its own worker already shares it. worker.lock stays
+  non-blocking: a second worker refuses with "worker.lock busy", since ingest
+  holds it for minutes, longer than any useful wait.
   Do not install/edit/unmask either digest unit. Verify masked AND inactive.
 
   installed_hashes must contain the exact paths shown in config.example.json.

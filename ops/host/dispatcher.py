@@ -7,8 +7,16 @@ import json
 import os
 import re
 import stat
+import time
 import uuid
 from pathlib import Path
+
+LOCK_POLL_SECONDS = 0.5
+LOCK_BUSY = {
+    ("deploy.lock", True): "another deployment or worker is running",
+    ("deploy.lock", False): "deploy.lock busy: a deployment holds it",
+    ("worker.lock", True): "worker.lock busy: another scheduled worker is running",
+}
 
 
 class Refused(RuntimeError):
@@ -130,7 +138,7 @@ class State:
         return self.read("active.json")
 
     @contextlib.contextmanager
-    def lock(self, exclusive, worker=False):
+    def lock(self, exclusive, worker=False, wait=0, clock=time.monotonic, sleep=time.sleep):
         path = self.root / ("worker.lock" if worker else "deploy.lock")
         before = secure_path(path, self.owner)
         try:
@@ -141,10 +149,15 @@ class State:
             opened = os.fstat(fd)
             if (opened.st_ino, opened.st_dev) != (before.st_ino, before.st_dev):
                 raise Refused("lock inode changed")
-            try:
-                fcntl.flock(fd, (fcntl.LOCK_EX if exclusive else fcntl.LOCK_SH) | fcntl.LOCK_NB)
-            except BlockingIOError:
-                raise Refused("another deployment or worker is running") from None
+            deadline = clock() + wait
+            while True:
+                try:
+                    fcntl.flock(fd, (fcntl.LOCK_EX if exclusive else fcntl.LOCK_SH) | fcntl.LOCK_NB)
+                    break
+                except BlockingIOError:
+                    if clock() >= deadline:
+                        raise Refused(LOCK_BUSY[path.name, exclusive]) from None
+                    sleep(LOCK_POLL_SECONDS)
             yield fd
         finally:
             os.close(fd)
