@@ -30,6 +30,7 @@ import { formatPolicyDate } from '@/lib/format-policy-date';
 import { precisionDateTime } from '@/lib/this-week';
 import { CourtRequirementsList } from "@/components/court-requirements-list";
 import { StatusPill } from "@/components/policy-indicators";
+import { splitSummaryBlocks } from '@/lib/summary-blocks';
 import { cn } from '@/lib/utils';
 
 type TabId = 'overview' | 'requirements' | 'content';
@@ -62,6 +63,23 @@ function getRequirements(policy: Policy): string[] {
 
 function StatusBadge({ policy }: { policy: Policy }) {
   return <StatusPill status={policy.status} dates={policy.dates} />;
+}
+
+function SummaryText({ text }: { text: string }) {
+  return (
+    <div className="min-w-0 flex-1 break-words text-base leading-[1.7]">
+      {splitSummaryBlocks(text).map((block, blockIndex) => (
+        <div key={blockIndex} className="max-w-[66ch] space-y-3 [&:not(:first-child)]:mt-4">
+          {block.paragraphs.map((paragraph, index) => (
+            <p key={index}>
+              {index === 0 && block.label ? <strong className="font-semibold">{block.label} </strong> : null}
+              {paragraph}
+            </p>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
 }
 
 function CopyLinkButton() {
@@ -123,7 +141,7 @@ export function PolicyDetailTabs({
         </div>
       ) : null}
 
-      <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_23rem]">
+      <div className="grid gap-8 xl:grid-cols-[minmax(0,44rem)_minmax(16rem,22rem)] xl:gap-[var(--space-10)]">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-3 font-mono text-[11px] uppercase tracking-[0.12em]">
             <span
@@ -135,8 +153,10 @@ export function PolicyDetailTabs({
             </span>
             <span className="h-4 w-px bg-border" />
             <span>{getPolicyTypeName(policy.type)}</span>
-            <span className="h-4 w-px bg-border" />
-            <StatusBadge policy={policy} />
+            <span className="hidden sm:contents">
+              <span className="h-4 w-px bg-border" />
+              <StatusBadge policy={policy} />
+            </span>
           </div>
 
           <h1 className="article-title mt-5 max-w-4xl">
@@ -211,39 +231,23 @@ export function PolicyDetailTabs({
                 </div>
               ) : null}
 
-              <div className="mt-7 grid gap-7 lg:grid-cols-[minmax(0,1fr)_17rem]">
-                {/* Grid items default to min-width auto and refuse to shrink. */}
-                <div className="min-w-0">
-                  <h2 className="section-title">Editorial summary</h2>
-                  <ol className="mt-3 border-y border-border">
-                    {requirements.slice(0, 3).map((requirement, index) => (
-                      <li key={`${requirement.slice(0, 30)}-${index}`} className="flex gap-3 border-b border-border px-2 py-3 last:border-b-0">
-                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[var(--status-active-bg)] text-xs font-semibold text-[var(--trust)]">
-                          {index + 1}
-                        </span>
-                        <p className="min-w-0 flex-1 break-words text-sm leading-6">{requirement}</p>
-                      </li>
-                    ))}
-                  </ol>
-                  {courtRequirements.length > 0 || requirements.length > 3 ? (
-                    <button type="button" onClick={() => setActiveTab('requirements')} className="mt-3 inline-flex items-center gap-2 text-sm text-primary hover:underline">
-                      View all requirements <ArrowRight className="h-4 w-4" />
-                    </button>
-                  ) : null}
-                </div>
-
-                <div className="min-w-0 border-l border-border pl-5">
-                  <h2 className="page-eyebrow">Policy changes</h2>
-                  <ol className="mt-4 space-y-5">
-                    {instrumentDates.slice(0, 4).map((date, index) => (
-                      <li key={`${date.type}-${String(date.date)}`} className="relative pl-5">
-                        <span className={cn('absolute left-0 top-1.5 h-2.5 w-2.5 rounded-full', index === 0 ? 'bg-primary ring-4 ring-primary/15' : 'bg-input')} />
-                        <p className="text-xs font-medium text-muted-foreground tabular">{formatPolicyDate(date, { short: true })}</p>
-                        <p className="mt-1 text-xs font-semibold">{getPolicyDateTypeName(date.type)}</p>
-                      </li>
-                    ))}
-                  </ol>
-                </div>
+              <div className="mt-7 min-w-0">
+                <h2 className="section-title">Editorial summary</h2>
+                <ol className="mt-3 border-y border-border">
+                  {requirements.slice(0, 3).map((requirement, index) => (
+                    <li key={`${requirement.slice(0, 30)}-${index}`} className="flex gap-3 border-b border-border px-2 py-4 last:border-b-0">
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[var(--status-active-bg)] text-xs font-semibold text-[var(--trust)]">
+                        {index + 1}
+                      </span>
+                      <SummaryText text={requirement} />
+                    </li>
+                  ))}
+                </ol>
+                {courtRequirements.length > 0 || requirements.length > 3 ? (
+                  <button type="button" onClick={() => setActiveTab('requirements')} className="mt-3 inline-flex items-center gap-2 text-sm text-primary hover:underline">
+                    View all requirements <ArrowRight className="h-4 w-4" />
+                  </button>
+                ) : null}
               </div>
             </div>
           ) : null}
@@ -256,7 +260,7 @@ export function PolicyDetailTabs({
                 {requirements.map((requirement, index) => (
                   <li key={`${requirement.slice(0, 30)}-${index}`} className="flex gap-4 border-b border-border py-4 last:border-b-0">
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--status-active-bg)] text-sm font-semibold text-[var(--trust)]">{index + 1}</span>
-                    <p className="min-w-0 flex-1 break-words text-sm leading-6">{requirement}</p>
+                    <SummaryText text={requirement} />
                   </li>
                 ))}
               </ol>
@@ -341,6 +345,21 @@ export function PolicyDetailTabs({
               Always check the official source before relying on this record.
             </div>
           </section>
+
+          {instrumentDates.length > 0 ? (
+            <section className="border border-border bg-card p-[var(--space-5)]">
+              <h2 className="page-eyebrow">Policy changes</h2>
+              <ol className="mt-4 space-y-5">
+                {instrumentDates.slice(0, 4).map((date, index) => (
+                  <li key={`${date.type}-${String(date.date)}`} className="relative pl-5">
+                    <span className={cn('absolute left-0 top-1.5 h-2.5 w-2.5 rounded-full', index === 0 ? 'bg-primary ring-4 ring-primary/15' : 'bg-input')} />
+                    <p className="text-xs font-medium text-muted-foreground tabular">{formatPolicyDate(date, { short: true })}</p>
+                    <p className="mt-1 text-xs font-semibold">{getPolicyDateTypeName(date.type)}</p>
+                  </li>
+                ))}
+              </ol>
+            </section>
+          ) : null}
         </aside>
       </div>
 
