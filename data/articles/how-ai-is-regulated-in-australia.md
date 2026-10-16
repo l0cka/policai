@@ -31,6 +31,18 @@ cites:
   - fwc-genai-guidance-note
 sources:
   - https://consult.industry.gov.au/ai-mandatory-guardrails
+image:
+  src: "/images/articles/how-ai-is-regulated-in-australia/lead.jpg"
+  alt: "Satellite photograph of the Australian continent and Tasmania, showing red-brown inland desert and green coastal regions against a dark blue ocean."
+  width: 2048
+  height: 1685
+  title: "Australia satellite plane"
+  creator: "Reto St\u00f6ckl / NASA Goddard Space Flight Center"
+  sourceUrl: "https://commons.wikimedia.org/wiki/File:Australia_satellite_plane.jpg"
+  licence: "PDM-1.0"
+  licenceUrl: "https://creativecommons.org/publicdomain/mark/1.0/"
+  modifications: "resized"
+  licenceCheckedAt: "2026-10-16"
 ---
 
 Who regulates artificial intelligence in Australia, and through which
