@@ -134,7 +134,7 @@ a number, or an event.
   link appears in `cites`. Each external official link appears in `sources`.
   Validation must reject a citation to a record that is not public and
   verified.
-  Links to `/developments` entries and to Policai views such as `/this-week`,
+  Links to `/developments` and to Policai views such as `/this-week`,
   `/courts` or `/timeline` support no claim and need no frontmatter entry.
   Every other link does.
 
@@ -164,7 +164,9 @@ Policai's view.
 An automated development that is not verified may appear only:
 
 - with the words "detected, not yet verified";
-- with a link to its entry on `/developments`; and
+- with a link to `/developments` (once
+  [#213](https://github.com/l0cka/policai/issues/213) gives each entry its own
+  anchor, a link to that entry); and
 - never as support for a factual claim, and never in a lead or title.
 
 ## Standard notices
