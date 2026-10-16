@@ -7306,10 +7306,10 @@
   {
     "id": "pmc-ai-infrastructure-consultation-2026",
     "title": "Getting it right: Building AI infrastructure that works for Australia",
-    "description": "Office of AI (PM&C) public consultation on proposed national requirements for large data centres and AI training, informing Australia's AI standards. Submissions close 5 pm AEDT on 9 October 2026.",
+    "description": "Office of AI (PM&C) public consultation on proposed national requirements for large data centres and AI training, informing Australia's AI standards. Submissions closed at 5 pm AEDT on 9 October 2026.",
     "jurisdiction": "federal",
     "type": "standard",
-    "status": "proposed",
+    "status": "closed",
     "effectiveDate": "2026-09-18",
     "dates": [
       {
@@ -7379,8 +7379,8 @@
       "Office of AI"
     ],
     "sourceUrl": "https://www.pmc.gov.au/domestic-policy/office-ai/getting-it-right-building-ai-infrastructure-works-australia",
-    "content": "The Office of AI in the Department of the Prime Minister and Cabinet is consulting on how Australia should manage the growth of large data centres and AI training. The consultation asks about requirements for large data centres, including their energy, water and land use, transparency and reporting, and community impacts, and about the conditions that should apply to AI training in Australia, including safety and security safeguards, contributions to Australian research and skills, and barriers to investment. Copyright is out of scope; the Attorney-General is consulting on it separately. Responses will inform Australia's AI standards, which the Government announced on 15 July 2026 and plans to develop with the states and territories and then legislate. The consultation opened at 6 am AEST on Friday 18 September 2026 and closes at 5 pm AEDT on Friday 9 October 2026.",
-    "aiSummary": "Open federal consultation on mandatory requirements for large AI data centres and AI training, informing the planned Australian AI standards; closes 9 October 2026.",
+    "content": "The Office of AI in the Department of the Prime Minister and Cabinet is consulting on how Australia should manage the growth of large data centres and AI training. The consultation asks about requirements for large data centres, including their energy, water and land use, transparency and reporting, and community impacts, and about the conditions that should apply to AI training in Australia, including safety and security safeguards, contributions to Australian research and skills, and barriers to investment. Copyright is out of scope; the Attorney-General is consulting on it separately. Responses will inform Australia's AI standards, which the Government announced on 15 July 2026 and plans to develop with the states and territories and then legislate. The consultation opened at 6 am AEST on Friday 18 September 2026 and closed at 5 pm AEDT on Friday 9 October 2026. PM&C states that all submissions will be reviewed and considered as part of its advice to the Government, and that information on outcomes and next steps will be made available in due course.",
+    "aiSummary": "Closed federal consultation on mandatory requirements for large AI data centres and AI training, informing the planned Australian AI standards; submissions closed 9 October 2026.",
     "tags": [
       "consultation",
       "AI standards",
@@ -7390,8 +7390,8 @@
       "Office of AI"
     ],
     "createdAt": "2026-10-06T23:07:28.376Z",
-    "updatedAt": "2026-10-06T23:07:28.376Z",
-    "lastReviewedAt": "2026-10-06T23:07:28.376Z",
+    "updatedAt": "2026-10-16T07:48:57.908Z",
+    "lastReviewedAt": "2026-10-16T07:48:57.908Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -7419,10 +7419,10 @@
           "notes": "The official consultation page states: \"Opens: 6 am AEST (Australian Eastern Standard Time) Friday 18 September 2026.\""
         }
       },
-      "checkedAt": "2026-10-06T23:07:28.376Z",
-      "checkedBy": "Daniel Alkurdi",
+      "checkedAt": "2026-10-16T07:48:57.908Z",
+      "checkedBy": "Policai Developer source re-read (issue 181)",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi for addition to the register on 7 October 2026 after review of the official PM&C consultation page, which states the opening and closing times; the PM&C news item of 17 September 2026 states the same period."
+      "notes": "Approved by Daniel Alkurdi for addition to the register on 7 October 2026 after review of the official PM&C consultation page, which states the opening and closing times; the PM&C news item of 17 September 2026 states the same period. Re-read 2026-10-16 (issue 181): the official PM&C page now states \"Submissions to this consultation have now closed\" and that information on outcomes and the Government's next steps will be made available in due course. No extension, published submissions or outcome are shown; status set to closed."
     }
   }
 ]
