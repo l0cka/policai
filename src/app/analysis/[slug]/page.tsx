@@ -11,6 +11,8 @@ import {
   SourceUnderReviewBanner,
   StandardNotices,
 } from '@/components/analysis';
+import { ArticleTable } from '@/components/article-table';
+import { articleMdxOptions } from '@/lib/article-markdown';
 import { getArticleBySlug, type ArticleView } from '@/lib/data-service';
 import { ARTICLE_BYLINE, articleEditorialDate } from '@/lib/articles';
 import { ARTICLE_TYPE_NAMES, type ArticleImage, type PublishedArticle } from '@/types';
@@ -143,7 +145,8 @@ export default async function ArticlePage({ params }: Params) {
       </div>
 
       <div className="prose article-body mt-8 max-w-none dark:prose-invert">
-        <MDXRemote source={article.body} options={{ mdxOptions: { format: 'md' } }} />
+        <MDXRemote source={article.body} components={{ table: ArticleTable }}
+          options={{ mdxOptions: articleMdxOptions }} />
       </div>
 
       {article.corrections.length > 0 ? (
