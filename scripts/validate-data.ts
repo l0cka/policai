@@ -17,6 +17,7 @@ import { execFile } from 'child_process';
 import { promisify } from 'util';
 import { readJsonFile } from '../src/lib/file-store';
 import { countUnsubstantiatedSecondaryDates } from '../src/lib/validate-data';
+import { readArticleImageFiles } from '../src/lib/article-image-files';
 import { readArticleSources } from '../src/lib/articles';
 import { readArticleBaseline } from '../src/lib/article-baseline';
 import { getPolicies } from '../src/lib/data-service';
@@ -167,13 +168,14 @@ async function main() {
     return;
   }
 
-  const [articles, articleBaseline, publicPolicies] = await Promise.all([
+  const [articles, articleBaseline, publicPolicies, articleImages] = await Promise.all([
     readArticleSources(path.join(STATE_DIR, 'articles')),
     readArticleBaseline({
       cwd: process.cwd(),
       baseSha: process.env.GITHUB_BASE_SHA,
     }),
     getPolicies(),
+    readArticleImageFiles(path.join(process.cwd(), 'public')),
   ]);
 
   const policyIds = new Set(policies.map((policy) => policy.id));
@@ -194,7 +196,11 @@ async function main() {
     validateSourceMonitoring(sourceMonitoring, WATCH_SOURCES),
     validateWatchState(watchState),
     validateWatchSources(WATCH_SOURCES),
-    validateArticles(articles, articleBaseline, { policies, publicPolicies }),
+    validateArticles(articles, articleBaseline, {
+      policies,
+      publicPolicies,
+      images: articleImages,
+    }),
   );
 
   for (const warning of report.warnings) {

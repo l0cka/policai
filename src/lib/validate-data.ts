@@ -34,6 +34,10 @@ import {
   parseArticle,
   type ArticleSource,
 } from '@/lib/articles';
+import {
+  validateArticleImages,
+  type ArticleImageFiles,
+} from '@/lib/article-images';
 import type { WatchState } from '@/lib/pipeline/collect';
 import type { WatchSource } from '@/lib/pipeline/sources';
 import { identityExceptionState } from '@/lib/pipeline/identity';
@@ -2247,9 +2251,10 @@ export function validatePolicyFrameworkArtifact(
   return { errors, warnings };
 }
 
-export interface ArticleCitationTargets {
+export interface ArticleValidationContext {
   policies: readonly Policy[];
   publicPolicies: readonly Policy[];
+  images: ArticleImageFiles;
 }
 
 function articleTransitionErrors(
@@ -2285,7 +2290,7 @@ function articleTransitionErrors(
 export function validateArticles(
   current: readonly ArticleSource[],
   base: readonly ArticleSource[] | null,
-  targets: ArticleCitationTargets,
+  targets: ArticleValidationContext,
 ): ValidationReport {
   const errors: string[] = [];
   const warnings: string[] = [];
@@ -2326,6 +2331,8 @@ export function validateArticles(
       }
     }
   }
+
+  errors.push(...validateArticleImages(parsed, targets.images));
 
   const currentSlugs = new Set(current.map((entry) => entry.slug));
   for (const entry of base ?? []) {

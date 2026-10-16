@@ -50,7 +50,7 @@ describe("parseArticle image", () => {
 	});
 
 	it("keeps creatorUrl and modifications optional", () => {
-		const { creatorUrl: _creatorUrl, modifications: _modifications, ...minimal } = IMAGE;
+		const minimal = { ...IMAGE, creatorUrl: undefined, modifications: undefined };
 		const result = parseArticle({ slug: SLUG, source: source(minimal) });
 		expect(result.ok && result.article.image).toEqual(minimal);
 	});

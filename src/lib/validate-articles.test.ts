@@ -17,6 +17,7 @@ const withheld = buildPolicy({ id: "fixture-withheld" });
 const trashed = buildPolicy({ id: "fixture-trashed", status: "trashed" });
 
 const targets = {
+	images: new Map(),
 	policies: [current, reviewDue, withheld, trashed],
 	publicPolicies: [current, reviewDue],
 };
@@ -90,7 +91,7 @@ describe("validateArticles citations", () => {
 			await fixture("fixture-note-withdrawn"),
 		];
 		expect(
-			validateArticles(entries, [], { policies: [], publicPolicies: [] }),
+			validateArticles(entries, [], { policies: [], publicPolicies: [], images: new Map() }),
 		).toEqual({ errors: [], warnings: [] });
 	});
 });
