@@ -28,6 +28,25 @@ async function errorsFor(slug: string): Promise<string[]> {
 }
 
 describe("parseArticle", () => {
+	it.each(["js", "javascript"])(
+		"refuses ---%s frontmatter without evaluating it",
+		(language) => {
+			const probe = globalThis as { policaiFrontmatterEvaluated?: boolean };
+			delete probe.policaiFrontmatterEvaluated;
+			const result = parseArticle({
+				slug: "qa-js",
+				source: `---${language}\n(globalThis.policaiFrontmatterEvaluated = true, { type: 'instrument_note', title: 'T' + String(6 * 7), summary: 'evaluated:' + typeof process, status: 'draft' })\n---\n\nBody.\n`,
+			});
+			expect(probe.policaiFrontmatterEvaluated).toBeUndefined();
+			expect(result).toEqual({
+				ok: false,
+				errors: [
+					`frontmatter is not valid YAML (frontmatter must be YAML, not ${language})`,
+				],
+			});
+		},
+	);
+
 	it("parses a published piece into the typed model", async () => {
 		const result = parseArticle(await fixture("fixture-weekly-published"));
 		expect(result).toMatchObject({

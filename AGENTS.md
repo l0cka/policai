@@ -136,7 +136,10 @@ See [docs/collector.md](./docs/collector.md) for operations.
 
 Pieces are Markdown files with YAML frontmatter, parsed by `parseArticle` in
 `src/lib/articles.ts` into `Article` (`src/types/index.ts`), a union on
-`status`. The rules for voice, formats and citations are in
+`status`. Frontmatter goes through `parseFrontmatter` (`src/lib/frontmatter.ts`),
+which accepts YAML only: any other fence language, such as `---js` or
+`---json`, is a parse error and is never evaluated. Every gray-matter call
+uses it. The rules for voice, formats and citations are in
 `docs/editorial-policy.md`. The tier is described in `docs/trust-model.md`.
 
 - **Frontmatter:** `type` (`weekly_briefing | instrument_note | explainer`),

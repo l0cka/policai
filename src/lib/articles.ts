@@ -1,7 +1,7 @@
 import { readdir, readFile } from "fs/promises";
 import path from "path";
-import matter from "gray-matter";
 import { isValidCalendarDate } from "@/lib/calendar-date";
+import { parseFrontmatter, type FrontmatterFile } from "@/lib/frontmatter";
 import { isAllowedSourceHost, sourceUrlsEqual } from "@/lib/source-url";
 import {
 	ARTICLE_STATUSES,
@@ -139,9 +139,9 @@ function calendarDate(value: unknown): string | undefined {
 }
 
 export function parseArticle({ slug, source }: ArticleSource): ArticleParseResult {
-	let file: matter.GrayMatterFile<string>;
+	let file: FrontmatterFile;
 	try {
-		file = matter(source);
+		file = parseFrontmatter(source);
 	} catch (error) {
 		return {
 			ok: false,
