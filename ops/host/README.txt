@@ -18,9 +18,9 @@ WHAT EXISTS
   It installs 14 explicit files only. It does not provision release clones, environment,
   config, state directories or locks, reload managers, start jobs, or activate runtimes.
   units/probono-*.service: guarded worker entrypoints; existing timers remain separate.
-  dispatcher.py: four-class routing, stable flock exclusion, fsynced journals,
-  retained-directory activation and rollback, persistent failure gate, reviewed
-  recovery with preserved prior failure records.
+  dispatcher.py: table-driven lane routing (ROUTES), stable flock exclusion,
+  fsynced journals, retained-directory activation and rollback, persistent failure
+  gate, reviewed recovery with preserved prior failure records.
   host.py: bounded subprocess/identity adapters; fixed Git, systemd, Compose,
   database identity and HTTP health checks; worker/backup guard.
   cli.py: initialize / deploy / rollback / status / worker / compose.
@@ -132,10 +132,26 @@ EXACT CLI (INSTALLED ROOT CODE ONLY)
     automatic collection/ISR deployments, explicitly review follow_main=true
     AFTER initial verification. It resolves main inside the locked/latched
     transaction, requires both fetched heads to agree, and rejects divergence.
-    Data-only changes fast-forward without builds/restarts. Child-only changes
-    build/activate dashboard+worker selection without restarting Policai.
-    Root-only code changes rebuild/restart Policai only. Shared/unknown paths
-    conservatively rebuild both. A failure blocks every subsequent timer cycle.
+    classify() routes each changed path by the first matching ROUTES row; a
+    change set selects the union of its paths' lanes. A lane not selected
+    fast-forwards in place without a build or restart.
+      no lane: test files (*.test.ts, *.test.tsx, any __tests__/ directory),
+        data/ and public/data/ (served through ISR), Markdown outside any
+        public/ directory, docs/, .github/, ops/host/ (installed by install.py),
+        ops/collector/ (runs from its own checkout) and scripts/.
+      Pro Bono only: apps/probono/. Its Compose build contexts are
+        apps/probono/dashboard and apps/probono/worker (validate_compose
+        enforces this), so no root file reaches its images.
+      Policai only: src/, public/, mcp/, design/, package.json,
+        package-lock.json, tsconfig.json, next.config.*, postcss.config.mjs
+        and components.json.
+      both: every other path, the safe default.
+    No scripts/ file runs during `npm run build` or under `next start`: the
+    root package.json has no pre/post hooks and only test files import from
+    scripts/. Route a script back to Policai if that changes. Tailwind's source
+    scan reads every tracked text file, but a file outside src/ can only add or
+    drop utilities no compiled component uses. A failure blocks every
+    subsequent timer cycle.
 
 FAILURE / RECOVERY
   sudo /usr/bin/python3 -I /usr/local/libexec/policai-host/cli.py rollback
