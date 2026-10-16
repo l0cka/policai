@@ -47,7 +47,7 @@ image:
 
 Who regulates artificial intelligence in Australia, and through which
 instruments? There is no single answer, because there is no general AI law.
-AI is governed in five layers: laws that apply to AI as they apply to any
+This guide describes five layers of AI governance: laws that apply to AI as they apply to any
 technology, a small number of laws written for AI, policies that govern how
 each government uses AI, voluntary national guidance, and the rules courts
 and tribunals set for the people who appear before them. This guide explains
@@ -66,10 +66,9 @@ previous proposals to introduce mandatory guardrails for AI development and
 deployment", and that feedback on the paper informed the National AI Plan.
 
 The [National AI Plan](/policies/national-ai-plan-2025), published on
-2 December 2025, is a strategic plan, not legislation. It builds on existing,
-largely technology-neutral laws, leaves regulators responsible for
-AI-related harms in their areas, and includes establishing an AI Safety
-Institute.
+2 December 2025, is a strategic plan, not legislation. It is supported by
+existing technology-neutral laws and sector regulators, and includes
+establishing an AI Safety Institute.
 
 That position covers AI in general. It does not rule out law on particular
 uses. The Department of the Prime Minister and Cabinet's
@@ -80,15 +79,15 @@ training, and then plans to legislate them.
 
 ## Which laws already apply to AI?
 
-The existing laws the National AI Plan builds on apply to AI as they apply to
+The existing laws that support the National AI Plan apply to AI as they apply to
 any other technology. The register tracks the guidance regulators issue on
 how they apply to AI.
 
-Privacy law is the clearest example. From 10 December 2026, an entity covered
+Privacy law is one example. From 10 December 2026, an entity covered
 by the Australian Privacy Principles must describe in its privacy policy the
 kinds of personal information and the kinds of decisions involved when it uses
-personal information in computer programs to make, or substantially and
-directly inform, decisions that could reasonably be expected to significantly
+personal information in computer programs to make, or do something
+substantially and directly related to making, decisions that could reasonably be expected to significantly
 affect an individual's rights or interests. The Office of the
 Australian Information Commissioner's
 [guidance on APP 1.7–1.9](/policies/oaic-app-1-7-adm-transparency-guidance)
@@ -118,9 +117,10 @@ A few instruments target AI directly.
 
 ## How do governments regulate their own use of AI?
 
-This is the most developed layer. Every Australian government has a policy,
-framework or guidance for how its own agencies use AI. These instruments bind
-public servants and agencies, not the private sector.
+Every Australian government has a policy, framework or guidance for how its
+own agencies use AI. These instruments apply to government agencies and
+public servants, not the private sector. Most are mandatory policies;
+Tasmania's is guidance.
 
 In June 2024, Data and Digital Ministers agreed the
 [National framework for the assurance of AI in government](/policies/national-framework-assurance-ai-government).
@@ -193,8 +193,9 @@ marks the Standard as superseded.
 
 ## What do courts and tribunals require?
 
-Courts and tribunals set rules for anyone who uses generative AI in
-proceedings before them, including people without a lawyer.
+Several courts and tribunals set rules for people who use generative AI in
+proceedings before them. The Federal Court's practice note expressly includes
+people without a lawyer.
 
 - The Federal Court's
   [GPN-AI](/policies/federal-court-gpn-ai) applies to everyone who appears
@@ -221,11 +222,12 @@ The privacy transparency duty that starts on 10 December 2026 is the
 broadest new one, because it turns on the use of computer programs in
 significant decisions rather than on the label "AI".
 
-For public bodies the picture is the reverse. Each government has its own
+For public bodies the picture is the reverse, and in Policai's analysis
+government use is the most developed layer. Each government has its own
 policy, and the details differ: who is accountable, which risk assessment
 applies and when a central body reviews a use case. A supplier working with
-several governments meets a different process in each, even though all of
-them refer back to the same national assurance framework.
+several governments meets a different process in each, even though most of
+them refer to the same national assurance framework.
 
 ## Where to follow this
 
