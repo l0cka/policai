@@ -2,6 +2,7 @@ import { readdir, readFile } from "fs/promises";
 import path from "path";
 import { isValidCalendarDate, sydneyCalendarDate } from "@/lib/calendar-date";
 import { parseFrontmatter, type FrontmatterFile } from "@/lib/frontmatter";
+import { parseArticleBody } from "@/lib/article-figures";
 import { isAllowedSourceHost, sourceUrlsEqual } from "@/lib/source-url";
 import {
 	ARTICLE_LICENCE_FORMS,
@@ -375,6 +376,9 @@ export function parseArticle({ slug, source }: ArticleSource): ArticleParseResul
 		}
 	}
 
+	const { blocks, errors: figureErrors } = parseArticleBody(body, { cites, sources });
+	errors.push(...figureErrors);
+
 	const corrections: ArticleCorrection[] = [];
 	if (present("corrections")) {
 		const raw = data.corrections;
@@ -445,6 +449,7 @@ export function parseArticle({ slug, source }: ArticleSource): ArticleParseResul
 		sources,
 		corrections,
 		body,
+		blocks,
 		...(image ? { image } : {}),
 		...(updatedAt ? { updatedAt } : {}),
 	};

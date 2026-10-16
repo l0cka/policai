@@ -34,6 +34,7 @@ import {
   parseArticle,
   type ArticleSource,
 } from '@/lib/articles';
+import { registerChartErrors } from '@/lib/article-figures';
 import {
   validateArticleImages,
   type ArticleImageFiles,
@@ -2378,6 +2379,14 @@ export function validateArticles(
     );
     errors.push(...report.errors);
     warnings.push(...report.warnings);
+    for (const block of article.blocks) {
+      if (block.kind !== 'figure' || block.figure.kind !== 'chart') continue;
+      errors.push(
+        ...registerChartErrors(block.figure, targets.publicPolicies).map(
+          (error) => `${label}: figure ${block.number}: ${error}`,
+        ),
+      );
+    }
   }
 
   errors.push(...validateArticleImages(parsed, targets.images));

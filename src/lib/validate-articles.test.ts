@@ -238,3 +238,58 @@ describe("validateArticles transitions", () => {
 		});
 	});
 });
+
+describe("validateArticles figures", () => {
+	const figureIds = [
+		"nsw-identifying-ai-guidance",
+		"fwc-genai-guidance-note",
+		"oaic-app-1-7-adm-transparency-guidance",
+		"federal-court-gpn-ai",
+		"nsw-supreme-court-sc-gen-23",
+		"nsw-ai-operational-policy",
+		"nsw-artificial-intelligence-assessment-framework",
+	];
+	const cited = figureIds.map((id, index) =>
+		buildPolicy({ id, jurisdiction: index < 3 ? "federal" : index < 5 ? "nsw" : "vic" }),
+	);
+	const staleCounted = buildPolicy({
+		id: "fixture-counted-review-due",
+		jurisdiction: "qld",
+		verification: { ...current.verification, status: "stale" },
+	});
+	const figureTargets = {
+		images: new Map(),
+		policies: [...cited, staleCounted, withheld],
+		publicPolicies: [...cited, staleCounted],
+	};
+
+	it("accepts a published piece with one figure of each kind", async () => {
+		const entry = await fixture("figure-kinds-published");
+		expect(validateArticles([entry], [], figureTargets)).toEqual({ errors: [], warnings: [] });
+	});
+
+	it("counts a review-due record in a chart without an error or a warning", async () => {
+		const entry = await fixture("figure-kinds-published");
+		const base = { ...entry, source: entry.source.replace(/```figure\nkind: chart[\s\S]*?```\n/, "") };
+		expect(validateArticles([entry], [base], figureTargets)).toEqual({ errors: [], warnings: [] });
+	});
+
+	it.each([
+		["invalid-figure-chart-no-match", "figure 1: the register query matches no public record"],
+		["invalid-figure-chart-count", "figure 1: a chart needs 3 to 10 bars; the register query gives 2"],
+	])("checks %s against the public register", async (slug, message) => {
+		const entry = await fixture(slug);
+		expect(validateArticles([entry], [], figureTargets).errors).toEqual([
+			`data/articles/${slug}.md: cites unknown register record "fixture-chart-only"`,
+			`data/articles/${slug}.md: ${message}`,
+		]);
+	});
+
+	it("applies the added-citation rule to a figure's cites", async () => {
+		const entry = await fixture("figure-citation-withheld");
+		const message =
+			'data/articles/figure-citation-withheld.md: cites "fixture-withheld", which is withheld or unverified (Source under review)';
+		expect(validateArticles([entry], [], targets)).toEqual({ errors: [message], warnings: [] });
+		expect(validateArticles([entry], [entry], targets)).toEqual({ errors: [], warnings: [message] });
+	});
+});
