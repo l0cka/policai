@@ -95,7 +95,6 @@ public/data/        public-safe canonical data served directly as open JSON
 data/               editorial register/data, collector state, reviews, coverage
 scripts/            collector, source audits, validation and migrations
 docs/               operational documentation
-content/blog/       MDX blog posts
 apps/probono/       independent Pro Bono dashboard and worker packages
 ops/host/           candidate host dispatcher, verification and cutover procedure
 ```
