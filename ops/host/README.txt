@@ -7,6 +7,7 @@ install.py. That copy can lag main until the next reviewed install.
 Entry point: cli.py
 Safe local demonstration: ./cli.py --help
 Installation preview: python3 -I install.py plan
+Upgrade preview against the installed tree: python3 -I install.py upgrade plan
 Tests: python3 -B verify.py
 CI: the Host dispatcher job checks MANIFEST.sha256 before running verify.py.
 Tests need Python >=3.11, Git and the Docker Compose plugin; Compose configuration
@@ -17,10 +18,16 @@ No invocation from this user-owned bundle can pass the CLI installation guard.
 Do not run this bundle as root. Review and install a fixed snapshot first.
 
 WHAT EXISTS
-  install.py: first-install file transaction with protected source-manifest checks,
-  held-job preflight, original-file backups and repeatable pre-initialization rollback.
-  It installs 14 explicit files only. It does not provision release clones, environment,
-  config, state directories or locks, reload managers, start jobs, or activate runtimes.
+  install.py: file transactions over the 14-entry install set (FILES: source name,
+  destination, mode, owner), shared by first install and upgrade. First install
+  (plan/apply/rollback) is one-shot: protected source-manifest checks, held-job
+  preflight, original-file backups and repeatable pre-initialization rollback.
+  upgrade (plan/apply/rollback) replaces only the entries whose bytes, mode or
+  owner differ from the reviewed snapshot, under the same manifest and held-job
+  gates plus a healthy-dispatcher gate and a digest that binds apply to the
+  installed tree the plan reviewed; see UPGRADE CONTRACT. Neither mode
+  provisions release clones, environment, config, state directories or locks,
+  reloads managers, starts jobs, or activates runtimes.
   units/probono-*.service: guarded worker entrypoints; existing timers remain separate.
   dispatcher.py: table-driven lane routing (ROUTES), stable flock exclusion,
   fsynced journals, retained-directory activation and rollback, persistent failure
@@ -84,6 +91,113 @@ INSTALLATION CONTRACT — ONLY IN THE SEPARATELY APPROVED WINDOW
      runtime.env is root-owned 0640, readable by l0cka's existing principal only.
   5. Complete the exact CLI sequence below, public-route checks, topology
      contract update/fixture/regeneration/live check and scheduler restoration.
+
+UPGRADE CONTRACT — ONLY IN A HOST WINDOW DANIEL APPROVES THROUGH ARGUS DEVOPS
+  The installed copy under /usr/local/libexec/policai-host lags main until a
+  reviewed upgrade. Installing one is a root operation on the production host:
+  it needs a host window approved by Daniel through Argus DevOps, and a PR merge
+  is not that approval.
+
+  Preview, from any checkout as l0cka (reads the installed tree, writes nothing):
+    python3 -I ops/host/install.py upgrade plan
+  It prints one line per install-set entry (changed, added or unchanged, with the
+  installed and reviewed sha256/mode/owner), a unified diff for every changed or
+  added file, units included, the journal location and an expect-installed
+  digest: sha256 over the sorted (destination, installed sha256/mode/uid/gid or
+  absent) set it read. Record that digest with the approval. Running plan as
+  root is refused outside the protected snapshot.
+
+  Stage the snapshot exactly as INSTALL-REVIEW.txt describes for first install:
+  export the reviewed commit's ops/host tree, record its MANIFEST.sha256 digest in
+  the approval record, and place it root-owned under
+  /usr/local/libexec/policai-host-review. Move the previous snapshot aside first
+  (never edit a snapshot in place; rollback of an upgrade runs from the snapshot
+  that applied it). Then hold the triggers (INSTALL-REVIEW.txt step 2) and run:
+    sudo /usr/bin/python3 -I /usr/local/libexec/policai-host-review/install.py \
+      upgrade apply --manifest-sha256 "$MANIFEST_SHA256" \
+      --expect-installed "$EXPECT_INSTALLED"
+
+  --expect-installed is the digest the reviewed plan printed. It is required
+  for a first apply (no journal.json for this manifest yet) and optional for a
+  re-apply of an existing journal, which is bound by the journal's own before
+  records instead. Whenever it is given, apply recomputes the digest from the
+  live tree and refuses on a mismatch, so a file replaced between plan and
+  apply never becomes the journalled rollback target. After a crash mid-apply
+  the live tree is mixed, so rerun apply without the digest.
+
+  apply runs only when every gate passes, in this order, before any file changes:
+    1. install.py is the protected snapshot's copy and the caller is root;
+    2. the snapshot's MANIFEST.sha256 digest equals --manifest-sha256 and every
+       listed file matches (verify_manifest); the bytes apply later reads from
+       the snapshot must hash to the same values or apply refuses;
+    3. deploy.lock is held exclusively, so no deploy or worker is running;
+    4. held(): policai-pull and every probono service and timer (ingest, enrich,
+       backup, backup-mirror, verify-deadlines) inactive with no drop-ins, both
+       digest units masked, no legacy worker container or process;
+    5. dispatcher_ready(): no blocked.json, and active.json present with
+       bootstrap_pending exactly false (a missing key refuses). recovery.json
+       and last-success.json are not read;
+    6. the live tree matches --expect-installed when given, and every entry,
+       unchanged ones included, is at its before or after state.
+  Only then does apply create the journal directory and save journal.json, so a
+  refused apply or re-apply leaves no journal and no applying phase behind.
+
+  Journal: /var/lib/policai-deploy-state/upgrades/<manifest-sha256>/ (root 0700),
+  separate from the first-install journal at .../installation. journal.json holds
+  phase (applying, applied, rolling-back, rolled-back) and, per entry, source,
+  destination, before (sha256, mode, uid, gid, or null when absent) and after.
+  <index>.before holds the original bytes of every changed file. before is
+  written once and never rewritten. The upgrades/ and <manifest-sha256>/
+  directory entries are fsynced, as is the state directory itself, before the
+  first replacement.
+
+  Every file, journal.json included, is written as .install-<hex> in its own
+  directory and renamed into place; the temporary is unlinked on any failure.
+  Only a power loss between create and rename can leave one behind. It is
+  harmless (systemd loads only unit-suffixed names and nothing executes it) and
+  may be removed once no apply or rollback is running. A journal.json that
+  fails to parse, or is oversized, is therefore a media fault, not a crash
+  outcome: apply and rollback both refuse it and write nothing. To recover,
+  move the journal directory aside (never delete it; the <index>.before files
+  are the only copies of the original bytes), run upgrade plan to see which
+  entries are at the installed or reviewed state, then either re-run apply
+  with the approved expect-installed digest if every entry is still installed,
+  or restore each changed entry by hand from its <index>.before file (index is
+  the entry's position in plan output) and confirm with upgrade plan.
+
+  State machine: each destination is at before, at after, or foreign. apply
+  converges every entry to after; rollback converges every entry to before.
+  Both validate all entries first, unchanged ones included, and refuse on a
+  foreign file before writing anything, back up originals before the first
+  replacement, write each file by atomic rename with fsync through an open
+  directory descriptor, and skip an entry already at its target. A foreign
+  file blocks both until the operator restores it; nothing is half-applied, so
+  restoring that one file is the whole repair. A crash at any point followed
+  by a rerun of apply, or a rollback, converges; a second rollback changes
+  nothing. Unchanged entries are never written. Rollback requires gates 1 to 4
+  but not 5, so it stays available when the new code blocked the dispatcher. It
+  is the file-level counterpart of, and never a substitute for, cli.py rollback
+  (release artifacts and images). Re-applying the same snapshot after its
+  rollback is allowed and reuses the journal.
+
+  apply and rollback install files only. They never touch active.json,
+  blocked.json, last-success.json, recovery.json, release clones, Docker,
+  the database, runtime.env or timers, and they do not daemon-reload. After
+  apply: inspect installed hashes and effective units, update installed_hashes
+  in /etc/policai-deploy/config.json for every changed or added entrypoint
+  (the 2026-10-16 change set adds backup-mirror.sh, which the new host.py
+  checks), reload the system and user managers, verify effective ExecStart
+  values, then restore timers (INSTALL-REVIEW.txt step 4). That change set also
+  moves probono-backup-mirror.service from ~/.local/bin/probono-backup-mirror.sh
+  onto cli.py worker backup-mirror; the old script is left in place and its
+  removal is an operator act.
+
+  Fixture: tests/fixtures/installed-2026-09-11 holds the installed tree as
+  observed on 2026-10-16 (cli.py, host.py, dispatcher.py, backup.sh and the
+  backup-mirror unit; absent.txt lists backup-mirror.sh as not installed),
+  reconstructed by reverse-applying Argus DevOps's installed-vs-b17bb52 diff.
+  Every other install-set entry matched b17bb52 byte for byte. test_upgrade.py
+  drives plan, apply, crash and rerun, rollback and the gates against it.
 
 SERVICE ROUTING (REVIEW EXISTING HARDENING; NOT BLIND DROP-INS)
   System policai-pull.service remains the compatibility entrypoint. It must
@@ -186,8 +300,11 @@ FAILURE / RECOVERY
 LIMITATIONS / REMAINING CUTOVER GATES
   Installer tests prove file recovery at the tested preparation/replacement/restore
   checkpoints and refusal of unrelated edits. They do not prove live systemd or
-  database cutover. Installation rollback is refused after dispatcher initialization;
-  use the separately reviewed application recovery procedure from that point onward.
+  database cutover. First-install rollback is refused after dispatcher initialization;
+  from that point file changes go through upgrade and its own rollback, and
+  release recovery through the separately reviewed application recovery procedure.
+  Gates 3 to 5 of the upgrade contract are tested with recorded systemctl output
+  and fixture state files, not against live systemd or the installed tree.
   Offline tests exercise real processes, locks, filesystem swaps, CLI refusal and
   Compose config parsing against isolated fixtures. Git/Docker/systemd mutations
   are command-recording/failure fixtures, NOT a live full-stack rehearsal.

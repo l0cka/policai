@@ -81,6 +81,11 @@ checks = [
     "verify.py",
 ]
 checks += ["tests/" + path.name for path in sorted((base / "tests").glob("*.py"))]
+checks += [
+    str(path.relative_to(base))
+    for path in sorted((base / "tests" / "fixtures").rglob("*"))
+    if path.is_file()
+]
 manifest = {name: hashlib.sha256((base / name).read_bytes()).hexdigest() for name in checks}
 passed = all(item["exit_code"] == 0 and item["count"] is not None for item in results)
 report = {

@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-"""First-install file transaction. Never provisions secrets or activates a runtime.
+"""Host dispatcher file installer: first install and reviewed upgrades.
 
-Only plan runs from a source checkout. See INSTALL-REVIEW.txt for protected
-snapshot provisioning, prerequisites and the separate application cutover.
+Never provisions secrets or activates a runtime. Only plan and upgrade plan run
+from a source checkout. See README.txt and INSTALL-REVIEW.txt for the protected
+snapshot, prerequisites, the upgrade procedure and the application cutover.
 """
 
 import argparse
+import difflib
 import fcntl
 import hashlib
 import json
@@ -159,8 +161,11 @@ def snapshot(path):
 class FileTransaction:
     """Internal API: tests supply temporary paths; the CLI only uses fixed paths."""
 
-    def __init__(self, source, journal, entries, check=protected):
+    PHASES = {"preparing", "prepared", "installed", "rolled-back"}
+
+    def __init__(self, source, journal, entries, check=protected, reviewed=None):
         self.source, self.journal, self.entries, self.check = source, journal, entries, check
+        self.reviewed = reviewed
         self.checkpoint = lambda phase: None
 
     def save(self, record):
@@ -172,10 +177,7 @@ class FileTransaction:
             os.getegid(),
         )
 
-    def apply(self):
-        if os.path.lexists(self.journal):
-            raise Refused("installation already recorded; preserve or roll back the journal")
-        # Validate every input before the first destination changes.
+    def inventory(self):
         items, payloads = [], []
         for name, path, mode, uid, gid in self.entries:
             self.check(path.parent, uid, directory=True)
@@ -184,9 +186,60 @@ class FileTransaction:
             if before is not None:
                 self.check(path, uid)
             data = (self.source / name).read_bytes()
+            if self.reviewed is not None and digest(data) != self.reviewed[name]:
+                raise Refused("reviewed source changed")
             after = {"sha256": digest(data), "mode": mode, "uid": uid, "gid": gid}
-            items.append({"source": name, "before": before, "after": after})
+            items.append(
+                {"source": name, "destination": str(path), "before": before, "after": after}
+            )
             payloads.append(data)
+        return items, payloads
+
+    def backup(self, index, item):
+        _, path, *_ = self.entries[index]
+        _, data = read_regular(path, item["before"]["uid"])
+        if digest(data) != item["before"]["sha256"]:
+            raise Refused("destination changed during backup")
+        atomic_write(self.journal / f"{index}.before", data, 0o600, os.geteuid(), os.getegid())
+
+    def verify_backup(self, index, item):
+        backup = self.journal / f"{index}.before"
+        self.check(backup)
+        data = backup.read_bytes()
+        if digest(data) != item["before"]["sha256"]:
+            raise Refused("journal backup changed")
+        return data
+
+    def restore(self, index, item, data):
+        _, path, _, uid, _ = self.entries[index]
+        self.check(path, uid)
+        if item["before"] is None:
+            with parent_fd(path) as directory:
+                if os.fstat(directory).st_uid != uid:
+                    raise Refused("destination directory owner changed")
+                os.unlink(path.name, dir_fd=directory)
+                os.fsync(directory)
+        else:
+            before = item["before"]
+            atomic_write(path, data, before["mode"], before["uid"], before["gid"])
+        self.checkpoint(f"restored:{index}")
+
+    def load(self):
+        self.check(self.journal, directory=True)
+        self.check(self.journal / "journal.json")
+        if (self.journal / "journal.json").stat().st_size > 65536:
+            raise Refused("installation journal oversized")
+        record = json.loads((self.journal / "journal.json").read_text())
+        if record.get("phase") not in self.PHASES:
+            raise Refused("unknown installation phase")
+        if len(record.get("files", [])) != len(self.entries):
+            raise Refused("installation file set changed")
+        return record
+
+    def apply(self):
+        if os.path.lexists(self.journal):
+            raise Refused("installation already recorded; preserve or roll back the journal")
+        items, payloads = self.inventory()
         self.journal.mkdir(mode=0o700)
         sync(self.journal.parent)
         record = {"phase": "preparing", "files": items}
@@ -197,12 +250,7 @@ class FileTransaction:
             if snapshot(path) != items[index]["before"]:
                 raise Refused("destination changed during preparation")
             if items[index]["before"] is not None:
-                _, data = read_regular(path, items[index]["before"]["uid"])
-                if digest(data) != items[index]["before"]["sha256"]:
-                    raise Refused("destination changed during backup")
-                atomic_write(
-                    self.journal / f"{index}.before", data, 0o600, os.geteuid(), os.getegid()
-                )
+                self.backup(index, items[index])
         record["phase"] = "prepared"
         self.save(record)
         self.checkpoint("prepared")
@@ -219,15 +267,7 @@ class FileTransaction:
         self.save(record)
 
     def rollback(self):
-        self.check(self.journal, directory=True)
-        self.check(self.journal / "journal.json")
-        if (self.journal / "journal.json").stat().st_size > 65536:
-            raise Refused("installation journal oversized")
-        record = json.loads((self.journal / "journal.json").read_text())
-        if record.get("phase") not in {"preparing", "prepared", "installed", "rolled-back"}:
-            raise Refused("unknown installation phase")
-        if len(record.get("files", [])) != len(self.entries):
-            raise Refused("installation file set changed")
+        record = self.load()
         if record["phase"] in {"preparing", "rolled-back"}:
             for (name, path, _, _, _), item in zip(self.entries, record["files"], strict=True):
                 if item["source"] != name or snapshot(path) != item["before"]:
@@ -248,35 +288,181 @@ class FileTransaction:
                 raise Refused("installation contract changed")
             if snapshot(path) not in (item["before"], item["after"]):
                 raise Refused("destination changed since installation")
-            data = None
-            if item["before"] is not None:
-                backup = self.journal / f"{index}.before"
-                self.check(backup)
-                data = backup.read_bytes()
-                if digest(data) != item["before"]["sha256"]:
-                    raise Refused("rollback backup changed")
-            backups.append(data)
+            backups.append(self.verify_backup(index, item) if item["before"] is not None else None)
         for index in reversed(range(len(self.entries))):
-            _, path, _, uid, _ = self.entries[index]
+            _, path, *_ = self.entries[index]
             item = record["files"][index]
             current = snapshot(path)
             if current == item["before"]:
                 continue
             if current != item["after"]:
                 raise Refused("destination changed during rollback")
-            self.check(path, uid)
-            if item["before"] is None:
-                with parent_fd(path) as directory:
-                    if os.fstat(directory).st_uid != uid:
-                        raise Refused("destination directory owner changed")
-                    os.unlink(path.name, dir_fd=directory)
-                    os.fsync(directory)
-            else:
-                before = item["before"]
-                atomic_write(path, backups[index], before["mode"], before["uid"], before["gid"])
-            self.checkpoint(f"restored:{index}")
+            self.restore(index, item, backups[index])
         record["phase"] = "rolled-back"
         self.save(record)
+
+
+def status(item):
+    if item["before"] is None:
+        return "added"
+    return "unchanged" if item["before"] == item["after"] else "changed"
+
+
+def installed_digest(items):
+    installed = [
+        [item["destination"], item["before"]]
+        for item in sorted(items, key=lambda item: item["destination"])
+    ]
+    return digest(json.dumps(installed, sort_keys=True).encode())
+
+
+def describe(record):
+    if record is None:
+        return "absent"
+    return f"{record['sha256'][:12]} {oct(record['mode'])} {record['uid']}:{record['gid']}"
+
+
+def render_plan(items, journal):
+    lines = [
+        f"{status(item):<9} {item['destination']}  "
+        f"{describe(item['before'])} -> {describe(item['after'])}"
+        for item in items
+    ]
+    lines.extend(item["diff"] for item in items if item["diff"])
+    lines.append(f"journal: {journal}")
+    lines.append(f"expect-installed: {installed_digest(items)}")
+    lines.append(
+        "plan changes nothing. upgrade apply --expect-installed <digest> installs these files "
+        "only while the installed tree still matches this plan; daemon-reload, timer "
+        "restoration and the next deploy stay with the host operator."
+    )
+    return "\n".join(lines)
+
+
+class Upgrade(FileTransaction):
+    PHASES = {"applying", "applied", "rolling-back", "rolled-back"}
+
+    def plan(self):
+        items, payloads = self.inventory()
+        for (_, path, *_), item, data in zip(self.entries, items, payloads, strict=True):
+            item["status"] = status(item)
+            item["diff"] = ""
+            if item["status"] == "unchanged":
+                continue
+            installed = read_regular(path)[1] if item["before"] is not None else b""
+            item["diff"] = "".join(
+                difflib.unified_diff(
+                    installed.decode(errors="replace").splitlines(keepends=True),
+                    data.decode(errors="replace").splitlines(keepends=True),
+                    item["destination"] + " (installed)",
+                    item["destination"] + " (reviewed)",
+                )
+            )
+        return items
+
+    def apply(self, expect_installed=None):
+        items, payloads = self.inventory()
+        journaled = os.path.lexists(self.journal / "journal.json")
+        if journaled:
+            record = self.load()
+            for item, saved in zip(items, record["files"], strict=True):
+                keys = ("source", "destination", "after")
+                if [saved[key] for key in keys] != [item[key] for key in keys]:
+                    raise Refused("upgrade journal records a different change set")
+        elif expect_installed is None:
+            raise Refused("first apply needs the reviewed plan digest")
+        else:
+            record = {"phase": "applying", "files": items}
+        if expect_installed is not None and installed_digest(items) != expect_installed:
+            raise Refused("installed tree differs from the reviewed plan")
+        pending, unsaved = [], []
+        for index, ((_, path, *_), item) in enumerate(
+            zip(self.entries, record["files"], strict=True)
+        ):
+            current = snapshot(path)
+            if current not in (item["before"], item["after"]):
+                raise Refused("destination changed outside the upgrade")
+            if item["before"] == item["after"]:
+                continue
+            pending.append(index)
+            if item["before"] is None:
+                continue
+            if os.path.lexists(self.journal / f"{index}.before"):
+                self.verify_backup(index, item)
+            elif current != item["before"]:
+                raise Refused("original bytes unavailable for backup")
+            else:
+                unsaved.append(index)
+        if not journaled:
+            self.journal.parent.mkdir(mode=0o700, exist_ok=True)
+            self.journal.mkdir(mode=0o700, exist_ok=True)
+            self.check(self.journal, directory=True)
+            sync(self.journal.parent)
+            sync(self.journal.parent.parent)
+        record["phase"] = "applying"
+        self.save(record)
+        self.checkpoint("journaled")
+        for index in unsaved:
+            self.backup(index, record["files"][index])
+        self.checkpoint("backed-up")
+        for index in pending:
+            _, path, mode, uid, gid = self.entries[index]
+            item = record["files"][index]
+            current = snapshot(path)
+            if current == item["after"]:
+                continue
+            if current != item["before"]:
+                raise Refused("destination changed before replacement")
+            atomic_write(path, payloads[index], mode, uid, gid)
+            self.checkpoint(f"replaced:{index}")
+        for (_, path, _, uid, _), item in zip(self.entries, record["files"], strict=True):
+            self.check(path, uid)
+            if snapshot(path) != item["after"]:
+                raise Refused("installed file differs")
+        record["phase"] = "applied"
+        self.save(record)
+
+    def rollback(self):
+        if not os.path.lexists(self.journal / "journal.json"):
+            raise Refused("no upgrade journal for this manifest")
+        record = self.load()
+        backups, pending = {}, []
+        for index, ((name, path, mode, uid, gid), item) in enumerate(
+            zip(self.entries, record["files"], strict=True)
+        ):
+            self.check(path.parent, uid, directory=True)
+            if (
+                item["source"] != name
+                or item["destination"] != str(path)
+                or any(
+                    item["after"][key] != value
+                    for key, value in (("mode", mode), ("uid", uid), ("gid", gid))
+                )
+            ):
+                raise Refused("upgrade contract changed")
+            current = snapshot(path)
+            if current == item["before"]:
+                continue
+            if current != item["after"]:
+                raise Refused("destination changed since upgrade")
+            pending.append(index)
+            if item["before"] is not None:
+                backups[index] = self.verify_backup(index, item)
+        if pending:
+            record["phase"] = "rolling-back"
+            self.save(record)
+        for index in reversed(pending):
+            _, path, *_ = self.entries[index]
+            item = record["files"][index]
+            current = snapshot(path)
+            if current == item["before"]:
+                continue
+            if current != item["after"]:
+                raise Refused("destination changed during rollback")
+            self.restore(index, item, backups.get(index))
+        if pending or record["phase"] != "rolled-back":
+            record["phase"] = "rolled-back"
+            self.save(record)
 
 
 def command(argv, user=False):
@@ -317,6 +503,7 @@ def held():
                 "probono-enrich",
                 "probono-backup",
                 "probono-backup-mirror",
+                "probono-verify-deadlines",
                 "probono-digest",
             ),
         ),
@@ -368,9 +555,9 @@ def held():
         raise Refused("legacy worker process active")
 
 
-def verify_manifest(expected):
-    path = REVIEW / "MANIFEST.sha256"
-    protected(path)
+def verify_manifest(expected, review=REVIEW, check=protected):
+    path = review / "MANIFEST.sha256"
+    check(path)
     data = path.read_bytes()
     if not re.fullmatch("[0-9a-f]{64}", expected) or digest(data) != expected:
         raise Refused("reviewed manifest digest differs")
@@ -384,8 +571,8 @@ def verify_manifest(expected):
         ):
             raise Refused("invalid manifest")
         name = match[2]
-        protected(REVIEW / name)
-        if digest((REVIEW / name).read_bytes()) != match[1]:
+        check(review / name)
+        if digest((review / name).read_bytes()) != match[1]:
             raise Refused("reviewed source changed")
         hashes[name] = match[1]
     if not (set(FILES) | {"install.py"}).issubset(hashes):
@@ -393,11 +580,74 @@ def verify_manifest(expected):
     return hashes
 
 
+@contextmanager
+def deployment_lock(state=STATE, check=protected):
+    check(state, directory=True)
+    check(state / "deploy.lock")
+    lock = os.open(state / "deploy.lock", os.O_RDONLY | os.O_NOFOLLOW)
+    try:
+        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        if os.fstat(lock).st_ino != (state / "deploy.lock").stat().st_ino:
+            raise Refused("deployment lock changed")
+        yield
+    finally:
+        os.close(lock)
+
+
+def dispatcher_ready(state=STATE, check=protected):
+    if os.path.lexists(state / "blocked.json"):
+        raise Refused("dispatcher blocked; complete reviewed recovery first")
+    if not os.path.lexists(state / "active.json"):
+        raise Refused("dispatcher not initialised; use first install")
+    check(state / "active.json")
+    info, data = read_regular(state / "active.json")
+    if info.st_size > 65536:
+        raise Refused("active record oversized")
+    record = json.loads(data)
+    if not isinstance(record, dict) or record.get("bootstrap_pending") is not False:
+        raise Refused("dispatcher activation incomplete")
+
+
+def install_entries():
+    entries = []
+    for name, (path, mode, owner) in FILES.items():
+        account = pwd.getpwnam(owner)
+        entries.append((name, Path(path), mode, account.pw_uid, account.pw_gid))
+    return entries
+
+
+def upgrade(
+    step,
+    manifest_sha256,
+    review=REVIEW,
+    state=STATE,
+    entries=None,
+    check=protected,
+    expect_installed=None,
+):
+    reviewed = verify_manifest(manifest_sha256, review, check)
+    transaction = Upgrade(
+        review, state / "upgrades" / manifest_sha256, entries or install_entries(), check, reviewed
+    )
+    with deployment_lock(state, check):
+        held()
+        if step == "apply":
+            dispatcher_ready(state, check)
+            transaction.apply(expect_installed)
+        else:
+            transaction.rollback()
+    return transaction
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("operation", choices=("plan", "apply", "rollback"))
+    parser.add_argument("operation", choices=("plan", "apply", "rollback", "upgrade"))
+    parser.add_argument("step", nargs="?", choices=("plan", "apply", "rollback"))
     parser.add_argument("--manifest-sha256")
+    parser.add_argument("--expect-installed")
     args = parser.parse_args()
+    if (args.operation == "upgrade") != (args.step is not None):
+        parser.error("upgrade takes exactly one step: plan, apply or rollback")
     if args.operation == "plan":
         print(
             json.dumps(
@@ -415,36 +665,46 @@ def main():
         )
         return 0
     try:
-        if Path(__file__) != REVIEW / "install.py" or os.geteuid() != 0:
+        reviewed = Path(__file__) == REVIEW / "install.py"
+        if args.operation == "upgrade" and args.step == "plan":
+            source = Path(__file__).resolve().parent
+            if os.geteuid() == 0 and not reviewed:
+                raise Refused("plan as root only from the protected review snapshot")
+
+            def preview(path, owner=0, directory=False):
+                if reviewed or not path.is_relative_to(source):
+                    protected(path, owner, directory)
+
+            items = Upgrade(source, None, install_entries(), preview).plan()
+            print(render_plan(items, STATE / "upgrades" / "<manifest-sha256>"))
+            return 0
+        if not reviewed or os.geteuid() != 0:
             raise Refused("use protected review snapshot as root")
         protected(Path(__file__))
-        verify_manifest(args.manifest_sha256 or "")
-        protected(STATE, directory=True)
-        protected(STATE / "deploy.lock")
-        lock = os.open(STATE / "deploy.lock", os.O_RDONLY | os.O_NOFOLLOW)
-        try:
-            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-            if os.fstat(lock).st_ino != (STATE / "deploy.lock").stat().st_ino:
-                raise Refused("deployment lock changed")
+        if args.operation == "upgrade":
+            upgrade(args.step, args.manifest_sha256 or "", expect_installed=args.expect_installed)
+            print(
+                f"Upgrade files {'installed' if args.step == 'apply' else 'restored'}; "
+                "timers remain held. No daemon-reload, restart or activation performed: "
+                "reload both managers and restore timers per README.txt."
+            )
+            return 0
+        reviewed = verify_manifest(args.manifest_sha256 or "")
+        with deployment_lock():
             held()
             if any(
                 os.path.lexists(STATE / name)
                 for name in ("active.json", "blocked.json", "last-success.json", "recovery.json")
             ):
                 raise Refused("dispatcher already initialised; installation rollback forbidden")
-            entries = []
-            for name, (path, mode, owner) in FILES.items():
-                account = pwd.getpwnam(owner)
-                entries.append((name, Path(path), mode, account.pw_uid, account.pw_gid))
-            transaction = FileTransaction(REVIEW, JOURNAL, entries)
+            transaction = FileTransaction(REVIEW, JOURNAL, install_entries(), reviewed=reviewed)
             getattr(transaction, args.operation)()
-        finally:
-            os.close(lock)
         print("Installation files verified; timers remain held. No runtime activation performed.")
         return 0
     except (RuntimeError, OSError, ValueError, KeyError, TypeError, subprocess.SubprocessError):
         print(
-            "Refused: preserve installation journal and held timers; inspect reviewed prerequisites.",
+            "Refused: preserve the installation and upgrade journals and held timers; "
+            "inspect reviewed prerequisites.",
             file=sys.stderr,
         )
         return 1
