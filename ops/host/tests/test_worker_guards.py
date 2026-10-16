@@ -10,7 +10,7 @@ from contextlib import redirect_stderr
 from pathlib import Path
 from unittest.mock import patch
 
-from test_transaction import FixtureState
+from test_transaction import FakeClock, FixtureState
 
 import cli
 import dispatcher as d
@@ -20,19 +20,6 @@ HOST = Path(__file__).resolve().parent.parent
 COMPOSE = "/var/lib/probono-radar/app/apps/probono/docker-compose.yaml"
 EXEC = ["compose", "-f", COMPOSE, "exec", "-T", "db"]
 GLOBALS = ["pg_dumpall", "-U", "radar", "--globals-only"]
-
-
-class FakeClock:
-    def __init__(self, on_sleep=lambda count: None):
-        self.now, self.sleeps, self.on_sleep = 1000.0, [], on_sleep
-
-    def clock(self):
-        return self.now
-
-    def sleep(self, seconds):
-        self.sleeps.append(seconds)
-        self.now += seconds
-        self.on_sleep(len(self.sleeps))
 
 
 class GlobalsDumpAllowlistTests(unittest.TestCase):
@@ -209,13 +196,25 @@ class LockWaitTests(unittest.TestCase):
     def test_default_wait_covers_a_pull(self):
         self.assertEqual(h.WORKER_LOCK_WAIT_SECONDS, 120)
 
-    def test_deploy_still_refuses_at_once_while_a_worker_holds_the_lock(self):
-        fake = FakeClock()
-        with h.worker_guard(self.state, clock=fake.clock, sleep=fake.sleep):
-            with self.assertRaises(d.Refused):
-                with self.state.lock(exclusive=True):
-                    pass
-        self.assertEqual(fake.sleeps, [])
+    def test_deploy_and_rollback_refuse_at_once_while_a_worker_holds_the_lock(self):
+        busy = d.LOCK_BUSY["deploy.lock", True]
+        transaction = d.Transaction(self.state, None)
+        with h.worker_guard(self.state, clock=self.state.fake.clock, sleep=self.state.fake.sleep):
+            for name, call in (
+                ("deploy", lambda: transaction.deploy(None)),
+                ("rollback", transaction.rollback),
+            ):
+                with self.subTest(name), self.assertRaises(d.Refused) as caught:
+                    call()
+                self.assertEqual(str(caught.exception), busy)
+        self.assertEqual(self.state.fake.sleeps, [])
+
+    def test_worker_takes_deploy_lock_before_worker_lock(self):
+        with h.worker_guard(self.state):
+            self.assertEqual(self.state.acquired, [("deploy.lock", False), ("worker.lock", True)])
+        self.state.acquired.clear()
+        with h.worker_guard(self.state, serialize=False):
+            self.assertEqual(self.state.acquired, [("deploy.lock", False)])
 
     def test_a_second_worker_is_refused_with_its_own_reason(self):
         with h.worker_guard(self.state):
