@@ -129,12 +129,18 @@ first tag for each publication-date selector (`dcterms.created`,
 `dcterms.issued`, `article:published_time`, `itemprop="datePublished"`),
 every publication-labelled `time[datetime]` anywhere in the document, then the
 first tag for each of the platform's last-resort selectors (`dcterms.date`,
-then `date`, on non-GovCMS pages). Extraction takes the first candidate that
-parses. The fingerprint hashes the whole ordered list, so any change to the
-value extraction reads changes the fingerprint: a tag that carries the key on
-`property` or `itemprop` beside an unrelated `name`, a swap of duplicate
-tags, or a publication `time` in a footer or in an aside inside `main`
-(#250). The fingerprint also hashes the main region's visible text, relevant
+then `date`, on non-GovCMS pages). Each candidate records its selector (or
+`label` or `time`) and its value, not where on the page it sat. Extraction
+takes the first candidate that parses. The fingerprint hashes the whole
+ordered list, so any change to the value extraction reads changes the
+fingerprint: a tag that carries the key on `property` or `itemprop` beside an
+unrelated `name`, a swap of duplicate tags, or a publication `time` in a
+footer or in an aside inside `main` (#250). The platform itself is not
+hashed: a Drupal or GovCMS generator gained or lost changes the fingerprint
+only where it changes the last-resort candidates, that is on a page carrying
+a `dcterms.date` or `date` tag. With neither tag the platform changes nothing
+extraction reads, and `date-metadata.test.ts` pins that the fingerprint stays
+the same (#290). The fingerprint also hashes the main region's visible text, relevant
 instrument links, `time[datetime]` values inside the main region, and a keyed
 metadata set: the date keys above, the modified-time keys `dcterms.modified`
 and `article:modified_time` (`og:updated_time` is neither read nor
@@ -145,7 +151,9 @@ date selectors and the key set come from the one table in
 `date-metadata.ts`, and `date-metadata.test.ts` fails if a selector, a
 shared-attribute tag, a duplicate swap or an out-of-region `time` can change
 the extracted date without changing the fingerprint. Browser captures accept
-the same metadata keys.
+the same metadata keys, and only those: a browser-capture fingerprint
+(`stableMetadata` in `src/lib/source-ingest.ts`) carries no candidate list,
+so the three #250 patterns are not covered there.
 
 Two earlier HTML fingerprint schemes may still be stored. The pre-#195 scheme
 omits `dcterms.created` and the date platform. The #244 scheme records dates
@@ -164,7 +172,9 @@ carries a `publicationDates` list, only the #244 one carries a
 equal fingerprints under two schemes, so a stored hash that matches an
 earlier fingerprint was written under that scheme, and a page that gains
 `dcterms.created` or a Drupal generator after its #244 fingerprint was stored
-reads as changed (#262).
+reads as changed (#262), the generator because the stored #244 preimage
+recorded the platform. Once the snapshot holds the current fingerprint the
+platform counts only through the last-resort candidates, as above.
 Stored-to-stored comparisons (two staged reviews of one transition, the DTA
 artifact or a court requirement against its policy) compare hashes as before
 and still need both sides re-verified together. `transitionForDocumentHash`
@@ -187,8 +197,9 @@ fingerprint only while the snapshot is absent, equals that stored hash, or
 equals this reading. A pending transition the snapshot has not yet recorded
 matches by an earlier fingerprint alone. Once the snapshot holds the current
 fingerprint, a later change confined to a value the stored scheme ignored
-(`dcterms.created` or the date platform under pre-#195, a shared-attribute
-tag, a duplicate swap or an out-of-region publication `time` under #244),
+(`dcterms.created` under pre-#195, a platform change that adds or removes
+a last-resort candidate under pre-#195, a shared-attribute tag, a duplicate
+swap or an out-of-region publication `time` under #244),
 including a field appearing on a page that lacked it, no longer matches and
 stages a review, on the direct path and on the adoption path alike. A change
 to such a value between the last verification and the first processed
