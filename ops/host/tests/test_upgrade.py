@@ -150,7 +150,10 @@ class Host:
             )
 
     def plan(self):
-        with patch.object(install, "command", side_effect=systemctl()):
+        with (
+            patch.object(install, "USER_UNITS", self.units),
+            patch.object(install, "command", side_effect=systemctl()),
+        ):
             return install.plan(self.review, self.state, self.config, self.entries, check)
 
     def gates(self):
