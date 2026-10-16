@@ -396,7 +396,7 @@
     ],
     "createdAt": "2026-07-24T02:37:40.240Z",
     "updatedAt": "2026-07-24T02:50:30.765Z",
-    "lastReviewedAt": "2026-07-24T02:50:30.765Z",
+    "lastReviewedAt": "2026-10-16T00:00:00.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -438,10 +438,10 @@
           "notes": "The official commencement proclamation fixes 3 November 2025 as the commencement date for the amending Act."
         }
       },
-      "checkedAt": "2026-07-24T02:50:30.765Z",
-      "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
+      "checkedBy": "Policai Developer source re-read (issue 161)",
       "method": "manual",
-      "notes": "Approved after fresh review of the assented Act and official commencement proclamation. The proposed record accurately describes the AI- and digitally generated depiction offences and commencement."
+      "notes": "Approved after fresh review of the assented Act and official commencement proclamation. The proposed record accurately describes the AI- and digitally generated depiction offences and commencement. Re-read against the live source on 2026-10-16; title, content, dates and status still match (issue 161)."
     }
   },
   {
@@ -520,7 +520,7 @@
     ],
     "createdAt": "2026-07-24T02:37:40.240Z",
     "updatedAt": "2026-07-24T02:49:28.151Z",
-    "lastReviewedAt": "2026-07-24T02:49:28.151Z",
+    "lastReviewedAt": "2026-10-16T00:00:00.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -562,10 +562,10 @@
           "notes": "The official commencement proclamation fixes 10 October 2025 for Part 2, including the AI-generated electoral advertising provisions."
         }
       },
-      "checkedAt": "2026-07-24T02:49:28.151Z",
-      "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
+      "checkedBy": "Policai Developer source re-read (issue 161)",
       "method": "manual",
-      "notes": "Approved after fresh review of the assented Act and official commencement proclamation. The proposed record accurately describes sections 115B to 115D and their commencement."
+      "notes": "Approved after fresh review of the assented Act and official commencement proclamation. The proposed record accurately describes sections 115B to 115D and their commencement. Re-read against the live source on 2026-10-16; title, content, dates and status still match (issue 161)."
     }
   },
   {
@@ -1397,7 +1397,7 @@
       }
     ],
     "effectiveDate": "2024-12-01",
-    "lastReviewedAt": "2026-07-19T06:14:28.176Z",
+    "lastReviewedAt": "2026-10-16T00:00:00.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -1424,10 +1424,10 @@
           "notes": "Verified from the official Digital NSW downloadable guidance path and filename, which identify December 2024; month precision is retained."
         }
       },
-      "checkedAt": "2026-07-19T06:14:28.176Z",
-      "checkedBy": "Daniel Alkurdi",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
+      "checkedBy": "Policai Developer source re-read (issue 161)",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026."
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Re-read against the live source on 2026-10-16; title, content, dates and status still match (issue 161)."
     }
   },
   {
@@ -2181,7 +2181,7 @@
     ],
     "createdAt": "2026-04-06T16:50:00Z",
     "updatedAt": "2026-07-19T01:54:29.573Z",
-    "lastReviewedAt": "2026-07-19T01:54:29.573Z",
+    "lastReviewedAt": "2026-10-16T00:00:00.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -2230,10 +2230,10 @@
           "notes": "The official APS AI Plan 2025 states 'Published November 2025'. It does not identify a day-level publication date. The stored first day represents November under Policai's month-precision convention; 12 November 2025 is separately shown as the ministerial foreword date and landing-page last-updated date."
         }
       },
-      "checkedAt": "2026-07-19T01:54:29.573Z",
-      "checkedBy": "Daniel Alkurdi",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
+      "checkedBy": "Policai Developer source re-read (issue 161)",
       "method": "manual",
-      "notes": "Daniel Alkurdi approved the corrections after reviewing the official digital.gov.au landing page, full APS AI Plan 2025, plan-on-a-page and Statement of Intent. The full plan says 'Published November 2025'; 12 November is the ministerial foreword date and the landing page's last-updated date, not a verified publication day. The plan states that implementation is jointly led and owned by the Department of Finance, Digital Transformation Agency and Australian Public Service Commission. The record now reflects its APS-only scope, Trust, People and Tools pillars, and principal capability, governance and reporting measures."
+      "notes": "Daniel Alkurdi approved the corrections after reviewing the official digital.gov.au landing page, full APS AI Plan 2025, plan-on-a-page and Statement of Intent. The full plan says 'Published November 2025'; 12 November is the ministerial foreword date and the landing page's last-updated date, not a verified publication day. The plan states that implementation is jointly led and owned by the Department of Finance, Digital Transformation Agency and Australian Public Service Commission. The record now reflects its APS-only scope, Trust, People and Tools pillars, and principal capability, governance and reporting measures. Re-read against the live source on 2026-10-16; title, content, dates and status still match (issue 161)."
     },
     "dates": [
       {
@@ -3475,10 +3475,10 @@
           "notes": "Verified by Daniel Alkurdi against the captured official source, which supports the approved date 2025-10-10 at day precision."
         }
       },
-      "checkedAt": "2026-07-19T06:14:28.540Z",
-      "checkedBy": "Daniel Alkurdi",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
+      "checkedBy": "Policai Developer source re-read (issue 161)",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026."
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Re-read against the live source on 2026-10-16; title, content, dates and status still match (issue 161)."
     },
     "dates": [
       {
@@ -3520,7 +3520,7 @@
         }
       }
     ],
-    "lastReviewedAt": "2026-07-19T06:14:28.540Z"
+    "lastReviewedAt": "2026-10-16T00:00:00.000Z"
   },
   {
     "id": "sa-guideline-use-of-generative-ai-and-llm-tools",
@@ -3581,10 +3581,10 @@
           "notes": "Verified by Daniel Alkurdi against the captured official source, which supports the approved date 2026-02-17 at day precision."
         }
       },
-      "checkedAt": "2026-07-19T06:14:28.314Z",
-      "checkedBy": "Daniel Alkurdi",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
+      "checkedBy": "Policai Developer source re-read (issue 161)",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026."
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Re-read against the live source on 2026-10-16; title, content, dates and status still match (issue 161)."
     },
     "dates": [
       {
@@ -3626,7 +3626,7 @@
         }
       }
     ],
-    "lastReviewedAt": "2026-07-19T06:14:28.314Z"
+    "lastReviewedAt": "2026-10-16T00:00:00.000Z"
   },
   {
     "id": "sa-ai-for-better-government-discussion-paper",
@@ -4486,7 +4486,7 @@
     ],
     "createdAt": "2026-05-01T00:00:00Z",
     "updatedAt": "2026-07-19T06:14:29.900Z",
-    "lastReviewedAt": "2026-07-19T06:14:29.900Z",
+    "lastReviewedAt": "2026-10-16T00:00:00.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -4513,10 +4513,10 @@
           "notes": "Verified by Daniel Alkurdi against the captured official source, which supports the issued date 2026-04-30 at day precision."
         }
       },
-      "checkedAt": "2026-07-19T06:14:29.900Z",
-      "checkedBy": "Daniel Alkurdi",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
+      "checkedBy": "Policai Developer source re-read (issue 161)",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026.",
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Re-read against the live source on 2026-10-16; title, content, dates and status still match (issue 161).",
       "lastSourceAuditAt": "2026-07-16T10:00:15.442Z"
     },
     "dates": [
@@ -5131,7 +5131,7 @@
     ],
     "createdAt": "2026-07-10T00:00:00.000Z",
     "updatedAt": "2026-07-19T06:14:29.219Z",
-    "lastReviewedAt": "2026-07-19T06:14:29.219Z",
+    "lastReviewedAt": "2026-10-16T00:00:00.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -5158,10 +5158,10 @@
           "notes": "Verified by Daniel Alkurdi against the captured official source, which supports the commenced date 2026-03-09 at day precision."
         }
       },
-      "checkedAt": "2026-07-19T06:14:29.219Z",
-      "checkedBy": "Daniel Alkurdi",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
+      "checkedBy": "Policai Developer source re-read (issue 161)",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026."
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Re-read against the live source on 2026-10-16; title, content, dates and status still match (issue 161)."
     },
     "dates": [
       {
@@ -5504,7 +5504,7 @@
     ],
     "createdAt": "2026-07-10T00:00:00.000Z",
     "updatedAt": "2026-07-19T06:14:28.896Z",
-    "lastReviewedAt": "2026-07-19T06:14:28.896Z",
+    "lastReviewedAt": "2026-10-16T00:00:00.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -5531,10 +5531,10 @@
           "notes": "Verified by Daniel Alkurdi against the captured official source, which supports the effective date 2026-01-01 at day precision."
         }
       },
-      "checkedAt": "2026-07-19T06:14:28.896Z",
-      "checkedBy": "Daniel Alkurdi",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
+      "checkedBy": "Policai Developer source re-read (issue 161)",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026.",
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Re-read against the live source on 2026-10-16; title, content, dates and status still match (issue 161).",
       "lastSourceAuditAt": "2026-07-16T10:00:36.173Z"
     },
     "dates": [
