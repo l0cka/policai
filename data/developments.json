@@ -32,7 +32,8 @@
         "publishedAtPrecision": "day"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Relevant AI Safety Institute research milestone, but the proposed policy record incorrectly classifies a commissioned research report as an active guideline. Replace with a timeline event."
   },
   {
     "id": "dev-inaugural-ai-review-committee-sets-out-expert-ad-15n6ewq",
