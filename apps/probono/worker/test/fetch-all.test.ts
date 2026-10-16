@@ -21,7 +21,7 @@ describe('ingestSource without a database', () => {
 
   it('records a failed run carrying the database error when an insert throws', async () => {
     query.mockImplementation(async (sql: string) => {
-      if (sql.includes('INSERT INTO items')) throw new Error('column "content_hash" does not exist');
+      if (String(sql).includes('INSERT INTO items')) throw new Error('column "content_hash" does not exist');
       return { rowCount: 1, rows: [] };
     });
 
