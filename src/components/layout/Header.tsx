@@ -19,7 +19,7 @@ const navItems = [
 
 const insightItems = [
   { href: '/timeline', label: 'Timeline' },
-  { href: '/network', label: 'Network' },
+  { href: '/coverage', label: 'Coverage' },
   { href: '/methodology', label: 'Methodology' },
 ];
 

@@ -20,6 +20,11 @@ const nextConfig: NextConfig = {
 				destination: "https://policai.org/:path*",
 				permanent: true,
 			},
+			{
+				source: "/network",
+				destination: "/coverage",
+				permanent: true,
+			},
 		];
 	},
 };
