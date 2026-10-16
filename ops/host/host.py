@@ -134,20 +134,22 @@ def check_compose_source(app, digest):
 STDIN_TASKS = ("src/save-enrichment.ts", "src/save-deadline-verification.ts")
 
 
+BACKUP_EXEC = [
+    "compose",
+    "-f",
+    "/var/lib/probono-radar/app/apps/probono/docker-compose.yaml",
+    "exec",
+    "-T",
+    "db",
+]
+BACKUP_DUMPS = (
+    ["pg_dump", "-U", "radar", "radar"],
+    ["pg_dumpall", "-U", "radar", "--globals-only"],
+)
+
+
 def worker_arguments(args):
-    backup = [
-        "compose",
-        "-f",
-        "/var/lib/probono-radar/app/apps/probono/docker-compose.yaml",
-        "exec",
-        "-T",
-        "db",
-        "pg_dump",
-        "-U",
-        "radar",
-        "radar",
-    ]
-    if args == backup:
+    if args[:6] == BACKUP_EXEC and args[6:] in BACKUP_DUMPS:
         return args[3:]
     prefix = ["compose", "--profile", "worker", "run", "--rm"]
     if args[:5] != prefix:
