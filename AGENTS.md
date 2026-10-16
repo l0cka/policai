@@ -197,19 +197,26 @@ A piece may carry an `image` object in its frontmatter. It is parsed by
 `parseArticle` into `ArticleImage` (`src/types/index.ts`). Fields: `src`
 (`/images/articles/<slug>/<file>`, jpg, png or webp), `alt`, `width`,
 `height`, `title`, `creator`, `sourceUrl` (https), `licence`, `licenceUrl`,
-`licenceCheckedAt` (date) and the optional `creatorUrl` (https) and
-`modifications` (for example `cropped`).
+`licenceCheckedAt` (date, not after today in Australia/Sydney) and the
+optional `creatorUrl` (https) and `modifications` (for example `cropped`).
 
 The licence is a table lookup (`ARTICLE_LICENCE_RULES` in
 `src/lib/article-licences.ts`). `licenceUrl` must equal the canonical URL for
-the `licence` id. NC, ND and every other id are rejected.
+the `licence` id. NC, ND and every other id are rejected, as is a version
+Creative Commons never published (for example `CC-BY-9.9`).
 
-| `licence` | `licenceUrl` |
-| --- | --- |
-| `CC0-1.0` | `https://creativecommons.org/publicdomain/zero/1.0/` |
-| `PDM-1.0` | `https://creativecommons.org/publicdomain/mark/1.0/` |
-| `CC-BY-<n.n>` | `https://creativecommons.org/licenses/by/<n.n>/` |
-| `CC-BY-SA-<n.n>` | `https://creativecommons.org/licenses/by-sa/<n.n>/` |
+| `licence` | `licenceUrl` | Attribution wording |
+| --- | --- | --- |
+| `CC0-1.0` | `https://creativecommons.org/publicdomain/zero/1.0/` | dedicated to the public domain under CC0 1.0 |
+| `PDM-1.0` | `https://creativecommons.org/publicdomain/mark/1.0/` | marked with Public Domain Mark 1.0 |
+| `CC-BY-<v>` | `https://creativecommons.org/licenses/by/<v>/` | licensed under CC BY `<v>` |
+| `CC-BY-SA-<v>` | `https://creativecommons.org/licenses/by-sa/<v>/` | licensed under CC BY-SA `<v>` |
+| `CC-BY-<p>-AU` | `https://creativecommons.org/licenses/by/<p>/au/` | licensed under CC BY `<p>` AU |
+| `CC-BY-SA-<p>-AU` | `https://creativecommons.org/licenses/by-sa/<p>/au/` | licensed under CC BY-SA `<p>` AU |
+
+`<v>` is 1.0, 2.0, 2.5, 3.0 or 4.0. `<p>` is an Australian port version:
+2.0, 2.1, 2.5 or 3.0. Other jurisdiction ports are rejected until a piece
+needs one; add it to `CC_PORTS` with the versions Creative Commons published.
 
 Some image hosts use their own licences, not Creative Commons, so a CC label
 on their images cannot be true. `DISALLOWED_IMAGE_HOSTS` (also in
@@ -223,7 +230,8 @@ the `licence`.
 | `pexels.com` | The Pexels Licence is not a Creative Commons licence. |
 
 `validateArticles` also checks the file in `public/` (`article-images.ts`):
-it exists, is a readable image, matches the declared `width` and `height`
+it exists, is a readable image whose format matches its extension (a
+`.jpg` file must hold JPEG data), matches the declared `width` and `height`
 (after EXIF orientation), has a long edge of 2048 to 2560 px and is at most
 1,200,000 bytes. A file under `public/images/articles/` that no article's
 `image.src` uses is an orphan and an error. These checks apply to every
@@ -233,12 +241,19 @@ already in the tree through `next`).
 The lead image on `/analysis/[slug]` and the thumbnail on `/analysis` use
 `next/image` with the declared size and `sizes`, so the page does not shift.
 A TASL line under the lead image links the title (source page), creator and
-licence, and adds "Modified: ..." when `modifications` is set. The image is
-the `og:image` and `twitter:image`, and the Article JSON-LD `image`
-(`ImageObject` with `license` and `creditText`).
+licence, words the licence as the table above shows, and adds
+"Modified: ..." when `modifications` is set. The image is the `og:image` and
+`twitter:image`, and the Article JSON-LD `image` (`ImageObject` with
+`license` and `creditText`). The JSON-LD names the creator only in
+`creditText`, because a creator may be a person or an organisation.
 
 `npm run add:article-image -- <url> <slug>` downloads the original over
-https with the collector identity `User-Agent` (`COLLECTOR_USER_AGENT`), refuses one under 2048 px on its long edge, applies EXIF orientation,
+https with the collector identity `User-Agent` (`COLLECTOR_USER_AGENT`).
+It follows at most five redirects, each to https on the same host and
+port; any other redirect is refused, so pass the final image URL. The
+download must finish within 30 seconds and stay within 64 MB, counted while
+it streams. It accepts only JPEG, PNG, WebP and TIFF input (no SVG or GIF)
+of at most 100 megapixels. It refuses an original under 2048 px on its long edge, applies EXIF orientation,
 re-encodes at a 2048 px long edge (quality 82, lowered in steps to 70 if the
 file would exceed the size limit), strips metadata and writes
 `public/images/articles/<slug>/lead.jpg`. It writes a temporary file in the

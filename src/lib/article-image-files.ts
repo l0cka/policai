@@ -37,7 +37,8 @@ export function orientedSize(
 async function inspect(file: string): Promise<ArticleImageFile> {
 	const { size } = await stat(file);
 	try {
-		return { bytes: size, ...orientedSize(await sharp(file).metadata()) };
+		const metadata = await sharp(file).metadata();
+		return { bytes: size, format: metadata.format, ...orientedSize(metadata) };
 	} catch {
 		return { bytes: size };
 	}

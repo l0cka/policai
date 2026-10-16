@@ -1,6 +1,6 @@
 /* @vitest-environment node */
 
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { articleLicenceTerms } from "./article-licences";
 import { parseArticle } from "./articles";
 
@@ -38,6 +38,9 @@ function errorsFor(image: Record<string, unknown> | "scalar"): string[] {
 	return result.ok ? [] : result.errors;
 }
 
+const LICENCE_FORMS =
+	"image.licence must be CC0-1.0, PDM-1.0, CC-BY-<version> or CC-BY-SA-<version> (versions 1.0, 2.0, 2.5, 3.0, 4.0; AU ports 2.0, 2.1, 2.5, 3.0 as CC-BY-3.0-AU)";
+
 describe("parseArticle image", () => {
 	it("parses a complete image into the typed value", () => {
 		const result = parseArticle({ slug: SLUG, source: source(IMAGE) });
@@ -72,7 +75,12 @@ describe("parseArticle image", () => {
 		["an impossible licenceCheckedAt", { ...IMAGE, licenceCheckedAt: "2026-02-30" }, ["image.licenceCheckedAt is required and must be a calendar date (YYYY-MM-DD)"]],
 		["an NC licence", { ...IMAGE, licence: "CC-BY-NC-4.0", licenceUrl: "https://creativecommons.org/licenses/by-nc/4.0/" }, ["image.licence CC-BY-NC-4.0 is rejected; NC and ND licences are not allowed"]],
 		["an ND licence", { ...IMAGE, licence: "CC-BY-ND-4.0", licenceUrl: "https://creativecommons.org/licenses/by-nd/4.0/" }, ["image.licence CC-BY-ND-4.0 is rejected; NC and ND licences are not allowed"]],
-		["an unknown licence", { ...IMAGE, licence: "Unsplash" }, ["image.licence must be CC0-1.0, PDM-1.0, CC-BY-<version> or CC-BY-SA-<version>, not Unsplash"]],
+		["an unknown licence", { ...IMAGE, licence: "Unsplash" }, [`${LICENCE_FORMS}, not Unsplash`]],
+		["a CC BY version that does not exist", { ...IMAGE, licence: "CC-BY-9.9", licenceUrl: "https://creativecommons.org/licenses/by/9.9/" }, [`${LICENCE_FORMS}, not CC-BY-9.9`]],
+		["a CC BY-SA version that does not exist", { ...IMAGE, licence: "CC-BY-SA-7.0", licenceUrl: "https://creativecommons.org/licenses/by-sa/7.0/" }, [`${LICENCE_FORMS}, not CC-BY-SA-7.0`]],
+		["a port that does not exist", { ...IMAGE, licence: "CC-BY-4.0-AU", licenceUrl: "https://creativecommons.org/licenses/by/4.0/au/" }, [`${LICENCE_FORMS}, not CC-BY-4.0-AU`]],
+		["an unported AU URL for a port", { ...IMAGE, licence: "CC-BY-3.0-AU", licenceUrl: "https://creativecommons.org/licenses/by/3.0/" }, ["image.licenceUrl must be https://creativecommons.org/licenses/by/3.0/au/ for CC-BY-3.0-AU"]],
+		["a licenceCheckedAt far in the future", { ...IMAGE, licenceCheckedAt: "2999-01-01" }, ["image.licenceCheckedAt 2999-01-01 is in the future (Australia/Sydney)"]],
 		["a licenceUrl that does not match", { ...IMAGE, licenceUrl: "https://creativecommons.org/licenses/by/4.0/" }, ["image.licenceUrl must be https://creativecommons.org/licenses/by-sa/4.0/ for CC-BY-SA-4.0"]],
 	] as const)("rejects %s", (_name, image, expected) => {
 		expect(errorsFor(image as Record<string, unknown> | "scalar")).toEqual(expected);
@@ -107,18 +115,38 @@ describe("parseArticle image", () => {
 	});
 });
 
-describe("articleLicenceTerms", () => {
-	it.each([
-		["CC0-1.0", "https://creativecommons.org/publicdomain/zero/1.0/", "CC0 1.0"],
-		["PDM-1.0", "https://creativecommons.org/publicdomain/mark/1.0/", "Public Domain Mark 1.0"],
-		["CC-BY-4.0", "https://creativecommons.org/licenses/by/4.0/", "CC BY 4.0"],
-		["CC-BY-3.0", "https://creativecommons.org/licenses/by/3.0/", "CC BY 3.0"],
-		["CC-BY-SA-2.5", "https://creativecommons.org/licenses/by-sa/2.5/", "CC BY-SA 2.5"],
-	])("maps %s to its canonical URL", (id, licenceUrl, label) => {
-		expect(articleLicenceTerms(id)).toEqual({ licence: id, licenceUrl, label });
+describe("parseArticle image licenceCheckedAt against the Sydney calendar", () => {
+	afterEach(() => {
+		vi.useRealTimers();
 	});
 
-	it.each(["CC-BY-NC-4.0", "CC-BY-ND-4.0", "CC-BY-NC-SA-4.0", "CC-BY-4", "CC0-2.0", "cc-by-4.0", ""])(
+	it("accepts today in Sydney and rejects tomorrow, while UTC is still on the previous day", () => {
+		vi.useFakeTimers({ toFake: ["Date"] });
+		vi.setSystemTime(new Date("2026-10-16T14:00:00Z"));
+		expect(errorsFor({ ...IMAGE, licenceCheckedAt: "2026-10-17" })).toEqual([]);
+		expect(errorsFor({ ...IMAGE, licenceCheckedAt: "2026-10-18" })).toEqual([
+			"image.licenceCheckedAt 2026-10-18 is in the future (Australia/Sydney)",
+		]);
+	});
+});
+
+describe("articleLicenceTerms", () => {
+	const LICENSED = "licensed under";
+	it.each([
+		["CC0-1.0", "https://creativecommons.org/publicdomain/zero/1.0/", "CC0 1.0", "dedicated to the public domain under"],
+		["PDM-1.0", "https://creativecommons.org/publicdomain/mark/1.0/", "Public Domain Mark 1.0", "marked with"],
+		["CC-BY-4.0", "https://creativecommons.org/licenses/by/4.0/", "CC BY 4.0", LICENSED],
+		["CC-BY-3.0", "https://creativecommons.org/licenses/by/3.0/", "CC BY 3.0", LICENSED],
+		["CC-BY-1.0", "https://creativecommons.org/licenses/by/1.0/", "CC BY 1.0", LICENSED],
+		["CC-BY-SA-2.5", "https://creativecommons.org/licenses/by-sa/2.5/", "CC BY-SA 2.5", LICENSED],
+		["CC-BY-3.0-AU", "https://creativecommons.org/licenses/by/3.0/au/", "CC BY 3.0 AU", LICENSED],
+		["CC-BY-2.5-AU", "https://creativecommons.org/licenses/by/2.5/au/", "CC BY 2.5 AU", LICENSED],
+		["CC-BY-SA-2.1-AU", "https://creativecommons.org/licenses/by-sa/2.1/au/", "CC BY-SA 2.1 AU", LICENSED],
+	])("maps %s to its canonical URL", (id, licenceUrl, label, grant) => {
+		expect(articleLicenceTerms(id)).toEqual({ licence: id, licenceUrl, label, grant });
+	});
+
+	it.each(["CC-BY-NC-4.0", "CC-BY-ND-4.0", "CC-BY-NC-SA-4.0", "CC-BY-4", "CC0-2.0", "cc-by-4.0", "", "CC-BY-9.9", "CC-BY-SA-7.0", "CC-BY-2.1", "CC-BY-4.0-AU", "CC-BY-3.0-NZ", "CC-BY-3.0-au", "PDM-1.0-AU"])(
 		"rejects %s",
 		(id) => {
 			expect(articleLicenceTerms(id)).toBeUndefined();
