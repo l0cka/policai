@@ -55,6 +55,10 @@ conventions still apply, but root Policai data/runtime assumptions do not.
 - Preserve masks on `probono-digest.service` and `probono-digest.timer`. Never
   unmask, enable or send a digest without explicit approval and verified SMTP
   configuration. Do not add tracked digest unit files.
+- `worker/src/digest.ts` is a dry run unless it gets `--send` and
+  `PROBONO_DIGEST_SEND_APPROVED=yes`, and it refuses a second send in the same
+  Sydney week. Set the variable only on explicit approval; never add it to
+  Compose, env files or units.
 - Database migrations, live writes, deployment, timer changes and destructive
   cleanup need separate approval. Preserve external Postgres state, secrets and
   backups through cutover and rollback. Machine enrichment is not editorial
