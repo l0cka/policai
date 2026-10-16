@@ -38,6 +38,7 @@ import {
   isAllowedSourceHost,
   isSafePublicHttpsUrl,
   parseSourceUrl,
+  sourceIdentityUrls,
   sourceUrlIdentity,
   sourceUrlsEqual,
 } from '@/lib/source-url';
@@ -1511,6 +1512,20 @@ export function validateSourceReviews(
       errors.push(`${label}: invalid discoveredAt`);
     if (!isTimestampString(review.updatedAt))
       errors.push(`${label}: invalid updatedAt`);
+    const targetRecord = review.targetPolicyId
+      ? policiesById.get(review.targetPolicyId)
+      : review.targetTimelineEventId
+        ? timelineEventsById.get(review.targetTimelineEventId)
+        : undefined;
+    const reviewSourceUrls =
+      targetRecord && sourceUrlsEqual(targetRecord.sourceUrl, review.sourceUrl)
+        ? sourceIdentityUrls(
+            targetRecord.sourceUrl,
+            targetRecord.verification?.source,
+          )
+        : [sourceUrlIdentity(review.sourceUrl)];
+    const identifiesReviewSource = (url: string) =>
+      reviewSourceUrls.includes(sourceUrlIdentity(url));
     const rawSourceEvidence = review.sourceEvidence as unknown;
     // SAFETY: isRecord establishes the object boundary; fields are validated below.
     const sourceEvidence = isRecord(rawSourceEvidence)
@@ -1519,7 +1534,7 @@ export function validateSourceReviews(
     if (!sourceEvidence || !isNonEmptyString(sourceEvidence.url)) {
       errors.push(`${label}: sourceEvidence requires a non-empty URL`);
     } else {
-      if (!sourceUrlsEqual(sourceEvidence.url, review.sourceUrl)) {
+      if (!identifiesReviewSource(sourceEvidence.url)) {
         errors.push(`${label}: source evidence URL must match sourceUrl`);
       }
       validateCanonicalSourceUrl(
@@ -1576,10 +1591,9 @@ export function validateSourceReviews(
         );
       }
       if (
-        !sourceUrlsEqual(review.linkedDevelopment.url, review.sourceUrl) ||
-        !sourceUrlsEqual(
+        !identifiesReviewSource(review.linkedDevelopment.url) ||
+        !identifiesReviewSource(
           review.linkedDevelopment.verification.source.url,
-          review.sourceUrl,
         )
       ) {
         errors.push(

@@ -150,7 +150,12 @@ attachments.
 
 When a changed direct document is already the source for a register policy, the
 collector stages a version-specific update review with `targetPolicyId`; it
-does not propose a duplicate policy. Pending and approved update reviews
+does not propose a duplicate policy. A record is matched through the same
+identity set that keeps its URLs out of discovery: its `sourceUrl` plus its
+verification `url` and redirect `finalUrl`. When the watched URL is such an
+alias, the review carries the record's canonical `sourceUrl`, while its source
+evidence and linked development keep the URL the collector retrieved. Timeline
+events match the same way. Pending and approved update reviews
 temporarily withhold that policy from public reads until an editor publishes
 the re-verified record. These reviews cannot be rejected. Publishing refuses an
 older update when a newer non-rejected source version exists, and publishing

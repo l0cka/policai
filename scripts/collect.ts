@@ -142,17 +142,9 @@ async function main() {
       trackedTimelineEvents: timelineEvents,
       sourceReviews: reviews,
       browserFetchImpl: browserFetch?.fetchImpl,
-      trackedUrls: [
-        ...policies.flatMap((policy) =>
-          sourceIdentityUrls(policy.sourceUrl, policy.verification.source),
-        ),
-        ...timelineEvents.flatMap((event) =>
-          sourceIdentityUrls(event.sourceUrl, event.verification.source),
-        ),
-        ...reviews.flatMap((review) =>
-          sourceIdentityUrls(review.sourceUrl, review.sourceEvidence),
-        ),
-      ],
+      trackedUrls: reviews.flatMap((review) =>
+        sourceIdentityUrls(review.sourceUrl, review.sourceEvidence),
+      ),
       previousMeta: meta ?? undefined,
       maxItemsPerSource: options.maxItems,
       force: Boolean(options.sourceId),
