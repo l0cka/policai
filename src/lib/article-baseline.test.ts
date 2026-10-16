@@ -6,7 +6,6 @@ import os from "os";
 import path from "path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { readArticleBaseline } from "./article-baseline";
-import { articleChanges, readArticleSources } from "./articles";
 
 let repo: string;
 
@@ -43,18 +42,11 @@ afterEach(async () => {
 });
 
 describe("readArticleBaseline", () => {
-	it("reads the merge-base with origin/main and classifies each piece", async () => {
-		const base = await readArticleBaseline({ cwd: repo });
-		expect(base).toEqual([
+	it("reads top-level pieces at the merge-base with origin/main", async () => {
+		expect(await readArticleBaseline({ cwd: repo })).toEqual([
 			{ slug: "edited", source: "before\n" },
 			{ slug: "kept", source: "kept\n" },
 		]);
-		const current = await readArticleSources(path.join(repo, "data/articles"));
-		expect(Object.fromEntries(articleChanges(current, base))).toEqual({
-			added: "new",
-			edited: "changed",
-			kept: "untouched",
-		});
 	});
 
 	it("prefers an explicit base SHA", async () => {

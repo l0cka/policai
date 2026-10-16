@@ -4,7 +4,6 @@ import path from "path";
 import { describe, expect, it } from "vitest";
 import {
 	articleBodyLinks,
-	articleChanges,
 	citationState,
 	parseArticle,
 	readArticleSources,
@@ -189,33 +188,6 @@ describe("articleBodyLinks", () => {
 			});
 		},
 	);
-});
-
-describe("articleChanges", () => {
-	const current = [
-		{ slug: "kept", source: "same" },
-		{ slug: "edited", source: "after" },
-		{ slug: "added", source: "new" },
-	];
-
-	it("marks pieces new, changed or untouched against the base", () => {
-		expect(
-			Object.fromEntries(
-				articleChanges(current, [
-					{ slug: "kept", source: "same" },
-					{ slug: "edited", source: "before" },
-				]),
-			),
-		).toEqual({ kept: "untouched", edited: "changed", added: "new" });
-	});
-
-	it("treats every piece as new when there is no base", () => {
-		expect(Object.fromEntries(articleChanges(current, null))).toEqual({
-			kept: "new",
-			edited: "new",
-			added: "new",
-		});
-	});
 });
 
 describe("citationState", () => {

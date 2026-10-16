@@ -3,7 +3,11 @@
 import path from "path";
 import { describe, expect, it } from "vitest";
 import { readArticleSources, type ArticleSource } from "./articles";
-import { validateArticles } from "./validate-data";
+import {
+	articleCitationReport,
+	validateArticles,
+	type CitedRecordState,
+} from "./validate-data";
 import { buildPolicy } from "@/test/factories";
 
 const FIXTURES = path.join(process.cwd(), "src/test/fixtures/articles");
@@ -29,11 +33,44 @@ async function fixture(slug: string): Promise<ArticleSource> {
 	return found;
 }
 
-function baseFor(entry: ArticleSource, change: "new" | "changed" | "untouched") {
-	if (change === "new") return [];
-	if (change === "untouched") return [entry];
-	return [{ ...entry, source: entry.source.replace("See the", "Read the") }];
-}
+describe("articleCitationReport", () => {
+	const label = "data/articles/piece.md";
+	const states = new Map<string, CitedRecordState>([
+		["current", "current"],
+		["review-due", "review_due"],
+		["withheld", "not_public"],
+		["trashed", "trashed"],
+	]);
+	const reviewDue = `${label}: cites "review-due", which is past its review interval (Source under review)`;
+	const withheld = `${label}: cites "withheld", which is withheld or unverified (Source under review)`;
+	const trashed = `${label}: cites trashed register record "trashed"`;
+	const missing = `${label}: cites unknown register record "missing"`;
+
+	it.each([
+		[
+			"a new piece",
+			[],
+			["current", "review-due", "withheld", "trashed", "missing"],
+			[reviewDue, withheld, trashed, missing],
+			[],
+		],
+		["a changed piece with an added citation", ["current"], ["current", "withheld"], [withheld], []],
+		[
+			"a piece whose existing citations went stale or were withheld",
+			["current", "review-due", "withheld"],
+			["current", "review-due", "withheld"],
+			[],
+			[reviewDue, withheld],
+		],
+		["existing citations to trashed or missing records", ["trashed", "missing"], ["trashed", "missing"], [trashed, missing], []],
+		["a dropped citation", ["withheld", "current"], ["current"], [], []],
+	])("%s", (_, baseCites, headCites, errors, warnings) => {
+		expect(articleCitationReport(label, baseCites, headCites, states)).toEqual({
+			errors,
+			warnings,
+		});
+	});
+});
 
 describe("validateArticles citations", () => {
 	const withheldMessage =
@@ -41,40 +78,86 @@ describe("validateArticles citations", () => {
 	const reviewDueMessage =
 		'data/articles/citation-review-due.md: cites "fixture-review-due", which is past its review interval (Source under review)';
 
+	function edited(entry: ArticleSource): ArticleSource {
+		return { ...entry, source: entry.source.replace("See the", "Read the") };
+	}
+
 	it.each([
-		["citation-withheld", "new", [withheldMessage], []],
-		["citation-withheld", "changed", [withheldMessage], []],
-		["citation-withheld", "untouched", [], [withheldMessage]],
-		["citation-review-due", "new", [reviewDueMessage], []],
-		["citation-review-due", "changed", [reviewDueMessage], []],
-		["citation-review-due", "untouched", [], [reviewDueMessage]],
-		["fixture-weekly-published", "new", [], []],
-		["fixture-weekly-published", "untouched", [], []],
-	] as const)("%s when %s", async (slug, change, errors, warnings) => {
+		["citation-withheld", [withheldMessage]],
+		["citation-review-due", [reviewDueMessage]],
+		["fixture-weekly-published", []],
+	])("checks every citation of new piece %s", async (slug, errors) => {
 		const entry = await fixture(slug);
-		expect(validateArticles([entry], baseFor(entry, change), targets)).toEqual({
-			errors,
-			warnings,
+		expect(validateArticles([entry], [], targets)).toEqual({ errors, warnings: [] });
+		expect(validateArticles([entry], null, targets)).toEqual({ errors, warnings: [] });
+	});
+
+	it("errors only on the citation a changed piece adds", async () => {
+		const base = await fixture("fixture-weekly-published");
+		const head = {
+			...base,
+			source: base.source.replace(
+				"  - fixture-current\n",
+				"  - fixture-current\n  - fixture-withheld\n  - fixture-review-due\n",
+			),
+		};
+		expect(validateArticles([head], [base], targets)).toEqual({
+			errors: [
+				'data/articles/fixture-weekly-published.md: cites "fixture-withheld", which is withheld or unverified (Source under review)',
+				'data/articles/fixture-weekly-published.md: cites "fixture-review-due", which is past its review interval (Source under review)',
+			],
+			warnings: [],
+		});
+	});
+
+	it.each([
+		["citation-withheld", withheldMessage],
+		["citation-review-due", reviewDueMessage],
+	])("warns on an existing citation of %s, changed or untouched", async (slug, message) => {
+		const entry = await fixture(slug);
+		const result = { errors: [], warnings: [message] };
+		expect(validateArticles([entry], [entry], targets)).toEqual(result);
+		expect(validateArticles([edited(entry)], [entry], targets)).toEqual(result);
+	});
+
+	it("lets a correction be appended to a piece whose citation went stale", async () => {
+		const base = await fixture("citation-review-due");
+		const corrected = {
+			...base,
+			source: base.source.replace(
+				"\n---\n",
+				"\ncorrections:\n  - date: 2026-10-20\n    text: The fixture record is under review.\n---\n",
+			),
+		};
+		expect(validateArticles([corrected], [base], targets)).toEqual({
+			errors: [],
+			warnings: [reviewDueMessage],
+		});
+	});
+
+	it("treats a draft's citations as new when it is published", async () => {
+		const published = await fixture("citation-withheld");
+		const draft = {
+			...published,
+			source: published.source.replace("status: published", "status: draft"),
+		};
+		expect(validateArticles([published], [draft], targets)).toEqual({
+			errors: [withheldMessage],
+			warnings: [],
 		});
 	});
 
 	it.each([
 		["invalid-cites-unknown", 'cites unknown register record "fixture-missing"'],
 		["invalid-cites-trashed", 'cites trashed register record "fixture-trashed"'],
-	])("%s is an error even when untouched", async (slug, message) => {
+	])("%s is an error whether new, changed or untouched", async (slug, message) => {
 		const entry = await fixture(slug);
-		for (const change of ["new", "changed", "untouched"] as const) {
-			expect(
-				validateArticles([entry], baseFor(entry, change), targets),
-			).toEqual({ errors: [`data/articles/${slug}.md: ${message}`], warnings: [] });
+		for (const base of [[], [edited(entry)], [entry]]) {
+			expect(validateArticles([entry], base, targets)).toEqual({
+				errors: [`data/articles/${slug}.md: ${message}`],
+				warnings: [],
+			});
 		}
-	});
-
-	it("treats every piece as new without a base", async () => {
-		const entry = await fixture("citation-withheld");
-		expect(validateArticles([entry], null, targets).errors).toEqual([
-			withheldMessage,
-		]);
 	});
 
 	it("reports parse errors with the file path", async () => {

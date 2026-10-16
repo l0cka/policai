@@ -29,8 +29,8 @@ import {
   type TimelineEvent,
 } from '@/types';
 import {
-  articleChanges,
   citationState,
+  type CitationState,
   parseArticle,
   type ArticleSource,
 } from '@/lib/articles';
@@ -2282,6 +2282,63 @@ function articleTransitionErrors(
   return errors;
 }
 
+export type CitedRecordState = 'missing' | 'trashed' | CitationState;
+
+const CITATION_PROBLEMS: Record<
+  Exclude<CitedRecordState, 'current'>,
+  { always: boolean; message: (policyId: string) => string }
+> = {
+  missing: {
+    always: true,
+    message: (policyId) => `cites unknown register record "${policyId}"`,
+  },
+  trashed: {
+    always: true,
+    message: (policyId) => `cites trashed register record "${policyId}"`,
+  },
+  not_public: {
+    always: false,
+    message: (policyId) =>
+      `cites "${policyId}", which is withheld or unverified (Source under review)`,
+  },
+  review_due: {
+    always: false,
+    message: (policyId) =>
+      `cites "${policyId}", which is past its review interval (Source under review)`,
+  },
+};
+
+export function articleCitationReport(
+  label: string,
+  baseCites: readonly string[],
+  headCites: readonly string[],
+  states: ReadonlyMap<string, CitedRecordState>,
+): ValidationReport {
+  const errors: string[] = [];
+  const warnings: string[] = [];
+  const existing = new Set(baseCites);
+  for (const policyId of headCites) {
+    const state = states.get(policyId) ?? 'missing';
+    if (state === 'current') continue;
+    const problem = CITATION_PROBLEMS[state];
+    const report = problem.always || !existing.has(policyId) ? errors : warnings;
+    report.push(`${label}: ${problem.message(policyId)}`);
+  }
+  return { errors, warnings };
+}
+
+function citedRecordStates(targets: ArticleCitationTargets): Map<string, CitedRecordState> {
+  const publicPolicies = new Map(
+    targets.publicPolicies.map((policy) => [policy.id, policy]),
+  );
+  return new Map(
+    targets.policies.map((policy): [string, CitedRecordState] => [
+      policy.id,
+      policy.status === 'trashed' ? 'trashed' : citationState(publicPolicies, policy.id),
+    ]),
+  );
+}
+
 export function validateArticles(
   current: readonly ArticleSource[],
   base: readonly ArticleSource[] | null,
@@ -2289,11 +2346,12 @@ export function validateArticles(
 ): ValidationReport {
   const errors: string[] = [];
   const warnings: string[] = [];
-  const canonical = new Map(targets.policies.map((policy) => [policy.id, policy]));
-  const publicPolicies = new Map(
-    targets.publicPolicies.map((policy) => [policy.id, policy]),
-  );
-  const changes = articleChanges(current, base);
+  const states = citedRecordStates(targets);
+  const previous = new Map<string, Article>();
+  for (const entry of base ?? []) {
+    const result = parseArticle(entry);
+    if (result.ok) previous.set(entry.slug, result.article);
+  }
   const parsed = new Map<string, Article>();
 
   for (const entry of current) {
@@ -2306,38 +2364,23 @@ export function validateArticles(
     const article = result.article;
     parsed.set(entry.slug, article);
     if (article.status !== 'published') continue;
-    const change = changes.get(entry.slug);
-    const report = change === 'untouched' ? warnings : errors;
-    for (const policyId of article.cites) {
-      const policy = canonical.get(policyId);
-      if (!policy) {
-        errors.push(`${label}: cites unknown register record "${policyId}"`);
-        continue;
-      }
-      if (policy.status === 'trashed') {
-        errors.push(`${label}: cites trashed register record "${policyId}"`);
-        continue;
-      }
-      const state = citationState(publicPolicies, policyId);
-      if (state === 'not_public') {
-        report.push(`${label}: cites "${policyId}", which is withheld or unverified (Source under review)`);
-      } else if (state === 'review_due') {
-        report.push(`${label}: cites "${policyId}", which is past its review interval (Source under review)`);
-      }
-    }
+    const before = previous.get(entry.slug);
+    const report = articleCitationReport(
+      label,
+      before?.status === 'published' ? before.cites : [],
+      article.cites,
+      states,
+    );
+    errors.push(...report.errors);
+    warnings.push(...report.warnings);
   }
 
   const currentSlugs = new Set(current.map((entry) => entry.slug));
-  for (const entry of base ?? []) {
-    const previous = parseArticle(entry);
-    const next = parsed.get(entry.slug);
-    if (!previous.ok || (currentSlugs.has(entry.slug) && !next)) continue;
+  for (const [slug, article] of previous) {
+    const next = parsed.get(slug);
+    if (currentSlugs.has(slug) && !next) continue;
     errors.push(
-      ...articleTransitionErrors(
-        `data/articles/${entry.slug}.md`,
-        previous.article,
-        next,
-      ),
+      ...articleTransitionErrors(`data/articles/${slug}.md`, article, next),
     );
   }
 

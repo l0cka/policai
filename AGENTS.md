@@ -168,21 +168,24 @@ uses it. The rules for voice, formats and citations are in
 
 `npm run validate:data` (`validateArticles`) enforces these rules:
 
-| Rule | New or changed piece | Untouched piece |
-| --- | --- | --- |
-| Frontmatter fails to parse, or a published piece has no `cites` | error | error |
-| Withdrawn piece without `withdrawnAt` or `withdrawnReason` | error | error |
-| Body link to `/policies/<id>` not in `cites`, or external link not in `sources` | error | error |
-| Citation to a missing or trashed record | error | error |
-| Citation to a withheld or unverified record (not in the public read) | error | warning, banner shows |
-| Citation to a public record past its review interval ("Review due") | error | warning, banner shows |
-| Published or withdrawn piece deleted, returned to draft, re-dated, or a withdrawn piece republished | error | n/a |
-| An earlier correction changed or removed (corrections are append-only) | error | n/a |
+| Rule | Result |
+| --- | --- |
+| Frontmatter fails to parse, or a published piece has no `cites` | error |
+| Withdrawn piece without `withdrawnAt` or `withdrawnReason` | error |
+| Body link to `/policies/<id>` not in `cites`, or external link not in `sources` | error |
+| Citation to a missing or trashed record | error |
+| Added citation to a withheld, unverified or review-due record | error |
+| Existing citation to a record that is now withheld, unverified or review-due | warning, banner shows |
+| Published or withdrawn piece deleted, returned to draft, re-dated, or a withdrawn piece republished | error |
+| An earlier correction changed or removed (corrections are append-only) | error |
 
-The approved rule that validation "rejects a citation to a record that is not
-public and verified" applies when a piece is published or changed (PM,
-2026-10-16). A piece is new, changed or untouched by comparison of its file
-with the base revision: `GITHUB_BASE_SHA` when set (CI passes the PR base),
+Citations are checked one by one (`articleCitationReport` in
+`validate-data.ts`), not per piece (PM, 2026-10-16). A citation is added when
+the piece's `cites` on the base revision lacks it. Every citation of a new
+piece, or of a piece that was a draft on the base, is added. An existing
+citation never blocks an edit, so a correction or update can always be
+appended to a piece whose source went under review. The base revision is
+`GITHUB_BASE_SHA` when set (CI passes the PR base),
 otherwise the merge-base of `HEAD` and `origin/main`. When `GITHUB_BASE_SHA`
 is set but cannot be read, `validate:data` fails, so the transition rules
 never pass silently. When it is unset and no merge-base can be read, every

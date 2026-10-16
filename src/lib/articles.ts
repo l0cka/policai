@@ -60,22 +60,6 @@ export type ArticleBodyLink =
 	| { kind: "site"; href: string }
 	| { kind: "external"; href: string };
 
-export type ArticleChange = "new" | "changed" | "untouched";
-
-export function articleChanges(
-	current: readonly ArticleSource[],
-	base: readonly ArticleSource[] | null,
-): Map<string, ArticleChange> {
-	const baseBySlug = new Map(base?.map((entry) => [entry.slug, entry.source]));
-	return new Map(
-		current.map(({ slug, source }): [string, ArticleChange] => {
-			const previous = baseBySlug.get(slug);
-			if (base === null || previous === undefined) return [slug, "new"];
-			return [slug, previous === source ? "untouched" : "changed"];
-		}),
-	);
-}
-
 export type CitationState ="current" | "review_due" | "not_public";
 
 export function citationState(
