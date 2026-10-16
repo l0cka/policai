@@ -32,7 +32,6 @@ function imageJsonLd(image: ArticleImage) {
     width: image.width,
     height: image.height,
     caption: image.alt,
-    creator: { '@type': 'Person', name: image.creator },
     license: image.licenceUrl,
     creditText: `${image.title} by ${image.creator}`,
     acquireLicensePage: image.sourceUrl,

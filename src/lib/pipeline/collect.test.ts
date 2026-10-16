@@ -24,10 +24,15 @@ const { classifyBatch } = vi.hoisted(() => ({
 }));
 vi.mock('./claude-classify', () => ({ classifyBatch, CLAUDE_BATCH_SIZE: 20 }));
 
-import { collect, collectionRunFailed, emptyWatchState } from './collect';
+import {
+  collect,
+  collectionRunFailed,
+  emptyWatchState,
+  qualifiesForReview,
+} from './collect';
 import type { SourceSnapshot, WatchState } from './collect';
 import type { SourceReview } from '@/types';
-import { MACHINE_CONFIDENCE_CAP } from './classify';
+import { MACHINE_CONFIDENCE_CAP, type Classification } from './classify';
 import { validateSourceReviews } from '../validate-data';
 
 beforeEach(() => {
@@ -3227,5 +3232,34 @@ describe('collect with Claude classifier', () => {
       (d) => d.url === CANDIDATE_URL,
     );
     expect(development?.classification).toBe('heuristic');
+  });
+});
+
+describe('qualifiesForReview', () => {
+  const capped = {
+    isRelevant: true,
+    relevanceScore: MACHINE_CONFIDENCE_CAP,
+    classification: 'ai',
+    tags: [],
+    agencies: [],
+    assessment: { method: 'ai', promptVersion: 'claude-classify-v1' },
+  } satisfies Classification;
+
+  it('stages a tracked change detection even when it is labelled ai and capped', () => {
+    expect(
+      qualifiesForReview(
+        {
+          ...capped,
+          assessment: { method: 'ai', promptVersion: 'source-hash-change-v1' },
+        },
+        0.7,
+      ),
+    ).toBe(true);
+  });
+
+  it('gates a classifier detection on its uncapped confidence', () => {
+    expect(qualifiesForReview({ ...capped, rawConfidence: 0.9 }, 0.7)).toBe(true);
+    expect(qualifiesForReview({ ...capped, rawConfidence: 0.6 }, 0.7)).toBe(false);
+    expect(qualifiesForReview(capped, 0.7)).toBe(false);
   });
 });

@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { articleLicenceLabel } from '@/lib/article-licences';
+import { articleLicenceTerms } from '@/lib/article-licences';
 import {
   ARTICLE_BYLINE,
   ARTICLE_DISCLOSURE,
@@ -104,6 +104,7 @@ function ExternalLink({ href, children }: { href: string; children: React.ReactN
 }
 
 export function ArticleImageAttribution({ image }: { image: ArticleImage }) {
+  const terms = articleLicenceTerms(image.licence);
   return (
     <>
       <ExternalLink href={image.sourceUrl}>{image.title}</ExternalLink> by{' '}
@@ -112,8 +113,8 @@ export function ArticleImageAttribution({ image }: { image: ArticleImage }) {
       ) : (
         image.creator
       )}
-      , licensed under{' '}
-      <ExternalLink href={image.licenceUrl}>{articleLicenceLabel(image.licence)}</ExternalLink>
+      , {terms?.grant ?? 'licensed under'}{' '}
+      <ExternalLink href={image.licenceUrl}>{terms?.label ?? image.licence}</ExternalLink>
       {image.modifications ? <>. Modified: {image.modifications}</> : null}.
     </>
   );

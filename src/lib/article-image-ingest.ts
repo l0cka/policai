@@ -1,7 +1,7 @@
 import { randomUUID } from "crypto";
 import { link, mkdir, rename, rm, writeFile } from "fs/promises";
 import path from "path";
-import sharp from "sharp";
+import sharp, { type Metadata } from "sharp";
 import {
 	ARTICLE_IMAGE_MAX_BYTES,
 	ARTICLE_IMAGE_MIN_LONG_EDGE,
@@ -19,6 +19,14 @@ const QUALITY_STEP = 4;
 const MIN_QUALITY = 70;
 
 const MAX_DOWNLOAD_BYTES = 64 * 1024 * 1024;
+
+const MAX_REDIRECTS = 5;
+
+export const DOWNLOAD_TIMEOUT_MS = 30_000;
+
+const SHARP_INPUT = { limitInputPixels: 100_000_000 };
+
+const INPUT_FORMATS: ReadonlySet<string> = new Set(["jpeg", "png", "webp", "tiff"]);
 
 export interface IngestedArticleImage {
 	src: string;
@@ -38,25 +46,74 @@ export interface IngestOptions {
 	replace?: boolean;
 }
 
-async function download(url: string, fetchImpl: typeof fetch): Promise<Buffer> {
-	if (new URL(url).protocol !== "https:") {
+async function fetchSameHost(
+	url: string,
+	fetchImpl: typeof fetch,
+	signal: AbortSignal,
+): Promise<Response> {
+	let current = new URL(url);
+	if (current.protocol !== "https:") {
 		throw new Error("the image URL must be https");
 	}
-	const response = await fetchImpl(url, {
-		headers: { "User-Agent": COLLECTOR_USER_AGENT },
-	});
-	if (!response.ok) {
-		throw new Error(`download failed with HTTP ${response.status}`);
+	for (let hops = 0; ; hops++) {
+		const response = await fetchImpl(current.href, {
+			headers: { "User-Agent": COLLECTOR_USER_AGENT },
+			redirect: "manual",
+			signal,
+		});
+		if (response.status < 300 || response.status >= 400) return response;
+		await response.body?.cancel();
+		const location = response.headers.get("location");
+		if (!location) throw new Error(`HTTP ${response.status} redirect has no Location header`);
+		if (hops === MAX_REDIRECTS) throw new Error(`more than ${MAX_REDIRECTS} redirects`);
+		const next = new URL(location, current);
+		if (next.protocol !== "https:" || next.host !== current.host) {
+			throw new Error(
+				`refusing the redirect from ${current.href} to ${next.href}; only same-host https redirects are followed, so pass the final image URL directly`,
+			);
+		}
+		current = next;
 	}
+}
+
+async function readCapped(response: Response): Promise<Buffer> {
 	const declared = Number(response.headers.get("content-length") ?? 0);
 	if (declared > MAX_DOWNLOAD_BYTES) {
 		throw new Error(`the download is ${declared} bytes; the limit is ${MAX_DOWNLOAD_BYTES}`);
 	}
-	const bytes = Buffer.from(await response.arrayBuffer());
-	if (bytes.length > MAX_DOWNLOAD_BYTES) {
-		throw new Error(`the download is ${bytes.length} bytes; the limit is ${MAX_DOWNLOAD_BYTES}`);
+	const chunks: Uint8Array[] = [];
+	let total = 0;
+	if (!response.body) return Buffer.alloc(0);
+	const reader = response.body.getReader();
+	for (;;) {
+		const { done, value } = await reader.read();
+		if (done) return Buffer.concat(chunks, total);
+		total += value.byteLength;
+		if (total > MAX_DOWNLOAD_BYTES) {
+			await reader.cancel();
+			throw new Error(`the download exceeds the ${MAX_DOWNLOAD_BYTES}-byte limit`);
+		}
+		chunks.push(value);
 	}
-	return bytes;
+}
+
+async function download(url: string, fetchImpl: typeof fetch): Promise<Buffer> {
+	const controller = new AbortController();
+	const timer = setTimeout(() => controller.abort(), DOWNLOAD_TIMEOUT_MS);
+	try {
+		const response = await fetchSameHost(url, fetchImpl, controller.signal);
+		if (!response.ok) {
+			throw new Error(`download failed with HTTP ${response.status}`);
+		}
+		return await readCapped(response);
+	} catch (error) {
+		if (controller.signal.aborted) {
+			throw new Error(`the download did not finish within ${DOWNLOAD_TIMEOUT_MS / 1000}s`);
+		}
+		throw error;
+	} finally {
+		clearTimeout(timer);
+	}
 }
 
 async function writeAtomically(file: string, data: Buffer, replace: boolean): Promise<void> {
@@ -114,12 +171,18 @@ export async function ingestArticleImage({
 		throw new Error(`slug "${slug}" must be lowercase kebab-case`);
 	}
 	const original = await download(url, fetchImpl);
-	let size: ReturnType<typeof orientedSize>;
+	let metadata: Metadata;
 	try {
-		size = orientedSize(await sharp(original).metadata());
+		metadata = await sharp(original, SHARP_INPUT).metadata();
 	} catch (error) {
 		throw new Error(`the download is not a readable image (${(error as Error).message})`);
 	}
+	if (!INPUT_FORMATS.has(metadata.format ?? "")) {
+		throw new Error(
+			`the download is ${metadata.format ?? "an unknown format"}; only ${[...INPUT_FORMATS].join(", ")} are accepted`,
+		);
+	}
+	const size = orientedSize(metadata);
 	if (!size) throw new Error("the download is not a readable image");
 	const longEdge = Math.max(size.width, size.height);
 	if (longEdge < ARTICLE_IMAGE_MIN_LONG_EDGE) {
@@ -128,7 +191,7 @@ export async function ingestArticleImage({
 		);
 	}
 
-	const resized = sharp(original).rotate().resize({
+	const resized = sharp(original, SHARP_INPUT).rotate().resize({
 		width: ARTICLE_IMAGE_MIN_LONG_EDGE,
 		height: ARTICLE_IMAGE_MIN_LONG_EDGE,
 		fit: "inside",

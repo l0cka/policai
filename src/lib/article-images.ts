@@ -8,9 +8,17 @@ export const ARTICLE_IMAGE_MAX_BYTES = 1_200_000;
 
 export interface ArticleImageFile {
 	bytes: number;
+	format?: string;
 	width?: number;
 	height?: number;
 }
+
+const FORMAT_BY_EXTENSION: Readonly<Record<string, string>> = {
+	jpg: "jpeg",
+	jpeg: "jpeg",
+	png: "png",
+	webp: "webp",
+};
 
 export type ArticleImageFiles = ReadonlyMap<string, ArticleImageFile>;
 
@@ -34,6 +42,12 @@ export function validateArticleImages(
 		if (file.width === undefined || file.height === undefined) {
 			errors.push(`${label} file ${image.src} is not a readable image`);
 			continue;
+		}
+		const extension = image.src.slice(image.src.lastIndexOf(".") + 1);
+		if (file.format !== FORMAT_BY_EXTENSION[extension]) {
+			errors.push(
+				`${label} file ${image.src} contains ${file.format} data but its extension is .${extension}`,
+			);
 		}
 		if (file.width !== image.width || file.height !== image.height) {
 			errors.push(

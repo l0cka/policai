@@ -70,12 +70,15 @@ describe('article images', () => {
     const jsonLd = JSON.parse(
       container.querySelector('script[type="application/ld+json"]')?.textContent ?? '{}',
     );
-    expect(jsonLd.image).toMatchObject({
+    expect(jsonLd.image).toEqual({
       '@type': 'ImageObject',
       url: `https://policai.org${SRC}`,
       width: 2048,
       height: 1365,
+      caption: 'A fixture courtroom with an empty bench',
       license: 'https://creativecommons.org/licenses/by-sa/4.0/',
+      creditText: 'Fixture courtroom by Jane Citizen',
+      acquireLicensePage: 'https://commons.wikimedia.org/wiki/File:Fixture_courtroom.jpg',
     });
   });
 
@@ -86,5 +89,36 @@ describe('article images', () => {
     expect(image).toHaveAttribute('width', '2048');
     expect(image).toHaveAttribute('height', '1365');
     expect(image).toHaveAttribute('sizes', '(min-width: 640px) 160px, 256px');
+  });
+
+  it.each([
+    ['PDM-1.0', 'https://creativecommons.org/publicdomain/mark/1.0/', 'Archive photo by State Records NSW, marked with Public Domain Mark 1.0.'],
+    ['CC0-1.0', 'https://creativecommons.org/publicdomain/zero/1.0/', 'Archive photo by State Records NSW, dedicated to the public domain under CC0 1.0.'],
+    ['CC-BY-3.0-AU', 'https://creativecommons.org/licenses/by/3.0/au/', 'Archive photo by State Records NSW, licensed under CC BY 3.0 AU.'],
+  ] as const)('words the %s attribution for what it is', async (licence, licenceUrl, text) => {
+    const { ArticleImageAttribution } = await import('@/components/analysis');
+    const { container } = render(
+      <p>
+        <ArticleImageAttribution
+          image={{
+            src: SRC,
+            alt: 'An archive photo',
+            width: 2048,
+            height: 1365,
+            title: 'Archive photo',
+            creator: 'State Records NSW',
+            sourceUrl: 'https://commons.wikimedia.org/wiki/File:Archive.jpg',
+            licence,
+            licenceUrl,
+            licenceCheckedAt: '2026-10-16',
+          }}
+        />
+      </p>,
+    );
+    expect(container).toHaveTextContent(text);
+    expect(within(container).getAllByRole('link').map((link) => link.getAttribute('href'))).toEqual([
+      'https://commons.wikimedia.org/wiki/File:Archive.jpg',
+      licenceUrl,
+    ]);
   });
 });

@@ -1,19 +1,14 @@
 # Editorial policy
 
 This is the style guide for Policai's written pieces, each a
-`data/articles/<slug>.md` file to be served at `/analysis`. It covers voice,
-the three formats, citations, the line between fact and analysis, the standard notices,
+`data/articles/<slug>.md` file served at `/analysis`. It covers voice, the
+three formats, citations, the line between fact and analysis, the standard notices,
 corrections and withdrawals, and what Policai does not publish.
 
 Pieces are the Policai analysis tier in [the trust model](./trust-model.md),
 kept visibly apart from verified register records and from
 unverified developments. The register and the developments feed stay neutral
 tracking. A piece never changes either of them.
-
-The articles platform that stores, validates and serves pieces is not built
-yet ([#213](https://github.com/l0cka/policai/issues/213)). Until it is on
-`main`, no piece publishes, and each sentence below that names the platform
-or validation states a requirement the platform must meet.
 
 Daniel Alkurdi is the editor. He approves this policy and the first three
 pieces. After that, a piece publishes on the Editorial Manager's
@@ -132,8 +127,13 @@ a number, or an event.
   them.
 - **Every link in the body appears in the frontmatter.** Each `/policies/<id>`
   link appears in `cites`. Each external official link appears in `sources`.
-  Validation must reject a citation to a record that is not public and
-  verified.
+  `npm run validate:data` rejects a body link missing from the frontmatter,
+  a source off the official allow-list, and a new citation to a record that
+  is withheld, trashed, unverified or marked "Review due". If a record the
+  published piece already cites later becomes withheld, unverified or
+  "Review due", validation reports a warning and the page shows the "Source
+  under review" banner. A citation to a trashed or unknown record is always
+  an error.
   Links to `/developments` and to Policai views such as `/this-week`,
   `/courts` or `/timeline` support no claim and need no frontmatter entry.
   Every other link does.
@@ -164,15 +164,14 @@ Policai's view.
 An automated development that is not verified may appear only:
 
 - with the words "detected, not yet verified";
-- with a link to `/developments` (once
-  [#213](https://github.com/l0cka/policai/issues/213) gives each entry its own
-  anchor, a link to that entry); and
+- with a link to `/developments` (once entries have their own anchors, a
+  link to that entry); and
 - never as support for a factual claim, and never in a lead or title.
 
 ## Standard notices
 
-The platform must render the byline "Policai", the "Analysis" tier label,
-the disclosure and the notice on every published piece. Do not change their
+The platform renders the byline "Policai", the "Analysis" tier label, the
+disclosure and the notice on every published piece. Do not change their
 wording in a piece. Changing it means changing this policy.
 
 **AI disclosure:**
@@ -189,11 +188,6 @@ wording in a piece. Changing it means changing this policy.
 
 Pieces carry one high-quality lead image. A piece with no image that meets
 these rules publishes without one.
-
-Image support is not built yet
-([#219](https://github.com/l0cka/policai/issues/219)). Until it is on `main`,
-each sentence below that names the platform or validation states a
-requirement the platform must meet.
 
 ### Licences
 
@@ -216,8 +210,15 @@ requirement the platform must meet.
 ### Quality
 
 - The source file is at least 2048 px on its long edge.
-- The repository keeps one master per image, re-encoded to 2048 px on the long
-  edge. The platform must serve smaller sizes from that master.
+- The repository keeps one master per image.
+  `npm run add:article-image -- <url> <slug>` downloads the source, refuses
+  one under 2048 px on its long edge, and re-encodes it to 2048 px as
+  `public/images/articles/<slug>/lead.jpg`. The site serves smaller sizes
+  from that master.
+- `npm run validate:data` rejects an image file whose long edge is outside
+  2048 to 2560 px, that is larger than 1.2 MB, or that does not match its
+  declared size, and any file under `public/images/articles/` that no piece
+  uses.
 
 ### Attribution
 
@@ -229,9 +230,11 @@ field.
 A modified CC BY-SA image is shared under the same CC BY-SA licence, and its
 attribution says so.
 
-The platform must render a TASL attribution under the image: title, author,
-source and licence, each linked, and the modifications. Validation must
-reject an image whose licence is not on the allowed list.
+The platform renders a TASL attribution under the image: the title linked
+to the source page, the creator (linked when there is a creator URL), the
+licence linked to its deed, and any modifications. Validation rejects a
+licence that is not on the allowed list, a licence URL that does not match
+the licence, and a source or creator URL on Unsplash or Pexels.
 
 ### Editorial limits
 
@@ -256,13 +259,15 @@ Policai corrects in the open. A published piece never changes silently.
   correct when published. Revise the text and add a dated `corrections` entry
   that starts with "Update:" and names the source change.
 - **Source under review:** when a cited record becomes stale or withheld, the
-  platform must show a "Source under review" banner. The editor re-reads the
-  record and the piece. The banner must clear when the record is verified again;
+  platform shows a "Source under review" banner. The editor re-reads the
+  record and the piece. The banner clears once the re-verified record is live on
+  the site, within an hour of that deploy;
   if the piece's claims no longer hold, publish a correction or update.
 - **Withdrawal:** for a piece that cannot be corrected, for example because
   its subject was misidentified or its central claim was wrong. Set `status`
-  to `withdrawn` with a reason. The URL must stay as a tombstone that says
-  when and why the piece was withdrawn. Never delete a published piece.
+  to `withdrawn` with `withdrawnAt` and `withdrawnReason`. The URL stays as a
+  tombstone that says when and why the piece was withdrawn. Never delete a
+  published piece; validation rejects the deletion.
 - Every correction, update and withdrawal goes through a pull request and the
   same editorial approval as a new piece.
 - Typo fixes that change no meaning need no correction entry.
@@ -291,8 +296,7 @@ A piece is a pull request that adds or changes one `data/articles/<slug>.md`
 file. The slug is lowercase kebab case and stays the same after publication.
 
 1. The Policai Writer drafts the piece and runs `npm run check`, which
-   includes `npm run validate:data` and, once the platform lands, its
-   article checks.
+   includes the article checks in `npm run validate:data`.
 2. The Editorial Manager checks every claim against its source, the fact and
    analysis boundary, and this policy, then records `EDITORIAL APPROVE <sha>`
    or `EDITORIAL REJECT <sha>`.

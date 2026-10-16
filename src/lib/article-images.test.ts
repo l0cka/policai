@@ -3,7 +3,7 @@
 import { mkdir, mkdtemp, rm, writeFile } from "fs/promises";
 import os from "os";
 import path from "path";
-import sharp from "sharp";
+import sharp, { type Sharp } from "sharp";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { readArticleImageFiles } from "./article-image-files";
 import { validateArticles } from "./validate-data";
@@ -92,6 +92,26 @@ describe("validateArticles images", () => {
 		expect(
 			await errorsFor(frontmatter(), async () => put(`${SLUG}/lead.jpg`, "not an image")),
 		).toEqual([`data/articles/${SLUG}.md: image file ${SRC} is not a readable image`]);
+	});
+
+	it("rejects a file whose format does not match its extension", async () => {
+		const webp = await sharp({ create: { width: 2048, height: 1365, channels: 3, background: "#456" } })
+			.webp()
+			.toBuffer();
+		expect(await errorsFor(frontmatter(), async () => put(`${SLUG}/lead.jpg`, webp))).toEqual([
+			`data/articles/${SLUG}.md: image file ${SRC} contains webp data but its extension is .jpg`,
+		]);
+	});
+
+	it.each([
+		["lead.webp", (b: Sharp) => b.webp()],
+		["lead.png", (b: Sharp) => b.png()],
+		["lead.jpeg", (b: Sharp) => b.jpeg()],
+	])("accepts %s holding its own format", async (file, encode) => {
+		const data = await encode(sharp({ create: { width: 2048, height: 1365, channels: 3, background: "#456" } })).toBuffer();
+		expect(
+			await errorsFor(frontmatter({ src: `/images/articles/${SLUG}/${file}` }), async () => put(`${SLUG}/${file}`, data)),
+		).toEqual([]);
 	});
 
 	it("rejects declared dimensions that differ from the file", async () => {

@@ -17,3 +17,7 @@ export function isValidCalendarDate(value: string): boolean {
     date.getUTCDate() === day
   );
 }
+
+export function sydneyCalendarDate(now: Date): string {
+  return now.toLocaleDateString('en-CA', { timeZone: 'Australia/Sydney' });
+}

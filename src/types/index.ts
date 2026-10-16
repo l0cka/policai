@@ -772,7 +772,9 @@ export type ArticleLicence =
 	| "CC0-1.0"
 	| "PDM-1.0"
 	| `CC-BY-${number}.${number}`
-	| `CC-BY-SA-${number}.${number}`;
+	| `CC-BY-${number}.${number}-${string}`
+	| `CC-BY-SA-${number}.${number}`
+	| `CC-BY-SA-${number}.${number}-${string}`;
 
 export interface ArticleImage {
 	src: string;
