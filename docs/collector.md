@@ -208,7 +208,12 @@ the page changed, not a classifier's judgement. The detection kind owns the
 classification: a change on a tracked policy or timeline event is never sent
 to a classifier, always carries `classification: 'heuristic'` and
 `promptVersion: 'source-hash-change-v1'`, and always stages a review,
-whichever classifier path is active. These detections land as
+whichever classifier path is active. The review gate (`qualifiesForReview` in
+`collect.ts`) keys these detections on that `promptVersion`, not on the
+classification label. For a Claude detection it compares the uncapped
+`rawConfidence` with the review threshold, because the capped score could
+never clear it. `rawConfidence` is used for that decision only and is never
+persisted. These detections land as
 `needs_review` and pass through the identical editorial gate; the cap and
 the score-1 path never let an automated detection publish anything. `data/policies.json` is never written by either path:
 a Vitest test asserts the file is byte-identical before and after a
