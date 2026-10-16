@@ -27,10 +27,17 @@ FILES = {
     **{
         name: (
             f"/usr/local/libexec/policai-host/{name}",
-            0o755 if name in {"bin/docker", "backup.sh"} else 0o644,
+            0o755 if name in {"bin/docker", "backup.sh", "backup-mirror.sh"} else 0o644,
             "root",
         )
-        for name in ("cli.py", "host.py", "dispatcher.py", "bin/docker", "backup.sh")
+        for name in (
+            "cli.py",
+            "host.py",
+            "dispatcher.py",
+            "bin/docker",
+            "backup.sh",
+            "backup-mirror.sh",
+        )
     },
     "policai-deploy": ("/usr/local/libexec/policai-deploy", 0o755, "root"),
     "compatibility/policai-deploy.sh": ("/home/l0cka/.local/bin/policai-deploy.sh", 0o755, "l0cka"),
@@ -41,7 +48,7 @@ FILES = {
             0o644,
             "l0cka",
         )
-        for name in ("ingest", "enrich", "backup", "verify-deadlines")
+        for name in ("ingest", "enrich", "backup", "backup-mirror", "verify-deadlines")
     },
 }
 
@@ -303,7 +310,16 @@ def command(argv, user=False):
 def held():
     for user, names in (
         (False, ("policai-pull",)),
-        (True, ("probono-ingest", "probono-enrich", "probono-backup", "probono-digest")),
+        (
+            True,
+            (
+                "probono-ingest",
+                "probono-enrich",
+                "probono-backup",
+                "probono-backup-mirror",
+                "probono-digest",
+            ),
+        ),
     ):
         for name in names:
             for suffix in (".service", ".timer"):
@@ -346,7 +362,7 @@ def held():
     # Include manual legacy shells, which do not participate in dispatcher locks.
     processes = command(["/usr/bin/ps", "-eo", "args="])
     if re.search(
-        r"(?:^|\s)(?:[^\s]*/)?ops/(?:ingest|enrich)\.sh(?:\s|$)|probono-radar/ops-host/backup-db\.sh",
+        r"(?:^|\s)(?:[^\s]*/)?ops/(?:ingest|enrich)\.sh(?:\s|$)|probono-radar/ops-host/backup-db\.sh|\.local/bin/probono-backup-mirror\.sh",
         processes,
     ):
         raise Refused("legacy worker process active")

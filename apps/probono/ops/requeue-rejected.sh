@@ -15,11 +15,15 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-LIMIT="${1:-200}"
-LIMIT_SQL="LIMIT $LIMIT"
-if [ "$LIMIT" = "0" ]; then LIMIT_SQL=""; fi
+LIMIT="${1-200}"
+if [[ ! "$LIMIT" =~ ^[0-9]+$ ]]; then
+  echo "usage: ops/requeue-rejected.sh [batch-size]   (non-negative integer, default 200, 0 = all)" >&2
+  exit 64
+fi
 
-read -r -d '' SQL <<SQL || true
+PROBONO_DOCKER_BIN="${PROBONO_DOCKER_BIN:-docker}"
+
+read -r -d '' SQL <<'SQL' || true
 WITH candidates AS (
   SELECT i.id
   FROM items i
@@ -28,15 +32,15 @@ WITH candidates AS (
     AND i.enriched_at IS NOT NULL
     AND s.active
   ORDER BY i.created_at ASC
-  $LIMIT_SQL
+  LIMIT NULLIF(:'limit', '0')::bigint
 )
 UPDATE items SET enriched_at = NULL
 WHERE id IN (SELECT id FROM candidates);
 SQL
 
 echo "[requeue] resetting up to ${LIMIT} rejected items from active sources"
-docker compose exec -T db psql -U radar -d radar -c "$SQL"
-docker compose exec -T db psql -U radar -d radar -c \
+printf '%s\n' "$SQL" | "$PROBONO_DOCKER_BIN" compose exec -T db psql -U radar -d radar -v ON_ERROR_STOP=1 -v "limit=$LIMIT" -f -
+"$PROBONO_DOCKER_BIN" compose exec -T db psql -U radar -d radar -c \
   "SELECT count(*) FILTER (WHERE enriched_at IS NULL) AS queued,
           count(*) FILTER (WHERE NOT relevant AND enriched_at IS NOT NULL) AS still_rejected
    FROM items;"

@@ -4,10 +4,11 @@ This directory holds the project-facing documentation that should stay in sync w
 
 ## Available Docs
 
-- [Collector operations guide](./collector.md) — how the daily collector works, running it locally, the GitHub Actions workflow, reviewing detections into the register, and adding sources.
+- [Collector operations guide](./collector.md) — how the daily collector works, running it locally, the host wrapper, reviewing detections into the register, and adding sources.
 - [Public API and MCP](./api.md) — public endpoints, filters, response formats, and read-only MCP tools.
 - [Architecture](./architecture.md) — system boundaries, data ownership, and non-negotiable invariants.
 - [Information trust model](./trust-model.md) — verification tiers, source rules, date policy, and publication gates.
+- [Editorial policy](./editorial-policy.md) — voice, formats, citations, standard notices, and corrections for written pieces in `data/articles/`.
 - [Hosting](./hosting-argus.md) — how the deployed site relates to this repository; the operational runbook is private.
 - [Amalgamation status](./amalgamation.md) — source integration, verification and remaining Pro Bono cutover steps.
 - [Collector hosting](./collector-argus.md) — where scheduled collection runs; retrieval and classification behaviour is in collector.md.

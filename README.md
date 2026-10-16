@@ -50,7 +50,7 @@ High-confidence detections are staged in `data/source-reviews.json`; a reviewer 
 - Next.js 16 App Router, React 19, TypeScript 5 (strict)
 - Tailwind CSS 4, shadcn/ui on Radix UI, D3.js
 - Cheerio for scraping; keyword heuristic or Claude (Anthropic) for relevance classification
-- Vitest; daily scheduled collection on the maintainer's server (GitHub Actions kept as a manual fallback); self-hosted behind a Cloudflare tunnel
+- Vitest; daily scheduled collection on the maintainer's server; self-hosted behind a Cloudflare tunnel
 
 ## Quick Start
 

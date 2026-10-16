@@ -1,5 +1,8 @@
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { isAllowedSourceHost } from '@/lib/source-url';
+import { isAllowedSourceHost, sourceIdentityUrls, sourceUrlsEqual } from '@/lib/source-url';
+import type { Policy } from '@/types';
 import { WATCH_SOURCES, getAutomaticSources, getManualSources } from './sources';
 
 const STATE_LEGISLATION_SOURCES: Record<string, string> = {
@@ -32,6 +35,10 @@ const E24_IDENTITY_EXCEPTION_IDS = [
   'art-practice-directions',
 ] as const;
 
+const REGISTER_POLICIES = JSON.parse(
+  readFileSync(join(process.cwd(), 'data', 'policies.json'), 'utf8'),
+) as Policy[];
+
 describe('WATCH_SOURCES', () => {
   it('uses unique source ids', () => {
     const ids = WATCH_SOURCES.map((source) => source.id);
@@ -42,6 +49,33 @@ describe('WATCH_SOURCES', () => {
     for (const source of WATCH_SOURCES) {
       expect(isAllowedSourceHost(source.url), source.id).toBe(true);
     }
+  });
+
+  it('watches the register sourceUrl of every record it matches', () => {
+    for (const source of getAutomaticSources()) {
+      if (source.kind !== 'document') continue;
+      for (const policy of REGISTER_POLICIES) {
+        const identity = sourceIdentityUrls(
+          policy.sourceUrl,
+          policy.verification?.source,
+        );
+        if (!identity.some((url) => sourceUrlsEqual(url, source.url))) continue;
+        expect(
+          sourceUrlsEqual(policy.sourceUrl, source.url),
+          `${source.id} watches an alias of ${policy.id}`,
+        ).toBe(true);
+      }
+    }
+  });
+
+  it('watches the canonical NT AI Assurance Framework URL', () => {
+    const source = WATCH_SOURCES.find(({ id }) => id === 'nt-ai-assurance');
+    const policy = REGISTER_POLICIES.find(
+      ({ id }) => id === 'nt-artificial-intelligence-assurance-framework',
+    );
+    expect(source?.fetchStrategy).toBe('browser');
+    expect(policy).toBeDefined();
+    expect(sourceUrlsEqual(source?.url ?? '', policy?.sourceUrl ?? '')).toBe(true);
   });
 
   it('watches the verified state legislation registers daily and automatically', () => {

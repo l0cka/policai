@@ -88,11 +88,32 @@ if [[ "$returned_ids" != "$expected_ids" ]]; then
 fi
 
 entry_count="$(printf '%s' "$enrichments" | jq -r 'length')"
+saved=0
+rejected=0
+failed=0
 for ((index = 0; index < entry_count; index++)); do
   item_id="$(printf '%s' "$enrichments" | jq -er ".[$index].item_id")"
   payload="$(printf '%s' "$enrichments" | jq -ce ".[$index] | del(.item_id)")"
+  save_status=0
   printf '%s' "$payload" \
-    | "$PROBONO_DOCKER_BIN" compose --profile worker run --rm -T worker src/save-enrichment.ts "$item_id"
+    | "$PROBONO_DOCKER_BIN" compose --profile worker run --rm -T worker src/save-enrichment.ts "$item_id" \
+    || save_status=$?
+  case "$save_status" in
+    0) saved=$((saved + 1)) ;;
+    2)
+      rejected=$((rejected + 1))
+      echo "[enrich] item $item_id rejected by the saver and recorded as screened out" >&2
+      ;;
+    *)
+      failed=$((failed + 1))
+      echo "[enrich] item $item_id failed with exit status $save_status" >&2
+      ;;
+  esac
 done
+
+echo "[enrich] saved $saved, rejected $rejected, failed $failed $(date -Is)"
+if ((failed > 0 || saved == 0)); then
+  exit 1
+fi
 
 echo "[enrich] done $(date -Is)"

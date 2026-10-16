@@ -1171,7 +1171,7 @@ export const WATCH_SOURCES: WatchSource[] = [
     name: 'NT Digital Territory — AI assurance framework',
     jurisdiction: 'nt',
     category: 'government',
-    url: 'https://digitalterritory.nt.gov.au/digital-government/strategies-and-guidance/policies-standards-and-guidance/artificial-intelligence-assurance-framework',
+    url: 'https://dcdd.nt.gov.au/publications/artificial-intelligence-assurance-framework',
     kind: 'document',
     schedule: 'weekly',
     enabled: true,

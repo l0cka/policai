@@ -23,7 +23,7 @@ The collector is the automation behind the Developments feed: it watches officia
      `data/watch-state.json`,
    - coverage health, per-source item/candidate counts, and errors →
      `public/data/meta.json`.
-4. The collector **never writes `data/policies.json`** — the register only changes through reviewed commits, and the GitHub workflow fails if a collector run touches it.
+4. The collector **never writes `data/policies.json`** — the register only changes through reviewed commits. The host wrapper `ops/collector/policai-collect.sh` fails a collection run that changes it. No GitHub workflow checks this, so a hand-made PR that edits the register is caught only by review.
 
 Non-dry-run collection holds the same cross-process data transaction lock as
 the editorial MCP workflow from its initial reads through its final atomic
@@ -108,6 +108,19 @@ creates a new sequenced `baseline_reversion` review. This prevents the obsolete
 changed-version review from withholding a valid baseline forever while still
 requiring an editor to confirm the live bytes before public access is restored.
 
+Page publication dates come from, in order: a visible publication label, then
+`dcterms.created`, `dcterms.issued`, `article:published_time` and
+`itemprop="datePublished"` metadata, then publication-labelled `time` elements,
+then the last-resort keys. The last-resort keys depend on the page's platform.
+A page whose `<meta name="generator">` content contains `GovCMS` or `Drupal`
+(any case) is a GovCMS page; there `dcterms.date` is the edit time, so it never
+sets `publishedAt` and only `date` remains. Every other page falls back to
+`dcterms.date`, then `date`. A GovCMS page with none of these fields has no
+publication date. Modified-time keys
+(`dcterms.modified`, `article:modified_time`, `og:updated_time`) never set
+`publishedAt`. Dates are read as written, so the source's own calendar day wins
+whatever the machine's time zone.
+
 HTML fingerprints include every publication-date metadata field used by
 extraction, relevant instrument links, and visible text. Linked PDF, Word, and RTF documents are retrieved and
 their byte hashes are folded into the landing page's fingerprint. A landing
@@ -144,7 +157,7 @@ alias, the review carries the record's canonical `sourceUrl`, while its source
 evidence and linked development keep the URL the collector retrieved. Timeline
 events match the same way. Pending and approved update reviews
 temporarily withhold that policy from public reads until an editor publishes
-the re-verified record or rejects the change review. Publishing refuses an
+the re-verified record. These reviews cannot be rejected. Publishing refuses an
 older update when a newer non-rejected source version exists, and publishing
 the newest version rejects older still-active update reviews as superseded.
 
