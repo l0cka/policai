@@ -122,6 +122,7 @@ describe('analysis article page', () => {
 
   it('renders a tombstone for a withdrawn piece without its body or notices', async () => {
     await renderArticle('fixture-note-withdrawn');
+    expect(screen.getByRole('heading', { level: 1 })).toHaveClass('article-title');
     expect(screen.getByRole('status')).toHaveTextContent('Withdrawn on 10 October 2026');
     expect(screen.getByRole('status')).toHaveTextContent('The note described a different instrument from the one it cited.');
     expect(screen.queryByTestId('body')).not.toBeInTheDocument();

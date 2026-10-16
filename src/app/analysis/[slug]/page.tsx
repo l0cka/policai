@@ -102,7 +102,7 @@ export default async function ArticlePage({ params }: Params) {
     return (
       <div className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 sm:py-10">
         <ArticleBreadcrumb type={article.type} />
-        <h1 className="page-title">{article.title}</h1>
+        <h1 className="article-title">{article.title}</h1>
         <div role="status" className="mt-6 border-l-2 border-[var(--caution)] bg-[var(--status-proposed-bg)] px-4 py-3 text-sm">
           <p className="font-medium text-[var(--caution)]">
             <ArticleDate label="Withdrawn on" date={article.withdrawnAt} />
@@ -126,7 +126,7 @@ export default async function ArticlePage({ params }: Params) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: articleJsonLd(article) }} />
       <ArticleBreadcrumb type={article.type} />
       <header className="space-y-3">
-        <h1 className="page-title">{article.title}</h1>
+        <h1 className="article-title">{article.title}</h1>
         <p className="text-base leading-7 text-muted-foreground">{article.summary}</p>
         <p className="flex flex-wrap gap-x-3 text-xs text-muted-foreground">
           <Byline />
@@ -142,7 +142,7 @@ export default async function ArticlePage({ params }: Params) {
         <StandardNotices />
       </div>
 
-      <div className="prose prose-sm mt-8 max-w-none dark:prose-invert sm:prose-base">
+      <div className="prose article-body mt-8 max-w-none dark:prose-invert">
         <MDXRemote source={article.body} options={{ mdxOptions: { format: 'md' } }} />
       </div>
 
