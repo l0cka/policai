@@ -172,6 +172,24 @@ A relevance score is not a verification score.
 Irrelevant, duplicate, misleading, or superseded leads remain in operational
 history where useful, but are not shown as current public developments.
 
+### 4. Policai analysis
+
+A written piece in `data/articles/` is Policai's own analysis, signed
+"Policai". It sits above the register and developments and never changes
+either. A piece is trustworthy only when:
+
+- every factual claim cites a public verified register record or an official
+  source on a `.gov.au` or allow-listed host;
+- analysis is marked as analysis and kept apart from reported fact;
+- an unverified development appears only as "detected, not yet verified",
+  with a link, and never supports a claim;
+- it carries the standard AI disclosure and not-legal-advice notice; and
+- corrections are appended and dated, and a withdrawn piece keeps a tombstone.
+
+A piece publishes only after editorial approval of its pull request. The
+rules, formats and notice wording are in the
+[editorial policy](./editorial-policy.md).
+
 ## Source policy
 
 - Prefer the official instrument page or document.

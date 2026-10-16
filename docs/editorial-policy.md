@@ -5,8 +5,8 @@ This is the style guide for Policai's written pieces: the files in
 citations, the line between fact and analysis, the standard notices,
 corrections and withdrawals, and what Policai does not publish.
 
-Pieces are the third trust tier in [the trust model](./trust-model.md):
-Policai analysis, kept visibly apart from verified register records and from
+Pieces are the Policai analysis tier in [the trust model](./trust-model.md),
+kept visibly apart from verified register records and from
 unverified developments. The register and the developments feed stay neutral
 tracking. A piece never changes either of them.
 
@@ -54,7 +54,8 @@ what falls due next.
   describe an empty window as a quiet week.
 - **Length:** 400 to 800 words.
 - **Structure:**
-  1. A two- or three-sentence lead: the most consequential verified change.
+  1. A two- or three-sentence lead that states, as fact, the verified change
+     the briefing opens with. Why it matters goes in `## Why it matters`.
   2. `## What changed`: each verified development or register change, one
      short paragraph each, with its citation.
   3. `## Coming up`: deadlines and commencements from the `/this-week`
@@ -112,8 +113,8 @@ a number, or an event.
   source on a `.gov.au` or allow-listed host, by its URL in `sources` and as
   a link in the text.
 - **Not allowed as support:** news reports, commentary, social media, vendor
-  material, other trackers, a withheld, stale-pending, trashed or unverified
-  register record, or a development that is not verified. These can prompt a
+  material, other trackers, a withheld, stale, trashed or unverified register
+  record, or a development that is not verified. These can prompt a
   piece. They cannot support a claim in it.
 - **Re-read before citing.** Open each source while drafting and confirm that
   it says what the piece says. A register record's summary is not a
@@ -127,6 +128,9 @@ a number, or an event.
 - **Every link in the body appears in the frontmatter.** Each `/policies/<id>`
   link appears in `cites`. Each external official link appears in `sources`.
   Validation rejects a citation to a record that is not public and verified.
+  Links to `/developments` entries and to Policai views such as `/this-week`,
+  `/courts` or `/timeline` support no claim and need no frontmatter entry.
+  Every other link does.
 
 If a claim cannot be cited, remove it.
 
