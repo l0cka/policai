@@ -3,11 +3,13 @@ import path from "path";
 import { isValidCalendarDate } from "@/lib/calendar-date";
 import { parseFrontmatter, type FrontmatterFile } from "@/lib/frontmatter";
 import { isAllowedSourceHost, sourceUrlsEqual } from "@/lib/source-url";
+import { articleLicenceTerms, disallowedImageHost } from "@/lib/article-licences";
 import {
 	ARTICLE_STATUSES,
 	ARTICLE_TYPES,
 	type Article,
 	type ArticleCorrection,
+	type ArticleImage,
 	type Policy,
 	type PublicArticle,
 } from "@/types";
@@ -24,6 +26,25 @@ export const ARTICLE_NOTICE =
 
 const ARTICLE_SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
+export const ARTICLE_IMAGE_ROOT = "/images/articles";
+
+const ARTICLE_IMAGE_FILE = /^[a-z0-9][a-z0-9._-]*\.(?:jpe?g|png|webp)$/;
+
+const ARTICLE_IMAGE_FIELDS = new Set([
+	"src",
+	"alt",
+	"width",
+	"height",
+	"title",
+	"creator",
+	"creatorUrl",
+	"sourceUrl",
+	"licence",
+	"licenceUrl",
+	"modifications",
+	"licenceCheckedAt",
+]);
+
 const SITE_ORIGIN = "https://policai.org";
 
 const ARTICLE_FIELDS = new Set([
@@ -38,6 +59,7 @@ const ARTICLE_FIELDS = new Set([
 	"cites",
 	"sources",
 	"corrections",
+	"image",
 ]);
 
 const BODY_LINK_PATTERNS = [
@@ -127,6 +149,120 @@ function calendarDate(value: unknown): string | undefined {
 		: undefined;
 }
 
+export function isArticleSlug(value: string): boolean {
+	return ARTICLE_SLUG.test(value);
+}
+
+function isHttpsUrl(value: string): boolean {
+	try {
+		return new URL(value).protocol === "https:";
+	} catch {
+		return false;
+	}
+}
+
+function parseArticleImage(
+	slug: string,
+	raw: unknown,
+	errors: string[],
+): ArticleImage | undefined {
+	if (typeof raw !== "object" || raw === null || Array.isArray(raw)) {
+		errors.push("image must be an object");
+		return undefined;
+	}
+	const data = raw as Record<string, unknown>;
+	const problems: string[] = [];
+	const fail = (message: string) => problems.push(`image.${message}`);
+
+	for (const key of Object.keys(data)) {
+		if (!ARTICLE_IMAGE_FIELDS.has(key)) fail(`${key} is not a known field`);
+	}
+	const required = (key: string): string | undefined => {
+		const value = data[key];
+		if (typeof value === "string" && value.trim()) return value.trim();
+		fail(`${key} is required and must be non-empty text`);
+		return undefined;
+	};
+	const optional = (key: string): string | undefined => {
+		if (data[key] === undefined) return undefined;
+		return required(key);
+	};
+	const httpsUrl = (key: string, isRequired: boolean): string | undefined => {
+		const value = isRequired ? required(key) : optional(key);
+		if (value === undefined) return value;
+		if (!isHttpsUrl(value)) {
+			fail(`${key} must be an https URL`);
+			return value;
+		}
+		const disallowed = disallowedImageHost(value);
+		if (disallowed) fail(`${key} is on ${disallowed.host}, which is not allowed: ${disallowed.reason}`);
+		return value;
+	};
+	const dimension = (key: string): number | undefined => {
+		const value = data[key];
+		if (typeof value === "number" && Number.isInteger(value) && value > 0) return value;
+		fail(`${key} is required and must be a positive whole number of pixels`);
+		return undefined;
+	};
+
+	const src = required("src");
+	if (src !== undefined) {
+		const prefix = `${ARTICLE_IMAGE_ROOT}/${slug}/`;
+		if (!src.startsWith(prefix) || !ARTICLE_IMAGE_FILE.test(src.slice(prefix.length))) {
+			fail(`src must be ${prefix}<file> with a jpg, png or webp file name`);
+		}
+	}
+	const alt = required("alt");
+	const width = dimension("width");
+	const height = dimension("height");
+	const title = required("title");
+	const creator = required("creator");
+	const creatorUrl = httpsUrl("creatorUrl", false);
+	const sourceUrl = httpsUrl("sourceUrl", true);
+	const modifications = optional("modifications");
+	const licenceCheckedAt = calendarDate(data.licenceCheckedAt);
+	if (!licenceCheckedAt) fail("licenceCheckedAt is required and must be a calendar date (YYYY-MM-DD)");
+
+	const licenceId = required("licence");
+	const licenceUrlValue = httpsUrl("licenceUrl", true);
+	let terms: ReturnType<typeof articleLicenceTerms>;
+	if (licenceId !== undefined) {
+		terms = articleLicenceTerms(licenceId);
+		if (!terms) {
+			fail(
+				/(^|-)(NC|ND)(-|$)/.test(licenceId)
+					? `licence ${licenceId} is rejected; NC and ND licences are not allowed`
+					: `licence must be CC0-1.0, PDM-1.0, CC-BY-<version> or CC-BY-SA-<version>, not ${licenceId}`,
+			);
+		} else if (licenceUrlValue !== undefined && licenceUrlValue !== terms.licenceUrl) {
+			fail(`licenceUrl must be ${terms.licenceUrl} for ${licenceId}`);
+		}
+	}
+
+	errors.push(...problems);
+	if (
+		problems.length > 0 ||
+		!src || !alt || !width || !height || !title || !creator || !sourceUrl ||
+		!terms || !licenceUrlValue || !licenceCheckedAt
+	) {
+		return undefined;
+	}
+	return {
+		src,
+		alt,
+		width,
+		height,
+		title,
+		creator,
+		...(creatorUrl ? { creatorUrl } : {}),
+		sourceUrl,
+		licence: terms.licence,
+		licenceUrl: terms.licenceUrl,
+		...(modifications ? { modifications } : {}),
+		licenceCheckedAt,
+	};
+}
+
 export function parseArticle({ slug, source }: ArticleSource): ArticleParseResult {
 	let file: FrontmatterFile;
 	try {
@@ -202,6 +338,9 @@ export function parseArticle({ slug, source }: ArticleSource): ArticleParseResul
 	const cites = list("cites");
 	const sources = list("sources");
 	const body = file.content.trim();
+	const image = present("image")
+		? parseArticleImage(slug, data.image, errors)
+		: undefined;
 
 	sources.forEach((url, index) => {
 		if (!isAllowedSourceHost(url)) {
@@ -299,6 +438,7 @@ export function parseArticle({ slug, source }: ArticleSource): ArticleParseResul
 		sources,
 		corrections,
 		body,
+		...(image ? { image } : {}),
 		...(updatedAt ? { updatedAt } : {}),
 	};
 

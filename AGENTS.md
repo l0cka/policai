@@ -191,6 +191,68 @@ is set but cannot be read, `validate:data` fails, so the transition rules
 never pass silently. When it is unset and no merge-base can be read, every
 piece counts as new.
 
+### Article images
+
+A piece may carry an `image` object in its frontmatter. It is parsed by
+`parseArticle` into `ArticleImage` (`src/types/index.ts`). Fields: `src`
+(`/images/articles/<slug>/<file>`, jpg, png or webp), `alt`, `width`,
+`height`, `title`, `creator`, `sourceUrl` (https), `licence`, `licenceUrl`,
+`licenceCheckedAt` (date) and the optional `creatorUrl` (https) and
+`modifications` (for example `cropped`).
+
+The licence is a table lookup (`ARTICLE_LICENCE_RULES` in
+`src/lib/article-licences.ts`). `licenceUrl` must equal the canonical URL for
+the `licence` id. NC, ND and every other id are rejected.
+
+| `licence` | `licenceUrl` |
+| --- | --- |
+| `CC0-1.0` | `https://creativecommons.org/publicdomain/zero/1.0/` |
+| `PDM-1.0` | `https://creativecommons.org/publicdomain/mark/1.0/` |
+| `CC-BY-<n.n>` | `https://creativecommons.org/licenses/by/<n.n>/` |
+| `CC-BY-SA-<n.n>` | `https://creativecommons.org/licenses/by-sa/<n.n>/` |
+
+Some image hosts use their own licences, not Creative Commons, so a CC label
+on their images cannot be true. `DISALLOWED_IMAGE_HOSTS` (also in
+`article-licences.ts`) lists them with the reason, and a `sourceUrl` or
+`creatorUrl` on a listed host or any of its subdomains is an error whatever
+the `licence`.
+
+| Host | Reason |
+| --- | --- |
+| `unsplash.com` | The Unsplash Licence is not a Creative Commons licence. |
+| `pexels.com` | The Pexels Licence is not a Creative Commons licence. |
+
+`validateArticles` also checks the file in `public/` (`article-images.ts`):
+it exists, is a readable image, matches the declared `width` and `height`
+(after EXIF orientation), has a long edge of 2048 to 2560 px and is at most
+1,200,000 bytes. A file under `public/images/articles/` that no article's
+`image.src` uses is an orphan and an error. These checks apply to every
+status and to untouched pieces. `sharp` is a devDependency for them (it is
+already in the tree through `next`).
+
+The lead image on `/analysis/[slug]` and the thumbnail on `/analysis` use
+`next/image` with the declared size and `sizes`, so the page does not shift.
+A TASL line under the lead image links the title (source page), creator and
+licence, and adds "Modified: ..." when `modifications` is set. The image is
+the `og:image` and `twitter:image`, and the Article JSON-LD `image`
+(`ImageObject` with `license` and `creditText`).
+
+`npm run add:article-image -- <url> <slug>` downloads the original over
+https with the collector identity `User-Agent` (`COLLECTOR_USER_AGENT`), refuses one under 2048 px on its long edge, applies EXIF orientation,
+re-encodes at a 2048 px long edge (quality 82, lowered in steps to 70 if the
+file would exceed the size limit), strips metadata and writes
+`public/images/articles/<slug>/lead.jpg`. It writes a temporary file in the
+same folder and renames it into place, so a failed run leaves no partial file.
+It refuses to overwrite an existing `lead.jpg`, because validation matches the
+file to its frontmatter only by size and a new image would keep the old
+attribution. Remove the file and its `image` attribution deliberately, or pass
+`--replace` (`npm run add:article-image -- <url> <slug> --replace`) and update
+every attribution field for the new image. It prints a frontmatter stub with
+`alt`, `title`, `creator`, `creatorUrl`, `sourceUrl`, `licence`,
+`licenceUrl`, `modifications` and `licenceCheckedAt` empty. It never infers
+licence data: a person fills them in from the source page, then deletes the
+optional keys they do not use. The stub fails `validate:data` until then.
+
 ## Key Domain Types
 
 Defined in `src/types/index.ts` — always import from `@/types`:
