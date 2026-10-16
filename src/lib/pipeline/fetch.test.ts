@@ -6,6 +6,7 @@ import { describe, expect, it, vi } from 'vitest';
 import {
   assertSafeSourceUrl,
   assertExpectedSourceDestination,
+  matchesRetrievedContent,
   retrieveSource,
   retrieveSourceOverHttp1,
   SourceFetchError,
@@ -1248,5 +1249,43 @@ describe('retrieveSource', () => {
     } finally {
       globalThis.fetch = originalFetch;
     }
+  });
+});
+
+describe('matchesRetrievedContent', () => {
+  const url = 'https://example.gov.au/policy';
+  const retrievePage = (head: string) =>
+    retrieveSource(url, {
+      fetchImpl: (async () =>
+        new Response(
+          `<html><head>${head}</head><body><main><h1>AI policy</h1><p>Stable obligations.</p></main></body></html>`,
+          { headers: { 'content-type': 'text/html' } },
+        )) as unknown as typeof fetch,
+      hashLinkedDocuments: false,
+    });
+
+  it('accepts the fingerprint stored before dcterms.created and the date platform were fingerprinted', async () => {
+    const current = await retrievePage(
+      '<meta name="Generator" content="Drupal 10 (https://www.drupal.org)"><meta name="dcterms.created" content="2026-06-01">',
+    );
+    expect(current.legacyContentHash).not.toBe(current.evidence.contentHash);
+    expect(matchesRetrievedContent(current, current.legacyContentHash)).toBe(true);
+    expect(matchesRetrievedContent(current, current.evidence.contentHash)).toBe(true);
+  });
+
+  it('rejects the current fingerprint of a page that lacked dcterms.created once the page gains it', async () => {
+    const before = await retrievePage('');
+    const after = await retrievePage(
+      '<meta name="dcterms.created" content="2026-06-01">',
+    );
+    expect(matchesRetrievedContent(after, before.evidence.contentHash)).toBe(false);
+  });
+
+  it('rejects the current fingerprint of a page that lacked a generator once it becomes a GovCMS page', async () => {
+    const before = await retrievePage('<meta name="dcterms.date" content="2025-03-01">');
+    const after = await retrievePage(
+      '<meta name="Generator" content="Drupal 10 (https://www.drupal.org)"><meta name="dcterms.date" content="2025-03-01">',
+    );
+    expect(matchesRetrievedContent(after, before.evidence.contentHash)).toBe(false);
   });
 });

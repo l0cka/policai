@@ -113,17 +113,73 @@ Page publication dates come from, in order: a visible publication label, then
 `itemprop="datePublished"` metadata, then publication-labelled `time` elements,
 then the last-resort keys. The last-resort keys depend on the page's platform.
 A page whose `<meta name="generator">` content contains `GovCMS` or `Drupal`
-(any case) is a GovCMS page; there `dcterms.date` is the edit time, so it never
-sets `publishedAt` and only `date` remains. Every other page falls back to
-`dcterms.date`, then `date`. A GovCMS page with none of these fields has no
-publication date. Modified-time keys
+(any case) is a GovCMS page. It has no last-resort keys: there `dcterms.date`
+is the edit time, and none of the Drupal and GovCMS pages checked for #195
+carried `date`, so a `date` value on such a page has unknown meaning. Every other page falls back to `dcterms.date`, then `date`. A GovCMS
+page with no publication label, publication metadata or labelled `time` element
+has no publication date. Modified-time keys
 (`dcterms.modified`, `article:modified_time`, `og:updated_time`) never set
 `publishedAt`. Dates are read as written, so the source's own calendar day wins
 whatever the machine's time zone.
 
 HTML fingerprints include every publication-date metadata field used by
-extraction, relevant instrument links, and visible text. Linked PDF, Word, and RTF documents are retrieved and
-their byte hashes are folded into the landing page's fingerprint. A landing
+extraction, the date platform (a `date-platform:govcms` or
+`date-platform:generic` entry, not the raw generator string, so a Drupal
+version bump does not read as a change), the
+modified-time keys `dcterms.modified` and `article:modified_time`
+(`og:updated_time` is neither read nor fingerprinted), `dc.date`, `og:title`,
+`citation_title`, `citation_publication_date`, `time[datetime]` values,
+relevant instrument links, and visible text. The date selectors and the
+fingerprint key set come from one table in `src/lib/pipeline/date-metadata.ts`,
+and `date-metadata.test.ts` fails if a selector can change the extracted date
+without changing the fingerprint. Browser captures accept the same metadata
+keys.
+
+Fingerprints stored before #195 omit `dcterms.created` and the date platform.
+Retrieval also computes that legacy fingerprint (`legacyContentHash`, in
+memory only), and `matchesRetrievedContent` in `src/lib/pipeline/fetch.ts` is
+the one comparison of a fresh retrieval with a stored hash. It accepts either
+fingerprint and is used for watch-state snapshots, verified policy and
+timeline hashes, staged transitions and their pending candidates, the
+change-reason label, the `discoveredAt` retention of a re-staged review, the
+register audit, and the re-staging, approval and publication gates. The
+current fingerprint always records the date platform and the legacy
+fingerprint never does, so no page has equal current and legacy fingerprints
+and a stored hash that matches a reading's legacy fingerprint was written
+before #195. A page that gains `dcterms.created` or a Drupal generator after
+its current fingerprint was stored therefore reads as changed; before this
+rule its new legacy fingerprint equalled the stored current one (#262).
+Stored-to-stored comparisons (two staged reviews of one transition, the DTA
+artifact or a court requirement against its policy) compare hashes as before
+and still need both sides re-verified together. `transitionForDocumentHash`
+in the pending-candidate loop compares the fresh current fingerprint with the
+latest staged transition and never accepts a legacy match: it runs only after
+that candidate failed `matchesRetrievedContent`, and the candidate it would
+reuse is either that same transition or one dismissed when a later transition
+was staged. Unchanged content therefore never reads as changed after the key
+change, and no stored file needs a migration. The first collection after the
+scheme change rewrites every HTML snapshot in `data/watch-state.json` to the
+current fingerprint without a change count or review.
+
+Legacy acceptance is gated by the watch-state snapshot. The collector writes
+the current fingerprint to the snapshot once it has processed a reading. A
+stored legacy hash (a verified record hash, or the latest transition the
+snapshot has recorded) matches a reading by its legacy fingerprint only while
+the snapshot is absent, equals that stored hash, or equals this reading. A
+pending transition the snapshot has not yet recorded matches by legacy alone.
+Once the snapshot holds the current fingerprint, a later change confined to
+`dcterms.created` or the date platform, including a field appearing on a page
+that lacked it, no longer matches and stages a review, on the direct path and
+on the adoption path alike. A change to those fields
+between the last verification and the first processed reading cannot be
+detected: the old baseline never recorded them. The register audit has no
+snapshot, so it reports such a record unchanged under a legacy match and, with
+`--write-evidence`, keeps the stored fingerprint while it updates
+`lastSourceAuditAt` and the retrieval details. Register hashes become current
+when a record is next approved or published, and the audit stays blind to the
+new fields until then.
+
+Linked PDF, Word, and RTF documents are retrieved and their byte hashes are folded into the landing page's fingerprint. A landing
 page therefore changes when a document is replaced at the same URL, even if
 both the HTML and the words “Download policy” stay the same. If a linked
 instrument cannot be retrieved as a document, the source check fails rather

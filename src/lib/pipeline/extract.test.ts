@@ -526,6 +526,17 @@ describe('extractPublishedDate', () => {
       }
     });
 
+    it('never dates a GovCMS or Drupal page by date metadata of unknown meaning', () => {
+      expect(
+        extractPublishedDateEvidence(`
+          <html><head>
+            <meta name="Generator" content="Drupal 10 (https://www.drupal.org)">
+            <meta name="date" content="2026-10-12">
+          </head><body><h1>Report</h1></body></html>
+        `),
+      ).toBeNull();
+    });
+
     it('still dates other pages by dcterms.date as a last resort', () => {
       for (const generator of ['', '<meta name="generator" content="WordPress 6.6">']) {
         expect(extractPublishedDateEvidence(editTimeOnly(generator))).toEqual({
