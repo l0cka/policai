@@ -7,9 +7,10 @@ units, cutover and rollback procedure) is kept privately by the maintainer.
 
 ## Cadence
 
-The pull timer, `policai-pull.timer`, currently fires every 15 minutes.
-A merged commit goes live on the next cycle that finishes, so allow at
-least that long, plus build time for code changes.
+The pull timer, `policai-pull.timer`, fires every 2 minutes with up to
+15 seconds of random jitter. A run that finds nothing to deploy takes about
+10 seconds. A merged commit goes live on the next cycle that finishes, so
+allow a few minutes, plus build time for code changes.
 
 ## Lane routing
 
