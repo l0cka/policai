@@ -164,15 +164,20 @@ cites, and every source it uses, must also be listed in the piece's `cites`
 and `sources`. A figure never adds a number or date its sources do not
 state, and a figure's analysis is marked as analysis like any other.
 
-The platform checks a figure like the text. Validation rejects a figure with
-no title, alt text or caption, an unknown kind, a count outside the limits
-above, a date that does not exist (such as 2026-02-30), a stray `---` line inside a
-figure block, a repeated matrix
-column or row header, a repeated timeline date and title, a fence that is
-not at the start of a line (inside a list or quote, or indented), and a cited
-record or source missing from the piece's lists. A figure
-citation is also covered by the added-citation rule and the "Source under
-review" banner.
+The platform checks a figure like the text. Validation rejects:
+
+- a figure with no title, alt text or caption, or an unknown kind;
+- a count outside the limits above;
+- a date that does not exist (such as 2026-02-30);
+- a stray `---` line inside a figure block;
+- a repeated matrix column or row header, or a repeated timeline date and
+  title;
+- a fence that is not at the start of a line (inside a list or quote, or
+  indented); and
+- a cited record or source missing from the piece's lists.
+
+A figure citation is also covered by the added-citation rule and the "Source
+under review" banner.
 
 ### Register charts
 
