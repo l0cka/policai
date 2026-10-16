@@ -10,7 +10,9 @@ import {
   SourceUnderReviewBanner,
   StandardNotices,
 } from '@/components/analysis';
-import { getArticleBySlug } from '@/lib/data-service';
+import { getArticleBySlug, type ArticleView } from '@/lib/data-service';
+import { ARTICLE_BYLINE, articleEditorialDate } from '@/lib/articles';
+import { ARTICLE_TYPE_NAMES, type PublishedArticle } from '@/types';
 
 export const revalidate = 3600;
 
@@ -30,6 +32,30 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     title: `${article.title} - Policai`,
     description: article.summary,
   };
+}
+
+const SITE_URL = 'https://policai.org';
+
+function articleJsonLd(article: ArticleView<PublishedArticle>): string {
+  const publisher = { '@type': 'Organization', name: ARTICLE_BYLINE, url: SITE_URL };
+  return JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: article.title,
+    description: article.summary,
+    url: `${SITE_URL}/analysis/${article.slug}`,
+    datePublished: article.publishedAt,
+    dateModified: articleEditorialDate(article),
+    articleSection: ARTICLE_TYPE_NAMES[article.type],
+    author: publisher,
+    publisher,
+    citation: [
+      ...article.citations
+        .filter((citation) => citation.state !== 'not_public')
+        .map((citation) => `${SITE_URL}/policies/${citation.policyId}`),
+      ...article.sources,
+    ],
+  }).replace(/</g, '\\u003c');
 }
 
 function Breadcrumb() {
@@ -71,6 +97,7 @@ export default async function ArticlePage({ params }: Params) {
 
   return (
     <article className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 sm:py-10">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: articleJsonLd(article) }} />
       <Breadcrumb />
       <header className="space-y-3">
         <AnalysisTierLabel type={article.type} />

@@ -72,6 +72,38 @@ describe('analysis article page', () => {
     expect(screen.queryByText('Source under review')).not.toBeInTheDocument();
   });
 
+  it('emits Article JSON-LD for a published piece', async () => {
+    await renderArticle('fixture-weekly-published');
+    const script = document.querySelector('script[type="application/ld+json"]');
+    expect(JSON.parse(script?.textContent ?? '{}')).toEqual({
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: 'Fixture weekly: 8–14 October 2026',
+      description: 'A fixture briefing that cites a current register record and an official source.',
+      url: 'https://policai.org/analysis/fixture-weekly-published',
+      datePublished: '2026-10-14',
+      dateModified: '2026-10-15',
+      articleSection: 'Weekly briefing',
+      author: { '@type': 'Organization', name: 'Policai', url: 'https://policai.org' },
+      publisher: { '@type': 'Organization', name: 'Policai', url: 'https://policai.org' },
+      citation: [
+        'https://policai.org/policies/fixture-current',
+        'https://www.example.gov.au/fixture-instrument',
+      ],
+    });
+  });
+
+  it('lists only published pieces in the Atom feed', async () => {
+    vi.resetModules();
+    const { GET } = await import('./feed.xml/route');
+    const xml = await (await GET()).text();
+    expect(xml).toContain('<id>https://policai.org/analysis/fixture-weekly-published</id>');
+    expect(xml).toContain('<title>Fixture weekly: 8–14 October 2026</title>');
+    expect(xml).toContain('<updated>2026-10-15T00:00:00Z</updated>');
+    expect(xml).not.toContain('fixture-note-withdrawn');
+    expect(xml).not.toContain('fixture-explainer-draft');
+  });
+
   it('shows the Source under review banner for a review-due citation', async () => {
     await renderArticle('citation-review-due');
     expect(screen.getByRole('status')).toHaveTextContent('Source under review');
