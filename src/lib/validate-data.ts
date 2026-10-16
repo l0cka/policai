@@ -230,22 +230,74 @@ function dateOnly(value: Date | string): string {
     : value.slice(0, 10);
 }
 
+export function dateEvidenceMatches(
+  evidence: { date?: string; precision?: string } | undefined,
+  date: Date | string,
+  precision: string,
+): boolean {
+  return evidence?.date === dateOnly(date) && evidence.precision === precision;
+}
+
 function sourceBacksRecordDate(
   source: SourceEvidence | undefined,
   date: Date | string,
   precision: string,
   allowPublishedMetadata: boolean,
 ): boolean {
-  const normalizedDate = dateOnly(date);
   return Boolean(
     source &&
       SHA256.test(source.contentHash ?? '') &&
       ((allowPublishedMetadata &&
-        source.publishedAt === normalizedDate &&
-        source.publishedAtPrecision === precision) ||
-        (source.reviewedDate?.date === normalizedDate &&
-          source.reviewedDate.precision === precision)),
+        dateEvidenceMatches(
+          { date: source.publishedAt, precision: source.publishedAtPrecision },
+          date,
+          precision,
+        )) ||
+        dateEvidenceMatches(source.reviewedDate, date, precision)),
   );
+}
+
+function proposedDateEvidenceErrors(policy: Policy): string[] {
+  if (!Array.isArray(policy.dates)) return [];
+  const errors: string[] = [];
+  policy.dates.forEach((candidateDate, index) => {
+    if (
+      !isRecord(candidateDate) ||
+      !isCalendarDateString(candidateDate.date) ||
+      !isOneOf(DATE_PRECISIONS, candidateDate.precision)
+    ) {
+      return;
+    }
+    const source = isRecord(candidateDate.source)
+      ? (candidateDate.source as unknown as SourceEvidence)
+      : undefined;
+    if (
+      candidateDate.primary === true &&
+      !sourceBacksRecordDate(
+        source,
+        candidateDate.date,
+        candidateDate.precision,
+        candidateDate.type === 'published',
+      )
+    ) {
+      errors.push(
+        'primary date requires matching source publication metadata or reviewed date evidence',
+      );
+    }
+    if (
+      source?.reviewedDate &&
+      !dateEvidenceMatches(
+        source.reviewedDate,
+        candidateDate.date,
+        candidateDate.precision,
+      )
+    ) {
+      errors.push(
+        `dates[${index}] reviewedDate must match the date and precision`,
+      );
+    }
+  });
+  return errors;
 }
 
 /**
@@ -1646,6 +1698,17 @@ export function validateSourceReviews(
             );
       errors.push(
         ...proposedRecordReport.errors.map(
+          (error) => `${label}: proposedRecord: ${error}`,
+        ),
+      );
+    }
+    if (
+      review.status === 'pending_review' &&
+      review.entryKind === 'policy' &&
+      isRecord(review.proposedRecord)
+    ) {
+      errors.push(
+        ...proposedDateEvidenceErrors(review.proposedRecord as Policy).map(
           (error) => `${label}: proposedRecord: ${error}`,
         ),
       );
