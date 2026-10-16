@@ -55,7 +55,7 @@ describe("data-service articles", () => {
 		).not.toContain("fixture-weekly-published");
 		expect(
 			(await getArticles({ citing: "fixture-current" })).map((article) => article.slug),
-		).toEqual(["fixture-weekly-published"]);
+		).toEqual(["fixture-tables-published", "fixture-weekly-published"]);
 	});
 
 	it("never serves a draft, and serves a withdrawn piece by slug", async () => {

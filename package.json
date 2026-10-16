@@ -45,6 +45,8 @@
     "date-fns": "^4.1.0",
     "gray-matter": "^4.0.3",
     "lucide-react": "^1.7.0",
+    "mdast-util-gfm-table": "^2.0.0",
+    "micromark-extension-gfm-table": "^2.1.2",
     "next": "^16.3.4",
     "next-mdx-remote": "^6.0.0",
     "pdfjs-dist": "^6.2.108",
