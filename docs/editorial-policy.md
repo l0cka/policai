@@ -164,8 +164,7 @@ Policai's view.
 An automated development that is not verified may appear only:
 
 - with the words "detected, not yet verified";
-- with a link to `/developments` (once entries have their own anchors, a
-  link to that entry); and
+- with a link to that entry, `/developments#<development id>`; and
 - never as support for a factual claim, and never in a lead or title.
 
 ## Standard notices
