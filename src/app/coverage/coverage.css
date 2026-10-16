@@ -102,12 +102,12 @@
   text-align: center;
 }
 
-.coverage-table .coverage-corner {
+.coverage-table th.coverage-corner {
   width: var(--cov-row-head);
   text-align: left;
 }
 
-.coverage-table .coverage-total-head {
+.coverage-table th.coverage-total-head {
   width: var(--cov-total);
   text-align: right;
 }
@@ -317,7 +317,7 @@
   .coverage-table,
   .coverage-table thead,
   .coverage-table tbody,
-  .coverage-drill-row,
+  .coverage-table tr.coverage-drill-row,
   .coverage-drill-row > td {
     display: block;
   }
@@ -341,8 +341,8 @@
     letter-spacing: 0.04em;
   }
 
-  .coverage-table .coverage-corner,
-  .coverage-table .coverage-total-head {
+  .coverage-table th.coverage-corner,
+  .coverage-table th.coverage-total-head {
     position: absolute;
     width: 1px;
     height: 1px;

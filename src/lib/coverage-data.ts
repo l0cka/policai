@@ -52,9 +52,7 @@ export interface CoverageCategory {
   label: string;
 }
 
-export type CoverageSource = Pick<Policy, 'id' | 'title' | 'jurisdiction' | 'type' | 'status'> & {
-  themes: readonly string[];
-};
+export type CoverageSource = Pick<Policy, 'id' | 'title' | 'jurisdiction' | 'type' | 'status' | 'themes'>;
 
 export interface CoverageRecord {
   id: string;
@@ -320,7 +318,9 @@ export function coverageFootnote(table: CoverageTable): string {
   const unused = table.uncharted.filter((entry) => entry.total === 0).length;
   const below = table.uncharted.length - unused;
   const scope =
-    table.minRecords <= 1
+    shown === table.categoryCount
+      ? `All ${table.categoryCount} themes in Policai's vocabulary have ${table.minRecords <= 1 ? 'a verified record' : `${countWord(table.minRecords)} or more verified records`} and are shown.`
+      : table.minRecords <= 1
       ? `${capitalise(countWord(shown))} of the ${table.categoryCount} themes in Policai's vocabulary ${plural(shown, 'has', 'have')} a verified record and ${plural(shown, 'is', 'are')} shown.`
       : `${capitalise(countWord(shown))} of the ${table.categoryCount} themes in Policai's vocabulary ${plural(shown, 'has', 'have')} ${countWord(table.minRecords)} or more verified records and ${plural(shown, 'is', 'are')} shown.`;
   const left = [

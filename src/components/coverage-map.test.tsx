@@ -8,6 +8,7 @@ import {
   type CoverageSource,
 } from '@/lib/coverage-data';
 import type { Jurisdiction } from '@/types';
+import type { ThemeId } from '@/lib/themes';
 
 const VOCABULARY: CoverageCategory[] = [
   { key: 'courts-tribunals', label: 'Courts and tribunals' },
@@ -15,7 +16,7 @@ const VOCABULARY: CoverageCategory[] = [
   { key: 'self-represented-litigants', label: 'Self-represented litigants' },
 ];
 
-function source(id: string, jurisdiction: Jurisdiction, themes: string[]): CoverageSource {
+function source(id: string, jurisdiction: Jurisdiction, themes: ThemeId[]): CoverageSource {
   return { id, title: `${id} — full title`, jurisdiction, type: 'practice_note', status: 'active', themes };
 }
 

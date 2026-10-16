@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Jurisdiction, PolicyStatus, PolicyType } from '@/types';
+import type { ThemeId } from '@/lib/themes';
 import {
   COVERAGE_JURISDICTIONS,
   COVERAGE_MIN_RECORDS,
@@ -25,7 +26,7 @@ const VOCABULARY: CoverageCategory[] = [
 let sequence = 0;
 function source(
   jurisdiction: Jurisdiction,
-  themes: string[],
+  themes: ThemeId[],
   overrides: { type?: PolicyType; status?: PolicyStatus; title?: string; id?: string } = {},
 ): CoverageSource {
   sequence += 1;
@@ -136,6 +137,11 @@ describe('page copy', () => {
     );
     expect(coverageStandfirst(tied)[0]).toBe('Courts and tribunals and Generative AI are the largest themes, with 1 of 2 records each.');
     expect(coverageStandfirst(tied)[1]).toBe('New South Wales and the ACT each have one record.');
+  });
+
+  it('says all when every theme in the vocabulary is charted', () => {
+    const full = buildCoverageData(REGISTER, VOCABULARY.filter((theme) => theme.key !== 'frontier-ai'));
+    expect(coverageFootnote(full.theme)).toMatch(/^All 4 themes in Policai's vocabulary have a verified record and are shown\. Themes are/);
   });
 
   it('describes the vocabulary and the uncharted themes in the footnote', () => {

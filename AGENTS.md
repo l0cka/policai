@@ -149,6 +149,12 @@ and still serves `buildNetworkData` nodes and edges.
   Each cell holds record ids. Columns follow `COVERAGE_JURISDICTIONS`
   (Federal, NSW, Vic, Qld, SA, WA, Tas, ACT, NT). Rows are sorted by total,
   then label. A theme is charted when it has `COVERAGE_MIN_RECORDS` records.
+  The value is 1, so every theme in the controlled vocabulary with a public
+  record is a row: the vocabulary already requires two public records per
+  theme, and a hidden theme cannot show where coverage is missing. The
+  original threshold of 6 filtered free-form tags. Raise it if the
+  vocabulary grows past what one table can show; uncharted themes are then
+  counted in the footnote.
 - **Copy:** every count and sentence on the page (standfirst, footnote, empty
   state) comes from `coverageStandfirst`, `coverageFootnote` and
   `coverageEmptySentence`. Do not type numbers into the page.

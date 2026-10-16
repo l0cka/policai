@@ -106,6 +106,7 @@ export function CoverageMap({
   const stateRef = useRef(initialState);
   const [announcement, setAnnouncement] = useState('');
   const buttons = useRef(new Map<string, HTMLButtonElement>());
+  const mapRef = useRef<HTMLDivElement>(null);
   const drillRef = useRef<HTMLTableRowElement>(null);
 
   const table = coverageTable(data, state.axis);
@@ -138,6 +139,17 @@ export function CoverageMap({
     window.addEventListener('popstate', onPopState);
     return () => window.removeEventListener('popstate', onPopState);
   }, [data]);
+
+  useEffect(() => {
+    const header = document.querySelector<HTMLElement>('[data-site-header]');
+    const map = mapRef.current;
+    if (!header || !map) return;
+    const observer = new ResizeObserver(() => {
+      map.style.setProperty('--coverage-sticky-top', `${header.getBoundingClientRect().height}px`);
+    });
+    observer.observe(header);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (initialState.selection.kind !== 'none') {
@@ -234,7 +246,7 @@ export function CoverageMap({
     );
 
   return (
-    <div className="coverage-map" onKeyDown={onRegionKeyDown}>
+    <div ref={mapRef} className="coverage-map" onKeyDown={onRegionKeyDown}>
       <div className="coverage-controls">
         <div role="group" aria-label="Chart rows" className="coverage-axis">
           {AXES.map(({ axis, label }) => (
