@@ -48,7 +48,11 @@ import {
 	policyRevisionHash,
 	timelineRevisionHash,
 } from "@/lib/policy-revision";
-import { validatePolicies, validateTimeline } from "@/lib/validate-data";
+import {
+	dateEvidenceMatches,
+	validatePolicies,
+	validateTimeline,
+} from "@/lib/validate-data";
 import {
 	isVerificationCurrent,
 	VERIFICATION_CLOCK_SKEW_TOLERANCE_MS,
@@ -648,8 +652,14 @@ function bindSourceBackedDate(input: {
 	const recordDate = calendarDateValue(input.recordDate);
 	if (
 		input.allowPublishedMetadata &&
-		input.sourceEvidence.publishedAt === recordDate &&
-		input.sourceEvidence.publishedAtPrecision === input.precision
+		dateEvidenceMatches(
+			{
+				date: input.sourceEvidence.publishedAt,
+				precision: input.sourceEvidence.publishedAtPrecision,
+			},
+			recordDate,
+			input.precision,
+		)
 	) {
 		return input.sourceEvidence;
 	}
@@ -658,8 +668,11 @@ function bindSourceBackedDate(input: {
 		const reviewedDate = calendarDateValue(input.reviewedDate.date);
 		const notes = input.reviewedDate.notes.trim();
 		if (
-			reviewedDate !== recordDate ||
-			input.reviewedDate.precision !== input.precision
+			!dateEvidenceMatches(
+				{ date: reviewedDate, precision: input.reviewedDate.precision },
+				recordDate,
+				input.precision,
+			)
 		) {
 			throw new Error(
 				"Reviewed date evidence must exactly match the record date and precision",
@@ -683,10 +696,7 @@ function bindSourceBackedDate(input: {
 	}
 
 	const existing = input.existingReviewedDate;
-	if (
-		existing?.date === recordDate &&
-		existing.precision === input.precision
-	) {
+	if (dateEvidenceMatches(existing, recordDate, input.precision)) {
 		return canonicalizeSourceEvidence({
 			...input.sourceEvidence,
 			reviewedDate: existing,
