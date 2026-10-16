@@ -263,6 +263,42 @@ class UpgradeTests(unittest.TestCase):
                     getattr(tx, recovery)()
                 self.assertEqual(host.tree(), partial)
 
+    def test_a_foreign_file_refuses_a_re_apply_before_any_write(self):
+        for name in ("bin/docker", "host.py"):
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as tmp:
+                host = Host(tmp)
+                tx = host.transaction()
+                tx.apply(host.expected)
+                tx.rollback()
+                path = host.path(name)
+                original = path.read_bytes()
+                path.write_bytes(b"foreign edit\n")
+                before = listing(host.root)
+                for step in ("apply", "rollback"):
+                    with self.assertRaises(install.Refused):
+                        getattr(tx, step)()
+                    self.assertEqual(listing(host.root), before)
+                record = json.loads((host.journal / "journal.json").read_text())
+                self.assertEqual(record["phase"], "rolled-back")
+                path.write_bytes(original)
+                tx.rollback()
+                self.assertEqual(host.tree(), host.original)
+                tx.apply()
+                host.assert_upgraded(self)
+
+    def test_apply_refuses_when_the_verified_manifest_disagrees_with_the_sources(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            host = Host(tmp)
+            hashes = install.verify_manifest(host.manifest, host.review, check)
+            hashes["host.py"] = "0" * 64
+            with (
+                patch.object(install, "verify_manifest", return_value=hashes),
+                self.assertRaises(install.Refused),
+            ):
+                host.upgrade("apply", expect_installed=host.expected)
+            self.assertEqual(host.tree(), host.original)
+            self.assertFalse((host.state / "upgrades").exists())
+
     def test_apply_refuses_a_file_replaced_between_plan_and_apply(self):
         with tempfile.TemporaryDirectory() as tmp:
             host = Host(tmp)
@@ -301,8 +337,17 @@ class UpgradeTests(unittest.TestCase):
     def test_dispatcher_ready_requires_an_unblocked_completed_activation(self):
         cases = (
             ({"active.json": {"bootstrap_pending": False}}, True),
-            ({"active.json": {}}, True),
-            ({"active.json": {}, "blocked.json": {"phase": "failed-review-required"}}, False),
+            ({"active.json": {}}, False),
+            ({"active.json": {"phase": "active"}}, False),
+            ({"active.json": {"bootstrap_pending": None}}, False),
+            ({"active.json": {"bootstrap_pending": 0}}, False),
+            (
+                {
+                    "active.json": {"bootstrap_pending": False},
+                    "blocked.json": {"phase": "failed-review-required"},
+                },
+                False,
+            ),
             ({"active.json": {"bootstrap_pending": True}}, False),
             ({}, False),
         )
