@@ -139,7 +139,7 @@ describe('register audit', () => {
     });
   });
 
-  it('treats a fingerprint stored before dcterms.created and the date platform were fingerprinted as unchanged', async () => {
+  it('treats a fingerprint stored before dcterms.created and the date platform were fingerprinted as unchanged and keeps it', async () => {
     const url = 'https://example.gov.au/policy';
     const retrievePage = (head: string) =>
       retrieveSource(url, {
@@ -173,9 +173,11 @@ describe('register audit', () => {
       asTheOldKeySetSawIt.evidence.contentHash,
     );
     expect(results[0].status).toBe('unchanged');
-    expect(
-      applyRegisterAuditEvidence([policy], results)[0].verification.status,
-    ).toBe('verified');
+    const written = applyRegisterAuditEvidence([policy], results)[0];
+    expect(written.verification).toMatchObject({
+      status: 'verified',
+      source: { contentHash: asTheOldKeySetSawIt.evidence.contentHash },
+    });
   });
 
   it('compares matching linked-document bytes across browser and server evidence', async () => {
