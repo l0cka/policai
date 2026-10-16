@@ -113,6 +113,119 @@ describe('splitSummaryBlocks', () => {
     });
   });
 
+  describe('marker rule', () => {
+    const labels = (text: string) => splitSummaryBlocks(text).map((block) => block.label);
+
+    it.each([
+      ['an abbreviation full stop (etc.)', 'Requirement 1: record names, dates, etc. Requirement 2: check it.'],
+      ['an abbreviation full stop (Pty Ltd.)', 'Requirement 1: disclose to Acme Pty Ltd. Requirement 2: check it.'],
+      ['an abbreviation full stop (no.)', 'Requirement 1: it was no. Requirement 2: check it.'],
+      ['a semicolon', 'Requirement 1: state the use; Requirement 2: check it.'],
+      ['a full stop and bracket', 'Requirement 1: state the use (see the Act.) Requirement 2: check it.'],
+      ['a full stop and double quote', 'Requirement 1: state "the use." Requirement 2: check it.'],
+      ['a full stop and single quote', "Requirement 1: state 'the use.' Requirement 2: check it."],
+      ['an exclamation mark', 'Requirement 1: state the use! Requirement 2: check it.'],
+      ['a question mark', 'Requirement 1: state the use? Requirement 2: check it.'],
+      ['a newline', 'Requirement 1: state the use\n  Requirement 2: check it.'],
+    ])('starts a block after %s', (_name, text) => {
+      expect(labels(text)).toEqual(['Requirement 1:', 'Requirement 2:']);
+      expect(normalise(rejoin(text))).toBe(normalise(text));
+    });
+
+    it.each([
+      'Requirement 1: Apply it, and see Requirement 3: of the guide.',
+      'Requirement 1: Apply it under Requirement 3: the guide.',
+      'Requirement 1: Apply it as in Requirement 4: above.',
+      'Requirement 1: Apply it (see Requirement 4: above).',
+      'Requirement 1: Apply it, etc. and see Requirement 4: above.',
+    ])('keeps a cross-reference inside its sentence: %s', (text) => {
+      expect(labels(text)).toEqual(['Requirement 1:']);
+      expect(rejoin(text)).toBe(text);
+    });
+
+    it('does not split a marker glued to the previous word or quote', () => {
+      expect(labels('Requirement 1: do it."Requirement 2: no.')).toEqual(['Requirement 1:']);
+    });
+
+    it('keeps a no-space-after-colon pair intact but inserts the missing space', () => {
+      const text = 'Requirement 1:Requirement 2:';
+      expect(rejoin(text)).toBe('Requirement 1: Requirement 2:');
+    });
+
+    it('stays linear on many line-start markers', () => {
+      const text = 'Requirement 1: x\n'.repeat(32_000);
+      const started = performance.now();
+      const blocks = splitSummaryBlocks(text);
+      expect(performance.now() - started).toBeLessThan(1500);
+      expect(blocks).toHaveLength(32_000);
+    });
+
+    it('stays linear on many markers in mid-sentence positions', () => {
+      const text = 'see Requirement 1: x '.repeat(25_000);
+      const started = performance.now();
+      const blocks = splitSummaryBlocks(text);
+      expect(performance.now() - started).toBeLessThan(1500);
+      expect(blocks).toHaveLength(1);
+    });
+  });
+
+  describe('generated inputs', () => {
+    const mulberry32 = (seed: number) => () => {
+      seed = (seed + 0x6d2b79f5) | 0;
+      let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+    const WORDS = ['the', 'court', 'must', 'Smith', 'record', 'AI', 'use', 'filed', '(Cth)', 'Acme'];
+    const ABBREVIATIONS = ['etc.', 'Ltd.', 'no.', 'Dr.', 'e.g.', 'i.e.', 'St.', 'v.'];
+    const STRUCTURAL = [' ', '. ', '; ', '.) ', '." ', ".' ", '! ', '? ', '\n', '.\n  '];
+    const INLINE = [' ', '  ', ', '];
+    const GAP = [' ', '\n', '  '];
+
+    const generate = (seed: number) => {
+      const random = mulberry32(seed);
+      const pick = <T,>(items: T[]) => items[Math.floor(random() * items.length)];
+      let text = '';
+      let boundary = true;
+      let structural = 0;
+      const count = 5 + Math.floor(random() * 40);
+      for (let n = 0; n < count; n++) {
+        const roll = random();
+        if (roll < 0.25) {
+          text += `Requirement ${n}:`;
+          if (boundary) structural++;
+          text += pick(GAP);
+          boundary = false;
+        } else if (roll < 0.35) {
+          text += `see Requirement ${n}:`;
+          text += pick(GAP);
+          boundary = false;
+        } else if (roll < 0.55) {
+          text += pick(ABBREVIATIONS);
+          text += pick([' ', ' ', '\n']);
+          boundary = true;
+        } else {
+          text += pick(WORDS);
+          const separator = pick([...STRUCTURAL, ...INLINE]);
+          text += separator;
+          boundary = STRUCTURAL.includes(separator);
+        }
+      }
+      return { text, structural };
+    };
+
+    it('lose, duplicate and reorder nothing, and label exactly the structural markers', () => {
+      const started = performance.now();
+      for (let seed = 1; seed <= 2000; seed++) {
+        const { text, structural } = generate(seed);
+        expect(normalise(rejoin(text)), `seed ${seed}`).toBe(normalise(text));
+        const labelled = splitSummaryBlocks(text).filter((block) => block.label).length;
+        expect(labelled, `seed ${seed}: ${JSON.stringify(text)}`).toBe(structural);
+      }
+      expect(performance.now() - started).toBeLessThan(10_000);
+    });
+  });
+
   describe('public records', () => {
     it('lose, duplicate and reorder no text in any public summary field', async () => {
       const policies = await getPolicies();
