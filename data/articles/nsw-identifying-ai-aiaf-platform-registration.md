@@ -12,6 +12,19 @@ sources:
   - https://www.digital.nsw.gov.au/policy/artificial-intelligence/nsw-artificial-intelligence-assessment-framework/identifying-ai
   - https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks/nsw-ai-assessment-framework
   - https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-strategy-and-operational-policy/nsw-ai-operational-policy
+image:
+  src: "/images/articles/nsw-identifying-ai-aiaf-platform-registration/lead.jpg"
+  alt: "Office towers of the Sydney central business district rising behind the Circular Quay ferry wharves, under a clear blue sky."
+  width: 2048
+  height: 1332
+  title: "AUS Sydney, Central Business District, Circular Quay 026"
+  creator: "-wuppertaler"
+  creatorUrl: "https://commons.wikimedia.org/wiki/User:-wuppertaler"
+  sourceUrl: "https://commons.wikimedia.org/wiki/File:AUS_Sydney,_Central_Business_District,_Circular_Quay_026.jpg"
+  licence: "CC-BY-4.0"
+  licenceUrl: "https://creativecommons.org/licenses/by/4.0/"
+  modifications: "resized"
+  licenceCheckedAt: "2026-10-16"
 ---
 
 The NSW Government has rewritten [Identifying AI](/policies/nsw-identifying-ai-guidance),
