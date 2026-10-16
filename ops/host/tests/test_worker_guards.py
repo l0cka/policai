@@ -250,6 +250,34 @@ class FailureLineTests(unittest.TestCase):
         self.assertIn("exited with status 3", line)
         self.assertIn("guards passed", line)
 
+    def test_a_spawned_task_that_times_out_is_a_task_failure(self):
+        class Slow:
+            def execute(self, argv, cwd, **kwargs):
+                sleeper = [sys.executable, "-c", "import time; time.sleep(30)"]
+                return h.Runner().execute(sleeper, cwd="/", timeout=0.2)
+
+        line = self.failure(lambda: self.worker(Slow()).run_worker("verify-deadlines", ()))
+        self.assertEqual(
+            line,
+            "Failed: worker task verify-deadlines: command timed out; guards passed."
+            " No automatic retry.",
+        )
+
+    def test_a_runner_refusal_before_spawn_is_a_refusal(self):
+        class Oversized:
+            def execute(self, argv, cwd, **kwargs):
+                argv = [sys.executable, "-c", "raise SystemExit(0)"]
+                return h.Runner().execute(argv, cwd="/", stdin_data=b"x" * 262145)
+
+        run = ["compose", "--profile", "worker", "run", "--rm", "worker"]
+        task = [*run, "src/save-enrichment.ts", "1"]
+        line = self.failure(lambda: self.worker(Oversized()).worker_compose(task, (), b"{}"))
+        self.assertEqual(
+            line,
+            "Refused: command input exceeds bound."
+            " Inspect status and reviewed prerequisites; no automatic retry.",
+        )
+
     def test_each_guard_refusal_names_its_guard(self):
         obj = self.worker(None)
 
@@ -272,7 +300,7 @@ class FailureLineTests(unittest.TestCase):
     def test_compose_task_failure_names_the_allowlisted_task(self):
         class Failing:
             def execute(self, argv, cwd, **kwargs):
-                raise d.Refused("command exited with status 1")
+                raise h.ProcessFailed("command exited with status 1")
 
         run = ["compose", "--profile", "worker", "run", "--rm", "worker"]
         line = self.failure(
