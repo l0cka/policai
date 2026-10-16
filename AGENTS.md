@@ -81,6 +81,7 @@ src/
 │   ├── developments/page.tsx     # Automated developments feed
 │   ├── this-week/page.tsx        # Weekly verified developments + upcoming dates
 │   ├── courts/page.tsx           # Court AI guidance view
+│   ├── analysis/                 # Analysis index, [slug] pieces and tombstones, feed.xml (Atom)
 │   ├── network|timeline/         # Visualisations
 │   ├── methodology|status/       # Verification method and source health
 │   ├── not-found.tsx             # Site 404 with onward links
@@ -96,6 +97,8 @@ src/
 ├── lib/
 │   ├── data-service.ts           # File-backed reads/writes over the repo JSON
 │   ├── validate-data.ts          # Data schema enforcement (used by CI + collector)
+│   ├── articles.ts               # Article frontmatter parser, standard notice text, citation state
+│   ├── article-baseline.ts       # Reads the base revision of data/articles/ from Git
 │   ├── analysis.ts               # Deterministic relevance/summary helpers
 │   ├── scraper-filter.ts         # Keyword heuristics shared by the pipeline
 │   ├── source-ingest.ts          # Curated publish path (used by the MCP server)
@@ -105,6 +108,7 @@ src/
 
 public/data/                      # Public-safe canonical data served directly
 data/                             # Editorial register/data, state, reviews, coverage
+data/articles/                    # Written pieces, one <slug>.md each (see Articles)
 scripts/                          # collector, audits, validation, migrations
 docs/                             # collector.md + docs index
 ```
@@ -124,7 +128,55 @@ docs/                             # collector.md + docs index
 6. **Coverage**: automatic sources report usable-content health in `public/data/meta.json`; protected sources are tracked in `data/source-monitoring.json`.
 7. **Freshness**: register source fingerprints are checked with `npm run audit:register`; changed content marks a record stale until editorial re-verification. Separately, a record whose manual verification is older than 90 days stays public but is shown as "Review due"; `npm run check:freshness` (CI, weekly) fails when overdue records exceed the ratchet in `data/freshness-budget.json`.
 
+8. **Articles** (`data/articles/<slug>.md`): Policai's written analysis. See Articles below.
+
 See [docs/collector.md](./docs/collector.md) for operations.
+
+## Articles
+
+Pieces are Markdown files with YAML frontmatter, parsed by `parseArticle` in
+`src/lib/articles.ts` into `Article` (`src/types/index.ts`), a union on
+`status`. The rules for voice, formats and citations are in
+`docs/editorial-policy.md`. The tier is described in `docs/trust-model.md`.
+
+- **Frontmatter:** `type` (`weekly_briefing | instrument_note | explainer`),
+  `title`, `summary`, `status` (`draft | published | withdrawn`),
+  `publishedAt`, `updatedAt`, `cites` (policy ids), `sources` (https URLs on
+  official hosts) and `corrections` (`{ date, text }`). A withdrawn piece also
+  needs `withdrawnAt` and `withdrawnReason`. Dates are `YYYY-MM-DD`. Any other
+  key is an error.
+- **Rendered from code:** the "Analysis" tier label, the "Policai" byline,
+  the AI disclosure and the not-legal-advice notice (`ARTICLE_*` in
+  `articles.ts`, verbatim from the editorial policy). Pieces do not carry
+  them, so a published piece cannot lack them.
+- **Reads:** `getArticles` (published only, filterable by `type` or
+  `citing`) and `getArticleBySlug` (published or withdrawn) in
+  `data-service.ts`. Drafts are never served. Each citation is classified
+  against the public policy read: `current`, `review_due` or `not_public`.
+  Anything other than `current` shows the "Source under review" banner. A
+  `not_public` record is shown without its title or link.
+  `POLICAI_ARTICLES_DIR` points reads at another directory, for previews
+  with fixtures (`src/test/fixtures/articles/`).
+
+`npm run validate:data` (`validateArticles`) enforces these rules:
+
+| Rule | New or changed piece | Untouched piece |
+| --- | --- | --- |
+| Frontmatter fails to parse, or a published piece has no `cites` | error | error |
+| Withdrawn piece without `withdrawnAt` or `withdrawnReason` | error | error |
+| Body link to `/policies/<id>` not in `cites`, or external link not in `sources` | error | error |
+| Citation to a missing or trashed record | error | error |
+| Citation to a withheld or unverified record (not in the public read) | error | warning, banner shows |
+| Citation to a public record past its review interval ("Review due") | error | warning, banner shows |
+| Published or withdrawn piece deleted, returned to draft, re-dated, or a withdrawn piece republished | error | n/a |
+| An earlier correction changed or removed (corrections are append-only) | error | n/a |
+
+The approved rule that validation "rejects a citation to a record that is not
+public and verified" applies when a piece is published or changed (PM,
+2026-10-16). A piece is new, changed or untouched by comparison of its file
+with the base revision: `GITHUB_BASE_SHA` when set (CI passes the PR base),
+otherwise the merge-base of `HEAD` and `origin/main`. If no base can be read,
+every piece counts as new.
 
 ## Key Domain Types
 
@@ -152,6 +204,7 @@ FIRECRAWL_URL=            # self-hosted Firecrawl base URL, defaults to http://1
 CLASSIFIER_BASE_URL=      # chat-completions base URL used when USE_CLAUDE_CLASSIFIER is set
 CLASSIFIER_API_KEY=       # bearer token for that endpoint
 CLASSIFIER_MODEL=         # model id sent with each request
+POLICAI_ARTICLES_DIR=     # read articles from this directory instead of data/articles (previews only)
 ```
 
 Classification needs all three `CLASSIFIER_*` variables. A missing one raises `ClaudeAuthError` before any request is sent. Keep the key in the host environment, never in the repo. Tests clear all three in `vitest.setup.ts`.
