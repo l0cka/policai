@@ -305,6 +305,14 @@ def status(item):
     return "unchanged" if item["before"] == item["after"] else "changed"
 
 
+def installed_digest(items):
+    installed = [
+        [item["destination"], item["before"]]
+        for item in sorted(items, key=lambda item: item["destination"])
+    ]
+    return digest(json.dumps(installed, sort_keys=True).encode())
+
+
 def describe(record):
     if record is None:
         return "absent"
@@ -319,9 +327,11 @@ def render_plan(items, journal):
     ]
     lines.extend(item["diff"] for item in items if item["diff"])
     lines.append(f"journal: {journal}")
+    lines.append(f"expect-installed: {installed_digest(items)}")
     lines.append(
-        "plan changes nothing. upgrade apply installs these files only; daemon-reload, "
-        "timer restoration and the next deploy stay with the host operator."
+        "plan changes nothing. upgrade apply --expect-installed <digest> installs these files "
+        "only while the installed tree still matches this plan; daemon-reload, timer "
+        "restoration and the next deploy stay with the host operator."
     )
     return "\n".join(lines)
 
@@ -361,8 +371,12 @@ class Upgrade(FileTransaction):
         sync(self.journal.parent)
         return {"phase": "applying", "files": items}
 
-    def apply(self):
+    def apply(self, expect_installed=None):
         items, payloads = self.inventory()
+        if expect_installed is None and not os.path.lexists(self.journal / "journal.json"):
+            raise Refused("first apply needs the reviewed plan digest")
+        if expect_installed is not None and installed_digest(items) != expect_installed:
+            raise Refused("installed tree differs from the reviewed plan")
         record = self.journaled(items)
         record["phase"] = "applying"
         self.save(record)
@@ -599,7 +613,15 @@ def install_entries():
     return entries
 
 
-def upgrade(step, manifest_sha256, review=REVIEW, state=STATE, entries=None, check=protected):
+def upgrade(
+    step,
+    manifest_sha256,
+    review=REVIEW,
+    state=STATE,
+    entries=None,
+    check=protected,
+    expect_installed=None,
+):
     verify_manifest(manifest_sha256, review, check)
     transaction = Upgrade(
         review, state / "upgrades" / manifest_sha256, entries or install_entries(), check
@@ -608,7 +630,9 @@ def upgrade(step, manifest_sha256, review=REVIEW, state=STATE, entries=None, che
         held()
         if step == "apply":
             dispatcher_ready(state, check)
-        getattr(transaction, step)()
+            transaction.apply(expect_installed)
+        else:
+            transaction.rollback()
     return transaction
 
 
@@ -617,6 +641,7 @@ def main():
     parser.add_argument("operation", choices=("plan", "apply", "rollback", "upgrade"))
     parser.add_argument("step", nargs="?", choices=("plan", "apply", "rollback"))
     parser.add_argument("--manifest-sha256")
+    parser.add_argument("--expect-installed")
     args = parser.parse_args()
     if (args.operation == "upgrade") != (args.step is not None):
         parser.error("upgrade takes exactly one step: plan, apply or rollback")
@@ -654,7 +679,7 @@ def main():
             raise Refused("use protected review snapshot as root")
         protected(Path(__file__))
         if args.operation == "upgrade":
-            upgrade(args.step, args.manifest_sha256 or "")
+            upgrade(args.step, args.manifest_sha256 or "", expect_installed=args.expect_installed)
             print(
                 f"Upgrade files {'installed' if args.step == 'apply' else 'restored'}; "
                 "timers remain held. No daemon-reload, restart or activation performed: "

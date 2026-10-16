@@ -166,7 +166,7 @@ class UpgradeTests(unittest.TestCase):
             host = Host(tmp)
             state_before = listing(host.state)
             tx = host.transaction()
-            tx.apply()
+            tx.apply(host.expected)
             host.assert_upgraded(self)
             record = json.loads((host.journal / "journal.json").read_text())
             for index, (item, snapshot) in enumerate(
@@ -211,7 +211,7 @@ class UpgradeTests(unittest.TestCase):
 
                     tx.checkpoint = interrupt
                     with self.assertRaises(InterruptedError):
-                        tx.apply()
+                        tx.apply(host.expected)
                     tx.checkpoint = lambda phase: None
                     getattr(tx, recovery)()
                     if recovery == "apply":
@@ -230,7 +230,7 @@ class UpgradeTests(unittest.TestCase):
             with self.subTest(checkpoint=checkpoint), tempfile.TemporaryDirectory() as tmp:
                 host = Host(tmp)
                 tx = host.transaction()
-                tx.apply()
+                tx.apply(host.expected)
 
                 def interrupt(current, checkpoint=checkpoint):
                     if current == checkpoint:
@@ -254,7 +254,7 @@ class UpgradeTests(unittest.TestCase):
 
             tx.checkpoint = interrupt
             with self.assertRaises(InterruptedError):
-                tx.apply()
+                tx.apply(host.expected)
             tx.checkpoint = lambda phase: None
             host.entries[1][1].write_text("operator edit")
             partial = host.tree()
@@ -266,13 +266,14 @@ class UpgradeTests(unittest.TestCase):
     def test_apply_refuses_a_file_replaced_between_plan_and_apply(self):
         with tempfile.TemporaryDirectory() as tmp:
             host = Host(tmp)
-            text = install.render_plan(host.transaction().plan(), host.journal)
-            self.assertIn(f"expect-installed: {host.expected}", text)
+            items = host.transaction().plan()
+            expected = install.installed_digest(items)
+            self.assertIn(f"expect-installed: {expected}", install.render_plan(items, host.journal))
             path = host.path("host.py")
             path.write_bytes(path.read_bytes() + b"\nreplaced between plan and apply\n")
             tampered = host.tree()
             with self.assertRaises(install.Refused):
-                host.upgrade("apply", expect_installed=host.expected)
+                host.upgrade("apply", expect_installed=expected)
             self.assertEqual(host.tree(), tampered)
             self.assertFalse((host.state / "upgrades").exists())
 
@@ -348,7 +349,7 @@ class UpgradeTests(unittest.TestCase):
                 host = Host(tmp)
                 deviate(host)
                 with self.assertRaises(install.Refused):
-                    host.upgrade("apply")
+                    host.upgrade("apply", expect_installed=host.expected)
                 self.assertEqual(host.tree(), host.original)
                 self.assertFalse((host.state / "upgrades").exists())
         for timer in TIMERS:
@@ -366,6 +367,7 @@ class UpgradeTests(unittest.TestCase):
                         state=host.state,
                         entries=host.entries,
                         check=check,
+                        expect_installed=host.expected,
                     )
                 self.assertEqual(host.tree(), host.original)
                 self.assertFalse((host.state / "upgrades").exists())
@@ -373,7 +375,7 @@ class UpgradeTests(unittest.TestCase):
     def test_upgrade_gate_applies_and_rolls_back_a_healthy_held_host(self):
         with tempfile.TemporaryDirectory() as tmp:
             host = Host(tmp)
-            host.upgrade("apply")
+            host.upgrade("apply", expect_installed=host.expected)
             host.assert_upgraded(self)
             (host.state / "blocked.json").write_text("{}")
             host.upgrade("rollback")
