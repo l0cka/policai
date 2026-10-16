@@ -1,5 +1,5 @@
 import path from 'path';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { buildPolicy } from '@/test/factories';
 import { ARTICLE_DISCLOSURE, ARTICLE_NOTICE } from '@/lib/articles';
@@ -57,7 +57,10 @@ describe('analysis article page', () => {
     for (const article of published) {
       document.body.innerHTML = '';
       await renderArticle(article.slug);
-      expect(screen.getByText('Analysis', { selector: 'span' })).toBeInTheDocument();
+      const breadcrumb = screen.getByRole('navigation', { name: 'Breadcrumb' });
+      expect(within(breadcrumb).getByRole('link', { name: 'Analysis' })).toHaveAttribute('href', '/analysis');
+      expect(screen.getAllByText('Analysis')).toHaveLength(1);
+      expect(document.body.innerHTML).not.toContain('status-amended');
       expect(screen.getAllByText('By Policai').length).toBeGreaterThan(0);
       expect(screen.getByText(ARTICLE_DISCLOSURE)).toBeInTheDocument();
       expect(screen.getByText(ARTICLE_NOTICE)).toBeInTheDocument();

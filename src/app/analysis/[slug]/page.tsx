@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import {
-  AnalysisTierLabel,
+  ArticleBreadcrumb,
   ArticleDate,
   ArticleLeadImage,
   Byline,
@@ -93,14 +93,6 @@ function articleJsonLd(article: ArticleView<PublishedArticle>): string {
   }).replace(/</g, '\\u003c');
 }
 
-function Breadcrumb() {
-  return (
-    <nav aria-label="Breadcrumb" className="mb-6 font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
-      <Link href="/analysis" className="hover:text-primary">Analysis</Link>
-    </nav>
-  );
-}
-
 export default async function ArticlePage({ params }: Params) {
   const { slug } = await params;
   const article = await getArticleBySlug(slug);
@@ -109,9 +101,8 @@ export default async function ArticlePage({ params }: Params) {
   if (article.status === 'withdrawn') {
     return (
       <div className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 sm:py-10">
-        <Breadcrumb />
-        <AnalysisTierLabel type={article.type} />
-        <h1 className="page-title mt-3">{article.title}</h1>
+        <ArticleBreadcrumb type={article.type} />
+        <h1 className="page-title">{article.title}</h1>
         <div role="status" className="mt-6 border-l-2 border-[var(--caution)] bg-[var(--status-proposed-bg)] px-4 py-3 text-sm">
           <p className="font-medium text-[var(--caution)]">
             <ArticleDate label="Withdrawn on" date={article.withdrawnAt} />
@@ -133,9 +124,8 @@ export default async function ArticlePage({ params }: Params) {
   return (
     <article className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 sm:py-10">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: articleJsonLd(article) }} />
-      <Breadcrumb />
+      <ArticleBreadcrumb type={article.type} />
       <header className="space-y-3">
-        <AnalysisTierLabel type={article.type} />
         <h1 className="page-title">{article.title}</h1>
         <p className="text-base leading-7 text-muted-foreground">{article.summary}</p>
         <p className="flex flex-wrap gap-x-3 text-xs text-muted-foreground">

@@ -114,6 +114,7 @@ export function Header({
     return pathname === href || pathname.startsWith(href + '/');
   };
 
+  const showCollectionStrip = !pathname.startsWith('/analysis/');
   const insightsActive = insightItems.some((item) => isActive(item.href));
 
   // Tabbing out of an open menu closes it, so the overlay never hides the
@@ -316,36 +317,38 @@ export function Header({
         )}
       </div>
 
-      <div className="border-t border-border bg-muted/40 text-muted-foreground">
-        <div className="container mx-auto flex min-h-9 flex-wrap py-2 items-center justify-between gap-6 px-4 font-mono text-[10px] tracking-[0.04em]  sm:px-6 lg:px-8">
-          <span className="text-muted-foreground sm:inline">
-            <span className="hidden sm:inline">{formatDataDate(dataCurrentAt)}</span>
-            <span className="sm:hidden">
-              {formatDataDate(dataCurrentAt)}
+      {showCollectionStrip ? (
+        <div className="border-t border-border bg-muted/40 text-muted-foreground">
+          <div className="container mx-auto flex min-h-9 flex-wrap py-2 items-center justify-between gap-6 px-4 font-mono text-[10px] tracking-[0.04em]  sm:px-6 lg:px-8">
+            <span className="text-muted-foreground sm:inline">
+              <span className="hidden sm:inline">{formatDataDate(dataCurrentAt)}</span>
+              <span className="sm:hidden">
+                {formatDataDate(dataCurrentAt)}
+              </span>
             </span>
-          </span>
-          <div className="hidden items-center gap-3 sm:flex">
-            <span
-              className={cn(
-                'inline-flex items-center gap-2 uppercase tracking-[0.12em]',
-                collectionHealth === 'healthy' ? 'text-[var(--trust)]' : 'text-[var(--caution)]',
-              )}
-            >
-              <span aria-hidden="true" className="h-2 w-2 rounded-full bg-current" />
-              {collectionHealth === 'healthy' ? 'Sources reached' : collectionHealth}
-            </span>
-            <span className="text-muted-foreground">
-              {collectionHealth === 'healthy'
-                ? `All ${dueSourceCount} due sources reached`
-                : `${successfulSourceCount}/${dueSourceCount} due sources reached`}
-            </span>
-            <span className="text-muted-foreground">·</span>
-            <Link href="/status" className="underline-grow text-primary hover:text-foreground">
-              Source health
-            </Link>
+            <div className="hidden items-center gap-3 sm:flex">
+              <span
+                className={cn(
+                  'inline-flex items-center gap-2 uppercase tracking-[0.12em]',
+                  collectionHealth === 'healthy' ? 'text-[var(--trust)]' : 'text-[var(--caution)]',
+                )}
+              >
+                <span aria-hidden="true" className="h-2 w-2 rounded-full bg-current" />
+                {collectionHealth === 'healthy' ? 'Sources reached' : collectionHealth}
+              </span>
+              <span className="text-muted-foreground">
+                {collectionHealth === 'healthy'
+                  ? `All ${dueSourceCount} due sources reached`
+                  : `${successfulSourceCount}/${dueSourceCount} due sources reached`}
+              </span>
+              <span className="text-muted-foreground">·</span>
+              <Link href="/status" className="underline-grow text-primary hover:text-foreground">
+                Source health
+              </Link>
+            </div>
           </div>
         </div>
-      </div>
+      ) : null}
     </header>
   );
 }
