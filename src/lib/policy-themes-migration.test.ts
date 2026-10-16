@@ -27,8 +27,8 @@ describe('applyThemeMapping', () => {
       ['courts-tribunals', 'generative-ai'],
       ['standards'],
     ]);
-    const stripped = records.map(({ themes: _themes, ...rest }: Record<string, unknown>) => rest);
-    expect(`${JSON.stringify(stripped, null, 2)}\n`).toBe(register);
+    for (const record of records) delete record.themes;
+    expect(`${JSON.stringify(records, null, 2)}\n`).toBe(register);
   });
 
   it('is idempotent', () => {
