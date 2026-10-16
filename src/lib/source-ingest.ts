@@ -52,7 +52,9 @@ import {
 } from "@/lib/policy-revision";
 import {
 	dateEvidenceMatches,
+	mergeReports,
 	validatePolicies,
+	validatePolicyThemes,
 	validateTimeline,
 } from "@/lib/validate-data";
 import {
@@ -805,6 +807,7 @@ export function buildProposedRecord(
 		content: analysisResult.cleanContent.slice(0, 4000),
 		aiSummary: analysisResult.analysis.summary,
 		tags: analysisResult.analysis.tags || [],
+		themes: [],
 		createdAt: now,
 		updatedAt: now,
 	};
@@ -1922,9 +1925,12 @@ async function approveStagedSourceUnlocked(input: {
 			notes: input.approvalNotes,
 		},
 	};
-	const report = validatePolicies(
-		[policy],
-		new Set(policies.map((existing) => existing.id)),
+	const report = mergeReports(
+		validatePolicies(
+			[policy],
+			new Set(policies.map((existing) => existing.id)),
+		),
+		validatePolicyThemes([policy]),
 	);
 	if (report.errors.length > 0) {
 		throw new Error(`Policy is not publishable: ${report.errors.join("; ")}`);
@@ -2452,9 +2458,12 @@ async function publishStagedSourceUnlocked(
 		const existingPolicies = await getPolicies(undefined, {
 			access: "admin",
 		});
-		const report = validatePolicies(
-			[policy],
-			new Set(existingPolicies.map((existing) => existing.id)),
+		const report = mergeReports(
+			validatePolicies(
+				[policy],
+				new Set(existingPolicies.map((existing) => existing.id)),
+			),
+			validatePolicyThemes([policy]),
 		);
 		if (report.errors.length > 0) {
 			throw new Error(`Policy is not publishable: ${report.errors.join("; ")}`);

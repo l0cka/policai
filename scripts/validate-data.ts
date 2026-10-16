@@ -29,9 +29,11 @@ import {
   validateCourtRequirements,
   validateDevelopments,
   validatePolicies,
+  validatePolicyThemes,
   validatePolicyFrameworkArtifact,
   validateSourceReviews,
   validateSourceMonitoring,
+  validateThemeCoverage,
   validateTimeline,
   validateWatchSources,
   validateWatchState,
@@ -182,6 +184,8 @@ async function main() {
   const timelineEventIds = new Set(timeline.map((event) => event.id));
   const report = mergeReports(
     validatePolicies(policies),
+    validatePolicyThemes(policies),
+    validateThemeCoverage(policies, publicPolicies),
     validateCourtRequirements(courtRequirements, policies),
     validateAgencies(agencies, 'agencies'),
     validateAgencies(commonwealthAgencies, 'commonwealth-agencies'),

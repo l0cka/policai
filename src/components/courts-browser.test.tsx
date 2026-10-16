@@ -35,6 +35,7 @@ function policy({
     content: `${title} details`,
     aiSummary: `${title} overview`,
     tags,
+    themes: ['courts-tribunals'],
     createdAt: date,
     updatedAt: date,
     lastReviewedAt: date,

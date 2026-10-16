@@ -44,6 +44,13 @@ import type { WatchSource } from '@/lib/pipeline/sources';
 import { identityExceptionState } from '@/lib/pipeline/identity';
 import { isValidCalendarDate } from '@/lib/calendar-date';
 import { VERIFICATION_CLOCK_SKEW_TOLERANCE_MS } from '@/lib/verification';
+import {
+  MAX_THEMES_PER_RECORD,
+  MIN_PUBLIC_RECORDS_PER_THEME,
+  MIN_THEMES_PER_RECORD,
+  THEMES,
+  isThemeId,
+} from '@/lib/themes';
 export { isAllowedSourceHost } from '@/lib/source-url';
 import {
   canonicalizeSourceUrl,
@@ -825,6 +832,72 @@ export function validatePolicies(
     );
   }
 
+  return { errors, warnings };
+}
+
+export function validatePolicyThemes(policies: readonly Policy[]): ValidationReport {
+  const errors: string[] = [];
+  policies.forEach((policy, index) => {
+    const label = isNonEmptyString(policy.id) ? policy.id : `policies[${index}]`;
+    const themes: unknown = policy.themes;
+    if (!Array.isArray(themes)) {
+      errors.push(`${label}: themes must be an array of theme ids`);
+      return;
+    }
+    if (
+      themes.length < MIN_THEMES_PER_RECORD ||
+      themes.length > MAX_THEMES_PER_RECORD
+    ) {
+      errors.push(
+        `${label}: themes must list ${MIN_THEMES_PER_RECORD} to ${MAX_THEMES_PER_RECORD} themes, not ${themes.length}`,
+      );
+    }
+    const seen = new Set<unknown>();
+    for (const theme of themes) {
+      if (!isThemeId(theme)) errors.push(`${label}: unknown theme "${theme}"`);
+      else if (seen.has(theme)) errors.push(`${label}: duplicate theme "${theme}"`);
+      seen.add(theme);
+    }
+  });
+  return { errors, warnings: [] };
+}
+
+function countThemeUse(policies: readonly Policy[]): Map<string, number> {
+  const counts = new Map<string, number>();
+  for (const policy of policies) {
+    if (policy.status === 'trashed' || !Array.isArray(policy.themes)) continue;
+    for (const theme of new Set(policy.themes)) {
+      counts.set(theme, (counts.get(theme) ?? 0) + 1);
+    }
+  }
+  return counts;
+}
+
+function countOf(count: number, noun: string): string {
+  return `${count} ${noun}${count === 1 ? '' : 's'}`;
+}
+
+export function validateThemeCoverage(
+  policies: readonly Policy[],
+  publicPolicies: readonly Policy[],
+): ValidationReport {
+  const errors: string[] = [];
+  const warnings: string[] = [];
+  const registerUse = countThemeUse(policies);
+  const publicUse = countThemeUse(publicPolicies);
+  for (const { key, label } of THEMES) {
+    const registerCount = registerUse.get(key) ?? 0;
+    const publicCount = publicUse.get(key) ?? 0;
+    if (registerCount < MIN_PUBLIC_RECORDS_PER_THEME) {
+      errors.push(
+        `themes: "${key}" (${label}) is used by ${countOf(registerCount, 'register record')}; a listed theme needs at least ${MIN_PUBLIC_RECORDS_PER_THEME}`,
+      );
+    } else if (publicCount < MIN_PUBLIC_RECORDS_PER_THEME) {
+      warnings.push(
+        `themes: "${key}" (${label}) is on ${countOf(publicCount, 'public record')}; it shows on fewer than ${MIN_PUBLIC_RECORDS_PER_THEME} until the withheld records return`,
+      );
+    }
+  }
   return { errors, warnings };
 }
 
