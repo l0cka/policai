@@ -412,16 +412,23 @@ LIMITATIONS / REMAINING CUTOVER GATES
   Commands suppress raw output deliberately. Diagnostics are phase/identity based;
   investigate failures with separately approved, redacted observations.
   cli.py exits 1 on every failure and prints one stderr line that never carries
-  command output, exception details, config or environment. A guard refusal
-  prints "Refused: <reason>." with the static Refused reason, for example
-  "deploy.lock busy: a deployment holds it", "worker.lock busy: another
-  scheduled worker is running", "persistent block: reviewed recovery required",
-  "scheduled workers must execute as l0cka" or "worker command not allowlisted".
-  A worker task that started after every guard passed and then failed prints
-  "Failed: worker task <name>: command exited with status <n>; guards passed."
-  (or the Runner's timeout or output-bound reason). <name> is the worker
-  operation, or the allowlisted Compose task such as src/verify-deadlines.ts or
-  pg_dumpall. Any other error prints only its exception type. The parent worker
+  command output, exception details, config or environment. A refusal prints
+  "Refused: <reason>. Inspect status and reviewed prerequisites; no automatic
+  retry." with the static Refused reason, for example "deploy.lock busy: a
+  deployment holds it", "worker.lock busy: another scheduled worker is
+  running", "persistent block: reviewed recovery required", "scheduled workers
+  must execute as l0cka", "worker command not allowlisted" or a Runner refusal
+  before any process starts, such as "command input exceeds bound". Only a
+  worker task whose process started and then failed prints "Failed: worker task
+  <name>: command exited with status <n>; guards passed. No automatic retry."
+  (or the Runner's "command timed out", "command output exceeded bound" or
+  "command unavailable or timed out" in place of the exit status). <name> is
+  the worker operation, or the allowlisted Compose task such as
+  src/verify-deadlines.ts or pg_dumpall. Any other error prints "Refused:
+  unexpected <exception type>. ..." with only its exception type. If building
+  the line itself fails, for example because host.py cannot be imported, cli.py
+  prints "Refused: failure report unavailable. Inspect status and reviewed
+  prerequisites; no automatic retry." and still exits 1. The parent worker
   captures and discards the nested Compose adapter's stderr, so the adapter also
   writes its line to syslog as policai-host-compose; journalctl --user -u
   probono-<worker> shows it beside the worker's own line.

@@ -133,6 +133,10 @@ def check_compose_source(app, digest):
 WORKER_LOCK_WAIT_SECONDS = 120
 
 
+class ProcessFailed(Refused):
+    pass
+
+
 class TaskFailed(Refused):
     pass
 
@@ -141,7 +145,7 @@ class TaskFailed(Refused):
 def worker_task(name):
     try:
         yield
-    except Refused as error:
+    except ProcessFailed as error:
         raise TaskFailed(f"{name}: {error}") from None
 
 
@@ -967,10 +971,11 @@ class Runner:
             if result:
                 raise Refused(f"command exited with status {result}")
             return output.decode("utf-8", errors="strict")
-        except Refused:
-            raise
+        except Refused as error:
+            raise ProcessFailed(str(error)) from None
         except (OSError, ValueError, UnicodeError, subprocess.TimeoutExpired):
-            raise Refused("command unavailable or timed out") from None
+            failure = Refused if process is None else ProcessFailed
+            raise failure("command unavailable or timed out") from None
         finally:
             if process is not None:
                 try:

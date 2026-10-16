@@ -10,7 +10,7 @@ from contextlib import redirect_stderr
 from pathlib import Path
 from unittest.mock import patch
 
-from test_transaction import FixtureState
+from test_transaction import FakeClock, FixtureState
 
 import cli
 import dispatcher as d
@@ -20,19 +20,6 @@ HOST = Path(__file__).resolve().parent.parent
 COMPOSE = "/var/lib/probono-radar/app/apps/probono/docker-compose.yaml"
 EXEC = ["compose", "-f", COMPOSE, "exec", "-T", "db"]
 GLOBALS = ["pg_dumpall", "-U", "radar", "--globals-only"]
-
-
-class FakeClock:
-    def __init__(self, on_sleep=lambda count: None):
-        self.now, self.sleeps, self.on_sleep = 1000.0, [], on_sleep
-
-    def clock(self):
-        return self.now
-
-    def sleep(self, seconds):
-        self.sleeps.append(seconds)
-        self.now += seconds
-        self.on_sleep(len(self.sleeps))
 
 
 class GlobalsDumpAllowlistTests(unittest.TestCase):
@@ -209,13 +196,25 @@ class LockWaitTests(unittest.TestCase):
     def test_default_wait_covers_a_pull(self):
         self.assertEqual(h.WORKER_LOCK_WAIT_SECONDS, 120)
 
-    def test_deploy_still_refuses_at_once_while_a_worker_holds_the_lock(self):
-        fake = FakeClock()
-        with h.worker_guard(self.state, clock=fake.clock, sleep=fake.sleep):
-            with self.assertRaises(d.Refused):
-                with self.state.lock(exclusive=True):
-                    pass
-        self.assertEqual(fake.sleeps, [])
+    def test_deploy_and_rollback_refuse_at_once_while_a_worker_holds_the_lock(self):
+        busy = d.LOCK_BUSY["deploy.lock", True]
+        transaction = d.Transaction(self.state, None)
+        with h.worker_guard(self.state, clock=self.state.fake.clock, sleep=self.state.fake.sleep):
+            for name, call in (
+                ("deploy", lambda: transaction.deploy(None)),
+                ("rollback", transaction.rollback),
+            ):
+                with self.subTest(name), self.assertRaises(d.Refused) as caught:
+                    call()
+                self.assertEqual(str(caught.exception), busy)
+        self.assertEqual(self.state.fake.sleeps, [])
+
+    def test_worker_takes_deploy_lock_before_worker_lock(self):
+        with h.worker_guard(self.state):
+            self.assertEqual(self.state.acquired, [("deploy.lock", False), ("worker.lock", True)])
+        self.state.acquired.clear()
+        with h.worker_guard(self.state, serialize=False):
+            self.assertEqual(self.state.acquired, [("deploy.lock", False)])
 
     def test_a_second_worker_is_refused_with_its_own_reason(self):
         with h.worker_guard(self.state):
@@ -251,6 +250,34 @@ class FailureLineTests(unittest.TestCase):
         self.assertIn("exited with status 3", line)
         self.assertIn("guards passed", line)
 
+    def test_a_spawned_task_that_times_out_is_a_task_failure(self):
+        class Slow:
+            def execute(self, argv, cwd, **kwargs):
+                sleeper = [sys.executable, "-c", "import time; time.sleep(30)"]
+                return h.Runner().execute(sleeper, cwd="/", timeout=0.2)
+
+        line = self.failure(lambda: self.worker(Slow()).run_worker("verify-deadlines", ()))
+        self.assertEqual(
+            line,
+            "Failed: worker task verify-deadlines: command timed out; guards passed."
+            " No automatic retry.",
+        )
+
+    def test_a_runner_refusal_before_spawn_is_a_refusal(self):
+        class Oversized:
+            def execute(self, argv, cwd, **kwargs):
+                argv = [sys.executable, "-c", "raise SystemExit(0)"]
+                return h.Runner().execute(argv, cwd="/", stdin_data=b"x" * 262145)
+
+        run = ["compose", "--profile", "worker", "run", "--rm", "worker"]
+        task = [*run, "src/save-enrichment.ts", "1"]
+        line = self.failure(lambda: self.worker(Oversized()).worker_compose(task, (), b"{}"))
+        self.assertEqual(
+            line,
+            "Refused: command input exceeds bound."
+            " Inspect status and reviewed prerequisites; no automatic retry.",
+        )
+
     def test_each_guard_refusal_names_its_guard(self):
         obj = self.worker(None)
 
@@ -273,7 +300,7 @@ class FailureLineTests(unittest.TestCase):
     def test_compose_task_failure_names_the_allowlisted_task(self):
         class Failing:
             def execute(self, argv, cwd, **kwargs):
-                raise d.Refused("command exited with status 1")
+                raise h.ProcessFailed("command exited with status 1")
 
         run = ["compose", "--profile", "worker", "run", "--rm", "worker"]
         line = self.failure(
@@ -296,6 +323,31 @@ class FailureLineTests(unittest.TestCase):
         self.assertEqual(err.getvalue().count("Refused: worker command not allowlisted"), 2)
         self.assertEqual(len(journal.call_args_list), 1)
         self.assertIn("worker command not allowlisted", journal.call_args.args[1])
+
+    def test_a_line_that_cannot_be_built_falls_back_to_a_fixed_line(self):
+        error = RuntimeError("unsafe installed root-owned entrypoint")
+        with patch.dict(sys.modules, {"host": None}), redirect_stderr(io.StringIO()) as err:
+            cli.report("worker", error)
+        self.assertEqual(
+            err.getvalue(),
+            "Refused: failure report unavailable."
+            " Inspect status and reviewed prerequisites; no automatic retry.\n",
+        )
+
+    def test_a_journal_failure_keeps_the_stderr_line(self):
+        error = d.Refused("worker command not allowlisted")
+        down = OSError("journal unavailable")
+        with (
+            patch.object(cli.syslog, "openlog"),
+            patch.object(cli.syslog, "syslog", side_effect=down),
+            redirect_stderr(io.StringIO()) as err,
+        ):
+            cli.report("compose", error)
+        self.assertEqual(
+            err.getvalue(),
+            "Refused: worker command not allowlisted."
+            " Inspect status and reviewed prerequisites; no automatic retry.\n",
+        )
 
 
 if __name__ == "__main__":

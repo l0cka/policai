@@ -1,3 +1,4 @@
+import contextlib
 import json
 import os
 import re
@@ -10,9 +11,33 @@ import dispatcher as d
 import host as h
 
 
+class FakeClock:
+    def __init__(self, on_sleep=lambda count: None, limit=1000):
+        self.now, self.sleeps, self.on_sleep, self.limit = 1000.0, [], on_sleep, limit
+
+    def clock(self):
+        return self.now
+
+    def sleep(self, seconds):
+        self.sleeps.append(seconds)
+        if len(self.sleeps) > self.limit:
+            raise AssertionError("lock wait loop ignored its deadline")
+        self.now += seconds
+        self.on_sleep(len(self.sleeps))
+
+
 class FixtureState(d.State):
     def __init__(self, path):
         self.root, self.owner = Path(path), os.getuid()
+        self.fake, self.acquired = FakeClock(), []
+
+    @contextlib.contextmanager
+    def lock(self, exclusive, worker=False, **kwargs):
+        kwargs.setdefault("clock", self.fake.clock)
+        kwargs.setdefault("sleep", self.fake.sleep)
+        with super().lock(exclusive, worker, **kwargs) as fd:
+            self.acquired.append(("worker.lock" if worker else "deploy.lock", exclusive))
+            yield fd
 
 
 class FakeHost:
