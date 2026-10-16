@@ -759,6 +759,22 @@ function changeDetectionReason(
   return contentHash === verifiedHash ? 'baseline_reversion' : 'changed';
 }
 
+const SOURCE_HASH_CHANGE_PROMPT_VERSION = 'source-hash-change-v1';
+
+export function qualifiesForReview(
+  classification: Classification,
+  minScoreForReview: number,
+): boolean {
+  if (classification.assessment.promptVersion === SOURCE_HASH_CHANGE_PROMPT_VERSION) {
+    return true;
+  }
+  if (classification.classification === 'heuristic') return true;
+  return (
+    (classification.rawConfidence ?? classification.relevanceScore) >=
+    minScoreForReview
+  );
+}
+
 function changeDetectionClassification(
   target: TrackedChangeTarget,
   reason: ChangeDetectionReason,
@@ -769,7 +785,7 @@ function changeDetectionClassification(
     classification: 'heuristic',
     assessment: {
       method: 'heuristic',
-      promptVersion: 'source-hash-change-v1',
+      promptVersion: SOURCE_HASH_CHANGE_PROMPT_VERSION,
     },
   } as const;
   if (target.kind === 'policy') {
@@ -1840,15 +1856,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
       if (headlineKey) knownHeadlineKeys.add(headlineKey);
       markCandidateComplete(state, enrichedCandidate, 'processed', nowIso);
 
-      if (
-        classification.classification === 'heuristic' ||
-        // Claude's relevanceScore is capped for storage (see
-        // MACHINE_CONFIDENCE_CAP in classify.ts), so the capped value would
-        // never clear minScoreForReview. rawConfidence carries the
-        // uncapped verdict for this decision only; it is never persisted.
-        (classification.rawConfidence ?? classification.relevanceScore) >=
-          minScoreForReview
-      ) {
+      if (qualifiesForReview(classification, minScoreForReview)) {
         const parsedFingerprint = parseChangeFingerprint(
           enrichedCandidate.changeFingerprint,
         );

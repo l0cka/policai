@@ -52,13 +52,16 @@ class BackupMirrorTests(unittest.TestCase):
             self.assertIn(f"{digest}  {name}\n", sums)
 
         kept = (self.destination / "radar-2026-10-15.sql.gz").read_bytes()
+        kept_globals = (self.destination / "globals-2026-10-15.sql.gz").read_bytes()
         self.dump("radar-2026-10-15.sql.gz", "rewritten at the source")
+        self.dump("globals-2026-10-15.sql.gz", "roles rewritten at the source")
         (self.source / "radar-2026-10-14.sql.gz").unlink()
         self.dump("radar-2026-10-16.sql.gz", "third")
         run = self.mirror()
         self.assertEqual(run.returncode, 0, run.stderr)
         self.assertEqual(run.stdout, "mirror: ok, 4 files, newest radar-2026-10-16.sql.gz\n")
         self.assertEqual((self.destination / "radar-2026-10-15.sql.gz").read_bytes(), kept)
+        self.assertEqual((self.destination / "globals-2026-10-15.sql.gz").read_bytes(), kept_globals)
         self.assertTrue((self.destination / "radar-2026-10-14.sql.gz").exists())
 
     def test_mirrors_a_corrupt_globals_dump_as_a_failure_and_tolerates_none(self):
