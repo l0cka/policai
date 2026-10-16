@@ -18,7 +18,7 @@ import { getArticleBySlug, type ArticleView } from '@/lib/data-service';
 import { ARTICLE_BYLINE, articleEditorialDate } from '@/lib/articles';
 import { ARTICLE_TYPE_NAMES, type ArticleImage, type PublishedArticle } from '@/types';
 
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
 
 type Params = { params: Promise<{ slug: string }> };
 
