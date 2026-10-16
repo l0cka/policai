@@ -69,6 +69,7 @@ function AgencyDetails({ agency }: { agency: Agency }) {
               year: 'numeric',
               month: 'long',
               day: 'numeric',
+              timeZone: 'Australia/Sydney',
             })}
           </p>
         </div>
