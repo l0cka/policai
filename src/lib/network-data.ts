@@ -9,6 +9,7 @@ import {
   type PolicyStatus,
   type PolicyType,
 } from '@/types';
+import { getThemeLabel, type ThemeId } from '@/lib/themes';
 
 export type NetworkEdgeKind = 'thematic' | 'formal';
 export type FormalRelationship = 'superseded_by';
@@ -21,6 +22,7 @@ export interface NetworkNode {
   status: PolicyStatus;
   type: PolicyType;
   tags: string[];
+  themes: ThemeId[];
   agencies: string[];
   effectiveDate: string;
   dateType: PolicyDateType;
@@ -44,7 +46,7 @@ export interface NetworkEdge {
 }
 
 export interface NetworkTheme {
-  key: string;
+  key: ThemeId;
   label: string;
   policyCount: number;
 }
@@ -78,52 +80,10 @@ const NETWORK_LABEL_OVERRIDES: Record<string, string> = {
   'qld-supreme-court-ai-practice-direction': 'QLD Practice Direction 5',
 };
 
-const NON_THEMATIC_TAGS = new Set([
-  'act',
-  'ai',
-  'artificial intelligence',
-  'commonwealth',
-  'federal',
-  'framework',
-  'guideline',
-  'guidelines',
-  'northern territory',
-  'nsw',
-  'policy',
-  'practice note',
-  'queensland',
-  'regulation',
-  'south australia',
-  'strategy',
-  'tasmania',
-  'victoria',
-  'wa',
-  'western australia',
-]);
-
 const LEAD_POLICY_ID = 'federal-court-gpn-ai';
 
-export function normalizeNetworkTheme(value: string): string {
-  return value.trim().toLocaleLowerCase('en-AU');
-}
-
-function isMeaningfulTheme(value: string): boolean {
-  return !NON_THEMATIC_TAGS.has(normalizeNetworkTheme(value));
-}
-
-function getSharedTags(a: NetworkNode, b: NetworkNode): string[] {
-  const bTags = new Set(b.tags.map(normalizeNetworkTheme));
-  return a.tags.filter((tag) => bTags.has(normalizeNetworkTheme(tag)));
-}
-
-function uniqueThemes(values: string[]): string[] {
-  const seen = new Set<string>();
-  return values.filter((value) => {
-    const key = normalizeNetworkTheme(value);
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
+function getSharedThemes(a: NetworkNode, b: NetworkNode): ThemeId[] {
+  return a.themes.filter((theme) => b.themes.includes(theme));
 }
 
 function getShortLabel(policy: Policy): string {
@@ -139,29 +99,18 @@ function getShortLabel(policy: Policy): string {
 }
 
 function buildThemes(nodes: NetworkNode[]): NetworkTheme[] {
-  const themes = new Map<
-    string,
-    { label: string; policies: Set<string> }
-  >();
-
+  const themes = new Map<ThemeId, number>();
   for (const node of nodes) {
-    for (const tag of node.tags) {
-      if (!isMeaningfulTheme(tag)) continue;
-      const key = normalizeNetworkTheme(tag);
-      const current = themes.get(key) ?? {
-        label: tag,
-        policies: new Set<string>(),
-      };
-      current.policies.add(node.id);
-      themes.set(key, current);
+    for (const theme of node.themes) {
+      themes.set(theme, (themes.get(theme) ?? 0) + 1);
     }
   }
 
   return [...themes.entries()]
-    .map(([key, value]) => ({
+    .map(([key, policyCount]) => ({
       key,
-      label: value.label,
-      policyCount: value.policies.size,
+      label: getThemeLabel(key),
+      policyCount,
     }))
     .filter((theme) => theme.policyCount >= 2)
     .sort(
@@ -172,31 +121,29 @@ function buildThemes(nodes: NetworkNode[]): NetworkTheme[] {
 }
 
 function buildInsight(edges: NetworkEdge[]): string {
-  const crossThemeCounts = new Map<string, { label: string; count: number }>();
+  const crossThemeCounts = new Map<string, number>();
 
   for (const edge of edges) {
     if (edge.kind !== 'thematic' || !edge.crossJurisdiction) continue;
-    for (const theme of edge.sharedThemes) {
-      const key = normalizeNetworkTheme(theme);
-      const current = crossThemeCounts.get(key) ?? { label: theme, count: 0 };
-      current.count += 1;
-      crossThemeCounts.set(key, current);
+    for (const label of edge.sharedThemes) {
+      crossThemeCounts.set(label, (crossThemeCounts.get(label) ?? 0) + 1);
     }
   }
 
+  const courts = getThemeLabel('courts-tribunals');
   const ranked = [...crossThemeCounts.entries()].sort(
-    ([aKey, a], [bKey, b]) =>
-      b.count - a.count ||
-      Number(bKey === 'courts') - Number(aKey === 'courts') ||
-      a.label.localeCompare(b.label, 'en-AU'),
+    ([aLabel, aCount], [bLabel, bCount]) =>
+      bCount - aCount ||
+      Number(bLabel === courts) - Number(aLabel === courts) ||
+      aLabel.localeCompare(bLabel, 'en-AU'),
   );
 
-  if (ranked[0]?.[0] === 'courts') {
+  if (ranked[0]?.[0] === courts) {
     return 'Court guidance forms the clearest cross-jurisdiction cluster.';
   }
 
   if (ranked[0]) {
-    return `${ranked[0][1].label} forms the clearest cross-jurisdiction cluster.`;
+    return `${ranked[0][0]} forms the clearest cross-jurisdiction cluster.`;
   }
 
   return 'Explore shared policy themes across Australian jurisdictions.';
@@ -219,6 +166,7 @@ export function buildNetworkData(policies: Policy[]): {
         status: policy.status,
         type: policy.type,
         tags: policy.tags,
+        themes: policy.themes,
         agencies: policy.agencies,
         effectiveDate:
           typeof primaryDate.date === 'string'
@@ -240,19 +188,17 @@ export function buildNetworkData(policies: Policy[]): {
     for (let j = i + 1; j < baseNodes.length; j++) {
       const a = baseNodes[i];
       const b = baseNodes[j];
-      const sharedTags = getSharedTags(a, b);
+      const sharedThemes = getSharedThemes(a, b);
       const crossJurisdiction = a.jurisdiction !== b.jurisdiction;
       const threshold = crossJurisdiction ? 3 : 2;
 
-      if (sharedTags.length >= threshold) {
+      if (sharedThemes.length >= threshold) {
         edges.push({
           source: a.id,
           target: b.id,
           kind: 'thematic',
-          weight: sharedTags.length,
-          sharedThemes: uniqueThemes(
-            sharedTags.filter(isMeaningfulTheme),
-          ),
+          weight: sharedThemes.length,
+          sharedThemes: sharedThemes.map(getThemeLabel),
           crossJurisdiction,
         });
       }
@@ -348,10 +294,9 @@ export function getNetworkConnections(
     if (!current.kinds.includes(edge.kind)) current.kinds.push(edge.kind);
     current.weight = Math.max(current.weight, edge.weight);
     current.crossJurisdiction ||= edge.crossJurisdiction;
-    current.sharedThemes = uniqueThemes([
-      ...current.sharedThemes,
-      ...edge.sharedThemes,
-    ]);
+    current.sharedThemes = [
+      ...new Set([...current.sharedThemes, ...edge.sharedThemes]),
+    ];
 
     if (edge.formalRelationship === 'superseded_by') {
       current.formalLabel =
@@ -375,9 +320,7 @@ export function nodeMatchesTheme(
   themeKey: string | null,
 ): boolean {
   if (!themeKey) return true;
-  return node.tags.some(
-    (tag) => normalizeNetworkTheme(tag) === normalizeNetworkTheme(themeKey),
-  );
+  return node.themes.some((theme) => theme === themeKey);
 }
 
 export function describeNetworkNode(node: NetworkNode): string {

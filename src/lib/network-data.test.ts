@@ -32,24 +32,29 @@ describe('buildNetworkData', () => {
     });
   });
 
-  it('keeps relationship evidence human-readable while excluding metadata tags', () => {
+  it('connects records by shared themes and labels them for display', () => {
     const federalCourt = buildPolicy({
       id: 'federal-court',
       title: 'Federal Court AI guidance',
       jurisdiction: 'federal',
-      tags: ['AI', 'courts', 'judicial', 'disclosure'],
+      themes: ['courts-tribunals', 'generative-ai', 'transparency-disclosure'],
     });
     const nswCourt = buildPolicy({
       id: 'nsw-court',
       title: 'NSW Court AI guidance',
       jurisdiction: 'nsw',
-      tags: ['AI', 'courts', 'judicial', 'disclosure', 'practice note'],
+      themes: [
+        'courts-tribunals',
+        'generative-ai',
+        'transparency-disclosure',
+        'legal-practice',
+      ],
     });
     const isolated = buildPolicy({
       id: 'isolated',
       title: 'Unconnected policy',
       jurisdiction: 'tas',
-      tags: ['AI infrastructure'],
+      themes: ['infrastructure'],
     });
 
     const { nodes, edges, summary } = buildNetworkData([
@@ -64,7 +69,11 @@ describe('buildNetworkData', () => {
         target: 'nsw-court',
         kind: 'thematic',
         crossJurisdiction: true,
-        sharedThemes: ['courts', 'judicial', 'disclosure'],
+        sharedThemes: [
+          'Courts and tribunals',
+          'Generative AI',
+          'Transparency and disclosure',
+        ],
       }),
     );
     expect(summary).toMatchObject({
@@ -84,14 +93,14 @@ describe('buildNetworkData', () => {
     const replacement = buildPolicy({
       id: 'replacement',
       title: 'Replacement guidance',
-      tags: ['assurance'],
+      themes: ['risk-assurance'],
     });
     const superseded = buildPolicy({
       id: 'superseded',
       title: 'Superseded guidance',
       status: 'superseded',
       supersededBy: 'replacement',
-      tags: ['AI ethics'],
+      themes: ['responsible-ai'],
     });
 
     const { nodes, edges, summary } = buildNetworkData([
@@ -123,13 +132,17 @@ describe('buildNetworkData', () => {
     });
   });
 
-  it('matches theme filters case-insensitively', () => {
+  it('matches theme filters by theme id', () => {
     const { nodes } = buildNetworkData([
-      buildPolicy({ tags: ['AI governance', 'Risk Management'] }),
+      buildPolicy({
+        tags: ['risk management'],
+        themes: ['ai-governance', 'risk-assurance'],
+      }),
     ]);
 
-    expect(nodeMatchesTheme(nodes[0], 'risk management')).toBe(true);
-    expect(nodeMatchesTheme(nodes[0], 'courts')).toBe(false);
+    expect(nodeMatchesTheme(nodes[0], 'risk-assurance')).toBe(true);
+    expect(nodeMatchesTheme(nodes[0], 'risk management')).toBe(false);
+    expect(nodeMatchesTheme(nodes[0], 'courts-tribunals')).toBe(false);
     expect(nodeMatchesTheme(nodes[0], null)).toBe(true);
   });
 });
