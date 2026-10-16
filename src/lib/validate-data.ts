@@ -2332,7 +2332,7 @@ export function articleCitationReport(
   return { errors, warnings };
 }
 
-function citedRecordStates(targets: ArticleCitationTargets): Map<string, CitedRecordState> {
+function citedRecordStates(targets: Pick<ArticleValidationContext, 'policies' | 'publicPolicies'>): Map<string, CitedRecordState> {
   const publicPolicies = new Map(
     targets.publicPolicies.map((policy) => [policy.id, policy]),
   );
