@@ -13,6 +13,19 @@ sources:
   - https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P
   - https://www.fwc.gov.au/documents/resources/guidance-note-use-of-generative-ai-in-commission-cases.pdf
   - https://www.pmc.gov.au/domestic-policy/office-ai/getting-it-right-building-ai-infrastructure-works-australia
+image:
+  src: "/images/articles/policai-weekly-2026-10-07/lead.jpg"
+  alt: "The front of Parliament House in Canberra, with its white colonnade and the flagmast above, under a blue sky with scattered cloud."
+  width: 2048
+  height: 1536
+  title: "Exterior of Parliament House, Canberra, 2022, 02"
+  creator: "Chris Olszewski"
+  creatorUrl: "https://commons.wikimedia.org/wiki/User:Kgbo"
+  sourceUrl: "https://commons.wikimedia.org/wiki/File:Exterior_of_Parliament_House,_Canberra,_2022,_02.jpg"
+  licence: "CC-BY-SA-4.0"
+  licenceUrl: "https://creativecommons.org/licenses/by-sa/4.0/"
+  modifications: "resized"
+  licenceCheckedAt: "2026-10-16"
 ---
 
 This briefing covers developments Policai detected and verified from
