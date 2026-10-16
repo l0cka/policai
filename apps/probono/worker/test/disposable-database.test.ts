@@ -32,6 +32,48 @@ describe('assertDisposableDatabase', () => {
     ).toThrow(/not 127\.0\.0\.1 or localhost/);
   });
 
+  it('refuses a ?host= override that points pg at a remote host', () => {
+    expect(() =>
+      assertDisposableDatabase(
+        'postgres://u:p@127.0.0.1:1/radar_test?host=db.example.invalid',
+      ),
+    ).toThrow(/"db\.example\.invalid" is not 127\.0\.0\.1 or localhost/);
+    expect(() =>
+      assertDisposableDatabase('postgres://u:p@127.0.0.1/radar_test?host=db.example.com'),
+    ).toThrow(/"db\.example\.com" is not 127\.0\.0\.1 or localhost/);
+  });
+
+  it('judges the ?host= override rather than the URL authority', () => {
+    expect(() =>
+      assertDisposableDatabase('postgres://u:p@db.example.com:5432/radar_test?host=127.0.0.1'),
+    ).not.toThrow();
+  });
+
+  it('refuses a unix-socket host', () => {
+    expect(() =>
+      assertDisposableDatabase('postgres://u:p@127.0.0.1/radar_test?host=/var/run/postgresql'),
+    ).toThrow(/not 127\.0\.0\.1 or localhost/);
+    expect(() =>
+      assertDisposableDatabase('postgres://u:p@%2Fvar%2Frun%2Fpostgresql/radar_test'),
+    ).toThrow(/not 127\.0\.0\.1 or localhost/);
+    expect(() =>
+      assertDisposableDatabase('socket:/var/run/postgresql?db=radar_test'),
+    ).toThrow(/not 127\.0\.0\.1 or localhost/);
+  });
+
+  it('refuses a URL with no host, which pg would take from PGHOST', () => {
+    expect(() => assertDisposableDatabase('postgres:///radar_test')).toThrow(/no host/);
+  });
+
+  it('refuses a database named only by ?dbname= or ?database=, which pg would take from PGDATABASE', () => {
+    expect(() =>
+      assertDisposableDatabase('postgres://u:p@127.0.0.1:5432/?dbname=radar_test'),
+    ).toThrow(/no database/);
+    expect(() =>
+      assertDisposableDatabase('postgres://u:p@127.0.0.1:5432/?database=radar_test'),
+    ).toThrow(/no database/);
+  });
+
   it('refuses an unparseable URL', () => {
     expect(() => assertDisposableDatabase('not a url')).toThrow(/parseable/);
   });
