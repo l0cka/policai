@@ -24,6 +24,7 @@ import {
 	projectVerificationForPublic,
 } from "@/lib/verification";
 import { reconcileLinkedDevelopments } from "@/lib/source-review";
+import { registerAsAt, registerChart, type RegisterChart } from "@/lib/article-figures";
 import {
 	citationState,
 	parseArticle,
@@ -392,12 +393,11 @@ async function readPoliciesForAccess(options: DataServiceOptions): Promise<Polic
 	const access = options.access ?? "public";
 	const now = options.now ?? new Date();
 	const policies = await readJsonFile<Policy[]>(POLICIES_FILE, []);
-	if (access !== "public") return policies;
-	return applyPublicPolicyFilter(
-		policies,
-		await getWithheldPolicyIds(policies),
-		now,
-	);
+	return access === "public" ? publicProjection(policies, now) : policies;
+}
+
+async function publicProjection(policies: Policy[], now: Date): Promise<Policy[]> {
+	return applyPublicPolicyFilter(policies, await getWithheldPolicyIds(policies), now);
 }
 
 export async function getPolicies(
@@ -1235,9 +1235,14 @@ export interface ArticleCitation {
 	title?: string;
 }
 
+export interface RegisterChartView extends RegisterChart {
+	asAt: string | null;
+}
+
 export type ArticleView<T extends PublicArticle = PublicArticle> = T & {
 	citations: ArticleCitation[];
 	sourceUnderReview: boolean;
+	registerCharts: Record<number, RegisterChartView>;
 };
 
 function articlesDir(): string {
@@ -1250,11 +1255,13 @@ function articlesDir(): string {
 async function readPublicArticles(
 	options: DataServiceOptions,
 ): Promise<ArticleView[]> {
-	const [sources, policies] = await Promise.all([
+	const [sources, register] = await Promise.all([
 		readArticleSources(articlesDir()),
-		readPoliciesForAccess({ ...options, access: "public" }),
+		readPoliciesForAccess({ ...options, access: "admin" }),
 	]);
+	const policies = await publicProjection(register, options.now ?? new Date());
 	const publicPolicies = new Map(policies.map((policy) => [policy.id, policy]));
+	const asAt = registerAsAt(register);
 	return sources.flatMap((source) => {
 		const result = parseArticle(source);
 		if (!result.ok || result.article.status === "draft") return [];
@@ -1269,6 +1276,13 @@ async function readPublicArticles(
 				citations,
 				sourceUnderReview: citations.some(
 					(citation) => citation.state !== "current",
+				),
+				registerCharts: Object.fromEntries(
+					result.article.blocks.flatMap((block) =>
+						block.kind === "figure" && block.figure.kind === "chart"
+							? [[block.number, { ...registerChart(block.figure, policies), asAt }]]
+							: [],
+					),
 				),
 			},
 		];

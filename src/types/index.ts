@@ -791,6 +791,107 @@ export interface ArticleImage {
 	licenceCheckedAt: string;
 }
 
+export const FIGURE_KINDS = ["timeline", "matrix", "flow", "chart"] as const;
+
+export type FigureKind = (typeof FIGURE_KINDS)[number];
+
+export const FIGURE_KIND_NAMES: Record<FigureKind, string> = {
+	timeline: "Timeline",
+	matrix: "Comparison",
+	flow: "Process",
+	chart: "Chart",
+};
+
+interface FigureFrame {
+	title: string;
+	alt: string;
+	caption: string;
+	sources: string[];
+}
+
+export interface TimelineEntry {
+	date: string;
+	precision: DatePrecision;
+	title: string;
+	detail?: string;
+}
+
+export interface TimelineFigure extends FigureFrame {
+	kind: "timeline";
+	cites: string[];
+	asAt: string;
+	entries: TimelineEntry[];
+}
+
+export type MatrixCell =
+	| { kind: "text"; text: string; emphasis: boolean }
+	| { kind: "not_stated" };
+
+export interface MatrixRow {
+	header: string;
+	cells: MatrixCell[];
+}
+
+export interface MatrixFigure extends FigureFrame {
+	kind: "matrix";
+	cites: string[];
+	wide: boolean;
+	columns: string[];
+	rows: MatrixRow[];
+}
+
+export const FLOW_STEP_ROLES = ["step", "decision", "end"] as const;
+
+export type FlowStepRole = (typeof FLOW_STEP_ROLES)[number];
+
+export interface FlowStep {
+	text: string;
+	role: FlowStepRole;
+	label?: string;
+}
+
+export interface FlowBranch {
+	from: number;
+	label: string;
+	steps: FlowStep[];
+}
+
+export interface FlowFigure extends FigureFrame {
+	kind: "flow";
+	cites: string[];
+	wide: boolean;
+	steps: FlowStep[];
+	branch?: FlowBranch;
+}
+
+export const CHART_GROUPS = ["jurisdiction", "type", "status"] as const;
+
+export type ChartGroup = (typeof CHART_GROUPS)[number];
+
+export interface ChartWhere {
+	jurisdiction?: Jurisdiction[];
+	type?: PolicyType[];
+	status?: PolicyStatus[];
+	effectiveDate?: { from?: string; to?: string };
+}
+
+export interface ChartQuery {
+	group: ChartGroup;
+	where: ChartWhere;
+}
+
+export interface ChartFigure extends FigureFrame {
+	kind: "chart";
+	query: ChartQuery;
+	highlight?: string;
+}
+
+export type ArticleFigure = TimelineFigure | MatrixFigure | FlowFigure | ChartFigure;
+
+export type ArticleBlock =
+	| { kind: "prose"; markdown: string }
+	| { kind: "figure"; number: number; figure: ArticleFigure };
+
 interface ArticleFields {
 	slug: string;
 	type: ArticleType;
@@ -802,6 +903,7 @@ interface ArticleFields {
 	image?: ArticleImage;
 	updatedAt?: string;
 	body: string;
+	blocks: ArticleBlock[];
 }
 
 export interface DraftArticle extends ArticleFields {

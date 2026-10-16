@@ -11,6 +11,7 @@ import {
   SourceUnderReviewBanner,
   StandardNotices,
 } from '@/components/analysis';
+import { ArticleFigureView } from '@/components/article-figures';
 import { ArticleTable } from '@/components/article-table';
 import { articleMdxOptions } from '@/lib/article-markdown';
 import { getArticleBySlug, type ArticleView } from '@/lib/data-service';
@@ -145,8 +146,24 @@ export default async function ArticlePage({ params }: Params) {
       </div>
 
       <div className="prose article-body mt-8 max-w-none dark:prose-invert">
-        <MDXRemote source={article.body} components={{ table: ArticleTable }}
-          options={{ mdxOptions: articleMdxOptions }} />
+        {article.blocks.map((block, index) =>
+          block.kind === 'prose' ? (
+            <MDXRemote
+              key={index}
+              source={block.markdown}
+              components={{ table: ArticleTable }}
+              options={{ mdxOptions: articleMdxOptions }}
+            />
+          ) : (
+            <ArticleFigureView
+              key={index}
+              number={block.number}
+              figure={block.figure}
+              citations={article.citations}
+              chart={article.registerCharts[block.number]}
+            />
+          ),
+        )}
       </div>
 
       {article.corrections.length > 0 ? (

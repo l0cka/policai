@@ -209,6 +209,25 @@ comparing each piece with the base revision:
   re-dated, a withdrawn piece stays withdrawn, and earlier corrections cannot
   change.
 - Frontmatter is YAML only; any other frontmatter language fails to parse.
+- A figure in a piece is checked like the text. Every record a timeline,
+  comparison or process figure cites must also be in the piece's `cites`, so
+  the rules above, and the banner, apply to it. Every figure source must be
+  in the piece's `sources`.
+- A register chart counts the public register, the same records
+  `/data/policies.json` serves, when the page is built or revalidated.
+  Withheld, unverified and trashed records are never counted. The chart cites
+  the register as a whole and makes no claim about any one record's content,
+  so a review-due record in the count is neither an error nor a reason for
+  the banner (PM, 2026-10-17). Its source line gives the number of public
+  records "as at" the last register change: the latest `updatedAt` across
+  every record in `data/policies.json`, withheld and trashed records
+  included, because withholding, trashing or publishing a record changes the
+  public count. It is shown as a calendar date in Australia/Sydney, not the
+  collection, build or render date (PM, 2026-10-17). A record without
+  `updatedAt` fails `validate:data`, so the date has no fallback. Its query
+  must group by jurisdiction, type or status and match at least one public
+  record. The prose does not restate a chart's numbers, so the text cannot go
+  stale against the live count.
 - If the CI base revision (`GITHUB_BASE_SHA`) cannot be read, validation
   fails rather than skipping these comparisons.
 

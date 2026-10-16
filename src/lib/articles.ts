@@ -2,6 +2,7 @@ import { readdir, readFile } from "fs/promises";
 import path from "path";
 import { isValidCalendarDate, sydneyCalendarDate } from "@/lib/calendar-date";
 import { parseFrontmatter, type FrontmatterFile } from "@/lib/frontmatter";
+import { parseArticleBody } from "@/lib/article-figures";
 import { isAllowedSourceHost, sourceUrlsEqual } from "@/lib/source-url";
 import {
 	ARTICLE_LICENCE_FORMS,
@@ -145,9 +146,6 @@ export function articleBodyLinks(body: string): ArticleBodyLink[] {
 }
 
 function calendarDate(value: unknown): string | undefined {
-	if (value instanceof Date && !Number.isNaN(value.getTime())) {
-		return value.toISOString().slice(0, 10);
-	}
 	return typeof value === "string" && isValidCalendarDate(value)
 		? value
 		: undefined;
@@ -375,6 +373,9 @@ export function parseArticle({ slug, source }: ArticleSource): ArticleParseResul
 		}
 	}
 
+	const { blocks, errors: figureErrors } = parseArticleBody(body, { cites, sources });
+	errors.push(...figureErrors);
+
 	const corrections: ArticleCorrection[] = [];
 	if (present("corrections")) {
 		const raw = data.corrections;
@@ -445,6 +446,7 @@ export function parseArticle({ slug, source }: ArticleSource): ArticleParseResul
 		sources,
 		corrections,
 		body,
+		blocks,
 		...(image ? { image } : {}),
 		...(updatedAt ? { updatedAt } : {}),
 	};

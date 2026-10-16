@@ -36,6 +36,19 @@ describe('validatePolicies', () => {
     expect(report.errors).toEqual([]);
   });
 
+  it('rejects a record without updatedAt, trashed or not, since it dates register charts', () => {
+    const active: Partial<Policy> = buildPolicy({ id: 'no-updated-at' });
+    delete active.updatedAt;
+    const trashed = { ...active, id: 'trashed-no-updated-at', status: 'trashed' };
+    const report = validatePolicies([active, trashed] as Policy[]);
+    expect(report.errors).toEqual(
+      expect.arrayContaining([
+        'no-updated-at: invalid updatedAt "undefined"',
+        'trashed-no-updated-at: invalid updatedAt "undefined"',
+      ]),
+    );
+  });
+
   it('rejects a verified primary date without matching source evidence', () => {
     const policy = buildPolicy();
     delete policy.dates[0].source?.reviewedDate;

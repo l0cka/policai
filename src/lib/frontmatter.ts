@@ -1,4 +1,5 @@
 import matter from "gray-matter";
+import yaml from "js-yaml";
 
 function refuse(language: string) {
 	return () => {
@@ -6,9 +7,14 @@ function refuse(language: string) {
 	};
 }
 
+export function parseYaml(source: string): unknown {
+	return yaml.load(source, { schema: yaml.CORE_SCHEMA });
+}
+
 const YAML_ONLY = {
 	language: "yaml",
 	engines: {
+		yaml: { parse: (source: string) => (parseYaml(source) ?? {}) as object },
 		js: refuse("js"),
 		javascript: refuse("javascript"),
 		json: refuse("json"),
