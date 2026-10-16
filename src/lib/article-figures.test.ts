@@ -3,7 +3,7 @@
 import path from "path";
 import { describe, expect, it } from "vitest";
 import { parseArticle, readArticleSources, type ArticleSource } from "./articles";
-import { registerAsAt, registerChart } from "./article-figures";
+import { registerChart } from "./article-figures";
 import { buildPolicy } from "@/test/factories";
 import type { Article, ArticleFigure, ChartFigure, Policy } from "@/types";
 
@@ -250,6 +250,43 @@ describe("figure blocks in article Markdown", () => {
 		]);
 	});
 
+	it.each([
+		[" ```figure", true],
+		["    ```figure", true],
+		["\t```figure", true],
+		["- ```figure", true],
+		["* ```figure", true],
+		["+ ```figure", true],
+		["> ```figure", true],
+		[">```figure", true],
+		["->```figure", true],
+		["> - ```figure", true],
+		["- > 1. ```figure", true],
+		["   1) ```figure", true],
+		["1. ```figure\t", true],
+		["> ```figure  ", true],
+		["1234567890. ```figure", false],
+		["x ```figure", false],
+		["- x ```figure", false],
+		["- ```figures", false],
+		["- ```js", false],
+		["> quoted text", false],
+		["- item", false],
+	])("flags %j as a misplaced figure fence: %s", (line, flagged) => {
+		const misplaced = errorsOf(inline(`Text.\n\n${line}`)).filter((error) => error.includes("column 0"));
+		expect(misplaced).toEqual(flagged ? ["line 3: a ```figure fence must start at column 0, outside any list or quote"] : []);
+	});
+
+	it.each([
+		["quote", "> ".repeat(30) + "quoted text"],
+		["list", "- ".repeat(30) + "x"],
+		["ordered list", "1. ".repeat(30) + "x"],
+	])("scans a deeply nested %s line in linear time", (_, line) => {
+		const started = performance.now();
+		expect(errorsOf(inline(`Text.\n\n${line}`))).toEqual([]);
+		expect(performance.now() - started).toBeLessThan(200);
+	});
+
 	it("gives every prose block the piece's reference definitions", () => {
 		const body = "See the [instrument][src].\n\n```figure\n" + TIMELINE + "\n```\n\nRead the [instrument][src] again.\n\n[src]: https://www.example.gov.au/fixture-instrument";
 		const prose = parsed(inline(body)).blocks.flatMap((block) => (block.kind === "prose" ? [block.markdown] : []));
@@ -305,16 +342,5 @@ describe("registerChart", () => {
 				{ value: "active", label: "Active", count: 2, highlighted: false },
 			],
 		});
-	});
-});
-
-describe("registerAsAt", () => {
-	const at = (updatedAt: string) => buildPolicy({ updatedAt });
-
-	it("is the Sydney calendar day of the latest updatedAt", () => {
-		expect(registerAsAt([at("2026-10-01T00:00:00.000Z"), at("2026-10-16T12:59:59.000Z")])).toBe("2026-10-16");
-		expect(registerAsAt([at("2026-10-16T13:00:00.000Z"), at("2026-10-01T00:00:00.000Z")])).toBe("2026-10-17");
-		expect(registerAsAt([at("2026-06-30T14:00:00.000Z")])).toBe("2026-07-01");
-		expect(registerAsAt([])).toBeNull();
 	});
 });

@@ -1,4 +1,4 @@
-import { isValidCalendarDate, sydneyCalendarDate } from "@/lib/calendar-date";
+import { isValidCalendarDate } from "@/lib/calendar-date";
 import { parseYaml } from "@/lib/frontmatter";
 import { sourceUrlsEqual } from "@/lib/source-url";
 import {
@@ -59,7 +59,7 @@ const CHART_LABELS: { [G in ChartGroup]: Record<Policy[G], string> } = {
 const FIGURE_OPEN = /^```figure\s*$/;
 const FIGURE_CLOSE = /^```\s*$/;
 const FENCE_OPEN = /^ {0,3}(`{3,}|~{3,})/;
-const MISPLACED_FIGURE_OPEN = /^(?:[ \t]*(?:[-*+]|\d{1,9}[.)]|>)?)*[ \t]*```figure\s*$/;
+const MISPLACED_FIGURE_OPEN = /^[ \t]*(?:(?:[-*+]|\d{1,9}[.)]|>)[ \t]*)*```figure\s*$/;
 const REFERENCE_DEFINITION = /^ {0,3}\[[^\]]+\]:\s*\S+.*$/;
 
 type Data = Record<string, unknown>;
@@ -501,11 +501,6 @@ export function registerChart(chart: ChartFigure, publicPolicies: readonly Polic
 		}));
 	if (group !== "status") bars.sort((a, b) => b.count - a.count);
 	return { total: counted.length, bars };
-}
-
-export function registerAsAt(register: readonly Policy[]): string | null {
-	const latest = Math.max(...register.map((policy) => new Date(policy.updatedAt).getTime()));
-	return Number.isFinite(latest) ? sydneyCalendarDate(new Date(latest)) : null;
 }
 
 export function registerChartErrors(chart: ChartFigure, publicPolicies: readonly Policy[]): string[] {

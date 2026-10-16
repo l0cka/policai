@@ -24,7 +24,8 @@ import {
 	projectVerificationForPublic,
 } from "@/lib/verification";
 import { reconcileLinkedDevelopments } from "@/lib/source-review";
-import { registerAsAt, registerChart, type RegisterChart } from "@/lib/article-figures";
+import { registerChart, type RegisterChart } from "@/lib/article-figures";
+import { sydneyCalendarDate } from "@/lib/calendar-date";
 import {
 	citationState,
 	parseArticle,
@@ -1236,7 +1237,7 @@ export interface ArticleCitation {
 }
 
 export interface RegisterChartView extends RegisterChart {
-	asAt: string | null;
+	asAt: string;
 }
 
 export type ArticleView<T extends PublicArticle = PublicArticle> = T & {
@@ -1255,13 +1256,13 @@ function articlesDir(): string {
 async function readPublicArticles(
 	options: DataServiceOptions,
 ): Promise<ArticleView[]> {
-	const [sources, register] = await Promise.all([
+	const now = options.now ?? new Date();
+	const [sources, policies] = await Promise.all([
 		readArticleSources(articlesDir()),
-		readPoliciesForAccess({ ...options, access: "admin" }),
+		readPoliciesForAccess({ ...options, now, access: "public" }),
 	]);
-	const policies = await publicProjection(register, options.now ?? new Date());
 	const publicPolicies = new Map(policies.map((policy) => [policy.id, policy]));
-	const asAt = registerAsAt(register);
+	const asAt = sydneyCalendarDate(now);
 	return sources.flatMap((source) => {
 		const result = parseArticle(source);
 		if (!result.ok || result.article.status === "draft") return [];

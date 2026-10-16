@@ -167,7 +167,7 @@ describe('figures in an analysis piece', () => {
       buildPolicy({ id: 'chart-vic', jurisdiction: 'vic' }),
       buildPolicy({ id: 'chart-review-due', jurisdiction: 'qld', verification: { ...cited[0].verification, checkedAt: '2026-01-01T00:00:00.000Z' } }),
     ];
-    const withheld = buildPolicy({ id: 'chart-withheld', jurisdiction: 'nt', updatedAt: '2026-07-15T20:30:00.000Z' });
+    const withheld = buildPolicy({ id: 'chart-withheld', jurisdiction: 'nt', updatedAt: '2026-07-20T00:00:00.000Z' });
     const withheldReview = {
       id: 'review-chart-withheld',
       status: 'pending_review' as const,
@@ -175,7 +175,7 @@ describe('figures in an analysis piece', () => {
       sourceUrl: withheld.sourceUrl,
     };
 
-    it('counts the public register live, dates it by the latest change including a withheld record, and does not count that record', async () => {
+    it('counts the public register live, dates it by the render in Sydney, and ignores a withheld record and its later edit', async () => {
       serve([...cited, ...counted, withheld], [withheldReview]);
       await renderArticle('figure-kinds-published');
       const figure = figureByLabel('Figure 4 · Chart');
@@ -199,12 +199,25 @@ describe('figures in an analysis piece', () => {
       expect(register).toHaveAttribute('href', '/');
     });
 
+    it('renders the piece on every request, so the count and its date are never cached', async () => {
+      const page = await import('./[slug]/page');
+      expect(page.dynamic).toBe('force-dynamic');
+      expect('revalidate' in page).toBe(false);
+    });
+
+    it('dates the count by the Sydney day of the render, not the UTC day', async () => {
+      vi.setSystemTime(new Date('2026-07-16T14:00:00.000Z'));
+      serve([...cited, ...counted]);
+      await renderArticle('figure-kinds-published');
+      expect(within(figureByLabel('Figure 4 · Chart')).getByRole('link')).toHaveTextContent(/^Policai register, 10 public records, as at 17 July 2026$/);
+    });
+
     it('does not raise the banner for a review-due record the chart counts', async () => {
       serve([...cited, ...counted]);
       await renderArticle('figure-kinds-published');
       expect(within(figureByLabel('Figure 4 · Chart')).getByText('Queensland')).toBeInTheDocument();
       expect(screen.queryByText('Source under review')).not.toBeInTheDocument();
-      expect(within(figureByLabel('Figure 4 · Chart')).getByRole('link')).toHaveTextContent(/^Policai register, 10 public records, as at 1 January 2025$/);
+      expect(within(figureByLabel('Figure 4 · Chart')).getByRole('link')).toHaveTextContent(/^Policai register, 10 public records, as at 16 July 2026$/);
     });
   });
 });

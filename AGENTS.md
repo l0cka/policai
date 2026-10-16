@@ -238,11 +238,19 @@ unverified and trashed records are never counted. A chart cites the register
 as a whole, not the records it counts: a review-due record in the count
 raises no error and no banner (PM, 2026-10-17). Its source line reads
 "Policai register, N public records, as at <date>", where the date is the
-last register change (`registerAsAt`): the latest `updatedAt` across every
-record in `data/policies.json`, withheld and trashed included, as an
-Australia/Sydney calendar date (PM, 2026-10-17). `readPublicArticles` reads
-the whole register for this date and counts only the public projection. A
-record without `updatedAt` fails `validate:data`. `validateArticles` (`registerChartErrors`) fails a
+date the page was generated, as a calendar date in Australia/Sydney (Daniel,
+2026-10-17, #293). `readPublicArticles` takes it from the same `now` that
+builds the public projection it counts, so the date is when the count was
+taken and reveals nothing about hidden records. `/analysis/[slug]` exports
+`dynamic = 'force-dynamic'` (`ƒ` in the build, served `no-store`), so each
+request recounts and redates, and a newly withheld citation leaves the page
+at once. Without it the route is dynamic only because it has no
+`generateStaticParams`; adding one would turn it into hourly ISR. The cost is
+one server render per request, about 18 ms median on Argus for a published
+piece (2026-10-17). A test in `src/app/analysis/article-figures.test.tsx`
+fails if the export is removed or `revalidate` returns. The date is formatted
+in the server render, so a reader's timezone cannot change it.
+`validateArticles` (`registerChartErrors`) fails a
 published chart whose query matches no public record, gives fewer than 3 or
 more than 10 bars, or highlights a value with no records. The prose must not
 restate a chart's numbers, since they change as the register changes.
