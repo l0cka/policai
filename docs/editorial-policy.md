@@ -166,7 +166,8 @@ state, and a figure's analysis is marked as analysis like any other.
 
 The platform checks a figure like the text. Validation rejects a figure with
 no title, alt text or caption, an unknown kind, a count outside the limits
-above, a date that does not exist (such as 2026-02-30), a repeated matrix
+above, a date that does not exist (such as 2026-02-30), a stray `---` line inside a
+figure block, a repeated matrix
 column or row header, a repeated timeline date and title, a fence that is
 not at the start of a line (inside a list or quote, or indented), and a cited
 record or source missing from the piece's lists. A figure
