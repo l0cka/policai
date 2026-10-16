@@ -1,6 +1,6 @@
 /* @vitest-environment node */
 
-import { mkdtemp, readFile, rm } from "fs/promises";
+import { mkdir, mkdtemp, readdir, readFile, rm, writeFile } from "fs/promises";
 import os from "os";
 import path from "path";
 import sharp from "sharp";
@@ -120,11 +120,53 @@ describe("ingestArticleImage", () => {
 		).rejects.toThrow("the download is not a readable image");
 	});
 
-	it("is idempotent: a rerun writes the same bytes", async () => {
+	it("is idempotent under replace: a rerun writes the same bytes", async () => {
 		const original = await photo(3000, 2000);
 		const first = await ingestArticleImage({ url: URL_OK, slug: "a-piece", publicDir, fetchImpl: source(original) });
 		const firstBytes = await readFile(first.file);
-		const second = await ingestArticleImage({ url: URL_OK, slug: "a-piece", publicDir, fetchImpl: source(original) });
+		const second = await ingestArticleImage({ url: URL_OK, slug: "a-piece", publicDir, fetchImpl: source(original), replace: true });
 		expect((await readFile(second.file)).equals(firstBytes)).toBe(true);
+	});
+
+	describe("an existing image for the slug", () => {
+		const slugDir = () => path.join(publicDir, "images", "articles", "a-piece");
+		const leadFile = () => path.join(slugDir(), "lead.jpg");
+
+		it("is never overwritten without replace, and the run leaves no other file", async () => {
+			const first = await ingestArticleImage({ url: URL_OK, slug: "a-piece", publicDir, fetchImpl: source(await photo(3000, 2000)) });
+			const firstBytes = await readFile(first.file);
+
+			const rerun = ingestArticleImage({ url: URL_OK, slug: "a-piece", publicDir, fetchImpl: source(await photo(3000, 2000, 1)) });
+			await expect(rerun).rejects.toThrow(
+				`${leadFile()} already exists. Remove it and its frontmatter image attribution deliberately, or rerun with --replace and update the attribution to match the new image`,
+			);
+			expect((await readFile(leadFile())).equals(firstBytes)).toBe(true);
+			expect(await readdir(slugDir())).toEqual(["lead.jpg"]);
+		});
+
+		it("is replaced with replace, leaving only the new file", async () => {
+			await ingestArticleImage({ url: URL_OK, slug: "a-piece", publicDir, fetchImpl: source(await photo(3000, 2000)) });
+			const second = await ingestArticleImage({ url: URL_OK, slug: "a-piece", publicDir, fetchImpl: source(await photo(4000, 2000)), replace: true });
+
+			expect([second.width, second.height]).toEqual([2048, 1024]);
+			expect((await sharp(await readFile(leadFile())).metadata()).height).toBe(1024);
+			expect(await readdir(slugDir())).toEqual(["lead.jpg"]);
+		});
+
+		it("is left intact, with no partial file, when the final write fails", async () => {
+			await mkdir(leadFile(), { recursive: true });
+			await writeFile(path.join(leadFile(), "keep"), "x");
+
+			await expect(
+				ingestArticleImage({ url: URL_OK, slug: "a-piece", publicDir, fetchImpl: source(await photo(3000, 2000)), replace: true }),
+			).rejects.toThrow();
+			expect(await readdir(slugDir())).toEqual(["lead.jpg"]);
+			expect(await readdir(leadFile())).toEqual(["keep"]);
+		});
+	});
+
+	it("writes a new image with no temporary file left behind", async () => {
+		const result = await ingestArticleImage({ url: URL_OK, slug: "a-piece", publicDir, fetchImpl: source(await photo(3000, 2000)) });
+		expect(await readdir(path.dirname(result.file))).toEqual(["lead.jpg"]);
 	});
 });

@@ -2,9 +2,11 @@ import path from 'path';
 import { ingestArticleImage } from '../src/lib/article-image-ingest';
 
 async function main() {
-  const [url, slug] = process.argv.slice(2);
-  if (!url || !slug || process.argv.length > 4) {
-    console.error('usage: tsx scripts/add-article-image.ts <image-url> <article-slug>');
+  const args = process.argv.slice(2);
+  const replace = args.includes('--replace');
+  const [url, slug, ...rest] = args.filter(arg => arg !== '--replace');
+  if (!url || !slug || rest.length > 0 || url.startsWith('--') || slug.startsWith('--')) {
+    console.error('usage: tsx scripts/add-article-image.ts <image-url> <article-slug> [--replace]');
     process.exitCode = 2;
     return;
   }
@@ -12,6 +14,7 @@ async function main() {
     url,
     slug,
     publicDir: path.join(process.cwd(), 'public'),
+    replace,
   });
   console.error(
     `wrote ${path.relative(process.cwd(), result.file)} (${result.width}x${result.height}, ${result.bytes} bytes, quality ${result.quality})`,

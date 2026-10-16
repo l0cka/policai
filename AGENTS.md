@@ -241,7 +241,13 @@ the `og:image` and `twitter:image`, and the Article JSON-LD `image`
 https with the collector identity `User-Agent` (`COLLECTOR_USER_AGENT`), refuses one under 2048 px on its long edge, applies EXIF orientation,
 re-encodes at a 2048 px long edge (quality 82, lowered in steps to 70 if the
 file would exceed the size limit), strips metadata and writes
-`public/images/articles/<slug>/lead.jpg`. It prints a frontmatter stub with
+`public/images/articles/<slug>/lead.jpg`. It writes a temporary file in the
+same folder and renames it into place, so a failed run leaves no partial file.
+It refuses to overwrite an existing `lead.jpg`, because validation matches the
+file to its frontmatter only by size and a new image would keep the old
+attribution. Remove the file and its `image` attribution deliberately, or pass
+`--replace` (`npm run add:article-image -- <url> <slug> --replace`) and update
+every attribution field for the new image. It prints a frontmatter stub with
 `alt`, `title`, `creator`, `creatorUrl`, `sourceUrl`, `licence`,
 `licenceUrl`, `modifications` and `licenceCheckedAt` empty. It never infers
 licence data: a person fills them in from the source page, then deletes the

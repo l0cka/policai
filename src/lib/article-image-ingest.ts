@@ -1,4 +1,5 @@
-import { mkdir, writeFile } from "fs/promises";
+import { randomUUID } from "crypto";
+import { link, mkdir, rename, rm, writeFile } from "fs/promises";
 import path from "path";
 import sharp from "sharp";
 import {
@@ -34,6 +35,7 @@ export interface IngestOptions {
 	slug: string;
 	publicDir: string;
 	fetchImpl?: typeof fetch;
+	replace?: boolean;
 }
 
 async function download(url: string, fetchImpl: typeof fetch): Promise<Buffer> {
@@ -55,6 +57,30 @@ async function download(url: string, fetchImpl: typeof fetch): Promise<Buffer> {
 		throw new Error(`the download is ${bytes.length} bytes; the limit is ${MAX_DOWNLOAD_BYTES}`);
 	}
 	return bytes;
+}
+
+async function writeAtomically(file: string, data: Buffer, replace: boolean): Promise<void> {
+	const temp = path.join(
+		path.dirname(file),
+		`.${path.basename(file)}.${randomUUID()}.tmp`,
+	);
+	try {
+		await writeFile(temp, data, { flag: "wx" });
+		if (replace) {
+			await rename(temp, file);
+			return;
+		}
+		try {
+			await link(temp, file);
+		} catch (error) {
+			if ((error as NodeJS.ErrnoException).code !== "EEXIST") throw error;
+			throw new Error(
+				`${file} already exists. Remove it and its frontmatter image attribution deliberately, or rerun with --replace and update the attribution to match the new image`,
+			);
+		}
+	} finally {
+		await rm(temp, { force: true });
+	}
 }
 
 export function articleImageStub(src: string, width: number, height: number): string {
@@ -82,6 +108,7 @@ export async function ingestArticleImage({
 	slug,
 	publicDir,
 	fetchImpl = fetch,
+	replace = false,
 }: IngestOptions): Promise<IngestedArticleImage> {
 	if (!isArticleSlug(slug)) {
 		throw new Error(`slug "${slug}" must be lowercase kebab-case`);
@@ -120,7 +147,7 @@ export async function ingestArticleImage({
 		const src = `${ARTICLE_IMAGE_ROOT}/${slug}/${ARTICLE_IMAGE_FILE_NAME}`;
 		const file = path.join(publicDir, ...src.split("/").filter(Boolean));
 		await mkdir(path.dirname(file), { recursive: true });
-		await writeFile(file, data);
+		await writeAtomically(file, data, replace);
 		return {
 			src,
 			file,
