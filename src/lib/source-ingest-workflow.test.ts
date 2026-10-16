@@ -1,7 +1,7 @@
 /* @vitest-environment node */
 
 import { unlink, writeFile } from 'node:fs/promises';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type {
   Development,
   Policy,
@@ -195,6 +195,8 @@ function buildLinkedDevelopment(
 
 describe('source ingest approval workflow', () => {
   beforeEach(() => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-07-16T12:00:00.000Z'));
     vi.clearAllMocks();
     getDevelopments.mockResolvedValue([]);
     getPolicies.mockResolvedValue([]);
@@ -244,6 +246,10 @@ describe('source ingest approval workflow', () => {
         ...updates,
       }),
     );
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   it('excludes automated retrieval metadata from the editorial policy revision', () => {
