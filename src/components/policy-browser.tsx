@@ -33,6 +33,7 @@ interface PolicyBrowserProps {
   upcomingDates?: UpcomingPolicyDate[];
   /** Server-rendered upcoming-deadlines rail, placed in the overview column. */
   deadlinesRail?: ReactNode;
+  analysisHero?: ReactNode;
   /** The Sydney calendar day (YYYY-MM-DD) countdowns are measured from. */
   today?: string;
   developments: Development[];
@@ -126,6 +127,7 @@ export function PolicyBrowser({
   policies,
   upcomingDates = [],
   deadlinesRail,
+  analysisHero,
   today,
   developments,
   developmentCount,
@@ -244,6 +246,7 @@ export function PolicyBrowser({
 
   return (
     <div className="editorial-register container mx-auto px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+      {analysisHero}
       <div className="mb-8 flex flex-wrap items-end justify-between gap-5">
         <div>
           <p className="page-eyebrow text-primary">
