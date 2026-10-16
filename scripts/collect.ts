@@ -1,8 +1,8 @@
 /**
  * Collector CLI — runs one collection pass over the watch sources and
- * persists the results to the repo's data files. In production this runs
- * in the daily GitHub Actions workflow, which commits the changes; run it
- * locally with --dry-run to preview.
+ * persists the results to the repo's data files. In production the host
+ * wrapper ops/collector/policai-collect.sh runs it; run it locally with
+ * --dry-run to preview.
  *
  * Usage:
  *   npx tsx scripts/collect.ts [--dry-run] [--source=<id>] [--max-items=<n>]

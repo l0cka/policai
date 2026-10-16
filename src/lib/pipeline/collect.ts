@@ -1274,64 +1274,67 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
       );
     }
 
-    if (due) {
+    const attemptIndexRetrieval = async (
+      impl: typeof fetch | undefined,
+      timeoutMs?: number,
+    ) => {
+      const retrieval = await retrieveSource(source.url, {
+        fetchImpl: impl,
+        now: () => now,
+        hashLinkedDocuments: source.kind === 'document',
+        identityAuthority,
+        ...(timeoutMs !== undefined ? { timeoutMs } : {}),
+      });
+      const extracted =
+        source.kind === 'document'
+          ? null
+          : source.kind === 'rss'
+            ? extractFromRss(retrieval.body, source.url, {
+                titlePattern: source.bodyRelevance?.titlePattern,
+              })
+            : extractFromHtml(retrieval.body, source.url);
+      return { retrieval, extracted };
+    };
+    const retrieveSourceIndex = async () => {
+      if (preferBrowser) {
+        return attemptIndexRetrieval(
+          browserFetchImpl,
+          BROWSER_RETRIEVAL_TIMEOUT_MS,
+        );
+      }
       try {
-        const attemptIndexRetrieval = async (
-          impl: typeof fetch | undefined,
-          timeoutMs?: number,
-        ) => {
-          const retrieval = await retrieveSource(source.url, {
-            fetchImpl: impl,
-            now: () => now,
-            hashLinkedDocuments: source.kind === 'document',
-            identityAuthority,
-            ...(timeoutMs !== undefined ? { timeoutMs } : {}),
-          });
-          const extracted =
-            source.kind === 'document'
-              ? null
-              : source.kind === 'rss'
-                ? extractFromRss(retrieval.body, source.url, {
-                    titlePattern: source.bodyRelevance?.titlePattern,
-                  })
-                : extractFromHtml(retrieval.body, source.url);
-          return { retrieval, extracted };
-        };
-        let indexAttempt: Awaited<ReturnType<typeof attemptIndexRetrieval>>;
-        if (preferBrowser) {
-          indexAttempt = await attemptIndexRetrieval(
+        const indexAttempt = await attemptIndexRetrieval(fetchImpl);
+        if (
+          browserFetchImpl &&
+          indexAttempt.extracted?.itemCount === 0 &&
+          !indexAttempt.extracted.feedValid
+        ) {
+          log(
+            `[collect] ${source.id}: empty index, retrying with the browser retriever`,
+          );
+          return await attemptIndexRetrieval(
             browserFetchImpl,
             BROWSER_RETRIEVAL_TIMEOUT_MS,
           );
-        } else {
-          try {
-            indexAttempt = await attemptIndexRetrieval(fetchImpl);
-            if (
-              browserFetchImpl &&
-              indexAttempt.extracted?.itemCount === 0 &&
-              !indexAttempt.extracted.feedValid
-            ) {
-              log(
-                `[collect] ${source.id}: empty index, retrying with the browser retriever`,
-              );
-              indexAttempt = await attemptIndexRetrieval(
-                browserFetchImpl,
-                BROWSER_RETRIEVAL_TIMEOUT_MS,
-              );
-            }
-          } catch (error) {
-            if (!browserFetchImpl || isBrowserFallbackFutile(error)) {
-              throw error;
-            }
-            log(
-              `[collect] ${source.id}: retrying source with the browser retriever`,
-            );
-            indexAttempt = await attemptIndexRetrieval(
-              browserFetchImpl,
-              BROWSER_RETRIEVAL_TIMEOUT_MS,
-            );
-          }
         }
+        return indexAttempt;
+      } catch (error) {
+        if (!browserFetchImpl || isBrowserFallbackFutile(error)) {
+          throw error;
+        }
+        log(
+          `[collect] ${source.id}: retrying source with the browser retriever`,
+        );
+        return attemptIndexRetrieval(
+          browserFetchImpl,
+          BROWSER_RETRIEVAL_TIMEOUT_MS,
+        );
+      }
+    };
+
+    if (due) {
+      try {
+        const indexAttempt = await retrieveSourceIndex();
         sourceRetrieval = indexAttempt.retrieval;
         const indexExtraction = indexAttempt.extracted;
         if (source.kind === 'document') {
@@ -1618,9 +1621,8 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
       try {
         pageRetrieval =
           source.kind === 'document' &&
-          sourceUrlsEqual(candidate.url, source.url) &&
-          sourceRetrieval
-            ? sourceRetrieval
+          sourceUrlsEqual(candidate.url, source.url)
+            ? sourceRetrieval ?? (await retrieveSourceIndex()).retrieval
             : await retrievePageWithFallback(candidate.url);
         existingPolicy = candidate.changeFingerprint
           ? trackedPoliciesByUrl.get(sourceUrlIdentity(candidate.url))

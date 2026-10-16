@@ -91,6 +91,7 @@ import {
   stageSourceUrl,
 } from './source-ingest';
 import { timelineRevisionHash } from './policy-revision';
+import { buildPolicy } from '@/test/factories';
 
 const SOURCE_URL = 'https://example.gov.au/policy';
 const DISCOVERY_URL = 'https://policy.example.com/analysis';
@@ -3131,6 +3132,44 @@ describe('source ingest approval workflow', () => {
     expect(updateSourceReview.mock.invocationCallOrder[0]).toBeLessThan(
       markCollectionReviewed.mock.invocationCallOrder[0],
     );
+  });
+
+  it('publishes a superseded record whose successor is already in the register', async () => {
+    getPolicies.mockResolvedValue([
+      buildPolicy({
+        id: 'successor-policy',
+        sourceUrl: 'https://example.gov.au/successor',
+      }),
+    ]);
+    const approvedPolicy = {
+      ...buildDraft({ effectiveDate: '2026-07-01' }),
+      status: 'superseded' as const,
+      supersededBy: 'successor-policy',
+      effectiveDate: '2026-07-01',
+      lastReviewedAt: '2026-07-16T00:00:00.000Z',
+      verification: {
+        status: 'verified' as const,
+        source: {
+          url: SOURCE_URL,
+          contentHash: 'a'.repeat(64),
+        },
+        checkedAt: '2026-07-16T00:00:00.000Z',
+        checkedBy: 'reviewer',
+        method: 'manual' as const,
+      },
+    };
+    getSourceReviewById.mockResolvedValue(
+      buildReview({
+        status: 'approved',
+        reviewedAt: '2026-07-16T00:00:00.000Z',
+        reviewedBy: 'reviewer',
+        proposedRecord: approvedPolicy,
+      }),
+    );
+
+    await publishStagedSource('source-review-1');
+
+    expect(createPolicy).toHaveBeenCalledWith(approvedPolicy);
   });
 
   it('serializes concurrent publications across the complete transaction', async () => {

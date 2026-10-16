@@ -1287,6 +1287,95 @@ describe('collect', () => {
     ).toBe('2026-07-01T00:00:00.000Z');
   });
 
+  it('retries a pending browser-strategy document version through the source retriever, not Firecrawl', async () => {
+    const browserDocument: WatchSource = {
+      ...DOCUMENT_SOURCE,
+      fetchStrategy: 'browser',
+    };
+    const baseline = await collect({
+      sources: [browserDocument],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl: fakeFetch({}),
+      browserFetchImpl: fakeFetch({
+        [DOCUMENT_SOURCE.url]:
+          '<html><body><main><h1>AI governance policy</h1><p>Version one.</p></main></body></html>',
+      }),
+      now: () => new Date('2026-07-01T00:00:00.000Z'),
+    });
+    const trackedPolicy = buildPolicy({
+      id: 'tracked-browser-document-policy',
+      sourceUrl: DOCUMENT_SOURCE.url,
+      verification: {
+        status: 'verified',
+        checkedAt: '2026-07-01T00:00:00.000Z',
+        checkedBy: 'reviewer',
+        method: 'manual',
+        source: {
+          url: DOCUMENT_SOURCE.url,
+          contentHash:
+            baseline.state.sourceSnapshots[DOCUMENT_SOURCE.id].contentHash,
+        },
+      },
+    });
+    const unreadableChange = fakeFetch({
+      [DOCUMENT_SOURCE.url]: {
+        body: Uint8Array.from([0x25, 0x50, 0x44, 0x46, 0x2d, 0x00]),
+        contentType: 'application/pdf',
+      },
+    });
+
+    const staged = await collect({
+      sources: [browserDocument],
+      state: baseline.state,
+      existingDevelopments: [],
+      trackedUrls: [DOCUMENT_SOURCE.url],
+      trackedPolicies: [trackedPolicy],
+      fetchImpl: fakeFetch({}),
+      browserFetchImpl: unreadableChange,
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+    });
+    const versionKeys = (state: WatchState) =>
+      Object.keys(state.seen).filter((key) => key.includes('policai-change='));
+    const [pendingVersion] = versionKeys(staged.state);
+    expect(versionKeys(staged.state)).toEqual([pendingVersion]);
+    expect(staged.state.seen[pendingVersion].status).toBe('pending');
+    expect(staged.reviewCandidates).toHaveLength(1);
+
+    const notDueState: WatchState = {
+      ...staged.state,
+      lastCheckedBySource: {
+        ...staged.state.lastCheckedBySource,
+        [DOCUMENT_SOURCE.id]: '2026-07-10T00:00:00.000Z',
+      },
+    };
+    scrapeWithFirecrawl.mockImplementation(async (url: string) => ({
+      ok: true,
+      markdown: '# AI governance policy\n\nFirecrawl markdown rendering.',
+      title: 'AI governance policy',
+      finalUrl: url,
+    }));
+
+    const retried = await collect({
+      sources: [browserDocument],
+      state: notDueState,
+      existingDevelopments: staged.developments,
+      trackedUrls: [DOCUMENT_SOURCE.url],
+      trackedPolicies: [trackedPolicy],
+      fetchImpl: fakeFetch({}),
+      browserFetchImpl: unreadableChange,
+      now: () => new Date('2026-07-11T00:00:00.000Z'),
+    });
+
+    expect(retried.reviewCandidates).toEqual([]);
+    expect(retried.developments).toEqual([]);
+    expect(versionKeys(retried.state)).toEqual([pendingVersion]);
+    expect(retried.state.seen[pendingVersion].status).toBe('pending');
+    expect(retried.state.sourceSnapshots[DOCUMENT_SOURCE.id]).toEqual(
+      staged.state.sourceSnapshots[DOCUMENT_SOURCE.id],
+    );
+  });
+
   it('keeps a successfully classified update unresolved until editorial publication', async () => {
     const baselineBody =
       '<html><body><main><h1>AI governance policy</h1><p>Version A baseline.</p></main></body></html>';

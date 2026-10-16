@@ -448,6 +448,93 @@ describe('extractPublishedDate', () => {
       ),
     ).toBe('2025-02-24');
   });
+
+  describe('GovCMS edit-time metadata', () => {
+    const disrPage = (extraHead = '') => `
+      <html>
+        <head>
+          <meta name="Generator" content="Drupal 11 (http://drupal.org) + GovCMS (http://govcms.gov.au)">
+          <meta name="dcterms.created" content="2026-10-08T09:00:00+11:00">
+          <meta name="dcterms.date" content="2026-10-12T12:47:45+1100">
+          <meta property="og:updated_time" content="2026-10-12T12:47:45+1100">
+          ${extraHead}
+        </head>
+        <body><main><h1>New report explores safe oversight of advanced AI</h1><p>8 October 2026</p></main></body>
+      </html>
+    `;
+
+    it('dates the page by dcterms.created, not by the edit time', () => {
+      const originalTimeZone = process.env.TZ;
+      try {
+        for (const timeZone of ['UTC', 'Pacific/Honolulu', 'Australia/Sydney']) {
+          process.env.TZ = timeZone;
+          expect(extractPublishedDateEvidence(disrPage())).toEqual({
+            date: '2026-10-08',
+            precision: 'day',
+          });
+        }
+      } finally {
+        if (originalTimeZone === undefined) delete process.env.TZ;
+        else process.env.TZ = originalTimeZone;
+      }
+    });
+
+    it('uses dcterms.issued or article:published_time over the edit time when created is absent', () => {
+      const editOnly = (publication: string) => `
+        <html><head>
+          <meta name="dcterms.date" content="2026-10-12T12:47:45+1100">
+          ${publication}
+        </head></html>
+      `;
+      expect(
+        extractPublishedDate(editOnly('<meta name="dcterms.issued" content="2026-10-06">')),
+      ).toBe('2026-10-06');
+      expect(
+        extractPublishedDate(
+          editOnly('<meta property="article:published_time" content="2026-10-05T08:00:00+11:00">'),
+        ),
+      ).toBe('2026-10-05');
+    });
+
+    it('never dates a page by modified-time keys', () => {
+      expect(
+        extractPublishedDate(`
+          <html><head>
+            <meta name="dcterms.modified" content="2026-10-12">
+            <meta property="article:modified_time" content="2026-10-12T12:47:45+11:00">
+            <meta property="og:updated_time" content="2026-10-12T12:47:45+1100">
+          </head></html>
+        `),
+      ).toBeNull();
+    });
+
+    const editTimeOnly = (generator = '') => `
+      <html><head>
+        ${generator}
+        <meta name="dcterms.date" content="2026-10-12T12:47:45+1100">
+        <meta property="og:updated_time" content="2026-10-12T12:47:45+1100">
+      </head><body><h1>Report</h1></body></html>
+    `;
+
+    it('never dates a GovCMS or Drupal page by dcterms.date', () => {
+      for (const generator of [
+        '<meta name="Generator" content="Drupal 11 (http://drupal.org) + GovCMS (http://govcms.gov.au)">',
+        '<meta name="generator" content="drupal 10 (https://www.drupal.org)">',
+        '<meta name="Generator" content="GOVCMS">',
+      ]) {
+        expect(extractPublishedDateEvidence(editTimeOnly(generator))).toBeNull();
+      }
+    });
+
+    it('still dates other pages by dcterms.date as a last resort', () => {
+      for (const generator of ['', '<meta name="generator" content="WordPress 6.6">']) {
+        expect(extractPublishedDateEvidence(editTimeOnly(generator))).toEqual({
+          date: '2026-10-12',
+          precision: 'day',
+        });
+      }
+    });
+  });
 });
 
 describe('extractDocumentCandidate', () => {
