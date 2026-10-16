@@ -2636,5 +2636,32 @@
       "method": "manual",
       "notes": "Drafted for approval by Daniel Alkurdi (pending his decision, escalation E14) as a federal timeline milestone reporting an independent performance audit, not as a policy instrument."
     }
+  },
+  {
+    "id": "tl-2026-10-08-aisi-epistemic-safety-scalable-oversight-report",
+    "date": "2026-10-08",
+    "datePrecision": "day",
+    "title": "Australian AI Safety Institute publishes CSIRO report on epistemic safety in scalable oversight",
+    "description": "The Australian AI Safety Institute published a report it commissioned from CSIRO offering a theoretical framework for how highly capable AI systems may influence the beliefs of their overseers while still performing tasks correctly. It is research to inform assurance of advanced AI systems and does not set requirements.",
+    "type": "announcement",
+    "jurisdiction": "federal",
+    "sourceUrl": "https://www.industry.gov.au/publications/epistemic-safety-scalable-oversight",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.industry.gov.au/publications/epistemic-safety-scalable-oversight",
+        "finalUrl": "https://www.industry.gov.au/publications/epistemic-safety-scalable-oversight",
+        "title": "Epistemic safety in scalable oversight | Department of Industry Science and Resources",
+        "retrievedAt": "2026-10-16T07:47:22.516Z",
+        "contentType": "text/html",
+        "contentHash": "f159fcf2c2c5c604962f1068a9d6516f5400b374fdb2b2c957f1bf3708f0d700",
+        "publishedAt": "2026-10-08",
+        "publishedAtPrecision": "day"
+      },
+      "checkedAt": "2026-10-16T07:47:22.516Z",
+      "checkedBy": "Policai Developer Agent (editorial-decision follow-up)",
+      "method": "manual",
+      "notes": "Recorded as a timeline event, not a policy instrument, following the Editorial Manager's decision on PR #160. The official publication page shows 'Date published: 8 October 2026' and dcterms.created 2026-10-08, and describes a CSIRO-authored research report commissioned by the AI Safety Institute."
+    }
   }
 ]

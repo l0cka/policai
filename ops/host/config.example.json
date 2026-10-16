@@ -10,16 +10,23 @@
     "image": "sha256:REPLACE_WITH_CURRENT_FULL_IMAGE_ID",
     "cluster": "REPLACE_WITH_VERIFIED_POSTGRES_CLUSTER_IDENTIFIER"
   },
+  "backup_mirror": {
+    "source": "REPLACE_WITH_PRIMARY_BACKUP_DIRECTORY",
+    "mount": "REPLACE_WITH_SECOND_DISK_MOUNT_POINT",
+    "destination": "REPLACE_WITH_MIRROR_DIRECTORY_BENEATH_THAT_MOUNT"
+  },
   "installed_hashes": {
     "/usr/local/libexec/policai-host/cli.py": "REPLACE_WITH_REVIEWED_INSTALLED_SHA256",
     "/usr/local/libexec/policai-host/host.py": "REPLACE_WITH_REVIEWED_INSTALLED_SHA256",
     "/usr/local/libexec/policai-host/dispatcher.py": "REPLACE_WITH_REVIEWED_INSTALLED_SHA256",
     "/usr/local/libexec/policai-host/bin/docker": "REPLACE_WITH_REVIEWED_INSTALLED_SHA256",
     "/usr/local/libexec/policai-host/backup.sh": "REPLACE_WITH_REVIEWED_INSTALLED_SHA256",
+    "/usr/local/libexec/policai-host/backup-mirror.sh": "REPLACE_WITH_REVIEWED_INSTALLED_SHA256",
     "/etc/systemd/system/policai-pull.service": "REPLACE_WITH_REVIEWED_INSTALLED_SHA256",
     "/home/l0cka/.config/systemd/user/probono-ingest.service": "REPLACE_WITH_REVIEWED_INSTALLED_SHA256",
     "/home/l0cka/.config/systemd/user/probono-enrich.service": "REPLACE_WITH_REVIEWED_INSTALLED_SHA256",
     "/home/l0cka/.config/systemd/user/probono-backup.service": "REPLACE_WITH_REVIEWED_INSTALLED_SHA256",
+    "/home/l0cka/.config/systemd/user/probono-backup-mirror.service": "REPLACE_WITH_REVIEWED_INSTALLED_SHA256",
     "/home/l0cka/.config/systemd/user/probono-verify-deadlines.service": "REPLACE_WITH_REVIEWED_INSTALLED_SHA256"
   }
 }

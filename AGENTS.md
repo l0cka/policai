@@ -49,7 +49,7 @@ Policai is an Australian AI policy tracker. It maintains a curated register of A
 - **Data:** public-safe JSON in `public/data/`; editorial and collector JSON in
   `data/`, all canonical and versioned
 - **Retrieval:** plain HTTP first; self-hosted Firecrawl for candidate pages on browser-strategy sources, falling back to headless Chromium (Playwright); index and RSS listing pages always use headless Chromium directly. Every path sends the collector identity `Policai/1.0 (+https://policai.org)` (`src/lib/pipeline/identity.ts`; see Collector identity below)
-- **Analysis:** keyword heuristic by default; Claude, an Anthropic model, batched through the Claude Code CLI on the collection host when `USE_CLAUDE_CLASSIFIER` is set — both classifier paths cap stored/displayed confidence at 0.65 (`MACHINE_CONFIDENCE_CAP`); direct-document change detections on tracked records store `relevanceScore: 1` by design (change-certainty, not classifier confidence) and stay editor-gated
+- **Analysis:** keyword heuristic by default; Claude, an Anthropic model, batched through an OpenAI-compatible chat-completions endpoint (`src/lib/pipeline/classifier-cli.ts`) when `USE_CLAUDE_CLASSIFIER` is set — both classifier paths cap stored/displayed confidence at 0.65 (`MACHINE_CONFIDENCE_CAP`); direct-document change detections on tracked records store `relevanceScore: 1` by design (change-certainty, not classifier confidence) and stay editor-gated
 - **Scraping:** Cheerio
 - **Testing:** Vitest (+ Testing Library)
 - **Automation:** a daily scheduled run on the maintainer's server
@@ -88,8 +88,10 @@ src/
 │   ├── agencies/                 # Temporary 307 to apsaitracker.app (owner's permission; force-dynamic
 │   │                             #   so no CDN caches it). To withdraw, restore notFound()
 │   ├── policies/[id]/            # Policy detail (server) + client tabs
-│   └── api/                      # READ-ONLY public JSON API (policies, agencies,
-│                                 #   timeline, network, status)
+│   └── api/                      # READ-ONLY public API, one route.ts each:
+│                                 #   policies, policies/[id], agencies, timeline, network,
+│                                 #   status, developments, court-requirements (JSON), and
+│                                 #   policies/[id]/markdown (text/markdown)
 ├── components/                   # UI, layout, visualisation components
 ├── lib/
 │   ├── data-service.ts           # File-backed reads/writes over the repo JSON
@@ -97,7 +99,7 @@ src/
 │   ├── analysis.ts               # Deterministic relevance/summary helpers
 │   ├── scraper-filter.ts         # Keyword heuristics shared by the pipeline
 │   ├── source-ingest.ts          # Curated publish path (used by the MCP server)
-│   └── pipeline/                 # Collector: sources.ts, extract.ts, classify.ts, claude-classify.ts, firecrawl.ts, collect.ts
+│   └── pipeline/                 # Collector: sources.ts, extract.ts, classify.ts, claude-classify.ts, classifier-cli.ts, firecrawl.ts, collect.ts
 ├── mcp/                          # Local MCP server for staging/publishing records
 └── types/index.ts                # All shared domain types
 
@@ -109,7 +111,7 @@ docs/                             # collector.md + docs index
 
 ## Data Model & Flow
 
-1. **Register** (`data/policies.json`): curated policy records. Changed only through explicit editorial approval (human or MCP-assisted). `/data/policies.json` and API/site reads expose only verified, non-trashed, non-withheld records. The collector never writes it; the workflow fails if it does.
+1. **Register** (`data/policies.json`): curated policy records. Changed only through explicit editorial approval (human or MCP-assisted). `/data/policies.json` and API/site reads expose only verified, non-trashed, non-withheld records. The collector never writes it. The host wrapper `ops/collector/policai-collect.sh` fails a collection run that changes it. No GitHub workflow checks this, so a hand-made PR that edits the register is caught only by review.
 2. **Developments** (`data/developments.json`): automated radar feed. Each entry has provenance (`sourceId`, `url`), a relevance score, and a `classification` label — `heuristic` (deterministic keyword rules, the default) or `ai` (Claude classification, active when `USE_CLAUDE_CLASSIFIER` is set), plus `curated` for promoted register entries. Both classifier paths cap confidence at 0.65 (`MACHINE_CONFIDENCE_CAP`) and show as "Needs review". Direct-document change detections on tracked records carry `relevanceScore: 1` — the score records change-certainty for a known instrument, not classifier confidence — and are equally editor-gated. `/data/developments.json` filters dismissed entries.
 3. **Editorial directories** (`data/timeline.json`, `data/agencies.json`,
    `data/commonwealth-agencies.json`): may contain records awaiting review and
@@ -147,10 +149,12 @@ None are required to run the site or collector. Optional (see `.env.example`):
 POLICAI_MCP_ADMIN_TOKEN=  # local MCP source-ingest writes
 USE_CLAUDE_CLASSIFIER=    # opt into Claude classification instead of the keyword heuristic (set on the collection host)
 FIRECRAWL_URL=            # self-hosted Firecrawl base URL, defaults to http://127.0.0.1:3003
-CLAUDE_BIN=               # path to the Claude Code CLI, defaults to `claude` on PATH
+CLASSIFIER_BASE_URL=      # chat-completions base URL used when USE_CLAUDE_CLASSIFIER is set
+CLASSIFIER_API_KEY=       # bearer token for that endpoint
+CLASSIFIER_MODEL=         # model id sent with each request
 ```
 
-Claude classification does not read a model API key from the environment; it runs through the Claude Code CLI's own authenticated session on the collection host.
+Classification needs all three `CLASSIFIER_*` variables. A missing one raises `ClaudeAuthError` before any request is sent. Keep the key in the host environment, never in the repo. Tests clear all three in `vitest.setup.ts`.
 
 ## Editing Data
 

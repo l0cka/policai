@@ -69,7 +69,7 @@
           "id": "transparency-statement",
           "title": "AI Transparency Statement",
           "type": "mandatory",
-          "deadline": "Immediate",
+          "deadline": null,
           "description": "Publicly available statement outlining approach to AI adoption and use",
           "details": [
             "Must follow Standard for transparency statements",
@@ -93,7 +93,7 @@
           "id": "accountable-officials",
           "title": "Accountable Officials",
           "type": "mandatory",
-          "deadline": "Immediate",
+          "deadline": null,
           "description": "Designate accountable official(s) for implementing this policy",
           "details": [
             "Follow Standard for accountability",
@@ -320,18 +320,19 @@
       "definition": "A specific application of an AI system or systems to achieve certain objectives or perform certain tasks."
     },
     "aiIncident": {
-      "definition": "An event, circumstance or series of events where the development, use or malfunction of one or more AI systems leads to: injury/harm to persons, disruption of critical infrastructure, violations of human rights or applicable laws, or harm to property/communities/environment."
+      "definition": "An event, circumstance or series of events where the development, use or malfunction of one or more AI systems by, or under the direction of, an Australian Government agency directly or indirectly leads to any of the following: injury or harm to the health of a person or groups of people; disruption of the management and operation of critical infrastructure; violations of human rights or harms arising from a breach of obligations under applicable laws, including intellectual property, privacy and Indigenous cultural and intellectual property; harm to property, communities or the environment."
     }
   },
   "relatedFrameworks": {
     "ai": [
-      "AI model clauses",
+      "Artificial Intelligence (AI) model clauses",
       "Australia's AI Ethics Principles",
-      "Engaging with AI guidance",
-      "Privacy and AI guidance",
-      "Information management for AI records",
-      "Public generative AI tools guidance",
-      "Technical standard for government AI"
+      "Engaging with Artificial Intelligence (AI) guidance",
+      "Guidance on privacy and the use of commercially available AI products",
+      "Information management for records created using Artificial Intelligence (AI) technologies",
+      "Public generative AI tools: managing access",
+      "Public generative AI tools: using safely and responsibly",
+      "Technical standard for government's use of artificial intelligence"
     ],
     "adm": [
       "Automated Decision-making Better Practice Guide"
@@ -375,9 +376,9 @@
         "notes": "Confirmed the version 2.0 effective date of 15 December 2025 on the official digital.gov.au policy page and in the linked official PDF."
       }
     },
-    "checkedAt": "2026-07-19T01:03:17.636Z",
-    "checkedBy": "Daniel Alkurdi",
+    "checkedAt": "2026-10-16T00:00:00.000Z",
+    "checkedBy": "Policai Developer source re-read (issue 161)",
     "method": "manual",
-    "notes": "Daniel Alkurdi reviewed the framework artifact against the approved official digital.gov.au page and version 2.0 PDF evidence. Its scope, exclusions, pillars, requirements and effective date remain consistent with the source; the exact page and PDF fingerprints match the related policy verification."
+    "notes": "Daniel Alkurdi reviewed the framework artifact against the approved official digital.gov.au page and version 2.0 PDF evidence. Its scope, exclusions, pillars, requirements and effective date remain consistent with the source; the exact page and PDF fingerprints match the related policy verification. Issue 161 corrections 2026-10-16: set the deadline of the transparency statement and accountable official requirements to null (the policy states none; it is effective 15 December 2025), restored the 'by, or under the direction of, an Australian Government agency directly or indirectly' qualifier and the full item (c) wording of the AI incident definition, and used the Appendix A titles verbatim with the two public generative AI tools items listed separately. The PDF byte hash was not recomputed in this pass."
   }
 }

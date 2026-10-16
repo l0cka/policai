@@ -99,6 +99,51 @@ class WorkerTests(unittest.TestCase):
             with self.assertRaises(d.Refused):
                 obj.run_worker(name, (99,))
 
+    def test_backup_mirror_runs_installed_script_with_root_config_paths(self):
+        obj = h.Host.__new__(h.Host)
+        events = []
+
+        class Run:
+            def execute(self, argv, cwd, **kwargs):
+                events.append((argv, kwargs))
+                return "PRIVATE OUTPUT"
+
+        obj.runner = Run()
+        obj.check_worker_identity = lambda: None
+        obj.check_worker_release = lambda: None
+        paths = {"source": "/srv/backups", "mount": "/mnt/second", "destination": "/mnt/second/b"}
+        obj.config = {"backup_mirror": paths}
+        obj.run_worker("backup-mirror", (99,))
+        argv, kwargs = events[0]
+        self.assertEqual(
+            argv, ["/usr/bin/bash", "/usr/local/libexec/policai-host/backup-mirror.sh"]
+        )
+        self.assertEqual(kwargs["pass_fds"], (99,))
+        self.assertEqual(
+            {k: v for k, v in kwargs["extra_env"].items() if k.startswith("PROBONO_MIRROR_")},
+            {
+                "PROBONO_MIRROR_SOURCE": "/srv/backups",
+                "PROBONO_MIRROR_MOUNT": "/mnt/second",
+                "PROBONO_MIRROR_DESTINATION": "/mnt/second/b",
+            },
+        )
+        obj.run_worker("backup", (99,))
+        self.assertNotIn("PROBONO_MIRROR_SOURCE", events[1][1]["extra_env"])
+        for bad in (
+            {**paths, "mount": "/"},
+            {**paths, "destination": "/srv/elsewhere"},
+            {**paths, "destination": "/mnt/second"},
+            {**paths, "source": "/mnt/second/primary"},
+            {**paths, "destination": "/mnt/second/../b"},
+            {**paths, "source": "relative/backups"},
+            {**paths, "mount": None},
+            {"source": "/srv/backups", "destination": "/mnt/second/b"},
+        ):
+            obj.config = {"backup_mirror": bad}
+            with self.subTest(paths=bad), self.assertRaises((d.Refused, KeyError)):
+                obj.run_worker("backup-mirror", (99,))
+        self.assertEqual(len(events), 2)
+
     def test_worker_stdin_only_reaches_reviewed_savers(self):
         obj = h.Host.__new__(h.Host)
         events = []

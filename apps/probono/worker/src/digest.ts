@@ -3,9 +3,11 @@ import { closePool, getPool } from './lib/db.js';
 import { renderDigest, type DigestItem } from './lib/render-digest.js';
 import { selectDigestDeadlines, sydneyToday } from './lib/deadline-rules.js';
 import { STREAMS } from './lib/types.js';
+import {
+  APPROVAL_ENV, claimDigest, decideDigestAction, digestExists, releaseDigest,
+} from './lib/digest-gate.js';
 
 async function main() {
-  const dryRun = process.argv.includes('--dry-run');
   const pool = getPool();
   const periodEnd = new Date();
   const periodStart = new Date(periodEnd.getTime() - 7 * 24 * 3600 * 1000);
@@ -39,28 +41,50 @@ async function main() {
     failedSources: failures.map((f) => f.name),
   });
 
-  if (dryRun) {
+  const action = decideDigestAction({
+    argv: process.argv.slice(2),
+    env: process.env,
+    alreadySent: await digestExists(pool, periodEnd),
+  });
+
+  if (action === 'dry-run') {
     console.log(html);
+    await closePool();
+    return;
+  }
+  if (action === 'refuse-not-approved') {
+    await closePool();
+    throw new Error(`refusing to send: set ${APPROVAL_ENV}=yes with explicit approval`);
+  }
+  if (action === 'refuse-already-sent') {
+    console.log('digest already sent for this period; nothing to do');
     await closePool();
     return;
   }
 
   const { SMTP_USER, SMTP_PASS, DIGEST_TO } = process.env;
   if (!SMTP_USER || !SMTP_PASS || !DIGEST_TO) throw new Error('SMTP_USER, SMTP_PASS, DIGEST_TO must be set');
+  const claimId = await claimDigest(pool, periodStart, periodEnd, items.map((i) => i.id));
+  if (claimId === null) {
+    console.log('digest already sent for this period; nothing to do');
+    await closePool();
+    return;
+  }
   const transport = nodemailer.createTransport({
     host: 'smtp.gmail.com', port: 465, secure: true,
     auth: { user: SMTP_USER, pass: SMTP_PASS },
   });
-  await transport.sendMail({
-    from: `Pro Bono Radar <${SMTP_USER}>`,
-    to: DIGEST_TO,
-    subject: `Pro Bono Radar — ${items.length} developments this week`,
-    html,
-  });
-  await pool.query(
-    `INSERT INTO digests (period_start, period_end, item_ids) VALUES ($1, $2, $3)`,
-    [periodStart.toISOString(), periodEnd.toISOString(), items.map((i) => i.id)],
-  );
+  try {
+    await transport.sendMail({
+      from: `Pro Bono Radar <${SMTP_USER}>`,
+      to: DIGEST_TO,
+      subject: `Pro Bono Radar — ${items.length} developments this week`,
+      html,
+    });
+  } catch (err) {
+    await releaseDigest(pool, claimId);
+    throw err;
+  }
   console.log(`digest sent: ${items.length} items to ${DIGEST_TO}`);
   await closePool();
 }
