@@ -4214,7 +4214,7 @@
   {
     "id": "family-court-ai-practice-direction",
     "title": "FCFCOA Practice Direction — Use of Artificial Intelligence (PD-AI)",
-    "description": "Practice direction of the Federal Circuit and Family Court of Australia on the use of AI, including generative AI, issued 29 May 2026 and applying to proceedings commenced on or after 1 December 2025 in Divisions 1 and 2.",
+    "description": "Practice direction of the Federal Circuit and Family Court of Australia on the use of AI, including generative AI, issued 29 May 2026 and applying to all proceedings in Divisions 1 and 2.",
     "jurisdiction": "federal",
     "type": "practice_note",
     "status": "active",
@@ -4223,7 +4223,7 @@
       "Federal Circuit and Family Court of Australia"
     ],
     "sourceUrl": "https://www.fcfcoa.gov.au/pd/pd-ai",
-    "content": "FCFCOA Practice Direction: Use of Artificial Intelligence (PD-AI) was issued on 29 May 2026. It applies to litigants (including self-represented litigants), lawyers, experts and other court users in proceedings commenced on or after 1 December 2025. It requires AI use consistent with integrity, accuracy, accountability, professional obligations, confidentiality and data security, and prohibits inputting confidential or privileged material into public AI tools, with strict requirements around discovery, disclosure orders, suppression orders and subpoenas.",
+    "content": "FCFCOA Practice Direction: Use of Artificial Intelligence (PD-AI) was issued on 29 May 2026. It applies to litigants (including self-represented litigants), lawyers, experts and other court users in all proceedings in Divisions 1 and 2 of the Federal Circuit and Family Court of Australia. It requires AI use consistent with integrity, accuracy, accountability, professional obligations, confidentiality and data security. Court users must refrain from including confidential or sensitive information if a public GenAI tool is used (clause 5.4), and information obtained through production, disclosure or discovery orders, information subject to non-publication or suppression orders, and documents produced on subpoena must not be entered into any GenAI tool unless closed-environment conditions are met (clause 5.5).",
     "aiSummary": "Federal Circuit and Family Court practice direction on AI use in proceedings, with emphasis on confidentiality in family law matters.",
     "tags": [
       "practice note",
@@ -4237,7 +4237,7 @@
     ],
     "createdAt": "2026-04-16T00:00:00Z",
     "updatedAt": "2026-07-19T06:14:29.933Z",
-    "lastReviewedAt": "2026-07-19T06:14:29.933Z",
+    "lastReviewedAt": "2026-10-16T00:00:00.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -4264,10 +4264,10 @@
           "notes": "Verified by Daniel Alkurdi against the captured official source, which supports the issued date 2026-05-29 at day precision."
         }
       },
-      "checkedAt": "2026-07-19T06:14:29.933Z",
-      "checkedBy": "Daniel Alkurdi",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
+      "checkedBy": "Policai Developer source re-read (issue 161)",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026."
+      "notes": "Re-read against the live official source on 16 October 2026 (issue 161). Corrected the scope: clause 1.1 applies the Practice Direction to all proceedings in Divisions 1 and 2, with no commencement cut-off, and clauses 5.4 and 5.5 distinguish the general duty to refrain from entering confidential or sensitive information into public GenAI tools from the narrower prohibition. The issued date of 29 May 2026 is unchanged."
     },
     "dates": [
       {
