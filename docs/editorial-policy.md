@@ -185,6 +185,66 @@ wording in a piece. Changing it means changing this policy.
 > This is general information and analysis, not legal advice. Check the
 > official sources and get advice on your own circumstances before you act.
 
+## Images
+
+Pieces carry one high-quality lead image. A piece with no image that meets
+these rules publishes without one.
+
+Image support is not built yet
+([#219](https://github.com/l0cka/policai/issues/219)). Until it is on `main`,
+each sentence below that names the platform or validation states a
+requirement the platform must meet.
+
+### Licences
+
+- **Allowed:** CC0, the Public Domain Mark, CC BY and CC BY-SA, any version.
+- **Not allowed:** any licence with NonCommercial (NC) or NoDerivatives (ND)
+  terms. Policai's commercial status is not settled, and ND forbids the crop a
+  lead image needs.
+- **Not allowed:** Unsplash and Pexels images, whose own licences are not
+  Creative Commons, and any image whose licence is unclear.
+- Prefer Wikimedia Commons, Openverse, and government sites that publish under
+  CC BY 4.0.
+- A site-wide CC BY notice is not enough. Confirm that the licence covers
+  the image itself; government notices commonly exclude photographs, logos,
+  the Coat of Arms and third-party material. If the image's own licence is
+  not stated, treat it as unclear.
+- Check the licence on the file's own page, not on a search result or an
+  aggregator. Record the date of that check as `licenceCheckedAt`. Check it
+  again whenever the image is changed.
+
+### Quality
+
+- The source file is at least 2048 px on its long edge.
+- The repository keeps one master per image, re-encoded to 2048 px on the long
+  edge. The platform must serve smaller sizes from that master.
+
+### Attribution
+
+Each image records its title, creator and creator URL, source page URL,
+licence and licence URL, any modifications (for example "cropped") and
+`licenceCheckedAt`. Copy these from the source page. Never guess a licence
+field.
+
+A modified CC BY-SA image is shared under the same CC BY-SA licence, and its
+attribution says so.
+
+The platform must render a TASL attribution under the image: title, author,
+source and licence, each linked, and the modifications. Validation must
+reject an image whose licence is not on the allowed list.
+
+### Editorial limits
+
+- An image illustrates the subject. It never implies that a person, agency or
+  organisation endorses the piece or Policai. Do not use logos, crests or
+  official seals as lead images.
+- No identifiable private individuals. Public officials may appear only in
+  official images of the public role that the piece discusses.
+- No AI-generated or AI-altered images. Cropping and resizing are the only
+  permitted changes.
+- Alt text describes what the image shows, in one plain sentence. It does not
+  repeat the title or caption, and it does not interpret the image.
+
 ## Corrections, updates and withdrawals
 
 Policai corrects in the open. A published piece never changes silently.
