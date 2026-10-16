@@ -1870,7 +1870,7 @@
   {
     "id": "asd-blueprint-secure-cloud-ai-usage-policy",
     "title": "ASD Blueprint for Secure Cloud — Artificial intelligence usage policy requirement",
-    "description": "ASD's Blueprint for Secure Cloud, first released on 19 December 2023 and last updated on 20 April 2026, surfaces an artificial intelligence usage policy as an organisational policy expected under ISM control ISM-2074.",
+    "description": "ASD's Blueprint for Secure Cloud, first released on 19 December 2023, surfaces an artificial intelligence usage policy as an organisational policy expected under ISM control ISM-2074.",
     "jurisdiction": "federal",
     "type": "guideline",
     "status": "active",
@@ -1879,8 +1879,8 @@
       "Australian Signals Directorate"
     ],
     "sourceUrl": "https://blueprint.asd.gov.au/security-and-governance/policies",
-    "content": "ASD's Blueprint for Secure Cloud was initially launched on 19 December 2023 and last updated on 18 September 2026 (version 1.4). It is better-practice guidance for designing, configuring and deploying secure cloud and hybrid workspaces, with a current focus on Microsoft 365. Its security and governance section links system security planning, the Essential Eight, system security plan annexes, and organisational policies and strategies. The organisational policies checklist explicitly identifies a general-purpose artificial intelligence usage policy as a requirement of ISM control ISM-2074. The Blueprint does not provide a template for this artefact, but positions it as part of the documentation agencies should review, develop and maintain when operating systems built using the Blueprint.",
-    "aiSummary": "ASD Blueprint guidance, first launched in December 2023 and updated in April 2026, identifies a general-purpose AI usage policy as an ISM-2074 organisational policy requirement.",
+    "content": "ASD's Blueprint for Secure Cloud was initially launched on 19 December 2023. The Blueprint is maintained as a living resource; its change log does not record a change specific to this policy. It is better-practice guidance for designing, configuring and deploying secure cloud and hybrid workspaces, with a current focus on Microsoft 365. Its security and governance section links system security planning, the Essential Eight, system security plan annexes, and organisational policies and strategies. The organisational policies checklist explicitly identifies a general-purpose artificial intelligence usage policy as a requirement of ISM control ISM-2074. The Blueprint does not provide a template for this artefact, but positions it as part of the documentation agencies should review, develop and maintain when operating systems built using the Blueprint.",
+    "aiSummary": "ASD Blueprint guidance, first launched in December 2023, identifies a general-purpose AI usage policy as an ISM-2074 organisational policy requirement.",
     "tags": [
       "ASD",
       "Blueprint for Secure Cloud",
@@ -1917,10 +1917,10 @@
           "notes": "Verified against the official ASD Blueprint changelog, which records the initial release on 19 December 2023."
         }
       },
-      "checkedAt": "2026-10-16T00:00:00.000Z",
+      "checkedAt": "2026-10-16T08:07:00.000Z",
       "checkedBy": "Policai Developer source re-read (issue 161)",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Issue 161 correction 2026-10-16: amended date moved from 20 April 2026 (version 1.3.12) to 18 September 2026 (version 1.4) per the Blueprint change log. The change log does not say the policies page itself changed on that date; launch 19 December 2023 is unchanged."
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Issue 161 editorial review 2026-10-16: amended date and 'last updated' claim removed. The change log's 20 April 2026 (1.3.12, SSP-A and portal links) and 18 September 2026 (1.4, 'Edge for Business design and configuration updates and changes') entries do not relate to this policy, and no entry mentions AI. Launch 19 December 2023 is unchanged."
     },
     "dates": [
       {
@@ -1952,20 +1952,9 @@
             "notes": "Verified against the official ASD Blueprint changelog, which records the initial release on 19 December 2023."
           }
         }
-      },
-      {
-        "type": "amended",
-        "date": "2026-09-18",
-        "precision": "day",
-        "source": {
-          "url": "https://blueprint.asd.gov.au/changelog",
-          "retrievedAt": "2026-10-16T00:00:00.000Z",
-          "title": "Change log",
-          "publisher": "Australian Signals Directorate"
-        }
       }
     ],
-    "lastReviewedAt": "2026-10-16T00:00:00.000Z"
+    "lastReviewedAt": "2026-10-16T08:07:00.000Z"
   },
   {
     "id": "policy-responsible-use-ai-government-v2",
@@ -3334,13 +3323,13 @@
     "jurisdiction": "vic",
     "type": "framework",
     "status": "active",
-    "effectiveDate": "2026-01-01",
+    "effectiveDate": "2026-01-30",
     "agencies": [
       "Victorian Government",
       "Department of Jobs, Skills, Industry and Regions"
     ],
     "sourceUrl": "https://djsir.vic.gov.au/priorities-and-initiatives/ai-mission-statement",
-    "content": "Victoria's AI Mission Statement was released in January 2026 and sets out the Victorian Government's plan to responsibly develop and adopt AI. It outlines six pillars covering investment and adoption, digital infrastructure, local innovation, talent and workforce, ethical AI use, and public sector adoption.",
+    "content": "Victoria's AI Mission Statement was launched on 30 January 2026 and sets out the Victorian Government's plan to responsibly develop and adopt AI. It outlines six pillars covering investment and adoption, digital infrastructure, local innovation, talent and workforce, ethical AI use, and public sector adoption.",
     "aiSummary": "Victorian Government AI strategy statement released on 30 January 2026, outlining six pillars for responsible development and adoption of AI.",
     "tags": [
       "Victoria",
@@ -3351,7 +3340,7 @@
     ],
     "createdAt": "2026-04-13T02:15:00Z",
     "updatedAt": "2026-07-19T06:14:30.218Z",
-    "lastReviewedAt": "2026-10-16T00:00:00.000Z",
+    "lastReviewedAt": "2026-10-16T08:07:00.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -3378,39 +3367,31 @@
           "notes": "Verified against the official Victorian Government announcement, published 30 January 2026."
         }
       },
-      "checkedAt": "2026-10-16T00:00:00.000Z",
+      "checkedAt": "2026-10-16T08:07:00.000Z",
       "checkedBy": "Policai Developer source re-read (issue 161)",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Issue 161 correction 2026-10-16: published date held at month precision (January 2026), which is all the DJSIR page and statement PDF support. The Premier's media release of 30 January 2026 (premier.vic.gov.au) states the statement was launched that day and could support day precision if the editor prefers."
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Issue 161 editorial review 2026-10-16: published date restored to 30 January 2026 at day precision, sourced to the Premier's media release of that day ('Friday 30 January 2026 ... Minister for Economic Growth and Jobs Danny Pearson today launched the Government's AI Mission Statement')."
     },
     "dates": [
       {
         "type": "published",
-        "date": "2026-01-01",
-        "precision": "month",
+        "date": "2026-01-30",
+        "precision": "day",
         "primary": true,
         "source": {
-          "url": "https://djsir.vic.gov.au/priorities-and-initiatives/ai-mission-statement",
-          "finalUrl": "https://djsir.vic.gov.au/priorities-and-initiatives/ai-mission-statement",
-          "title": "AI Mission Statement",
-          "retrievedAt": "2026-07-19T06:12:45.941Z",
-          "contentType": "text/html",
-          "contentHash": "729b1de5985ab65f8973d54a26e1ebb15d25cf3b2779dbd5fb65dc33425291e3",
-          "linkedDocuments": [],
-          "browserCapture": {
-            "method": "browser",
-            "capturedAt": "2026-07-19T06:12:45.941Z",
-            "capturedBy": "Daniel Alkurdi",
-            "notes": "Browser-reviewed official source evidence for the approved Policai verification batch on 19 July 2026.",
-            "pageContentHash": "ff2a2a0001523604edaef2795aa897924e504c0d2ab0f1b00e6658ad790ff47a",
-            "characterCount": 6355
-          },
+          "url": "https://www.premier.vic.gov.au/sites/default/files/2026-01/260130-Victoria%E2%80%99s-AI-Future-Driving-Jobs%2C-Opportunity-And-Growth.pdf",
+          "finalUrl": "https://www.premier.vic.gov.au/sites/default/files/2026-01/260130-Victoria%E2%80%99s-AI-Future-Driving-Jobs%2C-Opportunity-And-Growth.pdf",
+          "title": "Victoria's AI Future: Driving Jobs, Opportunity and Growth",
+          "publisher": "Premier of Victoria",
+          "retrievedAt": "2026-10-16T08:05:07.000Z",
+          "contentType": "application/pdf",
+          "contentHash": "ac6f4245bd8e87b6bcd657a8c3afc5d5a698386cc6eb51794063907bfe6dfefd",
           "reviewedDate": {
-            "date": "2026-01-01",
-            "precision": "month",
-            "reviewedAt": "2026-10-16T00:00:00.000Z",
+            "date": "2026-01-30",
+            "precision": "day",
+            "reviewedAt": "2026-10-16T08:07:00.000Z",
             "reviewedBy": "Policai Developer Agent",
-            "notes": "Re-verified 2026-10-16 against the live DJSIR AI Mission Statement PDF ('© State of Victoria, January 2026'); the owning department's page states no day, so month precision. The Premier's media release of Friday 30 January 2026 reports the launch."
+            "notes": "Re-read live 2026-10-16: the Premier's media release is dated 'Friday 30 January 2026' and states 'Minister for Economic Growth and Jobs Danny Pearson today launched the Government's AI Mission Statement', so the statement was launched on 30 January 2026 (day precision)."
           }
         }
       }
@@ -4223,7 +4204,7 @@
       "Federal Circuit and Family Court of Australia"
     ],
     "sourceUrl": "https://www.fcfcoa.gov.au/pd/pd-ai",
-    "content": "FCFCOA Practice Direction: Use of Artificial Intelligence (PD-AI) was issued on 29 May 2026. It applies to litigants (including self-represented litigants), lawyers, experts and other court users in all proceedings in Divisions 1 and 2 of the Federal Circuit and Family Court of Australia. It requires AI use consistent with integrity, accuracy, accountability, professional obligations, confidentiality and data security. Court users must refrain from including confidential or sensitive information if a public GenAI tool is used (clause 5.4), and information obtained through production, disclosure or discovery orders, information subject to non-publication or suppression orders, and documents produced on subpoena must not be entered into any GenAI tool unless closed-environment conditions are met (clause 5.5).",
+    "content": "FCFCOA Practice Direction: Use of Artificial Intelligence (PD-AI) was issued on 29 May 2026. It applies to litigants (including self-represented litigants), lawyers, experts and other court users in all proceedings in Divisions 1 and 2 of the Federal Circuit and Family Court of Australia. It sets principles of integrity, accountability, accuracy, confidentiality and data security, safety, and education and understanding (clause 3.3), and requires lawyers to maintain their professional duties when using AI (clause 3.1). Court users must refrain from including confidential or sensitive information if a public GenAI tool is used (clause 5.4(c)), and information obtained through production, disclosure or discovery orders, information subject to non-publication or suppression orders, and documents produced on subpoena must not be entered into any GenAI tool unless closed-environment conditions are met (clause 5.5).",
     "aiSummary": "Federal Circuit and Family Court practice direction on AI use in proceedings, with emphasis on confidentiality in family law matters.",
     "tags": [
       "practice note",
@@ -4237,7 +4218,7 @@
     ],
     "createdAt": "2026-04-16T00:00:00Z",
     "updatedAt": "2026-07-19T06:14:29.933Z",
-    "lastReviewedAt": "2026-10-16T00:00:00.000Z",
+    "lastReviewedAt": "2026-10-16T08:07:00.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -4264,10 +4245,10 @@
           "notes": "Verified by Daniel Alkurdi against the captured official source, which supports the issued date 2026-05-29 at day precision."
         }
       },
-      "checkedAt": "2026-10-16T00:00:00.000Z",
+      "checkedAt": "2026-10-16T08:07:00.000Z",
       "checkedBy": "Policai Developer source re-read (issue 161)",
       "method": "manual",
-      "notes": "Re-read against the live official source on 16 October 2026 (issue 161). Corrected the scope: clause 1.1 applies the Practice Direction to all proceedings in Divisions 1 and 2, with no commencement cut-off, and clauses 5.4 and 5.5 distinguish the general duty to refrain from entering confidential or sensitive information into public GenAI tools from the narrower prohibition. The issued date of 29 May 2026 is unchanged."
+      "notes": "Re-read against the live official source on 16 October 2026 (issue 161). Corrected the scope: clause 1.1 applies the Practice Direction to all proceedings in Divisions 1 and 2, with no commencement cut-off, and clauses 5.4(c) and 5.5 distinguish the general duty to refrain from entering confidential or sensitive information into public GenAI tools from the narrower prohibition. The issued date of 29 May 2026 is unchanged. Editorial review: clause 3.3 sets the court-user principles and clause 3.1 confines professional duties to lawyers."
     },
     "dates": [
       {
@@ -4766,7 +4747,7 @@
       "Data and Digital Ministers"
     ],
     "sourceUrl": "https://www.finance.gov.au/government/public-data/data-and-digital-ministers-meeting/national-framework-assurance-artificial-intelligence-government",
-    "content": "The National framework for the assurance of artificial intelligence in government was agreed by Data and Digital Ministers on 21 June 2024. It establishes a nationally consistent approach to AI assurance across the Commonwealth, states and territories, built on five cornerstones with practices mapped to the eight AI Ethics Principles. Jurisdictions develop their own specific policies and guidance within this framework; the NSW Artificial Intelligence Assurance Framework (2022) is one of the sources its practices drew on.",
+    "content": "The National framework for the assurance of artificial intelligence in government was agreed by Data and Digital Ministers on 21 June 2024. It establishes a nationally consistent approach to AI assurance across the Commonwealth, states and territories, built on five cornerstones with practices mapped to the eight AI Ethics Principles. It sets foundations across all aspects of government, with jurisdictions to develop specific policies and guidance suited to their own legislative, policy and operational context; the NSW Artificial Intelligence Assurance Framework (2022) is one of the sources its practices drew on.",
     "aiSummary": "Cross-jurisdictional assurance framework aligning all Australian governments’ AI oversight to the AI Ethics Principles.",
     "tags": [
       "assurance",
@@ -4776,7 +4757,7 @@
     ],
     "createdAt": "2026-07-10T00:00:00.000Z",
     "updatedAt": "2026-07-19T06:14:29.296Z",
-    "lastReviewedAt": "2026-10-16T00:00:00.000Z",
+    "lastReviewedAt": "2026-10-16T08:07:00.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -4803,10 +4784,10 @@
           "notes": "Verified by Daniel Alkurdi against the captured official source, which supports the published date 2024-06-21 at day precision."
         }
       },
-      "checkedAt": "2026-10-16T00:00:00.000Z",
+      "checkedAt": "2026-10-16T08:07:00.000Z",
       "checkedBy": "Policai Developer source re-read (issue 161)",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Issue 161 correction 2026-10-16: replaced the unsupported sentence that the NSW AIAF and a WA framework align to the national framework. The Finance implementing page says the practices drew on the NSW framework (2022) and that jurisdictions develop their own policies and guidance; no framework page mentions a WA framework."
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Issue 161 correction 2026-10-16: replaced the unsupported sentence that the NSW AIAF and a WA framework align to the national framework. The Finance implementing page says the practices drew on the NSW framework (2022) and that jurisdictions develop their own policies and guidance; no framework page mentions a WA framework. Editorial review 2026-10-16: jurisdiction sentence matches the introduction page's stated intent ('with jurisdictions to develop specific policies and guidance considerate of their own legislative, policy and operational context')."
     },
     "dates": [
       {
