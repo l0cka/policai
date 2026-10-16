@@ -638,7 +638,7 @@
     ],
     "createdAt": "2026-07-22T12:48:46.496Z",
     "updatedAt": "2026-07-24T02:36:19.291Z",
-    "lastReviewedAt": "2026-07-24T02:36:19.291Z",
+    "lastReviewedAt": "2026-10-16T00:00:00.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -680,10 +680,10 @@
           "notes": "The official OVIC page continues to state Last updated 26 June 2026; this remains the amended date for the guidance."
         }
       },
-      "checkedAt": "2026-07-24T02:36:19.291Z",
-      "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
+      "checkedBy": "Policai Developer source re-read (issue 161)",
       "method": "manual",
-      "notes": "Approved restoration: the official OVIC page still states Last updated 26 June 2026, the substantive guidance is unchanged, and both linked document fingerprints match the verified source version."
+      "notes": "Approved restoration: the official OVIC page still states Last updated 26 June 2026, the substantive guidance is unchanged, and both linked document fingerprints match the verified source version. Re-read against the live source on 2026-10-16; title, content, dates and status still match (issue 161)."
     }
   },
   {
@@ -756,7 +756,7 @@
     ],
     "createdAt": "2026-07-22T12:48:46.496Z",
     "updatedAt": "2026-07-24T02:35:49.530Z",
-    "lastReviewedAt": "2026-07-24T02:35:49.530Z",
+    "lastReviewedAt": "2026-10-16T00:00:00.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -798,10 +798,10 @@
           "notes": "The official OVIC page continues to state Last updated 26 June 2026; this remains the amended date for the guidance."
         }
       },
-      "checkedAt": "2026-07-24T02:35:49.530Z",
-      "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
+      "checkedBy": "Policai Developer source re-read (issue 161)",
       "method": "manual",
-      "notes": "Approved restoration: the official OVIC page still states Last updated 26 June 2026, the substantive guidance is unchanged, and both linked document fingerprints match the verified source version."
+      "notes": "Approved restoration: the official OVIC page still states Last updated 26 June 2026, the substantive guidance is unchanged, and both linked document fingerprints match the verified source version. Re-read against the live source on 2026-10-16; title, content, dates and status still match (issue 161)."
     }
   },
   {
@@ -2956,7 +2956,7 @@
     ],
     "createdAt": "2026-04-06T16:50:00Z",
     "updatedAt": "2026-08-07T05:10:38.082Z",
-    "lastReviewedAt": "2026-08-07T05:10:38.082Z",
+    "lastReviewedAt": "2026-10-16T00:00:00.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -2994,10 +2994,10 @@
           "notes": "Date confirmed against the live official source on 2026-08-08. VIC Gen-AI VPS guideline — endorsed VSB 24 Sep 2024, made by Secretary DPC 27 Nov 2024, updated 12 Feb 2025; all three dates confirmed on vic.gov.au."
         }
       },
-      "checkedAt": "2026-08-07T05:10:38.082Z",
-      "checkedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-08",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
+      "checkedBy": "Policai Developer source re-read (issue 161)",
       "method": "manual",
-      "notes": "VIC Gen-AI VPS guideline — endorsed VSB 24 Sep 2024, made by Secretary DPC 27 Nov 2024, updated 12 Feb 2025; all three dates confirmed on vic.gov.au.",
+      "notes": "VIC Gen-AI VPS guideline — endorsed VSB 24 Sep 2024, made by Secretary DPC 27 Nov 2024, updated 12 Feb 2025; all three dates confirmed on vic.gov.au. Re-read against the live source on 2026-10-16; title, content, dates and status still match (issue 161).",
       "lastSourceAuditAt": "2026-07-16T10:00:09.144Z"
     },
     "dates": [
@@ -4038,7 +4038,7 @@
     ],
     "createdAt": "2026-04-16T00:00:00Z",
     "updatedAt": "2026-07-16T10:05:00.000Z",
-    "lastReviewedAt": "2026-07-16T10:05:00.000Z",
+    "lastReviewedAt": "2026-10-16T00:00:00.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -4053,10 +4053,10 @@
         "etag": "\"29c3b-62cb79218cc80-gzip\"",
         "lastModified": "Mon, 27 Jan 2025 22:26:42 GMT"
       },
-      "checkedAt": "2026-07-16T10:05:00.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
+      "checkedBy": "Policai Developer source re-read (issue 161)",
       "method": "manual",
-      "notes": "Replaced the obsolete justice.nsw.gov.au URL with the current official PDF and checked the issue, commencement and substantive requirements."
+      "notes": "Replaced the obsolete justice.nsw.gov.au URL with the current official PDF and checked the issue, commencement and substantive requirements. Re-read against the live source on 2026-10-16; title, content, dates and status still match (issue 161)."
     },
     "dates": [
       {
@@ -4327,7 +4327,7 @@
     ],
     "createdAt": "2026-04-16T00:00:00Z",
     "updatedAt": "2026-07-16T10:05:00.000Z",
-    "lastReviewedAt": "2026-07-16T10:05:00.000Z",
+    "lastReviewedAt": "2026-10-16T00:00:00.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -4340,10 +4340,10 @@
         "contentType": "application/pdf",
         "contentHash": "400251380baf927c289d6c8e974b5d330b160904260f47b968670ccabc4b8a72"
       },
-      "checkedAt": "2026-07-16T10:05:00.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
+      "checkedBy": "Policai Developer source re-read (issue 161)",
       "method": "manual",
-      "notes": "Replaced a dead landing-page URL with the primary PDF and removed unsupported claims that the direction requires general AI-use disclosure for affidavits and expert reports."
+      "notes": "Replaced a dead landing-page URL with the primary PDF and removed unsupported claims that the direction requires general AI-use disclosure for affidavits and expert reports. Re-read against the live source on 2026-10-16; title, content, dates and status still match (issue 161)."
     },
     "dates": [
       {
