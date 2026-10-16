@@ -14,6 +14,7 @@ function piece(slug: string, type: ArticleType): PublishedArticle {
     sources: [],
     corrections: [],
     body: '',
+    blocks: [],
   } as PublishedArticle;
 }
 
