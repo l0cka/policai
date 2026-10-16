@@ -329,13 +329,71 @@ describe('validatePolicies', () => {
     );
   });
 
-  it('warns when supersededBy points nowhere', () => {
+  const buildSuccessor = () => {
+    const sourceUrl = 'https://example.gov.au/policies/successor';
+    const policy = buildPolicy({ id: 'policy-2', sourceUrl });
+    return {
+      ...policy,
+      verification: {
+        ...policy.verification,
+        source: { ...policy.verification.source, url: sourceUrl },
+      },
+    };
+  };
+
+  it('rejects a supersededBy that points nowhere', () => {
     const report = validatePolicies([
-      buildPolicy({ supersededBy: 'ghost-policy' }),
+      buildPolicy({ status: 'superseded', supersededBy: 'ghost-policy' }),
     ]);
-    expect(report.warnings).toEqual([
-      expect.stringContaining('supersededBy "ghost-policy"'),
+    expect(report.errors).toEqual([
+      'policy-1: supersededBy "ghost-policy" does not match a policy id',
     ]);
+  });
+
+  it('rejects a superseded policy without supersededBy', () => {
+    const report = validatePolicies([buildPolicy({ status: 'superseded' })]);
+    expect(report.errors).toEqual([
+      'policy-1: superseded status requires supersededBy',
+    ]);
+  });
+
+  it('rejects a policy that supersedes itself', () => {
+    const report = validatePolicies([
+      buildPolicy({ status: 'superseded', supersededBy: 'policy-1' }),
+    ]);
+    expect(report.errors).toEqual([
+      'policy-1: supersededBy cannot reference the policy itself',
+    ]);
+  });
+
+  it('rejects supersededBy on a policy that is not superseded', () => {
+    const successor = buildSuccessor();
+    const report = validatePolicies([
+      buildPolicy({ status: 'active', supersededBy: 'policy-2' }),
+      successor,
+    ]);
+    expect(report.errors).toEqual([
+      'policy-1: supersededBy requires superseded status, not "active"',
+    ]);
+  });
+
+  it('accepts a superseded policy whose successor is in the same batch', () => {
+    const successor = buildSuccessor();
+    const superseded = buildPolicy({
+      status: 'superseded',
+      supersededBy: 'policy-2',
+    });
+
+    expect(validatePolicies([superseded, successor]).errors).toEqual([]);
+    expect(validatePolicies([successor, superseded]).errors).toEqual([]);
+  });
+
+  it('accepts a superseded policy whose successor is already in the register', () => {
+    const report = validatePolicies(
+      [buildPolicy({ status: 'superseded', supersededBy: 'policy-2' })],
+      new Set(['policy-2']),
+    );
+    expect(report.errors).toEqual([]);
   });
 
   it('rejects creation timestamps that are later than updates', () => {
