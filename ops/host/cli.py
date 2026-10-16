@@ -36,7 +36,9 @@ def parser():
     worker = commands.add_parser(
         "worker", help="run exactly one guarded scheduled operation as l0cka"
     )
-    worker.add_argument("operation", choices=("ingest", "enrich", "backup", "verify-deadlines"))
+    worker.add_argument(
+        "operation", choices=("ingest", "enrich", "backup", "backup-mirror", "verify-deadlines")
+    )
     compose = commands.add_parser(
         "compose", help="internal allowlisted worker adapter; never arbitrary docker"
     )
