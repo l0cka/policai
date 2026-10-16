@@ -1,10 +1,13 @@
+import json
 import os
+import re
 import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
 
 import dispatcher as d
+import host as h
 
 
 class FixtureState(d.State):
@@ -41,7 +44,10 @@ class FakeHost:
         self.event("health")
 
     def active_record(self, record):
-        return {"target": record["target"]}
+        return {
+            "heads": dict.fromkeys(record["previous"], record["target"]),
+            "target": record["target"],
+        }
 
     def rollback(self, record):
         self.event("rollback")
@@ -116,6 +122,54 @@ class TransactionTests(unittest.TestCase):
             d.Transaction(state, host).deploy(None)
             self.assertLess(host.events.index("resolve"), host.events.index("stage"))
             self.assertEqual(state.read("active.json")["target"], "b" * 40)
+
+    def test_result_reports_resolved_main_and_deployed_heads(self):
+        old, new = "a" * 40, "b" * 40
+        both = {"policai": new, "probono": new}
+        cases = (
+            ("changed lane", new, ["src/app/page.tsx"], None, ["policai"], new, both),
+            ("no-lane merge", new, ["docs/hosting-argus.md"], None, [], new, both),
+            ("main did not move", old, [], None, [], old, {"policai": old, "probono": old}),
+            ("fails before resolving main", new, [], "resolve", None, None, None),
+            ("fails health", new, ["src/app/page.tsx"], "health", None, None, None),
+        )
+        for name, main, paths, fail, lanes, reported, heads in cases:
+            with self.subTest(name), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                (root / "deploy.lock").touch()
+                (root / "worker.lock").touch()
+                state = FixtureState(root)
+                active = {
+                    "heads": {"policai": old, "probono": old},
+                    "root_build": "build-a",
+                    "images": {},
+                    "target": old,
+                }
+                state.write("active.json", active)
+                host = FakeHost(paths)
+                host.active_record = lambda record: h.Host.active_record(None, record)
+                host.fail = fail
+
+                def resolve(host=host, main=main):
+                    host.event("resolve")
+                    return main
+
+                host.resolve_target = resolve
+                tx = d.Transaction(state, host)
+                if fail:
+                    with self.assertRaises(d.Refused):
+                        tx.deploy(None)
+                    self.assertEqual(state.read("active.json"), active)
+                    continue
+                result = tx.deploy(None)
+                self.assertEqual(
+                    result,
+                    {"verified": True, "activated_lanes": lanes, "main": reported, "heads": heads},
+                )
+                self.assertEqual(state.read("active.json")["heads"], heads)
+                printed = json.dumps(result)
+                legacy = re.match(r'\{"verified": true, "activated_lanes": \[([^\]]*)\]', printed)
+                self.assertIsNotNone(legacy, printed)
 
     def test_recovery_requires_verified_rollback_and_preserves_old_marker(self):
         with tempfile.TemporaryDirectory() as tmp:
