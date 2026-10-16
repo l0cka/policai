@@ -240,8 +240,10 @@ The source catalogue deliberately separates:
 Most previously-manual sources are automatic again since the collector gained
 a headless-browser retriever (`src/lib/pipeline/browser-fetch.ts`, Playwright
 Chromium). For sources marked `fetchStrategy: 'browser'`, the index or RSS
-listing page is still retrieved through the browser directly, because
-Firecrawl returns markdown and index parsing needs the page's HTML links.
+listing page is still retrieved through the browser directly. Index and RSS
+extraction parse the retrieved body as HTML or XML, but a Firecrawl page's
+body is its markdown. The `rawHtml` Firecrawl also returns is used only to
+find linked documents (see below), never as the body extraction reads.
 Candidate pages discovered from those sources (but never a document source's
 own page) are retrieved through a
 self-hosted Firecrawl instance first (`src/lib/pipeline/firecrawl.ts`),
