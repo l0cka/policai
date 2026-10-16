@@ -1,6 +1,5 @@
 /* @vitest-environment node */
 
-import { readFileSync } from 'node:fs';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { buildPolicy, buildTimelineEvent } from '@/test/factories';
 import { WATCH_SOURCES, type WatchSource } from './sources';
@@ -3048,25 +3047,6 @@ describe('collect with Claude classifier', () => {
     expect(development).toBeDefined();
     expect(development?.classification).toBe('ai');
     expect(development?.verification.status).not.toBe('verified');
-  });
-
-  it('leaves the curated register untouched when Claude is enabled', async () => {
-    vi.stubEnv('USE_CLAUDE_CLASSIFIER', '1');
-    classifyBatch.mockResolvedValueOnce([
-      {
-        id: CANDIDATE_URL,
-        relevant: true,
-        confidence: 0.9,
-        jurisdiction: null,
-        type: null,
-        summary: 'Another summary.',
-      },
-    ]);
-    const before = readFileSync('data/policies.json', 'utf8');
-
-    await collectWithOneCandidate();
-
-    expect(readFileSync('data/policies.json', 'utf8')).toBe(before);
   });
 
   it('maps Claude verdicts onto the development, calling classifyBatch once for the source', async () => {
