@@ -5,14 +5,38 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import patch
 
+import host
 import install
 
 SOURCE = Path(install.__file__).parent
 FIXTURE = SOURCE / "tests" / "fixtures" / "installed-2026-09-11"
 ABSENT = set((FIXTURE / "absent.txt").read_text().split())
 CHANGED = {name for name in install.FILES if (FIXTURE / name).is_file()}
+ACTIVE = {
+    "heads": {"policai": "0" * 40, "probono": "0" * 40},
+    "images": {"dashboard": "sha256:" + "0" * 64, "worker": "sha256:" + "0" * 64},
+    "root_build": "fixture-build",
+    "target": "0" * 40,
+}
+MIRROR = {
+    "source": "/home/l0cka/Backups/probono-radar",
+    "mount": "/mnt/argus-ssd",
+    "destination": "/mnt/argus-ssd/home/l0cka/backups/probono-radar",
+}
+CONFIG = {
+    "approved_target": "0" * 40,
+    "follow_main": True,
+    "recovery_authorization": "FIXTURE-RECOVERY-VALUE-NEVER-PRINTED",
+    "remote": "https://github.com/l0cka/policai.git",
+    "compose_sha256": "0" * 64,
+    "min_free_bytes": 8000000000,
+    "db": {"id": "0" * 64, "image": "sha256:" + "0" * 64, "cluster": "1"},
+    "installed_hashes": {"/usr/local/libexec/policai-host/cli.py": "FIXTURE-HASH-NEVER-PRINTED"},
+    "backup_mirror": MIRROR,
+}
 TIMERS = (
     "policai-pull.timer",
     "probono-ingest.timer",
@@ -87,7 +111,9 @@ class Host:
             path.chmod(mode)
         self.state.mkdir()
         (self.state / "deploy.lock").touch()
-        (self.state / "active.json").write_text(json.dumps({"bootstrap_pending": False}))
+        (self.state / "active.json").write_text(json.dumps(ACTIVE))
+        self.config = self.root / "config.json"
+        self.config.write_text(json.dumps(CONFIG))
         self.units.mkdir()
         for suffix in (".service", ".timer"):
             (self.units / ("probono-digest" + suffix)).symlink_to("/dev/null")
@@ -119,8 +145,16 @@ class Host:
                 state=self.state,
                 entries=self.entries,
                 check=check,
+                config=self.config,
                 **({} if expect_installed is None else {"expect_installed": expect_installed}),
             )
+
+    def plan(self):
+        with patch.object(install, "command", side_effect=systemctl()):
+            return install.plan(self.review, self.state, self.config, self.entries, check)
+
+    def gates(self):
+        return dict(self.plan()[1])
 
     def assert_upgraded(self, test):
         for name, path, mode, *_ in self.entries:
@@ -336,23 +370,26 @@ class UpgradeTests(unittest.TestCase):
 
     def test_dispatcher_ready_requires_an_unblocked_completed_activation(self):
         cases = (
-            ({"active.json": {"bootstrap_pending": False}}, True),
+            ({"active.json": ACTIVE}, True),
+            ({"active.json": {**ACTIVE, "bootstrap_pending": False}}, True),
+            ({"active.json": {**ACTIVE, "bootstrap_pending": True}}, False),
+            ({"active.json": {**ACTIVE, "bootstrap_pending": None}}, False),
+            ({"active.json": {**ACTIVE, "bootstrap_pending": 0}}, False),
+            ({"active.json": {**ACTIVE, "bootstrap_pending": "false"}}, False),
             ({"active.json": {}}, False),
+            ({"active.json": {"bootstrap_pending": False}}, False),
             ({"active.json": {"phase": "active"}}, False),
-            ({"active.json": {"bootstrap_pending": None}}, False),
-            ({"active.json": {"bootstrap_pending": 0}}, False),
-            (
-                {
-                    "active.json": {"bootstrap_pending": False},
-                    "blocked.json": {"phase": "failed-review-required"},
-                },
-                False,
-            ),
-            ({"active.json": {"bootstrap_pending": True}}, False),
+            ({"active.json": {k: v for k, v in ACTIVE.items() if k != "target"}}, False),
+            ({"active.json": {k: v for k, v in ACTIVE.items() if k != "heads"}}, False),
+            ({"active.json": [ACTIVE]}, False),
+            ({"active.json": ACTIVE, "blocked.json": {"phase": "failed-review-required"}}, False),
             ({}, False),
         )
         for files, ready in cases:
-            with self.subTest(files=sorted(files)), tempfile.TemporaryDirectory() as tmp:
+            with (
+                self.subTest(files=json.dumps(files, sort_keys=True)[:120]),
+                tempfile.TemporaryDirectory() as tmp,
+            ):
                 state = Path(tmp) / "state"
                 state.mkdir()
                 for name, record in files.items():
@@ -362,6 +399,157 @@ class UpgradeTests(unittest.TestCase):
                 else:
                     with self.assertRaises(install.Refused):
                         install.dispatcher_ready(state, check)
+
+    def test_plan_evaluates_the_unprivileged_gates_on_the_live_state_shape(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            host_ = Host(tmp)
+            items, results = host_.plan()
+            self.assertEqual([item["source"] for item in items], list(install.FILES))
+            gates = dict(results)
+            self.assertEqual(
+                list(gates),
+                [
+                    "1 protected snapshot as root",
+                    "2 reviewed manifest",
+                    "3 deployment lock",
+                    "4 held triggers",
+                    "5 dispatcher ready",
+                    "6 config backup_mirror",
+                ],
+            )
+            self.assertEqual(gates["1 protected snapshot as root"], "not evaluated by plan")
+            self.assertEqual(gates["3 deployment lock"], "not evaluated by plan")
+            self.assertEqual(
+                gates["2 reviewed manifest"], f"pass (MANIFEST.sha256 {host_.manifest})"
+            )
+            for gate in ("4 held triggers", "5 dispatcher ready", "6 config backup_mirror"):
+                self.assertEqual(gates[gate], "pass", gate)
+            text = install.render_gates(results)
+            self.assertIn("every evaluated gate passes", text)
+            self.assertEqual(host_.tree(), host_.original)
+            self.assertFalse((host_.state / "upgrades").exists())
+            host_.upgrade("apply", expect_installed=host_.expected)
+            host_.assert_upgraded(self)
+
+    def test_plan_and_apply_refuse_the_same_dispatcher_states(self):
+        for record in ({**ACTIVE, "bootstrap_pending": True}, {}, {"bootstrap_pending": False}):
+            with self.subTest(record=record), tempfile.TemporaryDirectory() as tmp:
+                host_ = Host(tmp)
+                (host_.state / "active.json").write_text(json.dumps(record))
+                gates = host_.gates()
+                self.assertTrue(gates["5 dispatcher ready"].startswith("refused: "), gates)
+                self.assertNotIn(
+                    "every evaluated gate passes", install.render_gates(list(gates.items()))
+                )
+                with self.assertRaises(install.Refused):
+                    host_.upgrade("apply", expect_installed=host_.expected)
+                self.assertEqual(host_.tree(), host_.original)
+                self.assertFalse((host_.state / "upgrades").exists())
+
+    def test_plan_names_the_missing_backup_mirror_block_and_apply_refuses_until_it_is_added(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            host_ = Host(tmp)
+            without = {k: v for k, v in CONFIG.items() if k != "backup_mirror"}
+            host_.config.write_text(json.dumps(without))
+            text = install.render_gates(host_.plan()[1])
+            self.assertIn("6 config backup_mirror: refused: ", text)
+            self.assertIn(f"{host_.config} has no backup_mirror block", text)
+            for key, value in MIRROR.items():
+                self.assertIn(f'"{key}": "{value}"', text)
+            self.assertNotIn("FIXTURE-RECOVERY-VALUE-NEVER-PRINTED", text)
+            self.assertNotIn("FIXTURE-HASH-NEVER-PRINTED", text)
+            self.assertNotIn("0" * 40, text)
+            with self.assertRaises(install.Refused):
+                host_.upgrade("apply", expect_installed=host_.expected)
+            self.assertEqual(host_.tree(), host_.original)
+            self.assertFalse((host_.state / "upgrades").exists())
+            self.assertEqual(json.loads(host_.config.read_text()), without)
+            host_.config.write_text(json.dumps({**without, "backup_mirror": MIRROR}))
+            self.assertEqual(host_.gates()["6 config backup_mirror"], "pass")
+            host_.upgrade("apply", expect_installed=host_.expected)
+            host_.assert_upgraded(self)
+            host_.upgrade("apply")
+            host_.assert_upgraded(self)
+            self.assertEqual(
+                json.loads(host_.config.read_text()), {**without, "backup_mirror": MIRROR}
+            )
+
+    def test_config_gate_never_echoes_config_content(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            host_ = Host(tmp)
+            broken = {
+                "missing": None,
+                "not json": "{FIXTURE-GARBAGE-NEVER-PRINTED",
+                "not an object": json.dumps(["FIXTURE-LIST-VALUE-NEVER-PRINTED"]),
+                "invalid block": json.dumps(
+                    {**CONFIG, "backup_mirror": {**MIRROR, "mount": "/FIXTURE-MOUNT-NEVER-PRINTED"}}
+                ),
+            }
+            for reason, content in broken.items():
+                with self.subTest(reason=reason):
+                    if content is None:
+                        host_.config.unlink()
+                    else:
+                        host_.config.write_text(content)
+                    text = install.render_gates(host_.plan()[1])
+                    self.assertIn("6 config backup_mirror: refused: ", text)
+                    self.assertNotIn("NEVER-PRINTED", text)
+                    with self.assertRaises(install.Refused):
+                        host_.upgrade("apply", expect_installed=host_.expected)
+                    self.assertEqual(host_.tree(), host_.original)
+                    self.assertFalse((host_.state / "upgrades").exists())
+
+    def test_config_gate_accepts_exactly_the_blocks_the_dispatcher_accepts(self):
+        blocks = (
+            MIRROR,
+            {**MIRROR, "extra": "ignored"},
+            {**MIRROR, "mount": "/"},
+            {**MIRROR, "mount": "/mnt/other"},
+            {**MIRROR, "mount": "/home"},
+            {**MIRROR, "destination": "/mnt/argus-ssd"},
+            {**MIRROR, "destination": "/mnt/argus-ssd/../x"},
+            {**MIRROR, "destination": "/mnt/argus-ssd/x/"},
+            {**MIRROR, "source": "relative/path"},
+            {**MIRROR, "source": 7},
+            {k: v for k, v in MIRROR.items() if k != "destination"},
+            "not a block",
+        )
+        for block in blocks:
+            with self.subTest(block=block), tempfile.TemporaryDirectory() as tmp:
+                config = Path(tmp) / "config.json"
+                config.write_text(json.dumps({**CONFIG, "backup_mirror": block}))
+                try:
+                    host.mirror_environment({"backup_mirror": block})
+                    accepted = True
+                except (host.Refused, KeyError, TypeError):
+                    accepted = False
+                if accepted:
+                    install.config_ready(config, check)
+                else:
+                    with self.assertRaises(install.Refused):
+                        install.config_ready(config, check)
+
+    def test_user_preflight_commands_run_directly_as_l0cka_without_root(self):
+        l0cka = SimpleNamespace(pw_name="l0cka", pw_uid=4242)
+        with patch.object(install.pwd, "getpwuid", return_value=l0cka):
+            output = install.command(["/usr/bin/env"], user=True).splitlines()
+        self.assertEqual(
+            sorted(output),
+            sorted(
+                [
+                    "HOME=/home/l0cka",
+                    "LANG=C.UTF-8",
+                    "PATH=/usr/bin:/bin",
+                    "XDG_RUNTIME_DIR=/run/user/4242",
+                ]
+            ),
+        )
+        other = SimpleNamespace(pw_name="someone-else", pw_uid=4242)
+        with (
+            patch.object(install.pwd, "getpwuid", return_value=other),
+            self.assertRaises(install.Refused),
+        ):
+            install.command(["/usr/bin/env"], user=True)
 
     def test_held_refuses_each_active_pull_or_probono_timer(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -386,7 +574,11 @@ class UpgradeTests(unittest.TestCase):
             "wrong digest": lambda host: setattr(host, "manifest", "0" * 64),
             "blocked dispatcher": lambda host: (host.state / "blocked.json").write_text("{}"),
             "pending bootstrap": lambda host: (host.state / "active.json").write_text(
-                json.dumps({"bootstrap_pending": True})
+                json.dumps({**ACTIVE, "bootstrap_pending": True})
+            ),
+            "uninitialised record": lambda host: (host.state / "active.json").write_text("{}"),
+            "config without backup_mirror": lambda host: host.config.write_text(
+                json.dumps({k: v for k, v in CONFIG.items() if k != "backup_mirror"})
             ),
         }
         for reason, deviate in refusals.items():
@@ -412,6 +604,7 @@ class UpgradeTests(unittest.TestCase):
                         state=host.state,
                         entries=host.entries,
                         check=check,
+                        config=host.config,
                         expect_installed=host.expected,
                     )
                 self.assertEqual(host.tree(), host.original)
