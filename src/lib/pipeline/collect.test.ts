@@ -3,6 +3,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { buildPolicy, buildTimelineEvent } from '@/test/factories';
 import { WATCH_SOURCES, type WatchSource } from './sources';
+import { retrieveSource } from './fetch';
 
 // vi.mock is hoisted above every import, including plain top-level const
 // declarations in this file, so the mock fn must come from vi.hoisted().
@@ -29,7 +30,7 @@ import {
   emptyWatchState,
   qualifiesForReview,
 } from './collect';
-import type { SourceSnapshot, WatchState } from './collect';
+import type { SeenCandidate, SourceSnapshot, WatchState } from './collect';
 import type { SourceReview } from '@/types';
 import { MACHINE_CONFIDENCE_CAP, type Classification } from './classify';
 import { validateSourceReviews } from '../validate-data';
@@ -967,6 +968,338 @@ describe('collect', () => {
     ).toMatchObject({
       changeCount: 1,
       lastChangedAt: '2026-07-10T00:00:00.000Z',
+    });
+  });
+
+  describe('fingerprints stored before dcterms.created and the date platform were fingerprinted', () => {
+    const drupalPage = (created: string, text = 'Version one.') => `
+      <html><head>
+        <meta name="Generator" content="Drupal 10 (https://www.drupal.org)">
+        <meta name="dcterms.created" content="${created}">
+      </head><body><main><h1>AI governance policy</h1><p>${text}</p></main></body></html>`;
+    const plainPage = (head = '', text = 'Version one.') =>
+      `<html><head>${head}</head><body><main><h1>AI governance policy</h1><p>${text}</p></main></body></html>`;
+
+    async function storedLegacyFingerprint(text?: string): Promise<string> {
+      const retrieved = await retrieveSource(DOCUMENT_SOURCE.url, {
+        fetchImpl: fakeFetch({
+          [DOCUMENT_SOURCE.url]: drupalPage('2026-06-01', text),
+        }),
+        hashLinkedDocuments: false,
+      });
+      return retrieved.legacyContentHash as string;
+    }
+
+    const transitionKey = (hash: string) =>
+      `${DOCUMENT_SOURCE.url}#policai-change=${hash}:1`;
+    const transitionEntry = (
+      hash: string,
+      status: 'pending' | 'processed',
+    ): SeenCandidate => ({
+      firstSeenAt: '2026-07-05T00:00:00.000Z',
+      sourceId: DOCUMENT_SOURCE.id,
+      status,
+      attempts: 1,
+      candidate: {
+        title: 'AI governance policy',
+        url: DOCUMENT_SOURCE.url,
+        text: 'AI governance policy',
+        changeFingerprint: `${hash}:1`,
+      },
+    });
+
+    it('keeps a pending transition staged under the legacy fingerprint at sequence 1 while its content is unchanged', async () => {
+      const verifiedHash = await storedLegacyFingerprint('Version zero.');
+      const pendingHash = await storedLegacyFingerprint('Version one.');
+      const trackedPolicy = buildPolicy({
+        id: 'tracked-document-policy',
+        sourceUrl: DOCUMENT_SOURCE.url,
+        verification: {
+          status: 'verified',
+          checkedAt: '2026-07-01T00:00:00.000Z',
+          checkedBy: 'reviewer',
+          method: 'manual',
+          source: { url: DOCUMENT_SOURCE.url, contentHash: verifiedHash },
+        },
+      });
+      const state: WatchState = {
+        ...emptyWatchState(),
+        sourceSnapshots: {
+          [DOCUMENT_SOURCE.id]: {
+            contentHash: verifiedHash,
+            firstCheckedAt: '2026-07-01T00:00:00.000Z',
+            lastCheckedAt: '2026-07-05T00:00:00.000Z',
+            changeCount: 0,
+          },
+        },
+        seen: {
+          [transitionKey(pendingHash)]: transitionEntry(pendingHash, 'pending'),
+        },
+      };
+
+      const result = await collect({
+        sources: [DOCUMENT_SOURCE],
+        state,
+        existingDevelopments: [],
+        trackedUrls: [DOCUMENT_SOURCE.url],
+        trackedPolicies: [trackedPolicy],
+        fetchImpl: fakeFetch({ [DOCUMENT_SOURCE.url]: drupalPage('2026-06-01') }),
+        now: () => new Date('2026-07-10T00:00:00.000Z'),
+      });
+
+      expect(
+        result.reviewCandidates.map((review) => review.sourceVersionSequence),
+      ).toEqual([1]);
+      expect(Object.keys(result.state.seen)).toEqual([
+        transitionKey(pendingHash),
+      ]);
+      expect(result.state.seen[transitionKey(pendingHash)].status).toBe(
+        'processed',
+      );
+    });
+
+    it('adopts a legacy transition published under a browser capture, then detects date metadata changes', async () => {
+      const transitionHash = await storedLegacyFingerprint();
+      const capturedHash = 'b'.repeat(64);
+      const trackedPolicy = buildPolicy({
+        id: 'tracked-document-policy',
+        sourceUrl: DOCUMENT_SOURCE.url,
+        verification: {
+          status: 'verified',
+          checkedAt: '2026-07-01T00:00:00.000Z',
+          checkedBy: 'reviewer',
+          method: 'manual',
+          source: {
+            url: DOCUMENT_SOURCE.url,
+            contentHash: capturedHash,
+            browserCapture: {
+              method: 'browser',
+              capturedAt: '2026-07-01T00:00:00.000Z',
+              capturedBy: 'reviewer',
+              notes: 'Captured in a controlled browser.',
+              pageContentHash: capturedHash,
+              characterCount: 40,
+            },
+          },
+        },
+      });
+      const state: WatchState = {
+        ...emptyWatchState(),
+        sourceSnapshots: {
+          [DOCUMENT_SOURCE.id]: {
+            contentHash: transitionHash,
+            firstCheckedAt: '2026-07-01T00:00:00.000Z',
+            lastCheckedAt: '2026-07-05T00:00:00.000Z',
+            changeCount: 1,
+          },
+        },
+        seen: {
+          [transitionKey(transitionHash)]: transitionEntry(
+            transitionHash,
+            'processed',
+          ),
+          [transitionKey(capturedHash)]: transitionEntry(
+            capturedHash,
+            'processed',
+          ),
+        },
+      };
+      const run = (current: WatchState, created: string, day: string) =>
+        collect({
+          sources: [DOCUMENT_SOURCE],
+          state: current,
+          existingDevelopments: [],
+          trackedUrls: [DOCUMENT_SOURCE.url],
+          trackedPolicies: [trackedPolicy],
+          fetchImpl: fakeFetch({ [DOCUMENT_SOURCE.url]: drupalPage(created) }),
+          now: () => new Date(`${day}T00:00:00.000Z`),
+        });
+
+      const unchanged = await run(state, '2026-06-01', '2026-07-10');
+      expect(unchanged.reviewCandidates).toEqual([]);
+      expect(
+        unchanged.state.sourceSnapshots[DOCUMENT_SOURCE.id].contentHash,
+      ).not.toBe(transitionHash);
+
+      const redated = await run(unchanged.state, '2026-06-20', '2026-07-17');
+      expect(redated.reviewCandidates).toHaveLength(1);
+      expect(redated.reviewCandidates[0]).toMatchObject({
+        targetPolicyId: trackedPolicy.id,
+        sourceVersionSequence: 2,
+      });
+    });
+
+    it('adopts a legacy verified fingerprint for unchanged content, then detects date metadata changes', async () => {
+      const legacyHash = await storedLegacyFingerprint();
+      const trackedPolicy = buildPolicy({
+        id: 'tracked-document-policy',
+        sourceUrl: DOCUMENT_SOURCE.url,
+        verification: {
+          status: 'verified',
+          checkedAt: '2026-07-01T00:00:00.000Z',
+          checkedBy: 'reviewer',
+          method: 'manual',
+          source: { url: DOCUMENT_SOURCE.url, contentHash: legacyHash },
+        },
+      });
+      const run = (state: WatchState, created: string, day: string) =>
+        collect({
+          sources: [DOCUMENT_SOURCE],
+          state,
+          existingDevelopments: [],
+          trackedUrls: [DOCUMENT_SOURCE.url],
+          trackedPolicies: [trackedPolicy],
+          fetchImpl: fakeFetch({ [DOCUMENT_SOURCE.url]: drupalPage(created) }),
+          now: () => new Date(`${day}T00:00:00.000Z`),
+        });
+
+      const unchanged = await run(emptyWatchState(), '2026-06-01', '2026-07-10');
+      expect(unchanged.developments).toEqual([]);
+      expect(unchanged.reviewCandidates).toEqual([]);
+      const adopted = unchanged.state.sourceSnapshots[DOCUMENT_SOURCE.id];
+      expect(adopted.contentHash).not.toBe(legacyHash);
+      expect(adopted.lastChangedAt).toBeUndefined();
+
+      const repeated = await run(unchanged.state, '2026-06-01', '2026-07-17');
+      expect(repeated.reviewCandidates).toEqual([]);
+
+      const redated = await run(repeated.state, '2026-06-20', '2026-07-24');
+      expect(redated.reviewCandidates).toHaveLength(1);
+      expect(redated.reviewCandidates[0]).toMatchObject({
+        targetPolicyId: trackedPolicy.id,
+        sourceVersionSequence: 1,
+      });
+    });
+
+    it('adopts a legacy snapshot fingerprint for unchanged content, then detects date metadata changes', async () => {
+      const legacyHash = await storedLegacyFingerprint();
+      const state: WatchState = {
+        ...emptyWatchState(),
+        sourceSnapshots: {
+          [DOCUMENT_SOURCE.id]: {
+            contentHash: legacyHash,
+            firstCheckedAt: '2026-07-01T00:00:00.000Z',
+            lastCheckedAt: '2026-07-01T00:00:00.000Z',
+            changeCount: 0,
+          },
+        },
+      };
+      const run = (current: WatchState, created: string, day: string) =>
+        collect({
+          sources: [DOCUMENT_SOURCE],
+          state: current,
+          existingDevelopments: [],
+          fetchImpl: fakeFetch({ [DOCUMENT_SOURCE.url]: drupalPage(created) }),
+          now: () => new Date(`${day}T00:00:00.000Z`),
+        });
+
+      const unchanged = await run(state, '2026-06-01', '2026-07-10');
+      const adopted = unchanged.state.sourceSnapshots[DOCUMENT_SOURCE.id];
+      expect(unchanged.developments).toEqual([]);
+      expect(adopted).toMatchObject({ changeCount: 0 });
+      expect(adopted.contentHash).not.toBe(legacyHash);
+      expect(adopted.lastChangedAt).toBeUndefined();
+
+      const redated = await run(unchanged.state, '2026-06-20', '2026-07-24');
+      expect(redated.state.sourceSnapshots[DOCUMENT_SOURCE.id]).toMatchObject({
+        changeCount: 1,
+        lastChangedAt: '2026-07-24T00:00:00.000Z',
+      });
+    });
+
+    describe('a page that gains a fingerprinted field after its current fingerprint was stored', () => {
+      const trackedPolicy = (contentHash: string) =>
+        buildPolicy({
+          id: 'tracked-document-policy',
+          sourceUrl: DOCUMENT_SOURCE.url,
+          verification: {
+            status: 'verified',
+            checkedAt: '2026-07-01T00:00:00.000Z',
+            checkedBy: 'reviewer',
+            method: 'manual',
+            source: { url: DOCUMENT_SOURCE.url, contentHash },
+          },
+        });
+      const run = (
+        state: WatchState,
+        html: string,
+        day: string,
+        policy?: ReturnType<typeof buildPolicy>,
+      ) =>
+        collect({
+          sources: [DOCUMENT_SOURCE],
+          state,
+          existingDevelopments: [],
+          ...(policy
+            ? { trackedUrls: [DOCUMENT_SOURCE.url], trackedPolicies: [policy] }
+            : {}),
+          fetchImpl: fakeFetch({ [DOCUMENT_SOURCE.url]: html }),
+          now: () => new Date(`${day}T00:00:00.000Z`),
+        });
+      const currentFingerprint = async (html: string) =>
+        (
+          await retrieveSource(DOCUMENT_SOURCE.url, {
+            fetchImpl: fakeFetch({ [DOCUMENT_SOURCE.url]: html }),
+            hashLinkedDocuments: false,
+          })
+        ).evidence.contentHash as string;
+
+      it('stages a review when a tracked page gains dcterms.created', async () => {
+        const policy = trackedPolicy(await currentFingerprint(plainPage()));
+        const baseline = await run(emptyWatchState(), plainPage(), '2026-07-10', policy);
+        expect(baseline.reviewCandidates).toEqual([]);
+
+        const dated = await run(
+          baseline.state,
+          plainPage('<meta name="dcterms.created" content="2026-06-01">'),
+          '2026-07-17',
+          policy,
+        );
+        expect(dated.reviewCandidates).toHaveLength(1);
+        expect(dated.reviewCandidates[0]).toMatchObject({
+          targetPolicyId: policy.id,
+          sourceVersionSequence: 1,
+        });
+      });
+
+      it('stages a review when a tracked page with dcterms.date becomes a GovCMS page', async () => {
+        const dateOnly = plainPage('<meta name="dcterms.date" content="2025-03-01">');
+        const policy = trackedPolicy(await currentFingerprint(dateOnly));
+        const baseline = await run(emptyWatchState(), dateOnly, '2026-07-10', policy);
+        expect(baseline.reviewCandidates).toEqual([]);
+
+        const govcms = await run(
+          baseline.state,
+          plainPage(
+            '<meta name="Generator" content="Drupal 10 (https://www.drupal.org)"><meta name="dcterms.date" content="2025-03-01">',
+          ),
+          '2026-07-17',
+          policy,
+        );
+        expect(govcms.reviewCandidates).toHaveLength(1);
+        expect(govcms.reviewCandidates[0]).toMatchObject({
+          targetPolicyId: policy.id,
+          sourceVersionSequence: 1,
+        });
+      });
+
+      it('counts an untracked page gaining dcterms.created as a change', async () => {
+        const baseline = await run(emptyWatchState(), plainPage(), '2026-07-10');
+        expect(baseline.state.sourceSnapshots[DOCUMENT_SOURCE.id]).toMatchObject({
+          changeCount: 0,
+        });
+
+        const dated = await run(
+          baseline.state,
+          plainPage('<meta name="dcterms.created" content="2026-06-01">'),
+          '2026-07-17',
+        );
+        expect(dated.state.sourceSnapshots[DOCUMENT_SOURCE.id]).toMatchObject({
+          changeCount: 1,
+          lastChangedAt: '2026-07-17T00:00:00.000Z',
+        });
+        expect(dated.developments).toHaveLength(1);
+      });
     });
   });
 

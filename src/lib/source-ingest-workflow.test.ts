@@ -57,8 +57,11 @@ const {
 
 vi.mock('@/lib/analysis', () => ({ analyseContentRelevance }));
 vi.mock('@/lib/pipeline/content', () => ({ extractRetrievedDocument }));
-vi.mock('@/lib/pipeline/fetch', () => ({
+vi.mock('@/lib/pipeline/fetch', async (importOriginal) => ({
   documentKindFromBytes,
+  matchesRetrievedContent: (
+    await importOriginal<typeof import('@/lib/pipeline/fetch')>()
+  ).matchesRetrievedContent,
   retrieveSource,
 }));
 vi.mock('@/lib/data-service', () => ({
@@ -1392,6 +1395,67 @@ describe('source ingest approval workflow', () => {
     expect(createSourceReview).not.toHaveBeenCalled();
   });
 
+  it('refreshes an ordered collector review staged under the legacy fingerprint when the page is unchanged', async () => {
+    const draft = buildDraft({
+      id: 'existing-policy',
+      effectiveDate: '2026-07-01',
+    });
+    const target: Policy = {
+      ...draft,
+      effectiveDate: '2026-07-01',
+      dates: draft.dates ?? [],
+      verification: {
+        status: 'verified',
+        source: { url: SOURCE_URL, contentHash: '0'.repeat(64) },
+        checkedAt: '2026-01-01T00:00:00.000Z',
+        checkedBy: 'reviewer',
+        method: 'manual',
+      },
+    };
+    getPolicies.mockResolvedValue([target]);
+    getSourceReviews.mockResolvedValue([
+      buildReview({
+        id: 'collector-transition-review',
+        targetPolicyId: target.id,
+        sourceVersionSequence: 4,
+        sourceEvidence: {
+          url: SOURCE_URL,
+          retrievedAt: '2026-07-15T00:00:00.000Z',
+          contentHash: 'a'.repeat(64),
+        },
+      }),
+    ]);
+    retrieveSource.mockResolvedValue({
+      body: '<main>Official AI policy</main>',
+      durationMs: 1,
+      legacyContentHash: 'a'.repeat(64),
+      evidence: {
+        url: SOURCE_URL,
+        finalUrl: SOURCE_URL,
+        retrievedAt: '2026-07-16T00:00:00.000Z',
+        contentType: 'text/html',
+        contentHash: 'c'.repeat(64),
+      },
+    });
+
+    await stageSourceUrl({
+      url: SOURCE_URL,
+      entryKind: 'policy',
+      actor: 'reviewer',
+    });
+
+    expect(updateSourceReview).toHaveBeenCalledWith(
+      'collector-transition-review',
+      expect.objectContaining({
+        sourceVersionSequence: 4,
+        sourceEvidence: expect.objectContaining({
+          contentHash: 'c'.repeat(64),
+        }),
+      }),
+    );
+    expect(createSourceReview).not.toHaveBeenCalled();
+  });
+
   it('re-verifies a tracked timeline event whose source is shared by tracked records', async () => {
     const relatedPolicyDraft = buildDraft({
       id: 'related-policy',
@@ -2057,6 +2121,162 @@ describe('source ingest approval workflow', () => {
       }),
     ).rejects.toThrow('changed after staging');
     expect(updateSourceReview).not.toHaveBeenCalled();
+  });
+
+  it('refuses approval when the page gained dcterms.created after staging under its current fingerprint', async () => {
+    const { retrieveSource: retrieveLive } =
+      await vi.importActual<typeof import('@/lib/pipeline/fetch')>(
+        '@/lib/pipeline/fetch',
+      );
+    const retrievePage = (head: string) =>
+      retrieveLive(SOURCE_URL, {
+        fetchImpl: (async () =>
+          new Response(
+            `<html><head>${head}</head><body><main>Official AI policy</main></body></html>`,
+            { headers: { 'content-type': 'text/html' } },
+          )) as unknown as typeof fetch,
+        hashLinkedDocuments: false,
+      });
+    const staged = await retrievePage('');
+    getSourceReviewById.mockResolvedValue(
+      buildReview({
+        sourceEvidence: {
+          url: SOURCE_URL,
+          retrievedAt: '2026-07-16T00:00:00.000Z',
+          contentHash: staged.evidence.contentHash as string,
+        },
+      }),
+    );
+    retrieveSource.mockResolvedValueOnce(
+      await retrievePage('<meta name="dcterms.created" content="2026-06-01">'),
+    );
+
+    await expect(
+      approveStagedSource({
+        id: 'source-review-1',
+        actor: 'reviewer',
+        proposedRecord: buildDraft({ effectiveDate: '2026-07-01' }),
+      }),
+    ).rejects.toThrow('changed after staging');
+    expect(updateSourceReview).not.toHaveBeenCalled();
+  });
+
+  it('approves a review staged before dcterms.created and the date platform were fingerprinted', async () => {
+    getSourceReviewById.mockResolvedValue(buildReview());
+    retrieveSource.mockResolvedValueOnce({
+      body: '<main>Official AI policy</main>',
+      durationMs: 1,
+      legacyContentHash: 'a'.repeat(64),
+      evidence: {
+        url: SOURCE_URL,
+        finalUrl: SOURCE_URL,
+        retrievedAt: '2026-07-16T00:00:00.000Z',
+        contentType: 'text/html',
+        contentHash: 'c'.repeat(64),
+      },
+    });
+
+    const approved = await approveStagedSource({
+      id: 'source-review-1',
+      actor: 'reviewer',
+      proposedRecord: buildDraft({ effectiveDate: '2026-07-01' }),
+    });
+
+    expect(approved.status).toBe('approved');
+    expect(approved.sourceEvidence.contentHash).toBe('c'.repeat(64));
+  });
+
+  describe('re-approval of a review approved under the legacy fingerprint', () => {
+    const reviewedDate = {
+      date: '2026-07-01',
+      precision: 'day' as const,
+      reviewedAt: '2026-07-16T06:00:00.000Z',
+      reviewedBy: 'reviewer',
+      notes: 'Checked the printed date on page one.',
+    };
+    const legacyEvidence = {
+      url: SOURCE_URL,
+      finalUrl: SOURCE_URL,
+      retrievedAt: '2026-07-15T00:00:00.000Z',
+      contentHash: 'a'.repeat(64),
+      reviewedDate,
+    };
+    const unchangedPageUnderTheCurrentKeys = {
+      body: '<main>Official AI policy</main>',
+      durationMs: 1,
+      legacyContentHash: 'a'.repeat(64),
+      evidence: {
+        url: SOURCE_URL,
+        finalUrl: SOURCE_URL,
+        retrievedAt: '2026-07-16T00:00:00.000Z',
+        contentType: 'text/html',
+        contentHash: 'c'.repeat(64),
+      },
+    };
+
+    beforeEach(() => {
+      retrieveSource.mockResolvedValue(unchangedPageUnderTheCurrentKeys);
+      extractRetrievedDocument.mockResolvedValue({
+        title: 'Official AI policy',
+        text: 'Official source-backed policy text.',
+        publishedAt: '2026-05-05',
+        publishedAtPrecision: 'day',
+      });
+    });
+
+    it('keeps the manual reviewed date of a policy review', async () => {
+      getSourceReviewById.mockResolvedValue(
+        buildReview({
+          status: 'approved',
+          reviewedAt: '2026-07-16T06:00:00.000Z',
+          reviewedBy: 'reviewer',
+          sourceEvidence: legacyEvidence,
+        }),
+      );
+
+      const approved = await approveStagedSource({
+        id: 'source-review-1',
+        actor: 'second-reviewer',
+        proposedRecord: buildDraft({ effectiveDate: '2026-07-01' }),
+      });
+
+      expect(approved.sourceEvidence).toMatchObject({
+        contentHash: 'c'.repeat(64),
+        reviewedDate,
+      });
+    });
+
+    it('keeps the manual reviewed date of a timeline review', async () => {
+      getSourceReviewById.mockResolvedValue(
+        buildReview({
+          entryKind: 'timeline_event',
+          status: 'approved',
+          reviewedAt: '2026-07-16T06:00:00.000Z',
+          reviewedBy: 'reviewer',
+          sourceEvidence: legacyEvidence,
+          proposedRecord: {
+            id: 'timeline-ai-policy',
+            date: '2026-07-01',
+            datePrecision: 'day',
+            title: 'AI policy announced',
+            description: 'An official AI policy announcement.',
+            type: 'announcement',
+            jurisdiction: 'federal',
+            sourceUrl: SOURCE_URL,
+          },
+        }),
+      );
+
+      const approved = await approveStagedSource({
+        id: 'source-review-1',
+        actor: 'second-reviewer',
+      });
+
+      expect(approved.sourceEvidence).toMatchObject({
+        contentHash: 'c'.repeat(64),
+        reviewedDate,
+      });
+    });
   });
 
   it('refuses approval when staged evidence has no fingerprint', async () => {
@@ -2936,6 +3156,60 @@ describe('source ingest approval workflow', () => {
     ).rejects.toThrow('verification has expired');
     expect(createPolicy).not.toHaveBeenCalled();
     expect(updatePolicy).not.toHaveBeenCalled();
+    expect(updateSourceReview).not.toHaveBeenCalled();
+  });
+
+  it('requires re-approval when the page gained dcterms.created after approval under its current fingerprint', async () => {
+    const { retrieveSource: retrieveLive } =
+      await vi.importActual<typeof import('@/lib/pipeline/fetch')>(
+        '@/lib/pipeline/fetch',
+      );
+    const retrievePage = (head: string) =>
+      retrieveLive(SOURCE_URL, {
+        fetchImpl: (async () =>
+          new Response(
+            `<html><head>${head}</head><body><main>Official AI policy</main></body></html>`,
+            { headers: { 'content-type': 'text/html' } },
+          )) as unknown as typeof fetch,
+        hashLinkedDocuments: false,
+      });
+    const approved = await retrievePage('');
+    const approvedPolicy = {
+      ...buildDraft({ effectiveDate: '2026-07-01' }),
+      effectiveDate: '2026-07-01',
+      lastReviewedAt: '2026-07-16T00:00:00.000Z',
+      verification: {
+        status: 'verified' as const,
+        source: {
+          url: SOURCE_URL,
+          contentHash: approved.evidence.contentHash as string,
+        },
+        checkedAt: '2026-07-16T00:00:00.000Z',
+        checkedBy: 'reviewer',
+        method: 'manual' as const,
+      },
+    };
+    getSourceReviewById.mockResolvedValue(
+      buildReview({
+        status: 'approved',
+        reviewedAt: '2026-07-16T00:00:00.000Z',
+        reviewedBy: 'reviewer',
+        sourceEvidence: {
+          url: SOURCE_URL,
+          retrievedAt: '2026-07-16T00:00:00.000Z',
+          contentHash: approved.evidence.contentHash as string,
+        },
+        proposedRecord: approvedPolicy,
+      }),
+    );
+    retrieveSource.mockResolvedValueOnce(
+      await retrievePage('<meta name="dcterms.created" content="2026-06-01">'),
+    );
+
+    await expect(
+      publishStagedSource('source-review-1'),
+    ).rejects.toThrow('changed after approval');
+    expect(createPolicy).not.toHaveBeenCalled();
     expect(updateSourceReview).not.toHaveBeenCalled();
   });
 

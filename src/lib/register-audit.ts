@@ -1,4 +1,5 @@
 import {
+  matchesRetrievedContent,
   retrieveSource,
   SourceFetchError,
   type RetrievedSource,
@@ -107,14 +108,15 @@ function compareLinkedDocuments(
 
 export function compareRegisterSourceEvidence(
   previous: SourceEvidence,
-  current: SourceEvidence,
+  current: Pick<RetrievedSource, 'evidence' | 'legacyContentHash'>,
 ): EvidenceComparison {
   const linkedComparison = compareLinkedDocuments(
     previous.linkedDocuments,
-    current.linkedDocuments,
+    current.evidence.linkedDocuments,
   );
   const retrievalMethodsMatch =
-    Boolean(previous.browserCapture) === Boolean(current.browserCapture);
+    Boolean(previous.browserCapture) ===
+    Boolean(current.evidence.browserCapture);
 
   if (!retrievalMethodsMatch) {
     return (
@@ -126,17 +128,16 @@ export function compareRegisterSourceEvidence(
     );
   }
 
-  if (!previous.contentHash || !current.contentHash) {
+  if (!previous.contentHash || !current.evidence.contentHash) {
     return {
       status: 'comparison_unavailable',
       error: 'Comparable source evidence is missing a content fingerprint',
     };
   }
   return {
-    status:
-      previous.contentHash === current.contentHash
-        ? 'unchanged'
-        : 'changed',
+    status: matchesRetrievedContent(current, previous.contentHash)
+      ? 'unchanged'
+      : 'changed',
     basis: 'content_hash',
   };
 }
@@ -286,7 +287,7 @@ export async function auditRegister(
         const comparison = previousHash
           ? compareRegisterSourceEvidence(
               policy.verification.source,
-              retrieved.evidence,
+              retrieved,
             )
           : null;
         const status: RegisterAuditStatus = comparison
@@ -375,7 +376,10 @@ export function applyRegisterAuditEvidence(
           source:
             result.comparisonBasis === 'linked_documents'
               ? policy.verification.source
-              : observedSource,
+              : {
+                  ...observedSource,
+                  contentHash: policy.verification.source.contentHash,
+                },
           lastSourceAuditAt: result.checkedAt,
         },
       };

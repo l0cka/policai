@@ -10,8 +10,10 @@ import {
 	extractRetrievedDocument,
 	type ExtractedDocument,
 } from "@/lib/pipeline/content";
+import { FINGERPRINT_METADATA_KEYS } from "@/lib/pipeline/date-metadata";
 import {
 	documentKindFromBytes,
+	matchesRetrievedContent,
 	retrieveSource,
 	type RetrievedSource,
 } from "@/lib/pipeline/fetch";
@@ -119,19 +121,6 @@ function retrieveEditorialSource(
 	});
 }
 
-const STABLE_BROWSER_METADATA_KEYS = new Set([
-	"article:published_time",
-	"article:modified_time",
-	"date",
-	"datepublished",
-	"dcterms.date",
-	"dcterms.issued",
-	"dcterms.modified",
-	"dc.date",
-	"og:title",
-	"citation_title",
-	"citation_publication_date",
-]);
 
 function capturePathIsWithin(root: string, filePath: string): boolean {
 	const child = relative(root, filePath);
@@ -307,7 +296,7 @@ async function buildBrowserCapturedSource(
 				const normalizedKey = key.trim().toLowerCase();
 				const normalizedValue = value.trim();
 				if (
-					!STABLE_BROWSER_METADATA_KEYS.has(normalizedKey) ||
+					!FINGERPRINT_METADATA_KEYS.has(normalizedKey) ||
 					!normalizedValue
 				) {
 					throw new Error("Browser capture contains unsupported stable metadata");
@@ -1030,8 +1019,9 @@ async function stageSourceUrlUnlocked(input: {
 	}
 	let requiresManualExtraction = false;
 	let analysisResult: SourceAnalysisResult;
+	let retrieved: RetrievedSource | undefined;
 	if (targetPolicy || targetTimelineEvent || input.browserCapture) {
-		const retrieved = input.browserCapture
+		retrieved = input.browserCapture
 			? await buildBrowserCapturedSource(canonicalUrl, input.browserCapture)
 			: await retrieveEditorialSource(
 					canonicalUrl,
@@ -1284,12 +1274,15 @@ async function stageSourceUrlUnlocked(input: {
 		if (existingReview.sourceVersionSequence !== undefined) {
 			const priorHash = existingReview.sourceEvidence.contentHash;
 			const refreshedHash = reviewProposal.sourceEvidence.contentHash;
+			const unchangedSinceStaging = retrieved
+				? matchesRetrievedContent(retrieved, priorHash)
+				: Boolean(priorHash && refreshedHash && priorHash === refreshedHash);
 			const refreshesPendingCollectorEvidenceWithBrowserCapture =
 				Boolean(input.browserCapture) &&
 				existingReview.status === "pending_review" &&
 				Boolean(targetPolicy || targetTimelineEvent);
 			if (
-				(!priorHash || !refreshedHash || priorHash !== refreshedHash) &&
+				!unchangedSinceStaging &&
 				!refreshesPendingCollectorEvidenceWithBrowserCapture
 			) {
 				throw new Error(
@@ -1435,10 +1428,7 @@ async function approveStagedSourceUnlocked(input: {
 				"Staged source has no content fingerprint and must be re-staged before approval",
 			);
 		}
-		if (
-			review.sourceEvidence.contentHash !==
-			retrieved.evidence.contentHash
-		) {
+		if (!matchesRetrievedContent(retrieved, review.sourceEvidence.contentHash)) {
 			throw new Error(
 				"Official source changed after staging and must be reviewed again before approval",
 			);
@@ -1557,7 +1547,7 @@ async function approveStagedSourceUnlocked(input: {
 			reviewedDate: input.reviewedDate,
 			existingReviewedDate:
 				review.status === "approved" &&
-				review.sourceEvidence.contentHash === sourceEvidence.contentHash
+				matchesRetrievedContent(retrieved, review.sourceEvidence.contentHash)
 					? review.sourceEvidence.reviewedDate
 					: undefined,
 			allowPublishedMetadata: true,
@@ -1908,7 +1898,7 @@ async function approveStagedSourceUnlocked(input: {
 		reviewedDate: input.reviewedDate,
 		existingReviewedDate:
 			review.status === "approved" &&
-			review.sourceEvidence.contentHash === sourceEvidence.contentHash
+			matchesRetrievedContent(retrieved, review.sourceEvidence.contentHash)
 				? review.sourceEvidence.reviewedDate
 				: undefined,
 		allowPublishedMetadata: primaryDate.type === "published",
@@ -2171,7 +2161,7 @@ async function assertSourceStillMatchesApproval(
 	const retrieved = browserCapture
 		? await buildBrowserCapturedSource(review.sourceUrl, browserCapture)
 		: await retrieveEditorialSource(review.sourceUrl);
-	if (retrieved.evidence.contentHash !== approvedHash) {
+	if (!matchesRetrievedContent(retrieved, approvedHash)) {
 		throw new Error(
 			"Official source changed after approval; re-approve it before publication",
 		);

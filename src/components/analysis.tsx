@@ -35,6 +35,21 @@ export function AnalysisTierLabel({ type }: { type: ArticleType }) {
   );
 }
 
+export function ArticleBreadcrumb({ type }: { type: ArticleType }) {
+  return (
+    <nav
+      aria-label="Breadcrumb"
+      className="mb-4 flex gap-1.5 font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground"
+    >
+      <Link href="/analysis" className="hover:text-primary">
+        {ARTICLE_TIER_LABEL}
+      </Link>
+      <span aria-hidden="true">/</span>
+      <span>{ARTICLE_TYPE_NAMES[type]}</span>
+    </nav>
+  );
+}
+
 export function Byline() {
   return <span>By {ARTICLE_BYLINE}</span>;
 }
@@ -123,15 +138,17 @@ export function ArticleImageAttribution({ image }: { image: ArticleImage }) {
 export function ArticleLeadImage({ image }: { image: ArticleImage }) {
   return (
     <figure className="mt-6">
-      <Image
-        src={image.src}
-        alt={image.alt}
-        width={image.width}
-        height={image.height}
-        sizes="(min-width: 768px) 768px, 100vw"
-        priority
-        className="h-auto w-full rounded-md"
-      />
+      <div className="aspect-[16/10] max-h-[28rem] w-full overflow-hidden rounded-md sm:aspect-[5/2]">
+        <Image
+          src={image.src}
+          alt={image.alt}
+          width={image.width}
+          height={image.height}
+          sizes="(min-width: 768px) 768px, 100vw"
+          priority
+          className="h-full w-full object-cover object-center"
+        />
+      </div>
       <figcaption className="mt-2 text-xs leading-5 text-muted-foreground">
         <ArticleImageAttribution image={image} />
       </figcaption>
