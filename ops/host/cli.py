@@ -163,14 +163,14 @@ def main():
         elif args.command == "deploy":
             if args.recover and config.get("recovery_authorization") != args.recover:
                 raise Refused("exact recovery transaction not approved in root config")
-            lanes = tx.deploy(
+            result = tx.deploy(
                 None
                 if config.get("follow_main") is True and not args.initial and not args.recover
                 else config["approved_target"],
                 initial=args.initial,
                 recovery=args.recover,
             )
-            print(json.dumps({"verified": True, "activated_lanes": sorted(lanes)}))
+            print(json.dumps(result))
         elif args.command == "rollback":
             tx.rollback()
             print("rollback health verified; persistent gate remains")

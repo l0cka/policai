@@ -337,6 +337,21 @@ EXACT CLI (INSTALLED ROOT CODE ONLY)
     drop utilities no compiled component uses. A failure blocks every
     subsequent timer cycle.
 
+  Deploy result: a verified deploy prints one JSON line to stdout, which the
+  policai-pull.service journal records:
+    {"verified": true, "activated_lanes": ["policai"], "main": "<sha>",
+     "heads": {"policai": "<sha>", "probono": "<sha>"}}
+    verified and activated_lanes keep their meaning and lead the line, so
+    parsers that match that prefix still work. activated_lanes lists the
+    rebuilt lanes; it is empty for a no-lane change set and for a cycle where
+    main did not move. main is the target the locked transaction deployed:
+    the resolved main that both fetched heads matched, or approved_target when
+    follow_main is off (prepare() also requires it to equal fetched main).
+    heads is the per-checkout commit written to active.json. To prove a merge
+    deployed, find a run whose main equals the merge commit or a descendant of
+    it; do not infer it from run timing. A refused or failed run prints no
+    result and no SHA, exits 1 and leaves the persistent gate.
+
 FAILURE / RECOVERY
   sudo /usr/bin/python3 -I /usr/local/libexec/policai-host/cli.py rollback
     Uses blocked.json and retained files/images. Stops affected root before
