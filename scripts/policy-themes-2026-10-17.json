@@ -1,0 +1,405 @@
+{
+  "nsw-nesa-stage-6-take-home-assessment-ai-rules": [
+    "Generative AI"
+  ],
+  "nsw-ai-operational-policy": [
+    "AI governance",
+    "Public sector use",
+    "Risk and assurance"
+  ],
+  "asic-apra-resilience-at-frontier-ai-speed-2026": [
+    "AI governance",
+    "Cyber security",
+    "Financial sector",
+    "Frontier AI",
+    "Procurement and supply chain"
+  ],
+  "new-ai-frontier-cyber-threat-guidance-for-boards-of-director": [
+    "Frontier AI",
+    "Cyber security",
+    "AI governance"
+  ],
+  "sa-summary-offences-ai-generated-depictions": [
+    "Online safety and deepfakes"
+  ],
+  "sa-electoral-ai-generated-advertisements": [
+    "Online safety and deepfakes"
+  ],
+  "vic-ovic-public-generative-ai-guidance": [
+    "Cyber security",
+    "Generative AI",
+    "Privacy and data",
+    "Public sector use"
+  ],
+  "vic-ovic-enterprise-generative-ai-guidance": [
+    "Cyber security",
+    "Generative AI",
+    "Privacy and data",
+    "Public sector use"
+  ],
+  "ai-in-recruitment": [
+    "Employment and workplace",
+    "Human oversight and verification",
+    "Public sector use",
+    "Responsible AI and ethics"
+  ],
+  "asd-careful-adoption-agentic-ai-services-2026": [
+    "Agentic AI",
+    "Cyber security",
+    "Human oversight and verification",
+    "Risk and assurance"
+  ],
+  "asd-agentic-ai-harnesses-2026": [
+    "Agentic AI",
+    "AI governance",
+    "Cyber security",
+    "Human oversight and verification",
+    "Risk and assurance"
+  ],
+  "acsc-opportunities-ai-cyber-defence-2026": [
+    "AI governance",
+    "Cyber security",
+    "Human oversight and verification",
+    "Procurement and supply chain"
+  ],
+  "expectations-data-centres-ai-infrastructure-2026": [
+    "Infrastructure and energy",
+    "Strategy and adoption"
+  ],
+  "nsw-identifying-ai-guidance": [
+    "AI governance",
+    "Risk and assurance",
+    "Transparency and disclosure"
+  ],
+  "nsw-responsible-ai-guidance": [
+    "AI governance",
+    "Responsible AI and ethics"
+  ],
+  "nsw-ai-procurement-essentials": [
+    "Procurement and supply chain",
+    "Risk and assurance"
+  ],
+  "victoria-ai-recordkeeping-guidance": [
+    "AI governance",
+    "Privacy and data"
+  ],
+  "wa-ai-assurance-self-assessment": [
+    "Risk and assurance",
+    "Public sector use"
+  ],
+  "wa-ai-governance-toolkit": [
+    "AI governance",
+    "Public sector use"
+  ],
+  "agentic-ai-addendum-technical-standard-2026": [
+    "Agentic AI",
+    "AI governance",
+    "Cyber security",
+    "Standards and lifecycle"
+  ],
+  "asd-blueprint-secure-cloud-ai-usage-policy": [
+    "AI governance",
+    "Cyber security"
+  ],
+  "policy-responsible-use-ai-government-v2": [
+    "AI governance",
+    "Responsible AI and ethics",
+    "Transparency and disclosure"
+  ],
+  "implementation-plan-policy-responsible-use-ai-government-2025": [
+    "Procurement and supply chain",
+    "Responsible AI and ethics",
+    "Strategy and adoption"
+  ],
+  "aps-ai-plan-2025": [
+    "AI governance",
+    "Public sector use",
+    "Strategy and adoption"
+  ],
+  "national-ai-plan-2025": [
+    "Infrastructure and energy",
+    "Responsible AI and ethics",
+    "Strategy and adoption"
+  ],
+  "voluntary-ai-safety-standard": [
+    "Human oversight and verification",
+    "Responsible AI and ethics",
+    "Risk and assurance",
+    "Standards and lifecycle",
+    "Transparency and disclosure"
+  ],
+  "australias-ai-ethics-framework": [
+    "Responsible AI and ethics"
+  ],
+  "government-response-privacy-act-review-report": [
+    "AI governance",
+    "Automated decision-making",
+    "Privacy and data"
+  ],
+  "safe-and-responsible-ai-australia-proposals-paper": [
+    "Responsible AI and ethics",
+    "AI governance"
+  ],
+  "automated-decision-making-ai-regulation-issues-paper": [
+    "AI governance",
+    "Automated decision-making"
+  ],
+  "nsw-artificial-intelligence-assessment-framework": [
+    "Public sector use",
+    "Risk and assurance"
+  ],
+  "victoria-genai-guideline-vps": [
+    "Generative AI",
+    "Public sector use"
+  ],
+  "queensland-ai-governance-policy": [
+    "AI governance",
+    "Public sector use",
+    "Risk and assurance"
+  ],
+  "queensland-use-of-generative-ai-in-government": [
+    "Generative AI",
+    "Public sector use"
+  ],
+  "queensland-foundational-ai-risk-assessment-guideline": [
+    "AI governance",
+    "Risk and assurance"
+  ],
+  "victorian-ai-mission-statement": [
+    "Public sector use",
+    "Responsible AI and ethics",
+    "Strategy and adoption"
+  ],
+  "sa-artificial-intelligence-ethics-policy": [
+    "AI governance",
+    "Public sector use",
+    "Responsible AI and ethics"
+  ],
+  "sa-guideline-use-of-generative-ai-and-llm-tools": [
+    "Generative AI",
+    "Public sector use"
+  ],
+  "sa-ai-for-better-government-discussion-paper": [
+    "AI governance",
+    "Public sector use",
+    "Strategy and adoption"
+  ],
+  "tas-guidance-for-the-use-of-artificial-intelligence-in-government": [
+    "Public sector use",
+    "Risk and assurance"
+  ],
+  "nt-artificial-intelligence-assurance-framework": [
+    "Public sector use",
+    "Risk and assurance"
+  ],
+  "federal-court-gpn-ai": [
+    "Courts and tribunals",
+    "Generative AI",
+    "Transparency and disclosure"
+  ],
+  "nsw-supreme-court-sc-gen-23": [
+    "Courts and tribunals",
+    "Transparency and disclosure"
+  ],
+  "vic-supreme-court-ai-guidelines": [
+    "Courts and tribunals",
+    "Generative AI"
+  ],
+  "family-court-ai-practice-direction": [
+    "Courts and tribunals",
+    "Privacy and data",
+    "Transparency and disclosure"
+  ],
+  "qld-supreme-court-ai-practice-direction": [
+    "Courts and tribunals",
+    "Transparency and disclosure"
+  ],
+  "asd-frontier-ai-models-cyber-security-2026": [
+    "Cyber security",
+    "Financial sector",
+    "Frontier AI",
+    "Risk and assurance"
+  ],
+  "apra-ai-industry-letter-2026": [
+    "AI governance",
+    "Cyber security",
+    "Financial sector",
+    "Frontier AI"
+  ],
+  "guidance-for-ai-adoption": [
+    "Responsible AI and ethics",
+    "Strategy and adoption"
+  ],
+  "ai-technical-standard": [
+    "Public sector use",
+    "Standards and lifecycle"
+  ],
+  "national-framework-assurance-ai-government": [
+    "Risk and assurance",
+    "Public sector use",
+    "AI governance"
+  ],
+  "oaic-guidance-developing-training-genai": [
+    "Generative AI",
+    "Privacy and data"
+  ],
+  "oaic-guidance-commercial-ai-products": [
+    "Privacy and data",
+    "Generative AI"
+  ],
+  "oaic-app-1-7-adm-transparency-guidance": [
+    "Automated decision-making",
+    "Privacy and data",
+    "Transparency and disclosure"
+  ],
+  "esafety-genai-industry-codes": [
+    "Online safety and deepfakes",
+    "Generative AI"
+  ],
+  "wa-ai-policy-assurance-framework": [
+    "AI governance",
+    "Automated decision-making",
+    "Risk and assurance"
+  ],
+  "act-ai-policy": [
+    "Responsible AI and ethics",
+    "Risk and assurance"
+  ],
+  "vic-supreme-court-sc-gen-25": [
+    "Courts and tribunals",
+    "Generative AI"
+  ],
+  "sa-courts-genai-guidelines": [
+    "Courts and tribunals",
+    "Generative AI",
+    "Evidence and legal practice"
+  ],
+  "art-generative-ai-practice-direction": [
+    "Courts and tribunals",
+    "Generative AI",
+    "Transparency and disclosure"
+  ],
+  "fwc-genai-guidance-note": [
+    "Courts and tribunals",
+    "Employment and workplace",
+    "Generative AI",
+    "Transparency and disclosure"
+  ],
+  "nsw-ncat-procedural-direction-7-genai": [
+    "Courts and tribunals",
+    "Generative AI",
+    "Transparency and disclosure"
+  ],
+  "nsw-district-court-genai-practice-note": [
+    "Courts and tribunals",
+    "Generative AI",
+    "Transparency and disclosure"
+  ],
+  "nsw-irc-practice-note-33-genai": [
+    "Courts and tribunals",
+    "Employment and workplace",
+    "Generative AI",
+    "Transparency and disclosure"
+  ],
+  "nsw-lec-practice-note-genai": [
+    "Courts and tribunals",
+    "Generative AI",
+    "Evidence and legal practice",
+    "Transparency and disclosure"
+  ],
+  "nsw-local-court-practice-note-genai": [
+    "Courts and tribunals",
+    "Generative AI",
+    "Self-represented litigants",
+    "Transparency and disclosure"
+  ],
+  "nsw-pic-procedural-direction-pic13-genai": [
+    "Courts and tribunals",
+    "Employment and workplace",
+    "Generative AI",
+    "Transparency and disclosure"
+  ],
+  "vic-supreme-court-ai-guidelines-judicial-officers": [
+    "Courts and tribunals",
+    "Generative AI"
+  ],
+  "vic-county-court-pnccv-1-2026": [
+    "Courts and tribunals",
+    "Generative AI",
+    "Transparency and disclosure"
+  ],
+  "vic-vcat-pnvcat-11-genai": [
+    "Courts and tribunals",
+    "Generative AI",
+    "Self-represented litigants",
+    "Transparency and disclosure"
+  ],
+  "qld-qcat-practice-direction-10-2025": [
+    "Courts and tribunals",
+    "Generative AI",
+    "Evidence and legal practice"
+  ],
+  "qld-district-court-practice-direction-12-2025": [
+    "Courts and tribunals",
+    "Generative AI",
+    "Evidence and legal practice"
+  ],
+  "qld-land-court-practice-direction-4-2025": [
+    "Courts and tribunals",
+    "Generative AI",
+    "Evidence and legal practice"
+  ],
+  "qld-planning-environment-court-practice-direction-7-2025": [
+    "Courts and tribunals",
+    "Generative AI",
+    "Evidence and legal practice"
+  ],
+  "qld-courts-genai-guidelines-non-lawyers": [
+    "Courts and tribunals",
+    "Generative AI",
+    "Self-represented litigants"
+  ],
+  "qld-courts-genai-guidelines-judicial-officers": [
+    "Courts and tribunals",
+    "Generative AI",
+    "Evidence and legal practice"
+  ],
+  "qld-supreme-court-practice-direction-14-2024-expert-evidence": [
+    "Courts and tribunals",
+    "Generative AI",
+    "Evidence and legal practice"
+  ],
+  "wa-supreme-court-genai-guidelines": [
+    "Courts and tribunals",
+    "Generative AI",
+    "Evidence and legal practice",
+    "Self-represented litigants",
+    "Transparency and disclosure"
+  ],
+  "nsw-judicial-gen-ai-guidelines": [
+    "Courts and tribunals",
+    "Generative AI"
+  ],
+  "vic-county-court-judicial-ai-guidelines": [
+    "Courts and tribunals",
+    "Generative AI"
+  ],
+  "federal-court-gpn-lip-ai": [
+    "Courts and tribunals",
+    "Generative AI",
+    "Human oversight and verification",
+    "Self-represented litigants",
+    "Transparency and disclosure"
+  ],
+  "sa-courts-gen-ai-self-represented-info": [
+    "Courts and tribunals",
+    "Generative AI",
+    "Human oversight and verification",
+    "Privacy and data",
+    "Self-represented litigants"
+  ],
+  "pmc-ai-infrastructure-consultation-2026": [
+    "Infrastructure and energy",
+    "Standards and lifecycle"
+  ]
+}

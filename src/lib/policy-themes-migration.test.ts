@@ -1,0 +1,58 @@
+/* @vitest-environment node */
+
+import { describe, expect, it } from 'vitest';
+import { applyThemeMapping } from './policy-themes-migration';
+
+const register = `${JSON.stringify(
+  [
+    { id: 'a', title: 'A', tags: ['courts'], createdAt: '2026-01-01' },
+    { id: 'b', title: 'B', tags: [], createdAt: '2026-01-02' },
+  ],
+  null,
+  2,
+)}\n`;
+
+const mapping = {
+  a: ['Courts and tribunals', 'Generative AI'],
+  b: ['Standards and lifecycle'],
+};
+
+describe('applyThemeMapping', () => {
+  it('adds theme ids after tags and leaves every other byte alone', () => {
+    const output = applyThemeMapping(register, mapping);
+    const records = JSON.parse(output);
+
+    expect(Object.keys(records[0])).toEqual(['id', 'title', 'tags', 'themes', 'createdAt']);
+    expect(records.map((record: { themes: string[] }) => record.themes)).toEqual([
+      ['courts-tribunals', 'generative-ai'],
+      ['standards'],
+    ]);
+    const stripped = records.map(({ themes: _themes, ...rest }: Record<string, unknown>) => rest);
+    expect(`${JSON.stringify(stripped, null, 2)}\n`).toBe(register);
+  });
+
+  it('is idempotent', () => {
+    const once = applyThemeMapping(register, mapping);
+    expect(applyThemeMapping(once, mapping)).toBe(once);
+  });
+
+  it('keeps a missing trailing newline missing', () => {
+    expect(applyThemeMapping(register.trimEnd(), mapping).endsWith(']')).toBe(true);
+  });
+
+  it('fails on records missing from the mapping, unknown ids and unknown labels', () => {
+    expect(() =>
+      applyThemeMapping(register, {
+        a: ['Courts', 'Generative AI'],
+        c: ['Frontier AI'],
+      }),
+    ).toThrow(
+      [
+        'theme mapping does not match data/policies.json:',
+        'b: record has no row in the mapping',
+        'c: mapping row has no record',
+        'a: unknown theme label "Courts"',
+      ].join('\n'),
+    );
+  });
+});
