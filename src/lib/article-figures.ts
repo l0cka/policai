@@ -59,7 +59,7 @@ const CHART_LABELS: { [G in ChartGroup]: Record<Policy[G], string> } = {
 const FIGURE_OPEN = /^```figure\s*$/;
 const FIGURE_CLOSE = /^```\s*$/;
 const FENCE_OPEN = /^ {0,3}(`{3,}|~{3,})/;
-const MISPLACED_FIGURE_OPEN = /^(?:[ \t]*(?:[-*+]|\d{1,9}[.)]|>)?)*[ \t]*```figure\s*$/;
+const MISPLACED_FIGURE_OPEN = /^[ \t]*(?:(?:[-*+]|\d{1,9}[.)]|>)[ \t]*)*```figure\s*$/;
 const REFERENCE_DEFINITION = /^ {0,3}\[[^\]]+\]:\s*\S+.*$/;
 
 type Data = Record<string, unknown>;
