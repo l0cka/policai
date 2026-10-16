@@ -3,7 +3,7 @@
 import path from "path";
 import { describe, expect, it } from "vitest";
 import { parseArticle, readArticleSources, type ArticleSource } from "./articles";
-import { registerAsAt, registerChart } from "./article-figures";
+import { registerChart } from "./article-figures";
 import { buildPolicy } from "@/test/factories";
 import type { Article, ArticleFigure, ChartFigure, Policy } from "@/types";
 
@@ -342,16 +342,5 @@ describe("registerChart", () => {
 				{ value: "active", label: "Active", count: 2, highlighted: false },
 			],
 		});
-	});
-});
-
-describe("registerAsAt", () => {
-	const at = (updatedAt: string) => buildPolicy({ updatedAt });
-
-	it("is the Sydney calendar day of the latest updatedAt", () => {
-		expect(registerAsAt([at("2026-10-01T00:00:00.000Z"), at("2026-10-16T12:59:59.000Z")])).toBe("2026-10-16");
-		expect(registerAsAt([at("2026-10-16T13:00:00.000Z"), at("2026-10-01T00:00:00.000Z")])).toBe("2026-10-17");
-		expect(registerAsAt([at("2026-06-30T14:00:00.000Z")])).toBe("2026-07-01");
-		expect(registerAsAt([])).toBeNull();
 	});
 });

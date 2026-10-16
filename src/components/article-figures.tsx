@@ -181,8 +181,7 @@ function ChartBody({ figure, chart }: { figure: ChartFigure; chart: RegisterChar
 }
 
 function registerSourceText(chart: RegisterChartView): string {
-  const records = `Policai register, ${chart.total} public ${chart.total === 1 ? 'record' : 'records'}`;
-  return chart.asAt ? `${records}, as at ${formatArticleDate(chart.asAt)}` : records;
+  return `Policai register, ${chart.total} public ${chart.total === 1 ? 'record' : 'records'}, as at ${formatArticleDate(chart.asAt)}`;
 }
 
 function figureBody(figure: ArticleFigure, chart: RegisterChartView | undefined): ReactNode {

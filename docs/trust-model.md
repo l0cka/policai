@@ -214,17 +214,17 @@ comparing each piece with the base revision:
   the rules above, and the banner, apply to it. Every figure source must be
   in the piece's `sources`.
 - A register chart counts the public register, the same records
-  `/data/policies.json` serves, when the page is built or revalidated.
+  `/data/policies.json` serves, when the page is rendered.
   Withheld, unverified and trashed records are never counted. The chart cites
   the register as a whole and makes no claim about any one record's content,
   so a review-due record in the count is neither an error nor a reason for
   the banner (PM, 2026-10-17). Its source line gives the number of public
-  records "as at" the last register change: the latest `updatedAt` across
-  every record in `data/policies.json`, withheld and trashed records
-  included, because withholding, trashing or publishing a record changes the
-  public count. It is shown as a calendar date in Australia/Sydney, not the
-  collection, build or render date (PM, 2026-10-17). A record without
-  `updatedAt` fails `validate:data`, so the date has no fallback. Its query
+  records "as at" the date the page was generated, as a calendar date in
+  Australia/Sydney (Daniel, 2026-10-17, #293). The count and the date come
+  from the same render, so the date is always when the count was taken, and
+  it reveals nothing about withheld, unverified or trashed records. The
+  piece page is rendered on each request. A cached copy would show the date
+  it was generated, which is still when its count was taken. Its query
   must group by jurisdiction, type or status and match at least one public
   record. The prose does not restate a chart's numbers, so the text cannot go
   stale against the live count.
