@@ -7,9 +7,9 @@
     "targetPolicyId": "automated-decision-making-ai-regulation-issues-paper",
     "targetPolicyBaseRevisionHash": "30e13a2e93e83eff9c3e434eb138667ce8459dba6000ce27267c1b2917338940",
     "status": "pending_review",
-    "discoveredAt": "2026-10-16T07:50:22.487Z",
+    "discoveredAt": "2026-10-16T08:03:15.250Z",
     "createdBy": "Policai Developer Agent",
-    "notes": "Publisher's timeline states Opened 17 March 2022 and Closed 20 May 2022; the record said 18 March 2022. The page says PM&C released the consultation in March 2022 and the digital economy policy function moved to the Department of Industry, Science and Resources on 1 July 2022. The PM&C media release was not checked for the 18 March date.",
+    "notes": "Restaged 16 October 2026 by Policai Developer Agent after EDITORIAL REJECT on #186. The publisher's consultation timeline states \"Opened 17 March 2022\" and \"Closed 20 May 2022\"; the record said 18 March 2022. The PM&C media release was not re-read (bot protection). Primary date is consultation_opened 2022-03-17 (day) with fresh evidence.",
     "analysis": {
       "isRelevant": true,
       "relevanceScore": 1,
@@ -28,7 +28,7 @@
     "sourceEvidence": {
       "url": "https://consult.industry.gov.au/automated-decision-making-ai-regulation-issues-paper",
       "finalUrl": "https://consult.industry.gov.au/automated-decision-making-ai-regulation-issues-paper",
-      "retrievedAt": "2026-10-16T07:50:22.484Z",
+      "retrievedAt": "2026-10-16T08:03:15.247Z",
       "contentType": "text/html",
       "contentHash": "449f18e3e29ac523efcb5f83658a9e49def8ce96faf76c9de8a3f1cf009feb22",
       "etag": "\"1906c3fc3515994abadd55eecbce8621-ssl\""
@@ -63,31 +63,22 @@
           "source": {
             "url": "https://consult.industry.gov.au/automated-decision-making-ai-regulation-issues-paper",
             "finalUrl": "https://consult.industry.gov.au/automated-decision-making-ai-regulation-issues-paper",
-            "title": "Positioning Australia as a leader in digital economy regulation (automated decision making and AI regulation): issues paper - Department of Industry, Science and Resources",
-            "retrievedAt": "2026-07-19T06:12:45.941Z",
+            "retrievedAt": "2026-10-16T08:03:15.192Z",
             "contentType": "text/html",
-            "contentHash": "689862921b361c856e675177485cfb8eba25ea8e82e3e946c173e33dca56a6f5",
-            "linkedDocuments": [],
-            "browserCapture": {
-              "method": "browser",
-              "capturedAt": "2026-07-19T06:12:45.941Z",
-              "capturedBy": "Daniel Alkurdi",
-              "notes": "Browser-reviewed official source evidence for the approved Policai verification batch on 19 July 2026.",
-              "pageContentHash": "c56b52a152a49ae2582f3b198ae1b732499be6a7a0f2e13458981e4b24bba51f",
-              "characterCount": 2027
-            },
+            "contentHash": "449f18e3e29ac523efcb5f83658a9e49def8ce96faf76c9de8a3f1cf009feb22",
+            "etag": "\"1906c3fc3515994abadd55eecbce8621-ssl\"",
             "reviewedDate": {
-              "date": "2022-03-18",
+              "date": "2022-03-17",
               "precision": "day",
-              "reviewedAt": "2026-07-19T06:14:30.262Z",
-              "reviewedBy": "Daniel Alkurdi",
-              "notes": "Verified against the official consultation page, which states that the consultation opened on 18 March 2022."
+              "reviewedAt": "2026-10-16T08:03:15.205Z",
+              "reviewedBy": "Policai Developer Agent",
+              "notes": "Re-read on 16 October 2026: the publisher's consultation page timeline states \"Opened 17 March 2022\" and \"Closed 20 May 2022\"."
             }
           }
         }
       ]
     },
-    "updatedAt": "2026-10-16T07:50:22.487Z"
+    "updatedAt": "2026-10-16T08:03:15.250Z"
   },
   {
     "id": "source-review-496c48ca-bd1a-4e2d-b029-5c233faf3dc1",
@@ -97,9 +88,9 @@
     "targetPolicyId": "wa-ai-governance-toolkit",
     "targetPolicyBaseRevisionHash": "9def480112327706c036c0d4ce5df263b942a6e16f7834bf687610828ae2a813",
     "status": "pending_review",
-    "discoveredAt": "2026-10-16T07:50:22.184Z",
+    "discoveredAt": "2026-10-16T08:03:15.123Z",
     "createdBy": "Policai Developer Agent",
-    "notes": "Live page now shows Last updated: 25 August 2026 (Last-Modified 2026-08-25); the recorded date was 15 January 2026. Title and the mandatory AI Accountable Officer content still match. Amended date moved to 2026-08-25.",
+    "notes": "Restaged 16 October 2026 by Policai Developer Agent after EDITORIAL REJECT on #186. Live page states \"Last updated: 25 August 2026\" (Last-Modified 2026-08-25T09:41:13+08:00); the recorded date was 15 January 2026. Title and the mandatory AI Accountable Officer content still match. Primary date is amended 2026-08-25 (day) with fresh evidence; the superseded amended 2026-01-15 date is dropped because a record may hold only one amended date.",
     "analysis": {
       "isRelevant": true,
       "relevanceScore": 0.55,
@@ -116,11 +107,11 @@
     "sourceEvidence": {
       "url": "https://www.wa.gov.au/organisation/department-of-the-premier-and-cabinet/office-of-digital-government/artificial-intelligence-governance-toolkit-wa-public-sector-entities",
       "finalUrl": "https://www.wa.gov.au/organisation/department-of-the-premier-and-cabinet/office-of-digital-government/artificial-intelligence-governance-toolkit-wa-public-sector-entities",
-      "retrievedAt": "2026-10-16T07:50:22.150Z",
+      "retrievedAt": "2026-10-16T08:03:15.093Z",
       "contentType": "text/html",
       "contentHash": "14146211a95e393485b21f61711c0ae58c9c6f7c617f2e4ae6af855c43202e57",
-      "etag": "\"1792136665\"",
-      "lastModified": "Fri, 16 Oct 2026 07:44:25 GMT",
+      "etag": "\"1792137648\"",
+      "lastModified": "Fri, 16 Oct 2026 08:00:48 GMT",
       "title": "Artificial Intelligence governance toolkit for WA public sector entities"
     },
     "proposedRecord": {
@@ -153,32 +144,25 @@
           "source": {
             "url": "https://www.wa.gov.au/organisation/department-of-the-premier-and-cabinet/office-of-digital-government/artificial-intelligence-governance-toolkit-wa-public-sector-entities",
             "finalUrl": "https://www.wa.gov.au/organisation/department-of-the-premier-and-cabinet/office-of-digital-government/artificial-intelligence-governance-toolkit-wa-public-sector-entities",
-            "title": "Artificial Intelligence governance toolkit for WA public sector entities",
-            "retrievedAt": "2026-07-19T05:42:18.760Z",
+            "retrievedAt": "2026-10-16T08:03:14.952Z",
             "contentType": "text/html",
-            "contentHash": "221020770ee14f037e8950ee9f394bbd5d210a3b4b314c7141faabe92c5c4cdd",
-            "linkedDocuments": [],
-            "browserCapture": {
-              "method": "browser",
-              "capturedAt": "2026-07-19T05:42:18.760Z",
-              "capturedBy": "Daniel Alkurdi",
-              "notes": "Fresh controlled Chrome capture for the approved bulk review of Artificial Intelligence governance toolkit for WA public sector entities; the official page is fingerprinted as the deterministic evidence boundary.",
-              "pageContentHash": "3dd21a9dc1054a94525d7f6a48e4396016334f685f8802baf05b2e7b3138486c",
-              "characterCount": 5513
-            },
+            "contentHash": "14146211a95e393485b21f61711c0ae58c9c6f7c617f2e4ae6af855c43202e57",
+            "etag": "\"1792137648\"",
+            "lastModified": "Fri, 16 Oct 2026 08:00:48 GMT",
+            "title": "Artificial Intelligence governance toolkit for WA public sector entities",
             "reviewedDate": {
-              "date": "2026-01-15",
+              "date": "2026-08-25",
               "precision": "day",
-              "reviewedAt": "2026-07-19T06:14:28.115Z",
-              "reviewedBy": "Daniel Alkurdi",
-              "notes": "Verified against the WA Office of the Auditor General page, which states that the toolkit was last updated on 15 January 2026."
+              "reviewedAt": "2026-10-16T08:03:15.053Z",
+              "reviewedBy": "Policai Developer Agent",
+              "notes": "Re-read on 16 October 2026: the live toolkit page states \"Last updated: 25 August 2026\"."
             }
           }
         }
       ],
       "effectiveDate": "2026-08-25"
     },
-    "updatedAt": "2026-10-16T07:50:22.184Z"
+    "updatedAt": "2026-10-16T08:03:15.123Z"
   },
   {
     "id": "source-review-eac87fd1-81a0-4e75-af40-4b89641fcf4d",
@@ -188,9 +172,9 @@
     "targetPolicyId": "queensland-foundational-ai-risk-assessment-guideline",
     "targetPolicyBaseRevisionHash": "d70f4897b0ac9b3431c110df76e53671965e21467bbcb645e8057b2b17dbf0b2",
     "status": "pending_review",
-    "discoveredAt": "2026-10-16T07:50:21.838Z",
+    "discoveredAt": "2026-10-16T08:03:14.834Z",
     "createdBy": "Policai Developer Agent",
-    "notes": "Live page shows v2.0.0, Status Current Non-mandated, Effective August 2026-current, Last updated 26 August 2026, and now covers FAIRA LITE. It also states the FAIRA framework is a mandated requirement under the AI governance policy while the guideline itself is non-mandated. Effective date moved from September 2024 to August 2026 (month precision).",
+    "notes": "Restaged 16 October 2026 by Policai Developer Agent after EDITORIAL REJECT on #186. Live page states \"Version: v2.0.0\", \"Status: Current Non-mandated\", \"Effective: August 2026–current\" and \"Last updated: 26 August 2026\", and covers FAIRA LITE. Primary date is amended 2026-08 (month) with fresh evidence; the v1 effective 2024-09 (month) date is kept as a secondary date with its existing July 2026 evidence. The amended type is used because a record may hold only one effective date.",
     "analysis": {
       "isRelevant": true,
       "relevanceScore": 0.65,
@@ -206,14 +190,14 @@
     "sourceEvidence": {
       "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/foundational-artificial-intelligence-risk-assessment-guideline",
       "finalUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/foundational-artificial-intelligence-risk-assessment-guideline",
-      "retrievedAt": "2026-10-16T07:50:21.444Z",
+      "retrievedAt": "2026-10-16T08:03:14.425Z",
       "contentType": "text/html",
       "contentHash": "de40b17f5916ff8369ca0e4c1e13db5259ce95ede4aef31db45435f1af78a961",
       "linkedDocuments": [
         {
           "url": "https://www.forgov.qld.gov.au/__data/assets/pdf_file/0024/321378/QGEA-Technology-Classification-Framework-v5.0.0.pdf",
           "finalUrl": "https://www.forgov.qld.gov.au/__data/assets/pdf_file/0024/321378/QGEA-Technology-Classification-Framework-v5.0.0.pdf",
-          "retrievedAt": "2026-10-16T07:50:21.538Z",
+          "retrievedAt": "2026-10-16T08:03:14.537Z",
           "contentType": "application/pdf",
           "contentHash": "5108d11808c900f9ae0c0478a7c29173998cc10386ce7a19e2548a6e130ca844"
         }
@@ -246,10 +230,39 @@
       "updatedAt": "2026-07-19T06:14:28.851Z",
       "dates": [
         {
-          "type": "effective",
+          "type": "amended",
           "date": "2026-08-01",
           "precision": "month",
           "primary": true,
+          "source": {
+            "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/foundational-artificial-intelligence-risk-assessment-guideline",
+            "finalUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/foundational-artificial-intelligence-risk-assessment-guideline",
+            "retrievedAt": "2026-10-16T08:03:13.236Z",
+            "contentType": "text/html",
+            "contentHash": "de40b17f5916ff8369ca0e4c1e13db5259ce95ede4aef31db45435f1af78a961",
+            "linkedDocuments": [
+              {
+                "url": "https://www.forgov.qld.gov.au/__data/assets/pdf_file/0024/321378/QGEA-Technology-Classification-Framework-v5.0.0.pdf",
+                "finalUrl": "https://www.forgov.qld.gov.au/__data/assets/pdf_file/0024/321378/QGEA-Technology-Classification-Framework-v5.0.0.pdf",
+                "retrievedAt": "2026-10-16T08:03:13.390Z",
+                "contentType": "application/pdf",
+                "contentHash": "5108d11808c900f9ae0c0478a7c29173998cc10386ce7a19e2548a6e130ca844"
+              }
+            ],
+            "title": "Foundational artificial intelligence risk assessment guideline - forgov.qld.gov.au",
+            "reviewedDate": {
+              "date": "2026-08-01",
+              "precision": "month",
+              "reviewedAt": "2026-10-16T08:03:13.757Z",
+              "reviewedBy": "Policai Developer Agent",
+              "notes": "Re-read on 16 October 2026: the live guideline page states \"Version: v2.0.0\", \"Effective: August 2026–current\" and \"Last updated: 26 August 2026\". Month precision because the page gives only the month for the version's effect."
+            }
+          }
+        },
+        {
+          "type": "effective",
+          "date": "2024-09-01",
+          "precision": "month",
           "source": {
             "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/foundational-artificial-intelligence-risk-assessment-guideline",
             "finalUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/foundational-artificial-intelligence-risk-assessment-guideline",
@@ -277,7 +290,7 @@
         }
       ]
     },
-    "updatedAt": "2026-10-16T07:50:21.838Z"
+    "updatedAt": "2026-10-16T08:03:14.834Z"
   },
   {
     "id": "source-review-bdb9576b-41f3-446d-8dc4-98023cd67aeb",
@@ -287,9 +300,9 @@
     "targetPolicyId": "nsw-identifying-ai-guidance",
     "targetPolicyBaseRevisionHash": "fb42e6ba93637123138642852af940d70e04ddda866c0e0b43b4267b201f347f",
     "status": "pending_review",
-    "discoveredAt": "2026-10-16T07:50:20.130Z",
+    "discoveredAt": "2026-10-16T08:03:15.464Z",
     "createdBy": "Policai Developer Agent",
-    "notes": "Live page has been rewritten around AIAF Platform registration: from 30 September 2026 the platform is the authoritative channel for AI use case registration and assessment and all agencies must register AI use cases. The page states no publication or revision date, so the recorded December 2024 date is retained unchanged and is not source-supported; the editor should decide whether to keep it, relabel it, or drop it.",
+    "notes": "Restaged 16 October 2026 by Policai Developer Agent after EDITORIAL REJECT on #186. Live page has been rewritten around AIAF Platform registration: \"From 30 September 2026, the AIAF Platform is the authoritative channel for AI use case registration and assessment across NSW Government.\" The page is undated, so published 2024-12 (month) is kept with its existing evidence and content now says the page is undated.",
     "analysis": {
       "isRelevant": true,
       "relevanceScore": 0.55,
@@ -306,7 +319,7 @@
     "sourceEvidence": {
       "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/nsw-artificial-intelligence-assessment-framework/identifying-ai",
       "finalUrl": "https://digital.nsw.gov.au/policy/artificial-intelligence/nsw-artificial-intelligence-assessment-framework/identifying-ai",
-      "retrievedAt": "2026-10-16T07:50:20.000Z",
+      "retrievedAt": "2026-10-16T08:03:15.411Z",
       "contentType": "text/html",
       "contentHash": "c50e5054fd4c9ee6f7f6183ef8919b6e913881d5073142d807f2f7b43d37c13b",
       "etag": "\"e51cf57e2d4a90a26e5f87be7fa8e0e7\"",
@@ -324,7 +337,7 @@
         "Digital NSW"
       ],
       "sourceUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/nsw-artificial-intelligence-assessment-framework/identifying-ai",
-      "content": "Guidance for NSW Government public servants involved in the lifecycle of digital solutions who need to understand whether a solution may contain artificial intelligence (AI). It provides general guidance only and is not an exhaustive source for determining whether AI is present or whether an AIAF assessment is required. From 30 September 2026 the AIAF Platform is the authoritative channel for AI use case registration and assessment across NSW Government. All agencies must register their AI use cases, and the platform determines whether an AIAF assessment is required. Where a solution uses or may use AI, the use case is registered in the AIAF Platform; where it does not, the decision is documented under the agency governance and records-management requirements. The page sets out common characteristics of AI and a questionnaire of non-AI and AI use cases, and describes a controlled offline assessment pathway for agencies without SectorLink onboarding.",
+      "content": "Guidance for NSW Government public servants involved in the lifecycle of digital solutions who need to understand whether a solution may contain artificial intelligence (AI). It provides general guidance only and is not an exhaustive source for determining whether AI is present or whether an AIAF assessment is required. From 30 September 2026 the AIAF Platform is the authoritative channel for AI use case registration and assessment across NSW Government. All agencies must register their AI use cases, and the platform determines whether an AIAF assessment is required. Where a solution uses or may use AI, the use case is registered in the AIAF Platform; where it does not, the decision is documented under the agency governance and records-management requirements. The page sets out common characteristics of AI and a questionnaire of non-AI and AI use cases, and describes a controlled offline assessment pathway for agencies without SectorLink onboarding. The current page is undated; this version reflects the AIAF Platform registration requirement in effect from 30 September 2026.",
       "aiSummary": "NSW Government guidance for identifying when a digital solution uses AI, directing agencies to register AI use cases in the AIAF Platform from 30 September 2026.",
       "tags": [
         "NSW",
@@ -368,7 +381,7 @@
       ],
       "effectiveDate": "2024-12-01"
     },
-    "updatedAt": "2026-10-16T07:50:20.130Z"
+    "updatedAt": "2026-10-16T08:03:15.465Z"
   },
   {
     "id": "source-review-dev-inaugural-ai-review-committee-sets-out-expert-ad-15n6ewq",
