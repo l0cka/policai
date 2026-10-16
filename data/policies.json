@@ -1989,7 +1989,7 @@
     ],
     "createdAt": "2026-04-06T07:59:40.767Z",
     "updatedAt": "2026-07-19T01:03:17.636Z",
-    "lastReviewedAt": "2026-10-16T00:00:00.000Z",
+    "lastReviewedAt": "2026-07-19T01:03:17.636Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -2024,10 +2024,10 @@
           "notes": "Confirmed the version 2.0 effective date of 15 December 2025 on the official digital.gov.au policy page and in the linked official PDF."
         }
       },
-      "checkedAt": "2026-10-16T00:00:00.000Z",
-      "checkedBy": "Policai Developer source re-read (issue 161)",
+      "checkedAt": "2026-07-19T01:03:17.636Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Daniel Alkurdi compared the record against the official digital.gov.au landing page and version 2.0 PDF. Approved corrections: classify the instrument as a policy; retain the Digital Transformation Agency as the supported agency; narrow the scope wording to non-corporate Commonwealth entities; and update the descriptions accordingly. The fresh page and PDF fingerprints matched the staged evidence. Re-read against the live source on 2026-10-16; title, content, dates and status still match (issue 161)."
+      "notes": "Daniel Alkurdi compared the record against the official digital.gov.au landing page and version 2.0 PDF. Approved corrections: classify the instrument as a policy; retain the Digital Transformation Agency as the supported agency; narrow the scope wording to non-corporate Commonwealth entities; and update the descriptions accordingly. The fresh page and PDF fingerprints matched the staged evidence."
     },
     "dates": [
       {
