@@ -199,9 +199,18 @@ YAML. `parseArticleBody` in `src/lib/article-figures.ts` (called by
 `parseArticle`) splits the body into prose and figure blocks
 (`Article.blocks`), numbers figures per piece in document order and parses
 each into `ArticleFigure`, a union on `kind`. Only a fence at column 0 that
-opens with exactly ```` ```figure ```` is a figure; one inside another code
-fence, list or blockquote is not. Reference-style link definitions are copied
-to every prose block, because each block renders on its own.
+opens with exactly ```` ```figure ```` is a figure. One inside another code
+fence is example text. One that is indented, or inside a list or blockquote,
+is a validation error, because Markdown would render it as a code block.
+Reference-style link definitions are copied to every prose block, because
+each block renders on its own.
+
+Figure YAML and frontmatter are parsed by `parseYaml` in
+`src/lib/frontmatter.ts` with the YAML core schema, so dates stay text and
+must be real calendar dates: `2026-02-30` is an error, not 2 March. A figure
+block is one YAML document, so a `---` line inside it is an error instead of
+ending the block early. Matrix column names, matrix row headers and timeline
+date-and-title pairs must not repeat.
 
 | Field | Kinds | Rule |
 | --- | --- | --- |

@@ -1,5 +1,5 @@
 import { isValidCalendarDate } from "@/lib/calendar-date";
-import { parseFrontmatter } from "@/lib/frontmatter";
+import { parseYaml } from "@/lib/frontmatter";
 import { sourceUrlsEqual } from "@/lib/source-url";
 import {
 	CHART_GROUPS,
@@ -59,6 +59,7 @@ const CHART_LABELS: { [G in ChartGroup]: Record<Policy[G], string> } = {
 const FIGURE_OPEN = /^```figure\s*$/;
 const FIGURE_CLOSE = /^```\s*$/;
 const FENCE_OPEN = /^ {0,3}(`{3,}|~{3,})/;
+const MISPLACED_FIGURE_OPEN = /^(?:[ \t]*(?:[-*+]|\d{1,9}[.)]|>)?)*[ \t]*```figure\s*$/;
 const REFERENCE_DEFINITION = /^ {0,3}\[[^\]]+\]:\s*\S+.*$/;
 
 type Data = Record<string, unknown>;
@@ -85,7 +86,8 @@ function scanBody(body: string): { raw: RawBlock[]; errors: string[]; definition
 	let fence: { char: string; length: number } | null = null;
 	let count = 0;
 
-	for (const line of body.split("\n")) {
+	const errors: string[] = [];
+	for (const [index, line] of body.split("\n").entries()) {
 		if (figure) {
 			if (FIGURE_CLOSE.test(line)) {
 				raw.push({ kind: "figure", ...figure });
@@ -108,13 +110,16 @@ function scanBody(body: string): { raw: RawBlock[]; errors: string[]; definition
 			figure = { number: count, lines: [] };
 			continue;
 		}
+		if (MISPLACED_FIGURE_OPEN.test(line)) {
+			errors.push(`line ${index + 1}: a \`\`\`figure fence must start at column 0, outside any list or quote`);
+		}
 		const open = FENCE_OPEN.exec(line);
 		if (open) fence = { char: open[1][0], length: open[1].length };
 		else if (REFERENCE_DEFINITION.test(line)) definitions.push(line.trim());
 		prose.push(line);
 	}
 	raw.push({ kind: "prose", lines: prose });
-	const errors = figure ? [`figure ${figure.number} is not closed with \`\`\``] : [];
+	if (figure) errors.push(`figure ${figure.number} is not closed with \`\`\``);
 	return { raw, errors, definitions };
 }
 
@@ -154,7 +159,6 @@ function oneOrMany(value: unknown): unknown[] {
 }
 
 function calendarDay(value: unknown): string | undefined {
-	if (value instanceof Date && !Number.isNaN(value.getTime())) return value.toISOString().slice(0, 10);
 	return typeof value === "string" && isValidCalendarDate(value) ? value : undefined;
 }
 
@@ -176,7 +180,7 @@ function parseFigure(
 ): { figure?: ArticleFigure; errors: string[] } {
 	let data: Data;
 	try {
-		const parsed = parseFrontmatter(`---\n${yaml}\n---\n`).data;
+		const parsed = parseYaml(yaml);
 		data = isRecord(parsed) ? parsed : {};
 	} catch (error) {
 		return { errors: [`is not valid YAML (${(error as Error).message})`] };
@@ -301,6 +305,9 @@ function parseTimeline(
 		}
 		entries.push({ ...date, title, ...(detail ? { detail } : {}) });
 	});
+	if (new Set(entries.map((entry) => `${entry.date}\n${entry.title}`)).size !== entries.length) {
+		errors.push("entries must not repeat a date and title");
+	}
 	if (entries.some((entry, index) => index > 0 && entry.date < entries[index - 1].date)) {
 		errors.push("timeline entries must be in date order");
 	}
@@ -336,6 +343,7 @@ function parseMatrix(data: Data, errors: string[]): { columns: string[]; rows: M
 	const badRows = countError(rawRows.length, rowLimits, `a matrix needs ${rowLimits.min} to ${rowLimits.max} rows`, errors);
 	if (badColumns || badRows) return undefined;
 	if (columns.some((column) => !column)) errors.push("columns must be non-empty text");
+	else if (new Set(columns).size !== columns.length) errors.push("columns must not repeat a name");
 	const rows: MatrixRow[] = [];
 	rawRows.forEach((raw: unknown, index) => {
 		if (!Array.isArray(raw) || raw.length !== columns.length) {
@@ -352,6 +360,7 @@ function parseMatrix(data: Data, errors: string[]): { columns: string[]; rows: M
 		}
 		if (header && cells.every((cell): cell is MatrixCell => cell !== undefined)) rows.push({ header, cells });
 	});
+	if (new Set(rows.map((row) => row.header)).size !== rows.length) errors.push("rows must not repeat a header");
 	return { columns, rows };
 }
 

@@ -146,9 +146,6 @@ export function articleBodyLinks(body: string): ArticleBodyLink[] {
 }
 
 function calendarDate(value: unknown): string | undefined {
-	if (value instanceof Date && !Number.isNaN(value.getTime())) {
-		return value.toISOString().slice(0, 10);
-	}
 	return typeof value === "string" && isValidCalendarDate(value)
 		? value
 		: undefined;
