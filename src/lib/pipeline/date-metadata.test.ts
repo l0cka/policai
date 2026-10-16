@@ -1,9 +1,11 @@
 /* @vitest-environment node */
 
+import { load } from 'cheerio';
 import { describe, expect, it } from 'vitest';
 import {
   LAST_RESORT_DATE_META_SELECTORS,
   PUBLICATION_DATE_META_SELECTORS,
+  publicationDateCandidates,
 } from './date-metadata';
 import { extractPublishedDateEvidence } from './extract';
 import { retrieveSource } from './fetch';
@@ -111,6 +113,31 @@ describe('publication-date metadata in fingerprints', () => {
     },
   );
 
+  it('changes the fingerprint when two publication times swap order and the extracted date changes', async () => {
+    const build = (first: string, second: string) =>
+      page(
+        '',
+        `<footer><p>Published <time datetime="${first}">x</time></p><p>Published <time datetime="${second}">y</time></p></footer>`,
+      );
+    const first = build('2026-01-01', '2026-03-03');
+    const second = build('2026-03-03', '2026-01-01');
+
+    expect(extractPublishedDateEvidence(first)?.date).toBe('2026-01-01');
+    expect(extractPublishedDateEvidence(second)?.date).toBe('2026-03-03');
+    expect(await fingerprint(first)).not.toBe(await fingerprint(second));
+  });
+
+  it('changes the fingerprint when a publication label in an aside inside main changes the extracted date', async () => {
+    const build = (label: string) =>
+      `<html><body><main><h1>AI policy</h1><p>Stable obligations.</p><aside>Published: ${label}</aside></main></body></html>`;
+    const first = build('1 March 2026');
+    const second = build('3 March 2026');
+
+    expect(extractPublishedDateEvidence(first)?.date).toBe('2026-03-01');
+    expect(extractPublishedDateEvidence(second)?.date).toBe('2026-03-03');
+    expect(await fingerprint(first)).not.toBe(await fingerprint(second));
+  });
+
   it('changes the fingerprint when the generator changes the date platform', async () => {
     const editTime = '<meta name="dcterms.date" content="2026-10-12">';
     const drupal = page(
@@ -123,6 +150,20 @@ describe('publication-date metadata in fingerprints', () => {
     expect(extractPublishedDateEvidence(drupal)).toBeNull();
     expect(extractPublishedDateEvidence(wordpress)?.date).toBe('2026-10-12');
     expect(await fingerprint(drupal)).not.toBe(await fingerprint(wordpress));
+  });
+
+  it('keeps the fingerprint when the platform changes and no last-resort tag is present', async () => {
+    const wordpress = page('<meta name="generator" content="WordPress 6.6">');
+    const drupal = page(
+      '<meta name="Generator" content="Drupal 10 (https://www.drupal.org)">',
+    );
+
+    expect(publicationDateCandidates(load(drupal))).toEqual(
+      publicationDateCandidates(load(wordpress)),
+    );
+    expect(extractPublishedDateEvidence(drupal)).toBeNull();
+    expect(extractPublishedDateEvidence(wordpress)).toBeNull();
+    expect(await fingerprint(drupal)).toBe(await fingerprint(wordpress));
   });
 
   it('keeps the fingerprint across a Drupal version bump that leaves the platform unchanged', async () => {
