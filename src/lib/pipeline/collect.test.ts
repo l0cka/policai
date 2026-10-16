@@ -1437,6 +1437,7 @@ describe('collect', () => {
     scrapeWithFirecrawl.mockImplementation(async (url: string) => ({
       ok: true,
       markdown: '# AI governance policy\n\nFirecrawl markdown rendering.',
+      rawHtml: '<html><body><main><h1>AI governance policy</h1></main></body></html>',
       title: 'AI governance policy',
       finalUrl: url,
     }));
@@ -2609,6 +2610,7 @@ describe('collect browser fallback', () => {
     scrapeWithFirecrawl.mockImplementation(async (url: string) => ({
       ok: true,
       markdown: `# New AI policy framework released\n\nFirecrawl-sourced content for ${url}.`,
+      rawHtml: '<html><body><main><h1>New AI policy framework released</h1></main></body></html>',
       title: 'New AI policy framework released',
       finalUrl: `${url}/canonical`,
     }));
@@ -2688,6 +2690,85 @@ describe('collect browser fallback', () => {
     expect(result.meta.collector.sourceResults[0].status).toBe('success');
   });
 
+  it('does not process a Firecrawl candidate whose page links an image-only PDF', async () => {
+    const browserSource: WatchSource = {
+      ...HTML_SOURCE,
+      fetchStrategy: 'browser',
+    };
+    const candidateUrl = 'https://www.example.gov.au/news/ai-policy-framework';
+    const pdfUrl = 'https://www.example.gov.au/files/ai-policy-framework.pdf';
+    const fetchImpl = fakeFetch({
+      [pdfUrl]: {
+        body: Uint8Array.from([0x25, 0x50, 0x44, 0x46, 0x2d, 0x00]),
+        contentType: 'application/pdf',
+      },
+    });
+    const browserFetchImpl = fakeFetch({
+      'https://www.example.gov.au/news': INDEX_HTML,
+    });
+    scrapeWithFirecrawl.mockImplementation(async (url: string) => ({
+      ok: true,
+      markdown: '# New AI policy framework released\n\nRead the AI policy framework.',
+      rawHtml:
+        '<html><body><main><h1>New AI policy framework released</h1><a href="/files/ai-policy-framework.pdf">AI policy framework (PDF)</a></main></body></html>',
+      title: 'New AI policy framework released',
+      finalUrl: url,
+    }));
+
+    const result = await collect({
+      sources: [browserSource],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl,
+      browserFetchImpl,
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+    });
+
+    expect(
+      result.developments.map((development) => development.url),
+    ).not.toContain(candidateUrl);
+    expect(result.state.seen[candidateUrl].status).not.toBe('processed');
+    expect(fetchImpl).toHaveBeenCalledWith(pdfUrl, expect.anything());
+  });
+
+  it('retries a Firecrawl candidate in the browser when its linked document is refused over HTTP', async () => {
+    const browserSource: WatchSource = {
+      ...HTML_SOURCE,
+      fetchStrategy: 'browser',
+    };
+    const candidateUrl = 'https://www.example.gov.au/news/ai-policy-framework';
+    const pdfUrl = 'https://www.example.gov.au/files/ai-policy-framework.pdf';
+    const fetchImpl = fakeFetch({ [pdfUrl]: 403 });
+    const browserFetchImpl = fakeFetch({
+      'https://www.example.gov.au/news': INDEX_HTML,
+      [candidateUrl]:
+        '<html><body><main><h1>New AI policy framework released</h1></main></body></html>',
+    });
+    scrapeWithFirecrawl.mockImplementation(async (url: string) => ({
+      ok: true,
+      markdown: '# New AI policy framework released',
+      rawHtml:
+        '<html><body><main><h1>New AI policy framework released</h1><a href="/files/ai-policy-framework.pdf">AI policy framework (PDF)</a></main></body></html>',
+      title: 'New AI policy framework released',
+      finalUrl: url,
+    }));
+
+    await collect({
+      sources: [browserSource],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl,
+      browserFetchImpl,
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+    });
+
+    expect(fetchImpl).toHaveBeenCalledWith(pdfUrl, expect.anything());
+    expect(browserFetchImpl).toHaveBeenCalledWith(
+      candidateUrl,
+      expect.anything(),
+    );
+  });
+
   it('does not consult Firecrawl for default http-strategy sources', async () => {
     const fetchImpl = fakeFetch({
       'https://www.example.gov.au/news': INDEX_HTML,
@@ -2727,6 +2808,7 @@ describe('collect browser fallback', () => {
       scrapeWithFirecrawl.mockImplementation(async (url: string) => ({
         ok: true,
         markdown: `# New AI policy framework released\n\nContent for ${url}.`,
+        rawHtml: '<html><body><main><h1>New AI policy framework released</h1></main></body></html>',
         title: 'New AI policy framework released',
         finalUrl: url,
       }));

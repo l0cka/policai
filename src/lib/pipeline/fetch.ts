@@ -592,9 +592,17 @@ async function addLinkedDocumentEvidence(
   ) {
     return retrieved;
   }
+  return foldLinkedDocuments(retrieved, retrieved.body, requestedUrl, options);
+}
 
+export async function foldLinkedDocuments(
+  retrieved: RetrievedSource,
+  html: string,
+  requestedUrl: string,
+  options: RetrieveSourceOptions,
+): Promise<RetrievedSource> {
   const urls = linkedDocumentUrls(
-    retrieved.body,
+    html,
     retrieved.evidence.finalUrl ?? requestedUrl,
   );
   if (urls.length === 0) return retrieved;

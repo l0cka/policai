@@ -35,7 +35,13 @@ export interface FirecrawlOptions {
 }
 
 export type FirecrawlResult =
-  | { ok: true; markdown: string; title: string | null; finalUrl: string }
+  | {
+      ok: true;
+      markdown: string;
+      rawHtml: string;
+      title: string | null;
+      finalUrl: string;
+    }
   | {
       ok: false;
       reason:
@@ -86,7 +92,7 @@ export async function scrapeWithFirecrawl(
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         url,
-        formats: ['markdown'],
+        formats: ['markdown', 'rawHtml'],
         onlyMainContent: true,
         ...(headers ? { headers } : {}),
       }),
@@ -105,6 +111,7 @@ export async function scrapeWithFirecrawl(
       success?: boolean;
       data?: {
         markdown?: string;
+        rawHtml?: string;
         metadata?: { title?: string; sourceURL?: string; url?: string };
       };
     };
@@ -130,8 +137,13 @@ export async function scrapeWithFirecrawl(
     }
     const markdown = payload.data?.markdown?.trim() ?? '';
 
+    const rawHtml = payload.data?.rawHtml ?? '';
+
     if (!payload.success || markdown.length === 0) {
       return { ok: false, reason: 'empty', detail: 'no markdown returned' };
+    }
+    if (rawHtml.trim().length === 0) {
+      return { ok: false, reason: 'empty', detail: 'no raw HTML returned' };
     }
     if (Buffer.byteLength(markdown, 'utf8') > maxResponseBytes) {
       return {
@@ -174,6 +186,7 @@ export async function scrapeWithFirecrawl(
     return {
       ok: true,
       markdown,
+      rawHtml,
       title: metadata?.title ?? null,
       finalUrl,
     };
