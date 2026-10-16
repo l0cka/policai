@@ -28,7 +28,8 @@ WHAT EXISTS
   deadline verification.
   backup.sh: canonical-path variant of the existing backup helper; same dump,
   gzip/content/size checks and 14-day/newest-five retention semantics.
-  backup-mirror.sh: additive copy of the radar-*.sql.gz dumps onto a second
+  backup-mirror.sh: additive copy of the radar-*.sql.gz dumps and their
+  globals-*.sql.gz role dumps (needed to restore onto a fresh cluster) onto a second
   physical disk, so one device failure cannot take the database and every backup
   together. It is not off-site. It refuses to run unless the mirror mount is
   mounted (an unmounted mount point would put the copy back on the root disk),
