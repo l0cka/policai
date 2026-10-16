@@ -5,6 +5,7 @@ import { MDXRemote } from 'next-mdx-remote/rsc';
 import {
   AnalysisTierLabel,
   ArticleDate,
+  ArticleLeadImage,
   Byline,
   CitedRecords,
   SourceUnderReviewBanner,
@@ -12,11 +13,31 @@ import {
 } from '@/components/analysis';
 import { getArticleBySlug, type ArticleView } from '@/lib/data-service';
 import { ARTICLE_BYLINE, articleEditorialDate } from '@/lib/articles';
-import { ARTICLE_TYPE_NAMES, type PublishedArticle } from '@/types';
+import { ARTICLE_TYPE_NAMES, type ArticleImage, type PublishedArticle } from '@/types';
 
 export const revalidate = 3600;
 
 type Params = { params: Promise<{ slug: string }> };
+
+const SITE_URL = 'https://policai.org';
+
+function imageUrl(image: ArticleImage) {
+  return { url: `${SITE_URL}${image.src}`, width: image.width, height: image.height, alt: image.alt };
+}
+
+function imageJsonLd(image: ArticleImage) {
+  return {
+    '@type': 'ImageObject',
+    url: `${SITE_URL}${image.src}`,
+    width: image.width,
+    height: image.height,
+    caption: image.alt,
+    creator: { '@type': 'Person', name: image.creator },
+    license: image.licenceUrl,
+    creditText: `${image.title} by ${image.creator}`,
+    acquireLicensePage: image.sourceUrl,
+  };
+}
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params;
@@ -31,10 +52,24 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   return {
     title: `${article.title} - Policai`,
     description: article.summary,
+    ...(article.image
+      ? {
+          openGraph: {
+            type: 'article',
+            title: article.title,
+            description: article.summary,
+            images: [imageUrl(article.image)],
+          },
+          twitter: {
+            card: 'summary_large_image',
+            title: article.title,
+            description: article.summary,
+            images: [imageUrl(article.image)],
+          },
+        }
+      : {}),
   };
 }
-
-const SITE_URL = 'https://policai.org';
 
 function articleJsonLd(article: ArticleView<PublishedArticle>): string {
   const publisher = { '@type': 'Organization', name: ARTICLE_BYLINE, url: SITE_URL };
@@ -47,6 +82,7 @@ function articleJsonLd(article: ArticleView<PublishedArticle>): string {
     datePublished: article.publishedAt,
     dateModified: articleEditorialDate(article),
     articleSection: ARTICLE_TYPE_NAMES[article.type],
+    ...(article.image ? { image: imageJsonLd(article.image) } : {}),
     author: publisher,
     publisher,
     citation: [
@@ -109,6 +145,8 @@ export default async function ArticlePage({ params }: Params) {
           {article.updatedAt ? <ArticleDate label="Updated" date={article.updatedAt} /> : null}
         </p>
       </header>
+
+      {article.image ? <ArticleLeadImage image={article.image} /> : null}
 
       <div className="mt-6 space-y-6">
         {article.sourceUnderReview ? <SourceUnderReviewBanner /> : null}
