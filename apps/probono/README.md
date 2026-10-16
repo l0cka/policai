@@ -82,6 +82,15 @@ backups remain a separate operational responsibility. Preserve masks on both
 for them. Unmasking requires explicit approval and verified SMTP configuration. Schema
 changes, timer changes, deployment and live writes also require separate approval. See [AGENTS.md](./AGENTS.md) for child-specific rules.
 
+`worker/src/save-enrichment.ts` exits 2 for a payload it rejects (malformed JSON or
+failed validation). Before exiting it marks the item screened out
+(`relevant = false`, `enriched_at` set, `blurb` holding the reason), so a payload
+that keeps failing leaves the `list-unenriched.ts` queue instead of heading every
+later batch. `ops/enrich.sh` counts each item as saved, rejected (exit 2) or failed
+(any other status), attempts every item, and exits non-zero only when an item
+failed or none was saved. `ops/requeue-rejected.sh` puts rejected items back in the
+queue.
+
 `worker/src/fetch-all.ts` exits explicitly once its run summary is printed and
 the pool is closed. `rss-parser` leaves the response unread when a feed answers
 with a non-2xx status, so that socket keeps Node alive; without the explicit
