@@ -114,4 +114,49 @@ describe("data-service articles", () => {
 			{ policyId: "fixture-current", state: "not_public" },
 		]);
 	});
+
+	describe("register chart date", () => {
+		const records = (["federal", "nsw", "vic"] as const).map((jurisdiction) =>
+			buildPolicy({
+				id: `fixture-${jurisdiction}`,
+				jurisdiction,
+				sourceUrl: `https://www.example.gov.au/${jurisdiction}`,
+				updatedAt: "2026-07-01T00:00:00.000Z",
+			}),
+		);
+		const latest = buildPolicy({
+			id: "fixture-latest",
+			jurisdiction: "qld",
+			sourceUrl: "https://www.example.gov.au/latest",
+			updatedAt: "2026-07-15T14:30:00.000Z",
+		});
+
+		it("comes from the latest updatedAt including a trashed record, which is not counted", async () => {
+			serve([...records, { ...latest, status: "trashed" }]);
+			const { getArticleBySlug } = await load();
+			const chart = (await getArticleBySlug("figure-kinds-published"))?.registerCharts[4];
+			expect(chart?.asAt).toBe("2026-07-16");
+			expect(chart?.total).toBe(3);
+			expect(chart?.bars.map((bar) => bar.value)).not.toContain("qld");
+		});
+
+		it("comes from the latest updatedAt including a withheld record, which is not counted", async () => {
+			serve(
+				[...records, latest],
+				[
+					{
+						id: "fixture-review",
+						status: "pending_review",
+						entryKind: "policy",
+						targetPolicyId: latest.id,
+						sourceUrl: latest.sourceUrl,
+					},
+				],
+			);
+			const { getArticleBySlug } = await load();
+			const chart = (await getArticleBySlug("figure-kinds-published"))?.registerCharts[4];
+			expect(chart?.asAt).toBe("2026-07-16");
+			expect(chart?.total).toBe(3);
+		});
+	});
 });
