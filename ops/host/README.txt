@@ -1,4 +1,8 @@
-TWO-RUNTIME HOST DISPATCHER — REVIEW BUNDLE, NOT INSTALLED
+TWO-RUNTIME HOST DISPATCHER — INSTALLED, LIVE DEPLOY PATH
+
+The dispatcher is installed and is the live deploy path for both runtimes.
+/usr/local/libexec/policai-host holds a copy installed from this bundle through
+install.py. That copy can lag main until the next reviewed install.
 
 Entry point: cli.py
 Safe local demonstration: ./cli.py --help
