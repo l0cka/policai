@@ -29,8 +29,11 @@ npm --prefix apps/probono/worker run test:security
 The worker command above unsets `DATABASE_URL` and skips database integration
 tests. Those tests delete rows. A shared Vitest setup file
 (`worker/test/support/require-disposable-database.ts`) fails the run before any
-query unless the URL host is `127.0.0.1` or `localhost` and the database name
-ends in `_test`. Run the full worker suite only against a disposable database
+query unless the connection `pg` will make has host `127.0.0.1` or `localhost`
+and a database name ending in `_test`. It parses the URL with
+`pg-connection-string`, the parser `pg` uses, so query parameters such as
+`?host=` count. A URL that names no host or no database is refused, because
+`pg` would fill the gap from `PGHOST` or `PGDATABASE`. Run the full worker suite only against a disposable database
 such as `postgres://user:pass@127.0.0.1:5432/radar_test`, as the pull-request
 workflow does with `probono_ci_test`. The compose `radar` database is refused.
 Never use a production connection. Dashboard builds do not need a database.
