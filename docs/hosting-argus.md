@@ -43,7 +43,22 @@ lanes. The invariant behind the no-lane rows is in
 ## Health gate and failure
 
 A deploy counts as done only when each rebuilt lane passes its health
-check and the dispatcher reports `verified: true`. A failed deploy writes
+check and the dispatcher reports `verified: true`. That result line also
+names the commit it deployed:
+
+```json
+{"verified": true, "activated_lanes": ["policai"], "main": "<sha>", "heads": {"policai": "<sha>", "probono": "<sha>"}}
+```
+
+`activated_lanes` lists the rebuilt lanes and is empty when no lane needed
+a rebuild. `main` is the commit the cycle resolved and deployed, and
+`heads` is the commit each checkout now holds. To confirm a merge went
+live, look for a verified run whose `main` is the merge commit or a later
+commit on `main`, not for a run that happened after the merge. A failed or
+refused run prints no result and no commit. The host reports these fields
+only after a reviewed install of the current dispatcher.
+
+A failed deploy writes
 a persistent gate. Every later timer cycle then refuses to deploy,
 including data-only commits, until a reviewed recovery clears it. Pushing
 a fix to `main` does not clear the gate.

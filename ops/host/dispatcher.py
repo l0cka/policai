@@ -240,11 +240,17 @@ class Transaction:
                 self.host.activate(record, lanes)
                 checkpoint("health")
                 self.host.health(record)
-                self.state.write("active.json", self.host.active_record(record))
+                deployed = self.host.active_record(record)
+                self.state.write("active.json", deployed)
                 checkpoint("verified")
                 self.state.write("last-success.json", record)
                 self.state.clear_marker()
-                return lanes
+                return {
+                    "verified": True,
+                    "activated_lanes": record["lanes"],
+                    "main": target,
+                    "heads": deployed["heads"],
+                }
             except BaseException:
                 checkpoint("failed-review-required")
                 raise Refused("deployment blocked; reviewed recovery required") from None
