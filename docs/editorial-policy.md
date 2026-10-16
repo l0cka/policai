@@ -166,7 +166,10 @@ state, and a figure's analysis is marked as analysis like any other.
 
 The platform checks a figure like the text. Validation rejects a figure with
 no title, alt text or caption, an unknown kind, a count outside the limits
-above, and a cited record or source missing from the piece's lists. A figure
+above, a date that does not exist (such as 2026-02-30), a repeated matrix
+column or row header, a repeated timeline date and title, a fence that is
+not at the start of a line (inside a list or quote, or indented), and a cited
+record or source missing from the piece's lists. A figure
 citation is also covered by the added-citation rule and the "Source under
 review" banner.
 
@@ -184,10 +187,12 @@ as the counts change. Say what the chart shows ("most records are federal")
 and leave the figures to the chart. The Writer and the Editorial Manager check
 this.
 
-The as-at date is the date of the last register change: the most recent
-`updatedAt` across every register record, as a Sydney calendar date. It
-moves when the register changes, not when collection last ran. Do not write a
-date in the prose that depends on it, because the chart states it.
+The as-at date is the date of the last register change: the Sydney calendar
+day of the most recent `updatedAt` across every register record, including
+withheld and trashed ones, because withholding, trashing or publishing a
+record changes the public count. It is not the collection, build or render
+date. A record without `updatedAt` fails validation. Do not write a date in
+the prose that depends on it, because the chart states it.
 
 ## Citations
 
