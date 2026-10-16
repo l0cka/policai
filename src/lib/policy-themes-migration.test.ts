@@ -1,7 +1,9 @@
 /* @vitest-environment node */
 
 import { describe, expect, it } from 'vitest';
+import approvedMapping from '../../scripts/policy-themes-2026-10-17.json';
 import { applyThemeMapping } from './policy-themes-migration';
+import { THEMES } from './themes';
 
 const register = `${JSON.stringify(
   [
@@ -53,6 +55,15 @@ describe('applyThemeMapping', () => {
         'c: mapping row has no record',
         'a: unknown theme label "Courts"',
       ].join('\n'),
+    );
+  });
+});
+
+describe('approved #305 mapping', () => {
+  it('uses exactly the labels in THEMES', () => {
+    const mappedLabels = new Set(Object.values(approvedMapping).flat());
+    expect([...mappedLabels].sort()).toEqual(
+      THEMES.map((theme) => theme.label).sort(),
     );
   });
 });

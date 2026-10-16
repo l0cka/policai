@@ -1,7 +1,11 @@
 /* @vitest-environment node */
 
 import { describe, expect, it } from 'vitest';
+import path from 'node:path';
 import { buildPolicy } from '@/test/factories';
+import { getPolicies } from './data-service';
+import { readJsonFile } from './file-store';
+import { MIN_PUBLIC_RECORDS_PER_THEME, THEMES } from './themes';
 import { validatePolicyThemes, validateThemeCoverage } from './validate-data';
 import type { Policy } from '@/types';
 
@@ -108,5 +112,24 @@ describe('validateThemeCoverage', () => {
       'themes: "standards" (Standards and lifecycle) is on 1 public record; it shows on fewer than 2 until the withheld records return',
     );
     expect(report.warnings.join('\n')).not.toMatch(/"employment"/);
+  });
+});
+
+describe('register themes', () => {
+  it('puts every listed theme on at least two register and public records', async () => {
+    const register = await readJsonFile<Policy[]>(
+      path.join(process.cwd(), 'data', 'policies.json'),
+      [],
+    );
+    const publicPolicies = await getPolicies();
+
+    expect(validatePolicyThemes(register).errors).toEqual([]);
+    expect(validateThemeCoverage(register, publicPolicies).errors).toEqual([]);
+    for (const { key } of THEMES) {
+      const publicCount = publicPolicies.filter((policy) =>
+        policy.themes.includes(key),
+      ).length;
+      expect(publicCount, key).toBeGreaterThanOrEqual(MIN_PUBLIC_RECORDS_PER_THEME);
+    }
   });
 });
