@@ -1,19 +1,14 @@
 # Editorial policy
 
 This is the style guide for Policai's written pieces, each a
-`data/articles/<slug>.md` file to be served at `/analysis`. It covers voice,
-the three formats, citations, the line between fact and analysis, the standard notices,
+`data/articles/<slug>.md` file served at `/analysis`. It covers voice, the
+three formats, citations, the line between fact and analysis, the standard notices,
 corrections and withdrawals, and what Policai does not publish.
 
 Pieces are the Policai analysis tier in [the trust model](./trust-model.md),
 kept visibly apart from verified register records and from
 unverified developments. The register and the developments feed stay neutral
 tracking. A piece never changes either of them.
-
-The articles platform that stores, validates and serves pieces is not built
-yet ([#213](https://github.com/l0cka/policai/issues/213)). Until it is on
-`main`, no piece publishes, and each sentence below that names the platform
-or validation states a requirement the platform must meet.
 
 Daniel Alkurdi is the editor. He approves this policy and the first three
 pieces. After that, a piece publishes on the Editorial Manager's
@@ -132,8 +127,11 @@ a number, or an event.
   them.
 - **Every link in the body appears in the frontmatter.** Each `/policies/<id>`
   link appears in `cites`. Each external official link appears in `sources`.
-  Validation must reject a citation to a record that is not public and
-  verified.
+  `npm run validate:data` rejects a body link missing from the frontmatter,
+  a source off the official allow-list, and a new citation to a record that
+  is withheld, trashed, unverified or marked "Review due". A record already
+  cited by the published piece that later lapses is reported as a warning,
+  and the page shows the "Source under review" banner.
   Links to `/developments` and to Policai views such as `/this-week`,
   `/courts` or `/timeline` support no claim and need no frontmatter entry.
   Every other link does.
@@ -171,8 +169,8 @@ An automated development that is not verified may appear only:
 
 ## Standard notices
 
-The platform must render the byline "Policai", the "Analysis" tier label,
-the disclosure and the notice on every published piece. Do not change their
+The platform renders the byline "Policai", the "Analysis" tier label, the
+disclosure and the notice on every published piece. Do not change their
 wording in a piece. Changing it means changing this policy.
 
 **AI disclosure:**
@@ -256,13 +254,15 @@ Policai corrects in the open. A published piece never changes silently.
   correct when published. Revise the text and add a dated `corrections` entry
   that starts with "Update:" and names the source change.
 - **Source under review:** when a cited record becomes stale or withheld, the
-  platform must show a "Source under review" banner. The editor re-reads the
-  record and the piece. The banner must clear when the record is verified again;
+  platform shows a "Source under review" banner. The editor re-reads the
+  record and the piece. The banner clears within an hour of the record being
+  verified again;
   if the piece's claims no longer hold, publish a correction or update.
 - **Withdrawal:** for a piece that cannot be corrected, for example because
   its subject was misidentified or its central claim was wrong. Set `status`
-  to `withdrawn` with a reason. The URL must stay as a tombstone that says
-  when and why the piece was withdrawn. Never delete a published piece.
+  to `withdrawn` with `withdrawnAt` and `withdrawnReason`. The URL stays as a
+  tombstone that says when and why the piece was withdrawn. Never delete a
+  published piece; validation rejects the deletion.
 - Every correction, update and withdrawal goes through a pull request and the
   same editorial approval as a new piece.
 - Typo fixes that change no meaning need no correction entry.
@@ -291,8 +291,7 @@ A piece is a pull request that adds or changes one `data/articles/<slug>.md`
 file. The slug is lowercase kebab case and stays the same after publication.
 
 1. The Policai Writer drafts the piece and runs `npm run check`, which
-   includes `npm run validate:data` and, once the platform lands, its
-   article checks.
+   includes the article checks in `npm run validate:data`.
 2. The Editorial Manager checks every claim against its source, the fact and
    analysis boundary, and this policy, then records `EDITORIAL APPROVE <sha>`
    or `EDITORIAL REJECT <sha>`.
