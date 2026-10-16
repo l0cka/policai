@@ -103,6 +103,15 @@ creates a new sequenced `baseline_reversion` review. This prevents the obsolete
 changed-version review from withholding a valid baseline forever while still
 requiring an editor to confirm the live bytes before public access is restored.
 
+Page publication dates come from, in order: a visible publication label, then
+`dcterms.created`, `dcterms.issued`, `article:published_time` and
+`itemprop="datePublished"` metadata, then publication-labelled `time` elements,
+then `dcterms.date` and `date`. GovCMS sites set `dcterms.date` to the edit
+time, so it only dates a page when nothing above it exists. Modified-time keys
+(`dcterms.modified`, `article:modified_time`, `og:updated_time`) never set
+`publishedAt`. Dates are read as written, so the source's own calendar day wins
+whatever the machine's time zone.
+
 HTML fingerprints include every publication-date metadata field used by
 extraction, relevant instrument links, and visible text. Linked PDF, Word, and RTF documents are retrieved and
 their byte hashes are folded into the landing page's fingerprint. A landing
