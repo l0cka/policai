@@ -1,9 +1,13 @@
 import { readdir, readFile } from "fs/promises";
 import path from "path";
-import { isValidCalendarDate } from "@/lib/calendar-date";
+import { isValidCalendarDate, sydneyCalendarDate } from "@/lib/calendar-date";
 import { parseFrontmatter, type FrontmatterFile } from "@/lib/frontmatter";
 import { isAllowedSourceHost, sourceUrlsEqual } from "@/lib/source-url";
-import { articleLicenceTerms, disallowedImageHost } from "@/lib/article-licences";
+import {
+	ARTICLE_LICENCE_FORMS,
+	articleLicenceTerms,
+	disallowedImageHost,
+} from "@/lib/article-licences";
 import {
 	ARTICLE_STATUSES,
 	ARTICLE_TYPES,
@@ -222,6 +226,9 @@ function parseArticleImage(
 	const modifications = optional("modifications");
 	const licenceCheckedAt = calendarDate(data.licenceCheckedAt);
 	if (!licenceCheckedAt) fail("licenceCheckedAt is required and must be a calendar date (YYYY-MM-DD)");
+	else if (licenceCheckedAt > sydneyCalendarDate(new Date())) {
+		fail(`licenceCheckedAt ${licenceCheckedAt} is in the future (Australia/Sydney)`);
+	}
 
 	const licenceId = required("licence");
 	const licenceUrlValue = httpsUrl("licenceUrl", true);
@@ -232,7 +239,7 @@ function parseArticleImage(
 			fail(
 				/(^|-)(NC|ND)(-|$)/.test(licenceId)
 					? `licence ${licenceId} is rejected; NC and ND licences are not allowed`
-					: `licence must be CC0-1.0, PDM-1.0, CC-BY-<version> or CC-BY-SA-<version>, not ${licenceId}`,
+					: `licence must be ${ARTICLE_LICENCE_FORMS}, not ${licenceId}`,
 			);
 		} else if (licenceUrlValue !== undefined && licenceUrlValue !== terms.licenceUrl) {
 			fail(`licenceUrl must be ${terms.licenceUrl} for ${licenceId}`);
