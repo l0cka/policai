@@ -4,7 +4,7 @@ Local CLIs for the Policai data workflow. They are plain `tsx` entrypoints — n
 
 ## collect.ts
 
-Runs one collection pass over the watch sources and persists the results (developments feed, watch state, staged reviews, freshness metadata). This is what the daily GitHub Actions workflow runs.
+Runs one collection pass over the watch sources and persists the results (developments feed, watch state, staged reviews, freshness metadata). The host wrapper `ops/collector/policai-collect.sh` runs it daily and fails the run if `data/policies.json` changed. The write step lives in `collect-run.ts`; `src/lib/pipeline/collect-run.test.ts` runs it against a temporary data directory and asserts the register stays byte-identical. Review candidates merge by stable id, because a retried run can carry newer evidence for a pending review. Reviews and developments are written before the watch state, so a failed write is recreated with the same ids on the next run.
 
 ```bash
 npm run collect -- --dry-run           # preview without writing

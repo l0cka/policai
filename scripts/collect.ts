@@ -11,49 +11,16 @@
  * detections always require editorial review.
  */
 
-import path from 'path';
 import { withDataMutationLock } from '../src/lib/data-lock';
-import { readJsonFile, writeJsonFile } from '../src/lib/file-store';
 import {
   createBrowserFetch,
   type BrowserFetch,
 } from '../src/lib/pipeline/browser-fetch';
 import {
-  collect,
-  collectionRunFailed,
-  emptyWatchState,
-  type WatchState,
-} from '../src/lib/pipeline/collect';
-import {
   getAutomaticSources,
   getSourceById,
-  WATCH_SOURCES,
 } from '../src/lib/pipeline/sources';
-import {
-  mergeSourceReviews,
-  reconcileLinkedDevelopments,
-} from '../src/lib/source-review';
-import { sourceIdentityUrls } from '../src/lib/source-url';
-import type {
-  CollectionMeta,
-  Development,
-  Policy,
-  SourceReview,
-  TimelineEvent,
-} from '../src/types';
-
-const DEVELOPMENTS_FILE = path.join(
-  process.cwd(),
-  'data',
-  'developments.json',
-);
-const META_FILE = path.join(process.cwd(), 'public', 'data', 'meta.json');
-const WATCH_STATE_FILE = path.join(process.cwd(), 'data', 'watch-state.json');
-const SOURCE_REVIEWS_FILE = path.join(
-  process.cwd(),
-  'data',
-  'source-reviews.json',
-);
+import { runCollection } from './collect-run';
 
 interface CliOptions {
   dryRun: boolean;
@@ -109,127 +76,21 @@ async function main() {
 
   const browserFetch = await createOptionalBrowserFetch();
 
-  const runCollection = async () => {
-    const [state, developments, meta, reviews, policies, timelineEvents] =
-      await Promise.all([
-        readJsonFile<WatchState>(WATCH_STATE_FILE, emptyWatchState()),
-        readJsonFile<Development[]>(DEVELOPMENTS_FILE, []),
-        readJsonFile<CollectionMeta | null>(META_FILE, null),
-        readJsonFile<SourceReview[]>(SOURCE_REVIEWS_FILE, []),
-        readJsonFile<Policy[]>(
-          path.join(process.cwd(), 'data', 'policies.json'),
-          [],
-        ),
-        readJsonFile<TimelineEvent[]>(
-          path.join(process.cwd(), 'data', 'timeline.json'),
-          [],
-        ),
-      ]);
-
-    const result = await collect({
+  const run = () =>
+    runCollection({
+      rootDir: process.cwd(),
       sources,
-      catalogSources: WATCH_SOURCES,
-      state: {
-        seen: state.seen ?? {},
-        lastCheckedBySource: state.lastCheckedBySource ?? {},
-        sourceSnapshots: state.sourceSnapshots ?? {},
-      },
-      existingDevelopments: reconcileLinkedDevelopments(
-        reviews,
-        developments,
-      ),
-      trackedPolicies: policies,
-      trackedTimelineEvents: timelineEvents,
-      sourceReviews: reviews,
+      dryRun: options.dryRun,
+      sourceId: options.sourceId,
+      maxItems: options.maxItems,
       browserFetchImpl: browserFetch?.fetchImpl,
-      trackedUrls: reviews.flatMap((review) =>
-        sourceIdentityUrls(review.sourceUrl, review.sourceEvidence),
-      ),
-      previousMeta: meta ?? undefined,
-      maxItemsPerSource: options.maxItems,
-      force: Boolean(options.sourceId),
-      logger: (message) => console.log(message),
     });
-
-    console.log(
-      `[collect] ${result.developments.length} new developments, ` +
-        `${result.reviewCandidates.length} review candidates, ` +
-        `${result.errors.length} source errors; ` +
-        `health ${result.meta.collector.health} ` +
-        `(${result.meta.collector.successfulSourceCount}/${result.meta.collector.dueSourceCount} due sources successful)`,
-    );
-    for (const development of result.developments) {
-      console.log(
-        `  + [${development.jurisdiction}] ${development.title} ` +
-          `(${development.relevanceScore}, ${development.classification}) ${development.url}`,
-      );
-    }
-    for (const error of result.errors) {
-      console.warn(`  ! ${error}`);
-    }
-
-    const runFailed = collectionRunFailed(
-      result.meta.collector.health,
-      result.errors,
-      Boolean(options.sourceId),
-    );
-    if (runFailed) {
-      console.error(
-        options.sourceId
-          ? '[collect] Targeted source run reported errors — treating run as failed.'
-          : '[collect] Source coverage is below the accepted threshold — treating run as failed.',
-      );
-      process.exitCode = 1;
-    }
-
-    if (options.dryRun) {
-      console.log('[collect] Dry run — nothing written.');
-      return;
-    }
-
-    // Stable review ids make retries idempotent, but a recovered candidate can
-    // carry newer extraction and proposal evidence. Merge by id instead of
-    // dropping updates to an existing pending review.
-    const mergedReviews = mergeSourceReviews(
-      reviews,
-      result.reviewCandidates,
-    );
-    const developmentById = new Map(
-      reconcileLinkedDevelopments(mergedReviews, developments).map(
-        (development) => [development.id, development],
-      ),
-    );
-    for (const development of result.developments) {
-      developmentById.set(development.id, development);
-    }
-    const mergedDevelopments = Array.from(developmentById.values()).sort(
-      (a, b) =>
-        new Date(b.detectedAt).getTime() - new Date(a.detectedAt).getTime(),
-    );
-
-    // Persist recoverable outputs before advancing the snapshot/seen state.
-    // If an earlier write fails, the next run recreates the same stable IDs.
-    if (result.reviewCandidates.length > 0) {
-      await writeJsonFile(SOURCE_REVIEWS_FILE, mergedReviews);
-    }
-    await writeJsonFile(DEVELOPMENTS_FILE, mergedDevelopments);
-    await writeJsonFile(WATCH_STATE_FILE, result.state);
-    if (!options.sourceId) {
-      await writeJsonFile(META_FILE, result.meta);
-    }
-
-    console.log(
-        `[collect] Wrote ${result.developments.length} developments, ` +
-        `${result.reviewCandidates.length} staged or updated reviews. Sources checked: ${result.meta.collector.lastRunSources.length}.`,
-    );
-
-  };
 
   try {
     if (options.dryRun) {
-      await runCollection();
+      await run();
     } else {
-      await withDataMutationLock(runCollection);
+      await withDataMutationLock(run);
     }
   } finally {
     await browserFetch?.close();

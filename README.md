@@ -130,7 +130,7 @@ filters, response formats, and MCP tools.
 
 ## Deployment
 
-The site is self-hosted at [policai.org](https://policai.org), served by `next start` behind a Cloudflare tunnel. The host pulls `main` on a timer: data-only commits are picked up by ISR within the hour, and code changes trigger a rebuild and restart. See [docs/hosting-argus.md](./docs/hosting-argus.md). The collector runs on the same host, in a separate checkout on a daily schedule, and pushes its commits to the same repository. It retrieves browser-only candidate pages through a self-hosted Firecrawl instance and, in production, classifies candidates with Claude through the Claude Code CLI already installed on the host. See [docs/collector.md](./docs/collector.md).
+The site is self-hosted at [policai.org](https://policai.org), served by `next start` behind a Cloudflare tunnel. The host pulls `main` on a timer: a guarded dispatcher routes each change by path: data-only commits are served through ISR with no rebuild, and code changes rebuild the affected app. See [docs/hosting-argus.md](./docs/hosting-argus.md). The collector runs on the same host, in a separate checkout on a daily schedule, and pushes its commits to the same repository. It retrieves browser-only candidate pages through a self-hosted Firecrawl instance and, in production, classifies candidates with Claude through the Claude Code CLI already installed on the host. See [docs/collector.md](./docs/collector.md).
 
 ## Contributing
 
