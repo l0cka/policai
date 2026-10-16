@@ -66,8 +66,18 @@ describe("readArticleBaseline", () => {
 		]);
 	});
 
-	it("returns null when no base can be resolved", async () => {
+	it("returns null when no base is set and no merge-base can be resolved", async () => {
 		git("update-ref", "-d", "refs/remotes/origin/main");
 		expect(await readArticleBaseline({ cwd: repo })).toBeNull();
+		expect(await readArticleBaseline({ cwd: repo, baseSha: " " })).toBeNull();
+	});
+
+	it("fails closed when an explicit base SHA cannot be read", async () => {
+		const missing = "0123456789abcdef0123456789abcdef01234567";
+		await expect(
+			readArticleBaseline({ cwd: repo, baseSha: missing }),
+		).rejects.toThrow(
+			`GITHUB_BASE_SHA "${missing}" cannot be read, so article transitions cannot be checked`,
+		);
 	});
 });

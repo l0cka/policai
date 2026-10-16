@@ -183,8 +183,10 @@ The approved rule that validation "rejects a citation to a record that is not
 public and verified" applies when a piece is published or changed (PM,
 2026-10-16). A piece is new, changed or untouched by comparison of its file
 with the base revision: `GITHUB_BASE_SHA` when set (CI passes the PR base),
-otherwise the merge-base of `HEAD` and `origin/main`. If no base can be read,
-every piece counts as new.
+otherwise the merge-base of `HEAD` and `origin/main`. When `GITHUB_BASE_SHA`
+is set but cannot be read, `validate:data` fails, so the transition rules
+never pass silently. When it is unset and no merge-base can be read, every
+piece counts as new.
 
 ## Key Domain Types
 
