@@ -5,6 +5,9 @@ export interface SummaryBlock {
 
 const MARKER = /\bRequirement \d+:/g;
 const LABEL = /^(Requirement \d+:)\s*/;
+const WHITESPACE = /\s/;
+const CLOSERS = new Set([')', ']', '"', "'", '\u2019', '\u201d']);
+const TERMINATORS = new Set(['.', '!', '?', ';']);
 const SENTENCE_END = /[.!?]\s+(?=[A-Z])/g;
 const PARAGRAPH_LIMIT = 400;
 const ABBREVIATIONS = new Set([
@@ -45,11 +48,20 @@ function groupSentences(text: string): string[] {
   return paragraphs;
 }
 
+function startsBlock(text: string, index: number): boolean {
+  let i = index - 1;
+  while (i >= 0 && WHITESPACE.test(text[i])) {
+    if (text[i] === '\n') return true;
+    i--;
+  }
+  if (i < 0) return true;
+  if (i === index - 1) return false;
+  while (i >= 0 && CLOSERS.has(text[i])) i--;
+  return i >= 0 && TERMINATORS.has(text[i]);
+}
+
 function markerOffsets(text: string): number[] {
-  const starts = new Set(sentenceStarts(text));
-  return [...text.matchAll(MARKER)]
-    .map((match) => match.index)
-    .filter((index) => starts.has(index) || /\n\s*$/.test(text.slice(0, index)));
+  return [...text.matchAll(MARKER)].map((match) => match.index).filter((index) => startsBlock(text, index));
 }
 
 export function splitSummaryBlocks(text: string): SummaryBlock[] {

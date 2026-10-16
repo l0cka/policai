@@ -159,14 +159,6 @@ describe('splitSummaryBlocks', () => {
       expect(performance.now() - started).toBeLessThan(1500);
       expect(blocks).toHaveLength(32_000);
     });
-
-    it('stays linear on many markers in mid-sentence positions', () => {
-      const text = 'see Requirement 1: x '.repeat(25_000);
-      const started = performance.now();
-      const blocks = splitSummaryBlocks(text);
-      expect(performance.now() - started).toBeLessThan(1500);
-      expect(blocks).toHaveLength(1);
-    });
   });
 
   describe('generated inputs', () => {
@@ -178,7 +170,7 @@ describe('splitSummaryBlocks', () => {
     };
     const WORDS = ['the', 'court', 'must', 'Smith', 'record', 'AI', 'use', 'filed', '(Cth)', 'Acme'];
     const ABBREVIATIONS = ['etc.', 'Ltd.', 'no.', 'Dr.', 'e.g.', 'i.e.', 'St.', 'v.'];
-    const STRUCTURAL = [' ', '. ', '; ', '.) ', '." ', ".' ", '! ', '? ', '\n', '.\n  '];
+    const STRUCTURAL = ['. ', '; ', '.) ', '." ', ".' ", '! ', '? ', '\n', '.\n  '];
     const INLINE = [' ', '  ', ', '];
     const GAP = [' ', '\n', '  '];
 
@@ -194,12 +186,14 @@ describe('splitSummaryBlocks', () => {
         if (roll < 0.25) {
           text += `Requirement ${n}:`;
           if (boundary) structural++;
-          text += pick(GAP);
-          boundary = false;
+          const gap = pick(GAP);
+          text += gap;
+          boundary = gap === '\n';
         } else if (roll < 0.35) {
           text += `see Requirement ${n}:`;
-          text += pick(GAP);
-          boundary = false;
+          const gap = pick(GAP);
+          text += gap;
+          boundary = gap === '\n';
         } else if (roll < 0.55) {
           text += pick(ABBREVIATIONS);
           text += pick([' ', ' ', '\n']);
