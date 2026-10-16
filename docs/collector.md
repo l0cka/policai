@@ -157,10 +157,11 @@ latest staged transition and never accepts a legacy match: it runs only after
 that candidate failed `matchesRetrievedContent`, and the candidate it would
 reuse is either that same transition or one dismissed when a later transition
 was staged. Unchanged content therefore never reads as changed after the key
-change, and no stored file needs a migration. Each source's first successful
-check after the scheme change rewrites its snapshot in `data/watch-state.json`
-to the current fingerprint without a change count or review. A source that
-fails or is not due keeps its legacy hash until its next successful check.
+change, and no stored file needs a migration. Each direct-document source's
+first successful check after the scheme change rewrites its snapshot in
+`data/watch-state.json` to the current fingerprint without a change count or
+review. A source that fails or is not due keeps its legacy hash until its next
+successful check.
 
 Legacy acceptance is gated by the watch-state snapshot. The collector writes
 the current fingerprint to the snapshot once it has processed a reading. A
