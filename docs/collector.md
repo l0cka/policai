@@ -113,10 +113,11 @@ Page publication dates come from, in order: a visible publication label, then
 `itemprop="datePublished"` metadata, then publication-labelled `time` elements,
 then the last-resort keys. The last-resort keys depend on the page's platform.
 A page whose `<meta name="generator">` content contains `GovCMS` or `Drupal`
-(any case) is a GovCMS page; there `dcterms.date` is the edit time, so it never
-sets `publishedAt` and only `date` remains. Every other page falls back to
-`dcterms.date`, then `date`. A GovCMS page with none of these fields has no
-publication date. Modified-time keys
+(any case) is a GovCMS page. It has no last-resort keys: there `dcterms.date`
+is the edit time, and none of the Drupal and GovCMS pages checked for #195
+carried `date`, so a `date` value on such a page has unknown meaning. Every other page falls back to `dcterms.date`, then `date`. A GovCMS
+page with no publication label, publication metadata or labelled `time` element
+has no publication date. Modified-time keys
 (`dcterms.modified`, `article:modified_time`, `og:updated_time`) never set
 `publishedAt`. Dates are read as written, so the source's own calendar day wins
 whatever the machine's time zone.

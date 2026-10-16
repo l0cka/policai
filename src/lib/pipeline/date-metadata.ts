@@ -13,7 +13,7 @@ const PUBLICATION_DATE_META: readonly DateMetaField[] = [
 ];
 
 const LAST_RESORT_DATE_META: Record<DateMetaPlatform, readonly DateMetaField[]> = {
-  govcms: [['name', 'date']],
+  govcms: [],
   generic: [
     ['name', 'dcterms.date'],
     ['name', 'date'],
