@@ -20,7 +20,6 @@ cites: [fixture-withheld]
 entries:
   - date: 2026-03-01
     title: Withheld instrument issued
-    cite: fixture-withheld
   - date: 2026-07-01
     title: Withheld instrument takes effect
 ```

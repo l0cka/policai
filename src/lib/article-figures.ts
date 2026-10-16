@@ -249,7 +249,7 @@ function parseFigure(
 	const frame = { title: title ?? "", alt: alt ?? "", caption: caption ?? "", sources };
 	let figure: ArticleFigure | undefined;
 	if (kind === "timeline") {
-		const parts = parseTimeline(data, cites, errors);
+		const parts = parseTimeline(data, errors);
 		if (parts) figure = { kind, ...frame, cites, ...parts };
 	} else if (kind === "matrix") {
 		const parts = parseMatrix(data, errors);
@@ -277,7 +277,6 @@ function countError(
 
 function parseTimeline(
 	data: Data,
-	cites: readonly string[],
 	errors: string[],
 ): { asAt: string; entries: TimelineEntry[] } | undefined {
 	const asAt = calendarDay(data.asAt);
@@ -293,9 +292,8 @@ function parseTimeline(
 		const date = timelineDate(entry.date);
 		const title = typeof entry.title === "string" ? entry.title.trim() : "";
 		const detail = typeof entry.detail === "string" ? entry.detail.trim() : undefined;
-		const cite = typeof entry.cite === "string" ? entry.cite.trim() : undefined;
 		for (const key of Object.keys(entry)) {
-			if (!["date", "title", "detail", "cite"].includes(key)) {
+			if (!["date", "title", "detail"].includes(key)) {
 				errors.push(`entries[${index}] has unknown field "${key}"`);
 			}
 		}
@@ -303,10 +301,7 @@ function parseTimeline(
 			errors.push(`entries[${index}] needs a date (YYYY-MM-DD, YYYY-MM or YYYY) and a title`);
 			return;
 		}
-		if (cite && !cites.includes(cite)) {
-			errors.push(`entries[${index}].cite ${cite} is not in the figure's cites`);
-		}
-		entries.push({ ...date, title, ...(detail ? { detail } : {}), ...(cite ? { cite } : {}) });
+		entries.push({ ...date, title, ...(detail ? { detail } : {}) });
 	});
 	if (entries.some((entry, index) => index > 0 && entry.date < entries[index - 1].date)) {
 		errors.push("timeline entries must be in date order");

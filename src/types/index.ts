@@ -814,7 +814,6 @@ export interface TimelineEntry {
 	precision: DatePrecision;
 	title: string;
 	detail?: string;
-	cite?: string;
 }
 
 export interface TimelineFigure extends FigureFrame {

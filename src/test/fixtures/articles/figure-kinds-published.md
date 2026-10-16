@@ -33,15 +33,12 @@ entries:
   - date: 2026-09-30
     title: NSW AIAF Platform becomes the authoritative channel
     detail: All agencies must register their AI use cases.
-    cite: nsw-identifying-ai-guidance
   - date: 2026-10-20
     title: Fair Work Commission guidance note commences
-    cite: fwc-genai-guidance-note
   - date: 2026-11-16
     title: Senate committee due to report on AI and data centres
   - date: 2026-12-10
     title: APP 1.7 to 1.9 transparency obligation applies
-    cite: oaic-app-1-7-adm-transparency-guidance
 ```
 
 ## What do courts and tribunals require?

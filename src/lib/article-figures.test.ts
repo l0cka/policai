@@ -82,8 +82,8 @@ describe("figure blocks in article Markdown", () => {
 			kind: "timeline",
 			asAt: "2026-10-16",
 			entries: [
-				{ date: "2026-09-30", precision: "day", cite: "nsw-identifying-ai-guidance", detail: "All agencies must register their AI use cases." },
-				{ date: "2026-10-20", precision: "day", cite: "fwc-genai-guidance-note" },
+				{ date: "2026-09-30", precision: "day", detail: "All agencies must register their AI use cases." },
+				{ date: "2026-10-20", precision: "day" },
 				{ date: "2026-11-16", precision: "day" },
 				{ date: "2026-12-10", precision: "day" },
 			],
@@ -180,10 +180,10 @@ describe("figure blocks in article Markdown", () => {
 		]);
 	});
 
-	it("rejects a timeline entry cite that the figure does not list, and entries out of date order", () => {
-		const unlisted = TIMELINE.replace("    title: Fixture instrument issued", "    title: Fixture instrument issued\n    cite: fixture-other");
-		expect(errorsOf(inline("```figure\n" + unlisted + "\n```"))).toEqual([
-			"figure 1: entries[0].cite fixture-other is not in the figure's cites",
+	it("rejects a field a timeline entry does not have, and entries out of date order", () => {
+		const linked = TIMELINE.replace("    title: Fixture instrument issued", "    title: Fixture instrument issued\n    cite: fixture-current");
+		expect(errorsOf(inline("```figure\n" + linked + "\n```"))).toEqual([
+			'figure 1: entries[0] has unknown field "cite"',
 		]);
 		const reversed = TIMELINE.replace("date: 2026-03", "date: 2028-03");
 		expect(errorsOf(inline("```figure\n" + reversed + "\n```"))).toEqual([
