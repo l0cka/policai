@@ -27,6 +27,7 @@ import {
   type Candidate,
 } from './extract';
 import {
+  foldLinkedDocuments,
   retrieveSource,
   SourceFetchError,
   type RetrievedSource,
@@ -157,13 +158,6 @@ function isBrowserFallbackFutile(error: unknown): boolean {
   );
 }
 
-/**
- * Wraps already-fetched Firecrawl markdown in a synthetic Response and
- * replays it through retrieveSource(), instead of re-deriving evidence
- * (content hash, canonicalized URL, bot-challenge checks) by hand. This
- * keeps a Firecrawl-sourced RetrievedSource identical in shape and
- * provenance rules to one fetched over HTTP or through Playwright.
- */
 async function retrievedSourceFromFirecrawl(
   markdown: string,
   requestedUrl: string,
@@ -171,11 +165,6 @@ async function retrievedSourceFromFirecrawl(
   now: () => Date,
 ): Promise<RetrievedSource> {
   const replayFetch: typeof fetch = async () => {
-    // text/plain, not text/markdown: extractRetrievedDocument only knows how
-    // to read HTML, XML, or plain text bodies. Markdown reads fine as plain
-    // text — cheerio treats it as one untagged text node — but a
-    // text/markdown content type would hit the "unsupported content type"
-    // guard and fail every Firecrawl-sourced candidate.
     const response = new Response(markdown, {
       status: 200,
       headers: { 'content-type': 'text/plain; charset=utf-8' },
@@ -1226,28 +1215,33 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
       url: string,
     ): Promise<RetrievedSource> => {
       if (preferBrowser) {
-        // Firecrawl runs on the collection host ahead of the
-        // in-process headless browser: it's cheaper per page and avoids
-        // spinning up Playwright for hosts we already know need a real
-        // browser. Any ok:false — timeout, unavailable, http_error, empty —
-        // falls through to Playwright rather than failing the candidate, so
-        // this stays reversible while Firecrawl reliability is proven out.
-        // Firecrawl cannot enforce source-bound exceptions on each hop. Even
-        // unrelated candidates from these sources use the scoped browser.
         const firecrawled = source.identityException
           ? { ok: false as const, reason: 'identity_scope' }
           : await scrapeWithFirecrawl(url, { identity: 'declared' });
         if (firecrawled.ok) {
-          return retrievedSourceFromFirecrawl(
+          const page = await retrievedSourceFromFirecrawl(
             firecrawled.markdown,
             url,
             firecrawled.finalUrl,
             () => now,
           );
+          try {
+            return await foldLinkedDocuments(page, firecrawled.rawHtml, url, {
+              fetchImpl,
+              now: () => now,
+              identityAuthority,
+            });
+          } catch (error) {
+            if (isBrowserFallbackFutile(error)) throw error;
+            log(
+              `[collect] ${source.id}: linked documents of Firecrawl page ${url} failed over HTTP (${error instanceof Error ? error.message : String(error)}), retrying with the browser retriever`,
+            );
+          }
+        } else {
+          log(
+            `[collect] ${source.id}: Firecrawl unavailable for ${url} (${firecrawled.reason}), retrying with the browser retriever`,
+          );
         }
-        log(
-          `[collect] ${source.id}: Firecrawl unavailable for ${url} (${firecrawled.reason}), retrying with the browser retriever`,
-        );
         return retrieveSource(url, {
           fetchImpl: browserFetchImpl,
           now: () => now,

@@ -14,19 +14,23 @@ if [ ! -d "$SRC" ]; then
 fi
 mkdir -p "$DST"
 
-rsync -a --ignore-existing --chmod=F600 "$SRC"/radar-*.sql.gz "$DST"/
+rsync -a --ignore-existing --chmod=F600 \
+  --include='radar-*.sql.gz' --include='globals-*.sql.gz' --exclude='*' \
+  "$SRC"/ "$DST"/
 
 bad=0
-for f in "$DST"/radar-*.sql.gz; do
+for f in "$DST"/radar-*.sql.gz "$DST"/globals-*.sql.gz; do
+  [ -e "$f" ] || continue
   if ! gzip -t "$f" 2>/dev/null; then
     printf 'mirror: FAILED gzip check: %s\n' "$f" >&2
     bad=$((bad + 1))
   fi
 done
 
-(cd "$DST" && sha256sum radar-*.sql.gz > SHA256SUMS.txt.tmp && mv SHA256SUMS.txt.tmp SHA256SUMS.txt)
+(cd "$DST" && find . -maxdepth 1 \( -name 'radar-*.sql.gz' -o -name 'globals-*.sql.gz' \) -printf '%f\n' \
+  | sort | xargs sha256sum > SHA256SUMS.txt.tmp && mv SHA256SUMS.txt.tmp SHA256SUMS.txt)
 
-count=$(find "$DST" -maxdepth 1 -name 'radar-*.sql.gz' | wc -l)
+count=$(find "$DST" -maxdepth 1 \( -name 'radar-*.sql.gz' -o -name 'globals-*.sql.gz' \) | wc -l)
 newest=$(find "$DST" -maxdepth 1 -name 'radar-*.sql.gz' -printf '%f\n' | sort | tail -1)
 if [ "$bad" -ne 0 ]; then
   printf 'mirror: %s files, newest %s, %s FAILED integrity\n' "$count" "$newest" "$bad" >&2
