@@ -211,6 +211,17 @@ the `licence` id. NC, ND and every other id are rejected.
 | `CC-BY-<n.n>` | `https://creativecommons.org/licenses/by/<n.n>/` |
 | `CC-BY-SA-<n.n>` | `https://creativecommons.org/licenses/by-sa/<n.n>/` |
 
+Some image hosts use their own licences, not Creative Commons, so a CC label
+on their images cannot be true. `DISALLOWED_IMAGE_HOSTS` (also in
+`article-licences.ts`) lists them with the reason, and a `sourceUrl` or
+`creatorUrl` on a listed host or any of its subdomains is an error whatever
+the `licence`.
+
+| Host | Reason |
+| --- | --- |
+| `unsplash.com` | The Unsplash Licence is not a Creative Commons licence. |
+| `pexels.com` | The Pexels Licence is not a Creative Commons licence. |
+
 `validateArticles` also checks the file in `public/` (`article-images.ts`):
 it exists, is a readable image, matches the declared `width` and `height`
 (after EXIF orientation), has a long edge of 2048 to 2560 px and is at most

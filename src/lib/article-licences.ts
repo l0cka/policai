@@ -31,6 +31,28 @@ export const ARTICLE_LICENCE_RULES: readonly LicenceRule[] = [
 	},
 ];
 
+export interface DisallowedImageHost {
+	host: string;
+	reason: string;
+}
+
+export const DISALLOWED_IMAGE_HOSTS: readonly DisallowedImageHost[] = [
+	{ host: "unsplash.com", reason: "the Unsplash Licence is not a Creative Commons licence" },
+	{ host: "pexels.com", reason: "the Pexels Licence is not a Creative Commons licence" },
+];
+
+export function disallowedImageHost(url: string): DisallowedImageHost | undefined {
+	let hostname: string;
+	try {
+		hostname = new URL(url).hostname.replace(/\.$/, "");
+	} catch {
+		return undefined;
+	}
+	return DISALLOWED_IMAGE_HOSTS.find(
+		({ host }) => hostname === host || hostname.endsWith(`.${host}`),
+	);
+}
+
 export interface ArticleLicenceTerms {
 	licence: ArticleLicence;
 	licenceUrl: string;

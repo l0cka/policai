@@ -3,7 +3,7 @@ import path from "path";
 import { isValidCalendarDate } from "@/lib/calendar-date";
 import { parseFrontmatter, type FrontmatterFile } from "@/lib/frontmatter";
 import { isAllowedSourceHost, sourceUrlsEqual } from "@/lib/source-url";
-import { articleLicenceTerms } from "@/lib/article-licences";
+import { articleLicenceTerms, disallowedImageHost } from "@/lib/article-licences";
 import {
 	ARTICLE_STATUSES,
 	ARTICLE_TYPES,
@@ -189,7 +189,13 @@ function parseArticleImage(
 	};
 	const httpsUrl = (key: string, isRequired: boolean): string | undefined => {
 		const value = isRequired ? required(key) : optional(key);
-		if (value !== undefined && !isHttpsUrl(value)) fail(`${key} must be an https URL`);
+		if (value === undefined) return value;
+		if (!isHttpsUrl(value)) {
+			fail(`${key} must be an https URL`);
+			return value;
+		}
+		const disallowed = disallowedImageHost(value);
+		if (disallowed) fail(`${key} is on ${disallowed.host}, which is not allowed: ${disallowed.reason}`);
 		return value;
 	};
 	const dimension = (key: string): number | undefined => {

@@ -77,6 +77,34 @@ describe("parseArticle image", () => {
 	] as const)("rejects %s", (_name, image, expected) => {
 		expect(errorsFor(image as Record<string, unknown> | "scalar")).toEqual(expected);
 	});
+
+	const UNSPLASH = "image.sourceUrl is on unsplash.com, which is not allowed: the Unsplash Licence is not a Creative Commons licence";
+	const PEXELS = "image.sourceUrl is on pexels.com, which is not allowed: the Pexels Licence is not a Creative Commons licence";
+
+	it.each([
+		["unsplash.com", "https://unsplash.com/photos/abc", [UNSPLASH]],
+		["images.unsplash.com", "https://images.unsplash.com/photo-1.jpg", [UNSPLASH]],
+		["a fully qualified Unsplash host", "https://unsplash.com./photos/abc", [UNSPLASH]],
+		["an upper-case Unsplash host", "https://UNSPLASH.com/photos/abc", [UNSPLASH]],
+		["pexels.com", "https://www.pexels.com/photo/abc-123/", [PEXELS]],
+		["images.pexels.com", "https://images.pexels.com/photos/1/a.jpeg", [PEXELS]],
+	] as const)("rejects a CC0 image whose sourceUrl is on %s", (_name, sourceUrl, expected) => {
+		expect(errorsFor({ ...IMAGE, sourceUrl, licence: "CC0-1.0", licenceUrl: "https://creativecommons.org/publicdomain/zero/1.0/" })).toEqual(expected);
+	});
+
+	it("rejects a creatorUrl on a disallowed host", () => {
+		expect(errorsFor({ ...IMAGE, creatorUrl: "https://unsplash.com/@jane" })).toEqual([
+			"image.creatorUrl is on unsplash.com, which is not allowed: the Unsplash Licence is not a Creative Commons licence",
+		]);
+	});
+
+	it.each([
+		"https://notunsplash.com/photos/abc",
+		"https://unsplash.com.example.org/photos/abc",
+		"https://commons.wikimedia.org/wiki/File:Pexels_mirror.jpg",
+	])("accepts %s, which only resembles a disallowed host", (sourceUrl) => {
+		expect(errorsFor({ ...IMAGE, sourceUrl })).toEqual([]);
+	});
 });
 
 describe("articleLicenceTerms", () => {
