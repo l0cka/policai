@@ -738,3 +738,64 @@ export function getPolicyStatusName(status: string | null | undefined): string {
 	if (!status) return "Unknown";
 	return isPolicyStatus(status) ? POLICY_STATUS_NAMES[status] : status;
 }
+
+export const ARTICLE_TYPES = [
+	"weekly_briefing",
+	"instrument_note",
+	"explainer",
+] as const;
+
+export type ArticleType = (typeof ARTICLE_TYPES)[number];
+
+export const ARTICLE_TYPE_NAMES: Record<ArticleType, string> = {
+	weekly_briefing: "Weekly briefing",
+	instrument_note: "Instrument note",
+	explainer: "Explainer",
+};
+
+export function isArticleType(
+	value: string | null | undefined,
+): value is ArticleType {
+	return isOneOf(ARTICLE_TYPES, value);
+}
+
+export const ARTICLE_STATUSES = ["draft", "published", "withdrawn"] as const;
+
+export type ArticleStatus = (typeof ARTICLE_STATUSES)[number];
+
+export interface ArticleCorrection {
+	date: string;
+	text: string;
+}
+
+interface ArticleFields {
+	slug: string;
+	type: ArticleType;
+	title: string;
+	summary: string;
+	cites: string[];
+	sources: string[];
+	corrections: ArticleCorrection[];
+	updatedAt?: string;
+	body: string;
+}
+
+export interface DraftArticle extends ArticleFields {
+	status: "draft";
+	publishedAt?: string;
+}
+
+export interface PublishedArticle extends ArticleFields {
+	status: "published";
+	publishedAt: string;
+}
+
+export interface WithdrawnArticle extends Omit<PublishedArticle, "status"> {
+	status: "withdrawn";
+	withdrawnAt: string;
+	withdrawnReason: string;
+}
+
+export type Article = DraftArticle | PublishedArticle | WithdrawnArticle;
+
+export type PublicArticle = PublishedArticle | WithdrawnArticle;
