@@ -3,6 +3,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from test_transaction import FakeClock
+
 try:
     import dispatcher as d
 except ModuleNotFoundError:
@@ -106,11 +108,13 @@ class StateTests(unittest.TestCase):
             state = d.State(root, owner=os.getuid())
             state.write("active.json", {"sha": "a" * 40})
             inode = (root / "deploy.lock").stat().st_ino
+            fake = FakeClock()
             with state.lock(exclusive=False):
                 state.require_ready()
                 with self.assertRaises(d.Refused):
-                    with state.lock(exclusive=True):
+                    with state.lock(exclusive=True, clock=fake.clock, sleep=fake.sleep):
                         pass
+            self.assertEqual(fake.sleeps, [])
             state.write("blocked.json", {"phase": "building"})
             with self.assertRaises(d.Refused):
                 state.require_ready()

@@ -2,6 +2,7 @@
 """Installed entrypoint. --help is safe from the uninstalled review bundle."""
 
 import argparse
+import contextlib
 import json
 import os
 import re
@@ -87,12 +88,23 @@ def failure_line(error):
     return f"Refused: {reason}. Inspect status and reviewed prerequisites; no automatic retry."
 
 
+FALLBACK_LINE = (
+    "Refused: failure report unavailable."
+    " Inspect status and reviewed prerequisites; no automatic retry."
+)
+
+
 def report(command, error):
-    line = failure_line(error)
-    print(line, file=sys.stderr)
+    try:
+        line = failure_line(error)
+    except Exception:
+        line = FALLBACK_LINE
+    with contextlib.suppress(Exception):
+        print(line, file=sys.stderr)
     if command == "compose":
-        syslog.openlog("policai-host-compose")
-        syslog.syslog(syslog.LOG_ERR, line)
+        with contextlib.suppress(Exception):
+            syslog.openlog("policai-host-compose")
+            syslog.syslog(syslog.LOG_ERR, line)
 
 
 def main():
