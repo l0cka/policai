@@ -169,7 +169,11 @@ classified by the configured AI model instead, invoked in batches of
 `CLAUDE_BATCH_SIZE` (20) candidates per call through
 `src/lib/pipeline/classifier-cli.ts`: one OpenAI-compatible
 `POST {CLASSIFIER_BASE_URL}chat/completions` per batch, authenticated with
-`CLASSIFIER_API_KEY` and pinned to `CLASSIFIER_MODEL`. The scheduled wrapper
+`CLASSIFIER_API_KEY` and pinned to `CLASSIFIER_MODEL`. Each source's
+surviving candidates go out together before the per-candidate loop, so a
+source costs one batch rather than one call per candidate. An authentication
+failure is not caught: it fails the run so a human re-authenticates. The
+scheduled wrapper
 uses the keyword heuristic: it does not read cloud credentials and refuses a
 nonempty `USE_CLAUDE_CLASSIFIER` until that mode is separately reviewed.
 The optional AI request carries no
@@ -200,7 +204,11 @@ The cap applies to classifier confidence only. Direct-document change
 detections — a monitored record's page whose content fingerprint moved —
 store `relevanceScore: 1` by design: relevance is not in question for an
 instrument the register already tracks, so the score records certainty that
-the page changed, not a classifier's judgement. These detections land as
+the page changed, not a classifier's judgement. The detection kind owns the
+classification: a change on a tracked policy or timeline event is never sent
+to a classifier, always carries `classification: 'heuristic'` and
+`promptVersion: 'source-hash-change-v1'`, and always stages a review,
+whichever classifier path is active. These detections land as
 `needs_review` and pass through the identical editorial gate; the cap and
 the score-1 path never let an automated detection publish anything. `data/policies.json` is never written by either path:
 a Vitest test asserts the file is byte-identical before and after a
