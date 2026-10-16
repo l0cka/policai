@@ -526,7 +526,10 @@ function validateVerification(
   return { errors, warnings };
 }
 
-export function validatePolicies(policies: Policy[]): ValidationReport {
+export function validatePolicies(
+  policies: Policy[],
+  registerIds: ReadonlySet<string> = new Set(),
+): ValidationReport {
   const errors: string[] = [];
   const warnings: string[] = [];
   const ids = new Set<string>();
@@ -729,13 +732,23 @@ export function validatePolicies(policies: Policy[]): ValidationReport {
     if (policy.supersededBy && !isNonEmptyString(policy.supersededBy)) {
       errors.push(`${label}: supersededBy must be a policy id`);
     }
+    if (policy.status === 'superseded' && !policy.supersededBy) {
+      errors.push(`${label}: superseded status requires supersededBy`);
+    }
+    if (policy.supersededBy && policy.status !== 'superseded') {
+      errors.push(
+        `${label}: supersededBy requires superseded status, not "${policy.status}"`,
+      );
+    }
+    if (policy.supersededBy && policy.supersededBy === policy.id) {
+      errors.push(`${label}: supersededBy cannot reference the policy itself`);
+    }
   });
 
-  // Cross-reference supersededBy targets
   policies.forEach((policy) => {
-    if (!isRecord(policy)) return;
-    if (policy.supersededBy && !ids.has(policy.supersededBy)) {
-      warnings.push(
+    if (!isRecord(policy) || !isNonEmptyString(policy.supersededBy)) return;
+    if (!ids.has(policy.supersededBy) && !registerIds.has(policy.supersededBy)) {
+      errors.push(
         `${policy.id}: supersededBy "${policy.supersededBy}" does not match a policy id`,
       );
     }
@@ -1618,7 +1631,7 @@ export function validateSourceReviews(
       }
       const proposedRecordReport =
         review.entryKind === 'policy'
-          ? validatePolicies([review.proposedRecord as Policy])
+          ? validatePolicies([review.proposedRecord as Policy], policyIds)
           : validateTimeline(
               [review.proposedRecord as TimelineEvent],
               policyIds ??

@@ -1922,7 +1922,10 @@ async function approveStagedSourceUnlocked(input: {
 			notes: input.approvalNotes,
 		},
 	};
-	const report = validatePolicies([policy]);
+	const report = validatePolicies(
+		[policy],
+		new Set(policies.map((existing) => existing.id)),
+	);
 	if (report.errors.length > 0) {
 		throw new Error(`Policy is not publishable: ${report.errors.join("; ")}`);
 	}
@@ -2446,7 +2449,13 @@ async function publishStagedSourceUnlocked(
 		}
 	} else {
 		const policy = review.proposedRecord as Policy;
-		const report = validatePolicies([policy]);
+		const existingPolicies = await getPolicies(undefined, {
+			access: "admin",
+		});
+		const report = validatePolicies(
+			[policy],
+			new Set(existingPolicies.map((existing) => existing.id)),
+		);
 		if (report.errors.length > 0) {
 			throw new Error(`Policy is not publishable: ${report.errors.join("; ")}`);
 		}
@@ -2459,9 +2468,6 @@ async function publishStagedSourceUnlocked(
 					"Update review must preserve the target policy id and source URL",
 				);
 			}
-			const existingPolicies = await getPolicies(undefined, {
-				access: "admin",
-			});
 			const targetPolicy = existingPolicies.find(
 				(existing) => existing.id === review.targetPolicyId,
 			);
@@ -2521,9 +2527,6 @@ async function publishStagedSourceUnlocked(
 				}
 			}
 		} else {
-			const existingPolicies = await getPolicies(undefined, {
-				access: "admin",
-			});
 			const existingPolicy = existingPolicies.find(
 				(candidate) =>
 					candidate.id === policy.id ||
