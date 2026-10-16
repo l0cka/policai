@@ -44,6 +44,7 @@ function formatDate(value: string): string {
     day: 'numeric',
     month: 'short',
     year: 'numeric',
+    timeZone: 'Australia/Sydney',
   });
 }
 
@@ -61,7 +62,7 @@ function developmentDate(development: Development): string {
 
 function monthKey(development: Development): string {
   return new Date(development.publishedAt || development.detectedAt)
-    .toLocaleDateString('en-AU', { month: 'long', year: 'numeric' })
+    .toLocaleDateString('en-AU', { month: 'long', year: 'numeric', timeZone: 'Australia/Sydney' })
     .toUpperCase();
 }
 

@@ -23,7 +23,7 @@ const insightItems = [
   { href: '/methodology', label: 'Methodology' },
 ];
 
-function formatDataDate(value: string | null): string {
+export function formatDataDate(value: string | null): string {
   if (!value) return 'SOURCE STATUS IN METHODOLOGY';
 
   return `COLLECTION AS AT ${new Date(value).toLocaleString('en-AU', {
@@ -33,6 +33,7 @@ function formatDataDate(value: string | null): string {
     hour: '2-digit',
     minute: '2-digit',
     hour12: false,
+    timeZone: 'Australia/Sydney',
     timeZoneName: 'short',
   }).toUpperCase()}`;
 }
