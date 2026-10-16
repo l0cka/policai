@@ -3408,9 +3408,9 @@
           "reviewedDate": {
             "date": "2026-01-01",
             "precision": "month",
-            "reviewedAt": "2026-07-19T06:14:30.218Z",
-            "reviewedBy": "Daniel Alkurdi",
-            "notes": "Verified against the official Victorian Government announcement, published 30 January 2026."
+            "reviewedAt": "2026-10-16T00:00:00.000Z",
+            "reviewedBy": "Policai Developer Agent",
+            "notes": "Re-verified 2026-10-16 against the live DJSIR AI Mission Statement PDF ('© State of Victoria, January 2026'); the owning department's page states no day, so month precision. The Premier's media release of Friday 30 January 2026 reports the launch."
           }
         }
       }
@@ -3827,9 +3827,9 @@
           "reviewedDate": {
             "date": "2024-09-01",
             "precision": "month",
-            "reviewedAt": "2026-07-19T06:14:27.954Z",
-            "reviewedBy": "Daniel Alkurdi",
-            "notes": "Verified against the current official Tasmanian Government guidance PDF; the document identifies 23 July 2024 as the publication date."
+            "reviewedAt": "2026-10-16T00:00:00.000Z",
+            "reviewedBy": "Policai Developer Agent",
+            "notes": "Re-verified 2026-10-16 against the live official PDF: title page 'Guidance for the use of artificial intelligence in Tasmanian Government September 2024' and 'Release of this guidance was approved by the Tasmanian Government Secretaries Board 13 September 2024'. The header 'Revision 1.4 23 July 2024' is the draft revision date, not publication."
           }
         }
       }
