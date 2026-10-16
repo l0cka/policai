@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { PageIntro } from '@/components/layout';
 import {
-  AnalysisTierLabel,
   ArticleDate,
   ArticleThumbnail,
+  ArticleTypeLabel,
   Byline,
 } from '@/components/analysis';
 import { getArticles } from '@/lib/data-service';
@@ -78,15 +78,15 @@ export default async function AnalysisPage({
             <article
               key={article.slug}
               className={cn(
-                'grid gap-2 border-b border-border py-5 transition-colors duration-[var(--dur-fast)] hover:bg-[var(--row-hover)] sm:grid-cols-[8rem_minmax(0,1fr)]',
-                article.image && 'sm:grid-cols-[8rem_minmax(0,1fr)_10rem]',
+                'grid gap-2 border-b border-[var(--rule-hair)] py-[var(--space-6)] transition-colors duration-[var(--dur-fast)] hover:bg-[var(--row-hover)] sm:grid-cols-[8rem_minmax(0,1fr)] sm:gap-x-[var(--space-8)] lg:grid-cols-[8rem_minmax(0,40rem)] lg:justify-start',
+                article.image && 'sm:grid-cols-[8rem_minmax(0,1fr)_10rem] lg:grid-cols-[8rem_minmax(0,40rem)_10rem]',
               )}
             >
-              <p className="text-xs font-medium text-muted-foreground tabular">
+              <p className="font-mono text-[length:var(--type-label)] uppercase tracking-[0.08em] text-muted-foreground tabular">
                 <ArticleDate date={article.publishedAt} />
               </p>
               <div className="min-w-0">
-                <AnalysisTierLabel type={article.type} />
+                <ArticleTypeLabel type={article.type} />
                 <h2 className="mt-2">
                   <Link href={`/analysis/${article.slug}`} className="record-title hover:text-primary">
                     {article.title}
@@ -105,7 +105,7 @@ export default async function AnalysisPage({
               </div>
               {article.image ? (
                 <Link href={`/analysis/${article.slug}`} tabIndex={-1} aria-hidden="true" className="order-first sm:order-last">
-                  <ArticleThumbnail image={article.image} />
+                  <ArticleThumbnail image={article.image} sizes="(min-width: 640px) 160px, 100vw" />
                 </Link>
               ) : null}
             </article>
