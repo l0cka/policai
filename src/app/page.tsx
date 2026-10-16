@@ -1,6 +1,8 @@
+import { AnalysisHero } from '@/components/analysis-hero';
 import { PolicyBrowser } from '@/components/policy-browser';
 import { UpcomingDeadlinesRail } from '@/components/upcoming-deadlines-rail';
 import {
+  getArticles,
   getCollectionMeta,
   getDevelopments,
   getPolicies,
@@ -17,11 +19,12 @@ import { summarizeManualSourceCoverage } from '@/lib/source-monitoring';
 export const revalidate = 3600;
 
 export default async function HomePage() {
-  const [policies, allDevelopments, meta, monitoring] = await Promise.all([
+  const [policies, allDevelopments, meta, monitoring, articles] = await Promise.all([
     getPolicies(),
     getDevelopments(),
     getCollectionMeta(),
     getSourceMonitoring(),
+    getArticles(),
   ]);
   const manualCoverage = summarizeManualSourceCoverage(
     WATCH_SOURCES,
@@ -60,6 +63,7 @@ export default async function HomePage() {
     <PolicyBrowser
       policies={policies}
       upcomingDates={upcomingDates}
+      analysisHero={<AnalysisHero articles={articles} />}
       deadlinesRail={<UpcomingDeadlinesRail items={deadlines} today={today} />}
       today={today}
       developments={developments}

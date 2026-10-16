@@ -91,7 +91,10 @@ describe('article images', () => {
     const image = screen.getByRole('img', { hidden: true });
     expect(image).toHaveAttribute('width', '2048');
     expect(image).toHaveAttribute('height', '1365');
-    expect(image).toHaveAttribute('sizes', '(min-width: 640px) 160px, 256px');
+    expect(image).toHaveAttribute('sizes', '(min-width: 640px) 160px, 100vw');
+    const frame = image.parentElement as HTMLElement;
+    expect(frame).toHaveClass('aspect-[3/2]', 'w-full', 'overflow-hidden');
+    expect(frame.className).not.toMatch(/max-w-|sm:w-/);
   });
 
   it.each([
