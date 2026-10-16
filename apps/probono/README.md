@@ -78,7 +78,16 @@ backups remain a separate operational responsibility. Preserve masks on both
 `probono-digest.service` and `probono-digest.timer`. A schedule in `ops/` does not
 authorise email delivery: unmasking requires explicit approval and verified SMTP
 configuration. Schema changes, timer changes, deployment and live writes also
-require separate approval. See [AGENTS.md](./AGENTS.md) for child-specific rules.
+require separate approval.
+
+`worker/src/digest.ts` defaults to a dry run that prints the HTML. It sends only
+when invoked with `--send` and `PROBONO_DIGEST_SEND_APPROVED=yes` is set, and
+SMTP credentials alone never enable it. Docker Compose does not pass the approval
+variable, so a sending run has to supply it deliberately. A period is one Sydney
+calendar week by `digests.period_end`; the digest claims that week in a locked
+transaction before sending and refuses when a row already exists, releasing the
+claim if the send fails. Setting the variable is the approval step and still
+needs the explicit approval above. See [AGENTS.md](./AGENTS.md) for child-specific rules.
 
 `worker/src/fetch-all.ts` exits explicitly once its run summary is printed and
 the pool is closed. `rss-parser` leaves the response unread when a feed answers
