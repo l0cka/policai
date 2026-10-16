@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { CollectionMeta } from '@/types';
-import { Header, collectionStripProps, formatCollectedAt } from './Header';
+import { collectionStripProps, formatCollectedAt } from '@/lib/collection-strip';
+import { Header } from './Header';
 
 let pathname = '/';
 vi.mock('next/navigation', () => ({ usePathname: () => pathname }));

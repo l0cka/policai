@@ -23,6 +23,15 @@ The collector is the automation behind the Developments feed: it watches officia
      `data/watch-state.json`,
    - coverage health, per-source item/candidate counts, and errors →
      `public/data/meta.json`.
+   The site header strip reads `lastCollectedAt` ("Collected 17 Oct 2026,
+   06:35 AEDT", Australia/Sydney) and shows `collector.health` and the
+   `successfulSourceCount/dueSourceCount` ratio beside it
+   ([`collection-strip.ts`](../src/lib/collection-strip.ts)). `lastHealthyAt`
+   is the last run with no failed due source. It still anchors the weekly
+   window and the register freshness date, and is never shown as the
+   collection date. A run that fails one source stays `degraded` and keeps
+   `lastHealthyAt` where it was, so the two dates drift apart while a source
+   stays broken.
 4. The collector **never writes `data/policies.json`** — the register only changes through reviewed commits. The host wrapper `ops/collector/policai-collect.sh` fails a collection run that changes it. No GitHub workflow checks this, so a hand-made PR that edits the register is caught only by review.
 
 Non-dry-run collection holds the same cross-process data transaction lock as
@@ -708,6 +717,11 @@ npm run collect -- --dry-run --source=<id>
   it to `automation: manual` with an explanation. Do not count a challenge page
   as coverage and do not disable an authoritative source merely because it
   cannot be automated.
+  Every due source counts in the health denominator, including a source that
+  is known to be blocked, so one persistent refusal keeps the run `degraded`
+  and `lastHealthyAt` stale. Move such a source to `automation: manual`
+  (which drops it from the denominator) rather than excluding it from the
+  count.
 - **An HTML source reports no coverage** — only links inside recognised
   publication/result containers count as index entries. Navigation, footer,
   homepage, login, and soft-error links do not make a source healthy; inspect
