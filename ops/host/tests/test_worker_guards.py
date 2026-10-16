@@ -324,6 +324,31 @@ class FailureLineTests(unittest.TestCase):
         self.assertEqual(len(journal.call_args_list), 1)
         self.assertIn("worker command not allowlisted", journal.call_args.args[1])
 
+    def test_a_line_that_cannot_be_built_falls_back_to_a_fixed_line(self):
+        error = RuntimeError("unsafe installed root-owned entrypoint")
+        with patch.dict(sys.modules, {"host": None}), redirect_stderr(io.StringIO()) as err:
+            cli.report("worker", error)
+        self.assertEqual(
+            err.getvalue(),
+            "Refused: failure report unavailable."
+            " Inspect status and reviewed prerequisites; no automatic retry.\n",
+        )
+
+    def test_a_journal_failure_keeps_the_stderr_line(self):
+        error = d.Refused("worker command not allowlisted")
+        down = OSError("journal unavailable")
+        with (
+            patch.object(cli.syslog, "openlog"),
+            patch.object(cli.syslog, "syslog", side_effect=down),
+            redirect_stderr(io.StringIO()) as err,
+        ):
+            cli.report("compose", error)
+        self.assertEqual(
+            err.getvalue(),
+            "Refused: worker command not allowlisted."
+            " Inspect status and reviewed prerequisites; no automatic retry.\n",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
