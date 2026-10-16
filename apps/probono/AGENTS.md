@@ -36,19 +36,29 @@ conventions still apply, but root Policai data/runtime assumptions do not.
   implicitly deploy Pro Bono or change its database, timers or email delivery.
 - The A2J cutover has been executed (2026-09-23 22:19 AEST). The live child
   release is `/var/lib/probono-radar/app/apps/probono`; the probono
-  ingest/enrich/backup/backup-mirror/verify-deadlines user units run from that
-  tree through the root-owned guarded dispatcher
-  `/usr/local/libexec/policai-host/cli.py`, whose allowlist is installed and
-  hash-pinned in the root config `installed_hashes`. The legacy checkout
+  ingest/enrich/backup/verify-deadlines user units run from that tree through
+  the root-owned guarded dispatcher `/usr/local/libexec/policai-host/cli.py`,
+  whose allowlist is installed and hash-pinned in the root config
+  `installed_hashes`. `probono-backup-mirror.service` still runs the untracked
+  `/home/l0cka/.local/bin/probono-backup-mirror.sh` directly, outside the
+  dispatcher. Its reviewed replacement is `ops/host/backup-mirror.sh` with
+  `ops/host/units/probono-backup-mirror.service` (`cli.py worker
+  backup-mirror`); it takes effect only when Argus DevOps installs it with
+  Daniel's approval (#197). The legacy checkout
   `/home/l0cka/Work/Argus/services/probono-radar/src` is retained as historical
   reference, not a runtime; verify actual systemd working directories and
   container ownership before operations.
-- Do not use the old `ops/deploy.sh` rsync deployment (`rsync --delete`). Legacy
-  runbooks and unit paths are historical until an approved release procedure
-  replaces them. Never sync a dirty checkout over another checkout.
+- The old `ops/deploy.sh` rsync deployment (`rsync --delete`) is removed; do not
+  recreate it. Installed service units are sourced from `ops/host/units/` at the
+  repository root. Legacy runbooks are historical until an approved release
+  procedure replaces them. Never sync a dirty checkout over another checkout.
 - Preserve masks on `probono-digest.service` and `probono-digest.timer`. Never
   unmask, enable or send a digest without explicit approval and verified SMTP
-  configuration. An included timer schedule is not permission to send email.
+  configuration. Do not add tracked digest unit files.
+- `worker/src/digest.ts` is a dry run unless it gets `--send` and
+  `PROBONO_DIGEST_SEND_APPROVED=yes`, and it refuses a second send in the same
+  Sydney week. Set the variable only on explicit approval; never add it to
+  Compose, env files or units.
 - Database migrations, live writes, deployment, timer changes and destructive
   cleanup need separate approval. Preserve external Postgres state, secrets and
   backups through cutover and rollback. Machine enrichment is not editorial

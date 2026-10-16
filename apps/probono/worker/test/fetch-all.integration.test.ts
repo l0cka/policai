@@ -6,8 +6,6 @@ import { parseRssString } from '../src/lib/fetch-rss.js';
 import { canonicalizeUrl } from '../src/lib/canonical.js';
 import type { RawItem } from '../src/lib/fetch-firecrawl.js';
 
-// Requires: docker compose up -d db && schema applied.
-// DATABASE_URL=postgres://radar:dev-only-password@127.0.0.1:5433/radar
 const describeWithDatabase = process.env.DATABASE_URL ? describe : describe.skip;
 
 describeWithDatabase('ingest pipeline (integration)', () => {

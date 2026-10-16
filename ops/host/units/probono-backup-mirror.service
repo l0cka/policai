@@ -1,0 +1,7 @@
+[Unit]
+Description=Mirror Pro Bono Radar database backups to the second physical disk
+
+[Service]
+Type=oneshot
+WorkingDirectory=/var/lib/probono-radar/app/apps/probono
+ExecStart=/usr/bin/python3 -I /usr/local/libexec/policai-host/cli.py worker backup-mirror

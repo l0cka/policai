@@ -15,7 +15,7 @@ Do not run this bundle as root. Review and install a fixed snapshot first.
 WHAT EXISTS
   install.py: first-install file transaction with protected source-manifest checks,
   held-job preflight, original-file backups and repeatable pre-initialization rollback.
-  It installs 12 explicit files only. It does not provision release clones, environment,
+  It installs 14 explicit files only. It does not provision release clones, environment,
   config, state directories or locks, reload managers, start jobs, or activate runtimes.
   units/probono-*.service: guarded worker entrypoints; existing timers remain separate.
   dispatcher.py: four-class routing, stable flock exclusion, fsynced journals,
@@ -28,6 +28,16 @@ WHAT EXISTS
   deadline verification.
   backup.sh: canonical-path variant of the existing backup helper; same dump,
   gzip/content/size checks and 14-day/newest-five retention semantics.
+  backup-mirror.sh: additive copy of the radar-*.sql.gz dumps onto a second
+  physical disk, so one device failure cannot take the database and every backup
+  together. It is not off-site. It refuses to run unless the mirror mount is
+  mounted (an unmounted mount point would put the copy back on the root disk),
+  never overwrites a mirrored file (--ignore-existing, so a corrupt source cannot
+  replace a good copy), never deletes (pruning the mirror is an operator act),
+  gzip-tests every mirrored file and rewrites SHA256SUMS.txt. The worker lock
+  serialises it with backup.sh. Its three paths come from the root config key
+  backup_mirror (source, mount, destination); the destination must sit beneath
+  the mount, which must not be / or contain the source.
   policai-deploy: new delegate for /usr/local/libexec/policai-deploy.
   compatibility/policai-deploy.sh: tested home-bin delegate to system service.
 
@@ -49,7 +59,7 @@ RUNTIME CONTRACT
 INSTALLATION CONTRACT — ONLY IN THE SEPARATELY APPROVED WINDOW
   1. Complete INSTALL-REVIEW.txt preflight, backup/restore drill and timer freeze.
      Verify no live legacy job can bypass the new exclusion. Preserve originals.
-  2. Install cli.py, host.py, dispatcher.py, backup.sh and bin/docker below
+  2. Install cli.py, host.py, dispatcher.py, backup.sh, backup-mirror.sh and bin/docker below
      /usr/local/libexec/policai-host, root-owned. Directories 0755, modules 0644,
      entrypoints 0755. Replace /usr/local/libexec/policai-deploy with the new
      delegate only after the old oneshot is idle. Preserve rollback copies.
@@ -89,6 +99,7 @@ SERVICE ROUTING (REVIEW EXISTING HARDENING; NOT BLIND DROP-INS)
     /usr/bin/python3 -I /usr/local/libexec/policai-host/cli.py worker ingest
     /usr/bin/python3 -I /usr/local/libexec/policai-host/cli.py worker enrich
     /usr/bin/python3 -I /usr/local/libexec/policai-host/cli.py worker backup
+    /usr/bin/python3 -I /usr/local/libexec/policai-host/cli.py worker backup-mirror
     /usr/bin/python3 -I /usr/local/libexec/policai-host/cli.py worker verify-deadlines
   Working directory: /var/lib/probono-radar/app/apps/probono.
   Preserve original schedules, principal and Claude capability restrictions.

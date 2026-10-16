@@ -35,6 +35,39 @@ DEPLOY_CLIENT_ENV = {
 }
 
 
+WORKER_SCRIPTS = {
+    "ingest": "ops/ingest.sh",
+    "enrich": "ops/enrich.sh",
+    "backup": str(CODE / "backup.sh"),
+    "backup-mirror": str(CODE / "backup-mirror.sh"),
+    "verify-deadlines": "ops/verify-deadlines.sh",
+}
+
+
+def mirror_environment(config):
+    paths = config["backup_mirror"]
+    for key in ("source", "mount", "destination"):
+        value = paths[key]
+        if (
+            not isinstance(value, str)
+            or not value.startswith("/")
+            or os.path.normpath(value) != value
+        ):
+            raise Refused("backup mirror path invalid")
+    mount = Path(paths["mount"])
+    if (
+        mount == Path("/")
+        or mount not in Path(paths["destination"]).parents
+        or mount in Path(paths["source"]).parents
+    ):
+        raise Refused("backup mirror must write beneath a separate mount")
+    return {
+        "PROBONO_MIRROR_SOURCE": paths["source"],
+        "PROBONO_MIRROR_MOUNT": paths["mount"],
+        "PROBONO_MIRROR_DESTINATION": paths["destination"],
+    }
+
+
 def user_unit_directory():
     # The system unit binds only this source directory read-only OUTSIDE /home.
     # Direct operator CLI use observes canonical files without a synthetic mirror.
@@ -389,11 +422,9 @@ class Host:
             str(CODE / "dispatcher.py"),
             str(CODE / "bin/docker"),
             str(CODE / "backup.sh"),
+            str(CODE / "backup-mirror.sh"),
             "/etc/systemd/system/policai-pull.service",
-            "/home/l0cka/.config/systemd/user/probono-ingest.service",
-            "/home/l0cka/.config/systemd/user/probono-enrich.service",
-            "/home/l0cka/.config/systemd/user/probono-backup.service",
-            "/home/l0cka/.config/systemd/user/probono-verify-deadlines.service",
+            *(str(USER_UNITS / f"probono-{name}.service") for name in WORKER_SCRIPTS),
         }
         if not required.issubset(self.config["installed_hashes"]):
             raise Refused("guarded entrypoint installation proof missing")
@@ -750,24 +781,25 @@ class Host:
         )
 
     def run_worker(self, name, lockfds):
-        if name not in ("ingest", "enrich", "backup", "verify-deadlines"):
+        if name not in WORKER_SCRIPTS:
             raise Refused("scheduled command out of scope")
         self.check_worker_identity()
         self.check_worker_release()
-        app = BASES["probono"] / "app/apps/probono"
-        script = str(CODE / "backup.sh") if name == "backup" else "ops/" + name + ".sh"
+        extra_env = {
+            "PATH": str(CODE / "bin") + ":/home/l0cka/.local/bin:/usr/bin:/bin",
+            "PROBONO_DOCKER_BIN": str(CODE / "bin/docker"),
+            "PROBONO_CLAUDE_BIN": "/home/l0cka/.local/bin/claude",
+        }
+        if name == "backup-mirror":
+            extra_env.update(mirror_environment(self.config))
         self.runner.execute(
-            ["/usr/bin/bash", script],
-            app,
+            ["/usr/bin/bash", WORKER_SCRIPTS[name]],
+            BASES["probono"] / "app/apps/probono",
             identity="l0cka",
             timeout=1800,
             limit=16_000_000,
             pass_fds=lockfds,
-            extra_env={
-                "PATH": str(CODE / "bin") + ":/home/l0cka/.local/bin:/usr/bin:/bin",
-                "PROBONO_DOCKER_BIN": str(CODE / "bin/docker"),
-                "PROBONO_CLAUDE_BIN": "/home/l0cka/.local/bin/claude",
-            },
+            extra_env=extra_env,
         )
         # Do not return or journal worker output, which can contain article data.
 

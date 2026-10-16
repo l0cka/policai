@@ -23,7 +23,7 @@ The collector is the automation behind the Developments feed: it watches officia
      `data/watch-state.json`,
    - coverage health, per-source item/candidate counts, and errors →
      `public/data/meta.json`.
-4. The collector **never writes `data/policies.json`** — the register only changes through reviewed commits, and the GitHub workflow fails if a collector run touches it.
+4. The collector **never writes `data/policies.json`** — the register only changes through reviewed commits. The host wrapper `ops/collector/policai-collect.sh` fails a collection run that changes it. No GitHub workflow checks this, so a hand-made PR that edits the register is caught only by review.
 
 Non-dry-run collection holds the same cross-process data transaction lock as
 the editorial MCP workflow from its initial reads through its final atomic
@@ -47,6 +47,11 @@ produce a lead only after their initial baseline changes. A changed fingerprint
 is not committed as the new baseline until the revised document is extracted
 successfully. Scanned PDFs without an extractable text layer fail with an
 explicit OCR/manual-review requirement and are retried.
+A pending document version is always re-fingerprinted through the source's own
+retrieval path (plain HTTP or the browser, with linked documents folded in),
+even when the source is not due. Firecrawl markdown never produces a document
+fingerprint: its hash is not comparable with the HTML-plus-attachments hash, so
+using it would stage a false new version and supersede the pending one.
 An unreadable changed-document version that reaches the retry limit remains a
 failed source-health condition on subsequent runs until a reviewer resolves it
 or the publisher serves a new readable version.
@@ -103,6 +108,19 @@ creates a new sequenced `baseline_reversion` review. This prevents the obsolete
 changed-version review from withholding a valid baseline forever while still
 requiring an editor to confirm the live bytes before public access is restored.
 
+Page publication dates come from, in order: a visible publication label, then
+`dcterms.created`, `dcterms.issued`, `article:published_time` and
+`itemprop="datePublished"` metadata, then publication-labelled `time` elements,
+then the last-resort keys. The last-resort keys depend on the page's platform.
+A page whose `<meta name="generator">` content contains `GovCMS` or `Drupal`
+(any case) is a GovCMS page; there `dcterms.date` is the edit time, so it never
+sets `publishedAt` and only `date` remains. Every other page falls back to
+`dcterms.date`, then `date`. A GovCMS page with none of these fields has no
+publication date. Modified-time keys
+(`dcterms.modified`, `article:modified_time`, `og:updated_time`) never set
+`publishedAt`. Dates are read as written, so the source's own calendar day wins
+whatever the machine's time zone.
+
 HTML fingerprints include every publication-date metadata field used by
 extraction, relevant instrument links, and visible text. Linked PDF, Word, and RTF documents are retrieved and
 their byte hashes are folded into the landing page's fingerprint. A landing
@@ -132,9 +150,14 @@ attachments.
 
 When a changed direct document is already the source for a register policy, the
 collector stages a version-specific update review with `targetPolicyId`; it
-does not propose a duplicate policy. Pending and approved update reviews
+does not propose a duplicate policy. A record is matched through the same
+identity set that keeps its URLs out of discovery: its `sourceUrl` plus its
+verification `url` and redirect `finalUrl`. When the watched URL is such an
+alias, the review carries the record's canonical `sourceUrl`, while its source
+evidence and linked development keep the URL the collector retrieved. Timeline
+events match the same way. Pending and approved update reviews
 temporarily withhold that policy from public reads until an editor publishes
-the re-verified record or rejects the change review. Publishing refuses an
+the re-verified record. These reviews cannot be rejected. Publishing refuses an
 older update when a newer non-rejected source version exists, and publishing
 the newest version rejects older still-active update reviews as superseded.
 
@@ -211,7 +234,8 @@ a headless-browser retriever (`src/lib/pipeline/browser-fetch.ts`, Playwright
 Chromium). For sources marked `fetchStrategy: 'browser'`, the index or RSS
 listing page is still retrieved through the browser directly, because
 Firecrawl returns markdown and index parsing needs the page's HTML links.
-Candidate pages discovered from those sources are retrieved through a
+Candidate pages discovered from those sources (but never a document source's
+own page) are retrieved through a
 self-hosted Firecrawl instance first (`src/lib/pipeline/firecrawl.ts`),
 falling back to the browser when Firecrawl is unavailable, times out, or
 returns no usable markdown. Sources carrying an identity exception bypass

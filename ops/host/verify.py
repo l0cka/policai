@@ -51,7 +51,7 @@ sources += sorted((base / "tests").glob("*.py")) + sorted(
 )
 for source in sources:
     ast.parse(source.read_text(), filename=str(source))
-for shell in ("backup.sh", "policai-deploy"):
+for shell in ("backup.sh", "backup-mirror.sh", "policai-deploy"):
     subprocess.run(["/usr/bin/bash", "-n", str(base / shell)], check=True, capture_output=True)
 
 checks = [
@@ -61,6 +61,7 @@ checks = [
     "install.py",
     "bin/docker",
     "backup.sh",
+    "backup-mirror.sh",
     "policai-deploy",
     "compatibility/policai-deploy.sh",
     "compatibility/test_compat.py",
@@ -73,6 +74,7 @@ checks = [
     "units/probono-ingest.service",
     "units/probono-enrich.service",
     "units/probono-backup.service",
+    "units/probono-backup-mirror.service",
     "units/probono-verify-deadlines.service",
     "ruff.toml",
     "run_tests.py",
@@ -86,7 +88,7 @@ report = {
     "total_tests": sum(item["count"] or 0 for item in results),
     "suites": results,
     "syntax_files": len(sources),
-    "shell_syntax_files": 2,
+    "shell_syntax_files": 3,
     "production_mutations": False,
     "live_deployment_verified": False,
     "independent_review": "pending Bob review",

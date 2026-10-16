@@ -43,6 +43,7 @@ import {
   canonicalizeSourceUrl,
   isAllowedSourceHost,
   parseSourceUrl,
+  sourceIdentityUrls,
   sourceUrlIdentity,
   sourceUrlsEqual,
 } from '@/lib/source-url';
@@ -378,7 +379,7 @@ function recoverPersistedDocumentTransitions(
     if (!sourceId) continue;
     const candidate: Candidate = {
       title: review.title,
-      url: review.sourceUrl,
+      url: review.linkedDevelopment?.url ?? review.sourceUrl,
       text: review.analysis.summary,
       changeFingerprint: `${contentHash}:${changeCount}`,
     };
@@ -461,6 +462,18 @@ function recoverPersistedDocumentTransitions(
       state.lastCheckedBySource[sourceId] = recoveredCheckedAt;
     }
   }
+}
+
+function recordsByIdentityUrl<
+  T extends { sourceUrl: string; verification: { source: SourceEvidence } },
+>(records: readonly T[]): Map<string, T> {
+  return new Map(
+    records.flatMap((record) =>
+      sourceIdentityUrls(record.sourceUrl, record.verification.source).map(
+        (url) => [url, record] as const,
+      ),
+    ),
+  );
 }
 
 function supersedeOlderDocumentCandidates(
@@ -701,7 +714,7 @@ function buildReviewCandidate(
 
   return {
     id: `source-review-${development.id}`,
-    sourceUrl: candidate.url,
+    sourceUrl: existingPolicy?.sourceUrl ?? candidate.url,
     title: candidate.title,
     entryKind: 'policy',
     targetPolicyId: existingPolicy?.id,
@@ -873,7 +886,7 @@ function buildChangedTimelineDocumentReview(
     development,
     review: {
       id: `source-review-${development.id}`,
-      sourceUrl: candidate.url,
+      sourceUrl: event.sourceUrl,
       title: candidate.title,
       entryKind: 'timeline_event',
       targetTimelineEventId: event.id,
@@ -1120,11 +1133,19 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     options.sourceReviews ?? [],
     catalogSources,
   );
+  const trackedPoliciesByUrl = recordsByIdentityUrl(
+    options.trackedPolicies ?? [],
+  );
+  const trackedTimelineEventsByUrl = recordsByIdentityUrl(
+    options.trackedTimelineEvents ?? [],
+  );
   const knownPublishedUrls = new Set([
     ...options.existingDevelopments.map((development) =>
       sourceUrlIdentity(development.url),
     ),
     ...(options.trackedUrls ?? []).map(sourceUrlIdentity),
+    ...trackedPoliciesByUrl.keys(),
+    ...trackedTimelineEventsByUrl.keys(),
   ]);
   const knownHeadlineKeys = new Set(
     options.existingDevelopments
@@ -1136,18 +1157,6 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         ),
       )
       .filter((value): value is string => Boolean(value)),
-  );
-  const trackedPoliciesByUrl = new Map(
-    (options.trackedPolicies ?? []).map((policy) => [
-      sourceUrlIdentity(policy.sourceUrl),
-      policy,
-    ]),
-  );
-  const trackedTimelineEventsByUrl = new Map(
-    (options.trackedTimelineEvents ?? []).map((event) => [
-      sourceUrlIdentity(event.sourceUrl),
-      event,
-    ]),
   );
   const existingDevelopmentsById = new Map(
     options.existingDevelopments.map((development) => [
@@ -1274,64 +1283,67 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
       );
     }
 
-    if (due) {
+    const attemptIndexRetrieval = async (
+      impl: typeof fetch | undefined,
+      timeoutMs?: number,
+    ) => {
+      const retrieval = await retrieveSource(source.url, {
+        fetchImpl: impl,
+        now: () => now,
+        hashLinkedDocuments: source.kind === 'document',
+        identityAuthority,
+        ...(timeoutMs !== undefined ? { timeoutMs } : {}),
+      });
+      const extracted =
+        source.kind === 'document'
+          ? null
+          : source.kind === 'rss'
+            ? extractFromRss(retrieval.body, source.url, {
+                titlePattern: source.bodyRelevance?.titlePattern,
+              })
+            : extractFromHtml(retrieval.body, source.url);
+      return { retrieval, extracted };
+    };
+    const retrieveSourceIndex = async () => {
+      if (preferBrowser) {
+        return attemptIndexRetrieval(
+          browserFetchImpl,
+          BROWSER_RETRIEVAL_TIMEOUT_MS,
+        );
+      }
       try {
-        const attemptIndexRetrieval = async (
-          impl: typeof fetch | undefined,
-          timeoutMs?: number,
-        ) => {
-          const retrieval = await retrieveSource(source.url, {
-            fetchImpl: impl,
-            now: () => now,
-            hashLinkedDocuments: source.kind === 'document',
-            identityAuthority,
-            ...(timeoutMs !== undefined ? { timeoutMs } : {}),
-          });
-          const extracted =
-            source.kind === 'document'
-              ? null
-              : source.kind === 'rss'
-                ? extractFromRss(retrieval.body, source.url, {
-                    titlePattern: source.bodyRelevance?.titlePattern,
-                  })
-                : extractFromHtml(retrieval.body, source.url);
-          return { retrieval, extracted };
-        };
-        let indexAttempt: Awaited<ReturnType<typeof attemptIndexRetrieval>>;
-        if (preferBrowser) {
-          indexAttempt = await attemptIndexRetrieval(
+        const indexAttempt = await attemptIndexRetrieval(fetchImpl);
+        if (
+          browserFetchImpl &&
+          indexAttempt.extracted?.itemCount === 0 &&
+          !indexAttempt.extracted.feedValid
+        ) {
+          log(
+            `[collect] ${source.id}: empty index, retrying with the browser retriever`,
+          );
+          return await attemptIndexRetrieval(
             browserFetchImpl,
             BROWSER_RETRIEVAL_TIMEOUT_MS,
           );
-        } else {
-          try {
-            indexAttempt = await attemptIndexRetrieval(fetchImpl);
-            if (
-              browserFetchImpl &&
-              indexAttempt.extracted?.itemCount === 0 &&
-              !indexAttempt.extracted.feedValid
-            ) {
-              log(
-                `[collect] ${source.id}: empty index, retrying with the browser retriever`,
-              );
-              indexAttempt = await attemptIndexRetrieval(
-                browserFetchImpl,
-                BROWSER_RETRIEVAL_TIMEOUT_MS,
-              );
-            }
-          } catch (error) {
-            if (!browserFetchImpl || isBrowserFallbackFutile(error)) {
-              throw error;
-            }
-            log(
-              `[collect] ${source.id}: retrying source with the browser retriever`,
-            );
-            indexAttempt = await attemptIndexRetrieval(
-              browserFetchImpl,
-              BROWSER_RETRIEVAL_TIMEOUT_MS,
-            );
-          }
         }
+        return indexAttempt;
+      } catch (error) {
+        if (!browserFetchImpl || isBrowserFallbackFutile(error)) {
+          throw error;
+        }
+        log(
+          `[collect] ${source.id}: retrying source with the browser retriever`,
+        );
+        return attemptIndexRetrieval(
+          browserFetchImpl,
+          BROWSER_RETRIEVAL_TIMEOUT_MS,
+        );
+      }
+    };
+
+    if (due) {
+      try {
+        const indexAttempt = await retrieveSourceIndex();
         sourceRetrieval = indexAttempt.retrieval;
         const indexExtraction = indexAttempt.extracted;
         if (source.kind === 'document') {
@@ -1618,9 +1630,8 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
       try {
         pageRetrieval =
           source.kind === 'document' &&
-          sourceUrlsEqual(candidate.url, source.url) &&
-          sourceRetrieval
-            ? sourceRetrieval
+          sourceUrlsEqual(candidate.url, source.url)
+            ? sourceRetrieval ?? (await retrieveSourceIndex()).retrieval
             : await retrievePageWithFallback(candidate.url);
         existingPolicy = candidate.changeFingerprint
           ? trackedPoliciesByUrl.get(sourceUrlIdentity(candidate.url))
