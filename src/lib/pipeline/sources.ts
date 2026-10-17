@@ -1125,9 +1125,9 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'document',
     schedule: 'weekly',
     enabled: true,
-    automation: 'automatic',
-    fetchStrategy: 'browser',
-    notes: 'The host rejects plain HTTP clients.',
+    automation: 'manual',
+    notes:
+      'Tracked by hand: the linked framework PDF on www.finance.gov.au resets the connection for the Policai collector identity (net::ERR_HTTP2_PROTOCOL_ERROR; curl with that identity gets HTTP/2 INTERNAL_ERROR and fails on HTTP/1.1, verified 2026-10-17) and the source has failed every collection run recorded since 2026-10-12. The block is respected and the user agent is not disguised or bypassed.',
   },
   {
     id: 'sa-office-for-ai',

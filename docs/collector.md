@@ -780,7 +780,11 @@ npm run collect -- --dry-run --source=<id>
   is known to be blocked, so one persistent refusal keeps the run `degraded`
   and `lastHealthyAt` stale. Move such a source to `automation: manual`
   (which drops it from the denominator) rather than excluding it from the
-  count.
+  count. `accc-rss` (HTTP 403 from the host's access-denied page) and
+  `wa-ai-policy` (the linked finance.gov.au framework PDF resets the
+  connection) were moved on 2026-10-17 for this reason (#304); each source's
+  `notes` carry the evidence. Until the next collection writes the new counts,
+  `meta.json` still shows the pre-change 57/59.
 - **An HTML source reports no coverage** — only links inside recognised
   publication/result containers count as index entries. Navigation, footer,
   homepage, login, and soft-error links do not make a source healthy; inspect
