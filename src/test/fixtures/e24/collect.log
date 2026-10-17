@@ -1,0 +1,9 @@
+[collect] Analysis mode: deterministic heuristics (detections require review)
+[collect] industry-ai-publications: identity exception expired on 2026-10-21; presenting the declared Policai identity
+[collect] FAILED industry-ai-publications: page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.industry.gov.au/publications?pub-topic=2963
+Call log:
+  - navigating to "https://www.industry.gov.au/publications?pub-topic=2963", waiting until "load"
+[collect] disr-news: identity exception expired on 2026-10-21; presenting the declared Policai identity
+[collect] disr-news: pending https://www.industry.gov.au/news/ai-example (page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.industry.gov.au/news/ai-example)
+[collect] digital-gov-ai: identity exception expired on 2026-10-21; presenting the declared Policai identity
+[collect] finance-news: not due yet, skipping

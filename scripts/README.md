@@ -40,6 +40,30 @@ diagnostic attempt against every source. The command rejects HTTP 200 bot
 challenges and exits non-zero when fewer than 80% of selected sources are
 usable or a critical source fails.
 
+## e24-report.ts
+
+Lists what the last collection run did with the 16 E24 sources (#162), offline.
+It reads `public/data/meta.json` `collector.sourceResults` and, optionally, the
+run log, and prints one line per source: critical flag, outcome, refusal kind,
+`identityException` marker and the first line of the error. A second section
+lists other sources whose failure matches a refusal pattern (`wa-ai-policy`
+reaches `www.finance.gov.au` through a linked PDF).
+
+```bash
+npm run report:e24
+npm run report:e24 -- --log=<run evidence dir>/collect.log
+npm run report:e24 -- --meta=<path> --json
+```
+
+Outcomes: `refused`, `failed`, `success`, `not-due` (a weekly source that was
+skipped), `manual` (now tracked by hand) and `not-run` (absent from the run).
+A failure is `refused` when its error, or a candidate failure for that source in
+the log, contains `ERR_HTTP2_PROTOCOL_ERROR`, `ERR_CONNECTION_RESET`/`ECONNRESET`
+or `HTTP 403`. The label is a pattern match for editorial review, not proof that
+the host refused the identity. Candidate failures appear in `meta.json` only as
+a count, so pass the log to see their errors. The source list is pinned in
+`src/lib/pipeline/e24-report.ts`, independent of the `identityException` field.
+
 ## audit-register.ts
 
 Compares curated register sources with stored content fingerprints.
