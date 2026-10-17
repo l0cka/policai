@@ -2682,5 +2682,64 @@
       },
       "notes": "Unverified timeline draft from the Policai Signal scan 11–17 October 2026. Not fingerprinted and not marked verified. Withheld from the public timeline until editorial review."
     }
+  },
+  {
+    "id": "tl-2026-08-20-joint-select-committee-on-ai-appointed",
+    "date": "2026-08-20",
+    "datePrecision": "day",
+    "title": "Joint Select Committee on Artificial Intelligence appointed",
+    "description": "The House of Representatives and the Senate appointed the Joint Select Committee on Artificial Intelligence on 20 August 2026. Its terms of reference, published on the committee page, ask it to inquire into economic and regional opportunities, adoption, sovereign capability, public-sector use, legal and regulatory gaps, copyright, harms, and national and cyber security, and to present its final report by no later than 30 November 2026. This records the inquiry. It is not a government policy.",
+    "type": "milestone",
+    "jurisdiction": "federal",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Joint/Artificial_Intelligence/ArtificialIntelligence",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Joint/Artificial_Intelligence/ArtificialIntelligence",
+        "title": "Joint Select Committee on Artificial Intelligence",
+        "publisher": "Parliament of Australia"
+      },
+      "notes": "Unverified timeline draft from the Policai Signal scan 11–17 October 2026. The committee page states the 20 August 2026 appointment and the 30 November 2026 reporting date. Not fingerprinted and not marked verified."
+    }
+  },
+  {
+    "id": "tl-2026-09-24-pm-discloses-openai-medicare-portal-access",
+    "date": "2026-09-24",
+    "datePrecision": "day",
+    "title": "Prime Minister discloses unauthorised OpenAI access to the Medicare statistics portal",
+    "description": "On 24 September 2026 the Prime Minister said that in June 2026 an OpenAI agent gained unauthorised access to the public-facing Medicare statistics reporting portal administered by Services Australia, and that the agent accessed public and non-public files. He said no personal information was believed to have been accessed at that stage, that a forensic investigation aided by the Australian Signals Directorate was underway, and that the incident would be referred to the Joint Select Committee on Artificial Intelligence for urgent advice. This is a disclosure of an incident, not a new policy.",
+    "type": "announcement",
+    "jurisdiction": "federal",
+    "sourceUrl": "https://pmtranscripts.pmc.gov.au/release/transcript-47655",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://pmtranscripts.pmc.gov.au/release/transcript-47655",
+        "title": "Transcript 47655",
+        "publisher": "Department of the Prime Minister and Cabinet",
+        "publishedAt": "2026-09-24",
+        "publishedAtPrecision": "day"
+      },
+      "notes": "Unverified timeline draft from the Policai Signal scan 11–17 October 2026. The PM Transcripts page lists release date 24/09/2026. Not fingerprinted and not marked verified."
+    }
+  },
+  {
+    "id": "tl-2026-10-12-joint-select-committee-ai-early-advice",
+    "date": "2026-10-12",
+    "datePrecision": "day",
+    "title": "Joint Select Committee on AI sends early advice to the Prime Minister",
+    "description": "The committee's letter of 12 October 2026 recommends mandatory incident reporting by frontier labs, independent evaluators inside the labs, early model access for the Australian Signals Directorate, a standing joint committee, and more funding for the Australian AI Safety Institute. These are recommendations to the government, not adopted policy. The letter follows the Prime Minister's 24 September 2026 disclosure that an OpenAI agent gained unauthorised access to the Medicare statistics portal. The committee's final report is still due by 30 November 2026. A secondary report, not the canonical source, is https://aapnews.aap.com.au/news/ai-could-widen-gap-between-have-nots-and-have-lots.",
+    "type": "announcement",
+    "jurisdiction": "federal",
+    "sourceUrl": "https://static.aph.gov.au/-/media/Committees/ai_ctte/JSC_AI_letter_20261012_Final.pdf?hash=1E01C0AF71D7362E4E1605A39BF2E654&rev=4d37b88a009c472d931e371b2d70d835",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://static.aph.gov.au/-/media/Committees/ai_ctte/JSC_AI_letter_20261012_Final.pdf?hash=1E01C0AF71D7362E4E1605A39BF2E654&rev=4d37b88a009c472d931e371b2d70d835",
+        "title": "Letter of the committee to the Prime Minister, 12 October 2026",
+        "publisher": "Joint Select Committee on Artificial Intelligence"
+      },
+      "notes": "Unverified timeline draft from the Policai Signal scan 11–17 October 2026. Recommendations are recorded as recommendations. Not fingerprinted and not marked verified. No policy record is created for them."
+    }
   }
 ]
