@@ -201,6 +201,21 @@ export default async function StatusPage() {
           </dl>
         </section>
 
+        {meta.collector.robotsUnverified?.length ? (
+          <section className="border-t border-border pt-7">
+            <h2 className="section-title">Robots unverified</h2>
+            <p className="text-muted-foreground">
+              robots.txt for these hosts has not been readable for 3 or more
+              runs; the collector still paces requests to them.
+            </p>
+            <ul className="mt-3 space-y-1 font-mono text-xs">
+              {meta.collector.robotsUnverified.map((host) => (
+                <li key={host}>{host}</li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
+
         <section className="border-t border-border pt-7">
           <h2 className="section-title">Sources</h2>
           <p className="mb-3 text-muted-foreground">

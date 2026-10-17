@@ -18,6 +18,7 @@ export const ROBOTS_RULES_CAP = 500;
 export const ROBOTS_PATTERN_CAP = 1000;
 export const ROBOTS_SITEMAPS_CAP = 20;
 export const ROBOTS_TIMEOUT_MS = 20_000;
+export const ROBOTS_UNVERIFIED_RUNS = 3;
 export const HOST_KEY = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*(:\d{1,5})?$/;
 
 const PRODUCT_TOKEN = COLLECTOR_IDENTITY_TOKEN.split('/')[0];
@@ -34,7 +35,11 @@ export interface HostRecord {
   backoffUntil: string | null;
   backoffStatus: 429 | 503 | null;
   backoffCount: number;
+  robotsUnreachableRuns: number;
 }
+
+export type StoredHostRecord = Omit<HostRecord, 'robotsUnreachableRuns'> &
+  Partial<Pick<HostRecord, 'robotsUnreachableRuns'>>;
 
 export type RefusalClass = Extract<
   FailureClass,
@@ -62,7 +67,7 @@ export interface HostGate {
 }
 
 export interface HostGateDeps {
-  hosts: Record<Host, HostRecord>;
+  hosts: Record<Host, StoredHostRecord>;
   refused: ReadonlyMap<Host, string>;
   fetchRobots: (origin: string) => Promise<{ status: number; body: string } | null>;
   now: () => number;
@@ -123,7 +128,17 @@ function storedRobots(rules: RobotsRules, origin: string): RobotsRules {
 }
 
 function emptyRecord(seenAt: string): HostRecord {
-  return { seenAt, robots: null, backoffUntil: null, backoffStatus: null, backoffCount: 0 };
+  return { seenAt, robots: null, backoffUntil: null, backoffStatus: null, backoffCount: 0, robotsUnreachableRuns: 0 };
+}
+
+export function robotsUnverifiedHosts(hosts: Record<Host, HostRecord>): Host[] {
+  return (Object.entries(hosts) as Array<[Host, HostRecord]>)
+    .filter(
+      ([, record]) =>
+        record.robots?.status === 'unreachable' && record.robotsUnreachableRuns >= ROBOTS_UNVERIFIED_RUNS,
+    )
+    .map(([host]) => host)
+    .sort();
 }
 
 function parseRetryAfter(value: string | null | undefined, nowMs: number): number | null {
@@ -139,7 +154,10 @@ export function createHostGate(deps: HostGateDeps): HostGate {
   const minGapMs = deps.minGapMs ?? DEFAULT_MIN_GAP_MS;
   const waitBudgetMs = deps.waitBudgetMs ?? WAIT_BUDGET_MS;
   const records = new Map<Host, HostRecord>(
-    Object.entries(deps.hosts).map(([host, record]) => [host as Host, { ...record }]),
+    Object.entries(deps.hosts).map(([host, record]) => [
+      host as Host,
+      { ...record, robotsUnreachableRuns: record.robotsUnreachableRuns ?? 0 },
+    ]),
   );
   const tripped = new Map<Host, { cls: RefusalClass; reason: string }>();
   const lastRequestAt = new Map<Host, number>();
@@ -178,7 +196,7 @@ export function createHostGate(deps: HostGateDeps): HostGate {
     return true;
   };
 
-  const robotsFresh = (robots: RobotsRecord | null): robots is RobotsRecord =>
+  const robotsFresh = (robots: RobotsRecord | null): boolean =>
     robots !== null &&
     robots.status !== 'unreachable' &&
     deps.now() - Date.parse(robots.fetchedAt) < ROBOTS_TTL_MS;
@@ -201,8 +219,14 @@ export function createHostGate(deps: HostGateDeps): HostGate {
     const response = await deps.fetchRobots(url.origin);
     const fetchedAt = iso();
     if (response === null || response.status >= 500) {
-      record.robots = { ...(record.robots ?? NO_RULES), fetchedAt, status: 'unreachable' };
-    } else if (response.status >= 400) {
+      record.robotsUnreachableRuns += 1;
+      if (record.robots === null || record.robots.status === 'unreachable') {
+        record.robots = { ...(record.robots ?? NO_RULES), fetchedAt, status: 'unreachable' };
+      }
+      return true;
+    }
+    record.robotsUnreachableRuns = 0;
+    if (response.status >= 400) {
       record.robots = { ...NO_RULES, fetchedAt, status: 'absent' };
     } else {
       record.robots = {

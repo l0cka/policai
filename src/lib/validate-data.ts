@@ -1361,6 +1361,14 @@ export function validateCollectionMeta(meta: CollectionMeta): ValidationReport {
       errors.push(`meta: collector ${field} must be a non-negative integer`);
     }
   }
+  if (
+    collector.robotsUnverified !== undefined &&
+    !(
+      Array.isArray(collector.robotsUnverified) &&
+      collector.robotsUnverified.every((host) => typeof host === 'string' && isHostKey(host))
+    )
+  )
+    errors.push('meta: invalid collector robotsUnverified');
 
   const coverageResults = collector.sourceResults.filter(
     (result) => result.coverageEligible !== false,
@@ -1950,6 +1958,8 @@ export function validateWatchState(state: WatchState): ValidationReport {
       errors.push(`${label}: invalid backoffStatus`);
     if (!Number.isInteger(record.backoffCount) || record.backoffCount < 0)
       errors.push(`${label}: invalid backoffCount`);
+    if (!Number.isInteger(record.robotsUnreachableRuns) || record.robotsUnreachableRuns < 0)
+      errors.push(`${label}: invalid robotsUnreachableRuns`);
   }
 
   for (const [sourceId, snapshot] of Object.entries(state.sourceSnapshots)) {

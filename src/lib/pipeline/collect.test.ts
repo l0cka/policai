@@ -172,6 +172,7 @@ describe('collect host gate state', () => {
           backoffUntil: null,
           backoffStatus: null,
           backoffCount: 0,
+          robotsUnreachableRuns: 0,
         },
       },
     };

@@ -22,7 +22,7 @@ import {
 import type { ClaudeVerdict } from './claude-classify';
 import { extractRetrievedDocument } from './content';
 import { classifyFailure, publicFailureUrl } from './failure';
-import type { Host, HostGate, HostRecord } from './host-gate';
+import { robotsUnverifiedHosts, type Host, type HostGate, type HostRecord } from './host-gate';
 import {
   extractFromHtml,
   extractFromRss,
@@ -2021,12 +2021,16 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
       (slowest ? ` (most on ${slowest[0]}: ${slowest[1]} ms)` : ''),
   );
   const robotsUnreachable = Object.entries(state.hosts)
-    .filter(([, record]) => record.robots?.status === 'unreachable')
+    .filter(([, record]) => record.robotsUnreachableRuns > 0)
     .map(([host]) => host);
   if (robotsUnreachable.length > 0) {
     log(
       `[collect] host gate: robots.txt unreachable on last attempt for ${robotsUnreachable.length} host${robotsUnreachable.length === 1 ? '' : 's'} (${robotsUnreachable.join(', ')}); cached rules kept, otherwise allowed`,
     );
+  }
+  const robotsUnverified = robotsUnverifiedHosts(state.hosts);
+  if (robotsUnverified.length > 0) {
+    log(`[collect] robots unverified: ${robotsUnverified.join(', ')}`);
   }
 
   const runHealth = healthForRun(
@@ -2062,6 +2066,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         (source) => source.enabled && source.automation === 'manual',
       ).length,
       sourceResults,
+      ...(robotsUnverified.length > 0 ? { robotsUnverified } : {}),
     },
   };
 

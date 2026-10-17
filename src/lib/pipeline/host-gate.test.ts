@@ -206,6 +206,7 @@ describe('admit', () => {
         backoffUntil: null,
         backoffStatus: null,
         backoffCount: 0,
+        robotsUnreachableRuns: 0,
       },
     };
     const h = harness({ [A]: null }, { hosts: cached });
@@ -235,6 +236,7 @@ describe('admit', () => {
         backoffUntil: null,
         backoffStatus: null,
         backoffCount: 0,
+        robotsUnreachableRuns: 0,
       },
     });
     const fresh = harness({ [A]: { status: 200, body: 'User-agent: *\nDisallow: /live-rule' } }, { hosts: cached(HOUR, 'parsed') });
@@ -471,6 +473,7 @@ describe('hosts', () => {
       backoffUntil: null,
       backoffStatus: null,
       backoffCount: 0,
+      robotsUnreachableRuns: 0,
     });
     const h = harness({}, { hosts: { [stale]: record(HOST_RETENTION_MS + 1), [recent]: record(HOUR) } });
     await h.gate.admit(url('/x'));
@@ -526,11 +529,11 @@ describe('robots unverified', () => {
   const host = hostOf(url('/'));
 
   async function runs(responses: RobotsResponse[], hosts: HostGateDeps['hosts'] = {}) {
-    let state = hosts;
+    let state: Record<Host, HostRecord> = {};
     const counts: number[] = [];
     const unverified: Host[][] = [];
     for (const [day, response] of responses.entries()) {
-      const h = harness({ [A]: response }, { hosts: state });
+      const h = harness({ [A]: response }, { hosts: day === 0 ? hosts : state });
       h.tick(day * (ROBOTS_TTL_MS + HOUR));
       await h.gate.admit(url('/one'));
       await h.gate.admit(url('/two'));
