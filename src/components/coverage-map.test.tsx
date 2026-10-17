@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen, within } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { CoverageMap } from './coverage-map';
 import {
@@ -136,6 +136,51 @@ describe('CoverageMap', () => {
       vi.restoreAllMocks();
     }
     expect(offsets).toEqual([{ target: 'coverage-drill-row', header: '94px', strip: '45px' }]);
+  });
+
+  it('re-measures the offsets when the site header or the column strip resizes', () => {
+    const header = document.createElement('header');
+    header.setAttribute('data-site-header', '');
+    document.body.prepend(header);
+    const heights = new Map([['HEADER', 94], ['THEAD', 45]]);
+    vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function (this: HTMLElement) {
+      return { height: heights.get(this.tagName) ?? 0 } as DOMRect;
+    });
+    const observed: Element[] = [];
+    let resize = () => {};
+    const disconnect = vi.fn();
+    vi.stubGlobal(
+      'ResizeObserver',
+      class {
+        constructor(callback: ResizeObserverCallback) {
+          resize = () => callback([], this as unknown as ResizeObserver);
+        }
+        observe(element: Element) {
+          observed.push(element);
+        }
+        disconnect = disconnect;
+      },
+    );
+    try {
+      renderMap();
+      const map = document.querySelector<HTMLElement>('.coverage-map')!;
+      expect(observed).toContain(header);
+      expect(observed).toContain(map.querySelector('thead'));
+      expect(observed).toHaveLength(2);
+
+      heights.set('HEADER', 120);
+      heights.set('THEAD', 60);
+      act(resize);
+      expect(map.style.getPropertyValue('--coverage-sticky-top')).toBe('120px');
+      expect(map.style.getPropertyValue('--coverage-strip-height')).toBe('60px');
+
+      cleanup();
+      expect(disconnect).toHaveBeenCalledTimes(1);
+    } finally {
+      header.remove();
+      vi.unstubAllGlobals();
+      vi.restoreAllMocks();
+    }
   });
 
   it('groups a theme row by jurisdiction and a column by theme', () => {
