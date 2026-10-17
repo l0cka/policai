@@ -22,6 +22,7 @@ import {
 import type { ClaudeVerdict } from './claude-classify';
 import { extractRetrievedDocument } from './content';
 import { classifyFailure } from './failure';
+import type { Host, HostGate, HostRecord } from './host-gate';
 import {
   extractFromHtml,
   extractFromRss,
@@ -90,6 +91,7 @@ export interface WatchState {
   seen: Record<string, SeenCandidate>;
   lastCheckedBySource: Record<string, string>;
   sourceSnapshots: Record<string, SourceSnapshot>;
+  hosts: Record<Host, HostRecord>;
 }
 
 export interface CollectOptions {
@@ -114,6 +116,8 @@ export interface CollectOptions {
    * retriever is blocked or an index renders no extractable items.
    */
   browserFetchImpl?: typeof fetch;
+  /** Politeness gate every outgoing request passes through; owns `state.hosts`. */
+  hostGate: HostGate;
   now?: () => Date;
   maxItemsPerSource?: number;
   /** Bypass schedule checks, used by explicit targeted diagnostics. */
@@ -178,7 +182,7 @@ async function retrievedSourceFromFirecrawl(
 }
 
 export function emptyWatchState(): WatchState {
-  return { seen: {}, lastCheckedBySource: {}, sourceSnapshots: {} };
+  return { seen: {}, lastCheckedBySource: {}, sourceSnapshots: {}, hosts: {} };
 }
 
 function slugify(value: string, maxLength = 60): string {
@@ -1174,7 +1178,9 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     seen: { ...options.state.seen },
     lastCheckedBySource: { ...options.state.lastCheckedBySource },
     sourceSnapshots: { ...(options.state.sourceSnapshots ?? {}) },
+    hosts: { ...(options.state.hosts ?? {}) },
   };
+  const gate = options.hostGate;
   recoverPersistedDocumentTransitions(
     state,
     options.sourceReviews ?? [],
@@ -1980,6 +1986,15 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
       ...(failure ?? {}),
     });
   }
+
+  state.hosts = gate.hosts();
+  const waits = Object.entries(gate.waited());
+  const waitedMs = waits.reduce((sum, [, ms]) => sum + ms, 0);
+  const slowest = waits.sort(([, a], [, b]) => b - a)[0];
+  log(
+    `[collect] host gate: waited ${waitedMs} ms across ${waits.length} host${waits.length === 1 ? '' : 's'}` +
+      (slowest ? ` (most on ${slowest[0]}: ${slowest[1]} ms)` : ''),
+  );
 
   const runHealth = healthForRun(
     sourceResults,

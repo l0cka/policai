@@ -1,6 +1,7 @@
 import type { FailureClass } from './failure';
-import { COLLECTOR_IDENTITY_TOKEN } from './identity';
-import { parseRobots, robotsAllows, type RobotsRules } from './robots';
+import { readResponseBytes, retrieveSourceOverHttp1, SourceFetchError } from './fetch';
+import { COLLECTOR_IDENTITY_TOKEN, COLLECTOR_USER_AGENT } from './identity';
+import { parseRobots, ROBOTS_MAX_BYTES, robotsAllows, type RobotsRules } from './robots';
 
 export type Host = string & { readonly __brand: 'Host' };
 
@@ -13,6 +14,7 @@ export const HOST_RETENTION_MS = 30 * 24 * 60 * 60 * 1000;
 export const ROBOTS_RULES_CAP = 500;
 export const ROBOTS_PATTERN_CAP = 1000;
 export const ROBOTS_SITEMAPS_CAP = 20;
+export const ROBOTS_TIMEOUT_MS = 20_000;
 
 const PRODUCT_TOKEN = COLLECTOR_IDENTITY_TOKEN.split('/')[0];
 
@@ -221,5 +223,41 @@ export function createHostGate(deps: HostGateDeps): HostGate {
     waited() {
       return Object.fromEntries(waited) as Record<Host, number>;
     },
+  };
+}
+
+export function robotsFetcher(
+  fetchImpl?: typeof fetch,
+  resolveHost?: (hostname: string) => Promise<string[]>,
+): HostGateDeps['fetchRobots'] {
+  return async (origin) => {
+    const url = `${origin}/robots.txt`;
+    try {
+      if (fetchImpl) {
+        const response = await fetchImpl(url, {
+          headers: { 'User-Agent': COLLECTOR_USER_AGENT, Accept: 'text/plain,*/*;q=0.5' },
+          redirect: 'follow',
+        });
+        const body = response.ok
+          ? (await readResponseBytes(response, ROBOTS_MAX_BYTES)).toString('utf8')
+          : '';
+        return { status: response.status, body };
+      }
+      const retrieved = await retrieveSourceOverHttp1(url, {
+        now: () => new Date(),
+        timeoutMs: ROBOTS_TIMEOUT_MS,
+        maxResponseBytes: ROBOTS_MAX_BYTES,
+        destinationPolicy: 'public-https',
+        resolveHost,
+      });
+      const body = retrieved.body || Buffer.from(retrieved.bytes ?? []).toString('utf8');
+      return { status: 200, body };
+    } catch (error) {
+      if (error instanceof SourceFetchError) {
+        if (error.status !== undefined) return { status: error.status, body: '' };
+        if (error.code === 'destination_mismatch') return { status: 404, body: '' };
+      }
+      return null;
+    }
   };
 }
