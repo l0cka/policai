@@ -52,6 +52,7 @@ const REAL_STRINGS: Array<[string, FailureClass, string | null]> = [
   ],
   ['HTML source contains no readable document text', 'parse', null],
   ['DOCX central directory is malformed', 'parse', null],
+  ['Invalid PDF structure.', 'parse', null],
   [
     'Unsupported source content type image/png; only HTML, plain text, XML, and text-bearing PDFs can be extracted',
     'parse',

@@ -41,6 +41,7 @@ import {
 } from '@/lib/article-images';
 import type { WatchState } from '@/lib/pipeline/collect';
 import type { WatchSource } from '@/lib/pipeline/sources';
+import { isFailureClass } from '@/lib/pipeline/failure';
 import { identityExceptionState } from '@/lib/pipeline/identity';
 import { isValidCalendarDate } from '@/lib/calendar-date';
 import { VERIFICATION_CLOCK_SKEW_TOLERANCE_MS } from '@/lib/verification';
@@ -1400,6 +1401,18 @@ export function validateCollectionMeta(meta: CollectionMeta): ValidationReport {
       errors.push(`${label}: invalid newCandidateCount`);
     if (result.status === 'error' && !isNonEmptyString(result.error))
       errors.push(`${label}: failed result requires an error`);
+    if (result.failureClass !== undefined && !isFailureClass(result.failureClass))
+      errors.push(`${label}: invalid failureClass`);
+    if (
+      result.failedUrl !== undefined &&
+      !(isNonEmptyString(result.failedUrl) && /^https?:\/\//.test(result.failedUrl))
+    )
+      errors.push(`${label}: invalid failedUrl`);
+    if (
+      result.status !== 'error' &&
+      (result.failureClass !== undefined || result.failedUrl !== undefined)
+    )
+      errors.push(`${label}: failure fields require a failed result`);
   });
 
   if (collector.health !== 'healthy') {

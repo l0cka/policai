@@ -21,6 +21,7 @@ import {
 } from './classify';
 import type { ClaudeVerdict } from './claude-classify';
 import { extractRetrievedDocument } from './content';
+import { classifyFailure } from './failure';
 import {
   extractFromHtml,
   extractFromRss,
@@ -1137,6 +1138,14 @@ function sourceResult(
   };
 }
 
+function rowFailure(
+  error: unknown,
+  fallbackUrl: string,
+): Required<Pick<SourceRunResult, 'failureClass' | 'failedUrl'>> {
+  const { cls, url } = classifyFailure(error);
+  return { failureClass: cls, failedUrl: url ?? fallbackUrl };
+}
+
 /**
  * Run one collection pass over the watch sources.
  *
@@ -1324,6 +1333,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     let newCandidateCount = 0;
     let deferSourceSuccess = false;
     const sourceErrors: string[] = [];
+    let failure: ReturnType<typeof rowFailure> | null = null;
 
     const exceptionUntil = source.identityException?.until;
     if (identityState === 'active') {
@@ -1625,6 +1635,11 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
             sourceErrors.push(message);
             errors.push(message);
             deferSourceSuccess = true;
+            const [firstFailure] = terminalDocumentFailures;
+            failure ??= rowFailure(
+              state.seen[candidateStateKey(firstFailure)]?.lastError,
+              firstFailure.url,
+            );
             log(`[collect] FAILED ${message}`);
           }
         }
@@ -1652,6 +1667,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         }`;
         sourceErrors.push(message);
         errors.push(message);
+        failure ??= rowFailure(error, source.url);
         log(`[collect] FAILED ${message}`);
       }
     }
@@ -1787,6 +1803,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
           continue;
         }
         candidateFailureCount++;
+        failure ??= rowFailure(error, candidate.url);
         const terminal =
           (error instanceof SourceFetchError && !error.retryable) ||
           (attempted.attempts ?? 0) >= MAX_CANDIDATE_ATTEMPTS;
@@ -1960,6 +1977,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         due,
       ),
       ...(identityState === 'none' ? {} : { identityException: identityState }),
+      ...(failure ?? {}),
     });
   }
 

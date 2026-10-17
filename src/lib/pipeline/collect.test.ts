@@ -1815,9 +1815,11 @@ describe('collect', () => {
     ]);
     expect(exhaustedVersion.developments).toEqual([]);
     expect(exhaustedVersion.reviewCandidates).toEqual([]);
-    expect(exhaustedVersion.meta.collector.sourceResults[0].status).toBe(
-      'error',
-    );
+    expect(exhaustedVersion.meta.collector.sourceResults[0]).toMatchObject({
+      status: 'error',
+      failureClass: 'parse',
+      failedUrl: DOCUMENT_SOURCE.url,
+    });
     expect(
       exhaustedVersion.state.lastCheckedBySource[DOCUMENT_SOURCE.id],
     ).toBe('2026-07-01T00:00:00.000Z');

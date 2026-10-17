@@ -1,5 +1,6 @@
 // Core domain types for Policai
 
+import type { FailureClass } from "@/lib/pipeline/failure";
 import type { ThemeId } from "@/lib/themes";
 
 export const JURISDICTIONS = [
@@ -462,6 +463,8 @@ export interface SourceRunResult {
 	 * declared Policai identity was presented).
 	 */
 	identityException?: "active" | "expired";
+	failureClass?: FailureClass;
+	failedUrl?: string;
 }
 
 export interface CollectionMeta {
