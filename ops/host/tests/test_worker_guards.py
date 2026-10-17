@@ -291,17 +291,19 @@ class FailureLineTests(unittest.TestCase):
             "command timed out": Probe("pass", timeout=0),
             "command output exceeded bound": Probe("print('x' * 100)", limit=10),
         }
-        for reason, runner in cases.items():
-            obj = self.worker(runner)
+
+        def probes(obj):
             obj.config = {"db": {}}
-            probes = {
+            return {
                 "git": lambda: obj.git("probono", "rev-parse", "--verify", "HEAD"),
                 "docker image inspect": lambda: obj.docker(
                     "image", "inspect", "sha256:" + "a" * 64
                 ),
                 "verify_database": obj.verify_database,
             }
-            for name, probe in probes.items():
+
+        for reason, runner in cases.items():
+            for name, probe in probes(self.worker(runner)).items():
                 with self.subTest(reason=reason, probe=name):
                     self.assertEqual(
                         self.failure(probe),

@@ -18,7 +18,14 @@ class InstallDirectoryTests(unittest.TestCase):
     def test_every_install_path_names_the_entrypoint_directory(self):
         code = cli.ENTRYPOINT.parent
         self.assertEqual(host.CODE, code)
-        for name in ("cli.py", "host.py", "dispatcher.py", "bin/docker", "backup.sh", "backup-mirror.sh"):
+        for name in (
+            "cli.py",
+            "host.py",
+            "dispatcher.py",
+            "bin/docker",
+            "backup.sh",
+            "backup-mirror.sh",
+        ):
             with self.subTest(name):
                 self.assertEqual(install.FILES[name][0], str(code / name))
         units = sorted((HOST / "units").glob("probono-*.service"))
