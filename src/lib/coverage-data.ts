@@ -310,25 +310,35 @@ export function coverageStandfirst(data: CoverageData): string[] {
   return facts;
 }
 
+function agree(count: number): { has: string; is: string } {
+  return count === 1 ? { has: 'has', is: 'is' } : { has: 'have', is: 'are' };
+}
+
+function themeScope(table: CoverageTable): string {
+  const shown = table.rows.length;
+  const unused = table.uncharted.filter((entry) => entry.total === 0).length;
+  const below = table.uncharted.length - unused;
+  const vocabulary = `${countWord(table.categoryCount)} themes in Policai's vocabulary`;
+  const need =
+    table.minRecords <= 1 ? 'a verified record' : `${countWord(table.minRecords)} or more verified records`;
+  if (shown === table.categoryCount) return `All ${vocabulary} have ${need} and are shown.`;
+  if (unused === table.categoryCount) return `None of the ${vocabulary} has a verified record yet.`;
+  const clauses = [
+    shown === 0
+      ? `none has ${need}`
+      : `${countWord(shown)} ${agree(shown).has} ${need} and ${agree(shown).is} shown`,
+    below > 0 ? `${countWord(below)} ${agree(below).has} fewer and ${agree(below).is} not charted` : null,
+    unused > 0 ? `${countWord(unused)} ${agree(unused).has} no verified record yet` : null,
+  ].filter((clause): clause is string => clause !== null);
+  return `Of the ${vocabulary}, ${clauses.join('; ')}.`;
+}
+
 export function coverageFootnote(table: CoverageTable): string {
   const shown = table.rows.length;
   if (table.axis === 'type') {
-    return `${capitalise(countWord(shown))} instrument ${plural(shown, 'type')} ${plural(shown, 'has', 'have')} a verified record. The type is the register's own classification of each instrument, and a count does not measure how strong an instrument is.`;
+    return `${capitalise(countWord(shown))} instrument ${shown > 1 ? 'types have' : 'type has'} a verified record. The type is the register's own classification of each instrument, and a count does not measure how strong an instrument is.`;
   }
-  const unused = table.uncharted.filter((entry) => entry.total === 0).length;
-  const below = table.uncharted.length - unused;
-  const scope =
-    shown === table.categoryCount
-      ? `All ${table.categoryCount} themes in Policai's vocabulary have ${table.minRecords <= 1 ? 'a verified record' : `${countWord(table.minRecords)} or more verified records`} and are shown.`
-      : table.minRecords <= 1
-      ? `${capitalise(countWord(shown))} of the ${table.categoryCount} themes in Policai's vocabulary ${plural(shown, 'has', 'have')} a verified record and ${plural(shown, 'is', 'are')} shown.`
-      : `${capitalise(countWord(shown))} of the ${table.categoryCount} themes in Policai's vocabulary ${plural(shown, 'has', 'have')} ${countWord(table.minRecords)} or more verified records and ${plural(shown, 'is', 'are')} shown.`;
-  const left = [
-    below > 0 ? `${countWord(below)} ${plural(below, 'has', 'have')} fewer and ${plural(below, 'is', 'are')} not charted` : null,
-    unused > 0 ? `${countWord(unused)} ${plural(unused, 'has', 'have')} no verified record yet` : null,
-  ].filter((part): part is string => part !== null);
-  const remainder = left.length > 0 ? ` ${capitalise(joinList(left))}.` : '';
-  return `${scope}${remainder} Themes are an editorial vocabulary assigned to verified register records, not legal categories, and a count does not measure how strong an instrument is.`;
+  return `${themeScope(table)} Themes are an editorial vocabulary assigned to verified register records, not legal categories, and a count does not measure how strong an instrument is.`;
 }
 
 export function coverageEmptySentence(table: CoverageTable): string {
