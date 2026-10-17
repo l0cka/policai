@@ -150,14 +150,24 @@ and still serves `buildNetworkData` nodes and edges.
   (Federal, NSW, Vic, Qld, SA, WA, Tas, ACT, NT). Rows are sorted by total,
   then label. A theme is charted when it has `COVERAGE_MIN_RECORDS` records.
   The value is 1, so every theme in the controlled vocabulary with a public
-  record is a row: the vocabulary already requires two public records per
-  theme, and a hidden theme cannot show where coverage is missing. The
+  record is a row: `validate:data` requires two non-trashed register records
+  per theme (fewer than two public records is only a warning), and a hidden
+  theme cannot show where coverage is missing. The
   original threshold of 6 filtered free-form tags. Raise it if the
   vocabulary grows past what one table can show; uncharted themes are then
   counted in the footnote.
+- **Rendering:** the route is `force-dynamic`. It reads `searchParams` to
+  server-render the selected drill-down, so it is dynamic by nature, and the
+  export says so; a `revalidate` would have no effect. Each request reads
+  `policies.json` and `source-reviews.json` and builds the matrix, which is
+  small (one pass over the public records). `src/app/coverage/page.test.tsx`
+  guards the export and asserts that withheld, unverified and trashed records
+  never reach a cell or a drill-down list.
 - **Copy:** every count and sentence on the page (standfirst, footnote, empty
   state) comes from `coverageStandfirst`, `coverageFootnote` and
-  `coverageEmptySentence`. Do not type numbers into the page.
+  `coverageEmptySentence`. Do not type numbers into the page. The footnote
+  agrees in number for 0, 1, 2 and many themes; its cases are a table in
+  `coverage-data.test.ts`.
 - **URL:** `?theme=<key>&j=<jurisdiction>` selects a cell, `theme` alone a row,
   `j` alone a column, and `by=type` (with `type=<key>`) switches the axis.
   Unknown values are ignored. Opening and closing use `replaceState`; moving
@@ -170,7 +180,14 @@ and still serves `buildNetworkData` nodes and edges.
   restyled as CSS grid strips. Changing `display` on table elements drops
   their table semantics in some browsers, so every table element carries its
   explicit ARIA role (`table`, `rowgroup`, `row`, `columnheader`,
-  `rowheader`, `cell`).
+  `rowheader`, `cell`). A selection loaded from the URL scrolls the
+  drill-down row into view. The row's `scroll-margin-top` is the site header
+  height (`--coverage-sticky-top`) plus, below 768px, the sticky column strip
+  (`--coverage-strip-height`); `CoverageMap` measures both before it scrolls.
+  `scripts/verify-coverage.mjs` checks on phone and desktop, light and dark,
+  that the drill-down heading clears both after a deep link and a click:
+  `POLICAI_VERIFY_URL=http://127.0.0.1:<port> POLICAI_EVIDENCE_DIR=<dir>
+  node scripts/verify-coverage.mjs` against a loopback production build.
 - **Styling:** `src/app/coverage/coverage.css`. The four cell levels are
   `color-mix()` of `--primary` into `--background`, local to the page.
 
