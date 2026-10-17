@@ -249,3 +249,100 @@ describe('the gate never makes a run worse than a neutral gate', () => {
     });
   }, 120_000);
 });
+
+describe('a spent wait budget never makes a host that asked for nothing worse', () => {
+  const HOSTS = 63;
+  const manySources: WatchSource[] = Array.from({ length: 75 }, (_, i) => ({
+    ...base,
+    id: `many-${i}`,
+    name: `Many ${i}`,
+    url: `https://www.host-${i % HOSTS}.gov.au/rss${i < HOSTS ? '' : '-2'}`,
+    kind: 'rss',
+    schedule: 'daily',
+  }));
+
+  function manyFetch(requests: string[]): typeof fetch {
+    return (async (input: RequestInfo | URL) => {
+      const url = new URL(String(input));
+      requests.push(url.toString());
+      if (url.pathname.startsWith('/rss')) {
+        const item = `https://${url.host}/media/ai-assurance${url.pathname}`;
+        return new Response(
+          `<?xml version="1.0"?><rss version="2.0"><channel><item><title>Consultation opens on AI assurance guidance at ${url.host}${url.pathname}</title><link>${item}</link><pubDate>Thu, 09 Jul 2026 01:00:00 GMT</pubDate></item></channel></rss>`,
+          { status: 200, headers: { 'content-type': 'application/rss+xml' } },
+        );
+      }
+      return new Response(article(`Consultation opens on AI assurance guidance at ${url.host}${url.pathname.replace('/media/ai-assurance', '')}`), { status: 200, headers: { 'content-type': 'text/html' } });
+    }) as typeof fetch;
+  }
+
+  async function runMany(gate: HostGate) {
+    const requests: string[] = [];
+    const now = new Date(Date.UTC(2026, 6, 10));
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
+    const pending = collect({
+      sources: manySources,
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl: manyFetch(requests),
+      now: () => now,
+      hostGate: gate,
+      logger: () => undefined,
+    });
+    await vi.runAllTimersAsync();
+    const result = await pending;
+    vi.useRealTimers();
+    return { result, requests };
+  }
+
+  function gateWithCrawlDelay(slow: (origin: string) => boolean, waitBudgetMs?: number) {
+    const clock = { t: Date.UTC(2026, 6, 10) };
+    return createHostGate({
+      hosts: {},
+      refused: new Map(),
+      fetchRobots: async (origin) => (slow(origin) ? { status: 200, body: 'User-agent: *\nCrawl-delay: 30\n' } : { status: 404, body: '' }),
+      now: () => clock.t,
+      sleep: async (ms) => {
+        clock.t += ms;
+      },
+      ...(waitBudgetMs === undefined ? {} : { waitBudgetMs }),
+    });
+  }
+
+  const hostOfUrl = (value: string) => new URL(value).host;
+
+  it("keeps the neutral gate's health with Crawl-delay 30 on all 63 hosts of 75 sources", async () => {
+    const neutral = await runMany(NEUTRAL);
+    const gated = await runMany(gateWithCrawlDelay(() => true));
+    expect(neutral.result.meta.collector.health).toBe('healthy');
+    expect(gated.result.meta.collector.health).toBe(neutral.result.meta.collector.health);
+    expect(gated.result.meta.collector.sourceResults.filter((row) => row.status === 'error')).toEqual([]);
+    expect(Object.values(gated.result.state.seen).filter((entry) => entry.status === 'failed')).toEqual([]);
+    expect(new Set(gated.requests.map(hostOfUrl))).toEqual(new Set(neutral.requests.map(hostOfUrl)));
+    expect(collectionRunFailed(gated.result.meta.collector.health, gated.result.errors, false)).toBe(false);
+  }, 120_000);
+
+  it('leaves every host without a Crawl-delay exactly as the neutral gate does after the budget is spent', async () => {
+    const isSlow = (origin: string) => Number(/host-(\d+)/.exec(origin)?.[1]) % 2 === 0;
+    const neutral = await runMany(NEUTRAL);
+    const gate = gateWithCrawlDelay(isSlow, 120_000);
+    const gated = await runMany(gate);
+    const fastRows = (run: typeof neutral) =>
+      run.result.meta.collector.sourceResults
+        .filter((row) => !isSlow(manySources.find((source) => source.id === row.sourceId)!.url))
+        .map((row) => {
+          const { durationMs, ...rest } = row;
+          void durationMs;
+          return rest;
+        });
+    const fastRequests = (run: typeof neutral) => run.requests.filter((request) => !isSlow(request));
+    expect(gated.requests.length).toBeLessThan(neutral.requests.length);
+    expect(fastRows(gated)).toEqual(fastRows(neutral));
+    expect(fastRequests(gated)).toEqual(fastRequests(neutral));
+    expect(gated.result.meta.collector.health).toBe(neutral.result.meta.collector.health);
+    const deferred = Object.values(gated.result.state.seen).filter((entry) => entry.status === 'pending');
+    expect(deferred.length).toBeGreaterThan(0);
+    for (const entry of deferred) expect(entry.attempts).toBe(0);
+    expect(Object.values(gated.result.state.seen).filter((entry) => entry.status === 'failed')).toEqual([]);
+  }, 120_000);
+});

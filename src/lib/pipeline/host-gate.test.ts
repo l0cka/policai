@@ -15,6 +15,7 @@ import {
   MAX_WAIT_MS,
   ROBOTS_RULES_CAP,
   ROBOTS_SITEMAPS_CAP,
+  ROBOTS_TIMEOUT_MS,
   ROBOTS_TTL_MS,
   ROBOTS_UNVERIFIED_RUNS,
   type RobotsRecord,
@@ -114,15 +115,18 @@ describe('admit', () => {
     expect(h.sleeps).toEqual([100]);
   });
 
-  it.each<[delay: string, gapMs: number]>([
-    ['1', DEFAULT_MIN_GAP_MS],
-    ['7', 7000],
-    ['2.5', 2500],
-    ['100', MAX_WAIT_MS],
-  ])('uses Crawl-delay %s when larger than the gap, capped: %d ms', async (delay, gapMs) => {
+  it.each<[label: string, delay: string, gapMs: number]>([
+    ['1', '1', DEFAULT_MIN_GAP_MS],
+    ['7', '7', 7000],
+    ['2.5', '2.5', 2500],
+    ['100', '100', MAX_WAIT_MS],
+    ['of 400 digits', '9'.repeat(400), MAX_WAIT_MS],
+  ])('uses Crawl-delay %s between page requests when larger than the gap, capped: %d ms', async (_label, delay, gapMs) => {
     const h = harness({ [A]: { status: 200, body: `User-agent: *\nCrawl-delay: ${delay}` } });
     await h.gate.admit(url('/one'));
-    expect(h.sleeps).toEqual([gapMs]);
+    await h.gate.admit(url('/two'));
+    expect(h.sleeps).toEqual([DEFAULT_MIN_GAP_MS, gapMs]);
+    expect(Number.isFinite(h.gate.hosts()[hostOf(url('/'))]?.robots?.crawlDelaySec)).toBe(true);
   });
 
   it('refuses a path robots.txt disallows and names the class in its detail', async () => {
@@ -190,7 +194,11 @@ describe('admit', () => {
     expect(h.gate.hosts()[hostOf(url('/'))]?.robots?.status).toBe(response === null ? 'unreachable' : 'parsed');
   });
 
-  it('keeps the last parsed rules as the cached copy when the refetch is unreachable, and refetches next run', async () => {
+  it.each<[label: string, response: { status: number; body: string } | null]>([
+    ['unreachable', null],
+    ['a 304 without Location', { status: 304, body: '' }],
+    ['a 1xx', { status: 102, body: '' }],
+  ])('keeps the last parsed rules as the cached copy when the refetch is %s, and refetches next run', async (_label, response) => {
     const host = hostOf(url('/'));
     const cached: Record<string, HostRecord> = {
       [host]: {
@@ -209,7 +217,7 @@ describe('admit', () => {
         robotsUnreachableRuns: 0,
       },
     };
-    const h = harness({ [A]: null }, { hosts: cached });
+    const h = harness({ [A]: response }, { hosts: cached });
     expect(await h.gate.admit(url('/private/x'))).toMatchObject({ kind: 'refused', cls: 'robots_disallowed' });
     expect(await h.gate.admit(url('/public'))).toEqual({ kind: 'go' });
     expect(h.robotsCalls).toEqual([A]);
@@ -426,36 +434,64 @@ describe('observe', () => {
 });
 
 describe('wait budget', () => {
-  it('refuses a wait that would overrun the run budget as a retryable timeout and keeps serving hosts that need no wait', async () => {
-    const h = harness({ [A]: { status: 200, body: 'User-agent: *\nCrawl-delay: 30' } }, { waitBudgetMs: 45_000 });
+  it('spends the budget only on the part of a Crawl-delay above the default gap and defers the rest as retryable', async () => {
+    const charged = MAX_WAIT_MS - DEFAULT_MIN_GAP_MS;
+    const h = harness({ [A]: { status: 200, body: 'User-agent: *\nCrawl-delay: 30' } }, { waitBudgetMs: charged });
     const host = hostOf(url('/'));
     expect(await h.gate.admit(url('/one'))).toEqual({ kind: 'go' });
-    expect(h.gate.waited()[host]).toBe(MAX_WAIT_MS);
-    const refused = await h.gate.admit(url('/three'));
-    expect(refused).toMatchObject({ kind: 'refused', cls: 'timeout' });
-    if (refused.kind !== 'refused') throw new Error('expected refusal');
-    expect(classifyFailure(refused.detail)).toEqual({ cls: 'timeout', url: `${A}/three` });
-    expect(E24_HTTP_403_REPORT.test(refused.detail)).toBe(false);
-    await expect(admitThroughGate(h.gate, `${A}/four`)).rejects.toMatchObject({ code: 'gate_refused', retryable: true });
-    expect(h.gate.waited()[host]).toBe(MAX_WAIT_MS);
-    expect(await h.gate.admit(url('/b', B))).toEqual({ kind: 'go' });
+    expect(await h.gate.admit(url('/two'))).toEqual({ kind: 'go' });
+    expect(h.sleeps).toEqual([DEFAULT_MIN_GAP_MS, MAX_WAIT_MS]);
+    const deferred = await h.gate.admit(url('/three'));
+    expect(deferred).toMatchObject({ kind: 'deferred' });
+    if (deferred.kind !== 'deferred') throw new Error('expected deferral');
+    expect(classifyFailure(deferred.detail)).toEqual({ cls: 'timeout', url: `${A}/three` });
+    expect(E24_HTTP_403_REPORT.test(deferred.detail)).toBe(false);
+    await expect(admitThroughGate(h.gate, `${A}/four`)).rejects.toMatchObject({ code: 'gate_deferred', retryable: true });
+    expect(h.sleeps).toHaveLength(2);
     h.tick(MAX_WAIT_MS);
     expect(await h.gate.admit(url('/five'))).toEqual({ kind: 'go' });
     expect(h.gate.hosts()[host]?.robots?.crawlDelaySec).toBe(30);
   });
 
-  it('counts backoff waits and the gap after a robots fetch against the same budget', async () => {
-    const h = harness({}, { waitBudgetMs: 2500 });
+  it('always waits the default gap and the gap after its own robots fetch, uncharged, once the budget is spent', async () => {
+    const slow = 'https://www.slow.gov.au';
+    const fresh = Array.from({ length: 40 }, (_, i) => `https://www.fresh-${i}.gov.au`);
+    const h = harness({ [slow]: { status: 200, body: 'User-agent: *\nCrawl-delay: 30' } }, { waitBudgetMs: 0 });
+    expect(await h.gate.admit(url('/one', slow))).toEqual({ kind: 'go' });
+    expect(await h.gate.admit(url('/two', slow))).toMatchObject({ kind: 'deferred' });
+    for (const origin of fresh) {
+      expect(await h.gate.admit(url('/index', origin))).toEqual({ kind: 'go' });
+      expect(await h.gate.admit(url('/item', origin))).toEqual({ kind: 'go' });
+    }
+    expect(h.robotsCalls).toEqual([slow, ...fresh]);
+    expect(h.sleeps).toEqual(Array.from({ length: 1 + 2 * fresh.length }, () => DEFAULT_MIN_GAP_MS));
+  });
+
+  it('a slow robots fetch costs no budget', async () => {
+    let tick: (ms: number) => void = () => undefined;
+    const h = harness({}, {
+      waitBudgetMs: 0,
+      fetchRobots: async () => {
+        tick(ROBOTS_TIMEOUT_MS);
+        return null;
+      },
+    });
+    tick = h.tick;
     expect(await h.gate.admit(url('/one'))).toEqual({ kind: 'go' });
+    expect(await h.gate.admit(url('/two'))).toEqual({ kind: 'go' });
+    expect(await h.gate.admit(url('/b', B))).toEqual({ kind: 'go' });
     expect(h.sleeps).toEqual([DEFAULT_MIN_GAP_MS]);
+  });
+
+  it('charges a Retry-After wait the host asked for', async () => {
+    const h = harness({}, { waitBudgetMs: 4000 });
+    expect(await h.gate.admit(url('/one'))).toEqual({ kind: 'go' });
     h.gate.observe(url('/one'), { status: 429, retryAfter: '5', transport: 'http' });
-    expect(await h.gate.admit(url('/two'))).toMatchObject({ kind: 'refused', cls: 'timeout' });
-    expect(await h.gate.admit(url('/b', B))).toMatchObject({ kind: 'refused', cls: 'timeout' });
-    expect(h.robotsCalls).toEqual([A, B]);
-    expect(h.sleeps).toEqual([DEFAULT_MIN_GAP_MS]);
-    h.tick(DEFAULT_MIN_GAP_MS);
+    expect(await h.gate.admit(url('/two'))).toMatchObject({ kind: 'deferred' });
+    expect(await h.gate.admit(url('/b', B))).toEqual({ kind: 'go' });
+    h.gate.observe(url('/b', B), { status: 503, retryAfter: '3', transport: 'http' });
     expect(await h.gate.admit(url('/c', B))).toEqual({ kind: 'go' });
-    expect(h.robotsCalls).toEqual([A, B]);
+    expect(h.sleeps).toEqual([DEFAULT_MIN_GAP_MS, DEFAULT_MIN_GAP_MS, 3000]);
   });
 
   it('the default budget leaves most of the 3,500 s host deadline for requests', () => {

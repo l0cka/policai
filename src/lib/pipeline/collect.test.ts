@@ -31,7 +31,7 @@ import {
   qualifiesForReview,
 } from './collect';
 import type { CollectOptions, SeenCandidate, SourceSnapshot, WatchState } from './collect';
-import { createHostGate, hostOf, type HostGate } from './host-gate';
+import { createHostGate, DEFAULT_MIN_GAP_MS, hostOf, type HostGate } from './host-gate';
 import { buildOpenHostGate, buildRecordingHostGate } from '@/test/factories';
 
 const collect = (options: Omit<CollectOptions, 'hostGate'> & { hostGate?: HostGate }) =>
@@ -304,7 +304,7 @@ describe('collect routes every transport through the host gate', () => {
     expect(nextDay.developments.map((d) => d.url)).toContain('https://www.example.gov.au/news/ai-two');
   });
 
-  it('a hostile Crawl-delay cannot push the run past the wait budget; deferred candidates stay pending', async () => {
+  it('a hostile Crawl-delay cannot push the run past the wait budget; deferred work stays pending and nothing fails', async () => {
     let clock = Date.parse('2026-07-10T00:00:00.000Z');
     const budgetMs = 60_000;
     const gate = createHostGate({
@@ -323,27 +323,30 @@ describe('collect routes every transport through the host gate', () => {
       'https://www.example.gov.au/news/': '<html><body><h1>AI policy</h1><p>AI governance guidance.</p></body></html>',
     });
     const startedAt = clock;
+    const second = { ...HTML_SOURCE, id: 'test-html-2', url: 'https://www.example.gov.au/news?page=2' };
     const result = await collect({
-      sources: [HTML_SOURCE, { ...HTML_SOURCE, id: 'test-html-2', url: 'https://www.example.gov.au/news?page=2' }],
+      sources: [HTML_SOURCE, second],
       state: emptyWatchState(),
       existingDevelopments: [],
       fetchImpl,
       now: () => new Date(startedAt),
       hostGate: gate,
     });
-    const waited = Object.values(gate.waited()).reduce((sum, ms) => sum + ms, 0);
-    expect(waited).toBeLessThanOrEqual(budgetMs);
-    expect(clock - startedAt).toBeLessThanOrEqual(budgetMs);
+    const minGapWaits = 3 * DEFAULT_MIN_GAP_MS;
+    expect(clock - startedAt).toBeLessThanOrEqual(budgetMs + minGapWaits);
     const seen = Object.values(result.state.seen);
-    expect(seen.filter((entry) => entry.status === 'processed')).toHaveLength(1);
+    expect(seen.filter((entry) => entry.status === 'processed')).toHaveLength(2);
     const deferred = seen.filter((entry) => entry.status === 'pending');
-    expect(deferred).toHaveLength(4);
+    expect(deferred).toHaveLength(3);
     for (const entry of deferred) expect(entry.attempts).toBe(0);
     expect(seen.filter((entry) => entry.status === 'failed')).toEqual([]);
     expect(result.meta.collector.sourceResults.map((row) => [row.sourceId, row.status, row.failureClass])).toEqual([
       ['test-html', 'success', undefined],
-      ['test-html-2', 'error', 'timeout'],
+      ['test-html-2', 'skipped', undefined],
     ]);
+    expect(result.meta.collector.health).toBe('healthy');
+    expect(validateCollectionMeta(result.meta).errors).toEqual([]);
+    expect(result.state.lastCheckedBySource[second.id]).toBeUndefined();
   });
 
   it('hands the gate to the browser retriever and to Firecrawl', async () => {

@@ -67,6 +67,8 @@ describe('robotsFetcher maps each transport outcome for the gate', () => {
     ['an HTML page', { [ROBOTS]: { status: 200, headers: { 'content-type': 'text/html' }, body: '<html><body>Home</body></html>' } }, { status: 200, body: '<html><body>Home</body></html>' }],
     ['a WAF challenge page', { [ROBOTS]: { status: 200, headers: { 'content-type': 'text/html' }, body: '<html><script>window.awsWafIntegration=1</script></html>' } }, null],
     ['a body over the 500 KiB cap', { [ROBOTS]: { status: 200, headers: TEXT, body: `${RULES}${'#'.repeat(ROBOTS_MAX_BYTES)}` } }, null],
+    ['a 204, an empty robots.txt', { [ROBOTS]: { status: 204 } }, { status: 200, body: '' }],
+    ['a 304 without Location', { [ROBOTS]: { status: 304 } }, { status: 304, body: '' }],
     ['a 403', { [ROBOTS]: { status: 403 } }, { status: 403, body: '' }],
     ['a 404', { [ROBOTS]: { status: 404 } }, { status: 404, body: '' }],
     ['a 429', { [ROBOTS]: { status: 429, headers: { 'retry-after': '3600' } } }, { status: 429, body: '' }],

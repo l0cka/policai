@@ -2,6 +2,7 @@
 
 import { describe, expect, it } from 'vitest';
 import {
+  CRAWL_DELAY_CAP_SEC,
   matchesRobotsPattern,
   parseRobots,
   ROBOTS_MAX_BYTES,
@@ -202,6 +203,14 @@ describe('parseRobots', () => {
     'treats a crawl-delay of %j as absent',
     (value) => {
       expect(parseRobots(`User-agent: *\nCrawl-delay: ${value}`, 'Policai').crawlDelaySec).toBeNull();
+    },
+  );
+
+  it.each(['9'.repeat(400), '9'.repeat(400) + '.5', '86401'])(
+    'caps a crawl-delay too large to be meant at one day (%#)',
+    (value) => {
+      expect(parseRobots(`User-agent: *\nCrawl-delay: ${value}`, 'Policai').crawlDelaySec).toBe(CRAWL_DELAY_CAP_SEC);
+      expect(CRAWL_DELAY_CAP_SEC).toBe(86_400);
     },
   );
 
