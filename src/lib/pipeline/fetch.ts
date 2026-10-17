@@ -18,6 +18,7 @@ import {
   publicationDateCandidates,
 } from './date-metadata';
 import { publicFailureUrl } from './failure';
+import type { HostGate, Transport } from './host-gate';
 import type {
   LinkedDocumentEvidence,
   SourceEvidence,
@@ -43,7 +44,7 @@ export { COLLECTOR_USER_AGENT };
 export class SourceFetchError extends Error {
   readonly status?: number;
   readonly retryable: boolean;
-  readonly code?: 'destination_mismatch';
+  readonly code?: 'destination_mismatch' | 'gate_refused';
   url?: string;
 
   constructor(
@@ -52,7 +53,7 @@ export class SourceFetchError extends Error {
       status?: number;
       retryable?: boolean;
       cause?: unknown;
-      code?: 'destination_mismatch';
+      code?: 'destination_mismatch' | 'gate_refused';
       url?: string;
     } = {},
   ) {
@@ -75,6 +76,31 @@ function failedAt(error: unknown, url: string): SourceFetchError {
         });
   fetchError.url ??= url;
   return fetchError;
+}
+
+export async function admitThroughGate(
+  gate: HostGate | undefined,
+  url: string,
+): Promise<number> {
+  if (!gate) return 0;
+  const startedAt = Date.now();
+  const admission = await gate.admit(new URL(url));
+  if (admission.kind === 'go') return Date.now() - startedAt;
+  if (admission.kind === 'decided_block') {
+    throw new SourceFetchError(
+      `${url} is on a host decided refused by ${admission.sourceId}; not requested`,
+      { retryable: false, code: 'gate_refused', url },
+    );
+  }
+  throw new SourceFetchError(admission.detail, {
+    retryable: admission.cls === 'rate_limited' || admission.cls === 'host_unavailable',
+    code: 'gate_refused',
+    url,
+  });
+}
+
+function hostsDiffer(a: string, b: string): boolean {
+  return new URL(a).host.toLowerCase() !== new URL(b).host.toLowerCase();
 }
 
 function httpStatusError(status: number, url: string): SourceFetchError {
@@ -162,6 +188,10 @@ export interface RetrieveSourceOptions {
   hashLinkedDocuments?: boolean;
   /** Source-bound browser permission; plain HTTP always declares identity. */
   identityAuthority?: IdentityAuthority;
+  /** Politeness gate admitting every request, redirect hop and linked document. */
+  gate?: HostGate;
+  /** Which client `fetchImpl` is, for the gate's observations; plain HTTP by default. */
+  transport?: Extract<Transport, 'http' | 'browser'>;
   http1Fallback?: (
     url: string,
     options: {
@@ -172,6 +202,7 @@ export interface RetrieveSourceOptions {
       destinationPolicy?: 'official' | 'public-https';
       deadlineAt?: number;
       startedAt?: number;
+      gate?: HostGate;
     },
   ) => Promise<RetrievedSource>;
 }
@@ -933,6 +964,7 @@ export async function retrieveSourceOverHttp1(
     deadlineAt?: number;
     startedAt?: number;
     requestImpl?: typeof https.get;
+    gate?: HostGate;
   },
 ): Promise<RetrievedSource> {
   const redirects = options.redirects ?? 0;
@@ -940,9 +972,13 @@ export async function retrieveSourceOverHttp1(
   if (redirects > MAX_REDIRECTS) {
     throw new SourceFetchError('Too many redirects');
   }
-  const startedAt = options.startedAt ?? Date.now();
+  const gateWaitMs = await admitThroughGate(options.gate, url);
+  const startedAt =
+    options.startedAt === undefined ? Date.now() : options.startedAt + gateWaitMs;
   const deadlineAt =
-    options.deadlineAt ?? startedAt + options.timeoutMs;
+    options.deadlineAt === undefined
+      ? startedAt + options.timeoutMs
+      : options.deadlineAt + gateWaitMs;
   const addresses = await withinRetrievalDeadline(
     assertSafeSourceUrl(
       url,
@@ -999,6 +1035,11 @@ export async function retrieveSourceOverHttp1(
       (response) => {
         try {
           const status = response.statusCode ?? 0;
+          options.gate?.observe(new URL(url), {
+            status,
+            retryAfter: headerValue(response.headers['retry-after']),
+            transport: 'http',
+          });
 			const location = headerValue(response.headers.location);
 			if (status >= 300 && status < 400 && location) {
 				const redirectUrl = new URL(location, url).toString();
@@ -1017,6 +1058,7 @@ export async function retrieveSourceOverHttp1(
                 deadlineAt,
                 startedAt,
                 requestImpl: options.requestImpl,
+                gate: options.gate,
               },
             ).then(resolve, (error: unknown) => reject(failedAt(error, redirectUrl)));
             return;
@@ -1185,28 +1227,28 @@ export async function retrieveSource(
   let lastError: SourceFetchError | null = null;
 
   for (let attempt = 1; attempt <= attempts; attempt++) {
-    const startedAt = Date.now();
-    const deadlineAt = startedAt + timeoutMs;
     let currentUrl = url;
     try {
       if (!fetchImpl) {
+        const startedAt = Date.now();
         const retrieved = await networkRetriever(url, {
           now,
           timeoutMs,
           maxResponseBytes,
           resolveHost,
           destinationPolicy,
-          deadlineAt,
+          deadlineAt: startedAt + timeoutMs,
           startedAt,
+          gate: options.gate,
         });
         return await addLinkedDocumentEvidence(retrieved, url, options);
       }
 
+      await admitThroughGate(options.gate, currentUrl);
+      const startedAt = Date.now();
+      let deadlineAt = startedAt + timeoutMs;
       let response: Response;
       let redirectCount = 0;
-      const deadlineSignal = AbortSignal.timeout(
-        Math.max(1, deadlineAt - Date.now()),
-      );
       while (true) {
         await withinRetrievalDeadline(
           assertSafeSourceUrl(
@@ -1216,6 +1258,9 @@ export async function retrieveSource(
           ),
           deadlineAt,
           timeoutMs,
+        );
+        const deadlineSignal = AbortSignal.timeout(
+          Math.max(1, deadlineAt - Date.now()),
         );
         const init: CollectorRequestInit = {
           headers: {
@@ -1233,6 +1278,11 @@ export async function retrieveSource(
           identityAuthority: options.identityAuthority,
         };
         response = await fetchImpl(currentUrl, init);
+        options.gate?.observe(new URL(currentUrl), {
+          status: response.status,
+          retryAfter: response.headers.get('retry-after'),
+          transport: options.transport ?? 'http',
+        });
         const location = response.headers.get('location');
         if (
           response.status >= 300 &&
@@ -1247,6 +1297,7 @@ export async function retrieveSource(
           await response.body?.cancel();
           currentUrl = new URL(location, currentUrl).toString();
           redirectCount++;
+          deadlineAt += await admitThroughGate(options.gate, currentUrl);
           continue;
         }
         break;
@@ -1257,6 +1308,10 @@ export async function retrieveSource(
       }
 
       const finalUrl = response.url || currentUrl;
+      if (hostsDiffer(finalUrl, currentUrl)) {
+        await response.body?.cancel().catch(() => undefined);
+        deadlineAt += await admitThroughGate(options.gate, finalUrl);
+      }
       await withinRetrievalDeadline(
         assertSafeSourceUrl(finalUrl, resolveHost, destinationPolicy),
         deadlineAt,

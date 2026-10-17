@@ -41,9 +41,17 @@ export type Admission =
   | { kind: 'decided_block'; sourceId: string }
   | { kind: 'refused'; cls: RefusalClass; detail: string };
 
+export type Transport = 'http' | 'browser' | 'firecrawl';
+
+export interface Observation {
+  status?: number;
+  retryAfter?: string | null;
+  transport: Transport;
+}
+
 export interface HostGate {
   admit(url: URL): Promise<Admission>;
-  observe(url: URL, outcome: { status?: number; retryAfter?: string | null }): void;
+  observe(url: URL, outcome: Observation): void;
   hosts(): Record<Host, HostRecord>;
   waited(): Record<Host, number>;
 }
@@ -188,13 +196,17 @@ export function createHostGate(deps: HostGateDeps): HostGate {
       const status = outcome.status;
       if (status === undefined) return;
       if (status === 403) {
-        tripped.set(host, { cls: 'identity_refused', reason: `HTTP 403 from ${host} earlier this run` });
+        if (outcome.transport === 'browser') {
+          tripped.set(host, { cls: 'identity_refused', reason: `HTTP 403 from ${host} earlier this run` });
+        }
         return;
       }
       if (status === 429 || status === 503) {
         const nowMs = deps.now();
+        const requested = parseRetryAfter(outcome.retryAfter, nowMs);
+        if (status === 503 && requested === null) return;
         const fallback = Math.min(BACKOFF_BASE_MS * 2 ** record.backoffCount, BACKOFF_CAP_MS);
-        const delay = Math.min(parseRetryAfter(outcome.retryAfter, nowMs) ?? fallback, BACKOFF_CAP_MS);
+        const delay = Math.min(requested ?? fallback, BACKOFF_CAP_MS);
         record.backoffCount += 1;
         record.backoffStatus = status;
         record.backoffUntil = new Date(nowMs + delay).toISOString();

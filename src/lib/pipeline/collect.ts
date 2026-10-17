@@ -160,7 +160,7 @@ const BROWSER_RETRIEVAL_TIMEOUT_MS = 60_000;
 function isBrowserFallbackFutile(error: unknown): boolean {
   return (
     error instanceof SourceFetchError &&
-    error.code === 'destination_mismatch'
+    (error.code === 'destination_mismatch' || error.code === 'gate_refused')
   );
 }
 
@@ -1255,7 +1255,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
       if (preferBrowser) {
         const firecrawled = source.identityException
           ? { ok: false as const, reason: 'identity_scope' }
-          : await scrapeWithFirecrawl(url, { identity: 'declared' });
+          : await scrapeWithFirecrawl(url, { identity: 'declared', gate });
         if (firecrawled.ok) {
           const page = await retrievedSourceFromFirecrawl(
             firecrawled.markdown,
@@ -1268,6 +1268,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
               fetchImpl,
               now: () => now,
               identityAuthority,
+              gate,
             });
           } catch (error) {
             if (isBrowserFallbackFutile(error)) throw error;
@@ -1285,10 +1286,12 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
           now: () => now,
           timeoutMs: BROWSER_RETRIEVAL_TIMEOUT_MS,
           identityAuthority,
+          gate,
+          transport: 'browser',
         });
       }
       try {
-        return await retrieveSource(url, { fetchImpl, now: () => now, identityAuthority });
+        return await retrieveSource(url, { fetchImpl, now: () => now, identityAuthority, gate });
       } catch (error) {
         if (!browserFetchImpl || isBrowserFallbackFutile(error)) throw error;
         log(`[collect] ${source.id}: retrying ${url} with the browser retriever`);
@@ -1297,6 +1300,8 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
           now: () => now,
           timeoutMs: BROWSER_RETRIEVAL_TIMEOUT_MS,
           identityAuthority,
+          gate,
+          transport: 'browser',
         });
       }
     };
@@ -1364,7 +1369,8 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         now: () => now,
         hashLinkedDocuments: source.kind === 'document',
         identityAuthority,
-        ...(timeoutMs !== undefined ? { timeoutMs } : {}),
+        gate,
+        ...(timeoutMs !== undefined ? { timeoutMs, transport: 'browser' as const } : {}),
       });
       const extracted =
         source.kind === 'document'
