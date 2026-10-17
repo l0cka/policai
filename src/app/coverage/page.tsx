@@ -9,7 +9,7 @@ import {
 import { THEMES } from '@/lib/themes';
 import './coverage.css';
 
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Australian AI Policy Coverage Map - Policai',
