@@ -1,7 +1,7 @@
 ---
 type: instrument_note
 title: "Queensland agencies must assess AI with a FAIRA, with a shorter version for trials"
-summary: Version 2.0.0 of Queensland's mandated AI governance policy, effective August 2026, requires agencies to follow ISO 38507 and to prepare a Foundational AI Risk Assessment, or an agreed equivalent, when evaluating AI.
+summary: Version 2.0.0 of Queensland's mandated AI governance policy, effective August 2026, requires agencies to establish AI governance arrangements with regard to ISO 38507 and to prepare a Foundational AI Risk Assessment, or an agreed equivalent, when evaluating AI.
 status: published
 publishedAt: 2026-10-17
 cites:
