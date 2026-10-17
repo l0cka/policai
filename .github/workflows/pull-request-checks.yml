@@ -11,7 +11,8 @@ permissions:
 jobs:
   lint:
     name: lint
-    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: [self-hosted, linux, argus]
 
     steps:
       - name: Checkout repository
@@ -35,7 +36,8 @@ jobs:
 
   test:
     name: test
-    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: [self-hosted, linux, argus]
 
     steps:
       - name: Checkout repository
@@ -66,7 +68,8 @@ jobs:
 
   build:
     name: build
-    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: [self-hosted, linux, argus]
 
     steps:
       - name: Checkout repository
@@ -87,7 +90,8 @@ jobs:
 
   probono-dashboard:
     name: Pro Bono dashboard
-    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: [self-hosted, linux, argus]
     defaults:
       run:
         working-directory: apps/probono/dashboard
@@ -112,7 +116,8 @@ jobs:
 
   probono-worker:
     name: Pro Bono worker
-    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: [self-hosted, linux, argus]
     defaults:
       run:
         working-directory: apps/probono/worker
@@ -171,7 +176,8 @@ jobs:
 
   host-dispatcher:
     name: Host dispatcher
-    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: [self-hosted, linux, argus]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
