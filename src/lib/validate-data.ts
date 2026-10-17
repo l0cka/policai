@@ -835,36 +835,44 @@ export function validatePolicies(
   return { errors, warnings };
 }
 
-export function validatePolicyThemes(policies: readonly Policy[]): ValidationReport {
+function recordThemeErrors(label: string, themes: unknown): string[] {
+  if (!Array.isArray(themes)) {
+    return [`${label}: themes must be an array of theme ids`];
+  }
   const errors: string[] = [];
-  policies.forEach((policy, index) => {
-    const label = isNonEmptyString(policy.id) ? policy.id : `policies[${index}]`;
-    const themes: unknown = policy.themes;
-    if (!Array.isArray(themes)) {
-      errors.push(`${label}: themes must be an array of theme ids`);
-      return;
-    }
-    if (
-      themes.length < MIN_THEMES_PER_RECORD ||
-      themes.length > MAX_THEMES_PER_RECORD
-    ) {
+  if (
+    themes.length < MIN_THEMES_PER_RECORD ||
+    themes.length > MAX_THEMES_PER_RECORD
+  ) {
+    errors.push(
+      `${label}: themes must list ${MIN_THEMES_PER_RECORD} to ${MAX_THEMES_PER_RECORD} themes, not ${themes.length}`,
+    );
+  }
+  const seen = new Set<unknown>();
+  for (const theme of themes) {
+    if (typeof theme !== 'string') {
       errors.push(
-        `${label}: themes must list ${MIN_THEMES_PER_RECORD} to ${MAX_THEMES_PER_RECORD} themes, not ${themes.length}`,
+        `${label}: theme entries must be theme id strings, not ${typeof theme} ${JSON.stringify(theme)}`,
       );
+    } else if (!isThemeId(theme)) {
+      errors.push(`${label}: unknown theme ${JSON.stringify(theme)}`);
+    } else if (seen.has(theme)) {
+      errors.push(`${label}: duplicate theme ${JSON.stringify(theme)}`);
     }
-    const seen = new Set<unknown>();
-    for (const theme of themes) {
-      if (typeof theme !== 'string') {
-        errors.push(
-          `${label}: theme entries must be theme id strings, not ${typeof theme} ${JSON.stringify(theme)}`,
-        );
-      } else if (!isThemeId(theme)) {
-        errors.push(`${label}: unknown theme ${JSON.stringify(theme)}`);
-      } else if (seen.has(theme)) {
-        errors.push(`${label}: duplicate theme ${JSON.stringify(theme)}`);
-      }
-      seen.add(theme);
-    }
+    seen.add(theme);
+  }
+  return errors;
+}
+
+export function validatePolicyThemes(policies: readonly Policy[]): ValidationReport {
+  const errors = policies.flatMap((policy, index) => {
+    const label = isNonEmptyString(policy.id) ? policy.id : `policies[${index}]`;
+    const recordErrors = recordThemeErrors(label, policy.themes);
+    if (recordErrors.length === 0) return [];
+    return [
+      ...recordErrors,
+      `${label}: valid theme ids are ${THEMES.map(({ key }) => key).join(', ')}`,
+    ];
   });
   return { errors, warnings: [] };
 }

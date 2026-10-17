@@ -558,7 +558,8 @@ Detections staged in `data/source-reviews.json` are proposals. To publish one:
 
 1. Run the local MCP server (`npm run mcp`).
 2. Inspect the staged source and correct the draft, especially its labelled
-   primary date.
+   primary date. Give a policy its `themes`: `list_themes` returns the valid
+   keys and labels from `src/lib/themes.ts`.
 3. Call `approve_staged_source` with reviewer identity and notes.
    The MCP input requires a human `reviewer`; the admin token authorises the
    operation but is not recorded as the person who performed the review.
