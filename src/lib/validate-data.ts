@@ -41,9 +41,9 @@ import {
 } from '@/lib/article-images';
 import type { WatchState } from '@/lib/pipeline/collect';
 import {
-  ROBOTS_PATTERN_CAP,
-  ROBOTS_RULES_CAP,
-  ROBOTS_SITEMAPS_CAP,
+  isHostKey,
+  isRobotsRuleList,
+  isStoredSitemapList,
 } from '@/lib/pipeline/host-gate';
 import type { WatchSource } from '@/lib/pipeline/sources';
 import { isFailureClass, publicFailureUrl } from '@/lib/pipeline/failure';
@@ -88,7 +88,6 @@ const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 const RFC3339_TIMESTAMP =
   /^\d{4}-\d{2}-\d{2}T(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z|[+-](?:[01]\d|2[0-3]):[0-5]\d)$/;
 const SHA256 = /^[a-f0-9]{64}$/;
-const HOST_KEY = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*(:\d{1,5})?$/;
 
 function isOneOf(values: readonly string[], value: unknown): boolean {
   return typeof value === 'string' && values.includes(value);
@@ -1928,7 +1927,7 @@ export function validateWatchState(state: WatchState): ValidationReport {
 
   for (const [host, record] of Object.entries(state.hosts ?? {})) {
     const label = `watchState:hosts:${host}`;
-    if (!HOST_KEY.test(host)) errors.push(`${label}: invalid host`);
+    if (!isHostKey(host)) errors.push(`${label}: invalid host`);
     if (!isTimestampString(record.seenAt)) errors.push(`${label}: invalid seenAt`);
     const robots = record.robots;
     if (robots !== null) {
@@ -1936,25 +1935,14 @@ export function validateWatchState(state: WatchState): ValidationReport {
       if (!isOneOf(['parsed', 'absent', 'unreachable'], robots.status))
         errors.push(`${label}: invalid robots.status`);
       for (const field of ['allow', 'disallow'] as const) {
-        const rules = robots[field];
-        if (
-          !Array.isArray(rules) ||
-          rules.length > ROBOTS_RULES_CAP ||
-          !rules.every((rule) => typeof rule === 'string' && /^[/*]/.test(rule) && rule.length <= ROBOTS_PATTERN_CAP)
-        )
-          errors.push(`${label}: invalid robots.${field}`);
+        if (!isRobotsRuleList(robots[field])) errors.push(`${label}: invalid robots.${field}`);
       }
       if (
         robots.crawlDelaySec !== null &&
         !(typeof robots.crawlDelaySec === 'number' && Number.isFinite(robots.crawlDelaySec) && robots.crawlDelaySec >= 0)
       )
         errors.push(`${label}: invalid robots.crawlDelaySec`);
-      if (
-        !Array.isArray(robots.sitemaps) ||
-        robots.sitemaps.length > ROBOTS_SITEMAPS_CAP ||
-        !robots.sitemaps.every((sitemap) => typeof sitemap === 'string' && isHttpsUrl(sitemap))
-      )
-        errors.push(`${label}: invalid robots.sitemaps`);
+      if (!isStoredSitemapList(robots.sitemaps)) errors.push(`${label}: invalid robots.sitemaps`);
     }
     if (record.backoffUntil !== null && !isTimestampString(record.backoffUntil))
       errors.push(`${label}: invalid backoffUntil`);

@@ -15,6 +15,7 @@ export const ROBOTS_RULES_CAP = 500;
 export const ROBOTS_PATTERN_CAP = 1000;
 export const ROBOTS_SITEMAPS_CAP = 20;
 export const ROBOTS_TIMEOUT_MS = 20_000;
+export const HOST_KEY = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*(:\d{1,5})?$/;
 
 const PRODUCT_TOKEN = COLLECTOR_IDENTITY_TOKEN.split('/')[0];
 
@@ -66,7 +67,54 @@ export interface HostGateDeps {
 }
 
 export function hostOf(url: URL): Host {
-  return url.host.toLowerCase() as Host;
+  return url.host.toLowerCase().replace(/\.(?=(?::\d+)?$)/, '') as Host;
+}
+
+export function isHostKey(value: string): value is Host {
+  return HOST_KEY.test(value);
+}
+
+export function isRobotsRuleList(value: unknown): value is string[] {
+  return (
+    Array.isArray(value) &&
+    value.length <= ROBOTS_RULES_CAP &&
+    value.every(
+      (rule) => typeof rule === 'string' && /^[/*]/.test(rule) && rule.length <= ROBOTS_PATTERN_CAP,
+    )
+  );
+}
+
+function isHttpsUrl(value: unknown): value is string {
+  try {
+    return typeof value === 'string' && new URL(value).protocol === 'https:';
+  } catch {
+    return false;
+  }
+}
+
+export function isStoredSitemapList(value: unknown): value is string[] {
+  return Array.isArray(value) && value.length <= ROBOTS_SITEMAPS_CAP && value.every(isHttpsUrl);
+}
+
+export function robotsRecordFits(robots: RobotsRules): boolean {
+  return (
+    isRobotsRuleList(robots.allow) &&
+    isRobotsRuleList(robots.disallow) &&
+    isStoredSitemapList(robots.sitemaps)
+  );
+}
+
+function storedRobots(rules: RobotsRules, origin: string): RobotsRules {
+  const sitemaps = new Set<string>();
+  for (const sitemap of rules.sitemaps) {
+    try {
+      const resolved = new URL(sitemap, `${origin}/robots.txt`).toString();
+      if (isHttpsUrl(resolved)) sitemaps.add(resolved);
+    } catch {
+      continue;
+    }
+  }
+  return { ...rules, sitemaps: [...sitemaps].slice(0, ROBOTS_SITEMAPS_CAP) };
 }
 
 function emptyRecord(seenAt: string): HostRecord {
@@ -80,14 +128,6 @@ function parseRetryAfter(value: string | null | undefined, nowMs: number): numbe
   if (!/[A-Za-z]/.test(trimmed)) return null;
   const date = Date.parse(trimmed);
   return Number.isFinite(date) ? Math.max(0, date - nowMs) : null;
-}
-
-function robotsFits(robots: RobotsRules): boolean {
-  const patterns = [...robots.allow, ...robots.disallow];
-  return (
-    patterns.length <= ROBOTS_RULES_CAP &&
-    patterns.every((pattern) => pattern.length <= ROBOTS_PATTERN_CAP)
-  );
 }
 
 export function createHostGate(deps: HostGateDeps): HostGate {
@@ -156,7 +196,11 @@ export function createHostGate(deps: HostGateDeps): HostGate {
       record.robots = { ...none, fetchedAt, status: 'absent' };
       return null;
     }
-    record.robots = { ...parseRobots(response.body, PRODUCT_TOKEN), fetchedAt, status: 'parsed' };
+    record.robots = {
+      ...storedRobots(parseRobots(response.body, PRODUCT_TOKEN), url.origin),
+      fetchedAt,
+      status: 'parsed',
+    };
     return null;
   };
 
@@ -223,10 +267,8 @@ export function createHostGate(deps: HostGateDeps): HostGate {
       const cutoff = deps.now() - HOST_RETENTION_MS;
       const out: Record<Host, HostRecord> = {};
       for (const [host, record] of records) {
-        if (Date.parse(record.seenAt) <= cutoff) continue;
-        const robots = record.robots && robotsFits(record.robots)
-          ? { ...record.robots, sitemaps: record.robots.sitemaps.slice(0, ROBOTS_SITEMAPS_CAP) }
-          : null;
+        if (!isHostKey(host) || Date.parse(record.seenAt) <= cutoff) continue;
+        const robots = record.robots && robotsRecordFits(record.robots) ? { ...record.robots } : null;
         out[host] = { ...record, robots };
       }
       return out;
