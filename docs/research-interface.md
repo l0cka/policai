@@ -20,7 +20,7 @@ canonical records, approves detections, runs a collector or changes schema.
 - `src/components/policy-table.tsx` renders the controlled result view. It no
   longer owns a second sort/page state or requires remounting to reset results.
 - `src/components/policy-indicators.tsx` owns shared source, status and
-  jurisdiction indicators. Courts, detail, timeline and network views do not
+  jurisdiction indicators. Courts, detail, timeline and coverage views do not
   import the entire register table to obtain a status pill.
 
 URL fields are `q`, `jurisdiction`, `type`, `status`, `sort`, `view` and `page`.

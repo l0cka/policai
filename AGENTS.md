@@ -82,7 +82,8 @@ src/
 │   ├── this-week/page.tsx        # Weekly verified developments + upcoming dates
 │   ├── courts/page.tsx           # Court AI guidance view
 │   ├── analysis/                 # Analysis index, [slug] pieces and tombstones, feed.xml (Atom)
-│   ├── network|timeline/         # Visualisations
+│   ├── coverage/                 # Coverage map: themes by jurisdiction (see Coverage map)
+│   ├── timeline/                 # Timeline visualisation
 │   ├── methodology|status/       # Verification method and source health
 │   ├── not-found.tsx             # Site 404 with onward links
 │   ├── map|framework|blog/       # Retired: each page calls notFound()
@@ -132,6 +133,63 @@ docs/                             # collector.md + docs index
 8. **Articles** (`data/articles/<slug>.md`): Policai's written analysis. See Articles below.
 
 See [docs/collector.md](./docs/collector.md) for operations.
+
+## Coverage map
+
+`/coverage` answers "who has an instrument on this subject, and where is
+there nothing?" as a table of themes (rows) by jurisdiction (columns). The
+nav calls it Coverage, under Explore. `/network` and any query string on it
+redirect there with a 308 (`next.config.ts`). `/api/network` is unchanged
+and still serves `buildNetworkData` nodes and edges.
+
+- **Data:** `buildCoverageData(policies, THEMES)` in `src/lib/coverage-data.ts`
+  is pure. It counts the public register read (`getPolicies()`: verified,
+  non-trashed, non-withheld) per `policy.themes` entry and jurisdiction, and
+  per `policy.type` for the "By instrument type" axis on the same code path.
+  Each cell holds record ids. Columns follow `COVERAGE_JURISDICTIONS`
+  (Federal, NSW, Vic, Qld, SA, WA, Tas, ACT, NT). Rows are sorted by total,
+  then label. A theme is charted when it has `COVERAGE_MIN_RECORDS` records.
+  The value is 1, so every theme in the controlled vocabulary with a public
+  record is a row: `validate:data` requires two non-trashed register records
+  per theme (fewer than two public records is only a warning), and a hidden
+  theme cannot show where coverage is missing. The
+  original threshold of 6 filtered free-form tags. Raise it if the
+  vocabulary grows past what one table can show; uncharted themes are then
+  counted in the footnote.
+- **Rendering:** the route is `force-dynamic`. It reads `searchParams` to
+  server-render the selected drill-down, so it is dynamic by nature, and the
+  export says so; a `revalidate` would have no effect. Each request reads
+  `policies.json` and `source-reviews.json` and builds the matrix, which is
+  small (one pass over the public records). `src/app/coverage/page.test.tsx`
+  guards the export and asserts that withheld, unverified and trashed records
+  never reach a cell or a drill-down list.
+- **Copy:** every count and sentence on the page (standfirst, footnote, empty
+  state) comes from `coverageStandfirst`, `coverageFootnote` and
+  `coverageEmptySentence`. Do not type numbers into the page. The footnote
+  agrees in number for 0, 1, 2 and many themes; its cases are a table in
+  `coverage-data.test.ts`.
+- **URL:** `?theme=<key>&j=<jurisdiction>` selects a cell, `theme` alone a row,
+  `j` alone a column, and `by=type` (with `type=<key>`) switches the axis.
+  Unknown values are ignored. Opening and closing use `replaceState`; moving
+  from one selection to another uses `pushState`, so Back restores it.
+- **Markup:** one server-rendered `<table>` from the client component
+  `CoverageMap` (`src/components/coverage-map.tsx`). Count cells are buttons
+  in a roving-tabindex grid: one tab stop, arrows, Home and End, Enter or
+  Space to open the drill-down row under the selection, Escape or "Clear
+  selection" to close it and return focus. Below 768px the same rows are
+  restyled as CSS grid strips. Changing `display` on table elements drops
+  their table semantics in some browsers, so every table element carries its
+  explicit ARIA role (`table`, `rowgroup`, `row`, `columnheader`,
+  `rowheader`, `cell`). A selection loaded from the URL scrolls the
+  drill-down row into view. The row's `scroll-margin-top` is the site header
+  height (`--coverage-sticky-top`) plus, below 768px, the sticky column strip
+  (`--coverage-strip-height`); `CoverageMap` measures both before it scrolls.
+  `scripts/verify-coverage.mjs` checks on phone and desktop, light and dark,
+  that the drill-down heading clears both after a deep link and a click:
+  `POLICAI_VERIFY_URL=http://127.0.0.1:<port> POLICAI_EVIDENCE_DIR=<dir>
+  node scripts/verify-coverage.mjs` against a loopback production build.
+- **Styling:** `src/app/coverage/coverage.css`. The four cell levels are
+  `color-mix()` of `--primary` into `--background`, local to the page.
 
 ## Articles
 
@@ -346,7 +404,7 @@ Defined in `src/types/index.ts`; import them from `@/types`. The one exception i
 - **PolicyType:** `legislation | regulation | guideline | framework | standard | practice_note | policy | tool | funding_program`
 - **PolicyStatus:** `proposed | active | amended | superseded | closed | repealed | trashed` (unverified and `trashed` records are hidden from public register reads; `superseded` records carry `supersededBy`)
 - **Policy** — register entity (with optional `supersededBy`, `lastReviewedAt`)
-- **ThemeId** — `Policy.themes[]` entries: keys of `THEMES` in `src/lib/themes.ts`, the controlled topic vocabulary the Editorial Manager owns (issue #305). Every record, trashed or not, has 1 to 5 unique themes. A listed theme on fewer than 2 non-trashed register records is a `validate:data` error. A listed theme on fewer than 2 public records is only a warning, because withholding a record for an update review, or an unverified record, can cause it during an ordinary collection run. The real-data test (`src/lib/validate-themes.test.ts`) asserts the register count only, so CI fails on the same condition as `validate:data`. Adding, renaming or removing a theme is an editorial decision made in a PR that edits `src/lib/themes.ts`. A new theme must be on at least 2 records in the same PR. Renaming or removing a theme needs a data migration of `data/policies.json` in the same PR: a rerunnable codemod like `scripts/apply-themes-2026-10-17.ts`. `tags` stay free-form keywords for search, `keywords` metadata, related records and the courts view; they are not themes. `/network` groups and connects records by `themes`.
+- **ThemeId** — `Policy.themes[]` entries: keys of `THEMES` in `src/lib/themes.ts`, the controlled topic vocabulary the Editorial Manager owns (issue #305). Every record, trashed or not, has 1 to 5 unique themes. A listed theme on fewer than 2 non-trashed register records is a `validate:data` error. A listed theme on fewer than 2 public records is only a warning, because withholding a record for an update review, or an unverified record, can cause it during an ordinary collection run. The real-data test (`src/lib/validate-themes.test.ts`) asserts the register count only, so CI fails on the same condition as `validate:data`. Adding, renaming or removing a theme is an editorial decision made in a PR that edits `src/lib/themes.ts`. A new theme must be on at least 2 records in the same PR. Renaming or removing a theme needs a data migration of `data/policies.json` in the same PR: a rerunnable codemod like `scripts/apply-themes-2026-10-17.ts`. `tags` stay free-form keywords for search, `keywords` metadata, related records and the courts view; they are not themes. `/coverage` charts records by `themes` and jurisdiction, and `/api/network` connects records that share `themes`.
 - **PolicyDate** — `Policy.dates[]` entries: `type` (`POLICY_DATE_TYPES`), calendar `date`, required `precision` (`day | month | year`; month/year dates anchor on the first day and never render a day), optional `primary` and `source`. Exactly one date is primary and backs `effectiveDate`.
 - **Deadline date types** (`DEADLINE_DATE_TYPES`): `consultation_closed | compliance_due | scheduled_review` — dates that fall due on an instrument rather than change it. They cannot be primary; future ones feed the homepage "Upcoming deadlines" rail and `/this-week` (`src/lib/this-week.ts`). Values are editorial, source-verified entries like any other date.
 - **Development**, **CollectionMeta** — feed + collector metadata

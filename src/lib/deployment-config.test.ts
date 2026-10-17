@@ -12,4 +12,13 @@ describe("deployment data packaging", () => {
 			]),
 		});
 	});
+
+	it("permanently redirects the retired network view to the coverage map", async () => {
+		const redirects = await nextConfig.redirects?.();
+		expect(redirects).toContainEqual({
+			source: "/network",
+			destination: "/coverage",
+			permanent: true,
+		});
+	});
 });

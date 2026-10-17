@@ -20,7 +20,7 @@ const navItems = [
 
 const insightItems = [
   { href: '/timeline', label: 'Timeline' },
-  { href: '/network', label: 'Network' },
+  { href: '/coverage', label: 'Coverage' },
   { href: '/methodology', label: 'Methodology' },
 ];
 
@@ -115,7 +115,7 @@ export function Header({
     };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background text-foreground">
+    <header data-site-header className="sticky top-0 z-50 w-full border-b border-border bg-background text-foreground">
       <div className="container mx-auto flex h-14 items-center px-4 sm:h-24 sm:px-6 lg:px-8">
         <Link href="/" aria-label="Policai home" className="shrink-0">
           <PolicaiLogo

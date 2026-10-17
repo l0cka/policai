@@ -38,7 +38,7 @@ Error responses use this form:
 | `GET` | `/api/developments` | Search public policy developments. |
 | `GET` | `/api/timeline` | List public timeline events. |
 | `GET` | `/api/agencies` | List public agency records. |
-| `GET` | `/api/network` | Get policy network nodes and edges. |
+| `GET` | `/api/network` | Get policy nodes and shared-theme edges. Stable; no site page uses it since `/network` became the coverage map. |
 | `GET` | `/api/status` | Get collection health and freshness data. |
 
 ### Policy filters

@@ -3,7 +3,6 @@ import { buildPolicy } from '@/test/factories';
 import {
   buildNetworkData,
   getNetworkConnections,
-  nodeMatchesTheme,
 } from './network-data';
 
 describe('buildNetworkData', () => {
@@ -57,7 +56,7 @@ describe('buildNetworkData', () => {
       themes: ['infrastructure'],
     });
 
-    const { nodes, edges, summary } = buildNetworkData([
+    const { nodes, edges } = buildNetworkData([
       federalCourt,
       nswCourt,
       isolated,
@@ -76,13 +75,6 @@ describe('buildNetworkData', () => {
         ],
       }),
     );
-    expect(summary).toMatchObject({
-      policyCount: 3,
-      thematicallyConnectedCount: 2,
-      isolatedCount: 1,
-      crossJurisdictionLinkCount: 1,
-      insight: 'Court guidance forms the clearest cross-jurisdiction cluster.',
-    });
     expect(nodes.find((node) => node.id === 'federal-court')).toMatchObject({
       thematicDegree: 1,
       formalDegree: 0,
@@ -103,7 +95,7 @@ describe('buildNetworkData', () => {
       themes: ['responsible-ai'],
     });
 
-    const { nodes, edges, summary } = buildNetworkData([
+    const { nodes, edges } = buildNetworkData([
       superseded,
       replacement,
     ]);
@@ -115,11 +107,6 @@ describe('buildNetworkData', () => {
       formalRelationship: 'superseded_by',
       sharedThemes: [],
     });
-    expect(summary).toMatchObject({
-      thematicallyConnectedCount: 0,
-      isolatedCount: 2,
-      formalRelationshipCount: 1,
-    });
     expect(getNetworkConnections('superseded', nodes, edges)).toEqual([
       expect.objectContaining({
         formalLabel: 'Superseded by',
@@ -130,19 +117,5 @@ describe('buildNetworkData', () => {
     expect(getNetworkConnections('replacement', nodes, edges)[0]).toMatchObject({
       formalLabel: 'Supersedes',
     });
-  });
-
-  it('matches theme filters by theme id', () => {
-    const { nodes } = buildNetworkData([
-      buildPolicy({
-        tags: ['risk management'],
-        themes: ['ai-governance', 'risk-assurance'],
-      }),
-    ]);
-
-    expect(nodeMatchesTheme(nodes[0], 'risk-assurance')).toBe(true);
-    expect(nodeMatchesTheme(nodes[0], 'risk management')).toBe(false);
-    expect(nodeMatchesTheme(nodes[0], 'courts-tribunals')).toBe(false);
-    expect(nodeMatchesTheme(nodes[0], null)).toBe(true);
   });
 });

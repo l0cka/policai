@@ -51,7 +51,7 @@ describe('Editorial identity and navigation', () => {
       ['Developments', '/developments'],
       ['Courts', '/courts'],
       ['Timeline', '/timeline'],
-      ['Network', '/network'],
+      ['Coverage', '/coverage'],
       ['Methodology', '/methodology'],
       ['API', '/api/policies'],
       ['Feedback', 'https://github.com/l0cka/policai/issues'],
