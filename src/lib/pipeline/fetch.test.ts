@@ -11,6 +11,8 @@ import {
   retrieveSourceOverHttp1,
   SourceFetchError,
 } from './fetch';
+import type { Admission } from './host-gate';
+import { buildRecordingHostGate } from '@/test/factories';
 
 describe('retrieveSource', () => {
   it('declares the Policai identity over plain HTTP, exempt or not', async () => {
@@ -1510,5 +1512,288 @@ describe('matchesRetrievedContent', () => {
       '<meta name="Generator" content="Drupal 10 (https://www.drupal.org)"><meta name="dcterms.date" content="2025-03-01">',
     );
     expect(matchesRetrievedContent(after, before.evidence.contentHash)).toBe(false);
+  });
+});
+
+describe('retrieveSource host gate', () => {
+  const html = (title: string) =>
+    new Response(`<html><body><main><h1>${title}</h1></main></body></html>`, {
+      status: 200,
+      headers: { 'content-type': 'text/html' },
+    });
+  const refusal = (url: URL): Admission => ({
+    kind: 'refused',
+    cls: 'robots_disallowed',
+    detail: `${url} is disallowed by robots.txt for Policai`,
+  });
+
+  it('admits before the request and observes the status and Retry-After after it', async () => {
+    const { gate, admitted, observed } = buildRecordingHostGate();
+    const fetchImpl = vi.fn(async () => {
+      expect(admitted).toEqual(['https://example.gov.au/policy']);
+      const response = html('AI policy');
+      response.headers.set('retry-after', '7');
+      return response;
+    });
+    await retrieveSource('https://example.gov.au/policy', {
+      fetchImpl: fetchImpl as unknown as typeof fetch,
+      gate,
+      hashLinkedDocuments: false,
+    });
+    expect(observed).toEqual([['https://example.gov.au/policy', { status: 200, retryAfter: '7', transport: 'http' }]]);
+  });
+
+  it('turns a refusal into a terminal SourceFetchError that carries the URL and makes no request', async () => {
+    const { gate } = buildRecordingHostGate(refusal);
+    const fetchImpl = vi.fn();
+    await expect(
+      retrieveSource('https://example.gov.au/search?q=ai', {
+        fetchImpl: fetchImpl as unknown as typeof fetch,
+        gate,
+        attempts: 3,
+      }),
+    ).rejects.toMatchObject({
+      name: 'SourceFetchError',
+      message: 'https://example.gov.au/search?q=ai is disallowed by robots.txt for Policai',
+      retryable: false,
+      code: 'gate_refused',
+      url: 'https://example.gov.au/search?q=ai',
+    });
+    expect(fetchImpl).not.toHaveBeenCalled();
+  });
+
+  it('reports a decided block as a terminal failure naming the deciding source', async () => {
+    const { gate } = buildRecordingHostGate(() => ({ kind: 'decided_block', sourceId: 'finance-news' }));
+    await expect(
+      retrieveSource('https://www.finance.gov.au/x.pdf', { fetchImpl: vi.fn() as unknown as typeof fetch, gate }),
+    ).rejects.toMatchObject({
+      code: 'gate_refused',
+      retryable: false,
+      message: expect.stringContaining('finance-news'),
+      url: 'https://www.finance.gov.au/x.pdf',
+    });
+  });
+
+  it('labels observations with the transport the caller names', async () => {
+    const { gate, observed } = buildRecordingHostGate();
+    await retrieveSource('https://example.gov.au/policy', {
+      fetchImpl: vi.fn(async () => html('AI policy')) as unknown as typeof fetch,
+      gate,
+      transport: 'browser',
+      hashLinkedDocuments: false,
+    });
+    expect(observed[0]?.[1].transport).toBe('browser');
+  });
+
+  it('keeps a backoff refusal retryable so a candidate stays pending for the next run', async () => {
+    const { gate } = buildRecordingHostGate((url) => ({
+      kind: 'refused',
+      cls: 'rate_limited',
+      detail: `${url.host} is backing off until later after HTTP 429; ${url} not requested`,
+    }));
+    await expect(
+      retrieveSource('https://example.gov.au/policy', { fetchImpl: vi.fn() as unknown as typeof fetch, gate, attempts: 1 }),
+    ).rejects.toMatchObject({ code: 'gate_refused', retryable: true });
+  });
+
+  it('keeps a breaker refusal retryable, so a never-requested candidate stays pending', async () => {
+    const url = 'https://example.gov.au/policy';
+    const { gate } = buildRecordingHostGate(() => ({
+      kind: 'refused',
+      cls: 'identity_refused',
+      detail: `example.gov.au refused the headless browser with a 403 earlier this run; ${url} not requested`,
+    }));
+    const fetchImpl = vi.fn();
+    await expect(
+      retrieveSource(url, { fetchImpl: fetchImpl as unknown as typeof fetch, gate, hashLinkedDocuments: false }),
+    ).rejects.toMatchObject({ code: 'gate_refused', retryable: true, url });
+    expect(fetchImpl).not.toHaveBeenCalled();
+  });
+
+  it('reports the response that was requested when the gate refuses the retry', async () => {
+    const url = 'https://example.gov.au/policy';
+    let admitted = 0;
+    const { gate } = buildRecordingHostGate(() =>
+      admitted++ === 0
+        ? { kind: 'go' }
+        : { kind: 'refused', cls: 'rate_limited', detail: `example.gov.au is backing off; ${url} not requested` },
+    );
+    const fetchImpl = vi.fn(async () => new Response('slow down', { status: 429, headers: { 'retry-after': '3600' } }));
+    await expect(
+      retrieveSource(url, {
+        fetchImpl: fetchImpl as unknown as typeof fetch,
+        gate,
+        hashLinkedDocuments: false,
+        attempts: 2,
+        retryDelayMs: 0,
+      }),
+    ).rejects.toMatchObject({ status: 429, retryable: true, url, message: `HTTP 429 at ${url}` });
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+  });
+
+  it('admits every redirect hop and observes each response', async () => {
+    const { gate, admitted, observed } = buildRecordingHostGate();
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(
+        new Response(null, { status: 301, headers: { location: 'https://other.gov.au/policy' } }),
+      )
+      .mockResolvedValueOnce(html('AI policy'));
+    await retrieveSource('https://example.gov.au/start', {
+      fetchImpl: fetchImpl as unknown as typeof fetch,
+      gate,
+      hashLinkedDocuments: false,
+    });
+    expect(admitted).toEqual(['https://example.gov.au/start', 'https://other.gov.au/policy']);
+    expect(observed.map(([url, outcome]) => [url, outcome.status])).toEqual([
+      ['https://example.gov.au/start', 301],
+      ['https://other.gov.au/policy', 200],
+    ]);
+  });
+
+  it('refuses a redirect hop onto a disallowed URL without requesting it', async () => {
+    const { gate } = buildRecordingHostGate((url) =>
+      url.hostname === 'other.gov.au' ? refusal(url) : { kind: 'go' },
+    );
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(
+        new Response(null, { status: 302, headers: { location: 'https://other.gov.au/private' } }),
+      );
+    await expect(
+      retrieveSource('https://example.gov.au/start', { fetchImpl: fetchImpl as unknown as typeof fetch, gate }),
+    ).rejects.toMatchObject({ code: 'gate_refused', url: 'https://other.gov.au/private' });
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+  });
+
+  it('admits a browser-followed redirect destination after the fact and discards a refused one', async () => {
+    const landed = (finalUrl: string) => {
+      const response = html('AI policy');
+      Object.defineProperty(response, 'url', { value: finalUrl });
+      return response;
+    };
+    const allowed = buildRecordingHostGate();
+    await retrieveSource('https://example.gov.au/start', {
+      fetchImpl: vi.fn(async () => landed('https://other.gov.au/policy')) as unknown as typeof fetch,
+      gate: allowed.gate,
+      hashLinkedDocuments: false,
+    });
+    expect(allowed.admitted).toEqual(['https://example.gov.au/start', 'https://other.gov.au/policy']);
+
+    const refusing = buildRecordingHostGate((url) =>
+      url.hostname === 'other.gov.au' ? refusal(url) : { kind: 'go' },
+    );
+    await expect(
+      retrieveSource('https://example.gov.au/start', {
+        fetchImpl: vi.fn(async () => landed('https://other.gov.au/policy')) as unknown as typeof fetch,
+        gate: refusing.gate,
+        hashLinkedDocuments: false,
+      }),
+    ).rejects.toMatchObject({ code: 'gate_refused', url: 'https://other.gov.au/policy' });
+  });
+
+  it('admits each linked document and fails the page when one is disallowed', async () => {
+    const page = `<html><body><main><h1>AI policy</h1>
+      <a href="/files/open.pdf">AI policy PDF</a>
+      <a href="/private/closed.pdf">AI framework PDF</a></main></body></html>`;
+    const fetchImpl = vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url.endsWith('.pdf')) {
+        return new Response('%PDF-1.4\npolicy', { status: 200, headers: { 'content-type': 'application/pdf' } });
+      }
+      return new Response(page, { status: 200, headers: { 'content-type': 'text/html' } });
+    });
+    const open = buildRecordingHostGate();
+    await retrieveSource('https://example.gov.au/policy', {
+      fetchImpl: fetchImpl as unknown as typeof fetch,
+      gate: open.gate,
+    });
+    expect(open.admitted).toEqual([
+      'https://example.gov.au/policy',
+      'https://example.gov.au/files/open.pdf',
+      'https://example.gov.au/private/closed.pdf',
+    ]);
+
+    const closed = buildRecordingHostGate((url) => (url.pathname.startsWith('/private') ? refusal(url) : { kind: 'go' }));
+    fetchImpl.mockClear();
+    await expect(
+      retrieveSource('https://example.gov.au/policy', { fetchImpl: fetchImpl as unknown as typeof fetch, gate: closed.gate }),
+    ).rejects.toMatchObject({ code: 'gate_refused', url: 'https://example.gov.au/private/closed.pdf' });
+    expect(fetchImpl.mock.calls.map(([input]) => String(input))).toEqual([
+      'https://example.gov.au/policy',
+      'https://example.gov.au/files/open.pdf',
+    ]);
+  });
+
+  it('gates the HTTP/1.1 path per hop and observes its statuses', async () => {
+    const { gate, admitted, observed } = buildRecordingHostGate();
+    const requestImpl = vi.fn(
+      (
+        url: URL,
+        _requestOptions: unknown,
+        onResponse: (response: PassThrough & { statusCode: number; headers: Record<string, string> }) => void,
+      ) => {
+        const request = new EventEmitter() as EventEmitter & {
+          setTimeout: (milliseconds: number, callback: () => void) => typeof request;
+          destroy: (error?: Error) => typeof request;
+        };
+        request.setTimeout = vi.fn(() => request);
+        request.destroy = vi.fn(() => request);
+        queueMicrotask(() => {
+          expect(admitted.at(-1)).toBe(url.toString());
+          const response = new PassThrough() as PassThrough & { statusCode: number; headers: Record<string, string> };
+          if (url.pathname === '/start') {
+            response.statusCode = 302;
+            response.headers = { location: 'https://other.gov.au/policy', 'retry-after': '3' };
+            onResponse(response);
+            response.end();
+            return;
+          }
+          response.statusCode = 200;
+          response.headers = { 'content-type': 'text/html' };
+          onResponse(response);
+          response.end('<main><h1>AI policy</h1></main>');
+        });
+        return request;
+      },
+    );
+    await retrieveSourceOverHttp1('https://example.gov.au/start', {
+      now: () => new Date('2026-07-16T00:00:00.000Z'),
+      timeoutMs: 1_000,
+      resolveHost: async () => ['8.8.8.8'],
+      requestImpl: requestImpl as unknown as typeof import('node:https').get,
+      gate,
+    });
+    expect(admitted).toEqual(['https://example.gov.au/start', 'https://other.gov.au/policy']);
+    expect(observed).toEqual([
+      ['https://example.gov.au/start', { status: 302, retryAfter: '3', transport: 'http' }],
+      ['https://other.gov.au/policy', { status: 200, retryAfter: undefined, transport: 'http' }],
+    ]);
+  });
+
+  it('refuses on the HTTP/1.1 path before connecting', async () => {
+    const { gate } = buildRecordingHostGate(refusal);
+    const requestImpl = vi.fn();
+    await expect(
+      retrieveSourceOverHttp1('https://example.gov.au/private', {
+        now: () => new Date('2026-07-16T00:00:00.000Z'),
+        timeoutMs: 1_000,
+        resolveHost: async () => ['8.8.8.8'],
+        requestImpl: requestImpl as unknown as typeof import('node:https').get,
+        gate,
+      }),
+    ).rejects.toMatchObject({ code: 'gate_refused', url: 'https://example.gov.au/private' });
+    expect(requestImpl).not.toHaveBeenCalled();
+  });
+
+  it('passes the gate to the HTTP/1.1 fallback', async () => {
+    const { gate } = buildRecordingHostGate();
+    const http1Fallback = vi.fn(async () => {
+      throw new SourceFetchError('stop here', { retryable: false });
+    });
+    await expect(
+      retrieveSource('https://example.gov.au/policy', { gate, http1Fallback, resolveHost: async () => ['8.8.8.8'] }),
+    ).rejects.toThrow('stop here');
+    expect(http1Fallback).toHaveBeenCalledWith('https://example.gov.au/policy', expect.objectContaining({ gate }));
   });
 });

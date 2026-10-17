@@ -1,11 +1,14 @@
 import { sourceUrlsEqual } from '@/lib/source-url';
 import {
+  admitThroughGate,
   assertSafeSourceUrl,
   DEFAULT_MAX_RESPONSE_BYTES,
+  isGateError,
   readResponseBytes,
   resolveHostAddresses,
   SourceFetchError,
 } from './fetch';
+import type { HostGate } from './host-gate';
 import { type CollectorIdentity, firecrawlRequestHeaders } from './identity';
 
 /**
@@ -32,6 +35,7 @@ export interface FirecrawlOptions {
   resolveHost?: (hostname: string) => Promise<string[]>;
   /** Identity Firecrawl presents to the source; defaults to 'declared'. */
   identity?: CollectorIdentity;
+  gate?: HostGate;
 }
 
 export type FirecrawlResult =
@@ -76,6 +80,7 @@ export async function scrapeWithFirecrawl(
       detail: 'Firecrawl cannot enforce a per-hop identity exception; use the scoped browser',
     };
   }
+  await admitThroughGate(options.gate, url);
   const timeoutMs =
     options.timeoutMs ??
     (hasCompletedACall ? WARM_TIMEOUT_MS : COLD_START_TIMEOUT_MS);
@@ -112,7 +117,12 @@ export async function scrapeWithFirecrawl(
       data?: {
         markdown?: string;
         rawHtml?: string;
-        metadata?: { title?: string; sourceURL?: string; url?: string };
+        metadata?: {
+          title?: string;
+          sourceURL?: string;
+          url?: string;
+          statusCode?: number;
+        };
       };
     };
     try {
@@ -181,6 +191,16 @@ export async function scrapeWithFirecrawl(
         detail: error instanceof Error ? error.message : String(error),
       };
     }
+    if (metadata?.statusCode !== undefined) {
+      options.gate?.observe(new URL(finalUrl), {
+        status: metadata.statusCode,
+        retryAfter: null,
+        transport: 'firecrawl',
+      });
+    }
+    if (new URL(finalUrl).host.toLowerCase() !== new URL(url).host.toLowerCase()) {
+      await admitThroughGate(options.gate, finalUrl);
+    }
 
     hasCompletedACall = true;
     return {
@@ -191,6 +211,7 @@ export async function scrapeWithFirecrawl(
       finalUrl,
     };
   } catch (error) {
+    if (isGateError(error)) throw error;
     const detail = error instanceof Error ? error.message : String(error);
     const aborted = error instanceof Error && error.name === 'AbortError';
     return {

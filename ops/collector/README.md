@@ -251,6 +251,9 @@ Git reads pinned commit objects; the gate never checks out or executes candidate
 code. A nonempty diff may contain only ordinary `100644` modifications to the
 exact paths `data/watch-state.json` and `public/data/meta.json`. Additions,
 deletions, renames, symlinks, other modes and basename lookalikes refuse.
+The watch-state shape check covers `seen`, `lastCheckedBySource`,
+`sourceSnapshots` and, when present, the host gate's `hosts` map (one object
+per host; docs/collector.md "Politeness").
 
 The collector/coordinator must acquire and retain evidence independently of the
 PR author: capture the scheduled-run receipt and scheduler provenance; inspect

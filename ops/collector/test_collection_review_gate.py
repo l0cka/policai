@@ -257,6 +257,14 @@ class GateTest(unittest.TestCase):
         self.assertEqual((labelled['verdict'], labelled['reasons']),
                          (without['verdict'], without['reasons']))
 
+    def test_robots_unverified_hosts_do_not_change_the_verdict(self):
+        without = self.run_gate()
+        self.meta['collector']['robotsUnverified'] = ['www.example.gov.au', 'www.other.gov.au']
+        self.revise()
+        listed = self.run_gate()
+        self.assertEqual(without['verdict'], 'would-merge', without['reasons'])
+        self.assertEqual((listed['verdict'], listed['reasons']), (without['verdict'], without['reasons']))
+
     def test_not_due_is_not_success_or_recovery(self):
         c = self.meta['collector']
         c['sourceResults'][0].update(status='skipped', coverageEligible=False, itemCount=None)
@@ -287,6 +295,30 @@ class GateTest(unittest.TestCase):
         row['itemCount'] = 20000
         self.revise()
         self.assert_escalates('count drop')
+
+    def test_host_gate_wait_budget_never_skips_a_due_source(self):
+        c = self.meta['collector']
+        waited = dict(c['sourceResults'][0], sourceId='source-b', itemCount=5,
+                      candidateCount=5, newCandidateCount=0, durationMs=30002)
+        c['sourceResults'].append(waited)
+        c.update(automaticSourceCount=2, dueSourceCount=2, successfulSourceCount=2,
+                 lastRunSources=['source-a', 'source-b'])
+        self.revise()
+        self.base = self.head
+        self.evidence['base'] = self.base
+        self.evidence['review']['base'] = self.base
+        coverage = self.evidence['coverage']
+        coverage['automatic_source_ids'].append('source-b')
+        coverage['base_due']['source-b'] = coverage['head_due']['source-b'] = True
+        c['runCount'] = 3
+        self.revise()
+        result = self.run_gate()
+        self.assertEqual(result['verdict'], 'would-merge', result['reasons'])
+        waited.update(status='skipped', itemCount=None, candidateCount=0, newCandidateCount=0)
+        c.update(dueSourceCount=1, successfulSourceCount=1, skippedSourceCount=1,
+                 lastRunSources=['source-a'])
+        self.revise()
+        self.assert_escalates('source-b: due source skipped')
 
     def add_candidate(self, value='2026-10-07', precision='day'):
         candidate = {'url': 'https://example.gov.au/synthetic', 'title': 'Synthetic AI policy',
@@ -444,11 +476,24 @@ class GateTest(unittest.TestCase):
     def test_malformed_state_is_not_a_passing_attestation(self):
         original = copy.deepcopy(self.state)
         for key, value in [('lastCheckedBySource', {'source-a': 4}),
-                           ('sourceSnapshots', {'source-a': {'changeCount': -1}})]:
+                           ('sourceSnapshots', {'source-a': {'changeCount': -1}}),
+                           ('hosts', []), ('hosts', {'www.example.gov.au': 'seen'})]:
             self.state = copy.deepcopy(original)
             self.state[key] = value
             self.revise()
             self.assert_escalates('state')
+
+    def test_host_gate_records_in_watch_state_pass(self):
+        self.state['hosts'] = {'www.example.gov.au': {
+            'seenAt': '2026-10-20T19:35:00.000Z',
+            'robots': {'fetchedAt': '2026-10-20T19:35:00.000Z', 'status': 'parsed',
+                       'allow': [], 'disallow': ['/search'], 'crawlDelaySec': None, 'sitemaps': []},
+            'backoffUntil': None, 'backoffStatus': None, 'backoffCount': 0,
+            'robotsUnreachableRuns': 0}}
+        self.revise()
+        result = self.run_gate()
+        self.assertEqual(result['verdict'], 'would-merge', result['reasons'])
+        self.assertEqual(result['changed_paths'], ['data/watch-state.json', 'public/data/meta.json'])
 
     def test_malformed_json_and_missing_evidence_file(self):
         for raw in ['{', '[]', '{"head":1,"head":2}', '{"schema_version":NaN}']:

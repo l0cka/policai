@@ -484,6 +484,7 @@ export interface CollectionMeta {
 		automaticSourceCount: number;
 		manualSourceCount: number;
 		sourceResults: SourceRunResult[];
+		robotsUnverified?: string[];
 	};
 }
 
