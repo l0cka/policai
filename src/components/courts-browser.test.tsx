@@ -166,7 +166,7 @@ describe('CourtsBrowser', () => {
       const pill = render(<StatusPill status="active" dates={future.dates} />);
       expect(screen.getByText('Not yet in effect')).toBeInTheDocument();
       pill.unmount();
-      render(<PolicyDetailTabs policy={future} relatedPolicies={[]} />);
+      render(<PolicyDetailTabs policy={future} />);
       expect(screen.getAllByText('Not yet in effect')).toHaveLength(2);
     } finally { vi.useRealTimers(); }
   });
@@ -191,7 +191,7 @@ describe('CourtsBrowser', () => {
     expect(screen.getByRole('link', { name: /Source document/ })).toBeInTheDocument();
   });
   it('carries structured requirements and exceptions into the full record', () => {
-    render(<PolicyDetailTabs policy={policies[0]} relatedPolicies={[]} courtRequirements={[{ ...requirements[0], exceptions: ['Only with prior leave.'] }]} />);
+    render(<PolicyDetailTabs policy={policies[0]} courtRequirements={[{ ...requirements[0], exceptions: ['Only with prior leave.'] }]} />);
     fireEvent.click(screen.getByRole('tab', { name: 'Key requirements' }));
     expect(screen.getByText('Verified requirements (1)')).toBeInTheDocument();
     expect(screen.getByText('Exception: Only with prior leave.')).toBeInTheDocument();

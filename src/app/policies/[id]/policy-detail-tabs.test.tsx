@@ -26,13 +26,13 @@ const policy: Policy = {
 
 describe('PolicyDetailTabs', () => {
   it('renders each Requirement marker as its own labelled block', () => {
-    render(<PolicyDetailTabs policy={policy} relatedPolicies={[]} />);
+    render(<PolicyDetailTabs policy={policy} />);
     expect(screen.getByText('Requirement 1:').tagName).toBe('STRONG');
     expect(screen.getByText('Requirement 2:').tagName).toBe('STRONG');
   });
 
   it('shows the Policy changes card when the record has instrument dates', () => {
-    render(<PolicyDetailTabs policy={policy} relatedPolicies={[]} />);
+    render(<PolicyDetailTabs policy={policy} />);
     expect(screen.getByRole('heading', { name: 'Policy changes' })).toBeInTheDocument();
   });
 
@@ -41,7 +41,14 @@ describe('PolicyDetailTabs', () => {
       ...policy,
       dates: [{ type: 'consultation_closed', date: '2026-02-01', precision: 'day' }],
     };
-    render(<PolicyDetailTabs policy={deadlineOnly} relatedPolicies={[]} />);
+    render(<PolicyDetailTabs policy={deadlineOnly} />);
     expect(screen.queryByRole('heading', { name: 'Policy changes' })).toBeNull();
+  });
+});
+
+describe('PolicyDetailTabs related slot', () => {
+  it('renders the related node in the summary column', () => {
+    render(<PolicyDetailTabs policy={policy} related={<p>related slot</p>} />);
+    expect(screen.getByText('related slot')).toBeInTheDocument();
   });
 });

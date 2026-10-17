@@ -1,34 +1,13 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { type Policy } from '@/types';
 import { getArticles, getPolicyById, getPolicies } from '@/lib/data-service';
 import { AnalysisTierLabel, ArticleDate } from '@/components/analysis';
 import { getPublicCourtRequirements } from '@/lib/court-requirements';
+import { RelatedInstruments } from '@/components/related/related-instruments';
+import { relatedInstruments } from '@/lib/related-policies';
 import { PolicyDetailTabs } from './policy-detail-tabs';
 
 export const revalidate = 3600;
-
-async function getRelatedPolicies(currentPolicy: Policy): Promise<Policy[]> {
-  const policies = await getPolicies();
-  const related = policies
-    .filter(p => p.id !== currentPolicy.id && p.status !== 'trashed')
-    .filter(p =>
-      p.jurisdiction === currentPolicy.jurisdiction ||
-      p.tags.some(tag => currentPolicy.tags.includes(tag))
-    )
-    .slice(0, 3);
-
-  // The superseding instrument must always be resolvable for the banner.
-  if (
-    currentPolicy.supersededBy &&
-    !related.some(p => p.id === currentPolicy.supersededBy)
-  ) {
-    const successor = policies.find(p => p.id === currentPolicy.supersededBy);
-    if (successor) related.unshift(successor);
-  }
-
-  return related;
-}
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -46,8 +25,8 @@ export default async function PolicyDetailPage({ params }: { params: Promise<{ i
   const policy = await getPolicyById(id);
   if (!policy) notFound();
 
-  const [relatedPolicies, analyses] = await Promise.all([
-    getRelatedPolicies(policy),
+  const [publicPolicies, analyses] = await Promise.all([
+    getPolicies(),
     getArticles({ citing: id }),
   ]);
   const courtRequirements = policy.type === "practice_note" ? await getPublicCourtRequirements({ policyId: id }) : [];
@@ -62,7 +41,11 @@ export default async function PolicyDetailPage({ params }: { params: Promise<{ i
         <span className="text-foreground">Policy</span>
       </nav>
 
-      <PolicyDetailTabs policy={policy} relatedPolicies={relatedPolicies} courtRequirements={courtRequirements} />
+      <PolicyDetailTabs
+        policy={policy}
+        courtRequirements={courtRequirements}
+        related={<RelatedInstruments items={relatedInstruments(policy, publicPolicies)} />}
+      />
 
       {analyses.length > 0 ? (
         <section aria-labelledby="cited-in-analysis" className="mt-10">
