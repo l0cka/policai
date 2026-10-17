@@ -697,6 +697,7 @@ function buildReviewCandidate(
       content: candidate.text,
       aiSummary: classification.summary || '',
       tags: classification.tags,
+      themes: [],
       createdAt: nowIso,
       updatedAt: nowIso,
     };

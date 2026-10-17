@@ -551,6 +551,7 @@ function createPolicyFromReview(item: LegacyPendingItem): PolicyDraft {
 		content: item.aiAnalysis.summary,
 		aiSummary: item.aiAnalysis.summary,
 		tags: item.aiAnalysis.tags || [],
+		themes: [],
 		createdAt: now,
 		updatedAt: now,
 	};

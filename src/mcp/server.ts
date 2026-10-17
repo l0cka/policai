@@ -195,7 +195,7 @@ server.registerTool(
   {
     title: 'Approve staged source',
     description:
-      'Validates and explicitly approves a complete source review before publication. Requires the human reviewer identity separately from the admin token. If a tracked target changed after staging, submit the rebased proposedRecord with expectedTargetRevisionHash from the refreshed review. Stage-only leads require an officialSourceUrl plus an explicitly reviewed replacement proposedRecord; the official source is fetched again and replaces the discovery evidence. Dates must match extracted metadata or include explicit reviewedDate evidence. Requires POLICAI_MCP_ADMIN_TOKEN.',
+      'Validates and explicitly approves a complete source review before publication. Requires the human reviewer identity separately from the admin token. If a tracked target changed after staging, submit the rebased proposedRecord with expectedTargetRevisionHash from the refreshed review. Stage-only leads require an officialSourceUrl plus an explicitly reviewed replacement proposedRecord; the official source is fetched again and replaces the discovery evidence. Dates must match extracted metadata or include explicit reviewedDate evidence. A policy record needs 1 to 5 themes, keys from src/lib/themes.ts; collector drafts have none, so a new policy is approved with an explicit proposedRecord carrying themes. Requires POLICAI_MCP_ADMIN_TOKEN.',
     inputSchema: {
       id: z.string(),
       reviewer: z.string().min(1),
