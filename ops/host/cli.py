@@ -3,6 +3,7 @@
 
 import argparse
 import contextlib
+import io
 import json
 import os
 import re
@@ -96,14 +97,17 @@ FALLBACK_LINE = (
 )
 
 
+class Discard(io.TextIOBase):
+    def write(self, text):
+        return len(text)
+
+
 def warn(line):
-    if sys.stderr is None:
-        return
     try:
         sys.stderr.write(line + "\n")
         sys.stderr.flush()
     except Exception:
-        sys.stderr = None
+        sys.stderr = Discard()
 
 
 def report(command, error):
@@ -231,7 +235,7 @@ def main():
                 output = host.worker_compose(command, fds, payload)
             sys.stdout.write(output)
         return 0
-    except (RuntimeError, OSError, ValueError, KeyError, TypeError) as error:
+    except Exception as error:
         if Path(__file__).resolve() != ENTRYPOINT:
             warn("Refused: use installed root-owned entrypoint; this artifact is uninstalled.")
         else:
