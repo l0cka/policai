@@ -110,6 +110,34 @@ describe('CoverageMap', () => {
     expect(screen.queryByRole('region')).not.toBeInTheDocument();
   });
 
+  it('scrolls a shared link to the drill-down row clear of the site header and the column strip', () => {
+    const header = document.createElement('header');
+    header.setAttribute('data-site-header', '');
+    document.body.prepend(header);
+    vi.stubGlobal('ResizeObserver', class { observe() {} disconnect() {} });
+    const heights = new Map([['HEADER', 94], ['THEAD', 45]]);
+    vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function (this: HTMLElement) {
+      return { height: heights.get(this.tagName) ?? 0 } as DOMRect;
+    });
+    const offsets: Record<string, string>[] = [];
+    scrollIntoView.mockImplementation(function (this: HTMLElement) {
+      const map = this.closest<HTMLElement>('.coverage-map')!;
+      offsets.push({
+        target: this.className,
+        header: map.style.getPropertyValue('--coverage-sticky-top'),
+        strip: map.style.getPropertyValue('--coverage-strip-height'),
+      });
+    });
+    try {
+      renderMap('theme=courts-tribunals&j=nsw');
+    } finally {
+      header.remove();
+      vi.unstubAllGlobals();
+      vi.restoreAllMocks();
+    }
+    expect(offsets).toEqual([{ target: 'coverage-drill-row', header: '94px', strip: '45px' }]);
+  });
+
   it('groups a theme row by jurisdiction and a column by theme', () => {
     renderMap();
     act(() => screen.getByRole('button', { name: 'Courts and tribunals' }).click());
