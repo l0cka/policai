@@ -1,6 +1,6 @@
 ---
 type: instrument_note
-title: "Queensland agencies must assess AI with a FAIRA, with a shorter version for trials"
+title: "Queensland agencies must assess AI with a FAIRA, with a shorter version for low-risk use"
 summary: Version 2.0.0 of Queensland's mandated AI governance policy, effective August 2026, requires agencies to establish AI governance arrangements with regard to ISO 38507 and to prepare a Foundational AI Risk Assessment, or an agreed equivalent, when evaluating AI.
 status: published
 publishedAt: 2026-10-17
@@ -25,7 +25,7 @@ image:
   licenceCheckedAt: "2026-10-17"
 ---
 
-Queensland's [Artificial intelligence governance policy](/policies/queensland-ai-governance-policy) is mandated and at version 2.0.0, effective from August 2026. When evaluating AI solutions, agencies "must prepare a Foundational AI risk assessment (FAIRA), or an agreed equivalent" ([policy page](https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy)).
+Queensland's [Artificial intelligence governance policy](/policies/queensland-ai-governance-policy) is mandated and at version 2.0.0, effective from August 2026. It is administered by the Department of Customer Services, Open Data and Small and Family Business. When evaluating AI solutions, agencies "must prepare a Foundational AI risk assessment (FAIRA), or an agreed equivalent" ([policy page](https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy)).
 
 ## What it requires
 
@@ -33,15 +33,15 @@ The policy has two requirements. Agencies "must establish AI governance arrangem
 
 ```figure
 kind: flow
-title: A low-risk trial can use FAIRA LITE; every other AI solution needs a FAIRA
-alt: "Flow: an agency evaluating an AI solution asks whether it is a low-risk proof of concept, trial or exploratory activity. If not, it prepares a FAIRA or an agreed equivalent. If so, it may prepare a FAIRA LITE in line with the guideline."
+title: A low-risk use case may use FAIRA LITE; otherwise a FAIRA or an agreed equivalent
+alt: "Flow: an agency evaluating an AI solution asks whether it is a low-risk use case, such as a proof of concept, trial or exploratory activity. If not, it prepares a FAIRA or an agreed equivalent. If so, it may prepare a FAIRA LITE in line with the guideline."
 caption: The assessment path in the policy's second requirement, as published in August 2026.
 cites: [queensland-ai-governance-policy, queensland-foundational-ai-risk-assessment-guideline]
 sources:
   - https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy
 steps:
   - text: An agency evaluates an AI solution
-  - text: Is it a low-risk proof of concept, trial or exploratory activity?
+  - text: Is it a low-risk use case, such as a proof of concept, trial or exploratory activity?
     role: decision
   - text: Prepare a FAIRA, or an agreed equivalent
     role: end
@@ -66,4 +66,4 @@ The [FAIRA guideline](/policies/queensland-foundational-ai-risk-assessment-guide
 
 ## Analysis
 
-In Policai's analysis, the policy sets the duty and the guideline sets the method: the duty is mandated, and the guidance on how to meet it is not. The policy does not say who agrees an "equivalent" or what counts as one, so an agency using another assessment has to confirm that with whoever is responsible within its own governance arrangements.
+In Policai's analysis, the policy sets the duty and the guideline sets the method: the duty is mandated, and the guidance on how to meet it is not. The policy page does not say who agrees an "equivalent" or what counts as one, so the policy leaves open how an agency confirms that another assessment qualifies.
