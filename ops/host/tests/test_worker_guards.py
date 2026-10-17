@@ -6,7 +6,7 @@ import sys
 import tempfile
 import time
 import unittest
-from contextlib import redirect_stderr, redirect_stdout
+from contextlib import ExitStack, redirect_stderr, redirect_stdout
 from pathlib import Path
 from unittest.mock import patch
 
@@ -278,25 +278,36 @@ class FailureLineTests(unittest.TestCase):
             " Inspect status and reviewed prerequisites; no automatic retry.",
         )
 
-    def test_a_guard_probe_that_exits_non_zero_is_a_refusal_with_its_status(self):
-        class Exiting:
-            def execute(self, argv, cwd, **kwargs):
-                return h.Runner().execute([sys.executable, "-c", "raise SystemExit(2)"], cwd="/")
+    def test_a_guard_probe_that_fails_after_spawning_is_a_refusal_naming_the_runner(self):
+        class Probe:
+            def __init__(self, code, **limits):
+                self.code, self.limits = code, limits
 
-        obj = self.worker(Exiting())
-        obj.config = {"db": {}}
-        probes = {
-            "git": lambda: obj.git("probono", "rev-parse", "--verify", "HEAD"),
-            "docker image inspect": lambda: obj.docker("image", "inspect", "sha256:" + "a" * 64),
-            "verify_database": obj.verify_database,
+            def execute(self, argv, cwd, **kwargs):
+                return h.Runner().execute([sys.executable, "-c", self.code], cwd="/", **self.limits)
+
+        cases = {
+            "command exited with status 2": Probe("raise SystemExit(2)"),
+            "command timed out": Probe("pass", timeout=0),
+            "command output exceeded bound": Probe("print('x' * 100)", limit=10),
         }
-        for name, probe in probes.items():
-            with self.subTest(name):
-                self.assertEqual(
-                    self.failure(probe),
-                    "Refused: command exited with status 2."
-                    " Inspect status and reviewed prerequisites; no automatic retry.",
-                )
+        for reason, runner in cases.items():
+            obj = self.worker(runner)
+            obj.config = {"db": {}}
+            probes = {
+                "git": lambda: obj.git("probono", "rev-parse", "--verify", "HEAD"),
+                "docker image inspect": lambda: obj.docker(
+                    "image", "inspect", "sha256:" + "a" * 64
+                ),
+                "verify_database": obj.verify_database,
+            }
+            for name, probe in probes.items():
+                with self.subTest(reason=reason, probe=name):
+                    self.assertEqual(
+                        self.failure(probe),
+                        f"Refused: {reason}."
+                        " Inspect status and reviewed prerequisites; no automatic retry.",
+                    )
 
     def test_each_guard_refusal_names_its_guard(self):
         obj = self.worker(None)
@@ -405,25 +416,83 @@ class FailureLineTests(unittest.TestCase):
             " guards passed. No automatic retry.",
         )
 
-    def test_report_lets_interrupts_and_exits_through(self):
+    def test_report_lets_interrupts_and_exits_through_at_every_site(self):
         error = d.Refused("worker command not allowlisted")
 
-        class Interrupted:
+        class Raising:
+            def __init__(self, exception):
+                self.exception = exception
+
             def write(self, text):
-                raise KeyboardInterrupt
+                raise self.exception
 
             flush = write
 
-        with patch.object(cli, "failure_line", side_effect=KeyboardInterrupt):
-            self.assertRaises(KeyboardInterrupt, cli.report, "worker", error)
-        with patch.object(sys, "stderr", Interrupted()):
-            self.assertRaises(KeyboardInterrupt, cli.report, "worker", error)
-        with (
-            patch.object(cli.syslog, "openlog"),
-            patch.object(cli.syslog, "syslog", side_effect=SystemExit(2)),
-            redirect_stderr(io.StringIO()),
-        ):
-            self.assertRaises(SystemExit, cli.report, "compose", error)
+        sites = {
+            "failure line": lambda exc: [patch.object(cli, "failure_line", side_effect=exc)],
+            "stderr write": lambda exc: [patch.object(sys, "stderr", Raising(exc))],
+            "journal": lambda exc: [patch.object(cli.syslog, "syslog", side_effect=exc)],
+        }
+        for site, raising in sites.items():
+            for exception in (KeyboardInterrupt, SystemExit):
+                with (
+                    self.subTest(site=site, exception=exception.__name__),
+                    ExitStack() as stack,
+                ):
+                    stack.enter_context(redirect_stderr(io.StringIO()))
+                    stack.enter_context(patch.object(cli.syslog, "openlog"))
+                    stack.enter_context(patch.object(cli.syslog, "syslog"))
+                    for active in raising(exception):
+                        stack.enter_context(active)
+                    self.assertRaises(exception, cli.report, "compose", error)
+
+    def test_a_later_stderr_write_stays_off_stdout_once_the_line_is_dropped(self):
+        class Broken:
+            def write(self, text):
+                raise BrokenPipeError
+
+            flush = write
+
+        for name, stream in {"broken": Broken(), "closed": None}.items():
+            with (
+                self.subTest(name),
+                patch.object(sys, "stderr", stream),
+                redirect_stdout(io.StringIO()) as out,
+            ):
+                cli.warn("Refused: first line.")
+                print("later diagnostic", file=sys.stderr)
+                cli.warn("Refused: second line.")
+                self.assertEqual(out.getvalue(), "")
+
+    def test_installed_main_reports_any_exception_with_one_line_and_exit_1(self):
+        fallback = (
+            "Refused: failure report unavailable."
+            " Inspect status and reviewed prerequisites; no automatic retry."
+        )
+        cases = {
+            "host import fails": (None, {"host": None}, fallback),
+            "AttributeError": (AttributeError("x"), {}, None),
+            "SyntaxError": (SyntaxError("x"), {}, None),
+        }
+        for name, (raised, modules, line) in cases.items():
+            line = line or (
+                f"Refused: unexpected {type(raised).__name__}."
+                " Inspect status and reviewed prerequisites; no automatic retry."
+            )
+            with (
+                self.subTest(name),
+                patch.object(cli, "ENTRYPOINT", Path(cli.__file__).resolve()),
+                patch.object(cli, "trusted_entrypoint", side_effect=raised),
+                patch.dict(sys.modules, modules),
+                patch.object(sys, "argv", ["cli.py", "compose", "--", "compose", "down"]),
+                patch.object(cli.syslog, "openlog"),
+                patch.object(cli.syslog, "syslog") as journal,
+                redirect_stderr(io.StringIO()) as err,
+                redirect_stdout(io.StringIO()) as out,
+            ):
+                code = cli.main()
+                self.assertEqual((code, out.getvalue(), err.getvalue()), (1, "", line + "\n"))
+                self.assertEqual(journal.call_args.args[1], line)
 
     def test_a_broken_stderr_still_reaches_the_journal(self):
         error = d.Refused("worker command not allowlisted")
@@ -469,18 +538,29 @@ class FailureChannelTests(unittest.TestCase):
             "import cli",
             "sys.argv = ['cli.py', 'worker', 'ingest']",
             "unsafe = RuntimeError('unsafe installed root-owned entrypoint')",
+            "import_fails = sys.argv[2] == 'import'",
+            "if import_fails:",
+            "    sys.modules['host'] = None",
+            "reached = []",
+            "report = cli.report",
+            "def traced(command, error):",
+            "    reached.append(command)",
+            "    report(command, error)",
             "with (",
             "    patch.object(cli, 'ENTRYPOINT', Path(cli.__file__).resolve()),",
-            "    patch.object(cli, 'trusted_entrypoint', side_effect=unsafe),",
+            "    patch.object(cli, 'trusted_entrypoint', side_effect=None if import_fails else unsafe),",
+            "    patch.object(cli, 'report', traced),",
             "):",
             "    code = cli.main()",
+            "print('reported' if reached == ['worker'] else 'not reported', flush=True)",
+            "print('later diagnostic', file=sys.stderr)",
             "raise SystemExit(code)",
         ]
     )
 
-    def installed_main(self, **kwargs):
+    def installed_main(self, mode="refusal", **kwargs):
         return subprocess.run(
-            [sys.executable, "-I", "-B", "-c", self.CHILD, str(HOST)],
+            [sys.executable, "-I", "-B", "-c", self.CHILD, str(HOST), mode],
             stdin=subprocess.DEVNULL,
             stdout=subprocess.PIPE,
             timeout=30,
@@ -512,7 +592,7 @@ class FailureChannelTests(unittest.TestCase):
 
     def test_installed_main_with_fd_2_closed_exits_1_and_keeps_stdout_clean(self):
         run = self.installed_main(preexec_fn=lambda: os.close(2))
-        self.assertEqual((run.returncode, run.stdout), (1, b""))
+        self.assertEqual((run.returncode, run.stdout), (1, b"reported\n"))
 
     def test_installed_main_exits_1_when_stderr_is_a_full_pipe(self):
         read, write = os.pipe()
@@ -523,14 +603,16 @@ class FailureChannelTests(unittest.TestCase):
             while True:
                 os.write(write, b"x" * 65536)
         run = self.installed_main(stderr=write)
-        self.assertEqual((run.returncode, run.stdout), (1, b""))
+        self.assertEqual((run.returncode, run.stdout), (1, b"reported\n"))
+        run = self.installed_main("import", stderr=write)
+        self.assertEqual((run.returncode, run.stdout), (1, b"reported\n"))
 
     def test_installed_main_exits_1_when_stderr_is_a_broken_pipe(self):
         read, write = os.pipe()
         os.close(read)
         self.addCleanup(os.close, write)
         run = self.installed_main(stderr=write)
-        self.assertEqual((run.returncode, run.stdout), (1, b""))
+        self.assertEqual((run.returncode, run.stdout), (1, b"reported\n"))
 
 
 if __name__ == "__main__":

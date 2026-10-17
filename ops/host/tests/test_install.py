@@ -7,7 +7,28 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
+import cli
+import host
 import install
+
+HOST = Path(__file__).resolve().parent.parent
+
+
+class InstallDirectoryTests(unittest.TestCase):
+    def test_every_install_path_names_the_entrypoint_directory(self):
+        code = cli.ENTRYPOINT.parent
+        self.assertEqual(host.CODE, code)
+        for name in ("cli.py", "host.py", "dispatcher.py", "bin/docker", "backup.sh", "backup-mirror.sh"):
+            with self.subTest(name):
+                self.assertEqual(install.FILES[name][0], str(code / name))
+        units = sorted((HOST / "units").glob("probono-*.service"))
+        self.assertTrue(units)
+        for unit in units:
+            with self.subTest(unit.name):
+                self.assertIn(
+                    f"ExecStart=/usr/bin/python3 -I {cli.ENTRYPOINT} worker ",
+                    unit.read_text(),
+                )
 
 
 class InstallationTests(unittest.TestCase):
