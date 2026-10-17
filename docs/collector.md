@@ -563,9 +563,30 @@ been unreachable on 3 consecutive runs is reported as robots unverified
   is not charged either. The budget is about a third of the wrapper's
   3,500 s deadline; a hostile `Crawl-delay: 30` on every host would
   otherwise need about 6,500 s and the wrapper would kill the run with
-  nothing written. Once the budget is spent, a request that needs a
-  requested wait is deferred, not sent (`the run's N ms host-gate wait
-  budget is spent`); see Deferral.
+  nothing written. Once the budget is spent, a candidate page, or a
+  linked document of one, that needs a requested wait is deferred, not
+  sent (`the run's N ms host-gate wait budget is spent`); see Deferral.
+  A due source's index request is never deferred. It waits what the host
+  asked for, up to the 30 s cap, whether or not the budget is spent, and
+  so do its redirects, its retry, its browser fallback and, for a
+  `document` source, the linked documents hashed into its fingerprint
+  (`collect.ts` hands them the gate with `admit(url, 'wait')`). These
+  waits are charged, so later candidates are deferred sooner. The reason
+  is the review gate: it rejects a run whose output marks a due source
+  `skipped`, so deferring an index would lose the whole run.
+  An index wait is at most 30 s for each index request that follows
+  another request to the same host. The model
+  (`~/Reports/2026-10-17-policai-source-coverage/pr5-index-wait-model.mts`)
+  puts 75 sources on 63 hosts, every host with `Crawl-delay: 30` and one
+  index request per source, at 12 × 30 = 360 s of index waits. The run is
+  then at most 181 s + 1,200 s + 360 s = 1,741 s, or 3,001 s if every host
+  also stalls its robots fetch for 20 s, under the 3,500 s limit; the
+  margin covers 28 more such index requests (70 without robots stalls).
+  It does not cover every index failing and being retried on such hosts
+  (about 8,500 s) or eight linked documents for every `document` source
+  on one host (about 9,700 s). A cap small enough for those is about 3 s,
+  which is the 2 s gap, so the cap stays 30 s and those cases are left
+  to a hard run deadline (Not done here).
 - **Retry-After.** A 429, or a 503 that carries `Retry-After` (seconds or an
   HTTP-date), sets `backoffUntil` on the host. A wait of up to 30 s is taken
   inline; a longer one refuses every request to the host as `rate_limited`
@@ -593,12 +614,11 @@ been unreachable on 3 consecutive runs is reported as robots unverified
   attempt count and is tried on the next run, the same as a candidate the
   per-run cap left for later. Only a candidate that was requested and
   refused fails, and when the gate refuses the retry of a request that was
-  made, the error reported is that request's response. A due source whose
-  index the wait budget defers is `skipped` for the run, keeps its last
-  check time and stays due, so the next run checks it; the log line ends
-  `source deferred to the next run`. A due source whose index the gate
-  refuses for any other reason fails for the run, with the refusal's
-  class. A `robots_disallowed` refusal is terminal for the candidate.
+  made, the error reported is that request's response. The wait budget
+  never defers a due source's index (see Wait budget), so no due source
+  is ever `skipped`. A due source whose index the gate refuses (a robots
+  `Disallow`, a backoff over 30 s, the breaker) fails for the run, with
+  the refusal's class. A `robots_disallowed` refusal is terminal for the candidate.
 - **Redirects.** Plain-HTTP hops are admitted before they are followed. The
   browser and Firecrawl follow redirects themselves, so their final URL is
   admitted after the fact when its host differs; a refusal discards the
@@ -643,7 +663,9 @@ has; a Firecrawl result without `metadata.statusCode` records no
 observation, so a `Retry-After` seen only by Firecrawl is not recorded;
 robots fetch time is outside the wait budget and there is no hard run
 deadline, so up to 20 s per host that stalls its robots.txt adds to the
-run (about 1,260 s for 63 hosts) under the wrapper's 3,500 s limit; a
+run (about 1,260 s for 63 hosts) under the wrapper's 3,500 s limit, and
+index waits after the budget is spent are bounded only per request (see
+Wait budget); a
 gzip- or br-encoded robots.txt body (the fetcher does not ask for one) is
 parsed as no rules, which allows more and is never worse than no gate.
 
