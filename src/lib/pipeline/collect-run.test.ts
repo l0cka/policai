@@ -82,7 +82,7 @@ describe('collection CLI write path', () => {
       hostGate: createHostGate({
         hosts: {},
         refused: new Map(),
-        fetchRobots: robotsFetcher(fetchImpl),
+        fetchRobots: robotsFetcher({ fetchImpl }),
         now: Date.now,
         sleep: async () => {},
       }),

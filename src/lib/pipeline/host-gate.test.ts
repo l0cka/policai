@@ -209,7 +209,7 @@ describe('admit', () => {
       status: 'unreachable',
       disallow: ['/private'],
       crawlDelaySec: 3,
-      fetchedAt: new Date(h.at()).toISOString(),
+      fetchedAt: new Date(START).toISOString(),
     });
     const next = harness({ [A]: { status: 200, body: 'User-agent: *\nDisallow: /other' } }, { hosts: h.gate.hosts() });
     expect(await next.gate.admit(url('/private/x'))).toEqual({ kind: 'go' });

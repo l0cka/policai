@@ -1,3 +1,4 @@
+import type https from 'node:https';
 import type { FailureClass } from './failure';
 import { readResponseBytes, retrieveSourceOverHttp1, SourceFetchError } from './fetch';
 import { COLLECTOR_IDENTITY_TOKEN, COLLECTOR_USER_AGENT } from './identity';
@@ -18,6 +19,7 @@ export const ROBOTS_TIMEOUT_MS = 20_000;
 export const HOST_KEY = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*(:\d{1,5})?$/;
 
 const PRODUCT_TOKEN = COLLECTOR_IDENTITY_TOKEN.split('/')[0];
+const NO_RULES: RobotsRules = { allow: [], disallow: [], crawlDelaySec: null, sitemaps: [] };
 
 export interface RobotsRecord extends RobotsRules {
   fetchedAt: string;
@@ -138,6 +140,7 @@ export function createHostGate(deps: HostGateDeps): HostGate {
   const tripped = new Map<Host, { cls: RefusalClass; reason: string }>();
   const lastRequestAt = new Map<Host, number>();
   const waited = new Map<Host, number>();
+  const robotsTried = new Set<Host>();
 
   const iso = () => new Date(deps.now()).toISOString();
 
@@ -173,35 +176,25 @@ export function createHostGate(deps: HostGateDeps): HostGate {
 
   const notRequested = (reason: string, url: URL): string => `${reason}; ${url} not requested`;
 
-  const trip = (host: Host, cls: RefusalClass, reason: string, url: URL): Admission => {
-    tripped.set(host, { cls, reason });
-    return { kind: 'refused', cls, detail: notRequested(reason, url) };
-  };
-
-  const loadRobots = async (url: URL, host: Host, record: HostRecord): Promise<Admission | null> => {
-    if (robotsFresh(record.robots)) return null;
+  const loadRobots = async (url: URL, host: Host, record: HostRecord): Promise<void> => {
+    if (robotsFresh(record.robots) || robotsTried.has(host)) return;
+    robotsTried.add(host);
     await pace(host, record);
     const response = await deps.fetchRobots(url.origin);
     const fetchedAt = iso();
-    const none: RobotsRules = { allow: [], disallow: [], crawlDelaySec: null, sitemaps: [] };
-    if (response === null) {
-      record.robots = { ...none, fetchedAt, status: 'unreachable' };
-      return trip(host, 'host_unavailable', `robots.txt for ${host} was unreachable; host unavailable this run`, url);
-    }
-    if (response.status >= 500) {
-      record.robots = { ...none, fetchedAt, status: 'unreachable' };
-      return trip(host, 'host_unavailable', `robots.txt for ${host} returned HTTP ${response.status}; host unavailable this run`, url);
+    if (response === null || response.status >= 500) {
+      record.robots = { ...(record.robots ?? NO_RULES), fetchedAt, status: 'unreachable' };
+      return;
     }
     if (response.status >= 400) {
-      record.robots = { ...none, fetchedAt, status: 'absent' };
-      return null;
+      record.robots = { ...NO_RULES, fetchedAt, status: 'absent' };
+      return;
     }
     record.robots = {
       ...storedRobots(parseRobots(response.body, PRODUCT_TOKEN), url.origin),
       fetchedAt,
       status: 'parsed',
     };
-    return null;
   };
 
   const backoffRemaining = (record: HostRecord): number =>
@@ -225,8 +218,7 @@ export function createHostGate(deps: HostGateDeps): HostGate {
         };
       }
       if (remaining > 0) await waitUntil(host, deps.now() + remaining);
-      const refusal = await loadRobots(url, host, record);
-      if (refusal) return refusal;
+      await loadRobots(url, host, record);
       if (record.robots && !robotsAllows(record.robots, url)) {
         return { kind: 'refused', cls: 'robots_disallowed', detail: `${url} is disallowed by robots.txt for ${PRODUCT_TOKEN}` };
       }
@@ -280,15 +272,19 @@ export function createHostGate(deps: HostGateDeps): HostGate {
   };
 }
 
-export function robotsFetcher(
-  fetchImpl?: typeof fetch,
-  resolveHost?: (hostname: string) => Promise<string[]>,
-): HostGateDeps['fetchRobots'] {
+export interface RobotsFetcherOptions {
+  fetchImpl?: typeof fetch;
+  resolveHost?: (hostname: string) => Promise<string[]>;
+  requestImpl?: typeof https.get;
+  timeoutMs?: number;
+}
+
+export function robotsFetcher(options: RobotsFetcherOptions = {}): HostGateDeps['fetchRobots'] {
   return async (origin) => {
     const url = `${origin}/robots.txt`;
     try {
-      if (fetchImpl) {
-        const response = await fetchImpl(url, {
+      if (options.fetchImpl) {
+        const response = await options.fetchImpl(url, {
           headers: { 'User-Agent': COLLECTOR_USER_AGENT, Accept: 'text/plain,*/*;q=0.5' },
           redirect: 'follow',
         });
@@ -299,10 +295,11 @@ export function robotsFetcher(
       }
       const retrieved = await retrieveSourceOverHttp1(url, {
         now: () => new Date(),
-        timeoutMs: ROBOTS_TIMEOUT_MS,
+        timeoutMs: options.timeoutMs ?? ROBOTS_TIMEOUT_MS,
         maxResponseBytes: ROBOTS_MAX_BYTES,
         destinationPolicy: 'public-https',
-        resolveHost,
+        resolveHost: options.resolveHost,
+        requestImpl: options.requestImpl,
       });
       const body = retrieved.body || Buffer.from(retrieved.bytes ?? []).toString('utf8');
       return { status: 200, body };

@@ -74,7 +74,7 @@ function productionGate(fetchImpl: typeof fetch, minGapMs?: number): HostGate {
   return createHostGate({
     hosts: {},
     refused: new Map(),
-    fetchRobots: robotsFetcher(fetchImpl),
+    fetchRobots: robotsFetcher({ fetchImpl }),
     now: Date.now,
     sleep: (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
     ...(minGapMs === undefined ? {} : { minGapMs }),

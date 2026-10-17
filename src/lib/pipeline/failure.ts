@@ -19,7 +19,7 @@ export const FAILURE_CLASSES = [
   {
     cls: 'host_unavailable',
     pattern:
-      /\bHTTP 5\d\d\b|robots\.txt for \S+ was unreachable|ERR_NAME_NOT_RESOLVED|ERR_CONNECTION_REFUSED|ERR_CERT_|ECONNREFUSED|ENOTFOUND|DNS lookup|did not resolve to a usable address/,
+      /\bHTTP 5\d\d\b|ERR_NAME_NOT_RESOLVED|ERR_CONNECTION_REFUSED|ERR_CERT_|ECONNREFUSED|ENOTFOUND|DNS lookup|did not resolve to a usable address/,
     description: 'HTTP 5xx, DNS, refused connection or TLS certificate failure.',
   },
   {
