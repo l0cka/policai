@@ -93,7 +93,7 @@ export async function admitThroughGate(
     );
   }
   throw new SourceFetchError(admission.detail, {
-    retryable: admission.cls === 'rate_limited' || admission.cls === 'host_unavailable',
+    retryable: admission.cls !== 'robots_disallowed',
     code: 'gate_refused',
     url,
   });
@@ -1354,7 +1354,8 @@ export async function retrieveSource(
       assertExpectedSourceDestination(url, result);
       return await addLinkedDocumentEvidence(result, url, options);
     } catch (error) {
-      lastError = failedAt(error, currentUrl);
+      const failed = failedAt(error, currentUrl);
+      lastError = failed.code === 'gate_refused' && lastError ? lastError : failed;
 
       if (!lastError.retryable || attempt === attempts) {
         throw lastError;

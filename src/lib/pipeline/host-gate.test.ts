@@ -429,7 +429,6 @@ describe('wait budget', () => {
     const h = harness({ [A]: { status: 200, body: 'User-agent: *\nCrawl-delay: 30' } }, { waitBudgetMs: 45_000 });
     const host = hostOf(url('/'));
     expect(await h.gate.admit(url('/one'))).toEqual({ kind: 'go' });
-    expect(await h.gate.admit(url('/two'))).toEqual({ kind: 'go' });
     expect(h.gate.waited()[host]).toBe(MAX_WAIT_MS);
     const refused = await h.gate.admit(url('/three'));
     expect(refused).toMatchObject({ kind: 'refused', cls: 'timeout' });
@@ -444,15 +443,18 @@ describe('wait budget', () => {
     expect(h.gate.hosts()[host]?.robots?.crawlDelaySec).toBe(30);
   });
 
-  it('counts backoff waits and the robots gap against the same budget', async () => {
-    const h = harness({}, { waitBudgetMs: 3000 });
-    await h.gate.admit(url('/one'));
+  it('counts backoff waits and the gap after a robots fetch against the same budget', async () => {
+    const h = harness({}, { waitBudgetMs: 2500 });
+    expect(await h.gate.admit(url('/one'))).toEqual({ kind: 'go' });
+    expect(h.sleeps).toEqual([DEFAULT_MIN_GAP_MS]);
     h.gate.observe(url('/one'), { status: 429, retryAfter: '5', transport: 'http' });
     expect(await h.gate.admit(url('/two'))).toMatchObject({ kind: 'refused', cls: 'timeout' });
-    expect(h.sleeps).toEqual([]);
-    expect(await h.gate.admit(url('/b', B))).toEqual({ kind: 'go' });
-    expect(await h.gate.admit(url('/c', B))).toMatchObject({ kind: 'refused', cls: 'timeout' });
+    expect(await h.gate.admit(url('/b', B))).toMatchObject({ kind: 'refused', cls: 'timeout' });
+    expect(h.robotsCalls).toEqual([A, B]);
     expect(h.sleeps).toEqual([DEFAULT_MIN_GAP_MS]);
+    h.tick(DEFAULT_MIN_GAP_MS);
+    expect(await h.gate.admit(url('/c', B))).toEqual({ kind: 'go' });
+    expect(h.robotsCalls).toEqual([A, B]);
   });
 
   it('the default budget leaves most of the 3,500 s host deadline for requests', () => {

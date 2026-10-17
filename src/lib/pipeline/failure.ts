@@ -7,7 +7,7 @@ export const FAILURE_CLASSES = [
   {
     cls: 'identity_refused',
     pattern:
-      /ERR_HTTP2_PROTOCOL_ERROR|ERR_CONNECTION_RESET|ECONNRESET|\bHTTP 403\b|bot-challenge page/,
+      /ERR_HTTP2_PROTOCOL_ERROR|ERR_CONNECTION_RESET|ECONNRESET|\bHTTP 403\b|bot-challenge page|refused the headless browser with a 403/,
     description:
       'Heuristic label: HTTP/2 protocol error, connection reset, HTTP 403 or a bot challenge. An outage can look the same; a human decides.',
   },
@@ -34,7 +34,7 @@ export const FAILURE_CLASSES = [
   },
   {
     cls: 'timeout',
-    pattern: /timed out|\bTimeout \d+ms exceeded|aborted due to timeout|ERR_TIMED_OUT|ETIMEDOUT/i,
+    pattern: /timed out|\bTimeout \d+ms exceeded|aborted due to timeout|ERR_TIMED_OUT|ETIMEDOUT|host-gate wait budget/i,
     description: 'A retrieval or navigation deadline passed.',
   },
   {

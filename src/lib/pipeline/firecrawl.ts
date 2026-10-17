@@ -190,11 +190,13 @@ export async function scrapeWithFirecrawl(
         detail: error instanceof Error ? error.message : String(error),
       };
     }
-    options.gate?.observe(new URL(finalUrl), {
-      status: metadata?.statusCode ?? 200,
-      retryAfter: null,
-      transport: 'firecrawl',
-    });
+    if (metadata?.statusCode !== undefined) {
+      options.gate?.observe(new URL(finalUrl), {
+        status: metadata.statusCode,
+        retryAfter: null,
+        transport: 'firecrawl',
+      });
+    }
     if (new URL(finalUrl).host.toLowerCase() !== new URL(url).host.toLowerCase()) {
       await admitThroughGate(options.gate, finalUrl);
     }

@@ -8,8 +8,10 @@ export type Host = string & { readonly __brand: 'Host' };
 
 export const DEFAULT_MIN_GAP_MS = 2000;
 export const MAX_WAIT_MS = 30_000;
+export const WAIT_BUDGET_MS = 20 * 60 * 1000;
 export const ROBOTS_TTL_MS = 24 * 60 * 60 * 1000;
 export const BACKOFF_BASE_MS = 60 * 60 * 1000;
+export const BACKOFF_LADDER_CAP_MS = 12 * 60 * 60 * 1000;
 export const BACKOFF_CAP_MS = 24 * 60 * 60 * 1000;
 export const HOST_RETENTION_MS = 30 * 24 * 60 * 60 * 1000;
 export const ROBOTS_RULES_CAP = 500;
@@ -36,7 +38,7 @@ export interface HostRecord {
 
 export type RefusalClass = Extract<
   FailureClass,
-  'robots_disallowed' | 'rate_limited' | 'host_unavailable' | 'identity_refused'
+  'robots_disallowed' | 'rate_limited' | 'host_unavailable' | 'identity_refused' | 'timeout'
 >;
 
 export type Admission =
@@ -66,6 +68,7 @@ export interface HostGateDeps {
   now: () => number;
   sleep: (ms: number) => Promise<void>;
   minGapMs?: number;
+  waitBudgetMs?: number;
 }
 
 export function hostOf(url: URL): Host {
@@ -134,6 +137,7 @@ function parseRetryAfter(value: string | null | undefined, nowMs: number): numbe
 
 export function createHostGate(deps: HostGateDeps): HostGate {
   const minGapMs = deps.minGapMs ?? DEFAULT_MIN_GAP_MS;
+  const waitBudgetMs = deps.waitBudgetMs ?? WAIT_BUDGET_MS;
   const records = new Map<Host, HostRecord>(
     Object.entries(deps.hosts).map(([host, record]) => [host as Host, { ...record }]),
   );
@@ -141,6 +145,7 @@ export function createHostGate(deps: HostGateDeps): HostGate {
   const lastRequestAt = new Map<Host, number>();
   const waited = new Map<Host, number>();
   const robotsTried = new Set<Host>();
+  let waitedTotal = 0;
 
   const iso = () => new Date(deps.now()).toISOString();
 
@@ -156,17 +161,21 @@ export function createHostGate(deps: HostGateDeps): HostGate {
     return Math.max(minGapMs, Math.min(crawlDelayMs, MAX_WAIT_MS));
   };
 
-  const waitUntil = async (host: Host, readyAt: number): Promise<void> => {
+  const waitUntil = async (host: Host, readyAt: number): Promise<boolean> => {
     const delay = readyAt - deps.now();
-    if (delay <= 0) return;
+    if (delay <= 0) return true;
+    if (waitedTotal + delay > waitBudgetMs) return false;
+    waitedTotal += delay;
     waited.set(host, (waited.get(host) ?? 0) + delay);
     await deps.sleep(delay);
+    return true;
   };
 
-  const pace = async (host: Host, record: HostRecord): Promise<void> => {
+  const pace = async (host: Host, record: HostRecord): Promise<boolean> => {
     const last = lastRequestAt.get(host);
-    if (last !== undefined) await waitUntil(host, last + gapFor(record));
+    if (last !== undefined && !(await waitUntil(host, last + gapFor(record)))) return false;
     lastRequestAt.set(host, deps.now());
+    return true;
   };
 
   const robotsFresh = (robots: RobotsRecord | null): robots is RobotsRecord =>
@@ -176,25 +185,33 @@ export function createHostGate(deps: HostGateDeps): HostGate {
 
   const notRequested = (reason: string, url: URL): string => `${reason}; ${url} not requested`;
 
-  const loadRobots = async (url: URL, host: Host, record: HostRecord): Promise<void> => {
-    if (robotsFresh(record.robots) || robotsTried.has(host)) return;
+  const overBudget = (host: Host, url: URL): Admission => ({
+    kind: 'refused',
+    cls: 'timeout',
+    detail: notRequested(
+      `the run's ${waitBudgetMs} ms host-gate wait budget is spent, so ${host} cannot be paced`,
+      url,
+    ),
+  });
+
+  const loadRobots = async (url: URL, host: Host, record: HostRecord): Promise<boolean> => {
+    if (robotsFresh(record.robots) || robotsTried.has(host)) return true;
+    if (!(await pace(host, record))) return false;
     robotsTried.add(host);
-    await pace(host, record);
     const response = await deps.fetchRobots(url.origin);
     const fetchedAt = iso();
     if (response === null || response.status >= 500) {
       record.robots = { ...(record.robots ?? NO_RULES), fetchedAt, status: 'unreachable' };
-      return;
-    }
-    if (response.status >= 400) {
+    } else if (response.status >= 400) {
       record.robots = { ...NO_RULES, fetchedAt, status: 'absent' };
-      return;
+    } else {
+      record.robots = {
+        ...storedRobots(parseRobots(response.body, PRODUCT_TOKEN), url.origin),
+        fetchedAt,
+        status: 'parsed',
+      };
     }
-    record.robots = {
-      ...storedRobots(parseRobots(response.body, PRODUCT_TOKEN), url.origin),
-      fetchedAt,
-      status: 'parsed',
-    };
+    return true;
   };
 
   const backoffRemaining = (record: HostRecord): number =>
@@ -217,12 +234,12 @@ export function createHostGate(deps: HostGateDeps): HostGate {
           detail: notRequested(`${host} is backing off until ${record.backoffUntil} after HTTP ${record.backoffStatus ?? 503}`, url),
         };
       }
-      if (remaining > 0) await waitUntil(host, deps.now() + remaining);
-      await loadRobots(url, host, record);
+      if (remaining > 0 && !(await waitUntil(host, deps.now() + remaining))) return overBudget(host, url);
+      if (!(await loadRobots(url, host, record))) return overBudget(host, url);
       if (record.robots && !robotsAllows(record.robots, url)) {
         return { kind: 'refused', cls: 'robots_disallowed', detail: `${url} is disallowed by robots.txt for ${PRODUCT_TOKEN}` };
       }
-      await pace(host, record);
+      if (!(await pace(host, record))) return overBudget(host, url);
       return { kind: 'go' };
     },
 
@@ -233,7 +250,10 @@ export function createHostGate(deps: HostGateDeps): HostGate {
       if (status === undefined) return;
       if (status === 403) {
         if (outcome.transport === 'browser') {
-          tripped.set(host, { cls: 'identity_refused', reason: `HTTP 403 from ${host} earlier this run` });
+          tripped.set(host, {
+            cls: 'identity_refused',
+            reason: `${host} refused the headless browser with a 403 earlier this run`,
+          });
         }
         return;
       }
@@ -241,9 +261,9 @@ export function createHostGate(deps: HostGateDeps): HostGate {
         const nowMs = deps.now();
         const requested = parseRetryAfter(outcome.retryAfter, nowMs);
         if (status === 503 && requested === null) return;
-        const fallback = Math.min(BACKOFF_BASE_MS * 2 ** record.backoffCount, BACKOFF_CAP_MS);
-        const delay = Math.min(requested ?? fallback, BACKOFF_CAP_MS);
-        record.backoffCount += 1;
+        const ladder = Math.min(BACKOFF_BASE_MS * 2 ** record.backoffCount, BACKOFF_LADDER_CAP_MS);
+        const delay = Math.min(requested ?? ladder, BACKOFF_CAP_MS);
+        if (delay > MAX_WAIT_MS) record.backoffCount += 1;
         record.backoffStatus = status;
         record.backoffUntil = new Date(nowMs + delay).toISOString();
         return;

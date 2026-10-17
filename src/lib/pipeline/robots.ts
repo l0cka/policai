@@ -8,6 +8,7 @@ export interface RobotsRules {
 }
 
 const UNRESERVED_OR_DELIMITER = /^[A-Za-z0-9\-._~!$&'()*+,;=:@/?]$/;
+const UNRESERVED = /^[A-Za-z0-9\-._~]$/;
 const PERCENT_ESCAPE = /^%[0-9A-Fa-f]{2}$/;
 const CRAWL_DELAY = /^\d+(?:\.\d+)?$/;
 
@@ -15,8 +16,10 @@ function normalizeForMatch(value: string): string {
   let out = '';
   for (let index = 0; index < value.length; ) {
     const char = value[index];
-    if (char === '%' && PERCENT_ESCAPE.test(value.slice(index, index + 3))) {
-      out += value.slice(index, index + 3).toUpperCase();
+    const escape = value.slice(index, index + 3);
+    if (char === '%' && PERCENT_ESCAPE.test(escape)) {
+      const decoded = String.fromCharCode(Number.parseInt(escape.slice(1), 16));
+      out += UNRESERVED.test(decoded) ? decoded : escape.toUpperCase();
       index += 3;
       continue;
     }

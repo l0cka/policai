@@ -334,9 +334,9 @@ describe('collect routes every transport through the host gate', () => {
     expect(waited).toBeLessThanOrEqual(budgetMs);
     expect(clock - startedAt).toBeLessThanOrEqual(budgetMs);
     const seen = Object.values(result.state.seen);
-    expect(seen.filter((entry) => entry.status === 'processed')).toHaveLength(2);
+    expect(seen.filter((entry) => entry.status === 'processed')).toHaveLength(1);
     const deferred = seen.filter((entry) => entry.status === 'pending');
-    expect(deferred.length).toBeGreaterThan(0);
+    expect(deferred).toHaveLength(4);
     for (const entry of deferred) expect(entry.attempts).toBe(0);
     expect(seen.filter((entry) => entry.status === 'failed')).toEqual([]);
     expect(result.meta.collector.sourceResults.map((row) => [row.sourceId, row.status, row.failureClass])).toEqual([

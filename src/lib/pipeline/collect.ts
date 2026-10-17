@@ -155,6 +155,14 @@ const WEEKLY_INTERVAL_MS = 6 * 24 * 60 * 60 * 1000;
 /** Browser retrieval covers cold start plus challenge settling. */
 const BROWSER_RETRIEVAL_TIMEOUT_MS = 60_000;
 
+function isDeferredByGate(error: unknown): boolean {
+  return (
+    error instanceof SourceFetchError &&
+    error.code === 'gate_refused' &&
+    error.retryable
+  );
+}
+
 /** Allow-list and homepage-redirect failures are not client-dependent. */
 function isBrowserFallbackFutile(error: unknown): boolean {
   return (
@@ -1816,6 +1824,15 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
           );
           continue;
         }
+        if (isDeferredByGate(error)) {
+          state.seen[key] = {
+            ...attempted,
+            attempts: (attempted.attempts ?? 1) - 1,
+            lastError: message,
+          };
+          log(`[collect] ${source.id}: deferred ${candidate.url} (${message})`);
+          continue;
+        }
         candidateFailureCount++;
         failure ??= rowFailure(error, candidate.url);
         const terminal =
@@ -2003,6 +2020,14 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     `[collect] host gate: waited ${waitedMs} ms across ${waits.length} host${waits.length === 1 ? '' : 's'}` +
       (slowest ? ` (most on ${slowest[0]}: ${slowest[1]} ms)` : ''),
   );
+  const robotsUnreachable = Object.entries(state.hosts)
+    .filter(([, record]) => record.robots?.status === 'unreachable')
+    .map(([host]) => host);
+  if (robotsUnreachable.length > 0) {
+    log(
+      `[collect] host gate: robots.txt unreachable on last attempt for ${robotsUnreachable.length} host${robotsUnreachable.length === 1 ? '' : 's'} (${robotsUnreachable.join(', ')}); cached rules kept, otherwise allowed`,
+    );
+  }
 
   const runHealth = healthForRun(
     sourceResults,
