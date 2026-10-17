@@ -1252,6 +1252,215 @@ describe('retrieveSource', () => {
   });
 });
 
+describe('retrieval errors carry the failing URL', () => {
+  const PAGE = 'https://www.example.gov.au/policy/ai';
+  const PDF = 'https://www.finance.gov.au/files/ai-policy.pdf';
+  const MOVED = 'https://www.other.gov.au/policy/ai';
+  const LINKING_PAGE = `<html><body><main><h1>AI policy</h1><p>Artificial intelligence policy framework.</p><a href="${PDF}">AI policy (PDF)</a></main></body></html>`;
+
+  async function failure(promise: Promise<unknown>): Promise<SourceFetchError> {
+    const error = await promise.then(
+      () => undefined,
+      (rejection: unknown) => rejection,
+    );
+    expect(error).toBeInstanceOf(SourceFetchError);
+    return error as SourceFetchError;
+  }
+
+  function routes(table: Record<string, () => Response | Promise<Response>>) {
+    return vi.fn(async (input: RequestInfo | URL) => {
+      const handler = table[String(input)];
+      if (!handler) throw new Error(`unexpected request ${String(input)}`);
+      return handler();
+    }) as unknown as typeof fetch;
+  }
+
+  it('names the requested URL on an HTTP status', async () => {
+    const error = await failure(
+      retrieveSource(PAGE, {
+        fetchImpl: routes({ [PAGE]: () => new Response('no', { status: 403 }) }),
+      }),
+    );
+    expect(error).toMatchObject({ status: 403, url: PAGE, message: `HTTP 403 at ${PAGE}` });
+  });
+
+  it('names the redirect target that returned the status', async () => {
+    const error = await failure(
+      retrieveSource(PAGE, {
+        fetchImpl: routes({
+          [PAGE]: () => new Response(null, { status: 302, headers: { location: MOVED } }),
+          [MOVED]: () => new Response('no', { status: 403 }),
+        }),
+      }),
+    );
+    expect(error).toMatchObject({ url: MOVED, message: `HTTP 403 at ${MOVED}` });
+  });
+
+  it('names the post-redirect URL a browser response reports', async () => {
+    const refused = new Response('no', { status: 403 });
+    Object.defineProperty(refused, 'url', { value: MOVED });
+    const error = await failure(
+      retrieveSource(PAGE, { fetchImpl: routes({ [PAGE]: () => refused }) }),
+    );
+    expect(error.url).toBe(MOVED);
+  });
+
+  it('names the URL of a transport error without one in its message', async () => {
+    const error = await failure(
+      retrieveSource(PAGE, {
+        attempts: 1,
+        fetchImpl: routes({
+          [PAGE]: () => new Response(null, { status: 302, headers: { location: MOVED } }),
+          [MOVED]: () => {
+            throw new Error('page.goto: net::ERR_HTTP2_PROTOCOL_ERROR');
+          },
+        }),
+      }),
+    );
+    expect(error.url).toBe(MOVED);
+  });
+
+  it('names a refused linked document, not the page that links it', async () => {
+    const error = await failure(
+      retrieveSource(PAGE, {
+        fetchImpl: routes({
+          [PAGE]: () =>
+            new Response(LINKING_PAGE, { status: 200, headers: { 'content-type': 'text/html' } }),
+          [PDF]: () => new Response('no', { status: 403 }),
+        }),
+      }),
+    );
+    expect(error).toMatchObject({ status: 403, url: PDF, message: `HTTP 403 at ${PDF}` });
+  });
+
+  it('names a linked document that fails byte validation', async () => {
+    const error = await failure(
+      retrieveSource(PAGE, {
+        fetchImpl: routes({
+          [PAGE]: () =>
+            new Response(LINKING_PAGE, { status: 200, headers: { 'content-type': 'text/html' } }),
+          [PDF]: () =>
+            new Response('not a pdf', {
+              status: 200,
+              headers: { 'content-type': 'application/pdf' },
+            }),
+        }),
+      }),
+    );
+    expect(error.url).toBe(PDF);
+  });
+
+  function http1Responder(
+    table: Record<string, { status: number; headers?: Record<string, string> } | Error>,
+  ) {
+    return vi.fn(
+      (
+        target: URL,
+        _requestOptions: object,
+        onResponse: (response: PassThrough & {
+          statusCode: number;
+          headers: Record<string, string>;
+        }) => void,
+      ) => {
+        const request = new EventEmitter() as EventEmitter & {
+          setTimeout: (milliseconds: number, callback: () => void) => typeof request;
+          destroy: (error?: Error) => typeof request;
+        };
+        request.setTimeout = vi.fn(() => request);
+        request.destroy = vi.fn((error?: Error) => {
+          if (error) queueMicrotask(() => request.emit('error', error));
+          return request;
+        });
+        queueMicrotask(() => {
+          const reply = table[target.toString()];
+          if (!reply || reply instanceof Error) {
+            request.emit('error', reply ?? new Error(`unexpected ${target}`));
+            return;
+          }
+          const response = new PassThrough() as PassThrough & {
+            statusCode: number;
+            headers: Record<string, string>;
+          };
+          response.statusCode = reply.status;
+          response.headers = reply.headers ?? {};
+          onResponse(response);
+          response.end('no');
+        });
+        return request;
+      },
+    ) as unknown as typeof import('node:https').get;
+  }
+
+  const http1Options = (requestImpl: typeof import('node:https').get) => ({
+    now: () => new Date('2026-07-16T00:00:00.000Z'),
+    timeoutMs: 1_000,
+    resolveHost: async () => ['8.8.8.8'],
+    requestImpl,
+  });
+
+  it('names the URL of an HTTP/1.1 status', async () => {
+    const error = await failure(
+      retrieveSourceOverHttp1(PAGE, http1Options(http1Responder({ [PAGE]: { status: 403 } }))),
+    );
+    expect(error).toMatchObject({ url: PAGE, message: `HTTP 403 at ${PAGE}` });
+  });
+
+  it('names the HTTP/1.1 redirect target that returned the status', async () => {
+    const error = await failure(
+      retrieveSourceOverHttp1(
+        PAGE,
+        http1Options(
+          http1Responder({
+            [PAGE]: { status: 301, headers: { location: MOVED } },
+            [MOVED]: { status: 403 },
+          }),
+        ),
+      ),
+    );
+    expect(error).toMatchObject({ url: MOVED, message: `HTTP 403 at ${MOVED}` });
+  });
+
+  it('names the URL of an HTTP/1.1 connection reset', async () => {
+    const reset = Object.assign(new Error('read ECONNRESET'), { code: 'ECONNRESET' });
+    const direct = await failure(
+      retrieveSourceOverHttp1(PAGE, http1Options(http1Responder({ [PAGE]: reset }))),
+    );
+    expect(direct).toMatchObject({ url: PAGE, cause: reset });
+    const error = await failure(
+      retrieveSourceOverHttp1(
+        PAGE,
+        http1Options(
+          http1Responder({
+            [PAGE]: { status: 302, headers: { location: MOVED } },
+            [MOVED]: reset,
+          }),
+        ),
+      ),
+    );
+    expect(error.url).toBe(MOVED);
+  });
+
+  it('names the HTTP/1.1 redirect target whose DNS check fails', async () => {
+    const error = await failure(
+      retrieveSourceOverHttp1(PAGE, {
+        ...http1Options(http1Responder({ [PAGE]: { status: 302, headers: { location: MOVED } } })),
+        resolveHost: async (hostname: string) => (hostname === 'www.other.gov.au' ? [] : ['8.8.8.8']),
+      }),
+    );
+    expect(error.url).toBe(MOVED);
+  });
+
+  it('keeps credentials and the query out of the message', async () => {
+    const signed = 'https://www.example.gov.au/files/a.pdf?X-Amz-Signature=secret';
+    const error = await failure(
+      retrieveSource(signed, {
+        fetchImpl: routes({ [signed]: () => new Response('no', { status: 403 }) }),
+      }),
+    );
+    expect(error.message).toBe('HTTP 403 at https://www.example.gov.au/files/a.pdf');
+  });
+});
+
 describe('matchesRetrievedContent', () => {
   const url = 'https://example.gov.au/policy';
   const retrievePage = (head: string) =>

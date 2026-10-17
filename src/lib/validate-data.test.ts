@@ -1561,4 +1561,40 @@ describe('validateCollectionMeta failure classes', () => {
       ).errors,
     ).toEqual(['meta:sourceResults[0]: failure fields require a failed result']);
   });
+
+  it.each([
+    ['success', { status: 'success', itemCount: 1, error: undefined }],
+    ['skipped', { status: 'skipped', error: undefined }],
+  ] as const)('rejects failedUrl alone on a %s row', (_status, overrides) => {
+    expect(
+      validateCollectionMeta(
+        meta(row({ ...overrides, failedUrl: 'https://www.example.gov.au/feed' })),
+      ).errors,
+    ).toContain('meta:sourceResults[0]: failure fields require a failed result');
+  });
+
+  it('requires failureClass and failedUrl together on an error row', () => {
+    expect(
+      validateCollectionMeta(meta(row({ failureClass: 'timeout' }))).errors,
+    ).toEqual(['meta:sourceResults[0]: failureClass and failedUrl must appear together']);
+    expect(
+      validateCollectionMeta(
+        meta(row({ failedUrl: 'https://www.example.gov.au/feed' })),
+      ).errors,
+    ).toEqual(['meta:sourceResults[0]: failureClass and failedUrl must appear together']);
+  });
+
+  it.each([
+    'https://user:secret@www.example.gov.au/feed',
+    'https://www.example.gov.au/feed?token=abc',
+    'https://',
+    `https://www.example.gov.au/${'a'.repeat(2100)}`,
+    'ftp://www.example.gov.au/feed',
+  ])('rejects failedUrl case %#', (failedUrl) => {
+    expect(
+      validateCollectionMeta(
+        meta(row({ failureClass: 'identity_refused', failedUrl })),
+      ).errors,
+    ).toEqual(['meta:sourceResults[0]: invalid failedUrl']);
+  });
 });
