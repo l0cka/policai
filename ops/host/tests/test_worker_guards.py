@@ -278,6 +278,26 @@ class FailureLineTests(unittest.TestCase):
             " Inspect status and reviewed prerequisites; no automatic retry.",
         )
 
+    def test_a_guard_probe_that_exits_non_zero_is_a_refusal_with_its_status(self):
+        class Exiting:
+            def execute(self, argv, cwd, **kwargs):
+                return h.Runner().execute([sys.executable, "-c", "raise SystemExit(2)"], cwd="/")
+
+        obj = self.worker(Exiting())
+        obj.config = {"db": {}}
+        probes = {
+            "git": lambda: obj.git("probono", "rev-parse", "--verify", "HEAD"),
+            "docker image inspect": lambda: obj.docker("image", "inspect", "sha256:" + "a" * 64),
+            "verify_database": obj.verify_database,
+        }
+        for name, probe in probes.items():
+            with self.subTest(name):
+                self.assertEqual(
+                    self.failure(probe),
+                    "Refused: command exited with status 2."
+                    " Inspect status and reviewed prerequisites; no automatic retry.",
+                )
+
     def test_each_guard_refusal_names_its_guard(self):
         obj = self.worker(None)
 

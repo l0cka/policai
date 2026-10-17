@@ -418,19 +418,28 @@ LIMITATIONS / REMAINING CUTOVER GATES
   deployment holds it", "worker.lock busy: another scheduled worker is
   running", "persistent block: reviewed recovery required", "scheduled workers
   must execute as l0cka", "worker command not allowlisted" or a Runner refusal
-  before any process starts, such as "command input exceeds bound". Only a
-  worker task whose process started and then failed prints "Failed: worker task
-  <name>: command exited with status <n>; guards passed. No automatic retry."
-  (or the Runner's "command timed out", "command output exceeded bound" or
-  "command unavailable or timed out" in place of the exit status). <name> is
+  before any process starts, such as "command input exceeds bound" or "command
+  unavailable or timed out" when the process cannot be spawned. A guard probe
+  that runs a process outside a worker task (git, docker image inspect, or the
+  docker inspect calls in verify_database) and exits non-zero prints "Refused:
+  command exited with status <n>. Inspect status and reviewed prerequisites; no
+  automatic retry." Only a worker task whose process started and then failed
+  prints "Failed: worker task <name>: command exited with status <n>; guards
+  passed. No automatic retry." (or the Runner's "command timed out", "command
+  output exceeded bound" or "command unavailable or timed out" in place of the
+  exit status). <name> is
   the worker operation, or the allowlisted Compose task such as
   src/verify-deadlines.ts or pg_dumpall. Any other error prints "Refused:
   unexpected <exception type>. ..." with only its exception type. If building
   the line itself fails, for example because host.py cannot be imported, cli.py
   prints "Refused: failure report unavailable. Inspect status and reviewed
-  prerequisites; no automatic retry." and still exits 1. The parent worker
-  captures and discards the nested Compose adapter's stderr, so the adapter also
-  writes its line to syslog as policai-host-compose; journalctl --user -u
+  prerequisites; no automatic retry." and still exits 1. The line never goes
+  to stdout, the Compose adapter's data channel to the parent worker. With fd 2
+  closed, cli.py prints no line. When stderr is a full non-blocking pipe or a
+  broken pipe, cli.py drops the line. Both cases still exit 1, and the Compose
+  adapter still writes its syslog line. The parent worker captures and
+  discards the nested Compose adapter's stderr, so the adapter also writes its
+  line to syslog as policai-host-compose; journalctl --user -u
   probono-<worker> shows it beside the worker's own line.
   Builds run under existing app identities, NOT a hostile-code sandbox. Review
   dependency lifecycle/build scripts; the same UID can access its live checkout.

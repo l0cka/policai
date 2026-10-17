@@ -96,13 +96,22 @@ FALLBACK_LINE = (
 )
 
 
+def warn(line):
+    if sys.stderr is None:
+        return
+    try:
+        sys.stderr.write(line + "\n")
+        sys.stderr.flush()
+    except Exception:
+        sys.stderr = None
+
+
 def report(command, error):
     try:
         line = failure_line(error)
     except Exception:
         line = FALLBACK_LINE
-    with contextlib.suppress(Exception):
-        print(line, file=sys.stderr)
+    warn(line)
     if command == "compose":
         with contextlib.suppress(Exception):
             syslog.openlog("policai-host-compose")
@@ -224,10 +233,7 @@ def main():
         return 0
     except (RuntimeError, OSError, ValueError, KeyError, TypeError) as error:
         if Path(__file__).resolve() != ENTRYPOINT:
-            print(
-                "Refused: use installed root-owned entrypoint; this artifact is uninstalled.",
-                file=sys.stderr,
-            )
+            warn("Refused: use installed root-owned entrypoint; this artifact is uninstalled.")
         else:
             report(args.command, error)
         return 1
