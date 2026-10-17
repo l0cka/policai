@@ -28,7 +28,7 @@ sources:
   - https://www.fwc.gov.au/documents/resources/guidance-note-use-of-generative-ai-in-commission-cases.pdf
 ---
 
-Courts and tribunals set their own rules for AI, and the rules differ. This guide covers the register's instruments for the federal courts, the Fair Work Commission and the Administrative Review Tribunal, and for New South Wales, Victoria and Queensland. It also covers the South Australian and Western Australian guidelines.
+Courts and tribunals set their own rules for AI, and the rules differ. This guide covers the register's instruments for the federal courts, the Fair Work Commission and the Administrative Review Tribunal, and for New South Wales, Victoria and Queensland. It also covers the South Australian and Western Australian guidelines. The earlier guide, [How AI is regulated across Australian jurisdictions](/analysis/how-ai-is-regulated-in-australia), gives courts one section. This guide compares what each instrument requires.
 
 ## What they agree on
 
@@ -46,7 +46,7 @@ Disclosure divides them most. The Federal Court and the Administrative Review Tr
 kind: matrix
 title: Disclosure of AI use ranges from a required statement to none
 alt: "Comparison of eight court and tribunal instruments by disclosure, checking and evidence. The NSW Supreme Court requires affidavits to state that AI was not used; the Federal Court and the Administrative Review Tribunal require disclosure on request and for some evidence; the Victorian Supreme Court needs no statement but court users must be ready to identify AI-produced parts; the Queensland Supreme Court's direction requires none."
-caption: What each instrument says about disclosure, checking and evidence, as recorded in the register and read on the official pages on 17 October 2026. The Administrative Review Tribunal row is taken from the register record. The instruments are practice notes, directions and guidelines, and do not carry equal force.
+caption: What each instrument says about disclosure, checking and evidence, as recorded in the register and read on the official pages on 17 October 2026. The Administrative Review Tribunal row is taken from the register record. Rows are the lead instrument of each court or tribunal whose text could be read and checked for this guide, and the instrument type is named in each row. The District, County and Local Courts, the Family Court, South Australia and Western Australia are covered in the text. Practice notes, directions and guidelines do not carry equal force.
 wide: true
 cites: [federal-court-gpn-ai, art-generative-ai-practice-direction, fwc-genai-guidance-note, nsw-supreme-court-sc-gen-23, nsw-ncat-procedural-direction-7-genai, vic-supreme-court-sc-gen-25, vic-vcat-pnvcat-11-genai, qld-supreme-court-ai-practice-direction]
 sources:
@@ -54,14 +54,14 @@ sources:
   - https://www.fwc.gov.au/documents/resources/guidance-note-use-of-generative-ai-in-commission-cases.pdf
 columns: [Court or tribunal, Disclosure of AI use, Checking, Evidence]
 rows:
-  - [Federal Court (GPN-AI), "If the Court requires it, and for some evidence", "Responsible person confirms authorities and facts", "Affidavits reflect the person's own recollection"]
-  - [Administrative Review Tribunal, "If the Tribunal requires it, and for some evidence", "Must verify; a tool cannot verify itself", "Disclosure required where AI summarises or analyses information a witness relies on"]
-  - ["Fair Work Commission (from 20 October 2026)", "Required, with a statement of checking", "A person must check", "Witness statements in the witness's own words"]
-  - [NSW Supreme Court (SC Gen 23), "Affidavits state AI was not used; experts disclose use, if leave is granted", "Authors verify submissions", "AI not to generate affidavit or witness-statement content"]
-  - [NCAT (PD 7), "Experts should disclose", "Verify submissions", "AI not to generate statement content"]
-  - [Victorian Supreme Court (SC GEN 25), "No statement required; must be ready to identify AI-produced parts", "Meaningful human verification", "Witness's own knowledge and words"]
-  - [VCAT (PNVCAT 11), "Parties should; experts must", "Author verifies", "AI must not generate an expert opinion"]
-  - [Queensland Supreme Court (PD 5), "Not required; a named practitioner is responsible", "Responsible person verifies references", ~]
+  - [Federal Court (GPN-AI, practice note), "If the Court requires it, and for some evidence", "Responsible person confirms authorities and facts", "Affidavits reflect the person's own recollection"]
+  - [Administrative Review Tribunal (practice direction), "If the Tribunal requires it, and for some evidence", "Must verify; a tool cannot verify itself", "Disclosure required where AI summarises or analyses information a witness relies on"]
+  - ["Fair Work Commission (guidance note, from 20 October 2026)", "Required, with a statement of checking", "A person must check", "Witness statements in the witness's own words"]
+  - [NSW Supreme Court (SC Gen 23, practice note), "Affidavits state AI was not used; experts disclose use, if leave is granted", "Authors verify submissions", "AI not to generate affidavit or witness-statement content"]
+  - [NCAT (procedural direction 7), "Experts should disclose", "Verify submissions", "AI not to generate statement content"]
+  - [Victorian Supreme Court (SC GEN 25, practice note), "No statement required; must be ready to identify AI-produced parts", "Meaningful human verification", "Witness's own knowledge and words"]
+  - [VCAT (PNVCAT 11, practice note), "Parties should; experts must", "Author verifies", "AI must not generate an expert opinion"]
+  - [Queensland Supreme Court (PD 5, practice direction), "Not required; a named practitioner is responsible", "Responsible person verifies references", ~]
 ```
 
 South Australia's guidelines say a party filing a document "need not disclose" AI use by a particular statement, but should be able to inform a judicial officer if questioned ([SA guidelines](/policies/sa-courts-genai-guidelines), para 43). Western Australia's Supreme Court says use should be disclosed "when directed by the court or where otherwise necessary or appropriate" ([WA guidelines](/policies/wa-supreme-court-genai-guidelines), para 12).
