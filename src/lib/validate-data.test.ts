@@ -1602,6 +1602,42 @@ describe('validateCollectionMeta failure classes', () => {
   });
 });
 
+describe('validateCollectionMeta robotsUnverified', () => {
+  const meta = (robotsUnverified?: unknown): CollectionMeta =>
+    ({
+      lastCollectedAt: '2026-10-17T19:30:00.000Z',
+      lastHealthyAt: '2026-10-17T19:30:00.000Z',
+      lastReviewedAt: null,
+      collector: {
+        runCount: 3,
+        lastRunSources: [],
+        lastRunErrors: [],
+        health: 'healthy',
+        dueSourceCount: 0,
+        successfulSourceCount: 0,
+        failedSourceCount: 0,
+        skippedSourceCount: 0,
+        successRate: 1,
+        automaticSourceCount: 0,
+        manualSourceCount: 0,
+        sourceResults: [],
+        ...(robotsUnverified === undefined ? {} : { robotsUnverified }),
+      },
+    }) as CollectionMeta;
+
+  it('accepts meta without the key and a list of host keys', () => {
+    expect(validateCollectionMeta(meta()).errors).toEqual([]);
+    expect(validateCollectionMeta(meta(['www.example.gov.au', 'www.other.gov.au:8443'])).errors).toEqual([]);
+  });
+
+  it.each([[['WWW.Example.gov.au']], [['https://www.example.gov.au']], [[7]], ['www.example.gov.au']])(
+    'rejects robotsUnverified %j',
+    (value) => {
+      expect(validateCollectionMeta(meta(value)).errors).toEqual(['meta: invalid collector robotsUnverified']);
+    },
+  );
+});
+
 describe('validateWatchState hosts', () => {
   const record = (): HostRecord => ({
     seenAt: '2026-10-20T19:35:00.000Z',
@@ -1616,6 +1652,7 @@ describe('validateWatchState hosts', () => {
     backoffUntil: '2026-10-21T19:35:00.000Z',
     backoffStatus: 429,
     backoffCount: 1,
+    robotsUnreachableRuns: 2,
   });
   const state = (hosts: Record<string, unknown> | undefined): WatchState =>
     ({ ...emptyWatchState(), ...(hosts === undefined ? {} : { hosts }) }) as WatchState;
@@ -1648,6 +1685,9 @@ describe('validateWatchState hosts', () => {
     ['backoffStatus', (h) => ({ ...h, backoffStatus: 500 })],
     ['backoffCount', (h) => ({ ...h, backoffCount: -1 })],
     ['backoffCount', (h) => ({ ...h, backoffCount: 1.5 })],
+    ['robotsUnreachableRuns', (h) => ({ ...h, robotsUnreachableRuns: -1 })],
+    ['robotsUnreachableRuns', (h) => ({ ...h, robotsUnreachableRuns: 0.5 })],
+    ['robotsUnreachableRuns', ({ robotsUnreachableRuns, ...h }) => (void robotsUnreachableRuns, h)],
   ])('rejects an invalid %s', (label, mutate) => {
     const report = validateWatchState(state({ 'www.example.gov.au': mutate(record()) }));
     expect(report.errors).toEqual([expect.stringContaining(`watchState:hosts:www.example.gov.au: invalid ${label}`)]);

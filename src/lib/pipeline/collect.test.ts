@@ -459,6 +459,45 @@ describe('a robots.txt the gate cannot read never makes a run worse', () => {
   });
 });
 
+describe('robots unverified report', () => {
+  it('names a never-read host in the run log and meta from its 3rd consecutive unreachable run', async () => {
+    const host = hostOf(new URL(HTML_SOURCE.url));
+    const ARTICLE = '<html><body><h1>New AI policy framework released</h1><p>AI governance.</p></body></html>';
+    let state = emptyWatchState();
+    const reports: Array<{ lines: string[]; robotsUnverified: unknown }> = [];
+    for (let day = 0; day < 3; day++) {
+      const lines: string[] = [];
+      const result = await collect({
+        sources: [HTML_SOURCE],
+        state,
+        existingDevelopments: [],
+        fetchImpl: fakeFetch({ [HTML_SOURCE.url]: INDEX_HTML, 'https://www.example.gov.au/news/': ARTICLE }),
+        now: () => new Date(Date.UTC(2026, 6, 10 + day)),
+        hostGate: createHostGate({
+          hosts: state.hosts,
+          refused: new Map(),
+          fetchRobots: async () => null,
+          now: Date.now,
+          sleep: async () => {},
+        }),
+        logger: (line) => lines.push(line),
+      });
+      expect(result.meta.collector.health).toBe('healthy');
+      expect(validateCollectionMeta(result.meta).errors).toEqual([]);
+      state = result.state;
+      reports.push({
+        lines: lines.filter((line) => line.startsWith('[collect] robots unverified')),
+        robotsUnverified: result.meta.collector.robotsUnverified,
+      });
+    }
+    expect(reports).toEqual([
+      { lines: [], robotsUnverified: undefined },
+      { lines: [], robotsUnverified: undefined },
+      { lines: [`[collect] robots unverified: ${host}`], robotsUnverified: [host] },
+    ]);
+  });
+});
+
 describe('collect', () => {
   it('detects new items, skips seen URLs, and updates state', async () => {
     const state = emptyWatchState();

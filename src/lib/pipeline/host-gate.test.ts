@@ -8,6 +8,7 @@ import {
   createHostGate,
   DEFAULT_MIN_GAP_MS,
   HOST_RETENTION_MS,
+  type Host,
   type HostGateDeps,
   type HostRecord,
   hostOf,
@@ -15,7 +16,9 @@ import {
   ROBOTS_RULES_CAP,
   ROBOTS_SITEMAPS_CAP,
   ROBOTS_TTL_MS,
+  ROBOTS_UNVERIFIED_RUNS,
   type RobotsRecord,
+  robotsUnverifiedHosts,
   type Transport,
   WAIT_BUDGET_MS,
 } from './host-gate';
@@ -209,12 +212,8 @@ describe('admit', () => {
     expect(await h.gate.admit(url('/private/x'))).toMatchObject({ kind: 'refused', cls: 'robots_disallowed' });
     expect(await h.gate.admit(url('/public'))).toEqual({ kind: 'go' });
     expect(h.robotsCalls).toEqual([A]);
-    expect(h.gate.hosts()[host]?.robots).toMatchObject({
-      status: 'unreachable',
-      disallow: ['/private'],
-      crawlDelaySec: 3,
-      fetchedAt: new Date(START).toISOString(),
-    });
+    expect(h.gate.hosts()[host]?.robots).toEqual(cached[host].robots);
+    expect(h.gate.hosts()[host]?.robotsUnreachableRuns).toBe(1);
     const next = harness({ [A]: { status: 200, body: 'User-agent: *\nDisallow: /other' } }, { hosts: h.gate.hosts() });
     expect(await next.gate.admit(url('/private/x'))).toEqual({ kind: 'go' });
     expect(next.robotsCalls).toEqual([A]);
@@ -519,5 +518,84 @@ describe('state size', () => {
     expect(bytes).toBeLessThan(160 * 1024);
     expect(lines).toBeLessThan(67 * 80);
     console.info(`host state: ${bytes} bytes, ${lines} lines for 67 hosts x 60 rules`);
+  });
+});
+
+describe('robots unverified', () => {
+  type RobotsResponse = { status: number; body: string } | null;
+  const host = hostOf(url('/'));
+
+  async function runs(responses: RobotsResponse[], hosts: HostGateDeps['hosts'] = {}) {
+    let state = hosts;
+    const counts: number[] = [];
+    const unverified: Host[][] = [];
+    for (const [day, response] of responses.entries()) {
+      const h = harness({ [A]: response }, { hosts: state });
+      h.tick(day * (ROBOTS_TTL_MS + HOUR));
+      await h.gate.admit(url('/one'));
+      await h.gate.admit(url('/two'));
+      state = h.gate.hosts();
+      counts.push(state[host].robotsUnreachableRuns);
+      unverified.push(robotsUnverifiedHosts(state));
+    }
+    return { state, counts, unverified };
+  }
+
+  it('counts unreachable runs once per run and resets on a 2xx or a 4xx', async () => {
+    const parsed = { status: 200, body: 'User-agent: *\nDisallow: /private' };
+    const { counts } = await runs([null, { status: 503, body: '' }, parsed, null, { status: 404, body: '' }, { status: 500, body: '' }]);
+    expect(counts).toEqual([1, 2, 0, 1, 0, 1]);
+  });
+
+  it('lists a host whose robots.txt was never read from its 3rd consecutive unreachable run', async () => {
+    const { state, unverified } = await runs([null, { status: 503, body: '' }, null, null]);
+    expect(unverified).toEqual([[], [], [host], [host]]);
+    expect(state[host].robots?.status).toBe('unreachable');
+  });
+
+  it.each<[label: string, first: RobotsResponse]>([
+    ['parsed', { status: 200, body: 'User-agent: *\nDisallow: /private' }],
+    ['absent', { status: 404, body: '' }],
+  ])('never lists a host once its robots.txt was read (%s) and keeps that copy', async (status, first) => {
+    const { state, counts, unverified } = await runs([first, null, null, null, null]);
+    expect(counts).toEqual([0, 1, 2, 3, 4]);
+    expect(unverified.flat()).toEqual([]);
+    expect(state[host].robots?.status).toBe(status);
+    const next = harness({ [A]: null }, { hosts: state });
+    expect(await next.gate.admit(url('/private/x'))).toMatchObject(
+      status === 'parsed' ? { kind: 'refused', cls: 'robots_disallowed' } : { kind: 'go' },
+    );
+  });
+
+  it('loads a record written without the counter as 0', async () => {
+    const legacy = {
+      seenAt: new Date(START - HOUR).toISOString(),
+      robots: { fetchedAt: new Date(START - HOUR).toISOString(), status: 'unreachable' as const, allow: [], disallow: [], crawlDelaySec: null, sitemaps: [] },
+      backoffUntil: null,
+      backoffStatus: null,
+      backoffCount: 0,
+    };
+    const { counts } = await runs([null], { [host]: legacy });
+    expect(counts).toEqual([1]);
+  });
+
+  it('names hosts in order and only those past the threshold', () => {
+    const record = (runs: number, status: RobotsRecord['status']): HostRecord => ({
+      seenAt: new Date(START).toISOString(),
+      robots: { fetchedAt: new Date(START).toISOString(), status, allow: [], disallow: [], crawlDelaySec: null, sitemaps: [] },
+      backoffUntil: null,
+      backoffStatus: null,
+      backoffCount: 0,
+      robotsUnreachableRuns: runs,
+    });
+    expect(
+      robotsUnverifiedHosts({
+        ['www.zeta.gov.au' as Host]: record(ROBOTS_UNVERIFIED_RUNS, 'unreachable'),
+        ['www.alpha.gov.au' as Host]: record(ROBOTS_UNVERIFIED_RUNS + 4, 'unreachable'),
+        ['www.beta.gov.au' as Host]: record(ROBOTS_UNVERIFIED_RUNS - 1, 'unreachable'),
+        ['www.gamma.gov.au' as Host]: record(ROBOTS_UNVERIFIED_RUNS + 4, 'parsed'),
+        ['www.delta.gov.au' as Host]: record(ROBOTS_UNVERIFIED_RUNS + 4, 'absent'),
+      }),
+    ).toEqual(['www.alpha.gov.au', 'www.zeta.gov.au']);
   });
 });

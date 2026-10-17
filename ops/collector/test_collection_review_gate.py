@@ -257,6 +257,14 @@ class GateTest(unittest.TestCase):
         self.assertEqual((labelled['verdict'], labelled['reasons']),
                          (without['verdict'], without['reasons']))
 
+    def test_robots_unverified_hosts_do_not_change_the_verdict(self):
+        without = self.run_gate()
+        self.meta['collector']['robotsUnverified'] = ['www.example.gov.au', 'www.other.gov.au']
+        self.revise()
+        listed = self.run_gate()
+        self.assertEqual(without['verdict'], 'would-merge', without['reasons'])
+        self.assertEqual((listed['verdict'], listed['reasons']), (without['verdict'], without['reasons']))
+
     def test_not_due_is_not_success_or_recovery(self):
         c = self.meta['collector']
         c['sourceResults'][0].update(status='skipped', coverageEligible=False, itemCount=None)
@@ -456,7 +464,8 @@ class GateTest(unittest.TestCase):
             'seenAt': '2026-10-20T19:35:00.000Z',
             'robots': {'fetchedAt': '2026-10-20T19:35:00.000Z', 'status': 'parsed',
                        'allow': [], 'disallow': ['/search'], 'crawlDelaySec': None, 'sitemaps': []},
-            'backoffUntil': None, 'backoffStatus': None, 'backoffCount': 0}}
+            'backoffUntil': None, 'backoffStatus': None, 'backoffCount': 0,
+            'robotsUnreachableRuns': 0}}
         self.revise()
         result = self.run_gate()
         self.assertEqual(result['verdict'], 'would-merge', result['reasons'])
