@@ -854,8 +854,15 @@ export function validatePolicyThemes(policies: readonly Policy[]): ValidationRep
     }
     const seen = new Set<unknown>();
     for (const theme of themes) {
-      if (!isThemeId(theme)) errors.push(`${label}: unknown theme "${theme}"`);
-      else if (seen.has(theme)) errors.push(`${label}: duplicate theme "${theme}"`);
+      if (typeof theme !== 'string') {
+        errors.push(
+          `${label}: theme entries must be theme id strings, not ${typeof theme} ${JSON.stringify(theme)}`,
+        );
+      } else if (!isThemeId(theme)) {
+        errors.push(`${label}: unknown theme ${JSON.stringify(theme)}`);
+      } else if (seen.has(theme)) {
+        errors.push(`${label}: duplicate theme ${JSON.stringify(theme)}`);
+      }
       seen.add(theme);
     }
   });
@@ -894,7 +901,7 @@ export function validateThemeCoverage(
       );
     } else if (publicCount < MIN_PUBLIC_RECORDS_PER_THEME) {
       warnings.push(
-        `themes: "${key}" (${label}) is on ${countOf(publicCount, 'public record')}; it shows on fewer than ${MIN_PUBLIC_RECORDS_PER_THEME} until the withheld records return`,
+        `themes: "${key}" (${label}) is on ${countOf(publicCount, 'public record')}; it shows on fewer than ${MIN_PUBLIC_RECORDS_PER_THEME} until enough of those records are public again`,
       );
     }
   }

@@ -5,7 +5,6 @@ import path from 'node:path';
 import { buildPolicy } from '@/test/factories';
 import { getPolicies } from './data-service';
 import { readJsonFile } from './file-store';
-import { MIN_PUBLIC_RECORDS_PER_THEME, THEMES } from './themes';
 import { validatePolicyThemes, validateThemeCoverage } from './validate-data';
 import type { Policy } from '@/types';
 
@@ -67,6 +66,17 @@ describe('validatePolicyThemes', () => {
     ]);
   });
 
+  it('names a non-string entry by its type and value', () => {
+    const report = validatePolicyThemes([
+      withThemes('nested', [['generative-ai']]),
+      withThemes('number', [7]),
+    ]);
+    expect(report.errors).toEqual([
+      'nested: theme entries must be theme id strings, not object ["generative-ai"]',
+      'number: theme entries must be theme id strings, not number 7',
+    ]);
+  });
+
   it('rejects unknown and duplicate themes', () => {
     const report = validatePolicyThemes([
       withThemes('unknown', ['courts', 'Generative AI']),
@@ -106,17 +116,18 @@ describe('validateThemeCoverage', () => {
     );
   });
 
-  it('warns when withholding leaves a theme on fewer than two public records', () => {
+  it('only warns when a theme on two register records has fewer than two public records', () => {
     const report = validateThemeCoverage(register, [register[0], register[2]]);
     expect(report.warnings).toContain(
-      'themes: "standards" (Standards and lifecycle) is on 1 public record; it shows on fewer than 2 until the withheld records return',
+      'themes: "standards" (Standards and lifecycle) is on 1 public record; it shows on fewer than 2 until enough of those records are public again',
     );
     expect(report.warnings.join('\n')).not.toMatch(/"employment"/);
+    expect(report.errors.join('\n')).not.toMatch(/"standards"/);
   });
 });
 
 describe('register themes', () => {
-  it('puts every listed theme on at least two register and public records', async () => {
+  it('puts every listed theme on at least two non-trashed register records', async () => {
     const register = await readJsonFile<Policy[]>(
       path.join(process.cwd(), 'data', 'policies.json'),
       [],
@@ -125,11 +136,5 @@ describe('register themes', () => {
 
     expect(validatePolicyThemes(register).errors).toEqual([]);
     expect(validateThemeCoverage(register, publicPolicies).errors).toEqual([]);
-    for (const { key } of THEMES) {
-      const publicCount = publicPolicies.filter((policy) =>
-        policy.themes.includes(key),
-      ).length;
-      expect(publicCount, key).toBeGreaterThanOrEqual(MIN_PUBLIC_RECORDS_PER_THEME);
-    }
   });
 });

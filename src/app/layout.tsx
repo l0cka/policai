@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Header } from '@/components/layout/Header';
+import { collectionStripProps } from '@/lib/collection-strip';
 import { Footer } from '@/components/layout/Footer';
 import { themeInitScript } from '@/components/layout/theme-init';
 import { BackToTop } from '@/components/ui/back-to-top';
@@ -34,8 +35,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const collectionMeta = await getCollectionMeta();
-  const dataCurrentAt =
-    collectionMeta.lastHealthyAt ?? collectionMeta.lastCollectedAt;
 
   return (
     <html
@@ -51,12 +50,7 @@ export default async function RootLayout({
           Skip to content
         </a>
         <TooltipProvider>
-          <Header
-            dataCurrentAt={dataCurrentAt}
-            collectionHealth={collectionMeta.collector.health}
-            successfulSourceCount={collectionMeta.collector.successfulSourceCount}
-            dueSourceCount={collectionMeta.collector.dueSourceCount}
-          />
+          <Header {...collectionStripProps(collectionMeta)} />
           <main id="main-content" className="flex-1">{children}</main>
           <Footer />
           <BackToTop />
