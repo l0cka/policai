@@ -1,15 +1,15 @@
 export const FAILURE_CLASSES = [
   {
+    cls: 'robots_disallowed',
+    pattern: /disallowed by robots\.txt/i,
+    description: 'robots.txt disallows the URL for the collector.',
+  },
+  {
     cls: 'identity_refused',
     pattern:
       /ERR_HTTP2_PROTOCOL_ERROR|ERR_CONNECTION_RESET|ECONNRESET|\bHTTP 403\b|bot-challenge page/,
     description:
       'Heuristic label: HTTP/2 protocol error, connection reset, HTTP 403 or a bot challenge. An outage can look the same; a human decides.',
-  },
-  {
-    cls: 'robots_disallowed',
-    pattern: /disallowed by robots\.txt/i,
-    description: 'robots.txt disallows the URL for the collector.',
   },
   {
     cls: 'rate_limited',
@@ -34,7 +34,7 @@ export const FAILURE_CLASSES = [
   },
   {
     cls: 'timeout',
-    pattern: /timed out|timeout|ERR_TIMED_OUT/i,
+    pattern: /timed out|\bTimeout \d+ms exceeded|aborted due to timeout|ERR_TIMED_OUT|ETIMEDOUT/i,
     description: 'A retrieval or navigation deadline passed.',
   },
   {
@@ -62,21 +62,63 @@ export const FAILURE_CLASSES = [
 
 export type FailureClass = (typeof FAILURE_CLASSES)[number]['cls'];
 
-const URL_PATTERN = /https?:\/\/[^\s"'<>()]+/;
+const URL_PATTERN = /https?:\/\/[^\s"'<>()[\]{}`]+/gi;
+const MAX_FAILED_URL_LENGTH = 2048;
+const MAX_CAUSE_DEPTH = 4;
+
+export function publicFailureUrl(raw: string): string | null {
+  let parsed: URL;
+  try {
+    parsed = new URL(raw);
+  } catch {
+    return null;
+  }
+  if (!/^https?:$/.test(parsed.protocol)) return null;
+  parsed.username = '';
+  parsed.password = '';
+  parsed.search = '';
+  parsed.hash = '';
+  const url = parsed.toString();
+  return url.length <= MAX_FAILED_URL_LENGTH ? url : `${parsed.origin}/`;
+}
+
+function failureTexts(error: unknown, depth = 0): string[] {
+  if (typeof error === 'string') return [error];
+  if (!(error instanceof Error) || depth > MAX_CAUSE_DEPTH) return [];
+  const code = 'code' in error && typeof error.code === 'string' ? [error.code] : [];
+  const members =
+    error instanceof AggregateError
+      ? error.errors.flatMap((member: unknown) => failureTexts(member, depth + 1))
+      : [];
+  return [error.message, ...code, ...members, ...failureTexts(error.cause, depth + 1)];
+}
+
+function carriedUrl(error: unknown): string | null {
+  return error instanceof Error && 'url' in error && typeof error.url === 'string'
+    ? publicFailureUrl(error.url)
+    : null;
+}
+
+function firstUrl(texts: string[]): string | null {
+  for (const text of texts) {
+    for (const [match] of text.matchAll(URL_PATTERN)) {
+      const url = publicFailureUrl(match.replace(/[.,;:!?]+$/, ''));
+      if (url) return url;
+    }
+  }
+  return null;
+}
 
 export function classifyFailure(error: unknown): {
   cls: FailureClass;
   url: string | null;
 } {
-  const message =
-    error instanceof Error
-      ? error.message
-      : typeof error === 'string'
-        ? error
-        : '';
-  const row = FAILURE_CLASSES.find(({ pattern }) => pattern.test(message));
-  const url = message.match(URL_PATTERN)?.[0].replace(/[.,;:]+$/, '') ?? null;
-  return { cls: row?.cls ?? 'other', url };
+  const texts = failureTexts(error);
+  const cls =
+    texts
+      .map((text) => FAILURE_CLASSES.find(({ pattern }) => pattern.test(text))?.cls)
+      .find((found) => found !== undefined && found !== 'other') ?? 'other';
+  return { cls, url: carriedUrl(error) ?? firstUrl(texts) };
 }
 
 export function isFailureClass(value: unknown): value is FailureClass {

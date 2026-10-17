@@ -46,7 +46,7 @@ import {
   ROBOTS_SITEMAPS_CAP,
 } from '@/lib/pipeline/host-gate';
 import type { WatchSource } from '@/lib/pipeline/sources';
-import { isFailureClass } from '@/lib/pipeline/failure';
+import { isFailureClass, publicFailureUrl } from '@/lib/pipeline/failure';
 import { identityExceptionState } from '@/lib/pipeline/identity';
 import { isValidCalendarDate } from '@/lib/calendar-date';
 import { VERIFICATION_CLOCK_SKEW_TOLERANCE_MS } from '@/lib/verification';
@@ -1419,7 +1419,7 @@ export function validateCollectionMeta(meta: CollectionMeta): ValidationReport {
       errors.push(`${label}: invalid failureClass`);
     if (
       result.failedUrl !== undefined &&
-      !(isNonEmptyString(result.failedUrl) && /^https?:\/\//.test(result.failedUrl))
+      !(isNonEmptyString(result.failedUrl) && publicFailureUrl(result.failedUrl) === result.failedUrl)
     )
       errors.push(`${label}: invalid failedUrl`);
     if (
@@ -1427,6 +1427,8 @@ export function validateCollectionMeta(meta: CollectionMeta): ValidationReport {
       (result.failureClass !== undefined || result.failedUrl !== undefined)
     )
       errors.push(`${label}: failure fields require a failed result`);
+    else if ((result.failureClass === undefined) !== (result.failedUrl === undefined))
+      errors.push(`${label}: failureClass and failedUrl must appear together`);
   });
 
   if (collector.health !== 'healthy') {

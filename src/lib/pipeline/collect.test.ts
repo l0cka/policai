@@ -38,7 +38,7 @@ const collect = (options: Omit<CollectOptions, 'hostGate'> & { hostGate?: HostGa
   collectThroughGate({ hostGate: buildOpenHostGate(), ...options });
 import type { SourceReview } from '@/types';
 import { MACHINE_CONFIDENCE_CAP, type Classification } from './classify';
-import { validateSourceReviews } from '../validate-data';
+import { validateCollectionMeta, validateSourceReviews } from '../validate-data';
 
 beforeEach(() => {
   scrapeWithFirecrawl.mockReset();
@@ -615,7 +615,7 @@ describe('collect', () => {
     expect(result.state.seen[url]).toMatchObject({
       status: 'failed',
       attempts: 1,
-      lastError: 'HTTP 404',
+      lastError: `HTTP 404 at ${url}`,
     });
   });
 
@@ -649,7 +649,7 @@ describe('collect', () => {
     expect(result.state.seen[url]).toMatchObject({
       status: 'failed',
       attempts: 5,
-      lastError: 'HTTP 503',
+      lastError: `HTTP 503 at ${url}`,
     });
   });
 
@@ -3813,7 +3813,7 @@ describe('failure classes on source results', () => {
 
     expect(rows['test-refused']).toMatchObject({
       status: 'error',
-      error: 'test-refused: HTTP 403',
+      error: 'test-refused: HTTP 403 at https://www.refused.gov.au/rss',
       failureClass: 'identity_refused',
       failedUrl: REFUSED_SOURCE.url,
     });
@@ -3834,7 +3834,7 @@ describe('failure classes on source results', () => {
     const { collector } = result.meta;
 
     expect(result.errors).toEqual([
-      'test-refused: HTTP 403',
+      'test-refused: HTTP 403 at https://www.refused.gov.au/rss',
       'test-html: 1 candidate retrieval failure',
     ]);
     expect(collector.lastRunErrors).toEqual(result.errors);
@@ -3855,5 +3855,144 @@ describe('failure classes on source results', () => {
     });
     expect(result.meta.lastHealthyAt).toBeNull();
     expect(collectionRunFailed(collector.health, result.errors, false)).toBe(true);
+  });
+
+  const LINKING_SOURCE: WatchSource = {
+    ...DOCUMENT_SOURCE,
+    id: 'test-linking',
+    url: 'https://www.example.gov.au/policy/ai',
+    schedule: 'daily',
+  };
+  const REFUSED_PDF = 'https://www.finance.gov.au/files/ai-policy.pdf';
+  const LINKING_PAGE = `<html><body><main><h1>AI policy</h1><p>Artificial intelligence policy framework.</p><a href="${REFUSED_PDF}">AI policy (PDF)</a></main></body></html>`;
+  const html = (body: string) => ({ body, contentType: 'text/html' });
+
+  it('names the host of a refused linked document', async () => {
+    const result = await collect({
+      sources: [LINKING_SOURCE],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl: fakeFetch({ [LINKING_SOURCE.url]: html(LINKING_PAGE), [REFUSED_PDF]: 403 }),
+      now,
+    });
+
+    expect(result.meta.collector.sourceResults[0]).toMatchObject({
+      status: 'error',
+      error: `test-linking: HTTP 403 at ${REFUSED_PDF}`,
+      failureClass: 'identity_refused',
+      failedUrl: REFUSED_PDF,
+    });
+  });
+
+  it('names the host a cross-host redirect reached', async () => {
+    const moved = 'https://www.other.gov.au/policy/ai';
+    const fetchImpl = vi.fn(async (input: RequestInfo | URL) =>
+      String(input) === LINKING_SOURCE.url
+        ? new Response(null, { status: 302, headers: { location: moved } })
+        : new Response('no', { status: 403 }),
+    ) as unknown as typeof fetch;
+
+    const result = await collect({
+      sources: [LINKING_SOURCE],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl,
+      now,
+    });
+
+    expect(result.meta.collector.sourceResults[0]).toMatchObject({
+      failureClass: 'identity_refused',
+      failedUrl: moved,
+    });
+  });
+
+  it('names a linked document refused over Firecrawl and the browser', async () => {
+    const browserSource: WatchSource = { ...HTML_SOURCE, fetchStrategy: 'browser' };
+    scrapeWithFirecrawl.mockImplementation(async (url: string) => ({
+      ok: true,
+      markdown: '# AI policy\n\nArtificial intelligence policy framework.',
+      rawHtml: LINKING_PAGE,
+      title: 'AI policy',
+      finalUrl: url,
+    }));
+
+    const result = await collect({
+      sources: [browserSource],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl: fakeFetch({ [REFUSED_PDF]: 403 }),
+      browserFetchImpl: fakeFetch({
+        'https://www.example.gov.au/news/': html(LINKING_PAGE),
+        'https://www.example.gov.au/news': INDEX_HTML,
+        [REFUSED_PDF]: 403,
+      }),
+      now,
+    });
+
+    expect(result.meta.collector.sourceResults[0]).toMatchObject({
+      status: 'error',
+      failureClass: 'identity_refused',
+      failedUrl: REFUSED_PDF,
+    });
+  });
+
+  it('records the first failure when a pending candidate also fails', async () => {
+    const state = emptyWatchState();
+    const pendingUrl = 'https://www.refused.gov.au/media/ai-update';
+    state.seen[pendingUrl] = {
+      firstSeenAt: '2026-07-09T00:00:00.000Z',
+      sourceId: REFUSED_SOURCE.id,
+      status: 'pending',
+      candidate: {
+        title: 'Artificial intelligence governance update',
+        url: pendingUrl,
+        text: 'AI governance policy update',
+      },
+    };
+
+    const result = await collect({
+      sources: [REFUSED_SOURCE],
+      state,
+      existingDevelopments: [],
+      fetchImpl: fakeFetch({ [REFUSED_SOURCE.url]: 403, [pendingUrl]: 404 }),
+      now,
+    });
+
+    expect(result.meta.collector.sourceResults[0]).toMatchObject({
+      error: expect.stringContaining('1 candidate retrieval failure'),
+      failureClass: 'identity_refused',
+      failedUrl: REFUSED_SOURCE.url,
+    });
+  });
+
+  it('drops the query from a candidate URL used as failedUrl', async () => {
+    const candidate = 'https://www.example.gov.au/news/ai-policy-framework?auth=secret';
+    const result = await collect({
+      sources: [HTML_SOURCE],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl: fakeFetch({
+        [HTML_SOURCE.url]: INDEX_HTML.replace('/news/ai-policy-framework', '/news/ai-policy-framework?auth=secret'),
+        [candidate]: html('<html><body></body></html>'),
+        'https://www.example.gov.au/news/seen-before':
+          '<html><body><h1>Existing AI governance standard update</h1></body></html>',
+      }),
+      now,
+    });
+
+    const row = result.meta.collector.sourceResults[0];
+    expect(row).toMatchObject({
+      status: 'error',
+      failedUrl: 'https://www.example.gov.au/news/ai-policy-framework',
+    });
+    expect(validateCollectionMeta(result.meta).errors).toEqual([]);
+  });
+
+  it('writes failureClass and failedUrl together or not at all', async () => {
+    const result = await run();
+    for (const row of result.meta.collector.sourceResults) {
+      expect('failureClass' in row).toBe('failedUrl' in row);
+      expect('failureClass' in row).toBe(row.status === 'error');
+    }
   });
 });
