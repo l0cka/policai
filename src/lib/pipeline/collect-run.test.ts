@@ -97,7 +97,16 @@ describe('collection CLI write path', () => {
       createdBy: 'collector',
     });
     expect(readJson('data', 'watch-state.json')).toHaveProperty('seen');
-    expect(readJson<WatchState>('data', 'watch-state.json').hosts).toEqual({});
+    expect(readJson<WatchState>('data', 'watch-state.json').hosts).toEqual({
+      'www.example.gov.au': expect.objectContaining({
+        robots: expect.objectContaining({ status: 'absent' }),
+        backoffUntil: null,
+      }),
+    });
+    expect(fetchImpl).toHaveBeenCalledWith(
+      'https://www.example.gov.au/robots.txt',
+      expect.objectContaining({ headers: expect.objectContaining({ 'User-Agent': expect.stringContaining('Policai/1.0') }) }),
+    );
     expect(readJson('public', 'data', 'meta.json')).toHaveProperty('collector');
     expect(digest(registerFile())).toBe(before);
   });

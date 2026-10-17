@@ -15,6 +15,7 @@ import {
   ROBOTS_SITEMAPS_CAP,
   ROBOTS_TTL_MS,
   type RobotsRecord,
+  type Transport,
 } from './host-gate';
 
 const START = Date.parse('2026-10-20T19:30:00.000Z');
@@ -126,7 +127,7 @@ describe('admit', () => {
     if (refused.kind !== 'refused') throw new Error('expected refusal');
     expect(classifyFailure(refused.detail)).toEqual({
       cls: 'robots_disallowed',
-      url: `${A}/search?q=ai`,
+      url: `${A}/search`,
     });
     expect(await h.gate.admit(url('/files/a.pdf'))).toMatchObject({ cls: 'robots_disallowed' });
     expect(await h.gate.admit(url('/files/a.pdf?download=1'))).toEqual({ kind: 'go' });
@@ -244,10 +245,10 @@ describe('admit', () => {
 });
 
 describe('observe', () => {
-  it('trips the host after one 403 and fails later requests fast as identity_refused', async () => {
+  it('trips the host after one browser 403 and fails later requests fast as identity_refused', async () => {
     const h = harness();
     await h.gate.admit(url('/one'));
-    h.gate.observe(url('/one'), { status: 403 });
+    h.gate.observe(url('/one'), { status: 403, transport: 'browser' });
     const refused = await h.gate.admit(url('/two'));
     expect(refused).toMatchObject({ kind: 'refused', cls: 'identity_refused' });
     if (refused.kind !== 'refused') throw new Error('expected refusal');
@@ -256,15 +257,33 @@ describe('observe', () => {
     expect(h.gate.hosts()[hostOf(url('/'))]).toMatchObject({ backoffUntil: null, backoffStatus: null });
   });
 
-  it.each([200, 204, 301, 302, 304, 400, 401, 404, 410, 500, 502])(
+  it.each([200, 204, 301, 302, 304, 400, 401, 404, 410, 500, 502, 503])(
     'does not infer a refusal from a %d',
     async (status) => {
       const h = harness();
       await h.gate.admit(url('/one'));
-      h.gate.observe(url('/one'), { status });
+      h.gate.observe(url('/one'), { status, transport: 'browser' });
       expect(await h.gate.admit(url('/two'))).toEqual({ kind: 'go' });
     },
   );
+
+  it.each<Transport>(['http', 'firecrawl'])(
+    'leaves the host open after a 403 over %s, so the browser fallback can still run',
+    async (transport) => {
+      const h = harness();
+      await h.gate.admit(url('/one'));
+      h.gate.observe(url('/one'), { status: 403, transport });
+      expect(await h.gate.admit(url('/two'))).toEqual({ kind: 'go' });
+    },
+  );
+
+  it('does not back off after a 503 without Retry-After', async () => {
+    const h = harness();
+    await h.gate.admit(url('/one'));
+    h.gate.observe(url('/one'), { status: 503, retryAfter: null, transport: 'http' });
+    expect(h.gate.hosts()[hostOf(url('/'))]).toMatchObject({ backoffUntil: null, backoffCount: 0 });
+    expect(await h.gate.admit(url('/two'))).toEqual({ kind: 'go' });
+  });
 
   it.each<[status: 429 | 503, cls: string]>([
     [429, 'rate_limited'],
@@ -273,7 +292,7 @@ describe('observe', () => {
     const h = harness();
     await h.gate.admit(url('/one'));
     const observedAt = h.at();
-    h.gate.observe(url('/one'), { status, retryAfter: '120' });
+    h.gate.observe(url('/one'), { status, retryAfter: '120', transport: 'http' });
     const refused = await h.gate.admit(url('/two'));
     expect(refused).toMatchObject({ kind: 'refused', cls });
     if (refused.kind !== 'refused') throw new Error('expected refusal');
@@ -290,7 +309,7 @@ describe('observe', () => {
   it('waits out a Retry-After shorter than the wait cap instead of refusing', async () => {
     const h = harness();
     await h.gate.admit(url('/one'));
-    h.gate.observe(url('/one'), { status: 429, retryAfter: '5' });
+    h.gate.observe(url('/one'), { status: 429, retryAfter: '5', transport: 'http' });
     expect(await h.gate.admit(url('/two'))).toEqual({ kind: 'go' });
     expect(h.sleeps.at(-1)).toBe(5000);
   });
@@ -299,7 +318,7 @@ describe('observe', () => {
     const h = harness();
     await h.gate.admit(url('/one'));
     const until = new Date(h.at() + 90 * 60 * 1000);
-    h.gate.observe(url('/one'), { status: 429, retryAfter: until.toUTCString() });
+    h.gate.observe(url('/one'), { status: 429, retryAfter: until.toUTCString(), transport: 'http' });
     expect(h.gate.hosts()[hostOf(url('/'))]?.backoffUntil).toBe(
       new Date(Math.floor(until.getTime() / 1000) * 1000).toISOString(),
     );
@@ -309,7 +328,7 @@ describe('observe', () => {
   it('clamps an excessive Retry-After to the 24 h cap', async () => {
     const h = harness();
     await h.gate.admit(url('/one'));
-    h.gate.observe(url('/one'), { status: 503, retryAfter: '999999999' });
+    h.gate.observe(url('/one'), { status: 503, retryAfter: '999999999', transport: 'http' });
     expect(h.gate.hosts()[hostOf(url('/'))]?.backoffUntil).toBe(new Date(h.at() + BACKOFF_CAP_MS).toISOString());
   });
 
@@ -322,7 +341,7 @@ describe('observe', () => {
       for (const [index, hours] of expected.entries()) {
         h.tick(BACKOFF_CAP_MS);
         await h.gate.admit(url('/one'));
-        h.gate.observe(url('/one'), { status: 429, retryAfter });
+        h.gate.observe(url('/one'), { status: 429, retryAfter, transport: 'http' });
         expect(h.gate.hosts()[host]).toMatchObject({
           backoffUntil: new Date(h.at() + hours * HOUR).toISOString(),
           backoffCount: index + 1,
@@ -330,9 +349,9 @@ describe('observe', () => {
       }
       h.tick(BACKOFF_CAP_MS);
       await h.gate.admit(url('/one'));
-      h.gate.observe(url('/one'), { status: 200 });
+      h.gate.observe(url('/one'), { status: 200, transport: 'http' });
       expect(h.gate.hosts()[host]).toMatchObject({ backoffUntil: null, backoffStatus: null, backoffCount: 0 });
-      h.gate.observe(url('/one'), { status: 429, retryAfter });
+      h.gate.observe(url('/one'), { status: 429, retryAfter, transport: 'http' });
       expect(h.gate.hosts()[host]?.backoffUntil).toBe(new Date(h.at() + HOUR).toISOString());
     },
   );

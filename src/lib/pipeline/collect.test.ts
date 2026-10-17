@@ -32,7 +32,7 @@ import {
 } from './collect';
 import type { CollectOptions, SeenCandidate, SourceSnapshot, WatchState } from './collect';
 import { createHostGate, hostOf, type HostGate } from './host-gate';
-import { buildOpenHostGate } from '@/test/factories';
+import { buildOpenHostGate, buildRecordingHostGate } from '@/test/factories';
 
 const collect = (options: Omit<CollectOptions, 'hostGate'> & { hostGate?: HostGate }) =>
   collectThroughGate({ hostGate: buildOpenHostGate(), ...options });
@@ -205,7 +205,7 @@ describe('collect host gate state', () => {
     });
     expect(robotsCalls).toEqual([]);
     expect(state.hosts[host]?.seenAt).toBe('2026-07-09T00:00:00.000Z');
-    expect(log).toContainEqual(expect.stringMatching(/^\[collect\] host gate: waited 0 ms across \d+ hosts?/));
+    expect(log).toContainEqual(expect.stringMatching(/^\[collect\] host gate: waited \d+ ms across 1 host/));
   });
 
   it('loads a state written before host records existed', async () => {
@@ -220,6 +220,107 @@ describe('collect host gate state', () => {
     });
     expect(result.errors).toEqual([]);
     expect(result.state.hosts).toBeDefined();
+  });
+});
+
+describe('collect routes every transport through the host gate', () => {
+  const robotsGate = (body: string) =>
+    createHostGate({
+      hosts: {},
+      refused: new Map(),
+      fetchRobots: async () => ({ status: 200, body }),
+      now: Date.now,
+      sleep: async () => {},
+    });
+
+  it('fails a source whose URL robots.txt disallows without requesting it', async () => {
+    const fetchImpl = fakeFetch({ [HTML_SOURCE.url]: INDEX_HTML });
+    const result = await collect({
+      sources: [HTML_SOURCE],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl,
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+      hostGate: robotsGate('User-agent: *\nDisallow: /news'),
+    });
+    expect(fetchImpl).not.toHaveBeenCalled();
+    expect(result.meta.collector.sourceResults[0]).toMatchObject({
+      status: 'error',
+      failureClass: 'robots_disallowed',
+      failedUrl: HTML_SOURCE.url,
+      error: expect.stringContaining('disallowed by robots.txt'),
+    });
+    expect(result.meta.collector.health).toBe('failed');
+  });
+
+  it('fails fast on the rest of a host after one browser 403 and still counts each failure', async () => {
+    const browserFetchImpl = fakeFetch({
+      [HTML_SOURCE.url]: `<html><body><main><ul class="news-list">
+        <li><a href="/news/ai-one">AI policy one</a></li>
+        <li><a href="/news/ai-two">AI policy two</a></li>
+      </ul></main></body></html>`,
+      'https://www.example.gov.au/news/': 403,
+    });
+    const result = await collect({
+      sources: [{ ...HTML_SOURCE, fetchStrategy: 'browser' }],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl: fakeFetch({}),
+      browserFetchImpl,
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+      hostGate: robotsGate(''),
+    });
+    const requested = vi.mocked(browserFetchImpl).mock.calls.map(([input]) => String(input));
+    expect(requested).toEqual([HTML_SOURCE.url, 'https://www.example.gov.au/news/ai-one']);
+    expect(result.meta.collector.sourceResults[0]).toMatchObject({
+      status: 'error',
+      failureClass: 'identity_refused',
+      error: 'test-html: 2 candidate retrieval failures',
+    });
+    expect(result.state.seen['https://www.example.gov.au/news/ai-two']).toMatchObject({
+      status: 'failed',
+      lastError: expect.stringContaining('HTTP 403 from www.example.gov.au earlier this run'),
+    });
+  });
+
+  it('hands the gate to the browser retriever and to Firecrawl', async () => {
+    const browserSource: WatchSource = { ...HTML_SOURCE, id: 'test-browser', fetchStrategy: 'browser' };
+    const browserFetchImpl = fakeFetch({ [HTML_SOURCE.url]: INDEX_HTML });
+    const { gate, admitted } = buildRecordingHostGate();
+    scrapeWithFirecrawl.mockResolvedValue({ ok: false, reason: 'unavailable', detail: 'down' });
+    await collect({
+      sources: [browserSource],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl: fakeFetch({}),
+      browserFetchImpl,
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+      hostGate: gate,
+    });
+    expect(admitted).toEqual([
+      HTML_SOURCE.url,
+      'https://www.example.gov.au/news/ai-policy-framework',
+      'https://www.example.gov.au/news/seen-before',
+    ]);
+    expect(scrapeWithFirecrawl).toHaveBeenCalledWith(
+      'https://www.example.gov.au/news/ai-policy-framework',
+      { identity: 'declared', gate },
+    );
+  });
+
+  it('does not fall back to the browser after a gate refusal on the plain path', async () => {
+    const browserFetchImpl = fakeFetch({ [HTML_SOURCE.url]: INDEX_HTML });
+    const result = await collect({
+      sources: [HTML_SOURCE],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl: fakeFetch({ [HTML_SOURCE.url]: 500 }),
+      browserFetchImpl,
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+      hostGate: robotsGate('User-agent: *\nDisallow: /news'),
+    });
+    expect(browserFetchImpl).not.toHaveBeenCalled();
+    expect(result.meta.collector.sourceResults[0]).toMatchObject({ failureClass: 'robots_disallowed' });
   });
 });
 
@@ -3156,7 +3257,7 @@ describe('collect browser fallback', () => {
 
     expect(scrapeWithFirecrawl).toHaveBeenCalledWith(
       'https://www.example.gov.au/news/ai-policy-framework',
-      { identity: 'declared' },
+      { identity: 'declared', gate: expect.anything() },
     );
     expect(browserFetchImpl).toHaveBeenCalledWith(
       'https://www.example.gov.au/news',
@@ -3210,7 +3311,7 @@ describe('collect browser fallback', () => {
 
     expect(scrapeWithFirecrawl).toHaveBeenCalledWith(
       'https://www.example.gov.au/news/ai-policy-framework',
-      { identity: 'declared' },
+      { identity: 'declared', gate: expect.anything() },
     );
     expect(browserFetchImpl).toHaveBeenCalledWith(
       'https://www.example.gov.au/news/ai-policy-framework',
@@ -3370,7 +3471,7 @@ describe('collect browser fallback', () => {
       );
       expect(requestedIdentities(browserFetchImpl)).toEqual(['declared']);
       for (const call of scrapeWithFirecrawl.mock.calls) {
-        expect(call[1]).toEqual({ identity: 'declared' });
+        expect(call[1]).toEqual({ identity: 'declared', gate: expect.anything() });
       }
       expect(scrapeWithFirecrawl).toHaveBeenCalled();
       expect(

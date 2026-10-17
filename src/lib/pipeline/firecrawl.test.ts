@@ -6,6 +6,7 @@ import {
   scrapeWithFirecrawl as scrapeWithFirecrawlRaw,
   type FirecrawlOptions,
 } from './firecrawl';
+import { buildRecordingHostGate } from '@/test/factories';
 
 function scrapeWithFirecrawl(url: string, options: FirecrawlOptions = {}) {
   return scrapeWithFirecrawlRaw(url, {
@@ -275,6 +276,65 @@ describe('scrapeWithFirecrawl', () => {
     expect(result).toMatchObject({
       ok: true,
       finalUrl: 'https://www.oaic.gov.au/privacy/final',
+    });
+  });
+});
+
+describe('scrapeWithFirecrawl host gate', () => {
+  const payload = (sourceURL: string, statusCode?: number) =>
+    JSON.stringify({
+      success: true,
+      data: {
+        markdown: '# OAIC',
+        rawHtml: '<html><body><main><h1>OAIC</h1></main></body></html>',
+        metadata: { sourceURL, ...(statusCode === undefined ? {} : { statusCode }) },
+      },
+    });
+
+  it('admits the target before posting to Firecrawl and observes the final status', async () => {
+    const { gate, admitted, observed } = buildRecordingHostGate();
+    const fetchMock = vi.fn(async () => {
+      expect(admitted).toEqual(['https://www.oaic.gov.au/news']);
+      return new Response(payload('https://www.oaic.gov.au/news', 200), { status: 200 });
+    });
+    vi.stubGlobal('fetch', fetchMock);
+    const result = await scrapeWithFirecrawl('https://www.oaic.gov.au/news', { gate });
+    expect(result.ok).toBe(true);
+    expect(observed).toEqual([['https://www.oaic.gov.au/news', { status: 200, retryAfter: null, transport: 'firecrawl' }]]);
+  });
+
+  it('throws the gate refusal as a SourceFetchError and never contacts Firecrawl', async () => {
+    const fetchMock = vi.fn();
+    vi.stubGlobal('fetch', fetchMock);
+    const { gate } = buildRecordingHostGate((url) => ({
+      kind: 'refused',
+      cls: 'robots_disallowed',
+      detail: `${url} is disallowed by robots.txt for Policai`,
+    }));
+    await expect(scrapeWithFirecrawl('https://www.oaic.gov.au/search', { gate })).rejects.toMatchObject({
+      name: 'SourceFetchError',
+      code: 'gate_refused',
+      retryable: false,
+      url: 'https://www.oaic.gov.au/search',
+    });
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it('admits a cross-host final URL after the scrape and discards a refused one', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => new Response(payload('https://www.other.gov.au/landing'), { status: 200 })));
+    const allowed = buildRecordingHostGate();
+    const result = await scrapeWithFirecrawl('https://www.oaic.gov.au/news', { gate: allowed.gate });
+    expect(result).toMatchObject({ ok: true, finalUrl: 'https://www.other.gov.au/landing' });
+    expect(allowed.admitted).toEqual(['https://www.oaic.gov.au/news', 'https://www.other.gov.au/landing']);
+
+    const refusing = buildRecordingHostGate((url) =>
+      url.hostname === 'www.other.gov.au'
+        ? { kind: 'refused', cls: 'robots_disallowed', detail: `${url} is disallowed by robots.txt for Policai` }
+        : { kind: 'go' },
+    );
+    await expect(scrapeWithFirecrawl('https://www.oaic.gov.au/news', { gate: refusing.gate })).rejects.toMatchObject({
+      code: 'gate_refused',
+      url: 'https://www.other.gov.au/landing',
     });
   });
 });
