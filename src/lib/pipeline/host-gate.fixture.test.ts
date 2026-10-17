@@ -60,8 +60,9 @@ function startFixture(robots: string): Promise<Fixture> {
   });
 }
 
-function loopbackFetch(port: number): typeof fetch {
+function loopbackFetch(port: number, starts: number[] = []): typeof fetch {
   return (async (input: RequestInfo | URL, init?: RequestInit) => {
+    starts.push(Date.now());
     const target = String(input).replace(ORIGIN, `http://127.0.0.1:${port}`);
     const response = await fetch(target, { ...init, redirect: 'manual' });
     Object.defineProperty(response, 'url', { value: String(input) });
@@ -80,7 +81,7 @@ function productionGate(fetchImpl: typeof fetch, minGapMs?: number): HostGate {
   });
 }
 
-const gaps = (hits: Fixture['hits']) => hits.slice(1).map((hit, index) => hit.at - hits[index].at);
+const gaps = (starts: number[]) => starts.slice(1).map((at, index) => at - starts[index]);
 
 describe('HostGate against a loopback fixture server', () => {
   let fixture: Fixture;
@@ -105,22 +106,26 @@ describe('HostGate against a loopback fixture server', () => {
     expect(gate.hosts()[hostOf(new URL(ORIGIN))]?.robots).toMatchObject({ status: 'parsed', disallow: ['/private'] });
   });
 
-  it('keeps consecutive requests to one host at least the gap apart on the server clock', async () => {
-    const fetchImpl = loopbackFetch(fixture.port);
+  it('starts consecutive requests to one host at least the gap apart', async () => {
+    const starts: number[] = [];
+    const fetchImpl = loopbackFetch(fixture.port, starts);
     const gate = productionGate(fetchImpl, 300);
     for (const path of ['/news/ai-one', '/news/ai-two', '/news/ai-one']) {
       await retrieveSource(`${ORIGIN}${path}`, { fetchImpl, gate, hashLinkedDocuments: false });
     }
-    expect(fixture.hits).toHaveLength(4);
-    for (const gap of gaps(fixture.hits)) expect(gap).toBeGreaterThanOrEqual(290);
+    expect(fixture.hits.map((hit) => hit.path)).toEqual(['/robots.txt', '/news/ai-one', '/news/ai-two', '/news/ai-one']);
+    expect(starts).toHaveLength(4);
+    for (const gap of gaps(starts)) expect(gap).toBeGreaterThanOrEqual(299);
     expect(gate.waited()[hostOf(new URL(ORIGIN))]).toBeGreaterThanOrEqual(800);
   });
 
-  it('spaces two requests by the default 2 s gap', async () => {
-    const fetchImpl = loopbackFetch(fixture.port);
+  it('starts the first page request 2 s after the robots fetch by default', async () => {
+    const starts: number[] = [];
+    const fetchImpl = loopbackFetch(fixture.port, starts);
     const gate = productionGate(fetchImpl);
     await retrieveSource(`${ORIGIN}/news/ai-one`, { fetchImpl, gate, hashLinkedDocuments: false });
-    expect(gaps(fixture.hits)[0]).toBeGreaterThanOrEqual(DEFAULT_MIN_GAP_MS - 10);
+    expect(starts).toHaveLength(2);
+    expect(gaps(starts)[0]).toBeGreaterThanOrEqual(DEFAULT_MIN_GAP_MS - 1);
   }, 10_000);
 
   it('waits out a short Retry-After after a 429 and then succeeds', async () => {

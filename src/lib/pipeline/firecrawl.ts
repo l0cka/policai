@@ -34,7 +34,6 @@ export interface FirecrawlOptions {
   resolveHost?: (hostname: string) => Promise<string[]>;
   /** Identity Firecrawl presents to the source; defaults to 'declared'. */
   identity?: CollectorIdentity;
-  /** Politeness gate admitting the target before Firecrawl is asked to fetch it. */
   gate?: HostGate;
 }
 

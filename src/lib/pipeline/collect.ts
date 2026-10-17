@@ -116,7 +116,6 @@ export interface CollectOptions {
    * retriever is blocked or an index renders no extractable items.
    */
   browserFetchImpl?: typeof fetch;
-  /** Politeness gate every outgoing request passes through; owns `state.hosts`. */
   hostGate: HostGate;
   now?: () => Date;
   maxItemsPerSource?: number;

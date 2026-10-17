@@ -188,9 +188,7 @@ export interface RetrieveSourceOptions {
   hashLinkedDocuments?: boolean;
   /** Source-bound browser permission; plain HTTP always declares identity. */
   identityAuthority?: IdentityAuthority;
-  /** Politeness gate admitting every request, redirect hop and linked document. */
   gate?: HostGate;
-  /** Which client `fetchImpl` is, for the gate's observations; plain HTTP by default. */
   transport?: Extract<Transport, 'http' | 'browser'>;
   http1Fallback?: (
     url: string,
