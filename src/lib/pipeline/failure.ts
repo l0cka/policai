@@ -73,7 +73,7 @@ export function publicFailureUrl(raw: string): string | null {
   } catch {
     return null;
   }
-  if (!/^https?:$/.test(parsed.protocol) || !parsed.hostname) return null;
+  if (!/^https?:$/.test(parsed.protocol)) return null;
   parsed.username = '';
   parsed.password = '';
   parsed.search = '';

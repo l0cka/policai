@@ -132,6 +132,7 @@ describe('classifyFailure', () => {
     ['at `https://www.example.gov.au/a`', 'https://www.example.gov.au/a'],
     ['at "https://www.example.gov.au/a"!', 'https://www.example.gov.au/a'],
     ['at https://www.example.gov.au/a?!', 'https://www.example.gov.au/a'],
+    ['refused https://www.example.gov.au/a!', 'https://www.example.gov.au/a'],
     ['at HTTPS://WWW.Example.GOV.AU/Path', 'https://www.example.gov.au/Path'],
     ['at https://user:secret@www.example.gov.au/a', 'https://www.example.gov.au/a'],
     ['at https://www.example.gov.au/a?auth=token#frag', 'https://www.example.gov.au/a'],

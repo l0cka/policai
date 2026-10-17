@@ -1422,6 +1422,10 @@ describe('retrieval errors carry the failing URL', () => {
 
   it('names the URL of an HTTP/1.1 connection reset', async () => {
     const reset = Object.assign(new Error('read ECONNRESET'), { code: 'ECONNRESET' });
+    const direct = await failure(
+      retrieveSourceOverHttp1(PAGE, http1Options(http1Responder({ [PAGE]: reset }))),
+    );
+    expect(direct).toMatchObject({ url: PAGE, cause: reset });
     const error = await failure(
       retrieveSourceOverHttp1(
         PAGE,

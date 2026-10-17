@@ -980,7 +980,7 @@ export async function retrieveSourceOverHttp1(
       clearTimeout(totalTimer);
       callback(value);
     };
-    const fail = (error: unknown) => finish(reject, failedAt(error, url));
+    const fail = (error: unknown) => finish(reject, error);
 
     const request = requestImpl(
       parsed,
