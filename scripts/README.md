@@ -151,6 +151,18 @@ from the 16 July register audit as `lastSourceAuditAt`, keeps them distinct from
 the earlier editorial `checkedAt`, and marks first-time post-review fingerprints
 stale until an editor compares the fingerprinted source version.
 
+`apply-themes-2026-10-17.ts` sets `themes` on every register record from
+`policy-themes-2026-10-17.json`, the per-record table approved in issue #305
+(theme labels, transcribed from the issue). It inserts `themes` after `tags`
+and changes nothing else. It fails when a record has no row, a row has no
+record, or a label is not in `src/lib/themes.ts`. A second run leaves the file
+byte-identical. After merging `main` into the branch that carries it, rerun it
+rather than resolving `data/policies.json` by hand.
+
+```bash
+npx tsx scripts/apply-themes-2026-10-17.ts
+```
+
 ## Related Docs
 
 - [`../docs/collector.md`](../docs/collector.md)

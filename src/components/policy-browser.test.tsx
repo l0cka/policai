@@ -21,6 +21,7 @@ const policies: Policy[] = ['federal', 'nsw'].map((jurisdiction, index) => ({
   ],
   agencies: ['Test department'],
   tags: ['assurance'],
+  themes: ['risk-assurance'],
   sourceUrl: 'https://example.gov.au/policy',
   content: '',
   aiSummary: '',

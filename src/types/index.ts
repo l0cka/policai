@@ -1,5 +1,7 @@
 // Core domain types for Policai
 
+import type { ThemeId } from "@/lib/themes";
+
 export const JURISDICTIONS = [
 	"federal",
 	"nsw",
@@ -271,6 +273,7 @@ export interface Policy {
 	content: string;
 	aiSummary: string;
 	tags: string[];
+	themes: ThemeId[];
 	createdAt: Date | string;
 	updatedAt: Date | string;
 	verification: RecordVerification;

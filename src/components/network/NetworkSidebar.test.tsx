@@ -11,6 +11,7 @@ const selectedPolicy: NetworkNode = {
   status: 'active',
   type: 'practice_note',
   tags: ['courts', 'judicial', 'disclosure'],
+  themes: ['courts-tribunals', 'generative-ai', 'transparency-disclosure'],
   agencies: ['Federal Court of Australia'],
   effectiveDate: '2025-09-01',
   dateType: 'issued',
@@ -34,7 +35,7 @@ const connections: NetworkConnection[] = [
   {
     node: relatedPolicy,
     kinds: ['thematic'],
-    sharedThemes: ['courts', 'judicial', 'disclosure'],
+    sharedThemes: ['Courts and tribunals', 'Generative AI', 'Transparency and disclosure'],
     weight: 4,
     crossJurisdiction: true,
   },
@@ -56,7 +57,7 @@ describe('NetworkSidebar', () => {
     expect(
       screen.getByRole('heading', { name: 'Why these policies connect' }),
     ).toBeInTheDocument();
-    expect(screen.getByText('Shares 3 editorial themes: courts, judicial, disclosure')).toBeInTheDocument();
+    expect(screen.getByText('Shares 3 editorial themes: Courts and tribunals, Generative AI, Transparency and disclosure')).toBeInTheDocument();
     expect(
       screen.getByRole('link', { name: /View full policy/ }),
     ).toHaveAttribute('href', '/policies/federal-court-gpn-ai');

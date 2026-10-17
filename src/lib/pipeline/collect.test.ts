@@ -2726,6 +2726,7 @@ describe('collect', () => {
           content: trackedPolicy.content,
           aiSummary: trackedPolicy.aiSummary,
           tags: trackedPolicy.tags,
+          themes: trackedPolicy.themes,
           createdAt: trackedPolicy.createdAt,
           updatedAt: trackedPolicy.updatedAt,
         },

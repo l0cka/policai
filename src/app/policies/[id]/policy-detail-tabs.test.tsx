@@ -14,6 +14,7 @@ const policy: Policy = {
   dates: [{ type: 'issued', date: '2026-01-01', precision: 'day', primary: true }],
   agencies: ['Test department'],
   tags: [],
+  themes: ['generative-ai'],
   sourceUrl: 'https://example.gov.au/policy',
   content:
     'Three requirements apply to every filing made here. Requirement 1: state that AI was used. Requirement 2: check the document by hand.',

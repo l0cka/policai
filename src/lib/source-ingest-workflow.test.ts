@@ -133,6 +133,7 @@ function buildDraft(overrides: Partial<PolicyDraft> = {}): PolicyDraft {
     content: 'Verified key policy details.',
     aiSummary: 'Machine-assisted summary.',
     tags: ['ai'],
+    themes: ['ai-governance'],
     createdAt: '2026-07-16T00:00:00.000Z',
     updatedAt: '2026-07-16T00:00:00.000Z',
     dates,
@@ -1838,6 +1839,19 @@ describe('source ingest approval workflow', () => {
     });
   });
 
+  it('refuses approval until the editor assigns themes', async () => {
+    getSourceReviewById.mockResolvedValue(buildReview());
+
+    await expect(
+      approveStagedSource({
+        id: 'source-review-1',
+        actor: 'reviewer',
+        proposedRecord: buildDraft({ effectiveDate: '2026-07-01', themes: [] }),
+      }),
+    ).rejects.toThrow('draft-policy: themes must list 1 to 5 themes, not 0');
+    expect(updateSourceReview).not.toHaveBeenCalled();
+  });
+
   it('refuses approval when a new-policy draft id belongs to another policy', async () => {
     const existingDraft = buildDraft({
       id: 'draft-policy',
@@ -3406,6 +3420,53 @@ describe('source ingest approval workflow', () => {
     expect(updateSourceReview.mock.invocationCallOrder[0]).toBeLessThan(
       markCollectionReviewed.mock.invocationCallOrder[0],
     );
+  });
+
+  it.each([
+    ['emptied', [], 'themes must list 1 to 5 themes, not 0'],
+    ['unknown', ['courts'], 'unknown theme "courts"'],
+    ['missing', undefined, 'themes must be an array of theme ids'],
+    [
+      'six',
+      [
+        'generative-ai',
+        'courts-tribunals',
+        'ai-governance',
+        'privacy-data',
+        'standards',
+        'employment',
+      ],
+      'themes must list 1 to 5 themes, not 6',
+    ],
+  ])('refuses to publish an approved snapshot with %s themes', async (_case, themes, message) => {
+    const approvedPolicy: Partial<Policy> = {
+      ...buildDraft({ effectiveDate: '2026-07-01' }),
+      effectiveDate: '2026-07-01',
+      lastReviewedAt: '2026-07-16T00:00:00.000Z',
+      verification: {
+        status: 'verified' as const,
+        source: { url: SOURCE_URL, contentHash: 'a'.repeat(64) },
+        checkedAt: '2026-07-16T00:00:00.000Z',
+        checkedBy: 'reviewer',
+        method: 'manual' as const,
+      },
+      themes: themes as Policy['themes'],
+    };
+    if (themes === undefined) delete approvedPolicy.themes;
+    getSourceReviewById.mockResolvedValue(
+      buildReview({
+        status: 'approved',
+        reviewedAt: '2026-07-16T00:00:00.000Z',
+        reviewedBy: 'reviewer',
+        proposedRecord: approvedPolicy as Policy,
+      }),
+    );
+
+    await expect(publishStagedSource('source-review-1')).rejects.toThrow(
+      `Policy is not publishable: draft-policy: ${message}`,
+    );
+    expect(createPolicy).not.toHaveBeenCalled();
+    expect(updatePolicy).not.toHaveBeenCalled();
   });
 
   it('publishes a superseded record whose successor is already in the register', async () => {
