@@ -32,35 +32,34 @@ Courts and tribunals set their own rules for AI, and the rules differ. This guid
 
 ## What they agree on
 
-Every instrument keeps responsibility with the person who files. The Federal Court says "The presentation of false or inaccurate information to the Court is unacceptable" ([GPN-AI](/policies/federal-court-gpn-ai), cl 4.4). Victoria's Supreme Court Practice Note makes court users responsible for their documents "whether or not a Court user has utilised AI" ([SC GEN 25](/policies/vic-supreme-court-sc-gen-25), cl 6.1).
+Most instruments keep responsibility with the person who files. The Federal Court says "The presentation of false or inaccurate information to the Court is unacceptable" ([GPN-AI](/policies/federal-court-gpn-ai), cl 4.4). Victoria's Supreme Court Practice Note makes court users responsible for their documents "whether or not a Court user has utilised AI" ([SC GEN 25](/policies/vic-supreme-court-sc-gen-25), cl 6.1).
 
-Most require checking. The Federal Court expects the responsible person to have confirmed that cited authorities exist and support the proposition ([GPN-AI](/policies/federal-court-gpn-ai), cl 4.5). The Queensland Supreme Court's direction requires the named practitioner to verify the accuracy and relevance of every reference in a submission ([PD 5 of 2025](/policies/qld-supreme-court-ai-practice-direction), para 9). Several add that an AI tool cannot do the checking. The Fair Work Commission says "the checking must be done by a person" ([guidance note](/policies/fwc-genai-guidance-note), cl 31).
+Most require checking. The Federal Court expects the responsible person to have confirmed that cited authorities exist and support the proposition ([GPN-AI](/policies/federal-court-gpn-ai), cl 4.5). The Queensland Supreme Court's direction requires the named practitioner to verify the accuracy and relevance of any reference to legislation, authorities or other sources in a written submission ([PD 5 of 2025](/policies/qld-supreme-court-ai-practice-direction), para 9). Several add that an AI tool cannot do the checking. From 20 October 2026, the Fair Work Commission's guidance note says "the checking must be done by a person" ([guidance note](/policies/fwc-genai-guidance-note), cl 31).
 
 Most also protect witness evidence. The Federal Court says affidavits and witness statements must reflect the person's own recollection ([GPN-AI](/policies/federal-court-gpn-ai), cl 4.8), and the NSW Supreme Court prohibits using AI to generate their content ([SC Gen 23](/policies/nsw-supreme-court-sc-gen-23), para 10).
 
 ## Where they differ
 
-Disclosure divides them most. The Federal Court and the Administrative Review Tribunal require disclosure when the court asks, and always for certain evidence. The Family Court and the Victorian Supreme Court have no general duty but expect a person to explain their use if asked. The NSW Supreme Court asks for a statement only in specified documents. The Queensland Supreme Court's direction on accuracy of references has no AI disclosure duty, although a separate direction requires experts in criminal trials to disclose how they used AI ([PD 14 of 2024](/policies/qld-supreme-court-practice-direction-14-2024-expert-evidence), para 16(l)).
+Disclosure divides them most. The Federal Court and the Administrative Review Tribunal require disclosure when the court asks, and always for certain evidence. The Victorian Supreme Court requires no disclosure statement, but court users "must be prepared to identify the specific portions of Court documents which were produced using AI and be able to explain how the output was verified" ([SC GEN 25](/policies/vic-supreme-court-sc-gen-25), cl 7.6). The NSW Supreme Court requires an affidavit, witness statement or character reference to "contain a disclosure that Gen AI was not used" in generating its content ([SC Gen 23](/policies/nsw-supreme-court-sc-gen-23), para 13). The Queensland Supreme Court's direction on accuracy of references has no AI disclosure duty. A separate direction applies to expert reports in Supreme Court criminal proceedings commenced by indictment from 15 July 2024, other than sentences: where the expert used generative AI to help form or express an opinion, the report must name the program and how it was used, and annexe the prompts ([PD 14 of 2024](/policies/qld-supreme-court-practice-direction-14-2024-expert-evidence), para 16(l)).
 
 ```figure
 kind: matrix
-title: Disclosure of AI use ranges from always, for some evidence, to never required
-alt: "Comparison of nine court and tribunal instruments. The Federal Court, Administrative Review Tribunal and VCAT require disclosure of AI use in some evidence; the Fair Work Commission requires it for any document; the Family Court, Victorian Supreme Court and NSW instruments require it only on request or in named documents; the Queensland Supreme Court requires none."
-caption: What each instrument says about disclosure, checking and evidence, as recorded in the register and read on the official pages on 17 October 2026.
+title: Disclosure of AI use ranges from a required statement to none
+alt: "Comparison of eight court and tribunal instruments by disclosure, checking and evidence. The NSW Supreme Court requires affidavits to state that AI was not used; the Federal Court and the Administrative Review Tribunal require disclosure on request and for some evidence; the Victorian Supreme Court needs no statement but court users must be ready to identify AI-produced parts; the Queensland Supreme Court's direction requires none."
+caption: What each instrument says about disclosure, checking and evidence, as recorded in the register and read on the official pages on 17 October 2026. The Administrative Review Tribunal row is taken from the register record. The instruments are practice notes, directions and guidelines, and do not carry equal force.
 wide: true
-cites: [federal-court-gpn-ai, family-court-ai-practice-direction, art-generative-ai-practice-direction, fwc-genai-guidance-note, nsw-supreme-court-sc-gen-23, nsw-ncat-procedural-direction-7-genai, vic-supreme-court-sc-gen-25, vic-vcat-pnvcat-11-genai, qld-supreme-court-ai-practice-direction]
+cites: [federal-court-gpn-ai, art-generative-ai-practice-direction, fwc-genai-guidance-note, nsw-supreme-court-sc-gen-23, nsw-ncat-procedural-direction-7-genai, vic-supreme-court-sc-gen-25, vic-vcat-pnvcat-11-genai, qld-supreme-court-ai-practice-direction]
 sources:
   - https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-ai
   - https://www.fwc.gov.au/documents/resources/guidance-note-use-of-generative-ai-in-commission-cases.pdf
 columns: [Court or tribunal, Disclosure of AI use, Checking, Evidence]
 rows:
   - [Federal Court (GPN-AI), "If the Court requires it, and for some evidence", "Responsible person confirms authorities and facts", "Affidavits reflect the person's own recollection"]
-  - [Family Court (PD-AI), "Not required unless asked, except experts", "Court users must verify output", "Affidavit content in the witness's own words"]
-  - [Administrative Review Tribunal, "If the Tribunal requires it, and for some evidence", "Must verify; a tool cannot verify itself", "AI must not make up or change evidence"]
-  - [Fair Work Commission, "Required, with a statement of checking", "A person must check", "Witness statements in the witness's own words"]
-  - [NSW Supreme Court (SC Gen 23), "Affidavits state AI was not used; experts disclose use", "Authors verify submissions", "AI not to generate affidavit or witness-statement content"]
+  - [Administrative Review Tribunal, "If the Tribunal requires it, and for some evidence", "Must verify; a tool cannot verify itself", "Disclosure required where AI summarises or analyses information a witness relies on"]
+  - ["Fair Work Commission (from 20 October 2026)", "Required, with a statement of checking", "A person must check", "Witness statements in the witness's own words"]
+  - [NSW Supreme Court (SC Gen 23), "Affidavits state AI was not used; experts disclose use, if leave is granted", "Authors verify submissions", "AI not to generate affidavit or witness-statement content"]
   - [NCAT (PD 7), "Experts should disclose", "Verify submissions", "AI not to generate statement content"]
-  - [Victorian Supreme Court (SC GEN 25), "Not required; be ready to explain if directed", "Meaningful human verification", "Witness's own knowledge and words"]
+  - [Victorian Supreme Court (SC GEN 25), "No statement required; must be ready to identify AI-produced parts", "Meaningful human verification", "Witness's own knowledge and words"]
   - [VCAT (PNVCAT 11), "Parties should; experts must", "Author verifies", "AI must not generate an expert opinion"]
   - [Queensland Supreme Court (PD 5), "Not required; a named practitioner is responsible", "Responsible person verifies references", ~]
 ```
@@ -69,7 +68,7 @@ South Australia's guidelines say a party filing a document "need not disclose" A
 
 ## Confidential material
 
-Several instruments restrict what goes into AI tools. The Family Court says information obtained through a court order, or subject to a suppression order, "must not be entered into any GenAI tool" unless strict conditions are met ([PD-AI](/policies/family-court-ai-practice-direction), cl 5.5). VCAT "specifically prohibits" uploading material that is subject to a non-publication or suppression order, or produced on subpoena or summons ([PNVCAT 11](/policies/vic-vcat-pnvcat-11-genai), [14]). Most other instruments address the same risk in softer terms.
+Several instruments restrict what goes into AI tools. The Family Court's direction bars entering material obtained through production, disclosure or discovery orders, material under a non-publication or suppression order, and documents produced on subpoena into any GenAI tool, unless closed-environment conditions are met ([PD-AI](/policies/family-court-ai-practice-direction), cl 5.5). VCAT "specifically prohibits" uploading material that is subject to a non-publication or suppression order, or produced on subpoena or summons ([PNVCAT 11](/policies/vic-vcat-pnvcat-11-genai), [14]). Most other instruments address the same risk in softer terms.
 
 ## Who follows whom
 
