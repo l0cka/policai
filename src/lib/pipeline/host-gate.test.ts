@@ -494,6 +494,30 @@ describe('wait budget', () => {
     expect(h.sleeps).toEqual([DEFAULT_MIN_GAP_MS, DEFAULT_MIN_GAP_MS, 3000]);
   });
 
+  it('waits what the host asked for on a request that must not be deferred, even once the budget is spent', async () => {
+    const h = harness({ [A]: { status: 200, body: 'User-agent: *\nCrawl-delay: 30' } }, { waitBudgetMs: 0 });
+    expect(await h.gate.admit(url('/index'))).toEqual({ kind: 'go' });
+    expect(await h.gate.admit(url('/item'))).toMatchObject({ kind: 'deferred' });
+    expect(await h.gate.admit(url('/index?page=2'), 'wait')).toEqual({ kind: 'go' });
+    expect(h.sleeps).toEqual([DEFAULT_MIN_GAP_MS, MAX_WAIT_MS]);
+    expect(await h.gate.admit(url('/b', B), 'wait')).toEqual({ kind: 'go' });
+    h.gate.observe(url('/b', B), { status: 429, retryAfter: '5', transport: 'http' });
+    expect(await h.gate.admit(url('/b', B), 'wait')).toEqual({ kind: 'go' });
+    expect(h.sleeps).toEqual([DEFAULT_MIN_GAP_MS, MAX_WAIT_MS, DEFAULT_MIN_GAP_MS, 5000]);
+    h.gate.observe(url('/b', B), { status: 429, retryAfter: '120', transport: 'http' });
+    expect(await h.gate.admit(url('/b', B), 'wait')).toMatchObject({ kind: 'refused', cls: 'rate_limited' });
+  });
+
+  it('charges a wait it would not defer, so later deferrable requests are deferred sooner', async () => {
+    const delay = { status: 200, body: 'User-agent: *\nCrawl-delay: 30' };
+    const charged = MAX_WAIT_MS - DEFAULT_MIN_GAP_MS;
+    const h = harness({ [A]: delay, [B]: delay }, { waitBudgetMs: charged });
+    expect(await h.gate.admit(url('/index'))).toEqual({ kind: 'go' });
+    expect(await h.gate.admit(url('/index?page=2'), 'wait')).toEqual({ kind: 'go' });
+    expect(await h.gate.admit(url('/index', B))).toEqual({ kind: 'go' });
+    expect(await h.gate.admit(url('/item', B))).toMatchObject({ kind: 'deferred' });
+  });
+
   it('the default budget leaves most of the 3,500 s host deadline for requests', () => {
     expect(WAIT_BUDGET_MS).toBe(20 * 60 * 1000);
   });

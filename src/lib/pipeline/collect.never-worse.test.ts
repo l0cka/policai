@@ -1,5 +1,9 @@
 /* @vitest-environment node */
 
+import { spawnSync } from 'node:child_process';
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 import { describe, expect, it, vi } from 'vitest';
 
 const { scrapeWithFirecrawl } = vi.hoisted(() => ({
@@ -11,7 +15,7 @@ vi.mock('./claude-classify', () => ({ classifyBatch: vi.fn(), CLAUDE_BATCH_SIZE:
 import { collect, collectionRunFailed, emptyWatchState, type WatchState } from './collect';
 import { createHostGate, type HostGate } from './host-gate';
 import type { WatchSource } from './sources';
-import type { SourceRunResult } from '@/types';
+import type { CollectionMeta, SourceRunResult } from '@/types';
 
 const base = { jurisdiction: 'federal', category: 'government', enabled: true, automation: 'automatic' } as const;
 const HTML: WatchSource = { ...base, id: 'p-html', name: 'P HTML', url: 'https://www.example.gov.au/news', kind: 'html-index', schedule: 'daily' };
@@ -168,7 +172,7 @@ async function runDays(
   return outcomes;
 }
 
-function realGate(robots: RobotsResponse) {
+function realGate(robots: RobotsResponse, waitBudgetMs?: number) {
   return (hosts: WatchState['hosts'], clock: { t: number }) =>
     createHostGate({
       hosts,
@@ -178,8 +182,41 @@ function realGate(robots: RobotsResponse) {
       sleep: async (ms) => {
         clock.t += ms;
       },
+      ...(waitBudgetMs === undefined ? {} : { waitBudgetMs }),
     });
 }
+
+const REVIEW_GATE = path.join(process.cwd(), 'ops', 'collector', 'collection_review_gate.py');
+const REVIEW_GATE_COVERAGE = `
+import importlib.util, json, sys
+spec = importlib.util.spec_from_file_location('collection_review_gate', sys.argv[1])
+gate = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(gate)
+data = json.load(open(sys.argv[2]))
+result = {'reasons': []}
+try:
+    gate.coverage_rows(data['meta'], data['coverage'], 'head', result)
+except gate.Refused as error:
+    result['reasons'].append(str(error))
+print(json.dumps(result['reasons']))
+`;
+
+function reviewGateReasons(meta: CollectionMeta, due: Record<string, boolean>): string[] {
+  const dir = mkdtempSync(path.join(os.tmpdir(), 'policai-review-gate-'));
+  try {
+    const input = path.join(dir, 'input.json');
+    const coverage = { automatic_source_ids: Object.keys(due), manual_source_count: 0, head_due: due };
+    writeFileSync(input, JSON.stringify({ meta, coverage }));
+    const run = spawnSync('python3', ['-I', '-B', '-c', REVIEW_GATE_COVERAGE, REVIEW_GATE, input], { encoding: 'utf8' });
+    expect(run.status, run.stderr).toBe(0);
+    return JSON.parse(run.stdout) as string[];
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+}
+
+const skippedIds = (outcome: RunOutcome) =>
+  outcome.rows.filter((row) => row.status === 'skipped').map((row) => row.sourceId);
 
 function* scenarios(): Generator<[Scenario, boolean]> {
   let n = 0;
@@ -216,6 +253,7 @@ describe('the gate never makes a run worse than a neutral gate', () => {
       for (const [day, expected] of neutral.entries()) {
         const actual = gated[day];
         compared++;
+        expect(skippedIds(actual), `${key} day ${day} skipped`).toEqual(skippedIds(expected));
         if (!neutral.slice(0, day + 1).some((run) => run.hostTakenOut)) {
           expect(actual, `${key} day ${day}`).toEqual({ ...expected, hostTakenOut: actual.hostTakenOut });
           continue;
@@ -228,6 +266,28 @@ describe('the gate never makes a run worse than a neutral gate', () => {
       for (const url of cumulative(neutral)) expect(cumulative(gated), `${key} developments`).toContain(url);
     }
     expect(compared).toBe(INDEX_OUTCOMES.length * CANDIDATE_OUTCOMES.length * 2 * 4);
+  }, 600_000);
+
+  it('with Crawl-delay 30 and the wait budget spent no due source is skipped and no index fails that the neutral gate fetched', async () => {
+    const crawlDelay30 = { status: 200, body: 'User-agent: *\nCrawl-delay: 30\n' };
+    const errorIds = (outcome: RunOutcome) =>
+      outcome.rows.filter((row) => row.status === 'error').map((row) => row.sourceId);
+    for (const [scenario, browser] of scenarios()) {
+      const key = JSON.stringify([scenario, browser]);
+      const neutral = await runDays(scenario, browser, () => NEUTRAL, []);
+      const gated = await runDays(scenario, browser, realGate(crawlDelay30, 0), []);
+      for (const [day, expected] of neutral.entries()) {
+        const actual = gated[day];
+        expect(skippedIds(actual), `${key} day ${day} skipped`).toEqual(skippedIds(expected));
+        if (neutral.slice(0, day + 1).some((run) => run.hostTakenOut)) continue;
+        expect(errorIds(actual), `${key} day ${day} errors`).toEqual(
+          errorIds(actual).filter((id) => errorIds(expected).includes(id)),
+        );
+        expect(failedKeys(actual), `${key} day ${day} failed set`).toEqual(
+          failedKeys(actual).filter((candidate) => failedKeys(expected).includes(candidate)),
+        );
+      }
+    }
   }, 600_000);
 
   it('never requests a path robots.txt disallows and leaves other hosts untouched', async () => {
@@ -252,14 +312,20 @@ describe('the gate never makes a run worse than a neutral gate', () => {
 
 describe('a spent wait budget never makes a host that asked for nothing worse', () => {
   const HOSTS = 63;
-  const manySources: WatchSource[] = Array.from({ length: 75 }, (_, i) => ({
+  const SHARED = 75 - HOSTS;
+  const manySource = (i: number, host: number, second: boolean): WatchSource => ({
     ...base,
     id: `many-${i}`,
     name: `Many ${i}`,
-    url: `https://www.host-${i % HOSTS}.gov.au/rss${i < HOSTS ? '' : '-2'}`,
+    url: `https://www.host-${host}.gov.au/rss${second ? '-2' : ''}`,
     kind: 'rss',
     schedule: 'daily',
-  }));
+  });
+  const manySources = Array.from({ length: 75 }, (_, i) => manySource(i, i % HOSTS, i >= HOSTS));
+  const pairedSources = Array.from({ length: 75 }, (_, i) =>
+    i < 2 * SHARED ? manySource(i, Math.floor(i / 2), i % 2 === 1) : manySource(i, i - SHARED, false),
+  );
+  const allDue = (sources: WatchSource[]) => Object.fromEntries(sources.map((source) => [source.id, true]));
 
   function manyFetch(requests: string[]): typeof fetch {
     return (async (input: RequestInfo | URL) => {
@@ -276,12 +342,13 @@ describe('a spent wait budget never makes a host that asked for nothing worse', 
     }) as typeof fetch;
   }
 
-  async function runMany(gate: HostGate) {
+  async function runMany(gate: HostGate, sources = manySources) {
     const requests: string[] = [];
     const now = new Date(Date.UTC(2026, 6, 10));
     vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
     const pending = collect({
-      sources: manySources,
+      sources,
+      catalogSources: sources,
       state: emptyWatchState(),
       existingDevelopments: [],
       fetchImpl: manyFetch(requests),
@@ -322,14 +389,20 @@ describe('a spent wait budget never makes a host that asked for nothing worse', 
     expect(collectionRunFailed(gated.result.meta.collector.health, gated.result.errors, false)).toBe(false);
   }, 120_000);
 
-  it('leaves every host without a Crawl-delay exactly as the neutral gate does after the budget is spent', async () => {
+  const orderings: Array<[string, WatchSource[]]> = [
+    ['spread over the run', manySources],
+    ['back to back on each shared host', pairedSources],
+  ];
+
+  it.each(orderings)('leaves every host without a Crawl-delay exactly as the neutral gate does after the budget is spent, sources %s', async (_label, sources) => {
     const isSlow = (origin: string) => Number(/host-(\d+)/.exec(origin)?.[1]) % 2 === 0;
-    const neutral = await runMany(NEUTRAL);
+    const neutral = await runMany(NEUTRAL, sources);
     const gate = gateWithCrawlDelay(isSlow, 120_000);
-    const gated = await runMany(gate);
+    const gated = await runMany(gate, sources);
+    expect(gated.result.meta.collector.sourceResults.filter((row) => row.status === 'skipped')).toEqual([]);
     const fastRows = (run: typeof neutral) =>
       run.result.meta.collector.sourceResults
-        .filter((row) => !isSlow(manySources.find((source) => source.id === row.sourceId)!.url))
+        .filter((row) => !isSlow(sources.find((source) => source.id === row.sourceId)!.url))
         .map((row) => {
           const { durationMs, ...rest } = row;
           void durationMs;
@@ -344,5 +417,27 @@ describe('a spent wait budget never makes a host that asked for nothing worse', 
     expect(deferred.length).toBeGreaterThan(0);
     for (const entry of deferred) expect(entry.attempts).toBe(0);
     expect(Object.values(gated.result.state.seen).filter((entry) => entry.status === 'failed')).toEqual([]);
+  }, 120_000);
+
+  it.each([
+    ['Crawl-delay 30 on all 63 hosts', manySources, undefined],
+    ['Crawl-delay 30 on all 63 hosts with the budget spent and shared hosts back to back', pairedSources, 60_000],
+  ] as Array<[string, WatchSource[], number | undefined]>)('the review gate accepts the collector output: %s', async (_label, sources, waitBudgetMs) => {
+    const { result } = await runMany(gateWithCrawlDelay(() => true, waitBudgetMs), sources);
+    const rows = result.meta.collector.sourceResults;
+    expect(rows.filter((row) => row.status === 'skipped')).toEqual([]);
+    expect(rows.filter((row) => row.status === 'error')).toEqual([]);
+    expect(reviewGateReasons(result.meta, allDue(sources))).toEqual([]);
+    const shared = sources[1].id;
+    const skipped: CollectionMeta = {
+      ...result.meta,
+      collector: {
+        ...result.meta.collector,
+        sourceResults: rows.map((row) =>
+          row.sourceId === shared ? { ...row, status: 'skipped', itemCount: null, candidateCount: 0, newCandidateCount: 0 } : row,
+        ),
+      },
+    };
+    expect(reviewGateReasons(skipped, allDue(sources))).toContain(`coverage head ${shared}: ${shared}: due source skipped`);
   }, 120_000);
 });

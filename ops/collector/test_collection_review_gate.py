@@ -296,6 +296,30 @@ class GateTest(unittest.TestCase):
         self.revise()
         self.assert_escalates('count drop')
 
+    def test_host_gate_wait_budget_never_skips_a_due_source(self):
+        c = self.meta['collector']
+        waited = dict(c['sourceResults'][0], sourceId='source-b', itemCount=5,
+                      candidateCount=5, newCandidateCount=0, durationMs=30002)
+        c['sourceResults'].append(waited)
+        c.update(automaticSourceCount=2, dueSourceCount=2, successfulSourceCount=2,
+                 lastRunSources=['source-a', 'source-b'])
+        self.revise()
+        self.base = self.head
+        self.evidence['base'] = self.base
+        self.evidence['review']['base'] = self.base
+        coverage = self.evidence['coverage']
+        coverage['automatic_source_ids'].append('source-b')
+        coverage['base_due']['source-b'] = coverage['head_due']['source-b'] = True
+        c['runCount'] = 3
+        self.revise()
+        result = self.run_gate()
+        self.assertEqual(result['verdict'], 'would-merge', result['reasons'])
+        waited.update(status='skipped', itemCount=None, candidateCount=0, newCandidateCount=0)
+        c.update(dueSourceCount=1, successfulSourceCount=1, skippedSourceCount=1,
+                 lastRunSources=['source-a'])
+        self.revise()
+        self.assert_escalates('source-b: due source skipped')
+
     def add_candidate(self, value='2026-10-07', precision='day'):
         candidate = {'url': 'https://example.gov.au/synthetic', 'title': 'Synthetic AI policy',
                      'text': 'Synthetic; not a real publication', 'dateHint': value,

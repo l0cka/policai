@@ -31,7 +31,7 @@ import {
   qualifiesForReview,
 } from './collect';
 import type { CollectOptions, SeenCandidate, SourceSnapshot, WatchState } from './collect';
-import { createHostGate, DEFAULT_MIN_GAP_MS, hostOf, type HostGate } from './host-gate';
+import { createHostGate, DEFAULT_MIN_GAP_MS, hostOf, MAX_WAIT_MS, type HostGate } from './host-gate';
 import { buildOpenHostGate, buildRecordingHostGate } from '@/test/factories';
 
 const collect = (options: Omit<CollectOptions, 'hostGate'> & { hostGate?: HostGate }) =>
@@ -304,7 +304,7 @@ describe('collect routes every transport through the host gate', () => {
     expect(nextDay.developments.map((d) => d.url)).toContain('https://www.example.gov.au/news/ai-two');
   });
 
-  it('a hostile Crawl-delay cannot push the run past the wait budget; deferred work stays pending and nothing fails', async () => {
+  it('a hostile Crawl-delay cannot push candidates past the wait budget; a due index still waits and is fetched', async () => {
     let clock = Date.parse('2026-07-10T00:00:00.000Z');
     const budgetMs = 60_000;
     const gate = createHostGate({
@@ -333,7 +333,8 @@ describe('collect routes every transport through the host gate', () => {
       hostGate: gate,
     });
     const minGapWaits = 3 * DEFAULT_MIN_GAP_MS;
-    expect(clock - startedAt).toBeLessThanOrEqual(budgetMs + minGapWaits);
+    expect(clock - startedAt).toBeLessThanOrEqual(budgetMs + MAX_WAIT_MS + minGapWaits);
+    expect(vi.mocked(fetchImpl).mock.calls.filter(([input]) => String(input) === second.url)).toHaveLength(1);
     const seen = Object.values(result.state.seen);
     expect(seen.filter((entry) => entry.status === 'processed')).toHaveLength(2);
     const deferred = seen.filter((entry) => entry.status === 'pending');
@@ -342,11 +343,11 @@ describe('collect routes every transport through the host gate', () => {
     expect(seen.filter((entry) => entry.status === 'failed')).toEqual([]);
     expect(result.meta.collector.sourceResults.map((row) => [row.sourceId, row.status, row.failureClass])).toEqual([
       ['test-html', 'success', undefined],
-      ['test-html-2', 'skipped', undefined],
+      ['test-html-2', 'success', undefined],
     ]);
     expect(result.meta.collector.health).toBe('healthy');
     expect(validateCollectionMeta(result.meta).errors).toEqual([]);
-    expect(result.state.lastCheckedBySource[second.id]).toBeUndefined();
+    expect(result.state.lastCheckedBySource[second.id]).toBe(new Date(startedAt).toISOString());
   });
 
   it('hands the gate to the browser retriever and to Firecrawl', async () => {
