@@ -160,10 +160,6 @@ function isDeferredByGate(error: unknown): boolean {
   return isGateError(error) && error.retryable;
 }
 
-function isDeferredByWaitBudget(error: unknown): boolean {
-  return error instanceof SourceFetchError && error.code === 'gate_deferred';
-}
-
 /** Allow-list and homepage-redirect failures are not client-dependent. */
 function isBrowserFallbackFutile(error: unknown): boolean {
   return (
@@ -1192,6 +1188,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     hosts: { ...(options.state.hosts ?? {}) },
   };
   const gate = options.hostGate;
+  const indexGate: HostGate = { ...gate, admit: (url) => gate.admit(url, 'wait') };
   recoverPersistedDocumentTransitions(
     state,
     options.sourceReviews ?? [],
@@ -1377,7 +1374,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         now: () => now,
         hashLinkedDocuments: source.kind === 'document',
         identityAuthority,
-        gate,
+        gate: indexGate,
         ...(timeoutMs !== undefined ? { timeoutMs, transport: 'browser' as const } : {}),
       });
       const extracted =
@@ -1688,13 +1685,6 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         const message = `${source.id}: ${
           error instanceof Error ? error.message : String(error)
         }`;
-        if (isDeferredByWaitBudget(error)) {
-          log(`[collect] ${message}; source deferred to the next run`);
-          sourceResults.push(
-            sourceResult(source.id, 'skipped', nowIso, startedAt, null, 0, 0, undefined, false),
-          );
-          continue;
-        }
         sourceErrors.push(message);
         errors.push(message);
         failure ??= rowFailure(error, source.url);

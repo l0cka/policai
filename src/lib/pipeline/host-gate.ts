@@ -54,6 +54,8 @@ export type Admission =
 
 export type Transport = 'http' | 'browser' | 'firecrawl';
 
+export type OnSpentBudget = 'defer' | 'wait';
+
 export interface Observation {
   status?: number;
   retryAfter?: string | null;
@@ -61,7 +63,7 @@ export interface Observation {
 }
 
 export interface HostGate {
-  admit(url: URL): Promise<Admission>;
+  admit(url: URL, onSpentBudget?: OnSpentBudget): Promise<Admission>;
   observe(url: URL, outcome: Observation): void;
   hosts(): Record<Host, HostRecord>;
   waited(): Record<Host, number>;
@@ -187,21 +189,28 @@ export function createHostGate(deps: HostGateDeps): HostGate {
     return Math.max(minGapMs, Math.min(crawlDelayMs, MAX_WAIT_MS));
   };
 
-  const waitUntil = async (host: Host, readyAt: number, freeUntil: number): Promise<boolean> => {
+  const waitUntil = async (
+    host: Host,
+    readyAt: number,
+    freeUntil: number,
+    onSpentBudget: OnSpentBudget,
+  ): Promise<boolean> => {
     const nowMs = deps.now();
     const delay = readyAt - nowMs;
     if (delay <= 0) return true;
     const requested = Math.min(delay, readyAt - freeUntil);
-    if (requested > 0 && budgetSpent + requested > waitBudgetMs) return false;
+    if (onSpentBudget === 'defer' && requested > 0 && budgetSpent + requested > waitBudgetMs) return false;
     budgetSpent += Math.max(0, requested);
     waited.set(host, (waited.get(host) ?? 0) + delay);
     await deps.sleep(delay);
     return true;
   };
 
-  const pace = async (host: Host, gapAfterMs: number): Promise<boolean> => {
+  const pace = async (host: Host, gapAfterMs: number, onSpentBudget: OnSpentBudget): Promise<boolean> => {
     const last = lastRequest.get(host);
-    if (last !== undefined && !(await waitUntil(host, last.at + last.gapMs, last.at + minGapMs))) return false;
+    if (last !== undefined && !(await waitUntil(host, last.at + last.gapMs, last.at + minGapMs, onSpentBudget))) {
+      return false;
+    }
     lastRequest.set(host, { at: deps.now(), gapMs: gapAfterMs });
     return true;
   };
@@ -221,9 +230,14 @@ export function createHostGate(deps: HostGateDeps): HostGate {
     ),
   });
 
-  const loadRobots = async (url: URL, host: Host, record: HostRecord): Promise<boolean> => {
+  const loadRobots = async (
+    url: URL,
+    host: Host,
+    record: HostRecord,
+    onSpentBudget: OnSpentBudget,
+  ): Promise<boolean> => {
     if (robotsFresh(record.robots) || robotsTried.has(host)) return true;
-    if (!(await pace(host, minGapMs))) return false;
+    if (!(await pace(host, minGapMs, onSpentBudget))) return false;
     robotsTried.add(host);
     const response = await deps.fetchRobots(url.origin);
     const fetchedAt = iso();
@@ -247,7 +261,7 @@ export function createHostGate(deps: HostGateDeps): HostGate {
     record.backoffUntil ? Date.parse(record.backoffUntil) - deps.now() : 0;
 
   return {
-    async admit(url) {
+    async admit(url, onSpentBudget = 'defer') {
       const host = hostOf(url);
       const decidedBy = deps.refused.get(host);
       if (decidedBy !== undefined) return { kind: 'decided_block', sourceId: decidedBy };
@@ -263,12 +277,14 @@ export function createHostGate(deps: HostGateDeps): HostGate {
           detail: notRequested(`${host} is backing off until ${record.backoffUntil} after HTTP ${record.backoffStatus ?? 503}`, url),
         };
       }
-      if (remaining > 0 && !(await waitUntil(host, deps.now() + remaining, deps.now()))) return overBudget(host, url);
-      if (!(await loadRobots(url, host, record))) return overBudget(host, url);
+      if (remaining > 0 && !(await waitUntil(host, deps.now() + remaining, deps.now(), onSpentBudget))) {
+        return overBudget(host, url);
+      }
+      if (!(await loadRobots(url, host, record, onSpentBudget))) return overBudget(host, url);
       if (record.robots && !robotsAllows(record.robots, url)) {
         return { kind: 'refused', cls: 'robots_disallowed', detail: `${url} is disallowed by robots.txt for ${PRODUCT_TOKEN}` };
       }
-      if (!(await pace(host, gapFor(record)))) return overBudget(host, url);
+      if (!(await pace(host, gapFor(record), onSpentBudget))) return overBudget(host, url);
       return { kind: 'go' };
     },
 
