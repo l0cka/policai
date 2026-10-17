@@ -47,7 +47,7 @@ describe('relatedInstruments', () => {
     ]);
   });
 
-  it('breaks weight ties with same jurisdiction first, then newest primary date', () => {
+  it('ranks a heavier cross-jurisdiction record first, then same-jurisdiction by newest primary date', () => {
     const self = policy('self', [T[0], T[1]]);
     const sameOld = policy('same-old', [T[0], T[1]], { date: '2024-01-01' });
     const sameNew = policy('same-new', [T[0], T[1]], { date: '2026-05-01' });
@@ -56,6 +56,40 @@ describe('relatedInstruments', () => {
     const selfWide = { ...self, themes: [T[0], T[1], T[2]] };
     const result = relatedInstruments(selfWide, [selfWide, sameOld, sameNew, crossNewest, crossTie]);
     expect(result.map((item) => item.id)).toEqual(['cross', 'same-new', 'same-old']);
+  });
+
+  it('puts a same-jurisdiction record before a cross-jurisdiction one of equal weight, whatever their dates', () => {
+    const self = policy('self', [T[0], T[1], T[2]]);
+    const cross = policy('cross', [T[0], T[1], T[2]], { jurisdiction: 'nsw', date: '2026-09-01', title: 'Alpha cross' });
+    const same = policy('same', [T[0], T[1], T[2]], { date: '2020-01-01', title: 'Zulu same' });
+    expect(relatedInstruments(self, [self, cross, same]).map((item) => item.id)).toEqual(['same', 'cross']);
+  });
+
+  it('orders equal-weight neighbours of one jurisdiction by newest primary date, not by title', () => {
+    const self = policy('self', [T[0], T[1]]);
+    const older = policy('older', [T[0], T[1]], { date: '2024-01-01', title: 'Alpha' });
+    const newer = policy('newer', [T[0], T[1]], { date: '2026-05-01', title: 'Zulu' });
+    expect(relatedInstruments(self, [self, older, newer]).map((item) => item.id)).toEqual(['newer', 'older']);
+  });
+
+  it('orders full ties by title ascending in the Australian locale', () => {
+    const self = policy('self', [T[0], T[1]]);
+    const titled = (id: string, title: string) => policy(id, [T[0], T[1]], { title });
+    const result = relatedInstruments(self, [
+      self,
+      titled('zeta', 'Zeta'),
+      titled('banana', 'Banana'),
+      titled('apple', 'apple'),
+    ]);
+    expect(result.map((item) => item.title)).toEqual(['apple', 'Banana', 'Zeta']);
+  });
+
+  it('lists shared themes in the viewed record\'s theme order whichever record was read first', () => {
+    const self = policy('self', [T[2], T[0], T[1]]);
+    const other = policy('other', [T[1], T[0], T[2], T[3]]);
+    const expected = ['AI governance', 'Generative AI', 'Courts and tribunals'];
+    expect(relatedInstruments(self, [self, other])[0].sharedThemes).toEqual(expected);
+    expect(relatedInstruments(self, [other, self])[0].sharedThemes).toEqual(expected);
   });
 
   it('puts the superseding record first and does not repeat it as a neighbour', () => {

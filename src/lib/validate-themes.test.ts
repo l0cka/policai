@@ -45,10 +45,8 @@ describe('validatePolicyThemes', () => {
     const report = validatePolicyThemes([active, trashed] as Policy[]);
     expect(report.errors).toEqual(
       expect.arrayContaining([
-        'no-themes: themes must be an array of theme ids',
-        `no-themes: ${VALID_IDS}`,
-        'trashed-no-themes: themes must be an array of theme ids',
-        `trashed-no-themes: ${VALID_IDS}`,
+        `no-themes: themes must be an array of theme ids; ${VALID_IDS}`,
+        `trashed-no-themes: themes must be an array of theme ids; ${VALID_IDS}`,
       ]),
     );
   });
@@ -66,10 +64,8 @@ describe('validatePolicyThemes', () => {
       ]),
     ]);
     expect(report.errors).toEqual([
-      'none: themes must list 1 to 5 themes, not 0',
-      `none: ${VALID_IDS}`,
-      'six: themes must list 1 to 5 themes, not 6',
-      `six: ${VALID_IDS}`,
+      `none: themes must list 1 to 5 themes, not 0; ${VALID_IDS}`,
+      `six: themes must list 1 to 5 themes, not 6; ${VALID_IDS}`,
     ]);
   });
 
@@ -79,10 +75,8 @@ describe('validatePolicyThemes', () => {
       withThemes('number', [7]),
     ]);
     expect(report.errors).toEqual([
-      'nested: theme entries must be theme id strings, not object ["generative-ai"]',
-      `nested: ${VALID_IDS}`,
-      'number: theme entries must be theme id strings, not number 7',
-      `number: ${VALID_IDS}`,
+      `nested: theme entries must be theme id strings, not object ["generative-ai"]; ${VALID_IDS}`,
+      `number: theme entries must be theme id strings, not number 7; ${VALID_IDS}`,
     ]);
   });
 
@@ -93,11 +87,31 @@ describe('validatePolicyThemes', () => {
     ]);
     expect(report.errors).toEqual([
       'unknown: unknown theme "courts"',
-      'unknown: unknown theme "Generative AI"',
-      `unknown: ${VALID_IDS}`,
-      'duplicate: duplicate theme "employment"',
-      `duplicate: ${VALID_IDS}`,
+      `unknown: unknown theme "Generative AI"; ${VALID_IDS}`,
+      `duplicate: duplicate theme "employment"; ${VALID_IDS}`,
     ]);
+  });
+
+  it('counts each theme error once and carries the valid ids on the last error of its record', () => {
+    const report = validatePolicyThemes([
+      withThemes('unknown', ['courts', 'Generative AI']),
+      withThemes('six', [
+        'generative-ai',
+        'courts-tribunals',
+        'ai-governance',
+        'privacy-data',
+        'standards',
+        'courts',
+      ]),
+      withThemes('valid', ['employment']),
+    ]);
+    expect(report.errors).toEqual([
+      'unknown: unknown theme "courts"',
+      `unknown: unknown theme "Generative AI"; ${VALID_IDS}`,
+      'six: themes must list 1 to 5 themes, not 6',
+      `six: unknown theme "courts"; ${VALID_IDS}`,
+    ]);
+    expect(report.errors).toHaveLength(4);
   });
 });
 

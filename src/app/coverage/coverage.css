@@ -206,7 +206,7 @@
 }
 
 .coverage-drill-row {
-  scroll-margin-top: calc(var(--coverage-sticky-top, 0px) + var(--space-2));
+  scroll-margin-top: calc(var(--coverage-sticky-top, 0px) + var(--space-2) - var(--scroll-clear-top, 0px));
 }
 
 .coverage-drill-row > td {
@@ -396,7 +396,14 @@
   }
 
   .coverage-drill-row {
-    scroll-margin-top: calc(var(--coverage-sticky-top, 0px) + var(--coverage-strip-height, 0px) + var(--space-2));
+    scroll-margin-top: calc(
+      var(--coverage-sticky-top, 0px) + var(--coverage-strip-height, 0px) + var(--space-2) - var(--scroll-clear-top, 0px)
+    );
+  }
+
+  .coverage-drill-head {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .coverage-drill-row > td {

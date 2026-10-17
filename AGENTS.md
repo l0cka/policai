@@ -102,6 +102,7 @@ src/
 │   ├── article-figures.ts        # Figure blocks in article bodies, register chart counts
 │   ├── article-baseline.ts       # Reads the base revision of data/articles/ from Git
 │   ├── analysis.ts               # Deterministic relevance/summary helpers
+│   ├── related-policies.ts       # Ranked related instruments for /policies/[id] (see Related instruments)
 │   ├── scraper-filter.ts         # Keyword heuristics shared by the pipeline
 │   ├── source-ingest.ts          # Curated publish path (used by the MCP server)
 │   └── pipeline/                 # Collector: sources.ts, extract.ts, classify.ts, claude-classify.ts, classifier-cli.ts, firecrawl.ts, collect.ts
@@ -181,15 +182,55 @@ and still serves `buildNetworkData` nodes and edges.
   their table semantics in some browsers, so every table element carries its
   explicit ARIA role (`table`, `rowgroup`, `row`, `columnheader`,
   `rowheader`, `cell`). A selection loaded from the URL scrolls the
-  drill-down row into view. The row's `scroll-margin-top` is the site header
-  height (`--coverage-sticky-top`) plus, below 768px, the sticky column strip
-  (`--coverage-strip-height`); `CoverageMap` measures both before it scrolls.
-  `scripts/verify-coverage.mjs` checks on phone and desktop, light and dark,
-  that the drill-down heading clears both after a deep link and a click:
+  drill-down row into view. The browser adds the row's `scroll-margin-top`
+  to the document's `scroll-padding-top` (`--scroll-clear-top`, `globals.css`),
+  so the margin is the clearance wanted, the site header height
+  (`--coverage-sticky-top`) plus, below 768px, the sticky column strip
+  (`--coverage-strip-height`) plus `--space-2`, minus `--scroll-clear-top`.
+  `CoverageMap` measures both heights before it scrolls and again when either
+  element resizes. Below 768px the drill-down head stacks "Clear selection"
+  under the heading, so the fixed "Scroll to top" button at the bottom right
+  never covers it. `coverage-css.test.ts` evaluates those CSS rules, so a
+  change to the margin, the scroll-padding or the head layout fails CI;
+  `coverage-map.test.tsx` pins what `CoverageMap` observes.
+  `scripts/verify-coverage.mjs` is not in CI. It checks on phone and desktop,
+  light and dark, that the drill-down heading clears both after a deep link
+  and a click, sits within 48px of the strip on a phone, and (at 430x932) that
+  "Clear selection" is clear of "Scroll to top":
   `POLICAI_VERIFY_URL=http://127.0.0.1:<port> POLICAI_EVIDENCE_DIR=<dir>
   node scripts/verify-coverage.mjs` against a loopback production build.
 - **Styling:** `src/app/coverage/coverage.css`. The four cell levels are
   `color-mix()` of `--primary` into `--background`, local to the page.
+
+## Related instruments
+
+`/policies/[id]` lists the instruments related to a record under its summary.
+`relatedInstruments(policy, publicPolicies)` in `src/lib/related-policies.ts`
+is pure. It runs `buildNetworkData` over the public read (`getPolicies()`)
+and takes `getNetworkConnections` for the record: two shared themes in one
+jurisdiction, three across jurisdictions. A record with no connection renders
+no heading.
+
+- **Order:** a superseding or superseded record first ("Superseded by" or
+  "Supersedes", in `--status-repealed`), then neighbours by shared-theme
+  count, descending. Ties go to a record in the viewed record's jurisdiction,
+  then the newest primary date, then the title in `en-AU` order. A superseded
+  record appears once. `related-policies.test.ts` pins every tie-breaker.
+- **Shares line:** the shared themes in the viewed record's theme order.
+- **Counts:** the list and the "Show all N related" total come from the
+  data, so they move with the theme vocabulary. #303 cited 24 related items
+  for `federal-court-gpn-ai`; that predates #307 and the page computes the
+  number.
+- **Rendering:** the server renders every item and the first eight are in
+  the HTML. Only `src/components/related/expandable-list.tsx` is a client
+  component (the expander). `src/app/policies/[id]/` has no `loading.tsx`:
+  React outlines a Suspense boundary that large into hidden segments that a
+  script reveals, so without JavaScript the page stayed on its skeleton and
+  showed 6 of the 8 items. `no-route-boundary.test.ts` guards that, and
+  `scripts/verify-related.mjs` checks the rendered page with and without
+  JavaScript, light and dark, at 1440x900 and 390x844 (it is not in CI):
+  `POLICAI_VERIFY_URL=http://127.0.0.1:<port> POLICAI_EVIDENCE_DIR=<dir>
+  node scripts/verify-related.mjs` against a loopback production build.
 
 ## Articles
 
