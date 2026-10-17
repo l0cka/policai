@@ -152,7 +152,7 @@ export function NetworkToolbar({
               className="h-11 border border-input bg-background px-3 text-sm"
             >
               <option value="">All themes</option>
-              {themes.slice(0, 16).map((theme) => (
+              {themes.map((theme) => (
                 <option key={theme.key} value={theme.key}>
                   {theme.label} ({theme.policyCount})
                 </option>
@@ -330,7 +330,7 @@ function NetworkFilterSheet({
             className="h-12 w-full border border-input bg-background px-3 text-sm"
           >
             <option value="">All themes</option>
-            {themes.slice(0, 20).map((theme) => (
+            {themes.map((theme) => (
               <option key={theme.key} value={theme.key}>
                 {theme.label} ({theme.policyCount})
               </option>
