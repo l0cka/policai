@@ -54,14 +54,14 @@ sources:
   - https://www.fwc.gov.au/documents/resources/guidance-note-use-of-generative-ai-in-commission-cases.pdf
 columns: [Court or tribunal, Disclosure of AI use, Checking, Evidence]
 rows:
-  - [Federal Court (GPN-AI, practice note), "If the Court requires it, and for some evidence", "Responsible person confirms authorities and facts", "Affidavits reflect the person's own recollection"]
-  - [Administrative Review Tribunal (practice direction), "If the Tribunal requires it, and for some evidence", "Must verify; a tool cannot verify itself", "Disclosure required where AI summarises or analyses information a witness relies on"]
+  - ["Federal Court (GPN-AI, practice note)", "If the Court requires it, and for some evidence", "Responsible person confirms authorities and facts", "Affidavits reflect the person's own recollection"]
+  - ["Administrative Review Tribunal (practice direction)", "If the Tribunal requires it, and for some evidence", "Must verify; a tool cannot verify itself", "Disclosure required where AI summarises or analyses information a witness relies on"]
   - ["Fair Work Commission (guidance note, from 20 October 2026)", "Required, with a statement of checking", "A person must check", "Witness statements in the witness's own words"]
-  - [NSW Supreme Court (SC Gen 23, practice note), "Affidavits state AI was not used; experts disclose use, if leave is granted", "Authors verify submissions", "AI not to generate affidavit or witness-statement content"]
-  - [NCAT (procedural direction 7), "Experts should disclose", "Verify submissions", "AI not to generate statement content"]
-  - [Victorian Supreme Court (SC GEN 25, practice note), "No statement required; must be ready to identify AI-produced parts", "Meaningful human verification", "Witness's own knowledge and words"]
-  - [VCAT (PNVCAT 11, practice note), "Parties should; experts must", "Author verifies", "AI must not generate an expert opinion"]
-  - [Queensland Supreme Court (PD 5, practice direction), "Not required; a named practitioner is responsible", "Responsible person verifies references", ~]
+  - ["NSW Supreme Court (SC Gen 23, practice note)", "Affidavits state AI was not used; experts disclose use, if leave is granted", "Authors verify submissions", "AI not to generate affidavit or witness-statement content"]
+  - ["NCAT (procedural direction 7)", "Experts should disclose", "Verify submissions", "AI not to generate statement content"]
+  - ["Victorian Supreme Court (SC GEN 25, practice note)", "No statement required; must be ready to identify AI-produced parts", "Meaningful human verification", "Witness's own knowledge and words"]
+  - ["VCAT (PNVCAT 11, practice note)", "Parties should; experts must", "Author verifies", "AI must not generate an expert opinion"]
+  - ["Queensland Supreme Court (PD 5, practice direction)", "Not required; a named practitioner is responsible", "Responsible person verifies references", ~]
 ```
 
 South Australia's guidelines say a party filing a document "need not disclose" AI use by a particular statement, but should be able to inform a judicial officer if questioned ([SA guidelines](/policies/sa-courts-genai-guidelines), para 43). Western Australia's Supreme Court says use should be disclosed "when directed by the court or where otherwise necessary or appropriate" ([WA guidelines](/policies/wa-supreme-court-genai-guidelines), para 12).
