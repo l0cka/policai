@@ -1,4 +1,5 @@
 import type { Jurisdiction, Policy, PolicyType } from '@/types';
+import { getThemeLabel } from '@/lib/themes';
 import {
   buildNetworkData,
   getNetworkConnections,
@@ -18,14 +19,17 @@ export interface RelatedInstrument {
   relation?: SupersessionRelation;
 }
 
-function toInstrument(connection: NetworkConnection): RelatedInstrument {
+function toInstrument(
+  connection: NetworkConnection,
+  viewedThemes: string[],
+): RelatedInstrument {
   const { node, sharedThemes, formalLabel } = connection;
   return {
     id: node.id,
     title: node.title,
     jurisdiction: node.jurisdiction,
     type: node.type,
-    sharedThemes,
+    sharedThemes: viewedThemes.filter((theme) => sharedThemes.includes(theme)),
     ...(formalLabel ? { relation: formalLabel as SupersessionRelation } : {}),
   };
 }
@@ -49,5 +53,8 @@ export function relatedInstruments(
         b.node.effectiveDate.localeCompare(a.node.effectiveDate) ||
         a.node.title.localeCompare(b.node.title, 'en-AU'),
     );
-  return [...formal, ...thematic].map(toInstrument);
+  const viewedThemes = policy.themes.map(getThemeLabel);
+  return [...formal, ...thematic].map((connection) =>
+    toInstrument(connection, viewedThemes),
+  );
 }

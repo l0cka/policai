@@ -1,5 +1,6 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
+import { renderToStaticMarkup } from 'react-dom/server';
 import type { RelatedInstrument } from '@/lib/related-policies';
 import { RelatedInstruments } from './related-instruments';
 
@@ -51,5 +52,26 @@ describe('RelatedInstruments', () => {
     );
     expect(screen.getByText('Superseded by')).toBeInTheDocument();
     expect(screen.queryByText(/^Shares:/)).toBeNull();
+  });
+
+  it('sets the supersession label in the repealed status colour and nothing else', () => {
+    render(
+      <RelatedInstruments
+        items={[
+          { id: 'new', title: 'Successor', jurisdiction: 'federal', type: 'guideline', sharedThemes: [], relation: 'Superseded by' },
+          ...items(1),
+        ]}
+      />,
+    );
+    expect(screen.getByText('Superseded by')).toHaveClass('text-[var(--status-repealed)]');
+    expect(screen.getByText('Shares: Generative AI, Courts and tribunals')).not.toHaveClass('text-[var(--status-repealed)]');
+  });
+
+  it('puts the first eight items in the server-rendered HTML, before any script runs', () => {
+    const html = renderToStaticMarkup(<RelatedInstruments items={items(11)} />);
+    expect(html.match(/<li /g)).toHaveLength(8);
+    expect(html.match(/Shares: /g)).toHaveLength(8);
+    expect(html).toContain('Show all 11 related');
+    expect(html).not.toContain('Record 8');
   });
 });
