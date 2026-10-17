@@ -499,15 +499,21 @@ makes a run worse than a run without it, except where robots.txt states a
 browser 403); `collect.never-worse.test.ts` holds that property against a
 neutral gate.
 
-The gate is RFC 9309 with one deliberate departure. The RFC says a crawler
-MUST treat an unreachable robots.txt (5xx, network error) as complete
-disallow for a while. The collector instead keeps the last parsed rules it
-has (the RFC's cached copy) and otherwise allows, because its 75 sources are
-editorially chosen pages, it already sends at most one request per 2 s per
-host, and QA showed that refusing on an unreadable robots.txt failed 140 of
-560 modelled runs that pass today, mostly on hosts whose WAF answers a
-plain HTTP client with a challenge page, a reset or a stall rather than a
-5xx. A WAF that blocks the robots fetch is not a server saying "stop".
+The gate is RFC 9309 with one deliberate departure. RFC 9309 section
+2.3.1.4 says a crawler MUST treat an unreachable robots.txt (5xx, network
+error) as complete disallow for a while. The collector instead keeps the
+last robots.txt it read (the RFC's cached copy) and otherwise allows, and
+retries on the next run. The reasons: its 75 sources are editorially chosen
+pages; many sit behind a WAF that answers a plain HTTP client with a
+challenge page, a reset or a stall rather than a 5xx, and a WAF that blocks
+the robots fetch is not a server asking us to stop; and QA's simulation
+showed RFC-strict behaviour failing 140 of 560 modelled runs that pass
+today. Politeness still holds without robots.txt: the 2 s gap, `Crawl-delay`
+from any copy held, `Retry-After` and the breaker all apply whatever
+robots.txt says. So that an unreachable robots.txt never becomes a
+permanent silent allow, a host whose robots.txt has never been read and has
+been unreachable on 3 consecutive runs is reported as robots unverified
+(below).
 
 - **robots.txt** ([`robots.ts`](../src/lib/pipeline/robots.ts), RFC 9309).
   Fetched at most once per host per run with the declared identity, over
@@ -520,9 +526,21 @@ plain HTTP client with a challenge page, a reset or a stall rather than a
   a 5xx, a connection error, the 20 s timeout, a body over 500 KiB (it is
   not parsed in part), more than five redirects, or a redirect off https.
   An unreachable robots.txt never refuses a request and never trips the
-  host: the gate keeps the rules from its last successful fetch when it has
-  them and otherwise allows, then refetches on the next run. The run log
-  names the hosts whose robots.txt was unreachable. A disallowed URL fails
+  host: the gate keeps the copy it last read (`parsed` or `absent`, with
+  that read's `fetchedAt`) when it has one and otherwise records
+  `unreachable` and allows, then refetches on the next run. The run log
+  names the hosts whose robots.txt was unreachable.
+- **Robots unverified.** `robotsUnreachableRuns` on the host record counts
+  consecutive runs whose robots fetch was unreachable, at most once per run,
+  and returns to 0 on any 2xx or 4xx. A host whose robots status is still
+  `unreachable` (no robots.txt ever read) and whose count is 3 or more
+  (`ROBOTS_UNVERIFIED_RUNS`) is robots unverified
+  (`robotsUnverifiedHosts`). The run log then ends its host-gate lines with
+  `[collect] robots unverified: <host>, <host>`, `meta.json` carries
+  `collector.robotsUnverified` (sorted host keys, omitted when empty) and
+  `/status` lists the hosts under "Robots unverified". The report changes no
+  request or outcome. A host that once read robots.txt is never listed; it
+  keeps that copy. A disallowed URL fails
   as `robots_disallowed` and is never requested; other paths on the host
   are unaffected. Parsed rules are cached for 24 h in the `hosts` record.
   Expect about half the hosts to refetch on a daily run, because the
@@ -575,7 +593,7 @@ plain HTTP client with a challenge page, a reset or a stall rather than a
   admitted after the fact when its host differs; a refusal discards the
   content and fails the request.
 
-The run log ends with
+The host-gate lines of the run log start with
 `[collect] host gate: waited <ms> ms across <n> hosts (most on <host>: <ms> ms)`.
 Read it after the first live run: the design budget allows the 2 s gap
 against the 3,500 s host deadline, and the offline model
@@ -585,8 +603,9 @@ cannot prove the live wall time.
 `hosts` in `data/watch-state.json` holds one record per host seen in the
 last 30 days: `seenAt`, `robots` (`fetchedAt`, `status`
 `parsed | absent | unreachable`, `allow`, `disallow`, `crawlDelaySec`,
-`sitemaps`) or `null`, `backoffUntil`, `backoffStatus` (`429 | 503 | null`)
-and `backoffCount`. The gate and `validateWatchState` share one definition
+`sitemaps`) or `null`, `backoffUntil`, `backoffStatus` (`429 | 503 | null`),
+`backoffCount` and `robotsUnreachableRuns`. A record written before
+`robotsUnreachableRuns` existed loads with 0. The gate and `validateWatchState` share one definition
 of the shape (`isHostKey`, `isRobotsRuleList`, `isStoredSitemapList` in
 `host-gate.ts`), so a state the gate writes always validates: a host key is
 a lowercase DNS name or IPv4 literal with an optional port (an IPv6 literal
