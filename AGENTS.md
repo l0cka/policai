@@ -383,6 +383,11 @@ Classification needs all three `CLASSIFIER_*` variables. A missing one raises `C
 - Use `readJsonFile`/`writeJsonFile` from `@/lib/file-store`; `cleanHtmlContent`/`extractJsonFromResponse` from `@/lib/utils`.
 - Public pages read via `src/lib/data-service.ts` server-side; keep interactive parts in client components fed by server props.
 - API routes are read-only and export named HTTP methods with `NextResponse.json()`.
+- The header strip shows `meta.lastCollectedAt` through
+  `collectionStripProps` and `formatCollectedAt` in
+  `src/lib/collection-strip.ts` (a plain module, so the server layout may call
+  them), pinned to `Australia/Sydney`. It never shows `lastHealthyAt`, which
+  would date the strip to the last fully healthy run (#304).
 - A server module (one without `'use client'`) imports only components from a
   `'use client'` module. Any other value it imports, such as a string or a
   function, becomes a client reference in the RSC payload, which the browser

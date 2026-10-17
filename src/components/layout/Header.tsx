@@ -7,6 +7,7 @@ import { ArrowUpRight, ChevronDown, Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { PolicaiLogo } from '@/components/layout/PolicaiLogo';
 import { ThemeToggle } from '@/components/layout/ThemeToggle';
+import { formatCollectedAt } from '@/lib/collection-strip';
 import type { CollectionHealthStatus } from '@/types';
 
 const navItems = [
@@ -22,21 +23,6 @@ const insightItems = [
   { href: '/network', label: 'Network' },
   { href: '/methodology', label: 'Methodology' },
 ];
-
-export function formatDataDate(value: string | null): string {
-  if (!value) return 'SOURCE STATUS IN METHODOLOGY';
-
-  return `COLLECTION AS AT ${new Date(value).toLocaleString('en-AU', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false,
-    timeZone: 'Australia/Sydney',
-    timeZoneName: 'short',
-  }).toUpperCase()}`;
-}
 
 /** Nav label whose underline wipes in from the left, and stays for the current page. */
 function NavLink({
@@ -70,12 +56,12 @@ function NavLink({
 }
 
 export function Header({
-  dataCurrentAt,
+  collectedAt,
   collectionHealth,
   successfulSourceCount,
   dueSourceCount,
 }: {
-  dataCurrentAt: string | null;
+  collectedAt: string | null;
   collectionHealth: CollectionHealthStatus;
   successfulSourceCount: number;
   dueSourceCount: number;
@@ -321,9 +307,9 @@ export function Header({
         <div className="border-t border-border bg-muted/40 text-muted-foreground">
           <div className="container mx-auto flex min-h-9 flex-wrap py-2 items-center justify-between gap-6 px-4 font-mono text-[10px] tracking-[0.04em]  sm:px-6 lg:px-8">
             <span className="text-muted-foreground sm:inline">
-              <span className="hidden sm:inline">{formatDataDate(dataCurrentAt)}</span>
+              <span className="hidden sm:inline">{formatCollectedAt(collectedAt)}</span>
               <span className="sm:hidden">
-                {formatDataDate(dataCurrentAt)}
+                {formatCollectedAt(collectedAt)}
               </span>
             </span>
             <div className="hidden items-center gap-3 sm:flex">
