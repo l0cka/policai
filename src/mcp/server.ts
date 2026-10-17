@@ -109,7 +109,7 @@ server.registerTool(
   {
     title: 'Stage browser-captured source',
     description:
-      'Stages a fresh, reviewer-attributed browser capture when the official source blocks the hardened server-side retriever. Existing policy or timeline records use targetRecordId; new records require an explicit proposedRecord; replacing a target URL additionally requires replaceTargetSource and a proposedRecord preserving its id. A timeline replacement may share its already-related policy canonical URL, but not unrelated identities. The capture includes normalized page text and local bytes for linked canonical documents; paths are validated and never persisted. Requires POLICAI_MCP_ADMIN_TOKEN. Does not approve or publish.',
+      `Stages a fresh, reviewer-attributed browser capture when the official source blocks the hardened server-side retriever. Existing policy or timeline records use targetRecordId; new records require an explicit proposedRecord; replacing a target URL additionally requires replaceTargetSource and a proposedRecord preserving its id. A policy proposedRecord needs ${MIN_THEMES_PER_RECORD} to ${MAX_THEMES_PER_RECORD} themes, keys listed by list_themes, before it can be approved. A timeline replacement may share its already-related policy canonical URL, but not unrelated identities. The capture includes normalized page text and local bytes for linked canonical documents; paths are validated and never persisted. Requires POLICAI_MCP_ADMIN_TOKEN. Does not approve or publish.`,
     inputSchema: {
       url: z.string().url(),
       entryKind: z.enum(['policy', 'timeline_event']),

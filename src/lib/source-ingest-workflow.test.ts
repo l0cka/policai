@@ -1870,9 +1870,8 @@ describe('source ingest approval workflow', () => {
 
     expect(error).toBeInstanceOf(Error);
     const message = (error as Error).message;
-    expect(message).toContain('draft-policy: unknown theme "courts"');
     expect(message).toContain(
-      `draft-policy: valid theme ids are ${THEMES.map(({ key }) => key).join(', ')}`,
+      `draft-policy: unknown theme "courts"; valid theme ids are ${THEMES.map(({ key }) => key).join(', ')}`,
     );
     expect(message).not.toContain('[object Object]');
     expect(updateSourceReview).not.toHaveBeenCalled();
@@ -3500,9 +3499,8 @@ describe('source ingest approval workflow', () => {
     expect(error).toBeInstanceOf(Error);
     const text = (error as Error).message;
     expect(text).toContain(`Policy is not publishable: draft-policy: ${message}`);
-    expect(text).toContain(
-      `draft-policy: valid theme ids are ${THEMES.map(({ key }) => key).join(', ')}`,
-    );
+    const validIds = `; valid theme ids are ${THEMES.map(({ key }) => key).join(', ')}`;
+    expect(text.slice(-validIds.length)).toBe(validIds);
     expect(text).not.toContain('[object Object]');
     expect(createPolicy).not.toHaveBeenCalled();
     expect(updatePolicy).not.toHaveBeenCalled();

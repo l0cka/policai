@@ -870,10 +870,10 @@ export function validatePolicyThemes(policies: readonly Policy[]): ValidationRep
     const label = isNonEmptyString(policy.id) ? policy.id : `policies[${index}]`;
     const recordErrors = recordThemeErrors(label, policy.themes);
     if (recordErrors.length === 0) return [];
-    return [
-      ...recordErrors,
-      `${label}: valid theme ids are ${THEMES.map(({ key }) => key).join(', ')}`,
-    ];
+    const last = recordErrors.length - 1;
+    recordErrors[last] +=
+      `; valid theme ids are ${THEMES.map(({ key }) => key).join(', ')}`;
+    return recordErrors;
   });
   return { errors, warnings: [] };
 }
