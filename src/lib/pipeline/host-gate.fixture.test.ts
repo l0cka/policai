@@ -201,7 +201,10 @@ describe('HostGate against a loopback fixture server', () => {
       ['fixture-browser', 'error', 'identity_refused'],
       ['fixture-after-trip', 'error', 'identity_refused'],
     ]);
-    expect(second.meta.collector.sourceResults[1].error).toContain('HTTP 403 from www.fixture.gov.au earlier this run');
+    expect(second.meta.collector.sourceResults[1].error).toContain(
+      'www.fixture.gov.au refused the headless browser with a 403 earlier this run',
+    );
+    expect(second.meta.collector.sourceResults[1].error).not.toMatch(/\bHTTP 403\b/);
   }, 15_000);
 });
 

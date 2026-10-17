@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { classifyFailure } from './failure';
 import {
   BACKOFF_CAP_MS,
+  BACKOFF_LADDER_CAP_MS,
   createHostGate,
   DEFAULT_MIN_GAP_MS,
   HOST_RETENTION_MS,
@@ -16,9 +17,12 @@ import {
   ROBOTS_TTL_MS,
   type RobotsRecord,
   type Transport,
+  WAIT_BUDGET_MS,
 } from './host-gate';
+import { admitThroughGate } from './fetch';
 
 const START = Date.parse('2026-10-20T19:30:00.000Z');
+const E24_HTTP_403_REPORT = /\bHTTP 403\b/;
 const HOUR = 60 * 60 * 1000;
 const A = 'https://www.alpha.gov.au';
 const B = 'https://www.beta.gov.au';
@@ -285,6 +289,9 @@ describe('observe', () => {
     expect(refused).toMatchObject({ kind: 'refused', cls: 'identity_refused' });
     if (refused.kind !== 'refused') throw new Error('expected refusal');
     expect(classifyFailure(refused.detail)).toEqual({ cls: 'identity_refused', url: `${A}/two` });
+    expect(refused.detail).toBe(`www.alpha.gov.au refused the headless browser with a 403 earlier this run; ${A}/two not requested`);
+    expect(E24_HTTP_403_REPORT.test(refused.detail)).toBe(false);
+    await expect(admitThroughGate(h.gate, `${A}/three`)).rejects.toMatchObject({ code: 'gate_refused', retryable: true });
     expect(await h.gate.admit(url('/b', B))).toEqual({ kind: 'go' });
     expect(h.gate.hosts()[hostOf(url('/'))]).toMatchObject({ backoffUntil: null, backoffStatus: null });
   });
@@ -365,11 +372,11 @@ describe('observe', () => {
   });
 
   it.each(['', 'soon', '-5', '1.5', null, undefined])(
-    'doubles from 1 h up to 24 h when Retry-After is %j, and a success resets it',
+    'doubles from 1 h to the 12 h ladder cap when Retry-After is %j, so the host is tried again next run',
     async (retryAfter) => {
       const h = harness();
       const host = hostOf(url('/'));
-      const expected = [1, 2, 4, 8, 16, 24, 24];
+      const expected = [1, 2, 4, 8, 12, 12];
       for (const [index, hours] of expected.entries()) {
         h.tick(BACKOFF_CAP_MS);
         await h.gate.admit(url('/one'));
@@ -379,6 +386,7 @@ describe('observe', () => {
           backoffCount: index + 1,
         });
       }
+      expect(BACKOFF_LADDER_CAP_MS).toBeLessThan(24 * HOUR);
       h.tick(BACKOFF_CAP_MS);
       await h.gate.admit(url('/one'));
       h.gate.observe(url('/one'), { status: 200, transport: 'http' });
@@ -387,6 +395,69 @@ describe('observe', () => {
       expect(h.gate.hosts()[host]?.backoffUntil).toBe(new Date(h.at() + HOUR).toISOString());
     },
   );
+
+  it('a 429 whose Retry-After is waited out inline does not climb the ladder', async () => {
+    const h = harness();
+    const host = hostOf(url('/'));
+    for (let index = 0; index < 7; index++) {
+      expect(await h.gate.admit(url(`/r${index}`))).toEqual({ kind: 'go' });
+      h.gate.observe(url(`/r${index}`), { status: 429, retryAfter: '5', transport: 'http' });
+      expect(h.gate.hosts()[host]?.backoffCount).toBe(0);
+    }
+    await h.gate.admit(url('/bare'));
+    h.gate.observe(url('/bare'), { status: 429, retryAfter: null, transport: 'http' });
+    expect(h.gate.hosts()[host]).toMatchObject({
+      backoffCount: 1,
+      backoffUntil: new Date(h.at() + HOUR).toISOString(),
+    });
+  });
+
+  it.each([400, 403, 404, 410])('does not reset a backoff after a %d', async (status) => {
+    const h = harness();
+    const host = hostOf(url('/'));
+    await h.gate.admit(url('/one'));
+    h.gate.observe(url('/one'), { status: 429, retryAfter: '5', transport: 'http' });
+    const backoffUntil = h.gate.hosts()[host]?.backoffUntil;
+    expect(backoffUntil).not.toBeNull();
+    h.gate.observe(url('/one'), { status, transport: 'http' });
+    expect(h.gate.hosts()[host]).toMatchObject({ backoffUntil, backoffStatus: 429 });
+  });
+});
+
+describe('wait budget', () => {
+  it('refuses a wait that would overrun the run budget as a retryable timeout and keeps serving hosts that need no wait', async () => {
+    const h = harness({ [A]: { status: 200, body: 'User-agent: *\nCrawl-delay: 30' } }, { waitBudgetMs: 45_000 });
+    const host = hostOf(url('/'));
+    expect(await h.gate.admit(url('/one'))).toEqual({ kind: 'go' });
+    expect(await h.gate.admit(url('/two'))).toEqual({ kind: 'go' });
+    expect(h.gate.waited()[host]).toBe(MAX_WAIT_MS);
+    const refused = await h.gate.admit(url('/three'));
+    expect(refused).toMatchObject({ kind: 'refused', cls: 'timeout' });
+    if (refused.kind !== 'refused') throw new Error('expected refusal');
+    expect(classifyFailure(refused.detail)).toEqual({ cls: 'timeout', url: `${A}/three` });
+    expect(E24_HTTP_403_REPORT.test(refused.detail)).toBe(false);
+    await expect(admitThroughGate(h.gate, `${A}/four`)).rejects.toMatchObject({ code: 'gate_refused', retryable: true });
+    expect(h.gate.waited()[host]).toBe(MAX_WAIT_MS);
+    expect(await h.gate.admit(url('/b', B))).toEqual({ kind: 'go' });
+    h.tick(MAX_WAIT_MS);
+    expect(await h.gate.admit(url('/five'))).toEqual({ kind: 'go' });
+    expect(h.gate.hosts()[host]?.robots?.crawlDelaySec).toBe(30);
+  });
+
+  it('counts backoff waits and the robots gap against the same budget', async () => {
+    const h = harness({}, { waitBudgetMs: 3000 });
+    await h.gate.admit(url('/one'));
+    h.gate.observe(url('/one'), { status: 429, retryAfter: '5', transport: 'http' });
+    expect(await h.gate.admit(url('/two'))).toMatchObject({ kind: 'refused', cls: 'timeout' });
+    expect(h.sleeps).toEqual([]);
+    expect(await h.gate.admit(url('/b', B))).toEqual({ kind: 'go' });
+    expect(await h.gate.admit(url('/c', B))).toMatchObject({ kind: 'refused', cls: 'timeout' });
+    expect(h.sleeps).toEqual([DEFAULT_MIN_GAP_MS]);
+  });
+
+  it('the default budget leaves most of the 3,500 s host deadline for requests', () => {
+    expect(WAIT_BUDGET_MS).toBe(20 * 60 * 1000);
+  });
 });
 
 describe('hosts', () => {

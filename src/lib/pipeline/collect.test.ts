@@ -253,7 +253,7 @@ describe('collect routes every transport through the host gate', () => {
     expect(result.meta.collector.health).toBe('failed');
   });
 
-  it('fails fast on the rest of a host after one browser 403 and still counts each failure', async () => {
+  it('defers the rest of a host after one browser 403: not requested, still pending, no attempt spent', async () => {
     const browserFetchImpl = fakeFetch({
       [HTML_SOURCE.url]: `<html><body><main><ul class="news-list">
         <li><a href="/news/ai-one">AI policy one</a></li>
@@ -275,12 +275,74 @@ describe('collect routes every transport through the host gate', () => {
     expect(result.meta.collector.sourceResults[0]).toMatchObject({
       status: 'error',
       failureClass: 'identity_refused',
-      error: 'test-html: 2 candidate retrieval failures',
+      failedUrl: 'https://www.example.gov.au/news/ai-one',
+      error: 'test-html: 1 candidate retrieval failure',
     });
+    expect(result.state.seen['https://www.example.gov.au/news/ai-one']).toMatchObject({ status: 'failed', attempts: 1 });
     expect(result.state.seen['https://www.example.gov.au/news/ai-two']).toMatchObject({
-      status: 'failed',
-      lastError: expect.stringContaining('HTTP 403 from www.example.gov.au earlier this run'),
+      status: 'pending',
+      attempts: 0,
+      lastError: expect.stringContaining('refused the headless browser with a 403 earlier this run'),
     });
+    expect(result.state.seen['https://www.example.gov.au/news/ai-two']?.lastError).not.toMatch(/\bHTTP 403\b/);
+
+    const recovered = fakeFetch({
+      [HTML_SOURCE.url]: INDEX_HTML,
+      'https://www.example.gov.au/news/': '<html><body><h1>AI policy two</h1><p>AI governance guidance.</p></body></html>',
+    });
+    const nextDay = await collect({
+      sources: [{ ...HTML_SOURCE, fetchStrategy: 'browser' }],
+      state: result.state,
+      existingDevelopments: result.developments,
+      fetchImpl: fakeFetch({}),
+      browserFetchImpl: recovered,
+      now: () => new Date('2026-07-11T00:00:00.000Z'),
+      hostGate: robotsGate(''),
+    });
+    expect(nextDay.state.seen['https://www.example.gov.au/news/ai-two']).toMatchObject({ status: 'processed', attempts: 1 });
+    expect(nextDay.developments.map((d) => d.url)).toContain('https://www.example.gov.au/news/ai-two');
+  });
+
+  it('a hostile Crawl-delay cannot push the run past the wait budget; deferred candidates stay pending', async () => {
+    let clock = Date.parse('2026-07-10T00:00:00.000Z');
+    const budgetMs = 60_000;
+    const gate = createHostGate({
+      hosts: {},
+      refused: new Map(),
+      fetchRobots: async () => ({ status: 200, body: 'User-agent: *\nCrawl-delay: 30' }),
+      now: () => clock,
+      sleep: async (ms) => {
+        clock += ms;
+      },
+      waitBudgetMs: budgetMs,
+    });
+    const items = Array.from({ length: 5 }, (_, i) => `<li><a href="/news/ai-${i}">AI policy ${i}</a></li>`).join('');
+    const fetchImpl = fakeFetch({
+      [HTML_SOURCE.url]: `<html><body><main><ul class="news-list">${items}</ul></main></body></html>`,
+      'https://www.example.gov.au/news/': '<html><body><h1>AI policy</h1><p>AI governance guidance.</p></body></html>',
+    });
+    const startedAt = clock;
+    const result = await collect({
+      sources: [HTML_SOURCE, { ...HTML_SOURCE, id: 'test-html-2', url: 'https://www.example.gov.au/news?page=2' }],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl,
+      now: () => new Date(startedAt),
+      hostGate: gate,
+    });
+    const waited = Object.values(gate.waited()).reduce((sum, ms) => sum + ms, 0);
+    expect(waited).toBeLessThanOrEqual(budgetMs);
+    expect(clock - startedAt).toBeLessThanOrEqual(budgetMs);
+    const seen = Object.values(result.state.seen);
+    expect(seen.filter((entry) => entry.status === 'processed')).toHaveLength(2);
+    const deferred = seen.filter((entry) => entry.status === 'pending');
+    expect(deferred.length).toBeGreaterThan(0);
+    for (const entry of deferred) expect(entry.attempts).toBe(0);
+    expect(seen.filter((entry) => entry.status === 'failed')).toEqual([]);
+    expect(result.meta.collector.sourceResults.map((row) => [row.sourceId, row.status, row.failureClass])).toEqual([
+      ['test-html', 'success', undefined],
+      ['test-html-2', 'error', 'timeout'],
+    ]);
   });
 
   it('hands the gate to the browser retriever and to Firecrawl', async () => {

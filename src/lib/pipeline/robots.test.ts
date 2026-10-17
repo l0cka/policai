@@ -60,7 +60,11 @@ describe('matchesRobotsPattern', () => {
     ['/caf%c3%a9', '/caf%C3%A9', true],
     ['/foo/bar?baz=https://foo.bar', '/foo/bar?baz=https://foo.bar', true],
     ['/foo/bar/%62%61%7A', '/foo/bar/%62%61%7A', true],
-    ['/foo/bar/%62%61%7A', '/foo/bar/baz', false],
+    ['/foo/bar/%62%61%7A', '/foo/bar/baz', true],
+    ['/foo/bar/baz', '/foo/bar/%62%61%7A', true],
+    ['/foo/bar/%2Fbaz', '/foo/bar//baz', false],
+    ['/foo/bar/%2fbaz', '/foo/bar/%2Fbaz', true],
+    ['/foo/bar/%7E', '/foo/bar/~', true],
   ])('%j against %j is %s', (pattern, path, expected) => {
     expect(matchesRobotsPattern(pattern, path)).toBe(expected);
   });

@@ -303,6 +303,14 @@ describe('scrapeWithFirecrawl host gate', () => {
     expect(observed).toEqual([['https://www.oaic.gov.au/news', { status: 200, retryAfter: null, transport: 'firecrawl' }]]);
   });
 
+  it('records no observation when Firecrawl omits the status code, so a backoff is not cleared by guesswork', async () => {
+    const { gate, observed } = buildRecordingHostGate();
+    vi.stubGlobal('fetch', vi.fn(async () => new Response(payload('https://www.oaic.gov.au/news'), { status: 200 })));
+    const result = await scrapeWithFirecrawl('https://www.oaic.gov.au/news', { gate });
+    expect(result.ok).toBe(true);
+    expect(observed).toEqual([]);
+  });
+
   it('throws the gate refusal as a SourceFetchError and never contacts Firecrawl', async () => {
     const fetchMock = vi.fn();
     vi.stubGlobal('fetch', fetchMock);

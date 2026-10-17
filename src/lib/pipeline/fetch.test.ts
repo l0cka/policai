@@ -1596,6 +1596,41 @@ describe('retrieveSource host gate', () => {
     ).rejects.toMatchObject({ code: 'gate_refused', retryable: true });
   });
 
+  it('keeps a breaker refusal retryable, so a never-requested candidate stays pending', async () => {
+    const url = 'https://example.gov.au/policy';
+    const { gate } = buildRecordingHostGate(() => ({
+      kind: 'refused',
+      cls: 'identity_refused',
+      detail: `example.gov.au refused the headless browser with a 403 earlier this run; ${url} not requested`,
+    }));
+    const fetchImpl = vi.fn();
+    await expect(
+      retrieveSource(url, { fetchImpl: fetchImpl as unknown as typeof fetch, gate, hashLinkedDocuments: false }),
+    ).rejects.toMatchObject({ code: 'gate_refused', retryable: true, url });
+    expect(fetchImpl).not.toHaveBeenCalled();
+  });
+
+  it('reports the response that was requested when the gate refuses the retry', async () => {
+    const url = 'https://example.gov.au/policy';
+    let admitted = 0;
+    const { gate } = buildRecordingHostGate(() =>
+      admitted++ === 0
+        ? { kind: 'go' }
+        : { kind: 'refused', cls: 'rate_limited', detail: `example.gov.au is backing off; ${url} not requested` },
+    );
+    const fetchImpl = vi.fn(async () => new Response('slow down', { status: 429, headers: { 'retry-after': '3600' } }));
+    await expect(
+      retrieveSource(url, {
+        fetchImpl: fetchImpl as unknown as typeof fetch,
+        gate,
+        hashLinkedDocuments: false,
+        attempts: 2,
+        retryDelayMs: 0,
+      }),
+    ).rejects.toMatchObject({ status: 429, retryable: true, url, message: `HTTP 429 at ${url}` });
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+  });
+
   it('admits every redirect hop and observes each response', async () => {
     const { gate, admitted, observed } = buildRecordingHostGate();
     const fetchImpl = vi
