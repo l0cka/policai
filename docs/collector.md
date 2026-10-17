@@ -483,45 +483,93 @@ force the selected source regardless of its normal daily/weekly due time.
 
 ### Politeness
 
-Every outgoing request passes through one `HostGate`
+Every request the collector itself issues passes through one `HostGate`
 ([`host-gate.ts`](../src/lib/pipeline/host-gate.ts)): plain HTTP, the
-HTTP/1.1 fallback, each redirect hop, every linked document, the headless
-browser's navigation and the target of each Firecrawl scrape. `collect()`
-requires the gate; `scripts/collect-run.ts` builds the production one and
-hands it the `hosts` records from `data/watch-state.json`. The host is the
-unit: `url.host` lowercased, port included.
+HTTP/1.1 fallback, each plain-HTTP redirect hop, every linked document, the
+headless browser's navigation and the target of each Firecrawl scrape. Not
+gated: the browser's own sub-resource and in-page requests, the redirect
+hops the browser and Firecrawl follow themselves (only the final URL is
+admitted, after the fact), Firecrawl's own fetches, and the hops of the
+robots.txt request itself. `collect()` requires the gate;
+`scripts/collect-run.ts` builds the production one and hands it the `hosts`
+records from `data/watch-state.json`. The host is the unit: `url.host`
+lowercased with any trailing dot removed, port included. The gate never
+makes a run worse than a run without it, except where robots.txt states a
+`Disallow` or a host asks to be left alone (`Retry-After`, a bare 429, a
+browser 403); `collect.never-worse.test.ts` holds that property against a
+neutral gate.
+
+The gate is RFC 9309 with one deliberate departure. The RFC says a crawler
+MUST treat an unreachable robots.txt (5xx, network error) as complete
+disallow for a while. The collector instead keeps the last parsed rules it
+has (the RFC's cached copy) and otherwise allows, because its 75 sources are
+editorially chosen pages, it already sends at most one request per 2 s per
+host, and QA showed that refusing on an unreadable robots.txt failed 140 of
+560 modelled runs that pass today, mostly on hosts whose WAF answers a
+plain HTTP client with a challenge page, a reset or a stall rather than a
+5xx. A WAF that blocks the robots fetch is not a server saying "stop".
 
 - **robots.txt** ([`robots.ts`](../src/lib/pipeline/robots.ts), RFC 9309).
-  Fetched once per host with the declared identity, through the same plain
-  transport, before the first request to that host. The `Policai` group is
-  used when present, else `*`. Matching is longest-match over `Allow` and
+  Fetched at most once per host per run with the declared identity, over
+  plain HTTP/1.1, before the first request to that host. The `Policai` group
+  is used when present, else `*`. Matching is longest-match over `Allow` and
   `Disallow`, with `*` wildcards and a `$` end anchor, equal lengths allow,
-  and the first 500 KiB parsed. A 4xx means allow all. A 5xx or an unreachable
-  robots.txt makes the host `host_unavailable` for the rest of the run. A
-  disallowed URL fails as `robots_disallowed` and is never requested; other
-  paths on the host are unaffected. Rules are cached for 24 h in the
-  `hosts` record and refetched after that, or on the next run when the last
-  attempt was unreachable. Expect about half the hosts to refetch on a daily
-  run, because the timer's random delay moves the run either side of 24 h.
+  and percent-encoded unreserved octets compared decoded. A 2xx is parsed
+  line by line, so an HTML or challenge page served with 200 yields no
+  rules. A 4xx means allow all (`absent`). Anything else is `unreachable`:
+  a 5xx, a connection error, the 20 s timeout, a body over 500 KiB (it is
+  not parsed in part), more than five redirects, or a redirect off https.
+  An unreachable robots.txt never refuses a request and never trips the
+  host: the gate keeps the rules from its last successful fetch when it has
+  them and otherwise allows, then refetches on the next run. The run log
+  names the hosts whose robots.txt was unreachable. A disallowed URL fails
+  as `robots_disallowed` and is never requested; other paths on the host
+  are unaffected. Parsed rules are cached for 24 h in the `hosts` record.
+  Expect about half the hosts to refetch on a daily run, because the
+  timer's random delay moves the run either side of 24 h.
 - **Gap.** At least 2 s between any two requests to one host, the robots
   fetch included, or the host's `Crawl-delay` when larger, capped at 30 s.
   Waits are taken inline; the per-request timeout starts after the wait.
+- **Wait budget.** A run may spend at most 1,200 s (`WAIT_BUDGET_MS`)
+  waiting at the gate, across all hosts, gaps and inline backoffs together.
+  That is about a third of the wrapper's 3,500 s deadline, 2.5 times the
+  design's inferred worst case for 2 s gaps (476 s), and leaves 2,300 s for
+  requests, 14 times the measured 162 s of fetch time, so a normal run never
+  reaches it; a hostile `Crawl-delay: 30` on every host would otherwise need
+  about 6,500 s and the wrapper would kill the run with nothing written.
+  Once the budget is spent, a request that would need another wait is
+  refused as a retryable `timeout` (`the run's N ms host-gate wait budget is
+  spent`); a request that needs no wait still goes.
 - **Retry-After.** A 429, or a 503 that carries `Retry-After` (seconds or an
   HTTP-date), sets `backoffUntil` on the host. A wait of up to 30 s is taken
   inline; a longer one refuses every request to the host as `rate_limited`
   (429) or `host_unavailable` (503) until it passes. A 429 without the header
-  backs off 1 h, doubling on each consecutive 429 to a 24 h cap; any 2xx or
-  3xx resets the doubling. A 503 without the header is an ordinary failure
-  and does not back the host off, so one failing URL does not take its host
-  out of the run. Backoff is persisted, so a run that starts inside a 24 h
-  backoff still honours it.
+  backs off 1 h, doubling on each further 429 that is not waited out inline
+  to a 12 h cap (`BACKOFF_LADDER_CAP_MS`), below the daily run interval, so
+  a host that rate-limits every day is still tried once a day; any 2xx or
+  3xx resets the ladder, a 4xx leaves it. A 429 waited out inline does not
+  climb it. An explicit `Retry-After` is honoured up to 24 h. A 503 without
+  the header is an ordinary failure and does not back the host off, so one
+  failing URL does not take its host out of the run. Backoff is persisted,
+  so a run that starts inside a backoff still honours it.
 - **Breaker.** A 403 returned to the headless browser trips the host for the
-  rest of the run: later requests to it fail at once as `identity_refused`
-  (`HTTP 403 from <host> earlier this run`), each still counted as a failure.
-  A 403 to plain HTTP or to Firecrawl does not trip it, because the browser
-  fallback is the existing answer to WAF fronts that block plain clients.
-  The breaker is in-memory only. The gate never infers a refusal from any
-  other status; `failure.ts` labels those afterwards.
+  rest of the run: later requests to it are refused at once as
+  `identity_refused` (`<host> refused the headless browser with a 403
+  earlier this run`). The wording avoids `HTTP 403` so a report that counts
+  hosts refusing the identity (`\bHTTP 403\b`) counts the request that was
+  refused, not the ones never sent. A 403 to plain HTTP or to Firecrawl does
+  not trip it, because the browser fallback is the existing answer to WAF
+  fronts that block plain clients. The breaker is in-memory only. The gate
+  never infers a refusal from any other status; `failure.ts` labels those
+  afterwards.
+- **Deferral.** A candidate the gate refuses without a request (breaker,
+  backoff or wait budget) is not a failure: it stays `pending`, keeps its
+  attempt count and is tried on the next run, the same as a candidate the
+  per-run cap left for later. Only a candidate that was requested and
+  refused fails, and when the gate refuses the retry of a request that was
+  made, the error reported is that request's response. A due source whose
+  index the gate refuses does fail for the run, with the refusal's class.
+  A `robots_disallowed` refusal is terminal for the candidate.
 - **Redirects.** Plain-HTTP hops are admitted before they are followed. The
   browser and Firecrawl follow redirects themselves, so their final URL is
   admitted after the fact when its host differs; a refusal discards the
@@ -538,18 +586,30 @@ cannot prove the live wall time.
 last 30 days: `seenAt`, `robots` (`fetchedAt`, `status`
 `parsed | absent | unreachable`, `allow`, `disallow`, `crawlDelaySec`,
 `sitemaps`) or `null`, `backoffUntil`, `backoffStatus` (`429 | 503 | null`)
-and `backoffCount`. A rule set over 500 patterns or with a pattern over 1,000
-characters is used for the run but not persisted; sitemaps are capped at 20.
+and `backoffCount`. The gate and `validateWatchState` share one definition
+of the shape (`isHostKey`, `isRobotsRuleList`, `isStoredSitemapList` in
+`host-gate.ts`), so a state the gate writes always validates: a host key is
+a lowercase DNS name or IPv4 literal with an optional port (an IPv6 literal
+is used for the run but not persisted); `Sitemap:` lines are resolved
+against the robots.txt URL, kept only when https, deduplicated and capped at
+20 (nothing reads them yet); a rule list over 500 patterns or with a pattern
+over 1,000 characters is used for the run but persisted as `robots: null`.
 `npm run validate:data` and the review gate check the shape. A daily run
-changes `seenAt` on every host and `fetchedAt` on the refetched ones.
+changes `seenAt` on every host and `fetchedAt` on the refetched ones. For a
+67-host state with Drupal-sized robots (60 rules each) the map is about
+159 KB and 5,200 lines on top of the existing file.
 
 Not done here: Firecrawl `map` and `crawl` stay unused (their robots
 handling is unverified and `map` sends queries to third-party search
 engines); the gate's `refused` map is empty until the structured
 `automation` decisions supply `refusedHosts`, so no host is skipped by
 decision yet; `npm run audit:sources`, `npm run audit:register` and the MCP
-source-ingest reads do not pass through the gate; the browser's own
-sub-resource requests are not paced.
+source-ingest reads do not pass through the gate; a 429 on robots.txt
+itself is allow-all with no backoff (the fetcher does not surface its
+`Retry-After`; the page request that follows observes its own); `admit()`
+does not serialise concurrent callers, which the sequential collector never
+has; a Firecrawl result without `metadata.statusCode` records no
+observation, so a `Retry-After` seen only by Firecrawl is not recorded.
 
 ### Failure classes
 
@@ -591,12 +651,12 @@ unchanged.
 | Class | Matches | Meaning |
 | --- | --- | --- |
 | `robots_disallowed` | `disallowed by robots.txt` | robots.txt disallows the URL; the host gate refused it before any request. It comes first so a refusal that robots.txt explains is not labelled `identity_refused`. |
-| `identity_refused` | `ERR_HTTP2_PROTOCOL_ERROR`, `ERR_CONNECTION_RESET`, `ECONNRESET`, `HTTP 403`, bot-challenge page | Heuristic label only. An outage can look the same. A human decides. |
+| `identity_refused` | `ERR_HTTP2_PROTOCOL_ERROR`, `ERR_CONNECTION_RESET`, `ECONNRESET`, `HTTP 403`, bot-challenge page, `refused the headless browser with a 403` (the gate's breaker) | Heuristic label only. An outage can look the same. A human decides. |
 | `rate_limited` | `HTTP 429` | The host asked us to slow down. |
-| `host_unavailable` | `HTTP 5xx`, `robots.txt for <host> was unreachable`, `ERR_NAME_NOT_RESOLVED`, `ERR_CONNECTION_REFUSED`, `ERR_CERT_*`, `ECONNREFUSED`, `ENOTFOUND`, DNS lookup failures | The host could not be reached safely, or its robots.txt could not be. |
+| `host_unavailable` | `HTTP 5xx`, `ERR_NAME_NOT_RESOLVED`, `ERR_CONNECTION_REFUSED`, `ERR_CERT_*`, `ECONNREFUSED`, `ENOTFOUND`, DNS lookup failures | The host could not be reached safely. |
 | `not_found` | `HTTP 404`, `HTTP 410` | The URL is gone. |
 | `http_error` | any other `HTTP nnn` | Another HTTP error status. |
-| `timeout` | `timed out` (`Timed out after`), `Timeout 45000ms exceeded`, `aborted due to timeout`, `ERR_TIMED_OUT`, `ETIMEDOUT` | A retrieval or navigation deadline passed. Any other text that merely contains `timeout` is not a timeout. |
+| `timeout` | `timed out` (`Timed out after`), `Timeout 45000ms exceeded`, `aborted due to timeout`, `ERR_TIMED_OUT`, `ETIMEDOUT`, `host-gate wait budget` | A retrieval or navigation deadline passed, or the run's gate wait budget is spent. Any other text that merely contains `timeout` is not a timeout. |
 | `empty` | `Source returned no usable index or feed items`, too few usable items, `Linked policy document <url> returned no document bytes`, no browser response | The source answered with nothing usable. |
 | `parse` | no extractable or readable text, unsupported content or document type, linked-document byte validation, DOCX or PDF structure errors | Content arrived but could not be extracted. |
 | `other` | anything else | Read `error`. This includes `Source response exceeds N byte limit` and `PDF retrieval did not retain the original document bytes` (an internal retention fault). |
