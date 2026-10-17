@@ -160,28 +160,60 @@ describe('admit', () => {
   });
 
   it.each([500, 502, 503, 504])(
-    'treats a %d robots.txt as host unavailable for the run and fails fast afterwards',
+    'admits after a %d robots.txt, records it unreachable and fetches it once per run',
     async (status) => {
       const h = harness({ [A]: { status, body: '' } });
-      const first = await h.gate.admit(url('/one'));
-      expect(first).toMatchObject({ kind: 'refused', cls: 'host_unavailable' });
-      if (first.kind !== 'refused') throw new Error('expected refusal');
-      expect(classifyFailure(first.detail)).toEqual({ cls: 'host_unavailable', url: `${A}/one` });
-      expect(await h.gate.admit(url('/two'))).toMatchObject({ cls: 'host_unavailable' });
+      expect(await h.gate.admit(url('/one'))).toEqual({ kind: 'go' });
+      expect(await h.gate.admit(url('/two'))).toEqual({ kind: 'go' });
       expect(h.robotsCalls).toEqual([A]);
-      expect(await h.gate.admit(url('/b', B))).toEqual({ kind: 'go' });
-      expect(h.gate.hosts()[hostOf(url('/'))]?.robots?.status).toBe('unreachable');
+      expect(h.gate.hosts()[hostOf(url('/'))]?.robots).toMatchObject({ status: 'unreachable', disallow: [] });
     },
   );
 
-  it('treats an unreachable robots.txt as host unavailable for the run', async () => {
-    const h = harness({ [A]: null });
-    const first = await h.gate.admit(url('/one'));
-    expect(first).toMatchObject({ kind: 'refused', cls: 'host_unavailable' });
-    if (first.kind !== 'refused') throw new Error('expected refusal');
-    expect(classifyFailure(first.detail)).toEqual({ cls: 'host_unavailable', url: `${A}/one` });
-    expect(await h.gate.admit(url('/two'))).toMatchObject({ cls: 'host_unavailable' });
+  it.each<[label: string, response: { status: number; body: string } | null]>([
+    ['a connection reset, stall, oversize body, redirect loop or https-to-http redirect', null],
+    ['a challenge page served as robots.txt', { status: 200, body: '<html><script>window.awsWafIntegration=1</script>Checking your browser before accessing</html>' }],
+    ['a binary body served as robots.txt', { status: 200, body: '%PDF-1.7 binary' }],
+  ])('admits after %s, never trips the host and fetches robots.txt once per run', async (_label, response) => {
+    const h = harness({ [A]: response });
+    expect(await h.gate.admit(url('/one'))).toEqual({ kind: 'go' });
+    expect(await h.gate.admit(url('/two'))).toEqual({ kind: 'go' });
+    expect(await h.gate.admit(url('/b', B))).toEqual({ kind: 'go' });
+    expect(h.robotsCalls).toEqual([A, B]);
+    expect(h.gate.hosts()[hostOf(url('/'))]?.robots?.status).toBe(response === null ? 'unreachable' : 'parsed');
+  });
+
+  it('keeps the last parsed rules as the cached copy when the refetch is unreachable, and refetches next run', async () => {
+    const host = hostOf(url('/'));
+    const cached: Record<string, HostRecord> = {
+      [host]: {
+        seenAt: new Date(START - ROBOTS_TTL_MS - 1).toISOString(),
+        robots: {
+          fetchedAt: new Date(START - ROBOTS_TTL_MS - 1).toISOString(),
+          status: 'parsed',
+          allow: [],
+          disallow: ['/private'],
+          crawlDelaySec: 3,
+          sitemaps: [],
+        },
+        backoffUntil: null,
+        backoffStatus: null,
+        backoffCount: 0,
+      },
+    };
+    const h = harness({ [A]: null }, { hosts: cached });
+    expect(await h.gate.admit(url('/private/x'))).toMatchObject({ kind: 'refused', cls: 'robots_disallowed' });
+    expect(await h.gate.admit(url('/public'))).toEqual({ kind: 'go' });
     expect(h.robotsCalls).toEqual([A]);
+    expect(h.gate.hosts()[host]?.robots).toMatchObject({
+      status: 'unreachable',
+      disallow: ['/private'],
+      crawlDelaySec: 3,
+      fetchedAt: new Date(h.at()).toISOString(),
+    });
+    const next = harness({ [A]: { status: 200, body: 'User-agent: *\nDisallow: /other' } }, { hosts: h.gate.hosts() });
+    expect(await next.gate.admit(url('/private/x'))).toEqual({ kind: 'go' });
+    expect(next.robotsCalls).toEqual([A]);
   });
 
   it('reuses cached robots for 24 h and refetches after', async () => {

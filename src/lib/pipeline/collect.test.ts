@@ -324,6 +324,79 @@ describe('collect routes every transport through the host gate', () => {
   });
 });
 
+describe('a robots.txt the gate cannot read never makes a run worse', () => {
+  const ROBOTS_OUTCOMES: Array<[label: string, response: { status: number; body: string } | null]> = [
+    ['a reset, stall, oversize body, redirect loop or https-to-http redirect', null],
+    ['an HTTP 503', { status: 503, body: '' }],
+    ['an HTTP 500', { status: 500, body: '' }],
+    ['a WAF challenge page', { status: 200, body: '<html><script>window.awsWafIntegration=1</script></html>' }],
+    ['an octet-stream body', { status: 200, body: '%PDF-1.7' }],
+  ];
+  const gateWith = (response: { status: number; body: string } | null) =>
+    createHostGate({
+      hosts: {},
+      refused: new Map(),
+      fetchRobots: async () => response,
+      now: Date.now,
+      sleep: async () => {},
+    });
+  const ARTICLE = '<html><body><h1>New AI policy framework released</h1><p>AI governance.</p></body></html>';
+
+  it.each(ROBOTS_OUTCOMES)('after %s a browser-strategy source is fetched through the browser and succeeds', async (_label, response) => {
+    const browserFetchImpl = fakeFetch({ [HTML_SOURCE.url]: INDEX_HTML, 'https://www.example.gov.au/news/': ARTICLE });
+    const result = await collect({
+      sources: [{ ...HTML_SOURCE, fetchStrategy: 'browser' }],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl: fakeFetch({}),
+      browserFetchImpl,
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+      hostGate: gateWith(response),
+    });
+    expect(result.errors).toEqual([]);
+    expect(result.meta.collector.sourceResults[0]).toMatchObject({ status: 'success', itemCount: 2 });
+    expect(result.meta.collector.health).toBe('healthy');
+    expect(result.developments.map((d) => d.url).sort()).toEqual([
+      'https://www.example.gov.au/news/ai-policy-framework',
+      'https://www.example.gov.au/news/seen-before',
+    ]);
+  });
+
+  it.each(ROBOTS_OUTCOMES)('after %s a plain source blocked over HTTP still recovers through the browser fallback', async (_label, response) => {
+    const browserFetchImpl = fakeFetch({ [HTML_SOURCE.url]: INDEX_HTML, 'https://www.example.gov.au/news/': ARTICLE });
+    const result = await collect({
+      sources: [HTML_SOURCE],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl: fakeFetch({ [HTML_SOURCE.url]: 403 }),
+      browserFetchImpl,
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+      hostGate: gateWith(response),
+    });
+    expect(browserFetchImpl).toHaveBeenCalledWith(HTML_SOURCE.url, expect.anything());
+    expect(result.errors).toEqual([]);
+    expect(result.meta.collector.sourceResults[0]).toMatchObject({ status: 'success', itemCount: 2 });
+    expect(result.state.hosts[hostOf(new URL(HTML_SOURCE.url))]?.robots?.status).toBe(
+      response === null || response.status >= 500 ? 'unreachable' : 'parsed',
+    );
+  });
+
+  it('still honours a Disallow that robots.txt states', async () => {
+    const fetchImpl = fakeFetch({ [HTML_SOURCE.url]: INDEX_HTML });
+    const result = await collect({
+      sources: [HTML_SOURCE],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl,
+      browserFetchImpl: fetchImpl,
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+      hostGate: gateWith({ status: 200, body: 'User-agent: *\nDisallow: /news' }),
+    });
+    expect(fetchImpl).not.toHaveBeenCalled();
+    expect(result.meta.collector.sourceResults[0]).toMatchObject({ status: 'error', failureClass: 'robots_disallowed' });
+  });
+});
+
 describe('collect', () => {
   it('detects new items, skips seen URLs, and updates state', async () => {
     const state = emptyWatchState();
