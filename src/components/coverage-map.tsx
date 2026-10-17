@@ -143,11 +143,16 @@ export function CoverageMap({
   useEffect(() => {
     const header = document.querySelector<HTMLElement>('[data-site-header]');
     const map = mapRef.current;
+    const strip = map?.querySelector('thead');
     if (!header || !map) return;
-    const observer = new ResizeObserver(() => {
+    const measure = () => {
       map.style.setProperty('--coverage-sticky-top', `${header.getBoundingClientRect().height}px`);
-    });
+      map.style.setProperty('--coverage-strip-height', `${strip?.getBoundingClientRect().height ?? 0}px`);
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
     observer.observe(header);
+    if (strip) observer.observe(strip);
     return () => observer.disconnect();
   }, []);
 

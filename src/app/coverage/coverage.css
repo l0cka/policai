@@ -205,12 +205,15 @@
   color: var(--foreground);
 }
 
+.coverage-drill-row {
+  scroll-margin-top: calc(var(--coverage-sticky-top, 0px) + var(--space-2));
+}
+
 .coverage-drill-row > td {
   padding: var(--space-3) 0 var(--space-4) calc(var(--cov-row-head) + 2px);
 }
 
 .coverage-drill {
-  scroll-margin-top: 6rem;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--paper-raised);
@@ -390,6 +393,10 @@
 
   .coverage-cell button {
     height: 34px;
+  }
+
+  .coverage-drill-row {
+    scroll-margin-top: calc(var(--coverage-sticky-top, 0px) + var(--coverage-strip-height, 0px) + var(--space-2));
   }
 
   .coverage-drill-row > td {
