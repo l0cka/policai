@@ -439,5 +439,79 @@ class FailureLineTests(unittest.TestCase):
         )
 
 
+class FailureChannelTests(unittest.TestCase):
+    CHILD = "\n".join(
+        [
+            "import sys",
+            "from pathlib import Path",
+            "from unittest.mock import patch",
+            "sys.path.insert(0, sys.argv[1])",
+            "import cli",
+            "sys.argv = ['cli.py', 'worker', 'ingest']",
+            "unsafe = RuntimeError('unsafe installed root-owned entrypoint')",
+            "with (",
+            "    patch.object(cli, 'ENTRYPOINT', Path(cli.__file__).resolve()),",
+            "    patch.object(cli, 'trusted_entrypoint', side_effect=unsafe),",
+            "):",
+            "    code = cli.main()",
+            "raise SystemExit(code)",
+        ]
+    )
+
+    def installed_main(self, **kwargs):
+        return subprocess.run(
+            [sys.executable, "-I", "-B", "-c", self.CHILD, str(HOST)],
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.PIPE,
+            timeout=30,
+            **kwargs,
+        )
+
+    def test_a_closed_stderr_never_moves_the_line_to_stdout(self):
+        error = d.Refused("worker command not allowlisted")
+        with (
+            patch.object(sys, "stderr", None),
+            patch.object(cli.syslog, "openlog"),
+            patch.object(cli.syslog, "syslog") as journal,
+            redirect_stdout(io.StringIO()) as out,
+        ):
+            cli.report("compose", error)
+            cli.report("worker", error)
+        self.assertEqual(out.getvalue(), "")
+        self.assertEqual(len(journal.call_args_list), 1)
+        self.assertIn("worker command not allowlisted", journal.call_args.args[1])
+
+    def test_an_uninstalled_refusal_with_stderr_closed_writes_nothing_to_stdout(self):
+        with (
+            patch.object(sys, "stderr", None),
+            patch.object(sys, "argv", ["cli.py", "compose", "--", "compose", "down"]),
+            redirect_stdout(io.StringIO()) as out,
+        ):
+            self.assertEqual(cli.main(), 1)
+        self.assertEqual(out.getvalue(), "")
+
+    def test_installed_main_with_fd_2_closed_exits_1_and_keeps_stdout_clean(self):
+        run = self.installed_main(preexec_fn=lambda: os.close(2))
+        self.assertEqual((run.returncode, run.stdout), (1, b""))
+
+    def test_installed_main_exits_1_when_stderr_is_a_full_pipe(self):
+        read, write = os.pipe()
+        self.addCleanup(os.close, read)
+        self.addCleanup(os.close, write)
+        fcntl.fcntl(write, fcntl.F_SETFL, os.O_NONBLOCK)
+        with self.assertRaises(BlockingIOError):
+            while True:
+                os.write(write, b"x" * 65536)
+        run = self.installed_main(stderr=write)
+        self.assertEqual((run.returncode, run.stdout), (1, b""))
+
+    def test_installed_main_exits_1_when_stderr_is_a_broken_pipe(self):
+        read, write = os.pipe()
+        os.close(read)
+        self.addCleanup(os.close, write)
+        run = self.installed_main(stderr=write)
+        self.assertEqual((run.returncode, run.stdout), (1, b""))
+
+
 if __name__ == "__main__":
     unittest.main()
