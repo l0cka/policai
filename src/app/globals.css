@@ -170,12 +170,13 @@
    * the status strip).
    */
   html {
-    scroll-padding-top: 6.5rem;
+    --scroll-clear-top: 6.5rem;
+    scroll-padding-top: var(--scroll-clear-top);
     scroll-padding-bottom: 5.5rem;
   }
   @media (min-width: 40rem) {
     html {
-      scroll-padding-top: 9rem;
+      --scroll-clear-top: 9rem;
     }
   }
   body {
