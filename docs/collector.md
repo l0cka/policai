@@ -522,9 +522,12 @@ been unreachable on 3 consecutive runs is reported as robots unverified
   `Disallow`, with `*` wildcards and a `$` end anchor, equal lengths allow,
   and percent-encoded unreserved octets compared decoded. A 2xx is parsed
   line by line, so an HTML or challenge page served with 200 yields no
-  rules. A 4xx means allow all (`absent`). Anything else is `unreachable`:
-  a 5xx, a connection error, the 20 s timeout, a body over 500 KiB (it is
-  not parsed in part), more than five redirects, or a redirect off https.
+  rules, and a 204 is an empty robots.txt that allows all. A `Crawl-delay`
+  over one day (`CRAWL_DELAY_CAP_SEC`) is read as one day. A 4xx means
+  allow all (`absent`). Anything else is `unreachable`: a 1xx or 3xx left
+  after redirects (such as a 304 without `Location`), a 5xx, a connection
+  error, the 20 s timeout, a body over 500 KiB (it is not parsed in part),
+  more than five redirects, or a redirect off https.
   An unreachable robots.txt never refuses a request and never trips the
   host: the gate keeps the copy it last read (`parsed` or `absent`, with
   that read's `fetchedAt`) when it has one and otherwise records
@@ -546,18 +549,23 @@ been unreachable on 3 consecutive runs is reported as robots unverified
   Expect about half the hosts to refetch on a daily run, because the
   timer's random delay moves the run either side of 24 h.
 - **Gap.** At least 2 s between any two requests to one host, the robots
-  fetch included, or the host's `Crawl-delay` when larger, capped at 30 s.
-  Waits are taken inline; the per-request timeout starts after the wait.
-- **Wait budget.** A run may spend at most 1,200 s (`WAIT_BUDGET_MS`)
-  waiting at the gate, across all hosts, gaps and inline backoffs together.
-  That is about a third of the wrapper's 3,500 s deadline, 2.5 times the
-  design's inferred worst case for 2 s gaps (476 s), and leaves 2,300 s for
-  requests, 14 times the measured 162 s of fetch time, so a normal run never
-  reaches it; a hostile `Crawl-delay: 30` on every host would otherwise need
-  about 6,500 s and the wrapper would kill the run with nothing written.
-  Once the budget is spent, a request that would need another wait is
-  refused as a retryable `timeout` (`the run's N ms host-gate wait budget is
-  spent`); a request that needs no wait still goes.
+  fetch included. After a page request the host's `Crawl-delay` applies
+  when larger, capped at 30 s; after the gate's own robots fetch only the
+  2 s gap applies, so a fresh host's first page needs no `Crawl-delay`
+  wait. Waits are taken inline; the per-request timeout starts after the
+  wait.
+- **Wait budget.** A run may spend at most 1,200 s (`WAIT_BUDGET_MS`) on
+  waits a host asked for: the part of a `Crawl-delay` above the 2 s gap,
+  and inline `Retry-After` waits. The 2 s gap is always waited and never
+  charged, so a host that asked for nothing is never affected by the
+  budget; those waits are bounded by 2 s per request, the design's model
+  (476 s inferred worst case). The robots fetch itself is not a wait and
+  is not charged either. The budget is about a third of the wrapper's
+  3,500 s deadline; a hostile `Crawl-delay: 30` on every host would
+  otherwise need about 6,500 s and the wrapper would kill the run with
+  nothing written. Once the budget is spent, a request that needs a
+  requested wait is deferred, not sent (`the run's N ms host-gate wait
+  budget is spent`); see Deferral.
 - **Retry-After.** A 429, or a 503 that carries `Retry-After` (seconds or an
   HTTP-date), sets `backoffUntil` on the host. A wait of up to 30 s is taken
   inline; a longer one refuses every request to the host as `rate_limited`
@@ -586,8 +594,11 @@ been unreachable on 3 consecutive runs is reported as robots unverified
   per-run cap left for later. Only a candidate that was requested and
   refused fails, and when the gate refuses the retry of a request that was
   made, the error reported is that request's response. A due source whose
-  index the gate refuses does fail for the run, with the refusal's class.
-  A `robots_disallowed` refusal is terminal for the candidate.
+  index the wait budget defers is `skipped` for the run, keeps its last
+  check time and stays due, so the next run checks it; the log line ends
+  `source deferred to the next run`. A due source whose index the gate
+  refuses for any other reason fails for the run, with the refusal's
+  class. A `robots_disallowed` refusal is terminal for the candidate.
 - **Redirects.** Plain-HTTP hops are admitted before they are followed. The
   browser and Firecrawl follow redirects themselves, so their final URL is
   admitted after the fact when its host differs; a refusal discards the
@@ -604,8 +615,9 @@ cannot prove the live wall time.
 last 30 days: `seenAt`, `robots` (`fetchedAt`, `status`
 `parsed | absent | unreachable`, `allow`, `disallow`, `crawlDelaySec`,
 `sitemaps`) or `null`, `backoffUntil`, `backoffStatus` (`429 | 503 | null`),
-`backoffCount` and `robotsUnreachableRuns`. A record written before
-`robotsUnreachableRuns` existed loads with 0. The gate and `validateWatchState` share one definition
+`backoffCount` and `robotsUnreachableRuns`. The gate loads a record
+without `robotsUnreachableRuns` with 0, but `validateWatchState` requires
+it; only an unreleased build of the gate wrote such records. The gate and `validateWatchState` share one definition
 of the shape (`isHostKey`, `isRobotsRuleList`, `isStoredSitemapList` in
 `host-gate.ts`), so a state the gate writes always validates: a host key is
 a lowercase DNS name or IPv4 literal with an optional port (an IPv6 literal
@@ -615,8 +627,8 @@ against the robots.txt URL, kept only when https, deduplicated and capped at
 over 1,000 characters is used for the run but persisted as `robots: null`.
 `npm run validate:data` and the review gate check the shape. A daily run
 changes `seenAt` on every host and `fetchedAt` on the refetched ones. For a
-67-host state with Drupal-sized robots (60 rules each) the map is about
-159 KB and 5,200 lines on top of the existing file.
+67-host state with Drupal-sized robots (60 rules each) QA measured the map
+at about 131 KB, adding about 141.5 KB to the file.
 
 Not done here: Firecrawl `map` and `crawl` stay unused (their robots
 handling is unverified and `map` sends queries to third-party search
@@ -628,7 +640,12 @@ itself is allow-all with no backoff (the fetcher does not surface its
 `Retry-After`; the page request that follows observes its own); `admit()`
 does not serialise concurrent callers, which the sequential collector never
 has; a Firecrawl result without `metadata.statusCode` records no
-observation, so a `Retry-After` seen only by Firecrawl is not recorded.
+observation, so a `Retry-After` seen only by Firecrawl is not recorded;
+robots fetch time is outside the wait budget and there is no hard run
+deadline, so up to 20 s per host that stalls its robots.txt adds to the
+run (about 1,260 s for 63 hosts) under the wrapper's 3,500 s limit; a
+gzip- or br-encoded robots.txt body (the fetcher does not ask for one) is
+parsed as no rules, which allows more and is never worse than no gate.
 
 ### Failure classes
 
