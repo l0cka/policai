@@ -13,7 +13,9 @@ import {
   serializeCoverageViewState,
   type CoverageCategory,
   type CoverageSource,
+  type CoverageTable,
 } from './coverage-data';
+import { THEMES } from '@/lib/themes';
 
 const VOCABULARY: CoverageCategory[] = [
   { key: 'courts-tribunals', label: 'Courts and tribunals' },
@@ -139,18 +141,57 @@ describe('page copy', () => {
     expect(coverageStandfirst(tied)[1]).toBe('New South Wales and the ACT each have one record.');
   });
 
-  it('says all when every theme in the vocabulary is charted', () => {
-    const full = buildCoverageData(REGISTER, VOCABULARY.filter((theme) => theme.key !== 'frontier-ai'));
-    expect(coverageFootnote(full.theme)).toMatch(/^All 4 themes in Policai's vocabulary have a verified record and are shown\. Themes are/);
-  });
-
-  it('describes the vocabulary and the uncharted themes in the footnote', () => {
+  it('counts the real register into the footnote with the vocabulary size', () => {
     expect(COVERAGE_MIN_RECORDS).toBe(1);
     expect(coverageFootnote(data.theme)).toBe(
-      "Four of the 5 themes in Policai's vocabulary have a verified record and are shown. One has no verified record yet. Themes are an editorial vocabulary assigned to verified register records, not legal categories, and a count does not measure how strong an instrument is.",
+      "Of the five themes in Policai's vocabulary, four have a verified record and are shown; one has no verified record yet. Themes are an editorial vocabulary assigned to verified register records, not legal categories, and a count does not measure how strong an instrument is.",
     );
-    expect(coverageFootnote({ ...data.theme, minRecords: 3, rows: data.theme.rows.slice(0, 2), uncharted: [...data.theme.rows.slice(2), ...data.theme.uncharted] })).toBe(
-      "Two of the 5 themes in Policai's vocabulary have three or more verified records and are shown. Two have fewer and are not charted and one has no verified record yet. Themes are an editorial vocabulary assigned to verified register records, not legal categories, and a count does not measure how strong an instrument is.",
+    expect(coverageFootnote(buildCoverageData([], THEMES).theme)).toMatch(
+      /^None of the 22 themes in Policai's vocabulary has a verified record yet\. Themes are/,
+    );
+  });
+});
+
+function themeTable(shown: number, below: number, unused: number, minRecords: number): CoverageTable {
+  const entry = (total: number) => (_: unknown, index: number) => ({ key: `t${total}-${index}`, label: `T${index}`, total });
+  return {
+    axis: 'theme',
+    minRecords,
+    categoryCount: shown + below + unused,
+    rows: Array.from({ length: shown }, (_, index) => ({ ...entry(minRecords)(_, index), cells: [] })),
+    uncharted: [...Array.from({ length: below }, entry(1)), ...Array.from({ length: unused }, entry(0))],
+  };
+}
+
+describe('coverage footnote counts', () => {
+  const cases: [string, number, number, number, number, string][] = [
+    ['all charted, threshold 1', 22, 0, 0, 1, "All 22 themes in Policai's vocabulary have a verified record and are shown."],
+    ['all charted, threshold 6', 22, 0, 0, 6, "All 22 themes in Policai's vocabulary have six or more verified records and are shown."],
+    ['none charted, threshold 1', 0, 0, 22, 1, "None of the 22 themes in Policai's vocabulary has a verified record yet."],
+    ['none charted, threshold 6, all empty', 0, 0, 22, 6, "None of the 22 themes in Policai's vocabulary has a verified record yet."],
+    ['none charted, threshold 6, some below', 0, 2, 20, 6, "Of the 22 themes in Policai's vocabulary, none has six or more verified records; two have fewer and are not charted; 20 have no verified record yet."],
+    ['none charted, threshold 6, one below', 0, 1, 21, 6, "Of the 22 themes in Policai's vocabulary, none has six or more verified records; one has fewer and is not charted; 21 have no verified record yet."],
+    ['one charted, threshold 1', 1, 0, 21, 1, "Of the 22 themes in Policai's vocabulary, one has a verified record and is shown; 21 have no verified record yet."],
+    ['two charted, threshold 1', 2, 0, 1, 1, "Of the three themes in Policai's vocabulary, two have a verified record and are shown; one has no verified record yet."],
+    ['many charted, threshold 1', 20, 0, 2, 1, "Of the 22 themes in Policai's vocabulary, 20 have a verified record and are shown; two have no verified record yet."],
+    ['some charted, threshold 6, all three groups', 12, 2, 8, 6, "Of the 22 themes in Policai's vocabulary, 12 have six or more verified records and are shown; two have fewer and are not charted; eight have no verified record yet."],
+    ['some charted, threshold 6, one below and none empty', 21, 1, 0, 6, "Of the 22 themes in Policai's vocabulary, 21 have six or more verified records and are shown; one has fewer and is not charted."],
+  ];
+
+  it.each(cases)('%s', (_, shown, below, unused, minRecords, sentence) => {
+    expect(coverageFootnote(themeTable(shown, below, unused, minRecords))).toBe(
+      `${sentence} Themes are an editorial vocabulary assigned to verified register records, not legal categories, and a count does not measure how strong an instrument is.`,
+    );
+  });
+
+  it.each([
+    [0, 'No instrument type has a verified record.'],
+    [1, 'One instrument type has a verified record.'],
+    [2, 'Two instrument types have a verified record.'],
+    [8, 'Eight instrument types have a verified record.'],
+  ])('describes %i instrument types', (shown, sentence) => {
+    expect(coverageFootnote({ ...themeTable(shown, 0, 0, 1), axis: 'type' })).toBe(
+      `${sentence} The type is the register's own classification of each instrument, and a count does not measure how strong an instrument is.`,
     );
   });
 });
