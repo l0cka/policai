@@ -1,3 +1,4 @@
+import { createHostGate, type HostGate } from '@/lib/pipeline/host-gate'
 import type { Agency, Policy, TimelineEvent } from '@/types'
 
 export function buildPolicy(overrides: Partial<Policy> = {}): Policy {
@@ -104,4 +105,14 @@ export function buildTimelineEvent(overrides: Partial<TimelineEvent> = {}): Time
     },
     ...overrides,
   }
+}
+
+export function buildOpenHostGate(): HostGate {
+  return createHostGate({
+    hosts: {},
+    refused: new Map(),
+    fetchRobots: async () => ({ status: 404, body: '' }),
+    now: Date.now,
+    sleep: async () => {},
+  })
 }

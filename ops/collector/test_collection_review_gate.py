@@ -444,11 +444,23 @@ class GateTest(unittest.TestCase):
     def test_malformed_state_is_not_a_passing_attestation(self):
         original = copy.deepcopy(self.state)
         for key, value in [('lastCheckedBySource', {'source-a': 4}),
-                           ('sourceSnapshots', {'source-a': {'changeCount': -1}})]:
+                           ('sourceSnapshots', {'source-a': {'changeCount': -1}}),
+                           ('hosts', []), ('hosts', {'www.example.gov.au': 'seen'})]:
             self.state = copy.deepcopy(original)
             self.state[key] = value
             self.revise()
             self.assert_escalates('state')
+
+    def test_host_gate_records_in_watch_state_pass(self):
+        self.state['hosts'] = {'www.example.gov.au': {
+            'seenAt': '2026-10-20T19:35:00.000Z',
+            'robots': {'fetchedAt': '2026-10-20T19:35:00.000Z', 'status': 'parsed',
+                       'allow': [], 'disallow': ['/search'], 'crawlDelaySec': None, 'sitemaps': []},
+            'backoffUntil': None, 'backoffStatus': None, 'backoffCount': 0}}
+        self.revise()
+        result = self.run_gate()
+        self.assertEqual(result['verdict'], 'would-merge', result['reasons'])
+        self.assertEqual(result['changed_paths'], ['data/watch-state.json', 'public/data/meta.json'])
 
     def test_malformed_json_and_missing_evidence_file(self):
         for raw in ['{', '[]', '{"head":1,"head":2}', '{"schema_version":NaN}']:

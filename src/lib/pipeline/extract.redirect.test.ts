@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { afterEach, vi } from 'vitest';
 import { canonicalizeSourceUrl } from '@/lib/source-url';
 import { collect, emptyWatchState } from './collect';
+import { buildOpenHostGate } from '@/test/factories';
 import { retrieveSource } from './fetch';
 import { WATCH_SOURCES } from './sources';
 import { extractCandidatesFromHtml, extractCandidatesFromRss } from './extract';
@@ -101,6 +102,7 @@ describe('official search redirect extraction', () => {
       throw new Error(`Unexpected fixture fetch: ${url}`);
     });
     const result = await collect({
+      hostGate: buildOpenHostGate(),
       sources: [source], state, existingDevelopments: [], fetchImpl,
       browserFetchImpl: fetchImpl,
       now: () => new Date('2026-10-06T00:00:00.000Z'),

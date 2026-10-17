@@ -378,3 +378,22 @@ describe('hosts', () => {
     expect(h.gate.hosts()[hostOf(url('/'))]).toBeDefined();
   });
 });
+
+describe('state size', () => {
+  it('keeps a 67-host state with Drupal-sized robots under 160 KiB when pretty-printed', async () => {
+    const rules = Array.from({ length: 60 }, (_, i) => `Disallow: /core/path-number-${i}/`).join('\n');
+    const robots: Robots = {};
+    const origins = Array.from({ length: 67 }, (_, i) => `https://www.agency-${i}.gov.au`);
+    for (const origin of origins) {
+      robots[origin] = { status: 200, body: `User-agent: *\n${rules}\nSitemap: ${origin}/sitemap.xml` };
+    }
+    const h = harness(robots);
+    for (const origin of origins) await h.gate.admit(url('/news', origin));
+    const serialized = JSON.stringify(h.gate.hosts(), null, 2);
+    const bytes = Buffer.byteLength(serialized);
+    const lines = serialized.split('\n').length;
+    expect(bytes).toBeLessThan(160 * 1024);
+    expect(lines).toBeLessThan(67 * 80);
+    console.info(`host state: ${bytes} bytes, ${lines} lines for 67 hosts x 60 rules`);
+  });
+});

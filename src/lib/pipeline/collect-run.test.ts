@@ -8,6 +8,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { runCollection } from '../../../scripts/collect-run';
 import { buildPolicy } from '@/test/factories';
 import type { Development, SourceReview } from '@/types';
+import type { WatchState } from './collect';
+import { createHostGate, robotsFetcher } from './host-gate';
 import type { WatchSource } from './sources';
 
 const SOURCE: WatchSource = {
@@ -77,6 +79,13 @@ describe('collection CLI write path', () => {
       dryRun: false,
       fetchImpl,
       now: () => new Date('2026-07-10T00:00:00.000Z'),
+      hostGate: createHostGate({
+        hosts: {},
+        refused: new Map(),
+        fetchRobots: robotsFetcher(fetchImpl),
+        now: Date.now,
+        sleep: async () => {},
+      }),
     });
 
     const developments = readJson<Development[]>('data', 'developments.json');
@@ -88,6 +97,7 @@ describe('collection CLI write path', () => {
       createdBy: 'collector',
     });
     expect(readJson('data', 'watch-state.json')).toHaveProperty('seen');
+    expect(readJson<WatchState>('data', 'watch-state.json').hosts).toEqual({});
     expect(readJson('public', 'data', 'meta.json')).toHaveProperty('collector');
     expect(digest(registerFile())).toBe(before);
   });

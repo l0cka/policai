@@ -25,12 +25,17 @@ const { classifyBatch } = vi.hoisted(() => ({
 vi.mock('./claude-classify', () => ({ classifyBatch, CLAUDE_BATCH_SIZE: 20 }));
 
 import {
-  collect,
+  collect as collectThroughGate,
   collectionRunFailed,
   emptyWatchState,
   qualifiesForReview,
 } from './collect';
-import type { SeenCandidate, SourceSnapshot, WatchState } from './collect';
+import type { CollectOptions, SeenCandidate, SourceSnapshot, WatchState } from './collect';
+import { createHostGate, hostOf, type HostGate } from './host-gate';
+import { buildOpenHostGate } from '@/test/factories';
+
+const collect = (options: Omit<CollectOptions, 'hostGate'> & { hostGate?: HostGate }) =>
+  collectThroughGate({ hostGate: buildOpenHostGate(), ...options });
 import type { SourceReview } from '@/types';
 import { MACHINE_CONFIDENCE_CAP, type Classification } from './classify';
 import { validateSourceReviews } from '../validate-data';
@@ -147,6 +152,76 @@ function fakeFetch(routes: Record<string, FakeRoute>) {
     return new Response(body, { status: 200 });
   }) as unknown as typeof fetch;
 }
+
+describe('collect host gate state', () => {
+  it('reads host records from the state, hands them to the gate and writes the gate back', async () => {
+    const host = hostOf(new URL(HTML_SOURCE.url));
+    const state: WatchState = {
+      ...emptyWatchState(),
+      hosts: {
+        [host]: {
+          seenAt: '2026-07-09T00:00:00.000Z',
+          robots: {
+            fetchedAt: '2026-07-09T23:00:00.000Z',
+            status: 'parsed',
+            allow: [],
+            disallow: ['/never'],
+            crawlDelaySec: null,
+            sitemaps: [],
+          },
+          backoffUntil: null,
+          backoffStatus: null,
+          backoffCount: 0,
+        },
+      },
+    };
+    const robotsCalls: string[] = [];
+    const hostGate = createHostGate({
+      hosts: state.hosts,
+      refused: new Map(),
+      fetchRobots: async (origin) => {
+        robotsCalls.push(origin);
+        return { status: 404, body: '' };
+      },
+      now: () => Date.parse('2026-07-10T00:00:00.000Z'),
+      sleep: async () => {},
+    });
+    const log: string[] = [];
+    const result = await collect({
+      sources: [HTML_SOURCE],
+      state,
+      existingDevelopments: [],
+      fetchImpl: fakeFetch({
+        [HTML_SOURCE.url]: INDEX_HTML,
+        'https://www.example.gov.au/news/': '<html><body><h1>New AI policy framework released</h1></body></html>',
+      }),
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+      hostGate,
+      logger: (message) => log.push(message),
+    });
+    expect(result.errors).toEqual([]);
+    expect(result.state.hosts[host]).toMatchObject({
+      robots: { disallow: ['/never'], status: 'parsed' },
+    });
+    expect(robotsCalls).toEqual([]);
+    expect(state.hosts[host]?.seenAt).toBe('2026-07-09T00:00:00.000Z');
+    expect(log).toContainEqual(expect.stringMatching(/^\[collect\] host gate: waited 0 ms across \d+ hosts?/));
+  });
+
+  it('loads a state written before host records existed', async () => {
+    const legacy = emptyWatchState() as Partial<WatchState>;
+    delete legacy.hosts;
+    const result = await collect({
+      sources: [HTML_SOURCE],
+      state: legacy as WatchState,
+      existingDevelopments: [],
+      fetchImpl: fakeFetch({ [HTML_SOURCE.url]: INDEX_HTML }),
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+    });
+    expect(result.errors).toEqual([]);
+    expect(result.state.hosts).toBeDefined();
+  });
+});
 
 describe('collect', () => {
   it('detects new items, skips seen URLs, and updates state', async () => {
@@ -2742,6 +2817,7 @@ describe('collect', () => {
           sourceSnapshots: input.previousSnapshot
             ? { [weeklyDocument.id]: input.previousSnapshot }
             : {},
+          hosts: {},
         },
         sourceReviews: [review],
         existingDevelopments: [],
