@@ -30,6 +30,7 @@ import {
 } from './extract';
 import {
   foldLinkedDocuments,
+  isGateError,
   matchesRetrievedContent,
   retrieveSource,
   SourceFetchError,
@@ -156,18 +157,18 @@ const WEEKLY_INTERVAL_MS = 6 * 24 * 60 * 60 * 1000;
 const BROWSER_RETRIEVAL_TIMEOUT_MS = 60_000;
 
 function isDeferredByGate(error: unknown): boolean {
-  return (
-    error instanceof SourceFetchError &&
-    error.code === 'gate_refused' &&
-    error.retryable
-  );
+  return isGateError(error) && error.retryable;
+}
+
+function isDeferredByWaitBudget(error: unknown): boolean {
+  return error instanceof SourceFetchError && error.code === 'gate_deferred';
 }
 
 /** Allow-list and homepage-redirect failures are not client-dependent. */
 function isBrowserFallbackFutile(error: unknown): boolean {
   return (
     error instanceof SourceFetchError &&
-    (error.code === 'destination_mismatch' || error.code === 'gate_refused')
+    (error.code === 'destination_mismatch' || isGateError(error))
   );
 }
 
@@ -1687,6 +1688,13 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         const message = `${source.id}: ${
           error instanceof Error ? error.message : String(error)
         }`;
+        if (isDeferredByWaitBudget(error)) {
+          log(`[collect] ${message}; source deferred to the next run`);
+          sourceResults.push(
+            sourceResult(source.id, 'skipped', nowIso, startedAt, null, 0, 0, undefined, false),
+          );
+          continue;
+        }
         sourceErrors.push(message);
         errors.push(message);
         failure ??= rowFailure(error, source.url);

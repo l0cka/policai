@@ -1,4 +1,5 @@
 export const ROBOTS_MAX_BYTES = 500 * 1024;
+export const CRAWL_DELAY_CAP_SEC = 24 * 60 * 60;
 
 export interface RobotsRules {
   allow: string[];
@@ -141,7 +142,7 @@ export function parseRobots(body: string, token: string): RobotsRules {
     if (field === 'crawl-delay') {
       collecting = true;
       if (!CRAWL_DELAY.test(value)) continue;
-      const seconds = Number(value);
+      const seconds = Math.min(Number(value), CRAWL_DELAY_CAP_SEC);
       for (const agent of agents) {
         const group = groupFor(agent);
         group.crawlDelaySec ??= seconds;

@@ -3,6 +3,7 @@ import {
   admitThroughGate,
   assertSafeSourceUrl,
   DEFAULT_MAX_RESPONSE_BYTES,
+  isGateError,
   readResponseBytes,
   resolveHostAddresses,
   SourceFetchError,
@@ -210,7 +211,7 @@ export async function scrapeWithFirecrawl(
       finalUrl,
     };
   } catch (error) {
-    if (error instanceof SourceFetchError && error.code === 'gate_refused') throw error;
+    if (isGateError(error)) throw error;
     const detail = error instanceof Error ? error.message : String(error);
     const aborted = error instanceof Error && error.name === 'AbortError';
     return {

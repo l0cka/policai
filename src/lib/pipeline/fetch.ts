@@ -44,7 +44,7 @@ export { COLLECTOR_USER_AGENT };
 export class SourceFetchError extends Error {
   readonly status?: number;
   readonly retryable: boolean;
-  readonly code?: 'destination_mismatch' | 'gate_refused';
+  readonly code?: 'destination_mismatch' | 'gate_refused' | 'gate_deferred';
   url?: string;
 
   constructor(
@@ -53,7 +53,7 @@ export class SourceFetchError extends Error {
       status?: number;
       retryable?: boolean;
       cause?: unknown;
-      code?: 'destination_mismatch' | 'gate_refused';
+      code?: 'destination_mismatch' | 'gate_refused' | 'gate_deferred';
       url?: string;
     } = {},
   ) {
@@ -92,11 +92,18 @@ export async function admitThroughGate(
       { retryable: false, code: 'gate_refused', url },
     );
   }
+  if (admission.kind === 'deferred') {
+    throw new SourceFetchError(admission.detail, { retryable: true, code: 'gate_deferred', url });
+  }
   throw new SourceFetchError(admission.detail, {
     retryable: admission.cls !== 'robots_disallowed',
     code: 'gate_refused',
     url,
   });
+}
+
+export function isGateError(error: unknown): error is SourceFetchError {
+  return error instanceof SourceFetchError && (error.code === 'gate_refused' || error.code === 'gate_deferred');
 }
 
 function hostsDiffer(a: string, b: string): boolean {
@@ -1355,7 +1362,7 @@ export async function retrieveSource(
       return await addLinkedDocumentEvidence(result, url, options);
     } catch (error) {
       const failed = failedAt(error, currentUrl);
-      lastError = failed.code === 'gate_refused' && lastError ? lastError : failed;
+      lastError = isGateError(failed) && lastError ? lastError : failed;
 
       if (!lastError.retryable || attempt === attempts) {
         throw lastError;

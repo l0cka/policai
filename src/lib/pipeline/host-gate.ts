@@ -43,13 +43,14 @@ export type StoredHostRecord = Omit<HostRecord, 'robotsUnreachableRuns'> &
 
 export type RefusalClass = Extract<
   FailureClass,
-  'robots_disallowed' | 'rate_limited' | 'host_unavailable' | 'identity_refused' | 'timeout'
+  'robots_disallowed' | 'rate_limited' | 'host_unavailable' | 'identity_refused'
 >;
 
 export type Admission =
   | { kind: 'go' }
   | { kind: 'decided_block'; sourceId: string }
-  | { kind: 'refused'; cls: RefusalClass; detail: string };
+  | { kind: 'refused'; cls: RefusalClass; detail: string }
+  | { kind: 'deferred'; detail: string };
 
 export type Transport = 'http' | 'browser' | 'firecrawl';
 
@@ -141,6 +142,13 @@ export function robotsUnverifiedHosts(hosts: Record<Host, HostRecord>): Host[] {
     .sort();
 }
 
+function robotsOutcome(response: { status: number } | null): RobotsRecord['status'] {
+  const statusClass = response === null ? 0 : Math.floor(response.status / 100);
+  if (statusClass === 2) return 'parsed';
+  if (statusClass === 4) return 'absent';
+  return 'unreachable';
+}
+
 function parseRetryAfter(value: string | null | undefined, nowMs: number): number | null {
   if (!value) return null;
   const trimmed = value.trim();
@@ -160,10 +168,10 @@ export function createHostGate(deps: HostGateDeps): HostGate {
     ]),
   );
   const tripped = new Map<Host, { cls: RefusalClass; reason: string }>();
-  const lastRequestAt = new Map<Host, number>();
+  const lastRequest = new Map<Host, { at: number; gapMs: number }>();
   const waited = new Map<Host, number>();
   const robotsTried = new Set<Host>();
-  let waitedTotal = 0;
+  let budgetSpent = 0;
 
   const iso = () => new Date(deps.now()).toISOString();
 
@@ -179,20 +187,22 @@ export function createHostGate(deps: HostGateDeps): HostGate {
     return Math.max(minGapMs, Math.min(crawlDelayMs, MAX_WAIT_MS));
   };
 
-  const waitUntil = async (host: Host, readyAt: number): Promise<boolean> => {
-    const delay = readyAt - deps.now();
+  const waitUntil = async (host: Host, readyAt: number, freeUntil: number): Promise<boolean> => {
+    const nowMs = deps.now();
+    const delay = readyAt - nowMs;
     if (delay <= 0) return true;
-    if (waitedTotal + delay > waitBudgetMs) return false;
-    waitedTotal += delay;
+    const requested = Math.min(delay, readyAt - freeUntil);
+    if (requested > 0 && budgetSpent + requested > waitBudgetMs) return false;
+    budgetSpent += Math.max(0, requested);
     waited.set(host, (waited.get(host) ?? 0) + delay);
     await deps.sleep(delay);
     return true;
   };
 
-  const pace = async (host: Host, record: HostRecord): Promise<boolean> => {
-    const last = lastRequestAt.get(host);
-    if (last !== undefined && !(await waitUntil(host, last + gapFor(record)))) return false;
-    lastRequestAt.set(host, deps.now());
+  const pace = async (host: Host, gapAfterMs: number): Promise<boolean> => {
+    const last = lastRequest.get(host);
+    if (last !== undefined && !(await waitUntil(host, last.at + last.gapMs, last.at + minGapMs))) return false;
+    lastRequest.set(host, { at: deps.now(), gapMs: gapAfterMs });
     return true;
   };
 
@@ -204,8 +214,7 @@ export function createHostGate(deps: HostGateDeps): HostGate {
   const notRequested = (reason: string, url: URL): string => `${reason}; ${url} not requested`;
 
   const overBudget = (host: Host, url: URL): Admission => ({
-    kind: 'refused',
-    cls: 'timeout',
+    kind: 'deferred',
     detail: notRequested(
       `the run's ${waitBudgetMs} ms host-gate wait budget is spent, so ${host} cannot be paced`,
       url,
@@ -214,11 +223,12 @@ export function createHostGate(deps: HostGateDeps): HostGate {
 
   const loadRobots = async (url: URL, host: Host, record: HostRecord): Promise<boolean> => {
     if (robotsFresh(record.robots) || robotsTried.has(host)) return true;
-    if (!(await pace(host, record))) return false;
+    if (!(await pace(host, minGapMs))) return false;
     robotsTried.add(host);
     const response = await deps.fetchRobots(url.origin);
     const fetchedAt = iso();
-    if (response === null || response.status >= 500) {
+    const outcome = robotsOutcome(response);
+    if (response === null || outcome === 'unreachable') {
       record.robotsUnreachableRuns += 1;
       if (record.robots === null || record.robots.status === 'unreachable') {
         record.robots = { ...(record.robots ?? NO_RULES), fetchedAt, status: 'unreachable' };
@@ -226,15 +236,10 @@ export function createHostGate(deps: HostGateDeps): HostGate {
       return true;
     }
     record.robotsUnreachableRuns = 0;
-    if (response.status >= 400) {
-      record.robots = { ...NO_RULES, fetchedAt, status: 'absent' };
-    } else {
-      record.robots = {
-        ...storedRobots(parseRobots(response.body, PRODUCT_TOKEN), url.origin),
-        fetchedAt,
-        status: 'parsed',
-      };
-    }
+    record.robots =
+      outcome === 'absent'
+        ? { ...NO_RULES, fetchedAt, status: 'absent' }
+        : { ...storedRobots(parseRobots(response.body, PRODUCT_TOKEN), url.origin), fetchedAt, status: 'parsed' };
     return true;
   };
 
@@ -258,12 +263,12 @@ export function createHostGate(deps: HostGateDeps): HostGate {
           detail: notRequested(`${host} is backing off until ${record.backoffUntil} after HTTP ${record.backoffStatus ?? 503}`, url),
         };
       }
-      if (remaining > 0 && !(await waitUntil(host, deps.now() + remaining))) return overBudget(host, url);
+      if (remaining > 0 && !(await waitUntil(host, deps.now() + remaining, deps.now()))) return overBudget(host, url);
       if (!(await loadRobots(url, host, record))) return overBudget(host, url);
       if (record.robots && !robotsAllows(record.robots, url)) {
         return { kind: 'refused', cls: 'robots_disallowed', detail: `${url} is disallowed by robots.txt for ${PRODUCT_TOKEN}` };
       }
-      if (!(await pace(host, record))) return overBudget(host, url);
+      if (!(await pace(host, gapFor(record)))) return overBudget(host, url);
       return { kind: 'go' };
     },
 
