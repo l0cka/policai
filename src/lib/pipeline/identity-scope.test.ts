@@ -8,6 +8,11 @@ import { destinationCollectorIdentity, identityAuthorityFor } from './identity';
 const { scrapeWithFirecrawl } = vi.hoisted(() => ({ scrapeWithFirecrawl: vi.fn() }));
 vi.mock('./firecrawl', () => ({ scrapeWithFirecrawl }));
 vi.mock('./claude-classify', () => ({ classifyBatch: vi.fn(), CLAUDE_BATCH_SIZE: 20 }));
+vi.mock('./sources', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('./sources')>();
+  const { withFixtureIdentityException } = await import('@/test/factories');
+  return { ...actual, WATCH_SOURCES: withFixtureIdentityException(actual.WATCH_SOURCES) };
+});
 import { collect, emptyWatchState } from './collect';
 
 const source = WATCH_SOURCES.find(s => s.id === 'industry-ai-publications')!;
@@ -24,16 +29,16 @@ beforeEach(() => {
 afterEach(() => { vi.useRealTimers(); vi.unstubAllEnvs(); });
 
 describe('destination authority before outgoing requests', () => {
-  it('expires all 16 permissions at the exact Sydney boundary with warnings only', () => {
+  it('expires a registered permission at the exact Sydney boundary with warnings only', () => {
     const before = new Date('2026-10-20T12:59:59.999Z');
     const boundary = new Date('2026-10-20T13:00:00.000Z');
     const active = (now: Date) => WATCH_SOURCES.filter(s =>
       destinationCollectorIdentity(identityAuthorityFor(s), s.url, now) === 'exempt');
-    expect(active(before)).toHaveLength(16);
+    expect(active(before).map(s => s.id)).toEqual([source.id]);
     expect(active(boundary)).toHaveLength(0);
     const report = validateWatchSources(WATCH_SOURCES, boundary);
     expect(report.errors).toEqual([]);
-    expect(report.warnings.filter(w => w.includes('identity exception expired'))).toHaveLength(16);
+    expect(report.warnings.filter(w => w.includes('identity exception expired'))).toHaveLength(1);
   });
 
   it('does not extend authority to sibling origins, credentials or invalid clocks', () => {

@@ -23,6 +23,11 @@ const { classifyBatch } = vi.hoisted(() => ({
   classifyBatch: vi.fn(),
 }));
 vi.mock('./claude-classify', () => ({ classifyBatch, CLAUDE_BATCH_SIZE: 20 }));
+vi.mock('./sources', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('./sources')>();
+  const { withFixtureIdentityException } = await import('@/test/factories');
+  return { ...actual, WATCH_SOURCES: withFixtureIdentityException(actual.WATCH_SOURCES) };
+});
 
 import {
   collect,

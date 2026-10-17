@@ -3,6 +3,11 @@ import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { createBrowserFetch, type BrowserLike } from './browser-fetch';
 import { COLLECTOR_IDENTITY_TOKEN, destinationCollectorIdentity, identityAuthorityFor } from './identity';
 import { WATCH_SOURCES } from './sources';
+vi.mock('./sources', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('./sources')>();
+  const { withFixtureIdentityException } = await import('@/test/factories');
+  return { ...actual, WATCH_SOURCES: withFixtureIdentityException(actual.WATCH_SOURCES) };
+});
 
 const sourceUrl = 'https://www.industry.gov.au/publications?pub-topic=2963';
 const authority = { sourceId: 'industry-ai-publications', sourceUrl, until: '2026-10-21' };
