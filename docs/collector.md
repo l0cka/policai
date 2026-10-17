@@ -515,7 +515,8 @@ fail.
 
 ## Production automation
 
-Collection runs daily (~05:30 Sydney) on the maintainer's server through
+Collection runs daily at 19:30 UTC (06:30 AEDT, 05:30 AEST) on the
+maintainer's server through
 [`ops/collector/policai-collect.sh`](../ops/collector/policai-collect.sh), installed
 at `~/.local/bin/policai-collect.sh`. See the
 [wrapper runbook](../ops/collector/README.md) for installation, tests and recovery.
