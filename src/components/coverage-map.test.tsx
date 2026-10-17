@@ -151,6 +151,24 @@ describe('CoverageMap', () => {
     expect(window.location.search).toBe('?j=nsw');
   });
 
+  it('replaces history to open and close a selection and pushes a move to a new one', () => {
+    renderMap();
+    const push = vi.spyOn(window.history, 'pushState');
+    const replace = vi.spyOn(window.history, 'replaceState');
+    const urls = (spy: typeof push) => spy.mock.calls.map((call) => call[2]);
+
+    act(() => cell(/^Courts and tribunals, New South Wales/).click());
+    expect(urls(replace)).toEqual(['/coverage?theme=courts-tribunals&j=nsw']);
+    expect(push).not.toHaveBeenCalled();
+
+    act(() => cell(/^Generative AI, Federal/).click());
+    expect(urls(push)).toEqual(['/coverage?theme=generative-ai&j=federal']);
+
+    act(() => screen.getByRole('button', { name: 'Clear selection' }).click());
+    expect(urls(replace)).toEqual(['/coverage?theme=courts-tribunals&j=nsw', '/coverage']);
+    expect(push).toHaveBeenCalledTimes(1);
+  });
+
   it('restores the selection from the URL on Back', () => {
     renderMap();
     act(() => cell(/^Courts and tribunals, New South Wales/).click());
