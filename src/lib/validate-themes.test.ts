@@ -6,7 +6,10 @@ import { buildPolicy } from '@/test/factories';
 import { getPolicies } from './data-service';
 import { readJsonFile } from './file-store';
 import { validatePolicyThemes, validateThemeCoverage } from './validate-data';
+import { THEMES } from './themes';
 import type { Policy } from '@/types';
+
+const VALID_IDS = `valid theme ids are ${THEMES.map(({ key }) => key).join(', ')}`;
 
 function withThemes(id: string, themes: unknown): Policy {
   return {
@@ -43,7 +46,9 @@ describe('validatePolicyThemes', () => {
     expect(report.errors).toEqual(
       expect.arrayContaining([
         'no-themes: themes must be an array of theme ids',
+        `no-themes: ${VALID_IDS}`,
         'trashed-no-themes: themes must be an array of theme ids',
+        `trashed-no-themes: ${VALID_IDS}`,
       ]),
     );
   });
@@ -62,7 +67,9 @@ describe('validatePolicyThemes', () => {
     ]);
     expect(report.errors).toEqual([
       'none: themes must list 1 to 5 themes, not 0',
+      `none: ${VALID_IDS}`,
       'six: themes must list 1 to 5 themes, not 6',
+      `six: ${VALID_IDS}`,
     ]);
   });
 
@@ -73,7 +80,9 @@ describe('validatePolicyThemes', () => {
     ]);
     expect(report.errors).toEqual([
       'nested: theme entries must be theme id strings, not object ["generative-ai"]',
+      `nested: ${VALID_IDS}`,
       'number: theme entries must be theme id strings, not number 7',
+      `number: ${VALID_IDS}`,
     ]);
   });
 
@@ -85,7 +94,9 @@ describe('validatePolicyThemes', () => {
     expect(report.errors).toEqual([
       'unknown: unknown theme "courts"',
       'unknown: unknown theme "Generative AI"',
+      `unknown: ${VALID_IDS}`,
       'duplicate: duplicate theme "employment"',
+      `duplicate: ${VALID_IDS}`,
     ]);
   });
 });

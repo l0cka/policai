@@ -95,6 +95,7 @@ import {
 } from './source-ingest';
 import { timelineRevisionHash } from './policy-revision';
 import { buildPolicy } from '@/test/factories';
+import { THEMES } from '@/lib/themes';
 
 const SOURCE_URL = 'https://example.gov.au/policy';
 const DISCOVERY_URL = 'https://policy.example.com/analysis';
@@ -1852,6 +1853,31 @@ describe('source ingest approval workflow', () => {
     expect(updateSourceReview).not.toHaveBeenCalled();
   });
 
+  it('names the valid theme ids and the offending value when approval refuses a theme', async () => {
+    getSourceReviewById.mockResolvedValue(buildReview());
+
+    const error = await approveStagedSource({
+      id: 'source-review-1',
+      actor: 'reviewer',
+      proposedRecord: buildDraft({
+        effectiveDate: '2026-07-01',
+        themes: ['courts'] as unknown as Policy['themes'],
+      }),
+    }).then(
+      () => null,
+      (reason: unknown) => reason,
+    );
+
+    expect(error).toBeInstanceOf(Error);
+    const message = (error as Error).message;
+    expect(message).toContain('draft-policy: unknown theme "courts"');
+    expect(message).toContain(
+      `draft-policy: valid theme ids are ${THEMES.map(({ key }) => key).join(', ')}`,
+    );
+    expect(message).not.toContain('[object Object]');
+    expect(updateSourceReview).not.toHaveBeenCalled();
+  });
+
   it('refuses approval when a new-policy draft id belongs to another policy', async () => {
     const existingDraft = buildDraft({
       id: 'draft-policy',
@@ -3427,6 +3453,11 @@ describe('source ingest approval workflow', () => {
     ['unknown', ['courts'], 'unknown theme "courts"'],
     ['missing', undefined, 'themes must be an array of theme ids'],
     [
+      'nested',
+      [['generative-ai']],
+      'theme entries must be theme id strings, not object ["generative-ai"]',
+    ],
+    [
       'six',
       [
         'generative-ai',
@@ -3462,9 +3493,17 @@ describe('source ingest approval workflow', () => {
       }),
     );
 
-    await expect(publishStagedSource('source-review-1')).rejects.toThrow(
-      `Policy is not publishable: draft-policy: ${message}`,
+    const error = await publishStagedSource('source-review-1').then(
+      () => null,
+      (reason: unknown) => reason,
     );
+    expect(error).toBeInstanceOf(Error);
+    const text = (error as Error).message;
+    expect(text).toContain(`Policy is not publishable: draft-policy: ${message}`);
+    expect(text).toContain(
+      `draft-policy: valid theme ids are ${THEMES.map(({ key }) => key).join(', ')}`,
+    );
+    expect(text).not.toContain('[object Object]');
     expect(createPolicy).not.toHaveBeenCalled();
     expect(updatePolicy).not.toHaveBeenCalled();
   });
