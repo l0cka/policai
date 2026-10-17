@@ -518,7 +518,9 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'rss',
     schedule: 'daily',
     enabled: true,
-    automation: 'automatic',
+    automation: 'manual',
+    notes:
+      'Tracked by hand: the host refuses the Policai collector identity (HTTP 403, Akamai Access Denied page, text/html, 405 bytes, reference #18.dc603017.1792195278.6bbb455, verified 2026-10-17) and the source has failed every collection run since 2026-10-07. The block is respected and the user agent is not disguised or bypassed.',
   },
   {
     id: 'apra-rss',
