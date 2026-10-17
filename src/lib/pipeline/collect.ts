@@ -21,7 +21,7 @@ import {
 } from './classify';
 import type { ClaudeVerdict } from './claude-classify';
 import { extractRetrievedDocument } from './content';
-import { classifyFailure } from './failure';
+import { classifyFailure, publicFailureUrl } from './failure';
 import {
   extractFromHtml,
   extractFromRss,
@@ -1143,7 +1143,10 @@ function rowFailure(
   fallbackUrl: string,
 ): Required<Pick<SourceRunResult, 'failureClass' | 'failedUrl'>> {
   const { cls, url } = classifyFailure(error);
-  return { failureClass: cls, failedUrl: url ?? fallbackUrl };
+  return {
+    failureClass: cls,
+    failedUrl: url ?? publicFailureUrl(fallbackUrl) ?? fallbackUrl,
+  };
 }
 
 /**

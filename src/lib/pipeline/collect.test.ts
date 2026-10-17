@@ -33,7 +33,7 @@ import {
 import type { SeenCandidate, SourceSnapshot, WatchState } from './collect';
 import type { SourceReview } from '@/types';
 import { MACHINE_CONFIDENCE_CAP, type Classification } from './classify';
-import { validateSourceReviews } from '../validate-data';
+import { validateCollectionMeta, validateSourceReviews } from '../validate-data';
 
 beforeEach(() => {
   scrapeWithFirecrawl.mockReset();
@@ -540,7 +540,7 @@ describe('collect', () => {
     expect(result.state.seen[url]).toMatchObject({
       status: 'failed',
       attempts: 1,
-      lastError: 'HTTP 404',
+      lastError: `HTTP 404 at ${url}`,
     });
   });
 
@@ -574,7 +574,7 @@ describe('collect', () => {
     expect(result.state.seen[url]).toMatchObject({
       status: 'failed',
       attempts: 5,
-      lastError: 'HTTP 503',
+      lastError: `HTTP 503 at ${url}`,
     });
   });
 
@@ -3887,6 +3887,29 @@ describe('failure classes on source results', () => {
       failureClass: 'identity_refused',
       failedUrl: REFUSED_SOURCE.url,
     });
+  });
+
+  it('drops the query from a candidate URL used as failedUrl', async () => {
+    const candidate = 'https://www.example.gov.au/news/ai-policy-framework?auth=secret';
+    const result = await collect({
+      sources: [HTML_SOURCE],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl: fakeFetch({
+        [HTML_SOURCE.url]: INDEX_HTML.replace('/news/ai-policy-framework', '/news/ai-policy-framework?auth=secret'),
+        [candidate]: html('<html><body></body></html>'),
+        'https://www.example.gov.au/news/seen-before':
+          '<html><body><h1>Existing AI governance standard update</h1></body></html>',
+      }),
+      now,
+    });
+
+    const row = result.meta.collector.sourceResults[0];
+    expect(row).toMatchObject({
+      status: 'error',
+      failedUrl: 'https://www.example.gov.au/news/ai-policy-framework',
+    });
+    expect(validateCollectionMeta(result.meta).errors).toEqual([]);
   });
 
   it('writes failureClass and failedUrl together or not at all', async () => {

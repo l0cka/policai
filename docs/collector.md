@@ -488,30 +488,52 @@ do not depend on them.
 
 `classifyFailure` in [`failure.ts`](../src/lib/pipeline/failure.ts) matches
 the error message against `FAILURE_CLASSES` in this order and takes the first
-match. `failedUrl` is the first URL in the message (the Playwright `at <url>`
-target or a linked document), else the source URL for an index failure or the
-candidate URL for a candidate failure. When a source fails more than once in a
-run, the row records the first failure: the index, then a document version
-that exhausted its retries, then the first failing candidate. The
-`N candidate retrieval failure(s)` text is unchanged.
+match. When the message matches only `other`, it tries the error's `code`, its
+`AggregateError` members and its `cause` chain in turn, so Node's
+`fetch failed` with an `ECONNREFUSED` or `ECONNRESET` cause gets a class.
+
+`failedUrl` is the URL whose request failed. It is the URL carried on the
+`SourceFetchError` (`url`) when there is one, else the first URL in the
+message (the Playwright `at <url>` target), else the source URL for an index
+failure or the candidate URL for a candidate failure. Every retrieval path
+sets `url`: an HTTP status names the URL that returned it, so after a
+redirect it is the redirect target, the host that refused, not the URL first
+requested. A linked document that fails names the document, not the page that
+links it; the link-count and aggregate byte limits name the page. Other transport errors name the request in progress. An HTTP status
+message also carries the URL (`HTTP 403 at <url>`), so a candidate's stored
+`lastError` still names the refusing host on later runs.
+
+`failedUrl` is written to a public file, so it is reduced to a public form:
+credentials, the query string and the fragment are dropped, the scheme and
+host are lower-cased, trailing punctuation and closing brackets or quotes are
+trimmed, and a URL with no host is ignored. A URL longer than 2048 characters
+is reduced to its origin. The URL in an `HTTP nnn at <url>` message is reduced
+the same way.
+
+When a source fails more than once in a run, the row records the first
+failure: the index, then a document version that exhausted its retries, then
+the first failing candidate. The `N candidate retrieval failure(s)` text is
+unchanged.
 
 | Class | Matches | Meaning |
 | --- | --- | --- |
+| `robots_disallowed` | `disallowed by robots.txt` | robots.txt disallows the URL. No code raises it yet. It comes first so a refusal that robots.txt explains is not labelled `identity_refused`. |
 | `identity_refused` | `ERR_HTTP2_PROTOCOL_ERROR`, `ERR_CONNECTION_RESET`, `ECONNRESET`, `HTTP 403`, bot-challenge page | Heuristic label only. An outage can look the same. A human decides. |
-| `robots_disallowed` | `disallowed by robots.txt` | robots.txt disallows the URL. No code raises it yet. |
 | `rate_limited` | `HTTP 429` | The host asked us to slow down. |
 | `host_unavailable` | `HTTP 5xx`, `ERR_NAME_NOT_RESOLVED`, `ERR_CONNECTION_REFUSED`, `ERR_CERT_*`, `ECONNREFUSED`, `ENOTFOUND`, DNS lookup failures | The host could not be reached safely. |
 | `not_found` | `HTTP 404`, `HTTP 410` | The URL is gone. |
 | `http_error` | any other `HTTP nnn` | Another HTTP error status. |
-| `timeout` | `Timed out after`, `Timeout 45000ms exceeded`, `aborted due to timeout`, `ERR_TIMED_OUT` | A retrieval or navigation deadline passed. |
-| `empty` | `Source returned no usable index or feed items`, too few usable items, no document bytes, no browser response | The source answered with nothing usable. |
-| `parse` | no extractable or readable text, unsupported content or document type, byte validation, DOCX or PDF structure errors | Content arrived but could not be extracted. |
-| `other` | anything else | Read `error`. |
+| `timeout` | `timed out` (`Timed out after`), `Timeout 45000ms exceeded`, `aborted due to timeout`, `ERR_TIMED_OUT`, `ETIMEDOUT` | A retrieval or navigation deadline passed. Any other text that merely contains `timeout` is not a timeout. |
+| `empty` | `Source returned no usable index or feed items`, too few usable items, `Linked policy document <url> returned no document bytes`, no browser response | The source answered with nothing usable. |
+| `parse` | no extractable or readable text, unsupported content or document type, linked-document byte validation, DOCX or PDF structure errors | Content arrived but could not be extracted. |
+| `other` | anything else | Read `error`. This includes `Source response exceeds N byte limit` and `PDF retrieval did not retain the original document bytes` (an internal retention fault). |
 
 Nothing reacts to a class. A source leaves the health denominator only through
 a reviewed change to its `automation`. `npm run validate:data` rejects an
-unknown class, a non-URL `failedUrl`, and either field on a row that did not
-fail.
+unknown class, a `failedUrl` that is not already in its public form (for
+example one with credentials or a query string), either field on a row that
+did not fail, and one field without the other. Error rows written before the
+fields existed carry neither and stay valid.
 
 ## Production automation
 

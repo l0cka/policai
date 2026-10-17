@@ -17,6 +17,7 @@ import {
   LEGACY_FINGERPRINT_METADATA_KEYS,
   publicationDateCandidates,
 } from './date-metadata';
+import { publicFailureUrl } from './failure';
 import type {
   LinkedDocumentEvidence,
   SourceEvidence,
@@ -43,6 +44,7 @@ export class SourceFetchError extends Error {
   readonly status?: number;
   readonly retryable: boolean;
   readonly code?: 'destination_mismatch';
+  url?: string;
 
   constructor(
     message: string,
@@ -51,6 +53,7 @@ export class SourceFetchError extends Error {
       retryable?: boolean;
       cause?: unknown;
       code?: 'destination_mismatch';
+      url?: string;
     } = {},
   ) {
     super(message, { cause: options.cause });
@@ -58,7 +61,28 @@ export class SourceFetchError extends Error {
     this.status = options.status;
     this.retryable = options.retryable ?? false;
     this.code = options.code;
+    this.url = options.url;
   }
+}
+
+function failedAt(error: unknown, url: string): SourceFetchError {
+  const fetchError =
+    error instanceof SourceFetchError
+      ? error
+      : new SourceFetchError(errorMessage(error), {
+          retryable: true,
+          cause: error,
+        });
+  fetchError.url ??= url;
+  return fetchError;
+}
+
+function httpStatusError(status: number, url: string): SourceFetchError {
+  const shownUrl = publicFailureUrl(url);
+  return new SourceFetchError(
+    shownUrl ? `HTTP ${status} at ${shownUrl}` : `HTTP ${status}`,
+    { status, retryable: isRetryableStatus(status), url },
+  );
 }
 
 async function withinRetrievalDeadline<T>(
@@ -675,11 +699,15 @@ export async function foldLinkedDocuments(
         : 'public-https',
       hashLinkedDocuments: false,
     });
-    assertLinkedDocumentBytes(linked, url);
+    try {
+      assertLinkedDocumentBytes(linked, url);
+    } catch (error) {
+      throw failedAt(error, url);
+    }
     if (!linked.evidence.contentHash) {
       throw new SourceFetchError(
         `Linked policy document ${url} did not produce a content hash`,
-        { retryable: false },
+        { retryable: false, url },
       );
     }
     retainedLinkedDocumentBytes += linked.bytes?.byteLength ?? 0;
@@ -952,16 +980,7 @@ export async function retrieveSourceOverHttp1(
       clearTimeout(totalTimer);
       callback(value);
     };
-    const fail = (error: unknown) =>
-      finish(
-        reject,
-        error instanceof SourceFetchError
-          ? error
-          : new SourceFetchError(errorMessage(error), {
-              retryable: true,
-              cause: error,
-            }),
-      );
+    const fail = (error: unknown) => finish(reject, failedAt(error, url));
 
     const request = requestImpl(
       parsed,
@@ -999,17 +1018,12 @@ export async function retrieveSourceOverHttp1(
                 startedAt,
                 requestImpl: options.requestImpl,
               },
-            ).then(resolve, reject);
+            ).then(resolve, (error: unknown) => reject(failedAt(error, redirectUrl)));
             return;
           }
           if (status < 200 || status >= 300) {
             response.destroy();
-            fail(
-              new SourceFetchError(`HTTP ${status}`, {
-                status,
-                retryable: isRetryableStatus(status),
-              }),
-            );
+            fail(httpStatusError(status, url));
             return;
           }
 
@@ -1133,13 +1147,7 @@ export async function retrieveSourceOverHttp1(
     try {
       return await attemptAddress(addresses[index], addressTimeoutMs);
     } catch (error) {
-      lastError =
-        error instanceof SourceFetchError
-          ? error
-          : new SourceFetchError(errorMessage(error), {
-              retryable: true,
-              cause: error,
-            });
+      lastError = failedAt(error, url);
       if (!lastError.retryable) {
         throw lastError;
       }
@@ -1179,6 +1187,7 @@ export async function retrieveSource(
   for (let attempt = 1; attempt <= attempts; attempt++) {
     const startedAt = Date.now();
     const deadlineAt = startedAt + timeoutMs;
+    let currentUrl = url;
     try {
       if (!fetchImpl) {
         const retrieved = await networkRetriever(url, {
@@ -1193,7 +1202,6 @@ export async function retrieveSource(
         return await addLinkedDocumentEvidence(retrieved, url, options);
       }
 
-      let currentUrl = url;
       let response: Response;
       let redirectCount = 0;
       const deadlineSignal = AbortSignal.timeout(
@@ -1245,10 +1253,7 @@ export async function retrieveSource(
       }
 
       if (!response.ok) {
-        throw new SourceFetchError(`HTTP ${response.status}`, {
-          status: response.status,
-          retryable: isRetryableStatus(response.status),
-        });
+        throw httpStatusError(response.status, response.url || currentUrl);
       }
 
       const finalUrl = response.url || currentUrl;
@@ -1296,13 +1301,7 @@ export async function retrieveSource(
       assertExpectedSourceDestination(url, result);
       return await addLinkedDocumentEvidence(result, url, options);
     } catch (error) {
-      lastError =
-        error instanceof SourceFetchError
-          ? error
-          : new SourceFetchError(errorMessage(error), {
-              retryable: true,
-              cause: error,
-            });
+      lastError = failedAt(error, currentUrl);
 
       if (!lastError.retryable || attempt === attempts) {
         throw lastError;
