@@ -1589,6 +1589,7 @@ describe('validateCollectionMeta failure classes', () => {
     'https://www.example.gov.au/feed?token=abc',
     'https://',
     `https://www.example.gov.au/${'a'.repeat(2100)}`,
+    'ftp://www.example.gov.au/feed',
   ])('rejects failedUrl case %#', (failedUrl) => {
     expect(
       validateCollectionMeta(
