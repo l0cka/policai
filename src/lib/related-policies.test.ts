@@ -98,14 +98,14 @@ describe('relatedInstruments', () => {
   });
 
   it('carries id, title, jurisdiction and type', () => {
-    const self = policy('self', [T[0], T[1]]);
-    const other = policy('other', [T[0], T[1]], { jurisdiction: 'vic', type: 'legislation' });
+    const self = policy('self', [T[0], T[1], T[2]]);
+    const other = policy('other', [T[0], T[1], T[2]], { jurisdiction: 'vic', type: 'legislation' });
     expect(relatedInstruments(self, [self, other])[0]).toEqual({
       id: 'other',
       title: 'Title other',
       jurisdiction: 'vic',
       type: 'legislation',
-      sharedThemes: ['Generative AI', 'Courts and tribunals'],
+      sharedThemes: ['Generative AI', 'Courts and tribunals', 'AI governance'],
     });
   });
 });
