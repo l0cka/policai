@@ -243,6 +243,20 @@ class GateTest(unittest.TestCase):
         self.revise()
         self.assert_escalates('hidden')
 
+    def test_failure_class_fields_do_not_change_the_verdict(self):
+        c = self.meta['collector']
+        c['sourceResults'][0].update(status='error', error='source-a: HTTP 403', itemCount=None)
+        c.update(successfulSourceCount=0, failedSourceCount=1, health='failed', successRate=0,
+                 lastRunErrors=['source-a: HTTP 403'])
+        self.revise()
+        without = self.run_gate()
+        c['sourceResults'][0].update(failureClass='identity_refused',
+                                     failedUrl='https://www.example.gov.au/feed')
+        self.revise()
+        labelled = self.run_gate()
+        self.assertEqual((labelled['verdict'], labelled['reasons']),
+                         (without['verdict'], without['reasons']))
+
     def test_not_due_is_not_success_or_recovery(self):
         c = self.meta['collector']
         c['sourceResults'][0].update(status='skipped', coverageEligible=False, itemCount=None)

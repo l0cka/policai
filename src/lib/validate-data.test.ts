@@ -5,6 +5,7 @@ import { buildPolicy, buildTimelineEvent } from '@/test/factories';
 import {
   countUnsubstantiatedSecondaryDates,
   isAllowedSourceHost,
+  validateCollectionMeta,
   validateDevelopments,
   validatePolicyFrameworkArtifact,
   validatePolicies,
@@ -14,7 +15,7 @@ import {
   validateWatchSources,
 } from './validate-data';
 import type { WatchSource } from '@/lib/pipeline/sources';
-import type { Policy } from '@/types';
+import type { CollectionMeta, Policy, SourceRunResult } from '@/types';
 
 describe('isAllowedSourceHost', () => {
   it('allows https gov.au hosts and the CSIRO exception', () => {
@@ -1485,5 +1486,79 @@ describe('validateWatchSources identity exceptions', () => {
       new Date('2026-12-01T00:00:00.000Z'),
     );
     expect(report.warnings).toEqual([]);
+  });
+});
+
+describe('validateCollectionMeta failure classes', () => {
+  const row = (overrides: Partial<SourceRunResult>): SourceRunResult => ({
+    sourceId: 'source-a',
+    status: 'error',
+    coverageEligible: true,
+    checkedAt: '2026-10-17T19:30:00.000Z',
+    durationMs: 10,
+    itemCount: null,
+    candidateCount: 0,
+    newCandidateCount: 0,
+    error: 'source-a: HTTP 403',
+    ...overrides,
+  });
+  const meta = (result: SourceRunResult): CollectionMeta => {
+    const failed = result.status === 'error' ? 1 : 0;
+    return {
+      lastCollectedAt: '2026-10-17T19:30:00.000Z',
+      lastHealthyAt: null,
+      lastReviewedAt: null,
+      collector: {
+        runCount: 1,
+        lastRunSources: ['source-a'],
+        lastRunErrors: result.error ? [result.error] : [],
+        health: failed ? 'failed' : 'healthy',
+        dueSourceCount: 1,
+        successfulSourceCount: 1 - failed,
+        failedSourceCount: failed,
+        skippedSourceCount: 0,
+        successRate: 1 - failed,
+        automaticSourceCount: 1,
+        manualSourceCount: 0,
+        sourceResults: [result],
+      },
+    };
+  };
+
+  it('accepts an error row with and without a failure class', () => {
+    expect(validateCollectionMeta(meta(row({}))).errors).toEqual([]);
+    expect(
+      validateCollectionMeta(
+        meta(
+          row({
+            failureClass: 'identity_refused',
+            failedUrl: 'https://www.example.gov.au/feed',
+          }),
+        ),
+      ).errors,
+    ).toEqual([]);
+  });
+
+  it('rejects an unknown class, a malformed URL and fields on a success', () => {
+    expect(
+      validateCollectionMeta(
+        meta(row({ failureClass: 'blocked' as never, failedUrl: 'nope' })),
+      ).errors,
+    ).toEqual([
+      'meta:sourceResults[0]: invalid failureClass',
+      'meta:sourceResults[0]: invalid failedUrl',
+    ]);
+    expect(
+      validateCollectionMeta(
+        meta(
+          row({
+            status: 'success',
+            itemCount: 1,
+            error: undefined,
+            failureClass: 'timeout',
+          }),
+        ),
+      ).errors,
+    ).toEqual(['meta:sourceResults[0]: failure fields require a failed result']);
   });
 });

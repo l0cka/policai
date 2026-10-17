@@ -478,9 +478,45 @@ overwrite global collection health. It still exits non-zero when that targeted
 run is unhealthy, after persisting retry and snapshot state. Targeted runs
 force the selected source regardless of its normal daily/weekly due time.
 
+### Failure classes
+
+Each failed row in `meta.json` → `collector.sourceResults` carries
+`failureClass` and `failedUrl`. Successful and skipped rows carry neither.
+The Editorial Manager reads them after a refusal to decide whether a source
+moves to manual tracking. The `error` text, health, thresholds and exit code
+do not depend on them.
+
+`classifyFailure` in [`failure.ts`](../src/lib/pipeline/failure.ts) matches
+the error message against `FAILURE_CLASSES` in this order and takes the first
+match. `failedUrl` is the first URL in the message (the Playwright `at <url>`
+target or a linked document), else the source URL for an index failure or the
+candidate URL for a candidate failure. When a source fails more than once in a
+run, the row records the first failure: the index, then a document version
+that exhausted its retries, then the first failing candidate. The
+`N candidate retrieval failure(s)` text is unchanged.
+
+| Class | Matches | Meaning |
+| --- | --- | --- |
+| `identity_refused` | `ERR_HTTP2_PROTOCOL_ERROR`, `ERR_CONNECTION_RESET`, `ECONNRESET`, `HTTP 403`, bot-challenge page | Heuristic label only. An outage can look the same. A human decides. |
+| `robots_disallowed` | `disallowed by robots.txt` | robots.txt disallows the URL. No code raises it yet. |
+| `rate_limited` | `HTTP 429` | The host asked us to slow down. |
+| `host_unavailable` | `HTTP 5xx`, `ERR_NAME_NOT_RESOLVED`, `ERR_CONNECTION_REFUSED`, `ERR_CERT_*`, `ECONNREFUSED`, `ENOTFOUND`, DNS lookup failures | The host could not be reached safely. |
+| `not_found` | `HTTP 404`, `HTTP 410` | The URL is gone. |
+| `http_error` | any other `HTTP nnn` | Another HTTP error status. |
+| `timeout` | `Timed out after`, `Timeout 45000ms exceeded`, `aborted due to timeout`, `ERR_TIMED_OUT` | A retrieval or navigation deadline passed. |
+| `empty` | `Source returned no usable index or feed items`, too few usable items, no document bytes, no browser response | The source answered with nothing usable. |
+| `parse` | no extractable or readable text, unsupported content or document type, byte validation, DOCX or PDF structure errors | Content arrived but could not be extracted. |
+| `other` | anything else | Read `error`. |
+
+Nothing reacts to a class. A source leaves the health denominator only through
+a reviewed change to its `automation`. `npm run validate:data` rejects an
+unknown class, a non-URL `failedUrl`, and either field on a row that did not
+fail.
+
 ## Production automation
 
-Collection runs daily (~05:30 Sydney) on the maintainer's server through
+Collection runs daily at 19:30 UTC (06:30 AEDT, 05:30 AEST) on the
+maintainer's server through
 [`ops/collector/policai-collect.sh`](../ops/collector/policai-collect.sh), installed
 at `~/.local/bin/policai-collect.sh`. See the
 [wrapper runbook](../ops/collector/README.md) for installation, tests and recovery.
