@@ -45,7 +45,14 @@ vi.mock('@/lib/court-requirements', () => ({
 }))
 
 import {
+  MAX_THEMES_PER_RECORD,
+  MIN_PUBLIC_RECORDS_PER_THEME,
+  MIN_THEMES_PER_RECORD,
+  THEMES,
+} from '@/lib/themes'
+import {
   handleApproveStagedSource,
+  handleListThemes,
   handlePublishStagedSource,
   handleListCourtRequirementCandidates,
   handleRecordManualSourceReview,
@@ -337,5 +344,32 @@ describe('MCP tool handlers', () => {
     ).rejects.toThrow('human reviewer identity')
 
     expect(recordManualSourceReview).not.toHaveBeenCalled()
+  })
+
+  it('lists every theme key and label in table order with the theme rules', () => {
+    const listing = handleListThemes()
+
+    expect(listing.themes).toHaveLength(THEMES.length)
+    expect(listing.themes[0]).toEqual({ key: 'generative-ai', label: 'Generative AI' })
+    expect(listing.themes.map(({ key }) => key)).toEqual(THEMES.map(({ key }) => key))
+    expect(listing.themes).toEqual(THEMES.map(({ key, label }) => ({ key, label })))
+    expect(listing).toEqual({
+      themes: listing.themes,
+      minThemesPerRecord: MIN_THEMES_PER_RECORD,
+      maxThemesPerRecord: MAX_THEMES_PER_RECORD,
+      minRecordsPerTheme: MIN_PUBLIC_RECORDS_PER_THEME,
+    })
+  })
+
+  it('derives the listing from the table it reads, keeping only key and label', () => {
+    const table = [
+      ...THEMES,
+      { key: 'new-theme', label: 'New theme', note: 'not listed' },
+    ]
+
+    const listing = handleListThemes(table)
+
+    expect(listing.themes).toHaveLength(THEMES.length + 1)
+    expect(listing.themes.at(-1)).toEqual({ key: 'new-theme', label: 'New theme' })
   })
 })

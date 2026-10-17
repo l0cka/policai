@@ -1,7 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
-import Link from 'next/link';
+import { useMemo, useState, type ReactNode } from 'react';
 import {
   ArrowRight,
   Check,
@@ -102,11 +101,11 @@ function CopyLinkButton() {
 
 export function PolicyDetailTabs({
   policy,
-  relatedPolicies,
+  related,
   courtRequirements = [],
 }: {
   policy: Policy;
-  relatedPolicies: Policy[];
+  related?: ReactNode;
   courtRequirements?: PublicCourtRequirement[];
 }) {
   const [activeTab, setActiveTab] = useState<TabId>('overview');
@@ -280,6 +279,7 @@ export function PolicyDetailTabs({
             </div>
           ) : null}
 
+          {related}
         </div>
 
         <aside className="space-y-5 xl:pt-0">
@@ -362,31 +362,6 @@ export function PolicyDetailTabs({
           ) : null}
         </aside>
       </div>
-
-      <section className="mt-6 border-t border-border pt-5">
-        <h2 className="section-title">Related policies</h2>
-        <div className="mt-3"><RelatedPolicies policies={relatedPolicies} /></div>
-      </section>
-    </div>
-  );
-}
-
-function RelatedPolicies({ policies }: { policies: Policy[] }) {
-  if (policies.length === 0) {
-    return <p className="text-sm text-muted-foreground">No related policies are currently published.</p>;
-  }
-
-  return (
-    <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-      {policies.map((related) => (
-        <Link key={related.id} href={`/policies/${related.id}`} className="group flex min-h-24 items-center justify-between border border-border bg-card/35 p-4 transition-colors hover:border-primary">
-          <span>
-            <span className="block record-title group-hover:text-primary">{related.title}</span>
-            <span className="mt-2 block font-mono text-[11px] uppercase text-muted-foreground">{getJurisdictionName(related.jurisdiction)} · {getPolicyTypeName(related.type)}</span>
-          </span>
-          <ArrowRight className="h-4 w-4 shrink-0 text-primary" />
-        </Link>
-      ))}
     </div>
   );
 }

@@ -56,10 +56,12 @@ def validate_remote(value):
     return value
 
 
+ENTRYPOINT = Path("/usr/local/libexec/policai-host/cli.py")
+
+
 def trusted_entrypoint():
     here = Path(__file__)
-    expected = Path("/usr/local/libexec/policai-host/cli.py")
-    if here != expected or here.resolve() != expected:
+    if here != ENTRYPOINT or here.resolve() != ENTRYPOINT:
         raise RuntimeError(
             "use installed root-owned entrypoint; uninstalled artifacts cannot operate on production"
         )
@@ -94,13 +96,22 @@ FALLBACK_LINE = (
 )
 
 
+def warn(line):
+    if sys.stderr is None:
+        return
+    try:
+        sys.stderr.write(line + "\n")
+        sys.stderr.flush()
+    except Exception:
+        sys.stderr = None
+
+
 def report(command, error):
     try:
         line = failure_line(error)
     except Exception:
         line = FALLBACK_LINE
-    with contextlib.suppress(Exception):
-        print(line, file=sys.stderr)
+    warn(line)
     if command == "compose":
         with contextlib.suppress(Exception):
             syslog.openlog("policai-host-compose")
@@ -221,11 +232,8 @@ def main():
             sys.stdout.write(output)
         return 0
     except (RuntimeError, OSError, ValueError, KeyError, TypeError) as error:
-        if Path(__file__).resolve() != Path("/usr/local/libexec/policai-host/cli.py"):
-            print(
-                "Refused: use installed root-owned entrypoint; this artifact is uninstalled.",
-                file=sys.stderr,
-            )
+        if Path(__file__).resolve() != ENTRYPOINT:
+            warn("Refused: use installed root-owned entrypoint; this artifact is uninstalled.")
         else:
             report(args.command, error)
         return 1
