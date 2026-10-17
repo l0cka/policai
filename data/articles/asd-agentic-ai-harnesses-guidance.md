@@ -28,9 +28,9 @@ The Australian Signals Directorate (ASD) has published [Agentic AI harnesses](/p
 
 ## What it says
 
-The harness is the software around the model. The register records that the advisory describes its components as the user interface, the prompt and policy layer, the context manager, the model interface, the tool registry, the permission system, the execution environment, the connector layer, the memory and session store, audit and observability, and the update and supply-chain path ([record](/policies/asd-agentic-ai-harnesses-2026)).
+The register records the harness as the software layer that connects the model to organisational data, tools and systems, and that the advisory describes its components as the user interface, the prompt and policy layer, the context manager, the model interface, the tool registry, the permission system, the execution environment, the connector layer, the memory and session store, audit and observability, and the update and supply-chain path ([record](/policies/asd-agentic-ai-harnesses-2026)).
 
-It explains that prompt injection cannot be reliably fixed in the model, so controls have to be enforced in the harness. The recommended controls are:
+It explains that prompt injection cannot be reliably fixed in the model, so controls have to be enforced in the harness. The recommended controls include:
 
 - least-privilege access and a hardened, organisation-controlled execution environment;
 - human approval for sensitive or high-impact actions;
@@ -44,8 +44,8 @@ It closes with governance questions for executives and advises a phased adoption
 
 ## Who it affects
 
-Any organisation adopting or considering agentic AI, with executives, security leaders and IT leaders as the audience. The register records that it complements ASD's [Careful adoption of agentic AI services](/policies/asd-careful-adoption-agentic-ai-services-2026), published on 1 May 2026 with international partners. That guidance advises introducing agentic systems incrementally, starting with low-risk tasks, and enforcing least privilege, strong identity management and continuous monitoring ([record](/policies/asd-careful-adoption-agentic-ai-services-2026)).
+The register records the audience as executive decision-makers, chief information security officers and IT leaders. It records that it complements ASD's [Careful adoption of agentic AI services](/policies/asd-careful-adoption-agentic-ai-services-2026), published on 1 May 2026 with international partners. That guidance advises introducing agentic systems incrementally, starting with low-risk tasks, and enforcing least privilege, strong identity management and continuous monitoring ([record](/policies/asd-careful-adoption-agentic-ai-services-2026)).
 
 ## Analysis
 
-In Policai's analysis, the advisory moves the governance question from which model an organisation uses to what the agent can reach and who approves it. A buyer of a commercial agent product can ask the supplier where each control on the list above is enforced. The register classes the advisory as a guideline, so it sets expectations, not legal requirements.
+In Policai's analysis, the advisory moves the governance question from which model an organisation uses to what the agent can reach and who approves it. A question that follows from the list above is where each control is enforced. The register classes the advisory as a guideline.
