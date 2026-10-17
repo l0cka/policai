@@ -99,6 +99,28 @@ describe('validatePolicyThemes', () => {
       `duplicate: ${VALID_IDS}`,
     ]);
   });
+
+  it('counts each theme error once and carries the valid ids on the last error of its record', () => {
+    const report = validatePolicyThemes([
+      withThemes('unknown', ['courts', 'Generative AI']),
+      withThemes('six', [
+        'generative-ai',
+        'courts-tribunals',
+        'ai-governance',
+        'privacy-data',
+        'standards',
+        'courts',
+      ]),
+      withThemes('valid', ['employment']),
+    ]);
+    expect(report.errors).toEqual([
+      'unknown: unknown theme "courts"',
+      `unknown: unknown theme "Generative AI"; ${VALID_IDS}`,
+      'six: themes must list 1 to 5 themes, not 6',
+      `six: unknown theme "courts"; ${VALID_IDS}`,
+    ]);
+    expect(report.errors).toHaveLength(4);
+  });
 });
 
 describe('validateThemeCoverage', () => {
