@@ -3691,3 +3691,91 @@ describe('qualifiesForReview', () => {
     expect(qualifiesForReview(capped, 0.7)).toBe(false);
   });
 });
+
+describe('failure classes on source results', () => {
+  const REFUSED_SOURCE: WatchSource = {
+    ...RSS_SOURCE,
+    id: 'test-refused',
+    url: 'https://www.refused.gov.au/rss',
+  };
+  const SKIPPED_SOURCE: WatchSource = {
+    ...RSS_SOURCE,
+    id: 'test-skipped',
+    url: 'https://www.example.gov.au/weekly-rss',
+    schedule: 'weekly',
+  };
+  const now = () => new Date('2026-07-10T00:00:00.000Z');
+
+  async function run() {
+    const state = emptyWatchState();
+    state.lastCheckedBySource[SKIPPED_SOURCE.id] = '2026-07-09T00:00:00.000Z';
+    return collect({
+      sources: [REFUSED_SOURCE, HTML_SOURCE, RSS_SOURCE, SKIPPED_SOURCE],
+      state,
+      existingDevelopments: [],
+      fetchImpl: fakeFetch({
+        [REFUSED_SOURCE.url]: 403,
+        'https://www.example.gov.au/news/ai-policy-framework': 404,
+        'https://www.example.gov.au/news/seen-before':
+          '<html><body><h1>Existing AI governance standard update</h1></body></html>',
+        'https://www.example.gov.au/news': INDEX_HTML,
+        'https://www.example.gov.au/rss': RSS_XML,
+        'https://www.example.gov.au/media/ai-assurance-consultation':
+          '<html><body><h1>Consultation on AI assurance</h1></body></html>',
+      }),
+      now,
+    });
+  }
+
+  it('records the class and URL of a refused index and a failing candidate', async () => {
+    const result = await run();
+    const rows = Object.fromEntries(
+      result.meta.collector.sourceResults.map((row) => [row.sourceId, row]),
+    );
+
+    expect(rows['test-refused']).toMatchObject({
+      status: 'error',
+      error: 'test-refused: HTTP 403',
+      failureClass: 'identity_refused',
+      failedUrl: REFUSED_SOURCE.url,
+    });
+    expect(rows['test-html']).toMatchObject({
+      status: 'error',
+      error: 'test-html: 1 candidate retrieval failure',
+      failureClass: 'not_found',
+      failedUrl: 'https://www.example.gov.au/news/ai-policy-framework',
+    });
+    for (const id of ['test-rss', 'test-skipped']) {
+      expect(rows[id]).not.toHaveProperty('failureClass');
+      expect(rows[id]).not.toHaveProperty('failedUrl');
+    }
+  });
+
+  it('leaves health, counts, error text and exit policy unchanged', async () => {
+    const result = await run();
+    const { collector } = result.meta;
+
+    expect(result.errors).toEqual([
+      'test-refused: HTTP 403',
+      'test-html: 1 candidate retrieval failure',
+    ]);
+    expect(collector.lastRunErrors).toEqual(result.errors);
+    expect({
+      health: collector.health,
+      dueSourceCount: collector.dueSourceCount,
+      successfulSourceCount: collector.successfulSourceCount,
+      failedSourceCount: collector.failedSourceCount,
+      skippedSourceCount: collector.skippedSourceCount,
+      successRate: collector.successRate,
+    }).toEqual({
+      health: 'failed',
+      dueSourceCount: 3,
+      successfulSourceCount: 1,
+      failedSourceCount: 2,
+      skippedSourceCount: 1,
+      successRate: 0.333,
+    });
+    expect(result.meta.lastHealthyAt).toBeNull();
+    expect(collectionRunFailed(collector.health, result.errors, false)).toBe(true);
+  });
+});
