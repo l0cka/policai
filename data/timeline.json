@@ -2663,5 +2663,24 @@
       "method": "manual",
       "notes": "Recorded as a timeline event, not a policy instrument, following the Editorial Manager's decision on PR #160. The official publication page shows 'Date published: 8 October 2026' and dcterms.created 2026-10-08, and describes a CSIRO-authored research report commissioned by the AI Safety Institute."
     }
+  },
+  {
+    "id": "tl-2026-10-15-digital-duty-of-care-bill-introduced",
+    "date": "2026-10-15",
+    "datePrecision": "day",
+    "title": "Online Safety Amendment (Digital Duty of Care) Bill 2026 introduced",
+    "description": "The bill was introduced and read a first time in the House of Representatives on 15 October 2026, and the second reading was moved the same day. It is proposed legislation, not an Act. It covers services that generate material using AI (s 25B(1)(h)) and yearly risk assessments. Schedule 3 would repeal the online-safety industry codes and standards 12 months after Royal Assent; those codes stay in force until that happens. The Senate Environment and Communications Legislation Committee is due to report on 20 November 2026. An exposure draft had been released for consultation on 8 September 2026.",
+    "type": "policy_introduced",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "federal-online-safety-amendment-digital-duty-of-care-bill-2026",
+    "sourceUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;adv=yes;orderBy=date-eFirst;page=0;query=Dataset%3AbillsCurBef,billsCurNotBef,billsPrevParl%20Dataset_Phrase%3A%22billhome%22;rec=0;resCount=Default",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;adv=yes;orderBy=date-eFirst;page=0;query=Dataset%3AbillsCurBef,billsCurNotBef,billsPrevParl%20Dataset_Phrase%3A%22billhome%22;rec=0;resCount=Default",
+        "title": "ParlInfo bill-home search"
+      },
+      "notes": "Unverified timeline draft from the Policai Signal scan 11–17 October 2026. Not fingerprinted and not marked verified. Withheld from the public timeline until editorial review."
+    }
   }
 ]
