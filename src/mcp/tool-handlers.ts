@@ -15,6 +15,12 @@ import {
 } from '@/lib/source-ingest';
 import { getSourceReviews } from '@/lib/data-service';
 import {
+  MAX_THEMES_PER_RECORD,
+  MIN_PUBLIC_RECORDS_PER_THEME,
+  MIN_THEMES_PER_RECORD,
+  THEMES,
+} from '@/lib/themes';
+import {
   getCourtRequirementsForReview,
   reviewCourtRequirement,
   type CourtRequirementReviewDecision,
@@ -146,6 +152,17 @@ export async function handleStageSourceCapture(input: {
 export async function handleListStagedSources(input: { status?: string }) {
   const status = normalizeReviewStatus(input.status);
   return getSourceReviews(status ? { status } : undefined);
+}
+
+export function handleListThemes(
+  table: readonly { key: string; label: string }[] = THEMES,
+) {
+  return {
+    themes: table.map(({ key, label }) => ({ key, label })),
+    minThemesPerRecord: MIN_THEMES_PER_RECORD,
+    maxThemesPerRecord: MAX_THEMES_PER_RECORD,
+    minRecordsPerTheme: MIN_PUBLIC_RECORDS_PER_THEME,
+  };
 }
 
 export async function handleListCourtRequirementCandidates(input: {
