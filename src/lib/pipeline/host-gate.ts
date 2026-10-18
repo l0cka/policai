@@ -9,6 +9,7 @@ export type Host = string & { readonly __brand: 'Host' };
 export const DEFAULT_MIN_GAP_MS = 2000;
 export const MAX_WAIT_MS = 30_000;
 export const WAIT_BUDGET_MS = 20 * 60 * 1000;
+export const ROBOTS_FETCH_BUDGET_MS = 10 * 60 * 1000;
 export const ROBOTS_TTL_MS = 24 * 60 * 60 * 1000;
 export const BACKOFF_BASE_MS = 60 * 60 * 1000;
 export const BACKOFF_LADDER_CAP_MS = 12 * 60 * 60 * 1000;
@@ -77,6 +78,7 @@ export interface HostGateDeps {
   sleep: (ms: number) => Promise<void>;
   minGapMs?: number;
   waitBudgetMs?: number;
+  robotsFetchBudgetMs?: number;
 }
 
 export function hostOf(url: URL): Host {
@@ -163,6 +165,7 @@ function parseRetryAfter(value: string | null | undefined, nowMs: number): numbe
 export function createHostGate(deps: HostGateDeps): HostGate {
   const minGapMs = deps.minGapMs ?? DEFAULT_MIN_GAP_MS;
   const waitBudgetMs = deps.waitBudgetMs ?? WAIT_BUDGET_MS;
+  const robotsFetchBudgetMs = deps.robotsFetchBudgetMs ?? ROBOTS_FETCH_BUDGET_MS;
   const records = new Map<Host, HostRecord>(
     Object.entries(deps.hosts).map(([host, record]) => [
       host as Host,
@@ -174,6 +177,7 @@ export function createHostGate(deps: HostGateDeps): HostGate {
   const waited = new Map<Host, number>();
   const robotsTried = new Set<Host>();
   let budgetSpent = 0;
+  let robotsFetchSpent = 0;
 
   const iso = () => new Date(deps.now()).toISOString();
 
@@ -237,9 +241,15 @@ export function createHostGate(deps: HostGateDeps): HostGate {
     onSpentBudget: OnSpentBudget,
   ): Promise<boolean> => {
     if (robotsFresh(record.robots) || robotsTried.has(host)) return true;
+    if (robotsFetchSpent >= robotsFetchBudgetMs) {
+      robotsTried.add(host);
+      return true;
+    }
     if (!(await pace(host, minGapMs, onSpentBudget))) return false;
     robotsTried.add(host);
+    const started = deps.now();
     const response = await deps.fetchRobots(url.origin);
+    robotsFetchSpent += Math.max(0, deps.now() - started);
     const fetchedAt = iso();
     const outcome = robotsOutcome(response);
     if (response === null || outcome === 'unreachable') {
@@ -344,19 +354,42 @@ export interface RobotsFetcherOptions {
   timeoutMs?: number;
 }
 
+function contentEncodingIsCompressed(value: string | null | undefined): boolean {
+  if (!value) return false;
+  const encoding = value.split(',')[0]?.trim().toLowerCase();
+  return encoding !== '' && encoding !== 'identity';
+}
+
+function bytesLookCompressed(bytes: Uint8Array): boolean {
+  if (bytes.length >= 2 && bytes[0] === 0x1f && bytes[1] === 0x8b) return true;
+  if (
+    bytes.length >= 2 &&
+    bytes[0] === 0x78 &&
+    (bytes[1] === 0x01 || bytes[1] === 0x5e || bytes[1] === 0x9c || bytes[1] === 0xda)
+  ) {
+    return true;
+  }
+  return false;
+}
+
 export function robotsFetcher(options: RobotsFetcherOptions = {}): HostGateDeps['fetchRobots'] {
   return async (origin) => {
     const url = `${origin}/robots.txt`;
     try {
       if (options.fetchImpl) {
         const response = await options.fetchImpl(url, {
-          headers: { 'User-Agent': COLLECTOR_USER_AGENT, Accept: 'text/plain,*/*;q=0.5' },
+          headers: {
+            'User-Agent': COLLECTOR_USER_AGENT,
+            Accept: 'text/plain,*/*;q=0.5',
+            'Accept-Encoding': 'identity',
+          },
           redirect: 'follow',
         });
-        const body = response.ok
-          ? (await readResponseBytes(response, ROBOTS_MAX_BYTES)).toString('utf8')
-          : '';
-        return { status: response.status, body };
+        if (contentEncodingIsCompressed(response.headers.get('content-encoding'))) return null;
+        if (!response.ok) return { status: response.status, body: '' };
+        const bytes = await readResponseBytes(response, ROBOTS_MAX_BYTES);
+        if (bytesLookCompressed(bytes)) return null;
+        return { status: response.status, body: bytes.toString('utf8') };
       }
       const retrieved = await retrieveSourceOverHttp1(url, {
         now: () => new Date(),
@@ -365,8 +398,11 @@ export function robotsFetcher(options: RobotsFetcherOptions = {}): HostGateDeps[
         destinationPolicy: 'public-https',
         resolveHost: options.resolveHost,
         requestImpl: options.requestImpl,
+        rejectCompressed: true,
       });
       const body = retrieved.body || Buffer.from(retrieved.bytes ?? []).toString('utf8');
+      const raw = retrieved.bytes ?? Buffer.from(body, 'latin1');
+      if (bytesLookCompressed(raw)) return null;
       return { status: 200, body };
     } catch (error) {
       if (error instanceof SourceFetchError) {

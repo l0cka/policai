@@ -3,11 +3,15 @@
 import { EventEmitter } from 'node:events';
 import type https from 'node:https';
 import { PassThrough } from 'node:stream';
+import { gzipSync } from 'node:zlib';
 import { describe, expect, it } from 'vitest';
 import { robotsFetcher } from './host-gate';
 import { ROBOTS_MAX_BYTES } from './robots';
 
-type Reply = { status: number; headers?: Record<string, string>; body?: string } | 'reset' | 'stall';
+type Reply =
+  | { status: number; headers?: Record<string, string>; body?: string | Buffer }
+  | 'reset'
+  | 'stall';
 
 const ORIGIN = 'https://www.fixture.gov.au';
 const ROBOTS = `${ORIGIN}/robots.txt`;
@@ -69,6 +73,9 @@ describe('robotsFetcher maps each transport outcome for the gate', () => {
     ['a body over the 500 KiB cap', { [ROBOTS]: { status: 200, headers: TEXT, body: `${RULES}${'#'.repeat(ROBOTS_MAX_BYTES)}` } }, null],
     ['a 204, an empty robots.txt', { [ROBOTS]: { status: 204 } }, { status: 200, body: '' }],
     ['a 304 without Location', { [ROBOTS]: { status: 304 } }, { status: 304, body: '' }],
+    ['a gzip Content-Encoding', { [ROBOTS]: { status: 200, headers: { ...TEXT, 'content-encoding': 'gzip' }, body: RULES } }, null],
+    ['a br Content-Encoding', { [ROBOTS]: { status: 200, headers: { ...TEXT, 'content-encoding': 'br' }, body: RULES } }, null],
+    ['a gzip body without Content-Encoding', { [ROBOTS]: { status: 200, headers: TEXT, body: gzipSync(RULES) } }, null],
     ['a 403', { [ROBOTS]: { status: 403 } }, { status: 403, body: '' }],
     ['a 404', { [ROBOTS]: { status: 404 } }, { status: 404, body: '' }],
     ['a 429', { [ROBOTS]: { status: 429, headers: { 'retry-after': '3600' } } }, { status: 429, body: '' }],

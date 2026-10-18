@@ -970,6 +970,7 @@ export async function retrieveSourceOverHttp1(
     startedAt?: number;
     requestImpl?: typeof https.get;
     gate?: HostGate;
+    rejectCompressed?: boolean;
   },
 ): Promise<RetrievedSource> {
   const redirects = options.redirects ?? 0;
@@ -1035,6 +1036,7 @@ export async function retrieveSourceOverHttp1(
           Accept:
             'text/html,application/xhtml+xml,application/rss+xml,application/atom+xml,application/xml;q=0.9,application/pdf;q=0.8,*/*;q=0.5',
           'Accept-Language': 'en-AU,en;q=0.9',
+          ...(options.rejectCompressed ? { 'Accept-Encoding': 'identity' } : {}),
         },
       },
       (response) => {
@@ -1074,6 +1076,23 @@ export async function retrieveSourceOverHttp1(
             return;
           }
 
+          if (options.rejectCompressed) {
+            const encoding = headerValue(response.headers['content-encoding'])
+              ?.split(',')[0]
+              ?.trim()
+              .toLowerCase();
+            if (encoding && encoding !== 'identity') {
+              response.destroy();
+              fail(
+                new SourceFetchError(
+                  `Source response used Content-Encoding: ${encoding}`,
+                  { retryable: true },
+                ),
+              );
+              return;
+            }
+          }
+
           assertContentLengthWithinLimit(
             response.headers['content-length'],
             maxResponseBytes,
@@ -1098,6 +1117,19 @@ export async function retrieveSourceOverHttp1(
           response.on('end', () => {
             try {
               const bodyBuffer = Buffer.concat(chunks, received);
+              if (
+                options.rejectCompressed &&
+                bodyBuffer.length >= 2 &&
+                bodyBuffer[0] === 0x1f &&
+                bodyBuffer[1] === 0x8b
+              ) {
+                fail(
+                  new SourceFetchError('Source response looks gzip-compressed', {
+                    retryable: true,
+                  }),
+                );
+                return;
+              }
               const contentType =
                 headerValue(response.headers['content-type'])
                   ?.split(';')[0]

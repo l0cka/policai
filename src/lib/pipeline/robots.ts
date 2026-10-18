@@ -142,7 +142,11 @@ export function parseRobots(body: string, token: string): RobotsRules {
     if (field === 'crawl-delay') {
       collecting = true;
       if (!CRAWL_DELAY.test(value)) continue;
-      const seconds = Math.min(Number(value), CRAWL_DELAY_CAP_SEC);
+      const parsed = Number(value);
+      if (Number.isNaN(parsed) || parsed < 0) continue;
+      const seconds = Number.isFinite(parsed)
+        ? Math.min(parsed, CRAWL_DELAY_CAP_SEC)
+        : CRAWL_DELAY_CAP_SEC;
       for (const agent of agents) {
         const group = groupFor(agent);
         group.crawlDelaySec ??= seconds;
