@@ -553,6 +553,16 @@ been unreachable on 3 consecutive runs is reported as robots unverified
   are unaffected. Parsed rules are cached for 24 h in the `hosts` record.
   Expect about half the hosts to refetch on a daily run, because the
   timer's random delay moves the run either side of 24 h.
+- **Robots-fetch budget.** A run may spend at most 600 s
+  (`ROBOTS_FETCH_BUDGET_MS`) of wall time on robots.txt fetches. The
+  elapsed time of each `fetchRobots` call is charged. Once the budget is
+  spent, later hosts skip the robots fetch for the rest of the run: they
+  keep any cached `parsed` or `absent` copy, otherwise allow, and do not
+  increment `robotsUnreachableRuns` (no attempt). This caps stalled
+  robots.txt hosts at about 30 × 20 s under the wrapper's 3,500 s limit
+  without a hard run deadline. A gzip- or br-encoded robots body (or any
+  non-`identity` `Content-Encoding`) is treated as unreachable, so a
+  previously parsed copy is kept rather than replaced with empty rules.
 - **Gap.** At least 2 s between any two requests to one host, the robots
   fetch included. After a page request the host's `Crawl-delay` applies
   when larger, capped at 30 s; after the gate's own robots fetch only the
@@ -565,12 +575,13 @@ been unreachable on 3 consecutive runs is reported as robots unverified
   charged, so a host that asked for nothing is never affected by the
   budget; those waits are bounded by 2 s per request, the design's model
   (476 s inferred worst case). The robots fetch itself is not a wait and
-  is not charged either. The budget is about a third of the wrapper's
-  3,500 s deadline; a hostile `Crawl-delay: 30` on every host would
-  otherwise need about 6,500 s and the wrapper would kill the run with
-  nothing written. Once the budget is spent, a candidate page, or a
-  linked document of one, that needs a requested wait is deferred, not
-  sent (`the run's N ms host-gate wait budget is spent`); see Deferral.
+  is not charged against this budget; it has its own budget (below). The
+  wait budget is about a third of the wrapper's 3,500 s deadline; a
+  hostile `Crawl-delay: 30` on every host would otherwise need about
+  6,500 s and the wrapper would kill the run with nothing written. Once
+  the budget is spent, a candidate page, or a linked document of one,
+  that needs a requested wait is deferred, not sent
+  (`the run's N ms host-gate wait budget is spent`); see Deferral.
   A due source's index request is never deferred. It waits what the host
   asked for, up to the 30 s cap, whether or not the budget is spent, and
   so do its redirects, its retry, its browser fallback and, for a
@@ -666,13 +677,9 @@ itself is allow-all with no backoff (the fetcher does not surface its
 does not serialise concurrent callers, which the sequential collector never
 has; a Firecrawl result without `metadata.statusCode` records no
 observation, so a `Retry-After` seen only by Firecrawl is not recorded;
-robots fetch time is outside the wait budget and there is no hard run
-deadline, so up to 20 s per host that stalls its robots.txt adds to the
-run (about 1,260 s for 63 hosts) under the wrapper's 3,500 s limit, and
-index waits after the budget is spent are bounded only per request (see
-Wait budget); a
-gzip- or br-encoded robots.txt body (the fetcher does not ask for one) is
-parsed as no rules, which allows more and is never worse than no gate.
+there is no hard run deadline beyond the robots-fetch budget and the wait
+budget, so index waits after the wait budget is spent are still bounded
+only per request (see Wait budget).
 
 ### Failure classes
 

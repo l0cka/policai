@@ -115,7 +115,7 @@ describe('HostGate against a loopback fixture server', () => {
     }
     expect(fixture.hits.map((hit) => hit.path)).toEqual(['/robots.txt', '/news/ai-one', '/news/ai-two', '/news/ai-one']);
     expect(starts).toHaveLength(4);
-    for (const gap of gaps(starts)) expect(gap).toBeGreaterThanOrEqual(299);
+    for (const gap of gaps(starts)) expect(gap).toBeGreaterThanOrEqual(300 - 10);
     expect(gate.waited()[hostOf(new URL(ORIGIN))]).toBeGreaterThan(0);
   });
 

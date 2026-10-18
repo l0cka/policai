@@ -13,6 +13,7 @@ import {
   type HostRecord,
   hostOf,
   MAX_WAIT_MS,
+  ROBOTS_FETCH_BUDGET_MS,
   ROBOTS_RULES_CAP,
   ROBOTS_SITEMAPS_CAP,
   ROBOTS_TIMEOUT_MS,
@@ -40,19 +41,22 @@ function harness(
   let clock = START;
   const sleeps: number[] = [];
   const robotsCalls: string[] = [];
+  const defaultFetchRobots: HostGateDeps['fetchRobots'] = async (origin) =>
+    origin in robots ? robots[origin] : { status: 404, body: '' };
+  const fetchRobots = overrides.fetchRobots ?? defaultFetchRobots;
   const deps: HostGateDeps = {
     hosts: {},
     refused: new Map(),
-    fetchRobots: async (origin) => {
-      robotsCalls.push(origin);
-      return origin in robots ? robots[origin] : { status: 404, body: '' };
-    },
     now: () => clock,
     sleep: async (ms) => {
       sleeps.push(ms);
       clock += ms;
     },
     ...overrides,
+    fetchRobots: async (origin) => {
+      robotsCalls.push(origin);
+      return fetchRobots(origin);
+    },
   };
   return {
     gate: createHostGate(deps),
@@ -467,10 +471,11 @@ describe('wait budget', () => {
     expect(h.sleeps).toEqual(Array.from({ length: 1 + 2 * fresh.length }, () => DEFAULT_MIN_GAP_MS));
   });
 
-  it('a slow robots fetch costs no budget', async () => {
+  it('a slow robots fetch costs no wait budget', async () => {
     let tick: (ms: number) => void = () => undefined;
     const h = harness({}, {
       waitBudgetMs: 0,
+      robotsFetchBudgetMs: ROBOTS_FETCH_BUDGET_MS,
       fetchRobots: async () => {
         tick(ROBOTS_TIMEOUT_MS);
         return null;
@@ -481,6 +486,48 @@ describe('wait budget', () => {
     expect(await h.gate.admit(url('/two'))).toEqual({ kind: 'go' });
     expect(await h.gate.admit(url('/b', B))).toEqual({ kind: 'go' });
     expect(h.sleeps).toEqual([DEFAULT_MIN_GAP_MS]);
+    expect(h.robotsCalls).toEqual([A, B]);
+  });
+
+  it('skips later robots fetches once the robots-fetch budget is spent, keeps cached rules, and still admits', async () => {
+    const host = hostOf(url('/'));
+    const cached: Record<string, HostRecord> = {
+      [host]: {
+        seenAt: new Date(START - ROBOTS_TTL_MS - 1).toISOString(),
+        robots: {
+          fetchedAt: new Date(START - ROBOTS_TTL_MS - 1).toISOString(),
+          status: 'parsed',
+          allow: [],
+          disallow: ['/private'],
+          crawlDelaySec: null,
+          sitemaps: [],
+        },
+        backoffUntil: null,
+        backoffStatus: null,
+        backoffCount: 0,
+        robotsUnreachableRuns: 0,
+      },
+    };
+    let tick: (ms: number) => void = () => undefined;
+    const h = harness(
+      { [A]: null, [B]: { status: 200, body: 'User-agent: *\nDisallow: /nope' } },
+      {
+        hosts: cached,
+        robotsFetchBudgetMs: ROBOTS_TIMEOUT_MS,
+        fetchRobots: async (origin) => {
+          tick(ROBOTS_TIMEOUT_MS);
+          return origin === A ? null : { status: 200, body: 'User-agent: *\nDisallow: /nope' };
+        },
+      },
+    );
+    tick = h.tick;
+    expect(await h.gate.admit(url('/private/x'))).toMatchObject({ kind: 'refused', cls: 'robots_disallowed' });
+    expect(h.robotsCalls).toEqual([A]);
+    expect(h.gate.hosts()[host]?.robots?.disallow).toEqual(['/private']);
+    expect(h.gate.hosts()[host]?.robotsUnreachableRuns).toBe(1);
+    expect(await h.gate.admit(url('/nope', B))).toEqual({ kind: 'go' });
+    expect(h.robotsCalls).toEqual([A]);
+    expect(ROBOTS_FETCH_BUDGET_MS).toBe(10 * 60 * 1000);
   });
 
   it('charges a Retry-After wait the host asked for', async () => {
