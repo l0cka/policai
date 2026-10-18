@@ -7,6 +7,11 @@ import {
   type WatchState,
 } from '../src/lib/pipeline/collect';
 import type { BrowserFetch } from '../src/lib/pipeline/browser-fetch';
+import {
+  createHostGate,
+  robotsFetcher,
+  type HostGate,
+} from '../src/lib/pipeline/host-gate';
 import { WATCH_SOURCES, type WatchSource } from '../src/lib/pipeline/sources';
 import {
   mergeSourceReviews,
@@ -29,8 +34,12 @@ export interface CollectionRun {
   maxItems?: number;
   fetchImpl?: typeof fetch;
   browserFetchImpl?: BrowserFetch['fetchImpl'];
+  hostGate?: HostGate;
   now?: () => Date;
 }
+
+const sleep = (ms: number) =>
+  new Promise<void>((resolve) => setTimeout(resolve, ms));
 
 function dataPaths(rootDir: string) {
   return {
@@ -61,6 +70,7 @@ export async function runCollection(run: CollectionRun): Promise<void> {
       ),
     ]);
 
+  const hosts = state.hosts ?? {};
   const result = await collect({
     sources: run.sources,
     catalogSources: WATCH_SOURCES,
@@ -68,7 +78,17 @@ export async function runCollection(run: CollectionRun): Promise<void> {
       seen: state.seen ?? {},
       lastCheckedBySource: state.lastCheckedBySource ?? {},
       sourceSnapshots: state.sourceSnapshots ?? {},
+      hosts,
     },
+    hostGate:
+      run.hostGate ??
+      createHostGate({
+        hosts,
+        refused: new Map(),
+        fetchRobots: robotsFetcher({ fetchImpl: run.fetchImpl }),
+        now: Date.now,
+        sleep,
+      }),
     existingDevelopments: reconcileLinkedDevelopments(
       reviews,
       developments,

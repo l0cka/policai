@@ -285,6 +285,8 @@ def inspect_dates(objects, evidence, args, result):
     for state in states:
         require(isinstance(state, dict) and all(isinstance(state.get(key), dict)
                 for key in ('seen', 'lastCheckedBySource', 'sourceSnapshots')), 'invalid watch state')
+        require(isinstance(state.get('hosts', {}), dict) and all(nonempty(host) and isinstance(record, dict)
+                for host, record in state.get('hosts', {}).items()), 'invalid watch state hosts')
         for source, timestamp in state['lastCheckedBySource'].items():
             require(nonempty(source) and isinstance(timestamp, str), 'invalid state check timestamp')
             require(datetime.datetime.fromisoformat(str(timestamp).replace('Z', '+00:00')).tzinfo is not None,

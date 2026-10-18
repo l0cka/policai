@@ -40,6 +40,11 @@ import {
   type ArticleImageFiles,
 } from '@/lib/article-images';
 import type { WatchState } from '@/lib/pipeline/collect';
+import {
+  isHostKey,
+  isRobotsRuleList,
+  isStoredSitemapList,
+} from '@/lib/pipeline/host-gate';
 import type { WatchSource } from '@/lib/pipeline/sources';
 import { isFailureClass, publicFailureUrl } from '@/lib/pipeline/failure';
 import { identityExceptionState } from '@/lib/pipeline/identity';
@@ -1356,6 +1361,14 @@ export function validateCollectionMeta(meta: CollectionMeta): ValidationReport {
       errors.push(`meta: collector ${field} must be a non-negative integer`);
     }
   }
+  if (
+    collector.robotsUnverified !== undefined &&
+    !(
+      Array.isArray(collector.robotsUnverified) &&
+      collector.robotsUnverified.every((host) => typeof host === 'string' && isHostKey(host))
+    )
+  )
+    errors.push('meta: invalid collector robotsUnverified');
 
   const coverageResults = collector.sourceResults.filter(
     (result) => result.coverageEligible !== false,
@@ -1918,6 +1931,35 @@ export function validateWatchState(state: WatchState): ValidationReport {
   )) {
     if (!isNonEmptyString(sourceId) || !isTimestampString(checkedAt))
       errors.push(`watchState:lastCheckedBySource:${sourceId}: invalid value`);
+  }
+
+  for (const [host, record] of Object.entries(state.hosts ?? {})) {
+    const label = `watchState:hosts:${host}`;
+    if (!isHostKey(host)) errors.push(`${label}: invalid host`);
+    if (!isTimestampString(record.seenAt)) errors.push(`${label}: invalid seenAt`);
+    const robots = record.robots;
+    if (robots !== null) {
+      if (!isTimestampString(robots.fetchedAt)) errors.push(`${label}: invalid robots.fetchedAt`);
+      if (!isOneOf(['parsed', 'absent', 'unreachable'], robots.status))
+        errors.push(`${label}: invalid robots.status`);
+      for (const field of ['allow', 'disallow'] as const) {
+        if (!isRobotsRuleList(robots[field])) errors.push(`${label}: invalid robots.${field}`);
+      }
+      if (
+        robots.crawlDelaySec !== null &&
+        !(typeof robots.crawlDelaySec === 'number' && Number.isFinite(robots.crawlDelaySec) && robots.crawlDelaySec >= 0)
+      )
+        errors.push(`${label}: invalid robots.crawlDelaySec`);
+      if (!isStoredSitemapList(robots.sitemaps)) errors.push(`${label}: invalid robots.sitemaps`);
+    }
+    if (record.backoffUntil !== null && !isTimestampString(record.backoffUntil))
+      errors.push(`${label}: invalid backoffUntil`);
+    if (record.backoffStatus !== null && record.backoffStatus !== 429 && record.backoffStatus !== 503)
+      errors.push(`${label}: invalid backoffStatus`);
+    if (!Number.isInteger(record.backoffCount) || record.backoffCount < 0)
+      errors.push(`${label}: invalid backoffCount`);
+    if (!Number.isInteger(record.robotsUnreachableRuns) || record.robotsUnreachableRuns < 0)
+      errors.push(`${label}: invalid robotsUnreachableRuns`);
   }
 
   for (const [sourceId, snapshot] of Object.entries(state.sourceSnapshots)) {

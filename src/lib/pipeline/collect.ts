@@ -22,6 +22,7 @@ import {
 import type { ClaudeVerdict } from './claude-classify';
 import { extractRetrievedDocument } from './content';
 import { classifyFailure, publicFailureUrl } from './failure';
+import { robotsUnverifiedHosts, type Host, type HostGate, type HostRecord } from './host-gate';
 import {
   extractFromHtml,
   extractFromRss,
@@ -29,6 +30,7 @@ import {
 } from './extract';
 import {
   foldLinkedDocuments,
+  isGateError,
   matchesRetrievedContent,
   retrieveSource,
   SourceFetchError,
@@ -90,6 +92,7 @@ export interface WatchState {
   seen: Record<string, SeenCandidate>;
   lastCheckedBySource: Record<string, string>;
   sourceSnapshots: Record<string, SourceSnapshot>;
+  hosts: Record<Host, HostRecord>;
 }
 
 export interface CollectOptions {
@@ -114,6 +117,7 @@ export interface CollectOptions {
    * retriever is blocked or an index renders no extractable items.
    */
   browserFetchImpl?: typeof fetch;
+  hostGate: HostGate;
   now?: () => Date;
   maxItemsPerSource?: number;
   /** Bypass schedule checks, used by explicit targeted diagnostics. */
@@ -152,11 +156,15 @@ const WEEKLY_INTERVAL_MS = 6 * 24 * 60 * 60 * 1000;
 /** Browser retrieval covers cold start plus challenge settling. */
 const BROWSER_RETRIEVAL_TIMEOUT_MS = 60_000;
 
+function isDeferredByGate(error: unknown): boolean {
+  return isGateError(error) && error.retryable;
+}
+
 /** Allow-list and homepage-redirect failures are not client-dependent. */
 function isBrowserFallbackFutile(error: unknown): boolean {
   return (
     error instanceof SourceFetchError &&
-    error.code === 'destination_mismatch'
+    (error.code === 'destination_mismatch' || isGateError(error))
   );
 }
 
@@ -178,7 +186,7 @@ async function retrievedSourceFromFirecrawl(
 }
 
 export function emptyWatchState(): WatchState {
-  return { seen: {}, lastCheckedBySource: {}, sourceSnapshots: {} };
+  return { seen: {}, lastCheckedBySource: {}, sourceSnapshots: {}, hosts: {} };
 }
 
 function slugify(value: string, maxLength = 60): string {
@@ -1177,7 +1185,10 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     seen: { ...options.state.seen },
     lastCheckedBySource: { ...options.state.lastCheckedBySource },
     sourceSnapshots: { ...(options.state.sourceSnapshots ?? {}) },
+    hosts: { ...(options.state.hosts ?? {}) },
   };
+  const gate = options.hostGate;
+  const indexGate: HostGate = { ...gate, admit: (url) => gate.admit(url, 'wait') };
   recoverPersistedDocumentTransitions(
     state,
     options.sourceReviews ?? [],
@@ -1249,7 +1260,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
       if (preferBrowser) {
         const firecrawled = source.identityException
           ? { ok: false as const, reason: 'identity_scope' }
-          : await scrapeWithFirecrawl(url, { identity: 'declared' });
+          : await scrapeWithFirecrawl(url, { identity: 'declared', gate });
         if (firecrawled.ok) {
           const page = await retrievedSourceFromFirecrawl(
             firecrawled.markdown,
@@ -1262,6 +1273,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
               fetchImpl,
               now: () => now,
               identityAuthority,
+              gate,
             });
           } catch (error) {
             if (isBrowserFallbackFutile(error)) throw error;
@@ -1279,10 +1291,12 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
           now: () => now,
           timeoutMs: BROWSER_RETRIEVAL_TIMEOUT_MS,
           identityAuthority,
+          gate,
+          transport: 'browser',
         });
       }
       try {
-        return await retrieveSource(url, { fetchImpl, now: () => now, identityAuthority });
+        return await retrieveSource(url, { fetchImpl, now: () => now, identityAuthority, gate });
       } catch (error) {
         if (!browserFetchImpl || isBrowserFallbackFutile(error)) throw error;
         log(`[collect] ${source.id}: retrying ${url} with the browser retriever`);
@@ -1291,6 +1305,8 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
           now: () => now,
           timeoutMs: BROWSER_RETRIEVAL_TIMEOUT_MS,
           identityAuthority,
+          gate,
+          transport: 'browser',
         });
       }
     };
@@ -1358,7 +1374,8 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         now: () => now,
         hashLinkedDocuments: source.kind === 'document',
         identityAuthority,
-        ...(timeoutMs !== undefined ? { timeoutMs } : {}),
+        gate: indexGate,
+        ...(timeoutMs !== undefined ? { timeoutMs, transport: 'browser' as const } : {}),
       });
       const extracted =
         source.kind === 'document'
@@ -1805,6 +1822,15 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
           );
           continue;
         }
+        if (isDeferredByGate(error)) {
+          state.seen[key] = {
+            ...attempted,
+            attempts: (attempted.attempts ?? 1) - 1,
+            lastError: message,
+          };
+          log(`[collect] ${source.id}: deferred ${candidate.url} (${message})`);
+          continue;
+        }
         candidateFailureCount++;
         failure ??= rowFailure(error, candidate.url);
         const terminal =
@@ -1984,6 +2010,27 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     });
   }
 
+  state.hosts = gate.hosts();
+  const waits = Object.entries(gate.waited());
+  const waitedMs = waits.reduce((sum, [, ms]) => sum + ms, 0);
+  const slowest = waits.sort(([, a], [, b]) => b - a)[0];
+  log(
+    `[collect] host gate: waited ${waitedMs} ms across ${waits.length} host${waits.length === 1 ? '' : 's'}` +
+      (slowest ? ` (most on ${slowest[0]}: ${slowest[1]} ms)` : ''),
+  );
+  const robotsUnreachable = Object.entries(state.hosts)
+    .filter(([, record]) => record.robotsUnreachableRuns > 0)
+    .map(([host]) => host);
+  if (robotsUnreachable.length > 0) {
+    log(
+      `[collect] host gate: robots.txt unreachable on last attempt for ${robotsUnreachable.length} host${robotsUnreachable.length === 1 ? '' : 's'} (${robotsUnreachable.join(', ')}); cached rules kept, otherwise allowed`,
+    );
+  }
+  const robotsUnverified = robotsUnverifiedHosts(state.hosts);
+  if (robotsUnverified.length > 0) {
+    log(`[collect] robots unverified: ${robotsUnverified.join(', ')}`);
+  }
+
   const runHealth = healthForRun(
     sourceResults,
     sources,
@@ -2017,6 +2064,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         (source) => source.enabled && source.automation === 'manual',
       ).length,
       sourceResults,
+      ...(robotsUnverified.length > 0 ? { robotsUnverified } : {}),
     },
   };
 
