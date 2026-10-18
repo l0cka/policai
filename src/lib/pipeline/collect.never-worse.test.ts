@@ -205,7 +205,11 @@ function reviewGateReasons(meta: CollectionMeta, due: Record<string, boolean>): 
   const dir = mkdtempSync(path.join(os.tmpdir(), 'policai-review-gate-'));
   try {
     const input = path.join(dir, 'input.json');
-    const coverage = { automatic_source_ids: Object.keys(due), manual_source_count: 0, head_due: due };
+    const coverage = {
+      head_automatic_source_ids: Object.keys(due),
+      head_manual_source_count: 0,
+      head_due: due,
+    };
     writeFileSync(input, JSON.stringify({ meta, coverage }));
     const run = spawnSync('python3', ['-I', '-B', '-c', REVIEW_GATE_COVERAGE, REVIEW_GATE, input], { encoding: 'utf8' });
     expect(run.status, run.stderr).toBe(0);

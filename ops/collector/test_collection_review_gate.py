@@ -311,7 +311,8 @@ class GateTest(unittest.TestCase):
         self.evidence['base'] = self.base
         self.evidence['review']['base'] = self.base
         coverage = self.evidence['coverage']
-        coverage['automatic_source_ids'].append('source-b')
+        coverage['base_automatic_source_ids'].append('source-b')
+        coverage['head_automatic_source_ids'].append('source-b')
         coverage['base_due']['source-b'] = coverage['head_due']['source-b'] = True
         c['runCount'] = 3
         self.revise()
