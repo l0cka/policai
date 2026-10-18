@@ -151,8 +151,8 @@ export function CoverageMap({
     };
     measure();
     const observer = new ResizeObserver(measure);
-    observer.observe(header);
-    if (strip) observer.observe(strip);
+    observer.observe(header, { box: 'border-box' });
+    if (strip) observer.observe(strip, { box: 'border-box' });
     return () => observer.disconnect();
   }, []);
 

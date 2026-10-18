@@ -86,6 +86,13 @@ function scrollClearance(width: 'phone' | 'wide'): string {
 describe('coverage drill-down scroll offset', () => {
   const HEADER = 94;
   const STRIP = 45;
+  const SCROLL_CLEAR = { phone: '6.5rem', wide: '9rem' } as const;
+
+  it('pins --scroll-clear-top to 6.5rem and 9rem from the 40rem breakpoint', () => {
+    expect(scrollClearance('phone')).toBe(SCROLL_CLEAR.phone);
+    expect(scrollClearance('wide')).toBe(SCROLL_CLEAR.wide);
+    expect(blocks(scope(GLOBALS_CSS, ['@layer base'])).some((block) => block.prelude === NARROW)).toBe(true);
+  });
 
   it('lets the document scroll-padding and the row margin together land the row just below the header', () => {
     const gap = pixels('var(--space-2)', {});
@@ -93,7 +100,7 @@ describe('coverage drill-down scroll offset', () => {
       const html = declarations(GLOBALS_CSS, 'html', ['@layer base']);
       expect(html['scroll-padding-top']).toBe('var(--scroll-clear-top)');
       const variables = {
-        '--scroll-clear-top': scrollClearance(width),
+        '--scroll-clear-top': SCROLL_CLEAR[width],
         '--coverage-sticky-top': `${HEADER}px`,
         '--coverage-strip-height': `${STRIP}px`,
       };
@@ -121,11 +128,21 @@ describe('coverage drill-down scroll offset', () => {
   });
 });
 
-describe('coverage drill-down head on phones', () => {
+describe('coverage drill-down head', () => {
   it('stacks Clear selection under the heading so the floating scroll-to-top button cannot cover it', () => {
-    expect(declarations(COVERAGE_CSS, '.coverage-drill-head', [PHONE])).toMatchObject({
+    expect(declarations(COVERAGE_CSS, '.coverage-drill-head')).toMatchObject({
       'flex-direction': 'column',
       'align-items': 'flex-start',
+    });
+    expect(declarations(COVERAGE_CSS, '.coverage-drill-head', [PHONE])['flex-direction']).toBeUndefined();
+  });
+
+  it('gives Clear selection a 44px minimum hit target', () => {
+    expect(declarations(COVERAGE_CSS, '.coverage-clear')).toMatchObject({
+      display: 'inline-flex',
+      'align-items': 'center',
+      'min-height': '2.75rem',
+      'min-width': '2.75rem',
     });
   });
 });

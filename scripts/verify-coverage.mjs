@@ -12,7 +12,10 @@ const VIEWPORTS = { desktop: { width: 1440, height: 900 }, phone: { width: 390, 
 const SCHEMES = ['light', 'dark'];
 const DEEP_LINK = '/coverage?theme=courts-tribunals&j=nsw';
 const CELL = /^Courts and tribunals, New South Wales:/;
-const FAB_VIEWPORT = { width: 430, height: 932 };
+const FAB_VIEWPORTS = {
+  phone: { width: 430, height: 932 },
+  tablet: { width: 768, height: 1024 },
+};
 const FAB_CELL = /^Online safety and deepfakes, South Australia:/;
 
 async function hydrated(page) {
@@ -83,38 +86,40 @@ try {
       await context.close();
     }
   }
-  for (const colorScheme of SCHEMES) {
-    const label = `fab-${colorScheme}`;
-    const context = await browser.newContext({ viewport: FAB_VIEWPORT, colorScheme });
-    const page = await context.newPage();
-    const errors = [];
-    page.on('pageerror', (error) => errors.push(error.message));
-    page.on('console', (message) => {
-      if (message.type() === 'error') errors.push(message.text());
-    });
-    await page.goto(`${base}/coverage`, { waitUntil: 'load' });
-    await hydrated(page);
-    await page.evaluate(() => window.scrollTo(0, 1400));
-    const fab = page.getByRole('button', { name: 'Scroll to top' });
-    await fab.waitFor();
-    await page.getByRole('button', { name: FAB_CELL }).click();
-    await page.waitForTimeout(300);
-    const clear = page.getByRole('button', { name: 'Clear selection' });
-    const fabBand = (await fab.boundingBox()).y + 18;
-    await page.evaluate((offset) => window.scrollBy(0, offset), (await clear.boundingBox()).y - fabBand);
-    await page.waitForTimeout(300);
-    const [clearBox, fabBox] = await Promise.all([clear.boundingBox(), fab.boundingBox()]);
-    const overlap =
-      clearBox.x < fabBox.x + fabBox.width &&
-      fabBox.x < clearBox.x + clearBox.width &&
-      clearBox.y < fabBox.y + fabBox.height &&
-      fabBox.y < clearBox.y + clearBox.height;
-    await page.screenshot({ path: `${dir}/${label}.png` });
-    assert(!overlap, `${label} Clear selection clear of Scroll to top ${JSON.stringify({ clearBox, fabBox })}`);
-    assert.deepEqual(errors, [], `${label} errors`);
-    results[label] = { clearBox, fabBox, overlap };
-    console.log(`${label}: ${JSON.stringify(results[label])}`);
-    await context.close();
+  for (const [viewportName, viewport] of Object.entries(FAB_VIEWPORTS)) {
+    for (const colorScheme of SCHEMES) {
+      const label = `fab-${viewportName}-${colorScheme}`;
+      const context = await browser.newContext({ viewport, colorScheme });
+      const page = await context.newPage();
+      const errors = [];
+      page.on('pageerror', (error) => errors.push(error.message));
+      page.on('console', (message) => {
+        if (message.type() === 'error') errors.push(message.text());
+      });
+      await page.goto(`${base}/coverage`, { waitUntil: 'load' });
+      await hydrated(page);
+      await page.evaluate(() => window.scrollTo(0, 1400));
+      const fab = page.getByRole('button', { name: 'Scroll to top' });
+      await fab.waitFor();
+      await page.getByRole('button', { name: FAB_CELL }).click();
+      await page.waitForTimeout(300);
+      const clear = page.getByRole('button', { name: 'Clear selection' });
+      const fabBand = (await fab.boundingBox()).y + 18;
+      await page.evaluate((offset) => window.scrollBy(0, offset), (await clear.boundingBox()).y - fabBand);
+      await page.waitForTimeout(300);
+      const [clearBox, fabBox] = await Promise.all([clear.boundingBox(), fab.boundingBox()]);
+      const overlap =
+        clearBox.x < fabBox.x + fabBox.width &&
+        fabBox.x < clearBox.x + clearBox.width &&
+        clearBox.y < fabBox.y + fabBox.height &&
+        fabBox.y < clearBox.y + clearBox.height;
+      await page.screenshot({ path: `${dir}/${label}.png` });
+      assert(!overlap, `${label} Clear selection clear of Scroll to top ${JSON.stringify({ clearBox, fabBox })}`);
+      assert.deepEqual(errors, [], `${label} errors`);
+      results[label] = { clearBox, fabBox, overlap };
+      console.log(`${label}: ${JSON.stringify(results[label])}`);
+      await context.close();
+    }
   }
   writeFileSync(`${dir}/verify-coverage.json`, JSON.stringify(results, null, 2));
   console.log('coverage scroll checks passed');

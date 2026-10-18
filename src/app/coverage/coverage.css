@@ -222,8 +222,8 @@
 
 .coverage-drill-head {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: flex-start;
   gap: var(--space-3);
   border-bottom: 1px solid var(--rule-hair);
   padding-bottom: var(--space-3);
@@ -242,7 +242,11 @@
 }
 
 .coverage-clear {
+  display: inline-flex;
   flex-shrink: 0;
+  align-items: center;
+  min-height: 2.75rem;
+  min-width: 2.75rem;
   font-size: 0.8125rem;
   color: var(--primary);
   text-decoration: underline;
@@ -399,11 +403,6 @@
     scroll-margin-top: calc(
       var(--coverage-sticky-top, 0px) + var(--coverage-strip-height, 0px) + var(--space-2) - var(--scroll-clear-top, 0px)
     );
-  }
-
-  .coverage-drill-head {
-    flex-direction: column;
-    align-items: flex-start;
   }
 
   .coverage-drill-row > td {

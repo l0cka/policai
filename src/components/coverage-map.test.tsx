@@ -146,7 +146,7 @@ describe('CoverageMap', () => {
     vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function (this: HTMLElement) {
       return { height: heights.get(this.tagName) ?? 0 } as DOMRect;
     });
-    const observed: Element[] = [];
+    const observed: { element: Element; options?: ResizeObserverOptions }[] = [];
     let resize = () => {};
     const disconnect = vi.fn();
     vi.stubGlobal(
@@ -155,8 +155,8 @@ describe('CoverageMap', () => {
         constructor(callback: ResizeObserverCallback) {
           resize = () => callback([], this as unknown as ResizeObserver);
         }
-        observe(element: Element) {
-          observed.push(element);
+        observe(element: Element, options?: ResizeObserverOptions) {
+          observed.push({ element, options });
         }
         disconnect = disconnect;
       },
@@ -164,9 +164,8 @@ describe('CoverageMap', () => {
     try {
       renderMap();
       const map = document.querySelector<HTMLElement>('.coverage-map')!;
-      expect(observed).toContain(header);
-      expect(observed).toContain(map.querySelector('thead'));
-      expect(observed).toHaveLength(2);
+      expect(observed.map((entry) => entry.element)).toEqual([header, map.querySelector('thead')]);
+      expect(observed.every((entry) => entry.options?.box === 'border-box')).toBe(true);
 
       heights.set('HEADER', 120);
       heights.set('THEAD', 60);
