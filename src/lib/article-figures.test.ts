@@ -206,6 +206,7 @@ describe("figure blocks in article Markdown", () => {
 		expect(errorsOf(inline("Text.\n\n```figure\n" + TIMELINE))).toEqual(["figure 1 is not closed with ```"]);
 	});
 
+	// #282: gray-matter / multi-doc YAML used to end the figure at --- and drop later fields.
 	it("rejects a --- line inside a figure instead of dropping the fields after it", () => {
 		const split = TIMELINE.replace("asAt: 2026-10-16", "---\nasAt: 2026-10-16");
 		expect(errorsOf(inline("```figure\n" + split + "\n```"))).toEqual([
@@ -213,6 +214,7 @@ describe("figure blocks in article Markdown", () => {
 		]);
 	});
 
+	// #282: js-yaml DEFAULT_SCHEMA turned 2026-02-30 into 2026-03-02; CORE_SCHEMA + isValidCalendarDate refuse it.
 	it("rejects calendar dates that roll over instead of moving them", () => {
 		expect(errorsOf(inline("```figure\n" + TIMELINE.replace("asAt: 2026-10-16", "asAt: 2026-02-30") + "\n```"))).toEqual([
 			"figure 1: asAt is required and must be a calendar date (YYYY-MM-DD)",
@@ -226,6 +228,7 @@ describe("figure blocks in article Markdown", () => {
 		]);
 	});
 
+	// #282: duplicate columns / row headers / timeline date+title pairs became duplicate React keys.
 	it("rejects repeated matrix columns and row headers, and repeated timeline entries", () => {
 		const frame = TIMELINE.split("\nasAt")[0].replace("kind: timeline", "kind: matrix");
 		expect(errorsOf(inline("```figure\n" + `${frame}\ncolumns: [Instrument, Status, Status]\nrows:\n  - [One, Active, Active]\n  - [Two, ~, ~]` + "\n```"))).toEqual([
@@ -240,6 +243,7 @@ describe("figure blocks in article Markdown", () => {
 		]);
 	});
 
+	// #282: indented or list-/quote-nested ```figure fences rendered as code blocks with no error.
 	it.each([
 		["indented", "  ```figure\n" + TIMELINE + "\n  ```"],
 		["in a list", "- ```figure\n" + TIMELINE.replace(/^/gm, "  ") + "\n  ```"],
