@@ -2763,5 +2763,27 @@
       },
       "notes": "Unverified timeline draft from the Policai Signal scan 11–17 October 2026. The DPC page is dated 8 October 2026 and states the 1 October 2026 appointments. Not fingerprinted and not marked verified. The linked discussion paper is unchanged."
     }
+  },
+  {
+    "id": "tl-2026-10-15-asd-essentials-launched",
+    "date": "2026-10-15",
+    "datePrecision": "day",
+    "title": "ASD launches the ASD Essentials",
+    "description": "ASD launched the ASD Essentials on 15 October 2026 as an evolution of the Essential Eight, with chapters for enterprise IT, operational technology and cloud. During the transition ASD keeps both the Essential Eight and the Essentials on cyber.gov.au. Until regulators communicate associated changes, organisations should continue to meet their current regulatory obligations. Companion guidance, AI considerations within the Essentials, was published the same day.",
+    "type": "announcement",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "asd-ai-considerations-within-the-essentials-2026",
+    "sourceUrl": "https://www.cyber.gov.au/news/asd-essentials-evolving-our-approach-to-cyber-security-resilience",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.cyber.gov.au/news/asd-essentials-evolving-our-approach-to-cyber-security-resilience",
+        "title": "ASD Essentials: evolving our approach to cyber security resilience",
+        "publisher": "Australian Signals Directorate",
+        "publishedAt": "2026-10-15",
+        "publishedAtPrecision": "day"
+      },
+      "notes": "Unverified timeline draft. The news page shows Published 15 Oct 2026 and says ASD will keep both the Essential Eight and the Essentials on cyber.gov.au during the transition. Not fingerprinted and not marked verified. Withheld from the public timeline until Daniel's own review. The transition guide (https://www.cyber.gov.au/publication/transitioning-from-the-essential-eight), also published 15 Oct 2026, is context for how an existing Essential Eight implementation moves across; the launch statement itself is the news item."
+    }
   }
 ]
