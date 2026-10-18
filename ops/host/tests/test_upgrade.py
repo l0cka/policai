@@ -337,18 +337,35 @@ class UpgradeTests(unittest.TestCase):
             self.assertFalse((host.state / "upgrades").exists())
 
     def test_apply_refuses_a_file_replaced_between_plan_and_apply(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            host = Host(tmp)
-            items = host.transaction().plan()
-            expected = install.installed_digest(items)
-            self.assertIn(f"expect-installed: {expected}", install.render_plan(items, host.journal))
-            path = host.path("host.py")
-            path.write_bytes(path.read_bytes() + b"\nreplaced between plan and apply\n")
-            tampered = host.tree()
-            with self.assertRaises(install.Refused):
-                host.upgrade("apply", expect_installed=expected)
-            self.assertEqual(host.tree(), tampered)
-            self.assertFalse((host.state / "upgrades").exists())
+        cases = (
+            ("content", lambda path: path.write_bytes(
+                path.read_bytes() + b"\nreplaced between plan and apply\n"
+            )),
+            ("mode", lambda path: path.chmod(0o600)),
+        )
+        for label, tamper in cases:
+            with self.subTest(label=label), tempfile.TemporaryDirectory() as tmp:
+                host = Host(tmp)
+                items = host.transaction().plan()
+                expected = install.installed_digest(items)
+                self.assertIn(
+                    f"expect-installed: {expected}",
+                    install.render_plan(items, host.journal),
+                )
+                path = host.path("host.py")
+                original_mode = path.stat().st_mode & 0o777
+                if label == "mode":
+                    self.assertNotEqual(original_mode, 0o600)
+                tamper(path)
+                tampered = host.tree()
+                with self.assertRaises(install.Refused) as raised:
+                    host.upgrade("apply", expect_installed=expected)
+                self.assertEqual(
+                    str(raised.exception),
+                    "installed tree differs from the reviewed plan",
+                )
+                self.assertEqual(host.tree(), tampered)
+                self.assertFalse((host.state / "upgrades").exists())
 
     def test_first_apply_needs_the_plan_digest_and_a_re_apply_does_not(self):
         with tempfile.TemporaryDirectory() as tmp:
