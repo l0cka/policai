@@ -223,10 +223,13 @@ no heading.
   number.
 - **Rendering:** the server renders every item and the first eight are in
   the HTML. Only `src/components/related/expandable-list.tsx` is a client
-  component (the expander). `src/app/policies/[id]/` has no `loading.tsx`:
-  React outlines a Suspense boundary that large into hidden segments that a
-  script reveals, so without JavaScript the page stayed on its skeleton and
-  showed 6 of the 8 items. `no-route-boundary.test.ts` guards that, and
+  component (the expander). Do not re-add a `loading.{tsx,ts,jsx,js}` in
+  `src/app/policies/[id]/` or any parent segment up to `src/app`: React
+  outlines a Suspense boundary that large into hidden segments that a script
+  reveals, so without JavaScript the page stayed on its skeleton and showed
+  6 of the 8 items. Trade-off: a first uncached client navigation keeps the
+  previous page until the server renders (about 40 to 80 ms; no pending cue).
+  `no-route-boundary.test.ts` guards the route and its parents, and
   `scripts/verify-related.mjs` checks the rendered page with and without
   JavaScript, light and dark, at 1440x900 and 390x844 (it is not in CI):
   `POLICAI_VERIFY_URL=http://127.0.0.1:<port> POLICAI_EVIDENCE_DIR=<dir>
