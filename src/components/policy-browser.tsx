@@ -232,6 +232,11 @@ export function PolicyBrowser({
   };
 
   const freshnessDate = lastHealthyAt ?? lastCollectedAt ?? lastReviewedAt;
+  const freshnessKind = lastHealthyAt
+    ? 'last fully healthy'
+    : lastCollectedAt
+      ? 'last collected'
+      : null;
   const freshLabel =
     collectionHealth === 'healthy'
       ? `All ${dueSourceCount} due sources reached`
@@ -523,7 +528,11 @@ export function PolicyBrowser({
             </h2>
             <p className="mt-3">
               {freshLabel}
-              {freshnessDate ? ` · ${formatDate(freshnessDate)}` : ''}
+              {freshnessDate
+                ? freshnessKind
+                  ? ` · ${freshnessKind} ${formatDate(freshnessDate)}`
+                  : ` · ${formatDate(freshnessDate)}`
+                : ''}
             </p>
             <p>{automaticSourceCount} automatic sources</p>
             <p>
