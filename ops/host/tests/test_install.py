@@ -28,6 +28,27 @@ class InstallDirectoryTests(unittest.TestCase):
         ):
             with self.subTest(name):
                 self.assertEqual(install.FILES[name][0], str(code / name))
+        self.assertEqual(install.FILES["policai-deploy"][0], "/usr/local/libexec/policai-deploy")
+        for name in ("bin/docker", "policai-deploy"):
+            with self.subTest(wrapper=name):
+                self.assertIn(str(cli.ENTRYPOINT), (HOST / name).read_text())
+        required = {
+            str(code / name)
+            for name in (
+                "cli.py",
+                "host.py",
+                "dispatcher.py",
+                "bin/docker",
+                "backup.sh",
+                "backup-mirror.sh",
+            )
+        }
+        required.add("/etc/systemd/system/policai-pull.service")
+        required.update(
+            str(host.USER_UNITS / f"probono-{name}.service") for name in host.WORKER_SCRIPTS
+        )
+        hashes = json.loads((HOST / "config.example.json").read_text())["installed_hashes"]
+        self.assertEqual(set(hashes), required)
         units = sorted((HOST / "units").glob("probono-*.service"))
         self.assertTrue(units)
         for unit in units:

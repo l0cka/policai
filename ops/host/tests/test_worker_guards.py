@@ -458,6 +458,7 @@ class FailureLineTests(unittest.TestCase):
             cli.report("worker", error)
         self.assertEqual(err.getvalue().count("Refused: worker command not allowlisted"), 2)
         self.assertEqual(len(journal.call_args_list), 1)
+        self.assertEqual(journal.call_args.args[0], cli.syslog.LOG_ERR)
         self.assertIn("worker command not allowlisted", journal.call_args.args[1])
 
     def test_a_line_that_cannot_be_built_falls_back_to_a_fixed_line(self):
@@ -597,6 +598,7 @@ class FailureLineTests(unittest.TestCase):
             ):
                 code = cli.main()
                 self.assertEqual((code, out.getvalue(), err.getvalue()), (1, "", line + "\n"))
+                self.assertEqual(journal.call_args.args[0], cli.syslog.LOG_ERR)
                 self.assertEqual(journal.call_args.args[1], line)
 
     def test_a_broken_stderr_still_reaches_the_journal(self):
@@ -610,6 +612,7 @@ class FailureLineTests(unittest.TestCase):
 
         with patch.object(sys, "stderr", Broken()), patch.object(cli.syslog, "syslog") as journal:
             cli.report("compose", error)
+        self.assertEqual(journal.call_args.args[0], cli.syslog.LOG_ERR)
         self.assertIn("worker command not allowlisted", journal.call_args.args[1])
 
     def test_installed_main_exits_1_after_a_journal_failure(self):
@@ -684,16 +687,20 @@ class FailureChannelTests(unittest.TestCase):
             cli.report("worker", error)
         self.assertEqual(out.getvalue(), "")
         self.assertEqual(len(journal.call_args_list), 1)
+        self.assertEqual(journal.call_args.args[0], cli.syslog.LOG_ERR)
         self.assertIn("worker command not allowlisted", journal.call_args.args[1])
 
     def test_an_uninstalled_refusal_with_stderr_closed_writes_nothing_to_stdout(self):
         with (
             patch.object(sys, "stderr", None),
             patch.object(sys, "argv", ["cli.py", "compose", "--", "compose", "down"]),
+            patch.object(cli.syslog, "openlog"),
+            patch.object(cli.syslog, "syslog") as journal,
             redirect_stdout(io.StringIO()) as out,
         ):
             self.assertEqual(cli.main(), 1)
         self.assertEqual(out.getvalue(), "")
+        self.assertEqual(journal.call_args_list, [])
 
     def test_installed_main_with_fd_2_closed_exits_1_and_keeps_stdout_clean(self):
         run = self.installed_main(preexec_fn=lambda: os.close(2))

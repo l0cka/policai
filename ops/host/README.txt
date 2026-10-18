@@ -4,10 +4,12 @@ The dispatcher is installed and is the live deploy path for both runtimes.
 /usr/local/libexec/policai-host holds a copy installed from this bundle through
 install.py. That copy can lag main until the next reviewed install.
 cli.ENTRYPOINT names that directory. host.CODE, the install.py FILES
-destinations and the probono-*.service ExecStart lines repeat it, because
-cli.py checks its own path before it imports any sibling module and install.py
-and the units import nothing. test_install.InstallDirectoryTests fails when
-any of them differs from cli.ENTRYPOINT.
+destinations, bin/docker and policai-deploy (which hard-code the entrypoint),
+the config.example.json installed_hashes keys, the INSTALL-REVIEW.txt install
+paths and the probono-*.service ExecStart lines repeat it, because cli.py
+checks its own path before it imports any sibling module and install.py and
+the units import nothing. test_install.InstallDirectoryTests fails when any
+of them differs from cli.ENTRYPOINT.
 
 Entry point: cli.py
 Safe local demonstration: ./cli.py --help
@@ -451,7 +453,11 @@ LIMITATIONS / REMAINING CUTOVER GATES
   of the exit status). <name> is the worker operation, or the allowlisted
   Compose task such as src/verify-deadlines.ts or pg_dumpall. Any other error
   prints "Refused: unexpected <exception type>. ..." with only its exception
-  type. If building the line itself fails, for example because host.py cannot be
+  type. An unexpected AttributeError uses that form and drops the traceback, so
+  the line can read like a missing prerequisite rather than a code bug. Other
+  BaseException types that are not Exception still print a raw traceback with
+  no syslog line; KeyboardInterrupt and SystemExit pass through unchanged. If
+  building the line itself fails, for example because host.py cannot be
   imported, cli.py prints "Refused: failure report unavailable. Inspect status
   and reviewed prerequisites; no automatic retry." and still exits 1. The line
   never goes to stdout, the Compose adapter's data channel to the parent worker.
@@ -459,10 +465,12 @@ LIMITATIONS / REMAINING CUTOVER GATES
   pipe or a broken pipe, cli.py drops the line. In each case cli.py then
   replaces sys.stderr with a sink that discards later writes, so no later stderr
   write in the process reaches stdout. Each case still exits 1, and the Compose
-  adapter still writes its syslog line. The parent worker captures and discards
-  the nested Compose adapter's stderr, so the adapter also writes its line to
-  syslog as policai-host-compose; journalctl --user -u probono-<worker> shows it
-  beside the worker's own line.
+  adapter still writes its syslog line at LOG_ERR. The parent worker captures
+  and discards the nested Compose adapter's stderr, so the adapter also writes
+  its line to syslog as policai-host-compose; journalctl --user -u
+  probono-<worker> shows it beside the worker's own line. Nested Compose
+  failures always exit 1, including a saver that exited 2, so the `2)` rejected
+  branch in apps/probono/ops/enrich.sh cannot fire through the dispatcher.
   Builds run under existing app identities, NOT a hostile-code sandbox. Review
   dependency lifecycle/build scripts; the same UID can access its live checkout.
   State retains old artifacts and candidate images; this bundle never prunes them.
