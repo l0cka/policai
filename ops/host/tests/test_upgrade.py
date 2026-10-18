@@ -311,11 +311,13 @@ class UpgradeTests(unittest.TestCase):
                 original = path.read_bytes()
                 path.write_bytes(b"foreign edit\n")
                 before = listing(host.root)
+                journal = (host.journal / "journal.json").read_bytes()
                 for step in ("apply", "rollback"):
                     with self.assertRaises(install.Refused):
                         getattr(tx, step)()
                     self.assertEqual(listing(host.root), before)
-                record = json.loads((host.journal / "journal.json").read_text())
+                    self.assertEqual((host.journal / "journal.json").read_bytes(), journal)
+                record = json.loads(journal)
                 self.assertEqual(record["phase"], "rolled-back")
                 path.write_bytes(original)
                 tx.rollback()
