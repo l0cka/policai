@@ -301,10 +301,6 @@ class UpgradeTests(unittest.TestCase):
                 self.assertEqual(host.tree(), partial)
 
     def test_a_foreign_file_refuses_a_re_apply_before_any_write(self):
-        # #265 D1/D3: apply, roll back, edit an unchanged entry (bin/docker) or a
-        # previously changed one (host.py), then re-apply. Every journal entry is
-        # validated before the first write, so the tree and journal stay put and
-        # phase never flips to applying.
         for name in ("bin/docker", "host.py"):
             with self.subTest(name=name), tempfile.TemporaryDirectory() as tmp:
                 host = Host(tmp)
@@ -395,9 +391,6 @@ class UpgradeTests(unittest.TestCase):
             self.assertEqual(host.tree(), host.original)
 
     def test_dispatcher_ready_requires_an_unblocked_completed_activation(self):
-        # #265 D4: active.json of {} must refuse. A completed activation still
-        # passes when bootstrap_pending is absent (#272: the dispatcher omits
-        # the key when false); explicit true / non-boolean values refuse.
         cases = (
             ({"active.json": ACTIVE}, True),
             ({"active.json": {**ACTIVE, "bootstrap_pending": False}}, True),
