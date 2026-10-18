@@ -224,6 +224,100 @@ class LockWaitTests(unittest.TestCase):
         self.assertIn("worker", str(caught.exception))
         self.assertNotIn("deployment", str(caught.exception))
 
+    def test_immediate_lock_refusal_matches_pre_wait_timing(self):
+        self.hold()
+        fake = FakeClock()
+        with self.assertRaises(d.Refused) as caught:
+            with h.worker_guard(self.state, wait=0, clock=fake.clock, sleep=fake.sleep):
+                self.fail("wait=0 must refuse on the first busy poll")
+        self.assertEqual(str(caught.exception), d.LOCK_BUSY["deploy.lock", False])
+        self.assertEqual(fake.sleeps, [])
+        self.assertEqual(fake.now, 1000.0)
+
+
+class VerifyDeadlinesScriptTests(unittest.TestCase):
+    FIXTURE = HOST / "tests" / "fixtures" / "verify-deadlines.sh"
+
+    def setUp(self):
+        if not self.FIXTURE.is_file():
+            self.skipTest("tests/fixtures/verify-deadlines.sh absent from ops/host snapshot")
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        self.root = Path(tmp.name)
+        self.log = self.root / "docker.log"
+        script_dir = self.root / "ops"
+        script_dir.mkdir()
+        self.script = script_dir / "verify-deadlines.sh"
+        self.script.write_text(self.FIXTURE.read_text())
+        self.script.chmod(0o755)
+        bin_dir = self.root / "bin"
+        bin_dir.mkdir()
+        self.docker = bin_dir / "docker"
+        self.path = f"{bin_dir}:/usr/bin:/bin"
+        self.lock = self.root / "verify.lock"
+
+    def write_docker(self, body):
+        self.docker.write_text(f"#!{sys.executable}\n" + body)
+        self.docker.chmod(0o755)
+
+    def run_script(self):
+        return subprocess.run(
+            ["/usr/bin/bash", str(self.script)],
+            cwd=self.root,
+            env={
+                "PATH": self.path,
+                "LANG": "C.UTF-8",
+                "PROBONO_DOCKER_BIN": str(self.docker),
+            },
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+
+    def patch_lock(self, source):
+        line = "exec 9>/tmp/probono-verify-deadlines.lock\n"
+        self.assertEqual(source.count(line), 1)
+        return source.replace(line, f"exec 9>{self.lock}\n")
+
+    def test_verifier_auth_exit_3_fails_the_script(self):
+        source = self.script.read_text()
+        self.script.write_text(self.patch_lock(source))
+        self.write_docker(
+            "import sys\n"
+            f"open({str(self.log)!r}, 'a').write(' '.join(sys.argv[1:]) + '\\n')\n"
+            "sys.exit(3)\n"
+        )
+        run = self.run_script()
+        self.assertEqual(run.returncode, 3, run.stderr)
+        self.assertIn("compose --profile worker run --rm worker src/verify-deadlines.ts", self.log.read_text())
+        self.assertNotIn("done:", run.stdout)
+
+    def test_invalid_batch_fails_closed_with_jq(self):
+        source = self.script.read_text()
+        self.script.write_text(self.patch_lock(source))
+        self.write_docker(
+            "import sys\n"
+            f"open({str(self.log)!r}, 'a').write(' '.join(sys.argv[1:]) + '\\n')\n"
+            "sys.stdout.write('{\"not\": \"an array\"}')\n"
+        )
+        run = self.run_script()
+        self.assertNotEqual(run.returncode, 0, run.stdout + run.stderr)
+        self.assertEqual(run.returncode, 5, run.stderr)
+        self.assertNotIn("done:", run.stdout)
+
+    def test_empty_batch_exits_zero_without_saves(self):
+        source = self.script.read_text()
+        self.script.write_text(self.patch_lock(source))
+        self.write_docker(
+            "import sys\n"
+            f"open({str(self.log)!r}, 'a').write(' '.join(sys.argv[1:]) + '\\n')\n"
+            "sys.stdout.write('[]')\n"
+        )
+        run = self.run_script()
+        self.assertEqual(run.returncode, 0, run.stderr)
+        self.assertIn("nothing to save", run.stdout)
+        self.assertEqual(self.log.read_text().count("\n"), 1)
+
 
 class FailureLineTests(unittest.TestCase):
     def worker(self, runner):
@@ -240,15 +334,24 @@ class FailureLineTests(unittest.TestCase):
             return cli.failure_line(error)
         self.fail("expected a refusal")
 
-    def test_task_exit_after_passing_guards_is_reported_as_a_task_failure(self):
-        class Failing:
-            def execute(self, argv, cwd, **kwargs):
-                return h.Runner().execute([sys.executable, "-c", "raise SystemExit(3)"], cwd="/")
+    def test_task_exits_after_passing_guards_report_exact_failed_lines(self):
+        for status in (1, 3, 5):
+            with self.subTest(status=status):
 
-        line = self.failure(lambda: self.worker(Failing()).run_worker("verify-deadlines", ()))
-        self.assertTrue(line.startswith("Failed: worker task verify-deadlines"), line)
-        self.assertIn("exited with status 3", line)
-        self.assertIn("guards passed", line)
+                class Exit:
+                    def execute(self, argv, cwd, code=status, **kwargs):
+                        return h.Runner().execute(
+                            [sys.executable, "-c", f"raise SystemExit({code})"], cwd="/"
+                        )
+
+                line = self.failure(
+                    lambda runner=Exit(): self.worker(runner).run_worker("verify-deadlines", ())
+                )
+                self.assertEqual(
+                    line,
+                    f"Failed: worker task verify-deadlines: command exited with status {status};"
+                    " guards passed. No automatic retry.",
+                )
 
     def test_a_spawned_task_that_times_out_is_a_task_failure(self):
         class Slow:
