@@ -316,8 +316,8 @@ SERVICE ROUTING (REVIEW EXISTING HARDENING; NOT BLIND DROP-INS)
   as the same Refused line and discarded nested Compose stderr, so the exit
   status was lost. Named Failed/Refused lines and the compose syslog identity
   make the next instance diagnosable; tests/test_worker_guards.py
-  (VerifyDeadlines071125Tests, VerifyDeadlinesScriptTests) pin the timing
-  signature and those three script exits.
+  (FailureLineTests exit-status table, VerifyDeadlinesScriptTests) pin the
+  timing signature and those three script exits.
   Do not install/edit/unmask either digest unit. Verify masked AND inactive.
 
   installed_hashes must contain the exact paths shown in config.example.json.
