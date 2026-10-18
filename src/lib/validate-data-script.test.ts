@@ -36,9 +36,6 @@ function runValidateData(policies: unknown[]) {
 }
 
 describe('scripts/validate-data.ts', () => {
-  // #312: scripts/validate-data.ts must call both theme validators. Each case
-  // below fails if its named call is removed (and the other call alone cannot
-  // satisfy the assertion).
   it('wires validatePolicyThemes so a bad record theme fails the script', () => {
     const result = runValidateData([
       { ...buildPolicy({ id: 'fixture-policy' }), themes: ['courts'] },
