@@ -552,6 +552,23 @@ class FailureLineTests(unittest.TestCase):
                         stack.enter_context(active)
                     self.assertRaises(exception, cli.report, "compose", error)
 
+    def test_main_lets_interrupts_and_exits_through(self):
+        cases = (
+            ("KeyboardInterrupt", KeyboardInterrupt()),
+            ("SystemExit(0)", SystemExit(0)),
+            ("SystemExit(3)", SystemExit(3)),
+        )
+        for name, raised in cases:
+            with (
+                self.subTest(name),
+                patch.object(cli, "trusted_entrypoint", side_effect=raised),
+                patch.object(sys, "argv", ["cli.py", "status"]),
+            ):
+                with self.assertRaises(type(raised)) as caught:
+                    cli.main()
+                if isinstance(raised, SystemExit):
+                    self.assertEqual(caught.exception.code, raised.code)
+
     def test_a_later_stderr_write_stays_off_stdout_once_the_line_is_dropped(self):
         class Broken:
             def write(self, text):
