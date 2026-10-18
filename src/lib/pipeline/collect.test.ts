@@ -3912,6 +3912,74 @@ describe('failure classes on source results', () => {
     expect(validateCollectionMeta(result.meta).errors).toEqual([]);
   });
 
+  it('rebuilds failedUrl from a stored HTTP status lastError', async () => {
+    const refusedPdf = 'https://www.finance.gov.au/files/a(1).pdf';
+    const changedBody = {
+      body: Uint8Array.from([0x25, 0x50, 0x44, 0x46, 0x2d, 0x00]),
+      contentType: 'application/pdf',
+    };
+    const initial = await collect({
+      sources: [DOCUMENT_SOURCE],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl: fakeFetch({
+        [DOCUMENT_SOURCE.url]:
+          '<html><body><main><h1>AI governance policy</h1><p>Version one.</p></main></body></html>',
+      }),
+      now: () => new Date('2026-07-01T00:00:00.000Z'),
+    });
+    const previousSnapshot = initial.state.sourceSnapshots[DOCUMENT_SOURCE.id];
+    const trackedPolicy = buildPolicy({
+      id: 'tracked-rebuild-failure-policy',
+      sourceUrl: DOCUMENT_SOURCE.url,
+      verification: {
+        status: 'verified',
+        checkedAt: '2026-07-01T00:00:00.000Z',
+        checkedBy: 'reviewer',
+        method: 'manual',
+        source: {
+          url: DOCUMENT_SOURCE.url,
+          contentHash: previousSnapshot.contentHash,
+        },
+      },
+    });
+    const failedChange = await collect({
+      sources: [DOCUMENT_SOURCE],
+      state: initial.state,
+      existingDevelopments: [],
+      trackedUrls: [DOCUMENT_SOURCE.url],
+      trackedPolicies: [trackedPolicy],
+      fetchImpl: fakeFetch({ [DOCUMENT_SOURCE.url]: changedBody }),
+      now,
+    });
+    const failedVersionKey = Object.keys(failedChange.state.seen).find((key) =>
+      key.includes('policai-change='),
+    );
+    expect(failedVersionKey).toBeDefined();
+    failedChange.state.seen[failedVersionKey as string] = {
+      ...failedChange.state.seen[failedVersionKey as string],
+      status: 'failed',
+      attempts: 5,
+      lastError: `HTTP 404 at ${refusedPdf}`,
+    };
+
+    const exhausted = await collect({
+      sources: [DOCUMENT_SOURCE],
+      state: failedChange.state,
+      existingDevelopments: failedChange.developments,
+      trackedUrls: [DOCUMENT_SOURCE.url],
+      trackedPolicies: [trackedPolicy],
+      fetchImpl: fakeFetch({ [DOCUMENT_SOURCE.url]: changedBody }),
+      now: () => new Date('2026-07-18T00:00:00.000Z'),
+    });
+
+    expect(exhausted.meta.collector.sourceResults[0]).toMatchObject({
+      status: 'error',
+      failureClass: 'not_found',
+      failedUrl: refusedPdf,
+    });
+  });
+
   it('writes failureClass and failedUrl together or not at all', async () => {
     const result = await run();
     for (const row of result.meta.collector.sourceResults) {

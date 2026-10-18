@@ -193,6 +193,50 @@ describe('classifyFailure', () => {
       ),
     ).toEqual({ cls: 'not_found', url: 'https://www.example.gov.au/media/ai-update' });
   });
+
+  it.each([
+    [
+      'HTTP 403 at https://www.finance.gov.au/files/a(1).pdf',
+      'identity_refused',
+      'https://www.finance.gov.au/files/a(1).pdf',
+    ],
+    [
+      "HTTP 403 at https://www.finance.gov.au/files/o'brien.pdf",
+      'identity_refused',
+      "https://www.finance.gov.au/files/o'brien.pdf",
+    ],
+    [
+      'HTTP 404 at https://www.example.gov.au/files/ENOTFOUND.pdf',
+      'not_found',
+      'https://www.example.gov.au/files/ENOTFOUND.pdf',
+    ],
+    [
+      'HTTP 404 at https://www.example.gov.au/files/ECONNRESET.pdf',
+      'not_found',
+      'https://www.example.gov.au/files/ECONNRESET.pdf',
+    ],
+    [
+      'HTTP 410 at https://www.example.gov.au/files/ERR_CERT_x.pdf',
+      'not_found',
+      'https://www.example.gov.au/files/ERR_CERT_x.pdf',
+    ],
+  ])('rebuilds %j from a stored lastError', (message, cls, url) => {
+    expect(classifyFailure(message)).toEqual({ cls, url });
+  });
+
+  it('classifies a SourceFetchError from its status when the message is bare', () => {
+    expect(
+      classifyFailure(
+        new SourceFetchError('upstream refused', {
+          status: 404,
+          url: 'https://www.example.gov.au/files/ENOTFOUND.pdf',
+        }),
+      ),
+    ).toEqual({
+      cls: 'not_found',
+      url: 'https://www.example.gov.au/files/ENOTFOUND.pdf',
+    });
+  });
 });
 
 describe('FAILURE_CLASSES', () => {

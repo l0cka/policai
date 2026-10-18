@@ -501,14 +501,24 @@ redirect it is the redirect target, the host that refused, not the URL first
 requested. A linked document that fails names the document, not the page that
 links it; the link-count and aggregate byte limits name the page. Other transport errors name the request in progress. An HTTP status
 message also carries the URL (`HTTP 403 at <url>`), so a candidate's stored
-`lastError` still names the refusing host on later runs.
+`lastError` still names the refusing host on later runs. Only HTTP status
+messages embed the URL in that string. A transport error stored as
+`fetch failed` or a timeout string keeps the candidate or source URL as
+`failedUrl` on a later rebuild, and may class the row as `other` because the
+cause chain is gone.
 
 `failedUrl` is written to a public file, so it is reduced to a public form:
 credentials, the query string and the fragment are dropped, the scheme and
-host are lower-cased, trailing punctuation and closing brackets or quotes are
-trimmed, and a URL with no host is ignored. A URL longer than 2048 characters
-is reduced to its origin. The URL in an `HTTP nnn at <url>` message is reduced
-the same way.
+host are lower-cased, and a URL with no host is ignored. When a URL is taken
+from a message, trailing sentence punctuation (`.,;:!?`) is trimmed and a
+wrapping bracket or quote at the end of the candidate is dropped.
+Parentheses and apostrophes in the path are kept, so a stored
+`HTTP 403 at https://example.gov.au/files/a(1).pdf` rebuilds the full path.
+Classification matches each text with URLs removed, so a path token such as
+`ENOTFOUND.pdf` cannot change the class; a `SourceFetchError` with `status`
+is classed from that status unless the message is `robots_disallowed`. A URL
+longer than 2048 characters is reduced to its origin. The URL in an
+`HTTP nnn at <url>` message is reduced the same way.
 
 When a source fails more than once in a run, the row records the first
 failure: the index, then a document version that exhausted its retries, then
