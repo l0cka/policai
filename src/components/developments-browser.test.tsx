@@ -112,7 +112,6 @@ afterEach(() => {
   window.location.hash = '';
 });
 
-// #223: stable /developments#<id> anchors; reveal past the other tab and filters (#237).
 it('gives each development an anchor id (#223)', () => {
   renderBrowser([development('dev-a-1x', 'Alpha item')]);
 
