@@ -51,7 +51,7 @@ async function coveragePage(query: Record<string, string> = {}) {
 }
 
 describe('/coverage page', () => {
-  it('counts only public records, so withheld, unverified and trashed records never reach a cell or a list', async () => {
+  it('counts only public records, so withheld, unverified and trashed records never reach a cell or a list (#330)', async () => {
     window.history.replaceState({}, '', '/coverage?theme=courts-tribunals&j=nsw');
     render(await coveragePage({ theme: 'courts-tribunals', j: 'nsw' }));
 
@@ -70,7 +70,7 @@ describe('/coverage page', () => {
     window.history.replaceState({}, '', '/');
   });
 
-  it('server-renders the table, its headers, caption and drill-down without JavaScript', async () => {
+  it('server-renders the table, its headers, caption and drill-down without JavaScript (#330)', async () => {
     const markup = renderToStaticMarkup(await coveragePage({ theme: 'courts-tribunals', j: 'nsw' }));
     const html = new DOMParser().parseFromString(markup, 'text/html');
     const table = html.querySelectorAll('table');
@@ -93,7 +93,7 @@ describe('/coverage page', () => {
     ]);
   });
 
-  it('renders on every request, because the selection comes from the query string', async () => {
+  it('renders on every request, because the selection comes from the query string (#330)', async () => {
     const page = await import('./page');
     expect(page.dynamic).toBe('force-dynamic');
     expect('revalidate' in page).toBe(false);

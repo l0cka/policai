@@ -141,7 +141,7 @@ describe('page copy', () => {
     expect(coverageStandfirst(tied)[1]).toBe('New South Wales and the ACT each have one record.');
   });
 
-  it('counts the real register into the footnote with the vocabulary size', () => {
+  it('counts the real register into the footnote with the vocabulary size (#330)', () => {
     expect(COVERAGE_MIN_RECORDS).toBe(1);
     expect(coverageFootnote(data.theme)).toBe(
       "Of the five themes in Policai's vocabulary, four have a verified record and are shown; one has no verified record yet. Themes are an editorial vocabulary assigned to verified register records, not legal categories, and a count does not measure how strong an instrument is.",
