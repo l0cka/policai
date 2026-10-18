@@ -112,13 +112,13 @@ afterEach(() => {
   window.location.hash = '';
 });
 
-it('gives each development an anchor id', () => {
+it('gives each development an anchor id (#223)', () => {
   renderBrowser([development('dev-a-1x', 'Alpha item')]);
 
   expect(screen.getByText('Alpha item').closest('article')).toHaveAttribute('id', 'dev-a-1x');
 });
 
-it('reveals an entry on load from the other tab and past active filters', async () => {
+it('reveals an entry on load from the other tab and past active filters (#223)', async () => {
   const scroll = vi.fn();
   Element.prototype.scrollIntoView = scroll;
   window.location.hash = '#dev-radar-1';
@@ -134,7 +134,7 @@ it('reveals an entry on load from the other tab and past active filters', async 
   expect(scroll.mock.contexts[0]).toBe(document.getElementById('dev-radar-1'));
 });
 
-it('reveals a hidden entry on hashchange by clearing filters', () => {
+it('reveals a hidden entry on hashchange by clearing filters (#223)', () => {
   const scroll = vi.fn();
   Element.prototype.scrollIntoView = scroll;
   renderBrowser(
