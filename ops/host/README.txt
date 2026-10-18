@@ -306,6 +306,18 @@ SERVICE ROUTING (REVIEW EXISTING HARDENING; NOT BLIND DROP-INS)
   granted at once because its own worker already shares it. worker.lock stays
   non-blocking: a second worker refuses with "worker.lock busy", since ingest
   holds it for minutes, longer than any useful wait.
+  The 2026-10-17 07:11:25 verify-deadlines refusal (issue #296) was not a
+  deploy.lock collision: the unit ran 5.3 s, while a busy shared lock with the
+  then-installed wait=0 path refused within one LOCK_NB poll and never slept.
+  Overlapping pulls and other workers were ruled out from the journals. The
+  duration matches a post-guard exit from ops/verify-deadlines.sh — nested
+  Compose status 3 (VerifierAuthError), status 1 (fatal worker error), or
+  jq -ce status 5 on a bad batch. The installed cli.py printed every failure
+  as the same Refused line and discarded nested Compose stderr, so the exit
+  status was lost. Named Failed/Refused lines and the compose syslog identity
+  make the next instance diagnosable; tests/test_worker_guards.py
+  (VerifyDeadlines071125Tests, VerifyDeadlinesScriptTests) pin the timing
+  signature and those three script exits.
   Do not install/edit/unmask either digest unit. Verify masked AND inactive.
 
   installed_hashes must contain the exact paths shown in config.example.json.

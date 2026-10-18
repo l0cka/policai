@@ -224,6 +224,199 @@ class LockWaitTests(unittest.TestCase):
         self.assertIn("worker", str(caught.exception))
         self.assertNotIn("deployment", str(caught.exception))
 
+    def test_immediate_lock_refusal_matches_pre_wait_timing(self):
+        # Before WORKER_LOCK_WAIT_SECONDS, worker_guard used wait=0. A pull that
+        # held deploy.lock refused within one LOCK_NB attempt and never slept.
+        # The 2026-10-17 07:11:25 verify-deadlines run lasted 5.3 s, so it was
+        # not this class of failure (issue #296).
+        self.hold()
+        fake = FakeClock()
+        with self.assertRaises(d.Refused) as caught:
+            with h.worker_guard(self.state, wait=0, clock=fake.clock, sleep=fake.sleep):
+                self.fail("wait=0 must refuse on the first busy poll")
+        self.assertEqual(str(caught.exception), d.LOCK_BUSY["deploy.lock", False])
+        self.assertEqual(fake.sleeps, [])
+        self.assertEqual(fake.now, 1000.0)
+
+
+class VerifyDeadlines071125Tests(unittest.TestCase):
+    """Root cause of the 2026-10-17 07:11:25 verify-deadlines refusal (#296).
+
+    Evidence from the worker journals (PR #299): the unit ran 5.3 s
+    (07:11:20.075–07:11:25.358); pulls were at 07:10:12–18 and 07:12:02–08;
+    no other probono worker ran in the window. Lock refusals on the then-
+    installed dispatcher return within one LOCK_NB poll. The installed
+    cli.py printed every failure as the same Refused line and discarded
+    nested Compose stderr, so the exit status was lost. The duration class
+    matches a post-guard task exit from ops/verify-deadlines.sh: nested
+    compose status 3 (VerifierAuthError), status 1 (fatal worker error), or
+    jq -ce status 5 on a bad batch. Each path is a TaskFailed after guards.
+    """
+
+    def worker(self, runner):
+        obj = h.Host.__new__(h.Host)
+        obj.runner = runner
+        obj.check_worker_identity = lambda: None
+        obj.check_worker_release = lambda: None
+        return obj
+
+    def failure(self, call):
+        try:
+            call()
+        except (RuntimeError, OSError, ValueError, KeyError, TypeError) as error:
+            return cli.failure_line(error)
+        self.fail("expected a failure line")
+
+    def test_auth_exit_3_after_guards_is_the_leading_duration_class(self):
+        class AuthExit:
+            def execute(self, argv, cwd, **kwargs):
+                return h.Runner().execute(
+                    [sys.executable, "-c", "raise SystemExit(3)"], cwd="/"
+                )
+
+        line = self.failure(lambda: self.worker(AuthExit()).run_worker("verify-deadlines", ()))
+        self.assertEqual(
+            line,
+            "Failed: worker task verify-deadlines: command exited with status 3;"
+            " guards passed. No automatic retry.",
+        )
+
+    def test_fatal_exit_1_after_guards_is_the_same_failure_class(self):
+        class FatalExit:
+            def execute(self, argv, cwd, **kwargs):
+                return h.Runner().execute(
+                    [sys.executable, "-c", "raise SystemExit(1)"], cwd="/"
+                )
+
+        line = self.failure(lambda: self.worker(FatalExit()).run_worker("verify-deadlines", ()))
+        self.assertEqual(
+            line,
+            "Failed: worker task verify-deadlines: command exited with status 1;"
+            " guards passed. No automatic retry.",
+        )
+
+    def test_jq_batch_exit_5_after_guards_is_the_same_failure_class(self):
+        class JqExit:
+            def execute(self, argv, cwd, **kwargs):
+                return h.Runner().execute(
+                    [sys.executable, "-c", "raise SystemExit(5)"], cwd="/"
+                )
+
+        line = self.failure(lambda: self.worker(JqExit()).run_worker("verify-deadlines", ()))
+        self.assertEqual(
+            line,
+            "Failed: worker task verify-deadlines: command exited with status 5;"
+            " guards passed. No automatic retry.",
+        )
+
+    def test_nested_compose_keeps_the_real_exit_status_for_diagnosis(self):
+        # Outer bash sees cli.py's exit 1; the compose syslog line carries the
+        # allowlisted task's status (3 for VerifierAuthError). That split is
+        # why 07:11:25 was undiagnosable before named failure lines.
+        class NestedAuth:
+            def execute(self, argv, cwd, **kwargs):
+                return h.Runner().execute(
+                    [sys.executable, "-c", "raise SystemExit(3)"], cwd="/"
+                )
+
+        run = ["compose", "--profile", "worker", "run", "--rm", "worker"]
+        line = self.failure(
+            lambda: self.worker(NestedAuth()).worker_compose(
+                [*run, "src/verify-deadlines.ts"], ()
+            )
+        )
+        self.assertEqual(
+            line,
+            "Failed: worker task src/verify-deadlines.ts: command exited with status 3;"
+            " guards passed. No automatic retry.",
+        )
+
+
+class VerifyDeadlinesScriptTests(unittest.TestCase):
+    """ops/verify-deadlines.sh failure modes that match the 07:11:25 candidates."""
+
+    def setUp(self):
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        self.root = Path(tmp.name)
+        self.log = self.root / "docker.log"
+        # Minimal tree so the script's cd to apps/probono succeeds.
+        script_dir = self.root / "ops"
+        script_dir.mkdir()
+        source = (HOST.parent.parent / "apps/probono/ops/verify-deadlines.sh").read_text()
+        self.script = script_dir / "verify-deadlines.sh"
+        self.script.write_text(source)
+        self.script.chmod(0o755)
+        bin_dir = self.root / "bin"
+        bin_dir.mkdir()
+        self.docker = bin_dir / "docker"
+        self.path = f"{bin_dir}:/usr/bin:/bin"
+        self.lock = self.root / "verify.lock"
+
+    def write_docker(self, body):
+        self.docker.write_text(f"#!{sys.executable}\n" + body)
+        self.docker.chmod(0o755)
+
+    def run_script(self):
+        return subprocess.run(
+            ["/usr/bin/bash", str(self.script)],
+            cwd=self.root,
+            env={
+                "PATH": self.path,
+                "LANG": "C.UTF-8",
+                "PROBONO_DOCKER_BIN": str(self.docker),
+            },
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+
+    def patch_lock(self, source):
+        # Keep the script's flock, but point it at the fixture so parallel tests
+        # do not share /tmp/probono-verify-deadlines.lock.
+        line = "exec 9>/tmp/probono-verify-deadlines.lock\n"
+        self.assertEqual(source.count(line), 1)
+        return source.replace(line, f"exec 9>{self.lock}\n")
+
+    def test_verifier_auth_exit_3_fails_the_script(self):
+        source = self.script.read_text()
+        self.script.write_text(self.patch_lock(source))
+        self.write_docker(
+            "import sys\n"
+            f"open({str(self.log)!r}, 'a').write(' '.join(sys.argv[1:]) + '\\n')\n"
+            "sys.exit(3)\n"
+        )
+        run = self.run_script()
+        self.assertEqual(run.returncode, 3, run.stderr)
+        self.assertIn("compose --profile worker run --rm worker src/verify-deadlines.ts", self.log.read_text())
+        self.assertNotIn("done:", run.stdout)
+
+    def test_invalid_batch_fails_closed_with_jq(self):
+        source = self.script.read_text()
+        self.script.write_text(self.patch_lock(source))
+        self.write_docker(
+            "import sys\n"
+            f"open({str(self.log)!r}, 'a').write(' '.join(sys.argv[1:]) + '\\n')\n"
+            "sys.stdout.write('{\"not\": \"an array\"}')\n"
+        )
+        run = self.run_script()
+        self.assertNotEqual(run.returncode, 0, run.stdout + run.stderr)
+        self.assertEqual(run.returncode, 5, run.stderr)
+        self.assertNotIn("done:", run.stdout)
+
+    def test_empty_batch_exits_zero_without_saves(self):
+        source = self.script.read_text()
+        self.script.write_text(self.patch_lock(source))
+        self.write_docker(
+            "import sys\n"
+            f"open({str(self.log)!r}, 'a').write(' '.join(sys.argv[1:]) + '\\n')\n"
+            "sys.stdout.write('[]')\n"
+        )
+        run = self.run_script()
+        self.assertEqual(run.returncode, 0, run.stderr)
+        self.assertIn("nothing to save", run.stdout)
+        self.assertEqual(self.log.read_text().count("\n"), 1)
+
 
 class FailureLineTests(unittest.TestCase):
     def worker(self, runner):
