@@ -110,4 +110,55 @@ describe('collection CLI write path', () => {
     expect(readJson('public', 'data', 'meta.json')).toHaveProperty('collector');
     expect(digest(registerFile())).toBe(before);
   });
+
+  it('does not write a manual source failure into automatic coverage', async () => {
+    const manual: WatchSource = {
+      ...SOURCE,
+      id: 'accc-rss',
+      name: 'ACCC — media releases',
+      automation: 'manual',
+      url: 'https://www.example.gov.au/accc',
+    };
+    const fetchImpl = vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url === SOURCE.url) return new Response(RSS_XML, { status: 200 });
+      if (url.startsWith('https://www.example.gov.au/media/')) {
+        return new Response(PAGE_HTML, { status: 200 });
+      }
+      if (url === manual.url) return new Response('denied', { status: 403 });
+      return new Response('not found', { status: 404 });
+    }) as unknown as typeof fetch;
+
+    await runCollection({
+      rootDir,
+      sources: [SOURCE, manual],
+      dryRun: false,
+      fetchImpl,
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+      hostGate: createHostGate({
+        hosts: {},
+        refused: new Map(),
+        fetchRobots: robotsFetcher({ fetchImpl }),
+        now: Date.now,
+        sleep: async () => {},
+      }),
+    });
+
+    const written = readJson<{
+      collector: {
+        health: string;
+        lastRunSources: string[];
+        lastRunErrors: string[];
+        sourceResults: { sourceId: string; coverageEligible?: boolean; status: string }[];
+      };
+    }>('public', 'data', 'meta.json');
+    expect(written.collector.health).toBe('healthy');
+    expect(written.collector.lastRunSources).not.toContain('accc-rss');
+    expect(written.collector.lastRunErrors.join('\n')).not.toContain('accc-rss');
+    expect(
+      written.collector.sourceResults.some(
+        (result) => result.sourceId === 'accc-rss' && result.coverageEligible !== false,
+      ),
+    ).toBe(false);
+  });
 });

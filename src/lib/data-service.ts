@@ -7,7 +7,9 @@
  */
 
 import path from "path";
+import { publicAutomaticCollectionMeta } from "@/lib/collection-coverage";
 import { readJsonFile, writeJsonFile } from "@/lib/file-store";
+import { WATCH_SOURCES } from "@/lib/pipeline/sources";
 import {
 	canonicalizeRecordVerification,
 	canonicalizeSourceEvidence,
@@ -1339,7 +1341,8 @@ const EMPTY_META: CollectionMeta = {
 };
 
 export async function getCollectionMeta(): Promise<CollectionMeta> {
-	return readJsonFile<CollectionMeta>(META_FILE, EMPTY_META);
+	const meta = await readJsonFile<CollectionMeta>(META_FILE, EMPTY_META);
+	return publicAutomaticCollectionMeta(meta, WATCH_SOURCES);
 }
 
 export async function getSourceMonitoring(): Promise<SourceMonitoringState> {

@@ -989,14 +989,18 @@ npm run collect -- --dry-run --source=<id>
   it to `automation: manual` with an explanation. Do not count a challenge page
   as coverage and do not disable an authoritative source merely because it
   cannot be automated.
-  Every due source counts in the health denominator, including a source that
-  is known to be blocked, so one persistent refusal keeps the run `degraded`
-  and `lastHealthyAt` stale. Move such a source to `automation: manual`
-  (which drops it from the denominator) rather than excluding it from the
-  count. `accc-rss` (HTTP 403 from the host's access-denied page) and
-  `wa-ai-policy` (the linked finance.gov.au framework PDF resets the
-  connection) were moved on 2026-10-17 for this reason (#304); each source's
-  `notes` carry the evidence.
+  Every due automatic source counts in the health denominator, including a
+  source that is known to be blocked, so one persistent refusal keeps the run
+  `degraded` and `lastHealthyAt` stale. Move such a source to
+  `automation: manual` (which drops it from the denominator) rather than
+  excluding it from the count. A result already stored for that id, including
+  one recorded while it was still automatic, is left out of the public
+  automatic count and does not keep the run degraded (`publicAutomaticCollectionMeta`
+  in `src/lib/collection-coverage.ts`, applied by `getCollectionMeta` and by
+  the committed `public/data/meta.json`). `accc-rss` (HTTP 403 from the host's
+  access-denied page) and `wa-ai-policy` (the linked finance.gov.au framework
+  PDF resets the connection) were moved for this reason (#304, #389); each
+  source's `notes` carry the evidence.
 - **An HTML source reports no coverage** — only links inside recognised
   publication/result containers count as index entries. Navigation, footer,
   homepage, login, and soft-error links do not make a source healthy; inspect
