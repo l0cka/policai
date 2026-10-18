@@ -38,7 +38,7 @@ APP 1.8 then requires the privacy policy to state the kinds of personal informat
 
 The [fact sheet](https://www.oaic.gov.au/__data/assets/pdf_file/0021/269013/APP-1.7-1.9-Transparency-Obligation-Fact-Sheet.PDF) defines "computer program" to include pre-programmed rule-based processes, AI and machine learning, "software, apps or word-processing tools" and generative AI, including chatbots. A decision may be in scope "even where a computer program output does not replace the entire decision-making process or is subject to human review". The OAIC considers that machine learning or generative AI outputs used in significant decisions "would generally fall within scope of the transparency obligation unless subject to extensive human oversight and control".
 
-Commercially sensitive information and trade secrets are excluded. Information that would expose an entity "to ridicule, embarrassment or public criticism" is not ([fact sheet](https://www.oaic.gov.au/__data/assets/pdf_file/0021/269013/APP-1.7-1.9-Transparency-Obligation-Fact-Sheet.PDF)).
+The OAIC says commercially sensitive information and trade secrets are excluded, relying on the explanatory memorandum addendum rather than the APP text. Information that would expose an entity "to ridicule, embarrassment or public criticism" is not ([fact sheet](https://www.oaic.gov.au/__data/assets/pdf_file/0021/269013/APP-1.7-1.9-Transparency-Obligation-Fact-Sheet.PDF)).
 
 The OAIC also published a supplementary fact sheet for government agencies and a flowchart, and updated its APP 1 Guidelines ([OAIC announcement](https://www.oaic.gov.au/news/media-centre/new-resources-on-transparency-for-use-of-ai-and-automated-decision-making)).
 
@@ -50,8 +50,8 @@ The OAIC "generally expects" the obligation to stay with the entity that uses pe
 
 ## Analysis
 
-In Policai's analysis, the obligation turns on the decision's effect on a person, not on the technology. The [fact sheet](https://www.oaic.gov.au/__data/assets/pdf_file/0021/269013/APP-1.7-1.9-Transparency-Obligation-Fact-Sheet.PDF)'s first worked example puts a spreadsheet formula that ranks clients for health and aged care in scope.
+In Policai's analysis, the obligation turns on the decision's effect on a person, not on the technology. Example 1 in the [fact sheet](https://www.oaic.gov.au/__data/assets/pdf_file/0021/269013/APP-1.7-1.9-Transparency-Obligation-Fact-Sheet.PDF) puts a spreadsheet formula that ranks clients for health and aged care in scope.
 
-On the OAIC's reading, human sign-off alone does not take a decision out of scope. In its [remuneration example](https://www.oaic.gov.au/__data/assets/pdf_file/0021/269013/APP-1.7-1.9-Transparency-Obligation-Fact-Sheet.PDF), a director approves every outcome and the AI recommendation is still in scope. Only further steps, such as interrogating outputs, using additional evidence and documenting why the decision departed from the recommendation, "could indicate" otherwise.
+On the OAIC's reading, human sign-off alone does not take a decision out of scope. In its [Example 3, on remuneration](https://www.oaic.gov.au/__data/assets/pdf_file/0021/269013/APP-1.7-1.9-Transparency-Obligation-Fact-Sheet.PDF), a director approves every outcome and the AI recommendation is still in scope. Only further steps, such as interrogating outputs, using additional evidence and documenting why the decision departed from the recommendation, "could indicate" otherwise.
 
-Entities using vendor tools depend on vendor information to describe them. The fact sheet requires grouped descriptions to be "meaningful to a reasonable person" but, beyond its examples, does not say how much detail meets that test.
+Entities using vendor tools depend on vendor information to describe them. The fact sheet requires grouped descriptions to be "meaningful to a reasonable person" but, beyond general guidance and its examples, sets no fixed level of detail.
