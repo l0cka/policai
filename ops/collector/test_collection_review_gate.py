@@ -55,7 +55,9 @@ class GateTest(unittest.TestCase):
             'review': {'base': self.base, 'head': self.head, 'status': 'completed',
                        'vendor': 'ollama-cloud', 'model': 'glm-5.3',
                        'findings': [], 'artifact': artifact},
-            'coverage': {'automatic_source_ids': ['source-a'], 'manual_source_count': 0,
+            'coverage': {'base_automatic_source_ids': ['source-a'],
+                         'head_automatic_source_ids': ['source-a'],
+                         'base_manual_source_count': 0, 'head_manual_source_count': 0,
                          'base_due': {'source-a': True}, 'head_due': {'source-a': True},
                          'artifact': artifact},
             'dates': [],
@@ -289,7 +291,8 @@ class GateTest(unittest.TestCase):
         self.evidence['base'] = self.base
         self.evidence['review']['base'] = self.base
         coverage = self.evidence['coverage']
-        coverage['automatic_source_ids'].append('source-b')
+        coverage['base_automatic_source_ids'].append('source-b')
+        coverage['head_automatic_source_ids'].append('source-b')
         coverage['base_due']['source-b'] = coverage['head_due']['source-b'] = True
         c['sourceResults'][0]['itemCount'] = 79
         row['itemCount'] = 20000
@@ -544,9 +547,11 @@ class GateTest(unittest.TestCase):
 
     def test_coverage_evidence_matrix_and_retry_not_recovery(self):
         original = copy.deepcopy(self.evidence['coverage'])
-        for key, value in [('automatic_source_ids', ['source-a', 'source-a']),
-                           ('manual_source_count', -1), ('base_due', {}),
-                           ('head_due', {'source-a': 'true'}), ('artifact', None)]:
+        for key, value in [('base_automatic_source_ids', ['source-a', 'source-a']),
+                           ('head_automatic_source_ids', ['source-a', 'source-a']),
+                           ('base_manual_source_count', -1), ('head_manual_source_count', -1),
+                           ('base_due', {}), ('head_due', {'source-a': 'true'}),
+                           ('artifact', None)]:
             self.evidence['coverage'] = copy.deepcopy(original)
             self.evidence['coverage'][key] = value
             self.assert_escalates('coverage')
@@ -559,6 +564,40 @@ class GateTest(unittest.TestCase):
         result = self.run_gate()
         self.assertEqual(result['verdict'], 'would-merge', result)
         self.assertFalse(result['comparisons'][0]['recovered'])
+
+    def test_source_set_change_admits_distinct_base_and_head_inventories(self):
+        c = self.meta['collector']
+        moved = dict(c['sourceResults'][0], sourceId='accc-rss', itemCount=10)
+        c['sourceResults'].append(moved)
+        c.update(automaticSourceCount=2, manualSourceCount=2, dueSourceCount=2,
+                 successfulSourceCount=2, lastRunSources=['source-a', 'accc-rss'])
+        self.revise()
+        self.base = self.head
+        self.evidence['base'] = self.base
+        self.evidence['review']['base'] = self.base
+        coverage = self.evidence['coverage']
+        coverage['base_automatic_source_ids'] = ['source-a', 'accc-rss']
+        coverage['head_automatic_source_ids'] = ['source-a']
+        coverage['base_manual_source_count'] = 2
+        coverage['head_manual_source_count'] = 3
+        coverage['base_due'] = {'source-a': True, 'accc-rss': True}
+        coverage['head_due'] = {'source-a': True}
+        c['sourceResults'] = [dict(c['sourceResults'][0])]
+        c.update(automaticSourceCount=1, manualSourceCount=3, dueSourceCount=1,
+                 successfulSourceCount=1, lastRunSources=['source-a'], runCount=c['runCount'] + 1)
+        self.revise()
+        result = self.run_gate()
+        self.assertEqual(result['verdict'], 'would-merge', result['reasons'])
+        kinds = {row['source_id']: row['kind'] for row in result['comparisons']}
+        self.assertEqual(kinds['source-a'], 'comparable')
+        self.assertEqual(kinds['accc-rss'], 'source-set-change')
+        shared = copy.deepcopy(coverage)
+        shared['base_automatic_source_ids'] = ['source-a', 'accc-rss']
+        shared['head_automatic_source_ids'] = ['source-a', 'accc-rss']
+        shared['head_due'] = {'source-a': True, 'accc-rss': True}
+        shared['head_manual_source_count'] = 2
+        self.evidence['coverage'] = shared
+        self.assert_escalates('source IDs')
 
     def test_artifact_symlinks_and_duplicate_ledger_rows_refuse(self):
         proof = Path(self.evidence['run']['artifact']['path'])
