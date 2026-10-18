@@ -306,10 +306,12 @@ each block renders on its own.
 
 Figure YAML and frontmatter are parsed by `parseYaml` in
 `src/lib/frontmatter.ts` with the YAML core schema, so dates stay text and
-must be real calendar dates: `2026-02-30` is an error, not 2 March. A figure
-block is one YAML document, so a `---` line inside it is an error instead of
-ending the block early. Matrix column names, matrix row headers and timeline
-date-and-title pairs must not repeat.
+must be real calendar dates: `2026-02-30` is an error, not 2 March (js-yaml
+default schema would roll that to 2 March; #282). A figure block is one YAML
+document, so a `---` line inside it is an error instead of ending the block
+early and silently dropping later fields (#282). Matrix column names, matrix
+row headers and timeline date-and-title pairs must not repeat (duplicate React
+keys otherwise; #282).
 
 | Field | Kinds | Rule |
 | --- | --- | --- |
@@ -338,9 +340,10 @@ as a whole, not the records it counts: a review-due record in the count
 raises no error and no banner (PM, 2026-10-17). Its source line reads
 "Policai register, N public records, as at <date>", where the date is the
 date the page was generated, as a calendar date in Australia/Sydney (Daniel,
-2026-10-17, #293). `readPublicArticles` takes it from the same `now` that
-builds the public projection it counts, so the date is when the count was
-taken and reveals nothing about hidden records. `/analysis/[slug]` exports
+2026-10-17, #293; supersedes the collection/`lastHealthyAt` date from #282).
+`readPublicArticles` takes it from the same `now` that builds the public
+projection it counts, so the date is when the count was taken and reveals
+nothing about hidden records. `/analysis/[slug]` exports
 `dynamic = 'force-dynamic'` (`ƒ` in the build, served `no-store`), so each
 request recounts and redates, and a newly withheld citation leaves the page
 at once. Without it the route is dynamic only because it has no
