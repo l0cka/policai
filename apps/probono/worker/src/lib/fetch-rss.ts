@@ -2,14 +2,14 @@ import Parser from 'rss-parser';
 import type { RawItem } from './fetch-firecrawl.js';
 
 /**
- * The collector identity, in the same form plain HTTP uses
- * (`COLLECTOR_USER_AGENT` in the root app). rss-parser's own client sends
- * `User-Agent: rss-parser` and, for a status of 300 or above, rejects with
- * `Status code N` before it reads the body. That bare status is what Source
- * health stored. This module fetches the document itself and uses rss-parser
- * only to parse XML.
+ * The collector identity on every retrieval path (`COLLECTOR_IDENTITY_TOKEN`
+ * in the root app): `Policai/1.0 (+https://policai.org)`, with no browser
+ * prefix. rss-parser's own client sends `User-Agent: rss-parser` and, for a
+ * status of 300 or above, rejects with `Status code N` before it reads the
+ * body. That bare status is what Source health stored. This module fetches
+ * the document itself and uses rss-parser only to parse XML.
  */
-export const FEED_USER_AGENT = 'Mozilla/5.0 (compatible; Policai/1.0 (+https://policai.org))';
+export const FEED_USER_AGENT = 'Policai/1.0 (+https://policai.org)';
 
 const parser = new Parser();
 const MAX_REDIRECTS = 5;

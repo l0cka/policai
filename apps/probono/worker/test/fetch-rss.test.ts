@@ -37,7 +37,7 @@ describe('fetchRss', () => {
     const items = await fetchRss(`${base}/rss.xml`);
 
     expect(seen).toEqual([FEED_USER_AGENT]);
-    expect(FEED_USER_AGENT).toContain('Policai/1.0 (+https://policai.org)');
+    expect(FEED_USER_AGENT).toBe('Policai/1.0 (+https://policai.org)');
     expect(items).toMatchObject([
       { title: 'Hotter summers, hotter homes', url: 'https://www.tenants.org.au/blog/hotter-summers' },
     ]);
