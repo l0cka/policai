@@ -231,8 +231,6 @@ export function PolicyBrowser({
     updateState({ sortField, sortDirection });
   };
 
-  // lastHealthyAt still anchors register freshness (#314 decides whether to move).
-  // Label it so it is not read as the collection date beside the header strip (#318).
   const freshnessDate = lastHealthyAt ?? lastCollectedAt ?? lastReviewedAt;
   const freshnessKind = lastHealthyAt
     ? 'last fully healthy'

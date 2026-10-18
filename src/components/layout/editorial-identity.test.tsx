@@ -8,7 +8,6 @@ vi.mock('next/navigation', () => ({ usePathname: () => pathname.current }));
 describe('Editorial identity and navigation', () => {
   it('labels collection freshness separately from record verification', () => {
     render(<Header collectedAt="2026-09-21T02:00:00Z" collectionHealth="healthy" successfulSourceCount={10} dueSourceCount={10} />);
-    // One COLLECTED node shared across breakpoints (phone degraded marker is separate).
     expect(screen.getAllByText(/COLLECTED/)).toHaveLength(1);
     expect(screen.queryByText(/DATA CURRENT TO/)).not.toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Source health' })).toHaveAttribute('href', '/status');

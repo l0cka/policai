@@ -491,8 +491,6 @@ Classification needs all three `CLASSIFIER_*` variables. A missing one raises `C
   would date the strip to the last fully healthy run (#304). Below `sm` a
   degraded run still shows a `degraded` marker beside the collected date.
   `formatCollectedAt` falls back when the stamp is missing or unparseable.
-  `src/app/layout-collection-strip.test.ts` pins that `layout.tsx` spreads
-  `collectionStripProps(meta)`.
 - A server module (one without `'use client'`) imports only components from a
   `'use client'` module. Any other value it imports, such as a string or a
   function, becomes a client reference in the RSC payload, which the browser
