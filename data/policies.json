@@ -5346,7 +5346,7 @@
   {
     "id": "esafety-genai-industry-codes",
     "title": "Online safety industry codes covering generative AI and AI companions",
-    "description": "Enforceable eSafety industry codes registered in September 2025 — including for generative AI services and AI companion chatbots — in effect from 9 March 2026, with age-assurance obligations and penalties up to $49.5m.",
+    "description": "Enforceable eSafety industry codes registered in September 2025 — including for generative AI services and AI companion chatbots — in effect from 9 March 2026, with age-assurance obligations and penalties up to $49.5m. Schedule 3 of the Online Safety Amendment (Digital Duty of Care) Bill 2026, introduced on 15 October 2026 and still before the House, would repeal these codes and standards 12 months after Royal Assent. That repeal has not occurred.",
     "jurisdiction": "federal",
     "type": "regulation",
     "status": "active",
@@ -5355,7 +5355,7 @@
       "eSafety Commissioner"
     ],
     "sourceUrl": "https://www.esafety.gov.au/industry/codes",
-    "content": "In September 2025 the eSafety Commissioner registered six new industry codes under the Online Safety Act, including codes covering generative AI services and AI companion chatbots. The codes took effect on 9 March 2026 and impose age-assurance and safety obligations, with civil penalties of up to $49.5 million. In March 2026 eSafety reported on risks AI companions pose to children following transparency notices issued to four providers in October 2025.",
+    "content": "In September 2025 the eSafety Commissioner registered six new industry codes under the Online Safety Act, including codes covering generative AI services and AI companion chatbots. The codes took effect on 9 March 2026 and impose age-assurance and safety obligations, with civil penalties of up to $49.5 million. In March 2026 eSafety reported on risks AI companions pose to children following transparency notices issued to four providers in October 2025. Pending repeal, not yet in effect: Schedule 3 of the Online Safety Amendment (Digital Duty of Care) Bill 2026 would repeal the online-safety industry codes and standards 12 months after Royal Assent. The bill was introduced on 15 October 2026 and is still proposed. This record stays active.",
     "aiSummary": "Enforceable online-safety codes for generative AI and AI companion services, in force since March 2026.",
     "tags": [
       "online safety",
@@ -5369,7 +5369,7 @@
       "generative-ai"
     ],
     "createdAt": "2026-07-10T00:00:00.000Z",
-    "updatedAt": "2026-07-19T06:14:29.219Z",
+    "updatedAt": "2026-10-17T09:00:00.000Z",
     "lastReviewedAt": "2026-10-16T00:00:00.000Z",
     "verification": {
       "status": "verified",
@@ -7808,6 +7808,58 @@
       "checkedBy": "Policai Developer source re-read (issue 181)",
       "method": "manual",
       "notes": "Approved by Daniel Alkurdi for addition to the register on 7 October 2026 after review of the official PM&C consultation page, which states the opening and closing times; the PM&C news item of 17 September 2026 states the same period. Re-read 2026-10-16 (issue 181): the official PM&C page now states \"Submissions to this consultation have now closed\" and that information on outcomes and the Government's next steps will be made available in due course. No extension, published submissions or outcome are shown; status set to closed."
+    }
+  },
+  {
+    "id": "federal-online-safety-amendment-digital-duty-of-care-bill-2026",
+    "title": "Online Safety Amendment (Digital Duty of Care) Bill 2026",
+    "description": "Proposed federal bill introduced in the House of Representatives on 15 October 2026, with the second reading moved the same day. It would place a digital duty of care on online services, including services that generate material using AI. It is before the House and is not law.",
+    "jurisdiction": "federal",
+    "type": "legislation",
+    "status": "proposed",
+    "effectiveDate": "2026-10-15",
+    "dates": [
+      {
+        "type": "published",
+        "date": "2026-10-15",
+        "precision": "day",
+        "primary": true
+      },
+      {
+        "type": "scheduled_review",
+        "date": "2026-11-20",
+        "precision": "day"
+      }
+    ],
+    "agencies": [
+      "Parliament of Australia",
+      "Department of Infrastructure, Transport, Regional Development, Communications and the Arts"
+    ],
+    "sourceUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;adv=yes;orderBy=date-eFirst;page=0;query=Dataset%3AbillsCurBef,billsCurNotBef,billsPrevParl%20Dataset_Phrase%3A%22billhome%22;rec=0;resCount=Default",
+    "content": "The Online Safety Amendment (Digital Duty of Care) Bill 2026 was introduced and read a first time in the House of Representatives on 15 October 2026, and the second reading was moved that day. Status is proposed: the register has no separate before-Parliament status. The bill is not an Act. The House progress page (https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553) records that introduction, the second reading, portfolio Infrastructure, Transport, Regional Development, Communications, Sport and the Arts, and referral on 15 October 2026 to the Senate Environment and Communications Legislation Committee, with a report due on 20 November 2026. That reporting date is stored as scheduled_review because the register has no committee-report date type. It is the committee's reporting date, not a statutory review of an Act. As described in the approved 11–17 October 2026 signal, the bill covers services that generate material using AI (s 25B(1)(h)), requires yearly risk assessments, and in Schedule 3 would repeal the online-safety industry codes and standards 12 months after Royal Assent. Those codes remain in force on esafety-genai-industry-codes. An exposure draft was released for targeted consultation on 8 September 2026 (Minister for Communications, https://minister.infrastructure.gov.au/wells/media-release/my-feed-my-way). The Minister announced introduction on 15 October 2026 (https://minister.infrastructure.gov.au/wells/media-release/digital-duty-care-next-step-australias-world-leading-reforms). The department's page is https://www.infrastructure.gov.au/media-communications/internet/online-safety/digital-duty-care. Secondary reports, not the canonical source: https://www.openaustralia.org.au/debates/?id=2026-10-15.6.2 and https://aigeek.au/news/digital-duty-of-care-bill-introduced-ai/.",
+    "aiSummary": "Proposed Online Safety Amendment (Digital Duty of Care) Bill 2026, introduced on 15 October 2026. It is not law. The Senate Environment and Communications Legislation Committee is due to report on 20 November 2026.",
+    "tags": [
+      "digital duty of care",
+      "online safety",
+      "generative AI",
+      "bill",
+      "Parliament"
+    ],
+    "themes": [
+      "online-safety",
+      "generative-ai",
+      "risk-assurance",
+      "ai-governance"
+    ],
+    "createdAt": "2026-10-17T09:00:00.000Z",
+    "updatedAt": "2026-10-17T09:00:00.000Z",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;adv=yes;orderBy=date-eFirst;page=0;query=Dataset%3AbillsCurBef,billsCurNotBef,billsPrevParl%20Dataset_Phrase%3A%22billhome%22;rec=0;resCount=Default",
+        "title": "ParlInfo bill-home search"
+      },
+      "notes": "Unverified editorial draft from the Policai Signal scan 11–17 October 2026, entered after Dan approved the gap. No source fingerprint, no checkedAt, no checkedBy, and no lastReviewedAt. Hidden from the public read until a manual editorial review."
     }
   }
 ]
