@@ -521,7 +521,6 @@ class GateTest(unittest.TestCase):
         self.assertFalse(result['comparisons'][0]['recovered'])
 
     def test_source_set_change_admits_distinct_base_and_head_inventories(self):
-        """#315-shaped case: accc-rss leaves automatic between base and head (#317)."""
         c = self.meta['collector']
         moved = dict(c['sourceResults'][0], sourceId='accc-rss', itemCount=10)
         c['sourceResults'].append(moved)
@@ -547,7 +546,6 @@ class GateTest(unittest.TestCase):
         kinds = {row['source_id']: row['kind'] for row in result['comparisons']}
         self.assertEqual(kinds['source-a'], 'comparable')
         self.assertEqual(kinds['accc-rss'], 'source-set-change')
-        # A single shared inventory still refuses the same base/head metas.
         shared = copy.deepcopy(coverage)
         shared['base_automatic_source_ids'] = ['source-a', 'accc-rss']
         shared['head_automatic_source_ids'] = ['source-a', 'accc-rss']

@@ -235,7 +235,6 @@ def inspect_coverage(objects, evidence, args, result):
         objects[args.head]['public/data/meta.json'], coverage, 'head', result))
     if base_rows is None or head_rows is None:
         return
-    # Sources may leave or join the automatic set between base and head (#315 / #317).
     for source in sorted(set(base_rows) | set(head_rows)):
         before, after = base_rows.get(source), head_rows.get(source)
         if before is None or after is None:
