@@ -1,6 +1,6 @@
 {
   "lastCollectedAt": "2026-10-17T19:33:37.076Z",
-  "lastHealthyAt": "2026-10-06T19:33:28.224Z",
+  "lastHealthyAt": "2026-10-17T19:33:37.076Z",
   "lastReviewedAt": "2026-10-16T08:58:16.496Z",
   "collector": {
     "runCount": 80,
@@ -37,20 +37,17 @@
       "wa-legislation-as-made",
       "wa-legislation-as-passed",
       "qld-ministerial-statements",
-      "wa-media-statements",
-      "wa-ai-policy"
+      "wa-media-statements"
     ],
-    "lastRunErrors": [
-      "wa-ai-policy: page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.finance.gov.au/sites/default/files/2024-06/National-framework-for-the-assurance-of-AI-in-government.pdf\nCall log:\n  - navigating to \"https://www.finance.gov.au/sites/default/files/2024-06/National-framework-for-the-assurance-of-AI-in-government.pdf\", waiting until \"load\"\n"
-    ],
-    "health": "degraded",
-    "dueSourceCount": 34,
+    "lastRunErrors": [],
+    "health": "healthy",
+    "dueSourceCount": 33,
     "successfulSourceCount": 33,
-    "failedSourceCount": 1,
+    "failedSourceCount": 0,
     "skippedSourceCount": 41,
-    "successRate": 0.971,
-    "automaticSourceCount": 75,
-    "manualSourceCount": 3,
+    "successRate": 1,
+    "automaticSourceCount": 74,
+    "manualSourceCount": 4,
     "sourceResults": [
       {
         "sourceId": "pm-media",
@@ -770,19 +767,6 @@
         "itemCount": 20,
         "candidateCount": 0,
         "newCandidateCount": 0
-      },
-      {
-        "sourceId": "wa-ai-policy",
-        "status": "error",
-        "coverageEligible": true,
-        "checkedAt": "2026-10-17T19:33:37.076Z",
-        "durationMs": 6203,
-        "itemCount": null,
-        "candidateCount": 0,
-        "newCandidateCount": 0,
-        "error": "wa-ai-policy: page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.finance.gov.au/sites/default/files/2024-06/National-framework-for-the-assurance-of-AI-in-government.pdf\nCall log:\n  - navigating to \"https://www.finance.gov.au/sites/default/files/2024-06/National-framework-for-the-assurance-of-AI-in-government.pdf\", waiting until \"load\"\n",
-        "failureClass": "identity_refused",
-        "failedUrl": "https://www.finance.gov.au/sites/default/files/2024-06/National-framework-for-the-assurance-of-AI-in-government.pdf"
       },
       {
         "sourceId": "tas-dpac-policies",

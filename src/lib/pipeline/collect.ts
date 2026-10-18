@@ -44,6 +44,10 @@ import {
   type WatchSource,
 } from './sources';
 import {
+  collectionRunHealth,
+  MIN_HEALTHY_SOURCE_RATE,
+} from '@/lib/collection-coverage';
+import {
   canonicalizeSourceEvidence,
   canonicalizeSourceUrl,
   isAllowedSourceHost,
@@ -150,7 +154,7 @@ export function collectionRunFailed(
 const DEFAULT_MAX_ITEMS_PER_SOURCE = 5;
 const DEFAULT_MIN_SCORE_FOR_DEVELOPMENT = 0.5;
 const DEFAULT_MIN_SCORE_FOR_REVIEW = 0.7;
-const DEFAULT_MIN_HEALTHY_SOURCE_RATE = 0.8;
+const DEFAULT_MIN_HEALTHY_SOURCE_RATE = MIN_HEALTHY_SOURCE_RATE;
 const MAX_CANDIDATE_ATTEMPTS = 5;
 const WEEKLY_INTERVAL_MS = 6 * 24 * 60 * 60 * 1000;
 /** Browser retrieval covers cold start plus challenge settling. */
@@ -988,62 +992,6 @@ function selectCandidatesForRun(
       selectedFresh.length + remainingCapacity,
     ),
   ];
-}
-
-function healthForRun(
-  sourceResults: SourceRunResult[],
-  sources: WatchSource[],
-  minHealthySourceRate: number,
-): {
-  status: CollectionHealthStatus;
-  dueSourceCount: number;
-  successfulSourceCount: number;
-  failedSourceCount: number;
-  skippedSourceCount: number;
-  successRate: number;
-} {
-  const coverageResults = sourceResults.filter(
-    (result) => result.coverageEligible !== false,
-  );
-  const successfulSourceCount = coverageResults.filter(
-    (result) => result.status === 'success',
-  ).length;
-  const failedSourceCount = coverageResults.filter(
-    (result) => result.status === 'error',
-  ).length;
-  const skippedSourceCount = sourceResults.filter(
-    (result) => result.status === 'skipped',
-  ).length;
-  const dueSourceCount = successfulSourceCount + failedSourceCount;
-  const successRate =
-    dueSourceCount === 0 ? 1 : successfulSourceCount / dueSourceCount;
-  const criticalSourceIds = new Set(
-    sources.filter((source) => source.critical).map((source) => source.id),
-  );
-  const criticalFailure = coverageResults.some(
-    (result) =>
-      result.status === 'error' && criticalSourceIds.has(result.sourceId),
-  );
-  const retryFailure = sourceResults.some(
-    (result) =>
-      result.coverageEligible === false && result.status === 'error',
-  );
-
-  let status: CollectionHealthStatus = 'healthy';
-  if (criticalFailure || successRate < minHealthySourceRate) {
-    status = 'failed';
-  } else if (failedSourceCount > 0 || retryFailure) {
-    status = 'degraded';
-  }
-
-  return {
-    status,
-    dueSourceCount,
-    successfulSourceCount,
-    failedSourceCount,
-    skippedSourceCount,
-    successRate,
-  };
 }
 
 function markPending(
@@ -2031,7 +1979,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     log(`[collect] robots unverified: ${robotsUnverified.join(', ')}`);
   }
 
-  const runHealth = healthForRun(
+  const runHealth = collectionRunHealth(
     sourceResults,
     sources,
     minHealthySourceRate,
