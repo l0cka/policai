@@ -1949,7 +1949,7 @@
       "Australian Signals Directorate"
     ],
     "sourceUrl": "https://blueprint.asd.gov.au/security-and-governance/policies",
-    "content": "ASD's Blueprint for Secure Cloud was initially launched on 19 December 2023. The Blueprint is maintained as a living resource; its change log does not record a change specific to this policy. It is better-practice guidance for designing, configuring and deploying secure cloud and hybrid workspaces, with a current focus on Microsoft 365. Its security and governance section links system security planning, the Essential Eight, system security plan annexes, and organisational policies and strategies. The organisational policies checklist explicitly identifies a general-purpose artificial intelligence usage policy as a requirement of ISM control ISM-2074. The Blueprint does not provide a template for this artefact, but positions it as part of the documentation agencies should review, develop and maintain when operating systems built using the Blueprint.",
+    "content": "ASD's Blueprint for Secure Cloud was initially launched on 19 December 2023. The Blueprint is maintained as a living resource; its change log does not record a change specific to this policy. It is better-practice guidance for designing, configuring and deploying secure cloud and hybrid workspaces, with a current focus on Microsoft 365. Its security and governance section links system security planning, the Essential Eight, system security plan annexes, and organisational policies and strategies. The organisational policies checklist explicitly identifies a general-purpose artificial intelligence usage policy as a requirement of ISM control ISM-2074. The Blueprint does not provide a template for this artefact, but positions it as part of the documentation agencies should review, develop and maintain when operating systems built using the Blueprint. ASD Essentials, launched on 15 October 2026, is the transition path from the Essential Eight (https://www.cyber.gov.au/publication/transitioning-from-the-essential-eight); ASD keeps the Essential Eight on cyber.gov.au during the transition (https://www.cyber.gov.au/news/asd-essentials-evolving-our-approach-to-cyber-security-resilience).",
     "aiSummary": "ASD Blueprint guidance, first launched in December 2023, identifies a general-purpose AI usage policy as an ISM-2074 organisational policy requirement.",
     "tags": [
       "ASD",
@@ -1964,7 +1964,7 @@
       "cyber-security"
     ],
     "createdAt": "2026-04-20T00:00:00Z",
-    "updatedAt": "2026-07-19T06:14:28.882Z",
+    "updatedAt": "2026-10-18T22:40:00.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -4581,7 +4581,7 @@
       "Australian Cyber Security Centre"
     ],
     "sourceUrl": "https://www.cyber.gov.au/blog/frontier-models-and-their-impact-on-cyber-security",
-    "content": "ASD published guidance on 9 April 2026 about the cyber security implications of increasingly capable frontier AI models, following Anthropic's 7 April 2026 announcement of Claude Mythos Preview. The guidance says frontier models reduce the cost, effort and expertise required to discover and exploit software vulnerabilities, while also creating opportunities for defenders to identify and remediate vulnerabilities before exploitation. ASD advises organisations to maintain strong cyber security baselines aligned to the Information Security Manual and Essential Eight, reduce exposed attack paths, patch more frequently, use AI defensively where appropriate, and implement layered security. APRA's 30 April 2026 AI industry letter points regulated entities to ASD advice on frontier AI models.",
+    "content": "ASD published guidance on 9 April 2026 about the cyber security implications of increasingly capable frontier AI models, following Anthropic's 7 April 2026 announcement of Claude Mythos Preview. The guidance says frontier models reduce the cost, effort and expertise required to discover and exploit software vulnerabilities, while also creating opportunities for defenders to identify and remediate vulnerabilities before exploitation. ASD advises organisations to maintain strong cyber security baselines aligned to the Information Security Manual and Essential Eight, reduce exposed attack paths, patch more frequently, use AI defensively where appropriate, and implement layered security. APRA's 30 April 2026 AI industry letter points regulated entities to ASD advice on frontier AI models. ASD Essentials, launched on 15 October 2026, is the transition path from the Essential Eight (https://www.cyber.gov.au/publication/transitioning-from-the-essential-eight); ASD keeps the Essential Eight on cyber.gov.au during the transition (https://www.cyber.gov.au/news/asd-essentials-evolving-our-approach-to-cyber-security-resilience).",
     "aiSummary": "ASD guidance on frontier AI cyber risks, defensive use of AI, patching tempo, attack-surface reduction, and layered cyber resilience.",
     "tags": [
       "frontier AI",
@@ -4598,7 +4598,7 @@
       "risk-assurance"
     ],
     "createdAt": "2026-05-01T00:00:00Z",
-    "updatedAt": "2026-10-07T00:39:50.272Z",
+    "updatedAt": "2026-10-18T22:40:00.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -7860,6 +7860,55 @@
         "title": "ParlInfo bill-home search"
       },
       "notes": "Unverified editorial draft from the Policai Signal scan 11–17 October 2026, entered after Dan approved the gap. No source fingerprint, no checkedAt, no checkedBy, and no lastReviewedAt. Hidden from the public read until a manual editorial review."
+    }
+  },
+  {
+    "id": "asd-ai-considerations-within-the-essentials-2026",
+    "title": "AI considerations within the Essentials",
+    "description": "ASD guidance, published on 15 October 2026, on applying the ASD Essentials to artificial intelligence whether an organisation consumes, develops or deploys AI.",
+    "jurisdiction": "federal",
+    "type": "guideline",
+    "status": "active",
+    "effectiveDate": "2026-10-15",
+    "dates": [
+      {
+        "type": "published",
+        "date": "2026-10-15",
+        "precision": "day",
+        "primary": true
+      }
+    ],
+    "agencies": [
+      "Australian Signals Directorate",
+      "Australian Cyber Security Centre"
+    ],
+    "sourceUrl": "https://www.cyber.gov.au/publication/ai-considerations-within-the-essentials",
+    "content": "ASD published this as guidance on 15 October 2026. The publication page (https://www.cyber.gov.au/publication/ai-considerations-within-the-essentials) shows \"Published 15 Oct 2026\" and the PDF is at https://www.cyber.gov.au/sites/default/files/2026-10/AI%20considerations%20within%20the%20Essentials.pdf. The page describes it as guidance that helps cyber security practitioners understand considerations for scoping, implementing and assessing controls in AI environments, especially within the enterprise IT chapter. ASD presents it as guidance. It uses 'should' language, and its disclaimer says it is 'of a general nature'. The same day's news item (https://www.cyber.gov.au/news/asd-essentials-evolving-our-approach-to-cyber-security-resilience) says ASD launched the ASD Essentials on 15 October 2026 as an evolution of the Essential Eight, in chapters for enterprise IT, operational technology and cloud, and that during the transition ASD keeps both frameworks on cyber.gov.au. It also says: \"Until associated regulatory changes are communicated by regulators, organisations should continue to meet their current regulatory obligations.\" The publication says the Essentials framework applies whether an organisation consumes, develops or deploys AI. It covers AI assets in scoping (including models, training data, model artefacts and inference endpoints), prompt injection, the integrity and provenance of model weights and training data, least privilege for AI agents and integrations, AI agents' non-person identities, AI tools capable of administrative actions operating through privileged environments, and logging of prompts and outputs. ASD's transition guidance, also published on 15 October 2026 (https://www.cyber.gov.au/publication/transitioning-from-the-essential-eight), says the enterprise IT chapter's Governance and culture domain includes an artificial intelligence accountability principle, and that these governance areas were not assessed as part of the Essential Eight maturity model. The AI considerations PDF (p 5) ties executive AI accountability to the ISM principle. The record sits with ASD's other AI cyber security guidance: Careful adoption of agentic AI services (asd-careful-adoption-agentic-ai-services-2026), Agentic AI harnesses (asd-agentic-ai-harnesses-2026), the Blueprint for Secure Cloud artificial intelligence usage policy requirement (asd-blueprint-secure-cloud-ai-usage-policy) and Frontier AI models and their impact on cyber security (asd-frontier-ai-models-cyber-security-2026).",
+    "aiSummary": "ASD guidance, published 15 October 2026, on applying the ASD Essentials to AI an organisation consumes, develops or deploys, including scoping, prompt injection, provenance, agent privilege and logging.",
+    "tags": [
+      "ASD Essentials",
+      "Essential Eight",
+      "artificial intelligence",
+      "prompt injection",
+      "agentic AI",
+      "cyber security"
+    ],
+    "themes": [
+      "cyber-security",
+      "ai-governance",
+      "risk-assurance",
+      "agentic-ai"
+    ],
+    "createdAt": "2026-10-18T21:40:00.000Z",
+    "updatedAt": "2026-10-18T22:40:00.000Z",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.cyber.gov.au/publication/ai-considerations-within-the-essentials",
+        "title": "AI considerations within the Essentials",
+        "publisher": "Australian Signals Directorate"
+      },
+      "notes": "Unverified editorial draft. The publication page and the 15 October 2026 ASD news item were read through a retrieval that could reach cyber.gov.au; this environment's browser and direct requests to the host hung or returned HTTP 500, which existing ASD records already note. No source fingerprint, no checkedAt, no checkedBy and no lastReviewedAt. Not marked verified. Hidden from the public read until Daniel's own review. cyber-news remains a manual source: its last manual review and watch-state lastCheckedBySource are 2026-10-06, before this launch."
     }
   }
 ]
