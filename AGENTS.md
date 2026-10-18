@@ -190,21 +190,28 @@ and still serves `buildNetworkData` nodes and edges.
   drill-down row into view (the `<tr class="coverage-drill-row">`, not the
   inner `.coverage-drill` panel — putting `scroll-margin-top` only on the
   panel left shared phone links under the sticky header and column strip,
-  #329). The browser adds the row's `scroll-margin-top` to the document's
-  `scroll-padding-top` (`--scroll-clear-top`, `globals.css`), so the margin
-  is the clearance wanted, the site header height (`--coverage-sticky-top`)
-  plus, below 768px, the sticky column strip (`--coverage-strip-height`)
-  plus `--space-2`, minus `--scroll-clear-top`. `CoverageMap` measures both
-  heights before it scrolls and again when either element resizes. Below
+  #329). The browser adds the row's `scroll-margin-top`
+  to the document's `scroll-padding-top` (`--scroll-clear-top` in
+  `globals.css`: `6.5rem`, and `9rem` from `min-width: 40rem`), so the
+  margin is the clearance wanted, the site header height
+  (`--coverage-sticky-top`) plus, below 768px, the sticky column strip
+  (`--coverage-strip-height`) plus `--space-2`, minus `--scroll-clear-top`.
+  `CoverageMap` measures both heights before it scrolls and again when either
+  element resizes (`ResizeObserver` with `box: 'border-box'`, so a
+  border or padding change on either sticky element is observed). Below
   768px the drill-down head stacks "Clear selection" under the heading, so
   the fixed "Scroll to top" button at the bottom right never covers it.
-  `coverage-css.test.ts` evaluates those CSS rules, so a change to the
-  margin, the scroll-padding or the head layout fails CI;
-  `coverage-map.test.tsx` pins what `CoverageMap` observes.
-  `scripts/verify-coverage.mjs` is not in CI. It checks on phone and desktop,
-  light and dark, that the drill-down heading clears both after a deep link
-  and a click, sits within 48px of the strip on a phone, and (at 430x932) that
-  "Clear selection" is clear of "Scroll to top":
+  From 768px the clear control stays in the head row and uses padding so
+  its hit target clears that button. `coverage-css.test.ts` evaluates those
+  CSS rules, so a change to the margin, the scroll-padding or the head
+  layout fails CI, and asserts that padding plus margin still equals header
+  (+ strip below 768px) + `--space-2`, and pins the stacked head and
+  clear-button hit target; `coverage-map.test.tsx` pins what `CoverageMap`
+  observes and that the observer uses `border-box`.
+  `scripts/verify-coverage.mjs` is not in CI. It checks on phone and
+  desktop, light and dark, that the drill-down heading clears both after a
+  deep link and a click, sits within 48px of the strip on a phone, and (at
+  430x932 and 768x1024) that "Clear selection" is clear of "Scroll to top":
   `POLICAI_VERIFY_URL=http://127.0.0.1:<port> POLICAI_EVIDENCE_DIR=<dir>
   node scripts/verify-coverage.mjs` against a loopback production build.
 - **Styling:** `src/app/coverage/coverage.css`. The four cell levels are
