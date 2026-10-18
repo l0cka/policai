@@ -11,7 +11,8 @@ permissions:
 jobs:
   lint:
     name: lint
-    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: [self-hosted, linux, argus]
 
     steps:
       - name: Checkout repository
@@ -35,7 +36,8 @@ jobs:
 
   test:
     name: test
-    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: [self-hosted, linux, argus]
 
     steps:
       - name: Checkout repository
@@ -66,7 +68,8 @@ jobs:
 
   build:
     name: build
-    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: [self-hosted, linux, argus]
 
     steps:
       - name: Checkout repository
@@ -87,7 +90,8 @@ jobs:
 
   probono-dashboard:
     name: Pro Bono dashboard
-    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: [self-hosted, linux, argus]
     defaults:
       run:
         working-directory: apps/probono/dashboard
@@ -112,7 +116,8 @@ jobs:
 
   probono-worker:
     name: Pro Bono worker
-    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: [self-hosted, linux, argus]
     defaults:
       run:
         working-directory: apps/probono/worker
@@ -171,12 +176,16 @@ jobs:
 
   host-dispatcher:
     name: Host dispatcher
-    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: [self-hosted, linux, argus]
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+      # Arch runners have no actions/setup-python cache for 3.11. Use system
+      # python3 (3.14 on Argus); ops/host/README.txt requires >=3.11.
+      - name: Require system Python >= 3.11
+        run: |
+          python3 -c 'import sys; assert sys.version_info >= (3, 11), sys.version'
+          python3 --version
       - name: Verify reviewed host source manifest
         working-directory: ops/host
         run: sha256sum --check MANIFEST.sha256
