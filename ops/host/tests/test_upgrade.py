@@ -337,8 +337,6 @@ class UpgradeTests(unittest.TestCase):
             self.assertFalse((host.state / "upgrades").exists())
 
     def test_apply_refuses_a_file_replaced_between_plan_and_apply(self):
-        # Issue #266: a content or mode change after plan must not become the
-        # journalled before / rollback target on a first apply.
         cases = (
             ("content", lambda path: path.write_bytes(
                 path.read_bytes() + b"\nreplaced between plan and apply\n"
