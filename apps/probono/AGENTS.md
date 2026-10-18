@@ -39,12 +39,13 @@ conventions still apply, but root Policai data/runtime assumptions do not.
   ingest/enrich/backup/verify-deadlines user units run from that tree through
   the root-owned guarded dispatcher `/usr/local/libexec/policai-host/cli.py`,
   whose allowlist is installed and hash-pinned in the root config
-  `installed_hashes`. `probono-backup-mirror.service` still runs the untracked
-  `/home/l0cka/.local/bin/probono-backup-mirror.sh` directly, outside the
-  dispatcher. Its reviewed replacement is `ops/host/backup-mirror.sh` with
-  `ops/host/units/probono-backup-mirror.service` (`cli.py worker
-  backup-mirror`); it takes effect only when Argus DevOps installs it with
-  Daniel's approval (#197). The legacy checkout
+  `installed_hashes`. The reviewed backup-mirror route is tracked the same way:
+  `ops/host/backup-mirror.sh` and `ops/host/units/probono-backup-mirror.service`
+  (`cli.py worker backup-mirror`), covered by `MANIFEST.sha256` and
+  `verify.py`. The live host still runs the untracked
+  `/home/l0cka/.local/bin/probono-backup-mirror.sh` outside the dispatcher until
+  Argus DevOps installs that route with Daniel's approval; merging the tracked
+  sources does not authorise that install. The legacy checkout
   `/home/l0cka/Work/Argus/services/probono-radar/src` is retained as historical
   reference, not a runtime; verify actual systemd working directories and
   container ownership before operations.
