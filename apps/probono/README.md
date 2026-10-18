@@ -108,7 +108,7 @@ claim if the send fails. Setting the variable is the approval step and still
 needs the explicit approval above.
 
 `worker/src/fetch-all.ts` exits explicitly once its run summary is printed and
-the pool is closed. `rss-parser` leaves the response unread when a feed answers
-with a non-2xx status, so that socket keeps Node alive; without the explicit
-exit one blocked feed holds the ingest container open until the host dispatcher
-times out, and a worker left running blocks later deployments and workers.
+the pool is closed. Without that exit a leftover handle holds the ingest
+container open until the host dispatcher times out, and a worker left running
+blocks later deployments and workers. Feed retrieval reads the response body
+before it returns, including when the status is not 200.
