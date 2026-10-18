@@ -26,7 +26,7 @@ vi.mock('@/lib/themes', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@/lib/themes')>()),
   MIN_THEMES_PER_RECORD: 2,
   MAX_THEMES_PER_RECORD: 7,
-  MIN_PUBLIC_RECORDS_PER_THEME: 3,
+  MIN_PUBLIC_RECORDS_PER_THEME: 11,
 }))
 
 async function connect(load: () => Promise<unknown>): Promise<Client> {
@@ -69,9 +69,9 @@ describe('list_themes registration', () => {
     const { description } = await describedTool(editorial, 'list_themes')
 
     expect(description).toContain('2 to 7 unique keys')
-    expect(description).toContain('at least 3 register records')
-    expect(description).toContain('fewer than 3 public records')
-    expect(description).not.toMatch(/1 to 5|at least 2|fewer than 2/)
+    expect(description).toContain('at least 11 register records')
+    expect(description).toContain('fewer than 11 public records')
+    expect(description).not.toMatch(/1 to 5|at least 2|fewer than 2|at least 3|fewer than 3/)
   })
 
   it('takes no admin token and answers a call with no arguments', async () => {
@@ -86,7 +86,7 @@ describe('list_themes registration', () => {
       themes: THEMES.map(({ key, label }) => ({ key, label })),
       minThemesPerRecord: 2,
       maxThemesPerRecord: 7,
-      minRecordsPerTheme: 3,
+      minRecordsPerTheme: 11,
     })
   })
 })
