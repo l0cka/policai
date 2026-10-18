@@ -146,7 +146,6 @@ describe('page copy', () => {
     expect(coverageFootnote(data.theme)).toBe(
       "Of the five themes in Policai's vocabulary, four have a verified record and are shown; one has no verified record yet. Themes are an editorial vocabulary assigned to verified register records, not legal categories, and a count does not measure how strong an instrument is.",
     );
-    // Empty register: "None of…", not countWord(0) → "No of the N themes … are shown".
     expect(coverageFootnote(buildCoverageData([], THEMES).theme)).toMatch(
       /^None of the 22 themes in Policai's vocabulary has a verified record yet\. Themes are/,
     );
@@ -165,7 +164,6 @@ function themeTable(shown: number, below: number, unused: number, minRecords: nu
 }
 
 describe('coverage footnote counts', () => {
-  // #330: empty and mixed uncharted groups must not say "No of the N themes" or join with "and".
   const cases: [string, number, number, number, number, string][] = [
     ['all charted, threshold 1', 22, 0, 0, 1, "All 22 themes in Policai's vocabulary have a verified record and are shown."],
     ['all charted, threshold 6', 22, 0, 0, 6, "All 22 themes in Policai's vocabulary have six or more verified records and are shown."],

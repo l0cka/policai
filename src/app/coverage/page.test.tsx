@@ -51,7 +51,6 @@ async function coveragePage(query: Record<string, string> = {}) {
 }
 
 describe('/coverage page', () => {
-  // #330: page must use the public getPolicies() projection, not the admin read.
   it('counts only public records, so withheld, unverified and trashed records never reach a cell or a list (#330)', async () => {
     window.history.replaceState({}, '', '/coverage?theme=courts-tribunals&j=nsw');
     render(await coveragePage({ theme: 'courts-tribunals', j: 'nsw' }));
