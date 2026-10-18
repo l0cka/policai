@@ -182,16 +182,19 @@ and still serves `buildNetworkData` nodes and edges.
   their table semantics in some browsers, so every table element carries its
   explicit ARIA role (`table`, `rowgroup`, `row`, `columnheader`,
   `rowheader`, `cell`). A selection loaded from the URL scrolls the
-  drill-down row into view. The browser adds the row's `scroll-margin-top`
-  to the document's `scroll-padding-top` (`--scroll-clear-top`, `globals.css`),
-  so the margin is the clearance wanted, the site header height
-  (`--coverage-sticky-top`) plus, below 768px, the sticky column strip
-  (`--coverage-strip-height`) plus `--space-2`, minus `--scroll-clear-top`.
-  `CoverageMap` measures both heights before it scrolls and again when either
-  element resizes. Below 768px the drill-down head stacks "Clear selection"
-  under the heading, so the fixed "Scroll to top" button at the bottom right
-  never covers it. `coverage-css.test.ts` evaluates those CSS rules, so a
-  change to the margin, the scroll-padding or the head layout fails CI;
+  drill-down row into view (the `<tr class="coverage-drill-row">`, not the
+  inner `.coverage-drill` panel — putting `scroll-margin-top` only on the
+  panel left shared phone links under the sticky header and column strip,
+  #329). The browser adds the row's `scroll-margin-top` to the document's
+  `scroll-padding-top` (`--scroll-clear-top`, `globals.css`), so the margin
+  is the clearance wanted, the site header height (`--coverage-sticky-top`)
+  plus, below 768px, the sticky column strip (`--coverage-strip-height`)
+  plus `--space-2`, minus `--scroll-clear-top`. `CoverageMap` measures both
+  heights before it scrolls and again when either element resizes. Below
+  768px the drill-down head stacks "Clear selection" under the heading, so
+  the fixed "Scroll to top" button at the bottom right never covers it.
+  `coverage-css.test.ts` evaluates those CSS rules, so a change to the
+  margin, the scroll-padding or the head layout fails CI;
   `coverage-map.test.tsx` pins what `CoverageMap` observes.
   `scripts/verify-coverage.mjs` is not in CI. It checks on phone and desktop,
   light and dark, that the drill-down heading clears both after a deep link

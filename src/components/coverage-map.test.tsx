@@ -110,7 +110,7 @@ describe('CoverageMap', () => {
     expect(screen.queryByRole('region')).not.toBeInTheDocument();
   });
 
-  it('scrolls a shared link to the drill-down row clear of the site header and the column strip', () => {
+  it('scrolls a shared link to the drill-down row clear of the site header and the column strip (#329)', () => {
     const header = document.createElement('header');
     header.setAttribute('data-site-header', '');
     document.body.prepend(header);
