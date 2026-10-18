@@ -2741,5 +2741,27 @@
       },
       "notes": "Unverified timeline draft from the Policai Signal scan 11–17 October 2026. Recommendations are recorded as recommendations. Not fingerprinted and not marked verified. No policy record is created for them."
     }
+  },
+  {
+    "id": "tl-2026-10-08-sa-royal-commission-into-ai",
+    "date": "2026-10-08",
+    "datePrecision": "day",
+    "title": "South Australia appoints Royal Commissioners on AI and releases terms of reference",
+    "description": "The Department of the Premier and Cabinet announced on 8 October 2026 that three Royal Commissioners had been appointed to the Royal Commission into Artificial Intelligence, and that the terms of reference had been released. Dr Iain Ross AO was appointed chair on 1 October 2026, with Kate Pounder and Professor Christopher Manning appointed as commissioners the same day. The Commission is expected to hand its final report to the government in mid-2027. This milestone is linked to the existing South Australian AI strategy discussion paper. It does not change that paper and it is not a new policy record.",
+    "type": "milestone",
+    "jurisdiction": "sa",
+    "relatedPolicyId": "sa-ai-for-better-government-discussion-paper",
+    "sourceUrl": "https://www.dpc.sa.gov.au/news/royal-commission-into-artificial-intelligence-announced",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.dpc.sa.gov.au/news/royal-commission-into-artificial-intelligence-announced",
+        "title": "Commissioners appointed for nation-leading AI Royal Commission",
+        "publisher": "Department of the Premier and Cabinet, South Australia",
+        "publishedAt": "2026-10-08",
+        "publishedAtPrecision": "day"
+      },
+      "notes": "Unverified timeline draft from the Policai Signal scan 11–17 October 2026. The DPC page is dated 8 October 2026 and states the 1 October 2026 appointments. Not fingerprinted and not marked verified. The linked discussion paper is unchanged."
+    }
   }
 ]
