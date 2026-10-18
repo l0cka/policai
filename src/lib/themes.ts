@@ -32,7 +32,7 @@ export const MIN_RECORDS_PER_THEME = 2;
 /** @deprecated Use {@link MIN_RECORDS_PER_THEME}. Kept as an alias for older imports. */
 export const MIN_PUBLIC_RECORDS_PER_THEME = MIN_RECORDS_PER_THEME;
 
-/** Cap for a theme id or value shown in a validation message (issue #320). */
+/** Cap for a theme id or value shown in a validation message. */
 export const MAX_THEME_MESSAGE_VALUE_CHARS = 80;
 
 /**
@@ -67,14 +67,12 @@ export function formatThemeMessageLabel(label: string): string {
  */
 export function formatThemeMessageValue(value: unknown): string {
   if (typeof value === 'string') {
-    // Escape `\`, `"`, then non-printing so `\u200b` stays one escape unit.
     const body = escapeThemeMessageChars(
       value.replace(/\\/g, '\\\\').replace(/"/g, '\\"'),
     );
     return `"${truncateThemeMessageValue(body)}"`;
   }
   if (typeof value === 'number' || typeof value === 'bigint' || typeof value === 'boolean') {
-    // JSON.stringify(1e999) is "null"; String keeps Infinity / NaN readable.
     return truncateThemeMessageValue(String(value));
   }
   if (value === undefined) {

@@ -45,7 +45,7 @@ describe('formatThemeMessageValue', () => {
   it('truncates long theme strings', () => {
     const long = 'x'.repeat(10_000);
     const formatted = formatThemeMessageValue(long);
-    expect(formatted.length).toBe(MAX_THEME_MESSAGE_VALUE_CHARS + 2); // quotes
+    expect(formatted.length).toBe(MAX_THEME_MESSAGE_VALUE_CHARS + 2);
     expect(formatted.startsWith('"')).toBe(true);
     expect(formatted.endsWith('…"')).toBe(true);
     expect(formatted).not.toContain('x'.repeat(100));

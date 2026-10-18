@@ -27,6 +27,7 @@ vi.mock('@/lib/themes', async (importOriginal) => ({
   MIN_THEMES_PER_RECORD: 2,
   MAX_THEMES_PER_RECORD: 7,
   MIN_RECORDS_PER_THEME: 11,
+  MIN_PUBLIC_RECORDS_PER_THEME: 11,
 }))
 
 async function connect(load: () => Promise<unknown>): Promise<Client> {
