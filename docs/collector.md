@@ -183,7 +183,9 @@ earlier fingerprint was written under that scheme, and a page that gains
 `dcterms.created` or a Drupal generator after its #244 fingerprint was stored
 reads as changed (#262), the generator because the stored #244 preimage
 recorded the platform. Once the snapshot holds the current fingerprint the
-platform counts only through the last-resort candidates, as above.
+platform counts only through the last-resort candidates, as above, for
+snapshots and current-scheme verified hashes; a record whose verified hash
+is still #244 stages one review until re-approval.
 Stored-to-stored comparisons (two staged reviews of one transition, the DTA
 artifact or a court requirement against its policy) compare hashes as before
 and still need both sides re-verified together. `transitionForDocumentHash`
