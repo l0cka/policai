@@ -247,4 +247,37 @@ describe('Editorial register', () => {
     expect(within(overview).getByRole('heading', { name: 'Upcoming deadlines' })).toBeInTheDocument();
     expect(overview).toHaveTextContent('No upcoming deadlines recorded');
   });
+
+  it('labels register freshness as last fully healthy when that stamp is older', () => {
+    render(
+      <PolicyBrowser
+        {...props}
+        lastCollectedAt="2026-10-17T19:35:00.990Z"
+        lastHealthyAt="2026-10-06T19:33:28.224Z"
+        collectionHealth="degraded"
+        successfulSourceCount={57}
+        dueSourceCount={59}
+      />,
+    );
+    const coverage = screen.getByRole('heading', { name: 'Source coverage' }).closest('section')!;
+    expect(coverage).toHaveTextContent('57/59 due sources reached');
+    expect(coverage).toHaveTextContent(/last fully healthy 07 Oct 2026/);
+    expect(coverage.textContent).not.toMatch(/17 Oct 2026/);
+  });
+
+  it('labels register freshness as last collected when no healthy stamp exists', () => {
+    render(
+      <PolicyBrowser
+        {...props}
+        lastCollectedAt="2026-10-17T19:35:00.990Z"
+        lastHealthyAt={null}
+        collectionHealth="degraded"
+        successfulSourceCount={57}
+        dueSourceCount={59}
+      />,
+    );
+    const coverage = screen.getByRole('heading', { name: 'Source coverage' }).closest('section')!;
+    expect(coverage).toHaveTextContent(/last collected 18 Oct 2026/);
+    expect(coverage).not.toHaveTextContent('last fully healthy');
+  });
 });

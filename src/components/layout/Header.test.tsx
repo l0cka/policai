@@ -68,6 +68,11 @@ describe('formatCollectedAt', () => {
   it('falls back when there is no collection date', () => {
     expect(formatCollectedAt(null)).toBe('SOURCE STATUS IN METHODOLOGY');
   });
+
+  it('falls back when the collection date is unparseable', () => {
+    expect(formatCollectedAt('not-a-date')).toBe('SOURCE STATUS IN METHODOLOGY');
+    expect(formatCollectedAt('not-a-date')).not.toMatch(/INVALID DATE/i);
+  });
 });
 
 describe('collection strip', () => {
@@ -81,6 +86,29 @@ describe('collection strip', () => {
     const strip = renderStrip(metaFixture());
     expect(strip.textContent).toContain('degraded');
     expect(strip.textContent).toContain('57/59 due sources reached');
+  });
+
+  it('keeps a degraded marker in the phone-visible left cluster', () => {
+    const strip = renderStrip(metaFixture());
+    const phoneMarker = strip.querySelector('.sm\\:hidden');
+    expect(phoneMarker?.textContent).toMatch(/degraded/i);
+    expect(phoneMarker?.className).toMatch(/sm:hidden/);
+  });
+
+  it('omits the phone degraded marker when the run is healthy', () => {
+    const strip = renderStrip(
+      metaFixture({
+        collector: {
+          ...metaFixture().collector,
+          health: 'healthy',
+          successfulSourceCount: 59,
+          failedSourceCount: 0,
+          successRate: 1,
+        },
+      }),
+    );
+    expect(strip.querySelector('.sm\\:hidden')).toBeNull();
+    expect(strip.textContent).toContain('Sources reached');
   });
 
   it('uses the fallback text when nothing has been collected', () => {

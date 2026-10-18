@@ -231,7 +231,14 @@ export function PolicyBrowser({
     updateState({ sortField, sortDirection });
   };
 
+  // lastHealthyAt still anchors register freshness (#314 decides whether to move).
+  // Label it so it is not read as the collection date beside the header strip (#318).
   const freshnessDate = lastHealthyAt ?? lastCollectedAt ?? lastReviewedAt;
+  const freshnessKind = lastHealthyAt
+    ? 'last fully healthy'
+    : lastCollectedAt
+      ? 'last collected'
+      : null;
   const freshLabel =
     collectionHealth === 'healthy'
       ? `All ${dueSourceCount} due sources reached`
@@ -523,7 +530,11 @@ export function PolicyBrowser({
             </h2>
             <p className="mt-3">
               {freshLabel}
-              {freshnessDate ? ` · ${formatDate(freshnessDate)}` : ''}
+              {freshnessDate
+                ? freshnessKind
+                  ? ` · ${freshnessKind} ${formatDate(freshnessDate)}`
+                  : ` · ${formatDate(freshnessDate)}`
+                : ''}
             </p>
             <p>{automaticSourceCount} automatic sources</p>
             <p>

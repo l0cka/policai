@@ -12,7 +12,10 @@ export function collectionStripProps(meta: CollectionMeta) {
 export function formatCollectedAt(value: string | null): string {
   if (!value) return 'SOURCE STATUS IN METHODOLOGY';
 
-  return `COLLECTED ${new Date(value).toLocaleString('en-AU', {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return 'SOURCE STATUS IN METHODOLOGY';
+
+  return `COLLECTED ${date.toLocaleString('en-AU', {
     day: '2-digit',
     month: 'short',
     year: 'numeric',
