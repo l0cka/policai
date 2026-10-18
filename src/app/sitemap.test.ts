@@ -6,7 +6,7 @@ vi.mock('@/lib/data-service', () => ({
   getArticles: vi.fn(async () => []),
 }));
 
-it('lists /coverage and no longer lists /network', async () => {
+it('lists /coverage and no longer lists /network (#330)', async () => {
   const urls = (await sitemap()).map((entry) => entry.url);
   expect(urls).toContain('https://policai.org/coverage');
   expect(urls.filter((url) => url.includes('/network'))).toEqual([]);

@@ -196,7 +196,7 @@ describe('CoverageMap', () => {
     expect(window.location.search).toBe('?j=nsw');
   });
 
-  it('replaces history to open and close a selection and pushes a move to a new one', () => {
+  it('replaces history to open and close a selection and pushes a move to a new one (#330)', () => {
     renderMap();
     const push = vi.spyOn(window.history, 'pushState');
     const replace = vi.spyOn(window.history, 'replaceState');

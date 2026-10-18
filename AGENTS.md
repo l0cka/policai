@@ -152,27 +152,34 @@ and still serves `buildNetworkData` nodes and edges.
   then label. A theme is charted when it has `COVERAGE_MIN_RECORDS` records.
   The value is 1, so every theme in the controlled vocabulary with a public
   record is a row: `validate:data` requires two non-trashed register records
-  per theme (fewer than two public records is only a warning), and a hidden
-  theme cannot show where coverage is missing. The
+  per theme (fewer than two public records is only a warning — not an error,
+  #330), and a hidden theme cannot show where coverage is missing. The
   original threshold of 6 filtered free-form tags. Raise it if the
   vocabulary grows past what one table can show; uncharted themes are then
   counted in the footnote.
-- **Rendering:** the route is `force-dynamic`. It reads `searchParams` to
-  server-render the selected drill-down, so it is dynamic by nature, and the
-  export says so; a `revalidate` would have no effect. Each request reads
-  `policies.json` and `source-reviews.json` and builds the matrix, which is
-  small (one pass over the public records). `src/app/coverage/page.test.tsx`
-  guards the export and asserts that withheld, unverified and trashed records
-  never reach a cell or a drill-down list.
+- **Rendering:** the route is `force-dynamic` (no `revalidate` — it would do
+  nothing on a dynamic route, #330). It reads `searchParams` to server-render
+  the selected drill-down, so it is dynamic by nature, and the export says so.
+  Each request reads `policies.json` and `source-reviews.json` through the
+  public `getPolicies()` projection and builds the matrix, which is small (one
+  pass over the public records). `src/app/coverage/page.test.tsx` guards the
+  export, asserts SSR table HTML, and asserts that withheld, unverified and
+  trashed records never reach a cell or a drill-down list (#330).
 - **Copy:** every count and sentence on the page (standfirst, footnote, empty
   state) comes from `coverageStandfirst`, `coverageFootnote` and
   `coverageEmptySentence`. Do not type numbers into the page. The footnote
   agrees in number for 0, 1, 2 and many themes; its cases are a table in
-  `coverage-data.test.ts`.
+  `coverage-data.test.ts`. An empty register must read "None of the N themes
+  … has a verified record yet", not "No of the N themes … are shown" (the
+  old path used `countWord(0)` → "No", #330). Clauses join with "; ", so a
+  threshold-6 empty chart does not run "and" between the below-threshold and
+  unused groups.
 - **URL:** `?theme=<key>&j=<jurisdiction>` selects a cell, `theme` alone a row,
   `j` alone a column, and `by=type` (with `type=<key>`) switches the axis.
   Unknown values are ignored. Opening and closing use `replaceState`; moving
-  from one selection to another uses `pushState`, so Back restores it.
+  from one selection to another uses `pushState`, so Back restores it
+  (`coverage-map.test.tsx`, #330). `/coverage` is in `sitemap.ts`
+  (`sitemap.test.ts`, #330).
 - **Markup:** one server-rendered `<table>` from the client component
   `CoverageMap` (`src/components/coverage-map.tsx`). Count cells are buttons
   in a roving-tabindex grid: one tab stop, arrows, Home and End, Enter or
