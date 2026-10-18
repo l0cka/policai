@@ -62,9 +62,11 @@ export const FAILURE_CLASSES = [
 
 export type FailureClass = (typeof FAILURE_CLASSES)[number]['cls'];
 
-const URL_PATTERN = /https?:\/\/[^\s"'<>()[\]{}`]+/gi;
+const LOOSE_URL_PATTERN = /https?:\/\/\S+/gi;
 const MAX_FAILED_URL_LENGTH = 2048;
 const MAX_CAUSE_DEPTH = 4;
+const SENTENCE_PUNCT = new Set(['.', ',', ';', ':', '!', '?']);
+const WRAPPER_CHARS = new Set(['"', "'", '<', '>', '[', ']', '{', '}', '`']);
 
 export function publicFailureUrl(raw: string): string | null {
   let parsed: URL;
@@ -99,14 +101,83 @@ function carriedUrl(error: unknown): string | null {
     : null;
 }
 
+function trimSentencePunct(raw: string): string {
+  let end = raw.length;
+  while (end > 0 && SENTENCE_PUNCT.has(raw[end - 1]!)) end -= 1;
+  return raw.slice(0, end);
+}
+
+function countChar(raw: string, char: string): number {
+  let count = 0;
+  for (const next of raw) if (next === char) count += 1;
+  return count;
+}
+
+function peelTrailingJunk(raw: string): string {
+  let candidate = trimSentencePunct(raw);
+  while (candidate.length > 0) {
+    const last = candidate[candidate.length - 1]!;
+    if (WRAPPER_CHARS.has(last)) {
+      candidate = trimSentencePunct(candidate.slice(0, -1));
+      continue;
+    }
+    if (last === ')' && countChar(candidate, '(') < countChar(candidate, ')')) {
+      candidate = trimSentencePunct(candidate.slice(0, -1));
+      continue;
+    }
+    break;
+  }
+  return candidate;
+}
+
+function extractPublicUrl(raw: string): string | null {
+  let candidate = raw;
+  while (candidate.length > 8) {
+    const peeled = peelTrailingJunk(candidate);
+    const url = publicFailureUrl(peeled);
+    if (url) return url;
+    candidate = candidate.slice(0, -1);
+  }
+  return null;
+}
+
 function firstUrl(texts: string[]): string | null {
   for (const text of texts) {
-    for (const [match] of text.matchAll(URL_PATTERN)) {
-      const url = publicFailureUrl(match.replace(/[.,;:!?]+$/, ''));
+    for (const [match] of text.matchAll(LOOSE_URL_PATTERN)) {
+      const url = extractPublicUrl(match);
       if (url) return url;
     }
   }
   return null;
+}
+
+function stripUrls(text: string): string {
+  return text.replace(LOOSE_URL_PATTERN, ' ');
+}
+
+function classFromStatus(status: number): FailureClass | null {
+  if (status === 403) return 'identity_refused';
+  if (status === 429) return 'rate_limited';
+  if (status >= 500 && status <= 599) return 'host_unavailable';
+  if (status === 404 || status === 410) return 'not_found';
+  if (status >= 400 && status <= 599) return 'http_error';
+  return null;
+}
+
+function carriedStatus(error: unknown): number | undefined {
+  return error instanceof Error && 'status' in error && typeof error.status === 'number'
+    ? error.status
+    : undefined;
+}
+
+function classFromTexts(texts: string[]): FailureClass {
+  return (
+    texts
+      .map((text) =>
+        FAILURE_CLASSES.find(({ pattern }) => pattern.test(stripUrls(text)))?.cls,
+      )
+      .find((found) => found !== undefined && found !== 'other') ?? 'other'
+  );
 }
 
 export function classifyFailure(error: unknown): {
@@ -114,10 +185,13 @@ export function classifyFailure(error: unknown): {
   url: string | null;
 } {
   const texts = failureTexts(error);
+  const fromTexts = classFromTexts(texts);
+  const status = carriedStatus(error);
+  const fromStatus = status === undefined ? null : classFromStatus(status);
   const cls =
-    texts
-      .map((text) => FAILURE_CLASSES.find(({ pattern }) => pattern.test(text))?.cls)
-      .find((found) => found !== undefined && found !== 'other') ?? 'other';
+    fromTexts === 'robots_disallowed'
+      ? fromTexts
+      : (fromStatus ?? fromTexts);
   return { cls, url: carriedUrl(error) ?? firstUrl(texts) };
 }
 
