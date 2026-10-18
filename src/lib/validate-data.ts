@@ -52,9 +52,11 @@ import { isValidCalendarDate } from '@/lib/calendar-date';
 import { VERIFICATION_CLOCK_SKEW_TOLERANCE_MS } from '@/lib/verification';
 import {
   MAX_THEMES_PER_RECORD,
-  MIN_PUBLIC_RECORDS_PER_THEME,
+  MIN_RECORDS_PER_THEME,
   MIN_THEMES_PER_RECORD,
   THEMES,
+  formatThemeMessageLabel,
+  formatThemeMessageValue,
   isThemeId,
 } from '@/lib/themes';
 export { isAllowedSourceHost } from '@/lib/source-url';
@@ -858,12 +860,12 @@ function recordThemeErrors(label: string, themes: unknown): string[] {
   for (const theme of themes) {
     if (typeof theme !== 'string') {
       errors.push(
-        `${label}: theme entries must be theme id strings, not ${typeof theme} ${JSON.stringify(theme)}`,
+        `${label}: theme entries must be theme id strings, not ${typeof theme} ${formatThemeMessageValue(theme)}`,
       );
     } else if (!isThemeId(theme)) {
-      errors.push(`${label}: unknown theme ${JSON.stringify(theme)}`);
+      errors.push(`${label}: unknown theme ${formatThemeMessageValue(theme)}`);
     } else if (seen.has(theme)) {
-      errors.push(`${label}: duplicate theme ${JSON.stringify(theme)}`);
+      errors.push(`${label}: duplicate theme ${formatThemeMessageValue(theme)}`);
     }
     seen.add(theme);
   }
@@ -872,7 +874,10 @@ function recordThemeErrors(label: string, themes: unknown): string[] {
 
 export function validatePolicyThemes(policies: readonly Policy[]): ValidationReport {
   const errors = policies.flatMap((policy, index) => {
-    const label = isNonEmptyString(policy.id) ? policy.id : `policies[${index}]`;
+    const rawLabel = isNonEmptyString(policy.id)
+      ? policy.id
+      : `policies[${index}]`;
+    const label = formatThemeMessageLabel(rawLabel);
     const recordErrors = recordThemeErrors(label, policy.themes);
     if (recordErrors.length === 0) return [];
     const last = recordErrors.length - 1;
@@ -909,13 +914,13 @@ export function validateThemeCoverage(
   for (const { key, label } of THEMES) {
     const registerCount = registerUse.get(key) ?? 0;
     const publicCount = publicUse.get(key) ?? 0;
-    if (registerCount < MIN_PUBLIC_RECORDS_PER_THEME) {
+    if (registerCount < MIN_RECORDS_PER_THEME) {
       errors.push(
-        `themes: "${key}" (${label}) is used by ${countOf(registerCount, 'register record')}; a listed theme needs at least ${MIN_PUBLIC_RECORDS_PER_THEME}`,
+        `themes: "${key}" (${label}) is used by ${countOf(registerCount, 'register record')}; a listed theme needs at least ${MIN_RECORDS_PER_THEME}`,
       );
-    } else if (publicCount < MIN_PUBLIC_RECORDS_PER_THEME) {
+    } else if (publicCount < MIN_RECORDS_PER_THEME) {
       warnings.push(
-        `themes: "${key}" (${label}) is on ${countOf(publicCount, 'public record')}; it shows on fewer than ${MIN_PUBLIC_RECORDS_PER_THEME} until enough of those records are public again`,
+        `themes: "${key}" (${label}) is on ${countOf(publicCount, 'public record')}; fewer than ${MIN_RECORDS_PER_THEME} until enough of those records are public again`,
       );
     }
   }

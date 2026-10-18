@@ -19,7 +19,7 @@ import {
 } from './tool-handlers';
 import {
   MAX_THEMES_PER_RECORD,
-  MIN_PUBLIC_RECORDS_PER_THEME,
+  MIN_RECORDS_PER_THEME,
   MIN_THEMES_PER_RECORD,
 } from '@/lib/themes';
 
@@ -150,7 +150,7 @@ server.registerTool(
   'list_themes',
   {
     title: 'List policy themes',
-    description: `Read-only list of the theme vocabulary in src/lib/themes.ts, in table order, as key and label. Give a policy record ${MIN_THEMES_PER_RECORD} to ${MAX_THEMES_PER_RECORD} unique keys in proposedRecord.themes; labels are display text only. Every listed theme must be on at least ${MIN_PUBLIC_RECORDS_PER_THEME} register records; fewer than ${MIN_PUBLIC_RECORDS_PER_THEME} public records is only a warning.`,
+    description: `Read-only list of the theme vocabulary in src/lib/themes.ts, in table order, as key and label. Give a policy record ${MIN_THEMES_PER_RECORD} to ${MAX_THEMES_PER_RECORD} unique keys in proposedRecord.themes; labels are display text only. Every listed theme must be on at least ${MIN_RECORDS_PER_THEME} register records; fewer than ${MIN_RECORDS_PER_THEME} public records is only a warning.`,
     inputSchema: {},
     annotations: {
       readOnlyHint: true,

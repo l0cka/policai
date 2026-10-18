@@ -26,6 +26,7 @@ vi.mock('@/lib/themes', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@/lib/themes')>()),
   MIN_THEMES_PER_RECORD: 2,
   MAX_THEMES_PER_RECORD: 7,
+  MIN_RECORDS_PER_THEME: 11,
   MIN_PUBLIC_RECORDS_PER_THEME: 11,
 }))
 
