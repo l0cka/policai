@@ -482,7 +482,7 @@ Classification needs all three `CLASSIFIER_*` variables. A missing one raises `C
 - Every policy needs a real, verified `sourceUrl` (https, `.gov.au` or allow-listed host) and accurate dates — if a day-level date can't be verified, say so in `content` rather than inventing precision.
 - Mark replaced instruments `superseded` (+ `supersededBy`) and dead consultations `closed`; don't delete history.
 - Stamp `lastReviewedAt` when you have verified a record against its source.
-- Give every policy 1 to 5 `themes` from `src/lib/themes.ts`. Collector and staged drafts carry `themes: []`, and approval and publication refuse a policy without themes, so approve a new policy with an explicit `proposedRecord` that sets them. Re-verification drafts keep the record's existing themes. Through MCP, `list_themes` (read-only, no admin token) returns each key and label from `THEMES` with the per-record and per-theme limits, and a refused theme names the valid keys.
+- Give every policy 1 to 5 `themes` from `src/lib/themes.ts`. Collector and staged drafts carry `themes: []`, and approval and publication refuse a policy without themes, so approve a new policy with an explicit `proposedRecord` that sets them. Re-verification drafts keep the record's existing themes. Through MCP, `list_themes` (read-only, no admin token) returns each key and label from `THEMES` with the per-record and per-theme limits. When a record has theme errors, the last error for that record ends with `; valid theme ids are <keys>` (not a separate `<id>: valid theme ids are <keys>` line). Approve and publish refusals join those errors, so they name the keys too.
 
 ## Code Conventions
 
