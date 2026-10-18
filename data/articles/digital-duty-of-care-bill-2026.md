@@ -8,6 +8,7 @@ cites:
   - esafety-genai-industry-codes
 sources:
   - https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553
+  - https://www.openaustralia.org.au/debates/?id=2026-10-15.6.2
 image:
   src: "/images/articles/digital-duty-of-care-bill-2026/lead.jpg"
   alt: "A hand holding up a smartphone, with colourful out-of-focus circles of light across its screen."
@@ -27,6 +28,8 @@ The Australian Government has introduced the Online Safety Amendment (Digital Du
 ## What it says
 
 The register records that Schedule 3 of the bill would repeal the online-safety industry codes and standards 12 months after Royal Assent ([record](/policies/esafety-genai-industry-codes)). Schedule 3 is titled "Repeal of online content scheme industry codes and standards" ([Parliament of Australia](https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553)).
+
+The second-reading speech on 15 October 2026 said: "If the digital duty of care passes through parliament and royal assent, a 12-month transitional period will be in place before the digital duty of care comes into effect" ([Hansard, via OpenAustralia](https://www.openaustralia.org.au/debates/?id=2026-10-15.6.2)).
 
 The codes it would repeal include those for generative AI services and AI companion chatbots. The register records that the eSafety Commissioner registered them in September 2025 under the Online Safety Act, and that they took effect on 9 March 2026. They impose age-assurance and safety obligations, with civil penalties of up to $49.5 million ([record](/policies/esafety-genai-industry-codes)).
 
