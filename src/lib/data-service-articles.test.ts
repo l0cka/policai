@@ -142,7 +142,6 @@ describe("data-service articles", () => {
 			["2026-07-16T14:00:00.000Z", "2026-07-17"],
 			["2027-01-15T12:59:59.000Z", "2027-01-15"],
 			["2027-01-15T13:00:00.000Z", "2027-01-16"],
-		// #282 / #293: as-at is the render day in Australia/Sydney, not lastHealthyAt / lastCollectedAt.
 		])("is the Sydney calendar day of the render at %s", async (at, day) => {
 			serve(records);
 			expect((await chartAt(new Date(at)))?.asAt).toBe(day);
