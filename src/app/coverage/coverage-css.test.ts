@@ -84,6 +84,8 @@ function scrollClearance(width: 'phone' | 'wide'): string {
 }
 
 describe('coverage drill-down scroll offset', () => {
+  // #329: phone deep links scrolled the <tr>, but margin lived on .coverage-drill
+  // at 6rem; header+strip cover ~139px. Margin must be on .coverage-drill-row.
   const HEADER = 94;
   const STRIP = 45;
 
