@@ -2769,7 +2769,7 @@
     "date": "2026-10-15",
     "datePrecision": "day",
     "title": "ASD launches the ASD Essentials",
-    "description": "ASD launched the ASD Essentials on 15 October 2026 as an evolution of the Essential Eight, with chapters for enterprise IT, operational technology and cloud. During the transition ASD keeps both the Essential Eight and the Essentials on cyber.gov.au. Until regulators communicate associated changes, organisations should continue to meet their current regulatory obligations. Companion guidance, AI considerations within the Essentials, was published the same day.",
+    "description": "ASD launched the ASD Essentials on 15 October 2026 as an evolution of the Essential Eight, with chapters for enterprise IT, operational technology and cloud. During the transition ASD keeps both the Essential Eight and the Essentials on cyber.gov.au. Until associated regulatory changes are communicated by regulators, organisations should continue to meet their current regulatory obligations. Companion guidance, AI considerations within the Essentials, was published the same day.",
     "type": "announcement",
     "jurisdiction": "federal",
     "relatedPolicyId": "asd-ai-considerations-within-the-essentials-2026",
