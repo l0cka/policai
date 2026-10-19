@@ -1,0 +1,73 @@
+{
+  "id": "asic-market-integrity-rules-ai-trading-2026",
+  "title": "ASIC Market Integrity Rules amendments for AI-enabled and automated trading",
+  "description": "ASIC amendments to the securities and futures Market Integrity Rules modernising trading-system and automated-trading obligations for algorithmic and AI-enabled trading. The amendment instruments were made on 15 September 2026; the operative rule changes commence on 18 March 2028. Parallel consultation CS 63 on updated RG 265 and RG 266 closes at 5 pm AEDT on 5 November 2026.",
+  "jurisdiction": "federal",
+  "type": "regulation",
+  "status": "active",
+  "effectiveDate": "2026-09-15",
+  "dates": [
+    {
+      "type": "issued",
+      "date": "2026-09-15",
+      "precision": "day",
+      "primary": true
+    },
+    {
+      "type": "published",
+      "date": "2026-09-24",
+      "precision": "day"
+    },
+    {
+      "type": "consultation_opened",
+      "date": "2026-09-24",
+      "precision": "day"
+    },
+    {
+      "type": "consultation_closed",
+      "date": "2026-11-05",
+      "precision": "day"
+    },
+    {
+      "type": "commenced",
+      "date": "2028-03-18",
+      "precision": "day"
+    }
+  ],
+  "agencies": [
+    "Australian Securities and Investments Commission"
+  ],
+  "sourceUrl": "https://www.asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-226mr-asic-strengthens-ai-trading-safeguards-and-streamlines-market-integrity-rules",
+  "content": "ASIC media release 26-226MR (page meta displayDate 24 September 2026; dcterms.date.created 2026-09-22) announces amendments to the ASIC Market Integrity Rules (Securities Markets) 2017 and ASIC Market Integrity Rules (Futures Markets) 2017 that modernise trading-systems obligations for algorithmic trading, including AI and machine learning, require participants to test, monitor and govern trading systems and algorithms, align more closely with IOSCO principles, apply trading-system requirements consistently to manually entered and automated orders, and clarify the false or misleading appearance rule for AI-enabled and other trading. The release says the amendments follow Consultation Paper 386 and take effect in 2028 after an 18-month transition. The Federal Register of Legislation records ASIC Market Integrity Rules (Securities Markets) Amendment Instrument 2026/574 (F2026L01223) and ASIC Market Integrity Rules (Futures Markets) Amendment Instrument 2026/575 (F2026L01224) with makingDate 15 September 2026 and as-made registration on 17 September 2026; both titles are in force. ASIC consultation CS 63 (https://www.asic.gov.au/regulatory-resources/find-a-document/consultations/cs-63-proposed-updates-to-rg-265-and-rg-266-and-withdrawal-of-rg-241) states Released 24 September 2026, comments close 5 November 2026 (submissions by 5 pm AEDT), that the market integrity rules were amended in September 2026, and that the rules commence on 18 March 2028 after an 18-month transition. CS 63 Attachment 5 (marked-up Securities Markets Rules) and Attachment 6 (marked-up Futures Markets Rules) state the Schedule 1 changes are in force from 18 March 2028 and that participants may continue to comply with the rules as in force on 15 October 2024 until that date. Draft updated RG 265 (CS 63 Attachment 1) describes trading-system controls that may include termination of a trading system (a kill switch) and states that certain reviews and instructions must be documented and retained for at least seven years; seven-year retention also appears in the marked-up Securities Markets Rules compilation. CS 63 also proposes consolidating guidance from RG 241 Electronic Trading into RG 265 and RG 266 so RG 241 can be retired. Instrument texts: https://www.legislation.gov.au/F2026L01223/latest/text and https://www.legislation.gov.au/F2026L01224/latest/text.",
+  "aiSummary": "ASIC MIR amendments for algorithmic and AI-enabled trading, made 15 September 2026, commencing 18 March 2028; CS 63 on RG 265/266 closes 5 November 2026.",
+  "tags": [
+    "ASIC",
+    "market integrity rules",
+    "algorithmic trading",
+    "AI trading",
+    "CS 63",
+    "RG 265",
+    "RG 266",
+    "financial markets"
+  ],
+  "themes": [
+    "financial-sector",
+    "ai-governance",
+    "risk-assurance",
+    "human-oversight",
+    "automated-decisions"
+  ],
+  "createdAt": "2026-10-19T08:35:00.000Z",
+  "updatedAt": "2026-10-19T08:35:00.000Z",
+  "verification": {
+    "status": "needs_review",
+    "source": {
+      "url": "https://www.asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-226mr-asic-strengthens-ai-trading-safeguards-and-streamlines-market-integrity-rules",
+      "title": "26-226MR ASIC strengthens AI trading safeguards and streamlines market integrity rules",
+      "publisher": "Australian Securities and Investments Commission",
+      "publishedAt": "2026-09-24",
+      "publishedAtPrecision": "day"
+    },
+    "notes": "Unverified register-gap draft for Daniel. Dates taken only from ASIC pages and the Federal Register of Legislation API/title pages: instruments makingDate 15 September 2026 and as-made registration 17 September 2026 (F2026L01223, F2026L01224); media release meta displayDate 24 September 2026; CS 63 Released 24 September 2026 and comments close 5 November 2026; commencement 18 March 2028 on the CS 63 page and Attachments 5–6. No checkedAt, no checkedBy, no lastReviewedAt. Not marked verified. Hidden from the public read until Daniel's own review."
+  }
+}
