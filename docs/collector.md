@@ -904,6 +904,24 @@ then `publishStagedSource`. `dismiss` runs `rejectStagedSource`. Reviewer
 must be allowlisted (`POLICAI_SIGNAL_REVIEWERS`, default
 `Daniel Alkurdi` and `Daniel`). `attestation.cardId` must equal `reviewId`.
 
+**Approve / publish when the host refuses a live re-fetch.** Approval and
+publication still prefer a live re-fetch of the official URL so a changed
+page cannot be approved from a stale staging hash. When that re-fetch fails
+with a host refusal — HTTP 403, HTTP 429, or an equivalent
+`identity_refused` / `rate_limited` failure (connection reset, bot-challenge
+wording, headless-browser 403 breaker) — `approveStagedSource` and
+`publishStagedSource` fall back to the collector-retained snapshot already on
+the review: `sourceEvidence` (including `contentHash`) plus the staged
+`proposedRecord` text (`content`, or `description` when content is missing).
+They do not invent bytes, do not guess a new fingerprint, and do not fall
+back for other failures (timeouts, HTTP 404/5xx, parse errors). The approval
+URL must still match the staged evidence URL (a source-replacement approve
+that points at a different official URL still requires a live fetch of that
+URL). When the fallback runs, approval notes gain the sentence in
+`RETAINED_SNAPSHOT_APPROVAL_NOTE` (`src/lib/source-ingest.ts`). If the host
+later serves different content successfully, the usual "changed after
+staging / approval" refusal still applies and the lead must be re-staged.
+
 **Themes and type from the reply.** An `approve` body may add
 `"themes": ["public-sector", "ai-governance"]` (1 to 5 unique theme ids
 from `src/lib/themes.ts`) and `"type": "<PolicyType>"`. They replace the
@@ -961,6 +979,7 @@ published review stays a noop whatever `themes` or `type` say.
 | `not_found` | Unknown review id |
 | `approve_blocked` (409) | Draft has no themes (ask Daniel to name them), no primary date, or is rejected |
 | `themes_required` / `editorial_fields_required` (409) | Approval refused themes or other reviewed fields (source date, `officialSourceUrl`, `proposedRecord`); fix through editorial MCP |
+| `approve_failed` (409) | Live re-fetch failed in a way the retained-snapshot fallback cannot cover (or another approve/publish gate failed); the error text names the cause (for example a non-refusal HTTP error) |
 | `invalid_request` (400) | Missing fields; `themes`/`type` on a dismiss, timeline or tracked-record review; `themes` not an array, repeated, or outside 1 to 5 |
 | `unknown_theme` / `unknown_type` (400) | Value is not a theme id or `PolicyType`; the error lists the valid ones |
 | `themes_not_in_reply` / `type_not_in_reply` (400) | A sent value is not named after `themes` or `type` in `attestation.replyText` |

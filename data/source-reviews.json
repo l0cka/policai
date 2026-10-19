@@ -181,39 +181,48 @@
   },
   {
     "id": "source-review-dev-bills-online-safety-and-other-legislation-amendm-1rn0ixa",
-    "sourceUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22",
-    "title": "BILLS : Online Safety and Other Legislation Amendment (My Face, My Rights) Bill 2025 : Second Reading",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=s1471",
+    "title": "Online Safety and Other Legislation Amendment (My Face, My Rights) Bill 2025",
     "entryKind": "policy",
     "status": "pending_review",
     "discoveredAt": "2026-10-07T19:33:43.055Z",
     "createdBy": "collector",
-    "notes": "Detected by the collector from Hansard — bill debates discussing AI (score 0.55, heuristic).",
+    "notes": "Detected by the collector from Hansard — bill debates discussing AI (score 0.55, heuristic). Primary sourceUrl repointed to the official aph.gov.au bill page (bId=s1471); Hansard second-reading debate retained as linkedDocuments: https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22",
     "analysis": {
       "isRelevant": true,
       "relevanceScore": 0.55,
-      "suggestedType": null,
+      "suggestedType": "legislation",
       "suggestedJurisdiction": "federal",
-      "summary": "16 explicit AI mentions in the debate text for \"BILLS : Online Safety and Other Legislation Amendment (My Face, My Rights) Bill 2025 : Second Reading\".",
+      "summary": "Private senator's bill (Senator David Pocock) amending the Online Safety Act 2021 and the Privacy Act 1988 to address non-consensual deepfake face or voice material. Introduced in the Senate on 24 November 2025; before the Senate as of the second-reading debate on 25 June 2026. Detected via Hansard debate discussing AI; primary citation is the bill homepage, not the debate transcript.",
       "tags": [],
       "agencies": []
     },
     "sourceEvidence": {
-      "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22",
-      "finalUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22",
+      "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=s1471",
+      "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=s1471",
       "retrievedAt": "2026-10-07T19:33:43.055Z",
       "contentType": "text/plain",
       "contentHash": "79d9ec28a4d6c36e28cfc88976c8a7a2b0dc2089c3b507ad091f8df4f93f7368",
-      "title": "BILLS : Online Safety and Other Legislation Amendment (My Face, My Rights) Bill 2025 : Second Reading",
+      "title": "Online Safety and Other Legislation Amendment (My Face, My Rights) Bill 2025",
       "publishedAt": "2026-06-25",
-      "publishedAtPrecision": "day"
+      "publishedAtPrecision": "day",
+      "linkedDocuments": [
+        {
+          "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22",
+          "finalUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22",
+          "retrievedAt": "2026-10-07T19:33:43.055Z",
+          "contentType": "text/plain",
+          "contentHash": "79d9ec28a4d6c36e28cfc88976c8a7a2b0dc2089c3b507ad091f8df4f93f7368"
+        }
+      ]
     },
     "proposedRecord": {
-      "id": "bills-online-safety-and-other-legislation-amendment-my-face-",
-      "title": "BILLS : Online Safety and Other Legislation Amendment (My Face, My Rights) Bill 2025 : Second Reading",
-      "description": "16 explicit AI mentions in the debate text for \"BILLS : Online Safety and Other Legislation Amendment (My Face, My Rights) Bill 2025 : Second Reading\".",
+      "id": "federal-online-safety-other-legislation-amendment-my-face-my-rights-bill-2025",
+      "title": "Online Safety and Other Legislation Amendment (My Face, My Rights) Bill 2025",
+      "description": "Private senator's bill (Senator David Pocock) amending the Online Safety Act 2021 and the Privacy Act 1988 to address non-consensual deepfake face or voice material. Introduced in the Senate on 24 November 2025; before the Senate as of the second-reading debate on 25 June 2026. Detected via Hansard debate discussing AI; primary citation is the bill homepage, not the debate transcript.",
       "jurisdiction": "federal",
       "type": "guideline",
-      "status": "active",
+      "status": "proposed",
       "effectiveDate": "2026-06-25",
       "dates": [
         {
@@ -222,36 +231,53 @@
           "precision": "day",
           "primary": true,
           "source": {
-            "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22",
-            "finalUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22",
+            "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=s1471",
+            "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=s1471",
             "retrievedAt": "2026-10-07T19:33:43.055Z",
             "contentType": "text/plain",
             "contentHash": "79d9ec28a4d6c36e28cfc88976c8a7a2b0dc2089c3b507ad091f8df4f93f7368",
-            "title": "BILLS : Online Safety and Other Legislation Amendment (My Face, My Rights) Bill 2025 : Second Reading",
+            "title": "Online Safety and Other Legislation Amendment (My Face, My Rights) Bill 2025",
             "publishedAt": "2026-06-25",
-            "publishedAtPrecision": "day"
+            "publishedAtPrecision": "day",
+            "linkedDocuments": [
+              {
+                "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22",
+                "finalUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22",
+                "retrievedAt": "2026-10-07T19:33:43.055Z",
+                "contentType": "text/plain",
+                "contentHash": "79d9ec28a4d6c36e28cfc88976c8a7a2b0dc2089c3b507ad091f8df4f93f7368"
+              }
+            ]
           }
         }
       ],
-      "agencies": [],
-      "sourceUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22",
+      "agencies": [
+        "Parliament of Australia"
+      ],
+      "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=s1471",
       "content": "[Skip all navigation links](https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22#startContent) [Permalink](https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22) Prev Next [Return to results list](https://parlinfo.aph.gov.au/parlInfo/search/summary/summary.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22#1) (1 results) [![Print List](https://parlinfo.aph.gov.au/images/print.jpg \"Print Document\")](https://parlinfo.aph.gov.au/parlInfo/search/display/displayPrint.w3p;qu",
-      "aiSummary": "16 explicit AI mentions in the debate text for \"BILLS : Online Safety and Other Legislation Amendment (My Face, My Rights) Bill 2025 : Second Reading\".",
-      "tags": [],
+      "aiSummary": "Private senator's bill (Senator David Pocock) amending the Online Safety Act 2021 and the Privacy Act 1988 to address non-consensual deepfake face or voice material. Introduced in the Senate on 24 November 2025; before the Senate as of the second-reading debate on 25 June 2026. Detected via Hansard debate discussing AI; primary citation is the bill homepage, not the debate transcript.",
+      "tags": [
+        "online safety",
+        "deepfake",
+        "privacy",
+        "bill",
+        "Parliament"
+      ],
       "createdAt": "2026-10-07T19:33:43.055Z",
       "updatedAt": "2026-10-07T19:33:43.055Z"
     },
     "linkedDevelopment": {
       "id": "dev-bills-online-safety-and-other-legislation-amendm-1rn0ixa",
-      "title": "BILLS : Online Safety and Other Legislation Amendment (My Face, My Rights) Bill 2025 : Second Reading",
-      "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22",
+      "title": "Online Safety and Other Legislation Amendment (My Face, My Rights) Bill 2025",
+      "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=s1471",
       "sourceId": "aph-hansard-bill-debates",
       "sourceName": "Hansard — bill debates discussing AI",
       "jurisdiction": "federal",
       "publishedAt": "2026-06-25",
       "publishedAtPrecision": "day",
       "detectedAt": "2026-10-07T19:33:43.055Z",
-      "summary": "16 explicit AI mentions in the debate text for \"BILLS : Online Safety and Other Legislation Amendment (My Face, My Rights) Bill 2025 : Second Reading\".",
+      "summary": "Private senator's bill (Senator David Pocock) amending the Online Safety Act 2021 and the Privacy Act 1988 to address non-consensual deepfake face or voice material. Introduced in the Senate on 24 November 2025; before the Senate as of the second-reading debate on 25 June 2026. Detected via Hansard debate discussing AI; primary citation is the bill homepage, not the debate transcript.",
       "relevanceScore": 0.55,
       "classification": "heuristic",
       "assessment": {
@@ -262,19 +288,28 @@
       "verification": {
         "status": "needs_review",
         "source": {
-          "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22",
-          "finalUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22",
+          "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=s1471",
+          "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=s1471",
           "retrievedAt": "2026-10-07T19:33:43.055Z",
           "contentType": "text/plain",
           "contentHash": "79d9ec28a4d6c36e28cfc88976c8a7a2b0dc2089c3b507ad091f8df4f93f7368",
-          "title": "BILLS : Online Safety and Other Legislation Amendment (My Face, My Rights) Bill 2025 : Second Reading",
+          "title": "Online Safety and Other Legislation Amendment (My Face, My Rights) Bill 2025",
           "publishedAt": "2026-06-25",
-          "publishedAtPrecision": "day"
+          "publishedAtPrecision": "day",
+          "linkedDocuments": [
+            {
+              "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22",
+              "finalUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22",
+              "retrievedAt": "2026-10-07T19:33:43.055Z",
+              "contentType": "text/plain",
+              "contentHash": "79d9ec28a4d6c36e28cfc88976c8a7a2b0dc2089c3b507ad091f8df4f93f7368"
+            }
+          ]
         }
       },
       "status": "detected"
     },
-    "updatedAt": "2026-10-07T19:33:43.055Z"
+    "updatedAt": "2026-10-19T08:00:00.000Z"
   },
   {
     "id": "source-review-2b920dd7-0656-4e00-b751-c44c053e730b",
