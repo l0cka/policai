@@ -2828,5 +2828,27 @@
       },
       "notes": "Unverified timeline draft citing the Premier's 14 October 2026 media release. Not fingerprinted and not marked verified. Withheld from the public timeline until Daniel's own review. Linked policy record tas-local-community-benefit-fund-ai-data-centres-2026 is also needs_review."
     }
+  },
+  {
+    "id": "tl-2026-09-24-asic-cs-63-rg-265-266",
+    "date": "2026-09-24",
+    "datePrecision": "day",
+    "title": "ASIC opens CS 63 consultation on RG 265 and RG 266 updates",
+    "description": "ASIC released consultation CS 63 on proposed updates to RG 265 and RG 266 (and withdrawal of RG 241) on 24 September 2026, reflecting September 2026 amendments to the securities and futures Market Integrity Rules for trading systems and automated trading. Submissions close at 5 pm AEDT on 5 November 2026. The amended rules commence on 18 March 2028.",
+    "type": "announcement",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "asic-market-integrity-rules-ai-trading-2026",
+    "sourceUrl": "https://www.asic.gov.au/regulatory-resources/find-a-document/consultations/cs-63-proposed-updates-to-rg-265-and-rg-266-and-withdrawal-of-rg-241",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.asic.gov.au/regulatory-resources/find-a-document/consultations/cs-63-proposed-updates-to-rg-265-and-rg-266-and-withdrawal-of-rg-241",
+        "title": "CS 63 Proposed updates to RG 265 and RG 266 and withdrawal of RG 241",
+        "publisher": "Australian Securities and Investments Commission",
+        "publishedAt": "2026-09-24",
+        "publishedAtPrecision": "day"
+      },
+      "notes": "Unverified timeline draft. CS 63 page states Released 24 September 2026 and Comments close 5 November 2026 (5 pm AEDT). Not fingerprinted and not marked verified. Withheld from the public timeline until Daniel's own review."
+    }
   }
 ]
