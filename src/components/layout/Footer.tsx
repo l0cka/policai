@@ -4,6 +4,8 @@ const links = [
   { href: '/this-week', label: 'This week', external: false },
   { href: '/courts', label: 'Courts', external: false },
   { href: '/analysis', label: 'Analysis', external: false },
+  { href: '/coverage', label: 'Coverage', external: false },
+  { href: '/timeline', label: 'Timeline', external: false },
   { href: '/methodology', label: 'Methodology', external: false },
   { href: '/feed.xml', label: 'RSS', external: false },
   { href: '/api/policies', label: 'API', external: false },

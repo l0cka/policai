@@ -9,6 +9,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { WebMcpTools } from '@/components/webmcp-tools';
 import { getCollectionMeta } from '@/lib/data-service';
 import {
+  SITE_ATOM_FEEDS,
   SITE_DESCRIPTION,
   SITE_KEYWORDS,
   SITE_NAME,
@@ -32,10 +33,7 @@ export const metadata: Metadata = {
   // Same for openGraph title/url/description — keep only shared defaults.
   alternates: {
     types: {
-      'application/atom+xml': [
-        { url: `${SITE_URL}/feed.xml`, title: 'Policai register feed' },
-        { url: `${SITE_URL}/analysis/feed.xml`, title: 'Policai analysis' },
-      ],
+      'application/atom+xml': [...SITE_ATOM_FEEDS],
     },
   },
   openGraph: SITE_SOCIAL_DEFAULTS.openGraph,

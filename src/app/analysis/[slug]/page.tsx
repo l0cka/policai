@@ -16,13 +16,12 @@ import { ArticleTable } from '@/components/article-table';
 import { articleMdxOptions } from '@/lib/article-markdown';
 import { getArticleBySlug, type ArticleView } from '@/lib/data-service';
 import { ARTICLE_BYLINE, articleEditorialDate } from '@/lib/articles';
+import { pageAlternates, SITE_URL } from '@/lib/site-seo';
 import { ARTICLE_TYPE_NAMES, type ArticleImage, type PublishedArticle } from '@/types';
 
 export const dynamic = 'force-dynamic';
 
 type Params = { params: Promise<{ slug: string }> };
-
-const SITE_URL = 'https://policai.org';
 
 function imageUrl(image: ArticleImage) {
   return { url: `${SITE_URL}${image.src}`, width: image.width, height: image.height, alt: image.alt };
@@ -54,7 +53,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   return {
     title: article.title,
     description: article.summary,
-    alternates: { canonical: `/analysis/${article.slug}` },
+    alternates: pageAlternates(`/analysis/${article.slug}`),
     openGraph: {
       type: 'article',
       url: `${SITE_URL}/analysis/${article.slug}`,
@@ -63,7 +62,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       ...(article.image ? { images: [imageUrl(article.image)] } : {}),
     },
     twitter: {
-      card: article.image ? 'summary_large_image' : 'summary',
+      card: 'summary_large_image',
       title: article.title,
       description: article.summary,
       ...(article.image ? { images: [imageUrl(article.image)] } : {}),
