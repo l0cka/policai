@@ -308,6 +308,27 @@ SERVICE ROUTING (REVIEW EXISTING HARDENING; NOT BLIND DROP-INS)
   granted at once because its own worker already shares it. worker.lock stays
   non-blocking: a second worker refuses with "worker.lock busy", since ingest
   holds it for minutes, longer than any useful wait.
+  Block scope: host.WORKER_GUARDS names what each operation must prove
+  beyond identity and the two locks. ingest, enrich and verify-deadlines
+  ("release") run the image and checkout of the active release, so they
+  refuse under blocked.json ("persistent block: reviewed recovery required")
+  and before the first activation. backup ("database") and backup-mirror
+  ("mirror") do not read either: backup.sh and backup-mirror.sh are root-
+  installed beside cli.py, the only Compose call is the db exec pg_dump pair
+  and no deploy ever touches the db service or its volume. They skip
+  require_ready and bootstrap_pending, so a failed Policai or Pro Bono deploy
+  no longer stops the nightly dump or its mirror (2026-10-18: a ~24 h block
+  left the database ~38 h without one). backup still proves the database
+  identity (verify_database) and the Compose source digest and contract
+  (validate_compose) before it dumps; backup-mirror needs only its
+  backup_mirror config paths. Both still take deploy.lock shared, so they
+  never overlap a deploy, rollback or recovery, and worker.lock, so they
+  never overlap another worker. The nested `cli.py compose` call picks its
+  guard with host.compose_guard: the db exec pair is "database", every
+  worker run task is "release". tests/test_block_tolerance.py pins the
+  table, the guard and the CLI routing under a block. A block therefore no
+  longer shows as a failed backup job; it still fails every release worker
+  and every policai-pull run.
   The 2026-10-17 07:11:25 verify-deadlines refusal (issue #296) was not a
   deploy.lock collision: the unit ran 5.3 s, while a busy shared lock with the
   then-installed wait=0 path refused within one LOCK_NB poll and never slept.

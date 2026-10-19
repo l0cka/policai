@@ -220,7 +220,7 @@ def main():
             tx.rollback()
             print("rollback health verified; persistent gate remains")
         elif args.command == "worker":
-            with h.worker_guard(state) as fds:
+            with h.worker_guard(state, h.WORKER_GUARDS[args.operation]) as fds:
                 host.run_worker(args.operation, fds)
             print("scheduled operation completed")
         elif args.command == "compose":
@@ -231,7 +231,7 @@ def main():
                 payload = sys.stdin.buffer.read(262145)
                 if len(payload) > 262144:
                     raise Refused("worker input exceeds bound")
-            with h.worker_guard(state, serialize=False) as fds:
+            with h.worker_guard(state, h.compose_guard(command), serialize=False) as fds:
                 output = host.worker_compose(command, fds, payload)
             sys.stdout.write(output)
         return 0

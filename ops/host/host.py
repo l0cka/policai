@@ -42,6 +42,13 @@ WORKER_SCRIPTS = {
     "backup-mirror": str(CODE / "backup-mirror.sh"),
     "verify-deadlines": "ops/verify-deadlines.sh",
 }
+WORKER_GUARDS = {
+    "ingest": "release",
+    "enrich": "release",
+    "verify-deadlines": "release",
+    "backup": "database",
+    "backup-mirror": "mirror",
+}
 
 
 def mirror_environment(config):
@@ -165,6 +172,10 @@ BACKUP_DUMPS = (
     ["pg_dump", "-U", "radar", "radar"],
     ["pg_dumpall", "-U", "radar", "--globals-only"],
 )
+
+
+def compose_guard(args):
+    return "database" if worker_arguments(args)[0] == "exec" else "release"
 
 
 def worker_arguments(args):
@@ -801,11 +812,23 @@ class Host:
             image_id(active["images"]["worker"]),
         )
 
+    def check_worker_database(self):
+        self.verify_database()
+        self.validate_compose(BASES["probono"] / "app/apps/probono", "active")
+
+    def check_worker(self, guard):
+        self.check_worker_identity()
+        if guard == "release":
+            self.check_worker_release()
+        elif guard == "database":
+            self.check_worker_database()
+        elif guard != "mirror":
+            raise Refused("unknown worker guard")
+
     def run_worker(self, name, lockfds):
         if name not in WORKER_SCRIPTS:
             raise Refused("scheduled command out of scope")
-        self.check_worker_identity()
-        self.check_worker_release()
+        self.check_worker(WORKER_GUARDS[name])
         extra_env = {
             "PATH": str(CODE / "bin") + ":/home/l0cka/.local/bin:/usr/bin:/bin",
             "PROBONO_DOCKER_BIN": str(CODE / "bin/docker"),
@@ -826,10 +849,9 @@ class Host:
         # Do not return or journal worker output, which can contain article data.
 
     def worker_compose(self, args, lockfds, stdin_data=None):
-        self.check_worker_identity()
-        self.check_worker_release()
         allowed = worker_arguments(args)
         backup = allowed[0] == "exec"
+        self.check_worker(compose_guard(args))
 
         if stdin_data is not None and not any(saver in allowed for saver in STDIN_TASKS):
             raise Refused("unexpected worker stdin")
@@ -866,11 +888,15 @@ class Host:
 
 @contextmanager
 def worker_guard(
-    state, serialize=True, wait=WORKER_LOCK_WAIT_SECONDS, clock=time.monotonic, sleep=time.sleep
+    state,
+    guard="release",
+    serialize=True,
+    wait=WORKER_LOCK_WAIT_SECONDS,
+    clock=time.monotonic,
+    sleep=time.sleep,
 ):
     with state.lock(exclusive=False, wait=wait, clock=clock, sleep=sleep) as fd:
-        active = state.require_ready()
-        if active.get("bootstrap_pending"):
+        if guard == "release" and state.require_ready().get("bootstrap_pending"):
             raise Refused("initial activation incomplete")
         if not serialize:
             yield (fd,)
