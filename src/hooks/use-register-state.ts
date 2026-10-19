@@ -21,7 +21,7 @@ export function useRegisterState() {
   const update = (patch: Partial<RegisterState>) => {
     const url = new URL(window.location.href);
     const next = updateRegisterState(parseRegisterState(url.searchParams), patch);
-    for (const key of ['q', 'jurisdiction', 'type', 'status', 'sort', 'view', 'page']) url.searchParams.delete(key);
+    for (const key of ['q', 'jurisdiction', 'type', 'status', 'theme', 'sort', 'view', 'page']) url.searchParams.delete(key);
     registerParams(next).forEach((value, key) => url.searchParams.set(key, value));
     // Retain Next's navigation metadata; typing must not add a history entry per letter.
     window.history.replaceState(window.history.state, '', url);
