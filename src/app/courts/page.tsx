@@ -1,7 +1,13 @@
 import type { Metadata } from 'next';
+import { CourtsAnalysis } from '@/components/courts-analysis';
 import { CourtsBrowser } from '@/components/courts-browser';
 import { getPublicCourtRequirements } from '@/lib/court-requirements';
-import { getPolicies } from '@/lib/data-service';
+import {
+  analysesByCourtPolicy,
+  courtFocusedAnalyses,
+  relatedByCourtPolicy,
+} from '@/lib/court-cross-links';
+import { getArticles, getPolicies } from '@/lib/data-service';
 
 export const revalidate = 3600;
 
@@ -12,9 +18,24 @@ export const metadata: Metadata = {
 };
 
 export default async function CourtsPage() {
-  const [policies, requirements] = await Promise.all([
+  const [policies, publicPolicies, requirements, articles] = await Promise.all([
     getPolicies({ type: 'practice_note' }),
+    getPolicies(),
     getPublicCourtRequirements(),
+    getArticles(),
   ]);
-  return <CourtsBrowser policies={policies} requirements={requirements} />;
+  const courtIds = new Set(policies.map((policy) => policy.id));
+  const courtAnalyses = courtFocusedAnalyses(articles, courtIds);
+  const analysesByPolicy = analysesByCourtPolicy(articles, courtIds);
+  const relatedByPolicy = relatedByCourtPolicy(policies, publicPolicies);
+
+  return (
+    <CourtsBrowser
+      policies={policies}
+      requirements={requirements}
+      analysesByPolicy={analysesByPolicy}
+      relatedByPolicy={relatedByPolicy}
+      analysis={<CourtsAnalysis articles={courtAnalyses} />}
+    />
+  );
 }
