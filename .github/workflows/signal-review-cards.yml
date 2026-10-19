@@ -1,0 +1,37 @@
+name: Signal review cards
+
+# Manual, read-only reprint of pending source-review cards. Signal does not
+# run this job. It reads data/source-reviews.json from GitHub and formats
+# cards with the rules in docs/collector.md. This job reprints the same text
+# into the step summary for a person who dispatches it.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cards:
+    name: pending source review cards
+    runs-on: [self-hosted, linux, argus]
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Print pending source review cards
+        run: |
+          set -o pipefail
+          npm run signal:reviews | tee "$GITHUB_STEP_SUMMARY"

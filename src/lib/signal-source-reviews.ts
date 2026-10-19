@@ -1,16 +1,51 @@
+import os from "node:os";
 import type { PolicyDraft, SourceReview, TimelineEventDraft } from "@/types";
 import { getJurisdictionName, getPolicyTypeName } from "@/types";
 
 /**
  * Read-only cards for pending source reviews, and the apply command that
- * calls the existing approve and reject paths. Approval receives only the
- * review id and reviewer name. This module does not publish.
+ * calls the existing approve and reject paths. Apply refuses unless a human
+ * confirms the reviewer name at a terminal. It does not publish.
  */
+
+/** One-line analysis summary, including the ellipsis when truncated. */
+export const SIGNAL_CARD_SUMMARY_LIMIT = 160;
+
+const SYDNEY_INSTANT: Intl.DateTimeFormatOptions = {
+	day: "2-digit",
+	month: "short",
+	year: "numeric",
+	hour: "2-digit",
+	minute: "2-digit",
+	hour12: false,
+	timeZone: "Australia/Sydney",
+	timeZoneName: "short",
+};
+
+export interface SignalCommandRunner {
+	user: string;
+	host: string;
+	at: string;
+}
 
 export interface SignalSourceReviewDeps {
 	listPending: () => Promise<SourceReview[]>;
-	approve: (input: { id: string; actor: string }) => Promise<SourceReview>;
+	approve: (input: {
+		id: string;
+		actor: string;
+		approvalNotes: string;
+	}) => Promise<SourceReview>;
 	reject: (id: string, reason?: string) => Promise<SourceReview>;
+	/** Defaults to process.env. CI and agent variables block apply. */
+	env?: Readonly<Record<string, string | undefined>>;
+	/** Defaults to process.stdin.isTTY. A non-TTY cannot confirm. */
+	stdinIsTTY?: boolean;
+	/**
+	 * Human confirmation. The script prompts on a terminal and returns true
+	 * only when the typed name matches. There is no environment bypass.
+	 */
+	confirmReviewer?: (reviewer: string) => Promise<boolean>;
+	runner?: SignalCommandRunner;
 }
 
 export interface SignalSourceReviewResult {
@@ -19,8 +54,61 @@ export interface SignalSourceReviewResult {
 	stderr: string;
 }
 
+export function formatSignalInstant(value: string | undefined): string {
+	if (!value) return "not recorded";
+	const date = new Date(value);
+	if (Number.isNaN(date.getTime())) return "unreadable";
+	return date.toLocaleString("en-AU", SYDNEY_INSTANT);
+}
+
+export function currentSignalRunner(now = new Date()): SignalCommandRunner {
+	let user = "unknown";
+	try {
+		user = os.userInfo().username || "unknown";
+	} catch {
+		user = "unknown";
+	}
+	return {
+		user,
+		host: os.hostname() || "unknown",
+		at: now.toISOString(),
+	};
+}
+
+export function runnerRecord(runner: SignalCommandRunner): string {
+	return `Ran by ${runner.user}@${runner.host} at ${formatSignalInstant(runner.at)} (${runner.at}).`;
+}
+
+/**
+ * Why apply must stop before a human is asked. CI and agent sessions are
+ * refused even when stdin looks like a terminal. An empty result means a
+ * terminal prompt is allowed.
+ */
+export function signalApplyBlockReason(input: {
+	env: Readonly<Record<string, string | undefined>>;
+	stdinIsTTY: boolean;
+}): string | undefined {
+	if (input.env.CI || input.env.GITHUB_ACTIONS) {
+		return "apply refuses to run in CI. A human confirms the reviewer name at a terminal, and CI cannot.";
+	}
+	if (input.env.CURSOR_AGENT || input.env.CLAUDECODE || input.env.CLAUDE_CODE) {
+		return "apply refuses to run in an agent session. A human confirms the reviewer name at a terminal.";
+	}
+	if (!input.stdinIsTTY) {
+		return "apply refuses a non-interactive session. A human confirms the reviewer name by typing it at a terminal.";
+	}
+	return undefined;
+}
+
 function oneLine(value: string): string {
 	return value.replace(/\s+/g, " ").trim();
+}
+
+function summaryLine(summary: string): string {
+	const line = oneLine(summary);
+	if (!line) return "none";
+	if (line.length <= SIGNAL_CARD_SUMMARY_LIMIT) return line;
+	return `${line.slice(0, SIGNAL_CARD_SUMMARY_LIMIT - 1)}…`;
 }
 
 function jurisdictionOf(review: SourceReview): string | undefined {
@@ -62,7 +150,13 @@ export function formatSourceReviewCard(review: SourceReview): string {
 	];
 	const jurisdiction = jurisdictionOf(review);
 	if (jurisdiction) lines.push(`jurisdiction: ${jurisdiction}`);
-	lines.push(`change: ${changeLine(review)}`);
+	lines.push(
+		`change: ${changeLine(review)}`,
+		`summary: ${summaryLine(review.analysis.summary)}`,
+		`relevance: ${Number.isFinite(review.analysis.relevanceScore) ? review.analysis.relevanceScore : "none"}`,
+		`discovered: ${formatSignalInstant(review.discoveredAt)}`,
+		`retrieved: ${formatSignalInstant(review.sourceEvidence.retrievedAt)}`,
+	);
 	return lines.join("\n");
 }
 
@@ -150,19 +244,47 @@ export async function runSignalSourceReviewCommand(
 		};
 	}
 
+	const blocked = signalApplyBlockReason({
+		env: deps.env ?? process.env,
+		stdinIsTTY: deps.stdinIsTTY ?? Boolean(process.stdin.isTTY),
+	});
+	if (blocked) {
+		return { exitCode: 1, stdout: "", stderr: blocked };
+	}
+	const confirmed = deps.confirmReviewer
+		? await deps.confirmReviewer(reviewer)
+		: false;
+	if (!confirmed) {
+		return {
+			exitCode: 1,
+			stdout: "",
+			stderr:
+				"A human must type the reviewer name at the terminal before apply runs.",
+		};
+	}
+
+	const runner = deps.runner ?? currentSignalRunner();
+	const attestation = runnerRecord(runner);
 	try {
 		if (action === "approve") {
-			const review = await deps.approve({ id, actor: reviewer });
+			const review = await deps.approve({
+				id,
+				actor: reviewer,
+				approvalNotes: attestation,
+			});
 			return {
 				exitCode: 0,
-				stdout: `Approved ${review.id} (status ${review.status}).`,
+				stdout: `Approved ${review.id} (status ${review.status}). ${attestation}`,
 				stderr: "",
 			};
 		}
-		const review = await deps.reject(id, `Dismissed by ${reviewer}`);
+		const review = await deps.reject(
+			id,
+			`Dismissed by ${reviewer}. ${attestation}`,
+		);
 		return {
 			exitCode: 0,
-			stdout: `Dismissed ${review.id} (status ${review.status}).`,
+			stdout: `Dismissed ${review.id} (status ${review.status}). ${attestation}`,
 			stderr: "",
 		};
 	} catch (error) {

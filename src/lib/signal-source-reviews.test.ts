@@ -1,12 +1,14 @@
 /* @vitest-environment node */
 
 import { readFileSync } from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { describe, expect, it, vi } from "vitest";
 import type { PolicyDraft, SourceReview } from "@/types";
 import {
 	formatPendingSourceReviewCards,
 	runSignalSourceReviewCommand,
+	SIGNAL_CARD_SUMMARY_LIMIT,
 	type SignalSourceReviewDeps,
 } from "./signal-source-reviews";
 
@@ -59,6 +61,14 @@ function review(overrides: Partial<SourceReview> = {}): SourceReview {
 	};
 }
 
+const RUNNER = {
+	user: "daniel",
+	host: "argus",
+	at: "2026-10-19T00:00:00.000Z",
+};
+const ATTESTATION =
+	"Ran by daniel@argus at 19 Oct 2026, 11:00 AEDT (2026-10-19T00:00:00.000Z).";
+
 function deps(
 	overrides: Partial<SignalSourceReviewDeps> = {},
 ): SignalSourceReviewDeps {
@@ -66,6 +76,10 @@ function deps(
 		listPending: vi.fn().mockResolvedValue([]),
 		approve: vi.fn(),
 		reject: vi.fn(),
+		env: {},
+		stdinIsTTY: true,
+		confirmReviewer: async () => true,
+		runner: RUNNER,
 		...overrides,
 	};
 }
@@ -107,12 +121,20 @@ describe("pending source review cards", () => {
 				"url: https://www.health.qld.gov.au/ai",
 				"jurisdiction: Queensland",
 				"change: Would add a new guideline record.",
+				"summary: Ignored when the draft has a jurisdiction.",
+				"relevance: 0.5",
+				"discovered: 20 July 2026, 10:00 AEST",
+				"retrieved: 16 July 2026, 10:00 AEST",
 				"",
 				"id: older",
 				"title: Older policy",
 				"url: https://example.gov.au/ai-policy",
 				"jurisdiction: Federal",
 				"change: Would add a new policy record.",
+				"summary: A source-backed policy description.",
+				"relevance: 0.65",
+				"discovered: 01 July 2026, 10:00 AEST",
+				"retrieved: 16 July 2026, 10:00 AEST",
 				"",
 				"2 pending source reviews.",
 			].join("\n"),
@@ -206,6 +228,23 @@ describe("pending source review cards", () => {
 		).toContain("change: Would add a timeline event.");
 	});
 
+	it("truncates the analysis summary to one line", () => {
+		const summary = `Sentence. ${"word ".repeat(80)}`;
+		const text = formatPendingSourceReviewCards([
+			review({
+				analysis: {
+					...review().analysis,
+					summary,
+				},
+			}),
+		]);
+		const line = text.split("\n").find((row) => row.startsWith("summary: "));
+		expect(line).toBeDefined();
+		expect(line!.length).toBe("summary: ".length + SIGNAL_CARD_SUMMARY_LIMIT);
+		expect(line).toMatch(/…$/);
+		expect(line).not.toContain("\n");
+	});
+
 	it("is an empty state when nothing is pending", () => {
 		expect(formatPendingSourceReviewCards([])).toBe(
 			"No pending source reviews.",
@@ -229,17 +268,81 @@ describe("signal source review apply", () => {
 			deps({ approve, reject }),
 		);
 
-		expect(approve).toHaveBeenCalledWith({ id: "rev-1", actor: "Daniel" });
-		expect(approve.mock.calls[0][0]).toEqual({
+		expect(approve).toHaveBeenCalledWith({
 			id: "rev-1",
 			actor: "Daniel",
+			approvalNotes: ATTESTATION,
 		});
 		expect(reject).not.toHaveBeenCalled();
 		expect(result).toEqual({
 			exitCode: 0,
-			stdout: "Approved rev-1 (status approved).",
+			stdout: `Approved rev-1 (status approved). ${ATTESTATION}`,
 			stderr: "",
 		});
+	});
+
+	it("refuses apply without a human confirmation", async () => {
+		const approve = vi.fn();
+		const reject = vi.fn();
+		const result = await runSignalSourceReviewCommand(
+			["apply", "--action=approve", "--id=rev-1", "--reviewer=Daniel"],
+			deps({
+				approve,
+				reject,
+				confirmReviewer: async () => false,
+			}),
+		);
+
+		expect(result).toMatchObject({
+			exitCode: 1,
+			stderr:
+				"A human must type the reviewer name at the terminal before apply runs.",
+		});
+		expect(approve).not.toHaveBeenCalled();
+		expect(reject).not.toHaveBeenCalled();
+	});
+
+	it.each([
+		["non-interactive", {}, false],
+		["CI", { CI: "true" }, true],
+		["GitHub Actions", { GITHUB_ACTIONS: "true" }, true],
+		["agent", { CURSOR_AGENT: "1" }, true],
+	] as const)(
+		"refuses apply in a %s session even if confirmation returns true",
+		async (_label, env, stdinIsTTY) => {
+			const approve = vi.fn();
+			const result = await runSignalSourceReviewCommand(
+				["apply", "--action=approve", "--id=rev-1", "--reviewer=Daniel"],
+				deps({
+					approve,
+					env: { ...env },
+					stdinIsTTY,
+					confirmReviewer: async () => true,
+				}),
+			);
+
+			expect(result.exitCode).toBe(1);
+			expect(result.stderr.length).toBeGreaterThan(0);
+			expect(approve).not.toHaveBeenCalled();
+		},
+	);
+
+	it("records the OS user, host, and timestamp on the approval", async () => {
+		const approve = vi.fn().mockResolvedValue(
+			review({ id: "rev-1", status: "approved" }),
+		);
+		const result = await runSignalSourceReviewCommand(
+			["apply", "--action=approve", "--id=rev-1", "--reviewer=Daniel"],
+			deps({ approve, runner: undefined }),
+		);
+
+		expect(result.exitCode).toBe(0);
+		const notes = approve.mock.calls[0][0].approvalNotes as string;
+		expect(notes).toContain(
+			`Ran by ${os.userInfo().username}@${os.hostname()} at `,
+		);
+		expect(notes).toMatch(/\(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z\)\.$/);
+		expect(approve.mock.calls[0][0].actor).toBe("Daniel");
 	});
 
 	it("returns the approve path's reason when reviewed fields are required", async () => {
@@ -272,10 +375,13 @@ describe("signal source review apply", () => {
 			deps({ reject }),
 		);
 
-		expect(reject).toHaveBeenCalledWith("rev-9", "Dismissed by Daniel");
+		expect(reject).toHaveBeenCalledWith(
+			"rev-9",
+			`Dismissed by Daniel. ${ATTESTATION}`,
+		);
 		expect(result).toEqual({
 			exitCode: 0,
-			stdout: "Dismissed rev-9 (status rejected).",
+			stdout: `Dismissed rev-9 (status rejected). ${ATTESTATION}`,
 			stderr: "",
 		});
 	});
@@ -344,8 +450,22 @@ describe("signal source review wiring", () => {
 			expect(source).not.toContain("lastReviewedAt");
 			expect(source).not.toContain("handlePublishStagedSource");
 		}
-		expect(script).toContain("approveStagedSource({ id, actor })");
+		expect(script).toContain(
+			"approveStagedSource({ id, actor, approvalNotes })",
+		);
 		expect(script).toContain("rejectStagedSource(id, reason)");
+		expect(script).toContain("confirmReviewer");
+		expect(script).toContain("currentSignalRunner()");
+		expect(lib).not.toMatch(/POLICAI_SIGNAL_REVIEW_CONFIRM|process\.env\.[A-Z0-9_]*CONFIRM/);
+
+		const workflow = readFileSync(
+			path.join(process.cwd(), ".github/workflows/signal-review-cards.yml"),
+			"utf8",
+		);
+		expect(workflow).toContain("contents: read");
+		expect(workflow).not.toMatch(/contents:\s*write|pull-requests:\s*write/);
+		expect(workflow).toContain("workflow_dispatch");
+		expect(workflow).not.toContain("schedule:");
 		expect(script).toContain('getSourceReviews({ status: "pending_review" })');
 	});
 });
