@@ -378,7 +378,7 @@ describe("signal source review apply", () => {
 		);
 
 		expect(result.exitCode).toBe(1);
-		expect(result.stderr).toContain("Signal reviewer must be one of: Daniel");
+		expect(result.stderr).toContain("Signal reviewer must be one of: Daniel Alkurdi, Daniel");
 		expect(approve).not.toHaveBeenCalled();
 	});
 

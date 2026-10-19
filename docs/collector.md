@@ -846,45 +846,106 @@ Detections staged in `data/source-reviews.json` are proposals. To publish one:
 ### Policai Signal (Grok Bot)
 
 **Policai Signal** is Daniel’s Grok Bot
-(`fa9b5c47-349a-438e-acfc-75055f2d6b8f`). It is the product path for staged
-review **approval**, **publish to the live register**, and **verification** of
-a named public record. His reply in that chat is the decision. The bot calls
-the editorial MCP (`npm run mcp`) on a trusted checkout (Argus recommended),
-or the token-gated CLI below. The TTY confirm path is a fallback when MCP is
-unavailable — not the daily UX.
+(`fa9b5c47-349a-438e-acfc-75055f2d6b8f`). Product path: **HTTPS on
+policai.org**. The bot can reach HTTPS with a masked env secret; it has **no**
+Argus SSH, **will not** run a TTY CLI, and **cannot** merge PRs. MCP / TTY /
+`npm run mcp` are laptop recovery only — not the bot UX.
 
-Bot-facing phrases (map to MCP `signal_decision` or the matching tool):
+#### Bot-facing HTTPS API
 
-| Phrase | Action | Id |
+Base: `https://policai.org`. Auth header on every Signal call:
+
+```http
+Authorization: Bearer $POLICAI_SIGNAL_TOKEN
+```
+
+Bot env (masked prompt; never paste into chat): **`POLICAI_SIGNAL_TOKEN`**.
+
+| Method | Path | Purpose |
 | --- | --- | --- |
-| `approve <id>` | `approve_staged_source` / `signal_decision` approve | source-review id |
-| `dismiss <id>` | `reject_staged_source` / `signal_decision` dismiss | source-review id |
-| `publish <id>` | `publish_staged_source` / `signal_decision` publish | source-review id (`approved`) |
-| `verify <policy-id>` | `verify_register_record` / `signal_decision` verify | public register policy id |
+| `GET` | `/api/signal/reviews/<reviewId>` | Dry-run / current state for one review |
+| `POST` | `/api/signal/reviews` | Apply `approve` (approve+publish) or `dismiss` |
 
-Trust: every write needs `POLICAI_MCP_ADMIN_TOKEN`. Approve / dismiss / verify
-also need an allowlisted reviewer (`POLICAI_SIGNAL_REVIEWERS`, default
-`Daniel`). CI and Cursor / Claude agent sessions are refused on the Signal
-CLI. Agents must not invent a verify; only an explicit Signal verify of a
-named policy id may call it. MCP / CLI write the checkout only — validate,
-commit, and push (or open a PR) afterward so Argus auto-deploy can serve
-`main`.
+**Dry-run (harmless first test):**
 
-`npm run signal:reviews` prints one card for each `pending_review` row, then a
-footer count. An empty queue prints `No pending source reviews.` The command
-does not fetch. `formatPendingSourceReviewCards` in
-`src/lib/signal-source-reviews.ts` is the pure function that builds that text.
-It takes the review array and does not read the network or the filesystem.
+```bash
+curl -sS -H "Authorization: Bearer $POLICAI_SIGNAL_TOKEN" \
+  "https://policai.org/api/signal/reviews/<reviewId>"
+```
 
-Policai Signal has no checkout on the collection host. It reads the pending
-rows from GitHub and applies the same rules, so a card it builds matches the
-CLI:
+Returns `{ success, dryRun, review, approve, dismiss }`. `approve.blockers` /
+`dismiss.blockers` explain themes / tracked-record issues. No write.
+
+**Apply:**
+
+```bash
+curl -sS -X POST "https://policai.org/api/signal/reviews" \
+  -H "Authorization: Bearer $POLICAI_SIGNAL_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "reviewId": "<id>",
+    "action": "approve",
+    "reviewer": "Daniel Alkurdi",
+    "attestation": {
+      "replyText": "<Dan reply verbatim>",
+      "chatMessageId": "<message id>",
+      "cardId": "<id>",
+      "decidedAt": "2026-10-19T05:00:00.000Z"
+    }
+  }'
+```
+
+`action` is `approve` or `dismiss` only. `approve` runs `approveStagedSource`
+then `publishStagedSource`. `dismiss` runs `rejectStagedSource`. Reviewer
+must be allowlisted (`POLICAI_SIGNAL_REVIEWERS`, default
+`Daniel Alkurdi` and `Daniel`). `attestation.cardId` must equal `reviewId`.
+
+Attestation is stored on the review and published verification notes as:
+
+```text
+Daniel Alkurdi (Signal): <reply verbatim>
+chatMessageId: …
+cardId: …
+decided: <Australia/Sydney> (<ISO>)
+relayed by Policai Signal
+```
+
+It must not claim TTY typing.
+
+**Idempotent:** approve on an already `published` review, or dismiss on an
+already `rejected` review, returns `noop: true` and the current state.
+
+**Errors (bot returns these to Dan; bot does not invent themes):**
+
+| `code` | When |
+| --- | --- |
+| `unauthorized` | Missing/wrong Bearer token |
+| `signal_token_unconfigured` | Host missing `POLICAI_SIGNAL_TOKEN` |
+| `not_found` | Unknown review id |
+| `approve_blocked` / `themes_required` / `editorial_fields_required` | Missing themes or other reviewed fields |
+| `dismiss_blocked` / `tracked_record_dismiss` | Tracked-record reviews cannot be dismissed |
+| `reviewer_not_allowlisted` | Reviewer not in allowlist |
+| `invalid_attestation` | Missing reply / message id / card id |
+
+Rate limit: 20 POST / 30 GET per IP per minute on `/api/signal/*`.
+
+**Persistence:** Git is the database. After a non-noop write the host uses
+`POLICAI_SIGNAL_GITHUB_TOKEN` to open a PR (default) or, if
+`POLICAI_SIGNAL_COMMIT_TARGET=main`, push a data commit to `main` for Argus
+auto-deploy. The bot never merges. Response `persistence.prUrl` is what Dan
+opens to merge. If the GitHub token is missing, `persistence.ok` is false and
+local checkout data may be overwritten by the next `policai-pull`.
+
+#### Pending cards (read-only)
+
+The bot reads pending rows from:
 
 `https://raw.githubusercontent.com/l0cka/policai/main/data/source-reviews.json`
 
-Keep rows whose `status` is `pending_review`. Order by `discoveredAt`
-descending, then `id` in `en-AU`. Each card is these lines, with a blank line
-between cards:
+`npm run signal:reviews` reprints the same cards locally. Empty queue:
+`No pending source reviews.` `formatPendingSourceReviewCards` in
+`src/lib/signal-source-reviews.ts` is pure. Keep `pending_review` rows; order
+by `discoveredAt` descending, then `id` in `en-AU`. Each card:
 
 ```text
 id: <id, one line>
@@ -899,51 +960,17 @@ retrieved: <sourceEvidence.retrievedAt in Australia/Sydney, or "not recorded">
 ```
 
 Omit `jurisdiction` when the staged record has none and
-`analysis.suggestedJurisdiction` is empty. The staged record's jurisdiction
-wins when both are set. Display names are Federal, New South Wales, Victoria,
-Queensland, Western Australia, South Australia, Tasmania, Australian Capital
-Territory, and Northern Territory. Dates use `en-AU` with
-`timeZone: "Australia/Sydney"` and a short zone name, for example
-`16 July 2026, 10:00 AEST`. The `change` line is: a source-URL replacement
-when `targetPolicyPreviousSourceUrl` or
-`targetTimelineEventPreviousSourceUrl` is set; otherwise an in-place update
-of `targetPolicyId` or `targetTimelineEventId`; otherwise a new timeline
-event or a new register record of the staged type. The footer is
-`1 pending source review.` or `N pending source reviews.`
+`analysis.suggestedJurisdiction` is empty. Display names are Federal, New
+South Wales, Victoria, Queensland, Western Australia, South Australia,
+Tasmania, Australian Capital Territory, and Northern Territory. Dates use
+`en-AU` with `timeZone: "Australia/Sydney"`. Footer: `1 pending source
+review.` or `N pending source reviews.`
 
-A person with a checkout can reprint the same text without applying a
-decision. `.github/workflows/signal-review-cards.yml` is manual
-(`workflow_dispatch`) and sets `permissions: contents: read` only. It runs
-`npm run signal:reviews` and copies the text into the job summary. It does
-not approve, dismiss, publish, or push.
+`.github/workflows/signal-review-cards.yml` is manual read-only reprint.
 
-**Trusted apply (product path for the bot / Argus):** pass a matching
-`--admin-token` (`POLICAI_MCP_ADMIN_TOKEN`). Approve / dismiss / verify also
-need `--reviewer` on the allowlist. Publish needs only the id and token.
-Non-TTY is allowed. CI and Cursor / Claude agent sessions are still refused.
-
-```bash
-npm run signal:reviews -- apply --action=approve --id=<id> --reviewer=Daniel --admin-token="$POLICAI_MCP_ADMIN_TOKEN"
-npm run signal:reviews -- apply --action=dismiss --id=<id> --reviewer=Daniel --admin-token="$POLICAI_MCP_ADMIN_TOKEN"
-npm run signal:reviews -- apply --action=publish --id=<id> --admin-token="$POLICAI_MCP_ADMIN_TOKEN"
-npm run signal:reviews -- apply --action=verify --id=<policy-id> --reviewer=Daniel --admin-token="$POLICAI_MCP_ADMIN_TOKEN"
-```
-
-**TTY fallback (approve / dismiss only):** without a matching admin token,
-`npm run signal:reviews -- apply --action=approve|dismiss --id=<id> --reviewer=<name>`
-requires a terminal. The human must type the reviewer name. `--reviewer`
-alone is not confirmation. Publish and verify are not available on the TTY
-path.
-
-Approve calls `approveStagedSource` with that id, the reviewer, and notes that
-record the runner (and, on the trusted path, that it was a Signal trusted
-apply). It does not pass a `proposedRecord` or themes. If approval needs
-those fields, the command stops and prints that reason — finish via MCP
-`approve_staged_source` with the reviewed draft. Dismiss calls
-`rejectStagedSource`; tracked-record reviews still fail with that path's
-reason. Publish calls `publishStagedSource`. Verify calls
-`verifyRegisterRecord` and stamps only a **public** register policy; withheld
-or unverified records must go through approve + publish instead.
+**Recovery only (not bot):** TTY or MCP approve/publish on a laptop when
+HTTPS is down. The bot must not be told to SSH to Argus or run
+`signal:reviews apply`.
 
 One-off publication scripts must also enter through `stageSourceUrl()` or the
 controlled `stageSourceCapture()` fallback rather than constructing a review

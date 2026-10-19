@@ -393,7 +393,7 @@ describe('MCP tool handlers', () => {
         reviewer: 'Random Agent',
         adminToken: 'secret-token',
       }),
-    ).rejects.toThrow('Signal reviewer must be one of: Daniel')
+    ).rejects.toThrow('Signal reviewer must be one of: Daniel Alkurdi, Daniel')
     expect(verifyRegisterRecord).not.toHaveBeenCalled()
   })
 

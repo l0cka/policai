@@ -3,17 +3,16 @@ import type { Policy, PolicyDraft, SourceReview, TimelineEventDraft } from "@/ty
 import { getJurisdictionName, getPolicyTypeName } from "@/types";
 
 /**
- * Read-only cards for pending source reviews, and the apply command that
- * calls approve, dismiss, publish, and verify. The product path is Policai
- * Signal (Grok Bot) via MCP or a token-gated apply on a trusted host. The
- * TTY confirm path remains a fallback for approve/dismiss only.
+ * Read-only cards for pending source reviews, and a recovery CLI apply path.
+ * Product path for the Grok Bot is HTTPS `/api/signal/reviews` (see
+ * signal-http.ts). TTY / MCP remain laptop recovery only.
  */
 
 /** One-line analysis summary, including the ellipsis when truncated. */
 export const SIGNAL_CARD_SUMMARY_LIMIT = 160;
 
 /** Default allowlisted Signal reviewer when POLICAI_SIGNAL_REVIEWERS is unset. */
-export const DEFAULT_SIGNAL_REVIEWERS = ["Daniel"] as const;
+export const DEFAULT_SIGNAL_REVIEWERS = ["Daniel Alkurdi", "Daniel"] as const;
 
 const SYDNEY_INSTANT: Intl.DateTimeFormatOptions = {
 	day: "2-digit",
