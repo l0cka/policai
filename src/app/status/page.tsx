@@ -310,17 +310,76 @@ export default async function StatusPage() {
           </p>
         </section>
 
-        <p className="text-muted-foreground">
-          Machine-readable:{' '}
-          <a href="/api/status" className="text-primary underline underline-offset-4 hover:no-underline">
-            /api/status
-          </a>
-          . How sources are chosen and verified:{' '}
-          <Link href="/methodology" className="text-primary underline underline-offset-4 hover:no-underline">
-            methodology
-          </Link>
-          .
-        </p>
+        <section className="border-t border-border pt-7">
+          <h2 className="section-title">Machine feeds and API</h2>
+          <p className="text-muted-foreground">
+            Feed readers and agents already hit these public surfaces. Full
+            descriptions live on{' '}
+            <Link
+              href="/methodology#machine-feeds"
+              className="text-primary underline underline-offset-4 hover:no-underline"
+            >
+              methodology
+            </Link>
+            .
+          </p>
+          <ul className="mt-3 list-disc space-y-2 pl-5 text-muted-foreground">
+            <li>
+              <a
+                href="/feed.xml"
+                className="font-mono text-xs text-primary underline underline-offset-4 hover:no-underline"
+              >
+                /feed.xml
+              </a>
+              {' '}
+              — Atom of recent public developments
+            </li>
+            <li>
+              <a
+                href="/analysis/feed.xml"
+                className="font-mono text-xs text-primary underline underline-offset-4 hover:no-underline"
+              >
+                /analysis/feed.xml
+              </a>
+              {' '}
+              — Atom of published analysis
+            </li>
+            <li>
+              <Link
+                href="/api/policies"
+                className="font-mono text-xs text-primary underline underline-offset-4 hover:no-underline"
+              >
+                /api/policies
+              </Link>
+              {' '}
+              — public register JSON;{' '}
+              <span className="font-mono text-xs">
+                /api/policies/&#123;id&#125;/markdown
+              </span>{' '}
+              for one record as markdown
+            </li>
+            <li>
+              <a
+                href="/api/developments"
+                className="font-mono text-xs text-primary underline underline-offset-4 hover:no-underline"
+              >
+                /api/developments
+              </a>
+              {' '}
+              — public developments JSON
+            </li>
+            <li>
+              <a
+                href="/api/status"
+                className="font-mono text-xs text-primary underline underline-offset-4 hover:no-underline"
+              >
+                /api/status
+              </a>
+              {' '}
+              — this page as JSON
+            </li>
+          </ul>
+        </section>
       </div>
     </article>
   );
