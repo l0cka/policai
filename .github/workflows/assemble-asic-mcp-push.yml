@@ -1,0 +1,41 @@
+name: assemble-asic-mcp-push
+on:
+  push:
+    branches:
+      - cursor/asic-ai-trading-gap-onto-main-9330
+      - cursor/asic-ai-trading-gap-cea6
+    paths:
+      - tmp/asic-mcp-assemble/**
+jobs:
+  assemble:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Assemble policies and timeline
+        run: |
+          set -euo pipefail
+          DIR=tmp/asic-mcp-assemble
+          test -f "$DIR/READY"
+          for name in timeline policies; do
+            cat "$DIR/$name".*.b64 | tr -d '\n' | base64 -d | gunzip > "data/$name.json"
+          done
+          python3 - <<'PY'
+          import json
+          p=json.load(open("data/policies.json"))
+          t=json.load(open("data/timeline.json"))
+          assert len(p)==89 and p[-1]["id"]=="asic-market-integrity-rules-ai-trading-2026", (len(p), p[-1]["id"])
+          assert len(t)==98 and t[-1]["id"]=="tl-2026-09-24-asic-cs-63-rg-265-266", (len(t), t[-1]["id"])
+          print("verified", len(p), len(t))
+          PY
+          rm -rf tmp/asic-mcp-assemble
+          rm -f data/_size_probe_30k.txt data/_size_probe_50k.txt data/_size_probe_80k.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git status
+          git commit -m "data: ASIC AI trading MIR + CS 63 (needs_review) onto main"
+          git push origin "HEAD:$GITHUB_REF_NAME"
