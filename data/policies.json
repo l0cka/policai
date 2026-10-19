@@ -7910,5 +7910,103 @@
       },
       "notes": "Unverified editorial draft. The publication page and the 15 October 2026 ASD news item were read through a retrieval that could reach cyber.gov.au; this environment's browser and direct requests to the host hung or returned HTTP 500, which existing ASD records already note. No source fingerprint, no checkedAt, no checkedBy and no lastReviewedAt. Not marked verified. Hidden from the public read until Daniel's own review. cyber-news remains a manual source: its last manual review and watch-state lastCheckedBySource are 2026-10-06, before this launch."
     }
+  },
+  {
+    "id": "tas-local-community-benefit-fund-ai-data-centres-2026",
+    "title": "Local Community Benefit Fund for AI and data-centre developments",
+    "description": "Tasmanian Government announcement that major AI and data-centre proponents will be expected to contribute to a Local Community Benefit Fund supporting host communities, alongside paying network costs and quarterly public reporting of water and energy use.",
+    "jurisdiction": "tas",
+    "type": "funding_program",
+    "status": "proposed",
+    "effectiveDate": "2026-10-14",
+    "dates": [
+      {
+        "type": "published",
+        "date": "2026-10-14",
+        "precision": "day",
+        "primary": true
+      }
+    ],
+    "agencies": [
+      "Premier of Tasmania",
+      "Department of Premier and Cabinet"
+    ],
+    "sourceUrl": "https://www.premier.tas.gov.au/latest-news/2026/october/major-ai-investment-must-deliver-for-tasmanian-communities",
+    "content": "On 14 October 2026 the Premier of Tasmania announced that the Tasmanian Government will establish a Local Community Benefit Fund so communities hosting major AI and data-centre developments share directly in the benefits. The fund is to support local infrastructure, skills and training, community organisations and initiatives that improve liveability and economic participation in host communities. Major AI and data-centre proponents will be expected to: pay their own infrastructure and network costs; help grow Tasmania's energy supply by supporting new renewable generation and additional energy capacity; locate in appropriate industrial precincts away from urban areas; protect consumers so water and power demand does not compromise supply security or raise costs for other users; contribute to the Local Community Benefit Fund; and publicly report water and energy use each quarter. The announcement builds on the Government's draft Statement of Expectations for Data Centres and AI Infrastructure and reflects issues raised through the Parliamentary Inquiry into AI Data Centres. Source: https://www.premier.tas.gov.au/latest-news/2026/october/major-ai-investment-must-deliver-for-tasmanian-communities.",
+    "aiSummary": "Tasmania announced on 14 October 2026 a Local Community Benefit Fund that major AI and data-centre proponents will be expected to contribute to, with network cost recovery and quarterly water and energy reporting.",
+    "tags": [
+      "Tasmania",
+      "community benefit",
+      "data centres",
+      "AI infrastructure",
+      "energy",
+      "water"
+    ],
+    "themes": [
+      "infrastructure"
+    ],
+    "createdAt": "2026-10-19T08:30:00.000Z",
+    "updatedAt": "2026-10-19T08:30:00.000Z",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.premier.tas.gov.au/latest-news/2026/october/major-ai-investment-must-deliver-for-tasmanian-communities",
+        "title": "Major AI investment must deliver for Tasmanian communities",
+        "publisher": "Premier of Tasmania",
+        "publishedAt": "2026-10-14"
+      },
+      "notes": "Unverified editorial draft from the Policai register-gap ingest of the Premier's 14 October 2026 media release. No source fingerprint, no checkedAt, no checkedBy, and no lastReviewedAt. Not marked verified. Hidden from the public read until Daniel's own review."
+    }
+  },
+  {
+    "id": "tas-draft-statement-expectations-data-centres-ai-2026",
+    "title": "Draft Statement of Expectations for Data Centres and AI Infrastructure",
+    "description": "Tasmanian Government draft Statement of Expectations for large data-centre and AI infrastructure developments, consulted from 7 September to 12 October 2026, with final expectations planned by end of 2026.",
+    "jurisdiction": "tas",
+    "type": "framework",
+    "status": "proposed",
+    "effectiveDate": "2026-09-07",
+    "dates": [
+      {
+        "type": "consultation_opened",
+        "date": "2026-09-07",
+        "precision": "day",
+        "primary": true
+      },
+      {
+        "type": "consultation_closed",
+        "date": "2026-10-12",
+        "precision": "day"
+      }
+    ],
+    "agencies": [
+      "Tasmanian Government"
+    ],
+    "sourceUrl": "https://engage.building.tas.gov.au/draft-expectations-data-centres-and-ai-infrastructure-developers",
+    "content": "The Tasmanian Government released a draft Statement of Expectations for Data Centres and Artificial Intelligence (AI) Infrastructure for public consultation on Engage with Building Tasmania. The Engage consultation page states that the expectations apply to large data-centre developments, generally including AI factories, hyper-scale data centres and multi-site developments by a proponent. Consultation opened on 7 September 2026 and closed at 11.59pm on Monday 12 October 2026; analysis of feedback was scheduled for October 2026, with release of the final Expectations by end of 2026. The draft is intended to guide proponents, investors, industry, communities and other stakeholders while supporting responsible development that delivers enduring benefits for Tasmania. The Premier's 14 October 2026 announcement of a Local Community Benefit Fund builds on this draft Statement. Primary source: https://engage.building.tas.gov.au/draft-expectations-data-centres-and-ai-infrastructure-developers.",
+    "aiSummary": "Tasmania's draft Statement of Expectations for data centres and AI infrastructure was open for consultation from 7 September to 12 October 2026; final expectations are planned by end of 2026.",
+    "tags": [
+      "Tasmania",
+      "data centres",
+      "AI infrastructure",
+      "Statement of Expectations",
+      "consultation",
+      "energy",
+      "water"
+    ],
+    "themes": [
+      "infrastructure"
+    ],
+    "createdAt": "2026-10-19T08:30:00.000Z",
+    "updatedAt": "2026-10-19T08:30:00.000Z",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://engage.building.tas.gov.au/draft-expectations-data-centres-and-ai-infrastructure-developers",
+        "title": "Draft Expectations for Data Centres and AI Infrastructure Developers",
+        "publisher": "Engage with Building Tasmania"
+      },
+      "notes": "Unverified editorial draft. Primary source is the official Engage with Building Tasmania consultation page (engage.building.tas.gov.au). Consultation dates and scope taken from that page. No source fingerprint, no checkedAt, no checkedBy, and no lastReviewedAt. Not marked verified. Hidden from the public read until Daniel's own review."
+    }
   }
 ]
