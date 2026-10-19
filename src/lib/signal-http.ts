@@ -1,30 +1,42 @@
-import type { PolicyDraft, SourceReview, TimelineEventDraft } from "@/types";
-import { getJurisdictionName, getPolicyTypeName } from "@/types";
+import type {
+	PolicyDraft,
+	PolicyType,
+	SourceReview,
+	TimelineEventDraft,
+} from "@/types";
+import {
+	getJurisdictionName,
+	getPolicyTypeName,
+	isPolicyType,
+	POLICY_TYPES,
+} from "@/types";
+import {
+	isThemeId,
+	MAX_THEMES_PER_RECORD,
+	MIN_THEMES_PER_RECORD,
+	THEMES,
+	type ThemeId,
+} from "@/lib/themes";
 import {
 	formatSignalInstant,
 	isSignalReviewer,
 	signalReviewers,
 } from "@/lib/signal-source-reviews";
 
-/**
- * HTTPS Signal API helpers for the Policai Signal Grok Bot. Auth is
- * POLICAI_SIGNAL_TOKEN only. Approve publishes; dismiss rejects. Attestation
- * never claims a TTY confirmation.
- */
-
 export const SIGNAL_HTTP_REVIEWER_DEFAULT = "Daniel Alkurdi";
 
 export type SignalHttpAction = "approve" | "dismiss";
 
 export interface SignalAttestationInput {
-	/** Daniel's chat reply, verbatim. */
 	replyText: string;
-	/** Stable id of the chat message that carried the decision. */
 	chatMessageId: string;
-	/** Card / source-review id the decision refers to. */
 	cardId: string;
-	/** Optional ISO instant; server fills Australia/Sydney display. */
 	decidedAt?: string;
+}
+
+export interface SignalReplyOverrides {
+	themes?: ThemeId[];
+	type?: PolicyType;
 }
 
 export interface SignalHttpDecisionInput {
@@ -32,6 +44,8 @@ export interface SignalHttpDecisionInput {
 	action: SignalHttpAction;
 	reviewer: string;
 	attestation: SignalAttestationInput;
+	themes?: unknown;
+	type?: unknown;
 }
 
 export interface SignalHttpDeps {
@@ -40,6 +54,7 @@ export interface SignalHttpDeps {
 		id: string;
 		actor: string;
 		approvalNotes: string;
+		proposedRecord?: PolicyDraft;
 	}) => Promise<SourceReview>;
 	publish: (id: string) => Promise<SourceReview>;
 	reject: (id: string, reason?: string) => Promise<SourceReview>;
@@ -75,6 +90,7 @@ export type SignalDryRunResult =
 				targetPolicyId?: string;
 				targetTimelineEventId?: string;
 				themes: string[];
+				type?: string;
 				jurisdiction?: string;
 				change: string;
 			};
@@ -83,6 +99,8 @@ export type SignalDryRunResult =
 				wouldPublish: boolean;
 				blockers: string[];
 				noopIf: string | null;
+				themeOptions: Array<{ id: ThemeId; label: string }>;
+				typeOptions: PolicyType[];
 			};
 			dismiss: {
 				allowed: boolean;
@@ -135,6 +153,7 @@ export function formatSignalAttestation(
 	input: SignalAttestationInput,
 	reviewer: string,
 	now = new Date(),
+	overrides: SignalReplyOverrides = {},
 ): string {
 	const decidedAt = input.decidedAt?.trim() || now.toISOString();
 	const sydney = formatSignalInstant(decidedAt);
@@ -149,6 +168,8 @@ export function formatSignalAttestation(
 		`chatMessageId: ${chatMessageId}`,
 		`cardId: ${cardId}`,
 		`decided: ${sydney} (${decidedAt})`,
+		...(overrides.themes ? [`themes: ${overrides.themes.join(", ")}`] : []),
+		...(overrides.type ? [`type: ${overrides.type}`] : []),
 		"relayed by Policai Signal",
 	].join("\n");
 }
@@ -199,6 +220,12 @@ function isTrackedRecordReview(review: SourceReview): boolean {
 	);
 }
 
+function acceptsReplyOverrides(review: SourceReview): boolean {
+	return review.entryKind !== "timeline_event" && !isTrackedRecordReview(review);
+}
+
+const THEME_IDS = THEMES.map(({ key }) => key);
+
 function approveBlockers(review: SourceReview): string[] {
 	const blockers: string[] = [];
 	if (review.status === "rejected") {
@@ -208,11 +235,170 @@ function approveBlockers(review: SourceReview): string[] {
 		const themes = themesOf(review);
 		if (themes.length === 0) {
 			blockers.push(
-				"Policy draft has no themes; supply an explicit proposedRecord with themes via editorial MCP before Signal can approve. The bot must not invent themes.",
+				`Policy draft has no themes. Ask Daniel to name ${MIN_THEMES_PER_RECORD} to ${MAX_THEMES_PER_RECORD} themes in his reply and send them as "themes"; each must appear after "themes" in attestation.replyText (for example "themes public-sector, ai-governance"). The bot must not invent themes. Valid theme ids: ${THEME_IDS.join(", ")}`,
+			);
+		}
+		if (!(review.proposedRecord as PolicyDraft).dates?.some((date) => date.primary)) {
+			blockers.push(
+				"Policy draft has no primary date; set a source-verified primary date through editorial MCP before Signal can approve",
 			);
 		}
 	}
 	return blockers;
+}
+
+type OverrideFailure = {
+	ok: false;
+	code:
+		| "invalid_request"
+		| "unknown_theme"
+		| "unknown_type"
+		| "themes_not_in_reply"
+		| "type_not_in_reply";
+	error: string;
+};
+
+const REPLY_KEYWORDS = {
+	themes: /(?<![a-z0-9-])themes?(?![a-z0-9-])/g,
+	type: /(?<![a-z0-9-])type(?![a-z0-9-])/g,
+} as const;
+
+const REPLY_CLAUSE_END = /[.;\n]|(?<![a-z0-9-])(?:themes?|type)(?![a-z0-9-])/;
+
+function replyClauses(
+	replyText: string,
+	keyword: keyof typeof REPLY_KEYWORDS,
+): string[] {
+	const text = replyText.toLowerCase();
+	return [...text.matchAll(REPLY_KEYWORDS[keyword])].map((match) => {
+		const rest = text.slice(match.index + match[0].length);
+		const end = rest.search(REPLY_CLAUSE_END);
+		return end === -1 ? rest : rest.slice(0, end);
+	});
+}
+
+function themeNamedInReply(replyText: string, theme: string): boolean {
+	return replyClauses(replyText, "themes").some((clause) =>
+		containsToken(clause, theme),
+	);
+}
+
+function typeNamedInReply(replyText: string, type: string): boolean {
+	return replyClauses(replyText, "type").some(
+		(clause) => clause.match(/[a-z0-9_-]+/)?.[0] === type.toLowerCase(),
+	);
+}
+
+function containsToken(text: string, value: string): boolean {
+	const needle = value.toLowerCase();
+	const isWordChar = (char: string | undefined) =>
+		char !== undefined && /[a-z0-9-]/.test(char);
+	for (
+		let at = text.indexOf(needle);
+		at !== -1;
+		at = text.indexOf(needle, at + 1)
+	) {
+		if (!isWordChar(text[at - 1]) && !isWordChar(text[at + needle.length])) {
+			return true;
+		}
+	}
+	return false;
+}
+
+export function parseReplyOverrides(
+	input: { themes?: unknown; type?: unknown; replyText: string },
+	review: SourceReview,
+): { ok: true; overrides: SignalReplyOverrides } | OverrideFailure {
+	if (input.themes === undefined && input.type === undefined) {
+		return { ok: true, overrides: {} };
+	}
+	if (!acceptsReplyOverrides(review)) {
+		return {
+			ok: false,
+			code: "invalid_request",
+			error:
+				"themes and type apply only to new register policy drafts, not timeline events or tracked-record reviews",
+		};
+	}
+	const overrides: SignalReplyOverrides = {};
+	if (input.themes !== undefined) {
+		if (!Array.isArray(input.themes)) {
+			return {
+				ok: false,
+				code: "invalid_request",
+				error: "themes must be an array of theme ids",
+			};
+		}
+		const unknown = input.themes.filter((theme) => !isThemeId(theme));
+		if (unknown.length > 0) {
+			return {
+				ok: false,
+				code: "unknown_theme",
+				error: `Unknown theme ids: ${unknown.map((theme) => JSON.stringify(theme)).join(", ")}; valid theme ids are ${THEME_IDS.join(", ")}`,
+			};
+		}
+		const themes = input.themes as ThemeId[];
+		if (new Set(themes).size !== themes.length) {
+			return {
+				ok: false,
+				code: "invalid_request",
+				error: "themes must not repeat",
+			};
+		}
+		if (
+			themes.length < MIN_THEMES_PER_RECORD ||
+			themes.length > MAX_THEMES_PER_RECORD
+		) {
+			return {
+				ok: false,
+				code: "invalid_request",
+				error: `themes must list ${MIN_THEMES_PER_RECORD} to ${MAX_THEMES_PER_RECORD} theme ids`,
+			};
+		}
+		overrides.themes = themes;
+	}
+	if (input.type !== undefined) {
+		if (typeof input.type !== "string" || !isPolicyType(input.type)) {
+			return {
+				ok: false,
+				code: "unknown_type",
+				error: `Unknown policy type ${JSON.stringify(input.type)}; valid types are ${POLICY_TYPES.join(", ")}`,
+			};
+		}
+		overrides.type = input.type;
+	}
+	const missingThemes = (overrides.themes ?? []).filter(
+		(theme) => !themeNamedInReply(input.replyText, theme),
+	);
+	if (missingThemes.length > 0) {
+		return {
+			ok: false,
+			code: "themes_not_in_reply",
+			error: `attestation.replyText does not name these themes: ${missingThemes.join(", ")}. Send only themes Daniel listed after "themes" in his reply.`,
+		};
+	}
+	if (overrides.type && !typeNamedInReply(input.replyText, overrides.type)) {
+		return {
+			ok: false,
+			code: "type_not_in_reply",
+			error: `attestation.replyText does not name the type ${overrides.type}. Send only a type Daniel wrote directly after "type" in his reply.`,
+		};
+	}
+	return { ok: true, overrides };
+}
+
+function withOverrides(
+	review: SourceReview,
+	overrides: SignalReplyOverrides,
+): SourceReview {
+	if (!overrides.themes && !overrides.type) return review;
+	return {
+		...review,
+		proposedRecord: {
+			...(review.proposedRecord as PolicyDraft),
+			...overrides,
+		},
+	};
 }
 
 function dismissBlockers(review: SourceReview): string[] {
@@ -242,6 +428,10 @@ export function previewSignalReview(review: SourceReview): SignalDryRunResult {
 			targetPolicyId: review.targetPolicyId,
 			targetTimelineEventId: review.targetTimelineEventId,
 			themes: themesOf(review),
+			type:
+				review.entryKind === "timeline_event"
+					? undefined
+					: (review.proposedRecord as PolicyDraft).type,
 			jurisdiction: jurisdictionOf(review),
 			change: changeLine(review),
 		},
@@ -253,6 +443,10 @@ export function previewSignalReview(review: SourceReview): SignalDryRunResult {
 				review.status === "published"
 					? "Review is already published; approve is a no-op"
 					: null,
+			themeOptions: acceptsReplyOverrides(review)
+				? THEMES.map(({ key, label }) => ({ id: key, label }))
+				: [],
+			typeOptions: acceptsReplyOverrides(review) ? [...POLICY_TYPES] : [],
 		},
 		dismiss: {
 			allowed: review.status !== "rejected" && dismissBlocks.length === 0,
@@ -321,13 +515,22 @@ export async function applySignalHttpDecision(
 		};
 	}
 
+	if (
+		input.action === "dismiss" &&
+		(input.themes !== undefined || input.type !== undefined)
+	) {
+		return {
+			ok: false,
+			status: 400,
+			code: "invalid_request",
+			error: "themes and type apply only to approve",
+		};
+	}
+
+	const now = deps.now?.() ?? new Date();
 	let attestationText: string;
 	try {
-		attestationText = formatSignalAttestation(
-			input.attestation,
-			reviewer,
-			deps.now?.() ?? new Date(),
-		);
+		attestationText = formatSignalAttestation(input.attestation, reviewer, now);
 	} catch (error) {
 		return {
 			ok: false,
@@ -367,7 +570,20 @@ export async function applySignalHttpDecision(
 				message: `Already published ${review.id}; no-op`,
 			};
 		}
-		const blockers = approveBlockers(review);
+		const parsed = parseReplyOverrides(
+			{
+				themes: input.themes,
+				type: input.type,
+				replyText: input.attestation.replyText,
+			},
+			review,
+		);
+		if (!parsed.ok) {
+			return { ok: false, status: 400, code: parsed.code, error: parsed.error };
+		}
+		const { overrides } = parsed;
+		const overridden = withOverrides(review, overrides);
+		const blockers = approveBlockers(overridden);
 		if (blockers.length > 0) {
 			return {
 				ok: false,
@@ -376,13 +592,24 @@ export async function applySignalHttpDecision(
 				error: blockers.join("; "),
 			};
 		}
+		const hasOverrides = overridden !== review;
+		if (hasOverrides) {
+			attestationText = formatSignalAttestation(
+				input.attestation,
+				reviewer,
+				now,
+				overrides,
+			);
+		}
 		try {
-			let current = review;
-			if (current.status !== "approved") {
-				current = await deps.approve({
+			if (review.status !== "approved" || hasOverrides) {
+				await deps.approve({
 					id: reviewId,
 					actor: reviewer,
 					approvalNotes: attestationText,
+					...(hasOverrides
+						? { proposedRecord: overridden.proposedRecord as PolicyDraft }
+						: {}),
 				});
 			}
 			const published = await deps.publish(reviewId);
@@ -398,7 +625,7 @@ export async function applySignalHttpDecision(
 			const message = error instanceof Error ? error.message : String(error);
 			const code = /theme/i.test(message)
 				? "themes_required"
-				: /proposedRecord|officialSourceUrl|reviewedDate|primary date/i.test(
+				: /proposedRecord|officialSourceUrl|reviewedDate|primary (policy )?date/i.test(
 							message,
 					  )
 					? "editorial_fields_required"

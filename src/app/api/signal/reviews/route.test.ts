@@ -238,6 +238,67 @@ describe("POST /api/signal/reviews", () => {
 		await expectDiskUntouched();
 	});
 
+	it("approves a themeless draft with the themes and type named in Daniel's reply", async () => {
+		const themeless = review();
+		themeless.proposedRecord = {
+			...themeless.proposedRecord,
+			themes: [],
+		} as PolicyDraft;
+		const github = fakeGitHub({ files: mainFiles(themeless) });
+		vi.stubGlobal("fetch", github.fetchImpl);
+		const replyText =
+			"Approve rev-main. Themes: public-sector, AI-Governance. Type guideline.";
+
+		const blocked = await post(decision("approve"));
+		expect(blocked).toMatchObject({
+			status: 409,
+			json: { code: "approve_blocked" },
+		});
+		expect(blocked.json.error).toMatch(/Ask Daniel to name 1 to 5 themes/);
+
+		const invented = await post({
+			...decision("approve"),
+			attestation: { ...decision("approve").attestation, replyText },
+			themes: ["public-sector", "privacy-data"],
+		});
+		expect(invented).toMatchObject({
+			status: 400,
+			json: { code: "themes_not_in_reply" },
+		});
+		expect(github.requests.filter((r) => r.method !== "GET")).toEqual([]);
+
+		const { status, json } = await post({
+			...decision("approve"),
+			attestation: { ...decision("approve").attestation, replyText },
+			themes: ["public-sector", "ai-governance"],
+			type: "guideline",
+		});
+
+		expect(status).toBe(200);
+		expect(json).toMatchObject({
+			success: true,
+			review: { id: "rev-main", status: "published" },
+		});
+		expect(json.attestationText).toContain(
+			"themes: public-sector, ai-governance\ntype: guideline\nrelayed by Policai Signal",
+		);
+		const files = github.committedFiles(json.persistence.commitSha);
+		const [policy] = JSON.parse(files["data/policies.json"]);
+		expect(policy).toMatchObject({
+			id: "signal-test-policy",
+			themes: ["public-sector", "ai-governance"],
+			type: "guideline",
+			verification: {
+				checkedBy: "Daniel Alkurdi",
+				notes: json.attestationText,
+			},
+		});
+		expect(policy.verification.notes).toContain(
+			`Daniel Alkurdi (Signal): ${replyText}`,
+		);
+		await expectDiskUntouched();
+	});
+
 	it("dismisses against the snapshot even when the deployed copy disagrees", async () => {
 		const github = fakeGitHub({ files: mainFiles(review()) });
 		vi.stubGlobal("fetch", github.fetchImpl);

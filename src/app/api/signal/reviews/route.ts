@@ -118,11 +118,17 @@ export async function POST(request: Request) {
 		{ repoRoot: process.cwd(), load: snapshot.load },
 		() =>
 			applySignalHttpDecision(
-				{ reviewId, action, reviewer, attestation: attestationInput },
+				{
+					reviewId,
+					action,
+					reviewer,
+					attestation: attestationInput,
+					themes: record.themes,
+					type: record.type,
+				},
 				{
 					getReview: getSourceReviewById,
-					approve: ({ id, actor, approvalNotes }) =>
-						approveStagedSource({ id, actor, approvalNotes }),
+					approve: (approval) => approveStagedSource(approval),
 					publish: (id) => publishStagedSource(id),
 					reject: (id, reason) => rejectStagedSource(id, reason),
 				},
