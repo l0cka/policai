@@ -843,6 +843,26 @@ Detections staged in `data/source-reviews.json` are proposals. To publish one:
    verified policy or timeline record through `src/lib/source-ingest.ts`.
 5. Run `npm run validate:data`, commit, and push (or open a PR).
 
+`npm run signal:reviews` prints one card for each `pending_review` row: id,
+title, official URL, jurisdiction when the staged record or its analysis has
+one, and one line on what the review would change, then a footer count. An
+empty queue prints `No pending source reviews.` The command does not fetch.
+
+`npm run signal:reviews -- apply --action=approve --id=<id> --reviewer=<name>`
+calls `approveStagedSource` with that id and reviewer only. A missing reviewer
+name is refused. If approval requires a `proposedRecord`, themes, or another
+reviewed field, the command stops and prints that reason. It does not supply
+those fields.
+
+`npm run signal:reviews -- apply --action=dismiss --id=<id> --reviewer=<name>`
+calls `rejectStagedSource`. Dismiss of a tracked-record review still fails
+with that path's reason.
+
+Neither action calls the publish tool. A successful approve is the existing
+approval write on the staged review; this command does not publish that
+review into the register. The routine that posts these cards from Policai
+Signal is not in this repository.
+
 One-off publication scripts must also enter through `stageSourceUrl()` or the
 controlled `stageSourceCapture()` fallback rather than constructing a review
 by hand, so the approval gate always has fresh source fingerprints. Staging a

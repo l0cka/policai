@@ -70,6 +70,7 @@ npm run collect        # one collection pass (-- --dry-run to preview, -- --sour
 npm run audit:sources  # live audit of automatic watch sources
 npm run audit:register # compare curated source fingerprints
 npm run mcp            # local MCP source-ingest server
+npm run signal:reviews # pending source-review cards; apply with --action=approve|dismiss --id=<id> --reviewer=<name>
 ```
 
 ## Project Structure

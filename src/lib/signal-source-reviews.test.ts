@@ -1,0 +1,351 @@
+/* @vitest-environment node */
+
+import { readFileSync } from "node:fs";
+import path from "node:path";
+import { describe, expect, it, vi } from "vitest";
+import type { PolicyDraft, SourceReview } from "@/types";
+import {
+	formatPendingSourceReviewCards,
+	runSignalSourceReviewCommand,
+	type SignalSourceReviewDeps,
+} from "./signal-source-reviews";
+
+const URL = "https://example.gov.au/ai-policy";
+
+function draft(overrides: Partial<PolicyDraft> = {}): PolicyDraft {
+	return {
+		id: "draft-policy",
+		title: "Draft AI policy",
+		description: "A source-backed policy description.",
+		jurisdiction: "federal",
+		type: "policy",
+		status: "active",
+		agencies: [],
+		sourceUrl: URL,
+		content: "Key policy details.",
+		aiSummary: "Machine-assisted summary.",
+		tags: [],
+		themes: [],
+		createdAt: "2026-07-16T00:00:00.000Z",
+		updatedAt: "2026-07-16T00:00:00.000Z",
+		...overrides,
+	};
+}
+
+function review(overrides: Partial<SourceReview> = {}): SourceReview {
+	return {
+		id: "source-review-1",
+		sourceUrl: URL,
+		title: "Draft AI policy",
+		entryKind: "policy",
+		status: "pending_review",
+		discoveredAt: "2026-07-16T00:00:00.000Z",
+		createdBy: "collector",
+		analysis: {
+			isRelevant: true,
+			relevanceScore: 0.65,
+			suggestedType: "policy",
+			suggestedJurisdiction: "federal",
+			summary: "A source-backed policy description.",
+		},
+		sourceEvidence: {
+			url: URL,
+			retrievedAt: "2026-07-16T00:00:00.000Z",
+			contentHash: "a".repeat(64),
+		},
+		proposedRecord: draft(),
+		updatedAt: "2026-07-16T00:00:00.000Z",
+		...overrides,
+	};
+}
+
+function deps(
+	overrides: Partial<SignalSourceReviewDeps> = {},
+): SignalSourceReviewDeps {
+	return {
+		listPending: vi.fn().mockResolvedValue([]),
+		approve: vi.fn(),
+		reject: vi.fn(),
+		...overrides,
+	};
+}
+
+describe("pending source review cards", () => {
+	it("prints one card per pending review and a count footer", () => {
+		const text = formatPendingSourceReviewCards([
+			review({
+				id: "older",
+				discoveredAt: "2026-07-01T00:00:00.000Z",
+				title: "Older\npolicy",
+			}),
+			review({
+				id: "newer",
+				discoveredAt: "2026-07-20T00:00:00.000Z",
+				title: "Newer policy",
+				sourceUrl: "https://www.health.qld.gov.au/ai",
+				analysis: {
+					isRelevant: true,
+					relevanceScore: 0.5,
+					suggestedType: "guideline",
+					suggestedJurisdiction: "federal",
+					summary: "Ignored when the draft has a jurisdiction.",
+				},
+				proposedRecord: draft({
+					jurisdiction: "qld",
+					type: "guideline",
+				}),
+			}),
+			review({ id: "approved", status: "approved" }),
+			review({ id: "published", status: "published" }),
+			review({ id: "rejected", status: "rejected" }),
+		]);
+
+		expect(text).toBe(
+			[
+				"id: newer",
+				"title: Newer policy",
+				"url: https://www.health.qld.gov.au/ai",
+				"jurisdiction: Queensland",
+				"change: Would add a new guideline record.",
+				"",
+				"id: older",
+				"title: Older policy",
+				"url: https://example.gov.au/ai-policy",
+				"jurisdiction: Federal",
+				"change: Would add a new policy record.",
+				"",
+				"2 pending source reviews.",
+			].join("\n"),
+		);
+	});
+
+	it("uses a singular footer for one review", () => {
+		expect(formatPendingSourceReviewCards([review()])).toMatch(
+			/1 pending source review\.$/,
+		);
+	});
+
+	it("omits jurisdiction when the review has none and uses analysis otherwise", () => {
+		const withoutJurisdiction = {
+			...draft(),
+			jurisdiction: undefined,
+		} as unknown as PolicyDraft;
+		const text = formatPendingSourceReviewCards([
+			review({
+				analysis: {
+					isRelevant: true,
+					relevanceScore: 0.5,
+					suggestedType: null,
+					suggestedJurisdiction: null,
+					summary: "No jurisdiction.",
+				},
+				proposedRecord: withoutJurisdiction,
+			}),
+		]);
+
+		expect(text).not.toContain("jurisdiction:");
+		expect(text).toContain(`url: ${URL}`);
+
+		const fromAnalysis = formatPendingSourceReviewCards([
+			review({
+				analysis: {
+					isRelevant: true,
+					relevanceScore: 0.5,
+					suggestedType: "policy",
+					suggestedJurisdiction: "nsw",
+					summary: "State policy.",
+				},
+				proposedRecord: withoutJurisdiction,
+			}),
+		]);
+		expect(fromAnalysis).toContain("jurisdiction: New South Wales");
+	});
+
+	it("states the register or timeline change in one line", () => {
+		expect(
+			formatPendingSourceReviewCards([
+				review({ targetPolicyId: "national-ai-plan" }),
+			]),
+		).toContain(
+			"change: Would update register record national-ai-plan in place.",
+		);
+		expect(
+			formatPendingSourceReviewCards([
+				review({
+					targetPolicyId: "national-ai-plan",
+					targetPolicyPreviousSourceUrl: "https://example.gov.au/old",
+				}),
+			]),
+		).toContain(
+			"change: Would replace the source URL of register record national-ai-plan.",
+		);
+		expect(
+			formatPendingSourceReviewCards([
+				review({
+					entryKind: "timeline_event",
+					targetTimelineEventId: "event-1",
+				}),
+			]),
+		).toContain("change: Would update timeline event event-1 in place.");
+		expect(
+			formatPendingSourceReviewCards([
+				review({
+					entryKind: "timeline_event",
+					targetTimelineEventId: "event-1",
+					targetTimelineEventPreviousSourceUrl:
+						"https://example.gov.au/old-event",
+				}),
+			]),
+		).toContain(
+			"change: Would replace the source URL of timeline event event-1.",
+		);
+		expect(
+			formatPendingSourceReviewCards([
+				review({ entryKind: "timeline_event" }),
+			]),
+		).toContain("change: Would add a timeline event.");
+	});
+
+	it("is an empty state when nothing is pending", () => {
+		expect(formatPendingSourceReviewCards([])).toBe(
+			"No pending source reviews.",
+		);
+		expect(
+			formatPendingSourceReviewCards([
+				review({ status: "approved" }),
+			]),
+		).toBe("No pending source reviews.");
+	});
+});
+
+describe("signal source review apply", () => {
+	it("approves through the existing path with only the id and reviewer", async () => {
+		const approve = vi.fn().mockResolvedValue(
+			review({ id: "rev-1", status: "approved" }),
+		);
+		const reject = vi.fn();
+		const result = await runSignalSourceReviewCommand(
+			["apply", "--action=approve", "--id=rev-1", "--reviewer=Daniel"],
+			deps({ approve, reject }),
+		);
+
+		expect(approve).toHaveBeenCalledWith({ id: "rev-1", actor: "Daniel" });
+		expect(approve.mock.calls[0][0]).toEqual({
+			id: "rev-1",
+			actor: "Daniel",
+		});
+		expect(reject).not.toHaveBeenCalled();
+		expect(result).toEqual({
+			exitCode: 0,
+			stdout: "Approved rev-1 (status approved).",
+			stderr: "",
+		});
+	});
+
+	it("returns the approve path's reason when reviewed fields are required", async () => {
+		const approve = vi.fn().mockRejectedValue(
+			new Error(
+				"Policy is not publishable: themes must be a list of theme ids; valid theme ids are ai-governance",
+			),
+		);
+		const result = await runSignalSourceReviewCommand(
+			[
+				"apply",
+				"--action=approve",
+				"--id=rev-1",
+				"--reviewer=Daniel",
+			],
+			deps({ approve }),
+		);
+
+		expect(result.exitCode).toBe(1);
+		expect(result.stderr).toContain("valid theme ids are ai-governance");
+		expect(result.stdout).toBe("");
+	});
+
+	it("dismisses through the existing reject path", async () => {
+		const reject = vi.fn().mockResolvedValue(
+			review({ id: "rev-9", status: "rejected" }),
+		);
+		const result = await runSignalSourceReviewCommand(
+			["apply", "--action=dismiss", "--id=rev-9", "--reviewer=Daniel"],
+			deps({ reject }),
+		);
+
+		expect(reject).toHaveBeenCalledWith("rev-9", "Dismissed by Daniel");
+		expect(result).toEqual({
+			exitCode: 0,
+			stdout: "Dismissed rev-9 (status rejected).",
+			stderr: "",
+		});
+	});
+
+	it("returns the reject path's reason for a tracked record", async () => {
+		const reject = vi.fn().mockRejectedValue(
+			new Error(
+				"Tracked-record reviews must be approved and published to re-verify the target; they cannot be rejected",
+			),
+		);
+		const result = await runSignalSourceReviewCommand(
+			["apply", "--action=dismiss", "--id=rev-2", "--reviewer=Ada"],
+			deps({ reject }),
+		);
+
+		expect(result.exitCode).toBe(1);
+		expect(result.stderr).toMatch(/cannot be rejected/);
+	});
+
+	it("refuses when the reviewer name is missing and does not call either path", async () => {
+		const approve = vi.fn();
+		const reject = vi.fn();
+		const result = await runSignalSourceReviewCommand(
+			["apply", "--action=approve", "--id=rev-1", "--reviewer="],
+			deps({ approve, reject }),
+		);
+
+		expect(result).toMatchObject({
+			exitCode: 1,
+			stderr: "A human reviewer identity is required.",
+		});
+		expect(approve).not.toHaveBeenCalled();
+		expect(reject).not.toHaveBeenCalled();
+	});
+
+	it("prints fixture cards from list and does not approve them", async () => {
+		const listPending = vi.fn().mockResolvedValue([review()]);
+		const approve = vi.fn();
+		const result = await runSignalSourceReviewCommand([], deps({
+			listPending,
+			approve,
+		}));
+
+		expect(listPending).toHaveBeenCalledOnce();
+		expect(approve).not.toHaveBeenCalled();
+		expect(result.exitCode).toBe(0);
+		expect(result.stdout).toContain("id: source-review-1");
+		expect(result.stdout).toContain("1 pending source review.");
+	});
+});
+
+describe("signal source review wiring", () => {
+	it("keeps publication and register verification out of this command", () => {
+		const lib = readFileSync(
+			path.join(process.cwd(), "src/lib/signal-source-reviews.ts"),
+			"utf8",
+		);
+		const script = readFileSync(
+			path.join(process.cwd(), "scripts/signal-source-reviews.ts"),
+			"utf8",
+		);
+
+		for (const source of [lib, script]) {
+			expect(source).not.toContain("publishStagedSource");
+			expect(source).not.toContain("proposedRecord:");
+			expect(source).not.toContain("lastReviewedAt");
+			expect(source).not.toContain("handlePublishStagedSource");
+		}
+		expect(script).toContain("approveStagedSource({ id, actor })");
+		expect(script).toContain("rejectStagedSource(id, reason)");
+		expect(script).toContain('getSourceReviews({ status: "pending_review" })');
+	});
+});
