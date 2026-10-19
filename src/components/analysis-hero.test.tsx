@@ -61,8 +61,9 @@ describe('AnalysisHero', () => {
       'href',
       `/analysis/${lead.slug}`,
     );
-    expect(within(hero).getByText(lead.summary)).toBeInTheDocument();
+    expect(within(hero).getByText(lead.summary)).toHaveClass('analysis-hero-teaser');
     expect(within(hero).getByText(`1 of ${articles.length}`)).toBeInTheDocument();
+    expect(within(hero).queryByText('By Policai')).not.toBeInTheDocument();
     expect(container.innerHTML).toContain('Fixture weekly: 8–14 October 2026');
     expect(container.innerHTML).not.toContain('Fixture explainer in draft');
     expect(container.innerHTML).not.toContain('Fixture note on a misidentified instrument');
@@ -140,19 +141,23 @@ describe('AnalysisHero', () => {
 
   it('shows a lead image with its declared size and a type label without a pill', async () => {
     const { container } = await renderHero('articles-with-image');
-    const image = screen.getByRole('img');
+    const image = screen.getByRole('img', { hidden: true });
     expect(image).toHaveAttribute('width', '2048');
     expect(image).toHaveAttribute('height', '1365');
-    expect(image).toHaveAttribute('sizes', '(min-width: 64rem) 360px, (min-width: 40rem) 50vw, 100vw');
+    expect(image).toHaveAttribute('sizes', '(min-width: 64rem) 160px, 120px');
+    expect(image.closest('.analysis-hero-figure')).toHaveAttribute('aria-hidden', 'true');
     expect(screen.getByText('Explainer')).toBeInTheDocument();
     expect(container.innerHTML).not.toContain('status-amended');
     expect(screen.queryByRole('button', { name: 'Next article' })).not.toBeInTheDocument();
   });
 
-  it('crossfades slides and turns that transition off for reduced motion', () => {
+  it('stays compact and crossfades, with reduced motion turning the transition off', () => {
     const css = fs.readFileSync(path.join(process.cwd(), 'src/app/globals.css'), 'utf8');
     const motion = css.slice(css.lastIndexOf('@media (prefers-reduced-motion: reduce)'));
-    expect(css).toContain('min-height: clamp(20rem, 46vh, 32rem)');
+    expect(css).toContain('.analysis-hero-teaser');
+    expect(css).toContain('-webkit-line-clamp: 1');
+    expect(css).toContain('clamp(1.25rem, 1rem + 1.1vw, 1.85rem)');
+    expect(css).not.toContain('min-height: clamp(20rem, 46vh, 32rem)');
     expect(css).toContain('opacity calc(var(--dur-slow) * 2) var(--ease-out-quint)');
     expect(motion).toContain('.analysis-hero-slide');
     expect(motion).toContain('transition: none !important');

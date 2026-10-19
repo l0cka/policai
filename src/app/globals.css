@@ -1070,30 +1070,28 @@
 }
 
 /*
- * Register analysis hero. One published piece fills the stage; the rest sit
- * in the same grid cell and crossfade in. The stage's minimum height is what
- * makes the hero large when a summary is short.
+ * Register analysis hero. Compact strip: about half the first viewport on a
+ * typical desktop so the register (filters or first rows) shows without a
+ * scroll. Slides share one grid cell and crossfade.
  */
 .analysis-hero {
-  margin-bottom: var(--space-10);
-  padding: var(--space-6) var(--space-6) var(--space-5);
+  margin-bottom: var(--space-8);
+  padding: var(--space-4) var(--space-5) var(--space-4);
   background: color-mix(in srgb, var(--primary) 7%, var(--background));
   border-top: 3px solid var(--primary);
 }
 .analysis-hero-stage {
   display: grid;
-  min-height: clamp(20rem, 46vh, 32rem);
 }
 .analysis-hero-slide {
   grid-area: 1 / 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: clamp(20rem, 46vh, 32rem);
-  padding-block: var(--space-8);
+  padding-block: var(--space-4);
   opacity: 0;
   visibility: hidden;
-  transform: translateY(1.25rem);
+  transform: translateY(0.5rem);
   pointer-events: none;
   transition:
     opacity calc(var(--dur-slow) * 2) var(--ease-out-quint),
@@ -1112,46 +1110,66 @@
     visibility 0s linear 0s;
 }
 .analysis-hero-title {
-  margin-top: var(--space-2);
+  margin-top: var(--space-1);
   font-family: var(--font-display);
-  font-size: clamp(1.75rem, 1rem + 3vw, 3.5rem);
+  font-size: clamp(1.25rem, 1rem + 1.1vw, 1.85rem);
   font-weight: 400;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
   text-wrap: balance;
   overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
-.analysis-hero-summary {
-  margin-top: var(--space-4);
-  max-width: 42rem;
-  font-size: clamp(1.0625rem, 1rem + 0.25vw, 1.25rem);
-  line-height: 1.55;
+.analysis-hero-teaser {
+  margin-top: var(--space-2);
+  max-width: 40rem;
+  font-size: var(--type-ui);
+  line-height: 1.4;
   color: var(--muted-foreground);
   overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
 }
 .analysis-hero-layout {
   display: grid;
-  gap: var(--space-8);
+  gap: var(--space-4);
   align-items: center;
 }
-@media (min-width: 64rem) {
+@media (min-width: 40rem) {
   .analysis-hero-layout {
-    grid-template-columns: minmax(0, 1.5fr) minmax(14rem, 22rem);
+    grid-template-columns: minmax(0, 1fr) 7.5rem;
   }
   .analysis-hero-layout-text {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+@media (min-width: 64rem) {
+  .analysis-hero-layout {
+    grid-template-columns: minmax(0, 1fr) 9.5rem;
+    gap: var(--space-5);
+  }
+}
 .analysis-hero-figure {
+  display: none;
   width: 100%;
+}
+@media (min-width: 40rem) {
+  .analysis-hero-figure {
+    display: block;
+  }
 }
 .analysis-hero-controls {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-3) var(--space-4);
-  margin-top: var(--space-4);
+  gap: var(--space-2) var(--space-4);
+  margin-top: var(--space-3);
 }
 .analysis-hero-control {
   display: inline-flex;

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArticleDate, ArticleThumbnail, ArticleTypeLabel, Byline } from '@/components/analysis';
+import { ArticleDate, ArticleThumbnail, ArticleTypeLabel } from '@/components/analysis';
 import { AnalysisHeroCarousel } from '@/components/analysis-hero-carousel';
 import type { ArticleView } from '@/lib/data-service';
 import { analysisHeroSlides } from '@/lib/analysis-hero';
@@ -25,15 +25,12 @@ export function AnalysisHero({ articles }: { articles: HeroArticle[] }) {
                 {article.title}
               </Link>
             </h3>
-            <p className="analysis-hero-summary">{article.summary}</p>
-            <p className="mt-4 flex flex-wrap gap-x-3 font-mono text-[length:var(--type-label)] text-muted-foreground">
-              <Byline />
+            <p className="analysis-hero-teaser">{article.summary}</p>
+            <p className="mt-3 flex flex-wrap items-baseline gap-x-3 gap-y-1 font-mono text-[length:var(--type-label)] text-muted-foreground">
               <ArticleDate date={article.publishedAt} />
               {article.sourceUnderReview ? (
                 <span className="text-[var(--caution)]">Source under review</span>
               ) : null}
-            </p>
-            <p className="mt-5">
               <Link
                 href={`/analysis/${article.slug}`}
                 className="text-primary underline underline-offset-4 hover:no-underline"
@@ -43,10 +40,10 @@ export function AnalysisHero({ articles }: { articles: HeroArticle[] }) {
             </p>
           </div>
           {article.image ? (
-            <div className="analysis-hero-figure">
+            <div className="analysis-hero-figure" aria-hidden="true">
               <ArticleThumbnail
                 image={article.image}
-                sizes="(min-width: 64rem) 360px, (min-width: 40rem) 50vw, 100vw"
+                sizes="(min-width: 64rem) 160px, 120px"
               />
             </div>
           ) : null}
