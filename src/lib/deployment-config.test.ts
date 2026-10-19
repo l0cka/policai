@@ -21,4 +21,13 @@ describe("deployment data packaging", () => {
 			permanent: true,
 		});
 	});
+
+	it("permanently redirects /developments/feed.xml to the canonical Atom feed", async () => {
+		const redirects = await nextConfig.redirects?.();
+		expect(redirects).toContainEqual({
+			source: "/developments/feed.xml",
+			destination: "/feed.xml",
+			permanent: true,
+		});
+	});
 });

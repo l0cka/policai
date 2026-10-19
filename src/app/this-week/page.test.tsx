@@ -29,3 +29,11 @@ it('distinguishes missing collection evidence from a verified quiet week', async
   expect(screen.getByText('Still coming')).toBeInTheDocument();
   expect(screen.queryByText('No verified changes this week')).not.toBeInTheDocument();
 });
+it('exposes habit jump links, counts and the developments Atom feed', async () => {
+  render(await ThisWeekPage());
+  const nav = screen.getByRole('navigation', { name: 'On this page' });
+  expect(nav.querySelector('a[href="#verified"]')).toHaveTextContent(/0 verified/);
+  expect(nav.querySelector('a[href="#coming-up"]')).toHaveTextContent(/1 coming up/);
+  expect(nav.querySelector('a[href="/feed.xml"]')).toHaveTextContent('Atom feed');
+  expect(nav.querySelector('a[href="/developments"]')).toHaveTextContent('Full developments');
+});

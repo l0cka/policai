@@ -12,6 +12,10 @@ function xmlDate(value: string): string {
 	return new Date(value).toISOString();
 }
 
+function verificationLabel(status: string): string {
+	return status === 'verified' ? 'Verified' : 'Needs review';
+}
+
 // GET returns an Atom 1.0 feed of recent, publicly visible developments.
 // The route reuses the public read path (getDevelopments), so dismissed or
 // editorially withheld entries can never reach the feed.
@@ -29,28 +33,34 @@ export async function GET(): Promise<Response> {
 			const title = escapeXml(development.title);
 			const detected = xmlDate(development.detectedAt);
 			const jurisdiction = escapeXml(getJurisdictionName(development.jurisdiction));
+			const verification = escapeXml(
+				verificationLabel(development.verification.status),
+			);
+			const onSite = escapeXml(`${SITE_URL}/developments#${development.id}`);
 			const summary = development.summary
 				? escapeXml(development.summary)
 				: '';
 			const summaryXml = summary
-				? `<summary type="html">${summary}</summary>`
+				? `    <summary type="html">${summary}</summary>\n`
 				: '';
 			return `  <entry>
     <id>${url}</id>
     <title>${title}</title>
     <link href="${url}" rel="alternate"/>
+    <link href="${onSite}" rel="related" title="On Policai"/>
     <published>${detected}</published>
     <updated>${detected}</updated>
+    <author><name>Policai</name></author>
     <category term="${jurisdiction}"/>
-${summaryXml}
-  </entry>`;
+    <category term="${verification}"/>
+${summaryXml}  </entry>`;
 		})
 		.join('\n');
 
 	const feed = `<?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Policai — Australian AI policy developments</title>
-  <subtitle>Newly detected Australian AI policy, regulation and court guidance.</subtitle>
+  <subtitle>Newly detected Australian AI policy, regulation and court guidance. Subscribe from /developments or /this-week; JSON at /api/developments.</subtitle>
   <link href="${SITE_URL}/developments" rel="alternate"/>
   <link href="${SITE_URL}/feed.xml" rel="self"/>
   <id>${SITE_URL}/feed.xml</id>
