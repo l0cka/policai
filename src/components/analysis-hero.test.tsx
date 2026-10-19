@@ -154,13 +154,21 @@ describe('AnalysisHero', () => {
   it('stays compact and crossfades, with reduced motion turning the transition off', () => {
     const css = fs.readFileSync(path.join(process.cwd(), 'src/app/globals.css'), 'utf8');
     const motion = css.slice(css.lastIndexOf('@media (prefers-reduced-motion: reduce)'));
+    const dither = fs.readFileSync(
+      path.join(process.cwd(), 'public/images/analysis-hero-dither.svg'),
+      'utf8',
+    );
     expect(css).toContain('.analysis-hero-teaser');
     expect(css).toContain('-webkit-line-clamp: 1');
     expect(css).toContain('clamp(1.25rem, 1rem + 1.1vw, 1.85rem)');
     expect(css).not.toContain('min-height: clamp(20rem, 46vh, 32rem)');
+    expect(css).toContain("url('/images/analysis-hero-dither.svg')");
+    expect(css).toContain('analysis-hero::before');
+    expect(dither).toContain('shape-rendering="crispEdges"');
     expect(css).toContain('opacity calc(var(--dur-slow) * 2) var(--ease-out-quint)');
     expect(motion).toContain('.analysis-hero-slide');
     expect(motion).toContain('transition: none !important');
     expect(motion).toContain('transform: none !important');
+    expect(motion).not.toMatch(/\.analysis-hero::before[\s\S]*animation/);
   });
 });
