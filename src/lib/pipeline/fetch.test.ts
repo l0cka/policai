@@ -1475,7 +1475,7 @@ describe('matchesRetrievedContent', () => {
       hashLinkedDocuments: false,
     });
 
-  it('accepts the fingerprint stored before dcterms.created and the date platform were fingerprinted', async () => {
+  it('accepts the fingerprint stored before dcterms.created and the date platform were fingerprinted (#249)', async () => {
     const current = await retrievePage(
       '<meta name="Generator" content="Drupal 10 (https://www.drupal.org)"><meta name="dcterms.created" content="2026-06-01">',
     );
@@ -1485,7 +1485,7 @@ describe('matchesRetrievedContent', () => {
     expect(matchesRetrievedContent(current, current.evidence.contentHash)).toBe(true);
   });
 
-  it('accepts the fingerprints this page had under the #244 keyed-set and pre-#195 schemes', async () => {
+  it('accepts the fingerprints this page had under the #244 keyed-set and pre-#195 schemes (#249)', async () => {
     const keyedSetHash =
       '4cac28aebfc4c39e4d08c993f85cfdbee945f54a290e687da4e0b365759ccef6';
     const legacyHash =

@@ -1363,7 +1363,7 @@ describe('collect', () => {
       },
     });
 
-    it('keeps a pending transition staged under the legacy fingerprint at sequence 1 while its content is unchanged', async () => {
+    it('keeps a pending transition staged under the legacy fingerprint at sequence 1 while its content is unchanged (#249)', async () => {
       const verifiedHash = await storedLegacyFingerprint('Version zero.');
       const pendingHash = await storedLegacyFingerprint('Version one.');
       const trackedPolicy = buildPolicy({
@@ -1413,7 +1413,7 @@ describe('collect', () => {
       );
     });
 
-    it('adopts a legacy transition published under a browser capture, then detects date metadata changes', async () => {
+    it('adopts a legacy transition published under a browser capture, then detects date metadata changes (#249)', async () => {
       const transitionHash = await storedLegacyFingerprint();
       const capturedHash = 'b'.repeat(64);
       const trackedPolicy = buildPolicy({
@@ -1484,7 +1484,7 @@ describe('collect', () => {
       });
     });
 
-    it('adopts a legacy verified fingerprint for unchanged content, then detects date metadata changes', async () => {
+    it('adopts a legacy verified fingerprint for unchanged content, then detects date metadata changes (#249)', async () => {
       const legacyHash = await storedLegacyFingerprint();
       const trackedPolicy = buildPolicy({
         id: 'tracked-document-policy',
@@ -1526,7 +1526,7 @@ describe('collect', () => {
       });
     });
 
-    it('adopts a legacy snapshot fingerprint for unchanged content, then detects date metadata changes', async () => {
+    it('adopts a legacy snapshot fingerprint for unchanged content, then detects date metadata changes (#249)', async () => {
       const legacyHash = await storedLegacyFingerprint();
       const state: WatchState = {
         ...emptyWatchState(),
