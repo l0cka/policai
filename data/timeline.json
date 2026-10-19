@@ -2808,6 +2808,28 @@
     }
   },
   {
+    "id": "tl-2026-10-14-tas-local-community-benefit-fund",
+    "date": "2026-10-14",
+    "datePrecision": "day",
+    "title": "Tasmania announces Local Community Benefit Fund for AI and data-centre developments",
+    "description": "Premier Jeremy Rockliff announced on 14 October 2026 that the Tasmanian Government will establish a Local Community Benefit Fund so communities hosting major AI and data-centre developments share directly in the benefits. Major proponents will be expected to contribute to the fund, pay their own network and infrastructure costs, and publicly report water and energy use each quarter. The announcement builds on the draft Statement of Expectations for Data Centres and AI Infrastructure.",
+    "type": "announcement",
+    "jurisdiction": "tas",
+    "relatedPolicyId": "tas-local-community-benefit-fund-ai-data-centres-2026",
+    "sourceUrl": "https://www.premier.tas.gov.au/latest-news/2026/october/major-ai-investment-must-deliver-for-tasmanian-communities",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.premier.tas.gov.au/latest-news/2026/october/major-ai-investment-must-deliver-for-tasmanian-communities",
+        "title": "Major AI investment must deliver for Tasmanian communities",
+        "publisher": "Premier of Tasmania",
+        "publishedAt": "2026-10-14",
+        "publishedAtPrecision": "day"
+      },
+      "notes": "Unverified timeline draft citing the Premier's 14 October 2026 media release. Not fingerprinted and not marked verified. Withheld from the public timeline until Daniel's own review. Linked policy record tas-local-community-benefit-fund-ai-data-centres-2026 is also needs_review."
+    }
+  },
+  {
     "id": "tl-2026-09-24-asic-cs-63-rg-265-266",
     "date": "2026-09-24",
     "datePrecision": "day",
