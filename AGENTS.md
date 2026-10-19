@@ -481,7 +481,7 @@ None are required to run the site or collector. Optional (see `.env.example`):
 
 ```bash
 POLICAI_SIGNAL_TOKEN=     # HTTPS /api/signal/* Bearer token (Grok Bot product path)
-POLICAI_SIGNAL_GITHUB_TOKEN= # host-only; opens Signal persistence PR (or push main)
+POLICAI_SIGNAL_GITHUB_TOKEN= # host-only; Signal POST reads GitHub main and commits changed files as a PR (or main push); never writes the checkout
 POLICAI_SIGNAL_REVIEWERS= # allowlist for Signal reviewer (default: Daniel Alkurdi,Daniel)
 POLICAI_MCP_ADMIN_TOKEN=  # local MCP source-ingest writes (laptop recovery; not the bot path)
 USE_CLAUDE_CLASSIFIER=    # opt into Claude classification instead of the keyword heuristic (set on the collection host)

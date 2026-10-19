@@ -926,15 +926,50 @@ already `rejected` review, returns `noop: true` and the current state.
 | `dismiss_blocked` / `tracked_record_dismiss` | Tracked-record reviews cannot be dismissed |
 | `reviewer_not_allowlisted` | Reviewer not in allowlist |
 | `invalid_attestation` | Missing reply / message id / card id |
+| `github_token_unconfigured` (503) | Host missing `POLICAI_SIGNAL_GITHUB_TOKEN`; nothing ran |
+| `github_unavailable` (502) | `main` could not be resolved on GitHub |
+| `main_moved` (409) | `main` target only: `main` moved after the read; retry |
+| `github_persist_failed` (502) | Commit, branch or PR creation failed; nothing merged |
 
 Rate limit: 20 POST / 30 GET per IP per minute on `/api/signal/*`.
 
-**Persistence:** Git is the database. After a non-noop write the host uses
-`POLICAI_SIGNAL_GITHUB_TOKEN` to open a PR (default) or, if
-`POLICAI_SIGNAL_COMMIT_TARGET=main`, push a data commit to `main` for Argus
-auto-deploy. The bot never merges. Response `persistence.prUrl` is what Dan
-opens to merge. If the GitHub token is missing, `persistence.ok` is false and
-local checkout data may be overwritten by the next `policai-pull`.
+**Persistence:** Git is the database, and Signal POST never writes the
+serving checkout. The service is read-only there (`ProtectSystem=strict`), and
+a dirty release checkout would block every later deploy. The route works in
+`src/app/api/signal/reviews/route.ts` with `src/lib/signal-git-persist.ts` and
+`src/lib/data-overlay.ts`:
+
+1. It resolves GitHub `main` to one base commit with
+   `POLICAI_SIGNAL_GITHUB_TOKEN` (repository `POLICAI_SIGNAL_GITHUB_REPO`,
+   default `l0cka/policai`).
+2. It runs the approve or dismiss inside `runWithDataOverlay`. Every data read
+   comes from the file at that commit (contents API, blob API for files over
+   1 MB). Writes stay in memory, and no lock file is taken.
+3. If the decision is a noop or changes no file, it returns
+   `persistence.skipped` and commits nothing.
+4. Otherwise it commits only the changed files on top of the base commit's
+   tree. A collector commit to `main` since the last deploy is kept, because
+   the decision read `main`, not the deployed copy.
+
+Targets:
+
+- `pr` (default): branch `signal/<action>-<reviewId>`. If an open PR already
+  has that head, the response returns it with `persistence.existing: true`
+  and no new commit, so a rerun is safe. A leftover branch with no open PR is
+  force-updated. Dan merges; the bot never merges.
+- `main` (`POLICAI_SIGNAL_COMMIT_TARGET=main`): fast-forward `main` without
+  force. If `main` moved after the read, the request fails with `main_moved`
+  and nothing is written. Send the same request again to decide against the
+  new `main`.
+
+`persistence` reports `target`, `branch`, `commitSha`, `prUrl`, `htmlUrl`,
+`baseSha` and the committed `files`. The site shows the decision only after
+the PR merges (or the `main` push lands) and the host deploy pulls it.
+
+Host requirements: `POLICAI_SIGNAL_GITHUB_TOKEN` must be set, or POST returns
+`github_token_unconfigured` (503) before any decision runs. The service needs
+outbound HTTPS to `api.github.com`. The production unit is currently
+localhost-only, so that is a host change for the maintainer.
 
 #### Pending cards (read-only)
 

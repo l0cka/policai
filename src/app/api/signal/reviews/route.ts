@@ -13,7 +13,8 @@ import {
 	type SignalAttestationInput,
 	type SignalHttpAction,
 } from "@/lib/signal-http";
-import { persistSignalDecisionToGitHub } from "@/lib/signal-git-persist";
+import { runWithDataOverlay } from "@/lib/data-overlay";
+import { openSignalSnapshot } from "@/lib/signal-git-persist";
 
 const SIGNAL_RATE = { limit: 20, windowSeconds: 60 } as const;
 
@@ -103,33 +104,36 @@ export async function POST(request: Request) {
 		);
 	}
 
-	const result = await applySignalHttpDecision(
-		{ reviewId, action, reviewer, attestation: attestationInput },
-		{
-			getReview: getSourceReviewById,
-			approve: ({ id, actor, approvalNotes }) =>
-				approveStagedSource({ id, actor, approvalNotes }),
-			publish: (id) => publishStagedSource(id),
-			reject: (id, reason) => rejectStagedSource(id, reason),
-		},
+	const opened = await openSignalSnapshot();
+	if (!opened.ok) {
+		return signalError(
+			opened.error,
+			opened.code === "github_token_unconfigured" ? 503 : 502,
+			opened.code,
+		);
+	}
+	const { snapshot } = opened;
+
+	const { result, changes } = await runWithDataOverlay(
+		{ repoRoot: process.cwd(), load: snapshot.load },
+		() =>
+			applySignalHttpDecision(
+				{ reviewId, action, reviewer, attestation: attestationInput },
+				{
+					getReview: getSourceReviewById,
+					approve: ({ id, actor, approvalNotes }) =>
+						approveStagedSource({ id, actor, approvalNotes }),
+					publish: (id) => publishStagedSource(id),
+					reject: (id, reason) => rejectStagedSource(id, reason),
+				},
+			),
 	);
 
 	if (!result.ok) {
 		return signalError(result.error, result.status, result.code);
 	}
 
-	let persistence: Awaited<ReturnType<typeof persistSignalDecisionToGitHub>> | null =
-		null;
-	if (!result.noop) {
-		persistence = await persistSignalDecisionToGitHub({
-			reviewId: result.review.id,
-			action: result.action,
-			message: result.message,
-			attestationText: result.attestationText,
-		});
-	}
-
-	return signalJson({
+	const decision = {
 		success: true,
 		noop: result.noop,
 		action: result.action,
@@ -143,22 +147,49 @@ export async function POST(request: Request) {
 			publishedAt: result.review.publishedAt,
 		},
 		attestationText: result.attestationText,
-		persistence: persistence
-			? persistence.ok
-				? {
-						ok: true,
-						target: persistence.target,
-						branch: persistence.branch,
-						commitSha: persistence.commitSha,
-						prUrl: persistence.prUrl,
-						htmlUrl: persistence.htmlUrl,
-					}
-				: {
-						ok: false,
-						code: persistence.code,
-						error: persistence.error,
-					}
-			: { ok: true, skipped: true, reason: "noop" },
+	};
+
+	if (result.noop || changes.length === 0) {
+		return signalJson({
+			...decision,
+			persistence: {
+				ok: true,
+				skipped: true,
+				reason: result.noop ? "noop" : "no_changes",
+				baseSha: snapshot.baseSha,
+			},
+		});
+	}
+
+	const persistence = await snapshot.commit({
+		reviewId: result.review.id,
+		action: result.action,
+		message: result.message,
+		attestationText: result.attestationText,
+		changes,
+	});
+	if (!persistence.ok) {
+		return signalError(
+			persistence.error,
+			persistence.code === "main_moved" ? 409 : 502,
+			persistence.code,
+			{ persistence: { ...persistence, baseSha: snapshot.baseSha } },
+		);
+	}
+
+	return signalJson({
+		...decision,
+		persistence: {
+			ok: true,
+			target: persistence.target,
+			branch: persistence.branch,
+			commitSha: persistence.commitSha,
+			prUrl: persistence.prUrl,
+			htmlUrl: persistence.htmlUrl,
+			...(persistence.existing ? { existing: true } : {}),
+			baseSha: snapshot.baseSha,
+			files: changes.map((change) => change.path),
+		},
 	});
 }
 

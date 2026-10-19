@@ -76,6 +76,25 @@ The boundaries are deliberately strict:
   unbounded per-request file reads.
 - `src/lib/file-store.ts` is the only canonical JSON file I/O boundary;
   `src/lib/file-lock.ts` writes only ephemeral lock ownership metadata.
+  A missing file may use the caller's fallback, but malformed or unreadable
+  JSON fails loudly, so canonical data never silently becomes an empty
+  dataset. Writes are atomic: pretty-printed JSON goes to a temporary file
+  beside the destination and is renamed into place on the same filesystem.
+  `withDataMutationLock` (`src/lib/data-lock.ts`, lock file
+  `data/.mutation.lock`) serialises data transactions across MCP and CLI
+  processes with no timeout, so long collector and audit transactions stay
+  serialised. Every write checks the lease just before the rename, so an
+  owner whose lock was reclaimed cannot finish a multi-file transaction under
+  a newer owner.
+- `src/lib/data-overlay.ts` (`runWithDataOverlay`) redirects file-store I/O
+  under a repository root to a request-scoped overlay held in
+  `AsyncLocalStorage`. Reads come from a caller-supplied `load` (cached per
+  path) or earlier overlay writes; writes stay in memory and a write outside
+  the root throws. `withDataMutationLock` runs without the lock file there,
+  because the overlay is private to the request. The result lists the files
+  whose final content differs from the loaded base, keeping the base file's
+  trailing newline. Signal POST uses it to compute a decision against a
+  GitHub snapshot (see `docs/collector.md`, Policai Signal).
 - `src/lib/validate-data.ts` enforces cross-file canonical invariants.
 - `src/lib/pipeline/` owns source retrieval, extraction, assessment, collection
   health, and review-proposal creation.
