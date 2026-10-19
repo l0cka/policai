@@ -875,6 +875,10 @@ curl -sS -H "Authorization: Bearer $POLICAI_SIGNAL_TOKEN" \
 
 Returns `{ success, dryRun, review, approve, dismiss }`. `approve.blockers` /
 `dismiss.blockers` explain themes / tracked-record issues. No write.
+`review.themes` and `review.type` are the draft's current values.
+`approve.themeOptions` (`{ id, label }` from `THEMES`) and
+`approve.typeOptions` (the `PolicyType` values) are what Daniel may name in
+his reply; both are empty when the review does not accept overrides.
 
 **Apply:**
 
@@ -900,6 +904,26 @@ then `publishStagedSource`. `dismiss` runs `rejectStagedSource`. Reviewer
 must be allowlisted (`POLICAI_SIGNAL_REVIEWERS`, default
 `Daniel Alkurdi` and `Daniel`). `attestation.cardId` must equal `reviewId`.
 
+**Themes and type from the reply.** An `approve` body may add
+`"themes": ["public-sector", "ai-governance"]` (1 to 5 unique theme ids
+from `src/lib/themes.ts`) and `"type": "<PolicyType>"`. They replace the
+draft's themes and type (no merge) before `approveStagedSource` runs with
+that `proposedRecord`, so a themeless draft can be approved once Daniel
+names its themes. They apply only to new register policy drafts: a
+timeline-event or tracked-record review, or a `dismiss`, with either field
+returns `invalid_request`.
+
+**Reply binding:** every theme id and the type must appear in
+`attestation.replyText` as a whole token, ignoring case. A token boundary is
+the start or end of the text or any character outside `[a-z0-9-]`, so
+`public-sector` matches in `themes public-sector, ai-governance` but
+`ai-governance` does not match inside `genai-governance-x`, and
+`public sector` does not match `public-sector`. A miss returns
+`themes_not_in_reply` or `type_not_in_reply`, naming the missing values.
+This check (`parseReplyOverrides` in `src/lib/signal-http.ts`) is what stops
+the bot from inventing values: it can relay only what Daniel wrote, and
+Daniel's reply is stored verbatim beside the applied values.
+
 Attestation is stored on the review and published verification notes as:
 
 ```text
@@ -907,13 +931,16 @@ Daniel Alkurdi (Signal): <reply verbatim>
 chatMessageId: …
 cardId: …
 decided: <Australia/Sydney> (<ISO>)
+themes: <applied theme ids>   (only when sent)
+type: <applied type>          (only when sent)
 relayed by Policai Signal
 ```
 
 It must not claim TTY typing.
 
 **Idempotent:** approve on an already `published` review, or dismiss on an
-already `rejected` review, returns `noop: true` and the current state.
+already `rejected` review, returns `noop: true` and the current state. A
+published review stays a noop whatever `themes` or `type` say.
 
 **Errors (bot returns these to Dan; bot does not invent themes):**
 
@@ -922,7 +949,11 @@ already `rejected` review, returns `noop: true` and the current state.
 | `unauthorized` | Missing/wrong Bearer token |
 | `signal_token_unconfigured` | Host missing `POLICAI_SIGNAL_TOKEN` |
 | `not_found` | Unknown review id |
-| `approve_blocked` / `themes_required` / `editorial_fields_required` | Missing themes or other reviewed fields |
+| `approve_blocked` (409) | Draft has no themes (ask Daniel to name them), no primary date, or is rejected |
+| `themes_required` / `editorial_fields_required` (409) | Approval refused themes or other reviewed fields (source date, `officialSourceUrl`, `proposedRecord`); fix through editorial MCP |
+| `invalid_request` (400) | Missing fields; `themes`/`type` on a dismiss, timeline or tracked-record review; `themes` not an array, repeated, or outside 1 to 5 |
+| `unknown_theme` / `unknown_type` (400) | Value is not a theme id or `PolicyType`; the error lists the valid ones |
+| `themes_not_in_reply` / `type_not_in_reply` (400) | A sent value is not a whole token in `attestation.replyText` |
 | `dismiss_blocked` / `tracked_record_dismiss` | Tracked-record reviews cannot be dismissed |
 | `reviewer_not_allowlisted` | Reviewer not in allowlist |
 | `invalid_attestation` | Missing reply / message id / card id |
