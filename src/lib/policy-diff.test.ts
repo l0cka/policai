@@ -66,7 +66,7 @@ describe('retainedPriorBody', () => {
       content: 'Current body.',
       dates: [],
       verification: { status: 'verified', source: { url: 'https://example.gov.au/policy' } },
-    } as Policy;
+    } as unknown as Policy;
     const hashed = policyRevisionHash(policy);
     expect(retainedPriorBody([{ policyId: policy.id, content: 'Old body.' }], policy.id)).toBe(
       'Old body.',
