@@ -32,6 +32,7 @@ import {
 	createTimelineEvent,
 	getDevelopments,
 	getPolicies,
+	getPolicyById,
 	getSourceReviewById,
 	getSourceReviews,
 	getTimelineEvents,
@@ -2647,6 +2648,65 @@ export function rejectStagedSource(
 	return withDataMutationLock(() =>
 		rejectStagedSourceUnlocked(id, reason),
 	);
+}
+
+/**
+ * Stamp a public register record as editorially verified. Used when Daniel
+ * names that policy id in Policai Signal. Refuses withheld, unverified, and
+ * trashed records — those stay on the staged-review publish path.
+ */
+async function verifyRegisterRecordUnlocked(input: {
+	policyId: string;
+	actor: string;
+	notes?: string;
+	now?: string;
+}): Promise<Policy> {
+	const actor = input.actor.replace(/\s+/g, " ").trim();
+	if (!actor) {
+		throw new Error("A human reviewer identity is required");
+	}
+	const policyId = input.policyId.trim();
+	if (!policyId) {
+		throw new Error("A register policy id is required");
+	}
+	const now = input.now ?? new Date().toISOString();
+	const publicPolicy = await getPolicyById(policyId);
+	if (!publicPolicy) {
+		const adminPolicy = await getPolicyById(policyId, { access: "admin" });
+		if (!adminPolicy) {
+			throw new Error(`Register record ${policyId} not found`);
+		}
+		if (adminPolicy.status === "trashed") {
+			throw new Error(`Register record ${policyId} is trashed`);
+		}
+		throw new Error(
+			`Register record ${policyId} is not public (withheld or unverified); approve and publish its staged review instead`,
+		);
+	}
+	const notes =
+		input.notes?.replace(/\s+/g, " ").trim() ||
+		`Verified via Policai Signal by ${actor}`;
+	const updated = await updatePolicy(policyId, {
+		lastReviewedAt: now,
+		verification: {
+			...publicPolicy.verification,
+			status: "verified",
+			checkedAt: now,
+			checkedBy: actor,
+			method: "manual",
+			notes,
+		},
+	});
+	if (!updated) {
+		throw new Error(`Register record ${policyId} not found`);
+	}
+	return updated;
+}
+
+export function verifyRegisterRecord(
+	input: Parameters<typeof verifyRegisterRecordUnlocked>[0],
+): ReturnType<typeof verifyRegisterRecordUnlocked> {
+	return withDataMutationLock(() => verifyRegisterRecordUnlocked(input));
 }
 
 export async function checkCoverage(input: {

@@ -1,16 +1,19 @@
 #!/usr/bin/env tsx
 /**
- * Cards for pending source reviews, and one approve or dismiss.
+ * Cards for pending source reviews, and approve / dismiss / publish / verify.
  *
  *   npm run signal:reviews
  *   npm run signal:reviews -- apply --action=approve --id=<id> --reviewer=<name>
  *   npm run signal:reviews -- apply --action=dismiss --id=<id> --reviewer=<name>
+ *   npm run signal:reviews -- apply --action=publish --id=<id> --admin-token=<token>
+ *   npm run signal:reviews -- apply --action=verify --id=<policy-id> --reviewer=<name> --admin-token=<token>
  *
- * Apply runs only at a terminal, outside CI and agent sessions. The human
- * must type the reviewer name to confirm it. The approval notes record the
- * OS user, host, and time. Approve calls approveStagedSource with the id,
- * that reviewer, and those notes. Dismiss calls rejectStagedSource. Neither
- * command publishes. There is no environment variable that skips the prompt.
+ * Product path: Policai Signal (Grok Bot) uses editorial MCP or this CLI with
+ * a matching POLICAI_MCP_ADMIN_TOKEN on a trusted host. Approve/dismiss also
+ * keep a TTY fallback where the human types the reviewer name. CI and Cursor
+ * / Claude agent sessions are refused. Publish and verify always need the
+ * admin token. Neither path invents a verified stamp without an explicit
+ * verify action for a named policy id.
  */
 
 import readline from "node:readline";
@@ -18,7 +21,9 @@ import { pathToFileURL } from "node:url";
 import { getSourceReviews } from "@/lib/data-service";
 import {
 	approveStagedSource,
+	publishStagedSource,
 	rejectStagedSource,
+	verifyRegisterRecord,
 } from "@/lib/source-ingest";
 import {
 	currentSignalRunner,
@@ -47,6 +52,9 @@ async function main() {
 		approve: ({ id, actor, approvalNotes }) =>
 			approveStagedSource({ id, actor, approvalNotes }),
 		reject: (id, reason) => rejectStagedSource(id, reason),
+		publish: (id) => publishStagedSource(id),
+		verify: ({ policyId, actor, notes }) =>
+			verifyRegisterRecord({ policyId, actor, notes }),
 		confirmReviewer,
 		runner: currentSignalRunner(),
 	});

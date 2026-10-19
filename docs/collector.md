@@ -843,6 +843,33 @@ Detections staged in `data/source-reviews.json` are proposals. To publish one:
    verified policy or timeline record through `src/lib/source-ingest.ts`.
 5. Run `npm run validate:data`, commit, and push (or open a PR).
 
+### Policai Signal (Grok Bot)
+
+**Policai Signal** is Daniel’s Grok Bot
+(`fa9b5c47-349a-438e-acfc-75055f2d6b8f`). It is the product path for staged
+review **approval**, **publish to the live register**, and **verification** of
+a named public record. His reply in that chat is the decision. The bot calls
+the editorial MCP (`npm run mcp`) on a trusted checkout (Argus recommended),
+or the token-gated CLI below. The TTY confirm path is a fallback when MCP is
+unavailable — not the daily UX.
+
+Bot-facing phrases (map to MCP `signal_decision` or the matching tool):
+
+| Phrase | Action | Id |
+| --- | --- | --- |
+| `approve <id>` | `approve_staged_source` / `signal_decision` approve | source-review id |
+| `dismiss <id>` | `reject_staged_source` / `signal_decision` dismiss | source-review id |
+| `publish <id>` | `publish_staged_source` / `signal_decision` publish | source-review id (`approved`) |
+| `verify <policy-id>` | `verify_register_record` / `signal_decision` verify | public register policy id |
+
+Trust: every write needs `POLICAI_MCP_ADMIN_TOKEN`. Approve / dismiss / verify
+also need an allowlisted reviewer (`POLICAI_SIGNAL_REVIEWERS`, default
+`Daniel`). CI and Cursor / Claude agent sessions are refused on the Signal
+CLI. Agents must not invent a verify; only an explicit Signal verify of a
+named policy id may call it. MCP / CLI write the checkout only — validate,
+commit, and push (or open a PR) afterward so Argus auto-deploy can serve
+`main`.
+
 `npm run signal:reviews` prints one card for each `pending_review` row, then a
 footer count. An empty queue prints `No pending source reviews.` The command
 does not fetch. `formatPendingSourceReviewCards` in
@@ -890,28 +917,33 @@ decision. `.github/workflows/signal-review-cards.yml` is manual
 `npm run signal:reviews` and copies the text into the job summary. It does
 not approve, dismiss, publish, or push.
 
-`npm run signal:reviews -- apply --action=approve --id=<id> --reviewer=<name>`
-calls `approveStagedSource` with that id, the reviewer, and approval notes
-that record the OS user, host, and time. It does not pass a `proposedRecord`
-or themes. A missing reviewer name is refused. If approval requires a
-`proposedRecord`, themes, or another reviewed field, the command stops and
-prints that reason.
+**Trusted apply (product path for the bot / Argus):** pass a matching
+`--admin-token` (`POLICAI_MCP_ADMIN_TOKEN`). Approve / dismiss / verify also
+need `--reviewer` on the allowlist. Publish needs only the id and token.
+Non-TTY is allowed. CI and Cursor / Claude agent sessions are still refused.
 
-Apply does not run from CI, from an agent session (`CURSOR_AGENT`,
-`CLAUDECODE`, or `CLAUDE_CODE`), or without a terminal. There is no
-environment variable that skips this. At a terminal the human must type the
-reviewer name. `--reviewer` alone is not confirmation, so an agent cannot
-record someone else's name by passing the flag.
+```bash
+npm run signal:reviews -- apply --action=approve --id=<id> --reviewer=Daniel --admin-token="$POLICAI_MCP_ADMIN_TOKEN"
+npm run signal:reviews -- apply --action=dismiss --id=<id> --reviewer=Daniel --admin-token="$POLICAI_MCP_ADMIN_TOKEN"
+npm run signal:reviews -- apply --action=publish --id=<id> --admin-token="$POLICAI_MCP_ADMIN_TOKEN"
+npm run signal:reviews -- apply --action=verify --id=<policy-id> --reviewer=Daniel --admin-token="$POLICAI_MCP_ADMIN_TOKEN"
+```
 
-`npm run signal:reviews -- apply --action=dismiss --id=<id> --reviewer=<name>`
-calls `rejectStagedSource` after the same confirmation. The rejection reason
-includes the reviewer and the same runner record. Dismiss of a tracked-record
-review still fails with that path's reason.
+**TTY fallback (approve / dismiss only):** without a matching admin token,
+`npm run signal:reviews -- apply --action=approve|dismiss --id=<id> --reviewer=<name>`
+requires a terminal. The human must type the reviewer name. `--reviewer`
+alone is not confirmation. Publish and verify are not available on the TTY
+path.
 
-Neither action calls the publish tool. A successful approve is the existing
-approval write on the staged review; this command does not publish that
-review into the register. Signal does not post these cards. It reads the
-JSON URL above.
+Approve calls `approveStagedSource` with that id, the reviewer, and notes that
+record the runner (and, on the trusted path, that it was a Signal trusted
+apply). It does not pass a `proposedRecord` or themes. If approval needs
+those fields, the command stops and prints that reason — finish via MCP
+`approve_staged_source` with the reviewed draft. Dismiss calls
+`rejectStagedSource`; tracked-record reviews still fail with that path's
+reason. Publish calls `publishStagedSource`. Verify calls
+`verifyRegisterRecord` and stamps only a **public** register policy; withheld
+or unverified records must go through approve + publish instead.
 
 One-off publication scripts must also enter through `stageSourceUrl()` or the
 controlled `stageSourceCapture()` fallback rather than constructing a review

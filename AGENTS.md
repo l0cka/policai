@@ -70,7 +70,7 @@ npm run collect        # one collection pass (-- --dry-run to preview, -- --sour
 npm run audit:sources  # live audit of automatic watch sources
 npm run audit:register # compare curated source fingerprints
 npm run mcp            # local MCP source-ingest server
-npm run signal:reviews # pending source-review cards; apply needs a terminal confirmation, --id, and --reviewer
+npm run signal:reviews # pending cards; Signal Grok Bot / token-gated apply (approve|dismiss|publish|verify); TTY confirm is approve/dismiss fallback only
 ```
 
 ## Project Structure
@@ -480,7 +480,8 @@ Use the display-name helpers (`getPolicyTypeName()`, `getPolicyStatusName()`, `g
 None are required to run the site or collector. Optional (see `.env.example`):
 
 ```bash
-POLICAI_MCP_ADMIN_TOKEN=  # local MCP source-ingest writes
+POLICAI_MCP_ADMIN_TOKEN=  # local MCP source-ingest writes; also required for Signal trusted apply (publish/verify)
+POLICAI_SIGNAL_REVIEWERS= # comma-separated allowlist for Signal approve/dismiss/verify (default: Daniel)
 USE_CLAUDE_CLASSIFIER=    # opt into Claude classification instead of the keyword heuristic (set on the collection host)
 FIRECRAWL_URL=            # self-hosted Firecrawl base URL, defaults to http://127.0.0.1:3003
 CLASSIFIER_BASE_URL=      # chat-completions base URL used when USE_CLAUDE_CLASSIFIER is set

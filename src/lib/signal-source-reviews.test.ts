@@ -76,6 +76,8 @@ function deps(
 		listPending: vi.fn().mockResolvedValue([]),
 		approve: vi.fn(),
 		reject: vi.fn(),
+		publish: vi.fn(),
+		verify: vi.fn(),
 		env: {},
 		stdinIsTTY: true,
 		confirmReviewer: async () => true,
@@ -83,6 +85,10 @@ function deps(
 		...overrides,
 	};
 }
+
+const TRUSTED_ENV = {
+	POLICAI_MCP_ADMIN_TOKEN: "signal-secret",
+} as const;
 
 describe("pending source review cards", () => {
 	it("prints one card per pending review and a count footer", () => {
@@ -296,7 +302,7 @@ describe("signal source review apply", () => {
 		expect(result).toMatchObject({
 			exitCode: 1,
 			stderr:
-				"A human must type the reviewer name at the terminal before apply runs.",
+				"A human must type the reviewer name at the terminal before apply runs, or pass a matching --admin-token on a trusted Signal host.",
 		});
 		expect(approve).not.toHaveBeenCalled();
 		expect(reject).not.toHaveBeenCalled();
@@ -326,6 +332,130 @@ describe("signal source review apply", () => {
 			expect(approve).not.toHaveBeenCalled();
 		},
 	);
+
+	it("approves on the trusted token path without a TTY confirm", async () => {
+		const approve = vi.fn().mockResolvedValue(
+			review({ id: "rev-1", status: "approved" }),
+		);
+		const confirmReviewer = vi.fn().mockResolvedValue(false);
+		const result = await runSignalSourceReviewCommand(
+			[
+				"apply",
+				"--action=approve",
+				"--id=rev-1",
+				"--reviewer=Daniel",
+				"--admin-token=signal-secret",
+			],
+			deps({
+				approve,
+				env: TRUSTED_ENV,
+				stdinIsTTY: false,
+				confirmReviewer,
+			}),
+		);
+
+		expect(confirmReviewer).not.toHaveBeenCalled();
+		expect(approve).toHaveBeenCalledWith({
+			id: "rev-1",
+			actor: "Daniel",
+			approvalNotes: `Signal trusted apply. ${ATTESTATION}`,
+		});
+		expect(result.exitCode).toBe(0);
+		expect(result.stdout).toContain("Approved rev-1");
+	});
+
+	it("refuses a trusted apply when the reviewer is not allowlisted", async () => {
+		const approve = vi.fn();
+		const result = await runSignalSourceReviewCommand(
+			[
+				"apply",
+				"--action=approve",
+				"--id=rev-1",
+				"--reviewer=NotDaniel",
+				"--admin-token=signal-secret",
+			],
+			deps({ approve, env: TRUSTED_ENV, stdinIsTTY: false }),
+		);
+
+		expect(result.exitCode).toBe(1);
+		expect(result.stderr).toContain("Signal reviewer must be one of: Daniel");
+		expect(approve).not.toHaveBeenCalled();
+	});
+
+	it("publishes only on the trusted token path", async () => {
+		const publish = vi.fn().mockResolvedValue(
+			review({ id: "rev-1", status: "published" }),
+		);
+		const denied = await runSignalSourceReviewCommand(
+			["apply", "--action=publish", "--id=rev-1", "--reviewer=Daniel"],
+			deps({ publish, stdinIsTTY: true }),
+		);
+		expect(denied.exitCode).toBe(1);
+		expect(denied.stderr).toMatch(/require a matching --admin-token/);
+		expect(publish).not.toHaveBeenCalled();
+
+		const ok = await runSignalSourceReviewCommand(
+			[
+				"apply",
+				"--action=publish",
+				"--id=rev-1",
+				"--admin-token=signal-secret",
+			],
+			deps({ publish, env: TRUSTED_ENV, stdinIsTTY: false }),
+		);
+		expect(publish).toHaveBeenCalledWith("rev-1");
+		expect(ok).toEqual({
+			exitCode: 0,
+			stdout: `Published rev-1 (status published). Signal trusted apply. ${ATTESTATION}`,
+			stderr: "",
+		});
+	});
+
+	it("verifies a named policy id on the trusted path", async () => {
+		const verify = vi.fn().mockResolvedValue({
+			id: "federal-example",
+			verification: { status: "verified" },
+		});
+		const result = await runSignalSourceReviewCommand(
+			[
+				"apply",
+				"--action=verify",
+				"--id=federal-example",
+				"--reviewer=Daniel",
+				"--admin-token=signal-secret",
+			],
+			deps({ verify, env: TRUSTED_ENV, stdinIsTTY: false }),
+		);
+
+		expect(verify).toHaveBeenCalledWith({
+			policyId: "federal-example",
+			actor: "Daniel",
+			notes: `Signal trusted apply. ${ATTESTATION}`,
+		});
+		expect(result.exitCode).toBe(0);
+		expect(result.stdout).toContain("Verified federal-example");
+	});
+
+	it("refuses trusted apply in a Cursor agent session even with a token", async () => {
+		const publish = vi.fn();
+		const result = await runSignalSourceReviewCommand(
+			[
+				"apply",
+				"--action=publish",
+				"--id=rev-1",
+				"--admin-token=signal-secret",
+			],
+			deps({
+				publish,
+				env: { ...TRUSTED_ENV, CURSOR_AGENT: "1" },
+				stdinIsTTY: false,
+			}),
+		);
+
+		expect(result.exitCode).toBe(1);
+		expect(result.stderr).toMatch(/agent session/);
+		expect(publish).not.toHaveBeenCalled();
+	});
 
 	it("records the OS user, host, and timestamp on the approval", async () => {
 		const approve = vi.fn().mockResolvedValue(
@@ -434,7 +564,7 @@ describe("signal source review apply", () => {
 });
 
 describe("signal source review wiring", () => {
-	it("keeps publication and register verification out of this command", () => {
+	it("wires publish and verify through the token-gated ladder, not a confirm bypass", () => {
 		const lib = readFileSync(
 			path.join(process.cwd(), "src/lib/signal-source-reviews.ts"),
 			"utf8",
@@ -444,19 +574,19 @@ describe("signal source review wiring", () => {
 			"utf8",
 		);
 
-		for (const source of [lib, script]) {
-			expect(source).not.toContain("publishStagedSource");
-			expect(source).not.toContain("proposedRecord:");
-			expect(source).not.toContain("lastReviewedAt");
-			expect(source).not.toContain("handlePublishStagedSource");
-		}
 		expect(script).toContain(
 			"approveStagedSource({ id, actor, approvalNotes })",
 		);
 		expect(script).toContain("rejectStagedSource(id, reason)");
+		expect(script).toContain("publishStagedSource(id)");
+		expect(script).toContain("verifyRegisterRecord({ policyId, actor, notes })");
 		expect(script).toContain("confirmReviewer");
 		expect(script).toContain("currentSignalRunner()");
+		expect(lib).toContain("isTrustedSignalApply");
+		expect(lib).toContain("POLICAI_MCP_ADMIN_TOKEN");
+		expect(lib).toContain("DEFAULT_SIGNAL_REVIEWERS");
 		expect(lib).not.toMatch(/POLICAI_SIGNAL_REVIEW_CONFIRM|process\.env\.[A-Z0-9_]*CONFIRM/);
+		expect(lib).not.toContain("proposedRecord:");
 
 		const workflow = readFileSync(
 			path.join(process.cwd(), ".github/workflows/signal-review-cards.yml"),
