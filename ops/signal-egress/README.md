@@ -1,65 +1,60 @@
-# Signal GitHub egress
+# Signal egress
 
 `policai.service` runs with `IPAddressDeny=any` and `IPAddressAllow=localhost`.
-Signal POST (`/api/signal/reviews`) persists each decision through
-`api.github.com`, so the service also needs to reach GitHub's API, and nothing
-else.
+Signal POST (`/api/signal/reviews`) needs two kinds of outbound HTTPS:
 
-`policai-github-egress.py` reads the `api` ranges from
-`https://api.github.com/meta` and applies them with `systemctl set-property
-policai.service IPAddressAllow= IPAddressAllow=localhost IPAddressAllow=<range>…`.
-The property changes the unit's live BPF filter, so the service is not
-restarted. systemd stores it in
-`/etc/systemd/system.control/policai.service.d/50-IPAddressAllow.conf`, and it
-survives reboots.
+- `api.github.com`, to read `main` and commit each decision;
+- the official source host, because publication re-retrieves the source and
+  refuses it if the content changed since approval (`source-ingest.ts`,
+  `assertSourceStillMatchesApproval`).
 
-The daily timer keeps the list current. GitHub changes its ranges without
-notice. A stale list makes Signal persistence fail with
-`github_persist_failed`. It never widens access.
+Official sources sit behind CDNs whose addresses change, so no stable address
+list covers them. `20-signal-egress.conf` therefore allows all remote
+addresses.
 
-Inbound access is unchanged. `IPAddressAllow` filters by remote address in
-both directions, but the service listens only on `127.0.0.1:8794`
-(`SocketBindAllow=tcp:8794`, `SocketBindDeny=any`), so no remote host can open
-a connection to it. Public traffic still arrives only through the Cloudflare
-tunnel on loopback.
+## What still limits the service
 
-The script refuses a missing or empty `api` list, a malformed range, and any
-range broader than /8 (IPv4) or /16 (IPv6). On any error it changes nothing.
-DNS keeps working because the `systemd-resolved` stub is on loopback.
+- Inbound is unchanged. The service listens only on `127.0.0.1:8794`
+  (`SocketBindAllow=tcp:8794`, `SocketBindDeny=any`), so no remote host can
+  open a connection to it. Public traffic still arrives through the
+  Cloudflare tunnel on loopback.
+- Source retrieval accepts only HTTPS on allow-listed official hosts, resolves
+  DNS itself and refuses private, loopback and link-local addresses
+  (`src/lib/pipeline/fetch.ts`, `assertSafeSourceUrl`). GitHub calls go to one
+  fixed host.
 
-## Test
+## Trade-off
 
-```sh
-python3 -B -m unittest -v ops/signal-egress/test_policai_github_egress.py
-python3 -I ops/signal-egress/policai-github-egress.py --dry-run
-```
+The kernel no longer stops a compromised Node process from reaching arbitrary
+hosts. The process holds the two Signal tokens and public data. The GitHub
+token is the asset that matters, and it needs GitHub reachable under any
+egress policy. Its scope, not this drop-in, limits what a leak can do.
 
-`--dry-run` fetches the live list and prints the `systemctl` command without
-running it.
+A loopback forward proxy with a hostname allowlist (GitHub plus official
+source hosts) would restore kernel-enforced egress. Revisit this if the
+service gains secrets or private data.
 
 ## Install
 
 Installation is a host network-access change and needs the maintainer's
-approval. Register the timer in
-`/home/l0cka/Work/Argus/services/argus-topology/topology.json` in the same
-change.
+approval. It restarts the site briefly.
 
 ```sh
-sudo install -o root -g root -m 0755 ops/signal-egress/policai-github-egress.py /usr/local/libexec/policai-github-egress
-sudo install -o root -g root -m 0644 ops/signal-egress/policai-github-egress.service ops/signal-egress/policai-github-egress.timer /etc/systemd/system/
+sudo install -o root -g root -m 0644 ops/signal-egress/20-signal-egress.conf /etc/systemd/system/policai.service.d/
 sudo systemctl daemon-reload
-sudo systemctl start policai-github-egress.service
-sudo systemctl enable --now policai-github-egress.timer
+sudo systemctl restart policai.service
 systemctl show -p IPAddressAllow policai.service
 ```
 
-The last command lists `127.0.0.0/8`, `::1/128` and the GitHub ranges.
+The last command prints `IPAddressAllow=0.0.0.0/0 ::/0` (systemd may also list
+`127.0.0.0/8 ::1/128`).
 
 ## Roll back
 
 ```sh
-sudo systemctl disable --now policai-github-egress.timer
-sudo systemctl set-property policai.service IPAddressAllow= IPAddressAllow=localhost
+sudo rm /etc/systemd/system/policai.service.d/20-signal-egress.conf
+sudo systemctl daemon-reload
+sudo systemctl restart policai.service
 ```
 
 Do not use `systemctl revert policai.service`. It also removes the
