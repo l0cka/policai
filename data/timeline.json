@@ -2765,6 +2765,27 @@
     }
   },
   {
+    "id": "tl-2026-10-08-inslm-annual-report-2025-26-ai-scoping",
+    "date": "2026-10-08",
+    "datePrecision": "day",
+    "title": "INSLM 2025–26 Annual Report scopes AI regulation in the national intelligence community",
+    "description": "The Independent National Security Legislation Monitor's 2025–26 Annual Report (publication date 8 October 2026 on the INSLM site) includes previously unpublished initial scoping of how AI is and is not regulated across the national intelligence community. Ministerial privacy rules for intelligence agencies \"say nothing about AI specifically.\" Core NIC agencies are exempt from the Privacy Act and the FOI Act; the Policy for the Responsible Use of AI in Government does not apply to ASIO, ASIS, ONI, ASD, DIO, ACIC or the intelligence functions of AUSTRAC, AFP, Home Affairs or Defence; and a range of exemptions from ADJR review and/or reasons apply to NIC decisions. The 2024 Independent Intelligence Review recommended an INSLM review of AI legislation for the NIC, but no Attorney-General or Prime Minister referral was made; initial scoping was undertaken and a full review was not completed in the reporting period. The Monitor's three-year term ends in late November 2026. This is scoping in an annual report, not a new policy instrument.",
+    "type": "milestone",
+    "jurisdiction": "federal",
+    "sourceUrl": "https://www.inslm.gov.au/system/files/2026-10/INSLM-annual-report-2025-26.pdf",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.inslm.gov.au/system/files/2026-10/INSLM-annual-report-2025-26.pdf",
+        "title": "Independent National Security Legislation Monitor Annual Report 2025–26",
+        "publisher": "Independent National Security Legislation Monitor",
+        "publishedAt": "2026-10-08",
+        "publishedAtPrecision": "day"
+      },
+      "notes": "Unverified Signal handoff draft (19 Oct 2026). Primary PDF and publication page confirmed via reader proxy because www.inslm.gov.au timed out for the Policai collector identity and headless Chrome in this environment. Publication page states Publication date 8 October 2026 and links this PDF. AI section \"Legal framework for use of AI by the National Intelligence Community\" (from about p.28) verified against extracted PDF text. Not fingerprinted as PDF bytes; not marked verified; no lastReviewedAt stamp. Secondary: Canberra Times 19 Oct 2026."
+    }
+  },
+  {
     "id": "tl-2026-10-15-asd-essentials-launched",
     "date": "2026-10-15",
     "datePrecision": "day",

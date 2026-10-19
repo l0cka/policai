@@ -1181,6 +1181,19 @@ export const WATCH_SOURCES: WatchSource[] = [
     fetchStrategy: 'browser',
     notes: 'Returns 403 to non-browser user agents.',
   },
+  {
+    id: 'inslm-annual-reports',
+    name: 'INSLM — annual reports',
+    jurisdiction: 'federal',
+    category: 'government',
+    url: 'https://www.inslm.gov.au/reviews-reports/annual-reports',
+    kind: 'document',
+    schedule: 'weekly',
+    enabled: true,
+    automation: 'manual',
+    notes:
+      'Tracked by hand: www.inslm.gov.au timed out with 0 bytes for the Policai collector identity and headless Chrome from the 2026-10-19 Signal retrieval environment (Akamai edge). Direct PDF and HTML fetches failed; content was confirmed via a reader proxy against the official publication page and PDF path. The block/timeout is respected and the user agent is not disguised. Annual reports and the document library are the official publication paths.',
+  },
 ];
 
 export function getAutomaticSources(): WatchSource[] {
