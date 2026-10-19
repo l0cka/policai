@@ -61,6 +61,9 @@ jobs:
       - name: Test collector publication wrapper
         run: python3 -m unittest discover -s ops/collector -p 'test_*.py' -v
 
+      - name: Test Signal egress refresh
+        run: python3 -m unittest discover -s ops/signal-egress -p 'test_*.py' -v
+
       - name: Validate data
         env:
           GITHUB_BASE_SHA: ${{ github.event.pull_request.base.sha }}
