@@ -57,13 +57,15 @@ const {
 
 vi.mock('@/lib/analysis', () => ({ analyseContentRelevance }));
 vi.mock('@/lib/pipeline/content', () => ({ extractRetrievedDocument }));
-vi.mock('@/lib/pipeline/fetch', async (importOriginal) => ({
-  documentKindFromBytes,
-  matchesRetrievedContent: (
-    await importOriginal<typeof import('@/lib/pipeline/fetch')>()
-  ).matchesRetrievedContent,
-  retrieveSource,
-}));
+vi.mock('@/lib/pipeline/fetch', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/lib/pipeline/fetch')>();
+  return {
+    documentKindFromBytes,
+    matchesRetrievedContent: actual.matchesRetrievedContent,
+    SourceFetchError: actual.SourceFetchError,
+    retrieveSource,
+  };
+});
 vi.mock('@/lib/data-service', () => ({
   createPolicy,
   createSourceReview,
@@ -90,9 +92,11 @@ import {
   publishStagedSource,
   recordManualSourceReview,
   rejectStagedSource,
+  RETAINED_SNAPSHOT_APPROVAL_NOTE,
   stageSourceCapture,
   stageSourceUrl,
 } from './source-ingest';
+import { SourceFetchError } from '@/lib/pipeline/fetch';
 import { timelineRevisionHash } from './policy-revision';
 import { buildPolicy } from '@/test/factories';
 import { THEMES } from '@/lib/themes';
@@ -1397,7 +1401,7 @@ describe('source ingest approval workflow', () => {
     expect(createSourceReview).not.toHaveBeenCalled();
   });
 
-  it('refreshes an ordered collector review staged under the legacy fingerprint when the page is unchanged', async () => {
+  it('refreshes an ordered collector review staged under the legacy fingerprint when the page is unchanged (#249)', async () => {
     const draft = buildDraft({
       id: 'existing-policy',
       effectiveDate: '2026-07-01',
@@ -2162,6 +2166,156 @@ describe('source ingest approval workflow', () => {
     expect(updateSourceReview).not.toHaveBeenCalled();
   });
 
+  it('approves from the collector-retained snapshot when live re-fetch returns HTTP 403', async () => {
+    const stagedHash = 'a'.repeat(64);
+    const review = buildReview({
+      sourceEvidence: {
+        url: SOURCE_URL,
+        finalUrl: SOURCE_URL,
+        retrievedAt: '2026-07-15T00:00:00.000Z',
+        contentType: 'text/html',
+        contentHash: stagedHash,
+        title: 'Draft AI policy',
+        publishedAt: '2026-07-01',
+        publishedAtPrecision: 'day',
+      },
+      proposedRecord: buildDraft({
+        effectiveDate: '2026-07-01',
+        content: 'Verified key policy details retained at collection time.',
+      }),
+    });
+    getSourceReviewById.mockResolvedValue(review);
+    retrieveSource.mockRejectedValueOnce(
+      new SourceFetchError(`HTTP 403 at ${SOURCE_URL}`, {
+        status: 403,
+        url: SOURCE_URL,
+      }),
+    );
+
+    const approved = await approveStagedSource({
+      id: 'source-review-1',
+      actor: 'reviewer',
+      approvalNotes: 'Signal approve after host refusal.',
+      proposedRecord: review.proposedRecord as PolicyDraft,
+    });
+
+    expect(extractRetrievedDocument).not.toHaveBeenCalled();
+    expect(approved.status).toBe('approved');
+    expect(approved.sourceEvidence.contentHash).toBe(stagedHash);
+    expect(approved.approvalNotes).toContain('Signal approve after host refusal.');
+    expect(approved.approvalNotes).toContain(RETAINED_SNAPSHOT_APPROVAL_NOTE);
+  });
+
+  it('approves from the retained snapshot when live re-fetch returns HTTP 429', async () => {
+    const review = buildReview({
+      sourceEvidence: {
+        url: SOURCE_URL,
+        finalUrl: SOURCE_URL,
+        retrievedAt: '2026-07-15T00:00:00.000Z',
+        contentType: 'text/html',
+        contentHash: 'a'.repeat(64),
+        title: 'Draft AI policy',
+        publishedAt: '2026-07-01',
+        publishedAtPrecision: 'day',
+      },
+      proposedRecord: buildDraft({
+        effectiveDate: '2026-07-01',
+        content: 'Verified key policy details retained at collection time.',
+      }),
+    });
+    getSourceReviewById.mockResolvedValue(review);
+    retrieveSource.mockRejectedValueOnce(
+      new SourceFetchError(`HTTP 429 at ${SOURCE_URL}`, {
+        status: 429,
+        retryable: true,
+        url: SOURCE_URL,
+      }),
+    );
+
+    await expect(
+      approveStagedSource({
+        id: 'source-review-1',
+        actor: 'reviewer',
+        proposedRecord: review.proposedRecord as PolicyDraft,
+      }),
+    ).resolves.toMatchObject({
+      status: 'approved',
+      sourceEvidence: { contentHash: 'a'.repeat(64) },
+    });
+  });
+
+  it('does not fall back to the retained snapshot for HTTP 404', async () => {
+    getSourceReviewById.mockResolvedValue(buildReview());
+    retrieveSource.mockRejectedValueOnce(
+      new SourceFetchError(`HTTP 404 at ${SOURCE_URL}`, {
+        status: 404,
+        url: SOURCE_URL,
+      }),
+    );
+
+    await expect(
+      approveStagedSource({
+        id: 'source-review-1',
+        actor: 'reviewer',
+        proposedRecord: buildDraft({ effectiveDate: '2026-07-01' }),
+      }),
+    ).rejects.toThrow(/HTTP 404/);
+    expect(updateSourceReview).not.toHaveBeenCalled();
+  });
+
+  it('publishes when live re-fetch returns HTTP 403 by reusing the retained snapshot', async () => {
+    const stagedHash = 'a'.repeat(64);
+    const approvedReview = buildReview({
+      status: 'approved',
+      reviewedAt: '2026-07-16T11:00:00.000Z',
+      reviewedBy: 'reviewer',
+      approvalNotes: 'Approved earlier.',
+      sourceEvidence: {
+        url: SOURCE_URL,
+        finalUrl: SOURCE_URL,
+        retrievedAt: '2026-07-15T00:00:00.000Z',
+        contentType: 'text/html',
+        contentHash: stagedHash,
+        title: 'Draft AI policy',
+        publishedAt: '2026-07-01',
+        publishedAtPrecision: 'day',
+      },
+      proposedRecord: buildDraft({
+        effectiveDate: '2026-07-01',
+        content: 'Verified key policy details retained at collection time.',
+        verification: {
+          status: 'verified',
+          source: {
+            url: SOURCE_URL,
+            finalUrl: SOURCE_URL,
+            retrievedAt: '2026-07-15T00:00:00.000Z',
+            contentType: 'text/html',
+            contentHash: stagedHash,
+            title: 'Draft AI policy',
+            publishedAt: '2026-07-01',
+            publishedAtPrecision: 'day',
+          },
+          checkedAt: '2026-07-16T11:00:00.000Z',
+          checkedBy: 'reviewer',
+          method: 'manual',
+        },
+      }),
+    });
+    getSourceReviewById.mockResolvedValue(approvedReview);
+    retrieveSource.mockRejectedValueOnce(
+      new SourceFetchError(`HTTP 403 at ${SOURCE_URL}`, {
+        status: 403,
+        url: SOURCE_URL,
+      }),
+    );
+    createPolicy.mockImplementation(async (policy) => policy);
+
+    await expect(publishStagedSource('source-review-1')).resolves.toMatchObject({
+      status: 'published',
+    });
+    expect(createPolicy).toHaveBeenCalled();
+  });
+
   it('refuses approval when the page gained dcterms.created after staging under its current fingerprint (#262)', async () => {
     const { retrieveSource: retrieveLive } =
       await vi.importActual<typeof import('@/lib/pipeline/fetch')>(
@@ -2225,7 +2379,7 @@ describe('source ingest approval workflow', () => {
     expect(approved.sourceEvidence.contentHash).toBe('c'.repeat(64));
   });
 
-  describe('re-approval of a review approved under the legacy fingerprint', () => {
+  describe('re-approval of a review approved under the legacy fingerprint (#249)', () => {
     const reviewedDate = {
       date: '2026-07-01',
       precision: 'day' as const,
@@ -2263,7 +2417,7 @@ describe('source ingest approval workflow', () => {
       });
     });
 
-    it('keeps the manual reviewed date of a policy review', async () => {
+    it('keeps the manual reviewed date of a policy review (#249)', async () => {
       getSourceReviewById.mockResolvedValue(
         buildReview({
           status: 'approved',
@@ -2285,7 +2439,7 @@ describe('source ingest approval workflow', () => {
       });
     });
 
-    it('keeps the manual reviewed date of a timeline review', async () => {
+    it('keeps the manual reviewed date of a timeline review (#249)', async () => {
       getSourceReviewById.mockResolvedValue(
         buildReview({
           entryKind: 'timeline_event',

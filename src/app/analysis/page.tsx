@@ -10,7 +10,7 @@ import {
 import { getArticles } from '@/lib/data-service';
 import { ARTICLE_TYPES, ARTICLE_TYPE_NAMES, isArticleType } from '@/types';
 import { cn } from '@/lib/utils';
-import { pageSocialMeta } from '@/lib/site-seo';
+import { pageAlternates, pageSocialMeta } from '@/lib/site-seo';
 
 export const revalidate = 3600;
 
@@ -21,14 +21,7 @@ const ANALYSIS_DESCRIPTION =
 export const metadata: Metadata = {
   title: ANALYSIS_TITLE,
   description: ANALYSIS_DESCRIPTION,
-  alternates: {
-    canonical: '/analysis',
-    types: {
-      'application/atom+xml': [
-        { url: 'https://policai.org/analysis/feed.xml', title: 'Policai analysis' },
-      ],
-    },
-  },
+  alternates: pageAlternates('/analysis'),
   ...pageSocialMeta({
     title: ANALYSIS_TITLE,
     description: ANALYSIS_DESCRIPTION,

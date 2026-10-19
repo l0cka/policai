@@ -27,6 +27,21 @@ export const SITE_KEYWORDS = [
 	'federal state territory AI policy',
 ] as const;
 
+export const SITE_ATOM_FEEDS = [
+	{ url: `${SITE_URL}/feed.xml`, title: 'Policai register feed' },
+	{ url: `${SITE_URL}/analysis/feed.xml`, title: 'Policai analysis' },
+] as const;
+
+/** Canonical + both Atom feeds. Child metadata replaces layout alternates wholesale in Next 16, so every page that sets a canonical must restate the feeds. */
+export function pageAlternates(canonical: string): NonNullable<Metadata['alternates']> {
+	return {
+		canonical,
+		types: {
+			'application/atom+xml': [...SITE_ATOM_FEEDS],
+		},
+	};
+}
+
 /**
  * Shared Open Graph / Twitter fields that are safe on the root layout.
  * Do not put title, description, or url here — Next inherits nested OG from
@@ -39,7 +54,7 @@ export const SITE_SOCIAL_DEFAULTS = {
 		siteName: SITE_NAME,
 	},
 	twitter: {
-		card: 'summary' as const,
+		card: 'summary_large_image' as const,
 	},
 };
 

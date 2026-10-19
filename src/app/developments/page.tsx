@@ -8,7 +8,7 @@ import {
 import { getDevelopmentStream } from '@/lib/development-streams';
 import { WATCH_SOURCES } from '@/lib/pipeline/sources';
 import { summarizeManualSourceCoverage } from '@/lib/source-monitoring';
-import { pageSocialMeta } from '@/lib/site-seo';
+import { pageAlternates, pageSocialMeta } from '@/lib/site-seo';
 
 export const revalidate = 3600;
 
@@ -19,14 +19,7 @@ const DEVELOPMENTS_DESCRIPTION =
 export const metadata: Metadata = {
   title: DEVELOPMENTS_TITLE,
   description: DEVELOPMENTS_DESCRIPTION,
-  alternates: {
-    canonical: '/developments',
-    types: {
-      'application/atom+xml': [
-        { url: 'https://policai.org/feed.xml', title: 'Policai developments' },
-      ],
-    },
-  },
+  alternates: pageAlternates('/developments'),
   ...pageSocialMeta({
     title: DEVELOPMENTS_TITLE,
     description: DEVELOPMENTS_DESCRIPTION,

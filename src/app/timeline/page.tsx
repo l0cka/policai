@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { TimelineBrowser } from '@/components/timeline-browser';
 import { getPolicies, getTimelineEvents } from '@/lib/data-service';
-import { pageSocialMeta } from '@/lib/site-seo';
+import { pageAlternates, pageSocialMeta } from '@/lib/site-seo';
 
 export const revalidate = 3600;
 
@@ -12,7 +12,7 @@ const TIMELINE_DESCRIPTION =
 export const metadata: Metadata = {
   title: TIMELINE_TITLE,
   description: TIMELINE_DESCRIPTION,
-  alternates: { canonical: '/timeline' },
+  alternates: pageAlternates('/timeline'),
   ...pageSocialMeta({
     title: TIMELINE_TITLE,
     description: TIMELINE_DESCRIPTION,

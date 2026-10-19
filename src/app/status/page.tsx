@@ -28,7 +28,7 @@ import { MetricStrip, PageIntro } from '@/components/layout';
 import { HealthSignal } from '@/components/ui/health-signal';
 import { getJurisdictionName } from '@/types';
 import { EDITORIAL_REVIEW_INTERVAL_DAYS } from '@/lib/verification';
-import { pageSocialMeta } from '@/lib/site-seo';
+import { pageAlternates, pageSocialMeta } from '@/lib/site-seo';
 
 export const revalidate = 3600;
 
@@ -39,7 +39,7 @@ const STATUS_DESCRIPTION =
 export const metadata: Metadata = {
   title: STATUS_TITLE,
   description: STATUS_DESCRIPTION,
-  alternates: { canonical: '/status' },
+  alternates: pageAlternates('/status'),
   ...pageSocialMeta({
     title: STATUS_TITLE,
     description: STATUS_DESCRIPTION,

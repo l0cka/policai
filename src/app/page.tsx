@@ -17,6 +17,7 @@ import {
 } from '@/lib/this-week';
 import { summarizeManualSourceCoverage } from '@/lib/source-monitoring';
 import {
+  pageAlternates,
   pageSocialMeta,
   SITE_DESCRIPTION,
   SITE_TITLE,
@@ -25,7 +26,7 @@ import {
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  alternates: { canonical: '/' },
+  alternates: pageAlternates('/'),
   ...pageSocialMeta({
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,

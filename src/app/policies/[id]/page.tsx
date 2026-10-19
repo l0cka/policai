@@ -7,6 +7,7 @@ import { CitedInAnalysis } from '@/components/related/cited-in-analysis';
 import { RelatedInstruments } from '@/components/related/related-instruments';
 import { relatedInstruments } from '@/lib/related-policies';
 import {
+  pageAlternates,
   policyJsonLd,
   policyPageDescription,
   policyPageTitle,
@@ -37,7 +38,7 @@ export async function generateMetadata({
       getJurisdictionName(policy.jurisdiction),
       'Australian AI policy',
     ],
-    alternates: { canonical: `/policies/${policy.id}` },
+    alternates: pageAlternates(`/policies/${policy.id}`),
     openGraph: {
       type: 'article',
       url,
@@ -47,7 +48,7 @@ export async function generateMetadata({
       locale: 'en_AU',
     },
     twitter: {
-      card: 'summary',
+      card: 'summary_large_image',
       title,
       description,
     },

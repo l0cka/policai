@@ -8,7 +8,7 @@ import {
   relatedByCourtPolicy,
 } from '@/lib/court-cross-links';
 import { getArticles, getPolicies } from '@/lib/data-service';
-import { pageSocialMeta } from '@/lib/site-seo';
+import { pageAlternates, pageSocialMeta } from '@/lib/site-seo';
 
 export const revalidate = 3600;
 
@@ -19,7 +19,7 @@ const COURTS_DESCRIPTION =
 export const metadata: Metadata = {
   title: COURTS_TITLE,
   description: COURTS_DESCRIPTION,
-  alternates: { canonical: '/courts' },
+  alternates: pageAlternates('/courts'),
   ...pageSocialMeta({
     title: COURTS_TITLE,
     description: COURTS_DESCRIPTION,

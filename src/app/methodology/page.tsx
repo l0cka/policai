@@ -8,7 +8,7 @@ import {
 import { WATCH_SOURCES } from '@/lib/pipeline/sources';
 import { summarizeManualSourceCoverage } from '@/lib/source-monitoring';
 import { MetricStrip, PageIntro } from '@/components/layout';
-import { pageSocialMeta } from '@/lib/site-seo';
+import { pageAlternates, pageSocialMeta } from '@/lib/site-seo';
 
 export const revalidate = 3600;
 
@@ -19,7 +19,7 @@ const METHODOLOGY_DESCRIPTION =
 export const metadata: Metadata = {
   title: METHODOLOGY_TITLE,
   description: METHODOLOGY_DESCRIPTION,
-  alternates: { canonical: '/methodology' },
+  alternates: pageAlternates('/methodology'),
   ...pageSocialMeta({
     title: METHODOLOGY_TITLE,
     description: METHODOLOGY_DESCRIPTION,
