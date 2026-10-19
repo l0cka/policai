@@ -28,13 +28,23 @@ import { MetricStrip, PageIntro } from '@/components/layout';
 import { HealthSignal } from '@/components/ui/health-signal';
 import { getJurisdictionName } from '@/types';
 import { EDITORIAL_REVIEW_INTERVAL_DAYS } from '@/lib/verification';
+import { pageSocialMeta } from '@/lib/site-seo';
 
 export const revalidate = 3600;
 
+const STATUS_TITLE = 'Source status';
+const STATUS_DESCRIPTION =
+  'Which official sources Policai watches, when each was last checked, and where the register is thin.';
+
 export const metadata: Metadata = {
-  title: 'Source status - Policai',
-  description:
-    'Which official sources Policai watches, when each was last checked, and where the register is thin.',
+  title: STATUS_TITLE,
+  description: STATUS_DESCRIPTION,
+  alternates: { canonical: '/status' },
+  ...pageSocialMeta({
+    title: STATUS_TITLE,
+    description: STATUS_DESCRIPTION,
+    path: '/status',
+  }),
 };
 
 const STATE_LABEL: Record<SourceFreshnessState, string> = {

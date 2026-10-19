@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { AnalysisHero } from '@/components/analysis-hero';
 import { PolicyBrowser } from '@/components/policy-browser';
 import { UpcomingDeadlinesRail } from '@/components/upcoming-deadlines-rail';
@@ -15,8 +16,22 @@ import {
   weekWindowEndingAt,
 } from '@/lib/this-week';
 import { summarizeManualSourceCoverage } from '@/lib/source-monitoring';
+import {
+  pageSocialMeta,
+  SITE_DESCRIPTION,
+  SITE_TITLE,
+} from '@/lib/site-seo';
 
 export const revalidate = 3600;
+
+export const metadata: Metadata = {
+  alternates: { canonical: '/' },
+  ...pageSocialMeta({
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    path: '/',
+  }),
+};
 
 export default async function HomePage() {
   const [policies, allDevelopments, meta, monitoring, articles] = await Promise.all([

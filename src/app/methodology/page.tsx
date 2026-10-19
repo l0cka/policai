@@ -8,13 +8,23 @@ import {
 import { WATCH_SOURCES } from '@/lib/pipeline/sources';
 import { summarizeManualSourceCoverage } from '@/lib/source-monitoring';
 import { MetricStrip, PageIntro } from '@/components/layout';
+import { pageSocialMeta } from '@/lib/site-seo';
 
 export const revalidate = 3600;
 
+const METHODOLOGY_TITLE = 'Methodology and verification';
+const METHODOLOGY_DESCRIPTION =
+  'How Policai discovers, verifies, reviews and publishes Australian AI policy records — and which machine feeds and APIs are available.';
+
 export const metadata: Metadata = {
-  title: 'Methodology & Verification - Policai',
-  description:
-    'How Policai discovers, verifies, reviews, and publishes Australian AI policy information.',
+  title: METHODOLOGY_TITLE,
+  description: METHODOLOGY_DESCRIPTION,
+  alternates: { canonical: '/methodology' },
+  ...pageSocialMeta({
+    title: METHODOLOGY_TITLE,
+    description: METHODOLOGY_DESCRIPTION,
+    path: '/methodology',
+  }),
 };
 
 export default async function MethodologyPage() {

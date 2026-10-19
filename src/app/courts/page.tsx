@@ -8,13 +8,23 @@ import {
   relatedByCourtPolicy,
 } from '@/lib/court-cross-links';
 import { getArticles, getPolicies } from '@/lib/data-service';
+import { pageSocialMeta } from '@/lib/site-seo';
 
 export const revalidate = 3600;
 
+const COURTS_TITLE = 'Court and tribunal AI guidance';
+const COURTS_DESCRIPTION =
+  'Verified Australian court and tribunal practice notes, directions and guidance on using AI in proceedings — for lawyers, litigants and court officers.';
+
 export const metadata: Metadata = {
-  title: 'Courts & Tribunals - Policai',
-  description:
-    'Verified Australian court practice notes, directions, and guidance governing the use of artificial intelligence in proceedings.',
+  title: COURTS_TITLE,
+  description: COURTS_DESCRIPTION,
+  alternates: { canonical: '/courts' },
+  ...pageSocialMeta({
+    title: COURTS_TITLE,
+    description: COURTS_DESCRIPTION,
+    path: '/courts',
+  }),
 };
 
 export default async function CourtsPage() {

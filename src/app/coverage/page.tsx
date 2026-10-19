@@ -7,14 +7,24 @@ import {
   parseCoverageViewState,
 } from '@/lib/coverage-data';
 import { THEMES } from '@/lib/themes';
+import { pageSocialMeta } from '@/lib/site-seo';
 import './coverage.css';
 
 export const dynamic = 'force-dynamic';
 
+const COVERAGE_TITLE = 'Australian AI policy coverage by theme';
+const COVERAGE_DESCRIPTION =
+  'Which AI policy themes each Australian jurisdiction has a verified instrument for, and where there is none.';
+
 export const metadata: Metadata = {
-  title: 'Australian AI Policy Coverage Map - Policai',
-  description:
-    'Which AI policy themes each Australian jurisdiction has a verified instrument for, and where there is none.',
+  title: COVERAGE_TITLE,
+  description: COVERAGE_DESCRIPTION,
+  alternates: { canonical: '/coverage' },
+  ...pageSocialMeta({
+    title: COVERAGE_TITLE,
+    description: COVERAGE_DESCRIPTION,
+    path: '/coverage',
+  }),
 };
 
 function toUrlSearchParams(value: Record<string, string | string[] | undefined>): URLSearchParams {
