@@ -1401,7 +1401,7 @@ describe('source ingest approval workflow', () => {
     expect(createSourceReview).not.toHaveBeenCalled();
   });
 
-  it('refreshes an ordered collector review staged under the legacy fingerprint when the page is unchanged', async () => {
+  it('refreshes an ordered collector review staged under the legacy fingerprint when the page is unchanged (#249)', async () => {
     const draft = buildDraft({
       id: 'existing-policy',
       effectiveDate: '2026-07-01',
@@ -2379,7 +2379,7 @@ describe('source ingest approval workflow', () => {
     expect(approved.sourceEvidence.contentHash).toBe('c'.repeat(64));
   });
 
-  describe('re-approval of a review approved under the legacy fingerprint', () => {
+  describe('re-approval of a review approved under the legacy fingerprint (#249)', () => {
     const reviewedDate = {
       date: '2026-07-01',
       precision: 'day' as const,
@@ -2417,7 +2417,7 @@ describe('source ingest approval workflow', () => {
       });
     });
 
-    it('keeps the manual reviewed date of a policy review', async () => {
+    it('keeps the manual reviewed date of a policy review (#249)', async () => {
       getSourceReviewById.mockResolvedValue(
         buildReview({
           status: 'approved',
@@ -2439,7 +2439,7 @@ describe('source ingest approval workflow', () => {
       });
     });
 
-    it('keeps the manual reviewed date of a timeline review', async () => {
+    it('keeps the manual reviewed date of a timeline review (#249)', async () => {
       getSourceReviewById.mockResolvedValue(
         buildReview({
           entryKind: 'timeline_event',

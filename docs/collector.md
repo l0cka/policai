@@ -176,10 +176,10 @@ as a sorted set with a `date-platform:` entry, so it misses the #250 values.
 Retrieval also computes this reading's fingerprint under both
 (`earlierContentHashes`, the #244 value first, in memory only), and
 `matchesRetrievedContent` in `src/lib/pipeline/fetch.ts` is the one
-comparison of a fresh retrieval with a stored hash. It accepts the current
-fingerprint or either earlier one and is used for watch-state snapshots,
-verified policy and timeline hashes, staged transitions and their pending
-candidates, the change-reason label, the `discoveredAt` retention of a
+comparison of a fresh retrieval with a stored hash (#249). It accepts the
+current fingerprint or either earlier one and is used for watch-state
+snapshots, verified policy and timeline hashes, staged transitions and their
+pending candidates, the change-reason label, the `discoveredAt` retention of a
 re-staged review, the register audit, and the re-staging, approval and
 publication gates. The three preimages are disjoint: only the current one
 carries a `publicationDates` list, only the #244 one carries a
