@@ -128,6 +128,7 @@ class HostIntegrationTests(unittest.TestCase):
         events = []
         obj.check_worker_identity = lambda: None
         obj.check_worker_release = lambda: None
+        obj.check_worker_database = lambda: None
 
         class Run:
             def execute(self, argv, *args, **kwargs):
