@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
 	metaDescription,
+	pageAlternates,
 	pageSocialMeta,
 	policyJsonLd,
 	policyPageDescription,
@@ -58,6 +59,29 @@ describe('siteJsonLd', () => {
 	});
 });
 
+describe('pageAlternates', () => {
+	it.each(['/', '/this-week', '/analysis/a-note'])(
+		'advertises both Atom feeds with canonical %s',
+		(canonical) => {
+			expect(pageAlternates(canonical)).toEqual({
+				canonical,
+				types: {
+					'application/atom+xml': [
+						{
+							url: 'https://policai.org/feed.xml',
+							title: 'Policai register feed',
+						},
+						{
+							url: 'https://policai.org/analysis/feed.xml',
+							title: 'Policai analysis',
+						},
+					],
+				},
+			});
+		},
+	);
+});
+
 describe('pageSocialMeta', () => {
 	it('omits page title/url/description from layout-safe defaults', () => {
 		expect(SITE_SOCIAL_DEFAULTS.openGraph).not.toHaveProperty('title');
@@ -78,6 +102,11 @@ describe('pageSocialMeta', () => {
 			url: 'https://policai.org/this-week',
 			description: 'Weekly verified developments.',
 			locale: 'en_AU',
+		});
+		expect(social.twitter).toMatchObject({
+			card: 'summary_large_image',
+			title: 'This week in Australian AI policy',
+			description: 'Weekly verified developments.',
 		});
 		expect(social.openGraph?.title).not.toBe(SITE_TITLE);
 	});

@@ -7,7 +7,7 @@ import {
   parseCoverageViewState,
 } from '@/lib/coverage-data';
 import { THEMES } from '@/lib/themes';
-import { pageSocialMeta } from '@/lib/site-seo';
+import { pageAlternates, pageSocialMeta } from '@/lib/site-seo';
 import './coverage.css';
 
 export const dynamic = 'force-dynamic';
@@ -19,7 +19,7 @@ const COVERAGE_DESCRIPTION =
 export const metadata: Metadata = {
   title: COVERAGE_TITLE,
   description: COVERAGE_DESCRIPTION,
-  alternates: { canonical: '/coverage' },
+  alternates: pageAlternates('/coverage'),
   ...pageSocialMeta({
     title: COVERAGE_TITLE,
     description: COVERAGE_DESCRIPTION,
