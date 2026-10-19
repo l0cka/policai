@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState, type ReactNode } from 'react';
+import Link from 'next/link';
 import {
   ArrowRight,
   Check,
@@ -27,6 +28,7 @@ import { parseSourceUrl } from '@/lib/source-url';
 import { EmptyState } from '@/components/ui/empty-state';
 import { formatPolicyDate } from '@/lib/format-policy-date';
 import { precisionDateTime } from '@/lib/this-week';
+import { FollowControl } from '@/components/follow-control';
 import { CourtRequirementsList } from "@/components/court-requirements-list";
 import { StatusPill } from "@/components/policy-indicators";
 import { policyPriorBodies } from '../../../../data/policy-prior-bodies';
@@ -227,6 +229,13 @@ export function PolicyDetailTabs({
               <FileText className="h-4 w-4" />
               Markdown with sources
             </a>
+            <FollowControl follow={{ kind: 'policy', id: policy.id }} label={policy.title} />
+            <Link
+              href="/following"
+              className="inline-flex min-h-11 items-center px-3 text-sm font-medium text-primary underline underline-offset-4"
+            >
+              Following
+            </Link>
           </div>
 
           {priorBody !== null ? <WhatChanged before={priorBody} after={policy.content} /> : null}
