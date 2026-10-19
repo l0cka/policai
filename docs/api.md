@@ -132,11 +132,16 @@ Set `POLICAI_CORS_ORIGIN` on the server to restrict cross-origin access to one o
 
 `/feed.xml` is an Atom feed of public developments (also linked from
 `/developments` and `/this-week`; `/developments/feed.xml` permanently
-redirects there). `/analysis/feed.xml` is an Atom feed of published analysis
-pieces. Both read through `data-service.ts`, so withheld developments and
-drafts never appear. Every interpolated value is escaped with `escapeXml`
+redirects there). There is no separate developments-only Atom path;
+`/feed.xml` is that feed. `/analysis/feed.xml` is an Atom feed of published
+analysis pieces. Both read through `data-service.ts`, so withheld developments
+and drafts never appear. Every interpolated value is escaped with `escapeXml`
 (`src/lib/xml.ts`), including text from third-party pages, so a feed is always
 well-formed XML. Machine clients that prefer JSON can use `GET /api/developments`.
+
+The public site lists these feeds and the JSON endpoints under
+[Machine feeds and API](https://policai.org/methodology#machine-feeds) on
+`/methodology`, with a short index on `/status`.
 
 ## Public MCP server
 
