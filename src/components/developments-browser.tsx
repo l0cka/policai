@@ -60,6 +60,10 @@ function developmentDate(development: Development): string {
   );
 }
 
+function developmentStamp(development: Development): number {
+  return new Date(development.publishedAt || development.detectedAt).getTime();
+}
+
 function monthKey(development: Development): string {
   return new Date(development.publishedAt || development.detectedAt)
     .toLocaleDateString('en-AU', { month: 'long', year: 'numeric', timeZone: 'Australia/Sydney' })
@@ -108,7 +112,7 @@ function DevelopmentFeed({
   return (
     <div>
       {Array.from(grouped.entries()).map(([month, developments]) => (
-        <section key={month} className="mb-4">
+        <section key={month} className="mb-3 sm:mb-4">
           <h2 className="border-b border-[var(--rule-heavy)] py-2 font-mono text-[11px] font-medium uppercase tracking-[0.12em]">{month}</h2>
           <div>
             {developments.map((development) => {
@@ -119,12 +123,16 @@ function DevelopmentFeed({
                   key={development.id}
                   id={development.id}
                   style={jurisdictionRailStyle(development.jurisdiction)}
-                  className="ink-rail scroll-mt-28 grid gap-2 border-b border-border py-4 pl-3 transition-colors duration-[var(--dur-fast)] hover:bg-[var(--row-hover)] sm:grid-cols-[6.5rem_7rem_minmax(0,1fr)] lg:grid-cols-[6.5rem_7rem_minmax(0,1fr)_9rem_10rem]"
+                  className="ink-rail scroll-mt-28 grid gap-1.5 border-b border-border py-3 pl-3 transition-colors duration-[var(--dur-fast)] hover:bg-[var(--row-hover)] sm:grid-cols-[6.5rem_7rem_minmax(0,1fr)] sm:gap-2 sm:py-4 lg:grid-cols-[6.5rem_7rem_minmax(0,1fr)_9rem_10rem]"
                 >
                   <time className="text-xs font-medium text-muted-foreground tabular">{developmentDate(development)}</time>
-                  <div>
+                  <div className="flex flex-wrap items-center gap-2 sm:block">
                     <span className={cn('inline-flex rounded-md px-2 py-1 font-mono text-[11px] uppercase tracking-[0.08em]', label === 'Consultation' || !verified ? 'bg-[var(--status-proposed-bg)] text-[var(--status-proposed)]' : 'bg-[var(--status-active-bg)] text-[var(--trust)]')}>
                       {label}
+                    </span>
+                    <span className={cn('inline-flex items-center gap-1 text-[11px] lg:hidden', verified ? 'text-[var(--trust)]' : 'text-[var(--caution)]')}>
+                      {verified ? <CheckCircle2 className="h-3 w-3" fill="currentColor" /> : <CircleAlert className="h-3 w-3" />}
+                      {verified ? 'Verified' : 'Needs review'}
                     </span>
                   </div>
                   <div className="min-w-0">
@@ -133,7 +141,17 @@ function DevelopmentFeed({
                       <ArrowUpRight className="mt-0.5 h-3.5 w-3.5 shrink-0 opacity-50 group-hover:opacity-100" />
                     </a>
                     {development.summary ? <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">{development.summary}</p> : null}
-                    <p className="mt-2 text-[11px] text-muted-foreground lg:hidden">{getJurisdictionName(development.jurisdiction)} · {development.sourceName}</p>
+                    <p className="mt-1.5 text-[11px] text-muted-foreground lg:hidden">
+                      {getJurisdictionName(development.jurisdiction)} · {development.sourceName}
+                      {development.relatedPolicyId ? (
+                        <>
+                          {' · '}
+                          <Link href={`/policies/${development.relatedPolicyId}`} className="text-primary hover:underline">
+                            In the register
+                          </Link>
+                        </>
+                      ) : null}
+                    </p>
                   </div>
                   <div className="hidden text-xs leading-5 text-muted-foreground lg:block">{getJurisdictionName(development.jurisdiction)}</div>
                   <div className="hidden lg:block">
@@ -208,7 +226,17 @@ export function DevelopmentsBrowser({
 
   const verified = developments.filter((item) => item.verification.status === 'verified');
   const radar = developments.filter((item) => item.verification.status !== 'verified');
-  const activeItems = activeTab === 'verified' ? verified : radar;
+  const activeItems = useMemo(() => {
+    const items = activeTab === 'verified' ? verified : radar;
+    if (activeTab !== 'radar') return items;
+    // Radar: higher relevance first (direct-change certainty, then classifier score), then recency.
+    return [...items].sort(
+      (a, b) =>
+        b.relevanceScore - a.relevanceScore ||
+        developmentStamp(b) - developmentStamp(a),
+    );
+  }, [activeTab, verified, radar]);
+  const filtersActive = search.length > 0 || jurisdiction !== 'all' || stream !== 'all';
   const filteredItems = useMemo(
     () =>
       activeItems.filter((item) => {
@@ -231,66 +259,89 @@ export function DevelopmentsBrowser({
   const manualCoverage = manualSourceCount > 0 ? Math.round((currentManualSourceCount / manualSourceCount) * 100) : 100;
   const overallCoverage = Math.round((automaticCoverage + manualCoverage) / 2);
 
+  const clearFilters = () => {
+    setSearch('');
+    setJurisdiction('all');
+    setStream('all');
+  };
+
   return (
-    <div className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
+    <div className="container mx-auto px-4 py-6 sm:px-6 sm:py-7 lg:px-8">
       <header className="reveal">
         <h1 className="page-title">Policy developments</h1>
-        <p className="mt-3 max-w-3xl text-sm leading-6 text-muted-foreground">
+        <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground sm:mt-3">
           Updates found on official sources. Records an editor has checked are
           listed separately from leads that are still unconfirmed.
         </p>
+        <p className="mt-2 text-xs text-muted-foreground">
+          Subscribe with the{' '}
+          <a href="/feed.xml" className="text-primary underline underline-offset-4 hover:no-underline">
+            developments feed
+          </a>
+          {' '}
+          or the{' '}
+          <a href="/api/developments" className="text-primary underline underline-offset-4 hover:no-underline">
+            JSON API
+          </a>
+          . Weekly digest on{' '}
+          <Link href="/this-week" className="text-primary underline underline-offset-4 hover:no-underline">
+            this week
+          </Link>
+          .
+        </p>
       </header>
 
-      <div className="mt-5 flex gap-4 border-b border-border sm:gap-8" role="tablist" aria-label="Development verification state">
-        <button type="button" role="tab" aria-selected={activeTab === 'verified'} onClick={() => setActiveTab('verified')} className={cn('-mb-px min-h-12 whitespace-nowrap border-b-[3px] px-1 text-base transition-colors sm:min-h-14 sm:px-2 sm:text-lg', activeTab === 'verified' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground')}>
+      <div className="mt-4 flex gap-4 border-b border-border sm:mt-5 sm:gap-8" role="tablist" aria-label="Development verification state">
+        <button type="button" role="tab" aria-selected={activeTab === 'verified'} onClick={() => setActiveTab('verified')} className={cn('-mb-px min-h-11 whitespace-nowrap border-b-[3px] px-1 text-base transition-colors sm:min-h-14 sm:px-2 sm:text-lg', activeTab === 'verified' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground')}>
           Verified<span className="hidden sm:inline"> developments</span> <span className="ml-1.5 font-mono text-sm">{verified.length}</span>
         </button>
-        <button type="button" role="tab" aria-selected={activeTab === 'radar'} onClick={() => setActiveTab('radar')} className={cn('-mb-px min-h-12 whitespace-nowrap border-b-[3px] px-1 text-base transition-colors sm:min-h-14 sm:px-2 sm:text-lg', activeTab === 'radar' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground')}>
+        <button type="button" role="tab" aria-selected={activeTab === 'radar'} onClick={() => setActiveTab('radar')} className={cn('-mb-px min-h-11 whitespace-nowrap border-b-[3px] px-1 text-base transition-colors sm:min-h-14 sm:px-2 sm:text-lg', activeTab === 'radar' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground')}>
           <span className="sm:hidden">Unconfirmed</span><span className="hidden sm:inline">Automated radar</span> <span className="ml-1.5 font-mono text-sm">{radar.length}</span>
         </button>
       </div>
 
-      <p className={cn('flex min-h-11 items-center gap-2 border-b border-border px-3 text-xs', activeTab === 'verified' ? 'bg-[var(--status-active-bg)]/35' : 'bg-[var(--status-proposed-bg)]/45')}>
-        {activeTab === 'verified' ? <CheckCircle2 className="h-4 w-4 text-[var(--trust)]" fill="currentColor" /> : <CircleAlert className="h-4 w-4 text-[var(--caution)]" />}
-        {activeTab === 'verified' ? 'Checked against the linked official source.' : 'Detected automatically and not yet editorially verified.'}
+      <p className={cn('flex min-h-10 items-center gap-2 border-b border-border px-3 text-xs sm:min-h-11', activeTab === 'verified' ? 'bg-[var(--status-active-bg)]/35' : 'bg-[var(--status-proposed-bg)]/45')}>
+        {activeTab === 'verified' ? <CheckCircle2 className="h-4 w-4 shrink-0 text-[var(--trust)]" fill="currentColor" /> : <CircleAlert className="h-4 w-4 shrink-0 text-[var(--caution)]" />}
+        {activeTab === 'verified' ? 'Checked against the linked official source.' : 'Detected automatically and not yet editorially verified. Ranked by relevance, then recency.'}
       </p>
 
-      <div className="mt-3 grid gap-8 xl:grid-cols-[minmax(0,1fr)_19rem]">
+      <div className="mt-3 grid gap-6 xl:grid-cols-[minmax(0,1fr)_19rem] xl:gap-8">
         <div className="min-w-0">
-          <div className="mb-3 flex flex-col gap-2 sm:flex-row">
+          <div className="mb-2 flex flex-col gap-2 sm:mb-3 sm:flex-row">
             <label className="relative flex-1">
               <span className="sr-only">Search developments</span>
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <input type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search developments" className="h-11 w-full rounded-md border border-input bg-background pl-10 pr-3 text-sm focus:border-primary" />
+              <input type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search developments" className="h-10 w-full rounded-md border border-input bg-background pl-10 pr-3 text-sm focus:border-primary sm:h-11" />
             </label>
-            <label className="relative sm:w-60">
+            <label className="relative sm:w-52">
               <span className="sr-only">Filter by jurisdiction</span>
               <Filter className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
-              <select value={jurisdiction} onChange={(event) => setJurisdiction(event.target.value)} className="h-11 w-full rounded-md appearance-none border border-input bg-background pl-10 pr-3 text-sm">
+              <select value={jurisdiction} onChange={(event) => setJurisdiction(event.target.value)} className="h-10 w-full appearance-none rounded-md border border-input bg-background pl-10 pr-3 text-sm sm:h-11">
                 <option value="all">All jurisdictions</option>
                 {Object.entries(JURISDICTION_NAMES).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
               </select>
             </label>
-            <label className="relative sm:w-60">
+            <label className="relative sm:w-52">
               <span className="sr-only">Filter by stream</span>
               <Filter className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
-              <select value={stream} onChange={(event) => setStream(event.target.value as 'all' | DevelopmentStream)} className="h-11 w-full rounded-md appearance-none border border-input bg-background pl-10 pr-3 text-sm">
+              <select value={stream} onChange={(event) => setStream(event.target.value as 'all' | DevelopmentStream)} className="h-10 w-full appearance-none rounded-md border border-input bg-background pl-10 pr-3 text-sm sm:h-11">
                 <option value="all">All streams</option>
                 {DEVELOPMENT_STREAMS.map((value) => <option key={value} value={value}>{getDevelopmentStreamName(value)}</option>)}
               </select>
             </label>
           </div>
+          {filtersActive && filteredItems.length > 0 ? (
+            <p className="mb-2 font-mono text-[11px] uppercase text-muted-foreground" aria-live="polite">
+              Showing {filteredItems.length} of {activeItems.length}
+              {' · '}
+              <button type="button" onClick={clearFilters} className="text-primary underline underline-offset-2 hover:no-underline">
+                Clear filters
+              </button>
+            </p>
+          ) : null}
           <DevelopmentFeed
             items={filteredItems}
-            onReset={
-              search || jurisdiction !== 'all' || stream !== 'all'
-                ? () => {
-                    setSearch('');
-                    setJurisdiction('all');
-                    setStream('all');
-                  }
-                : undefined
-            }
+            onReset={filtersActive ? clearFilters : undefined}
           />
         </div>
 

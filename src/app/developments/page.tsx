@@ -14,6 +14,13 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: 'Developments - Policai',
   description: 'Verified and emerging Australian AI policy developments from official government sources.',
+  alternates: {
+    types: {
+      'application/atom+xml': [
+        { url: 'https://policai.org/feed.xml', title: 'Policai developments' },
+      ],
+    },
+  },
 };
 
 export default async function DevelopmentsPage() {

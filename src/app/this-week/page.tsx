@@ -34,6 +34,13 @@ export const metadata: Metadata = {
   title: 'This week - Policai',
   description:
     'Verified Australian AI policy developments from the latest collected week, and upcoming dates already recorded in the register.',
+  alternates: {
+    types: {
+      'application/atom+xml': [
+        { url: 'https://policai.org/feed.xml', title: 'Policai developments' },
+      ],
+    },
+  },
 };
 
 function formatTimestamp(value: string | null): string | null {
@@ -71,7 +78,7 @@ function DevelopmentRow({ development }: { development: Development }) {
   return (
     <article
       style={jurisdictionRailStyle(development.jurisdiction)}
-      className="ink-rail grid gap-2 border-b border-border py-4 pl-3 transition-colors duration-[var(--dur-fast)] hover:bg-[var(--row-hover)] sm:grid-cols-[7rem_minmax(0,1fr)]"
+      className="ink-rail grid gap-1.5 border-b border-border py-3 pl-3 transition-colors duration-[var(--dur-fast)] hover:bg-[var(--row-hover)] sm:grid-cols-[7rem_minmax(0,1fr)] sm:gap-2 sm:py-4"
     >
       <time dateTime={new Date(development.detectedAt).toISOString()} className="text-xs font-medium text-muted-foreground tabular">
         {new Date(development.detectedAt).toLocaleDateString('en-AU', {
@@ -99,11 +106,11 @@ function DevelopmentRow({ development }: { development: Development }) {
           <ArrowUpRight className="mt-0.5 h-3.5 w-3.5 shrink-0 opacity-50 group-hover:opacity-100" />
         </a>
         {development.summary ? (
-          <p className="mt-1 text-sm leading-6 text-muted-foreground">
+          <p className="mt-1 line-clamp-2 text-sm leading-5 text-muted-foreground sm:leading-6 sm:line-clamp-none">
             {development.summary}
           </p>
         ) : null}
-        <div className="mt-2 flex flex-wrap items-center gap-3 text-[11px]">
+        <div className="mt-1.5 flex flex-wrap items-center gap-3 text-[11px] sm:mt-2">
           <span
             className={cn(
               'flex items-center gap-1.5',
@@ -134,7 +141,7 @@ function UpcomingRow({ item }: { item: UpcomingDate }) {
   return (
     <article
       style={jurisdictionRailStyle(item.jurisdiction)}
-      className="ink-rail grid gap-2 border-b border-border py-4 pl-3 transition-colors duration-[var(--dur-fast)] hover:bg-[var(--row-hover)] sm:grid-cols-[8rem_minmax(0,1fr)]"
+      className="ink-rail grid gap-1.5 border-b border-border py-3 pl-3 transition-colors duration-[var(--dur-fast)] hover:bg-[var(--row-hover)] sm:grid-cols-[8rem_minmax(0,1fr)] sm:gap-2 sm:py-4"
     >
       <div className="font-mono text-[11px] font-medium uppercase text-muted-foreground">
         <CalendarClock className="mb-1 h-3.5 w-3.5" />
@@ -166,7 +173,7 @@ function UpcomingRow({ item }: { item: UpcomingDate }) {
           {item.policyTitle}
           <ArrowUpRight className="mt-0.5 h-3.5 w-3.5 shrink-0 opacity-50 group-hover:opacity-100" />
         </a>
-        <div className="mt-2 text-[11px]">
+        <div className="mt-1.5 text-[11px] sm:mt-2">
           <Link
             href={`/policies/${item.policyId}`}
             className="text-primary hover:underline"
@@ -203,15 +210,34 @@ export default async function ThisWeekPage() {
 
   const lastCollected = formatTimestamp(meta.lastCollectedAt);
   const lastHealthy = formatTimestamp(meta.lastHealthyAt);
+  const verifiedCount = weeklyDevelopments.length;
+  const upcomingCount = upcoming.length;
 
   return (
-    <div className="mx-auto w-full max-w-[1240px] px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+    <div className="mx-auto w-full max-w-[1240px] px-4 py-6 sm:px-6 sm:py-10 lg:px-8">
       <header className="reveal">
         <h1 className="page-title">This week</h1>
-        <p className="mt-3 max-w-3xl text-sm leading-6 text-muted-foreground">
+        <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground sm:mt-3">
           Verified developments from the latest collected week, and dates to
           watch in the register. Every entry links to its source.
         </p>
+        <nav
+          aria-label="On this page"
+          className="mt-3 flex flex-wrap items-baseline gap-x-4 gap-y-1 text-sm"
+        >
+          <a href="#verified" className="text-primary underline underline-offset-4 hover:no-underline">
+            {verifiedCount} verified
+          </a>
+          <a href="#coming-up" className="text-primary underline underline-offset-4 hover:no-underline">
+            {upcomingCount} coming up
+          </a>
+          <Link href="/developments" className="text-muted-foreground underline underline-offset-4 hover:text-primary hover:no-underline">
+            Full developments
+          </Link>
+          <a href="/feed.xml" className="text-muted-foreground underline underline-offset-4 hover:text-primary hover:no-underline">
+            Atom feed
+          </a>
+        </nav>
         <p className="mt-2 flex flex-wrap gap-x-4 font-mono text-[11px] uppercase text-muted-foreground">
           {lastCollected ? <span>Last collected {lastCollected}</span> : null}
           {lastHealthy ? <span>Last fully healthy {lastHealthy}</span> : null}
@@ -219,9 +245,12 @@ export default async function ThisWeekPage() {
         {stale ? <p role="status" className="mt-4 border-l-2 border-[var(--caution)] pl-3 text-sm">Collection is more than seven days old. This is a historical snapshot, not current weekly coverage. <Link href="/methodology" className="underline">Check source health</Link>.</p> : null}
       </header>
 
-      <section className="mt-8">
+      <section id="verified" className="mt-6 scroll-mt-28 sm:mt-8">
         <h2 className="border-b border-[var(--rule-heavy)] py-2 font-mono text-[11px] font-medium uppercase tracking-[0.12em]">
           Verified developments
+          <span className="ml-2 font-mono text-muted-foreground normal-case tracking-normal">
+            {verifiedCount}
+          </span>
         </h2>
         <p className="mt-2 max-w-3xl text-xs leading-5 text-muted-foreground">
           {window ? `Detected ${dateLabel(window.start)} – ${dateLabel(window.end)}. ` : 'No usable collection timestamp is available. '}
@@ -265,13 +294,20 @@ export default async function ThisWeekPage() {
           <Link href="/developments" className="text-primary hover:underline">
             <span className="underline underline-offset-4">developments feed</span>
           </Link>
+          . Subscribe with the{' '}
+          <a href="/feed.xml" className="text-primary underline underline-offset-4 hover:no-underline">
+            Atom feed
+          </a>
           .
         </p>
       </section>
 
-      <section id="coming-up" className="mt-10 scroll-mt-32">
+      <section id="coming-up" className="mt-8 scroll-mt-28 sm:mt-10">
         <h2 className="border-b border-[var(--rule-heavy)] py-2 font-mono text-[11px] font-medium uppercase tracking-[0.12em]">
           Coming up
+          <span className="ml-2 font-mono text-muted-foreground normal-case tracking-normal">
+            {upcomingCount}
+          </span>
         </h2>
         <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
           From today, {dateLabel(now.getTime())} (Sydney): commencement dates

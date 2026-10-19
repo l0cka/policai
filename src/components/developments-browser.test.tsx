@@ -50,6 +50,41 @@ it('filters the feed by stream', () => {
   expect(
     screen.getByRole('option', { name: 'Consultations and inquiries' }),
   ).toBeInTheDocument();
+  expect(screen.getByText(/Showing 1 of 2/)).toBeInTheDocument();
+});
+
+it('surfaces the Atom feed and JSON API for machine readers', () => {
+  renderBrowser([development('inquiry', 'Senate opens inquiry into AI')]);
+
+  expect(screen.getByRole('link', { name: 'developments feed' })).toHaveAttribute(
+    'href',
+    '/feed.xml',
+  );
+  expect(screen.getByRole('link', { name: 'JSON API' })).toHaveAttribute(
+    'href',
+    '/api/developments',
+  );
+});
+
+it('ranks unconfirmed radar items by relevance before recency', () => {
+  const olderHigh = {
+    ...development('high', 'High relevance older lead'),
+    relevanceScore: 0.65,
+    detectedAt: '2026-09-01T00:00:00.000Z',
+  };
+  const newerLow = {
+    ...development('low', 'Low relevance newer lead'),
+    relevanceScore: 0.2,
+    detectedAt: '2026-09-20T00:00:00.000Z',
+  };
+  renderBrowser([newerLow, olderHigh]);
+
+  const titles = screen.getAllByRole('link').map((link) => link.textContent);
+  const highIndex = titles.findIndex((text) => text?.includes('High relevance'));
+  const lowIndex = titles.findIndex((text) => text?.includes('Low relevance'));
+  expect(highIndex).toBeGreaterThanOrEqual(0);
+  expect(lowIndex).toBeGreaterThanOrEqual(0);
+  expect(highIndex).toBeLessThan(lowIndex);
 });
 
 it('explains an empty filter result and offers a reset', () => {
