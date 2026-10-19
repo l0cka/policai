@@ -2162,7 +2162,7 @@ describe('source ingest approval workflow', () => {
     expect(updateSourceReview).not.toHaveBeenCalled();
   });
 
-  it('refuses approval when the page gained dcterms.created after staging under its current fingerprint', async () => {
+  it('refuses approval when the page gained dcterms.created after staging under its current fingerprint (#262)', async () => {
     const { retrieveSource: retrieveLive } =
       await vi.importActual<typeof import('@/lib/pipeline/fetch')>(
         '@/lib/pipeline/fetch',
@@ -3198,7 +3198,7 @@ describe('source ingest approval workflow', () => {
     expect(updateSourceReview).not.toHaveBeenCalled();
   });
 
-  it('requires re-approval when the page gained dcterms.created after approval under its current fingerprint', async () => {
+  it('requires re-approval when the page gained dcterms.created after approval under its current fingerprint (#262)', async () => {
     const { retrieveSource: retrieveLive } =
       await vi.importActual<typeof import('@/lib/pipeline/fetch')>(
         '@/lib/pipeline/fetch',

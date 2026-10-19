@@ -1498,7 +1498,7 @@ describe('matchesRetrievedContent', () => {
     expect(matchesRetrievedContent(current, legacyHash)).toBe(true);
   });
 
-  it('rejects the current fingerprint of a page that lacked dcterms.created once the page gains it', async () => {
+  it('rejects the current fingerprint of a page that lacked dcterms.created once the page gains it (#262)', async () => {
     const before = await retrievePage('');
     const after = await retrievePage(
       '<meta name="dcterms.created" content="2026-06-01">',
@@ -1506,7 +1506,7 @@ describe('matchesRetrievedContent', () => {
     expect(matchesRetrievedContent(after, before.evidence.contentHash)).toBe(false);
   });
 
-  it('rejects the current fingerprint of a page that lacked a generator once it becomes a GovCMS page', async () => {
+  it('rejects the current fingerprint of a page that lacked a generator once it becomes a GovCMS page (#262)', async () => {
     const before = await retrievePage('<meta name="dcterms.date" content="2025-03-01">');
     const after = await retrievePage(
       '<meta name="Generator" content="Drupal 10 (https://www.drupal.org)"><meta name="dcterms.date" content="2025-03-01">',
