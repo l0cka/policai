@@ -26,21 +26,31 @@ import {
 } from '@/types';
 import type { UpcomingPolicyDate as UpcomingDate } from '@/lib/this-week';
 import { cn } from '@/lib/utils';
+import { pageSocialMeta } from '@/lib/site-seo';
 
 // Upcoming dates must advance even when collection is stalled.
 export const dynamic = 'force-dynamic';
 
+const THIS_WEEK_TITLE = 'This week in Australian AI policy';
+const THIS_WEEK_DESCRIPTION =
+  'Verified Australian AI policy developments from the latest collected week, plus upcoming compliance, consultation and commencement dates already in the register.';
+
 export const metadata: Metadata = {
-  title: 'This week - Policai',
-  description:
-    'Verified Australian AI policy developments from the latest collected week, and upcoming dates already recorded in the register.',
+  title: THIS_WEEK_TITLE,
+  description: THIS_WEEK_DESCRIPTION,
   alternates: {
+    canonical: '/this-week',
     types: {
       'application/atom+xml': [
         { url: 'https://policai.org/feed.xml', title: 'Policai developments' },
       ],
     },
   },
+  ...pageSocialMeta({
+    title: THIS_WEEK_TITLE,
+    description: THIS_WEEK_DESCRIPTION,
+    path: '/this-week',
+  }),
 };
 
 function formatTimestamp(value: string | null): string | null {

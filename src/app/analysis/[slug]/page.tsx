@@ -44,32 +44,30 @@ function imageJsonLd(image: ArticleImage) {
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params;
   const article = await getArticleBySlug(slug);
-  if (!article) return { title: 'Analysis not found - Policai' };
+  if (!article) return { title: 'Analysis not found' };
   if (article.status === 'withdrawn') {
     return {
-      title: `Withdrawn: ${article.title} - Policai`,
+      title: `Withdrawn: ${article.title}`,
       robots: { index: false },
     };
   }
   return {
-    title: `${article.title} - Policai`,
+    title: article.title,
     description: article.summary,
-    ...(article.image
-      ? {
-          openGraph: {
-            type: 'article',
-            title: article.title,
-            description: article.summary,
-            images: [imageUrl(article.image)],
-          },
-          twitter: {
-            card: 'summary_large_image',
-            title: article.title,
-            description: article.summary,
-            images: [imageUrl(article.image)],
-          },
-        }
-      : {}),
+    alternates: { canonical: `/analysis/${article.slug}` },
+    openGraph: {
+      type: 'article',
+      url: `${SITE_URL}/analysis/${article.slug}`,
+      title: article.title,
+      description: article.summary,
+      ...(article.image ? { images: [imageUrl(article.image)] } : {}),
+    },
+    twitter: {
+      card: article.image ? 'summary_large_image' : 'summary',
+      title: article.title,
+      description: article.summary,
+      ...(article.image ? { images: [imageUrl(article.image)] } : {}),
+    },
   };
 }
 

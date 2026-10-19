@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
 const links = [
+  { href: '/this-week', label: 'This week', external: false },
+  { href: '/courts', label: 'Courts', external: false },
+  { href: '/analysis', label: 'Analysis', external: false },
   { href: '/methodology', label: 'Methodology', external: false },
   { href: '/feed.xml', label: 'RSS', external: false },
   { href: '/api/policies', label: 'API', external: false },
@@ -14,8 +17,9 @@ export function Footer() {
           button, so they are never hidden when focused. */}
       <div className="container mx-auto flex flex-col gap-4 px-4 pb-24 pt-6 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
         <p className="max-w-3xl text-xs leading-5 text-muted-foreground">
-          An open register of Australian AI policy. Every record is checked
-          against its official source, and the data is versioned in Git.
+          An open register of Australian AI policy for practitioners. Every
+          record is checked against its official source, and the data is
+          versioned in Git.
         </p>
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-muted-foreground">
           {links.map((link) =>

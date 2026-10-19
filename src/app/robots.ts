@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next';
+import { SITE_URL } from '@/lib/site-seo';
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -6,9 +7,12 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/admin/', '/api/'],
+        // /api/ is machine JSON (already linked from methodology); keep crawlers
+        // on HTML. Retired routes return 404 — discourage re-crawl noise.
+        disallow: ['/admin/', '/api/', '/map', '/framework', '/blog'],
       },
     ],
-    sitemap: 'https://policai.org/sitemap.xml',
+    sitemap: `${SITE_URL}/sitemap.xml`,
+    host: SITE_URL,
   };
 }
