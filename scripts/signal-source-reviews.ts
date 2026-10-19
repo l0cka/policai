@@ -1,16 +1,20 @@
 #!/usr/bin/env tsx
 /**
- * Cards for pending source reviews, and one approve or dismiss.
+ * Cards for pending source reviews, and a laptop recovery apply path.
  *
  *   npm run signal:reviews
  *   npm run signal:reviews -- apply --action=approve --id=<id> --reviewer=<name>
  *   npm run signal:reviews -- apply --action=dismiss --id=<id> --reviewer=<name>
+ *   npm run signal:reviews -- apply --action=publish --id=<id> --admin-token=<token>
+ *   npm run signal:reviews -- apply --action=verify --id=<policy-id> --reviewer=<name> --admin-token=<token>
  *
- * Apply runs only at a terminal, outside CI and agent sessions. The human
- * must type the reviewer name to confirm it. The approval notes record the
- * OS user, host, and time. Approve calls approveStagedSource with the id,
- * that reviewer, and those notes. Dismiss calls rejectStagedSource. Neither
- * command publishes. There is no environment variable that skips the prompt.
+ * Product path for the Grok Bot is HTTPS GET/POST /api/signal/reviews with
+ * POLICAI_SIGNAL_TOKEN (see docs/collector.md). This CLI is recovery only
+ * when that endpoint is down: TTY confirm for approve/dismiss, or a matching
+ * POLICAI_MCP_ADMIN_TOKEN for token-gated recovery apply. CI and Cursor /
+ * Claude agent sessions are refused. Publish and verify always need the
+ * admin token. Neither path invents a verified stamp without an explicit
+ * verify action for a named policy id.
  */
 
 import readline from "node:readline";
@@ -18,7 +22,9 @@ import { pathToFileURL } from "node:url";
 import { getSourceReviews } from "@/lib/data-service";
 import {
 	approveStagedSource,
+	publishStagedSource,
 	rejectStagedSource,
+	verifyRegisterRecord,
 } from "@/lib/source-ingest";
 import {
 	currentSignalRunner,
@@ -47,6 +53,9 @@ async function main() {
 		approve: ({ id, actor, approvalNotes }) =>
 			approveStagedSource({ id, actor, approvalNotes }),
 		reject: (id, reason) => rejectStagedSource(id, reason),
+		publish: (id) => publishStagedSource(id),
+		verify: ({ policyId, actor, notes }) =>
+			verifyRegisterRecord({ policyId, actor, notes }),
 		confirmReviewer,
 		runner: currentSignalRunner(),
 	});

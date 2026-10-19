@@ -13,8 +13,10 @@ import {
   handleRecordManualSourceReview,
   handleRejectStagedSource,
   handleReviewCourtRequirement,
+  handleSignalDecision,
   handleStageSourceCapture,
   handleStageSourceUrl,
+  handleVerifyRegisterRecord,
   toToolText,
 } from './tool-handlers';
 import {
@@ -320,6 +322,66 @@ server.registerTool(
     },
   },
   async (input) => toToolText(await handleRejectStagedSource(input)),
+);
+
+server.registerTool(
+  'verify_register_record',
+  {
+    title: 'Verify register record',
+    description:
+      'Stamps a public register policy as editorially verified after a named human decision (Policai Signal). Sets lastReviewedAt and verification.status=verified. Refuses withheld, unverified, and trashed records. Requires an allowlisted Signal reviewer (POLICAI_SIGNAL_REVIEWERS, default Daniel) and POLICAI_MCP_ADMIN_TOKEN. Agents must not call this unless that human named the policy id verified.',
+    inputSchema: {
+      policyId: z.string().min(1),
+      reviewer: z.string().min(1),
+      notes: z.string().optional(),
+      adminToken: z.string(),
+    },
+    annotations: {
+      readOnlyHint: false,
+      idempotentHint: false,
+      destructiveHint: true,
+    },
+  },
+  async (input) => toToolText(await handleVerifyRegisterRecord(input)),
+);
+
+server.registerTool(
+  'signal_decision',
+  {
+    title: 'Signal decision',
+    description:
+      'Laptop recovery only (not the Grok Bot product path). Approve, dismiss, publish, or verify a staged review via MCP when HTTPS /api/signal/reviews is unavailable. Product path: GET/POST /api/signal/reviews with POLICAI_SIGNAL_TOKEN. Approve/dismiss/verify require an allowlisted reviewer (default Daniel Alkurdi). Publish requires a previously approved review. Requires POLICAI_MCP_ADMIN_TOKEN. Does not commit or push; the host must validate and commit after a write.',
+    inputSchema: {
+      action: z.enum(['approve', 'dismiss', 'publish', 'verify']),
+      id: z.string().min(1),
+      reviewer: z.string().min(1).optional(),
+      notes: z.string().optional(),
+      proposedRecord: z.record(z.string(), z.unknown()).optional(),
+      expectedTargetRevisionHash: z.string().regex(/^[a-f0-9]{64}$/).optional(),
+      officialSourceUrl: z.string().url().optional(),
+      manualExtraction: z.object({
+        method: z.enum(['ocr', 'manual_transcription']),
+        title: z.string().min(1),
+        text: z.string().min(20),
+        publishedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+        publishedAtPrecision: z.enum(['day', 'month', 'year']).optional(),
+        notes: z.string().min(1),
+      }).optional(),
+      reviewedDate: z.object({
+        date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+        precision: z.enum(['day', 'month', 'year']),
+        notes: z.string().min(20),
+      }).optional(),
+      browserCapture: browserCaptureSchema.optional(),
+      adminToken: z.string(),
+    },
+    annotations: {
+      readOnlyHint: false,
+      idempotentHint: false,
+      destructiveHint: true,
+    },
+  },
+  async (input) => toToolText(await handleSignalDecision(input)),
 );
 
 async function main() {

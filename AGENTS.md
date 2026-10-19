@@ -70,7 +70,7 @@ npm run collect        # one collection pass (-- --dry-run to preview, -- --sour
 npm run audit:sources  # live audit of automatic watch sources
 npm run audit:register # compare curated source fingerprints
 npm run mcp            # local MCP source-ingest server
-npm run signal:reviews # pending source-review cards; apply needs a terminal confirmation, --id, and --reviewer
+npm run signal:reviews # pending cards reprint; product Signal path is HTTPS /api/signal/reviews (not this CLI)
 ```
 
 ## Project Structure
@@ -91,10 +91,10 @@ src/
 │   ├── agencies/                 # Temporary 307 to apsaitracker.app (owner's permission; force-dynamic
 │   │                             #   so no CDN caches it). To withdraw, restore notFound()
 │   ├── policies/[id]/            # Policy detail (server) + client tabs
-│   └── api/                      # READ-ONLY public API, one route.ts each:
+│   └── api/                      # Public read API + Signal write exception:
 │                                 #   policies, policies/[id], agencies, timeline, network,
-│                                 #   status, developments, court-requirements (JSON), and
-│                                 #   policies/[id]/markdown (text/markdown)
+│                                 #   status, developments, court-requirements (JSON),
+│                                 #   policies/[id]/markdown, and signal/reviews (tokenized)
 ├── components/                   # UI, layout, visualisation components
 ├── lib/
 │   ├── data-service.ts           # File-backed reads/writes over the repo JSON
@@ -480,7 +480,10 @@ Use the display-name helpers (`getPolicyTypeName()`, `getPolicyStatusName()`, `g
 None are required to run the site or collector. Optional (see `.env.example`):
 
 ```bash
-POLICAI_MCP_ADMIN_TOKEN=  # local MCP source-ingest writes
+POLICAI_SIGNAL_TOKEN=     # HTTPS /api/signal/* Bearer token (Grok Bot product path)
+POLICAI_SIGNAL_GITHUB_TOKEN= # host-only; opens Signal persistence PR (or push main)
+POLICAI_SIGNAL_REVIEWERS= # allowlist for Signal reviewer (default: Daniel Alkurdi,Daniel)
+POLICAI_MCP_ADMIN_TOKEN=  # local MCP source-ingest writes (laptop recovery; not the bot path)
 USE_CLAUDE_CLASSIFIER=    # opt into Claude classification instead of the keyword heuristic (set on the collection host)
 FIRECRAWL_URL=            # self-hosted Firecrawl base URL, defaults to http://127.0.0.1:3003
 CLASSIFIER_BASE_URL=      # chat-completions base URL used when USE_CLAUDE_CLASSIFIER is set
