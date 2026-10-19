@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { diffPolicyText } from './policy-diff';
+import type { Policy } from '@/types';
+import { diffPolicyText, retainedPriorBody } from './policy-diff';
+import { policyRevisionHash } from './policy-revision';
 
 describe('diffPolicyText', () => {
   it('returns an added line and keeps the shared line', () => {
@@ -32,5 +34,44 @@ describe('diffPolicyText', () => {
     );
     expect(diff.removed).toEqual(['Old sentence.']);
     expect(diff.added).toEqual(['New sentence.']);
+  });
+});
+
+describe('retainedPriorBody', () => {
+  it('returns the one retained body for a record', () => {
+    expect(
+      retainedPriorBody(
+        [{ policyId: 'record-1', content: 'Previous instrument text.' }],
+        'record-1',
+      ),
+    ).toBe('Previous instrument text.');
+  });
+
+  it('returns null when the record has no entry, a blank body, or two bodies', () => {
+    const entries = [
+      { policyId: 'blank', content: '   ' },
+      { policyId: 'missing-body' },
+      { policyId: 'twice', content: 'First.' },
+      { policyId: 'twice', content: 'Second.' },
+    ];
+    expect(retainedPriorBody(entries, 'absent')).toBeNull();
+    expect(retainedPriorBody(entries, 'blank')).toBeNull();
+    expect(retainedPriorBody(entries, 'missing-body')).toBeNull();
+    expect(retainedPriorBody(entries, 'twice')).toBeNull();
+  });
+
+  it('keeps policyRevisionHash inputs free of prior text', () => {
+    const policy = {
+      id: 'record-1',
+      content: 'Current body.',
+      dates: [],
+      verification: { status: 'verified', source: { url: 'https://example.gov.au/policy' } },
+    } as Policy;
+    const hashed = policyRevisionHash(policy);
+    expect(retainedPriorBody([{ policyId: policy.id, content: 'Old body.' }], policy.id)).toBe(
+      'Old body.',
+    );
+    expect(policyRevisionHash(policy)).toBe(hashed);
+    expect(policyRevisionHash({ ...policy, priorContent: 'Old body.' } as Policy)).not.toBe(hashed);
   });
 });

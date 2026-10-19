@@ -29,7 +29,8 @@ import { formatPolicyDate } from '@/lib/format-policy-date';
 import { precisionDateTime } from '@/lib/this-week';
 import { CourtRequirementsList } from "@/components/court-requirements-list";
 import { StatusPill } from "@/components/policy-indicators";
-import { diffPolicyText } from '@/lib/policy-diff';
+import { policyPriorBodies } from '../../../../data/policy-prior-bodies';
+import { diffPolicyText, retainedPriorBody } from '@/lib/policy-diff';
 import { splitSummaryBlocks } from '@/lib/summary-blocks';
 import { cn } from '@/lib/utils';
 
@@ -63,17 +64,6 @@ function getRequirements(policy: Policy): string[] {
 
 function StatusBadge({ policy }: { policy: Policy }) {
   return <StatusPill status={policy.status} dates={policy.dates} />;
-}
-
-/**
- * Optional sibling of `content`. Public reads spread the stored object, so a
- * present string survives without a required JSON field. Missing, blank, and
- * non-string values are not a retained prior body.
- */
-function retainedPriorBody(policy: Policy): string | null {
-  const value = (policy as Policy & { priorContent?: unknown }).priorContent;
-  if (typeof value !== 'string' || value.trim() === '') return null;
-  return value;
 }
 
 function WhatChanged({ before, after }: { before: string; after: string }) {
@@ -164,7 +154,7 @@ export function PolicyDetailTabs({
   const sourceHost = policy.sourceUrl
     ? parseSourceUrl(policy.sourceUrl).hostname.replace(/^www\./, '')
     : null;
-  const priorBody = retainedPriorBody(policy);
+  const priorBody = retainedPriorBody(policyPriorBodies, policy.id);
 
   const downloadPolicy = () => {
     const blob = new Blob([JSON.stringify(policy, null, 2)], {

@@ -3,6 +3,31 @@ export interface PolicyTextDiff {
   removed: string[];
 }
 
+/**
+ * Prior instrument text stored beside the register, not on the policy.
+ * `content` is optional: omit it, or leave it blank, when nothing is retained.
+ * `policyRevisionHash` never reads this value.
+ */
+export interface PolicyPriorBody {
+  policyId: string;
+  content?: string;
+}
+
+/** The retained prior body for one record, or null when none is stored. */
+export function retainedPriorBody(
+  entries: readonly PolicyPriorBody[],
+  policyId: string,
+): string | null {
+  const matches = entries.filter(
+    (entry) =>
+      entry.policyId === policyId &&
+      typeof entry.content === 'string' &&
+      entry.content.trim() !== '',
+  );
+  if (matches.length !== 1) return null;
+  return matches[0].content ?? null;
+}
+
 /** Split on newlines. An empty body has no lines. */
 function linesOf(text: string): string[] {
   return text.length === 0 ? [] : text.split(/\r?\n/);
