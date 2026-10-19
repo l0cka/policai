@@ -125,6 +125,8 @@ INSERT INTO sources (name, url, fetch_method, item_link_pattern, stream_hint) VA
   ('Pine Rivers Community Legal Service', 'https://encircle.org.au/feed/', 'rss', NULL, 'news'),
   ('Prisoners'' Legal Service', 'https://plsqld.com/feed/', 'rss', NULL, 'news'),
   ('Queensland Advocacy for Inclusion', 'https://qai.org.au/feed/', 'rss', NULL, 'news'),
+  -- Retired 2026-10-19 (#390): Cloudflare refuses the collector identity;
+  -- seed deactivates below. Do not re-activate without an allow-list path.
   ('Redfern Legal Centre', 'https://rlc.org.au/rss.xml', 'rss', NULL, 'news'),
   ('Ruah Legal Services', 'https://ruahlegal.org.au/feed/', 'rss', NULL, 'news'),
   ('Seniors Rights Service', 'https://seniorsrightsservice.org.au/feed/', 'rss', NULL, 'news'),
@@ -195,6 +197,10 @@ UPDATE sources SET active = false WHERE url IN (
   'https://www.maddocks.com.au/insights',               -- bot challenge
   'https://lawfoundation.net.au/'                       -- bot challenge
 );
+-- Cloudflare refuses the collector identity (GitHub #390, approved
+-- 2026-10-19). Migration: db/migrations/2026-10-19-retire-redfern-legal-centre.sql.
+-- Re-applied on every seed so a fresh database matches production.
+UPDATE sources SET active = false WHERE url = 'https://rlc.org.au/rss.xml';
 -- Terms forbid reproduction: headline, link and date only.
 UPDATE sources SET allow_excerpt = false WHERE url IN (
   'https://www.ashurst.com/en/insights/all-insights/',
