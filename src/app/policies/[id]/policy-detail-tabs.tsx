@@ -29,6 +29,7 @@ import { formatPolicyDate } from '@/lib/format-policy-date';
 import { precisionDateTime } from '@/lib/this-week';
 import { CourtRequirementsList } from "@/components/court-requirements-list";
 import { StatusPill } from "@/components/policy-indicators";
+import { diffPolicyText } from '@/lib/policy-diff';
 import { splitSummaryBlocks } from '@/lib/summary-blocks';
 import { cn } from '@/lib/utils';
 
@@ -62,6 +63,52 @@ function getRequirements(policy: Policy): string[] {
 
 function StatusBadge({ policy }: { policy: Policy }) {
   return <StatusPill status={policy.status} dates={policy.dates} />;
+}
+
+/**
+ * Optional sibling of `content`. Public reads spread the stored object, so a
+ * present string survives without a required JSON field. Missing, blank, and
+ * non-string values are not a retained prior body.
+ */
+function retainedPriorBody(policy: Policy): string | null {
+  const value = (policy as Policy & { priorContent?: unknown }).priorContent;
+  if (typeof value !== 'string' || value.trim() === '') return null;
+  return value;
+}
+
+function WhatChanged({ before, after }: { before: string; after: string }) {
+  const diff = useMemo(() => diffPolicyText(before, after), [before, after]);
+  const unchanged = diff.added.length === 0 && diff.removed.length === 0;
+
+  return (
+    <section className="mt-6 min-w-0 max-w-4xl border border-border p-4" aria-labelledby="what-changed-heading">
+      <h2 id="what-changed-heading" className="section-title">What changed</h2>
+      {unchanged ? (
+        <p className="mt-3 text-sm leading-6">The text is unchanged.</p>
+      ) : (
+        <ul className="mt-3 min-w-0 space-y-2">
+          {diff.removed.map((line, index) => (
+            <li
+              key={`removed-${index}`}
+              className="min-w-0 bg-[var(--status-repealed-bg)] px-3 py-2 text-sm leading-6 text-[var(--status-repealed)]"
+            >
+              <span className="font-mono text-[11px] uppercase tracking-[0.08em]">Removed</span>
+              <del className="mt-1 block whitespace-pre-wrap break-words">{line.length > 0 ? line : ' '}</del>
+            </li>
+          ))}
+          {diff.added.map((line, index) => (
+            <li
+              key={`added-${index}`}
+              className="min-w-0 bg-[var(--status-active-bg)] px-3 py-2 text-sm leading-6 text-[var(--status-active)]"
+            >
+              <span className="font-mono text-[11px] uppercase tracking-[0.08em]">Added</span>
+              <span className="mt-1 block whitespace-pre-wrap break-words">{line.length > 0 ? line : ' '}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  );
 }
 
 function SummaryText({ text }: { text: string }) {
@@ -117,6 +164,7 @@ export function PolicyDetailTabs({
   const sourceHost = policy.sourceUrl
     ? parseSourceUrl(policy.sourceUrl).hostname.replace(/^www\./, '')
     : null;
+  const priorBody = retainedPriorBody(policy);
 
   const downloadPolicy = () => {
     const blob = new Blob([JSON.stringify(policy, null, 2)], {
@@ -190,6 +238,8 @@ export function PolicyDetailTabs({
               Markdown with sources
             </a>
           </div>
+
+          {priorBody !== null ? <WhatChanged before={priorBody} after={policy.content} /> : null}
 
           <div className="no-scrollbar mt-5 overflow-x-auto border-b border-border">
             <div className="flex min-w-max gap-8" role="tablist" aria-label="Policy sections">
