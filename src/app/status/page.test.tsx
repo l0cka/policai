@@ -131,3 +131,31 @@ it('names the hosts whose robots.txt has not been readable for 3 or more runs', 
       .map((item) => item.textContent),
   ).toEqual(['www.alpha.gov.au', 'www.beta.gov.au']);
 });
+
+it('lists machine feeds and API surfaces with links to methodology', async () => {
+  render(await StatusPage());
+  const section = screen
+    .getByRole('heading', { name: 'Machine feeds and API' })
+    .closest('section');
+  expect(section).not.toBeNull();
+  const scoped = within(section as HTMLElement);
+  expect(scoped.getByRole('link', { name: '/feed.xml' })).toHaveAttribute(
+    'href',
+    '/feed.xml',
+  );
+  expect(scoped.getByRole('link', { name: '/api/policies' })).toHaveAttribute(
+    'href',
+    '/api/policies',
+  );
+  expect(
+    scoped.getByRole('link', { name: '/api/developments' }),
+  ).toHaveAttribute('href', '/api/developments');
+  expect(scoped.getByRole('link', { name: '/api/status' })).toHaveAttribute(
+    'href',
+    '/api/status',
+  );
+  expect(scoped.getByRole('link', { name: 'methodology' })).toHaveAttribute(
+    'href',
+    '/methodology#machine-feeds',
+  );
+});
