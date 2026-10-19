@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { selectAnalysisHero } from '@/lib/analysis-hero';
-import type { ArticleType, PublishedArticle } from '@/types';
+import { analysisHeroIndex, analysisHeroSlides } from '@/lib/analysis-hero';
+import type { Article, ArticleType, PublishedArticle } from '@/types';
 
 function piece(slug: string, type: ArticleType): PublishedArticle {
   return {
@@ -18,47 +18,33 @@ function piece(slug: string, type: ArticleType): PublishedArticle {
   } as PublishedArticle;
 }
 
-describe('selectAnalysisHero', () => {
-  it('returns null when there are no pieces', () => {
-    expect(selectAnalysisHero([])).toBeNull();
-  });
-
-  it('uses a lone piece as the lead with nothing beside it', () => {
-    const only = piece('only-note', 'instrument_note');
-    expect(selectAnalysisHero([only])).toEqual({ lead: only, more: [] });
-  });
-
-  it('leads with the newest weekly briefing even when notes are newer', () => {
-    const note = piece('newest-note', 'instrument_note');
-    const older = piece('older-weekly', 'weekly_briefing');
-    const oldest = piece('oldest-weekly', 'weekly_briefing');
-    const result = selectAnalysisHero([note, older, oldest]);
-    expect(result?.lead).toBe(older);
-    expect(result?.more).toEqual([note]);
-  });
-
-  it('falls back to the newest piece when there is no weekly briefing', () => {
-    const explainer = piece('newest-explainer', 'explainer');
-    const note = piece('older-note', 'instrument_note');
-    const result = selectAnalysisHero([explainer, note]);
-    expect(result?.lead).toBe(explainer);
-    expect(result?.more).toEqual([note]);
-  });
-
-  it('shows at most three notes and explainers, newest first, never the lead', () => {
-    const weekly = piece('weekly', 'weekly_briefing');
-    const others = ['a', 'b', 'c', 'd'].map((id, index) =>
-      piece(id, index % 2 ? 'explainer' : 'instrument_note'),
-    );
-    const extraWeekly = piece('earlier-weekly', 'weekly_briefing');
-    const result = selectAnalysisHero([others[0], weekly, others[1], extraWeekly, others[2], others[3]]);
-    expect(result?.lead).toBe(weekly);
-    expect(result?.more).toEqual([others[0], others[1], others[2]]);
-  });
-
-  it('shows the pieces that exist when fewer than three remain', () => {
-    const weekly = piece('weekly', 'weekly_briefing');
+describe('analysisHeroSlides', () => {
+  it('keeps published pieces in the order given', () => {
     const note = piece('note', 'instrument_note');
-    expect(selectAnalysisHero([weekly, note])?.more).toEqual([note]);
+    const weekly = piece('weekly', 'weekly_briefing');
+    expect(analysisHeroSlides([note, weekly])).toEqual([note, weekly]);
+  });
+
+  it('returns an empty list when there are no pieces', () => {
+    expect(analysisHeroSlides([])).toEqual([]);
+  });
+
+  it('drops drafts and withdrawn pieces', () => {
+    const published = piece('published', 'instrument_note');
+    const draft = { ...piece('draft', 'explainer'), status: 'draft' } as Article;
+    const withdrawn = { ...piece('withdrawn', 'instrument_note'), status: 'withdrawn' } as Article;
+    expect(analysisHeroSlides([draft, published, withdrawn])).toEqual([published]);
+  });
+});
+
+describe('analysisHeroIndex', () => {
+  it('wraps forward and back', () => {
+    expect(analysisHeroIndex(0, 1, 3)).toBe(1);
+    expect(analysisHeroIndex(2, 1, 3)).toBe(0);
+    expect(analysisHeroIndex(0, -1, 3)).toBe(2);
+  });
+
+  it('stays at zero when there is nothing to show', () => {
+    expect(analysisHeroIndex(4, 1, 0)).toBe(0);
   });
 });

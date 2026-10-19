@@ -1069,6 +1069,213 @@
   }
 }
 
+/*
+ * Register analysis hero. Compact strip: about half the first viewport on a
+ * typical desktop so the register (filters or first rows) shows without a
+ * scroll. Slides share one grid cell and crossfade. The Bayer dither tile is
+ * static CSS (no JS, no animated noise); reduced-motion leaves it still.
+ */
+.analysis-hero {
+  --analysis-hero-dither: url('/images/analysis-hero-dither.svg');
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin-bottom: var(--space-8);
+  padding: var(--space-4) var(--space-5) var(--space-4);
+  background: color-mix(in srgb, var(--primary) 7%, var(--background));
+  border-top: 3px solid var(--primary);
+}
+.analysis-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-color: var(--primary);
+  opacity: light-dark(0.26, 0.34);
+  -webkit-mask-image: var(--analysis-hero-dither);
+  -webkit-mask-size: 5px 5px;
+  -webkit-mask-repeat: repeat;
+  -webkit-mask-mode: luminance;
+  mask-image: var(--analysis-hero-dither);
+  mask-size: 5px 5px;
+  mask-repeat: repeat;
+  mask-mode: luminance;
+}
+/* Soft parchment wash on the left so the title stays clear over the dither. */
+.analysis-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    color-mix(in srgb, var(--background) 88%, transparent) 0%,
+    color-mix(in srgb, var(--background) 55%, transparent) 38%,
+    transparent 68%
+  );
+}
+.analysis-hero > * {
+  position: relative;
+  z-index: 1;
+}
+.analysis-hero-stage {
+  display: grid;
+}
+.analysis-hero-slide {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: var(--space-4);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(0.5rem);
+  pointer-events: none;
+  transition:
+    opacity calc(var(--dur-slow) * 2) var(--ease-out-quint),
+    transform calc(var(--dur-slow) * 2) var(--ease-out-quint),
+    visibility 0s linear calc(var(--dur-slow) * 2);
+}
+.analysis-hero-slide[data-current="true"] {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  pointer-events: auto;
+  z-index: 1;
+  transition:
+    opacity calc(var(--dur-slow) * 2) var(--ease-out-quint),
+    transform calc(var(--dur-slow) * 2) var(--ease-out-quint),
+    visibility 0s linear 0s;
+}
+.analysis-hero-title {
+  margin-top: var(--space-1);
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 1rem + 1.1vw, 1.85rem);
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.analysis-hero-teaser {
+  margin-top: var(--space-2);
+  max-width: 40rem;
+  font-size: var(--type-ui);
+  line-height: 1.4;
+  color: var(--muted-foreground);
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}
+.analysis-hero-layout {
+  display: grid;
+  gap: var(--space-4);
+  align-items: center;
+}
+@media (min-width: 40rem) {
+  .analysis-hero-layout {
+    grid-template-columns: minmax(0, 1fr) 7.5rem;
+  }
+  .analysis-hero-layout-text {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (min-width: 64rem) {
+  .analysis-hero-layout {
+    grid-template-columns: minmax(0, 1fr) 9.5rem;
+    gap: var(--space-5);
+  }
+}
+.analysis-hero-figure {
+  display: none;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius);
+}
+.analysis-hero-figure::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-color: var(--primary);
+  opacity: light-dark(0.5, 0.45);
+  mix-blend-mode: multiply;
+  -webkit-mask-image: var(--analysis-hero-dither);
+  mask-image: var(--analysis-hero-dither);
+  -webkit-mask-size: 3px 3px;
+  mask-size: 3px 3px;
+  -webkit-mask-repeat: repeat;
+  mask-repeat: repeat;
+  -webkit-mask-mode: luminance;
+  mask-mode: luminance;
+}
+.analysis-hero-figure img {
+  filter: grayscale(0.55) contrast(1.3) brightness(1.04);
+}
+@media (min-width: 40rem) {
+  .analysis-hero-figure {
+    display: block;
+  }
+}
+.analysis-hero-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+  margin-top: var(--space-3);
+}
+.analysis-hero-control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding-inline: var(--space-4);
+  border: 1px solid var(--rule);
+  background: var(--background);
+  font-family: var(--font-mono);
+  font-size: var(--type-label);
+  font-weight: 500;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+}
+.analysis-hero-control:hover {
+  color: var(--primary);
+}
+.analysis-hero-control:focus-visible,
+.analysis-hero-dot:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+.analysis-hero-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 2.75rem;
+  background: transparent;
+}
+.analysis-hero-dot > span {
+  width: 0.5rem;
+  height: 0.5rem;
+  border: 1px solid var(--foreground);
+  border-radius: var(--radius-pill);
+}
+.analysis-hero-dot[aria-current="true"] > span {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
 /* Respect reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -1089,6 +1296,12 @@
   tr:hover > .ink-rail::before,
   tr:focus-within > .ink-rail::before {
     opacity: 1;
+  }
+  .analysis-hero-slide,
+  .analysis-hero-slide[data-current="true"] {
+    transition: none !important;
+    transform: none !important;
+    animation: none !important;
   }
 }
 
