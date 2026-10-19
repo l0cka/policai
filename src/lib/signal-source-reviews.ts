@@ -114,8 +114,10 @@ export function isSignalReviewer(
 }
 
 /**
- * True when the caller presented the configured MCP admin token. Used for the
- * trusted Signal apply path (Grok Bot / Argus), not for the TTY fallback.
+ * True when the caller presented the configured MCP admin token. Used only
+ * for this CLI's recovery token-gated apply (laptop / emergency host), not
+ * for the Grok Bot product path (HTTPS /api/signal/reviews +
+ * POLICAI_SIGNAL_TOKEN) and not for the TTY confirm fallback.
  */
 export function isTrustedSignalApply(input: {
 	env: Readonly<Record<string, string | undefined>>;
@@ -127,11 +129,12 @@ export function isTrustedSignalApply(input: {
 }
 
 /**
- * Why apply must stop. CI is always refused. The TTY fallback also refuses
- * agent sessions and non-interactive shells. The trusted token path allows
- * non-TTY hosts for the Grok Bot but still refuses Cursor/Claude agent
- * sessions and CI so a leaked token in a cloud agent cannot stamp through
- * this CLI.
+ * Why this recovery CLI must stop. CI is always refused. The TTY fallback
+ * also refuses agent sessions and non-interactive shells. The recovery
+ * token path allows non-TTY laptop/host shells but still refuses
+ * Cursor/Claude agent sessions and CI so a leaked MCP admin token in a
+ * cloud agent cannot stamp through this CLI. The Grok Bot must use HTTPS
+ * /api/signal/reviews with POLICAI_SIGNAL_TOKEN instead.
  */
 export function signalApplyBlockReason(input: {
 	env: Readonly<Record<string, string | undefined>>;
@@ -139,14 +142,14 @@ export function signalApplyBlockReason(input: {
 	trusted: boolean;
 }): string | undefined {
 	if (input.env.CI || input.env.GITHUB_ACTIONS) {
-		return "apply refuses to run in CI. Signal writes require a trusted host or a human terminal, and CI cannot.";
+		return "apply refuses to run in CI. Recovery writes need a human terminal or a matching POLICAI_MCP_ADMIN_TOKEN on a laptop host, and CI cannot.";
 	}
 	if (input.env.CURSOR_AGENT || input.env.CLAUDECODE || input.env.CLAUDE_CODE) {
-		return "apply refuses to run in an agent session. Policai Signal (Grok Bot) or a human terminal must apply the decision.";
+		return "apply refuses to run in an agent session. Use HTTPS /api/signal/reviews with POLICAI_SIGNAL_TOKEN (Grok Bot product path), or a human terminal for recovery.";
 	}
 	if (input.trusted) return undefined;
 	if (!input.stdinIsTTY) {
-		return "apply refuses a non-interactive session without a matching POLICAI_MCP_ADMIN_TOKEN. Pass --admin-token on a trusted host, or confirm the reviewer name at a terminal.";
+		return "apply refuses a non-interactive session without a matching POLICAI_MCP_ADMIN_TOKEN. Pass --admin-token for recovery apply, or confirm the reviewer name at a terminal. The Grok Bot product path is HTTPS /api/signal/reviews with POLICAI_SIGNAL_TOKEN.";
 	}
 	return undefined;
 }
@@ -308,7 +311,7 @@ export async function runSignalSourceReviewCommand(
 				exitCode: 1,
 				stdout: "",
 				stderr:
-					"publish and verify require a matching --admin-token (POLICAI_MCP_ADMIN_TOKEN) on a trusted Signal host.",
+					"publish and verify require a matching --admin-token (POLICAI_MCP_ADMIN_TOKEN) for recovery apply. The Grok Bot product path is HTTPS /api/signal/reviews with POLICAI_SIGNAL_TOKEN.",
 			};
 		}
 	}
@@ -348,7 +351,7 @@ export async function runSignalSourceReviewCommand(
 				exitCode: 1,
 				stdout: "",
 				stderr:
-					"A human must type the reviewer name at the terminal before apply runs, or pass a matching --admin-token on a trusted Signal host.",
+					"A human must type the reviewer name at the terminal before recovery apply runs, or pass a matching --admin-token. The Grok Bot product path is HTTPS /api/signal/reviews with POLICAI_SIGNAL_TOKEN.",
 			};
 		}
 	}
@@ -356,7 +359,7 @@ export async function runSignalSourceReviewCommand(
 	const runner = deps.runner ?? currentSignalRunner();
 	const attestation = runnerRecord(runner);
 	const pathNote = trusted
-		? `Signal trusted apply. ${attestation}`
+		? `Signal recovery apply. ${attestation}`
 		: attestation;
 
 	try {

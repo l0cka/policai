@@ -350,7 +350,7 @@ server.registerTool(
   {
     title: 'Signal decision',
     description:
-      'Policai Signal Grok Bot entry: approve, dismiss, publish, or verify. Phrases: approve <review-id>, dismiss <review-id>, publish <review-id>, verify <policy-id>. Approve/dismiss/verify require an allowlisted reviewer (default Daniel). Publish requires a previously approved review. Requires POLICAI_MCP_ADMIN_TOKEN. Does not commit or push; the host must validate and commit after a write.',
+      'Laptop recovery only (not the Grok Bot product path). Approve, dismiss, publish, or verify a staged review via MCP when HTTPS /api/signal/reviews is unavailable. Product path: GET/POST /api/signal/reviews with POLICAI_SIGNAL_TOKEN. Approve/dismiss/verify require an allowlisted reviewer (default Daniel Alkurdi). Publish requires a previously approved review. Requires POLICAI_MCP_ADMIN_TOKEN. Does not commit or push; the host must validate and commit after a write.',
     inputSchema: {
       action: z.enum(['approve', 'dismiss', 'publish', 'verify']),
       id: z.string().min(1),

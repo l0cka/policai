@@ -302,7 +302,7 @@ describe("signal source review apply", () => {
 		expect(result).toMatchObject({
 			exitCode: 1,
 			stderr:
-				"A human must type the reviewer name at the terminal before apply runs, or pass a matching --admin-token on a trusted Signal host.",
+				"A human must type the reviewer name at the terminal before recovery apply runs, or pass a matching --admin-token. The Grok Bot product path is HTTPS /api/signal/reviews with POLICAI_SIGNAL_TOKEN.",
 		});
 		expect(approve).not.toHaveBeenCalled();
 		expect(reject).not.toHaveBeenCalled();
@@ -358,7 +358,7 @@ describe("signal source review apply", () => {
 		expect(approve).toHaveBeenCalledWith({
 			id: "rev-1",
 			actor: "Daniel",
-			approvalNotes: `Signal trusted apply. ${ATTESTATION}`,
+			approvalNotes: `Signal recovery apply. ${ATTESTATION}`,
 		});
 		expect(result.exitCode).toBe(0);
 		expect(result.stdout).toContain("Approved rev-1");
@@ -406,7 +406,7 @@ describe("signal source review apply", () => {
 		expect(publish).toHaveBeenCalledWith("rev-1");
 		expect(ok).toEqual({
 			exitCode: 0,
-			stdout: `Published rev-1 (status published). Signal trusted apply. ${ATTESTATION}`,
+			stdout: `Published rev-1 (status published). Signal recovery apply. ${ATTESTATION}`,
 			stderr: "",
 		});
 	});
@@ -430,7 +430,7 @@ describe("signal source review apply", () => {
 		expect(verify).toHaveBeenCalledWith({
 			policyId: "federal-example",
 			actor: "Daniel",
-			notes: `Signal trusted apply. ${ATTESTATION}`,
+			notes: `Signal recovery apply. ${ATTESTATION}`,
 		});
 		expect(result.exitCode).toBe(0);
 		expect(result.stdout).toContain("Verified federal-example");
