@@ -1,5 +1,37 @@
 [
   {
+    "id": "dev-inslm-annual-report-2025-26-ai-scoping",
+    "title": "INSLM 2025–26 Annual Report scopes AI regulation in the national intelligence community",
+    "url": "https://www.inslm.gov.au/system/files/2026-10/INSLM-annual-report-2025-26.pdf",
+    "sourceId": "inslm-annual-reports",
+    "sourceName": "INSLM — annual reports",
+    "jurisdiction": "federal",
+    "publishedAt": "2026-10-08",
+    "publishedAtPrecision": "day",
+    "detectedAt": "2026-10-19T05:37:03.000Z",
+    "summary": "INSLM's 2025–26 Annual Report (published 8 October 2026) includes initial scoping of the legal landscape for AI use by the national intelligence community: ministerial privacy rules \"say nothing about AI specifically\"; core NIC agencies are exempt from the Privacy Act, FOI Act and the Policy for the Responsible Use of AI in Government, with significant ADJR/reasons exemptions; the 2024 IIR recommendation for an INSLM AI review was never referred; initial scoping was done but a full review was not completed in the reporting period; the Monitor's term ends in late November 2026.",
+    "relevanceScore": 1,
+    "classification": "curated",
+    "assessment": {
+      "method": "editorial",
+      "assessedAt": "2026-10-19T05:37:03.000Z",
+      "promptVersion": "editorial-review-v1"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.inslm.gov.au/system/files/2026-10/INSLM-annual-report-2025-26.pdf",
+        "title": "Independent National Security Legislation Monitor Annual Report 2025–26",
+        "publisher": "Independent National Security Legislation Monitor",
+        "publishedAt": "2026-10-08",
+        "publishedAtPrecision": "day"
+      },
+      "notes": "Unverified Signal handoff draft (19 Oct 2026). Cites the primary INSLM PDF, not the Canberra Times piece. Date taken from the INSLM publication page (8 October 2026). Stays needs_review pending editorial approval. Related timeline event tl-2026-10-08-inslm-annual-report-2025-26-ai-scoping."
+    },
+    "status": "detected",
+    "relatedTimelineEventId": "tl-2026-10-08-inslm-annual-report-2025-26-ai-scoping"
+  },
+  {
     "id": "dev-new-report-explores-safe-oversight-of-advanced-a-5uk6ft",
     "title": "New report explores safe oversight of advanced AI systems",
     "url": "https://www.industry.gov.au/news/new-report-explores-safe-oversight-advanced-ai-systems",
