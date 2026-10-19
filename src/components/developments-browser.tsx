@@ -64,10 +64,32 @@ function developmentStamp(development: Development): number {
   return new Date(development.publishedAt || development.detectedAt).getTime();
 }
 
+/** YYYYMM in Australia/Sydney so month order matches monthKey grouping. */
+function sydneyMonthRank(development: Development): number {
+  const label = new Date(development.publishedAt || development.detectedAt).toLocaleDateString(
+    'en-CA',
+    { year: 'numeric', month: '2-digit', timeZone: 'Australia/Sydney' },
+  );
+  return Number(label.replace('-', ''));
+}
+
 function monthKey(development: Development): string {
   return new Date(development.publishedAt || development.detectedAt)
     .toLocaleDateString('en-AU', { month: 'long', year: 'numeric', timeZone: 'Australia/Sydney' })
     .toUpperCase();
+}
+
+/**
+ * Radar list order: months newest-first (Sydney calendar month), then higher
+ * relevance within the month, then recency. Global relevance-first would let an
+ * older high-score month float above a newer one via Map insertion order.
+ */
+function compareRadarDevelopments(a: Development, b: Development): number {
+  return (
+    sydneyMonthRank(b) - sydneyMonthRank(a) ||
+    b.relevanceScore - a.relevanceScore ||
+    developmentStamp(b) - developmentStamp(a)
+  );
 }
 
 function eventType(development: Development): string {
@@ -229,12 +251,7 @@ export function DevelopmentsBrowser({
   const activeItems = useMemo(() => {
     const items = activeTab === 'verified' ? verified : radar;
     if (activeTab !== 'radar') return items;
-    // Radar: higher relevance first (direct-change certainty, then classifier score), then recency.
-    return [...items].sort(
-      (a, b) =>
-        b.relevanceScore - a.relevanceScore ||
-        developmentStamp(b) - developmentStamp(a),
-    );
+    return [...items].sort(compareRadarDevelopments);
   }, [activeTab, verified, radar]);
   const filtersActive = search.length > 0 || jurisdiction !== 'all' || stream !== 'all';
   const filteredItems = useMemo(
@@ -302,7 +319,7 @@ export function DevelopmentsBrowser({
 
       <p className={cn('flex min-h-10 items-center gap-2 border-b border-border px-3 text-xs sm:min-h-11', activeTab === 'verified' ? 'bg-[var(--status-active-bg)]/35' : 'bg-[var(--status-proposed-bg)]/45')}>
         {activeTab === 'verified' ? <CheckCircle2 className="h-4 w-4 shrink-0 text-[var(--trust)]" fill="currentColor" /> : <CircleAlert className="h-4 w-4 shrink-0 text-[var(--caution)]" />}
-        {activeTab === 'verified' ? 'Checked against the linked official source.' : 'Detected automatically and not yet editorially verified. Ranked by relevance, then recency.'}
+        {activeTab === 'verified' ? 'Checked against the linked official source.' : 'Detected automatically and not yet editorially verified. Months newest first; within a month ranked by relevance, then recency.'}
       </p>
 
       <div className="mt-3 grid gap-6 xl:grid-cols-[minmax(0,1fr)_19rem] xl:gap-8">
