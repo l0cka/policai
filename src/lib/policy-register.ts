@@ -1,3 +1,4 @@
+import { isThemeId, type ThemeId } from '@/lib/themes';
 import {
   JURISDICTION_NAMES, POLICY_TYPE_NAMES, POLICY_STATUS_NAMES,
   getJurisdictionName, getPolicyTypeName, getPolicyStatusName, getPrimaryPolicyDate,
@@ -15,6 +16,7 @@ export interface RegisterState {
   jurisdictions: string[];
   types: string[];
   statuses: string[];
+  themes: ThemeId[];
   sortField: PolicySortField;
   sortDirection: PolicySortDirection;
   viewMode: PolicyViewMode;
@@ -36,6 +38,7 @@ export function parseRegisterState(params: URLSearchParams): RegisterState {
     jurisdictions: selected('jurisdiction', JURISDICTION_NAMES),
     types: selected('type', POLICY_TYPE_NAMES),
     statuses: selected('status', POLICY_STATUS_NAMES),
+    themes: [...new Set(params.getAll('theme').flatMap(value => value.split(',')).filter(isThemeId))],
     sortField: validSort ? field as PolicySortField : 'effectiveDate',
     sortDirection: validSort ? direction as PolicySortDirection : 'desc',
     viewMode: params.get('view') === 'table' ? 'table' : 'list',
@@ -49,6 +52,7 @@ export function registerParams(state: RegisterState): URLSearchParams {
   if (state.jurisdictions.length) params.set('jurisdiction', state.jurisdictions.join(','));
   if (state.types.length) params.set('type', state.types.join(','));
   if (state.statuses.length) params.set('status', state.statuses.join(','));
+  if (state.themes.length) params.set('theme', state.themes.join(','));
   if (state.sortField !== 'effectiveDate' || state.sortDirection !== 'desc') params.set('sort', `${state.sortField}:${state.sortDirection}`);
   if (state.viewMode !== 'list') params.set('view', state.viewMode);
   if (state.page > 1) params.set('page', String(state.page));
@@ -56,7 +60,7 @@ export function registerParams(state: RegisterState): URLSearchParams {
 }
 
 export function updateRegisterState(state: RegisterState, patch: Partial<RegisterState>): RegisterState {
-  const criteria = ['search', 'jurisdictions', 'types', 'statuses', 'sortField', 'sortDirection'] as const;
+  const criteria = ['search', 'jurisdictions', 'types', 'statuses', 'themes', 'sortField', 'sortDirection'] as const;
   const resetPage = criteria.some(key => key in patch && JSON.stringify(patch[key]) !== JSON.stringify(state[key]));
   return { ...state, ...patch, page: resetPage ? 1 : patch.page ?? state.page };
 }
@@ -79,7 +83,8 @@ export function selectRegisterPolicies(policies: Policy[], state: RegisterState)
     (!query || [policy.title, policy.description, ...policy.tags, ...policy.agencies].some(value => value.toLowerCase().includes(query))) &&
     (!state.jurisdictions.length || state.jurisdictions.includes(policy.jurisdiction)) &&
     (!state.types.length || state.types.includes(policy.type)) &&
-    (!state.statuses.length || state.statuses.includes(policy.status)),
+    (!state.statuses.length || state.statuses.includes(policy.status)) &&
+    (!state.themes.length || state.themes.some((theme) => policy.themes.includes(theme))),
   ).sort((a, b) => {
     const comparison = label(a).localeCompare(label(b), 'en-AU') || a.id.localeCompare(b.id);
     return state.sortDirection === 'asc' ? comparison : -comparison;

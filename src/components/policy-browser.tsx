@@ -11,7 +11,8 @@ import Link from 'next/link';
 import { ArrowUpRight, ChevronDown, List, Search, Table2 } from 'lucide-react';
 import { FilterControls, type FilterGroup } from '@/components/filter-sidebar';
 import { PolicyTable } from '@/components/policy-table';
-import { selectRegisterPolicies, type PolicySortDirection, type PolicySortField, type PolicyViewMode } from '@/lib/policy-register';
+import { registerParams, selectRegisterPolicies, updateRegisterState, type PolicySortDirection, type PolicySortField, type PolicyViewMode } from '@/lib/policy-register';
+import { getThemeLabel, type ThemeId } from '@/lib/themes';
 import { useRegisterState } from '@/hooks/use-register-state';
 import { formatPolicyDate } from '@/lib/format-policy-date';
 import { upcomingDateCountdown, type UpcomingPolicyDate } from '@/lib/this-week';
@@ -73,6 +74,8 @@ function formatDevelopmentDate(development: Development): string {
     { short: true },
   );
 }
+
+const DISCOVERY_THEMES = ['legal-practice', 'public-sector'] as const satisfies readonly ThemeId[];
 
 function toggleFilter(value: string, current: string[], setter: (values: string[]) => void) {
   setter(current.includes(value) ? current.filter(item => item !== value) : [...current, value]);
@@ -144,7 +147,7 @@ export function PolicyBrowser({
   unavailableManualSourceCount,
 }: PolicyBrowserProps) {
   const [state, updateState] = useRegisterState();
-  const { search, jurisdictions, types, statuses, viewMode, sortField, sortDirection, page } = state;
+  const { search, jurisdictions, types, statuses, themes, viewMode, sortField, sortDirection, page } = state;
   const setSearch = (search: string) => updateState({ search });
   const setJurisdictions = (jurisdictions: string[]) => updateState({ jurisdictions });
   const setTypes = (types: string[]) => updateState({ types });
@@ -215,12 +218,17 @@ export function PolicyBrowser({
   ];
 
   const activeFilterCount =
-    jurisdictions.length + types.length + statuses.length;
+    jurisdictions.length + types.length + statuses.length + themes.length;
   const hasActiveFilters = activeFilterCount > 0;
-  const clearFilters = () => updateState({ jurisdictions: [], types: [], statuses: [] });
+  const clearFilters = () => updateState({ jurisdictions: [], types: [], statuses: [], themes: [] });
   const resetSearch = () => {
-    updateState({ search: '', jurisdictions: [], types: [], statuses: [] });
+    updateState({ search: '', jurisdictions: [], types: [], statuses: [], themes: [] });
     searchRef.current?.focus();
+  };
+  const themeHref = (theme: ThemeId) => {
+    const params = registerParams(updateRegisterState(state, { themes: [theme] }));
+    const query = params.toString();
+    return query ? `/?${query}` : '/';
   };
   const handleSort = (field: PolicySortField) => updateState({
     sortField: field,
@@ -250,9 +258,9 @@ export function PolicyBrowser({
   };
 
   return (
-    <div className="editorial-register container mx-auto px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+    <div className="editorial-register container mx-auto px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
       {analysisHero}
-      <div className="mb-8 flex flex-wrap items-end justify-between gap-5">
+      <div className="mb-5 flex flex-wrap items-end justify-between gap-5">
         <div>
           <p className="page-eyebrow text-primary">
             The Australian AI policy register
@@ -278,33 +286,73 @@ export function PolicyBrowser({
           aria-label="Policy register"
           className="min-w-0 scroll-mt-32"
         >
-          <form role="search" onSubmit={handleSearchSubmit}>
-            <label className="sr-only" htmlFor="register-search">
-              Search policies, agencies or topics
-            </label>
-            <div className="flex h-14 items-center gap-3 rounded border border-input bg-card px-4 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-ring">
-              <Search
-                className="h-5 w-5 shrink-0 text-muted-foreground"
-                aria-hidden="true"
-              />
-              <input
-                id="register-search"
-                ref={searchRef}
-                type="search"
-                placeholder="Search policies, agencies or topics…"
-                value={search}
-                onChange={(event) => setSearch(event.target.value)}
-                className="h-full min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
-              />
-              <kbd className="hidden whitespace-nowrap rounded border border-border px-1.5 py-1 text-[10px] text-muted-foreground sm:block">
-                Ctrl / ⌘ K
-              </kbd>
-            </div>
-          </form>
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:gap-6">
+            <form role="search" onSubmit={handleSearchSubmit} className="min-w-0 flex-1">
+              <label className="sr-only" htmlFor="register-search">
+                Search policies, agencies or topics
+              </label>
+              <div className="flex h-14 items-center gap-3 rounded border border-input bg-card px-4 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-ring">
+                <Search
+                  className="h-5 w-5 shrink-0 text-muted-foreground"
+                  aria-hidden="true"
+                />
+                <input
+                  id="register-search"
+                  ref={searchRef}
+                  type="search"
+                  placeholder="Search policies, agencies or topics…"
+                  value={search}
+                  onChange={(event) => setSearch(event.target.value)}
+                  className="h-full min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+                />
+                <kbd className="hidden whitespace-nowrap rounded border border-border px-1.5 py-1 text-[10px] text-muted-foreground sm:block">
+                  Ctrl / ⌘ K
+                </kbd>
+              </div>
+            </form>
+            <nav aria-label="Register starting points" className="flex flex-wrap items-center gap-x-4 gap-y-1">
+              <Link
+                href="/developments"
+                className="inline-flex min-h-11 items-center gap-1.5 text-xs text-primary underline underline-offset-4"
+              >
+                Browse developments
+                <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+              </Link>
+              {DISCOVERY_THEMES.map((theme) => {
+                const selected = themes.length === 1 && themes[0] === theme;
+                return (
+                  <a
+                    key={theme}
+                    href={themeHref(theme)}
+                    aria-current={selected ? 'true' : undefined}
+                    onClick={(event) => {
+                      if (
+                        event.button !== 0 ||
+                        event.metaKey ||
+                        event.ctrlKey ||
+                        event.shiftKey ||
+                        event.altKey
+                      ) {
+                        return;
+                      }
+                      event.preventDefault();
+                      updateState({ themes: [theme] });
+                    }}
+                    className={cn(
+                      'inline-flex min-h-11 items-center text-xs text-primary underline underline-offset-4',
+                      selected && 'font-semibold',
+                    )}
+                  >
+                    {getThemeLabel(theme)}
+                  </a>
+                );
+              })}
+            </nav>
+          </div>
           <div
             role="group"
             aria-label="Register filters"
-            className="relative my-4 flex flex-wrap items-start gap-2"
+            className="relative my-3 flex flex-wrap items-start gap-2"
           >
             {filterGroups.map((group) => (
               <details
@@ -364,6 +412,18 @@ export function PolicyBrowser({
                     </button>
                   )),
               )}
+              {themes.map((theme) => (
+                <button
+                  key={theme}
+                  type="button"
+                  aria-label={`Remove filter: ${getThemeLabel(theme)}`}
+                  onClick={() => updateState({ themes: themes.filter((item) => item !== theme) })}
+                  className="inline-flex min-h-11 items-center gap-3 rounded border border-primary/30 bg-accent px-3 text-xs text-primary"
+                >
+                  {getThemeLabel(theme)}
+                  <span aria-hidden="true">×</span>
+                </button>
+              ))}
             </div>
           )}
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-3">
@@ -488,12 +548,6 @@ export function PolicyBrowser({
             <p className="mt-3 text-xs leading-6 text-muted-foreground">
               Automated detections are separate from verified register records.
             </p>
-            <Link
-              href="/developments"
-              className="mt-2 inline-flex min-h-11 items-center gap-2 text-xs text-primary"
-            >
-              Browse developments <ArrowUpRight className="h-3.5 w-3.5" />
-            </Link>
             <p className="text-xs leading-5 text-muted-foreground">
               {developmentCount} developments · {weeklyDevelopmentCount}{' '}
               detected in the latest collection week
