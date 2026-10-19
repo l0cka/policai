@@ -1599,7 +1599,7 @@ describe('collect', () => {
           })
         ).evidence.contentHash as string;
 
-      it('stages a review when a tracked page gains dcterms.created', async () => {
+      it('stages a review when a tracked page gains dcterms.created (#262)', async () => {
         const policy = trackedPolicy(await currentFingerprint(plainPage()));
         const baseline = await run(emptyWatchState(), plainPage(), '2026-07-10', policy);
         expect(baseline.reviewCandidates).toEqual([]);
@@ -1617,7 +1617,7 @@ describe('collect', () => {
         });
       });
 
-      it('stages a review when a tracked page with dcterms.date becomes a GovCMS page', async () => {
+      it('stages a review when a tracked page with dcterms.date becomes a GovCMS page (#262)', async () => {
         const dateOnly = plainPage('<meta name="dcterms.date" content="2025-03-01">');
         const policy = trackedPolicy(await currentFingerprint(dateOnly));
         const baseline = await run(emptyWatchState(), dateOnly, '2026-07-10', policy);
@@ -1638,7 +1638,7 @@ describe('collect', () => {
         });
       });
 
-      it('counts an untracked page gaining dcterms.created as a change', async () => {
+      it('counts an untracked page gaining dcterms.created as a change (#262)', async () => {
         const baseline = await run(emptyWatchState(), plainPage(), '2026-07-10');
         expect(baseline.state.sourceSnapshots[DOCUMENT_SOURCE.id]).toMatchObject({
           changeCount: 0,

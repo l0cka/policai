@@ -214,7 +214,7 @@ describe('register audit', () => {
     });
   });
 
-  it('reports a page that gained dcterms.created since its current fingerprint was stored as changed', async () => {
+  it('reports a page that gained dcterms.created since its current fingerprint was stored as changed (#262)', async () => {
     const url = 'https://example.gov.au/policy';
     const retrievePage = (head: string) =>
       retrieveSource(url, {
