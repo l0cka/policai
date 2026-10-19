@@ -1,0 +1,66 @@
+name: assemble-asic-mcp-push
+on:
+  push:
+    branches:
+      - cursor/asic-ai-trading-gap-onto-main-9330
+      - cursor/asic-ai-trading-gap-cea6
+    paths:
+      - tmp/asic-mcp-assemble/**
+jobs:
+  assemble:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Build data files from main plus ASIC deltas
+        run: |
+          set -euo pipefail
+          DIR=tmp/asic-mcp-assemble
+          test -f "$DIR/READY"
+          test -f "$DIR/asic_policy.json"
+          test -f "$DIR/asic_timeline.json"
+          curl -fsSL "https://raw.githubusercontent.com/l0cka/policai/main/data/policies.json" -o /tmp/base_policies.json
+          curl -fsSL "https://raw.githubusercontent.com/l0cka/policai/main/data/timeline.json" -o /tmp/base_timeline.json
+          python3 - <<'PY'
+          import json
+          policies = json.load(open("/tmp/base_policies.json"))
+          timeline = json.load(open("/tmp/base_timeline.json"))
+          asic_p = json.load(open("tmp/asic-mcp-assemble/asic_policy.json"))
+          asic_t = json.load(open("tmp/asic-mcp-assemble/asic_timeline.json"))
+          assert asic_p["id"] == "asic-market-integrity-rules-ai-trading-2026"
+          assert asic_t["id"] == "tl-2026-09-24-asic-cs-63-rg-265-266"
+          p_ids = {p["id"] for p in policies}
+          t_ids = {e["id"] for e in timeline}
+          if asic_p["id"] not in p_ids:
+              policies.append(asic_p)
+          else:
+              policies = [asic_p if p["id"] == asic_p["id"] else p for p in policies]
+              if policies[-1]["id"] != asic_p["id"]:
+                  policies = [p for p in policies if p["id"] != asic_p["id"]] + [asic_p]
+          if asic_t["id"] not in t_ids:
+              timeline.append(asic_t)
+          else:
+              timeline = [asic_t if e["id"] == asic_t["id"] else e for e in timeline]
+              if timeline[-1]["id"] != asic_t["id"]:
+                  timeline = [e for e in timeline if e["id"] != asic_t["id"]] + [asic_t]
+          assert len(policies) == 89 and policies[-1]["id"] == asic_p["id"]
+          assert len(timeline) == 98 and timeline[-1]["id"] == asic_t["id"]
+          assert policies[-1]["verification"]["status"] == "needs_review"
+          assert timeline[-1]["verification"]["status"] == "needs_review"
+          json.dump(policies, open("data/policies.json", "w"), indent=2, ensure_ascii=False)
+          open("data/policies.json", "a").write("\n")
+          json.dump(timeline, open("data/timeline.json", "w"), indent=2, ensure_ascii=False)
+          open("data/timeline.json", "a").write("\n")
+          print("OK", len(policies), policies[-1]["id"], len(timeline), timeline[-1]["id"])
+          PY
+          rm -rf tmp/asic-mcp-assemble
+          rm -f data/_size_probe_30k.txt data/_size_probe_50k.txt data/_size_probe_80k.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git status
+          git commit -m "data: ASIC AI trading MIR + CS 63 (needs_review) onto main"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
