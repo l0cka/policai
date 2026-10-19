@@ -260,17 +260,29 @@ describe("signal reply overrides", () => {
 	it.each([
 		["themes public-sector, ai-governance", "public-sector", true],
 		["themes public-sector, ai-governance", "ai-governance", true],
-		["genai-governance-x", "ai-governance", false],
-		["ai-governance-x", "ai-governance", false],
-		["xai-governance", "ai-governance", false],
+		["themes genai-governance-x", "ai-governance", false],
+		["themes ai-governance-x", "ai-governance", false],
+		["themes xai-governance", "ai-governance", false],
 		["Approve. Themes: AI-Governance.", "ai-governance", true],
-		["(public-sector)", "public-sector", true],
-		["public-sector", "public-sector", true],
-		["public sector", "public-sector", false],
+		["theme (public-sector)", "public-sector", true],
+		["themes public sector", "public-sector", false],
+		["public-sector", "public-sector", false],
+		["approve public-sector ai-governance", "public-sector", false],
+		["themes ai-governance. Also public-sector", "public-sector", false],
+		["themes ai-governance; public-sector", "public-sector", false],
+		["themes ai-governance type public-sector", "public-sector", false],
+		["employment law is fine; themes ai-governance", "employment", false],
 		["type practice_note please", "practice_note", true],
-		["practice_notes", "practice_note", false],
+		["Type: practice_note", "practice_note", true],
+		["type practice_notes", "practice_note", false],
+		["approve this practice_note", "practice_note", false],
+		["type is practice_note", "practice_note", false],
+		["approve this policy", "policy", false],
+		["approve this policy, type legislation", "policy", false],
+		["approve this policy, type legislation", "legislation", true],
+		["themes ai-governance, type legislation", "legislation", true],
 	])("reply %j names %s: %s", (replyText, value, named) => {
-		const isType = value === "practice_note";
+		const isType = ["practice_note", "policy", "legislation"].includes(value);
 		const result = parseReplyOverrides(
 			isType ? { type: value, replyText } : { themes: [value], replyText },
 			themeless(),
@@ -331,7 +343,7 @@ describe("signal reply overrides", () => {
 		const result = parseReplyOverrides(
 			{
 				themes: ["ai-governance", "public-sector", "privacy-data"],
-				replyText: "approve with ai-governance",
+				replyText: "approve, themes ai-governance",
 			},
 			themeless(),
 		);

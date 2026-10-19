@@ -913,13 +913,23 @@ names its themes. They apply only to new register policy drafts: a
 timeline-event or tracked-record review, or a `dismiss`, with either field
 returns `invalid_request`.
 
-**Reply binding:** every theme id and the type must appear in
-`attestation.replyText` as a whole token, ignoring case. A token boundary is
-the start or end of the text or any character outside `[a-z0-9-]`, so
-`public-sector` matches in `themes public-sector, ai-governance` but
-`ai-governance` does not match inside `genai-governance-x`, and
-`public sector` does not match `public-sector`. A miss returns
-`themes_not_in_reply` or `type_not_in_reply`, naming the missing values.
+**Reply binding:** Daniel names values after a keyword, for example
+`approve, themes public-sector, ai-governance; type legislation`. Matching
+ignores case.
+
+- A theme counts only when it is a whole token inside a `theme` or `themes`
+  clause. The clause runs from the keyword to the next `.`, `;`, line break,
+  or `theme`, `themes` or `type` keyword.
+- The type counts only when it is the first token after `type` (`type
+  legislation` or `type: legislation`).
+- A token boundary is the start or end of the clause or any character
+  outside `[a-z0-9-]`. So `ai-governance` does not match inside
+  `genai-governance-x`, and `public sector` does not match `public-sector`.
+- A word used in passing never counts. In `approve this policy`, `policy` is
+  not a type, and in `employment law is fine`, `employment` is not a theme.
+
+A miss returns `themes_not_in_reply` or `type_not_in_reply`, naming the
+missing values.
 This check (`parseReplyOverrides` in `src/lib/signal-http.ts`) is what stops
 the bot from inventing values: it can relay only what Daniel wrote, and
 Daniel's reply is stored verbatim beside the applied values.
@@ -953,7 +963,7 @@ published review stays a noop whatever `themes` or `type` say.
 | `themes_required` / `editorial_fields_required` (409) | Approval refused themes or other reviewed fields (source date, `officialSourceUrl`, `proposedRecord`); fix through editorial MCP |
 | `invalid_request` (400) | Missing fields; `themes`/`type` on a dismiss, timeline or tracked-record review; `themes` not an array, repeated, or outside 1 to 5 |
 | `unknown_theme` / `unknown_type` (400) | Value is not a theme id or `PolicyType`; the error lists the valid ones |
-| `themes_not_in_reply` / `type_not_in_reply` (400) | A sent value is not a whole token in `attestation.replyText` |
+| `themes_not_in_reply` / `type_not_in_reply` (400) | A sent value is not named after `themes` or `type` in `attestation.replyText` |
 | `dismiss_blocked` / `tracked_record_dismiss` | Tracked-record reviews cannot be dismissed |
 | `reviewer_not_allowlisted` | Reviewer not in allowlist |
 | `invalid_attestation` | Missing reply / message id / card id |

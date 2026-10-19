@@ -235,7 +235,7 @@ function approveBlockers(review: SourceReview): string[] {
 		const themes = themesOf(review);
 		if (themes.length === 0) {
 			blockers.push(
-				`Policy draft has no themes. Ask Daniel to name ${MIN_THEMES_PER_RECORD} to ${MAX_THEMES_PER_RECORD} themes in his reply and send them as "themes"; each must appear in attestation.replyText. The bot must not invent themes. Valid theme ids: ${THEME_IDS.join(", ")}`,
+				`Policy draft has no themes. Ask Daniel to name ${MIN_THEMES_PER_RECORD} to ${MAX_THEMES_PER_RECORD} themes in his reply and send them as "themes"; each must appear after "themes" in attestation.replyText (for example "themes public-sector, ai-governance"). The bot must not invent themes. Valid theme ids: ${THEME_IDS.join(", ")}`,
 			);
 		}
 		if (!(review.proposedRecord as PolicyDraft).dates?.some((date) => date.primary)) {
@@ -258,8 +258,38 @@ type OverrideFailure = {
 	error: string;
 };
 
-function namedInReply(replyText: string, value: string): boolean {
+const REPLY_KEYWORDS = {
+	themes: /(?<![a-z0-9-])themes?(?![a-z0-9-])/g,
+	type: /(?<![a-z0-9-])type(?![a-z0-9-])/g,
+} as const;
+
+const REPLY_CLAUSE_END = /[.;\n]|(?<![a-z0-9-])(?:themes?|type)(?![a-z0-9-])/;
+
+function replyClauses(
+	replyText: string,
+	keyword: keyof typeof REPLY_KEYWORDS,
+): string[] {
 	const text = replyText.toLowerCase();
+	return [...text.matchAll(REPLY_KEYWORDS[keyword])].map((match) => {
+		const rest = text.slice(match.index + match[0].length);
+		const end = rest.search(REPLY_CLAUSE_END);
+		return end === -1 ? rest : rest.slice(0, end);
+	});
+}
+
+function themeNamedInReply(replyText: string, theme: string): boolean {
+	return replyClauses(replyText, "themes").some((clause) =>
+		containsToken(clause, theme),
+	);
+}
+
+function typeNamedInReply(replyText: string, type: string): boolean {
+	return replyClauses(replyText, "type").some(
+		(clause) => clause.match(/[a-z0-9_-]+/)?.[0] === type.toLowerCase(),
+	);
+}
+
+function containsToken(text: string, value: string): boolean {
 	const needle = value.toLowerCase();
 	const isWordChar = (char: string | undefined) =>
 		char !== undefined && /[a-z0-9-]/.test(char);
@@ -338,20 +368,20 @@ export function parseReplyOverrides(
 		overrides.type = input.type;
 	}
 	const missingThemes = (overrides.themes ?? []).filter(
-		(theme) => !namedInReply(input.replyText, theme),
+		(theme) => !themeNamedInReply(input.replyText, theme),
 	);
 	if (missingThemes.length > 0) {
 		return {
 			ok: false,
 			code: "themes_not_in_reply",
-			error: `attestation.replyText does not name these themes: ${missingThemes.join(", ")}. Send only themes Daniel wrote in his reply.`,
+			error: `attestation.replyText does not name these themes: ${missingThemes.join(", ")}. Send only themes Daniel listed after "themes" in his reply.`,
 		};
 	}
-	if (overrides.type && !namedInReply(input.replyText, overrides.type)) {
+	if (overrides.type && !typeNamedInReply(input.replyText, overrides.type)) {
 		return {
 			ok: false,
 			code: "type_not_in_reply",
-			error: `attestation.replyText does not name the type ${overrides.type}. Send only a type Daniel wrote in his reply.`,
+			error: `attestation.replyText does not name the type ${overrides.type}. Send only a type Daniel wrote directly after "type" in his reply.`,
 		};
 	}
 	return { ok: true, overrides };
