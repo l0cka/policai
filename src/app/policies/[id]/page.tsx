@@ -29,37 +29,28 @@ export default async function PolicyDetailPage({ params }: { params: Promise<{ i
     getPolicies(),
     getArticles({ citing: id }),
   ]);
-  const isCourtInstrument = policy.type === 'practice_note';
-  const courtRequirements = isCourtInstrument
-    ? await getPublicCourtRequirements({ policyId: id })
-    : [];
+  const courtRequirements = policy.type === "practice_note" ? await getPublicCourtRequirements({ policyId: id }) : [];
 
   return (
     <div className="container mx-auto px-4 py-6 sm:px-6 lg:px-8">
       <nav aria-label="Breadcrumb" className="mb-6 font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
         <Link href="/" className="hover:text-primary">Register</Link>
         <span className="mx-2">/</span>
-        {isCourtInstrument ? (
-          <>
-            <Link href="/courts" className="hover:text-primary">Courts</Link>
-            <span className="mx-2">/</span>
-          </>
-        ) : (
-          <>
-            <span>{policy.jurisdiction}</span>
-            <span className="mx-2">/</span>
-          </>
-        )}
+        <span>{policy.jurisdiction}</span>
+        <span className="mx-2">/</span>
         <span className="text-foreground">Policy</span>
       </nav>
 
       <PolicyDetailTabs
         policy={policy}
         courtRequirements={courtRequirements}
-        related={<RelatedInstruments items={relatedInstruments(policy, publicPolicies)} />}
+        related={
+          <>
+            <CitedInAnalysis articles={analyses} />
+            <RelatedInstruments items={relatedInstruments(policy, publicPolicies)} />
+          </>
+        }
       />
-
-      <CitedInAnalysis articles={analyses} />
     </div>
   );
 }

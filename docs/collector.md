@@ -843,6 +843,76 @@ Detections staged in `data/source-reviews.json` are proposals. To publish one:
    verified policy or timeline record through `src/lib/source-ingest.ts`.
 5. Run `npm run validate:data`, commit, and push (or open a PR).
 
+`npm run signal:reviews` prints one card for each `pending_review` row, then a
+footer count. An empty queue prints `No pending source reviews.` The command
+does not fetch. `formatPendingSourceReviewCards` in
+`src/lib/signal-source-reviews.ts` is the pure function that builds that text.
+It takes the review array and does not read the network or the filesystem.
+
+Policai Signal has no checkout on the collection host. It reads the pending
+rows from GitHub and applies the same rules, so a card it builds matches the
+CLI:
+
+`https://raw.githubusercontent.com/l0cka/policai/main/data/source-reviews.json`
+
+Keep rows whose `status` is `pending_review`. Order by `discoveredAt`
+descending, then `id` in `en-AU`. Each card is these lines, with a blank line
+between cards:
+
+```text
+id: <id, one line>
+title: <title, one line>
+url: <sourceUrl>
+jurisdiction: <display name>
+change: <one line, from the target id and entry kind>
+summary: <analysis.summary, one line, at most 160 characters, ellipsis if cut>
+relevance: <analysis.relevanceScore>
+discovered: <discoveredAt in Australia/Sydney>
+retrieved: <sourceEvidence.retrievedAt in Australia/Sydney, or "not recorded">
+```
+
+Omit `jurisdiction` when the staged record has none and
+`analysis.suggestedJurisdiction` is empty. The staged record's jurisdiction
+wins when both are set. Display names are Federal, New South Wales, Victoria,
+Queensland, Western Australia, South Australia, Tasmania, Australian Capital
+Territory, and Northern Territory. Dates use `en-AU` with
+`timeZone: "Australia/Sydney"` and a short zone name, for example
+`16 July 2026, 10:00 AEST`. The `change` line is: a source-URL replacement
+when `targetPolicyPreviousSourceUrl` or
+`targetTimelineEventPreviousSourceUrl` is set; otherwise an in-place update
+of `targetPolicyId` or `targetTimelineEventId`; otherwise a new timeline
+event or a new register record of the staged type. The footer is
+`1 pending source review.` or `N pending source reviews.`
+
+A person with a checkout can reprint the same text without applying a
+decision. `.github/workflows/signal-review-cards.yml` is manual
+(`workflow_dispatch`) and sets `permissions: contents: read` only. It runs
+`npm run signal:reviews` and copies the text into the job summary. It does
+not approve, dismiss, publish, or push.
+
+`npm run signal:reviews -- apply --action=approve --id=<id> --reviewer=<name>`
+calls `approveStagedSource` with that id, the reviewer, and approval notes
+that record the OS user, host, and time. It does not pass a `proposedRecord`
+or themes. A missing reviewer name is refused. If approval requires a
+`proposedRecord`, themes, or another reviewed field, the command stops and
+prints that reason.
+
+Apply does not run from CI, from an agent session (`CURSOR_AGENT`,
+`CLAUDECODE`, or `CLAUDE_CODE`), or without a terminal. There is no
+environment variable that skips this. At a terminal the human must type the
+reviewer name. `--reviewer` alone is not confirmation, so an agent cannot
+record someone else's name by passing the flag.
+
+`npm run signal:reviews -- apply --action=dismiss --id=<id> --reviewer=<name>`
+calls `rejectStagedSource` after the same confirmation. The rejection reason
+includes the reviewer and the same runner record. Dismiss of a tracked-record
+review still fails with that path's reason.
+
+Neither action calls the publish tool. A successful approve is the existing
+approval write on the staged review; this command does not publish that
+review into the register. Signal does not post these cards. It reads the
+JSON URL above.
+
 One-off publication scripts must also enter through `stageSourceUrl()` or the
 controlled `stageSourceCapture()` fallback rather than constructing a review
 by hand, so the approval gate always has fresh source fingerprints. Staging a
