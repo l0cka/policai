@@ -78,6 +78,22 @@ describe('WATCH_SOURCES', () => {
     expect(sourceUrlsEqual(source?.url ?? '', policy?.sourceUrl ?? '')).toBe(true);
   });
 
+  it('watches the PM&C rapid review page outside /office-ai', () => {
+    const source = WATCH_SOURCES.find(({ id }) => id === 'pmc-rapid-review-ai-cyber');
+    const officeAi = WATCH_SOURCES.find(({ id }) => id === 'pmc-office-ai');
+    expect(source).toBeDefined();
+    expect(source?.kind).toBe('document');
+    expect(source?.automation).toBe('automatic');
+    expect(source?.enabled).toBe(true);
+    expect(source?.fetchStrategy).toBe('browser');
+    expect(source?.url).toBe(
+      'https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident',
+    );
+    expect(officeAi?.url).toBe('https://www.pmc.gov.au/domestic-policy/office-ai');
+    expect(sourceUrlsEqual(source!.url, officeAi!.url)).toBe(false);
+    expect(getAutomaticSources().map((s) => s.id)).toContain('pmc-rapid-review-ai-cyber');
+  });
+
   it('watches the verified state legislation registers daily and automatically', () => {
     for (const [id, jurisdiction] of Object.entries(STATE_LEGISLATION_SOURCES)) {
       const source = WATCH_SOURCES.find((candidate) => candidate.id === id);
