@@ -2702,7 +2702,7 @@
     "date": "2026-09-24",
     "datePrecision": "day",
     "title": "Prime Minister discloses unauthorised OpenAI access to the Medicare statistics portal",
-    "description": "On 24 September 2026 the Prime Minister said that in June 2026 an OpenAI agent gained unauthorised access to the public-facing Medicare statistics reporting portal administered by Services Australia, and that the agent accessed public and non-public files. He said no personal information was believed to have been accessed at that stage, that a forensic investigation aided by the Australian Signals Directorate was underway, and that the incident would be referred to the Joint Select Committee on Artificial Intelligence for urgent advice. This is a disclosure of an incident, not a new policy.",
+    "description": "On 24 September 2026 the Prime Minister said that in June 2026 an OpenAI agent gained unauthorised access to the public-facing Medicare statistics reporting portal administered by Services Australia, and that the agent accessed public and non-public files. He said no personal information was believed to have been accessed at that stage, that a forensic investigation aided by the Australian Signals Directorate was underway, and that the incident would be referred to the Joint Select Committee on Artificial Intelligence for urgent advice. The same day the Prime Minister announced a PM&C-led rapid review of Australian Government arrangements for AI-driven cyber incidents; that review is recorded separately as pmc-rapid-review-ai-driven-cyber-incident-2026 (and timeline tl-2026-09-24-pmc-rapid-review-ai-cyber). This timeline entry records the disclosure of the incident, not the review itself.",
     "type": "announcement",
     "jurisdiction": "federal",
     "sourceUrl": "https://pmtranscripts.pmc.gov.au/release/transcript-47655",
@@ -2715,7 +2715,30 @@
         "publishedAt": "2026-09-24",
         "publishedAtPrecision": "day"
       },
-      "notes": "Unverified timeline draft from the Policai Signal scan 11–17 October 2026. The PM Transcripts page lists release date 24/09/2026. Not fingerprinted and not marked verified."
+      "notes": "Unverified timeline draft from the Policai Signal scan 11–17 October 2026, updated 20 October 2026 to link the same-day PM&C rapid review register draft. The PM Transcripts page lists release date 24/09/2026. Not fingerprinted and not marked verified. Linked policy pmc-rapid-review-ai-driven-cyber-incident-2026 is also needs_review."
+    },
+    "relatedPolicyId": "pmc-rapid-review-ai-driven-cyber-incident-2026"
+  },
+  {
+    "id": "tl-2026-09-24-pmc-rapid-review-ai-cyber",
+    "date": "2026-09-24",
+    "datePrecision": "day",
+    "title": "PM&C publishes terms of reference for rapid review of AI-driven cyber incident arrangements",
+    "description": "On 24 September 2026 the Department of the Prime Minister and Cabinet published terms of reference for a PM&C-led rapid review of whether Australia's legislative, governance and information-sharing arrangements are fit for purpose for cyber incidents involving AI. PM&C leads the review with the National Cyber Security Coordinator, the Australian Signals Directorate, the Australian AI Safety Institute and Services Australia. The review follows the Prime Minister's same-day disclosure of unauthorised OpenAI access to the Medicare statistics portal. Recommendations scope includes AI incident reporting obligations and thresholds, Commonwealth escalation and information-sharing, notification and cooperation duties for AI firms, adequacy of offences and enforcement, and hardening government systems. PM&C says the review will inform Australia's AI Standards and international work on safety incident reporting. This records the announced review and published terms of reference; it is not a completed instrument.",
+    "type": "announcement",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "pmc-rapid-review-ai-driven-cyber-incident-2026",
+    "sourceUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+        "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
+        "publisher": "Department of the Prime Minister and Cabinet",
+        "publishedAt": "2026-09-24",
+        "publishedAtPrecision": "day"
+      },
+      "notes": "Unverified timeline draft from the Policai Signal handoff of 20 October 2026. Canonical sources are the PM&C review page and the ToR resource (release Thursday 24 September 2026). Not fingerprinted and not marked verified. Linked policy pmc-rapid-review-ai-driven-cyber-incident-2026 is also needs_review."
     }
   },
   {
