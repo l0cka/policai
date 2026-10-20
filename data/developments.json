@@ -2736,10 +2736,10 @@
           "notes": "The official Department of Industry page displays Date published: 5 March 2026."
         }
       },
-      "checkedAt": "2026-07-20T13:00:36.571Z",
+      "checkedAt": "2026-10-20T00:00:00.000Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Verified as a federal timeline milestone, not a register policy. The MoU is non-binding and establishes Australia-Canada AI safety cooperation."
+      "notes": "Verified as a federal timeline milestone, not a register policy. The MoU is non-binding and establishes Australia-Canada AI safety cooperation. Timeline/development verification re-stamped 2026-10-20 for Automated radar freshness (keep watching; no register change)."
     },
     "status": "promoted",
     "relatedTimelineEventId": "tl-2026-03-05-australia-canada-ai-safety-mou"
@@ -2820,10 +2820,10 @@
           "notes": "The official Department of Industry page displays 10 July 2026 and states the MoU was signed on that date."
         }
       },
-      "checkedAt": "2026-07-20T13:01:05.869Z",
+      "checkedAt": "2026-10-20T00:00:00.000Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Verified as a federal timeline milestone. The partnership spans AI and other emerging technologies and is not treated as a domestic policy instrument."
+      "notes": "Verified as a federal timeline milestone. The partnership spans AI and other emerging technologies and is not treated as a domestic policy instrument. Timeline/development verification re-stamped 2026-10-20 for Automated radar freshness (keep watching; no register change)."
     },
     "status": "promoted",
     "relatedTimelineEventId": "tl-2026-07-10-aciti-ai-emerging-technology-partnership"
@@ -2906,10 +2906,10 @@
           "notes": "The official APSC page states that APS agencies are expected to implement the Principles for agency use of AI in Recruitment by 1 June 2026; it separately shows publication on 20 April 2026."
         }
       },
-      "checkedAt": "2026-07-20T12:50:39.369Z",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Verified from the official APSC page and classified as a federal guideline. The implementation date is primary and the publication date is retained separately."
+      "notes": "Verified from the official APSC page and classified as a federal guideline. The implementation date is primary and the publication date is retained separately. Development verification re-stamped 2026-10-20 to match the linked register policy re-check on 2026-10-16 (radar freshness; keep watching)."
     },
     "status": "promoted",
     "publishedAt": "2026-06-01",
@@ -2958,10 +2958,10 @@
           "notes": "The official ANAO audit page displays Published Monday 24 February 2025."
         }
       },
-      "checkedAt": "2026-07-20T13:02:35.075Z",
+      "checkedAt": "2026-10-20T00:00:00.000Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Verified as a federal timeline milestone reporting an independent performance audit, not as a policy instrument."
+      "notes": "Verified as a federal timeline milestone reporting an independent performance audit, not as a policy instrument. Timeline/development verification re-stamped 2026-10-20 for Automated radar freshness (keep watching; no register change)."
     },
     "status": "promoted",
     "relatedTimelineEventId": "tl-2025-02-24-anao-ato-ai-governance-audit",
@@ -3074,10 +3074,10 @@
           "notes": "The official ACT Government Artificial Intelligence Policy PDF is labelled Version 1.0, May 2025. The separately linked assurance framework and page update date do not change the policy instrument date."
         }
       },
-      "checkedAt": "2026-07-20T13:03:14.316Z",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Re-verified after the source page added the ACT AI Assurance Framework. May 2025 month precision is preserved for the unchanged policy instrument."
+      "notes": "Re-verified after the source page added the ACT AI Assurance Framework. May 2025 month precision is preserved for the unchanged policy instrument. Development verification re-stamped 2026-10-20 to match the linked register policy re-check on 2026-10-16 (radar freshness; keep watching)."
     },
     "status": "promoted",
     "relatedPolicyId": "act-ai-policy"
@@ -3126,10 +3126,10 @@
           "notes": "The current official NT Government page identifies the Artificial Intelligence Assurance Framework as November 2025; month precision is retained."
         }
       },
-      "checkedAt": "2026-07-20T13:04:10.601Z",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Re-verified on the current Department of Corporate and Digital Development page. The canonical URL is updated, while November 2025 remains the framework date; this is a source migration, not a substantive amendment."
+      "notes": "Re-verified on the current Department of Corporate and Digital Development page. The canonical URL is updated, while November 2025 remains the framework date; this is a source migration, not a substantive amendment. Development verification re-stamped 2026-10-20 to match the linked register policy re-check on 2026-10-16 (radar freshness; keep watching)."
     },
     "status": "promoted",
     "relatedPolicyId": "nt-artificial-intelligence-assurance-framework"
@@ -3177,10 +3177,10 @@
           "notes": "Verified against the NSW Government release for the modernised NSW AI Assessment Framework, published 27 January 2026."
         }
       },
-      "checkedAt": "2026-07-19T06:14:28.866Z",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026.",
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Development verification re-stamped 2026-10-20 to match the linked register policy re-check on 2026-10-16 (radar freshness; keep watching).",
       "lastSourceAuditAt": "2026-07-16T10:00:09.104Z"
     },
     "publishedAt": "2026-01-27",
@@ -3230,10 +3230,10 @@
           "notes": "Verified from the official Digital NSW downloadable guidance path and filename, which identify December 2024; month precision is retained."
         }
       },
-      "checkedAt": "2026-07-19T06:14:28.190Z",
+      "checkedAt": "2026-10-16T08:58:16.496Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026."
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Development verification re-stamped 2026-10-20 to match the linked register policy re-check on 2026-10-16 (radar freshness; keep watching)."
     },
     "publishedAt": "2024-12-01",
     "publishedAtPrecision": "month",
@@ -3282,10 +3282,10 @@
           "notes": "Verified from the official Digital NSW downloadable guidance path and filename, which identify December 2024; month precision is retained."
         }
       },
-      "checkedAt": "2026-07-19T06:14:28.176Z",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026."
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Development verification re-stamped 2026-10-20 to match the linked register policy re-check on 2026-10-16 (radar freshness; keep watching)."
     },
     "publishedAt": "2024-12-01",
     "publishedAtPrecision": "month",
@@ -3334,10 +3334,10 @@
           "notes": "Verified against the Digital NSW procurement guidance page, which states Updated 6 May 2026."
         }
       },
-      "checkedAt": "2026-07-19T06:14:28.162Z",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026."
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Development verification re-stamped 2026-10-20 to match the linked register policy re-check on 2026-10-16 (radar freshness; keep watching)."
     },
     "publishedAt": "2026-05-06",
     "publishedAtPrecision": "day",
@@ -3577,10 +3577,10 @@
           "notes": "Verified against the Public Record Office Victoria guidance page, which states Last updated June 4, 2026."
         }
       },
-      "checkedAt": "2026-07-19T06:14:28.146Z",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026."
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Development verification re-stamped 2026-10-20 to match the linked register policy re-check on 2026-10-16 (radar freshness; keep watching)."
     },
     "publishedAt": "2026-06-04",
     "publishedAtPrecision": "day",
@@ -3657,10 +3657,10 @@
           "notes": "Verified against the official WA Government AI Assurance Framework document labelled Version 2.0, April 2025; month precision is retained."
         }
       },
-      "checkedAt": "2026-07-19T06:14:28.131Z",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026."
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Development verification re-stamped 2026-10-20 to match the linked register policy re-check on 2026-10-16 (radar freshness; keep watching)."
     },
     "publishedAt": "2025-04-01",
     "publishedAtPrecision": "month",
@@ -3792,10 +3792,10 @@
           "notes": "Verified against the WA Office of the Auditor General page, which states that the toolkit was last updated on 15 January 2026."
         }
       },
-      "checkedAt": "2026-07-19T06:14:28.115Z",
+      "checkedAt": "2026-10-16T08:58:16.036Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026."
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Development verification re-stamped 2026-10-20 to match the linked register policy re-check on 2026-10-16 (radar freshness; keep watching)."
     },
     "publishedAt": "2026-01-15",
     "publishedAtPrecision": "day",
