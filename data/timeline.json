@@ -1124,30 +1124,25 @@
         "url": "https://www.pm.gov.au/media/ai-australias-interests",
         "finalUrl": "https://www.pm.gov.au/media/ai-australias-interests",
         "title": "AI in Australia's interests",
-        "retrievedAt": "2026-07-20T10:05:51.852Z",
+        "publisher": "Prime Minister of Australia",
+        "retrievedAt": "2026-10-20T01:03:39.241Z",
         "contentType": "text/html",
-        "contentHash": "14e65bf8d4a32ae030b3d3f4caf531f4d970f1e4be90f266f05d7bb6b12d6835",
+        "contentHash": "1076b4e03c580fca40abf7b22d2483203b495e5c5b4cb8c38279143dbaaf0c80",
+        "publishedAt": "2026-07-15",
+        "publishedAtPrecision": "day",
         "linkedDocuments": [],
-        "browserCapture": {
-          "method": "browser",
-          "capturedAt": "2026-07-20T10:05:51.852Z",
-          "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
-          "notes": "Fresh official-source browser verification performed on 20 July 2026 immediately before recording the user approval.",
-          "pageContentHash": "fa342c8936fa39adb293260e6bdf4ba9a59ce9b725cc4fe87c4d093f335a8961",
-          "characterCount": 218
-        },
         "reviewedDate": {
           "date": "2026-07-15",
           "precision": "day",
-          "reviewedAt": "2026-07-20T10:05:51.866Z",
-          "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
-          "notes": "Announcement date verified on the official Prime Minister source."
+          "reviewedAt": "2026-10-20T01:03:39.241Z",
+          "reviewedBy": "Daniel Alkurdi (Cursor-assisted re-verification)",
+          "notes": "Announcement date confirmed on the official Prime Minister media release (time[datetime]=2026-07-15T03:00:21Z). The page still states that the Office of AI is established in PM&C and that Australian Standards for AI will be introduced."
         }
       },
-      "checkedAt": "2026-07-20T10:05:51.866Z",
-      "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
+      "checkedAt": "2026-10-20T01:03:39.241Z",
+      "checkedBy": "Daniel Alkurdi (Cursor-assisted re-verification)",
       "method": "manual",
-      "notes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source."
+      "notes": "Editorial re-verification on 20 October 2026 per Daniel Alkurdi: clear the stale radar badge for projected development dev-2026-07-15-australian-ai-standards-office-of-ai. No new Office of AI or Australian AI Standards register instrument was invented from the media release alone."
     }
   },
   {
