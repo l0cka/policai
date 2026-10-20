@@ -2774,15 +2774,37 @@
     "jurisdiction": "federal",
     "sourceUrl": "https://www.inslm.gov.au/system/files/2026-10/INSLM-annual-report-2025-26.pdf",
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
         "url": "https://www.inslm.gov.au/system/files/2026-10/INSLM-annual-report-2025-26.pdf",
+        "finalUrl": "https://www.inslm.gov.au/system/files/2026-10/INSLM-annual-report-2025-26.pdf",
         "title": "Independent National Security Legislation Monitor Annual Report 2025–26",
         "publisher": "Independent National Security Legislation Monitor",
+        "retrievedAt": "2026-10-20T01:02:06Z",
+        "contentType": "text/plain",
+        "contentHash": "8c88e308f403fafcdb3d54ecfef0dbe988a1b0ffba169758625f6335bb339a97",
         "publishedAt": "2026-10-08",
-        "publishedAtPrecision": "day"
+        "publishedAtPrecision": "day",
+        "manualExtraction": {
+          "method": "manual_transcription",
+          "extractedAt": "2026-10-20T01:02:06Z",
+          "extractedBy": "Daniel Alkurdi",
+          "notes": "Official PDF at www.inslm.gov.au timed out for direct retrieval (Akamai / zero bytes for Policai collector identity and browser UA). Text was re-fetched on 20 Oct 2026 via reader proxy of the official PDF URL and checked against the AI scoping section \"Legal framework for use of AI by the National Intelligence Community\" (~p.28): ministerial privacy rules say nothing about AI specifically; core NIC Privacy Act / FOI / government AI-policy exemptions; 2024 IIR recommendation not referred; initial scoping only; Monitor term ends late November 2026. Publication date 8 October 2026 confirmed on https://www.inslm.gov.au/publications/annual-report-2025-26. Not PDF byte-fingerprinted. No new register instrument invented from this annual-report scoping section.",
+          "textHash": "8c88e308f403fafcdb3d54ecfef0dbe988a1b0ffba169758625f6335bb339a97",
+          "characterCount": 93998
+        },
+        "reviewedDate": {
+          "date": "2026-10-08",
+          "precision": "day",
+          "reviewedAt": "2026-10-20T01:02:06Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "INSLM publication page states \"Publication date / 8 October 2026\" and links this PDF (https://www.inslm.gov.au/publications/annual-report-2025-26). Confirmed via reader proxy on 20 Oct 2026 because the host timed out for direct retrieval."
+        }
       },
-      "notes": "Unverified Signal handoff draft (19 Oct 2026). Primary PDF and publication page confirmed via reader proxy because www.inslm.gov.au timed out for the Policai collector identity and headless Chrome in this environment. Publication page states Publication date 8 October 2026 and links this PDF. AI section \"Legal framework for use of AI by the National Intelligence Community\" (from about p.28) verified against extracted PDF text. Not fingerprinted as PDF bytes; not marked verified; no lastReviewedAt stamp. Secondary: Canberra Times 19 Oct 2026."
+      "checkedAt": "2026-10-20T01:02:06Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Daniel Alkurdi approved promote for radar item dev-inslm-annual-report-2025-26-ai-scoping (radar review 2026-10-20): approve Signal draft timeline tl-2026-10-08-inslm-annual-report-2025-26-ai-scoping and verify this development. Primary: INSLM PDF / publication page, 8 Oct 2026. Timeline-only milestone; no new policies.json register instrument from the annual-report AI scoping section."
     }
   },
   {
