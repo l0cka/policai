@@ -8163,5 +8163,61 @@
       },
       "notes": "Unverified register-gap draft for Daniel. Dates taken only from ASIC pages and the Federal Register of Legislation: instruments dated 15 September 2026 and registered 17 September 2026 (F2026L01223, F2026L01224); media release displayDate 24 September 2026; CS 63 Released 24 September 2026 and comments close 5 November 2026 (5 pm AEDT); CS 63 states the rules commence on 18 March 2028; section 2 of each instrument commences 18 months after the day it is registered. Re-read on 20 October 2026: the media release and the CS 63 page do not mention a kill switch or seven-year record keeping, so the kill-switch sentence was removed. Seven-year retention is kept from the as-made instruments (securities rules 5.6.3A(3), 5.6.3B(4), 5.6.4(4), 5.6.8(4) and 5.6.8A(5), and futures rules 2.2B.3(3), 2.2B.4(4), 2.2B.5(4), 2.2B.8(4) and 2.2B.9(5)). No checkedAt, no checkedBy, no lastReviewedAt. Not marked verified. Hidden from the public read until Daniel's own review."
     }
+  },
+  {
+    "id": "pmc-rapid-review-ai-driven-cyber-incident-2026",
+    "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
+    "description": "PM&C-led rapid review, announced with formal terms of reference on 24 September 2026, of whether Australia's legislative, governance and information-sharing arrangements are fit for purpose for cyber incidents involving AI.",
+    "jurisdiction": "federal",
+    "type": "policy",
+    "status": "proposed",
+    "effectiveDate": "2026-09-24",
+    "dates": [
+      {
+        "type": "published",
+        "date": "2026-09-24",
+        "precision": "day",
+        "primary": true
+      }
+    ],
+    "agencies": [
+      "Department of the Prime Minister and Cabinet",
+      "National Cyber Security Coordinator",
+      "Australian Signals Directorate",
+      "Australian AI Safety Institute",
+      "Services Australia"
+    ],
+    "sourceUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+    "content": "On 24 September 2026 the Prime Minister announced a Department of the Prime Minister and Cabinet (PM&C)-led rapid review of whether existing legislative, governance and information-sharing arrangements are fit for purpose to prepare for and respond to cyber incidents involving artificial intelligence. PM&C published formal terms of reference the same day (https://www.pmc.gov.au/resources/terms-reference-rapid-review-australian-government-arrangements-ai-driven-cyber-incident; release date Thursday 24 September 2026). The review page states that PM&C leads the review in collaboration with the National Cyber Security Coordinator, the Australian Signals Directorate, the Australian AI Safety Institute and Services Australia. Per the terms of reference, recommendations scope covers: reporting requirements relating to AI-driven cyber incidents, AI-identified cyber vulnerabilities and cyber-related AI safety incidents (including obligations, thresholds, pathways and systems); Commonwealth governance and information-sharing arrangements for managing incidents involving AI (including roles, responsibilities and escalation pathways); engagement and information-sharing obligations of AI firms (including notification requirements and cooperation arrangements during incidents); the adequacy of existing system and legislative, regulatory and enforcement frameworks in deterring AI-driven cyber incidents (including whether current offences, liabilities, penalties and enforcement mechanisms are sufficient and effective); and mechanisms to strengthen networks and systems of government departments and agencies against AI vulnerabilities. PM&C states the review will also inform Australia's AI Standards and international work on safety incident reporting. The Prime Minister's disclosure of the underlying OpenAI / Medicare statistics portal incident is recorded separately as timeline event tl-2026-09-24-pm-discloses-openai-medicare-portal-access. This record is the government rapid review with published terms of reference; it is not a completed instrument and it is not OpenAI's later company taskforce.",
+    "aiSummary": "PM&C-led rapid review announced 24 September 2026 with published terms of reference on whether legislative, governance and information-sharing arrangements are fit for AI-driven cyber incidents; recommendations to inform Australia's AI Standards.",
+    "tags": [
+      "rapid review",
+      "PM&C",
+      "cyber security",
+      "AI incident reporting",
+      "terms of reference",
+      "OpenAI",
+      "Medicare portal"
+    ],
+    "themes": [
+      "cyber-security",
+      "ai-governance",
+      "risk-assurance",
+      "standards",
+      "agentic-ai"
+    ],
+    "createdAt": "2026-10-20T05:20:00.000Z",
+    "updatedAt": "2026-10-20T05:20:00.000Z",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+        "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
+        "publisher": "Department of the Prime Minister and Cabinet",
+        "publishedAt": "2026-09-24",
+        "publishedAtPrecision": "day"
+      },
+      "notes": "Unverified editorial draft from the Policai Signal handoff of 20 October 2026. Primary sources are the PM&C review page and the terms of reference resource (release Thursday 24 September 2026). Partner agencies taken from the PM&C ToR/page (PM&C lead; National Cyber Security Coordinator; ASD; Australian AI Safety Institute; Services Australia), not from the PM transcript's longer verbal list that also named the Office of AI. No source fingerprint, no checkedAt, no checkedBy, and no lastReviewedAt. Not marked verified. Hidden from the public read until Daniel's own review. Do not conflate with OpenAI's separate company Australian taskforce announced 20 October 2026."
+    }
   }
 ]
