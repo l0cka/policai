@@ -9,6 +9,7 @@ import {
 } from 'react';
 import Link from 'next/link';
 import { ArrowUpRight, ChevronDown, List, Search, Table2 } from 'lucide-react';
+import { FollowControl } from '@/components/follow-control';
 import { FilterControls, type FilterGroup } from '@/components/filter-sidebar';
 import { PolicyTable } from '@/components/policy-table';
 import { registerParams, selectRegisterPolicies, updateRegisterState, type PolicySortDirection, type PolicySortField, type PolicyViewMode } from '@/lib/policy-register';
@@ -24,6 +25,7 @@ import {
   getPolicyDateTypeName,
   type CollectionHealthStatus,
   type Development,
+  type Jurisdiction,
   type Policy,
 } from '@/types';
 import { cn } from '@/lib/utils';
@@ -391,6 +393,12 @@ export function PolicyBrowser({
                 Clear search and filters
               </button>
             )}
+            <Link
+              href="/following"
+              className="inline-flex min-h-11 items-center px-2 text-xs text-primary underline underline-offset-4"
+            >
+              Following
+            </Link>
           </div>
           {hasActiveFilters && (
             <div className="mb-4 flex flex-wrap gap-2">
@@ -424,6 +432,18 @@ export function PolicyBrowser({
                   <span aria-hidden="true">×</span>
                 </button>
               ))}
+              {jurisdictions.length === 1 ? (
+                <FollowControl
+                  follow={{ kind: 'jurisdiction', id: jurisdictions[0] as Jurisdiction }}
+                  label={getJurisdictionName(jurisdictions[0] as Jurisdiction)}
+                />
+              ) : null}
+              {themes.length === 1 ? (
+                <FollowControl
+                  follow={{ kind: 'theme', id: themes[0] }}
+                  label={getThemeLabel(themes[0])}
+                />
+              ) : null}
             </div>
           )}
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-3">
