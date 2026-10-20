@@ -126,6 +126,21 @@ export const WATCH_SOURCES: WatchSource[] = [
       'Directly tracks the Office of AI mandate and national standards implementation; PMC serves an empty shell to plain HTTP clients, so the page is rendered in the headless browser.',
   },
   {
+    id: 'pmc-rapid-review-ai-cyber',
+    name: 'PM&C — Rapid review into AI-driven cyber incident arrangements',
+    jurisdiction: 'federal',
+    category: 'government',
+    url: 'https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident',
+    kind: 'document',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    critical: true,
+    notes:
+      'Direct document watch for the 24 September 2026 PM&C rapid review page (outside /office-ai). Sibling domestic-policy pages are not discovered by pmc-office-ai. PMC Imperva often blocks plain HTTP; use the headless browser like pmc-office-ai. Companion ToR resource: https://www.pmc.gov.au/resources/terms-reference-rapid-review-australian-government-arrangements-ai-driven-cyber-incident.',
+  },
+  {
     id: 'industry-ai-publications',
     name: 'Department of Industry — AI publications',
     jurisdiction: 'federal',
