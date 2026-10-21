@@ -1737,6 +1737,74 @@ describe('validateCollectionMeta robotsUnverified', () => {
   );
 });
 
+describe('validateCollectionMeta run order', () => {
+  const meta = (stamps: Partial<CollectionMeta>): CollectionMeta =>
+    ({
+      lastCollectedAt: '2026-10-17T19:30:00.000Z',
+      lastHealthyAt: '2026-10-10T19:30:00.000Z',
+      lastUsableAt: '2026-10-14T19:30:00.000Z',
+      lastReviewedAt: null,
+      collector: {
+        runCount: 3,
+        lastRunSources: [],
+        lastRunErrors: [],
+        health: 'failed',
+        dueSourceCount: 0,
+        successfulSourceCount: 0,
+        failedSourceCount: 0,
+        skippedSourceCount: 0,
+        successRate: 0,
+        automaticSourceCount: 0,
+        manualSourceCount: 0,
+        sourceResults: [],
+      },
+      ...stamps,
+    }) as CollectionMeta;
+
+  it('accepts healthy, then usable, then collected, and missing stamps', () => {
+    expect(validateCollectionMeta(meta({})).errors).toEqual([]);
+    expect(
+      validateCollectionMeta(meta({ lastHealthyAt: null, lastUsableAt: null })).errors,
+    ).toEqual([]);
+  });
+
+  it.each([
+    [{ lastHealthyAt: '2026-10-15T00:00:00.000Z' }, 'meta: lastHealthyAt is after lastUsableAt'],
+    [{ lastUsableAt: '2026-10-18T00:00:00.000Z' }, 'meta: lastUsableAt is after lastCollectedAt'],
+    [
+      { lastUsableAt: null, lastHealthyAt: '2026-10-18T00:00:00.000Z' },
+      'meta: lastHealthyAt is after lastCollectedAt',
+    ],
+  ])('rejects out-of-order stamps case %#', (stamps, error) => {
+    expect(validateCollectionMeta(meta(stamps)).errors).toEqual([error]);
+  });
+});
+
+describe('validateWatchState sourceHealth', () => {
+  const state = (lastSuccessAt: string | null): WatchState => ({
+    ...emptyWatchState(),
+    sourceHealth: {
+      'source-a': {
+        lastSuccessAt,
+        firstFailureAt: '2026-10-15T00:00:00.000Z',
+        consecutiveFailures: 2,
+        lastFailureClass: 'timeout',
+      },
+    },
+  });
+
+  it('accepts failures that began after the last success', () => {
+    expect(validateWatchState(state('2026-10-08T00:00:00.000Z')).errors).toEqual([]);
+    expect(validateWatchState(state(null)).errors).toEqual([]);
+  });
+
+  it('rejects a success at or after the first failure of the streak', () => {
+    expect(validateWatchState(state('2026-10-16T00:00:00.000Z')).errors).toEqual([
+      'watchState:sourceHealth:source-a: lastSuccessAt must precede firstFailureAt',
+    ]);
+  });
+});
+
 describe('validateWatchState hosts', () => {
   const record = (): HostRecord => ({
     seenAt: '2026-10-20T19:35:00.000Z',

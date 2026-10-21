@@ -80,6 +80,7 @@ export async function runCollection(run: CollectionRun): Promise<void> {
       lastCheckedBySource: state.lastCheckedBySource ?? {},
       sourceSnapshots: state.sourceSnapshots ?? {},
       hosts,
+      sourceHealth: state.sourceHealth ?? {},
     },
     hostGate:
       run.hostGate ??

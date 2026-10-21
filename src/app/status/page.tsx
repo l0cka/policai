@@ -4,10 +4,13 @@ import {
   getCollectionMeta,
   getPolicies,
   getSourceCheckTimes,
+  getSourceHealth,
   getSourceMonitoring,
   getSourceReviews,
 } from '@/lib/data-service';
-import { WATCH_SOURCES } from '@/lib/pipeline/sources';
+import { getAutomaticSources, WATCH_SOURCES } from '@/lib/pipeline/sources';
+import { sourcesNotReachedSince } from '@/lib/pipeline/source-health';
+import { collectionAnchor } from '@/lib/this-week';
 import { summarizeManualSourceCoverage } from '@/lib/source-monitoring';
 import {
   assessSourceFreshness,
@@ -62,6 +65,16 @@ const WIDE_ONLY = 'hidden sm:table-cell';
 /** Records due within this many days are listed under Record review. */
 const REVIEW_SOON_DAYS = 30;
 
+function sydneyDate(stamp: string | null): string {
+  if (!stamp) return 'never';
+  return new Date(stamp).toLocaleDateString('en-AU', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    timeZone: 'Australia/Sydney',
+  });
+}
+
 function dueLabel(daysLeft: number | null): string {
   if (daysLeft === null) return 'Never reviewed';
   if (daysLeft < 0) return `Overdue ${age(-daysLeft)}`;
@@ -75,14 +88,23 @@ function age(days: number | null): string {
 }
 
 export default async function StatusPage() {
-  const [meta, policies, checkTimes, monitoring, pendingReviews] =
+  const [meta, policies, checkTimes, sourceHealth, monitoring, pendingReviews] =
     await Promise.all([
       getCollectionMeta(),
       getPolicies(),
       getSourceCheckTimes(),
+      getSourceHealth(),
       getSourceMonitoring(),
       getSourceReviews({ status: 'pending_review' }),
     ]);
+  const anchor = collectionAnchor(meta);
+  const automatic = getAutomaticSources();
+  const nameOf = new Map(automatic.map((source) => [source.id, source.name]));
+  const unreached = sourcesNotReachedSince(
+    anchor,
+    sourceHealth,
+    automatic.map((source) => source.id),
+  );
   const rows = assessSourceFreshness(WATCH_SOURCES, checkTimes);
   const freshness = summarizeSourceFreshness(rows);
   const manual = summarizeManualSourceCoverage(WATCH_SOURCES, monitoring);
@@ -225,6 +247,32 @@ export default async function StatusPage() {
             </ul>
           </section>
         ) : null}
+
+        <section className="border-t border-border pt-7">
+          <h2 className="section-title">Not reached since the last passing run</h2>
+          <p className="text-muted-foreground">
+            Last collected {sydneyDate(meta.lastCollectedAt)}. Last passing
+            run {sydneyDate(anchor)}, which anchors the weekly window.{' '}
+            {unreached.length === 0
+              ? 'Every automatic source has been reached since then.'
+              : 'These automatic sources have failed in every run since then, so the window may miss what they published.'}
+          </p>
+          {unreached.length > 0 ? (
+            <ul className="mt-3 space-y-1">
+              {unreached.map((row) => (
+                <li key={row.sourceId}>
+                  {nameOf.get(row.sourceId) ?? row.sourceId}{' '}
+                  <span className="font-mono text-xs text-muted-foreground">
+                    failing since {sydneyDate(row.firstFailureAt)},{' '}
+                    {row.consecutiveFailures} run
+                    {row.consecutiveFailures === 1 ? '' : 's'}
+                    {row.lastFailureClass ? `, ${row.lastFailureClass}` : ''}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </section>
 
         <section className="border-t border-border pt-7">
           <h2 className="section-title">Sources</h2>

@@ -1355,6 +1355,21 @@ export function validateCollectionMeta(meta: CollectionMeta): ValidationReport {
     errors.push('meta: invalid lastUsableAt');
   if (meta.lastReviewedAt && !isTimestampString(meta.lastReviewedAt))
     errors.push('meta: invalid lastReviewedAt');
+  const runOrder = [
+    ['lastHealthyAt', meta.lastHealthyAt],
+    ['lastUsableAt', meta.lastUsableAt],
+    ['lastCollectedAt', meta.lastCollectedAt],
+  ] as const;
+  runOrder.forEach(([earlierName, earlier], index) => {
+    for (const [laterName, later] of runOrder.slice(index + 1)) {
+      if (
+        isTimestampString(earlier) &&
+        isTimestampString(later) &&
+        Date.parse(earlier) > Date.parse(later)
+      )
+        errors.push(`meta: ${earlierName} is after ${laterName}`);
+    }
+  });
   if (!isOneOf(COLLECTION_HEALTH_STATUSES, collector.health))
     errors.push('meta: invalid collector health');
   if (
@@ -1983,6 +1998,26 @@ export function validateWatchState(state: WatchState): ValidationReport {
       errors.push(`${label}: invalid backoffCount`);
     if (!Number.isInteger(record.robotsUnreachableRuns) || record.robotsUnreachableRuns < 0)
       errors.push(`${label}: invalid robotsUnreachableRuns`);
+  }
+
+  for (const [sourceId, record] of Object.entries(state.sourceHealth ?? {})) {
+    const label = `watchState:sourceHealth:${sourceId}`;
+    if (record.lastSuccessAt !== null && !isTimestampString(record.lastSuccessAt))
+      errors.push(`${label}: invalid lastSuccessAt`);
+    if (!Number.isInteger(record.consecutiveFailures) || record.consecutiveFailures < 0)
+      errors.push(`${label}: invalid consecutiveFailures`);
+    const failing = record.consecutiveFailures > 0;
+    if (failing ? !isTimestampString(record.firstFailureAt) : record.firstFailureAt !== null)
+      errors.push(`${label}: firstFailureAt must be set exactly while failing`);
+    if (failing ? !isFailureClass(record.lastFailureClass) : record.lastFailureClass !== null)
+      errors.push(`${label}: lastFailureClass must be set exactly while failing`);
+    if (
+      failing &&
+      isTimestampString(record.lastSuccessAt) &&
+      isTimestampString(record.firstFailureAt) &&
+      Date.parse(record.lastSuccessAt) >= Date.parse(record.firstFailureAt)
+    )
+      errors.push(`${label}: lastSuccessAt must precede firstFailureAt`);
   }
 
   for (const [sourceId, snapshot] of Object.entries(state.sourceSnapshots)) {
