@@ -1323,6 +1323,7 @@ export async function getArticleBySlug(
 const EMPTY_META: CollectionMeta = {
 	lastCollectedAt: null,
 	lastHealthyAt: null,
+	lastUsableAt: null,
 	lastReviewedAt: null,
 	collector: {
 		runCount: 0,

@@ -130,6 +130,10 @@ export function publicAutomaticCollectionMeta(
       health.status === 'healthy' && meta.lastCollectedAt
         ? meta.lastCollectedAt
         : meta.lastHealthyAt,
+    lastUsableAt:
+      health.status !== 'failed' && meta.lastCollectedAt
+        ? meta.lastCollectedAt
+        : meta.lastUsableAt,
     collector: {
       ...collector,
       lastRunSources: collector.lastRunSources.filter(

@@ -39,7 +39,7 @@ const props = {
   developmentCount: 5,
   weeklyDevelopmentCount: 2,
   lastCollectedAt: '2026-09-20',
-  lastHealthyAt: '2026-09-20',
+  lastUsableAt: '2026-09-20',
   lastReviewedAt: null,
   collectionHealth: 'healthy' as const,
   successfulSourceCount: 10,
@@ -248,12 +248,12 @@ describe('Editorial register', () => {
     expect(overview).toHaveTextContent('No upcoming deadlines recorded');
   });
 
-  it('labels register freshness as last fully healthy when that stamp is older', () => {
+  it('labels register freshness as last passing collection when the latest run failed', () => {
     render(
       <PolicyBrowser
         {...props}
         lastCollectedAt="2026-10-17T19:35:00.990Z"
-        lastHealthyAt="2026-10-06T19:33:28.224Z"
+        lastUsableAt="2026-10-06T19:33:28.224Z"
         collectionHealth="degraded"
         successfulSourceCount={57}
         dueSourceCount={59}
@@ -261,16 +261,16 @@ describe('Editorial register', () => {
     );
     const coverage = screen.getByRole('heading', { name: 'Source coverage' }).closest('section')!;
     expect(coverage).toHaveTextContent('57/59 due sources reached');
-    expect(coverage).toHaveTextContent(/last fully healthy 07 Oct 2026/);
+    expect(coverage).toHaveTextContent(/last passing collection 07 Oct 2026/);
     expect(coverage.textContent).not.toMatch(/17 Oct 2026/);
   });
 
-  it('labels register freshness as last collected when no healthy stamp exists', () => {
+  it('anchors register freshness on a degraded run that met the threshold', () => {
     render(
       <PolicyBrowser
         {...props}
         lastCollectedAt="2026-10-17T19:35:00.990Z"
-        lastHealthyAt={null}
+        lastUsableAt="2026-10-17T19:35:00.990Z"
         collectionHealth="degraded"
         successfulSourceCount={57}
         dueSourceCount={59}
@@ -278,6 +278,21 @@ describe('Editorial register', () => {
     );
     const coverage = screen.getByRole('heading', { name: 'Source coverage' }).closest('section')!;
     expect(coverage).toHaveTextContent(/last collected 18 Oct 2026/);
-    expect(coverage).not.toHaveTextContent('last fully healthy');
+  });
+
+  it('labels register freshness as last collected when no passing run is recorded', () => {
+    render(
+      <PolicyBrowser
+        {...props}
+        lastCollectedAt="2026-10-17T19:35:00.990Z"
+        lastUsableAt={null}
+        collectionHealth="degraded"
+        successfulSourceCount={57}
+        dueSourceCount={59}
+      />,
+    );
+    const coverage = screen.getByRole('heading', { name: 'Source coverage' }).closest('section')!;
+    expect(coverage).toHaveTextContent(/last collected 18 Oct 2026/);
+    expect(coverage).not.toHaveTextContent('last passing collection');
   });
 });

@@ -7,7 +7,8 @@ no collection, editorial approval, email delivery or schema change is performed.
 ## Policai
 
 `src/lib/this-week.ts` selects verified, non-dismissed developments in the seven
-elapsed days ending at `lastHealthyAt ?? lastCollectedAt`. The page shows that
+elapsed days ending at `collectionAnchor(meta)`, which is
+`lastUsableAt ?? lastCollectedAt`: the latest run that was not `failed`. The page shows that
 exact historical window and warns when it is more than seven days old. Without a
 usable anchor it reports coverage unavailable, not a quiet week. Detection date
 is not presented as the date of a substantive policy change.

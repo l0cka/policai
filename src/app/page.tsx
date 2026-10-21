@@ -11,6 +11,7 @@ import {
 } from '@/lib/data-service';
 import { WATCH_SOURCES } from '@/lib/pipeline/sources';
 import {
+  collectionAnchor,
   selectUpcomingPolicyDates,
   splitUpcomingDeadlines,
   weekWindowEndingAt,
@@ -56,7 +57,7 @@ export default async function HomePage() {
   // Anchored to the data's own currency rather than the wall clock, so the
   // figure is deterministic for a given collection state (and satisfies the
   // render-purity rule).
-  const dataCurrentAt = meta.lastHealthyAt ?? meta.lastCollectedAt;
+  const dataCurrentAt = collectionAnchor(meta);
   const weekAgo = dataCurrentAt
     ? new Date(dataCurrentAt).getTime() - 7 * 24 * 60 * 60 * 1000
     : Number.POSITIVE_INFINITY;
@@ -86,7 +87,7 @@ export default async function HomePage() {
       developmentCount={allDevelopments.filter((development) => development.status !== 'dismissed').length}
       weeklyDevelopmentCount={weeklyDevelopmentCount}
       lastCollectedAt={meta.lastCollectedAt}
-      lastHealthyAt={meta.lastHealthyAt}
+      lastUsableAt={meta.lastUsableAt}
       lastReviewedAt={meta.lastReviewedAt}
       collectionHealth={meta.collector.health}
       successfulSourceCount={meta.collector.successfulSourceCount}

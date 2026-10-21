@@ -11,6 +11,7 @@ function metaFixture(overrides: Partial<CollectionMeta> = {}): CollectionMeta {
   return {
     lastCollectedAt: '2026-10-16T19:35:00.990Z',
     lastHealthyAt: '2026-10-06T19:33:28.224Z',
+    lastUsableAt: '2026-10-06T19:33:28.224Z',
     lastReviewedAt: null,
     collector: {
       runCount: 79,
