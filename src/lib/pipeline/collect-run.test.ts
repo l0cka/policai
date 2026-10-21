@@ -6,7 +6,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { runCollection } from '../../../scripts/collect-run';
-import { buildPolicy } from '@/test/factories';
+import { buildManualDecision, buildPolicy } from '@/test/factories';
 import type { Development, SourceReview } from '@/types';
 import type { WatchState } from './collect';
 import { createHostGate, robotsFetcher } from './host-gate';
@@ -116,7 +116,7 @@ describe('collection CLI write path', () => {
       ...SOURCE,
       id: 'accc-rss',
       name: 'ACCC — media releases',
-      automation: 'manual',
+      automation: buildManualDecision(),
       url: 'https://www.example.gov.au/accc',
     };
     const fetchImpl = vi.fn(async (input: RequestInfo | URL) => {

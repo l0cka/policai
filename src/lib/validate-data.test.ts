@@ -1,7 +1,7 @@
 /* @vitest-environment node */
 
 import { describe, expect, it } from 'vitest';
-import { buildPolicy, buildTimelineEvent } from '@/test/factories';
+import { buildManualDecision, buildPolicy, buildTimelineEvent } from '@/test/factories';
 import {
   countUnsubstantiatedSecondaryDates,
   isAllowedSourceHost,
@@ -1071,7 +1071,7 @@ describe('validateSourceMonitoring', () => {
       kind: 'html-index',
       schedule: 'daily',
       enabled: true,
-      automation: 'manual',
+      automation: buildManualDecision(),
     } satisfies WatchSource;
 
     const report = validateSourceMonitoring(
@@ -1106,7 +1106,7 @@ describe('validateSourceMonitoring', () => {
       kind: 'html-index',
       schedule: 'daily',
       enabled: true,
-      automation: 'manual',
+      automation: buildManualDecision(),
     } satisfies WatchSource;
 
     const report = validateSourceMonitoring(
@@ -1489,6 +1489,60 @@ describe('validateWatchSources identity exceptions', () => {
       new Date('2026-12-01T00:00:00.000Z'),
     );
     expect(report.warnings).toEqual([]);
+  });
+});
+
+describe('validateWatchSources automation decisions', () => {
+  const now = new Date('2026-10-22T00:00:00.000Z');
+  const automatic: WatchSource = {
+    id: 'finance-media',
+    name: 'Finance media',
+    jurisdiction: 'federal',
+    category: 'government',
+    url: 'https://www.finance.gov.au/media',
+    kind: 'html-index',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+  };
+  const refusing: WatchSource = {
+    ...automatic,
+    id: 'finance-news',
+    url: 'https://www.finance.gov.au/about-us/news',
+    automation: buildManualDecision({ because: 'identity_refused' }),
+  };
+
+  it('accepts a complete manual decision', () => {
+    expect(validateWatchSources([refusing], now).errors).toEqual([]);
+  });
+
+  it('fails an automatic source on a host decided refused, naming the decider', () => {
+    expect(validateWatchSources([automatic, refusing], now).errors).toEqual([
+      'watchSources:finance-media: automatic source on www.finance.gov.au, which finance-news records as refusing the declared identity; move it to manual tracking or reverse that decision',
+    ]);
+  });
+
+  it('lets an automatic source share a host with a manual source blocked for another reason', () => {
+    const blocked = { ...refusing, automation: buildManualDecision({ because: 'bot_blocked' }) };
+    expect(validateWatchSources([automatic, blocked], now).errors).toEqual([]);
+  });
+
+  it('rejects a bare manual flag and an incomplete decision', () => {
+    const bare = { ...refusing, automation: 'manual' } as unknown as WatchSource;
+    const incomplete = {
+      ...refusing,
+      id: 'incomplete',
+      url: 'https://www.finance.gov.au/other',
+      automation: { ...buildManualDecision(), because: 'unknown', decidedBy: '', reviewEveryDays: 0, since: '2026-11-01', evidence: 'short' },
+    } as unknown as WatchSource;
+    expect(validateWatchSources([bare, incomplete], now).errors).toEqual([
+      "watchSources:finance-news: automation must be 'automatic' or a manual decision",
+      'watchSources:incomplete: invalid manual because',
+      'watchSources:incomplete: manual decision since cannot be in the future',
+      'watchSources:incomplete: manual decision needs decidedBy',
+      'watchSources:incomplete: reviewEveryDays must be a positive integer',
+      'watchSources:incomplete: manual decision needs evidence of at least 20 characters',
+    ]);
   });
 });
 

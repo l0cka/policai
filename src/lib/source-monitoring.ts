@@ -45,7 +45,7 @@ export function summarizeManualSourceCoverage(
   now = new Date(),
 ): ManualSourceCoverage {
   const manualSources = sources.filter(
-    (source) => source.enabled && source.automation === 'manual',
+    (source) => source.enabled && source.automation !== 'automatic',
   );
   const reviewBySource = new Map(
     monitoring.manualReviews.map((review) => [review.sourceId, review]),

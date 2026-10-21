@@ -533,7 +533,7 @@ async function recordManualSourceReviewUnlocked(input: {
 	if (!source || !source.enabled) {
 		throw new Error("Unknown or disabled source");
 	}
-	if (source.automation !== "manual") {
+	if (source.automation === "automatic") {
 		throw new Error("Source is configured for automatic collection");
 	}
 	const notes = input.notes?.trim();

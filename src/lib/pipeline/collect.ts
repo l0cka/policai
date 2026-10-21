@@ -6,6 +6,7 @@ import type {
   PolicyDraft,
   SourceEvidence,
   SourceReview,
+  SkippedLinked,
   SourceRunResult,
   TimelineEvent,
   TimelineEventDraft,
@@ -29,6 +30,7 @@ import {
   type Candidate,
 } from './extract';
 import {
+  DecidedBlockError,
   foldLinkedDocuments,
   isGateError,
   matchesRetrievedContent,
@@ -1301,6 +1303,10 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     let deferSourceSuccess = false;
     const sourceErrors: string[] = [];
     let failure: ReturnType<typeof rowFailure> | null = null;
+    const skippedLinked = new Map<string, SkippedLinked>();
+    const noteSkipped = (skipped: readonly SkippedLinked[] | undefined) => {
+      for (const entry of skipped ?? []) skippedLinked.set(entry.url, entry);
+    };
 
     const exceptionUntil = source.identityException?.until;
     if (identityState === 'active') {
@@ -1376,6 +1382,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
       try {
         const indexAttempt = await retrieveSourceIndex();
         sourceRetrieval = indexAttempt.retrieval;
+        noteSkipped(sourceRetrieval.skippedLinked);
         const indexExtraction = indexAttempt.extracted;
         if (source.kind === 'document') {
           itemCount = 1;
@@ -1700,6 +1707,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
           sourceUrlsEqual(candidate.url, source.url)
             ? sourceRetrieval ?? (await retrieveSourceIndex()).retrieval
             : await retrievePageWithFallback(candidate.url);
+        noteSkipped(pageRetrieval.skippedLinked);
         const expectedVersion = parseChangeFingerprint(
           candidate.changeFingerprint,
         );
@@ -1768,6 +1776,12 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
           log(
             `[collect] ${source.id}: superseded ${candidate.url} (${message})`,
           );
+          continue;
+        }
+        if (error instanceof DecidedBlockError) {
+          noteSkipped([{ url: candidate.url, decidedBy: error.decidedBy }]);
+          markCandidateFailed(state, candidate, nowIso, message);
+          log(`[collect] ${source.id}: skipped ${candidate.url} (${message})`);
           continue;
         }
         if (isDeferredByGate(error)) {
@@ -1955,6 +1969,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
       ),
       ...(identityState === 'none' ? {} : { identityException: identityState }),
       ...(failure ?? {}),
+      ...(skippedLinked.size > 0 ? { skippedLinked: [...skippedLinked.values()] } : {}),
     });
   }
 
@@ -2009,7 +2024,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         (source) => source.enabled && source.automation === 'automatic',
       ).length,
       manualSourceCount: catalogSources.filter(
-        (source) => source.enabled && source.automation === 'manual',
+        (source) => source.enabled && source.automation !== 'automatic',
       ).length,
       sourceResults,
       ...(robotsUnverified.length > 0 ? { robotsUnverified } : {}),

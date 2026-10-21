@@ -45,7 +45,8 @@ import {
   isRobotsRuleList,
   isStoredSitemapList,
 } from '@/lib/pipeline/host-gate';
-import type { WatchSource } from '@/lib/pipeline/sources';
+import { hostOf } from '@/lib/pipeline/host';
+import { refusedHosts, type WatchSource } from '@/lib/pipeline/sources';
 import { isFailureClass, publicFailureUrl } from '@/lib/pipeline/failure';
 import { identityExceptionState } from '@/lib/pipeline/identity';
 import { isValidCalendarDate } from '@/lib/calendar-date';
@@ -2015,8 +2016,7 @@ export function validateWatchSources(
       errors.push(`${label}: invalid kind`);
     if (!isOneOf(['daily', 'weekly'], source.schedule))
       errors.push(`${label}: invalid schedule`);
-    if (!isOneOf(['automatic', 'manual'], source.automation))
-      errors.push(`${label}: invalid automation mode`);
+    validateAutomation(label, source.automation, now, errors);
     if (
       source.minimumItemCount !== undefined &&
       (!Number.isInteger(source.minimumItemCount) ||
@@ -2038,7 +2038,58 @@ export function validateWatchSources(
     }
   });
 
+  const refused = refusedHosts(sources);
+  for (const source of sources) {
+    if (source.automation !== 'automatic' || !URL.canParse(source.url)) continue;
+    const decidedBy = refused.get(hostOf(new URL(source.url)));
+    if (decidedBy) {
+      errors.push(
+        `watchSources:${source.id}: automatic source on ${hostOf(new URL(source.url))}, which ${decidedBy} records as refusing the declared identity; move it to manual tracking or reverse that decision`,
+      );
+    }
+  }
+
   return { errors, warnings };
+}
+
+const MANUAL_BECAUSE = [
+  'identity_refused',
+  'bot_blocked',
+  'robots_disallowed',
+  'not_found',
+] as const;
+
+function validateAutomation(
+  label: string,
+  automation: unknown,
+  now: Date,
+  errors: string[],
+): void {
+  if (automation === 'automatic') return;
+  if (!isRecord(automation) || automation.mode !== 'manual') {
+    errors.push(`${label}: automation must be 'automatic' or a manual decision`);
+    return;
+  }
+  if (!isOneOf(MANUAL_BECAUSE, automation.because))
+    errors.push(`${label}: invalid manual because`);
+  if (!isOneOf(['manual', 'await_allowlist'], automation.decision))
+    errors.push(`${label}: invalid manual decision`);
+  if (!isCalendarDateString(automation.since))
+    errors.push(`${label}: manual decision since must be YYYY-MM-DD`);
+  else if (
+    new Date(`${automation.since}T00:00:00Z`).getTime() >
+    now.getTime() + VERIFICATION_CLOCK_SKEW_TOLERANCE_MS
+  )
+    errors.push(`${label}: manual decision since cannot be in the future`);
+  if (!isNonEmptyString(automation.decidedBy))
+    errors.push(`${label}: manual decision needs decidedBy`);
+  if (
+    !Number.isInteger(automation.reviewEveryDays) ||
+    (automation.reviewEveryDays as number) < 1
+  )
+    errors.push(`${label}: reviewEveryDays must be a positive integer`);
+  if (!isNonEmptyString(automation.evidence) || automation.evidence.trim().length < 20)
+    errors.push(`${label}: manual decision needs evidence of at least 20 characters`);
 }
 
 export function validateSourceMonitoring(
@@ -2068,7 +2119,7 @@ export function validateSourceMonitoring(
     const source = sourceById.get(review.sourceId);
     if (!source) {
       errors.push(`${label}: unknown source id`);
-    } else if (source.automation !== 'manual') {
+    } else if (source.automation === 'automatic') {
       errors.push(`${label}: source is not configured for manual review`);
     }
     if (!isOneOf(MANUAL_SOURCE_REVIEW_STATUSES, review.status))
@@ -2157,7 +2208,7 @@ export function validateSourceMonitoring(
   }
 
   for (const source of sources.filter(
-    (candidate) => candidate.enabled && candidate.automation === 'manual',
+    (candidate) => candidate.enabled && candidate.automation !== 'automatic',
   )) {
     if (!seen.has(source.id)) {
       warnings.push(

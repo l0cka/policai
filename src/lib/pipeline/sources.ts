@@ -1,4 +1,5 @@
 import type { Jurisdiction } from '@/types';
+import { hostOf, type Host } from './host';
 import type { SourceIdentityException } from './identity';
 
 /**
@@ -19,7 +20,30 @@ import type { SourceIdentityException } from './identity';
 
 export type SourceKind = 'html-index' | 'rss' | 'document';
 export type SourceCategory = 'government' | 'regulator' | 'court';
-export type SourceAutomation = 'automatic' | 'manual';
+export type ManualBecause =
+  | 'identity_refused'
+  | 'bot_blocked'
+  | 'robots_disallowed'
+  | 'not_found';
+
+/**
+ * A reviewed decision to track a source by hand. Only a merged change to
+ * this record takes a source out of the automatic inventory; the collector
+ * never does it. `await_allowlist` is used only where an allow-list request
+ * has a written reply.
+ */
+export interface ManualDecision {
+  mode: 'manual';
+  because: ManualBecause;
+  decision: 'manual' | 'await_allowlist';
+  /** YYYY-MM-DD the decision was taken. */
+  since: string;
+  decidedBy: string;
+  reviewEveryDays: number;
+  evidence: string;
+}
+
+export type SourceAutomation = 'automatic' | ManualDecision;
 export type SourceFetchStrategy = 'http' | 'browser';
 
 export interface WatchSource {
@@ -256,9 +280,16 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'weekly',
     enabled: false,
-    automation: 'manual',
-    notes:
-      'The departmental news index now returns 404 and no successor page is published (verified 2026-07-20); portfolio announcements are covered by agd-ministers-media.',
+    automation: {
+      mode: 'manual',
+      because: 'not_found',
+      decision: 'manual',
+      since: '2026-07-20',
+      decidedBy: 'Daniel',
+      reviewEveryDays: 14,
+      evidence:
+        'The departmental news index now returns 404 and no successor page is published (verified 2026-07-20); portfolio announcements are covered by agd-ministers-media.',
+    },
   },
   {
     id: 'agd-ministers-media',
@@ -308,9 +339,18 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'weekly',
     enabled: true,
-    automation: 'manual',
+    automation: {
+      mode: 'manual',
+      because: 'identity_refused',
+      decision: 'manual',
+      since: '2026-10-07',
+      decidedBy: 'Daniel',
+      reviewEveryDays: 14,
+      evidence:
+        'Tracked by hand: the host resets connections that identify as the Policai collector (a default curl request gets 200, verified 2026-10-07). The user agent is not disguised or bypassed (decision of 2026-10-07). The previous URL (/about-us/view-all-content/news) returns 404.',
+    },
     notes:
-      'ASD/ACSC news index covering AI cyber guidance and joint statements. Tracked by hand: the host resets connections that identify as the Policai collector (a default curl request gets 200, verified 2026-10-07). The user agent is not disguised or bypassed (decision of 2026-10-07). The previous URL (/about-us/view-all-content/news) returns 404.',
+      'ASD/ACSC news index covering AI cyber guidance and joint statements.',
   },
   {
     id: 'apsc-latest-news',
@@ -533,9 +573,16 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'rss',
     schedule: 'daily',
     enabled: true,
-    automation: 'manual',
-    notes:
-      'Tracked by hand: the host refuses the Policai collector identity (HTTP 403, Akamai Access Denied page, text/html, 405 bytes, reference #18.dc603017.1792195278.6bbb455, verified 2026-10-17) and the source has failed every collection run since 2026-10-07. The block is respected and the user agent is not disguised or bypassed.',
+    automation: {
+      mode: 'manual',
+      because: 'identity_refused',
+      decision: 'manual',
+      since: '2026-10-17',
+      decidedBy: 'Daniel',
+      reviewEveryDays: 14,
+      evidence:
+        'Tracked by hand: the host refuses the Policai collector identity (HTTP 403, Akamai Access Denied page, text/html, 405 bytes, reference #18.dc603017.1792195278.6bbb455, verified 2026-10-17) and the source has failed every collection run since 2026-10-07. The block is respected and the user agent is not disguised or bypassed.',
+    },
   },
   {
     id: 'apra-rss',
@@ -1140,9 +1187,16 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'document',
     schedule: 'weekly',
     enabled: true,
-    automation: 'manual',
-    notes:
-      'Tracked by hand: the linked framework PDF on www.finance.gov.au resets the connection for the Policai collector identity (net::ERR_HTTP2_PROTOCOL_ERROR; curl with that identity gets HTTP/2 INTERNAL_ERROR and fails on HTTP/1.1, verified 2026-10-17) and the source has failed every collection run recorded since 2026-10-12. The block is respected and the user agent is not disguised or bypassed.',
+    automation: {
+      mode: 'manual',
+      because: 'bot_blocked',
+      decision: 'manual',
+      since: '2026-10-18',
+      decidedBy: 'Daniel',
+      reviewEveryDays: 14,
+      evidence:
+        'The linked framework PDF on www.finance.gov.au resets the connection for the Policai collector identity (net::ERR_HTTP2_PROTOCOL_ERROR; curl with that identity gets HTTP/2 INTERNAL_ERROR and fails on HTTP/1.1, verified 2026-10-17) and the source has failed every collection run recorded since 2026-10-12. The block is respected and the user agent is not disguised or bypassed. The page host accepts the collector, so this is not recorded as identity_refused (which would mark www.wa.gov.au refused); once www.finance.gov.au has its own identity decision the source returns to automatic and the PDF is skipped.',
+    },
   },
   {
     id: 'sa-office-for-ai',
@@ -1153,9 +1207,16 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'document',
     schedule: 'weekly',
     enabled: true,
-    automation: 'manual',
-    notes:
-      'Returns 403 to every automated client, including the headless browser (verified 2026-07-20); review manually.',
+    automation: {
+      mode: 'manual',
+      because: 'bot_blocked',
+      decision: 'manual',
+      since: '2026-07-20',
+      decidedBy: 'Daniel',
+      reviewEveryDays: 14,
+      evidence:
+        'Returns 403 to every automated client, including the headless browser (verified 2026-07-20); review manually.',
+    },
   },
   {
     id: 'tas-dpac-policies',
@@ -1205,25 +1266,47 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'document',
     schedule: 'weekly',
     enabled: true,
-    automation: 'manual',
-    notes:
-      'Tracked by hand: www.inslm.gov.au timed out with 0 bytes for the Policai collector identity and headless Chrome from the 2026-10-19 Signal retrieval environment (Akamai edge). Direct PDF and HTML fetches failed; content was confirmed via a reader proxy against the official publication page and PDF path. The block/timeout is respected and the user agent is not disguised. Annual reports and the document library are the official publication paths.',
+    automation: {
+      mode: 'manual',
+      because: 'bot_blocked',
+      decision: 'manual',
+      since: '2026-10-19',
+      decidedBy: 'Daniel',
+      reviewEveryDays: 14,
+      evidence:
+        'Tracked by hand: www.inslm.gov.au timed out with 0 bytes for the Policai collector identity and headless Chrome from the 2026-10-19 Signal retrieval environment (Akamai edge). Direct PDF and HTML fetches failed; content was confirmed via a reader proxy against the official publication page and PDF path. The block/timeout is respected and the user agent is not disguised. Annual reports and the document library are the official publication paths.',
+    },
   },
 ];
 
+/**
+ * Hosts whose refusal of the declared identity has a reviewed decision,
+ * mapped to the deciding source. Derived from the catalogue so it can never
+ * drift from it; the collector neither requests these hosts nor counts a
+ * linked document there as a failure.
+ */
+export function refusedHosts(
+  sources: readonly WatchSource[],
+): ReadonlyMap<Host, string> {
+  const refused = new Map<Host, string>();
+  for (const source of sources) {
+    if (source.automation === 'automatic') continue;
+    if (source.automation.because !== 'identity_refused') continue;
+    const host = hostOf(new URL(source.url));
+    if (!refused.has(host)) refused.set(host, source.id);
+  }
+  return refused;
+}
+
 export function getAutomaticSources(): WatchSource[] {
-  return WATCH_SOURCES.filter(
-    (source) => source.enabled && source.automation === 'automatic',
-  );
+  return WATCH_SOURCES.filter((source) => source.enabled && source.automation === 'automatic');
 }
 
 /** @deprecated Prefer getAutomaticSources() so the coverage boundary is clear. */
 export const getEnabledSources = getAutomaticSources;
 
 export function getManualSources(): WatchSource[] {
-  return WATCH_SOURCES.filter(
-    (source) => source.enabled && source.automation === 'manual',
-  );
+  return WATCH_SOURCES.filter((source) => source.enabled && source.automation !== 'automatic');
 }
 
 export function getSourceById(id: string): WatchSource | undefined {

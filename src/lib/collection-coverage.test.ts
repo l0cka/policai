@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
+import { buildManualDecision } from '@/test/factories';
 import type { CollectionMeta, SourceRunResult } from '@/types';
 import { WATCH_SOURCES } from '@/lib/pipeline/sources';
 import {
@@ -17,12 +18,12 @@ const AUTOMATIC: CoverageCatalogSource = {
 const ACCC: CoverageCatalogSource = {
   id: 'accc-rss',
   enabled: true,
-  automation: 'manual',
+  automation: buildManualDecision(),
 };
 const WA: CoverageCatalogSource = {
   id: 'wa-ai-policy',
   enabled: true,
-  automation: 'manual',
+  automation: buildManualDecision(),
 };
 const CATALOG = [AUTOMATIC, ACCC, WA];
 
