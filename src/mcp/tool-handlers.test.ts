@@ -9,6 +9,7 @@ const {
   rejectStagedSource,
   stageSourceCapture,
   stageSourceUrl,
+  verifyRegisterRecord,
   getCourtRequirementsForReview,
   reviewCourtRequirement,
 } = vi.hoisted(() => ({
@@ -18,6 +19,7 @@ const {
   publishStagedSource: vi.fn(),
   recordManualSourceReview: vi.fn(),
   rejectStagedSource: vi.fn(),
+  verifyRegisterRecord: vi.fn(),
   getCourtRequirementsForReview: vi.fn(),
   reviewCourtRequirement: vi.fn(),
 }))
@@ -33,6 +35,7 @@ vi.mock('@/lib/source-ingest', () => ({
   publishStagedSource,
   recordManualSourceReview,
   rejectStagedSource,
+  verifyRegisterRecord,
 }))
 
 vi.mock('@/lib/data-service', () => ({
@@ -45,14 +48,23 @@ vi.mock('@/lib/court-requirements', () => ({
 }))
 
 import {
+  MAX_THEMES_PER_RECORD,
+  MIN_RECORDS_PER_THEME,
+  MIN_THEMES_PER_RECORD,
+  THEMES,
+} from '@/lib/themes'
+import {
   handleApproveStagedSource,
+  handleListThemes,
   handlePublishStagedSource,
   handleListCourtRequirementCandidates,
   handleRecordManualSourceReview,
   handleRejectStagedSource,
+  handleSignalDecision,
   handleStageSourceCapture,
   handleStageSourceUrl,
   handleReviewCourtRequirement,
+  handleVerifyRegisterRecord,
 } from './tool-handlers'
 
 const originalToken = process.env.POLICAI_MCP_ADMIN_TOKEN
@@ -66,6 +78,7 @@ describe('MCP tool handlers', () => {
     publishStagedSource.mockReset()
     recordManualSourceReview.mockReset()
     rejectStagedSource.mockReset()
+    verifyRegisterRecord.mockReset()
     getCourtRequirementsForReview.mockReset()
     reviewCourtRequirement.mockReset()
   })
@@ -111,6 +124,22 @@ describe('MCP tool handlers', () => {
       }),
     ).rejects.toThrow('Invalid POLICAI_MCP_ADMIN_TOKEN')
 
+    await expect(
+      handleVerifyRegisterRecord({
+        policyId: 'policy-1',
+        reviewer: 'Daniel',
+        adminToken: 'wrong',
+      }),
+    ).rejects.toThrow('Invalid POLICAI_MCP_ADMIN_TOKEN')
+
+    await expect(
+      handleSignalDecision({
+        action: 'publish',
+        id: 'source-review-1',
+        adminToken: 'wrong',
+      }),
+    ).rejects.toThrow('Invalid POLICAI_MCP_ADMIN_TOKEN')
+
     expect(stageSourceUrl).not.toHaveBeenCalled()
     expect(stageSourceCapture).not.toHaveBeenCalled()
     expect(approveStagedSource).not.toHaveBeenCalled()
@@ -118,6 +147,7 @@ describe('MCP tool handlers', () => {
     expect(rejectStagedSource).not.toHaveBeenCalled()
     expect(recordManualSourceReview).not.toHaveBeenCalled()
     expect(reviewCourtRequirement).not.toHaveBeenCalled()
+    expect(verifyRegisterRecord).not.toHaveBeenCalled()
   })
 
   it('lists and reviews court requirement candidates', async () => {
@@ -337,5 +367,86 @@ describe('MCP tool handlers', () => {
     ).rejects.toThrow('human reviewer identity')
 
     expect(recordManualSourceReview).not.toHaveBeenCalled()
+  })
+
+  it('verifies a named public register record for an allowlisted Signal reviewer', async () => {
+    verifyRegisterRecord.mockResolvedValue({ id: 'policy-1' })
+
+    await handleVerifyRegisterRecord({
+      policyId: 'policy-1',
+      reviewer: 'Daniel',
+      notes: 'Checked against source.',
+      adminToken: 'secret-token',
+    })
+
+    expect(verifyRegisterRecord).toHaveBeenCalledWith({
+      policyId: 'policy-1',
+      actor: 'Daniel',
+      notes: 'Checked against source.',
+    })
+  })
+
+  it('refuses verify_register_record for a non-allowlisted reviewer', async () => {
+    await expect(
+      handleVerifyRegisterRecord({
+        policyId: 'policy-1',
+        reviewer: 'Random Agent',
+        adminToken: 'secret-token',
+      }),
+    ).rejects.toThrow('Signal reviewer must be one of: Daniel Alkurdi, Daniel')
+    expect(verifyRegisterRecord).not.toHaveBeenCalled()
+  })
+
+  it('maps signal_decision publish and verify to the ingest paths', async () => {
+    publishStagedSource.mockResolvedValue({ id: 'source-review-1', status: 'published' })
+    verifyRegisterRecord.mockResolvedValue({ id: 'policy-1' })
+
+    await handleSignalDecision({
+      action: 'publish',
+      id: 'source-review-1',
+      adminToken: 'secret-token',
+    })
+    expect(publishStagedSource).toHaveBeenCalledWith('source-review-1', {
+      browserCapture: undefined,
+    })
+
+    await handleSignalDecision({
+      action: 'verify',
+      id: 'policy-1',
+      reviewer: 'Daniel',
+      adminToken: 'secret-token',
+    })
+    expect(verifyRegisterRecord).toHaveBeenCalledWith({
+      policyId: 'policy-1',
+      actor: 'Daniel',
+      notes: 'Policai Signal decision (verify) by Daniel',
+    })
+  })
+
+  it('lists every theme key and label in table order with the theme rules', () => {
+    const listing = handleListThemes()
+
+    expect(listing.themes).toHaveLength(THEMES.length)
+    expect(listing.themes[0]).toEqual({ key: 'generative-ai', label: 'Generative AI' })
+    expect(listing.themes.map(({ key }) => key)).toEqual(THEMES.map(({ key }) => key))
+    expect(listing.themes).toEqual(THEMES.map(({ key, label }) => ({ key, label })))
+    expect(listing).toEqual({
+      themes: listing.themes,
+      minThemesPerRecord: MIN_THEMES_PER_RECORD,
+      maxThemesPerRecord: MAX_THEMES_PER_RECORD,
+      minRecordsPerTheme: MIN_RECORDS_PER_THEME,
+    })
+  })
+
+  it('derives the listing from the table it reads, keeping only key and label', () => {
+    const table = [
+      ...THEMES,
+      { key: 'new-theme', label: 'New theme', note: 'not listed' },
+    ]
+
+    const listing = handleListThemes(table)
+
+    expect(listing.themes).toHaveLength(THEMES.length + 1)
+    expect(listing.themes.at(-1)).toEqual({ key: 'new-theme', label: 'New theme' })
   })
 })

@@ -8,12 +8,23 @@ import {
 import { getDevelopmentStream } from '@/lib/development-streams';
 import { WATCH_SOURCES } from '@/lib/pipeline/sources';
 import { summarizeManualSourceCoverage } from '@/lib/source-monitoring';
+import { pageAlternates, pageSocialMeta } from '@/lib/site-seo';
 
 export const revalidate = 3600;
 
+const DEVELOPMENTS_TITLE = 'Australian AI policy developments';
+const DEVELOPMENTS_DESCRIPTION =
+  'New and emerging Australian AI policy activity detected on official government sources, for review against the curated Policai register.';
+
 export const metadata: Metadata = {
-  title: 'Developments - Policai',
-  description: 'Verified and emerging Australian AI policy developments from official government sources.',
+  title: DEVELOPMENTS_TITLE,
+  description: DEVELOPMENTS_DESCRIPTION,
+  alternates: pageAlternates('/developments'),
+  ...pageSocialMeta({
+    title: DEVELOPMENTS_TITLE,
+    description: DEVELOPMENTS_DESCRIPTION,
+    path: '/developments',
+  }),
 };
 
 export default async function DevelopmentsPage() {

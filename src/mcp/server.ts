@@ -8,14 +8,22 @@ import {
   handleCheckCoverage,
   handleListCourtRequirementCandidates,
   handleListStagedSources,
+  handleListThemes,
   handlePublishStagedSource,
   handleRecordManualSourceReview,
   handleRejectStagedSource,
   handleReviewCourtRequirement,
+  handleSignalDecision,
   handleStageSourceCapture,
   handleStageSourceUrl,
+  handleVerifyRegisterRecord,
   toToolText,
 } from './tool-handlers';
+import {
+  MAX_THEMES_PER_RECORD,
+  MIN_RECORDS_PER_THEME,
+  MIN_THEMES_PER_RECORD,
+} from '@/lib/themes';
 
 const server = new McpServer({
   name: 'policai-source-ingest',
@@ -103,7 +111,7 @@ server.registerTool(
   {
     title: 'Stage browser-captured source',
     description:
-      'Stages a fresh, reviewer-attributed browser capture when the official source blocks the hardened server-side retriever. Existing policy or timeline records use targetRecordId; new records require an explicit proposedRecord; replacing a target URL additionally requires replaceTargetSource and a proposedRecord preserving its id. A timeline replacement may share its already-related policy canonical URL, but not unrelated identities. The capture includes normalized page text and local bytes for linked canonical documents; paths are validated and never persisted. Requires POLICAI_MCP_ADMIN_TOKEN. Does not approve or publish.',
+      `Stages a fresh, reviewer-attributed browser capture when the official source blocks the hardened server-side retriever. Existing policy or timeline records use targetRecordId; new records require an explicit proposedRecord; replacing a target URL additionally requires replaceTargetSource and a proposedRecord preserving its id. A policy proposedRecord needs ${MIN_THEMES_PER_RECORD} to ${MAX_THEMES_PER_RECORD} themes, keys listed by list_themes, before it can be approved. A timeline replacement may share its already-related policy canonical URL, but not unrelated identities. The capture includes normalized page text and local bytes for linked canonical documents; paths are validated and never persisted. Requires POLICAI_MCP_ADMIN_TOKEN. Does not approve or publish.`,
     inputSchema: {
       url: z.string().url(),
       entryKind: z.enum(['policy', 'timeline_event']),
@@ -138,6 +146,21 @@ server.registerTool(
     },
   },
   async (input) => toToolText(await handleListStagedSources(input)),
+);
+
+server.registerTool(
+  'list_themes',
+  {
+    title: 'List policy themes',
+    description: `Read-only list of the theme vocabulary in src/lib/themes.ts, in table order, as key and label. Give a policy record ${MIN_THEMES_PER_RECORD} to ${MAX_THEMES_PER_RECORD} unique keys in proposedRecord.themes; labels are display text only. Every listed theme must be on at least ${MIN_RECORDS_PER_THEME} register records; fewer than ${MIN_RECORDS_PER_THEME} public records is only a warning.`,
+    inputSchema: {},
+    annotations: {
+      readOnlyHint: true,
+      idempotentHint: true,
+      destructiveHint: false,
+    },
+  },
+  async () => toToolText(handleListThemes()),
 );
 
 server.registerTool(
@@ -195,7 +218,7 @@ server.registerTool(
   {
     title: 'Approve staged source',
     description:
-      'Validates and explicitly approves a complete source review before publication. Requires the human reviewer identity separately from the admin token. If a tracked target changed after staging, submit the rebased proposedRecord with expectedTargetRevisionHash from the refreshed review. Stage-only leads require an officialSourceUrl plus an explicitly reviewed replacement proposedRecord; the official source is fetched again and replaces the discovery evidence. Dates must match extracted metadata or include explicit reviewedDate evidence. A policy record needs 1 to 5 themes, keys from src/lib/themes.ts; collector drafts have none, so a new policy is approved with an explicit proposedRecord carrying themes. Requires POLICAI_MCP_ADMIN_TOKEN.',
+      `Validates and explicitly approves a complete source review before publication. Requires the human reviewer identity separately from the admin token. If a tracked target changed after staging, submit the rebased proposedRecord with expectedTargetRevisionHash from the refreshed review. Stage-only leads require an officialSourceUrl plus an explicitly reviewed replacement proposedRecord; the official source is fetched again and replaces the discovery evidence. Dates must match extracted metadata or include explicit reviewedDate evidence. A policy record needs ${MIN_THEMES_PER_RECORD} to ${MAX_THEMES_PER_RECORD} themes, keys listed by list_themes; collector drafts have none, so a new policy is approved with an explicit proposedRecord carrying themes. Requires POLICAI_MCP_ADMIN_TOKEN.`,
     inputSchema: {
       id: z.string(),
       reviewer: z.string().min(1),
@@ -299,6 +322,66 @@ server.registerTool(
     },
   },
   async (input) => toToolText(await handleRejectStagedSource(input)),
+);
+
+server.registerTool(
+  'verify_register_record',
+  {
+    title: 'Verify register record',
+    description:
+      'Stamps a public register policy as editorially verified after a named human decision (Policai Signal). Sets lastReviewedAt and verification.status=verified. Refuses withheld, unverified, and trashed records. Requires an allowlisted Signal reviewer (POLICAI_SIGNAL_REVIEWERS, default Daniel) and POLICAI_MCP_ADMIN_TOKEN. Agents must not call this unless that human named the policy id verified.',
+    inputSchema: {
+      policyId: z.string().min(1),
+      reviewer: z.string().min(1),
+      notes: z.string().optional(),
+      adminToken: z.string(),
+    },
+    annotations: {
+      readOnlyHint: false,
+      idempotentHint: false,
+      destructiveHint: true,
+    },
+  },
+  async (input) => toToolText(await handleVerifyRegisterRecord(input)),
+);
+
+server.registerTool(
+  'signal_decision',
+  {
+    title: 'Signal decision',
+    description:
+      'Laptop recovery only (not the Grok Bot product path). Approve, dismiss, publish, or verify a staged review via MCP when HTTPS /api/signal/reviews is unavailable. Product path: GET/POST /api/signal/reviews with POLICAI_SIGNAL_TOKEN. Approve/dismiss/verify require an allowlisted reviewer (default Daniel Alkurdi). Publish requires a previously approved review. Requires POLICAI_MCP_ADMIN_TOKEN. Does not commit or push; the host must validate and commit after a write.',
+    inputSchema: {
+      action: z.enum(['approve', 'dismiss', 'publish', 'verify']),
+      id: z.string().min(1),
+      reviewer: z.string().min(1).optional(),
+      notes: z.string().optional(),
+      proposedRecord: z.record(z.string(), z.unknown()).optional(),
+      expectedTargetRevisionHash: z.string().regex(/^[a-f0-9]{64}$/).optional(),
+      officialSourceUrl: z.string().url().optional(),
+      manualExtraction: z.object({
+        method: z.enum(['ocr', 'manual_transcription']),
+        title: z.string().min(1),
+        text: z.string().min(20),
+        publishedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+        publishedAtPrecision: z.enum(['day', 'month', 'year']).optional(),
+        notes: z.string().min(1),
+      }).optional(),
+      reviewedDate: z.object({
+        date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+        precision: z.enum(['day', 'month', 'year']),
+        notes: z.string().min(20),
+      }).optional(),
+      browserCapture: browserCaptureSchema.optional(),
+      adminToken: z.string(),
+    },
+    annotations: {
+      readOnlyHint: false,
+      idempotentHint: false,
+      destructiveHint: true,
+    },
+  },
+  async (input) => toToolText(await handleSignalDecision(input)),
 );
 
 async function main() {

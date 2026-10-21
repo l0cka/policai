@@ -3,6 +3,7 @@
 
 import argparse
 import contextlib
+import io
 import json
 import os
 import re
@@ -56,10 +57,12 @@ def validate_remote(value):
     return value
 
 
+ENTRYPOINT = Path("/usr/local/libexec/policai-host/cli.py")
+
+
 def trusted_entrypoint():
     here = Path(__file__)
-    expected = Path("/usr/local/libexec/policai-host/cli.py")
-    if here != expected or here.resolve() != expected:
+    if here != ENTRYPOINT or here.resolve() != ENTRYPOINT:
         raise RuntimeError(
             "use installed root-owned entrypoint; uninstalled artifacts cannot operate on production"
         )
@@ -94,13 +97,25 @@ FALLBACK_LINE = (
 )
 
 
+class Discard(io.TextIOBase):
+    def write(self, text):
+        return len(text)
+
+
+def warn(line):
+    try:
+        sys.stderr.write(line + "\n")
+        sys.stderr.flush()
+    except Exception:
+        sys.stderr = Discard()
+
+
 def report(command, error):
     try:
         line = failure_line(error)
     except Exception:
         line = FALLBACK_LINE
-    with contextlib.suppress(Exception):
-        print(line, file=sys.stderr)
+    warn(line)
     if command == "compose":
         with contextlib.suppress(Exception):
             syslog.openlog("policai-host-compose")
@@ -205,7 +220,7 @@ def main():
             tx.rollback()
             print("rollback health verified; persistent gate remains")
         elif args.command == "worker":
-            with h.worker_guard(state) as fds:
+            with h.worker_guard(state, h.WORKER_GUARDS[args.operation]) as fds:
                 host.run_worker(args.operation, fds)
             print("scheduled operation completed")
         elif args.command == "compose":
@@ -216,16 +231,13 @@ def main():
                 payload = sys.stdin.buffer.read(262145)
                 if len(payload) > 262144:
                     raise Refused("worker input exceeds bound")
-            with h.worker_guard(state, serialize=False) as fds:
+            with h.worker_guard(state, h.compose_guard(command), serialize=False) as fds:
                 output = host.worker_compose(command, fds, payload)
             sys.stdout.write(output)
         return 0
-    except (RuntimeError, OSError, ValueError, KeyError, TypeError) as error:
-        if Path(__file__).resolve() != Path("/usr/local/libexec/policai-host/cli.py"):
-            print(
-                "Refused: use installed root-owned entrypoint; this artifact is uninstalled.",
-                file=sys.stderr,
-            )
+    except Exception as error:
+        if Path(__file__).resolve() != ENTRYPOINT:
+            warn("Refused: use installed root-owned entrypoint; this artifact is uninstalled.")
         else:
             report(args.command, error)
         return 1

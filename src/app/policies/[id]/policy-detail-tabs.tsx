@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import Link from 'next/link';
 import {
   ArrowRight,
@@ -28,8 +28,11 @@ import { parseSourceUrl } from '@/lib/source-url';
 import { EmptyState } from '@/components/ui/empty-state';
 import { formatPolicyDate } from '@/lib/format-policy-date';
 import { precisionDateTime } from '@/lib/this-week';
+import { FollowControl } from '@/components/follow-control';
 import { CourtRequirementsList } from "@/components/court-requirements-list";
 import { StatusPill } from "@/components/policy-indicators";
+import { policyPriorBodies } from '../../../../data/policy-prior-bodies';
+import { diffPolicyText, retainedPriorBody } from '@/lib/policy-diff';
 import { splitSummaryBlocks } from '@/lib/summary-blocks';
 import { cn } from '@/lib/utils';
 
@@ -63,6 +66,41 @@ function getRequirements(policy: Policy): string[] {
 
 function StatusBadge({ policy }: { policy: Policy }) {
   return <StatusPill status={policy.status} dates={policy.dates} />;
+}
+
+function WhatChanged({ before, after }: { before: string; after: string }) {
+  const diff = useMemo(() => diffPolicyText(before, after), [before, after]);
+  const unchanged = diff.added.length === 0 && diff.removed.length === 0;
+
+  return (
+    <section className="mt-6 min-w-0 max-w-4xl border border-border p-4" aria-labelledby="what-changed-heading">
+      <h2 id="what-changed-heading" className="section-title">What changed</h2>
+      {unchanged ? (
+        <p className="mt-3 text-sm leading-6">The text is unchanged.</p>
+      ) : (
+        <ul className="mt-3 min-w-0 space-y-2">
+          {diff.removed.map((line, index) => (
+            <li
+              key={`removed-${index}`}
+              className="min-w-0 bg-[var(--status-repealed-bg)] px-3 py-2 text-sm leading-6 text-[var(--status-repealed)]"
+            >
+              <span className="font-mono text-[11px] uppercase tracking-[0.08em]">Removed</span>
+              <del className="mt-1 block whitespace-pre-wrap break-words">{line.length > 0 ? line : ' '}</del>
+            </li>
+          ))}
+          {diff.added.map((line, index) => (
+            <li
+              key={`added-${index}`}
+              className="min-w-0 bg-[var(--status-active-bg)] px-3 py-2 text-sm leading-6 text-[var(--status-active)]"
+            >
+              <span className="font-mono text-[11px] uppercase tracking-[0.08em]">Added</span>
+              <span className="mt-1 block whitespace-pre-wrap break-words">{line.length > 0 ? line : ' '}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  );
 }
 
 function SummaryText({ text }: { text: string }) {
@@ -102,11 +140,11 @@ function CopyLinkButton() {
 
 export function PolicyDetailTabs({
   policy,
-  relatedPolicies,
+  related,
   courtRequirements = [],
 }: {
   policy: Policy;
-  relatedPolicies: Policy[];
+  related?: ReactNode;
   courtRequirements?: PublicCourtRequirement[];
 }) {
   const [activeTab, setActiveTab] = useState<TabId>('overview');
@@ -118,6 +156,7 @@ export function PolicyDetailTabs({
   const sourceHost = policy.sourceUrl
     ? parseSourceUrl(policy.sourceUrl).hostname.replace(/^www\./, '')
     : null;
+  const priorBody = retainedPriorBody(policyPriorBodies, policy.id);
 
   const downloadPolicy = () => {
     const blob = new Blob([JSON.stringify(policy, null, 2)], {
@@ -190,7 +229,16 @@ export function PolicyDetailTabs({
               <FileText className="h-4 w-4" />
               Markdown with sources
             </a>
+            <FollowControl follow={{ kind: 'policy', id: policy.id }} label={policy.title} />
+            <Link
+              href="/following"
+              className="inline-flex min-h-11 items-center px-3 text-sm font-medium text-primary underline underline-offset-4"
+            >
+              Following
+            </Link>
           </div>
+
+          {priorBody !== null ? <WhatChanged before={priorBody} after={policy.content} /> : null}
 
           <div className="no-scrollbar mt-5 overflow-x-auto border-b border-border">
             <div className="flex min-w-max gap-8" role="tablist" aria-label="Policy sections">
@@ -280,6 +328,7 @@ export function PolicyDetailTabs({
             </div>
           ) : null}
 
+          {related}
         </div>
 
         <aside className="space-y-5 xl:pt-0">
@@ -362,31 +411,6 @@ export function PolicyDetailTabs({
           ) : null}
         </aside>
       </div>
-
-      <section className="mt-6 border-t border-border pt-5">
-        <h2 className="section-title">Related policies</h2>
-        <div className="mt-3"><RelatedPolicies policies={relatedPolicies} /></div>
-      </section>
-    </div>
-  );
-}
-
-function RelatedPolicies({ policies }: { policies: Policy[] }) {
-  if (policies.length === 0) {
-    return <p className="text-sm text-muted-foreground">No related policies are currently published.</p>;
-  }
-
-  return (
-    <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-      {policies.map((related) => (
-        <Link key={related.id} href={`/policies/${related.id}`} className="group flex min-h-24 items-center justify-between border border-border bg-card/35 p-4 transition-colors hover:border-primary">
-          <span>
-            <span className="block record-title group-hover:text-primary">{related.title}</span>
-            <span className="mt-2 block font-mono text-[11px] uppercase text-muted-foreground">{getJurisdictionName(related.jurisdiction)} · {getPolicyTypeName(related.type)}</span>
-          </span>
-          <ArrowRight className="h-4 w-4 shrink-0 text-primary" />
-        </Link>
-      ))}
     </div>
   );
 }

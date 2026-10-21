@@ -48,7 +48,7 @@ Policai is an Australian AI policy tracker. It maintains a curated register of A
 - **Visualisations:** D3.js
 - **Data:** public-safe JSON in `public/data/`; editorial and collector JSON in
   `data/`, all canonical and versioned
-- **Retrieval:** plain HTTP first; self-hosted Firecrawl for candidate pages on browser-strategy sources, falling back to headless Chromium (Playwright); index and RSS listing pages always use headless Chromium directly. Every path sends the collector identity `Policai/1.0 (+https://policai.org)` (`src/lib/pipeline/identity.ts`; see Collector identity below)
+- **Retrieval:** plain HTTP first; self-hosted Firecrawl for candidate pages on browser-strategy sources, falling back to headless Chromium (Playwright); index and RSS listing pages always use headless Chromium directly. Every path sends the collector identity `Policai/1.0 (+https://policai.org)` (`src/lib/pipeline/identity.ts`; see Collector identity below) and passes through one `HostGate` (`src/lib/pipeline/host-gate.ts`: robots.txt, a 2 s gap per host, `Retry-After`, a per-run breaker; docs/collector.md "Politeness"). Firecrawl `map` and `crawl` are not used.
 - **Analysis:** keyword heuristic by default; Claude, an Anthropic model, batched through an OpenAI-compatible chat-completions endpoint (`src/lib/pipeline/classifier-cli.ts`) when `USE_CLAUDE_CLASSIFIER` is set — both classifier paths cap stored/displayed confidence at 0.65 (`MACHINE_CONFIDENCE_CAP`); direct-document change detections on tracked records store `relevanceScore: 1` by design (change-certainty, not classifier confidence) and stay editor-gated
 - **Scraping:** Cheerio
 - **Testing:** Vitest (+ Testing Library)
@@ -70,6 +70,7 @@ npm run collect        # one collection pass (-- --dry-run to preview, -- --sour
 npm run audit:sources  # live audit of automatic watch sources
 npm run audit:register # compare curated source fingerprints
 npm run mcp            # local MCP source-ingest server
+npm run signal:reviews # pending cards reprint; product Signal path is HTTPS /api/signal/reviews (not this CLI)
 ```
 
 ## Project Structure
@@ -82,17 +83,18 @@ src/
 │   ├── this-week/page.tsx        # Weekly verified developments + upcoming dates
 │   ├── courts/page.tsx           # Court AI guidance view
 │   ├── analysis/                 # Analysis index, [slug] pieces and tombstones, feed.xml (Atom)
-│   ├── network|timeline/         # Visualisations
+│   ├── coverage/                 # Coverage map: themes by jurisdiction (see Coverage map)
+│   ├── timeline/                 # Timeline visualisation
 │   ├── methodology|status/       # Verification method and source health
 │   ├── not-found.tsx             # Site 404 with onward links
 │   ├── map|framework|blog/       # Retired: each page calls notFound()
 │   ├── agencies/                 # Temporary 307 to apsaitracker.app (owner's permission; force-dynamic
 │   │                             #   so no CDN caches it). To withdraw, restore notFound()
 │   ├── policies/[id]/            # Policy detail (server) + client tabs
-│   └── api/                      # READ-ONLY public API, one route.ts each:
+│   └── api/                      # Public read API + Signal write exception:
 │                                 #   policies, policies/[id], agencies, timeline, network,
-│                                 #   status, developments, court-requirements (JSON), and
-│                                 #   policies/[id]/markdown (text/markdown)
+│                                 #   status, developments, court-requirements (JSON),
+│                                 #   policies/[id]/markdown, and signal/reviews (tokenized)
 ├── components/                   # UI, layout, visualisation components
 ├── lib/
 │   ├── data-service.ts           # File-backed reads/writes over the repo JSON
@@ -101,6 +103,7 @@ src/
 │   ├── article-figures.ts        # Figure blocks in article bodies, register chart counts
 │   ├── article-baseline.ts       # Reads the base revision of data/articles/ from Git
 │   ├── analysis.ts               # Deterministic relevance/summary helpers
+│   ├── related-policies.ts       # Ranked related instruments for /policies/[id] (see Related instruments)
 │   ├── scraper-filter.ts         # Keyword heuristics shared by the pipeline
 │   ├── source-ingest.ts          # Curated publish path (used by the MCP server)
 │   └── pipeline/                 # Collector: sources.ts, extract.ts, classify.ts, claude-classify.ts, classifier-cli.ts, firecrawl.ts, collect.ts
@@ -117,14 +120,14 @@ docs/                             # collector.md + docs index
 ## Data Model & Flow
 
 1. **Register** (`data/policies.json`): curated policy records. Changed only through explicit editorial approval (human or MCP-assisted). `/data/policies.json` and API/site reads expose only verified, non-trashed, non-withheld records. The collector never writes it. The host wrapper `ops/collector/policai-collect.sh` fails a collection run that changes it. No GitHub workflow checks this, so a hand-made PR that edits the register is caught only by review.
-2. **Developments** (`data/developments.json`): automated radar feed. Each entry has provenance (`sourceId`, `url`), a relevance score, and a `classification` label — `heuristic` (deterministic keyword rules, the default) or `ai` (Claude classification, active when `USE_CLAUDE_CLASSIFIER` is set), plus `curated` for promoted register entries. Both classifier paths cap confidence at 0.65 (`MACHINE_CONFIDENCE_CAP`) and show as "Needs review". Direct-document change detections on tracked records carry `relevanceScore: 1` — the score records change-certainty for a known instrument, not classifier confidence — and are equally editor-gated. `/data/developments.json` filters dismissed entries.
+2. **Developments** (`data/developments.json`): automated radar feed. Each entry has provenance (`sourceId`, `url`), a relevance score, and a `classification` label — `heuristic` (deterministic keyword rules, the default) or `ai` (Claude classification, active when `USE_CLAUDE_CLASSIFIER` is set), plus `curated` for promoted register entries. Both classifier paths cap confidence at 0.65 (`MACHINE_CONFIDENCE_CAP`) and show as "Needs review". Direct-document change detections on tracked records carry `relevanceScore: 1` — the score records change-certainty for a known instrument, not classifier confidence — and are equally editor-gated. `/data/developments.json` filters dismissed entries. Public feed entries render `id={development.id}` so `/developments#<id>` reveals past the other tab and filters (#223); dismissed rows never reach the browser. `docs/editorial-policy.md` allows those fragment links.
 3. **Editorial directories** (`data/timeline.json`, `data/agencies.json`,
    `data/commonwealth-agencies.json`): may contain records awaiting review and
    are never served statically; `/data/*.json` route handlers apply public
    verification filters.
    The DTA framework artifact is also editorial and is withheld whenever its
    related register policy is withheld.
-4. **Collector** (`src/lib/pipeline/collect.ts`): pure orchestrator — fetch sources → extract candidates → diff against `data/watch-state.json` → classify → return developments/review candidates/state/meta. The CLI (`scripts/collect.ts`) persists them.
+4. **Collector** (`src/lib/pipeline/collect.ts`): pure orchestrator — fetch sources → extract candidates → diff against `data/watch-state.json` → classify → return developments/review candidates/state/meta. The CLI (`scripts/collect.ts`) persists them. Every fresh-vs-stored fingerprint comparison uses `matchesRetrievedContent` (pending document candidates, ordered re-staging, re-approval `reviewedDate`, adoption-path snapshot gate, and register audit `--write-evidence`; #249). HTML fingerprints under the current, #244 and pre-#195 schemes stay structurally disjoint (`publicationDates` / `date-platform:` / neither), so a page that gains `dcterms.created` or a Drupal generator after its current fingerprint was stored reads as changed (#262; `docs/collector.md`).
 5. **Review**: high-confidence detections are staged in `data/source-reviews.json`; a separate approval action is required before publishing creates a register record. Changed direct-document sources stage a version-specific review with `targetPolicyId`, temporarily withhold the existing policy publicly, and update that policy in place after approval.
 6. **Coverage**: automatic sources report usable-content health in `public/data/meta.json`; protected sources are tracked in `data/source-monitoring.json`.
 7. **Freshness**: register source fingerprints are checked with `npm run audit:register`; changed content marks a record stale until editorial re-verification. Separately, a record whose manual verification is older than 90 days stays public but is shown as "Review due"; `npm run check:freshness` (CI, weekly) fails when overdue records exceed the ratchet in `data/freshness-budget.json`.
@@ -132,6 +135,121 @@ docs/                             # collector.md + docs index
 8. **Articles** (`data/articles/<slug>.md`): Policai's written analysis. See Articles below.
 
 See [docs/collector.md](./docs/collector.md) for operations.
+
+## Coverage map
+
+`/coverage` answers "who has an instrument on this subject, and where is
+there nothing?" as a table of themes (rows) by jurisdiction (columns). The
+nav calls it Coverage, under Explore. `/network` and any query string on it
+redirect there with a 308 (`next.config.ts`). `/api/network` is unchanged
+and still serves `buildNetworkData` nodes and edges.
+
+- **Data:** `buildCoverageData(policies, THEMES)` in `src/lib/coverage-data.ts`
+  is pure. It counts the public register read (`getPolicies()`: verified,
+  non-trashed, non-withheld) per `policy.themes` entry and jurisdiction, and
+  per `policy.type` for the "By instrument type" axis on the same code path.
+  Each cell holds record ids. Columns follow `COVERAGE_JURISDICTIONS`
+  (Federal, NSW, Vic, Qld, SA, WA, Tas, ACT, NT). Rows are sorted by total,
+  then label. A theme is charted when it has `COVERAGE_MIN_RECORDS` records.
+  The value is 1, so every theme in the controlled vocabulary with a public
+  record is a row: `validate:data` requires two non-trashed register records
+  per theme (fewer than two public records is only a warning), and a hidden
+  theme cannot show where coverage is missing. The
+  original threshold of 6 filtered free-form tags. Raise it if the
+  vocabulary grows past what one table can show; uncharted themes are then
+  counted in the footnote.
+- **Rendering:** the route is `force-dynamic`. It reads `searchParams` to
+  server-render the selected drill-down, so it is dynamic by nature, and the
+  export says so; a `revalidate` would have no effect. Each request reads
+  `policies.json` and `source-reviews.json` through the public `getPolicies()`
+  projection and builds the matrix, which is small (one pass over the public
+  records). `src/app/coverage/page.test.tsx` guards the export, asserts SSR
+  table HTML, and asserts that withheld, unverified and trashed records never
+  reach a cell or a drill-down list.
+- **Copy:** every count and sentence on the page (standfirst, footnote, empty
+  state) comes from `coverageStandfirst`, `coverageFootnote` and
+  `coverageEmptySentence`. Do not type numbers into the page. The footnote
+  agrees in number for 0, 1, 2 and many themes; its cases are a table in
+  `coverage-data.test.ts`. An empty register must read "None of the N themes
+  … has a verified record yet". Clauses join with "; ", so a threshold-6 empty
+  chart does not run "and" between the below-threshold and unused groups.
+- **URL:** `?theme=<key>&j=<jurisdiction>` selects a cell, `theme` alone a row,
+  `j` alone a column, and `by=type` (with `type=<key>`) switches the axis.
+  Unknown values are ignored. Opening and closing use `replaceState`; moving
+  from one selection to another uses `pushState`, so Back restores it
+  (`coverage-map.test.tsx`). `/coverage` is in `sitemap.ts`
+  (`sitemap.test.ts`).
+- **Markup:** one server-rendered `<table>` from the client component
+  `CoverageMap` (`src/components/coverage-map.tsx`). Count cells are buttons
+  in a roving-tabindex grid: one tab stop, arrows, Home and End, Enter or
+  Space to open the drill-down row under the selection, Escape or "Clear
+  selection" to close it and return focus. Below 768px the same rows are
+  restyled as CSS grid strips. Changing `display` on table elements drops
+  their table semantics in some browsers, so every table element carries its
+  explicit ARIA role (`table`, `rowgroup`, `row`, `columnheader`,
+  `rowheader`, `cell`). A selection loaded from the URL scrolls the
+  drill-down row into view (the `<tr class="coverage-drill-row">`, not the
+  inner `.coverage-drill` panel — putting `scroll-margin-top` only on the
+  panel left shared phone links under the sticky header and column strip,
+  #329). The browser adds the row's `scroll-margin-top`
+  to the document's `scroll-padding-top` (`--scroll-clear-top` in
+  `globals.css`: `6.5rem`, and `9rem` from `min-width: 40rem`), so the
+  margin is the clearance wanted, the site header height
+  (`--coverage-sticky-top`) plus, below 768px, the sticky column strip
+  (`--coverage-strip-height`) plus `--space-2`, minus `--scroll-clear-top`.
+  `CoverageMap` measures both heights before it scrolls and again when either
+  element resizes (`ResizeObserver` with `box: 'border-box'`, so a
+  border or padding change on either sticky element is observed). Below
+  768px the drill-down head stacks "Clear selection" under the heading, so
+  the fixed "Scroll to top" button at the bottom right never covers it.
+  From 768px the clear control stays in the head row and uses padding so
+  its hit target clears that button. `coverage-css.test.ts` evaluates those
+  CSS rules, so a change to the margin, the scroll-padding or the head
+  layout fails CI, and asserts that padding plus margin still equals header
+  (+ strip below 768px) + `--space-2`, and pins the stacked head and
+  clear-button hit target; `coverage-map.test.tsx` pins what `CoverageMap`
+  observes and that the observer uses `border-box`.
+  `scripts/verify-coverage.mjs` is not in CI. It checks on phone and
+  desktop, light and dark, that the drill-down heading clears both after a
+  deep link and a click, sits within 48px of the strip on a phone, and (at
+  430x932 and 768x1024) that "Clear selection" is clear of "Scroll to top":
+  `POLICAI_VERIFY_URL=http://127.0.0.1:<port> POLICAI_EVIDENCE_DIR=<dir>
+  node scripts/verify-coverage.mjs` against a loopback production build.
+- **Styling:** `src/app/coverage/coverage.css`. The four cell levels are
+  `color-mix()` of `--primary` into `--background`, local to the page.
+
+## Related instruments
+
+`/policies/[id]` lists the instruments related to a record under its summary.
+`relatedInstruments(policy, publicPolicies)` in `src/lib/related-policies.ts`
+is pure. It runs `buildNetworkData` over the public read (`getPolicies()`)
+and takes `getNetworkConnections` for the record: two shared themes in one
+jurisdiction, three across jurisdictions. A record with no connection renders
+no heading.
+
+- **Order:** a superseding or superseded record first ("Superseded by" or
+  "Supersedes", in `--status-repealed`), then neighbours by shared-theme
+  count, descending. Ties go to a record in the viewed record's jurisdiction,
+  then the newest primary date, then the title in `en-AU` order. A superseded
+  record appears once. `related-policies.test.ts` pins every tie-breaker.
+- **Shares line:** the shared themes in the viewed record's theme order.
+- **Counts:** the list and the "Show all N related" total come from the
+  data, so they move with the theme vocabulary. #303 cited 24 related items
+  for `federal-court-gpn-ai`; that predates #307 and the page computes the
+  number.
+- **Rendering:** the server renders every item and the first eight are in
+  the HTML. Only `src/components/related/expandable-list.tsx` is a client
+  component (the expander). Do not re-add a `loading.{tsx,ts,jsx,js}` in
+  `src/app/policies/[id]/` or any parent segment up to `src/app`: React
+  outlines a Suspense boundary that large into hidden segments that a script
+  reveals, so without JavaScript the page stayed on its skeleton and showed
+  6 of the 8 items. Trade-off: a first uncached client navigation keeps the
+  previous page until the server renders (about 40 to 80 ms; no pending cue).
+  `no-route-boundary.test.ts` guards the route and its parents, and
+  `scripts/verify-related.mjs` checks the rendered page with and without
+  JavaScript, light and dark, at 1440x900 and 390x844 (it is not in CI):
+  `POLICAI_VERIFY_URL=http://127.0.0.1:<port> POLICAI_EVIDENCE_DIR=<dir>
+  node scripts/verify-related.mjs` against a loopback production build.
 
 ## Articles
 
@@ -207,10 +325,12 @@ each block renders on its own.
 
 Figure YAML and frontmatter are parsed by `parseYaml` in
 `src/lib/frontmatter.ts` with the YAML core schema, so dates stay text and
-must be real calendar dates: `2026-02-30` is an error, not 2 March. A figure
-block is one YAML document, so a `---` line inside it is an error instead of
-ending the block early. Matrix column names, matrix row headers and timeline
-date-and-title pairs must not repeat.
+must be real calendar dates: `2026-02-30` is an error, not 2 March (js-yaml
+default schema would roll that to 2 March; #282). A figure block is one YAML
+document, so a `---` line inside it is an error instead of ending the block
+early and silently dropping later fields (#282). Matrix column names, matrix
+row headers and timeline date-and-title pairs must not repeat (duplicate React
+keys otherwise; #282).
 
 | Field | Kinds | Rule |
 | --- | --- | --- |
@@ -239,9 +359,10 @@ as a whole, not the records it counts: a review-due record in the count
 raises no error and no banner (PM, 2026-10-17). Its source line reads
 "Policai register, N public records, as at <date>", where the date is the
 date the page was generated, as a calendar date in Australia/Sydney (Daniel,
-2026-10-17, #293). `readPublicArticles` takes it from the same `now` that
-builds the public projection it counts, so the date is when the count was
-taken and reveals nothing about hidden records. `/analysis/[slug]` exports
+2026-10-17, #293; supersedes the collection/`lastHealthyAt` date from #282).
+`readPublicArticles` takes it from the same `now` that builds the public
+projection it counts, so the date is when the count was taken and reveals
+nothing about hidden records. `/analysis/[slug]` exports
 `dynamic = 'force-dynamic'` (`ƒ` in the build, served `no-store`), so each
 request recounts and redates, and a newly withheld citation leaves the page
 at once. Without it the route is dynamic only because it has no
@@ -346,7 +467,7 @@ Defined in `src/types/index.ts`; import them from `@/types`. The one exception i
 - **PolicyType:** `legislation | regulation | guideline | framework | standard | practice_note | policy | tool | funding_program`
 - **PolicyStatus:** `proposed | active | amended | superseded | closed | repealed | trashed` (unverified and `trashed` records are hidden from public register reads; `superseded` records carry `supersededBy`)
 - **Policy** — register entity (with optional `supersededBy`, `lastReviewedAt`)
-- **ThemeId** — `Policy.themes[]` entries: keys of `THEMES` in `src/lib/themes.ts`, the controlled topic vocabulary the Editorial Manager owns (issue #305). Every record, trashed or not, has 1 to 5 unique themes. A listed theme on fewer than 2 non-trashed register records is a `validate:data` error. A listed theme on fewer than 2 public records is only a warning, because withholding a record for an update review, or an unverified record, can cause it during an ordinary collection run. The real-data test (`src/lib/validate-themes.test.ts`) asserts the register count only, so CI fails on the same condition as `validate:data`. Adding, renaming or removing a theme is an editorial decision made in a PR that edits `src/lib/themes.ts`. A new theme must be on at least 2 records in the same PR. Renaming or removing a theme needs a data migration of `data/policies.json` in the same PR: a rerunnable codemod like `scripts/apply-themes-2026-10-17.ts`. `tags` stay free-form keywords for search, `keywords` metadata, related records and the courts view; they are not themes. `/network` groups and connects records by `themes`.
+- **ThemeId** — `Policy.themes[]` entries: keys of `THEMES` in `src/lib/themes.ts`, the controlled topic vocabulary the Editorial Manager owns (issue #305). Every record, trashed or not, has 1 to 5 unique themes. A listed theme on fewer than 2 non-trashed register records is a `validate:data` error. A listed theme on fewer than 2 public records is only a warning, because withholding a record for an update review, or an unverified record, can cause it during an ordinary collection run. The real-data test (`src/lib/validate-themes.test.ts`) asserts the register count only, so CI fails on the same condition as `validate:data`. Adding, renaming or removing a theme is an editorial decision made in a PR that edits `src/lib/themes.ts`. A new theme must be on at least 2 records in the same PR. Renaming or removing a theme needs a data migration of `data/policies.json` in the same PR: a rerunnable codemod like `scripts/apply-themes-2026-10-17.ts`. `tags` stay free-form keywords for search, `keywords` metadata, related records and the courts view; they are not themes. `/coverage` charts records by `themes` and jurisdiction, and `/api/network` connects records that share `themes`.
 - **PolicyDate** — `Policy.dates[]` entries: `type` (`POLICY_DATE_TYPES`), calendar `date`, required `precision` (`day | month | year`; month/year dates anchor on the first day and never render a day), optional `primary` and `source`. Exactly one date is primary and backs `effectiveDate`.
 - **Deadline date types** (`DEADLINE_DATE_TYPES`): `consultation_closed | compliance_due | scheduled_review` — dates that fall due on an instrument rather than change it. They cannot be primary; future ones feed the homepage "Upcoming deadlines" rail and `/this-week` (`src/lib/this-week.ts`). Values are editorial, source-verified entries like any other date.
 - **Development**, **CollectionMeta** — feed + collector metadata
@@ -359,7 +480,10 @@ Use the display-name helpers (`getPolicyTypeName()`, `getPolicyStatusName()`, `g
 None are required to run the site or collector. Optional (see `.env.example`):
 
 ```bash
-POLICAI_MCP_ADMIN_TOKEN=  # local MCP source-ingest writes
+POLICAI_SIGNAL_TOKEN=     # HTTPS /api/signal/* Bearer token (Grok Bot product path)
+POLICAI_SIGNAL_GITHUB_TOKEN= # host-only; Signal POST reads GitHub main and commits changed files as a PR (or main push); never writes the checkout
+POLICAI_SIGNAL_REVIEWERS= # allowlist for Signal reviewer (default: Daniel Alkurdi,Daniel)
+POLICAI_MCP_ADMIN_TOKEN=  # local MCP source-ingest writes (laptop recovery; not the bot path)
 USE_CLAUDE_CLASSIFIER=    # opt into Claude classification instead of the keyword heuristic (set on the collection host)
 FIRECRAWL_URL=            # self-hosted Firecrawl base URL, defaults to http://127.0.0.1:3003
 CLASSIFIER_BASE_URL=      # chat-completions base URL used when USE_CLAUDE_CLASSIFIER is set
@@ -377,7 +501,7 @@ Classification needs all three `CLASSIFIER_*` variables. A missing one raises `C
 - Every policy needs a real, verified `sourceUrl` (https, `.gov.au` or allow-listed host) and accurate dates — if a day-level date can't be verified, say so in `content` rather than inventing precision.
 - Mark replaced instruments `superseded` (+ `supersededBy`) and dead consultations `closed`; don't delete history.
 - Stamp `lastReviewedAt` when you have verified a record against its source.
-- Give every policy 1 to 5 `themes` from `src/lib/themes.ts`. Collector and staged drafts carry `themes: []`, and approval and publication refuse a policy without themes, so approve a new policy with an explicit `proposedRecord` that sets them. Re-verification drafts keep the record's existing themes.
+- Give every policy 1 to 5 `themes` from `src/lib/themes.ts`. Collector and staged drafts carry `themes: []`, and approval and publication refuse a policy without themes, so approve a new policy with an explicit `proposedRecord` that sets them. Re-verification drafts keep the record's existing themes. `npm run validate:data` runs both `validatePolicyThemes` and `validateThemeCoverage` (`scripts/validate-data.ts`; `src/lib/validate-data-script.test.ts` fails if either call is removed). Publication also refuses an approved snapshot whose themes were emptied, set to an unknown id, omitted, nested (a non-string entry is named by type and JSON value, not as an unknown theme id), or grown past five, and does not call `createPolicy` or `updatePolicy` (`src/lib/source-ingest-workflow.test.ts`). Through MCP, `list_themes` (read-only, no admin token) returns each key and label from `THEMES` with the per-record and per-theme limits. When a record has theme errors, the last error for that record ends with `; valid theme ids are <keys>` (not a separate `<id>: valid theme ids are <keys>` line). Approve and publish refusals join those errors, so they name the keys too.
 
 ## Code Conventions
 
@@ -389,7 +513,9 @@ Classification needs all three `CLASSIFIER_*` variables. A missing one raises `C
   `collectionStripProps` and `formatCollectedAt` in
   `src/lib/collection-strip.ts` (a plain module, so the server layout may call
   them), pinned to `Australia/Sydney`. It never shows `lastHealthyAt`, which
-  would date the strip to the last fully healthy run (#304).
+  would date the strip to the last fully healthy run (#304). Below `sm` a
+  degraded run still shows a `degraded` marker beside the collected date.
+  `formatCollectedAt` falls back when the stamp is missing or unparseable.
 - A server module (one without `'use client'`) imports only components from a
   `'use client'` module. Any other value it imports, such as a string or a
   function, becomes a client reference in the RSC payload, which the browser

@@ -12,8 +12,19 @@ import {
   rejectStagedSource,
   stageSourceCapture,
   stageSourceUrl,
+  verifyRegisterRecord,
 } from '@/lib/source-ingest';
 import { getSourceReviews } from '@/lib/data-service';
+import {
+  isSignalReviewer,
+  signalReviewers,
+} from '@/lib/signal-source-reviews';
+import {
+  MAX_THEMES_PER_RECORD,
+  MIN_RECORDS_PER_THEME,
+  MIN_THEMES_PER_RECORD,
+  THEMES,
+} from '@/lib/themes';
 import {
   getCourtRequirementsForReview,
   reviewCourtRequirement,
@@ -148,6 +159,17 @@ export async function handleListStagedSources(input: { status?: string }) {
   return getSourceReviews(status ? { status } : undefined);
 }
 
+export function handleListThemes(
+  table: readonly { key: string; label: string }[] = THEMES,
+) {
+  return {
+    themes: table.map(({ key, label }) => ({ key, label })),
+    minThemesPerRecord: MIN_THEMES_PER_RECORD,
+    maxThemesPerRecord: MAX_THEMES_PER_RECORD,
+    minRecordsPerTheme: MIN_RECORDS_PER_THEME,
+  };
+}
+
 export async function handleListCourtRequirementCandidates(input: {
   status?: CourtRequirementStatus;
   policyId?: string;
@@ -262,4 +284,107 @@ export async function handleRecordManualSourceReview(input: {
       ...(input.evidence ? { evidence: input.evidence } : {}),
     });
   });
+}
+
+function requireSignalReviewer(reviewer?: string) {
+  const name = reviewer?.replace(/\s+/g, ' ').trim();
+  if (!name) {
+    throw new Error('A human reviewer identity is required');
+  }
+  if (!isSignalReviewer(name, process.env)) {
+    throw new Error(
+      `Signal reviewer must be one of: ${signalReviewers(process.env).join(', ')}.`,
+    );
+  }
+  return name;
+}
+
+/**
+ * Stamp a public register record verified after Daniel names that id in
+ * Policai Signal. Requires the admin token and an allowlisted reviewer.
+ */
+export async function handleVerifyRegisterRecord(input: {
+  policyId: string;
+  reviewer?: string;
+  notes?: string;
+  adminToken?: string;
+}) {
+  return audited('verify_register_record', {}, () => {
+    requireMcpAdminToken(input.adminToken);
+    const reviewer = requireSignalReviewer(input.reviewer);
+    return verifyRegisterRecord({
+      policyId: input.policyId,
+      actor: reviewer,
+      notes: input.notes,
+    });
+  });
+}
+
+/**
+ * One entry for the Signal Grok Bot phrase table: approve, dismiss, publish,
+ * or verify. Same trust gates as the individual tools plus the Signal
+ * reviewer allowlist on approve / dismiss / verify.
+ */
+export async function handleSignalDecision(input: {
+  action: 'approve' | 'dismiss' | 'publish' | 'verify';
+  id: string;
+  reviewer?: string;
+  notes?: string;
+  proposedRecord?: Record<string, unknown>;
+  expectedTargetRevisionHash?: string;
+  officialSourceUrl?: string;
+  manualExtraction?: ManualExtractionInput;
+  reviewedDate?: ReviewedDateInput;
+  browserCapture?: BrowserCaptureInput;
+  adminToken?: string;
+}) {
+  requireMcpAdminToken(input.adminToken);
+  const id = input.id.trim();
+  if (!id) {
+    throw new Error(
+      input.action === 'verify'
+        ? 'A register policy id is required'
+        : 'A source review id is required',
+    );
+  }
+
+  if (input.action === 'publish') {
+    return audited('signal_decision', {}, () =>
+      publishStagedSource(id, { browserCapture: input.browserCapture }),
+    );
+  }
+
+  const reviewer = requireSignalReviewer(input.reviewer);
+  const notes =
+    input.notes?.replace(/\s+/g, ' ').trim() ||
+    `Policai Signal decision (${input.action}) by ${reviewer}`;
+
+  if (input.action === 'verify') {
+    return audited('signal_decision', {}, () =>
+      verifyRegisterRecord({ policyId: id, actor: reviewer, notes }),
+    );
+  }
+
+  if (input.action === 'dismiss') {
+    return audited('signal_decision', {}, () =>
+      rejectStagedSource(id, notes),
+    );
+  }
+
+  return audited('signal_decision', {}, () =>
+    approveStagedSource({
+      id,
+      actor: reviewer,
+      approvalNotes: notes,
+      proposedRecord: input.proposedRecord as
+        | PolicyDraft
+        | TimelineEventDraft
+        | undefined,
+      expectedTargetRevisionHash: input.expectedTargetRevisionHash,
+      officialSourceUrl: input.officialSourceUrl,
+      manualExtraction: input.manualExtraction,
+      reviewedDate: input.reviewedDate,
+      browserCapture: input.browserCapture,
+    }),
+  );
 }

@@ -6,6 +6,8 @@ The collector is the automation behind the Developments feed: it watches officia
 
 1. Loads the seen-URL registry (`data/watch-state.json`) and the existing feed (`data/developments.json`).
 2. For each due source marked `automation: automatic` in [`src/lib/pipeline/sources.ts`](../src/lib/pipeline/sources.ts) (daily sources every run, weekly sources every 6+ days):
+   - admits every request through the host gate (robots.txt, a 2 s gap per
+     host, `Retry-After`; see Politeness below),
    - fetches the index page or RSS feed,
   - rejects bot-challenge pages even when they return HTTP 200 or are
     mislabelled as generic binary content,
@@ -19,19 +21,23 @@ The collector is the automation behind the Developments feed: it watches officia
    - detections (score ≥ 0.5) → `data/developments.json`,
    - AI detections (score ≥ 0.7) and all heuristic detections that enter the
      feed → also staged in `data/source-reviews.json`,
-   - candidate retry state and direct-document fingerprints →
+   - candidate retry state, direct-document fingerprints and per-host
+     robots and backoff records →
      `data/watch-state.json`,
    - coverage health, per-source item/candidate counts, and errors →
      `public/data/meta.json`.
    The site header strip reads `lastCollectedAt` ("Collected 17 Oct 2026,
    06:35 AEDT", Australia/Sydney) and shows `collector.health` and the
    `successfulSourceCount/dueSourceCount` ratio beside it
-   ([`collection-strip.ts`](../src/lib/collection-strip.ts)). `lastHealthyAt`
-   is the last run with no failed due source. It still anchors the weekly
-   window and the register freshness date, and is never shown as the
-   collection date. A run that fails one source stays `degraded` and keeps
-   `lastHealthyAt` where it was, so the two dates drift apart while a source
-   stays broken.
+   ([`collection-strip.ts`](../src/lib/collection-strip.ts)). Below `sm` the
+   detailed count cluster is hidden; a degraded run still shows a `degraded`
+   marker next to the collected date so a phone reader sees the run is not
+   fully healthy. `lastHealthyAt` is the last run with no failed due source.
+   It still anchors the weekly window and the register freshness date, and is
+   never shown as the collection date — the register line labels it "last
+   fully healthy" (or "last collected" when no healthy stamp exists). A run
+   that fails one source stays `degraded` and keeps `lastHealthyAt` where it
+   was, so the two dates drift apart while a source stays broken.
 4. The collector **never writes `data/policies.json`** — the register only changes through reviewed commits. The host wrapper `ops/collector/policai-collect.sh` fails a collection run that changes it. No GitHub workflow checks this, so a hand-made PR that edits the register is caught only by review.
 
 Non-dry-run collection holds the same cross-process data transaction lock as
@@ -170,10 +176,10 @@ as a sorted set with a `date-platform:` entry, so it misses the #250 values.
 Retrieval also computes this reading's fingerprint under both
 (`earlierContentHashes`, the #244 value first, in memory only), and
 `matchesRetrievedContent` in `src/lib/pipeline/fetch.ts` is the one
-comparison of a fresh retrieval with a stored hash. It accepts the current
-fingerprint or either earlier one and is used for watch-state snapshots,
-verified policy and timeline hashes, staged transitions and their pending
-candidates, the change-reason label, the `discoveredAt` retention of a
+comparison of a fresh retrieval with a stored hash (#249). It accepts the
+current fingerprint or either earlier one and is used for watch-state
+snapshots, verified policy and timeline hashes, staged transitions and their
+pending candidates, the change-reason label, the `discoveredAt` retention of a
 re-staged review, the register audit, and the re-staging, approval and
 publication gates. The three preimages are disjoint: only the current one
 carries a `publicationDates` list, only the #244 one carries a
@@ -183,7 +189,9 @@ earlier fingerprint was written under that scheme, and a page that gains
 `dcterms.created` or a Drupal generator after its #244 fingerprint was stored
 reads as changed (#262), the generator because the stored #244 preimage
 recorded the platform. Once the snapshot holds the current fingerprint the
-platform counts only through the last-resort candidates, as above.
+platform counts only through the last-resort candidates, as above, for
+snapshots and current-scheme verified hashes; a record whose verified hash
+is still #244 stages one review until re-approval.
 Stored-to-stored comparisons (two staged reviews of one transition, the DTA
 artifact or a court requirement against its policy) compare hashes as before
 and still need both sides re-verified together. `transitionForDocumentHash`
@@ -481,9 +489,272 @@ overwrite global collection health. It still exits non-zero when that targeted
 run is unhealthy, after persisting retry and snapshot state. Targeted runs
 force the selected source regardless of its normal daily/weekly due time.
 
+### Politeness
+
+Every request the collector itself issues passes through one `HostGate`
+([`host-gate.ts`](../src/lib/pipeline/host-gate.ts)): plain HTTP, the
+HTTP/1.1 fallback, each plain-HTTP redirect hop, every linked document, the
+headless browser's navigation and the target of each Firecrawl scrape. Not
+gated: the browser's own sub-resource and in-page requests, the redirect
+hops the browser and Firecrawl follow themselves (only the final URL is
+admitted, after the fact), Firecrawl's own fetches, and the hops of the
+robots.txt request itself. `collect()` requires the gate;
+`scripts/collect-run.ts` builds the production one and hands it the `hosts`
+records from `data/watch-state.json`. The host is the unit: `url.host`
+lowercased with any trailing dot removed, port included. The gate never
+makes a run worse than a run without it, except where robots.txt states a
+`Disallow` or a host asks to be left alone (`Retry-After`, a bare 429, a
+browser 403); `collect.never-worse.test.ts` holds that property against a
+neutral gate.
+
+The gate is RFC 9309 with one deliberate departure. RFC 9309 section
+2.3.1.4 says a crawler MUST treat an unreachable robots.txt (5xx, network
+error) as complete disallow for a while. The collector instead keeps the
+last robots.txt it read (the RFC's cached copy) and otherwise allows, and
+retries on the next run. The reasons: its 75 sources are editorially chosen
+pages; many sit behind a WAF that answers a plain HTTP client with a
+challenge page, a reset or a stall rather than a 5xx, and a WAF that blocks
+the robots fetch is not a server asking us to stop; and QA's simulation
+showed RFC-strict behaviour failing 140 of 560 modelled runs that pass
+today. Politeness still holds without robots.txt: the 2 s gap, `Crawl-delay`
+from any copy held, `Retry-After` and the breaker all apply whatever
+robots.txt says. So that an unreachable robots.txt never becomes a
+permanent silent allow, a host whose robots.txt has never been read and has
+been unreachable on 3 consecutive runs is reported as robots unverified
+(below).
+
+- **robots.txt** ([`robots.ts`](../src/lib/pipeline/robots.ts), RFC 9309).
+  Fetched at most once per host per run with the declared identity, over
+  plain HTTP/1.1, before the first request to that host. The `Policai` group
+  is used when present, else `*`. Matching is longest-match over `Allow` and
+  `Disallow`, with `*` wildcards and a `$` end anchor, equal lengths allow,
+  and percent-encoded unreserved octets compared decoded. A 2xx is parsed
+  line by line, so an HTML or challenge page served with 200 yields no
+  rules, and a 204 is an empty robots.txt that allows all. A `Crawl-delay`
+  over one day (`CRAWL_DELAY_CAP_SEC`) is read as one day. A 4xx means
+  allow all (`absent`). Anything else is `unreachable`: a 1xx or 3xx left
+  after redirects (such as a 304 without `Location`), a 5xx, a connection
+  error, the 20 s timeout, a body over 500 KiB (it is not parsed in part),
+  more than five redirects, or a redirect off https.
+  An unreachable robots.txt never refuses a request and never trips the
+  host: the gate keeps the copy it last read (`parsed` or `absent`, with
+  that read's `fetchedAt`) when it has one and otherwise records
+  `unreachable` and allows, then refetches on the next run. The run log
+  names the hosts whose robots.txt was unreachable.
+- **Robots unverified.** `robotsUnreachableRuns` on the host record counts
+  consecutive runs whose robots fetch was unreachable, at most once per run,
+  and returns to 0 on any 2xx or 4xx. A host whose robots status is still
+  `unreachable` (no robots.txt ever read) and whose count is 3 or more
+  (`ROBOTS_UNVERIFIED_RUNS`) is robots unverified
+  (`robotsUnverifiedHosts`). The run log then ends its host-gate lines with
+  `[collect] robots unverified: <host>, <host>`, `meta.json` carries
+  `collector.robotsUnverified` (sorted host keys, omitted when empty) and
+  `/status` lists the hosts under "Robots unverified". The report changes no
+  request or outcome. A host that once read robots.txt is never listed; it
+  keeps that copy. A disallowed URL fails
+  as `robots_disallowed` and is never requested; other paths on the host
+  are unaffected. Parsed rules are cached for 24 h in the `hosts` record.
+  Expect about half the hosts to refetch on a daily run, because the
+  timer's random delay moves the run either side of 24 h.
+- **Robots-fetch budget.** A run may spend at most 600 s
+  (`ROBOTS_FETCH_BUDGET_MS`) of wall time on robots.txt fetches. The
+  elapsed time of each `fetchRobots` call is charged. Once the budget is
+  spent, later hosts skip the robots fetch for the rest of the run: they
+  keep any cached `parsed` or `absent` copy, otherwise allow, and do not
+  increment `robotsUnreachableRuns` (no attempt). This caps stalled
+  robots.txt hosts at about 30 × 20 s under the wrapper's 3,500 s limit
+  without a hard run deadline. A gzip- or br-encoded robots body (or any
+  non-`identity` `Content-Encoding`) is treated as unreachable, so a
+  previously parsed copy is kept rather than replaced with empty rules.
+- **Gap.** At least 2 s between any two requests to one host, the robots
+  fetch included. After a page request the host's `Crawl-delay` applies
+  when larger, capped at 30 s; after the gate's own robots fetch only the
+  2 s gap applies, so a fresh host's first page needs no `Crawl-delay`
+  wait. Waits are taken inline; the per-request timeout starts after the
+  wait.
+- **Wait budget.** A run may spend at most 1,200 s (`WAIT_BUDGET_MS`) on
+  waits a host asked for: the part of a `Crawl-delay` above the 2 s gap,
+  and inline `Retry-After` waits. The 2 s gap is always waited and never
+  charged, so a host that asked for nothing is never affected by the
+  budget; those waits are bounded by 2 s per request, the design's model
+  (476 s inferred worst case). The robots fetch itself is not a wait and
+  is not charged against this budget; it has its own budget (below). The
+  wait budget is about a third of the wrapper's 3,500 s deadline; a
+  hostile `Crawl-delay: 30` on every host would otherwise need about
+  6,500 s and the wrapper would kill the run with nothing written. Once
+  the budget is spent, a candidate page, or a linked document of one,
+  that needs a requested wait is deferred, not sent
+  (`the run's N ms host-gate wait budget is spent`); see Deferral.
+  A due source's index request is never deferred. It waits what the host
+  asked for, up to the 30 s cap, whether or not the budget is spent, and
+  so do its redirects, its retry, its browser fallback and, for a
+  `document` source, the linked documents hashed into its fingerprint
+  (`collect.ts` hands them the gate with `admit(url, 'wait')`). These
+  waits are charged, so later candidates are deferred sooner. The reason
+  is the review gate: it rejects a run whose output marks a due source
+  `skipped`, so deferring an index would lose the whole run.
+  An index wait is at most 30 s for each index request that follows
+  another request to the same host. The model
+  (`~/Reports/2026-10-17-policai-source-coverage/pr5-index-wait-model.mts`)
+  puts 75 sources on 63 hosts, every host with `Crawl-delay: 30` and one
+  index request per source, at 12 × 30 = 360 s of index waits. The run is
+  then at most 181 s + 1,200 s + 360 s = 1,741 s, or 3,001 s if every host
+  also stalls its robots fetch for 20 s, under the 3,500 s limit; the
+  margin covers 28 more such index requests (70 without robots stalls).
+  It does not cover every index failing and being retried on such hosts
+  (about 8,500 s) or eight linked documents for every `document` source
+  on one host (about 9,700 s). A cap small enough for those is about 3 s,
+  which is the 2 s gap, so the cap stays 30 s and those cases are left
+  to a hard run deadline (Not done here).
+- **Retry-After.** A 429, or a 503 that carries `Retry-After` (seconds or an
+  HTTP-date), sets `backoffUntil` on the host. A wait of up to 30 s is taken
+  inline; a longer one refuses every request to the host as `rate_limited`
+  (429) or `host_unavailable` (503) until it passes. A 429 without the header
+  backs off 1 h, doubling on each further 429 that is not waited out inline
+  to a 12 h cap (`BACKOFF_LADDER_CAP_MS`), below the daily run interval, so
+  a host that rate-limits every day is still tried once a day; any 2xx or
+  3xx resets the ladder, a 4xx leaves it. A 429 waited out inline does not
+  climb it. An explicit `Retry-After` is honoured up to 24 h. A 503 without
+  the header is an ordinary failure and does not back the host off, so one
+  failing URL does not take its host out of the run. Backoff is persisted,
+  so a run that starts inside a backoff still honours it.
+- **Breaker.** A 403 returned to the headless browser trips the host for the
+  rest of the run: later requests to it are refused at once as
+  `identity_refused` (`<host> refused the headless browser with a 403
+  earlier this run`). The wording avoids `HTTP 403` so a report that counts
+  hosts refusing the identity (`\bHTTP 403\b`) counts the request that was
+  refused, not the ones never sent. A 403 to plain HTTP or to Firecrawl does
+  not trip it, because the browser fallback is the existing answer to WAF
+  fronts that block plain clients. The breaker is in-memory only. The gate
+  never infers a refusal from any other status; `failure.ts` labels those
+  afterwards.
+- **Deferral.** A candidate the gate refuses without a request (breaker,
+  backoff or wait budget) is not a failure: it stays `pending`, keeps its
+  attempt count and is tried on the next run, the same as a candidate the
+  per-run cap left for later. Only a candidate that was requested and
+  refused fails, and when the gate refuses the retry of a request that was
+  made, the error reported is that request's response. The wait budget
+  never defers a due source's index (see Wait budget), so no due source
+  is ever `skipped`. A due source whose index the gate refuses (a robots
+  `Disallow`, a backoff over 30 s, the breaker) fails for the run, with
+  the refusal's class. A `robots_disallowed` refusal is terminal for the candidate.
+- **Redirects.** Plain-HTTP hops are admitted before they are followed. The
+  browser and Firecrawl follow redirects themselves, so their final URL is
+  admitted after the fact when its host differs; a refusal discards the
+  content and fails the request.
+
+The host-gate lines of the run log start with
+`[collect] host gate: waited <ms> ms across <n> hosts (most on <host>: <ms> ms)`.
+Read it after the first live run: the design budget allows the 2 s gap
+against the 3,500 s host deadline, and the offline model
+(`~/Reports/2026-10-17-policai-source-coverage/pr5-wall-time-model.mjs`)
+cannot prove the live wall time.
+
+`hosts` in `data/watch-state.json` holds one record per host seen in the
+last 30 days: `seenAt`, `robots` (`fetchedAt`, `status`
+`parsed | absent | unreachable`, `allow`, `disallow`, `crawlDelaySec`,
+`sitemaps`) or `null`, `backoffUntil`, `backoffStatus` (`429 | 503 | null`),
+`backoffCount` and `robotsUnreachableRuns`. The gate loads a record
+without `robotsUnreachableRuns` with 0, but `validateWatchState` requires
+it; only an unreleased build of the gate wrote such records. The gate and `validateWatchState` share one definition
+of the shape (`isHostKey`, `isRobotsRuleList`, `isStoredSitemapList` in
+`host-gate.ts`), so a state the gate writes always validates: a host key is
+a lowercase DNS name or IPv4 literal with an optional port (an IPv6 literal
+is used for the run but not persisted); `Sitemap:` lines are resolved
+against the robots.txt URL, kept only when https, deduplicated and capped at
+20 (nothing reads them yet); a rule list over 500 patterns or with a pattern
+over 1,000 characters is used for the run but persisted as `robots: null`.
+`npm run validate:data` and the review gate check the shape. A daily run
+changes `seenAt` on every host and `fetchedAt` on the refetched ones. For a
+67-host state with Drupal-sized robots (60 rules each) QA measured the map
+at about 131 KB, adding about 141.5 KB to the file.
+
+Not done here: Firecrawl `map` and `crawl` stay unused (their robots
+handling is unverified and `map` sends queries to third-party search
+engines); the gate's `refused` map is empty until the structured
+`automation` decisions supply `refusedHosts`, so no host is skipped by
+decision yet; `npm run audit:sources`, `npm run audit:register` and the MCP
+source-ingest reads do not pass through the gate; a 429 on robots.txt
+itself is allow-all with no backoff (the fetcher does not surface its
+`Retry-After`; the page request that follows observes its own); `admit()`
+does not serialise concurrent callers, which the sequential collector never
+has; a Firecrawl result without `metadata.statusCode` records no
+observation, so a `Retry-After` seen only by Firecrawl is not recorded;
+there is no hard run deadline beyond the robots-fetch budget and the wait
+budget, so index waits after the wait budget is spent are still bounded
+only per request (see Wait budget).
+
+### Failure classes
+
+Each failed row in `meta.json` → `collector.sourceResults` carries
+`failureClass` and `failedUrl`. Successful and skipped rows carry neither.
+The Editorial Manager reads them after a refusal to decide whether a source
+moves to manual tracking. The `error` text, health, thresholds and exit code
+do not depend on them.
+
+`classifyFailure` in [`failure.ts`](../src/lib/pipeline/failure.ts) matches
+the error message against `FAILURE_CLASSES` in this order and takes the first
+match. When the message matches only `other`, it tries the error's `code`, its
+`AggregateError` members and its `cause` chain in turn, so Node's
+`fetch failed` with an `ECONNREFUSED` or `ECONNRESET` cause gets a class.
+
+`failedUrl` is the URL whose request failed. It is the URL carried on the
+`SourceFetchError` (`url`) when there is one, else the first URL in the
+message (the Playwright `at <url>` target), else the source URL for an index
+failure or the candidate URL for a candidate failure. Every retrieval path
+sets `url`: an HTTP status names the URL that returned it, so after a
+redirect it is the redirect target, the host that refused, not the URL first
+requested. A linked document that fails names the document, not the page that
+links it; the link-count and aggregate byte limits name the page. Other transport errors name the request in progress. An HTTP status
+message also carries the URL (`HTTP 403 at <url>`), so a candidate's stored
+`lastError` still names the refusing host on later runs. Only HTTP status
+messages embed the URL in that string. A transport error stored as
+`fetch failed` or a timeout string keeps the candidate or source URL as
+`failedUrl` on a later rebuild, and may class the row as `other` because the
+cause chain is gone.
+
+`failedUrl` is written to a public file, so it is reduced to a public form:
+credentials, the query string and the fragment are dropped, the scheme and
+host are lower-cased, and a URL with no host is ignored. When a URL is taken
+from a message, trailing sentence punctuation (`.,;:!?`) is trimmed and a
+wrapping bracket or quote at the end of the candidate is dropped.
+Parentheses and apostrophes in the path are kept, so a stored
+`HTTP 403 at https://example.gov.au/files/a(1).pdf` rebuilds the full path.
+Classification matches each text with URLs removed, so a path token such as
+`ENOTFOUND.pdf` cannot change the class; a `SourceFetchError` with `status`
+is classed from that status unless the message is `robots_disallowed`. A URL
+longer than 2048 characters is reduced to its origin. The URL in an
+`HTTP nnn at <url>` message is reduced the same way.
+
+When a source fails more than once in a run, the row records the first
+failure: the index, then a document version that exhausted its retries, then
+the first failing candidate. The `N candidate retrieval failure(s)` text is
+unchanged.
+
+| Class | Matches | Meaning |
+| --- | --- | --- |
+| `robots_disallowed` | `disallowed by robots.txt` | robots.txt disallows the URL; the host gate refused it before any request. It comes first so a refusal that robots.txt explains is not labelled `identity_refused`. |
+| `identity_refused` | `ERR_HTTP2_PROTOCOL_ERROR`, `ERR_CONNECTION_RESET`, `ECONNRESET`, `HTTP 403`, bot-challenge page, `refused the headless browser with a 403` (the gate's breaker) | Heuristic label only. An outage can look the same. A human decides. |
+| `rate_limited` | `HTTP 429` | The host asked us to slow down. |
+| `host_unavailable` | `HTTP 5xx`, `ERR_NAME_NOT_RESOLVED`, `ERR_CONNECTION_REFUSED`, `ERR_CERT_*`, `ECONNREFUSED`, `ENOTFOUND`, DNS lookup failures | The host could not be reached safely. |
+| `not_found` | `HTTP 404`, `HTTP 410` | The URL is gone. |
+| `http_error` | any other `HTTP nnn` | Another HTTP error status. |
+| `timeout` | `timed out` (`Timed out after`), `Timeout 45000ms exceeded`, `aborted due to timeout`, `ERR_TIMED_OUT`, `ETIMEDOUT`, `host-gate wait budget` | A retrieval or navigation deadline passed, or the run's gate wait budget is spent. Any other text that merely contains `timeout` is not a timeout. |
+| `empty` | `Source returned no usable index or feed items`, too few usable items, `Linked policy document <url> returned no document bytes`, no browser response | The source answered with nothing usable. |
+| `parse` | no extractable or readable text, unsupported content or document type, linked-document byte validation, DOCX or PDF structure errors | Content arrived but could not be extracted. |
+| `other` | anything else | Read `error`. This includes `Source response exceeds N byte limit` and `PDF retrieval did not retain the original document bytes` (an internal retention fault). |
+
+Nothing reacts to a class. A source leaves the health denominator only through
+a reviewed change to its `automation`. `npm run validate:data` rejects an
+unknown class, a `failedUrl` that is not already in its public form (for
+example one with credentials or a query string), either field on a row that
+did not fail, and one field without the other. Error rows written before the
+fields existed carry neither and stay valid.
+
 ## Production automation
 
-Collection runs daily (~05:30 Sydney) on the maintainer's server through
+Collection runs daily at 19:30 UTC (06:30 AEDT, 05:30 AEST) on the
+maintainer's server through
 [`ops/collector/policai-collect.sh`](../ops/collector/policai-collect.sh), installed
 at `~/.local/bin/policai-collect.sh`. See the
 [wrapper runbook](../ops/collector/README.md) for installation, tests and recovery.
@@ -561,7 +832,8 @@ Detections staged in `data/source-reviews.json` are proposals. To publish one:
 
 1. Run the local MCP server (`npm run mcp`).
 2. Inspect the staged source and correct the draft, especially its labelled
-   primary date.
+   primary date. Give a policy its `themes`: `list_themes` returns the valid
+   keys and labels from `src/lib/themes.ts`.
 3. Call `approve_staged_source` with reviewer identity and notes.
    The MCP input requires a human `reviewer`; the admin token authorises the
    operation but is not recorded as the person who performed the review.
@@ -573,6 +845,230 @@ Detections staged in `data/source-reviews.json` are proposals. To publish one:
 4. Call the publish tool. Publishing refuses pending drafts and creates the
    verified policy or timeline record through `src/lib/source-ingest.ts`.
 5. Run `npm run validate:data`, commit, and push (or open a PR).
+
+### Policai Signal (Grok Bot)
+
+**Policai Signal** is Daniel’s Grok Bot
+(`fa9b5c47-349a-438e-acfc-75055f2d6b8f`). Product path: **HTTPS on
+policai.org**. The bot can reach HTTPS with a masked env secret; it has **no**
+Argus SSH, **will not** run a TTY CLI, and **cannot** merge PRs. MCP / TTY /
+`npm run mcp` are laptop recovery only — not the bot UX.
+
+#### Bot-facing HTTPS API
+
+Base: `https://policai.org`. Auth header on every Signal call:
+
+```http
+Authorization: Bearer $POLICAI_SIGNAL_TOKEN
+```
+
+Bot env (masked prompt; never paste into chat): **`POLICAI_SIGNAL_TOKEN`**.
+
+| Method | Path | Purpose |
+| --- | --- | --- |
+| `GET` | `/api/signal/reviews/<reviewId>` | Dry-run / current state for one review |
+| `POST` | `/api/signal/reviews` | Apply `approve` (approve+publish) or `dismiss` |
+
+**Dry-run (harmless first test):**
+
+```bash
+curl -sS -H "Authorization: Bearer $POLICAI_SIGNAL_TOKEN" \
+  "https://policai.org/api/signal/reviews/<reviewId>"
+```
+
+Returns `{ success, dryRun, review, approve, dismiss }`. `approve.blockers` /
+`dismiss.blockers` explain themes / tracked-record issues. No write.
+`review.themes` and `review.type` are the draft's current values.
+`approve.themeOptions` (`{ id, label }` from `THEMES`) and
+`approve.typeOptions` (the `PolicyType` values) are what Daniel may name in
+his reply; both are empty when the review does not accept overrides.
+
+**Apply:**
+
+```bash
+curl -sS -X POST "https://policai.org/api/signal/reviews" \
+  -H "Authorization: Bearer $POLICAI_SIGNAL_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "reviewId": "<id>",
+    "action": "approve",
+    "reviewer": "Daniel Alkurdi",
+    "attestation": {
+      "replyText": "<Dan reply verbatim>",
+      "chatMessageId": "<message id>",
+      "cardId": "<id>",
+      "decidedAt": "2026-10-19T05:00:00.000Z"
+    }
+  }'
+```
+
+`action` is `approve` or `dismiss` only. `approve` runs `approveStagedSource`
+then `publishStagedSource`. `dismiss` runs `rejectStagedSource`. Reviewer
+must be allowlisted (`POLICAI_SIGNAL_REVIEWERS`, default
+`Daniel Alkurdi` and `Daniel`). `attestation.cardId` must equal `reviewId`.
+
+**Approve / publish when the host refuses a live re-fetch.** Approval and
+publication still prefer a live re-fetch of the official URL so a changed
+page cannot be approved from a stale staging hash. When that re-fetch fails
+with a host refusal — HTTP 403, HTTP 429, or an equivalent
+`identity_refused` / `rate_limited` failure (connection reset, bot-challenge
+wording, headless-browser 403 breaker) — `approveStagedSource` and
+`publishStagedSource` fall back to the collector-retained snapshot already on
+the review: `sourceEvidence` (including `contentHash`) plus the staged
+`proposedRecord` text (`content`, or `description` when content is missing).
+They do not invent bytes, do not guess a new fingerprint, and do not fall
+back for other failures (timeouts, HTTP 404/5xx, parse errors). The approval
+URL must still match the staged evidence URL (a source-replacement approve
+that points at a different official URL still requires a live fetch of that
+URL). When the fallback runs, approval notes gain the sentence in
+`RETAINED_SNAPSHOT_APPROVAL_NOTE` (`src/lib/source-ingest.ts`). If the host
+later serves different content successfully, the usual "changed after
+staging / approval" refusal still applies and the lead must be re-staged.
+
+**Themes and type from the reply.** An `approve` body may add
+`"themes": ["public-sector", "ai-governance"]` (1 to 5 unique theme ids
+from `src/lib/themes.ts`) and `"type": "<PolicyType>"`. They replace the
+draft's themes and type (no merge) before `approveStagedSource` runs with
+that `proposedRecord`, so a themeless draft can be approved once Daniel
+names its themes. They apply only to new register policy drafts: a
+timeline-event or tracked-record review, or a `dismiss`, with either field
+returns `invalid_request`.
+
+**Reply binding:** Daniel names values after a keyword, for example
+`approve, themes public-sector, ai-governance; type legislation`. Matching
+ignores case.
+
+- A theme counts only when it is a whole token inside a `theme` or `themes`
+  clause. The clause runs from the keyword to the next `.`, `;`, line break,
+  or `theme`, `themes` or `type` keyword.
+- The type counts only when it is the first token after `type` (`type
+  legislation` or `type: legislation`).
+- A token boundary is the start or end of the clause or any character
+  outside `[a-z0-9-]`. So `ai-governance` does not match inside
+  `genai-governance-x`, and `public sector` does not match `public-sector`.
+- A word used in passing never counts. In `approve this policy`, `policy` is
+  not a type, and in `employment law is fine`, `employment` is not a theme.
+
+A miss returns `themes_not_in_reply` or `type_not_in_reply`, naming the
+missing values.
+This check (`parseReplyOverrides` in `src/lib/signal-http.ts`) is what stops
+the bot from inventing values: it can relay only what Daniel wrote, and
+Daniel's reply is stored verbatim beside the applied values.
+
+Attestation is stored on the review and published verification notes as:
+
+```text
+Daniel Alkurdi (Signal): <reply verbatim>
+chatMessageId: …
+cardId: …
+decided: <Australia/Sydney> (<ISO>)
+themes: <applied theme ids>   (only when sent)
+type: <applied type>          (only when sent)
+relayed by Policai Signal
+```
+
+It must not claim TTY typing.
+
+**Idempotent:** approve on an already `published` review, or dismiss on an
+already `rejected` review, returns `noop: true` and the current state. A
+published review stays a noop whatever `themes` or `type` say.
+
+**Errors (bot returns these to Dan; bot does not invent themes):**
+
+| `code` | When |
+| --- | --- |
+| `unauthorized` | Missing/wrong Bearer token |
+| `signal_token_unconfigured` | Host missing `POLICAI_SIGNAL_TOKEN` |
+| `not_found` | Unknown review id |
+| `approve_blocked` (409) | Draft has no themes (ask Daniel to name them), no primary date, or is rejected |
+| `themes_required` / `editorial_fields_required` (409) | Approval refused themes or other reviewed fields (source date, `officialSourceUrl`, `proposedRecord`); fix through editorial MCP |
+| `approve_failed` (409) | Live re-fetch failed in a way the retained-snapshot fallback cannot cover (or another approve/publish gate failed); the error text names the cause (for example a non-refusal HTTP error) |
+| `invalid_request` (400) | Missing fields; `themes`/`type` on a dismiss, timeline or tracked-record review; `themes` not an array, repeated, or outside 1 to 5 |
+| `unknown_theme` / `unknown_type` (400) | Value is not a theme id or `PolicyType`; the error lists the valid ones |
+| `themes_not_in_reply` / `type_not_in_reply` (400) | A sent value is not named after `themes` or `type` in `attestation.replyText` |
+| `dismiss_blocked` / `tracked_record_dismiss` | Tracked-record reviews cannot be dismissed |
+| `reviewer_not_allowlisted` | Reviewer not in allowlist |
+| `invalid_attestation` | Missing reply / message id / card id |
+| `github_token_unconfigured` (503) | Host missing `POLICAI_SIGNAL_GITHUB_TOKEN`; nothing ran |
+| `github_unavailable` (502) | `main` could not be resolved on GitHub |
+| `main_moved` (409) | `main` target only: `main` moved after the read; retry |
+| `github_persist_failed` (502) | Commit, branch or PR creation failed; nothing merged |
+
+Rate limit: 20 POST / 30 GET per IP per minute on `/api/signal/*`.
+
+**Persistence:** Git is the database, and Signal POST never writes the
+serving checkout. The service is read-only there (`ProtectSystem=strict`), and
+a dirty release checkout would block every later deploy. The route works in
+`src/app/api/signal/reviews/route.ts` with `src/lib/signal-git-persist.ts` and
+`src/lib/data-overlay.ts`:
+
+1. It resolves GitHub `main` to one base commit with
+   `POLICAI_SIGNAL_GITHUB_TOKEN` (repository `POLICAI_SIGNAL_GITHUB_REPO`,
+   default `l0cka/policai`).
+2. It runs the approve or dismiss inside `runWithDataOverlay`. Every data read
+   comes from the file at that commit (contents API, blob API for files over
+   1 MB). Writes stay in memory, and no lock file is taken.
+3. If the decision is a noop or changes no file, it returns
+   `persistence.skipped` and commits nothing.
+4. Otherwise it commits only the changed files on top of the base commit's
+   tree. A collector commit to `main` since the last deploy is kept, because
+   the decision read `main`, not the deployed copy.
+
+Targets:
+
+- `pr` (default): branch `signal/<action>-<reviewId>`. If an open PR already
+  has that head, the response returns it with `persistence.existing: true`
+  and no new commit, so a rerun is safe. A leftover branch with no open PR is
+  force-updated. Dan merges; the bot never merges.
+- `main` (`POLICAI_SIGNAL_COMMIT_TARGET=main`): fast-forward `main` without
+  force. If `main` moved after the read, the request fails with `main_moved`
+  and nothing is written. Send the same request again to decide against the
+  new `main`.
+
+`persistence` reports `target`, `branch`, `commitSha`, `prUrl`, `htmlUrl`,
+`baseSha` and the committed `files`. The site shows the decision only after
+the PR merges (or the `main` push lands) and the host deploy pulls it.
+
+Host requirements: `POLICAI_SIGNAL_GITHUB_TOKEN` must be set, or POST returns
+`github_token_unconfigured` (503) before any decision runs. The service needs
+outbound HTTPS to `api.github.com`. The production unit is currently
+localhost-only, so that is a host change for the maintainer.
+
+#### Pending cards (read-only)
+
+The bot reads pending rows from:
+
+`https://raw.githubusercontent.com/l0cka/policai/main/data/source-reviews.json`
+
+`npm run signal:reviews` reprints the same cards locally. Empty queue:
+`No pending source reviews.` `formatPendingSourceReviewCards` in
+`src/lib/signal-source-reviews.ts` is pure. Keep `pending_review` rows; order
+by `discoveredAt` descending, then `id` in `en-AU`. Each card:
+
+```text
+id: <id, one line>
+title: <title, one line>
+url: <sourceUrl>
+jurisdiction: <display name>
+change: <one line, from the target id and entry kind>
+summary: <analysis.summary, one line, at most 160 characters, ellipsis if cut>
+relevance: <analysis.relevanceScore>
+discovered: <discoveredAt in Australia/Sydney>
+retrieved: <sourceEvidence.retrievedAt in Australia/Sydney, or "not recorded">
+```
+
+Omit `jurisdiction` when the staged record has none and
+`analysis.suggestedJurisdiction` is empty. Display names are Federal, New
+South Wales, Victoria, Queensland, Western Australia, South Australia,
+Tasmania, Australian Capital Territory, and Northern Territory. Dates use
+`en-AU` with `timeZone: "Australia/Sydney"`. Footer: `1 pending source
+review.` or `N pending source reviews.`
+
+`.github/workflows/signal-review-cards.yml` is manual read-only reprint.
+
+**Recovery only (not bot):** TTY or MCP approve/publish on a laptop when
+HTTPS is down. The bot must not be told to SSH to Argus or run
+`signal:reviews apply`.
 
 One-off publication scripts must also enter through `stageSourceUrl()` or the
 controlled `stageSourceCapture()` fallback rather than constructing a review
@@ -720,11 +1216,18 @@ npm run collect -- --dry-run --source=<id>
   it to `automation: manual` with an explanation. Do not count a challenge page
   as coverage and do not disable an authoritative source merely because it
   cannot be automated.
-  Every due source counts in the health denominator, including a source that
-  is known to be blocked, so one persistent refusal keeps the run `degraded`
-  and `lastHealthyAt` stale. Move such a source to `automation: manual`
-  (which drops it from the denominator) rather than excluding it from the
-  count.
+  Every due automatic source counts in the health denominator, including a
+  source that is known to be blocked, so one persistent refusal keeps the run
+  `degraded` and `lastHealthyAt` stale. Move such a source to
+  `automation: manual` (which drops it from the denominator) rather than
+  excluding it from the count. A result already stored for that id, including
+  one recorded while it was still automatic, is left out of the public
+  automatic count and does not keep the run degraded (`publicAutomaticCollectionMeta`
+  in `src/lib/collection-coverage.ts`, applied by `getCollectionMeta` and by
+  the committed `public/data/meta.json`). `accc-rss` (HTTP 403 from the host's
+  access-denied page) and `wa-ai-policy` (the linked finance.gov.au framework
+  PDF resets the connection) were moved for this reason (#304, #389); each
+  source's `notes` carry the evidence.
 - **An HTML source reports no coverage** — only links inside recognised
   publication/result containers count as index entries. Navigation, footer,
   homepage, login, and soft-error links do not make a source healthy; inspect

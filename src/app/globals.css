@@ -119,22 +119,6 @@
   --map-label: light-dark(#57534e, #dce4ee);
   --map-label-muted: light-dark(#78716c, #a7b2c3);
 
-  --network-jurisdiction-bg: light-dark(#2f4fd8, #8fa8ff);
-  --network-jurisdiction-border: light-dark(#2345c8, #6f8be8);
-  --network-agency-bg: light-dark(#d9a13b, #e7b96c);
-  --network-agency-foreground: light-dark(#10213a, #10141b);
-  --network-agency-border: light-dark(#b7791f, #c18f3e);
-  --network-active-bg: light-dark(#2d8a74, #65d2b4);
-  --network-active-border: light-dark(#146b5a, #3ca98c);
-  --network-proposed-bg: light-dark(#d6a344, #e7b96c);
-  --network-proposed-border: light-dark(#b7791f, #c18f3e);
-  --network-amended-bg: light-dark(#5575e6, #91aaff);
-  --network-amended-border: light-dark(#2f4fd8, #6f8be8);
-  --network-default-bg: light-dark(#7b8795, #8d9aab);
-  --network-default-border: light-dark(#657181, #6c7888);
-  --network-edge: light-dark(#7a8797, #7f8ca0);
-  --network-cross-edge: light-dark(#a855f7, #c79cff);
-  --network-minimap-mask: light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.35));
 
   /*
    * Jurisdiction accents, drawn from each government's own livery — Queensland
@@ -186,12 +170,13 @@
    * the status strip).
    */
   html {
-    scroll-padding-top: 6.5rem;
+    --scroll-clear-top: 6.5rem;
+    scroll-padding-top: var(--scroll-clear-top);
     scroll-padding-bottom: 5.5rem;
   }
   @media (min-width: 40rem) {
     html {
-      scroll-padding-top: 9rem;
+      --scroll-clear-top: 9rem;
     }
   }
   body {
@@ -1066,20 +1051,6 @@
   background: color-mix(in srgb, var(--primary) 22%, transparent);
 }
 
-/*
- * SVG graph nodes cannot take a CSS outline box, so the node draws its own
- * ring and shows it only for keyboard focus.
- */
-.network-node:focus-visible {
-  opacity: 1;
-}
-.network-node .network-node-focus {
-  visibility: hidden;
-}
-.network-node:focus-visible .network-node-focus {
-  visibility: visible;
-}
-
 @media print {
   body {
     background-image: none;
@@ -1096,6 +1067,213 @@
     color: inherit;
     text-decoration: none;
   }
+}
+
+/*
+ * Register analysis hero. Compact strip: about half the first viewport on a
+ * typical desktop so the register (filters or first rows) shows without a
+ * scroll. Slides share one grid cell and crossfade. The Bayer dither tile is
+ * static CSS (no JS, no animated noise); reduced-motion leaves it still.
+ */
+.analysis-hero {
+  --analysis-hero-dither: url('/images/analysis-hero-dither.svg');
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin-bottom: var(--space-8);
+  padding: var(--space-4) var(--space-5) var(--space-4);
+  background: color-mix(in srgb, var(--primary) 7%, var(--background));
+  border-top: 3px solid var(--primary);
+}
+.analysis-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-color: var(--primary);
+  opacity: light-dark(0.26, 0.34);
+  -webkit-mask-image: var(--analysis-hero-dither);
+  -webkit-mask-size: 5px 5px;
+  -webkit-mask-repeat: repeat;
+  -webkit-mask-mode: luminance;
+  mask-image: var(--analysis-hero-dither);
+  mask-size: 5px 5px;
+  mask-repeat: repeat;
+  mask-mode: luminance;
+}
+/* Soft parchment wash on the left so the title stays clear over the dither. */
+.analysis-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    color-mix(in srgb, var(--background) 88%, transparent) 0%,
+    color-mix(in srgb, var(--background) 55%, transparent) 38%,
+    transparent 68%
+  );
+}
+.analysis-hero > * {
+  position: relative;
+  z-index: 1;
+}
+.analysis-hero-stage {
+  display: grid;
+}
+.analysis-hero-slide {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: var(--space-4);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(0.5rem);
+  pointer-events: none;
+  transition:
+    opacity calc(var(--dur-slow) * 2) var(--ease-out-quint),
+    transform calc(var(--dur-slow) * 2) var(--ease-out-quint),
+    visibility 0s linear calc(var(--dur-slow) * 2);
+}
+.analysis-hero-slide[data-current="true"] {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  pointer-events: auto;
+  z-index: 1;
+  transition:
+    opacity calc(var(--dur-slow) * 2) var(--ease-out-quint),
+    transform calc(var(--dur-slow) * 2) var(--ease-out-quint),
+    visibility 0s linear 0s;
+}
+.analysis-hero-title {
+  margin-top: var(--space-1);
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 1rem + 1.1vw, 1.85rem);
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.analysis-hero-teaser {
+  margin-top: var(--space-2);
+  max-width: 40rem;
+  font-size: var(--type-ui);
+  line-height: 1.4;
+  color: var(--muted-foreground);
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}
+.analysis-hero-layout {
+  display: grid;
+  gap: var(--space-4);
+  align-items: center;
+}
+@media (min-width: 40rem) {
+  .analysis-hero-layout {
+    grid-template-columns: minmax(0, 1fr) 7.5rem;
+  }
+  .analysis-hero-layout-text {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (min-width: 64rem) {
+  .analysis-hero-layout {
+    grid-template-columns: minmax(0, 1fr) 9.5rem;
+    gap: var(--space-5);
+  }
+}
+.analysis-hero-figure {
+  display: none;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius);
+}
+.analysis-hero-figure::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-color: var(--primary);
+  opacity: light-dark(0.5, 0.45);
+  mix-blend-mode: multiply;
+  -webkit-mask-image: var(--analysis-hero-dither);
+  mask-image: var(--analysis-hero-dither);
+  -webkit-mask-size: 3px 3px;
+  mask-size: 3px 3px;
+  -webkit-mask-repeat: repeat;
+  mask-repeat: repeat;
+  -webkit-mask-mode: luminance;
+  mask-mode: luminance;
+}
+.analysis-hero-figure img {
+  filter: grayscale(0.55) contrast(1.3) brightness(1.04);
+}
+@media (min-width: 40rem) {
+  .analysis-hero-figure {
+    display: block;
+  }
+}
+.analysis-hero-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+  margin-top: var(--space-3);
+}
+.analysis-hero-control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding-inline: var(--space-4);
+  border: 1px solid var(--rule);
+  background: var(--background);
+  font-family: var(--font-mono);
+  font-size: var(--type-label);
+  font-weight: 500;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+}
+.analysis-hero-control:hover {
+  color: var(--primary);
+}
+.analysis-hero-control:focus-visible,
+.analysis-hero-dot:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+.analysis-hero-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 2.75rem;
+  background: transparent;
+}
+.analysis-hero-dot > span {
+  width: 0.5rem;
+  height: 0.5rem;
+  border: 1px solid var(--foreground);
+  border-radius: var(--radius-pill);
+}
+.analysis-hero-dot[aria-current="true"] > span {
+  background: var(--primary);
+  border-color: var(--primary);
 }
 
 /* Respect reduced motion preferences */
@@ -1119,113 +1297,11 @@
   tr:focus-within > .ink-rail::before {
     opacity: 1;
   }
-}
-
-/* Network relationship explorer responsive states */
-@media (max-width: 767px) {
-  .network-method-intro,
-  .network-metrics {
-    display: none;
-  }
-
-  .network-insight-line {
-    display: none;
-  }
-
-  .network-page-intro {
-    padding-bottom: var(--space-4);
-  }
-
-  .network-workspace {
-    margin-top: var(--space-4);
-  }
-}
-
-@media (max-width: 1023px) and (orientation: landscape) and (max-height: 600px) {
-  .network-page-intro {
-    padding-bottom: var(--space-3);
-  }
-
-  .network-page-intro > div {
-    display: grid;
-    grid-template-columns: minmax(17rem, 0.9fr) minmax(20rem, 1.1fr);
-    align-items: end;
-    gap: var(--space-6);
-  }
-
-  .network-method-intro,
-  .network-metrics {
-    display: none;
-  }
-
-  .network-title {
-    margin-top: var(--space-1);
-    font-family: var(--font-display);
-    font-size: 1.5rem;
-    line-height: 1;
-  }
-
-  .network-caveat {
-    margin-top: 0;
-  }
-
-  .network-insight-line {
-    display: none;
-  }
-
-  .network-workspace {
-    min-height: 34rem;
-    margin-top: var(--space-3);
-  }
-
-  .network-main {
-    margin-right: 20rem;
-  }
-
-  .network-mobile-view,
-  .network-toolbar-actions,
-  .network-toolbar-filters {
-    display: none;
-  }
-
-  .network-mobile-filter {
-    display: inline-flex;
-  }
-
-  .network-toolbar > div:last-child {
-    display: none;
-  }
-
-  .network-graph-shell {
-    height: 27rem;
-  }
-
-  .network-inspector {
-    inset: 0 0 0 auto;
-    width: 20rem;
-    max-height: none;
-    border-top: 0;
-    border-left: 1px solid var(--border);
-    box-shadow: none;
-    transform: translate(0, 0);
-  }
-
-  .network-inspector > div:first-child {
-    display: none;
-  }
-}
-
-@media print {
-  .network-workspace {
-    break-inside: avoid;
-  }
-
-  .network-inspector {
-    position: absolute;
-  }
-
-  .network-graph-shell {
-    height: 42rem;
+  .analysis-hero-slide,
+  .analysis-hero-slide[data-current="true"] {
+    transition: none !important;
+    transform: none !important;
+    animation: none !important;
   }
 }
 

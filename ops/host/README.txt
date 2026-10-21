@@ -3,6 +3,13 @@ TWO-RUNTIME HOST DISPATCHER — INSTALLED, LIVE DEPLOY PATH
 The dispatcher is installed and is the live deploy path for both runtimes.
 /usr/local/libexec/policai-host holds a copy installed from this bundle through
 install.py. That copy can lag main until the next reviewed install.
+cli.ENTRYPOINT names that directory. host.CODE, the install.py FILES
+destinations, bin/docker and policai-deploy (which hard-code the entrypoint),
+the config.example.json installed_hashes keys, the INSTALL-REVIEW.txt install
+paths and the probono-*.service ExecStart lines repeat it, because cli.py
+checks its own path before it imports any sibling module and install.py and
+the units import nothing. test_install.InstallDirectoryTests fails when any
+of them differs from cli.ENTRYPOINT.
 
 Entry point: cli.py
 Safe local demonstration: ./cli.py --help
@@ -301,6 +308,39 @@ SERVICE ROUTING (REVIEW EXISTING HARDENING; NOT BLIND DROP-INS)
   granted at once because its own worker already shares it. worker.lock stays
   non-blocking: a second worker refuses with "worker.lock busy", since ingest
   holds it for minutes, longer than any useful wait.
+  Block scope: host.WORKER_GUARDS names what each operation must prove
+  beyond identity and the two locks. ingest, enrich and verify-deadlines
+  ("release") run the image and checkout of the active release, so they
+  refuse under blocked.json ("persistent block: reviewed recovery required")
+  and before the first activation. backup ("database") and backup-mirror
+  ("mirror") do not read either: backup.sh and backup-mirror.sh are root-
+  installed beside cli.py, the only Compose call is the db exec pg_dump pair
+  and no deploy ever touches the db service or its volume. They skip
+  require_ready and bootstrap_pending, so a failed Policai or Pro Bono deploy
+  no longer stops the nightly dump or its mirror (2026-10-18: a ~24 h block
+  left the database ~38 h without one). backup still proves the database
+  identity (verify_database) and the Compose source digest and contract
+  (validate_compose) before it dumps; backup-mirror needs only its
+  backup_mirror config paths. Both still take deploy.lock shared, so they
+  never overlap a deploy, rollback or recovery, and worker.lock, so they
+  never overlap another worker. The nested `cli.py compose` call picks its
+  guard with host.compose_guard: the db exec pair is "database", every
+  worker run task is "release". tests/test_block_tolerance.py pins the
+  table, the guard and the CLI routing under a block. A block therefore no
+  longer shows as a failed backup job; it still fails every release worker
+  and every policai-pull run.
+  The 2026-10-17 07:11:25 verify-deadlines refusal (issue #296) was not a
+  deploy.lock collision: the unit ran 5.3 s, while a busy shared lock with the
+  then-installed wait=0 path refused within one LOCK_NB poll and never slept.
+  Overlapping pulls and other workers were ruled out from the journals. The
+  duration matches a post-guard exit from ops/verify-deadlines.sh — nested
+  Compose status 3 (VerifierAuthError), status 1 (fatal worker error), or
+  jq -ce status 5 on a bad batch. The installed cli.py printed every failure
+  as the same Refused line and discarded nested Compose stderr, so the exit
+  status was lost. Named Failed/Refused lines and the compose syslog identity
+  make the next instance diagnosable; tests/test_worker_guards.py
+  (FailureLineTests exit-status table, VerifyDeadlinesScriptTests) pin the
+  timing signature and those three script exits.
   Do not install/edit/unmask either digest unit. Verify masked AND inactive.
 
   installed_hashes must contain the exact paths shown in config.example.json.
@@ -411,27 +451,47 @@ LIMITATIONS / REMAINING CUTOVER GATES
   DB identity. Source collection failures are not falsely treated as deploy failure.
   Commands suppress raw output deliberately. Diagnostics are phase/identity based;
   investigate failures with separately approved, redacted observations.
-  cli.py exits 1 on every failure and prints one stderr line that never carries
-  command output, exception details, config or environment. A refusal prints
+  Once its arguments parse, cli.py exits 1 on every Exception and prints one
+  stderr line that never carries command output, exception details, config or
+  environment. KeyboardInterrupt and SystemExit pass through, and argparse
+  rejects bad arguments with its own usage message and exit 2. A refusal prints
   "Refused: <reason>. Inspect status and reviewed prerequisites; no automatic
   retry." with the static Refused reason, for example "deploy.lock busy: a
-  deployment holds it", "worker.lock busy: another scheduled worker is
-  running", "persistent block: reviewed recovery required", "scheduled workers
-  must execute as l0cka", "worker command not allowlisted" or a Runner refusal
-  before any process starts, such as "command input exceeds bound". Only a
-  worker task whose process started and then failed prints "Failed: worker task
-  <name>: command exited with status <n>; guards passed. No automatic retry."
-  (or the Runner's "command timed out", "command output exceeded bound" or
-  "command unavailable or timed out" in place of the exit status). <name> is
-  the worker operation, or the allowlisted Compose task such as
-  src/verify-deadlines.ts or pg_dumpall. Any other error prints "Refused:
-  unexpected <exception type>. ..." with only its exception type. If building
-  the line itself fails, for example because host.py cannot be imported, cli.py
-  prints "Refused: failure report unavailable. Inspect status and reviewed
-  prerequisites; no automatic retry." and still exits 1. The parent worker
-  captures and discards the nested Compose adapter's stderr, so the adapter also
-  writes its line to syslog as policai-host-compose; journalctl --user -u
-  probono-<worker> shows it beside the worker's own line.
+  deployment holds it", "worker.lock busy: another scheduled worker is running",
+  "persistent block: reviewed recovery required", "scheduled workers must
+  execute as l0cka", "worker command not allowlisted" or a Runner refusal before
+  any process starts, such as "command input exceeds bound" or "command
+  unavailable or timed out" when the process cannot be spawned. A guard probe
+  that runs a process outside a worker task (git, docker image inspect, or the
+  docker inspect calls in verify_database) and exits non-zero prints "Refused:
+  command exited with status <n>. Inspect status and reviewed prerequisites; no
+  automatic retry." One that times out or exceeds the output bound prints
+  "Refused: command timed out. ..." or "Refused: command output exceeded bound.
+  ..." with the same ending. Only a worker task whose process started and then
+  failed prints "Failed: worker task <name>: command exited with status <n>;
+  guards passed. No automatic retry." (or the Runner's "command timed out",
+  "command output exceeded bound" or "command unavailable or timed out" in place
+  of the exit status). <name> is the worker operation, or the allowlisted
+  Compose task such as src/verify-deadlines.ts or pg_dumpall. Any other error
+  prints "Refused: unexpected <exception type>. ..." with only its exception
+  type. An unexpected AttributeError uses that form and drops the traceback, so
+  the line can read like a missing prerequisite rather than a code bug. Other
+  BaseException types that are not Exception still print a raw traceback with
+  no syslog line; KeyboardInterrupt and SystemExit pass through unchanged. If
+  building the line itself fails, for example because host.py cannot be
+  imported, cli.py prints "Refused: failure report unavailable. Inspect status
+  and reviewed prerequisites; no automatic retry." and still exits 1. The line
+  never goes to stdout, the Compose adapter's data channel to the parent worker.
+  With fd 2 closed, cli.py prints no line. When stderr is a full non-blocking
+  pipe or a broken pipe, cli.py drops the line. In each case cli.py then
+  replaces sys.stderr with a sink that discards later writes, so no later stderr
+  write in the process reaches stdout. Each case still exits 1, and the Compose
+  adapter still writes its syslog line at LOG_ERR. The parent worker captures
+  and discards the nested Compose adapter's stderr, so the adapter also writes
+  its line to syslog as policai-host-compose; journalctl --user -u
+  probono-<worker> shows it beside the worker's own line. Nested Compose
+  failures always exit 1, including a saver that exited 2, so the `2)` rejected
+  branch in apps/probono/ops/enrich.sh cannot fire through the dispatcher.
   Builds run under existing app identities, NOT a hostile-code sandbox. Review
   dependency lifecycle/build scripts; the same UID can access its live checkout.
   State retains old artifacts and candidate images; this bundle never prunes them.

@@ -61,7 +61,9 @@ class BackupMirrorTests(unittest.TestCase):
         self.assertEqual(run.returncode, 0, run.stderr)
         self.assertEqual(run.stdout, "mirror: ok, 4 files, newest radar-2026-10-16.sql.gz\n")
         self.assertEqual((self.destination / "radar-2026-10-15.sql.gz").read_bytes(), kept)
-        self.assertEqual((self.destination / "globals-2026-10-15.sql.gz").read_bytes(), kept_globals)
+        self.assertEqual(
+            (self.destination / "globals-2026-10-15.sql.gz").read_bytes(), kept_globals
+        )
         self.assertTrue((self.destination / "radar-2026-10-14.sql.gz").exists())
 
     def test_mirrors_a_corrupt_globals_dump_as_a_failure_and_tolerates_none(self):
@@ -72,7 +74,9 @@ class BackupMirrorTests(unittest.TestCase):
         (self.source / "globals-2026-10-14.sql.gz").write_bytes(b"not gzip")
         run = self.mirror()
         self.assertNotEqual(run.returncode, 0)
-        self.assertIn("FAILED gzip check: " + str(self.destination / "globals-2026-10-14.sql.gz"), run.stderr)
+        self.assertIn(
+            "FAILED gzip check: " + str(self.destination / "globals-2026-10-14.sql.gz"), run.stderr
+        )
 
     def test_fails_loudly_when_a_mirrored_dump_is_corrupt(self):
         self.dump("radar-2026-10-14.sql.gz", "good")

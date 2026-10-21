@@ -139,7 +139,7 @@ describe('register audit', () => {
     });
   });
 
-  it('treats a fingerprint stored before dcterms.created and the date platform were fingerprinted as unchanged and keeps it', async () => {
+  it('treats a fingerprint stored before dcterms.created and the date platform were fingerprinted as unchanged and keeps it (#249)', async () => {
     const url = 'https://example.gov.au/policy';
     const retrievePage = (head: string) =>
       retrieveSource(url, {
@@ -178,7 +178,7 @@ describe('register audit', () => {
     });
   });
 
-  it('treats a fingerprint stored under the #244 keyed-set scheme as unchanged and keeps it', async () => {
+  it('treats a fingerprint stored under the #244 keyed-set scheme as unchanged and keeps it (#249)', async () => {
     const url = 'https://example.gov.au/policy';
     const current = await retrieveSource(url, {
       fetchImpl: (async () =>
@@ -214,7 +214,7 @@ describe('register audit', () => {
     });
   });
 
-  it('reports a page that gained dcterms.created since its current fingerprint was stored as changed', async () => {
+  it('reports a page that gained dcterms.created since its current fingerprint was stored as changed (#262)', async () => {
     const url = 'https://example.gov.au/policy';
     const retrievePage = (head: string) =>
       retrieveSource(url, {

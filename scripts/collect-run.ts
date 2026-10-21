@@ -1,4 +1,5 @@
 import path from 'path';
+import { publicAutomaticCollectionMeta } from '../src/lib/collection-coverage';
 import { readJsonFile, writeJsonFile } from '../src/lib/file-store';
 import {
   collect,
@@ -7,6 +8,11 @@ import {
   type WatchState,
 } from '../src/lib/pipeline/collect';
 import type { BrowserFetch } from '../src/lib/pipeline/browser-fetch';
+import {
+  createHostGate,
+  robotsFetcher,
+  type HostGate,
+} from '../src/lib/pipeline/host-gate';
 import { WATCH_SOURCES, type WatchSource } from '../src/lib/pipeline/sources';
 import {
   mergeSourceReviews,
@@ -29,8 +35,12 @@ export interface CollectionRun {
   maxItems?: number;
   fetchImpl?: typeof fetch;
   browserFetchImpl?: BrowserFetch['fetchImpl'];
+  hostGate?: HostGate;
   now?: () => Date;
 }
+
+const sleep = (ms: number) =>
+  new Promise<void>((resolve) => setTimeout(resolve, ms));
 
 function dataPaths(rootDir: string) {
   return {
@@ -61,6 +71,7 @@ export async function runCollection(run: CollectionRun): Promise<void> {
       ),
     ]);
 
+  const hosts = state.hosts ?? {};
   const result = await collect({
     sources: run.sources,
     catalogSources: WATCH_SOURCES,
@@ -68,7 +79,17 @@ export async function runCollection(run: CollectionRun): Promise<void> {
       seen: state.seen ?? {},
       lastCheckedBySource: state.lastCheckedBySource ?? {},
       sourceSnapshots: state.sourceSnapshots ?? {},
+      hosts,
     },
+    hostGate:
+      run.hostGate ??
+      createHostGate({
+        hosts,
+        refused: new Map(),
+        fetchRobots: robotsFetcher({ fetchImpl: run.fetchImpl }),
+        now: Date.now,
+        sleep,
+      }),
     existingDevelopments: reconcileLinkedDevelopments(
       reviews,
       developments,
@@ -88,12 +109,16 @@ export async function runCollection(run: CollectionRun): Promise<void> {
     logger: (message) => console.log(message),
   });
 
+  const publicMeta = run.sourceId
+    ? result.meta
+    : publicAutomaticCollectionMeta(result.meta, WATCH_SOURCES);
+
   console.log(
     `[collect] ${result.developments.length} new developments, ` +
       `${result.reviewCandidates.length} review candidates, ` +
       `${result.errors.length} source errors; ` +
-      `health ${result.meta.collector.health} ` +
-      `(${result.meta.collector.successfulSourceCount}/${result.meta.collector.dueSourceCount} due sources successful)`,
+      `health ${publicMeta.collector.health} ` +
+      `(${publicMeta.collector.successfulSourceCount}/${publicMeta.collector.dueSourceCount} due sources successful)`,
   );
   for (const development of result.developments) {
     console.log(
@@ -106,7 +131,7 @@ export async function runCollection(run: CollectionRun): Promise<void> {
   }
 
   const runFailed = collectionRunFailed(
-    result.meta.collector.health,
+    publicMeta.collector.health,
     result.errors,
     Boolean(run.sourceId),
   );
@@ -147,7 +172,7 @@ export async function runCollection(run: CollectionRun): Promise<void> {
   await writeJsonFile(paths.developments, mergedDevelopments);
   await writeJsonFile(paths.watchState, result.state);
   if (!run.sourceId) {
-    await writeJsonFile(paths.meta, result.meta);
+    await writeJsonFile(paths.meta, publicMeta);
   }
 
   console.log(

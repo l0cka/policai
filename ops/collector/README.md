@@ -251,6 +251,9 @@ Git reads pinned commit objects; the gate never checks out or executes candidate
 code. A nonempty diff may contain only ordinary `100644` modifications to the
 exact paths `data/watch-state.json` and `public/data/meta.json`. Additions,
 deletions, renames, symlinks, other modes and basename lookalikes refuse.
+The watch-state shape check covers `seen`, `lastCheckedBySource`,
+`sourceSnapshots` and, when present, the host gate's `hosts` map (one object
+per host; docs/collector.md "Politeness").
 
 The collector/coordinator must acquire and retain evidence independently of the
 PR author: capture the scheduled-run receipt and scheduler provenance; inspect
@@ -300,11 +303,15 @@ its bytes must exist and match the digest. Paths are never fetched as URLs.
   identity and SHA; the gate does not call the model. Wrong identity/SHA,
   missing/pending review, any finding or a nonempty `flags` field refuses. Later model-policy changes
   require review, not a free-text override.
-- `coverage`: `automatic_source_ids` (complete, unique nonempty list),
-  `manual_source_count` (nonnegative integer), `base_due` and `head_due`
-  (objects mapping every automatic source ID to a boolean), and `artifact`
-  retaining the inventory and scheduling calculation at both commits. Do not
-  derive this evidence solely from the candidate's self-reported meta totals.
+- `coverage`: `base_automatic_source_ids` and `head_automatic_source_ids`
+  (each a complete, unique nonempty list for that commit),
+  `base_manual_source_count` and `head_manual_source_count` (nonnegative
+  integers), `base_due` and `head_due` (objects mapping every automatic source
+  ID on that side to a boolean), and `artifact` retaining the inventory and
+  scheduling calculation at both commits. Base and head inventories may differ
+  when a source moves between automatic and manual (or is added/removed); do
+  not force one shared list. Do not derive this evidence solely from the
+  candidate's self-reported meta totals.
 - `dates`: an array covering **exactly** new or changed watch-state candidates,
   keyed by their `seen` map key. Each object has `key`, `source_id`, `url`,
   `artifact` (retained UTF-8 source text), and nonempty `values`. Each value is
@@ -321,15 +328,17 @@ none establishes actual CI, review or trial progress.
 
 ### Coverage and date policy
 
-The gate reconciles per-source rows with the independent inventory, schedule,
-checked IDs, success/failure/skipped totals, error list and rounded success
-rate. Missing rows, duplicate IDs, invalid types/statuses/counts, hidden errors
-and inconsistent eligibility refuse. `coverageEligible: false` retries and
-skipped sources never count as successful coverage or recovery. Comparisons
-label scheduling changes and not-due rows separately. The gate does not treat a
-not-due row as proof of health. Every head error, including explicit new
-success-to-error transitions and continuing failures, escalates for human
-review; making a failure explicit is necessary, not sufficient to pass.
+The gate reconciles per-source rows with the independent per-side inventory,
+schedule, checked IDs, success/failure/skipped totals, error list and rounded
+success rate. Missing rows, duplicate IDs, invalid types/statuses/counts,
+hidden errors and inconsistent eligibility refuse. `coverageEligible: false`
+retries and skipped sources never count as successful coverage or recovery.
+Comparisons label scheduling changes, not-due rows, and source-set changes
+(a source present on only one side's automatic inventory) separately. The gate
+does not treat a not-due or source-set-change row as proof of health. Every head
+error, including explicit new success-to-error transitions and continuing
+failures, escalates for human review; making a failure explicit is necessary,
+not sufficient to pass.
 
 The proposed shadow count-drop limit is **at most 20% for each comparable,
 successful source**, checked with integer arithmetic:

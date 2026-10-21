@@ -14,6 +14,7 @@ vi.mock('./sources', async (importOriginal) => {
   return { ...actual, WATCH_SOURCES: withFixtureIdentityException(actual.WATCH_SOURCES) };
 });
 import { collect, emptyWatchState } from './collect';
+import { buildOpenHostGate } from '@/test/factories';
 
 const source = WATCH_SOURCES.find(s => s.id === 'industry-ai-publications')!;
 const authority = { sourceId: source.id, sourceUrl: source.url, until: '2026-10-21' };
@@ -102,7 +103,7 @@ describe('destination authority before outgoing requests', () => {
           ? `<main><ul class="news-list"><li><a href="${candidate}">New AI policy framework released</a></li></ul></main>` : html,
         { headers: { 'content-type': 'text/html' } });
       }) as typeof fetch;
-      const result = await collect({ sources: [source], state: emptyWatchState(), existingDevelopments: [], browserFetchImpl,
+      const result = await collect({ sources: [source], state: emptyWatchState(), existingDevelopments: [], browserFetchImpl, hostGate: buildOpenHostGate(),
         fetchImpl: vi.fn(async () => { throw new Error('unexpected HTTP'); }) as typeof fetch,
         now: () => new Date() });
       expect(result.errors).toEqual([]);
@@ -118,7 +119,7 @@ describe('destination authority before outgoing requests', () => {
       calls.push([String(input), (init as CollectorRequestInit).collectorIdentity]);
       return new Response(html, { headers: { 'content-type': 'text/html' } });
     }) as typeof fetch;
-    await collect({ sources: [{ ...source, kind: 'document' }, second], state: emptyWatchState(), existingDevelopments: [], browserFetchImpl, now: () => new Date() });
+    await collect({ sources: [{ ...source, kind: 'document' }, second], state: emptyWatchState(), existingDevelopments: [], browserFetchImpl, hostGate: buildOpenHostGate(), now: () => new Date() });
     expect(calls).toEqual([[source.url, 'exempt'], [other, 'declared']]);
   });
 });

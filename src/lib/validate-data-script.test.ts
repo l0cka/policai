@@ -36,14 +36,26 @@ function runValidateData(policies: unknown[]) {
 }
 
 describe('scripts/validate-data.ts', () => {
-  it('fails on record themes and on theme coverage', () => {
+  it('wires validatePolicyThemes so a bad record theme fails the script', () => {
     const result = runValidateData([
       { ...buildPolicy({ id: 'fixture-policy' }), themes: ['courts'] },
     ]);
 
     expect(result.stderr).toContain('ERROR fixture-policy: unknown theme "courts"');
+    expect(result.status).toBe(1);
+  }, 60_000);
+
+  it('wires validateThemeCoverage so a short listed theme fails the script', () => {
+    const result = runValidateData([
+      {
+        ...buildPolicy({ id: 'fixture-policy' }),
+        themes: ['generative-ai'],
+      },
+    ]);
+
+    expect(result.stderr).not.toContain('unknown theme');
     expect(result.stderr).toContain(
-      'ERROR themes: "generative-ai" (Generative AI) is used by 0 register records; a listed theme needs at least 2',
+      'ERROR themes: "generative-ai" (Generative AI) is used by 1 register record; a listed theme needs at least 2',
     );
     expect(result.status).toBe(1);
   }, 60_000);

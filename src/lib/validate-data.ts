@@ -40,15 +40,23 @@ import {
   type ArticleImageFiles,
 } from '@/lib/article-images';
 import type { WatchState } from '@/lib/pipeline/collect';
+import {
+  isHostKey,
+  isRobotsRuleList,
+  isStoredSitemapList,
+} from '@/lib/pipeline/host-gate';
 import type { WatchSource } from '@/lib/pipeline/sources';
+import { isFailureClass, publicFailureUrl } from '@/lib/pipeline/failure';
 import { identityExceptionState } from '@/lib/pipeline/identity';
 import { isValidCalendarDate } from '@/lib/calendar-date';
 import { VERIFICATION_CLOCK_SKEW_TOLERANCE_MS } from '@/lib/verification';
 import {
   MAX_THEMES_PER_RECORD,
-  MIN_PUBLIC_RECORDS_PER_THEME,
+  MIN_RECORDS_PER_THEME,
   MIN_THEMES_PER_RECORD,
   THEMES,
+  formatThemeMessageLabel,
+  formatThemeMessageValue,
   isThemeId,
 } from '@/lib/themes';
 export { isAllowedSourceHost } from '@/lib/source-url';
@@ -835,36 +843,47 @@ export function validatePolicies(
   return { errors, warnings };
 }
 
-export function validatePolicyThemes(policies: readonly Policy[]): ValidationReport {
+function recordThemeErrors(label: string, themes: unknown): string[] {
+  if (!Array.isArray(themes)) {
+    return [`${label}: themes must be an array of theme ids`];
+  }
   const errors: string[] = [];
-  policies.forEach((policy, index) => {
-    const label = isNonEmptyString(policy.id) ? policy.id : `policies[${index}]`;
-    const themes: unknown = policy.themes;
-    if (!Array.isArray(themes)) {
-      errors.push(`${label}: themes must be an array of theme ids`);
-      return;
-    }
-    if (
-      themes.length < MIN_THEMES_PER_RECORD ||
-      themes.length > MAX_THEMES_PER_RECORD
-    ) {
+  if (
+    themes.length < MIN_THEMES_PER_RECORD ||
+    themes.length > MAX_THEMES_PER_RECORD
+  ) {
+    errors.push(
+      `${label}: themes must list ${MIN_THEMES_PER_RECORD} to ${MAX_THEMES_PER_RECORD} themes, not ${themes.length}`,
+    );
+  }
+  const seen = new Set<unknown>();
+  for (const theme of themes) {
+    if (typeof theme !== 'string') {
       errors.push(
-        `${label}: themes must list ${MIN_THEMES_PER_RECORD} to ${MAX_THEMES_PER_RECORD} themes, not ${themes.length}`,
+        `${label}: theme entries must be theme id strings, not ${typeof theme} ${formatThemeMessageValue(theme)}`,
       );
+    } else if (!isThemeId(theme)) {
+      errors.push(`${label}: unknown theme ${formatThemeMessageValue(theme)}`);
+    } else if (seen.has(theme)) {
+      errors.push(`${label}: duplicate theme ${formatThemeMessageValue(theme)}`);
     }
-    const seen = new Set<unknown>();
-    for (const theme of themes) {
-      if (typeof theme !== 'string') {
-        errors.push(
-          `${label}: theme entries must be theme id strings, not ${typeof theme} ${JSON.stringify(theme)}`,
-        );
-      } else if (!isThemeId(theme)) {
-        errors.push(`${label}: unknown theme ${JSON.stringify(theme)}`);
-      } else if (seen.has(theme)) {
-        errors.push(`${label}: duplicate theme ${JSON.stringify(theme)}`);
-      }
-      seen.add(theme);
-    }
+    seen.add(theme);
+  }
+  return errors;
+}
+
+export function validatePolicyThemes(policies: readonly Policy[]): ValidationReport {
+  const errors = policies.flatMap((policy, index) => {
+    const rawLabel = isNonEmptyString(policy.id)
+      ? policy.id
+      : `policies[${index}]`;
+    const label = formatThemeMessageLabel(rawLabel);
+    const recordErrors = recordThemeErrors(label, policy.themes);
+    if (recordErrors.length === 0) return [];
+    const last = recordErrors.length - 1;
+    recordErrors[last] +=
+      `; valid theme ids are ${THEMES.map(({ key }) => key).join(', ')}`;
+    return recordErrors;
   });
   return { errors, warnings: [] };
 }
@@ -895,13 +914,13 @@ export function validateThemeCoverage(
   for (const { key, label } of THEMES) {
     const registerCount = registerUse.get(key) ?? 0;
     const publicCount = publicUse.get(key) ?? 0;
-    if (registerCount < MIN_PUBLIC_RECORDS_PER_THEME) {
+    if (registerCount < MIN_RECORDS_PER_THEME) {
       errors.push(
-        `themes: "${key}" (${label}) is used by ${countOf(registerCount, 'register record')}; a listed theme needs at least ${MIN_PUBLIC_RECORDS_PER_THEME}`,
+        `themes: "${key}" (${label}) is used by ${countOf(registerCount, 'register record')}; a listed theme needs at least ${MIN_RECORDS_PER_THEME}`,
       );
-    } else if (publicCount < MIN_PUBLIC_RECORDS_PER_THEME) {
+    } else if (publicCount < MIN_RECORDS_PER_THEME) {
       warnings.push(
-        `themes: "${key}" (${label}) is on ${countOf(publicCount, 'public record')}; it shows on fewer than ${MIN_PUBLIC_RECORDS_PER_THEME} until enough of those records are public again`,
+        `themes: "${key}" (${label}) is on ${countOf(publicCount, 'public record')}; fewer than ${MIN_RECORDS_PER_THEME} until enough of those records are public again`,
       );
     }
   }
@@ -1347,6 +1366,14 @@ export function validateCollectionMeta(meta: CollectionMeta): ValidationReport {
       errors.push(`meta: collector ${field} must be a non-negative integer`);
     }
   }
+  if (
+    collector.robotsUnverified !== undefined &&
+    !(
+      Array.isArray(collector.robotsUnverified) &&
+      collector.robotsUnverified.every((host) => typeof host === 'string' && isHostKey(host))
+    )
+  )
+    errors.push('meta: invalid collector robotsUnverified');
 
   const coverageResults = collector.sourceResults.filter(
     (result) => result.coverageEligible !== false,
@@ -1400,6 +1427,20 @@ export function validateCollectionMeta(meta: CollectionMeta): ValidationReport {
       errors.push(`${label}: invalid newCandidateCount`);
     if (result.status === 'error' && !isNonEmptyString(result.error))
       errors.push(`${label}: failed result requires an error`);
+    if (result.failureClass !== undefined && !isFailureClass(result.failureClass))
+      errors.push(`${label}: invalid failureClass`);
+    if (
+      result.failedUrl !== undefined &&
+      !(isNonEmptyString(result.failedUrl) && publicFailureUrl(result.failedUrl) === result.failedUrl)
+    )
+      errors.push(`${label}: invalid failedUrl`);
+    if (
+      result.status !== 'error' &&
+      (result.failureClass !== undefined || result.failedUrl !== undefined)
+    )
+      errors.push(`${label}: failure fields require a failed result`);
+    else if ((result.failureClass === undefined) !== (result.failedUrl === undefined))
+      errors.push(`${label}: failureClass and failedUrl must appear together`);
   });
 
   if (collector.health !== 'healthy') {
@@ -1895,6 +1936,35 @@ export function validateWatchState(state: WatchState): ValidationReport {
   )) {
     if (!isNonEmptyString(sourceId) || !isTimestampString(checkedAt))
       errors.push(`watchState:lastCheckedBySource:${sourceId}: invalid value`);
+  }
+
+  for (const [host, record] of Object.entries(state.hosts ?? {})) {
+    const label = `watchState:hosts:${host}`;
+    if (!isHostKey(host)) errors.push(`${label}: invalid host`);
+    if (!isTimestampString(record.seenAt)) errors.push(`${label}: invalid seenAt`);
+    const robots = record.robots;
+    if (robots !== null) {
+      if (!isTimestampString(robots.fetchedAt)) errors.push(`${label}: invalid robots.fetchedAt`);
+      if (!isOneOf(['parsed', 'absent', 'unreachable'], robots.status))
+        errors.push(`${label}: invalid robots.status`);
+      for (const field of ['allow', 'disallow'] as const) {
+        if (!isRobotsRuleList(robots[field])) errors.push(`${label}: invalid robots.${field}`);
+      }
+      if (
+        robots.crawlDelaySec !== null &&
+        !(typeof robots.crawlDelaySec === 'number' && Number.isFinite(robots.crawlDelaySec) && robots.crawlDelaySec >= 0)
+      )
+        errors.push(`${label}: invalid robots.crawlDelaySec`);
+      if (!isStoredSitemapList(robots.sitemaps)) errors.push(`${label}: invalid robots.sitemaps`);
+    }
+    if (record.backoffUntil !== null && !isTimestampString(record.backoffUntil))
+      errors.push(`${label}: invalid backoffUntil`);
+    if (record.backoffStatus !== null && record.backoffStatus !== 429 && record.backoffStatus !== 503)
+      errors.push(`${label}: invalid backoffStatus`);
+    if (!Number.isInteger(record.backoffCount) || record.backoffCount < 0)
+      errors.push(`${label}: invalid backoffCount`);
+    if (!Number.isInteger(record.robotsUnreachableRuns) || record.robotsUnreachableRuns < 0)
+      errors.push(`${label}: invalid robotsUnreachableRuns`);
   }
 
   for (const [sourceId, snapshot] of Object.entries(state.sourceSnapshots)) {

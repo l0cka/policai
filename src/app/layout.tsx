@@ -8,24 +8,39 @@ import { BackToTop } from '@/components/ui/back-to-top';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { WebMcpTools } from '@/components/webmcp-tools';
 import { getCollectionMeta } from '@/lib/data-service';
+import {
+  SITE_ATOM_FEEDS,
+  SITE_DESCRIPTION,
+  SITE_KEYWORDS,
+  SITE_NAME,
+  SITE_SOCIAL_DEFAULTS,
+  SITE_TITLE,
+  SITE_URL,
+  siteJsonLd,
+} from '@/lib/site-seo';
 import { parseSourceUrl } from '@/lib/source-url';
 
 export const metadata: Metadata = {
-  title: 'Policai - Australian AI Policy and Governance Tracker',
-  description:
-    'A register of AI policy, regulation and court guidance from Australian federal, state and territory governments, each record linked to its official source.',
-  keywords: [
-    'Australian AI policy',
-    'AI regulation',
-    'artificial intelligence',
-    'government policy',
-    'AI governance Australia',
-  ],
-  metadataBase: parseSourceUrl('https://policai.org'),
+  title: {
+    default: SITE_TITLE,
+    template: `%s · ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  keywords: [...SITE_KEYWORDS],
+  metadataBase: parseSourceUrl(SITE_URL),
+  // Do not set alternates.canonical here — Next merges layout metadata into
+  // every route; a root canonical of "/" would wrongly tag child pages.
+  // Same for openGraph title/url/description — keep only shared defaults.
   alternates: {
     types: {
-      'application/atom+xml': 'https://policai.org/feed.xml',
+      'application/atom+xml': [...SITE_ATOM_FEEDS],
     },
+  },
+  openGraph: SITE_SOCIAL_DEFAULTS.openGraph,
+  twitter: SITE_SOCIAL_DEFAULTS.twitter,
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
@@ -43,6 +58,10 @@ export default async function RootLayout({
     >
       <head>
         <script>{themeInitScript}</script>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: siteJsonLd() }}
+        />
       </head>
       <body className="antialiased min-h-screen flex flex-col">
         <WebMcpTools />

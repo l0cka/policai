@@ -21,6 +21,8 @@ import {
 } from './classify';
 import type { ClaudeVerdict } from './claude-classify';
 import { extractRetrievedDocument } from './content';
+import { classifyFailure, publicFailureUrl } from './failure';
+import { robotsUnverifiedHosts, type Host, type HostGate, type HostRecord } from './host-gate';
 import {
   extractFromHtml,
   extractFromRss,
@@ -28,6 +30,7 @@ import {
 } from './extract';
 import {
   foldLinkedDocuments,
+  isGateError,
   matchesRetrievedContent,
   retrieveSource,
   SourceFetchError,
@@ -40,6 +43,10 @@ import {
   WATCH_SOURCES,
   type WatchSource,
 } from './sources';
+import {
+  collectionRunHealth,
+  MIN_HEALTHY_SOURCE_RATE,
+} from '@/lib/collection-coverage';
 import {
   canonicalizeSourceEvidence,
   canonicalizeSourceUrl,
@@ -89,6 +96,7 @@ export interface WatchState {
   seen: Record<string, SeenCandidate>;
   lastCheckedBySource: Record<string, string>;
   sourceSnapshots: Record<string, SourceSnapshot>;
+  hosts: Record<Host, HostRecord>;
 }
 
 export interface CollectOptions {
@@ -113,6 +121,7 @@ export interface CollectOptions {
    * retriever is blocked or an index renders no extractable items.
    */
   browserFetchImpl?: typeof fetch;
+  hostGate: HostGate;
   now?: () => Date;
   maxItemsPerSource?: number;
   /** Bypass schedule checks, used by explicit targeted diagnostics. */
@@ -145,17 +154,21 @@ export function collectionRunFailed(
 const DEFAULT_MAX_ITEMS_PER_SOURCE = 5;
 const DEFAULT_MIN_SCORE_FOR_DEVELOPMENT = 0.5;
 const DEFAULT_MIN_SCORE_FOR_REVIEW = 0.7;
-const DEFAULT_MIN_HEALTHY_SOURCE_RATE = 0.8;
+const DEFAULT_MIN_HEALTHY_SOURCE_RATE = MIN_HEALTHY_SOURCE_RATE;
 const MAX_CANDIDATE_ATTEMPTS = 5;
 const WEEKLY_INTERVAL_MS = 6 * 24 * 60 * 60 * 1000;
 /** Browser retrieval covers cold start plus challenge settling. */
 const BROWSER_RETRIEVAL_TIMEOUT_MS = 60_000;
 
+function isDeferredByGate(error: unknown): boolean {
+  return isGateError(error) && error.retryable;
+}
+
 /** Allow-list and homepage-redirect failures are not client-dependent. */
 function isBrowserFallbackFutile(error: unknown): boolean {
   return (
     error instanceof SourceFetchError &&
-    error.code === 'destination_mismatch'
+    (error.code === 'destination_mismatch' || isGateError(error))
   );
 }
 
@@ -177,7 +190,7 @@ async function retrievedSourceFromFirecrawl(
 }
 
 export function emptyWatchState(): WatchState {
-  return { seen: {}, lastCheckedBySource: {}, sourceSnapshots: {} };
+  return { seen: {}, lastCheckedBySource: {}, sourceSnapshots: {}, hosts: {} };
 }
 
 function slugify(value: string, maxLength = 60): string {
@@ -981,62 +994,6 @@ function selectCandidatesForRun(
   ];
 }
 
-function healthForRun(
-  sourceResults: SourceRunResult[],
-  sources: WatchSource[],
-  minHealthySourceRate: number,
-): {
-  status: CollectionHealthStatus;
-  dueSourceCount: number;
-  successfulSourceCount: number;
-  failedSourceCount: number;
-  skippedSourceCount: number;
-  successRate: number;
-} {
-  const coverageResults = sourceResults.filter(
-    (result) => result.coverageEligible !== false,
-  );
-  const successfulSourceCount = coverageResults.filter(
-    (result) => result.status === 'success',
-  ).length;
-  const failedSourceCount = coverageResults.filter(
-    (result) => result.status === 'error',
-  ).length;
-  const skippedSourceCount = sourceResults.filter(
-    (result) => result.status === 'skipped',
-  ).length;
-  const dueSourceCount = successfulSourceCount + failedSourceCount;
-  const successRate =
-    dueSourceCount === 0 ? 1 : successfulSourceCount / dueSourceCount;
-  const criticalSourceIds = new Set(
-    sources.filter((source) => source.critical).map((source) => source.id),
-  );
-  const criticalFailure = coverageResults.some(
-    (result) =>
-      result.status === 'error' && criticalSourceIds.has(result.sourceId),
-  );
-  const retryFailure = sourceResults.some(
-    (result) =>
-      result.coverageEligible === false && result.status === 'error',
-  );
-
-  let status: CollectionHealthStatus = 'healthy';
-  if (criticalFailure || successRate < minHealthySourceRate) {
-    status = 'failed';
-  } else if (failedSourceCount > 0 || retryFailure) {
-    status = 'degraded';
-  }
-
-  return {
-    status,
-    dueSourceCount,
-    successfulSourceCount,
-    failedSourceCount,
-    skippedSourceCount,
-    successRate,
-  };
-}
-
 function markPending(
   state: WatchState,
   candidate: Candidate,
@@ -1137,6 +1094,17 @@ function sourceResult(
   };
 }
 
+function rowFailure(
+  error: unknown,
+  fallbackUrl: string,
+): Required<Pick<SourceRunResult, 'failureClass' | 'failedUrl'>> {
+  const { cls, url } = classifyFailure(error);
+  return {
+    failureClass: cls,
+    failedUrl: url ?? publicFailureUrl(fallbackUrl) ?? fallbackUrl,
+  };
+}
+
 /**
  * Run one collection pass over the watch sources.
  *
@@ -1165,7 +1133,10 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     seen: { ...options.state.seen },
     lastCheckedBySource: { ...options.state.lastCheckedBySource },
     sourceSnapshots: { ...(options.state.sourceSnapshots ?? {}) },
+    hosts: { ...(options.state.hosts ?? {}) },
   };
+  const gate = options.hostGate;
+  const indexGate: HostGate = { ...gate, admit: (url) => gate.admit(url, 'wait') };
   recoverPersistedDocumentTransitions(
     state,
     options.sourceReviews ?? [],
@@ -1237,7 +1208,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
       if (preferBrowser) {
         const firecrawled = source.identityException
           ? { ok: false as const, reason: 'identity_scope' }
-          : await scrapeWithFirecrawl(url, { identity: 'declared' });
+          : await scrapeWithFirecrawl(url, { identity: 'declared', gate });
         if (firecrawled.ok) {
           const page = await retrievedSourceFromFirecrawl(
             firecrawled.markdown,
@@ -1250,6 +1221,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
               fetchImpl,
               now: () => now,
               identityAuthority,
+              gate,
             });
           } catch (error) {
             if (isBrowserFallbackFutile(error)) throw error;
@@ -1267,10 +1239,12 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
           now: () => now,
           timeoutMs: BROWSER_RETRIEVAL_TIMEOUT_MS,
           identityAuthority,
+          gate,
+          transport: 'browser',
         });
       }
       try {
-        return await retrieveSource(url, { fetchImpl, now: () => now, identityAuthority });
+        return await retrieveSource(url, { fetchImpl, now: () => now, identityAuthority, gate });
       } catch (error) {
         if (!browserFetchImpl || isBrowserFallbackFutile(error)) throw error;
         log(`[collect] ${source.id}: retrying ${url} with the browser retriever`);
@@ -1279,6 +1253,8 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
           now: () => now,
           timeoutMs: BROWSER_RETRIEVAL_TIMEOUT_MS,
           identityAuthority,
+          gate,
+          transport: 'browser',
         });
       }
     };
@@ -1324,6 +1300,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     let newCandidateCount = 0;
     let deferSourceSuccess = false;
     const sourceErrors: string[] = [];
+    let failure: ReturnType<typeof rowFailure> | null = null;
 
     const exceptionUntil = source.identityException?.until;
     if (identityState === 'active') {
@@ -1345,7 +1322,8 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         now: () => now,
         hashLinkedDocuments: source.kind === 'document',
         identityAuthority,
-        ...(timeoutMs !== undefined ? { timeoutMs } : {}),
+        gate: indexGate,
+        ...(timeoutMs !== undefined ? { timeoutMs, transport: 'browser' as const } : {}),
       });
       const extracted =
         source.kind === 'document'
@@ -1625,6 +1603,11 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
             sourceErrors.push(message);
             errors.push(message);
             deferSourceSuccess = true;
+            const [firstFailure] = terminalDocumentFailures;
+            failure ??= rowFailure(
+              state.seen[candidateStateKey(firstFailure)]?.lastError,
+              firstFailure.url,
+            );
             log(`[collect] FAILED ${message}`);
           }
         }
@@ -1652,6 +1635,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         }`;
         sourceErrors.push(message);
         errors.push(message);
+        failure ??= rowFailure(error, source.url);
         log(`[collect] FAILED ${message}`);
       }
     }
@@ -1786,7 +1770,17 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
           );
           continue;
         }
+        if (isDeferredByGate(error)) {
+          state.seen[key] = {
+            ...attempted,
+            attempts: (attempted.attempts ?? 1) - 1,
+            lastError: message,
+          };
+          log(`[collect] ${source.id}: deferred ${candidate.url} (${message})`);
+          continue;
+        }
         candidateFailureCount++;
+        failure ??= rowFailure(error, candidate.url);
         const terminal =
           (error instanceof SourceFetchError && !error.retryable) ||
           (attempted.attempts ?? 0) >= MAX_CANDIDATE_ATTEMPTS;
@@ -1960,10 +1954,32 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         due,
       ),
       ...(identityState === 'none' ? {} : { identityException: identityState }),
+      ...(failure ?? {}),
     });
   }
 
-  const runHealth = healthForRun(
+  state.hosts = gate.hosts();
+  const waits = Object.entries(gate.waited());
+  const waitedMs = waits.reduce((sum, [, ms]) => sum + ms, 0);
+  const slowest = waits.sort(([, a], [, b]) => b - a)[0];
+  log(
+    `[collect] host gate: waited ${waitedMs} ms across ${waits.length} host${waits.length === 1 ? '' : 's'}` +
+      (slowest ? ` (most on ${slowest[0]}: ${slowest[1]} ms)` : ''),
+  );
+  const robotsUnreachable = Object.entries(state.hosts)
+    .filter(([, record]) => record.robotsUnreachableRuns > 0)
+    .map(([host]) => host);
+  if (robotsUnreachable.length > 0) {
+    log(
+      `[collect] host gate: robots.txt unreachable on last attempt for ${robotsUnreachable.length} host${robotsUnreachable.length === 1 ? '' : 's'} (${robotsUnreachable.join(', ')}); cached rules kept, otherwise allowed`,
+    );
+  }
+  const robotsUnverified = robotsUnverifiedHosts(state.hosts);
+  if (robotsUnverified.length > 0) {
+    log(`[collect] robots unverified: ${robotsUnverified.join(', ')}`);
+  }
+
+  const runHealth = collectionRunHealth(
     sourceResults,
     sources,
     minHealthySourceRate,
@@ -1996,6 +2012,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         (source) => source.enabled && source.automation === 'manual',
       ).length,
       sourceResults,
+      ...(robotsUnverified.length > 0 ? { robotsUnverified } : {}),
     },
   };
 

@@ -20,6 +20,17 @@ const nextConfig: NextConfig = {
 				destination: "https://policai.org/:path*",
 				permanent: true,
 			},
+			{
+				source: "/network",
+				destination: "/coverage",
+				permanent: true,
+			},
+			// Habit path for the developments Atom feed; canonical remains /feed.xml.
+			{
+				source: "/developments/feed.xml",
+				destination: "/feed.xml",
+				permanent: true,
+			},
 		];
 	},
 };

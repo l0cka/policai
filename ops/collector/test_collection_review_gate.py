@@ -55,7 +55,9 @@ class GateTest(unittest.TestCase):
             'review': {'base': self.base, 'head': self.head, 'status': 'completed',
                        'vendor': 'ollama-cloud', 'model': 'glm-5.3',
                        'findings': [], 'artifact': artifact},
-            'coverage': {'automatic_source_ids': ['source-a'], 'manual_source_count': 0,
+            'coverage': {'base_automatic_source_ids': ['source-a'],
+                         'head_automatic_source_ids': ['source-a'],
+                         'base_manual_source_count': 0, 'head_manual_source_count': 0,
                          'base_due': {'source-a': True}, 'head_due': {'source-a': True},
                          'artifact': artifact},
             'dates': [],
@@ -243,6 +245,28 @@ class GateTest(unittest.TestCase):
         self.revise()
         self.assert_escalates('hidden')
 
+    def test_failure_class_fields_do_not_change_the_verdict(self):
+        c = self.meta['collector']
+        c['sourceResults'][0].update(status='error', error='source-a: HTTP 403', itemCount=None)
+        c.update(successfulSourceCount=0, failedSourceCount=1, health='failed', successRate=0,
+                 lastRunErrors=['source-a: HTTP 403'])
+        self.revise()
+        without = self.run_gate()
+        c['sourceResults'][0].update(failureClass='identity_refused',
+                                     failedUrl='https://www.example.gov.au/feed')
+        self.revise()
+        labelled = self.run_gate()
+        self.assertEqual((labelled['verdict'], labelled['reasons']),
+                         (without['verdict'], without['reasons']))
+
+    def test_robots_unverified_hosts_do_not_change_the_verdict(self):
+        without = self.run_gate()
+        self.meta['collector']['robotsUnverified'] = ['www.example.gov.au', 'www.other.gov.au']
+        self.revise()
+        listed = self.run_gate()
+        self.assertEqual(without['verdict'], 'would-merge', without['reasons'])
+        self.assertEqual((listed['verdict'], listed['reasons']), (without['verdict'], without['reasons']))
+
     def test_not_due_is_not_success_or_recovery(self):
         c = self.meta['collector']
         c['sourceResults'][0].update(status='skipped', coverageEligible=False, itemCount=None)
@@ -267,12 +291,38 @@ class GateTest(unittest.TestCase):
         self.evidence['base'] = self.base
         self.evidence['review']['base'] = self.base
         coverage = self.evidence['coverage']
-        coverage['automatic_source_ids'].append('source-b')
+        coverage['base_automatic_source_ids'].append('source-b')
+        coverage['head_automatic_source_ids'].append('source-b')
         coverage['base_due']['source-b'] = coverage['head_due']['source-b'] = True
         c['sourceResults'][0]['itemCount'] = 79
         row['itemCount'] = 20000
         self.revise()
         self.assert_escalates('count drop')
+
+    def test_host_gate_wait_budget_never_skips_a_due_source(self):
+        c = self.meta['collector']
+        waited = dict(c['sourceResults'][0], sourceId='source-b', itemCount=5,
+                      candidateCount=5, newCandidateCount=0, durationMs=30002)
+        c['sourceResults'].append(waited)
+        c.update(automaticSourceCount=2, dueSourceCount=2, successfulSourceCount=2,
+                 lastRunSources=['source-a', 'source-b'])
+        self.revise()
+        self.base = self.head
+        self.evidence['base'] = self.base
+        self.evidence['review']['base'] = self.base
+        coverage = self.evidence['coverage']
+        coverage['base_automatic_source_ids'].append('source-b')
+        coverage['head_automatic_source_ids'].append('source-b')
+        coverage['base_due']['source-b'] = coverage['head_due']['source-b'] = True
+        c['runCount'] = 3
+        self.revise()
+        result = self.run_gate()
+        self.assertEqual(result['verdict'], 'would-merge', result['reasons'])
+        waited.update(status='skipped', itemCount=None, candidateCount=0, newCandidateCount=0)
+        c.update(dueSourceCount=1, successfulSourceCount=1, skippedSourceCount=1,
+                 lastRunSources=['source-a'])
+        self.revise()
+        self.assert_escalates('source-b: due source skipped')
 
     def add_candidate(self, value='2026-10-07', precision='day'):
         candidate = {'url': 'https://example.gov.au/synthetic', 'title': 'Synthetic AI policy',
@@ -430,11 +480,24 @@ class GateTest(unittest.TestCase):
     def test_malformed_state_is_not_a_passing_attestation(self):
         original = copy.deepcopy(self.state)
         for key, value in [('lastCheckedBySource', {'source-a': 4}),
-                           ('sourceSnapshots', {'source-a': {'changeCount': -1}})]:
+                           ('sourceSnapshots', {'source-a': {'changeCount': -1}}),
+                           ('hosts', []), ('hosts', {'www.example.gov.au': 'seen'})]:
             self.state = copy.deepcopy(original)
             self.state[key] = value
             self.revise()
             self.assert_escalates('state')
+
+    def test_host_gate_records_in_watch_state_pass(self):
+        self.state['hosts'] = {'www.example.gov.au': {
+            'seenAt': '2026-10-20T19:35:00.000Z',
+            'robots': {'fetchedAt': '2026-10-20T19:35:00.000Z', 'status': 'parsed',
+                       'allow': [], 'disallow': ['/search'], 'crawlDelaySec': None, 'sitemaps': []},
+            'backoffUntil': None, 'backoffStatus': None, 'backoffCount': 0,
+            'robotsUnreachableRuns': 0}}
+        self.revise()
+        result = self.run_gate()
+        self.assertEqual(result['verdict'], 'would-merge', result['reasons'])
+        self.assertEqual(result['changed_paths'], ['data/watch-state.json', 'public/data/meta.json'])
 
     def test_malformed_json_and_missing_evidence_file(self):
         for raw in ['{', '[]', '{"head":1,"head":2}', '{"schema_version":NaN}']:
@@ -485,9 +548,11 @@ class GateTest(unittest.TestCase):
 
     def test_coverage_evidence_matrix_and_retry_not_recovery(self):
         original = copy.deepcopy(self.evidence['coverage'])
-        for key, value in [('automatic_source_ids', ['source-a', 'source-a']),
-                           ('manual_source_count', -1), ('base_due', {}),
-                           ('head_due', {'source-a': 'true'}), ('artifact', None)]:
+        for key, value in [('base_automatic_source_ids', ['source-a', 'source-a']),
+                           ('head_automatic_source_ids', ['source-a', 'source-a']),
+                           ('base_manual_source_count', -1), ('head_manual_source_count', -1),
+                           ('base_due', {}), ('head_due', {'source-a': 'true'}),
+                           ('artifact', None)]:
             self.evidence['coverage'] = copy.deepcopy(original)
             self.evidence['coverage'][key] = value
             self.assert_escalates('coverage')
@@ -500,6 +565,40 @@ class GateTest(unittest.TestCase):
         result = self.run_gate()
         self.assertEqual(result['verdict'], 'would-merge', result)
         self.assertFalse(result['comparisons'][0]['recovered'])
+
+    def test_source_set_change_admits_distinct_base_and_head_inventories(self):
+        c = self.meta['collector']
+        moved = dict(c['sourceResults'][0], sourceId='accc-rss', itemCount=10)
+        c['sourceResults'].append(moved)
+        c.update(automaticSourceCount=2, manualSourceCount=2, dueSourceCount=2,
+                 successfulSourceCount=2, lastRunSources=['source-a', 'accc-rss'])
+        self.revise()
+        self.base = self.head
+        self.evidence['base'] = self.base
+        self.evidence['review']['base'] = self.base
+        coverage = self.evidence['coverage']
+        coverage['base_automatic_source_ids'] = ['source-a', 'accc-rss']
+        coverage['head_automatic_source_ids'] = ['source-a']
+        coverage['base_manual_source_count'] = 2
+        coverage['head_manual_source_count'] = 3
+        coverage['base_due'] = {'source-a': True, 'accc-rss': True}
+        coverage['head_due'] = {'source-a': True}
+        c['sourceResults'] = [dict(c['sourceResults'][0])]
+        c.update(automaticSourceCount=1, manualSourceCount=3, dueSourceCount=1,
+                 successfulSourceCount=1, lastRunSources=['source-a'], runCount=c['runCount'] + 1)
+        self.revise()
+        result = self.run_gate()
+        self.assertEqual(result['verdict'], 'would-merge', result['reasons'])
+        kinds = {row['source_id']: row['kind'] for row in result['comparisons']}
+        self.assertEqual(kinds['source-a'], 'comparable')
+        self.assertEqual(kinds['accc-rss'], 'source-set-change')
+        shared = copy.deepcopy(coverage)
+        shared['base_automatic_source_ids'] = ['source-a', 'accc-rss']
+        shared['head_automatic_source_ids'] = ['source-a', 'accc-rss']
+        shared['head_due'] = {'source-a': True, 'accc-rss': True}
+        shared['head_manual_source_count'] = 2
+        self.evidence['coverage'] = shared
+        self.assert_escalates('source IDs')
 
     def test_artifact_symlinks_and_duplicate_ledger_rows_refuse(self):
         proof = Path(self.evidence['run']['artifact']['path'])

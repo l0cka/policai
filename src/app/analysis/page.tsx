@@ -10,20 +10,23 @@ import {
 import { getArticles } from '@/lib/data-service';
 import { ARTICLE_TYPES, ARTICLE_TYPE_NAMES, isArticleType } from '@/types';
 import { cn } from '@/lib/utils';
+import { pageAlternates, pageSocialMeta } from '@/lib/site-seo';
 
 export const revalidate = 3600;
 
+const ANALYSIS_TITLE = 'Analysis of Australian AI policy';
+const ANALYSIS_DESCRIPTION =
+  "Policai's own analysis for practitioners: weekly briefings, instrument notes and explainers, each citing the verified register and official sources.";
+
 export const metadata: Metadata = {
-  title: 'Analysis - Policai',
-  description:
-    "Policai's own analysis of Australian AI policy: weekly briefings, instrument notes and explainers, each citing the verified register and official sources.",
-  alternates: {
-    types: {
-      'application/atom+xml': [
-        { url: 'https://policai.org/analysis/feed.xml', title: 'Policai analysis' },
-      ],
-    },
-  },
+  title: ANALYSIS_TITLE,
+  description: ANALYSIS_DESCRIPTION,
+  alternates: pageAlternates('/analysis'),
+  ...pageSocialMeta({
+    title: ANALYSIS_TITLE,
+    description: ANALYSIS_DESCRIPTION,
+    path: '/analysis',
+  }),
 };
 
 const FILTERS = [

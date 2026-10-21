@@ -6,7 +6,7 @@ import sys
 import tempfile
 import time
 import unittest
-from contextlib import redirect_stderr
+from contextlib import ExitStack, redirect_stderr, redirect_stdout
 from pathlib import Path
 from unittest.mock import patch
 
@@ -224,6 +224,100 @@ class LockWaitTests(unittest.TestCase):
         self.assertIn("worker", str(caught.exception))
         self.assertNotIn("deployment", str(caught.exception))
 
+    def test_immediate_lock_refusal_matches_pre_wait_timing(self):
+        self.hold()
+        fake = FakeClock()
+        with self.assertRaises(d.Refused) as caught:
+            with h.worker_guard(self.state, wait=0, clock=fake.clock, sleep=fake.sleep):
+                self.fail("wait=0 must refuse on the first busy poll")
+        self.assertEqual(str(caught.exception), d.LOCK_BUSY["deploy.lock", False])
+        self.assertEqual(fake.sleeps, [])
+        self.assertEqual(fake.now, 1000.0)
+
+
+class VerifyDeadlinesScriptTests(unittest.TestCase):
+    FIXTURE = HOST / "tests" / "fixtures" / "verify-deadlines.sh"
+
+    def setUp(self):
+        if not self.FIXTURE.is_file():
+            self.skipTest("tests/fixtures/verify-deadlines.sh absent from ops/host snapshot")
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        self.root = Path(tmp.name)
+        self.log = self.root / "docker.log"
+        script_dir = self.root / "ops"
+        script_dir.mkdir()
+        self.script = script_dir / "verify-deadlines.sh"
+        self.script.write_text(self.FIXTURE.read_text())
+        self.script.chmod(0o755)
+        bin_dir = self.root / "bin"
+        bin_dir.mkdir()
+        self.docker = bin_dir / "docker"
+        self.path = f"{bin_dir}:/usr/bin:/bin"
+        self.lock = self.root / "verify.lock"
+
+    def write_docker(self, body):
+        self.docker.write_text(f"#!{sys.executable}\n" + body)
+        self.docker.chmod(0o755)
+
+    def run_script(self):
+        return subprocess.run(
+            ["/usr/bin/bash", str(self.script)],
+            cwd=self.root,
+            env={
+                "PATH": self.path,
+                "LANG": "C.UTF-8",
+                "PROBONO_DOCKER_BIN": str(self.docker),
+            },
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+
+    def patch_lock(self, source):
+        line = "exec 9>/tmp/probono-verify-deadlines.lock\n"
+        self.assertEqual(source.count(line), 1)
+        return source.replace(line, f"exec 9>{self.lock}\n")
+
+    def test_verifier_auth_exit_3_fails_the_script(self):
+        source = self.script.read_text()
+        self.script.write_text(self.patch_lock(source))
+        self.write_docker(
+            "import sys\n"
+            f"open({str(self.log)!r}, 'a').write(' '.join(sys.argv[1:]) + '\\n')\n"
+            "sys.exit(3)\n"
+        )
+        run = self.run_script()
+        self.assertEqual(run.returncode, 3, run.stderr)
+        self.assertIn("compose --profile worker run --rm worker src/verify-deadlines.ts", self.log.read_text())
+        self.assertNotIn("done:", run.stdout)
+
+    def test_invalid_batch_fails_closed_with_jq(self):
+        source = self.script.read_text()
+        self.script.write_text(self.patch_lock(source))
+        self.write_docker(
+            "import sys\n"
+            f"open({str(self.log)!r}, 'a').write(' '.join(sys.argv[1:]) + '\\n')\n"
+            "sys.stdout.write('{\"not\": \"an array\"}')\n"
+        )
+        run = self.run_script()
+        self.assertNotEqual(run.returncode, 0, run.stdout + run.stderr)
+        self.assertEqual(run.returncode, 5, run.stderr)
+        self.assertNotIn("done:", run.stdout)
+
+    def test_empty_batch_exits_zero_without_saves(self):
+        source = self.script.read_text()
+        self.script.write_text(self.patch_lock(source))
+        self.write_docker(
+            "import sys\n"
+            f"open({str(self.log)!r}, 'a').write(' '.join(sys.argv[1:]) + '\\n')\n"
+            "sys.stdout.write('[]')\n"
+        )
+        run = self.run_script()
+        self.assertEqual(run.returncode, 0, run.stderr)
+        self.assertIn("nothing to save", run.stdout)
+        self.assertEqual(self.log.read_text().count("\n"), 1)
+
 
 class FailureLineTests(unittest.TestCase):
     def worker(self, runner):
@@ -231,6 +325,7 @@ class FailureLineTests(unittest.TestCase):
         obj.runner = runner
         obj.check_worker_identity = lambda: None
         obj.check_worker_release = lambda: None
+        obj.check_worker_database = lambda: None
         return obj
 
     def failure(self, call):
@@ -240,15 +335,24 @@ class FailureLineTests(unittest.TestCase):
             return cli.failure_line(error)
         self.fail("expected a refusal")
 
-    def test_task_exit_after_passing_guards_is_reported_as_a_task_failure(self):
-        class Failing:
-            def execute(self, argv, cwd, **kwargs):
-                return h.Runner().execute([sys.executable, "-c", "raise SystemExit(3)"], cwd="/")
+    def test_task_exits_after_passing_guards_report_exact_failed_lines(self):
+        for status in (1, 3, 5):
+            with self.subTest(status=status):
 
-        line = self.failure(lambda: self.worker(Failing()).run_worker("verify-deadlines", ()))
-        self.assertTrue(line.startswith("Failed: worker task verify-deadlines"), line)
-        self.assertIn("exited with status 3", line)
-        self.assertIn("guards passed", line)
+                class Exit:
+                    def execute(self, argv, cwd, code=status, **kwargs):
+                        return h.Runner().execute(
+                            [sys.executable, "-c", f"raise SystemExit({code})"], cwd="/"
+                        )
+
+                line = self.failure(
+                    lambda runner=Exit(): self.worker(runner).run_worker("verify-deadlines", ())
+                )
+                self.assertEqual(
+                    line,
+                    f"Failed: worker task verify-deadlines: command exited with status {status};"
+                    " guards passed. No automatic retry.",
+                )
 
     def test_a_spawned_task_that_times_out_is_a_task_failure(self):
         class Slow:
@@ -277,6 +381,39 @@ class FailureLineTests(unittest.TestCase):
             "Refused: command input exceeds bound."
             " Inspect status and reviewed prerequisites; no automatic retry.",
         )
+
+    def test_a_guard_probe_that_fails_after_spawning_is_a_refusal_naming_the_runner(self):
+        class Probe:
+            def __init__(self, code, **limits):
+                self.code, self.limits = code, limits
+
+            def execute(self, argv, cwd, **kwargs):
+                return h.Runner().execute([sys.executable, "-c", self.code], cwd="/", **self.limits)
+
+        cases = {
+            "command exited with status 2": Probe("raise SystemExit(2)"),
+            "command timed out": Probe("pass", timeout=0),
+            "command output exceeded bound": Probe("print('x' * 100)", limit=10),
+        }
+
+        def probes(obj):
+            obj.config = {"db": {}}
+            return {
+                "git": lambda: obj.git("probono", "rev-parse", "--verify", "HEAD"),
+                "docker image inspect": lambda: obj.docker(
+                    "image", "inspect", "sha256:" + "a" * 64
+                ),
+                "verify_database": obj.verify_database,
+            }
+
+        for reason, runner in cases.items():
+            for name, probe in probes(self.worker(runner)).items():
+                with self.subTest(reason=reason, probe=name):
+                    self.assertEqual(
+                        self.failure(probe),
+                        f"Refused: {reason}."
+                        " Inspect status and reviewed prerequisites; no automatic retry.",
+                    )
 
     def test_each_guard_refusal_names_its_guard(self):
         obj = self.worker(None)
@@ -322,6 +459,7 @@ class FailureLineTests(unittest.TestCase):
             cli.report("worker", error)
         self.assertEqual(err.getvalue().count("Refused: worker command not allowlisted"), 2)
         self.assertEqual(len(journal.call_args_list), 1)
+        self.assertEqual(journal.call_args.args[0], cli.syslog.LOG_ERR)
         self.assertIn("worker command not allowlisted", journal.call_args.args[1])
 
     def test_a_line_that_cannot_be_built_falls_back_to_a_fixed_line(self):
@@ -348,6 +486,263 @@ class FailureLineTests(unittest.TestCase):
             "Refused: worker command not allowlisted."
             " Inspect status and reviewed prerequisites; no automatic retry.\n",
         )
+
+    def test_a_spawn_failure_is_a_refusal_and_a_later_os_error_a_task_failure(self):
+        missing = Path(tempfile.mkdtemp()) / "missing"
+
+        class Absent:
+            def execute(self, argv, cwd, **kwargs):
+                return h.Runner().execute([str(missing)], cwd="/")
+
+        class Broken:
+            def execute(self, argv, cwd, **kwargs):
+                argv = [sys.executable, "-c", "raise SystemExit(0)"]
+                with patch.object(h.selectors, "DefaultSelector", side_effect=OSError()):
+                    return h.Runner().execute(argv, cwd="/")
+
+        self.assertEqual(
+            self.failure(lambda: self.worker(Absent()).run_worker("verify-deadlines", ())),
+            "Refused: command unavailable or timed out."
+            " Inspect status and reviewed prerequisites; no automatic retry.",
+        )
+        self.assertEqual(
+            self.failure(lambda: self.worker(Broken()).run_worker("verify-deadlines", ())),
+            "Failed: worker task verify-deadlines: command unavailable or timed out;"
+            " guards passed. No automatic retry.",
+        )
+
+    def test_output_over_the_bound_is_a_task_failure(self):
+        class Loud:
+            def execute(self, argv, cwd, **kwargs):
+                argv = [sys.executable, "-c", "print('x' * 100)"]
+                return h.Runner().execute(argv, cwd="/", limit=10)
+
+        self.assertEqual(
+            self.failure(lambda: self.worker(Loud()).run_worker("verify-deadlines", ())),
+            "Failed: worker task verify-deadlines: command output exceeded bound;"
+            " guards passed. No automatic retry.",
+        )
+
+    def test_report_lets_interrupts_and_exits_through_at_every_site(self):
+        error = d.Refused("worker command not allowlisted")
+
+        class Raising:
+            def __init__(self, exception):
+                self.exception = exception
+
+            def write(self, text):
+                raise self.exception
+
+            flush = write
+
+        sites = {
+            "failure line": lambda exc: [patch.object(cli, "failure_line", side_effect=exc)],
+            "stderr write": lambda exc: [patch.object(sys, "stderr", Raising(exc))],
+            "journal": lambda exc: [patch.object(cli.syslog, "syslog", side_effect=exc)],
+        }
+        for site, raising in sites.items():
+            for exception in (KeyboardInterrupt, SystemExit):
+                with (
+                    self.subTest(site=site, exception=exception.__name__),
+                    ExitStack() as stack,
+                ):
+                    stack.enter_context(redirect_stderr(io.StringIO()))
+                    stack.enter_context(patch.object(cli.syslog, "openlog"))
+                    stack.enter_context(patch.object(cli.syslog, "syslog"))
+                    for active in raising(exception):
+                        stack.enter_context(active)
+                    self.assertRaises(exception, cli.report, "compose", error)
+
+    def test_main_lets_interrupts_and_exits_through(self):
+        cases = (
+            ("KeyboardInterrupt", KeyboardInterrupt()),
+            ("SystemExit(0)", SystemExit(0)),
+            ("SystemExit(3)", SystemExit(3)),
+        )
+        for name, raised in cases:
+            with (
+                self.subTest(name),
+                patch.object(cli, "trusted_entrypoint", side_effect=raised),
+                patch.object(sys, "argv", ["cli.py", "status"]),
+            ):
+                with self.assertRaises(type(raised)) as caught:
+                    cli.main()
+                if isinstance(raised, SystemExit):
+                    self.assertEqual(caught.exception.code, raised.code)
+
+    def test_a_later_stderr_write_stays_off_stdout_once_the_line_is_dropped(self):
+        class Broken:
+            def write(self, text):
+                raise BrokenPipeError
+
+            flush = write
+
+        for name, stream in {"broken": Broken(), "closed": None}.items():
+            with (
+                self.subTest(name),
+                patch.object(sys, "stderr", stream),
+                redirect_stdout(io.StringIO()) as out,
+            ):
+                cli.warn("Refused: first line.")
+                print("later diagnostic", file=sys.stderr)
+                cli.warn("Refused: second line.")
+                self.assertEqual(out.getvalue(), "")
+
+    def test_installed_main_reports_any_exception_with_one_line_and_exit_1(self):
+        fallback = (
+            "Refused: failure report unavailable."
+            " Inspect status and reviewed prerequisites; no automatic retry."
+        )
+        cases = {
+            "host import fails": (None, {"host": None}, fallback),
+            "AttributeError": (AttributeError("x"), {}, None),
+            "SyntaxError": (SyntaxError("x"), {}, None),
+        }
+        for name, (raised, modules, line) in cases.items():
+            line = line or (
+                f"Refused: unexpected {type(raised).__name__}."
+                " Inspect status and reviewed prerequisites; no automatic retry."
+            )
+            with (
+                self.subTest(name),
+                patch.object(cli, "ENTRYPOINT", Path(cli.__file__).resolve()),
+                patch.object(cli, "trusted_entrypoint", side_effect=raised),
+                patch.dict(sys.modules, modules),
+                patch.object(sys, "argv", ["cli.py", "compose", "--", "compose", "down"]),
+                patch.object(cli.syslog, "openlog"),
+                patch.object(cli.syslog, "syslog") as journal,
+                redirect_stderr(io.StringIO()) as err,
+                redirect_stdout(io.StringIO()) as out,
+            ):
+                code = cli.main()
+                self.assertEqual((code, out.getvalue(), err.getvalue()), (1, "", line + "\n"))
+                self.assertEqual(journal.call_args.args[0], cli.syslog.LOG_ERR)
+                self.assertEqual(journal.call_args.args[1], line)
+
+    def test_a_broken_stderr_still_reaches_the_journal(self):
+        error = d.Refused("worker command not allowlisted")
+
+        class Broken:
+            def write(self, text):
+                raise BrokenPipeError
+
+            flush = write
+
+        with patch.object(sys, "stderr", Broken()), patch.object(cli.syslog, "syslog") as journal:
+            cli.report("compose", error)
+        self.assertEqual(journal.call_args.args[0], cli.syslog.LOG_ERR)
+        self.assertIn("worker command not allowlisted", journal.call_args.args[1])
+
+    def test_installed_main_exits_1_after_a_journal_failure(self):
+        unsafe = RuntimeError("unsafe installed root-owned entrypoint")
+        with (
+            patch.object(cli, "ENTRYPOINT", Path(cli.__file__).resolve()),
+            patch.object(cli, "trusted_entrypoint", side_effect=unsafe),
+            patch.object(sys, "argv", ["cli.py", "compose", "--", "compose", "down"]),
+            patch.object(cli.syslog, "openlog"),
+            patch.object(cli.syslog, "syslog", side_effect=OSError("journal unavailable")),
+            redirect_stderr(io.StringIO()) as err,
+            redirect_stdout(io.StringIO()) as out,
+        ):
+            code = cli.main()
+        self.assertEqual(code, 1)
+        self.assertEqual(out.getvalue(), "")
+        self.assertEqual(
+            err.getvalue(),
+            "Refused: unexpected RuntimeError."
+            " Inspect status and reviewed prerequisites; no automatic retry.\n",
+        )
+
+
+class FailureChannelTests(unittest.TestCase):
+    CHILD = "\n".join(
+        [
+            "import sys",
+            "from pathlib import Path",
+            "from unittest.mock import patch",
+            "sys.path.insert(0, sys.argv[1])",
+            "import cli",
+            "sys.argv = ['cli.py', 'worker', 'ingest']",
+            "unsafe = RuntimeError('unsafe installed root-owned entrypoint')",
+            "import_fails = sys.argv[2] == 'import'",
+            "if import_fails:",
+            "    sys.modules['host'] = None",
+            "reached = []",
+            "report = cli.report",
+            "def traced(command, error):",
+            "    reached.append(command)",
+            "    report(command, error)",
+            "with (",
+            "    patch.object(cli, 'ENTRYPOINT', Path(cli.__file__).resolve()),",
+            "    patch.object(cli, 'trusted_entrypoint', side_effect=None if import_fails else unsafe),",
+            "    patch.object(cli, 'report', traced),",
+            "):",
+            "    code = cli.main()",
+            "print('reported' if reached == ['worker'] else 'not reported', flush=True)",
+            "print('later diagnostic', file=sys.stderr)",
+            "raise SystemExit(code)",
+        ]
+    )
+
+    def installed_main(self, mode="refusal", **kwargs):
+        return subprocess.run(
+            [sys.executable, "-I", "-B", "-c", self.CHILD, str(HOST), mode],
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.PIPE,
+            timeout=30,
+            **kwargs,
+        )
+
+    def test_a_closed_stderr_never_moves_the_line_to_stdout(self):
+        error = d.Refused("worker command not allowlisted")
+        with (
+            patch.object(sys, "stderr", None),
+            patch.object(cli.syslog, "openlog"),
+            patch.object(cli.syslog, "syslog") as journal,
+            redirect_stdout(io.StringIO()) as out,
+        ):
+            cli.report("compose", error)
+            cli.report("worker", error)
+        self.assertEqual(out.getvalue(), "")
+        self.assertEqual(len(journal.call_args_list), 1)
+        self.assertEqual(journal.call_args.args[0], cli.syslog.LOG_ERR)
+        self.assertIn("worker command not allowlisted", journal.call_args.args[1])
+
+    def test_an_uninstalled_refusal_with_stderr_closed_writes_nothing_to_stdout(self):
+        with (
+            patch.object(sys, "stderr", None),
+            patch.object(sys, "argv", ["cli.py", "compose", "--", "compose", "down"]),
+            patch.object(cli.syslog, "openlog"),
+            patch.object(cli.syslog, "syslog") as journal,
+            redirect_stdout(io.StringIO()) as out,
+        ):
+            self.assertEqual(cli.main(), 1)
+        self.assertEqual(out.getvalue(), "")
+        self.assertEqual(journal.call_args_list, [])
+
+    def test_installed_main_with_fd_2_closed_exits_1_and_keeps_stdout_clean(self):
+        run = self.installed_main(preexec_fn=lambda: os.close(2))
+        self.assertEqual((run.returncode, run.stdout), (1, b"reported\n"))
+
+    def test_installed_main_exits_1_when_stderr_is_a_full_pipe(self):
+        read, write = os.pipe()
+        self.addCleanup(os.close, read)
+        self.addCleanup(os.close, write)
+        fcntl.fcntl(write, fcntl.F_SETFL, os.O_NONBLOCK)
+        with self.assertRaises(BlockingIOError):
+            while True:
+                os.write(write, b"x" * 65536)
+        run = self.installed_main(stderr=write)
+        self.assertEqual((run.returncode, run.stdout), (1, b"reported\n"))
+        run = self.installed_main("import", stderr=write)
+        self.assertEqual((run.returncode, run.stdout), (1, b"reported\n"))
+
+    def test_installed_main_exits_1_when_stderr_is_a_broken_pipe(self):
+        read, write = os.pipe()
+        os.close(read)
+        self.addCleanup(os.close, write)
+        run = self.installed_main(stderr=write)
+        self.assertEqual((run.returncode, run.stdout), (1, b"reported\n"))
 
 
 if __name__ == "__main__":

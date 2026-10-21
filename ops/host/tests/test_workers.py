@@ -81,6 +81,7 @@ class WorkerTests(unittest.TestCase):
         obj.runner = Run()
         obj.check_worker_identity = lambda: None
         obj.check_worker_release = lambda: None
+        obj.check_worker_database = lambda: None
         obj.run_worker("ingest", (99,))
         argv, cwd, kwargs = events[0]
         self.assertEqual(argv, ["/usr/bin/bash", "ops/ingest.sh"])
@@ -111,6 +112,7 @@ class WorkerTests(unittest.TestCase):
         obj.runner = Run()
         obj.check_worker_identity = lambda: None
         obj.check_worker_release = lambda: None
+        obj.check_worker_database = lambda: None
         paths = {"source": "/srv/backups", "mount": "/mnt/second", "destination": "/mnt/second/b"}
         obj.config = {"backup_mirror": paths}
         obj.run_worker("backup-mirror", (99,))
@@ -156,6 +158,7 @@ class WorkerTests(unittest.TestCase):
         obj.runner = Run()
         obj.check_worker_identity = lambda: None
         obj.check_worker_release = lambda: None
+        obj.check_worker_database = lambda: None
         run = ["compose", "--profile", "worker", "run", "--rm"]
         for saver in ("src/save-enrichment.ts", "src/save-deadline-verification.ts"):
             obj.worker_compose([*run, "-T", "worker", saver, "7"], (), b"{}")

@@ -1,20 +1,51 @@
 import type { Metadata } from 'next';
+import { CourtsAnalysis } from '@/components/courts-analysis';
 import { CourtsBrowser } from '@/components/courts-browser';
 import { getPublicCourtRequirements } from '@/lib/court-requirements';
-import { getPolicies } from '@/lib/data-service';
+import {
+  analysesByCourtPolicy,
+  courtFocusedAnalyses,
+  relatedByCourtPolicy,
+} from '@/lib/court-cross-links';
+import { getArticles, getPolicies } from '@/lib/data-service';
+import { pageAlternates, pageSocialMeta } from '@/lib/site-seo';
 
 export const revalidate = 3600;
 
+const COURTS_TITLE = 'Court and tribunal AI guidance';
+const COURTS_DESCRIPTION =
+  'Verified Australian court and tribunal practice notes, directions and guidance on using AI in proceedings — for lawyers, litigants and court officers.';
+
 export const metadata: Metadata = {
-  title: 'Courts & Tribunals - Policai',
-  description:
-    'Verified Australian court practice notes, directions, and guidance governing the use of artificial intelligence in proceedings.',
+  title: COURTS_TITLE,
+  description: COURTS_DESCRIPTION,
+  alternates: pageAlternates('/courts'),
+  ...pageSocialMeta({
+    title: COURTS_TITLE,
+    description: COURTS_DESCRIPTION,
+    path: '/courts',
+  }),
 };
 
 export default async function CourtsPage() {
-  const [policies, requirements] = await Promise.all([
+  const [policies, publicPolicies, requirements, articles] = await Promise.all([
     getPolicies({ type: 'practice_note' }),
+    getPolicies(),
     getPublicCourtRequirements(),
+    getArticles(),
   ]);
-  return <CourtsBrowser policies={policies} requirements={requirements} />;
+  const courtIds = new Set(policies.map((policy) => policy.id));
+  const courtAnalyses = courtFocusedAnalyses(articles, courtIds);
+  const analysesByPolicy = analysesByCourtPolicy(articles, courtIds);
+  const relatedByPolicy = relatedByCourtPolicy(policies, publicPolicies);
+
+  return (
+    <CourtsBrowser
+      policies={policies}
+      requirements={requirements}
+      analysesByPolicy={analysesByPolicy}
+      relatedByPolicy={relatedByPolicy}
+      analysis={<CourtsAnalysis articles={courtAnalyses} />}
+    />
+  );
 }

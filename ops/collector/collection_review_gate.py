@@ -151,13 +151,19 @@ def inspect_evidence(evidence, repo, base, head, result):
     attempt(result, 'review evidence', check_review)
 
 
+def side_inventory(coverage, side):
+    """Per-side automatic source IDs; base and head may differ when a source moves."""
+    inventory = coverage.get(side + '_automatic_source_ids')
+    require(isinstance(inventory, list) and all(nonempty(s) for s in inventory)
+            and len(set(inventory)) == len(inventory) and inventory, 'invalid source inventory')
+    return inventory
+
+
 def coverage_rows(meta, coverage, side, result):
     collector = meta['collector']
     rows = collector['sourceResults']
     require(isinstance(rows, list), 'source results missing')
-    inventory = coverage['automatic_source_ids']
-    require(isinstance(inventory, list) and all(nonempty(s) for s in inventory)
-            and len(set(inventory)) == len(inventory) and inventory, 'invalid source inventory')
+    inventory = side_inventory(coverage, side)
     due = coverage[side + '_due']
     require(isinstance(due, dict) and set(due) == set(inventory)
             and all(type(value) is bool for value in due.values()), 'schedule evidence incomplete')
@@ -195,10 +201,11 @@ def coverage_rows(meta, coverage, side, result):
     success = sum(row.get('status') == 'success' and due[source] for source, row in indexed.items())
     failed = sum(row.get('status') == 'error' and due[source] for source, row in indexed.items())
     skipped = sum(row.get('status') == 'skipped' for row in rows)
-    totals = {'automaticSourceCount': len(inventory), 'manualSourceCount': coverage['manual_source_count'],
+    manual = coverage.get(side + '_manual_source_count')
+    require(integer(manual), 'invalid manual inventory count')
+    totals = {'automaticSourceCount': len(inventory), 'manualSourceCount': manual,
               'dueSourceCount': success + failed, 'successfulSourceCount': success,
               'failedSourceCount': failed, 'skippedSourceCount': skipped}
-    require(integer(coverage['manual_source_count']), 'invalid manual inventory count')
     for key, expected in totals.items():
         require(integer(collector.get(key)) and collector[key] == expected, f'inconsistent {key}')
     require(integer(collector.get('runCount')), 'invalid run count')
@@ -228,8 +235,19 @@ def inspect_coverage(objects, evidence, args, result):
         objects[args.head]['public/data/meta.json'], coverage, 'head', result))
     if base_rows is None or head_rows is None:
         return
-    for source in sorted(head_rows):
-        before, after = base_rows[source], head_rows[source]
+    for source in sorted(set(base_rows) | set(head_rows)):
+        before, after = base_rows.get(source), head_rows.get(source)
+        if before is None or after is None:
+            result['comparisons'].append({
+                'source_id': source, 'kind': 'source-set-change',
+                'base_count': None if before is None else before.get('itemCount'),
+                'head_count': None if after is None else after.get('itemCount'),
+                'recovered': False})
+            if after is not None and after.get('status') == 'error':
+                explicit = nonempty(after.get('error'))
+                result['reasons'].append(
+                    f'coverage {source}: new failure; {"explicit" if explicit else "hidden"}; human review required')
+            continue
         both_due = coverage['base_due'][source] and coverage['head_due'][source]
         kind = 'comparable' if both_due else 'schedule-change' if (
             coverage['base_due'][source] != coverage['head_due'][source]) else 'not-due'
@@ -285,6 +303,8 @@ def inspect_dates(objects, evidence, args, result):
     for state in states:
         require(isinstance(state, dict) and all(isinstance(state.get(key), dict)
                 for key in ('seen', 'lastCheckedBySource', 'sourceSnapshots')), 'invalid watch state')
+        require(isinstance(state.get('hosts', {}), dict) and all(nonempty(host) and isinstance(record, dict)
+                for host, record in state.get('hosts', {}).items()), 'invalid watch state hosts')
         for source, timestamp in state['lastCheckedBySource'].items():
             require(nonempty(source) and isinstance(timestamp, str), 'invalid state check timestamp')
             require(datetime.datetime.fromisoformat(str(timestamp).replace('Z', '+00:00')).tzinfo is not None,

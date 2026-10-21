@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { buildPolicy } from '@/test/factories';
 import {
@@ -100,4 +100,62 @@ it('reports record re-verification age as information, not a failure', async () 
   expect(section).toHaveTextContent('oldest review 114 days ago');
   expect(section).toHaveTextContent('every 90 days');
   expect(section).toHaveTextContent('stays published and is labelled “Review due”');
+});
+
+it.each<[label: string, robotsUnverified: string[] | undefined]>([
+  ['absent', undefined],
+  ['empty', []],
+])('shows no robots unverified section when the list is %s', async (_label, robotsUnverified) => {
+  const meta = await getCollectionMeta();
+  vi.mocked(getCollectionMeta).mockResolvedValue({
+    ...meta,
+    collector: { ...meta.collector, ...(robotsUnverified ? { robotsUnverified } : {}) },
+  });
+  render(await StatusPage());
+  expect(screen.queryByRole('heading', { name: 'Robots unverified' })).not.toBeInTheDocument();
+});
+
+it('names the hosts whose robots.txt has not been readable for 3 or more runs', async () => {
+  const meta = await getCollectionMeta();
+  vi.mocked(getCollectionMeta).mockResolvedValue({
+    ...meta,
+    collector: { ...meta.collector, robotsUnverified: ['www.alpha.gov.au', 'www.beta.gov.au'] },
+  });
+  render(await StatusPage());
+  const section = screen.getByRole('heading', { name: 'Robots unverified' }).closest('section');
+  expect(section).toHaveTextContent('robots.txt for these hosts has not been readable for 3 or more runs');
+  expect(section).toHaveTextContent('still paces requests');
+  expect(
+    within(section as HTMLElement)
+      .getAllByRole('listitem')
+      .map((item) => item.textContent),
+  ).toEqual(['www.alpha.gov.au', 'www.beta.gov.au']);
+});
+
+it('lists machine feeds and API surfaces with links to methodology', async () => {
+  render(await StatusPage());
+  const section = screen
+    .getByRole('heading', { name: 'Machine feeds and API' })
+    .closest('section');
+  expect(section).not.toBeNull();
+  const scoped = within(section as HTMLElement);
+  expect(scoped.getByRole('link', { name: '/feed.xml' })).toHaveAttribute(
+    'href',
+    '/feed.xml',
+  );
+  expect(scoped.getByRole('link', { name: '/api/policies' })).toHaveAttribute(
+    'href',
+    '/api/policies',
+  );
+  expect(
+    scoped.getByRole('link', { name: '/api/developments' }),
+  ).toHaveAttribute('href', '/api/developments');
+  expect(scoped.getByRole('link', { name: '/api/status' })).toHaveAttribute(
+    'href',
+    '/api/status',
+  );
+  expect(scoped.getByRole('link', { name: 'methodology' })).toHaveAttribute(
+    'href',
+    '/methodology#machine-feeds',
+  );
 });

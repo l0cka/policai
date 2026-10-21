@@ -38,8 +38,13 @@ Error responses use this form:
 | `GET` | `/api/developments` | Search public policy developments. |
 | `GET` | `/api/timeline` | List public timeline events. |
 | `GET` | `/api/agencies` | List public agency records. |
-| `GET` | `/api/network` | Get policy network nodes and edges. |
+| `GET` | `/api/network` | Get policy nodes and shared-theme edges. Stable; no site page uses it since `/network` became the coverage map. |
 | `GET` | `/api/status` | Get collection health and freshness data. |
+| `GET` | `/api/signal/reviews/{id}` | Signal dry-run for one staged review (Bearer `POLICAI_SIGNAL_TOKEN`). |
+| `POST` | `/api/signal/reviews` | Signal approve (approve+publish) or dismiss with attestation (same token). |
+
+The Signal routes are the only public-site write API. They are not part of the
+anonymous public register API. See [collector.md](./collector.md#policai-signal-grok-bot).
 
 ### Policy filters
 
@@ -130,11 +135,18 @@ Set `POLICAI_CORS_ORIGIN` on the server to restrict cross-origin access to one o
 
 ## Feeds
 
-`/feed.xml` is an Atom feed of public developments. `/analysis/feed.xml` is an
-Atom feed of published analysis pieces. Both read through `data-service.ts`,
-so withheld developments and drafts never appear. Every interpolated value is
-escaped with `escapeXml` (`src/lib/xml.ts`), including text from third-party
-pages, so a feed is always well-formed XML.
+`/feed.xml` is an Atom feed of public developments (also linked from
+`/developments` and `/this-week`; `/developments/feed.xml` permanently
+redirects there). There is no separate developments-only Atom path;
+`/feed.xml` is that feed. `/analysis/feed.xml` is an Atom feed of published
+analysis pieces. Both read through `data-service.ts`, so withheld developments
+and drafts never appear. Every interpolated value is escaped with `escapeXml`
+(`src/lib/xml.ts`), including text from third-party pages, so a feed is always
+well-formed XML. Machine clients that prefer JSON can use `GET /api/developments`.
+
+The public site lists these feeds and the JSON endpoints under
+[Machine feeds and API](https://policai.org/methodology#machine-feeds) on
+`/methodology`, with a short index on `/status`.
 
 ## Public MCP server
 

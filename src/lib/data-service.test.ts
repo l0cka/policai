@@ -1973,6 +1973,75 @@ describe("data-service file store", () => {
 		});
 	});
 
+	it("leaves a manual source out of the public automatic coverage count", async () => {
+		readJsonFile.mockResolvedValue({
+			lastCollectedAt: "2026-10-17T19:33:37.076Z",
+			lastHealthyAt: "2026-10-06T19:33:28.224Z",
+			lastReviewedAt: null,
+			collector: {
+				runCount: 80,
+				lastRunSources: ["pm-media", "accc-rss", "wa-ai-policy"],
+				lastRunErrors: [
+					"accc-rss: HTTP 403",
+					"wa-ai-policy: net::ERR_HTTP2_PROTOCOL_ERROR",
+				],
+				health: "degraded",
+				dueSourceCount: 3,
+				successfulSourceCount: 1,
+				failedSourceCount: 2,
+				skippedSourceCount: 0,
+				successRate: 0.333,
+				automaticSourceCount: 75,
+				manualSourceCount: 3,
+				sourceResults: [
+					{
+						sourceId: "pm-media",
+						status: "success",
+						coverageEligible: true,
+						checkedAt: "2026-10-17T19:33:37.076Z",
+						durationMs: 1,
+						itemCount: 1,
+						candidateCount: 0,
+						newCandidateCount: 0,
+					},
+					{
+						sourceId: "accc-rss",
+						status: "error",
+						coverageEligible: true,
+						checkedAt: "2026-10-17T19:33:37.076Z",
+						durationMs: 1,
+						itemCount: null,
+						candidateCount: 0,
+						newCandidateCount: 0,
+						error: "accc-rss: HTTP 403",
+					},
+					{
+						sourceId: "wa-ai-policy",
+						status: "error",
+						coverageEligible: true,
+						checkedAt: "2026-10-17T19:33:37.076Z",
+						durationMs: 1,
+						itemCount: null,
+						candidateCount: 0,
+						newCandidateCount: 0,
+						error: "wa-ai-policy: net::ERR_HTTP2_PROTOCOL_ERROR",
+					},
+				],
+			},
+		});
+
+		const { getCollectionMeta } = await loadDataServiceModule();
+		const meta = await getCollectionMeta();
+
+		expect(meta.collector.health).toBe("healthy");
+		expect(meta.collector.lastRunSources).not.toContain("accc-rss");
+		expect(meta.collector.lastRunSources).not.toContain("wa-ai-policy");
+		expect(meta.collector.failedSourceCount).toBe(0);
+		expect(meta.collector.dueSourceCount).toBe(
+			meta.collector.successfulSourceCount,
+		);
+	});
+
 	it("never moves the global editorial review timestamp backwards", async () => {
 		const meta = {
 			lastCollectedAt: "2026-07-16T00:00:00.000Z",

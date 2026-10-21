@@ -1,5 +1,87 @@
 [
   {
+    "id": "federal-online-safety-other-legislation-amendment-my-face-my-rights-bill-2025",
+    "title": "Online Safety and Other Legislation Amendment (My Face, My Rights) Bill 2025",
+    "description": "Private senator's bill (Senator David Pocock) amending the Online Safety Act 2021 and the Privacy Act 1988 to address non-consensual deepfake face or voice material. Introduced in the Senate on 24 November 2025; before the Senate as of the second-reading debate on 25 June 2026. Detected via Hansard debate discussing AI; primary citation is the bill homepage, not the debate transcript.",
+    "jurisdiction": "federal",
+    "type": "legislation",
+    "status": "proposed",
+    "effectiveDate": "2026-06-25",
+    "dates": [
+      {
+        "type": "published",
+        "date": "2026-06-25",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=s1471",
+          "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=s1471",
+          "retrievedAt": "2026-10-07T19:33:43.055Z",
+          "contentType": "text/plain",
+          "contentHash": "79d9ec28a4d6c36e28cfc88976c8a7a2b0dc2089c3b507ad091f8df4f93f7368",
+          "title": "Online Safety and Other Legislation Amendment (My Face, My Rights) Bill 2025",
+          "publishedAt": "2026-06-25",
+          "publishedAtPrecision": "day",
+          "linkedDocuments": [
+            {
+              "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22",
+              "finalUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22",
+              "retrievedAt": "2026-10-07T19:33:43.055Z",
+              "contentType": "text/plain",
+              "contentHash": "79d9ec28a4d6c36e28cfc88976c8a7a2b0dc2089c3b507ad091f8df4f93f7368"
+            }
+          ]
+        }
+      }
+    ],
+    "agencies": [
+      "Parliament of Australia"
+    ],
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=s1471",
+    "content": "[Skip all navigation links](https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22#startContent) [Permalink](https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22) Prev Next [Return to results list](https://parlinfo.aph.gov.au/parlInfo/search/summary/summary.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22#1) (1 results) [![Print List](https://parlinfo.aph.gov.au/images/print.jpg \"Print Document\")](https://parlinfo.aph.gov.au/parlInfo/search/display/displayPrint.w3p;qu",
+    "aiSummary": "Private senator's bill (Senator David Pocock) amending the Online Safety Act 2021 and the Privacy Act 1988 to address non-consensual deepfake face or voice material. Introduced in the Senate on 24 November 2025; before the Senate as of the second-reading debate on 25 June 2026. Detected via Hansard debate discussing AI; primary citation is the bill homepage, not the debate transcript.",
+    "tags": [
+      "online safety",
+      "deepfake",
+      "privacy",
+      "bill",
+      "Parliament"
+    ],
+    "createdAt": "2026-10-07T19:33:43.055Z",
+    "updatedAt": "2026-10-19T09:22:36.725Z",
+    "themes": [
+      "online-safety",
+      "privacy-data"
+    ],
+    "lastReviewedAt": "2026-10-19T09:22:36.725Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=s1471",
+        "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=s1471",
+        "retrievedAt": "2026-10-07T19:33:43.055Z",
+        "contentType": "text/plain",
+        "contentHash": "79d9ec28a4d6c36e28cfc88976c8a7a2b0dc2089c3b507ad091f8df4f93f7368",
+        "title": "Online Safety and Other Legislation Amendment (My Face, My Rights) Bill 2025",
+        "publishedAt": "2026-06-25",
+        "publishedAtPrecision": "day",
+        "linkedDocuments": [
+          {
+            "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22",
+            "finalUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22",
+            "retrievedAt": "2026-10-07T19:33:43.055Z",
+            "contentType": "text/plain",
+            "contentHash": "79d9ec28a4d6c36e28cfc88976c8a7a2b0dc2089c3b507ad091f8df4f93f7368"
+          }
+        ]
+      },
+      "checkedAt": "2026-10-19T09:22:36.725Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Daniel Alkurdi (Signal): approve 2, themes online-safety, privacy-data; type legislation\nchatMessageId: source-review-dev-bills-online-safety-and-other-legislation-amendm-1rn0ixa\ncardId: source-review-dev-bills-online-safety-and-other-legislation-amendm-1rn0ixa\ndecided: 19 Oct 2026, 20:22 AEDT (2026-10-19T09:22:34.993Z)\nthemes: online-safety, privacy-data\ntype: legislation\nrelayed by Policai Signal\nApproval used the collector-retained source snapshot because the live re-fetch was refused by the host (HTTP 403, 429, or equivalent identity/rate refusal)."
+    }
+  },
+  {
     "id": "nsw-nesa-stage-6-take-home-assessment-ai-rules",
     "title": "NESA Stage 6 take-home assessment and generative AI rules",
     "description": "Forthcoming ACE Rule changes cap take-home assessment in each Preliminary and HSC course at one task weighted no more than 15%, require marks to reflect students’ own work rather than generative-AI use, and direct schools not to rely primarily on AI-detection software.",
@@ -1949,7 +2031,7 @@
       "Australian Signals Directorate"
     ],
     "sourceUrl": "https://blueprint.asd.gov.au/security-and-governance/policies",
-    "content": "ASD's Blueprint for Secure Cloud was initially launched on 19 December 2023. The Blueprint is maintained as a living resource; its change log does not record a change specific to this policy. It is better-practice guidance for designing, configuring and deploying secure cloud and hybrid workspaces, with a current focus on Microsoft 365. Its security and governance section links system security planning, the Essential Eight, system security plan annexes, and organisational policies and strategies. The organisational policies checklist explicitly identifies a general-purpose artificial intelligence usage policy as a requirement of ISM control ISM-2074. The Blueprint does not provide a template for this artefact, but positions it as part of the documentation agencies should review, develop and maintain when operating systems built using the Blueprint.",
+    "content": "ASD's Blueprint for Secure Cloud was initially launched on 19 December 2023. The Blueprint is maintained as a living resource; its change log does not record a change specific to this policy. It is better-practice guidance for designing, configuring and deploying secure cloud and hybrid workspaces, with a current focus on Microsoft 365. Its security and governance section links system security planning, the Essential Eight, system security plan annexes, and organisational policies and strategies. The organisational policies checklist explicitly identifies a general-purpose artificial intelligence usage policy as a requirement of ISM control ISM-2074. The Blueprint does not provide a template for this artefact, but positions it as part of the documentation agencies should review, develop and maintain when operating systems built using the Blueprint. ASD Essentials, launched on 15 October 2026, is the transition path from the Essential Eight (https://www.cyber.gov.au/publication/transitioning-from-the-essential-eight); ASD keeps the Essential Eight on cyber.gov.au during the transition (https://www.cyber.gov.au/news/asd-essentials-evolving-our-approach-to-cyber-security-resilience).",
     "aiSummary": "ASD Blueprint guidance, first launched in December 2023, identifies a general-purpose AI usage policy as an ISM-2074 organisational policy requirement.",
     "tags": [
       "ASD",
@@ -1964,7 +2046,7 @@
       "cyber-security"
     ],
     "createdAt": "2026-04-20T00:00:00Z",
-    "updatedAt": "2026-07-19T06:14:28.882Z",
+    "updatedAt": "2026-10-18T22:40:00.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -4581,7 +4663,7 @@
       "Australian Cyber Security Centre"
     ],
     "sourceUrl": "https://www.cyber.gov.au/blog/frontier-models-and-their-impact-on-cyber-security",
-    "content": "ASD published guidance on 9 April 2026 about the cyber security implications of increasingly capable frontier AI models, following Anthropic's 7 April 2026 announcement of Claude Mythos Preview. The guidance says frontier models reduce the cost, effort and expertise required to discover and exploit software vulnerabilities, while also creating opportunities for defenders to identify and remediate vulnerabilities before exploitation. ASD advises organisations to maintain strong cyber security baselines aligned to the Information Security Manual and Essential Eight, reduce exposed attack paths, patch more frequently, use AI defensively where appropriate, and implement layered security. APRA's 30 April 2026 AI industry letter points regulated entities to ASD advice on frontier AI models.",
+    "content": "ASD published guidance on 9 April 2026 about the cyber security implications of increasingly capable frontier AI models, following Anthropic's 7 April 2026 announcement of Claude Mythos Preview. The guidance says frontier models reduce the cost, effort and expertise required to discover and exploit software vulnerabilities, while also creating opportunities for defenders to identify and remediate vulnerabilities before exploitation. ASD advises organisations to maintain strong cyber security baselines aligned to the Information Security Manual and Essential Eight, reduce exposed attack paths, patch more frequently, use AI defensively where appropriate, and implement layered security. APRA's 30 April 2026 AI industry letter points regulated entities to ASD advice on frontier AI models. ASD Essentials, launched on 15 October 2026, is the transition path from the Essential Eight (https://www.cyber.gov.au/publication/transitioning-from-the-essential-eight); ASD keeps the Essential Eight on cyber.gov.au during the transition (https://www.cyber.gov.au/news/asd-essentials-evolving-our-approach-to-cyber-security-resilience).",
     "aiSummary": "ASD guidance on frontier AI cyber risks, defensive use of AI, patching tempo, attack-surface reduction, and layered cyber resilience.",
     "tags": [
       "frontier AI",
@@ -4598,7 +4680,7 @@
       "risk-assurance"
     ],
     "createdAt": "2026-05-01T00:00:00Z",
-    "updatedAt": "2026-10-07T00:39:50.272Z",
+    "updatedAt": "2026-10-18T22:40:00.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -5346,7 +5428,7 @@
   {
     "id": "esafety-genai-industry-codes",
     "title": "Online safety industry codes covering generative AI and AI companions",
-    "description": "Enforceable eSafety industry codes registered in September 2025 — including for generative AI services and AI companion chatbots — in effect from 9 March 2026, with age-assurance obligations and penalties up to $49.5m.",
+    "description": "Enforceable eSafety industry codes registered in September 2025 — including for generative AI services and AI companion chatbots — in effect from 9 March 2026, with age-assurance obligations and penalties up to $49.5m. Schedule 3 of the Online Safety Amendment (Digital Duty of Care) Bill 2026, introduced on 15 October 2026 and still before the House, would repeal these codes and standards 12 months after Royal Assent. That repeal has not occurred.",
     "jurisdiction": "federal",
     "type": "regulation",
     "status": "active",
@@ -5355,7 +5437,7 @@
       "eSafety Commissioner"
     ],
     "sourceUrl": "https://www.esafety.gov.au/industry/codes",
-    "content": "In September 2025 the eSafety Commissioner registered six new industry codes under the Online Safety Act, including codes covering generative AI services and AI companion chatbots. The codes took effect on 9 March 2026 and impose age-assurance and safety obligations, with civil penalties of up to $49.5 million. In March 2026 eSafety reported on risks AI companions pose to children following transparency notices issued to four providers in October 2025.",
+    "content": "In September 2025 the eSafety Commissioner registered six new industry codes under the Online Safety Act, including codes covering generative AI services and AI companion chatbots. The codes took effect on 9 March 2026 and impose age-assurance and safety obligations, with civil penalties of up to $49.5 million. In March 2026 eSafety reported on risks AI companions pose to children following transparency notices issued to four providers in October 2025. Pending repeal, not yet in effect: Schedule 3 of the Online Safety Amendment (Digital Duty of Care) Bill 2026 would repeal the online-safety industry codes and standards 12 months after Royal Assent. The bill was introduced on 15 October 2026 and is still proposed. This record stays active.",
     "aiSummary": "Enforceable online-safety codes for generative AI and AI companion services, in force since March 2026.",
     "tags": [
       "online safety",
@@ -5369,7 +5451,7 @@
       "generative-ai"
     ],
     "createdAt": "2026-07-10T00:00:00.000Z",
-    "updatedAt": "2026-07-19T06:14:29.219Z",
+    "updatedAt": "2026-10-17T09:00:00.000Z",
     "lastReviewedAt": "2026-10-16T00:00:00.000Z",
     "verification": {
       "status": "verified",
@@ -7808,6 +7890,334 @@
       "checkedBy": "Policai Developer source re-read (issue 181)",
       "method": "manual",
       "notes": "Approved by Daniel Alkurdi for addition to the register on 7 October 2026 after review of the official PM&C consultation page, which states the opening and closing times; the PM&C news item of 17 September 2026 states the same period. Re-read 2026-10-16 (issue 181): the official PM&C page now states \"Submissions to this consultation have now closed\" and that information on outcomes and the Government's next steps will be made available in due course. No extension, published submissions or outcome are shown; status set to closed."
+    }
+  },
+  {
+    "id": "federal-online-safety-amendment-digital-duty-of-care-bill-2026",
+    "title": "Online Safety Amendment (Digital Duty of Care) Bill 2026",
+    "description": "Proposed federal bill introduced in the House of Representatives on 15 October 2026, with the second reading moved the same day. It would place a digital duty of care on online services, including services that generate material using AI. It is before the House and is not law.",
+    "jurisdiction": "federal",
+    "type": "legislation",
+    "status": "proposed",
+    "effectiveDate": "2026-10-15",
+    "dates": [
+      {
+        "type": "published",
+        "date": "2026-10-15",
+        "precision": "day",
+        "primary": true
+      },
+      {
+        "type": "scheduled_review",
+        "date": "2026-11-20",
+        "precision": "day"
+      }
+    ],
+    "agencies": [
+      "Parliament of Australia",
+      "Department of Infrastructure, Transport, Regional Development, Communications and the Arts"
+    ],
+    "sourceUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;adv=yes;orderBy=date-eFirst;page=0;query=Dataset%3AbillsCurBef,billsCurNotBef,billsPrevParl%20Dataset_Phrase%3A%22billhome%22;rec=0;resCount=Default",
+    "content": "The Online Safety Amendment (Digital Duty of Care) Bill 2026 was introduced and read a first time in the House of Representatives on 15 October 2026, and the second reading was moved that day. Status is proposed: the register has no separate before-Parliament status. The bill is not an Act. The House progress page (https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553) records that introduction, the second reading, portfolio Infrastructure, Transport, Regional Development, Communications, Sport and the Arts, and referral on 15 October 2026 to the Senate Environment and Communications Legislation Committee, with a report due on 20 November 2026. That reporting date is stored as scheduled_review because the register has no committee-report date type. It is the committee's reporting date, not a statutory review of an Act. As described in the approved 11–17 October 2026 signal, the bill covers services that generate material using AI (s 25B(1)(h)), requires yearly risk assessments, and in Schedule 3 would repeal the online-safety industry codes and standards 12 months after Royal Assent. Those codes remain in force on esafety-genai-industry-codes. An exposure draft was released for targeted consultation on 8 September 2026 (Minister for Communications, https://minister.infrastructure.gov.au/wells/media-release/my-feed-my-way). The Minister announced introduction on 15 October 2026 (https://minister.infrastructure.gov.au/wells/media-release/digital-duty-care-next-step-australias-world-leading-reforms). The department's page is https://www.infrastructure.gov.au/media-communications/internet/online-safety/digital-duty-care. Secondary reports, not the canonical source: https://www.openaustralia.org.au/debates/?id=2026-10-15.6.2 and https://aigeek.au/news/digital-duty-of-care-bill-introduced-ai/.",
+    "aiSummary": "Proposed Online Safety Amendment (Digital Duty of Care) Bill 2026, introduced on 15 October 2026. It is not law. The Senate Environment and Communications Legislation Committee is due to report on 20 November 2026.",
+    "tags": [
+      "digital duty of care",
+      "online safety",
+      "generative AI",
+      "bill",
+      "Parliament"
+    ],
+    "themes": [
+      "online-safety",
+      "generative-ai",
+      "risk-assurance",
+      "ai-governance"
+    ],
+    "createdAt": "2026-10-17T09:00:00.000Z",
+    "updatedAt": "2026-10-17T09:00:00.000Z",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;adv=yes;orderBy=date-eFirst;page=0;query=Dataset%3AbillsCurBef,billsCurNotBef,billsPrevParl%20Dataset_Phrase%3A%22billhome%22;rec=0;resCount=Default",
+        "title": "ParlInfo bill-home search"
+      },
+      "notes": "Unverified editorial draft from the Policai Signal scan 11–17 October 2026, entered after Dan approved the gap. No source fingerprint, no checkedAt, no checkedBy, and no lastReviewedAt. Hidden from the public read until a manual editorial review."
+    }
+  },
+  {
+    "id": "asd-ai-considerations-within-the-essentials-2026",
+    "title": "AI considerations within the Essentials",
+    "description": "ASD guidance, published on 15 October 2026, on applying the ASD Essentials to artificial intelligence whether an organisation consumes, develops or deploys AI.",
+    "jurisdiction": "federal",
+    "type": "guideline",
+    "status": "active",
+    "effectiveDate": "2026-10-15",
+    "dates": [
+      {
+        "type": "published",
+        "date": "2026-10-15",
+        "precision": "day",
+        "primary": true
+      }
+    ],
+    "agencies": [
+      "Australian Signals Directorate",
+      "Australian Cyber Security Centre"
+    ],
+    "sourceUrl": "https://www.cyber.gov.au/publication/ai-considerations-within-the-essentials",
+    "content": "ASD published this as guidance on 15 October 2026. The publication page (https://www.cyber.gov.au/publication/ai-considerations-within-the-essentials) shows \"Published 15 Oct 2026\" and the PDF is at https://www.cyber.gov.au/sites/default/files/2026-10/AI%20considerations%20within%20the%20Essentials.pdf. The page describes it as guidance that helps cyber security practitioners understand considerations for scoping, implementing and assessing controls in AI environments, especially within the enterprise IT chapter. ASD presents it as guidance. It uses 'should' language, and its disclaimer says it is 'of a general nature'. The same day's news item (https://www.cyber.gov.au/news/asd-essentials-evolving-our-approach-to-cyber-security-resilience) says ASD launched the ASD Essentials on 15 October 2026 as an evolution of the Essential Eight, in chapters for enterprise IT, operational technology and cloud, and that during the transition ASD keeps both frameworks on cyber.gov.au. It also says: \"Until associated regulatory changes are communicated by regulators, organisations should continue to meet their current regulatory obligations.\" The publication says the Essentials framework applies whether an organisation consumes, develops or deploys AI. It covers AI assets in scoping (including models, training data, model artefacts and inference endpoints), prompt injection, the integrity and provenance of model weights and training data, least privilege for AI agents and integrations, AI agents' non-person identities, AI tools capable of administrative actions operating through privileged environments, and logging of prompts and outputs. ASD's transition guidance, also published on 15 October 2026 (https://www.cyber.gov.au/publication/transitioning-from-the-essential-eight), says the enterprise IT chapter's Governance and culture domain includes an artificial intelligence accountability principle, and that these governance areas were not assessed as part of the Essential Eight maturity model. The AI considerations PDF (p 5) ties executive AI accountability to the ISM principle. The record sits with ASD's other AI cyber security guidance: Careful adoption of agentic AI services (asd-careful-adoption-agentic-ai-services-2026), Agentic AI harnesses (asd-agentic-ai-harnesses-2026), the Blueprint for Secure Cloud artificial intelligence usage policy requirement (asd-blueprint-secure-cloud-ai-usage-policy) and Frontier AI models and their impact on cyber security (asd-frontier-ai-models-cyber-security-2026).",
+    "aiSummary": "ASD guidance, published 15 October 2026, on applying the ASD Essentials to AI an organisation consumes, develops or deploys, including scoping, prompt injection, provenance, agent privilege and logging.",
+    "tags": [
+      "ASD Essentials",
+      "Essential Eight",
+      "artificial intelligence",
+      "prompt injection",
+      "agentic AI",
+      "cyber security"
+    ],
+    "themes": [
+      "cyber-security",
+      "ai-governance",
+      "risk-assurance",
+      "agentic-ai"
+    ],
+    "createdAt": "2026-10-18T21:40:00.000Z",
+    "updatedAt": "2026-10-18T22:40:00.000Z",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.cyber.gov.au/publication/ai-considerations-within-the-essentials",
+        "title": "AI considerations within the Essentials",
+        "publisher": "Australian Signals Directorate"
+      },
+      "notes": "Unverified editorial draft. The publication page and the 15 October 2026 ASD news item were read through a retrieval that could reach cyber.gov.au; this environment's browser and direct requests to the host hung or returned HTTP 500, which existing ASD records already note. No source fingerprint, no checkedAt, no checkedBy and no lastReviewedAt. Not marked verified. Hidden from the public read until Daniel's own review. cyber-news remains a manual source: its last manual review and watch-state lastCheckedBySource are 2026-10-06, before this launch."
+    }
+  },
+  {
+    "id": "tas-local-community-benefit-fund-ai-data-centres-2026",
+    "title": "Local Community Benefit Fund for AI and data-centre developments",
+    "description": "Tasmanian Government announcement that major AI and data-centre proponents will be expected to contribute to a Local Community Benefit Fund supporting host communities, alongside paying network costs and quarterly public reporting of water and energy use.",
+    "jurisdiction": "tas",
+    "type": "funding_program",
+    "status": "proposed",
+    "effectiveDate": "2026-10-14",
+    "dates": [
+      {
+        "type": "published",
+        "date": "2026-10-14",
+        "precision": "day",
+        "primary": true
+      }
+    ],
+    "agencies": [
+      "Premier of Tasmania",
+      "Department of Premier and Cabinet"
+    ],
+    "sourceUrl": "https://www.premier.tas.gov.au/latest-news/2026/october/major-ai-investment-must-deliver-for-tasmanian-communities",
+    "content": "On 14 October 2026 the Premier of Tasmania announced that the Tasmanian Government will establish a Local Community Benefit Fund so communities hosting major AI and data-centre developments share directly in the benefits. The fund is to support local infrastructure, skills and training, community organisations and initiatives that improve liveability and economic participation in host communities. Major AI and data-centre proponents will be expected to: pay their own infrastructure and network costs; help grow Tasmania's energy supply by supporting new renewable generation and additional energy capacity; locate in appropriate industrial precincts away from urban areas; protect consumers so water and power demand does not compromise supply security or raise costs for other users; contribute to the Local Community Benefit Fund; and publicly report water and energy use each quarter. The announcement builds on the Government's draft Statement of Expectations for Data Centres and AI Infrastructure and reflects issues raised through the Parliamentary Inquiry into AI Data Centres. Source: https://www.premier.tas.gov.au/latest-news/2026/october/major-ai-investment-must-deliver-for-tasmanian-communities.",
+    "aiSummary": "Tasmania announced on 14 October 2026 a Local Community Benefit Fund that major AI and data-centre proponents will be expected to contribute to, with network cost recovery and quarterly water and energy reporting.",
+    "tags": [
+      "Tasmania",
+      "community benefit",
+      "data centres",
+      "AI infrastructure",
+      "energy",
+      "water"
+    ],
+    "themes": [
+      "infrastructure"
+    ],
+    "createdAt": "2026-10-19T08:30:00.000Z",
+    "updatedAt": "2026-10-19T08:30:00.000Z",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.premier.tas.gov.au/latest-news/2026/october/major-ai-investment-must-deliver-for-tasmanian-communities",
+        "title": "Major AI investment must deliver for Tasmanian communities",
+        "publisher": "Premier of Tasmania",
+        "publishedAt": "2026-10-14"
+      },
+      "notes": "Unverified editorial draft from the Policai register-gap ingest of the Premier's 14 October 2026 media release. No source fingerprint, no checkedAt, no checkedBy, and no lastReviewedAt. Not marked verified. Hidden from the public read until Daniel's own review."
+    }
+  },
+  {
+    "id": "tas-draft-statement-expectations-data-centres-ai-2026",
+    "title": "Draft Statement of Expectations for Data Centres and AI Infrastructure",
+    "description": "Tasmanian Government draft Statement of Expectations for large data-centre and AI infrastructure developments, consulted from 7 September to 12 October 2026, with final expectations planned by end of 2026.",
+    "jurisdiction": "tas",
+    "type": "framework",
+    "status": "proposed",
+    "effectiveDate": "2026-09-07",
+    "dates": [
+      {
+        "type": "consultation_opened",
+        "date": "2026-09-07",
+        "precision": "day",
+        "primary": true
+      },
+      {
+        "type": "consultation_closed",
+        "date": "2026-10-12",
+        "precision": "day"
+      }
+    ],
+    "agencies": [
+      "Tasmanian Government"
+    ],
+    "sourceUrl": "https://engage.building.tas.gov.au/draft-expectations-data-centres-and-ai-infrastructure-developers",
+    "content": "The Tasmanian Government released a draft Statement of Expectations for Data Centres and Artificial Intelligence (AI) Infrastructure for public consultation on Engage with Building Tasmania. The Engage consultation page states that the expectations apply to large data-centre developments, generally including AI factories, hyper-scale data centres and multi-site developments by a proponent. Consultation opened on 7 September 2026 and closed at 11.59pm on Monday 12 October 2026; analysis of feedback was scheduled for October 2026, with release of the final Expectations by end of 2026. The draft is intended to guide proponents, investors, industry, communities and other stakeholders while supporting responsible development that delivers enduring benefits for Tasmania. The Premier's 14 October 2026 announcement of a Local Community Benefit Fund builds on this draft Statement. Primary source: https://engage.building.tas.gov.au/draft-expectations-data-centres-and-ai-infrastructure-developers.",
+    "aiSummary": "Tasmania's draft Statement of Expectations for data centres and AI infrastructure was open for consultation from 7 September to 12 October 2026; final expectations are planned by end of 2026.",
+    "tags": [
+      "Tasmania",
+      "data centres",
+      "AI infrastructure",
+      "Statement of Expectations",
+      "consultation",
+      "energy",
+      "water"
+    ],
+    "themes": [
+      "infrastructure"
+    ],
+    "createdAt": "2026-10-19T08:30:00.000Z",
+    "updatedAt": "2026-10-19T08:30:00.000Z",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://engage.building.tas.gov.au/draft-expectations-data-centres-and-ai-infrastructure-developers",
+        "title": "Draft Expectations for Data Centres and AI Infrastructure Developers",
+        "publisher": "Engage with Building Tasmania"
+      },
+      "notes": "Unverified editorial draft. Primary source is the official Engage with Building Tasmania consultation page (engage.building.tas.gov.au). Consultation dates and scope taken from that page. No source fingerprint, no checkedAt, no checkedBy, and no lastReviewedAt. Not marked verified. Hidden from the public read until Daniel's own review."
+    }
+  },
+  {
+    "id": "asic-market-integrity-rules-ai-trading-2026",
+    "title": "ASIC Market Integrity Rules amendments for AI-enabled and automated trading",
+    "description": "ASIC amendments to the securities and futures Market Integrity Rules modernising trading-system and automated-trading obligations for algorithmic and AI-enabled trading. Media release 26-226MR is dated 24 September 2026. The amendment instruments were made on 15 September 2026. CS 63 states that the rules commence on 18 March 2028. Parallel consultation CS 63 on updated RG 265 and RG 266 closes at 5 pm AEDT on 5 November 2026.",
+    "jurisdiction": "federal",
+    "type": "regulation",
+    "status": "active",
+    "effectiveDate": "2026-09-15",
+    "dates": [
+      {
+        "type": "issued",
+        "date": "2026-09-15",
+        "precision": "day",
+        "primary": true
+      },
+      {
+        "type": "published",
+        "date": "2026-09-24",
+        "precision": "day"
+      },
+      {
+        "type": "consultation_opened",
+        "date": "2026-09-24",
+        "precision": "day"
+      },
+      {
+        "type": "consultation_closed",
+        "date": "2026-11-05",
+        "precision": "day"
+      },
+      {
+        "type": "commenced",
+        "date": "2028-03-18",
+        "precision": "day"
+      }
+    ],
+    "agencies": [
+      "Australian Securities and Investments Commission"
+    ],
+    "sourceUrl": "https://www.asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-226mr-asic-strengthens-ai-trading-safeguards-and-streamlines-market-integrity-rules",
+    "content": "ASIC media release 26-226MR (https://www.asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-226mr-asic-strengthens-ai-trading-safeguards-and-streamlines-market-integrity-rules) is dated 24 September 2026 on the page (displayDate). It announces amendments to the ASIC Market Integrity Rules (Securities Markets) 2017 and the ASIC Market Integrity Rules (Futures Markets) 2017 that modernise trading-systems obligations for algorithmic trading, including AI and machine learning, require participants to test, monitor and govern trading systems and algorithms, align more closely with IOSCO principles, apply trading-system requirements consistently to manually entered and automated orders, and clarify the false or misleading appearance rule for AI-enabled and other trading. The release says the amendments follow Consultation Paper 386 and take effect in 2028 after an 18-month transition. The release does not mention a kill switch or a seven-year record-keeping period. ASIC consultation CS 63 (https://www.asic.gov.au/regulatory-resources/find-a-document/consultations/cs-63-proposed-updates-to-rg-265-and-rg-266-and-withdrawal-of-rg-241) states Released 24 September 2026 and that comments close at 5 pm AEDT on 5 November 2026. It states that the market integrity rules were amended in September 2026 and that the rules commence on 18 March 2028 after an 18-month transition. It proposes updates to RG 265 and RG 266 and moving relevant guidance from RG 241 into those guides so RG 241 can be retired. The CS 63 page does not mention a kill switch or seven-year record keeping. Attachments 5 and 6, the marked-up compilations of the securities and futures rules, state that the changes are in force from 18 March 2028 and that market participants and market operators can continue to comply with the rules as in force on 15 October 2024 until 18 March 2028. The Federal Register of Legislation records ASIC Market Integrity Rules (Securities Markets) Amendment Instrument 2026/574 (F2026L01223, https://www.legislation.gov.au/F2026L01223/latest/text) and ASIC Market Integrity Rules (Futures Markets) Amendment Instrument 2026/575 (F2026L01224, https://www.legislation.gov.au/F2026L01224/latest/text). Each instrument is dated 15 September 2026 and was registered on 17 September 2026. Section 2 of each instrument states that it commences on the day that is 18 months after the day it is registered. The instruments do not use the term kill switch. They do set seven-year record obligations in the amended trading-system rules. In the securities instrument, a trading participant must maintain records of trading messages identified under the monitoring and post-trade surveillance rule, and any measures taken, for seven years from the date of the relevant trading message (rule 5.6.3A(3)); maintain records that demonstrate compliance with the trading-algorithm controls and testing obligations for seven years (rule 5.6.3B(4)); and document and retain for at least seven years records of the methodology, scope and results of the Initial Certification Review (rule 5.6.4(4)), the Material Change Review (rule 5.6.8(4)) and the Annual Review (rule 5.6.8A(5)), and of recommended changes applied as a result. The futures instrument states the corresponding obligations in rules 2.2B.3(3), 2.2B.4(4), 2.2B.5(4), 2.2B.8(4) and 2.2B.9(5).",
+    "aiSummary": "ASIC MIR amendments for algorithmic and AI-enabled trading. Media release 26-226MR is dated 24 September 2026; instruments made 15 September 2026. CS 63 states commencement on 18 March 2028 and closes on 5 November 2026.",
+    "tags": [
+      "ASIC",
+      "market integrity rules",
+      "algorithmic trading",
+      "AI trading",
+      "CS 63",
+      "RG 265",
+      "RG 266",
+      "financial markets"
+    ],
+    "themes": [
+      "financial-sector",
+      "ai-governance",
+      "risk-assurance",
+      "human-oversight",
+      "automated-decisions"
+    ],
+    "createdAt": "2026-10-19T08:35:00.000Z",
+    "updatedAt": "2026-10-20T09:10:00.000Z",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-226mr-asic-strengthens-ai-trading-safeguards-and-streamlines-market-integrity-rules",
+        "title": "26-226MR ASIC strengthens AI trading safeguards and streamlines market integrity rules",
+        "publisher": "Australian Securities and Investments Commission",
+        "publishedAt": "2026-09-24",
+        "publishedAtPrecision": "day"
+      },
+      "notes": "Unverified register-gap draft for Daniel. Dates taken only from ASIC pages and the Federal Register of Legislation: instruments dated 15 September 2026 and registered 17 September 2026 (F2026L01223, F2026L01224); media release displayDate 24 September 2026; CS 63 Released 24 September 2026 and comments close 5 November 2026 (5 pm AEDT); CS 63 states the rules commence on 18 March 2028; section 2 of each instrument commences 18 months after the day it is registered. Re-read on 20 October 2026: the media release and the CS 63 page do not mention a kill switch or seven-year record keeping, so the kill-switch sentence was removed. Seven-year retention is kept from the as-made instruments (securities rules 5.6.3A(3), 5.6.3B(4), 5.6.4(4), 5.6.8(4) and 5.6.8A(5), and futures rules 2.2B.3(3), 2.2B.4(4), 2.2B.5(4), 2.2B.8(4) and 2.2B.9(5)). No checkedAt, no checkedBy, no lastReviewedAt. Not marked verified. Hidden from the public read until Daniel's own review."
+    }
+  },
+  {
+    "id": "pmc-rapid-review-ai-driven-cyber-incident-2026",
+    "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
+    "description": "PM&C-led rapid review, announced with formal terms of reference on 24 September 2026, of whether Australia's legislative, governance and information-sharing arrangements are fit for purpose for cyber incidents involving AI.",
+    "jurisdiction": "federal",
+    "type": "policy",
+    "status": "proposed",
+    "effectiveDate": "2026-09-24",
+    "dates": [
+      {
+        "type": "published",
+        "date": "2026-09-24",
+        "precision": "day",
+        "primary": true
+      }
+    ],
+    "agencies": [
+      "Department of the Prime Minister and Cabinet",
+      "National Cyber Security Coordinator",
+      "Australian Signals Directorate",
+      "Australian AI Safety Institute",
+      "Services Australia"
+    ],
+    "sourceUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+    "content": "On 24 September 2026 the Prime Minister announced a Department of the Prime Minister and Cabinet (PM&C)-led rapid review of whether existing legislative, governance and information-sharing arrangements are fit for purpose to prepare for and respond to cyber incidents involving artificial intelligence. PM&C published formal terms of reference the same day (https://www.pmc.gov.au/resources/terms-reference-rapid-review-australian-government-arrangements-ai-driven-cyber-incident; release date Thursday 24 September 2026). The review page states that PM&C leads the review in collaboration with the National Cyber Security Coordinator, the Australian Signals Directorate, the Australian AI Safety Institute and Services Australia. Per the terms of reference, recommendations scope covers: reporting requirements relating to AI-driven cyber incidents, AI-identified cyber vulnerabilities and cyber-related AI safety incidents (including obligations, thresholds, pathways and systems); Commonwealth governance and information-sharing arrangements for managing incidents involving AI (including roles, responsibilities and escalation pathways); engagement and information-sharing obligations of AI firms (including notification requirements and cooperation arrangements during incidents); the adequacy of existing system and legislative, regulatory and enforcement frameworks in deterring AI-driven cyber incidents (including whether current offences, liabilities, penalties and enforcement mechanisms are sufficient and effective); and mechanisms to strengthen networks and systems of government departments and agencies against AI vulnerabilities. PM&C states the review will also inform Australia's AI Standards and international work on safety incident reporting. The Prime Minister's disclosure of the underlying OpenAI / Medicare statistics portal incident is recorded separately as timeline event tl-2026-09-24-pm-discloses-openai-medicare-portal-access. This record is the government rapid review with published terms of reference; it is not a completed instrument and it is not OpenAI's later company taskforce.",
+    "aiSummary": "PM&C-led rapid review announced 24 September 2026 with published terms of reference on whether legislative, governance and information-sharing arrangements are fit for AI-driven cyber incidents; recommendations to inform Australia's AI Standards.",
+    "tags": [
+      "rapid review",
+      "PM&C",
+      "cyber security",
+      "AI incident reporting",
+      "terms of reference",
+      "OpenAI",
+      "Medicare portal"
+    ],
+    "themes": [
+      "cyber-security",
+      "ai-governance",
+      "risk-assurance",
+      "standards",
+      "agentic-ai"
+    ],
+    "createdAt": "2026-10-20T05:20:00.000Z",
+    "updatedAt": "2026-10-20T05:20:00.000Z",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+        "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
+        "publisher": "Department of the Prime Minister and Cabinet",
+        "publishedAt": "2026-09-24",
+        "publishedAtPrecision": "day"
+      },
+      "notes": "Unverified editorial draft from the Policai Signal handoff of 20 October 2026. Primary sources are the PM&C review page and the terms of reference resource (release Thursday 24 September 2026). Partner agencies taken from the PM&C ToR/page (PM&C lead; National Cyber Security Coordinator; ASD; Australian AI Safety Institute; Services Australia), not from the PM transcript's longer verbal list that also named the Office of AI. No source fingerprint, no checkedAt, no checkedBy, and no lastReviewedAt. Not marked verified. Hidden from the public read until Daniel's own review. Do not conflate with OpenAI's separate company Australian taskforce announced 20 October 2026."
     }
   }
 ]

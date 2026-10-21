@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Page not found - Policai',
+  title: 'Page not found',
 };
 
 const destinations = [

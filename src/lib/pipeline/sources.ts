@@ -103,6 +103,21 @@ export const WATCH_SOURCES: WatchSource[] = [
       'Directly tracks the Office of AI mandate and national standards implementation; PMC serves an empty shell to plain HTTP clients, so the page is rendered in the headless browser.',
   },
   {
+    id: 'pmc-rapid-review-ai-cyber',
+    name: 'PM&C — Rapid review into AI-driven cyber incident arrangements',
+    jurisdiction: 'federal',
+    category: 'government',
+    url: 'https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident',
+    kind: 'document',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    critical: true,
+    notes:
+      'Direct document watch for the 24 September 2026 PM&C rapid review page (outside /office-ai). Sibling domestic-policy pages are not discovered by pmc-office-ai. PMC Imperva often blocks plain HTTP; use the headless browser like pmc-office-ai. Companion ToR resource: https://www.pmc.gov.au/resources/terms-reference-rapid-review-australian-government-arrangements-ai-driven-cyber-incident.',
+  },
+  {
     id: 'industry-ai-publications',
     name: 'Department of Industry — AI publications',
     jurisdiction: 'federal',
@@ -1086,9 +1101,9 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'document',
     schedule: 'weekly',
     enabled: true,
-    automation: 'automatic',
-    fetchStrategy: 'browser',
-    notes: 'The host rejects plain HTTP clients.',
+    automation: 'manual',
+    notes:
+      'Tracked by hand: the linked framework PDF on www.finance.gov.au resets the connection for the Policai collector identity (net::ERR_HTTP2_PROTOCOL_ERROR; curl with that identity gets HTTP/2 INTERNAL_ERROR and fails on HTTP/1.1, verified 2026-10-17) and the source has failed every collection run recorded since 2026-10-12. The block is respected and the user agent is not disguised or bypassed.',
   },
   {
     id: 'sa-office-for-ai',
@@ -1141,6 +1156,19 @@ export const WATCH_SOURCES: WatchSource[] = [
     automation: 'automatic',
     fetchStrategy: 'browser',
     notes: 'Returns 403 to non-browser user agents.',
+  },
+  {
+    id: 'inslm-annual-reports',
+    name: 'INSLM — annual reports',
+    jurisdiction: 'federal',
+    category: 'government',
+    url: 'https://www.inslm.gov.au/reviews-reports/annual-reports',
+    kind: 'document',
+    schedule: 'weekly',
+    enabled: true,
+    automation: 'manual',
+    notes:
+      'Tracked by hand: www.inslm.gov.au timed out with 0 bytes for the Policai collector identity and headless Chrome from the 2026-10-19 Signal retrieval environment (Akamai edge). Direct PDF and HTML fetches failed; content was confirmed via a reader proxy against the official publication page and PDF path. The block/timeout is respected and the user agent is not disguised. Annual reports and the document library are the official publication paths.',
   },
 ];
 

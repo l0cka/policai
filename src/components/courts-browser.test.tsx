@@ -1,5 +1,6 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+import Link from 'next/link';
 import { StatusPill } from './policy-indicators';
 import { CourtsBrowser } from './courts-browser';
 import { PolicyDetailTabs } from '@/app/policies/[id]/policy-detail-tabs';
@@ -166,7 +167,7 @@ describe('CourtsBrowser', () => {
       const pill = render(<StatusPill status="active" dates={future.dates} />);
       expect(screen.getByText('Not yet in effect')).toBeInTheDocument();
       pill.unmount();
-      render(<PolicyDetailTabs policy={future} relatedPolicies={[]} />);
+      render(<PolicyDetailTabs policy={future} />);
       expect(screen.getAllByText('Not yet in effect')).toHaveLength(2);
     } finally { vi.useRealTimers(); }
   });
@@ -191,7 +192,7 @@ describe('CourtsBrowser', () => {
     expect(screen.getByRole('link', { name: /Source document/ })).toBeInTheDocument();
   });
   it('carries structured requirements and exceptions into the full record', () => {
-    render(<PolicyDetailTabs policy={policies[0]} relatedPolicies={[]} courtRequirements={[{ ...requirements[0], exceptions: ['Only with prior leave.'] }]} />);
+    render(<PolicyDetailTabs policy={policies[0]} courtRequirements={[{ ...requirements[0], exceptions: ['Only with prior leave.'] }]} />);
     fireEvent.click(screen.getByRole('tab', { name: 'Key requirements' }));
     expect(screen.getByText('Verified requirements (1)')).toBeInTheDocument();
     expect(screen.getByText('Exception: Only with prior leave.')).toBeInTheDocument();
@@ -239,5 +240,62 @@ describe('CourtsBrowser', () => {
       'Judicial officers must not use generative AI to formulate reasons.',
     );
     expect(screen.getByText('paragraph 4')).toBeInTheDocument();
+  });
+
+  it('surfaces court-focused analysis and accordion related / citing links', () => {
+    render(
+      <CourtsBrowser
+        policies={policies}
+        analysis={
+          <section aria-labelledby="court-analysis">
+            <h2 id="court-analysis">Court-focused analysis</h2>
+            <Link href="/analysis/courts-and-tribunals-ai-rules">
+              How Australian courts and tribunals govern the use of AI
+            </Link>
+          </section>
+        }
+        analysesByPolicy={{
+          'judicial-guidance': [
+            {
+              slug: 'courts-and-tribunals-ai-rules',
+              title: 'How Australian courts and tribunals govern the use of AI',
+              type: 'explainer',
+              publishedAt: '2026-10-17',
+              summary: 'There is no single national rule.',
+              courtCiteCount: 1,
+            },
+          ],
+        }}
+        relatedByPolicy={{
+          'judicial-guidance': [
+            {
+              id: 'litigant-guidance',
+              title: 'Information for self-represented litigants',
+              jurisdiction: 'sa',
+              type: 'practice_note',
+              sharedThemes: ['Courts and tribunals'],
+            },
+          ],
+        }}
+      />,
+    );
+
+    expect(screen.getByRole('heading', { name: 'Court-focused analysis' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', {
+        name: 'How Australian courts and tribunals govern the use of AI',
+      }),
+    ).toHaveAttribute('href', '/analysis/courts-and-tribunals-ai-rules');
+
+    fireEvent.click(screen.getByRole('button', { name: /Guidelines for judicial officers/ }));
+    expect(screen.getByText('Related instruments')).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'Information for self-represented litigants' }),
+    ).toHaveAttribute('href', '/policies/litigant-guidance');
+    expect(screen.getByRole('link', { name: 'All related on the full record' })).toHaveAttribute(
+      'href',
+      '/policies/judicial-guidance',
+    );
+    expect(screen.getByText('Analysis citing this record')).toBeInTheDocument();
   });
 });

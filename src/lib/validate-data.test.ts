@@ -5,6 +5,7 @@ import { buildPolicy, buildTimelineEvent } from '@/test/factories';
 import {
   countUnsubstantiatedSecondaryDates,
   isAllowedSourceHost,
+  validateCollectionMeta,
   validateDevelopments,
   validatePolicyFrameworkArtifact,
   validatePolicies,
@@ -12,9 +13,12 @@ import {
   validateSourceReviews,
   validateTimeline,
   validateWatchSources,
+  validateWatchState,
 } from './validate-data';
+import { emptyWatchState, type WatchState } from '@/lib/pipeline/collect';
+import { ROBOTS_RULES_CAP, ROBOTS_SITEMAPS_CAP, type HostRecord } from '@/lib/pipeline/host-gate';
 import type { WatchSource } from '@/lib/pipeline/sources';
-import type { Policy } from '@/types';
+import type { CollectionMeta, Policy, SourceRunResult } from '@/types';
 
 describe('isAllowedSourceHost', () => {
   it('allows https gov.au hosts and the CSIRO exception', () => {
@@ -1486,4 +1490,214 @@ describe('validateWatchSources identity exceptions', () => {
     );
     expect(report.warnings).toEqual([]);
   });
+});
+
+describe('validateCollectionMeta failure classes', () => {
+  const row = (overrides: Partial<SourceRunResult>): SourceRunResult => ({
+    sourceId: 'source-a',
+    status: 'error',
+    coverageEligible: true,
+    checkedAt: '2026-10-17T19:30:00.000Z',
+    durationMs: 10,
+    itemCount: null,
+    candidateCount: 0,
+    newCandidateCount: 0,
+    error: 'source-a: HTTP 403',
+    ...overrides,
+  });
+  const meta = (result: SourceRunResult): CollectionMeta => {
+    const failed = result.status === 'error' ? 1 : 0;
+    return {
+      lastCollectedAt: '2026-10-17T19:30:00.000Z',
+      lastHealthyAt: null,
+      lastReviewedAt: null,
+      collector: {
+        runCount: 1,
+        lastRunSources: ['source-a'],
+        lastRunErrors: result.error ? [result.error] : [],
+        health: failed ? 'failed' : 'healthy',
+        dueSourceCount: 1,
+        successfulSourceCount: 1 - failed,
+        failedSourceCount: failed,
+        skippedSourceCount: 0,
+        successRate: 1 - failed,
+        automaticSourceCount: 1,
+        manualSourceCount: 0,
+        sourceResults: [result],
+      },
+    };
+  };
+
+  it('accepts an error row with and without a failure class', () => {
+    expect(validateCollectionMeta(meta(row({}))).errors).toEqual([]);
+    expect(
+      validateCollectionMeta(
+        meta(
+          row({
+            failureClass: 'identity_refused',
+            failedUrl: 'https://www.example.gov.au/feed',
+          }),
+        ),
+      ).errors,
+    ).toEqual([]);
+  });
+
+  it('rejects an unknown class, a malformed URL and fields on a success', () => {
+    expect(
+      validateCollectionMeta(
+        meta(row({ failureClass: 'blocked' as never, failedUrl: 'nope' })),
+      ).errors,
+    ).toEqual([
+      'meta:sourceResults[0]: invalid failureClass',
+      'meta:sourceResults[0]: invalid failedUrl',
+    ]);
+    expect(
+      validateCollectionMeta(
+        meta(
+          row({
+            status: 'success',
+            itemCount: 1,
+            error: undefined,
+            failureClass: 'timeout',
+          }),
+        ),
+      ).errors,
+    ).toEqual(['meta:sourceResults[0]: failure fields require a failed result']);
+  });
+
+  it.each([
+    ['success', { status: 'success', itemCount: 1, error: undefined }],
+    ['skipped', { status: 'skipped', error: undefined }],
+  ] as const)('rejects failedUrl alone on a %s row', (_status, overrides) => {
+    expect(
+      validateCollectionMeta(
+        meta(row({ ...overrides, failedUrl: 'https://www.example.gov.au/feed' })),
+      ).errors,
+    ).toContain('meta:sourceResults[0]: failure fields require a failed result');
+  });
+
+  it('requires failureClass and failedUrl together on an error row', () => {
+    expect(
+      validateCollectionMeta(meta(row({ failureClass: 'timeout' }))).errors,
+    ).toEqual(['meta:sourceResults[0]: failureClass and failedUrl must appear together']);
+    expect(
+      validateCollectionMeta(
+        meta(row({ failedUrl: 'https://www.example.gov.au/feed' })),
+      ).errors,
+    ).toEqual(['meta:sourceResults[0]: failureClass and failedUrl must appear together']);
+  });
+
+  it.each([
+    'https://user:secret@www.example.gov.au/feed',
+    'https://www.example.gov.au/feed?token=abc',
+    'https://',
+    `https://www.example.gov.au/${'a'.repeat(2100)}`,
+    'ftp://www.example.gov.au/feed',
+  ])('rejects failedUrl case %#', (failedUrl) => {
+    expect(
+      validateCollectionMeta(
+        meta(row({ failureClass: 'identity_refused', failedUrl })),
+      ).errors,
+    ).toEqual(['meta:sourceResults[0]: invalid failedUrl']);
+  });
+});
+
+describe('validateCollectionMeta robotsUnverified', () => {
+  const meta = (robotsUnverified?: unknown): CollectionMeta =>
+    ({
+      lastCollectedAt: '2026-10-17T19:30:00.000Z',
+      lastHealthyAt: '2026-10-17T19:30:00.000Z',
+      lastReviewedAt: null,
+      collector: {
+        runCount: 3,
+        lastRunSources: [],
+        lastRunErrors: [],
+        health: 'healthy',
+        dueSourceCount: 0,
+        successfulSourceCount: 0,
+        failedSourceCount: 0,
+        skippedSourceCount: 0,
+        successRate: 1,
+        automaticSourceCount: 0,
+        manualSourceCount: 0,
+        sourceResults: [],
+        ...(robotsUnverified === undefined ? {} : { robotsUnverified }),
+      },
+    }) as CollectionMeta;
+
+  it('accepts meta without the key and a list of host keys', () => {
+    expect(validateCollectionMeta(meta()).errors).toEqual([]);
+    expect(validateCollectionMeta(meta(['www.example.gov.au', 'www.other.gov.au:8443'])).errors).toEqual([]);
+  });
+
+  it.each([[['WWW.Example.gov.au']], [['https://www.example.gov.au']], [[7]], ['www.example.gov.au']])(
+    'rejects robotsUnverified %j',
+    (value) => {
+      expect(validateCollectionMeta(meta(value)).errors).toEqual(['meta: invalid collector robotsUnverified']);
+    },
+  );
+});
+
+describe('validateWatchState hosts', () => {
+  const record = (): HostRecord => ({
+    seenAt: '2026-10-20T19:35:00.000Z',
+    robots: {
+      fetchedAt: '2026-10-20T19:35:00.000Z',
+      status: 'parsed',
+      allow: ['/search/open'],
+      disallow: ['/search', '/*.pdf$'],
+      crawlDelaySec: 5,
+      sitemaps: ['https://www.example.gov.au/sitemap.xml'],
+    },
+    backoffUntil: '2026-10-21T19:35:00.000Z',
+    backoffStatus: 429,
+    backoffCount: 1,
+    robotsUnreachableRuns: 2,
+  });
+  const state = (hosts: Record<string, unknown> | undefined): WatchState =>
+    ({ ...emptyWatchState(), ...(hosts === undefined ? {} : { hosts }) }) as WatchState;
+
+  it('accepts a complete host record, one without robots and a state written before hosts existed', () => {
+    expect(validateWatchState(state({ 'www.example.gov.au': record() })).errors).toEqual([]);
+    expect(
+      validateWatchState(
+        state({
+          'www.example.gov.au:8443': { ...record(), robots: null, backoffUntil: null, backoffStatus: null, backoffCount: 0 },
+        }),
+      ).errors,
+    ).toEqual([]);
+    const legacy = emptyWatchState() as Partial<WatchState>;
+    delete legacy.hosts;
+    expect(validateWatchState(legacy as WatchState).errors).toEqual([]);
+  });
+
+  it.each<[label: string, mutate: (host: HostRecord) => unknown]>([
+    ['seenAt', (h) => ({ ...h, seenAt: 'yesterday' })],
+    ['robots.fetchedAt', (h) => ({ ...h, robots: { ...h.robots, fetchedAt: '2026-10-20' } })],
+    ['robots.status', (h) => ({ ...h, robots: { ...h.robots, status: 'cached' } })],
+    ['robots.allow', (h) => ({ ...h, robots: { ...h.robots, allow: ['search'] } })],
+    ['robots.disallow', (h) => ({ ...h, robots: { ...h.robots, disallow: [7] } })],
+    ['robots.crawlDelaySec', (h) => ({ ...h, robots: { ...h.robots, crawlDelaySec: -1 } })],
+    ['robots.sitemaps', (h) => ({ ...h, robots: { ...h.robots, sitemaps: ['not a url'] } })],
+    ['robots.disallow', (h) => ({ ...h, robots: { ...h.robots, disallow: Array.from({ length: ROBOTS_RULES_CAP + 1 }, (_, i) => `/r${i}`) } })],
+    ['robots.sitemaps', (h) => ({ ...h, robots: { ...h.robots, sitemaps: Array.from({ length: ROBOTS_SITEMAPS_CAP + 1 }, (_, i) => `https://www.example.gov.au/${i}.xml`) } })],
+    ['backoffUntil', (h) => ({ ...h, backoffUntil: 1_700_000_000 })],
+    ['backoffStatus', (h) => ({ ...h, backoffStatus: 500 })],
+    ['backoffCount', (h) => ({ ...h, backoffCount: -1 })],
+    ['backoffCount', (h) => ({ ...h, backoffCount: 1.5 })],
+    ['robotsUnreachableRuns', (h) => ({ ...h, robotsUnreachableRuns: -1 })],
+    ['robotsUnreachableRuns', (h) => ({ ...h, robotsUnreachableRuns: 0.5 })],
+    ['robotsUnreachableRuns', ({ robotsUnreachableRuns, ...h }) => (void robotsUnreachableRuns, h)],
+  ])('rejects an invalid %s', (label, mutate) => {
+    const report = validateWatchState(state({ 'www.example.gov.au': mutate(record()) }));
+    expect(report.errors).toEqual([expect.stringContaining(`watchState:hosts:www.example.gov.au: invalid ${label}`)]);
+  });
+
+  it.each(['WWW.Example.gov.au', 'www.example.gov.au/path', 'https://www.example.gov.au', '', 'a b.gov.au'])(
+    'rejects the host key %j',
+    (host) => {
+      const report = validateWatchState(state({ [host]: record() }));
+      expect(report.errors).toEqual([expect.stringContaining('invalid host')]);
+    },
+  );
 });

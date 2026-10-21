@@ -8,13 +8,23 @@ import {
 import { WATCH_SOURCES } from '@/lib/pipeline/sources';
 import { summarizeManualSourceCoverage } from '@/lib/source-monitoring';
 import { MetricStrip, PageIntro } from '@/components/layout';
+import { pageAlternates, pageSocialMeta } from '@/lib/site-seo';
 
 export const revalidate = 3600;
 
+const METHODOLOGY_TITLE = 'Methodology and verification';
+const METHODOLOGY_DESCRIPTION =
+  'How Policai discovers, verifies, reviews and publishes Australian AI policy records — and which machine feeds and APIs are available.';
+
 export const metadata: Metadata = {
-  title: 'Methodology & Verification - Policai',
-  description:
-    'How Policai discovers, verifies, reviews, and publishes Australian AI policy information.',
+  title: METHODOLOGY_TITLE,
+  description: METHODOLOGY_DESCRIPTION,
+  alternates: pageAlternates('/methodology'),
+  ...pageSocialMeta({
+    title: METHODOLOGY_TITLE,
+    description: METHODOLOGY_DESCRIPTION,
+    path: '/methodology',
+  }),
 };
 
 export default async function MethodologyPage() {
@@ -142,6 +152,146 @@ export default async function MethodologyPage() {
         </section>
 
         <section className="border-t border-border pt-7">
+          <h2 id="machine-feeds" className="section-title scroll-mt-28">
+            Machine feeds and API
+          </h2>
+          <p className="text-muted-foreground">
+            Read-only surfaces for feed readers and agents. They use the same
+            public projection as the site: verified, non-trashed, non-withheld
+            register records, and non-dismissed developments. Response shapes
+            stay as they are unless a concrete consumer needs a change.
+          </p>
+          <h3 className="mt-5 font-medium">Feeds</h3>
+          <ul className="mt-2 list-disc space-y-2 pl-5 text-muted-foreground">
+            <li>
+              <a
+                href="/feed.xml"
+                className="font-mono text-xs text-primary underline underline-offset-4 hover:no-underline"
+              >
+                /feed.xml
+              </a>
+              {' '}
+              — Atom feed of recent public developments (the same list as{' '}
+              <Link
+                href="/developments"
+                className="text-primary underline underline-offset-4 hover:no-underline"
+              >
+                /developments
+              </Link>
+              ). There is no separate developments-only Atom path; this is that
+              feed.
+            </li>
+            <li>
+              <a
+                href="/analysis/feed.xml"
+                className="font-mono text-xs text-primary underline underline-offset-4 hover:no-underline"
+              >
+                /analysis/feed.xml
+              </a>
+              {' '}
+              — Atom feed of published analysis pieces.
+            </li>
+          </ul>
+          <h3 className="mt-5 font-medium">JSON and markdown</h3>
+          <ul className="mt-2 list-disc space-y-2 pl-5 text-muted-foreground">
+            <li>
+              <Link
+                href="/api/policies"
+                className="font-mono text-xs text-primary underline underline-offset-4 hover:no-underline"
+              >
+                /api/policies
+              </Link>
+              {' '}
+              — search the public register;{' '}
+              <span className="font-mono text-xs">/api/policies/&#123;id&#125;</span>{' '}
+              returns one record.
+            </li>
+            <li>
+              <span className="font-mono text-xs">
+                /api/policies/&#123;id&#125;/markdown
+              </span>
+              {' '}
+              — one public record as{' '}
+              <span className="font-mono text-xs">text/markdown</span> with
+              source URL, verification and review stamps. Linked from each
+              policy page.
+            </li>
+            <li>
+              <a
+                href="/api/developments"
+                className="font-mono text-xs text-primary underline underline-offset-4 hover:no-underline"
+              >
+                /api/developments
+              </a>
+              {' '}
+              — search public developments (JSON; filters for jurisdiction,
+              status, since, and limit).
+            </li>
+            <li>
+              <a
+                href="/api/status"
+                className="font-mono text-xs text-primary underline underline-offset-4 hover:no-underline"
+              >
+                /api/status
+              </a>
+              {' '}
+              — collection health and freshness; the human page is{' '}
+              <Link
+                href="/status"
+                className="text-primary underline underline-offset-4 hover:no-underline"
+              >
+                /status
+              </Link>
+              .
+            </li>
+            <li>
+              Also public and read-only:{' '}
+              <a
+                href="/api/timeline"
+                className="font-mono text-xs text-primary underline underline-offset-4 hover:no-underline"
+              >
+                /api/timeline
+              </a>
+              ,{' '}
+              <a
+                href="/api/agencies"
+                className="font-mono text-xs text-primary underline underline-offset-4 hover:no-underline"
+              >
+                /api/agencies
+              </a>
+              ,{' '}
+              <a
+                href="/api/network"
+                className="font-mono text-xs text-primary underline underline-offset-4 hover:no-underline"
+              >
+                /api/network
+              </a>
+              , and{' '}
+              <a
+                href="/api/court-requirements"
+                className="font-mono text-xs text-primary underline underline-offset-4 hover:no-underline"
+              >
+                /api/court-requirements
+              </a>
+              .
+            </li>
+          </ul>
+          <p className="mt-4 text-muted-foreground">
+            Endpoint filters and response forms are described in the repository
+            file{' '}
+            <a
+              href="https://github.com/l0cka/policai/blob/main/docs/api.md"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary underline underline-offset-4 hover:no-underline"
+            >
+              docs/api.md
+            </a>
+            .
+          </p>
+        </section>
+
+        <section className="border-t border-border pt-7">
           <h2 id="open-data" className="section-title scroll-mt-28">Open data and corrections</h2>
           <p className="text-muted-foreground">
             Canonical records are versioned in Git and available as{' '}
@@ -150,6 +300,13 @@ export default async function MethodologyPage() {
               className="text-primary underline underline-offset-4 hover:no-underline"
             >
               open JSON
+            </a>
+            . Feeds and the JSON API are listed under{' '}
+            <a
+              href="#machine-feeds"
+              className="text-primary underline underline-offset-4 hover:no-underline"
+            >
+              Machine feeds and API
             </a>
             . Corrections can be proposed through{' '}
             <a
@@ -175,6 +332,7 @@ export default async function MethodologyPage() {
             <li><a href="#source-and-date-rules" className="block py-1 text-muted-foreground hover:text-primary">Source and date rules</a></li>
             <li><a href="#register-state" className="block py-1 text-muted-foreground hover:text-primary">Current register state</a></li>
             <li><a href="#collection-health" className="block py-1 text-muted-foreground hover:text-primary">Collection health</a></li>
+            <li><a href="#machine-feeds" className="block py-1 text-muted-foreground hover:text-primary">Machine feeds and API</a></li>
             <li><a href="#open-data" className="block py-1 text-muted-foreground hover:text-primary">Open data and corrections</a></li>
           </ul>
         </nav>

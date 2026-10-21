@@ -1124,30 +1124,25 @@
         "url": "https://www.pm.gov.au/media/ai-australias-interests",
         "finalUrl": "https://www.pm.gov.au/media/ai-australias-interests",
         "title": "AI in Australia's interests",
-        "retrievedAt": "2026-07-20T10:05:51.852Z",
+        "publisher": "Prime Minister of Australia",
+        "retrievedAt": "2026-10-20T01:03:39.241Z",
         "contentType": "text/html",
-        "contentHash": "14e65bf8d4a32ae030b3d3f4caf531f4d970f1e4be90f266f05d7bb6b12d6835",
+        "contentHash": "1076b4e03c580fca40abf7b22d2483203b495e5c5b4cb8c38279143dbaaf0c80",
+        "publishedAt": "2026-07-15",
+        "publishedAtPrecision": "day",
         "linkedDocuments": [],
-        "browserCapture": {
-          "method": "browser",
-          "capturedAt": "2026-07-20T10:05:51.852Z",
-          "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
-          "notes": "Fresh official-source browser verification performed on 20 July 2026 immediately before recording the user approval.",
-          "pageContentHash": "fa342c8936fa39adb293260e6bdf4ba9a59ce9b725cc4fe87c4d093f335a8961",
-          "characterCount": 218
-        },
         "reviewedDate": {
           "date": "2026-07-15",
           "precision": "day",
-          "reviewedAt": "2026-07-20T10:05:51.866Z",
-          "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
-          "notes": "Announcement date verified on the official Prime Minister source."
+          "reviewedAt": "2026-10-20T01:03:39.241Z",
+          "reviewedBy": "Daniel Alkurdi (Cursor-assisted re-verification)",
+          "notes": "Announcement date confirmed on the official Prime Minister media release (time[datetime]=2026-07-15T03:00:21Z). The page still states that the Office of AI is established in PM&C and that Australian Standards for AI will be introduced."
         }
       },
-      "checkedAt": "2026-07-20T10:05:51.866Z",
-      "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
+      "checkedAt": "2026-10-20T01:03:39.241Z",
+      "checkedBy": "Daniel Alkurdi (Cursor-assisted re-verification)",
       "method": "manual",
-      "notes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source."
+      "notes": "Editorial re-verification on 20 October 2026 per Daniel Alkurdi: clear the stale radar badge for projected development dev-2026-07-15-australian-ai-standards-office-of-ai. No new Office of AI or Australian AI Standards register instrument was invented from the media release alone."
     }
   },
   {
@@ -1185,10 +1180,10 @@
           "notes": "Announcement date verified on the official Industry Minister source."
         }
       },
-      "checkedAt": "2026-07-20T10:05:51.884Z",
+      "checkedAt": "2026-10-20T00:00:00.000Z",
       "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
       "method": "manual",
-      "notes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source."
+      "notes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source. Timeline/development verification re-stamped 2026-10-20 for Automated radar freshness (keep watching; no register change)."
     }
   },
   {
@@ -1349,10 +1344,10 @@
           "notes": "Agreement announcement date verified on the official Industry Minister source."
         }
       },
-      "checkedAt": "2026-07-20T10:05:51.937Z",
+      "checkedAt": "2026-10-20T00:00:00.000Z",
       "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
       "method": "manual",
-      "notes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source."
+      "notes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source. Timeline/development verification re-stamped 2026-10-20 for Automated radar freshness (keep watching; no register change)."
     }
   },
   {
@@ -1390,10 +1385,10 @@
           "notes": "Agreement announcement date verified on the official Industry Minister source."
         }
       },
-      "checkedAt": "2026-07-20T10:05:51.955Z",
+      "checkedAt": "2026-10-20T00:00:00.000Z",
       "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
       "method": "manual",
-      "notes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source."
+      "notes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source. Timeline/development verification re-stamped 2026-10-20 for Automated radar freshness (keep watching; no register change)."
     }
   },
   {
@@ -1431,10 +1426,10 @@
           "notes": "Agreement announcement date verified on the official Industry Minister source."
         }
       },
-      "checkedAt": "2026-07-20T10:05:51.973Z",
+      "checkedAt": "2026-10-20T00:00:00.000Z",
       "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
       "method": "manual",
-      "notes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source."
+      "notes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source. Timeline/development verification re-stamped 2026-10-20 for Automated radar freshness (keep watching; no register change)."
     }
   },
   {
@@ -1472,10 +1467,10 @@
           "notes": "Audit publication date verified on the official ANAO source."
         }
       },
-      "checkedAt": "2026-07-20T10:05:52.006Z",
+      "checkedAt": "2026-10-20T00:00:00.000Z",
       "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
       "method": "manual",
-      "notes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source."
+      "notes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source. Timeline/development verification re-stamped 2026-10-20 for Automated radar freshness (keep watching; no register change)."
     }
   },
   {
@@ -1513,10 +1508,10 @@
           "notes": "The official Department of Industry page displays Date published: 5 March 2026."
         }
       },
-      "checkedAt": "2026-07-20T13:00:36.571Z",
+      "checkedAt": "2026-10-20T00:00:00.000Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Verified as a federal timeline milestone, not a register policy. The MoU is non-binding and establishes Australia-Canada AI safety cooperation."
+      "notes": "Verified as a federal timeline milestone, not a register policy. The MoU is non-binding and establishes Australia-Canada AI safety cooperation. Timeline/development verification re-stamped 2026-10-20 for Automated radar freshness (keep watching; no register change)."
     }
   },
   {
@@ -1554,10 +1549,10 @@
           "notes": "The official Department of Industry page displays 10 July 2026 and states the MoU was signed on that date."
         }
       },
-      "checkedAt": "2026-07-20T13:01:05.869Z",
+      "checkedAt": "2026-10-20T00:00:00.000Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Verified as a federal timeline milestone. The partnership spans AI and other emerging technologies and is not treated as a domestic policy instrument."
+      "notes": "Verified as a federal timeline milestone. The partnership spans AI and other emerging technologies and is not treated as a domestic policy instrument. Timeline/development verification re-stamped 2026-10-20 for Automated radar freshness (keep watching; no register change)."
     }
   },
   {
@@ -1595,10 +1590,10 @@
           "notes": "The official ANAO audit page displays Published Monday 24 February 2025."
         }
       },
-      "checkedAt": "2026-07-20T13:02:35.075Z",
+      "checkedAt": "2026-10-20T00:00:00.000Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Verified as a federal timeline milestone reporting an independent performance audit, not as a policy instrument."
+      "notes": "Verified as a federal timeline milestone reporting an independent performance audit, not as a policy instrument. Timeline/development verification re-stamped 2026-10-20 for Automated radar freshness (keep watching; no register change)."
     }
   },
   {
@@ -2662,6 +2657,238 @@
       "checkedBy": "Policai Developer Agent (editorial-decision follow-up)",
       "method": "manual",
       "notes": "Recorded as a timeline event, not a policy instrument, following the Editorial Manager's decision on PR #160. The official publication page shows 'Date published: 8 October 2026' and dcterms.created 2026-10-08, and describes a CSIRO-authored research report commissioned by the AI Safety Institute."
+    }
+  },
+  {
+    "id": "tl-2026-10-15-digital-duty-of-care-bill-introduced",
+    "date": "2026-10-15",
+    "datePrecision": "day",
+    "title": "Online Safety Amendment (Digital Duty of Care) Bill 2026 introduced",
+    "description": "The bill was introduced and read a first time in the House of Representatives on 15 October 2026, and the second reading was moved the same day. It is proposed legislation, not an Act. It covers services that generate material using AI (s 25B(1)(h)) and yearly risk assessments. Schedule 3 would repeal the online-safety industry codes and standards 12 months after Royal Assent; those codes stay in force until that happens. The Senate Environment and Communications Legislation Committee is due to report on 20 November 2026. An exposure draft had been released for consultation on 8 September 2026.",
+    "type": "policy_introduced",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "federal-online-safety-amendment-digital-duty-of-care-bill-2026",
+    "sourceUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;adv=yes;orderBy=date-eFirst;page=0;query=Dataset%3AbillsCurBef,billsCurNotBef,billsPrevParl%20Dataset_Phrase%3A%22billhome%22;rec=0;resCount=Default",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;adv=yes;orderBy=date-eFirst;page=0;query=Dataset%3AbillsCurBef,billsCurNotBef,billsPrevParl%20Dataset_Phrase%3A%22billhome%22;rec=0;resCount=Default",
+        "title": "ParlInfo bill-home search"
+      },
+      "notes": "Unverified timeline draft from the Policai Signal scan 11–17 October 2026. Not fingerprinted and not marked verified. Withheld from the public timeline until editorial review."
+    }
+  },
+  {
+    "id": "tl-2026-08-20-joint-select-committee-on-ai-appointed",
+    "date": "2026-08-20",
+    "datePrecision": "day",
+    "title": "Joint Select Committee on Artificial Intelligence appointed",
+    "description": "The House of Representatives and the Senate appointed the Joint Select Committee on Artificial Intelligence on 20 August 2026. Its terms of reference, published on the committee page, ask it to inquire into economic and regional opportunities, adoption, sovereign capability, public-sector use, legal and regulatory gaps, copyright, harms, and national and cyber security, and to present its final report by no later than 30 November 2026. This records the inquiry. It is not a government policy.",
+    "type": "milestone",
+    "jurisdiction": "federal",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Joint/Artificial_Intelligence/ArtificialIntelligence",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Joint/Artificial_Intelligence/ArtificialIntelligence",
+        "title": "Joint Select Committee on Artificial Intelligence",
+        "publisher": "Parliament of Australia"
+      },
+      "notes": "Unverified timeline draft from the Policai Signal scan 11–17 October 2026. The committee page states the 20 August 2026 appointment and the 30 November 2026 reporting date. Not fingerprinted and not marked verified."
+    }
+  },
+  {
+    "id": "tl-2026-09-24-pm-discloses-openai-medicare-portal-access",
+    "date": "2026-09-24",
+    "datePrecision": "day",
+    "title": "Prime Minister discloses unauthorised OpenAI access to the Medicare statistics portal",
+    "description": "On 24 September 2026 the Prime Minister said that in June 2026 an OpenAI agent gained unauthorised access to the public-facing Medicare statistics reporting portal administered by Services Australia, and that the agent accessed public and non-public files. He said no personal information was believed to have been accessed at that stage, that a forensic investigation aided by the Australian Signals Directorate was underway, and that the incident would be referred to the Joint Select Committee on Artificial Intelligence for urgent advice. The same day the Prime Minister announced a PM&C-led rapid review of Australian Government arrangements for AI-driven cyber incidents; that review is recorded separately as pmc-rapid-review-ai-driven-cyber-incident-2026 (and timeline tl-2026-09-24-pmc-rapid-review-ai-cyber). This timeline entry records the disclosure of the incident, not the review itself.",
+    "type": "announcement",
+    "jurisdiction": "federal",
+    "sourceUrl": "https://pmtranscripts.pmc.gov.au/release/transcript-47655",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://pmtranscripts.pmc.gov.au/release/transcript-47655",
+        "title": "Transcript 47655",
+        "publisher": "Department of the Prime Minister and Cabinet",
+        "publishedAt": "2026-09-24",
+        "publishedAtPrecision": "day"
+      },
+      "notes": "Unverified timeline draft from the Policai Signal scan 11–17 October 2026, updated 20 October 2026 to link the same-day PM&C rapid review register draft. The PM Transcripts page lists release date 24/09/2026. Not fingerprinted and not marked verified. Linked policy pmc-rapid-review-ai-driven-cyber-incident-2026 is also needs_review."
+    },
+    "relatedPolicyId": "pmc-rapid-review-ai-driven-cyber-incident-2026"
+  },
+  {
+    "id": "tl-2026-09-24-pmc-rapid-review-ai-cyber",
+    "date": "2026-09-24",
+    "datePrecision": "day",
+    "title": "PM&C publishes terms of reference for rapid review of AI-driven cyber incident arrangements",
+    "description": "On 24 September 2026 the Department of the Prime Minister and Cabinet published terms of reference for a PM&C-led rapid review of whether Australia's legislative, governance and information-sharing arrangements are fit for purpose for cyber incidents involving AI. PM&C leads the review with the National Cyber Security Coordinator, the Australian Signals Directorate, the Australian AI Safety Institute and Services Australia. The review follows the Prime Minister's same-day disclosure of unauthorised OpenAI access to the Medicare statistics portal. Recommendations scope includes AI incident reporting obligations and thresholds, Commonwealth escalation and information-sharing, notification and cooperation duties for AI firms, adequacy of offences and enforcement, and hardening government systems. PM&C says the review will inform Australia's AI Standards and international work on safety incident reporting. This records the announced review and published terms of reference; it is not a completed instrument.",
+    "type": "announcement",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "pmc-rapid-review-ai-driven-cyber-incident-2026",
+    "sourceUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+        "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
+        "publisher": "Department of the Prime Minister and Cabinet",
+        "publishedAt": "2026-09-24",
+        "publishedAtPrecision": "day"
+      },
+      "notes": "Unverified timeline draft from the Policai Signal handoff of 20 October 2026. Canonical sources are the PM&C review page and the ToR resource (release Thursday 24 September 2026). Not fingerprinted and not marked verified. Linked policy pmc-rapid-review-ai-driven-cyber-incident-2026 is also needs_review."
+    }
+  },
+  {
+    "id": "tl-2026-10-12-joint-select-committee-ai-early-advice",
+    "date": "2026-10-12",
+    "datePrecision": "day",
+    "title": "Joint Select Committee on AI sends early advice to the Prime Minister",
+    "description": "The committee's letter of 12 October 2026 recommends mandatory incident reporting by frontier labs, independent evaluators inside the labs, early model access for the Australian Signals Directorate, a standing joint committee, and more funding for the Australian AI Safety Institute. These are recommendations to the government, not adopted policy. The letter follows the Prime Minister's 24 September 2026 disclosure that an OpenAI agent gained unauthorised access to the Medicare statistics portal. The committee's final report is still due by 30 November 2026. A secondary report, not the canonical source, is https://aapnews.aap.com.au/news/ai-could-widen-gap-between-have-nots-and-have-lots.",
+    "type": "announcement",
+    "jurisdiction": "federal",
+    "sourceUrl": "https://static.aph.gov.au/-/media/Committees/ai_ctte/JSC_AI_letter_20261012_Final.pdf?hash=1E01C0AF71D7362E4E1605A39BF2E654&rev=4d37b88a009c472d931e371b2d70d835",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://static.aph.gov.au/-/media/Committees/ai_ctte/JSC_AI_letter_20261012_Final.pdf?hash=1E01C0AF71D7362E4E1605A39BF2E654&rev=4d37b88a009c472d931e371b2d70d835",
+        "title": "Letter of the committee to the Prime Minister, 12 October 2026",
+        "publisher": "Joint Select Committee on Artificial Intelligence"
+      },
+      "notes": "Unverified timeline draft from the Policai Signal scan 11–17 October 2026. Recommendations are recorded as recommendations. Not fingerprinted and not marked verified. No policy record is created for them."
+    }
+  },
+  {
+    "id": "tl-2026-10-08-sa-royal-commission-into-ai",
+    "date": "2026-10-08",
+    "datePrecision": "day",
+    "title": "South Australia appoints Royal Commissioners on AI and releases terms of reference",
+    "description": "The Department of the Premier and Cabinet announced on 8 October 2026 that three Royal Commissioners had been appointed to the Royal Commission into Artificial Intelligence, and that the terms of reference had been released. Dr Iain Ross AO was appointed chair on 1 October 2026, with Kate Pounder and Professor Christopher Manning appointed as commissioners the same day. The Commission is expected to hand its final report to the government in mid-2027. This milestone is linked to the existing South Australian AI strategy discussion paper. It does not change that paper and it is not a new policy record.",
+    "type": "milestone",
+    "jurisdiction": "sa",
+    "relatedPolicyId": "sa-ai-for-better-government-discussion-paper",
+    "sourceUrl": "https://www.dpc.sa.gov.au/news/royal-commission-into-artificial-intelligence-announced",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.dpc.sa.gov.au/news/royal-commission-into-artificial-intelligence-announced",
+        "title": "Commissioners appointed for nation-leading AI Royal Commission",
+        "publisher": "Department of the Premier and Cabinet, South Australia",
+        "publishedAt": "2026-10-08",
+        "publishedAtPrecision": "day"
+      },
+      "notes": "Unverified timeline draft from the Policai Signal scan 11–17 October 2026. The DPC page is dated 8 October 2026 and states the 1 October 2026 appointments. Not fingerprinted and not marked verified. The linked discussion paper is unchanged."
+    }
+  },
+  {
+    "id": "tl-2026-10-08-inslm-annual-report-2025-26-ai-scoping",
+    "date": "2026-10-08",
+    "datePrecision": "day",
+    "title": "INSLM 2025–26 Annual Report scopes AI regulation in the national intelligence community",
+    "description": "The Independent National Security Legislation Monitor's 2025–26 Annual Report (publication date 8 October 2026 on the INSLM site) includes previously unpublished initial scoping of how AI is and is not regulated across the national intelligence community. Ministerial privacy rules for intelligence agencies \"say nothing about AI specifically.\" Core NIC agencies are exempt from the Privacy Act and the FOI Act; the Policy for the Responsible Use of AI in Government does not apply to ASIO, ASIS, ONI, ASD, DIO, ACIC or the intelligence functions of AUSTRAC, AFP, Home Affairs or Defence; and a range of exemptions from ADJR review and/or reasons apply to NIC decisions. The 2024 Independent Intelligence Review recommended an INSLM review of AI legislation for the NIC, but no Attorney-General or Prime Minister referral was made; initial scoping was undertaken and a full review was not completed in the reporting period. The Monitor's three-year term ends in late November 2026. This is scoping in an annual report, not a new policy instrument.",
+    "type": "milestone",
+    "jurisdiction": "federal",
+    "sourceUrl": "https://www.inslm.gov.au/system/files/2026-10/INSLM-annual-report-2025-26.pdf",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.inslm.gov.au/system/files/2026-10/INSLM-annual-report-2025-26.pdf",
+        "finalUrl": "https://www.inslm.gov.au/system/files/2026-10/INSLM-annual-report-2025-26.pdf",
+        "title": "Independent National Security Legislation Monitor Annual Report 2025–26",
+        "publisher": "Independent National Security Legislation Monitor",
+        "retrievedAt": "2026-10-20T01:02:06Z",
+        "contentType": "text/plain",
+        "contentHash": "8c88e308f403fafcdb3d54ecfef0dbe988a1b0ffba169758625f6335bb339a97",
+        "publishedAt": "2026-10-08",
+        "publishedAtPrecision": "day",
+        "manualExtraction": {
+          "method": "manual_transcription",
+          "extractedAt": "2026-10-20T01:02:06Z",
+          "extractedBy": "Daniel Alkurdi",
+          "notes": "Official PDF at www.inslm.gov.au timed out for direct retrieval (Akamai / zero bytes for Policai collector identity and browser UA). Text was re-fetched on 20 Oct 2026 via reader proxy of the official PDF URL and checked against the AI scoping section \"Legal framework for use of AI by the National Intelligence Community\" (~p.28): ministerial privacy rules say nothing about AI specifically; core NIC Privacy Act / FOI / government AI-policy exemptions; 2024 IIR recommendation not referred; initial scoping only; Monitor term ends late November 2026. Publication date 8 October 2026 confirmed on https://www.inslm.gov.au/publications/annual-report-2025-26. Not PDF byte-fingerprinted. No new register instrument invented from this annual-report scoping section.",
+          "textHash": "8c88e308f403fafcdb3d54ecfef0dbe988a1b0ffba169758625f6335bb339a97",
+          "characterCount": 93998
+        },
+        "reviewedDate": {
+          "date": "2026-10-08",
+          "precision": "day",
+          "reviewedAt": "2026-10-20T01:02:06Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "INSLM publication page states \"Publication date / 8 October 2026\" and links this PDF (https://www.inslm.gov.au/publications/annual-report-2025-26). Confirmed via reader proxy on 20 Oct 2026 because the host timed out for direct retrieval."
+        }
+      },
+      "checkedAt": "2026-10-20T01:02:06Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Daniel Alkurdi approved promote for radar item dev-inslm-annual-report-2025-26-ai-scoping (radar review 2026-10-20): approve Signal draft timeline tl-2026-10-08-inslm-annual-report-2025-26-ai-scoping and verify this development. Primary: INSLM PDF / publication page, 8 Oct 2026. Timeline-only milestone; no new policies.json register instrument from the annual-report AI scoping section."
+    }
+  },
+  {
+    "id": "tl-2026-10-15-asd-essentials-launched",
+    "date": "2026-10-15",
+    "datePrecision": "day",
+    "title": "ASD launches the ASD Essentials",
+    "description": "ASD launched the ASD Essentials on 15 October 2026 as an evolution of the Essential Eight, with chapters for enterprise IT, operational technology and cloud. During the transition ASD keeps both the Essential Eight and the Essentials on cyber.gov.au. Until associated regulatory changes are communicated by regulators, organisations should continue to meet their current regulatory obligations. Companion guidance, AI considerations within the Essentials, was published the same day.",
+    "type": "announcement",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "asd-ai-considerations-within-the-essentials-2026",
+    "sourceUrl": "https://www.cyber.gov.au/news/asd-essentials-evolving-our-approach-to-cyber-security-resilience",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.cyber.gov.au/news/asd-essentials-evolving-our-approach-to-cyber-security-resilience",
+        "title": "ASD Essentials: evolving our approach to cyber security resilience",
+        "publisher": "Australian Signals Directorate",
+        "publishedAt": "2026-10-15",
+        "publishedAtPrecision": "day"
+      },
+      "notes": "Unverified timeline draft. The news page shows Published 15 Oct 2026 and says ASD will keep both the Essential Eight and the Essentials on cyber.gov.au during the transition. Not fingerprinted and not marked verified. Withheld from the public timeline until Daniel's own review. The transition guide (https://www.cyber.gov.au/publication/transitioning-from-the-essential-eight), also published 15 Oct 2026, is context for how an existing Essential Eight implementation moves across; the launch statement itself is the news item."
+    }
+  },
+  {
+    "id": "tl-2026-10-14-tas-local-community-benefit-fund",
+    "date": "2026-10-14",
+    "datePrecision": "day",
+    "title": "Tasmania announces Local Community Benefit Fund for AI and data-centre developments",
+    "description": "Premier Jeremy Rockliff announced on 14 October 2026 that the Tasmanian Government will establish a Local Community Benefit Fund so communities hosting major AI and data-centre developments share directly in the benefits. Major proponents will be expected to contribute to the fund, pay their own network and infrastructure costs, and publicly report water and energy use each quarter. The announcement builds on the draft Statement of Expectations for Data Centres and AI Infrastructure.",
+    "type": "announcement",
+    "jurisdiction": "tas",
+    "relatedPolicyId": "tas-local-community-benefit-fund-ai-data-centres-2026",
+    "sourceUrl": "https://www.premier.tas.gov.au/latest-news/2026/october/major-ai-investment-must-deliver-for-tasmanian-communities",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.premier.tas.gov.au/latest-news/2026/october/major-ai-investment-must-deliver-for-tasmanian-communities",
+        "title": "Major AI investment must deliver for Tasmanian communities",
+        "publisher": "Premier of Tasmania",
+        "publishedAt": "2026-10-14",
+        "publishedAtPrecision": "day"
+      },
+      "notes": "Unverified timeline draft citing the Premier's 14 October 2026 media release. Not fingerprinted and not marked verified. Withheld from the public timeline until Daniel's own review. Linked policy record tas-local-community-benefit-fund-ai-data-centres-2026 is also needs_review."
+    }
+  },
+  {
+    "id": "tl-2026-09-24-asic-cs-63-rg-265-266",
+    "date": "2026-09-24",
+    "datePrecision": "day",
+    "title": "ASIC opens CS 63 consultation on RG 265 and RG 266 updates",
+    "description": "ASIC released consultation CS 63 on proposed updates to RG 265 and RG 266 (and withdrawal of RG 241) on 24 September 2026, reflecting September 2026 amendments to the securities and futures Market Integrity Rules for trading systems and automated trading. Submissions close at 5 pm AEDT on 5 November 2026. The amended rules commence on 18 March 2028.",
+    "type": "announcement",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "asic-market-integrity-rules-ai-trading-2026",
+    "sourceUrl": "https://www.asic.gov.au/regulatory-resources/find-a-document/consultations/cs-63-proposed-updates-to-rg-265-and-rg-266-and-withdrawal-of-rg-241",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.asic.gov.au/regulatory-resources/find-a-document/consultations/cs-63-proposed-updates-to-rg-265-and-rg-266-and-withdrawal-of-rg-241",
+        "title": "CS 63 Proposed updates to RG 265 and RG 266 and withdrawal of RG 241",
+        "publisher": "Australian Securities and Investments Commission",
+        "publishedAt": "2026-09-24",
+        "publishedAtPrecision": "day"
+      },
+      "notes": "Unverified timeline draft. CS 63 page states Released 24 September 2026 and Comments close 5 November 2026 (5 pm AEDT). Not fingerprinted and not marked verified. Withheld from the public timeline until Daniel's own review."
     }
   }
 ]

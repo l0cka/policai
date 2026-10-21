@@ -299,7 +299,9 @@ def build_payload(objects, evidence, args, result):
                  for p in proofs), 'retained date context missing')
     indexed = {p['key']: p for p in proofs}
     gate.require(len(indexed) == len(proofs), 'duplicate retained date context')
-    inventory = evidence['coverage']['automatic_source_ids']
+    base_inventory = evidence['coverage']['base_automatic_source_ids']
+    head_inventory = evidence['coverage']['head_automatic_source_ids']
+    inventories = (base_inventory, head_inventory)
     count_rows = []
     indexed_counts = []
     for sha in (args.base, args.head):
@@ -309,7 +311,8 @@ def build_payload(objects, evidence, args, result):
         indexed_counts.append({row['sourceId']: row for row in rows})
         gate.require(len(indexed_counts[-1]) == len(rows), 'duplicate source count context')
     count_fields = ('status', 'coverageEligible', 'itemCount', 'candidateCount', 'newCandidateCount', 'error')
-    for source in sorted(set(inventory) | set(indexed_counts[0]) | set(indexed_counts[1])):
+    for source in sorted(set(base_inventory) | set(head_inventory)
+                         | set(indexed_counts[0]) | set(indexed_counts[1])):
         sides = [{key: rows[source].get(key) for key in count_fields} if source in rows else None
                  for rows in indexed_counts]
         count_rows.append({'source_id': source, 'base': sides[0], 'head': sides[1],
@@ -318,9 +321,13 @@ def build_payload(objects, evidence, args, result):
     coverage = {'changed_items_total': len(changed), 'changed_items_included': 0,
                 'counts_total': len(count_rows), 'counts_included': 0,
                 'deterministic_context_errors': bool(result['reasons']),
-                'count_identity_complete': all(set(rows) == set(inventory) for rows in indexed_counts)
-                    and all(type(evidence['coverage'][side].get(source)) is bool
-                            for side in ('base_due', 'head_due') for source in inventory),
+                'count_identity_complete': all(
+                    set(rows) == set(inventory)
+                    for rows, inventory in zip(indexed_counts, inventories))
+                    and all(type(evidence['coverage']['base_due'].get(source)) is bool
+                            for source in base_inventory)
+                    and all(type(evidence['coverage']['head_due'].get(source)) is bool
+                            for source in head_inventory),
                 'truncated_fields': [], 'missing_date_keys': [], 'missing_candidate_keys': [],
                 'truncated': False, 'complete': True}
 

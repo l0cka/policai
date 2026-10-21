@@ -11,6 +11,8 @@ import {
   retrieveSourceOverHttp1,
   SourceFetchError,
 } from './fetch';
+import type { Admission } from './host-gate';
+import { buildRecordingHostGate } from '@/test/factories';
 
 describe('retrieveSource', () => {
   it('declares the Policai identity over plain HTTP, exempt or not', async () => {
@@ -1252,6 +1254,215 @@ describe('retrieveSource', () => {
   });
 });
 
+describe('retrieval errors carry the failing URL', () => {
+  const PAGE = 'https://www.example.gov.au/policy/ai';
+  const PDF = 'https://www.finance.gov.au/files/ai-policy.pdf';
+  const MOVED = 'https://www.other.gov.au/policy/ai';
+  const LINKING_PAGE = `<html><body><main><h1>AI policy</h1><p>Artificial intelligence policy framework.</p><a href="${PDF}">AI policy (PDF)</a></main></body></html>`;
+
+  async function failure(promise: Promise<unknown>): Promise<SourceFetchError> {
+    const error = await promise.then(
+      () => undefined,
+      (rejection: unknown) => rejection,
+    );
+    expect(error).toBeInstanceOf(SourceFetchError);
+    return error as SourceFetchError;
+  }
+
+  function routes(table: Record<string, () => Response | Promise<Response>>) {
+    return vi.fn(async (input: RequestInfo | URL) => {
+      const handler = table[String(input)];
+      if (!handler) throw new Error(`unexpected request ${String(input)}`);
+      return handler();
+    }) as unknown as typeof fetch;
+  }
+
+  it('names the requested URL on an HTTP status', async () => {
+    const error = await failure(
+      retrieveSource(PAGE, {
+        fetchImpl: routes({ [PAGE]: () => new Response('no', { status: 403 }) }),
+      }),
+    );
+    expect(error).toMatchObject({ status: 403, url: PAGE, message: `HTTP 403 at ${PAGE}` });
+  });
+
+  it('names the redirect target that returned the status', async () => {
+    const error = await failure(
+      retrieveSource(PAGE, {
+        fetchImpl: routes({
+          [PAGE]: () => new Response(null, { status: 302, headers: { location: MOVED } }),
+          [MOVED]: () => new Response('no', { status: 403 }),
+        }),
+      }),
+    );
+    expect(error).toMatchObject({ url: MOVED, message: `HTTP 403 at ${MOVED}` });
+  });
+
+  it('names the post-redirect URL a browser response reports', async () => {
+    const refused = new Response('no', { status: 403 });
+    Object.defineProperty(refused, 'url', { value: MOVED });
+    const error = await failure(
+      retrieveSource(PAGE, { fetchImpl: routes({ [PAGE]: () => refused }) }),
+    );
+    expect(error.url).toBe(MOVED);
+  });
+
+  it('names the URL of a transport error without one in its message', async () => {
+    const error = await failure(
+      retrieveSource(PAGE, {
+        attempts: 1,
+        fetchImpl: routes({
+          [PAGE]: () => new Response(null, { status: 302, headers: { location: MOVED } }),
+          [MOVED]: () => {
+            throw new Error('page.goto: net::ERR_HTTP2_PROTOCOL_ERROR');
+          },
+        }),
+      }),
+    );
+    expect(error.url).toBe(MOVED);
+  });
+
+  it('names a refused linked document, not the page that links it', async () => {
+    const error = await failure(
+      retrieveSource(PAGE, {
+        fetchImpl: routes({
+          [PAGE]: () =>
+            new Response(LINKING_PAGE, { status: 200, headers: { 'content-type': 'text/html' } }),
+          [PDF]: () => new Response('no', { status: 403 }),
+        }),
+      }),
+    );
+    expect(error).toMatchObject({ status: 403, url: PDF, message: `HTTP 403 at ${PDF}` });
+  });
+
+  it('names a linked document that fails byte validation', async () => {
+    const error = await failure(
+      retrieveSource(PAGE, {
+        fetchImpl: routes({
+          [PAGE]: () =>
+            new Response(LINKING_PAGE, { status: 200, headers: { 'content-type': 'text/html' } }),
+          [PDF]: () =>
+            new Response('not a pdf', {
+              status: 200,
+              headers: { 'content-type': 'application/pdf' },
+            }),
+        }),
+      }),
+    );
+    expect(error.url).toBe(PDF);
+  });
+
+  function http1Responder(
+    table: Record<string, { status: number; headers?: Record<string, string> } | Error>,
+  ) {
+    return vi.fn(
+      (
+        target: URL,
+        _requestOptions: object,
+        onResponse: (response: PassThrough & {
+          statusCode: number;
+          headers: Record<string, string>;
+        }) => void,
+      ) => {
+        const request = new EventEmitter() as EventEmitter & {
+          setTimeout: (milliseconds: number, callback: () => void) => typeof request;
+          destroy: (error?: Error) => typeof request;
+        };
+        request.setTimeout = vi.fn(() => request);
+        request.destroy = vi.fn((error?: Error) => {
+          if (error) queueMicrotask(() => request.emit('error', error));
+          return request;
+        });
+        queueMicrotask(() => {
+          const reply = table[target.toString()];
+          if (!reply || reply instanceof Error) {
+            request.emit('error', reply ?? new Error(`unexpected ${target}`));
+            return;
+          }
+          const response = new PassThrough() as PassThrough & {
+            statusCode: number;
+            headers: Record<string, string>;
+          };
+          response.statusCode = reply.status;
+          response.headers = reply.headers ?? {};
+          onResponse(response);
+          response.end('no');
+        });
+        return request;
+      },
+    ) as unknown as typeof import('node:https').get;
+  }
+
+  const http1Options = (requestImpl: typeof import('node:https').get) => ({
+    now: () => new Date('2026-07-16T00:00:00.000Z'),
+    timeoutMs: 1_000,
+    resolveHost: async () => ['8.8.8.8'],
+    requestImpl,
+  });
+
+  it('names the URL of an HTTP/1.1 status', async () => {
+    const error = await failure(
+      retrieveSourceOverHttp1(PAGE, http1Options(http1Responder({ [PAGE]: { status: 403 } }))),
+    );
+    expect(error).toMatchObject({ url: PAGE, message: `HTTP 403 at ${PAGE}` });
+  });
+
+  it('names the HTTP/1.1 redirect target that returned the status', async () => {
+    const error = await failure(
+      retrieveSourceOverHttp1(
+        PAGE,
+        http1Options(
+          http1Responder({
+            [PAGE]: { status: 301, headers: { location: MOVED } },
+            [MOVED]: { status: 403 },
+          }),
+        ),
+      ),
+    );
+    expect(error).toMatchObject({ url: MOVED, message: `HTTP 403 at ${MOVED}` });
+  });
+
+  it('names the URL of an HTTP/1.1 connection reset', async () => {
+    const reset = Object.assign(new Error('read ECONNRESET'), { code: 'ECONNRESET' });
+    const direct = await failure(
+      retrieveSourceOverHttp1(PAGE, http1Options(http1Responder({ [PAGE]: reset }))),
+    );
+    expect(direct).toMatchObject({ url: PAGE, cause: reset });
+    const error = await failure(
+      retrieveSourceOverHttp1(
+        PAGE,
+        http1Options(
+          http1Responder({
+            [PAGE]: { status: 302, headers: { location: MOVED } },
+            [MOVED]: reset,
+          }),
+        ),
+      ),
+    );
+    expect(error.url).toBe(MOVED);
+  });
+
+  it('names the HTTP/1.1 redirect target whose DNS check fails', async () => {
+    const error = await failure(
+      retrieveSourceOverHttp1(PAGE, {
+        ...http1Options(http1Responder({ [PAGE]: { status: 302, headers: { location: MOVED } } })),
+        resolveHost: async (hostname: string) => (hostname === 'www.other.gov.au' ? [] : ['8.8.8.8']),
+      }),
+    );
+    expect(error.url).toBe(MOVED);
+  });
+
+  it('keeps credentials and the query out of the message', async () => {
+    const signed = 'https://www.example.gov.au/files/a.pdf?X-Amz-Signature=secret';
+    const error = await failure(
+      retrieveSource(signed, {
+        fetchImpl: routes({ [signed]: () => new Response('no', { status: 403 }) }),
+      }),
+    );
+    expect(error.message).toBe('HTTP 403 at https://www.example.gov.au/files/a.pdf');
+  });
+});
+
 describe('matchesRetrievedContent', () => {
   const url = 'https://example.gov.au/policy';
   const retrievePage = (head: string) =>
@@ -1264,7 +1475,7 @@ describe('matchesRetrievedContent', () => {
       hashLinkedDocuments: false,
     });
 
-  it('accepts the fingerprint stored before dcterms.created and the date platform were fingerprinted', async () => {
+  it('accepts the fingerprint stored before dcterms.created and the date platform were fingerprinted (#249)', async () => {
     const current = await retrievePage(
       '<meta name="Generator" content="Drupal 10 (https://www.drupal.org)"><meta name="dcterms.created" content="2026-06-01">',
     );
@@ -1274,7 +1485,7 @@ describe('matchesRetrievedContent', () => {
     expect(matchesRetrievedContent(current, current.evidence.contentHash)).toBe(true);
   });
 
-  it('accepts the fingerprints this page had under the #244 keyed-set and pre-#195 schemes', async () => {
+  it('accepts the fingerprints this page had under the #244 keyed-set and pre-#195 schemes (#249)', async () => {
     const keyedSetHash =
       '4cac28aebfc4c39e4d08c993f85cfdbee945f54a290e687da4e0b365759ccef6';
     const legacyHash =
@@ -1287,7 +1498,7 @@ describe('matchesRetrievedContent', () => {
     expect(matchesRetrievedContent(current, legacyHash)).toBe(true);
   });
 
-  it('rejects the current fingerprint of a page that lacked dcterms.created once the page gains it', async () => {
+  it('rejects the current fingerprint of a page that lacked dcterms.created once the page gains it (#262)', async () => {
     const before = await retrievePage('');
     const after = await retrievePage(
       '<meta name="dcterms.created" content="2026-06-01">',
@@ -1295,11 +1506,294 @@ describe('matchesRetrievedContent', () => {
     expect(matchesRetrievedContent(after, before.evidence.contentHash)).toBe(false);
   });
 
-  it('rejects the current fingerprint of a page that lacked a generator once it becomes a GovCMS page', async () => {
+  it('rejects the current fingerprint of a page that lacked a generator once it becomes a GovCMS page (#262)', async () => {
     const before = await retrievePage('<meta name="dcterms.date" content="2025-03-01">');
     const after = await retrievePage(
       '<meta name="Generator" content="Drupal 10 (https://www.drupal.org)"><meta name="dcterms.date" content="2025-03-01">',
     );
     expect(matchesRetrievedContent(after, before.evidence.contentHash)).toBe(false);
+  });
+});
+
+describe('retrieveSource host gate', () => {
+  const html = (title: string) =>
+    new Response(`<html><body><main><h1>${title}</h1></main></body></html>`, {
+      status: 200,
+      headers: { 'content-type': 'text/html' },
+    });
+  const refusal = (url: URL): Admission => ({
+    kind: 'refused',
+    cls: 'robots_disallowed',
+    detail: `${url} is disallowed by robots.txt for Policai`,
+  });
+
+  it('admits before the request and observes the status and Retry-After after it', async () => {
+    const { gate, admitted, observed } = buildRecordingHostGate();
+    const fetchImpl = vi.fn(async () => {
+      expect(admitted).toEqual(['https://example.gov.au/policy']);
+      const response = html('AI policy');
+      response.headers.set('retry-after', '7');
+      return response;
+    });
+    await retrieveSource('https://example.gov.au/policy', {
+      fetchImpl: fetchImpl as unknown as typeof fetch,
+      gate,
+      hashLinkedDocuments: false,
+    });
+    expect(observed).toEqual([['https://example.gov.au/policy', { status: 200, retryAfter: '7', transport: 'http' }]]);
+  });
+
+  it('turns a refusal into a terminal SourceFetchError that carries the URL and makes no request', async () => {
+    const { gate } = buildRecordingHostGate(refusal);
+    const fetchImpl = vi.fn();
+    await expect(
+      retrieveSource('https://example.gov.au/search?q=ai', {
+        fetchImpl: fetchImpl as unknown as typeof fetch,
+        gate,
+        attempts: 3,
+      }),
+    ).rejects.toMatchObject({
+      name: 'SourceFetchError',
+      message: 'https://example.gov.au/search?q=ai is disallowed by robots.txt for Policai',
+      retryable: false,
+      code: 'gate_refused',
+      url: 'https://example.gov.au/search?q=ai',
+    });
+    expect(fetchImpl).not.toHaveBeenCalled();
+  });
+
+  it('reports a decided block as a terminal failure naming the deciding source', async () => {
+    const { gate } = buildRecordingHostGate(() => ({ kind: 'decided_block', sourceId: 'finance-news' }));
+    await expect(
+      retrieveSource('https://www.finance.gov.au/x.pdf', { fetchImpl: vi.fn() as unknown as typeof fetch, gate }),
+    ).rejects.toMatchObject({
+      code: 'gate_refused',
+      retryable: false,
+      message: expect.stringContaining('finance-news'),
+      url: 'https://www.finance.gov.au/x.pdf',
+    });
+  });
+
+  it('labels observations with the transport the caller names', async () => {
+    const { gate, observed } = buildRecordingHostGate();
+    await retrieveSource('https://example.gov.au/policy', {
+      fetchImpl: vi.fn(async () => html('AI policy')) as unknown as typeof fetch,
+      gate,
+      transport: 'browser',
+      hashLinkedDocuments: false,
+    });
+    expect(observed[0]?.[1].transport).toBe('browser');
+  });
+
+  it('keeps a backoff refusal retryable so a candidate stays pending for the next run', async () => {
+    const { gate } = buildRecordingHostGate((url) => ({
+      kind: 'refused',
+      cls: 'rate_limited',
+      detail: `${url.host} is backing off until later after HTTP 429; ${url} not requested`,
+    }));
+    await expect(
+      retrieveSource('https://example.gov.au/policy', { fetchImpl: vi.fn() as unknown as typeof fetch, gate, attempts: 1 }),
+    ).rejects.toMatchObject({ code: 'gate_refused', retryable: true });
+  });
+
+  it('keeps a breaker refusal retryable, so a never-requested candidate stays pending', async () => {
+    const url = 'https://example.gov.au/policy';
+    const { gate } = buildRecordingHostGate(() => ({
+      kind: 'refused',
+      cls: 'identity_refused',
+      detail: `example.gov.au refused the headless browser with a 403 earlier this run; ${url} not requested`,
+    }));
+    const fetchImpl = vi.fn();
+    await expect(
+      retrieveSource(url, { fetchImpl: fetchImpl as unknown as typeof fetch, gate, hashLinkedDocuments: false }),
+    ).rejects.toMatchObject({ code: 'gate_refused', retryable: true, url });
+    expect(fetchImpl).not.toHaveBeenCalled();
+  });
+
+  it('reports the response that was requested when the gate refuses the retry', async () => {
+    const url = 'https://example.gov.au/policy';
+    let admitted = 0;
+    const { gate } = buildRecordingHostGate(() =>
+      admitted++ === 0
+        ? { kind: 'go' }
+        : { kind: 'refused', cls: 'rate_limited', detail: `example.gov.au is backing off; ${url} not requested` },
+    );
+    const fetchImpl = vi.fn(async () => new Response('slow down', { status: 429, headers: { 'retry-after': '3600' } }));
+    await expect(
+      retrieveSource(url, {
+        fetchImpl: fetchImpl as unknown as typeof fetch,
+        gate,
+        hashLinkedDocuments: false,
+        attempts: 2,
+        retryDelayMs: 0,
+      }),
+    ).rejects.toMatchObject({ status: 429, retryable: true, url, message: `HTTP 429 at ${url}` });
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+  });
+
+  it('admits every redirect hop and observes each response', async () => {
+    const { gate, admitted, observed } = buildRecordingHostGate();
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(
+        new Response(null, { status: 301, headers: { location: 'https://other.gov.au/policy' } }),
+      )
+      .mockResolvedValueOnce(html('AI policy'));
+    await retrieveSource('https://example.gov.au/start', {
+      fetchImpl: fetchImpl as unknown as typeof fetch,
+      gate,
+      hashLinkedDocuments: false,
+    });
+    expect(admitted).toEqual(['https://example.gov.au/start', 'https://other.gov.au/policy']);
+    expect(observed.map(([url, outcome]) => [url, outcome.status])).toEqual([
+      ['https://example.gov.au/start', 301],
+      ['https://other.gov.au/policy', 200],
+    ]);
+  });
+
+  it('refuses a redirect hop onto a disallowed URL without requesting it', async () => {
+    const { gate } = buildRecordingHostGate((url) =>
+      url.hostname === 'other.gov.au' ? refusal(url) : { kind: 'go' },
+    );
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(
+        new Response(null, { status: 302, headers: { location: 'https://other.gov.au/private' } }),
+      );
+    await expect(
+      retrieveSource('https://example.gov.au/start', { fetchImpl: fetchImpl as unknown as typeof fetch, gate }),
+    ).rejects.toMatchObject({ code: 'gate_refused', url: 'https://other.gov.au/private' });
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+  });
+
+  it('admits a browser-followed redirect destination after the fact and discards a refused one', async () => {
+    const landed = (finalUrl: string) => {
+      const response = html('AI policy');
+      Object.defineProperty(response, 'url', { value: finalUrl });
+      return response;
+    };
+    const allowed = buildRecordingHostGate();
+    await retrieveSource('https://example.gov.au/start', {
+      fetchImpl: vi.fn(async () => landed('https://other.gov.au/policy')) as unknown as typeof fetch,
+      gate: allowed.gate,
+      hashLinkedDocuments: false,
+    });
+    expect(allowed.admitted).toEqual(['https://example.gov.au/start', 'https://other.gov.au/policy']);
+
+    const refusing = buildRecordingHostGate((url) =>
+      url.hostname === 'other.gov.au' ? refusal(url) : { kind: 'go' },
+    );
+    await expect(
+      retrieveSource('https://example.gov.au/start', {
+        fetchImpl: vi.fn(async () => landed('https://other.gov.au/policy')) as unknown as typeof fetch,
+        gate: refusing.gate,
+        hashLinkedDocuments: false,
+      }),
+    ).rejects.toMatchObject({ code: 'gate_refused', url: 'https://other.gov.au/policy' });
+  });
+
+  it('admits each linked document and fails the page when one is disallowed', async () => {
+    const page = `<html><body><main><h1>AI policy</h1>
+      <a href="/files/open.pdf">AI policy PDF</a>
+      <a href="/private/closed.pdf">AI framework PDF</a></main></body></html>`;
+    const fetchImpl = vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url.endsWith('.pdf')) {
+        return new Response('%PDF-1.4\npolicy', { status: 200, headers: { 'content-type': 'application/pdf' } });
+      }
+      return new Response(page, { status: 200, headers: { 'content-type': 'text/html' } });
+    });
+    const open = buildRecordingHostGate();
+    await retrieveSource('https://example.gov.au/policy', {
+      fetchImpl: fetchImpl as unknown as typeof fetch,
+      gate: open.gate,
+    });
+    expect(open.admitted).toEqual([
+      'https://example.gov.au/policy',
+      'https://example.gov.au/files/open.pdf',
+      'https://example.gov.au/private/closed.pdf',
+    ]);
+
+    const closed = buildRecordingHostGate((url) => (url.pathname.startsWith('/private') ? refusal(url) : { kind: 'go' }));
+    fetchImpl.mockClear();
+    await expect(
+      retrieveSource('https://example.gov.au/policy', { fetchImpl: fetchImpl as unknown as typeof fetch, gate: closed.gate }),
+    ).rejects.toMatchObject({ code: 'gate_refused', url: 'https://example.gov.au/private/closed.pdf' });
+    expect(fetchImpl.mock.calls.map(([input]) => String(input))).toEqual([
+      'https://example.gov.au/policy',
+      'https://example.gov.au/files/open.pdf',
+    ]);
+  });
+
+  it('gates the HTTP/1.1 path per hop and observes its statuses', async () => {
+    const { gate, admitted, observed } = buildRecordingHostGate();
+    const requestImpl = vi.fn(
+      (
+        url: URL,
+        _requestOptions: unknown,
+        onResponse: (response: PassThrough & { statusCode: number; headers: Record<string, string> }) => void,
+      ) => {
+        const request = new EventEmitter() as EventEmitter & {
+          setTimeout: (milliseconds: number, callback: () => void) => typeof request;
+          destroy: (error?: Error) => typeof request;
+        };
+        request.setTimeout = vi.fn(() => request);
+        request.destroy = vi.fn(() => request);
+        queueMicrotask(() => {
+          expect(admitted.at(-1)).toBe(url.toString());
+          const response = new PassThrough() as PassThrough & { statusCode: number; headers: Record<string, string> };
+          if (url.pathname === '/start') {
+            response.statusCode = 302;
+            response.headers = { location: 'https://other.gov.au/policy', 'retry-after': '3' };
+            onResponse(response);
+            response.end();
+            return;
+          }
+          response.statusCode = 200;
+          response.headers = { 'content-type': 'text/html' };
+          onResponse(response);
+          response.end('<main><h1>AI policy</h1></main>');
+        });
+        return request;
+      },
+    );
+    await retrieveSourceOverHttp1('https://example.gov.au/start', {
+      now: () => new Date('2026-07-16T00:00:00.000Z'),
+      timeoutMs: 1_000,
+      resolveHost: async () => ['8.8.8.8'],
+      requestImpl: requestImpl as unknown as typeof import('node:https').get,
+      gate,
+    });
+    expect(admitted).toEqual(['https://example.gov.au/start', 'https://other.gov.au/policy']);
+    expect(observed).toEqual([
+      ['https://example.gov.au/start', { status: 302, retryAfter: '3', transport: 'http' }],
+      ['https://other.gov.au/policy', { status: 200, retryAfter: undefined, transport: 'http' }],
+    ]);
+  });
+
+  it('refuses on the HTTP/1.1 path before connecting', async () => {
+    const { gate } = buildRecordingHostGate(refusal);
+    const requestImpl = vi.fn();
+    await expect(
+      retrieveSourceOverHttp1('https://example.gov.au/private', {
+        now: () => new Date('2026-07-16T00:00:00.000Z'),
+        timeoutMs: 1_000,
+        resolveHost: async () => ['8.8.8.8'],
+        requestImpl: requestImpl as unknown as typeof import('node:https').get,
+        gate,
+      }),
+    ).rejects.toMatchObject({ code: 'gate_refused', url: 'https://example.gov.au/private' });
+    expect(requestImpl).not.toHaveBeenCalled();
+  });
+
+  it('passes the gate to the HTTP/1.1 fallback', async () => {
+    const { gate } = buildRecordingHostGate();
+    const http1Fallback = vi.fn(async () => {
+      throw new SourceFetchError('stop here', { retryable: false });
+    });
+    await expect(
+      retrieveSource('https://example.gov.au/policy', { gate, http1Fallback, resolveHost: async () => ['8.8.8.8'] }),
+    ).rejects.toThrow('stop here');
+    expect(http1Fallback).toHaveBeenCalledWith('https://example.gov.au/policy', expect.objectContaining({ gate }));
   });
 });

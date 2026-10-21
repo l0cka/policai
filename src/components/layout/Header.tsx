@@ -20,7 +20,7 @@ const navItems = [
 
 const insightItems = [
   { href: '/timeline', label: 'Timeline' },
-  { href: '/network', label: 'Network' },
+  { href: '/coverage', label: 'Coverage' },
   { href: '/methodology', label: 'Methodology' },
 ];
 
@@ -115,7 +115,7 @@ export function Header({
     };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background text-foreground">
+    <header data-site-header className="sticky top-0 z-50 w-full border-b border-border bg-background text-foreground">
       <div className="container mx-auto flex h-14 items-center px-4 sm:h-24 sm:px-6 lg:px-8">
         <Link href="/" aria-label="Policai home" className="shrink-0">
           <PolicaiLogo
@@ -306,11 +306,16 @@ export function Header({
       {showCollectionStrip ? (
         <div className="border-t border-border bg-muted/40 text-muted-foreground">
           <div className="container mx-auto flex min-h-9 flex-wrap py-2 items-center justify-between gap-6 px-4 font-mono text-[10px] tracking-[0.04em]  sm:px-6 lg:px-8">
-            <span className="text-muted-foreground sm:inline">
-              <span className="hidden sm:inline">{formatCollectedAt(collectedAt)}</span>
-              <span className="sm:hidden">
-                {formatCollectedAt(collectedAt)}
-              </span>
+            <span className="inline-flex flex-wrap items-center gap-x-3 gap-y-1 text-muted-foreground">
+              <span>{formatCollectedAt(collectedAt)}</span>
+              {collectionHealth !== 'healthy' ? (
+                <span
+                  className="inline-flex items-center gap-2 uppercase tracking-[0.12em] text-[var(--caution)] sm:hidden"
+                >
+                  <span aria-hidden="true" className="h-2 w-2 rounded-full bg-current" />
+                  {collectionHealth}
+                </span>
+              ) : null}
             </span>
             <div className="hidden items-center gap-3 sm:flex">
               <span

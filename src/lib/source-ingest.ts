@@ -17,6 +17,7 @@ import {
 	retrieveSource,
 	type RetrievedSource,
 } from "@/lib/pipeline/fetch";
+import { classifyFailure } from "@/lib/pipeline/failure";
 import { getSourceById } from "@/lib/pipeline/sources";
 import {
 	canonicalizeSourceEvidence,
@@ -32,6 +33,7 @@ import {
 	createTimelineEvent,
 	getDevelopments,
 	getPolicies,
+	getPolicyById,
 	getSourceReviewById,
 	getSourceReviews,
 	getTimelineEvents,
@@ -113,6 +115,10 @@ const MAX_BROWSER_CAPTURE_CHARACTERS = 500_000;
 const MAX_CAPTURED_DOCUMENT_BYTES = 32 * 1024 * 1024;
 const SHA256_PATTERN = /^[a-f0-9]{64}$/;
 
+/** Appended to approval notes when live re-fetch is refused and the staged snapshot is used. */
+export const RETAINED_SNAPSHOT_APPROVAL_NOTE =
+	"Approval used the collector-retained source snapshot because the live re-fetch was refused by the host (HTTP 403, 429, or equivalent identity/rate refusal).";
+
 function retrieveEditorialSource(
 	url: string,
 	destinationPolicy?: "official" | "public-https",
@@ -121,6 +127,90 @@ function retrieveEditorialSource(
 		timeoutMs: EDITORIAL_SOURCE_TIMEOUT_MS,
 		...(destinationPolicy ? { destinationPolicy } : {}),
 	});
+}
+
+function isHostRefusalForApprovalFallback(error: unknown): boolean {
+	const { cls } = classifyFailure(error);
+	return cls === "identity_refused" || cls === "rate_limited";
+}
+
+function retainedSnapshotBody(review: SourceReview): string | null {
+	const proposed = review.proposedRecord;
+	if ("content" in proposed && typeof proposed.content === "string") {
+		const content = proposed.content.trim();
+		if (content.length >= 20) return content;
+	}
+	const description = proposed.description?.trim();
+	if (description && description.length >= 20) return description;
+	return null;
+}
+
+/**
+ * Rebuild a RetrievedSource from the staged review when the host refuses a
+ * live re-fetch. Uses only retained evidence + proposed text — no invented bytes.
+ */
+function buildRetainedApprovalSnapshot(
+	review: SourceReview,
+	approvalSourceUrl: string,
+): RetrievedSource | null {
+	const evidence = review.sourceEvidence;
+	if (!evidence.contentHash || !evidence.retrievedAt) return null;
+	const stagedDestination = evidence.finalUrl ?? evidence.url;
+	if (
+		!sourceUrlsEqual(approvalSourceUrl, evidence.url) &&
+		!sourceUrlsEqual(approvalSourceUrl, stagedDestination)
+	) {
+		return null;
+	}
+	const body = retainedSnapshotBody(review);
+	if (!body) return null;
+	return {
+		body,
+		durationMs: 0,
+		evidence: canonicalizeSourceEvidence(evidence),
+	};
+}
+
+function withRetainedSnapshotApprovalNotes(
+	approvalNotes: string | undefined,
+	usedRetainedSnapshot: boolean,
+): string | undefined {
+	if (!usedRetainedSnapshot) return approvalNotes;
+	if (!approvalNotes?.trim()) return RETAINED_SNAPSHOT_APPROVAL_NOTE;
+	if (approvalNotes.includes(RETAINED_SNAPSHOT_APPROVAL_NOTE)) {
+		return approvalNotes;
+	}
+	return `${approvalNotes.trim()}\n${RETAINED_SNAPSHOT_APPROVAL_NOTE}`;
+}
+
+async function retrieveSourceForApproval(
+	approvalSourceUrl: string,
+	review: SourceReview,
+	browserCapture?: BrowserCaptureInput,
+): Promise<{ retrieved: RetrievedSource; usedRetainedSnapshot: boolean }> {
+	if (browserCapture) {
+		return {
+			retrieved: await buildBrowserCapturedSource(
+				approvalSourceUrl,
+				browserCapture,
+			),
+			usedRetainedSnapshot: false,
+		};
+	}
+	try {
+		return {
+			retrieved: await retrieveEditorialSource(approvalSourceUrl),
+			usedRetainedSnapshot: false,
+		};
+	} catch (error) {
+		if (!isHostRefusalForApprovalFallback(error)) throw error;
+		const retained = buildRetainedApprovalSnapshot(
+			review,
+			approvalSourceUrl,
+		);
+		if (!retained) throw error;
+		return { retrieved: retained, usedRetainedSnapshot: true };
+	}
 }
 
 
@@ -1419,12 +1509,11 @@ async function approveStagedSourceUnlocked(input: {
 			"The approving reviewer must be the named browser-capture reviewer",
 		);
 	}
-	const retrieved = input.browserCapture
-		? await buildBrowserCapturedSource(
-				approvalSourceUrl,
-				input.browserCapture,
-			)
-		: await retrieveEditorialSource(approvalSourceUrl);
+	const { retrieved, usedRetainedSnapshot } = await retrieveSourceForApproval(
+		approvalSourceUrl,
+		review,
+		input.browserCapture,
+	);
 	if (!replacesSource) {
 		if (!review.sourceEvidence.contentHash) {
 			throw new Error(
@@ -1447,52 +1536,71 @@ async function approveStagedSourceUnlocked(input: {
 		}
 	}
 	const now = new Date().toISOString();
+	const approvalNotes = withRetainedSnapshotApprovalNotes(
+		input.approvalNotes,
+		usedRetainedSnapshot,
+	);
 	let manualExtractionEvidence: SourceEvidence["manualExtraction"];
 	let document;
-	try {
-		document = await extractRetrievedDocument(
-			retrieved,
-			approvalSourceUrl,
-			new URL(approvalSourceUrl).hostname,
-		);
-	} catch (error) {
-		const manual = input.manualExtraction;
-		if (!manual) throw error;
-		if (!input.proposedRecord) {
+	if (usedRetainedSnapshot) {
+		const retainedText = retainedSnapshotBody(review);
+		if (!retainedText) {
 			throw new Error(
-				"Manual or OCR extraction requires an explicitly reviewed proposedRecord",
-			);
-		}
-		const title = manual.title.trim();
-		const text = manual.text.trim();
-		const notes = manual.notes.trim();
-		if (!title || text.length < 20 || !notes) {
-			throw new Error(
-				"Manual or OCR extraction requires a title, at least 20 characters of text, and explanatory notes",
-			);
-		}
-		if (
-			manual.publishedAtPrecision &&
-			!manual.publishedAt
-		) {
-			throw new Error(
-				"Manual extraction date precision requires a source-backed date",
+				"Collector-retained source snapshot has no usable text for approval",
 			);
 		}
 		document = {
-			title,
-			text,
-			publishedAt: manual.publishedAt,
-			publishedAtPrecision: manual.publishedAtPrecision,
+			title: review.sourceEvidence.title ?? review.title,
+			text: retainedText,
+			publishedAt: review.sourceEvidence.publishedAt,
+			publishedAtPrecision: review.sourceEvidence.publishedAtPrecision,
 		};
-		manualExtractionEvidence = {
-			method: manual.method,
-			extractedAt: now,
-			extractedBy: input.actor,
-			notes: `${notes} Automatic extraction failed: ${error instanceof Error ? error.message : String(error)}`,
-			textHash: createHash("sha256").update(text).digest("hex"),
-			characterCount: text.length,
-		};
+	} else {
+		try {
+			document = await extractRetrievedDocument(
+				retrieved,
+				approvalSourceUrl,
+				new URL(approvalSourceUrl).hostname,
+			);
+		} catch (error) {
+			const manual = input.manualExtraction;
+			if (!manual) throw error;
+			if (!input.proposedRecord) {
+				throw new Error(
+					"Manual or OCR extraction requires an explicitly reviewed proposedRecord",
+				);
+			}
+			const title = manual.title.trim();
+			const text = manual.text.trim();
+			const notes = manual.notes.trim();
+			if (!title || text.length < 20 || !notes) {
+				throw new Error(
+					"Manual or OCR extraction requires a title, at least 20 characters of text, and explanatory notes",
+				);
+			}
+			if (
+				manual.publishedAtPrecision &&
+				!manual.publishedAt
+			) {
+				throw new Error(
+					"Manual extraction date precision requires a source-backed date",
+				);
+			}
+			document = {
+				title,
+				text,
+				publishedAt: manual.publishedAt,
+				publishedAtPrecision: manual.publishedAtPrecision,
+			};
+			manualExtractionEvidence = {
+				method: manual.method,
+				extractedAt: now,
+				extractedBy: input.actor,
+				notes: `${notes} Automatic extraction failed: ${error instanceof Error ? error.message : String(error)}`,
+				textHash: createHash("sha256").update(text).digest("hex"),
+				characterCount: text.length,
+			};
+		}
 	}
 	sourceUrl = approvalSourceUrl;
 	let sourceEvidence: SourceEvidence = canonicalizeSourceEvidence({
@@ -1566,7 +1674,7 @@ async function approveStagedSourceUnlocked(input: {
 				checkedAt: now,
 				checkedBy: input.actor,
 				method: "manual",
-				notes: input.approvalNotes,
+				notes: approvalNotes,
 			},
 		};
 		if (
@@ -1726,7 +1834,7 @@ async function approveStagedSourceUnlocked(input: {
 			...(linkedDevelopment ? { linkedDevelopment } : {}),
 			reviewedAt: now,
 			reviewedBy: input.actor,
-			approvalNotes: input.approvalNotes,
+			approvalNotes,
 		});
 		if (!updated) {
 			throw new Error("Failed to approve staged source");
@@ -1922,7 +2030,7 @@ async function approveStagedSourceUnlocked(input: {
 			checkedAt: now,
 			checkedBy: input.actor,
 			method: "manual",
-			notes: input.approvalNotes,
+			notes: approvalNotes,
 		},
 	};
 	const report = mergeReports(
@@ -1968,7 +2076,7 @@ async function approveStagedSourceUnlocked(input: {
 		...(linkedDevelopment ? { linkedDevelopment } : {}),
 		reviewedAt: now,
 		reviewedBy: input.actor,
-		approvalNotes: input.approvalNotes,
+		approvalNotes,
 	});
 	if (!updated) {
 		throw new Error("Failed to approve staged source");
@@ -2164,9 +2272,11 @@ async function assertSourceStillMatchesApproval(
 				: "A browser capture changes the retrieval method and requires a new staged review",
 		);
 	}
-	const retrieved = browserCapture
-		? await buildBrowserCapturedSource(review.sourceUrl, browserCapture)
-		: await retrieveEditorialSource(review.sourceUrl);
+	const { retrieved } = await retrieveSourceForApproval(
+		review.sourceUrl,
+		review,
+		browserCapture,
+	);
 	if (!matchesRetrievedContent(retrieved, approvedHash)) {
 		throw new Error(
 			"Official source changed after approval; re-approve it before publication",
@@ -2647,6 +2757,65 @@ export function rejectStagedSource(
 	return withDataMutationLock(() =>
 		rejectStagedSourceUnlocked(id, reason),
 	);
+}
+
+/**
+ * Stamp a public register record as editorially verified. Used when Daniel
+ * names that policy id in Policai Signal. Refuses withheld, unverified, and
+ * trashed records — those stay on the staged-review publish path.
+ */
+async function verifyRegisterRecordUnlocked(input: {
+	policyId: string;
+	actor: string;
+	notes?: string;
+	now?: string;
+}): Promise<Policy> {
+	const actor = input.actor.replace(/\s+/g, " ").trim();
+	if (!actor) {
+		throw new Error("A human reviewer identity is required");
+	}
+	const policyId = input.policyId.trim();
+	if (!policyId) {
+		throw new Error("A register policy id is required");
+	}
+	const now = input.now ?? new Date().toISOString();
+	const publicPolicy = await getPolicyById(policyId);
+	if (!publicPolicy) {
+		const adminPolicy = await getPolicyById(policyId, { access: "admin" });
+		if (!adminPolicy) {
+			throw new Error(`Register record ${policyId} not found`);
+		}
+		if (adminPolicy.status === "trashed") {
+			throw new Error(`Register record ${policyId} is trashed`);
+		}
+		throw new Error(
+			`Register record ${policyId} is not public (withheld or unverified); approve and publish its staged review instead`,
+		);
+	}
+	const notes =
+		input.notes?.replace(/\s+/g, " ").trim() ||
+		`Verified via Policai Signal by ${actor}`;
+	const updated = await updatePolicy(policyId, {
+		lastReviewedAt: now,
+		verification: {
+			...publicPolicy.verification,
+			status: "verified",
+			checkedAt: now,
+			checkedBy: actor,
+			method: "manual",
+			notes,
+		},
+	});
+	if (!updated) {
+		throw new Error(`Register record ${policyId} not found`);
+	}
+	return updated;
+}
+
+export function verifyRegisterRecord(
+	input: Parameters<typeof verifyRegisterRecordUnlocked>[0],
+): ReturnType<typeof verifyRegisterRecordUnlocked> {
+	return withDataMutationLock(() => verifyRegisterRecordUnlocked(input));
 }
 
 export async function checkCoverage(input: {

@@ -1,3 +1,4 @@
+import { createHostGate, type Admission, type HostGate, type Observation } from '@/lib/pipeline/host-gate'
 import type { Agency, Policy, TimelineEvent } from '@/types'
 import type { WatchSource } from '@/lib/pipeline/sources'
 
@@ -115,4 +116,33 @@ export function withFixtureIdentityException(sources: WatchSource[]): WatchSourc
       ? { ...source, identityException: { until: '2026-10-21', reason: 'fixture exception' } }
       : source,
   )
+}
+
+export function buildOpenHostGate(): HostGate {
+  return createHostGate({
+    hosts: {},
+    refused: new Map(),
+    fetchRobots: async () => ({ status: 404, body: '' }),
+    now: Date.now,
+    sleep: async () => {},
+  })
+}
+
+export function buildRecordingHostGate(
+  decide: (url: URL) => Admission = () => ({ kind: 'go' }),
+): { gate: HostGate; admitted: string[]; observed: Array<[string, Observation]> } {
+  const admitted: string[] = []
+  const observed: Array<[string, Observation]> = []
+  const gate: HostGate = {
+    admit: async (url) => {
+      admitted.push(url.toString())
+      return decide(url)
+    },
+    observe: (url, outcome) => {
+      observed.push([url.toString(), outcome])
+    },
+    hosts: () => ({}),
+    waited: () => ({}),
+  }
+  return { gate, admitted, observed }
 }

@@ -356,7 +356,7 @@ try {
     '/developments',
     '/courts',
     '/timeline',
-    '/network',
+    '/coverage',
     '/methodology',
   ]) {
     assert.equal((await page.goto(`${url}${route}`)).status(), 200);

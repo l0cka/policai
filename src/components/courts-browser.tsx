@@ -1,6 +1,6 @@
 "use client";
 
-import { useSyncExternalStore, useMemo, useEffect, useRef } from "react";
+import { useSyncExternalStore, useMemo, useEffect, useRef, type ReactNode } from "react";
 import Link from "next/link";
 import { CourtRequirementsList } from "./court-requirements-list";
 import {
@@ -13,7 +13,9 @@ import {
 } from "lucide-react";
 import {
 	JURISDICTION_NAMES,
+	getJurisdictionName,
 	getPolicyDateTypeName,
+	getPolicyTypeName,
 	getPrimaryPolicyDate,
 	type Policy,
 	type Jurisdiction,
@@ -21,6 +23,8 @@ import {
 } from "@/types";
 import { formatPolicyDate } from "@/lib/format-policy-date";
 import { jurisdictionAccent, jurisdictionRailStyle } from "@/lib/jurisdiction-accent";
+import type { CourtAnalysisLink } from "@/lib/court-cross-links";
+import type { RelatedInstrument } from "@/lib/related-policies";
 import { StatusPill, SourceState } from "@/components/policy-indicators";
 import { MetricStrip, PageIntro } from "@/components/layout";
 import { NoResultsState } from "@/components/ui/empty-state";
@@ -122,9 +126,15 @@ function updateCourtUrl(values: Record<string, string | null>) {
 export function CourtsBrowser({
 	policies,
 	requirements = [],
+	analysesByPolicy = {},
+	relatedByPolicy = {},
+	analysis = null,
 }: {
 	policies: Policy[];
 	requirements?: PublicCourtRequirement[];
+	analysesByPolicy?: Record<string, CourtAnalysisLink[]>;
+	relatedByPolicy?: Record<string, RelatedInstrument[]>;
+	analysis?: ReactNode;
 }) {
 	const queryString = useSyncExternalStore(subscribeToCourtUrl, courtUrlSnapshot, serverCourtUrlSnapshot);
 	const restoredScroll = useRef(false);
@@ -253,6 +263,8 @@ export function CourtsBrowser({
 				{ value: requirements.length, label: "verified requirements" },
 			]} />
 
+			{analysis}
+
 			<div className="pt-7">
 				<section aria-label="Find court guidance" className="border-y border-border bg-muted/30 px-3 py-3 sm:px-4">
 					<div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-[minmax(16rem,1fr)_13rem_13rem_11rem]">
@@ -337,6 +349,8 @@ export function CourtsBrowser({
 								const isExpanded = expandedId === note.id;
 								const primaryDate = getPrimaryPolicyDate(note);
 								const noteRequirements = requirementsByPolicy.get(note.id) ?? [];
+								const noteRelated = relatedByPolicy[note.id] ?? [];
+								const noteAnalyses = analysesByPolicy[note.id] ?? [];
 								return (
 									<div
 										key={note.id}
@@ -417,6 +431,67 @@ export function CourtsBrowser({
 													<p className="text-xs leading-5 text-muted-foreground">Record source checked: {new Date(note.verification.checkedAt).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric", timeZone: "Australia/Sydney" })}. Collection freshness is not a new editorial review of this record. Always check the official source.</p>
 												)}
 												<CourtRequirementsList title={note.title} requirements={noteRequirements} />
+
+												{noteRelated.length > 0 ? (
+													<div>
+														<span className="font-mono text-xs font-medium uppercase tracking-wider text-foreground">
+															Related instruments
+														</span>
+														<ul className="mt-2 space-y-2">
+															{noteRelated.map((item) => (
+																<li key={item.id}>
+																	<Link
+																		href={`/policies/${item.id}`}
+																		onClick={() => window.history.replaceState({ ...window.history.state, courtsScroll: window.scrollY }, "")}
+																		className="text-sm font-medium text-primary hover:underline"
+																	>
+																		{item.title}
+																	</Link>
+																	<p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
+																		{getJurisdictionName(item.jurisdiction)} · {getPolicyTypeName(item.type)}
+																	</p>
+																</li>
+															))}
+														</ul>
+														<Link
+															href={`/policies/${note.id}`}
+															onClick={() => window.history.replaceState({ ...window.history.state, courtsScroll: window.scrollY }, "")}
+															className="mt-2 inline-block text-xs font-medium text-primary hover:underline"
+														>
+															All related on the full record
+														</Link>
+													</div>
+												) : null}
+
+												{noteAnalyses.length > 0 ? (
+													<div>
+														<span className="font-mono text-xs font-medium uppercase tracking-wider text-foreground">
+															Analysis citing this record
+														</span>
+														<ul className="mt-2 space-y-2">
+															{noteAnalyses.map((article) => (
+																<li key={article.slug}>
+																	<Link
+																		href={`/analysis/${article.slug}`}
+																		className="text-sm font-medium text-primary hover:underline"
+																	>
+																		{article.title}
+																	</Link>
+																	<p className="text-xs text-muted-foreground">
+																		Published{" "}
+																		<time dateTime={article.publishedAt}>
+																			{formatPolicyDate({
+																				type: "published",
+																				date: article.publishedAt,
+																				precision: "day",
+																			})}
+																		</time>
+																	</p>
+																</li>
+															))}
+														</ul>
+													</div>
+												) : null}
 
 												{/* Key requirements */}
 												{note.content && (

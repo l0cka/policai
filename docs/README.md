@@ -13,7 +13,7 @@ This directory holds the project-facing documentation that should stay in sync w
 - [Amalgamation status](./amalgamation.md) — source integration, verification and remaining Pro Bono cutover steps.
 - [Collector hosting](./collector-argus.md) — where scheduled collection runs; retrieval and classification behaviour is in collector.md.
 - [Authoritative refactor tracker](./refactor-authoritative-policai.md) — baseline findings, workstreams, and completion gates.
-- [Network relationship explorer concept](./design/policai-network-concept-02.md) — the approved desktop/mobile semantic design contract for `/network`.
+- [Network relationship explorer concept](./design/policai-network-concept-02.md) — retired design for the old `/network` force graph, replaced by the coverage map (#302); kept for history.
 
 ## Canonical Sources
 

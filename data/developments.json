@@ -1,5 +1,59 @@
 [
   {
+    "id": "dev-inslm-annual-report-2025-26-ai-scoping",
+    "title": "INSLM 2025–26 Annual Report scopes AI regulation in the national intelligence community",
+    "url": "https://www.inslm.gov.au/system/files/2026-10/INSLM-annual-report-2025-26.pdf",
+    "sourceId": "inslm-annual-reports",
+    "sourceName": "INSLM — annual reports",
+    "jurisdiction": "federal",
+    "publishedAt": "2026-10-08",
+    "publishedAtPrecision": "day",
+    "detectedAt": "2026-10-19T05:37:03.000Z",
+    "summary": "INSLM's 2025–26 Annual Report (published 8 October 2026) includes initial scoping of the legal landscape for AI use by the national intelligence community: ministerial privacy rules \"say nothing about AI specifically\"; core NIC agencies are exempt from the Privacy Act, FOI Act and the Policy for the Responsible Use of AI in Government, with significant ADJR/reasons exemptions; the 2024 IIR recommendation for an INSLM AI review was never referred; initial scoping was done but a full review was not completed in the reporting period; the Monitor's term ends in late November 2026.",
+    "relevanceScore": 1,
+    "classification": "curated",
+    "assessment": {
+      "method": "editorial",
+      "assessedAt": "2026-10-19T05:37:03.000Z",
+      "promptVersion": "editorial-review-v1"
+    },
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.inslm.gov.au/system/files/2026-10/INSLM-annual-report-2025-26.pdf",
+        "finalUrl": "https://www.inslm.gov.au/system/files/2026-10/INSLM-annual-report-2025-26.pdf",
+        "title": "Independent National Security Legislation Monitor Annual Report 2025–26",
+        "publisher": "Independent National Security Legislation Monitor",
+        "retrievedAt": "2026-10-20T01:02:06Z",
+        "contentType": "text/plain",
+        "contentHash": "8c88e308f403fafcdb3d54ecfef0dbe988a1b0ffba169758625f6335bb339a97",
+        "publishedAt": "2026-10-08",
+        "publishedAtPrecision": "day",
+        "manualExtraction": {
+          "method": "manual_transcription",
+          "extractedAt": "2026-10-20T01:02:06Z",
+          "extractedBy": "Daniel Alkurdi",
+          "notes": "Official PDF at www.inslm.gov.au timed out for direct retrieval (Akamai / zero bytes for Policai collector identity and browser UA). Text was re-fetched on 20 Oct 2026 via reader proxy of the official PDF URL and checked against the AI scoping section \"Legal framework for use of AI by the National Intelligence Community\" (~p.28): ministerial privacy rules say nothing about AI specifically; core NIC Privacy Act / FOI / government AI-policy exemptions; 2024 IIR recommendation not referred; initial scoping only; Monitor term ends late November 2026. Publication date 8 October 2026 confirmed on https://www.inslm.gov.au/publications/annual-report-2025-26. Not PDF byte-fingerprinted. No new register instrument invented from this annual-report scoping section.",
+          "textHash": "8c88e308f403fafcdb3d54ecfef0dbe988a1b0ffba169758625f6335bb339a97",
+          "characterCount": 93998
+        },
+        "reviewedDate": {
+          "date": "2026-10-08",
+          "precision": "day",
+          "reviewedAt": "2026-10-20T01:02:06Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "INSLM publication page states \"Publication date / 8 October 2026\" and links this PDF (https://www.inslm.gov.au/publications/annual-report-2025-26). Confirmed via reader proxy on 20 Oct 2026 because the host timed out for direct retrieval."
+        }
+      },
+      "checkedAt": "2026-10-20T01:02:06Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Daniel Alkurdi approved promote for radar item dev-inslm-annual-report-2025-26-ai-scoping (radar review 2026-10-20): approve Signal draft timeline tl-2026-10-08-inslm-annual-report-2025-26-ai-scoping and verify this development. Primary: INSLM PDF / publication page, 8 Oct 2026. Timeline-only milestone; no new policies.json register instrument from the annual-report AI scoping section."
+    },
+    "status": "promoted",
+    "relatedTimelineEventId": "tl-2026-10-08-inslm-annual-report-2025-26-ai-scoping"
+  },
+  {
     "id": "dev-new-report-explores-safe-oversight-of-advanced-a-5uk6ft",
     "title": "New report explores safe oversight of advanced AI systems",
     "url": "https://www.industry.gov.au/news/new-report-explores-safe-oversight-advanced-ai-systems",
@@ -68,36 +122,50 @@
   },
   {
     "id": "dev-bills-online-safety-and-other-legislation-amendm-1rn0ixa",
-    "title": "BILLS : Online Safety and Other Legislation Amendment (My Face, My Rights) Bill 2025 : Second Reading",
-    "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22",
+    "title": "Online Safety and Other Legislation Amendment (My Face, My Rights) Bill 2025",
+    "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=s1471",
     "sourceId": "aph-hansard-bill-debates",
     "sourceName": "Hansard — bill debates discussing AI",
     "jurisdiction": "federal",
     "publishedAt": "2026-06-25",
     "publishedAtPrecision": "day",
     "detectedAt": "2026-10-07T19:33:43.055Z",
-    "summary": "16 explicit AI mentions in the debate text for \"BILLS : Online Safety and Other Legislation Amendment (My Face, My Rights) Bill 2025 : Second Reading\".",
-    "relevanceScore": 0.55,
-    "classification": "heuristic",
+    "summary": "Private senator's bill (Senator David Pocock) amending the Online Safety Act 2021 and the Privacy Act 1988 to address non-consensual deepfake face or voice material. Introduced in the Senate on 24 November 2025; before the Senate as of the second-reading debate on 25 June 2026. Detected via Hansard debate discussing AI; primary citation is the bill homepage, not the debate transcript.",
+    "relevanceScore": 1,
+    "classification": "curated",
     "assessment": {
-      "method": "heuristic",
-      "promptVersion": "body-mentions-v1",
-      "assessedAt": "2026-10-07T19:33:43.055Z"
+      "method": "editorial",
+      "assessedAt": "2026-10-19T09:22:36.725Z",
+      "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
-        "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22",
-        "finalUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22",
+        "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=s1471",
+        "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=s1471",
         "retrievedAt": "2026-10-07T19:33:43.055Z",
         "contentType": "text/plain",
         "contentHash": "79d9ec28a4d6c36e28cfc88976c8a7a2b0dc2089c3b507ad091f8df4f93f7368",
-        "title": "BILLS : Online Safety and Other Legislation Amendment (My Face, My Rights) Bill 2025 : Second Reading",
+        "title": "Online Safety and Other Legislation Amendment (My Face, My Rights) Bill 2025",
         "publishedAt": "2026-06-25",
-        "publishedAtPrecision": "day"
-      }
+        "publishedAtPrecision": "day",
+        "linkedDocuments": [
+          {
+            "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22",
+            "finalUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22",
+            "retrievedAt": "2026-10-07T19:33:43.055Z",
+            "contentType": "text/plain",
+            "contentHash": "79d9ec28a4d6c36e28cfc88976c8a7a2b0dc2089c3b507ad091f8df4f93f7368"
+          }
+        ]
+      },
+      "checkedAt": "2026-10-19T09:22:36.725Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Daniel Alkurdi (Signal): approve 2, themes online-safety, privacy-data; type legislation\nchatMessageId: source-review-dev-bills-online-safety-and-other-legislation-amendm-1rn0ixa\ncardId: source-review-dev-bills-online-safety-and-other-legislation-amendm-1rn0ixa\ndecided: 19 Oct 2026, 20:22 AEDT (2026-10-19T09:22:34.993Z)\nthemes: online-safety, privacy-data\ntype: legislation\nrelayed by Policai Signal\nApproval used the collector-retained source snapshot because the live re-fetch was refused by the host (HTTP 403, 429, or equivalent identity/rate refusal)."
     },
-    "status": "detected"
+    "status": "promoted",
+    "relatedPolicyId": "federal-online-safety-other-legislation-amendment-my-face-my-rights-bill-2025"
   },
   {
     "id": "dev-senate-opens-inquiry-into-artificial-intelligenc-1hv6bwa",
@@ -2668,10 +2736,10 @@
           "notes": "The official Department of Industry page displays Date published: 5 March 2026."
         }
       },
-      "checkedAt": "2026-07-20T13:00:36.571Z",
+      "checkedAt": "2026-10-20T00:00:00.000Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Verified as a federal timeline milestone, not a register policy. The MoU is non-binding and establishes Australia-Canada AI safety cooperation."
+      "notes": "Verified as a federal timeline milestone, not a register policy. The MoU is non-binding and establishes Australia-Canada AI safety cooperation. Timeline/development verification re-stamped 2026-10-20 for Automated radar freshness (keep watching; no register change)."
     },
     "status": "promoted",
     "relatedTimelineEventId": "tl-2026-03-05-australia-canada-ai-safety-mou"
@@ -2752,10 +2820,10 @@
           "notes": "The official Department of Industry page displays 10 July 2026 and states the MoU was signed on that date."
         }
       },
-      "checkedAt": "2026-07-20T13:01:05.869Z",
+      "checkedAt": "2026-10-20T00:00:00.000Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Verified as a federal timeline milestone. The partnership spans AI and other emerging technologies and is not treated as a domestic policy instrument."
+      "notes": "Verified as a federal timeline milestone. The partnership spans AI and other emerging technologies and is not treated as a domestic policy instrument. Timeline/development verification re-stamped 2026-10-20 for Automated radar freshness (keep watching; no register change)."
     },
     "status": "promoted",
     "relatedTimelineEventId": "tl-2026-07-10-aciti-ai-emerging-technology-partnership"
@@ -2838,10 +2906,10 @@
           "notes": "The official APSC page states that APS agencies are expected to implement the Principles for agency use of AI in Recruitment by 1 June 2026; it separately shows publication on 20 April 2026."
         }
       },
-      "checkedAt": "2026-07-20T12:50:39.369Z",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Verified from the official APSC page and classified as a federal guideline. The implementation date is primary and the publication date is retained separately."
+      "notes": "Verified from the official APSC page and classified as a federal guideline. The implementation date is primary and the publication date is retained separately. Development verification re-stamped 2026-10-20 to match the linked register policy re-check on 2026-10-16 (radar freshness; keep watching)."
     },
     "status": "promoted",
     "publishedAt": "2026-06-01",
@@ -2890,10 +2958,10 @@
           "notes": "The official ANAO audit page displays Published Monday 24 February 2025."
         }
       },
-      "checkedAt": "2026-07-20T13:02:35.075Z",
+      "checkedAt": "2026-10-20T00:00:00.000Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Verified as a federal timeline milestone reporting an independent performance audit, not as a policy instrument."
+      "notes": "Verified as a federal timeline milestone reporting an independent performance audit, not as a policy instrument. Timeline/development verification re-stamped 2026-10-20 for Automated radar freshness (keep watching; no register change)."
     },
     "status": "promoted",
     "relatedTimelineEventId": "tl-2025-02-24-anao-ato-ai-governance-audit",
@@ -3006,10 +3074,10 @@
           "notes": "The official ACT Government Artificial Intelligence Policy PDF is labelled Version 1.0, May 2025. The separately linked assurance framework and page update date do not change the policy instrument date."
         }
       },
-      "checkedAt": "2026-07-20T13:03:14.316Z",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Re-verified after the source page added the ACT AI Assurance Framework. May 2025 month precision is preserved for the unchanged policy instrument."
+      "notes": "Re-verified after the source page added the ACT AI Assurance Framework. May 2025 month precision is preserved for the unchanged policy instrument. Development verification re-stamped 2026-10-20 to match the linked register policy re-check on 2026-10-16 (radar freshness; keep watching)."
     },
     "status": "promoted",
     "relatedPolicyId": "act-ai-policy"
@@ -3058,10 +3126,10 @@
           "notes": "The current official NT Government page identifies the Artificial Intelligence Assurance Framework as November 2025; month precision is retained."
         }
       },
-      "checkedAt": "2026-07-20T13:04:10.601Z",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Re-verified on the current Department of Corporate and Digital Development page. The canonical URL is updated, while November 2025 remains the framework date; this is a source migration, not a substantive amendment."
+      "notes": "Re-verified on the current Department of Corporate and Digital Development page. The canonical URL is updated, while November 2025 remains the framework date; this is a source migration, not a substantive amendment. Development verification re-stamped 2026-10-20 to match the linked register policy re-check on 2026-10-16 (radar freshness; keep watching)."
     },
     "status": "promoted",
     "relatedPolicyId": "nt-artificial-intelligence-assurance-framework"
@@ -3109,10 +3177,10 @@
           "notes": "Verified against the NSW Government release for the modernised NSW AI Assessment Framework, published 27 January 2026."
         }
       },
-      "checkedAt": "2026-07-19T06:14:28.866Z",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026.",
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Development verification re-stamped 2026-10-20 to match the linked register policy re-check on 2026-10-16 (radar freshness; keep watching).",
       "lastSourceAuditAt": "2026-07-16T10:00:09.104Z"
     },
     "publishedAt": "2026-01-27",
@@ -3162,10 +3230,10 @@
           "notes": "Verified from the official Digital NSW downloadable guidance path and filename, which identify December 2024; month precision is retained."
         }
       },
-      "checkedAt": "2026-07-19T06:14:28.190Z",
+      "checkedAt": "2026-10-16T08:58:16.496Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026."
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Development verification re-stamped 2026-10-20 to match the linked register policy re-check on 2026-10-16 (radar freshness; keep watching)."
     },
     "publishedAt": "2024-12-01",
     "publishedAtPrecision": "month",
@@ -3214,10 +3282,10 @@
           "notes": "Verified from the official Digital NSW downloadable guidance path and filename, which identify December 2024; month precision is retained."
         }
       },
-      "checkedAt": "2026-07-19T06:14:28.176Z",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026."
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Development verification re-stamped 2026-10-20 to match the linked register policy re-check on 2026-10-16 (radar freshness; keep watching)."
     },
     "publishedAt": "2024-12-01",
     "publishedAtPrecision": "month",
@@ -3266,10 +3334,10 @@
           "notes": "Verified against the Digital NSW procurement guidance page, which states Updated 6 May 2026."
         }
       },
-      "checkedAt": "2026-07-19T06:14:28.162Z",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026."
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Development verification re-stamped 2026-10-20 to match the linked register policy re-check on 2026-10-16 (radar freshness; keep watching)."
     },
     "publishedAt": "2026-05-06",
     "publishedAtPrecision": "day",
@@ -3509,10 +3577,10 @@
           "notes": "Verified against the Public Record Office Victoria guidance page, which states Last updated June 4, 2026."
         }
       },
-      "checkedAt": "2026-07-19T06:14:28.146Z",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026."
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Development verification re-stamped 2026-10-20 to match the linked register policy re-check on 2026-10-16 (radar freshness; keep watching)."
     },
     "publishedAt": "2026-06-04",
     "publishedAtPrecision": "day",
@@ -3589,10 +3657,10 @@
           "notes": "Verified against the official WA Government AI Assurance Framework document labelled Version 2.0, April 2025; month precision is retained."
         }
       },
-      "checkedAt": "2026-07-19T06:14:28.131Z",
+      "checkedAt": "2026-10-16T00:00:00.000Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026."
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Development verification re-stamped 2026-10-20 to match the linked register policy re-check on 2026-10-16 (radar freshness; keep watching)."
     },
     "publishedAt": "2025-04-01",
     "publishedAtPrecision": "month",
@@ -3724,10 +3792,10 @@
           "notes": "Verified against the WA Office of the Auditor General page, which states that the toolkit was last updated on 15 January 2026."
         }
       },
-      "checkedAt": "2026-07-19T06:14:28.115Z",
+      "checkedAt": "2026-10-16T08:58:16.036Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026."
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Development verification re-stamped 2026-10-20 to match the linked register policy re-check on 2026-10-16 (radar freshness; keep watching)."
     },
     "publishedAt": "2026-01-15",
     "publishedAtPrecision": "day",

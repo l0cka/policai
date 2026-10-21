@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)"
+SKILL="$ROOT/.claude/skills/verify"
+DEFAULT_PORT=8894
+EVIDENCE="${POLICAI_EVIDENCE_DIR:-$HOME/Reports/$(date +%F)-policai-verify}"
+
+unit() { echo "sandbox-policai-verify-$1"; }
+listener_pid() { ss -ltnpH "sport = :$1" 2>/dev/null | grep -o 'pid=[0-9]*' | head -1 | cut -d= -f2; }
+die() { echo "policai-verify: $*" >&2; exit 1; }
+
+cmd_build() {
+  cd "$ROOT"
+  if [ ! -d node_modules ] || [ package-lock.json -nt node_modules/.package-lock.json ]; then
+    npm ci --no-audit --no-fund
+  fi
+  npm run build
+  git rev-parse HEAD > .next/verify-built-head
+  git status --porcelain -- . ':!.claude' > .next/verify-built-dirt
+  echo "built $(cat .next/BUILD_ID) at $(cut -c1-12 .next/verify-built-head)"
+}
+
+cmd_start() {
+  local port="${1:-$DEFAULT_PORT}" u; u="$(unit "$port")"
+  [ -f "$ROOT/.next/BUILD_ID" ] || die "no production build; run: policai-verify build"
+  [ -z "$(listener_pid "$port")" ] || die "port $port is already in use; pick another port"
+  systemctl --user reset-failed "$u" 2>/dev/null || true
+  local env=(-E PATH="$PATH" -E NODE_ENV=production)
+  [ -n "${POLICAI_ARTICLES_DIR:-}" ] && env+=(-E POLICAI_ARTICLES_DIR="$POLICAI_ARTICLES_DIR")
+  systemd-run --user --quiet --unit="$u" --working-directory="$ROOT" "${env[@]}" \
+    "$ROOT/node_modules/.bin/next" start -H 127.0.0.1 -p "$port"
+  for _ in $(seq 1 60); do
+    if curl -fs -o /dev/null "http://127.0.0.1:$port/api/status"; then
+      echo "ready http://127.0.0.1:$port (unit $u)"; return 0
+    fi
+    systemctl --user is-active --quiet "$u" || { journalctl --user -u "$u" -n 30 --no-pager; die "unit $u exited"; }
+    sleep 1
+  done
+  die "http://127.0.0.1:$port/api/status not ready after 60s"
+}
+
+cmd_doctor() {
+  local port="${1:-$DEFAULT_PORT}" u pid ok=0; u="$(unit "$port")"
+  if systemctl --user is-active --quiet "$u"; then echo "ok    unit $u active"; else echo "FAIL  unit $u not active"; ok=1; fi
+  pid="$(listener_pid "$port")"
+  if [ -n "$pid" ] && grep -q "$u.service" "/proc/$pid/cgroup" 2>/dev/null; then echo "ok    127.0.0.1:$port owned by $u (pid $pid)"
+  else echo "FAIL  port $port not owned by $u (listener pid: ${pid:-none})"; ok=1; fi
+  local code; code="$(curl -s -o /dev/null -w '%{http_code}' "http://127.0.0.1:$port/api/status" || true)"
+  if [ "$code" = 200 ]; then echo "ok    /api/status 200"; else echo "FAIL  /api/status $code"; ok=1; fi
+  cd "$ROOT"
+  local built head; built="$(cat .next/verify-built-head 2>/dev/null || echo unknown)"; head="$(git rev-parse HEAD)"
+  if [ "$built" = "$head" ] && [ "$(git status --porcelain -- . ':!.claude')" = "$(cat .next/verify-built-dirt 2>/dev/null)" ]; then
+    echo "ok    build $(cat .next/BUILD_ID) matches HEAD ${head:0:12} and working tree"
+  else echo "STALE build from ${built:0:12}; HEAD ${head:0:12} or working tree changed since. Rebuild and restart."; ok=1; fi
+  return $ok
+}
+
+cmd_snap() {
+  local port="${1:-$DEFAULT_PORT}" path="${2:-/}" name="${3:-snap}"
+  mkdir -p "$EVIDENCE"
+  POLICAI_VERIFY_URL="http://127.0.0.1:$port" POLICAI_EVIDENCE_DIR="$EVIDENCE" \
+    node "$SKILL/bin/snap.mjs" "$path" "$name" "${@:4}"
+}
+
+cmd_script() {
+  local port="$1" name="$2"; shift 2
+  mkdir -p "$EVIDENCE/$name"
+  cd "$ROOT"
+  POLICAI_VERIFY_URL="http://127.0.0.1:$port" POLICAI_EVIDENCE_DIR="$EVIDENCE/$name" \
+    node "scripts/verify-$name.mjs" "$@"
+}
+
+cmd_stop() {
+  local port="${1:-$DEFAULT_PORT}" u; u="$(unit "$port")"
+  systemctl --user stop "$u" 2>/dev/null || true
+  systemctl --user reset-failed "$u" 2>/dev/null || true
+  [ -z "$(listener_pid "$port")" ] && echo "stopped $u; evidence kept in $EVIDENCE" || die "port $port still has a listener"
+}
+
+case "${1:-}" in
+  build) shift; cmd_build "$@" ;;
+  start) shift; cmd_start "$@" ;;
+  doctor) shift; cmd_doctor "$@" ;;
+  snap) shift; cmd_snap "$@" ;;
+  script) shift; cmd_script "$@" ;;
+  stop) shift; cmd_stop "$@" ;;
+  evidence) echo "$EVIDENCE" ;;
+  *) die "usage: policai-verify build | start [port] | doctor [port] | snap <port> <path> <name> [--phone] [--dark] [--no-js] | script <port> <coverage|related|editorial> | stop [port] | evidence" ;;
+esac
