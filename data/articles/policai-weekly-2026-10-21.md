@@ -1,7 +1,7 @@
 ---
 type: weekly_briefing
 title: "Policai weekly: 15–21 October 2026"
-summary: The Digital Duty of Care Bill's introduction, ASD's new Essentials framework and its AI guidance, the Fair Work Commission's generative AI rules taking effect, a later reporting date for the Senate data centres inquiry, and the APS bargaining position on AI.
+summary: The Digital Duty of Care Bill's introduction, ASD's new Essentials framework and its AI guidance, the Fair Work Commission's generative AI rules taking effect, and a later reporting date for the Senate data centres inquiry.
 status: published
 publishedAt: 2026-10-22
 cites:
@@ -42,7 +42,7 @@ The Online Safety Amendment (Digital Duty of Care) Bill 2026 was introduced in t
 - **Fair Work Commission.** The [guidance note on generative AI](/policies/fwc-genai-guidance-note) commenced on 20 October ([guidance note, para 5](https://www.fwc.gov.au/documents/resources/guidance-note-use-of-generative-ai-in-commission-cases.pdf)).
 - **Senate data centres inquiry.** On 20 October the committee tabled a progress report that updates its reporting date to 23 March 2027 ([inquiry page](https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P)).
 - **Joint Select Committee on AI.** The committee held public hearings in Canberra on 16 October and in Sydney on 20 and 21 October ([hearings page](https://www.aph.gov.au/Parliamentary_Business/Committees/Joint/Artificial_Intelligence/ArtificialIntelligence/Public_Hearings)).
-- **APS bargaining.** Verified in this window, but possibly not new. The Australian Public Service Commission (APSC) page, last updated on 20 October, says the Chief Negotiator "is not proposing a standalone common condition on AI", and would instead include AI in the Learning and Development and Consultative Committee common conditions ([APSC](https://www.apsc.gov.au/apsbargaining/proposed-commonwealth-positions/further-key-employment-conditions)).
+- **APS bargaining.** Verified in this window, but not new. The Australian Public Service Commission (APSC) page, last updated on 9 October, says the Chief Negotiator "is not proposing a standalone common condition on AI", and would instead include AI in the Learning and Development and Consultative Committee common conditions ([APSC](https://www.apsc.gov.au/apsbargaining/proposed-commonwealth-positions/further-key-employment-conditions)).
 
 ## Coming up
 
