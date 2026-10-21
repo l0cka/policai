@@ -8219,5 +8219,67 @@
       },
       "notes": "Unverified editorial draft from the Policai Signal handoff of 20 October 2026. Primary sources are the PM&C review page and the terms of reference resource (release Thursday 24 September 2026). Partner agencies taken from the PM&C ToR/page (PM&C lead; National Cyber Security Coordinator; ASD; Australian AI Safety Institute; Services Australia), not from the PM transcript's longer verbal list that also named the Office of AI. No source fingerprint, no checkedAt, no checkedBy, and no lastReviewedAt. Not marked verified. Hidden from the public read until Daniel's own review. Do not conflate with OpenAI's separate company Australian taskforce announced 20 October 2026."
     }
+  },
+  {
+    "id": "agd-ogp-nap4-consultation-2026",
+    "title": "Australia's Fourth Open Government National Action Plan (NAP4) consultation",
+    "description": "Attorney-General's Department public consultation on proposed commitments for Australia's Fourth Open Government Partnership National Action Plan (January 2027–December 2028), including DTA-led Proposed Commitment 5 on AI transparency and digital accessibility. Submissions close on 6 November 2026.",
+    "jurisdiction": "federal",
+    "type": "framework",
+    "status": "proposed",
+    "effectiveDate": "2026-10-15",
+    "dates": [
+      {
+        "type": "consultation_opened",
+        "date": "2026-10-15",
+        "precision": "day",
+        "primary": true
+      },
+      {
+        "type": "consultation_closed",
+        "date": "2026-11-06",
+        "precision": "day"
+      },
+      {
+        "type": "published",
+        "date": "2026-10-16",
+        "precision": "day"
+      }
+    ],
+    "agencies": [
+      "Attorney-General's Department",
+      "Digital Transformation Agency"
+    ],
+    "sourceUrl": "https://consultations.ag.gov.au/integrity/ogp-fnap",
+    "content": "On 16 October 2026 the Attorney-General announced public consultation on Australia's Fourth Open Government Partnership National Action Plan (NAP4). The Attorney-General's Department consultation hub lists the consultation as opened on 15 October 2026 and closing on 6 November 2026. NAP4 would cover the two-year implementation period from January 2027 to December 2028. The consultation paper presents seven proposed commitments developed by the Open Government Forum; final commitments are subject to Forum agreement and government approval. Proposed Commitment 5, \"Enhancing transparency of AI and digital accessibility\", is led by the Digital Transformation Agency. It would use AI-enabled assessment tools for regular reviews of the quality, completeness and accessibility of agency AI Transparency Statements and of the digital experience of public-facing government information and services (accessibility, usability, discoverability and standards compliance). Findings would be published through a public benchmarking/insights program supporting DTA stewardship of Australian Government AI policy and the Digital Experience Policy. Proposed Commitment 1 (National Media Literacy Strategy, led by the Department of Infrastructure, Transport, Regional Development, Communications, Sport and the Arts) also names AI's effect on media literacy. Primary consultation page: https://consultations.ag.gov.au/integrity/ogp-fnap. Consultation paper: https://consultations.ag.gov.au/integrity/ogp-fnap/user_uploads/ogp-fnap_consultation-paper.pdf. Minister's media release (16 October 2026): https://ministers.ag.gov.au/media-centre/have-your-say-australias-next-open-government-national-action-plan-16-10-2026.",
+    "aiSummary": "Open federal consultation on Australia's Fourth Open Government National Action Plan, including a DTA-led proposed commitment to assess AI Transparency Statements and digital accessibility; submissions close 6 November 2026.",
+    "tags": [
+      "consultation",
+      "Open Government Partnership",
+      "NAP4",
+      "AI transparency",
+      "Digital Transformation Agency",
+      "Attorney-General's Department",
+      "digital accessibility"
+    ],
+    "themes": [
+      "transparency-disclosure",
+      "public-sector",
+      "ai-governance",
+      "responsible-ai"
+    ],
+    "createdAt": "2026-10-20T05:13:00.000Z",
+    "updatedAt": "2026-10-20T05:13:00.000Z",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://consultations.ag.gov.au/integrity/ogp-fnap",
+        "title": "Open Government Partnership: Inform the development of Australia's Fourth National Action Plan",
+        "publisher": "Attorney-General's Department",
+        "publishedAt": "2026-10-16",
+        "publishedAtPrecision": "day"
+      },
+      "notes": "Unverified editorial draft from the Policai Signal handoff of 20 October 2026. Consultation hub (Citizen Space) states Opened 15 October 2026 and Closes 6 November 2026; the Attorney-General's media release is dated 16 October 2026, so consultation_opened uses the hub open date and published uses the media-release date. Commitment 5 wording taken from the consultation paper (Proposed Commitment 5, DTA lead). Source URLs: consultation hub, consultation paper PDF, and ministers.ag.gov.au release. No source fingerprint, no checkedAt, no checkedBy, and no lastReviewedAt. Not marked verified. Hidden from the public read until Daniel's own review. After 6 November 2026, set status to closed if submissions have closed (same pattern as pmc-ai-infrastructure-consultation-2026)."
+    }
   }
 ]
