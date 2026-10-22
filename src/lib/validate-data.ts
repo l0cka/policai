@@ -2071,6 +2071,8 @@ export function validateWatchSources(
     if (!isOneOf(['daily', 'weekly'], source.schedule))
       errors.push(`${label}: invalid schedule`);
     validateAutomation(label, source.automation, now, errors);
+    if (source.admittedAt !== undefined && !isCalendarDateString(source.admittedAt))
+      errors.push(`${label}: admittedAt must be YYYY-MM-DD`);
     if (
       source.minimumItemCount !== undefined &&
       (!Number.isInteger(source.minimumItemCount) ||

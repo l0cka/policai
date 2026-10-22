@@ -1640,11 +1640,27 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
             );
           });
 
+        // An admitted index or feed's first completed check finds back
+        // catalogue, so it only records those items as seen; developments
+        // start from the second check. Documents baseline on their own.
+        const seeding =
+          source.admittedAt !== undefined &&
+          source.kind !== 'document' &&
+          !state.lastCheckedBySource[source.id];
         for (const candidate of fresh) {
-          newCandidateCount++;
           markPending(state, candidate, source, nowIso);
+          if (seeding) {
+            markCandidateComplete(state, candidate, 'processed', nowIso);
+          } else {
+            newCandidateCount++;
+          }
         }
-        discovered = fresh;
+        if (seeding && fresh.length > 0) {
+          log(
+            `[collect] ${source.id}: first check; seeded ${fresh.length} current item${fresh.length === 1 ? '' : 's'} as seen without developments: ${fresh.map((candidate) => candidate.url).join(', ')}`,
+          );
+        }
+        discovered = seeding ? [] : fresh;
         if (!deferSourceSuccess && sourceErrors.length === 0) {
           state.lastCheckedBySource[source.id] = nowIso;
         }
