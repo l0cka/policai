@@ -612,6 +612,7 @@ function validateVerification(
 export function validatePolicies(
   policies: Policy[],
   registerIds: ReadonlySet<string> = new Set(),
+  { requireLegislative = true }: { requireLegislative?: boolean } = {},
 ): ValidationReport {
   const errors: string[] = [];
   const warnings: string[] = [];
@@ -826,7 +827,7 @@ export function validatePolicies(
     if (policy.supersededBy && policy.supersededBy === policy.id) {
       errors.push(`${label}: supersededBy cannot reference the policy itself`);
     }
-    errors.push(...legislativeErrors(policy).map((error) => `${label}: ${error}`));
+    errors.push(...legislativeErrors(policy, { requireLegislative }).map((error) => `${label}: ${error}`));
   });
 
   policies.forEach((policy) => {
@@ -1866,7 +1867,10 @@ export function validateSourceReviews(
       }
       const proposedRecordReport =
         review.entryKind === 'policy'
-          ? validatePolicies([review.proposedRecord as Policy], policyIds)
+          ? validatePolicies([review.proposedRecord as Policy], policyIds, {
+              // Records approved before lifecycle tracking keep their snapshot.
+              requireLegislative: false,
+            })
           : validateTimeline(
               [review.proposedRecord as TimelineEvent],
               policyIds ??
