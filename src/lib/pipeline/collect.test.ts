@@ -4186,6 +4186,71 @@ describe('failure classes on source results', () => {
     });
   });
 
+  const financeDecided = () =>
+    createHostGate({
+      hosts: {},
+      refused: new Map([[hostOf(new URL(REFUSED_PDF)), 'finance-news']]),
+      fetchRobots: async () => null,
+      now: Date.now,
+      sleep: async () => {},
+    });
+  const requestedHosts = (fetchImpl: typeof fetch) =>
+    vi.mocked(fetchImpl).mock.calls.map(([input]) => new URL(String(input)).host);
+
+  it('skips a linked document on a decided-refused host and succeeds', async () => {
+    const fetchImpl = fakeFetch({ [LINKING_SOURCE.url]: html(LINKING_PAGE), [REFUSED_PDF]: 403 });
+    const result = await collect({
+      sources: [LINKING_SOURCE],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl,
+      hostGate: financeDecided(),
+      now,
+    });
+
+    const row = result.meta.collector.sourceResults[0];
+    expect(row).toMatchObject({
+      status: 'success',
+      skippedLinked: [{ url: REFUSED_PDF, decidedBy: 'finance-news' }],
+    });
+    expect(row.failureClass).toBeUndefined();
+    expect(result.errors).toEqual([]);
+    expect(requestedHosts(fetchImpl)).not.toContain('www.finance.gov.au');
+    expect(result.state.sourceSnapshots[LINKING_SOURCE.id]).toBeDefined();
+    expect(validateCollectionMeta(result.meta).errors).toEqual([]);
+  });
+
+  it('skips a pending candidate on a decided-refused host without counting a failure', async () => {
+    const refusedCandidate = 'https://www.finance.gov.au/news/ai-plan-released';
+    const state = emptyWatchState();
+    state.seen[refusedCandidate] = {
+      firstSeenAt: '2026-07-09T00:00:00.000Z',
+      sourceId: HTML_SOURCE.id,
+      status: 'pending',
+      candidate: { title: 'New AI plan released', url: refusedCandidate, text: 'AI plan' },
+    };
+    const fetchImpl = fakeFetch({
+      [HTML_SOURCE.url]: INDEX_HTML,
+      'https://www.example.gov.au/news/': html('<html><body><h1>New AI policy framework released</h1></body></html>'),
+      [refusedCandidate]: 403,
+    });
+    const result = await collect({
+      sources: [HTML_SOURCE],
+      state,
+      existingDevelopments: [],
+      fetchImpl,
+      hostGate: financeDecided(),
+      now,
+    });
+
+    expect(result.meta.collector.sourceResults[0]).toMatchObject({
+      status: 'success',
+      skippedLinked: [{ url: refusedCandidate, decidedBy: 'finance-news' }],
+    });
+    expect(result.state.seen[refusedCandidate]?.status).toBe('failed');
+    expect(requestedHosts(fetchImpl)).not.toContain('www.finance.gov.au');
+  });
+
   it('names the host a cross-host redirect reached', async () => {
     const moved = 'https://www.other.gov.au/policy/ai';
     const fetchImpl = vi.fn(async (input: RequestInfo | URL) =>

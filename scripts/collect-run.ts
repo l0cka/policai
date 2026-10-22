@@ -13,7 +13,7 @@ import {
   robotsFetcher,
   type HostGate,
 } from '../src/lib/pipeline/host-gate';
-import { WATCH_SOURCES, type WatchSource } from '../src/lib/pipeline/sources';
+import { refusedHosts, WATCH_SOURCES, type WatchSource } from '../src/lib/pipeline/sources';
 import {
   mergeSourceReviews,
   reconcileLinkedDevelopments,
@@ -85,7 +85,7 @@ export async function runCollection(run: CollectionRun): Promise<void> {
       run.hostGate ??
       createHostGate({
         hosts,
-        refused: new Map(),
+        refused: refusedHosts(WATCH_SOURCES),
         fetchRobots: robotsFetcher({ fetchImpl: run.fetchImpl }),
         now: Date.now,
         sleep,

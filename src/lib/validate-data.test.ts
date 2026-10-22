@@ -1,7 +1,7 @@
 /* @vitest-environment node */
 
 import { describe, expect, it } from 'vitest';
-import { buildPolicy, buildTimelineEvent } from '@/test/factories';
+import { buildManualDecision, buildPolicy, buildTimelineEvent } from '@/test/factories';
 import {
   countUnsubstantiatedSecondaryDates,
   isAllowedSourceHost,
@@ -1071,7 +1071,7 @@ describe('validateSourceMonitoring', () => {
       kind: 'html-index',
       schedule: 'daily',
       enabled: true,
-      automation: 'manual',
+      automation: buildManualDecision(),
     } satisfies WatchSource;
 
     const report = validateSourceMonitoring(
@@ -1106,7 +1106,7 @@ describe('validateSourceMonitoring', () => {
       kind: 'html-index',
       schedule: 'daily',
       enabled: true,
-      automation: 'manual',
+      automation: buildManualDecision(),
     } satisfies WatchSource;
 
     const report = validateSourceMonitoring(
@@ -1492,6 +1492,59 @@ describe('validateWatchSources identity exceptions', () => {
   });
 });
 
+describe('validateWatchSources automation decisions', () => {
+  const now = new Date('2026-10-22T00:00:00.000Z');
+  const automatic: WatchSource = {
+    id: 'finance-media',
+    name: 'Finance media',
+    jurisdiction: 'federal',
+    category: 'government',
+    url: 'https://www.finance.gov.au/media',
+    kind: 'html-index',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+  };
+  const refusing: WatchSource = {
+    ...automatic,
+    id: 'finance-news',
+    url: 'https://www.finance.gov.au/about-us/news',
+    automation: buildManualDecision({ because: 'identity_refused' }),
+  };
+
+  it('accepts a complete manual decision', () => {
+    expect(validateWatchSources([refusing], now).errors).toEqual([]);
+  });
+
+  it('fails an automatic source on a host decided refused, naming the decider', () => {
+    expect(validateWatchSources([automatic, refusing], now).errors).toEqual([
+      'watchSources:finance-media: automatic source on www.finance.gov.au, which finance-news records as refusing the declared identity; move it to manual tracking or reverse that decision',
+    ]);
+  });
+
+  it('lets an automatic source share a host with a manual source blocked for another reason', () => {
+    const blocked = { ...refusing, automation: buildManualDecision({ because: 'bot_blocked' }) };
+    expect(validateWatchSources([automatic, blocked], now).errors).toEqual([]);
+  });
+
+  it('rejects a bare manual flag and an incomplete decision', () => {
+    const bare = { ...refusing, automation: 'manual' } as unknown as WatchSource;
+    const incomplete = {
+      ...refusing,
+      id: 'incomplete',
+      url: 'https://www.finance.gov.au/other',
+      automation: { ...buildManualDecision(), because: 'unknown', decidedBy: '', since: '2026-11-01', evidence: 'short' },
+    } as unknown as WatchSource;
+    expect(validateWatchSources([bare, incomplete], now).errors).toEqual([
+      "watchSources:finance-news: automation must be 'automatic' or a manual decision",
+      'watchSources:incomplete: invalid manual because',
+      'watchSources:incomplete: manual decision since cannot be in the future',
+      'watchSources:incomplete: manual decision needs decidedBy',
+      'watchSources:incomplete: manual decision needs evidence of at least 20 characters',
+    ]);
+  });
+});
+
 describe('validateCollectionMeta failure classes', () => {
   const row = (overrides: Partial<SourceRunResult>): SourceRunResult => ({
     sourceId: 'source-a',
@@ -1600,6 +1653,50 @@ describe('validateCollectionMeta failure classes', () => {
         meta(row({ failureClass: 'identity_refused', failedUrl })),
       ).errors,
     ).toEqual(['meta:sourceResults[0]: invalid failedUrl']);
+  });
+
+  it('accepts decided skips with a public url and a decider', () => {
+    expect(
+      validateCollectionMeta(
+        meta(
+          row({
+            status: 'success',
+            itemCount: 1,
+            error: undefined,
+            skippedLinked: [
+              { url: 'https://www.finance.gov.au/a.pdf', decidedBy: 'finance-news' },
+            ],
+          }),
+        ),
+      ).errors,
+    ).toEqual([]);
+  });
+
+  it.each([
+    [[], 'meta:sourceResults[0]: skippedLinked must be a non-empty array'],
+    ['nope', 'meta:sourceResults[0]: skippedLinked must be a non-empty array'],
+    [
+      [{ url: 'https://www.finance.gov.au/a.pdf?token=abc', decidedBy: 'finance-news' }],
+      'meta:sourceResults[0]: skippedLinked[0] has an invalid url',
+    ],
+    [
+      [{ url: 'http://www.finance.gov.au/a.pdf', decidedBy: 'finance-news' }],
+      'meta:sourceResults[0]: skippedLinked[0] has an invalid url',
+    ],
+    [
+      [{ url: '', decidedBy: 'finance-news' }],
+      'meta:sourceResults[0]: skippedLinked[0] has an invalid url',
+    ],
+    [
+      [{ url: 'https://www.finance.gov.au/a.pdf', decidedBy: ' ' }],
+      'meta:sourceResults[0]: skippedLinked[0] requires decidedBy',
+    ],
+  ])('rejects malformed skippedLinked case %#', (skippedLinked, error) => {
+    expect(
+      validateCollectionMeta(
+        meta(row({ skippedLinked: skippedLinked as never })),
+      ).errors,
+    ).toEqual([error]);
   });
 });
 

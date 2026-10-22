@@ -1,4 +1,5 @@
 import type { CollectionHealthStatus, CollectionMeta, SourceRunResult } from '@/types';
+import type { SourceAutomation } from '@/lib/pipeline/sources';
 
 /**
  * A run below this successful-source ratio is failed, not fresh.
@@ -9,7 +10,7 @@ export const MIN_HEALTHY_SOURCE_RATE = 0.8;
 export interface CoverageCatalogSource {
   id: string;
   enabled: boolean;
-  automation: 'automatic' | 'manual';
+  automation: SourceAutomation;
   critical?: boolean;
 }
 
@@ -89,8 +90,8 @@ function errorNamesManualSource(error: string, manualIds: ReadonlySet<string>): 
  * Public automatic coverage ignores sources the catalogue tracks by hand.
  * A result recorded while a source was still automatic — `accc-rss` and
  * `wa-ai-policy` in the October 2026 runs — must not stay in the due-source
- * count or keep the run degraded after the source moves to `automation:
- * 'manual'`.
+ * count or keep the run degraded after the source moves to manual
+ * tracking.
  */
 export function publicAutomaticCollectionMeta(
   meta: CollectionMeta,
@@ -99,7 +100,7 @@ export function publicAutomaticCollectionMeta(
 ): CollectionMeta {
   const manualIds = new Set(
     catalog
-      .filter((source) => source.automation === 'manual')
+      .filter((source) => source.automation !== 'automatic')
       .map((source) => source.id),
   );
   if (manualIds.size === 0) return meta;
@@ -152,7 +153,7 @@ export function publicAutomaticCollectionMeta(
         (source) => source.enabled && source.automation === 'automatic',
       ).length,
       manualSourceCount: catalog.filter(
-        (source) => source.enabled && source.automation === 'manual',
+        (source) => source.enabled && source.automation !== 'automatic',
       ).length,
       sourceResults,
     },
