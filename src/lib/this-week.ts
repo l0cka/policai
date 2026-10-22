@@ -1,13 +1,13 @@
 // Pure selection helpers behind the /this-week page.
 //
 // The "week" is anchored to the data's own currency (the collection anchor:
-// meta.lastHealthyAt ?? meta.lastCollectedAt, the same value src/app/page.tsx
-// uses) rather than the wall clock, so the rendered page is deterministic for
+// collectionAnchor, which src/app/page.tsx also uses) rather than the wall clock, so the rendered page is deterministic for
 // a given collection state.
 
 import {
   DEADLINE_DATE_TYPES,
   isDeadlineDateType,
+  type CollectionMeta,
   type DatePrecision,
   type Development,
   type Policy,
@@ -18,6 +18,17 @@ import {
 } from "@/types";
 
 export const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+
+/**
+ * The latest run that did not fail, so one standing source failure does not
+ * freeze the window (#314). Before any such run, the last collection, even
+ * a failed one.
+ */
+export function collectionAnchor(
+  meta: Pick<CollectionMeta, "lastUsableAt" | "lastCollectedAt">,
+): string | null {
+  return meta.lastUsableAt ?? meta.lastCollectedAt;
+}
 
 export interface WeekWindow {
   /** Inclusive start of the 7-day window, in epoch milliseconds. */

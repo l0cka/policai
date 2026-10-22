@@ -40,7 +40,7 @@ const props = {
   developmentCount: 5,
   weeklyDevelopmentCount: 2,
   lastCollectedAt: '2026-09-20',
-  lastHealthyAt: '2026-09-20',
+  lastUsableAt: '2026-09-20',
   lastReviewedAt: null,
   collectionHealth: 'healthy' as const,
   successfulSourceCount: 10,

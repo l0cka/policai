@@ -129,6 +129,7 @@ async function main() {
         {
           lastCollectedAt: null,
           lastHealthyAt: null,
+          lastUsableAt: null,
           lastReviewedAt: null,
           collector: {
             runCount: 0,

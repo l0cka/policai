@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 360" width="1280" height="360" role="img" aria-labelledby="title">
+  <title id="title">policai: Australian AI policy register</title>
+  <!-- Colours and faces from design/tokens.css; mark paths match src/components/layout/PolicaiLogo.tsx. -->
+  <style>
+    .paper { fill: #f8f7f3; }
+    .rule { fill: #245847; }
+    .accent { fill: #146b5a; }
+    .mark path { fill: #245847; }
+    .wordmark { fill: #202822; font: 700 112px Arial, Helvetica, sans-serif; letter-spacing: -6.7px; }
+    .tagline { fill: #245847; font: 400 38px Georgia, 'Times New Roman', serif; }
+    .eyebrow { fill: #606760; font: 400 17px 'SFMono-Regular', Consolas, 'Liberation Mono', monospace; letter-spacing: 2.7px; }
+    @media (prefers-color-scheme: dark) {
+      .paper { fill: #151b18; }
+      .rule, .mark path { fill: #a3cfb3; }
+      .accent { fill: #65d2b4; }
+      .wordmark { fill: #eef0e9; }
+      .tagline { fill: #a3cfb3; }
+      .eyebrow { fill: #b0bbb1; }
+    }
+  </style>
+  <rect class="paper" width="1280" height="360"/>
+  <rect class="rule" width="20" height="360"/>
+  <g class="mark" transform="translate(112 96) scale(1.84)">
+    <path d="M5 17 35 2v8L12 22v45l-7-4z"/>
+    <path d="M17 23 45 9v10L26 29v43l-9 4z"/>
+    <path d="M46 24c13 0 19 10 17 22-2 12-11 17-22 17H30l10-8c4-3 6-7 6-12z"/>
+  </g>
+  <text class="wordmark" x="252" y="200">policai</text>
+  <rect class="accent" x="258" y="240" width="56" height="5"/>
+  <text class="tagline" x="256" y="298">Australian AI policy register</text>
+  <text class="eyebrow" x="1180" y="72" text-anchor="end">POLICAI.ORG</text>
+</svg>

@@ -51,6 +51,7 @@ function meta(results: SourceRunResult[], errors: string[]): CollectionMeta {
   return {
     lastCollectedAt: '2026-10-17T19:33:37.076Z',
     lastHealthyAt: '2026-10-06T19:33:28.224Z',
+    lastUsableAt: '2026-10-06T19:33:28.224Z',
     lastReviewedAt: '2026-10-16T08:58:16.496Z',
     collector: {
       runCount: 80,
@@ -116,6 +117,7 @@ describe('publicAutomaticCollectionMeta', () => {
       lastRunErrors: ['pm-media: HTTP 503'],
     });
     expect(projected.lastHealthyAt).toBe(recorded.lastHealthyAt);
+    expect(projected.lastUsableAt).toBe(recorded.lastUsableAt);
   });
 
   it('still degrades on an automatic retry that is outside the due-source ratio', () => {
@@ -143,6 +145,7 @@ describe('publicAutomaticCollectionMeta', () => {
       lastRunErrors: ['other-auto: HTTP 503'],
     });
     expect(projected.lastHealthyAt).toBe(recorded.lastHealthyAt);
+    expect(projected.lastUsableAt).toBe(recorded.lastCollectedAt);
   });
 
   it('leaves a run with no manual rows untouched', () => {

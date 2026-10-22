@@ -478,6 +478,8 @@ export interface SkippedLinked {
 export interface CollectionMeta {
 	lastCollectedAt: string | null;
 	lastHealthyAt: string | null;
+	/** Latest run whose health was not `failed`; anchors the weekly window and register freshness. */
+	lastUsableAt: string | null;
 	lastReviewedAt: string | null;
 	collector: {
 		runCount: number;

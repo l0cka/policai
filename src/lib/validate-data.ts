@@ -1351,6 +1351,8 @@ export function validateCollectionMeta(meta: CollectionMeta): ValidationReport {
     errors.push('meta: invalid lastCollectedAt');
   if (meta.lastHealthyAt && !isTimestampString(meta.lastHealthyAt))
     errors.push('meta: invalid lastHealthyAt');
+  if (meta.lastUsableAt && !isTimestampString(meta.lastUsableAt))
+    errors.push('meta: invalid lastUsableAt');
   if (meta.lastReviewedAt && !isTimestampString(meta.lastReviewedAt))
     errors.push('meta: invalid lastReviewedAt');
   if (!isOneOf(COLLECTION_HEALTH_STATUSES, collector.health))

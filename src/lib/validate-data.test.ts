@@ -1563,6 +1563,7 @@ describe('validateCollectionMeta failure classes', () => {
     return {
       lastCollectedAt: '2026-10-17T19:30:00.000Z',
       lastHealthyAt: null,
+      lastUsableAt: null,
       lastReviewedAt: null,
       collector: {
         runCount: 1,
@@ -1704,6 +1705,7 @@ describe('validateCollectionMeta robotsUnverified', () => {
     ({
       lastCollectedAt: '2026-10-17T19:30:00.000Z',
       lastHealthyAt: '2026-10-17T19:30:00.000Z',
+      lastUsableAt: '2026-10-17T19:30:00.000Z',
       lastReviewedAt: null,
       collector: {
         runCount: 3,
