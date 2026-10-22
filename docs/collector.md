@@ -44,8 +44,8 @@ The collector is the automation behind the Developments feed: it watches officia
    `failed` run leaves it where it was; the register line then labels the
    older date "last passing collection" instead of "last collected".
    `/status` puts the two dates side by side and, from the ledger, names
-   each automatic source that has failed in every run since that anchor
-   (`sourcesNotReachedSince`), so the window states what it may miss.
+   each automatic source that is failing and has had no successful check at
+   or after that anchor (`sourcesNotReachedSince`), so the window states what it may miss.
    Skipped sources and candidate-only retries leave a source's ledger record
    unchanged. `validate:data` checks the order: `lastHealthyAt` is no later
    than `lastUsableAt`, which is no later than `lastCollectedAt`, and a

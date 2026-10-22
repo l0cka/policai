@@ -1798,6 +1798,13 @@ describe('validateWatchState sourceHealth', () => {
     expect(validateWatchState(state(null)).errors).toEqual([]);
   });
 
+  it('rejects an empty source id', () => {
+    const base = state(null);
+    expect(
+      validateWatchState({ ...base, sourceHealth: { '': base.sourceHealth!['source-a'] } }).errors,
+    ).toEqual(['watchState:sourceHealth:: empty source id']);
+  });
+
   it('rejects a success at or after the first failure of the streak', () => {
     expect(validateWatchState(state('2026-10-16T00:00:00.000Z')).errors).toEqual([
       'watchState:sourceHealth:source-a: lastSuccessAt must precede firstFailureAt',

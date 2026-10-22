@@ -253,9 +253,11 @@ export default async function StatusPage() {
           <p className="text-muted-foreground">
             Last collected {sydneyDate(meta.lastCollectedAt)}. Last passing
             run {sydneyDate(anchor)}, which anchors the weekly window.{' '}
-            {unreached.length === 0
-              ? 'Every automatic source has been reached since then.'
-              : 'These automatic sources have failed in every run since then, so the window may miss what they published.'}
+            {Object.keys(sourceHealth).length === 0
+              ? 'The per-source ledger has no records yet; the next collection builds it.'
+              : unreached.length === 0
+                ? 'Every automatic source has been reached since then.'
+                : 'These automatic sources are failing and have had no successful check since then, so the window may miss what they published.'}
           </p>
           {unreached.length > 0 ? (
             <ul className="mt-3 space-y-1">

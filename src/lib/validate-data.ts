@@ -2002,6 +2002,7 @@ export function validateWatchState(state: WatchState): ValidationReport {
 
   for (const [sourceId, record] of Object.entries(state.sourceHealth ?? {})) {
     const label = `watchState:sourceHealth:${sourceId}`;
+    if (!isNonEmptyString(sourceId)) errors.push(`${label}: empty source id`);
     if (record.lastSuccessAt !== null && !isTimestampString(record.lastSuccessAt))
       errors.push(`${label}: invalid lastSuccessAt`);
     if (!Number.isInteger(record.consecutiveFailures) || record.consecutiveFailures < 0)

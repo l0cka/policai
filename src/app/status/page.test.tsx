@@ -136,7 +136,24 @@ it('names the hosts whose robots.txt has not been readable for 3 or more runs', 
   ).toEqual(['www.alpha.gov.au', 'www.beta.gov.au']);
 });
 
+it('says the ledger is not built yet before the first collection writes it', async () => {
+  render(await StatusPage());
+  const section = screen
+    .getByRole('heading', { name: 'Not reached since the last passing run' })
+    .closest('section');
+  expect(section).toHaveTextContent('The per-source ledger has no records yet');
+  expect(section).not.toHaveTextContent('Every automatic source has been reached');
+});
+
 it('says every automatic source was reached since the last passing run', async () => {
+  vi.mocked(getSourceHealth).mockResolvedValue({
+    'pm-media': {
+      lastSuccessAt: '2026-09-22T08:00:00.000Z',
+      firstFailureAt: null,
+      consecutiveFailures: 0,
+      lastFailureClass: null,
+    },
+  });
   render(await StatusPage());
   const section = screen
     .getByRole('heading', { name: 'Not reached since the last passing run' })
