@@ -79,6 +79,19 @@ describe('parseFrlTitle', () => {
     ]);
   });
 
+  it('keeps a genuine repeal after a disallowance visible, so the reviewer sees the conflict', () => {
+    const title = JSON.parse(fixture('F2024L00850'));
+    title.statusHistory[1].reasons[0].affectedByTitle = { titleId: 'F2024L09999', name: 'Repealing Rules 2024', provisions: 'sch 1' };
+    const reading = parseFrlTitle(JSON.stringify(title));
+    expect(reading.events.at(-1)).toMatchObject({ event: { kind: 'repealed', by: 'sch 1 of the Repealing Rules 2024' } });
+  });
+
+  it('reads commencement from the earliest in-force entry, whatever order the history comes in', () => {
+    const title = JSON.parse(fixture('F2026L01239'));
+    title.statusHistory = [{ status: 'InForce', start: '2027-01-01T00:00:00', reasons: [] }, ...title.statusHistory];
+    expect(parseFrlTitle(JSON.stringify(title)).events.find(({ event }) => event.kind === 'commenced')?.date).toBe('2026-09-21');
+  });
+
   it('reads a dated repeal with the provision that repealed it', () => {
     const reading = parseFrlTitle(fixture('F2024L01303'));
     expect(reading.events.at(-1)).toMatchObject({ date: '2025-03-26', event: { kind: 'repealed', by: 's 48A of the Legislation Act 2003' } });

@@ -117,14 +117,18 @@ export function parseFrlTitle(json: string): RegisterReading<InstrumentEvent | L
     }
   }
 
-  const [first] = title.statusHistory ?? [];
-  const commenced = first?.status === 'InForce' ? day(first.start) : null;
+  const commenced =
+    (title.statusHistory ?? [])
+      .filter((entry) => entry.status === 'InForce')
+      .map((entry) => day(entry.start))
+      .filter((date): date is string => date !== null)
+      .sort()[0] ?? null;
   if (title.isPrincipal && commenced) dated.push({ date: commenced, event: { kind: 'commenced', extent: 'full' } });
 
   for (const entry of title.statusHistory ?? []) {
     const date = day(entry.start);
     if (!date || entry.status === 'InForce') continue;
-    if (disallowedOn && entry.status === 'Repealed' && date >= disallowedOn) continue;
+    if (disallowedOn && entry.status === 'Repealed' && entry.reasons?.some(isDisallowanceRepeal)) continue;
     if (entry.status === 'Repealed') {
       const by = entry.reasons?.map((reason) => reasonText(reason)).find(Boolean) ?? 'repeal recorded on the Federal Register';
       dated.push({ date, event: { kind: 'repealed', by } });
@@ -148,4 +152,10 @@ function reasonText(reason: FrlReason): string | null {
   const affecting = reason.affectedByTitle;
   if (affecting?.name) return [affecting.provisions, affecting.name].filter(Boolean).join(' of the ');
   return reason.markdown ? reason.markdown.replace(/\[([^\]]+)\]\([^)]*\)/g, '$1') : null;
+}
+
+/** s 42 of the Legislation Act 2003 repeals a disallowed instrument; the register records that as a repeal. */
+function isDisallowanceRepeal(reason: FrlReason): boolean {
+  const by = reason.affectedByTitle;
+  return by?.titleId === 'C2004A01224' && by.provisions?.trim() === 's 42';
 }
