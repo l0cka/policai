@@ -136,7 +136,7 @@ class TransactionTests(unittest.TestCase):
             with self.subTest(failure=failure):
                 self.run_case(failure)
 
-    def test_refused_failure_keeps_its_public_reason(self):
+    def test_failed_git_fetch_keeps_its_public_reason(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             (root / "deploy.lock").touch()
@@ -146,7 +146,7 @@ class TransactionTests(unittest.TestCase):
             host = FakeHost()
 
             def resolve():
-                raise d.Refused("command exited with status 128")
+                raise h.ProcessFailed("command exited with status 128")
 
             host.resolve_target = resolve
             with self.assertRaises(d.Refused):
@@ -157,7 +157,7 @@ class TransactionTests(unittest.TestCase):
                 blocked["failure"],
                 {
                     "phase": "preflight",
-                    "error": "Refused",
+                    "error": "ProcessFailed",
                     "reason": "command exited with status 128",
                 },
             )
