@@ -65,6 +65,9 @@ describe('extractFromBillList', () => {
   });
 
   it('treats a page without its list as broken, not empty', () => {
-    expect(extractFromBillList('wa', '<html><body><p>Loading…</p></body></html>', WA)).toEqual({ itemCount: 0, candidates: [] });
+    const loading = '<html><body><p>Loading…</p></body></html>';
+    expect(extractFromBillList('nt', loading, NT)).toEqual({ itemCount: 0, candidates: [] });
+    expect(extractFromBillList('qld', loading, QLD)).toEqual({ itemCount: 0, candidates: [] });
+    expect(extractFromBillList('wa', loading, WA)).toEqual({ itemCount: 0, candidates: [] });
   });
 });
