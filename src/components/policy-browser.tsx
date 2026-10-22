@@ -24,13 +24,10 @@ import {
   POLICY_TYPE_NAMES,
   getJurisdictionName,
   getPolicyDateTypeName,
-  type CollectionHealthStatus,
-  type Development,
   type Jurisdiction,
   type Policy,
 } from '@/types';
 import { cn } from '@/lib/utils';
-import { auDate } from '@/lib/au-date';
 
 interface PolicyBrowserProps {
   policies: Policy[];
@@ -41,42 +38,6 @@ interface PolicyBrowserProps {
   analysisHero?: ReactNode;
   /** The Sydney calendar day (YYYY-MM-DD) countdowns are measured from. */
   today?: string;
-  developments: Development[];
-  developmentCount: number;
-  /** Developments first detected in the last seven days, dismissed excluded. */
-  weeklyDevelopmentCount: number;
-  lastCollectedAt: string | null;
-  lastUsableAt: string | null;
-  lastReviewedAt: string | null;
-  collectionHealth: CollectionHealthStatus;
-  successfulSourceCount: number;
-  dueSourceCount: number;
-  automaticSourceCount: number;
-  manualSourceCount: number;
-  currentManualSourceCount: number;
-  unavailableManualSourceCount: number;
-}
-
-function formatDate(value: string): string {
-  return auDate(new Date(value), {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-    timeZone: 'Australia/Sydney',
-  });
-}
-
-function formatDevelopmentDate(development: Development): string {
-  if (!development.publishedAt) return formatDate(development.detectedAt);
-
-  return formatPolicyDate(
-    {
-      type: 'published',
-      date: development.publishedAt,
-      precision: development.publishedAtPrecision ?? 'day',
-    },
-    { short: true },
-  );
 }
 
 const DISCOVERY_THEMES = ['legal-practice', 'public-sector'] as const satisfies readonly ThemeId[];
@@ -136,19 +97,6 @@ export function PolicyBrowser({
   deadlinesRail,
   analysisHero,
   today,
-  developments,
-  developmentCount,
-  weeklyDevelopmentCount,
-  lastCollectedAt,
-  lastUsableAt,
-  lastReviewedAt,
-  collectionHealth,
-  successfulSourceCount,
-  dueSourceCount,
-  automaticSourceCount,
-  manualSourceCount,
-  currentManualSourceCount,
-  unavailableManualSourceCount,
 }: PolicyBrowserProps) {
   const [state, updateState] = useRegisterState();
   const { search, jurisdictions, types, statuses, stages, themes, viewMode, sortField, sortDirection, page } = state;
@@ -258,19 +206,6 @@ export function PolicyBrowser({
     updateState({ sortField, sortDirection });
   };
 
-  const freshnessDate = lastUsableAt ?? lastCollectedAt ?? lastReviewedAt;
-  const freshnessKind = lastUsableAt
-    ? lastUsableAt === lastCollectedAt
-      ? 'last collected'
-      : 'last passing collection'
-    : lastCollectedAt
-      ? 'last collected'
-      : null;
-  const freshLabel =
-    collectionHealth === 'healthy'
-      ? `All ${dueSourceCount} due sources reached`
-      : `${successfulSourceCount}/${dueSourceCount} due sources reached`;
-
   const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     document
@@ -279,27 +214,14 @@ export function PolicyBrowser({
   };
 
   return (
-    <div className="editorial-register container mx-auto px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+    <div className="editorial-register container mx-auto px-4 py-7 sm:px-6 lg:px-8">
       {analysisHero}
-      <div className="mb-5 flex flex-wrap items-end justify-between gap-5">
-        <div>
-          <p className="page-eyebrow text-primary">
-            The Australian AI policy register
-          </p>
-          <h1 className="register-title mt-2">
-            Australian AI policy.
-          </h1>
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">
-            Find Australian AI policies, regulation and court guidance. Go
-            straight to the source.
-          </p>
-        </div>
-        <Link
-          href="/methodology"
-          className="text-xs text-primary underline underline-offset-4"
-        >
-          How records are verified
-        </Link>
+      <div className="mb-5">
+        <h1 className="register-title">Australian AI policy.</h1>
+        <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">
+          Find Australian AI policies, regulation and court guidance. Go
+          straight to the source.
+        </p>
       </div>
       <div className="grid items-start gap-10 xl:grid-cols-[minmax(0,1fr)_232px]">
         <section
@@ -308,69 +230,29 @@ export function PolicyBrowser({
           className="min-w-0 scroll-mt-20"
         >
           <h2 id="policy-register-heading" className="sr-only">Policy register</h2>
-          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:gap-6">
-            <form role="search" onSubmit={handleSearchSubmit} className="min-w-0 flex-1">
-              <label className="sr-only" htmlFor="register-search">
-                Search policies, agencies or topics
-              </label>
-              <div className="flex h-14 items-center gap-3 rounded border border-input bg-card px-4 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-ring">
-                <Search
-                  className="h-5 w-5 shrink-0 text-muted-foreground"
-                  aria-hidden="true"
-                />
-                <input
-                  id="register-search"
-                  ref={searchRef}
-                  type="search"
-                  placeholder="Search policies, agencies or topics…"
-                  value={search}
-                  onChange={(event) => setSearch(event.target.value)}
-                  className="h-full min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
-                />
-                <kbd className="hidden whitespace-nowrap rounded border border-border px-1.5 py-1 text-[10px] text-muted-foreground sm:block">
-                  Ctrl / ⌘ K
-                </kbd>
-              </div>
-            </form>
-            <nav aria-label="Register starting points" className="flex flex-wrap items-center gap-x-4 gap-y-1">
-              <Link
-                href="/developments"
-                className="inline-flex min-h-11 items-center gap-1.5 text-xs text-primary underline underline-offset-4"
-              >
-                Browse developments
-                <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
-              </Link>
-              {DISCOVERY_THEMES.map((theme) => {
-                const selected = themes.length === 1 && themes[0] === theme;
-                return (
-                  <a
-                    key={theme}
-                    href={themeHref(theme)}
-                    aria-current={selected ? 'true' : undefined}
-                    onClick={(event) => {
-                      if (
-                        event.button !== 0 ||
-                        event.metaKey ||
-                        event.ctrlKey ||
-                        event.shiftKey ||
-                        event.altKey
-                      ) {
-                        return;
-                      }
-                      event.preventDefault();
-                      updateState({ themes: [theme] });
-                    }}
-                    className={cn(
-                      'inline-flex min-h-11 items-center text-xs text-primary underline underline-offset-4',
-                      selected && 'font-semibold',
-                    )}
-                  >
-                    {getThemeLabel(theme)}
-                  </a>
-                );
-              })}
-            </nav>
-          </div>
+          <form role="search" onSubmit={handleSearchSubmit}>
+            <label className="sr-only" htmlFor="register-search">
+              Search policies, agencies or topics
+            </label>
+            <div className="flex h-14 items-center gap-3 rounded border border-input bg-card px-4 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-ring">
+              <Search
+                className="h-5 w-5 shrink-0 text-muted-foreground"
+                aria-hidden="true"
+              />
+              <input
+                id="register-search"
+                ref={searchRef}
+                type="search"
+                placeholder="Search policies, agencies or topics…"
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                className="h-full min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+              />
+              <kbd className="hidden whitespace-nowrap rounded border border-border px-1.5 py-1 text-[10px] text-muted-foreground sm:block">
+                Ctrl / ⌘ K
+              </kbd>
+            </div>
+          </form>
           <div
             role="group"
             aria-label="Register filters"
@@ -536,6 +418,38 @@ export function PolicyBrowser({
               ))}
             </div>
           </section>
+          <section className="border-t border-border pt-6">
+            <h2 className="section-title">Browse by theme</h2>
+            <ul className="mt-3">
+              {DISCOVERY_THEMES.map((theme) => {
+                const selected = themes.length === 1 && themes[0] === theme;
+                return (
+                  <li key={theme}>
+                    <a
+                      href={themeHref(theme)}
+                      aria-current={selected ? 'true' : undefined}
+                      onClick={(event) => {
+                        if (
+                          event.button !== 0 ||
+                          event.metaKey ||
+                          event.ctrlKey ||
+                          event.shiftKey ||
+                          event.altKey
+                        ) {
+                          return;
+                        }
+                        event.preventDefault();
+                        updateState({ themes: [theme] });
+                      }}
+                      className="flex min-h-11 items-center text-xs text-muted-foreground hover:text-primary aria-[current]:font-semibold aria-[current]:text-primary"
+                    >
+                      {getThemeLabel(theme)}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
           {deadlinesRail}
           {upcomingDates.length > 0 && today ? (
             <section className="border-t border-border pt-6">
@@ -568,75 +482,6 @@ export function PolicyBrowser({
               </Link>
             </section>
           ) : null}
-          <section className="border-t border-border pt-6">
-            <h2 className="section-title">
-              A register, not legal advice.
-            </h2>
-            <p className="mt-3 text-xs leading-6 text-muted-foreground">
-              Every record links to its source. Check the official document for
-              scope, commencement and current obligations.
-            </p>
-            <Link
-              href="/methodology"
-              className="mt-2 inline-flex min-h-11 items-center gap-2 text-xs text-primary"
-            >
-              About the register <ArrowUpRight className="h-3.5 w-3.5" />
-            </Link>
-          </section>
-          <section className="border-t border-border pt-6">
-            <h2 className="section-title">Looking for what’s new?</h2>
-            <p className="mt-3 text-xs leading-6 text-muted-foreground">
-              Automated detections are separate from verified register records.
-            </p>
-            <p className="text-xs leading-5 text-muted-foreground">
-              {developmentCount} developments · {weeklyDevelopmentCount}{' '}
-              detected in the latest collection week
-            </p>
-          </section>
-          {developments.length > 0 && (
-            <section className="border-t border-border pt-6">
-              <h2 className="section-title">
-                Recently verified developments
-              </h2>
-              {developments.slice(0, 3).map((development) => (
-                <article key={development.id} className="mt-4">
-                  <p className="text-xs text-muted-foreground">
-                    {formatDevelopmentDate(development)} ·{' '}
-                    {getJurisdictionName(development.jurisdiction)}
-                  </p>
-                  <a
-                    href={development.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-1 inline-block text-xs leading-5 text-primary underline underline-offset-4"
-                  >
-                    {development.title} ↗
-                  </a>
-                </article>
-              ))}
-            </section>
-          )}
-          <section className="border-t border-border pt-6 text-xs leading-6 text-muted-foreground">
-            <h2 className="section-title text-foreground">
-              Source coverage
-            </h2>
-            <p className="mt-3">
-              {freshLabel}
-              {freshnessDate
-                ? freshnessKind
-                  ? ` · ${freshnessKind} ${formatDate(freshnessDate)}`
-                  : ` · ${formatDate(freshnessDate)}`
-                : ''}
-            </p>
-            <p>{automaticSourceCount} automatic sources</p>
-            <p>
-              {currentManualSourceCount}/{manualSourceCount} manual sources
-              checked
-              {unavailableManualSourceCount > 0
-                ? ` · ${unavailableManualSourceCount} unavailable`
-                : ''}
-            </p>
-          </section>
         </aside>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { PolicyBrowser } from './policy-browser';
 import type { Policy } from '@/types';
@@ -36,35 +36,21 @@ const props = {
     policy('legal', 'Court AI note', ['legal-practice']),
     policy('agency', 'Agency framework', ['public-sector']),
   ],
-  developments: [],
-  developmentCount: 5,
-  weeklyDevelopmentCount: 2,
-  lastCollectedAt: '2026-09-20',
-  lastUsableAt: '2026-09-20',
-  lastReviewedAt: null,
-  collectionHealth: 'healthy' as const,
-  successfulSourceCount: 10,
-  dueSourceCount: 10,
-  automaticSourceCount: 12,
-  manualSourceCount: 2,
-  currentManualSourceCount: 1,
-  unavailableManualSourceCount: 1,
 };
 
 describe('Homepage discovery', () => {
-  it('renders the register heading, the developments link and the two theme links', () => {
+  it('renders the register heading and the two theme links in the overview', () => {
     render(<PolicyBrowser {...props} />);
     expect(screen.getByRole('heading', { level: 1, name: 'Australian AI policy.' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /Browse developments/ })).toHaveAttribute('href', '/developments');
-    expect(screen.getByRole('link', { name: 'Evidence and legal practice' })).toHaveAttribute('href', '/?theme=legal-practice');
-    expect(screen.getByRole('link', { name: 'Public sector use' })).toHaveAttribute('href', '/?theme=public-sector');
+    const overview = screen.getByRole('complementary', { name: 'Register overview' });
+    expect(within(overview).getByRole('link', { name: 'Evidence and legal practice' })).toHaveAttribute('href', '/?theme=legal-practice');
+    expect(within(overview).getByRole('link', { name: 'Public sector use' })).toHaveAttribute('href', '/?theme=public-sector');
     expect(screen.getByRole('searchbox')).toBeInTheDocument();
   });
 
   it('filters the register from a theme link and keeps the links on a shared jurisdiction URL', () => {
     window.history.replaceState({}, '', '/?jurisdiction=federal');
     render(<PolicyBrowser {...props} />);
-    expect(screen.getByRole('link', { name: /Browse developments/ })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Evidence and legal practice' })).toHaveAttribute(
       'href',
       '/?jurisdiction=federal&theme=legal-practice',
