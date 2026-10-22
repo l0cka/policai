@@ -305,7 +305,7 @@ export function PolicyBrowser({
         <section
           id="policy-register"
           aria-labelledby="policy-register-heading"
-          className="min-w-0 scroll-mt-32"
+          className="min-w-0 scroll-mt-20"
         >
           <h2 id="policy-register-heading" className="sr-only">Policy register</h2>
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:gap-6">
@@ -467,7 +467,7 @@ export function PolicyBrowser({
             </div>
           )}
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-3">
-            <p id="register-results" tabIndex={-1} role="status" className="scroll-mt-32 text-sm text-muted-foreground">
+            <p id="register-results" tabIndex={-1} role="status" className="scroll-mt-20 text-sm text-muted-foreground">
               {filteredPolicies.length}{' '}
               {filteredPolicies.length === 1 ? 'policy' : 'policies'}
               {search ? ` matching “${search}”` : ' in the register'}

@@ -57,7 +57,7 @@ export default async function RefusalsPage() {
 
   return (
     <article className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
-      <PageIntro eyebrow="Coverage" title={TITLE} description={DESCRIPTION} />
+      <PageIntro title={TITLE} description={DESCRIPTION} />
       <MetricStrip
         metrics={[
           { value: rows.length, label: 'sources refused' },
@@ -66,7 +66,7 @@ export default async function RefusalsPage() {
           { value: rows.filter((row) => row.response === 'undecided').length, label: 'awaiting a decision' },
         ]}
       />
-      <div className="max-w-5xl space-y-10 py-9 text-sm leading-6">
+      <div className="space-y-10 py-9 text-sm leading-6">
         <section>
           <p className="max-w-3xl text-muted-foreground">
             Policai’s collector identifies itself as{' '}

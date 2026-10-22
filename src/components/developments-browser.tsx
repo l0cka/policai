@@ -2,6 +2,7 @@
 
 import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
+import { PageIntro } from '@/components/layout';
 import {
   ArrowRight,
   ArrowUpRight,
@@ -145,7 +146,7 @@ function DevelopmentFeed({
                   key={development.id}
                   id={development.id}
                   style={jurisdictionRailStyle(development.jurisdiction)}
-                  className="ink-rail scroll-mt-28 grid gap-1.5 border-b border-border py-3 pl-3 transition-colors duration-[var(--dur-fast)] hover:bg-[var(--row-hover)] sm:grid-cols-[6.5rem_7rem_minmax(0,1fr)] sm:gap-2 sm:py-4 lg:grid-cols-[6.5rem_7rem_minmax(0,1fr)_9rem_10rem]"
+                  className="ink-rail scroll-mt-20 grid gap-1.5 border-b border-border py-3 pl-3 transition-colors duration-[var(--dur-fast)] hover:bg-[var(--row-hover)] sm:grid-cols-[6.5rem_7rem_minmax(0,1fr)] sm:gap-2 sm:py-4 lg:grid-cols-[6.5rem_7rem_minmax(0,1fr)_9rem_10rem]"
                 >
                   <time className="text-xs font-medium text-muted-foreground tabular">{developmentDate(development)}</time>
                   <div className="flex flex-wrap items-center gap-2 sm:block">
@@ -283,14 +284,13 @@ export function DevelopmentsBrowser({
   };
 
   return (
-    <div className="container mx-auto px-4 py-6 sm:px-6 sm:py-7 lg:px-8">
-      <header className="reveal">
-        <h1 className="page-title">Policy developments</h1>
-        <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground sm:mt-3">
-          Updates found on official sources. Records an editor has checked are
-          listed separately from leads that are still unconfirmed.
-        </p>
-        <p className="mt-2 text-xs text-muted-foreground">
+    <div className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
+      <PageIntro
+        title="Policy developments"
+        description="Updates found on official sources. Records an editor has checked are listed separately from leads that are still unconfirmed."
+      />
+      <div className="reveal">
+        <p className="text-xs text-muted-foreground">
           Subscribe with the{' '}
           <a href="/feed.xml" className="text-primary underline underline-offset-4 hover:no-underline">
             developments feed
@@ -300,13 +300,9 @@ export function DevelopmentsBrowser({
           <a href="/api/developments" className="text-primary underline underline-offset-4 hover:no-underline">
             JSON API
           </a>
-          . Weekly digest on{' '}
-          <Link href="/this-week" className="text-primary underline underline-offset-4 hover:no-underline">
-            this week
-          </Link>
           .
         </p>
-      </header>
+      </div>
 
       <div className="mt-4 flex gap-4 border-b border-border sm:mt-5 sm:gap-8" role="tablist" aria-label="Development verification state">
         <button type="button" role="tab" aria-selected={activeTab === 'verified'} onClick={() => setActiveTab('verified')} className={cn('-mb-px min-h-11 whitespace-nowrap border-b-[3px] px-1 text-base transition-colors sm:min-h-14 sm:px-2 sm:text-lg', activeTab === 'verified' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground')}>
@@ -362,7 +358,7 @@ export function DevelopmentsBrowser({
           />
         </div>
 
-        <aside className="self-start border-border xl:sticky xl:top-28 xl:border-l xl:pl-6">
+        <aside className="self-start border-border xl:sticky xl:top-20 xl:border-l xl:pl-6">
           <section>
             <h2 className="section-title">Collection status</h2>
             <div className="mt-3 rounded-md border border-border bg-card/50 p-4">

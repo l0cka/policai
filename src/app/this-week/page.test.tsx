@@ -39,8 +39,7 @@ it('exposes habit jump links, counts and the developments Atom feed', async () =
   const nav = screen.getByRole('navigation', { name: 'On this page' });
   expect(nav.querySelector('a[href="#verified"]')).toHaveTextContent(/0 verified/);
   expect(nav.querySelector('a[href="#coming-up"]')).toHaveTextContent(/1 coming up/);
-  expect(nav.querySelector('a[href="/feed.xml"]')).toHaveTextContent('Atom feed');
-  expect(nav.querySelector('a[href="/developments"]')).toHaveTextContent('Full developments');
+  expect(screen.getByRole('link', { name: 'Atom feed' })).toHaveAttribute('href', '/feed.xml');
 });
 it('reads each section heading with its count as separate words', async () => {
   render(await ThisWeekPage());

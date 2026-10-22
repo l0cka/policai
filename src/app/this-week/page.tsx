@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { PageIntro } from '@/components/layout';
 import { ArrowUpRight, CalendarClock } from 'lucide-react';
 import {
   getCollectionMeta,
@@ -219,16 +220,15 @@ export default async function ThisWeekPage() {
   const upcomingCount = upcoming.length;
 
   return (
-    <div className="mx-auto w-full max-w-[1240px] px-4 py-6 sm:px-6 sm:py-10 lg:px-8">
-      <header className="reveal">
-        <h1 className="page-title">This week</h1>
-        <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground sm:mt-3">
-          Verified developments from the latest collected week, and dates to
-          watch in the register. Every entry links to its source.
-        </p>
+    <div className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
+      <PageIntro
+        title="This week"
+        description="Verified developments from the latest collected week, and dates to watch in the register. Every entry links to its source."
+      />
+      <div className="reveal">
         <nav
           aria-label="On this page"
-          className="mt-3 flex flex-wrap items-baseline gap-x-4 gap-y-1 text-sm"
+          className="flex flex-wrap items-baseline gap-x-4 gap-y-1 text-sm"
         >
           <a href="#verified" className="text-primary underline underline-offset-4 hover:no-underline">
             {verifiedCount} verified
@@ -236,21 +236,15 @@ export default async function ThisWeekPage() {
           <a href="#coming-up" className="text-primary underline underline-offset-4 hover:no-underline">
             {upcomingCount} coming up
           </a>
-          <Link href="/developments" className="text-muted-foreground underline underline-offset-4 hover:text-primary hover:no-underline">
-            Full developments
-          </Link>
-          <a href="/feed.xml" className="text-muted-foreground underline underline-offset-4 hover:text-primary hover:no-underline">
-            Atom feed
-          </a>
         </nav>
         <p className="mt-2 flex flex-wrap gap-x-4 font-mono text-[11px] uppercase text-muted-foreground">
           {lastCollected ? <span>Last collected {lastCollected}</span> : null}
           {lastHealthy ? <span>Last fully healthy {lastHealthy}</span> : null}
         </p>
-        {stale ? <p role="status" className="mt-4 border-l-2 border-[var(--caution)] pl-3 text-sm">Collection is more than seven days old. This is a historical snapshot, not current weekly coverage. <Link href="/methodology" className="underline">Check source health</Link>.</p> : null}
-      </header>
+        {stale ? <p role="status" className="mt-4 border-l-2 border-[var(--caution)] pl-3 text-sm">Collection is more than seven days old. This is a historical snapshot, not current weekly coverage. <Link href="/status" className="underline">Check source status</Link>.</p> : null}
+      </div>
 
-      <section id="verified" className="mt-6 scroll-mt-28 sm:mt-8">
+      <section id="verified" className="mt-6 scroll-mt-20 sm:mt-8">
         <h2 className="border-b border-[var(--rule-heavy)] py-2 font-mono text-[11px] font-medium uppercase tracking-[0.12em]">
           Verified developments{' '}
           <span className="ml-0.5 font-mono text-muted-foreground normal-case tracking-normal">
@@ -307,7 +301,7 @@ export default async function ThisWeekPage() {
         </p>
       </section>
 
-      <section id="coming-up" className="mt-8 scroll-mt-28 sm:mt-10">
+      <section id="coming-up" className="mt-8 scroll-mt-20 sm:mt-10">
         <h2 className="border-b border-[var(--rule-heavy)] py-2 font-mono text-[11px] font-medium uppercase tracking-[0.12em]">
           Coming up{' '}
           <span className="ml-0.5 font-mono text-muted-foreground normal-case tracking-normal">
