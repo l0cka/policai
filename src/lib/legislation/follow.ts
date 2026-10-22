@@ -5,6 +5,7 @@ import { sourceUrlsEqual } from '@/lib/source-url';
 import { classifyFailure } from '@/lib/pipeline/failure';
 import type { Policy, PolicyDate, PolicyDraft, SourceEvidence, SourceReview, SourceRunResult } from '@/types';
 import { parseAphProgress } from './aph-progress';
+import { parseTasBillProgress } from './tas-progress';
 import {
   frlAmendedPrincipals,
   frlCommencements,
@@ -31,8 +32,8 @@ export const FOLLOW_SOURCE_PREFIX = 'track:';
 
 const APH_BILL_PAGE = 'https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=';
 
-/** APH bill pages are served only to a browser; the Federal Register API answers plain HTTP. */
-export type FollowRegister = 'aph' | 'frl';
+/** APH bill pages are served only to a browser; the Federal Register API and Tasmanian bill pages answer plain HTTP. */
+export type FollowRegister = 'aph' | 'frl' | 'tas';
 
 export interface FollowTarget {
   sourceId: string;
@@ -44,15 +45,19 @@ export interface FollowTarget {
 const READ: Record<FollowRegister, { title: string; read: (body: string, evidence: SourceEvidence) => RegisterReading }> = {
   aph: { title: 'Bill home page', read: parseAphProgress },
   frl: { title: 'Federal Register title record', read: parseFrlTitle },
+  tas: { title: 'Parliament of Tasmania bill page', read: parseTasBillProgress },
 };
+
+const TAS_BILL_PAGE = /^https:\/\/www\.parliament\.tas\.gov\.au\/bills\/bills\d{4}\//;
 
 export function aphBillPage(billId: string): string {
   return `${APH_BILL_PAGE}${billId}`;
 }
 
 /**
- * Federal bills whose register source is their APH bill page, and federal
- * instruments with a Federal Register title id.
+ * Federal bills whose register source is their APH bill page, federal
+ * instruments with a Federal Register title id, and Tasmanian bills with a
+ * Parliament of Tasmania bill page.
  */
 export function followTargets(policies: readonly Policy[]): FollowTarget[] {
   return policies.flatMap((policy): FollowTarget[] => {
@@ -67,6 +72,9 @@ export function followTargets(policies: readonly Policy[]): FollowTarget[] {
     }
     if (legislative.kind === 'instrument' && ref.register === 'frl') {
       return [{ sourceId, url: frlTitleRecord(ref.titleId), register: 'frl', policy: { ...policy, legislative } }];
+    }
+    if (legislative.kind === 'bill' && ref.register === 'state' && ref.jurisdiction === 'tas' && TAS_BILL_PAGE.test(ref.url)) {
+      return [{ sourceId, url: ref.url, register: 'tas', policy: { ...policy, legislative } }];
     }
     return [];
   });

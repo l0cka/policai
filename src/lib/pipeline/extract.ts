@@ -208,6 +208,8 @@ export function extractFromHtml(
     '.views-row',
     '.bu-updates__item',
     '.bu-link',
+    // The Parliament of Tasmania lists current bills as one bare div per bill.
+    'div:has(> a[href*="/bills/bills"])',
     // Drupal views tables render one entry per body row; header rows carry
     // th cells only, so sort links never count as entries.
     'tr:has(td[class*="views-field"])',
