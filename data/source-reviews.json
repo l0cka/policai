@@ -1,5 +1,282 @@
 [
   {
+    "id": "source-review-3ae7ea4b-d3f7-4466-a505-5acb20f39244",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7537",
+    "title": "AI Kill Switch and Data Centre Control Bill 2026",
+    "entryKind": "policy",
+    "status": "published",
+    "discoveredAt": "2026-10-22T10:27:40.512Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Register record for the AI Kill Switch and Data Centre Control Bill 2026, staged for an editorial decision card.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": "legislation",
+      "suggestedJurisdiction": "federal",
+      "summary": "Private member's bill introduced in the House of Representatives by Andrew Gee MP on 7 September 2026. It would set safeguards for advanced artificial intelligence systems, including mandatory shutdown capabilities, critical incident reporting obligations and emergency intervention powers, and would impose a moratorium on building or upgrading AI data centres unless specified conditions are met. The bill is before the House and is not law.",
+      "tags": [
+        "kill switch",
+        "frontier AI",
+        "data centres",
+        "bill",
+        "Parliament",
+        "private member"
+      ],
+      "agencies": [
+        "Parliament of Australia"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7537",
+      "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7537",
+      "title": "AI Kill Switch and Data Centre Control Bill 2026 – Parliament of Australia",
+      "retrievedAt": "2026-10-22T10:27:40.448Z",
+      "contentType": "text/html",
+      "contentHash": "1f7734d1a8facfbaf392fc55d4f02f3dd480f6723a93e1915c458b19c22077ef",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-10-22T10:27:40.448Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "Headless Chromium capture of the APH bill home page for r7537 with the Policai collector identity; APH refuses plain HTTP clients. Staged by Claude (agent) for Daniel Alkurdi's register.",
+        "pageContentHash": "39253b39616ff73884d1add004a95a6020b528930b52026bfc8140f67e0c0b68",
+        "characterCount": 4884
+      },
+      "reviewedDate": {
+        "date": "2026-09-07",
+        "precision": "day",
+        "reviewedAt": "2026-10-22T11:52:51.430Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The captured bill home page shows \"Introduced and read a first time 07 Sep 2026\" and \"Second reading moved 07 Sep 2026\" in the House of Representatives."
+      }
+    },
+    "proposedRecord": {
+      "id": "federal-ai-kill-switch-and-data-centre-control-bill-2026",
+      "title": "AI Kill Switch and Data Centre Control Bill 2026",
+      "description": "Private member's bill introduced in the House of Representatives by Andrew Gee MP on 7 September 2026. It would set safeguards for advanced artificial intelligence systems, including mandatory shutdown capabilities, critical incident reporting obligations and emergency intervention powers, and would impose a moratorium on building or upgrading AI data centres unless specified conditions are met. The bill is before the House and is not law.",
+      "jurisdiction": "federal",
+      "type": "legislation",
+      "status": "proposed",
+      "effectiveDate": "2026-09-07",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-09-07",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7537",
+            "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7537",
+            "title": "AI Kill Switch and Data Centre Control Bill 2026 – Parliament of Australia",
+            "retrievedAt": "2026-10-22T10:27:40.448Z",
+            "contentType": "text/html",
+            "contentHash": "1f7734d1a8facfbaf392fc55d4f02f3dd480f6723a93e1915c458b19c22077ef",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-10-22T10:27:40.448Z",
+              "capturedBy": "Claude (agent)",
+              "requestedBy": "Daniel Alkurdi",
+              "notes": "Headless Chromium capture of the APH bill home page for r7537 with the Policai collector identity; APH refuses plain HTTP clients. Staged by Claude (agent) for Daniel Alkurdi's register.",
+              "pageContentHash": "39253b39616ff73884d1add004a95a6020b528930b52026bfc8140f67e0c0b68",
+              "characterCount": 4884
+            },
+            "reviewedDate": {
+              "date": "2026-09-07",
+              "precision": "day",
+              "reviewedAt": "2026-10-22T11:52:51.430Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "The captured bill home page shows \"Introduced and read a first time 07 Sep 2026\" and \"Second reading moved 07 Sep 2026\" in the House of Representatives."
+            }
+          }
+        }
+      ],
+      "agencies": [
+        "Parliament of Australia"
+      ],
+      "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7537",
+      "content": "APH bill summary: \"The bill: establishes safeguards for advanced artificial intelligence (AI) systems, including mandatory shutdown capabilities, critical incident reporting obligations and emergency intervention powers; and imposes a moratorium on the construction and upgrade of AI data centres unless specified conditions are met.\" Type: Private. Sponsor: Andrew Gee MP. Originating house: House of Representatives. Progress: introduced and read a first time 7 September 2026; second reading moved 7 September 2026. Status: before the House of Representatives.",
+      "aiSummary": "Private member's bill (Andrew Gee MP) for mandatory shutdown capability, incident reporting and emergency powers over advanced AI, and a conditional moratorium on new or upgraded AI data centres. Introduced 7 September 2026; not law.",
+      "tags": [
+        "kill switch",
+        "frontier AI",
+        "data centres",
+        "bill",
+        "Parliament",
+        "private member"
+      ],
+      "themes": [
+        "frontier-ai",
+        "infrastructure",
+        "ai-governance"
+      ],
+      "createdAt": "2026-10-22T10:27:24.207Z",
+      "updatedAt": "2026-10-22T11:52:51.430Z",
+      "legislative": {
+        "kind": "bill",
+        "ref": {
+          "register": "aph",
+          "billId": "r7537"
+        },
+        "origin": "private_member",
+        "events": [
+          {
+            "date": "2026-09-07",
+            "precision": "day",
+            "event": {
+              "kind": "introduced",
+              "chamber": "lower"
+            },
+            "source": {
+              "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7537",
+              "title": "Bill home page"
+            }
+          }
+        ]
+      },
+      "lastReviewedAt": "2026-10-22T11:52:51.430Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7537",
+          "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7537",
+          "title": "AI Kill Switch and Data Centre Control Bill 2026 – Parliament of Australia",
+          "retrievedAt": "2026-10-22T10:27:40.448Z",
+          "contentType": "text/html",
+          "contentHash": "1f7734d1a8facfbaf392fc55d4f02f3dd480f6723a93e1915c458b19c22077ef",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-22T10:27:40.448Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Headless Chromium capture of the APH bill home page for r7537 with the Policai collector identity; APH refuses plain HTTP clients. Staged by Claude (agent) for Daniel Alkurdi's register.",
+            "pageContentHash": "39253b39616ff73884d1add004a95a6020b528930b52026bfc8140f67e0c0b68",
+            "characterCount": 4884
+          },
+          "reviewedDate": {
+            "date": "2026-09-07",
+            "precision": "day",
+            "reviewedAt": "2026-10-22T11:52:51.430Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The captured bill home page shows \"Introduced and read a first time 07 Sep 2026\" and \"Second reading moved 07 Sep 2026\" in the House of Representatives."
+          }
+        },
+        "checkedAt": "2026-10-22T11:52:51.430Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd79K64Z1fXzsAApba6bmTTdF (proposal e002ab43). Proposed by Claude (agent), at the request of Daniel Alkurdi. APH bill r7537 progress parsed with parseAphProgress (introduced 2026-09-07; second reading moved is procedural). Unrecognised: []."
+      }
+    },
+    "updatedAt": "2026-10-22T11:52:51.471Z",
+    "proposal": {
+      "proposedBy": "Claude (agent), at the request of Daniel Alkurdi",
+      "proposedRecord": {
+        "id": "federal-ai-kill-switch-and-data-centre-control-bill-2026",
+        "title": "AI Kill Switch and Data Centre Control Bill 2026",
+        "description": "Private member's bill introduced in the House of Representatives by Andrew Gee MP on 7 September 2026. It would set safeguards for advanced artificial intelligence systems, including mandatory shutdown capabilities, critical incident reporting obligations and emergency intervention powers, and would impose a moratorium on building or upgrading AI data centres unless specified conditions are met. The bill is before the House and is not law.",
+        "jurisdiction": "federal",
+        "type": "legislation",
+        "status": "proposed",
+        "effectiveDate": "2026-09-07",
+        "dates": [
+          {
+            "type": "published",
+            "date": "2026-09-07",
+            "precision": "day",
+            "primary": true,
+            "source": {
+              "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7537",
+              "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7537",
+              "title": "AI Kill Switch and Data Centre Control Bill 2026 – Parliament of Australia",
+              "retrievedAt": "2026-10-22T10:27:40.448Z",
+              "contentType": "text/html",
+              "contentHash": "1f7734d1a8facfbaf392fc55d4f02f3dd480f6723a93e1915c458b19c22077ef",
+              "linkedDocuments": [],
+              "browserCapture": {
+                "method": "browser",
+                "capturedAt": "2026-10-22T10:27:40.448Z",
+                "capturedBy": "Claude (agent)",
+                "requestedBy": "Daniel Alkurdi",
+                "notes": "Headless Chromium capture of the APH bill home page for r7537 with the Policai collector identity; APH refuses plain HTTP clients. Staged by Claude (agent) for Daniel Alkurdi's register.",
+                "pageContentHash": "39253b39616ff73884d1add004a95a6020b528930b52026bfc8140f67e0c0b68",
+                "characterCount": 4884
+              },
+              "reviewedDate": {
+                "date": "2026-09-07",
+                "precision": "day",
+                "reviewedAt": "2026-10-22T10:27:40.499Z",
+                "reviewedBy": "Claude (agent)",
+                "notes": "The captured bill home page shows \"Introduced and read a first time 07 Sep 2026\" in the House of Representatives."
+              }
+            }
+          }
+        ],
+        "agencies": [
+          "Parliament of Australia"
+        ],
+        "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7537",
+        "content": "APH bill summary: \"The bill: establishes safeguards for advanced artificial intelligence (AI) systems, including mandatory shutdown capabilities, critical incident reporting obligations and emergency intervention powers; and imposes a moratorium on the construction and upgrade of AI data centres unless specified conditions are met.\" Type: Private. Sponsor: Andrew Gee MP. Originating house: House of Representatives. Progress: introduced and read a first time 7 September 2026; second reading moved 7 September 2026. Status: before the House of Representatives.",
+        "aiSummary": "Private member's bill (Andrew Gee MP) for mandatory shutdown capability, incident reporting and emergency powers over advanced AI, and a conditional moratorium on new or upgraded AI data centres. Introduced 7 September 2026; not law.",
+        "tags": [
+          "kill switch",
+          "frontier AI",
+          "data centres",
+          "bill",
+          "Parliament",
+          "private member"
+        ],
+        "themes": [
+          "frontier-ai",
+          "infrastructure",
+          "ai-governance"
+        ],
+        "createdAt": "2026-10-22T10:27:24.207Z",
+        "updatedAt": "2026-10-22T10:27:24.207Z",
+        "legislative": {
+          "kind": "bill",
+          "ref": {
+            "register": "aph",
+            "billId": "r7537"
+          },
+          "origin": "private_member",
+          "events": [
+            {
+              "date": "2026-09-07",
+              "precision": "day",
+              "event": {
+                "kind": "introduced",
+                "chamber": "lower"
+              },
+              "source": {
+                "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7537",
+                "title": "Bill home page"
+              }
+            }
+          ]
+        }
+      },
+      "reviewedDate": {
+        "date": "2026-09-07",
+        "precision": "day",
+        "notes": "The captured bill home page shows \"Introduced and read a first time 07 Sep 2026\" and \"Second reading moved 07 Sep 2026\" in the House of Representatives."
+      },
+      "notes": "APH bill r7537 progress parsed with parseAphProgress (introduced 2026-09-07; second reading moved is procedural). Unrecognised: [].",
+      "proposedAt": "2026-10-22T10:27:40.525Z"
+    },
+    "reviewedAt": "2026-10-22T11:52:51.430Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd79K64Z1fXzsAApba6bmTTdF (proposal e002ab43). Proposed by Claude (agent), at the request of Daniel Alkurdi. APH bill r7537 progress parsed with parseAphProgress (introduced 2026-09-07; second reading moved is procedural). Unrecognised: [].",
+    "decision": {
+      "proposalHash": "e002ab43dfa650d37a126e100155aeedfb470f4b440e35df2697a8d9971e55d1",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-10-22T11:52:51.426Z",
+      "attestationUrl": "https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd79K64Z1fXzsAApba6bmTTdF"
+    },
+    "publishedAt": "2026-10-22T11:52:51.459Z"
+  },
+  {
     "id": "source-review-643e51c3-2365-4254-952a-d95fd3f3b601",
     "sourceUrl": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
     "title": "Electoral Legislation Amendment (Elections) Act 2026",

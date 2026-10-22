@@ -1,5 +1,35 @@
 [
   {
+    "id": "mcp-audit-d4d3ceea-065a-4f66-ab65-127bee9d27ff",
+    "createdAt": "2026-10-22T11:52:51.478Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-8f2e120c-6a50-439b-a627-5e73cfbc18bf",
+    "createdAt": "2026-10-22T10:27:40.540Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-ff0c93d6-9266-49ec-8683-8890aefa5a0e",
+    "createdAt": "2026-10-22T10:27:40.520Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7537",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-86196056-1192-4312-8db1-2b7cc4dd0295",
+    "createdAt": "2026-10-22T10:27:40.499Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7537",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-8a0fee2a-5efd-4d70-a529-86c75dfd6ff7",
     "createdAt": "2026-10-22T07:41:33.858Z",
     "actor": "local-mcp-admin",
