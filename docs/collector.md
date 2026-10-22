@@ -534,14 +534,20 @@ been unreachable on 3 consecutive runs is reported as robots unverified
 
 - **robots.txt** ([`robots.ts`](../src/lib/pipeline/robots.ts), RFC 9309).
   Fetched at most once per host per run with the declared identity, over
-  plain HTTP/1.1, before the first request to that host. The `Policai` group
+  plain HTTP/1.1, before the first request to that host. When a WAF refuses
+  the plain client (a 401, a 403 or a dropped connection) and the run has a
+  browser, robots.txt is read again through the browser, so a host the
+  collector reaches only by browser still has its rules read. An HTML answer
+  from the browser is a challenge page, not robots.txt, and is discarded. The `Policai` group
   is used when present, else `*`. Matching is longest-match over `Allow` and
   `Disallow`, with `*` wildcards and a `$` end anchor, equal lengths allow,
   and percent-encoded unreserved octets compared decoded. A 2xx is parsed
   line by line, so an HTML or challenge page served with 200 yields no
   rules, and a 204 is an empty robots.txt that allows all. A `Crawl-delay`
   over one day (`CRAWL_DELAY_CAP_SEC`) is read as one day. A 4xx means
-  allow all (`absent`). Anything else is `unreachable`: a 1xx or 3xx left
+  allow all (`absent`), except a 401 or 403: that is a WAF refusing the
+  reader, not a site without robots.txt, so it counts as `unreachable`.
+  Anything else is `unreachable` too: a 1xx or 3xx left
   after redirects (such as a 304 without `Location`), a 5xx, a connection
   error, the 20 s timeout, a body over 500 KiB (it is not parsed in part),
   more than five redirects, or a redirect off https.
@@ -552,7 +558,7 @@ been unreachable on 3 consecutive runs is reported as robots unverified
   names the hosts whose robots.txt was unreachable.
 - **Robots unverified.** `robotsUnreachableRuns` on the host record counts
   consecutive runs whose robots fetch was unreachable, at most once per run,
-  and returns to 0 on any 2xx or 4xx. A host whose robots status is still
+  and returns to 0 on any 2xx or other 4xx. A host whose robots status is still
   `unreachable` (no robots.txt ever read) and whose count is 3 or more
   (`ROBOTS_UNVERIFIED_RUNS`) is robots unverified
   (`robotsUnverifiedHosts`). The run log then ends its host-gate lines with

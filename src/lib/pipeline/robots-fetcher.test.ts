@@ -99,4 +99,53 @@ describe('robotsFetcher maps each transport outcome for the gate', () => {
     await fetchRobots(ORIGIN);
     expect(requested).toEqual([ROBOTS]);
   });
+
+  describe('through the browser when plain HTTP is refused', () => {
+    const browser = (reply: { status: number; contentType: string; body: string } | Error) => {
+      const calls: string[] = [];
+      const browserFetchImpl = (async (input: string | URL | Request) => {
+        calls.push(String(input));
+        if (reply instanceof Error) throw reply;
+        return new Response(reply.status === 204 ? null : reply.body, {
+          status: reply.status,
+          headers: { 'content-type': reply.contentType },
+        });
+      }) as typeof fetch;
+      return { browserFetchImpl, calls };
+    };
+    const withBrowser = (routes: Record<string, Reply>, browserFetchImpl: typeof fetch) => {
+      const { requestImpl } = stubRequests(routes);
+      return robotsFetcher({ requestImpl, resolveHost: async () => ['93.184.216.34'], timeoutMs: 50, browserFetchImpl });
+    };
+
+    it.each<[label: string, reply: Reply]>([
+      ['a 403', { status: 403 }],
+      ['a 401', { status: 401 }],
+      ['a connection reset', 'reset'],
+    ])('reads the rules through the browser after %s', async (_label, reply) => {
+      const { browserFetchImpl, calls } = browser({ status: 200, contentType: 'text/plain', body: RULES });
+      expect(await withBrowser({ [ROBOTS]: reply }, browserFetchImpl)(ORIGIN)).toEqual({ status: 200, body: RULES });
+      expect(calls).toEqual([ROBOTS]);
+    });
+
+    it.each<[label: string, reply: Reply]>([
+      ['a 200', { status: 200, headers: TEXT, body: RULES }],
+      ['a 404', { status: 404 }],
+      ['a 503', { status: 503 }],
+    ])('never opens the browser after %s', async (_label, reply) => {
+      const { browserFetchImpl, calls } = browser({ status: 200, contentType: 'text/plain', body: '' });
+      await withBrowser({ [ROBOTS]: reply }, browserFetchImpl)(ORIGIN);
+      expect(calls).toEqual([]);
+    });
+
+    it.each<[label: string, reply: { status: number; contentType: string; body: string } | Error, expected: { status: number; body: string }]>([
+      ['a challenge page', { status: 200, contentType: 'text/html', body: '<html>Just a moment...</html>' }, { status: 403, body: '' }],
+      ['an error', new Error('net::ERR_ABORTED'), { status: 403, body: '' }],
+      ['its own 403', { status: 403, contentType: 'text/html', body: '' }, { status: 403, body: '' }],
+      ['a 404', { status: 404, contentType: 'text/html', body: '' }, { status: 404, body: '' }],
+    ])('keeps a usable answer when the browser returns %s', async (_label, reply, expected) => {
+      const { browserFetchImpl } = browser(reply);
+      expect(await withBrowser({ [ROBOTS]: { status: 403 } }, browserFetchImpl)(ORIGIN)).toEqual(expected);
+    });
+  });
 });

@@ -146,6 +146,8 @@ export function robotsUnverifiedHosts(hosts: Record<Host, HostRecord>): Host[] {
 function robotsOutcome(response: { status: number } | null): RobotsRecord['status'] {
   const statusClass = response === null ? 0 : Math.floor(response.status / 100);
   if (statusClass === 2) return 'parsed';
+  // A 401 or 403 is a WAF refusing the reader, not a site without robots.txt.
+  if (response?.status === 401 || response?.status === 403) return 'unreachable';
   if (statusClass === 4) return 'absent';
   return 'unreachable';
 }
@@ -346,6 +348,7 @@ export function createHostGate(deps: HostGateDeps): HostGate {
 
 export interface RobotsFetcherOptions {
   fetchImpl?: typeof fetch;
+  browserFetchImpl?: typeof fetch;
   resolveHost?: (hostname: string) => Promise<string[]>;
   requestImpl?: typeof https.get;
   timeoutMs?: number;
@@ -369,44 +372,66 @@ function bytesLookCompressed(bytes: Uint8Array): boolean {
   return false;
 }
 
+async function robotsOverFetch(
+  fetchImpl: typeof fetch,
+  url: string,
+  rejectHtml: boolean,
+): Promise<{ status: number; body: string } | null> {
+  const response = await fetchImpl(url, {
+    headers: {
+      'User-Agent': COLLECTOR_USER_AGENT,
+      Accept: 'text/plain,*/*;q=0.5',
+      'Accept-Encoding': 'identity',
+    },
+    redirect: 'follow',
+  });
+  if (contentEncodingIsCompressed(response.headers.get('content-encoding'))) return null;
+  if (!response.ok) return { status: response.status, body: '' };
+  if (rejectHtml && /html/i.test(response.headers.get('content-type') ?? '')) return null;
+  const bytes = await readResponseBytes(response, ROBOTS_MAX_BYTES);
+  if (bytesLookCompressed(bytes)) return null;
+  return { status: response.status, body: bytes.toString('utf8') };
+}
+
+async function robotsOverHttp(url: string, options: RobotsFetcherOptions): Promise<{ status: number; body: string } | null> {
+  try {
+    if (options.fetchImpl) return await robotsOverFetch(options.fetchImpl, url, false);
+    const retrieved = await retrieveSourceOverHttp1(url, {
+      now: () => new Date(),
+      timeoutMs: options.timeoutMs ?? ROBOTS_TIMEOUT_MS,
+      maxResponseBytes: ROBOTS_MAX_BYTES,
+      destinationPolicy: 'public-https',
+      resolveHost: options.resolveHost,
+      requestImpl: options.requestImpl,
+      rejectCompressed: true,
+    });
+    const body = retrieved.body || Buffer.from(retrieved.bytes ?? []).toString('utf8');
+    const raw = retrieved.bytes ?? Buffer.from(body, 'latin1');
+    if (bytesLookCompressed(raw)) return null;
+    return { status: 200, body };
+  } catch (error) {
+    if (error instanceof SourceFetchError) {
+      if (error.status !== undefined) return { status: error.status, body: '' };
+      if (error.code === 'destination_mismatch') return { status: 404, body: '' };
+    }
+    return null;
+  }
+}
+
+const refusedOverHttp = (response: { status: number } | null): boolean =>
+  response === null || response.status === 401 || response.status === 403;
+
+/**
+ * Reads robots.txt over plain HTTP, then through the browser when a WAF
+ * refused the plain client, so a browser-fetched host's rules are still read.
+ * The browser never returns robots.txt as HTML: that is a challenge page.
+ */
 export function robotsFetcher(options: RobotsFetcherOptions = {}): HostGateDeps['fetchRobots'] {
   return async (origin) => {
     const url = `${origin}/robots.txt`;
-    try {
-      if (options.fetchImpl) {
-        const response = await options.fetchImpl(url, {
-          headers: {
-            'User-Agent': COLLECTOR_USER_AGENT,
-            Accept: 'text/plain,*/*;q=0.5',
-            'Accept-Encoding': 'identity',
-          },
-          redirect: 'follow',
-        });
-        if (contentEncodingIsCompressed(response.headers.get('content-encoding'))) return null;
-        if (!response.ok) return { status: response.status, body: '' };
-        const bytes = await readResponseBytes(response, ROBOTS_MAX_BYTES);
-        if (bytesLookCompressed(bytes)) return null;
-        return { status: response.status, body: bytes.toString('utf8') };
-      }
-      const retrieved = await retrieveSourceOverHttp1(url, {
-        now: () => new Date(),
-        timeoutMs: options.timeoutMs ?? ROBOTS_TIMEOUT_MS,
-        maxResponseBytes: ROBOTS_MAX_BYTES,
-        destinationPolicy: 'public-https',
-        resolveHost: options.resolveHost,
-        requestImpl: options.requestImpl,
-        rejectCompressed: true,
-      });
-      const body = retrieved.body || Buffer.from(retrieved.bytes ?? []).toString('utf8');
-      const raw = retrieved.bytes ?? Buffer.from(body, 'latin1');
-      if (bytesLookCompressed(raw)) return null;
-      return { status: 200, body };
-    } catch (error) {
-      if (error instanceof SourceFetchError) {
-        if (error.status !== undefined) return { status: error.status, body: '' };
-        if (error.code === 'destination_mismatch') return { status: 404, body: '' };
-      }
-      return null;
-    }
+    const overHttp = await robotsOverHttp(url, options);
+    if (!options.browserFetchImpl || !refusedOverHttp(overHttp)) return overHttp;
+    const overBrowser = await robotsOverFetch(options.browserFetchImpl, url, true).catch(() => null);
+    return overBrowser ?? overHttp;
   };
 }

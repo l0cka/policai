@@ -85,7 +85,7 @@ export async function runCollection(run: CollectionRun): Promise<void> {
     createHostGate({
       hosts,
       refused: refusedHosts(WATCH_SOURCES),
-      fetchRobots: robotsFetcher({ fetchImpl: run.fetchImpl }),
+      fetchRobots: robotsFetcher({ fetchImpl: run.fetchImpl, browserFetchImpl: run.browserFetchImpl }),
       now: Date.now,
       sleep,
     });
