@@ -7,6 +7,8 @@ import type { Policy, PolicyDate, PolicyDraft, SourceEvidence, SourceReview, Sou
 import { parseAphProgress } from './aph-progress';
 import { parseSaBillSummaries, SA_BILL_PAGE, saBillSummaries } from './sa-salt';
 import { parseTasBillProgress } from './tas-progress';
+import { VIC_BILL_PAGE } from './vic-bills';
+import { parseVicBillProgress } from './vic-progress';
 import {
   frlAmendedPrincipals,
   frlCommencements,
@@ -33,8 +35,8 @@ export const FOLLOW_SOURCE_PREFIX = 'track:';
 
 const APH_BILL_PAGE = 'https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=';
 
-/** APH bill pages are served only to a browser; the Federal Register API, Tasmanian bill pages and SA's SALT API answer plain HTTP. */
-export type FollowRegister = 'aph' | 'frl' | 'tas' | 'sa';
+/** APH bill pages are served only to a browser; the Federal Register API, Tasmanian and Victorian bill pages and SA's SALT API answer plain HTTP. */
+export type FollowRegister = 'aph' | 'frl' | 'tas' | 'sa' | 'vic';
 
 export interface FollowTarget {
   sourceId: string;
@@ -48,6 +50,7 @@ const READ: Record<FollowRegister, { title: string; read: (body: string, evidenc
   frl: { title: 'Federal Register title record', read: parseFrlTitle },
   tas: { title: 'Parliament of Tasmania bill page', read: parseTasBillProgress },
   sa: { title: 'Parliament of South Australia bill summary', read: parseSaBillSummaries },
+  vic: { title: 'Victorian Legislation bill page', read: parseVicBillProgress },
 };
 
 const TAS_BILL_PAGE = /^https:\/\/www\.parliament\.tas\.gov\.au\/bills\/bills\d{4}\//;
@@ -59,8 +62,9 @@ export function aphBillPage(billId: string): string {
 /**
  * Federal bills whose register source is their APH bill page, federal
  * instruments with a Federal Register title id, Tasmanian bills with a
- * Parliament of Tasmania bill page, and SA bills with a SALT bill page,
- * read through the SALT API.
+ * Parliament of Tasmania bill page, SA bills with a SALT bill page, read
+ * through the SALT API, and Victorian bills with a Victorian Legislation
+ * bill page.
  */
 export function followTargets(policies: readonly Policy[]): FollowTarget[] {
   return policies.flatMap((policy): FollowTarget[] => {
@@ -78,6 +82,9 @@ export function followTargets(policies: readonly Policy[]): FollowTarget[] {
     }
     if (legislative.kind === 'bill' && ref.register === 'state' && ref.jurisdiction === 'tas' && TAS_BILL_PAGE.test(ref.url)) {
       return [{ sourceId, url: ref.url, register: 'tas', policy: { ...policy, legislative } }];
+    }
+    if (legislative.kind === 'bill' && ref.register === 'state' && ref.jurisdiction === 'vic' && VIC_BILL_PAGE.test(ref.url)) {
+      return [{ sourceId, url: ref.url, register: 'vic', policy: { ...policy, legislative } }];
     }
     const saBill = legislative.kind === 'bill' && ref.register === 'state' && ref.jurisdiction === 'sa' ? SA_BILL_PAGE.exec(ref.url) : null;
     if (saBill) {

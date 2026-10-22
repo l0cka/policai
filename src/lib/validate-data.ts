@@ -2082,7 +2082,7 @@ export function validateWatchSources(
         sourceUrls.set(sourceIdentity, label);
       }
     }
-    if (!isOneOf(['html-index', 'rss', 'document', 'frl-search', 'sa-salt-search'], source.kind))
+    if (!isOneOf(['html-index', 'rss', 'document', 'frl-search', 'sa-salt-search', 'vic-bill-search'], source.kind))
       errors.push(`${label}: invalid kind`);
     if (!isOneOf(['daily', 'weekly'], source.schedule))
       errors.push(`${label}: invalid schedule`);

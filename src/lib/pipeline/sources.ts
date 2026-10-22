@@ -1,6 +1,7 @@
 import type { Jurisdiction } from '@/types';
 import { frlAiInstrumentSearch } from '@/lib/legislation/frl-search';
 import { saBillSearch } from '@/lib/legislation/sa-salt';
+import { vicBillSearch } from '@/lib/legislation/vic-bills';
 import { hostOf, type Host } from './host';
 import type { SourceIdentityException } from './identity';
 
@@ -20,11 +21,11 @@ import type { SourceIdentityException } from './identity';
  * meta.json.
  */
 
-export type SourceKind = 'html-index' | 'rss' | 'document' | 'frl-search' | 'sa-salt-search';
+export type SourceKind = 'html-index' | 'rss' | 'document' | 'frl-search' | 'sa-salt-search' | 'vic-bill-search';
 
 /** Register JSON searches: each row names and dates a law, so its title and date are kept. */
 export function isRegisterSearch(kind: SourceKind): boolean {
-  return kind === 'frl-search' || kind === 'sa-salt-search';
+  return kind === 'frl-search' || kind === 'sa-salt-search' || kind === 'vic-bill-search';
 }
 export type SourceCategory = 'government' | 'regulator' | 'court';
 export type ManualBecause =
@@ -1178,6 +1179,21 @@ export const WATCH_SOURCES: WatchSource[] = [
     fetchStrategy: 'browser',
     notes:
       'Acts and statutory rules lodged in the current week, rendered as a Ripple data table. Checked 2026-09-23: 7 entries extracted; 1 of 6 dry runs returned the table before it rendered, so an occasional empty-index failure is expected. The first state legislation register watched; NSW and SA registers refuse automated clients.',
+  },
+  {
+    id: 'vic-parliament-bills',
+    name: 'Victorian legislation — bills in Parliament',
+    bodyId: 'vic-ocpc',
+    jurisdiction: 'vic',
+    category: 'government',
+    url: vicBillSearch(),
+    kind: 'vic-bill-search',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    admittedAt: '2026-10-22',
+    notes:
+      'The search index behind the client-side “bills in Parliament” page: every bill before the current Parliament, read as JSON over a plain GET. Each bill page carries its stage history for both Houses, which the follow watch reads (src/lib/legislation/vic-progress.ts). Probed from Argus 2026-10-22: 200 under the declared identity, robots allows /api/tide, 46 bills.',
   },
   {
     id: 'qld-legislation-new',
