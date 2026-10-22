@@ -1049,6 +1049,30 @@
     }
   },
   {
+    "id": "qld-parliament",
+    "name": "Queensland Parliament",
+    "jurisdiction": "qld",
+    "tier": "A",
+    "hosts": [
+      "www.parliament.qld.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "wa-parliament",
+    "name": "Parliament of Western Australia",
+    "jurisdiction": "wa",
+    "tier": "A",
+    "hosts": [
+      "www.parliament.wa.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
     "id": "tas-parliament",
     "name": "Parliament of Tasmania",
     "jurisdiction": "tas",

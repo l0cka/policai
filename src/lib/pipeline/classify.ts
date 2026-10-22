@@ -132,9 +132,10 @@ export function classifyByBodyMentions(
 /**
  * Relevance for a register search row that already matched AI: the Federal
  * Register's full-text score above its cut (`@/lib/legislation/frl-search`)
- * or an AI-titled SA or Victorian bill (`@/lib/legislation/sa-salt`,
- * `@/lib/legislation/vic-bills`). None gives an excerpt, so the summary
- * states the match; the score keeps it in review.
+ * or an AI-titled state bill (`@/lib/legislation/sa-salt`,
+ * `@/lib/legislation/vic-bills`, `@/lib/legislation/state-bill-lists`).
+ * None gives an excerpt, so the summary states the match; the score keeps
+ * it in review.
  */
 export function classifyBySearchMatch(candidate: Candidate): Classification {
   return {
