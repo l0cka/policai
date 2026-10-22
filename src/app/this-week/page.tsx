@@ -251,8 +251,8 @@ export default async function ThisWeekPage() {
 
       <section id="verified" className="mt-6 scroll-mt-28 sm:mt-8">
         <h2 className="border-b border-[var(--rule-heavy)] py-2 font-mono text-[11px] font-medium uppercase tracking-[0.12em]">
-          Verified developments
-          <span className="ml-2 font-mono text-muted-foreground normal-case tracking-normal">
+          Verified developments{' '}
+          <span className="ml-0.5 font-mono text-muted-foreground normal-case tracking-normal">
             {verifiedCount}
           </span>
         </h2>
@@ -308,8 +308,8 @@ export default async function ThisWeekPage() {
 
       <section id="coming-up" className="mt-8 scroll-mt-28 sm:mt-10">
         <h2 className="border-b border-[var(--rule-heavy)] py-2 font-mono text-[11px] font-medium uppercase tracking-[0.12em]">
-          Coming up
-          <span className="ml-2 font-mono text-muted-foreground normal-case tracking-normal">
+          Coming up{' '}
+          <span className="ml-0.5 font-mono text-muted-foreground normal-case tracking-normal">
             {upcomingCount}
           </span>
         </h2>

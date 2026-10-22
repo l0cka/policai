@@ -153,7 +153,7 @@ export default async function StatusPage() {
         ]}
       />
 
-      <div className="max-w-5xl space-y-10 py-9 text-sm leading-6">
+      <div className="max-w-5xl space-y-10 py-9 text-sm leading-6 [&_section>p]:max-w-3xl">
         <section>
           <h2 className="section-title">Editorial queue</h2>
           <p className="text-muted-foreground">
