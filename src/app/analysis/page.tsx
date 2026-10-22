@@ -48,7 +48,7 @@ export default async function AnalysisPage({
   const articles = await getArticles({ type });
 
   return (
-    <div className="mx-auto w-full max-w-[1240px] px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+    <div className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
       <PageIntro
         title="Analysis"
         description="Written pieces signed by Policai. They are Policai's analysis, separate from the verified register and from automated developments. Every factual claim cites a verified register record or an official source."

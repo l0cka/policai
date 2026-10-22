@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import Link from 'next/link';
+import { PageIntro } from '@/components/layout';
 import { ArrowUpRight } from 'lucide-react';
 import { getPolicies } from '@/lib/data-service';
 import { formatPolicyDate } from '@/lib/format-policy-date';
@@ -154,7 +155,7 @@ function Section({
   children: ReactNode;
 }) {
   return (
-    <section id={id} aria-labelledby={`${id}-heading`} className="mt-8 scroll-mt-28 sm:mt-10">
+    <section id={id} aria-labelledby={`${id}-heading`} className="mt-8 scroll-mt-20 sm:mt-10">
       <h2
         id={`${id}-heading`}
         className="border-b border-[var(--rule-heavy)] py-2 font-mono text-[11px] font-medium uppercase tracking-[0.12em]"
@@ -180,15 +181,13 @@ export default async function LegislationPage() {
   const made = recentlyMade(records, today, RECENT_DAYS);
 
   return (
-    <div className="mx-auto w-full max-w-[1240px] px-4 py-6 sm:px-6 sm:py-10 lg:px-8">
-      <header className="reveal">
-        <h1 className="page-title">Legislation</h1>
-        <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground sm:mt-3">
-          AI-related bills, Acts and legislative instruments in the register,
-          tracked through Parliament from their official pages. Every stage
-          links to its source.
-        </p>
-        <nav aria-label="On this page" className="mt-3 flex flex-wrap items-baseline gap-x-4 gap-y-1 text-sm">
+    <div className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
+      <PageIntro
+        title="Legislation"
+        description="AI-related bills, Acts and legislative instruments in the register, tracked through Parliament from their official pages. Every stage links to its source."
+      />
+      <div className="reveal">
+        <nav aria-label="On this page" className="flex flex-wrap items-baseline gap-x-4 gap-y-1 text-sm">
           <a href="#before-parliament" className="text-primary underline underline-offset-4 hover:no-underline">
             {bills.length} before Parliament
           </a>
@@ -202,7 +201,7 @@ export default async function LegislationPage() {
             API
           </a>
         </nav>
-      </header>
+      </div>
 
       <Section
         id="before-parliament"

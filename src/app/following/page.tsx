@@ -33,9 +33,8 @@ export default async function FollowingPage() {
   }));
 
   return (
-    <div className="container mx-auto px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+    <div className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
       <PageIntro
-        eyebrow="This browser"
         title={FOLLOWING_TITLE}
         description="Records followed on this browser only. A different browser, or a new profile, starts empty. There is no account and nothing is emailed."
       />

@@ -63,7 +63,7 @@ export default async function MethodologyPage() {
       <div className="grid gap-10 py-9 lg:grid-cols-[minmax(0,1fr)_14rem]">
       <div className="max-w-3xl space-y-10 text-sm leading-6">
         <section>
-          <h2 id="trust-levels" className="section-title scroll-mt-28">Trust levels</h2>
+          <h2 id="trust-levels" className="section-title scroll-mt-20">Trust levels</h2>
           <dl className="space-y-4">
             <div className="border-l-2 border-[var(--trust)] bg-[var(--status-active-bg)]/25 px-4 py-3">
               <dt className="font-medium">Verified register record</dt>
@@ -91,7 +91,7 @@ export default async function MethodologyPage() {
         </section>
 
         <section className="border-t border-border pt-7">
-          <h2 id="source-and-date-rules" className="section-title scroll-mt-28">Source and date rules</h2>
+          <h2 id="source-and-date-rules" className="section-title scroll-mt-20">Source and date rules</h2>
           <ul className="list-disc pl-5 text-muted-foreground space-y-2">
             <li>
               Verified records use the official instrument page or document.
@@ -112,7 +112,7 @@ export default async function MethodologyPage() {
         </section>
 
         <section className="border-t border-border pt-7">
-          <h2 id="register-state" className="section-title scroll-mt-28">Current register state</h2>
+          <h2 id="register-state" className="section-title scroll-mt-20">Current register state</h2>
           <p className="text-muted-foreground">
             {publicPolicies.length} records are currently publishable in the
             public register.
@@ -123,7 +123,7 @@ export default async function MethodologyPage() {
         </section>
 
         <section className="border-t border-border pt-7">
-          <h2 id="collection-health" className="section-title scroll-mt-28">Collection health</h2>
+          <h2 id="collection-health" className="section-title scroll-mt-20">Collection health</h2>
           <p className="text-muted-foreground">
             The latest run is <strong>{meta.collector.health}</strong>, with{' '}
             {meta.collector.successfulSourceCount} of{' '}
@@ -152,7 +152,7 @@ export default async function MethodologyPage() {
         </section>
 
         <section className="border-t border-border pt-7">
-          <h2 id="machine-feeds" className="section-title scroll-mt-28">
+          <h2 id="machine-feeds" className="section-title scroll-mt-20">
             Machine feeds and API
           </h2>
           <p className="text-muted-foreground">
@@ -292,7 +292,7 @@ export default async function MethodologyPage() {
         </section>
 
         <section className="border-t border-border pt-7">
-          <h2 id="open-data" className="section-title scroll-mt-28">Open data and corrections</h2>
+          <h2 id="open-data" className="section-title scroll-mt-20">Open data and corrections</h2>
           <p className="text-muted-foreground">
             Canonical records are versioned in Git and available as{' '}
             <a
@@ -325,7 +325,7 @@ export default async function MethodologyPage() {
           </p>
         </section>
       </div>
-        <nav aria-label="On this page" className="hidden self-start border-l border-border pl-6 text-sm lg:sticky lg:top-28 lg:block">
+        <nav aria-label="On this page" className="hidden self-start border-l border-border pl-6 text-sm lg:sticky lg:top-20 lg:block">
           <p className="font-mono text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">On this page</p>
           <ul className="mt-3">
             <li><a href="#trust-levels" className="block py-1 text-muted-foreground hover:text-primary">Trust levels</a></li>

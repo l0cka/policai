@@ -138,7 +138,6 @@ export default async function StatusPage() {
   return (
     <article className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
       <PageIntro
-        eyebrow="Coverage"
         title="Source status"
         description="When each official source was last checked successfully, and where the register is thin."
         actions={<HealthSignal health={meta.collector.health} />}
@@ -155,7 +154,7 @@ export default async function StatusPage() {
         ]}
       />
 
-      <div className="max-w-5xl space-y-10 py-9 text-sm leading-6 [&_section>p]:max-w-3xl">
+      <div className="space-y-10 py-9 text-sm leading-6 [&_section>p]:max-w-3xl">
         <section>
           <h2 className="section-title">Editorial queue</h2>
           <p className="text-muted-foreground">
