@@ -1672,7 +1672,7 @@ main {
 /* Below lg the source folds under the title rather than into its own column. */
 .item-source-inline {
   margin-top: var(--space-2);
-  font-size: var(--type-label);
+  font-size: var(--type-small);
   color: var(--muted-foreground);
 }
 
@@ -2189,9 +2189,11 @@ main {
   background: var(--card);
 }
 
+/* Matches the map's height; the legend scrolls rather than spilling out. */
 .sector-map-controls {
   align-self: stretch;
   height: clamp(32rem, 74vh, 50rem);
+  overflow-y: auto;
 }
 
 .sector-map-controls .sector-detail-swap {
@@ -2290,7 +2292,7 @@ main {
 }
 
 .sector-map-government small {
-  font-size: var(--type-label);
+  font-size: var(--type-small);
   line-height: 1.5;
   color: var(--muted-foreground);
 }
@@ -2315,7 +2317,7 @@ main {
   background: transparent;
   color: var(--muted-foreground);
   font: inherit;
-  font-size: var(--type-label);
+  font-size: var(--type-small);
   cursor: pointer;
 }
 
@@ -2333,7 +2335,7 @@ main {
 }
 
 .sector-map-source {
-  font-size: var(--type-label);
+  font-size: var(--type-small);
   line-height: 1.55;
   color: var(--muted-foreground);
 }
@@ -2388,8 +2390,8 @@ main {
 }
 
 .sector-map-guide dd,
-.sector-map-guide > p {
-  font-size: var(--type-label);
+.sector-map-source-note {
+  font-size: var(--type-small);
   line-height: 1.45;
   color: var(--muted-foreground);
 }
@@ -2398,7 +2400,7 @@ main {
   margin-left: 2.05rem;
 }
 
-.sector-map-guide > p {
+.sector-map-source-note {
   display: block;
   margin-top: 0.65rem;
   padding-top: 0.6rem;
@@ -2493,7 +2495,7 @@ main {
 .sector-org-picker > span {
   display: block;
   margin-top: 0.4rem;
-  font-size: var(--type-label);
+  font-size: var(--type-small);
   color: var(--muted-foreground);
 }
 
@@ -2531,7 +2533,7 @@ main {
   display: grid;
   grid-template-columns: 5.75rem 1fr;
   gap: var(--space-2);
-  font-size: 0.7rem;
+  font-size: var(--type-small);
 }
 
 .sector-selected-org dt {
@@ -2641,7 +2643,7 @@ main {
   background: transparent;
   color: var(--foreground);
   font: inherit;
-  font-size: var(--type-label);
+  font-size: var(--type-small);
   cursor: pointer;
 }
 
@@ -3775,7 +3777,7 @@ tbody td:first-child {
 
 .cell-error {
   max-width: 22rem;
-  font-size: var(--type-label);
+  font-size: var(--type-small);
   line-height: 1.5;
   color: var(--muted-foreground);
 }
