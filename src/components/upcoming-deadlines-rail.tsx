@@ -33,7 +33,7 @@ export function UpcomingDeadlinesRail({
       aria-labelledby="upcoming-deadlines-heading"
       className="border-t border-border pt-6"
     >
-      <h2 id="upcoming-deadlines-heading" className="text-sm font-semibold">
+      <h2 id="upcoming-deadlines-heading" className="section-title">
         Upcoming deadlines
       </h2>
       {shown.length > 0 ? (

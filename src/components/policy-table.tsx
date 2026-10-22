@@ -42,14 +42,14 @@ function PolicyCard({
           <span aria-hidden="true">/</span>
           <span>{getPolicyTypeName(policy.type)}</span>
         </p>
-        <h2 className="record-title">
+        <h3 className="record-title">
           <Link
             href={`/policies/${policy.id}`}
             className="text-foreground hover:text-primary hover:underline"
           >
             {policy.title}
           </Link>
-        </h2>
+        </h3>
         {!compact && (
           <p className="mt-2 line-clamp-2 text-sm leading-6 text-muted-foreground">
             {policy.description}

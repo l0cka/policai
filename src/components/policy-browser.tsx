@@ -303,9 +303,10 @@ export function PolicyBrowser({
       <div className="grid items-start gap-10 xl:grid-cols-[minmax(0,1fr)_232px]">
         <section
           id="policy-register"
-          aria-label="Policy register"
+          aria-labelledby="policy-register-heading"
           className="min-w-0 scroll-mt-32"
         >
+          <h2 id="policy-register-heading" className="sr-only">Policy register</h2>
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:gap-6">
             <form role="search" onSubmit={handleSearchSubmit} className="min-w-0 flex-1">
               <label className="sr-only" htmlFor="register-search">
@@ -518,7 +519,7 @@ export function PolicyBrowser({
           className="space-y-7 border-t border-border pt-6 xl:border-l xl:border-t-0 xl:pl-7 xl:pt-0"
         >
           <section>
-            <h2 className="text-sm font-semibold">Browse by jurisdiction</h2>
+            <h2 className="section-title">Browse by jurisdiction</h2>
             <div className="mt-3 grid grid-cols-2 gap-x-5 xl:grid-cols-1">
               {filterGroups[0].options.map((option) => (
                 <button
@@ -537,7 +538,7 @@ export function PolicyBrowser({
           {deadlinesRail}
           {upcomingDates.length > 0 && today ? (
             <section className="border-t border-border pt-6">
-              <h2 className="text-sm font-semibold">Coming up</h2>
+              <h2 className="section-title">Coming up</h2>
               <ul className="mt-3 space-y-3">
                 {upcomingDates.slice(0, 5).map((item) => {
                   const countdown = upcomingDateCountdown(item, today);
@@ -567,7 +568,7 @@ export function PolicyBrowser({
             </section>
           ) : null}
           <section className="border-t border-border pt-6">
-            <h2 className="text-sm font-semibold">
+            <h2 className="section-title">
               A register, not legal advice.
             </h2>
             <p className="mt-3 text-xs leading-6 text-muted-foreground">
@@ -582,7 +583,7 @@ export function PolicyBrowser({
             </Link>
           </section>
           <section className="border-t border-border pt-6">
-            <h2 className="text-sm font-semibold">Looking for what’s new?</h2>
+            <h2 className="section-title">Looking for what’s new?</h2>
             <p className="mt-3 text-xs leading-6 text-muted-foreground">
               Automated detections are separate from verified register records.
             </p>
@@ -593,7 +594,7 @@ export function PolicyBrowser({
           </section>
           {developments.length > 0 && (
             <section className="border-t border-border pt-6">
-              <h2 className="text-sm font-semibold">
+              <h2 className="section-title">
                 Recently verified developments
               </h2>
               {developments.slice(0, 3).map((development) => (
@@ -615,7 +616,7 @@ export function PolicyBrowser({
             </section>
           )}
           <section className="border-t border-border pt-6 text-xs leading-6 text-muted-foreground">
-            <h2 className="text-sm font-semibold text-foreground">
+            <h2 className="section-title text-foreground">
               Source coverage
             </h2>
             <p className="mt-3">

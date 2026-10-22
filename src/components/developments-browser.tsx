@@ -364,7 +364,7 @@ export function DevelopmentsBrowser({
 
         <aside className="self-start border-border xl:sticky xl:top-28 xl:border-l xl:pl-6">
           <section>
-            <h2 className="text-sm font-semibold">Collection status</h2>
+            <h2 className="section-title">Collection status</h2>
             <div className="mt-3 rounded-md border border-border bg-card/50 p-4">
               <HealthSignal health={collectionHealth} className="text-[12px]" />
               {lastCollectedAt ? <p className="mt-3 border-t border-border pt-3 font-mono text-[11px] uppercase text-muted-foreground">Last checked {formatDate(lastCollectedAt)}</p> : null}
