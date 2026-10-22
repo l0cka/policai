@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { buildPolicy } from '@/test/factories';
 import type { Jurisdiction, PolicyDate, PolicyStatus } from '@/types';
 import type { Legislative, LegislativeEvent } from './model';
-import { beforeParliament, comingUp, legislativeStage, recentlyMade, type LegislativeRecord } from './overview';
+import { beforeParliament, comingUp, legislativeStage, madeLaws, recentlyMade, type LegislativeRecord } from './overview';
 
 const SOURCE = { url: 'https://www.aph.gov.au/bill' };
 
@@ -111,6 +111,22 @@ describe('recentlyMade', () => {
     );
     expect(rows.map((row) => [row.record.id, row.date, row.label, row.detail])).toEqual([
       ['act', '2026-12-10', 'Assented', 'Act No. 112 of 2026'],
+    ]);
+  });
+});
+
+describe('madeLaws', () => {
+  it('lists every made or in-force law however old, Commonwealth first, and leaves out bills and ended laws', () => {
+    const commenced = on('2027-01-01', { kind: 'commenced', extent: 'full' });
+    const rows = madeLaws([
+      record('sa-act', bill(introduced, passedLower, passedUpper, assented, commenced), { jurisdiction: 'sa', status: 'active' }),
+      record('rules', instrument(on('2026-09-17', { kind: 'registered' })), { status: 'active' }),
+      record('bill', bill(introduced)),
+      record('lapsed', bill(introduced, on('2027-01-01', { kind: 'lapsed' }))),
+    ]);
+    expect(rows.map((row) => [row.record.id, row.stage, row.last.label])).toEqual([
+      ['rules', 'made', 'Registered on the Federal Register of Legislation'],
+      ['sa-act', 'in_force', 'Commenced'],
     ]);
   });
 });

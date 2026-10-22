@@ -10,9 +10,12 @@ import {
   beforeParliament,
   comingUp,
   isLegislativeRecord,
+  LEGISLATIVE_STAGE_NAMES,
+  madeLaws,
   recentlyMade,
   type BillInParliament,
   type DatedEntry,
+  type MadeLaw,
 } from '@/lib/legislation/overview';
 import { pageAlternates, pageSocialMeta } from '@/lib/site-seo';
 import { precisionDateTime } from '@/lib/this-week';
@@ -115,6 +118,31 @@ function BillRow({ bill }: { bill: BillInParliament }) {
   );
 }
 
+function LawRow({ law }: { law: MadeLaw }) {
+  return (
+    <article
+      style={jurisdictionRailStyle(law.record.jurisdiction)}
+      className="ink-rail grid gap-1.5 border-b border-border py-3 pl-3 sm:grid-cols-[8rem_minmax(0,1fr)] sm:gap-2 sm:py-4"
+    >
+      <EntryDate entry={law.last} />
+      <div className="min-w-0">
+        <p className="text-xs text-muted-foreground">
+          {LEGISLATIVE_STAGE_NAMES[law.stage]} · {getJurisdictionName(law.record.jurisdiction)} ·{' '}
+          {getPolicyTypeName(law.record.type)}
+        </p>
+        <RecordLink entry={law} />
+        <p className="mt-1 text-sm leading-6 text-muted-foreground">
+          {law.last.label}
+          {law.last.detail ? `. ${law.last.detail}` : ''}
+        </p>
+        <div className="mt-1.5 text-xs">
+          <SourceLink href={law.last.sourceUrl} />
+        </div>
+      </div>
+    </article>
+  );
+}
+
 function EntryRow({ entry }: { entry: DatedEntry }) {
   return (
     <article
@@ -179,6 +207,7 @@ export default async function LegislationPage() {
   const bills = beforeParliament(records);
   const upcoming = comingUp(records, today);
   const made = recentlyMade(records, today, RECENT_DAYS);
+  const laws = madeLaws(records);
 
   return (
     <div className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
@@ -196,6 +225,9 @@ export default async function LegislationPage() {
           </a>
           <a href="#recently-made" className="text-primary underline underline-offset-4 hover:no-underline">
             {made.length} recently made
+          </a>
+          <a href="#laws" className="text-primary underline underline-offset-4 hover:no-underline">
+            {laws.length} {laws.length === 1 ? 'law' : 'laws'} made
           </a>
           <a href="/api/legislation" className="text-muted-foreground underline underline-offset-4 hover:text-primary hover:no-underline">
             API
@@ -236,6 +268,18 @@ export default async function LegislationPage() {
       >
         {made.map((entry) => (
           <EntryRow key={`${entry.record.id}-${entry.label}-${entry.date}`} entry={entry} />
+        ))}
+      </Section>
+
+      <Section
+        id="laws"
+        title="Laws made"
+        count={laws.length}
+        intro="Every AI-related Act and instrument in the register that has been made, in force or awaiting commencement, Commonwealth first, with its latest stage."
+        empty="No AI-related Act or instrument in the register has been made yet."
+      >
+        {laws.map((law) => (
+          <LawRow key={law.record.id} law={law} />
         ))}
       </Section>
     </div>
