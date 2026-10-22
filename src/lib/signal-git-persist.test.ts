@@ -9,7 +9,7 @@ const TOKEN_ENV = { POLICAI_SIGNAL_GITHUB_TOKEN: "gh-token" };
 const COMMIT = {
 	reviewId: "rev-1",
 	action: "dismiss" as const,
-	message: "Approved rev-1",
+	message: "Dismissed rev-1",
 	attestationText: "relayed by Policai Signal",
 	changes: [{ path: "data/source-reviews.json", content: '[{"id":"rev-1"}]' }],
 };
