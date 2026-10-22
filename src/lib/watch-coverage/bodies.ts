@@ -1,6 +1,7 @@
 import type { Jurisdiction } from '@/types';
 import { JURISDICTIONS } from '@/types';
 import type { Host } from '@/lib/pipeline/host';
+import { isValidCalendarDate } from '@/lib/calendar-date';
 
 export type BodyId = string & { readonly __brand: 'BodyId' };
 export type Tier = 'A' | 'B' | 'C';
@@ -26,7 +27,6 @@ export interface Body {
 const TIERS: readonly string[] = ['A', 'B', 'C'];
 const BODY_ID = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const HOST = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$/;
-const CALENDAR_DATE = /^\d{4}-\d{2}-\d{2}$/;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
@@ -41,7 +41,7 @@ function parseScope(raw: unknown, label: string): BodyScope {
   if (raw.status === 'unassessed') return { status: 'unassessed' };
   if (raw.status !== 'in_scope' && raw.status !== 'out_of_scope')
     throw new Error(`${label}: invalid scope status`);
-  if (typeof raw.decidedAt !== 'string' || !CALENDAR_DATE.test(raw.decidedAt))
+  if (typeof raw.decidedAt !== 'string' || !isValidCalendarDate(raw.decidedAt))
     throw new Error(`${label}: scope decidedAt must be YYYY-MM-DD`);
   if (!nonEmpty(raw.decidedBy)) throw new Error(`${label}: scope needs decidedBy`);
   if (raw.status === 'in_scope')

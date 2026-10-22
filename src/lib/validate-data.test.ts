@@ -1589,6 +1589,15 @@ describe('validateBodies', () => {
     website: 'https://www.industry.gov.au/',
   });
 
+  it('rejects a scope decision on a date that does not exist', () => {
+    const rolled = bodies.map((body) =>
+      body.id === 'disr' ? { ...body, scope: { ...body.scope, decidedAt: '2026-02-30' } } : body,
+    );
+    expect(validateBodies(rolled, [source], {}).errors).toEqual([
+      'bodies:disr: scope decidedAt must be YYYY-MM-DD',
+    ]);
+  });
+
   it('accepts sources and directory records that resolve to their body', () => {
     const subUnit = buildAgency({
       id: 'disr-ai-unit',
