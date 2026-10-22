@@ -37,7 +37,7 @@ function day(date: string): string {
   return formatPolicyDate({ type: 'published', date, precision: 'day' });
 }
 
-function describe(event: LegislativeEvent, jurisdiction: Jurisdiction): { label: string; detail?: string } {
+export function describeEvent(event: LegislativeEvent, jurisdiction: Jurisdiction): { label: string; detail?: string } {
   const house = (chamber: Chamber) => `the ${chamberName(jurisdiction, chamber)}`;
   switch (event.kind) {
     case 'introduced':
@@ -120,7 +120,7 @@ export function progressSteps(
   const { legislative, jurisdiction } = policy;
   const done = legislative.events.map((dated): ProgressStep => ({
     state: 'done',
-    ...describe(dated.event, jurisdiction),
+    ...describeEvent(dated.event, jurisdiction),
     date: dated.date,
     precision: dated.precision,
     sourceUrl: dated.source.url,

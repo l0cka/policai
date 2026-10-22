@@ -37,6 +37,7 @@ Error responses use this form:
 | `GET` | `/api/policies/{id}` | Get one public policy record. |
 | `GET` | `/api/developments` | Search public policy developments. |
 | `GET` | `/api/timeline` | List public timeline events. |
+| `GET` | `/api/legislation` | List public bills, Acts and instruments with their lifecycle events and stage. |
 | `GET` | `/api/agencies` | List public agency records. |
 | `GET` | `/api/network` | Get policy nodes and shared-theme edges. Stable; no site page uses it since `/network` became the coverage map. |
 | `GET` | `/api/status` | Get collection health and freshness data. |
@@ -92,6 +93,19 @@ curl 'https://policai.org/api/developments?since=2026-08-01&limit=20'
 `GET /api/agencies` accepts `level`, `jurisdiction`, and `commonwealth`. The `level` value is `federal` or `state`. The `commonwealth` value is `true` or `false`.
 
 `GET /api/timeline` accepts `jurisdiction`.
+
+### Legislation filters
+
+`GET /api/legislation` returns public register records that carry
+`legislative`: each record's official id and dated, sourced lifecycle events.
+Each record also has `stage`, derived from its events: `before_parliament`,
+`made` (assented or registered, not yet commenced), `in_force`, or `ended`
+(lapsed, withdrawn, negatived, disallowed or repealed). It accepts
+`jurisdiction` and `stage`.
+
+```bash
+curl 'https://policai.org/api/legislation?stage=before_parliament'
+```
 
 `GET /api/policies/{id}/markdown` returns one public register record as
 `text/markdown`. The document carries its own provenance: the official source

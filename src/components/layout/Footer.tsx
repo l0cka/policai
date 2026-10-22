@@ -3,6 +3,7 @@ import Link from 'next/link';
 const links = [
   { href: '/this-week', label: 'This week', external: false },
   { href: '/courts', label: 'Courts', external: false },
+  { href: '/legislation', label: 'Legislation', external: false },
   { href: '/analysis', label: 'Analysis', external: false },
   { href: '/coverage', label: 'Coverage', external: false },
   { href: '/timeline', label: 'Timeline', external: false },

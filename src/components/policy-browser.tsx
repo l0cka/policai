@@ -12,7 +12,8 @@ import { ArrowUpRight, ChevronDown, List, Search, Table2 } from 'lucide-react';
 import { FollowControl } from '@/components/follow-control';
 import { FilterControls, type FilterGroup } from '@/components/filter-sidebar';
 import { PolicyTable } from '@/components/policy-table';
-import { registerParams, selectRegisterPolicies, updateRegisterState, type PolicySortDirection, type PolicySortField, type PolicyViewMode } from '@/lib/policy-register';
+import { LEGISLATIVE_STAGE_NAMES } from '@/lib/legislation/overview';
+import { registerParams, registerStage, selectRegisterPolicies, updateRegisterState, type PolicySortDirection, type PolicySortField, type PolicyViewMode } from '@/lib/policy-register';
 import { getThemeLabel, type ThemeId } from '@/lib/themes';
 import { useRegisterState } from '@/hooks/use-register-state';
 import { formatPolicyDate } from '@/lib/format-policy-date';
@@ -149,11 +150,12 @@ export function PolicyBrowser({
   unavailableManualSourceCount,
 }: PolicyBrowserProps) {
   const [state, updateState] = useRegisterState();
-  const { search, jurisdictions, types, statuses, themes, viewMode, sortField, sortDirection, page } = state;
+  const { search, jurisdictions, types, statuses, stages, themes, viewMode, sortField, sortDirection, page } = state;
   const setSearch = (search: string) => updateState({ search });
   const setJurisdictions = (jurisdictions: string[]) => updateState({ jurisdictions });
   const setTypes = (types: string[]) => updateState({ types });
   const setStatuses = (statuses: string[]) => updateState({ statuses });
+  const setStages = (stages: string[]) => updateState({ stages });
   const setViewMode = (viewMode: PolicyViewMode) => updateState({ viewMode });
   const deferredState = useDeferredValue(state);
   const searchRef = useRef<HTMLInputElement>(null);
@@ -176,7 +178,7 @@ export function PolicyBrowser({
     value: string,
   ) => policies.filter((policy) => policy[key] === value).length;
 
-  const filterGroups: FilterGroup[] = [
+  const allFilterGroups: FilterGroup[] = [
     {
       id: 'jurisdiction',
       label: 'Jurisdiction',
@@ -217,14 +219,28 @@ export function PolicyBrowser({
         }))
         .filter((option) => option.count > 0),
     },
+    {
+      id: 'stage',
+      label: 'Legislative stage',
+      selectedValues: stages,
+      onToggle: (value) => toggleFilter(value, stages, setStages),
+      options: Object.entries(LEGISLATIVE_STAGE_NAMES)
+        .map(([value, label]) => ({
+          value,
+          label,
+          count: policies.filter((policy) => registerStage(policy) === value).length,
+        }))
+        .filter((option) => option.count > 0),
+    },
   ];
+  const filterGroups = allFilterGroups.filter((group) => group.options.length > 0);
 
   const activeFilterCount =
-    jurisdictions.length + types.length + statuses.length + themes.length;
+    jurisdictions.length + types.length + statuses.length + stages.length + themes.length;
   const hasActiveFilters = activeFilterCount > 0;
-  const clearFilters = () => updateState({ jurisdictions: [], types: [], statuses: [], themes: [] });
+  const clearFilters = () => updateState({ jurisdictions: [], types: [], statuses: [], stages: [], themes: [] });
   const resetSearch = () => {
-    updateState({ search: '', jurisdictions: [], types: [], statuses: [], themes: [] });
+    updateState({ search: '', jurisdictions: [], types: [], statuses: [], stages: [], themes: [] });
     searchRef.current?.focus();
   };
   const themeHref = (theme: ThemeId) => {
