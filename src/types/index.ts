@@ -1,7 +1,8 @@
 // Core domain types for Policai
 
 import type { FailureClass } from "@/lib/pipeline/failure";
-import type { Legislative } from "@/lib/legislation/model";
+import type { UnrecognisedStage } from "@/lib/legislation/aph-progress";
+import type { BillEvent, Dated, Legislative } from "@/lib/legislation/model";
 import type { ThemeId } from "@/lib/themes";
 
 export const JURISDICTIONS = [
@@ -385,6 +386,15 @@ export interface SourceReview {
 	proposal?: SourceReviewProposal;
 	/** The editor's decision on this review's proposal. */
 	decision?: SourceReviewDecision;
+	/**
+	 * A follow watch's stage update for a legislative record. The record stays
+	 * public while it waits: its last approved stage is still true as of its date.
+	 */
+	legislativeUpdate?: {
+		added: Dated<BillEvent>[];
+		unrecognised: UnrecognisedStage[];
+		error?: string;
+	};
 	updatedAt: string;
 }
 

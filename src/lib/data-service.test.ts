@@ -376,6 +376,45 @@ describe("data-service file store", () => {
 		expect(projected.policies).toEqual([visiblePolicy.id]);
 	});
 
+	it("keeps a bill public while a follow watch's stage update waits for a decision", async () => {
+		const bill = buildPolicy({
+			id: "followed-bill",
+			sourceUrl: "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7249",
+		});
+		const stageUpdate = {
+			id: "source-review-follow-followed-bill-0123456789abcdef",
+			sourceUrl: bill.sourceUrl,
+			title: bill.title,
+			entryKind: "policy" as const,
+			targetPolicyId: bill.id,
+			status: "pending_review" as const,
+			discoveredAt: "2026-07-16T00:00:00.000Z",
+			createdBy: "collector",
+			analysis: {
+				isRelevant: true,
+				relevanceScore: 1,
+				suggestedType: bill.type,
+				suggestedJurisdiction: bill.jurisdiction,
+				summary: "Passed the Senate.",
+			},
+			sourceEvidence: { url: bill.sourceUrl },
+			proposedRecord: bill,
+			legislativeUpdate: { added: [], unrecognised: [] },
+			updatedAt: "2026-07-16T00:00:00.000Z",
+		};
+		readJsonFile.mockImplementation(
+			async (filePath: string, fallback: unknown) => {
+				if (filePath.endsWith("policies.json")) return [bill];
+				if (filePath.endsWith("source-reviews.json")) return [stageUpdate];
+				return fallback;
+			},
+		);
+
+		const { getPolicies } = await loadDataServiceModule();
+
+		expect((await getPolicies()).map((policy) => policy.id)).toEqual([bill.id]);
+	});
+
 	it("merges curated and generated timeline events without duplicating curated policy entries", async () => {
 		const coveredPolicy = buildPolicy({
 			id: "covered-policy",
