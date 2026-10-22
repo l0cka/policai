@@ -1,5 +1,6 @@
 import type { Jurisdiction } from '@/types';
 import { frlAiInstrumentSearch } from '@/lib/legislation/frl-search';
+import { saBillSearch } from '@/lib/legislation/sa-salt';
 import { hostOf, type Host } from './host';
 import type { SourceIdentityException } from './identity';
 
@@ -19,7 +20,12 @@ import type { SourceIdentityException } from './identity';
  * meta.json.
  */
 
-export type SourceKind = 'html-index' | 'rss' | 'document' | 'frl-search';
+export type SourceKind = 'html-index' | 'rss' | 'document' | 'frl-search' | 'sa-salt-search';
+
+/** Register JSON searches: each row names and dates a law, so its title and date are kept. */
+export function isRegisterSearch(kind: SourceKind): boolean {
+  return kind === 'frl-search' || kind === 'sa-salt-search';
+}
 export type SourceCategory = 'government' | 'regulator' | 'court';
 export type ManualBecause =
   | 'identity_refused'
@@ -1272,6 +1278,21 @@ export const WATCH_SOURCES: WatchSource[] = [
     admittedAt: '2026-10-22',
     notes:
       'Bills before either House, listed alphabetically without dates, so a new bill is one not seen before. Each bill page carries a stage table for both Houses, which the follow watch reads (src/lib/legislation/tas-progress.ts). Probed from Argus 2026-10-22: plain HTTP 200 under the declared identity, robots allows it, 37 bills extracted.',
+  },
+  {
+    id: 'sa-parliament-bills',
+    name: 'Parliament of South Australia — bills this session',
+    bodyId: 'sa-parliament',
+    jurisdiction: 'sa',
+    category: 'government',
+    url: saBillSearch(),
+    kind: 'sa-salt-search',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    admittedAt: '2026-10-22',
+    notes:
+      'SALT, the JSON API behind the Parliament’s bill pages: every bill of the current session in both Houses, with title, House, introduction date and status. Each bill’s summary also feeds the follow watch (src/lib/legislation/sa-salt.ts). Probed from Argus 2026-10-22: plain HTTP 200 under the declared identity, no robots rules, 73 bills for 56th/1st.',
   },
   {
     id: 'vic-ai',

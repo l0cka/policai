@@ -1,7 +1,15 @@
 import type { RecordVerification, SourceEvidence } from "@/types";
 
-/** Hosts allowed as policy/development sources besides *.gov.au. */
-const EXTRA_ALLOWED_HOSTS = new Set(["www.csiro.au", "csiro.au"]);
+/**
+ * Hosts allowed as policy/development sources besides *.gov.au. The SALT
+ * host is the API behind salt.parliament.sa.gov.au's bill pages; only that
+ * exact host is allowed, never azurewebsites.net.
+ */
+const EXTRA_ALLOWED_HOSTS = new Set([
+	"www.csiro.au",
+	"csiro.au",
+	"prod-internet-salt-functionapp.azurewebsites.net",
+]);
 
 const TRACKING_QUERY_PARAMETERS = new Set([
 	"dclid",

@@ -23,6 +23,7 @@ import {
 } from './classify';
 import type { ClaudeVerdict } from './claude-classify';
 import { extractFromFrlSearch, trackedFrlPages } from '@/lib/legislation/frl-search';
+import { extractFromSaltSearch } from '@/lib/legislation/sa-salt';
 import { extractRetrievedDocument } from './content';
 import { classifyFailure, publicFailureUrl } from './failure';
 import { robotsUnverifiedHosts, type Host, type HostGate, type HostRecord } from './host-gate';
@@ -45,6 +46,7 @@ import { advanceSourceHealth, type SourceHealthRecord } from './source-health';
 import { identityAuthorityFor, identityExceptionState } from './identity';
 import {
   getAutomaticSources,
+  isRegisterSearch,
   WATCH_SOURCES,
   type WatchSource,
 } from './sources';
@@ -1355,7 +1357,9 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
               })
             : source.kind === 'frl-search'
               ? extractFromFrlSearch(retrieval.body)
-              : extractFromHtml(retrieval.body, source.url);
+              : source.kind === 'sa-salt-search'
+                ? extractFromSaltSearch(retrieval.body)
+                : extractFromHtml(retrieval.body, source.url);
       return { retrieval, extracted };
     };
     const retrieveSourceIndex = async () => {
@@ -1703,7 +1707,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     );
 
     const claudeVerdictsById: Map<string, ClaudeVerdict> | null =
-      useClaudeClassifier && !source.bodyRelevance && source.kind !== 'frl-search'
+      useClaudeClassifier && !source.bodyRelevance && !isRegisterSearch(source.kind)
         ? await classifyCandidatesWithClaude(
             candidates
               .filter((candidate) => !trackedChangeTarget(candidate))
@@ -1846,9 +1850,9 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         continue;
       }
 
-      // A register search row names and dates the instrument; its page's
-      // first heading is the site banner.
-      const fromRegister = source.kind === 'frl-search';
+      // A register search row names and dates the instrument or bill; its
+      // page's first heading is the site banner.
+      const fromRegister = isRegisterSearch(source.kind);
       const enrichedCandidate: Candidate = {
         ...candidate,
         title:
@@ -1891,7 +1895,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
             changeTarget,
             changeDetectionReason(changeTarget.record, pageRetrieval),
           )
-        : source.kind === 'frl-search'
+        : isRegisterSearch(source.kind)
           ? classifyBySearchMatch(candidate)
           : source.bodyRelevance
             ? classifyByBodyMentions(
