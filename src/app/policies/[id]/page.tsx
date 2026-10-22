@@ -67,6 +67,7 @@ export default async function PolicyDetailPage({ params }: { params: Promise<{ i
     getArticles({ citing: id }),
     getSiteReuse(),
   ]);
+  const sourceReuse = policy.sourceUrl ? reuseForUrl(siteReuse, policy.sourceUrl) : undefined;
   const courtRequirements = policy.type === "practice_note" ? await getPublicCourtRequirements({ policyId: id }) : [];
 
   return (
@@ -86,7 +87,7 @@ export default async function PolicyDetailPage({ params }: { params: Promise<{ i
       <PolicyDetailTabs
         policy={policy}
         courtRequirements={courtRequirements}
-        sourceReuse={policy.sourceUrl ? reuseForUrl(siteReuse, policy.sourceUrl) : undefined}
+        sourceReuse={sourceReuse?.status === 'stated' ? sourceReuse : undefined}
         progress={policy.legislative ? <LegislativeProgress policy={{ ...policy, legislative: policy.legislative }} /> : null}
         related={
           <>

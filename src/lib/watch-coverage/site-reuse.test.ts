@@ -92,6 +92,15 @@ describe('siteReuseCoverage', () => {
       warnings: ['siteReuse: ovic.vic.gov.au has no recorded reuse terms'],
     });
   });
+
+  it('errors on a check dated after today in Sydney', () => {
+    const entries = parseSiteReuse([{ ...stated, checkedAt: '2026-10-23' }]);
+    // 13:30 UTC on 22 Oct is 00:30 on 23 Oct in Sydney.
+    expect(siteReuseCoverage(entries, bodies, new Date('2026-10-22T13:30:00Z')).errors).toEqual([]);
+    expect(siteReuseCoverage(entries, bodies, new Date('2026-10-22T12:00:00Z')).errors).toEqual([
+      'siteReuse:www.oaic.gov.au: checkedAt 2026-10-23 is in the future (Australia/Sydney)',
+    ]);
+  });
 });
 
 describe('siteReuseRows', () => {

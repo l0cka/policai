@@ -1,4 +1,4 @@
-import { isValidCalendarDate } from '@/lib/calendar-date';
+import { isValidCalendarDate, sydneyCalendarDate } from '@/lib/calendar-date';
 import { hostOf, type Host } from '@/lib/pipeline/host';
 import type { Body } from './bodies';
 
@@ -120,17 +120,27 @@ export function parseSiteReuse(raw: unknown): SiteReuse[] {
   });
 }
 
-/** Cross-file rules: every entry is a body's host; unchecked body hosts warn. */
+/**
+ * Cross-file rules: every entry is a body's host and was checked no later
+ * than today in Sydney; unchecked body hosts warn.
+ */
 export function siteReuseCoverage(
   entries: readonly SiteReuse[],
   bodies: readonly Body[],
+  now: Date = new Date(),
 ): { errors: string[]; warnings: string[] } {
   const bodyHosts = new Set<string>(bodies.flatMap((body) => body.hosts));
   const checked = new Set<string>(entries.map((entry) => entry.host));
+  const today = sydneyCalendarDate(now);
   return {
-    errors: entries
-      .filter((entry) => !bodyHosts.has(entry.host))
-      .map((entry) => `siteReuse:${entry.host}: not a host of any body in bodies.json`),
+    errors: [
+      ...entries
+        .filter((entry) => !bodyHosts.has(entry.host))
+        .map((entry) => `siteReuse:${entry.host}: not a host of any body in bodies.json`),
+      ...entries
+        .filter((entry) => entry.checkedAt > today)
+        .map((entry) => `siteReuse:${entry.host}: checkedAt ${entry.checkedAt} is in the future (Australia/Sydney)`),
+    ],
     warnings: [...bodyHosts]
       .filter((host) => !checked.has(host))
       .map((host) => `siteReuse: ${host} has no recorded reuse terms`),

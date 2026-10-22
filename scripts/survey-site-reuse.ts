@@ -4,9 +4,10 @@
  * evidence for an editor to record in data/site-reuse.json. It never writes
  * that file.
  *
- * Retrieval declares the collector identity, obeys robots.txt and waits 2 s
- * between requests to a host. A host that refuses us is reported as refused;
- * the survey does not retry it another way.
+ * Every request goes through the host gate (declared identity, robots.txt,
+ * crawl-delay, Retry-After, decided blocks) and the official-host allow-list,
+ * over plain HTTP first and then the collector's browser, as the collector
+ * does. A host that refuses us is reported as refused, not retried another way.
  *
  * Usage:
  *   npm run survey:site-reuse -- --out=<file.json> [--host=<host>]...
@@ -16,12 +17,11 @@ import { writeFile } from 'node:fs/promises';
 import * as cheerio from 'cheerio';
 import { getBodies } from '../src/lib/data-service';
 import { createBrowserFetch } from '../src/lib/pipeline/browser-fetch';
-import { looksLikeBotChallenge } from '../src/lib/pipeline/fetch';
-import { COLLECTOR_IDENTITY_TOKEN, COLLECTOR_USER_AGENT } from '../src/lib/pipeline/identity';
-import { parseRobots, robotsAllows, type RobotsRules } from '../src/lib/pipeline/robots';
+import { isGateError, retrieveSource, SourceFetchError } from '../src/lib/pipeline/fetch';
+import { createHostGate, robotsFetcher } from '../src/lib/pipeline/host-gate';
+import { refusedHosts, WATCH_SOURCES } from '../src/lib/pipeline/sources';
 
-const GAP_MS = 2000;
-const TIMEOUT_MS = 30_000;
+const TIMEOUT_MS = 60_000;
 const MAX_CANDIDATES = 4;
 const EXCERPT_RADIUS = 280;
 const LINK_TEXT = /copyright|licen[cs]|terms of use|reuse|re-use|disclaimer/i;
@@ -41,7 +41,6 @@ const STATEMENT = new RegExp(
 
 interface Page {
   url: string;
-  status: number;
   via: 'http' | 'browser';
   html: string;
 }
@@ -52,7 +51,6 @@ type Outcome =
 
 interface CandidateReport {
   url: string;
-  status: number | null;
   via?: 'http' | 'browser';
   title?: string;
   statements: string[];
@@ -64,12 +62,15 @@ interface HostReport {
   host: string;
   bodyIds: string[];
   checkedAt: string;
-  robots: 'parsed' | 'absent' | 'unreachable';
-  home: { url: string; status: number | null; via?: 'http' | 'browser'; error?: string };
+  home: { url: string; via?: 'http' | 'browser'; error?: string };
   candidates: CandidateReport[];
 }
 
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
+
+function message(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
 
 function argValues(name: string): string[] {
   return process.argv
@@ -131,102 +132,66 @@ async function main() {
   const hosts = [...owners.keys()].filter((host) => only.size === 0 || only.has(host));
 
   const browser = createBrowserFetch();
-  const lastRequest = new Map<string, number>();
+  const gate = createHostGate({
+    hosts: {},
+    refused: refusedHosts(WATCH_SOURCES),
+    fetchRobots: robotsFetcher({ browserFetchImpl: browser.fetchImpl }),
+    now: Date.now,
+    sleep,
+  });
 
-  async function paced(host: string): Promise<void> {
-    const wait = (lastRequest.get(host) ?? 0) + GAP_MS - Date.now();
-    if (wait > 0) await sleep(wait);
-    lastRequest.set(host, Date.now());
-  }
-
-  async function get(url: string, host: string): Promise<Outcome> {
-    await paced(host);
+  async function get(url: string): Promise<Outcome> {
+    const options = { gate, attempts: 1, timeoutMs: TIMEOUT_MS, hashLinkedDocuments: false };
     try {
-      const response = await fetch(url, {
-        headers: { 'User-Agent': COLLECTOR_USER_AGENT, Accept: 'text/html,*/*' },
-        redirect: 'follow',
-        signal: AbortSignal.timeout(TIMEOUT_MS),
-      });
-      const html = await response.text();
-      if (response.ok && !looksLikeBotChallenge(html))
-        return { kind: 'ok', page: { url: response.url, status: response.status, via: 'http', html } };
-      if (response.status === 404) return { kind: 'ok', page: { url, status: 404, via: 'http', html: '' } };
-    } catch {
-      // Fall through to the browser, which the collector also uses for these hosts.
-    }
-    await paced(host);
-    try {
-      const response = await browser.fetchImpl(url, { signal: AbortSignal.timeout(TIMEOUT_MS * 2) });
-      const html = await response.text();
-      if (looksLikeBotChallenge(html)) return { kind: 'refused', detail: 'bot challenge' };
-      return { kind: 'ok', page: { url: response.url || url, status: response.status, via: 'browser', html } };
+      const retrieved = await retrieveSource(url, options);
+      return { kind: 'ok', page: { url: retrieved.evidence.finalUrl ?? url, via: 'http', html: retrieved.body } };
     } catch (error) {
-      return { kind: 'refused', detail: error instanceof Error ? error.message : String(error) };
+      const futile =
+        error instanceof SourceFetchError &&
+        (error.code === 'destination_mismatch' || error.status === 404 || isGateError(error));
+      if (futile) return { kind: 'refused', detail: message(error) };
     }
-  }
-
-  async function robotsFor(host: string): Promise<{ state: HostReport['robots']; rules: RobotsRules | null }> {
-    await paced(host);
     try {
-      const response = await fetch(`https://${host}/robots.txt`, {
-        headers: { 'User-Agent': COLLECTOR_USER_AGENT },
-        signal: AbortSignal.timeout(TIMEOUT_MS),
+      const retrieved = await retrieveSource(url, {
+        ...options,
+        fetchImpl: browser.fetchImpl,
+        timeoutMs: TIMEOUT_MS * 2,
+        transport: 'browser',
       });
-      if (response.status >= 400 && response.status < 500) return { state: 'absent', rules: null };
-      if (!response.ok) return { state: 'unreachable', rules: null };
-      const rules = parseRobots(await response.text(), COLLECTOR_IDENTITY_TOKEN.split('/')[0]);
-      return { state: 'parsed', rules };
-    } catch {
-      return { state: 'unreachable', rules: null };
+      return { kind: 'ok', page: { url: retrieved.evidence.finalUrl ?? url, via: 'browser', html: retrieved.body } };
+    } catch (error) {
+      return { kind: 'refused', detail: message(error) };
     }
   }
 
   const reports: HostReport[] = [];
   try {
     for (const host of hosts) {
-      const checkedAt = new Date().toISOString();
-      const robots = await robotsFor(host);
-      const allowed = (url: string) => !robots.rules || robotsAllows(robots.rules, new URL(url));
       const homeUrl = `https://${host}/`;
       const report: HostReport = {
         host,
         bodyIds: owners.get(host)!,
-        checkedAt,
-        robots: robots.state,
-        home: { url: homeUrl, status: null },
+        checkedAt: new Date().toISOString(),
+        home: { url: homeUrl },
         candidates: [],
       };
       reports.push(report);
-      if (!allowed(homeUrl)) {
-        report.home.error = 'robots.txt disallows';
-        continue;
-      }
-      const home = await get(homeUrl, host);
+      const home = await get(homeUrl);
       if (home.kind === 'refused') {
         report.home.error = home.detail;
         continue;
       }
-      report.home = { url: home.page.url, status: home.page.status, via: home.page.via };
+      report.home = { url: home.page.url, via: home.page.via };
       let links = candidateLinks(home.page.html, home.page.url, host);
       if (links.length === 0) links = FALLBACK_PATHS.map((path) => `https://${host}${path}`);
       for (const link of links) {
-        if (!allowed(link)) {
-          report.candidates.push({ url: link, status: null, statements: [], excerpts: [], error: 'robots.txt disallows' });
-          continue;
-        }
-        const outcome = await get(link, host);
+        const outcome = await get(link);
         if (outcome.kind === 'refused') {
-          report.candidates.push({ url: link, status: null, statements: [], excerpts: [], error: outcome.detail });
+          report.candidates.push({ url: link, statements: [], excerpts: [], error: outcome.detail });
           continue;
         }
         const { title, text } = textOf(outcome.page.html);
-        report.candidates.push({
-          url: outcome.page.url,
-          status: outcome.page.status,
-          via: outcome.page.via,
-          title,
-          ...statementsIn(text),
-        });
+        report.candidates.push({ url: outcome.page.url, via: outcome.page.via, title, ...statementsIn(text) });
       }
       console.error(
         `${host}: ${report.candidates.filter((candidate) => candidate.statements.length).length}/${report.candidates.length} candidates with statements`,

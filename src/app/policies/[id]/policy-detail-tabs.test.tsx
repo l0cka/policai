@@ -71,6 +71,7 @@ describe('PolicyDetailTabs site reuse terms', () => {
         checkedAt: '2026-10-22',
       },
     ]);
+    if (sourceReuse.status !== 'stated') throw new Error('fixture must be stated');
     render(<PolicyDetailTabs policy={policy} sourceReuse={sourceReuse} />);
     expect(screen.getByText('Site reuse terms').nextElementSibling).toHaveTextContent('CC BY 4.0');
     expect(screen.getByRole('link', { name: 'CC BY 4.0' })).toHaveAttribute('href', 'https://example.gov.au/copyright');

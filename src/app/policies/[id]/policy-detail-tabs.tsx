@@ -150,7 +150,7 @@ export function PolicyDetailTabs({
   progress?: ReactNode;
   related?: ReactNode;
   courtRequirements?: PublicCourtRequirement[];
-  sourceReuse?: SiteReuse;
+  sourceReuse?: Extract<SiteReuse, { status: 'stated' }>;
 }) {
   const [activeTab, setActiveTab] = useState<TabId>('overview');
   const requirements = useMemo(() => getRequirements(policy), [policy]);
@@ -401,13 +401,9 @@ export function PolicyDetailTabs({
                 <div className="grid grid-cols-[6.5rem_1fr] gap-3">
                   <dt className="text-muted-foreground">Site reuse terms</dt>
                   <dd>
-                    {sourceReuse.status === 'stated' ? (
-                      <a href={sourceReuse.termsUrl} className="text-primary underline underline-offset-4 hover:no-underline">
-                        {reuseLabel(sourceReuse)}
-                      </a>
-                    ) : (
-                      reuseLabel(sourceReuse)
-                    )}
+                    <a href={sourceReuse.termsUrl} className="text-primary underline underline-offset-4 hover:no-underline">
+                      {reuseLabel(sourceReuse)}
+                    </a>
                   </dd>
                 </div>
               ) : null}
