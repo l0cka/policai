@@ -3,29 +3,22 @@
  * Cards for pending source reviews, and a laptop recovery apply path.
  *
  *   npm run signal:reviews
- *   npm run signal:reviews -- apply --action=approve --id=<id> --reviewer=<name>
  *   npm run signal:reviews -- apply --action=dismiss --id=<id> --reviewer=<name>
- *   npm run signal:reviews -- apply --action=publish --id=<id> --admin-token=<token>
  *   npm run signal:reviews -- apply --action=verify --id=<policy-id> --reviewer=<name> --admin-token=<token>
  *
  * Product path for the Grok Bot is HTTPS GET/POST /api/signal/reviews with
  * POLICAI_SIGNAL_TOKEN (see docs/collector.md). This CLI is recovery only
- * when that endpoint is down: TTY confirm for approve/dismiss, or a matching
+ * when that endpoint is down: TTY confirm for dismiss, or a matching
  * POLICAI_MCP_ADMIN_TOKEN for token-gated recovery apply. CI and Cursor /
- * Claude agent sessions are refused. Publish and verify always need the
- * admin token. Neither path invents a verified stamp without an explicit
+ * Claude agent sessions are refused. Verify always needs the admin token.
+ * Approval happens only on a decision card in the Policai Claude project. Neither path invents a verified stamp without an explicit
  * verify action for a named policy id.
  */
 
 import readline from "node:readline";
 import { pathToFileURL } from "node:url";
 import { getSourceReviews } from "@/lib/data-service";
-import {
-	approveStagedSource,
-	publishStagedSource,
-	rejectStagedSource,
-	verifyRegisterRecord,
-} from "@/lib/source-ingest";
+import { rejectStagedSource, verifyRegisterRecord } from "@/lib/source-ingest";
 import {
 	currentSignalRunner,
 	runSignalSourceReviewCommand,
@@ -50,10 +43,7 @@ function confirmReviewer(reviewer: string): Promise<boolean> {
 async function main() {
 	const result = await runSignalSourceReviewCommand(process.argv.slice(2), {
 		listPending: () => getSourceReviews({ status: "pending_review" }),
-		approve: ({ id, actor, approvalNotes }) =>
-			approveStagedSource({ id, actor, approvalNotes }),
 		reject: (id, reason) => rejectStagedSource(id, reason),
-		publish: (id) => publishStagedSource(id),
 		verify: ({ policyId, actor, notes }) =>
 			verifyRegisterRecord({ policyId, actor, notes }),
 		confirmReviewer,

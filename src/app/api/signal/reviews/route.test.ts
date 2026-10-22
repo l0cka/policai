@@ -8,13 +8,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { PolicyDraft, SourceReview } from "@/types";
 import { fakeGitHub } from "@/test/fake-github";
 
-const { retrieveSource } = vi.hoisted(() => ({ retrieveSource: vi.fn() }));
-
-vi.mock("@/lib/pipeline/fetch", async (importOriginal) => ({
-	...(await importOriginal<typeof import("@/lib/pipeline/fetch")>()),
-	retrieveSource,
-}));
-
 const SOURCE_URL = "https://www.example.gov.au/ai-policy";
 const HASH = "a".repeat(64);
 
@@ -161,16 +154,6 @@ beforeEach(async () => {
 	vi.stubEnv("POLICAI_SIGNAL_TOKEN", "signal-secret");
 	vi.stubEnv("POLICAI_SIGNAL_GITHUB_TOKEN", "gh-token");
 	vi.stubEnv("POLICAI_SIGNAL_COMMIT_TARGET", "");
-	retrieveSource.mockResolvedValue({
-		body: `<html><head><title>Signal test AI policy</title><meta name="dcterms.issued" content="2026-07-01"></head><body><main><h1>Signal test AI policy</h1><p>${"This policy sets out how agencies govern artificial intelligence. ".repeat(20)}</p></main></body></html>`,
-		contentType: "text/html",
-		evidence: {
-			url: SOURCE_URL,
-			retrievedAt: "2026-10-19T00:00:00.000Z",
-			contentHash: HASH,
-		},
-		durationMs: 1,
-	});
 });
 
 afterEach(() => {
@@ -187,115 +170,16 @@ async function expectDiskUntouched() {
 }
 
 describe("POST /api/signal/reviews", () => {
-	it("approves against the GitHub snapshot and commits only changed files", async () => {
-		const github = fakeGitHub({
-			files: mainFiles(review()),
-			largeFiles: ["data/source-reviews.json"],
-		});
+	it("refuses approve and commits nothing", async () => {
+		const github = fakeGitHub({ files: mainFiles(review()) });
 		vi.stubGlobal("fetch", github.fetchImpl);
 
 		const { status, json } = await post(decision("approve"));
 
-		expect(json).toMatchObject({
-			success: true,
-			noop: false,
-			review: { id: "rev-main", status: "published" },
-			persistence: {
-				ok: true,
-				target: "pr",
-				branch: "signal/approve-rev-main",
-				prUrl: "https://github.com/l0cka/policai/pull/999",
-				baseSha: github.baseSha,
-			},
-		});
-		expect(status).toBe(200);
-		const files = github.committedFiles(json.persistence.commitSha);
-		expect(json.persistence.files).toEqual([
-			"data/policies.json",
-			"data/source-reviews.json",
-			"public/data/meta.json",
-		]);
-		expect(Object.keys(files)).toEqual(json.persistence.files);
-		expect(JSON.parse(files["public/data/meta.json"])).toMatchObject({
-			lastCollectedAt: MAIN_META.lastCollectedAt,
-		});
-		expect(files["public/data/meta.json"].endsWith("}")).toBe(true);
-
-		const reviews = JSON.parse(files["data/source-reviews.json"]);
-		expect(reviews.find((r: SourceReview) => r.id === "rev-main")).toMatchObject({
-			status: "published",
-			title: "Signal test AI policy",
-		});
-		expect(
-			reviews.find((r: SourceReview) => r.id === "collected-after-deploy"),
-		).toMatchObject({ mainOnlyMarker: MAIN_ONLY.mainOnlyMarker });
-		expect(files["data/source-reviews.json"].endsWith("]\n")).toBe(true);
-
-		const policies = JSON.parse(files["data/policies.json"]);
-		expect(policies.map((p: { id: string }) => p.id)).toEqual([
-			"signal-test-policy",
-		]);
-		await expectDiskUntouched();
-	});
-
-	it("approves a themeless draft with the themes and type named in Daniel's reply", async () => {
-		const themeless = review();
-		themeless.proposedRecord = {
-			...themeless.proposedRecord,
-			themes: [],
-		} as PolicyDraft;
-		const github = fakeGitHub({ files: mainFiles(themeless) });
-		vi.stubGlobal("fetch", github.fetchImpl);
-		const replyText =
-			"Approve rev-main. Themes: public-sector, AI-Governance. Type guideline.";
-
-		const blocked = await post(decision("approve"));
-		expect(blocked).toMatchObject({
-			status: 409,
-			json: { code: "approve_blocked" },
-		});
-		expect(blocked.json.error).toMatch(/Ask Daniel to name 1 to 5 themes/);
-
-		const invented = await post({
-			...decision("approve"),
-			attestation: { ...decision("approve").attestation, replyText },
-			themes: ["public-sector", "privacy-data"],
-		});
-		expect(invented).toMatchObject({
-			status: 400,
-			json: { code: "themes_not_in_reply" },
-		});
+		expect(status).toBe(403);
+		expect(json).toMatchObject({ success: false, code: "approve_not_allowed" });
+		expect(json.error).toContain("decision card");
 		expect(github.requests.filter((r) => r.method !== "GET")).toEqual([]);
-
-		const { status, json } = await post({
-			...decision("approve"),
-			attestation: { ...decision("approve").attestation, replyText },
-			themes: ["public-sector", "ai-governance"],
-			type: "guideline",
-		});
-
-		expect(status).toBe(200);
-		expect(json).toMatchObject({
-			success: true,
-			review: { id: "rev-main", status: "published" },
-		});
-		expect(json.attestationText).toContain(
-			"themes: public-sector, ai-governance\ntype: guideline\nrelayed by Policai Signal",
-		);
-		const files = github.committedFiles(json.persistence.commitSha);
-		const [policy] = JSON.parse(files["data/policies.json"]);
-		expect(policy).toMatchObject({
-			id: "signal-test-policy",
-			themes: ["public-sector", "ai-governance"],
-			type: "guideline",
-			verification: {
-				checkedBy: "Daniel Alkurdi",
-				notes: json.attestationText,
-			},
-		});
-		expect(policy.verification.notes).toContain(
-			`Daniel Alkurdi (Signal): ${replyText}`,
-		);
 		await expectDiskUntouched();
 	});
 

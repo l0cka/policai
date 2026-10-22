@@ -1,17 +1,12 @@
 import { NextResponse } from "next/server";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { getSourceReviewById } from "@/lib/data-service";
-import {
-	approveStagedSource,
-	publishStagedSource,
-	rejectStagedSource,
-} from "@/lib/source-ingest";
+import { rejectStagedSource } from "@/lib/source-ingest";
 import {
 	applySignalHttpDecision,
 	bearerToken,
 	requireSignalHttpToken,
 	type SignalAttestationInput,
-	type SignalHttpAction,
 } from "@/lib/signal-http";
 import { runWithDataOverlay } from "@/lib/data-overlay";
 import { openSignalSnapshot } from "@/lib/signal-git-persist";
@@ -65,7 +60,7 @@ export async function POST(request: Request) {
 	const record = body as Record<string, unknown>;
 	const reviewId =
 		typeof record.reviewId === "string" ? record.reviewId : undefined;
-	const action = record.action as SignalHttpAction | undefined;
+	const action = typeof record.action === "string" ? record.action : undefined;
 	const reviewer =
 		typeof record.reviewer === "string" ? record.reviewer : undefined;
 	const attestationRaw = record.attestation;
@@ -123,13 +118,9 @@ export async function POST(request: Request) {
 					action,
 					reviewer,
 					attestation: attestationInput,
-					themes: record.themes,
-					type: record.type,
 				},
 				{
 					getReview: getSourceReviewById,
-					approve: (approval) => approveStagedSource(approval),
-					publish: (id) => publishStagedSource(id),
 					reject: (id, reason) => rejectStagedSource(id, reason),
 				},
 			),

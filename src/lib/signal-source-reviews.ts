@@ -25,8 +25,6 @@ const SYDNEY_INSTANT: Intl.DateTimeFormatOptions = {
 	timeZoneName: "short",
 };
 
-export type SignalApplyAction = "approve" | "dismiss" | "publish" | "verify";
-
 export interface SignalCommandRunner {
 	user: string;
 	host: string;
@@ -35,13 +33,7 @@ export interface SignalCommandRunner {
 
 export interface SignalSourceReviewDeps {
 	listPending: () => Promise<SourceReview[]>;
-	approve: (input: {
-		id: string;
-		actor: string;
-		approvalNotes: string;
-	}) => Promise<SourceReview>;
 	reject: (id: string, reason?: string) => Promise<SourceReview>;
-	publish: (id: string) => Promise<SourceReview>;
 	verify: (input: {
 		policyId: string;
 		actor: string;
@@ -252,7 +244,7 @@ function reviewerName(value: string | undefined): string | undefined {
 }
 
 const USAGE =
-	"Usage: signal:reviews [apply --action=approve|dismiss|publish|verify --id=<id> --reviewer=<name> [--admin-token=<token>]]";
+	"Usage: signal:reviews [apply --action=dismiss|verify --id=<id> --reviewer=<name> [--admin-token=<token>]]";
 
 export async function runSignalSourceReviewCommand(
 	argv: readonly string[],
@@ -275,23 +267,26 @@ export async function runSignalSourceReviewCommand(
 		};
 	}
 
-	const action = argument(argv, "action") as SignalApplyAction | undefined;
+	const action = argument(argv, "action");
 	const id = argument(argv, "id")?.trim();
 	const reviewer = reviewerName(argument(argv, "reviewer"));
 	const adminToken = argument(argv, "admin-token");
 	const env = deps.env ?? process.env;
 	const trusted = isTrustedSignalApply({ env, adminToken });
 
-	if (
-		action !== "approve" &&
-		action !== "dismiss" &&
-		action !== "publish" &&
-		action !== "verify"
-	) {
+	if (action === "approve" || action === "publish") {
 		return {
 			exitCode: 2,
 			stdout: "",
-			stderr: "Action must be approve, dismiss, publish, or verify.",
+			stderr:
+				"Approval moved to decision cards in the Policai Claude project. An agent proposes the source and records Daniel's tap with record_decision.",
+		};
+	}
+	if (action !== "dismiss" && action !== "verify") {
+		return {
+			exitCode: 2,
+			stdout: "",
+			stderr: "Action must be dismiss or verify.",
 		};
 	}
 	if (!id) {
@@ -305,32 +300,28 @@ export async function runSignalSourceReviewCommand(
 		};
 	}
 
-	if (action === "publish" || action === "verify") {
-		if (!trusted) {
-			return {
-				exitCode: 1,
-				stdout: "",
-				stderr:
-					"publish and verify require a matching --admin-token (POLICAI_MCP_ADMIN_TOKEN) for recovery apply. The Grok Bot product path is HTTPS /api/signal/reviews with POLICAI_SIGNAL_TOKEN.",
-			};
-		}
+	if (action === "verify" && !trusted) {
+		return {
+			exitCode: 1,
+			stdout: "",
+			stderr:
+				"verify requires a matching --admin-token (POLICAI_MCP_ADMIN_TOKEN) for recovery apply. The Grok Bot product path is HTTPS /api/signal/reviews with POLICAI_SIGNAL_TOKEN.",
+		};
 	}
 
-	if (action !== "publish") {
-		if (!reviewer) {
-			return {
-				exitCode: 1,
-				stdout: "",
-				stderr: "A human reviewer identity is required.",
-			};
-		}
-		if (trusted && !isSignalReviewer(reviewer, env)) {
-			return {
-				exitCode: 1,
-				stdout: "",
-				stderr: `Signal reviewer must be one of: ${signalReviewers(env).join(", ")}.`,
-			};
-		}
+	if (!reviewer) {
+		return {
+			exitCode: 1,
+			stdout: "",
+			stderr: "A human reviewer identity is required.",
+		};
+	}
+	if (trusted && !isSignalReviewer(reviewer, env)) {
+		return {
+			exitCode: 1,
+			stdout: "",
+			stderr: `Signal reviewer must be one of: ${signalReviewers(env).join(", ")}.`,
+		};
 	}
 
 	const blocked = signalApplyBlockReason({
@@ -344,7 +335,7 @@ export async function runSignalSourceReviewCommand(
 
 	if (!trusted) {
 		const confirmed = deps.confirmReviewer
-			? await deps.confirmReviewer(reviewer as string)
+			? await deps.confirmReviewer(reviewer)
 			: false;
 		if (!confirmed) {
 			return {
@@ -363,18 +354,6 @@ export async function runSignalSourceReviewCommand(
 		: attestation;
 
 	try {
-		if (action === "approve") {
-			const review = await deps.approve({
-				id,
-				actor: reviewer as string,
-				approvalNotes: pathNote,
-			});
-			return {
-				exitCode: 0,
-				stdout: `Approved ${review.id} (status ${review.status}). ${pathNote}`,
-				stderr: "",
-			};
-		}
 		if (action === "dismiss") {
 			const review = await deps.reject(
 				id,
@@ -386,17 +365,9 @@ export async function runSignalSourceReviewCommand(
 				stderr: "",
 			};
 		}
-		if (action === "publish") {
-			const review = await deps.publish(id);
-			return {
-				exitCode: 0,
-				stdout: `Published ${review.id} (status ${review.status}). ${pathNote}`,
-				stderr: "",
-			};
-		}
 		const policy = await deps.verify({
 			policyId: id,
-			actor: reviewer as string,
+			actor: reviewer,
 			notes: pathNote,
 		});
 		return {

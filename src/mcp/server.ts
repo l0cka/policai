@@ -4,19 +4,16 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { z } from 'zod';
 import {
   handleAnalyseSourceUrl,
-  handleApproveStagedSource,
   handleCheckCoverage,
   handleListCourtRequirementCandidates,
   handleListStagedSources,
   handleListThemes,
   handleProposeSourceDecision,
-  handlePublishStagedSource,
   handleRecordDecision,
   handleRecordManualSourceReview,
   handleRejectStagedSource,
   handleReviewCourtRequirement,
   handleShowSourceProposal,
-  handleSignalDecision,
   handleStageSourceCapture,
   handleStageSourceUrl,
   handleVerifyRegisterRecord,
@@ -176,7 +173,7 @@ server.registerTool(
   {
     title: 'Propose source decision',
     description:
-      'Prepares everything a pending review needs for approval, so the editor decides on one complete proposal: the edited proposedRecord, reviewedDate for a date the source shows but does not expose as metadata, manualExtraction, officialSourceUrl for a stage-only lead, or expectedTargetRevisionHash after a rebase. proposedBy names who prepared it honestly, for example "Claude (agent)". Returns proposalHash. Requires POLICAI_MCP_ADMIN_TOKEN. Does not approve or publish.',
+      `Prepares everything a pending review needs for approval, so the editor decides on one complete proposal: the edited proposedRecord, reviewedDate for a date the source shows but does not expose as metadata, manualExtraction, officialSourceUrl for a stage-only lead, or expectedTargetRevisionHash after a rebase. A policy record needs ${MIN_THEMES_PER_RECORD} to ${MAX_THEMES_PER_RECORD} themes, keys listed by list_themes; collector drafts have none, so propose a proposedRecord carrying themes. proposedBy names who prepared it honestly, for example "Claude (agent)". Returns proposalHash. Requires POLICAI_MCP_ADMIN_TOKEN. Does not approve or publish.`,
     inputSchema: {
       id: z.string().min(1),
       proposedBy: z.string().min(1),
@@ -296,44 +293,6 @@ server.registerTool(
 );
 
 server.registerTool(
-  'approve_staged_source',
-  {
-    title: 'Approve staged source',
-    description:
-      `Validates and explicitly approves a complete source review before publication. Requires the human reviewer identity separately from the admin token. If a tracked target changed after staging, submit the rebased proposedRecord with expectedTargetRevisionHash from the refreshed review. Stage-only leads require an officialSourceUrl plus an explicitly reviewed replacement proposedRecord; the official source is fetched again and replaces the discovery evidence. Dates must match extracted metadata or include explicit reviewedDate evidence. A policy record needs ${MIN_THEMES_PER_RECORD} to ${MAX_THEMES_PER_RECORD} themes, keys listed by list_themes; collector drafts have none, so a new policy is approved with an explicit proposedRecord carrying themes. Requires POLICAI_MCP_ADMIN_TOKEN.`,
-    inputSchema: {
-      id: z.string(),
-      reviewer: z.string().min(1),
-      proposedRecord: z.record(z.string(), z.unknown()).optional(),
-      expectedTargetRevisionHash: z.string().regex(/^[a-f0-9]{64}$/).optional(),
-      officialSourceUrl: z.string().url().optional(),
-      approvalNotes: z.string().optional(),
-      manualExtraction: z.object({
-        method: z.enum(['ocr', 'manual_transcription']),
-        title: z.string().min(1),
-        text: z.string().min(20),
-        publishedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
-        publishedAtPrecision: z.enum(['day', 'month', 'year']).optional(),
-        notes: z.string().min(1),
-      }).optional(),
-      reviewedDate: z.object({
-        date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-        precision: z.enum(['day', 'month', 'year']),
-        notes: z.string().min(20),
-      }).optional(),
-      browserCapture: browserCaptureSchema.optional(),
-      adminToken: z.string(),
-    },
-    annotations: {
-      readOnlyHint: false,
-      idempotentHint: false,
-      destructiveHint: true,
-    },
-  },
-  async (input) => toToolText(await handleApproveStagedSource(input)),
-);
-
-server.registerTool(
   'record_manual_source_review',
   {
     title: 'Record a manual source review',
@@ -365,25 +324,6 @@ server.registerTool(
     },
   },
   async (input) => toToolText(await handleRecordManualSourceReview(input)),
-);
-
-server.registerTool(
-  'publish_staged_source',
-  {
-    title: 'Publish staged source',
-    description: 'Publishes a staged source review into Policai data. Requires POLICAI_MCP_ADMIN_TOKEN.',
-    inputSchema: {
-      id: z.string(),
-      browserCapture: browserCaptureSchema.optional(),
-      adminToken: z.string(),
-    },
-    annotations: {
-      readOnlyHint: false,
-      idempotentHint: false,
-      destructiveHint: true,
-    },
-  },
-  async (input) => toToolText(await handlePublishStagedSource(input)),
 );
 
 server.registerTool(
@@ -425,45 +365,6 @@ server.registerTool(
     },
   },
   async (input) => toToolText(await handleVerifyRegisterRecord(input)),
-);
-
-server.registerTool(
-  'signal_decision',
-  {
-    title: 'Signal decision',
-    description:
-      'Laptop recovery only (not the Grok Bot product path). Approve, dismiss, publish, or verify a staged review via MCP when HTTPS /api/signal/reviews is unavailable. Product path: GET/POST /api/signal/reviews with POLICAI_SIGNAL_TOKEN. Approve/dismiss/verify require an allowlisted reviewer (default Daniel Alkurdi). Publish requires a previously approved review. Requires POLICAI_MCP_ADMIN_TOKEN. Does not commit or push; the host must validate and commit after a write.',
-    inputSchema: {
-      action: z.enum(['approve', 'dismiss', 'publish', 'verify']),
-      id: z.string().min(1),
-      reviewer: z.string().min(1).optional(),
-      notes: z.string().optional(),
-      proposedRecord: z.record(z.string(), z.unknown()).optional(),
-      expectedTargetRevisionHash: z.string().regex(/^[a-f0-9]{64}$/).optional(),
-      officialSourceUrl: z.string().url().optional(),
-      manualExtraction: z.object({
-        method: z.enum(['ocr', 'manual_transcription']),
-        title: z.string().min(1),
-        text: z.string().min(20),
-        publishedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
-        publishedAtPrecision: z.enum(['day', 'month', 'year']).optional(),
-        notes: z.string().min(1),
-      }).optional(),
-      reviewedDate: z.object({
-        date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-        precision: z.enum(['day', 'month', 'year']),
-        notes: z.string().min(20),
-      }).optional(),
-      browserCapture: browserCaptureSchema.optional(),
-      adminToken: z.string(),
-    },
-    annotations: {
-      readOnlyHint: false,
-      idempotentHint: false,
-      destructiveHint: true,
-    },
-  },
-  async (input) => toToolText(await handleSignalDecision(input)),
 );
 
 async function main() {

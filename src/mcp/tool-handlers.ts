@@ -1,6 +1,5 @@
 import {
 	analyseSourceUrl,
-	approveStagedSource,
 	auditMcpTool,
   type BrowserCaptureInput,
   type ManualExtractionInput,
@@ -10,7 +9,6 @@ import {
   describeSourceProposal,
   normalizeReviewStatus,
   proposeSourceDecision,
-  publishStagedSource,
   recordManualSourceReview,
   rejectStagedSource,
   stageSourceCapture,
@@ -272,54 +270,6 @@ export async function handleRecordDecision(input: {
   });
 }
 
-export async function handleApproveStagedSource(input: {
-  id: string;
-  reviewer?: string;
-  proposedRecord?: Record<string, unknown>;
-  expectedTargetRevisionHash?: string;
-  officialSourceUrl?: string;
-  approvalNotes?: string;
-  manualExtraction?: ManualExtractionInput;
-  reviewedDate?: ReviewedDateInput;
-  browserCapture?: BrowserCaptureInput;
-  adminToken?: string;
-}) {
-  return audited('approve_staged_source', {}, () => {
-    requireMcpAdminToken(input.adminToken);
-    const reviewer = input.reviewer?.trim();
-    if (!reviewer) {
-      throw new Error('A human reviewer identity is required');
-    }
-    return approveStagedSource({
-      id: input.id,
-      actor: reviewer,
-      proposedRecord: input.proposedRecord as
-        | PolicyDraft
-        | TimelineEventDraft
-        | undefined,
-      expectedTargetRevisionHash: input.expectedTargetRevisionHash,
-      officialSourceUrl: input.officialSourceUrl,
-      approvalNotes: input.approvalNotes,
-      manualExtraction: input.manualExtraction,
-      reviewedDate: input.reviewedDate,
-      browserCapture: input.browserCapture,
-    });
-  });
-}
-
-export async function handlePublishStagedSource(input: {
-  id: string;
-  browserCapture?: BrowserCaptureInput;
-  adminToken?: string;
-}) {
-  return audited('publish_staged_source', {}, () => {
-    requireMcpAdminToken(input.adminToken);
-    return publishStagedSource(input.id, {
-      browserCapture: input.browserCapture,
-    });
-  });
-}
-
 export async function handleRejectStagedSource(input: {
   id: string;
   reason?: string;
@@ -391,71 +341,3 @@ export async function handleVerifyRegisterRecord(input: {
   });
 }
 
-/**
- * One entry for the Signal Grok Bot phrase table: approve, dismiss, publish,
- * or verify. Same trust gates as the individual tools plus the Signal
- * reviewer allowlist on approve / dismiss / verify.
- */
-export async function handleSignalDecision(input: {
-  action: 'approve' | 'dismiss' | 'publish' | 'verify';
-  id: string;
-  reviewer?: string;
-  notes?: string;
-  proposedRecord?: Record<string, unknown>;
-  expectedTargetRevisionHash?: string;
-  officialSourceUrl?: string;
-  manualExtraction?: ManualExtractionInput;
-  reviewedDate?: ReviewedDateInput;
-  browserCapture?: BrowserCaptureInput;
-  adminToken?: string;
-}) {
-  requireMcpAdminToken(input.adminToken);
-  const id = input.id.trim();
-  if (!id) {
-    throw new Error(
-      input.action === 'verify'
-        ? 'A register policy id is required'
-        : 'A source review id is required',
-    );
-  }
-
-  if (input.action === 'publish') {
-    return audited('signal_decision', {}, () =>
-      publishStagedSource(id, { browserCapture: input.browserCapture }),
-    );
-  }
-
-  const reviewer = requireSignalReviewer(input.reviewer);
-  const notes =
-    input.notes?.replace(/\s+/g, ' ').trim() ||
-    `Policai Signal decision (${input.action}) by ${reviewer}`;
-
-  if (input.action === 'verify') {
-    return audited('signal_decision', {}, () =>
-      verifyRegisterRecord({ policyId: id, actor: reviewer, notes }),
-    );
-  }
-
-  if (input.action === 'dismiss') {
-    return audited('signal_decision', {}, () =>
-      rejectStagedSource(id, notes),
-    );
-  }
-
-  return audited('signal_decision', {}, () =>
-    approveStagedSource({
-      id,
-      actor: reviewer,
-      approvalNotes: notes,
-      proposedRecord: input.proposedRecord as
-        | PolicyDraft
-        | TimelineEventDraft
-        | undefined,
-      expectedTargetRevisionHash: input.expectedTargetRevisionHash,
-      officialSourceUrl: input.officialSourceUrl,
-      manualExtraction: input.manualExtraction,
-      reviewedDate: input.reviewedDate,
-      browserCapture: input.browserCapture,
-    }),
-  );
-}

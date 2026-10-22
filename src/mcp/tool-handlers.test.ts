@@ -3,8 +3,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 const {
-  approveStagedSource,
-  publishStagedSource,
+  decideSourceReview,
+  proposeSourceDecision,
   recordManualSourceReview,
   rejectStagedSource,
   stageSourceCapture,
@@ -13,10 +13,10 @@ const {
   getCourtRequirementsForReview,
   reviewCourtRequirement,
 } = vi.hoisted(() => ({
-  approveStagedSource: vi.fn(),
+  decideSourceReview: vi.fn(),
+  proposeSourceDecision: vi.fn(),
   stageSourceUrl: vi.fn(),
   stageSourceCapture: vi.fn(),
-  publishStagedSource: vi.fn(),
   recordManualSourceReview: vi.fn(),
   rejectStagedSource: vi.fn(),
   verifyRegisterRecord: vi.fn(),
@@ -29,10 +29,10 @@ vi.mock('@/lib/source-ingest', () => ({
   auditMcpTool: vi.fn(),
   checkCoverage: vi.fn(),
   normalizeReviewStatus: vi.fn((status?: string) => status),
-  approveStagedSource,
+  decideSourceReview,
+  proposeSourceDecision,
   stageSourceCapture,
   stageSourceUrl,
-  publishStagedSource,
   recordManualSourceReview,
   rejectStagedSource,
   verifyRegisterRecord,
@@ -54,13 +54,12 @@ import {
   THEMES,
 } from '@/lib/themes'
 import {
-  handleApproveStagedSource,
   handleListThemes,
-  handlePublishStagedSource,
   handleListCourtRequirementCandidates,
+  handleProposeSourceDecision,
+  handleRecordDecision,
   handleRecordManualSourceReview,
   handleRejectStagedSource,
-  handleSignalDecision,
   handleStageSourceCapture,
   handleStageSourceUrl,
   handleReviewCourtRequirement,
@@ -74,8 +73,8 @@ describe('MCP tool handlers', () => {
     process.env.POLICAI_MCP_ADMIN_TOKEN = 'secret-token'
     stageSourceUrl.mockReset()
     stageSourceCapture.mockReset()
-    approveStagedSource.mockReset()
-    publishStagedSource.mockReset()
+    decideSourceReview.mockReset()
+    proposeSourceDecision.mockReset()
     recordManualSourceReview.mockReset()
     rejectStagedSource.mockReset()
     verifyRegisterRecord.mockReset()
@@ -96,11 +95,17 @@ describe('MCP tool handlers', () => {
     ).rejects.toThrow('Invalid POLICAI_MCP_ADMIN_TOKEN')
 
     await expect(
-      handleApproveStagedSource({ id: 'source-review-1', adminToken: 'wrong' }),
+      handleProposeSourceDecision({ id: 'source-review-1', adminToken: 'wrong' }),
     ).rejects.toThrow('Invalid POLICAI_MCP_ADMIN_TOKEN')
 
     await expect(
-      handlePublishStagedSource({ id: 'source-review-1', adminToken: 'wrong' }),
+      handleRecordDecision({
+        id: 'source-review-1',
+        proposalHash: 'a'.repeat(64),
+        reviewer: 'Daniel',
+        attestationUrl: 'https://claude.ai/code/project/chan_x?thread=cmsg_x',
+        adminToken: 'wrong',
+      }),
     ).rejects.toThrow('Invalid POLICAI_MCP_ADMIN_TOKEN')
 
     await expect(
@@ -132,18 +137,10 @@ describe('MCP tool handlers', () => {
       }),
     ).rejects.toThrow('Invalid POLICAI_MCP_ADMIN_TOKEN')
 
-    await expect(
-      handleSignalDecision({
-        action: 'publish',
-        id: 'source-review-1',
-        adminToken: 'wrong',
-      }),
-    ).rejects.toThrow('Invalid POLICAI_MCP_ADMIN_TOKEN')
-
     expect(stageSourceUrl).not.toHaveBeenCalled()
     expect(stageSourceCapture).not.toHaveBeenCalled()
-    expect(approveStagedSource).not.toHaveBeenCalled()
-    expect(publishStagedSource).not.toHaveBeenCalled()
+    expect(proposeSourceDecision).not.toHaveBeenCalled()
+    expect(decideSourceReview).not.toHaveBeenCalled()
     expect(rejectStagedSource).not.toHaveBeenCalled()
     expect(recordManualSourceReview).not.toHaveBeenCalled()
     expect(reviewCourtRequirement).not.toHaveBeenCalled()
@@ -180,29 +177,6 @@ describe('MCP tool handlers', () => {
     })
   })
 
-  it('forwards the official replacement URL during approval', async () => {
-    approveStagedSource.mockResolvedValue({ id: 'source-review-1' })
-
-    await handleApproveStagedSource({
-      id: 'source-review-1',
-      reviewer: 'Jane Reviewer',
-      officialSourceUrl: 'https://example.gov.au/official-policy',
-      adminToken: 'secret-token',
-    })
-
-    expect(approveStagedSource).toHaveBeenCalledWith({
-      id: 'source-review-1',
-      actor: 'Jane Reviewer',
-      proposedRecord: undefined,
-      expectedTargetRevisionHash: undefined,
-      officialSourceUrl: 'https://example.gov.au/official-policy',
-      approvalNotes: undefined,
-      manualExtraction: undefined,
-      reviewedDate: undefined,
-      browserCapture: undefined,
-    })
-  })
-
   it('forwards reviewer-attributed browser captures without persisting the token', async () => {
     stageSourceCapture.mockResolvedValue({ id: 'source-review-1' })
     const capture = {
@@ -236,76 +210,6 @@ describe('MCP tool handlers', () => {
       actor: 'local-mcp-admin',
       browserCapture: capture,
     })
-  })
-
-  it('forwards controlled OCR evidence during approval', async () => {
-    approveStagedSource.mockResolvedValue({ id: 'source-review-1' })
-    const manualExtraction = {
-      method: 'ocr' as const,
-      title: 'Official image-only policy',
-      text: 'Reviewed OCR text from the official image-only policy.',
-      notes: 'Compared against every source page.',
-    }
-
-    await handleApproveStagedSource({
-      id: 'source-review-1',
-      reviewer: 'Jane Reviewer',
-      proposedRecord: { id: 'policy-1' },
-      manualExtraction,
-      adminToken: 'secret-token',
-    })
-
-    expect(approveStagedSource).toHaveBeenCalledWith(
-      expect.objectContaining({ manualExtraction }),
-    )
-  })
-
-  it('forwards explicit reviewed date evidence during approval', async () => {
-    approveStagedSource.mockResolvedValue({ id: 'source-review-1' })
-    const reviewedDate = {
-      date: '2026-07-01',
-      precision: 'day' as const,
-      notes: 'Confirmed the effective date in the official instrument.',
-    }
-
-    await handleApproveStagedSource({
-      id: 'source-review-1',
-      reviewer: 'Jane Reviewer',
-      reviewedDate,
-      adminToken: 'secret-token',
-    })
-
-    expect(approveStagedSource).toHaveBeenCalledWith(
-      expect.objectContaining({ reviewedDate }),
-    )
-  })
-
-  it('forwards the expected target revision during a rebase', async () => {
-    approveStagedSource.mockResolvedValue({ id: 'source-review-1' })
-    const expectedTargetRevisionHash = 'a'.repeat(64)
-
-    await handleApproveStagedSource({
-      id: 'source-review-1',
-      reviewer: 'Jane Reviewer',
-      proposedRecord: { id: 'policy-1' },
-      expectedTargetRevisionHash,
-      adminToken: 'secret-token',
-    })
-
-    expect(approveStagedSource).toHaveBeenCalledWith(
-      expect.objectContaining({ expectedTargetRevisionHash }),
-    )
-  })
-
-  it('rejects approvals without a human reviewer identity', async () => {
-    await expect(
-      handleApproveStagedSource({
-        id: 'source-review-1',
-        reviewer: '   ',
-        adminToken: 'secret-token',
-      }),
-    ).rejects.toThrow('human reviewer identity')
-    expect(approveStagedSource).not.toHaveBeenCalled()
   })
 
   it('attributes manual source checks to the human reviewer', async () => {
@@ -395,32 +299,6 @@ describe('MCP tool handlers', () => {
       }),
     ).rejects.toThrow('Signal reviewer must be one of: Daniel Alkurdi, Daniel')
     expect(verifyRegisterRecord).not.toHaveBeenCalled()
-  })
-
-  it('maps signal_decision publish and verify to the ingest paths', async () => {
-    publishStagedSource.mockResolvedValue({ id: 'source-review-1', status: 'published' })
-    verifyRegisterRecord.mockResolvedValue({ id: 'policy-1' })
-
-    await handleSignalDecision({
-      action: 'publish',
-      id: 'source-review-1',
-      adminToken: 'secret-token',
-    })
-    expect(publishStagedSource).toHaveBeenCalledWith('source-review-1', {
-      browserCapture: undefined,
-    })
-
-    await handleSignalDecision({
-      action: 'verify',
-      id: 'policy-1',
-      reviewer: 'Daniel',
-      adminToken: 'secret-token',
-    })
-    expect(verifyRegisterRecord).toHaveBeenCalledWith({
-      policyId: 'policy-1',
-      actor: 'Daniel',
-      notes: 'Policai Signal decision (verify) by Daniel',
-    })
   })
 
   it('lists every theme key and label in table order with the theme rules', () => {
