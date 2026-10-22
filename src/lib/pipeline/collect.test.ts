@@ -1152,6 +1152,48 @@ describe('collect', () => {
     expect(validateWatchState(second.state).errors).toEqual([]);
   });
 
+  it('seeds an admitted source on its first check and emits from its second', async () => {
+    const admitted: WatchSource = { ...HTML_SOURCE, admittedAt: '2026-07-09' };
+    const pages = {
+      'https://www.example.gov.au/news/ai-policy-framework':
+        '<html><body><h1>New AI policy framework released</h1></body></html>',
+      'https://www.example.gov.au/news/seen-before':
+        '<html><body><h1>Existing AI governance standard update</h1></body></html>',
+      'https://www.example.gov.au/news/ai-assurance-standard':
+        '<html><body><h1>AI assurance standard published</h1></body></html>',
+    };
+    const first = await collect({
+      sources: [admitted],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl: fakeFetch({ [admitted.url]: INDEX_HTML, ...pages }),
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+    });
+    expect(first.developments).toEqual([]);
+    expect(first.meta.collector.sourceResults[0]).toMatchObject({
+      status: 'success',
+      candidateCount: 2,
+      newCandidateCount: 0,
+    });
+    expect(first.state.lastCheckedBySource[admitted.id]).toBe('2026-07-10T00:00:00.000Z');
+    expect(validateWatchState(first.state).errors).toEqual([]);
+
+    const grown = INDEX_HTML.replace(
+      '<li><a href="/news/seen-before">',
+      '<li><a href="/news/ai-assurance-standard">AI assurance standard published</a></li>\n    <li><a href="/news/seen-before">',
+    );
+    const second = await collect({
+      sources: [admitted],
+      state: first.state,
+      existingDevelopments: first.developments,
+      fetchImpl: fakeFetch({ [admitted.url]: grown, ...pages }),
+      now: () => new Date('2026-07-11T00:00:00.000Z'),
+    });
+    expect(second.developments.map((development) => development.url)).toEqual([
+      'https://www.example.gov.au/news/ai-assurance-standard',
+    ]);
+  });
+
   it('baselines direct documents and emits a lead only when content changes', async () => {
     const trackedPolicy = buildPolicy({
       id: 'tracked-document-policy',

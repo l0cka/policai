@@ -1176,6 +1176,14 @@ npm run audit:sources -- --source=<id>
 npm run collect -- --dry-run --source=<id>
 ```
 
+A new `html-index` or `rss` source also sets `admittedAt` (YYYY-MM-DD).
+Its first completed check marks the items currently listed as seen and emits
+no developments; the run log names each seeded URL so the admission PR can
+list them. Developments start from the second check. Without `admittedAt`, the
+first check treats up to `maxItemsPerSource` back-catalogue items as new.
+`document` sources need no seeding because their first check only records
+a fingerprint baseline.
+
 ## Troubleshooting
 
 - **Publication fails with `GH013`** — retain the run and inspect its branch and

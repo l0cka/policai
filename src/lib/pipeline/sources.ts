@@ -93,6 +93,12 @@ export interface WatchSource {
     minAiMentions: number;
   };
   critical?: boolean;
+  /**
+   * YYYY-MM-DD the source was admitted through an admission PR. Its first
+   * completed index or feed check marks the current items seen and emits no
+   * developments, so a new source cannot flood the review queue.
+   */
+  admittedAt?: string;
   notes?: string;
 }
 
