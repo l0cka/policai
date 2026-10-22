@@ -9,7 +9,9 @@ import type { RegisterReading, UnrecognisedStage } from './stage-update';
  * Assembly", "Legislative Council", "Assent information") of stage names and
  * dates such as "Tue 07 April 2026". A bill that lapsed or was withdrawn
  * says so in `billStatus`, dated by `dateCanonical`; a negatived bill goes to
- * the reviewer, since the data does not say which House voted it down.
+ * the reviewer, since the data does not say which House voted it down. A bill
+ * never introduced (a withdrawn notice of motion) has no lifecycle, so its
+ * status goes to the reviewer too.
  */
 
 const CHAMBERS: Record<string, Chamber> = { 'Legislative Assembly': 'lower', 'Legislative Council': 'upper' };
@@ -24,6 +26,9 @@ const PROCEDURAL = [
   /^considered in detail$/,
   /^date committed$/,
   /^passed w'?out amdt$/,
+  /^passed with amdts?$/,
+  /^date passed (?:la|lc)$/,
+  /^reported (?:with|without) amendments?$/,
   /^returned to (?:la|lc)$/,
   /^passed parliament$/,
   /^(?:la|lc) sent to governor$/,
@@ -97,9 +102,10 @@ export function parseNswBillDetail(html: string, source: SourceEvidence): Regist
   }
   const ended = /^\d{4}-\d{2}-\d{2}$/.test(detail.dateCanonical ?? '') ? detail.dateCanonical : undefined;
   const status = (detail.billStatus ?? '').toLowerCase();
-  if (ended && status.startsWith('lapsed')) dated.push({ date: ended, event: { kind: 'lapsed' } });
-  else if (ended && status === 'withdrawn') dated.push({ date: ended, event: { kind: 'withdrawn' } });
-  else if (ended && status === 'negatived') unrecognised.push({ chamber: null, stage: 'Negatived', date: ended });
+  const introduced = dated.some(({ event }) => event.kind === 'introduced');
+  if (ended && introduced && status.startsWith('lapsed')) dated.push({ date: ended, event: { kind: 'lapsed' } });
+  else if (ended && introduced && status === 'withdrawn') dated.push({ date: ended, event: { kind: 'withdrawn' } });
+  else if (ended && (status === 'negatived' || status === 'withdrawn')) unrecognised.push({ chamber: null, stage: detail.billStatus ?? '', date: ended });
   return {
     title: detail.shortTitle?.trim() || null,
     events: dated

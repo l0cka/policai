@@ -47,6 +47,30 @@ describe('parseNswBillDetail', () => {
     expect(parseNswBillDetail(negatived, { url: NSW_BILL }).unrecognised).toEqual([{ chamber: null, stage: 'Negatived', date: '2024-10-23' }]);
   });
 
+  it('leaves the withdrawal of a bill never introduced to the reviewer', () => {
+    const notice = nswWith((detail) =>
+      Object.assign(detail, {
+        billStatus: 'Withdrawn',
+        dateCanonical: '2024-06-04',
+        progress: { 'Legislative Council': [{ key: 'Notice of Motion', value: 'Tue 06 February 2024' }], 'Assent information': [] },
+      }),
+    );
+    const reading = parseNswBillDetail(notice, { url: NSW_BILL });
+    expect(reading.events).toEqual([]);
+    expect(reading.unrecognised).toEqual([{ chamber: null, stage: 'Withdrawn', date: '2024-06-04' }]);
+  });
+
+  it('treats the rows restating passage, and committee reports, as procedural', () => {
+    const amended = nswWith((detail) => {
+      const progress = detail.progress as Record<string, { key: string; value: string }[]>;
+      progress['Legislative Assembly'].push({ key: 'Passed with amdts', value: 'Wed 25 March 2026' });
+      progress['Legislative Council'].push({ key: 'Date Passed LC', value: 'Thu 26 March 2026' }, { key: 'Reported without amendment', value: 'Thu 26 March 2026' });
+    });
+    const reading = parseNswBillDetail(amended, { url: NSW_BILL });
+    expect(reading.events).toContainEqual(expect.objectContaining({ date: '2026-03-25', event: { kind: 'passed', chamber: 'lower', withAmendments: true } }));
+    expect(reading.unrecognised).toEqual([]);
+  });
+
   it('refuses a page without the bill data', () => {
     expect(() => parseNswBillDetail('<html><body>Just a moment…</body></html>', { url: NSW_BILL })).toThrow('no bill data');
   });
