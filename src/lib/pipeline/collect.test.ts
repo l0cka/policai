@@ -565,8 +565,8 @@ describe('collect', () => {
       itemCount: 2,
       candidateCount: 2,
     });
-    expect(result.meta.collector.automaticSourceCount).toBe(81);
-    expect(result.meta.collector.manualSourceCount).toBe(11);
+    expect(result.meta.collector.automaticSourceCount).toBe(74);
+    expect(result.meta.collector.manualSourceCount).toBe(18);
     expect(result.errors).toEqual([]);
   });
 

@@ -102,8 +102,15 @@ describe('WATCH_SOURCES', () => {
 
   it('derives refused hosts from identity_refused decisions only', () => {
     expect(Object.fromEntries(refusedHosts(WATCH_SOURCES))).toEqual({
+      'www.industry.gov.au': 'industry-ai-publications',
+      'www.minister.industry.gov.au': 'industry-ministers-media',
+      'www.dta.gov.au': 'dta-media',
+      'www.digital.gov.au': 'digital-gov-ai',
+      'ministers.ag.gov.au': 'agd-ministers-media',
       'www.cyber.gov.au': 'cyber-news',
+      'www.apsc.gov.au': 'apsc-latest-news',
       'www.accc.gov.au': 'accc-rss',
+      'www.acma.gov.au': 'acma-media',
       'www.esafety.gov.au': 'esafety-media',
     });
   });

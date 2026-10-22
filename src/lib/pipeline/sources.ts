@@ -174,7 +174,15 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'daily',
     enabled: true,
-    automation: 'automatic',
+    automation: {
+      mode: 'manual',
+      because: 'identity_refused',
+      decision: 'manual',
+      since: '2026-10-22',
+      decidedBy: 'Daniel',
+      evidence:
+        'The first collection after the E24 exception expired (run 2026-10-22T19:30Z) was refused by www.industry.gov.au with net::ERR_HTTP2_PROTOCOL_ERROR against the declared Policai identity. The allow-list request had no written reply, so refused E24 sources are tracked by hand (Daniel, 2026-10-17, #162).',
+    },
     fetchStrategy: 'browser',
     critical: true,
     notes:
@@ -190,7 +198,15 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'rss',
     schedule: 'daily',
     enabled: true,
-    automation: 'automatic',
+    automation: {
+      mode: 'manual',
+      because: 'identity_refused',
+      decision: 'manual',
+      since: '2026-10-22',
+      decidedBy: 'Daniel',
+      evidence:
+        'The first collection after the E24 exception expired (run 2026-10-22T19:30Z) was refused by www.minister.industry.gov.au with net::ERR_HTTP2_PROTOCOL_ERROR against the declared Policai identity. The allow-list request had no written reply, so refused E24 sources are tracked by hand (Daniel, 2026-10-17, #162).',
+    },
     fetchStrategy: 'browser',
     critical: true,
     notes:
@@ -206,7 +222,15 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'rss',
     schedule: 'daily',
     enabled: true,
-    automation: 'automatic',
+    automation: {
+      mode: 'manual',
+      because: 'identity_refused',
+      decision: 'manual',
+      since: '2026-10-22',
+      decidedBy: 'Daniel',
+      evidence:
+        'The first collection after the E24 exception expired (run 2026-10-22T19:30Z) was refused by www.dta.gov.au with net::ERR_HTTP2_PROTOCOL_ERROR against the declared Policai identity. The allow-list request had no written reply, so refused E24 sources are tracked by hand (Daniel, 2026-10-17, #162).',
+    },
     fetchStrategy: 'browser',
     critical: true,
     notes:
@@ -222,7 +246,15 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'daily',
     enabled: true,
-    automation: 'automatic',
+    automation: {
+      mode: 'manual',
+      because: 'identity_refused',
+      decision: 'manual',
+      since: '2026-10-22',
+      decidedBy: 'Daniel',
+      evidence:
+        'The first collection after the E24 exception expired (run 2026-10-22T19:30Z) was refused by www.digital.gov.au with net::ERR_HTTP2_PROTOCOL_ERROR against the declared Policai identity. The allow-list request had no written reply, so refused E24 sources are tracked by hand (Daniel, 2026-10-17, #162).',
+    },
     fetchStrategy: 'browser',
     critical: true,
     notes: 'GovCMS/Akamai rejects plain HTTP clients.',
@@ -237,7 +269,15 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'daily',
     enabled: true,
-    automation: 'automatic',
+    automation: {
+      mode: 'manual',
+      because: 'identity_refused',
+      decision: 'manual',
+      since: '2026-10-22',
+      decidedBy: 'Daniel',
+      evidence:
+        'The first collection after the E24 exception expired (run 2026-10-22T19:30Z) was refused by www.industry.gov.au with net::ERR_HTTP2_PROTOCOL_ERROR against the declared Policai identity. The allow-list request had no written reply, so refused E24 sources are tracked by hand (Daniel, 2026-10-17, #162).',
+    },
     fetchStrategy: 'browser',
     notes:
       'Departmental news and media-release index; GovCMS rejects plain HTTP clients.',
@@ -301,7 +341,15 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'daily',
     enabled: true,
-    automation: 'automatic',
+    automation: {
+      mode: 'manual',
+      because: 'identity_refused',
+      decision: 'manual',
+      since: '2026-10-22',
+      decidedBy: 'Daniel',
+      evidence:
+        'The first collection after the E24 exception expired (run 2026-10-22T19:30Z) was refused by ministers.ag.gov.au with net::ERR_HTTP2_PROTOCOL_ERROR against the declared Policai identity. The allow-list request had no written reply, so refused E24 sources are tracked by hand (Daniel, 2026-10-17, #162).',
+    },
     fetchStrategy: 'browser',
     notes:
       'Whole-of-government AI safety, privacy, copyright and automated-decision announcements; the host rejects plain HTTP clients.',
@@ -364,7 +412,15 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'daily',
     enabled: true,
-    automation: 'automatic',
+    automation: {
+      mode: 'manual',
+      because: 'identity_refused',
+      decision: 'manual',
+      since: '2026-10-22',
+      decidedBy: 'Daniel',
+      evidence:
+        'The first collection after the E24 exception expired (run 2026-10-22T19:30Z) was refused by www.apsc.gov.au with net::ERR_HTTP2_PROTOCOL_ERROR against the declared Policai identity. The allow-list request had no written reply, so refused E24 sources are tracked by hand (Daniel, 2026-10-17, #162).',
+    },
     fetchStrategy: 'browser',
     notes:
       'APS-wide AI workforce, recruitment, capability and governance guidance; the host rejects plain HTTP clients.',
@@ -671,7 +727,15 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'html-index',
     schedule: 'daily',
     enabled: true,
-    automation: 'automatic',
+    automation: {
+      mode: 'manual',
+      because: 'identity_refused',
+      decision: 'manual',
+      since: '2026-10-22',
+      decidedBy: 'Daniel',
+      evidence:
+        'The first collection after the E24 exception expired (run 2026-10-22T19:30Z) was refused by www.acma.gov.au with net::ERR_HTTP2_PROTOCOL_ERROR against the declared Policai identity. The allow-list request had no written reply, so refused E24 sources are tracked by hand (Daniel, 2026-10-17, #162).',
+    },
     fetchStrategy: 'browser',
     notes:
       'Communications and media regulation, including misinformation, deepfakes and online platforms; GovCMS rejects plain HTTP clients.',
