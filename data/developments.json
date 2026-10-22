@@ -214,10 +214,11 @@
       "method": "manual",
       "notes": "Re-verification of the existing timeline event. The committee page still states the referral date of 13 May 2026, that submissions closed on 1 September 2026 and the reporting date of 16 November 2026, so the event is unchanged. Pending Daniel Alkurdi's approval (escalation E16)."
     },
-    "status": "promoted",
+    "status": "dismissed",
     "relatedTimelineEventId": "tl-2026-05-13-senate-ai-data-centres-inquiry",
     "publishedAt": "2026-05-13",
-    "publishedAtPrecision": "day"
+    "publishedAtPrecision": "day",
+    "dismissalReason": "Superseded by newer source update source-review-12cb291c-9c64-433d-a200-5e7b9be75d54"
   },
   {
     "id": "dev-new-resources-on-transparency-for-use-of-ai-and--68u2j7",
@@ -705,7 +706,7 @@
     "relatedTimelineEventId": "tl-2026-05-13-senate-ai-data-centres-inquiry",
     "publishedAt": "2026-05-13",
     "publishedAtPrecision": "day",
-    "dismissalReason": "Superseded by newer source update source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-1hv6bwa"
+    "dismissalReason": "Superseded by newer source update source-review-12cb291c-9c64-433d-a200-5e7b9be75d54"
   },
   {
     "id": "dev-asic-and-apra-host-super-ceos-to-discuss-frontie-wh4ka1",
@@ -1445,7 +1446,7 @@
     "relatedTimelineEventId": "tl-2026-05-13-senate-ai-data-centres-inquiry",
     "publishedAt": "2026-05-13",
     "publishedAtPrecision": "day",
-    "dismissalReason": "Superseded by newer source update source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-1hv6bwa"
+    "dismissalReason": "Superseded by newer source update source-review-12cb291c-9c64-433d-a200-5e7b9be75d54"
   },
   {
     "id": "dev-report-explores-risks-and-controls-for-artificia-grmboo",
@@ -1772,7 +1773,7 @@
     "relatedTimelineEventId": "tl-2026-05-13-senate-ai-data-centres-inquiry",
     "publishedAt": "2026-05-13",
     "publishedAtPrecision": "day",
-    "dismissalReason": "Superseded by newer source update source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-1hv6bwa"
+    "dismissalReason": "Superseded by newer source update source-review-12cb291c-9c64-433d-a200-5e7b9be75d54"
   },
   {
     "id": "dev-from-homework-to-heartache-why-children-are-turn-e0tsfo",
@@ -2033,7 +2034,7 @@
     "relatedTimelineEventId": "tl-2026-05-13-senate-ai-data-centres-inquiry",
     "publishedAt": "2026-05-13",
     "publishedAtPrecision": "day",
-    "dismissalReason": "Superseded by newer source update source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-1hv6bwa"
+    "dismissalReason": "Superseded by newer source update source-review-12cb291c-9c64-433d-a200-5e7b9be75d54"
   },
   {
     "id": "dev-26-092mr-asic-calls-for-urgent-cyber-uplift-as-a-v2vvmh",

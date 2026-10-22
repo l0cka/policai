@@ -6,7 +6,7 @@
     "entryKind": "timeline_event",
     "targetTimelineEventId": "tl-2026-05-13-senate-ai-data-centres-inquiry",
     "targetTimelineRevisionHash": "6676fec4ec7b63226c6bc6eeab73426716b62a1e916a57d6860401592760f625",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-10-22T01:16:43.310Z",
     "createdBy": "local-mcp-admin",
     "notes": "Proposed description sentence: Submissions closed on 1 September 2026. On 20 October 2026 the committee tabled a progress report moving its reporting date to 23 March 2027.",
@@ -23,17 +23,24 @@
       "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
       "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
       "title": "Artificial intelligence and data centres",
-      "retrievedAt": "2026-10-22T01:15:30Z",
+      "retrievedAt": "2026-10-22T01:39:03Z",
       "contentType": "text/html",
       "contentHash": "4e8745d1e5a171544c3f1ccf6a0d1070d621dccc20b595aa86fcbc6934e7dc07",
       "linkedDocuments": [],
       "browserCapture": {
         "method": "browser",
-        "capturedAt": "2026-10-22T01:15:30Z",
+        "capturedAt": "2026-10-22T01:39:03Z",
         "capturedBy": "Daniel Alkurdi (Claude-assisted web review)",
         "notes": "Browser capture of the official Senate committee inquiry page on 22 October 2026 (AEDT), directed by Daniel Alkurdi. The collector's HTTP retrieval of aph.gov.au returns HTTP 403, so the rendered page text is the fingerprinted evidence boundary.",
         "pageContentHash": "edce5a4b471665845f1f4bef4096aebf0e532c2a8c36ab26470a7739b05799b6",
         "characterCount": 1078
+      },
+      "reviewedDate": {
+        "date": "2026-05-13",
+        "precision": "day",
+        "reviewedAt": "2026-10-22T01:39:03.499Z",
+        "reviewedBy": "Daniel Alkurdi (Claude-assisted web review)",
+        "notes": "The captured inquiry page states \"Date referred: 13 May 2026\" and \"On 13 May 2026, the following matter was referred for inquiry and report\"."
       }
     },
     "proposedRecord": {
@@ -41,12 +48,47 @@
       "date": "2026-05-13",
       "datePrecision": "day",
       "title": "Senate opens inquiry into artificial intelligence and data centres",
-      "description": "The Senate inquiry covers AI and data-centre regulation, government deals, and community, industry, energy, water and environmental impacts. Submissions closed on 1 September 2026, and the committee is due to report on 16 November 2026.",
+      "description": "The Senate inquiry covers AI and data-centre regulation, government deals, and community, industry, energy, water and environmental impacts. Submissions closed on 1 September 2026. On 20 October 2026 the committee tabled a progress report moving its reporting date to 23 March 2027.",
       "type": "announcement",
       "jurisdiction": "federal",
-      "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P"
+      "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+          "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+          "title": "Artificial intelligence and data centres",
+          "retrievedAt": "2026-10-22T01:39:03Z",
+          "contentType": "text/html",
+          "contentHash": "4e8745d1e5a171544c3f1ccf6a0d1070d621dccc20b595aa86fcbc6934e7dc07",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-22T01:39:03Z",
+            "capturedBy": "Daniel Alkurdi (Claude-assisted web review)",
+            "notes": "Browser capture of the official Senate committee inquiry page on 22 October 2026 (AEDT), directed by Daniel Alkurdi. The collector's HTTP retrieval of aph.gov.au returns HTTP 403, so the rendered page text is the fingerprinted evidence boundary.",
+            "pageContentHash": "edce5a4b471665845f1f4bef4096aebf0e532c2a8c36ab26470a7739b05799b6",
+            "characterCount": 1078
+          },
+          "reviewedDate": {
+            "date": "2026-05-13",
+            "precision": "day",
+            "reviewedAt": "2026-10-22T01:39:03.499Z",
+            "reviewedBy": "Daniel Alkurdi (Claude-assisted web review)",
+            "notes": "The captured inquiry page states \"Date referred: 13 May 2026\" and \"On 13 May 2026, the following matter was referred for inquiry and report\"."
+          }
+        },
+        "checkedAt": "2026-10-22T01:39:03.499Z",
+        "checkedBy": "Daniel Alkurdi (Claude-assisted web review)",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi in the Policai project thread on 22 October 2026 (reply: \"approve it\"). The committee's progress report of 20 October 2026 moved the reporting date to 23 March 2027."
+      }
     },
-    "updatedAt": "2026-10-22T01:16:43.310Z"
+    "updatedAt": "2026-10-22T01:39:31.137Z",
+    "reviewedAt": "2026-10-22T01:39:03.499Z",
+    "reviewedBy": "Daniel Alkurdi (Claude-assisted web review)",
+    "approvalNotes": "Approved by Daniel Alkurdi in the Policai project thread on 22 October 2026 (reply: \"approve it\"). The committee's progress report of 20 October 2026 moved the reporting date to 23 March 2027.",
+    "publishedAt": "2026-10-22T01:39:31.116Z"
   },
   {
     "id": "source-review-dev-new-report-explores-safe-oversight-of-advanced-a-5uk6ft",
