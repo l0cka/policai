@@ -140,10 +140,12 @@ function CopyLinkButton() {
 
 export function PolicyDetailTabs({
   policy,
+  progress,
   related,
   courtRequirements = [],
 }: {
   policy: Policy;
+  progress?: ReactNode;
   related?: ReactNode;
   courtRequirements?: PublicCourtRequirement[];
 }) {
@@ -239,6 +241,8 @@ export function PolicyDetailTabs({
           </div>
 
           {priorBody !== null ? <WhatChanged before={priorBody} after={policy.content} /> : null}
+
+          {progress}
 
           <div className="no-scrollbar mt-5 overflow-x-auto border-b border-border">
             <div className="flex min-w-max gap-8" role="tablist" aria-label="Policy sections">

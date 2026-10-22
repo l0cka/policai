@@ -6,6 +6,7 @@ import { getPublicCourtRequirements } from '@/lib/court-requirements';
 import { CitedInAnalysis } from '@/components/related/cited-in-analysis';
 import { RelatedInstruments } from '@/components/related/related-instruments';
 import { relatedInstruments } from '@/lib/related-policies';
+import { LegislativeProgress } from '@/components/legislation/legislative-progress';
 import {
   pageAlternates,
   policyJsonLd,
@@ -83,6 +84,7 @@ export default async function PolicyDetailPage({ params }: { params: Promise<{ i
       <PolicyDetailTabs
         policy={policy}
         courtRequirements={courtRequirements}
+        progress={policy.legislative ? <LegislativeProgress policy={{ ...policy, legislative: policy.legislative }} /> : null}
         related={
           <>
             <CitedInAnalysis articles={analyses} />
