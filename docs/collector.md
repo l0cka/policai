@@ -21,8 +21,10 @@ The collector is the automation behind the Developments feed: it watches officia
    - detections (score ≥ 0.5) → `data/developments.json`,
    - AI detections (score ≥ 0.7) and all heuristic detections that enter the
      feed → also staged in `data/source-reviews.json`,
-   - candidate retry state, direct-document fingerprints and per-host
-     robots and backoff records →
+   - candidate retry state, direct-document fingerprints, per-host
+     robots and backoff records, and the per-source `sourceHealth` ledger
+     (`lastSuccessAt`, `firstFailureAt`, `consecutiveFailures`,
+     `lastFailureClass`; [`source-health.ts`](../src/lib/pipeline/source-health.ts)) →
      `data/watch-state.json`,
    - coverage health, per-source item/candidate counts, and errors →
      `public/data/meta.json`.
@@ -41,6 +43,13 @@ The collector is the automation behind the Developments feed: it watches officia
    `lastUsableAt`, so one standing failure does not freeze the window. Only a
    `failed` run leaves it where it was; the register line then labels the
    older date "last passing collection" instead of "last collected".
+   `/status` puts the two dates side by side and, from the ledger, names
+   each automatic source that is failing and has had no successful check at
+   or after that anchor (`sourcesNotReachedSince`), so the window states what it may miss.
+   Skipped sources and candidate-only retries leave a source's ledger record
+   unchanged. `validate:data` checks the order: `lastHealthyAt` is no later
+   than `lastUsableAt`, which is no later than `lastCollectedAt`, and a
+   failing ledger record's `lastSuccessAt` precedes its `firstFailureAt`.
 4. The collector **never writes `data/policies.json`** — the register only changes through reviewed commits. The host wrapper `ops/collector/policai-collect.sh` fails a collection run that changes it. No GitHub workflow checks this, so a hand-made PR that edits the register is caught only by review.
 
 Non-dry-run collection holds the same cross-process data transaction lock as

@@ -5,6 +5,7 @@ import {
   getCollectionMeta,
   getPolicies,
   getSourceCheckTimes,
+  getSourceHealth,
   getSourceMonitoring,
   getSourceReviews,
 } from '@/lib/data-service';
@@ -14,6 +15,7 @@ vi.mock('@/lib/data-service', () => ({
   getCollectionMeta: vi.fn(),
   getPolicies: vi.fn(),
   getSourceCheckTimes: vi.fn(),
+  getSourceHealth: vi.fn(),
   getSourceMonitoring: vi.fn(),
   getSourceReviews: vi.fn(),
 }));
@@ -51,6 +53,7 @@ beforeEach(() => {
   vi.mocked(getSourceCheckTimes).mockResolvedValue({
     'act-ai-policy': '2026-07-20T12:19:40.243Z',
   });
+  vi.mocked(getSourceHealth).mockResolvedValue({});
   vi.mocked(getSourceMonitoring).mockResolvedValue({ manualReviews: [] });
   vi.mocked(getSourceReviews).mockResolvedValue([
     { discoveredAt: '2026-09-01T00:00:00.000Z' } as Awaited<
@@ -131,6 +134,73 @@ it('names the hosts whose robots.txt has not been readable for 3 or more runs', 
       .getAllByRole('listitem')
       .map((item) => item.textContent),
   ).toEqual(['www.alpha.gov.au', 'www.beta.gov.au']);
+});
+
+it('says the ledger is not built yet before the first collection writes it', async () => {
+  render(await StatusPage());
+  const section = screen
+    .getByRole('heading', { name: 'Not reached since the last passing run' })
+    .closest('section');
+  expect(section).toHaveTextContent('The per-source ledger has no records yet');
+  expect(section).not.toHaveTextContent('Every automatic source has been reached');
+});
+
+it('says every automatic source was reached since the last passing run', async () => {
+  vi.mocked(getSourceHealth).mockResolvedValue({
+    'pm-media': {
+      lastSuccessAt: '2026-09-22T08:00:00.000Z',
+      firstFailureAt: null,
+      consecutiveFailures: 0,
+      lastFailureClass: null,
+    },
+  });
+  render(await StatusPage());
+  const section = screen
+    .getByRole('heading', { name: 'Not reached since the last passing run' })
+    .closest('section');
+  expect(section).toHaveTextContent('Last collected 22 Sept 2026. Last passing run 22 Sept 2026');
+  expect(section).toHaveTextContent('Every automatic source has been reached since then.');
+});
+
+it('names the automatic sources failing since the last passing run, longest first', async () => {
+  const meta = await getCollectionMeta();
+  vi.mocked(getCollectionMeta).mockResolvedValue({
+    ...meta,
+    lastCollectedAt: '2026-09-22T08:23:23.603Z',
+    lastUsableAt: '2026-09-20T08:00:00.000Z',
+  });
+  vi.mocked(getSourceHealth).mockResolvedValue({
+    'pm-media': {
+      lastSuccessAt: '2026-09-19T08:00:00.000Z',
+      firstFailureAt: '2026-09-20T08:00:00.000Z',
+      consecutiveFailures: 3,
+      lastFailureClass: 'identity_refused',
+    },
+    'pmc-office-ai': {
+      lastSuccessAt: '2026-09-21T08:00:00.000Z',
+      firstFailureAt: '2026-09-22T08:00:00.000Z',
+      consecutiveFailures: 1,
+      lastFailureClass: 'timeout',
+    },
+    'accc-rss': {
+      lastSuccessAt: null,
+      firstFailureAt: '2026-09-01T08:00:00.000Z',
+      consecutiveFailures: 9,
+      lastFailureClass: 'identity_refused',
+    },
+  });
+  render(await StatusPage());
+  const section = screen
+    .getByRole('heading', { name: 'Not reached since the last passing run' })
+    .closest('section');
+  expect(section).toHaveTextContent('Last passing run 20 Sept 2026');
+  expect(
+    within(section as HTMLElement)
+      .getAllByRole('listitem')
+      .map((item) => item.textContent),
+  ).toEqual([
+    'Prime Minister of Australia — media failing since 20 Sept 2026, 3 runs, identity_refused',
+  ]);
 });
 
 it('lists machine feeds and API surfaces with links to methodology', async () => {

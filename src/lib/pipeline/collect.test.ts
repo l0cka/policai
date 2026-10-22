@@ -38,7 +38,7 @@ const collect = (options: Omit<CollectOptions, 'hostGate'> & { hostGate?: HostGa
   collectThroughGate({ hostGate: buildOpenHostGate(), ...options });
 import type { SourceReview } from '@/types';
 import { MACHINE_CONFIDENCE_CAP, type Classification } from './classify';
-import { validateCollectionMeta, validateSourceReviews } from '../validate-data';
+import { validateCollectionMeta, validateSourceReviews, validateWatchState } from '../validate-data';
 
 beforeEach(() => {
   scrapeWithFirecrawl.mockReset();
@@ -1108,6 +1108,44 @@ describe('collect', () => {
     expect(result.meta.collector.health).toBe('degraded');
     expect(result.meta.lastHealthyAt).toBeNull();
     expect(result.meta.lastUsableAt).toBe('2026-07-10T00:00:00.000Z');
+  });
+
+  it('keeps advancing other sources\' lastSuccessAt while one source stands failed', async () => {
+    const routes = {
+      'https://www.example.gov.au/news': 403,
+      'https://www.example.gov.au/rss': RSS_XML,
+      'https://www.example.gov.au/media/ai-assurance-consultation':
+        '<html><body>Official AI assurance consultation details.</body></html>',
+    } as const;
+    const run = (state: WatchState, at: string) =>
+      collect({
+        sources: [HTML_SOURCE, RSS_SOURCE],
+        state,
+        existingDevelopments: [],
+        fetchImpl: fakeFetch(routes),
+        minHealthySourceRate: 0.5,
+        now: () => new Date(at),
+      });
+
+    const first = await run(emptyWatchState(), '2026-07-10T00:00:00.000Z');
+    const second = await run(first.state, '2026-07-11T00:00:00.000Z');
+
+    expect(second.state.sourceHealth).toEqual({
+      [HTML_SOURCE.id]: {
+        lastSuccessAt: null,
+        firstFailureAt: '2026-07-10T00:00:00.000Z',
+        consecutiveFailures: 2,
+        lastFailureClass: 'identity_refused',
+      },
+      [RSS_SOURCE.id]: {
+        lastSuccessAt: '2026-07-11T00:00:00.000Z',
+        firstFailureAt: null,
+        consecutiveFailures: 0,
+        lastFailureClass: null,
+      },
+    });
+    expect(second.meta.lastUsableAt).toBe('2026-07-11T00:00:00.000Z');
+    expect(validateWatchState(second.state).errors).toEqual([]);
   });
 
   it('baselines direct documents and emits a lead only when content changes', async () => {
@@ -3120,6 +3158,7 @@ describe('collect', () => {
             ? { [weeklyDocument.id]: input.previousSnapshot }
             : {},
           hosts: {},
+          sourceHealth: {},
         },
         sourceReviews: [review],
         existingDevelopments: [],

@@ -39,6 +39,7 @@ import {
   type RetrievedSource,
 } from './fetch';
 import { scrapeWithFirecrawl } from './firecrawl';
+import { advanceSourceHealth, type SourceHealthRecord } from './source-health';
 import { identityAuthorityFor, identityExceptionState } from './identity';
 import {
   getAutomaticSources,
@@ -99,6 +100,7 @@ export interface WatchState {
   lastCheckedBySource: Record<string, string>;
   sourceSnapshots: Record<string, SourceSnapshot>;
   hosts: Record<Host, HostRecord>;
+  sourceHealth: Record<string, SourceHealthRecord>;
 }
 
 export interface CollectOptions {
@@ -192,7 +194,13 @@ async function retrievedSourceFromFirecrawl(
 }
 
 export function emptyWatchState(): WatchState {
-  return { seen: {}, lastCheckedBySource: {}, sourceSnapshots: {}, hosts: {} };
+  return {
+    seen: {},
+    lastCheckedBySource: {},
+    sourceSnapshots: {},
+    hosts: {},
+    sourceHealth: {},
+  };
 }
 
 function slugify(value: string, maxLength = 60): string {
@@ -1136,6 +1144,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     lastCheckedBySource: { ...options.state.lastCheckedBySource },
     sourceSnapshots: { ...(options.state.sourceSnapshots ?? {}) },
     hosts: { ...(options.state.hosts ?? {}) },
+    sourceHealth: { ...(options.state.sourceHealth ?? {}) },
   };
   const gate = options.hostGate;
   const indexGate: HostGate = { ...gate, admit: (url) => gate.admit(url, 'wait') };
@@ -1977,6 +1986,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
   }
 
   state.hosts = gate.hosts();
+  state.sourceHealth = advanceSourceHealth(state.sourceHealth, sourceResults);
   const waits = Object.entries(gate.waited());
   const waitedMs = waits.reduce((sum, [, ms]) => sum + ms, 0);
   const slowest = waits.sort(([, a], [, b]) => b - a)[0];

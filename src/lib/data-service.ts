@@ -10,6 +10,7 @@ import path from "path";
 import { publicAutomaticCollectionMeta } from "@/lib/collection-coverage";
 import { readJsonFile, writeJsonFile } from "@/lib/file-store";
 import { WATCH_SOURCES } from "@/lib/pipeline/sources";
+import type { SourceHealthRecord } from "@/lib/pipeline/source-health";
 import {
 	canonicalizeRecordVerification,
 	canonicalizeSourceEvidence,
@@ -1361,6 +1362,16 @@ export async function getSourceCheckTimes(): Promise<Record<string, string>> {
 		lastCheckedBySource?: Record<string, string>;
 	}>(WATCH_STATE_FILE, {});
 	return state.lastCheckedBySource ?? {};
+}
+
+/** Per-source reach ledger; like check times, the only part of watch-state served. */
+export async function getSourceHealth(): Promise<
+	Record<string, SourceHealthRecord>
+> {
+	const state = await readJsonFile<{
+		sourceHealth?: Record<string, SourceHealthRecord>;
+	}>(WATCH_STATE_FILE, {});
+	return state.sourceHealth ?? {};
 }
 
 export async function upsertManualSourceReview(
