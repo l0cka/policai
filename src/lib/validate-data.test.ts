@@ -1,7 +1,7 @@
 /* @vitest-environment node */
 
 import { describe, expect, it } from 'vitest';
-import { buildManualDecision, buildPolicy, buildTimelineEvent } from '@/test/factories';
+import { buildAgency, buildManualDecision, buildPolicy, buildTimelineEvent } from '@/test/factories';
 import {
   countUnsubstantiatedSecondaryDates,
   isAllowedSourceHost,
@@ -12,6 +12,7 @@ import {
   validateSourceMonitoring,
   validateSourceReviews,
   validateTimeline,
+  validateBodies,
   validateWatchSources,
   validateWatchState,
 } from './validate-data';
@@ -1064,6 +1065,7 @@ describe('validateSourceMonitoring', () => {
   it('rejects materially future manual review timestamps', () => {
     const source = {
       id: 'manual-source',
+      bodyId: 'test-body',
       name: 'Manual source',
       jurisdiction: 'federal',
       category: 'government',
@@ -1099,6 +1101,7 @@ describe('validateSourceMonitoring', () => {
   it('rejects successful manual checks without retained evidence and substantive notes', () => {
     const source = {
       id: 'manual-source',
+      bodyId: 'test-body',
       name: 'Manual source',
       jurisdiction: 'federal',
       category: 'government',
@@ -1447,6 +1450,7 @@ describe('countUnsubstantiatedSecondaryDates', () => {
 describe('validateWatchSources identity exceptions', () => {
   const base: WatchSource = {
     id: 'example-source',
+    bodyId: 'test-body',
     name: 'Example source',
     jurisdiction: 'federal',
     category: 'government',
@@ -1496,6 +1500,7 @@ describe('validateWatchSources automation decisions', () => {
   const now = new Date('2026-10-22T00:00:00.000Z');
   const automatic: WatchSource = {
     id: 'finance-media',
+    bodyId: 'test-body',
     name: 'Finance media',
     jurisdiction: 'federal',
     category: 'government',
@@ -1542,6 +1547,99 @@ describe('validateWatchSources automation decisions', () => {
       'watchSources:incomplete: manual decision needs decidedBy',
       'watchSources:incomplete: manual decision needs evidence of at least 20 characters',
     ]);
+  });
+});
+
+describe('validateBodies', () => {
+  const tierA = (jurisdiction: string) => ({
+    id: `${jurisdiction}-gov`,
+    name: `${jurisdiction} government`,
+    jurisdiction,
+    tier: 'A',
+    hosts: [`www.${jurisdiction}.gov.au`],
+    scope: { status: 'unassessed' },
+  });
+  const bodies = [
+    ...['nsw', 'vic', 'qld', 'wa', 'sa', 'tas', 'act', 'nt'].map(tierA),
+    {
+      id: 'disr',
+      name: 'Department of Industry, Science and Resources',
+      jurisdiction: 'federal',
+      tier: 'A',
+      hosts: ['www.industry.gov.au'],
+      scope: { status: 'in_scope', decidedAt: '2026-10-22', decidedBy: 'Editorial Manager' },
+    },
+  ];
+  const source: WatchSource = {
+    id: 'disr-news',
+    bodyId: 'disr',
+    name: 'DISR news',
+    jurisdiction: 'federal',
+    category: 'government',
+    url: 'https://www.industry.gov.au/news',
+    kind: 'html-index',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+  };
+  const agency = buildAgency({
+    id: 'diser',
+    bodyId: 'disr',
+    name: 'Department of Industry, Science and Resources',
+    website: 'https://www.industry.gov.au/',
+  });
+
+  it('rejects a scope decision on a date that does not exist', () => {
+    const rolled = bodies.map((body) =>
+      body.id === 'disr' ? { ...body, scope: { ...body.scope, decidedAt: '2026-02-30' } } : body,
+    );
+    expect(validateBodies(rolled, [source], {}).errors).toEqual([
+      'bodies:disr: scope decidedAt must be YYYY-MM-DD',
+    ]);
+  });
+
+  it('accepts sources and directory records that resolve to their body', () => {
+    const subUnit = buildAgency({
+      id: 'disr-ai-unit',
+      bodyId: 'disr',
+      name: 'Department of Industry, Science and Resources - AI unit',
+      website: 'https://www.industry.gov.au/ai',
+    });
+    expect(validateBodies(bodies, [source], { agencies: [agency, subUnit] }).errors).toEqual([]);
+  });
+
+  it('fails an unknown body, a foreign host and a name mismatch', () => {
+    const report = validateBodies(
+      bodies,
+      [
+        { ...source, id: 'orphan', bodyId: 'nope' },
+        { ...source, id: 'foreign', url: 'https://www.finance.gov.au/news' },
+      ],
+      { agencies: [{ ...agency, name: 'Department of Industry' }] },
+    );
+    expect(report.errors).toEqual([
+      'watchSources:orphan: unknown bodyId nope',
+      "watchSources:foreign: host www.finance.gov.au is not one of body disr's hosts",
+      'agencies:diser: name "Department of Industry" differs from body disr ("Department of Industry, Science and Resources")',
+    ]);
+  });
+
+  it('fails a jurisdiction mismatch and a jurisdiction without a tier A body', () => {
+    const report = validateBodies(
+      bodies.filter((body) => body.jurisdiction !== 'nt'),
+      [{ ...source, jurisdiction: 'nsw' }],
+      {},
+    );
+    expect(report.errors).toEqual([
+      'bodies: no tier A body for nt',
+      'watchSources:disr-news: jurisdiction nsw differs from body disr (federal)',
+    ]);
+  });
+
+  it('reports a malformed bodies file instead of throwing', () => {
+    expect(
+      validateBodies([{ ...bodies[0], tier: 'D' }], [], {}).errors,
+    ).toEqual(['bodies:nsw-gov: invalid tier']);
   });
 });
 

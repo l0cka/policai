@@ -279,6 +279,7 @@ function toPublicAgencies(
 			: undefined;
 		return {
 			id: agency.id,
+			bodyId: agency.bodyId,
 			name: agency.name,
 			acronym: agency.acronym,
 			level: agency.level,

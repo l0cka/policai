@@ -48,6 +48,8 @@ export type SourceFetchStrategy = 'http' | 'browser';
 export interface WatchSource {
   id: string;
   name: string;
+  /** The publishing body in `data/bodies.json`; `validate:data` resolves it. */
+  bodyId: string;
   jurisdiction: Jurisdiction;
   category: SourceCategory;
   url: string;
@@ -122,6 +124,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'pm-media',
     name: 'Prime Minister of Australia — media',
+    bodyId: 'pmc',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.pm.gov.au/media',
@@ -136,6 +139,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'pmc-office-ai',
     name: 'Department of the Prime Minister and Cabinet — Office of AI',
+    bodyId: 'pmc',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.pmc.gov.au/domestic-policy/office-ai',
@@ -151,6 +155,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'pmc-rapid-review-ai-cyber',
     name: 'PM&C — Rapid review into AI-driven cyber incident arrangements',
+    bodyId: 'pmc',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident',
@@ -166,6 +171,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'industry-ai-publications',
     name: 'Department of Industry — AI publications',
+    bodyId: 'disr',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.industry.gov.au/publications?pub-topic=2963',
@@ -182,6 +188,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'industry-ministers-media',
     name: 'Industry, Science and Resources ministers — media centre',
+    bodyId: 'disr',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.minister.industry.gov.au/feed/all/all/rss.xml',
@@ -198,6 +205,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'dta-media',
     name: 'Digital Transformation Agency — media releases',
+    bodyId: 'dta',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.dta.gov.au/news-and-blogs/latest/feed/news_item',
@@ -214,6 +222,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'digital-gov-ai',
     name: 'digital.gov.au — AI in government policy hub',
+    bodyId: 'dta',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.digital.gov.au/policy/ai',
@@ -229,6 +238,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'disr-news',
     name: 'Department of Industry, Science and Resources — news',
+    bodyId: 'disr',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.industry.gov.au/news',
@@ -244,6 +254,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'naic-news',
     name: 'National AI Centre — news and insights',
+    bodyId: 'disr',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.ai.gov.au/news-and-insights',
@@ -259,6 +270,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'finance-news',
     name: 'Department of Finance — news (APS AI Plan, GovAI)',
+    bodyId: 'finance',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.finance.gov.au/about-us/news',
@@ -273,6 +285,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'agd-news',
     name: "Attorney-General's Department — news (copyright & AI)",
+    bodyId: 'agd',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.ag.gov.au/about-us/news-and-media',
@@ -292,6 +305,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'agd-ministers-media',
     name: "Attorney-General's portfolio ministers — media centre",
+    bodyId: 'agd',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://ministers.ag.gov.au/media-centre',
@@ -307,6 +321,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'treasury-publications',
     name: 'Treasury — publications (digital competition, consumer law)',
+    bodyId: 'treasury',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://treasury.gov.au/publication',
@@ -320,6 +335,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'csiro-news',
     name: 'CSIRO — news (Data61, AI research)',
+    bodyId: 'csiro',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.csiro.au/en/news',
@@ -331,6 +347,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'cyber-news',
     name: 'Australian Cyber Security Centre — news',
+    bodyId: 'asd',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.cyber.gov.au/news',
@@ -352,6 +369,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'apsc-latest-news',
     name: 'Australian Public Service Commission — latest news',
+    bodyId: 'apsc',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.apsc.gov.au/latest-news',
@@ -367,6 +385,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'anao-performance-audits',
     name: 'Australian National Audit Office — performance audit reports',
+    bodyId: 'anao',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.anao.gov.au/pubs/performance-audit?items_per_page=120&page=0',
@@ -382,6 +401,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'senate-ai-data-centres',
     name: 'Senate inquiry — artificial intelligence and data centres',
+    bodyId: 'aph',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P',
@@ -396,6 +416,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'senate-new-inquiries',
     name: 'Australian Senate — new committee inquiries',
+    bodyId: 'aph',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.aph.gov.au/senate/rss/new_inquiries',
@@ -409,6 +430,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'senate-reports',
     name: 'Australian Senate — committee reports tabled',
+    bodyId: 'aph',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.aph.gov.au/senate/rss/reports',
@@ -422,6 +444,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'house-new-inquiries',
     name: 'House of Representatives — new committee inquiries',
+    bodyId: 'aph',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.aph.gov.au/Parliamentary_Business/Committees/House/Current_Inquiries',
@@ -436,6 +459,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'joint-new-inquiries',
     name: 'Parliamentary joint committees — new inquiries',
+    bodyId: 'aph',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.aph.gov.au/Parliamentary_Business/Committees/Joint/Current_Inquiries',
@@ -450,6 +474,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'aph-bills-digests',
     name: 'Parliamentary Library — bills digests',
+    bodyId: 'aph',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://parlinfo.aph.gov.au/parlInfo/feeds/rss.w3p;adv=yes;orderBy=date-eFirst;page=0;query=Date%3AthisYear%20Dataset%3Abillsdgs;resCount=100',
@@ -464,6 +489,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'aph-hansard-bill-debates',
     name: 'Hansard — bill debates discussing AI',
+    bodyId: 'aph',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://parlinfo.aph.gov.au/parlInfo/feeds/rss.w3p;adv=yes;orderBy=date-eFirst;page=0;query=%22artificial%20intelligence%22%20Date%3AthisYear%20Dataset%3Ahansardr,hansards;resCount=100',
@@ -482,6 +508,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'legislation-whats-new',
     name: 'Federal Register of Legislation — what’s new',
+    bodyId: 'opc',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.legislation.gov.au/search/registrationdate(today-7,today)/sort(registeredat%20desc)',
@@ -496,6 +523,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'agd-consultations',
     name: "Attorney-General's Department — consultation hub",
+    bodyId: 'agd',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://consultations.ag.gov.au/',
@@ -510,6 +538,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'industry-consultations',
     name: 'Department of Industry — consultation hub',
+    bodyId: 'disr',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://consult.industry.gov.au/',
@@ -524,6 +553,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'treasury-consultations',
     name: 'Treasury — consultation hub',
+    bodyId: 'treasury',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://consult.treasury.gov.au/',
@@ -538,6 +568,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'aemc-media',
     name: 'Australian Energy Market Commission — media releases',
+    bodyId: 'aemc',
     jurisdiction: 'federal',
     category: 'regulator',
     url: 'https://www.aemc.gov.au/news-centre/media-releases',
@@ -552,6 +583,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'oaic-media',
     name: 'OAIC — media centre',
+    bodyId: 'oaic',
     jurisdiction: 'federal',
     category: 'regulator',
     url: 'https://www.oaic.gov.au/news/media-centre',
@@ -564,6 +596,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'accc-rss',
     name: 'ACCC — media releases',
+    bodyId: 'accc',
     jurisdiction: 'federal',
     category: 'regulator',
     url: 'https://www.accc.gov.au/rss/media_releases.xml',
@@ -583,6 +616,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'apra-rss',
     name: 'APRA — news',
+    bodyId: 'apra',
     jurisdiction: 'federal',
     category: 'regulator',
     url: 'https://www.apra.gov.au/rss.xml',
@@ -594,6 +628,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'asic-newsroom',
     name: 'ASIC — newsroom',
+    bodyId: 'asic',
     jurisdiction: 'federal',
     category: 'regulator',
     url: 'https://asic.gov.au/newsroom',
@@ -608,6 +643,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'acma-media',
     name: 'ACMA — media releases',
+    bodyId: 'acma',
     jurisdiction: 'federal',
     category: 'regulator',
     url: 'https://www.acma.gov.au/media-releases',
@@ -623,6 +659,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'tga-media',
     name: 'TGA — media releases',
+    bodyId: 'tga',
     jurisdiction: 'federal',
     category: 'regulator',
     url: 'https://www.tga.gov.au/news/media-releases',
@@ -638,6 +675,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'ipa-news',
     name: 'IP Australia — news',
+    bodyId: 'ipaustralia',
     jurisdiction: 'federal',
     category: 'regulator',
     url: 'https://www.ipaustralia.gov.au/about-us/news-and-community/news',
@@ -652,6 +690,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'fwc-news',
     name: 'Fair Work Commission — news and media',
+    bodyId: 'fwc',
     jurisdiction: 'federal',
     category: 'regulator',
     url: 'https://www.fwc.gov.au/about-us/news-and-media',
@@ -666,6 +705,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'teqsa-news',
     name: 'TEQSA — latest news',
+    bodyId: 'teqsa',
     jurisdiction: 'federal',
     category: 'regulator',
     url: 'https://www.teqsa.gov.au/latest-news',
@@ -681,6 +721,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'aec-media',
     name: 'AEC — media releases',
+    bodyId: 'aec',
     jurisdiction: 'federal',
     category: 'regulator',
     url: 'https://www.aec.gov.au/media/media-releases.htm',
@@ -695,6 +736,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'esafety-media',
     name: 'eSafety Commissioner — media releases',
+    bodyId: 'esafety',
     jurisdiction: 'federal',
     category: 'regulator',
     url: 'https://www.esafety.gov.au/newsroom/media-releases',
@@ -709,6 +751,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'pc-media',
     name: 'Productivity Commission — media releases',
+    bodyId: 'pc',
     jurisdiction: 'federal',
     category: 'regulator',
     url: 'https://www.pc.gov.au/media-speeches/media-releases',
@@ -722,6 +765,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'ahrc-media',
     name: 'Australian Human Rights Commission — media centre',
+    bodyId: 'ahrc',
     jurisdiction: 'federal',
     category: 'regulator',
     url: 'https://humanrights.gov.au/about-us/media-centre',
@@ -736,6 +780,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'fcfcoa-practice-directions',
     name: 'Federal Circuit and Family Court — practice directions',
+    bodyId: 'fcfcoa',
     jurisdiction: 'federal',
     category: 'court',
     url: 'https://www.fcfcoa.gov.au/resources/practice-directions',
@@ -751,6 +796,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'fedcourt-practice-notes',
     name: 'Federal Court — practice notes',
+    bodyId: 'fedcourt',
     jurisdiction: 'federal',
     category: 'court',
     url: 'https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes',
@@ -765,6 +811,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'art-practice-directions',
     name: 'Administrative Review Tribunal — practice directions',
+    bodyId: 'art',
     jurisdiction: 'federal',
     category: 'court',
     url: 'https://www.art.gov.au/help-and-resources/professionals-and-practitioners/practice-directions-and-other-guidance',
@@ -780,6 +827,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'ncat-procedural-directions',
     name: 'NCAT — procedural directions and guidelines',
+    bodyId: 'ncat',
     jurisdiction: 'nsw',
     category: 'court',
     url: 'https://ncat.nsw.gov.au/publications-and-resources/procedural-directions-and-guidelines.html',
@@ -794,6 +842,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'qcat-practice-directions',
     name: 'QCAT — practice directions',
+    bodyId: 'qcat',
     jurisdiction: 'qld',
     category: 'court',
     url: 'https://www.qcat.qld.gov.au/resources/practice-directions',
@@ -808,6 +857,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'wa-sc-practice-directions',
     name: 'WA Supreme Court — practice directions',
+    bodyId: 'wa-supreme-court',
     jurisdiction: 'wa',
     category: 'court',
     url: 'https://www.supremecourt.wa.gov.au/P/practice_directions.aspx',
@@ -821,6 +871,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'sa-courts-news',
     name: 'SA Courts Administration Authority — news',
+    bodyId: 'sa-courts',
     jurisdiction: 'sa',
     category: 'court',
     url: 'https://www.courts.sa.gov.au/feed',
@@ -834,6 +885,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'act-sc-practice-directions',
     name: 'ACT Supreme Court — practice directions',
+    bodyId: 'act-courts',
     jurisdiction: 'act',
     category: 'court',
     url: 'https://www.courts.act.gov.au/supreme/law-and-practice/practice-notes-and-directions-and-notices-to-practitioners/practice-directions',
@@ -847,6 +899,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'tas-sc-practice-directions',
     name: 'Tasmanian Supreme Court — practice directions',
+    bodyId: 'tas-supreme-court',
     jurisdiction: 'tas',
     category: 'court',
     url: 'https://www.supremecourt.tas.gov.au/publications/directions',
@@ -860,6 +913,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'nt-sc-practice-directions',
     name: 'NT Supreme Court — practice directions',
+    bodyId: 'nt-supreme-court',
     jurisdiction: 'nt',
     category: 'court',
     url: 'https://supremecourt.nt.gov.au/lawyers/practice-directions',
@@ -874,6 +928,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'ntcat-procedural-directions',
     name: 'NTCAT — procedural directions',
+    bodyId: 'ntcat',
     jurisdiction: 'nt',
     category: 'court',
     url: 'https://ntcat.nt.gov.au/publications?type=11',
@@ -887,6 +942,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'nsw-sc-practice-notes',
     name: 'NSW Supreme Court — practice notes',
+    bodyId: 'nsw-supreme-court',
     jurisdiction: 'nsw',
     category: 'court',
     url: 'https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html',
@@ -900,6 +956,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'nsw-gazette-recent',
     name: 'NSW Government Gazette — recent issues',
+    bodyId: 'nsw-pco',
     jurisdiction: 'nsw',
     category: 'government',
     url: 'https://gazette.nsw.gov.au/',
@@ -913,6 +970,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'vic-sc-practice-notes',
     name: 'Victorian Supreme Court — practice notes',
+    bodyId: 'vic-supreme-court',
     jurisdiction: 'vic',
     category: 'court',
     url: 'https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes',
@@ -924,6 +982,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'qld-courts-news',
     name: 'Queensland Courts — news',
+    bodyId: 'qld-courts',
     jurisdiction: 'qld',
     category: 'court',
     url: 'https://www.courts.qld.gov.au/newsroom/news',
@@ -937,6 +996,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'vcat-rss',
     name: 'VCAT — news feed',
+    bodyId: 'vcat',
     jurisdiction: 'vic',
     category: 'court',
     url: 'https://www.vcat.vic.gov.au/rss.xml',
@@ -950,6 +1010,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'vcat-pnvcat11-generative-ai',
     name: 'VCAT — practice note PNVCAT11 (generative AI)',
+    bodyId: 'vcat',
     jurisdiction: 'vic',
     category: 'court',
     url: 'https://www.vcat.vic.gov.au/documents/practice-note-pnvcat11-use-generative-artificial-intelligence',
@@ -964,6 +1025,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'nsw-digital-ai',
     name: 'Digital NSW — artificial intelligence',
+    bodyId: 'nsw-office-for-ai',
     jurisdiction: 'nsw',
     category: 'government',
     url: 'https://www.digital.nsw.gov.au/policy/artificial-intelligence',
@@ -977,6 +1039,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'nsw-media-releases',
     name: 'NSW Government — media releases',
+    bodyId: 'nsw-government',
     jurisdiction: 'nsw',
     category: 'government',
     url: 'https://www.nsw.gov.au/media-releases',
@@ -991,6 +1054,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'vic-legislation-whats-new',
     name: 'Victorian legislation — what’s new',
+    bodyId: 'vic-ocpc',
     jurisdiction: 'vic',
     category: 'government',
     url: 'https://www.legislation.vic.gov.au/whats-new',
@@ -1005,6 +1069,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'qld-legislation-new',
     name: 'Queensland legislation — new Acts and subordinate legislation',
+    bodyId: 'qld-opc',
     jurisdiction: 'qld',
     category: 'government',
     url: 'https://www.legislation.qld.gov.au/feed?id=newlegislation',
@@ -1018,6 +1083,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'tas-legislation-statutory-rules',
     name: 'Tasmanian legislation — statutory rules gazetted this month',
+    bodyId: 'tas-opc',
     jurisdiction: 'tas',
     category: 'government',
     url: 'https://www.legislation.tas.gov.au/feed?id=sr-month',
@@ -1031,6 +1097,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'tas-legislation-acts',
     name: 'Tasmanian legislation — Royal Assents this month',
+    bodyId: 'tas-opc',
     jurisdiction: 'tas',
     category: 'government',
     url: 'https://www.legislation.tas.gov.au/feed?id=act-month',
@@ -1044,6 +1111,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'wa-legislation-as-made',
     name: 'WA legislation — subsidiary legislation as made',
+    bodyId: 'wa-pco',
     jurisdiction: 'wa',
     category: 'government',
     url: 'https://www.legislation.wa.gov.au/legislation/statutes.nsf/asmade.atom',
@@ -1057,6 +1125,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'wa-legislation-as-passed',
     name: 'WA legislation — Acts as passed',
+    bodyId: 'wa-pco',
     jurisdiction: 'wa',
     category: 'government',
     url: 'https://www.legislation.wa.gov.au/legislation/statutes.nsf/aspassed.atom',
@@ -1070,6 +1139,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'vic-ai',
     name: 'vic.gov.au — generative AI guidance',
+    bodyId: 'vic-dpc',
     jurisdiction: 'vic',
     category: 'government',
     url: 'https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps',
@@ -1081,6 +1151,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'ovic-news',
     name: 'OVIC — news',
+    bodyId: 'ovic',
     jurisdiction: 'vic',
     category: 'regulator',
     url: 'https://ovic.vic.gov.au/about-us/news-and-media/news',
@@ -1094,6 +1165,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'ovic-privacy-resources',
     name: 'OVIC — privacy resources for organisations',
+    bodyId: 'ovic',
     jurisdiction: 'vic',
     category: 'regulator',
     url: 'https://ovic.vic.gov.au/privacy/resources-for-organisations',
@@ -1108,6 +1180,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'ovic-enterprise-generative-ai',
     name: 'OVIC — enterprise generative AI guidance',
+    bodyId: 'ovic',
     jurisdiction: 'vic',
     category: 'regulator',
     url: 'https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-enterprise-generative-ai-tools-in-the-victorian-public-sector',
@@ -1122,6 +1195,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'ovic-public-generative-ai',
     name: 'OVIC — publicly available generative AI guidance',
+    bodyId: 'ovic',
     jurisdiction: 'vic',
     category: 'regulator',
     url: 'https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-personal-information-with-publicly-available-generative-ai-tools-in-the-victorian-public-sector',
@@ -1136,6 +1210,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'qld-qgea-ai',
     name: 'Queensland QGEA — AI governance policy',
+    bodyId: 'qld-dsiti',
     jurisdiction: 'qld',
     category: 'government',
     url: 'https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy',
@@ -1149,6 +1224,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'qld-ministerial-statements',
     name: 'Queensland Government — ministerial media statements',
+    bodyId: 'qld-government',
     jurisdiction: 'qld',
     category: 'government',
     url: 'https://statements.qld.gov.au/',
@@ -1163,6 +1239,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'wa-media-statements',
     name: 'WA Government — media statements',
+    bodyId: 'wa-government',
     jurisdiction: 'wa',
     category: 'government',
     url: 'https://www.mediastatements.wa.gov.au/',
@@ -1177,6 +1254,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'wa-ai-policy',
     name: 'WA — AI policy and assurance framework',
+    bodyId: 'wa-office-of-digital-government',
     jurisdiction: 'wa',
     category: 'government',
     url: 'https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework',
@@ -1196,6 +1274,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'sa-office-for-ai',
     name: 'SA Office for AI',
+    bodyId: 'sa-office-for-ai',
     jurisdiction: 'sa',
     category: 'government',
     url: 'https://www.ai.sa.gov.au/',
@@ -1215,6 +1294,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'tas-dpac-policies',
     name: 'Tasmania DPAC — digital strategy policies',
+    bodyId: 'tas-dpac-dss',
     jurisdiction: 'tas',
     category: 'government',
     url: 'https://www.dpac.tas.gov.au/divisions/digital_strategy_and_services/policies',
@@ -1228,6 +1308,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'act-ai-policy',
     name: 'ACT Government — AI policy',
+    bodyId: 'act-government',
     jurisdiction: 'act',
     category: 'government',
     url: 'https://www.act.gov.au/open/act-government-artificial-intelligence-policy',
@@ -1241,6 +1322,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'nt-ai-assurance',
     name: 'NT Digital Territory — AI assurance framework',
+    bodyId: 'nt-dcdd',
     jurisdiction: 'nt',
     category: 'government',
     url: 'https://dcdd.nt.gov.au/publications/artificial-intelligence-assurance-framework',
@@ -1254,6 +1336,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'inslm-annual-reports',
     name: 'INSLM — annual reports',
+    bodyId: 'inslm',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.inslm.gov.au/reviews-reports/annual-reports',

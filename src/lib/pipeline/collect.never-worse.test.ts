@@ -18,11 +18,11 @@ import type { WatchSource } from './sources';
 import type { CollectionMeta, SourceRunResult } from '@/types';
 
 const base = { jurisdiction: 'federal', category: 'government', enabled: true, automation: 'automatic' } as const;
-const HTML: WatchSource = { ...base, id: 'p-html', name: 'P HTML', url: 'https://www.example.gov.au/news', kind: 'html-index', schedule: 'daily' };
-const RSS: WatchSource = { ...base, id: 'p-rss', name: 'P RSS', url: 'https://www.example.gov.au/rss', kind: 'rss', schedule: 'daily' };
-const DOC: WatchSource = { ...base, id: 'p-doc', name: 'P AI governance policy', url: 'https://www.example.gov.au/policy/ai-governance', kind: 'document', schedule: 'daily' };
-const WEEKLY: WatchSource = { ...base, id: 'p-weekly', name: 'P weekly', url: 'https://www.example.gov.au/weekly', kind: 'rss', schedule: 'weekly' };
-const OTHER: WatchSource = { ...base, id: 'p-other', name: 'P other', url: 'https://www.other.gov.au/rss', kind: 'rss', schedule: 'daily' };
+const HTML: WatchSource = { ...base, id: 'p-html', bodyId: 'test-body', name: 'P HTML', url: 'https://www.example.gov.au/news', kind: 'html-index', schedule: 'daily' };
+const RSS: WatchSource = { ...base, id: 'p-rss', bodyId: 'test-body', name: 'P RSS', url: 'https://www.example.gov.au/rss', kind: 'rss', schedule: 'daily' };
+const DOC: WatchSource = { ...base, id: 'p-doc', bodyId: 'test-body', name: 'P AI governance policy', url: 'https://www.example.gov.au/policy/ai-governance', kind: 'document', schedule: 'daily' };
+const WEEKLY: WatchSource = { ...base, id: 'p-weekly', bodyId: 'test-body', name: 'P weekly', url: 'https://www.example.gov.au/weekly', kind: 'rss', schedule: 'weekly' };
+const OTHER: WatchSource = { ...base, id: 'p-other', bodyId: 'test-body', name: 'P other', url: 'https://www.other.gov.au/rss', kind: 'rss', schedule: 'daily' };
 const SOURCES = [HTML, RSS, DOC, WEEKLY, OTHER];
 
 const INDEX_HTML =
@@ -320,6 +320,7 @@ describe('a spent wait budget never makes a host that asked for nothing worse', 
   const manySource = (i: number, host: number, second: boolean): WatchSource => ({
     ...base,
     id: `many-${i}`,
+    bodyId: 'test-body',
     name: `Many ${i}`,
     url: `https://www.host-${host}.gov.au/rss${second ? '-2' : ''}`,
     kind: 'rss',

@@ -47,6 +47,7 @@ import {
 } from '@/lib/pipeline/host-gate';
 import { hostOf } from '@/lib/pipeline/host';
 import { refusedHosts, type WatchSource } from '@/lib/pipeline/sources';
+import { parseBodies, type Body } from '@/lib/watch-coverage/bodies';
 import { isFailureClass, publicFailureUrl } from '@/lib/pipeline/failure';
 import { identityExceptionState } from '@/lib/pipeline/identity';
 import { isValidCalendarDate } from '@/lib/calendar-date';
@@ -2138,6 +2139,63 @@ function validateAutomation(
     errors.push(`${label}: manual decision needs decidedBy`);
   if (!isNonEmptyString(automation.evidence) || automation.evidence.trim().length < 20)
     errors.push(`${label}: manual decision needs evidence of at least 20 characters`);
+}
+
+/**
+ * Cross-file rules for `data/bodies.json`: every source and directory record
+ * resolves to a body in its jurisdiction, and a source's host belongs to its
+ * body. A directory record names its body, or a part of it after " - ".
+ */
+export function validateBodies(
+  raw: unknown,
+  sources: readonly WatchSource[],
+  directories: Readonly<Record<string, readonly Agency[]>>,
+): ValidationReport {
+  const errors: string[] = [];
+  let bodies: Body[];
+  try {
+    bodies = parseBodies(raw);
+  } catch (error) {
+    return { errors: [error instanceof Error ? error.message : String(error)], warnings: [] };
+  }
+  const byId = new Map<string, Body>(bodies.map((body) => [body.id, body]));
+  for (const jurisdiction of JURISDICTIONS) {
+    if (!bodies.some((body) => body.jurisdiction === jurisdiction && body.tier === 'A'))
+      errors.push(`bodies: no tier A body for ${jurisdiction}`);
+  }
+  for (const body of bodies) {
+    if (new Set(body.hosts).size !== body.hosts.length)
+      errors.push(`bodies:${body.id}: duplicate host`);
+  }
+
+  const resolve = (label: string, bodyId: string, jurisdiction: string, url: string) => {
+    const body = byId.get(bodyId);
+    if (!body) {
+      errors.push(`${label}: unknown bodyId ${bodyId}`);
+      return undefined;
+    }
+    if (body.jurisdiction !== jurisdiction)
+      errors.push(`${label}: jurisdiction ${jurisdiction} differs from body ${body.id} (${body.jurisdiction})`);
+    if (URL.canParse(url)) {
+      const host = hostOf(new URL(url));
+      if (!body.hosts.includes(host))
+        errors.push(`${label}: host ${host} is not one of body ${body.id}'s hosts`);
+    }
+    return body;
+  };
+
+  for (const source of sources) {
+    resolve(`watchSources:${source.id}`, source.bodyId, source.jurisdiction, source.url);
+  }
+  for (const [file, records] of Object.entries(directories)) {
+    for (const record of records) {
+      const label = `${file}:${record.id}`;
+      const body = resolve(label, record.bodyId, record.jurisdiction, record.website);
+      if (body && record.name !== body.name && !record.name.startsWith(`${body.name} - `))
+        errors.push(`${label}: name "${record.name}" differs from body ${body.id} ("${body.name}")`);
+    }
+  }
+  return { errors, warnings: [] };
 }
 
 export function validateSourceMonitoring(

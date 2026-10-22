@@ -135,7 +135,9 @@ describe('HostGate against a loopback fixture server', () => {
     const gate = productionGate(fetchImpl);
     await retrieveSource(`${ORIGIN}/news/ai-one`, { fetchImpl, gate, hashLinkedDocuments: false });
     expect(starts).toHaveLength(2);
-    expect(gaps(starts)[0]).toBeGreaterThanOrEqual(DEFAULT_MIN_GAP_MS - 1);
+    // The gate stamps the robots request before the fetch records its start,
+    // so the measured gap can trail the gate's own gap by a few ms.
+    expect(gaps(starts)[0]).toBeGreaterThanOrEqual(DEFAULT_MIN_GAP_MS - 10);
   }, 10_000);
 
   it('waits out a short Retry-After after a 429 and then succeeds', async () => {
@@ -160,6 +162,7 @@ describe('HostGate against a loopback fixture server', () => {
     const gate = productionGate(fetchImpl, 10);
     const indexSource: WatchSource = {
       id: 'fixture-index',
+      bodyId: 'test-body',
       name: 'Fixture index',
       jurisdiction: 'federal',
       category: 'government',
