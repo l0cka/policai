@@ -1,5 +1,46 @@
 [
   {
+    "id": "mcp-audit-93539c5f-3d09-438d-be3e-458098ea8289",
+    "createdAt": "2026-10-22T06:10:02.783Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-5ffdf173-a711-464e-9301-2a423f9661b4",
+    "createdAt": "2026-10-22T06:10:02.762Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-5cdb8f8b-153c-4c98-98aa-38a30bb2928e",
+    "createdAt": "2026-10-22T06:10:02.735Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-8abc618d-e5d3-4d88-8d35-fd1af582785a",
+    "createdAt": "2026-10-22T06:09:43.716Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+    "status": "error",
+    "errorSummary": "HTTP 403 at https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details"
+  },
+  {
+    "id": "mcp-audit-e2dd59f3-3b62-4099-8c86-6b4c345c9de9",
+    "createdAt": "2026-10-22T06:09:19.027Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.parliament.nsw.gov.au/bills/Pages/bill-details.aspx?pk=18875",
+    "status": "error",
+    "errorSummary": "HTTP 403 at https://www.parliament.nsw.gov.au/bills/Pages/bill-details.aspx"
+  },
+  {
     "id": "mcp-audit-98f5b8b3-b554-4ca6-9d19-70914a20c48e",
     "createdAt": "2026-10-22T06:08:03.405Z",
     "actor": "local-mcp-admin",

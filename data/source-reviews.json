@@ -1,5 +1,390 @@
 [
   {
+    "id": "source-review-643e51c3-2365-4254-952a-d95fd3f3b601",
+    "sourceUrl": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+    "title": "Bill Details | Parliament of NSW",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-10-22T06:10:02.752Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "State register backfill (AI-relevant NSW Act), staged for an editorial decision card.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": "legislation",
+      "suggestedJurisdiction": "nsw",
+      "summary": "NSW Act that amends the Electoral Act 2017 and other electoral laws. New section 189A makes it an offence, during the regulated period before an election, to publish or distribute electoral material that is generated substantially, or altered significantly, by artificial intelligence and depicts a real person doing something they did not do, unless that person consented in writing. New section 189B requires other AI-generated electoral material depicting a realistic person, event or place to carry a statement that it is digitally generated. Assented to on 7 April 2026; sections 189A and 189B commenced that day.",
+      "tags": [
+        "New South Wales",
+        "elections",
+        "deepfakes",
+        "electoral material",
+        "artificial intelligence"
+      ],
+      "agencies": [
+        "NSW Electoral Commission",
+        "Parliament of New South Wales"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+      "finalUrl": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+      "title": "Bill Details | Parliament of NSW",
+      "retrievedAt": "2026-10-22T06:10:02.663Z",
+      "contentType": "text/html",
+      "contentHash": "84844e580712abc37da7b6b42b4063d68e79f432967b5f122f08a20b637745b0",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-10-22T06:10:02.663Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "Headless Chromium capture of the NSW Parliament bill page for the Electoral Legislation Amendment (Elections) Bill 2026 with the Policai collector identity; the collector HTTP client was refused with HTTP 403. Staged by Claude (agent) for Daniel Alkurdi's state register backfill.",
+        "pageContentHash": "ffe6d4ac729db98b3c60c790a813c0e73a619b225308add82375d85114bbc094",
+        "characterCount": 2907
+      }
+    },
+    "proposedRecord": {
+      "id": "nsw-electoral-legislation-amendment-elections-act-2026",
+      "title": "Electoral Legislation Amendment (Elections) Act 2026",
+      "description": "NSW Act that amends the Electoral Act 2017 and other electoral laws. New section 189A makes it an offence, during the regulated period before an election, to publish or distribute electoral material that is generated substantially, or altered significantly, by artificial intelligence and depicts a real person doing something they did not do, unless that person consented in writing. New section 189B requires other AI-generated electoral material depicting a realistic person, event or place to carry a statement that it is digitally generated. Assented to on 7 April 2026; sections 189A and 189B commenced that day.",
+      "jurisdiction": "nsw",
+      "type": "legislation",
+      "status": "active",
+      "effectiveDate": "2026-04-07",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-04-07",
+          "precision": "day",
+          "source": {
+            "url": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+            "finalUrl": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+            "title": "Bill Details | Parliament of NSW",
+            "retrievedAt": "2026-10-22T06:10:02.663Z",
+            "contentType": "text/html",
+            "contentHash": "84844e580712abc37da7b6b42b4063d68e79f432967b5f122f08a20b637745b0",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-10-22T06:10:02.663Z",
+              "capturedBy": "Claude (agent)",
+              "requestedBy": "Daniel Alkurdi",
+              "notes": "Headless Chromium capture of the NSW Parliament bill page for the Electoral Legislation Amendment (Elections) Bill 2026 with the Policai collector identity; the collector HTTP client was refused with HTTP 403. Staged by Claude (agent) for Daniel Alkurdi's state register backfill.",
+              "pageContentHash": "ffe6d4ac729db98b3c60c790a813c0e73a619b225308add82375d85114bbc094",
+              "characterCount": 2907
+            },
+            "reviewedDate": {
+              "date": "2026-04-07",
+              "precision": "day",
+              "reviewedAt": "2026-10-22T06:10:02.735Z",
+              "reviewedBy": "Claude (agent)",
+              "notes": "The fetched bill home page records \"Assented on Tue 07 April 2026\" and \"Act number: 6 of 2026\"."
+            }
+          }
+        },
+        {
+          "type": "commenced",
+          "date": "2026-04-07",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+            "finalUrl": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+            "title": "Bill Details | Parliament of NSW",
+            "retrievedAt": "2026-10-22T06:10:02.663Z",
+            "contentType": "text/html",
+            "contentHash": "84844e580712abc37da7b6b42b4063d68e79f432967b5f122f08a20b637745b0",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-10-22T06:10:02.663Z",
+              "capturedBy": "Claude (agent)",
+              "requestedBy": "Daniel Alkurdi",
+              "notes": "Headless Chromium capture of the NSW Parliament bill page for the Electoral Legislation Amendment (Elections) Bill 2026 with the Policai collector identity; the collector HTTP client was refused with HTTP 403. Staged by Claude (agent) for Daniel Alkurdi's state register backfill.",
+              "pageContentHash": "ffe6d4ac729db98b3c60c790a813c0e73a619b225308add82375d85114bbc094",
+              "characterCount": 2907
+            },
+            "reviewedDate": {
+              "date": "2026-04-07",
+              "precision": "day",
+              "reviewedAt": "2026-10-22T06:10:02.735Z",
+              "reviewedBy": "Claude (agent)",
+              "notes": "The fetched bill home page records assent on 7 April 2026. Section 2(d) of the text passed by both Houses commences the provisions not listed in s 2(a) to (c), including Schedule 1[81] (sections 189A and 189B), on the date of assent."
+            }
+          }
+        }
+      ],
+      "agencies": [
+        "NSW Electoral Commission",
+        "Parliament of New South Wales"
+      ],
+      "sourceUrl": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+      "content": "Schedule 1[81] inserts sections 189A and 189B into the Electoral Act 2017. Section 189A prohibits printing, publishing, distributing or publicly displaying, during the regulated period, digitally generated electoral material that depicts a simulated person performing an act the real person did not perform (maximum penalty for an individual 60 penalty units or 6 months imprisonment, or both; otherwise 300 penalty units). It is a defence that the real person gave written consent, or that the defendant took no part in the content and could not reasonably have known. Digitally generated electoral material means electoral material with audio visual, visual or audio content generated substantially, or modified or altered significantly, by artificial intelligence, excluding cartoons and animated drawings. Section 189B requires digitally generated electoral material depicting a digitally created person, event or place that a reasonable person would think is real to include a written or spoken statement that it is digitally generated electoral material (maximum penalty for an individual 20 penalty units or 6 months imprisonment, or both; otherwise 100 penalty units).",
+      "aiSummary": "NSW election law that bans deceptive AI-generated depictions of real people in electoral material during the regulated period and requires other AI-generated electoral material to be labelled. In force since 7 April 2026.",
+      "tags": [
+        "New South Wales",
+        "elections",
+        "deepfakes",
+        "electoral material",
+        "artificial intelligence"
+      ],
+      "themes": [
+        "generative-ai",
+        "transparency-disclosure"
+      ],
+      "createdAt": "2026-10-22T06:09:51.690Z",
+      "updatedAt": "2026-10-22T06:09:51.690Z",
+      "legislative": {
+        "kind": "bill",
+        "ref": {
+          "register": "state",
+          "jurisdiction": "nsw",
+          "url": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875"
+        },
+        "origin": "government",
+        "events": [
+          {
+            "date": "2026-03-17",
+            "precision": "day",
+            "event": {
+              "kind": "introduced",
+              "chamber": "lower"
+            },
+            "source": {
+              "url": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+              "title": "Bill home page"
+            }
+          },
+          {
+            "date": "2026-03-25",
+            "precision": "day",
+            "event": {
+              "kind": "passed",
+              "chamber": "lower"
+            },
+            "source": {
+              "url": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+              "title": "Bill home page"
+            }
+          },
+          {
+            "date": "2026-03-26",
+            "precision": "day",
+            "event": {
+              "kind": "passed",
+              "chamber": "upper"
+            },
+            "source": {
+              "url": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+              "title": "Bill home page"
+            }
+          },
+          {
+            "date": "2026-04-07",
+            "precision": "day",
+            "event": {
+              "kind": "assented",
+              "actCitation": "Act No 6 of 2026"
+            },
+            "source": {
+              "url": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+              "title": "Bill home page"
+            }
+          },
+          {
+            "date": "2026-04-07",
+            "precision": "day",
+            "event": {
+              "kind": "commenced",
+              "extent": "partial",
+              "note": "Section 2(d) commences everything not listed in s 2(a) to (c) on the date of assent, including Schedule 1[81], which inserts sections 189A and 189B (digitally generated electoral material) into the Electoral Act 2017. Section 3(1) and Schedule 2[30], [31] and [43] commence by proclamation and Schedule 2[10] and [11] on 1 July 2026."
+            },
+            "source": {
+              "url": "https://files.parliament.nsw.gov.au/fileapi/ParlFiles/GetArtifact?serverRelativeUrl=%2Fbill%2Ffiles%2F18875%2FPassed%20by%20both%20Houses.pdf",
+              "title": "Electoral Legislation Amendment (Elections) Bill 2026, passed by both Houses, section 2"
+            }
+          }
+        ]
+      }
+    },
+    "updatedAt": "2026-10-22T06:10:02.767Z",
+    "proposal": {
+      "proposedBy": "Claude (agent), at the request of Daniel Alkurdi",
+      "proposedRecord": {
+        "id": "nsw-electoral-legislation-amendment-elections-act-2026",
+        "title": "Electoral Legislation Amendment (Elections) Act 2026",
+        "description": "NSW Act that amends the Electoral Act 2017 and other electoral laws. New section 189A makes it an offence, during the regulated period before an election, to publish or distribute electoral material that is generated substantially, or altered significantly, by artificial intelligence and depicts a real person doing something they did not do, unless that person consented in writing. New section 189B requires other AI-generated electoral material depicting a realistic person, event or place to carry a statement that it is digitally generated. Assented to on 7 April 2026; sections 189A and 189B commenced that day.",
+        "jurisdiction": "nsw",
+        "type": "legislation",
+        "status": "active",
+        "effectiveDate": "2026-04-07",
+        "dates": [
+          {
+            "type": "published",
+            "date": "2026-04-07",
+            "precision": "day",
+            "source": {
+              "url": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+              "finalUrl": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+              "title": "Bill Details | Parliament of NSW",
+              "retrievedAt": "2026-10-22T06:10:02.663Z",
+              "contentType": "text/html",
+              "contentHash": "84844e580712abc37da7b6b42b4063d68e79f432967b5f122f08a20b637745b0",
+              "linkedDocuments": [],
+              "browserCapture": {
+                "method": "browser",
+                "capturedAt": "2026-10-22T06:10:02.663Z",
+                "capturedBy": "Claude (agent)",
+                "requestedBy": "Daniel Alkurdi",
+                "notes": "Headless Chromium capture of the NSW Parliament bill page for the Electoral Legislation Amendment (Elections) Bill 2026 with the Policai collector identity; the collector HTTP client was refused with HTTP 403. Staged by Claude (agent) for Daniel Alkurdi's state register backfill.",
+                "pageContentHash": "ffe6d4ac729db98b3c60c790a813c0e73a619b225308add82375d85114bbc094",
+                "characterCount": 2907
+              },
+              "reviewedDate": {
+                "date": "2026-04-07",
+                "precision": "day",
+                "reviewedAt": "2026-10-22T06:10:02.735Z",
+                "reviewedBy": "Claude (agent)",
+                "notes": "The fetched bill home page records \"Assented on Tue 07 April 2026\" and \"Act number: 6 of 2026\"."
+              }
+            }
+          },
+          {
+            "type": "commenced",
+            "date": "2026-04-07",
+            "precision": "day",
+            "primary": true,
+            "source": {
+              "url": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+              "finalUrl": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+              "title": "Bill Details | Parliament of NSW",
+              "retrievedAt": "2026-10-22T06:10:02.663Z",
+              "contentType": "text/html",
+              "contentHash": "84844e580712abc37da7b6b42b4063d68e79f432967b5f122f08a20b637745b0",
+              "linkedDocuments": [],
+              "browserCapture": {
+                "method": "browser",
+                "capturedAt": "2026-10-22T06:10:02.663Z",
+                "capturedBy": "Claude (agent)",
+                "requestedBy": "Daniel Alkurdi",
+                "notes": "Headless Chromium capture of the NSW Parliament bill page for the Electoral Legislation Amendment (Elections) Bill 2026 with the Policai collector identity; the collector HTTP client was refused with HTTP 403. Staged by Claude (agent) for Daniel Alkurdi's state register backfill.",
+                "pageContentHash": "ffe6d4ac729db98b3c60c790a813c0e73a619b225308add82375d85114bbc094",
+                "characterCount": 2907
+              },
+              "reviewedDate": {
+                "date": "2026-04-07",
+                "precision": "day",
+                "reviewedAt": "2026-10-22T06:10:02.735Z",
+                "reviewedBy": "Claude (agent)",
+                "notes": "The fetched bill home page records assent on 7 April 2026. Section 2(d) of the text passed by both Houses commences the provisions not listed in s 2(a) to (c), including Schedule 1[81] (sections 189A and 189B), on the date of assent."
+              }
+            }
+          }
+        ],
+        "agencies": [
+          "NSW Electoral Commission",
+          "Parliament of New South Wales"
+        ],
+        "sourceUrl": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+        "content": "Schedule 1[81] inserts sections 189A and 189B into the Electoral Act 2017. Section 189A prohibits printing, publishing, distributing or publicly displaying, during the regulated period, digitally generated electoral material that depicts a simulated person performing an act the real person did not perform (maximum penalty for an individual 60 penalty units or 6 months imprisonment, or both; otherwise 300 penalty units). It is a defence that the real person gave written consent, or that the defendant took no part in the content and could not reasonably have known. Digitally generated electoral material means electoral material with audio visual, visual or audio content generated substantially, or modified or altered significantly, by artificial intelligence, excluding cartoons and animated drawings. Section 189B requires digitally generated electoral material depicting a digitally created person, event or place that a reasonable person would think is real to include a written or spoken statement that it is digitally generated electoral material (maximum penalty for an individual 20 penalty units or 6 months imprisonment, or both; otherwise 100 penalty units).",
+        "aiSummary": "NSW election law that bans deceptive AI-generated depictions of real people in electoral material during the regulated period and requires other AI-generated electoral material to be labelled. In force since 7 April 2026.",
+        "tags": [
+          "New South Wales",
+          "elections",
+          "deepfakes",
+          "electoral material",
+          "artificial intelligence"
+        ],
+        "themes": [
+          "generative-ai",
+          "transparency-disclosure"
+        ],
+        "createdAt": "2026-10-22T06:09:51.690Z",
+        "updatedAt": "2026-10-22T06:09:51.690Z",
+        "legislative": {
+          "kind": "bill",
+          "ref": {
+            "register": "state",
+            "jurisdiction": "nsw",
+            "url": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875"
+          },
+          "origin": "government",
+          "events": [
+            {
+              "date": "2026-03-17",
+              "precision": "day",
+              "event": {
+                "kind": "introduced",
+                "chamber": "lower"
+              },
+              "source": {
+                "url": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+                "title": "Bill home page"
+              }
+            },
+            {
+              "date": "2026-03-25",
+              "precision": "day",
+              "event": {
+                "kind": "passed",
+                "chamber": "lower"
+              },
+              "source": {
+                "url": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+                "title": "Bill home page"
+              }
+            },
+            {
+              "date": "2026-03-26",
+              "precision": "day",
+              "event": {
+                "kind": "passed",
+                "chamber": "upper"
+              },
+              "source": {
+                "url": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+                "title": "Bill home page"
+              }
+            },
+            {
+              "date": "2026-04-07",
+              "precision": "day",
+              "event": {
+                "kind": "assented",
+                "actCitation": "Act No 6 of 2026"
+              },
+              "source": {
+                "url": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+                "title": "Bill home page"
+              }
+            },
+            {
+              "date": "2026-04-07",
+              "precision": "day",
+              "event": {
+                "kind": "commenced",
+                "extent": "partial",
+                "note": "Section 2(d) commences everything not listed in s 2(a) to (c) on the date of assent, including Schedule 1[81], which inserts sections 189A and 189B (digitally generated electoral material) into the Electoral Act 2017. Section 3(1) and Schedule 2[30], [31] and [43] commence by proclamation and Schedule 2[10] and [11] on 1 July 2026."
+              },
+              "source": {
+                "url": "https://files.parliament.nsw.gov.au/fileapi/ParlFiles/GetArtifact?serverRelativeUrl=%2Fbill%2Ffiles%2F18875%2FPassed%20by%20both%20Houses.pdf",
+                "title": "Electoral Legislation Amendment (Elections) Bill 2026, passed by both Houses, section 2"
+              }
+            }
+          ]
+        }
+      },
+      "reviewedDate": {
+        "date": "2026-04-07",
+        "precision": "day",
+        "notes": "The fetched bill home page records assent on Tue 7 April 2026 (Act No 6 of 2026). Section 2(d) of the passed text commences Schedule 1[81], sections 189A and 189B of the Electoral Act 2017, on the date of assent."
+      },
+      "notes": "Chamber stages read from https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875 (plain HTTP with the collector identity). Commencement from s 2 of https://files.parliament.nsw.gov.au/fileapi/ParlFiles/GetArtifact?serverRelativeUrl=%2Fbill%2Ffiles%2F18875%2FPassed%20by%20both%20Houses.pdf.",
+      "proposedAt": "2026-10-22T06:10:02.767Z"
+    }
+  },
+  {
     "id": "source-review-095de8a0-09a6-4304-a571-1d4b58335050",
     "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
     "title": "Online Safety Amendment (Digital Duty of Care) Bill 2026",
