@@ -24,6 +24,7 @@ import {
 } from '@/types';
 import { jurisdictionAccent } from '@/lib/jurisdiction-accent';
 import { parseSourceUrl } from '@/lib/source-url';
+import { reuseLabel, type SiteReuse } from '@/lib/watch-coverage/site-reuse';
 import { EmptyState } from '@/components/ui/empty-state';
 import { formatPolicyDate } from '@/lib/format-policy-date';
 import { precisionDateTime } from '@/lib/this-week';
@@ -143,11 +144,13 @@ export function PolicyDetailTabs({
   progress,
   related,
   courtRequirements = [],
+  sourceReuse,
 }: {
   policy: Policy;
   progress?: ReactNode;
   related?: ReactNode;
   courtRequirements?: PublicCourtRequirement[];
+  sourceReuse?: Extract<SiteReuse, { status: 'stated' }>;
 }) {
   const [activeTab, setActiveTab] = useState<TabId>('overview');
   const requirements = useMemo(() => getRequirements(policy), [policy]);
@@ -394,6 +397,16 @@ export function PolicyDetailTabs({
             </p>
             <dl className="mt-4 space-y-3 text-sm">
               {sourceHost ? <div className="grid grid-cols-[6.5rem_1fr] gap-3"><dt className="text-muted-foreground">Official source</dt><dd>{sourceHost}</dd></div> : null}
+              {sourceReuse ? (
+                <div className="grid grid-cols-[6.5rem_1fr] gap-3">
+                  <dt className="text-muted-foreground">Site reuse terms</dt>
+                  <dd>
+                    <a href={sourceReuse.termsUrl} className="text-primary underline underline-offset-4 hover:no-underline">
+                      {reuseLabel(sourceReuse)}
+                    </a>
+                  </dd>
+                </div>
+              ) : null}
               {policy.verification.checkedAt ? <div className="grid grid-cols-[6.5rem_1fr] gap-3"><dt className="text-muted-foreground">Checked</dt><dd className="tabular">{humanDate(policy.verification.checkedAt)}</dd></div> : null}
               {policy.verification.source.retrievedAt ? <div className="grid grid-cols-[6.5rem_1fr] gap-3"><dt className="text-muted-foreground">Retrieved</dt><dd className="tabular">{humanDate(policy.verification.source.retrievedAt)}</dd></div> : null}
             </dl>

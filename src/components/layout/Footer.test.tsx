@@ -19,6 +19,7 @@ it('lists every page under its section, with the utilities moved out of the head
     ['Methodology', '/methodology'],
     ['Source status', '/status'],
     ['Refusing sites', '/status/refusals'],
+    ['Reuse terms', '/status/reuse'],
     ['API', '/api/policies'],
     ['Feedback', 'https://github.com/l0cka/policai/issues'],
   ]) {

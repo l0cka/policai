@@ -48,6 +48,7 @@ import {
 import { hostOf } from '@/lib/pipeline/host';
 import { refusedHosts, type WatchSource } from '@/lib/pipeline/sources';
 import { parseBodies, type Body } from '@/lib/watch-coverage/bodies';
+import { parseSiteReuse, siteReuseCoverage } from '@/lib/watch-coverage/site-reuse';
 import { isFailureClass, publicFailureUrl } from '@/lib/pipeline/failure';
 import { identityExceptionState } from '@/lib/pipeline/identity';
 import { isValidCalendarDate } from '@/lib/calendar-date';
@@ -2161,6 +2162,15 @@ function validateAutomation(
     errors.push(`${label}: manual decision needs decidedBy`);
   if (!isNonEmptyString(automation.evidence) || automation.evidence.trim().length < 20)
     errors.push(`${label}: manual decision needs evidence of at least 20 characters`);
+}
+
+/** `data/site-reuse.json`: well formed, and every entry names a body's host. */
+export function validateSiteReuse(raw: unknown, bodiesRaw: unknown): ValidationReport {
+  try {
+    return siteReuseCoverage(parseSiteReuse(raw), parseBodies(bodiesRaw));
+  } catch (error) {
+    return { errors: [error instanceof Error ? error.message : String(error)], warnings: [] };
+  }
 }
 
 /**

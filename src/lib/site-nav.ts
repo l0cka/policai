@@ -42,6 +42,7 @@ export const ABOUT_SECTION: NavSection = {
     { href: '/methodology', label: 'Methodology' },
     { href: '/status', label: 'Source status' },
     { href: '/status/refusals', label: 'Refusing sites' },
+    { href: '/status/reuse', label: 'Reuse terms' },
   ],
 };
 

@@ -12,6 +12,7 @@ import { readJsonFile, writeJsonFile } from "@/lib/file-store";
 import { WATCH_SOURCES } from "@/lib/pipeline/sources";
 import type { SourceHealthRecord } from "@/lib/pipeline/source-health";
 import { parseBodies, type Body } from "@/lib/watch-coverage/bodies";
+import { parseSiteReuse, type SiteReuse } from "@/lib/watch-coverage/site-reuse";
 import {
 	canonicalizeRecordVerification,
 	canonicalizeSourceEvidence,
@@ -326,6 +327,7 @@ const AGENCIES_FILE = path.join(
 	"agencies.json",
 );
 const BODIES_FILE = path.join(process.cwd(), "data", "bodies.json");
+const SITE_REUSE_FILE = path.join(process.cwd(), "data", "site-reuse.json");
 const COMMONWEALTH_AGENCIES_FILE = path.join(
 	process.cwd(),
 	"data",
@@ -1371,6 +1373,10 @@ export async function getSourceCheckTimes(): Promise<Record<string, string>> {
 /** The publishing-body catalogue that watch coverage counts against. */
 export async function getBodies(): Promise<Body[]> {
 	return parseBodies(await readJsonFile<unknown>(BODIES_FILE, []));
+}
+
+export async function getSiteReuse(): Promise<SiteReuse[]> {
+	return parseSiteReuse(await readJsonFile<unknown>(SITE_REUSE_FILE, []));
 }
 
 /** Per-source reach ledger; like check times, the only part of watch-state served. */

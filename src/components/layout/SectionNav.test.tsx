@@ -17,9 +17,10 @@ describe('SectionNav', () => {
     ['/coverage', 'Register views', ['Records', 'Timeline', 'Coverage map'], 'Coverage map'],
     ['/this-week', 'Updates views', ['This week', 'Developments'], 'This week'],
     ['/developments', 'Updates views', ['This week', 'Developments'], 'Developments'],
-    ['/methodology', 'About views', ['Methodology', 'Source status', 'Refusing sites'], 'Methodology'],
-    ['/status', 'About views', ['Methodology', 'Source status', 'Refusing sites'], 'Source status'],
-    ['/status/refusals', 'About views', ['Methodology', 'Source status', 'Refusing sites'], 'Refusing sites'],
+    ['/methodology', 'About views', ['Methodology', 'Source status', 'Refusing sites', 'Reuse terms'], 'Methodology'],
+    ['/status', 'About views', ['Methodology', 'Source status', 'Refusing sites', 'Reuse terms'], 'Source status'],
+    ['/status/refusals', 'About views', ['Methodology', 'Source status', 'Refusing sites', 'Reuse terms'], 'Refusing sites'],
+    ['/status/reuse', 'About views', ['Methodology', 'Source status', 'Refusing sites', 'Reuse terms'], 'Reuse terms'],
   ])('on %s lists the %s and marks the current one', (path, label, views, current) => {
     renderAt(path);
     const nav = screen.getByRole('navigation', { name: label });
