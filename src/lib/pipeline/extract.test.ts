@@ -188,6 +188,25 @@ describe('extractCandidatesFromHtml', () => {
     ]);
   });
 
+  it('extracts the Parliament of Tasmania current bills list', () => {
+    const html = readFileSync(
+      join(__dirname, '../legislation/__fixtures__/state/tas-bills.html'),
+      'utf8',
+    ).replace(
+      'Conversion Practices Prohibition Bill 2026 (45 of 2026)',
+      'Artificial Intelligence (Transparency) Bill 2026 (45 of 2026)',
+    );
+    const result = extractFromHtml(html, 'https://www.parliament.tas.gov.au/bills');
+
+    expect(result.itemCount).toBeGreaterThan(30);
+    expect(result.candidates).toEqual([
+      expect.objectContaining({
+        title: 'Artificial Intelligence (Transparency) Bill 2026 (45 of 2026)',
+        url: 'https://www.parliament.tas.gov.au/bills/bills2026/conversion-practices-prohibition-bill-2026-45-of-2026',
+      }),
+    ]);
+  });
+
   it('extracts dated OVIC resource cards', () => {
     const result = extractFromHtml(
       `<main>

@@ -1259,6 +1259,21 @@ export const WATCH_SOURCES: WatchSource[] = [
       'Seven-day tables of bills presented and passed, Acts and notified instruments, which also covers the Legislative Assembly’s bills (its own bills list is a weekly PDF). Probed from Argus 2026-10-22: plain HTTP 200 under the declared identity, robots allows the page (crawl-delay 10), 26 rows extracted.',
   },
   {
+    id: 'tas-parliament-bills',
+    name: 'Parliament of Tasmania — current bills',
+    bodyId: 'tas-parliament',
+    jurisdiction: 'tas',
+    category: 'government',
+    url: 'https://www.parliament.tas.gov.au/bills',
+    kind: 'html-index',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    admittedAt: '2026-10-22',
+    notes:
+      'Bills before either House, listed alphabetically without dates, so a new bill is one not seen before. Each bill page carries a stage table for both Houses, which the follow watch reads (src/lib/legislation/tas-progress.ts). Probed from Argus 2026-10-22: plain HTTP 200 under the declared identity, robots allows it, 37 bills extracted.',
+  },
+  {
     id: 'vic-ai',
     name: 'vic.gov.au — generative AI guidance',
     bodyId: 'vic-dpc',

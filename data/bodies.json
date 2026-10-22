@@ -1036,6 +1036,18 @@
     }
   },
   {
+    "id": "tas-parliament",
+    "name": "Parliament of Tasmania",
+    "jurisdiction": "tas",
+    "tier": "A",
+    "hosts": [
+      "www.parliament.tas.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
     "id": "tas-opc",
     "name": "Office of Parliamentary Counsel (TAS)",
     "jurisdiction": "tas",

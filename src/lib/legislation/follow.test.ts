@@ -82,6 +82,40 @@ describe('followTargets', () => {
   });
 });
 
+const TAS_BILL = 'https://www.parliament.tas.gov.au/bills/bills2026/commission-of-inquiry-miscellaneous-amendments-bill-2026-25-of-2026';
+
+function tasBill(url: string): Policy {
+  return buildPolicy({
+    id: 'tas-commission-bill',
+    title: 'Commission of Inquiry (Miscellaneous Amendments) Bill 2026',
+    jurisdiction: 'tas',
+    type: 'legislation',
+    status: 'proposed',
+    sourceUrl: url,
+    legislative: { kind: 'bill', ref: { register: 'state', jurisdiction: 'tas', url }, origin: 'government', events: [] },
+  });
+}
+
+describe('followTargets for state bills', () => {
+  it('follows a Tasmanian bill at its Parliament page, and no other state page', () => {
+    const targets = followTargets([tasBill(TAS_BILL), { ...tasBill('https://www.legislation.tas.gov.au/view/html/asmade/act-2026-001'), id: 'tas-act' }]);
+    expect(targets.map((target) => [target.sourceId, target.register, target.url])).toEqual([['track:tas-commission-bill', 'tas', TAS_BILL]]);
+  });
+
+  it('stages the first reading the page shows', async () => {
+    const page = readFileSync(join(__dirname, '__fixtures__/state/tas-bill-commission-of-inquiry-2026.html'), 'utf8');
+    const { reviews, errors } = await followLegislation({
+      targets: followTargets([tasBill(TAS_BILL)]),
+      existingReviews: [],
+      retrieve: async (url) => ({ body: page, evidence: { url, retrievedAt: now.toISOString(), contentHash: 'b'.repeat(64) } }),
+      now,
+    });
+    expect(errors).toEqual([]);
+    expect(reviews[0].legislativeUpdate?.added.map(({ date, event }) => [date, event])).toEqual([['2026-08-11', { kind: 'introduced', chamber: 'lower' }]]);
+    expect(reviews[0].notes).toContain('House of Assembly');
+  });
+});
+
 describe('followLegislation', () => {
   it('stages one update review with the new stages and the derived status', async () => {
     const record = bill('r7249', [introduced('2024-09-12', 'lower', 'r7249')]);
