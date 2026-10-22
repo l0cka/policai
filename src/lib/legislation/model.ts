@@ -153,6 +153,7 @@ function step(
       if (state.tabled.has(event.chamber)) return `already tabled in the ${event.chamber} chamber`;
       return { ...state, tabled: new Set([...state.tabled, event.chamber]) };
     case 'disallowed':
+      if (kind !== 'instrument') return 'only an instrument is disallowed';
       if (!made) return 'only a registered instrument is disallowed';
       if (!state.tabled.has(event.chamber)) return `disallowed needs tabling in the ${event.chamber} chamber`;
       return { ...state, phase: 'ended' };
@@ -351,6 +352,11 @@ function shapeErrors(raw: unknown): string[] {
   return errors;
 }
 
+const KIND_OF_TYPE: Record<'legislation' | 'regulation', Legislative['kind']> = {
+  legislation: 'bill',
+  regulation: 'instrument',
+};
+
 const LAW_DATE_TYPES = ['commenced', 'amended', 'repealed'] as const;
 
 function dateOnly(value: Date | string): string {
@@ -373,6 +379,10 @@ export function legislativeErrors(
   if (shape.length > 0) return shape;
   // SAFETY: shapeErrors accepted every field the model reads.
   const legislative = policy.legislative as Legislative;
+  const expectedKind = KIND_OF_TYPE[policy.type];
+  if (legislative.kind !== expectedKind) {
+    return [`a ${policy.type} record's legislative kind is ${expectedKind}, not ${legislative.kind}`];
+  }
 
   const { phase, errors } = replay(legislative, policy.jurisdiction);
   const result = errors.map((error) => `legislative.${error}`);

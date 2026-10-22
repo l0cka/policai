@@ -33,6 +33,10 @@ function instrument(...events: ReturnType<typeof on>[]): Legislative {
   };
 }
 
+function isInstrument(legislative: unknown): boolean {
+  return typeof legislative === 'object' && legislative !== null && (legislative as { kind?: unknown }).kind === 'instrument';
+}
+
 const introduced = on('2026-10-15', { kind: 'introduced', chamber: 'lower' });
 const passedLower = on('2026-11-26', { kind: 'passed', chamber: 'lower', withAmendments: false });
 const passedUpper = on('2026-12-03', { kind: 'passed', chamber: 'upper', withAmendments: true });
@@ -42,11 +46,11 @@ const registered = on('2026-09-01', { kind: 'registered' });
 const tabledUpper = on('2026-09-08', { kind: 'tabled', chamber: 'upper', disallowanceEnds: '2026-11-20' });
 
 function record(
-  legislative: unknown,
+  legislative: Legislative | Record<string, unknown> | undefined,
   overrides: { status?: PolicyStatus; jurisdiction?: Jurisdiction; type?: Policy['type']; dates?: PolicyDate[] } = {},
 ) {
   return {
-    type: 'legislation' as const,
+    type: (isInstrument(legislative) ? 'regulation' : 'legislation') as Policy['type'],
     status: 'proposed' as const,
     jurisdiction: 'federal' as const,
     dates: [],
@@ -97,6 +101,7 @@ describe('legislativeErrors', () => {
     ['events out of date order', bill(passedLower, introduced), 'dated before the event above it'],
     ['disallowance in a chamber it was not tabled in', instrument(registered, tabledUpper, on('2026-10-20', { kind: 'disallowed', chamber: 'lower' })), 'disallowed needs tabling in the lower chamber'],
     ['a bill event on an instrument', instrument(registered, introduced), 'only a bill is introduced'],
+    ['disallowance of a bill', bill(introduced, on('2026-11-01', { kind: 'disallowed', chamber: 'upper' })), 'only an instrument is disallowed'],
   ])('rejects %s', (_name, legislative, message) => {
     const errors = legislativeErrors(record(legislative));
     expect(errors.join('\n')).toContain(message);
@@ -122,6 +127,15 @@ describe('legislativeErrors', () => {
     const legislative = bill(introduced, passedLower, passedUpper, assented, commenced);
     expect(legislativeErrors(record(legislative, { status: 'active' }))).toEqual([
       'legislative.events[4] commenced on 2027-01-01 has no matching "commenced" record date',
+    ]);
+  });
+
+  it('pairs legislation records with bills and regulation records with instruments', () => {
+    expect(legislativeErrors(record(bill(introduced), { type: 'regulation' }))).toEqual([
+      "a regulation record's legislative kind is instrument, not bill",
+    ]);
+    expect(legislativeErrors(record(instrument(registered), { type: 'legislation', status: 'active' }))).toEqual([
+      "a legislation record's legislative kind is bill, not instrument",
     ]);
   });
 
