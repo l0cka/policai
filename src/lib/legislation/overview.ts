@@ -127,6 +127,14 @@ export function comingUp(records: LegislativeRecord[], today: string): DatedEntr
     .sort((a, b) => a.date.localeCompare(b.date) || a.record.title.localeCompare(b.record.title));
 }
 
+/** Every recorded stage dated from `since` to `until` (YYYY-MM-DD, both included), latest first. */
+export function stagesBetween(records: LegislativeRecord[], since: string, until: string): DatedEntry[] {
+  return records
+    .flatMap(entries)
+    .filter((entry) => entry.date >= since && entry.date <= until)
+    .sort((a, b) => b.date.localeCompare(a.date) || a.record.title.localeCompare(b.record.title));
+}
+
 const MADE = new Set(['assented', 'registered', 'commenced']);
 const DAY_MS = 24 * 60 * 60 * 1000;
 
