@@ -266,7 +266,7 @@
     "sourceUrl": "https://www.cyber.gov.au/advisory/protect-your-organisations-ai-services",
     "title": "Protect your organisations’ AI services",
     "entryKind": "policy",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-10-22T01:11:49.088Z",
     "createdBy": "Daniel Alkurdi (Claude-assisted web review)",
     "notes": "Manual cyber.gov.au check on 22 October 2026 found this ASD advisory (Published 29 Sep 2026) with no register record and no collector development. Staged as a new guideline for editorial review; it is not approved, published or verified. Related existing records: asd-careful-adoption-agentic-ai-services-2026 and asd-agentic-ai-harnesses-2026.",
@@ -362,9 +362,38 @@
         "cyber-security",
         "ai-governance",
         "risk-assurance"
-      ]
+      ],
+      "createdAt": "2026-10-22T01:11:49.088Z",
+      "updatedAt": "2026-10-22T02:07:56.557Z",
+      "lastReviewedAt": "2026-10-22T02:07:56.557Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.cyber.gov.au/advisory/protect-your-organisations-ai-services",
+          "finalUrl": "https://www.cyber.gov.au/advisory/protect-your-organisations-ai-services",
+          "title": "Protect your organisations’ AI services",
+          "retrievedAt": "2026-10-22T01:09:29.000Z",
+          "contentType": "text/html",
+          "contentHash": "7b8e211df5ac7c93eb4b1f95cb1f0ad4acd286eaca744a4cddf85039d752b4c2",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-22T01:09:29.000Z",
+            "capturedBy": "Daniel Alkurdi (Claude-assisted web review)",
+            "notes": "Plain HTTP fetch (curl, default user agent) of the official ASD cyber.gov.au page on 22 October 2026, reviewed with Claude. The Policai collector does not track cyber.gov.au automatically; this publication was found in a manual check of the cyber.gov.au publications index and missed by earlier checks.",
+            "pageContentHash": "b516b8d506268865474e5337c48fae5a98eca743e60115a595cc740d1daa5a45",
+            "characterCount": 6292
+          },
+          "publishedAt": "2026-09-29",
+          "publishedAtPrecision": "day"
+        },
+        "checkedAt": "2026-10-22T02:07:56.557Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7KcTueXbaTHEuH1WrdG6i9X#cmsg_019nKBbCzGtpRmfKqX3Xisd71xVE76PibA2oYYFbsqBUZf (proposal 26d01b81). Proposed by Claude (agent). Adds the missing createdAt. The browser capture was made by Claude at Daniel Alkurdi's request; its capturedBy label predates honest agent attribution."
+      }
     },
-    "updatedAt": "2026-10-22T02:05:57.088Z",
+    "updatedAt": "2026-10-22T02:07:56.673Z",
     "proposal": {
       "proposedBy": "Claude (agent)",
       "proposedRecord": {
@@ -426,7 +455,17 @@
       },
       "notes": "Adds the missing createdAt. The browser capture was made by Claude at Daniel Alkurdi's request; its capturedBy label predates honest agent attribution.",
       "proposedAt": "2026-10-22T02:05:57.088Z"
-    }
+    },
+    "reviewedAt": "2026-10-22T02:07:56.557Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7KcTueXbaTHEuH1WrdG6i9X#cmsg_019nKBbCzGtpRmfKqX3Xisd71xVE76PibA2oYYFbsqBUZf (proposal 26d01b81). Proposed by Claude (agent). Adds the missing createdAt. The browser capture was made by Claude at Daniel Alkurdi's request; its capturedBy label predates honest agent attribution.",
+    "decision": {
+      "proposalHash": "26d01b813ef41c95528bd00a8548d2c0afadef80bae5333f2844bd7a948e1706",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-10-22T02:07:56.543Z",
+      "attestationUrl": "https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7KcTueXbaTHEuH1WrdG6i9X#cmsg_019nKBbCzGtpRmfKqX3Xisd71xVE76PibA2oYYFbsqBUZf"
+    },
+    "publishedAt": "2026-10-22T02:07:56.632Z"
   },
   {
     "id": "source-review-dev-new-report-explores-safe-oversight-of-advanced-a-5uk6ft",
