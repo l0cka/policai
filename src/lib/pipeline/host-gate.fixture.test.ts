@@ -35,8 +35,6 @@ function startFixture(robots: string): Promise<Fixture> {
   const fixture: Partial<Fixture> & { hits: Fixture['hits'] } = { hits: [], robots, limitedRemaining: 1, token };
   const server = createServer((request, response) => {
     const path = request.url ?? '/';
-    // The port is on a loopback interface shared with every other process on the CI host,
-    // so record only requests sent through loopbackFetch.
     if (request.headers[FIXTURE_TOKEN_HEADER] !== token) {
       response.writeHead(404).end();
       return;
