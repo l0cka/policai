@@ -13,7 +13,9 @@ import { isRelevantScrapedCandidate } from '@/lib/scraper-filter';
  * - `qld`: the Queensland Parliament's bills before the House (browser).
  *   Each bill links to its tabled bill text, the only per-bill page it has.
  * - `wa`: the WA Parliament's current bills (browser), a table of House,
- *   bill, date introduced and stage, linking each bill's progress page.
+ *   bill, date introduced and stage, linking each bill's progress page. The
+ *   view pages at 30 rows unless the URL raises Count, so a full page is an
+ *   error rather than a silently short list.
  */
 
 export type BillListId = 'nt' | 'qld' | 'wa';
@@ -91,7 +93,7 @@ const READERS: Record<BillListId, ($: cheerio.CheerioAPI, baseUrl: string) => Bi
       .filter((_, candidate) => /bill name/i.test($(candidate).find('thead').text()))
       .first();
     if (table.length === 0) return null;
-    return table
+    const rows = table
       .find('tbody > tr')
       .map((_, row): BillRow | null => {
         const cells = $(row).children('td');
@@ -107,6 +109,10 @@ const READERS: Record<BillListId, ($: cheerio.CheerioAPI, baseUrl: string) => Bi
       })
       .get()
       .filter((row): row is BillRow => row !== null);
+    // The view serves 30 rows a page unless the URL raises Count.
+    const pageSize = Number(new URL(baseUrl).searchParams.get('Count') ?? 30);
+    if (rows.length >= pageSize) throw new Error(`the WA bill list filled its page of ${pageSize} rows; raise Count in the source URL`);
+    return rows;
   },
 };
 

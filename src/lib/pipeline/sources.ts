@@ -1274,7 +1274,7 @@ export const WATCH_SOURCES: WatchSource[] = [
     bodyId: 'wa-parliament',
     jurisdiction: 'wa',
     category: 'government',
-    url: 'https://www.parliament.wa.gov.au/parliament/bills.nsf/screenWebCurrentBills',
+    url: 'https://www.parliament.wa.gov.au/parliament/bills.nsf/screenWebCurrentBills?Count=200&OpenForm=',
     kind: 'bill-list',
     billList: 'wa',
     schedule: 'daily',
@@ -1283,7 +1283,7 @@ export const WATCH_SOURCES: WatchSource[] = [
     fetchStrategy: 'browser',
     admittedAt: '2026-10-22',
     notes:
-      'Bills before either House: House, title, date introduced and current stage, each linking its progress page. The host answers plain HTTP with an Azure WAF 403, so the list is read in the collector’s browser under the declared identity; robots allows it there. Fetched from Argus 2026-10-22: 30 bills.',
+      'Bills before either House: House, title, date introduced and current stage, each linking its progress page. The host answers plain HTTP with an Azure WAF 403, so the list is read in the collector’s browser under the declared identity; robots allows it there. The view pages at 30 rows; Count=200 returns all 89 current bills (Argus, 2026-10-22), and a full page fails the run rather than reading a short list.',
   },
   {
     id: 'qld-parliament-bills',

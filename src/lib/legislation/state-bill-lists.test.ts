@@ -7,7 +7,7 @@ const fixture = (name: string) => readFileSync(join(__dirname, '__fixtures__/sta
 
 const NT = 'https://legislation.nt.gov.au/en/LegislationPortal/Bills/Before-Legislative-Assembly';
 const QLD = 'https://www.parliament.qld.gov.au/Work-of-the-Assembly/Bills-and-Legislation/Bills-before-the-House';
-const WA = 'https://www.parliament.wa.gov.au/parliament/bills.nsf/screenWebCurrentBills';
+const WA = 'https://www.parliament.wa.gov.au/parliament/bills.nsf/screenWebCurrentBills?Count=200&OpenForm=';
 
 describe('extractFromBillList', () => {
   it('reads every bill on each list and keeps none, since no current title names AI', () => {
@@ -57,6 +57,11 @@ describe('extractFromBillList', () => {
         dateHintPrecision: 'day',
       },
     ]);
+  });
+
+  it('refuses a WA list that fills its page, since bills past it would be missed', () => {
+    const page = 'https://www.parliament.wa.gov.au/parliament/bills.nsf/screenWebCurrentBills';
+    expect(() => extractFromBillList('wa', fixture('wa-current-bills.html'), page)).toThrow('filled its page of 30 rows');
   });
 
   it('treats a page without its list as broken, not empty', () => {
