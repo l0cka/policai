@@ -7,6 +7,7 @@ import { describe, expect, it, vi } from "vitest";
 import type { PolicyDraft, SourceReview } from "@/types";
 import {
 	formatPendingSourceReviewCards,
+	formatSignalInstant,
 	runSignalSourceReviewCommand,
 	SIGNAL_CARD_SUMMARY_LIMIT,
 	type SignalSourceReviewDeps,
@@ -544,5 +545,13 @@ describe("signal source review wiring", () => {
 		expect(workflow).toContain("workflow_dispatch");
 		expect(workflow).not.toContain("schedule:");
 		expect(script).toContain('getSourceReviews({ status: "pending_review" })');
+	});
+});
+
+describe("formatSignalInstant", () => {
+	it("prints September as Sep, like the site", () => {
+		const text = formatSignalInstant("2026-09-14T02:30:00Z");
+		expect(text).toContain("14 Sep 2026");
+		expect(text).not.toContain("Sept");
 	});
 });
