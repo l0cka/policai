@@ -418,7 +418,13 @@ FAILURE / RECOVERY
     each completed switch and verifies repeated recovery for both release clones.
     Successful rollback leaves blocked.json intact.
 
-  Review the failure; fix main using normal history. Put the reviewed target SHA
+  Review the failure. A failed deploy records failure in blocked.json and
+  cli.py status prints it: phase is the last checkpoint reached before the
+  error (preflight, target-resolved, stage, activate or health), error is the
+  exception type and, for a Refused, reason is its static public text. Other
+  exception messages are never stored. A record without failure predates
+  this field; the 2026-10-20 05:16 block was one, and its cause had to be
+  inferred from timing. Fix main using normal history. Put the reviewed target SHA
   in approved_target and the exact failed transaction ID in recovery_authorization.
   Then, in the reviewed window:
     sudo /usr/bin/python3 -I /usr/local/libexec/policai-host/cli.py deploy --recover ID

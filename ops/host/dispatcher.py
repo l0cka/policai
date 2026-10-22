@@ -264,7 +264,11 @@ class Transaction:
                     "main": target,
                     "heads": deployed["heads"],
                 }
-            except BaseException:
+            except BaseException as error:
+                # Refused reasons are static and nonsecret; any other error keeps only its type.
+                record["failure"] = {"phase": record["phase"], "error": type(error).__name__}
+                if isinstance(error, Refused):
+                    record["failure"]["reason"] = str(error)
                 checkpoint("failed-review-required")
                 raise Refused("deployment blocked; reviewed recovery required") from None
 

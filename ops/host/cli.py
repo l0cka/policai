@@ -143,6 +143,7 @@ def main():
                             "phase": record.get("phase"),
                             "transaction": record.get("id"),
                             "target": record.get("target"),
+                            "failure": record.get("failure"),
                             "bootstrap_pending": record.get("bootstrap_pending", False),
                         }
                     )
