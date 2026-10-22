@@ -6,6 +6,7 @@ import { isAbsolute, relative, resolve } from "node:path";
 import { analyseContentRelevance } from "@/lib/analysis";
 import { isValidCalendarDate } from "@/lib/calendar-date";
 import { withDataMutationLock } from "@/lib/data-lock";
+import { isLegislativeDraft } from "@/lib/legislation/model";
 import {
 	extractRetrievedDocument,
 	type ExtractedDocument,
@@ -39,6 +40,7 @@ import {
 	getTimelineEvents,
 	logMcpAuditEvent,
 	markCollectionReviewed,
+	retireTimelineEventsCiting,
 	sourceUrlExists,
 	upsertManualSourceReview,
 	upsertDevelopment,
@@ -1017,12 +1019,20 @@ async function stageSourceUrlUnlocked(input: {
 	const { canonicalUrl, isOfficial } = validateSourceUrl(input.url, {
 		stageOnly: input.stageOnly,
 	});
+	// A legislative record replaces the hand-typed timeline events on its
+	// page when it publishes, so it does not compete with them for the source.
+	const legislativeRecord =
+		input.entryKind === "policy" &&
+		input.proposedRecord !== undefined &&
+		isLegislativeDraft(input.proposedRecord);
 	const [trackedPolicies, trackedTimelineEvents] = await Promise.all([
 		getPolicies(undefined, { access: "admin" }),
-		getTimelineEvents(undefined, {
-			includeGenerated: false,
-			access: "admin",
-		}),
+		legislativeRecord
+			? []
+			: getTimelineEvents(undefined, {
+					includeGenerated: false,
+					access: "admin",
+				}),
 	]);
 	const sourceReviews = await getSourceReviews();
 	const matchingPolicies = trackedPolicies.filter((policy) =>
@@ -1118,7 +1128,10 @@ async function stageSourceUrlUnlocked(input: {
 				!timelineReviewTargetId(review) &&
 				sourceUrlsEqual(review.sourceUrl, canonicalUrl),
 		);
-		if (!existingReview && (await sourceUrlExists(canonicalUrl))) {
+		if (
+			!existingReview &&
+			(await sourceUrlExists(canonicalUrl, { legislativeRecord }))
+		) {
 			throw new Error("Source URL already exists in tracked or staged content");
 		}
 	}
@@ -1903,10 +1916,13 @@ async function approveStagedSourceUnlocked(input: {
 	let replacesTargetPolicySource = false;
 	const [policies, timelineEvents, sourceReviews] = await Promise.all([
 		getPolicies(undefined, { access: "admin" }),
-		getTimelineEvents(undefined, {
-			includeGenerated: false,
-			access: "admin",
-		}),
+		// As at staging, a legislative record replaces the timeline events on its page.
+		isLegislativeDraft(draft)
+			? []
+			: getTimelineEvents(undefined, {
+					includeGenerated: false,
+					access: "admin",
+				}),
 		getSourceReviews(),
 	]);
 	if (review.targetPolicyId) {
@@ -2721,11 +2737,16 @@ async function publishStagedSourceUnlocked(
 			} else {
 				const duplicateExists = await sourceUrlExists(review.sourceUrl, {
 					excludeSourceReviewId: review.id,
+					legislativeRecord: isLegislativeDraft(policy),
 				});
 				if (duplicateExists) {
 					throw new Error("Source URL already exists in tracked content");
 				}
 				await createPolicy(policy);
+			}
+			// Idempotent, so a retried publish finishes what a failed one began.
+			if (isLegislativeDraft(policy)) {
+				await retireTimelineEventsCiting(policy.sourceUrl);
 			}
 		}
 	}

@@ -4,8 +4,10 @@ import {
   type DatePrecision,
   type Jurisdiction,
   type Policy,
+  type PolicyDraft,
   type PolicyStatus,
   type SourceEvidence,
+  type TimelineEventDraft,
 } from '@/types';
 import { isValidCalendarDate } from '@/lib/calendar-date';
 
@@ -14,6 +16,11 @@ import { isValidCalendarDate } from '@/lib/calendar-date';
  * the canonical record; status and phase are derived by replaying them
  * through `step`, which is the only place the legal order is encoded.
  */
+
+/** A proposed policy record that tracks a bill, Act or instrument. */
+export function isLegislativeDraft(record: PolicyDraft | TimelineEventDraft): boolean {
+  return 'legislative' in record && record.legislative !== undefined;
+}
 
 export type Chamber = 'lower' | 'upper';
 

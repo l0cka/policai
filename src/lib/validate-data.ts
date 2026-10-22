@@ -1113,6 +1113,25 @@ export function validateAgencies(
   return { errors, warnings };
 }
 
+/**
+ * A legislative record carries its bill's history as events and shows them on
+ * the timeline itself, so no hand-typed timeline event may cite its page.
+ */
+export function validateLegislativeTimelineOverlap(
+  policies: Policy[],
+  events: TimelineEvent[],
+): ValidationReport {
+  const errors = events.flatMap((event) => {
+    const record = policies.find(
+      (policy) => policy.legislative && sourceUrlsEqual(policy.sourceUrl, event.sourceUrl),
+    );
+    return record
+      ? [`${event.id}: cites the page of legislative record ${record.id}; its history belongs in that record's events`]
+      : [];
+  });
+  return { errors, warnings: [] };
+}
+
 export function validateTimeline(
   events: TimelineEvent[],
   policyIds: Set<string>,
