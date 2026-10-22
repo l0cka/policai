@@ -875,6 +875,32 @@ review (`sourceEvidence` plus the staged record text) and its notes gain
 `RETAINED_SNAPSHOT_APPROVAL_NOTE` (`src/lib/source-ingest.ts`). Other
 failures, such as timeouts, 404s and 5xx responses, still refuse.
 
+### Follow watches for federal bills
+
+Every register bill whose `legislative.ref` is an APH bill id, and whose
+`sourceUrl` is that bill's home page, is followed on each collection run
+under the watch id `track:<policyId>`. The watch reads the page through the
+browser with the Policai identity, because APH answers plain HTTP clients with
+a WAF 403. `src/lib/legislation/aph-progress.ts` parses the Progress tables and
+committee Notes into lifecycle events. Fixtures for that parser are excerpts of
+real bill pages in `src/lib/legislation/__fixtures__/aph/`.
+
+When the page shows a stage the record lacks, the watch stages one update
+review against the record. The proposed record carries the merged events and
+the derived status. The review's `legislativeUpdate` lists the added stages,
+plus any stage the parser could not map, such as "Discharged from Notice
+Paper". A merge that breaks the legal order is reported in the review, not
+applied. Unlike a changed direct document, a stage update keeps the record
+public while it waits, because the last approved stage is still true as of its
+date. It is decided like any other review: a proposal, then Daniel's decision
+card, then `record_decision`.
+
+Each bill has at most one waiting stage update. A decided update is never
+staged again; only a further change on the page stages a new one. A page with
+no Progress stages counts as a failure in the source health ledger, so a markup
+change cannot pass silently. Run one watch with
+`npm run collect -- --source=track:<policyId>`.
+
 ### Policai Signal (Grok Bot)
 
 **Policai Signal** is Daniel’s Grok Bot

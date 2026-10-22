@@ -195,6 +195,7 @@ async function getWithheldPolicyIds(
 		) {
 			continue;
 		}
+		if (review.legislativeUpdate) continue;
 		if (review.targetPolicyId) {
 			const canonical = policies.find(
 				(policy) => policy.id === review.targetPolicyId,

@@ -13,7 +13,15 @@ import {
   robotsFetcher,
   type HostGate,
 } from '../src/lib/pipeline/host-gate';
+import { retrieveSource } from '../src/lib/pipeline/fetch';
+import { advanceSourceHealth } from '../src/lib/pipeline/source-health';
 import { refusedHosts, WATCH_SOURCES, type WatchSource } from '../src/lib/pipeline/sources';
+import {
+  FOLLOW_SOURCE_PREFIX,
+  followLegislation,
+  followTargets,
+  type FollowResult,
+} from '../src/lib/legislation/follow';
 import {
   mergeSourceReviews,
   reconcileLinkedDevelopments,
@@ -72,6 +80,15 @@ export async function runCollection(run: CollectionRun): Promise<void> {
     ]);
 
   const hosts = state.hosts ?? {};
+  const hostGate =
+    run.hostGate ??
+    createHostGate({
+      hosts,
+      refused: refusedHosts(WATCH_SOURCES),
+      fetchRobots: robotsFetcher({ fetchImpl: run.fetchImpl }),
+      now: Date.now,
+      sleep,
+    });
   const result = await collect({
     sources: run.sources,
     catalogSources: WATCH_SOURCES,
@@ -82,15 +99,7 @@ export async function runCollection(run: CollectionRun): Promise<void> {
       hosts,
       sourceHealth: state.sourceHealth ?? {},
     },
-    hostGate:
-      run.hostGate ??
-      createHostGate({
-        hosts,
-        refused: refusedHosts(WATCH_SOURCES),
-        fetchRobots: robotsFetcher({ fetchImpl: run.fetchImpl }),
-        now: Date.now,
-        sleep,
-      }),
+    hostGate,
     existingDevelopments: reconcileLinkedDevelopments(
       reviews,
       developments,
@@ -110,6 +119,13 @@ export async function runCollection(run: CollectionRun): Promise<void> {
     logger: (message) => console.log(message),
   });
 
+  const follow = await followTrackedBills(run, policies, reviews, hostGate);
+  const reviewCandidates = [...result.reviewCandidates, ...follow.reviews];
+  result.state.sourceHealth = advanceSourceHealth(
+    result.state.sourceHealth,
+    follow.results,
+  );
+
   const publicMeta = run.sourceId
     ? result.meta
     : publicAutomaticCollectionMeta(result.meta, WATCH_SOURCES);
@@ -117,6 +133,7 @@ export async function runCollection(run: CollectionRun): Promise<void> {
   console.log(
     `[collect] ${result.developments.length} new developments, ` +
       `${result.reviewCandidates.length} review candidates, ` +
+      `${follow.reviews.length} stage updates, ` +
       `${result.errors.length} source errors; ` +
       `health ${publicMeta.collector.health} ` +
       `(${publicMeta.collector.successfulSourceCount}/${publicMeta.collector.dueSourceCount} due sources successful)`,
@@ -127,7 +144,7 @@ export async function runCollection(run: CollectionRun): Promise<void> {
         `(${development.relevanceScore}, ${development.classification}) ${development.url}`,
     );
   }
-  for (const error of result.errors) {
+  for (const error of [...result.errors, ...follow.errors]) {
     console.warn(`  ! ${error}`);
   }
 
@@ -150,10 +167,7 @@ export async function runCollection(run: CollectionRun): Promise<void> {
     return;
   }
 
-  const mergedReviews = mergeSourceReviews(
-    reviews,
-    result.reviewCandidates,
-  );
+  const mergedReviews = mergeSourceReviews(reviews, reviewCandidates);
   const developmentById = new Map(
     reconcileLinkedDevelopments(mergedReviews, developments).map(
       (development) => [development.id, development],
@@ -167,7 +181,7 @@ export async function runCollection(run: CollectionRun): Promise<void> {
       new Date(b.detectedAt).getTime() - new Date(a.detectedAt).getTime(),
   );
 
-  if (result.reviewCandidates.length > 0) {
+  if (reviewCandidates.length > 0) {
     await writeJsonFile(paths.sourceReviews, mergedReviews);
   }
   await writeJsonFile(paths.developments, mergedDevelopments);
@@ -178,6 +192,44 @@ export async function runCollection(run: CollectionRun): Promise<void> {
 
   console.log(
     `[collect] Wrote ${result.developments.length} developments, ` +
-      `${result.reviewCandidates.length} staged or updated reviews. Sources checked: ${result.meta.collector.lastRunSources.length}.`,
+      `${reviewCandidates.length} staged or updated reviews. Sources checked: ${result.meta.collector.lastRunSources.length}.`,
   );
+}
+
+/**
+ * Follow watches read each tracked federal bill's APH page through the
+ * browser with the Policai identity; APH refuses plain HTTP clients. A run
+ * targeted at one catalogue source skips them; `--source track:<policyId>`
+ * follows one bill.
+ */
+async function followTrackedBills(
+  run: CollectionRun,
+  policies: Policy[],
+  reviews: SourceReview[],
+  gate: HostGate,
+): Promise<FollowResult> {
+  const none: FollowResult = { reviews: [], errors: [], results: [] };
+  if (run.sourceId && !run.sourceId.startsWith(FOLLOW_SOURCE_PREFIX)) return none;
+  if (!run.browserFetchImpl) {
+    console.log('[follow] No browser retriever; follow watches skipped.');
+    return none;
+  }
+  const browserFetchImpl = run.browserFetchImpl;
+  const now = run.now ?? (() => new Date());
+  return followLegislation({
+    targets: followTargets(policies).filter(
+      (target) => !run.sourceId || target.sourceId === run.sourceId,
+    ),
+    existingReviews: reviews,
+    retrieve: (url) =>
+      retrieveSource(url, {
+        fetchImpl: browserFetchImpl,
+        now,
+        gate,
+        timeoutMs: 60_000,
+        transport: 'browser',
+      }),
+    now: now(),
+    log: (message) => console.log(message),
+  });
 }

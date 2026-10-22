@@ -1542,6 +1542,15 @@ export function validateSourceReviews(
     }
     if (!isOneOf(SOURCE_REVIEW_ENTRY_KINDS, review.entryKind))
       errors.push(`${label}: invalid entryKind`);
+    // A stage update keeps its record public, so only a follow watch's
+    // update of a legislative record may carry one.
+    if (
+      review.legislativeUpdate !== undefined &&
+      (!review.targetPolicyId ||
+        !isRecord((review.proposedRecord as Partial<Policy> | undefined)?.legislative))
+    ) {
+      errors.push(`${label}: legislativeUpdate is only for an update review of a legislative record`);
+    }
     if (review.targetPolicyId) {
       if (review.entryKind !== 'policy') {
         errors.push(`${label}: targetPolicyId is only valid for policy reviews`);

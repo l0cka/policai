@@ -21,6 +21,7 @@ import {
   getSourceById,
 } from '../src/lib/pipeline/sources';
 import { runCollection } from './collect-run';
+import { FOLLOW_SOURCE_PREFIX } from '../src/lib/legislation/follow';
 
 interface CliOptions {
   dryRun: boolean;
@@ -61,7 +62,12 @@ async function main() {
   );
 
   let sources = getAutomaticSources();
-  if (options.sourceId) {
+  if (options.sourceId?.startsWith(FOLLOW_SOURCE_PREFIX)) {
+    sources = [];
+    console.log(
+      `[collect] Targeted follow watch ${options.sourceId}; catalogue sources are skipped.`,
+    );
+  } else if (options.sourceId) {
     const source = getSourceById(options.sourceId);
     if (!source) {
       console.error(`[collect] Unknown source id: ${options.sourceId}`);
