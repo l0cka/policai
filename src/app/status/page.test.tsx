@@ -2,6 +2,7 @@ import { render, screen, within } from '@testing-library/react';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { buildPolicy } from '@/test/factories';
 import {
+  getBodies,
   getCollectionMeta,
   getPolicies,
   getSourceCheckTimes,
@@ -12,6 +13,7 @@ import {
 import StatusPage from './page';
 
 vi.mock('@/lib/data-service', () => ({
+  getBodies: vi.fn(),
   getCollectionMeta: vi.fn(),
   getPolicies: vi.fn(),
   getSourceCheckTimes: vi.fn(),
@@ -54,6 +56,7 @@ beforeEach(() => {
     'act-ai-policy': '2026-07-20T12:19:40.243Z',
   });
   vi.mocked(getSourceHealth).mockResolvedValue({});
+  vi.mocked(getBodies).mockResolvedValue([]);
   vi.mocked(getSourceMonitoring).mockResolvedValue({ manualReviews: [] });
   vi.mocked(getSourceReviews).mockResolvedValue([
     { discoveredAt: '2026-09-01T00:00:00.000Z' } as Awaited<
@@ -229,4 +232,25 @@ it('lists machine feeds and API surfaces with links to methodology', async () =>
     'href',
     '/methodology#machine-feeds',
   );
+});
+
+it('counts watched bodies by tier and names the tier A gaps', async () => {
+  vi.mocked(getBodies).mockResolvedValue(
+    [
+      { id: 'act-government', name: 'ACT Government', tier: 'A' },
+      { id: 'act-pco', name: 'ACT Parliamentary Counsel', tier: 'A' },
+    ].map((body) => ({
+      ...body,
+      jurisdiction: 'act',
+      hosts: [],
+      scope: { status: 'unassessed' },
+    })) as unknown as Awaited<ReturnType<typeof getBodies>>,
+  );
+  render(await StatusPage());
+  const table = screen.getByRole('region', { name: 'Watch coverage table' });
+  const row = within(table).getByText('Australian Capital Territory').closest('tr');
+  expect(row).toHaveTextContent('1 of 2');
+  expect(
+    screen.getByText(/Tier A bodies with no working source: ACT Parliamentary Counsel\./),
+  ).toBeInTheDocument();
 });
