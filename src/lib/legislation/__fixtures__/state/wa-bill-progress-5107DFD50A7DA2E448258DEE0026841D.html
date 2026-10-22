@@ -1,0 +1,678 @@
+<html lang="en" data-uw-w-loader=""><head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="google-site-verification" content="13ZdpESq3g2pnmBPa3Wx-MvZFyguDYkikceejNqpt7w">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="/WebCMS/WebCMS.nsf/reset.css">
+<link rel="stylesheet" type="text/css" media="screen" href="/WebCMS/WebCMS.nsf/superfish.css">
+<link rel="stylesheet" type="text/css" media="screen" href="/WebCMS/WebCMS.nsf/superfish-vertical.css">
+<link rel="stylesheet" type="text/css" media="all" href="/WebCMS/WebCMS.nsf/fontawesome-all.min.css">
+<link rel="stylesheet" type="text/css" media="all" href="/WebCMS/WebCMS.nsf/style.css">
+<link rel="stylesheet" type="text/css" media="all" href="/WebCMS/WebCMS.nsf/flexslider.css">
+<link rel="stylesheet" type="text/css" media="all" href="/WebCMS/WebCMS.nsf/combobo.css">
+<link rel="stylesheet" type="text/css" media="all" href="/WebCMS/WebCMS.nsf/modaal.css">
+<link rel="stylesheet" type="text/css" media="all" href="/WebCMS/WebCMS.nsf/calendarhome.css">
+<link rel="stylesheet" type="text/css" media="all" href="/WebCMS/WebCMS.nsf/jquery.tokenize.css">
+<link rel="stylesheet" type="text/css" media="all" href="/WebCMS/WebCMS.nsf/jquery-ui-1.12.1.min.css">
+<link rel="shortcut icon" href="/WebCMS/WebCMS.nsf/favicon.ico" type="image/x-icon">
+<link rel="icon" href="/WebCMS/WebCMS.nsf/favicon.ico" type="image/x-icon">
+<script async="" src="https://scripts.clarity.ms/0.8.72-beta/clarity.js"></script><script async="" src="https://www.clarity.ms/tag/q5hk1cnewm"></script><script async="" src="https://www.google-analytics.com/analytics.js"></script><script src="/WebCMS/WebCMS.nsf/jquery-3.6.0.min.js"></script>
+<script src="/WebCMS/WebCMS.nsf/jquery-migrate-3.3.2.min.js"></script>
+<script src="/WebCMS/WebCMS.nsf/jquery-accessible-tabs.js"></script>
+<script src="/WebCMS/WebCMS.nsf/jquery.flexslider.min.js"></script>
+<script src="/WebCMS/WebCMS.nsf/jquery.tokenize.js"></script>
+<script src="/WebCMS/WebCMS.nsf/jquery-ui-1.13.2.min.js"></script>
+<script src="/WebCMS/WebCMS.nsf/doubletaptogo.min.js"></script>
+<script src="/WebCMS/WebCMS.nsf/combobo.js"></script>
+<script src="/WebCMS/WebCMS.nsf/icheck.min.js"></script>
+<script src="/WebCMS/WebCMS.nsf/jquery-accessible-accordion.js"></script>
+<script src="/WebCMS/WebCMS.nsf/modaal.min.js"></script>
+<script src="/WebCMS/WebCMS.nsf/scripts.js"></script>
+<script src="/WebCMS/WebCMS.nsf/jquery.jfontsize-1.0.js"></script>
+<script src="/WebCMS/WebCMS.nsf/hoverIntent.js"></script>
+<script src="/WebCMS/WebCMS.nsf/superfish.js"></script>
+<script src="/WebCMS/WebCMS.nsf/libSite.js"></script>
+<script src="/WebCMS/WebCMS.nsf/dynamicWatchLive.js"></script>
+<script src="/WebCMS/WebCMS.nsf/fullcalendar.min.js"></script>
+<script src="/WebCMS/WebCMS.nsf/analytics.js"></script>
+<script src="/WebCMS/WebCMS.nsf/autotrack.js"></script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-R8K6YXFL5H"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-R8K6YXFL5H');
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "q5hk1cnewm");
+</script>
+<script src="https://cdn.userway.org/widget.js" data-account="rYzWOhJr3O"></script>
+<meta name="google-site-verification" content="8--uz9rdisR-vCgdJQECQa_vm_OIrtXZZMEHBSZWef8"><title>Progress of Bills</title><meta name="description" content="Find Bills (proposed laws) introduced by the Parliament of Western Australia.">
+<link rel="stylesheet" type="text/css" href="/parliament/bills.nsf/style.css"><link rel="stylesheet" type="text/css" href="/parliament/bills.nsf/internetOverride.css">
+<script language="JavaScript" type="text/javascript">
+<!-- 
+$(document).ready(function(){
+     var viewName = $("#ViewName").val();     
+     var url = window.location.href;
+     
+     $("a font[size='2']").prop('size','3');
+     $("li font[size='2']").prop('size','3');
+          $("font[size='2']").prop('size','3');
+
+}); ////////////////////////////////////////////////////////////////////////////////////////////End document ready
+
+
+function checkit() {
+     var favorite = []; 
+     $.each($("input[name='bills_current']:checked"), 
+      function(){ favorite.push('1') });
+//     $.each($("input[name='bills_all']:checked"), 
+ //     function(){ favorite.push('2') });
+      $.each($("input[name='bills_private']:checked"), 
+      function(){ favorite.push('3') });
+     //alert("My checks are: " + favorite.join(", "));
+     return  favorite.join("")
+     //return favorite
+ }
+
+function getQuery(str)
+{
+	var viewName = $("#ViewName").val();
+	var orderBy = "&SearchOrder=4";
+	var SearchMax="&SearchMax=500"
+	var elementsChecked=checkit();
+
+	var viewTotal="WebAllBills";
+	viewCurrent = "WebCurrentBills";
+
+	if ($('input[name=bills][value=current]:checked').length==1)
+			{
+	     	   	queryDecoded=viewCurrent+"?SearchView&Query=" + escape( str ) + SearchMax + orderBy;
+			} 
+		else
+			{ 
+      			queryDecoded=viewTotal+"?SearchView&Query=" + escape( str ) + SearchMax + orderBy;
+			}
+	openDbRelativeURL(queryDecoded);
+}
+
+function doHidden()
+{
+            div = document.getElementById('flotante');
+            div.style.display = 'none';     
+            
+ }
+
+
+function doSearch ( s ) {
+var regExp1 = /\bfield\b/;
+var regExp2 = /[(,),<,>,\[,\]]/;
+var str = s.value;
+ if ( str == "" ){ 
+alert("Please be sure to enter something to search for.");
+s.focus();
+} else { 
+if ( typeof regExp1.source != 'undefined' ) //supports regular expression testing 
+if ( regExp1.test( str ) || regExp2.test( str ) ){
+var alrt = "Please note that you can not include:"; 
+alrt += "\n\nThe reserved word 'field'\nthe characters [, ], (, ), < or >";
+alrt += "\n\nin your search query!\n\nIf you are confident that you know";
+alrt += "\nwhat you are doing, then you can\nmanually produce the URL required."
+s.focus();
+return alert( alrt );
+}
+
+
+getQuery(str);
+//openDbRelativeURL("WebCurrentBills?SearchView&Query=" + escape( str ) + "&start=1&count=10");
+  
+}
+}
+
+function openDbRelativeURL( url, target ){
+//Check we have a target window;
+target = (target == null ) ? window : target;
+//Work out the path of the database;
+path = location.pathname.split('.nsf')[0] + '.nsf/';
+target.location.href = path + url;
+}
+
+function returnFalse(s){
+//guess the field if not supplied
+s = (s == null) ? document.forms[0].Query : s;
+
+//if you want to do the search, use this line
+doSearch(s);
+
+//if you want to alert the user, use this line
+//alert('Please use the \'Go!!\' button to do a search');
+
+//this line should always be here!!
+return false;
+}
+// -->
+</script>
+<link href="https://cdn.userway.org/styles/2026-09-29-10-33-22/widget_base.css?v=1790678002737" type="text/css" rel="stylesheet"></head>
+<body text="#000000" bgcolor="#FFFFFF"><div class="uw-sl" role="region" data-uw-rm-ignore="true" data-uw-ignore-translate="true" aria-label="Quick Accessibility Options"><button class="uw-sl__item" data-uw-rm-ignore="true" data-uw-ignore-translate="true" lang="en-AU" id="uw-skip-to-main"><span class="uw-sl__item__left" data-uw-ignore-translate="true"><span class="uw-sl__item__img"><svg focusable="false" width="26" height="24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation"><g stroke="#000" stroke-width="1.5" fill="none" fill-rule="evenodd"><rect class="no-fill" fill="none" x=".75" y=".75" width="24.5" height="22.5" rx="3"></rect><path class="no-fill" fill="none" d="M1 7h24M9.5 7v17"></path></g></svg></span><span class="uw-sl__item__title" data-uw-ignore-s17="" data-uw-rm-ignore="true" data-uw-ignore-translate="true">Skip to main content</span></span><span class="uw-sl__e-icon"><svg width="26" height="27" role="presentation" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><g class="no-fill" fill="none" fill-rule="evenodd"><path d="M4.498 24.3v-.872H1.5v-1.37h2.716v-.872H1.5v-1.27h3v-.872H.542V24.3h3.955zm1.909 0v-3.695L9.183 24.3h.95v-5.256h-.95v3.695l-2.776-3.695H5.45V24.3h.957zm7.21 0v-4.383h1.682v-.873h-4.314v.873h1.683V24.3h.948zm6.421 0v-.872H17.04v-1.37h2.716v-.872H17.04v-1.27h3v-.872h-3.956V24.3h3.955zm1.84 0v-1.767h1.017l1.24 1.767h1.086l-1.316-1.867c.757-.237 1.27-.849 1.27-1.644 0-1.025-.842-1.745-1.966-1.745H20.92V24.3h.957zm1.224-2.647h-1.224v-1.729h1.224c.65 0 1.101.33 1.101.865 0 .535-.451.864-1.101.864z" fill="#000" fill-rule="nonzero"></path><path class="no-fill" fill="none" d="M18.9 1v6.3a2.7 2.7 0 01-2.7 2.7H5.4h0" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path fill="none" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M8.1 12.7L5.4 10l2.7-2.7"></path></g></svg></span></button><button class="uw-sl__item" data-uw-rm-ignore="true" data-uw-ignore-translate="true" lang="en-AU" id="uw-enable-visibility"><span class="uw-sl__item__left" data-uw-ignore-translate="true"><span class="uw-sl__item__img"><svg focusable="false" width="28" height="26" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation"><g class="no-fill" fill="none" fill-rule="evenodd"><path d="M13.808 6.019C8.625 6.019 4.01 9.197 1 14.148c3.01 4.951 7.625 8.129 12.808 8.129s9.797-3.178 12.807-8.129c-3.01-4.951-7.624-8.13-12.807-8.13" stroke="#000" class="no-fill" stroke-width="1.5" fill="none"></path><path d="M13.813 11.124c1.704 0 3.086 1.368 3.086 3.055 0 1.688-1.382 3.055-3.086 3.055s-3.086-1.367-3.086-3.055c0-1.687 1.382-3.055 3.086-3.055m0-3.055c-3.408 0-6.172 2.735-6.172 6.11 0 3.375 2.764 6.11 6.172 6.11s6.172-2.735 6.172-6.11c0-3.375-2.764-6.11-6.172-6.11" class="fill-white" fill="#FFF" fill-rule="nonzero"></path><path d="M17.913 14.18c0 2.244-1.839 4.064-4.105 4.064-2.268 0-4.106-1.82-4.106-4.065s1.838-4.064 4.106-4.064c2.266 0 4.105 1.82 4.105 4.064" stroke="#000" stroke-width="1.5" class="no-fill" fill="none"></path><path class="no-fill" stroke="#FFF" stroke-width="3" stroke-linecap="round" d="M2.872 22.306L22.03 3.339" fill="none"></path><path stroke="#000" stroke-width="1.5" stroke-linecap="round" d="M4.24 23.661L23.398 4.694" class="no-fill" fill="none"></path></g></svg></span><span class="uw-sl__item__title" data-uw-ignore-s17="" data-uw-rm-ignore="true" data-uw-ignore-translate="true">Enable accessibility for low vision</span></span><span class="uw-sl__e-icon"><svg width="26" height="27" role="presentation" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><g class="no-fill" fill="none" fill-rule="evenodd"><path d="M4.498 24.3v-.872H1.5v-1.37h2.716v-.872H1.5v-1.27h3v-.872H.542V24.3h3.955zm1.909 0v-3.695L9.183 24.3h.95v-5.256h-.95v3.695l-2.776-3.695H5.45V24.3h.957zm7.21 0v-4.383h1.682v-.873h-4.314v.873h1.683V24.3h.948zm6.421 0v-.872H17.04v-1.37h2.716v-.872H17.04v-1.27h3v-.872h-3.956V24.3h3.955zm1.84 0v-1.767h1.017l1.24 1.767h1.086l-1.316-1.867c.757-.237 1.27-.849 1.27-1.644 0-1.025-.842-1.745-1.966-1.745H20.92V24.3h.957zm1.224-2.647h-1.224v-1.729h1.224c.65 0 1.101.33 1.101.865 0 .535-.451.864-1.101.864z" fill="#000" fill-rule="nonzero"></path><path class="no-fill" fill="none" d="M18.9 1v6.3a2.7 2.7 0 01-2.7 2.7H5.4h0" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path fill="none" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M8.1 12.7L5.4 10l2.7-2.7"></path></g></svg></span></button><button class="uw-sl__item" data-uw-rm-ignore="true" data-uw-ignore-translate="true" lang="en-AU" id="uw-open-accessibility"><span class="uw-sl__item__left" data-uw-ignore-translate="true"><span class="uw-sl__item__img"><svg focusable="false" width="23" height="28" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation"><path d="M.018 8.639c.105-.595.65-.991 1.223-.877a53.94 53.94 0 0020.517 0c.625-.125 1.228.366 1.242 1.06.01.544-.402 1.003-.915 1.102-2.289.44-4.589.727-6.893.877-.948.063-1.647.948-1.54 1.932l.202 1.84c.314 2.87.958 5.69 1.919 8.399l1.26 3.553c.202.568-.076 1.197-.62 1.407a.994.994 0 01-.364.068c-.4 0-.768-.245-.944-.638l-.007.007-.325-.724a110.53 110.53 0 01-2.83-6.926.462.462 0 00-.878 0 105.146 105.146 0 01-2.832 6.917l-.308.68.005-.021a1.05 1.05 0 01-.98.705.994.994 0 01-.364-.068c-.544-.21-.821-.839-.62-1.407l1.26-3.553a37.235 37.235 0 001.92-8.403l.2-1.824c.107-.986-.59-1.881-1.54-1.943A55.94 55.94 0 01.86 9.914c-.57-.11-.947-.68-.841-1.275zM11.5 0c1.934 0 3.502 1.634 3.502 3.651 0 2.016-1.568 3.65-3.502 3.65-1.934 0-3.502-1.634-3.502-3.65C7.998 1.634 9.566 0 11.5 0z" fill="#000" fill-rule="evenodd"></path></svg></span><span class="uw-sl__item__title" data-uw-ignore-s17="" data-uw-rm-ignore="true" data-uw-ignore-translate="true">Open the accessibility menu</span></span><span class="uw-sl__e-icon"><svg width="26" height="27" role="presentation" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><g class="no-fill" fill="none" fill-rule="evenodd"><path d="M4.498 24.3v-.872H1.5v-1.37h2.716v-.872H1.5v-1.27h3v-.872H.542V24.3h3.955zm1.909 0v-3.695L9.183 24.3h.95v-5.256h-.95v3.695l-2.776-3.695H5.45V24.3h.957zm7.21 0v-4.383h1.682v-.873h-4.314v.873h1.683V24.3h.948zm6.421 0v-.872H17.04v-1.37h2.716v-.872H17.04v-1.27h3v-.872h-3.956V24.3h3.955zm1.84 0v-1.767h1.017l1.24 1.767h1.086l-1.316-1.867c.757-.237 1.27-.849 1.27-1.644 0-1.025-.842-1.745-1.966-1.745H20.92V24.3h.957zm1.224-2.647h-1.224v-1.729h1.224c.65 0 1.101.33 1.101.865 0 .535-.451.864-1.101.864z" fill="#000" fill-rule="nonzero"></path><path class="no-fill" fill="none" d="M18.9 1v6.3a2.7 2.7 0 01-2.7 2.7H5.4h0" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path fill="none" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M8.1 12.7L5.4 10l2.7-2.7"></path></g></svg></span></button></div>
+
+<div class="uwy userway_p2" data-uw-feature-ignore="true" data-uw-rm-ignore="true" title="Accessibility Menu" style="background-color: transparent !important; overflow: initial !important;"><div class="userway_buttons_wrapper" style="left: calc(-18px + 100vw) !important; top: calc(50% - 5px) !important;"><div class="ulsti hidden userway_dark" id="userwayLstIcon" aria-label="Translations Menu" role="button" tabindex="0" aria-haspopup="dialog" data-uw-s19-ignore="" title="Translations Menu" style="background: linear-gradient(to right, rgb(32, 28, 54), rgb(24, 21, 41), rgb(16, 14, 27), rgb(8, 7, 14), rgb(0, 0, 0)) !important;"><span class="uiiw"></span><div class="ups"><img width="43" height="43" data-uw-rm-ignore="" class="si_w" aria-hidden="true" alt="Spinner: White decorative" src="https://cdn.userway.org/widgetapp/images/spin_wh.svg"></div><span class="usr lst-spacer"></span></div><div class="uai userway_dark" id="userwayAccessibilityIcon" aria-label="Accessibility Menu" role="button" tabindex="0" aria-haspopup="dialog" title="Accessibility Menu" style="background: linear-gradient(to right, rgb(32, 28, 54), rgb(24, 21, 41), rgb(16, 14, 27), rgb(8, 7, 14), rgb(0, 0, 0)) !important;"><span class="uiiw"><img data-uw-rm-ignore="" class="ui_w" role="presentation" alt="" src="https://cdn.userway.org/widgetapp/images/body_wh.svg"></span><div class="ups"><img width="43" height="43" data-uw-rm-ignore="" class="si_w" aria-hidden="true" alt="Spinner: White decorative" src="https://cdn.userway.org/widgetapp/images/spin_wh.svg"></div><span class="usr"></span></div><div class="uwaw-dictionary-tooltip"></div></div><iframe class="uwif userway_p2" data-uw-ignore-translate="true" name="userway" title="UserWay Accessibility Menu" allow="clipboard-write" style="max-width: 100vw !important; visibility: visible !important; opacity: 1 !important; color-scheme: light !important;"></iframe></div><div class="uw-s10-bottom-ruler-guide"></div><div class="uw-s10-right-ruler-guide"></div><div class="uw-s10-left-ruler-guide"></div><div class="uw-s10-reading-guide"><div class="uw-s10-reading-guide__arrow"></div></div><div class="uw-s12-tooltip" aria-hidden="true"></div><form onsubmit="return returnFalse(this.Query);
+return true;" method="post" action="/parliament/bills.nsf/f8add92d5bc211f948258425002870f8?CreateDocument&amp;ParentUNID=5107DFD50A7DA2E448258DEE0026841D" name="_BillProgressPopup"><font size="3" color="#ff0000"></font>
+    <a href="#main" class="a11y">Skip to main content</a>
+    <header id="branding" class="clearfix">
+	 <div class="wrapper clearfix">
+	
+	   <div class="logo"><a href="/WebCMS/webcms.nsf/index" ga-on="click" ga-event-category="Links" ga-event-action="Title Link" ga-event-label="Home Logo"><img src="/WebCMS/WebCMS.nsf/logo.png" alt="Parliament of Western Australia logo" style="width:341px;height:120px"></a></div>
+	   <div class="header_right">
+	
+			<!-- Top menu -->
+			<nav id="topmenu" aria-label="Top Menu">
+			 <ul role="menubar">
+
+				<li class="home" role="menuitem"><a href="/WebCMS/WebCMS.nsf/index" ga-on="click" ga-event-category="Links" ga-event-action="Title Link" ga-event-label="Home">Home</a></li>
+				<li role="menuitem"><a href="/WebCMS/WebCMS.nsf/SiteMap" ga-on="click" ga-event-category="Links" ga-event-action="Title Link" ga-event-label="Site map">Site map</a></li>
+				<li role="menuitem"><a href="/WebCMS/WebCMS.nsf/content/home-accessibility" ga-on="click" ga-event-category="Links" ga-event-action="Title Link" ga-event-label="Accessibility">Accessibility</a></li>
+				<li role="menuitem"><a href="/WebCMS/WebCMS.nsf/content/contact-us" ga-on="click" ga-event-category="Links" ga-event-action="Title Link" ga-event-label="Contact Us">Contact us</a></li>
+				<li role="menuitem"><a href="/WebCMS/WebCMS.nsf/content/rss-feeds" ga-on="click" ga-event-category="Links" ga-event-action="Title Link" ga-event-label="Alerts">Alerts</a></li>
+				<!--li role="menuitem"><a href="https://webmail.parliament.wa.gov.au/" target="_blank" rel="noreferrer" ga-on="click" ga-event-category="Links" ga-event-action="Title Link" ga-event-label="WebMail">Webmail</a></li-->
+			 </ul>
+			</nav>
+	<!-- End of top menu block -->
+	
+	<!-- Mobile-only visible section -->
+	<a href="/WebCMS/webcms.nsf/index" class="home_icon">Home <i class="fas fa-home" aria-hidden="true"></i></a><button type="button" aria-label="Menu Show/Hide website navigation" aria-haspopup="true" class="show_nav" id="show_nav" aria-controls="mobile_menu">Menu <i class="far fa-bars" aria-hidden="true"></i><span class="a11y">Show/Hide website navigation</span></button>
+	<div class="clearfix"></div>
+	<!-- End of mobile-only visible section -->
+	
+	<!-- Live Video stream section getHTMLWatchLivePre-->
+	<div class="video_stream_section clearfix">
+	   <div class="flexslider video_stream_options">
+		
+	  <div class="flex-viewport" style="overflow: hidden; position: relative;"><ul class="slides" id="slideLiveWidget" style="width: 600%; transition-duration: 0s; transform: translate3d(0px, 0px, 0px);"><!-- Live Video stream section getHTMLWatchLive  --><li id="liWidget1" style="width: 560px; margin-right: 0px; float: left; display: block;"><div class="desktop"><span class="widgetmsg hasWatchLive"> The Legislative Assembly meets today (09:00 AM)</span><a href="https://www.parliament.wa.gov.au/watch" ga-on="click" ga-event-category="Links" ga-event-action="Media Link" ga-event-label="Watch live" class="video_stream_link"><strong>Watch live</strong></a></div><div class="mobile"><span class="widgetmsg"><a href="https://www.parliament.wa.gov.au/watch" class="video_stream_linkm">Watch Assembly live</a></span></div></li><li id="liWidget2" style="width: 560px; margin-right: 0px; float: left; display: block;"><div class="desktop"><span class="widgetmsg hasWatchLive"> The Legislative Council meets today (10:00 AM)</span><a href="https://www.parliament.wa.gov.au/watch" ga-on="click" ga-event-category="Links" ga-event-action="Media Link" ga-event-label="Watch live" class="video_stream_link"><strong>Watch live</strong></a></div><div class="mobile"><span class="widgetmsg"><a href="https://www.parliament.wa.gov.au/watch" class="video_stream_linkm">Watch Council live</a></span></div></li><li id="liWidget3" style="width: 560px; margin-right: 0px; float: left; display: block;"><div class="desktop"><span class="widgetmsg"> The Environment and Public Affairs meets  tomorrow (10:00 AM)</span></div><div class="mobile"><span class="widgetmsg">Committee meet tomorrow</span></div></li>	 </ul></div><ul class="flex-direction-nav"><li class="flex-nav-prev"><a class="flex-prev" href="#">Previous streaming option</a></li><li class="flex-nav-next"><a class="flex-next" href="#">Next streaming option</a></li></ul></div>
+	</div>
+	<!-- End of live video stream section getHTMLWatchLive  -->
+<!-- End of live video stream section getHTMLWatchLivePre -->
+	
+	</div>
+	
+	</div>
+	</header><!-- mobile menu Is built With JS From Top menu And Main menu less homepage link -->
+	<div id="mobile_menu" aria-labelledby="show_nav">
+	 <nav aria-label="Mobile Menu">
+	  <ul role="menubar">
+				<li class="has_sub" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0">
+				<a href="/WebCMS/webcms.nsf/content/parliamentary-business" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Parliamentary Business">Parliamentary Business</a><ul class="sub-menu" role="menu"><li role="menuitem"><a href="/parliament/bills.nsf/screenWebCurrentBills" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Bills (proposed laws)">Bills (proposed laws)</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/wa-acts-and-regulations" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="WA Acts and Regulations (current Laws)">WA Acts and Regulations (current Laws)</a></li><li role="menuitem"><a href="https://www.parliament.wa.gov.au/hansard/search" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Hansard (Debates)">Hansard (Debates)</a></li><li role="menuitem"><a href="/parliament/commit.nsf/WCurrentCommitteesByName" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Committees">Committees</a></li><li role="menuitem"><a href="/Test/Tables.nsf/screenLaunch" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Tabled Papers">Tabled Papers</a></li><li role="menuitem"><a href="/Parliament/SitSched.nsf/viewChamberDocsLC" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Chamber Documents">Chamber Documents</a></li><li role="menuitem"><a href="/Parliament/Pquest.nsf/screenLaunch?OpenForm" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Parliamentary Questions and Answers">Parliamentary Questions and Answers</a></li><li role="menuitem"><a href="/webcms/webcms.nsf/WebSittingCalendar" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Sitting Calendar">Sitting Calendar</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/order-of-business" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Order of Business">Order of Business</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/standing-orders" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Standing Orders">Standing Orders</a></li><li role="menuitem"><a href="https://www.parliament.wa.gov.au/watch" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Watch and listen">Watch and listen</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/scrutiny-of-finance" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Scrutiny of finances (Budget Estimates)">Scrutiny of finances (Budget Estimates)</a></li></ul></li>
+				<li class="has_sub" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0">
+				<a href="/parliament/memblist.nsf/WAMembers" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Members">Members</a><ul class="sub-menu" role="menu"><li role="menuitem"><a href="/parliament/memblist.nsf/WAMembers" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Find your MP">Find your MP</a></li><li role="menuitem"><a href="/parliament/memblist.nsf/WebCurrentMembLC" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Members of the Legislative Council (Upper House)">Members of the Legislative Council (Upper House)</a></li><li role="menuitem"><a href="/Parliament/memblist.nsf/ScreenMembersWPolOffHoldLC" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="President and Office Holders">President and Office Holders</a></li><li role="menuitem"><a href="/parliament/SeatingPlans.nsf/CouncilChartN?openform" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Upper House Seating Plan">Upper House Seating Plan</a></li><li role="menuitem"><a href="/parliament/memblist.nsf/WebCurrentMembLA" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Members of the Legislative Assembly (Lower House)">Members of the Legislative Assembly (Lower House)</a></li><li role="menuitem"><a href="/Parliament/memblist.nsf/ScreenMembersWPolOffHoldLA" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Speaker and Office Holders">Speaker and Office Holders</a></li><li role="menuitem"><a href="/parliament/SeatingPlans.nsf/AssemblyChart?openform" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Lower House Seating Plan">Lower House Seating Plan</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/what-members-of-parliament-do" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="What Members do">What Members do</a></li><li role="menuitem"><a href="/Parliament/memblist.nsf/ScreenMembersWPolOffHod" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Ministers and Parliamentary Secretaries">Ministers and Parliamentary Secretaries</a></li><li role="menuitem"><a href="/Parliament/memblist.nsf/ScreenMembersWShadPolOffHold" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Shadow Ministers">Shadow Ministers</a></li><li role="menuitem"><a href="/Parliament/Library/MPHistoricalData.nsf/ScreenMemberBios" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Members’ biographical register">Members’ biographical register</a></li><li role="menuitem"><a href="https://www.parliament.wa.gov.au/WebCMS/webcms.nsf/content/parliamentary-library-electorate-profiles-2025" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Electorates">Electorates</a></li></ul></li>
+				<li class="has_sub" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0">
+				<a href="/WebCMS/webcms.nsf/content/about-parliament" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="About Parliament">About Parliament</a><ul class="sub-menu" role="menu"><li role="menuitem"><a href="/parliament/memblist.nsf/WALegislativeCouncil" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Legislative Council (Upper House)">Legislative Council (Upper House)</a></li><li role="menuitem"><a href="/parliament/memblist.nsf/WALegislativeAssembly" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Legislative Assembly (Lower House)">Legislative Assembly (Lower House)</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/parliamentary-departments" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Parliamentary Departments">Parliamentary Departments</a></li><li role="menuitem"><a href="https://www.parliament.wa.gov.au/WebCMS/webcms.nsf/content/parliament-plans-and-publications" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Parliament Plans &amp; Publications">Parliament Plans &amp; Publications</a></li><li role="menuitem"><a href="/parliament/employ.nsf/ScreenWebVac" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Careers">Careers</a></li></ul></li>
+				<li class="has_sub" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0">
+				<a href="/parliament/memblist.nsf/Getinvolved" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Get Involved">Get Involved</a><ul class="sub-menu" role="menu"><li role="menuitem"><a href="/parliament/memblist.nsf/WAMembers" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Find Your MP">Find Your MP</a></li><li role="menuitem"><a href="/hansard/hansard.nsf/NewAdvancedSearch" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Find out what was said in Parliament">Find out what was said in Parliament</a></li><li role="menuitem"><a href="https://www.parliament.wa.gov.au/watch" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Watch and listen">Watch and listen</a></li><li role="menuitem"><a href="/Parliament/commit.nsf/WebOpenSubmissions" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Make a submission">Make a submission</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/petitioningparliament" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Petitioning Parliament">Petitioning Parliament</a></li><li role="menuitem"><a href="/parliament/commit.nsf/Committees" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Public hearings">Public hearings</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/contact-a-member" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Contact a member">Contact a member</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/vote-in-an-election" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Vote in an election">Vote in an election</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/promote-your-cause" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Lighting of Parliament">Lighting of Parliament</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/parliamentary-friendship-groups" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Parliamentary Friendship Groups">Parliamentary Friendship Groups</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/former-members-association" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Former Members Association">Former Members Association</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/what-parliament-does" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="What Parliament does">What Parliament does</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/rss-feeds" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="RSS Feeds / Alerts">RSS Feeds / Alerts</a></li></ul></li>
+				<li class="has_sub" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0">
+				<a href="/WebCMS/webcms.nsf/content/visit-and-learn" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Visit and Learn">Visit and Learn</a><ul class="sub-menu" role="menu"><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/visit-and-learn-tours" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Tours">Tours</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/visit-and-learn-education-programs-and-resources" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Education Programs and Resources">Education Programs and Resources</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/visit-and-learn-plan-your-visit" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Plan your visit">Plan your visit</a></li><li role="menuitem"><a href="/WebCMS/toursevents.nsf/ScreenEventCurrent" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Events and exhibitions">Events and exhibitions</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/parliamentary-history" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Parliamentary History">Parliamentary History</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/parliamentary-library" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Parliamentary Library">Parliamentary Library</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/house-and-grounds" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="House and Grounds">House and Grounds</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/visit-and-learn-learn-how-parliament-works" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="How Parliament works">How Parliament works</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/factsheets" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Fact sheets">Fact sheets</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/parliamentsession" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Parliaments and Sessions">Parliaments and Sessions</a></li></ul></li>
+		 
+
+				
+				<li role="menuitem"><a href="/WebCMS/WebCMS.nsf/SiteMap" ga-on="click" ga-event-category="Links" ga-event-action="Title Link" ga-event-label="Site map">Site map</a></li>
+				<li role="menuitem"><a href="/WebCMS/WebCMS.nsf/content/home-accessibility" ga-on="click" ga-event-category="Links" ga-event-action="Title Link" ga-event-label="Accessibility">Accessibility</a></li>
+				<li role="menuitem"><a href="/WebCMS/WebCMS.nsf/content/contact-us" ga-on="click" ga-event-category="Links" ga-event-action="Title Link" ga-event-label="Contact Us">Contact us</a></li>
+				<li role="menuitem"><a href="/WebCMS/WebCMS.nsf/content/rss-feeds" ga-on="click" ga-event-category="Links" ga-event-action="Title Link" ga-event-label="Alerts">Alerts</a></li>
+				<!--li role="menuitem"><a href="https://webmail.parliament.wa.gov.au/" target="_blank" rel="noreferrer" ga-on="click" ga-event-category="Links" ga-event-action="Title Link" ga-event-label="WebMail">Webmail</a></li-->
+			 </ul>
+	 </nav>
+	
+				<xform action="/WebCMS/webcms.nsf/index" method="post" class="clearfix">
+					<div class="row">
+					<div class="fullwidth_query">
+						<label class="a11y" for="search_query">Search this website</label>
+						<input type="text" placeholder="Search" name="search_query" id="search_query" onkeypress="searchKeyDown(event)" data-uw-rm-form="nfx">
+					</div>
+					<div style="display: none;" class="advancedSearch"><a href="/websearch/parlsearchd.nsf" ga-on="click" ga-event-category="Links" ga-event-action="Navbar Advanced Search" ga-event-label="Advanced Search">Advanced Search</a></div>
+					</div>
+					<!--<div><input type="submit" value="Search" /></div>-->
+					<div><button type="button" onclick="goSearchText()" ga-on="click" ga-event-category="Links" ga-event-action="Navbar Search" ga-event-label="Search" aria-label="Submit website search" value="Submit website search"><span class="a11y">Search</span><i class="far fa-search" aria-hidden="true"></i></button></div>
+				</xform>
+		</div>
+	<!-- End of mobile menu block -->
+    <!-- Begin NavBar  -->
+	<div id="mainmenu">
+	  <div class="wrapper clearfix">
+	<div class="searchform">
+				<xform action="/WebCMS/webcms.nsf/index" method="post" class="clearfix">
+					<div class="row">
+					<div class="fullwidth_query">
+						<label class="a11y" for="search_query">Search this website</label>
+						<input type="text" placeholder="Search" name="search_query" id="search_query" onkeypress="searchKeyDown(event)">
+					</div>
+					<div style="display: none;" class="advancedSearch"><a href="/websearch/parlsearchd.nsf" ga-on="click" ga-event-category="Links" ga-event-action="Navbar Advanced Search" ga-event-label="Advanced Search">Advanced Search</a></div>
+					</div>
+					<!--<div><input type="submit" value="Search" /></div>-->
+					<div><button type="button" onclick="goSearchText()" ga-on="click" ga-event-category="Links" ga-event-action="Navbar Search" ga-event-label="Search" aria-label="Submit website search" value="Submit website search"><span class="a11y">Search</span><i class="far fa-search" aria-hidden="true"></i></button></div>
+				</xform>
+		</div>
+		<nav aria-label="Main Menu">
+		 <ul role="menubar">
+				<li class="has_sub" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0">
+				<a href="/WebCMS/webcms.nsf/content/parliamentary-business" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Parliamentary Business">Parliamentary Business</a><ul class="sub-menu" role="menu"><li role="menuitem"><a href="/parliament/bills.nsf/screenWebCurrentBills" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Bills (proposed laws)">Bills (proposed laws)</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/wa-acts-and-regulations" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="WA Acts and Regulations (current Laws)">WA Acts and Regulations (current Laws)</a></li><li role="menuitem"><a href="https://www.parliament.wa.gov.au/hansard/search" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Hansard (Debates)">Hansard (Debates)</a></li><li role="menuitem"><a href="/parliament/commit.nsf/WCurrentCommitteesByName" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Committees">Committees</a></li><li role="menuitem"><a href="/Test/Tables.nsf/screenLaunch" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Tabled Papers">Tabled Papers</a></li><li role="menuitem"><a href="/Parliament/SitSched.nsf/viewChamberDocsLC" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Chamber Documents">Chamber Documents</a></li><li role="menuitem"><a href="/Parliament/Pquest.nsf/screenLaunch?OpenForm" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Parliamentary Questions and Answers">Parliamentary Questions and Answers</a></li><li role="menuitem"><a href="/webcms/webcms.nsf/WebSittingCalendar" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Sitting Calendar">Sitting Calendar</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/order-of-business" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Order of Business">Order of Business</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/standing-orders" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Standing Orders">Standing Orders</a></li><li role="menuitem"><a href="https://www.parliament.wa.gov.au/watch" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Watch and listen">Watch and listen</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/scrutiny-of-finance" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Scrutiny of finances (Budget Estimates)">Scrutiny of finances (Budget Estimates)</a></li></ul></li>
+				<li class="has_sub" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0">
+				<a href="/parliament/memblist.nsf/WAMembers" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Members">Members</a><ul class="sub-menu" role="menu"><li role="menuitem"><a href="/parliament/memblist.nsf/WAMembers" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Find your MP">Find your MP</a></li><li role="menuitem"><a href="/parliament/memblist.nsf/WebCurrentMembLC" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Members of the Legislative Council (Upper House)">Members of the Legislative Council (Upper House)</a></li><li role="menuitem"><a href="/Parliament/memblist.nsf/ScreenMembersWPolOffHoldLC" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="President and Office Holders">President and Office Holders</a></li><li role="menuitem"><a href="/parliament/SeatingPlans.nsf/CouncilChartN?openform" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Upper House Seating Plan">Upper House Seating Plan</a></li><li role="menuitem"><a href="/parliament/memblist.nsf/WebCurrentMembLA" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Members of the Legislative Assembly (Lower House)">Members of the Legislative Assembly (Lower House)</a></li><li role="menuitem"><a href="/Parliament/memblist.nsf/ScreenMembersWPolOffHoldLA" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Speaker and Office Holders">Speaker and Office Holders</a></li><li role="menuitem"><a href="/parliament/SeatingPlans.nsf/AssemblyChart?openform" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Lower House Seating Plan">Lower House Seating Plan</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/what-members-of-parliament-do" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="What Members do">What Members do</a></li><li role="menuitem"><a href="/Parliament/memblist.nsf/ScreenMembersWPolOffHod" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Ministers and Parliamentary Secretaries">Ministers and Parliamentary Secretaries</a></li><li role="menuitem"><a href="/Parliament/memblist.nsf/ScreenMembersWShadPolOffHold" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Shadow Ministers">Shadow Ministers</a></li><li role="menuitem"><a href="/Parliament/Library/MPHistoricalData.nsf/ScreenMemberBios" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Members’ biographical register">Members’ biographical register</a></li><li role="menuitem"><a href="https://www.parliament.wa.gov.au/WebCMS/webcms.nsf/content/parliamentary-library-electorate-profiles-2025" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Electorates">Electorates</a></li></ul></li>
+				<li class="has_sub" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0">
+				<a href="/WebCMS/webcms.nsf/content/about-parliament" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="About Parliament">About Parliament</a><ul class="sub-menu" role="menu"><li role="menuitem"><a href="/parliament/memblist.nsf/WALegislativeCouncil" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Legislative Council (Upper House)">Legislative Council (Upper House)</a></li><li role="menuitem"><a href="/parliament/memblist.nsf/WALegislativeAssembly" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Legislative Assembly (Lower House)">Legislative Assembly (Lower House)</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/parliamentary-departments" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Parliamentary Departments">Parliamentary Departments</a></li><li role="menuitem"><a href="https://www.parliament.wa.gov.au/WebCMS/webcms.nsf/content/parliament-plans-and-publications" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Parliament Plans &amp; Publications">Parliament Plans &amp; Publications</a></li><li role="menuitem"><a href="/parliament/employ.nsf/ScreenWebVac" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Careers">Careers</a></li></ul></li>
+				<li class="has_sub" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0">
+				<a href="/parliament/memblist.nsf/Getinvolved" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Get Involved">Get Involved</a><ul class="sub-menu" role="menu"><li role="menuitem"><a href="/parliament/memblist.nsf/WAMembers" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Find Your MP">Find Your MP</a></li><li role="menuitem"><a href="/hansard/hansard.nsf/NewAdvancedSearch" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Find out what was said in Parliament">Find out what was said in Parliament</a></li><li role="menuitem"><a href="https://www.parliament.wa.gov.au/watch" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Watch and listen">Watch and listen</a></li><li role="menuitem"><a href="/Parliament/commit.nsf/WebOpenSubmissions" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Make a submission">Make a submission</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/petitioningparliament" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Petitioning Parliament">Petitioning Parliament</a></li><li role="menuitem"><a href="/parliament/commit.nsf/Committees" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Public hearings">Public hearings</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/contact-a-member" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Contact a member">Contact a member</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/vote-in-an-election" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Vote in an election">Vote in an election</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/promote-your-cause" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Lighting of Parliament">Lighting of Parliament</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/parliamentary-friendship-groups" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Parliamentary Friendship Groups">Parliamentary Friendship Groups</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/former-members-association" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Former Members Association">Former Members Association</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/what-parliament-does" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="What Parliament does">What Parliament does</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/rss-feeds" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="RSS Feeds / Alerts">RSS Feeds / Alerts</a></li></ul></li>
+				<li class="has_sub" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0">
+				<a href="/WebCMS/webcms.nsf/content/visit-and-learn" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Visit and Learn">Visit and Learn</a><ul class="sub-menu" role="menu"><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/visit-and-learn-tours" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Tours">Tours</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/visit-and-learn-education-programs-and-resources" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Education Programs and Resources">Education Programs and Resources</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/visit-and-learn-plan-your-visit" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Plan your visit">Plan your visit</a></li><li role="menuitem"><a href="/WebCMS/toursevents.nsf/ScreenEventCurrent" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Events and exhibitions">Events and exhibitions</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/parliamentary-history" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Parliamentary History">Parliamentary History</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/parliamentary-library" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Parliamentary Library">Parliamentary Library</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/house-and-grounds" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="House and Grounds">House and Grounds</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/visit-and-learn-learn-how-parliament-works" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="How Parliament works">How Parliament works</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/factsheets" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Fact sheets">Fact sheets</a></li><li role="menuitem"><a href="/WebCMS/webcms.nsf/content/parliamentsession" ga-on="click" ga-event-category="Links" ga-event-action="NavBar Link" ga-event-label="Parliaments and Sessions">Parliaments and Sessions</a></li></ul></li>
+		 </ul>
+		</nav>
+	  </div>
+	</div>
+ 	<!-- Finish NavBar  -->
+	
+	<!-- Begin BreadCrumb -->
+	<section class="clearfix grey_bg padded">
+	 <div class="wrapper"><div class="column span100">
+			<nav class="breadcrumbs noborder" aria-label="Breadcrumb">
+				<ul>
+					<li><a href="/WebCMS/webcms.nsf/index" ga-on="click" ga-event-category="Links" ga-event-action="Breadcrumb" ga-event-label="Home">Home</a></li><li><a href="/parliament/bills.nsf/screenWebCurrentBills" ga-on="click" ga-event-category="Links" ga-event-action="Breadcrumb" ga-event-label="Current Bills">Current Bills</a></li><li><span class="current" aria-current="page">Bill</span></li>					
+				</ul>
+			</nav>
+	    </div>
+        <!-- Here goes the image -->
+       
+			</div>
+	</section>
+   
+
+	<div id="main" tabindex="-1" class="">
+			<div class="wrapper">
+				<section class="clearfix">
+                 <div class="column span100 clearfix">
+					<!-- Here goes richt text content defined in the web page -->
+
+	
+<div id="mainContent" tabindex="-1">
+  <div class="wrapper">
+        <section class="clearfix">
+<!-- This menu is divided in two parts, this div is Left Side Current bills-->
+            <div class="column span75 mspan100 clearfix">
+            <div class="feed_layout bills_layout bordered clearfix">
+<input name="ViewName" id="ViewName" type="hidden" value="WebAllBills">
+<table role="presentation" class="billHeading">
+<tbody>
+<tr><td colspan="2"><h1>Appropriation (Recurrent 2026–27) Bill 2026</h1></td></tr>
+<tr><td class="fieldDesc">Bill No.</td><td class="fieldStyle">67</td></tr>
+<tr><td class="fieldDesc">Synopsis</td><td class="fieldStyle">The purpose of the Bill is to grant supply and to appropriate and apply out of the Consolidated Account certain sums for the recurrent services and purposed of the year ending 30 June 2027.</td></tr>
+<tr>
+<td class="fieldDesc">Status</td>
+<td class="fieldStyle">Assented to 
+<br>Royal Assent given 19 Aug 2026 as Act No. 10 of 2026.  For details refer to the Commencement Clause of the Bill (see also <a href="https://www.legislation.wa.gov.au/legislation/prod/filestore.nsf/FileURL/table09.pdf/$FILE/Table09.pdf?OpenElement">Assent and Commencement information for Acts</a>)
+</td>
+</tr>
+</tbody>
+</table>
+
+<table role="presentation">
+<tbody>
+<tr class="headerRow"><td class="fieldDesc" colspan="2">Bill History</td></tr>
+<tr>
+<td></td>
+<td class="fieldStyle"><ul class="ulLink"><li class="liLink"><a target="_blank" href="/Parliament/Bills.nsf/5107DFD50A7DA2E448258DEE0026841D/$File/Bill%2B67-1.pdf" ga-on="click" ga-event-category="Downloads" ga-event-action="Bills" ga-event-label="Bill as Introduced"><img src="/Parliament/Bills.nsf/pdf.gif?OpenImageResource" alt="pdf icon">  Download the Bill as Introduced</a></li></ul>
+<ul class="ulLink"><li class="liLink"><a target="_blank" href="/Parliament/Bills.nsf/5107DFD50A7DA2E448258DEE0026841D/$File/Bill%2B67-1.002.pdf" ga-on="click" ga-event-category="Downloads" ga-event-action="Bills" ga-event-label="Bill as passed by originating house"><img src="/Parliament/Bills.nsf/pdf.gif?OpenImageResource" alt="pdf icon">  Download the Bill as passed by originating House</a></li></ul>
+
+<ul class="ulLink"><li class="liLink"><a target="_blank" href="/Parliament/Bills.nsf/5107DFD50A7DA2E448258DEE0026841D/$File/EM%2B67-1.pdf" ga-on="click" ga-event-category="Downloads" ga-event-action="Bills" ga-event-label="Explanatory Memorandum LA"><img src="/Parliament/Bills.nsf/pdf.gif?OpenImageResource" alt="pdf icon">  Explanatory Memorandum presented in the Legislative Assembly</a></li></ul>
+<ul class="ulLink"><li class="liLink"><a target="_blank" href="/Parliament/Bills.nsf/5107DFD50A7DA2E448258DEE0026841D/$File/EM%2B67-1.002.pdf" ga-on="click" ga-event-category="Downloads" ga-event-action="Bills" ga-event-label="Explanatory Memorandum LC"><img src="/Parliament/Bills.nsf/pdf.gif?OpenImageResource" alt="pdf icon">  Explanatory Memorandum presented in the Legislative Council</a></li></ul>
+<ul class="ulLink"><li class="liLink"><a href="https://www.parliament.wa.gov.au/hansard/daily/lh/2026-05-07/39">Second reading speech in the Legislative Assembly</a></li></ul>
+<ul class="ulLink"><li class="liLink"><a href="https://www.parliament.wa.gov.au/hansard/daily/uh/2026-06-10/11">Second reading speech in the Legislative Council</a></li></ul>
+</td>
+</tr>
+<tr class="headerRow"><td colspan="2" class="fieldDesc">Acts Amended by this Bill (Blue Bills)</td></tr>
+<tr><td></td><td class="fieldStyle" colspan="2"></td></tr>
+<tr class="headerRow"><td colspan="2" class="fieldDesc">Related Committee Activity</td></tr>
+<tr><td></td><td class="fieldStyle"></td></tr>
+<tr class="headerRow"><td colspan="2" class="fieldDesc"> Legislative Council Supplementary Notice Paper</td></tr>
+ <tr><td></td><td class="fieldStyle"></td></tr>
+<tr class="headerRow"><td colspan="2" class="fieldDesc">Messages regarding this Bill</td></tr>
+<tr><td></td><td><ul class="ulLink"><li class="liLink"><a target="_blank" href="/Parliament/Bills.nsf/5107DFD50A7DA2E448258DEE0026841D/$File/Gov%2B06%2B%282026%29.pdf" ga-on="click" ga-event-category="Downloads" ga-event-action="Bills" ga-event-label="Message"><img src="/Parliament/Bills.nsf/pdf.gif?OpenImageResource" alt="pdf icon">  (Message No. 6 from the Governor, dated 07 May 2026)</a></li><li class="liLink"><a target="_blank" href="/Parliament/Bills.nsf/5107DFD50A7DA2E448258DEE0026841D/$File/LA%2B60%2B%282026%29.pdf" ga-on="click" ga-event-category="Downloads" ga-event-action="Bills" ga-event-label="Message"><img src="/Parliament/Bills.nsf/pdf.gif?OpenImageResource" alt="pdf icon">  (Message No. 60 from the Legislative Assembly, dated 09 Jun 2026)</a></li><li class="liLink"><a target="_blank" href="/Parliament/Bills.nsf/5107DFD50A7DA2E448258DEE0026841D/$File/LC%2B42%2B%282026%29.pdf" ga-on="click" ga-event-category="Downloads" ga-event-action="Bills" ga-event-label="Message"><img src="/Parliament/Bills.nsf/pdf.gif?OpenImageResource" alt="pdf icon">  (Message No. 42 from the Legislative Council, dated 11 Aug 2026)</a></li><li class="liLink"><a target="_blank" href="/Parliament/Bills.nsf/5107DFD50A7DA2E448258DEE0026841D/$File/Gov%2B16%2B%282026%29.pdf" ga-on="click" ga-event-category="Downloads" ga-event-action="Bills" ga-event-label="Message"><img src="/Parliament/Bills.nsf/pdf.gif?OpenImageResource" alt="pdf icon">  (Message No. 16 from the Governor, dated 19 Aug 2026)</a></li></ul></td></tr> 
+<tr class="headerRow"><td class="fieldDesc" colspan="2">Progress</td></tr>
+</tbody>
+</table>
+<table role="presentation" class="bil_table_LA tableLA">
+<tbody>
+<tr>
+<td>Legislative Assembly</td>
+<td>Date</td>
+</tr>
+<tr>
+<td>Introduced</td>
+<td>07 May 2026</td>
+</tr>
+<tr>
+<td>First Reading</td>
+<td>07 May 2026</td>
+</tr>
+<tr>
+<td>Second Reading</td>
+<td>07 May 2026</td>
+</tr>
+<tr>
+<td colspan="2"><a href="https://www.parliament.wa.gov.au/hansard/daily/lh/2026-05-07/39">Second reading speech in the Legislative Assembly</a></td>
+</tr>
+<tr>
+<td>Second Reading Agreed</td>
+<td>14 May 2026</td>
+</tr>
+<tr>
+<td>Third Reading</td>
+<td>09 Jun 2026</td>
+</tr>
+</tbody>
+</table>
+<div style="margin-top:15px;"></div>
+<table role="presentation" class="bil_table_LC tableLC">
+<tbody>
+<tr>
+<td>Legislative Council</td>
+<td>Date</td>
+</tr>
+<tr>
+<td>Introduced</td>
+<td>10 Jun 2026</td>
+</tr>
+<tr>
+<td>First Reading</td>
+<td>10 Jun 2026</td>
+</tr>
+<tr>
+<td>Second Reading</td>
+<td>10 Jun 2026</td>
+</tr>
+<tr>
+<td colspan="2"><a href="https://www.parliament.wa.gov.au/hansard/daily/uh/2026-06-10/11">Second reading speech in the Legislative Council</a></td>
+</tr>
+<tr>
+<td>Second Reading Agreed</td>
+<td>11 Aug 2026</td>
+</tr>
+<tr>
+<td>Third Reading</td>
+<td>11 Aug 2026</td>
+</tr>
+</tbody>
+</table>
+<table role="presentation">
+<tbody>
+<tr class="headerRow"><td class="fieldDesc" colspan="2">Superseded Legislative Council Supplementary Notice Papers (SNPs)</td></tr>
+<tr><td></td><td> </td></tr>
+<tr class="headerRow"><td class="fieldDesc" colspan="2">Comparisons between versions of Bills</td></tr>
+<tr><td></td><td> </td></tr>
+<tr><td></td><td></td></tr>
+<tr class="headerRow"><td class="fieldDesc" colspan="2">Conference of Managers</td></tr>
+<tr><td></td><td> </td></tr>
+<tr class="headerRow"><td class="fieldDesc" colspan="2">Notes</td></tr>
+<tr><td colspan="2"></td></tr>
+</tbody>
+</table>
+ </div>
+               </div> 
+                  <div class="column span25 mspan100">
+<aside class="widget bordered clearfix">
+<div class="inner">
+<h3>Search bills</h3>
+<p>Use the filters to refine your search</p>
+<label class="a11y" for="Query">Search Bills</label>
+<div class="fullwidth_query filter_item"><input type="text" placeholder="" id="Query" name="Query">
+</div>
+<div class="filter_item">
+<div class="iradio_flat" role="radio" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="radio" name="bills" id="bills_current" value="current" aria-label="Select Current" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>Current bills<br>
+<div class="iradio_flat checked" role="radio" aria-checked="true" aria-disabled="false" style="position: relative;"><input type="radio" name="bills" value="all" checked="" aria-label="Select All" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>All bills
+</div>
+<button type="submit" onclick="doSearch(this.form.Query);" aria-label="Submit bills search" value="Submit bills search">Search <i class="far fa-search" aria-hidden="true"></i></button>
+</div>
+</aside>
+<aside class="widget grey_bg">
+<div class="inner">
+<h3>About bills</h3>
+<p>Bills are a draft of a proposed law.</p>
+<div class="button"><a href="/WebCMS/webcms.nsf/content/bills-to-an-act">A bill to an act <i class="far fa-chevron-right" aria-hidden="true"></i></a>
+</div>
+</div>
+</aside>
+		<aside class="widget grey_bg">
+		   <div class="inner">
+		         <div class="white_bg">
+			<nav class="button_style" aria-label="Sidebar Menu">
+
+					
+						<ul><li><a href="/Parliament/Bills.nsf/screenBillsProgress" ga-on="click" ga-event-category="Links" ga-event-action="NavMenu Link" ga-event-label="Table of bills progress">Table of bills progress</a></li><li><a href="/webcms/webcms.nsf/resources/file-lc-bill-progress/$file/2022%20Bill%20Flowchart.pdf" ga-on="click" ga-event-category="Links" ga-event-action="NavMenu Link" ga-event-label="Legislative Council bills flowchart">Legislative Council bills flowchart</a></li><li><a href="/webcms/webcms.nsf/resources/file-la-bill-progress/$file/LA+Bill+Progress.pdf" ga-on="click" ga-event-category="Links" ga-event-action="NavMenu Link" ga-event-label="Legislative Assembly bills flowchart">Legislative Assembly bills flowchart</a></li><li><a href="https://www.legislation.wa.gov.au/legislation/prod/filestore.nsf/FileURL/table09.pdf/$FILE/Table09.pdf?OpenElement" target="_blank" ga-on="click" ga-event-category="Links" ga-event-action="NavMenu Link" ga-event-label="Acts assent and commencement information">Acts assent and commencement information</a></li>
+						</ul>
+			</nav>
+		         </div>
+		      </div>
+		</aside>
+             </div> 
+      </section>
+   </div>
+</div>
+<!--
+<input type="submit" value="Hide Submit">//-->
+			</div>
+       </section>
+      </div>
+	</div>
+	<!--Close Wrapper-->				
+	
+		<div id="footer">
+	
+		<div class="wrapper clearfix">
+			
+			<div class="column span50 mspan100 clearfix">
+				<nav class="footer_menu clearfix" aria-label="Footer Menu">
+					<ul>
+
+	<li><a href="/WebCMS/webcms.nsf/index" ga-on="click" ga-event-category="Links" ga-event-action="Footer Link" ga-event-label="Home">Home</a></li>
+	<li><a href="/WebCMS/webcms.nsf/content/privacy" ga-on="click" ga-event-category="Links" ga-event-action="Footer Link" ga-event-label="Privacy">Privacy</a></li>
+	<li><a href="/WebCMS/webcms.nsf/content/disclaimer" ga-on="click" ga-event-category="Links" ga-event-action="Footer Link" ga-event-label="Disclaimer">Disclaimer</a></li>
+	<li><a href="/WebCMS/webcms.nsf/content/copyright" ga-on="click" ga-event-category="Links" ga-event-action="Footer Link" ga-event-label="Copyright">Copyright</a></li>
+	</ul>
+	<ul>
+	<li><a href="/WebCMS/webcms.nsf/content/home-glossary" ga-on="click" ga-event-category="Links" ga-event-action="Footer Link" ga-event-label="Glossary">Glossary</a></li>
+	<li><a href="/WebCMS/webcms.nsf/content/contact-us" ga-on="click" ga-event-category="Links" ga-event-action="Footer Link" ga-event-label="Contact us">Contact us</a></li>
+	<!--li><a href="/WebCMS/webcms.nsf/content/careers" ga-on="click" ga-event-category="Links" ga-event-action="Footer Link" ga-event-label="Careers">Careers</a></li-->
+	<li><a href="https://www.parliament.wa.gov.au/parliament/employ.nsf/ScreenWebVac" ga-on="click" ga-event-category="Links" ga-event-action="Footer Link" ga-event-label="Careers">Careers</a></li>
+	<li><a href="/WebCMS/HelpUsing.nsf/InstructionsWeb" ga-on="click" ga-event-category="Links" ga-event-action="Footer Link" ga-event-label="Using this website">Using this website</a></li>
+	<li><a href="/WebCMS/webcms.nsf/content/related-sites" ga-on="click" ga-event-category="Links" ga-event-action="Footer Link" ga-event-label="Related sites">Related sites</a></li>
+	</ul>
+	</nav>
+	</div>
+	<div class="column span50 mspan100 alignright footer_right clearfix">
+	<div class="footer_logo"><a href="/WebCMS/webcms.nsf/index" ga-on="click" ga-event-category="Links" ga-event-action="Footer Link" ga-event-label="Home Logo"><img src="/WebCMS/WebCMS.nsf/images/logo_footer.png" alt="Parliament of Western Australia logo"></a></div>
+	<div class="footer_acknowledgement_title">Acknowledgement of Country</div>
+	<div class="footer_acknowledgement">The Parliament of Western Australia is honoured to be situated on the ancestral lands of the Whadjuk Noongar people. The Parliament acknowledges the First Australians as the traditional owners of the lands we represent and pays respects to their Elders both past and present.</div>
+	</div>
+	</div>
+	</div>	 
+	<img src="/WebCMS/WebCMS.nsf/images/logo_footer.png" onload="loadSlidesWidget()" style="width:0px;height:0px;display:none" alt="">
+
+<input name="Form" type="hidden" value="BIL">
+<input name="Query_String_Decoded" type="hidden" value="OpenForm=&amp;ParentUNID=5107DFD50A7DA2E448258DEE0026841D">
+<input name="ParliamentVersion" type="hidden" value="">
+<input name="Query_String" type="hidden" value="OpenForm=&amp;ParentUNID=5107DFD50A7DA2E448258DEE0026841D">
+<input name="ParentUNID" type="hidden" value="5107DFD50A7DA2E448258DEE0026841D">
+<input name="Bil_Attach" type="hidden" value="">
+<input name="Dis_Bil_Special" type="hidden" value="">
+<input name="Bil_Status" type="hidden" value="Assented to">
+<input name="Bil_Previous" type="hidden" value="">
+<input name="Bil_Parliament" type="hidden" value="42nd">
+<input name="Bil_Session" type="hidden" value="1st">
+<input name="Profile_Parliament" type="hidden" value="42">
+<input name="Profile_Session" type="hidden" value="1">
+<input name="URLDocsLink" type="hidden" value="">
+<input name="LAHideLineHead" type="hidden" value="No">
+<input name="LAHideLine1" type="hidden" value="Yes">
+<input name="LAHideLine2" type="hidden" value="No">
+<input name="LAHideLine3" type="hidden" value="No">
+<input name="LAHideLine4" type="hidden" value="No">
+<input name="LAHideLine5" type="hidden" value="No">
+<input name="LAHideLine6" type="hidden" value="Yes">
+<input name="LAHideLine7" type="hidden" value="Yes">
+<input name="LAHideLine8" type="hidden" value="No">
+<input name="LCHideLineHead" type="hidden" value="No">
+<input name="LCHideLine1" type="hidden" value="Yes">
+<input name="LCHideLine2" type="hidden" value="No">
+<input name="LCHideLine3" type="hidden" value="No">
+<input name="LCHideLine4" type="hidden" value="No">
+<input name="LCHideLine5" type="hidden" value="No">
+<input name="LCHideLine6" type="hidden" value="Yes">
+<input name="LCHideLine7" type="hidden" value="Yes">
+<input name="LCHideLine8" type="hidden" value="No">
+<input name="HideLine1" type="hidden" value="Yes">
+<input name="HideLine2" type="hidden" value="Yes">
+<input name="HideLine3" type="hidden" value="Yes">
+<input name="HideLine4" type="hidden" value="Yes">
+<input name="HideLine5" type="hidden" value="Yes">
+<input name="HideLine6" type="hidden" value="Yes">
+<input name="HideLine7" type="hidden" value="Yes">
+<input name="HideLine8" type="hidden" value="Yes">
+<input name="HideLine9" type="hidden" value="Yes">
+<input name="HideLine10" type="hidden" value="Yes">
+<input name="HideLine1_1" type="hidden" value="Yes">
+<input name="HideLine2_1" type="hidden" value="Yes">
+<input name="HideLine3_1" type="hidden" value="Yes">
+<input name="HideLine4_1" type="hidden" value="Yes">
+<input name="HideLine5_1" type="hidden" value="Yes">
+<input name="HideLine6_1" type="hidden" value="Yes">
+<input name="HideLine7_1" type="hidden" value="Yes">
+<input name="HideLine8_1" type="hidden" value="Yes">
+<input name="HideLine9_1" type="hidden" value="Yes">
+<input name="HideLine10_1" type="hidden" value="Yes">
+<input name="HideNotes" type="hidden" value="Yes">
+<input name="DateSeparator" type="hidden" value=" ">
+<input name="HidePrivateMember" type="hidden" value="Yes">
+<input name="HTTP_User_Agent" type="hidden" value="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Policai/1.0 (+https://policai.org)">
+<input name="HTTP_Accept" type="hidden" value="text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7">
+<input name="HTTP_X_WAP_Profile" type="hidden" value="">
+<input name="HTTP_X_Operamini_Features" type="hidden" value="">
+<input name="HTTP_Profile" type="hidden" value="">
+<input name="Server_Name" type="hidden" value="www.parliament.wa.gov.au">
+<input name="CookieMobileOrFull" type="hidden" value="">
+<input name="IntranetURLs" type="hidden" value="">
+<input name="ExtranetURLs" type="hidden" value="">
+<input name="IsIntranet" type="hidden" value="0">
+<input name="IsExtranet" type="hidden" value="0">
+<input name="isMobile" type="hidden" value="Desktop">
+<input name="CMSPath" type="hidden" value="WebCMS/WebCMS.nsf">
+<input name="CMSPath" type="hidden" value="WebCMS/WebCMS.nsf">
+<input name="CMSPath" type="hidden" value="WebCMS/WebCMS.nsf">
+<input name="CMSPath" type="hidden" value="WebCMS/WebCMS.nsf">
+<input name="Path_Info_Decoded" type="hidden" value="/parliament/bills.nsf/BillProgressPopup?OpenForm=&amp;ParentUNID=5107DFD50A7DA2E448258DEE0026841D">
+<input name="PathInfo" type="hidden" value="/parliament/bills.nsf/BillProgressPopup?OpenForm=">
+<input name="$$HTMLFrontMatter" type="hidden" value="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;">
+<input name="DispSubscribeLink" type="hidden" value="&amp;Bill=67&amp;BillName=Appropriation (Recurrent 2026–27) Bill 2026">
+<input name="DispBillName" type="hidden" value="Appropriation (Recurrent 2026–27) Bill 2026">
+<input name="bilNodisp" type="hidden" value="67">
+<input name="BodyDisp" type="hidden" value="The purpose of the Bill is to grant supply and to appropriate and apply out of the Consolidated Account certain sums for the recurrent services and purposed of the year ending 30 June 2027.">
+<input name="Dip_Bil_MemberIntro_1" type="hidden" value="">
+<input name="DispBilProclaimComment_1" type="hidden" value="">
+<input name="DispBilProclaimComment_2" type="hidden" value="Royal Assent given 19 Aug 2026 as Act No. 10 of 2026.  For details refer to the Commencement Clause of the Bill (see also [&lt;a href=&quot;https://www.legislation.wa.gov.au/legislation/prod/filestore.nsf/FileURL/table09.pdf/$FILE/Table09.pdf?OpenElement&quot;&gt;]Assent and Commencement information for Acts[&lt;/a&gt;])">
+<input name="Bil_Attach_display" type="hidden" value="&lt;ul class=&quot;ulLink&quot;&gt;&lt;li class=&quot;liLink&quot;&gt;&lt;a target=_blank href=&quot;/Parliament/Bills.nsf/5107DFD50A7DA2E448258DEE0026841D/$File/Bill%2B67-1.pdf&quot; ga-on=&quot;click&quot; ga-event-category=&quot;Downloads&quot; ga-event-action=&quot;Bills&quot; ga-event-label=&quot;Bill as Introduced&quot;&gt;&lt;img src=&quot;/Parliament/Bills.nsf/pdf.gif?OpenImageResource&quot; alt=&quot;pdf icon&quot;&gt;  Download the Bill as Introduced&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;">
+<input name="Bil_Attach_display_Introducing" type="hidden" value="&lt;ul class=&quot;ulLink&quot;&gt;&lt;li class=&quot;liLink&quot;&gt;&lt;a target=_blank href=&quot;/Parliament/Bills.nsf/5107DFD50A7DA2E448258DEE0026841D/$File/Bill%2B67-1.002.pdf&quot; ga-on=&quot;click&quot; ga-event-category=&quot;Downloads&quot; ga-event-action=&quot;Bills&quot; ga-event-label=&quot;Bill as passed by originating house&quot;&gt;&lt;img src=&quot;/Parliament/Bills.nsf/pdf.gif?OpenImageResource&quot; alt=&quot;pdf icon&quot;&gt;  Download the Bill as passed by originating House&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;">
+<input name="Bil_Attach_display_assent" type="hidden" value="">
+<input name="EMLA_display" type="hidden" value="&lt;ul class=&quot;ulLink&quot;&gt;&lt;li class=&quot;liLink&quot;&gt;&lt;a target=_blank href=&quot;/Parliament/Bills.nsf/5107DFD50A7DA2E448258DEE0026841D/$File/EM%2B67-1.pdf&quot; ga-on=&quot;click&quot; ga-event-category=&quot;Downloads&quot; ga-event-action=&quot;Bills&quot; ga-event-label=&quot;Explanatory Memorandum LA&quot;&gt;&lt;img src=&quot;/Parliament/Bills.nsf/pdf.gif?OpenImageResource&quot; alt=&quot;pdf icon&quot;&gt;  Explanatory Memorandum presented in the Legislative Assembly&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;">
+<input name="EMLC_display" type="hidden" value="&lt;ul class=&quot;ulLink&quot;&gt;&lt;li class=&quot;liLink&quot;&gt;&lt;a target=_blank href=&quot;/Parliament/Bills.nsf/5107DFD50A7DA2E448258DEE0026841D/$File/EM%2B67-1.002.pdf&quot; ga-on=&quot;click&quot; ga-event-category=&quot;Downloads&quot; ga-event-action=&quot;Bills&quot; ga-event-label=&quot;Explanatory Memorandum LC&quot;&gt;&lt;img src=&quot;/Parliament/Bills.nsf/pdf.gif?OpenImageResource&quot; alt=&quot;pdf icon&quot;&gt;  Explanatory Memorandum presented in the Legislative Council&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;">
+<input name="MSRLA_display" type="hidden" value="[&lt;ul class=&quot;ulLink&quot;&gt;&lt;li class=&quot;liLink&quot;&gt;&lt;a href=&quot;https://www.parliament.wa.gov.au/hansard/daily/lh/2026-05-07/39&quot;&gt;Second reading speech in the Legislative Assembly&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;]">
+<input name="MSRLC_display" type="hidden" value="[&lt;ul class=&quot;ulLink&quot;&gt;&lt;li class=&quot;liLink&quot;&gt;&lt;a href=&quot;https://www.parliament.wa.gov.au/hansard/daily/uh/2026-06-10/11&quot;&gt;Second reading speech in the Legislative Council&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;]">
+<input name="Bil_BlueBills_display" type="hidden" value="">
+<input name="OtherDocsURLDisplay" type="hidden" value="">
+<input name="Bil_Related_Commitee_Display" type="hidden" value="">
+<input name="SNPLClink_display" type="hidden" value="">
+<input name="Bil_Previous_display" type="hidden" value="">
+<input name="Messages_btn_Houses_display" type="hidden" value="&lt;ul class=&quot;ulLink&quot;&gt;&lt;li class=&quot;liLink&quot;&gt;&lt;a target=_blank href=&quot;/Parliament/Bills.nsf/5107DFD50A7DA2E448258DEE0026841D/$File/Gov%2B06%2B%282026%29.pdf&quot; ga-on=&quot;click&quot; ga-event-category=&quot;Downloads&quot; ga-event-action=&quot;Bills&quot; ga-event-label=&quot;Message&quot;&gt;&lt;img src=&quot;/Parliament/Bills.nsf/pdf.gif?OpenImageResource&quot; alt=&quot;pdf icon&quot;&gt;  (Message No. 6 from the Governor, dated 07 May 2026)&lt;/a&gt;&lt;/li&gt;&lt;li class=&quot;liLink&quot;&gt;&lt;a target=_blank href=&quot;/Parliament/Bills.nsf/5107DFD50A7DA2E448258DEE0026841D/$File/LA%2B60%2B%282026%29.pdf&quot; ga-on=&quot;click&quot; ga-event-category=&quot;Downloads&quot; ga-event-action=&quot;Bills&quot; ga-event-label=&quot;Message&quot;&gt;&lt;img src=&quot;/Parliament/Bills.nsf/pdf.gif?OpenImageResource&quot; alt=&quot;pdf icon&quot;&gt;  (Message No. 60 from the Legislative Assembly, dated 09 Jun 2026)&lt;/a&gt;&lt;/li&gt;&lt;li class=&quot;liLink&quot;&gt;&lt;a target=_blank href=&quot;/Parliament/Bills.nsf/5107DFD50A7DA2E448258DEE0026841D/$File/LC%2B42%2B%282026%29.pdf&quot; ga-on=&quot;click&quot; ga-event-category=&quot;Downloads&quot; ga-event-action=&quot;Bills&quot; ga-event-label=&quot;Message&quot;&gt;&lt;img src=&quot;/Parliament/Bills.nsf/pdf.gif?OpenImageResource&quot; alt=&quot;pdf icon&quot;&gt;  (Message No. 42 from the Legislative Council, dated 11 Aug 2026)&lt;/a&gt;&lt;/li&gt;&lt;li class=&quot;liLink&quot;&gt;&lt;a target=_blank href=&quot;/Parliament/Bills.nsf/5107DFD50A7DA2E448258DEE0026841D/$File/Gov%2B16%2B%282026%29.pdf&quot; ga-on=&quot;click&quot; ga-event-category=&quot;Downloads&quot; ga-event-action=&quot;Bills&quot; ga-event-label=&quot;Message&quot;&gt;&lt;img src=&quot;/Parliament/Bills.nsf/pdf.gif?OpenImageResource&quot; alt=&quot;pdf icon&quot;&gt;  (Message No. 16 from the Governor, dated 19 Aug 2026)&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;">
+<input name="DBI_LA" type="hidden" value="07 May 2026">
+<input name="DBR_LA" type="hidden" value="07 May 2026">
+<input name="DBR2_LA" type="hidden" value="07 May 2026">
+<input name="DBPNum1" type="hidden" value="[&lt;a href=&quot;https://www.parliament.wa.gov.au/hansard/daily/lh/2026-05-07/39&quot;&gt;Second reading speech in the Legislative Assembly&lt;/a&gt;]">
+<input name="DBA_LA" type="hidden" value="14 May 2026">
+<input name="DBC_LA" type="hidden" value="">
+<input name="DBAm_LA" type="hidden" value="">
+<input name="DBR3_LA" type="hidden" value="09 Jun 2026">
+<input name="DBI_LC_1" type="hidden" value="10 Jun 2026">
+<input name="DBR1_LC" type="hidden" value="10 Jun 2026">
+<input name="DBR2_LC" type="hidden" value="10 Jun 2026">
+<input name="DBPN2" type="hidden" value="[&lt;a href=&quot;https://www.parliament.wa.gov.au/hansard/daily/uh/2026-06-10/11&quot;&gt;Second reading speech in the Legislative Council&lt;/a&gt;]">
+<input name="DBALC" type="hidden" value="11 Aug 2026">
+<input name="DBCLC_1" type="hidden" value="">
+<input name="DBAmLC" type="hidden" value="">
+<input name="DBR3_LC" type="hidden" value="11 Aug 2026">
+<input name="Dis_Msg_Head1" type="hidden" value="">
+<input name="Dis_Dat1" type="hidden" value="">
+<input name="Dis_Not1" type="hidden" value="">
+<input name="Dis_Msg_Head2" type="hidden" value="">
+<input name="Dis_Dat2" type="hidden" value="">
+<input name="Dis_Not2" type="hidden" value="">
+<input name="Dis_Msg_Head3" type="hidden" value="">
+<input name="Dis_Dat3" type="hidden" value="">
+<input name="Dis_Not3" type="hidden" value="">
+<input name="Dis_Msg_Head4" type="hidden" value="">
+<input name="Dis_Dat4" type="hidden" value="">
+<input name="Dis_Not4" type="hidden" value="">
+<input name="Dis_Msg_Head5" type="hidden" value="">
+<input name="Dis_Dat5" type="hidden" value="">
+<input name="Dis_Not5" type="hidden" value="">
+<input name="Dis_Msg_Head6" type="hidden" value="">
+<input name="Dis_Dat6" type="hidden" value="">
+<input name="Dis_Not6" type="hidden" value="">
+<input name="Dis_Msg_Head7" type="hidden" value="">
+<input name="Dis_Dat7" type="hidden" value="">
+<input name="Dis_Not7" type="hidden" value="">
+<input name="Dis_Msg_Head8" type="hidden" value="">
+<input name="Dis_Dat8" type="hidden" value="">
+<input name="Dis_Not8" type="hidden" value="">
+<input name="Dis_Msg_Head9" type="hidden" value="">
+<input name="Dis_Dat9" type="hidden" value="">
+<input name="Dis_Not9" type="hidden" value="">
+<input name="Dis_Msg_Head10" type="hidden" value="">
+<input name="Dis_Dat10" type="hidden" value="">
+<input name="Dis_Not10" type="hidden" value="">
+<input name="Dis_Msg_Head1_1" type="hidden" value="">
+<input name="Dis_Dat11" type="hidden" value="">
+<input name="Dis_Not11" type="hidden" value="">
+<input name="Dis_Link_1" type="hidden" value="">
+<input name="Dis_Msg_Head2_1" type="hidden" value="">
+<input name="Dis_Dat12" type="hidden" value="">
+<input name="Dis_Not12" type="hidden" value="">
+<input name="Dis_Msg_Head3_1" type="hidden" value="">
+<input name="Dis_Dat13" type="hidden" value="">
+<input name="Dis_Not13" type="hidden" value="">
+<input name="Dis_Msg_Head4_1" type="hidden" value="">
+<input name="Dis_Dat14" type="hidden" value="">
+<input name="Dis_Not14" type="hidden" value="">
+<input name="Dis_Msg_Head5_1" type="hidden" value="">
+<input name="Dis_Dat15" type="hidden" value="">
+<input name="Dis_Not15" type="hidden" value="">
+<input name="Dis_Msg_Head6_1" type="hidden" value="">
+<input name="Dis_Dat16" type="hidden" value="">
+<input name="Dis_Not16" type="hidden" value="">
+<input name="Dis_Msg_Head7_1" type="hidden" value="">
+<input name="Dis_Dat17" type="hidden" value="">
+<input name="Dis_Not17" type="hidden" value="">
+<input name="Dis_Msg_Head8_1" type="hidden" value="">
+<input name="Dis_Dat18" type="hidden" value="">
+<input name="Dis_Not18" type="hidden" value="">
+<input name="Dis_Msg_Head9_1" type="hidden" value="">
+<input name="Dis_Dat19" type="hidden" value="">
+<input name="Dis_Not19" type="hidden" value="">
+<input name="Dis_Msg_Head10_1" type="hidden" value="">
+<input name="Dis_Dat20" type="hidden" value="">
+<input name="Dis_Not20" type="hidden" value="">
+<input name="SLCSNPlink_display" type="hidden" value="">
+<input name="BillComp_display" type="hidden" value="">
+<input name="BillCompDesc_display" type="hidden" value="">
+<input name="Conference_display" type="hidden" value="">
+<input name="DispBil_Comments" type="hidden" value="">
+<input name="DispSubscribeLink" type="hidden" value="&amp;Bill=67&amp;BillName=Appropriation (Recurrent 2026–27) Bill 2026"></form>
+
+
+<script src="https://cdn.userway.org/widgetapp/2026-09-29-10-33-22/widget_app_base_1790678002737.js" async="" id="a11yWidgetSrc" crossorigin="anonymous" integrity="sha256-i8lWKLzie0Zgw1qt44knviZAaaIjBxD9wIXEjw6EwcA="></script><script crossorigin="anonymous" integrity="sha256-lLrfQ9dF8lfeDYs8glS89ME8SnouKF7DQs5/1w4kB2I=" src="https://cdn.userway.org/widgetapp/2026-09-29-10-33-22/remediation/remediation_1790678002737.js"></script><script crossorigin="anonymous" integrity="sha256-VTbKbeKge91BpLu1PqJDjKXgoz7iM5jEDaS/xfpuCX8=" src="https://cdn.userway.org/remediation/2026-09-29-10-33-22/paid/remediation-tool.js?ts=1790678002737"></script></body></html>

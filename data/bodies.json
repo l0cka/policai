@@ -1049,6 +1049,18 @@
     }
   },
   {
+    "id": "nsw-parliament",
+    "name": "Parliament of New South Wales",
+    "jurisdiction": "nsw",
+    "tier": "A",
+    "hosts": [
+      "www.parliament.nsw.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
     "id": "qld-parliament",
     "name": "Queensland Parliament",
     "jurisdiction": "qld",

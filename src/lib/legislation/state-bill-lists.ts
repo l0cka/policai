@@ -16,9 +16,15 @@ import { isRelevantScrapedCandidate } from '@/lib/scraper-filter';
  *   bill, date introduced and stage, linking each bill's progress page. The
  *   view pages at 30 rows unless the URL raises Count, so a full page is an
  *   error rather than a silently short list.
+ * - `nsw`: the NSW Parliament's current-session bills (browser), one card
+ *   per bill with its origin and status. Each card links through a search
+ *   redirect that robots disallows, so the bill page is rebuilt from the
+ *   billId in the redirect's `url` parameter. The page renders 10 cards and
+ *   loads more from a path robots disallows unless `num_ranks` asks for all,
+ *   so a page still offering more (`start_rank`) is an error.
  */
 
-export type BillListId = 'nt' | 'qld' | 'wa';
+export type BillListId = 'nt' | 'qld' | 'wa' | 'nsw';
 
 interface BillRow {
   url: string;
@@ -83,6 +89,42 @@ const READERS: Record<BillListId, ($: cheerio.CheerioAPI, baseUrl: string) => Bi
           title: squash(link.text()),
           text: [introducedBy && `Introduced by ${introducedBy}`, stage && `stage reached: ${stage}`].filter(Boolean).join('; ') + '.',
           ...withDate(numericDate(introducedBy)),
+        };
+      })
+      .get()
+      .filter((row): row is BillRow => row !== null);
+  },
+  nsw: ($) => {
+    const cards = $('a.pims-generic-card');
+    if (cards.length === 0) return null;
+    if ($.html().includes('start_rank=')) {
+      throw new Error('the NSW bill list offers more bills; raise num_ranks in the source URL');
+    }
+    return cards
+      .map((_, card): BillRow | null => {
+        const redirect = $(card).attr('href') ?? '';
+        let target: string | null = null;
+        try {
+          target = new URL(redirect).searchParams.get('url');
+        } catch {
+          return null;
+        }
+        const billId = target ? /[?&]billId=(\d+)/.exec(target)?.[1] : undefined;
+        if (!billId) return null;
+        const field = (label: string) =>
+          squash(
+            $(card)
+              .find('dl.pims-generic-card__dl > dt')
+              .filter((_, term) => squash($(term).text()).toLowerCase() === label)
+              .next('dd')
+              .text(),
+          );
+        const origin = field('origin:');
+        const status = field('status:');
+        return {
+          url: `https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=${billId}`,
+          title: squash($(card).find('h2.pims-generic-card__title').text()),
+          text: [origin && `Introduced in the ${origin}`, status && `status: ${status}`].filter(Boolean).join('; ') + '.',
         };
       })
       .get()

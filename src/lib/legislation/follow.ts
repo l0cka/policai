@@ -5,10 +5,12 @@ import { sourceUrlsEqual } from '@/lib/source-url';
 import { classifyFailure } from '@/lib/pipeline/failure';
 import type { Policy, PolicyDate, PolicyDraft, SourceEvidence, SourceReview, SourceRunResult } from '@/types';
 import { parseAphProgress } from './aph-progress';
+import { parseNswBillDetail } from './nsw-progress';
 import { parseSaBillSummaries, SA_BILL_PAGE, saBillSummaries } from './sa-salt';
 import { parseTasBillProgress } from './tas-progress';
 import { VIC_BILL_PAGE } from './vic-bills';
 import { parseVicBillProgress } from './vic-progress';
+import { parseWaBillProgress } from './wa-progress';
 import {
   frlAmendedPrincipals,
   frlCommencements,
@@ -35,8 +37,10 @@ export const FOLLOW_SOURCE_PREFIX = 'track:';
 
 const APH_BILL_PAGE = 'https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=';
 
-/** APH bill pages are served only to a browser; the Federal Register API, Tasmanian and Victorian bill pages and SA's SALT API answer plain HTTP. */
-export type FollowRegister = 'aph' | 'frl' | 'tas' | 'sa' | 'vic';
+export type FollowRegister = 'aph' | 'frl' | 'tas' | 'sa' | 'vic' | 'nsw' | 'wa';
+
+/** APH, NSW and WA bill pages are served only to a browser; the other registers answer plain HTTP. */
+export const BROWSER_REGISTERS: ReadonlySet<FollowRegister> = new Set(['aph', 'nsw', 'wa']);
 
 export interface FollowTarget {
   sourceId: string;
@@ -51,8 +55,12 @@ const READ: Record<FollowRegister, { title: string; read: (body: string, evidenc
   tas: { title: 'Parliament of Tasmania bill page', read: parseTasBillProgress },
   sa: { title: 'Parliament of South Australia bill summary', read: parseSaBillSummaries },
   vic: { title: 'Victorian Legislation bill page', read: parseVicBillProgress },
+  nsw: { title: 'NSW Parliament bill page', read: parseNswBillDetail },
+  wa: { title: 'WA Parliament bill progress page', read: parseWaBillProgress },
 };
 
+const NSW_BILL_PAGE = /^https:\/\/www\.parliament\.nsw\.gov\.au\/parliamentary-business\/bills\/bill-details\?billId=\d+$/;
+const WA_BILL_PAGE = /^https:\/\/www\.parliament\.wa\.gov\.au\/parliament\/bills\.nsf\/BillProgressPopup\?OpenForm=&ParentUNID=[0-9A-F]{32}$/;
 const TAS_BILL_PAGE = /^https:\/\/www\.parliament\.tas\.gov\.au\/bills\/bills\d{4}\//;
 
 export function aphBillPage(billId: string): string {
@@ -63,8 +71,8 @@ export function aphBillPage(billId: string): string {
  * Federal bills whose register source is their APH bill page, federal
  * instruments with a Federal Register title id, Tasmanian bills with a
  * Parliament of Tasmania bill page, SA bills with a SALT bill page, read
- * through the SALT API, and Victorian bills with a Victorian Legislation
- * bill page.
+ * through the SALT API, and Victorian, NSW and WA bills with their bill
+ * page.
  */
 export function followTargets(policies: readonly Policy[]): FollowTarget[] {
   return policies.flatMap((policy): FollowTarget[] => {
@@ -85,6 +93,12 @@ export function followTargets(policies: readonly Policy[]): FollowTarget[] {
     }
     if (legislative.kind === 'bill' && ref.register === 'state' && ref.jurisdiction === 'vic' && VIC_BILL_PAGE.test(ref.url)) {
       return [{ sourceId, url: ref.url, register: 'vic', policy: { ...policy, legislative } }];
+    }
+    if (legislative.kind === 'bill' && ref.register === 'state' && ref.jurisdiction === 'nsw' && NSW_BILL_PAGE.test(ref.url)) {
+      return [{ sourceId, url: ref.url, register: 'nsw', policy: { ...policy, legislative } }];
+    }
+    if (legislative.kind === 'bill' && ref.register === 'state' && ref.jurisdiction === 'wa' && WA_BILL_PAGE.test(ref.url)) {
+      return [{ sourceId, url: ref.url, register: 'wa', policy: { ...policy, legislative } }];
     }
     const saBill = legislative.kind === 'bill' && ref.register === 'state' && ref.jurisdiction === 'sa' ? SA_BILL_PAGE.exec(ref.url) : null;
     if (saBill) {

@@ -7,6 +7,7 @@ const fixture = (name: string) => readFileSync(join(__dirname, '__fixtures__/sta
 
 const NT = 'https://legislation.nt.gov.au/en/LegislationPortal/Bills/Before-Legislative-Assembly';
 const QLD = 'https://www.parliament.qld.gov.au/Work-of-the-Assembly/Bills-and-Legislation/Bills-before-the-House';
+const NSW = 'https://www.parliament.nsw.gov.au/parliamentary-business/bills/current-session-bills?num_ranks=1000';
 const WA = 'https://www.parliament.wa.gov.au/parliament/bills.nsf/screenWebCurrentBills?Count=200&OpenForm=';
 
 describe('extractFromBillList', () => {
@@ -64,10 +65,28 @@ describe('extractFromBillList', () => {
     expect(() => extractFromBillList('wa', fixture('wa-current-bills.html'), page)).toThrow('filled its page of 30 rows');
   });
 
+  it('keeps the NSW deepfake bill from the whole session, citing its bill page rebuilt from the search redirect', () => {
+    const result = extractFromBillList('nsw', fixture('nsw-current-session-bills.html'), NSW);
+    expect(result.itemCount).toBe(544);
+    expect(result.candidates).toEqual([
+      {
+        url: 'https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18782',
+        title: 'Crimes Amendment (Deepfake Sexual Material) Bill 2025',
+        text: 'Introduced in the Legislative Assembly; status: Lapsed in Accordance with Standing Orders, Fri 06 February 2026.',
+      },
+    ]);
+  });
+
+  it('refuses an NSW list that still offers more bills', () => {
+    const html = fixture('nsw-current-session-bills.html').replace('</main>', '<div hx-get="/_design/rest-assets/funnelback/listing-pages-fb?start_rank=11"></div></main>');
+    expect(() => extractFromBillList('nsw', html, NSW)).toThrow('offers more bills');
+  });
+
   it('treats a page without its list as broken, not empty', () => {
     const loading = '<html><body><p>Loading…</p></body></html>';
     expect(extractFromBillList('nt', loading, NT)).toEqual({ itemCount: 0, candidates: [] });
     expect(extractFromBillList('qld', loading, QLD)).toEqual({ itemCount: 0, candidates: [] });
     expect(extractFromBillList('wa', loading, WA)).toEqual({ itemCount: 0, candidates: [] });
+    expect(extractFromBillList('nsw', loading, NSW)).toEqual({ itemCount: 0, candidates: [] });
   });
 });

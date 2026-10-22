@@ -17,6 +17,7 @@ import { retrieveSource } from '../src/lib/pipeline/fetch';
 import { advanceSourceHealth } from '../src/lib/pipeline/source-health';
 import { refusedHosts, WATCH_SOURCES, type WatchSource } from '../src/lib/pipeline/sources';
 import {
+  BROWSER_REGISTERS,
   FOLLOW_SOURCE_PREFIX,
   followLegislation,
   followTargets,
@@ -216,17 +217,17 @@ async function followTrackedLegislation(
   const targets = followTargets(policies).filter(
     (target) =>
       (!run.sourceId || target.sourceId === run.sourceId) &&
-      (target.register !== 'aph' || browserFetchImpl),
+      (!BROWSER_REGISTERS.has(target.register) || browserFetchImpl),
   );
   if (!browserFetchImpl) {
-    console.log('[follow] No browser retriever; APH bill watches skipped.');
+    console.log('[follow] No browser retriever; APH, NSW and WA bill watches skipped.');
   }
   const now = run.now ?? (() => new Date());
   return followLegislation({
     targets,
     existingReviews: reviews,
     retrieve: (url, register) =>
-      register === 'aph'
+      BROWSER_REGISTERS.has(register)
         ? retrieveSource(url, {
             fetchImpl: browserFetchImpl,
             now,

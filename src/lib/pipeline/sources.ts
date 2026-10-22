@@ -1269,6 +1269,23 @@ export const WATCH_SOURCES: WatchSource[] = [
       'Official Atom feed of WA Acts as passed. Checked 2026-09-23: 200 entries over plain HTTP (about 0.5 MB).',
   },
   {
+    id: 'nsw-parliament-bills',
+    name: 'NSW Parliament — current session bills',
+    bodyId: 'nsw-parliament',
+    jurisdiction: 'nsw',
+    category: 'government',
+    url: 'https://www.parliament.nsw.gov.au/parliamentary-business/bills/current-session-bills?num_ranks=1000',
+    kind: 'bill-list',
+    billList: 'nsw',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    admittedAt: '2026-10-22',
+    notes:
+      'Every bill of the current session, with origin and status. The host answers plain HTTP, robots.txt included, with a Cloudflare 403 (since 22 Oct 2026), so the list is read in the collector’s browser under the declared identity; robots allows it there. The page renders 10 cards and loads more from /_design, which robots disallows, so num_ranks asks for all 544 at once; a page still offering more fails the run. Bill links go through search.parliament.nsw.gov.au, which robots disallows, so the reader rebuilds each bill page from its billId.',
+  },
+  {
     id: 'wa-parliament-bills',
     name: 'Parliament of Western Australia — current bills',
     bodyId: 'wa-parliament',

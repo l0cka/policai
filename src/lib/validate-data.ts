@@ -2084,7 +2084,7 @@ export function validateWatchSources(
     }
     if (!isOneOf(['html-index', 'rss', 'document', 'frl-search', 'sa-salt-search', 'vic-bill-search', 'bill-list'], source.kind))
       errors.push(`${label}: invalid kind`);
-    if ((source.kind === 'bill-list') !== isOneOf(['nt', 'qld', 'wa'], source.billList))
+    if ((source.kind === 'bill-list') !== isOneOf(['nt', 'qld', 'wa', 'nsw'], source.billList))
       errors.push(`${label}: billList names the reader of a bill-list source, and only of one`);
     if (!isOneOf(['daily', 'weekly'], source.schedule))
       errors.push(`${label}: invalid schedule`);
