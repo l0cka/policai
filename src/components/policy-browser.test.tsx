@@ -124,6 +124,14 @@ describe('Editorial register', () => {
     expect(screen.getByText('Page 1 of 3')).toBeInTheDocument();
   });
 
+  it('nests each record title under the register heading', () => {
+    render(<PolicyBrowser {...props} policies={paginatedPolicies} />);
+    const register = screen.getByRole('region', { name: 'Policy register' });
+    expect(within(register).getByRole('heading', { level: 2, name: 'Policy register' })).toBeInTheDocument();
+    expect(within(register).getAllByRole('heading', { level: 3 }).length).toBeGreaterThan(0);
+    expect(within(register).queryAllByRole('heading', { level: 2 })).toHaveLength(1);
+  });
+
   it('leads with search and readable records, with developments explicitly separate', () => {
     render(<PolicyBrowser {...props} />);
     expect(
