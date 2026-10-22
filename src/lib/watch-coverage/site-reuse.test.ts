@@ -56,6 +56,12 @@ describe('parseSiteReuse', () => {
     expect(() => parseSiteReuse([entry])).toThrow(message);
   });
 
+  it('accepts a copyright page on the www variant of the host', () => {
+    expect(() =>
+      parseSiteReuse([{ ...stated, host: 'asic.gov.au', termsUrl: 'https://www.asic.gov.au/copyright' }]),
+    ).not.toThrow();
+  });
+
   it('rejects a host recorded twice', () => {
     expect(() => parseSiteReuse([stated, stated])).toThrow('duplicate host');
   });

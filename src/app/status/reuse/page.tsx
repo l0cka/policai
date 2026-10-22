@@ -95,7 +95,7 @@ export default async function ReusePage() {
       <div className="space-y-10 py-9 text-sm leading-6">
         <section>
           <p className="max-w-3xl text-muted-foreground">
-            Most Australian government sites license their content under
+            Most of the sites Policai has checked license their content under
             Creative Commons, usually excluding the Coat of Arms, logos and
             material owned by others. Courts, parliaments and some agencies
             keep their own terms. This is a summary of what each site’s
@@ -157,8 +157,8 @@ export default async function ReusePage() {
         ))}
         <p className="text-xs text-muted-foreground">
           Each site links to the copyright page Policai read. “Unknown” counts
-          sites with no statement Policai could find and sites that refuse
-          Policai’s declared collector, which are not checked another way.
+          sites that refuse Policai’s declared collector and sites whose terms
+          Policai has not yet found.
         </p>
       </div>
     </article>

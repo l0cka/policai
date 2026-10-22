@@ -1,1 +1,652 @@
-[]
+[
+  {
+    "host": "www.pm.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "creative_commons",
+      "licence": "CC-BY-4.0",
+      "exceptions": "the Coat of Arms and all photos and graphics"
+    },
+    "termsUrl": "https://www.pm.gov.au/copyright",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.industry.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.minister.industry.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.ai.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.dta.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.digital.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.finance.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.ag.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "ministers.ag.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.oaic.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "creative_commons",
+      "licence": "CC-BY-4.0",
+      "exceptions": "third-party content, the OAIC logo and the Commonwealth Coat of Arms"
+    },
+    "termsUrl": "https://www.oaic.gov.au/about-the-OAIC/copyright",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.asd.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.cyber.gov.au",
+    "status": "refused",
+    "note": "Recorded as refusing Policai’s collector, so not requested.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.homeaffairs.gov.au",
+    "status": "refused",
+    "note": "HTTP 403 for Policai’s declared identity.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.esafety.gov.au",
+    "status": "refused",
+    "note": "Recorded as refusing Policai’s collector, so not requested.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.aph.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "creative_commons",
+      "licence": "CC-BY-NC-ND-4.0",
+      "exceptions": "the Commonwealth Coat of Arms and material marked otherwise"
+    },
+    "termsUrl": "https://www.aph.gov.au/Help/Disclaimer_Privacy_Copyright",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.legislation.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "creative_commons",
+      "licence": "CC-BY-4.0",
+      "exceptions": "the Commonwealth Coat of Arms and material marked otherwise"
+    },
+    "termsUrl": "https://www.legislation.gov.au/terms-of-use",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "treasury.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "creative_commons",
+      "licence": "CC-BY-4.0",
+      "exceptions": "the Commonwealth Coat of Arms, the department's logo and third-party content"
+    },
+    "termsUrl": "https://treasury.gov.au/copyright-disclaimer",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "asic.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "custom",
+      "summary": "Verbatim copies of ten classes of ASIC documents, including regulatory guides, information sheets, reports and consultation papers, may be reproduced under CC BY 4.0. Other content, the ASIC logo and the Coat of Arms need permission."
+    },
+    "termsUrl": "https://www.asic.gov.au/about-asic/dealing-with-asic/copyright-and-linking-to-our-websites",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.asic.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "custom",
+      "summary": "Verbatim copies of ten classes of ASIC documents, including regulatory guides, information sheets, reports and consultation papers, may be reproduced under CC BY 4.0. Other content, the ASIC logo and the Coat of Arms need permission."
+    },
+    "termsUrl": "https://www.asic.gov.au/about-asic/dealing-with-asic/copyright-and-linking-to-our-websites",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.apra.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "creative_commons",
+      "licence": "CC-BY-4.0",
+      "exceptions": "the Commonwealth Coat of Arms, the APRA and APRA Connect logos and third-party material"
+    },
+    "termsUrl": "https://www.apra.gov.au/copyright",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.accc.gov.au",
+    "status": "refused",
+    "note": "Recorded as refusing Policai’s collector, so not requested.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.acma.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.tga.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "humanrights.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "creative_commons",
+      "licence": "CC-BY-4.0",
+      "exceptions": "third-party material and other listed exclusions"
+    },
+    "termsUrl": "https://humanrights.gov.au/about-us/copyright",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.apsc.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.anao.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.art.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.fedcourt.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "custom",
+      "summary": "Commonwealth copyright. The Court is relicensing its website material under CC BY 3.0 AU as it reviews it; only material marked with the licence is covered. Judgments and judges’ material are excluded."
+    },
+    "termsUrl": "https://www.fedcourt.gov.au/copyright",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.fcfcoa.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.ipaustralia.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "creative_commons",
+      "licence": "CC-BY-4.0",
+      "exceptions": "the Commonwealth Coat of Arms, the corporate logo, staff and premises photos and third-party content; pages may not be copied wholesale onto another website"
+    },
+    "termsUrl": "https://www.ipaustralia.gov.au/about-us/about-this-site/copyright",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.pc.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "creative_commons",
+      "licence": "CC-BY-4.0",
+      "exceptions": "the Commonwealth Coat of Arms, the Productivity Commission logo and third-party content"
+    },
+    "termsUrl": "https://www.pc.gov.au/copyright",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.teqsa.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.health.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.education.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.dfat.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.servicesaustralia.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.infrastructure.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.afp.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "creative_commons",
+      "licence": "CC-BY-4.0",
+      "exceptions": "the Commonwealth Coat of Arms, the AFP logo and trade-marked material"
+    },
+    "termsUrl": "https://www.afp.gov.au/copyright",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.ato.gov.au",
+    "status": "refused",
+    "note": "HTTP 403 for Policai’s declared identity.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.abs.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "creative_commons",
+      "licence": "CC-BY-4.0",
+      "exceptions": "listed ABS branding and artwork and third-party material"
+    },
+    "termsUrl": "https://www.abs.gov.au/website-privacy-copyright-and-disclaimer",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.agriculture.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.dss.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.austrac.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.naa.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.fwc.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "custom",
+      "summary": "Download, display, print and reproduce in unaltered form only, for personal, non-commercial use or use within your organisation. Other rights reserved."
+    },
+    "termsUrl": "https://www.fwc.gov.au/about-us/legal-and-freedom-information/about-website/copyright",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.fairwork.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.niaa.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "creative_commons",
+      "licence": "CC-BY-4.0",
+      "exceptions": "the Commonwealth Coat of Arms, the agency's logo and third-party content"
+    },
+    "termsUrl": "https://www.niaa.gov.au/copyright-disclaimer",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.gbrmpa.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.ndiscommission.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.ndis.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "creative_commons",
+      "licence": "CC-BY-NC-3.0",
+      "exceptions": "logos, trade marks, third-party material and other specified content; applies only to material marked with the licence"
+    },
+    "termsUrl": "https://www.ndis.gov.au/policies-rules-and-legal/using-our-websites-and-social-media/copyright",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.osi.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.arc.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.comcare.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.safeworkaustralia.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.cgc.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.pbo.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.cdpp.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.dcceew.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.dva.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.nhmrc.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.aic.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.aec.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "creative_commons",
+      "licence": "CC-BY-4.0",
+      "exceptions": "the Commonwealth Coat of Arms, AEC logos, AEC maps and third-party content"
+    },
+    "termsUrl": "https://www.aec.gov.au/footer/Copyright.htm",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.inslm.gov.au",
+    "status": "refused",
+    "note": "Connection reset (HTTP/2) for Policai’s declared identity, as in the collector audit of 7 Oct 2026.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.nsw.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "creative_commons",
+      "licence": "CC-BY-4.0",
+      "exceptions": "the State Coat of Arms, NSW Government logos and trade marks, third-party material and material published on other conditions"
+    },
+    "termsUrl": "https://www.nsw.gov.au/nsw-government/about-website/copyright",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "legislation.nsw.gov.au",
+    "status": "refused",
+    "note": "HTTP 403 for Policai’s declared identity.",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "gazette.nsw.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "creative_commons",
+      "licence": "CC-BY-4.0",
+      "exceptions": "material marked otherwise"
+    },
+    "termsUrl": "https://gazette.nsw.gov.au/copyright",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.vic.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "creative_commons",
+      "licence": "CC-BY-4.0",
+      "exceptions": "images and branding, including the Victorian Coat of Arms and Government logo, and third-party content"
+    },
+    "termsUrl": "https://www.vic.gov.au/copyright",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.premier.vic.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "creative_commons",
+      "licence": "CC-BY-4.0",
+      "exceptions": "images and branding, including the Victorian Coat of Arms and Government logo, and third-party content"
+    },
+    "termsUrl": "https://www.premier.vic.gov.au/copyright",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.legislation.vic.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "all_rights_reserved",
+      "summary": "No reproduction except as the Copyright Act 1968 allows. The Government Printer owns copyright in Victorian legislation."
+    },
+    "termsUrl": "https://www.legislation.vic.gov.au/copyright",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "ovic.vic.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "creative_commons",
+      "licence": "CC-BY-4.0",
+      "exceptions": "images, photographs and branding, including the Victorian Coat of Arms and OVIC logo, and third-party content"
+    },
+    "termsUrl": "https://ovic.vic.gov.au/disclaimer",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.qld.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "creative_commons",
+      "licence": "CC-BY-4.0",
+      "exceptions": "the Coat of Arms, government logos, trade marks and third-party material"
+    },
+    "termsUrl": "https://www.qld.gov.au/legal/copyright",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.legislation.qld.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "creative_commons",
+      "licence": "CC-BY-4.0",
+      "exceptions": "the Coat of Arms, government logos, trade marks and third-party material"
+    },
+    "termsUrl": "https://www.legislation.qld.gov.au/copyright",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.courts.qld.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "custom",
+      "summary": "Link to, download, display, print and copy in unaltered form for personal use only. Other reproduction needs written permission, apart from Copyright Act 1968 uses."
+    },
+    "termsUrl": "https://www.courts.qld.gov.au/footer/pages/copyright",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.qcat.qld.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "all_rights_reserved",
+      "summary": "No reproduction or reuse for any purpose without written permission, apart from fair dealing under the Copyright Act 1968."
+    },
+    "termsUrl": "https://www.qcat.qld.gov.au/home/copyright",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.wa.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "custom",
+      "summary": "Non-commercial use, including within your organisation, with attribution. Commercial reuse needs written permission from the State."
+    },
+    "termsUrl": "https://www.wa.gov.au/terms-of-use",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.supremecourt.wa.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "custom",
+      "summary": "Only the uses the conditions list, plus Copyright Act 1968 uses; all other rights reserved. Linking to the site needs written permission."
+    },
+    "termsUrl": "https://www.supremecourt.wa.gov.au/_misc/disclaimer.aspx",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.legislation.sa.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "creative_commons",
+      "licence": "CC-BY-4.0",
+      "exceptions": "the State Badge, Piping Shrike, Royal Arms and other State emblems and trade-marked material"
+    },
+    "termsUrl": "https://www.legislation.sa.gov.au/copyright",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.courts.sa.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "all_rights_reserved",
+      "summary": "Crown copyright of South Australia. Reproduction beyond the Copyright Act 1968 needs written permission from the Attorney-General."
+    },
+    "termsUrl": "https://www.courts.sa.gov.au/copyright",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.legislation.tas.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "creative_commons",
+      "licence": "CC-BY-4.0",
+      "exceptions": "material marked otherwise, logos and third-party material"
+    },
+    "termsUrl": "https://www.legislation.tas.gov.au/copyrightanddisclaimer",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.act.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "creative_commons",
+      "licence": "CC-BY-4.0",
+      "exceptions": "third-party material and material published on other conditions"
+    },
+    "termsUrl": "https://www.act.gov.au/copyright",
+    "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.courts.act.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "all_rights_reserved",
+      "summary": "Reproduction beyond the Copyright Act 1968 needs authorisation from the ACT Justice and Community Safety Directorate."
+    },
+    "termsUrl": "https://www.courts.act.gov.au/corporate/copyright",
+    "checkedAt": "2026-10-22"
+  }
+]

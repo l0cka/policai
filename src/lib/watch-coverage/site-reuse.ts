@@ -109,7 +109,9 @@ export function parseSiteReuse(raw: unknown): SiteReuse[] {
       const { termsUrl } = entry;
       if (typeof termsUrl !== 'string' || !URL.canParse(termsUrl) || new URL(termsUrl).protocol !== 'https:')
         throw new Error(`${label}: termsUrl must be an https URL`);
-      if (hostOf(new URL(termsUrl)) !== host) throw new Error(`${label}: termsUrl must be on ${host}`);
+      const termsHost = hostOf(new URL(termsUrl)).replace(/^www\./, '');
+      if (termsHost !== host.replace(/^www\./, ''))
+        throw new Error(`${label}: termsUrl must be on ${host} or its www variant`);
       return { host: host as Host, status, terms: parseTerms(entry.terms, label), termsUrl, checkedAt };
     }
     if (status === 'not_stated' || status === 'refused') {
