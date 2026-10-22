@@ -5,7 +5,7 @@ import { COLLECTOR_IDENTITY_TOKEN, destinationCollectorIdentity, identityAuthori
 import { WATCH_SOURCES } from './sources';
 vi.mock('./sources', async (importOriginal) => {
   const actual = await importOriginal<typeof import('./sources')>();
-  const { withFixtureIdentityException } = await import('@/test/factories');
+  const { withFixtureIdentityException } = await import('@/test/identity-exception');
   return { ...actual, WATCH_SOURCES: withFixtureIdentityException(actual.WATCH_SOURCES) };
 });
 

@@ -10,7 +10,7 @@ vi.mock('./firecrawl', () => ({ scrapeWithFirecrawl }));
 vi.mock('./claude-classify', () => ({ classifyBatch: vi.fn(), CLAUDE_BATCH_SIZE: 20 }));
 vi.mock('./sources', async (importOriginal) => {
   const actual = await importOriginal<typeof import('./sources')>();
-  const { withFixtureIdentityException } = await import('@/test/factories');
+  const { withFixtureIdentityException } = await import('@/test/identity-exception');
   return { ...actual, WATCH_SOURCES: withFixtureIdentityException(actual.WATCH_SOURCES) };
 });
 import { collect, emptyWatchState } from './collect';
