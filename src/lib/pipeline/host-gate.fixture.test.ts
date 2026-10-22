@@ -1,5 +1,6 @@
 /* @vitest-environment node */
 
+import { randomUUID } from 'node:crypto';
 import { createServer, type Server } from 'node:http';
 import type { AddressInfo } from 'node:net';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
@@ -9,6 +10,7 @@ import { retrieveSource } from './fetch';
 import type { WatchSource } from './sources';
 
 const ORIGIN = 'https://www.fixture.gov.au';
+const FIXTURE_TOKEN_HEADER = 'x-fixture-token';
 
 const INDEX = `<html><body><main><ul class="news-list">
   <li><a href="/news/ai-one">AI policy one</a></li>
@@ -22,15 +24,23 @@ const page = (title: string) =>
 interface Fixture {
   server: Server;
   port: number;
+  token: string;
   hits: Array<{ path: string; at: number; userAgent: string }>;
   robots: string;
   limitedRemaining: number;
 }
 
 function startFixture(robots: string): Promise<Fixture> {
-  const fixture: Partial<Fixture> & { hits: Fixture['hits'] } = { hits: [], robots, limitedRemaining: 1 };
+  const token = randomUUID();
+  const fixture: Partial<Fixture> & { hits: Fixture['hits'] } = { hits: [], robots, limitedRemaining: 1, token };
   const server = createServer((request, response) => {
     const path = request.url ?? '/';
+    // The port is on a loopback interface shared with every other process on the CI host,
+    // so record only requests sent through loopbackFetch.
+    if (request.headers[FIXTURE_TOKEN_HEADER] !== token) {
+      response.writeHead(404).end();
+      return;
+    }
     fixture.hits.push({ path, at: Date.now(), userAgent: request.headers['user-agent'] ?? '' });
     const send = (status: number, body: string, headers: Record<string, string> = {}) => {
       response.writeHead(status, { 'content-type': 'text/html', ...headers });
@@ -60,11 +70,13 @@ function startFixture(robots: string): Promise<Fixture> {
   });
 }
 
-function loopbackFetch(port: number, starts: number[] = []): typeof fetch {
+function loopbackFetch({ port, token }: Fixture, starts: number[] = []): typeof fetch {
   return (async (input: RequestInfo | URL, init?: RequestInit) => {
     starts.push(Date.now());
     const target = String(input).replace(ORIGIN, `http://127.0.0.1:${port}`);
-    const response = await fetch(target, { ...init, redirect: 'manual' });
+    const headers = new Headers(init?.headers);
+    headers.set(FIXTURE_TOKEN_HEADER, token);
+    const response = await fetch(target, { ...init, headers, redirect: 'manual' });
     Object.defineProperty(response, 'url', { value: String(input) });
     return response;
   }) as typeof fetch;
@@ -95,7 +107,7 @@ describe('HostGate against a loopback fixture server', () => {
   });
 
   it('fetches robots.txt with the declared identity and never requests a disallowed path', async () => {
-    const fetchImpl = loopbackFetch(fixture.port);
+    const fetchImpl = loopbackFetch(fixture);
     const gate = productionGate(fetchImpl, 10);
     await retrieveSource(`${ORIGIN}/news`, { fetchImpl, gate, hashLinkedDocuments: false });
     await expect(
@@ -108,7 +120,7 @@ describe('HostGate against a loopback fixture server', () => {
 
   it('starts consecutive requests to one host at least the gap apart', async () => {
     const starts: number[] = [];
-    const fetchImpl = loopbackFetch(fixture.port, starts);
+    const fetchImpl = loopbackFetch(fixture, starts);
     const gate = productionGate(fetchImpl, 300);
     for (const path of ['/news/ai-one', '/news/ai-two', '/news/ai-one']) {
       await retrieveSource(`${ORIGIN}${path}`, { fetchImpl, gate, hashLinkedDocuments: false });
@@ -121,7 +133,7 @@ describe('HostGate against a loopback fixture server', () => {
 
   it('starts the first page request 2 s after the robots fetch by default', async () => {
     const starts: number[] = [];
-    const fetchImpl = loopbackFetch(fixture.port, starts);
+    const fetchImpl = loopbackFetch(fixture, starts);
     const gate = productionGate(fetchImpl);
     await retrieveSource(`${ORIGIN}/news/ai-one`, { fetchImpl, gate, hashLinkedDocuments: false });
     expect(starts).toHaveLength(2);
@@ -129,7 +141,7 @@ describe('HostGate against a loopback fixture server', () => {
   }, 10_000);
 
   it('waits out a short Retry-After after a 429 and then succeeds', async () => {
-    const fetchImpl = loopbackFetch(fixture.port);
+    const fetchImpl = loopbackFetch(fixture);
     const gate = productionGate(fetchImpl, 10);
     const result = await retrieveSource(`${ORIGIN}/limited`, {
       fetchImpl,
@@ -146,7 +158,7 @@ describe('HostGate against a loopback fixture server', () => {
   }, 10_000);
 
   it('runs a collection pass: the disallowed candidate is refused, the rest are collected, and a browser 403 trips the host', async () => {
-    const fetchImpl = loopbackFetch(fixture.port);
+    const fetchImpl = loopbackFetch(fixture);
     const gate = productionGate(fetchImpl, 10);
     const indexSource: WatchSource = {
       id: 'fixture-index',
