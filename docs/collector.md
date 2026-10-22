@@ -837,23 +837,40 @@ version cannot be lost merely because its state write completed first.
 
 ## Reviewing detections into the register
 
-Detections staged in `data/source-reviews.json` are proposals. To publish one:
+Detections staged in `data/source-reviews.json` are proposals. An agent
+prepares each one completely, and Daniel decides on it with one tap on a
+decision card in the Policai Claude project. Approval then publishes.
 
 1. Run the local MCP server (`npm run mcp`).
-2. Inspect the staged source and correct the draft, especially its labelled
-   primary date. Give a policy its `themes`: `list_themes` returns the valid
-   keys and labels from `src/lib/themes.ts`.
-3. Call `approve_staged_source` with reviewer identity and notes.
-   The MCP input requires a human `reviewer`; the admin token authorises the
-   operation but is not recorded as the person who performed the review.
-   If the tracked policy or timeline event changed after staging, stage it
-   again to refresh the review, rebase the edited `proposedRecord` on that
-   current record, and pass the refreshed policy base or timeline revision as
-   `expectedTargetRevisionHash`. Approval rejects stale drafts that do not
-   acknowledge the current canonical revision.
-4. Call the publish tool. Publishing refuses pending drafts and creates the
-   verified policy or timeline record through `src/lib/source-ingest.ts`.
-5. Run `npm run validate:data`, commit, and push (or open a PR).
+2. Stage the source with `stage_source_url`, or with `stage_source_capture`
+   when the host refuses the collector. Pass the exact record to publish as
+   `proposedRecord`, edits included. A capture names who made it honestly:
+   `capturedBy: "Claude (agent)"` and `requestedBy: "Daniel Alkurdi"`, never
+   an agent signing as Daniel.
+3. Call `propose_source_decision` for anything else approval needs: a
+   corrected `proposedRecord` (for example `themes` on a new policy, keys from
+   `list_themes`), `reviewedDate` for a date the page states but does not
+   expose as metadata, `manualExtraction`, `officialSourceUrl` for a
+   stage-only lead, or `expectedTargetRevisionHash` after a rebase.
+4. Call `show_source_proposal`. Fix and re-propose until `blockers` is
+   empty; each entry is the error approval would raise today.
+5. Post a decision card (`request_decision`) that shows the current and
+   proposed record, the source and who captured it, and the
+   `proposalCode`. A typed "go ahead" is not a decision; only a tap is.
+6. When Daniel taps Approve, call `record_decision` with the review id, the
+   `proposalHash`, `reviewer: "Daniel Alkurdi"`, and the card's link as
+   `attestationUrl`. It refuses if the review changed after the card was
+   posted, if the reviewer is not on the `POLICAI_SIGNAL_REVIEWERS`
+   allowlist, or if a staged browser capture is more than 7 days old. It
+   approves with the staged evidence, without a new capture, then publishes.
+   Calling it again with the same hash resumes a publication that failed
+   part-way.
+7. Run `npm run validate:data`, commit, and push (or open a PR).
+
+Server-fetchable sources are fetched again at decision time, and approval
+refuses if their fingerprint moved since staging.
+`approve_staged_source` and `publish_staged_source` remain for now and will
+be removed once the reviews staged under them are re-proposed.
 
 ### Policai Signal (Grok Bot)
 

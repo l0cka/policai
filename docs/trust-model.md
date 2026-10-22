@@ -342,8 +342,13 @@ piece shows only its tombstone. Pieces are served at `/analysis`.
   documents are present, Policai validates file signatures and size limits,
   hashes the page and exact document bytes into one composite fingerprint, and
   persists the hashes and provenance without retaining local file paths.
-  Approval and publication each require a fresh matching capture; a changed
-  page or document therefore returns the record to review. Existing records
+  The editor decides on the staged capture itself: the decision is bound to
+  a proposal hash over the staged record, any prepared approval inputs, and
+  the capture fingerprint, and it is refused once the capture is more than
+  7 days old. A changed page or document therefore needs a new capture and a
+  new decision. The capture records who made it (`capturedBy`) separately
+  from the editor who asked for it (`requestedBy`) and the editor who
+  approved it (`verification.checkedBy`). Existing records
   remain revision-bound. New records require a complete explicit proposal, and
   replacement of a dead tracked URL requires a separately declared source
   migration that preserves the target id and passes identity-collision checks.

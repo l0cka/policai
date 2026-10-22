@@ -6,7 +6,10 @@ import {
   type ManualExtractionInput,
   type ReviewedDateInput,
   checkCoverage,
+  decideSourceReview,
+  describeSourceProposal,
   normalizeReviewStatus,
+  proposeSourceDecision,
   publishStagedSource,
   recordManualSourceReview,
   rejectStagedSource,
@@ -109,6 +112,7 @@ export async function handleStageSourceUrl(input: {
   url: string;
   entryKind: SourceReviewEntryKind;
   targetRecordId?: string;
+  proposedRecord?: Record<string, unknown>;
   notes?: string;
   stageOnly?: boolean;
   adminToken?: string;
@@ -119,6 +123,10 @@ export async function handleStageSourceUrl(input: {
       url: input.url,
       entryKind: input.entryKind,
       targetRecordId: input.targetRecordId,
+      proposedRecord: input.proposedRecord as
+        | PolicyDraft
+        | TimelineEventDraft
+        | undefined,
       notes: input.notes,
       actor: MCP_ACTOR,
       stageOnly: input.stageOnly,
@@ -197,6 +205,69 @@ export async function handleReviewCourtRequirement(input: {
       reviewer,
       notes,
       revision: input.revision,
+    });
+  });
+}
+
+export function handleShowSourceProposal(input: { id: string }) {
+  return describeSourceProposal(input.id);
+}
+
+export async function handleProposeSourceDecision(input: {
+  id: string;
+  proposedBy?: string;
+  proposedRecord?: Record<string, unknown>;
+  expectedTargetRevisionHash?: string;
+  officialSourceUrl?: string;
+  manualExtraction?: ManualExtractionInput;
+  reviewedDate?: ReviewedDateInput;
+  notes?: string;
+  adminToken?: string;
+}) {
+  return audited('propose_source_decision', {}, () => {
+    requireMcpAdminToken(input.adminToken);
+    return proposeSourceDecision({
+      id: input.id,
+      proposedBy: input.proposedBy?.trim() ?? '',
+      proposedRecord: input.proposedRecord as
+        | PolicyDraft
+        | TimelineEventDraft
+        | undefined,
+      expectedTargetRevisionHash: input.expectedTargetRevisionHash,
+      officialSourceUrl: input.officialSourceUrl,
+      manualExtraction: input.manualExtraction,
+      reviewedDate: input.reviewedDate,
+      notes: input.notes,
+    });
+  });
+}
+
+const DECISION_CARD_URL = /^https:\/\/claude\.ai\/\S+$/;
+
+/**
+ * Records the editor's tap on a decision card. The reviewer must be on the
+ * editor allowlist and the card link is kept as the attestation.
+ */
+export async function handleRecordDecision(input: {
+  id: string;
+  proposalHash: string;
+  reviewer?: string;
+  attestationUrl: string;
+  adminToken?: string;
+}) {
+  return audited('record_decision', {}, () => {
+    requireMcpAdminToken(input.adminToken);
+    const reviewer = requireSignalReviewer(input.reviewer);
+    if (!DECISION_CARD_URL.test(input.attestationUrl)) {
+      throw new Error(
+        'attestationUrl must link to the claude.ai decision card the editor answered',
+      );
+    }
+    return decideSourceReview({
+      id: input.id,
+      proposalHash: input.proposalHash,
+      reviewer,
+      attestationUrl: input.attestationUrl,
     });
   });
 }
