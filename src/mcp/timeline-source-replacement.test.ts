@@ -5,7 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { buildPolicy, buildTimelineEvent } from '@/test/factories';
 import type { SourceReview } from '@/types';
 
-// Isolate only persistence: handlers, ingestion, extraction and validators are real.
+// Isolate only persistence: staging handler, ingestion, extraction and validators are real.
 const { files } = vi.hoisted(() => ({ files: new Map<string, unknown>() }));
 vi.mock('@/lib/file-store', () => ({
   readJsonFile: async (path: string, fallback: unknown) =>
@@ -17,7 +17,8 @@ vi.mock('@/lib/file-store', () => ({
 vi.mock('@/lib/data-lock', () => ({
   withDataMutationLock: async (run: () => Promise<unknown>) => run(),
 }));
-import { handleStageSourceCapture, handleApproveStagedSource, handlePublishStagedSource } from './tool-handlers';
+import { handleStageSourceCapture } from './tool-handlers';
+import { approveStagedSource, publishStagedSource } from '@/lib/source-ingest';
 import { getSourceReviews, getTimelineEvents } from '@/lib/data-service';
 import { validateSourceReviews } from '@/lib/validate-data';
 import { timelineRevisionHash } from '@/lib/policy-revision';
@@ -41,12 +42,12 @@ const stage = (extra: Record<string, unknown> = {}) => handleStageSourceCapture(
   replaceTargetSource: true, proposedRecord: { ...event(), sourceUrl: newUrl },
   capture: capture(), adminToken, ...extra,
 });
-const approve = (id: string, extra: Record<string, unknown> = {}) => handleApproveStagedSource({
-  id, reviewer: 'Fixture Reviewer', browserCapture: capture(), adminToken,
+const approve = (id: string, { reviewer = 'Fixture Reviewer', ...extra }: Record<string, unknown> = {}) => approveStagedSource({
+  id, actor: reviewer as string, browserCapture: capture(),
   reviewedDate: { date: '2026-07-01', precision: 'day', notes: 'The instrument expressly states commencement on 1 July 2026.' },
   ...extra,
 });
-const publish = (id: string) => handlePublishStagedSource({ id, browserCapture: capture(), adminToken });
+const publish = (id: string) => publishStagedSource(id, { browserCapture: capture() });
 
 beforeEach(() => {
   files.clear();
@@ -56,7 +57,7 @@ beforeEach(() => {
 });
 afterEach(() => vi.unstubAllEnvs());
 
-describe('timeline source replacement through real MCP handlers', () => {
+describe('timeline source replacement from MCP staging through approval and publication', () => {
   it('refuses approval when previous source provenance is missing or wrong', async () => {
     const staged = await stage();
     for (const previousUrl of [undefined, 'https://example.gov.au/wrong']) {
@@ -193,7 +194,7 @@ describe('timeline source replacement through real MCP handlers', () => {
     files.set('timeline.json', [{ ...event(), title: 'Edited after approval' }]);
     await expect(publish(staged.id)).rejects.toThrow('already exists');
     files.set('timeline.json', [event()]);
-    await expect(handlePublishStagedSource({ id: staged.id, adminToken, browserCapture: { ...capture(), pageText: 'Changed official source text that must require a new review.' } })).rejects.toThrow('Official source changed after approval; re-approve it before publication');
+    await expect(publishStagedSource(staged.id, { browserCapture: { ...capture(), pageText: 'Changed official source text that must require a new review.' } })).rejects.toThrow('Official source changed after approval; re-approve it before publication');
     expect((await readEvent()).sourceUrl).toBe(oldUrl);
   });
 

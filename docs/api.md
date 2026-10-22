@@ -41,7 +41,7 @@ Error responses use this form:
 | `GET` | `/api/network` | Get policy nodes and shared-theme edges. Stable; no site page uses it since `/network` became the coverage map. |
 | `GET` | `/api/status` | Get collection health and freshness data. |
 | `GET` | `/api/signal/reviews/{id}` | Signal dry-run for one staged review (Bearer `POLICAI_SIGNAL_TOKEN`). |
-| `POST` | `/api/signal/reviews` | Signal approve (approve+publish) or dismiss with attestation (same token). |
+| `POST` | `/api/signal/reviews` | Signal dismiss with attestation (same token). Signal cannot approve. |
 
 The Signal routes are the only public-site write API. They are not part of the
 anonymous public register API. See [collector.md](./collector.md#policai-signal-grok-bot).

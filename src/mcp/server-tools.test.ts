@@ -93,7 +93,7 @@ describe('list_themes registration', () => {
 })
 
 describe('policy theme guidance in editorial tool descriptions', () => {
-  it.each(['approve_staged_source', 'stage_source_capture'])(
+  it.each(['propose_source_decision', 'stage_source_capture'])(
     '%s names the theme range from the constants and points to list_themes',
     async (name) => {
       const { description } = await describedTool(editorial, name)

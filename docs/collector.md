@@ -868,17 +868,22 @@ decision card in the Policai Claude project. Approval then publishes.
 7. Run `npm run validate:data`, commit, and push (or open a PR).
 
 Server-fetchable sources are fetched again at decision time, and approval
-refuses if their fingerprint moved since staging.
-`approve_staged_source` and `publish_staged_source` remain for now and will
-be removed once the reviews staged under them are re-proposed.
+refuses if their fingerprint moved since staging. When that re-fetch is
+refused by the host (HTTP 403, HTTP 429, or an equivalent `identity_refused`
+/ `rate_limited` failure), approval falls back to the snapshot already on the
+review (`sourceEvidence` plus the staged record text) and its notes gain
+`RETAINED_SNAPSHOT_APPROVAL_NOTE` (`src/lib/source-ingest.ts`). Other
+failures, such as timeouts, 404s and 5xx responses, still refuse.
 
 ### Policai Signal (Grok Bot)
 
 **Policai Signal** is Daniel’s Grok Bot
-(`fa9b5c47-349a-438e-acfc-75055f2d6b8f`). Product path: **HTTPS on
-policai.org**. The bot can reach HTTPS with a masked env secret; it has **no**
-Argus SSH, **will not** run a TTY CLI, and **cannot** merge PRs. MCP / TTY /
-`npm run mcp` are laptop recovery only — not the bot UX.
+(`fa9b5c47-349a-438e-acfc-75055f2d6b8f`). It is another AI agent, so it
+cannot approve anything. It alerts Daniel to pending reviews, previews them,
+and dismisses new-source leads Daniel rejects. Approval happens only on a
+decision card in the Policai Claude project (see above). Product path:
+**HTTPS on policai.org**. The bot can reach HTTPS with a masked env secret; it
+has **no** Argus SSH, **will not** run a TTY CLI, and **cannot** merge PRs.
 
 #### Bot-facing HTTPS API
 
@@ -893,7 +898,7 @@ Bot env (masked prompt; never paste into chat): **`POLICAI_SIGNAL_TOKEN`**.
 | Method | Path | Purpose |
 | --- | --- | --- |
 | `GET` | `/api/signal/reviews/<reviewId>` | Dry-run / current state for one review |
-| `POST` | `/api/signal/reviews` | Apply `approve` (approve+publish) or `dismiss` |
+| `POST` | `/api/signal/reviews` | Apply `dismiss` |
 
 **Dry-run (harmless first test):**
 
@@ -902,12 +907,10 @@ curl -sS -H "Authorization: Bearer $POLICAI_SIGNAL_TOKEN" \
   "https://policai.org/api/signal/reviews/<reviewId>"
 ```
 
-Returns `{ success, dryRun, review, approve, dismiss }`. `approve.blockers` /
-`dismiss.blockers` explain themes / tracked-record issues. No write.
-`review.themes` and `review.type` are the draft's current values.
-`approve.themeOptions` (`{ id, label }` from `THEMES`) and
-`approve.typeOptions` (the `PolicyType` values) are what Daniel may name in
-his reply; both are empty when the review does not accept overrides.
+Returns `{ success, dryRun, review, approve, dismiss }`. No write.
+`approve` is always `{ allowed: false, reason }`, and the reason says that
+Daniel approves on a decision card in the Policai project.
+`dismiss.blockers` explains why a review cannot be dismissed.
 
 **Apply:**
 
@@ -917,7 +920,7 @@ curl -sS -X POST "https://policai.org/api/signal/reviews" \
   -H "Content-Type: application/json" \
   -d '{
     "reviewId": "<id>",
-    "action": "approve",
+    "action": "dismiss",
     "reviewer": "Daniel Alkurdi",
     "attestation": {
       "replyText": "<Dan reply verbatim>",
@@ -928,90 +931,35 @@ curl -sS -X POST "https://policai.org/api/signal/reviews" \
   }'
 ```
 
-`action` is `approve` or `dismiss` only. `approve` runs `approveStagedSource`
-then `publishStagedSource`. `dismiss` runs `rejectStagedSource`. Reviewer
-must be allowlisted (`POLICAI_SIGNAL_REVIEWERS`, default
-`Daniel Alkurdi` and `Daniel`). `attestation.cardId` must equal `reviewId`.
+`action` must be `dismiss`, which runs `rejectStagedSource`. `approve`
+returns `approve_not_allowed` (403) and changes nothing. Reviewer must be
+allowlisted (`POLICAI_SIGNAL_REVIEWERS`, default `Daniel Alkurdi` and
+`Daniel`). `attestation.cardId` must equal `reviewId`.
 
-**Approve / publish when the host refuses a live re-fetch.** Approval and
-publication still prefer a live re-fetch of the official URL so a changed
-page cannot be approved from a stale staging hash. When that re-fetch fails
-with a host refusal — HTTP 403, HTTP 429, or an equivalent
-`identity_refused` / `rate_limited` failure (connection reset, bot-challenge
-wording, headless-browser 403 breaker) — `approveStagedSource` and
-`publishStagedSource` fall back to the collector-retained snapshot already on
-the review: `sourceEvidence` (including `contentHash`) plus the staged
-`proposedRecord` text (`content`, or `description` when content is missing).
-They do not invent bytes, do not guess a new fingerprint, and do not fall
-back for other failures (timeouts, HTTP 404/5xx, parse errors). The approval
-URL must still match the staged evidence URL (a source-replacement approve
-that points at a different official URL still requires a live fetch of that
-URL). When the fallback runs, approval notes gain the sentence in
-`RETAINED_SNAPSHOT_APPROVAL_NOTE` (`src/lib/source-ingest.ts`). If the host
-later serves different content successfully, the usual "changed after
-staging / approval" refusal still applies and the lead must be re-staged.
-
-**Themes and type from the reply.** An `approve` body may add
-`"themes": ["public-sector", "ai-governance"]` (1 to 5 unique theme ids
-from `src/lib/themes.ts`) and `"type": "<PolicyType>"`. They replace the
-draft's themes and type (no merge) before `approveStagedSource` runs with
-that `proposedRecord`, so a themeless draft can be approved once Daniel
-names its themes. They apply only to new register policy drafts: a
-timeline-event or tracked-record review, or a `dismiss`, with either field
-returns `invalid_request`.
-
-**Reply binding:** Daniel names values after a keyword, for example
-`approve, themes public-sector, ai-governance; type legislation`. Matching
-ignores case.
-
-- A theme counts only when it is a whole token inside a `theme` or `themes`
-  clause. The clause runs from the keyword to the next `.`, `;`, line break,
-  or `theme`, `themes` or `type` keyword.
-- The type counts only when it is the first token after `type` (`type
-  legislation` or `type: legislation`).
-- A token boundary is the start or end of the clause or any character
-  outside `[a-z0-9-]`. So `ai-governance` does not match inside
-  `genai-governance-x`, and `public sector` does not match `public-sector`.
-- A word used in passing never counts. In `approve this policy`, `policy` is
-  not a type, and in `employment law is fine`, `employment` is not a theme.
-
-A miss returns `themes_not_in_reply` or `type_not_in_reply`, naming the
-missing values.
-This check (`parseReplyOverrides` in `src/lib/signal-http.ts`) is what stops
-the bot from inventing values: it can relay only what Daniel wrote, and
-Daniel's reply is stored verbatim beside the applied values.
-
-Attestation is stored on the review and published verification notes as:
+Attestation is stored in the review's rejection reason as:
 
 ```text
 Daniel Alkurdi (Signal): <reply verbatim>
 chatMessageId: …
 cardId: …
 decided: <Australia/Sydney> (<ISO>)
-themes: <applied theme ids>   (only when sent)
-type: <applied type>          (only when sent)
 relayed by Policai Signal
 ```
 
 It must not claim TTY typing.
 
-**Idempotent:** approve on an already `published` review, or dismiss on an
-already `rejected` review, returns `noop: true` and the current state. A
-published review stays a noop whatever `themes` or `type` say.
+**Idempotent:** dismiss on an already `rejected` review returns
+`noop: true` and the current state.
 
-**Errors (bot returns these to Dan; bot does not invent themes):**
+**Errors (bot returns these to Dan):**
 
 | `code` | When |
 | --- | --- |
 | `unauthorized` | Missing/wrong Bearer token |
 | `signal_token_unconfigured` | Host missing `POLICAI_SIGNAL_TOKEN` |
 | `not_found` | Unknown review id |
-| `approve_blocked` (409) | Draft has no themes (ask Daniel to name them), no primary date, or is rejected |
-| `themes_required` / `editorial_fields_required` (409) | Approval refused themes or other reviewed fields (source date, `officialSourceUrl`, `proposedRecord`); fix through editorial MCP |
-| `approve_failed` (409) | Live re-fetch failed in a way the retained-snapshot fallback cannot cover (or another approve/publish gate failed); the error text names the cause (for example a non-refusal HTTP error) |
-| `invalid_request` (400) | Missing fields; `themes`/`type` on a dismiss, timeline or tracked-record review; `themes` not an array, repeated, or outside 1 to 5 |
-| `unknown_theme` / `unknown_type` (400) | Value is not a theme id or `PolicyType`; the error lists the valid ones |
-| `themes_not_in_reply` / `type_not_in_reply` (400) | A sent value is not named after `themes` or `type` in `attestation.replyText` |
+| `approve_not_allowed` (403) | `action` was `approve`; Daniel approves on a decision card instead |
+| `invalid_action` / `invalid_request` (400) | Unknown action, or missing fields |
 | `dismiss_blocked` / `tracked_record_dismiss` | Tracked-record reviews cannot be dismissed |
 | `reviewer_not_allowlisted` | Reviewer not in allowlist |
 | `invalid_attestation` | Missing reply / message id / card id |
@@ -1031,8 +979,8 @@ a dirty release checkout would block every later deploy. The route works in
 1. It resolves GitHub `main` to one base commit with
    `POLICAI_SIGNAL_GITHUB_TOKEN` (repository `POLICAI_SIGNAL_GITHUB_REPO`,
    default `l0cka/policai`).
-2. It runs the approve or dismiss inside `runWithDataOverlay`. Every data read
-   comes from the file at that commit (contents API, blob API for files over
+2. It runs the dismissal inside `runWithDataOverlay`. Every data read comes
+   from the file at that commit (contents API, blob API for files over
    1 MB). Writes stay in memory, and no lock file is taken.
 3. If the decision is a noop or changes no file, it returns
    `persistence.skipped` and commits nothing.
@@ -1092,9 +1040,9 @@ review.` or `N pending source reviews.`
 
 `.github/workflows/signal-review-cards.yml` is manual read-only reprint.
 
-**Recovery only (not bot):** TTY or MCP approve/publish on a laptop when
-HTTPS is down. The bot must not be told to SSH to Argus or run
-`signal:reviews apply`.
+**Recovery only (not bot):** `npm run signal:reviews -- apply` can dismiss
+or verify on a laptop when HTTPS is down. It cannot approve or publish. The
+bot must not be told to SSH to Argus or run `signal:reviews apply`.
 
 One-off publication scripts must also enter through `stageSourceUrl()` or the
 controlled `stageSourceCapture()` fallback rather than constructing a review
@@ -1162,11 +1110,10 @@ npx vitest run src/mcp/timeline-source-replacement.test.ts src/lib/timeline-sour
 ```
 
 A browser-captured review remains subject to the normal gates.
-`approve_staged_source` requires a fresh matching `browserCapture`, and its
-`reviewer` must match the capture reviewer. `publish_staged_source` requires
-another fresh matching capture. Any page-text, relevant-link, or document-byte
-change forces re-staging or re-approval rather than silently refreshing the
-trusted baseline.
+`record_decision` approves and publishes against the staged capture, and
+refuses one more than 7 days old. Re-staging with a fresh capture is the only
+way to refresh it, and it clears the proposal and any decision, so a changed
+page needs a new decision card.
 
 Dismissals: reject the staged review and set the matching development's status
 to `dismissed` with a `dismissalReason`. Publishing a collector review promotes
@@ -1180,10 +1127,10 @@ development before applying URL deduplication.
 
 A changed-source review for an existing policy cannot be rejected, because the
 source is already known to differ from the last verified evidence. If the
-change is immaterial, approve and publish the unchanged/corrected policy draft
-with reviewer notes; this refreshes the evidence hash and review metadata.
+change is immaterial, propose the unchanged/corrected policy draft and
+decide it on a card; this refreshes the evidence hash and review metadata.
 If the exact changed version is image-only or otherwise not machine-readable,
-`approve_staged_source` accepts a controlled `manualExtraction` only after
+`propose_source_decision` accepts a controlled `manualExtraction`, which approval uses only after
 automatic extraction fails. Supply the full reviewed `proposedRecord`, OCR or
 manual-transcription method, title, extracted text, and notes. Approval binds
 the transcription hash and reviewer identity to the still-matching staged
@@ -1335,7 +1282,7 @@ npm run collect -- --dry-run --source=<id>
 
 Stage-only non-government leads remain pending until an editor supplies
 `officialSourceUrl` and an explicitly reviewed replacement `proposedRecord` to
-`approve_staged_source`. Approval retrieves and extracts that official source
+`propose_source_decision`. Approval retrieves and extracts that official source
 again, replaces the discovery evidence, and only then validates the replacement
 record. Publishing synchronizes the linked development from the reviewed record
 and marks its assessment as editorial.
