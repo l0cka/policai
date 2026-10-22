@@ -1679,6 +1679,10 @@ describe('validateCollectionMeta failure classes', () => {
       'meta:sourceResults[0]: skippedLinked[0] has an invalid url',
     ],
     [
+      [{ url: 'http://www.finance.gov.au/a.pdf', decidedBy: 'finance-news' }],
+      'meta:sourceResults[0]: skippedLinked[0] has an invalid url',
+    ],
+    [
       [{ url: '', decidedBy: 'finance-news' }],
       'meta:sourceResults[0]: skippedLinked[0] has an invalid url',
     ],

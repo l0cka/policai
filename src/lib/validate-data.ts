@@ -1449,6 +1449,7 @@ export function validateCollectionMeta(meta: CollectionMeta): ValidationReport {
         result.skippedLinked.forEach((skipped, index) => {
           if (
             !isNonEmptyString(skipped?.url) ||
+            !skipped.url.startsWith('https://') ||
             publicFailureUrl(skipped.url) !== skipped.url
           )
             errors.push(`${label}: skippedLinked[${index}] has an invalid url`);
