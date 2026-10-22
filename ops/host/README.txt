@@ -408,13 +408,18 @@ EXACT CLI (INSTALLED ROOT CODE ONLY)
     deployed, find a run whose main equals the merge commit or a descendant of
     it; do not infer it from run timing. A refused or failed run prints no
     result and no SHA, exits 1 and leaves the persistent gate. One exception:
-    when a follow_main run resolved its own target and main then moved
-    before staging (prepare's "approved target is not fetched main", raised
-    as MainMoved), nothing was built and active.json is untouched, so the run
-    removes its marker, prints "Refused: main moved during deployment; next
-    cycle retries" and the next timer cycle deploys the new main. An explicit
-    target (approved_target or --recover) that is not fetched main still
-    blocks. The 2026-10-22 14:34 AEDT block was this race: #453 merged one
+    a follow_main run that resolved its own target and then stops before
+    staging for a reason the next cycle can clear raises Deferred. Nothing was
+    built and active.json is untouched, so the run removes its marker, prints
+    "Refused: <reason>; next cycle retries", exits 1 and the next timer cycle
+    tries again. The two Deferred reasons are "main moved during deployment"
+    (prepare's re-fetched main is no longer the resolved target) and "main
+    fetch failed" (the git fetch of main failed or timed out, in
+    resolve_target or prepare). A persistent cause still shows as a failed
+    policai-pull.service every cycle. Every other failure, and any failure
+    with an explicit target (approved_target or --recover), still blocks.
+    Both 2026 blocks were Deferred causes: on 2026-10-20 05:16 AEDT a WAN
+    drop broke the GitHub fetch, and on 2026-10-22 14:34 AEDT #453 merged one
     second into a run that had resolved #447.
 
 FAILURE / RECOVERY

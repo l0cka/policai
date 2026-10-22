@@ -107,8 +107,24 @@ class HostIntegrationTests(unittest.TestCase):
         with self.assertRaises(d.Refused):
             obj.prepare(NEW)
         obj.config = {"approved_target": OLD, "follow_main": True}
-        with self.assertRaises(d.MainMoved):
+        with self.assertRaises(d.Deferred):
             obj.prepare(OLD)
+
+    def test_failed_main_fetch_defers(self):
+        obj = h.Host.__new__(h.Host)
+        obj.config = {"approved_target": NEW, "follow_main": True}
+        obj.check_repo = lambda lane: OLD
+
+        def git(lane, *args, **kw):
+            if args[0] == "fetch":
+                raise h.ProcessFailed("command exited with status 128")
+            return NEW
+
+        obj.git = git
+        for call in (obj.resolve_target, lambda: obj.prepare(NEW)):
+            with self.assertRaises(d.Deferred) as caught:
+                call()
+            self.assertEqual(str(caught.exception), "main fetch failed")
 
     def test_host_constructor_uses_state_not_as_command_runner(self):
         state = object()

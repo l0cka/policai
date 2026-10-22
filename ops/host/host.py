@@ -17,7 +17,7 @@ import time
 from contextlib import contextmanager
 from pathlib import Path
 
-from dispatcher import MainMoved, Refused, State, promote, secure_path, sha, sync_dir, undo_promote
+from dispatcher import Deferred, Refused, State, promote, secure_path, sha, sync_dir, undo_promote
 
 STATE = Path("/var/lib/policai-deploy-state")
 CONFIG = Path("/etc/policai-deploy/config.json")
@@ -313,13 +313,17 @@ class Host:
             raise Refused("concealed index entries")
         return sha(git("rev-parse", "--verify", "HEAD"))
 
+    def fetch_main(self, lane):
+        try:
+            self.git(lane, "fetch", "--quiet", "origin", "refs/heads/main:refs/remotes/origin/main")
+        except ProcessFailed:
+            raise Deferred("main fetch failed") from None
+
     def resolve_target(self):
         if self.config.get("follow_main") is not True:
             raise Refused("automatic main tracking lacks approval")
         self.check_repo("policai")
-        self.git(
-            "policai", "fetch", "--quiet", "origin", "refs/heads/main:refs/remotes/origin/main"
-        )
+        self.fetch_main("policai")
         return sha(
             self.git(
                 "policai", "rev-parse", "--verify", "refs/remotes/origin/main^{commit}"
@@ -335,18 +339,12 @@ class Host:
         previous, paths = {}, set()
         for lane in BASES:
             previous[lane] = self.check_repo(lane)
-            self.git(
-                lane,
-                "fetch",
-                "--quiet",
-                "origin",
-                "refs/heads/main:refs/remotes/origin/main",
-            )
+            self.fetch_main(lane)
             if (
                 self.git(lane, "rev-parse", "--verify", "refs/remotes/origin/main^{commit}").strip()
                 != target
             ):
-                raise MainMoved("approved target is not fetched main")
+                raise Deferred("main moved during deployment")
             self.git(lane, "merge-base", "--is-ancestor", previous[lane], target)
             raw = self.git(
                 lane,

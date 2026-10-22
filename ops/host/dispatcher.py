@@ -23,8 +23,8 @@ class Refused(RuntimeError):
     """Public, nonsecret operational error."""
 
 
-class MainMoved(Refused):
-    """main advanced past the resolved target before anything was staged."""
+class Deferred(Refused):
+    """A follow_main run stopped before staging for a reason the next cycle can clear."""
 
 
 def secure_path(path, owner=0, directory=False, ancestors=True):
@@ -270,12 +270,9 @@ class Transaction:
                     "heads": deployed["heads"],
                 }
             except BaseException as error:
-                if resolved and isinstance(error, MainMoved):
-                    # A merge landed mid-run. Nothing is staged and active.json is
-                    # untouched, so retry next cycle instead of blocking. An explicit
-                    # target (approved_target or --recover) keeps the persistent gate.
+                if resolved and isinstance(error, Deferred):
                     self.state.clear_marker()
-                    raise Refused("main moved during deployment; next cycle retries") from None
+                    raise Refused(f"{error}; next cycle retries") from None
                 # Refused reasons are static and nonsecret; any other error keeps only its type.
                 record["failure"] = {"phase": record["phase"], "error": type(error).__name__}
                 if isinstance(error, Refused):
