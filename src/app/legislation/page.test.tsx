@@ -56,6 +56,11 @@ it('shows bills before Parliament, upcoming dates and recently made instruments'
   const made = screen.getByRole('region', { name: 'Recently made 1' });
   expect(within(made).getByText(/Registered on the Federal Register of Legislation/)).toBeInTheDocument();
   expect(screen.queryByText('A guideline')).not.toBeInTheDocument();
+
+  const laws = screen.getByRole('region', { name: 'Laws made 1' });
+  expect(within(laws).getByRole('link', { name: 'ASIC Market Integrity Rules' })).toBeInTheDocument();
+  expect(within(laws).getByText(/Made, not yet in force/)).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: '1 law made' })).toHaveAttribute('href', '#laws');
 });
 
 it('says plainly when a section is empty', async () => {

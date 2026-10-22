@@ -71,6 +71,25 @@ export function beforeParliament(records: LegislativeRecord[]): BillInParliament
     );
 }
 
+export interface MadeLaw {
+  record: LegislativeRecord;
+  stage: Extract<LegislativeStage, 'made' | 'in_force'>;
+  last: DatedEntry;
+}
+
+/** Acts and instruments made, in force or awaiting commencement, Commonwealth first, latest movement first. */
+export function madeLaws(records: LegislativeRecord[]): MadeLaw[] {
+  return records
+    .flatMap((record): MadeLaw[] => {
+      const stage = legislativeStage(record);
+      return stage === 'made' || stage === 'in_force' ? [{ record, stage, last: entries(record).at(-1)! }] : [];
+    })
+    .sort(
+      (a, b) =>
+        jurisdictionOrder(a.record) - jurisdictionOrder(b.record) || b.last.date.localeCompare(a.last.date),
+    );
+}
+
 function upcomingDates(record: LegislativeRecord): DatedEntry[] {
   const stage = legislativeStage(record);
   if (stage === null || stage === 'ended') return [];
