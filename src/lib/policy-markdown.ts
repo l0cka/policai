@@ -6,6 +6,7 @@ import {
   type Policy,
 } from '@/types';
 import { formatPolicyDate } from '@/lib/format-policy-date';
+import { auDate } from '@/lib/au-date';
 
 const SITE_URL = 'https://policai.org';
 
@@ -13,7 +14,7 @@ function formatTimestamp(value: string | undefined): string | null {
   if (!value) return null;
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return null;
-  return date.toLocaleDateString('en-AU', {
+  return auDate(date, {
     day: 'numeric',
     month: 'long',
     year: 'numeric',

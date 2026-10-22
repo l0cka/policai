@@ -25,6 +25,7 @@ import {
   getDevelopmentStreamName,
   type DevelopmentStream,
 } from '@/lib/development-streams';
+import { auDate } from '@/lib/au-date';
 
 interface DevelopmentsBrowserProps {
   developments: Development[];
@@ -40,7 +41,7 @@ interface DevelopmentsBrowserProps {
 }
 
 function formatDate(value: string): string {
-  return new Date(value).toLocaleDateString('en-AU', {
+  return auDate(new Date(value), {
     day: 'numeric',
     month: 'short',
     year: 'numeric',
@@ -74,8 +75,7 @@ function sydneyMonthRank(development: Development): number {
 }
 
 function monthKey(development: Development): string {
-  return new Date(development.publishedAt || development.detectedAt)
-    .toLocaleDateString('en-AU', { month: 'long', year: 'numeric', timeZone: 'Australia/Sydney' })
+  return auDate(new Date(development.publishedAt || development.detectedAt), { month: 'long', year: 'numeric', timeZone: 'Australia/Sydney' })
     .toUpperCase();
 }
 
@@ -152,7 +152,7 @@ function DevelopmentFeed({
                     <span className={cn('inline-flex rounded-md px-2 py-1 font-mono text-[11px] uppercase tracking-[0.08em]', label === 'Consultation' || !verified ? 'bg-[var(--status-proposed-bg)] text-[var(--status-proposed)]' : 'bg-[var(--status-active-bg)] text-[var(--trust)]')}>
                       {label}
                     </span>
-                    <span className={cn('inline-flex items-center gap-1 text-[11px] lg:hidden', verified ? 'text-[var(--trust)]' : 'text-[var(--caution)]')}>
+                    <span className={cn('inline-flex items-center gap-1 text-xs lg:hidden', verified ? 'text-[var(--trust)]' : 'text-[var(--caution)]')}>
                       {verified ? <CheckCircle2 className="h-3 w-3" fill="currentColor" /> : <CircleAlert className="h-3 w-3" />}
                       {verified ? 'Verified' : 'Needs review'}
                     </span>
@@ -163,7 +163,7 @@ function DevelopmentFeed({
                       <ArrowUpRight className="mt-0.5 h-3.5 w-3.5 shrink-0 opacity-50 group-hover:opacity-100" />
                     </a>
                     {development.summary ? <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">{development.summary}</p> : null}
-                    <p className="mt-1.5 text-[11px] text-muted-foreground lg:hidden">
+                    <p className="mt-1.5 text-xs text-muted-foreground lg:hidden">
                       {getJurisdictionName(development.jurisdiction)} · {development.sourceName}
                       {development.relatedPolicyId ? (
                         <>
@@ -178,12 +178,12 @@ function DevelopmentFeed({
                   <div className="hidden text-xs leading-5 text-muted-foreground lg:block">{getJurisdictionName(development.jurisdiction)}</div>
                   <div className="hidden lg:block">
                     <p className="text-xs text-muted-foreground">{development.sourceName}</p>
-                    <p className={cn('mt-2 flex items-center gap-1.5 text-[11px]', verified ? 'text-[var(--trust)]' : 'text-[var(--caution)]')}>
+                    <p className={cn('mt-2 flex items-center gap-1.5 text-xs', verified ? 'text-[var(--trust)]' : 'text-[var(--caution)]')}>
                       {verified ? <CheckCircle2 className="h-3.5 w-3.5" fill="currentColor" /> : <CircleAlert className="h-3.5 w-3.5" />}
                       {verified ? 'Verified' : 'Needs review'}
                     </p>
                     {development.relatedPolicyId ? (
-                      <Link href={`/policies/${development.relatedPolicyId}`} className="mt-1 inline-flex items-center gap-1 text-[11px] text-primary hover:underline">In the register <ArrowRight className="h-3 w-3" /></Link>
+                      <Link href={`/policies/${development.relatedPolicyId}`} className="mt-1 inline-flex items-center gap-1 text-xs text-primary hover:underline">In the register <ArrowRight className="h-3 w-3" /></Link>
                     ) : null}
                   </div>
                 </article>

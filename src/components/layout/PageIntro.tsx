@@ -20,7 +20,7 @@ export function PageIntro({
           {eyebrow ? <p className="page-eyebrow mb-2.5">{eyebrow}</p> : null}
           <h1 className="page-title">{title}</h1>
           {description ? (
-            <div className="mt-2.5 max-w-2xl text-sm leading-6 text-muted-foreground">
+            <div className="mt-2.5 max-w-[70ch] text-sm leading-6 text-muted-foreground">
               {description}
             </div>
           ) : null}

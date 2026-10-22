@@ -30,6 +30,7 @@ import {
   type Policy,
 } from '@/types';
 import { cn } from '@/lib/utils';
+import { auDate } from '@/lib/au-date';
 
 interface PolicyBrowserProps {
   policies: Policy[];
@@ -57,7 +58,7 @@ interface PolicyBrowserProps {
 }
 
 function formatDate(value: string): string {
-  return new Date(value).toLocaleDateString('en-AU', {
+  return auDate(new Date(value), {
     day: '2-digit',
     month: 'short',
     year: 'numeric',
@@ -544,7 +545,7 @@ export function PolicyBrowser({
                   const countdown = upcomingDateCountdown(item, today);
                   return (
                     <li key={`${item.policyId}-${item.dateType}-${item.date}`}>
-                      <p className="text-[11px] text-muted-foreground">
+                      <p className="text-xs text-muted-foreground">
                         {getPolicyDateTypeName(item.dateType)} ·{' '}
                         {formatPolicyDate({ type: item.dateType, date: item.date, precision: item.precision })}
                         {countdown ? ` · ${countdown}` : ''}
@@ -599,7 +600,7 @@ export function PolicyBrowser({
               </h2>
               {developments.slice(0, 3).map((development) => (
                 <article key={development.id} className="mt-4">
-                  <p className="text-[11px] text-muted-foreground">
+                  <p className="text-xs text-muted-foreground">
                     {formatDevelopmentDate(development)} ·{' '}
                     {getJurisdictionName(development.jurisdiction)}
                   </p>

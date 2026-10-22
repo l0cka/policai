@@ -93,7 +93,7 @@ export function Timeline({ events, selectedJurisdiction, onEventClick }: Timelin
                   <div className="min-w-0">
                     <p className="record-title group-hover:text-primary">{event.title}</p>
                     <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">{event.description}</p>
-                    <p className="mt-2 text-[11px] text-muted-foreground lg:hidden">
+                    <p className="mt-2 text-xs text-muted-foreground lg:hidden">
                       <JurisdictionMark jurisdiction={event.jurisdiction} />
                     </p>
                   </div>
@@ -108,7 +108,7 @@ export function Timeline({ events, selectedJurisdiction, onEventClick }: Timelin
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}
-                        className="mt-2 inline-flex items-center gap-1 text-[11px] text-primary hover:underline"
+                        className="mt-2 inline-flex items-center gap-1 text-xs text-primary hover:underline"
                       >
                         Source <ArrowUpRight className="h-3 w-3" />
                       </a>

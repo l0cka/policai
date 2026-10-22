@@ -6,6 +6,7 @@ import {
   type Jurisdiction,
   type Policy,
 } from '@/types';
+import { auDate } from '@/lib/au-date';
 
 const jurisdictionLabel: Record<Jurisdiction, string> = {
   federal: 'Federal',
@@ -34,7 +35,7 @@ function safePolicyDate(policy: Policy): { date: Date; dateType: string } | null
 }
 
 function formatAxisDate(date: Date): string {
-  return date.toLocaleDateString('en-AU', {
+  return auDate(date, {
     month: 'short',
     year: '2-digit',
     timeZone: 'Australia/Sydney',

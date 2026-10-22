@@ -37,7 +37,7 @@ function PolicyCard({
   return (
     <article className="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 border-b border-border py-5 sm:gap-x-6">
       <div className="min-w-0">
-        <p className="mb-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-muted-foreground">
+        <p className="mb-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
           <span>{getJurisdictionName(policy.jurisdiction)}</span>
           <span aria-hidden="true">/</span>
           <span>{getPolicyTypeName(policy.type)}</span>
@@ -70,9 +70,9 @@ function PolicyCard({
       </div>
       <div className="flex max-w-28 flex-col items-end gap-3 text-right">
         <StatusPill status={policy.status} dates={policy.dates} />
-        <span className="mt-1 text-[11px] leading-5">
+        <span className="mt-1 text-xs leading-5">
           {formatPolicyDate(primaryDate, { short: true })}
-          <span className="block text-[10px] text-muted-foreground">
+          <span className="block text-xs text-muted-foreground">
             {getPolicyDateTypeName(primaryDate.type)}
           </span>
         </span>

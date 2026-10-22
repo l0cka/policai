@@ -28,6 +28,7 @@ import {
 import type { UpcomingPolicyDate as UpcomingDate } from '@/lib/this-week';
 import { cn } from '@/lib/utils';
 import { pageAlternates, pageSocialMeta } from '@/lib/site-seo';
+import { auDate } from '@/lib/au-date';
 
 // Upcoming dates must advance even when collection is stalled.
 export const dynamic = 'force-dynamic';
@@ -49,7 +50,7 @@ export const metadata: Metadata = {
 
 function formatTimestamp(value: string | null): string | null {
   if (!value) return null;
-  return new Date(value).toLocaleString('en-AU', {
+  return auDate(new Date(value), {
     day: '2-digit',
     month: 'short',
     year: 'numeric',
@@ -85,7 +86,7 @@ function DevelopmentRow({ development }: { development: Development }) {
       className="ink-rail grid gap-1.5 border-b border-border py-3 pl-3 transition-colors duration-[var(--dur-fast)] hover:bg-[var(--row-hover)] sm:grid-cols-[7rem_minmax(0,1fr)] sm:gap-2 sm:py-4"
     >
       <time dateTime={new Date(development.detectedAt).toISOString()} className="text-xs font-medium text-muted-foreground tabular">
-        {new Date(development.detectedAt).toLocaleDateString('en-AU', {
+        {auDate(new Date(development.detectedAt), {
           day: 'numeric',
           month: 'short',
           year: 'numeric',
@@ -95,7 +96,7 @@ function DevelopmentRow({ development }: { development: Development }) {
       <div className="min-w-0">
         <div className="flex flex-wrap items-center gap-2">
           <EvidenceLabel development={development} />
-          <span className="text-[11px] text-muted-foreground">
+          <span className="text-xs text-muted-foreground">
             {getJurisdictionName(development.jurisdiction)} ·{' '}
             {development.sourceName}
           </span>
@@ -114,7 +115,7 @@ function DevelopmentRow({ development }: { development: Development }) {
             {development.summary}
           </p>
         ) : null}
-        <div className="mt-1.5 flex flex-wrap items-center gap-3 text-[11px] sm:mt-2">
+        <div className="mt-1.5 flex flex-wrap items-center gap-3 text-xs sm:mt-2">
           <span
             className={cn(
               'flex items-center gap-1.5',
@@ -162,7 +163,7 @@ function UpcomingRow({ item }: { item: UpcomingDate }) {
         {item.precision !== 'day' ? <p className="mt-1 normal-case">Exact day not recorded</p> : null}
       </div>
       <div className="min-w-0">
-        <p className="text-[11px] text-muted-foreground">
+        <p className="text-xs text-muted-foreground">
           {getPolicyDateTypeName(item.dateType)} ·{' '}
           {getJurisdictionName(item.jurisdiction)} ·{' '}
           {getPolicyTypeName(item.type)} ·{' '}
@@ -177,7 +178,7 @@ function UpcomingRow({ item }: { item: UpcomingDate }) {
           {item.policyTitle}
           <ArrowUpRight className="mt-0.5 h-3.5 w-3.5 shrink-0 opacity-50 group-hover:opacity-100" />
         </a>
-        <div className="mt-1.5 text-[11px] sm:mt-2">
+        <div className="mt-1.5 text-xs sm:mt-2">
           <Link
             href={`/policies/${item.policyId}`}
             className="text-primary hover:underline"
@@ -210,7 +211,7 @@ export default async function ThisWeekPage() {
       : [];
   const upcoming = selectUpcomingPolicyDates(policies, weekWindowEndingAt(now)!);
   const stale = window && now.getTime() - window.end > WEEK_MS;
-  const dateLabel = (stamp: number) => new Date(stamp).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Australia/Sydney' });
+  const dateLabel = (stamp: number) => auDate(new Date(stamp), { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Australia/Sydney' });
 
   const lastCollected = formatTimestamp(meta.lastCollectedAt);
   const lastHealthy = formatTimestamp(meta.lastHealthyAt);

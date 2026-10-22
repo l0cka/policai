@@ -1,4 +1,5 @@
 import type { PolicyDate } from '@/types';
+import { auDate } from '@/lib/au-date';
 
 export function parseCalendarDateForDisplay(value: Date | string): Date {
   if (value instanceof Date) return value;
@@ -20,19 +21,19 @@ export function formatPolicyDate(
       ? policyDate.date
       : new Date(`${policyDate.date.slice(0, 10)}T00:00:00.000Z`);
   if (policyDate.precision === 'year') {
-    return date.toLocaleDateString('en-AU', {
+    return auDate(date, {
       year: 'numeric',
       timeZone: 'UTC',
     });
   }
   if (policyDate.precision === 'month') {
-    return date.toLocaleDateString('en-AU', {
+    return auDate(date, {
       month: options.short ? 'short' : 'long',
       year: 'numeric',
       timeZone: 'UTC',
     });
   }
-  return date.toLocaleDateString('en-AU', {
+  return auDate(date, {
     day: 'numeric',
     month: options.short ? 'short' : 'long',
     year: 'numeric',
