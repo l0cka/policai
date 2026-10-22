@@ -37,6 +37,10 @@ const REFUSAL_KINDS: ReadonlySet<string> = new Set<RefusalKind>([
 ]);
 const OBSERVED: ReadonlySet<FailureClass> = new Set<FailureClass>(['identity_refused', 'robots_disallowed']);
 
+/** The Sydney calendar day of a stamp, as YYYY-MM-DD, matching /status. */
+const sydneyDay = (stamp: string): string =>
+  new Intl.DateTimeFormat('en-CA', { timeZone: 'Australia/Sydney' }).format(new Date(stamp));
+
 /**
  * Every enabled source whose site refuses the declared collector: the
  * decided ones from their manual decision, and automatic ones the ledger
@@ -84,7 +88,7 @@ export function siteRefusals(input: {
       {
         ...base,
         kind: health.lastFailureClass as RefusalKind,
-        since: health.firstFailureAt.slice(0, 10),
+        since: sydneyDay(health.firstFailureAt),
         response: 'undecided',
         evidence: null,
       },

@@ -54,7 +54,7 @@ describe('siteRefusals', () => {
     });
     expect(rows.map((row) => [row.sourceId, row.host, row.tier, row.kind, row.since, row.response])).toEqual([
       ['fed-media', 'www.fed.gov.au', 'A', 'identity_refused', '2026-10-01', 'await_allowlist'],
-      ['fed-news', 'www.fed.gov.au', 'A', 'identity_refused', '2026-10-21', 'undecided'],
+      ['fed-news', 'www.fed.gov.au', 'A', 'identity_refused', '2026-10-22', 'undecided'],
       ['fed-policy', 'www.other.gov.au', 'A', 'bot_blocked', '2026-10-01', 'manual'],
       ['qld-news', 'www.qld.gov.au', 'B', 'bot_blocked', '2026-10-20', 'manual'],
     ]);

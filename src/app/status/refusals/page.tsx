@@ -142,7 +142,8 @@ export default async function RefusalsPage() {
         <p className="text-xs text-muted-foreground">
           “Since” is the date the decision was recorded, or the first refused
           run for a refusal still awaiting a decision. The evidence for each
-          decision is kept with the source in Policai’s public source catalogue.
+          decision is kept with the source in Policai’s source catalogue, in
+          its public code repository.
         </p>
       </div>
     </article>
