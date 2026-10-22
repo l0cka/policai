@@ -14,6 +14,7 @@ const AI_KEYWORDS = [
   'automated decision',
   'algorithmic',
   'deepfake',
+  'artificially generated',
   'data centre',
   'data center',
   'hyperscale',

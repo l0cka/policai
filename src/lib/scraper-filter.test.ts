@@ -45,6 +45,16 @@ describe('isRelevantScrapedCandidate', () => {
       }),
     ).toBe(false);
   });
+
+  it('accepts a bill on artificially generated content, as SA titled its 2024 deepfake bill', () => {
+    expect(
+      isRelevantScrapedCandidate({
+        title: 'Summary Offences (Artificially Generated Content) Amendment Bill 2024',
+        url: 'https://salt.parliament.sa.gov.au/bill/5403',
+        text: 'Introduced in the Legislative Council; SALT status: Lapsed in LC.',
+      }),
+    ).toBe(true);
+  });
 });
 
 describe('countAiMentions', () => {

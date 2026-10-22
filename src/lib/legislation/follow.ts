@@ -5,6 +5,7 @@ import { sourceUrlsEqual } from '@/lib/source-url';
 import { classifyFailure } from '@/lib/pipeline/failure';
 import type { Policy, PolicyDate, PolicyDraft, SourceEvidence, SourceReview, SourceRunResult } from '@/types';
 import { parseAphProgress } from './aph-progress';
+import { parseSaBillSummaries, SA_BILL_PAGE, saBillSummaries } from './sa-salt';
 import { parseTasBillProgress } from './tas-progress';
 import {
   frlAmendedPrincipals,
@@ -32,8 +33,8 @@ export const FOLLOW_SOURCE_PREFIX = 'track:';
 
 const APH_BILL_PAGE = 'https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=';
 
-/** APH bill pages are served only to a browser; the Federal Register API and Tasmanian bill pages answer plain HTTP. */
-export type FollowRegister = 'aph' | 'frl' | 'tas';
+/** APH bill pages are served only to a browser; the Federal Register API, Tasmanian bill pages and SA's SALT API answer plain HTTP. */
+export type FollowRegister = 'aph' | 'frl' | 'tas' | 'sa';
 
 export interface FollowTarget {
   sourceId: string;
@@ -46,6 +47,7 @@ const READ: Record<FollowRegister, { title: string; read: (body: string, evidenc
   aph: { title: 'Bill home page', read: parseAphProgress },
   frl: { title: 'Federal Register title record', read: parseFrlTitle },
   tas: { title: 'Parliament of Tasmania bill page', read: parseTasBillProgress },
+  sa: { title: 'Parliament of South Australia bill summary', read: parseSaBillSummaries },
 };
 
 const TAS_BILL_PAGE = /^https:\/\/www\.parliament\.tas\.gov\.au\/bills\/bills\d{4}\//;
@@ -56,8 +58,9 @@ export function aphBillPage(billId: string): string {
 
 /**
  * Federal bills whose register source is their APH bill page, federal
- * instruments with a Federal Register title id, and Tasmanian bills with a
- * Parliament of Tasmania bill page.
+ * instruments with a Federal Register title id, Tasmanian bills with a
+ * Parliament of Tasmania bill page, and SA bills with a SALT bill page,
+ * read through the SALT API.
  */
 export function followTargets(policies: readonly Policy[]): FollowTarget[] {
   return policies.flatMap((policy): FollowTarget[] => {
@@ -75,6 +78,10 @@ export function followTargets(policies: readonly Policy[]): FollowTarget[] {
     }
     if (legislative.kind === 'bill' && ref.register === 'state' && ref.jurisdiction === 'tas' && TAS_BILL_PAGE.test(ref.url)) {
       return [{ sourceId, url: ref.url, register: 'tas', policy: { ...policy, legislative } }];
+    }
+    const saBill = legislative.kind === 'bill' && ref.register === 'state' && ref.jurisdiction === 'sa' ? SA_BILL_PAGE.exec(ref.url) : null;
+    if (saBill) {
+      return [{ sourceId, url: saBillSummaries(saBill[1]), register: 'sa', policy: { ...policy, legislative } }];
     }
     return [];
   });

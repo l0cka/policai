@@ -130,8 +130,9 @@ export function classifyByBodyMentions(
 }
 
 /**
- * Relevance for a register full-text search that already matched AI terms
- * above its cut (see `@/lib/legislation/frl-search`). The register gives no
+ * Relevance for a register search row that already matched AI: the Federal
+ * Register's full-text score above its cut (`@/lib/legislation/frl-search`)
+ * or an AI-titled SA bill (`@/lib/legislation/sa-salt`). Neither gives an
  * excerpt, so the summary states the match; the score keeps it in review.
  */
 export function classifyBySearchMatch(candidate: Candidate): Classification {

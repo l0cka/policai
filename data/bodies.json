@@ -1036,6 +1036,19 @@
     }
   },
   {
+    "id": "sa-parliament",
+    "name": "Parliament of South Australia",
+    "jurisdiction": "sa",
+    "tier": "A",
+    "hosts": [
+      "prod-internet-salt-functionapp.azurewebsites.net",
+      "salt.parliament.sa.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
     "id": "tas-parliament",
     "name": "Parliament of Tasmania",
     "jurisdiction": "tas",

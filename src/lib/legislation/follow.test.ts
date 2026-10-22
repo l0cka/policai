@@ -6,6 +6,7 @@ import type { Policy, SourceReview } from '@/types';
 import { aphBillPage, followLegislation, followTargets } from './follow';
 import { frlAmendedPrincipals, frlTitleRecord, frlVersionsFrom, parseFrlTitle } from './frl-title';
 import type { Dated, Legislative, LegislativeEvent } from './model';
+import { saBillPage } from './sa-salt';
 
 const fixture = (billId: string) => readFileSync(join(__dirname, '__fixtures__/aph', `${billId}.html`), 'utf8');
 
@@ -113,6 +114,41 @@ describe('followTargets for state bills', () => {
     expect(errors).toEqual([]);
     expect(reviews[0].legislativeUpdate?.added.map(({ date, event }) => [date, event])).toEqual([['2026-08-11', { kind: 'introduced', chamber: 'lower' }]]);
     expect(reviews[0].notes).toContain('House of Assembly');
+  });
+});
+
+function saBill(url: string): Policy {
+  return buildPolicy({
+    id: 'sa-petroleum-bill',
+    title: 'Petroleum Products Regulation (Emergencies and Other Matters) Amendment Bill 2026',
+    jurisdiction: 'sa',
+    type: 'legislation',
+    status: 'proposed',
+    sourceUrl: url,
+    legislative: { kind: 'bill', ref: { register: 'state', jurisdiction: 'sa', url }, origin: 'government', events: [] },
+  });
+}
+
+describe('followTargets for SA bills', () => {
+  it('follows an SA bill page through the SALT API, and no other SA page', () => {
+    const targets = followTargets([saBill(saBillPage(5619)), { ...saBill('https://www.legislation.sa.gov.au/lz?path=/c/a/petroleum'), id: 'sa-act' }]);
+    expect(targets.map((target) => [target.sourceId, target.register, target.url])).toEqual([
+      ['track:sa-petroleum-bill', 'sa', 'https://prod-internet-salt-functionapp.azurewebsites.net/api/GetBillSummaries?billId=5619'],
+    ]);
+  });
+
+  it('stages passage from the bill summary, and asks the reviewer to confirm assent', async () => {
+    const summary = readFileSync(join(__dirname, '__fixtures__/state/sa-salt-bill-5619-assented.json'), 'utf8');
+    const { reviews, errors } = await followLegislation({
+      targets: followTargets([saBill(saBillPage(5619))]),
+      existingReviews: [],
+      retrieve: async (url) => ({ body: summary, evidence: { url, retrievedAt: now.toISOString(), contentHash: 'c'.repeat(64) } }),
+      now,
+    });
+    expect(errors).toEqual([]);
+    expect(reviews[0].legislativeUpdate?.added.map(({ event }) => event.kind)).toEqual(['introduced', 'passed', 'passed']);
+    expect(reviews[0].notes).toContain('Assented as Act No. 1 of 2026, date not confirmed');
+    expect(reviews[0].proposedRecord).toMatchObject({ sourceUrl: saBillPage(5619) });
   });
 });
 
