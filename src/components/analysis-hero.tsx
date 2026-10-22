@@ -19,7 +19,7 @@ export function AnalysisHero({ articles }: { articles: HeroArticle[] }) {
         padding-block: var(--space-2);
       }
       .analysis-hero-slide.analysis-hero-slide {
-        padding-block: 0;
+        padding-block: var(--space-3) 0;
       }
       .analysis-hero-controls.analysis-hero-controls {
         margin-top: var(--space-1);
