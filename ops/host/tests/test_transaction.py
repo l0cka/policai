@@ -136,55 +136,73 @@ class TransactionTests(unittest.TestCase):
             with self.subTest(failure=failure):
                 self.run_case(failure)
 
-    def test_failed_git_fetch_keeps_its_public_reason(self):
+    def fixture(self, tmp):
+        root = Path(tmp)
+        (root / "deploy.lock").touch()
+        (root / "worker.lock").touch()
+        state = FixtureState(root)
+        state.write("active.json", {"target": "a" * 40})
+        return root, state
+
+    def test_pre_staging_failures_retry_until_the_limit_then_block(self):
         with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            (root / "deploy.lock").touch()
-            (root / "worker.lock").touch()
-            state = FixtureState(root)
-            state.write("active.json", {"target": "a" * 40})
+            root, state = self.fixture(tmp)
             host = FakeHost()
 
             def resolve():
                 raise h.ProcessFailed("command exited with status 128")
 
             host.resolve_target = resolve
+            failure = {
+                "phase": "preflight",
+                "error": "ProcessFailed",
+                "reason": "command exited with status 128",
+            }
+            for count in range(1, d.DEFER_LIMIT):
+                with self.assertRaises(d.Refused):
+                    d.Transaction(state, host).deploy(None)
+                self.assertFalse((root / "blocked.json").exists())
+                self.assertEqual(state.read("deferred.json"), {"count": count, "failure": failure})
             with self.assertRaises(d.Refused):
                 d.Transaction(state, host).deploy(None)
             blocked = state.read("blocked.json")
             self.assertEqual(blocked["phase"], "failed-review-required")
-            self.assertEqual(
-                blocked["failure"],
-                {
-                    "phase": "preflight",
-                    "error": "ProcessFailed",
-                    "reason": "command exited with status 128",
-                },
-            )
+            self.assertEqual(blocked["failure"], failure)
+            self.assertEqual(state.read("active.json"), {"target": "a" * 40})
 
-    def test_main_moving_mid_run_defers_only_a_resolved_target(self):
-        for resolved in (True, False):
-            with self.subTest(resolved=resolved), tempfile.TemporaryDirectory() as tmp:
-                root = Path(tmp)
-                (root / "deploy.lock").touch()
-                (root / "worker.lock").touch()
-                state = FixtureState(root)
-                state.write("active.json", {"target": "a" * 40})
+    def test_success_resets_the_retry_count(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root, state = self.fixture(tmp)
+            host = FakeHost()
+            host.resolve_target = lambda: "b" * 40
+            moved = FakeHost()
+            moved.resolve_target = host.resolve_target
+
+            def prepare(target):
+                raise d.Refused("approved target is not fetched main")
+
+            moved.prepare = prepare
+            with self.assertRaises(d.Refused):
+                d.Transaction(state, moved).deploy(None)
+            self.assertEqual(state.read("deferred.json")["count"], 1)
+            d.Transaction(state, host).deploy(None)
+            self.assertFalse((root / "deferred.json").exists())
+            self.assertFalse((root / "blocked.json").exists())
+
+    def test_explicit_targets_and_staging_failures_block_at_once(self):
+        for explicit, fail in ((True, "prepare"), (False, "stage"), (False, "health")):
+            with (
+                self.subTest(explicit=explicit, fail=fail),
+                tempfile.TemporaryDirectory() as tmp,
+            ):
+                root, state = self.fixture(tmp)
                 host = FakeHost()
                 host.resolve_target = lambda: "b" * 40
-
-                def prepare(target):
-                    raise d.MainMoved("approved target is not fetched main")
-
-                host.prepare = prepare
+                host.fail = fail
                 with self.assertRaises(d.Refused):
-                    d.Transaction(state, host).deploy(None if resolved else "b" * 40)
-                self.assertEqual(state.read("active.json"), {"target": "a" * 40})
-                if resolved:
-                    self.assertFalse((root / "blocked.json").exists())
-                    d.Transaction(state, FakeHost()).deploy("b" * 40)
-                else:
-                    self.assertEqual(state.read("blocked.json")["failure"]["error"], "MainMoved")
+                    d.Transaction(state, host).deploy("b" * 40 if explicit else None)
+                self.assertEqual(state.read("blocked.json")["phase"], "failed-review-required")
+                self.assertFalse((root / "deferred.json").exists())
 
     def test_follow_main_resolves_target_inside_latched_transaction(self):
         with tempfile.TemporaryDirectory() as tmp:

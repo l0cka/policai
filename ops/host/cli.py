@@ -136,6 +136,11 @@ def main():
             with state.lock(exclusive=False):
                 blocked = os.path.lexists(h.STATE / "blocked.json")
                 record = state.read("blocked.json" if blocked else "active.json")
+                deferred = (
+                    state.read("deferred.json")
+                    if os.path.lexists(h.STATE / "deferred.json")
+                    else None
+                )
                 print(
                     json.dumps(
                         {
@@ -144,6 +149,7 @@ def main():
                             "transaction": record.get("id"),
                             "target": record.get("target"),
                             "failure": record.get("failure"),
+                            "deferred": deferred,
                             "bootstrap_pending": record.get("bootstrap_pending", False),
                         }
                     )

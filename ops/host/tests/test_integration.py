@@ -107,7 +107,7 @@ class HostIntegrationTests(unittest.TestCase):
         with self.assertRaises(d.Refused):
             obj.prepare(NEW)
         obj.config = {"approved_target": OLD, "follow_main": True}
-        with self.assertRaises(d.MainMoved):
+        with self.assertRaisesRegex(d.Refused, "not fetched main"):
             obj.prepare(OLD)
 
     def test_host_constructor_uses_state_not_as_command_runner(self):
