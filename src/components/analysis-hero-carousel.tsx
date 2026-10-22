@@ -69,7 +69,7 @@ export function AnalysisHeroCarousel({
       }}
     >
       <div className="flex items-baseline justify-between gap-4 border-b border-[var(--rule-heavy)] py-2 font-mono text-[length:var(--type-label)] font-medium uppercase tracking-[var(--tracking-eyebrow)]">
-        <h2 id="analysis-hero-heading">Analysis</h2>
+        <p id="analysis-hero-heading">Analysis</p>
         <div className="flex gap-4">
           <Link href="/analysis" className="hover:text-primary">
             All analysis
@@ -91,7 +91,7 @@ export function AnalysisHeroCarousel({
         </p>
         {count > 1 ? (
           <div className="flex flex-wrap items-center gap-2">
-            <div className="flex flex-wrap items-center" role="group" aria-label="Articles">
+            <div className="analysis-hero-dots flex flex-wrap items-center" role="group" aria-label="Articles">
               {slides.map((article, slideIndex) => {
                 const active = slideIndex === current;
                 return (
