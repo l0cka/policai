@@ -2,18 +2,30 @@ name: Record freshness
 
 # Fails when overdue public records exceed data/freshness-budget.json.
 # Time-based, so it also runs weekly: records go stale without any push.
+# On pull requests it runs only when records or the code that ages them change.
 # Kept out of `npm run check` so unrelated local work is not blocked by the
 # calendar.
 on:
   pull_request:
     branches:
       - main
+    paths:
+      - data/**
+      - scripts/check-freshness.ts
+      - src/lib/**
+      - package.json
+      - package-lock.json
+      - .github/workflows/record-freshness.yml
   schedule:
     - cron: "0 22 * * 0" # Monday 08:00 AEST
   workflow_dispatch:
 
 permissions:
   contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   freshness:

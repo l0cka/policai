@@ -8,7 +8,41 @@ on:
 permissions:
   contents: read
 
+# A newer push to the same PR supersedes the run for the older one.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
+  # Required checks must report on every PR, so the Pro Bono jobs always run
+  # and skip only their steps when apps/probono is untouched. Host dispatcher
+  # is not required and skips as a whole job. If this job fails, everything
+  # runs, so a broken diff never reads as a passing skip.
+  changes:
+    name: changes
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: [self-hosted, linux, argus]
+    outputs:
+      probono: ${{ steps.diff.outputs.probono }}
+      host: ${{ steps.diff.outputs.host }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      # The checkout is the PR merge commit, so its first parent is the base.
+      - name: Detect changed areas
+        id: diff
+        run: |
+          set -euo pipefail
+          files="$(git diff --name-only HEAD^1 HEAD)"
+          printf '%s\n' "$files"
+          matches() { grep -qE "$1" <<<"$files" && echo true || echo false; }
+          workflow='^\.github/workflows/pull-request-checks\.yml$'
+          {
+            echo "probono=$(matches "^apps/probono/|$workflow")"
+            echo "host=$(matches "^ops/host/|$workflow")"
+          } >> "$GITHUB_OUTPUT"
+
   lint:
     name: lint
     if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
@@ -90,7 +124,8 @@ jobs:
 
   probono-dashboard:
     name: Pro Bono dashboard
-    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+    needs: changes
+    if: ${{ !cancelled() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
     runs-on: [self-hosted, linux, argus]
     defaults:
       run:
@@ -98,38 +133,58 @@ jobs:
     # Build is database-free; never inherit production connection settings.
     env:
       DATABASE_URL: ''
+      AFFECTED: ${{ needs.changes.result != 'success' || needs.changes.outputs.probono == 'true' }}
     steps:
+      - name: Skip, Pro Bono code unchanged
+        if: ${{ env.AFFECTED != 'true' }}
+        working-directory: .
+        run: echo 'No change under apps/probono; checks skipped.'
       - uses: actions/checkout@v4
+        if: ${{ env.AFFECTED == 'true' }}
       - uses: actions/setup-node@v4
+        if: ${{ env.AFFECTED == 'true' }}
         with:
           node-version: 24
           cache: npm
           cache-dependency-path: apps/probono/dashboard/package-lock.json
       - name: Install dashboard dependencies
+        if: ${{ env.AFFECTED == 'true' }}
         run: npm ci
       - name: Typecheck dashboard
+        if: ${{ env.AFFECTED == 'true' }}
         run: npm run typecheck
       - name: Test dashboard
+        if: ${{ env.AFFECTED == 'true' }}
         run: npm test
       - name: Build dashboard
+        if: ${{ env.AFFECTED == 'true' }}
         run: npm run build
 
   probono-worker:
     name: Pro Bono worker
-    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+    needs: changes
+    if: ${{ !cancelled() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
     runs-on: [self-hosted, linux, argus]
     defaults:
       run:
         working-directory: apps/probono/worker
+    env:
+      AFFECTED: ${{ needs.changes.result != 'success' || needs.changes.outputs.probono == 'true' }}
     # Integration fixtures DELETE table contents. Only this disposable Postgres
     # may be used: no repository secrets, production Compose, or data volumes.
     # Start it with `docker run` rather than Actions `services:` — on Argus the
     # service-container helper fails at Initialize containers with
     # `/proc/1/cgroup` missing and a null network (2026-10-20).
     steps:
+      - name: Skip, Pro Bono code unchanged
+        if: ${{ env.AFFECTED != 'true' }}
+        working-directory: .
+        run: echo 'No change under apps/probono; checks skipped.'
       - uses: actions/checkout@v4
+        if: ${{ env.AFFECTED == 'true' }}
       - name: Start disposable Postgres for CI
         id: pg
+        if: ${{ env.AFFECTED == 'true' }}
         working-directory: .
         run: |
           set -euo pipefail
@@ -166,15 +221,19 @@ jobs:
           test -n "$port"
           echo "port=$port" >> "$GITHUB_OUTPUT"
       - uses: actions/setup-node@v4
+        if: ${{ env.AFFECTED == 'true' }}
         with:
           node-version: 24
           cache: npm
           cache-dependency-path: apps/probono/worker/package-lock.json
       - name: Install worker dependencies
+        if: ${{ env.AFFECTED == 'true' }}
         run: npm ci
       - name: Typecheck worker
+        if: ${{ env.AFFECTED == 'true' }}
         run: npm run typecheck
       - name: Initialize disposable test database
+        if: ${{ env.AFFECTED == 'true' }}
         env:
           DATABASE_URL: postgres://probono_ci:probono_ci@127.0.0.1:${{ steps.pg.outputs.port }}/probono_ci_test
         run: |
@@ -194,19 +253,22 @@ jobs:
           }
           JS
       - name: Run unit and database integration tests
+        if: ${{ env.AFFECTED == 'true' }}
         env:
           DATABASE_URL: postgres://probono_ci:probono_ci@127.0.0.1:${{ steps.pg.outputs.port }}/probono_ci_test
         run: npm test
       - name: Run enrichment security tests
+        if: ${{ env.AFFECTED == 'true' }}
         run: npm run test:security
       - name: Stop disposable Postgres
-        if: always()
+        if: ${{ always() && env.AFFECTED == 'true' }}
         working-directory: .
         run: docker rm -f "${{ steps.pg.outputs.container }}" >/dev/null 2>&1 || true
 
   host-dispatcher:
     name: Host dispatcher
-    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+    needs: changes
+    if: ${{ !cancelled() && (needs.changes.result == 'failure' || needs.changes.outputs.host == 'true') }}
     runs-on: [self-hosted, linux, argus]
     steps:
       - uses: actions/checkout@v4
