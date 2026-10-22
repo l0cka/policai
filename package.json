@@ -20,6 +20,7 @@
     "add:article-image": "tsx scripts/add-article-image.ts",
     "check:freshness": "tsx scripts/check-freshness.ts",
     "report:watch-coverage": "tsx scripts/report-watch-coverage.ts",
+    "discover:sources": "tsx scripts/discover-sources.ts",
     "signal:reviews": "tsx scripts/signal-source-reviews.ts",
     "mcp": "tsx src/mcp/server.ts",
     "mcp:public": "tsx src/mcp/public-server.ts",
