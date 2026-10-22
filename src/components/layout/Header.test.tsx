@@ -76,52 +76,55 @@ describe('formatCollectedAt', () => {
   });
 });
 
-describe('collection strip', () => {
-  it('shows the last collection, not the last healthy run', () => {
-    const strip = renderStrip(metaFixture());
-    expect(strip.textContent).toMatch(/COLLECTED 17 OCT 2026,? 06:35/);
-    expect(strip.textContent).not.toMatch(/07 OCT|06 OCT/);
+describe('source status link', () => {
+  const statusLink = (container: HTMLElement) =>
+    container.querySelector<HTMLAnchorElement>('[data-site-header] a[href="/status"]');
+
+  it('names the last collection, not the last healthy run', () => {
+    const link = statusLink(renderStrip(metaFixture()));
+    expect(link?.getAttribute('aria-label')).toMatch(/collected 17 oct 2026,? 06:35/);
+    expect(link?.getAttribute('aria-label')).not.toMatch(/07 oct|06 oct/);
   });
 
   it('shows degraded status and the source count separately', () => {
-    const strip = renderStrip(metaFixture());
-    expect(strip.textContent).toContain('degraded');
-    expect(strip.textContent).toContain('57/59 due sources reached');
+    const link = statusLink(renderStrip(metaFixture()));
+    expect(link?.textContent).toContain('degraded');
+    expect(link?.getAttribute('aria-label')).toContain('57/59 due sources reached');
   });
 
-  it('keeps a degraded marker in the phone-visible left cluster', () => {
-    const strip = renderStrip(metaFixture());
-    const phoneMarker = strip.querySelector('.sm\\:hidden');
-    expect(phoneMarker?.textContent).toMatch(/degraded/i);
-    expect(phoneMarker?.className).toMatch(/sm:hidden/);
+  it('keeps a degraded label visible on phones', () => {
+    const link = statusLink(renderStrip(metaFixture()));
+    const label = [...(link?.querySelectorAll('span') ?? [])].find((s) => /degraded/i.test(s.textContent ?? ''));
+    expect(label?.className ?? '').not.toMatch(/sr-only/);
   });
 
-  it('omits the phone degraded marker when the run is healthy', () => {
-    const strip = renderStrip(
-      metaFixture({
-        collector: {
-          ...metaFixture().collector,
-          health: 'healthy',
-          successfulSourceCount: 59,
-          failedSourceCount: 0,
-          successRate: 1,
-        },
-      }),
+  it('hides the healthy label on phones and keeps it for screen readers', () => {
+    const link = statusLink(
+      renderStrip(
+        metaFixture({
+          collector: {
+            ...metaFixture().collector,
+            health: 'healthy',
+            successfulSourceCount: 59,
+            failedSourceCount: 0,
+            successRate: 1,
+          },
+        }),
+      ),
     );
-    expect(strip.querySelector('.sm\\:hidden')).toBeNull();
-    expect(strip.textContent).toContain('Sources reached');
+    expect(link?.textContent).toContain('Sources reached');
+    expect(link?.querySelector('.max-sm\\:sr-only')).not.toBeNull();
   });
 
   it('uses the fallback text when nothing has been collected', () => {
-    const strip = renderStrip(
-      metaFixture({ lastCollectedAt: null, lastHealthyAt: '2026-10-06T19:33:28.224Z' }),
+    const link = statusLink(
+      renderStrip(metaFixture({ lastCollectedAt: null, lastHealthyAt: '2026-10-06T19:33:28.224Z' })),
     );
-    expect(strip.textContent).toContain('SOURCE STATUS IN METHODOLOGY');
-    expect(strip.textContent).not.toContain('COLLECTED');
+    expect(link?.getAttribute('aria-label')).toContain('source status in methodology');
+    expect(link?.getAttribute('aria-label')).not.toContain('collected');
   });
 
-  it('is hidden on article pages', () => {
-    const strip = renderStrip(metaFixture(), '/analysis/some-piece');
-    expect(strip.textContent).not.toContain('COLLECTED');
+  it('stays in the header on article pages, so the header keeps one height', () => {
+    expect(statusLink(renderStrip(metaFixture(), '/analysis/some-piece'))).not.toBeNull();
   });
 });

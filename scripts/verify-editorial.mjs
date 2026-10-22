@@ -68,12 +68,8 @@ async function audit(name) {
   });
   accessibility.push({ name, ...result });
 }
-async function theme(name, mobile) {
-  if (mobile)
-    await page.getByRole('button', { name: 'Open menu', exact: true }).click();
-  await visible(page.getByRole('radio', { name, exact: true })).click();
-  if (mobile)
-    await page.getByRole('button', { name: 'Close menu', exact: true }).click();
+async function theme(name) {
+  await page.getByRole('radio', { name, exact: true }).click();
 }
 async function openFilter(name) {
   const details = page
@@ -258,7 +254,7 @@ try {
   for (const width of [320, 390, 768, 1024, 1440]) {
     await page.setViewportSize({ width, height: 1000 });
     for (const name of ['Light', 'Dark']) {
-      await theme(name, width < 1024);
+      await theme(name);
       await page.evaluate(() => window.scrollTo(0, 0));
       assert(
         await page.evaluate(
@@ -284,19 +280,17 @@ try {
     );
   }
   await page.setViewportSize({ width: 390, height: 844 });
-  await theme('Light', true);
+  await theme('Light');
   await page.getByRole('button', { name: 'Open menu' }).click();
   const mobile = page.getByRole('navigation', { name: 'Mobile' });
   for (const name of [
     'Register',
-    'Developments',
+    'Updates',
+    'Legislation',
     'Courts',
-    'Timeline',
-    'Network',
-    'Methodology',
+    'Analysis',
+    'About',
     'A2J',
-    'API',
-    'Feedback',
   ])
     assert(await mobile.getByRole('link', { name, exact: true }).isVisible());
   await shot('mobile-navigation');
@@ -329,18 +323,8 @@ try {
   );
   await page.reload();
   assert.equal(await page.locator('html').getAttribute('data-theme'), 'dark');
-  await theme('Light', false);
-  await page.getByRole('button', { name: 'Explore', exact: true }).click();
-  await page.getByRole('link', { name: 'Timeline', exact: true }).waitFor();
-  await page.keyboard.press('Escape');
-  assert(
-    await page
-      .getByRole('button', { name: 'Explore', exact: true })
-      .evaluate((e) => e === document.activeElement),
-  );
-  checks.push(
-    'Theme arrow keys + persistence and Explore disclosure keyboard focus',
-  );
+  await theme('Light');
+  checks.push('Theme arrow keys + persistence');
 
   const source = visible(
     page.getByRole('link', { name: /^Official source for/ }),
