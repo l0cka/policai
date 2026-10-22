@@ -175,8 +175,11 @@ async function main() {
   }
 
   const reports: HostReport[] = [];
+  // Saved before each host, so a run that is killed keeps the hosts it finished.
+  const save = () => writeFile(out, `${JSON.stringify(reports, null, 2)}\n`);
   try {
     for (const host of hosts) {
+      await save();
       const homeUrl = `https://${host}/`;
       const report: HostReport = {
         host,
@@ -209,7 +212,7 @@ async function main() {
     }
   } finally {
     await browser.close();
-    await writeFile(out, `${JSON.stringify(reports, null, 2)}\n`);
+    await save();
   }
 }
 
