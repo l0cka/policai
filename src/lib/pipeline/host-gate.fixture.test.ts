@@ -23,25 +23,15 @@ interface Fixture {
   server: Server;
   port: number;
   hits: Array<{ path: string; at: number; userAgent: string }>;
-  foreign: Array<{ path: string; userAgent: string }>;
   robots: string;
   limitedRemaining: number;
 }
 
 function startFixture(robots: string): Promise<Fixture> {
-  const fixture: Partial<Fixture> & Pick<Fixture, 'hits' | 'foreign'> = {
-    hits: [],
-    foreign: [],
-    robots,
-    limitedRemaining: 1,
-  };
+  const fixture: Partial<Fixture> & { hits: Fixture['hits'] } = { hits: [], robots, limitedRemaining: 1 };
   const server = createServer((request, response) => {
     const path = request.url ?? '/';
-    const userAgent = request.headers['user-agent'] ?? '';
-    // CI runners share a loopback with other jobs, and a stray probe of a
-    // reused port must not count as a collector request.
-    if (userAgent.includes('Policai/')) fixture.hits.push({ path, at: Date.now(), userAgent });
-    else fixture.foreign.push({ path, userAgent });
+    fixture.hits.push({ path, at: Date.now(), userAgent: request.headers['user-agent'] ?? '' });
     const send = (status: number, body: string, headers: Record<string, string> = {}) => {
       response.writeHead(status, { 'content-type': 'text/html', ...headers });
       response.end(body);
