@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import {
+  getBodies,
   getCollectionMeta,
   getPolicies,
   getSourceCheckTimes,
@@ -11,6 +12,7 @@ import {
 import { getAutomaticSources, WATCH_SOURCES } from '@/lib/pipeline/sources';
 import { sourcesNotReachedSince } from '@/lib/pipeline/source-health';
 import { collectionAnchor } from '@/lib/this-week';
+import { watchCoverage } from '@/lib/watch-coverage/report';
 import { summarizeManualSourceCoverage } from '@/lib/source-monitoring';
 import {
   assessSourceFreshness,
@@ -62,6 +64,8 @@ const HEADER_CELL =
 // Secondary columns drop out on narrow screens so the state stays visible.
 const WIDE_ONLY = 'hidden sm:table-cell';
 
+const WATCH_TIERS = ['A', 'B', 'C'] as const;
+
 /** Records due within this many days are listed under Record review. */
 const REVIEW_SOON_DAYS = 30;
 
@@ -88,7 +92,7 @@ function age(days: number | null): string {
 }
 
 export default async function StatusPage() {
-  const [meta, policies, checkTimes, sourceHealth, monitoring, pendingReviews] =
+  const [meta, policies, checkTimes, sourceHealth, monitoring, pendingReviews, bodies] =
     await Promise.all([
       getCollectionMeta(),
       getPolicies(),
@@ -96,6 +100,7 @@ export default async function StatusPage() {
       getSourceHealth(),
       getSourceMonitoring(),
       getSourceReviews({ status: 'pending_review' }),
+      getBodies(),
     ]);
   const anchor = collectionAnchor(meta);
   const automatic = getAutomaticSources();
@@ -115,6 +120,18 @@ export default async function StatusPage() {
     (row) => row.overdue || (row.daysLeft !== null && row.daysLeft <= REVIEW_SOON_DAYS),
   );
   const completeness = summarizeRecordCompleteness(policies);
+  const watch = watchCoverage({
+    bodies,
+    sources: WATCH_SOURCES,
+    sourceHealth,
+    checkTimes,
+    monitoring,
+    sourceResults: meta.collector.sourceResults,
+    now: new Date(),
+  });
+  const watchJurisdictions = [...new Set(watch.cells.map((cell) => cell.jurisdiction))];
+  const tierAGaps = watch.gaps.filter((gap) => gap.tier === 'A');
+  const otherGaps = watch.gaps.length - tierAGaps.length;
 
   return (
     <article className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
@@ -368,6 +385,107 @@ export default async function StatusPage() {
             Binding instruments are register records typed as legislation or
             regulation.
           </p>
+        </section>
+
+        <section className="border-t border-border pt-7">
+          <h2 className="section-title">Watch coverage by publishing body</h2>
+          <p className="mb-3 text-muted-foreground">
+            Each cell counts the bodies that have a working automatic source
+            or a manual source, out of the bodies in that jurisdiction and
+            tier. Tier A is each government&apos;s central, digital or AI and
+            drafting bodies, plus the federal policy departments, regulators
+            and Parliament.
+            {watch.unassessed > 0
+              ? ` ${watch.unassessed} of these bodies have no scope decision yet and are counted.`
+              : null}
+          </p>
+          <div className="overflow-x-auto" role="region" aria-label="Watch coverage table" tabIndex={0}>
+            <table className="w-full">
+              <thead>
+                <tr className="border-y border-[var(--rule-heavy)]">
+                  <th scope="col" className={HEADER_CELL}>Jurisdiction</th>
+                  {WATCH_TIERS.map((tier) => (
+                    <th key={tier} scope="col" className={HEADER_CELL}>Tier {tier}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {watchJurisdictions.map((jurisdiction) => (
+                  <tr key={jurisdiction} className="border-b border-border">
+                    <td className="py-2.5 pr-3">{getJurisdictionName(jurisdiction)}</td>
+                    {WATCH_TIERS.map((tier) => {
+                      const cell = watch.cells.find(
+                        (c) => c.jurisdiction === jurisdiction && c.tier === tier,
+                      );
+                      return (
+                        <td key={tier} className="py-2.5 pr-3 tabular-nums">
+                          {cell ? `${cell.automatic + cell.manual} of ${cell.bodies}` : '–'}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="mt-3 text-muted-foreground">
+            {tierAGaps.length === 0
+              ? 'Every tier A body has a working source.'
+              : `Tier A bodies with no working source: ${tierAGaps
+                  .map((gap) => `${gap.name}${gap.coverage === 'failing' ? ' (failing)' : ''}`)
+                  .join(', ')}.`}{' '}
+            {otherGaps > 0
+              ? `${otherGaps} tier B and C ${otherGaps === 1 ? 'body has' : 'bodies have'} none either.`
+              : null}
+          </p>
+          {watch.undecidedRefusals.length > 0 ? (
+            <>
+              <h3 className="mt-5 font-medium">Refusals awaiting a decision</h3>
+              <ul className="mt-2 space-y-1">
+                {watch.undecidedRefusals.map((row) => (
+                  <li key={row.sourceId}>
+                    {row.sourceId}{' '}
+                    <span className="font-mono text-xs text-muted-foreground">
+                      {row.cls} since {sydneyDate(row.since)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : null}
+          {watch.blocks.length > 0 ? (
+            <>
+              <h3 className="mt-5 font-medium">Decided blocks</h3>
+              <ul className="mt-2 space-y-1">
+                {watch.blocks.map((block) => (
+                  <li key={block.sourceId}>
+                    {block.sourceId}{' '}
+                    <span className="font-mono text-xs text-muted-foreground">
+                      {block.automation.because}, {block.automation.decision} since{' '}
+                      {sydneyDate(block.automation.since)}, last reviewed{' '}
+                      {sydneyDate(block.lastReviewedAt)}
+                      {block.overdue ? ', review overdue' : ''}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : null}
+          {watch.skippedLinked.length > 0 ? (
+            <>
+              <h3 className="mt-5 font-medium">Linked documents not requested</h3>
+              <ul className="mt-2 space-y-1">
+                {watch.skippedLinked.map((row) => (
+                  <li key={`${row.sourceId} ${row.url}`}>
+                    {row.sourceId}{' '}
+                    <span className="font-mono text-xs text-muted-foreground">
+                      {row.url}, host decided by {row.decidedBy}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : null}
         </section>
 
         <section className="border-t border-border pt-7">

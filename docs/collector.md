@@ -1228,6 +1228,16 @@ a fingerprint baseline.
   jurisdiction with no tier A body. Add a new publisher to `bodies.json`
   in the same PR. `diser` and `disr` are two directory records for one
   body.
+- **Finding what is not watched** — `npm run report:watch-coverage` (add
+  `-- --json` for the raw report) counts, per jurisdiction and tier, the
+  in-scope bodies with a working automatic source or an enabled manual
+  source, and lists the gaps, every decided block with its last manual
+  review, refusals awaiting a decision and linked documents skipped on a
+  refused host. A body is covered automatically when any of its automatic
+  sources is being reached; a source the per-source ledger has not
+  recorded yet counts from its last completed check. Out-of-scope bodies
+  are left out and unassessed ones are counted. `/status` shows the same
+  report (`watchCoverage` in `src/lib/watch-coverage/report.ts`).
 - **A host refuses the declared identity** — record it once, on the manual
   decision of the source that observed it, with `because: 'identity_refused'`.
   `refusedHosts` in `src/lib/pipeline/sources.ts` derives the refused hosts

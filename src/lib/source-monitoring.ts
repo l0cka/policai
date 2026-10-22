@@ -16,7 +16,7 @@ export interface ManualSourceCoverage {
   neverReviewed: number;
 }
 
-function reviewIsCurrent(
+export function reviewIsCurrent(
   source: WatchSource,
   review: ManualSourceReview,
   now: Date,
