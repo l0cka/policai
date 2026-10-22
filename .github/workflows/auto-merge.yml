@@ -1,0 +1,64 @@
+name: Auto-merge
+
+# Arms GitHub auto-merge (squash) on non-draft PRs opened by l0cka. GitHub
+# then merges once the "Protect main" ruleset passes: lint, test and build
+# green and every review thread resolved. A `hold` label disarms it, for PRs
+# gated on a date or an event. Merging to main deploys Argus.
+#
+# pull_request_target runs this file from main, so a PR cannot rewrite its own
+# arming policy. The job never checks out PR code.
+on:
+  pull_request_target:
+    branches:
+      - main
+    types: [opened, reopened, ready_for_review, labeled, unlabeled]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: auto-merge-${{ github.event.pull_request.number }}
+
+jobs:
+  arm:
+    name: arm auto-merge
+    if: ${{ github.event.pull_request.user.login == 'l0cka' && !github.event.pull_request.draft && github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: [self-hosted, linux, argus]
+
+    steps:
+      - name: Enable or disable auto-merge
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const held = pr.labels.some((label) => label.name === 'hold');
+            if (held) {
+              if (!pr.auto_merge) return core.info('Held, auto-merge already off.');
+              await github.graphql(
+                'mutation($id: ID!) { disablePullRequestAutoMerge(input: { pullRequestId: $id }) { clientMutationId } }',
+                { id: pr.node_id },
+              );
+              return core.info('Held, auto-merge disabled.');
+            }
+            if (pr.auto_merge) return core.info('Auto-merge already on.');
+            // GitHub refuses to arm a PR that can already merge, e.g. when
+            // `hold` comes off after CI went green. Merge that one directly.
+            const { data: fresh } = await github.rest.pulls.get({
+              ...context.repo,
+              pull_number: pr.number,
+            });
+            if (fresh.mergeable_state === 'clean') {
+              await github.rest.pulls.merge({
+                ...context.repo,
+                pull_number: pr.number,
+                sha: fresh.head.sha,
+                merge_method: 'squash',
+              });
+              return core.info('Already mergeable, squash-merged.');
+            }
+            await github.graphql(
+              'mutation($id: ID!) { enablePullRequestAutoMerge(input: { pullRequestId: $id, mergeMethod: SQUASH }) { clientMutationId } }',
+              { id: pr.node_id },
+            );
+            core.info('Auto-merge enabled (squash).');
