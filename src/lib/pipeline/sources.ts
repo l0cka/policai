@@ -1244,6 +1244,21 @@ export const WATCH_SOURCES: WatchSource[] = [
       'Official Atom feed of WA Acts as passed. Checked 2026-09-23: 200 entries over plain HTTP (about 0.5 MB).',
   },
   {
+    id: 'act-legislation-whats-new',
+    name: 'ACT legislation — what’s new',
+    bodyId: 'act-pco',
+    jurisdiction: 'act',
+    category: 'government',
+    url: 'https://www.legislation.act.gov.au/WhatsNew/Index',
+    kind: 'html-index',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    admittedAt: '2026-10-22',
+    notes:
+      'Seven-day tables of bills presented and passed, Acts and notified instruments, which also covers the Legislative Assembly’s bills (its own bills list is a weekly PDF). Probed from Argus 2026-10-22: plain HTTP 200 under the declared identity, robots allows the page (crawl-delay 10), 26 rows extracted.',
+  },
+  {
     id: 'vic-ai',
     name: 'vic.gov.au — generative AI guidance',
     bodyId: 'vic-dpc',
