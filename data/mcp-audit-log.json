@@ -1,5 +1,33 @@
 [
   {
+    "id": "mcp-audit-8a0fee2a-5efd-4d70-a529-86c75dfd6ff7",
+    "createdAt": "2026-10-22T07:41:33.858Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-77f9d585-25db-4349-ae45-3069c3e37274",
+    "createdAt": "2026-10-22T07:41:33.317Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-e948fd0d-5bcc-468b-87fa-edae600a3f49",
+    "createdAt": "2026-10-22T07:41:32.787Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-f951ecbf-c554-4bca-9e90-c4ec5ef4b2a5",
+    "createdAt": "2026-10-22T07:41:32.270Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-93539c5f-3d09-438d-be3e-458098ea8289",
     "createdAt": "2026-10-22T06:10:02.783Z",
     "actor": "local-mcp-admin",
