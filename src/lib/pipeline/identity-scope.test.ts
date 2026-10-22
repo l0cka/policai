@@ -25,16 +25,17 @@ beforeEach(() => {
 afterEach(() => { vi.useRealTimers(); vi.unstubAllEnvs(); });
 
 describe('destination authority before outgoing requests', () => {
-  it('expires all 16 permissions at the exact Sydney boundary with warnings only', () => {
+  it('expires all 15 remaining permissions at the exact Sydney boundary with warnings only', () => {
     const before = new Date('2026-10-20T12:59:59.999Z');
     const boundary = new Date('2026-10-20T13:00:00.000Z');
     const active = (now: Date) => WATCH_SOURCES.filter(s =>
       destinationCollectorIdentity(identityAuthorityFor(s), s.url, now) === 'exempt');
-    expect(active(before)).toHaveLength(16);
+    expect(active(before)).toHaveLength(15);
     expect(active(boundary)).toHaveLength(0);
-    const report = validateWatchSources(WATCH_SOURCES, boundary);
+    // Only the exempt sources: later manual decisions are dated after this clock.
+    const report = validateWatchSources(WATCH_SOURCES.filter(s => s.identityException), boundary);
     expect(report.errors).toEqual([]);
-    expect(report.warnings.filter(w => w.includes('identity exception expired'))).toHaveLength(16);
+    expect(report.warnings.filter(w => w.includes('identity exception expired'))).toHaveLength(15);
   });
 
   it('does not extend authority to sibling origins, credentials or invalid clocks', () => {

@@ -31,7 +31,6 @@ const E24_IDENTITY_EXCEPTION_IDS = [
   'acma-media',
   'tga-media',
   'teqsa-news',
-  'esafety-media',
   'fcfcoa-practice-directions',
   'art-practice-directions',
 ] as const;
@@ -125,6 +124,7 @@ describe('WATCH_SOURCES', () => {
     expect(Object.fromEntries(refusedHosts(WATCH_SOURCES))).toEqual({
       'www.cyber.gov.au': 'cyber-news',
       'www.accc.gov.au': 'accc-rss',
+      'www.esafety.gov.au': 'esafety-media',
     });
   });
 
@@ -138,7 +138,7 @@ describe('WATCH_SOURCES', () => {
     expect(refusedHosts([broken]).size).toBe(0);
   });
 
-  it('grants the time-boxed E24 identity exception to exactly the 16 refusing sources', () => {
+  it('grants the time-boxed E24 identity exception to the 15 refusing sources still automatic', () => {
     const exempt = WATCH_SOURCES.filter((source) => source.identityException);
     expect(exempt.map((source) => source.id).sort()).toEqual(
       [...E24_IDENTITY_EXCEPTION_IDS].sort(),

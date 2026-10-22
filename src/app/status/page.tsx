@@ -455,6 +455,16 @@ export default async function StatusPage() {
               </ul>
             </>
           ) : null}
+          <p className="mt-3 text-muted-foreground">
+            <Link
+              href="/status/refusals"
+              className="text-primary underline underline-offset-4 hover:no-underline"
+            >
+              Sites that refuse Policai
+            </Link>{' '}
+            lists every official site that blocks the collector and how each is
+            covered instead.
+          </p>
           {watch.blocks.length > 0 ? (
             <>
               <h3 className="mt-5 font-medium">Decided blocks</h3>
