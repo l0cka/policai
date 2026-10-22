@@ -1875,6 +1875,25 @@ describe("data-service file store", () => {
 		).resolves.toBe(true);
 	});
 
+	it("lets a legislative record take a page only hand-typed timeline events cite, and retires them", async () => {
+		const page = "https://example.gov.au/bill";
+		const introduced = buildTimelineEvent({ id: "tl-bill-introduced", sourceUrl: page });
+		const other = buildTimelineEvent({ id: "tl-other", sourceUrl: "https://example.gov.au/other" });
+		readJsonFile.mockImplementation(
+			async (filePath: string, fallback: unknown) => {
+				if (filePath.endsWith("timeline.json")) return [introduced, other];
+				return fallback;
+			},
+		);
+
+		const { retireTimelineEventsCiting, sourceUrlExists } = await loadDataServiceModule();
+
+		await expect(sourceUrlExists(page)).resolves.toBe(true);
+		await expect(sourceUrlExists(page, { legislativeRecord: true })).resolves.toBe(false);
+		await expect(retireTimelineEventsCiting(page)).resolves.toEqual(["tl-bill-introduced"]);
+		expect(writeJsonFile).toHaveBeenCalledWith(expect.stringMatching(/timeline\.json$/), [other]);
+	});
+
 	it("detects duplicate source URLs across staged source reviews", async () => {
 		const stagedReview = {
 			id: "source-review-1",

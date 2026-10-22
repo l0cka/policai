@@ -7,6 +7,7 @@ import {
   isAllowedSourceHost,
   validateCollectionMeta,
   validateDevelopments,
+  validateLegislativeTimelineOverlap,
   validatePolicyFrameworkArtifact,
   validatePolicies,
   validateSourceMonitoring,
@@ -2004,4 +2005,28 @@ describe('validateWatchState hosts', () => {
       expect(report.errors).toEqual([expect.stringContaining('invalid host')]);
     },
   );
+});
+
+describe('validateLegislativeTimelineOverlap', () => {
+  it('refuses a timeline event on the page of a legislative record, and only then', () => {
+    const page = 'https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7537';
+    const bill = buildPolicy({
+      id: 'kill-switch-bill',
+      sourceUrl: page,
+      type: 'legislation',
+      status: 'proposed',
+      legislative: { kind: 'bill', ref: { register: 'aph', billId: 'r7537' }, origin: 'private_member', events: [] },
+    });
+    const plain = buildPolicy({ id: 'plain-policy', sourceUrl: 'https://example.gov.au/policy' });
+    const report = validateLegislativeTimelineOverlap(
+      [bill, plain],
+      [
+        buildTimelineEvent({ id: 'tl-bill', sourceUrl: page }),
+        buildTimelineEvent({ id: 'tl-policy', sourceUrl: plain.sourceUrl }),
+      ],
+    );
+    expect(report.errors).toEqual([
+      "tl-bill: cites the page of legislative record kill-switch-bill; its history belongs in that record's events",
+    ]);
+  });
 });

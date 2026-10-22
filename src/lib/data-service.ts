@@ -31,7 +31,10 @@ import {
 import { reconcileLinkedDevelopments } from "@/lib/source-review";
 import { registerChart, type RegisterChart } from "@/lib/article-figures";
 import { sydneyCalendarDate } from "@/lib/calendar-date";
-import type { LegislativeEvent } from "@/lib/legislation/model";
+import {
+	isLegislativeDraft,
+	type LegislativeEvent,
+} from "@/lib/legislation/model";
 import { describeEvent } from "@/lib/legislation/progress";
 import {
 	citationState,
@@ -623,7 +626,9 @@ export async function createSourceReview(
 		!normalized.targetPolicyId &&
 		!normalized.targetTimelineEventId &&
 		!normalized.targetTimelineRevisionHash &&
-		(await sourceUrlExists(normalized.sourceUrl))
+		(await sourceUrlExists(normalized.sourceUrl, {
+			legislativeRecord: isLegislativeDraft(normalized.proposedRecord),
+		}))
 	) {
 		throw new DuplicatePolicyError(normalized.sourceUrl);
 	}
@@ -672,18 +677,28 @@ export async function deleteSourceReview(id: string): Promise<boolean> {
 	return true;
 }
 
+/**
+ * Whether a policy, timeline event or open source review already cites
+ * `sourceUrl`. A legislative record carries its bill's history as events, so
+ * it may take a bill page that only hand-typed timeline events cite
+ * (`legislativeRecord`). Publishing it retires those entries
+ * (`retireTimelineEventsCiting`).
+ */
 export async function sourceUrlExists(
 	sourceUrl: string,
 	options: {
 		excludeSourceReviewId?: string;
+		legislativeRecord?: boolean;
 	} = {},
 ): Promise<boolean> {
 	if (await policyExistsBySourceUrl(sourceUrl)) return true;
 
-	const timelineEvents = await getTimelineEvents(undefined, {
-		includeGenerated: false,
-		access: "admin",
-	});
+	const timelineEvents = options.legislativeRecord
+		? []
+		: await getTimelineEvents(undefined, {
+				includeGenerated: false,
+				access: "admin",
+			});
 	if (
 		timelineEvents.some((event) =>
 			sourceUrlsEqual(event.sourceUrl, sourceUrl),
@@ -885,6 +900,24 @@ export async function updateTimelineEvent(
 	events[index] = canonicalizeTimelineRecord(event);
 	await writeJsonFile(TIMELINE_FILE, events);
 	return events[index];
+}
+
+/**
+ * Removes the hand-typed timeline events citing `sourceUrl`, once a
+ * legislative record publishes on that page and its events take their place.
+ */
+export async function retireTimelineEventsCiting(
+	sourceUrl: string,
+): Promise<string[]> {
+	const events = await readJsonFile<TimelineEvent[]>(TIMELINE_FILE, []);
+	const kept = events.filter(
+		(event) => !sourceUrlsEqual(event.sourceUrl, sourceUrl),
+	);
+	if (kept.length === events.length) return [];
+	await writeJsonFile(TIMELINE_FILE, kept);
+	return events
+		.filter((event) => sourceUrlsEqual(event.sourceUrl, sourceUrl))
+		.map((event) => event.id);
 }
 
 export async function getTimelineEvents(
