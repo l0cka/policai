@@ -20,7 +20,8 @@ export type SourceStanding =
     }
   | { kind: 'not_yet_run' };
 
-export type BodyCoverage = 'automatic' | 'manual' | 'failing' | 'uncovered';
+/** `pending`: every source is newly admitted and not yet checked. */
+export type BodyCoverage = 'automatic' | 'manual' | 'failing' | 'pending' | 'uncovered';
 
 export interface WatchCoverageCell {
   jurisdiction: Jurisdiction;
@@ -29,6 +30,7 @@ export interface WatchCoverageCell {
   automatic: number;
   manual: number;
   failing: number;
+  pending: number;
   uncovered: number;
 }
 
@@ -36,7 +38,7 @@ export interface WatchCoverageReport {
   asOf: string;
   cells: WatchCoverageCell[];
   /** In-scope bodies with no working source, tier A first. */
-  gaps: Array<{ bodyId: BodyId; name: string; jurisdiction: Jurisdiction; tier: Tier; coverage: 'failing' | 'uncovered' }>;
+  gaps: Array<{ bodyId: BodyId; name: string; jurisdiction: Jurisdiction; tier: Tier; coverage: 'failing' | 'pending' | 'uncovered' }>;
   blocks: Array<{ sourceId: string; bodyId: string; automation: ManualDecision; lastReviewedAt: string | null; overdue: boolean }>;
   undecidedRefusals: Array<{ sourceId: string; since: string; runs: number; cls: FailureClass }>;
   skippedLinked: Array<{ sourceId: string; url: string; decidedBy: string }>;
@@ -88,7 +90,8 @@ export function sourceStanding(
 function bodyCoverage(standings: readonly SourceStanding[]): BodyCoverage {
   if (standings.some((standing) => standing.kind === 'ok')) return 'automatic';
   if (standings.some((standing) => standing.kind === 'manual')) return 'manual';
-  return standings.length > 0 ? 'failing' : 'uncovered';
+  if (standings.length === 0) return 'uncovered';
+  return standings.every((standing) => standing.kind === 'not_yet_run') ? 'pending' : 'failing';
 }
 
 /**
@@ -125,7 +128,7 @@ export function watchCoverage(input: WatchCoverageInput): WatchCoverageReport {
 
   const cells = JURISDICTIONS.flatMap((jurisdiction) =>
     TIERS.map((tier): WatchCoverageCell => {
-      const cell = { jurisdiction, tier, bodies: 0, automatic: 0, manual: 0, failing: 0, uncovered: 0 };
+      const cell = { jurisdiction, tier, bodies: 0, automatic: 0, manual: 0, failing: 0, pending: 0, uncovered: 0 };
       for (const body of inScope) {
         if (body.jurisdiction !== jurisdiction || body.tier !== tier) continue;
         cell.bodies++;
@@ -138,7 +141,7 @@ export function watchCoverage(input: WatchCoverageInput): WatchCoverageReport {
   const gaps = inScope
     .flatMap((body) => {
       const coverage = coverageOf.get(body.id)!;
-      return coverage === 'failing' || coverage === 'uncovered'
+      return coverage === 'failing' || coverage === 'pending' || coverage === 'uncovered'
         ? [{ bodyId: body.id, name: body.name, jurisdiction: body.jurisdiction, tier: body.tier, coverage }]
         : [];
     })

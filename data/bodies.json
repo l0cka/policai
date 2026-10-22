@@ -760,7 +760,8 @@
     "jurisdiction": "nsw",
     "tier": "A",
     "hosts": [
-      "www.digital.nsw.gov.au"
+      "www.digital.nsw.gov.au",
+      "www.nsw.gov.au"
     ],
     "scope": {
       "status": "unassessed"

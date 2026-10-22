@@ -140,9 +140,9 @@ describe('watchCoverage', () => {
 
   it('counts each in-scope body once per jurisdiction and tier', () => {
     expect(report.cells).toEqual([
-      { jurisdiction: 'federal', tier: 'A', bodies: 4, automatic: 1, manual: 1, failing: 1, uncovered: 1 },
-      { jurisdiction: 'federal', tier: 'B', bodies: 1, automatic: 1, manual: 0, failing: 0, uncovered: 0 },
-      { jurisdiction: 'nsw', tier: 'A', bodies: 1, automatic: 0, manual: 0, failing: 1, uncovered: 0 },
+      { jurisdiction: 'federal', tier: 'A', bodies: 4, automatic: 1, manual: 1, failing: 1, pending: 0, uncovered: 1 },
+      { jurisdiction: 'federal', tier: 'B', bodies: 1, automatic: 1, manual: 0, failing: 0, pending: 0, uncovered: 0 },
+      { jurisdiction: 'nsw', tier: 'A', bodies: 1, automatic: 0, manual: 0, failing: 0, pending: 1, uncovered: 0 },
     ]);
     expect(report.unassessed).toBe(5);
   });
@@ -151,7 +151,7 @@ describe('watchCoverage', () => {
     expect(report.gaps.map((gap) => [gap.bodyId, gap.coverage])).toEqual([
       ['broken', 'failing'],
       ['none', 'uncovered'],
-      ['state', 'failing'],
+      ['state', 'pending'],
     ]);
   });
 
