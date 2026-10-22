@@ -1,6 +1,7 @@
 import os from "node:os";
 import type { Policy, PolicyDraft, SourceReview, TimelineEventDraft } from "@/types";
 import { getJurisdictionName, getPolicyTypeName } from "@/types";
+import { auDate } from "@/lib/au-date";
 
 /**
  * Read-only cards for pending source reviews, and a recovery CLI apply path.
@@ -62,7 +63,7 @@ export function formatSignalInstant(value: string | undefined): string {
 	if (!value) return "not recorded";
 	const date = new Date(value);
 	if (Number.isNaN(date.getTime())) return "unreadable";
-	return date.toLocaleString("en-AU", SYDNEY_INSTANT);
+	return auDate(date, SYDNEY_INSTANT);
 }
 
 export function currentSignalRunner(now = new Date()): SignalCommandRunner {

@@ -19,8 +19,11 @@ const STREAM_LABELS: Record<string, string> = {
 const esc = (s: string) =>
   s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 
+// ICU spells September "Sept"; the dashboard and site print "Sep".
 const fmtSydney = (d: Date) =>
-  d.toLocaleDateString('en-AU', { timeZone: 'Australia/Sydney', day: 'numeric', month: 'short', year: 'numeric' });
+  d
+    .toLocaleDateString('en-AU', { timeZone: 'Australia/Sydney', day: 'numeric', month: 'short', year: 'numeric' })
+    .replace(/\bSept\b/, 'Sep');
 
 const safeHref = (u: string) => (/^https?:\/\//i.test(u) ? esc(u) : undefined);
 
