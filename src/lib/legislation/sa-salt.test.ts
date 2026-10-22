@@ -93,19 +93,12 @@ describe('parseSaBillSummaries', () => {
     expect(legislativePhase(bill(reading.events), 'sa')).toBe('made');
   });
 
-  it('ignores another bill that shares the title', () => {
+  it('names every Act number the rows give when they disagree', () => {
     const rows = JSON.parse(fixture('bill-5619-assented'));
-    rows.push({ ...rows[0], billID: 5700, houseID: 2, fullHouse: 'Legislative Council', dateIntroduced: '2026-09-01T00:00:00', actNumber: 20 });
-    expect(parseSaBillSummaries(JSON.stringify(rows), { url: saBillPage(5619) }).events.map(({ event }) => event.kind)).toEqual([
-      'introduced',
-      'passed',
-      'passed',
+    Object.assign(rows[1], { statusText: 'Assented', dateCompleted: '2026-06-11T00:00:00', actNumber: 2 });
+    expect(parseSaBillSummaries(JSON.stringify(rows), { url: saBillPage(5619) }).unrecognised).toEqual([
+      { chamber: null, stage: 'Assented as Act No. 1 of 2026 or Act No. 2 of 2026, date not confirmed', date: '2026-06-11' },
     ]);
-  });
-
-  it('reads the bill asked for by its API address as well as its page', () => {
-    const url = 'https://prod-internet-salt-functionapp.azurewebsites.net/api/GetBillSummaries?billId=5637';
-    expect(parseSaBillSummaries(fixture('bill-5619-assented'), { url }).events).toHaveLength(3);
   });
 
   it('reads only the introduction of a bill adjourned at its second reading', () => {

@@ -79,22 +79,8 @@ const CHAMBERS: Record<number, Chamber> = { 1: 'lower', 2: 'upper' };
 const IN_PROGRESS = new Set(['1st reading', '2nd reading', 'adj 2nd reading', 'in committee']);
 
 /**
- * The rows of one bill: the asked-for House's row and the other House's row
- * for the same bill. GetBillSummaries also returns other bills that share
- * the title (two Return to Work bills became Acts 6 and 7 of 2026), and
- * those each start in their own House (referenceType 0).
- */
-function billRows(rows: Record<string, unknown>[], billId: number): Record<string, unknown>[] {
-  const asked = rows.find((row) => row.billID === billId);
-  if (!asked) throw new Error(`the SALT bill summary has no row for bill ${billId}`);
-  const origin = asked.referenceType === 0 ? asked : rows.find((row) => row.referenceType === 0 && row.fullHouse === asked.originHouse);
-  return rows.filter(
-    (row) => row === asked || row === origin || (origin && row.referenceType === 1 && row.originHouse === origin.fullHouse && row.houseID !== origin.houseID),
-  );
-}
-
-/**
- * Reads GetBillSummaries, one row per House. The House the bill started in
+ * Reads GetBillSummaries: one row per House, each under that House's own
+ * bill id, whichever id is asked for. The House the bill started in
  * gives its introduction; the other House's first reading is its arrival.
  * A House passed the bill when its row has a third reading date and a
  * passed, awaiting-assent or assented status. A negative vote has only the
@@ -105,12 +91,11 @@ function billRows(rows: Record<string, unknown>[], billId: number): Record<strin
  * but keeps each House's own completion date (Employment Agents, Act 13 of
  * 2026, shows two), and the two Acts checked against their assent notes
  * (19 of 2025, 67 of 2024) had one date on every row. Otherwise the reviewer
- * reads the assent from the Act.
+ * reads the assent from the Act, told every Act number the rows give (the
+ * Return to Work bill's rows say 6 and 7 of 2026).
  */
 export function parseSaBillSummaries(json: string, source: SourceEvidence): RegisterReading<BillEvent> {
-  const billId = /(?:billId=|\/bill\/)(\d+)$/.exec(source.url)?.[1];
-  if (!billId) throw new Error(`no SALT bill id in ${source.url}`);
-  const rows = billRows(list(json, 'bill summary'), Number(billId));
+  const rows = list(json, 'bill summary');
   const dated: { date: string; event: BillEvent }[] = [];
   const unrecognised: UnrecognisedStage[] = [];
   for (const row of rows) {
@@ -136,13 +121,13 @@ export function parseSaBillSummaries(json: string, source: SourceEvidence): Regi
   if (assented.length > 0) {
     const acts = new Set(assented.map((row) => (typeof row.actNumber === 'number' && row.actNumber > 0 ? `Act No. ${row.actNumber} of ${String(row.yearOfAct)}` : '')));
     const dates = new Set(rows.map((row) => day(row.dateCompleted)));
-    const [act] = acts;
     const [date] = dates;
     const latest = [...dates].filter((value): value is string => value !== null).sort().at(-1);
-    if (assented.length === rows.length && acts.size === 1 && act && dates.size === 1 && date) {
-      dated.push({ date, event: { kind: 'assented', actCitation: act } });
+    const named = [...acts].filter(Boolean).sort();
+    if (assented.length === rows.length && acts.size === 1 && named.length === 1 && dates.size === 1 && date) {
+      dated.push({ date, event: { kind: 'assented', actCitation: named[0] } });
     } else if (latest) {
-      unrecognised.push({ chamber: null, stage: act ? `Assented as ${act}, date not confirmed` : 'Assented', date: latest });
+      unrecognised.push({ chamber: null, stage: named.length > 0 ? `Assented as ${named.join(' or ')}, date not confirmed` : 'Assented', date: latest });
     }
   }
   const title = rows.find((row) => row.referenceType === 0)?.title;
