@@ -6,8 +6,9 @@ import type { RegisterReading, UnrecognisedStage } from './stage-update';
  * public OData API, which answers plain HTTP. The record gives registration,
  * a principal instrument's commencement, tabling in each House, the end of
  * each disallowance window once the register fixes it, disallowance and
- * repeal. An amending instrument's amendments commence in its principal's
- * versions, which this record does not show.
+ * repeal. An amending instrument's amendments commence in the versions of
+ * the principal it amends: `frlAmendedPrincipals` finds the principal and
+ * `frlCommencements` reads the dates from its versions.
  *
  * A disallowance is a DisallowanceMotion event whose MotionOutcome is
  * DebatedAndAgreed; the register then also marks the title Repealed under
@@ -74,7 +75,12 @@ function parseTitle(json: string): FrlTitle {
   return raw as FrlTitle;
 }
 
-export function parseFrlTitle(json: string): RegisterReading<InstrumentEvent | LawEvent> {
+export interface FrlReading extends RegisterReading<InstrumentEvent | LawEvent> {
+  /** An amending instrument commences in its principal's versions, not its own record. */
+  principal: boolean;
+}
+
+export function parseFrlTitle(json: string): FrlReading {
   const title = parseTitle(json);
   const source = { url: `${FRL_SITE}/${title.id}/asmade/details`, title: title.name };
   const dated: { date: string; event: InstrumentEvent | LawEvent }[] = [];
@@ -139,6 +145,7 @@ export function parseFrlTitle(json: string): RegisterReading<InstrumentEvent | L
 
   return {
     title: title.name,
+    principal: Boolean(title.isPrincipal),
     events: dated
       .map((entry, index) => ({ ...entry, index }))
       .sort((a, b) => a.date.localeCompare(b.date) || a.index - b.index)
@@ -158,4 +165,60 @@ function reasonText(reason: FrlReason): string | null {
 function isDisallowanceRepeal(reason: FrlReason): boolean {
   const by = reason.affectedByTitle;
   return by?.titleId === 'C2004A01224' && by.provisions?.trim() === 's 42';
+}
+
+/** The register's search grammar, with its quotes and brackets percent-encoded as the API expects. */
+function searchCriteria(criteria: string): string {
+  return criteria.replace(/"/g, '%22').replace(/\[/g, '%5B').replace(/\]/g, '%5D');
+}
+
+/** Search for the principal titles an amending instrument amends. */
+export function frlAmendedPrincipals(titleId: string): string {
+  return `${FRL_API}/Titles/Search(criteria='${searchCriteria(`affects("${titleId}",[amending])`)}')?$select=id,name,isPrincipal`;
+}
+
+/** A principal's versions from a day on; the API wants a datetime without a zone. */
+export function frlVersionsFrom(principalId: string, from: string): string {
+  const filter = `titleId eq '${principalId}' and start ge ${from}T00:00:00`;
+  return `${FRL_API}/Versions?$filter=${encodeURIComponent(filter)}&$select=titleId,start,reasons`;
+}
+
+function rows(json: string, what: string): Record<string, unknown>[] {
+  const raw: unknown = JSON.parse(json);
+  const value = raw && typeof raw === 'object' ? (raw as { value?: unknown }).value : undefined;
+  if (!Array.isArray(value)) throw new Error(`the Federal Register response is not a list of ${what}`);
+  return value.filter((row): row is Record<string, unknown> => Boolean(row) && typeof row === 'object');
+}
+
+export function parseFrlPrincipals(json: string): string[] {
+  return rows(json, 'titles')
+    .filter((row) => row.isPrincipal === true && typeof row.id === 'string')
+    .map((row) => row.id as string);
+}
+
+export interface FrlCommencement {
+  date: string;
+  principalId: string;
+  provisions: string | null;
+}
+
+/**
+ * The days an amending instrument's provisions take effect in a principal:
+ * each version of the principal that the instrument's provisions start,
+ * including versions the register has scheduled but not yet compiled.
+ */
+export function frlCommencements(json: string, amendingId: string): FrlCommencement[] {
+  const found = new Map<string, FrlCommencement>();
+  for (const row of rows(json, 'versions')) {
+    const date = day(typeof row.start === 'string' ? row.start : null);
+    if (!date || typeof row.titleId !== 'string') continue;
+    for (const reason of Array.isArray(row.reasons) ? (row.reasons as FrlReason[]) : []) {
+      const by = reason.affectedByTitle;
+      if (by?.titleId !== amendingId) continue;
+      const known = found.get(date);
+      const provisions = [known?.provisions, by.provisions].filter(Boolean).join(', ') || null;
+      found.set(date, { date, principalId: row.titleId, provisions });
+    }
+  }
+  return [...found.values()].sort((a, b) => a.date.localeCompare(b.date));
 }

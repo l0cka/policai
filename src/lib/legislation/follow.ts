@@ -3,10 +3,18 @@ import { formatPolicyDate } from '@/lib/format-policy-date';
 import { policyRevisionHash } from '@/lib/policy-revision';
 import { sourceUrlsEqual } from '@/lib/source-url';
 import { classifyFailure } from '@/lib/pipeline/failure';
-import type { Policy, PolicyDraft, SourceEvidence, SourceReview, SourceRunResult } from '@/types';
+import type { Policy, PolicyDate, PolicyDraft, SourceEvidence, SourceReview, SourceRunResult } from '@/types';
 import { parseAphProgress } from './aph-progress';
-import { frlTitleRecord, parseFrlTitle } from './frl-title';
-import type { Legislative } from './model';
+import {
+  frlAmendedPrincipals,
+  frlCommencements,
+  frlTitleRecord,
+  frlVersionsFrom,
+  parseFrlPrincipals,
+  parseFrlTitle,
+  type FrlCommencement,
+} from './frl-title';
+import type { Dated, LawEvent, Legislative } from './model';
 import { describeEvent } from './progress';
 import { stageUpdate, type RegisterReading } from './stage-update';
 
@@ -131,7 +139,7 @@ export async function followLegislation(run: FollowRun): Promise<FollowResult> {
     }
     const { title, read } = READ[register];
     const evidence: SourceEvidence = { ...retrieved.evidence, title };
-    let progress: RegisterReading | null = null;
+    let progress: (RegisterReading & { principal?: boolean }) | null = null;
     let unreadable = `the ${title.toLowerCase()} shows no stages; its format may have changed`;
     try {
       progress = read(retrieved.body, { url, title });
@@ -145,16 +153,58 @@ export async function followLegislation(run: FollowRun): Promise<FollowResult> {
       log(`[follow] FAILED ${message}`);
       continue;
     }
+    let scheduled: FrlCommencement | undefined;
+    if (policy.legislative.ref.register === 'frl' && 'principal' in progress && progress.principal === false) {
+      const registered = progress.events.find(({ event }) => event.kind === 'registered')?.date;
+      let commencements: FrlCommencement[];
+      try {
+        commencements = await amendmentCommencements(policy.legislative.ref.titleId, registered ?? '1901-01-01', run.retrieve);
+      } catch (error) {
+        const message = `${sourceId}: ${error instanceof Error ? error.message : String(error)}`;
+        errors.push(message);
+        results.push(row(sourceId, startedAt, { error: message, failureClass: classifyFailure(error).cls }));
+        log(`[follow] FAILED ${message}`);
+        continue;
+      }
+      const today = nowIso.slice(0, 10);
+      const commenced = commencements.filter((entry) => entry.date <= today);
+      scheduled = commencements.find((entry) => entry.date > today);
+      const source = progress.events[0].source;
+      progress = {
+        ...progress,
+        events: [
+          ...progress.events,
+          ...commenced.map(({ date, principalId, provisions }, index): Dated<LawEvent> => ({
+            date,
+            precision: 'day',
+            event: {
+              kind: 'commenced',
+              extent: !scheduled && index === commenced.length - 1 ? 'full' : 'partial',
+              note: `${provisions ?? 'Amendments'} commence in ${principalId}`,
+            },
+            source,
+          })),
+        ],
+      };
+    }
     results.push(row(sourceId, startedAt));
     const update = stageUpdate(policy.legislative, policy.jurisdiction, progress);
     const { unrecognised } = progress;
-    if (update.kind === 'unchanged' && unrecognised.length === 0) {
+    const recordedCommencement = policy.dates.find((date) => date.type === 'commenced');
+    const commencementMoved =
+      scheduled && String(recordedCommencement?.date ?? '').slice(0, 10) !== scheduled.date ? scheduled : undefined;
+    if (update.kind === 'unchanged' && unrecognised.length === 0 && !commencementMoved) {
       log(`[follow] ${sourceId}: no new stage`);
       continue;
     }
     const added = update.kind === 'unchanged' ? [] : update.added;
     const changed = update.kind === 'unchanged' ? [] : update.changed;
-    const id = `source-review-follow-${policy.id}-${fingerprint(changed.length > 0 ? { added, changed, unrecognised } : { added, unrecognised })}`;
+    const id = `source-review-follow-${policy.id}-${fingerprint({
+      added,
+      ...(changed.length > 0 ? { changed } : {}),
+      unrecognised,
+      ...(commencementMoved ? { scheduled: commencementMoved.date } : {}),
+    })}`;
     if (run.existingReviews.some((review) => review.id === id)) {
       log(`[follow] ${sourceId}: this stage update was already decided`);
       continue;
@@ -171,6 +221,12 @@ export async function followLegislation(run: FollowRun): Promise<FollowResult> {
     const summary = [
       stages.length > 0 ? `${policy.title}: ${stages.join('; ')}.` : `${policy.title}: no new lifecycle stage.`,
       ...(deadlines.length > 0 ? [`Also, ${deadlines.join('; ')}.`] : []),
+      ...(commencementMoved
+        ? [
+            `The Federal Register schedules ${commencementMoved.provisions ?? 'the amendments'} to commence in ${commencementMoved.principalId} on ${on(commencementMoved.date)}; ` +
+              (recordedCommencement ? `the record says ${on(String(recordedCommencement.date).slice(0, 10))}.` : 'the record has no commencement date.'),
+          ]
+        : []),
       ...unrecognised.map((stage) => `The page also shows "${stage.stage}" on ${on(stage.date)}, which has no lifecycle meaning yet; read the page.`),
       ...(update.kind === 'invalid' ? [`Not applied: ${update.error}. Read the page and correct the record by hand.`] : []),
     ].join(' ');
@@ -195,14 +251,19 @@ export async function followLegislation(run: FollowRun): Promise<FollowResult> {
         agencies: policy.agencies,
       },
       sourceEvidence: evidence,
-      proposedRecord:
-        update.kind === 'update'
-          ? proposedRecord(policy, { legislative: update.legislative, status: update.status }, nowIso)
-          : proposedRecord(policy, {}, nowIso),
+      proposedRecord: proposedRecord(
+        policy,
+        {
+          ...(update.kind === 'update' ? { legislative: update.legislative, status: update.status } : {}),
+          ...(commencementMoved ? { dates: withCommencement(policy.dates, commencementMoved, progress.events[0].source) } : {}),
+        },
+        nowIso,
+      ),
       legislativeUpdate: {
         added,
         ...(changed.length > 0 ? { changed } : {}),
         unrecognised,
+        ...(commencementMoved ? { scheduledCommencement: commencementMoved.date } : {}),
         ...(update.kind === 'invalid' ? { error: update.error } : {}),
       },
       updatedAt: nowIso,
@@ -210,4 +271,26 @@ export async function followLegislation(run: FollowRun): Promise<FollowResult> {
     log(`[follow] ${sourceId}: staged ${id}`);
   }
   return { reviews, errors, results };
+}
+
+/** When an amending instrument's provisions commence: read from the versions of each principal it amends. */
+async function amendmentCommencements(
+  titleId: string,
+  registered: string,
+  retrieve: FollowRun['retrieve'],
+): Promise<FrlCommencement[]> {
+  const principals = parseFrlPrincipals((await retrieve(frlAmendedPrincipals(titleId), 'frl')).body);
+  const found: FrlCommencement[] = [];
+  for (const principalId of principals) {
+    found.push(...frlCommencements((await retrieve(frlVersionsFrom(principalId, registered), 'frl')).body, titleId));
+  }
+  return found.sort((a, b) => a.date.localeCompare(b.date));
+}
+
+/** The record's dates with its commencement moved to the day the register schedules. */
+function withCommencement(dates: PolicyDate[], scheduled: FrlCommencement, source: SourceEvidence): PolicyDate[] {
+  const commencement: PolicyDate = { type: 'commenced', date: scheduled.date, precision: 'day', source };
+  return dates.some((date) => date.type === 'commenced')
+    ? dates.map((date) => (date.type === 'commenced' ? { ...date, date: scheduled.date, precision: 'day', source } : date))
+    : [...dates, commencement];
 }
