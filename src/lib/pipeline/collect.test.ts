@@ -1,6 +1,9 @@
 /* @vitest-environment node */
 
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { frlAiInstrumentSearch } from '@/lib/legislation/frl-search';
 import { buildPolicy, buildTimelineEvent } from '@/test/factories';
 import { WATCH_SOURCES, type WatchSource } from './sources';
 import { retrieveSource } from './fetch';
@@ -612,6 +615,46 @@ describe('collect', () => {
     );
     expect(result.state.seen['https://parlinfo.aph.gov.au/debate/levy']?.status).toBe('dismissed');
     expect(result.state.seen['https://parlinfo.aph.gov.au/debate/petition']).toBeUndefined();
+  });
+
+  it('turns Federal Register full-text matches into developments for review', async () => {
+    const REGISTER_SOURCE: WatchSource = {
+      id: 'test-frl-search',
+      bodyId: 'test-body',
+      name: 'Test register search',
+      jurisdiction: 'federal',
+      category: 'government',
+      url: frlAiInstrumentSearch(),
+      kind: 'frl-search',
+      schedule: 'daily',
+      enabled: true,
+      automation: 'automatic',
+    };
+    const page = (title: string) => `<html><body><main><h1>${title}</h1><p>Registered 17 September 2026.</p></main></body></html>`;
+
+    const result = await collect({
+      sources: [REGISTER_SOURCE],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl: fakeFetch({
+        [REGISTER_SOURCE.url]: {
+          contentType: 'application/json',
+          body: readFileSync(join(__dirname, '../legislation/__fixtures__/frl/search-ai-instruments.json'), 'utf8'),
+        },
+        'https://www.legislation.gov.au/F2026L01224/asmade/details': page('ASIC Market Integrity Rules (Futures Markets) Amendment Instrument 2026/575'),
+        'https://www.legislation.gov.au/F2026L01223/asmade/details': page('ASIC Market Integrity Rules (Securities Markets) Amendment Instrument 2026/574'),
+      }),
+      now: () => new Date('2026-09-18T00:00:00.000Z'),
+    });
+
+    expect(result.errors).toEqual([]);
+    expect(result.developments.map((d) => [d.url, d.publishedAt])).toEqual([
+      ['https://www.legislation.gov.au/F2026L01224/asmade/details', '2026-09-17'],
+      ['https://www.legislation.gov.au/F2026L01223/asmade/details', '2026-09-17'],
+    ]);
+    expect(result.developments[1].summary).toContain('matched this instrument as made (relevance 27.1)');
+    expect(result.developments[1].relevanceScore).toBeLessThanOrEqual(MACHINE_CONFIDENCE_CAP);
+    expect(result.state.seen['https://www.legislation.gov.au/F2026L01187/asmade/details']).toBeUndefined();
   });
 
   it('suppresses same-month alternate government release URLs by headline', async () => {

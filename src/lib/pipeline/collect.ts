@@ -14,6 +14,7 @@ import type {
 import { normalizeJurisdiction, normalizePolicyType } from '@/types';
 import {
   classifyByBodyMentions,
+  classifyBySearchMatch,
   classifyCandidate,
   classifyCandidatesWithClaude,
   classificationFromVerdict,
@@ -21,6 +22,7 @@ import {
   type Classification,
 } from './classify';
 import type { ClaudeVerdict } from './claude-classify';
+import { extractFromFrlSearch } from '@/lib/legislation/frl-search';
 import { extractRetrievedDocument } from './content';
 import { classifyFailure, publicFailureUrl } from './failure';
 import { robotsUnverifiedHosts, type Host, type HostGate, type HostRecord } from './host-gate';
@@ -1350,7 +1352,9 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
             ? extractFromRss(retrieval.body, source.url, {
                 titlePattern: source.bodyRelevance?.titlePattern,
               })
-            : extractFromHtml(retrieval.body, source.url);
+            : source.kind === 'frl-search'
+              ? extractFromFrlSearch(retrieval.body)
+              : extractFromHtml(retrieval.body, source.url);
       return { retrieval, extracted };
     };
     const retrieveSourceIndex = async () => {
@@ -1698,7 +1702,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     );
 
     const claudeVerdictsById: Map<string, ClaudeVerdict> | null =
-      useClaudeClassifier && !source.bodyRelevance
+      useClaudeClassifier && !source.bodyRelevance && source.kind !== 'frl-search'
         ? await classifyCandidatesWithClaude(
             candidates
               .filter((candidate) => !trackedChangeTarget(candidate))
@@ -1881,18 +1885,20 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
             changeTarget,
             changeDetectionReason(changeTarget.record, pageRetrieval),
           )
-        : source.bodyRelevance
-          ? classifyByBodyMentions(
-              enrichedCandidate,
-              document.text,
-              source.bodyRelevance.minAiMentions,
-            )
-          : useClaudeClassifier
-            ? classificationFromVerdict(
-                claudeVerdictsById?.get(candidateStateKey(candidate)),
+        : source.kind === 'frl-search'
+          ? classifyBySearchMatch(candidate)
+          : source.bodyRelevance
+            ? classifyByBodyMentions(
                 enrichedCandidate,
+                document.text,
+                source.bodyRelevance.minAiMentions,
               )
-            : await classifyCandidate(enrichedCandidate, document.text);
+            : useClaudeClassifier
+              ? classificationFromVerdict(
+                  claudeVerdictsById?.get(candidateStateKey(candidate)),
+                  enrichedCandidate,
+                )
+              : await classifyCandidate(enrichedCandidate, document.text);
       if (
         !classification.isRelevant ||
         classification.relevanceScore < minScoreForDevelopment

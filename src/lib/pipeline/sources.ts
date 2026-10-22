@@ -1,4 +1,5 @@
 import type { Jurisdiction } from '@/types';
+import { frlAiInstrumentSearch } from '@/lib/legislation/frl-search';
 import { hostOf, type Host } from './host';
 import type { SourceIdentityException } from './identity';
 
@@ -18,7 +19,7 @@ import type { SourceIdentityException } from './identity';
  * meta.json.
  */
 
-export type SourceKind = 'html-index' | 'rss' | 'document';
+export type SourceKind = 'html-index' | 'rss' | 'document' | 'frl-search';
 export type SourceCategory = 'government' | 'regulator' | 'court';
 export type ManualBecause =
   | 'identity_refused'
@@ -531,18 +532,17 @@ export const WATCH_SOURCES: WatchSource[] = [
   },
   {
     id: 'legislation-whats-new',
-    name: 'Federal Register of Legislation — what’s new',
+    name: 'Federal Register of Legislation — new AI instruments',
     bodyId: 'opc',
     jurisdiction: 'federal',
     category: 'government',
-    url: 'https://www.legislation.gov.au/search/registrationdate(today-7,today)/sort(registeredat%20desc)',
-    kind: 'html-index',
+    url: frlAiInstrumentSearch(),
+    kind: 'frl-search',
     schedule: 'daily',
     enabled: true,
     automation: 'automatic',
-    fetchStrategy: 'browser',
     notes:
-      'Rolling seven-day search for newly registered acts and instruments. The register is client-rendered, so ngx-datatable result rows are extracted from the rendered page.',
+      'Full-text search of the register API for legislative instruments whose text uses AI terms, newest as made first. Replaced the what’s-new title scrape on 2026-10-22: it read about 99 rows a day but instrument titles rarely name AI, so it never kept a candidate. The API answers plain HTTP. See src/lib/legislation/frl-search.ts for the relevance cut.',
   },
   {
     id: 'agd-consultations',
