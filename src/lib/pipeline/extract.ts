@@ -208,9 +208,6 @@ export function extractFromHtml(
     '.views-row',
     '.bu-updates__item',
     '.bu-link',
-    // The Federal Register of Legislation renders search results with
-    // ngx-datatable rather than semantic table rows.
-    'datatable-body-row[role="row"]',
     // Drupal views tables render one entry per body row; header rows carry
     // th cells only, so sort links never count as entries.
     'tr:has(td[class*="views-field"])',
@@ -255,7 +252,6 @@ export function extractFromHtml(
           '.views-row',
           '.bu-updates__item',
           '.bu-link',
-          'datatable-body-row[role="row"]',
         ].join(','),
       ).length === 0
     ) {

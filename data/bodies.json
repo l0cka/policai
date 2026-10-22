@@ -134,7 +134,8 @@
     "jurisdiction": "federal",
     "tier": "A",
     "hosts": [
-      "www.legislation.gov.au"
+      "www.legislation.gov.au",
+      "api.prod.legislation.gov.au"
     ],
     "scope": {
       "status": "unassessed"

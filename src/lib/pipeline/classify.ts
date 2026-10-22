@@ -130,6 +130,26 @@ export function classifyByBodyMentions(
 }
 
 /**
+ * Relevance for a register full-text search that already matched AI terms
+ * above its cut (see `@/lib/legislation/frl-search`). The register gives no
+ * excerpt, so the summary states the match; the score keeps it in review.
+ */
+export function classifyBySearchMatch(candidate: Candidate): Classification {
+  return {
+    isRelevant: true,
+    relevanceScore: 0.55,
+    classification: 'heuristic',
+    summary: candidate.text,
+    tags: [],
+    agencies: [],
+    assessment: {
+      method: 'heuristic',
+      promptVersion: 'register-search-v1',
+    },
+  };
+}
+
+/**
  * Classify a candidate with the deterministic ruleset. The fetched page is
  * accepted for call-site compatibility; extraction already supplies the
  * bounded candidate excerpt used by the rules.
