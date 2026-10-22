@@ -36,6 +36,7 @@ import {
   validateThemeCoverage,
   validateTimeline,
   validateBodies,
+  validateSiteReuse,
   validateWatchSources,
   validateWatchState,
 } from '../src/lib/validate-data';
@@ -104,6 +105,7 @@ async function main() {
     watchState,
     courtRequirements,
     bodies,
+    siteReuse,
   ] = await Promise.all([
       readJsonFile<Policy[]>(
         path.join(STATE_DIR, 'policies.json'),
@@ -166,6 +168,7 @@ async function main() {
         [],
       ),
       readJsonFile<unknown>(path.join(STATE_DIR, 'bodies.json'), null),
+      readJsonFile<unknown>(path.join(STATE_DIR, 'site-reuse.json'), null),
     ]);
 
   if (policies.length === 0) {
@@ -208,6 +211,7 @@ async function main() {
       agencies,
       'commonwealth-agencies': commonwealthAgencies,
     }),
+    validateSiteReuse(siteReuse, bodies),
     validateArticles(articles, articleBaseline, {
       policies,
       publicPolicies,

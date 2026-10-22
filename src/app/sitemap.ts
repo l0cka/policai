@@ -88,6 +88,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         changeFrequency: 'weekly',
         priority: 0.4,
       },
+      {
+        url: `${SITE_URL}/status/reuse`,
+        changeFrequency: 'weekly',
+        priority: 0.4,
+      },
     ] as const
   ).map((page) =>
     collectedAt ? { ...page, lastModified: collectedAt } : page,

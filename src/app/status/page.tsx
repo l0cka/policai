@@ -464,6 +464,15 @@ export default async function StatusPage() {
             lists every official site that blocks the collector and how each is
             covered instead.
           </p>
+          <p className="mt-3 text-muted-foreground">
+            <Link
+              href="/status/reuse"
+              className="text-primary underline underline-offset-4 hover:no-underline"
+            >
+              Reuse terms of official sites
+            </Link>{' '}
+            records what each watched site’s copyright page permits.
+          </p>
           {watch.blocks.length > 0 ? (
             <>
               <h3 className="mt-5 font-medium">Decided blocks</h3>
