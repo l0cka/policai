@@ -119,7 +119,7 @@ export async function runCollection(run: CollectionRun): Promise<void> {
     logger: (message) => console.log(message),
   });
 
-  const follow = await followTrackedBills(run, policies, reviews, hostGate);
+  const follow = await followTrackedLegislation(run, policies, reviews, hostGate);
   const reviewCandidates = [...result.reviewCandidates, ...follow.reviews];
   result.state.sourceHealth = advanceSourceHealth(
     result.state.sourceHealth,
@@ -198,37 +198,43 @@ export async function runCollection(run: CollectionRun): Promise<void> {
 
 /**
  * Follow watches read each tracked federal bill's APH page through the
- * browser with the Policai identity; APH refuses plain HTTP clients. A run
- * targeted at one catalogue source skips them; `--source track:<policyId>`
- * follows one bill.
+ * browser with the Policai identity, since APH refuses plain HTTP clients,
+ * and each tracked federal instrument's Federal Register title record over
+ * plain HTTP. A run targeted at one catalogue source skips them;
+ * `--source track:<policyId>` follows one record.
  */
-async function followTrackedBills(
+async function followTrackedLegislation(
   run: CollectionRun,
   policies: Policy[],
   reviews: SourceReview[],
   gate: HostGate,
 ): Promise<FollowResult> {
-  const none: FollowResult = { reviews: [], errors: [], results: [] };
-  if (run.sourceId && !run.sourceId.startsWith(FOLLOW_SOURCE_PREFIX)) return none;
-  if (!run.browserFetchImpl) {
-    console.log('[follow] No browser retriever; follow watches skipped.');
-    return none;
+  if (run.sourceId && !run.sourceId.startsWith(FOLLOW_SOURCE_PREFIX)) {
+    return { reviews: [], errors: [], results: [] };
   }
   const browserFetchImpl = run.browserFetchImpl;
+  const targets = followTargets(policies).filter(
+    (target) =>
+      (!run.sourceId || target.sourceId === run.sourceId) &&
+      (target.register !== 'aph' || browserFetchImpl),
+  );
+  if (!browserFetchImpl) {
+    console.log('[follow] No browser retriever; APH bill watches skipped.');
+  }
   const now = run.now ?? (() => new Date());
   return followLegislation({
-    targets: followTargets(policies).filter(
-      (target) => !run.sourceId || target.sourceId === run.sourceId,
-    ),
+    targets,
     existingReviews: reviews,
-    retrieve: (url) =>
-      retrieveSource(url, {
-        fetchImpl: browserFetchImpl,
-        now,
-        gate,
-        timeoutMs: 60_000,
-        transport: 'browser',
-      }),
+    retrieve: (url, register) =>
+      register === 'aph'
+        ? retrieveSource(url, {
+            fetchImpl: browserFetchImpl,
+            now,
+            gate,
+            timeoutMs: 60_000,
+            transport: 'browser',
+          })
+        : retrieveSource(url, { fetchImpl: run.fetchImpl, now, gate }),
     now: now(),
     log: (message) => console.log(message),
   });

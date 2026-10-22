@@ -4,11 +4,12 @@ import { describe, expect, it, vi } from 'vitest';
 import { buildPolicy } from '@/test/factories';
 import type { Policy, SourceReview } from '@/types';
 import { aphBillPage, followLegislation, followTargets } from './follow';
-import type { Legislative } from './model';
+import { frlTitleRecord, parseFrlTitle } from './frl-title';
+import type { Dated, Legislative, LegislativeEvent } from './model';
 
 const fixture = (billId: string) => readFileSync(join(__dirname, '__fixtures__/aph', `${billId}.html`), 'utf8');
 
-function bill(billId: string, events: Legislative['events']): Policy {
+function bill(billId: string, events: Dated<LegislativeEvent>[]): Policy {
   return buildPolicy({
     id: `bill-${billId}`,
     title: `Bill ${billId}`,
@@ -31,6 +32,25 @@ const introduced = (date: string, chamber: 'lower' | 'upper', billId: string) =>
   source: { url: aphBillPage(billId), title: 'Bill home page' },
 });
 
+const frlFixture = readFileSync(join(__dirname, '__fixtures__/frl/F2026L01223.json'), 'utf8');
+
+function rules(events: Dated<LegislativeEvent>[]): Policy {
+  return buildPolicy({
+    id: 'asic-rules',
+    title: 'ASIC AI trading rules',
+    type: 'regulation',
+    status: 'active',
+    sourceUrl: 'https://www.asic.gov.au/media-release',
+    legislative: {
+      kind: 'instrument',
+      ref: { register: 'frl', titleId: 'F2026L01223' },
+      issuerBodyId: 'asic',
+      enablingAct: 'Corporations Act 2001, s 798G(1)',
+      events: events as Extract<Legislative, { kind: 'instrument' }>['events'],
+    },
+  });
+}
+
 const now = new Date('2026-10-22T05:00:00Z');
 const retrieveFixture = (billId: string) => async (url: string) => ({
   body: fixture(billId),
@@ -38,15 +58,17 @@ const retrieveFixture = (billId: string) => async (url: string) => ({
 });
 
 describe('followTargets', () => {
-  it('follows APH bills whose source is their bill page, not trashed records or other registers', () => {
+  it('follows APH bills whose source is their bill page and Federal Register instruments, not trashed or other records', () => {
     const targets = followTargets([
       bill('r7553', [introduced('2026-10-15', 'lower', 'r7553')]),
       { ...bill('s1471', []), status: 'trashed' },
       { ...bill('r7537', []), sourceUrl: 'https://www.aph.gov.au/elsewhere' },
+      rules([]),
       buildPolicy({ id: 'guideline' }),
     ]);
-    expect(targets.map((target) => [target.sourceId, target.url])).toEqual([
-      ['track:bill-r7553', aphBillPage('r7553')],
+    expect(targets.map((target) => [target.sourceId, target.register, target.url])).toEqual([
+      ['track:bill-r7553', 'aph', aphBillPage('r7553')],
+      ['track:asic-rules', 'frl', frlTitleRecord('F2026L01223')],
     ]);
   });
 });
@@ -116,7 +138,53 @@ describe('followLegislation', () => {
     });
     expect(reviews).toEqual([]);
     expect(results).toMatchObject([{ sourceId: 'track:bill-r7553', status: 'error', failureClass: 'parse' }]);
-    expect(errors).toEqual(['track:bill-r7553: the bill page has no Progress stages; its markup may have changed']);
+    expect(errors).toEqual(['track:bill-r7553: the bill home page shows no stages; its format may have changed']);
+  });
+});
+
+describe('followLegislation on a Federal Register instrument', () => {
+  const fixed = () => {
+    const title = JSON.parse(frlFixture);
+    title.parliamentaryScrutinySummary.lastDateForDisallowanceInHoR = '2026-12-03T00:00:00';
+    title.parliamentaryScrutinySummary.lastDateForDisallowanceInSenate = '2026-12-04T00:00:00';
+    return JSON.stringify(title);
+  };
+
+  it('stages nothing while the register shows what the record holds', async () => {
+    const record = rules(parseFrlTitle(frlFixture).events);
+    const retrieve = vi.fn(async (url: string) => ({ body: frlFixture, evidence: { url } }));
+    const result = await followLegislation({ targets: followTargets([record]), existingReviews: [], retrieve, now });
+    expect(result).toMatchObject({ reviews: [], errors: [], results: [{ sourceId: 'track:asic-rules', status: 'success' }] });
+    expect(retrieve).toHaveBeenCalledWith(frlTitleRecord('F2026L01223'), 'frl');
+  });
+
+  it('stages the disallowance window ends once the register fixes them', async () => {
+    const record = rules(parseFrlTitle(frlFixture).events);
+    const { reviews } = await followLegislation({
+      targets: followTargets([record]),
+      existingReviews: [],
+      retrieve: async (url) => ({ body: fixed(), evidence: { url } }),
+      now,
+    });
+    expect(reviews).toHaveLength(1);
+    expect(reviews[0].legislativeUpdate?.added).toEqual([]);
+    expect(reviews[0].legislativeUpdate?.changed?.map(({ event }) => event)).toEqual([
+      { kind: 'tabled', chamber: 'lower', disallowanceEnds: '2026-12-03' },
+      { kind: 'tabled', chamber: 'upper', disallowanceEnds: '2026-12-04' },
+    ]);
+    expect(reviews[0].notes).toContain('the House disallowance window now ends 3 December 2026; the Senate disallowance window now ends 4 December 2026');
+    expect(reviews[0].sourceEvidence?.title).toBe('Federal Register title record');
+  });
+
+  it('reports a response that is not a title record as a parse failure', async () => {
+    const { errors, results } = await followLegislation({
+      targets: followTargets([rules(parseFrlTitle(frlFixture).events)]),
+      existingReviews: [],
+      retrieve: async (url) => ({ body: '{"error":{"code":"404"}}', evidence: { url } }),
+      now,
+    });
+    expect(results).toMatchObject([{ status: 'error', failureClass: 'parse' }]);
+    expect(errors).toEqual(['track:asic-rules: the Federal Register response is not a title record']);
   });
 });
 

@@ -1,6 +1,7 @@
 import * as cheerio from 'cheerio';
-import type { Jurisdiction, PolicyStatus, SourceEvidence } from '@/types';
-import { legislativeStatus, type BillEvent, type Chamber, type Dated, type LawEvent, type Legislative } from './model';
+import type { SourceEvidence } from '@/types';
+import type { BillEvent, Chamber } from './model';
+import type { RegisterReading, UnrecognisedStage } from './stage-update';
 
 /**
  * Reads the Progress table and committee Notes of an APH bill home page
@@ -13,19 +14,6 @@ import { legislativeStatus, type BillEvent, type Chamber, type Dated, type LawEv
  * other's amendments. Committee referrals are not in the table but in the
  * Notes list further down the page.
  */
-
-export interface UnrecognisedStage {
-  chamber: Chamber | null;
-  stage: string;
-  date: string;
-}
-
-export interface AphProgress {
-  title: string | null;
-  events: Dated<BillEvent>[];
-  /** Stages with no lifecycle meaning yet, such as "Discharged from Notice Paper", for a reviewer to read. */
-  unrecognised: UnrecognisedStage[];
-}
 
 const APH_ORIGIN = 'https://www.aph.gov.au';
 
@@ -67,7 +55,7 @@ function noteDate(text: string): string | null {
   return match ? `${match[3]}-${match[2].padStart(2, '0')}-${match[1].padStart(2, '0')}` : null;
 }
 
-export function parseAphProgress(html: string, source: SourceEvidence): AphProgress {
+export function parseAphProgress(html: string, source: SourceEvidence): RegisterReading<BillEvent> {
   const $ = cheerio.load(html);
   const dated: { date: string; event: BillEvent }[] = [];
   const unrecognised: UnrecognisedStage[] = [];
@@ -164,53 +152,4 @@ export function parseAphProgress(html: string, source: SourceEvidence): AphProgr
       .map(({ date, event }) => ({ date, precision: 'day' as const, event, source })),
     unrecognised,
   };
-}
-
-const RANK: Record<BillEvent['kind'] | LawEvent['kind'], number> = {
-  introduced: 0,
-  referred: 1,
-  reported: 2,
-  passed: 3,
-  negatived: 3,
-  lapsed: 4,
-  withdrawn: 4,
-  assented: 5,
-  commenced: 6,
-  amended: 7,
-  repealed: 8,
-};
-
-function sameEvent(a: Dated<BillEvent | LawEvent>, b: Dated<BillEvent | LawEvent>): boolean {
-  if (a.date !== b.date || a.event.kind !== b.event.kind) return false;
-  const chamber = (event: BillEvent | LawEvent) => ('chamber' in event ? event.chamber : undefined);
-  const committee = (event: BillEvent | LawEvent) => ('committee' in event ? event.committee : undefined);
-  return chamber(a.event) === chamber(b.event) && committee(a.event) === committee(b.event);
-}
-
-export type StageUpdate =
-  | { kind: 'unchanged' }
-  | { kind: 'update'; added: Dated<BillEvent>[]; legislative: Extract<Legislative, { kind: 'bill' }>; status: PolicyStatus }
-  | { kind: 'invalid'; added: Dated<BillEvent>[]; error: string };
-
-/**
- * The record's events plus any stage the bill page shows that the record
- * lacks. Events the page does not show, such as commencement read from the
- * Federal Register, stay. A merged history that breaks the legal order is
- * reported, not applied, so a reviewer reads the page.
- */
-export function stageUpdate(
-  legislative: Extract<Legislative, { kind: 'bill' }>,
-  jurisdiction: Jurisdiction,
-  progress: AphProgress,
-): StageUpdate {
-  const added = progress.events.filter((parsed) => !legislative.events.some((known) => sameEvent(known, parsed)));
-  if (added.length === 0) return { kind: 'unchanged' };
-  const events = [...legislative.events, ...added].sort(
-    (a, b) => a.date.localeCompare(b.date) || RANK[a.event.kind] - RANK[b.event.kind],
-  );
-  const merged = { ...legislative, events };
-  const status = legislativeStatus(merged, jurisdiction);
-  return status
-    ? { kind: 'update', added, legislative: merged, status }
-    : { kind: 'invalid', added, error: 'the page and the record together break the legal order of stages' };
 }
