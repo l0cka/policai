@@ -21,7 +21,8 @@ export const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 
 /**
  * The latest run that did not fail, so one standing source failure does not
- * freeze the window (#314). Before any such run, the last collection.
+ * freeze the window (#314). Before any such run, the last collection, even
+ * a failed one.
  */
 export function collectionAnchor(
   meta: Pick<CollectionMeta, "lastUsableAt" | "lastCollectedAt">,

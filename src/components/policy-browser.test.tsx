@@ -254,7 +254,7 @@ describe('Editorial register', () => {
         {...props}
         lastCollectedAt="2026-10-17T19:35:00.990Z"
         lastUsableAt="2026-10-06T19:33:28.224Z"
-        collectionHealth="degraded"
+        collectionHealth="failed"
         successfulSourceCount={57}
         dueSourceCount={59}
       />,
