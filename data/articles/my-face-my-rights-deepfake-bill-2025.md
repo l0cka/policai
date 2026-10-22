@@ -43,7 +43,7 @@ The Privacy Act cause of action would arise where a person uses or discloses dee
 
 ## Who it affects
 
-The scheme would reach social media, relevant electronic and designated internet services, hosting providers and end-users ([bill as introduced, s 93A](https://parlinfo.aph.gov.au/parlInfo/download/legislation/bills/s1471_first-senate/toc_pdf/25S2920.pdf;fileType=application%2Fpdf)). Journalists working under professional standards, government, law enforcement and intelligence agencies, and people under 18 would be exempt from the cause of action (Sch 2, cll 16–21). eSafety and the Office of the Australian Information Commissioner would implement it within existing resources ([explanatory memorandum](https://parlinfo.aph.gov.au/parlInfo/download/legislation/ems/s1471_ems_6b78644a-3a08-4850-911f-b9f9d6ade06e/upload_pdf/EM_25S29.pdf;fileType=application%2Fpdf)).
+The scheme would reach social media, relevant electronic and designated internet services, hosting providers and end-users ([bill as introduced, s 93A](https://parlinfo.aph.gov.au/parlInfo/download/legislation/bills/s1471_first-senate/toc_pdf/25S2920.pdf;fileType=application%2Fpdf)). Journalists working under professional standards, government agencies acting in good faith, law enforcement and intelligence agencies, and people under 18 would be exempt from the cause of action (Sch 2, cll 16–21). eSafety and the Office of the Australian Information Commissioner would implement it within existing resources ([explanatory memorandum](https://parlinfo.aph.gov.au/parlInfo/download/legislation/ems/s1471_ems_6b78644a-3a08-4850-911f-b9f9d6ade06e/upload_pdf/EM_25S29.pdf;fileType=application%2Fpdf)).
 
 ## Analysis
 
