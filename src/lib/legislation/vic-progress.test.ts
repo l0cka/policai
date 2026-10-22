@@ -50,12 +50,22 @@ describe('parseVicBillProgress', () => {
     ]);
   });
 
+  it('reads a withdrawn or lapsed bill, as the pages mark them', () => {
+    const withdrawn = fixture(PLEBISCITE).replace('>Second reading moved<', '>Bill withdrawn<');
+    expect(parseVicBillProgress(withdrawn, { url: page(PLEBISCITE) }).events.map(({ date, event }) => [date, event])).toEqual([
+      ['2026-07-28', { kind: 'introduced', chamber: 'upper' }],
+      ['2026-07-29', { kind: 'withdrawn' }],
+    ]);
+    const lapsed = fixture(PLEBISCITE).replace('>Second reading moved<', '>Bill lapsed<');
+    expect(parseVicBillProgress(lapsed, { url: page(PLEBISCITE) }).events.at(-1)?.event).toEqual({ kind: 'lapsed' });
+  });
+
   it('shows a stage it does not know, and assent without an Act number, to a reviewer', () => {
     const html = fixture(SEXUAL_OFFENCES)
       .replace('>Act number 38/2022<', '>Act number pending<')
-      .replace('>Debate resumed<', '>Bill withdrawn<');
+      .replace('>Debate resumed<', '>Bill discharged<');
     expect(parseVicBillProgress(html, { url: page(SEXUAL_OFFENCES) }).unrecognised).toEqual([
-      { chamber: 'lower', stage: 'Bill withdrawn', date: '2022-08-18' },
+      { chamber: 'lower', stage: 'Bill discharged', date: '2022-08-18' },
       { chamber: null, stage: 'Royal Assent given', date: '2022-09-06' },
     ]);
   });

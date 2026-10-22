@@ -79,6 +79,8 @@ export function parseVicBillProgress(html: string, source: SourceEvidence): Regi
         dated.push({ date, event: { kind: 'passed', chamber, ...(amended ? { withAmendments: true } : {}) } });
       } else if (/\bdefeated$/.test(name)) {
         dated.push({ date, event: { kind: 'negatived', chamber } });
+      } else if (name === 'bill withdrawn' || name === 'bill lapsed') {
+        dated.push({ date, event: { kind: name === 'bill withdrawn' ? 'withdrawn' : 'lapsed' } });
       } else if (!PROCEDURAL.some((pattern) => pattern.test(name))) {
         unrecognised.push({ chamber, stage, date });
       }
