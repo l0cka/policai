@@ -375,13 +375,9 @@ export function formatDeadlineDate(date: string, precision: Precision, withYear 
   const d = new Date(`${date}T00:00:00Z`);
   if (precision === 'year') return date.slice(0, 4);
   // Fixed three-letter months: en-AU renders September as "Sept".
-  if (precision === 'month') return `${MONTH_ABBR[d.getUTCMonth()]} ${date.slice(0, 4)}`;
-  return d.toLocaleDateString('en-AU', {
-    day: 'numeric',
-    month: 'short',
-    ...(withYear ? { year: 'numeric' } : {}),
-    timeZone: 'UTC',
-  });
+  const month = MONTH_ABBR[d.getUTCMonth()];
+  if (precision === 'month') return `${month} ${date.slice(0, 4)}`;
+  return `${d.getUTCDate()} ${month}${withYear ? ` ${date.slice(0, 4)}` : ''}`;
 }
 
 /* Machine-readable value for <time dateTime>. */

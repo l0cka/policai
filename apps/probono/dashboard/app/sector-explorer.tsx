@@ -372,7 +372,7 @@ export default function SectorExplorer({
                 </div>
 
                 <section className="sector-map-guide" aria-labelledby="sector-map-guide-title">
-                  <h2 id="sector-map-guide-title">Map legend</h2>
+                  <p id="sector-map-guide-title" className="sector-map-guide-title">Map legend</p>
                   <dl>
                     <div>
                       <dt>

@@ -630,6 +630,7 @@ main {
 }
 
 .page-intro {
+  max-width: 70ch;
   margin-top: 0.625rem;
   font-size: var(--type-ui);
   line-height: 1.7;
@@ -2358,10 +2359,11 @@ main {
   border-top: 1px solid var(--rule-hair);
 }
 
-.sector-map-guide h2 {
-  font-size: var(--type-small);
-  font-weight: 600;
-  letter-spacing: 0.08em;
+.sector-map-guide-title {
+  font-family: var(--font-mono);
+  font-size: var(--type-label);
+  font-weight: 500;
+  letter-spacing: var(--tracking-eyebrow);
   text-transform: uppercase;
 }
 
@@ -2469,8 +2471,9 @@ main {
 .sector-org-picker label {
   display: block;
   margin-bottom: var(--space-2);
+  font-family: var(--font-mono);
   font-size: var(--type-label);
-  letter-spacing: 0.08em;
+  letter-spacing: var(--tracking-eyebrow);
   text-transform: uppercase;
   color: var(--muted-foreground);
 }
@@ -2560,7 +2563,7 @@ main {
   padding: var(--space-3);
   border-left: 2px solid var(--caution);
   background: var(--status-proposed-bg);
-  font-size: 0.7rem;
+  font-size: var(--type-ui);
   line-height: 1.55;
 }
 
@@ -2663,7 +2666,7 @@ main {
 
 .sector-evidence-note {
   margin-top: var(--space-3);
-  font-size: 0.65rem;
+  font-size: var(--type-small);
   line-height: 1.6;
   color: var(--muted-foreground);
 }
@@ -2671,8 +2674,9 @@ main {
 .sector-jurisdiction-name {
   display: block;
   margin-top: 0.1rem;
+  font-family: var(--font-mono);
   font-size: var(--type-label);
-  letter-spacing: 0.08em;
+  letter-spacing: var(--tracking-eyebrow);
   text-transform: uppercase;
   color: var(--muted-foreground);
 }
