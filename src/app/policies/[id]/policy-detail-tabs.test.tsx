@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import type { Policy } from '@/types';
 import { PolicyDetailTabs } from './policy-detail-tabs';
@@ -31,18 +31,31 @@ describe('PolicyDetailTabs', () => {
     expect(screen.getByText('Requirement 2:').tagName).toBe('STRONG');
   });
 
-  it('shows the Policy changes card when the record has instrument dates', () => {
+  it('leads with the official source and keeps the other actions under More', () => {
     render(<PolicyDetailTabs policy={policy} />);
-    expect(screen.getByRole('heading', { name: 'Policy changes' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'View official source' })).toHaveAttribute('href', policy.sourceUrl);
+    expect(screen.getByRole('button', { name: 'Follow Guidance note' })).toHaveTextContent(/^Follow$/);
+    const more = screen.getByText('More').closest('details')!;
+    expect(more.open).toBe(false);
+    for (const name of ['Copy link', 'Download data']) {
+      expect(within(more).getByRole('button', { name, hidden: true })).toBeInTheDocument();
+    }
+    expect(within(more).getByRole('link', { name: 'Markdown with sources', hidden: true })).toHaveAttribute(
+      'href',
+      '/api/policies/record-1/markdown',
+    );
+    more.open = true;
+    fireEvent.keyDown(within(more).getByRole('button', { name: 'Copy link' }), { key: 'Escape' });
+    expect(more.open).toBe(false);
   });
 
-  it('omits the Policy changes card when the record has no instrument dates', () => {
-    const deadlineOnly: Policy = {
-      ...policy,
-      dates: [{ type: 'consultation_closed', date: '2026-02-01', precision: 'day' }],
-    };
-    render(<PolicyDetailTabs policy={deadlineOnly} />);
+  it('shows the status and each recorded date once', () => {
+    render(<PolicyDetailTabs policy={policy} />);
+    expect(screen.getAllByText('Active')).toHaveLength(1);
+    expect(screen.getAllByText('Issued')).toHaveLength(1);
     expect(screen.queryByRole('heading', { name: 'Policy changes' })).toBeNull();
+    expect(screen.queryByRole('heading', { name: 'Source verification' })).toBeNull();
+    expect(screen.getByText('Verified against the official source')).toBeInTheDocument();
   });
 });
 

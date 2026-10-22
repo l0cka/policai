@@ -6,7 +6,7 @@
 
 - `detail-tabs` switches the `Policy sections` tabs `Overview`, `Key requirements` and `Full text`.
 - `detail-related` lists related instruments, supersession first, eight server-rendered with `Show all N related`.
-- `detail-share` offers `Copy link` and `Download data`.
+- `detail-share` puts `Copy link`, `Download data` and `Markdown with sources` under the `More` disclosure, beside `View official source` and `Follow`.
 - `detail-markdown` serves the record as Markdown at `/api/policies/<id>/markdown`.
 - `detail-hidden` returns 404 for withheld, unverified or trashed records.
 
