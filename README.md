@@ -1,17 +1,17 @@
 <p align="center">
   <a href="https://policai.org">
-    <img src="./docs/design/policai-readme-banner.png" alt="Policai — Australian AI policy tracker" width="100%" />
+    <img src="./docs/design/policai-readme-banner.svg" alt="Policai, Australian AI policy register" width="100%" />
   </a>
 </p>
 
 # Policai
 
-[![Website](https://img.shields.io/badge/website-policai.org-146B5A?style=flat-square)](https://policai.org)
+[![Website](https://img.shields.io/badge/website-policai.org-245847?style=flat-square)](https://policai.org)
 [![Pull Request Checks](https://github.com/l0cka/policai/actions/workflows/pull-request-checks.yml/badge.svg)](https://github.com/l0cka/policai/actions/workflows/pull-request-checks.yml)
 [![License: AGPL-3.0](https://img.shields.io/github/license/l0cka/policai?style=flat-square)](./LICENSE)
-[![Node.js >= 22.13.0](https://img.shields.io/badge/Node.js-%E2%89%A522.13.0-2F4FD8?style=flat-square&logo=nodedotjs&logoColor=white)](./package.json)
+[![Node.js >= 22.13.0](https://img.shields.io/badge/Node.js-%E2%89%A522.13.0-245847?style=flat-square&logo=nodedotjs&logoColor=white)](./package.json)
 
-Policai is an Australian AI policy tracker. It maintains a curated register of AI policy, regulation, governance and court guidance across federal and state/territory jurisdictions, and automatically detects new developments from official government sources every day.
+Policai is the Australian AI policy register: a curated register of federal and state/territory AI policy, regulation, governance and court guidance, where every record links to its official source. New developments are detected from official government sources every day, and only editor-reviewed records enter the register.
 
 Product surface:
 
@@ -94,12 +94,14 @@ src/types/          shared domain types
 public/data/        public-safe canonical data served directly as open JSON
 data/               editorial register/data, collector state, reviews, coverage
 scripts/            collector, source audits, validation and migrations
+design/             shared design tokens (colour, type) for Policai and Policai A2J
 docs/               operational documentation
 apps/probono/       independent Pro Bono dashboard and worker packages
 ops/host/           candidate host dispatcher, verification and cutover procedure
 ```
 
-Pro Bono Radar shares source history with Policai but retains separate packages,
+Policai A2J ([a2j.policai.org](https://a2j.policai.org)), built from the Pro Bono Radar
+application, shares source history with Policai but retains separate packages,
 PostgreSQL data and production releases. Follow its [application guide](./apps/probono/README.md)
 for installation and checks. The [host dispatcher](./ops/host/README.txt) is a
 cutover candidate; importing the child application does not activate it in production.

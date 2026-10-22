@@ -32,12 +32,15 @@ The collector is the automation behind the Developments feed: it watches officia
    ([`collection-strip.ts`](../src/lib/collection-strip.ts)). Below `sm` the
    detailed count cluster is hidden; a degraded run still shows a `degraded`
    marker next to the collected date so a phone reader sees the run is not
-   fully healthy. `lastHealthyAt` is the last run with no failed due source.
-   It still anchors the weekly window and the register freshness date, and is
-   never shown as the collection date — the register line labels it "last
-   fully healthy" (or "last collected" when no healthy stamp exists). A run
-   that fails one source stays `degraded` and keeps `lastHealthyAt` where it
-   was, so the two dates drift apart while a source stays broken.
+   fully healthy. `lastHealthyAt` is the last run with no failed due source,
+   and is never shown as the collection date. `lastUsableAt` is the latest
+   run whose health was not `failed` (healthy or `degraded`), and anchors the
+   weekly window and the register freshness date (`collectionAnchor` in
+   [`this-week.ts`](../src/lib/this-week.ts); Daniel, #324, closes #314). A
+   run that fails one source stays `degraded` and still advances
+   `lastUsableAt`, so one standing failure does not freeze the window. Only a
+   `failed` run leaves it where it was; the register line then labels the
+   older date "last passing collection" instead of "last collected".
 4. The collector **never writes `data/policies.json`** — the register only changes through reviewed commits. The host wrapper `ops/collector/policai-collect.sh` fails a collection run that changes it. No GitHub workflow checks this, so a hand-made PR that edits the register is caught only by review.
 
 Non-dry-run collection holds the same cross-process data transaction lock as

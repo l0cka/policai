@@ -22,6 +22,11 @@ it('does not present a past date as upcoming when collection has stalled', async
   expect(screen.getByText('Still coming')).toBeInTheDocument();
   expect(screen.getByText(/Collection is more than seven days old/)).toBeInTheDocument();
 });
+it('anchors the week on the latest passing run, not the last fully healthy one', async () => {
+  vi.mocked(getCollectionMeta).mockResolvedValue({ lastCollectedAt: '2026-09-21T19:30:00Z', lastHealthyAt: '2026-08-01T00:00:00Z', lastUsableAt: '2026-09-21T19:30:00Z' } as Awaited<ReturnType<typeof getCollectionMeta>>);
+  render(await ThisWeekPage());
+  expect(screen.queryByText(/Collection is more than seven days old/)).not.toBeInTheDocument();
+});
 it('distinguishes missing collection evidence from a verified quiet week', async () => {
   vi.mocked(getCollectionMeta).mockResolvedValue({ lastCollectedAt: null, lastHealthyAt: null } as Awaited<ReturnType<typeof getCollectionMeta>>);
   render(await ThisWeekPage());

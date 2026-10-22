@@ -1977,6 +1977,7 @@ describe("data-service file store", () => {
 		readJsonFile.mockResolvedValue({
 			lastCollectedAt: "2026-10-17T19:33:37.076Z",
 			lastHealthyAt: "2026-10-06T19:33:28.224Z",
+			lastUsableAt: "2026-10-06T19:33:28.224Z",
 			lastReviewedAt: null,
 			collector: {
 				runCount: 80,
@@ -2046,6 +2047,7 @@ describe("data-service file store", () => {
 		const meta = {
 			lastCollectedAt: "2026-07-16T00:00:00.000Z",
 			lastHealthyAt: "2026-07-16T00:00:00.000Z",
+			lastUsableAt: "2026-07-16T00:00:00.000Z",
 			lastReviewedAt: "2026-07-16T12:00:00.000Z",
 			collector: {
 				runCount: 1,

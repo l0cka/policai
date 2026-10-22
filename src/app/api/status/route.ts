@@ -49,6 +49,7 @@ export async function GET(request?: Request) {
 	return publicApiJson({
 		lastCollectedAt: meta.lastCollectedAt,
 		lastHealthyAt: meta.lastHealthyAt,
+		lastUsableAt: meta.lastUsableAt,
 		lastReviewedAt: meta.lastReviewedAt,
 		collection: {
 			health: meta.collector.health,

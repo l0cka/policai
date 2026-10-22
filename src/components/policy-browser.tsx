@@ -44,7 +44,7 @@ interface PolicyBrowserProps {
   /** Developments first detected in the last seven days, dismissed excluded. */
   weeklyDevelopmentCount: number;
   lastCollectedAt: string | null;
-  lastHealthyAt: string | null;
+  lastUsableAt: string | null;
   lastReviewedAt: string | null;
   collectionHealth: CollectionHealthStatus;
   successfulSourceCount: number;
@@ -138,7 +138,7 @@ export function PolicyBrowser({
   developmentCount,
   weeklyDevelopmentCount,
   lastCollectedAt,
-  lastHealthyAt,
+  lastUsableAt,
   lastReviewedAt,
   collectionHealth,
   successfulSourceCount,
@@ -241,9 +241,11 @@ export function PolicyBrowser({
     updateState({ sortField, sortDirection });
   };
 
-  const freshnessDate = lastHealthyAt ?? lastCollectedAt ?? lastReviewedAt;
-  const freshnessKind = lastHealthyAt
-    ? 'last fully healthy'
+  const freshnessDate = lastUsableAt ?? lastCollectedAt ?? lastReviewedAt;
+  const freshnessKind = lastUsableAt
+    ? lastUsableAt === lastCollectedAt
+      ? 'last collected'
+      : 'last passing collection'
     : lastCollectedAt
       ? 'last collected'
       : null;

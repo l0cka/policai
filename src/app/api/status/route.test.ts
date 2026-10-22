@@ -48,6 +48,7 @@ describe("/api/status", () => {
 		getCollectionMeta.mockResolvedValue({
 			lastCollectedAt: null,
 			lastHealthyAt: null,
+			lastUsableAt: null,
 			lastReviewedAt: null,
 			collector: {
 				runCount: 0,
@@ -71,6 +72,7 @@ describe("/api/status", () => {
 		await expect(response.json()).resolves.toEqual({
 			lastCollectedAt: null,
 			lastHealthyAt: null,
+			lastUsableAt: null,
 			lastReviewedAt: null,
 			collection: {
 				health: "failed",
@@ -106,6 +108,7 @@ describe("/api/status", () => {
 		getCollectionMeta.mockResolvedValue({
 			lastCollectedAt: "2026-07-10T05:30:00.000Z",
 			lastHealthyAt: "2026-07-10T05:30:00.000Z",
+			lastUsableAt: "2026-07-10T05:30:00.000Z",
 			lastReviewedAt: "2026-07-01T00:00:00.000Z",
 			collector: {
 				runCount: 4,
@@ -151,6 +154,7 @@ describe("/api/status", () => {
 		await expect(response.json()).resolves.toEqual({
 			lastCollectedAt: "2026-07-10T05:30:00.000Z",
 			lastHealthyAt: "2026-07-10T05:30:00.000Z",
+			lastUsableAt: "2026-07-10T05:30:00.000Z",
 			lastReviewedAt: "2026-07-01T00:00:00.000Z",
 			collection: {
 				health: "healthy",
@@ -194,6 +198,7 @@ describe("/api/status", () => {
 		getCollectionMeta.mockResolvedValue({
 			lastCollectedAt: null,
 			lastHealthyAt: null,
+			lastUsableAt: null,
 			lastReviewedAt: null,
 			collector: {
 				runCount: 0,
@@ -230,6 +235,7 @@ describe("/api/status", () => {
 			getCollectionMeta.mockResolvedValue({
 				lastCollectedAt: null,
 				lastHealthyAt: null,
+				lastUsableAt: null,
 				lastReviewedAt: null,
 				collector: {
 					runCount: 0,

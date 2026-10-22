@@ -22,6 +22,7 @@ beforeEach(() => {
   vi.mocked(getCollectionMeta).mockResolvedValue({
     lastCollectedAt: '2026-09-22T08:23:23.603Z',
     lastHealthyAt: '2026-09-22T08:23:23.603Z',
+    lastUsableAt: '2026-09-22T08:23:23.603Z',
     lastReviewedAt: null,
     collector: {
       runCount: 71,
