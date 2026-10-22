@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { frlTitleRecord, parseFrlTitle } from './frl-title';
+import { frlAmendedPrincipals, frlCommencements, frlTitleRecord, frlVersionsFrom, parseFrlPrincipals, parseFrlTitle } from './frl-title';
 import { legislativePhase, type Dated, type Legislative, type LegislativeEvent } from './model';
 import { stageUpdate } from './stage-update';
 
@@ -130,5 +130,25 @@ describe('stageUpdate on an instrument', () => {
   it('reports no change when the register still shows what the record holds', () => {
     const reading = parseFrlTitle(fixture('F2026L01223'));
     expect(stageUpdate(instrument(reading.events), 'federal', reading)).toEqual({ kind: 'unchanged' });
+  });
+});
+
+describe('an amending instrument commencing in its principal', () => {
+  it('builds the search and versions queries the register accepts', () => {
+    expect(frlAmendedPrincipals('F2026L01223')).toBe(
+      "https://api.prod.legislation.gov.au/v1/Titles/Search(criteria='affects(%22F2026L01223%22,%5Bamending%5D)')?$select=id,name,isPrincipal",
+    );
+    expect(frlVersionsFrom('F2017L01474', '2026-09-17')).toBe(
+      'https://api.prod.legislation.gov.au/v1/Versions?$filter=titleId%20eq%20\'F2017L01474\'%20and%20start%20ge%202026-09-17T00%3A00%3A00&$select=titleId,start,reasons',
+    );
+  });
+
+  it('finds the principal and the day the amendments commence in it', () => {
+    expect(parseFrlTitle(fixture('F2026L01223')).principal).toBe(false);
+    expect(parseFrlPrincipals(fixture('search-affects-F2026L01223-amending'))).toEqual(['F2017L01474']);
+    expect(frlCommencements(fixture('F2017L01474.versions'), 'F2026L01223')).toEqual([
+      { date: '2028-03-17', principalId: 'F2017L01474', provisions: 'sch 1 (items 1-109)' },
+    ]);
+    expect(frlCommencements(fixture('F2017L01474.versions'), 'F2099L00001')).toEqual([]);
   });
 });

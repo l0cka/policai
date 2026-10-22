@@ -892,8 +892,13 @@ id `track:<policyId>`:
   instrument's commencement, tabling in each House, the end of each
   disallowance window, disallowance and repeal. The API writes 9999-12-31 for a
   date it has not fixed yet; the parser treats that as no date. An amending
-  instrument's amendments commence in its principal's versions, which this
-  watch does not read yet.
+  instrument's amendments commence in the versions of the principal it
+  amends, so for an amending instrument the watch also searches
+  `Titles/Search(criteria='affects("<id>",[amending])')` for the principal
+  and reads its `Versions` from the registration day on. A commencement day
+  that has come becomes a `commenced` stage. A day still to come is compared
+  with the record's `commenced` date, and a difference stages an update that
+  moves the date.
 
 Parser fixtures are in `src/lib/legislation/__fixtures__/aph/` and
 `src/lib/legislation/__fixtures__/frl/`.
@@ -903,7 +908,7 @@ deadline the record holds (a committee report date or the end of a
 disallowance window), the watch stages one update review against the record.
 The proposed record carries the merged events and the derived status. The
 review's `legislativeUpdate` lists the added stages, the changed deadlines,
-and any stage the parser could not map, such as "Discharged from Notice Paper"
+a moved scheduled commencement (`scheduledCommencement`), and any stage the parser could not map, such as "Discharged from Notice Paper"
 or a disallowance motion that did not pass. A merge that breaks the legal order
 is reported in the review, not applied. Unlike a changed direct document, a
 stage update keeps the record public while it waits, because the last approved

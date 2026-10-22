@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { buildPolicy } from '@/test/factories';
 import type { Policy, SourceReview } from '@/types';
 import { aphBillPage, followLegislation, followTargets } from './follow';
-import { frlTitleRecord, parseFrlTitle } from './frl-title';
+import { frlAmendedPrincipals, frlTitleRecord, frlVersionsFrom, parseFrlTitle } from './frl-title';
 import type { Dated, Legislative, LegislativeEvent } from './model';
 
 const fixture = (billId: string) => readFileSync(join(__dirname, '__fixtures__/aph', `${billId}.html`), 'utf8');
@@ -34,8 +34,9 @@ const introduced = (date: string, chamber: 'lower' | 'upper', billId: string) =>
 
 const frlFixture = readFileSync(join(__dirname, '__fixtures__/frl/F2026L01223.json'), 'utf8');
 
-function rules(events: Dated<LegislativeEvent>[]): Policy {
+function rules(events: Dated<LegislativeEvent>[], dates: Policy['dates'] = []): Policy {
   return buildPolicy({
+    dates,
     id: 'asic-rules',
     title: 'ASIC AI trading rules',
     type: 'regulation',
@@ -50,6 +51,14 @@ function rules(events: Dated<LegislativeEvent>[]): Policy {
     },
   });
 }
+
+const frl = (name: string) => readFileSync(join(__dirname, '__fixtures__/frl', `${name}.json`), 'utf8');
+
+/** The register API: this title record, its principal search, and the principal's versions. */
+const register = (title: string) => async (url: string) => ({
+  body: url.includes('/Search(') ? frl('search-affects-F2026L01223-amending') : url.includes('/Versions?') ? frl('F2017L01474.versions') : title,
+  evidence: { url },
+});
 
 const now = new Date('2026-10-22T05:00:00Z');
 const retrieveFixture = (billId: string) => async (url: string) => ({
@@ -151,11 +160,15 @@ describe('followLegislation on a Federal Register instrument', () => {
   };
 
   it('stages nothing while the register shows what the record holds', async () => {
-    const record = rules(parseFrlTitle(frlFixture).events);
-    const retrieve = vi.fn(async (url: string) => ({ body: frlFixture, evidence: { url } }));
+    const record = rules(parseFrlTitle(frlFixture).events, [{ type: 'commenced', date: '2028-03-17', precision: 'day' }]);
+    const retrieve = vi.fn(register(frlFixture));
     const result = await followLegislation({ targets: followTargets([record]), existingReviews: [], retrieve, now });
     expect(result).toMatchObject({ reviews: [], errors: [], results: [{ sourceId: 'track:asic-rules', status: 'success' }] });
-    expect(retrieve).toHaveBeenCalledWith(frlTitleRecord('F2026L01223'), 'frl');
+    expect(retrieve.mock.calls.map(([url]) => url)).toEqual([
+      frlTitleRecord('F2026L01223'),
+      frlAmendedPrincipals('F2026L01223'),
+      frlVersionsFrom('F2017L01474', '2026-09-17'),
+    ]);
   });
 
   it('stages the disallowance window ends once the register fixes them', async () => {
@@ -163,7 +176,7 @@ describe('followLegislation on a Federal Register instrument', () => {
     const { reviews } = await followLegislation({
       targets: followTargets([record]),
       existingReviews: [],
-      retrieve: async (url) => ({ body: fixed(), evidence: { url } }),
+      retrieve: register(fixed()),
       now,
     });
     expect(reviews).toHaveLength(1);
@@ -185,6 +198,37 @@ describe('followLegislation on a Federal Register instrument', () => {
     });
     expect(results).toMatchObject([{ status: 'error', failureClass: 'parse' }]);
     expect(errors).toEqual(['track:asic-rules: the Federal Register response is not a title record']);
+  });
+});
+
+describe('followLegislation on an amending instrument', () => {
+  const retrieve = register(frlFixture);
+  const recorded = () => parseFrlTitle(frlFixture).events;
+
+  it('stages nothing while the record holds the day the register schedules', async () => {
+    const record = rules(recorded(), [{ type: 'commenced', date: '2028-03-17', precision: 'day' }]);
+    const result = await followLegislation({ targets: followTargets([record]), existingReviews: [], retrieve, now });
+    expect(result).toMatchObject({ reviews: [], errors: [] });
+  });
+
+  it('proposes the scheduled commencement when the record has another day', async () => {
+    const record = rules(recorded(), [{ type: 'commenced', date: '2028-03-18', precision: 'day' }]);
+    const { reviews } = await followLegislation({ targets: followTargets([record]), existingReviews: [], retrieve, now });
+    expect(reviews).toHaveLength(1);
+    expect(reviews[0].legislativeUpdate).toMatchObject({ added: [], scheduledCommencement: '2028-03-17' });
+    expect((reviews[0].proposedRecord as Policy).dates).toMatchObject([{ type: 'commenced', date: '2028-03-17' }]);
+    expect(reviews[0].notes).toContain(
+      'The Federal Register schedules sch 1 (items 1-109) to commence in F2017L01474 on 17 March 2028; the record says 18 March 2028.',
+    );
+  });
+
+  it('adds the commencement as a stage once its day has come', async () => {
+    const record = rules(recorded(), [{ type: 'commenced', date: '2028-03-17', precision: 'day' }]);
+    const { reviews } = await followLegislation({ targets: followTargets([record]), existingReviews: [], retrieve, now: new Date('2028-03-20T00:00:00Z') });
+    expect(reviews[0].legislativeUpdate?.added).toMatchObject([
+      { date: '2028-03-17', event: { kind: 'commenced', extent: 'full', note: 'sch 1 (items 1-109) commence in F2017L01474' } },
+    ]);
+    expect(reviews[0].proposedRecord).toMatchObject({ status: 'active' });
   });
 });
 

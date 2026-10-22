@@ -395,6 +395,8 @@ export interface SourceReview {
 		/** Known events whose deadline the register has set or moved. */
 		changed?: Dated<LegislativeEvent>[];
 		unrecognised: UnrecognisedStage[];
+		/** The day the register now schedules commencement, when the record's date differs. */
+		scheduledCommencement?: string;
 		error?: string;
 	};
 	updatedAt: string;
