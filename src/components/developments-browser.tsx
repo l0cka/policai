@@ -11,13 +11,11 @@ import {
   Filter,
   Search,
 } from 'lucide-react';
-import { HealthSignal } from '@/components/ui/health-signal';
 import { jurisdictionRailStyle } from '@/lib/jurisdiction-accent';
 import { formatPolicyDate } from '@/lib/format-policy-date';
 import {
   JURISDICTION_NAMES,
   getJurisdictionName,
-  type CollectionHealthStatus,
   type Development,
 } from '@/types';
 import { cn } from '@/lib/utils';
@@ -32,13 +30,6 @@ interface DevelopmentsBrowserProps {
   developments: Development[];
   /** Reader stream per development id, derived on the server. */
   streamById: Record<string, DevelopmentStream>;
-  collectionHealth: CollectionHealthStatus;
-  lastCollectedAt: string | null;
-  successfulSourceCount: number;
-  dueSourceCount: number;
-  automaticSourceCount: number;
-  manualSourceCount: number;
-  currentManualSourceCount: number;
 }
 
 function formatDate(value: string): string {
@@ -200,13 +191,6 @@ function DevelopmentFeed({
 export function DevelopmentsBrowser({
   developments,
   streamById,
-  collectionHealth,
-  lastCollectedAt,
-  successfulSourceCount,
-  dueSourceCount,
-  automaticSourceCount,
-  manualSourceCount,
-  currentManualSourceCount,
 }: DevelopmentsBrowserProps) {
   const [activeTab, setActiveTab] = useState<'verified' | 'radar'>(() =>
     developments.some((item) => item.verification.status === 'verified')
@@ -273,10 +257,6 @@ export function DevelopmentsBrowser({
     pendingAnchor.current = null;
   }, [revealCount, filteredItems]);
 
-  const automaticCoverage = dueSourceCount > 0 ? Math.round((successfulSourceCount / dueSourceCount) * 100) : 100;
-  const manualCoverage = manualSourceCount > 0 ? Math.round((currentManualSourceCount / manualSourceCount) * 100) : 100;
-  const overallCoverage = Math.round((automaticCoverage + manualCoverage) / 2);
-
   const clearFilters = () => {
     setSearch('');
     setJurisdiction('all');
@@ -306,10 +286,10 @@ export function DevelopmentsBrowser({
 
       <div className="mt-4 flex gap-4 border-b border-border sm:mt-5 sm:gap-8" role="tablist" aria-label="Development verification state">
         <button type="button" role="tab" aria-selected={activeTab === 'verified'} onClick={() => setActiveTab('verified')} className={cn('-mb-px min-h-11 whitespace-nowrap border-b-[3px] px-1 text-base transition-colors sm:min-h-14 sm:px-2 sm:text-lg', activeTab === 'verified' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground')}>
-          Verified<span className="hidden sm:inline"> developments</span> <span className="ml-1.5 font-mono text-sm">{verified.length}</span>
+          Verified <span className="ml-1.5 font-mono text-sm">{verified.length}</span>
         </button>
         <button type="button" role="tab" aria-selected={activeTab === 'radar'} onClick={() => setActiveTab('radar')} className={cn('-mb-px min-h-11 whitespace-nowrap border-b-[3px] px-1 text-base transition-colors sm:min-h-14 sm:px-2 sm:text-lg', activeTab === 'radar' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground')}>
-          <span className="sm:hidden">Unconfirmed</span><span className="hidden sm:inline">Automated radar</span> <span className="ml-1.5 font-mono text-sm">{radar.length}</span>
+          Unconfirmed <span className="ml-1.5 font-mono text-sm">{radar.length}</span>
         </button>
       </div>
 
@@ -318,8 +298,7 @@ export function DevelopmentsBrowser({
         {activeTab === 'verified' ? 'Checked against the linked official source.' : 'Detected automatically and not yet editorially verified. Months newest first; within a month ranked by relevance, then recency.'}
       </p>
 
-      <div className="mt-3 grid gap-6 xl:grid-cols-[minmax(0,1fr)_19rem] xl:gap-8">
-        <div className="min-w-0">
+      <div className="mt-3 min-w-0">
           <div className="mb-2 flex flex-col gap-2 sm:mb-3 sm:flex-row">
             <label className="relative flex-1">
               <span className="sr-only">Search developments</span>
@@ -356,32 +335,6 @@ export function DevelopmentsBrowser({
             items={filteredItems}
             onReset={filtersActive ? clearFilters : undefined}
           />
-        </div>
-
-        <aside className="self-start border-border xl:sticky xl:top-20 xl:border-l xl:pl-6">
-          <section>
-            <h2 className="section-title">Collection status</h2>
-            <div className="mt-3 rounded-md border border-border bg-card/50 p-4">
-              <HealthSignal health={collectionHealth} className="text-[12px]" />
-              {lastCollectedAt ? <p className="mt-3 border-t border-border pt-3 font-mono text-[11px] uppercase text-muted-foreground">Last checked {formatDate(lastCollectedAt)}</p> : null}
-            </div>
-            <div className="mt-4 space-y-3">
-              {[
-                ['Automatic', automaticCoverage],
-                ['Manual', manualCoverage],
-                ['Overall', overallCoverage],
-              ].map(([label, value]) => (
-                <div key={label as string} className="grid grid-cols-[5rem_1fr_2.25rem] items-center gap-2 text-xs">
-                  <span>{label}</span>
-                  <span className="h-1.5 overflow-hidden rounded-full bg-muted"><span className="block h-full rounded-full bg-[var(--trust)]" style={{ width: `${value}%` }} /></span>
-                  <span className="font-mono text-[11px] font-medium text-muted-foreground">{value}%</span>
-                </div>
-              ))}
-            </div>
-            <p className="mt-3 font-mono text-[11px] uppercase leading-4 text-muted-foreground">{automaticSourceCount} automatic · {manualSourceCount} manual sources</p>
-            <Link href="/methodology" className="mt-4 inline-flex items-center gap-1 text-xs text-primary hover:underline">View methodology <ArrowRight className="h-3 w-3" /></Link>
-          </section>
-        </aside>
       </div>
     </div>
   );

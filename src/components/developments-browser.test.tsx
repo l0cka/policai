@@ -28,13 +28,6 @@ it('filters the feed by stream', () => {
         development('note', 'Federal Court issues GPN-AI practice note'),
       ]}
       streamById={{ inquiry: 'consultation', note: 'court' }}
-      collectionHealth="healthy"
-      lastCollectedAt={null}
-      successfulSourceCount={1}
-      dueSourceCount={1}
-      automaticSourceCount={1}
-      manualSourceCount={0}
-      currentManualSourceCount={0}
     />,
   );
 
@@ -118,13 +111,6 @@ it('explains an empty filter result and offers a reset', () => {
     <DevelopmentsBrowser
       developments={[development('inquiry', 'Senate opens inquiry into AI')]}
       streamById={{ inquiry: 'consultation' }}
-      collectionHealth="healthy"
-      lastCollectedAt={null}
-      successfulSourceCount={1}
-      dueSourceCount={1}
-      automaticSourceCount={1}
-      manualSourceCount={0}
-      currentManualSourceCount={0}
     />,
   );
 
@@ -158,13 +144,6 @@ function renderBrowser(items: Development[], streamById: Record<string, 'consult
     <DevelopmentsBrowser
       developments={items}
       streamById={streamById}
-      collectionHealth="healthy"
-      lastCollectedAt={null}
-      successfulSourceCount={1}
-      dueSourceCount={1}
-      automaticSourceCount={1}
-      manualSourceCount={0}
-      currentManualSourceCount={0}
     />,
   );
 }
