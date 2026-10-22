@@ -41,6 +41,7 @@ export const ABOUT_SECTION: NavSection = {
   views: [
     { href: '/methodology', label: 'Methodology' },
     { href: '/status', label: 'Source status' },
+    { href: '/status/refusals', label: 'Refusing sites' },
   ],
 };
 
@@ -57,4 +58,13 @@ function sectionRoutes(section: NavSection): string[] {
 
 export function isSectionActive(section: NavSection, pathname: string): boolean {
   return sectionRoutes(section).some((href) => routeMatches(pathname, href));
+}
+
+/** The section whose views include this exact page, for the section sub-nav. */
+export function sectionForView(pathname: string): NavSection | null {
+  return (
+    [...PRIMARY_SECTIONS, ABOUT_SECTION].find(
+      (section) => section.views.length > 1 && section.views.some((view) => view.href === pathname),
+    ) ?? null
+  );
 }

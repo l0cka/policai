@@ -57,6 +57,7 @@ describe('Editorial identity and navigation', () => {
     ['/analysis/some-piece', 'Analysis'],
     ['/methodology', 'About'],
     ['/status', 'About'],
+    ['/status/refusals', 'About'],
   ])('marks the section for %s as %s', (path, section) => {
     renderHeader(path);
     const current = screen
