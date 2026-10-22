@@ -1,6 +1,7 @@
 import type { Jurisdiction } from '@/types';
 import { frlAiInstrumentSearch } from '@/lib/legislation/frl-search';
 import { saBillSearch } from '@/lib/legislation/sa-salt';
+import type { BillListId } from '@/lib/legislation/state-bill-lists';
 import { vicBillSearch } from '@/lib/legislation/vic-bills';
 import { hostOf, type Host } from './host';
 import type { SourceIdentityException } from './identity';
@@ -21,11 +22,11 @@ import type { SourceIdentityException } from './identity';
  * meta.json.
  */
 
-export type SourceKind = 'html-index' | 'rss' | 'document' | 'frl-search' | 'sa-salt-search' | 'vic-bill-search';
+export type SourceKind = 'html-index' | 'rss' | 'document' | 'frl-search' | 'sa-salt-search' | 'vic-bill-search' | 'bill-list';
 
 /** Register JSON searches: each row names and dates a law, so its title and date are kept. */
 export function isRegisterSearch(kind: SourceKind): boolean {
-  return kind === 'frl-search' || kind === 'sa-salt-search' || kind === 'vic-bill-search';
+  return kind === 'frl-search' || kind === 'sa-salt-search' || kind === 'vic-bill-search' || kind === 'bill-list';
 }
 export type SourceCategory = 'government' | 'regulator' | 'court';
 export type ManualBecause =
@@ -75,6 +76,8 @@ export interface WatchSource {
    * falls back to the browser on failure.
    */
   fetchStrategy?: SourceFetchStrategy;
+  /** For a 'bill-list' source: which state bill list reader parses it (`@/lib/legislation/state-bill-lists`). */
+  billList?: BillListId;
   /**
    * Time-boxed permission to retrieve without the declared Policai identity
    * (see `./identity`). Expires at the START of `until` (Australia/Sydney).
@@ -1264,6 +1267,56 @@ export const WATCH_SOURCES: WatchSource[] = [
     automation: 'automatic',
     notes:
       'Official Atom feed of WA Acts as passed. Checked 2026-09-23: 200 entries over plain HTTP (about 0.5 MB).',
+  },
+  {
+    id: 'wa-parliament-bills',
+    name: 'Parliament of Western Australia — current bills',
+    bodyId: 'wa-parliament',
+    jurisdiction: 'wa',
+    category: 'government',
+    url: 'https://www.parliament.wa.gov.au/parliament/bills.nsf/screenWebCurrentBills?Count=200&OpenForm=',
+    kind: 'bill-list',
+    billList: 'wa',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    admittedAt: '2026-10-22',
+    notes:
+      'Bills before either House: House, title, date introduced and current stage, each linking its progress page. The host answers plain HTTP with an Azure WAF 403, so the list is read in the collector’s browser under the declared identity; robots allows it there. The view pages at 30 rows; Count=200 returns all 89 current bills (Argus, 2026-10-22), and a full page fails the run rather than reading a short list.',
+  },
+  {
+    id: 'qld-parliament-bills',
+    name: 'Queensland Parliament — bills before the House',
+    bodyId: 'qld-parliament',
+    jurisdiction: 'qld',
+    category: 'government',
+    url: 'https://www.parliament.qld.gov.au/Work-of-the-Assembly/Bills-and-Legislation/Bills-before-the-House',
+    kind: 'bill-list',
+    billList: 'qld',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    admittedAt: '2026-10-22',
+    notes:
+      'Bills before the Legislative Assembly with who introduced each and when, and the stage reached; each bill links its tabled bill text, the only per-bill page. The host answers plain HTTP with an Azure WAF 403, so the list is read in the collector’s browser under the declared identity; robots.txt is a 404 there. Fetched from Argus 2026-10-22.',
+  },
+  {
+    id: 'nt-assembly-bills',
+    name: 'NT legislation — bills before the Legislative Assembly',
+    bodyId: 'nt-opc',
+    jurisdiction: 'nt',
+    category: 'government',
+    url: 'https://legislation.nt.gov.au/en/LegislationPortal/Bills/Before-Legislative-Assembly',
+    kind: 'bill-list',
+    billList: 'nt',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    admittedAt: '2026-10-22',
+    notes:
+      'Bills introduced and not yet passed, grouped by letter without dates, so a new bill is one not seen before. The NT Assembly publishes no bills list of its own. Fetched from Argus 2026-10-22: plain HTTP 200 under the declared identity, robots allows it, 5 bills.',
   },
   {
     id: 'act-legislation-whats-new',

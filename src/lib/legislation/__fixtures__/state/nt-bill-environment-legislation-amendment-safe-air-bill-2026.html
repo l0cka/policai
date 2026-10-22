@@ -1,0 +1,570 @@
+
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Northern Territory Legislation</title>
+	<link href="/Includes/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/Includes/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" >
+    <link href="/Includes/css/font-awesome.min.css" rel="stylesheet" type="text/css" >
+	<link href="/Includes/css/stylesheet.css" rel="stylesheet" type="text/css" />
+    <script src="/Includes/js/jquery-1.12.3.min.js"></script>
+    <script src="/Includes/js/bootstrap.min.js"></script>
+    <script src="/Includes/js/bootstrap-datepicker.min.js"></script>
+    <script src="/Includes/js/bootstrap-datepicker.en-AU.min.js" charset="UTF-8"></script>
+
+    <script src="/Scripts/jquery.validate.min.js"></script>
+<script src="/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+    
+        <script>
+            (function (i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+            ga('create', 'UA-85117865-1', 'auto');
+            ga('send', 'pageview');
+
+        </script>
+
+    <script>
+
+        function processSubscription(itemGuid, subscribe) {
+            $("#sub-" + itemGuid).hide();
+            $("#unsub-" + itemGuid).hide();
+            $("#loader-" + itemGuid).show();
+
+            $.post("/en/Pages/Notification/ProcessSubscription",
+                            { ItemGuid: itemGuid, subscription: subscribe },
+                            function (data, status) {
+                                if (data.response == 'success') {
+                                    if (subscribe) {
+                                        $("#sub-" + itemGuid).hide();
+                                        $("#unsub-" + itemGuid).show();
+                                        $("#loader-" + itemGuid).hide();
+                                    }
+                                    else {
+                                        $("#sub-" + itemGuid).show();
+                                        $("#unsub-" + itemGuid).hide();
+                                        $("#loader-" + itemGuid).hide();
+                                    }
+
+                                }
+                                else {
+                                    showFailure(itemGuid, subscribe);
+                                }
+                            })
+                            .fail(function () {
+                                showFailure(itemGuid, subscribe);
+                            });
+        }
+
+        function showFailure(itemGuid, subscribe)
+        {
+            $("#loader-" + itemGuid).hide();
+            if (subscribe)
+                $("#sub-" + itemGuid).show();
+            else
+                $("#unsub-" + itemGuid).show();
+            alert("Sorry, an error occurred while processing your request. Please try later.");
+        }
+
+        function activePanel(panelId, headerId)
+        {
+            $('#' + panelId).collapse('show');
+        }
+        $(function () {
+            $(".panel-collapse").on("shown.bs.collapse", function () {
+                var bod = $(this).find(".panel-body");
+                var end = bod.height() + bod.offset().top;
+                var footerTop = $(".footer").offset().top;
+                if (end > footerTop) {
+                    var header = $(this).prev(".panel-heading");                    
+
+                    $('html, body').animate({
+                        scrollTop: header.offset().top - $(".navbar-fixed-top").height()
+                    }, 200);
+                }
+            });
+            //set the header padding to be the same as the nav bar.
+            var rz = function () {
+                if ($(".navbar-fixed-top")) {
+                    var toph = $(".navbar-fixed-top").height();
+                    $(".header-wrapper").height(toph);
+                    var tophOuter = parseInt($(".navbar-fixed-top").outerHeight()) + parseInt($(".panel-heading").css('padding-top').replace("px", "")); // with some offset                    
+                    $(".navanchor").css('height', tophOuter);
+                    $(".navanchor").css('margin-top', -1 * tophOuter);
+                }
+            };
+            rz();
+            $(window).on("resize", rz);
+        });
+    </script>
+</head>
+<body>
+    
+
+    <div>
+            
+
+<div>
+        
+
+<div class="header-wrapper">
+        
+
+
+
+
+
+<nav class="navbar navbar-default navbar-fixed-top banner ntgbluenavbar">
+    <a href="/en">
+        <img src="/Includes/img/NTGLogoNew.svg" class="ntg-deader-logo" alt="NTG Logo">
+    </a>
+    <div class="dept-header-align"><span class="text dept-header"><a href="/en">Northern Territory Legislation</a></span></div>
+    <div class="pull-right">
+        
+<div class="user-top-menu">
+    <a class="btn btn-default top-menu-link" id="my-account-link" href="/en/Pages/Notification/Login"><span class="glyphicon glyphicon-user"></span> <span>My Account</span></a>
+</div>
+
+        <button class="btn btn-default  btnDisplay" value=""><span class="glyphicon glyphicon-search"></span> Search</button>
+
+    </div>
+
+        <form action="/en/Search/Search" method="post">
+            <div class="form-inline hiddenForm" style="display:none">
+                <br/>
+                <br/>
+                <input id="scController" name="scController" type="hidden" value="Search" /><input id="scAction" name="scAction" type="hidden" value="Search" />
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="input-group col-xs-12 col-md-8 responsive-search">
+                            <input type="text" class="form-control pull-left" placeholder="Search" title="Search" name="SearchText" aria-label="search">
+
+                            <div class="input-group-btn search-buttons">
+                                <input type="hidden" value="50" name="ResultsPerPage" />
+                                <input type="hidden" value="1" name="PageNo" />
+                                <button class="btn btn-default form-control pull-left" type="submit" value="">Search</button>
+                                <a class="btn btn-default form-control pull-left" href="/en/Search/Search#dvAdvancedSearch" id="advancedSearchBtn">Advanced Search</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+            </div>
+        </form>
+
+</nav>
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".btnDisplay").click(function () {
+                $('.hiddenForm').toggle();
+        });
+    });
+</script>
+
+
+
+
+</div>
+
+<div class="row row-eq-height">
+    <div class="col-md-2" style="padding-right:0px;">
+
+
+
+<ul class="nav nav-pills nav-stacked side-menu">
+                    <li class="panel-heading home-thumb-colour-1" data-toggle="collapse" data-target="#sdNav_Bills" >
+                        <h4 class="panel-title">
+                            <span class="glyphicon glyphicon-menu-right"></span>
+                            <span class="glyphicon glyphicon-menu-down"></span>
+                            <a href="#">
+                                Bills
+                            </a>
+                        </h4>
+                    </li>
+                    <li>
+                        <div id="sdNav_Bills" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                        <p>
+                                            <a href="/en/LegislationPortal/Bills/By-Session">By Session</a>
+                                        </p>
+                                        <p>
+                                            <a href="/en/LegislationPortal/Bills/By-Sponsor">By Sponsor</a>
+                                        </p>
+                                        <p>
+                                            <a href="/en/LegislationPortal/Bills/Before-Legislative-Assembly">Before Legislative Assembly</a>
+                                        </p>
+                                        <p>
+                                            <a href="/en/LegislationPortal/Bills/By-Title">By Title</a>
+                                        </p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="panel-heading home-thumb-colour-1" data-toggle="collapse" data-target="#sdNav_Acts" >
+                        <h4 class="panel-title">
+                            <span class="glyphicon glyphicon-menu-right"></span>
+                            <span class="glyphicon glyphicon-menu-down"></span>
+                            <a href="#">
+                                Acts
+                            </a>
+                        </h4>
+                    </li>
+                    <li>
+                        <div id="sdNav_Acts" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                        <p>
+                                            <a href="/en/LegislationPortal/Acts/By-Title">By Title</a>
+                                        </p>
+                                        <p>
+                                            <a href="/en/LegislationPortal/Acts/By-Agency">By Agency</a>
+                                        </p>
+                                        <p>
+                                            <a href="/en/LegislationPortal/Acts/By-Year">By Year</a>
+                                        </p>
+                                        <p>
+                                            <a href="/en/LegislationPortal/Acts/By-Parent-Act">By Parent Act</a>
+                                        </p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="panel-heading home-thumb-colour-1" data-toggle="collapse" data-target="#sdNav_SubordinateLegislation" >
+                        <h4 class="panel-title">
+                            <span class="glyphicon glyphicon-menu-right"></span>
+                            <span class="glyphicon glyphicon-menu-down"></span>
+                            <a href="#">
+                                Subordinate Legislation
+                            </a>
+                        </h4>
+                    </li>
+                    <li>
+                        <div id="sdNav_SubordinateLegislation" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                        <p>
+                                            <a href="/en/LegislationPortal/Subordinate-Legislation/By-Title">By Title</a>
+                                        </p>
+                                        <p>
+                                            <a href="/en/LegislationPortal/Subordinate-Legislation/By-Agency">By Agency</a>
+                                        </p>
+                                        <p>
+                                            <a href="/en/LegislationPortal/Subordinate-Legislation/By-Parent-Act">By Parent Act</a>
+                                        </p>
+                                        <p>
+                                            <a href="/en/LegislationPortal/Subordinate-Legislation/By-Year">By Year</a>
+                                        </p>
+                                        <p>
+                                            <a href="/en/LegislationPortal/Subordinate-Legislation/By-Type">By Type</a>
+                                        </p>
+                                        <p>
+                                            <a href="/en/LegislationPortal/Subordinate-Legislation/By-Principal-Subordinate-Legislation">By Principal Subordinate Legislation</a>
+                                        </p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="panel-heading home-thumb-colour-1" data-toggle="collapse" data-target="#sdNav_LegislationInformation" >
+                        <h4 class="panel-title">
+                            <span class="glyphicon glyphicon-menu-right"></span>
+                            <span class="glyphicon glyphicon-menu-down"></span>
+                            <a href="#">
+                                Legislation Information
+                            </a>
+                        </h4>
+                    </li>
+                    <li>
+                        <div id="sdNav_LegislationInformation" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                        <p>
+                                            <a href="/en/LegislationPortal/Legislation-Information/Alphabetical-Tables">Alphabetical Tables</a>
+                                        </p>
+                                        <p>
+                                            <a href="/en/LegislationPortal/Legislation-Information/Chronological-Tables">Chronological Tables</a>
+                                        </p>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="/en/LegislationPortal/Superseded-Reprints">Superseded Reprints</a>
+                    </li>
+                    <li>
+                        <a href="/en/Legislation/ADMINISTRATIVE-ARRANGEMENTS-ORDER">Administrative Arrangements Order</a>
+                    </li>
+                    <li>
+                        <a target="_blank" href="https://nt.gov.au/about-government/gazettes">Gazettes</a>
+                    </li>
+                    <li>
+                        <a target="_blank" href="https://parliament.nt.gov.au/business/parliamentary-records">Hansard</a>
+                    </li>
+
+</ul>
+</div>
+    <div class="col-md-10">
+
+<div>
+        
+
+<div class="actPage">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-4">
+                
+                <fieldset class="roundedWhiteBorders">
+                    <legend class="roundedWhiteBordersSmall">Details</legend>
+                    <h3>Environment Legislation Amendment (Safe Air) Bill 2026 </h3>
+                    <br />
+                    <button class="btn btn-default btn-sm btn-subscribe disabled"         title="Please login to My Account to subscribe"                 style="display: inline-block"        >    <span class="glyphicon glyphicon-envelope"></span></button>
+                    <hr>
+                    <div class="row">
+                        <label>Serial No:</label>
+                        <span>73</span>
+                    </div>
+                    <div class="row">
+                        <label>Assembly:</label>
+                        <span>Fifteenth (2024 - )</span>
+                    </div>
+                    <div class="row">
+                        <label>Sponsor:</label>
+                        <span>Mr Burgoyne</span>
+                    </div>
+                    <div class="row">
+                        <label>Remarks:</label>
+                        <span></span>
+                    </div>
+                    <div class="row">
+                        <label>Introduced:</label>
+                        <span>26/08/2026</span>
+                    </div>
+                    <div class="row">
+                        <label>Status:</label>
+                        <span></span>
+                    </div>
+                    <div class="row">
+                        <label>Date:</label>
+                        <span></span>
+                    </div>
+                    <div class="row">
+                        <label>Amended:</label>
+                        <span></span>
+                    </div>
+                </fieldset>
+                <fieldset class="roundedWhiteBorders">
+                    <legend class="roundedWhiteBordersSmall">Download</legend>
+                    <div class="row">
+                        <div class="col-sm-6 text-center">
+                                <a href="https://legislation.nt.gov.au/api/sitecore/Bill/BWord?id=19404">
+                                    <i class="fa fa-file-word-o fa-3x" title="Word Download"></i>
+                                    <span class="sr-only"></span>
+                                </a>
+                        </div>
+                        <div class="col-sm-6 text-center">
+                                <a href="https://legislation.nt.gov.au/api/sitecore/Bill/BPDF?id=19404">
+                                    <i class="fa fa-file-pdf-o fa-3x" title="PDF Download"></i>
+                                    <span class="sr-only"></span>
+                                </a>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="roundedWhiteBorders" id="TOCMasterRoundedPanel">
+    <legend class="roundedWhiteBordersSmall">
+            <div class="panel-heading" data-toggle="collapse" id="TOCPanelHeading" data-target="#TOCPanel">Table of Contents</div>
+    </legend>
+    <div id="TOCPanel" class="row panel-collapse collapse in">
+	    <div class="panel-body col-md-12" id="TOC">            
+        </div>
+    </div>
+</fieldset>
+<script>
+    $("#TOCPanel").on("click", ".outlineItem a", function () {
+        $("html, body").animate({ scrollTop: 0 });
+    })
+</script>
+                <fieldset class="roundedWhiteBorders">
+                    <legend class="roundedWhiteBordersSmall">Related</legend>
+                    <div class="row">
+
+                            <label>Act:</label> <span></span>
+                    </div>
+                        <div class="row">
+                            <label>Explanatory Statement:</label>
+                            <a href="https://legislation.nt.gov.au/api/sitecore/Bill/SC_OtherDoc?itemId=c23fb5cf-42a1-4e08-8a4e-c3995f911af9&amp;type=ExplanatoryStatementBody">
+                                <i class="fa fa-file-pdf-o fa-2x" title="Explanatory Statement Download"></i>
+                                <span class="sr-only">Serial 73 ES Environment Legislation Amendment Safe Air Bill 2026 pdf</span>
+                            </a>
+                        </div>
+                                    </fieldset>
+                
+            </div>
+            <div class="col-sm-8">
+                <div class="roundedWhiteBorders">
+                    
+
+
+
+
+<script>
+    var PDF_URL = "https://legislation.nt.gov.au/api/sitecore/Bill/BPDF?id=19404";
+    var curItemGUID = "c23fb5cf-42a1-4e08-8a4e-c3995f911af9";
+    var baseURL = "/api/sitecore/Legislation/Amendment";
+
+</script>
+<link rel="stylesheet" href="/Includes/css/pdf_viewer.css">
+<script src="/Includes/js/pdf_compatibility.js"></script>
+<script src="/Includes/js/pdf_l10n.js"></script>
+<script src="/Includes/js/pdf.js"></script>
+<script src="/Includes/js/pdf_viewer.js"></script>
+
+
+<div tabindex="1" class="loadingInProgress pdf-set-height">
+    <div id="outerContainer" class="">
+        <div id="mainContainer">
+            <div class="findbar hidden doorHanger hiddenSmallView" id="findbar">
+                <label for="findInput" class="toolbarLabel" data-l10n-id="find_label">Find:</label>
+                <input id="findInput" class="toolbarField" tabindex="91">
+                <div class="splitToolbarButton">
+                    <button class="toolbarButton findPrevious" title="" id="findPrevious" tabindex="92" data-l10n-id="find_previous">
+                        <span data-l10n-id="find_previous_label">Previous</span>
+                    </button>
+                    <div class="splitToolbarButtonSeparator"></div>
+                    <button class="toolbarButton findNext" title="" id="findNext" tabindex="93" data-l10n-id="find_next">
+                        <span data-l10n-id="find_next_label">Next</span>
+                    </button>
+                </div>
+                <input type="checkbox" id="findHighlightAll" class="toolbarField" tabindex="94">
+                <label for="findHighlightAll" class="toolbarLabel" data-l10n-id="find_highlight">Highlight all</label>
+                <input type="checkbox" id="findMatchCase" class="toolbarField" tabindex="95">
+                <label for="findMatchCase" class="toolbarLabel" data-l10n-id="find_match_case_label">Match case</label>
+                <span id="findResultsCount" class="toolbarLabel hidden"></span>
+                <span id="findMsg" class="toolbarLabel"></span>
+            </div>
+            <!-- findbar -->
+            <div class="toolbar">
+                <div id="toolbarContainer">
+                    <div id="toolbarViewer">
+                        <div id="toolbarViewerLeft">
+                            <div class="splitToolbarButton">
+                                <button id="viewFind" class="toolbarButton group hiddenSmallView" title="Find in Document" tabindex="12" data-l10n-id="findbar">
+                                    <span data-l10n-id="findbar_label">Find</span>
+                                </button>
+                                <button id="firstPage" class="toolbarButton firstPage" title="Go to First Page" tabindex="56" data-l10n-id="first_page">
+                                    <span data-l10n-id="first_page_label">Go to First Page</span>
+                                </button>
+                                <button class="toolbarButton pageUp" title="Previous Page" id="previous" tabindex="13" data-l10n-id="previous">
+                                    <span data-l10n-id="previous_label">Previous</span>
+                                </button>
+                                <div class="splitToolbarButtonSeparator"></div>
+                                <button class="toolbarButton pageDown" title="Next Page" id="next" tabindex="14" data-l10n-id="next">
+                                    <span data-l10n-id="next_label">Next</span>
+                                </button>
+                                <button id="lastPage" class="toolbarButton lastPage" title="Go to Last Page" tabindex="57" data-l10n-id="last_page">
+                                    <span data-l10n-id="last_page_label">Go to Last Page</span>
+                                </button>
+                                <label id="pageNumberLabel" class="toolbarLabel" for="pageNumber" data-l10n-id="page_label">Page: </label>
+                            </div>
+                            <input type="number" id="pageNumber" class="toolbarField pageNumber" value="1" size="4" min="1" tabindex="15">
+                            <span id="numPages" class="toolbarLabel"></span>
+                            <button id="toggleHandTool" class="toolbarButton handTool" title="Enable hand tool" tabindex="60" data-l10n-id="hand_tool_enable">
+                                <span data-l10n-id="hand_tool_enable_label">Enable hand tool</span>
+                            </button>
+                            <div class="splitToolbarButton">
+                                <button id="zoomOut" class="toolbarButton zoomOut" title="Zoom Out" tabindex="21" data-l10n-id="zoom_out">
+                                    <span data-l10n-id="zoom_out_label">Zoom Out</span>
+                                </button>
+                                <div class="splitToolbarButtonSeparator"></div>
+                                <button id="zoomIn" class="toolbarButton zoomIn" title="Zoom In" tabindex="22" data-l10n-id="zoom_in">
+                                    <span data-l10n-id="zoom_in_label">Zoom In</span>
+                                </button>
+                            </div>
+                            <span id="scaleSelectContainer" class="dropdownToolbarButton">
+                                <select id="scaleSelect" title="Zoom" tabindex="23" data-l10n-id="zoom">
+                                    <option id="pageAutoOption" title="" value="auto" selected="selected" data-l10n-id="page_scale_auto">Automatic Zoom</option>
+                                    <option id="pageActualOption" title="" value="page-actual" data-l10n-id="page_scale_actual">Actual Size</option>
+                                    <option id="pageFitOption" title="" value="page-fit" data-l10n-id="page_scale_fit">Fit Page</option>
+                                    <option id="pageWidthOption" title="" value="page-width" data-l10n-id="page_scale_width">Full Width</option>
+                                    <option id="customScaleOption" title="" value="custom" hidden="true"></option>
+                                    <option title="" value="0.5" data-l10n-id="page_scale_percent" data-l10n-args='{ "scale": 50 }'>50%</option>
+                                    <option title="" value="0.75" data-l10n-id="page_scale_percent" data-l10n-args='{ "scale": 75 }'>75%</option>
+                                    <option title="" value="1" data-l10n-id="page_scale_percent" data-l10n-args='{ "scale": 100 }'>100%</option>
+                                    <option title="" value="1.25" data-l10n-id="page_scale_percent" data-l10n-args='{ "scale": 125 }'>125%</option>
+                                    <option title="" value="1.5" data-l10n-id="page_scale_percent" data-l10n-args='{ "scale": 150 }'>150%</option>
+                                    <option title="" value="2" data-l10n-id="page_scale_percent" data-l10n-args='{ "scale": 200 }'>200%</option>
+                                    <option title="" value="3" data-l10n-id="page_scale_percent" data-l10n-args='{ "scale": 300 }'>300%</option>
+                                    <option title="" value="4" data-l10n-id="page_scale_percent" data-l10n-args='{ "scale": 400 }'>400%</option>
+                                </select>
+                            </span>
+                        </div>
+                    </div>
+                    <div id="loadingBar">
+                        <div class="progress">
+                            <div class="glimmer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="viewerContainer" tabindex="0">
+                <div id="viewer" class="pdfViewer"></div>
+            </div>
+        </div>
+        <!-- mainContainer -->
+        <div id="overlayContainer" class="hidden">
+        </div>
+        <!-- overlayContainer -->
+    </div>
+    <!-- outerContainer -->
+</div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div></div>
+</div>
+
+
+
+<div>
+    <footer class="footer  navbar-fixed-bottom">
+        
+<nav class="navbar navbar-default ntgbluenavbar">
+    <div class="container">
+        <ul class="nav navbar-nav ntgbluenavbar">
+                <li>
+                        <a href="/en/Footer/Contact-Us">Contact Us </a>
+                </li>
+                <li>
+                        <a href="/en/Footer/Help">Help </a>
+                </li>
+                <li>
+                        <a href="/en/Footer/Other-Websites">Other Websites </a>
+                </li>
+                <li>
+                        <a href="/en/Footer/Terms-of-Use">Terms of Use </a>
+                </li>
+                <li>
+                        <span> </span>
+                </li>
+
+        </ul>
+    </div>
+</nav>
+    </footer>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -24,6 +24,7 @@ import {
 import type { ClaudeVerdict } from './claude-classify';
 import { extractFromFrlSearch, trackedFrlPages } from '@/lib/legislation/frl-search';
 import { extractFromSaltSearch } from '@/lib/legislation/sa-salt';
+import { extractFromBillList } from '@/lib/legislation/state-bill-lists';
 import { extractFromVicBillSearch } from '@/lib/legislation/vic-bills';
 import { extractRetrievedDocument } from './content';
 import { classifyFailure, publicFailureUrl } from './failure';
@@ -1362,7 +1363,9 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
                 ? extractFromSaltSearch(retrieval.body)
                 : source.kind === 'vic-bill-search'
                   ? extractFromVicBillSearch(retrieval.body)
-                  : extractFromHtml(retrieval.body, source.url);
+                  : source.kind === 'bill-list' && source.billList
+                    ? extractFromBillList(source.billList, retrieval.body, source.url)
+                    : extractFromHtml(retrieval.body, source.url);
       return { retrieval, extracted };
     };
     const retrieveSourceIndex = async () => {
