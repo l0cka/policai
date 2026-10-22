@@ -5,6 +5,11 @@ import {
 } from './format-policy-date';
 
 describe('policy calendar dates', () => {
+  it('abbreviates September to three letters like every other month', () => {
+    expect(formatPolicyDate({ type: 'published', date: '2026-09-30', precision: 'day' }, { short: true })).toBe('30 Sep 2026');
+    expect(formatPolicyDate({ type: 'published', date: '2026-09-30', precision: 'day' })).toBe('30 September 2026');
+  });
+
   it('formats date-only values without timezone rollback', () => {
     const previousTimezone = process.env.TZ;
     process.env.TZ = 'America/Los_Angeles';

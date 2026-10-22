@@ -8,6 +8,7 @@ import {
   type DeadlineCard,
 } from '../lib/deadline-data';
 import { deadlineDateTime, formatDeadlineDate, type SecondaryDate } from '../lib/deadline-model';
+import { auDate } from '../lib/au-date';
 
 /*
  * Every dated list on the site uses one row grammar: the subject leads, the
@@ -117,7 +118,7 @@ export function DeadlineTimeline({ rows }: { rows: DeadlineCard[] }) {
                 <div className={`date-block ${urgency(days)}`} aria-hidden="true">
                   <span className="day">{Number(r.date.slice(8, 10))}</span>
                   <span className="mon">
-                    {new Date(`${r.date}T00:00:00`).toLocaleDateString('en-AU', { month: 'short' })}
+                    {auDate(new Date(`${r.date}T00:00:00`), { month: 'short' })}
                   </span>
                 </div>
 

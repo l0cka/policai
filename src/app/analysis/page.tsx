@@ -98,7 +98,7 @@ export default async function AnalysisPage({
                 <p className="mt-1 max-w-3xl text-sm leading-6 text-muted-foreground">
                   {article.summary}
                 </p>
-                <p className="mt-2 flex flex-wrap gap-x-3 text-[11px] text-muted-foreground">
+                <p className="mt-2 flex flex-wrap gap-x-3 text-xs text-muted-foreground">
                   <Byline />
                   {article.updatedAt ? <ArticleDate label="Updated" date={article.updatedAt} /> : null}
                   {article.sourceUnderReview ? (

@@ -35,6 +35,7 @@ import { policyPriorBodies } from '../../../../data/policy-prior-bodies';
 import { diffPolicyText, retainedPriorBody } from '@/lib/policy-diff';
 import { splitSummaryBlocks } from '@/lib/summary-blocks';
 import { cn } from '@/lib/utils';
+import { auDate } from '@/lib/au-date';
 
 type TabId = 'overview' | 'requirements' | 'content';
 
@@ -45,7 +46,7 @@ const tabs: Array<{ id: TabId; label: string }> = [
 ];
 
 function humanDate(value: string): string {
-  return new Date(value).toLocaleDateString('en-AU', {
+  return auDate(new Date(value), {
     day: 'numeric',
     month: 'short',
     year: 'numeric',
@@ -196,7 +197,9 @@ export function PolicyDetailTabs({
             <span>{getPolicyTypeName(policy.type)}</span>
             <span className="hidden sm:contents">
               <span className="h-4 w-px bg-border" />
-              <StatusBadge policy={policy} />
+              <span className="font-sans normal-case tracking-normal">
+                <StatusBadge policy={policy} />
+              </span>
             </span>
           </div>
 

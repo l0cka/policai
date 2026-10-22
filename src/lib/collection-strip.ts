@@ -1,4 +1,5 @@
 import type { CollectionMeta } from '@/types';
+import { auDate } from '@/lib/au-date';
 
 export function collectionStripProps(meta: CollectionMeta) {
   return {
@@ -15,7 +16,7 @@ export function formatCollectedAt(value: string | null): string {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return 'SOURCE STATUS IN METHODOLOGY';
 
-  return `COLLECTED ${date.toLocaleString('en-AU', {
+  return `COLLECTED ${auDate(date, {
     day: '2-digit',
     month: 'short',
     year: 'numeric',

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { getPool } from '../../lib/db';
 import { fetchMethodLabel, getItemCompleteness, sourceErrorLabel, getSourceHealth, sourceHealthState, ITEM_EXPECTED_FIELDS, ITEM_EXPECTED_FIELD_LABELS, type SourceHealthState } from '../../lib/health-data';
 import { CheckCircle, CircleAlert, CircleDash } from '../icons';
+import { auDate } from '../../lib/au-date';
 
 export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
@@ -135,7 +136,7 @@ export default async function Health() {
                   <td>{fetchMethodLabel(r.fetch_method)}</td>
                   <td className="cell-mono">
                     {r.next_run_at
-                      ? new Date(r.next_run_at).toLocaleString('en-AU', {
+                      ? auDate(new Date(r.next_run_at), {
                           timeZone: 'Australia/Sydney',
                           day: '2-digit',
                           month: 'short',

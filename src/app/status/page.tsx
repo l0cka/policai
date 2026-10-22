@@ -34,6 +34,7 @@ import { HealthSignal } from '@/components/ui/health-signal';
 import { getJurisdictionName } from '@/types';
 import { EDITORIAL_REVIEW_INTERVAL_DAYS } from '@/lib/verification';
 import { pageAlternates, pageSocialMeta } from '@/lib/site-seo';
+import { auDate } from '@/lib/au-date';
 
 export const revalidate = 3600;
 
@@ -72,7 +73,7 @@ const REVIEW_SOON_DAYS = 30;
 
 function sydneyDate(stamp: string | null): string {
   if (!stamp) return 'never';
-  return new Date(stamp).toLocaleDateString('en-AU', {
+  return auDate(new Date(stamp), {
     day: 'numeric',
     month: 'short',
     year: 'numeric',

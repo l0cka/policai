@@ -13,6 +13,7 @@ import { JurisdictionMark } from '@/components/policy-indicators';
 import { jurisdictionRailStyle } from '@/lib/jurisdiction-accent';
 import { type Agency } from '@/types';
 import { MetricStrip, PageIntro } from '@/components/layout';
+import { auDate } from '@/lib/au-date';
 
 /** Verified / unverified / no-statement-found, in the same icon language as the register. */
 function StatementState({ agency }: { agency: Agency }) {
@@ -65,7 +66,7 @@ function AgencyDetails({ agency }: { agency: Agency }) {
             Last updated
           </span>
           <p className="mt-1">
-            {new Date(agency.lastUpdated).toLocaleDateString('en-AU', {
+            {auDate(new Date(agency.lastUpdated), {
               year: 'numeric',
               month: 'long',
               day: 'numeric',

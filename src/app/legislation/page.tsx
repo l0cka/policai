@@ -97,7 +97,7 @@ function BillRow({ bill }: { bill: BillInParliament }) {
     >
       <EntryDate entry={bill.last} />
       <div className="min-w-0">
-        <p className="text-[11px] text-muted-foreground">
+        <p className="text-xs text-muted-foreground">
           {getJurisdictionName(bill.record.jurisdiction)}
         </p>
         <RecordLink entry={bill} />
@@ -105,7 +105,7 @@ function BillRow({ bill }: { bill: BillInParliament }) {
           {bill.last.label}
           {bill.last.detail ? `. ${bill.last.detail}` : ''}
         </p>
-        <div className="mt-1.5 flex flex-wrap items-center gap-3 text-[11px]">
+        <div className="mt-1.5 flex flex-wrap items-center gap-3 text-xs">
           <ChamberBar bill={bill} />
           <SourceLink href={bill.last.sourceUrl} />
         </div>
@@ -122,7 +122,7 @@ function EntryRow({ entry }: { entry: DatedEntry }) {
     >
       <EntryDate entry={entry} />
       <div className="min-w-0">
-        <p className="text-[11px] text-muted-foreground">
+        <p className="text-xs text-muted-foreground">
           {entry.label} · {getJurisdictionName(entry.record.jurisdiction)} ·{' '}
           {getPolicyTypeName(entry.record.type)}
         </p>
@@ -130,7 +130,7 @@ function EntryRow({ entry }: { entry: DatedEntry }) {
         {entry.detail ? (
           <p className="mt-1 text-sm leading-6 text-muted-foreground">{entry.detail}</p>
         ) : null}
-        <div className="mt-1.5 text-[11px]">
+        <div className="mt-1.5 text-xs">
           <SourceLink href={entry.sourceUrl} />
         </div>
       </div>

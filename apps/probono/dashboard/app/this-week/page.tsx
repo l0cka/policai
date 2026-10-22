@@ -5,6 +5,7 @@ import { getWeeklyBrief, type WeeklySignal } from '../../lib/this-week-data';
 import { isStaleSnapshot, weekWindow } from '../../lib/weekly-query';
 import { STREAMS } from '../../lib/radar-state';
 import { ArrowRight, ArrowUpRight, Flag } from '../icons';
+import { auDate } from '../../lib/au-date';
 
 export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
@@ -13,7 +14,7 @@ export const metadata: Metadata = {
 };
 
 function shortDate(value: string | Date): string {
-  return new Date(value).toLocaleDateString('en-AU', { timeZone: 'Australia/Sydney', day: 'numeric', month: 'short', year: 'numeric' });
+  return auDate(new Date(value), { timeZone: 'Australia/Sydney', day: 'numeric', month: 'short', year: 'numeric' });
 }
 
 function Signal({ item, opportunity = false }: { item: WeeklySignal; opportunity?: boolean }) {

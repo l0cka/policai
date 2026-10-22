@@ -161,7 +161,7 @@ it('says every automatic source was reached since the last passing run', async (
   const section = screen
     .getByRole('heading', { name: 'Not reached since the last passing run' })
     .closest('section');
-  expect(section).toHaveTextContent('Last collected 22 Sept 2026. Last passing run 22 Sept 2026');
+  expect(section).toHaveTextContent('Last collected 22 Sep 2026. Last passing run 22 Sep 2026');
   expect(section).toHaveTextContent('Every automatic source has been reached since then.');
 });
 
@@ -196,13 +196,13 @@ it('names the automatic sources failing since the last passing run, longest firs
   const section = screen
     .getByRole('heading', { name: 'Not reached since the last passing run' })
     .closest('section');
-  expect(section).toHaveTextContent('Last passing run 20 Sept 2026');
+  expect(section).toHaveTextContent('Last passing run 20 Sep 2026');
   expect(
     within(section as HTMLElement)
       .getAllByRole('listitem')
       .map((item) => item.textContent),
   ).toEqual([
-    'Prime Minister of Australia — media failing since 20 Sept 2026, 3 runs, identity_refused',
+    'Prime Minister of Australia — media failing since 20 Sep 2026, 3 runs, identity_refused',
   ]);
 });
 

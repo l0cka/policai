@@ -3,6 +3,7 @@ import { STREAMS } from '../lib/radar-state';
 const COLLECTIONS: Record<string, string> = { ...STREAMS, unclassified: 'Unclassified' };
 
 import type { NetworkPair, NetworkSignal } from '../lib/radar-data';
+import { auDate } from '../lib/au-date';
 
 type Node = {
   key: string;
@@ -39,7 +40,7 @@ function isSafeUrl(value: string): boolean {
 }
 
 function shortDate(value: string | Date): string {
-  return new Date(value).toLocaleDateString('en-AU', {
+  return auDate(new Date(value), {
     timeZone: 'Australia/Sydney',
     day: 'numeric',
     month: 'short',
