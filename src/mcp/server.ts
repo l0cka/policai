@@ -9,10 +9,13 @@ import {
   handleListCourtRequirementCandidates,
   handleListStagedSources,
   handleListThemes,
+  handleProposeSourceDecision,
   handlePublishStagedSource,
+  handleRecordDecision,
   handleRecordManualSourceReview,
   handleRejectStagedSource,
   handleReviewCourtRequirement,
+  handleShowSourceProposal,
   handleSignalDecision,
   handleStageSourceCapture,
   handleStageSourceUrl,
@@ -40,6 +43,7 @@ const browserCaptureSchema = z.object({
   })).max(32).optional(),
   capturedAt: z.string().datetime({ offset: true }),
   capturedBy: z.string().min(1),
+  requestedBy: z.string().min(1).optional(),
   notes: z.string().min(20),
   linkedDocuments: z.array(z.object({
     url: z.string().url(),
@@ -88,11 +92,12 @@ server.registerTool(
   {
     title: 'Stage source URL',
     description:
-      'Writes a source review proposal. If the URL belongs to tracked records, use entryKind and targetRecordId to select the record to re-verify; targetRecordId is required when multiple records of that kind share the URL. Requires POLICAI_MCP_ADMIN_TOKEN. Does not publish.',
+      'Writes a source review proposal. If the URL belongs to tracked records, use entryKind and targetRecordId to select the record to re-verify; targetRecordId is required when multiple records of that kind share the URL. proposedRecord sets the exact record to publish, edits included. Requires POLICAI_MCP_ADMIN_TOKEN. Does not publish.',
     inputSchema: {
       url: z.string().url(),
       entryKind: z.enum(['policy', 'timeline_event']),
       targetRecordId: z.string().min(1).optional(),
+      proposedRecord: z.record(z.string(), z.unknown()).optional(),
       notes: z.string().optional(),
       stageOnly: z.boolean().optional(),
       adminToken: z.string(),
@@ -146,6 +151,83 @@ server.registerTool(
     },
   },
   async (input) => toToolText(await handleListStagedSources(input)),
+);
+
+server.registerTool(
+  'show_source_proposal',
+  {
+    title: 'Show source proposal',
+    description:
+      'Read-only. Returns what a decision card must show for one staged review: the current record, the proposed record, the source evidence, and proposalHash with its short proposalCode. Post a decision card with that content, then pass proposalHash to record_decision once the editor taps Approve.',
+    inputSchema: {
+      id: z.string().min(1),
+    },
+    annotations: {
+      readOnlyHint: true,
+      idempotentHint: true,
+      destructiveHint: false,
+    },
+  },
+  async (input) => toToolText(await handleShowSourceProposal(input)),
+);
+
+server.registerTool(
+  'propose_source_decision',
+  {
+    title: 'Propose source decision',
+    description:
+      'Prepares everything a pending review needs for approval, so the editor decides on one complete proposal: the edited proposedRecord, reviewedDate for a date the source shows but does not expose as metadata, manualExtraction, officialSourceUrl for a stage-only lead, or expectedTargetRevisionHash after a rebase. proposedBy names who prepared it honestly, for example "Claude (agent)". Returns proposalHash. Requires POLICAI_MCP_ADMIN_TOKEN. Does not approve or publish.',
+    inputSchema: {
+      id: z.string().min(1),
+      proposedBy: z.string().min(1),
+      proposedRecord: z.record(z.string(), z.unknown()).optional(),
+      expectedTargetRevisionHash: z.string().regex(/^[a-f0-9]{64}$/).optional(),
+      officialSourceUrl: z.string().url().optional(),
+      manualExtraction: z.object({
+        method: z.enum(['ocr', 'manual_transcription']),
+        title: z.string().min(1),
+        text: z.string().min(20),
+        publishedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+        publishedAtPrecision: z.enum(['day', 'month', 'year']).optional(),
+        notes: z.string().min(1),
+      }).optional(),
+      reviewedDate: z.object({
+        date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+        precision: z.enum(['day', 'month', 'year']),
+        notes: z.string().min(20),
+      }).optional(),
+      notes: z.string().optional(),
+      adminToken: z.string(),
+    },
+    annotations: {
+      readOnlyHint: false,
+      idempotentHint: false,
+      destructiveHint: false,
+    },
+  },
+  async (input) => toToolText(await handleProposeSourceDecision(input)),
+);
+
+server.registerTool(
+  'record_decision',
+  {
+    title: 'Record editor decision',
+    description:
+      'Approves and publishes a staged review after the editor tapped Approve on a Policai project decision card. Call it only with the proposalHash the card showed and the link to that card; a typed "go ahead" is not a decision. Refuses when the review changed since the card was posted, when the reviewer is not on the editor allowlist (POLICAI_SIGNAL_REVIEWERS, default Daniel Alkurdi), or when a staged browser capture is over 7 days old. Retrying the same decision resumes a failed publication. Requires POLICAI_MCP_ADMIN_TOKEN.',
+    inputSchema: {
+      id: z.string().min(1),
+      proposalHash: z.string().regex(/^[a-f0-9]{64}$/),
+      reviewer: z.string().min(1),
+      attestationUrl: z.string().url(),
+      adminToken: z.string(),
+    },
+    annotations: {
+      readOnlyHint: false,
+      idempotentHint: true,
+      destructiveHint: true,
+    },
+  },
+  async (input) => toToolText(await handleRecordDecision(input)),
 );
 
 server.registerTool(
