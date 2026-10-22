@@ -7,7 +7,7 @@ export function CourtsAnalysis({ articles }: { articles: CourtAnalysisLink[] }) 
   if (articles.length === 0) return null;
 
   return (
-    <section aria-labelledby="court-analysis" className="mt-7 max-w-[44rem]">
+    <section aria-labelledby="court-analysis" className="mt-12 max-w-[44rem]">
       <h2
         id="court-analysis"
         className="border-b border-[var(--rule-heavy)] py-2 font-mono text-[11px] font-medium uppercase tracking-[0.12em]"

@@ -9,7 +9,7 @@ const [register, updates, ...sections] = PRIMARY_SECTIONS;
 // The footer mirrors the header's sections, with each section's views listed
 // under it, and adds the machine-readable and off-site links.
 const groups: Array<{ label: string; links: FooterLink[] }> = [
-  { label: register.label, links: [...register.views] },
+  { label: register.label, links: [...register.views, { href: '/following', label: 'Following' }] },
   { label: updates.label, links: [...updates.views, { href: '/feed.xml', label: 'RSS' }] },
   { label: 'Sections', links: sections.map(({ href, label }) => ({ href, label })) },
   {

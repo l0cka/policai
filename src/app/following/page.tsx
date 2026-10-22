@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { FollowingList, type FollowingPolicy } from '@/components/follow-control';
 import { PageIntro } from '@/components/layout';
 import { getPolicies } from '@/lib/data-service';
@@ -38,11 +37,6 @@ export default async function FollowingPage() {
         title={FOLLOWING_TITLE}
         description="Records followed on this browser only. A different browser, or a new profile, starts empty. There is no account and nothing is emailed."
       />
-      <p className="text-sm">
-        <Link href="/this-week" className="text-primary underline underline-offset-4">
-          This week in Australian AI policy
-        </Link>
-      </p>
       <FollowingList policies={rows} />
     </div>
   );

@@ -90,8 +90,13 @@ export function FollowingList({ policies }: { policies: readonly FollowingPolicy
     return (
       <p role="status" className="mt-6 max-w-2xl text-sm leading-6 text-muted-foreground">
         {follows.length === 0
-          ? 'Nothing followed in this browser yet. Follow a record, a jurisdiction, or a theme, then come back to this page.'
-          : 'No public records match the follows saved in this browser.'}
+          ? 'Nothing followed in this browser yet. '
+          : 'No public records match the follows saved in this browser. '}
+        Open a record in the{' '}
+        <Link href="/" className="text-primary underline underline-offset-4">
+          register
+        </Link>{' '}
+        and choose Follow, or filter the register to one jurisdiction or theme and follow that.
       </p>
     );
   }

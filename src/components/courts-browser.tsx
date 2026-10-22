@@ -263,8 +263,6 @@ export function CourtsBrowser({
 				{ value: requirements.length, label: "verified requirements" },
 			]} />
 
-			{analysis}
-
 			<div className="pt-7">
 				<section aria-label="Find court guidance" className="border-y border-border bg-muted/30 px-3 py-3 sm:px-4">
 					<div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-[minmax(16rem,1fr)_13rem_13rem_11rem]">
@@ -555,6 +553,8 @@ export function CourtsBrowser({
 				</section>
 			)}
 			</div>
+
+			{analysis}
 		</div>
 	);
 }

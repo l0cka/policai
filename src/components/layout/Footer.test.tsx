@@ -9,6 +9,7 @@ it('lists every page under its section, with the utilities moved out of the head
     ['Records', '/'],
     ['Timeline', '/timeline'],
     ['Coverage map', '/coverage'],
+    ['Following', '/following'],
     ['This week', '/this-week'],
     ['Developments', '/developments'],
     ['RSS', '/feed.xml'],

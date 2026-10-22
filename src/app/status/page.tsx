@@ -146,9 +146,9 @@ export default async function StatusPage() {
         metrics={[
           {
             value: `${meta.collector.successfulSourceCount}/${meta.collector.dueSourceCount}`,
-            label: 'due sources reached, last run',
+            label: `due sources reached in the run of ${sydneyDate(meta.lastCollectedAt)}`,
           },
-          { value: freshness.overdue, label: 'overdue sources' },
+          { value: freshness.overdue, label: 'sources overdue for a check today' },
           { value: freshness.neverChecked, label: 'never checked' },
           { value: queue.pending, label: 'awaiting review' },
         ]}
