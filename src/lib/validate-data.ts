@@ -1442,6 +1442,20 @@ export function validateCollectionMeta(meta: CollectionMeta): ValidationReport {
       errors.push(`${label}: failure fields require a failed result`);
     else if ((result.failureClass === undefined) !== (result.failedUrl === undefined))
       errors.push(`${label}: failureClass and failedUrl must appear together`);
+    if (result.skippedLinked !== undefined) {
+      if (!Array.isArray(result.skippedLinked) || result.skippedLinked.length === 0)
+        errors.push(`${label}: skippedLinked must be a non-empty array`);
+      else
+        result.skippedLinked.forEach((skipped, index) => {
+          if (
+            !isNonEmptyString(skipped?.url) ||
+            publicFailureUrl(skipped.url) !== skipped.url
+          )
+            errors.push(`${label}: skippedLinked[${index}] has an invalid url`);
+          if (!isNonEmptyString(skipped?.decidedBy))
+            errors.push(`${label}: skippedLinked[${index}] requires decidedBy`);
+        });
+    }
   });
 
   if (collector.health !== 'healthy') {
@@ -2083,11 +2097,6 @@ function validateAutomation(
     errors.push(`${label}: manual decision since cannot be in the future`);
   if (!isNonEmptyString(automation.decidedBy))
     errors.push(`${label}: manual decision needs decidedBy`);
-  if (
-    !Number.isInteger(automation.reviewEveryDays) ||
-    (automation.reviewEveryDays as number) < 1
-  )
-    errors.push(`${label}: reviewEveryDays must be a positive integer`);
   if (!isNonEmptyString(automation.evidence) || automation.evidence.trim().length < 20)
     errors.push(`${label}: manual decision needs evidence of at least 20 characters`);
 }

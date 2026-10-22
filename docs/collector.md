@@ -1218,11 +1218,13 @@ npm run collect -- --dry-run --source=<id>
   `degraded` and `lastHealthyAt` stale. Move such a source to manual
   tracking (which drops it from the denominator) rather than excluding it
   from the count. `automation` is then a decision record, never a bare flag:
-  `{ mode: 'manual', because, decision, since, decidedBy, reviewEveryDays,
-  evidence }`, where `because` is `identity_refused`, `bot_blocked`,
+  `{ mode: 'manual', because, decision, since, decidedBy, evidence }`, where `because` is `identity_refused`, `bot_blocked`,
   `robots_disallowed` or `not_found`, and `decision` is `manual` or
   `await_allowlist` (only where an allow-list request has a written reply).
-  `validate:data` rejects an incomplete record. Only a reviewed PR changes
+  `validate:data` rejects an incomplete record. The record carries no review
+  cadence of its own: how often an editor must check a manual source by hand
+  still follows its `schedule` (`reviewIsCurrent` in
+  `src/lib/source-monitoring.ts`). Only a reviewed PR changes
   it; the collector never moves a source itself. A result already stored for that id, including
   one recorded while it was still automatic, is left out of the public
   automatic count and does not keep the run degraded (`publicAutomaticCollectionMeta`
@@ -1237,6 +1239,10 @@ npm run collect -- --dry-run --source=<id>
   from those decisions, and the host gate never requests them: a linked
   document or candidate there is listed under `skippedLinked` on the
   source's result row, with the deciding source, and is not a failure.
+  A skipped candidate is marked `failed` in `watch-state.json` so the next
+  run does not request it again. Reversing the host decision does not revive
+  it: clear that candidate's `seen` entry in the same PR if it should be
+  collected.
   `validate:data` fails while an automatic source sits on a refused host, so
   one host decision cannot be half-applied. Record `bot_blocked` instead
   when the page host itself accepts the collector and only a linked host

@@ -161,4 +161,30 @@ describe('collection CLI write path', () => {
       ),
     ).toBe(false);
   });
+
+  it('installs the refused hosts from the catalog decisions on the default gate', async () => {
+    const requested: string[] = [];
+    const fetchImpl = vi.fn(async (input: RequestInfo | URL) => {
+      requested.push(String(input));
+      return new Response('', { status: 404 });
+    }) as unknown as typeof fetch;
+
+    await runCollection({
+      rootDir,
+      sources: [
+        { ...SOURCE, id: 'accc-probe', url: 'https://www.accc.gov.au/rss' },
+        { ...SOURCE, id: 'cyber-probe', url: 'https://www.cyber.gov.au/rss' },
+      ],
+      dryRun: true,
+      fetchImpl,
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+    });
+
+    expect(requested.map((url) => new URL(url).host)).not.toEqual(
+      expect.arrayContaining(['www.accc.gov.au']),
+    );
+    expect(requested.map((url) => new URL(url).host)).not.toEqual(
+      expect.arrayContaining(['www.cyber.gov.au']),
+    );
+  });
 });

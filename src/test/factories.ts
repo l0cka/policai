@@ -144,7 +144,6 @@ export function buildManualDecision(overrides: Partial<ManualDecision> = {}): Ma
     decision: 'manual',
     since: '2026-10-01',
     decidedBy: 'Daniel',
-    reviewEveryDays: 14,
     evidence: 'Returns 403 to every automated client, verified by hand.',
     ...overrides,
   }

@@ -1533,14 +1533,13 @@ describe('validateWatchSources automation decisions', () => {
       ...refusing,
       id: 'incomplete',
       url: 'https://www.finance.gov.au/other',
-      automation: { ...buildManualDecision(), because: 'unknown', decidedBy: '', reviewEveryDays: 0, since: '2026-11-01', evidence: 'short' },
+      automation: { ...buildManualDecision(), because: 'unknown', decidedBy: '', since: '2026-11-01', evidence: 'short' },
     } as unknown as WatchSource;
     expect(validateWatchSources([bare, incomplete], now).errors).toEqual([
       "watchSources:finance-news: automation must be 'automatic' or a manual decision",
       'watchSources:incomplete: invalid manual because',
       'watchSources:incomplete: manual decision since cannot be in the future',
       'watchSources:incomplete: manual decision needs decidedBy',
-      'watchSources:incomplete: reviewEveryDays must be a positive integer',
       'watchSources:incomplete: manual decision needs evidence of at least 20 characters',
     ]);
   });
@@ -1653,6 +1652,46 @@ describe('validateCollectionMeta failure classes', () => {
         meta(row({ failureClass: 'identity_refused', failedUrl })),
       ).errors,
     ).toEqual(['meta:sourceResults[0]: invalid failedUrl']);
+  });
+
+  it('accepts decided skips with a public url and a decider', () => {
+    expect(
+      validateCollectionMeta(
+        meta(
+          row({
+            status: 'success',
+            itemCount: 1,
+            error: undefined,
+            skippedLinked: [
+              { url: 'https://www.finance.gov.au/a.pdf', decidedBy: 'finance-news' },
+            ],
+          }),
+        ),
+      ).errors,
+    ).toEqual([]);
+  });
+
+  it.each([
+    [[], 'meta:sourceResults[0]: skippedLinked must be a non-empty array'],
+    ['nope', 'meta:sourceResults[0]: skippedLinked must be a non-empty array'],
+    [
+      [{ url: 'https://www.finance.gov.au/a.pdf?token=abc', decidedBy: 'finance-news' }],
+      'meta:sourceResults[0]: skippedLinked[0] has an invalid url',
+    ],
+    [
+      [{ url: '', decidedBy: 'finance-news' }],
+      'meta:sourceResults[0]: skippedLinked[0] has an invalid url',
+    ],
+    [
+      [{ url: 'https://www.finance.gov.au/a.pdf', decidedBy: ' ' }],
+      'meta:sourceResults[0]: skippedLinked[0] requires decidedBy',
+    ],
+  ])('rejects malformed skippedLinked case %#', (skippedLinked, error) => {
+    expect(
+      validateCollectionMeta(
+        meta(row({ skippedLinked: skippedLinked as never })),
+      ).errors,
+    ).toEqual([error]);
   });
 });
 

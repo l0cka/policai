@@ -1305,7 +1305,10 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     let failure: ReturnType<typeof rowFailure> | null = null;
     const skippedLinked = new Map<string, SkippedLinked>();
     const noteSkipped = (skipped: readonly SkippedLinked[] | undefined) => {
-      for (const entry of skipped ?? []) skippedLinked.set(entry.url, entry);
+      for (const entry of skipped ?? []) {
+        const url = publicFailureUrl(entry.url);
+        if (url) skippedLinked.set(url, { url, decidedBy: entry.decidedBy });
+      }
     };
 
     const exceptionUntil = source.identityException?.until;
