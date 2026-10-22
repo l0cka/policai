@@ -1238,6 +1238,17 @@ a fingerprint baseline.
   recorded yet counts from its last completed check. Out-of-scope bodies
   are left out and unassessed ones are counted. `/status` shows the same
   report (`watchCoverage` in `src/lib/watch-coverage/report.ts`).
+- **Finding sources for a body** — `npm run discover:sources -- --body=<id>`
+  reads the body's robots.txt `Sitemap:` lines (or `/sitemap.xml` when
+  there are none) and the RSS or Atom feeds its home page links (or
+  `/rss.xml` and `/feed` when it links none), then
+  prints ranked proposals with sample titles and marks any already
+  watched. Every request goes through the host gate under the declared
+  identity and the official-host allow-list, so robots.txt, pacing and
+  decided blocks hold; a disallowed section is listed as skipped, never
+  proposed. It uses plain HTTP only, so hosts that reject non-browser
+  clients return nothing. It writes nothing: admit a proposal through a PR
+  that adds the source with its `bodyId` and `admittedAt`.
 - **A host refuses the declared identity** — record it once, on the manual
   decision of the source that observed it, with `because: 'identity_refused'`.
   `refusedHosts` in `src/lib/pipeline/sources.ts` derives the refused hosts
