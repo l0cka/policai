@@ -168,10 +168,16 @@ describe('admit', () => {
     expect(await h.gate.admit(url('/nope'))).toMatchObject({ cls: 'robots_disallowed' });
   });
 
-  it.each([400, 401, 403, 404, 410, 451])('treats a %d robots.txt as allow-all', async (status) => {
+  it.each([400, 404, 410, 451])('treats a %d robots.txt as allow-all', async (status) => {
     const h = harness({ [A]: { status, body: 'User-agent: *\nDisallow: /' } });
     expect(await h.gate.admit(url('/anything'))).toEqual({ kind: 'go' });
     expect(h.gate.hosts()[hostOf(url('/'))]?.robots?.status).toBe('absent');
+  });
+
+  it.each([401, 403])('records a %d robots.txt as unreachable, not absent: a WAF refused the reader', async (status) => {
+    const h = harness({ [A]: { status, body: '' } });
+    expect(await h.gate.admit(url('/anything'))).toEqual({ kind: 'go' });
+    expect(h.gate.hosts()[hostOf(url('/'))]?.robots?.status).toBe('unreachable');
   });
 
   it.each([500, 502, 503, 504])(
