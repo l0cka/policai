@@ -26,7 +26,7 @@ export type BillEvent =
   | { kind: 'introduced'; chamber: Chamber }
   | { kind: 'referred'; committee: string; inquiryUrl: string; reportDue?: string }
   | { kind: 'reported'; committee: string; reportUrl: string }
-  | { kind: 'passed'; chamber: Chamber; withAmendments: boolean }
+  | { kind: 'passed'; chamber: Chamber; withAmendments?: boolean }
   | { kind: 'assented'; actCitation: string; act?: OfficialRef }
   | { kind: 'lapsed' }
   | { kind: 'withdrawn' }
@@ -288,7 +288,7 @@ const EVENT_FIELDS: Record<LegislativeEvent['kind'], (event: Raw) => string[]> =
   ],
   passed: (e) => [
     ...(isChamber(e.chamber) ? [] : ['chamber must be lower or upper']),
-    ...(typeof e.withAmendments === 'boolean' ? [] : ['withAmendments must be true or false']),
+    ...(e.withAmendments === undefined || typeof e.withAmendments === 'boolean' ? [] : ['withAmendments must be true or false']),
   ],
   assented: (e) => [
     ...(isText(e.actCitation) ? [] : ['actCitation is required']),
@@ -366,12 +366,20 @@ function dateOnly(value: Date | string): string {
 /**
  * Every problem with a register record's `legislative` field: its shape, the
  * order of its events, a stored status that disagrees with them, and a
- * commencement, amendment or repeal event without the matching record date.
+ * commencement, amendment or repeal record date that is none of its events.
+ * A record keeps one date per type, so with partial commencements the record
+ * date names the one that matters; a scheduled date with no event yet is
+ * left alone.
  */
 export function legislativeErrors(
   policy: Pick<Policy, 'type' | 'status' | 'jurisdiction' | 'dates'> & { legislative?: unknown },
+  { requireLegislative = true }: { requireLegislative?: boolean } = {},
 ): string[] {
-  if (policy.legislative === undefined) return [];
+  if (policy.legislative === undefined) {
+    return requireLegislative && policy.type === 'legislation' && policy.status !== 'trashed'
+      ? ['a legislation record needs legislative: its official id and lifecycle events']
+      : [];
+  }
   if (policy.type !== 'legislation' && policy.type !== 'regulation') {
     return [`legislative is only for legislation or regulation records, not "${policy.type}"`];
   }
@@ -397,14 +405,15 @@ export function legislativeErrors(
     }
   }
 
-  const recordDates = new Set(
-    (policy.dates ?? []).map((date) => `${date.type}:${dateOnly(date.date)}`),
-  );
-  legislative.events.forEach((dated, index) => {
-    const type = LAW_DATE_TYPES.find((candidate) => candidate === dated.event.kind);
-    if (type && !recordDates.has(`${type}:${dated.date}`)) {
-      result.push(`legislative.events[${index}] ${type} on ${dated.date} has no matching "${type}" record date`);
+  for (const type of LAW_DATE_TYPES) {
+    const eventDates = legislative.events
+      .filter((dated) => dated.event.kind === type)
+      .map((dated) => dated.date);
+    if (eventDates.length === 0) continue;
+    const recordDate = (policy.dates ?? []).find((date) => date.type === type);
+    if (!recordDate || !eventDates.includes(dateOnly(recordDate.date))) {
+      result.push(`legislative: the "${type}" record date must be one of its ${type} event dates (${eventDates.join(', ')})`);
     }
-  });
+  }
   return result;
 }

@@ -251,6 +251,28 @@
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
       "notes": "Daniel Alkurdi (Signal): approve 2, themes online-safety, privacy-data; type legislation\nchatMessageId: source-review-dev-bills-online-safety-and-other-legislation-amendm-1rn0ixa\ncardId: source-review-dev-bills-online-safety-and-other-legislation-amendm-1rn0ixa\ndecided: 19 Oct 2026, 20:22 AEDT (2026-10-19T09:22:34.993Z)\nthemes: online-safety, privacy-data\ntype: legislation\nrelayed by Policai Signal\nApproval used the collector-retained source snapshot because the live re-fetch was refused by the host (HTTP 403, 429, or equivalent identity/rate refusal)."
+    },
+    "legislative": {
+      "kind": "bill",
+      "ref": {
+        "register": "aph",
+        "billId": "s1471"
+      },
+      "origin": "private_member",
+      "events": [
+        {
+          "date": "2025-11-24",
+          "precision": "day",
+          "event": {
+            "kind": "introduced",
+            "chamber": "upper"
+          },
+          "source": {
+            "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=s1471",
+            "title": "Bill home page"
+          }
+        }
+      ]
     }
   },
   {
@@ -719,6 +741,78 @@
       "checkedBy": "Policai Developer source re-read (issue 161)",
       "method": "manual",
       "notes": "Approved after fresh review of the assented Act and official commencement proclamation. The proposed record accurately describes the AI- and digitally generated depiction offences and commencement. Re-read against the live source on 2026-10-16; title, content, dates and status still match (issue 161)."
+    },
+    "legislative": {
+      "kind": "bill",
+      "ref": {
+        "register": "state",
+        "jurisdiction": "sa",
+        "url": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/a/2025/summary-offences-humiliating-degrading-or-invasive-depictions-amendment-act-2025_19/2025.19.un.pdf"
+      },
+      "origin": "private_member",
+      "events": [
+        {
+          "date": "2024-06-19",
+          "precision": "day",
+          "event": {
+            "kind": "introduced",
+            "chamber": "upper"
+          },
+          "source": {
+            "url": "https://prod-internet-salt-functionapp.azurewebsites.net/api/GetBillSummaries?billId=5322",
+            "title": "SA Parliament bill summary, LC bill 176"
+          }
+        },
+        {
+          "date": "2025-04-30",
+          "precision": "day",
+          "event": {
+            "kind": "passed",
+            "chamber": "upper",
+            "withAmendments": true
+          },
+          "source": {
+            "url": "https://prod-internet-salt-functionapp.azurewebsites.net/api/GetBillSummaries?billId=5322",
+            "title": "SA Parliament bill summary, LC bill 176"
+          }
+        },
+        {
+          "date": "2025-05-14",
+          "precision": "day",
+          "event": {
+            "kind": "passed",
+            "chamber": "lower"
+          },
+          "source": {
+            "url": "https://prod-internet-salt-functionapp.azurewebsites.net/api/GetBillSummaries?billId=5499",
+            "title": "SA Parliament bill summary, HA bill 215"
+          }
+        },
+        {
+          "date": "2025-05-22",
+          "precision": "day",
+          "event": {
+            "kind": "assented",
+            "actCitation": "Act No. 19 of 2025"
+          },
+          "source": {
+            "url": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/a/2025/summary-offences-humiliating-degrading-or-invasive-depictions-amendment-act-2025_19/2025.19.un.pdf",
+            "title": "Act as made"
+          }
+        },
+        {
+          "date": "2025-11-03",
+          "precision": "day",
+          "event": {
+            "kind": "commenced",
+            "extent": "full"
+          },
+          "source": {
+            "url": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/p/2025/summary-offences-humiliating-degrading-or-invasive-depictions-amendment-act-commencement-proclamation-2025_30.10.2025-p-4242/30.10.2025-p-4242.un.pdf",
+            "title": "Commencement proclamation, Gazette 30.10.2025 p 4242"
+          }
+        }
+      ]
     }
   },
   {
@@ -846,6 +940,91 @@
       "checkedBy": "Policai Developer source re-read (issue 161)",
       "method": "manual",
       "notes": "Approved after fresh review of the assented Act and official commencement proclamation. The proposed record accurately describes sections 115B to 115D and their commencement. Re-read against the live source on 2026-10-16; title, content, dates and status still match (issue 161)."
+    },
+    "legislative": {
+      "kind": "bill",
+      "ref": {
+        "register": "state",
+        "jurisdiction": "sa",
+        "url": "https://www.legislation.sa.gov.au/lz?path=%2FV%2FA%2F2024%2FELECTORAL%20(MISCELLANEOUS)%20AMENDMENT%20ACT%202024_67"
+      },
+      "origin": "government",
+      "events": [
+        {
+          "date": "2024-11-14",
+          "precision": "day",
+          "event": {
+            "kind": "introduced",
+            "chamber": "upper"
+          },
+          "source": {
+            "url": "https://prod-internet-salt-functionapp.azurewebsites.net/api/GetBillSummaries?billId=5433",
+            "title": "SA Parliament bill summary, LC bill 242"
+          }
+        },
+        {
+          "date": "2024-11-26",
+          "precision": "day",
+          "event": {
+            "kind": "passed",
+            "chamber": "upper"
+          },
+          "source": {
+            "url": "https://prod-internet-salt-functionapp.azurewebsites.net/api/GetBillSummaries?billId=5433",
+            "title": "SA Parliament bill summary, LC bill 242"
+          }
+        },
+        {
+          "date": "2024-11-27",
+          "precision": "day",
+          "event": {
+            "kind": "passed",
+            "chamber": "lower"
+          },
+          "source": {
+            "url": "https://prod-internet-salt-functionapp.azurewebsites.net/api/GetBillSummaries?billId=5435",
+            "title": "SA Parliament bill summary, HA bill 185"
+          }
+        },
+        {
+          "date": "2024-12-05",
+          "precision": "day",
+          "event": {
+            "kind": "assented",
+            "actCitation": "Act No. 67 of 2024"
+          },
+          "source": {
+            "url": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/a/2024/electoral-miscellaneous-amendment-act-2024_67/2024.67.un.pdf",
+            "title": "Act as made"
+          }
+        },
+        {
+          "date": "2024-12-05",
+          "precision": "day",
+          "event": {
+            "kind": "commenced",
+            "extent": "partial",
+            "note": "Commenced on assent except Part 2 (s 2(1))."
+          },
+          "source": {
+            "url": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/a/2024/electoral-miscellaneous-amendment-act-2024_67/2024.67.un.pdf",
+            "title": "Act as made"
+          }
+        },
+        {
+          "date": "2025-10-10",
+          "precision": "day",
+          "event": {
+            "kind": "commenced",
+            "extent": "partial",
+            "note": "Part 2 by proclamation, including s 32 (AI-generated electoral advertising, ss 115B to 115D). The proclamation suspended other sections of Part 2."
+          },
+          "source": {
+            "url": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/p/2025/electoral-miscellaneous-amendment-act-commencement-proclamation-2025_10.10.2025-p-4059/10.10.2025-p-4059.un.pdf",
+            "title": "Commencement proclamation, Gazette 10.10.2025 p 4059"
+          }
+        }
+      ]
     }
   },
   {
@@ -8089,7 +8268,7 @@
       "Parliament of Australia",
       "Department of Infrastructure, Transport, Regional Development, Communications and the Arts"
     ],
-    "sourceUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;adv=yes;orderBy=date-eFirst;page=0;query=Dataset%3AbillsCurBef,billsCurNotBef,billsPrevParl%20Dataset_Phrase%3A%22billhome%22;rec=0;resCount=Default",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
     "content": "The Online Safety Amendment (Digital Duty of Care) Bill 2026 was introduced and read a first time in the House of Representatives on 15 October 2026, and the second reading was moved that day. Status is proposed: the register has no separate before-Parliament status. The bill is not an Act. The House progress page (https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553) records that introduction, the second reading, portfolio Infrastructure, Transport, Regional Development, Communications, Sport and the Arts, and referral on 15 October 2026 to the Senate Environment and Communications Legislation Committee, with a report due on 20 November 2026. That reporting date is stored as scheduled_review because the register has no committee-report date type. It is the committee's reporting date, not a statutory review of an Act. As described in the approved 11–17 October 2026 signal, the bill covers services that generate material using AI (s 25B(1)(h)), requires yearly risk assessments, and in Schedule 3 would repeal the online-safety industry codes and standards 12 months after Royal Assent. Those codes remain in force on esafety-genai-industry-codes. An exposure draft was released for targeted consultation on 8 September 2026 (Minister for Communications, https://minister.infrastructure.gov.au/wells/media-release/my-feed-my-way). The Minister announced introduction on 15 October 2026 (https://minister.infrastructure.gov.au/wells/media-release/digital-duty-care-next-step-australias-world-leading-reforms). The department's page is https://www.infrastructure.gov.au/media-communications/internet/online-safety/digital-duty-care. Secondary reports, not the canonical source: https://www.openaustralia.org.au/debates/?id=2026-10-15.6.2 and https://aigeek.au/news/digital-duty-of-care-bill-introduced-ai/.",
     "aiSummary": "Proposed Online Safety Amendment (Digital Duty of Care) Bill 2026, introduced on 15 October 2026. It is not law. The Senate Environment and Communications Legislation Committee is due to report on 20 November 2026.",
     "tags": [
@@ -8110,10 +8289,46 @@
     "verification": {
       "status": "needs_review",
       "source": {
-        "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;adv=yes;orderBy=date-eFirst;page=0;query=Dataset%3AbillsCurBef,billsCurNotBef,billsPrevParl%20Dataset_Phrase%3A%22billhome%22;rec=0;resCount=Default",
-        "title": "ParlInfo bill-home search"
+        "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+        "title": "Online Safety Amendment (Digital Duty of Care) Bill 2026 — bill home page"
       },
       "notes": "Unverified editorial draft from the Policai Signal scan 11–17 October 2026, entered after Dan approved the gap. No source fingerprint, no checkedAt, no checkedBy, and no lastReviewedAt. Hidden from the public read until a manual editorial review."
+    },
+    "legislative": {
+      "kind": "bill",
+      "ref": {
+        "register": "aph",
+        "billId": "r7553"
+      },
+      "origin": "government",
+      "events": [
+        {
+          "date": "2026-10-15",
+          "precision": "day",
+          "event": {
+            "kind": "introduced",
+            "chamber": "lower"
+          },
+          "source": {
+            "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+            "title": "Bill home page"
+          }
+        },
+        {
+          "date": "2026-10-15",
+          "precision": "day",
+          "event": {
+            "kind": "referred",
+            "committee": "Senate Environment and Communications Legislation Committee",
+            "inquiryUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/DigitalDutyofCare48P",
+            "reportDue": "2026-11-20"
+          },
+          "source": {
+            "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+            "title": "Bill home page"
+          }
+        }
+      ]
     }
   },
   {
@@ -8334,6 +8549,52 @@
         "publishedAtPrecision": "day"
       },
       "notes": "Unverified register-gap draft for Daniel. Dates taken only from ASIC pages and the Federal Register of Legislation: instruments dated 15 September 2026 and registered 17 September 2026 (F2026L01223, F2026L01224); media release displayDate 24 September 2026; CS 63 Released 24 September 2026 and comments close 5 November 2026 (5 pm AEDT); CS 63 states the rules commence on 18 March 2028; section 2 of each instrument commences 18 months after the day it is registered. Re-read on 20 October 2026: the media release and the CS 63 page do not mention a kill switch or seven-year record keeping, so the kill-switch sentence was removed. Seven-year retention is kept from the as-made instruments (securities rules 5.6.3A(3), 5.6.3B(4), 5.6.4(4), 5.6.8(4) and 5.6.8A(5), and futures rules 2.2B.3(3), 2.2B.4(4), 2.2B.5(4), 2.2B.8(4) and 2.2B.9(5)). No checkedAt, no checkedBy, no lastReviewedAt. Not marked verified. Hidden from the public read until Daniel's own review."
+    },
+    "legislative": {
+      "kind": "instrument",
+      "ref": {
+        "register": "frl",
+        "titleId": "F2026L01223"
+      },
+      "issuerBodyId": "asic",
+      "enablingAct": "Corporations Act 2001, s 798G(1)",
+      "events": [
+        {
+          "date": "2026-09-17",
+          "precision": "day",
+          "event": {
+            "kind": "registered"
+          },
+          "source": {
+            "url": "https://www.legislation.gov.au/F2026L01223/asmade/details",
+            "title": "ASIC Market Integrity Rules (Securities Markets) Amendment Instrument 2026/574"
+          }
+        },
+        {
+          "date": "2026-10-12",
+          "precision": "day",
+          "event": {
+            "kind": "tabled",
+            "chamber": "lower"
+          },
+          "source": {
+            "url": "https://www.legislation.gov.au/F2026L01223/asmade/details",
+            "title": "ASIC Market Integrity Rules (Securities Markets) Amendment Instrument 2026/574"
+          }
+        },
+        {
+          "date": "2026-10-12",
+          "precision": "day",
+          "event": {
+            "kind": "tabled",
+            "chamber": "upper"
+          },
+          "source": {
+            "url": "https://www.legislation.gov.au/F2026L01223/asmade/details",
+            "title": "ASIC Market Integrity Rules (Securities Markets) Amendment Instrument 2026/574"
+          }
+        }
+      ]
     }
   },
   {

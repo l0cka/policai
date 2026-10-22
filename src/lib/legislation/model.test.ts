@@ -81,8 +81,13 @@ describe('legislativeStatus', () => {
 });
 
 describe('legislativeErrors', () => {
-  it('accepts a record without a legislative field', () => {
-    expect(legislativeErrors(record(undefined))).toEqual([]);
+  it('requires legislative on a legislation record, not on a regulation or trashed one', () => {
+    expect(legislativeErrors(record(undefined))).toEqual([
+      'a legislation record needs legislative: its official id and lifecycle events',
+    ]);
+    expect(legislativeErrors(record(undefined, { type: 'regulation' }))).toEqual([]);
+    expect(legislativeErrors(record(undefined, { status: 'trashed' }))).toEqual([]);
+    expect(legislativeErrors(record(undefined), { requireLegislative: false })).toEqual([]);
   });
 
   it('accepts a bill whose status and dates agree with its events', () => {
@@ -123,11 +128,27 @@ describe('legislativeErrors', () => {
     expect(legislativeErrors(record(instrument(registered), { status: 'superseded' }))).toEqual([]);
   });
 
-  it('requires a record date for each commencement, amendment and repeal', () => {
+  it('requires the commenced record date to be one of the commencement events', () => {
     const legislative = bill(introduced, passedLower, passedUpper, assented, commenced);
-    expect(legislativeErrors(record(legislative, { status: 'active' }))).toEqual([
-      'legislative.events[4] commenced on 2027-01-01 has no matching "commenced" record date',
-    ]);
+    const message = 'legislative: the "commenced" record date must be one of its commenced event dates (2027-01-01)';
+    expect(legislativeErrors(record(legislative, { status: 'active' }))).toEqual([message]);
+    const wrong: PolicyDate[] = [{ type: 'commenced', date: '2027-02-01', precision: 'day', primary: true }];
+    expect(legislativeErrors(record(legislative, { status: 'active', dates: wrong }))).toEqual([message]);
+  });
+
+  it('lets the commenced record date name one of several partial commencements', () => {
+    const legislative = bill(
+      introduced, passedLower, passedUpper, assented,
+      on('2026-12-10', { kind: 'commenced', extent: 'partial' }),
+      on('2027-06-01', { kind: 'commenced', extent: 'partial' }),
+    );
+    const dates: PolicyDate[] = [{ type: 'commenced', date: '2027-06-01', precision: 'day', primary: true }];
+    expect(legislativeErrors(record(legislative, { status: 'active', dates }))).toEqual([]);
+  });
+
+  it('leaves a scheduled commencement with no event alone', () => {
+    const dates: PolicyDate[] = [{ type: 'commenced', date: '2028-03-18', precision: 'day' }];
+    expect(legislativeErrors(record(instrument(registered), { status: 'active', dates }))).toEqual([]);
   });
 
   it('pairs legislation records with bills and regulation records with instruments', () => {
