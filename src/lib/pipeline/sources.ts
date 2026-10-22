@@ -40,6 +40,8 @@ export interface ManualDecision {
   since: string;
   decidedBy: string;
   evidence: string;
+  /** The refusing host when it is not the source's own, such as a linked document's. */
+  blockedHost?: string;
 }
 
 export type SourceAutomation = 'automatic' | ManualDecision;
@@ -485,9 +487,17 @@ export const WATCH_SOURCES: WatchSource[] = [
     category: 'government',
     url: 'https://parlinfo.aph.gov.au/parlInfo/feeds/rss.w3p;adv=yes;orderBy=date-eFirst;page=0;query=Date%3AthisYear%20Dataset%3Abillsdgs;resCount=100',
     kind: 'rss',
-    schedule: 'daily',
+    schedule: 'weekly',
     enabled: true,
-    automation: 'automatic',
+    automation: {
+      mode: 'manual',
+      because: 'bot_blocked',
+      decision: 'manual',
+      since: '2026-10-22',
+      decidedBy: 'Daniel',
+      evidence:
+        'parlinfo.aph.gov.au returns an Azure WAF 403 to both plain HTTP and headless Chromium under the declared identity (probed from Argus 2026-10-22). Decided 2026-10-22: tracked by hand.',
+    },
     fetchStrategy: 'browser',
     notes:
       'Official ParlInfo feed of Parliamentary Library bills digests — the leading indicator for bills before parliament, including AI legislation; APH rejects plain HTTP clients.',
@@ -500,9 +510,17 @@ export const WATCH_SOURCES: WatchSource[] = [
     category: 'government',
     url: 'https://parlinfo.aph.gov.au/parlInfo/feeds/rss.w3p;adv=yes;orderBy=date-eFirst;page=0;query=%22artificial%20intelligence%22%20Date%3AthisYear%20Dataset%3Ahansardr,hansards;resCount=100',
     kind: 'rss',
-    schedule: 'daily',
+    schedule: 'weekly',
     enabled: true,
-    automation: 'automatic',
+    automation: {
+      mode: 'manual',
+      because: 'bot_blocked',
+      decision: 'manual',
+      since: '2026-10-22',
+      decidedBy: 'Daniel',
+      evidence:
+        'parlinfo.aph.gov.au returns an Azure WAF 403 to both plain HTTP and headless Chromium under the declared identity (probed from Argus 2026-10-22). Decided 2026-10-22: tracked by hand.',
+    },
     fetchStrategy: 'browser',
     bodyRelevance: {
       titlePattern: /^(?:Federation Chamber : )?BILLS : /,
@@ -584,6 +602,26 @@ export const WATCH_SOURCES: WatchSource[] = [
     automation: 'automatic',
     notes:
       'Energy-market rules and standards affecting large AI and data-centre loads (Drupal views table).',
+  },
+  {
+    id: 'homeaffairs-media-releases',
+    name: 'Department of Home Affairs — media releases',
+    bodyId: 'homeaffairs',
+    jurisdiction: 'federal',
+    category: 'government',
+    url: 'https://www.homeaffairs.gov.au/news-media/media-releases',
+    kind: 'html-index',
+    schedule: 'weekly',
+    enabled: true,
+    automation: {
+      mode: 'manual',
+      because: 'bot_blocked',
+      decision: 'manual',
+      since: '2026-10-22',
+      decidedBy: 'Daniel',
+      evidence:
+        'The host and its robots.txt return an Akamai “Access Denied” 403 to the declared Policai identity (probed from Argus 2026-10-22). Decided 2026-10-22: tracked by hand.',
+    },
   },
   // --- Federal: regulators ---
   {
@@ -747,11 +785,18 @@ export const WATCH_SOURCES: WatchSource[] = [
     category: 'regulator',
     url: 'https://www.esafety.gov.au/newsroom/media-releases',
     kind: 'html-index',
-    schedule: 'daily',
+    schedule: 'weekly',
     enabled: true,
-    automation: 'automatic',
+    automation: {
+      mode: 'manual',
+      because: 'identity_refused',
+      decision: 'manual',
+      since: '2026-10-22',
+      decidedBy: 'Daniel',
+      evidence:
+        'Since the E24 exception expired on 2026-10-21, www.esafety.gov.au refuses the declared Policai identity (probed from Argus 2026-10-22). Decided 2026-10-22: tracked by hand.',
+    },
     fetchStrategy: 'browser',
-    identityException: E24_IDENTITY_EXCEPTION, // www.esafety.gov.au refused the declared UA
     notes: 'GovCMS/Akamai rejects plain HTTP clients.',
   },
   {
@@ -1074,6 +1119,46 @@ export const WATCH_SOURCES: WatchSource[] = [
       'The department that owns NSW digital government and the Office for AI. Admitted 2026-10-22 in the first #324 batch (dry run on Argus: 10 items, 0 developments); www.nsw.gov.au disallows query strings, so the plain listing is watched.',
   },
   {
+    id: 'nsw-legislation',
+    name: 'NSW legislation',
+    bodyId: 'nsw-pco',
+    jurisdiction: 'nsw',
+    category: 'government',
+    url: 'https://legislation.nsw.gov.au/',
+    kind: 'html-index',
+    schedule: 'weekly',
+    enabled: true,
+    automation: {
+      mode: 'manual',
+      because: 'bot_blocked',
+      decision: 'manual',
+      since: '2026-10-22',
+      decidedBy: 'Daniel',
+      evidence:
+        'The register shows a persistent Cloudflare challenge to automated clients under the declared identity (probed from Argus 2026-10-22). Decided 2026-10-22: tracked by hand.',
+    },
+  },
+  {
+    id: 'sa-legislation-whats-new',
+    name: 'South Australian legislation — what’s new',
+    bodyId: 'sa-opc',
+    jurisdiction: 'sa',
+    category: 'government',
+    url: 'https://www.legislation.sa.gov.au/whats-new',
+    kind: 'html-index',
+    schedule: 'weekly',
+    enabled: true,
+    automation: {
+      mode: 'manual',
+      because: 'bot_blocked',
+      decision: 'manual',
+      since: '2026-10-22',
+      decidedBy: 'Daniel',
+      evidence:
+        'Cloudflare serves a “Just a moment...” challenge to Node fetch and headless Chromium under the declared identity, while curl with the same user agent gets 200 (dry run on Argus 2026-10-22). Decided 2026-10-22: tracked by hand.',
+    },
+  },
+  {
     id: 'vic-legislation-whats-new',
     name: 'Victorian legislation — what’s new',
     bodyId: 'vic-ocpc',
@@ -1289,6 +1374,7 @@ export const WATCH_SOURCES: WatchSource[] = [
       decision: 'manual',
       since: '2026-10-18',
       decidedBy: 'Daniel',
+      blockedHost: 'www.finance.gov.au',
       evidence:
         'The linked framework PDF on www.finance.gov.au resets the connection for the Policai collector identity (net::ERR_HTTP2_PROTOCOL_ERROR; curl with that identity gets HTTP/2 INTERNAL_ERROR and fails on HTTP/1.1, verified 2026-10-17) and the source has failed every collection run recorded since 2026-10-12. The block is respected and the user agent is not disguised or bypassed. The page host accepts the collector, so this is not recorded as identity_refused (which would mark www.wa.gov.au refused); once www.finance.gov.au has its own identity decision the source returns to automatic and the PDF is skipped.',
     },

@@ -2145,6 +2145,11 @@ function validateAutomation(
     errors.push(`${label}: invalid manual because`);
   if (!isOneOf(['manual', 'await_allowlist'], automation.decision))
     errors.push(`${label}: invalid manual decision`);
+  if (
+    automation.blockedHost !== undefined &&
+    (typeof automation.blockedHost !== 'string' || !isHostKey(automation.blockedHost))
+  )
+    errors.push(`${label}: blockedHost must be a lower-case host name`);
   if (!isCalendarDateString(automation.since))
     errors.push(`${label}: manual decision since must be YYYY-MM-DD`);
   else if (

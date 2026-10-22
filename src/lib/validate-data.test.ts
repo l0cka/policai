@@ -1573,6 +1573,13 @@ describe('validateWatchSources automation decisions', () => {
       'watchSources:incomplete: manual decision needs evidence of at least 20 characters',
     ]);
   });
+
+  it('rejects a blockedHost that is not a host name', () => {
+    const linked = { ...refusing, automation: buildManualDecision({ blockedHost: 'https://www.finance.gov.au/a.pdf' }) };
+    expect(validateWatchSources([linked], now).errors).toEqual([
+      'watchSources:finance-news: blockedHost must be a lower-case host name',
+    ]);
+  });
 });
 
 describe('validateBodies', () => {

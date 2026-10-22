@@ -83,6 +83,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         changeFrequency: 'daily',
         priority: 0.5,
       },
+      {
+        url: `${SITE_URL}/status/refusals`,
+        changeFrequency: 'weekly',
+        priority: 0.4,
+      },
     ] as const
   ).map((page) =>
     collectedAt ? { ...page, lastModified: collectedAt } : page,
