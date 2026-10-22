@@ -15,7 +15,8 @@ concurrency:
 
 jobs:
   # lint, test and build are required checks and always run. The jobs below
-  # are not required, so they are skipped when the PR leaves their code alone.
+  # are skipped when the PR leaves their code alone. If this job fails they run
+  # anyway, so a broken diff never reads as a passing skip.
   changes:
     name: changes
     if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
@@ -123,7 +124,7 @@ jobs:
   probono-dashboard:
     name: Pro Bono dashboard
     needs: changes
-    if: ${{ needs.changes.outputs.probono == 'true' }}
+    if: ${{ !cancelled() && (needs.changes.result == 'failure' || needs.changes.outputs.probono == 'true') }}
     runs-on: [self-hosted, linux, argus]
     defaults:
       run:
@@ -150,7 +151,7 @@ jobs:
   probono-worker:
     name: Pro Bono worker
     needs: changes
-    if: ${{ needs.changes.outputs.probono == 'true' }}
+    if: ${{ !cancelled() && (needs.changes.result == 'failure' || needs.changes.outputs.probono == 'true') }}
     runs-on: [self-hosted, linux, argus]
     defaults:
       run:
@@ -230,7 +231,7 @@ jobs:
   host-dispatcher:
     name: Host dispatcher
     needs: changes
-    if: ${{ needs.changes.outputs.host == 'true' }}
+    if: ${{ !cancelled() && (needs.changes.result == 'failure' || needs.changes.outputs.host == 'true') }}
     runs-on: [self-hosted, linux, argus]
     steps:
       - uses: actions/checkout@v4
