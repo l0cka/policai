@@ -465,6 +465,14 @@ export interface SourceRunResult {
 	identityException?: "active" | "expired";
 	failureClass?: FailureClass;
 	failedUrl?: string;
+	/** Linked documents and candidates on a decided-refused host, not requested. */
+	skippedLinked?: SkippedLinked[];
+}
+
+export interface SkippedLinked {
+	url: string;
+	/** The source whose manual decision records the host's refusal. */
+	decidedBy: string;
 }
 
 export interface CollectionMeta {

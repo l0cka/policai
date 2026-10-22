@@ -2,8 +2,9 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { isAllowedSourceHost, sourceIdentityUrls, sourceUrlsEqual } from '@/lib/source-url';
+import { buildManualDecision } from '@/test/factories';
 import type { Policy } from '@/types';
-import { WATCH_SOURCES, getAutomaticSources, getManualSources } from './sources';
+import { WATCH_SOURCES, getAutomaticSources, getManualSources, refusedHosts } from './sources';
 
 const STATE_LEGISLATION_SOURCES: Record<string, string> = {
   'vic-legislation-whats-new': 'vic',
@@ -114,10 +115,27 @@ describe('WATCH_SOURCES', () => {
     expect(cyberSources.map((source) => source.id)).toEqual(['cyber-news']);
     const [source] = cyberSources;
     expect(source.url).toBe('https://www.cyber.gov.au/news');
-    expect(source.automation).toBe('manual');
+    expect(source.automation).toMatchObject({ mode: 'manual', because: 'identity_refused' });
     expect(source.fetchStrategy).toBeUndefined();
     expect(getManualSources().map((s) => s.id)).toContain('cyber-news');
     expect(getAutomaticSources().map((s) => s.id)).not.toContain('cyber-news');
+  });
+
+  it('derives refused hosts from identity_refused decisions only', () => {
+    expect(Object.fromEntries(refusedHosts(WATCH_SOURCES))).toEqual({
+      'www.cyber.gov.au': 'cyber-news',
+      'www.accc.gov.au': 'accc-rss',
+    });
+  });
+
+  it('skips an identity_refused source whose url does not parse', () => {
+    const broken = {
+      ...WATCH_SOURCES[0],
+      id: 'broken-url',
+      url: 'not-a-url',
+      automation: buildManualDecision({ because: 'identity_refused' }),
+    };
+    expect(refusedHosts([broken]).size).toBe(0);
   });
 
   it('grants the time-boxed E24 identity exception to exactly the 16 refusing sources', () => {

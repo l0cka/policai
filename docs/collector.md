@@ -1212,22 +1212,45 @@ npm run collect -- --dry-run --source=<id>
   commit without recollection. A changed remote main or run branch needs manual
   reconciliation, not a forced push.
 - **A source keeps failing** — check `meta.json` → `collector.sourceResults`.
-  If the endpoint consistently requires a browser, keep it enabled but change
-  it to `automation: manual` with an explanation. Do not count a challenge page
+  If the endpoint consistently requires a browser, keep it enabled but move
+  it to manual tracking with a reviewed decision (below). Do not count a challenge page
   as coverage and do not disable an authoritative source merely because it
   cannot be automated.
   Every due automatic source counts in the health denominator, including a
   source that is known to be blocked, so one persistent refusal keeps the run
-  `degraded` and `lastHealthyAt` stale. Move such a source to
-  `automation: manual` (which drops it from the denominator) rather than
-  excluding it from the count. A result already stored for that id, including
+  `degraded` and `lastHealthyAt` stale. Move such a source to manual
+  tracking (which drops it from the denominator) rather than excluding it
+  from the count. `automation` is then a decision record, never a bare flag:
+  `{ mode: 'manual', because, decision, since, decidedBy, evidence }`, where `because` is `identity_refused`, `bot_blocked`,
+  `robots_disallowed` or `not_found`, and `decision` is `manual` or
+  `await_allowlist` (only where an allow-list request has a written reply).
+  `validate:data` rejects an incomplete record. The record carries no review
+  cadence of its own: how often an editor must check a manual source by hand
+  still follows its `schedule` (`reviewIsCurrent` in
+  `src/lib/source-monitoring.ts`). Only a reviewed PR changes
+  it; the collector never moves a source itself. A result already stored for that id, including
   one recorded while it was still automatic, is left out of the public
   automatic count and does not keep the run degraded (`publicAutomaticCollectionMeta`
   in `src/lib/collection-coverage.ts`, applied by `getCollectionMeta` and by
   the committed `public/data/meta.json`). `accc-rss` (HTTP 403 from the host's
   access-denied page) and `wa-ai-policy` (the linked finance.gov.au framework
   PDF resets the connection) were moved for this reason (#304, #389); each
-  source's `notes` carry the evidence.
+  decision's `evidence` carries the measurements.
+- **A host refuses the declared identity** — record it once, on the manual
+  decision of the source that observed it, with `because: 'identity_refused'`.
+  `refusedHosts` in `src/lib/pipeline/sources.ts` derives the refused hosts
+  from those decisions, and the host gate never requests them: a linked
+  document or candidate there is listed under `skippedLinked` on the
+  source's result row, with the deciding source, and is not a failure.
+  A skipped candidate is marked `failed` in `watch-state.json` so the next
+  run does not request it again. Reversing the host decision does not revive
+  it: clear that candidate's `seen` entry in the same PR if it should be
+  collected.
+  `validate:data` fails while an automatic source sits on a refused host, so
+  one host decision cannot be half-applied. Record `bot_blocked` instead
+  when the page host itself accepts the collector and only a linked host
+  refuses, so the page host is not marked refused (`wa-ai-policy` until
+  www.finance.gov.au has its own decision).
 - **An HTML source reports no coverage** — only links inside recognised
   publication/result containers count as index entries. Navigation, footer,
   homepage, login, and soft-error links do not make a source healthy; inspect

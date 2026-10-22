@@ -2,9 +2,10 @@ import type https from 'node:https';
 import type { FailureClass } from './failure';
 import { readResponseBytes, retrieveSourceOverHttp1, SourceFetchError } from './fetch';
 import { COLLECTOR_IDENTITY_TOKEN, COLLECTOR_USER_AGENT } from './identity';
+import { hostOf, type Host } from './host';
 import { parseRobots, ROBOTS_MAX_BYTES, robotsAllows, type RobotsRules } from './robots';
 
-export type Host = string & { readonly __brand: 'Host' };
+export { hostOf, type Host };
 
 export const DEFAULT_MIN_GAP_MS = 2000;
 export const MAX_WAIT_MS = 30_000;
@@ -79,10 +80,6 @@ export interface HostGateDeps {
   minGapMs?: number;
   waitBudgetMs?: number;
   robotsFetchBudgetMs?: number;
-}
-
-export function hostOf(url: URL): Host {
-  return url.host.toLowerCase().replace(/\.(?=(?::\d+)?$)/, '') as Host;
 }
 
 export function isHostKey(value: string): value is Host {

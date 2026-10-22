@@ -1,6 +1,20 @@
 {
   "manualReviews": [
     {
+      "sourceId": "cyber-news",
+      "status": "checked",
+      "reviewedAt": "2026-10-22T01:11:15.591Z",
+      "reviewedBy": "Daniel Alkurdi (Claude-assisted web review)",
+      "evidence": {
+        "url": "https://www.cyber.gov.au/news",
+        "finalUrl": "https://www.cyber.gov.au/news",
+        "title": "News | CGA",
+        "publisher": "Australian Signals Directorate (Australian Cyber Security Centre)",
+        "retrievedAt": "2026-10-22T01:11:15.000Z"
+      },
+      "notes": "Manual check of the ACSC news index and the cyber.gov.au publications index on 22 October 2026 by plain HTTP fetch (curl, default user agent), reviewed with Claude; the Policai collector was not used and no user agent, block or rate limit was disguised or worked around. Read https://www.cyber.gov.au/news index pages 1 and 2 (sorted by date updated) and https://www.cyber.gov.au/access-publications-and-alerts sorted Latest, pages 0 to 3. Since the 6 October check the only AI-related items are the ASD Essentials launch (15 Oct 2026) and \"AI considerations within the Essentials\" (15 Oct 2026), already in the register as asd-ai-considerations-within-the-essentials-2026. Two September AI items were missed by earlier checks and are staged for editorial review, not approved or published: the advisory \"Protect your organisations' AI services\" (Published 29 Sep 2026) and the alert \"Risks of AI misalignment to Australian organisations\" (Published 25 Sep 2026). Faceted listing URLs (topic and content-type filters) returned HTTP 403 or timed out and were not worked around. No content hash is recorded because the page text was not extracted the same way as the earlier browser check."
+    },
+    {
       "sourceId": "sa-office-for-ai",
       "status": "checked",
       "reviewedAt": "2026-07-16T10:15:00.000Z",
@@ -11,21 +25,6 @@
         "publisher": "Government of South Australia"
       },
       "notes": "Reviewed the Office for AI site. The AI-strategy consultation status and dates were reconciled in the register."
-    },
-    {
-      "sourceId": "cyber-news",
-      "status": "checked",
-      "reviewedAt": "2026-10-06T23:50:00.000Z",
-      "reviewedBy": "Daniel Alkurdi (Hermes-assisted browser check)",
-      "evidence": {
-        "url": "https://www.cyber.gov.au/news",
-        "finalUrl": "https://www.cyber.gov.au/news",
-        "title": "News | CGA",
-        "publisher": "Australian Signals Directorate (Australian Cyber Security Centre)",
-        "retrievedAt": "2026-10-06T23:47:41.912Z",
-        "contentHash": "75d8a8be057a1b7401aa39db45875bfcd7039b61c801d03f1c35ea73c94fb4c8"
-      },
-      "notes": "First manual check of the ACSC news index after the source moved to by-hand tracking. Read https://www.cyber.gov.au/news in an ordinary browser session; the Policai collector was not used and no user agent, block or rate limit was disguised or worked around. The index resolved without a block and sorts by date updated, so index dates are update dates rather than first-published dates. Index pages 1 to 3 were read, covering all fourteen news items listed from 1 July 2026 onward. Three are AI-related: \"ASD releases new guidance on the agentic AI harnesses\" (11 Sep 2026) and \"New AI frontier cyber threat guidance for boards of directors\" (02 Sep 2026) are already covered by register records; \"Using AI to strengthen cyber defence\" (02 Sep 2026), which announces the ACSC publication \"Opportunities for AI in cyber defence\" at https://www.cyber.gov.au/publication/opportunities-for-ai-in-cyber-defence, is not covered and is listed for editorial decision. No register records were added or changed by this check. The content hash is SHA-256 of the rendered index page text (6269 characters) at the retrieval time above."
     }
   ]
 }

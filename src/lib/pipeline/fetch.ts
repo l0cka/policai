@@ -21,6 +21,7 @@ import { publicFailureUrl } from './failure';
 import type { HostGate, Transport } from './host-gate';
 import type {
   LinkedDocumentEvidence,
+  SkippedLinked,
   SourceEvidence,
 } from '@/types';
 import {
@@ -66,6 +67,21 @@ export class SourceFetchError extends Error {
   }
 }
 
+/** A URL on a host whose refusal has a reviewed decision; never requested. */
+export class DecidedBlockError extends SourceFetchError {
+  readonly decidedBy: string;
+
+  constructor(url: string, decidedBy: string) {
+    super(`${url} is on a host decided refused by ${decidedBy}; not requested`, {
+      retryable: false,
+      code: 'gate_refused',
+      url,
+    });
+    this.name = 'DecidedBlockError';
+    this.decidedBy = decidedBy;
+  }
+}
+
 function failedAt(error: unknown, url: string): SourceFetchError {
   const fetchError =
     error instanceof SourceFetchError
@@ -87,10 +103,7 @@ export async function admitThroughGate(
   const admission = await gate.admit(new URL(url));
   if (admission.kind === 'go') return Date.now() - startedAt;
   if (admission.kind === 'decided_block') {
-    throw new SourceFetchError(
-      `${url} is on a host decided refused by ${admission.sourceId}; not requested`,
-      { retryable: false, code: 'gate_refused', url },
-    );
+    throw new DecidedBlockError(url, admission.sourceId);
   }
   if (admission.kind === 'deferred') {
     throw new SourceFetchError(admission.detail, { retryable: true, code: 'gate_deferred', url });
@@ -158,6 +171,8 @@ export interface RetrievedSource {
    * Only their evidence is persisted; response bytes remain in-memory.
    */
   linkedSources?: RetrievedSource[];
+  /** Linked documents on a decided-refused host, never requested. */
+  skippedLinked?: SkippedLinked[];
   evidence: SourceEvidence;
   earlierContentHashes?: readonly string[];
   durationMs: number;
@@ -711,6 +726,7 @@ export async function foldLinkedDocuments(
     evidence: LinkedDocumentEvidence;
     source: RetrievedSource;
   }> = [];
+  const skippedLinked: SkippedLinked[] = [];
   const maxLinkedDocumentBytes =
     options.maxLinkedDocumentBytes ?? DEFAULT_MAX_LINKED_DOCUMENT_BYTES;
   let retainedLinkedDocumentBytes = 0;
@@ -723,18 +739,25 @@ export async function foldLinkedDocuments(
         { retryable: false },
       );
     }
-    const linked = await retrieveSource(url, {
-      ...options,
-      attempts: 1,
-      maxResponseBytes: Math.min(
-        options.maxResponseBytes ?? DEFAULT_MAX_RESPONSE_BYTES,
-        remainingBytes,
-      ),
-      destinationPolicy: isAllowedSourceHost(url)
-        ? 'official'
-        : 'public-https',
-      hashLinkedDocuments: false,
-    });
+    let linked: RetrievedSource;
+    try {
+      linked = await retrieveSource(url, {
+        ...options,
+        attempts: 1,
+        maxResponseBytes: Math.min(
+          options.maxResponseBytes ?? DEFAULT_MAX_RESPONSE_BYTES,
+          remainingBytes,
+        ),
+        destinationPolicy: isAllowedSourceHost(url)
+          ? 'official'
+          : 'public-https',
+        hashLinkedDocuments: false,
+      });
+    } catch (error) {
+      if (!(error instanceof DecidedBlockError)) throw error;
+      skippedLinked.push({ url, decidedBy: error.decidedBy });
+      continue;
+    }
     try {
       assertLinkedDocumentBytes(linked, url);
     } catch (error) {
@@ -766,6 +789,9 @@ export async function foldLinkedDocuments(
       },
     });
   }
+  if (linkedResults.length === 0 && skippedLinked.length > 0) {
+    return { ...retrieved, skippedLinked };
+  }
   const linkedDocuments = linkedResults.map((result) => result.evidence);
   const pageHash = retrieved.evidence.contentHash;
   if (!pageHash) {
@@ -791,6 +817,7 @@ export async function foldLinkedDocuments(
   return {
     ...retrieved,
     linkedSources: linkedResults.map((result) => result.source),
+    ...(skippedLinked.length > 0 ? { skippedLinked } : {}),
     earlierContentHashes: (retrieved.earlierContentHashes ?? []).map(composite),
     evidence: {
       ...retrieved.evidence,

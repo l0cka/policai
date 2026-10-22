@@ -6,7 +6,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { runCollection } from '../../../scripts/collect-run';
-import { buildPolicy } from '@/test/factories';
+import { buildManualDecision, buildPolicy } from '@/test/factories';
 import type { Development, SourceReview } from '@/types';
 import type { WatchState } from './collect';
 import { createHostGate, robotsFetcher } from './host-gate';
@@ -116,7 +116,7 @@ describe('collection CLI write path', () => {
       ...SOURCE,
       id: 'accc-rss',
       name: 'ACCC — media releases',
-      automation: 'manual',
+      automation: buildManualDecision(),
       url: 'https://www.example.gov.au/accc',
     };
     const fetchImpl = vi.fn(async (input: RequestInfo | URL) => {
@@ -160,5 +160,31 @@ describe('collection CLI write path', () => {
         (result) => result.sourceId === 'accc-rss' && result.coverageEligible !== false,
       ),
     ).toBe(false);
+  });
+
+  it('installs the refused hosts from the catalog decisions on the default gate', async () => {
+    const requested: string[] = [];
+    const fetchImpl = vi.fn(async (input: RequestInfo | URL) => {
+      requested.push(String(input));
+      return new Response('', { status: 404 });
+    }) as unknown as typeof fetch;
+
+    await runCollection({
+      rootDir,
+      sources: [
+        { ...SOURCE, id: 'accc-probe', url: 'https://www.accc.gov.au/rss' },
+        { ...SOURCE, id: 'cyber-probe', url: 'https://www.cyber.gov.au/rss' },
+      ],
+      dryRun: true,
+      fetchImpl,
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+    });
+
+    expect(requested.map((url) => new URL(url).host)).not.toEqual(
+      expect.arrayContaining(['www.accc.gov.au']),
+    );
+    expect(requested.map((url) => new URL(url).host)).not.toEqual(
+      expect.arrayContaining(['www.cyber.gov.au']),
+    );
   });
 });

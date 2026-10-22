@@ -1,4 +1,5 @@
 import { createHostGate, type Admission, type HostGate, type Observation } from '@/lib/pipeline/host-gate'
+import type { ManualDecision } from '@/lib/pipeline/sources'
 import type { Agency, Policy, TimelineEvent } from '@/types'
 
 export function buildPolicy(overrides: Partial<Policy> = {}): Policy {
@@ -134,4 +135,16 @@ export function buildRecordingHostGate(
     waited: () => ({}),
   }
   return { gate, admitted, observed }
+}
+
+export function buildManualDecision(overrides: Partial<ManualDecision> = {}): ManualDecision {
+  return {
+    mode: 'manual',
+    because: 'bot_blocked',
+    decision: 'manual',
+    since: '2026-10-01',
+    decidedBy: 'Daniel',
+    evidence: 'Returns 403 to every automated client, verified by hand.',
+    ...overrides,
+  }
 }

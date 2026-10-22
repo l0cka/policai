@@ -40,7 +40,7 @@ export function buildJurisdictionCoverage(
       automaticSources: watching.filter(
         (source) => source.automation === 'automatic',
       ).length,
-      manualSources: watching.filter((source) => source.automation === 'manual')
+      manualSources: watching.filter((source) => source.automation !== 'automatic')
         .length,
     };
   });
