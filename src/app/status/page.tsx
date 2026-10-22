@@ -65,6 +65,7 @@ const HEADER_CELL =
 const WIDE_ONLY = 'hidden sm:table-cell';
 
 const WATCH_TIERS = ['A', 'B', 'C'] as const;
+const GAP_NOTE = { failing: ' (failing)', pending: ' (newly admitted, not yet checked)', uncovered: '' } as const;
 
 /** Records due within this many days are listed under Record review. */
 const REVIEW_SOON_DAYS = 30;
@@ -432,7 +433,7 @@ export default async function StatusPage() {
             {tierAGaps.length === 0
               ? 'Every tier A body has a working source.'
               : `Tier A bodies with no working source: ${tierAGaps
-                  .map((gap) => `${gap.name}${gap.coverage === 'failing' ? ' (failing)' : ''}`)
+                  .map((gap) => `${gap.name}${GAP_NOTE[gap.coverage]}`)
                   .join(', ')}.`}{' '}
             {otherGaps > 0
               ? `${otherGaps} tier B and C ${otherGaps === 1 ? 'body has' : 'bodies have'} none either.`

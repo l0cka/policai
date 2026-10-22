@@ -59,7 +59,7 @@ async function main() {
       `\nGaps, tier ${tier}: ` +
         (gaps.length === 0
           ? 'none'
-          : gaps.map((gap) => `${gap.bodyId} (${gap.coverage === 'uncovered' ? 'no source' : 'failing'})`).join(', ')),
+          : gaps.map((gap) => `${gap.bodyId} (${{ uncovered: 'no source', failing: 'failing', pending: 'not yet checked' }[gap.coverage]})`).join(', ')),
     );
   }
 

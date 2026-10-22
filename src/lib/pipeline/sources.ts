@@ -1058,6 +1058,22 @@ export const WATCH_SOURCES: WatchSource[] = [
       'Whole-of-government NSW announcements, including AI policy and digital government decisions.',
   },
   {
+    id: 'nsw-dcs-media-releases',
+    name: 'NSW Department of Customer Service — media releases',
+    bodyId: 'nsw-dcs',
+    jurisdiction: 'nsw',
+    category: 'government',
+    url: 'https://www.nsw.gov.au/departments-and-agencies/customer-service/media-releases',
+    kind: 'html-index',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    admittedAt: '2026-10-22',
+    notes:
+      'The department that owns NSW digital government and the Office for AI. Admitted 2026-10-22 in the first #324 batch (dry run on Argus: 10 items, 0 developments); www.nsw.gov.au disallows query strings, so the plain listing is watched.',
+  },
+  {
     id: 'vic-legislation-whats-new',
     name: 'Victorian legislation — what’s new',
     bodyId: 'vic-ocpc',

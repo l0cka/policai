@@ -238,7 +238,7 @@ it('counts watched bodies by tier and names the tier A gaps', async () => {
   vi.mocked(getBodies).mockResolvedValue(
     [
       { id: 'act-government', name: 'ACT Government', tier: 'A' },
-      { id: 'act-pco', name: 'ACT Parliamentary Counsel', tier: 'A' },
+      { id: 'act-unwatched', name: 'ACT Unwatched Office', tier: 'A' },
     ].map((body) => ({
       ...body,
       jurisdiction: 'act',
@@ -251,6 +251,6 @@ it('counts watched bodies by tier and names the tier A gaps', async () => {
   const row = within(table).getByText('Australian Capital Territory').closest('tr');
   expect(row).toHaveTextContent('1 of 2');
   expect(
-    screen.getByText(/Tier A bodies with no working source: ACT Parliamentary Counsel\./),
+    screen.getByText(/Tier A bodies with no working source: ACT Unwatched Office\./),
   ).toBeInTheDocument();
 });
