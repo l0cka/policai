@@ -91,7 +91,7 @@ export function AnalysisHeroCarousel({
         </p>
         {count > 1 ? (
           <div className="flex flex-wrap items-center gap-2">
-            <div className="flex items-center" role="group" aria-label="Articles">
+            <div className="flex flex-wrap items-center" role="group" aria-label="Articles">
               {slides.map((article, slideIndex) => {
                 const active = slideIndex === current;
                 return (

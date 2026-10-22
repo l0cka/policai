@@ -1219,6 +1219,10 @@
   -webkit-mask-mode: luminance;
   mask-mode: luminance;
 }
+/* Lead photos run close to 4:3, so the shared 3:2 thumbnail crop cut too much of them here. */
+.analysis-hero-figure > div {
+  aspect-ratio: 4 / 3;
+}
 .analysis-hero-figure img {
   filter: grayscale(0.55) contrast(1.3) brightness(1.04);
 }
