@@ -11,6 +11,7 @@ import {
 
 const source: WatchSource = {
   id: 's',
+  bodyId: 'test-body',
   name: 'S',
   jurisdiction: 'tas',
   category: 'government',

@@ -68,6 +68,7 @@ describe('collection CLI failure policy', () => {
 
 const HTML_SOURCE: WatchSource = {
   id: 'test-html',
+  bodyId: 'test-body',
   name: 'Test HTML source',
   jurisdiction: 'federal',
   category: 'government',
@@ -80,6 +81,7 @@ const HTML_SOURCE: WatchSource = {
 
 const RSS_SOURCE: WatchSource = {
   id: 'test-rss',
+  bodyId: 'test-body',
   name: 'Test RSS source',
   jurisdiction: 'federal',
   category: 'regulator',
@@ -92,6 +94,7 @@ const RSS_SOURCE: WatchSource = {
 
 const DOCUMENT_SOURCE: WatchSource = {
   id: 'test-document',
+  bodyId: 'test-body',
   name: 'Test AI governance policy',
   jurisdiction: 'federal',
   category: 'government',
@@ -562,6 +565,7 @@ describe('collect', () => {
   it('judges title-blind feed items by AI mentions in the fetched body', async () => {
     const HANSARD_SOURCE: WatchSource = {
       id: 'test-hansard',
+      bodyId: 'test-body',
       name: 'Test Hansard',
       jurisdiction: 'federal',
       category: 'government',

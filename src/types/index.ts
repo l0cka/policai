@@ -284,6 +284,8 @@ export interface Policy {
 
 export interface Agency {
 	id: string;
+	/** The body in `data/bodies.json` this directory record describes. */
+	bodyId: string;
 	name: string;
 	acronym: string;
 	level: AgencyLevel;

@@ -8,6 +8,7 @@ import {
 
 const base: WatchSource = {
   id: 'daily-auto',
+  bodyId: 'test-body',
   name: 'Daily automatic',
   jurisdiction: 'federal',
   category: 'government',

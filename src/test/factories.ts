@@ -60,6 +60,7 @@ export function buildAgency(overrides: Partial<Agency> = {}): Agency {
   const website = overrides.website ?? 'https://example.gov.au/industry'
   return {
     id: 'agency-1',
+    bodyId: 'disr',
     name: 'Department of Industry',
     acronym: 'DISR',
     level: 'federal',

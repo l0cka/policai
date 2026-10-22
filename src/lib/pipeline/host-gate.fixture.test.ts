@@ -160,6 +160,7 @@ describe('HostGate against a loopback fixture server', () => {
     const gate = productionGate(fetchImpl, 10);
     const indexSource: WatchSource = {
       id: 'fixture-index',
+      bodyId: 'test-body',
       name: 'Fixture index',
       jurisdiction: 'federal',
       category: 'government',

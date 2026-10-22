@@ -1245,6 +1245,17 @@ npm run collect -- --dry-run --source=<id>
   access-denied page) and `wa-ai-policy` (the linked finance.gov.au framework
   PDF resets the connection) were moved for this reason (#304, #389); each
   decision's `evidence` carries the measurements.
+- **Adding a source or directory record** — give it the `bodyId` of its
+  publishing body in `data/bodies.json`. A body has an id, name,
+  jurisdiction, tier (`A`, `B` or `C`), the hosts it publishes on, and a
+  scope decision; the Editorial Manager owns scope and tiers.
+  `validate:data` fails on an unknown `bodyId`, a source or directory
+  website whose host is not one of its body's hosts, a jurisdiction that
+  differs from the body's, a directory name that is neither the body's
+  name nor the body's name followed by ` - ` and a part of it, and a
+  jurisdiction with no tier A body. Add a new publisher to `bodies.json`
+  in the same PR. `diser` and `disr` are two directory records for one
+  body.
 - **A host refuses the declared identity** — record it once, on the manual
   decision of the source that observed it, with `because: 'identity_refused'`.
   `refusedHosts` in `src/lib/pipeline/sources.ts` derives the refused hosts

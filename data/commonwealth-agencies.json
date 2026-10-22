@@ -1,6 +1,7 @@
 [
   {
     "id": "dta",
+    "bodyId": "dta",
     "name": "Digital Transformation Agency",
     "acronym": "DTA",
     "level": "federal",
@@ -21,6 +22,7 @@
   },
   {
     "id": "ato",
+    "bodyId": "ato",
     "name": "Australian Taxation Office",
     "acronym": "ATO",
     "level": "federal",
@@ -41,6 +43,7 @@
   },
   {
     "id": "asic",
+    "bodyId": "asic",
     "name": "Australian Securities and Investments Commission",
     "acronym": "ASIC",
     "level": "federal",
@@ -59,6 +62,7 @@
   },
   {
     "id": "art",
+    "bodyId": "art",
     "name": "Administrative Review Tribunal",
     "acronym": "ART",
     "level": "federal",
@@ -77,6 +81,7 @@
   },
   {
     "id": "abs",
+    "bodyId": "abs",
     "name": "Australian Bureau of Statistics",
     "acronym": "ABS",
     "level": "federal",
@@ -96,6 +101,7 @@
   },
   {
     "id": "health",
+    "bodyId": "health",
     "name": "Department of Health, Disability and Ageing",
     "acronym": "Health",
     "level": "federal",
@@ -114,6 +120,7 @@
   },
   {
     "id": "homeaffairs",
+    "bodyId": "homeaffairs",
     "name": "Department of Home Affairs",
     "acronym": "Home Affairs",
     "level": "federal",
@@ -133,6 +140,7 @@
   },
   {
     "id": "dfat",
+    "bodyId": "dfat",
     "name": "Department of Foreign Affairs and Trade",
     "acronym": "DFAT",
     "level": "federal",
@@ -151,6 +159,7 @@
   },
   {
     "id": "csiro",
+    "bodyId": "csiro",
     "name": "Commonwealth Scientific and Industrial Research Organisation",
     "acronym": "CSIRO",
     "level": "federal",
@@ -170,6 +179,7 @@
   },
   {
     "id": "education",
+    "bodyId": "education",
     "name": "Department of Education",
     "acronym": "Education",
     "level": "federal",
@@ -189,6 +199,7 @@
   },
   {
     "id": "daff",
+    "bodyId": "daff",
     "name": "Department of Agriculture, Fisheries and Forestry",
     "acronym": "DAFF",
     "level": "federal",
@@ -208,6 +219,7 @@
   },
   {
     "id": "treasury",
+    "bodyId": "treasury",
     "name": "Department of the Treasury",
     "acronym": "Treasury",
     "level": "federal",
@@ -226,6 +238,7 @@
   },
   {
     "id": "agd",
+    "bodyId": "agd",
     "name": "Attorney-General's Department",
     "acronym": "AGD",
     "level": "federal",
@@ -244,6 +257,7 @@
   },
   {
     "id": "finance",
+    "bodyId": "finance",
     "name": "Department of Finance",
     "acronym": "Finance",
     "level": "federal",
@@ -262,6 +276,7 @@
   },
   {
     "id": "servicesaustralia",
+    "bodyId": "servicesaustralia",
     "name": "Services Australia",
     "acronym": "Services Australia",
     "level": "federal",
@@ -283,6 +298,7 @@
   },
   {
     "id": "dss",
+    "bodyId": "dss",
     "name": "Department of Social Services",
     "acronym": "DSS",
     "level": "federal",
@@ -301,6 +317,7 @@
   },
   {
     "id": "apra",
+    "bodyId": "apra",
     "name": "Australian Prudential Regulation Authority",
     "acronym": "APRA",
     "level": "federal",
@@ -319,6 +336,7 @@
   },
   {
     "id": "accc",
+    "bodyId": "accc",
     "name": "Australian Competition and Consumer Commission",
     "acronym": "ACCC",
     "level": "federal",
@@ -337,6 +355,7 @@
   },
   {
     "id": "austrac",
+    "bodyId": "austrac",
     "name": "Australian Transaction Reports and Analysis Centre",
     "acronym": "AUSTRAC",
     "level": "federal",
@@ -355,6 +374,7 @@
   },
   {
     "id": "disr",
+    "bodyId": "disr",
     "name": "Department of Industry, Science and Resources",
     "acronym": "DISR",
     "level": "federal",
@@ -373,6 +393,7 @@
   },
   {
     "id": "naa",
+    "bodyId": "naa",
     "name": "National Archives of Australia",
     "acronym": "NAA",
     "level": "federal",
@@ -391,6 +412,7 @@
   },
   {
     "id": "esafety",
+    "bodyId": "esafety",
     "name": "eSafety Commissioner",
     "acronym": "eSafety",
     "level": "federal",
@@ -409,6 +431,7 @@
   },
   {
     "id": "fwc",
+    "bodyId": "fwc",
     "name": "Fair Work Commission",
     "acronym": "FWC",
     "level": "federal",
@@ -428,6 +451,7 @@
   },
   {
     "id": "fwo",
+    "bodyId": "fwo",
     "name": "Fair Work Ombudsman",
     "acronym": "FWO",
     "level": "federal",
@@ -447,6 +471,7 @@
   },
   {
     "id": "pc",
+    "bodyId": "pc",
     "name": "Productivity Commission",
     "acronym": "PC",
     "level": "federal",
@@ -465,6 +490,7 @@
   },
   {
     "id": "niaa",
+    "bodyId": "niaa",
     "name": "National Indigenous Australians Agency",
     "acronym": "NIAA",
     "level": "federal",
@@ -485,6 +511,7 @@
   },
   {
     "id": "cer",
+    "bodyId": "cer",
     "name": "Clean Energy Regulator",
     "acronym": "CER",
     "level": "federal",
@@ -504,6 +531,7 @@
   },
   {
     "id": "anao",
+    "bodyId": "anao",
     "name": "Australian National Audit Office",
     "acronym": "ANAO",
     "level": "federal",
@@ -523,6 +551,7 @@
   },
   {
     "id": "gbrmpa",
+    "bodyId": "gbrmpa",
     "name": "Great Barrier Reef Marine Park Authority",
     "acronym": "GBRMPA",
     "level": "federal",
@@ -543,6 +572,7 @@
   },
   {
     "id": "ipaustralia",
+    "bodyId": "ipaustralia",
     "name": "IP Australia",
     "acronym": "IP Australia",
     "level": "federal",
@@ -561,6 +591,7 @@
   },
   {
     "id": "ndisqsc",
+    "bodyId": "ndisqsc",
     "name": "NDIS Quality and Safeguards Commission",
     "acronym": "NDIS QSC",
     "level": "federal",
@@ -579,6 +610,7 @@
   },
   {
     "id": "afp",
+    "bodyId": "afp",
     "name": "Australian Federal Police",
     "acronym": "AFP",
     "level": "federal",
@@ -598,6 +630,7 @@
   },
   {
     "id": "osi",
+    "bodyId": "osi",
     "name": "Office of the Special Investigator",
     "acronym": "OSI",
     "level": "federal",
@@ -616,6 +649,7 @@
   },
   {
     "id": "arc",
+    "bodyId": "arc",
     "name": "Australian Research Council",
     "acronym": "ARC",
     "level": "federal",
@@ -635,6 +669,7 @@
   },
   {
     "id": "comcare",
+    "bodyId": "comcare",
     "name": "Comcare",
     "acronym": "Comcare",
     "level": "federal",
@@ -655,6 +690,7 @@
   },
   {
     "id": "swa",
+    "bodyId": "swa",
     "name": "Safe Work Australia",
     "acronym": "SWA",
     "level": "federal",
@@ -674,6 +710,7 @@
   },
   {
     "id": "cgc",
+    "bodyId": "cgc",
     "name": "Commonwealth Grants Commission",
     "acronym": "CGC",
     "level": "federal",
@@ -692,6 +729,7 @@
   },
   {
     "id": "ombudsman",
+    "bodyId": "ombudsman",
     "name": "Commonwealth Ombudsman",
     "acronym": "Ombudsman",
     "level": "federal",
@@ -710,6 +748,7 @@
   },
   {
     "id": "pbo",
+    "bodyId": "pbo",
     "name": "Parliamentary Budget Office",
     "acronym": "PBO",
     "level": "federal",
@@ -728,6 +767,7 @@
   },
   {
     "id": "teqsa",
+    "bodyId": "teqsa",
     "name": "Tertiary Education Quality and Standards Agency",
     "acronym": "TEQSA",
     "level": "federal",
@@ -746,6 +786,7 @@
   },
   {
     "id": "cdpp",
+    "bodyId": "cdpp",
     "name": "Commonwealth Director of Public Prosecutions",
     "acronym": "CDPP",
     "level": "federal",
@@ -764,6 +805,7 @@
   },
   {
     "id": "ditrdca",
+    "bodyId": "ditrdca",
     "name": "Department of Infrastructure, Transport, Regional Development, Communications and the Arts",
     "acronym": "DITRDCA",
     "level": "federal",
@@ -782,6 +824,7 @@
   },
   {
     "id": "dcceew",
+    "bodyId": "dcceew",
     "name": "Department of Climate Change, Energy, the Environment and Water",
     "acronym": "DCCEEW",
     "level": "federal",
@@ -800,6 +843,7 @@
   },
   {
     "id": "dva",
+    "bodyId": "dva",
     "name": "Department of Veterans' Affairs",
     "acronym": "DVA",
     "level": "federal",
@@ -821,6 +865,7 @@
   },
   {
     "id": "nhmrc",
+    "bodyId": "nhmrc",
     "name": "National Health and Medical Research Council",
     "acronym": "NHMRC",
     "level": "federal",
@@ -839,6 +884,7 @@
   },
   {
     "id": "aic",
+    "bodyId": "aic",
     "name": "Australian Institute of Criminology",
     "acronym": "AIC",
     "level": "federal",
@@ -857,6 +903,7 @@
   },
   {
     "id": "aph",
+    "bodyId": "aph",
     "name": "Parliament of Australia - Department of the Senate",
     "acronym": "APH",
     "level": "federal",
@@ -875,6 +922,7 @@
   },
   {
     "id": "acma",
+    "bodyId": "acma",
     "name": "Australian Communications and Media Authority",
     "acronym": "ACMA",
     "level": "federal",
@@ -894,6 +942,7 @@
   },
   {
     "id": "ndia",
+    "bodyId": "ndia",
     "name": "National Disability Insurance Agency",
     "acronym": "NDIA",
     "level": "federal",
@@ -911,6 +960,7 @@
   },
   {
     "id": "oaic",
+    "bodyId": "oaic",
     "name": "Office of the Australian Information Commissioner",
     "acronym": "OAIC",
     "level": "federal",

@@ -5,6 +5,7 @@ import { summarizeManualSourceCoverage } from '@/lib/source-monitoring';
 
 const daily: WatchSource = {
   id: 'daily-manual',
+  bodyId: 'test-body',
   name: 'Daily manual source',
   jurisdiction: 'federal',
   category: 'government',

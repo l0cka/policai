@@ -14,6 +14,7 @@ import type { WatchSource } from './sources';
 
 const SOURCE: WatchSource = {
   id: 'cli-test-rss',
+  bodyId: 'test-body',
   name: 'CLI test RSS source',
   jurisdiction: 'federal',
   category: 'regulator',
