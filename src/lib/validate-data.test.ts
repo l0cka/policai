@@ -375,6 +375,31 @@ describe('validatePolicies', () => {
     ]);
   });
 
+  it('rejects a legislative record whose status disagrees with its lifecycle', () => {
+    const report = validatePolicies([
+      buildPolicy({
+        type: 'legislation',
+        status: 'active',
+        legislative: {
+          kind: 'bill',
+          ref: { register: 'aph', billId: 'r7421' },
+          origin: 'government',
+          events: [
+            {
+              date: '2026-10-15',
+              precision: 'day',
+              event: { kind: 'introduced', chamber: 'lower' },
+              source: { url: 'https://www.aph.gov.au/bill' },
+            },
+          ],
+        },
+      }),
+    ]);
+    expect(report.errors).toEqual([
+      'policy-1: status "active" disagrees with its lifecycle events, which make it "proposed"',
+    ]);
+  });
+
   it('rejects a policy that supersedes itself', () => {
     const report = validatePolicies([
       buildPolicy({ status: 'superseded', supersededBy: 'policy-1' }),

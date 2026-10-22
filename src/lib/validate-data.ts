@@ -51,6 +51,7 @@ import { parseBodies, type Body } from '@/lib/watch-coverage/bodies';
 import { isFailureClass, publicFailureUrl } from '@/lib/pipeline/failure';
 import { identityExceptionState } from '@/lib/pipeline/identity';
 import { isValidCalendarDate } from '@/lib/calendar-date';
+import { legislativeErrors } from '@/lib/legislation/model';
 import { VERIFICATION_CLOCK_SKEW_TOLERANCE_MS } from '@/lib/verification';
 import {
   MAX_THEMES_PER_RECORD,
@@ -825,6 +826,7 @@ export function validatePolicies(
     if (policy.supersededBy && policy.supersededBy === policy.id) {
       errors.push(`${label}: supersededBy cannot reference the policy itself`);
     }
+    errors.push(...legislativeErrors(policy).map((error) => `${label}: ${error}`));
   });
 
   policies.forEach((policy) => {

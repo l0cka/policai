@@ -1,6 +1,7 @@
 // Core domain types for Policai
 
 import type { FailureClass } from "@/lib/pipeline/failure";
+import type { Legislative } from "@/lib/legislation/model";
 import type { ThemeId } from "@/lib/themes";
 
 export const JURISDICTIONS = [
@@ -282,6 +283,8 @@ export interface Policy {
 	verification: RecordVerification;
 	supersededBy?: string;
 	lastReviewedAt?: string;
+	/** Lifecycle of a bill, Act or legislative instrument; drives `status`. */
+	legislative?: Legislative;
 }
 
 export interface Agency {
