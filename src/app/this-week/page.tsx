@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { PageIntro } from '@/components/layout';
+import { EntryRow } from '@/components/legislative-entry';
 import { ArrowUpRight, CalendarClock } from 'lucide-react';
 import {
   getCollectionMeta,
@@ -8,6 +10,7 @@ import {
 } from '@/lib/data-service';
 import { formatPolicyDate } from '@/lib/format-policy-date';
 import { jurisdictionRailStyle } from '@/lib/jurisdiction-accent';
+import { isLegislativeRecord, stagesBetween } from '@/lib/legislation/overview';
 import {
   collectionAnchor,
   precisionDateTime,
@@ -28,6 +31,8 @@ import {
 import type { UpcomingPolicyDate as UpcomingDate } from '@/lib/this-week';
 import { cn } from '@/lib/utils';
 import { pageAlternates, pageSocialMeta } from '@/lib/site-seo';
+import { auDate } from '@/lib/au-date';
+import { sydneyCalendarDate } from '@/lib/calendar-date';
 
 // Upcoming dates must advance even when collection is stalled.
 export const dynamic = 'force-dynamic';
@@ -49,7 +54,7 @@ export const metadata: Metadata = {
 
 function formatTimestamp(value: string | null): string | null {
   if (!value) return null;
-  return new Date(value).toLocaleString('en-AU', {
+  return auDate(new Date(value), {
     day: '2-digit',
     month: 'short',
     year: 'numeric',
@@ -85,7 +90,7 @@ function DevelopmentRow({ development }: { development: Development }) {
       className="ink-rail grid gap-1.5 border-b border-border py-3 pl-3 transition-colors duration-[var(--dur-fast)] hover:bg-[var(--row-hover)] sm:grid-cols-[7rem_minmax(0,1fr)] sm:gap-2 sm:py-4"
     >
       <time dateTime={new Date(development.detectedAt).toISOString()} className="text-xs font-medium text-muted-foreground tabular">
-        {new Date(development.detectedAt).toLocaleDateString('en-AU', {
+        {auDate(new Date(development.detectedAt), {
           day: 'numeric',
           month: 'short',
           year: 'numeric',
@@ -95,7 +100,7 @@ function DevelopmentRow({ development }: { development: Development }) {
       <div className="min-w-0">
         <div className="flex flex-wrap items-center gap-2">
           <EvidenceLabel development={development} />
-          <span className="text-[11px] text-muted-foreground">
+          <span className="text-xs text-muted-foreground">
             {getJurisdictionName(development.jurisdiction)} ·{' '}
             {development.sourceName}
           </span>
@@ -114,7 +119,7 @@ function DevelopmentRow({ development }: { development: Development }) {
             {development.summary}
           </p>
         ) : null}
-        <div className="mt-1.5 flex flex-wrap items-center gap-3 text-[11px] sm:mt-2">
+        <div className="mt-1.5 flex flex-wrap items-center gap-3 text-xs sm:mt-2">
           <span
             className={cn(
               'flex items-center gap-1.5',
@@ -162,7 +167,7 @@ function UpcomingRow({ item }: { item: UpcomingDate }) {
         {item.precision !== 'day' ? <p className="mt-1 normal-case">Exact day not recorded</p> : null}
       </div>
       <div className="min-w-0">
-        <p className="text-[11px] text-muted-foreground">
+        <p className="text-xs text-muted-foreground">
           {getPolicyDateTypeName(item.dateType)} ·{' '}
           {getJurisdictionName(item.jurisdiction)} ·{' '}
           {getPolicyTypeName(item.type)} ·{' '}
@@ -177,7 +182,7 @@ function UpcomingRow({ item }: { item: UpcomingDate }) {
           {item.policyTitle}
           <ArrowUpRight className="mt-0.5 h-3.5 w-3.5 shrink-0 opacity-50 group-hover:opacity-100" />
         </a>
-        <div className="mt-1.5 text-[11px] sm:mt-2">
+        <div className="mt-1.5 text-xs sm:mt-2">
           <Link
             href={`/policies/${item.policyId}`}
             className="text-primary hover:underline"
@@ -208,9 +213,13 @@ export default async function ThisWeekPage() {
     window && weeklyDevelopments.length === 0
       ? selectRecentVerifiedBefore(allDevelopments, window)
       : [];
+  const sydneyDay = (stamp: number) => sydneyCalendarDate(new Date(stamp));
+  const stages = window
+    ? stagesBetween(policies.filter(isLegislativeRecord), sydneyDay(window.start), sydneyDay(window.end))
+    : [];
   const upcoming = selectUpcomingPolicyDates(policies, weekWindowEndingAt(now)!);
   const stale = window && now.getTime() - window.end > WEEK_MS;
-  const dateLabel = (stamp: number) => new Date(stamp).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Australia/Sydney' });
+  const dateLabel = (stamp: number) => auDate(new Date(stamp), { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Australia/Sydney' });
 
   const lastCollected = formatTimestamp(meta.lastCollectedAt);
   const lastHealthy = formatTimestamp(meta.lastHealthyAt);
@@ -218,41 +227,37 @@ export default async function ThisWeekPage() {
   const upcomingCount = upcoming.length;
 
   return (
-    <div className="mx-auto w-full max-w-[1240px] px-4 py-6 sm:px-6 sm:py-10 lg:px-8">
-      <header className="reveal">
-        <h1 className="page-title">This week</h1>
-        <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground sm:mt-3">
-          Verified developments from the latest collected week, and dates to
-          watch in the register. Every entry links to its source.
-        </p>
+    <div className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
+      <PageIntro
+        title="This week"
+        description="Verified developments from the latest collected week, and dates to watch in the register. Every entry links to its source."
+      />
+      <div className="reveal">
         <nav
           aria-label="On this page"
-          className="mt-3 flex flex-wrap items-baseline gap-x-4 gap-y-1 text-sm"
+          className="flex flex-wrap items-baseline gap-x-4 gap-y-1 text-sm"
         >
           <a href="#verified" className="text-primary underline underline-offset-4 hover:no-underline">
             {verifiedCount} verified
           </a>
+          <a href="#legislation" className="text-primary underline underline-offset-4 hover:no-underline">
+            {stages.length} legislative {stages.length === 1 ? 'stage' : 'stages'}
+          </a>
           <a href="#coming-up" className="text-primary underline underline-offset-4 hover:no-underline">
             {upcomingCount} coming up
-          </a>
-          <Link href="/developments" className="text-muted-foreground underline underline-offset-4 hover:text-primary hover:no-underline">
-            Full developments
-          </Link>
-          <a href="/feed.xml" className="text-muted-foreground underline underline-offset-4 hover:text-primary hover:no-underline">
-            Atom feed
           </a>
         </nav>
         <p className="mt-2 flex flex-wrap gap-x-4 font-mono text-[11px] uppercase text-muted-foreground">
           {lastCollected ? <span>Last collected {lastCollected}</span> : null}
           {lastHealthy ? <span>Last fully healthy {lastHealthy}</span> : null}
         </p>
-        {stale ? <p role="status" className="mt-4 border-l-2 border-[var(--caution)] pl-3 text-sm">Collection is more than seven days old. This is a historical snapshot, not current weekly coverage. <Link href="/methodology" className="underline">Check source health</Link>.</p> : null}
-      </header>
+        {stale ? <p role="status" className="mt-4 border-l-2 border-[var(--caution)] pl-3 text-sm">Collection is more than seven days old. This is a historical snapshot, not current weekly coverage. <Link href="/status" className="underline">Check source status</Link>.</p> : null}
+      </div>
 
-      <section id="verified" className="mt-6 scroll-mt-28 sm:mt-8">
+      <section id="verified" className="mt-6 scroll-mt-20 sm:mt-8">
         <h2 className="border-b border-[var(--rule-heavy)] py-2 font-mono text-[11px] font-medium uppercase tracking-[0.12em]">
-          Verified developments
-          <span className="ml-2 font-mono text-muted-foreground normal-case tracking-normal">
+          Verified developments{' '}
+          <span className="ml-0.5 font-mono text-muted-foreground normal-case tracking-normal">
             {verifiedCount}
           </span>
         </h2>
@@ -306,10 +311,39 @@ export default async function ThisWeekPage() {
         </p>
       </section>
 
-      <section id="coming-up" className="mt-8 scroll-mt-28 sm:mt-10">
+      <section id="legislation" className="mt-8 scroll-mt-20 sm:mt-10">
         <h2 className="border-b border-[var(--rule-heavy)] py-2 font-mono text-[11px] font-medium uppercase tracking-[0.12em]">
-          Coming up
-          <span className="ml-2 font-mono text-muted-foreground normal-case tracking-normal">
+          In Parliament and on the register{' '}
+          <span className="ml-0.5 font-mono text-muted-foreground normal-case tracking-normal">
+            {stages.length}
+          </span>
+        </h2>
+        <p className="mt-2 max-w-3xl text-xs leading-5 text-muted-foreground">
+          {window ? `Stages dated ${dateLabel(window.start)} – ${dateLabel(window.end)}` : 'Stages'} for the bills, Acts
+          and instruments in the register, each read from its official source and approved by an editor. Dated by the
+          stage, not by when it was found.
+        </p>
+        {stages.length > 0 ? (
+          <div>
+            {stages.map((entry) => (
+              <EntryRow key={`${entry.record.id}-${entry.date}-${entry.label}`} entry={entry} />
+            ))}
+          </div>
+        ) : (
+          <p className="border-b border-border py-6 text-sm text-muted-foreground">
+            No tracked bill, Act or instrument moved in this window. Every one is on the{' '}
+            <Link href="/legislation" className="text-primary underline underline-offset-4 hover:no-underline">
+              legislation page
+            </Link>
+            .
+          </p>
+        )}
+      </section>
+
+      <section id="coming-up" className="mt-8 scroll-mt-20 sm:mt-10">
+        <h2 className="border-b border-[var(--rule-heavy)] py-2 font-mono text-[11px] font-medium uppercase tracking-[0.12em]">
+          Coming up{' '}
+          <span className="ml-0.5 font-mono text-muted-foreground normal-case tracking-normal">
             {upcomingCount}
           </span>
         </h2>

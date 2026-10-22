@@ -45,10 +45,14 @@ import {
   isRobotsRuleList,
   isStoredSitemapList,
 } from '@/lib/pipeline/host-gate';
-import type { WatchSource } from '@/lib/pipeline/sources';
+import { hostOf } from '@/lib/pipeline/host';
+import { refusedHosts, type WatchSource } from '@/lib/pipeline/sources';
+import { parseBodies, type Body } from '@/lib/watch-coverage/bodies';
+import { parseSiteReuse, siteReuseCoverage } from '@/lib/watch-coverage/site-reuse';
 import { isFailureClass, publicFailureUrl } from '@/lib/pipeline/failure';
 import { identityExceptionState } from '@/lib/pipeline/identity';
 import { isValidCalendarDate } from '@/lib/calendar-date';
+import { legislativeErrors } from '@/lib/legislation/model';
 import { VERIFICATION_CLOCK_SKEW_TOLERANCE_MS } from '@/lib/verification';
 import {
   MAX_THEMES_PER_RECORD,
@@ -609,6 +613,7 @@ function validateVerification(
 export function validatePolicies(
   policies: Policy[],
   registerIds: ReadonlySet<string> = new Set(),
+  { requireLegislative = true }: { requireLegislative?: boolean } = {},
 ): ValidationReport {
   const errors: string[] = [];
   const warnings: string[] = [];
@@ -823,6 +828,7 @@ export function validatePolicies(
     if (policy.supersededBy && policy.supersededBy === policy.id) {
       errors.push(`${label}: supersededBy cannot reference the policy itself`);
     }
+    errors.push(...legislativeErrors(policy, { requireLegislative }).map((error) => `${label}: ${error}`));
   });
 
   policies.forEach((policy) => {
@@ -1107,6 +1113,25 @@ export function validateAgencies(
   return { errors, warnings };
 }
 
+/**
+ * A legislative record carries its bill's history as events and shows them on
+ * the timeline itself, so no hand-typed timeline event may cite its page.
+ */
+export function validateLegislativeTimelineOverlap(
+  policies: Policy[],
+  events: TimelineEvent[],
+): ValidationReport {
+  const errors = events.flatMap((event) => {
+    const record = policies.find(
+      (policy) => policy.legislative && sourceUrlsEqual(policy.sourceUrl, event.sourceUrl),
+    );
+    return record
+      ? [`${event.id}: cites the page of legislative record ${record.id}; its history belongs in that record's events`]
+      : [];
+  });
+  return { errors, warnings: [] };
+}
+
 export function validateTimeline(
   events: TimelineEvent[],
   policyIds: Set<string>,
@@ -1354,6 +1379,21 @@ export function validateCollectionMeta(meta: CollectionMeta): ValidationReport {
     errors.push('meta: invalid lastUsableAt');
   if (meta.lastReviewedAt && !isTimestampString(meta.lastReviewedAt))
     errors.push('meta: invalid lastReviewedAt');
+  const runOrder = [
+    ['lastHealthyAt', meta.lastHealthyAt],
+    ['lastUsableAt', meta.lastUsableAt],
+    ['lastCollectedAt', meta.lastCollectedAt],
+  ] as const;
+  runOrder.forEach(([earlierName, earlier], index) => {
+    for (const [laterName, later] of runOrder.slice(index + 1)) {
+      if (
+        isTimestampString(earlier) &&
+        isTimestampString(later) &&
+        Date.parse(earlier) > Date.parse(later)
+      )
+        errors.push(`meta: ${earlierName} is after ${laterName}`);
+    }
+  });
   if (!isOneOf(COLLECTION_HEALTH_STATUSES, collector.health))
     errors.push('meta: invalid collector health');
   if (
@@ -1443,6 +1483,21 @@ export function validateCollectionMeta(meta: CollectionMeta): ValidationReport {
       errors.push(`${label}: failure fields require a failed result`);
     else if ((result.failureClass === undefined) !== (result.failedUrl === undefined))
       errors.push(`${label}: failureClass and failedUrl must appear together`);
+    if (result.skippedLinked !== undefined) {
+      if (!Array.isArray(result.skippedLinked) || result.skippedLinked.length === 0)
+        errors.push(`${label}: skippedLinked must be a non-empty array`);
+      else
+        result.skippedLinked.forEach((skipped, index) => {
+          if (
+            !isNonEmptyString(skipped?.url) ||
+            !skipped.url.startsWith('https://') ||
+            publicFailureUrl(skipped.url) !== skipped.url
+          )
+            errors.push(`${label}: skippedLinked[${index}] has an invalid url`);
+          if (!isNonEmptyString(skipped?.decidedBy))
+            errors.push(`${label}: skippedLinked[${index}] requires decidedBy`);
+        });
+    }
   });
 
   if (collector.health !== 'healthy') {
@@ -1507,6 +1562,15 @@ export function validateSourceReviews(
     }
     if (!isOneOf(SOURCE_REVIEW_ENTRY_KINDS, review.entryKind))
       errors.push(`${label}: invalid entryKind`);
+    // A stage update keeps its record public, so only a follow watch's
+    // update of a legislative record may carry one.
+    if (
+      review.legislativeUpdate !== undefined &&
+      (!review.targetPolicyId ||
+        !isRecord((review.proposedRecord as Partial<Policy> | undefined)?.legislative))
+    ) {
+      errors.push(`${label}: legislativeUpdate is only for an update review of a legislative record`);
+    }
     if (review.targetPolicyId) {
       if (review.entryKind !== 'policy') {
         errors.push(`${label}: targetPolicyId is only valid for policy reviews`);
@@ -1832,7 +1896,10 @@ export function validateSourceReviews(
       }
       const proposedRecordReport =
         review.entryKind === 'policy'
-          ? validatePolicies([review.proposedRecord as Policy], policyIds)
+          ? validatePolicies([review.proposedRecord as Policy], policyIds, {
+              // Records approved before lifecycle tracking keep their snapshot.
+              requireLegislative: false,
+            })
           : validateTimeline(
               [review.proposedRecord as TimelineEvent],
               policyIds ??
@@ -1969,6 +2036,27 @@ export function validateWatchState(state: WatchState): ValidationReport {
       errors.push(`${label}: invalid robotsUnreachableRuns`);
   }
 
+  for (const [sourceId, record] of Object.entries(state.sourceHealth ?? {})) {
+    const label = `watchState:sourceHealth:${sourceId}`;
+    if (!isNonEmptyString(sourceId)) errors.push(`${label}: empty source id`);
+    if (record.lastSuccessAt !== null && !isTimestampString(record.lastSuccessAt))
+      errors.push(`${label}: invalid lastSuccessAt`);
+    if (!Number.isInteger(record.consecutiveFailures) || record.consecutiveFailures < 0)
+      errors.push(`${label}: invalid consecutiveFailures`);
+    const failing = record.consecutiveFailures > 0;
+    if (failing ? !isTimestampString(record.firstFailureAt) : record.firstFailureAt !== null)
+      errors.push(`${label}: firstFailureAt must be set exactly while failing`);
+    if (failing ? !isFailureClass(record.lastFailureClass) : record.lastFailureClass !== null)
+      errors.push(`${label}: lastFailureClass must be set exactly while failing`);
+    if (
+      failing &&
+      isTimestampString(record.lastSuccessAt) &&
+      isTimestampString(record.firstFailureAt) &&
+      Date.parse(record.lastSuccessAt) >= Date.parse(record.firstFailureAt)
+    )
+      errors.push(`${label}: lastSuccessAt must precede firstFailureAt`);
+  }
+
   for (const [sourceId, snapshot] of Object.entries(state.sourceSnapshots)) {
     if (!SHA256.test(snapshot.contentHash))
       errors.push(`watchState:sourceSnapshots:${sourceId}: invalid contentHash`);
@@ -2013,12 +2101,15 @@ export function validateWatchSources(
         sourceUrls.set(sourceIdentity, label);
       }
     }
-    if (!isOneOf(['html-index', 'rss', 'document'], source.kind))
+    if (!isOneOf(['html-index', 'rss', 'document', 'frl-search', 'sa-salt-search', 'vic-bill-search', 'bill-list'], source.kind))
       errors.push(`${label}: invalid kind`);
+    if ((source.kind === 'bill-list') !== isOneOf(['nt', 'qld', 'wa', 'nsw'], source.billList))
+      errors.push(`${label}: billList names the reader of a bill-list source, and only of one`);
     if (!isOneOf(['daily', 'weekly'], source.schedule))
       errors.push(`${label}: invalid schedule`);
-    if (!isOneOf(['automatic', 'manual'], source.automation))
-      errors.push(`${label}: invalid automation mode`);
+    validateAutomation(label, source.automation, now, errors);
+    if (source.admittedAt !== undefined && !isCalendarDateString(source.admittedAt))
+      errors.push(`${label}: admittedAt must be YYYY-MM-DD`);
     if (
       source.minimumItemCount !== undefined &&
       (!Number.isInteger(source.minimumItemCount) ||
@@ -2040,7 +2131,124 @@ export function validateWatchSources(
     }
   });
 
+  const refused = refusedHosts(sources);
+  for (const source of sources) {
+    if (source.automation !== 'automatic' || !URL.canParse(source.url)) continue;
+    const decidedBy = refused.get(hostOf(new URL(source.url)));
+    if (decidedBy) {
+      errors.push(
+        `watchSources:${source.id}: automatic source on ${hostOf(new URL(source.url))}, which ${decidedBy} records as refusing the declared identity; move it to manual tracking or reverse that decision`,
+      );
+    }
+  }
+
   return { errors, warnings };
+}
+
+const MANUAL_BECAUSE = [
+  'identity_refused',
+  'bot_blocked',
+  'robots_disallowed',
+  'not_found',
+] as const;
+
+function validateAutomation(
+  label: string,
+  automation: unknown,
+  now: Date,
+  errors: string[],
+): void {
+  if (automation === 'automatic') return;
+  if (!isRecord(automation) || automation.mode !== 'manual') {
+    errors.push(`${label}: automation must be 'automatic' or a manual decision`);
+    return;
+  }
+  if (!isOneOf(MANUAL_BECAUSE, automation.because))
+    errors.push(`${label}: invalid manual because`);
+  if (!isOneOf(['manual', 'await_allowlist'], automation.decision))
+    errors.push(`${label}: invalid manual decision`);
+  if (
+    automation.blockedHost !== undefined &&
+    (typeof automation.blockedHost !== 'string' || !isHostKey(automation.blockedHost))
+  )
+    errors.push(`${label}: blockedHost must be a lower-case host name`);
+  if (!isCalendarDateString(automation.since))
+    errors.push(`${label}: manual decision since must be YYYY-MM-DD`);
+  else if (
+    new Date(`${automation.since}T00:00:00Z`).getTime() >
+    now.getTime() + VERIFICATION_CLOCK_SKEW_TOLERANCE_MS
+  )
+    errors.push(`${label}: manual decision since cannot be in the future`);
+  if (!isNonEmptyString(automation.decidedBy))
+    errors.push(`${label}: manual decision needs decidedBy`);
+  if (!isNonEmptyString(automation.evidence) || automation.evidence.trim().length < 20)
+    errors.push(`${label}: manual decision needs evidence of at least 20 characters`);
+}
+
+/** `data/site-reuse.json`: well formed, and every entry names a body's host. */
+export function validateSiteReuse(raw: unknown, bodiesRaw: unknown): ValidationReport {
+  try {
+    return siteReuseCoverage(parseSiteReuse(raw), parseBodies(bodiesRaw));
+  } catch (error) {
+    return { errors: [error instanceof Error ? error.message : String(error)], warnings: [] };
+  }
+}
+
+/**
+ * Cross-file rules for `data/bodies.json`: every source and directory record
+ * resolves to a body in its jurisdiction, and a source's host belongs to its
+ * body. A directory record names its body, or a part of it after " - ".
+ */
+export function validateBodies(
+  raw: unknown,
+  sources: readonly WatchSource[],
+  directories: Readonly<Record<string, readonly Agency[]>>,
+): ValidationReport {
+  const errors: string[] = [];
+  let bodies: Body[];
+  try {
+    bodies = parseBodies(raw);
+  } catch (error) {
+    return { errors: [error instanceof Error ? error.message : String(error)], warnings: [] };
+  }
+  const byId = new Map<string, Body>(bodies.map((body) => [body.id, body]));
+  for (const jurisdiction of JURISDICTIONS) {
+    if (!bodies.some((body) => body.jurisdiction === jurisdiction && body.tier === 'A'))
+      errors.push(`bodies: no tier A body for ${jurisdiction}`);
+  }
+  for (const body of bodies) {
+    if (new Set(body.hosts).size !== body.hosts.length)
+      errors.push(`bodies:${body.id}: duplicate host`);
+  }
+
+  const resolve = (label: string, bodyId: string, jurisdiction: string, url: string) => {
+    const body = byId.get(bodyId);
+    if (!body) {
+      errors.push(`${label}: unknown bodyId ${bodyId}`);
+      return undefined;
+    }
+    if (body.jurisdiction !== jurisdiction)
+      errors.push(`${label}: jurisdiction ${jurisdiction} differs from body ${body.id} (${body.jurisdiction})`);
+    if (URL.canParse(url)) {
+      const host = hostOf(new URL(url));
+      if (!body.hosts.includes(host))
+        errors.push(`${label}: host ${host} is not one of body ${body.id}'s hosts`);
+    }
+    return body;
+  };
+
+  for (const source of sources) {
+    resolve(`watchSources:${source.id}`, source.bodyId, source.jurisdiction, source.url);
+  }
+  for (const [file, records] of Object.entries(directories)) {
+    for (const record of records) {
+      const label = `${file}:${record.id}`;
+      const body = resolve(label, record.bodyId, record.jurisdiction, record.website);
+      if (body && record.name !== body.name && !record.name.startsWith(`${body.name} - `))
+        errors.push(`${label}: name "${record.name}" differs from body ${body.id} ("${body.name}")`);
+    }
+  }
+  return { errors, warnings: [] };
 }
 
 export function validateSourceMonitoring(
@@ -2070,7 +2278,7 @@ export function validateSourceMonitoring(
     const source = sourceById.get(review.sourceId);
     if (!source) {
       errors.push(`${label}: unknown source id`);
-    } else if (source.automation !== 'manual') {
+    } else if (source.automation === 'automatic') {
       errors.push(`${label}: source is not configured for manual review`);
     }
     if (!isOneOf(MANUAL_SOURCE_REVIEW_STATUSES, review.status))
@@ -2159,7 +2367,7 @@ export function validateSourceMonitoring(
   }
 
   for (const source of sources.filter(
-    (candidate) => candidate.enabled && candidate.automation === 'manual',
+    (candidate) => candidate.enabled && candidate.automation !== 'automatic',
   )) {
     if (!seen.has(source.id)) {
       warnings.push(

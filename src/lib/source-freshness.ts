@@ -52,7 +52,7 @@ export function assessSourceFreshness(
           ? null
           : Math.floor((now.getTime() - parsed) / DAY_MS);
       let state: SourceFreshnessState;
-      if (source.automation === 'manual') state = 'manual';
+      if (source.automation !== 'automatic') state = 'manual';
       else if (ageDays === null) state = 'never_checked';
       else if (ageDays > FRESHNESS_LIMIT_DAYS[source.schedule]) state = 'overdue';
       else state = 'current';

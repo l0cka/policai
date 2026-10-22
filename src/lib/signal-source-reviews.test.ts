@@ -7,6 +7,7 @@ import { describe, expect, it, vi } from "vitest";
 import type { PolicyDraft, SourceReview } from "@/types";
 import {
 	formatPendingSourceReviewCards,
+	formatSignalInstant,
 	runSignalSourceReviewCommand,
 	SIGNAL_CARD_SUMMARY_LIMIT,
 	type SignalSourceReviewDeps,
@@ -74,9 +75,7 @@ function deps(
 ): SignalSourceReviewDeps {
 	return {
 		listPending: vi.fn().mockResolvedValue([]),
-		approve: vi.fn(),
 		reject: vi.fn(),
-		publish: vi.fn(),
 		verify: vi.fn(),
 		env: {},
 		stdinIsTTY: true,
@@ -264,36 +263,34 @@ describe("pending source review cards", () => {
 });
 
 describe("signal source review apply", () => {
-	it("approves through the existing path with only the id and reviewer", async () => {
-		const approve = vi.fn().mockResolvedValue(
-			review({ id: "rev-1", status: "approved" }),
-		);
-		const reject = vi.fn();
-		const result = await runSignalSourceReviewCommand(
-			["apply", "--action=approve", "--id=rev-1", "--reviewer=Daniel"],
-			deps({ approve, reject }),
-		);
+	it.each(["approve", "publish"])(
+		"refuses %s and points to decision cards",
+		async (action) => {
+			const reject = vi.fn();
+			const verify = vi.fn();
+			const result = await runSignalSourceReviewCommand(
+				[
+					"apply",
+					`--action=${action}`,
+					"--id=rev-1",
+					"--reviewer=Daniel",
+					"--admin-token=signal-secret",
+				],
+				deps({ reject, verify, env: TRUSTED_ENV, stdinIsTTY: false }),
+			);
 
-		expect(approve).toHaveBeenCalledWith({
-			id: "rev-1",
-			actor: "Daniel",
-			approvalNotes: ATTESTATION,
-		});
-		expect(reject).not.toHaveBeenCalled();
-		expect(result).toEqual({
-			exitCode: 0,
-			stdout: `Approved rev-1 (status approved). ${ATTESTATION}`,
-			stderr: "",
-		});
-	});
+			expect(result.exitCode).toBe(2);
+			expect(result.stderr).toContain("decision cards");
+			expect(reject).not.toHaveBeenCalled();
+			expect(verify).not.toHaveBeenCalled();
+		},
+	);
 
 	it("refuses apply without a human confirmation", async () => {
-		const approve = vi.fn();
 		const reject = vi.fn();
 		const result = await runSignalSourceReviewCommand(
-			["apply", "--action=approve", "--id=rev-1", "--reviewer=Daniel"],
+			["apply", "--action=dismiss", "--id=rev-1", "--reviewer=Daniel"],
 			deps({
-				approve,
 				reject,
 				confirmReviewer: async () => false,
 			}),
@@ -304,7 +301,6 @@ describe("signal source review apply", () => {
 			stderr:
 				"A human must type the reviewer name at the terminal before recovery apply runs, or pass a matching --admin-token. The Grok Bot product path is HTTPS /api/signal/reviews with POLICAI_SIGNAL_TOKEN.",
 		});
-		expect(approve).not.toHaveBeenCalled();
 		expect(reject).not.toHaveBeenCalled();
 	});
 
@@ -316,11 +312,11 @@ describe("signal source review apply", () => {
 	] as const)(
 		"refuses apply in a %s session even if confirmation returns true",
 		async (_label, env, stdinIsTTY) => {
-			const approve = vi.fn();
+			const reject = vi.fn();
 			const result = await runSignalSourceReviewCommand(
-				["apply", "--action=approve", "--id=rev-1", "--reviewer=Daniel"],
+				["apply", "--action=dismiss", "--id=rev-1", "--reviewer=Daniel"],
 				deps({
-					approve,
+					reject,
 					env: { ...env },
 					stdinIsTTY,
 					confirmReviewer: async () => true,
@@ -329,25 +325,25 @@ describe("signal source review apply", () => {
 
 			expect(result.exitCode).toBe(1);
 			expect(result.stderr.length).toBeGreaterThan(0);
-			expect(approve).not.toHaveBeenCalled();
+			expect(reject).not.toHaveBeenCalled();
 		},
 	);
 
-	it("approves on the trusted token path without a TTY confirm", async () => {
-		const approve = vi.fn().mockResolvedValue(
-			review({ id: "rev-1", status: "approved" }),
+	it("dismisses on the trusted token path without a TTY confirm", async () => {
+		const reject = vi.fn().mockResolvedValue(
+			review({ id: "rev-1", status: "rejected" }),
 		);
 		const confirmReviewer = vi.fn().mockResolvedValue(false);
 		const result = await runSignalSourceReviewCommand(
 			[
 				"apply",
-				"--action=approve",
+				"--action=dismiss",
 				"--id=rev-1",
 				"--reviewer=Daniel",
 				"--admin-token=signal-secret",
 			],
 			deps({
-				approve,
+				reject,
 				env: TRUSTED_ENV,
 				stdinIsTTY: false,
 				confirmReviewer,
@@ -355,67 +351,45 @@ describe("signal source review apply", () => {
 		);
 
 		expect(confirmReviewer).not.toHaveBeenCalled();
-		expect(approve).toHaveBeenCalledWith({
-			id: "rev-1",
-			actor: "Daniel",
-			approvalNotes: `Signal recovery apply. ${ATTESTATION}`,
-		});
+		expect(reject).toHaveBeenCalledWith(
+			"rev-1",
+			`Dismissed by Daniel. Signal recovery apply. ${ATTESTATION}`,
+		);
 		expect(result.exitCode).toBe(0);
-		expect(result.stdout).toContain("Approved rev-1");
+		expect(result.stdout).toContain("Dismissed rev-1");
 	});
 
 	it("refuses a trusted apply when the reviewer is not allowlisted", async () => {
-		const approve = vi.fn();
+		const reject = vi.fn();
 		const result = await runSignalSourceReviewCommand(
 			[
 				"apply",
-				"--action=approve",
+				"--action=dismiss",
 				"--id=rev-1",
 				"--reviewer=NotDaniel",
 				"--admin-token=signal-secret",
 			],
-			deps({ approve, env: TRUSTED_ENV, stdinIsTTY: false }),
+			deps({ reject, env: TRUSTED_ENV, stdinIsTTY: false }),
 		);
 
 		expect(result.exitCode).toBe(1);
 		expect(result.stderr).toContain("Signal reviewer must be one of: Daniel Alkurdi, Daniel");
-		expect(approve).not.toHaveBeenCalled();
+		expect(reject).not.toHaveBeenCalled();
 	});
 
-	it("publishes only on the trusted token path", async () => {
-		const publish = vi.fn().mockResolvedValue(
-			review({ id: "rev-1", status: "published" }),
-		);
-		const denied = await runSignalSourceReviewCommand(
-			["apply", "--action=publish", "--id=rev-1", "--reviewer=Daniel"],
-			deps({ publish, stdinIsTTY: true }),
-		);
-		expect(denied.exitCode).toBe(1);
-		expect(denied.stderr).toMatch(/require a matching --admin-token/);
-		expect(publish).not.toHaveBeenCalled();
-
-		const ok = await runSignalSourceReviewCommand(
-			[
-				"apply",
-				"--action=publish",
-				"--id=rev-1",
-				"--admin-token=signal-secret",
-			],
-			deps({ publish, env: TRUSTED_ENV, stdinIsTTY: false }),
-		);
-		expect(publish).toHaveBeenCalledWith("rev-1");
-		expect(ok).toEqual({
-			exitCode: 0,
-			stdout: `Published rev-1 (status published). Signal recovery apply. ${ATTESTATION}`,
-			stderr: "",
-		});
-	});
-
-	it("verifies a named policy id on the trusted path", async () => {
+	it("verifies only on the trusted token path", async () => {
 		const verify = vi.fn().mockResolvedValue({
 			id: "federal-example",
 			verification: { status: "verified" },
 		});
+		const denied = await runSignalSourceReviewCommand(
+			["apply", "--action=verify", "--id=federal-example", "--reviewer=Daniel"],
+			deps({ verify, stdinIsTTY: true }),
+		);
+		expect(denied.exitCode).toBe(1);
+		expect(denied.stderr).toMatch(/requires a matching --admin-token/);
+		expect(verify).not.toHaveBeenCalled();
+
 		const result = await runSignalSourceReviewCommand(
 			[
 				"apply",
@@ -437,16 +411,17 @@ describe("signal source review apply", () => {
 	});
 
 	it("refuses trusted apply in a Cursor agent session even with a token", async () => {
-		const publish = vi.fn();
+		const verify = vi.fn();
 		const result = await runSignalSourceReviewCommand(
 			[
 				"apply",
-				"--action=publish",
-				"--id=rev-1",
+				"--action=verify",
+				"--id=federal-example",
+				"--reviewer=Daniel",
 				"--admin-token=signal-secret",
 			],
 			deps({
-				publish,
+				verify,
 				env: { ...TRUSTED_ENV, CURSOR_AGENT: "1" },
 				stdinIsTTY: false,
 			}),
@@ -454,46 +429,24 @@ describe("signal source review apply", () => {
 
 		expect(result.exitCode).toBe(1);
 		expect(result.stderr).toMatch(/agent session/);
-		expect(publish).not.toHaveBeenCalled();
+		expect(verify).not.toHaveBeenCalled();
 	});
 
-	it("records the OS user, host, and timestamp on the approval", async () => {
-		const approve = vi.fn().mockResolvedValue(
-			review({ id: "rev-1", status: "approved" }),
+	it("records the OS user, host, and timestamp on the dismissal", async () => {
+		const reject = vi.fn().mockResolvedValue(
+			review({ id: "rev-1", status: "rejected" }),
 		);
 		const result = await runSignalSourceReviewCommand(
-			["apply", "--action=approve", "--id=rev-1", "--reviewer=Daniel"],
-			deps({ approve, runner: undefined }),
+			["apply", "--action=dismiss", "--id=rev-1", "--reviewer=Daniel"],
+			deps({ reject, runner: undefined }),
 		);
 
 		expect(result.exitCode).toBe(0);
-		const notes = approve.mock.calls[0][0].approvalNotes as string;
+		const notes = reject.mock.calls[0][1] as string;
 		expect(notes).toContain(
 			`Ran by ${os.userInfo().username}@${os.hostname()} at `,
 		);
 		expect(notes).toMatch(/\(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z\)\.$/);
-		expect(approve.mock.calls[0][0].actor).toBe("Daniel");
-	});
-
-	it("returns the approve path's reason when reviewed fields are required", async () => {
-		const approve = vi.fn().mockRejectedValue(
-			new Error(
-				"Policy is not publishable: themes must be a list of theme ids; valid theme ids are ai-governance",
-			),
-		);
-		const result = await runSignalSourceReviewCommand(
-			[
-				"apply",
-				"--action=approve",
-				"--id=rev-1",
-				"--reviewer=Daniel",
-			],
-			deps({ approve }),
-		);
-
-		expect(result.exitCode).toBe(1);
-		expect(result.stderr).toContain("valid theme ids are ai-governance");
-		expect(result.stdout).toBe("");
 	});
 
 	it("dismisses through the existing reject path", async () => {
@@ -531,32 +484,30 @@ describe("signal source review apply", () => {
 		expect(result.stderr).toMatch(/cannot be rejected/);
 	});
 
-	it("refuses when the reviewer name is missing and does not call either path", async () => {
-		const approve = vi.fn();
+	it("refuses when the reviewer name is missing", async () => {
 		const reject = vi.fn();
 		const result = await runSignalSourceReviewCommand(
-			["apply", "--action=approve", "--id=rev-1", "--reviewer="],
-			deps({ approve, reject }),
+			["apply", "--action=dismiss", "--id=rev-1", "--reviewer="],
+			deps({ reject }),
 		);
 
 		expect(result).toMatchObject({
 			exitCode: 1,
 			stderr: "A human reviewer identity is required.",
 		});
-		expect(approve).not.toHaveBeenCalled();
 		expect(reject).not.toHaveBeenCalled();
 	});
 
-	it("prints fixture cards from list and does not approve them", async () => {
+	it("prints fixture cards from list without deciding them", async () => {
 		const listPending = vi.fn().mockResolvedValue([review()]);
-		const approve = vi.fn();
+		const reject = vi.fn();
 		const result = await runSignalSourceReviewCommand([], deps({
 			listPending,
-			approve,
+			reject,
 		}));
 
 		expect(listPending).toHaveBeenCalledOnce();
-		expect(approve).not.toHaveBeenCalled();
+		expect(reject).not.toHaveBeenCalled();
 		expect(result.exitCode).toBe(0);
 		expect(result.stdout).toContain("id: source-review-1");
 		expect(result.stdout).toContain("1 pending source review.");
@@ -564,7 +515,7 @@ describe("signal source review apply", () => {
 });
 
 describe("signal source review wiring", () => {
-	it("wires publish and verify through the token-gated ladder, not a confirm bypass", () => {
+	it("wires dismiss and verify through the token-gated ladder, not a confirm bypass", () => {
 		const lib = readFileSync(
 			path.join(process.cwd(), "src/lib/signal-source-reviews.ts"),
 			"utf8",
@@ -574,11 +525,8 @@ describe("signal source review wiring", () => {
 			"utf8",
 		);
 
-		expect(script).toContain(
-			"approveStagedSource({ id, actor, approvalNotes })",
-		);
+		expect(script).not.toMatch(/approveStagedSource|publishStagedSource/);
 		expect(script).toContain("rejectStagedSource(id, reason)");
-		expect(script).toContain("publishStagedSource(id)");
 		expect(script).toContain("verifyRegisterRecord({ policyId, actor, notes })");
 		expect(script).toContain("confirmReviewer");
 		expect(script).toContain("currentSignalRunner()");
@@ -597,5 +545,13 @@ describe("signal source review wiring", () => {
 		expect(workflow).toContain("workflow_dispatch");
 		expect(workflow).not.toContain("schedule:");
 		expect(script).toContain('getSourceReviews({ status: "pending_review" })');
+	});
+});
+
+describe("formatSignalInstant", () => {
+	it("prints September as Sep, like the site", () => {
+		const text = formatSignalInstant("2026-09-14T02:30:00Z");
+		expect(text).toContain("14 Sep 2026");
+		expect(text).not.toContain("Sept");
 	});
 });

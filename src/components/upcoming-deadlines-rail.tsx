@@ -33,7 +33,7 @@ export function UpcomingDeadlinesRail({
       aria-labelledby="upcoming-deadlines-heading"
       className="border-t border-border pt-6"
     >
-      <h2 id="upcoming-deadlines-heading" className="text-sm font-semibold">
+      <h2 id="upcoming-deadlines-heading" className="section-title">
         Upcoming deadlines
       </h2>
       {shown.length > 0 ? (
@@ -42,7 +42,7 @@ export function UpcomingDeadlinesRail({
             const countdown = upcomingDateCountdown(item, today);
             return (
               <li key={`${item.policyId}-${item.dateType}-${item.date}`}>
-                <p className="text-[length:var(--type-label)] text-muted-foreground">
+                <p className="text-xs text-muted-foreground">
                   {getPolicyDateTypeName(item.dateType)} ·{' '}
                   <time dateTime={precisionDateTime(item.date, item.precision)}>
                     {formatPolicyDate({
@@ -59,7 +59,7 @@ export function UpcomingDeadlinesRail({
                 >
                   {item.policyTitle}
                 </Link>
-                <p className="text-[length:var(--type-label)] text-muted-foreground">
+                <p className="text-xs text-muted-foreground">
                   {getJurisdictionName(item.jurisdiction)}
                   {item.precision !== 'day' ? ' · exact day not recorded' : ''}
                 </p>

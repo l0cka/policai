@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { getArticles, getPolicyById, getPolicies } from '@/lib/data-service';
+import { getArticles, getPolicyById, getPolicies, getSiteReuse } from '@/lib/data-service';
+import { reuseForUrl } from '@/lib/watch-coverage/site-reuse';
 import { getPublicCourtRequirements } from '@/lib/court-requirements';
 import { CitedInAnalysis } from '@/components/related/cited-in-analysis';
 import { RelatedInstruments } from '@/components/related/related-instruments';
 import { relatedInstruments } from '@/lib/related-policies';
+import { LegislativeProgress } from '@/components/legislation/legislative-progress';
 import {
   pageAlternates,
   policyJsonLd,
@@ -60,10 +62,12 @@ export default async function PolicyDetailPage({ params }: { params: Promise<{ i
   const policy = await getPolicyById(id);
   if (!policy) notFound();
 
-  const [publicPolicies, analyses] = await Promise.all([
+  const [publicPolicies, analyses, siteReuse] = await Promise.all([
     getPolicies(),
     getArticles({ citing: id }),
+    getSiteReuse(),
   ]);
+  const sourceReuse = policy.sourceUrl ? reuseForUrl(siteReuse, policy.sourceUrl) : undefined;
   const courtRequirements = policy.type === "practice_note" ? await getPublicCourtRequirements({ policyId: id }) : [];
 
   return (
@@ -83,6 +87,8 @@ export default async function PolicyDetailPage({ params }: { params: Promise<{ i
       <PolicyDetailTabs
         policy={policy}
         courtRequirements={courtRequirements}
+        sourceReuse={sourceReuse?.status === 'stated' ? sourceReuse : undefined}
+        progress={policy.legislative ? <LegislativeProgress policy={{ ...policy, legislative: policy.legislative }} /> : null}
         related={
           <>
             <CitedInAnalysis articles={analyses} />

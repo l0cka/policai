@@ -36,7 +36,7 @@ export function RelatedInstruments({ items }: { items: RelatedInstrument[] }) {
 
   return (
     <section aria-labelledby="related-instruments" className="mt-8 max-w-[44rem]">
-      <h2 id="related-instruments" className="mb-3 font-display text-[1.125rem] leading-snug">
+      <h2 id="related-instruments" className="section-title mb-3">
         Related instruments
       </h2>
       <ExpandableList

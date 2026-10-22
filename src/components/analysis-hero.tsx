@@ -19,7 +19,7 @@ export function AnalysisHero({ articles }: { articles: HeroArticle[] }) {
         padding-block: var(--space-2);
       }
       .analysis-hero-slide.analysis-hero-slide {
-        padding-block: 0;
+        padding-block: var(--space-3) 0;
       }
       .analysis-hero-controls.analysis-hero-controls {
         margin-top: var(--space-1);
@@ -34,6 +34,14 @@ export function AnalysisHero({ articles }: { articles: HeroArticle[] }) {
       .analysis-hero > .flex {
         padding-block: 0;
       }
+      @media (max-width: 639px) {
+        .analysis-hero-title.analysis-hero-title {
+          -webkit-line-clamp: 2;
+        }
+        .analysis-hero-dots {
+          display: none;
+        }
+      }
       `}</style>
       <AnalysisHeroCarousel slides={slides.map((article) => ({ slug: article.slug, title: article.title }))}>
         {slides.map((article) => (
@@ -43,11 +51,11 @@ export function AnalysisHero({ articles }: { articles: HeroArticle[] }) {
           >
             <div className="min-w-0">
               <ArticleTypeLabel type={article.type} />
-              <h3 className="analysis-hero-title">
+              <p className="analysis-hero-title">
                 <Link href={`/analysis/${article.slug}`} className="hover:text-primary">
                   {article.title}
                 </Link>
-              </h3>
+              </p>
               <p className="analysis-hero-teaser">{article.summary}</p>
               <p className="mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-1 font-mono text-[length:var(--type-label)] text-muted-foreground">
                 <ArticleDate date={article.publishedAt} />

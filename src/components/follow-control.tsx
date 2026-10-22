@@ -16,7 +16,16 @@ import {
 import { getThemeLabel } from '@/lib/themes';
 import { getJurisdictionName, getPolicyTypeName, type Jurisdiction, type PolicyType } from '@/types';
 
-export function FollowControl({ follow, label }: { follow: Follow; label: string }) {
+export function FollowControl({
+  follow,
+  label,
+  short = false,
+}: {
+  follow: Follow;
+  label: string;
+  /** Show only Follow or Following; the accessible name still names the item. */
+  short?: boolean;
+}) {
   const follows = useSyncExternalStore(subscribeFollows, readFollows, emptyFollows);
   const active = follows.some(
     (item) => item.kind === follow.kind && item.id === follow.id,
@@ -27,13 +36,14 @@ export function FollowControl({ follow, label }: { follow: Follow; label: string
     <button
       type="button"
       aria-pressed={active}
+      aria-label={short ? action : undefined}
       onClick={() => {
         if (active) removeFollow(follow);
         else addFollow(follow);
       }}
-      className="inline-flex min-h-11 items-center rounded border border-input px-3 text-xs font-medium text-foreground hover:bg-muted aria-pressed:border-primary/40 aria-pressed:text-primary"
+      className={`inline-flex min-h-11 items-center rounded border border-input px-3 ${short ? 'text-sm' : 'text-xs'} font-medium text-foreground hover:bg-muted aria-pressed:border-primary/40 aria-pressed:text-primary`}
     >
-      {action}
+      {short ? (active ? 'Following' : 'Follow') : action}
     </button>
   );
 }
@@ -80,8 +90,13 @@ export function FollowingList({ policies }: { policies: readonly FollowingPolicy
     return (
       <p role="status" className="mt-6 max-w-2xl text-sm leading-6 text-muted-foreground">
         {follows.length === 0
-          ? 'Nothing followed in this browser yet. Follow a record, a jurisdiction, or a theme, then come back to this page.'
-          : 'No public records match the follows saved in this browser.'}
+          ? 'Nothing followed in this browser yet. '
+          : 'No public records match the follows saved in this browser. '}
+        Open a record in the{' '}
+        <Link href="/" className="text-primary underline underline-offset-4">
+          register
+        </Link>{' '}
+        and choose Follow, or filter the register to one jurisdiction or theme and follow that.
       </p>
     );
   }

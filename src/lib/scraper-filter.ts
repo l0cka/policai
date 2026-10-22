@@ -13,6 +13,8 @@ const AI_KEYWORDS = [
   'machine learning',
   'automated decision',
   'algorithmic',
+  'deepfake',
+  'artificially generated',
   'data centre',
   'data center',
   'hyperscale',
@@ -140,6 +142,13 @@ function hasGovernanceSignal(text: string): boolean {
   return hasAnyKeyword(normalize(text), GOVERNANCE_KEYWORDS);
 }
 
+/** "Crimes (Deepfakes) Amendment Bill 2026", "… Regulation 2026 (No 1)": a law is governance by definition. */
+const LEGISLATIVE_TITLE_PATTERN = /\b(?:bill|act|regulations?|rules?|determination|instrument|declaration|standard|code)\s+\d{4}\b/i;
+
+function isLegislativeTitle(title: string): boolean {
+  return LEGISLATIVE_TITLE_PATTERN.test(title);
+}
+
 function isPdfUrl(url: string): boolean {
   try {
     return new URL(url).pathname.toLowerCase().endsWith('.pdf');
@@ -181,7 +190,7 @@ export function isRelevantScrapedCandidate(link: ScrapedLinkLike): boolean {
     return false;
   }
 
-  return hasGovernanceSignal(context) || isPdfUrl(link.url);
+  return hasGovernanceSignal(context) || isLegislativeTitle(link.title) || isPdfUrl(link.url);
 }
 
 export function shouldCreatePolicyFromAnalysis(

@@ -30,16 +30,11 @@ before the expiry date.
 ## Egress
 
 `policai.service` runs with `IPAddressDeny=any` and `IPAddressAllow=localhost`.
-Signal POST needs two kinds of outbound HTTPS:
-
-- `api.github.com`, to read `main` and commit each decision.
-- The official source host. Publication fetches the source again and refuses
-  it when the content has changed since approval
-  (`assertSourceStillMatchesApproval` in `src/lib/source-ingest.ts`).
-
-Official sources are served from CDNs whose addresses change, so no fixed
-address list covers them. `20-signal-egress.conf` therefore allows all remote
-addresses.
+Signal POST needs outbound HTTPS to `api.github.com`, to read `main` and
+commit each dismissal. It no longer fetches official sources, because Signal
+can no longer approve or publish. `20-signal-egress.conf` still allows all
+remote addresses from when it did; narrowing it to GitHub is a separate host
+change.
 
 Inbound access does not change. The service listens only on `127.0.0.1:8794`
 (`SocketBindAllow=tcp:8794`, `SocketBindDeny=any`), so no remote host can

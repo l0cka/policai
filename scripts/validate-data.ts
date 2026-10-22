@@ -34,7 +34,10 @@ import {
   validateSourceReviews,
   validateSourceMonitoring,
   validateThemeCoverage,
+  validateLegislativeTimelineOverlap,
   validateTimeline,
+  validateBodies,
+  validateSiteReuse,
   validateWatchSources,
   validateWatchState,
 } from '../src/lib/validate-data';
@@ -102,6 +105,8 @@ async function main() {
     sourceMonitoring,
     watchState,
     courtRequirements,
+    bodies,
+    siteReuse,
   ] = await Promise.all([
       readJsonFile<Policy[]>(
         path.join(STATE_DIR, 'policies.json'),
@@ -163,6 +168,8 @@ async function main() {
         path.join(STATE_DIR, 'court-requirements.json'),
         [],
       ),
+      readJsonFile<unknown>(path.join(STATE_DIR, 'bodies.json'), null),
+      readJsonFile<unknown>(path.join(STATE_DIR, 'site-reuse.json'), null),
     ]);
 
   if (policies.length === 0) {
@@ -191,6 +198,7 @@ async function main() {
     validateAgencies(agencies, 'agencies'),
     validateAgencies(commonwealthAgencies, 'commonwealth-agencies'),
     validateTimeline(timeline, policyIds),
+    validateLegislativeTimelineOverlap(policies, timeline),
     validatePolicyFrameworkArtifact(policyFramework, policies),
     validateDevelopments(developments, policyIds, timelineEventIds),
     validateCollectionMeta(meta),
@@ -201,6 +209,11 @@ async function main() {
     validateSourceMonitoring(sourceMonitoring, WATCH_SOURCES),
     validateWatchState(watchState),
     validateWatchSources(WATCH_SOURCES),
+    validateBodies(bodies, WATCH_SOURCES, {
+      agencies,
+      'commonwealth-agencies': commonwealthAgencies,
+    }),
+    validateSiteReuse(siteReuse, bodies),
     validateArticles(articles, articleBaseline, {
       policies,
       publicPolicies,

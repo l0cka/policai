@@ -1,4 +1,9 @@
 import type { Jurisdiction } from '@/types';
+import { frlAiInstrumentSearch } from '@/lib/legislation/frl-search';
+import { saBillSearch } from '@/lib/legislation/sa-salt';
+import type { BillListId } from '@/lib/legislation/state-bill-lists';
+import { vicBillSearch } from '@/lib/legislation/vic-bills';
+import { hostOf, type Host } from './host';
 import type { SourceIdentityException } from './identity';
 
 /**
@@ -17,14 +22,45 @@ import type { SourceIdentityException } from './identity';
  * meta.json.
  */
 
-export type SourceKind = 'html-index' | 'rss' | 'document';
+export type SourceKind = 'html-index' | 'rss' | 'document' | 'frl-search' | 'sa-salt-search' | 'vic-bill-search' | 'bill-list';
+
+/** Register JSON searches: each row names and dates a law, so its title and date are kept. */
+export function isRegisterSearch(kind: SourceKind): boolean {
+  return kind === 'frl-search' || kind === 'sa-salt-search' || kind === 'vic-bill-search' || kind === 'bill-list';
+}
 export type SourceCategory = 'government' | 'regulator' | 'court';
-export type SourceAutomation = 'automatic' | 'manual';
+export type ManualBecause =
+  | 'identity_refused'
+  | 'bot_blocked'
+  | 'robots_disallowed'
+  | 'not_found';
+
+/**
+ * A reviewed decision to track a source by hand. Only a merged change to
+ * this record takes a source out of the automatic inventory; the collector
+ * never does it. `await_allowlist` is used only where an allow-list request
+ * has a written reply.
+ */
+export interface ManualDecision {
+  mode: 'manual';
+  because: ManualBecause;
+  decision: 'manual' | 'await_allowlist';
+  /** YYYY-MM-DD the decision was taken. */
+  since: string;
+  decidedBy: string;
+  evidence: string;
+  /** The refusing host when it is not the source's own, such as a linked document's. */
+  blockedHost?: string;
+}
+
+export type SourceAutomation = 'automatic' | ManualDecision;
 export type SourceFetchStrategy = 'http' | 'browser';
 
 export interface WatchSource {
   id: string;
   name: string;
+  /** The publishing body in `data/bodies.json`; `validate:data` resolves it. */
+  bodyId: string;
   jurisdiction: Jurisdiction;
   category: SourceCategory;
   url: string;
@@ -40,6 +76,8 @@ export interface WatchSource {
    * falls back to the browser on failure.
    */
   fetchStrategy?: SourceFetchStrategy;
+  /** For a 'bill-list' source: which state bill list reader parses it (`@/lib/legislation/state-bill-lists`). */
+  billList?: BillListId;
   /**
    * Time-boxed permission to retrieve without the declared Policai identity
    * (see `./identity`). Expires at the START of `until` (Australia/Sydney).
@@ -68,6 +106,12 @@ export interface WatchSource {
     minAiMentions: number;
   };
   critical?: boolean;
+  /**
+   * YYYY-MM-DD the source was admitted through an admission PR. Its first
+   * completed index or feed check marks the current items seen and emits no
+   * developments, so a new source cannot flood the review queue.
+   */
+  admittedAt?: string;
   notes?: string;
 }
 
@@ -76,6 +120,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'pm-media',
     name: 'Prime Minister of Australia — media',
+    bodyId: 'pmc',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.pm.gov.au/media',
@@ -90,6 +135,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'pmc-office-ai',
     name: 'Department of the Prime Minister and Cabinet — Office of AI',
+    bodyId: 'pmc',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.pmc.gov.au/domestic-policy/office-ai',
@@ -105,6 +151,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'pmc-rapid-review-ai-cyber',
     name: 'PM&C — Rapid review into AI-driven cyber incident arrangements',
+    bodyId: 'pmc',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident',
@@ -120,6 +167,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'industry-ai-publications',
     name: 'Department of Industry — AI publications',
+    bodyId: 'disr',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.industry.gov.au/publications?pub-topic=2963',
@@ -135,6 +183,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'industry-ministers-media',
     name: 'Industry, Science and Resources ministers — media centre',
+    bodyId: 'disr',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.minister.industry.gov.au/feed/all/all/rss.xml',
@@ -150,6 +199,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'dta-media',
     name: 'Digital Transformation Agency — media releases',
+    bodyId: 'dta',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.dta.gov.au/news-and-blogs/latest/feed/news_item',
@@ -165,6 +215,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'digital-gov-ai',
     name: 'digital.gov.au — AI in government policy hub',
+    bodyId: 'dta',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.digital.gov.au/policy/ai',
@@ -179,6 +230,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'disr-news',
     name: 'Department of Industry, Science and Resources — news',
+    bodyId: 'disr',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.industry.gov.au/news',
@@ -193,6 +245,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'naic-news',
     name: 'National AI Centre — news and insights',
+    bodyId: 'disr',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.ai.gov.au/news-and-insights',
@@ -207,6 +260,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'finance-news',
     name: 'Department of Finance — news (APS AI Plan, GovAI)',
+    bodyId: 'finance',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.finance.gov.au/about-us/news',
@@ -220,19 +274,27 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'agd-news',
     name: "Attorney-General's Department — news (copyright & AI)",
+    bodyId: 'agd',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.ag.gov.au/about-us/news-and-media',
     kind: 'html-index',
     schedule: 'weekly',
     enabled: false,
-    automation: 'manual',
-    notes:
-      'The departmental news index now returns 404 and no successor page is published (verified 2026-07-20); portfolio announcements are covered by agd-ministers-media.',
+    automation: {
+      mode: 'manual',
+      because: 'not_found',
+      decision: 'manual',
+      since: '2026-07-20',
+      decidedBy: 'Daniel',
+      evidence:
+        'The departmental news index now returns 404 and no successor page is published (verified 2026-07-20); portfolio announcements are covered by agd-ministers-media.',
+    },
   },
   {
     id: 'agd-ministers-media',
     name: "Attorney-General's portfolio ministers — media centre",
+    bodyId: 'agd',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://ministers.ag.gov.au/media-centre',
@@ -247,6 +309,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'treasury-publications',
     name: 'Treasury — publications (digital competition, consumer law)',
+    bodyId: 'treasury',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://treasury.gov.au/publication',
@@ -260,6 +323,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'csiro-news',
     name: 'CSIRO — news (Data61, AI research)',
+    bodyId: 'csiro',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.csiro.au/en/news',
@@ -271,19 +335,29 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'cyber-news',
     name: 'Australian Cyber Security Centre — news',
+    bodyId: 'asd',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.cyber.gov.au/news',
     kind: 'html-index',
     schedule: 'weekly',
     enabled: true,
-    automation: 'manual',
+    automation: {
+      mode: 'manual',
+      because: 'identity_refused',
+      decision: 'manual',
+      since: '2026-10-07',
+      decidedBy: 'Daniel',
+      evidence:
+        'Tracked by hand: the host resets connections that identify as the Policai collector (a default curl request gets 200, verified 2026-10-07). The user agent is not disguised or bypassed (decision of 2026-10-07). The previous URL (/about-us/view-all-content/news) returns 404.',
+    },
     notes:
-      'ASD/ACSC news index covering AI cyber guidance and joint statements. Tracked by hand: the host resets connections that identify as the Policai collector (a default curl request gets 200, verified 2026-10-07). The user agent is not disguised or bypassed (decision of 2026-10-07). The previous URL (/about-us/view-all-content/news) returns 404.',
+      'ASD/ACSC news index covering AI cyber guidance and joint statements.',
   },
   {
     id: 'apsc-latest-news',
     name: 'Australian Public Service Commission — latest news',
+    bodyId: 'apsc',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.apsc.gov.au/latest-news',
@@ -298,6 +372,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'anao-performance-audits',
     name: 'Australian National Audit Office — performance audit reports',
+    bodyId: 'anao',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.anao.gov.au/pubs/performance-audit?items_per_page=120&page=0',
@@ -312,6 +387,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'senate-ai-data-centres',
     name: 'Senate inquiry — artificial intelligence and data centres',
+    bodyId: 'aph',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P',
@@ -326,6 +402,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'senate-new-inquiries',
     name: 'Australian Senate — new committee inquiries',
+    bodyId: 'aph',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.aph.gov.au/senate/rss/new_inquiries',
@@ -339,6 +416,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'senate-reports',
     name: 'Australian Senate — committee reports tabled',
+    bodyId: 'aph',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.aph.gov.au/senate/rss/reports',
@@ -352,6 +430,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'house-new-inquiries',
     name: 'House of Representatives — new committee inquiries',
+    bodyId: 'aph',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.aph.gov.au/Parliamentary_Business/Committees/House/Current_Inquiries',
@@ -366,6 +445,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'joint-new-inquiries',
     name: 'Parliamentary joint committees — new inquiries',
+    bodyId: 'aph',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.aph.gov.au/Parliamentary_Business/Committees/Joint/Current_Inquiries',
@@ -380,13 +460,22 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'aph-bills-digests',
     name: 'Parliamentary Library — bills digests',
+    bodyId: 'aph',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://parlinfo.aph.gov.au/parlInfo/feeds/rss.w3p;adv=yes;orderBy=date-eFirst;page=0;query=Date%3AthisYear%20Dataset%3Abillsdgs;resCount=100',
     kind: 'rss',
-    schedule: 'daily',
+    schedule: 'weekly',
     enabled: true,
-    automation: 'automatic',
+    automation: {
+      mode: 'manual',
+      because: 'bot_blocked',
+      decision: 'manual',
+      since: '2026-10-22',
+      decidedBy: 'Daniel',
+      evidence:
+        'parlinfo.aph.gov.au returns an Azure WAF 403 to both plain HTTP and headless Chromium under the declared identity (probed from Argus 2026-10-22). Decided 2026-10-22: tracked by hand.',
+    },
     fetchStrategy: 'browser',
     notes:
       'Official ParlInfo feed of Parliamentary Library bills digests — the leading indicator for bills before parliament, including AI legislation; APH rejects plain HTTP clients.',
@@ -394,13 +483,22 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'aph-hansard-bill-debates',
     name: 'Hansard — bill debates discussing AI',
+    bodyId: 'aph',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://parlinfo.aph.gov.au/parlInfo/feeds/rss.w3p;adv=yes;orderBy=date-eFirst;page=0;query=%22artificial%20intelligence%22%20Date%3AthisYear%20Dataset%3Ahansardr,hansards;resCount=100',
     kind: 'rss',
-    schedule: 'daily',
+    schedule: 'weekly',
     enabled: true,
-    automation: 'automatic',
+    automation: {
+      mode: 'manual',
+      because: 'bot_blocked',
+      decision: 'manual',
+      since: '2026-10-22',
+      decidedBy: 'Daniel',
+      evidence:
+        'parlinfo.aph.gov.au returns an Azure WAF 403 to both plain HTTP and headless Chromium under the declared identity (probed from Argus 2026-10-22). Decided 2026-10-22: tracked by hand.',
+    },
     fetchStrategy: 'browser',
     bodyRelevance: {
       titlePattern: /^(?:Federation Chamber : )?BILLS : /,
@@ -411,21 +509,22 @@ export const WATCH_SOURCES: WatchSource[] = [
   },
   {
     id: 'legislation-whats-new',
-    name: 'Federal Register of Legislation — what’s new',
+    name: 'Federal Register of Legislation — new AI instruments',
+    bodyId: 'opc',
     jurisdiction: 'federal',
     category: 'government',
-    url: 'https://www.legislation.gov.au/search/registrationdate(today-7,today)/sort(registeredat%20desc)',
-    kind: 'html-index',
+    url: frlAiInstrumentSearch(),
+    kind: 'frl-search',
     schedule: 'daily',
     enabled: true,
     automation: 'automatic',
-    fetchStrategy: 'browser',
     notes:
-      'Rolling seven-day search for newly registered acts and instruments. The register is client-rendered, so ngx-datatable result rows are extracted from the rendered page.',
+      'Full-text search of the register API for legislative instruments whose text uses AI terms, newest as made first. Replaced the what’s-new title scrape on 2026-10-22: it read about 99 rows a day but instrument titles rarely name AI, so it never kept a candidate. The API answers plain HTTP. See src/lib/legislation/frl-search.ts for the relevance cut.',
   },
   {
     id: 'agd-consultations',
     name: "Attorney-General's Department — consultation hub",
+    bodyId: 'agd',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://consultations.ag.gov.au/',
@@ -440,6 +539,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'industry-consultations',
     name: 'Department of Industry — consultation hub',
+    bodyId: 'disr',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://consult.industry.gov.au/',
@@ -454,6 +554,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'treasury-consultations',
     name: 'Treasury — consultation hub',
+    bodyId: 'treasury',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://consult.treasury.gov.au/',
@@ -468,6 +569,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'aemc-media',
     name: 'Australian Energy Market Commission — media releases',
+    bodyId: 'aemc',
     jurisdiction: 'federal',
     category: 'regulator',
     url: 'https://www.aemc.gov.au/news-centre/media-releases',
@@ -478,10 +580,31 @@ export const WATCH_SOURCES: WatchSource[] = [
     notes:
       'Energy-market rules and standards affecting large AI and data-centre loads (Drupal views table).',
   },
+  {
+    id: 'homeaffairs-media-releases',
+    name: 'Department of Home Affairs — media releases',
+    bodyId: 'homeaffairs',
+    jurisdiction: 'federal',
+    category: 'government',
+    url: 'https://www.homeaffairs.gov.au/news-media/media-releases',
+    kind: 'html-index',
+    schedule: 'weekly',
+    enabled: true,
+    automation: {
+      mode: 'manual',
+      because: 'bot_blocked',
+      decision: 'manual',
+      since: '2026-10-22',
+      decidedBy: 'Daniel',
+      evidence:
+        'The host and its robots.txt return an Akamai “Access Denied” 403 to the declared Policai identity (probed from Argus 2026-10-22). Decided 2026-10-22: tracked by hand.',
+    },
+  },
   // --- Federal: regulators ---
   {
     id: 'oaic-media',
     name: 'OAIC — media centre',
+    bodyId: 'oaic',
     jurisdiction: 'federal',
     category: 'regulator',
     url: 'https://www.oaic.gov.au/news/media-centre',
@@ -494,19 +617,27 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'accc-rss',
     name: 'ACCC — media releases',
+    bodyId: 'accc',
     jurisdiction: 'federal',
     category: 'regulator',
     url: 'https://www.accc.gov.au/rss/media_releases.xml',
     kind: 'rss',
     schedule: 'daily',
     enabled: true,
-    automation: 'manual',
-    notes:
-      'Tracked by hand: the host refuses the Policai collector identity (HTTP 403, Akamai Access Denied page, text/html, 405 bytes, reference #18.dc603017.1792195278.6bbb455, verified 2026-10-17) and the source has failed every collection run since 2026-10-07. The block is respected and the user agent is not disguised or bypassed.',
+    automation: {
+      mode: 'manual',
+      because: 'identity_refused',
+      decision: 'manual',
+      since: '2026-10-17',
+      decidedBy: 'Daniel',
+      evidence:
+        'Tracked by hand: the host refuses the Policai collector identity (HTTP 403, Akamai Access Denied page, text/html, 405 bytes, reference #18.dc603017.1792195278.6bbb455, verified 2026-10-17) and the source has failed every collection run since 2026-10-07. The block is respected and the user agent is not disguised or bypassed.',
+    },
   },
   {
     id: 'apra-rss',
     name: 'APRA — news',
+    bodyId: 'apra',
     jurisdiction: 'federal',
     category: 'regulator',
     url: 'https://www.apra.gov.au/rss.xml',
@@ -518,6 +649,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'asic-newsroom',
     name: 'ASIC — newsroom',
+    bodyId: 'asic',
     jurisdiction: 'federal',
     category: 'regulator',
     url: 'https://asic.gov.au/newsroom',
@@ -532,6 +664,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'acma-media',
     name: 'ACMA — media releases',
+    bodyId: 'acma',
     jurisdiction: 'federal',
     category: 'regulator',
     url: 'https://www.acma.gov.au/media-releases',
@@ -546,6 +679,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'tga-media',
     name: 'TGA — media releases',
+    bodyId: 'tga',
     jurisdiction: 'federal',
     category: 'regulator',
     url: 'https://www.tga.gov.au/news/media-releases',
@@ -560,6 +694,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'ipa-news',
     name: 'IP Australia — news',
+    bodyId: 'ipaustralia',
     jurisdiction: 'federal',
     category: 'regulator',
     url: 'https://www.ipaustralia.gov.au/about-us/news-and-community/news',
@@ -574,6 +709,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'fwc-news',
     name: 'Fair Work Commission — news and media',
+    bodyId: 'fwc',
     jurisdiction: 'federal',
     category: 'regulator',
     url: 'https://www.fwc.gov.au/about-us/news-and-media',
@@ -588,6 +724,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'teqsa-news',
     name: 'TEQSA — latest news',
+    bodyId: 'teqsa',
     jurisdiction: 'federal',
     category: 'regulator',
     url: 'https://www.teqsa.gov.au/latest-news',
@@ -602,6 +739,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'aec-media',
     name: 'AEC — media releases',
+    bodyId: 'aec',
     jurisdiction: 'federal',
     category: 'regulator',
     url: 'https://www.aec.gov.au/media/media-releases.htm',
@@ -616,19 +754,29 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'esafety-media',
     name: 'eSafety Commissioner — media releases',
+    bodyId: 'esafety',
     jurisdiction: 'federal',
     category: 'regulator',
     url: 'https://www.esafety.gov.au/newsroom/media-releases',
     kind: 'html-index',
-    schedule: 'daily',
+    schedule: 'weekly',
     enabled: true,
-    automation: 'automatic',
+    automation: {
+      mode: 'manual',
+      because: 'identity_refused',
+      decision: 'manual',
+      since: '2026-10-22',
+      decidedBy: 'Daniel',
+      evidence:
+        'Since the E24 exception expired on 2026-10-21, www.esafety.gov.au refuses the declared Policai identity (probed from Argus 2026-10-22). Decided 2026-10-22: tracked by hand.',
+    },
     fetchStrategy: 'browser',
     notes: 'GovCMS/Akamai rejects plain HTTP clients.',
   },
   {
     id: 'pc-media',
     name: 'Productivity Commission — media releases',
+    bodyId: 'pc',
     jurisdiction: 'federal',
     category: 'regulator',
     url: 'https://www.pc.gov.au/media-speeches/media-releases',
@@ -642,6 +790,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'ahrc-media',
     name: 'Australian Human Rights Commission — media centre',
+    bodyId: 'ahrc',
     jurisdiction: 'federal',
     category: 'regulator',
     url: 'https://humanrights.gov.au/about-us/media-centre',
@@ -656,6 +805,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'fcfcoa-practice-directions',
     name: 'Federal Circuit and Family Court — practice directions',
+    bodyId: 'fcfcoa',
     jurisdiction: 'federal',
     category: 'court',
     url: 'https://www.fcfcoa.gov.au/resources/practice-directions',
@@ -670,6 +820,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'fedcourt-practice-notes',
     name: 'Federal Court — practice notes',
+    bodyId: 'fedcourt',
     jurisdiction: 'federal',
     category: 'court',
     url: 'https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes',
@@ -684,6 +835,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'art-practice-directions',
     name: 'Administrative Review Tribunal — practice directions',
+    bodyId: 'art',
     jurisdiction: 'federal',
     category: 'court',
     url: 'https://www.art.gov.au/help-and-resources/professionals-and-practitioners/practice-directions-and-other-guidance',
@@ -698,6 +850,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'ncat-procedural-directions',
     name: 'NCAT — procedural directions and guidelines',
+    bodyId: 'ncat',
     jurisdiction: 'nsw',
     category: 'court',
     url: 'https://ncat.nsw.gov.au/publications-and-resources/procedural-directions-and-guidelines.html',
@@ -712,6 +865,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'qcat-practice-directions',
     name: 'QCAT — practice directions',
+    bodyId: 'qcat',
     jurisdiction: 'qld',
     category: 'court',
     url: 'https://www.qcat.qld.gov.au/resources/practice-directions',
@@ -726,6 +880,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'wa-sc-practice-directions',
     name: 'WA Supreme Court — practice directions',
+    bodyId: 'wa-supreme-court',
     jurisdiction: 'wa',
     category: 'court',
     url: 'https://www.supremecourt.wa.gov.au/P/practice_directions.aspx',
@@ -739,6 +894,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'sa-courts-news',
     name: 'SA Courts Administration Authority — news',
+    bodyId: 'sa-courts',
     jurisdiction: 'sa',
     category: 'court',
     url: 'https://www.courts.sa.gov.au/feed',
@@ -752,6 +908,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'act-sc-practice-directions',
     name: 'ACT Supreme Court — practice directions',
+    bodyId: 'act-courts',
     jurisdiction: 'act',
     category: 'court',
     url: 'https://www.courts.act.gov.au/supreme/law-and-practice/practice-notes-and-directions-and-notices-to-practitioners/practice-directions',
@@ -765,6 +922,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'tas-sc-practice-directions',
     name: 'Tasmanian Supreme Court — practice directions',
+    bodyId: 'tas-supreme-court',
     jurisdiction: 'tas',
     category: 'court',
     url: 'https://www.supremecourt.tas.gov.au/publications/directions',
@@ -778,6 +936,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'nt-sc-practice-directions',
     name: 'NT Supreme Court — practice directions',
+    bodyId: 'nt-supreme-court',
     jurisdiction: 'nt',
     category: 'court',
     url: 'https://supremecourt.nt.gov.au/lawyers/practice-directions',
@@ -792,6 +951,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'ntcat-procedural-directions',
     name: 'NTCAT — procedural directions',
+    bodyId: 'ntcat',
     jurisdiction: 'nt',
     category: 'court',
     url: 'https://ntcat.nt.gov.au/publications?type=11',
@@ -805,6 +965,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'nsw-sc-practice-notes',
     name: 'NSW Supreme Court — practice notes',
+    bodyId: 'nsw-supreme-court',
     jurisdiction: 'nsw',
     category: 'court',
     url: 'https://supremecourt.nsw.gov.au/practice-procedure/practice-notes0.html',
@@ -818,6 +979,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'nsw-gazette-recent',
     name: 'NSW Government Gazette — recent issues',
+    bodyId: 'nsw-pco',
     jurisdiction: 'nsw',
     category: 'government',
     url: 'https://gazette.nsw.gov.au/',
@@ -831,6 +993,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'vic-sc-practice-notes',
     name: 'Victorian Supreme Court — practice notes',
+    bodyId: 'vic-supreme-court',
     jurisdiction: 'vic',
     category: 'court',
     url: 'https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes',
@@ -842,6 +1005,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'qld-courts-news',
     name: 'Queensland Courts — news',
+    bodyId: 'qld-courts',
     jurisdiction: 'qld',
     category: 'court',
     url: 'https://www.courts.qld.gov.au/newsroom/news',
@@ -855,6 +1019,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'vcat-rss',
     name: 'VCAT — news feed',
+    bodyId: 'vcat',
     jurisdiction: 'vic',
     category: 'court',
     url: 'https://www.vcat.vic.gov.au/rss.xml',
@@ -868,6 +1033,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'vcat-pnvcat11-generative-ai',
     name: 'VCAT — practice note PNVCAT11 (generative AI)',
+    bodyId: 'vcat',
     jurisdiction: 'vic',
     category: 'court',
     url: 'https://www.vcat.vic.gov.au/documents/practice-note-pnvcat11-use-generative-artificial-intelligence',
@@ -882,6 +1048,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'nsw-digital-ai',
     name: 'Digital NSW — artificial intelligence',
+    bodyId: 'nsw-office-for-ai',
     jurisdiction: 'nsw',
     category: 'government',
     url: 'https://www.digital.nsw.gov.au/policy/artificial-intelligence',
@@ -895,6 +1062,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'nsw-media-releases',
     name: 'NSW Government — media releases',
+    bodyId: 'nsw-government',
     jurisdiction: 'nsw',
     category: 'government',
     url: 'https://www.nsw.gov.au/media-releases',
@@ -907,8 +1075,65 @@ export const WATCH_SOURCES: WatchSource[] = [
       'Whole-of-government NSW announcements, including AI policy and digital government decisions.',
   },
   {
+    id: 'nsw-dcs-media-releases',
+    name: 'NSW Department of Customer Service — media releases',
+    bodyId: 'nsw-dcs',
+    jurisdiction: 'nsw',
+    category: 'government',
+    url: 'https://www.nsw.gov.au/departments-and-agencies/customer-service/media-releases',
+    kind: 'html-index',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    admittedAt: '2026-10-22',
+    notes:
+      'The department that owns NSW digital government and the Office for AI. Admitted 2026-10-22 in the first #324 batch (dry run on Argus: 10 items, 0 developments); www.nsw.gov.au disallows query strings, so the plain listing is watched.',
+  },
+  {
+    id: 'nsw-legislation',
+    name: 'NSW legislation',
+    bodyId: 'nsw-pco',
+    jurisdiction: 'nsw',
+    category: 'government',
+    url: 'https://legislation.nsw.gov.au/',
+    kind: 'html-index',
+    schedule: 'weekly',
+    enabled: true,
+    automation: {
+      mode: 'manual',
+      because: 'bot_blocked',
+      decision: 'manual',
+      since: '2026-10-22',
+      decidedBy: 'Daniel',
+      evidence:
+        'The register shows a persistent Cloudflare challenge to automated clients under the declared identity (probed from Argus 2026-10-22). Decided 2026-10-22: tracked by hand.',
+    },
+  },
+  {
+    id: 'sa-legislation-whats-new',
+    name: 'South Australian legislation — what’s new',
+    bodyId: 'sa-opc',
+    jurisdiction: 'sa',
+    category: 'government',
+    url: 'https://www.legislation.sa.gov.au/whats-new',
+    kind: 'html-index',
+    schedule: 'weekly',
+    enabled: true,
+    automation: {
+      mode: 'manual',
+      because: 'bot_blocked',
+      decision: 'manual',
+      since: '2026-10-22',
+      decidedBy: 'Daniel',
+      evidence:
+        'Cloudflare serves a “Just a moment...” challenge to Node fetch and headless Chromium under the declared identity, while curl with the same user agent gets 200 (dry run on Argus 2026-10-22). Decided 2026-10-22: tracked by hand.',
+    },
+  },
+  {
     id: 'vic-legislation-whats-new',
     name: 'Victorian legislation — what’s new',
+    bodyId: 'vic-ocpc',
     jurisdiction: 'vic',
     category: 'government',
     url: 'https://www.legislation.vic.gov.au/whats-new',
@@ -921,8 +1146,24 @@ export const WATCH_SOURCES: WatchSource[] = [
       'Acts and statutory rules lodged in the current week, rendered as a Ripple data table. Checked 2026-09-23: 7 entries extracted; 1 of 6 dry runs returned the table before it rendered, so an occasional empty-index failure is expected. The first state legislation register watched; NSW and SA registers refuse automated clients.',
   },
   {
+    id: 'vic-parliament-bills',
+    name: 'Victorian legislation — bills in Parliament',
+    bodyId: 'vic-ocpc',
+    jurisdiction: 'vic',
+    category: 'government',
+    url: vicBillSearch(),
+    kind: 'vic-bill-search',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    admittedAt: '2026-10-22',
+    notes:
+      'The search index behind the client-side “bills in Parliament” page: every bill before the current Parliament, read as JSON over a plain GET. Each bill page carries its stage history for both Houses, which the follow watch reads (src/lib/legislation/vic-progress.ts). Probed from Argus 2026-10-22: 200 under the declared identity, robots allows /api/tide, 46 bills.',
+  },
+  {
     id: 'qld-legislation-new',
     name: 'Queensland legislation — new Acts and subordinate legislation',
+    bodyId: 'qld-opc',
     jurisdiction: 'qld',
     category: 'government',
     url: 'https://www.legislation.qld.gov.au/feed?id=newlegislation',
@@ -936,6 +1177,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'tas-legislation-statutory-rules',
     name: 'Tasmanian legislation — statutory rules gazetted this month',
+    bodyId: 'tas-opc',
     jurisdiction: 'tas',
     category: 'government',
     url: 'https://www.legislation.tas.gov.au/feed?id=sr-month',
@@ -949,6 +1191,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'tas-legislation-acts',
     name: 'Tasmanian legislation — Royal Assents this month',
+    bodyId: 'tas-opc',
     jurisdiction: 'tas',
     category: 'government',
     url: 'https://www.legislation.tas.gov.au/feed?id=act-month',
@@ -962,6 +1205,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'wa-legislation-as-made',
     name: 'WA legislation — subsidiary legislation as made',
+    bodyId: 'wa-pco',
     jurisdiction: 'wa',
     category: 'government',
     url: 'https://www.legislation.wa.gov.au/legislation/statutes.nsf/asmade.atom',
@@ -975,6 +1219,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'wa-legislation-as-passed',
     name: 'WA legislation — Acts as passed',
+    bodyId: 'wa-pco',
     jurisdiction: 'wa',
     category: 'government',
     url: 'https://www.legislation.wa.gov.au/legislation/statutes.nsf/aspassed.atom',
@@ -986,8 +1231,121 @@ export const WATCH_SOURCES: WatchSource[] = [
       'Official Atom feed of WA Acts as passed. Checked 2026-09-23: 200 entries over plain HTTP (about 0.5 MB).',
   },
   {
+    id: 'nsw-parliament-bills',
+    name: 'NSW Parliament — current session bills',
+    bodyId: 'nsw-parliament',
+    jurisdiction: 'nsw',
+    category: 'government',
+    url: 'https://www.parliament.nsw.gov.au/parliamentary-business/bills/current-session-bills?num_ranks=1000',
+    kind: 'bill-list',
+    billList: 'nsw',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    admittedAt: '2026-10-22',
+    notes:
+      'Every bill of the current session, with origin and status. The host answers plain HTTP, robots.txt included, with a Cloudflare 403 (since 22 Oct 2026), so the list is read in the collector’s browser under the declared identity; robots allows it there. The page renders 10 cards and loads more from /_design, which robots disallows, so num_ranks asks for all 544 at once; a page still offering more fails the run. Bill links go through search.parliament.nsw.gov.au, which robots disallows, so the reader rebuilds each bill page from its billId.',
+  },
+  {
+    id: 'wa-parliament-bills',
+    name: 'Parliament of Western Australia — current bills',
+    bodyId: 'wa-parliament',
+    jurisdiction: 'wa',
+    category: 'government',
+    url: 'https://www.parliament.wa.gov.au/parliament/bills.nsf/screenWebCurrentBills?Count=200&OpenForm=',
+    kind: 'bill-list',
+    billList: 'wa',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    admittedAt: '2026-10-22',
+    notes:
+      'Bills before either House: House, title, date introduced and current stage, each linking its progress page. The host answers plain HTTP with an Azure WAF 403, so the list is read in the collector’s browser under the declared identity; robots allows it there. The view pages at 30 rows; Count=200 returns all 89 current bills (Argus, 2026-10-22), and a full page fails the run rather than reading a short list.',
+  },
+  {
+    id: 'qld-parliament-bills',
+    name: 'Queensland Parliament — bills before the House',
+    bodyId: 'qld-parliament',
+    jurisdiction: 'qld',
+    category: 'government',
+    url: 'https://www.parliament.qld.gov.au/Work-of-the-Assembly/Bills-and-Legislation/Bills-before-the-House',
+    kind: 'bill-list',
+    billList: 'qld',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    admittedAt: '2026-10-22',
+    notes:
+      'Bills before the Legislative Assembly with who introduced each and when, and the stage reached; each bill links its tabled bill text, the only per-bill page. The host answers plain HTTP with an Azure WAF 403, so the list is read in the collector’s browser under the declared identity; robots.txt is a 404 there. Fetched from Argus 2026-10-22.',
+  },
+  {
+    id: 'nt-assembly-bills',
+    name: 'NT legislation — bills before the Legislative Assembly',
+    bodyId: 'nt-opc',
+    jurisdiction: 'nt',
+    category: 'government',
+    url: 'https://legislation.nt.gov.au/en/LegislationPortal/Bills/Before-Legislative-Assembly',
+    kind: 'bill-list',
+    billList: 'nt',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    admittedAt: '2026-10-22',
+    notes:
+      'Bills introduced and not yet passed, grouped by letter without dates, so a new bill is one not seen before. The NT Assembly publishes no bills list of its own. Fetched from Argus 2026-10-22: plain HTTP 200 under the declared identity, robots allows it, 5 bills.',
+  },
+  {
+    id: 'act-legislation-whats-new',
+    name: 'ACT legislation — what’s new',
+    bodyId: 'act-pco',
+    jurisdiction: 'act',
+    category: 'government',
+    url: 'https://www.legislation.act.gov.au/WhatsNew/Index',
+    kind: 'html-index',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    admittedAt: '2026-10-22',
+    notes:
+      'Seven-day tables of bills presented and passed, Acts and notified instruments, which also covers the Legislative Assembly’s bills (its own bills list is a weekly PDF). Probed from Argus 2026-10-22: plain HTTP 200 under the declared identity, robots allows the page (crawl-delay 10), 26 rows extracted.',
+  },
+  {
+    id: 'tas-parliament-bills',
+    name: 'Parliament of Tasmania — current bills',
+    bodyId: 'tas-parliament',
+    jurisdiction: 'tas',
+    category: 'government',
+    url: 'https://www.parliament.tas.gov.au/bills',
+    kind: 'html-index',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    admittedAt: '2026-10-22',
+    notes:
+      'Bills before either House, listed alphabetically without dates, so a new bill is one not seen before. Each bill page carries a stage table for both Houses, which the follow watch reads (src/lib/legislation/tas-progress.ts). Probed from Argus 2026-10-22: plain HTTP 200 under the declared identity, robots allows it, 37 bills extracted.',
+  },
+  {
+    id: 'sa-parliament-bills',
+    name: 'Parliament of South Australia — bills this session',
+    bodyId: 'sa-parliament',
+    jurisdiction: 'sa',
+    category: 'government',
+    url: saBillSearch(),
+    kind: 'sa-salt-search',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+    admittedAt: '2026-10-22',
+    notes:
+      'SALT, the JSON API behind the Parliament’s bill pages: every bill of the current session in both Houses, with title, House, introduction date and status. Each bill’s summary also feeds the follow watch (src/lib/legislation/sa-salt.ts). Probed from Argus 2026-10-22: plain HTTP 200 under the declared identity, no robots rules, 73 bills for 56th/1st.',
+  },
+  {
     id: 'vic-ai',
     name: 'vic.gov.au — generative AI guidance',
+    bodyId: 'vic-dpc',
     jurisdiction: 'vic',
     category: 'government',
     url: 'https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps',
@@ -999,6 +1357,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'ovic-news',
     name: 'OVIC — news',
+    bodyId: 'ovic',
     jurisdiction: 'vic',
     category: 'regulator',
     url: 'https://ovic.vic.gov.au/about-us/news-and-media/news',
@@ -1012,6 +1371,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'ovic-privacy-resources',
     name: 'OVIC — privacy resources for organisations',
+    bodyId: 'ovic',
     jurisdiction: 'vic',
     category: 'regulator',
     url: 'https://ovic.vic.gov.au/privacy/resources-for-organisations',
@@ -1026,6 +1386,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'ovic-enterprise-generative-ai',
     name: 'OVIC — enterprise generative AI guidance',
+    bodyId: 'ovic',
     jurisdiction: 'vic',
     category: 'regulator',
     url: 'https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-enterprise-generative-ai-tools-in-the-victorian-public-sector',
@@ -1040,6 +1401,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'ovic-public-generative-ai',
     name: 'OVIC — publicly available generative AI guidance',
+    bodyId: 'ovic',
     jurisdiction: 'vic',
     category: 'regulator',
     url: 'https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-personal-information-with-publicly-available-generative-ai-tools-in-the-victorian-public-sector',
@@ -1054,6 +1416,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'qld-qgea-ai',
     name: 'Queensland QGEA — AI governance policy',
+    bodyId: 'qld-dsiti',
     jurisdiction: 'qld',
     category: 'government',
     url: 'https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy',
@@ -1067,6 +1430,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'qld-ministerial-statements',
     name: 'Queensland Government — ministerial media statements',
+    bodyId: 'qld-government',
     jurisdiction: 'qld',
     category: 'government',
     url: 'https://statements.qld.gov.au/',
@@ -1081,6 +1445,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'wa-media-statements',
     name: 'WA Government — media statements',
+    bodyId: 'wa-government',
     jurisdiction: 'wa',
     category: 'government',
     url: 'https://www.mediastatements.wa.gov.au/',
@@ -1095,32 +1460,48 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'wa-ai-policy',
     name: 'WA — AI policy and assurance framework',
+    bodyId: 'wa-office-of-digital-government',
     jurisdiction: 'wa',
     category: 'government',
     url: 'https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework',
     kind: 'document',
     schedule: 'weekly',
     enabled: true,
-    automation: 'manual',
-    notes:
-      'Tracked by hand: the linked framework PDF on www.finance.gov.au resets the connection for the Policai collector identity (net::ERR_HTTP2_PROTOCOL_ERROR; curl with that identity gets HTTP/2 INTERNAL_ERROR and fails on HTTP/1.1, verified 2026-10-17) and the source has failed every collection run recorded since 2026-10-12. The block is respected and the user agent is not disguised or bypassed.',
+    automation: {
+      mode: 'manual',
+      because: 'bot_blocked',
+      decision: 'manual',
+      since: '2026-10-18',
+      decidedBy: 'Daniel',
+      blockedHost: 'www.finance.gov.au',
+      evidence:
+        'The linked framework PDF on www.finance.gov.au resets the connection for the Policai collector identity (net::ERR_HTTP2_PROTOCOL_ERROR; curl with that identity gets HTTP/2 INTERNAL_ERROR and fails on HTTP/1.1, verified 2026-10-17) and the source has failed every collection run recorded since 2026-10-12. The block is respected and the user agent is not disguised or bypassed. The page host accepts the collector, so this is not recorded as identity_refused (which would mark www.wa.gov.au refused); once www.finance.gov.au has its own identity decision the source returns to automatic and the PDF is skipped.',
+    },
   },
   {
     id: 'sa-office-for-ai',
     name: 'SA Office for AI',
+    bodyId: 'sa-office-for-ai',
     jurisdiction: 'sa',
     category: 'government',
     url: 'https://www.ai.sa.gov.au/',
     kind: 'document',
     schedule: 'weekly',
     enabled: true,
-    automation: 'manual',
-    notes:
-      'Returns 403 to every automated client, including the headless browser (verified 2026-07-20); review manually.',
+    automation: {
+      mode: 'manual',
+      because: 'bot_blocked',
+      decision: 'manual',
+      since: '2026-07-20',
+      decidedBy: 'Daniel',
+      evidence:
+        'Returns 403 to every automated client, including the headless browser (verified 2026-07-20); review manually.',
+    },
   },
   {
     id: 'tas-dpac-policies',
     name: 'Tasmania DPAC — digital strategy policies',
+    bodyId: 'tas-dpac-dss',
     jurisdiction: 'tas',
     category: 'government',
     url: 'https://www.dpac.tas.gov.au/divisions/digital_strategy_and_services/policies',
@@ -1134,6 +1515,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'act-ai-policy',
     name: 'ACT Government — AI policy',
+    bodyId: 'act-government',
     jurisdiction: 'act',
     category: 'government',
     url: 'https://www.act.gov.au/open/act-government-artificial-intelligence-policy',
@@ -1147,6 +1529,7 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'nt-ai-assurance',
     name: 'NT Digital Territory — AI assurance framework',
+    bodyId: 'nt-dcdd',
     jurisdiction: 'nt',
     category: 'government',
     url: 'https://dcdd.nt.gov.au/publications/artificial-intelligence-assurance-framework',
@@ -1160,31 +1543,54 @@ export const WATCH_SOURCES: WatchSource[] = [
   {
     id: 'inslm-annual-reports',
     name: 'INSLM — annual reports',
+    bodyId: 'inslm',
     jurisdiction: 'federal',
     category: 'government',
     url: 'https://www.inslm.gov.au/reviews-reports/annual-reports',
     kind: 'document',
     schedule: 'weekly',
     enabled: true,
-    automation: 'manual',
-    notes:
-      'Tracked by hand: www.inslm.gov.au timed out with 0 bytes for the Policai collector identity and headless Chrome from the 2026-10-19 Signal retrieval environment (Akamai edge). Direct PDF and HTML fetches failed; content was confirmed via a reader proxy against the official publication page and PDF path. The block/timeout is respected and the user agent is not disguised. Annual reports and the document library are the official publication paths.',
+    automation: {
+      mode: 'manual',
+      because: 'bot_blocked',
+      decision: 'manual',
+      since: '2026-10-19',
+      decidedBy: 'Daniel',
+      evidence:
+        'Tracked by hand: www.inslm.gov.au timed out with 0 bytes for the Policai collector identity and headless Chrome from the 2026-10-19 Signal retrieval environment (Akamai edge). Direct PDF and HTML fetches failed; content was confirmed via a reader proxy against the official publication page and PDF path. The block/timeout is respected and the user agent is not disguised. Annual reports and the document library are the official publication paths.',
+    },
   },
 ];
 
+/**
+ * Hosts whose refusal of the declared identity has a reviewed decision,
+ * mapped to the deciding source. Derived from the catalogue so it can never
+ * drift from it; the collector neither requests these hosts nor counts a
+ * linked document there as a failure.
+ */
+export function refusedHosts(
+  sources: readonly WatchSource[],
+): ReadonlyMap<Host, string> {
+  const refused = new Map<Host, string>();
+  for (const source of sources) {
+    if (source.automation === 'automatic') continue;
+    if (source.automation.because !== 'identity_refused') continue;
+    if (!URL.canParse(source.url)) continue;
+    const host = hostOf(new URL(source.url));
+    if (!refused.has(host)) refused.set(host, source.id);
+  }
+  return refused;
+}
+
 export function getAutomaticSources(): WatchSource[] {
-  return WATCH_SOURCES.filter(
-    (source) => source.enabled && source.automation === 'automatic',
-  );
+  return WATCH_SOURCES.filter((source) => source.enabled && source.automation === 'automatic');
 }
 
 /** @deprecated Prefer getAutomaticSources() so the coverage boundary is clear. */
 export const getEnabledSources = getAutomaticSources;
 
 export function getManualSources(): WatchSource[] {
-  return WATCH_SOURCES.filter(
-    (source) => source.enabled && source.automation === 'manual',
-  );
+  return WATCH_SOURCES.filter((source) => source.enabled && source.automation !== 'automatic');
 }
 
 export function getSourceById(id: string): WatchSource | undefined {

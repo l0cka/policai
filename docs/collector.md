@@ -21,8 +21,10 @@ The collector is the automation behind the Developments feed: it watches officia
    - detections (score ≥ 0.5) → `data/developments.json`,
    - AI detections (score ≥ 0.7) and all heuristic detections that enter the
      feed → also staged in `data/source-reviews.json`,
-   - candidate retry state, direct-document fingerprints and per-host
-     robots and backoff records →
+   - candidate retry state, direct-document fingerprints, per-host
+     robots and backoff records, and the per-source `sourceHealth` ledger
+     (`lastSuccessAt`, `firstFailureAt`, `consecutiveFailures`,
+     `lastFailureClass`; [`source-health.ts`](../src/lib/pipeline/source-health.ts)) →
      `data/watch-state.json`,
    - coverage health, per-source item/candidate counts, and errors →
      `public/data/meta.json`.
@@ -41,6 +43,13 @@ The collector is the automation behind the Developments feed: it watches officia
    `lastUsableAt`, so one standing failure does not freeze the window. Only a
    `failed` run leaves it where it was; the register line then labels the
    older date "last passing collection" instead of "last collected".
+   `/status` puts the two dates side by side and, from the ledger, names
+   each automatic source that is failing and has had no successful check at
+   or after that anchor (`sourcesNotReachedSince`), so the window states what it may miss.
+   Skipped sources and candidate-only retries leave a source's ledger record
+   unchanged. `validate:data` checks the order: `lastHealthyAt` is no later
+   than `lastUsableAt`, which is no later than `lastCollectedAt`, and a
+   failing ledger record's `lastSuccessAt` precedes its `firstFailureAt`.
 4. The collector **never writes `data/policies.json`** — the register only changes through reviewed commits. The host wrapper `ops/collector/policai-collect.sh` fails a collection run that changes it. No GitHub workflow checks this, so a hand-made PR that edits the register is caught only by review.
 
 Non-dry-run collection holds the same cross-process data transaction lock as
@@ -528,14 +537,20 @@ been unreachable on 3 consecutive runs is reported as robots unverified
 
 - **robots.txt** ([`robots.ts`](../src/lib/pipeline/robots.ts), RFC 9309).
   Fetched at most once per host per run with the declared identity, over
-  plain HTTP/1.1, before the first request to that host. The `Policai` group
+  plain HTTP/1.1, before the first request to that host. When a WAF refuses
+  the plain client (a 401, a 403 or a dropped connection) and the run has a
+  browser, robots.txt is read again through the browser, so a host the
+  collector reaches only by browser still has its rules read. An HTML answer
+  from the browser is a challenge page, not robots.txt, and is discarded. The `Policai` group
   is used when present, else `*`. Matching is longest-match over `Allow` and
   `Disallow`, with `*` wildcards and a `$` end anchor, equal lengths allow,
   and percent-encoded unreserved octets compared decoded. A 2xx is parsed
   line by line, so an HTML or challenge page served with 200 yields no
   rules, and a 204 is an empty robots.txt that allows all. A `Crawl-delay`
   over one day (`CRAWL_DELAY_CAP_SEC`) is read as one day. A 4xx means
-  allow all (`absent`). Anything else is `unreachable`: a 1xx or 3xx left
+  allow all (`absent`), except a 401 or 403: that is a WAF refusing the
+  reader, not a site without robots.txt, so it counts as `unreachable`.
+  Anything else is `unreachable` too: a 1xx or 3xx left
   after redirects (such as a 304 without `Location`), a 5xx, a connection
   error, the 20 s timeout, a body over 500 KiB (it is not parsed in part),
   more than five redirects, or a redirect off https.
@@ -546,7 +561,7 @@ been unreachable on 3 consecutive runs is reported as robots unverified
   names the hosts whose robots.txt was unreachable.
 - **Robots unverified.** `robotsUnreachableRuns` on the host record counts
   consecutive runs whose robots fetch was unreachable, at most once per run,
-  and returns to 0 on any 2xx or 4xx. A host whose robots status is still
+  and returns to 0 on any 2xx or other 4xx. A host whose robots status is still
   `unreachable` (no robots.txt ever read) and whose count is 3 or more
   (`ROBOTS_UNVERIFIED_RUNS`) is robots unverified
   (`robotsUnverifiedHosts`). The run log then ends its host-gate lines with
@@ -831,31 +846,100 @@ version cannot be lost merely because its state write completed first.
 
 ## Reviewing detections into the register
 
-Detections staged in `data/source-reviews.json` are proposals. To publish one:
+Detections staged in `data/source-reviews.json` are proposals. An agent
+prepares each one completely, and Daniel decides on it with one tap on a
+decision card in the Policai Claude project. Approval then publishes.
 
 1. Run the local MCP server (`npm run mcp`).
-2. Inspect the staged source and correct the draft, especially its labelled
-   primary date. Give a policy its `themes`: `list_themes` returns the valid
-   keys and labels from `src/lib/themes.ts`.
-3. Call `approve_staged_source` with reviewer identity and notes.
-   The MCP input requires a human `reviewer`; the admin token authorises the
-   operation but is not recorded as the person who performed the review.
-   If the tracked policy or timeline event changed after staging, stage it
-   again to refresh the review, rebase the edited `proposedRecord` on that
-   current record, and pass the refreshed policy base or timeline revision as
-   `expectedTargetRevisionHash`. Approval rejects stale drafts that do not
-   acknowledge the current canonical revision.
-4. Call the publish tool. Publishing refuses pending drafts and creates the
-   verified policy or timeline record through `src/lib/source-ingest.ts`.
-5. Run `npm run validate:data`, commit, and push (or open a PR).
+2. Stage the source with `stage_source_url`, or with `stage_source_capture`
+   when the host refuses the collector. Pass the exact record to publish as
+   `proposedRecord`, edits included. A capture names who made it honestly:
+   `capturedBy: "Claude (agent)"` and `requestedBy: "Daniel Alkurdi"`, never
+   an agent signing as Daniel.
+3. Call `propose_source_decision` for anything else approval needs: a
+   corrected `proposedRecord` (for example `themes` on a new policy, keys from
+   `list_themes`), `reviewedDate` for a date the page states but does not
+   expose as metadata, `manualExtraction`, `officialSourceUrl` for a
+   stage-only lead, or `expectedTargetRevisionHash` after a rebase.
+4. Call `show_source_proposal`. Fix and re-propose until `blockers` is
+   empty; each entry is the error approval would raise today.
+5. Post a decision card (`request_decision`) that shows the current and
+   proposed record, the source and who captured it, and the
+   `proposalCode`. A typed "go ahead" is not a decision; only a tap is.
+6. When Daniel taps Approve, call `record_decision` with the review id, the
+   `proposalHash`, `reviewer: "Daniel Alkurdi"`, and the card's link as
+   `attestationUrl`. It refuses if the review changed after the card was
+   posted, if the reviewer is not on the `POLICAI_SIGNAL_REVIEWERS`
+   allowlist, or if a staged browser capture is more than 7 days old. It
+   approves with the staged evidence, without a new capture, then publishes.
+   Calling it again with the same hash resumes a publication that failed
+   part-way.
+7. Run `npm run validate:data`, commit, and push (or open a PR).
+
+Server-fetchable sources are fetched again at decision time, and approval
+refuses if their fingerprint moved since staging. When that re-fetch is
+refused by the host (HTTP 403, HTTP 429, or an equivalent `identity_refused`
+/ `rate_limited` failure), approval falls back to the snapshot already on the
+review (`sourceEvidence` plus the staged record text) and its notes gain
+`RETAINED_SNAPSHOT_APPROVAL_NOTE` (`src/lib/source-ingest.ts`). Other
+failures, such as timeouts, 404s and 5xx responses, still refuse.
+
+### Follow watches for federal legislation
+
+Each collection run follows two kinds of register record, each under the watch
+id `track:<policyId>`:
+
+- A bill whose `legislative.ref` is an APH bill id, and whose `sourceUrl` is
+  that bill's home page. The watch reads the page through the browser with the
+  Policai identity, because APH answers plain HTTP clients with a WAF 403.
+  `src/lib/legislation/aph-progress.ts` parses the Progress tables and
+  committee Notes into lifecycle events.
+- An instrument whose `legislative.ref` is a Federal Register title id. The
+  watch reads the title record from the register's OData API
+  (`api.prod.legislation.gov.au/v1/Titles('<id>')`) over plain HTTP.
+  `src/lib/legislation/frl-title.ts` reads registration, a principal
+  instrument's commencement, tabling in each House, the end of each
+  disallowance window, disallowance and repeal. The API writes 9999-12-31 for a
+  date it has not fixed yet; the parser treats that as no date. An amending
+  instrument's amendments commence in the versions of the principal it
+  amends, so for an amending instrument the watch also searches
+  `Titles/Search(criteria='affects("<id>",[amending])')` for the principal
+  and reads its `Versions` from the registration day on. A commencement day
+  that has come becomes a `commenced` stage. A day still to come is compared
+  with the record's `commenced` date, and a difference stages an update that
+  moves the date.
+
+Parser fixtures are in `src/lib/legislation/__fixtures__/aph/` and
+`src/lib/legislation/__fixtures__/frl/`.
+
+When the register shows a stage the record lacks, or has set or moved a
+deadline the record holds (a committee report date or the end of a
+disallowance window), the watch stages one update review against the record.
+The proposed record carries the merged events and the derived status. The
+review's `legislativeUpdate` lists the added stages, the changed deadlines,
+a moved scheduled commencement (`scheduledCommencement`), and any stage the parser could not map, such as "Discharged from Notice Paper"
+or a disallowance motion that did not pass. A merge that breaks the legal order
+is reported in the review, not applied. Unlike a changed direct document, a
+stage update keeps the record public while it waits, because the last approved
+stage is still true as of its date. It is decided like any other review: a
+proposal, then Daniel's decision card, then `record_decision`.
+
+Each record has at most one waiting stage update. A decided update is never
+staged again; only a further change on the register stages a new one. A page
+or response with no stages counts as a failure in the source health ledger, so
+a format change cannot pass silently. A run without a browser skips the APH
+watches but still runs the Federal Register ones. Run one watch with
+`npm run collect -- --source=track:<policyId>`.
 
 ### Policai Signal (Grok Bot)
 
 **Policai Signal** is Daniel’s Grok Bot
-(`fa9b5c47-349a-438e-acfc-75055f2d6b8f`). Product path: **HTTPS on
-policai.org**. The bot can reach HTTPS with a masked env secret; it has **no**
-Argus SSH, **will not** run a TTY CLI, and **cannot** merge PRs. MCP / TTY /
-`npm run mcp` are laptop recovery only — not the bot UX.
+(`fa9b5c47-349a-438e-acfc-75055f2d6b8f`). It is another AI agent, so it
+cannot approve anything. It alerts Daniel to pending reviews, previews them,
+and dismisses new-source leads Daniel rejects. Approval happens only on a
+decision card in the Policai Claude project (see above). Product path:
+**HTTPS on policai.org**. The bot can reach HTTPS with a masked env secret; it
+has **no** Argus SSH, **will not** run a TTY CLI, and **cannot** merge PRs.
 
 #### Bot-facing HTTPS API
 
@@ -870,7 +954,7 @@ Bot env (masked prompt; never paste into chat): **`POLICAI_SIGNAL_TOKEN`**.
 | Method | Path | Purpose |
 | --- | --- | --- |
 | `GET` | `/api/signal/reviews/<reviewId>` | Dry-run / current state for one review |
-| `POST` | `/api/signal/reviews` | Apply `approve` (approve+publish) or `dismiss` |
+| `POST` | `/api/signal/reviews` | Apply `dismiss` |
 
 **Dry-run (harmless first test):**
 
@@ -879,12 +963,10 @@ curl -sS -H "Authorization: Bearer $POLICAI_SIGNAL_TOKEN" \
   "https://policai.org/api/signal/reviews/<reviewId>"
 ```
 
-Returns `{ success, dryRun, review, approve, dismiss }`. `approve.blockers` /
-`dismiss.blockers` explain themes / tracked-record issues. No write.
-`review.themes` and `review.type` are the draft's current values.
-`approve.themeOptions` (`{ id, label }` from `THEMES`) and
-`approve.typeOptions` (the `PolicyType` values) are what Daniel may name in
-his reply; both are empty when the review does not accept overrides.
+Returns `{ success, dryRun, review, approve, dismiss }`. No write.
+`approve` is always `{ allowed: false, reason }`, and the reason says that
+Daniel approves on a decision card in the Policai project.
+`dismiss.blockers` explains why a review cannot be dismissed.
 
 **Apply:**
 
@@ -894,7 +976,7 @@ curl -sS -X POST "https://policai.org/api/signal/reviews" \
   -H "Content-Type: application/json" \
   -d '{
     "reviewId": "<id>",
-    "action": "approve",
+    "action": "dismiss",
     "reviewer": "Daniel Alkurdi",
     "attestation": {
       "replyText": "<Dan reply verbatim>",
@@ -905,90 +987,35 @@ curl -sS -X POST "https://policai.org/api/signal/reviews" \
   }'
 ```
 
-`action` is `approve` or `dismiss` only. `approve` runs `approveStagedSource`
-then `publishStagedSource`. `dismiss` runs `rejectStagedSource`. Reviewer
-must be allowlisted (`POLICAI_SIGNAL_REVIEWERS`, default
-`Daniel Alkurdi` and `Daniel`). `attestation.cardId` must equal `reviewId`.
+`action` must be `dismiss`, which runs `rejectStagedSource`. `approve`
+returns `approve_not_allowed` (403) and changes nothing. Reviewer must be
+allowlisted (`POLICAI_SIGNAL_REVIEWERS`, default `Daniel Alkurdi` and
+`Daniel`). `attestation.cardId` must equal `reviewId`.
 
-**Approve / publish when the host refuses a live re-fetch.** Approval and
-publication still prefer a live re-fetch of the official URL so a changed
-page cannot be approved from a stale staging hash. When that re-fetch fails
-with a host refusal — HTTP 403, HTTP 429, or an equivalent
-`identity_refused` / `rate_limited` failure (connection reset, bot-challenge
-wording, headless-browser 403 breaker) — `approveStagedSource` and
-`publishStagedSource` fall back to the collector-retained snapshot already on
-the review: `sourceEvidence` (including `contentHash`) plus the staged
-`proposedRecord` text (`content`, or `description` when content is missing).
-They do not invent bytes, do not guess a new fingerprint, and do not fall
-back for other failures (timeouts, HTTP 404/5xx, parse errors). The approval
-URL must still match the staged evidence URL (a source-replacement approve
-that points at a different official URL still requires a live fetch of that
-URL). When the fallback runs, approval notes gain the sentence in
-`RETAINED_SNAPSHOT_APPROVAL_NOTE` (`src/lib/source-ingest.ts`). If the host
-later serves different content successfully, the usual "changed after
-staging / approval" refusal still applies and the lead must be re-staged.
-
-**Themes and type from the reply.** An `approve` body may add
-`"themes": ["public-sector", "ai-governance"]` (1 to 5 unique theme ids
-from `src/lib/themes.ts`) and `"type": "<PolicyType>"`. They replace the
-draft's themes and type (no merge) before `approveStagedSource` runs with
-that `proposedRecord`, so a themeless draft can be approved once Daniel
-names its themes. They apply only to new register policy drafts: a
-timeline-event or tracked-record review, or a `dismiss`, with either field
-returns `invalid_request`.
-
-**Reply binding:** Daniel names values after a keyword, for example
-`approve, themes public-sector, ai-governance; type legislation`. Matching
-ignores case.
-
-- A theme counts only when it is a whole token inside a `theme` or `themes`
-  clause. The clause runs from the keyword to the next `.`, `;`, line break,
-  or `theme`, `themes` or `type` keyword.
-- The type counts only when it is the first token after `type` (`type
-  legislation` or `type: legislation`).
-- A token boundary is the start or end of the clause or any character
-  outside `[a-z0-9-]`. So `ai-governance` does not match inside
-  `genai-governance-x`, and `public sector` does not match `public-sector`.
-- A word used in passing never counts. In `approve this policy`, `policy` is
-  not a type, and in `employment law is fine`, `employment` is not a theme.
-
-A miss returns `themes_not_in_reply` or `type_not_in_reply`, naming the
-missing values.
-This check (`parseReplyOverrides` in `src/lib/signal-http.ts`) is what stops
-the bot from inventing values: it can relay only what Daniel wrote, and
-Daniel's reply is stored verbatim beside the applied values.
-
-Attestation is stored on the review and published verification notes as:
+Attestation is stored in the review's rejection reason as:
 
 ```text
 Daniel Alkurdi (Signal): <reply verbatim>
 chatMessageId: …
 cardId: …
 decided: <Australia/Sydney> (<ISO>)
-themes: <applied theme ids>   (only when sent)
-type: <applied type>          (only when sent)
 relayed by Policai Signal
 ```
 
 It must not claim TTY typing.
 
-**Idempotent:** approve on an already `published` review, or dismiss on an
-already `rejected` review, returns `noop: true` and the current state. A
-published review stays a noop whatever `themes` or `type` say.
+**Idempotent:** dismiss on an already `rejected` review returns
+`noop: true` and the current state.
 
-**Errors (bot returns these to Dan; bot does not invent themes):**
+**Errors (bot returns these to Dan):**
 
 | `code` | When |
 | --- | --- |
 | `unauthorized` | Missing/wrong Bearer token |
 | `signal_token_unconfigured` | Host missing `POLICAI_SIGNAL_TOKEN` |
 | `not_found` | Unknown review id |
-| `approve_blocked` (409) | Draft has no themes (ask Daniel to name them), no primary date, or is rejected |
-| `themes_required` / `editorial_fields_required` (409) | Approval refused themes or other reviewed fields (source date, `officialSourceUrl`, `proposedRecord`); fix through editorial MCP |
-| `approve_failed` (409) | Live re-fetch failed in a way the retained-snapshot fallback cannot cover (or another approve/publish gate failed); the error text names the cause (for example a non-refusal HTTP error) |
-| `invalid_request` (400) | Missing fields; `themes`/`type` on a dismiss, timeline or tracked-record review; `themes` not an array, repeated, or outside 1 to 5 |
-| `unknown_theme` / `unknown_type` (400) | Value is not a theme id or `PolicyType`; the error lists the valid ones |
-| `themes_not_in_reply` / `type_not_in_reply` (400) | A sent value is not named after `themes` or `type` in `attestation.replyText` |
+| `approve_not_allowed` (403) | `action` was `approve`; Daniel approves on a decision card instead |
+| `invalid_action` / `invalid_request` (400) | Unknown action, or missing fields |
 | `dismiss_blocked` / `tracked_record_dismiss` | Tracked-record reviews cannot be dismissed |
 | `reviewer_not_allowlisted` | Reviewer not in allowlist |
 | `invalid_attestation` | Missing reply / message id / card id |
@@ -1008,8 +1035,8 @@ a dirty release checkout would block every later deploy. The route works in
 1. It resolves GitHub `main` to one base commit with
    `POLICAI_SIGNAL_GITHUB_TOKEN` (repository `POLICAI_SIGNAL_GITHUB_REPO`,
    default `l0cka/policai`).
-2. It runs the approve or dismiss inside `runWithDataOverlay`. Every data read
-   comes from the file at that commit (contents API, blob API for files over
+2. It runs the dismissal inside `runWithDataOverlay`. Every data read comes
+   from the file at that commit (contents API, blob API for files over
    1 MB). Writes stay in memory, and no lock file is taken.
 3. If the decision is a noop or changes no file, it returns
    `persistence.skipped` and commits nothing.
@@ -1069,9 +1096,9 @@ review.` or `N pending source reviews.`
 
 `.github/workflows/signal-review-cards.yml` is manual read-only reprint.
 
-**Recovery only (not bot):** TTY or MCP approve/publish on a laptop when
-HTTPS is down. The bot must not be told to SSH to Argus or run
-`signal:reviews apply`.
+**Recovery only (not bot):** `npm run signal:reviews -- apply` can dismiss
+or verify on a laptop when HTTPS is down. It cannot approve or publish. The
+bot must not be told to SSH to Argus or run `signal:reviews apply`.
 
 One-off publication scripts must also enter through `stageSourceUrl()` or the
 controlled `stageSourceCapture()` fallback rather than constructing a review
@@ -1139,11 +1166,10 @@ npx vitest run src/mcp/timeline-source-replacement.test.ts src/lib/timeline-sour
 ```
 
 A browser-captured review remains subject to the normal gates.
-`approve_staged_source` requires a fresh matching `browserCapture`, and its
-`reviewer` must match the capture reviewer. `publish_staged_source` requires
-another fresh matching capture. Any page-text, relevant-link, or document-byte
-change forces re-staging or re-approval rather than silently refreshing the
-trusted baseline.
+`record_decision` approves and publishes against the staged capture, and
+refuses one more than 7 days old. Re-staging with a fresh capture is the only
+way to refresh it, and it clears the proposal and any decision, so a changed
+page needs a new decision card.
 
 Dismissals: reject the staged review and set the matching development's status
 to `dismissed` with a `dismissalReason`. Publishing a collector review promotes
@@ -1157,10 +1183,10 @@ development before applying URL deduplication.
 
 A changed-source review for an existing policy cannot be rejected, because the
 source is already known to differ from the last verified evidence. If the
-change is immaterial, approve and publish the unchanged/corrected policy draft
-with reviewer notes; this refreshes the evidence hash and review metadata.
+change is immaterial, propose the unchanged/corrected policy draft and
+decide it on a card; this refreshes the evidence hash and review metadata.
 If the exact changed version is image-only or otherwise not machine-readable,
-`approve_staged_source` accepts a controlled `manualExtraction` only after
+`propose_source_decision` accepts a controlled `manualExtraction`, which approval uses only after
 automatic extraction fails. Supply the full reviewed `proposedRecord`, OCR or
 manual-transcription method, title, extracted text, and notes. Approval binds
 the transcription hash and reviewer identity to the still-matching staged
@@ -1206,6 +1232,14 @@ npm run audit:sources -- --source=<id>
 npm run collect -- --dry-run --source=<id>
 ```
 
+A new `html-index` or `rss` source also sets `admittedAt` (YYYY-MM-DD).
+Its first completed check marks the items currently listed as seen and emits
+no developments; the run log names each seeded URL so the admission PR can
+list them. Developments start from the second check. Without `admittedAt`, the
+first check treats up to `maxItemsPerSource` back-catalogue items as new.
+`document` sources need no seeding because their first check only records
+a fingerprint baseline.
+
 ## Troubleshooting
 
 - **Publication fails with `GH013`** — retain the run and inspect its branch and
@@ -1215,22 +1249,77 @@ npm run collect -- --dry-run --source=<id>
   commit without recollection. A changed remote main or run branch needs manual
   reconciliation, not a forced push.
 - **A source keeps failing** — check `meta.json` → `collector.sourceResults`.
-  If the endpoint consistently requires a browser, keep it enabled but change
-  it to `automation: manual` with an explanation. Do not count a challenge page
+  If the endpoint consistently requires a browser, keep it enabled but move
+  it to manual tracking with a reviewed decision (below). Do not count a challenge page
   as coverage and do not disable an authoritative source merely because it
   cannot be automated.
   Every due automatic source counts in the health denominator, including a
   source that is known to be blocked, so one persistent refusal keeps the run
-  `degraded` and `lastHealthyAt` stale. Move such a source to
-  `automation: manual` (which drops it from the denominator) rather than
-  excluding it from the count. A result already stored for that id, including
+  `degraded` and `lastHealthyAt` stale. Move such a source to manual
+  tracking (which drops it from the denominator) rather than excluding it
+  from the count. `automation` is then a decision record, never a bare flag:
+  `{ mode: 'manual', because, decision, since, decidedBy, evidence }`, where `because` is `identity_refused`, `bot_blocked`,
+  `robots_disallowed` or `not_found`, and `decision` is `manual` or
+  `await_allowlist` (only where an allow-list request has a written reply).
+  `validate:data` rejects an incomplete record. The record carries no review
+  cadence of its own: how often an editor must check a manual source by hand
+  still follows its `schedule` (`reviewIsCurrent` in
+  `src/lib/source-monitoring.ts`). Only a reviewed PR changes
+  it; the collector never moves a source itself. A result already stored for that id, including
   one recorded while it was still automatic, is left out of the public
   automatic count and does not keep the run degraded (`publicAutomaticCollectionMeta`
   in `src/lib/collection-coverage.ts`, applied by `getCollectionMeta` and by
   the committed `public/data/meta.json`). `accc-rss` (HTTP 403 from the host's
   access-denied page) and `wa-ai-policy` (the linked finance.gov.au framework
   PDF resets the connection) were moved for this reason (#304, #389); each
-  source's `notes` carry the evidence.
+  decision's `evidence` carries the measurements.
+- **Adding a source or directory record** — give it the `bodyId` of its
+  publishing body in `data/bodies.json`. A body has an id, name,
+  jurisdiction, tier (`A`, `B` or `C`), the hosts it publishes on, and a
+  scope decision; the Editorial Manager owns scope and tiers.
+  `validate:data` fails on an unknown `bodyId`, a source or directory
+  website whose host is not one of its body's hosts, a jurisdiction that
+  differs from the body's, a directory name that is neither the body's
+  name nor the body's name followed by ` - ` and a part of it, and a
+  jurisdiction with no tier A body. Add a new publisher to `bodies.json`
+  in the same PR. `diser` and `disr` are two directory records for one
+  body.
+- **Finding what is not watched** — `npm run report:watch-coverage` (add
+  `-- --json` for the raw report) counts, per jurisdiction and tier, the
+  in-scope bodies with a working automatic source or an enabled manual
+  source, and lists the gaps, every decided block with its last manual
+  review, refusals awaiting a decision and linked documents skipped on a
+  refused host. A body is covered automatically when any of its automatic
+  sources is being reached; a source the per-source ledger has not
+  recorded yet counts from its last completed check. Out-of-scope bodies
+  are left out and unassessed ones are counted. `/status` shows the same
+  report (`watchCoverage` in `src/lib/watch-coverage/report.ts`).
+- **Finding sources for a body** — `npm run discover:sources -- --body=<id>`
+  reads the body's robots.txt `Sitemap:` lines (or `/sitemap.xml` when
+  there are none) and the RSS or Atom feeds its home page links (or
+  `/rss.xml` and `/feed` when it links none), then
+  prints ranked proposals with sample titles and marks any already
+  watched. Every request goes through the host gate under the declared
+  identity and the official-host allow-list, so robots.txt, pacing and
+  decided blocks hold; a disallowed section is listed as skipped, never
+  proposed. It uses plain HTTP only, so hosts that reject non-browser
+  clients return nothing. It writes nothing: admit a proposal through a PR
+  that adds the source with its `bodyId` and `admittedAt`.
+- **A host refuses the declared identity** — record it once, on the manual
+  decision of the source that observed it, with `because: 'identity_refused'`.
+  `refusedHosts` in `src/lib/pipeline/sources.ts` derives the refused hosts
+  from those decisions, and the host gate never requests them: a linked
+  document or candidate there is listed under `skippedLinked` on the
+  source's result row, with the deciding source, and is not a failure.
+  A skipped candidate is marked `failed` in `watch-state.json` so the next
+  run does not request it again. Reversing the host decision does not revive
+  it: clear that candidate's `seen` entry in the same PR if it should be
+  collected.
+  `validate:data` fails while an automatic source sits on a refused host, so
+  one host decision cannot be half-applied. Record `bot_blocked` instead
+  when the page host itself accepts the collector and only a linked host
+  refuses, so the page host is not marked refused (`wa-ai-policy` until
+  www.finance.gov.au has its own decision).
 - **An HTML source reports no coverage** — only links inside recognised
   publication/result containers count as index entries. Navigation, footer,
   homepage, login, and soft-error links do not make a source healthy; inspect
@@ -1289,7 +1378,7 @@ npm run collect -- --dry-run --source=<id>
 
 Stage-only non-government leads remain pending until an editor supplies
 `officialSourceUrl` and an explicitly reviewed replacement `proposedRecord` to
-`approve_staged_source`. Approval retrieves and extracts that official source
+`propose_source_decision`. Approval retrieves and extracts that official source
 again, replaces the discovery evidence, and only then validates the replacement
 record. Publishing synchronizes the linked development from the reviewed record
 and marks its assessment as editorial.

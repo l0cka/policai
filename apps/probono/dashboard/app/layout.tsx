@@ -6,6 +6,7 @@ import CompanionMark from './companion-mark';
 import { getPool } from '../lib/db';
 import './globals.css';
 import './editorial.css';
+import { auDate } from '../lib/au-date';
 
 export const dynamic = 'force-dynamic';
 
@@ -49,8 +50,7 @@ async function lastIngestAt(): Promise<string | null> {
 
 function formatDataDate(value: string | null): string {
   if (!value) return 'SOURCE STATUS ON THE SOURCES PAGE';
-  return `DATA CURRENT TO ${new Date(value)
-    .toLocaleString('en-AU', {
+  return `DATA CURRENT TO ${auDate(new Date(value), {
       timeZone: 'Australia/Sydney',
       day: '2-digit',
       month: 'short',

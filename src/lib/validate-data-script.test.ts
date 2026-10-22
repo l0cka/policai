@@ -15,7 +15,7 @@ afterEach(() => {
   workDir = undefined;
 });
 
-function runValidateData(policies: unknown[]) {
+function runValidateData(policies: unknown[], bodies?: unknown) {
   const env = { ...process.env };
   delete env.GITHUB_BASE_SHA;
   workDir = mkdtempSync(path.join(os.tmpdir(), 'policai-validate-data-'));
@@ -24,6 +24,8 @@ function runValidateData(policies: unknown[]) {
     path.join(workDir, 'data', 'policies.json'),
     JSON.stringify(policies),
   );
+  if (bodies !== undefined)
+    writeFileSync(path.join(workDir, 'data', 'bodies.json'), JSON.stringify(bodies));
   return spawnSync(
     path.join(repoRoot, 'node_modules', '.bin', 'tsx'),
     [
@@ -57,6 +59,13 @@ describe('scripts/validate-data.ts', () => {
     expect(result.stderr).toContain(
       'ERROR themes: "generative-ai" (Generative AI) is used by 1 register record; a listed theme needs at least 2',
     );
+    expect(result.status).toBe(1);
+  }, 60_000);
+
+  it('wires validateBodies so a catalogue without a tier A body fails the script', () => {
+    const result = runValidateData([buildPolicy({ id: 'fixture-policy' })], []);
+
+    expect(result.stderr).toContain('ERROR bodies: no tier A body for federal');
     expect(result.status).toBe(1);
   }, 60_000);
 });

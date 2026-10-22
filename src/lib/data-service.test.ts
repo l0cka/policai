@@ -376,6 +376,45 @@ describe("data-service file store", () => {
 		expect(projected.policies).toEqual([visiblePolicy.id]);
 	});
 
+	it("keeps a bill public while a follow watch's stage update waits for a decision", async () => {
+		const bill = buildPolicy({
+			id: "followed-bill",
+			sourceUrl: "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7249",
+		});
+		const stageUpdate = {
+			id: "source-review-follow-followed-bill-0123456789abcdef",
+			sourceUrl: bill.sourceUrl,
+			title: bill.title,
+			entryKind: "policy" as const,
+			targetPolicyId: bill.id,
+			status: "pending_review" as const,
+			discoveredAt: "2026-07-16T00:00:00.000Z",
+			createdBy: "collector",
+			analysis: {
+				isRelevant: true,
+				relevanceScore: 1,
+				suggestedType: bill.type,
+				suggestedJurisdiction: bill.jurisdiction,
+				summary: "Passed the Senate.",
+			},
+			sourceEvidence: { url: bill.sourceUrl },
+			proposedRecord: bill,
+			legislativeUpdate: { added: [], unrecognised: [] },
+			updatedAt: "2026-07-16T00:00:00.000Z",
+		};
+		readJsonFile.mockImplementation(
+			async (filePath: string, fallback: unknown) => {
+				if (filePath.endsWith("policies.json")) return [bill];
+				if (filePath.endsWith("source-reviews.json")) return [stageUpdate];
+				return fallback;
+			},
+		);
+
+		const { getPolicies } = await loadDataServiceModule();
+
+		expect((await getPolicies()).map((policy) => policy.id)).toEqual([bill.id]);
+	});
+
 	it("merges curated and generated timeline events without duplicating curated policy entries", async () => {
 		const coveredPolicy = buildPolicy({
 			id: "covered-policy",
@@ -417,6 +456,39 @@ describe("data-service file store", () => {
 				description: `${"x".repeat(197)}...`,
 			}),
 		);
+	});
+
+	it("lists each approved stage of a legislative record on the timeline, citing its source", async () => {
+		const page = "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7249";
+		const bill = buildPolicy({
+			id: "tracked-bill",
+			title: "Tracked Bill 2026",
+			type: "legislation",
+			status: "proposed",
+			legislative: {
+				kind: "bill",
+				ref: { register: "aph", billId: "r7249" },
+				origin: "government",
+				events: [
+					{ date: "2026-07-01", precision: "day", event: { kind: "introduced", chamber: "lower" }, source: { url: page } },
+					{ date: "2026-08-12", precision: "day", event: { kind: "passed", chamber: "lower", withAmendments: true }, source: { url: page } },
+				],
+			},
+		});
+		readJsonFile.mockImplementation(
+			async (filePath: string, fallback: unknown) => {
+				if (filePath.endsWith("policies.json")) return [bill];
+				return fallback;
+			},
+		);
+
+		const { getTimelineEvents } = await loadDataServiceModule();
+		const result = await getTimelineEvents(undefined, { scope: "policy-register" });
+
+		expect(result.map(({ id, date, type, title, description, sourceUrl }) => ({ id, date, type, title, description, sourceUrl }))).toEqual([
+			{ id: "policy-timeline-tracked-bill-0", date: "2026-07-01", type: "policy_introduced", title: "Tracked Bill 2026: Introduced in the House of Representatives", description: "Introduced in the House of Representatives", sourceUrl: page },
+			{ id: "policy-timeline-tracked-bill-1", date: "2026-08-12", type: "milestone", title: "Tracked Bill 2026: Passed the House of Representatives", description: "With amendments", sourceUrl: page },
+		]);
 	});
 
 	it("limits register timeline reads to lifecycle events linked to visible policies", async () => {
@@ -1801,6 +1873,25 @@ describe("data-service file store", () => {
 				"https://example.gov.au/policy/?utm_source=email#details",
 			),
 		).resolves.toBe(true);
+	});
+
+	it("lets a legislative record take a page only hand-typed timeline events cite, and retires them", async () => {
+		const page = "https://example.gov.au/bill";
+		const introduced = buildTimelineEvent({ id: "tl-bill-introduced", sourceUrl: page });
+		const other = buildTimelineEvent({ id: "tl-other", sourceUrl: "https://example.gov.au/other" });
+		readJsonFile.mockImplementation(
+			async (filePath: string, fallback: unknown) => {
+				if (filePath.endsWith("timeline.json")) return [introduced, other];
+				return fallback;
+			},
+		);
+
+		const { retireTimelineEventsCiting, sourceUrlExists } = await loadDataServiceModule();
+
+		await expect(sourceUrlExists(page)).resolves.toBe(true);
+		await expect(sourceUrlExists(page, { legislativeRecord: true })).resolves.toBe(false);
+		await expect(retireTimelineEventsCiting(page)).resolves.toEqual(["tl-bill-introduced"]);
+		expect(writeJsonFile).toHaveBeenCalledWith(expect.stringMatching(/timeline\.json$/), [other]);
 	});
 
 	it("detects duplicate source URLs across staged source reviews", async () => {

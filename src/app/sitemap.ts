@@ -54,6 +54,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.8,
       },
       {
+        url: `${SITE_URL}/legislation`,
+        changeFrequency: 'weekly',
+        priority: 0.8,
+      },
+      {
         url: `${SITE_URL}/courts`,
         changeFrequency: 'weekly',
         priority: 0.8,
@@ -77,6 +82,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         url: `${SITE_URL}/status`,
         changeFrequency: 'daily',
         priority: 0.5,
+      },
+      {
+        url: `${SITE_URL}/status/refusals`,
+        changeFrequency: 'weekly',
+        priority: 0.4,
+      },
+      {
+        url: `${SITE_URL}/status/reuse`,
+        changeFrequency: 'weekly',
+        priority: 0.4,
       },
     ] as const
   ).map((page) =>

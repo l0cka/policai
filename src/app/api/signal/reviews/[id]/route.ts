@@ -43,12 +43,6 @@ export async function GET(
 	const { id } = await context.params;
 	const result = await dryRunSignalReview(id, {
 		getReview: getSourceReviewById,
-		approve: async () => {
-			throw new Error("dry-run");
-		},
-		publish: async () => {
-			throw new Error("dry-run");
-		},
 		reject: async () => {
 			throw new Error("dry-run");
 		},

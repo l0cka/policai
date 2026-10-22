@@ -49,6 +49,12 @@ describe('AnalysisHero', () => {
     expect(screen.queryByRole('heading', { name: 'Analysis' })).not.toBeInTheDocument();
   });
 
+  it('leaves the page outline to the register, so the carousel adds no headings', async () => {
+    await renderHero('articles');
+    const hero = screen.getByRole('region', { name: 'Analysis' });
+    expect(within(hero).queryAllByRole('heading')).toHaveLength(0);
+  });
+
   it('shows the newest published piece first and keeps drafts and withdrawn pieces out', async () => {
     const { container, articles } = await renderHero('articles');
     const hero = screen.getByRole('region', { name: 'Analysis' });

@@ -248,17 +248,13 @@
   line-height: var(--article-body-leading);
 }
 
-.article-body :is(a, strong) {
-  font-family: var(--font-sans);
-}
-
 .article-body > :is(p, ul, ol, h2, h3, blockquote) {
   max-width: var(--article-measure);
 }
 
 .article-body :is(h2, h3) {
   font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: 400;
 }
 
 .article-body h2 {
@@ -267,8 +263,10 @@
   margin-top: var(--space-10);
 }
 
+/* Body size, so weight is what sets it apart. */
 .article-body h3 {
   font-size: 1.125rem;
+  font-weight: 600;
 }
 
 .article-table-scroll {
@@ -1218,6 +1216,10 @@
   mask-repeat: repeat;
   -webkit-mask-mode: luminance;
   mask-mode: luminance;
+}
+/* Lead photos run close to 4:3, so the shared 3:2 thumbnail crop cut too much of them here. */
+.analysis-hero-figure > div {
+  aspect-ratio: 4 / 3;
 }
 .analysis-hero-figure img {
   filter: grayscale(0.55) contrast(1.3) brightness(1.04);

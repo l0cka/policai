@@ -12,6 +12,7 @@ import {
 import { sourceHealthHeadline } from '../lib/health-data';
 import { ArrowRight, ArrowUpRight, Flag, Search } from './icons';
 import { SignalNetwork } from './signal-network';
+import { auDate } from '../lib/au-date';
 
 export const dynamic = 'force-dynamic';
 
@@ -27,7 +28,7 @@ function dayLabel(date: string, today: string): string {
   if (diff === -1) return 'Yesterday';
   const d = new Date(`${date}T00:00:00`);
   const sameYear = date.slice(0, 4) === today.slice(0, 4);
-  return d.toLocaleDateString('en-AU', {
+  return auDate(d, {
     weekday: diff > -7 ? 'long' : undefined,
     day: 'numeric',
     month: 'long',
@@ -50,7 +51,7 @@ function streamVars(stream: string | null): React.CSSProperties | undefined {
 }
 
 function shortDate(value: string | Date): string {
-  return new Date(value).toLocaleDateString('en-AU', {
+  return auDate(new Date(value), {
     timeZone: 'Australia/Sydney',
     day: 'numeric',
     month: 'short',

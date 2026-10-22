@@ -1,15 +1,29 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { expect, it } from 'vitest';
 import { Footer } from './Footer';
 
-it('links Coverage and Timeline', () => {
+it('lists every page under its section, with the utilities moved out of the header', () => {
   render(<Footer />);
-  expect(screen.getByRole('link', { name: 'Coverage' })).toHaveAttribute(
-    'href',
-    '/coverage',
-  );
-  expect(screen.getByRole('link', { name: 'Timeline' })).toHaveAttribute(
-    'href',
-    '/timeline',
-  );
+  const footer = screen.getByRole('navigation', { name: 'Footer' });
+  for (const [name, href] of [
+    ['Records', '/'],
+    ['Timeline', '/timeline'],
+    ['Coverage map', '/coverage'],
+    ['Following', '/following'],
+    ['This week', '/this-week'],
+    ['Developments', '/developments'],
+    ['RSS', '/feed.xml'],
+    ['Legislation', '/legislation'],
+    ['Courts', '/courts'],
+    ['Analysis', '/analysis'],
+    ['Methodology', '/methodology'],
+    ['Source status', '/status'],
+    ['Refusing sites', '/status/refusals'],
+    ['Reuse terms', '/status/reuse'],
+    ['API', '/api/policies'],
+    ['Feedback', 'https://github.com/l0cka/policai/issues'],
+  ]) {
+    expect(within(footer).getByRole('link', { name })).toHaveAttribute('href', href);
+  }
+  expect(screen.getByRole('radiogroup', { name: 'Colour theme' })).toBeInTheDocument();
 });

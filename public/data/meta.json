@@ -2,7 +2,7 @@
   "lastCollectedAt": "2026-10-17T19:33:37.076Z",
   "lastHealthyAt": "2026-10-17T19:33:37.076Z",
   "lastUsableAt": "2026-10-17T19:33:37.076Z",
-  "lastReviewedAt": "2026-10-19T09:22:36.725Z",
+  "lastReviewedAt": "2026-10-22T07:41:33.800Z",
   "collector": {
     "runCount": 80,
     "lastRunSources": [
@@ -19,13 +19,10 @@
       "senate-reports",
       "house-new-inquiries",
       "joint-new-inquiries",
-      "aph-bills-digests",
-      "aph-hansard-bill-debates",
       "legislation-whats-new",
       "oaic-media",
       "apra-rss",
       "acma-media",
-      "esafety-media",
       "ahrc-media",
       "sa-courts-news",
       "nsw-gazette-recent",
@@ -42,13 +39,13 @@
     ],
     "lastRunErrors": [],
     "health": "healthy",
-    "dueSourceCount": 33,
-    "successfulSourceCount": 33,
+    "dueSourceCount": 30,
+    "successfulSourceCount": 30,
     "failedSourceCount": 0,
     "skippedSourceCount": 41,
     "successRate": 1,
-    "automaticSourceCount": 74,
-    "manualSourceCount": 4,
+    "automaticSourceCount": 73,
+    "manualSourceCount": 11,
     "sourceResults": [
       {
         "sourceId": "pm-media",
@@ -248,26 +245,6 @@
         "newCandidateCount": 0
       },
       {
-        "sourceId": "aph-bills-digests",
-        "status": "success",
-        "coverageEligible": true,
-        "checkedAt": "2026-10-17T19:33:37.076Z",
-        "durationMs": 328,
-        "itemCount": 62,
-        "candidateCount": 0,
-        "newCandidateCount": 0
-      },
-      {
-        "sourceId": "aph-hansard-bill-debates",
-        "status": "success",
-        "coverageEligible": true,
-        "checkedAt": "2026-10-17T19:33:37.076Z",
-        "durationMs": 1780,
-        "itemCount": 385,
-        "candidateCount": 25,
-        "newCandidateCount": 0
-      },
-      {
         "sourceId": "legislation-whats-new",
         "status": "success",
         "coverageEligible": true,
@@ -407,17 +384,6 @@
         "itemCount": null,
         "candidateCount": 0,
         "newCandidateCount": 0
-      },
-      {
-        "sourceId": "esafety-media",
-        "status": "success",
-        "coverageEligible": true,
-        "checkedAt": "2026-10-17T19:33:37.076Z",
-        "durationMs": 3654,
-        "itemCount": 1,
-        "candidateCount": 0,
-        "newCandidateCount": 0,
-        "identityException": "active"
       },
       {
         "sourceId": "pc-media",

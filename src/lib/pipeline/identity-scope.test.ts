@@ -37,7 +37,8 @@ describe('destination authority before outgoing requests', () => {
       destinationCollectorIdentity(identityAuthorityFor(s), s.url, now) === 'exempt');
     expect(active(before).map(s => s.id)).toEqual([source.id]);
     expect(active(boundary)).toHaveLength(0);
-    const report = validateWatchSources(WATCH_SOURCES, boundary);
+    // Only the exempt sources: later manual decisions are dated after this clock.
+    const report = validateWatchSources(WATCH_SOURCES.filter(s => s.identityException), boundary);
     expect(report.errors).toEqual([]);
     expect(report.warnings.filter(w => w.includes('identity exception expired'))).toHaveLength(1);
   });

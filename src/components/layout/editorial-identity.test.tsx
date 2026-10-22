@@ -5,99 +5,92 @@ import { Header } from './Header';
 const pathname = vi.hoisted(() => ({ current: '/' }));
 vi.mock('next/navigation', () => ({ usePathname: () => pathname.current }));
 
+function renderHeader(path = '/') {
+  pathname.current = path;
+  return render(
+    <Header
+      collectedAt="2026-09-21T02:00:00Z"
+      collectionHealth="healthy"
+      successfulSourceCount={10}
+      dueSourceCount={10}
+    />,
+  );
+}
+
 describe('Editorial identity and navigation', () => {
-  it('labels collection freshness separately from record verification', () => {
-    render(<Header collectedAt="2026-09-21T02:00:00Z" collectionHealth="healthy" successfulSourceCount={10} dueSourceCount={10} />);
-    expect(screen.getAllByText(/COLLECTED/)).toHaveLength(1);
+  it('links collection freshness to Source status, separately from record verification', () => {
+    renderHeader();
+    const status = screen.getByRole('link', { name: /^Source status:/ });
+    expect(status).toHaveAttribute('href', '/status');
+    expect(status.getAttribute('aria-label')).toMatch(/collected 21 sept? 2026/);
     expect(screen.queryByText(/DATA CURRENT TO/)).not.toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Source health' })).toHaveAttribute('href', '/status');
   });
-  it.each([
-    ['/', 1],
-    ['/analysis', 1],
-    ['/analysis/how-ai-is-regulated-in-australia', 0],
-  ])('shows the collection strip on %s: %i occurrences', (path, count) => {
-    pathname.current = path;
-    render(<Header collectedAt="2026-09-21T02:00:00Z" collectionHealth="healthy" successfulSourceCount={10} dueSourceCount={10} />);
-    expect(screen.queryAllByText(/COLLECTED/)).toHaveLength(count);
-    expect(screen.queryAllByRole('link', { name: 'Source health' })).toHaveLength(count);
-    pathname.current = '/';
-  });
+
   it('uses the companion vector mark and lowercase wordmark', () => {
     const { container } = render(<PolicaiLogo />);
-    expect(container.querySelector('svg')).toHaveAttribute(
-      'viewBox',
-      '0 0 64 76',
-    );
+    expect(container.querySelector('svg')).toHaveAttribute('viewBox', '0 0 64 76');
     expect(screen.getByText('policai')).toBeInTheDocument();
   });
-  it('keeps every navigation destination and exposes utilities in the mobile menu', () => {
-    render(
-      <Header
-        collectedAt={null}
-        collectionHealth="healthy"
-        successfulSourceCount={10}
-        dueSourceCount={10}
-      />,
-    );
+
+  it('shows the five sections and no dropdown', () => {
+    renderHeader();
     const primary = screen.getByRole('navigation', { name: 'Primary' });
-    expect(
-      within(primary).getByRole('link', { name: 'Register' }),
-    ).toHaveAttribute('aria-current', 'page');
+    expect(within(primary).getAllByRole('link').map((link) => link.textContent)).toEqual([
+      'Register',
+      'Updates',
+      'Legislation',
+      'Courts',
+      'Analysis',
+    ]);
+    expect(screen.queryByRole('button', { name: 'Explore' })).not.toBeInTheDocument();
+  });
+
+  it.each([
+    ['/', 'Register'],
+    ['/policies/some-record', 'Register'],
+    ['/timeline', 'Register'],
+    ['/coverage', 'Register'],
+    ['/this-week', 'Updates'],
+    ['/developments', 'Updates'],
+    ['/legislation', 'Legislation'],
+    ['/courts', 'Courts'],
+    ['/analysis/some-piece', 'Analysis'],
+    ['/methodology', 'About'],
+    ['/status', 'About'],
+    ['/status/refusals', 'About'],
+    ['/status/reuse', 'About'],
+  ])('marks the section for %s as %s', (path, section) => {
+    renderHeader(path);
+    const current = screen
+      .getAllByRole('link')
+      .filter((link) => link.getAttribute('aria-current') === 'page')
+      .map((link) => link.textContent);
+    expect(current).toEqual([section]);
+  });
+
+  it('lists every section in the mobile menu and returns focus on Escape', () => {
+    renderHeader();
     fireEvent.click(screen.getByRole('button', { name: 'Open menu' }));
     const mobile = screen.getByRole('navigation', { name: 'Mobile' });
     for (const [name, href] of [
       ['Register', '/'],
-      ['Developments', '/developments'],
+      ['Updates', '/this-week'],
+      ['Legislation', '/legislation'],
       ['Courts', '/courts'],
-      ['Timeline', '/timeline'],
-      ['Coverage', '/coverage'],
-      ['Methodology', '/methodology'],
-      ['API', '/api/policies'],
-      ['Feedback', 'https://github.com/l0cka/policai/issues'],
+      ['Analysis', '/analysis'],
+      ['About', '/methodology'],
       ['A2J', 'https://a2j.policai.org'],
     ]) {
-      expect(within(mobile).getByRole('link', { name })).toHaveAttribute(
-        'href',
-        href,
-      );
+      expect(within(mobile).getByRole('link', { name })).toHaveAttribute('href', href);
     }
+    expect(within(mobile).getByRole('link', { name: /^Source status:/ })).toHaveAttribute('href', '/status');
     fireEvent.keyDown(document, { key: 'Escape' });
-    expect(
-      screen.queryByRole('navigation', { name: 'Mobile' }),
-    ).not.toBeInTheDocument();
+    expect(screen.queryByRole('navigation', { name: 'Mobile' })).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Open menu' })).toHaveFocus();
   });
-  it('closes the Explore menu when keyboard focus leaves it', () => {
-    render(
-      <Header
-        collectedAt={null}
-        collectionHealth="healthy"
-        successfulSourceCount={10}
-        dueSourceCount={10}
-      />,
-    );
-    const explore = screen.getByRole('button', { name: 'Explore' });
-    fireEvent.click(explore);
-    expect(explore).toHaveAttribute('aria-expanded', 'true');
-    const timeline = screen.getByRole('link', { name: 'Timeline' });
-    fireEvent.blur(explore, { relatedTarget: timeline });
-    expect(explore).toHaveAttribute('aria-expanded', 'true');
-    const a2j = within(
-      screen.getByRole('navigation', { name: 'Primary' }),
-    ).getByRole('link', { name: 'A2J' });
-    fireEvent.blur(timeline, { relatedTarget: a2j });
-    expect(explore).toHaveAttribute('aria-expanded', 'false');
-  });
+
   it('keeps the mobile menu open when focus returns to its toggle', () => {
-    render(
-      <Header
-        collectedAt={null}
-        collectionHealth="healthy"
-        successfulSourceCount={10}
-        dueSourceCount={10}
-      />,
-    );
+    renderHeader();
     const toggle = screen.getByRole('button', { name: 'Open menu' });
     fireEvent.click(toggle);
     const mobile = screen.getByRole('navigation', { name: 'Mobile' });
@@ -105,8 +98,6 @@ describe('Editorial identity and navigation', () => {
     fireEvent.blur(register, { relatedTarget: toggle });
     expect(screen.getByRole('navigation', { name: 'Mobile' })).toBeInTheDocument();
     fireEvent.blur(register, { relatedTarget: document.body });
-    expect(
-      screen.queryByRole('navigation', { name: 'Mobile' }),
-    ).not.toBeInTheDocument();
+    expect(screen.queryByRole('navigation', { name: 'Mobile' })).not.toBeInTheDocument();
   });
 });

@@ -1,6 +1,9 @@
 /* @vitest-environment node */
 
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { frlAiInstrumentSearch } from '@/lib/legislation/frl-search';
 import { buildPolicy, buildTimelineEvent } from '@/test/factories';
 import { WATCH_SOURCES, type WatchSource } from './sources';
 import { retrieveSource } from './fetch';
@@ -43,7 +46,7 @@ const collect = (options: Omit<CollectOptions, 'hostGate'> & { hostGate?: HostGa
   collectThroughGate({ hostGate: buildOpenHostGate(), ...options });
 import type { SourceReview } from '@/types';
 import { MACHINE_CONFIDENCE_CAP, type Classification } from './classify';
-import { validateCollectionMeta, validateSourceReviews } from '../validate-data';
+import { validateCollectionMeta, validateSourceReviews, validateWatchState } from '../validate-data';
 
 beforeEach(() => {
   scrapeWithFirecrawl.mockReset();
@@ -73,6 +76,7 @@ describe('collection CLI failure policy', () => {
 
 const HTML_SOURCE: WatchSource = {
   id: 'test-html',
+  bodyId: 'test-body',
   name: 'Test HTML source',
   jurisdiction: 'federal',
   category: 'government',
@@ -85,6 +89,7 @@ const HTML_SOURCE: WatchSource = {
 
 const RSS_SOURCE: WatchSource = {
   id: 'test-rss',
+  bodyId: 'test-body',
   name: 'Test RSS source',
   jurisdiction: 'federal',
   category: 'regulator',
@@ -97,6 +102,7 @@ const RSS_SOURCE: WatchSource = {
 
 const DOCUMENT_SOURCE: WatchSource = {
   id: 'test-document',
+  bodyId: 'test-body',
   name: 'Test AI governance policy',
   jurisdiction: 'federal',
   category: 'government',
@@ -559,14 +565,15 @@ describe('collect', () => {
       itemCount: 2,
       candidateCount: 2,
     });
-    expect(result.meta.collector.automaticSourceCount).toBe(75);
-    expect(result.meta.collector.manualSourceCount).toBe(5);
+    expect(result.meta.collector.automaticSourceCount).toBe(81);
+    expect(result.meta.collector.manualSourceCount).toBe(11);
     expect(result.errors).toEqual([]);
   });
 
   it('judges title-blind feed items by AI mentions in the fetched body', async () => {
     const HANSARD_SOURCE: WatchSource = {
       id: 'test-hansard',
+      bodyId: 'test-body',
       name: 'Test Hansard',
       jurisdiction: 'federal',
       category: 'government',
@@ -613,6 +620,62 @@ describe('collect', () => {
     );
     expect(result.state.seen['https://parlinfo.aph.gov.au/debate/levy']?.status).toBe('dismissed');
     expect(result.state.seen['https://parlinfo.aph.gov.au/debate/petition']).toBeUndefined();
+  });
+
+  it('turns Federal Register full-text matches into developments for review', async () => {
+    const REGISTER_SOURCE: WatchSource = {
+      id: 'test-frl-search',
+      bodyId: 'test-body',
+      name: 'Test register search',
+      jurisdiction: 'federal',
+      category: 'government',
+      url: frlAiInstrumentSearch(),
+      kind: 'frl-search',
+      schedule: 'daily',
+      enabled: true,
+      automation: 'automatic',
+    };
+    const page = (title: string) =>
+      `<html><head><title>${title} - Federal Register of Legislation</title></head><body><h1>Federal Register of Legislation</h1><main><p>Published 1 January 2020.</p></main></body></html>`;
+    const tracked = buildPolicy({
+      id: 'asic-ai-trading-rules',
+      sourceUrl: 'https://asic.gov.au/news/ai-trading-rules',
+      legislative: {
+        kind: 'instrument',
+        ref: { register: 'frl', titleId: 'F2026L01223' },
+        issuerBodyId: 'asic',
+        enablingAct: 'Corporations Act 2001, s 798G(1)',
+        events: [],
+      },
+    });
+
+    const result = await collect({
+      sources: [REGISTER_SOURCE],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      trackedPolicies: [tracked],
+      fetchImpl: fakeFetch({
+        [REGISTER_SOURCE.url]: {
+          contentType: 'application/json',
+          body: readFileSync(join(__dirname, '../legislation/__fixtures__/frl/search-ai-instruments.json'), 'utf8'),
+        },
+        'https://www.legislation.gov.au/F2026L01224/asmade/details': page('ASIC Market Integrity Rules (Futures Markets) Amendment Instrument 2026/575'),
+        'https://www.legislation.gov.au/F2026L01223/asmade/details': page('ASIC Market Integrity Rules (Securities Markets) Amendment Instrument 2026/574'),
+      }),
+      now: () => new Date('2026-09-18T00:00:00.000Z'),
+    });
+
+    expect(result.errors).toEqual([]);
+    expect(result.developments.map((d) => [d.url, d.title, d.publishedAt])).toEqual([
+      [
+        'https://www.legislation.gov.au/F2026L01224/asmade/details',
+        'ASIC Market Integrity Rules (Futures Markets) Amendment Instrument 2026/575',
+        '2026-09-17',
+      ],
+    ]);
+    expect(result.developments[0].summary).toContain('matched this instrument as made (relevance 25.7)');
+    expect(result.developments[0].relevanceScore).toBeLessThanOrEqual(MACHINE_CONFIDENCE_CAP);
+    expect(result.state.seen['https://www.legislation.gov.au/F2026L01187/asmade/details']).toBeUndefined();
   });
 
   it('suppresses same-month alternate government release URLs by headline', async () => {
@@ -1113,6 +1176,86 @@ describe('collect', () => {
     expect(result.meta.collector.health).toBe('degraded');
     expect(result.meta.lastHealthyAt).toBeNull();
     expect(result.meta.lastUsableAt).toBe('2026-07-10T00:00:00.000Z');
+  });
+
+  it('keeps advancing other sources\' lastSuccessAt while one source stands failed', async () => {
+    const routes = {
+      'https://www.example.gov.au/news': 403,
+      'https://www.example.gov.au/rss': RSS_XML,
+      'https://www.example.gov.au/media/ai-assurance-consultation':
+        '<html><body>Official AI assurance consultation details.</body></html>',
+    } as const;
+    const run = (state: WatchState, at: string) =>
+      collect({
+        sources: [HTML_SOURCE, RSS_SOURCE],
+        state,
+        existingDevelopments: [],
+        fetchImpl: fakeFetch(routes),
+        minHealthySourceRate: 0.5,
+        now: () => new Date(at),
+      });
+
+    const first = await run(emptyWatchState(), '2026-07-10T00:00:00.000Z');
+    const second = await run(first.state, '2026-07-11T00:00:00.000Z');
+
+    expect(second.state.sourceHealth).toEqual({
+      [HTML_SOURCE.id]: {
+        lastSuccessAt: null,
+        firstFailureAt: '2026-07-10T00:00:00.000Z',
+        consecutiveFailures: 2,
+        lastFailureClass: 'identity_refused',
+      },
+      [RSS_SOURCE.id]: {
+        lastSuccessAt: '2026-07-11T00:00:00.000Z',
+        firstFailureAt: null,
+        consecutiveFailures: 0,
+        lastFailureClass: null,
+      },
+    });
+    expect(second.meta.lastUsableAt).toBe('2026-07-11T00:00:00.000Z');
+    expect(validateWatchState(second.state).errors).toEqual([]);
+  });
+
+  it('seeds an admitted source on its first check and emits from its second', async () => {
+    const admitted: WatchSource = { ...HTML_SOURCE, admittedAt: '2026-07-09' };
+    const pages = {
+      'https://www.example.gov.au/news/ai-policy-framework':
+        '<html><body><h1>New AI policy framework released</h1></body></html>',
+      'https://www.example.gov.au/news/seen-before':
+        '<html><body><h1>Existing AI governance standard update</h1></body></html>',
+      'https://www.example.gov.au/news/ai-assurance-standard':
+        '<html><body><h1>AI assurance standard published</h1></body></html>',
+    };
+    const first = await collect({
+      sources: [admitted],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl: fakeFetch({ [admitted.url]: INDEX_HTML, ...pages }),
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+    });
+    expect(first.developments).toEqual([]);
+    expect(first.meta.collector.sourceResults[0]).toMatchObject({
+      status: 'success',
+      candidateCount: 2,
+      newCandidateCount: 0,
+    });
+    expect(first.state.lastCheckedBySource[admitted.id]).toBe('2026-07-10T00:00:00.000Z');
+    expect(validateWatchState(first.state).errors).toEqual([]);
+
+    const grown = INDEX_HTML.replace(
+      '<li><a href="/news/seen-before">',
+      '<li><a href="/news/ai-assurance-standard">AI assurance standard published</a></li>\n    <li><a href="/news/seen-before">',
+    );
+    const second = await collect({
+      sources: [admitted],
+      state: first.state,
+      existingDevelopments: first.developments,
+      fetchImpl: fakeFetch({ [admitted.url]: grown, ...pages }),
+      now: () => new Date('2026-07-11T00:00:00.000Z'),
+    });
+    expect(second.developments.map((development) => development.url)).toEqual([
+      'https://www.example.gov.au/news/ai-assurance-standard',
+    ]);
   });
 
   it('baselines direct documents and emits a lead only when content changes', async () => {
@@ -3125,6 +3268,7 @@ describe('collect', () => {
             ? { [weeklyDocument.id]: input.previousSnapshot }
             : {},
           hosts: {},
+          sourceHealth: {},
         },
         sourceReviews: [review],
         existingDevelopments: [],
@@ -4189,6 +4333,71 @@ describe('failure classes on source results', () => {
       failureClass: 'identity_refused',
       failedUrl: REFUSED_PDF,
     });
+  });
+
+  const financeDecided = () =>
+    createHostGate({
+      hosts: {},
+      refused: new Map([[hostOf(new URL(REFUSED_PDF)), 'finance-news']]),
+      fetchRobots: async () => null,
+      now: Date.now,
+      sleep: async () => {},
+    });
+  const requestedHosts = (fetchImpl: typeof fetch) =>
+    vi.mocked(fetchImpl).mock.calls.map(([input]) => new URL(String(input)).host);
+
+  it('skips a linked document on a decided-refused host and succeeds', async () => {
+    const fetchImpl = fakeFetch({ [LINKING_SOURCE.url]: html(LINKING_PAGE), [REFUSED_PDF]: 403 });
+    const result = await collect({
+      sources: [LINKING_SOURCE],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl,
+      hostGate: financeDecided(),
+      now,
+    });
+
+    const row = result.meta.collector.sourceResults[0];
+    expect(row).toMatchObject({
+      status: 'success',
+      skippedLinked: [{ url: REFUSED_PDF, decidedBy: 'finance-news' }],
+    });
+    expect(row.failureClass).toBeUndefined();
+    expect(result.errors).toEqual([]);
+    expect(requestedHosts(fetchImpl)).not.toContain('www.finance.gov.au');
+    expect(result.state.sourceSnapshots[LINKING_SOURCE.id]).toBeDefined();
+    expect(validateCollectionMeta(result.meta).errors).toEqual([]);
+  });
+
+  it('skips a pending candidate on a decided-refused host without counting a failure', async () => {
+    const refusedCandidate = 'https://www.finance.gov.au/news/ai-plan-released';
+    const state = emptyWatchState();
+    state.seen[refusedCandidate] = {
+      firstSeenAt: '2026-07-09T00:00:00.000Z',
+      sourceId: HTML_SOURCE.id,
+      status: 'pending',
+      candidate: { title: 'New AI plan released', url: refusedCandidate, text: 'AI plan' },
+    };
+    const fetchImpl = fakeFetch({
+      [HTML_SOURCE.url]: INDEX_HTML,
+      'https://www.example.gov.au/news/': html('<html><body><h1>New AI policy framework released</h1></body></html>'),
+      [refusedCandidate]: 403,
+    });
+    const result = await collect({
+      sources: [HTML_SOURCE],
+      state,
+      existingDevelopments: [],
+      fetchImpl,
+      hostGate: financeDecided(),
+      now,
+    });
+
+    expect(result.meta.collector.sourceResults[0]).toMatchObject({
+      status: 'success',
+      skippedLinked: [{ url: refusedCandidate, decidedBy: 'finance-news' }],
+    });
+    expect(result.state.seen[refusedCandidate]?.status).toBe('failed');
+    expect(requestedHosts(fetchImpl)).not.toContain('www.finance.gov.au');
   });
 
   it('names the host a cross-host redirect reached', async () => {

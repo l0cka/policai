@@ -6,7 +6,8 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { runCollection } from '../../../scripts/collect-run';
-import { buildPolicy } from '@/test/factories';
+import { aphBillPage } from '@/lib/legislation/follow';
+import { buildManualDecision, buildPolicy } from '@/test/factories';
 import type { Development, SourceReview } from '@/types';
 import type { WatchState } from './collect';
 import { createHostGate, robotsFetcher } from './host-gate';
@@ -14,6 +15,7 @@ import type { WatchSource } from './sources';
 
 const SOURCE: WatchSource = {
   id: 'cli-test-rss',
+  bodyId: 'test-body',
   name: 'CLI test RSS source',
   jurisdiction: 'federal',
   category: 'regulator',
@@ -116,7 +118,7 @@ describe('collection CLI write path', () => {
       ...SOURCE,
       id: 'accc-rss',
       name: 'ACCC — media releases',
-      automation: 'manual',
+      automation: buildManualDecision(),
       url: 'https://www.example.gov.au/accc',
     };
     const fetchImpl = vi.fn(async (input: RequestInfo | URL) => {
@@ -160,5 +162,80 @@ describe('collection CLI write path', () => {
         (result) => result.sourceId === 'accc-rss' && result.coverageEligible !== false,
       ),
     ).toBe(false);
+  });
+
+  it('installs the refused hosts from the catalog decisions on the default gate', async () => {
+    const requested: string[] = [];
+    const fetchImpl = vi.fn(async (input: RequestInfo | URL) => {
+      requested.push(String(input));
+      return new Response('', { status: 404 });
+    }) as unknown as typeof fetch;
+
+    await runCollection({
+      rootDir,
+      sources: [
+        { ...SOURCE, id: 'accc-probe', url: 'https://www.accc.gov.au/rss' },
+        { ...SOURCE, id: 'cyber-probe', url: 'https://www.cyber.gov.au/rss' },
+      ],
+      dryRun: true,
+      fetchImpl,
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+    });
+
+    expect(requested.map((url) => new URL(url).host)).not.toEqual(
+      expect.arrayContaining(['www.accc.gov.au']),
+    );
+    expect(requested.map((url) => new URL(url).host)).not.toEqual(
+      expect.arrayContaining(['www.cyber.gov.au']),
+    );
+  });
+  it('follows a tracked federal bill through the browser and stages its new stages without touching the register', async () => {
+    const billUrl = aphBillPage('r7249');
+    const bill = buildPolicy({
+      id: 'privacy-bill',
+      type: 'legislation',
+      status: 'proposed',
+      sourceUrl: billUrl,
+      legislative: {
+        kind: 'bill',
+        ref: { register: 'aph', billId: 'r7249' },
+        origin: 'government',
+        events: [{ date: '2024-09-12', precision: 'day', event: { kind: 'introduced', chamber: 'lower' }, source: { url: billUrl } }],
+      },
+    });
+    writeFileSync(registerFile(), JSON.stringify([bill], null, 2) + '\n');
+    const before = digest(registerFile());
+    const page = readFileSync(path.join(__dirname, '../legislation/__fixtures__/aph/r7249.html'), 'utf8');
+    const fetchImpl = vi.fn(async () => new Response('not found', { status: 404 })) as unknown as typeof fetch;
+    const browserFetchImpl = vi.fn(async (input: RequestInfo | URL) =>
+      String(input) === billUrl
+        ? new Response(page, { status: 200, headers: { 'content-type': 'text/html' } })
+        : new Response('not found', { status: 404 }),
+    ) as unknown as typeof fetch;
+
+    await runCollection({
+      rootDir,
+      sources: [],
+      dryRun: false,
+      fetchImpl,
+      browserFetchImpl,
+      now: () => new Date('2026-10-22T05:00:00.000Z'),
+      hostGate: createHostGate({
+        hosts: {},
+        refused: new Map(),
+        fetchRobots: robotsFetcher({ fetchImpl }),
+        now: Date.now,
+        sleep: async () => {},
+      }),
+    });
+
+    const reviews = readJson<SourceReview[]>('data', 'source-reviews.json');
+    expect(reviews).toHaveLength(1);
+    expect(reviews[0]).toMatchObject({ targetPolicyId: 'privacy-bill', status: 'pending_review' });
+    expect(reviews[0].legislativeUpdate?.added).toHaveLength(5);
+    expect(readJson<WatchState>('data', 'watch-state.json').sourceHealth['track:privacy-bill']).toMatchObject({
+      consecutiveFailures: 0,
+    });
+    expect(digest(registerFile())).toBe(before);
   });
 });

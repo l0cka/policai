@@ -12,6 +12,8 @@ import uuid
 from pathlib import Path
 
 LOCK_POLL_SECONDS = 0.5
+# Consecutive pre-staging failures a follow_main run retries before it blocks.
+DEFER_LIMIT = 5
 LOCK_BUSY = {
     ("deploy.lock", True): "another deployment or worker is running",
     ("deploy.lock", False): "deploy.lock busy: a deployment holds it",
@@ -60,6 +62,7 @@ def sync_dir(path):
 class State:
     NAMES = {
         "blocked.json",
+        "deferred.json",
         "active.json",
         "last-success.json",
         "recovery.json",
@@ -127,9 +130,11 @@ class State:
         sync_dir(directory)
         sync_dir(self.root)
 
-    def clear_marker(self):
-        secure_path(self.root / "blocked.json", self.owner)
-        (self.root / "blocked.json").unlink()
+    def clear_marker(self, name="blocked.json"):
+        if name not in self.NAMES:
+            raise Refused("unknown state record")
+        secure_path(self.root / name, self.owner)
+        (self.root / name).unlink()
         sync_dir(self.root)
 
     def require_ready(self):
@@ -237,9 +242,10 @@ class Transaction:
 
             # Host progress hooks write only controlled metadata, never output.
             self.host.checkpoint = checkpoint
+            resolved = target is None
             try:
                 self.host.preflight(active)
-                if target is None:
+                if resolved:
                     target = sha(self.host.resolve_target())
                     record["target"] = target
                     checkpoint("target-resolved")
@@ -257,6 +263,8 @@ class Transaction:
                 self.state.write("active.json", deployed)
                 checkpoint("verified")
                 self.state.write("last-success.json", record)
+                if os.path.lexists(self.state.root / "deferred.json"):
+                    self.state.clear_marker("deferred.json")
                 self.state.clear_marker()
                 return {
                     "verified": True,
@@ -264,7 +272,29 @@ class Transaction:
                     "main": target,
                     "heads": deployed["heads"],
                 }
-            except BaseException:
+            except BaseException as error:
+                # Refused reasons are static and nonsecret; any other error keeps only its type.
+                failure = {"phase": record["phase"], "error": type(error).__name__}
+                if isinstance(error, Refused):
+                    failure["reason"] = str(error)
+                if resolved and record["phase"] in ("preflight", "target-resolved"):
+                    # Nothing is staged and active.json is untouched (a network blip, a
+                    # merge landing mid-run), so retry next cycle. Repeated failures still
+                    # block. An explicit target (approved_target or --recover) always does.
+                    deferred = (
+                        self.state.read("deferred.json")
+                        if os.path.lexists(self.state.root / "deferred.json")
+                        else {"count": 0}
+                    )
+                    if deferred["count"] + 1 < DEFER_LIMIT:
+                        self.state.write(
+                            "deferred.json", {"count": deferred["count"] + 1, "failure": failure}
+                        )
+                        self.state.clear_marker()
+                        raise Refused(
+                            "deployment deferred before staging; next cycle retries"
+                        ) from None
+                record["failure"] = failure
                 checkpoint("failed-review-required")
                 raise Refused("deployment blocked; reviewed recovery required") from None
 

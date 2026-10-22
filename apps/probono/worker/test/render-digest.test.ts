@@ -24,6 +24,15 @@ describe('renderDigest', () => {
     expect(html).toContain('http://100.87.255.67:8850');
   });
 
+  it('prints September as Sep in the heading dates', () => {
+    const html = renderDigest({
+      periodStart: new Date('2026-08-31T00:00:00Z'), periodEnd: new Date('2026-09-06T00:00:00Z'), dashboardUrl: 'http://x',
+      opportunities: [], byStream: {}, deadlines: [], failedSources: [],
+    });
+    expect(html).toContain('31 Aug 2026 to 6 Sep 2026');
+    expect(html).not.toContain('Sept');
+  });
+
   it('omits the failure footer when nothing failed', () => {
     const html = renderDigest({
       periodStart: new Date(), periodEnd: new Date(), dashboardUrl: 'http://x',

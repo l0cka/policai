@@ -6,6 +6,7 @@ import { isAbsolute, relative, resolve } from "node:path";
 import { analyseContentRelevance } from "@/lib/analysis";
 import { isValidCalendarDate } from "@/lib/calendar-date";
 import { withDataMutationLock } from "@/lib/data-lock";
+import { isLegislativeDraft } from "@/lib/legislation/model";
 import {
 	extractRetrievedDocument,
 	type ExtractedDocument,
@@ -39,6 +40,7 @@ import {
 	getTimelineEvents,
 	logMcpAuditEvent,
 	markCollectionReviewed,
+	retireTimelineEventsCiting,
 	sourceUrlExists,
 	upsertManualSourceReview,
 	upsertDevelopment,
@@ -50,6 +52,7 @@ import {
 import { linkedDevelopmentId } from "@/lib/source-review";
 import {
 	policyRevisionHash,
+	revisionHash,
 	timelineRevisionHash,
 } from "@/lib/policy-revision";
 import {
@@ -75,7 +78,9 @@ import {
 	type PolicyDraft,
 	type SourceEvidence,
 	type SourceReview,
+	type SourceReviewDecision,
 	type SourceReviewEntryKind,
+	type SourceReviewProposal,
 	type SourceReviewStatus,
 	type TimelineEvent,
 	type TimelineEventDraft,
@@ -103,6 +108,7 @@ export interface BrowserCaptureInput {
 	stableMetadata?: Array<{ key: string; value: string }>;
 	capturedAt: string;
 	capturedBy: string;
+	requestedBy?: string;
 	notes: string;
 	linkedDocuments: Array<{
 		url: string;
@@ -114,6 +120,8 @@ const EDITORIAL_SOURCE_TIMEOUT_MS = 60_000;
 const MAX_BROWSER_CAPTURE_CHARACTERS = 500_000;
 const MAX_CAPTURED_DOCUMENT_BYTES = 32 * 1024 * 1024;
 const SHA256_PATTERN = /^[a-f0-9]{64}$/;
+/** How old a staged browser capture may be when the editor decides on it. */
+export const STAGED_CAPTURE_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
 
 /** Appended to approval notes when live re-fetch is refused and the staged snapshot is used. */
 export const RETAINED_SNAPSHOT_APPROVAL_NOTE =
@@ -183,25 +191,56 @@ function withRetainedSnapshotApprovalNotes(
 	return `${approvalNotes.trim()}\n${RETAINED_SNAPSHOT_APPROVAL_NOTE}`;
 }
 
+type ApprovalSnapshot = "collector" | "staged_capture";
+
+/**
+ * A browser-captured review keeps only fingerprints of the page, so the
+ * decision reuses that staged evidence while it is recent enough.
+ */
+function stagedCaptureSnapshot(
+	review: SourceReview,
+	approvalSourceUrl: string,
+): RetrievedSource {
+	const capture = review.sourceEvidence.browserCapture;
+	if (!capture) {
+		throw new Error("Review has no staged browser capture to reuse");
+	}
+	if (Date.now() - Date.parse(capture.capturedAt) > STAGED_CAPTURE_MAX_AGE_MS) {
+		throw new Error(
+			"Staged browser capture is more than 7 days old; capture the source again and re-propose the review",
+		);
+	}
+	const snapshot = buildRetainedApprovalSnapshot(review, approvalSourceUrl);
+	if (!snapshot) {
+		throw new Error(
+			"Staged browser capture is incomplete; capture the source again and re-propose the review",
+		);
+	}
+	return snapshot;
+}
+
 async function retrieveSourceForApproval(
 	approvalSourceUrl: string,
 	review: SourceReview,
 	browserCapture?: BrowserCaptureInput,
-): Promise<{ retrieved: RetrievedSource; usedRetainedSnapshot: boolean }> {
+	options: { reuseStagedCapture?: boolean } = {},
+): Promise<{ retrieved: RetrievedSource; snapshot?: ApprovalSnapshot }> {
 	if (browserCapture) {
 		return {
 			retrieved: await buildBrowserCapturedSource(
 				approvalSourceUrl,
 				browserCapture,
 			),
-			usedRetainedSnapshot: false,
+		};
+	}
+	if (options.reuseStagedCapture && review.sourceEvidence.browserCapture) {
+		return {
+			retrieved: stagedCaptureSnapshot(review, approvalSourceUrl),
+			snapshot: "staged_capture",
 		};
 	}
 	try {
-		return {
-			retrieved: await retrieveEditorialSource(approvalSourceUrl),
-			usedRetainedSnapshot: false,
-		};
+		return { retrieved: await retrieveEditorialSource(approvalSourceUrl) };
 	} catch (error) {
 		if (!isHostRefusalForApprovalFallback(error)) throw error;
 		const retained = buildRetainedApprovalSnapshot(
@@ -209,7 +248,7 @@ async function retrieveSourceForApproval(
 			approvalSourceUrl,
 		);
 		if (!retained) throw error;
-		return { retrieved: retained, usedRetainedSnapshot: true };
+		return { retrieved: retained, snapshot: "collector" };
 	}
 }
 
@@ -346,6 +385,7 @@ async function buildBrowserCapturedSource(
 		throw new Error("Browser capture must have been collected within the last 24 hours");
 	}
 	const capturedBy = input.capturedBy.trim();
+	const requestedBy = input.requestedBy?.trim();
 	const notes = input.notes.trim();
 	const pageTitle = input.pageTitle.trim();
 	const pageText = input.pageText.replace(/\s+/g, " ").trim();
@@ -489,6 +529,7 @@ async function buildBrowserCapturedSource(
 				method: "browser",
 				capturedAt: input.capturedAt,
 				capturedBy,
+				...(requestedBy ? { requestedBy } : {}),
 				notes,
 				pageContentHash,
 				characterCount: pageText.length,
@@ -533,7 +574,7 @@ async function recordManualSourceReviewUnlocked(input: {
 	if (!source || !source.enabled) {
 		throw new Error("Unknown or disabled source");
 	}
-	if (source.automation !== "manual") {
+	if (source.automation === "automatic") {
 		throw new Error("Source is configured for automatic collection");
 	}
 	const notes = input.notes?.trim();
@@ -978,12 +1019,20 @@ async function stageSourceUrlUnlocked(input: {
 	const { canonicalUrl, isOfficial } = validateSourceUrl(input.url, {
 		stageOnly: input.stageOnly,
 	});
+	// A legislative record replaces the hand-typed timeline events on its
+	// page when it publishes, so it does not compete with them for the source.
+	const legislativeRecord =
+		input.entryKind === "policy" &&
+		input.proposedRecord !== undefined &&
+		isLegislativeDraft(input.proposedRecord);
 	const [trackedPolicies, trackedTimelineEvents] = await Promise.all([
 		getPolicies(undefined, { access: "admin" }),
-		getTimelineEvents(undefined, {
-			includeGenerated: false,
-			access: "admin",
-		}),
+		legislativeRecord
+			? []
+			: getTimelineEvents(undefined, {
+					includeGenerated: false,
+					access: "admin",
+				}),
 	]);
 	const sourceReviews = await getSourceReviews();
 	const matchingPolicies = trackedPolicies.filter((policy) =>
@@ -1079,7 +1128,10 @@ async function stageSourceUrlUnlocked(input: {
 				!timelineReviewTargetId(review) &&
 				sourceUrlsEqual(review.sourceUrl, canonicalUrl),
 		);
-		if (!existingReview && (await sourceUrlExists(canonicalUrl))) {
+		if (
+			!existingReview &&
+			(await sourceUrlExists(canonicalUrl, { legislativeRecord }))
+		) {
 			throw new Error("Source URL already exists in tracked or staged content");
 		}
 	}
@@ -1399,6 +1451,8 @@ async function stageSourceUrlUnlocked(input: {
 			approvalNotes: undefined,
 			publishedAt: undefined,
 			rejectionReason: undefined,
+			proposal: undefined,
+			decision: undefined,
 		});
 		if (!refreshed) {
 			throw new Error("Failed to refresh the existing source review");
@@ -1453,11 +1507,25 @@ async function approveStagedSourceUnlocked(input: {
 	manualExtraction?: ManualExtractionInput;
 	reviewedDate?: ReviewedDateInput;
 	browserCapture?: BrowserCaptureInput;
+	reuseStagedCapture?: boolean;
+	decision?: SourceReviewDecision;
+	/** Run every approval check without writing. */
+	dryRun?: boolean;
 }): Promise<SourceReview> {
 	const review = await getSourceReviewById(input.id);
 	if (!review) {
 		throw new Error("Staged source not found");
 	}
+	const writeApproval = async (
+		updates: Partial<SourceReview>,
+	): Promise<SourceReview> => {
+		if (input.dryRun) return { ...review, ...updates };
+		const updated = await updateSourceReview(review.id, updates);
+		if (!updated) {
+			throw new Error("Failed to approve staged source");
+		}
+		return updated;
+	};
 	if (review.status === "published") {
 		throw new Error("Published sources cannot be re-approved");
 	}
@@ -1494,7 +1562,10 @@ async function approveStagedSourceUnlocked(input: {
 	const stagedWithBrowserCapture = Boolean(
 		review.sourceEvidence.browserCapture,
 	);
-	if (stagedWithBrowserCapture !== Boolean(input.browserCapture)) {
+	if (
+		stagedWithBrowserCapture !== Boolean(input.browserCapture) &&
+		!(stagedWithBrowserCapture && input.reuseStagedCapture)
+	) {
 		throw new Error(
 			stagedWithBrowserCapture
 				? "Browser-captured reviews require a fresh browser capture for approval"
@@ -1509,10 +1580,11 @@ async function approveStagedSourceUnlocked(input: {
 			"The approving reviewer must be the named browser-capture reviewer",
 		);
 	}
-	const { retrieved, usedRetainedSnapshot } = await retrieveSourceForApproval(
+	const { retrieved, snapshot } = await retrieveSourceForApproval(
 		approvalSourceUrl,
 		review,
 		input.browserCapture,
+		{ reuseStagedCapture: input.reuseStagedCapture },
 	);
 	if (!replacesSource) {
 		if (!review.sourceEvidence.contentHash) {
@@ -1538,11 +1610,11 @@ async function approveStagedSourceUnlocked(input: {
 	const now = new Date().toISOString();
 	const approvalNotes = withRetainedSnapshotApprovalNotes(
 		input.approvalNotes,
-		usedRetainedSnapshot,
+		snapshot === "collector",
 	);
 	let manualExtractionEvidence: SourceEvidence["manualExtraction"];
 	let document;
-	if (usedRetainedSnapshot) {
+	if (snapshot) {
 		const retainedText = retainedSnapshotBody(review);
 		if (!retainedText) {
 			throw new Error(
@@ -1821,7 +1893,7 @@ async function approveStagedSourceUnlocked(input: {
 				publishedAtPrecision: event.datePrecision,
 			},
 		);
-		const updated = await updateSourceReview(review.id, {
+		return writeApproval({
 			sourceUrl,
 			sourceEvidence,
 			title: event.title,
@@ -1835,11 +1907,8 @@ async function approveStagedSourceUnlocked(input: {
 			reviewedAt: now,
 			reviewedBy: input.actor,
 			approvalNotes,
+			decision: input.decision,
 		});
-		if (!updated) {
-			throw new Error("Failed to approve staged source");
-		}
-		return updated;
 	}
 
 	const draft = proposedRecord as PolicyDraft;
@@ -1847,10 +1916,13 @@ async function approveStagedSourceUnlocked(input: {
 	let replacesTargetPolicySource = false;
 	const [policies, timelineEvents, sourceReviews] = await Promise.all([
 		getPolicies(undefined, { access: "admin" }),
-		getTimelineEvents(undefined, {
-			includeGenerated: false,
-			access: "admin",
-		}),
+		// As at staging, a legislative record replaces the timeline events on its page.
+		isLegislativeDraft(draft)
+			? []
+			: getTimelineEvents(undefined, {
+					includeGenerated: false,
+					access: "admin",
+				}),
 		getSourceReviews(),
 	]);
 	if (review.targetPolicyId) {
@@ -2059,7 +2131,7 @@ async function approveStagedSourceUnlocked(input: {
 			publishedAtPrecision: primaryDate.precision,
 		},
 	);
-	const updated = await updateSourceReview(review.id, {
+	return writeApproval({
 		sourceUrl,
 		sourceEvidence,
 		title: policy.title,
@@ -2077,11 +2149,8 @@ async function approveStagedSourceUnlocked(input: {
 		reviewedAt: now,
 		reviewedBy: input.actor,
 		approvalNotes,
+		decision: input.decision,
 	});
-	if (!updated) {
-		throw new Error("Failed to approve staged source");
-	}
-	return updated;
 }
 
 export function approveStagedSource(
@@ -2246,8 +2315,9 @@ function policyWithLatestSourceAudit(
 async function assertSourceStillMatchesApproval(
 	review: SourceReview,
 	approvedVerification: Policy["verification"],
-	browserCapture?: BrowserCaptureInput,
+	options: PublishOptions,
 ): Promise<void> {
+	const { browserCapture, reuseStagedCapture } = options;
 	const approvedHash = approvedVerification.source.contentHash;
 	const approvedDestination =
 		approvedVerification.source.finalUrl ?? approvedVerification.source.url;
@@ -2265,7 +2335,10 @@ async function assertSourceStillMatchesApproval(
 	const approvedWithBrowserCapture = Boolean(
 		approvedVerification.source.browserCapture,
 	);
-	if (approvedWithBrowserCapture !== Boolean(browserCapture)) {
+	if (
+		approvedWithBrowserCapture !== Boolean(browserCapture) &&
+		!(approvedWithBrowserCapture && reuseStagedCapture)
+	) {
 		throw new Error(
 			approvedWithBrowserCapture
 				? "Browser-captured sources require a fresh browser capture before publication"
@@ -2276,6 +2349,7 @@ async function assertSourceStillMatchesApproval(
 		review.sourceUrl,
 		review,
 		browserCapture,
+		{ reuseStagedCapture },
 	);
 	if (!matchesRetrievedContent(retrieved, approvedHash)) {
 		throw new Error(
@@ -2389,9 +2463,14 @@ async function canonicalRecordWrittenFromReview(
 		: null;
 }
 
+interface PublishOptions {
+	browserCapture?: BrowserCaptureInput;
+	reuseStagedCapture?: boolean;
+}
+
 export function publishStagedSource(
 	id: string,
-	options: { browserCapture?: BrowserCaptureInput } = {},
+	options: PublishOptions = {},
 ): Promise<SourceReview> {
 	return withDataMutationLock(() =>
 		publishStagedSourceUnlocked(id, options),
@@ -2400,7 +2479,7 @@ export function publishStagedSource(
 
 async function publishStagedSourceUnlocked(
 	id: string,
-	options: { browserCapture?: BrowserCaptureInput } = {},
+	options: PublishOptions = {},
 ): Promise<SourceReview> {
 	const review = await getSourceReviewById(id);
 	if (!review) {
@@ -2473,7 +2552,7 @@ async function publishStagedSourceUnlocked(
 	await assertSourceStillMatchesApproval(
 		review,
 		approvedVerification,
-		options.browserCapture,
+		options,
 	);
 
 	const publishedAt = new Date().toISOString();
@@ -2658,11 +2737,16 @@ async function publishStagedSourceUnlocked(
 			} else {
 				const duplicateExists = await sourceUrlExists(review.sourceUrl, {
 					excludeSourceReviewId: review.id,
+					legislativeRecord: isLegislativeDraft(policy),
 				});
 				if (duplicateExists) {
 					throw new Error("Source URL already exists in tracked content");
 				}
 				await createPolicy(policy);
+			}
+			// Idempotent, so a retried publish finishes what a failed one began.
+			if (isLegislativeDraft(policy)) {
+				await retireTimelineEventsCiting(policy.sourceUrl);
 			}
 		}
 	}
@@ -2704,6 +2788,192 @@ async function publishStagedSourceUnlocked(
 	// publicly verified before this terminal status is durable.
 	await reconcilePublicationSideEffects(reviewForPublication, publishedAt);
 	return updated;
+}
+
+/**
+ * Fingerprint of everything the editor approves: the staged record, its
+ * source evidence, and any prepared approval inputs. Any later change to
+ * the review produces a different hash, so an old decision cannot apply.
+ */
+export function sourceReviewProposalHash(review: SourceReview): string {
+	return revisionHash({
+		id: review.id,
+		sourceUrl: review.sourceUrl,
+		sourceEvidence: review.sourceEvidence,
+		proposedRecord: review.proposedRecord,
+		proposal: review.proposal,
+	});
+}
+
+function proposalApprovalInput(review: SourceReview) {
+	const proposal = review.proposal;
+	return {
+		id: review.id,
+		proposedRecord: proposal?.proposedRecord,
+		expectedTargetRevisionHash: proposal?.expectedTargetRevisionHash,
+		officialSourceUrl: proposal?.officialSourceUrl,
+		manualExtraction: proposal?.manualExtraction,
+		reviewedDate: proposal?.reviewedDate,
+		reuseStagedCapture: true,
+	};
+}
+
+async function proposeSourceDecisionUnlocked(
+	input: { id: string } & Omit<SourceReviewProposal, "proposedAt">,
+): Promise<{ review: SourceReview; proposalHash: string }> {
+	const { id, ...proposal } = input;
+	const review = await getSourceReviewById(id);
+	if (!review) {
+		throw new Error("Staged source not found");
+	}
+	if (review.status !== "pending_review") {
+		throw new Error(
+			`Only pending reviews can take a proposal; this review is ${review.status}`,
+		);
+	}
+	if (!proposal.proposedBy.trim()) {
+		throw new Error("A proposal must name who prepared it");
+	}
+	if (proposal.officialSourceUrl) {
+		validateSourceUrl(proposal.officialSourceUrl);
+	}
+	const updated = await updateSourceReview(id, {
+		proposal: { ...proposal, proposedAt: new Date().toISOString() },
+		decision: undefined,
+	});
+	if (!updated) {
+		throw new Error("Failed to record the proposal");
+	}
+	return { review: updated, proposalHash: sourceReviewProposalHash(updated) };
+}
+
+export function proposeSourceDecision(
+	input: Parameters<typeof proposeSourceDecisionUnlocked>[0],
+): ReturnType<typeof proposeSourceDecisionUnlocked> {
+	return withDataMutationLock(() => proposeSourceDecisionUnlocked(input));
+}
+
+/** What a decision card shows: the record before and after, and its evidence. */
+export async function describeSourceProposal(id: string) {
+	const review = await getSourceReviewById(id);
+	if (!review) {
+		throw new Error("Staged source not found");
+	}
+	const targetTimelineEventId = timelineReviewTargetId(review);
+	const current = review.targetPolicyId
+		? (await getPolicies(undefined, { access: "admin" })).find(
+				(policy) => policy.id === review.targetPolicyId,
+			)
+		: targetTimelineEventId
+			? (
+					await getTimelineEvents(undefined, {
+						includeGenerated: false,
+						access: "admin",
+					})
+				).find((event) => event.id === targetTimelineEventId)
+			: undefined;
+	const capture = review.sourceEvidence.browserCapture;
+	const proposalHash = sourceReviewProposalHash(review);
+	const blockers: string[] = [];
+	if (review.status !== "pending_review") {
+		blockers.push(`This review is ${review.status}`);
+	} else {
+		await approveStagedSourceUnlocked({
+			...proposalApprovalInput(review),
+			actor: "Editor (preview)",
+			dryRun: true,
+		}).catch((error: unknown) => {
+			blockers.push(error instanceof Error ? error.message : String(error));
+		});
+	}
+	return {
+		id: review.id,
+		title: review.title,
+		entryKind: review.entryKind,
+		status: review.status,
+		sourceUrl: review.sourceUrl,
+		current: current ?? null,
+		proposed: review.proposal?.proposedRecord ?? review.proposedRecord,
+		proposal: review.proposal ?? null,
+		evidence: {
+			retrievedAt: review.sourceEvidence.retrievedAt,
+			contentHash: review.sourceEvidence.contentHash,
+			...(capture
+				? {
+						capturedAt: capture.capturedAt,
+						capturedBy: capture.capturedBy,
+						requestedBy: capture.requestedBy,
+						usableUntil: new Date(
+							Date.parse(capture.capturedAt) + STAGED_CAPTURE_MAX_AGE_MS,
+						).toISOString(),
+					}
+				: {}),
+		},
+		proposalHash,
+		proposalCode: proposalHash.slice(0, 8),
+		/** Approval checks that would refuse this proposal today. Post a card only when empty. */
+		blockers,
+	};
+}
+
+async function decideSourceReviewUnlocked(input: {
+	id: string;
+	proposalHash: string;
+	reviewer: string;
+	attestationUrl: string;
+}): Promise<SourceReview> {
+	const review = await getSourceReviewById(input.id);
+	if (!review) {
+		throw new Error("Staged source not found");
+	}
+	if (review.decision?.proposalHash === input.proposalHash) {
+		if (review.status === "published") return review;
+		if (review.status === "approved") {
+			return publishStagedSourceUnlocked(review.id, {
+				reuseStagedCapture: true,
+			});
+		}
+	}
+	if (review.status !== "pending_review") {
+		throw new Error(
+			`This review is ${review.status}; propose it again before deciding`,
+		);
+	}
+	if (sourceReviewProposalHash(review) !== input.proposalHash) {
+		throw new Error(
+			"The review changed after its decision card was posted; post a new card for the current proposal",
+		);
+	}
+	const approvalNotes = [
+		`Approved by ${input.reviewer} on decision card ${input.attestationUrl} (proposal ${input.proposalHash.slice(0, 8)}).`,
+		`Proposed by ${review.proposal?.proposedBy ?? review.createdBy}.`,
+		review.proposal?.notes?.trim(),
+	]
+		.filter(Boolean)
+		.join(" ");
+	await approveStagedSourceUnlocked({
+		...proposalApprovalInput(review),
+		actor: input.reviewer,
+		approvalNotes,
+		decision: {
+			proposalHash: input.proposalHash,
+			decidedBy: input.reviewer,
+			decidedAt: new Date().toISOString(),
+			attestationUrl: input.attestationUrl,
+		},
+	});
+	return publishStagedSourceUnlocked(review.id, { reuseStagedCapture: true });
+}
+
+/**
+ * Applies the editor's decision: approves exactly the proposal that the
+ * decision card showed and publishes it. Retrying the same decision resumes
+ * a publication that failed part-way.
+ */
+export function decideSourceReview(
+	input: Parameters<typeof decideSourceReviewUnlocked>[0],
+): ReturnType<typeof decideSourceReviewUnlocked> {
+	return withDataMutationLock(() => decideSourceReviewUnlocked(input));
 }
 
 async function rejectStagedSourceUnlocked(

@@ -407,7 +407,20 @@ EXACT CLI (INSTALLED ROOT CODE ONLY)
     heads is the per-checkout commit written to active.json. To prove a merge
     deployed, find a run whose main equals the merge commit or a descendant of
     it; do not infer it from run timing. A refused or failed run prints no
-    result and no SHA, exits 1 and leaves the persistent gate.
+    result and no SHA, exits 1 and leaves the persistent gate. One exception:
+    a follow_main run that resolved its own target and fails before staging
+    (phase preflight or target-resolved: a GitHub fetch during a network
+    drop, or "approved target is not fetched main" when a merge lands
+    mid-run) has built nothing and left active.json untouched. It records
+    {count, failure} in deferred.json, removes its marker, prints "Refused:
+    deployment deferred before staging; next cycle retries" and the next
+    timer cycle tries again. The DEFER_LIMIT-th consecutive such failure (5,
+    about 10 minutes) blocks as usual; a verified deploy removes
+    deferred.json. cli.py status prints it as deferred. An explicit target
+    (approved_target or --recover) and any failure from stage onwards block
+    at once. Both 2026 blocks before this rule were pre-staging: a WAN drop
+    on 2026-10-20 05:16 AEDT and #453 merging one second into a run that had
+    resolved #447 on 2026-10-22 14:34 AEDT.
 
 FAILURE / RECOVERY
   sudo /usr/bin/python3 -I /usr/local/libexec/policai-host/cli.py rollback
@@ -418,7 +431,13 @@ FAILURE / RECOVERY
     each completed switch and verifies repeated recovery for both release clones.
     Successful rollback leaves blocked.json intact.
 
-  Review the failure; fix main using normal history. Put the reviewed target SHA
+  Review the failure. A failed deploy records failure in blocked.json and
+  cli.py status prints it: phase is the last checkpoint reached before the
+  error (preflight, target-resolved, stage, activate or health), error is the
+  exception type and, for a Refused, reason is its static public text. Other
+  exception messages are never stored. A record without failure predates
+  this field; the 2026-10-20 05:16 block was one, and its cause had to be
+  inferred from timing. Fix main using normal history. Put the reviewed target SHA
   in approved_target and the exact failed transaction ID in recovery_authorization.
   Then, in the reviewed window:
     sudo /usr/bin/python3 -I /usr/local/libexec/policai-host/cli.py deploy --recover ID

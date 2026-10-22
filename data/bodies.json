@@ -1,0 +1,1208 @@
+[
+  {
+    "id": "pmc",
+    "name": "Department of the Prime Minister and Cabinet",
+    "jurisdiction": "federal",
+    "tier": "A",
+    "hosts": [
+      "www.pmc.gov.au",
+      "www.pm.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "disr",
+    "name": "Department of Industry, Science and Resources",
+    "jurisdiction": "federal",
+    "tier": "A",
+    "hosts": [
+      "www.industry.gov.au",
+      "consult.industry.gov.au",
+      "www.minister.industry.gov.au",
+      "www.ai.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "dta",
+    "name": "Digital Transformation Agency",
+    "jurisdiction": "federal",
+    "tier": "A",
+    "hosts": [
+      "www.dta.gov.au",
+      "www.digital.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "finance",
+    "name": "Department of Finance",
+    "jurisdiction": "federal",
+    "tier": "A",
+    "hosts": [
+      "www.finance.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "agd",
+    "name": "Attorney-General's Department",
+    "jurisdiction": "federal",
+    "tier": "A",
+    "hosts": [
+      "www.ag.gov.au",
+      "consultations.ag.gov.au",
+      "ministers.ag.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "oaic",
+    "name": "Office of the Australian Information Commissioner",
+    "jurisdiction": "federal",
+    "tier": "A",
+    "hosts": [
+      "www.oaic.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "asd",
+    "name": "Australian Signals Directorate",
+    "jurisdiction": "federal",
+    "tier": "A",
+    "hosts": [
+      "www.asd.gov.au",
+      "www.cyber.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "homeaffairs",
+    "name": "Department of Home Affairs",
+    "jurisdiction": "federal",
+    "tier": "A",
+    "hosts": [
+      "www.homeaffairs.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "esafety",
+    "name": "eSafety Commissioner",
+    "jurisdiction": "federal",
+    "tier": "A",
+    "hosts": [
+      "www.esafety.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "aph",
+    "name": "Parliament of Australia",
+    "jurisdiction": "federal",
+    "tier": "A",
+    "hosts": [
+      "www.aph.gov.au",
+      "parlinfo.aph.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "opc",
+    "name": "Office of Parliamentary Counsel",
+    "jurisdiction": "federal",
+    "tier": "A",
+    "hosts": [
+      "www.legislation.gov.au",
+      "api.prod.legislation.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "treasury",
+    "name": "Department of the Treasury",
+    "jurisdiction": "federal",
+    "tier": "B",
+    "hosts": [
+      "treasury.gov.au",
+      "consult.treasury.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "asic",
+    "name": "Australian Securities and Investments Commission",
+    "jurisdiction": "federal",
+    "tier": "B",
+    "hosts": [
+      "asic.gov.au",
+      "www.asic.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "apra",
+    "name": "Australian Prudential Regulation Authority",
+    "jurisdiction": "federal",
+    "tier": "B",
+    "hosts": [
+      "www.apra.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "accc",
+    "name": "Australian Competition and Consumer Commission",
+    "jurisdiction": "federal",
+    "tier": "B",
+    "hosts": [
+      "www.accc.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "acma",
+    "name": "Australian Communications and Media Authority",
+    "jurisdiction": "federal",
+    "tier": "B",
+    "hosts": [
+      "www.acma.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "tga",
+    "name": "Therapeutic Goods Administration",
+    "jurisdiction": "federal",
+    "tier": "B",
+    "hosts": [
+      "www.tga.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "ahrc",
+    "name": "Australian Human Rights Commission",
+    "jurisdiction": "federal",
+    "tier": "B",
+    "hosts": [
+      "humanrights.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "apsc",
+    "name": "Australian Public Service Commission",
+    "jurisdiction": "federal",
+    "tier": "B",
+    "hosts": [
+      "www.apsc.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "anao",
+    "name": "Australian National Audit Office",
+    "jurisdiction": "federal",
+    "tier": "B",
+    "hosts": [
+      "www.anao.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "art",
+    "name": "Administrative Review Tribunal",
+    "jurisdiction": "federal",
+    "tier": "B",
+    "hosts": [
+      "www.art.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "fedcourt",
+    "name": "Federal Court of Australia",
+    "jurisdiction": "federal",
+    "tier": "B",
+    "hosts": [
+      "www.fedcourt.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "fcfcoa",
+    "name": "Federal Circuit and Family Court of Australia",
+    "jurisdiction": "federal",
+    "tier": "B",
+    "hosts": [
+      "www.fcfcoa.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "ipaustralia",
+    "name": "IP Australia",
+    "jurisdiction": "federal",
+    "tier": "B",
+    "hosts": [
+      "www.ipaustralia.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "pc",
+    "name": "Productivity Commission",
+    "jurisdiction": "federal",
+    "tier": "B",
+    "hosts": [
+      "www.pc.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "teqsa",
+    "name": "Tertiary Education Quality and Standards Agency",
+    "jurisdiction": "federal",
+    "tier": "B",
+    "hosts": [
+      "www.teqsa.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "health",
+    "name": "Department of Health, Disability and Ageing",
+    "jurisdiction": "federal",
+    "tier": "B",
+    "hosts": [
+      "www.health.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "education",
+    "name": "Department of Education",
+    "jurisdiction": "federal",
+    "tier": "B",
+    "hosts": [
+      "www.education.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "dfat",
+    "name": "Department of Foreign Affairs and Trade",
+    "jurisdiction": "federal",
+    "tier": "B",
+    "hosts": [
+      "www.dfat.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "servicesaustralia",
+    "name": "Services Australia",
+    "jurisdiction": "federal",
+    "tier": "B",
+    "hosts": [
+      "www.servicesaustralia.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "ditrdca",
+    "name": "Department of Infrastructure, Transport, Regional Development, Communications and the Arts",
+    "jurisdiction": "federal",
+    "tier": "B",
+    "hosts": [
+      "www.infrastructure.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "ombudsman",
+    "name": "Commonwealth Ombudsman",
+    "jurisdiction": "federal",
+    "tier": "B",
+    "hosts": [
+      "www.ombudsman.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "afp",
+    "name": "Australian Federal Police",
+    "jurisdiction": "federal",
+    "tier": "B",
+    "hosts": [
+      "www.afp.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "ato",
+    "name": "Australian Taxation Office",
+    "jurisdiction": "federal",
+    "tier": "C",
+    "hosts": [
+      "www.ato.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "abs",
+    "name": "Australian Bureau of Statistics",
+    "jurisdiction": "federal",
+    "tier": "C",
+    "hosts": [
+      "www.abs.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "csiro",
+    "name": "Commonwealth Scientific and Industrial Research Organisation",
+    "jurisdiction": "federal",
+    "tier": "C",
+    "hosts": [
+      "www.csiro.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "daff",
+    "name": "Department of Agriculture, Fisheries and Forestry",
+    "jurisdiction": "federal",
+    "tier": "C",
+    "hosts": [
+      "www.agriculture.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "dss",
+    "name": "Department of Social Services",
+    "jurisdiction": "federal",
+    "tier": "C",
+    "hosts": [
+      "www.dss.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "austrac",
+    "name": "Australian Transaction Reports and Analysis Centre",
+    "jurisdiction": "federal",
+    "tier": "C",
+    "hosts": [
+      "www.austrac.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "naa",
+    "name": "National Archives of Australia",
+    "jurisdiction": "federal",
+    "tier": "C",
+    "hosts": [
+      "www.naa.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "fwc",
+    "name": "Fair Work Commission",
+    "jurisdiction": "federal",
+    "tier": "C",
+    "hosts": [
+      "www.fwc.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "fwo",
+    "name": "Fair Work Ombudsman",
+    "jurisdiction": "federal",
+    "tier": "C",
+    "hosts": [
+      "www.fairwork.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "niaa",
+    "name": "National Indigenous Australians Agency",
+    "jurisdiction": "federal",
+    "tier": "C",
+    "hosts": [
+      "www.niaa.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "cer",
+    "name": "Clean Energy Regulator",
+    "jurisdiction": "federal",
+    "tier": "C",
+    "hosts": [
+      "www.cer.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "gbrmpa",
+    "name": "Great Barrier Reef Marine Park Authority",
+    "jurisdiction": "federal",
+    "tier": "C",
+    "hosts": [
+      "www.gbrmpa.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "ndisqsc",
+    "name": "NDIS Quality and Safeguards Commission",
+    "jurisdiction": "federal",
+    "tier": "C",
+    "hosts": [
+      "www.ndiscommission.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "ndia",
+    "name": "National Disability Insurance Agency",
+    "jurisdiction": "federal",
+    "tier": "C",
+    "hosts": [
+      "www.ndis.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "osi",
+    "name": "Office of the Special Investigator",
+    "jurisdiction": "federal",
+    "tier": "C",
+    "hosts": [
+      "www.osi.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "arc",
+    "name": "Australian Research Council",
+    "jurisdiction": "federal",
+    "tier": "C",
+    "hosts": [
+      "www.arc.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "comcare",
+    "name": "Comcare",
+    "jurisdiction": "federal",
+    "tier": "C",
+    "hosts": [
+      "www.comcare.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "swa",
+    "name": "Safe Work Australia",
+    "jurisdiction": "federal",
+    "tier": "C",
+    "hosts": [
+      "www.safeworkaustralia.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "cgc",
+    "name": "Commonwealth Grants Commission",
+    "jurisdiction": "federal",
+    "tier": "C",
+    "hosts": [
+      "www.cgc.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "pbo",
+    "name": "Parliamentary Budget Office",
+    "jurisdiction": "federal",
+    "tier": "C",
+    "hosts": [
+      "www.pbo.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "cdpp",
+    "name": "Commonwealth Director of Public Prosecutions",
+    "jurisdiction": "federal",
+    "tier": "C",
+    "hosts": [
+      "www.cdpp.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "dcceew",
+    "name": "Department of Climate Change, Energy, the Environment and Water",
+    "jurisdiction": "federal",
+    "tier": "C",
+    "hosts": [
+      "www.dcceew.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "dva",
+    "name": "Department of Veterans' Affairs",
+    "jurisdiction": "federal",
+    "tier": "C",
+    "hosts": [
+      "www.dva.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "nhmrc",
+    "name": "National Health and Medical Research Council",
+    "jurisdiction": "federal",
+    "tier": "C",
+    "hosts": [
+      "www.nhmrc.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "aic",
+    "name": "Australian Institute of Criminology",
+    "jurisdiction": "federal",
+    "tier": "C",
+    "hosts": [
+      "www.aic.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "aec",
+    "name": "Australian Electoral Commission",
+    "jurisdiction": "federal",
+    "tier": "C",
+    "hosts": [
+      "www.aec.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "aemc",
+    "name": "Australian Energy Market Commission",
+    "jurisdiction": "federal",
+    "tier": "C",
+    "hosts": [
+      "www.aemc.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "inslm",
+    "name": "Independent National Security Legislation Monitor",
+    "jurisdiction": "federal",
+    "tier": "C",
+    "hosts": [
+      "www.inslm.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "nsw-government",
+    "name": "NSW Government",
+    "jurisdiction": "nsw",
+    "tier": "A",
+    "hosts": [
+      "www.nsw.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "nsw-dcs",
+    "name": "NSW Department of Customer Service",
+    "jurisdiction": "nsw",
+    "tier": "A",
+    "hosts": [
+      "www.digital.nsw.gov.au",
+      "www.nsw.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "nsw-office-for-ai",
+    "name": "NSW Office for AI",
+    "jurisdiction": "nsw",
+    "tier": "A",
+    "hosts": [
+      "www.digital.nsw.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "nsw-pco",
+    "name": "NSW Parliamentary Counsel's Office",
+    "jurisdiction": "nsw",
+    "tier": "A",
+    "hosts": [
+      "legislation.nsw.gov.au",
+      "gazette.nsw.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "nsw-supreme-court",
+    "name": "Supreme Court of NSW",
+    "jurisdiction": "nsw",
+    "tier": "B",
+    "hosts": [
+      "supremecourt.nsw.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "ncat",
+    "name": "NSW Civil and Administrative Tribunal",
+    "jurisdiction": "nsw",
+    "tier": "B",
+    "hosts": [
+      "ncat.nsw.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "vic-dpc",
+    "name": "Victorian Department of Premier and Cabinet",
+    "jurisdiction": "vic",
+    "tier": "A",
+    "hosts": [
+      "www.vic.gov.au",
+      "www.premier.vic.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "vic-ocpc",
+    "name": "Office of the Chief Parliamentary Counsel (VIC)",
+    "jurisdiction": "vic",
+    "tier": "A",
+    "hosts": [
+      "www.legislation.vic.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "ovic",
+    "name": "Office of the Victorian Information Commissioner",
+    "jurisdiction": "vic",
+    "tier": "B",
+    "hosts": [
+      "ovic.vic.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "vic-supreme-court",
+    "name": "Supreme Court of Victoria",
+    "jurisdiction": "vic",
+    "tier": "B",
+    "hosts": [
+      "www.supremecourt.vic.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "vcat",
+    "name": "Victorian Civil and Administrative Tribunal",
+    "jurisdiction": "vic",
+    "tier": "B",
+    "hosts": [
+      "www.vcat.vic.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "qld-government",
+    "name": "Queensland Government",
+    "jurisdiction": "qld",
+    "tier": "A",
+    "hosts": [
+      "statements.qld.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "qld-dsiti",
+    "name": "Queensland Department of Science, Innovation and Technology",
+    "jurisdiction": "qld",
+    "tier": "A",
+    "hosts": [
+      "www.qld.gov.au",
+      "www.forgov.qld.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "qld-opc",
+    "name": "Office of the Queensland Parliamentary Counsel",
+    "jurisdiction": "qld",
+    "tier": "A",
+    "hosts": [
+      "www.legislation.qld.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "qld-courts",
+    "name": "Queensland Courts",
+    "jurisdiction": "qld",
+    "tier": "B",
+    "hosts": [
+      "www.courts.qld.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "qcat",
+    "name": "Queensland Civil and Administrative Tribunal",
+    "jurisdiction": "qld",
+    "tier": "B",
+    "hosts": [
+      "www.qcat.qld.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "wa-government",
+    "name": "WA Government",
+    "jurisdiction": "wa",
+    "tier": "A",
+    "hosts": [
+      "www.mediastatements.wa.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "wa-office-of-digital-government",
+    "name": "Office of Digital Government (WA)",
+    "jurisdiction": "wa",
+    "tier": "A",
+    "hosts": [
+      "www.wa.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "wa-pco",
+    "name": "Parliamentary Counsel's Office (WA)",
+    "jurisdiction": "wa",
+    "tier": "A",
+    "hosts": [
+      "www.legislation.wa.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "wa-supreme-court",
+    "name": "Supreme Court of Western Australia",
+    "jurisdiction": "wa",
+    "tier": "B",
+    "hosts": [
+      "www.supremecourt.wa.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "sa-office-for-ai",
+    "name": "SA Office for AI",
+    "jurisdiction": "sa",
+    "tier": "A",
+    "hosts": [
+      "www.ai.sa.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "sa-opc",
+    "name": "Office of Parliamentary Counsel (SA)",
+    "jurisdiction": "sa",
+    "tier": "A",
+    "hosts": [
+      "www.legislation.sa.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "sa-courts",
+    "name": "Courts Administration Authority (SA)",
+    "jurisdiction": "sa",
+    "tier": "B",
+    "hosts": [
+      "www.courts.sa.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "tas-dpac-dss",
+    "name": "Department of Premier and Cabinet — Digital Strategy and Services (TAS)",
+    "jurisdiction": "tas",
+    "tier": "A",
+    "hosts": [
+      "www.dpac.tas.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "sa-parliament",
+    "name": "Parliament of South Australia",
+    "jurisdiction": "sa",
+    "tier": "A",
+    "hosts": [
+      "prod-internet-salt-functionapp.azurewebsites.net",
+      "salt.parliament.sa.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "nsw-parliament",
+    "name": "Parliament of New South Wales",
+    "jurisdiction": "nsw",
+    "tier": "A",
+    "hosts": [
+      "www.parliament.nsw.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "qld-parliament",
+    "name": "Queensland Parliament",
+    "jurisdiction": "qld",
+    "tier": "A",
+    "hosts": [
+      "www.parliament.qld.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "wa-parliament",
+    "name": "Parliament of Western Australia",
+    "jurisdiction": "wa",
+    "tier": "A",
+    "hosts": [
+      "www.parliament.wa.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "tas-parliament",
+    "name": "Parliament of Tasmania",
+    "jurisdiction": "tas",
+    "tier": "A",
+    "hosts": [
+      "www.parliament.tas.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "tas-opc",
+    "name": "Office of Parliamentary Counsel (TAS)",
+    "jurisdiction": "tas",
+    "tier": "A",
+    "hosts": [
+      "www.legislation.tas.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "tas-supreme-court",
+    "name": "Supreme Court of Tasmania",
+    "jurisdiction": "tas",
+    "tier": "B",
+    "hosts": [
+      "www.supremecourt.tas.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "act-government",
+    "name": "ACT Government",
+    "jurisdiction": "act",
+    "tier": "A",
+    "hosts": [
+      "www.act.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "act-pco",
+    "name": "ACT Parliamentary Counsel's Office",
+    "jurisdiction": "act",
+    "tier": "A",
+    "hosts": [
+      "www.legislation.act.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "act-courts",
+    "name": "ACT Courts",
+    "jurisdiction": "act",
+    "tier": "B",
+    "hosts": [
+      "www.courts.act.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "nt-dcdd",
+    "name": "Department of Corporate and Digital Development (NT)",
+    "jurisdiction": "nt",
+    "tier": "A",
+    "hosts": [
+      "digitalterritory.nt.gov.au",
+      "dcdd.nt.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "nt-opc",
+    "name": "Office of the Parliamentary Counsel (NT)",
+    "jurisdiction": "nt",
+    "tier": "A",
+    "hosts": [
+      "legislation.nt.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "nt-supreme-court",
+    "name": "Supreme Court of the Northern Territory",
+    "jurisdiction": "nt",
+    "tier": "B",
+    "hosts": [
+      "supremecourt.nt.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  },
+  {
+    "id": "ntcat",
+    "name": "NT Civil and Administrative Tribunal",
+    "jurisdiction": "nt",
+    "tier": "B",
+    "hosts": [
+      "ntcat.nt.gov.au"
+    ],
+    "scope": {
+      "status": "unassessed"
+    }
+  }
+]

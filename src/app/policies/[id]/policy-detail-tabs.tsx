@@ -1,10 +1,10 @@
 'use client';
 
 import { useMemo, useState, type ReactNode } from 'react';
-import Link from 'next/link';
 import {
   ArrowRight,
   Check,
+  ChevronDown,
   CheckCircle2,
   Copy,
   Download,
@@ -12,7 +12,6 @@ import {
   FileText,
   Info,
   Link2,
-  ShieldCheck,
 } from 'lucide-react';
 import {
   getJurisdictionName,
@@ -25,6 +24,7 @@ import {
 } from '@/types';
 import { jurisdictionAccent } from '@/lib/jurisdiction-accent';
 import { parseSourceUrl } from '@/lib/source-url';
+import { reuseLabel, type SiteReuse } from '@/lib/watch-coverage/site-reuse';
 import { EmptyState } from '@/components/ui/empty-state';
 import { formatPolicyDate } from '@/lib/format-policy-date';
 import { precisionDateTime } from '@/lib/this-week';
@@ -35,6 +35,7 @@ import { policyPriorBodies } from '../../../../data/policy-prior-bodies';
 import { diffPolicyText, retainedPriorBody } from '@/lib/policy-diff';
 import { splitSummaryBlocks } from '@/lib/summary-blocks';
 import { cn } from '@/lib/utils';
+import { auDate } from '@/lib/au-date';
 
 type TabId = 'overview' | 'requirements' | 'content';
 
@@ -45,7 +46,7 @@ const tabs: Array<{ id: TabId; label: string }> = [
 ];
 
 function humanDate(value: string): string {
-  return new Date(value).toLocaleDateString('en-AU', {
+  return auDate(new Date(value), {
     day: 'numeric',
     month: 'short',
     year: 'numeric',
@@ -140,12 +141,16 @@ function CopyLinkButton() {
 
 export function PolicyDetailTabs({
   policy,
+  progress,
   related,
   courtRequirements = [],
+  sourceReuse,
 }: {
   policy: Policy;
+  progress?: ReactNode;
   related?: ReactNode;
   courtRequirements?: PublicCourtRequirement[];
+  sourceReuse?: Extract<SiteReuse, { status: 'stated' }>;
 }) {
   const [activeTab, setActiveTab] = useState<TabId>('overview');
   const requirements = useMemo(() => getRequirements(policy), [policy]);
@@ -180,7 +185,7 @@ export function PolicyDetailTabs({
         </div>
       ) : null}
 
-      <div className="grid gap-8 xl:grid-cols-[minmax(0,44rem)_minmax(16rem,22rem)] xl:gap-[var(--space-10)]">
+      <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_20rem] xl:gap-[var(--space-10)]">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-3 font-mono text-[11px] uppercase tracking-[0.12em]">
             <span
@@ -192,8 +197,8 @@ export function PolicyDetailTabs({
             </span>
             <span className="h-4 w-px bg-border" />
             <span>{getPolicyTypeName(policy.type)}</span>
-            <span className="hidden sm:contents">
-              <span className="h-4 w-px bg-border" />
+            <span className="h-4 w-px bg-border" />
+            <span className="font-sans normal-case tracking-normal">
               <StatusBadge policy={policy} />
             </span>
           </div>
@@ -217,28 +222,39 @@ export function PolicyDetailTabs({
                 View official source
               </a>
             ) : null}
-            <CopyLinkButton />
-            <button type="button" onClick={downloadPolicy} className="inline-flex min-h-11 items-center gap-2 rounded-md px-3 text-sm font-medium hover:text-primary">
-              <Download className="h-4 w-4" />
-              Download data
-            </button>
-            <a
-              href={`/api/policies/${encodeURIComponent(policy.id)}/markdown`}
-              className="inline-flex min-h-11 items-center gap-2 rounded-md px-3 text-sm font-medium hover:text-primary"
+            <FollowControl follow={{ kind: 'policy', id: policy.id }} label={policy.title} short />
+            <details
+              className="relative"
+              onKeyDown={(event) => {
+                if (event.key !== 'Escape') return;
+                event.currentTarget.open = false;
+                event.currentTarget.querySelector('summary')?.focus();
+              }}
             >
-              <FileText className="h-4 w-4" />
-              Markdown with sources
-            </a>
-            <FollowControl follow={{ kind: 'policy', id: policy.id }} label={policy.title} />
-            <Link
-              href="/following"
-              className="inline-flex min-h-11 items-center px-3 text-sm font-medium text-primary underline underline-offset-4"
-            >
-              Following
-            </Link>
+              <summary className="inline-flex min-h-11 cursor-pointer list-none items-center gap-1.5 rounded-md px-3 text-sm font-medium hover:text-primary [&::-webkit-details-marker]:hidden">
+                More
+                <ChevronDown className="h-4 w-4" aria-hidden="true" />
+              </summary>
+              <div className="absolute right-0 top-full z-20 mt-1 flex min-w-56 flex-col border border-border bg-popover p-1 shadow-[var(--shadow-lift)]">
+                <CopyLinkButton />
+                <button type="button" onClick={downloadPolicy} className="inline-flex min-h-11 items-center gap-2 rounded-md px-3 text-sm font-medium hover:text-primary">
+                  <Download className="h-4 w-4" />
+                  Download data
+                </button>
+                <a
+                  href={`/api/policies/${encodeURIComponent(policy.id)}/markdown`}
+                  className="inline-flex min-h-11 items-center gap-2 rounded-md px-3 text-sm font-medium hover:text-primary"
+                >
+                  <FileText className="h-4 w-4" />
+                  Markdown with sources
+                </a>
+              </div>
+            </details>
           </div>
 
           {priorBody !== null ? <WhatChanged before={priorBody} after={policy.content} /> : null}
+
+          {progress}
 
           <div className="no-scrollbar mt-5 overflow-x-auto border-b border-border">
             <div className="flex min-w-max gap-8" role="tablist" aria-label="Policy sections">
@@ -335,7 +351,6 @@ export function PolicyDetailTabs({
           <section className="border border-border bg-card/40 p-5">
             <h2 className="section-title">At a glance</h2>
             <dl className="mt-4 space-y-3 text-sm">
-              <div className="grid grid-cols-[7rem_1fr] gap-3"><dt className="text-muted-foreground">Status</dt><dd><StatusBadge policy={policy} /></dd></div>
               <div className="grid grid-cols-[7rem_1fr] gap-3"><dt className="text-muted-foreground">Jurisdiction</dt><dd>{getJurisdictionName(policy.jurisdiction)}</dd></div>
               <div className="grid grid-cols-[7rem_1fr] gap-3"><dt className="text-muted-foreground">Policy type</dt><dd>{getPolicyTypeName(policy.type)}</dd></div>
               <div className="grid grid-cols-[7rem_1fr] gap-3"><dt className="text-muted-foreground">Agency</dt><dd>{policy.agencies.join(', ') || 'Not specified'}</dd></div>
@@ -369,11 +384,7 @@ export function PolicyDetailTabs({
                 </dl>
               </div>
             ) : null}
-          </section>
-
-          <section className="border border-border bg-card/40 p-5">
-            <h2 className="section-title">Source verification</h2>
-            <p className="mt-4 flex items-center gap-2 border-b border-border pb-4 text-sm">
+            <p className="mt-5 flex items-center gap-2 border-t border-border pt-4 text-sm">
               <CheckCircle2
                 className={policy.verification.status === 'verified' ? 'h-5 w-5 text-[var(--trust)]' : 'h-5 w-5 text-[var(--caution)]'}
                 fill="currentColor"
@@ -386,29 +397,23 @@ export function PolicyDetailTabs({
             </p>
             <dl className="mt-4 space-y-3 text-sm">
               {sourceHost ? <div className="grid grid-cols-[6.5rem_1fr] gap-3"><dt className="text-muted-foreground">Official source</dt><dd>{sourceHost}</dd></div> : null}
+              {sourceReuse ? (
+                <div className="grid grid-cols-[6.5rem_1fr] gap-3">
+                  <dt className="text-muted-foreground">Site reuse terms</dt>
+                  <dd>
+                    <a href={sourceReuse.termsUrl} className="text-primary underline underline-offset-4 hover:no-underline">
+                      {reuseLabel(sourceReuse)}
+                    </a>
+                  </dd>
+                </div>
+              ) : null}
               {policy.verification.checkedAt ? <div className="grid grid-cols-[6.5rem_1fr] gap-3"><dt className="text-muted-foreground">Checked</dt><dd className="tabular">{humanDate(policy.verification.checkedAt)}</dd></div> : null}
               {policy.verification.source.retrievedAt ? <div className="grid grid-cols-[6.5rem_1fr] gap-3"><dt className="text-muted-foreground">Retrieved</dt><dd className="tabular">{humanDate(policy.verification.source.retrievedAt)}</dd></div> : null}
             </dl>
-            <div className="mt-5 flex gap-3 border border-[var(--trust)]/35 bg-[var(--status-active-bg)]/25 p-4 text-sm italic leading-5 text-[var(--trust)]">
-              <ShieldCheck className="h-5 w-5 shrink-0" />
+            <p className="mt-4 text-xs leading-5 text-muted-foreground">
               Always check the official source before relying on this record.
-            </div>
+            </p>
           </section>
-
-          {instrumentDates.length > 0 ? (
-            <section className="border border-border bg-card p-[var(--space-5)]">
-              <h2 className="page-eyebrow">Policy changes</h2>
-              <ol className="mt-4 space-y-5">
-                {instrumentDates.slice(0, 4).map((date, index) => (
-                  <li key={`${date.type}-${String(date.date)}`} className="relative pl-5">
-                    <span className={cn('absolute left-0 top-1.5 h-2.5 w-2.5 rounded-full', index === 0 ? 'bg-primary ring-4 ring-primary/15' : 'bg-input')} />
-                    <p className="text-xs font-medium text-muted-foreground tabular">{formatPolicyDate(date, { short: true })}</p>
-                    <p className="mt-1 text-xs font-semibold">{getPolicyDateTypeName(date.type)}</p>
-                  </li>
-                ))}
-              </ol>
-            </section>
-          ) : null}
         </aside>
       </div>
     </div>

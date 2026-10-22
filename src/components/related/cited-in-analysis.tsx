@@ -16,7 +16,7 @@ export type CitingArticle = {
 export function CitedInAnalysis({ articles }: { articles: CitingArticle[] }) {
   return (
     <section aria-labelledby="cited-in-analysis" className="mt-8 max-w-[44rem]">
-      <h2 id="cited-in-analysis" className="mb-3 font-display text-[1.125rem] leading-snug">
+      <h2 id="cited-in-analysis" className="section-title mb-3">
         Analysis citing this record
       </h2>
       {articles.length === 0 ? (

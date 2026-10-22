@@ -208,9 +208,8 @@ export function extractFromHtml(
     '.views-row',
     '.bu-updates__item',
     '.bu-link',
-    // The Federal Register of Legislation renders search results with
-    // ngx-datatable rather than semantic table rows.
-    'datatable-body-row[role="row"]',
+    // The Parliament of Tasmania lists current bills as one bare div per bill.
+    'div:has(> a[href*="/bills/bills"])',
     // Drupal views tables render one entry per body row; header rows carry
     // th cells only, so sort links never count as entries.
     'tr:has(td[class*="views-field"])',
@@ -220,6 +219,9 @@ export function extractFromHtml(
   // "...listing..." class, so the row must win over the generic selector,
   // which would otherwise treat the link as its own container.
   const rippleTableRowSelector = 'tbody[class*="rpl-data-table__row"] > tr';
+  // The ACT legislation register lists what's new in DataTables inside one
+  // article; each row is an entry, not the article around them.
+  const dataTableRowSelector = 'table.datatable > tbody > tr';
   const semanticListSelector = [
     'ul[class*="result"]',
     'ol[class*="result"]',
@@ -255,7 +257,6 @@ export function extractFromHtml(
           '.views-row',
           '.bu-updates__item',
           '.bu-link',
-          'datatable-body-row[role="row"]',
         ].join(','),
       ).length === 0
     ) {
@@ -272,10 +273,12 @@ export function extractFromHtml(
     if (!title || title.length < 8) return;
 
     const listItem = link.closest('li');
-    const rippleTableRow = link.closest(rippleTableRowSelector);
+    const tableRow = link.closest(
+      `${rippleTableRowSelector}, ${dataTableRowSelector}`,
+    );
     const container =
-      rippleTableRow.length > 0
-        ? rippleTableRow
+      tableRow.length > 0
+        ? tableRow
         : listItem.length > 0 &&
             listItem.closest(semanticListSelector).length > 0
           ? listItem

@@ -10,6 +10,9 @@ import path from "path";
 import { publicAutomaticCollectionMeta } from "@/lib/collection-coverage";
 import { readJsonFile, writeJsonFile } from "@/lib/file-store";
 import { WATCH_SOURCES } from "@/lib/pipeline/sources";
+import type { SourceHealthRecord } from "@/lib/pipeline/source-health";
+import { parseBodies, type Body } from "@/lib/watch-coverage/bodies";
+import { parseSiteReuse, type SiteReuse } from "@/lib/watch-coverage/site-reuse";
 import {
 	canonicalizeRecordVerification,
 	canonicalizeSourceEvidence,
@@ -28,6 +31,11 @@ import {
 import { reconcileLinkedDevelopments } from "@/lib/source-review";
 import { registerChart, type RegisterChart } from "@/lib/article-figures";
 import { sydneyCalendarDate } from "@/lib/calendar-date";
+import {
+	isLegislativeDraft,
+	type LegislativeEvent,
+} from "@/lib/legislation/model";
+import { describeEvent } from "@/lib/legislation/progress";
 import {
 	citationState,
 	parseArticle,
@@ -193,6 +201,7 @@ async function getWithheldPolicyIds(
 		) {
 			continue;
 		}
+		if (review.legislativeUpdate) continue;
 		if (review.targetPolicyId) {
 			const canonical = policies.find(
 				(policy) => policy.id === review.targetPolicyId,
@@ -278,6 +287,7 @@ function toPublicAgencies(
 			: undefined;
 		return {
 			id: agency.id,
+			bodyId: agency.bodyId,
 			name: agency.name,
 			acronym: agency.acronym,
 			level: agency.level,
@@ -321,6 +331,8 @@ const AGENCIES_FILE = path.join(
 	"data",
 	"agencies.json",
 );
+const BODIES_FILE = path.join(process.cwd(), "data", "bodies.json");
+const SITE_REUSE_FILE = path.join(process.cwd(), "data", "site-reuse.json");
 const COMMONWEALTH_AGENCIES_FILE = path.join(
 	process.cwd(),
 	"data",
@@ -614,7 +626,9 @@ export async function createSourceReview(
 		!normalized.targetPolicyId &&
 		!normalized.targetTimelineEventId &&
 		!normalized.targetTimelineRevisionHash &&
-		(await sourceUrlExists(normalized.sourceUrl))
+		(await sourceUrlExists(normalized.sourceUrl, {
+			legislativeRecord: isLegislativeDraft(normalized.proposedRecord),
+		}))
 	) {
 		throw new DuplicatePolicyError(normalized.sourceUrl);
 	}
@@ -663,18 +677,28 @@ export async function deleteSourceReview(id: string): Promise<boolean> {
 	return true;
 }
 
+/**
+ * Whether a policy, timeline event or open source review already cites
+ * `sourceUrl`. A legislative record carries its bill's history as events, so
+ * it may take a bill page that only hand-typed timeline events cite
+ * (`legislativeRecord`). Publishing it retires those entries
+ * (`retireTimelineEventsCiting`).
+ */
 export async function sourceUrlExists(
 	sourceUrl: string,
 	options: {
 		excludeSourceReviewId?: string;
+		legislativeRecord?: boolean;
 	} = {},
 ): Promise<boolean> {
 	if (await policyExistsBySourceUrl(sourceUrl)) return true;
 
-	const timelineEvents = await getTimelineEvents(undefined, {
-		includeGenerated: false,
-		access: "admin",
-	});
+	const timelineEvents = options.legislativeRecord
+		? []
+		: await getTimelineEvents(undefined, {
+				includeGenerated: false,
+				access: "admin",
+			});
 	if (
 		timelineEvents.some((event) =>
 			sourceUrlsEqual(event.sourceUrl, sourceUrl),
@@ -808,6 +832,34 @@ function generatedTimelineEvent(
 	};
 }
 
+const LEGISLATIVE_TIMELINE_TYPES: Partial<
+	Record<LegislativeEvent["kind"], TimelineEventType>
+> = {
+	introduced: "policy_introduced",
+	registered: "policy_introduced",
+	amended: "policy_amended",
+	repealed: "policy_repealed",
+};
+
+/** One timeline entry per approved stage of a bill, Act or instrument. */
+function legislativeTimelineEvents(policy: Policy): TimelineEvent[] {
+	return (policy.legislative?.events ?? []).map((dated, index) => {
+		const { label, detail } = describeEvent(dated.event, policy.jurisdiction);
+		return {
+			id: `policy-timeline-${policy.id}-${index}`,
+			date: dated.date,
+			datePrecision: dated.precision,
+			title: `${policy.title}: ${label}`,
+			description: detail ?? label,
+			type: LEGISLATIVE_TIMELINE_TYPES[dated.event.kind] ?? "milestone",
+			jurisdiction: policy.jurisdiction,
+			relatedPolicyId: policy.id,
+			sourceUrl: dated.source.url,
+			verification: policy.verification,
+		};
+	});
+}
+
 export async function createTimelineEvent(
 	event: TimelineEvent,
 	options: {
@@ -848,6 +900,24 @@ export async function updateTimelineEvent(
 	events[index] = canonicalizeTimelineRecord(event);
 	await writeJsonFile(TIMELINE_FILE, events);
 	return events[index];
+}
+
+/**
+ * Removes the hand-typed timeline events citing `sourceUrl`, once a
+ * legislative record publishes on that page and its events take their place.
+ */
+export async function retireTimelineEventsCiting(
+	sourceUrl: string,
+): Promise<string[]> {
+	const events = await readJsonFile<TimelineEvent[]>(TIMELINE_FILE, []);
+	const kept = events.filter(
+		(event) => !sourceUrlsEqual(event.sourceUrl, sourceUrl),
+	);
+	if (kept.length === events.length) return [];
+	await writeJsonFile(TIMELINE_FILE, kept);
+	return events
+		.filter((event) => sourceUrlsEqual(event.sourceUrl, sourceUrl))
+		.map((event) => event.id);
 }
 
 export async function getTimelineEvents(
@@ -913,7 +983,8 @@ export async function getTimelineEvents(
 	// Generate timeline events from policies (skip if manual event already covers it)
 	const policyEvents: TimelineEvent[] = policies
 		.filter((p) => p.effectiveDate && !manualPolicyIds.has(p.id))
-		.map((p) => {
+		.flatMap((p) => {
+			if (p.legislative?.events.length) return legislativeTimelineEvents(p);
 			const generated = generatedTimelineEvent(p);
 			return {
 				id: `policy-timeline-${p.id}`,
@@ -1361,6 +1432,25 @@ export async function getSourceCheckTimes(): Promise<Record<string, string>> {
 		lastCheckedBySource?: Record<string, string>;
 	}>(WATCH_STATE_FILE, {});
 	return state.lastCheckedBySource ?? {};
+}
+
+/** The publishing-body catalogue that watch coverage counts against. */
+export async function getBodies(): Promise<Body[]> {
+	return parseBodies(await readJsonFile<unknown>(BODIES_FILE, []));
+}
+
+export async function getSiteReuse(): Promise<SiteReuse[]> {
+	return parseSiteReuse(await readJsonFile<unknown>(SITE_REUSE_FILE, []));
+}
+
+/** Per-source reach ledger; like check times, the only part of watch-state served. */
+export async function getSourceHealth(): Promise<
+	Record<string, SourceHealthRecord>
+> {
+	const state = await readJsonFile<{
+		sourceHealth?: Record<string, SourceHealthRecord>;
+	}>(WATCH_STATE_FILE, {});
+	return state.sourceHealth ?? {};
 }
 
 export async function upsertManualSourceReview(

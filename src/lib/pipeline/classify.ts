@@ -130,6 +130,29 @@ export function classifyByBodyMentions(
 }
 
 /**
+ * Relevance for a register search row that already matched AI: the Federal
+ * Register's full-text score above its cut (`@/lib/legislation/frl-search`)
+ * or an AI-titled state bill (`@/lib/legislation/sa-salt`,
+ * `@/lib/legislation/vic-bills`, `@/lib/legislation/state-bill-lists`).
+ * None gives an excerpt, so the summary states the match; the score keeps
+ * it in review.
+ */
+export function classifyBySearchMatch(candidate: Candidate): Classification {
+  return {
+    isRelevant: true,
+    relevanceScore: 0.55,
+    classification: 'heuristic',
+    summary: candidate.text,
+    tags: [],
+    agencies: [],
+    assessment: {
+      method: 'heuristic',
+      promptVersion: 'register-search-v1',
+    },
+  };
+}
+
+/**
  * Classify a candidate with the deterministic ruleset. The fetched page is
  * accepted for call-site compatibility; extraction already supplies the
  * bounded candidate excerpt used by the rules.

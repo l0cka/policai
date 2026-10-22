@@ -7,6 +7,7 @@ import type {
   Policy,
   PolicyDraft,
   SourceReview,
+  TimelineEvent,
 } from '@/types';
 
 const {
@@ -23,6 +24,7 @@ const {
   getTimelineEvents,
   logMcpAuditEvent,
   markCollectionReviewed,
+  retireTimelineEventsCiting,
   retrieveSource,
   sourceUrlExists,
   upsertDevelopment,
@@ -45,6 +47,7 @@ const {
   getTimelineEvents: vi.fn(),
   logMcpAuditEvent: vi.fn(),
   markCollectionReviewed: vi.fn(),
+  retireTimelineEventsCiting: vi.fn(),
   retrieveSource: vi.fn(),
   sourceUrlExists: vi.fn(),
   upsertDevelopment: vi.fn(),
@@ -77,6 +80,7 @@ vi.mock('@/lib/data-service', () => ({
   getTimelineEvents,
   logMcpAuditEvent,
   markCollectionReviewed,
+  retireTimelineEventsCiting,
   sourceUrlExists,
   upsertDevelopment,
   upsertManualSourceReview,
@@ -142,6 +146,38 @@ function buildDraft(overrides: Partial<PolicyDraft> = {}): PolicyDraft {
     createdAt: '2026-07-16T00:00:00.000Z',
     updatedAt: '2026-07-16T00:00:00.000Z',
     dates,
+    ...overrides,
+  };
+}
+
+function legislativeDraft(): PolicyDraft {
+  return buildDraft({
+    id: 'example-bill-2026',
+    title: 'Example Bill 2026',
+    type: 'legislation',
+    status: 'proposed',
+    effectiveDate: '2026-07-01',
+    legislative: {
+      kind: 'bill',
+      ref: { register: 'aph', billId: 'r9999' },
+      origin: 'private_member',
+      events: [
+        { date: '2026-07-01', precision: 'day', event: { kind: 'introduced', chamber: 'lower' }, source: { url: SOURCE_URL } },
+      ],
+    },
+  });
+}
+
+function buildTimelineEventFixture(overrides: Partial<TimelineEvent>): TimelineEvent {
+  return {
+    id: 'tl-event',
+    date: '2026-07-01',
+    title: 'Example Bill 2026 introduced',
+    description: 'Introduced in the House of Representatives.',
+    type: 'milestone',
+    jurisdiction: 'federal',
+    sourceUrl: SOURCE_URL,
+    verification: { status: 'verified', source: { url: SOURCE_URL } },
     ...overrides,
   };
 }
@@ -389,6 +425,20 @@ describe('source ingest approval workflow', () => {
     expect(updateSourceReview).not.toHaveBeenCalled();
   });
 
+  it('approves a legislative record on a bill page a hand-typed timeline event cites, and no other record', async () => {
+    getTimelineEvents.mockResolvedValue([
+      buildTimelineEventFixture({ id: 'tl-bill-introduced', sourceUrl: SOURCE_URL }),
+    ]);
+    getSourceReviewById.mockResolvedValue(buildReview({ proposedRecord: legislativeDraft() }));
+
+    await expect(
+      approveStagedSource({ id: 'source-review-1', actor: 'Jane Reviewer', proposedRecord: buildDraft({ effectiveDate: '2026-07-01' }) }),
+    ).rejects.toThrow('is already used by tracked or staged content');
+    await expect(
+      approveStagedSource({ id: 'source-review-1', actor: 'Jane Reviewer', proposedRecord: legislativeDraft() }),
+    ).resolves.toMatchObject({ status: 'approved' });
+  });
+
   it('binds explicit reviewed date evidence to the current source fingerprint', async () => {
     getSourceReviewById.mockResolvedValue(buildReview());
     extractRetrievedDocument.mockResolvedValueOnce({
@@ -506,7 +556,7 @@ describe('source ingest approval workflow', () => {
       actor: 'reviewer',
     });
 
-    expect(sourceUrlExists).toHaveBeenCalledWith(SOURCE_URL);
+    expect(sourceUrlExists).toHaveBeenCalledWith(SOURCE_URL, { legislativeRecord: false });
     expect(retrieveSource).toHaveBeenCalledWith(SOURCE_URL, {
       destinationPolicy: 'official',
       timeoutMs: 60_000,
@@ -856,6 +906,41 @@ describe('source ingest approval workflow', () => {
         browserCapture,
       }),
     ).rejects.toThrow('require an explicitly reviewed proposedRecord');
+  });
+
+  it('lets a legislative record take a bill page only hand-typed timeline events cite', async () => {
+    getTimelineEvents.mockResolvedValue([
+      buildTimelineEventFixture({ id: 'tl-bill-introduced', sourceUrl: SOURCE_URL }),
+    ]);
+    const browserCapture = {
+      pageTitle: 'Example Bill 2026',
+      pageText: 'Official browser-captured bill page.',
+      references: [SOURCE_URL],
+      capturedAt: new Date().toISOString(),
+      capturedBy: 'Jane Reviewer',
+      notes: 'Captured from the bill page.',
+      linkedDocuments: [],
+    };
+
+    await expect(
+      stageSourceCapture({
+        url: SOURCE_URL,
+        entryKind: 'policy',
+        proposedRecord: buildDraft({ id: 'plain-policy', effectiveDate: '2026-07-01' }),
+        actor: 'local-mcp-admin',
+        browserCapture,
+      }),
+    ).rejects.toThrow('Source URL belongs to tracked timeline records');
+
+    await stageSourceCapture({
+      url: SOURCE_URL,
+      entryKind: 'policy',
+      proposedRecord: legislativeDraft(),
+      actor: 'local-mcp-admin',
+      browserCapture,
+    });
+    expect(sourceUrlExists).toHaveBeenLastCalledWith(SOURCE_URL, { legislativeRecord: true });
+    expect((createSourceReview.mock.calls[0][0] as SourceReview).proposedRecord.id).toBe('example-bill-2026');
   });
 
   it('stages an explicit browser-verified replacement for a dead target source', async () => {
@@ -3593,11 +3678,48 @@ describe('source ingest approval workflow', () => {
     await publishStagedSource('source-review-1');
 
     expect(createPolicy).toHaveBeenCalledWith(approvedPolicy);
+    expect(retireTimelineEventsCiting).not.toHaveBeenCalled();
     expect(markCollectionReviewed).toHaveBeenCalledWith(
       '2026-07-16T00:00:00.000Z',
     );
     expect(updateSourceReview.mock.invocationCallOrder[0]).toBeLessThan(
       markCollectionReviewed.mock.invocationCallOrder[0],
+    );
+  });
+
+  it('retires the hand-typed timeline events on a bill page when its legislative record publishes', async () => {
+    const approvedBill = {
+      ...legislativeDraft(),
+      effectiveDate: '2026-07-01',
+      lastReviewedAt: '2026-07-16T00:00:00.000Z',
+      verification: {
+        status: 'verified' as const,
+        source: { url: SOURCE_URL, contentHash: 'a'.repeat(64) },
+        checkedAt: '2026-07-16T00:00:00.000Z',
+        checkedBy: 'reviewer',
+        method: 'manual' as const,
+      },
+    };
+    getSourceReviewById.mockResolvedValue(
+      buildReview({
+        status: 'approved',
+        reviewedAt: '2026-07-16T00:00:00.000Z',
+        reviewedBy: 'reviewer',
+        title: approvedBill.title,
+        proposedRecord: approvedBill,
+      }),
+    );
+
+    await publishStagedSource('source-review-1');
+
+    expect(sourceUrlExists).toHaveBeenCalledWith(SOURCE_URL, {
+      excludeSourceReviewId: 'source-review-1',
+      legislativeRecord: true,
+    });
+    expect(createPolicy).toHaveBeenCalledWith(approvedBill);
+    expect(retireTimelineEventsCiting).toHaveBeenCalledWith(SOURCE_URL);
+    expect(createPolicy.mock.invocationCallOrder[0]).toBeLessThan(
+      retireTimelineEventsCiting.mock.invocationCallOrder[0],
     );
   });
 

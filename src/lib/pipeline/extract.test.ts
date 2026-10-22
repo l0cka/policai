@@ -1,4 +1,6 @@
 /* @vitest-environment node */
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 import {
@@ -166,28 +168,41 @@ describe('extractCandidatesFromHtml', () => {
     ]);
   });
 
-  it('extracts Federal Register ngx-datatable result rows', () => {
-    const result = extractFromHtml(
-      `<main>
-        <datatable-body-row role="row" class="datatable-body-row">
-          <div class="title-name">
-            <a href="/F2026L00999/asmade">Artificial Intelligence (Government Assurance) Rules 2026</a>
-          </div>
-        </datatable-body-row>
-        <datatable-body-row role="row" class="datatable-body-row">
-          <div class="title-name">
-            <a href="/F2026N00516/asmade">Approval to hold a stake in a financial sector company</a>
-          </div>
-        </datatable-body-row>
-      </main>`,
-      'https://www.legislation.gov.au/search/registrationdate(today-7,today)',
+  it('extracts ACT legislation register what\'s-new table rows with their dates', () => {
+    const html = readFileSync(
+      join(__dirname, '../legislation/__fixtures__/state/act-whats-new.html'),
+      'utf8',
+    ).replace(
+      '<a href="/b/db_75186/">Crimes (Anti-Consorting) Amendment Bill 2026</a>',
+      '<a href="/b/db_75186/">Crimes (Deepfake Sexual Material) Amendment Bill 2026</a>',
     );
+    const result = extractFromHtml(html, 'https://www.legislation.act.gov.au/WhatsNew/Index');
 
-    expect(result.itemCount).toBe(2);
+    expect(result.itemCount).toBeGreaterThan(20);
     expect(result.candidates).toEqual([
       expect.objectContaining({
-        title: 'Artificial Intelligence (Government Assurance) Rules 2026',
-        url: 'https://www.legislation.gov.au/F2026L00999/asmade',
+        title: 'Crimes (Deepfake Sexual Material) Amendment Bill 2026',
+        url: 'https://www.legislation.act.gov.au/b/db_75186',
+        dateHint: '2026-10-21',
+      }),
+    ]);
+  });
+
+  it('extracts the Parliament of Tasmania current bills list', () => {
+    const html = readFileSync(
+      join(__dirname, '../legislation/__fixtures__/state/tas-bills.html'),
+      'utf8',
+    ).replace(
+      'Conversion Practices Prohibition Bill 2026 (45 of 2026)',
+      'Artificial Intelligence (Transparency) Bill 2026 (45 of 2026)',
+    );
+    const result = extractFromHtml(html, 'https://www.parliament.tas.gov.au/bills');
+
+    expect(result.itemCount).toBeGreaterThan(30);
+    expect(result.candidates).toEqual([
+      expect.objectContaining({
+        title: 'Artificial Intelligence (Transparency) Bill 2026 (45 of 2026)',
+        url: 'https://www.parliament.tas.gov.au/bills/bills2026/conversion-practices-prohibition-bill-2026-45-of-2026',
       }),
     ]);
   });

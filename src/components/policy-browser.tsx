@@ -12,7 +12,8 @@ import { ArrowUpRight, ChevronDown, List, Search, Table2 } from 'lucide-react';
 import { FollowControl } from '@/components/follow-control';
 import { FilterControls, type FilterGroup } from '@/components/filter-sidebar';
 import { PolicyTable } from '@/components/policy-table';
-import { registerParams, selectRegisterPolicies, updateRegisterState, type PolicySortDirection, type PolicySortField, type PolicyViewMode } from '@/lib/policy-register';
+import { LEGISLATIVE_STAGE_NAMES } from '@/lib/legislation/overview';
+import { registerParams, registerStage, selectRegisterPolicies, updateRegisterState, type PolicySortDirection, type PolicySortField, type PolicyViewMode } from '@/lib/policy-register';
 import { getThemeLabel, type ThemeId } from '@/lib/themes';
 import { useRegisterState } from '@/hooks/use-register-state';
 import { formatPolicyDate } from '@/lib/format-policy-date';
@@ -23,8 +24,6 @@ import {
   POLICY_TYPE_NAMES,
   getJurisdictionName,
   getPolicyDateTypeName,
-  type CollectionHealthStatus,
-  type Development,
   type Jurisdiction,
   type Policy,
 } from '@/types';
@@ -39,42 +38,6 @@ interface PolicyBrowserProps {
   analysisHero?: ReactNode;
   /** The Sydney calendar day (YYYY-MM-DD) countdowns are measured from. */
   today?: string;
-  developments: Development[];
-  developmentCount: number;
-  /** Developments first detected in the last seven days, dismissed excluded. */
-  weeklyDevelopmentCount: number;
-  lastCollectedAt: string | null;
-  lastUsableAt: string | null;
-  lastReviewedAt: string | null;
-  collectionHealth: CollectionHealthStatus;
-  successfulSourceCount: number;
-  dueSourceCount: number;
-  automaticSourceCount: number;
-  manualSourceCount: number;
-  currentManualSourceCount: number;
-  unavailableManualSourceCount: number;
-}
-
-function formatDate(value: string): string {
-  return new Date(value).toLocaleDateString('en-AU', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-    timeZone: 'Australia/Sydney',
-  });
-}
-
-function formatDevelopmentDate(development: Development): string {
-  if (!development.publishedAt) return formatDate(development.detectedAt);
-
-  return formatPolicyDate(
-    {
-      type: 'published',
-      date: development.publishedAt,
-      precision: development.publishedAtPrecision ?? 'day',
-    },
-    { short: true },
-  );
 }
 
 const DISCOVERY_THEMES = ['legal-practice', 'public-sector'] as const satisfies readonly ThemeId[];
@@ -134,26 +97,14 @@ export function PolicyBrowser({
   deadlinesRail,
   analysisHero,
   today,
-  developments,
-  developmentCount,
-  weeklyDevelopmentCount,
-  lastCollectedAt,
-  lastUsableAt,
-  lastReviewedAt,
-  collectionHealth,
-  successfulSourceCount,
-  dueSourceCount,
-  automaticSourceCount,
-  manualSourceCount,
-  currentManualSourceCount,
-  unavailableManualSourceCount,
 }: PolicyBrowserProps) {
   const [state, updateState] = useRegisterState();
-  const { search, jurisdictions, types, statuses, themes, viewMode, sortField, sortDirection, page } = state;
+  const { search, jurisdictions, types, statuses, stages, themes, viewMode, sortField, sortDirection, page } = state;
   const setSearch = (search: string) => updateState({ search });
   const setJurisdictions = (jurisdictions: string[]) => updateState({ jurisdictions });
   const setTypes = (types: string[]) => updateState({ types });
   const setStatuses = (statuses: string[]) => updateState({ statuses });
+  const setStages = (stages: string[]) => updateState({ stages });
   const setViewMode = (viewMode: PolicyViewMode) => updateState({ viewMode });
   const deferredState = useDeferredValue(state);
   const searchRef = useRef<HTMLInputElement>(null);
@@ -176,7 +127,7 @@ export function PolicyBrowser({
     value: string,
   ) => policies.filter((policy) => policy[key] === value).length;
 
-  const filterGroups: FilterGroup[] = [
+  const allFilterGroups: FilterGroup[] = [
     {
       id: 'jurisdiction',
       label: 'Jurisdiction',
@@ -217,14 +168,28 @@ export function PolicyBrowser({
         }))
         .filter((option) => option.count > 0),
     },
+    {
+      id: 'stage',
+      label: 'Legislative stage',
+      selectedValues: stages,
+      onToggle: (value) => toggleFilter(value, stages, setStages),
+      options: Object.entries(LEGISLATIVE_STAGE_NAMES)
+        .map(([value, label]) => ({
+          value,
+          label,
+          count: policies.filter((policy) => registerStage(policy) === value).length,
+        }))
+        .filter((option) => option.count > 0),
+    },
   ];
+  const filterGroups = allFilterGroups.filter((group) => group.options.length > 0);
 
   const activeFilterCount =
-    jurisdictions.length + types.length + statuses.length + themes.length;
+    jurisdictions.length + types.length + statuses.length + stages.length + themes.length;
   const hasActiveFilters = activeFilterCount > 0;
-  const clearFilters = () => updateState({ jurisdictions: [], types: [], statuses: [], themes: [] });
+  const clearFilters = () => updateState({ jurisdictions: [], types: [], statuses: [], stages: [], themes: [] });
   const resetSearch = () => {
-    updateState({ search: '', jurisdictions: [], types: [], statuses: [], themes: [] });
+    updateState({ search: '', jurisdictions: [], types: [], statuses: [], stages: [], themes: [] });
     searchRef.current?.focus();
   };
   const themeHref = (theme: ThemeId) => {
@@ -241,19 +206,6 @@ export function PolicyBrowser({
     updateState({ sortField, sortDirection });
   };
 
-  const freshnessDate = lastUsableAt ?? lastCollectedAt ?? lastReviewedAt;
-  const freshnessKind = lastUsableAt
-    ? lastUsableAt === lastCollectedAt
-      ? 'last collected'
-      : 'last passing collection'
-    : lastCollectedAt
-      ? 'last collected'
-      : null;
-  const freshLabel =
-    collectionHealth === 'healthy'
-      ? `All ${dueSourceCount} due sources reached`
-      : `${successfulSourceCount}/${dueSourceCount} due sources reached`;
-
   const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     document
@@ -262,97 +214,45 @@ export function PolicyBrowser({
   };
 
   return (
-    <div className="editorial-register container mx-auto px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+    <div className="editorial-register container mx-auto px-4 py-7 sm:px-6 lg:px-8">
       {analysisHero}
-      <div className="mb-5 flex flex-wrap items-end justify-between gap-5">
-        <div>
-          <p className="page-eyebrow text-primary">
-            The Australian AI policy register
-          </p>
-          <h1 className="register-title mt-2">
-            Australian AI policy.
-          </h1>
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">
-            Find Australian AI policies, regulation and court guidance. Go
-            straight to the source.
-          </p>
-        </div>
-        <Link
-          href="/methodology"
-          className="text-xs text-primary underline underline-offset-4"
-        >
-          How records are verified
-        </Link>
+      <div className="mb-5">
+        <h1 className="register-title">Australian AI policy.</h1>
+        <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">
+          Find Australian AI policies, regulation and court guidance. Go
+          straight to the source.
+        </p>
       </div>
       <div className="grid items-start gap-10 xl:grid-cols-[minmax(0,1fr)_232px]">
         <section
           id="policy-register"
-          aria-label="Policy register"
-          className="min-w-0 scroll-mt-32"
+          aria-labelledby="policy-register-heading"
+          className="min-w-0 scroll-mt-20"
         >
-          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:gap-6">
-            <form role="search" onSubmit={handleSearchSubmit} className="min-w-0 flex-1">
-              <label className="sr-only" htmlFor="register-search">
-                Search policies, agencies or topics
-              </label>
-              <div className="flex h-14 items-center gap-3 rounded border border-input bg-card px-4 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-ring">
-                <Search
-                  className="h-5 w-5 shrink-0 text-muted-foreground"
-                  aria-hidden="true"
-                />
-                <input
-                  id="register-search"
-                  ref={searchRef}
-                  type="search"
-                  placeholder="Search policies, agencies or topics…"
-                  value={search}
-                  onChange={(event) => setSearch(event.target.value)}
-                  className="h-full min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
-                />
-                <kbd className="hidden whitespace-nowrap rounded border border-border px-1.5 py-1 text-[10px] text-muted-foreground sm:block">
-                  Ctrl / ⌘ K
-                </kbd>
-              </div>
-            </form>
-            <nav aria-label="Register starting points" className="flex flex-wrap items-center gap-x-4 gap-y-1">
-              <Link
-                href="/developments"
-                className="inline-flex min-h-11 items-center gap-1.5 text-xs text-primary underline underline-offset-4"
-              >
-                Browse developments
-                <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
-              </Link>
-              {DISCOVERY_THEMES.map((theme) => {
-                const selected = themes.length === 1 && themes[0] === theme;
-                return (
-                  <a
-                    key={theme}
-                    href={themeHref(theme)}
-                    aria-current={selected ? 'true' : undefined}
-                    onClick={(event) => {
-                      if (
-                        event.button !== 0 ||
-                        event.metaKey ||
-                        event.ctrlKey ||
-                        event.shiftKey ||
-                        event.altKey
-                      ) {
-                        return;
-                      }
-                      event.preventDefault();
-                      updateState({ themes: [theme] });
-                    }}
-                    className={cn(
-                      'inline-flex min-h-11 items-center text-xs text-primary underline underline-offset-4',
-                      selected && 'font-semibold',
-                    )}
-                  >
-                    {getThemeLabel(theme)}
-                  </a>
-                );
-              })}
-            </nav>
-          </div>
+          <h2 id="policy-register-heading" className="sr-only">Policy register</h2>
+          <form role="search" onSubmit={handleSearchSubmit}>
+            <label className="sr-only" htmlFor="register-search">
+              Search policies, agencies or topics
+            </label>
+            <div className="flex h-14 items-center gap-3 rounded border border-input bg-card px-4 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-ring">
+              <Search
+                className="h-5 w-5 shrink-0 text-muted-foreground"
+                aria-hidden="true"
+              />
+              <input
+                id="register-search"
+                ref={searchRef}
+                type="search"
+                placeholder="Search policies, agencies or topics…"
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                className="h-full min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+              />
+              <kbd className="hidden whitespace-nowrap rounded border border-border px-1.5 py-1 text-[10px] text-muted-foreground sm:block">
+                Ctrl / ⌘ K
+              </kbd>
+            </div>
+          </form>
           <div
             role="group"
             aria-label="Register filters"
@@ -449,7 +349,7 @@ export function PolicyBrowser({
             </div>
           )}
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-3">
-            <p id="register-results" tabIndex={-1} role="status" className="scroll-mt-32 text-sm text-muted-foreground">
+            <p id="register-results" tabIndex={-1} role="status" className="scroll-mt-20 text-sm text-muted-foreground">
               {filteredPolicies.length}{' '}
               {filteredPolicies.length === 1 ? 'policy' : 'policies'}
               {search ? ` matching “${search}”` : ' in the register'}
@@ -502,7 +402,7 @@ export function PolicyBrowser({
           className="space-y-7 border-t border-border pt-6 xl:border-l xl:border-t-0 xl:pl-7 xl:pt-0"
         >
           <section>
-            <h2 className="text-sm font-semibold">Browse by jurisdiction</h2>
+            <h2 className="section-title">Browse by jurisdiction</h2>
             <div className="mt-3 grid grid-cols-2 gap-x-5 xl:grid-cols-1">
               {filterGroups[0].options.map((option) => (
                 <button
@@ -518,16 +418,48 @@ export function PolicyBrowser({
               ))}
             </div>
           </section>
+          <section className="border-t border-border pt-6">
+            <h2 className="section-title">Browse by theme</h2>
+            <ul className="mt-3">
+              {DISCOVERY_THEMES.map((theme) => {
+                const selected = themes.length === 1 && themes[0] === theme;
+                return (
+                  <li key={theme}>
+                    <a
+                      href={themeHref(theme)}
+                      aria-current={selected ? 'true' : undefined}
+                      onClick={(event) => {
+                        if (
+                          event.button !== 0 ||
+                          event.metaKey ||
+                          event.ctrlKey ||
+                          event.shiftKey ||
+                          event.altKey
+                        ) {
+                          return;
+                        }
+                        event.preventDefault();
+                        updateState({ themes: [theme] });
+                      }}
+                      className="flex min-h-11 items-center text-xs text-muted-foreground hover:text-primary aria-[current]:font-semibold aria-[current]:text-primary"
+                    >
+                      {getThemeLabel(theme)}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
           {deadlinesRail}
           {upcomingDates.length > 0 && today ? (
             <section className="border-t border-border pt-6">
-              <h2 className="text-sm font-semibold">Coming up</h2>
+              <h2 className="section-title">Coming up</h2>
               <ul className="mt-3 space-y-3">
                 {upcomingDates.slice(0, 5).map((item) => {
                   const countdown = upcomingDateCountdown(item, today);
                   return (
                     <li key={`${item.policyId}-${item.dateType}-${item.date}`}>
-                      <p className="text-[11px] text-muted-foreground">
+                      <p className="text-xs text-muted-foreground">
                         {getPolicyDateTypeName(item.dateType)} ·{' '}
                         {formatPolicyDate({ type: item.dateType, date: item.date, precision: item.precision })}
                         {countdown ? ` · ${countdown}` : ''}
@@ -550,75 +482,6 @@ export function PolicyBrowser({
               </Link>
             </section>
           ) : null}
-          <section className="border-t border-border pt-6">
-            <h2 className="text-sm font-semibold">
-              A register, not legal advice.
-            </h2>
-            <p className="mt-3 text-xs leading-6 text-muted-foreground">
-              Every record links to its source. Check the official document for
-              scope, commencement and current obligations.
-            </p>
-            <Link
-              href="/methodology"
-              className="mt-2 inline-flex min-h-11 items-center gap-2 text-xs text-primary"
-            >
-              About the register <ArrowUpRight className="h-3.5 w-3.5" />
-            </Link>
-          </section>
-          <section className="border-t border-border pt-6">
-            <h2 className="text-sm font-semibold">Looking for what’s new?</h2>
-            <p className="mt-3 text-xs leading-6 text-muted-foreground">
-              Automated detections are separate from verified register records.
-            </p>
-            <p className="text-xs leading-5 text-muted-foreground">
-              {developmentCount} developments · {weeklyDevelopmentCount}{' '}
-              detected in the latest collection week
-            </p>
-          </section>
-          {developments.length > 0 && (
-            <section className="border-t border-border pt-6">
-              <h2 className="text-sm font-semibold">
-                Recently verified developments
-              </h2>
-              {developments.slice(0, 3).map((development) => (
-                <article key={development.id} className="mt-4">
-                  <p className="text-[11px] text-muted-foreground">
-                    {formatDevelopmentDate(development)} ·{' '}
-                    {getJurisdictionName(development.jurisdiction)}
-                  </p>
-                  <a
-                    href={development.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-1 inline-block text-xs leading-5 text-primary underline underline-offset-4"
-                  >
-                    {development.title} ↗
-                  </a>
-                </article>
-              ))}
-            </section>
-          )}
-          <section className="border-t border-border pt-6 text-xs leading-6 text-muted-foreground">
-            <h2 className="text-sm font-semibold text-foreground">
-              Source coverage
-            </h2>
-            <p className="mt-3">
-              {freshLabel}
-              {freshnessDate
-                ? freshnessKind
-                  ? ` · ${freshnessKind} ${formatDate(freshnessDate)}`
-                  : ` · ${formatDate(freshnessDate)}`
-                : ''}
-            </p>
-            <p>{automaticSourceCount} automatic sources</p>
-            <p>
-              {currentManualSourceCount}/{manualSourceCount} manual sources
-              checked
-              {unavailableManualSourceCount > 0
-                ? ` · ${unavailableManualSourceCount} unavailable`
-                : ''}
-            </p>
-          </section>
         </aside>
       </div>
     </div>

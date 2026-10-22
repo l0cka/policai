@@ -3,6 +3,7 @@ import './globals.css';
 import { Header } from '@/components/layout/Header';
 import { collectionStripProps } from '@/lib/collection-strip';
 import { Footer } from '@/components/layout/Footer';
+import { SectionNav } from '@/components/layout/SectionNav';
 import { themeInitScript } from '@/components/layout/theme-init';
 import { BackToTop } from '@/components/ui/back-to-top';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -70,6 +71,7 @@ export default async function RootLayout({
         </a>
         <TooltipProvider>
           <Header {...collectionStripProps(collectionMeta)} />
+          <SectionNav />
           <main id="main-content" className="flex-1">{children}</main>
           <Footer />
           <BackToTop />

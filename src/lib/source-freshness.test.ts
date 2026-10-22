@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { buildManualDecision } from '@/test/factories';
 import type { WatchSource } from '@/lib/pipeline/sources';
 import {
   assessSourceFreshness,
@@ -7,6 +8,7 @@ import {
 
 const base: WatchSource = {
   id: 'daily-auto',
+  bodyId: 'test-body',
   name: 'Daily automatic',
   jurisdiction: 'federal',
   category: 'government',
@@ -26,7 +28,7 @@ describe('assessSourceFreshness', () => {
         { ...base, id: 'weekly-stale', schedule: 'weekly' },
         { ...base, id: 'weekly-ok', schedule: 'weekly' },
         { ...base, id: 'never' },
-        { ...base, id: 'manual', automation: 'manual' },
+        { ...base, id: 'manual', automation: buildManualDecision() },
         { ...base, id: 'off', enabled: false },
       ],
       {

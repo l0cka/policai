@@ -168,7 +168,7 @@ describe('CourtsBrowser', () => {
       expect(screen.getByText('Not yet in effect')).toBeInTheDocument();
       pill.unmount();
       render(<PolicyDetailTabs policy={future} />);
-      expect(screen.getAllByText('Not yet in effect')).toHaveLength(2);
+      expect(screen.getAllByText('Not yet in effect')).toHaveLength(1);
     } finally { vi.useRealTimers(); }
   });
   it('exposes disclosure state and associates the controlled panel', () => {

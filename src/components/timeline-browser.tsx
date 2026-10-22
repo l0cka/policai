@@ -87,8 +87,7 @@ export function TimelineBrowser({
         { value: stats.verifiedEvents, label: 'verified events' },
       ]} />
 
-      <div className="mt-3 grid gap-8 xl:grid-cols-[minmax(0,1fr)_19rem]">
-        <div className="min-w-0">
+      <div className="mt-3 min-w-0">
           <div className="mb-3 flex flex-col gap-2 sm:flex-row">
             <label className="relative sm:w-60">
               <span className="sr-only">Filter by jurisdiction</span>
@@ -120,7 +119,18 @@ export function TimelineBrowser({
             </label>
           </div>
 
-          <div className="mb-3 flex items-center justify-between">
+          <ul aria-label="Event types" className="mb-3 flex flex-wrap gap-x-5 gap-y-1.5">
+            {POLICY_LIFECYCLE_TIMELINE_EVENT_TYPES.map((type) => (
+              <li key={type} className="flex items-center gap-2 text-xs text-muted-foreground">
+                <span aria-hidden="true" className={cn('inline-flex h-2 w-2 shrink-0 rounded-full', EVENT_TYPE_CONFIG[type].dot)} />
+                {EVENT_TYPE_CONFIG[type].label}
+              </li>
+            ))}
+          </ul>
+
+          {/* The count repeats the metric strip until a filter narrows it, but
+              stays in the live region so filtering is announced. */}
+          <div className={cn('mb-3 flex items-center justify-between', !hasActiveFilters && 'sr-only')}>
             <p className="font-mono text-[11px] text-muted-foreground" aria-live="polite">
               {filteredEvents.length} of {timelineData.length} events
             </p>
@@ -139,19 +149,6 @@ export function TimelineBrowser({
             events={filteredEvents}
             onEventClick={(event) => setSelectedEvent(event as TimelineEvent)}
           />
-        </div>
-
-        <aside className="self-start border-border xl:sticky xl:top-28 xl:border-l xl:pl-6">
-          <h2 className="text-sm font-semibold">Legend</h2>
-          <div className="mt-3 space-y-2.5">
-            {POLICY_LIFECYCLE_TIMELINE_EVENT_TYPES.map((type) => (
-              <div key={type} className="flex items-center gap-2 text-sm">
-                <span className={cn('inline-flex h-2 w-2 shrink-0 rounded-full', EVENT_TYPE_CONFIG[type].dot)} />
-                {EVENT_TYPE_CONFIG[type].label}
-              </div>
-            ))}
-          </div>
-        </aside>
       </div>
 
       {/* Event Detail Dialog */}

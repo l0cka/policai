@@ -243,7 +243,7 @@ export default function SectorDirectory({
                           ) : (
                             o.name
                           )}
-                          {o.abbrev ? <span className="sector-abbr">{o.abbrev}</span> : null}
+                          {o.abbrev ? <>{' '}<span className="sector-abbr">{o.abbrev}</span></> : null}
                           {monitoringAvailable && o.monitored ? (
                             <span
                               className="radar-dot"

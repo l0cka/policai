@@ -1,6 +1,8 @@
 // Core domain types for Policai
 
 import type { FailureClass } from "@/lib/pipeline/failure";
+import type { UnrecognisedStage } from "@/lib/legislation/stage-update";
+import type { Dated, Legislative, LegislativeEvent } from "@/lib/legislation/model";
 import type { ThemeId } from "@/lib/themes";
 
 export const JURISDICTIONS = [
@@ -100,6 +102,8 @@ export interface BrowserCaptureEvidence {
 	method: "browser";
 	capturedAt: string;
 	capturedBy: string;
+	/** Editor who asked for the capture when someone else, such as an agent, made it. */
+	requestedBy?: string;
 	notes: string;
 	pageContentHash: string;
 	characterCount: number;
@@ -280,10 +284,14 @@ export interface Policy {
 	verification: RecordVerification;
 	supersededBy?: string;
 	lastReviewedAt?: string;
+	/** Lifecycle of a bill, Act or legislative instrument; drives `status`. */
+	legislative?: Legislative;
 }
 
 export interface Agency {
 	id: string;
+	/** The body in `data/bodies.json` this directory record describes. */
+	bodyId: string;
 	name: string;
 	acronym: string;
 	level: AgencyLevel;
@@ -374,7 +382,55 @@ export interface SourceReview {
 	approvalNotes?: string;
 	publishedAt?: string;
 	rejectionReason?: string;
+	/** Approval inputs prepared for the editor's decision. */
+	proposal?: SourceReviewProposal;
+	/** The editor's decision on this review's proposal. */
+	decision?: SourceReviewDecision;
+	/**
+	 * A follow watch's stage update for a legislative record. The record stays
+	 * public while it waits: its last approved stage is still true as of its date.
+	 */
+	legislativeUpdate?: {
+		added: Dated<LegislativeEvent>[];
+		/** Known events whose deadline the register has set or moved. */
+		changed?: Dated<LegislativeEvent>[];
+		unrecognised: UnrecognisedStage[];
+		/** The day the register now schedules commencement, when the record's date differs. */
+		scheduledCommencement?: string;
+		error?: string;
+	};
 	updatedAt: string;
+}
+
+export interface SourceReviewProposal {
+	proposedBy: string;
+	proposedAt: string;
+	proposedRecord?: PolicyDraft | TimelineEventDraft;
+	expectedTargetRevisionHash?: string;
+	officialSourceUrl?: string;
+	manualExtraction?: {
+		method: "ocr" | "manual_transcription";
+		title: string;
+		text: string;
+		publishedAt?: string;
+		publishedAtPrecision?: DatePrecision;
+		notes: string;
+	};
+	reviewedDate?: {
+		date: string;
+		precision: DatePrecision;
+		notes: string;
+	};
+	notes?: string;
+}
+
+export interface SourceReviewDecision {
+	/** `sourceReviewProposalHash` of the review the editor approved. */
+	proposalHash: string;
+	decidedBy: string;
+	decidedAt: string;
+	/** Link to the decision card the editor answered. */
+	attestationUrl: string;
 }
 
 export type PolicyDraft = Omit<
@@ -465,6 +521,14 @@ export interface SourceRunResult {
 	identityException?: "active" | "expired";
 	failureClass?: FailureClass;
 	failedUrl?: string;
+	/** Linked documents and candidates on a decided-refused host, not requested. */
+	skippedLinked?: SkippedLinked[];
+}
+
+export interface SkippedLinked {
+	url: string;
+	/** The source whose manual decision records the host's refusal. */
+	decidedBy: string;
 }
 
 export interface CollectionMeta {

@@ -372,7 +372,7 @@ export default function SectorExplorer({
                 </div>
 
                 <section className="sector-map-guide" aria-labelledby="sector-map-guide-title">
-                  <h2 id="sector-map-guide-title">Map legend</h2>
+                  <p id="sector-map-guide-title" className="sector-map-guide-title">Map legend</p>
                   <dl>
                     <div>
                       <dt>
@@ -408,7 +408,7 @@ export default function SectorExplorer({
                       <dd>Service areas, branches, outreach and online coverage.</dd>
                     </div>
                   </dl>
-                  <p>
+                  <p className="sector-map-source-note">
                     Source: provider pages, geocoded with OpenStreetMap Nominatim. Faded dots are
                     suburb-level.
                   </p>
@@ -488,7 +488,7 @@ export default function SectorExplorer({
                     {selectedIndex >= 0 ? `${selectedIndex + 1} of ` : ''}
                     {visibleOrgs.length} records in this view
                   </span>
-                  <h3 className="sr-only">{selectedOrg.name}</h3>
+                  <h2 className="sr-only">{selectedOrg.name}</h2>
                 </div>
                 <dl>
                   <div>

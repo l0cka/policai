@@ -1,17 +1,19 @@
 /* @vitest-environment node */
 
 import { describe, expect, it } from 'vitest';
-import { buildPolicy, buildTimelineEvent } from '@/test/factories';
+import { buildAgency, buildManualDecision, buildPolicy, buildTimelineEvent } from '@/test/factories';
 import {
   countUnsubstantiatedSecondaryDates,
   isAllowedSourceHost,
   validateCollectionMeta,
   validateDevelopments,
+  validateLegislativeTimelineOverlap,
   validatePolicyFrameworkArtifact,
   validatePolicies,
   validateSourceMonitoring,
   validateSourceReviews,
   validateTimeline,
+  validateBodies,
   validateWatchSources,
   validateWatchState,
 } from './validate-data';
@@ -371,6 +373,31 @@ describe('validatePolicies', () => {
     const report = validatePolicies([buildPolicy({ status: 'superseded' })]);
     expect(report.errors).toEqual([
       'policy-1: superseded status requires supersededBy',
+    ]);
+  });
+
+  it('rejects a legislative record whose status disagrees with its lifecycle', () => {
+    const report = validatePolicies([
+      buildPolicy({
+        type: 'legislation',
+        status: 'active',
+        legislative: {
+          kind: 'bill',
+          ref: { register: 'aph', billId: 'r7421' },
+          origin: 'government',
+          events: [
+            {
+              date: '2026-10-15',
+              precision: 'day',
+              event: { kind: 'introduced', chamber: 'lower' },
+              source: { url: 'https://www.aph.gov.au/bill' },
+            },
+          ],
+        },
+      }),
+    ]);
+    expect(report.errors).toEqual([
+      'policy-1: status "active" disagrees with its lifecycle events, which make it "proposed"',
     ]);
   });
 
@@ -1064,6 +1091,7 @@ describe('validateSourceMonitoring', () => {
   it('rejects materially future manual review timestamps', () => {
     const source = {
       id: 'manual-source',
+      bodyId: 'test-body',
       name: 'Manual source',
       jurisdiction: 'federal',
       category: 'government',
@@ -1071,7 +1099,7 @@ describe('validateSourceMonitoring', () => {
       kind: 'html-index',
       schedule: 'daily',
       enabled: true,
-      automation: 'manual',
+      automation: buildManualDecision(),
     } satisfies WatchSource;
 
     const report = validateSourceMonitoring(
@@ -1099,6 +1127,7 @@ describe('validateSourceMonitoring', () => {
   it('rejects successful manual checks without retained evidence and substantive notes', () => {
     const source = {
       id: 'manual-source',
+      bodyId: 'test-body',
       name: 'Manual source',
       jurisdiction: 'federal',
       category: 'government',
@@ -1106,7 +1135,7 @@ describe('validateSourceMonitoring', () => {
       kind: 'html-index',
       schedule: 'daily',
       enabled: true,
-      automation: 'manual',
+      automation: buildManualDecision(),
     } satisfies WatchSource;
 
     const report = validateSourceMonitoring(
@@ -1447,6 +1476,7 @@ describe('countUnsubstantiatedSecondaryDates', () => {
 describe('validateWatchSources identity exceptions', () => {
   const base: WatchSource = {
     id: 'example-source',
+    bodyId: 'test-body',
     name: 'Example source',
     jurisdiction: 'federal',
     category: 'government',
@@ -1489,6 +1519,160 @@ describe('validateWatchSources identity exceptions', () => {
       new Date('2026-12-01T00:00:00.000Z'),
     );
     expect(report.warnings).toEqual([]);
+  });
+});
+
+describe('validateWatchSources automation decisions', () => {
+  const now = new Date('2026-10-22T00:00:00.000Z');
+  const automatic: WatchSource = {
+    id: 'finance-media',
+    bodyId: 'test-body',
+    name: 'Finance media',
+    jurisdiction: 'federal',
+    category: 'government',
+    url: 'https://www.finance.gov.au/media',
+    kind: 'html-index',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+  };
+  const refusing: WatchSource = {
+    ...automatic,
+    id: 'finance-news',
+    url: 'https://www.finance.gov.au/about-us/news',
+    automation: buildManualDecision({ because: 'identity_refused' }),
+  };
+
+  it('accepts a complete manual decision', () => {
+    expect(validateWatchSources([refusing], now).errors).toEqual([]);
+  });
+
+  it('fails an automatic source on a host decided refused, naming the decider', () => {
+    expect(validateWatchSources([automatic, refusing], now).errors).toEqual([
+      'watchSources:finance-media: automatic source on www.finance.gov.au, which finance-news records as refusing the declared identity; move it to manual tracking or reverse that decision',
+    ]);
+  });
+
+  it('lets an automatic source share a host with a manual source blocked for another reason', () => {
+    const blocked = { ...refusing, automation: buildManualDecision({ because: 'bot_blocked' }) };
+    expect(validateWatchSources([automatic, blocked], now).errors).toEqual([]);
+  });
+
+  it('rejects a bare manual flag and an incomplete decision', () => {
+    const bare = { ...refusing, automation: 'manual' } as unknown as WatchSource;
+    const incomplete = {
+      ...refusing,
+      id: 'incomplete',
+      url: 'https://www.finance.gov.au/other',
+      automation: { ...buildManualDecision(), because: 'unknown', decidedBy: '', since: '2026-11-01', evidence: 'short' },
+    } as unknown as WatchSource;
+    expect(validateWatchSources([bare, incomplete], now).errors).toEqual([
+      "watchSources:finance-news: automation must be 'automatic' or a manual decision",
+      'watchSources:incomplete: invalid manual because',
+      'watchSources:incomplete: manual decision since cannot be in the future',
+      'watchSources:incomplete: manual decision needs decidedBy',
+      'watchSources:incomplete: manual decision needs evidence of at least 20 characters',
+    ]);
+  });
+
+  it('rejects a blockedHost that is not a host name', () => {
+    const linked = { ...refusing, automation: buildManualDecision({ blockedHost: 'https://www.finance.gov.au/a.pdf' }) };
+    expect(validateWatchSources([linked], now).errors).toEqual([
+      'watchSources:finance-news: blockedHost must be a lower-case host name',
+    ]);
+  });
+});
+
+describe('validateBodies', () => {
+  const tierA = (jurisdiction: string) => ({
+    id: `${jurisdiction}-gov`,
+    name: `${jurisdiction} government`,
+    jurisdiction,
+    tier: 'A',
+    hosts: [`www.${jurisdiction}.gov.au`],
+    scope: { status: 'unassessed' },
+  });
+  const bodies = [
+    ...['nsw', 'vic', 'qld', 'wa', 'sa', 'tas', 'act', 'nt'].map(tierA),
+    {
+      id: 'disr',
+      name: 'Department of Industry, Science and Resources',
+      jurisdiction: 'federal',
+      tier: 'A',
+      hosts: ['www.industry.gov.au'],
+      scope: { status: 'in_scope', decidedAt: '2026-10-22', decidedBy: 'Editorial Manager' },
+    },
+  ];
+  const source: WatchSource = {
+    id: 'disr-news',
+    bodyId: 'disr',
+    name: 'DISR news',
+    jurisdiction: 'federal',
+    category: 'government',
+    url: 'https://www.industry.gov.au/news',
+    kind: 'html-index',
+    schedule: 'daily',
+    enabled: true,
+    automation: 'automatic',
+  };
+  const agency = buildAgency({
+    id: 'diser',
+    bodyId: 'disr',
+    name: 'Department of Industry, Science and Resources',
+    website: 'https://www.industry.gov.au/',
+  });
+
+  it('rejects a scope decision on a date that does not exist', () => {
+    const rolled = bodies.map((body) =>
+      body.id === 'disr' ? { ...body, scope: { ...body.scope, decidedAt: '2026-02-30' } } : body,
+    );
+    expect(validateBodies(rolled, [source], {}).errors).toEqual([
+      'bodies:disr: scope decidedAt must be YYYY-MM-DD',
+    ]);
+  });
+
+  it('accepts sources and directory records that resolve to their body', () => {
+    const subUnit = buildAgency({
+      id: 'disr-ai-unit',
+      bodyId: 'disr',
+      name: 'Department of Industry, Science and Resources - AI unit',
+      website: 'https://www.industry.gov.au/ai',
+    });
+    expect(validateBodies(bodies, [source], { agencies: [agency, subUnit] }).errors).toEqual([]);
+  });
+
+  it('fails an unknown body, a foreign host and a name mismatch', () => {
+    const report = validateBodies(
+      bodies,
+      [
+        { ...source, id: 'orphan', bodyId: 'nope' },
+        { ...source, id: 'foreign', url: 'https://www.finance.gov.au/news' },
+      ],
+      { agencies: [{ ...agency, name: 'Department of Industry' }] },
+    );
+    expect(report.errors).toEqual([
+      'watchSources:orphan: unknown bodyId nope',
+      "watchSources:foreign: host www.finance.gov.au is not one of body disr's hosts",
+      'agencies:diser: name "Department of Industry" differs from body disr ("Department of Industry, Science and Resources")',
+    ]);
+  });
+
+  it('fails a jurisdiction mismatch and a jurisdiction without a tier A body', () => {
+    const report = validateBodies(
+      bodies.filter((body) => body.jurisdiction !== 'nt'),
+      [{ ...source, jurisdiction: 'nsw' }],
+      {},
+    );
+    expect(report.errors).toEqual([
+      'bodies: no tier A body for nt',
+      'watchSources:disr-news: jurisdiction nsw differs from body disr (federal)',
+    ]);
+  });
+
+  it('reports a malformed bodies file instead of throwing', () => {
+    expect(
+      validateBodies([{ ...bodies[0], tier: 'D' }], [], {}).errors,
+    ).toEqual(['bodies:nsw-gov: invalid tier']);
   });
 });
 
@@ -1601,6 +1785,50 @@ describe('validateCollectionMeta failure classes', () => {
       ).errors,
     ).toEqual(['meta:sourceResults[0]: invalid failedUrl']);
   });
+
+  it('accepts decided skips with a public url and a decider', () => {
+    expect(
+      validateCollectionMeta(
+        meta(
+          row({
+            status: 'success',
+            itemCount: 1,
+            error: undefined,
+            skippedLinked: [
+              { url: 'https://www.finance.gov.au/a.pdf', decidedBy: 'finance-news' },
+            ],
+          }),
+        ),
+      ).errors,
+    ).toEqual([]);
+  });
+
+  it.each([
+    [[], 'meta:sourceResults[0]: skippedLinked must be a non-empty array'],
+    ['nope', 'meta:sourceResults[0]: skippedLinked must be a non-empty array'],
+    [
+      [{ url: 'https://www.finance.gov.au/a.pdf?token=abc', decidedBy: 'finance-news' }],
+      'meta:sourceResults[0]: skippedLinked[0] has an invalid url',
+    ],
+    [
+      [{ url: 'http://www.finance.gov.au/a.pdf', decidedBy: 'finance-news' }],
+      'meta:sourceResults[0]: skippedLinked[0] has an invalid url',
+    ],
+    [
+      [{ url: '', decidedBy: 'finance-news' }],
+      'meta:sourceResults[0]: skippedLinked[0] has an invalid url',
+    ],
+    [
+      [{ url: 'https://www.finance.gov.au/a.pdf', decidedBy: ' ' }],
+      'meta:sourceResults[0]: skippedLinked[0] requires decidedBy',
+    ],
+  ])('rejects malformed skippedLinked case %#', (skippedLinked, error) => {
+    expect(
+      validateCollectionMeta(
+        meta(row({ skippedLinked: skippedLinked as never })),
+      ).errors,
+    ).toEqual([error]);
+  });
 });
 
 describe('validateCollectionMeta robotsUnverified', () => {
@@ -1638,6 +1866,81 @@ describe('validateCollectionMeta robotsUnverified', () => {
       expect(validateCollectionMeta(meta(value)).errors).toEqual(['meta: invalid collector robotsUnverified']);
     },
   );
+});
+
+describe('validateCollectionMeta run order', () => {
+  const meta = (stamps: Partial<CollectionMeta>): CollectionMeta =>
+    ({
+      lastCollectedAt: '2026-10-17T19:30:00.000Z',
+      lastHealthyAt: '2026-10-10T19:30:00.000Z',
+      lastUsableAt: '2026-10-14T19:30:00.000Z',
+      lastReviewedAt: null,
+      collector: {
+        runCount: 3,
+        lastRunSources: [],
+        lastRunErrors: [],
+        health: 'failed',
+        dueSourceCount: 0,
+        successfulSourceCount: 0,
+        failedSourceCount: 0,
+        skippedSourceCount: 0,
+        successRate: 0,
+        automaticSourceCount: 0,
+        manualSourceCount: 0,
+        sourceResults: [],
+      },
+      ...stamps,
+    }) as CollectionMeta;
+
+  it('accepts healthy, then usable, then collected, and missing stamps', () => {
+    expect(validateCollectionMeta(meta({})).errors).toEqual([]);
+    expect(
+      validateCollectionMeta(meta({ lastHealthyAt: null, lastUsableAt: null })).errors,
+    ).toEqual([]);
+  });
+
+  it.each([
+    [{ lastHealthyAt: '2026-10-15T00:00:00.000Z' }, 'meta: lastHealthyAt is after lastUsableAt'],
+    [{ lastUsableAt: '2026-10-18T00:00:00.000Z' }, 'meta: lastUsableAt is after lastCollectedAt'],
+    [
+      { lastUsableAt: null, lastHealthyAt: '2026-10-18T00:00:00.000Z' },
+      'meta: lastHealthyAt is after lastCollectedAt',
+    ],
+  ])('rejects out-of-order stamps case %#', (stamps, error) => {
+    expect(validateCollectionMeta(meta(stamps)).errors).toEqual([error]);
+  });
+});
+
+describe('validateWatchState sourceHealth', () => {
+  const state = (lastSuccessAt: string | null): WatchState => ({
+    ...emptyWatchState(),
+    sourceHealth: {
+      'source-a': {
+        lastSuccessAt,
+        firstFailureAt: '2026-10-15T00:00:00.000Z',
+        consecutiveFailures: 2,
+        lastFailureClass: 'timeout',
+      },
+    },
+  });
+
+  it('accepts failures that began after the last success', () => {
+    expect(validateWatchState(state('2026-10-08T00:00:00.000Z')).errors).toEqual([]);
+    expect(validateWatchState(state(null)).errors).toEqual([]);
+  });
+
+  it('rejects an empty source id', () => {
+    const base = state(null);
+    expect(
+      validateWatchState({ ...base, sourceHealth: { '': base.sourceHealth!['source-a'] } }).errors,
+    ).toEqual(['watchState:sourceHealth:: empty source id']);
+  });
+
+  it('rejects a success at or after the first failure of the streak', () => {
+    expect(validateWatchState(state('2026-10-16T00:00:00.000Z')).errors).toEqual([
+      'watchState:sourceHealth:source-a: lastSuccessAt must precede firstFailureAt',
+    ]);
+  });
 });
 
 describe('validateWatchState hosts', () => {
@@ -1702,4 +2005,28 @@ describe('validateWatchState hosts', () => {
       expect(report.errors).toEqual([expect.stringContaining('invalid host')]);
     },
   );
+});
+
+describe('validateLegislativeTimelineOverlap', () => {
+  it('refuses a timeline event on the page of a legislative record, and only then', () => {
+    const page = 'https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7537';
+    const bill = buildPolicy({
+      id: 'kill-switch-bill',
+      sourceUrl: page,
+      type: 'legislation',
+      status: 'proposed',
+      legislative: { kind: 'bill', ref: { register: 'aph', billId: 'r7537' }, origin: 'private_member', events: [] },
+    });
+    const plain = buildPolicy({ id: 'plain-policy', sourceUrl: 'https://example.gov.au/policy' });
+    const report = validateLegislativeTimelineOverlap(
+      [bill, plain],
+      [
+        buildTimelineEvent({ id: 'tl-bill', sourceUrl: page }),
+        buildTimelineEvent({ id: 'tl-policy', sourceUrl: plain.sourceUrl }),
+      ],
+    );
+    expect(report.errors).toEqual([
+      "tl-bill: cites the page of legislative record kill-switch-bill; its history belongs in that record's events",
+    ]);
+  });
 });

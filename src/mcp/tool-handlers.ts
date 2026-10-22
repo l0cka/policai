@@ -1,13 +1,14 @@
 import {
 	analyseSourceUrl,
-	approveStagedSource,
 	auditMcpTool,
   type BrowserCaptureInput,
   type ManualExtractionInput,
   type ReviewedDateInput,
   checkCoverage,
+  decideSourceReview,
+  describeSourceProposal,
   normalizeReviewStatus,
-  publishStagedSource,
+  proposeSourceDecision,
   recordManualSourceReview,
   rejectStagedSource,
   stageSourceCapture,
@@ -109,6 +110,7 @@ export async function handleStageSourceUrl(input: {
   url: string;
   entryKind: SourceReviewEntryKind;
   targetRecordId?: string;
+  proposedRecord?: Record<string, unknown>;
   notes?: string;
   stageOnly?: boolean;
   adminToken?: string;
@@ -119,6 +121,10 @@ export async function handleStageSourceUrl(input: {
       url: input.url,
       entryKind: input.entryKind,
       targetRecordId: input.targetRecordId,
+      proposedRecord: input.proposedRecord as
+        | PolicyDraft
+        | TimelineEventDraft
+        | undefined,
       notes: input.notes,
       actor: MCP_ACTOR,
       stageOnly: input.stageOnly,
@@ -201,50 +207,65 @@ export async function handleReviewCourtRequirement(input: {
   });
 }
 
-export async function handleApproveStagedSource(input: {
+export function handleShowSourceProposal(input: { id: string }) {
+  return describeSourceProposal(input.id);
+}
+
+export async function handleProposeSourceDecision(input: {
   id: string;
-  reviewer?: string;
+  proposedBy?: string;
   proposedRecord?: Record<string, unknown>;
   expectedTargetRevisionHash?: string;
   officialSourceUrl?: string;
-  approvalNotes?: string;
   manualExtraction?: ManualExtractionInput;
   reviewedDate?: ReviewedDateInput;
-  browserCapture?: BrowserCaptureInput;
+  notes?: string;
   adminToken?: string;
 }) {
-  return audited('approve_staged_source', {}, () => {
+  return audited('propose_source_decision', {}, () => {
     requireMcpAdminToken(input.adminToken);
-    const reviewer = input.reviewer?.trim();
-    if (!reviewer) {
-      throw new Error('A human reviewer identity is required');
-    }
-    return approveStagedSource({
+    return proposeSourceDecision({
       id: input.id,
-      actor: reviewer,
+      proposedBy: input.proposedBy?.trim() ?? '',
       proposedRecord: input.proposedRecord as
         | PolicyDraft
         | TimelineEventDraft
         | undefined,
       expectedTargetRevisionHash: input.expectedTargetRevisionHash,
       officialSourceUrl: input.officialSourceUrl,
-      approvalNotes: input.approvalNotes,
       manualExtraction: input.manualExtraction,
       reviewedDate: input.reviewedDate,
-      browserCapture: input.browserCapture,
+      notes: input.notes,
     });
   });
 }
 
-export async function handlePublishStagedSource(input: {
+const DECISION_CARD_URL = /^https:\/\/claude\.ai\/\S+$/;
+
+/**
+ * Records the editor's tap on a decision card. The reviewer must be on the
+ * editor allowlist and the card link is kept as the attestation.
+ */
+export async function handleRecordDecision(input: {
   id: string;
-  browserCapture?: BrowserCaptureInput;
+  proposalHash: string;
+  reviewer?: string;
+  attestationUrl: string;
   adminToken?: string;
 }) {
-  return audited('publish_staged_source', {}, () => {
+  return audited('record_decision', {}, () => {
     requireMcpAdminToken(input.adminToken);
-    return publishStagedSource(input.id, {
-      browserCapture: input.browserCapture,
+    const reviewer = requireSignalReviewer(input.reviewer);
+    if (!DECISION_CARD_URL.test(input.attestationUrl)) {
+      throw new Error(
+        'attestationUrl must link to the claude.ai decision card the editor answered',
+      );
+    }
+    return decideSourceReview({
+      id: input.id,
+      proposalHash: input.proposalHash,
+      reviewer,
+      attestationUrl: input.attestationUrl,
     });
   });
 }
@@ -320,71 +341,3 @@ export async function handleVerifyRegisterRecord(input: {
   });
 }
 
-/**
- * One entry for the Signal Grok Bot phrase table: approve, dismiss, publish,
- * or verify. Same trust gates as the individual tools plus the Signal
- * reviewer allowlist on approve / dismiss / verify.
- */
-export async function handleSignalDecision(input: {
-  action: 'approve' | 'dismiss' | 'publish' | 'verify';
-  id: string;
-  reviewer?: string;
-  notes?: string;
-  proposedRecord?: Record<string, unknown>;
-  expectedTargetRevisionHash?: string;
-  officialSourceUrl?: string;
-  manualExtraction?: ManualExtractionInput;
-  reviewedDate?: ReviewedDateInput;
-  browserCapture?: BrowserCaptureInput;
-  adminToken?: string;
-}) {
-  requireMcpAdminToken(input.adminToken);
-  const id = input.id.trim();
-  if (!id) {
-    throw new Error(
-      input.action === 'verify'
-        ? 'A register policy id is required'
-        : 'A source review id is required',
-    );
-  }
-
-  if (input.action === 'publish') {
-    return audited('signal_decision', {}, () =>
-      publishStagedSource(id, { browserCapture: input.browserCapture }),
-    );
-  }
-
-  const reviewer = requireSignalReviewer(input.reviewer);
-  const notes =
-    input.notes?.replace(/\s+/g, ' ').trim() ||
-    `Policai Signal decision (${input.action}) by ${reviewer}`;
-
-  if (input.action === 'verify') {
-    return audited('signal_decision', {}, () =>
-      verifyRegisterRecord({ policyId: id, actor: reviewer, notes }),
-    );
-  }
-
-  if (input.action === 'dismiss') {
-    return audited('signal_decision', {}, () =>
-      rejectStagedSource(id, notes),
-    );
-  }
-
-  return audited('signal_decision', {}, () =>
-    approveStagedSource({
-      id,
-      actor: reviewer,
-      approvalNotes: notes,
-      proposedRecord: input.proposedRecord as
-        | PolicyDraft
-        | TimelineEventDraft
-        | undefined,
-      expectedTargetRevisionHash: input.expectedTargetRevisionHash,
-      officialSourceUrl: input.officialSourceUrl,
-      manualExtraction: input.manualExtraction,
-      reviewedDate: input.reviewedDate,
-      browserCapture: input.browserCapture,
-    }),
-  );
-}

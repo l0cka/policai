@@ -1,13 +1,18 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import {
+  getBodies,
   getCollectionMeta,
   getPolicies,
   getSourceCheckTimes,
+  getSourceHealth,
   getSourceMonitoring,
   getSourceReviews,
 } from '@/lib/data-service';
-import { WATCH_SOURCES } from '@/lib/pipeline/sources';
+import { getAutomaticSources, WATCH_SOURCES } from '@/lib/pipeline/sources';
+import { sourcesNotReachedSince } from '@/lib/pipeline/source-health';
+import { collectionAnchor } from '@/lib/this-week';
+import { watchCoverage } from '@/lib/watch-coverage/report';
 import { summarizeManualSourceCoverage } from '@/lib/source-monitoring';
 import {
   assessSourceFreshness,
@@ -29,6 +34,7 @@ import { HealthSignal } from '@/components/ui/health-signal';
 import { getJurisdictionName } from '@/types';
 import { EDITORIAL_REVIEW_INTERVAL_DAYS } from '@/lib/verification';
 import { pageAlternates, pageSocialMeta } from '@/lib/site-seo';
+import { auDate } from '@/lib/au-date';
 
 export const revalidate = 3600;
 
@@ -59,8 +65,21 @@ const HEADER_CELL =
 // Secondary columns drop out on narrow screens so the state stays visible.
 const WIDE_ONLY = 'hidden sm:table-cell';
 
+const WATCH_TIERS = ['A', 'B', 'C'] as const;
+const GAP_NOTE = { failing: ' (failing)', pending: ' (newly admitted, not yet checked)', uncovered: '' } as const;
+
 /** Records due within this many days are listed under Record review. */
 const REVIEW_SOON_DAYS = 30;
+
+function sydneyDate(stamp: string | null): string {
+  if (!stamp) return 'never';
+  return auDate(new Date(stamp), {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    timeZone: 'Australia/Sydney',
+  });
+}
 
 function dueLabel(daysLeft: number | null): string {
   if (daysLeft === null) return 'Never reviewed';
@@ -75,14 +94,24 @@ function age(days: number | null): string {
 }
 
 export default async function StatusPage() {
-  const [meta, policies, checkTimes, monitoring, pendingReviews] =
+  const [meta, policies, checkTimes, sourceHealth, monitoring, pendingReviews, bodies] =
     await Promise.all([
       getCollectionMeta(),
       getPolicies(),
       getSourceCheckTimes(),
+      getSourceHealth(),
       getSourceMonitoring(),
       getSourceReviews({ status: 'pending_review' }),
+      getBodies(),
     ]);
+  const anchor = collectionAnchor(meta);
+  const automatic = getAutomaticSources();
+  const nameOf = new Map(automatic.map((source) => [source.id, source.name]));
+  const unreached = sourcesNotReachedSince(
+    anchor,
+    sourceHealth,
+    automatic.map((source) => source.id),
+  );
   const rows = assessSourceFreshness(WATCH_SOURCES, checkTimes);
   const freshness = summarizeSourceFreshness(rows);
   const manual = summarizeManualSourceCoverage(WATCH_SOURCES, monitoring);
@@ -93,11 +122,22 @@ export default async function StatusPage() {
     (row) => row.overdue || (row.daysLeft !== null && row.daysLeft <= REVIEW_SOON_DAYS),
   );
   const completeness = summarizeRecordCompleteness(policies);
+  const watch = watchCoverage({
+    bodies,
+    sources: WATCH_SOURCES,
+    sourceHealth,
+    checkTimes,
+    monitoring,
+    sourceResults: meta.collector.sourceResults,
+    now: new Date(),
+  });
+  const watchJurisdictions = [...new Set(watch.cells.map((cell) => cell.jurisdiction))];
+  const tierAGaps = watch.gaps.filter((gap) => gap.tier === 'A');
+  const otherGaps = watch.gaps.length - tierAGaps.length;
 
   return (
     <article className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
       <PageIntro
-        eyebrow="Coverage"
         title="Source status"
         description="When each official source was last checked successfully, and where the register is thin."
         actions={<HealthSignal health={meta.collector.health} />}
@@ -106,15 +146,15 @@ export default async function StatusPage() {
         metrics={[
           {
             value: `${meta.collector.successfulSourceCount}/${meta.collector.dueSourceCount}`,
-            label: 'due sources reached, last run',
+            label: `due sources reached in the run of ${sydneyDate(meta.lastCollectedAt)}`,
           },
-          { value: freshness.overdue, label: 'overdue sources' },
+          { value: freshness.overdue, label: 'sources overdue for a check today' },
           { value: freshness.neverChecked, label: 'never checked' },
           { value: queue.pending, label: 'awaiting review' },
         ]}
       />
 
-      <div className="max-w-5xl space-y-10 py-9 text-sm leading-6">
+      <div className="space-y-10 py-9 text-sm leading-6 [&_section>p]:max-w-3xl">
         <section>
           <h2 className="section-title">Editorial queue</h2>
           <p className="text-muted-foreground">
@@ -227,6 +267,34 @@ export default async function StatusPage() {
         ) : null}
 
         <section className="border-t border-border pt-7">
+          <h2 className="section-title">Not reached since the last passing run</h2>
+          <p className="text-muted-foreground">
+            Last collected {sydneyDate(meta.lastCollectedAt)}. Last passing
+            run {sydneyDate(anchor)}, which anchors the weekly window.{' '}
+            {Object.keys(sourceHealth).length === 0
+              ? 'The per-source ledger has no records yet; the next collection builds it.'
+              : unreached.length === 0
+                ? 'Every automatic source has been reached since then.'
+                : 'These automatic sources are failing and have had no successful check since then, so the window may miss what they published.'}
+          </p>
+          {unreached.length > 0 ? (
+            <ul className="mt-3 space-y-1">
+              {unreached.map((row) => (
+                <li key={row.sourceId}>
+                  {nameOf.get(row.sourceId) ?? row.sourceId}{' '}
+                  <span className="font-mono text-xs text-muted-foreground">
+                    failing since {sydneyDate(row.firstFailureAt)},{' '}
+                    {row.consecutiveFailures} run
+                    {row.consecutiveFailures === 1 ? '' : 's'}
+                    {row.lastFailureClass ? `, ${row.lastFailureClass}` : ''}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </section>
+
+        <section className="border-t border-border pt-7">
           <h2 className="section-title">Sources</h2>
           <p className="mb-3 text-muted-foreground">
             A source is overdue when its last completed check is older than{' '}
@@ -318,6 +386,126 @@ export default async function StatusPage() {
             Binding instruments are register records typed as legislation or
             regulation.
           </p>
+        </section>
+
+        <section className="border-t border-border pt-7">
+          <h2 className="section-title">Watch coverage by publishing body</h2>
+          <p className="mb-3 text-muted-foreground">
+            Each cell counts the bodies that have a working automatic source
+            or a manual source, out of the bodies in that jurisdiction and
+            tier. Tier A is each government&apos;s central, digital or AI and
+            drafting bodies, plus the federal policy departments, regulators
+            and Parliament.
+            {watch.unassessed > 0
+              ? ` ${watch.unassessed} of these bodies have no scope decision yet and are counted.`
+              : null}
+          </p>
+          <div className="overflow-x-auto" role="region" aria-label="Watch coverage table" tabIndex={0}>
+            <table className="w-full">
+              <thead>
+                <tr className="border-y border-[var(--rule-heavy)]">
+                  <th scope="col" className={HEADER_CELL}>Jurisdiction</th>
+                  {WATCH_TIERS.map((tier) => (
+                    <th key={tier} scope="col" className={HEADER_CELL}>Tier {tier}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {watchJurisdictions.map((jurisdiction) => (
+                  <tr key={jurisdiction} className="border-b border-border">
+                    <td className="py-2.5 pr-3">{getJurisdictionName(jurisdiction)}</td>
+                    {WATCH_TIERS.map((tier) => {
+                      const cell = watch.cells.find(
+                        (c) => c.jurisdiction === jurisdiction && c.tier === tier,
+                      );
+                      return (
+                        <td key={tier} className="py-2.5 pr-3 tabular-nums">
+                          {cell ? `${cell.automatic + cell.manual} of ${cell.bodies}` : '–'}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="mt-3 text-muted-foreground">
+            {tierAGaps.length === 0
+              ? 'Every tier A body has a working source.'
+              : `Tier A bodies with no working source: ${tierAGaps
+                  .map((gap) => `${gap.name}${GAP_NOTE[gap.coverage]}`)
+                  .join(', ')}.`}{' '}
+            {otherGaps > 0
+              ? `${otherGaps} tier B and C ${otherGaps === 1 ? 'body has' : 'bodies have'} none either.`
+              : null}
+          </p>
+          {watch.undecidedRefusals.length > 0 ? (
+            <>
+              <h3 className="mt-5 font-medium">Refusals awaiting a decision</h3>
+              <ul className="mt-2 space-y-1">
+                {watch.undecidedRefusals.map((row) => (
+                  <li key={row.sourceId}>
+                    {row.sourceId}{' '}
+                    <span className="font-mono text-xs text-muted-foreground">
+                      {row.cls} since {sydneyDate(row.since)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : null}
+          <p className="mt-3 text-muted-foreground">
+            <Link
+              href="/status/refusals"
+              className="text-primary underline underline-offset-4 hover:no-underline"
+            >
+              Sites that refuse Policai
+            </Link>{' '}
+            lists every official site that blocks the collector and how each is
+            covered instead.
+          </p>
+          <p className="mt-3 text-muted-foreground">
+            <Link
+              href="/status/reuse"
+              className="text-primary underline underline-offset-4 hover:no-underline"
+            >
+              Reuse terms of official sites
+            </Link>{' '}
+            records what each watched site’s copyright page permits.
+          </p>
+          {watch.blocks.length > 0 ? (
+            <>
+              <h3 className="mt-5 font-medium">Decided blocks</h3>
+              <ul className="mt-2 space-y-1">
+                {watch.blocks.map((block) => (
+                  <li key={block.sourceId}>
+                    {block.sourceId}{' '}
+                    <span className="font-mono text-xs text-muted-foreground">
+                      {block.automation.because}, {block.automation.decision} since{' '}
+                      {sydneyDate(block.automation.since)}, last reviewed{' '}
+                      {sydneyDate(block.lastReviewedAt)}
+                      {block.overdue ? ', review overdue' : ''}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : null}
+          {watch.skippedLinked.length > 0 ? (
+            <>
+              <h3 className="mt-5 font-medium">Linked documents not requested</h3>
+              <ul className="mt-2 space-y-1">
+                {watch.skippedLinked.map((row) => (
+                  <li key={`${row.sourceId} ${row.url}`}>
+                    {row.sourceId}{' '}
+                    <span className="font-mono text-xs text-muted-foreground">
+                      {row.url}, host decided by {row.decidedBy}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : null}
         </section>
 
         <section className="border-t border-border pt-7">

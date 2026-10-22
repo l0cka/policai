@@ -6,6 +6,7 @@ import type {
   PolicyDraft,
   SourceEvidence,
   SourceReview,
+  SkippedLinked,
   SourceRunResult,
   TimelineEvent,
   TimelineEventDraft,
@@ -13,6 +14,7 @@ import type {
 import { normalizeJurisdiction, normalizePolicyType } from '@/types';
 import {
   classifyByBodyMentions,
+  classifyBySearchMatch,
   classifyCandidate,
   classifyCandidatesWithClaude,
   classificationFromVerdict,
@@ -20,6 +22,10 @@ import {
   type Classification,
 } from './classify';
 import type { ClaudeVerdict } from './claude-classify';
+import { extractFromFrlSearch, trackedFrlPages } from '@/lib/legislation/frl-search';
+import { extractFromSaltSearch } from '@/lib/legislation/sa-salt';
+import { extractFromBillList } from '@/lib/legislation/state-bill-lists';
+import { extractFromVicBillSearch } from '@/lib/legislation/vic-bills';
 import { extractRetrievedDocument } from './content';
 import { classifyFailure, publicFailureUrl } from './failure';
 import { robotsUnverifiedHosts, type Host, type HostGate, type HostRecord } from './host-gate';
@@ -29,6 +35,7 @@ import {
   type Candidate,
 } from './extract';
 import {
+  DecidedBlockError,
   foldLinkedDocuments,
   isGateError,
   matchesRetrievedContent,
@@ -37,9 +44,11 @@ import {
   type RetrievedSource,
 } from './fetch';
 import { scrapeWithFirecrawl } from './firecrawl';
+import { advanceSourceHealth, type SourceHealthRecord } from './source-health';
 import { identityAuthorityFor, identityExceptionState } from './identity';
 import {
   getAutomaticSources,
+  isRegisterSearch,
   WATCH_SOURCES,
   type WatchSource,
 } from './sources';
@@ -97,6 +106,7 @@ export interface WatchState {
   lastCheckedBySource: Record<string, string>;
   sourceSnapshots: Record<string, SourceSnapshot>;
   hosts: Record<Host, HostRecord>;
+  sourceHealth: Record<string, SourceHealthRecord>;
 }
 
 export interface CollectOptions {
@@ -190,7 +200,13 @@ async function retrievedSourceFromFirecrawl(
 }
 
 export function emptyWatchState(): WatchState {
-  return { seen: {}, lastCheckedBySource: {}, sourceSnapshots: {}, hosts: {} };
+  return {
+    seen: {},
+    lastCheckedBySource: {},
+    sourceSnapshots: {},
+    hosts: {},
+    sourceHealth: {},
+  };
 }
 
 function slugify(value: string, maxLength = 60): string {
@@ -1134,6 +1150,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     lastCheckedBySource: { ...options.state.lastCheckedBySource },
     sourceSnapshots: { ...(options.state.sourceSnapshots ?? {}) },
     hosts: { ...(options.state.hosts ?? {}) },
+    sourceHealth: { ...(options.state.sourceHealth ?? {}) },
   };
   const gate = options.hostGate;
   const indexGate: HostGate = { ...gate, admit: (url) => gate.admit(url, 'wait') };
@@ -1165,6 +1182,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     ...(options.trackedUrls ?? []).map(sourceUrlIdentity),
     ...trackedPoliciesByUrl.keys(),
     ...trackedTimelineEventsByUrl.keys(),
+    ...trackedFrlPages(options.trackedPolicies ?? []).map(sourceUrlIdentity),
   ]);
   const knownHeadlineKeys = new Set(
     options.existingDevelopments
@@ -1301,6 +1319,13 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     let deferSourceSuccess = false;
     const sourceErrors: string[] = [];
     let failure: ReturnType<typeof rowFailure> | null = null;
+    const skippedLinked = new Map<string, SkippedLinked>();
+    const noteSkipped = (skipped: readonly SkippedLinked[] | undefined) => {
+      for (const entry of skipped ?? []) {
+        const url = publicFailureUrl(entry.url);
+        if (url) skippedLinked.set(url, { url, decidedBy: entry.decidedBy });
+      }
+    };
 
     const exceptionUntil = source.identityException?.until;
     if (identityState === 'active') {
@@ -1332,7 +1357,15 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
             ? extractFromRss(retrieval.body, source.url, {
                 titlePattern: source.bodyRelevance?.titlePattern,
               })
-            : extractFromHtml(retrieval.body, source.url);
+            : source.kind === 'frl-search'
+              ? extractFromFrlSearch(retrieval.body)
+              : source.kind === 'sa-salt-search'
+                ? extractFromSaltSearch(retrieval.body)
+                : source.kind === 'vic-bill-search'
+                  ? extractFromVicBillSearch(retrieval.body)
+                  : source.kind === 'bill-list' && source.billList
+                    ? extractFromBillList(source.billList, retrieval.body, source.url)
+                    : extractFromHtml(retrieval.body, source.url);
       return { retrieval, extracted };
     };
     const retrieveSourceIndex = async () => {
@@ -1376,6 +1409,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
       try {
         const indexAttempt = await retrieveSourceIndex();
         sourceRetrieval = indexAttempt.retrieval;
+        noteSkipped(sourceRetrieval.skippedLinked);
         const indexExtraction = indexAttempt.extracted;
         if (source.kind === 'document') {
           itemCount = 1;
@@ -1621,11 +1655,27 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
             );
           });
 
+        // An admitted index or feed's first completed check finds back
+        // catalogue, so it only records those items as seen; developments
+        // start from the second check. Documents baseline on their own.
+        const seeding =
+          source.admittedAt !== undefined &&
+          source.kind !== 'document' &&
+          !state.lastCheckedBySource[source.id];
         for (const candidate of fresh) {
-          newCandidateCount++;
           markPending(state, candidate, source, nowIso);
+          if (seeding) {
+            markCandidateComplete(state, candidate, 'processed', nowIso);
+          } else {
+            newCandidateCount++;
+          }
         }
-        discovered = fresh;
+        if (seeding && fresh.length > 0) {
+          log(
+            `[collect] ${source.id}: first check; seeded ${fresh.length} current item${fresh.length === 1 ? '' : 's'} as seen without developments: ${fresh.map((candidate) => candidate.url).join(', ')}`,
+          );
+        }
+        discovered = seeding ? [] : fresh;
         if (!deferSourceSuccess && sourceErrors.length === 0) {
           state.lastCheckedBySource[source.id] = nowIso;
         }
@@ -1663,7 +1713,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     );
 
     const claudeVerdictsById: Map<string, ClaudeVerdict> | null =
-      useClaudeClassifier && !source.bodyRelevance
+      useClaudeClassifier && !source.bodyRelevance && !isRegisterSearch(source.kind)
         ? await classifyCandidatesWithClaude(
             candidates
               .filter((candidate) => !trackedChangeTarget(candidate))
@@ -1700,6 +1750,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
           sourceUrlsEqual(candidate.url, source.url)
             ? sourceRetrieval ?? (await retrieveSourceIndex()).retrieval
             : await retrievePageWithFallback(candidate.url);
+        noteSkipped(pageRetrieval.skippedLinked);
         const expectedVersion = parseChangeFingerprint(
           candidate.changeFingerprint,
         );
@@ -1770,6 +1821,12 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
           );
           continue;
         }
+        if (error instanceof DecidedBlockError) {
+          noteSkipped([{ url: candidate.url, decidedBy: error.decidedBy }]);
+          markCandidateFailed(state, candidate, nowIso, message);
+          log(`[collect] ${source.id}: skipped ${candidate.url} (${message})`);
+          continue;
+        }
         if (isDeferredByGate(error)) {
           state.seen[key] = {
             ...attempted,
@@ -1799,18 +1856,23 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         continue;
       }
 
+      // A register search row names and dates the instrument or bill; its
+      // page's first heading is the site banner.
+      const fromRegister = isRegisterSearch(source.kind);
       const enrichedCandidate: Candidate = {
         ...candidate,
         title:
           existingPolicy?.title ||
           existingTimelineEvent?.title ||
-          document.title ||
+          (fromRegister ? candidate.title : document.title) ||
           candidate.title,
         text: document.text.slice(0, 600) || candidate.text,
-        dateHint: document.publishedAt ?? candidate.dateHint,
-        dateHintPrecision:
-          document.publishedAtPrecision ??
-          candidate.dateHintPrecision,
+        dateHint: fromRegister
+          ? candidate.dateHint
+          : (document.publishedAt ?? candidate.dateHint),
+        dateHintPrecision: fromRegister
+          ? candidate.dateHintPrecision
+          : (document.publishedAtPrecision ?? candidate.dateHintPrecision),
       };
       state.seen[candidateStateKey(candidate)].candidate = enrichedCandidate;
       if (source.kind === 'document' && changeTarget) {
@@ -1839,18 +1901,20 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
             changeTarget,
             changeDetectionReason(changeTarget.record, pageRetrieval),
           )
-        : source.bodyRelevance
-          ? classifyByBodyMentions(
-              enrichedCandidate,
-              document.text,
-              source.bodyRelevance.minAiMentions,
-            )
-          : useClaudeClassifier
-            ? classificationFromVerdict(
-                claudeVerdictsById?.get(candidateStateKey(candidate)),
+        : isRegisterSearch(source.kind)
+          ? classifyBySearchMatch(candidate)
+          : source.bodyRelevance
+            ? classifyByBodyMentions(
                 enrichedCandidate,
+                document.text,
+                source.bodyRelevance.minAiMentions,
               )
-            : await classifyCandidate(enrichedCandidate, document.text);
+            : useClaudeClassifier
+              ? classificationFromVerdict(
+                  claudeVerdictsById?.get(candidateStateKey(candidate)),
+                  enrichedCandidate,
+                )
+              : await classifyCandidate(enrichedCandidate, document.text);
       if (
         !classification.isRelevant ||
         classification.relevanceScore < minScoreForDevelopment
@@ -1955,10 +2019,12 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
       ),
       ...(identityState === 'none' ? {} : { identityException: identityState }),
       ...(failure ?? {}),
+      ...(skippedLinked.size > 0 ? { skippedLinked: [...skippedLinked.values()] } : {}),
     });
   }
 
   state.hosts = gate.hosts();
+  state.sourceHealth = advanceSourceHealth(state.sourceHealth, sourceResults);
   const waits = Object.entries(gate.waited());
   const waitedMs = waits.reduce((sum, [, ms]) => sum + ms, 0);
   const slowest = waits.sort(([, a], [, b]) => b - a)[0];
@@ -2013,7 +2079,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         (source) => source.enabled && source.automation === 'automatic',
       ).length,
       manualSourceCount: catalogSources.filter(
-        (source) => source.enabled && source.automation === 'manual',
+        (source) => source.enabled && source.automation !== 'automatic',
       ).length,
       sourceResults,
       ...(robotsUnverified.length > 0 ? { robotsUnverified } : {}),

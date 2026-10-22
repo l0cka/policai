@@ -16,7 +16,7 @@ export interface ManualSourceCoverage {
   neverReviewed: number;
 }
 
-function reviewIsCurrent(
+export function reviewIsCurrent(
   source: WatchSource,
   review: ManualSourceReview,
   now: Date,
@@ -45,7 +45,7 @@ export function summarizeManualSourceCoverage(
   now = new Date(),
 ): ManualSourceCoverage {
   const manualSources = sources.filter(
-    (source) => source.enabled && source.automation === 'manual',
+    (source) => source.enabled && source.automation !== 'automatic',
   );
   const reviewBySource = new Map(
     monitoring.manualReviews.map((review) => [review.sourceId, review]),

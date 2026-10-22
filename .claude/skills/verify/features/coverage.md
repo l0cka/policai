@@ -12,7 +12,7 @@
 
 ## How to get to it (user POV)
 
-- Choose `button "Explore"` in the header, then Coverage.
+- Choose `link "Register"` in the header, then `link "Coverage map"` in `navigation "Register views"`.
 - Open `/coverage?theme=<key>&j=<jurisdiction>` (deep link), `?theme=` alone, `?j=` alone, or `?by=type&type=<key>`.
 - Open the old `/network` URL.
 

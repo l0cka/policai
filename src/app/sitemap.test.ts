@@ -13,6 +13,7 @@ vi.mock('@/lib/data-service', () => ({
 it('lists /coverage and no longer lists /network (#330)', async () => {
   const urls = (await sitemap()).map((entry) => entry.url);
   expect(urls).toContain('https://policai.org/coverage');
+  expect(urls).toContain('https://policai.org/legislation');
   expect(urls.filter((url) => url.includes('/network'))).toEqual([]);
 });
 

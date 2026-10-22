@@ -1,9 +1,11 @@
 import { describe, expect, it } from 'vitest';
+import { buildManualDecision } from '@/test/factories';
 import type { WatchSource } from '@/lib/pipeline/sources';
 import { summarizeManualSourceCoverage } from '@/lib/source-monitoring';
 
 const daily: WatchSource = {
   id: 'daily-manual',
+  bodyId: 'test-body',
   name: 'Daily manual source',
   jurisdiction: 'federal',
   category: 'government',
@@ -11,7 +13,7 @@ const daily: WatchSource = {
   kind: 'html-index',
   schedule: 'daily',
   enabled: true,
-  automation: 'manual',
+  automation: buildManualDecision(),
 };
 
 const weekly: WatchSource = {

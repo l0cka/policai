@@ -31,7 +31,7 @@ function stableJsonValue(value: unknown): StableJsonValue | undefined {
   return undefined;
 }
 
-function revisionHash(value: unknown): string {
+export function revisionHash(value: unknown): string {
   return createHash('sha256')
     .update(JSON.stringify(stableJsonValue(value)))
     .digest('hex');

@@ -1,3 +1,4 @@
+import type { SignalHttpAction } from "@/lib/signal-http";
 import type { DataOverlayChange } from "@/lib/data-overlay";
 
 export type SignalCommitTarget = "pr" | "main";
@@ -11,7 +12,7 @@ export interface SignalSnapshotOptions {
 
 export interface SignalCommitInput {
 	reviewId: string;
-	action: "approve" | "dismiss";
+	action: SignalHttpAction;
 	message: string;
 	attestationText: string;
 	changes: DataOverlayChange[];

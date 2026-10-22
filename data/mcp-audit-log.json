@@ -1,5 +1,478 @@
 [
   {
+    "id": "mcp-audit-d4d3ceea-065a-4f66-ab65-127bee9d27ff",
+    "createdAt": "2026-10-22T11:52:51.478Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-8f2e120c-6a50-439b-a627-5e73cfbc18bf",
+    "createdAt": "2026-10-22T10:27:40.540Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-ff0c93d6-9266-49ec-8683-8890aefa5a0e",
+    "createdAt": "2026-10-22T10:27:40.520Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7537",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-86196056-1192-4312-8db1-2b7cc4dd0295",
+    "createdAt": "2026-10-22T10:27:40.499Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7537",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-8a0fee2a-5efd-4d70-a529-86c75dfd6ff7",
+    "createdAt": "2026-10-22T07:41:33.858Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-77f9d585-25db-4349-ae45-3069c3e37274",
+    "createdAt": "2026-10-22T07:41:33.317Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-e948fd0d-5bcc-468b-87fa-edae600a3f49",
+    "createdAt": "2026-10-22T07:41:32.787Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-f951ecbf-c554-4bca-9e90-c4ec5ef4b2a5",
+    "createdAt": "2026-10-22T07:41:32.270Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-93539c5f-3d09-438d-be3e-458098ea8289",
+    "createdAt": "2026-10-22T06:10:02.783Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-5ffdf173-a711-464e-9301-2a423f9661b4",
+    "createdAt": "2026-10-22T06:10:02.762Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-5cdb8f8b-153c-4c98-98aa-38a30bb2928e",
+    "createdAt": "2026-10-22T06:10:02.735Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-8abc618d-e5d3-4d88-8d35-fd1af582785a",
+    "createdAt": "2026-10-22T06:09:43.716Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+    "status": "error",
+    "errorSummary": "HTTP 403 at https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details"
+  },
+  {
+    "id": "mcp-audit-e2dd59f3-3b62-4099-8c86-6b4c345c9de9",
+    "createdAt": "2026-10-22T06:09:19.027Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.parliament.nsw.gov.au/bills/Pages/bill-details.aspx?pk=18875",
+    "status": "error",
+    "errorSummary": "HTTP 403 at https://www.parliament.nsw.gov.au/bills/Pages/bill-details.aspx"
+  },
+  {
+    "id": "mcp-audit-98f5b8b3-b554-4ca6-9d19-70914a20c48e",
+    "createdAt": "2026-10-22T06:08:03.405Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-b0727fe3-942e-4d3c-a417-64265415bcce",
+    "createdAt": "2026-10-22T06:08:02.723Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-1a1d20ef-ed7f-4a24-8e3f-6c7f6702ed3d",
+    "createdAt": "2026-10-22T06:08:02.225Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-7eb33df9-e778-410b-97f3-b2f56189ec08",
+    "createdAt": "2026-10-22T06:08:01.711Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-525b964d-8e7b-499a-ba12-69726e42bcd4",
+    "createdAt": "2026-10-22T05:57:20.563Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-6160537c-bb0a-43cc-9986-08a9f6194b2e",
+    "createdAt": "2026-10-22T05:57:20.554Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-226mr-asic-strengthens-ai-trading-safeguards-and-streamlines-market-integrity-rules",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-f41d0abd-dcc9-4a26-8121-224ce15eb82f",
+    "createdAt": "2026-10-22T05:57:20.509Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-226mr-asic-strengthens-ai-trading-safeguards-and-streamlines-market-integrity-rules",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-74653261-fcd7-4850-87ea-857defc6e3dd",
+    "createdAt": "2026-10-22T05:57:12.097Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-1ee9d910-59bf-4bb0-a7fa-bf211aaedbf4",
+    "createdAt": "2026-10-22T05:57:12.084Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-e9c7723d-d842-4372-8287-69750ea0508a",
+    "createdAt": "2026-10-22T05:57:12.064Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-0fb1dd22-9ef3-45cd-a8af-cf11674039f1",
+    "createdAt": "2026-10-22T05:56:56.377Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-901b102e-25e4-4b27-aaeb-ef8f5d88d13b",
+    "createdAt": "2026-10-22T05:56:56.366Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.legislation.gov.au/F2022L00062/asmade/details",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-a1a65000-274c-49b9-892a-c9c19a1a709d",
+    "createdAt": "2026-10-22T05:56:56.347Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.legislation.gov.au/F2022L00062/asmade/details",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-6221d8ee-ef6f-4819-b2de-be6c30e67aea",
+    "createdAt": "2026-10-22T05:56:38.382Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-d5f1cdb5-0b5e-4015-a35f-1e49174dd8d3",
+    "createdAt": "2026-10-22T05:56:38.370Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.legislation.gov.au/F2024L00711/asmade/details",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-229fa87b-24f5-4c87-830c-7f5d4ba94e76",
+    "createdAt": "2026-10-22T05:56:38.353Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.legislation.gov.au/F2024L00711/asmade/details",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-92cb0b23-532d-49f5-a2fa-b2968b4dffbd",
+    "createdAt": "2026-10-22T05:56:24.260Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-479a0c08-3a7d-420a-97cd-8acbc382650a",
+    "createdAt": "2026-10-22T05:56:24.248Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.legislation.gov.au/F2024L00710/asmade/details",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-a9575e74-9271-43bf-8006-f69f9ce3836b",
+    "createdAt": "2026-10-22T05:56:24.228Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.legislation.gov.au/F2024L00710/asmade/details",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-2ada96c5-a23e-43d6-b4ab-acc9418b9e0f",
+    "createdAt": "2026-10-22T05:56:10.305Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-cdf5c3a4-297b-4e1e-a990-b270e9f09f83",
+    "createdAt": "2026-10-22T05:56:10.289Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.legislation.gov.au/C2024A00128/asmade/text",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-f89b005f-a313-45b8-a413-3e3393dac679",
+    "createdAt": "2026-10-22T05:56:10.249Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.legislation.gov.au/C2024A00128/asmade/text",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-f539692e-cdd8-4d30-8f0b-ceba38380b35",
+    "createdAt": "2026-10-22T05:55:49.273Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-5d1acdd7-dc91-4375-a3d1-f9df8c506c2d",
+    "createdAt": "2026-10-22T05:55:49.262Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.legislation.gov.au/C2024A00078/asmade/text",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-6deda988-b855-4f07-b16a-de735361a5fb",
+    "createdAt": "2026-10-22T05:55:49.236Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.legislation.gov.au/C2024A00078/asmade/text",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-e855e3c9-12ae-47ee-ae4b-45552bf10262",
+    "createdAt": "2026-10-22T05:53:38.221Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-d53ece58-1569-42cb-aa27-9c5e257798d0",
+    "createdAt": "2026-10-22T05:53:38.208Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-f30fca12-f244-460f-8dcd-745580489312",
+    "createdAt": "2026-10-22T05:51:38.947Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-ccd7159c-ae42-403b-a1b5-7941a69f4cca",
+    "createdAt": "2026-10-22T05:51:38.931Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.legislation.gov.au/C2024A00078/asmade/text",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-530ed316-1fcf-4f66-8f1b-7a5a9e0120b0",
+    "createdAt": "2026-10-22T05:50:16.762Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-0c33d98f-5aec-4200-b292-6fda6a74f3b1",
+    "createdAt": "2026-10-22T05:50:16.748Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-226mr-asic-strengthens-ai-trading-safeguards-and-streamlines-market-integrity-rules",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-322aa0a6-fe12-4c9e-8e4e-05c37393db52",
+    "createdAt": "2026-10-22T05:49:07.950Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-8b42487f-edb5-41be-91f5-88d4f112d304",
+    "createdAt": "2026-10-22T05:49:07.929Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.legislation.gov.au/F2022L00062/asmade/details",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-338c92ea-63f2-4392-a2d3-f35e92120864",
+    "createdAt": "2026-10-22T05:48:49.840Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-1cd01006-b4fe-40a7-8e1c-535ce6c4fd01",
+    "createdAt": "2026-10-22T05:48:49.825Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.legislation.gov.au/F2024L00711/asmade/details",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-d5590961-3278-4fac-84ea-580378a45602",
+    "createdAt": "2026-10-22T05:48:35.844Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-aaa20d31-2302-4f38-bd86-ad1ccc75099d",
+    "createdAt": "2026-10-22T05:48:35.832Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.legislation.gov.au/F2024L00710/asmade/details",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-0f0829ad-c854-4762-980b-9fdd95937942",
+    "createdAt": "2026-10-22T05:48:21.881Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-2600eee6-3fb4-4300-bb87-f7a88315ca7c",
+    "createdAt": "2026-10-22T05:48:21.868Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.legislation.gov.au/C2024A00128/asmade/text",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-ee749e40-a3b1-403e-9b81-b85b2623989f",
+    "createdAt": "2026-10-22T05:48:01.499Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-a96ff60d-f702-48e9-bb66-d1bf37242258",
+    "createdAt": "2026-10-22T05:48:01.484Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.legislation.gov.au/C2024A00078/asmade/text",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-3d84c656-b038-4b0e-a257-a5e8811442b4",
+    "createdAt": "2026-10-22T05:45:54.045Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-58f4061a-26de-4561-86ec-9cf82dd76963",
+    "createdAt": "2026-10-22T05:45:54.022Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.legislation.gov.au/C2024A00078/asmade/text",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-ec44ba96-38a1-4e1b-afba-1a19e127c08a",
+    "createdAt": "2026-10-22T02:09:31.832Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-e81125ab-03a6-408b-b5ac-cf95c321f580",
+    "createdAt": "2026-10-22T02:07:56.703Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-0f33dfaf-e7c8-428b-953a-709553924831",
+    "createdAt": "2026-10-22T02:05:57.114Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-99c06841-7b9c-4ed6-af4d-4ebb598162be",
+    "createdAt": "2026-10-22T02:05:57.006Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-d49ca6dd-383a-4aaa-a846-ae9780649b79",
+    "createdAt": "2026-10-22T01:39:31.148Z",
+    "actor": "local-mcp-admin",
+    "toolName": "publish_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-5889905f-f58d-4797-b57d-4c131d07b591",
+    "createdAt": "2026-10-22T01:39:03.532Z",
+    "actor": "local-mcp-admin",
+    "toolName": "approve_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-bf29ddeb-5d15-4e04-8e4c-e199ba8abe62",
+    "createdAt": "2026-10-22T01:16:43.329Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-93e8f17c-7445-4968-bd76-08c38e9f6f7b",
     "createdAt": "2026-10-07T01:35:09.159Z",
     "actor": "local-mcp-admin",

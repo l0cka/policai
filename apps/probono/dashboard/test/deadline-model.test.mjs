@@ -52,6 +52,7 @@ describe('deadline rules for legacy rows', () => {
     assert.equal(formatDeadlineDate('2027-01-01', 'year'), '2027');
     assert.match(formatDeadlineDate('2026-10-16', 'day'), /^16 Oct\.? 2026$/);
     assert.match(formatDeadlineDate('2026-10-16', 'day', false), /^16 Oct\.?$/);
+    assert.equal(formatDeadlineDate('2026-09-30', 'day'), '30 Sep 2026');
   });
 });
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildPolicy } from '@/test/factories';
+import { buildManualDecision, buildPolicy } from '@/test/factories';
 import type { WatchSource } from '@/lib/pipeline/sources';
 import {
   buildJurisdictionCoverage,
@@ -11,6 +11,7 @@ import {
 
 const source: WatchSource = {
   id: 's',
+  bodyId: 'test-body',
   name: 'S',
   jurisdiction: 'tas',
   category: 'government',
@@ -30,7 +31,7 @@ describe('buildJurisdictionCoverage', () => {
       ],
       [
         source,
-        { ...source, id: 'm', automation: 'manual' },
+        { ...source, id: 'm', automation: buildManualDecision() },
         { ...source, id: 'x', enabled: false },
       ],
     );
