@@ -1,5 +1,654 @@
 [
   {
+    "id": "federal-privacy-and-other-legislation-amendment-act-2024",
+    "title": "Privacy and Other Legislation Amendment Act 2024",
+    "description": "Federal Act amending the Privacy Act 1988 and other laws. Schedule 1, Part 15 (items 87 and 88) requires an APP entity's privacy policy to explain when it uses personal information in computer programs that make, or substantially and directly contribute to, decisions that could significantly affect an individual's rights or interests (new APP 1.7 to 1.9). Those automated decision provisions start on 10 December 2026. Most of Schedule 1 commenced on 11 December 2024 and Schedule 2 (the statutory tort for serious invasions of privacy) on 10 June 2025.",
+    "jurisdiction": "federal",
+    "type": "legislation",
+    "status": "active",
+    "effectiveDate": "2024-12-11",
+    "dates": [
+      {
+        "type": "published",
+        "date": "2024-12-10",
+        "precision": "day",
+        "source": {
+          "url": "https://www.legislation.gov.au/C2024A00128/asmade/text",
+          "finalUrl": "https://www.legislation.gov.au/C2024A00128/asmade/text",
+          "title": "Privacy and Other Legislation Amendment Act 2024 - Federal Register of Legislation",
+          "retrievedAt": "2026-10-22T05:56:10.210Z",
+          "contentType": "text/html",
+          "contentHash": "17970bf12e0df01c2f88197417a4b118113f87d7f4ed87cd13b53f7be5b4e8e2",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-22T05:56:10.210Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Headless Chromium capture of the Federal Register of Legislation as-made text of Act No. 128 of 2024 (C2024A00128), rendered with the Policai collector identity. Staged by Claude (agent) for Daniel Alkurdi's federal register backfill.",
+            "pageContentHash": "d5e76d9df4ff126873e9c9a5582dd1b6271e612e41333205e9e0aaf7be8aed49",
+            "characterCount": 107752
+          },
+          "reviewedDate": {
+            "date": "2024-12-10",
+            "precision": "day",
+            "reviewedAt": "2026-10-22T05:56:10.250Z",
+            "reviewedBy": "Claude (agent)",
+            "notes": "The captured as-made text records that Act No. 128 of 2024 received Royal Assent on 10 December 2024; the APH bill page records assent on 10 December 2024."
+          }
+        }
+      },
+      {
+        "type": "commenced",
+        "date": "2024-12-11",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://www.legislation.gov.au/C2024A00128/asmade/text",
+          "finalUrl": "https://www.legislation.gov.au/C2024A00128/asmade/text",
+          "title": "Privacy and Other Legislation Amendment Act 2024 - Federal Register of Legislation",
+          "retrievedAt": "2026-10-22T05:56:10.210Z",
+          "contentType": "text/html",
+          "contentHash": "17970bf12e0df01c2f88197417a4b118113f87d7f4ed87cd13b53f7be5b4e8e2",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-22T05:56:10.210Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Headless Chromium capture of the Federal Register of Legislation as-made text of Act No. 128 of 2024 (C2024A00128), rendered with the Policai collector identity. Staged by Claude (agent) for Daniel Alkurdi's federal register backfill.",
+            "pageContentHash": "d5e76d9df4ff126873e9c9a5582dd1b6271e612e41333205e9e0aaf7be8aed49",
+            "characterCount": 107752
+          },
+          "reviewedDate": {
+            "date": "2024-12-11",
+            "precision": "day",
+            "reviewedAt": "2026-10-22T07:41:33.800Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The captured as-made text records Royal Assent on 10 December 2024; its commencement table starts most of Schedule 1 the day after assent. The Federal Register versions of the Privacy Act 1988 start compilation 101 (C2024C00833) on 11 December 2024 for those items, compilation 103 on 10 June 2025 for Schedule 2, and schedule sch 1 items 87 and 88 for 10 December 2026."
+          }
+        }
+      },
+      {
+        "type": "compliance_due",
+        "date": "2026-12-10",
+        "precision": "day",
+        "source": {
+          "url": "https://www.legislation.gov.au/C2024A00128/asmade/text",
+          "finalUrl": "https://www.legislation.gov.au/C2024A00128/asmade/text",
+          "title": "Privacy and Other Legislation Amendment Act 2024 - Federal Register of Legislation",
+          "retrievedAt": "2026-10-22T05:56:10.210Z",
+          "contentType": "text/html",
+          "contentHash": "17970bf12e0df01c2f88197417a4b118113f87d7f4ed87cd13b53f7be5b4e8e2",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-22T05:56:10.210Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Headless Chromium capture of the Federal Register of Legislation as-made text of Act No. 128 of 2024 (C2024A00128), rendered with the Policai collector identity. Staged by Claude (agent) for Daniel Alkurdi's federal register backfill.",
+            "pageContentHash": "d5e76d9df4ff126873e9c9a5582dd1b6271e612e41333205e9e0aaf7be8aed49",
+            "characterCount": 107752
+          },
+          "reviewedDate": {
+            "date": "2026-12-10",
+            "precision": "day",
+            "reviewedAt": "2026-10-22T05:56:10.250Z",
+            "reviewedBy": "Claude (agent)",
+            "notes": "Item 7 of the captured commencement table starts Schedule 1, Part 15 (items 87 and 88, automated decisions and APP 1.7 to 1.9) on the day after the end of the period of 24 months beginning on the day of Royal Assent, which the table gives as 10 December 2026; the Federal Register schedules a Privacy Act 1988 version starting 10 December 2026 for sch 1 items 87 and 88."
+          }
+        }
+      }
+    ],
+    "agencies": [
+      "Attorney-General's Department",
+      "Office of the Australian Information Commissioner",
+      "Parliament of Australia"
+    ],
+    "sourceUrl": "https://www.legislation.gov.au/C2024A00128/asmade/text",
+    "content": "Schedule 1 amends the Privacy Act 1988, including a Children's Online Privacy Code, new enforcement and declaration powers for the Information Commissioner, and Part 15 \"Automated decisions and privacy policies\". Part 15 inserts Australian Privacy Principles 1.7 to 1.9: where an APP entity has arranged for a computer program to make, or do a thing substantially and directly related to making, a decision that could reasonably be expected to significantly affect an individual's rights or interests, and personal information is used in the program, its APP privacy policy must say what kinds of personal information are used and what kinds of decisions are made. Schedule 2 inserts a statutory tort for serious invasions of privacy. Schedule 3 amends the Criminal Code to create offences for doxxing.",
+    "aiSummary": "Federal privacy reforms assented on 10 December 2024. New APP 1.7 to 1.9 require privacy policies to disclose automated decisions that significantly affect individuals, from 10 December 2026.",
+    "tags": [
+      "Privacy Act",
+      "automated decision-making",
+      "APP 1.7",
+      "privacy policy",
+      "statutory tort",
+      "doxxing"
+    ],
+    "themes": [
+      "privacy-data",
+      "automated-decisions",
+      "transparency-disclosure"
+    ],
+    "createdAt": "2026-10-22T05:55:28.601Z",
+    "updatedAt": "2026-10-22T07:41:33.800Z",
+    "legislative": {
+      "kind": "bill",
+      "ref": {
+        "register": "aph",
+        "billId": "r7249"
+      },
+      "origin": "government",
+      "events": [
+        {
+          "date": "2024-09-12",
+          "precision": "day",
+          "event": {
+            "kind": "introduced",
+            "chamber": "lower"
+          },
+          "source": {
+            "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7249",
+            "title": "Bill home page"
+          }
+        },
+        {
+          "date": "2024-09-19",
+          "precision": "day",
+          "event": {
+            "kind": "referred",
+            "committee": "Senate Legal and Constitutional Affairs Legislation Committee",
+            "inquiryUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Legal_and_Constitutional_Affairs/PrivacyAmendment47"
+          },
+          "source": {
+            "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7249",
+            "title": "Bill home page"
+          }
+        },
+        {
+          "date": "2024-11-06",
+          "precision": "day",
+          "event": {
+            "kind": "passed",
+            "chamber": "lower"
+          },
+          "source": {
+            "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7249",
+            "title": "Bill home page"
+          }
+        },
+        {
+          "date": "2024-11-14",
+          "precision": "day",
+          "event": {
+            "kind": "reported",
+            "committee": "Senate Legal and Constitutional Affairs Legislation Committee",
+            "reportUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Legal_and_Constitutional_Affairs/PrivacyAmendment47"
+          },
+          "source": {
+            "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7249",
+            "title": "Bill home page"
+          }
+        },
+        {
+          "date": "2024-11-28",
+          "precision": "day",
+          "event": {
+            "kind": "passed",
+            "chamber": "upper",
+            "withAmendments": true
+          },
+          "source": {
+            "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7249",
+            "title": "Bill home page"
+          }
+        },
+        {
+          "date": "2024-12-10",
+          "precision": "day",
+          "event": {
+            "kind": "assented",
+            "actCitation": "Act No. 128 of 2024"
+          },
+          "source": {
+            "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7249",
+            "title": "Bill home page"
+          }
+        },
+        {
+          "date": "2024-12-11",
+          "precision": "day",
+          "event": {
+            "kind": "commenced",
+            "extent": "partial",
+            "note": "In the Privacy Act 1988 (C2004A03712): sch 1 (items 1-4, 6-9, 11, 13-28, 30-34, 36-38, 40-42, 49-57A, 59, 61-63, 65, 66, 72, 82-85), sch 1 (item 5), sch 1 (item 43), sch 1 (item 10), sch 1 (item 12)."
+          },
+          "source": {
+            "url": "https://api.prod.legislation.gov.au/v1/Versions?$filter=titleId%20eq%20'C2004A03712'%20and%20start%20ge%202024-12-01T00%3A00%3A00&$select=titleId,start,reasons",
+            "title": "Federal Register of Legislation: Privacy Act 1988 versions"
+          }
+        },
+        {
+          "date": "2025-06-10",
+          "precision": "day",
+          "event": {
+            "kind": "commenced",
+            "extent": "partial",
+            "note": "In the Privacy Act 1988 (C2004A03712): sch 2 (items 1-10)."
+          },
+          "source": {
+            "url": "https://api.prod.legislation.gov.au/v1/Versions?$filter=titleId%20eq%20'C2004A03712'%20and%20start%20ge%202024-12-01T00%3A00%3A00&$select=titleId,start,reasons",
+            "title": "Federal Register of Legislation: Privacy Act 1988 versions"
+          }
+        }
+      ]
+    },
+    "lastReviewedAt": "2026-10-22T07:41:33.800Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.legislation.gov.au/C2024A00128/asmade/text",
+        "finalUrl": "https://www.legislation.gov.au/C2024A00128/asmade/text",
+        "title": "Privacy and Other Legislation Amendment Act 2024 - Federal Register of Legislation",
+        "retrievedAt": "2026-10-22T05:56:10.210Z",
+        "contentType": "text/html",
+        "contentHash": "17970bf12e0df01c2f88197417a4b118113f87d7f4ed87cd13b53f7be5b4e8e2",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-10-22T05:56:10.210Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "Headless Chromium capture of the Federal Register of Legislation as-made text of Act No. 128 of 2024 (C2024A00128), rendered with the Policai collector identity. Staged by Claude (agent) for Daniel Alkurdi's federal register backfill.",
+          "pageContentHash": "d5e76d9df4ff126873e9c9a5582dd1b6271e612e41333205e9e0aaf7be8aed49",
+          "characterCount": 107752
+        },
+        "reviewedDate": {
+          "date": "2024-12-11",
+          "precision": "day",
+          "reviewedAt": "2026-10-22T07:41:33.800Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The captured as-made text records Royal Assent on 10 December 2024; its commencement table starts most of Schedule 1 the day after assent. The Federal Register versions of the Privacy Act 1988 start compilation 101 (C2024C00833) on 11 December 2024 for those items, compilation 103 on 10 June 2025 for Schedule 2, and schedule sch 1 items 87 and 88 for 10 December 2026."
+        }
+      },
+      "checkedAt": "2026-10-22T07:41:33.800Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd7HBJv1U5LYgUnunCTESCxT8 (proposal 1f8dc833). Proposed by Claude (agent), at the request of Daniel Alkurdi. APH bill r7249 progress parsed with parseAphProgress; commencements from frlCommencements over https://api.prod.legislation.gov.au/v1/Versions?$filter=titleId%20eq%20'C2004A03712'%20and%20start%20ge%202024-12-01T00%3A00%3A00&$select=titleId,start,reasons: 2024-12-11 sch 1 (items 1-4, 6-9, 11, 13-28, 30-34, 36-38, 40-42, 49-57A, 59, 61-63, 65, 66, 72, 82-85), sch 1 (item 5), sch 1 (item 43), sch 1 (item 10), sch 1 (item 12); 2025-06-10 sch 2 (items 1-10); 2026-12-10 sch 1 (items 87, 88)."
+    }
+  },
+  {
+    "id": "federal-online-safety-relevant-electronic-services-industry-standard-2024",
+    "title": "Online Safety (Relevant Electronic Services—Class 1A and Class 1B Material) Industry Standard 2024",
+    "description": "Industry standard made by the eSafety Commissioner under section 145 of the Online Safety Act 2021 for relevant electronic services such as messaging, email, dating and gaming services, covering class 1A and class 1B material such as child sexual abuse and pro-terror material. It requires providers to consider the risk of such material generated by artificial intelligence. Registered on 21 June 2024; it commenced on 22 December 2024, six months after the day after registration.",
+    "jurisdiction": "federal",
+    "type": "regulation",
+    "status": "active",
+    "effectiveDate": "2024-12-22",
+    "dates": [
+      {
+        "type": "issued",
+        "date": "2024-06-19",
+        "precision": "day",
+        "source": {
+          "url": "https://www.legislation.gov.au/F2024L00711/asmade/details",
+          "finalUrl": "https://www.legislation.gov.au/F2024L00711/asmade/details",
+          "title": "Online Safety (Relevant Electronic Services—Class 1A and Class 1B Material) Industry Standard 2024 - Federal Register of Legislation",
+          "retrievedAt": "2026-10-22T05:56:38.328Z",
+          "contentType": "text/html",
+          "contentHash": "af123d07f0aeddcce2256c3159688da8f6f10641f2a0aef808c7469ebbafb26f",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-22T05:56:38.328Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Headless Chromium capture of the Federal Register of Legislation details page for F2024L00711, rendered with the Policai collector identity. Staged by Claude (agent) for Daniel Alkurdi's federal register backfill.",
+            "pageContentHash": "43a52aeb2893c0b9b4b88e256ec115e905eac1115011dc84b451d4fa70c0acb7",
+            "characterCount": 2234
+          },
+          "reviewedDate": {
+            "date": "2024-06-19",
+            "precision": "day",
+            "reviewedAt": "2026-10-22T05:56:38.353Z",
+            "reviewedBy": "Claude (agent)",
+            "notes": "The Federal Register title record for F2024L00711 gives a making date of 19 June 2024; the captured details page records registration on 2024-06-21."
+          }
+        }
+      },
+      {
+        "type": "commenced",
+        "date": "2024-12-22",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://www.legislation.gov.au/F2024L00711/asmade/details",
+          "finalUrl": "https://www.legislation.gov.au/F2024L00711/asmade/details",
+          "title": "Online Safety (Relevant Electronic Services—Class 1A and Class 1B Material) Industry Standard 2024 - Federal Register of Legislation",
+          "retrievedAt": "2026-10-22T05:56:38.328Z",
+          "contentType": "text/html",
+          "contentHash": "af123d07f0aeddcce2256c3159688da8f6f10641f2a0aef808c7469ebbafb26f",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-22T05:56:38.328Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Headless Chromium capture of the Federal Register of Legislation details page for F2024L00711, rendered with the Policai collector identity. Staged by Claude (agent) for Daniel Alkurdi's federal register backfill.",
+            "pageContentHash": "43a52aeb2893c0b9b4b88e256ec115e905eac1115011dc84b451d4fa70c0acb7",
+            "characterCount": 2234
+          },
+          "reviewedDate": {
+            "date": "2024-12-22",
+            "precision": "day",
+            "reviewedAt": "2026-10-22T07:41:33.269Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The captured details page records registration on 2024-06-21. Section 2 of the standard and its explanatory statement (https://www.legislation.gov.au/F2024L00711/asmade/2024-06-21/es/original/pdf) commence it six months after the day after registration on the Federal Register, which is 2024-12-22."
+          }
+        }
+      }
+    ],
+    "agencies": [
+      "eSafety Commissioner"
+    ],
+    "sourceUrl": "https://www.legislation.gov.au/F2024L00711/asmade/details",
+    "content": "The standard applies to relevant electronic services, including messaging, email, dating and gaming services, and sets compliance measures for class 1A and class 1B material, including detection and removal, user reporting and annual reports to the Commissioner. Its risk assessment factors include the risk of such material generated by artificial intelligence. Tabled in both Houses on 24 June 2024. A Senate disallowance motion was withdrawn on 18 November 2024.",
+    "aiSummary": "eSafety industry standard for messaging, email, dating and gaming services on child sexual abuse and pro-terror material, including AI-generated material. In force since 22 December 2024.",
+    "tags": [
+      "eSafety",
+      "industry standard",
+      "messaging",
+      "online safety",
+      "child safety"
+    ],
+    "themes": [
+      "online-safety",
+      "generative-ai"
+    ],
+    "createdAt": "2026-10-22T05:55:28.601Z",
+    "updatedAt": "2026-10-22T07:41:33.269Z",
+    "legislative": {
+      "kind": "instrument",
+      "ref": {
+        "register": "frl",
+        "titleId": "F2024L00711"
+      },
+      "issuerBodyId": "esafety",
+      "enablingAct": "Online Safety Act 2021, s 145",
+      "events": [
+        {
+          "date": "2024-06-21",
+          "precision": "day",
+          "event": {
+            "kind": "registered"
+          },
+          "source": {
+            "url": "https://www.legislation.gov.au/F2024L00711/asmade/details",
+            "title": "Online Safety (Relevant Electronic Services—Class 1A and Class 1B Material) Industry Standard 2024"
+          }
+        },
+        {
+          "date": "2024-06-24",
+          "precision": "day",
+          "event": {
+            "kind": "tabled",
+            "chamber": "lower"
+          },
+          "source": {
+            "url": "https://www.legislation.gov.au/F2024L00711/asmade/details",
+            "title": "Online Safety (Relevant Electronic Services—Class 1A and Class 1B Material) Industry Standard 2024"
+          }
+        },
+        {
+          "date": "2024-06-24",
+          "precision": "day",
+          "event": {
+            "kind": "tabled",
+            "chamber": "upper"
+          },
+          "source": {
+            "url": "https://www.legislation.gov.au/F2024L00711/asmade/details",
+            "title": "Online Safety (Relevant Electronic Services—Class 1A and Class 1B Material) Industry Standard 2024"
+          }
+        },
+        {
+          "date": "2024-12-22",
+          "precision": "day",
+          "event": {
+            "kind": "commenced",
+            "extent": "full",
+            "note": "Section 2 commences the standard 6 months after the later of the day after its registration under the Online Safety Act 2021 and the day after its registration under the Legislation Act 2003. The explanatory statement says six months after the day after registration on the Federal Register (2024-06-21). The Federal Register shows the instrument in force from registration."
+          },
+          "source": {
+            "url": "https://www.legislation.gov.au/F2024L00711/asmade/text",
+            "title": "Online Safety (Relevant Electronic Services—Class 1A and Class 1B Material) Industry Standard 2024, section 2"
+          }
+        }
+      ]
+    },
+    "lastReviewedAt": "2026-10-22T07:41:33.269Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.legislation.gov.au/F2024L00711/asmade/details",
+        "finalUrl": "https://www.legislation.gov.au/F2024L00711/asmade/details",
+        "title": "Online Safety (Relevant Electronic Services—Class 1A and Class 1B Material) Industry Standard 2024 - Federal Register of Legislation",
+        "retrievedAt": "2026-10-22T05:56:38.328Z",
+        "contentType": "text/html",
+        "contentHash": "af123d07f0aeddcce2256c3159688da8f6f10641f2a0aef808c7469ebbafb26f",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-10-22T05:56:38.328Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "Headless Chromium capture of the Federal Register of Legislation details page for F2024L00711, rendered with the Policai collector identity. Staged by Claude (agent) for Daniel Alkurdi's federal register backfill.",
+          "pageContentHash": "43a52aeb2893c0b9b4b88e256ec115e905eac1115011dc84b451d4fa70c0acb7",
+          "characterCount": 2234
+        },
+        "reviewedDate": {
+          "date": "2024-12-22",
+          "precision": "day",
+          "reviewedAt": "2026-10-22T07:41:33.269Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The captured details page records registration on 2024-06-21. Section 2 of the standard and its explanatory statement (https://www.legislation.gov.au/F2024L00711/asmade/2024-06-21/es/original/pdf) commence it six months after the day after registration on the Federal Register, which is 2024-12-22."
+        }
+      },
+      "checkedAt": "2026-10-22T07:41:33.269Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd76ZMd88q4asfohMBVAzSUEu (proposal 4a6fc537). Proposed by Claude (agent), at the request of Daniel Alkurdi. Instrument events from parseFrlTitle over https://api.prod.legislation.gov.au/v1/Titles('F2024L00711'). The register's in-force-from-registration commencement was replaced with the s 2 date. Unrecognised scrutiny item: 2024-08-22 Notice of a disallowance motion by The Parliamentary Joint Committee On Human Rights, withdrawn."
+    }
+  },
+  {
+    "id": "nsw-electoral-legislation-amendment-elections-act-2026",
+    "title": "Electoral Legislation Amendment (Elections) Act 2026",
+    "description": "NSW Act that amends the Electoral Act 2017 and other electoral laws. New section 189A makes it an offence, during the regulated period before an election, to publish or distribute electoral material that is generated substantially, or altered significantly, by artificial intelligence and depicts a real person doing something they did not do, unless that person consented in writing. New section 189B requires other AI-generated electoral material depicting a realistic person, event or place to carry a statement that it is digitally generated. Assented to on 7 April 2026; sections 189A and 189B commenced that day.",
+    "jurisdiction": "nsw",
+    "type": "legislation",
+    "status": "active",
+    "effectiveDate": "2026-04-07",
+    "dates": [
+      {
+        "type": "published",
+        "date": "2026-04-07",
+        "precision": "day",
+        "source": {
+          "url": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+          "finalUrl": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+          "title": "Bill Details | Parliament of NSW",
+          "retrievedAt": "2026-10-22T06:10:02.663Z",
+          "contentType": "text/html",
+          "contentHash": "84844e580712abc37da7b6b42b4063d68e79f432967b5f122f08a20b637745b0",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-22T06:10:02.663Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Headless Chromium capture of the NSW Parliament bill page for the Electoral Legislation Amendment (Elections) Bill 2026 with the Policai collector identity; the collector HTTP client was refused with HTTP 403. Staged by Claude (agent) for Daniel Alkurdi's state register backfill.",
+            "pageContentHash": "ffe6d4ac729db98b3c60c790a813c0e73a619b225308add82375d85114bbc094",
+            "characterCount": 2907
+          },
+          "reviewedDate": {
+            "date": "2026-04-07",
+            "precision": "day",
+            "reviewedAt": "2026-10-22T06:10:02.735Z",
+            "reviewedBy": "Claude (agent)",
+            "notes": "The fetched bill home page records \"Assented on Tue 07 April 2026\" and \"Act number: 6 of 2026\"."
+          }
+        }
+      },
+      {
+        "type": "commenced",
+        "date": "2026-04-07",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+          "finalUrl": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+          "title": "Bill Details | Parliament of NSW",
+          "retrievedAt": "2026-10-22T06:10:02.663Z",
+          "contentType": "text/html",
+          "contentHash": "84844e580712abc37da7b6b42b4063d68e79f432967b5f122f08a20b637745b0",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-22T06:10:02.663Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Headless Chromium capture of the NSW Parliament bill page for the Electoral Legislation Amendment (Elections) Bill 2026 with the Policai collector identity; the collector HTTP client was refused with HTTP 403. Staged by Claude (agent) for Daniel Alkurdi's state register backfill.",
+            "pageContentHash": "ffe6d4ac729db98b3c60c790a813c0e73a619b225308add82375d85114bbc094",
+            "characterCount": 2907
+          },
+          "reviewedDate": {
+            "date": "2026-04-07",
+            "precision": "day",
+            "reviewedAt": "2026-10-22T07:41:32.220Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The fetched bill home page records assent on Tue 7 April 2026 (Act No 6 of 2026). Section 2(d) of the passed text commences Schedule 1[81], sections 189A and 189B of the Electoral Act 2017, on the date of assent."
+          }
+        }
+      }
+    ],
+    "agencies": [
+      "NSW Electoral Commission",
+      "Parliament of New South Wales"
+    ],
+    "sourceUrl": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+    "content": "Schedule 1[81] inserts sections 189A and 189B into the Electoral Act 2017. Section 189A prohibits printing, publishing, distributing or publicly displaying, during the regulated period, digitally generated electoral material that depicts a simulated person performing an act the real person did not perform (maximum penalty for an individual 60 penalty units or 6 months imprisonment, or both; otherwise 300 penalty units). It is a defence that the real person gave written consent, or that the defendant took no part in the content and could not reasonably have known. Digitally generated electoral material means electoral material with audio visual, visual or audio content generated substantially, or modified or altered significantly, by artificial intelligence, excluding cartoons and animated drawings. Section 189B requires digitally generated electoral material depicting a digitally created person, event or place that a reasonable person would think is real to include a written or spoken statement that it is digitally generated electoral material (maximum penalty for an individual 20 penalty units or 6 months imprisonment, or both; otherwise 100 penalty units).",
+    "aiSummary": "NSW election law that bans deceptive AI-generated depictions of real people in electoral material during the regulated period and requires other AI-generated electoral material to be labelled. In force since 7 April 2026.",
+    "tags": [
+      "New South Wales",
+      "elections",
+      "deepfakes",
+      "electoral material",
+      "artificial intelligence"
+    ],
+    "themes": [
+      "generative-ai",
+      "transparency-disclosure"
+    ],
+    "createdAt": "2026-10-22T06:09:51.690Z",
+    "updatedAt": "2026-10-22T07:41:32.220Z",
+    "legislative": {
+      "kind": "bill",
+      "ref": {
+        "register": "state",
+        "jurisdiction": "nsw",
+        "url": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875"
+      },
+      "origin": "government",
+      "events": [
+        {
+          "date": "2026-03-17",
+          "precision": "day",
+          "event": {
+            "kind": "introduced",
+            "chamber": "lower"
+          },
+          "source": {
+            "url": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+            "title": "Bill home page"
+          }
+        },
+        {
+          "date": "2026-03-25",
+          "precision": "day",
+          "event": {
+            "kind": "passed",
+            "chamber": "lower"
+          },
+          "source": {
+            "url": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+            "title": "Bill home page"
+          }
+        },
+        {
+          "date": "2026-03-26",
+          "precision": "day",
+          "event": {
+            "kind": "passed",
+            "chamber": "upper"
+          },
+          "source": {
+            "url": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+            "title": "Bill home page"
+          }
+        },
+        {
+          "date": "2026-04-07",
+          "precision": "day",
+          "event": {
+            "kind": "assented",
+            "actCitation": "Act No 6 of 2026"
+          },
+          "source": {
+            "url": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+            "title": "Bill home page"
+          }
+        },
+        {
+          "date": "2026-04-07",
+          "precision": "day",
+          "event": {
+            "kind": "commenced",
+            "extent": "partial",
+            "note": "Section 2(d) commences everything not listed in s 2(a) to (c) on the date of assent, including Schedule 1[81], which inserts sections 189A and 189B (digitally generated electoral material) into the Electoral Act 2017. Section 3(1) and Schedule 2[30], [31] and [43] commence by proclamation and Schedule 2[10] and [11] on 1 July 2026."
+          },
+          "source": {
+            "url": "https://files.parliament.nsw.gov.au/fileapi/ParlFiles/GetArtifact?serverRelativeUrl=%2Fbill%2Ffiles%2F18875%2FPassed%20by%20both%20Houses.pdf",
+            "title": "Electoral Legislation Amendment (Elections) Bill 2026, passed by both Houses, section 2"
+          }
+        }
+      ]
+    },
+    "lastReviewedAt": "2026-10-22T07:41:32.220Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+        "finalUrl": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+        "title": "Bill Details | Parliament of NSW",
+        "retrievedAt": "2026-10-22T06:10:02.663Z",
+        "contentType": "text/html",
+        "contentHash": "84844e580712abc37da7b6b42b4063d68e79f432967b5f122f08a20b637745b0",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-10-22T06:10:02.663Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "Headless Chromium capture of the NSW Parliament bill page for the Electoral Legislation Amendment (Elections) Bill 2026 with the Policai collector identity; the collector HTTP client was refused with HTTP 403. Staged by Claude (agent) for Daniel Alkurdi's state register backfill.",
+          "pageContentHash": "ffe6d4ac729db98b3c60c790a813c0e73a619b225308add82375d85114bbc094",
+          "characterCount": 2907
+        },
+        "reviewedDate": {
+          "date": "2026-04-07",
+          "precision": "day",
+          "reviewedAt": "2026-10-22T07:41:32.220Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The fetched bill home page records assent on Tue 7 April 2026 (Act No 6 of 2026). Section 2(d) of the passed text commences Schedule 1[81], sections 189A and 189B of the Electoral Act 2017, on the date of assent."
+        }
+      },
+      "checkedAt": "2026-10-22T07:41:32.220Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd7QnAkTfoAa7Ehr1kxFGNHUo (proposal ba1b9162). Proposed by Claude (agent), at the request of Daniel Alkurdi. Chamber stages read from https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875 (plain HTTP with the collector identity). Commencement from s 2 of https://files.parliament.nsw.gov.au/fileapi/ParlFiles/GetArtifact?serverRelativeUrl=%2Fbill%2Ffiles%2F18875%2FPassed%20by%20both%20Houses.pdf."
+    }
+  },
+  {
     "id": "federal-online-safety-basic-online-safety-expectations-determination-2022",
     "title": "Online Safety (Basic Online Safety Expectations) Determination 2022",
     "description": "Determination made by the Minister for Communications under section 45 of the Online Safety Act 2021 setting out the Australian Government's basic online safety expectations for social media, relevant electronic and designated internet services. The Online Safety (Basic Online Safety Expectations) Amendment Determination 2024 added section 8A, which expects providers whose services use or enable generative AI capabilities to take reasonable steps to build in safety measures and to minimise the use of those capabilities to produce unlawful or harmful material, and section 8B on recommender systems. The amendment took effect on 31 May 2024.",
@@ -8886,12 +9535,62 @@
         "type": "published",
         "date": "2026-10-15",
         "precision": "day",
-        "primary": true
+        "primary": true,
+        "source": {
+          "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+          "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+          "title": "Online Safety Amendment (Digital Duty of Care) Bill 2026 – Parliament of Australia",
+          "retrievedAt": "2026-10-22T05:57:12.034Z",
+          "contentType": "text/html",
+          "contentHash": "ee4cd1fa2283818ac255e27ec0cd8b39eec6667da7c614d7138b8b85be232612",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-22T05:57:12.034Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Headless Chromium capture of the APH bill home page for r7553 with the Policai collector identity; APH refuses plain HTTP clients. Staged by Claude (agent) for Daniel Alkurdi as a re-verification of the hidden draft.",
+            "pageContentHash": "3bd30c6d8e60fe4dbda1daf776c976b0bab1990120cea1c801fc3cfbf3b272bf",
+            "characterCount": 4768
+          },
+          "reviewedDate": {
+            "date": "2026-10-15",
+            "precision": "day",
+            "reviewedAt": "2026-10-22T07:41:32.742Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The captured bill home page shows \"Introduced and read a first time 15 Oct 2026\" in the House of Representatives, and a note \"Referred to Committee (15/10/2026): Senate Environment and Communications Legislation Committee; Report due 20/11/2026\"."
+          }
+        }
       },
       {
         "type": "scheduled_review",
         "date": "2026-11-20",
-        "precision": "day"
+        "precision": "day",
+        "source": {
+          "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+          "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+          "title": "Online Safety Amendment (Digital Duty of Care) Bill 2026 – Parliament of Australia",
+          "retrievedAt": "2026-10-22T05:57:12.034Z",
+          "contentType": "text/html",
+          "contentHash": "ee4cd1fa2283818ac255e27ec0cd8b39eec6667da7c614d7138b8b85be232612",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-22T05:57:12.034Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Headless Chromium capture of the APH bill home page for r7553 with the Policai collector identity; APH refuses plain HTTP clients. Staged by Claude (agent) for Daniel Alkurdi as a re-verification of the hidden draft.",
+            "pageContentHash": "3bd30c6d8e60fe4dbda1daf776c976b0bab1990120cea1c801fc3cfbf3b272bf",
+            "characterCount": 4768
+          },
+          "reviewedDate": {
+            "date": "2026-11-20",
+            "precision": "day",
+            "reviewedAt": "2026-10-22T05:57:12.064Z",
+            "reviewedBy": "Claude (agent)",
+            "notes": "The captured bill home page notes \"Referred to Committee (15/10/2026): Senate Environment and Communications Legislation Committee; Report due 20/11/2026\"."
+          }
+        }
       }
     ],
     "agencies": [
@@ -8915,14 +9614,38 @@
       "ai-governance"
     ],
     "createdAt": "2026-10-17T09:00:00.000Z",
-    "updatedAt": "2026-10-17T09:00:00.000Z",
+    "updatedAt": "2026-10-22T07:41:32.742Z",
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
         "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
-        "title": "Online Safety Amendment (Digital Duty of Care) Bill 2026 — bill home page"
+        "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+        "title": "Online Safety Amendment (Digital Duty of Care) Bill 2026 – Parliament of Australia",
+        "retrievedAt": "2026-10-22T05:57:12.034Z",
+        "contentType": "text/html",
+        "contentHash": "ee4cd1fa2283818ac255e27ec0cd8b39eec6667da7c614d7138b8b85be232612",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-10-22T05:57:12.034Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "Headless Chromium capture of the APH bill home page for r7553 with the Policai collector identity; APH refuses plain HTTP clients. Staged by Claude (agent) for Daniel Alkurdi as a re-verification of the hidden draft.",
+          "pageContentHash": "3bd30c6d8e60fe4dbda1daf776c976b0bab1990120cea1c801fc3cfbf3b272bf",
+          "characterCount": 4768
+        },
+        "reviewedDate": {
+          "date": "2026-10-15",
+          "precision": "day",
+          "reviewedAt": "2026-10-22T07:41:32.742Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The captured bill home page shows \"Introduced and read a first time 15 Oct 2026\" in the House of Representatives, and a note \"Referred to Committee (15/10/2026): Senate Environment and Communications Legislation Committee; Report due 20/11/2026\"."
+        }
       },
-      "notes": "Unverified editorial draft from the Policai Signal scan 11–17 October 2026, entered after Dan approved the gap. No source fingerprint, no checkedAt, no checkedBy, and no lastReviewedAt. Hidden from the public read until a manual editorial review."
+      "checkedAt": "2026-10-22T07:41:32.742Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd7Rr5zTM5redgLaFizPo3awj (proposal d0bd5125). Proposed by Claude (agent), at the request of Daniel Alkurdi. Re-verification of the hidden draft with a fresh APH capture; lifecycle events re-read with parseAphProgress."
     },
     "legislative": {
       "kind": "bill",
@@ -8959,7 +9682,8 @@
           }
         }
       ]
-    }
+    },
+    "lastReviewedAt": "2026-10-22T07:41:32.742Z"
   },
   {
     "id": "asd-ai-considerations-within-the-essentials-2026",

@@ -2,9 +2,9 @@
   {
     "id": "source-review-643e51c3-2365-4254-952a-d95fd3f3b601",
     "sourceUrl": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
-    "title": "Bill Details | Parliament of NSW",
+    "title": "Electoral Legislation Amendment (Elections) Act 2026",
     "entryKind": "policy",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-10-22T06:10:02.752Z",
     "createdBy": "local-mcp-admin",
     "notes": "State register backfill (AI-relevant NSW Act), staged for an editorial decision card.",
@@ -42,6 +42,13 @@
         "notes": "Headless Chromium capture of the NSW Parliament bill page for the Electoral Legislation Amendment (Elections) Bill 2026 with the Policai collector identity; the collector HTTP client was refused with HTTP 403. Staged by Claude (agent) for Daniel Alkurdi's state register backfill.",
         "pageContentHash": "ffe6d4ac729db98b3c60c790a813c0e73a619b225308add82375d85114bbc094",
         "characterCount": 2907
+      },
+      "reviewedDate": {
+        "date": "2026-04-07",
+        "precision": "day",
+        "reviewedAt": "2026-10-22T07:41:32.220Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The fetched bill home page records assent on Tue 7 April 2026 (Act No 6 of 2026). Section 2(d) of the passed text commences Schedule 1[81], sections 189A and 189B of the Electoral Act 2017, on the date of assent."
       }
     },
     "proposedRecord": {
@@ -108,9 +115,9 @@
             "reviewedDate": {
               "date": "2026-04-07",
               "precision": "day",
-              "reviewedAt": "2026-10-22T06:10:02.735Z",
-              "reviewedBy": "Claude (agent)",
-              "notes": "The fetched bill home page records assent on 7 April 2026. Section 2(d) of the text passed by both Houses commences the provisions not listed in s 2(a) to (c), including Schedule 1[81] (sections 189A and 189B), on the date of assent."
+              "reviewedAt": "2026-10-22T07:41:32.220Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "The fetched bill home page records assent on Tue 7 April 2026 (Act No 6 of 2026). Section 2(d) of the passed text commences Schedule 1[81], sections 189A and 189B of the Electoral Act 2017, on the date of assent."
             }
           }
         }
@@ -134,7 +141,7 @@
         "transparency-disclosure"
       ],
       "createdAt": "2026-10-22T06:09:51.690Z",
-      "updatedAt": "2026-10-22T06:09:51.690Z",
+      "updatedAt": "2026-10-22T07:41:32.220Z",
       "legislative": {
         "kind": "bill",
         "ref": {
@@ -206,9 +213,42 @@
             }
           }
         ]
+      },
+      "lastReviewedAt": "2026-10-22T07:41:32.220Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+          "finalUrl": "https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875",
+          "title": "Bill Details | Parliament of NSW",
+          "retrievedAt": "2026-10-22T06:10:02.663Z",
+          "contentType": "text/html",
+          "contentHash": "84844e580712abc37da7b6b42b4063d68e79f432967b5f122f08a20b637745b0",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-22T06:10:02.663Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Headless Chromium capture of the NSW Parliament bill page for the Electoral Legislation Amendment (Elections) Bill 2026 with the Policai collector identity; the collector HTTP client was refused with HTTP 403. Staged by Claude (agent) for Daniel Alkurdi's state register backfill.",
+            "pageContentHash": "ffe6d4ac729db98b3c60c790a813c0e73a619b225308add82375d85114bbc094",
+            "characterCount": 2907
+          },
+          "reviewedDate": {
+            "date": "2026-04-07",
+            "precision": "day",
+            "reviewedAt": "2026-10-22T07:41:32.220Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The fetched bill home page records assent on Tue 7 April 2026 (Act No 6 of 2026). Section 2(d) of the passed text commences Schedule 1[81], sections 189A and 189B of the Electoral Act 2017, on the date of assent."
+          }
+        },
+        "checkedAt": "2026-10-22T07:41:32.220Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd7QnAkTfoAa7Ehr1kxFGNHUo (proposal ba1b9162). Proposed by Claude (agent), at the request of Daniel Alkurdi. Chamber stages read from https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875 (plain HTTP with the collector identity). Commencement from s 2 of https://files.parliament.nsw.gov.au/fileapi/ParlFiles/GetArtifact?serverRelativeUrl=%2Fbill%2Ffiles%2F18875%2FPassed%20by%20both%20Houses.pdf."
       }
     },
-    "updatedAt": "2026-10-22T06:10:02.767Z",
+    "updatedAt": "2026-10-22T07:41:32.262Z",
     "proposal": {
       "proposedBy": "Claude (agent), at the request of Daniel Alkurdi",
       "proposedRecord": {
@@ -382,7 +422,17 @@
       },
       "notes": "Chamber stages read from https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875 (plain HTTP with the collector identity). Commencement from s 2 of https://files.parliament.nsw.gov.au/fileapi/ParlFiles/GetArtifact?serverRelativeUrl=%2Fbill%2Ffiles%2F18875%2FPassed%20by%20both%20Houses.pdf.",
       "proposedAt": "2026-10-22T06:10:02.767Z"
-    }
+    },
+    "reviewedAt": "2026-10-22T07:41:32.220Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd7QnAkTfoAa7Ehr1kxFGNHUo (proposal ba1b9162). Proposed by Claude (agent), at the request of Daniel Alkurdi. Chamber stages read from https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875 (plain HTTP with the collector identity). Commencement from s 2 of https://files.parliament.nsw.gov.au/fileapi/ParlFiles/GetArtifact?serverRelativeUrl=%2Fbill%2Ffiles%2F18875%2FPassed%20by%20both%20Houses.pdf.",
+    "decision": {
+      "proposalHash": "ba1b9162a2594546e846cd4e8e62f7d370dd1a5c12d44d7340fafb8a0db4710e",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-10-22T07:41:32.215Z",
+      "attestationUrl": "https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd7QnAkTfoAa7Ehr1kxFGNHUo"
+    },
+    "publishedAt": "2026-10-22T07:41:32.251Z"
   },
   {
     "id": "source-review-095de8a0-09a6-4304-a571-1d4b58335050",
@@ -391,7 +441,7 @@
     "entryKind": "policy",
     "targetPolicyId": "federal-online-safety-amendment-digital-duty-of-care-bill-2026",
     "targetPolicyBaseRevisionHash": "1942cf49c7b2254940ba2d797bf5c9da6ae971ce36f0aea27c19d4f482af47ac",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-10-22T05:57:12.076Z",
     "createdBy": "local-mcp-admin",
     "notes": "Re-verification of the hidden draft record with fresh evidence, for an editorial decision card.",
@@ -429,6 +479,13 @@
         "notes": "Headless Chromium capture of the APH bill home page for r7553 with the Policai collector identity; APH refuses plain HTTP clients. Staged by Claude (agent) for Daniel Alkurdi as a re-verification of the hidden draft.",
         "pageContentHash": "3bd30c6d8e60fe4dbda1daf776c976b0bab1990120cea1c801fc3cfbf3b272bf",
         "characterCount": 4768
+      },
+      "reviewedDate": {
+        "date": "2026-10-15",
+        "precision": "day",
+        "reviewedAt": "2026-10-22T07:41:32.742Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The captured bill home page shows \"Introduced and read a first time 15 Oct 2026\" in the House of Representatives, and a note \"Referred to Committee (15/10/2026): Senate Environment and Communications Legislation Committee; Report due 20/11/2026\"."
       }
     },
     "proposedRecord": {
@@ -465,9 +522,9 @@
             "reviewedDate": {
               "date": "2026-10-15",
               "precision": "day",
-              "reviewedAt": "2026-10-22T05:57:12.064Z",
-              "reviewedBy": "Claude (agent)",
-              "notes": "The captured bill home page shows \"Introduced and read a first time 15 Oct 2026\" in the House of Representatives."
+              "reviewedAt": "2026-10-22T07:41:32.742Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "The captured bill home page shows \"Introduced and read a first time 15 Oct 2026\" in the House of Representatives, and a note \"Referred to Committee (15/10/2026): Senate Environment and Communications Legislation Committee; Report due 20/11/2026\"."
             }
           }
         },
@@ -523,7 +580,7 @@
         "ai-governance"
       ],
       "createdAt": "2026-10-17T09:00:00.000Z",
-      "updatedAt": "2026-10-22T05:55:28.601Z",
+      "updatedAt": "2026-10-22T07:41:32.742Z",
       "legislative": {
         "kind": "bill",
         "ref": {
@@ -559,9 +616,42 @@
             }
           }
         ]
+      },
+      "lastReviewedAt": "2026-10-22T07:41:32.742Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+          "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+          "title": "Online Safety Amendment (Digital Duty of Care) Bill 2026 – Parliament of Australia",
+          "retrievedAt": "2026-10-22T05:57:12.034Z",
+          "contentType": "text/html",
+          "contentHash": "ee4cd1fa2283818ac255e27ec0cd8b39eec6667da7c614d7138b8b85be232612",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-22T05:57:12.034Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Headless Chromium capture of the APH bill home page for r7553 with the Policai collector identity; APH refuses plain HTTP clients. Staged by Claude (agent) for Daniel Alkurdi as a re-verification of the hidden draft.",
+            "pageContentHash": "3bd30c6d8e60fe4dbda1daf776c976b0bab1990120cea1c801fc3cfbf3b272bf",
+            "characterCount": 4768
+          },
+          "reviewedDate": {
+            "date": "2026-10-15",
+            "precision": "day",
+            "reviewedAt": "2026-10-22T07:41:32.742Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The captured bill home page shows \"Introduced and read a first time 15 Oct 2026\" in the House of Representatives, and a note \"Referred to Committee (15/10/2026): Senate Environment and Communications Legislation Committee; Report due 20/11/2026\"."
+          }
+        },
+        "checkedAt": "2026-10-22T07:41:32.742Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd7Rr5zTM5redgLaFizPo3awj (proposal d0bd5125). Proposed by Claude (agent), at the request of Daniel Alkurdi. Re-verification of the hidden draft with a fresh APH capture; lifecycle events re-read with parseAphProgress."
       }
     },
-    "updatedAt": "2026-10-22T05:57:12.088Z",
+    "updatedAt": "2026-10-22T07:41:32.780Z",
     "proposal": {
       "proposedBy": "Claude (agent), at the request of Daniel Alkurdi",
       "proposedRecord": {
@@ -701,7 +791,18 @@
       },
       "notes": "Re-verification of the hidden draft with a fresh APH capture; lifecycle events re-read with parseAphProgress.",
       "proposedAt": "2026-10-22T05:57:12.088Z"
-    }
+    },
+    "targetPolicyRevisionHash": "1942cf49c7b2254940ba2d797bf5c9da6ae971ce36f0aea27c19d4f482af47ac",
+    "reviewedAt": "2026-10-22T07:41:32.742Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd7Rr5zTM5redgLaFizPo3awj (proposal d0bd5125). Proposed by Claude (agent), at the request of Daniel Alkurdi. Re-verification of the hidden draft with a fresh APH capture; lifecycle events re-read with parseAphProgress.",
+    "decision": {
+      "proposalHash": "d0bd5125d53e35ba2d2c0d4cd4f0e9a89c9dd802fbe094e53df17693384655ab",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-10-22T07:41:32.738Z",
+      "attestationUrl": "https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd7Rr5zTM5redgLaFizPo3awj"
+    },
+    "publishedAt": "2026-10-22T07:41:32.776Z"
   },
   {
     "id": "source-review-e12d8d7d-49c5-4882-8de1-f8da9a23a262",
@@ -1644,9 +1745,9 @@
   {
     "id": "source-review-2609c8b8-e7e7-4d78-83d8-30941a790d7e",
     "sourceUrl": "https://www.legislation.gov.au/F2024L00711/asmade/details",
-    "title": "Online Safety (Relevant Electronic Services—Class 1A and Class 1B Material) Industry Standard 2024 - Federal Register of Legislation",
+    "title": "Online Safety (Relevant Electronic Services—Class 1A and Class 1B Material) Industry Standard 2024",
     "entryKind": "policy",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-10-22T05:56:38.365Z",
     "createdBy": "local-mcp-admin",
     "notes": "Federal register backfill (AI-relevant Commonwealth instrument), staged for an editorial decision card.",
@@ -1683,6 +1784,13 @@
         "notes": "Headless Chromium capture of the Federal Register of Legislation details page for F2024L00711, rendered with the Policai collector identity. Staged by Claude (agent) for Daniel Alkurdi's federal register backfill.",
         "pageContentHash": "43a52aeb2893c0b9b4b88e256ec115e905eac1115011dc84b451d4fa70c0acb7",
         "characterCount": 2234
+      },
+      "reviewedDate": {
+        "date": "2024-12-22",
+        "precision": "day",
+        "reviewedAt": "2026-10-22T07:41:33.269Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The captured details page records registration on 2024-06-21. Section 2 of the standard and its explanatory statement (https://www.legislation.gov.au/F2024L00711/asmade/2024-06-21/es/original/pdf) commence it six months after the day after registration on the Federal Register, which is 2024-12-22."
       }
     },
     "proposedRecord": {
@@ -1749,9 +1857,9 @@
             "reviewedDate": {
               "date": "2024-12-22",
               "precision": "day",
-              "reviewedAt": "2026-10-22T05:56:38.353Z",
-              "reviewedBy": "Claude (agent)",
-              "notes": "The captured details page records registration on 2024-06-21. Section 2 and the explanatory statement commence the standard six months after the day after registration on the Federal Register, which is 2024-12-22."
+              "reviewedAt": "2026-10-22T07:41:33.269Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "The captured details page records registration on 2024-06-21. Section 2 of the standard and its explanatory statement (https://www.legislation.gov.au/F2024L00711/asmade/2024-06-21/es/original/pdf) commence it six months after the day after registration on the Federal Register, which is 2024-12-22."
             }
           }
         }
@@ -1774,7 +1882,7 @@
         "generative-ai"
       ],
       "createdAt": "2026-10-22T05:55:28.601Z",
-      "updatedAt": "2026-10-22T05:55:28.601Z",
+      "updatedAt": "2026-10-22T07:41:33.269Z",
       "legislative": {
         "kind": "instrument",
         "ref": {
@@ -1833,9 +1941,42 @@
             }
           }
         ]
+      },
+      "lastReviewedAt": "2026-10-22T07:41:33.269Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.legislation.gov.au/F2024L00711/asmade/details",
+          "finalUrl": "https://www.legislation.gov.au/F2024L00711/asmade/details",
+          "title": "Online Safety (Relevant Electronic Services—Class 1A and Class 1B Material) Industry Standard 2024 - Federal Register of Legislation",
+          "retrievedAt": "2026-10-22T05:56:38.328Z",
+          "contentType": "text/html",
+          "contentHash": "af123d07f0aeddcce2256c3159688da8f6f10641f2a0aef808c7469ebbafb26f",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-22T05:56:38.328Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Headless Chromium capture of the Federal Register of Legislation details page for F2024L00711, rendered with the Policai collector identity. Staged by Claude (agent) for Daniel Alkurdi's federal register backfill.",
+            "pageContentHash": "43a52aeb2893c0b9b4b88e256ec115e905eac1115011dc84b451d4fa70c0acb7",
+            "characterCount": 2234
+          },
+          "reviewedDate": {
+            "date": "2024-12-22",
+            "precision": "day",
+            "reviewedAt": "2026-10-22T07:41:33.269Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The captured details page records registration on 2024-06-21. Section 2 of the standard and its explanatory statement (https://www.legislation.gov.au/F2024L00711/asmade/2024-06-21/es/original/pdf) commence it six months after the day after registration on the Federal Register, which is 2024-12-22."
+          }
+        },
+        "checkedAt": "2026-10-22T07:41:33.269Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd76ZMd88q4asfohMBVAzSUEu (proposal 4a6fc537). Proposed by Claude (agent), at the request of Daniel Alkurdi. Instrument events from parseFrlTitle over https://api.prod.legislation.gov.au/v1/Titles('F2024L00711'). The register's in-force-from-registration commencement was replaced with the s 2 date. Unrecognised scrutiny item: 2024-08-22 Notice of a disallowance motion by The Parliamentary Joint Committee On Human Rights, withdrawn."
       }
     },
-    "updatedAt": "2026-10-22T05:56:38.375Z",
+    "updatedAt": "2026-10-22T07:41:33.309Z",
     "proposal": {
       "proposedBy": "Claude (agent), at the request of Daniel Alkurdi",
       "proposedRecord": {
@@ -1995,7 +2136,17 @@
       },
       "notes": "Instrument events from parseFrlTitle over https://api.prod.legislation.gov.au/v1/Titles('F2024L00711'). The register's in-force-from-registration commencement was replaced with the s 2 date. Unrecognised scrutiny item: 2024-08-22 Notice of a disallowance motion by The Parliamentary Joint Committee On Human Rights, withdrawn.",
       "proposedAt": "2026-10-22T05:56:38.375Z"
-    }
+    },
+    "reviewedAt": "2026-10-22T07:41:33.269Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd76ZMd88q4asfohMBVAzSUEu (proposal 4a6fc537). Proposed by Claude (agent), at the request of Daniel Alkurdi. Instrument events from parseFrlTitle over https://api.prod.legislation.gov.au/v1/Titles('F2024L00711'). The register's in-force-from-registration commencement was replaced with the s 2 date. Unrecognised scrutiny item: 2024-08-22 Notice of a disallowance motion by The Parliamentary Joint Committee On Human Rights, withdrawn.",
+    "decision": {
+      "proposalHash": "4a6fc537b9faf37b7e5a5cc994fb961b9f8be3b7de9bcd2605a90a13bd45636a",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-10-22T07:41:33.264Z",
+      "attestationUrl": "https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd76ZMd88q4asfohMBVAzSUEu"
+    },
+    "publishedAt": "2026-10-22T07:41:33.298Z"
   },
   {
     "id": "source-review-305a8756-eb86-49bc-b31d-93a4c8015815",
@@ -2406,9 +2557,9 @@
   {
     "id": "source-review-fd21dac5-f19f-49b1-bc83-2ba04cea183d",
     "sourceUrl": "https://www.legislation.gov.au/C2024A00128/asmade/text",
-    "title": "Privacy and Other Legislation Amendment Act 2024 - Federal Register of Legislation",
+    "title": "Privacy and Other Legislation Amendment Act 2024",
     "entryKind": "policy",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-10-22T05:56:10.281Z",
     "createdBy": "local-mcp-admin",
     "notes": "Federal register backfill (AI-relevant Commonwealth law), staged for an editorial decision card.",
@@ -2448,6 +2599,13 @@
         "notes": "Headless Chromium capture of the Federal Register of Legislation as-made text of Act No. 128 of 2024 (C2024A00128), rendered with the Policai collector identity. Staged by Claude (agent) for Daniel Alkurdi's federal register backfill.",
         "pageContentHash": "d5e76d9df4ff126873e9c9a5582dd1b6271e612e41333205e9e0aaf7be8aed49",
         "characterCount": 107752
+      },
+      "reviewedDate": {
+        "date": "2024-12-11",
+        "precision": "day",
+        "reviewedAt": "2026-10-22T07:41:33.800Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The captured as-made text records Royal Assent on 10 December 2024; its commencement table starts most of Schedule 1 the day after assent. The Federal Register versions of the Privacy Act 1988 start compilation 101 (C2024C00833) on 11 December 2024 for those items, compilation 103 on 10 June 2025 for Schedule 2, and schedule sch 1 items 87 and 88 for 10 December 2026."
       }
     },
     "proposedRecord": {
@@ -2514,9 +2672,9 @@
             "reviewedDate": {
               "date": "2024-12-11",
               "precision": "day",
-              "reviewedAt": "2026-10-22T05:56:10.250Z",
-              "reviewedBy": "Claude (agent)",
-              "notes": "The captured commencement table starts most of Schedule 1 the day after Royal Assent; the Federal Register starts compilation 101 (C2024C00833) of the Privacy Act 1988 on 11 December 2024 for those items."
+              "reviewedAt": "2026-10-22T07:41:33.800Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "The captured as-made text records Royal Assent on 10 December 2024; its commencement table starts most of Schedule 1 the day after assent. The Federal Register versions of the Privacy Act 1988 start compilation 101 (C2024C00833) on 11 December 2024 for those items, compilation 103 on 10 June 2025 for Schedule 2, and schedule sch 1 items 87 and 88 for 10 December 2026."
             }
           }
         },
@@ -2573,7 +2731,7 @@
         "transparency-disclosure"
       ],
       "createdAt": "2026-10-22T05:55:28.601Z",
-      "updatedAt": "2026-10-22T05:55:28.601Z",
+      "updatedAt": "2026-10-22T07:41:33.800Z",
       "legislative": {
         "kind": "bill",
         "ref": {
@@ -2684,9 +2842,42 @@
             }
           }
         ]
+      },
+      "lastReviewedAt": "2026-10-22T07:41:33.800Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.legislation.gov.au/C2024A00128/asmade/text",
+          "finalUrl": "https://www.legislation.gov.au/C2024A00128/asmade/text",
+          "title": "Privacy and Other Legislation Amendment Act 2024 - Federal Register of Legislation",
+          "retrievedAt": "2026-10-22T05:56:10.210Z",
+          "contentType": "text/html",
+          "contentHash": "17970bf12e0df01c2f88197417a4b118113f87d7f4ed87cd13b53f7be5b4e8e2",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-22T05:56:10.210Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Headless Chromium capture of the Federal Register of Legislation as-made text of Act No. 128 of 2024 (C2024A00128), rendered with the Policai collector identity. Staged by Claude (agent) for Daniel Alkurdi's federal register backfill.",
+            "pageContentHash": "d5e76d9df4ff126873e9c9a5582dd1b6271e612e41333205e9e0aaf7be8aed49",
+            "characterCount": 107752
+          },
+          "reviewedDate": {
+            "date": "2024-12-11",
+            "precision": "day",
+            "reviewedAt": "2026-10-22T07:41:33.800Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The captured as-made text records Royal Assent on 10 December 2024; its commencement table starts most of Schedule 1 the day after assent. The Federal Register versions of the Privacy Act 1988 start compilation 101 (C2024C00833) on 11 December 2024 for those items, compilation 103 on 10 June 2025 for Schedule 2, and schedule sch 1 items 87 and 88 for 10 December 2026."
+          }
+        },
+        "checkedAt": "2026-10-22T07:41:33.800Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd7HBJv1U5LYgUnunCTESCxT8 (proposal 1f8dc833). Proposed by Claude (agent), at the request of Daniel Alkurdi. APH bill r7249 progress parsed with parseAphProgress; commencements from frlCommencements over https://api.prod.legislation.gov.au/v1/Versions?$filter=titleId%20eq%20'C2004A03712'%20and%20start%20ge%202024-12-01T00%3A00%3A00&$select=titleId,start,reasons: 2024-12-11 sch 1 (items 1-4, 6-9, 11, 13-28, 30-34, 36-38, 40-42, 49-57A, 59, 61-63, 65, 66, 72, 82-85), sch 1 (item 5), sch 1 (item 43), sch 1 (item 10), sch 1 (item 12); 2025-06-10 sch 2 (items 1-10); 2026-12-10 sch 1 (items 87, 88)."
       }
     },
-    "updatedAt": "2026-10-22T05:56:10.293Z",
+    "updatedAt": "2026-10-22T07:41:33.849Z",
     "proposal": {
       "proposedBy": "Claude (agent), at the request of Daniel Alkurdi",
       "proposedRecord": {
@@ -2932,7 +3123,17 @@
       },
       "notes": "APH bill r7249 progress parsed with parseAphProgress; commencements from frlCommencements over https://api.prod.legislation.gov.au/v1/Versions?$filter=titleId%20eq%20'C2004A03712'%20and%20start%20ge%202024-12-01T00%3A00%3A00&$select=titleId,start,reasons: 2024-12-11 sch 1 (items 1-4, 6-9, 11, 13-28, 30-34, 36-38, 40-42, 49-57A, 59, 61-63, 65, 66, 72, 82-85), sch 1 (item 5), sch 1 (item 43), sch 1 (item 10), sch 1 (item 12); 2025-06-10 sch 2 (items 1-10); 2026-12-10 sch 1 (items 87, 88).",
       "proposedAt": "2026-10-22T05:56:10.293Z"
-    }
+    },
+    "reviewedAt": "2026-10-22T07:41:33.800Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd7HBJv1U5LYgUnunCTESCxT8 (proposal 1f8dc833). Proposed by Claude (agent), at the request of Daniel Alkurdi. APH bill r7249 progress parsed with parseAphProgress; commencements from frlCommencements over https://api.prod.legislation.gov.au/v1/Versions?$filter=titleId%20eq%20'C2004A03712'%20and%20start%20ge%202024-12-01T00%3A00%3A00&$select=titleId,start,reasons: 2024-12-11 sch 1 (items 1-4, 6-9, 11, 13-28, 30-34, 36-38, 40-42, 49-57A, 59, 61-63, 65, 66, 72, 82-85), sch 1 (item 5), sch 1 (item 43), sch 1 (item 10), sch 1 (item 12); 2025-06-10 sch 2 (items 1-10); 2026-12-10 sch 1 (items 87, 88).",
+    "decision": {
+      "proposalHash": "1f8dc833a22862dd7cd78fa5f72ea078eb70fdf4bf477a2f7ca143621b59c340",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-10-22T07:41:33.793Z",
+      "attestationUrl": "https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd7HBJv1U5LYgUnunCTESCxT8"
+    },
+    "publishedAt": "2026-10-22T07:41:33.835Z"
   },
   {
     "id": "source-review-0e3c1377-45e7-45f7-b683-644d78a097c1",
