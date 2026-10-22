@@ -35,19 +35,6 @@ const policies: Policy[] = ['federal', 'nsw'].map((jurisdiction, index) => ({
 }));
 const props = {
   policies,
-  developments: [],
-  developmentCount: 5,
-  weeklyDevelopmentCount: 2,
-  lastCollectedAt: '2026-09-20',
-  lastUsableAt: '2026-09-20',
-  lastReviewedAt: null,
-  collectionHealth: 'healthy' as const,
-  successfulSourceCount: 10,
-  dueSourceCount: 10,
-  automaticSourceCount: 12,
-  manualSourceCount: 2,
-  currentManualSourceCount: 1,
-  unavailableManualSourceCount: 1,
 };
 
 const paginatedPolicies = Array.from({ length: 24 }, (_, index) => ({
@@ -132,7 +119,7 @@ describe('Editorial register', () => {
     expect(within(register).queryAllByRole('heading', { level: 2 })).toHaveLength(1);
   });
 
-  it('leads with search and readable records, with developments explicitly separate', () => {
+  it('leads with search and readable records', () => {
     render(<PolicyBrowser {...props} />);
     expect(
       screen.getByRole('heading', { level: 1, name: 'Australian AI policy.' }),
@@ -147,14 +134,6 @@ describe('Editorial register', () => {
       'aria-pressed',
       'true',
     );
-    expect(
-      screen.getByText(
-        'Automated detections are separate from verified register records.',
-      ),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('link', { name: /Browse developments/ }),
-    ).toHaveAttribute('href', '/developments');
   });
 
   it('preserves multi-select and combined filters, chips, search reset and shortcut', () => {
@@ -254,53 +233,5 @@ describe('Editorial register', () => {
     const overview = screen.getByRole('complementary', { name: 'Register overview' });
     expect(within(overview).getByRole('heading', { name: 'Upcoming deadlines' })).toBeInTheDocument();
     expect(overview).toHaveTextContent('No upcoming deadlines recorded');
-  });
-
-  it('labels register freshness as last passing collection when the latest run failed', () => {
-    render(
-      <PolicyBrowser
-        {...props}
-        lastCollectedAt="2026-10-17T19:35:00.990Z"
-        lastUsableAt="2026-10-06T19:33:28.224Z"
-        collectionHealth="failed"
-        successfulSourceCount={57}
-        dueSourceCount={59}
-      />,
-    );
-    const coverage = screen.getByRole('heading', { name: 'Source coverage' }).closest('section')!;
-    expect(coverage).toHaveTextContent('57/59 due sources reached');
-    expect(coverage).toHaveTextContent(/last passing collection 07 Oct 2026/);
-    expect(coverage.textContent).not.toMatch(/17 Oct 2026/);
-  });
-
-  it('anchors register freshness on a degraded run that met the threshold', () => {
-    render(
-      <PolicyBrowser
-        {...props}
-        lastCollectedAt="2026-10-17T19:35:00.990Z"
-        lastUsableAt="2026-10-17T19:35:00.990Z"
-        collectionHealth="degraded"
-        successfulSourceCount={57}
-        dueSourceCount={59}
-      />,
-    );
-    const coverage = screen.getByRole('heading', { name: 'Source coverage' }).closest('section')!;
-    expect(coverage).toHaveTextContent(/last collected 18 Oct 2026/);
-  });
-
-  it('labels register freshness as last collected when no passing run is recorded', () => {
-    render(
-      <PolicyBrowser
-        {...props}
-        lastCollectedAt="2026-10-17T19:35:00.990Z"
-        lastUsableAt={null}
-        collectionHealth="degraded"
-        successfulSourceCount={57}
-        dueSourceCount={59}
-      />,
-    );
-    const coverage = screen.getByRole('heading', { name: 'Source coverage' }).closest('section')!;
-    expect(coverage).toHaveTextContent(/last collected 18 Oct 2026/);
-    expect(coverage).not.toHaveTextContent('last passing collection');
   });
 });

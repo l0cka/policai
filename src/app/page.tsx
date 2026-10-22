@@ -2,21 +2,12 @@ import type { Metadata } from 'next';
 import { AnalysisHero } from '@/components/analysis-hero';
 import { PolicyBrowser } from '@/components/policy-browser';
 import { UpcomingDeadlinesRail } from '@/components/upcoming-deadlines-rail';
+import { getArticles, getPolicies } from '@/lib/data-service';
 import {
-  getArticles,
-  getCollectionMeta,
-  getDevelopments,
-  getPolicies,
-  getSourceMonitoring,
-} from '@/lib/data-service';
-import { WATCH_SOURCES } from '@/lib/pipeline/sources';
-import {
-  collectionAnchor,
   selectUpcomingPolicyDates,
   splitUpcomingDeadlines,
   weekWindowEndingAt,
 } from '@/lib/this-week';
-import { summarizeManualSourceCoverage } from '@/lib/source-monitoring';
 import {
   pageAlternates,
   pageSocialMeta,
@@ -36,36 +27,7 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const [policies, allDevelopments, meta, monitoring, articles] = await Promise.all([
-    getPolicies(),
-    getDevelopments(),
-    getCollectionMeta(),
-    getSourceMonitoring(),
-    getArticles(),
-  ]);
-  const manualCoverage = summarizeManualSourceCoverage(
-    WATCH_SOURCES,
-    monitoring,
-  );
-  const developments = allDevelopments
-    .filter(
-      (development) =>
-        development.status !== 'dismissed' &&
-        development.verification.status === 'verified',
-    )
-    .slice(0, 6);
-  // Anchored to the data's own currency rather than the wall clock, so the
-  // figure is deterministic for a given collection state (and satisfies the
-  // render-purity rule).
-  const dataCurrentAt = collectionAnchor(meta);
-  const weekAgo = dataCurrentAt
-    ? new Date(dataCurrentAt).getTime() - 7 * 24 * 60 * 60 * 1000
-    : Number.POSITIVE_INFINITY;
-  const weeklyDevelopmentCount = allDevelopments.filter(
-    (development) =>
-      development.status !== 'dismissed' &&
-      new Date(development.detectedAt).getTime() >= weekAgo,
-  ).length;
+  const [policies, articles] = await Promise.all([getPolicies(), getArticles()]);
 
   // Coming up is measured from the Sydney calendar day of this render; the page
   // revalidates hourly, so a countdown is at most an hour behind. Deadlines get
@@ -83,19 +45,6 @@ export default async function HomePage() {
       analysisHero={<AnalysisHero articles={articles} />}
       deadlinesRail={<UpcomingDeadlinesRail items={deadlines} today={today} />}
       today={today}
-      developments={developments}
-      developmentCount={allDevelopments.filter((development) => development.status !== 'dismissed').length}
-      weeklyDevelopmentCount={weeklyDevelopmentCount}
-      lastCollectedAt={meta.lastCollectedAt}
-      lastUsableAt={meta.lastUsableAt}
-      lastReviewedAt={meta.lastReviewedAt}
-      collectionHealth={meta.collector.health}
-      successfulSourceCount={meta.collector.successfulSourceCount}
-      dueSourceCount={meta.collector.dueSourceCount}
-      automaticSourceCount={meta.collector.automaticSourceCount}
-      manualSourceCount={manualCoverage.total}
-      currentManualSourceCount={manualCoverage.current}
-      unavailableManualSourceCount={manualCoverage.unavailable}
     />
   );
 }
