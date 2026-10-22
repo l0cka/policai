@@ -141,7 +141,8 @@ See [docs/collector.md](./docs/collector.md) for operations.
 
 `/coverage` answers "who has an instrument on this subject, and where is
 there nothing?" as a table of themes (rows) by jurisdiction (columns). The
-nav calls it Coverage, under Explore. `/network` and any query string on it
+nav calls it Coverage map, a view of the Register
+(`src/lib/site-nav.ts`). `/network` and any query string on it
 redirect there with a 308 (`next.config.ts`). `/api/network` is unchanged
 and still serves `buildNetworkData` nodes and edges.
 

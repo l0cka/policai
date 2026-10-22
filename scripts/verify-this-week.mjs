@@ -63,7 +63,7 @@ try {
     await page.setViewportSize({width:390,height:844});
     await visit(base+'/');
     await page.getByRole('button',{name:'Open menu',exact:true}).click();
-    const link = page.getByRole('link',{name:'This week',exact:true}).filter({visible:true});
+    const link = page.getByRole('navigation',{name:'Mobile'}).getByRole('link',{name:'Updates',exact:true});
     await link.focus();await link.press('Enter');
     await page.waitForURL('**/this-week');
     assert(await page.getByRole('button',{name:'Open menu',exact:true}).isVisible());
