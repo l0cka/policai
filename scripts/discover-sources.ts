@@ -38,7 +38,7 @@ async function main() {
   });
   const discovery = await discoverForBody(body, {
     gate,
-    fetchText: async (url) => (await retrieveSource(url, { gate, attempts: 1 })).body,
+    fetchText: async (url) => (await retrieveSource(url, { gate, attempts: 1, timeoutMs: 60_000 })).body,
   });
   const watched = new Map(WATCH_SOURCES.map((source) => [source.url, source.id]));
 

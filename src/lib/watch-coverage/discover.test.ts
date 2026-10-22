@@ -86,7 +86,7 @@ describe('discoverForBody', () => {
     );
   });
 
-  it('falls back to /sitemap.xml when robots.txt names no sitemap', async () => {
+  it('probes well-known feeds and /sitemap.xml when nothing is declared', async () => {
     const requested: string[] = [];
     const gate = createHostGate({
       hosts: {},
@@ -100,10 +100,12 @@ describe('discoverForBody', () => {
       fetchText: async (url) => {
         await admitThroughGate(gate, url);
         requested.push(url);
-        return '<html></html>';
+        return url.endsWith('/rss.xml') ? '<rss><item><title>AI notice</title></item></rss>' : '<html></html>';
       },
+    }).then(({ proposals }) => {
+      expect(proposals.map((p) => [p.url, p.evidence])).toEqual([[`${ORIGIN}/rss.xml`, 'well_known_feed']]);
     });
-    expect(requested).toEqual([`${ORIGIN}/`, `${ORIGIN}/sitemap.xml`]);
+    expect(requested).toEqual([`${ORIGIN}/`, `${ORIGIN}/rss.xml`, `${ORIGIN}/feed`, `${ORIGIN}/sitemap.xml`]);
   });
 });
 

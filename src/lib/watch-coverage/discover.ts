@@ -3,7 +3,7 @@ import { robotsAllows } from '@/lib/pipeline/robots';
 import type { SourceKind } from '@/lib/pipeline/sources';
 import type { Body } from './bodies';
 
-export type ProposalEvidence = 'robots_sitemap' | 'sitemap_xml' | 'feed_link';
+export type ProposalEvidence = 'robots_sitemap' | 'sitemap_xml' | 'feed_link' | 'well_known_feed';
 
 export interface SourceProposal {
   url: string;
@@ -26,7 +26,9 @@ export interface DiscoverDeps {
   fetchText: (url: string) => Promise<string>;
 }
 
-const MAX_SITEMAPS_PER_HOST = 5;
+const MAX_SITEMAPS_PER_HOST = 20;
+/** Probed only when the home page declares no feed. */
+const WELL_KNOWN_FEEDS = ['/rss.xml', '/feed'];
 const MAX_SITEMAP_URLS = 5000;
 const MIN_PAGES_PER_SECTION = 3;
 const MAX_PROPOSALS = 15;
@@ -131,7 +133,8 @@ export function sitemapSections(
 /**
  * Proposes candidate sources for a body from what its hosts publish for
  * crawlers: robots.txt `Sitemap:` lines, `/sitemap.xml` when robots.txt
- * names none, and feeds linked from the home page. Every request goes
+ * names none, and feeds linked from the home page (or `/rss.xml` and
+ * `/feed` when it links none). Every request goes
  * through the host gate, so robots.txt, pacing and decided blocks hold.
  * Nothing is written; people admit sources through a reviewed PR.
  */
@@ -150,14 +153,17 @@ export async function discoverForBody(body: Body, deps: DiscoverDeps): Promise<D
   for (const host of body.hosts) {
     const origin = `https://${host}`;
     const home = await get(`${origin}/`);
-    for (const feed of home ? feedLinks(home, `${origin}/`) : []) {
+    const declared = home ? feedLinks(home, `${origin}/`) : [];
+    const feeds =
+      declared.length > 0 ? declared : WELL_KNOWN_FEEDS.map((path) => ({ url: `${origin}${path}`, title: '' }));
+    for (const feed of feeds) {
       const xml = await get(feed.url);
-      if (xml === null) continue;
+      if (xml === null || !/<(rss|feed)\b/i.test(xml)) continue;
       const titles = feedTitles(xml);
       proposals.push({
         url: feed.url,
         kind: 'rss',
-        evidence: 'feed_link',
+        evidence: declared.length > 0 ? 'feed_link' : 'well_known_feed',
         score: 2 + relevanceScore(`${feed.url} ${feed.title}`) + Math.min(titles.filter((t) => AI_TERMS.test(t)).length, 5),
         sampleTitles: titles.slice(0, SAMPLE_SIZE),
       });
