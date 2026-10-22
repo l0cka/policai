@@ -92,7 +92,7 @@ function rowFor(
         null
       : null;
   const outcome: E24Outcome = !result
-    ? source?.automation === 'manual'
+    ? source && source.automation !== 'automatic'
       ? 'manual'
       : 'not-run'
     : result.status === 'skipped'

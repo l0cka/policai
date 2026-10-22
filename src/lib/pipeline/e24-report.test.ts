@@ -2,6 +2,7 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
+import { buildManualDecision } from '@/test/factories';
 import type { CollectionMeta } from '@/types';
 import { buildE24Report, E24_SOURCE_IDS, formatE24Report } from './e24-report';
 import { WATCH_SOURCES } from './sources';
@@ -9,6 +10,8 @@ import { WATCH_SOURCES } from './sources';
 const FIXTURES = join(process.cwd(), 'src', 'test', 'fixtures', 'e24');
 const meta = JSON.parse(readFileSync(join(FIXTURES, 'meta.json'), 'utf8')) as CollectionMeta;
 const log = readFileSync(join(FIXTURES, 'collect.log'), 'utf8');
+// The fixture run predates the moves to manual tracking.
+const AUTOMATIC_CATALOG = WATCH_SOURCES.map((source) => ({ ...source, automation: 'automatic' as const }));
 
 describe('buildE24Report', () => {
   it('names catalogued sources only', () => {
@@ -18,7 +21,7 @@ describe('buildE24Report', () => {
   });
 
   it('classifies each E24 source from meta.json and the run log', () => {
-    const report = buildE24Report(meta, log);
+    const report = buildE24Report(meta, log, AUTOMATIC_CATALOG);
     const byId = new Map(report.e24.map((row) => [row.sourceId, row]));
     expect(report.e24.map((row) => row.sourceId)).toEqual([...E24_SOURCE_IDS]);
     expect(byId.get('industry-ai-publications')).toEqual({
@@ -68,7 +71,7 @@ describe('buildE24Report', () => {
   });
 
   it('lists refusals of other sources but not their ordinary failures', () => {
-    const report = buildE24Report(meta, log);
+    const report = buildE24Report(meta, log, AUTOMATIC_CATALOG);
     expect(
       report.otherRefusals.map((row) => [row.sourceId, row.refusal]),
     ).toEqual([
@@ -78,9 +81,9 @@ describe('buildE24Report', () => {
   });
 
   it('reports a source moved to manual tracking as manual', () => {
-    const catalog = WATCH_SOURCES.map((source) =>
+    const catalog = AUTOMATIC_CATALOG.map((source) =>
       source.id === 'esafety-media'
-        ? { ...source, automation: 'manual' as const, critical: undefined }
+        ? { ...source, automation: buildManualDecision(), critical: undefined }
         : source,
     );
     const row = buildE24Report(meta, '', catalog).e24.find(
@@ -90,7 +93,7 @@ describe('buildE24Report', () => {
   });
 
   it('prints the run, the outcome counts and one line per source', () => {
-    const text = formatE24Report(buildE24Report(meta, log));
+    const text = formatE24Report(buildE24Report(meta, log, AUTOMATIC_CATALOG));
     const lines = text.split('\n');
     expect(lines[0]).toBe('run 2026-10-20T19:31:00.000Z health failed');
     expect(lines[1]).toBe(
