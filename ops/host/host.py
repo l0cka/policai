@@ -17,7 +17,7 @@ import time
 from contextlib import contextmanager
 from pathlib import Path
 
-from dispatcher import MainMoved, Refused, State, promote, secure_path, sha, sync_dir, undo_promote
+from dispatcher import Refused, State, promote, secure_path, sha, sync_dir, undo_promote
 
 STATE = Path("/var/lib/policai-deploy-state")
 CONFIG = Path("/etc/policai-deploy/config.json")
@@ -346,7 +346,7 @@ class Host:
                 self.git(lane, "rev-parse", "--verify", "refs/remotes/origin/main^{commit}").strip()
                 != target
             ):
-                raise MainMoved("approved target is not fetched main")
+                raise Refused("approved target is not fetched main")
             self.git(lane, "merge-base", "--is-ancestor", previous[lane], target)
             raw = self.git(
                 lane,

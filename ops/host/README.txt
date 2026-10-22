@@ -408,14 +408,19 @@ EXACT CLI (INSTALLED ROOT CODE ONLY)
     deployed, find a run whose main equals the merge commit or a descendant of
     it; do not infer it from run timing. A refused or failed run prints no
     result and no SHA, exits 1 and leaves the persistent gate. One exception:
-    when a follow_main run resolved its own target and main then moved
-    before staging (prepare's "approved target is not fetched main", raised
-    as MainMoved), nothing was built and active.json is untouched, so the run
-    removes its marker, prints "Refused: main moved during deployment; next
-    cycle retries" and the next timer cycle deploys the new main. An explicit
-    target (approved_target or --recover) that is not fetched main still
-    blocks. The 2026-10-22 14:34 AEDT block was this race: #453 merged one
-    second into a run that had resolved #447.
+    a follow_main run that resolved its own target and fails before staging
+    (phase preflight or target-resolved: a GitHub fetch during a network
+    drop, or "approved target is not fetched main" when a merge lands
+    mid-run) has built nothing and left active.json untouched. It records
+    {count, failure} in deferred.json, removes its marker, prints "Refused:
+    deployment deferred before staging; next cycle retries" and the next
+    timer cycle tries again. The DEFER_LIMIT-th consecutive such failure (5,
+    about 10 minutes) blocks as usual; a verified deploy removes
+    deferred.json. cli.py status prints it as deferred. An explicit target
+    (approved_target or --recover) and any failure from stage onwards block
+    at once. Both 2026 blocks before this rule were pre-staging: a WAN drop
+    on 2026-10-20 05:16 AEDT and #453 merging one second into a run that had
+    resolved #447 on 2026-10-22 14:34 AEDT.
 
 FAILURE / RECOVERY
   sudo /usr/bin/python3 -I /usr/local/libexec/policai-host/cli.py rollback
