@@ -152,6 +152,38 @@ describe('followTargets for SA bills', () => {
   });
 });
 
+const VIC_BILL = 'https://www.legislation.vic.gov.au/bills/cannabis-legalisation-plebiscite-bill-2026';
+
+describe('followTargets for Victorian bills', () => {
+  const vicBill = (url: string): Policy =>
+    buildPolicy({
+      id: 'vic-plebiscite-bill',
+      title: 'Cannabis Legalisation Plebiscite Bill 2026',
+      jurisdiction: 'vic',
+      type: 'legislation',
+      status: 'proposed',
+      sourceUrl: url,
+      legislative: { kind: 'bill', ref: { register: 'state', jurisdiction: 'vic', url }, origin: 'private_member', events: [] },
+    });
+
+  it('follows a Victorian bill at its bill page, and no other Victorian page', () => {
+    const targets = followTargets([vicBill(VIC_BILL), { ...vicBill('https://www.legislation.vic.gov.au/as-made/acts/example-act-2026'), id: 'vic-act' }]);
+    expect(targets.map((target) => [target.sourceId, target.register, target.url])).toEqual([['track:vic-plebiscite-bill', 'vic', VIC_BILL]]);
+  });
+
+  it('stages the first reading the page shows', async () => {
+    const page = readFileSync(join(__dirname, '__fixtures__/state/vic-bill-cannabis-legalisation-plebiscite-bill-2026.html'), 'utf8');
+    const { reviews, errors } = await followLegislation({
+      targets: followTargets([vicBill(VIC_BILL)]),
+      existingReviews: [],
+      retrieve: async (url) => ({ body: page, evidence: { url, retrievedAt: now.toISOString(), contentHash: 'd'.repeat(64) } }),
+      now,
+    });
+    expect(errors).toEqual([]);
+    expect(reviews[0].legislativeUpdate?.added.map(({ date, event }) => [date, event])).toEqual([['2026-07-28', { kind: 'introduced', chamber: 'upper' }]]);
+  });
+});
+
 describe('followLegislation', () => {
   it('stages one update review with the new stages and the derived status', async () => {
     const record = bill('r7249', [introduced('2024-09-12', 'lower', 'r7249')]);
