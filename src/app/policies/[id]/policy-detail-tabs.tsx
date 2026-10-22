@@ -397,7 +397,7 @@ export function PolicyDetailTabs({
 
           {instrumentDates.length > 0 ? (
             <section className="border border-border bg-card p-[var(--space-5)]">
-              <h2 className="page-eyebrow">Policy changes</h2>
+              <h2 className="section-title">Policy changes</h2>
               <ol className="mt-4 space-y-5">
                 {instrumentDates.slice(0, 4).map((date, index) => (
                   <li key={`${date.type}-${String(date.date)}`} className="relative pl-5">
