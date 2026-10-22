@@ -1,5 +1,19 @@
 [
   {
+    "id": "mcp-audit-0f33dfaf-e7c8-428b-953a-709553924831",
+    "createdAt": "2026-10-22T02:05:57.114Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-99c06841-7b9c-4ed6-af4d-4ebb598162be",
+    "createdAt": "2026-10-22T02:05:57.006Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-d49ca6dd-383a-4aaa-a846-ae9780649b79",
     "createdAt": "2026-10-22T01:39:31.148Z",
     "actor": "local-mcp-admin",
