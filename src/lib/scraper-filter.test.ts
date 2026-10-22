@@ -28,6 +28,23 @@ describe('isRelevantScrapedCandidate', () => {
       }),
     ).toBe(true);
   });
+
+  it('accepts an AI-related law by its title, which carries no policy wording', () => {
+    expect(
+      isRelevantScrapedCandidate({
+        title: 'Crimes (Deepfake Sexual Material) Amendment Bill 2026',
+        url: 'https://www.legislation.act.gov.au/b/db_75999/',
+        text: '21 October 2026 Crimes (Deepfake Sexual Material) Amendment Bill 2026 PMB',
+      }),
+    ).toBe(true);
+    expect(
+      isRelevantScrapedCandidate({
+        title: 'Crimes (Anti-Consorting) Amendment Bill 2026',
+        url: 'https://www.legislation.act.gov.au/b/db_75186/',
+        text: '21 October 2026 Crimes (Anti-Consorting) Amendment Bill 2026 PMB',
+      }),
+    ).toBe(false);
+  });
 });
 
 describe('countAiMentions', () => {

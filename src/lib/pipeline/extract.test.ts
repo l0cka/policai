@@ -1,4 +1,6 @@
 /* @vitest-environment node */
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 import {
@@ -162,6 +164,26 @@ describe('extractCandidatesFromHtml', () => {
         title: 'Artificial Intelligence Transparency Regulations 2026',
         url: 'https://www.legislation.vic.gov.au/as-made/statutory-rules/artificial-intelligence-transparency-regulations-2026',
         dateHint: '2026-09-16',
+      }),
+    ]);
+  });
+
+  it('extracts ACT legislation register what\'s-new table rows with their dates', () => {
+    const html = readFileSync(
+      join(__dirname, '../legislation/__fixtures__/state/act-whats-new.html'),
+      'utf8',
+    ).replace(
+      '<a href="/b/db_75186/">Crimes (Anti-Consorting) Amendment Bill 2026</a>',
+      '<a href="/b/db_75186/">Crimes (Deepfake Sexual Material) Amendment Bill 2026</a>',
+    );
+    const result = extractFromHtml(html, 'https://www.legislation.act.gov.au/WhatsNew/Index');
+
+    expect(result.itemCount).toBeGreaterThan(20);
+    expect(result.candidates).toEqual([
+      expect.objectContaining({
+        title: 'Crimes (Deepfake Sexual Material) Amendment Bill 2026',
+        url: 'https://www.legislation.act.gov.au/b/db_75186',
+        dateHint: '2026-10-21',
       }),
     ]);
   });

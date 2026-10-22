@@ -217,6 +217,9 @@ export function extractFromHtml(
   // "...listing..." class, so the row must win over the generic selector,
   // which would otherwise treat the link as its own container.
   const rippleTableRowSelector = 'tbody[class*="rpl-data-table__row"] > tr';
+  // The ACT legislation register lists what's new in DataTables inside one
+  // article; each row is an entry, not the article around them.
+  const dataTableRowSelector = 'table.datatable > tbody > tr';
   const semanticListSelector = [
     'ul[class*="result"]',
     'ol[class*="result"]',
@@ -268,10 +271,12 @@ export function extractFromHtml(
     if (!title || title.length < 8) return;
 
     const listItem = link.closest('li');
-    const rippleTableRow = link.closest(rippleTableRowSelector);
+    const tableRow = link.closest(
+      `${rippleTableRowSelector}, ${dataTableRowSelector}`,
+    );
     const container =
-      rippleTableRow.length > 0
-        ? rippleTableRow
+      tableRow.length > 0
+        ? tableRow
         : listItem.length > 0 &&
             listItem.closest(semanticListSelector).length > 0
           ? listItem
