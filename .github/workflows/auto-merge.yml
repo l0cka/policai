@@ -4,8 +4,11 @@ name: Auto-merge
 # then merges once the "Protect main" ruleset passes: lint, test and build
 # green and every review thread resolved. A `hold` label disarms it, for PRs
 # gated on a date or an event. Merging to main deploys Argus.
+#
+# pull_request_target runs this file from main, so a PR cannot rewrite its own
+# arming policy. The job never checks out PR code.
 on:
-  pull_request:
+  pull_request_target:
     branches:
       - main
     types: [opened, reopened, ready_for_review, labeled, unlabeled]
@@ -39,20 +42,23 @@ jobs:
               return core.info('Held, auto-merge disabled.');
             }
             if (pr.auto_merge) return core.info('Auto-merge already on.');
-            try {
-              await github.graphql(
-                'mutation($id: ID!) { enablePullRequestAutoMerge(input: { pullRequestId: $id, mergeMethod: SQUASH }) { clientMutationId } }',
-                { id: pr.node_id },
-              );
-              core.info('Auto-merge enabled (squash).');
-            } catch (error) {
-              // GitHub refuses to arm a PR that can already merge, e.g. when
-              // `hold` comes off after CI went green. Merge it directly.
-              if (!/clean status/i.test(error.message)) throw error;
+            // GitHub refuses to arm a PR that can already merge, e.g. when
+            // `hold` comes off after CI went green. Merge that one directly.
+            const { data: fresh } = await github.rest.pulls.get({
+              ...context.repo,
+              pull_number: pr.number,
+            });
+            if (fresh.mergeable_state === 'clean') {
               await github.rest.pulls.merge({
                 ...context.repo,
                 pull_number: pr.number,
+                sha: fresh.head.sha,
                 merge_method: 'squash',
               });
-              core.info('Already mergeable, squash-merged.');
+              return core.info('Already mergeable, squash-merged.');
             }
+            await github.graphql(
+              'mutation($id: ID!) { enablePullRequestAutoMerge(input: { pullRequestId: $id, mergeMethod: SQUASH }) { clientMutationId } }',
+              { id: pr.node_id },
+            );
+            core.info('Auto-merge enabled (squash).');
