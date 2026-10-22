@@ -95,7 +95,7 @@
     "sourceUrl": "https://www.cyber.gov.au/alert/risks-of-ai-misalignment-to-australian-organisations",
     "title": "Risks of AI misalignment to Australian organisations",
     "entryKind": "policy",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-10-22T01:11:49.111Z",
     "createdBy": "Daniel Alkurdi (Claude-assisted web review)",
     "notes": "Manual cyber.gov.au check on 22 October 2026 found this ASD's ACSC alert (Published 25 Sep 2026) with no register record and no collector development. Staged as a new guideline for editorial review; it is not approved, published or verified. Relation to the dismissed collector lead dev-11-aug-2026-news-when-ai-agents-take-unexpected--qhac98 ('When AI agents take unexpected actions', now at https://www.cyber.gov.au/blog/when-ai-agents-take-unexpected-actions): the alert links that blog as earlier advice, but the page does not show it is the same incident. The blog describes an AI assistant bypassing booking limits in a gym-booking system (ABC News, 10 August); the alert describes AI agents that, when blocked by security controls on public-facing websites, independently identified vulnerabilities and attempted further actions without authorisation, and is an ACSC alert with mitigation advice rather than blog commentary. Editor to decide whether it is a distinct instrument. Related existing records: asd-careful-adoption-agentic-ai-services-2026 and asd-agentic-ai-harnesses-2026.",
@@ -193,9 +193,38 @@
         "human-oversight",
         "risk-assurance",
         "ai-governance"
-      ]
+      ],
+      "createdAt": "2026-10-22T01:11:49.111Z",
+      "updatedAt": "2026-10-22T02:09:31.676Z",
+      "lastReviewedAt": "2026-10-22T02:09:31.676Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.cyber.gov.au/alert/risks-of-ai-misalignment-to-australian-organisations",
+          "finalUrl": "https://www.cyber.gov.au/alert/risks-of-ai-misalignment-to-australian-organisations",
+          "title": "Risks of AI misalignment to Australian organisations",
+          "retrievedAt": "2026-10-22T01:09:33.000Z",
+          "contentType": "text/html",
+          "contentHash": "87e3040b098fdebeeae1dce0e479135f5ffcf1b9080c7e2216ba38233cd86ec1",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-22T01:09:33.000Z",
+            "capturedBy": "Daniel Alkurdi (Claude-assisted web review)",
+            "notes": "Plain HTTP fetch (curl, default user agent) of the official ASD cyber.gov.au page on 22 October 2026, reviewed with Claude. The Policai collector does not track cyber.gov.au automatically; this publication was found in a manual check of the cyber.gov.au publications index and missed by earlier checks.",
+            "pageContentHash": "57c9c93daa60f92e0da72bc5b560c962b03d58a1a8d98037ea46341af25bbe6a",
+            "characterCount": 3519
+          },
+          "publishedAt": "2026-09-25",
+          "publishedAtPrecision": "day"
+        },
+        "checkedAt": "2026-10-22T02:09:31.676Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7KcTueXbaTHEuH1WrdG6i9X#cmsg_019nKBbCzGtpRmfKqX3Xisd7RREjkmtkgfQ2YzdBPdLUF6 (proposal ed997562). Proposed by Claude (agent). Adds the missing createdAt. The browser capture was made by Claude at Daniel Alkurdi's request; its capturedBy label predates honest agent attribution."
+      }
     },
-    "updatedAt": "2026-10-22T02:05:56.970Z",
+    "updatedAt": "2026-10-22T02:09:31.802Z",
     "proposal": {
       "proposedBy": "Claude (agent)",
       "proposedRecord": {
@@ -259,7 +288,17 @@
       },
       "notes": "Adds the missing createdAt. The browser capture was made by Claude at Daniel Alkurdi's request; its capturedBy label predates honest agent attribution.",
       "proposedAt": "2026-10-22T02:05:56.970Z"
-    }
+    },
+    "reviewedAt": "2026-10-22T02:09:31.676Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7KcTueXbaTHEuH1WrdG6i9X#cmsg_019nKBbCzGtpRmfKqX3Xisd7RREjkmtkgfQ2YzdBPdLUF6 (proposal ed997562). Proposed by Claude (agent). Adds the missing createdAt. The browser capture was made by Claude at Daniel Alkurdi's request; its capturedBy label predates honest agent attribution.",
+    "decision": {
+      "proposalHash": "ed9975624a2c6499aab443ca990f8258e24b0bb645b7c24ec5cf2bb9ffe34cd0",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-10-22T02:09:31.662Z",
+      "attestationUrl": "https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7KcTueXbaTHEuH1WrdG6i9X#cmsg_019nKBbCzGtpRmfKqX3Xisd7RREjkmtkgfQ2YzdBPdLUF6"
+    },
+    "publishedAt": "2026-10-22T02:09:31.760Z"
   },
   {
     "id": "source-review-bae8cf98-3fd0-4f4c-b9da-2a4d788484e0",
