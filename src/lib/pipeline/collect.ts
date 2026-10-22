@@ -22,7 +22,7 @@ import {
   type Classification,
 } from './classify';
 import type { ClaudeVerdict } from './claude-classify';
-import { extractFromFrlSearch } from '@/lib/legislation/frl-search';
+import { extractFromFrlSearch, trackedFrlPages } from '@/lib/legislation/frl-search';
 import { extractRetrievedDocument } from './content';
 import { classifyFailure, publicFailureUrl } from './failure';
 import { robotsUnverifiedHosts, type Host, type HostGate, type HostRecord } from './host-gate';
@@ -1178,6 +1178,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     ...(options.trackedUrls ?? []).map(sourceUrlIdentity),
     ...trackedPoliciesByUrl.keys(),
     ...trackedTimelineEventsByUrl.keys(),
+    ...trackedFrlPages(options.trackedPolicies ?? []).map(sourceUrlIdentity),
   ]);
   const knownHeadlineKeys = new Set(
     options.existingDevelopments
@@ -1845,18 +1846,23 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         continue;
       }
 
+      // A register search row names and dates the instrument; its page's
+      // first heading is the site banner.
+      const fromRegister = source.kind === 'frl-search';
       const enrichedCandidate: Candidate = {
         ...candidate,
         title:
           existingPolicy?.title ||
           existingTimelineEvent?.title ||
-          document.title ||
+          (fromRegister ? candidate.title : document.title) ||
           candidate.title,
         text: document.text.slice(0, 600) || candidate.text,
-        dateHint: document.publishedAt ?? candidate.dateHint,
-        dateHintPrecision:
-          document.publishedAtPrecision ??
-          candidate.dateHintPrecision,
+        dateHint: fromRegister
+          ? candidate.dateHint
+          : (document.publishedAt ?? candidate.dateHint),
+        dateHintPrecision: fromRegister
+          ? candidate.dateHintPrecision
+          : (document.publishedAtPrecision ?? candidate.dateHintPrecision),
       };
       state.seen[candidateStateKey(candidate)].candidate = enrichedCandidate;
       if (source.kind === 'document' && changeTarget) {

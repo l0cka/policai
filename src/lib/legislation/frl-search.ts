@@ -1,5 +1,6 @@
 import type { Candidate, ExtractionResult } from '@/lib/pipeline/extract';
 import { canonicalizeSourceUrl } from '@/lib/source-url';
+import type { Policy } from '@/types';
 
 /**
  * Discovers new AI-related legislative instruments through the Federal
@@ -26,6 +27,19 @@ export function frlAiInstrumentSearch(): string {
   );
 }
 
+/** The register page a candidate and a legislation record both cite. */
+function frlRecordPage(titleId: string): string {
+  return `https://www.legislation.gov.au/${titleId}/asmade/details`;
+}
+
+/**
+ * Register pages of instruments already tracked, so a match is not proposed
+ * again when the record cites the issuer's release rather than the register.
+ */
+export function trackedFrlPages(policies: readonly Policy[]): string[] {
+  return policies.flatMap(({ legislative }) => (legislative?.ref.register === 'frl' ? [frlRecordPage(legislative.ref.titleId)] : []));
+}
+
 interface FrlSearchRow {
   id?: unknown;
   name?: unknown;
@@ -50,7 +64,7 @@ export function extractFromFrlSearch(json: string): ExtractionResult {
     if (typeof version.relevance !== 'number' || version.relevance < FRL_MIN_RELEVANCE) continue;
     const registered = typeof row.asMadeRegisteredAt === 'string' ? /^\d{4}-\d{2}-\d{2}/.exec(row.asMadeRegisteredAt)?.[0] : undefined;
     candidates.push({
-      url: `https://www.legislation.gov.au/${row.id}/asmade/details`,
+      url: frlRecordPage(row.id),
       title: row.name,
       text: `Federal Register full-text search for ${AI_PHRASES.map((phrase) => `"${phrase}"`).join(', ')} matched this instrument as made (relevance ${version.relevance.toFixed(1)}).`,
       ...(registered ? { dateHint: registered, dateHintPrecision: 'day' as const } : {}),

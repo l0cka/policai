@@ -630,12 +630,25 @@ describe('collect', () => {
       enabled: true,
       automation: 'automatic',
     };
-    const page = (title: string) => `<html><body><main><h1>${title}</h1><p>Registered 17 September 2026.</p></main></body></html>`;
+    const page = (title: string) =>
+      `<html><head><title>${title} - Federal Register of Legislation</title></head><body><h1>Federal Register of Legislation</h1><main><p>Published 1 January 2020.</p></main></body></html>`;
+    const tracked = buildPolicy({
+      id: 'asic-ai-trading-rules',
+      sourceUrl: 'https://asic.gov.au/news/ai-trading-rules',
+      legislative: {
+        kind: 'instrument',
+        ref: { register: 'frl', titleId: 'F2026L01223' },
+        issuerBodyId: 'asic',
+        enablingAct: 'Corporations Act 2001, s 798G(1)',
+        events: [],
+      },
+    });
 
     const result = await collect({
       sources: [REGISTER_SOURCE],
       state: emptyWatchState(),
       existingDevelopments: [],
+      trackedPolicies: [tracked],
       fetchImpl: fakeFetch({
         [REGISTER_SOURCE.url]: {
           contentType: 'application/json',
@@ -648,12 +661,15 @@ describe('collect', () => {
     });
 
     expect(result.errors).toEqual([]);
-    expect(result.developments.map((d) => [d.url, d.publishedAt])).toEqual([
-      ['https://www.legislation.gov.au/F2026L01224/asmade/details', '2026-09-17'],
-      ['https://www.legislation.gov.au/F2026L01223/asmade/details', '2026-09-17'],
+    expect(result.developments.map((d) => [d.url, d.title, d.publishedAt])).toEqual([
+      [
+        'https://www.legislation.gov.au/F2026L01224/asmade/details',
+        'ASIC Market Integrity Rules (Futures Markets) Amendment Instrument 2026/575',
+        '2026-09-17',
+      ],
     ]);
-    expect(result.developments[1].summary).toContain('matched this instrument as made (relevance 27.1)');
-    expect(result.developments[1].relevanceScore).toBeLessThanOrEqual(MACHINE_CONFIDENCE_CAP);
+    expect(result.developments[0].summary).toContain('matched this instrument as made (relevance 25.7)');
+    expect(result.developments[0].relevanceScore).toBeLessThanOrEqual(MACHINE_CONFIDENCE_CAP);
     expect(result.state.seen['https://www.legislation.gov.au/F2026L01187/asmade/details']).toBeUndefined();
   });
 
