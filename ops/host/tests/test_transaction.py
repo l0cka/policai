@@ -162,6 +162,30 @@ class TransactionTests(unittest.TestCase):
                 },
             )
 
+    def test_main_moving_mid_run_defers_only_a_resolved_target(self):
+        for resolved in (True, False):
+            with self.subTest(resolved=resolved), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                (root / "deploy.lock").touch()
+                (root / "worker.lock").touch()
+                state = FixtureState(root)
+                state.write("active.json", {"target": "a" * 40})
+                host = FakeHost()
+                host.resolve_target = lambda: "b" * 40
+
+                def prepare(target):
+                    raise d.MainMoved("approved target is not fetched main")
+
+                host.prepare = prepare
+                with self.assertRaises(d.Refused):
+                    d.Transaction(state, host).deploy(None if resolved else "b" * 40)
+                self.assertEqual(state.read("active.json"), {"target": "a" * 40})
+                if resolved:
+                    self.assertFalse((root / "blocked.json").exists())
+                    d.Transaction(state, FakeHost()).deploy("b" * 40)
+                else:
+                    self.assertEqual(state.read("blocked.json")["failure"]["error"], "MainMoved")
+
     def test_follow_main_resolves_target_inside_latched_transaction(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

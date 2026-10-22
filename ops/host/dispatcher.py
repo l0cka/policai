@@ -23,6 +23,10 @@ class Refused(RuntimeError):
     """Public, nonsecret operational error."""
 
 
+class MainMoved(Refused):
+    """main advanced past the resolved target before anything was staged."""
+
+
 def secure_path(path, owner=0, directory=False, ancestors=True):
     """Reject aliases and writable authority paths. Never reads file content."""
     path = Path(path)
@@ -237,9 +241,10 @@ class Transaction:
 
             # Host progress hooks write only controlled metadata, never output.
             self.host.checkpoint = checkpoint
+            resolved = target is None
             try:
                 self.host.preflight(active)
-                if target is None:
+                if resolved:
                     target = sha(self.host.resolve_target())
                     record["target"] = target
                     checkpoint("target-resolved")
@@ -265,6 +270,12 @@ class Transaction:
                     "heads": deployed["heads"],
                 }
             except BaseException as error:
+                if resolved and isinstance(error, MainMoved):
+                    # A merge landed mid-run. Nothing is staged and active.json is
+                    # untouched, so retry next cycle instead of blocking. An explicit
+                    # target (approved_target or --recover) keeps the persistent gate.
+                    self.state.clear_marker()
+                    raise Refused("main moved during deployment; next cycle retries") from None
                 # Refused reasons are static and nonsecret; any other error keeps only its type.
                 record["failure"] = {"phase": record["phase"], "error": type(error).__name__}
                 if isinstance(error, Refused):

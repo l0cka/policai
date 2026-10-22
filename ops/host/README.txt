@@ -407,7 +407,15 @@ EXACT CLI (INSTALLED ROOT CODE ONLY)
     heads is the per-checkout commit written to active.json. To prove a merge
     deployed, find a run whose main equals the merge commit or a descendant of
     it; do not infer it from run timing. A refused or failed run prints no
-    result and no SHA, exits 1 and leaves the persistent gate.
+    result and no SHA, exits 1 and leaves the persistent gate. One exception:
+    when a follow_main run resolved its own target and main then moved
+    before staging (prepare's "approved target is not fetched main", raised
+    as MainMoved), nothing was built and active.json is untouched, so the run
+    removes its marker, prints "Refused: main moved during deployment; next
+    cycle retries" and the next timer cycle deploys the new main. An explicit
+    target (approved_target or --recover) that is not fetched main still
+    blocks. The 2026-10-22 14:34 AEDT block was this race: #453 merged one
+    second into a run that had resolved #447.
 
 FAILURE / RECOVERY
   sudo /usr/bin/python3 -I /usr/local/libexec/policai-host/cli.py rollback
