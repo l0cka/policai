@@ -6,8 +6,9 @@
  *
  * Every request goes through the host gate (declared identity, robots.txt,
  * crawl-delay, Retry-After, decided blocks) and the official-host allow-list,
- * over plain HTTP first and then the collector's browser, as the collector
- * does. A host that refuses us is reported as refused, not retried another way.
+ * over plain HTTP, then Firecrawl, then the collector's browser, in the
+ * collector's order, all with the same declared identity. A page none of
+ * them can fetch is reported as refused.
  *
  * Usage:
  *   npm run survey:site-reuse -- --out=<file.json> [--host=<host>]...
@@ -18,6 +19,7 @@ import * as cheerio from 'cheerio';
 import { getBodies } from '../src/lib/data-service';
 import { createBrowserFetch } from '../src/lib/pipeline/browser-fetch';
 import { isGateError, retrieveSource, SourceFetchError } from '../src/lib/pipeline/fetch';
+import { scrapeWithFirecrawl } from '../src/lib/pipeline/firecrawl';
 import { createHostGate, robotsFetcher } from '../src/lib/pipeline/host-gate';
 import { refusedHosts, WATCH_SOURCES } from '../src/lib/pipeline/sources';
 
@@ -39,9 +41,11 @@ const STATEMENT = new RegExp(
   'gi',
 );
 
+type Via = 'http' | 'firecrawl' | 'browser';
+
 interface Page {
   url: string;
-  via: 'http' | 'browser';
+  via: Via;
   html: string;
 }
 
@@ -51,7 +55,7 @@ type Outcome =
 
 interface CandidateReport {
   url: string;
-  via?: 'http' | 'browser';
+  via?: Via;
   title?: string;
   statements: string[];
   excerpts: string[];
@@ -62,7 +66,7 @@ interface HostReport {
   host: string;
   bodyIds: string[];
   checkedAt: string;
-  home: { url: string; via?: 'http' | 'browser'; error?: string };
+  home: { url: string; via?: Via; error?: string };
   candidates: CandidateReport[];
 }
 
@@ -150,6 +154,12 @@ async function main() {
         error instanceof SourceFetchError &&
         (error.code === 'destination_mismatch' || error.status === 404 || isGateError(error));
       if (futile) return { kind: 'refused', detail: message(error) };
+    }
+    try {
+      const scraped = await scrapeWithFirecrawl(url, { gate });
+      if (scraped.ok) return { kind: 'ok', page: { url: scraped.finalUrl, via: 'firecrawl', html: scraped.rawHtml } };
+    } catch (error) {
+      if (isGateError(error)) return { kind: 'refused', detail: message(error) };
     }
     try {
       const retrieved = await retrieveSource(url, {
