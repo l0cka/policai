@@ -3,7 +3,7 @@ import { join } from 'node:path';
 import { describe, expect, it, vi } from 'vitest';
 import { buildPolicy } from '@/test/factories';
 import type { Policy, SourceReview } from '@/types';
-import { aphBillPage, followLegislation, followTargets } from './follow';
+import { aphBillPage, BROWSER_REGISTERS, followLegislation, followTargets } from './follow';
 import { frlAmendedPrincipals, frlTitleRecord, frlVersionsFrom, parseFrlTitle } from './frl-title';
 import type { Dated, Legislative, LegislativeEvent } from './model';
 import { saBillPage } from './sa-salt';
@@ -181,6 +181,34 @@ describe('followTargets for Victorian bills', () => {
     });
     expect(errors).toEqual([]);
     expect(reviews[0].legislativeUpdate?.added.map(({ date, event }) => [date, event])).toEqual([['2026-07-28', { kind: 'introduced', chamber: 'upper' }]]);
+  });
+});
+
+describe('followTargets for NSW and WA bills', () => {
+  const stateBill = (id: string, jurisdiction: 'nsw' | 'wa', url: string): Policy =>
+    buildPolicy({
+      id,
+      title: id,
+      jurisdiction,
+      type: 'legislation',
+      status: 'proposed',
+      sourceUrl: url,
+      legislative: { kind: 'bill', ref: { register: 'state', jurisdiction, url }, origin: 'government', events: [] },
+    });
+
+  it('follows NSW and WA bill pages through the browser registers, and no other page', () => {
+    const nsw = 'https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875';
+    const wa = 'https://www.parliament.wa.gov.au/parliament/bills.nsf/BillProgressPopup?OpenForm=&ParentUNID=5107DFD50A7DA2E448258DEE0026841D';
+    const targets = followTargets([
+      stateBill('nsw-bill', 'nsw', nsw),
+      stateBill('wa-bill', 'wa', wa),
+      stateBill('nsw-act', 'nsw', 'https://legislation.nsw.gov.au/view/html/inforce/current/act-2026-006'),
+    ]);
+    expect(targets.map((target) => [target.sourceId, target.register, target.url])).toEqual([
+      ['track:nsw-bill', 'nsw', nsw],
+      ['track:wa-bill', 'wa', wa],
+    ]);
+    expect(targets.every(({ register }) => BROWSER_REGISTERS.has(register))).toBe(true);
   });
 });
 

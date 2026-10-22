@@ -4,8 +4,7 @@ Raw response bodies saved verbatim on 22 October 2026 (Australia/Sydney) for the
 state extractors. Every request used the collector identity
 `Mozilla/5.0 (compatible; Policai/1.0 (+https://policai.org))` over plain HTTP,
 after checking the host's robots.txt. Rows marked "browser" were fetched with
-the collector's own `createBrowserFetch`, because the host refuses plain HTTP
-with an Azure WAF page.
+the collector's own `createBrowserFetch`, because the host refuses plain HTTP.
 
 | File | Source URL |
 | --- | --- |
@@ -22,6 +21,9 @@ with an Azure WAF page.
 | `qld-bills-before-the-house.html` | https://www.parliament.qld.gov.au/Work-of-the-Assembly/Bills-and-Legislation/Bills-before-the-House (browser) |
 | `wa-current-bills.html` | https://www.parliament.wa.gov.au/parliament/bills.nsf/screenWebCurrentBills (browser) |
 | `wa-bill-progress-A97052A7F3DF8F5548258DA800203E8B.html` | https://www.parliament.wa.gov.au/parliament/bills.nsf/BillProgressPopup?openForm&ParentUNID=A97052A7F3DF8F5548258DA800203E8B (browser) |
+| `nsw-current-session-bills.html` | https://www.parliament.nsw.gov.au/parliamentary-business/bills/current-session-bills?num_ranks=1000 (browser) |
+| `nsw-bill-18875.html` | https://www.parliament.nsw.gov.au/parliamentary-business/bills/bill-details?billId=18875 (browser) |
+| `wa-bill-progress-5107DFD50A7DA2E448258DEE0026841D.html` | https://www.parliament.wa.gov.au/parliament/bills.nsf/BillProgressPopup?OpenForm=&ParentUNID=5107DFD50A7DA2E448258DEE0026841D (browser) |
 | `sa-salt-search-56-1.json` | https://prod-internet-salt-functionapp.azurewebsites.net/api/Search/?resultsPerPage=4000&motionType=0&parliamentSession=56th/1st&startDate=2026-05-04T14:00:00.000Z&endDate=2026-10-22T13:00:00.000Z |
 | `sa-salt-bill-5619-assented.json` | https://prod-internet-salt-functionapp.azurewebsites.net/api/GetBillSummaries?billId=5619 |
 | `sa-salt-bill-5620-before-parliament.json` | https://prod-internet-salt-functionapp.azurewebsites.net/api/GetBillSummaries?billId=5620 |
@@ -61,3 +63,14 @@ allows these paths. The Western Australian bill is the Building and Construction
 Industry (Security of Payment) Amendment Bill 2026, which passed both Houses on
 7 May and 13 October 2026. The Northern Territory bill page shows only its
 introduction date; its Status, Date and Amended fields are blank.
+
+NSW Parliament refused plain HTTP, robots.txt included, with a Cloudflare 403
+on 22 October 2026, so the NSW pages were fetched in the browser. The
+current-session list renders 10 cards and loads more through
+`/_design/rest-assets/funnelback/...`, a path robots disallows. With
+`num_ranks=1000`, the page itself returns all 544 bills of the session in one
+response. Each bill links through `search.parliament.nsw.gov.au/s/redirect`,
+which robots disallows; read the billId from the redirect's encoded `url`
+parameter instead of following it. The Western Australian page is the
+Appropriation (Recurrent 2026–27) Bill 2026, Royal Assent 19 August 2026, Act
+No. 10 of 2026, fetched with its canonical `OpenForm=` URL.
