@@ -23,6 +23,7 @@ interface ApiItemResponse<T> {
 interface PublicStatusResponse {
   lastCollectedAt: string | null;
   lastHealthyAt: string | null;
+  lastUsableAt: string | null;
   lastReviewedAt: string | null;
   collection: {
     health: string;

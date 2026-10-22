@@ -9,6 +9,7 @@ import {
 import { formatPolicyDate } from '@/lib/format-policy-date';
 import { jurisdictionRailStyle } from '@/lib/jurisdiction-accent';
 import {
+  collectionAnchor,
   precisionDateTime,
   selectRecentVerifiedBefore,
   selectUpcomingPolicyDates,
@@ -198,7 +199,7 @@ export default async function ThisWeekPage() {
 
   // Retrospective coverage follows collection. Coming up uses today's date.
   const now = new Date();
-  const anchor = meta.lastHealthyAt ?? meta.lastCollectedAt;
+  const anchor = collectionAnchor(meta);
   const window = weekWindowEndingAt(anchor);
   const weeklyDevelopments = window
     ? selectWeeklyDevelopments(allDevelopments, window)

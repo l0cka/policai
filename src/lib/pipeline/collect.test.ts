@@ -1049,6 +1049,7 @@ describe('collect', () => {
     const previousMeta = {
       lastCollectedAt: '2026-07-09T00:00:00.000Z',
       lastHealthyAt: '2026-07-09T00:00:00.000Z',
+      lastUsableAt: '2026-07-09T00:00:00.000Z',
       lastReviewedAt: null,
       collector: {
         runCount: 1,
@@ -1086,6 +1087,27 @@ describe('collect', () => {
       ]),
     );
     expect(result.meta.lastHealthyAt).toBe(previousMeta.lastHealthyAt);
+    expect(result.meta.lastUsableAt).toBe(previousMeta.lastUsableAt);
+  });
+
+  it('advances the usable anchor, not the healthy one, on a degraded run', async () => {
+    const result = await collect({
+      sources: [HTML_SOURCE, RSS_SOURCE],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl: fakeFetch({
+        'https://www.example.gov.au/news': 403,
+        'https://www.example.gov.au/rss': RSS_XML,
+        'https://www.example.gov.au/media/ai-assurance-consultation':
+          '<html><body>Official AI assurance consultation details.</body></html>',
+      }),
+      minHealthySourceRate: 0.5,
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+    });
+
+    expect(result.meta.collector.health).toBe('degraded');
+    expect(result.meta.lastHealthyAt).toBeNull();
+    expect(result.meta.lastUsableAt).toBe('2026-07-10T00:00:00.000Z');
   });
 
   it('baselines direct documents and emits a lead only when content changes', async () => {

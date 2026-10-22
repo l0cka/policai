@@ -1994,6 +1994,10 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
       runHealth.status === 'healthy'
         ? nowIso
         : previousMeta?.lastHealthyAt ?? null,
+    lastUsableAt:
+      runHealth.status !== 'failed'
+        ? nowIso
+        : previousMeta?.lastUsableAt ?? null,
     lastReviewedAt: previousMeta?.lastReviewedAt ?? null,
     collector: {
       runCount: (previousMeta?.collector.runCount ?? 0) + 1,
