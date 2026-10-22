@@ -325,7 +325,7 @@
     "entryKind": "policy",
     "targetPolicyId": "asic-market-integrity-rules-ai-trading-2026",
     "targetPolicyBaseRevisionHash": "463f873aed4883d7df89ff08f6f13ab0b634a37465feecf63d8e11b354277532",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-10-22T05:57:20.548Z",
     "createdBy": "local-mcp-admin",
     "notes": "Re-verification of the hidden draft record with fresh evidence, for an editorial decision card.",
@@ -341,10 +341,17 @@
     "sourceEvidence": {
       "url": "https://www.asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-226mr-asic-strengthens-ai-trading-safeguards-and-streamlines-market-integrity-rules",
       "finalUrl": "https://www.asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-226mr-asic-strengthens-ai-trading-safeguards-and-streamlines-market-integrity-rules",
-      "retrievedAt": "2026-10-22T05:57:20.542Z",
+      "retrievedAt": "2026-10-22T06:08:03.318Z",
       "contentType": "text/html",
       "contentHash": "e7fa9e82e71022e776f0cbd92addc28d668d64b7d85223724c520e7b4f225dd6",
-      "title": "26-226MR ASIC strengthens AI trading safeguards and streamlines market integrity rules | ASIC"
+      "title": "26-226MR ASIC strengthens AI trading safeguards and streamlines market integrity rules | ASIC",
+      "reviewedDate": {
+        "date": "2026-09-15",
+        "precision": "day",
+        "reviewedAt": "2026-10-22T06:08:03.324Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The media release reports ASIC has made amendments to both sets of rules. The Federal Register title records for F2026L01223 and F2026L01224 give a making date of 15 September 2026 and registration on 17 September 2026."
+      }
     },
     "proposedRecord": {
       "id": "asic-market-integrity-rules-ai-trading-2026",
@@ -363,16 +370,16 @@
           "source": {
             "url": "https://www.asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-226mr-asic-strengthens-ai-trading-safeguards-and-streamlines-market-integrity-rules",
             "finalUrl": "https://www.asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-226mr-asic-strengthens-ai-trading-safeguards-and-streamlines-market-integrity-rules",
-            "retrievedAt": "2026-10-22T05:57:20.493Z",
+            "retrievedAt": "2026-10-22T06:08:03.318Z",
             "contentType": "text/html",
             "contentHash": "e7fa9e82e71022e776f0cbd92addc28d668d64b7d85223724c520e7b4f225dd6",
             "title": "26-226MR ASIC strengthens AI trading safeguards and streamlines market integrity rules | ASIC",
             "reviewedDate": {
               "date": "2026-09-15",
               "precision": "day",
-              "reviewedAt": "2026-10-22T05:57:20.510Z",
-              "reviewedBy": "Claude (agent)",
-              "notes": "The Federal Register title records for F2026L01223 and F2026L01224 give a making date of 15 September 2026; the captured media release reports that ASIC has made the amendments."
+              "reviewedAt": "2026-10-22T06:08:03.324Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "The media release reports ASIC has made amendments to both sets of rules. The Federal Register title records for F2026L01223 and F2026L01224 give a making date of 15 September 2026 and registration on 17 September 2026."
             }
           }
         },
@@ -481,7 +488,7 @@
         "automated-decisions"
       ],
       "createdAt": "2026-10-19T08:35:00.000Z",
-      "updatedAt": "2026-10-22T05:55:28.601Z",
+      "updatedAt": "2026-10-22T06:08:03.324Z",
       "legislative": {
         "kind": "instrument",
         "ref": {
@@ -527,9 +534,32 @@
             }
           }
         ]
+      },
+      "lastReviewedAt": "2026-10-22T06:08:03.324Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-226mr-asic-strengthens-ai-trading-safeguards-and-streamlines-market-integrity-rules",
+          "finalUrl": "https://www.asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-226mr-asic-strengthens-ai-trading-safeguards-and-streamlines-market-integrity-rules",
+          "retrievedAt": "2026-10-22T06:08:03.318Z",
+          "contentType": "text/html",
+          "contentHash": "e7fa9e82e71022e776f0cbd92addc28d668d64b7d85223724c520e7b4f225dd6",
+          "title": "26-226MR ASIC strengthens AI trading safeguards and streamlines market integrity rules | ASIC",
+          "reviewedDate": {
+            "date": "2026-09-15",
+            "precision": "day",
+            "reviewedAt": "2026-10-22T06:08:03.324Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The media release reports ASIC has made amendments to both sets of rules. The Federal Register title records for F2026L01223 and F2026L01224 give a making date of 15 September 2026 and registration on 17 September 2026."
+          }
+        },
+        "checkedAt": "2026-10-22T06:08:03.324Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd7KNPzemojn2WFEg12PozCjy (proposal 9c69307a). Proposed by Claude (agent), at the request of Daniel Alkurdi. Re-verification of the hidden draft. Commenced date corrected from 2028-03-18 to 2028-03-17, read with frlCommencements over https://api.prod.legislation.gov.au/v1/Versions?$filter=titleId%20eq%20'F2017L01474'%20and%20start%20ge%202026-09-01T00%3A00%3A00&$select=titleId,start,reasons; instrument events from parseFrlTitle; F2026L01224 named in the description."
       }
     },
-    "updatedAt": "2026-10-22T05:57:20.557Z",
+    "updatedAt": "2026-10-22T06:08:03.399Z",
     "proposal": {
       "proposedBy": "Claude (agent), at the request of Daniel Alkurdi",
       "proposedRecord": {
@@ -722,14 +752,25 @@
       },
       "notes": "Re-verification of the hidden draft. Commenced date corrected from 2028-03-18 to 2028-03-17, read with frlCommencements over https://api.prod.legislation.gov.au/v1/Versions?$filter=titleId%20eq%20'F2017L01474'%20and%20start%20ge%202026-09-01T00%3A00%3A00&$select=titleId,start,reasons; instrument events from parseFrlTitle; F2026L01224 named in the description.",
       "proposedAt": "2026-10-22T05:57:20.557Z"
-    }
+    },
+    "targetPolicyRevisionHash": "463f873aed4883d7df89ff08f6f13ab0b634a37465feecf63d8e11b354277532",
+    "reviewedAt": "2026-10-22T06:08:03.324Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd7KNPzemojn2WFEg12PozCjy (proposal 9c69307a). Proposed by Claude (agent), at the request of Daniel Alkurdi. Re-verification of the hidden draft. Commenced date corrected from 2028-03-18 to 2028-03-17, read with frlCommencements over https://api.prod.legislation.gov.au/v1/Versions?$filter=titleId%20eq%20'F2017L01474'%20and%20start%20ge%202026-09-01T00%3A00%3A00&$select=titleId,start,reasons; instrument events from parseFrlTitle; F2026L01224 named in the description.",
+    "decision": {
+      "proposalHash": "9c69307a2f0e799647d51ed7b5ce430210bb52aa4710f428b0be97ae69d9dc11",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-10-22T06:08:03.169Z",
+      "attestationUrl": "https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd7KNPzemojn2WFEg12PozCjy"
+    },
+    "publishedAt": "2026-10-22T06:08:03.393Z"
   },
   {
     "id": "source-review-e6dfda6b-5f86-48f0-8a2b-ff19883ea646",
     "sourceUrl": "https://www.legislation.gov.au/F2022L00062/asmade/details",
-    "title": "Online Safety (Basic Online Safety Expectations) Determination 2022 - Federal Register of Legislation",
+    "title": "Online Safety (Basic Online Safety Expectations) Determination 2022",
     "entryKind": "policy",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-10-22T05:56:56.359Z",
     "createdBy": "local-mcp-admin",
     "notes": "Federal register backfill (AI-relevant Commonwealth instrument), staged for an editorial decision card.",
@@ -767,6 +808,13 @@
         "notes": "Headless Chromium capture of the Federal Register of Legislation details page for F2022L00062, rendered with the Policai collector identity. Staged by Claude (agent) for Daniel Alkurdi's federal register backfill.",
         "pageContentHash": "c1a1869a16c3b81ba1d92727726df5c0f340e8e13e3f8648fc087d274ba21edf",
         "characterCount": 2065
+      },
+      "reviewedDate": {
+        "date": "2022-01-23",
+        "precision": "day",
+        "reviewedAt": "2026-10-22T06:08:02.678Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The captured details page and the Federal Register title record give registration of F2022L00062 and in-force status from 2022-01-23. The amendment F2024L00590 starts compilation 2024-05-31 (F2024C00516) of the determination."
       }
     },
     "proposedRecord": {
@@ -833,9 +881,9 @@
             "reviewedDate": {
               "date": "2022-01-23",
               "precision": "day",
-              "reviewedAt": "2026-10-22T05:56:56.347Z",
-              "reviewedBy": "Claude (agent)",
-              "notes": "The captured details page and the Federal Register title record show F2022L00062 registered and in force from 2022-01-23."
+              "reviewedAt": "2026-10-22T06:08:02.678Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "The captured details page and the Federal Register title record give registration of F2022L00062 and in-force status from 2022-01-23. The amendment F2024L00590 starts compilation 2024-05-31 (F2024C00516) of the determination."
             }
           }
         },
@@ -889,7 +937,7 @@
         "generative-ai"
       ],
       "createdAt": "2026-10-22T05:55:28.601Z",
-      "updatedAt": "2026-10-22T05:55:28.601Z",
+      "updatedAt": "2026-10-22T06:08:02.678Z",
       "legislative": {
         "kind": "instrument",
         "ref": {
@@ -959,9 +1007,42 @@
             }
           }
         ]
+      },
+      "lastReviewedAt": "2026-10-22T06:08:02.678Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.legislation.gov.au/F2022L00062/asmade/details",
+          "finalUrl": "https://www.legislation.gov.au/F2022L00062/asmade/details",
+          "title": "Online Safety (Basic Online Safety Expectations) Determination 2022 - Federal Register of Legislation",
+          "retrievedAt": "2026-10-22T05:56:56.317Z",
+          "contentType": "text/html",
+          "contentHash": "246db43e14e6185dffb1c753178168a1a00d7006cf45485b1c469573a1f87dd9",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-22T05:56:56.317Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Headless Chromium capture of the Federal Register of Legislation details page for F2022L00062, rendered with the Policai collector identity. Staged by Claude (agent) for Daniel Alkurdi's federal register backfill.",
+            "pageContentHash": "c1a1869a16c3b81ba1d92727726df5c0f340e8e13e3f8648fc087d274ba21edf",
+            "characterCount": 2065
+          },
+          "reviewedDate": {
+            "date": "2022-01-23",
+            "precision": "day",
+            "reviewedAt": "2026-10-22T06:08:02.678Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The captured details page and the Federal Register title record give registration of F2022L00062 and in-force status from 2022-01-23. The amendment F2024L00590 starts compilation 2024-05-31 (F2024C00516) of the determination."
+          }
+        },
+        "checkedAt": "2026-10-22T06:08:02.678Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd7WF8r7jEJfHjwNzUT8rcaTq (proposal fa9974ea). Proposed by Claude (agent), at the request of Daniel Alkurdi. Instrument events from parseFrlTitle over https://api.prod.legislation.gov.au/v1/Titles('F2022L00062'); amendment from frlCommencements over https://api.prod.legislation.gov.au/v1/Versions?$filter=titleId%20eq%20'F2022L00062'%20and%20start%20ge%202024-01-01T00%3A00%3A00&$select=titleId,start,reasons. Unrecognised: none."
       }
     },
-    "updatedAt": "2026-10-22T05:56:56.371Z",
+    "updatedAt": "2026-10-22T06:08:02.716Z",
     "proposal": {
       "proposedBy": "Claude (agent), at the request of Daniel Alkurdi",
       "proposedRecord": {
@@ -1163,7 +1244,17 @@
       },
       "notes": "Instrument events from parseFrlTitle over https://api.prod.legislation.gov.au/v1/Titles('F2022L00062'); amendment from frlCommencements over https://api.prod.legislation.gov.au/v1/Versions?$filter=titleId%20eq%20'F2022L00062'%20and%20start%20ge%202024-01-01T00%3A00%3A00&$select=titleId,start,reasons. Unrecognised: none.",
       "proposedAt": "2026-10-22T05:56:56.371Z"
-    }
+    },
+    "reviewedAt": "2026-10-22T06:08:02.678Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd7WF8r7jEJfHjwNzUT8rcaTq (proposal fa9974ea). Proposed by Claude (agent), at the request of Daniel Alkurdi. Instrument events from parseFrlTitle over https://api.prod.legislation.gov.au/v1/Titles('F2022L00062'); amendment from frlCommencements over https://api.prod.legislation.gov.au/v1/Versions?$filter=titleId%20eq%20'F2022L00062'%20and%20start%20ge%202024-01-01T00%3A00%3A00&$select=titleId,start,reasons. Unrecognised: none.",
+    "decision": {
+      "proposalHash": "fa9974eabcdcbd57200d2490563a0858646368e3b5afdc922b2e9c709dea45b4",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-10-22T06:08:02.674Z",
+      "attestationUrl": "https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd7WF8r7jEJfHjwNzUT8rcaTq"
+    },
+    "publishedAt": "2026-10-22T06:08:02.706Z"
   },
   {
     "id": "source-review-2609c8b8-e7e7-4d78-83d8-30941a790d7e",
@@ -1524,9 +1615,9 @@
   {
     "id": "source-review-305a8756-eb86-49bc-b31d-93a4c8015815",
     "sourceUrl": "https://www.legislation.gov.au/F2024L00710/asmade/details",
-    "title": "Online Safety (Designated Internet Services—Class 1A and Class 1B Material) Industry Standard 2024 - Federal Register of Legislation",
+    "title": "Online Safety (Designated Internet Services—Class 1A and Class 1B Material) Industry Standard 2024",
     "entryKind": "policy",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-10-22T05:56:24.240Z",
     "createdBy": "local-mcp-admin",
     "notes": "Federal register backfill (AI-relevant Commonwealth instrument), staged for an editorial decision card.",
@@ -1563,6 +1654,13 @@
         "notes": "Headless Chromium capture of the Federal Register of Legislation details page for F2024L00710, rendered with the Policai collector identity. Staged by Claude (agent) for Daniel Alkurdi's federal register backfill.",
         "pageContentHash": "5c44b0b73b787c98f9275f4b6873881f30e91cd5a5ce75d93c12a69b62c702d3",
         "characterCount": 2234
+      },
+      "reviewedDate": {
+        "date": "2024-12-22",
+        "precision": "day",
+        "reviewedAt": "2026-10-22T06:08:02.182Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The captured details page records registration on 2024-06-21. Section 2 of the standard and its explanatory statement (https://www.legislation.gov.au/F2024L00710/asmade/2024-06-21/es/original/pdf) commence it six months after the day after registration on the Federal Register, which is 2024-12-22."
       }
     },
     "proposedRecord": {
@@ -1629,9 +1727,9 @@
             "reviewedDate": {
               "date": "2024-12-22",
               "precision": "day",
-              "reviewedAt": "2026-10-22T05:56:24.228Z",
-              "reviewedBy": "Claude (agent)",
-              "notes": "The captured details page records registration on 2024-06-21. Section 2 and the explanatory statement commence the standard six months after the day after registration on the Federal Register, which is 2024-12-22."
+              "reviewedAt": "2026-10-22T06:08:02.182Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "The captured details page records registration on 2024-06-21. Section 2 of the standard and its explanatory statement (https://www.legislation.gov.au/F2024L00710/asmade/2024-06-21/es/original/pdf) commence it six months after the day after registration on the Federal Register, which is 2024-12-22."
             }
           }
         }
@@ -1654,7 +1752,7 @@
         "generative-ai"
       ],
       "createdAt": "2026-10-22T05:55:28.601Z",
-      "updatedAt": "2026-10-22T05:55:28.601Z",
+      "updatedAt": "2026-10-22T06:08:02.182Z",
       "legislative": {
         "kind": "instrument",
         "ref": {
@@ -1713,9 +1811,42 @@
             }
           }
         ]
+      },
+      "lastReviewedAt": "2026-10-22T06:08:02.182Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.legislation.gov.au/F2024L00710/asmade/details",
+          "finalUrl": "https://www.legislation.gov.au/F2024L00710/asmade/details",
+          "title": "Online Safety (Designated Internet Services—Class 1A and Class 1B Material) Industry Standard 2024 - Federal Register of Legislation",
+          "retrievedAt": "2026-10-22T05:56:24.195Z",
+          "contentType": "text/html",
+          "contentHash": "de0429579f0a7371c9c98756905fa4c783df373a7971ad17178500574727d041",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-22T05:56:24.195Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Headless Chromium capture of the Federal Register of Legislation details page for F2024L00710, rendered with the Policai collector identity. Staged by Claude (agent) for Daniel Alkurdi's federal register backfill.",
+            "pageContentHash": "5c44b0b73b787c98f9275f4b6873881f30e91cd5a5ce75d93c12a69b62c702d3",
+            "characterCount": 2234
+          },
+          "reviewedDate": {
+            "date": "2024-12-22",
+            "precision": "day",
+            "reviewedAt": "2026-10-22T06:08:02.182Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The captured details page records registration on 2024-06-21. Section 2 of the standard and its explanatory statement (https://www.legislation.gov.au/F2024L00710/asmade/2024-06-21/es/original/pdf) commence it six months after the day after registration on the Federal Register, which is 2024-12-22."
+          }
+        },
+        "checkedAt": "2026-10-22T06:08:02.182Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd77QcxaYsio5UKRPAWXJxGZt (proposal 95806005). Proposed by Claude (agent), at the request of Daniel Alkurdi. Instrument events from parseFrlTitle over https://api.prod.legislation.gov.au/v1/Titles('F2024L00710'). The register's in-force-from-registration commencement was replaced with the s 2 date. Unrecognised scrutiny item: 2024-08-22 Notice of a disallowance motion by The Parliamentary Joint Committee On Human Rights, withdrawn."
       }
     },
-    "updatedAt": "2026-10-22T05:56:24.253Z",
+    "updatedAt": "2026-10-22T06:08:02.218Z",
     "proposal": {
       "proposedBy": "Claude (agent), at the request of Daniel Alkurdi",
       "proposedRecord": {
@@ -1875,7 +2006,17 @@
       },
       "notes": "Instrument events from parseFrlTitle over https://api.prod.legislation.gov.au/v1/Titles('F2024L00710'). The register's in-force-from-registration commencement was replaced with the s 2 date. Unrecognised scrutiny item: 2024-08-22 Notice of a disallowance motion by The Parliamentary Joint Committee On Human Rights, withdrawn.",
       "proposedAt": "2026-10-22T05:56:24.253Z"
-    }
+    },
+    "reviewedAt": "2026-10-22T06:08:02.182Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd77QcxaYsio5UKRPAWXJxGZt (proposal 95806005). Proposed by Claude (agent), at the request of Daniel Alkurdi. Instrument events from parseFrlTitle over https://api.prod.legislation.gov.au/v1/Titles('F2024L00710'). The register's in-force-from-registration commencement was replaced with the s 2 date. Unrecognised scrutiny item: 2024-08-22 Notice of a disallowance motion by The Parliamentary Joint Committee On Human Rights, withdrawn.",
+    "decision": {
+      "proposalHash": "958060058de1b328b31eab99a74459b3a6e163f18295c80e7846628f14356663",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-10-22T06:08:02.178Z",
+      "attestationUrl": "https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd77QcxaYsio5UKRPAWXJxGZt"
+    },
+    "publishedAt": "2026-10-22T06:08:02.208Z"
   },
   {
     "id": "source-review-fd21dac5-f19f-49b1-bc83-2ba04cea183d",
@@ -2411,9 +2552,9 @@
   {
     "id": "source-review-0e3c1377-45e7-45f7-b683-644d78a097c1",
     "sourceUrl": "https://www.legislation.gov.au/C2024A00078/asmade/text",
-    "title": "Criminal Code Amendment (Deepfake Sexual Material) Act 2024 - Federal Register of Legislation",
+    "title": "Criminal Code Amendment (Deepfake Sexual Material) Act 2024",
     "entryKind": "policy",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-10-22T05:55:49.253Z",
     "createdBy": "local-mcp-admin",
     "notes": "Federal register backfill (AI-relevant Commonwealth law), staged for an editorial decision card.",
@@ -2451,6 +2592,13 @@
         "notes": "Headless Chromium capture of the Federal Register of Legislation as-made text of Act No. 78 of 2024 (C2024A00078), rendered with the Policai collector identity. Staged by Claude (agent) for Daniel Alkurdi's federal register backfill.",
         "pageContentHash": "579e5d0a50abb84f4e124c9753d7ffda9823985bfa6830d55a03dc0da5ec2b9a",
         "characterCount": 11565
+      },
+      "reviewedDate": {
+        "date": "2024-09-03",
+        "precision": "day",
+        "reviewedAt": "2026-10-22T06:08:01.663Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The captured as-made text records Royal Assent on 2 September 2024, and section 2 commences Schedule 1 on the day after assent. The Federal Register versions of the Criminal Code Act 1995 start compilation 160 (C2024C00358) on 3 September 2024 for sch 1 items 1-6 of this Act."
       }
     },
     "proposedRecord": {
@@ -2517,9 +2665,9 @@
             "reviewedDate": {
               "date": "2024-09-03",
               "precision": "day",
-              "reviewedAt": "2026-10-22T05:55:49.237Z",
-              "reviewedBy": "Claude (agent)",
-              "notes": "Section 2 of the captured Act commences Schedule 1 on the day after Royal Assent (2 September 2024). The Federal Register starts compilation 160 of the Criminal Code Act 1995 on 3 September 2024 for sch 1 items 1-6 of this Act."
+              "reviewedAt": "2026-10-22T06:08:01.663Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "The captured as-made text records Royal Assent on 2 September 2024, and section 2 commences Schedule 1 on the day after assent. The Federal Register versions of the Criminal Code Act 1995 start compilation 160 (C2024C00358) on 3 September 2024 for sch 1 items 1-6 of this Act."
             }
           }
         }
@@ -2543,7 +2691,7 @@
         "generative-ai"
       ],
       "createdAt": "2026-10-22T05:55:28.601Z",
-      "updatedAt": "2026-10-22T05:55:28.601Z",
+      "updatedAt": "2026-10-22T06:08:01.663Z",
       "legislative": {
         "kind": "bill",
         "ref": {
@@ -2640,9 +2788,42 @@
             }
           }
         ]
+      },
+      "lastReviewedAt": "2026-10-22T06:08:01.663Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.legislation.gov.au/C2024A00078/asmade/text",
+          "finalUrl": "https://www.legislation.gov.au/C2024A00078/asmade/text",
+          "title": "Criminal Code Amendment (Deepfake Sexual Material) Act 2024 - Federal Register of Legislation",
+          "retrievedAt": "2026-10-22T05:55:49.195Z",
+          "contentType": "text/html",
+          "contentHash": "5c4e2dc4b6ccf7be081d54aab8acddb7d8c866ea8129d0f48c2275e20c2636da",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-22T05:55:49.195Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Headless Chromium capture of the Federal Register of Legislation as-made text of Act No. 78 of 2024 (C2024A00078), rendered with the Policai collector identity. Staged by Claude (agent) for Daniel Alkurdi's federal register backfill.",
+            "pageContentHash": "579e5d0a50abb84f4e124c9753d7ffda9823985bfa6830d55a03dc0da5ec2b9a",
+            "characterCount": 11565
+          },
+          "reviewedDate": {
+            "date": "2024-09-03",
+            "precision": "day",
+            "reviewedAt": "2026-10-22T06:08:01.663Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The captured as-made text records Royal Assent on 2 September 2024, and section 2 commences Schedule 1 on the day after assent. The Federal Register versions of the Criminal Code Act 1995 start compilation 160 (C2024C00358) on 3 September 2024 for sch 1 items 1-6 of this Act."
+          }
+        },
+        "checkedAt": "2026-10-22T06:08:01.663Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd7KKhNVaczYd5Q8Wjt5TBrbS (proposal b6fd3453). Proposed by Claude (agent), at the request of Daniel Alkurdi. APH bill r7205 progress parsed with parseAphProgress; commencement from frlCommencements over https://api.prod.legislation.gov.au/v1/Versions?$filter=titleId%20eq%20'C2004A04868'%20and%20start%20ge%202024-09-01T00%3A00%3A00&$select=titleId,start,reasons."
       }
     },
-    "updatedAt": "2026-10-22T05:55:49.266Z",
+    "updatedAt": "2026-10-22T06:08:01.703Z",
     "proposal": {
       "proposedBy": "Claude (agent), at the request of Daniel Alkurdi",
       "proposedRecord": {
@@ -2841,7 +3022,17 @@
       },
       "notes": "APH bill r7205 progress parsed with parseAphProgress; commencement from frlCommencements over https://api.prod.legislation.gov.au/v1/Versions?$filter=titleId%20eq%20'C2004A04868'%20and%20start%20ge%202024-09-01T00%3A00%3A00&$select=titleId,start,reasons.",
       "proposedAt": "2026-10-22T05:55:49.266Z"
-    }
+    },
+    "reviewedAt": "2026-10-22T06:08:01.663Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd7KKhNVaczYd5Q8Wjt5TBrbS (proposal b6fd3453). Proposed by Claude (agent), at the request of Daniel Alkurdi. APH bill r7205 progress parsed with parseAphProgress; commencement from frlCommencements over https://api.prod.legislation.gov.au/v1/Versions?$filter=titleId%20eq%20'C2004A04868'%20and%20start%20ge%202024-09-01T00%3A00%3A00&$select=titleId,start,reasons.",
+    "decision": {
+      "proposalHash": "b6fd34539c166e9a71b1f7cb4224410ea08269352e7c45e0c57c18aa9cd83758",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-10-22T06:08:01.658Z",
+      "attestationUrl": "https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd7KKhNVaczYd5Q8Wjt5TBrbS"
+    },
+    "publishedAt": "2026-10-22T06:08:01.692Z"
   },
   {
     "id": "source-review-12cb291c-9c64-433d-a200-5e7b9be75d54",
