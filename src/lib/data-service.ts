@@ -31,6 +31,8 @@ import {
 import { reconcileLinkedDevelopments } from "@/lib/source-review";
 import { registerChart, type RegisterChart } from "@/lib/article-figures";
 import { sydneyCalendarDate } from "@/lib/calendar-date";
+import type { LegislativeEvent } from "@/lib/legislation/model";
+import { describeEvent } from "@/lib/legislation/progress";
 import {
 	citationState,
 	parseArticle,
@@ -815,6 +817,34 @@ function generatedTimelineEvent(
 	};
 }
 
+const LEGISLATIVE_TIMELINE_TYPES: Partial<
+	Record<LegislativeEvent["kind"], TimelineEventType>
+> = {
+	introduced: "policy_introduced",
+	registered: "policy_introduced",
+	amended: "policy_amended",
+	repealed: "policy_repealed",
+};
+
+/** One timeline entry per approved stage of a bill, Act or instrument. */
+function legislativeTimelineEvents(policy: Policy): TimelineEvent[] {
+	return (policy.legislative?.events ?? []).map((dated, index) => {
+		const { label, detail } = describeEvent(dated.event, policy.jurisdiction);
+		return {
+			id: `policy-timeline-${policy.id}-${index}`,
+			date: dated.date,
+			datePrecision: dated.precision,
+			title: `${policy.title}: ${label}`,
+			description: detail ?? label,
+			type: LEGISLATIVE_TIMELINE_TYPES[dated.event.kind] ?? "milestone",
+			jurisdiction: policy.jurisdiction,
+			relatedPolicyId: policy.id,
+			sourceUrl: dated.source.url,
+			verification: policy.verification,
+		};
+	});
+}
+
 export async function createTimelineEvent(
 	event: TimelineEvent,
 	options: {
@@ -920,7 +950,8 @@ export async function getTimelineEvents(
 	// Generate timeline events from policies (skip if manual event already covers it)
 	const policyEvents: TimelineEvent[] = policies
 		.filter((p) => p.effectiveDate && !manualPolicyIds.has(p.id))
-		.map((p) => {
+		.flatMap((p) => {
+			if (p.legislative?.events.length) return legislativeTimelineEvents(p);
 			const generated = generatedTimelineEvent(p);
 			return {
 				id: `policy-timeline-${p.id}`,

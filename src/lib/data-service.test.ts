@@ -458,6 +458,39 @@ describe("data-service file store", () => {
 		);
 	});
 
+	it("lists each approved stage of a legislative record on the timeline, citing its source", async () => {
+		const page = "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7249";
+		const bill = buildPolicy({
+			id: "tracked-bill",
+			title: "Tracked Bill 2026",
+			type: "legislation",
+			status: "proposed",
+			legislative: {
+				kind: "bill",
+				ref: { register: "aph", billId: "r7249" },
+				origin: "government",
+				events: [
+					{ date: "2026-07-01", precision: "day", event: { kind: "introduced", chamber: "lower" }, source: { url: page } },
+					{ date: "2026-08-12", precision: "day", event: { kind: "passed", chamber: "lower", withAmendments: true }, source: { url: page } },
+				],
+			},
+		});
+		readJsonFile.mockImplementation(
+			async (filePath: string, fallback: unknown) => {
+				if (filePath.endsWith("policies.json")) return [bill];
+				return fallback;
+			},
+		);
+
+		const { getTimelineEvents } = await loadDataServiceModule();
+		const result = await getTimelineEvents(undefined, { scope: "policy-register" });
+
+		expect(result.map(({ id, date, type, title, description, sourceUrl }) => ({ id, date, type, title, description, sourceUrl }))).toEqual([
+			{ id: "policy-timeline-tracked-bill-0", date: "2026-07-01", type: "policy_introduced", title: "Tracked Bill 2026: Introduced in the House of Representatives", description: "Introduced in the House of Representatives", sourceUrl: page },
+			{ id: "policy-timeline-tracked-bill-1", date: "2026-08-12", type: "milestone", title: "Tracked Bill 2026: Passed the House of Representatives", description: "With amendments", sourceUrl: page },
+		]);
+	});
+
 	it("limits register timeline reads to lifecycle events linked to visible policies", async () => {
 		const policy = buildPolicy({ id: "registered-policy" });
 		const linkedLifecycleEvent = buildTimelineEvent({
