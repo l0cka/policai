@@ -1,8 +1,9 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { parseAphProgress, stageUpdate } from './aph-progress';
-import { legislativePhase, type Legislative } from './model';
+import { parseAphProgress } from './aph-progress';
+import { stageUpdate } from './stage-update';
+import { legislativePhase, type Dated, type Legislative, type LegislativeEvent } from './model';
 
 function parse(billId: string) {
   const html = readFileSync(join(__dirname, '__fixtures__/aph', `${billId}.html`), 'utf8');
@@ -66,7 +67,7 @@ describe('parseAphProgress', () => {
 });
 
 describe('stageUpdate', () => {
-  const bill = (events: Legislative['events']): Extract<Legislative, { kind: 'bill' }> => ({
+  const bill = (events: Dated<LegislativeEvent>[]): Extract<Legislative, { kind: 'bill' }> => ({
     kind: 'bill',
     ref: { register: 'aph', billId: 'r7249' },
     origin: 'government',

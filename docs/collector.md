@@ -875,30 +875,46 @@ review (`sourceEvidence` plus the staged record text) and its notes gain
 `RETAINED_SNAPSHOT_APPROVAL_NOTE` (`src/lib/source-ingest.ts`). Other
 failures, such as timeouts, 404s and 5xx responses, still refuse.
 
-### Follow watches for federal bills
+### Follow watches for federal legislation
 
-Every register bill whose `legislative.ref` is an APH bill id, and whose
-`sourceUrl` is that bill's home page, is followed on each collection run
-under the watch id `track:<policyId>`. The watch reads the page through the
-browser with the Policai identity, because APH answers plain HTTP clients with
-a WAF 403. `src/lib/legislation/aph-progress.ts` parses the Progress tables and
-committee Notes into lifecycle events. Fixtures for that parser are excerpts of
-real bill pages in `src/lib/legislation/__fixtures__/aph/`.
+Each collection run follows two kinds of register record, each under the watch
+id `track:<policyId>`:
 
-When the page shows a stage the record lacks, the watch stages one update
-review against the record. The proposed record carries the merged events and
-the derived status. The review's `legislativeUpdate` lists the added stages,
-plus any stage the parser could not map, such as "Discharged from Notice
-Paper". A merge that breaks the legal order is reported in the review, not
-applied. Unlike a changed direct document, a stage update keeps the record
-public while it waits, because the last approved stage is still true as of its
-date. It is decided like any other review: a proposal, then Daniel's decision
-card, then `record_decision`.
+- A bill whose `legislative.ref` is an APH bill id, and whose `sourceUrl` is
+  that bill's home page. The watch reads the page through the browser with the
+  Policai identity, because APH answers plain HTTP clients with a WAF 403.
+  `src/lib/legislation/aph-progress.ts` parses the Progress tables and
+  committee Notes into lifecycle events.
+- An instrument whose `legislative.ref` is a Federal Register title id. The
+  watch reads the title record from the register's OData API
+  (`api.prod.legislation.gov.au/v1/Titles('<id>')`) over plain HTTP.
+  `src/lib/legislation/frl-title.ts` reads registration, a principal
+  instrument's commencement, tabling in each House, the end of each
+  disallowance window, disallowance and repeal. The API writes 9999-12-31 for a
+  date it has not fixed yet; the parser treats that as no date. An amending
+  instrument's amendments commence in its principal's versions, which this
+  watch does not read yet.
 
-Each bill has at most one waiting stage update. A decided update is never
-staged again; only a further change on the page stages a new one. A page with
-no Progress stages counts as a failure in the source health ledger, so a markup
-change cannot pass silently. Run one watch with
+Parser fixtures are in `src/lib/legislation/__fixtures__/aph/` and
+`src/lib/legislation/__fixtures__/frl/`.
+
+When the register shows a stage the record lacks, or has set or moved a
+deadline the record holds (a committee report date or the end of a
+disallowance window), the watch stages one update review against the record.
+The proposed record carries the merged events and the derived status. The
+review's `legislativeUpdate` lists the added stages, the changed deadlines,
+and any stage the parser could not map, such as "Discharged from Notice Paper"
+or a disallowance motion that did not pass. A merge that breaks the legal order
+is reported in the review, not applied. Unlike a changed direct document, a
+stage update keeps the record public while it waits, because the last approved
+stage is still true as of its date. It is decided like any other review: a
+proposal, then Daniel's decision card, then `record_decision`.
+
+Each record has at most one waiting stage update. A decided update is never
+staged again; only a further change on the register stages a new one. A page
+or response with no stages counts as a failure in the source health ledger, so
+a format change cannot pass silently. A run without a browser skips the APH
+watches but still runs the Federal Register ones. Run one watch with
 `npm run collect -- --source=track:<policyId>`.
 
 ### Policai Signal (Grok Bot)
