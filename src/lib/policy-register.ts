@@ -1,3 +1,4 @@
+import { isLegislativeRecord, LEGISLATIVE_STAGE_NAMES, legislativeStage } from '@/lib/legislation/overview';
 import { isThemeId, type ThemeId } from '@/lib/themes';
 import {
   JURISDICTION_NAMES, POLICY_TYPE_NAMES, POLICY_STATUS_NAMES,
@@ -16,6 +17,7 @@ export interface RegisterState {
   jurisdictions: string[];
   types: string[];
   statuses: string[];
+  stages: string[];
   themes: ThemeId[];
   sortField: PolicySortField;
   sortDirection: PolicySortDirection;
@@ -38,6 +40,7 @@ export function parseRegisterState(params: URLSearchParams): RegisterState {
     jurisdictions: selected('jurisdiction', JURISDICTION_NAMES),
     types: selected('type', POLICY_TYPE_NAMES),
     statuses: selected('status', POLICY_STATUS_NAMES),
+    stages: selected('stage', LEGISLATIVE_STAGE_NAMES),
     themes: [...new Set(params.getAll('theme').flatMap(value => value.split(',')).filter(isThemeId))],
     sortField: validSort ? field as PolicySortField : 'effectiveDate',
     sortDirection: validSort ? direction as PolicySortDirection : 'desc',
@@ -52,6 +55,7 @@ export function registerParams(state: RegisterState): URLSearchParams {
   if (state.jurisdictions.length) params.set('jurisdiction', state.jurisdictions.join(','));
   if (state.types.length) params.set('type', state.types.join(','));
   if (state.statuses.length) params.set('status', state.statuses.join(','));
+  if (state.stages.length) params.set('stage', state.stages.join(','));
   if (state.themes.length) params.set('theme', state.themes.join(','));
   if (state.sortField !== 'effectiveDate' || state.sortDirection !== 'desc') params.set('sort', `${state.sortField}:${state.sortDirection}`);
   if (state.viewMode !== 'list') params.set('view', state.viewMode);
@@ -60,9 +64,14 @@ export function registerParams(state: RegisterState): URLSearchParams {
 }
 
 export function updateRegisterState(state: RegisterState, patch: Partial<RegisterState>): RegisterState {
-  const criteria = ['search', 'jurisdictions', 'types', 'statuses', 'themes', 'sortField', 'sortDirection'] as const;
+  const criteria = ['search', 'jurisdictions', 'types', 'statuses', 'stages', 'themes', 'sortField', 'sortDirection'] as const;
   const resetPage = criteria.some(key => key in patch && JSON.stringify(patch[key]) !== JSON.stringify(state[key]));
   return { ...state, ...patch, page: resetPage ? 1 : patch.page ?? state.page };
+}
+
+/** A legislative record's stage, for the register's stage filter. */
+export function registerStage(policy: Policy): string | null {
+  return isLegislativeRecord(policy) ? legislativeStage(policy) : null;
 }
 
 export function selectRegisterPolicies(policies: Policy[], state: RegisterState): Policy[] {
@@ -84,6 +93,7 @@ export function selectRegisterPolicies(policies: Policy[], state: RegisterState)
     (!state.jurisdictions.length || state.jurisdictions.includes(policy.jurisdiction)) &&
     (!state.types.length || state.types.includes(policy.type)) &&
     (!state.statuses.length || state.statuses.includes(policy.status)) &&
+    (!state.stages.length || state.stages.includes(registerStage(policy) ?? '')) &&
     (!state.themes.length || state.themes.some((theme) => policy.themes.includes(theme))),
   ).sort((a, b) => {
     const comparison = label(a).localeCompare(label(b), 'en-AU') || a.id.localeCompare(b.id);

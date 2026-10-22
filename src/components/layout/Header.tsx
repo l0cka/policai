@@ -19,6 +19,7 @@ const navItems = [
 ];
 
 const insightItems = [
+  { href: '/legislation', label: 'Legislation' },
   { href: '/timeline', label: 'Timeline' },
   { href: '/coverage', label: 'Coverage' },
   { href: '/methodology', label: 'Methodology' },

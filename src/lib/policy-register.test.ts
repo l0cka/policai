@@ -27,4 +27,22 @@ describe('register state', () => {
     expect(policies.map(p => p.id)).toEqual(['federal', 'act']);
     expect(selectRegisterPolicies(policies, { ...state, jurisdictions: ['nsw'] })).toEqual([]);
   });
+  it('filters legislative records by the stage their events derive, and round-trips it', () => {
+    const source = { url: 'https://www.aph.gov.au/bill' };
+    const bill = buildPolicy({
+      id: 'bill',
+      type: 'legislation',
+      legislative: {
+        kind: 'bill',
+        ref: { register: 'aph', billId: 's1471' },
+        origin: 'private_member',
+        events: [{ date: '2025-11-24', precision: 'day', event: { kind: 'introduced', chamber: 'upper' }, source }],
+      },
+    });
+    const state = parseRegisterState(new URLSearchParams('stage=before_parliament,passed'));
+    expect(state.stages).toEqual(['before_parliament']);
+    expect(parseRegisterState(registerParams(state))).toEqual(state);
+    expect(selectRegisterPolicies([bill, buildPolicy({ id: 'guideline' })], state).map(p => p.id)).toEqual(['bill']);
+    expect(selectRegisterPolicies([bill], { ...state, stages: ['in_force'] })).toEqual([]);
+  });
 });

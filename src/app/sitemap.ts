@@ -54,6 +54,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.8,
       },
       {
+        url: `${SITE_URL}/legislation`,
+        changeFrequency: 'weekly',
+        priority: 0.8,
+      },
+      {
         url: `${SITE_URL}/courts`,
         changeFrequency: 'weekly',
         priority: 0.8,

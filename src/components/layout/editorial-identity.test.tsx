@@ -50,6 +50,7 @@ describe('Editorial identity and navigation', () => {
       ['Register', '/'],
       ['Developments', '/developments'],
       ['Courts', '/courts'],
+      ['Legislation', '/legislation'],
       ['Timeline', '/timeline'],
       ['Coverage', '/coverage'],
       ['Methodology', '/methodology'],

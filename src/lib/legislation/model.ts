@@ -220,8 +220,17 @@ export function legislativeStatus(
   legislative: Legislative,
   jurisdiction: Jurisdiction,
 ): PolicyStatus | null {
+  const phase = legislativePhase(legislative, jurisdiction);
+  return phase ? STATUS_OF_PHASE[phase] : null;
+}
+
+/** Where a record's events leave it, or null when they break the legal order. */
+export function legislativePhase(
+  legislative: Legislative,
+  jurisdiction: Jurisdiction,
+): LegislativePhase | null {
   const { phase, errors } = replay(legislative, jurisdiction);
-  return phase && errors.length === 0 ? STATUS_OF_PHASE[phase] : null;
+  return errors.length === 0 ? phase : null;
 }
 
 // Parsing: data/policies.json is untrusted at this boundary.
