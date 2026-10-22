@@ -8,7 +8,7 @@ const TOKEN_ENV = { POLICAI_SIGNAL_GITHUB_TOKEN: "gh-token" };
 
 const COMMIT = {
 	reviewId: "rev-1",
-	action: "approve" as const,
+	action: "dismiss" as const,
 	message: "Approved rev-1",
 	attestationText: "relayed by Policai Signal",
 	changes: [{ path: "data/source-reviews.json", content: '[{"id":"rev-1"}]' }],
@@ -57,7 +57,7 @@ describe("signal GitHub snapshot", () => {
 		expect(result).toMatchObject({
 			ok: true,
 			target: "pr",
-			branch: "signal/approve-rev-1",
+			branch: "signal/dismiss-rev-1",
 			prUrl: "https://github.com/l0cka/policai/pull/999",
 		});
 		if (!result.ok) return;
@@ -67,21 +67,21 @@ describe("signal GitHub snapshot", () => {
 		const commit = github.commits.get(result.commitSha);
 		expect(commit?.parents).toEqual([github.baseSha]);
 		expect(github.trees.get(commit!.tree)?.base_tree).toBe(github.baseTree);
-		expect(github.refs.get("heads/signal/approve-rev-1")).toBe(result.commitSha);
+		expect(github.refs.get("heads/signal/dismiss-rev-1")).toBe(result.commitSha);
 	});
 
 	it("force-updates a leftover branch that has no open PR", async () => {
 		const github = fakeGitHub({
 			files: {},
-			existingBranches: ["signal/approve-rev-1"],
+			existingBranches: ["signal/dismiss-rev-1"],
 		});
 		const result = await (await open(github)).commit(COMMIT);
 		expect(result.ok).toBe(true);
 		if (!result.ok) return;
-		expect(github.refs.get("heads/signal/approve-rev-1")).toBe(result.commitSha);
+		expect(github.refs.get("heads/signal/dismiss-rev-1")).toBe(result.commitSha);
 		expect(
 			github.requests.find(
-				(r) => r.method === "PATCH" && r.path === "/git/refs/heads/signal/approve-rev-1",
+				(r) => r.method === "PATCH" && r.path === "/git/refs/heads/signal/dismiss-rev-1",
 			)?.body,
 		).toEqual({ sha: result.commitSha, force: true });
 	});
@@ -101,7 +101,7 @@ describe("signal GitHub snapshot", () => {
 		expect(result).toEqual({
 			ok: true,
 			target: "pr",
-			branch: "signal/approve-rev-1",
+			branch: "signal/dismiss-rev-1",
 			commitSha: "earlier-commit",
 			prUrl: "https://github.com/l0cka/policai/pull/41",
 			htmlUrl: "https://github.com/l0cka/policai/pull/41",

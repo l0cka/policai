@@ -57,6 +57,18 @@ async function describedTool(client: Client, name: string) {
   return tool
 }
 
+describe('editorial approval surface', () => {
+  it('registers no tool that approves outside a recorded decision', async () => {
+    const { tools } = await editorial.listTools()
+    const names = tools.map(({ name }) => name)
+
+    expect(names).toContain('record_decision')
+    for (const removed of ['approve_staged_source', 'publish_staged_source', 'signal_decision']) {
+      expect(names).not.toContain(removed)
+    }
+  })
+})
+
 describe('list_themes registration', () => {
   it('is on the editorial server only', async () => {
     const editorialNames = (await editorial.listTools()).tools.map(({ name }) => name)
