@@ -108,6 +108,13 @@ class TransactionTests(unittest.TestCase):
                     t.deploy("b" * 40)
                 self.assertTrue((p / "blocked.json").exists())
                 self.assertNotIn("secret", (p / "blocked.json").read_text())
+                self.assertEqual(
+                    s.read("blocked.json")["failure"],
+                    {
+                        "phase": "preflight" if fail in ("preflight", "prepare") else fail,
+                        "error": "RuntimeError",
+                    },
+                )
                 before = list(h.events)
                 with self.assertRaises(d.Refused):
                     t.deploy("c" * 40)
@@ -128,6 +135,32 @@ class TransactionTests(unittest.TestCase):
         for failure in ("preflight", "prepare", "stage", "activate", "health"):
             with self.subTest(failure=failure):
                 self.run_case(failure)
+
+    def test_failed_git_fetch_keeps_its_public_reason(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "deploy.lock").touch()
+            (root / "worker.lock").touch()
+            state = FixtureState(root)
+            state.write("active.json", {"target": "a" * 40})
+            host = FakeHost()
+
+            def resolve():
+                raise h.ProcessFailed("command exited with status 128")
+
+            host.resolve_target = resolve
+            with self.assertRaises(d.Refused):
+                d.Transaction(state, host).deploy(None)
+            blocked = state.read("blocked.json")
+            self.assertEqual(blocked["phase"], "failed-review-required")
+            self.assertEqual(
+                blocked["failure"],
+                {
+                    "phase": "preflight",
+                    "error": "ProcessFailed",
+                    "reason": "command exited with status 128",
+                },
+            )
 
     def test_follow_main_resolves_target_inside_latched_transaction(self):
         with tempfile.TemporaryDirectory() as tmp:
