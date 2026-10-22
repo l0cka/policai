@@ -4,6 +4,7 @@ title: "Policai weekly: 8–14 October 2026"
 summary: The Joint Select Committee on AI's early advice to the Prime Minister, a ministerial speech on regulating frontier AI, Tasmania's expectations for AI data centres, South Australia's AI Royal Commissioners, and the INSLM's scoping of AI law for intelligence agencies.
 status: published
 publishedAt: 2026-10-19
+updatedAt: 2026-10-22
 cites:
   - fwc-genai-guidance-note
   - oaic-app-1-7-adm-transparency-guidance
@@ -30,6 +31,9 @@ image:
   licenceUrl: "https://creativecommons.org/licenses/by/2.0/"
   modifications: "resized"
   licenceCheckedAt: "2026-10-19"
+corrections:
+  - date: 2026-10-22
+    text: "Update: on 20 October 2026 the Senate committee tabled a progress report moving its reporting date on AI and data centres from 16 November 2026 to 23 March 2027. This briefing now gives the new date."
 ---
 
 On 12 October 2026 the Joint Select Committee on Artificial Intelligence wrote to the Prime Minister with early recommendations, including that the Government require frontier labs to monitor and report incidents, mandate independent evaluators embedded in those labs, and require early access to new models for agencies such as the Australian Signals Directorate ([committee letter](https://static.aph.gov.au/-/media/Committees/ai_ctte/JSC_AI_letter_20261012_Final.pdf)). This briefing covers the seven days to 14 October 2026. No development detected in that window is verified in Policai's feed yet, so each item was checked at its official source.
@@ -48,9 +52,9 @@ On 12 October 2026 the Joint Select Committee on Artificial Intelligence wrote t
 | --- | --- |
 | 20 October 2026 | Fair Work Commission [guidance note on generative AI](/policies/fwc-genai-guidance-note) commences |
 | 5 November 2026 | ASIC [consultation on updated market integrity guidance](https://www.asic.gov.au/regulatory-resources/find-a-document/consultations/cs-63-proposed-updates-to-rg-265-and-rg-266-and-withdrawal-of-rg-241) closes; the amended rules on trading systems and automated trading, made in September 2026, commence on 18 March 2028 |
-| 16 November 2026 | Senate committee [reports on AI and data centres](https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P) |
 | By 30 November 2026 | Joint Select Committee on AI [full report](https://static.aph.gov.au/-/media/Committees/ai_ctte/JSC_AI_letter_20261012_Final.pdf) due |
 | 10 December 2026 | [APP 1.7–1.9 transparency obligation](/policies/oaic-app-1-7-adm-transparency-guidance) applies |
+| 23 March 2027 | Senate committee [reports on AI and data centres](https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P) |
 | Mid-2027 | South Australian Royal Commission [final report](https://www.dpc.sa.gov.au/news/royal-commission-into-artificial-intelligence-announced) expected |
 
 ## Why it matters
