@@ -8,7 +8,39 @@ on:
 permissions:
   contents: read
 
+# A newer push to the same PR supersedes the run for the older one.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
+  # lint, test and build are required checks and always run. The jobs below
+  # are not required, so they are skipped when the PR leaves their code alone.
+  changes:
+    name: changes
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: [self-hosted, linux, argus]
+    outputs:
+      probono: ${{ steps.diff.outputs.probono }}
+      host: ${{ steps.diff.outputs.host }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      # The checkout is the PR merge commit, so its first parent is the base.
+      - name: Detect changed areas
+        id: diff
+        run: |
+          set -euo pipefail
+          files="$(git diff --name-only HEAD^1 HEAD)"
+          printf '%s\n' "$files"
+          matches() { grep -qE "$1" <<<"$files" && echo true || echo false; }
+          workflow='^\.github/workflows/pull-request-checks\.yml$'
+          {
+            echo "probono=$(matches "^apps/probono/|$workflow")"
+            echo "host=$(matches "^ops/host/|$workflow")"
+          } >> "$GITHUB_OUTPUT"
+
   lint:
     name: lint
     if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
@@ -90,7 +122,8 @@ jobs:
 
   probono-dashboard:
     name: Pro Bono dashboard
-    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+    needs: changes
+    if: ${{ needs.changes.outputs.probono == 'true' }}
     runs-on: [self-hosted, linux, argus]
     defaults:
       run:
@@ -116,7 +149,8 @@ jobs:
 
   probono-worker:
     name: Pro Bono worker
-    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+    needs: changes
+    if: ${{ needs.changes.outputs.probono == 'true' }}
     runs-on: [self-hosted, linux, argus]
     defaults:
       run:
@@ -195,7 +229,8 @@ jobs:
 
   host-dispatcher:
     name: Host dispatcher
-    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+    needs: changes
+    if: ${{ needs.changes.outputs.host == 'true' }}
     runs-on: [self-hosted, linux, argus]
     steps:
       - uses: actions/checkout@v4
