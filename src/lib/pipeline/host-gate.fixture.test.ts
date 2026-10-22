@@ -9,6 +9,8 @@ import { retrieveSource } from './fetch';
 import type { WatchSource } from './sources';
 
 const ORIGIN = 'https://www.fixture.gov.au';
+// Shared self-hosted runners have other processes probing loopback ports, so only requests this test sent are recorded.
+const FIXTURE_HEADER = 'x-policai-fixture';
 
 const INDEX = `<html><body><main><ul class="news-list">
   <li><a href="/news/ai-one">AI policy one</a></li>
@@ -31,6 +33,10 @@ function startFixture(robots: string): Promise<Fixture> {
   const fixture: Partial<Fixture> & { hits: Fixture['hits'] } = { hits: [], robots, limitedRemaining: 1 };
   const server = createServer((request, response) => {
     const path = request.url ?? '/';
+    if (request.headers[FIXTURE_HEADER] !== '1') {
+      response.writeHead(404);
+      return response.end();
+    }
     fixture.hits.push({ path, at: Date.now(), userAgent: request.headers['user-agent'] ?? '' });
     const send = (status: number, body: string, headers: Record<string, string> = {}) => {
       response.writeHead(status, { 'content-type': 'text/html', ...headers });
@@ -64,7 +70,9 @@ function loopbackFetch(port: number, starts: number[] = []): typeof fetch {
   return (async (input: RequestInfo | URL, init?: RequestInit) => {
     starts.push(Date.now());
     const target = String(input).replace(ORIGIN, `http://127.0.0.1:${port}`);
-    const response = await fetch(target, { ...init, redirect: 'manual' });
+    const headers = new Headers(init?.headers);
+    headers.set(FIXTURE_HEADER, '1');
+    const response = await fetch(target, { ...init, headers, redirect: 'manual' });
     Object.defineProperty(response, 'url', { value: String(input) });
     return response;
   }) as typeof fetch;
