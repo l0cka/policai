@@ -29,6 +29,11 @@ import {
   reconcileLinkedDevelopments,
 } from '../src/lib/source-review';
 import { sourceIdentityUrls } from '../src/lib/source-url';
+import {
+  validateDevelopments,
+  validateSourceReviews,
+  type ValidationReport,
+} from '../src/lib/validate-data';
 import type {
   CollectionMeta,
   Development,
@@ -56,6 +61,40 @@ export interface CollectionRun {
    * promotes it only once the output validates.
    */
   stateDir?: string;
+}
+
+/**
+ * Keeps every record main already has and every new or changed record the
+ * validator accepts. A rejected change falls back to main's version (or is
+ * dropped when main has none), so one bad record never sinks the run.
+ */
+export function withoutInvalidChanges<T extends { id: string }>(
+  main: readonly T[],
+  next: readonly T[],
+  validate: (items: T[]) => ValidationReport,
+): { items: T[]; dropped: string[] } {
+  const mainById = new Map(main.map((item) => [item.id, item]));
+  const unchanged = (item: T) => {
+    const original = mainById.get(item.id);
+    return original !== undefined && JSON.stringify(original) === JSON.stringify(item);
+  };
+  let items = [...next];
+  const dropped: string[] = [];
+  for (;;) {
+    const { errors } = validate(items);
+    const rejected = new Map<string, string>();
+    for (const item of items) {
+      const error = errors.find((message) => message.startsWith(`${item.id}: `));
+      if (error && !unchanged(item)) rejected.set(item.id, error);
+    }
+    if (rejected.size === 0) return { items, dropped };
+    dropped.push(...rejected.values());
+    items = items.flatMap((item) => {
+      if (!rejected.has(item.id)) return [item];
+      const original = mainById.get(item.id);
+      return original ? [original] : [];
+    });
+  }
 }
 
 /** Findings this collector made that main does not carry yet. */
@@ -208,7 +247,12 @@ export async function runCollection(run: CollectionRun): Promise<void> {
     return;
   }
 
-  const mergedReviews = mergeSourceReviews(reviews, reviewCandidates);
+  const checkedReviews = withoutInvalidChanges(
+    mainReviews,
+    mergeSourceReviews(reviews, reviewCandidates),
+    (items) => validateSourceReviews(items, { policies, timelineEvents }),
+  );
+  const mergedReviews = checkedReviews.items;
   const developmentById = new Map(
     reconcileLinkedDevelopments(mergedReviews, developments).map(
       (development) => [development.id, development],
@@ -217,10 +261,23 @@ export async function runCollection(run: CollectionRun): Promise<void> {
   for (const development of result.developments) {
     developmentById.set(development.id, development);
   }
-  const mergedDevelopments = Array.from(developmentById.values()).sort(
-    (a, b) =>
-      new Date(b.detectedAt).getTime() - new Date(a.detectedAt).getTime(),
+  const checkedDevelopments = withoutInvalidChanges(
+    mainDevelopments,
+    Array.from(developmentById.values()).sort(
+      (a, b) =>
+        new Date(b.detectedAt).getTime() - new Date(a.detectedAt).getTime(),
+    ),
+    (items) =>
+      validateDevelopments(
+        items,
+        new Set(policies.map((policy) => policy.id)),
+        new Set(timelineEvents.map((event) => event.id)),
+      ),
   );
+  const mergedDevelopments = checkedDevelopments.items;
+  const dropped = [...checkedReviews.dropped, ...checkedDevelopments.dropped];
+  for (const error of dropped) console.warn(`  ! dropped invalid record ${error}`);
+  publicMeta.collector.lastRunErrors.push(...dropped.map((error) => `dropped invalid record ${error}`));
 
   if (reviewCandidates.length > 0 || carried.sourceReviews.length > 0) {
     await writeJsonFile(paths.sourceReviews, mergedReviews);
@@ -232,7 +289,7 @@ export async function runCollection(run: CollectionRun): Promise<void> {
   }
   if (run.stateDir) {
     const next: Outbox = {
-      developments: notOn(mainDevelopments, [...carried.developments, ...result.developments]),
+      developments: notOn(mainDevelopments, mergedDevelopments),
       sourceReviews: notOn(mainReviews, mergedReviews),
     };
     await writeJsonFile(path.join(run.stateDir, 'next', 'watch-state.json'), result.state);
