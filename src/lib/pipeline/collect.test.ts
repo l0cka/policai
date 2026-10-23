@@ -3714,14 +3714,16 @@ describe('collect browser fallback', () => {
     const browserFetchImpl = fakeFetch({
       'https://www.example.gov.au/news': INDEX_HTML,
     });
-    scrapeWithFirecrawl.mockImplementation(async (url: string) => ({
-      ok: true,
-      markdown: '# New AI policy framework released\n\nRead the AI policy framework.',
-      rawHtml:
-        '<html><body><main><h1>New AI policy framework released</h1><a href="/files/ai-policy-framework.pdf">AI policy framework (PDF)</a></main></body></html>',
-      title: 'New AI policy framework released',
-      finalUrl: url,
-    }));
+    scrapeWithFirecrawl.mockImplementation(async (url: string) => (url === HTML_SOURCE.url
+      ? { ok: false, reason: 'unavailable', detail: 'index read by the browser' }
+      : {
+        ok: true,
+        markdown: '# New AI policy framework released\n\nRead the AI policy framework.',
+        rawHtml:
+          '<html><body><main><h1>New AI policy framework released</h1><a href="/files/ai-policy-framework.pdf">AI policy framework (PDF)</a></main></body></html>',
+        title: 'New AI policy framework released',
+        finalUrl: url,
+      }));
 
     const result = await collect({
       sources: [browserSource],
@@ -3752,14 +3754,16 @@ describe('collect browser fallback', () => {
       [candidateUrl]:
         '<html><body><main><h1>New AI policy framework released</h1></main></body></html>',
     });
-    scrapeWithFirecrawl.mockImplementation(async (url: string) => ({
-      ok: true,
-      markdown: '# New AI policy framework released',
-      rawHtml:
-        '<html><body><main><h1>New AI policy framework released</h1><a href="/files/ai-policy-framework.pdf">AI policy framework (PDF)</a></main></body></html>',
-      title: 'New AI policy framework released',
-      finalUrl: url,
-    }));
+    scrapeWithFirecrawl.mockImplementation(async (url: string) => (url === HTML_SOURCE.url
+      ? { ok: false, reason: 'unavailable', detail: 'index read by the browser' }
+      : {
+        ok: true,
+        markdown: '# New AI policy framework released',
+        rawHtml:
+          '<html><body><main><h1>New AI policy framework released</h1><a href="/files/ai-policy-framework.pdf">AI policy framework (PDF)</a></main></body></html>',
+        title: 'New AI policy framework released',
+        finalUrl: url,
+      }));
 
     await collect({
       sources: [browserSource],
@@ -3775,6 +3779,70 @@ describe('collect browser fallback', () => {
       candidateUrl,
       expect.anything(),
     );
+  });
+
+  it('reads a browser-strategy index through Firecrawl before the headless browser', async () => {
+    const browserFetchImpl = fakeFetch({});
+    scrapeWithFirecrawl.mockImplementation(async (url: string) => ({
+      ok: true,
+      markdown: url === HTML_SOURCE.url ? '# News' : '# New AI policy framework released\n\nBody.',
+      rawHtml: url === HTML_SOURCE.url ? INDEX_HTML : '<html><body><h1>New AI policy framework released</h1></body></html>',
+      title: null,
+      finalUrl: url,
+    }));
+
+    const result = await collect({
+      sources: [{ ...HTML_SOURCE, fetchStrategy: 'browser' }],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl: fakeFetch({}),
+      browserFetchImpl,
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+    });
+
+    expect(scrapeWithFirecrawl).toHaveBeenCalledWith(HTML_SOURCE.url, {
+      identity: 'declared',
+      gate: expect.anything(),
+    });
+    expect(browserFetchImpl).not.toHaveBeenCalledWith(HTML_SOURCE.url, expect.anything());
+    expect(result.meta.collector.sourceResults[0].status).toBe('success');
+    expect(result.developments.map((development) => development.url)).toContain(
+      'https://www.example.gov.au/news/ai-policy-framework',
+    );
+  });
+
+  it('tries Firecrawl for an index the plain client cannot read, then the browser', async () => {
+    const browserFetchImpl = fakeFetch({ [HTML_SOURCE.url]: INDEX_HTML });
+
+    const result = await collect({
+      sources: [HTML_SOURCE],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl: fakeFetch({ [HTML_SOURCE.url]: 500 }),
+      browserFetchImpl,
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+    });
+
+    expect(scrapeWithFirecrawl).toHaveBeenCalledWith(HTML_SOURCE.url, expect.anything());
+    expect(browserFetchImpl).toHaveBeenCalledWith(HTML_SOURCE.url, expect.anything());
+    expect(result.meta.collector.sourceResults[0].status).toBe('success');
+  });
+
+  it('never reads a document or feed index through Firecrawl', async () => {
+    const browserFetchImpl = fakeFetch({
+      [HTML_SOURCE.url]: '<html><body><main><h1>AI policy</h1><p>Government AI guidance.</p></main></body></html>',
+    });
+
+    await collect({
+      sources: [{ ...HTML_SOURCE, kind: 'document', fetchStrategy: 'browser' }],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl: fakeFetch({}),
+      browserFetchImpl,
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+    });
+
+    expect(scrapeWithFirecrawl).not.toHaveBeenCalledWith(HTML_SOURCE.url, expect.anything());
   });
 
   it('does not consult Firecrawl for default http-strategy sources', async () => {
@@ -4426,13 +4494,15 @@ describe('failure classes on source results', () => {
 
   it('names a linked document refused over Firecrawl and the browser', async () => {
     const browserSource: WatchSource = { ...HTML_SOURCE, fetchStrategy: 'browser' };
-    scrapeWithFirecrawl.mockImplementation(async (url: string) => ({
-      ok: true,
-      markdown: '# AI policy\n\nArtificial intelligence policy framework.',
-      rawHtml: LINKING_PAGE,
-      title: 'AI policy',
-      finalUrl: url,
-    }));
+    scrapeWithFirecrawl.mockImplementation(async (url: string) => (url === HTML_SOURCE.url
+      ? { ok: false, reason: 'unavailable', detail: 'index read by the browser' }
+      : {
+        ok: true,
+        markdown: '# AI policy\n\nArtificial intelligence policy framework.',
+        rawHtml: LINKING_PAGE,
+        title: 'AI policy',
+        finalUrl: url,
+      }));
 
     const result = await collect({
       sources: [browserSource],

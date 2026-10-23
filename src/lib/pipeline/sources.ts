@@ -14,8 +14,8 @@ import type { SourceIdentityException } from './identity';
  * `html-index` sources are scraped for announcement links; `document`
  * sources are watched for content-hash changes. Hosts that reject plain
  * HTTP clients (GovCMS behind Akamai, APH, AWS WAF fronted state sites)
- * are marked fetchStrategy 'browser'. Their discovered candidate pages are
- * retrieved through the self-hosted Firecrawl stack first, falling through
+ * are marked fetchStrategy 'browser'. Their html-index pages and discovered
+ * candidate pages are retrieved through the self-hosted Firecrawl stack first, falling through
  * to the headless browser when Firecrawl can't serve the page; every other
  * source still falls back to the browser when the plain retriever fails.
  * The collector tolerates per-source failures and reports them in
@@ -70,7 +70,7 @@ export interface WatchSource {
   automation: SourceAutomation;
   /**
    * 'browser' skips the plain HTTP client — for hosts known to reject
-   * non-browser clients. Discovered candidate pages try the self-hosted
+   * non-browser clients. An html-index page and discovered candidate pages try the self-hosted
    * Firecrawl stack first and fall through to the headless browser directly
    * when Firecrawl can't serve the page. The default 'http' path still
    * falls back to the browser on failure.

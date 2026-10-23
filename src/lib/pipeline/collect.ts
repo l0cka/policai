@@ -183,15 +183,16 @@ function isBrowserFallbackFutile(error: unknown): boolean {
 }
 
 async function retrievedSourceFromFirecrawl(
-  markdown: string,
+  body: string,
   requestedUrl: string,
   finalUrl: string,
   now: () => Date,
+  contentType = 'text/plain; charset=utf-8',
 ): Promise<RetrievedSource> {
   const replayFetch: typeof fetch = async () => {
-    const response = new Response(markdown, {
+    const response = new Response(body, {
       status: 200,
-      headers: { 'content-type': 'text/plain; charset=utf-8' },
+      headers: { 'content-type': contentType },
     });
     Object.defineProperty(response, 'url', { value: finalUrl });
     return response;
@@ -1368,13 +1369,43 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
                     : extractFromHtml(retrieval.body, source.url);
       return { retrieval, extracted };
     };
-    const retrieveSourceIndex = async () => {
-      if (preferBrowser) {
-        return attemptIndexRetrieval(
-          browserFetchImpl,
-          BROWSER_RETRIEVAL_TIMEOUT_MS,
+    // Index pages climb the same ladder as candidate pages: Firecrawl, still
+    // declaring the Policai identity, reaches GovCMS hosts that reset the
+    // browser. Only html-index pages: a document's hash and a feed's XML
+    // would change with the renderer.
+    const firecrawlIndex = async () => {
+      if (source.kind !== 'html-index' || source.identityException) return null;
+      const firecrawled = await scrapeWithFirecrawl(source.url, {
+        identity: 'declared',
+        gate: indexGate,
+      });
+      if (!firecrawled.ok) {
+        log(
+          `[collect] ${source.id}: Firecrawl unavailable for the index (${firecrawled.reason}), retrying with the browser retriever`,
         );
+        return null;
       }
+      const retrieval = await retrievedSourceFromFirecrawl(
+        firecrawled.rawHtml,
+        source.url,
+        firecrawled.finalUrl,
+        () => now,
+        'text/html; charset=utf-8',
+      );
+      const extracted = extractFromHtml(retrieval.body, source.url);
+      if (extracted.itemCount === 0) {
+        log(
+          `[collect] ${source.id}: empty Firecrawl index, retrying with the browser retriever`,
+        );
+        return null;
+      }
+      return { retrieval, extracted };
+    };
+    const browserIndex = async () =>
+      (await firecrawlIndex()) ??
+      attemptIndexRetrieval(browserFetchImpl, BROWSER_RETRIEVAL_TIMEOUT_MS);
+    const retrieveSourceIndex = async () => {
+      if (preferBrowser) return browserIndex();
       try {
         const indexAttempt = await attemptIndexRetrieval(fetchImpl);
         if (
@@ -1385,10 +1416,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
           log(
             `[collect] ${source.id}: empty index, retrying with the browser retriever`,
           );
-          return await attemptIndexRetrieval(
-            browserFetchImpl,
-            BROWSER_RETRIEVAL_TIMEOUT_MS,
-          );
+          return await browserIndex();
         }
         return indexAttempt;
       } catch (error) {
@@ -1398,10 +1426,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         log(
           `[collect] ${source.id}: retrying source with the browser retriever`,
         );
-        return attemptIndexRetrieval(
-          browserFetchImpl,
-          BROWSER_RETRIEVAL_TIMEOUT_MS,
-        );
+        return browserIndex();
       }
     };
 
