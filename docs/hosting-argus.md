@@ -7,18 +7,17 @@ cutover and rollback procedure) is kept privately by the maintainer.
 
 ## policai.org on Workers
 
-`.github/workflows/cloudflare-deploy.yml` builds the site with
-`npm run build:cloudflare` and deploys it with `opennextjs-cloudflare
-deploy` from a GitHub-hosted runner. The API token lives only in the
-`cloudflare-preview` GitHub environment.
+Cloudflare Workers Builds deploys the Worker on every push to `main`,
+including auto-merges, which start no GitHub workflow. It runs
+`npm run build:cloudflare`, then `npx opennextjs-cloudflare deploy`, with
+`NODE_VERSION=24`. A commit that changes only `apps/probono/` is skipped.
+The build settings live on the Worker in the Cloudflare dashboard, not in
+this repository.
 
 Workers have no project filesystem, so `scripts/bundle-data.mjs` bundles
 `data/` and `public/data/` into the Worker at build time. Every commit to
-`main`, data included, needs a deploy before it is public. A push to `main`
-starts one. Auto-merge pushes through `GITHUB_TOKEN`, which starts no
-workflow, so a five-minute schedule also deploys whenever `main` is newer
-than the last successful deploy. Allow up to about ten minutes for a merge
-to go live.
+`main`, data included, is public only after its build deploys, about three
+minutes after the merge.
 
 The routes for `policai.org/*` and `www.policai.org/*` are in
 `wrangler.jsonc`. The workers.dev URL is off, so the Signal write API
