@@ -58,6 +58,7 @@ async function main() {
     );
   }
   console.log(`\nClef agrees with editors on ${agree} of ${scored} scored items.`);
+  if (scored === 0) process.exitCode = 1;
 }
 
 main().catch((error) => {

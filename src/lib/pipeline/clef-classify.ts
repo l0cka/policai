@@ -87,7 +87,10 @@ async function getJson(
     redirect: 'error',
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
-  if (!response.ok) throw new Error(`HTTP ${response.status} from ${path}`);
+  if (!response.ok) {
+    const detail = (await response.text()).slice(0, 200);
+    throw new Error(`HTTP ${response.status} from ${path}: ${detail}`);
+  }
   return response.json();
 }
 
@@ -109,10 +112,39 @@ export async function clefUnavailableReason(
     const installed = tags.models.some((model) =>
       [CLEF_MODEL, `${CLEF_MODEL}:latest`].includes(model.name),
     );
-    return installed ? null : `${CLEF_MODEL} is not installed`;
+    if (!installed) return `${CLEF_MODEL} is not installed`;
+    // Listed is not the same as loadable: an Ollama upgrade can leave a model
+    // on disk in a format it no longer reads. One real question proves it.
+    await askClef(fetchImpl, {
+      id: 'probe',
+      title: 'National framework for the assurance of AI in government',
+      text: '',
+      sourceName: 'Department of Finance',
+    });
+    return null;
   } catch (error) {
     return `Clef check failed: ${error instanceof Error ? error.message : String(error)}`;
   }
+}
+
+async function askClef(
+  fetchImpl: typeof fetch,
+  item: RelevanceItem,
+): Promise<number> {
+  const state = JSON.stringify({
+    title: item.title,
+    source: item.sourceName,
+    excerpt: item.text.slice(0, EXCERPT_LIMIT),
+  });
+  const reply = answerSchema.parse(
+    await getJson(fetchImpl, '/v1/systemone', {
+      model: CLEF_MODEL,
+      keep_alive: '5m',
+      state,
+      questions: { relevant: QUESTION },
+    }),
+  );
+  return reply.answers.relevant.noul;
 }
 
 /**
@@ -125,21 +157,8 @@ export function createClefScorer(deps: ClefDeps = {}): RelevanceScorer {
   return async (items) => {
     const scores = new Map<string, number>();
     for (const item of items) {
-      const state = JSON.stringify({
-        title: item.title,
-        source: item.sourceName,
-        excerpt: item.text.slice(0, EXCERPT_LIMIT),
-      });
       try {
-        const reply = answerSchema.parse(
-          await getJson(fetchImpl, '/v1/systemone', {
-            model: CLEF_MODEL,
-            keep_alive: '5m',
-            state,
-            questions: { relevant: QUESTION },
-          }),
-        );
-        scores.set(item.id, reply.answers.relevant.noul);
+        scores.set(item.id, await askClef(fetchImpl, item));
       } catch (error) {
         log(
           `[clef] ${item.id}: ${error instanceof Error ? error.message : String(error)}; keyword rules used`,
