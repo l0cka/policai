@@ -77,7 +77,7 @@ export default async function ReusePage() {
 
   return (
     <article className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
-      <PageIntro title={TITLE} description={DESCRIPTION} />
+      <PageIntro eyebrow="About · sources" title={TITLE} description={DESCRIPTION} />
       <MetricStrip
         metrics={[
           { value: rows.length, label: 'websites' },
