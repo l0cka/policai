@@ -20,30 +20,21 @@ import {
   type Classification,
 } from './classify';
 import type { RelevanceScorer } from './clef-classify';
-import { extractFromFrlSearch, trackedFrlPages } from '@/lib/legislation/frl-search';
-import { extractFromSaltSearch } from '@/lib/legislation/sa-salt';
-import { extractFromBillList } from '@/lib/legislation/state-bill-lists';
-import { extractFromVicBillSearch } from '@/lib/legislation/vic-bills';
+import { trackedFrlPages } from '@/lib/legislation/frl-search';
 import { extractRetrievedDocument } from './content';
 import { classifyFailure, publicFailureUrl } from './failure';
 import { robotsUnverifiedHosts, type Host, type HostGate, type HostRecord } from './host-gate';
-import {
-  extractFromHtml,
-  extractFromRss,
-  type Candidate,
-} from './extract';
+import type { Candidate } from './extract';
 import {
   DecidedBlockError,
-  foldLinkedDocuments,
   isGateError,
   matchesRetrievedContent,
-  retrieveSource,
   SourceFetchError,
   type RetrievedSource,
 } from './fetch';
-import { scrapeWithFirecrawl } from './firecrawl';
+import { retrievalLadder } from './retrieval-ladder';
 import { advanceSourceHealth, type SourceHealthRecord } from './source-health';
-import { identityAuthorityFor, identityExceptionState } from './identity';
+import { identityExceptionState } from './identity';
 import {
   getAutomaticSources,
   isRegisterSearch,
@@ -172,37 +163,9 @@ const DEFAULT_MIN_SCORE_FOR_REVIEW = 0.7;
 const DEFAULT_MIN_HEALTHY_SOURCE_RATE = MIN_HEALTHY_SOURCE_RATE;
 const MAX_CANDIDATE_ATTEMPTS = 5;
 const WEEKLY_INTERVAL_MS = 6 * 24 * 60 * 60 * 1000;
-/** Browser retrieval covers cold start plus challenge settling. */
-const BROWSER_RETRIEVAL_TIMEOUT_MS = 60_000;
 
 function isDeferredByGate(error: unknown): boolean {
   return isGateError(error) && error.retryable;
-}
-
-/** Allow-list and homepage-redirect failures are not client-dependent. */
-function isBrowserFallbackFutile(error: unknown): boolean {
-  return (
-    error instanceof SourceFetchError &&
-    (error.code === 'destination_mismatch' || isGateError(error))
-  );
-}
-
-async function retrievedSourceFromFirecrawl(
-  body: string,
-  requestedUrl: string,
-  finalUrl: string,
-  now: () => Date,
-  contentType = 'text/plain; charset=utf-8',
-): Promise<RetrievedSource> {
-  const replayFetch: typeof fetch = async () => {
-    const response = new Response(body, {
-      status: 200,
-      headers: { 'content-type': contentType },
-    });
-    Object.defineProperty(response, 'url', { value: finalUrl });
-    return response;
-  };
-  return retrieveSource(requestedUrl, { fetchImpl: replayFetch, now });
 }
 
 export function emptyWatchState(): WatchState {
@@ -1131,6 +1094,218 @@ function rowFailure(
   };
 }
 
+/** What one reading of a document source means: a new version, an update review, or nothing. */
+interface DocumentReading {
+  discovered: Candidate[];
+  directDocument: Awaited<ReturnType<typeof extractRetrievedDocument>> | null;
+  /** An update review for a tracked record, staged once per new version. */
+  staged: { development: Development; review: SourceReview } | null;
+  deferSourceSuccess: boolean;
+}
+
+/**
+ * Compares a document source's current reading with its snapshot and the
+ * tracked record's verified fingerprint, and advances the snapshot and
+ * version transitions in `state`.
+ */
+async function readDocumentSource(
+  source: WatchSource,
+  sourceRetrieval: RetrievedSource,
+  state: WatchState,
+  nowIso: string,
+  trackedPoliciesByUrl: ReadonlyMap<string, Policy>,
+  trackedTimelineEventsByUrl: ReadonlyMap<string, TimelineEvent>,
+): Promise<DocumentReading> {
+  let discovered: Candidate[] = [];
+  let directDocument: DocumentReading['directDocument'] = null;
+  const contentHash = sourceRetrieval.evidence.contentHash;
+  if (!contentHash) {
+    throw new Error('Document retrieval did not produce a content hash');
+  }
+  const previous = state.sourceSnapshots[source.id];
+  const reading = sourceRetrieval;
+  const isCurrentReading = (hash: string | undefined) =>
+    matchesRetrievedContent(reading, hash);
+  const isThisReading = (
+    hash: string | undefined,
+    snapshot: SourceSnapshot | undefined,
+  ) =>
+    hash === contentHash ||
+    (isCurrentReading(hash) &&
+      (!snapshot ||
+        snapshot.contentHash === hash ||
+        snapshot.contentHash === contentHash));
+  const latestTransition = latestDocumentTransition(state, source.id);
+  const readingHash =
+    latestTransition &&
+    isThisReading(
+      latestTransition.contentHash,
+      previous &&
+        (previous.changeCount ?? 0) >= latestTransition.changeCount
+        ? previous
+        : undefined,
+    )
+      ? latestTransition.contentHash
+      : contentHash;
+  const trackedPolicy = trackedPoliciesByUrl.get(
+    sourceUrlIdentity(source.url),
+  );
+  const trackedTimelineEvent = trackedTimelineEventsByUrl.get(
+    sourceUrlIdentity(source.url),
+  );
+  const canonicalContentHash = trackedPolicy
+    ? trackedPolicy.verification.source.contentHash
+    : trackedTimelineEvent?.verification.source.contentHash;
+  const trackedRecord = trackedPolicy ?? trackedTimelineEvent;
+  const canonicalIsCurrent = isThisReading(
+    canonicalContentHash,
+    previous,
+  );
+  const adoptedReading =
+    trackedRecord &&
+    canonicalContentHash &&
+    !canonicalIsCurrent
+      ? adoptablePublishedReading(
+          state,
+          source.id,
+          readingHash,
+          canonicalContentHash,
+        )
+      : null;
+  const reviewReason = trackedRecord
+    ? !canonicalContentHash
+      ? 'baseline_missing'
+      : !canonicalIsCurrent && !adoptedReading
+        ? 'changed'
+        : hasUnresolvedDocumentTransition(state, source.id) &&
+            !adoptedReading
+          ? 'baseline_reversion'
+          : null
+    : null;
+
+  if (adoptedReading) {
+    const entry = state.seen[adoptedReading.key];
+    state.seen[adoptedReading.key] = {
+      ...entry,
+      status: 'processed',
+      processedAt: entry.processedAt ?? nowIso,
+    };
+    delete state.seen[adoptedReading.key].lastError;
+  }
+
+  if (trackedRecord && reviewReason) {
+    const transition = transitionForDocumentHash(
+      state,
+      source.id,
+      readingHash,
+    );
+    if (transition.isNew) {
+      supersedeOlderDocumentCandidates(
+        state,
+        source.id,
+        transition.changeCount,
+        nowIso,
+      );
+    }
+    const staged = trackedPolicy
+      ? buildChangedDocumentReview(
+          trackedPolicy,
+          source,
+          sourceRetrieval.evidence,
+          readingHash,
+          transition.changeCount,
+          nowIso,
+          reviewReason,
+        )
+      : buildChangedTimelineDocumentReview(
+          trackedTimelineEvent as TimelineEvent,
+          source,
+          sourceRetrieval.evidence,
+          readingHash,
+          transition.changeCount,
+          nowIso,
+          reviewReason,
+        );
+    return {
+      discovered: [staged.candidate],
+      directDocument: null,
+      staged: transition.isNew ? staged : null,
+      deferSourceSuccess: true,
+    };
+  } else if (trackedRecord) {
+    const changeCount = maximumChangeCountForSource(
+      state,
+      source.id,
+    );
+    state.sourceSnapshots[source.id] = {
+      contentHash,
+      firstCheckedAt: previous?.firstCheckedAt ?? nowIso,
+      lastCheckedAt: nowIso,
+      ...(previous?.lastChangedAt
+        ? { lastChangedAt: previous.lastChangedAt }
+        : {}),
+      ...(previous && !isCurrentReading(previous.contentHash)
+        ? { lastChangedAt: nowIso }
+        : {}),
+      changeCount,
+    };
+  } else if (!previous) {
+    directDocument = await extractRetrievedDocument(
+      sourceRetrieval,
+      source.url,
+      source.name,
+    );
+    state.sourceSnapshots[source.id] = {
+      contentHash,
+      firstCheckedAt: nowIso,
+      lastCheckedAt: nowIso,
+      changeCount: 0,
+    };
+  } else if (isCurrentReading(previous.contentHash)) {
+    state.sourceSnapshots[source.id] = {
+      ...previous,
+      contentHash,
+      lastCheckedAt: nowIso,
+    };
+  } else {
+    const transition = transitionForDocumentHash(
+      state,
+      source.id,
+      contentHash,
+    );
+    const changeCount = transition.changeCount;
+    if (transition.isNew) {
+      supersedeOlderDocumentCandidates(
+        state,
+        source.id,
+        changeCount,
+        nowIso,
+      );
+    }
+    directDocument = await extractRetrievedDocument(
+      sourceRetrieval,
+      source.url,
+      source.name,
+    );
+    state.sourceSnapshots[source.id] = {
+      ...previous,
+      contentHash,
+      lastCheckedAt: nowIso,
+      lastChangedAt: nowIso,
+      changeCount,
+    };
+    discovered = [{
+      title: directDocument.title,
+      url: canonicalizeSourceUrl(source.url),
+      text: directDocument.text.slice(0, 600),
+      dateHint: directDocument.publishedAt,
+      dateHintPrecision: directDocument.publishedAtPrecision,
+      changeFingerprint: `${contentHash}:${changeCount}`,
+    }];
+  }
+  return { discovered, directDocument, staged: null, deferSourceSuccess: false };
+}
+
 /**
  * Run one collection pass over the watch sources.
  *
@@ -1163,7 +1338,6 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     sourceHealth: { ...(options.state.sourceHealth ?? {}) },
   };
   const gate = options.hostGate;
-  const indexGate: HostGate = { ...gate, admit: (url) => gate.admit(url, 'wait') };
   recoverPersistedDocumentTransitions(
     state,
     options.sourceReviews ?? [],
@@ -1220,73 +1394,20 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
   const errors: string[] = [];
   const sourceResults: SourceRunResult[] = [];
 
-  const browserFetchImpl = options.browserFetchImpl;
-
   for (const source of sources) {
     await options.recycleBrowser?.();
     const startedAt = Date.now();
-    const preferBrowser =
-      source.fetchStrategy === 'browser' && Boolean(browserFetchImpl);
     // E24: every path declares the Policai identity unless the source's
     // time-boxed exception is still current; an expired one is ignored.
     const identityState = identityExceptionState(source, now);
-    const identityAuthority = identityAuthorityFor(source);
-    const retrievePageWithFallback = async (
-      url: string,
-    ): Promise<RetrievedSource> => {
-      if (preferBrowser) {
-        const firecrawled = source.identityException
-          ? { ok: false as const, reason: 'identity_scope' }
-          : await scrapeWithFirecrawl(url, { identity: 'declared', gate });
-        if (firecrawled.ok) {
-          const page = await retrievedSourceFromFirecrawl(
-            firecrawled.markdown,
-            url,
-            firecrawled.finalUrl,
-            () => now,
-          );
-          try {
-            return await foldLinkedDocuments(page, firecrawled.rawHtml, url, {
-              fetchImpl,
-              now: () => now,
-              identityAuthority,
-              gate,
-            });
-          } catch (error) {
-            if (isBrowserFallbackFutile(error)) throw error;
-            log(
-              `[collect] ${source.id}: linked documents of Firecrawl page ${url} failed over HTTP (${error instanceof Error ? error.message : String(error)}), retrying with the browser retriever`,
-            );
-          }
-        } else {
-          log(
-            `[collect] ${source.id}: Firecrawl unavailable for ${url} (${firecrawled.reason}), retrying with the browser retriever`,
-          );
-        }
-        return retrieveSource(url, {
-          fetchImpl: browserFetchImpl,
-          now: () => now,
-          timeoutMs: BROWSER_RETRIEVAL_TIMEOUT_MS,
-          identityAuthority,
-          gate,
-          transport: 'browser',
-        });
-      }
-      try {
-        return await retrieveSource(url, { fetchImpl, now: () => now, identityAuthority, gate });
-      } catch (error) {
-        if (!browserFetchImpl || isBrowserFallbackFutile(error)) throw error;
-        log(`[collect] ${source.id}: retrying ${url} with the browser retriever`);
-        return retrieveSource(url, {
-          fetchImpl: browserFetchImpl,
-          now: () => now,
-          timeoutMs: BROWSER_RETRIEVAL_TIMEOUT_MS,
-          identityAuthority,
-          gate,
-          transport: 'browser',
-        });
-      }
-    };
+    const ladder = retrievalLadder({
+      source,
+      now,
+      gate,
+      fetchImpl,
+      browserFetchImpl: options.browserFetchImpl,
+      log,
+    });
     let pending = pendingCandidatesForSource(state, source.id);
     for (const candidate of pending) {
       if (!isAllowedSourceHost(candidate.url)) {
@@ -1349,289 +1470,29 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
       );
     }
 
-    const attemptIndexRetrieval = async (
-      impl: typeof fetch | undefined,
-      timeoutMs?: number,
-    ) => {
-      const retrieval = await retrieveSource(source.url, {
-        fetchImpl: impl,
-        now: () => now,
-        hashLinkedDocuments: source.kind === 'document',
-        identityAuthority,
-        gate: indexGate,
-        ...(timeoutMs !== undefined ? { timeoutMs, transport: 'browser' as const } : {}),
-      });
-      const extracted =
-        source.kind === 'document'
-          ? null
-          : source.kind === 'rss'
-            ? extractFromRss(retrieval.body, source.url, {
-                titlePattern: source.bodyRelevance?.titlePattern,
-              })
-            : source.kind === 'frl-search'
-              ? extractFromFrlSearch(retrieval.body)
-              : source.kind === 'sa-salt-search'
-                ? extractFromSaltSearch(retrieval.body)
-                : source.kind === 'vic-bill-search'
-                  ? extractFromVicBillSearch(retrieval.body)
-                  : source.kind === 'bill-list' && source.billList
-                    ? extractFromBillList(source.billList, retrieval.body, source.url)
-                    : extractFromHtml(retrieval.body, source.url);
-      return { retrieval, extracted };
-    };
-    // Index pages climb the same ladder as candidate pages: Firecrawl, still
-    // declaring the Policai identity, reaches GovCMS hosts that reset the
-    // browser. Only html-index pages: a document's hash and a feed's XML
-    // would change with the renderer.
-    const firecrawlIndex = async () => {
-      if (source.kind !== 'html-index' || source.identityException) return null;
-      const firecrawled = await scrapeWithFirecrawl(source.url, {
-        identity: 'declared',
-        gate: indexGate,
-      });
-      if (!firecrawled.ok) {
-        log(
-          `[collect] ${source.id}: Firecrawl unavailable for the index (${firecrawled.reason}), retrying with the browser retriever`,
-        );
-        return null;
-      }
-      const retrieval = await retrievedSourceFromFirecrawl(
-        firecrawled.rawHtml,
-        source.url,
-        firecrawled.finalUrl,
-        () => now,
-        'text/html; charset=utf-8',
-      );
-      const extracted = extractFromHtml(retrieval.body, source.url);
-      if (extracted.itemCount === 0) {
-        log(
-          `[collect] ${source.id}: empty Firecrawl index, retrying with the browser retriever`,
-        );
-        return null;
-      }
-      return { retrieval, extracted };
-    };
-    const browserIndex = async () =>
-      (await firecrawlIndex()) ??
-      attemptIndexRetrieval(browserFetchImpl, BROWSER_RETRIEVAL_TIMEOUT_MS);
-    const retrieveSourceIndex = async () => {
-      if (preferBrowser) return browserIndex();
-      try {
-        const indexAttempt = await attemptIndexRetrieval(fetchImpl);
-        if (
-          browserFetchImpl &&
-          indexAttempt.extracted?.itemCount === 0 &&
-          !indexAttempt.extracted.feedValid
-        ) {
-          log(
-            `[collect] ${source.id}: empty index, retrying with the browser retriever`,
-          );
-          return await browserIndex();
-        }
-        return indexAttempt;
-      } catch (error) {
-        if (!browserFetchImpl || isBrowserFallbackFutile(error)) {
-          throw error;
-        }
-        log(
-          `[collect] ${source.id}: retrying source with the browser retriever`,
-        );
-        return browserIndex();
-      }
-    };
 
     if (due) {
       try {
-        const indexAttempt = await retrieveSourceIndex();
+        const indexAttempt = await ladder.index();
         sourceRetrieval = indexAttempt.retrieval;
         noteSkipped(sourceRetrieval.skippedLinked);
         const indexExtraction = indexAttempt.extracted;
         if (source.kind === 'document') {
           itemCount = 1;
-          const contentHash = sourceRetrieval.evidence.contentHash;
-          if (!contentHash) {
-            throw new Error('Document retrieval did not produce a content hash');
-          }
-          const previous = state.sourceSnapshots[source.id];
-          const reading = sourceRetrieval;
-          const isCurrentReading = (hash: string | undefined) =>
-            matchesRetrievedContent(reading, hash);
-          const isThisReading = (
-            hash: string | undefined,
-            snapshot: SourceSnapshot | undefined,
-          ) =>
-            hash === contentHash ||
-            (isCurrentReading(hash) &&
-              (!snapshot ||
-                snapshot.contentHash === hash ||
-                snapshot.contentHash === contentHash));
-          const latestTransition = latestDocumentTransition(state, source.id);
-          const readingHash =
-            latestTransition &&
-            isThisReading(
-              latestTransition.contentHash,
-              previous &&
-                (previous.changeCount ?? 0) >= latestTransition.changeCount
-                ? previous
-                : undefined,
-            )
-              ? latestTransition.contentHash
-              : contentHash;
-          const trackedPolicy = trackedPoliciesByUrl.get(
-            sourceUrlIdentity(source.url),
+          const reading = await readDocumentSource(
+            source,
+            sourceRetrieval,
+            state,
+            nowIso,
+            trackedPoliciesByUrl,
+            trackedTimelineEventsByUrl,
           );
-          const trackedTimelineEvent = trackedTimelineEventsByUrl.get(
-            sourceUrlIdentity(source.url),
-          );
-          const canonicalContentHash = trackedPolicy
-            ? trackedPolicy.verification.source.contentHash
-            : trackedTimelineEvent?.verification.source.contentHash;
-          const trackedRecord = trackedPolicy ?? trackedTimelineEvent;
-          const canonicalIsCurrent = isThisReading(
-            canonicalContentHash,
-            previous,
-          );
-          const adoptedReading =
-            trackedRecord &&
-            canonicalContentHash &&
-            !canonicalIsCurrent
-              ? adoptablePublishedReading(
-                  state,
-                  source.id,
-                  readingHash,
-                  canonicalContentHash,
-                )
-              : null;
-          const reviewReason = trackedRecord
-            ? !canonicalContentHash
-              ? 'baseline_missing'
-              : !canonicalIsCurrent && !adoptedReading
-                ? 'changed'
-                : hasUnresolvedDocumentTransition(state, source.id) &&
-                    !adoptedReading
-                  ? 'baseline_reversion'
-                  : null
-            : null;
-
-          if (adoptedReading) {
-            const entry = state.seen[adoptedReading.key];
-            state.seen[adoptedReading.key] = {
-              ...entry,
-              status: 'processed',
-              processedAt: entry.processedAt ?? nowIso,
-            };
-            delete state.seen[adoptedReading.key].lastError;
-          }
-
-          if (trackedRecord && reviewReason) {
-            const transition = transitionForDocumentHash(
-              state,
-              source.id,
-              readingHash,
-            );
-            if (transition.isNew) {
-              supersedeOlderDocumentCandidates(
-                state,
-                source.id,
-                transition.changeCount,
-                nowIso,
-              );
-            }
-            const staged = trackedPolicy
-              ? buildChangedDocumentReview(
-                  trackedPolicy,
-                  source,
-                  sourceRetrieval.evidence,
-                  readingHash,
-                  transition.changeCount,
-                  nowIso,
-                  reviewReason,
-                )
-              : buildChangedTimelineDocumentReview(
-                  trackedTimelineEvent as TimelineEvent,
-                  source,
-                  sourceRetrieval.evidence,
-                  readingHash,
-                  transition.changeCount,
-                  nowIso,
-                  reviewReason,
-                );
-            discovered = [staged.candidate];
-            if (transition.isNew) {
-              developments.push(staged.development);
-              reviewCandidates.push(staged.review);
-            }
-            deferSourceSuccess = true;
-          } else if (trackedRecord) {
-            const changeCount = maximumChangeCountForSource(
-              state,
-              source.id,
-            );
-            state.sourceSnapshots[source.id] = {
-              contentHash,
-              firstCheckedAt: previous?.firstCheckedAt ?? nowIso,
-              lastCheckedAt: nowIso,
-              ...(previous?.lastChangedAt
-                ? { lastChangedAt: previous.lastChangedAt }
-                : {}),
-              ...(previous && !isCurrentReading(previous.contentHash)
-                ? { lastChangedAt: nowIso }
-                : {}),
-              changeCount,
-            };
-          } else if (!previous) {
-            directDocument = await extractRetrievedDocument(
-              sourceRetrieval,
-              source.url,
-              source.name,
-            );
-            state.sourceSnapshots[source.id] = {
-              contentHash,
-              firstCheckedAt: nowIso,
-              lastCheckedAt: nowIso,
-              changeCount: 0,
-            };
-          } else if (isCurrentReading(previous.contentHash)) {
-            state.sourceSnapshots[source.id] = {
-              ...previous,
-              contentHash,
-              lastCheckedAt: nowIso,
-            };
-          } else {
-            const transition = transitionForDocumentHash(
-              state,
-              source.id,
-              contentHash,
-            );
-            const changeCount = transition.changeCount;
-            if (transition.isNew) {
-              supersedeOlderDocumentCandidates(
-                state,
-                source.id,
-                changeCount,
-                nowIso,
-              );
-            }
-            directDocument = await extractRetrievedDocument(
-              sourceRetrieval,
-              source.url,
-              source.name,
-            );
-            state.sourceSnapshots[source.id] = {
-              ...previous,
-              contentHash,
-              lastCheckedAt: nowIso,
-              lastChangedAt: nowIso,
-              changeCount,
-            };
-            discovered = [{
-              title: directDocument.title,
-              url: canonicalizeSourceUrl(source.url),
-              text: directDocument.text.slice(0, 600),
-              dateHint: directDocument.publishedAt,
-              dateHintPrecision: directDocument.publishedAtPrecision,
-              changeFingerprint: `${contentHash}:${changeCount}`,
-            }];
+          discovered = reading.discovered;
+          directDocument = reading.directDocument;
+          deferSourceSuccess = reading.deferSourceSuccess;
+          if (reading.staged) {
+            developments.push(reading.staged.development);
+            reviewCandidates.push(reading.staged.review);
           }
         } else {
           if (!indexExtraction) {
@@ -1790,8 +1651,8 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         pageRetrieval =
           source.kind === 'document' &&
           sourceUrlsEqual(candidate.url, source.url)
-            ? sourceRetrieval ?? (await retrieveSourceIndex()).retrieval
-            : await retrievePageWithFallback(candidate.url);
+            ? sourceRetrieval ?? (await ladder.index()).retrieval
+            : await ladder.page(candidate.url);
         noteSkipped(pageRetrieval.skippedLinked);
         const expectedVersion = parseChangeFingerprint(
           candidate.changeFingerprint,
