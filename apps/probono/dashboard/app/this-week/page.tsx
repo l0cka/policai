@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '../../lib/site-meta';
 import Link from 'next/link';
 import { countdown, daysUntil, safeHref, urgency } from '../../lib/deadline-data';
 import { getWeeklyBrief, type WeeklySignal } from '../../lib/this-week-data';
@@ -8,10 +9,12 @@ import { ArrowRight, ArrowUpRight, Flag } from '../icons';
 import { auDate } from '../../lib/au-date';
 
 export const dynamic = 'force-dynamic';
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'This week',
-  description: 'A rolling seven-day radar brief, potential opportunities and upcoming deadlines, linked to their sources.',
-};
+  description:
+    'A rolling seven-day radar brief, potential opportunities and upcoming deadlines, linked to their sources.',
+  path: '/this-week',
+});
 
 function shortDate(value: string | Date): string {
   return auDate(new Date(value), { timeZone: 'Australia/Sydney', day: 'numeric', month: 'short', year: 'numeric' });

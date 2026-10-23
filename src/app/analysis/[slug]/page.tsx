@@ -16,7 +16,7 @@ import { ArticleTable } from '@/components/article-table';
 import { articleMdxOptions } from '@/lib/article-markdown';
 import { getArticleBySlug, type ArticleView } from '@/lib/data-service';
 import { ARTICLE_BYLINE, articleEditorialDate } from '@/lib/articles';
-import { pageAlternates, SITE_URL } from '@/lib/site-seo';
+import { metaDescription, pageAlternates, SITE_SHARE_IMAGE, SITE_URL } from '@/lib/site-seo';
 import { ARTICLE_TYPE_NAMES, type ArticleImage, type PublishedArticle } from '@/types';
 
 export const dynamic = 'force-dynamic';
@@ -50,22 +50,24 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       robots: { index: false },
     };
   }
+  const description = metaDescription(article.summary);
+  const images = [article.image ? imageUrl(article.image) : SITE_SHARE_IMAGE];
   return {
     title: article.title,
-    description: article.summary,
+    description,
     alternates: pageAlternates(`/analysis/${article.slug}`),
     openGraph: {
       type: 'article',
       url: `${SITE_URL}/analysis/${article.slug}`,
       title: article.title,
-      description: article.summary,
-      ...(article.image ? { images: [imageUrl(article.image)] } : {}),
+      description,
+      images,
     },
     twitter: {
       card: 'summary_large_image',
       title: article.title,
-      description: article.summary,
-      ...(article.image ? { images: [imageUrl(article.image)] } : {}),
+      description,
+      images,
     },
   };
 }

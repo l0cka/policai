@@ -58,6 +58,14 @@ export const SITE_SOCIAL_DEFAULTS = {
 	},
 };
 
+/** The generated share card (`app/opengraph-image.tsx`). Pages that set their own openGraph lose the file-convention image, so they name it. */
+export const SITE_SHARE_IMAGE = {
+	url: `${SITE_URL}/opengraph-image`,
+	width: 1200,
+	height: 630,
+	alt: `${SITE_NAME}, Australian AI policy register`,
+};
+
 /** Per-route OG/Twitter so habit pages do not inherit homepage title/url. */
 export function pageSocialMeta(input: {
 	title: string;
@@ -72,11 +80,13 @@ export function pageSocialMeta(input: {
 			url,
 			title: input.title,
 			description: input.description,
+			images: [SITE_SHARE_IMAGE],
 		},
 		twitter: {
 			...SITE_SOCIAL_DEFAULTS.twitter,
 			title: input.title,
 			description: input.description,
+			images: [SITE_SHARE_IMAGE],
 		},
 	};
 }

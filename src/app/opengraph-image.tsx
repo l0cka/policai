@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
-import { SITE_NAME } from '@/lib/site-seo';
+import { SITE_NAME, SITE_SHARE_IMAGE } from '@/lib/site-seo';
 
-export const alt = `${SITE_NAME}, Australian AI policy register`;
+export const alt = SITE_SHARE_IMAGE.alt;
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 

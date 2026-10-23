@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '../../lib/site-meta';
 import { getPool } from '../../lib/db';
 import locations from '../../lib/sector-locations.json';
 import SectorDirectory from '../sector-directory';
@@ -12,11 +13,12 @@ import {
 
 export const dynamic = 'force-dynamic';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'The sector',
   description:
-    'A researched directory of organisations and programs that fund, coordinate, deliver or study legal assistance in Australia, with the funding and referral structure that connects them.',
-};
+    'A researched directory of the organisations that fund, coordinate, deliver or study legal assistance in Australia, and how funding and referrals connect them.',
+  path: '/sector',
+});
 
 export default async function SectorPage() {
   // The sector reference is file-backed and remains useful in a local checkout

@@ -110,6 +110,13 @@ describe('pageSocialMeta', () => {
 		});
 		expect(social.openGraph?.title).not.toBe(SITE_TITLE);
 	});
+
+	it('names the share card, which a page-level openGraph otherwise drops', () => {
+		const social = pageSocialMeta({ title: 'Courts', description: 'Court AI rules.', path: '/courts' });
+		const card = { url: 'https://policai.org/opengraph-image', width: 1200, height: 630 };
+		expect(social.openGraph?.images).toEqual([expect.objectContaining(card)]);
+		expect(social.twitter?.images).toEqual([expect.objectContaining(card)]);
+	});
 });
 
 describe('policy page SEO helpers', () => {

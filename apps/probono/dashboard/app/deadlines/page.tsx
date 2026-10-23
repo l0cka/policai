@@ -1,12 +1,15 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '../../lib/site-meta';
 import { DeadlineList, DeadlineTimeline } from '../deadlines';
 import { getDeadlineView } from '../../lib/deadline-data';
 
 export const dynamic = 'force-dynamic';
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'Deadlines',
-  description: 'Consultation, submission and grant closing dates from the radar, soonest first, each linked to its source.',
-};
+  description:
+    'Consultation, submission and grant closing dates from the radar, soonest first, each linked to its source.',
+  path: '/deadlines',
+});
 
 export default async function DeadlinesPage() {
   const { closing: upcoming, calendar: milestones, closed: passed } = await getDeadlineView(30);
