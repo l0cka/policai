@@ -356,11 +356,16 @@ The source catalogue deliberately separates:
 
 Most previously-manual sources are automatic again since the collector gained
 a headless-browser retriever (`src/lib/pipeline/browser-fetch.ts`, Playwright
-Chromium). For sources marked `fetchStrategy: 'browser'`, the index or RSS
-listing page is still retrieved through the browser directly. Index and RSS
-extraction parse the retrieved body as HTML or XML, but a Firecrawl page's
-body is its markdown. The `rawHtml` Firecrawl also returns is used only to
-find linked documents (see below), never as the body extraction reads.
+Chromium). For sources marked `fetchStrategy: 'browser'`, an `html-index`
+listing page is read through Firecrawl first and extracted from its `rawHtml`,
+falling back to the browser when Firecrawl fails or the page yields no items.
+An `http` source whose plain fetch fails, or returns an empty index, takes the
+same Firecrawl-then-browser route. Firecrawl declares the Policai identity like
+every other path; it reaches GovCMS hosts that reset the browser's HTTP/2
+connection. RSS, register and document sources never read their own page
+through Firecrawl, because the renderer would change a feed's XML or a
+document's content hash. For a candidate page, Firecrawl's body is its
+markdown, and its `rawHtml` is used only to find linked documents (see below).
 Candidate pages discovered from those sources (but never a document source's
 own page) are retrieved through a
 self-hosted Firecrawl instance first (`src/lib/pipeline/firecrawl.ts`),
