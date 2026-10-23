@@ -1,1 +1,1077 @@
-[]
+[
+  {
+    "policyId": "federal-privacy-and-other-legislation-amendment-act-2024",
+    "kind": "rule",
+    "legalForce": "binding",
+    "appliesTo": [
+      "privacy_act_entity"
+    ],
+    "scope": {
+      "quote": "1.7 Without limiting subclause 1.3, the APP privacy policy of an APP entity must contain the information covered by subclause 1.8 if: (a) the entity has arranged for a computer program to make, or do a thing that is substantially and directly related to making, a decision; and…",
+      "pinpoint": "Sch 1 Pt 15 item 88 (APP 1.7)",
+      "url": "https://www.legislation.gov.au/C2024A00128/asmade/2024-12-10/text/1/epub/OEBPS/document_1/document_1.html"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "federal-online-safety-relevant-electronic-services-industry-standard-2024",
+    "kind": "rule",
+    "legalForce": "binding",
+    "appliesTo": [
+      "online_service"
+    ],
+    "scope": {
+      "quote": "(1) This industry standard applies to a relevant electronic service, wherever it is provided from, but only so far as it is provided to end-users in Australia.",
+      "pinpoint": "s 5(1)",
+      "url": "https://www.legislation.gov.au/F2024L00711/asmade/2024-06-21/text/original/epub/OEBPS/document_1/document_1.html"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "federal-online-safety-basic-online-safety-expectations-determination-2022",
+    "kind": "rule",
+    "legalForce": "binding",
+    "appliesTo": [
+      "online_service"
+    ],
+    "scope": {
+      "quote": "For the purposes of subsections 45(1), (2) and (3) of the Act, this Part specifies the basic online safety expectations for the following: (a) a social media service; (b) a relevant electronic service of any kind; (c) a designated internet service of any kind.",
+      "pinpoint": "s 5",
+      "url": "https://www.legislation.gov.au/F2022L00062/asmade/2022-01-23/text/original/epub/OEBPS/document_1/document_1.html"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "federal-online-safety-designated-internet-services-industry-standard-2024",
+    "kind": "rule",
+    "legalForce": "binding",
+    "appliesTo": [
+      "online_service"
+    ],
+    "scope": {
+      "quote": "(1) This industry standard applies to a designated internet service, wherever it is provided from, but only so far as it is provided to end-users in Australia.",
+      "pinpoint": "s 5(1)",
+      "url": "https://www.legislation.gov.au/F2024L00710/asmade/2024-06-21/text/original/epub/OEBPS/document_1/document_1.html"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "federal-criminal-code-amendment-deepfake-sexual-material-act-2024",
+    "kind": "rule",
+    "legalForce": "binding",
+    "appliesTo": [
+      "anyone"
+    ],
+    "scope": {
+      "quote": "(1) A person (the first person) commits an offence if: (a) the first person uses a carriage service to transmit material of another person; and…",
+      "pinpoint": "Sch 1 item 5 (Criminal Code s 474.17A(1))",
+      "url": "https://www.legislation.gov.au/C2024A00078/asmade/2024-09-02/text/original/epub/OEBPS/document_1/document_1.html"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "nsw-nesa-stage-6-take-home-assessment-ai-rules",
+    "kind": "rule",
+    "legalForce": "proposed",
+    "appliesTo": [
+      "education"
+    ],
+    "scope": {
+      "quote": "Schools must design formal assessment tasks so that marks reflect the student’s own knowledge, skills and understanding. Marks must not reflect a student’s use of generative AI.",
+      "pinpoint": "Generative AI use in school-based assessment",
+      "url": "https://www.nsw.gov.au/education-and-training/nesa/news/all/new-take-home-assessment-rules"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "nsw-ai-operational-policy",
+    "kind": "rule",
+    "legalForce": "government_mandatory",
+    "appliesTo": [
+      "state_entity"
+    ],
+    "scope": {
+      "quote": "The NSW AI Operational Policy is an all-of-government policy that outlines mandatory agency requirements to ensure the safe, lawful and ethical use of AI in the NSW Government.",
+      "pinpoint": "Overview",
+      "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-strategy-and-operational-policy/nsw-ai-operational-policy"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "asic-apra-resilience-at-frontier-ai-speed-2026",
+    "kind": "rule",
+    "legalForce": "regulator_expectation",
+    "appliesTo": [
+      "financial_services"
+    ],
+    "scope": {
+      "quote": "As set out in APRA’s and ASIC’s letters, the regulators expect entities to take action now to lift their resilience and to demonstrate that key decisions, escalation pathways, recovery arrangements, assurance activities and governance processes can operate at the speed required by emerging frontier AI threats.",
+      "pinpoint": "From awareness to action – what entities should do next",
+      "url": "https://download.asic.gov.au/media/imunrchk/asic-and-apra-resilience-at-frontier-ai-speed-roundatable.pdf"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "sa-summary-offences-ai-generated-depictions",
+    "kind": "rule",
+    "legalForce": "binding",
+    "appliesTo": [
+      "anyone"
+    ],
+    "scope": {
+      "quote": "(1) A person who creates a humiliating or degrading depiction of a simulated person is guilty of an offence.",
+      "pinpoint": "s 4 (Summary Offences Act 1953 s 26G(1))",
+      "url": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/a/2025/summary-offences-humiliating-degrading-or-invasive-depictions-amendment-act-2025_19/2025.19.un.pdf"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "sa-electoral-ai-generated-advertisements",
+    "kind": "rule",
+    "legalForce": "binding",
+    "appliesTo": [
+      "election_participant"
+    ],
+    "scope": {
+      "quote": "(1) A person must not distribute, or cause or permit to be distributed, an artificially generated electoral advertisement that contains a depiction of a simulated person performing an act that the real person depicted in the depiction did not perform.",
+      "pinpoint": "s 32 (Electoral Act 1985 s 115B(1))",
+      "url": "https://www.legislation.sa.gov.au/_legislation-documents/lz/v/a/2024/electoral-miscellaneous-amendment-act-2024_67/2024.67.un.pdf"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "vic-ovic-public-generative-ai-guidance",
+    "kind": "rule",
+    "legalForce": "regulator_expectation",
+    "appliesTo": [
+      "state_entity"
+    ],
+    "scope": {
+      "quote": "This guidance outlines the Office of the Victorian Information Commissioner’s (OVIC) position on the use of publicly available Generative Artificial Intelligence (Generative AI) tools within Victorian public sector organisations (VPS organisations)",
+      "pinpoint": "Introduction",
+      "url": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-personal-information-with-publicly-available-generative-ai-tools-in-the-victorian-public-sector"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "vic-ovic-enterprise-generative-ai-guidance",
+    "kind": "rule",
+    "legalForce": "regulator_expectation",
+    "appliesTo": [
+      "state_entity"
+    ],
+    "scope": {
+      "quote": "For the purpose of this guidance, VPS organisations are organisations subject to Parts 3 and 4 of the Privacy and Data Protection Act 2014.",
+      "pinpoint": "Definitions",
+      "url": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-enterprise-generative-ai-tools-in-the-victorian-public-sector"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "nsw-identifying-ai-guidance",
+    "kind": "rule",
+    "legalForce": "voluntary",
+    "appliesTo": [
+      "state_entity"
+    ],
+    "scope": {
+      "quote": "This guidance is for NSW Government public servants involved in the lifecycle of digital solutions, from design and sourcing to procurement, selection and management, who need to understand whether a solution may contain artificial intelligence (AI).",
+      "pinpoint": "Overview",
+      "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/nsw-artificial-intelligence-assessment-framework/identifying-ai"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "nsw-responsible-ai-guidance",
+    "kind": "rule",
+    "legalForce": "voluntary",
+    "appliesTo": [
+      "state_entity"
+    ],
+    "scope": {
+      "quote": "NSW government agencies can use this guidance to understand what responsible AI means in practice.",
+      "pinpoint": "Overview",
+      "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/nsw-artificial-intelligence-assessment-framework/responsibilities"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "nsw-ai-procurement-essentials",
+    "kind": "rule",
+    "legalForce": "voluntary",
+    "appliesTo": [
+      "state_entity"
+    ],
+    "scope": {
+      "quote": "The Framework gives NSW Government buying teams key considerations for sourcing and managing AI enabled systems.",
+      "pinpoint": "Buying AI responsibly",
+      "url": "https://www.info.buy.nsw.gov.au/resources/artificial-intelligence-ai-procurement-essentials"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "wa-ai-assurance-self-assessment",
+    "kind": "rule",
+    "legalForce": "government_mandatory",
+    "appliesTo": [
+      "state_entity"
+    ],
+    "scope": {
+      "quote": "This Framework applies to entities within the scope of the Policy.",
+      "pinpoint": "Who should use the Framework?",
+      "url": "https://forms.digital.wa.gov.au/250231755970861"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "wa-ai-governance-toolkit",
+    "kind": "rule",
+    "legalForce": "voluntary",
+    "appliesTo": [
+      "state_entity"
+    ],
+    "scope": {
+      "quote": "This toolkit supports all public sector entities in implementing artificial intelligence (AI) governance and assurance practices, in line with the WA Government AI Policy.",
+      "pinpoint": "Overview",
+      "url": "https://www.wa.gov.au/organisation/department-of-the-premier-and-cabinet/office-of-digital-government/artificial-intelligence-governance-toolkit-wa-public-sector-entities"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "asd-blueprint-secure-cloud-ai-usage-policy",
+    "kind": "rule",
+    "legalForce": "voluntary",
+    "appliesTo": [
+      "any_organisation"
+    ],
+    "scope": {
+      "quote": "The Blueprint does provide the following checklist that organisations can refer to when reviewing, developing and updating their documentation associated with a system or systems built using the Blueprint.",
+      "pinpoint": "Policies",
+      "url": "https://blueprint.asd.gov.au/security-and-governance/policies"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "nsw-artificial-intelligence-assessment-framework",
+    "kind": "rule",
+    "legalForce": "government_mandatory",
+    "appliesTo": [
+      "state_entity"
+    ],
+    "scope": {
+      "quote": "All NSW Government agencies must comply with the NSW AI Operational Policy and apply the AI Assessment Framework when required, under Department of Customer Service Circular DCS-2026-02.",
+      "pinpoint": "Overview",
+      "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks/nsw-ai-assessment-framework"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "victoria-genai-guideline-vps",
+    "kind": "rule",
+    "legalForce": "government_mandatory",
+    "appliesTo": [
+      "state_entity"
+    ],
+    "scope": {
+      "quote": "It applies to all public service bodies and public entities as defined in the Public Administration Act 2004",
+      "pinpoint": "Scope",
+      "url": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "queensland-ai-governance-policy",
+    "kind": "rule",
+    "legalForce": "government_mandatory",
+    "appliesTo": [
+      "state_entity"
+    ],
+    "scope": {
+      "quote": "This policy applies to all Queensland Government departments (as defined by the Public Sector Act 2022).",
+      "pinpoint": "Application",
+      "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "queensland-use-of-generative-ai-in-government",
+    "kind": "rule",
+    "legalForce": "voluntary",
+    "appliesTo": [
+      "state_entity"
+    ],
+    "scope": {
+      "quote": "As a Queensland Government employee, you may already be using generative AI tools to assist in basic tasks such as writing emails or summarising reports. This information sheet outlines some key considerations around the use generative AI in the workplace.",
+      "pinpoint": "p 1",
+      "url": "https://www.forgov.qld.gov.au/__data/assets/pdf_file/0028/416647/Use-of-generative-AI-in-government-v1.0.1.pdf"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "queensland-foundational-ai-risk-assessment-guideline",
+    "kind": "rule",
+    "legalForce": "government_mandatory",
+    "appliesTo": [
+      "state_entity"
+    ],
+    "scope": {
+      "quote": "The FAIRA framework is a mandated requirement to maintain a comprehensive, consistent and evidence-based process to evaluate AI under the AI governance policy.",
+      "pinpoint": "Purpose",
+      "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/foundational-artificial-intelligence-risk-assessment-guideline"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "victorian-ai-mission-statement",
+    "kind": "not_a_rule",
+    "note": "A statement of the Victorian Government's aims for AI in the economy and public services; it sets no obligation.",
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "sa-artificial-intelligence-ethics-policy",
+    "kind": "rule",
+    "legalForce": "government_mandatory",
+    "appliesTo": [
+      "state_entity"
+    ],
+    "scope": {
+      "quote": "This policy applies to all South Australian (SA) Government public sector agencies (as defined in ICT Policy Statement 1 – Compliant Authorities).",
+      "pinpoint": "Scope",
+      "url": "https://www.treasury.sa.gov.au/__data/assets/pdf_file/0004/1194340/AI_Ethics_Policy.pdf"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "sa-guideline-use-of-generative-ai-and-llm-tools",
+    "kind": "rule",
+    "legalForce": "voluntary",
+    "appliesTo": [
+      "state_entity"
+    ],
+    "scope": {
+      "quote": "This guideline applies to all South Australian (SA) Government public sector agencies (as defined in ICT Policy Statement 1 – Compliant Authorities).",
+      "pinpoint": "Scope",
+      "url": "https://www.treasury.sa.gov.au/__data/assets/pdf_file/0007/936745/Guideline-13.1-Use-of-Large-Language-Model-AI-Tools-Utilities.pdf"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "tas-guidance-for-the-use-of-artificial-intelligence-in-government",
+    "kind": "rule",
+    "legalForce": "voluntary",
+    "appliesTo": [
+      "state_entity"
+    ],
+    "scope": {
+      "quote": "To provide guidance for agencies to ensure a consistent baseline approach to the use of artificial intelligence by the Tasmanian Government.",
+      "pinpoint": "Purpose of this document",
+      "url": "https://www.dpac.tas.gov.au/__data/assets/pdf_file/0034/497176/Tasmanian-Government-Guidance-Artificial-Intelligence.pdf"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "nt-artificial-intelligence-assurance-framework",
+    "kind": "rule",
+    "legalForce": "government_mandatory",
+    "appliesTo": [
+      "state_entity"
+    ],
+    "scope": {
+      "quote": "The framework is to be used when NT Government agencies or government owned corporations are designing, building or using AI-enabled systems.",
+      "pinpoint": "Purpose",
+      "url": "https://dcdd.nt.gov.au/publications/artificial-intelligence-assurance-framework"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "federal-court-gpn-ai",
+    "kind": "rule",
+    "legalForce": "binding",
+    "appliesTo": [
+      "court_user"
+    ],
+    "scope": {
+      "quote": "3.1 This Practice Note applies to all persons who appear before or file documents with the Court. That includes litigants, whether they have legal representation or not.",
+      "pinpoint": "para 3.1",
+      "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-ai"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "nsw-supreme-court-sc-gen-23",
+    "kind": "rule",
+    "legalForce": "binding",
+    "appliesTo": [
+      "court_user"
+    ],
+    "scope": {
+      "quote": "This Practice Note was issued on 28 January 2025, commences on 3 February 2025 and will apply to all proceedings from that date.",
+      "pinpoint": "para 1",
+      "url": "https://supremecourt.nsw.gov.au/documents/Practice-and-Procedure/Practice-Notes/general/current/PN_SC_Gen_23.pdf"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "vic-supreme-court-ai-guidelines",
+    "kind": "rule",
+    "legalForce": "regulator_expectation",
+    "appliesTo": [
+      "court_user"
+    ],
+    "scope": {
+      "quote": "These Guidelines have been developed to assist those conducting litigation in the Supreme Court of Victoria. They are designed to assist both legal practitioners and self-represented litigants.",
+      "pinpoint": "Introduction",
+      "url": "https://www.supremecourt.vic.gov.au/sites/default/files/2024-05/AI%20Guidelines%20SCV.pdf"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "qld-supreme-court-ai-practice-direction",
+    "kind": "rule",
+    "legalForce": "binding",
+    "appliesTo": [
+      "court_user"
+    ],
+    "scope": {
+      "quote": "5. For written submissions to the Court, the person or persons who take responsibility for the contents of the document (the responsible person(s)) must be identified by name at the end of the document.",
+      "pinpoint": "para 5",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/882064/sc-pd-5-pf-2025.pdf"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "apra-ai-industry-letter-2026",
+    "kind": "rule",
+    "legalForce": "regulator_expectation",
+    "appliesTo": [
+      "financial_services"
+    ],
+    "scope": {
+      "quote": "APRA requires regulated entities to ensure appropriate risk management of AI, including setting risk appetite, managing AI related exposures, and ensuring appropriate oversight and accountability.",
+      "pinpoint": "Letter (To: All APRA-regulated entities)",
+      "url": "https://www.apra.gov.au/apra-letter-to-industry-on-artificial-intelligence-ai"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "oaic-guidance-developing-training-genai",
+    "kind": "rule",
+    "legalForce": "regulator_expectation",
+    "appliesTo": [
+      "privacy_act_entity",
+      "online_service"
+    ],
+    "scope": {
+      "quote": "This guidance is intended for developers of generative artificial intelligence (AI) models or systems who are subject to the Privacy Act (see ‘When does the Privacy Act apply?’ below).",
+      "pinpoint": "Who is this guidance for?",
+      "url": "https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-developing-and-training-generative-ai-models"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "oaic-guidance-commercial-ai-products",
+    "kind": "rule",
+    "legalForce": "regulator_expectation",
+    "appliesTo": [
+      "privacy_act_entity"
+    ],
+    "scope": {
+      "quote": "This guidance is intended to assist organisations to comply with their privacy obligations when using commercially available AI products, and to assist with selection of an appropriate product.",
+      "pinpoint": "Who is this guidance for?",
+      "url": "https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-the-use-of-commercially-available-ai-products"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "oaic-app-1-7-adm-transparency-guidance",
+    "kind": "rule",
+    "legalForce": "regulator_expectation",
+    "appliesTo": [
+      "privacy_act_entity"
+    ],
+    "scope": {
+      "quote": "This fact sheet is intended to help APP entities implement new Australian Privacy Principle (APP) 1 transparency obligations under APP 1.7-1.9, with respect to the usage of computer programs to make or inform decisions (transparency obligation).",
+      "pinpoint": "p 1",
+      "url": "https://www.oaic.gov.au/__data/assets/pdf_file/0021/269013/APP-1.7-1.9-Transparency-Obligation-Fact-Sheet.PDF"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "wa-ai-policy-assurance-framework",
+    "kind": "rule",
+    "legalForce": "government_mandatory",
+    "appliesTo": [
+      "state_entity"
+    ],
+    "scope": {
+      "quote": "The Policy applies to: • The WA Public Sector, and the following Schedule 1 entities as defined in the Public Sector Management Act 1994 (WA):",
+      "pinpoint": "Scope",
+      "url": "https://www.wa.gov.au/system/files/2025-07/ai_policyv2.pdf"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "act-ai-policy",
+    "kind": "rule",
+    "legalForce": "government_mandatory",
+    "appliesTo": [
+      "state_entity"
+    ],
+    "scope": {
+      "quote": "To comply with the policy, directorates must provide bi-annual summaries of their AI initiatives…",
+      "pinpoint": "Reporting",
+      "url": "https://www.act.gov.au/__data/assets/pdf_file/0010/2931382/ACT-Government-Artificial-Intelligence-Policy.pdf"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "vic-supreme-court-sc-gen-25",
+    "kind": "rule",
+    "legalForce": "binding",
+    "appliesTo": [
+      "court_user"
+    ],
+    "scope": {
+      "quote": "2.2 This Practice Note applies to all Court users.",
+      "pinpoint": "para 2.2",
+      "url": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes/sc-gen-25-the-use-of-artificial-intelligence-by-court-users"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "sa-courts-genai-guidelines",
+    "kind": "rule",
+    "legalForce": "binding",
+    "appliesTo": [
+      "court_user"
+    ],
+    "scope": {
+      "quote": "The guidelines will apply to proceedings in the Supreme Court, District Court, Magistrates Court, Youth Court, Environment, Resources and Development Court and the Court of Disputed Returns.",
+      "pinpoint": "Media release",
+      "url": "https://www.courts.sa.gov.au/2026/01/19/supreme-court-issues-guidelines-for-the-use-of-generative-ai"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "nsw-ncat-procedural-direction-7-genai",
+    "kind": "rule",
+    "legalForce": "binding",
+    "appliesTo": [
+      "court_user"
+    ],
+    "scope": {
+      "quote": "This Procedural Direction applies to: All Tribunal proceedings",
+      "pinpoint": "Application",
+      "url": "https://ncat.nsw.gov.au/documents/procedural-directions/ncat-pd7-use-of-generative-ai.pdf"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "nsw-district-court-genai-practice-note",
+    "kind": "rule",
+    "legalForce": "binding",
+    "appliesTo": [
+      "court_user"
+    ],
+    "scope": {
+      "quote": "This Practice Note was issued on 28 January 2025, commences on 3 February 2025 and will apply to all proceedings from that date.",
+      "pinpoint": "para 1",
+      "url": "https://districtcourt.nsw.gov.au/documents/practice-notes/district-court-pn---general/Gen_AI_Practice_Note.pdf"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "nsw-irc-practice-note-33-genai",
+    "kind": "rule",
+    "legalForce": "binding",
+    "appliesTo": [
+      "court_user"
+    ],
+    "scope": {
+      "quote": "2. This Practice Note applies to all proceedings before the Commission including the Commission in Court Session.",
+      "pinpoint": "para 2",
+      "url": "https://irc.nsw.gov.au/documents/practice-notes/Practice_Note_No_33_-_Use_of_GenAI.pdf"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "nsw-lec-practice-note-genai",
+    "kind": "rule",
+    "legalForce": "binding",
+    "appliesTo": [
+      "court_user"
+    ],
+    "scope": {
+      "quote": "It commences on 12 February 2025 and will apply to all proceedings from that date.",
+      "pinpoint": "para 1",
+      "url": "https://lec.nsw.gov.au/documents/practice-notes/Practice_Note_-_Use_of_Generative_Artificial_Intelligence_UPDATED.pdf"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "nsw-local-court-practice-note-genai",
+    "kind": "rule",
+    "legalForce": "binding",
+    "appliesTo": [
+      "court_user"
+    ],
+    "scope": {
+      "quote": "1.4 This Practice Note applies to all proceedings in the Local Court.",
+      "pinpoint": "para 1.4",
+      "url": "https://localcourt.nsw.gov.au/documents/practice-notes/other/Practice_Note_Generative_Artificial_Intelligence_Commences_12.01.26.pdf"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "nsw-pic-procedural-direction-pic13-genai",
+    "kind": "rule",
+    "legalForce": "binding",
+    "appliesTo": [
+      "court_user"
+    ],
+    "scope": {
+      "quote": "This Procedural Direction applies to: Workers Compensation Division, Motor Accidents Division and Police Officer Support Scheme Division",
+      "pinpoint": "Application",
+      "url": "https://www.pi.nsw.gov.au/resources/procedural-directions/procedural-direction-pic13-use-of-generative-artificial-intelligence"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "vic-supreme-court-ai-guidelines-judicial-officers",
+    "kind": "rule",
+    "legalForce": "voluntary",
+    "appliesTo": [
+      "judicial_officer"
+    ],
+    "scope": {
+      "quote": "1.1 These Guidelines outline the parameters around the use of Artificial Intelligence (AI) by Judicial Officers of this Court.",
+      "pinpoint": "para 1.1",
+      "url": "https://www.supremecourt.vic.gov.au/forms-fees-and-services/forms-templates-and-guidelines/guidelines-the-use-of-artificial-intelligence-by-judicial-officers"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "vic-county-court-pnccv-1-2026",
+    "kind": "rule",
+    "legalForce": "binding",
+    "appliesTo": [
+      "court_user"
+    ],
+    "scope": {
+      "quote": "The purpose of this Practice Note is to provide Court users with guidance about the use of Artificial Intelligence (AI).",
+      "pinpoint": "Introduction",
+      "url": "https://www.countycourt.vic.gov.au/files/documents/2026-06/use-artificial-intelligence-court-users-practice-note.docx"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "vic-vcat-pnvcat-11-genai",
+    "kind": "rule",
+    "legalForce": "binding",
+    "appliesTo": [
+      "court_user"
+    ],
+    "scope": {
+      "quote": "It applies to all proceedings in all Tribunal practice areas and to all users engaging with the Tribunal (parties).",
+      "pinpoint": "para 3",
+      "url": "https://www.vcat.vic.gov.au/media/551/download"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "qld-qcat-practice-direction-10-2025",
+    "kind": "rule",
+    "legalForce": "binding",
+    "appliesTo": [
+      "court_user"
+    ],
+    "scope": {
+      "quote": "5. For written submissions to the Tribunal, the person or persons who take responsibility for the contents of the document (the responsible person(s)) must be identified by name at the end of the document.",
+      "pinpoint": "para 5",
+      "url": "https://www.qcat.qld.gov.au/__data/assets/pdf_file/0006/884940/qcat-practice-direction-10-of-2025-accuracy-of-references-in-submissions.pdf"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "qld-district-court-practice-direction-12-2025",
+    "kind": "rule",
+    "legalForce": "binding",
+    "appliesTo": [
+      "court_user"
+    ],
+    "scope": {
+      "quote": "For written submissions to the Court, the person or persons who take responsibility for the contents of the document (the responsible person(s)) must be identified by name at the end of the document.",
+      "pinpoint": "para 5",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0011/882461/dcpd-12-of-2025.pdf"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "qld-land-court-practice-direction-4-2025",
+    "kind": "rule",
+    "legalForce": "binding",
+    "appliesTo": [
+      "court_user"
+    ],
+    "scope": {
+      "quote": "the person or persons who take responsibility for the contents of the document (the responsible person(s)) must be identified by name at the end of the document.",
+      "pinpoint": "para 7",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0011/882875/lc-pd-4-of-2025-Accuracy-of-References-in-Submissions.pdf"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "qld-planning-environment-court-practice-direction-7-2025",
+    "kind": "rule",
+    "legalForce": "binding",
+    "appliesTo": [
+      "court_user"
+    ],
+    "scope": {
+      "quote": "For written submissions to the Court, the person or persons who take responsibility for the contents of the document (the responsible person(s)) must be identified by name at the end of the document.",
+      "pinpoint": "para 5",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0003/882462/p-and-e-cpd-07-of-2025.pdf"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "qld-supreme-court-practice-direction-14-2024-expert-evidence",
+    "kind": "rule",
+    "legalForce": "binding",
+    "appliesTo": [
+      "court_user"
+    ],
+    "scope": {
+      "quote": "This Practice Direction commences on 15 July 2024. It applies to all criminal proceedings in the Supreme Court commenced by an indictment presented on or after that date (other than sentences).",
+      "pinpoint": "para 4",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/797050/scpd-14-of-2024.pdf"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "wa-supreme-court-genai-guidelines",
+    "kind": "rule",
+    "legalForce": "regulator_expectation",
+    "appliesTo": [
+      "court_user"
+    ],
+    "scope": {
+      "quote": "These guidelines concern the use of artificial intelligence (AI) in proceedings before the Supreme Court of Western Australia. They are intended to assist all those involved in proceedings, including lawyers, non-lawyers, self-represented litigants in civil and criminal proceedings and expert witnesses.",
+      "pinpoint": "para 1",
+      "url": "https://www.supremecourt.wa.gov.au/_files/Guidelines%20for%20the%20Use%20of%20Generative%20Artificial%20Intelligence.pdf"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "nsw-judicial-gen-ai-guidelines",
+    "kind": "rule",
+    "legalForce": "voluntary",
+    "appliesTo": [
+      "judicial_officer"
+    ],
+    "scope": {
+      "quote": "These Guidelines apply to all courts in New South Wales and have been developed after a process of consultation with Heads of Jurisdiction and review of recently published guidelines of other common law courts.",
+      "pinpoint": "para 1",
+      "url": "https://supremecourt.nsw.gov.au/content/dam/dcj/ctsd/supreme-court/documents/About-the-Court/policies/Guidelines_Gen_AI.pdf"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "vic-county-court-judicial-ai-guidelines",
+    "kind": "rule",
+    "legalForce": "voluntary",
+    "appliesTo": [
+      "judicial_officer"
+    ],
+    "scope": {
+      "quote": "These Guidelines outline the parameters around the use of Artificial Intelligence (AI) by Judicial Officers of this Court.",
+      "pinpoint": "Introduction",
+      "url": "https://www.countycourt.vic.gov.au/files/documents/2026-06/guidelines-use-ai-judicial-officers.docx"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "federal-court-gpn-lip-ai",
+    "kind": "rule",
+    "legalForce": "binding",
+    "appliesTo": [
+      "court_user"
+    ],
+    "scope": {
+      "quote": "1.1 This practice note is for litigants in person in the Federal Court of Australia.",
+      "pinpoint": "para 1.1",
+      "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "tas-local-community-benefit-fund-ai-data-centres-2026",
+    "kind": "not_a_rule",
+    "note": "A proposed fund to share the benefits of AI and data-centre developments with host communities; it sets no obligation.",
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "tas-draft-statement-expectations-data-centres-ai-2026",
+    "kind": "rule",
+    "legalForce": "proposed",
+    "appliesTo": [
+      "data_centre"
+    ],
+    "scope": {
+      "quote": "These expectations apply to new and expanded data centre and AI infrastructure developments, including hyperscale, co-location, large-scale AI compute facilities…",
+      "pinpoint": "Scope, p 3",
+      "url": "https://engage.building.tas.gov.au/download_file/view/2683/1065"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "agd-ogp-nap4-consultation-2026",
+    "kind": "not_a_rule",
+    "note": "An open consultation on Australia's Fourth Open Government National Action Plan; a national action plan sets commitments, not obligations on readers.",
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23"
+    }
+  }
+]
