@@ -171,16 +171,6 @@ export default function SectorExplorer({
   const selectedEvidence = selectedOrg ? evidenceFor(selectedOrg.name, relationship) : [];
   const selectedLocation = selectedOrg ? ORG_LOCATIONS.get(selectedOrg.name) : undefined;
 
-  const serviceCounts = useMemo(
-    () =>
-      SERVICE_CATEGORIES.map((entry) => ({
-        ...entry,
-        count: orgs.filter((org) => org.jurisdiction === jurisdiction && entry.match(org)).length,
-      })),
-    [orgs, jurisdiction],
-  );
-  const frontlineTotal = serviceCounts.reduce((sum, entry) => sum + entry.count, 0);
-
   // Sourced-evidence counts within the current jurisdiction and category scope.
   // Funding counts directory attributions; the other types count named links.
   const relationshipCounts = useMemo(
