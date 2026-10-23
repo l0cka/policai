@@ -26,7 +26,10 @@ import { refusedHosts, WATCH_SOURCES } from '../src/lib/pipeline/sources';
 const TIMEOUT_MS = 60_000;
 const MAX_CANDIDATES = 4;
 const EXCERPT_RADIUS = 280;
-const LINK_TEXT = /copyright|licen[cs]|terms of use|reuse|re-use|disclaimer/i;
+const LEAD_CHARS = 1500;
+// `licen[cs]e\b` and not `licen[cs]`: business-licensing pages would otherwise
+// crowd out the copyright fallbacks.
+const LINK_TEXT = /copyright|licen[cs]e\b|terms of use|reuse|re-use|disclaimer/i;
 const FALLBACK_PATHS = ['/copyright', '/about/copyright', '/copyright-statement'];
 const STATEMENT = new RegExp(
   [
@@ -37,6 +40,7 @@ const STATEMENT = new RegExp(
     'all rights (?:are )?reserved',
     'crown copyright',
     'copyright act 1968',
+    '©[^.]{0,120}',
   ].join('|'),
   'gi',
 );
@@ -102,6 +106,9 @@ function statementsIn(text: string): { statements: string[]; excerpts: string[] 
     excerpts.push(text.slice(start, lastEnd));
     if (excerpts.length >= 6) break;
   }
+  // A page with no recognised wording may still state terms in plain words, so
+  // the editor gets its opening text to read.
+  if (excerpts.length === 0) excerpts.push(text.slice(0, LEAD_CHARS));
   return { statements: [...statements], excerpts };
 }
 
@@ -195,8 +202,9 @@ async function main() {
         continue;
       }
       report.home = { url: home.page.url, via: home.page.via };
-      let links = candidateLinks(home.page.html, home.page.url, host);
-      if (links.length === 0) links = FALLBACK_PATHS.map((path) => `https://${host}${path}`);
+      const links = candidateLinks(home.page.html, home.page.url, host);
+      if (!links.some((link) => /copyright/i.test(link)))
+        links.push(...FALLBACK_PATHS.map((path) => `https://${host}${path}`));
       for (const link of links) {
         const outcome = await get(link);
         if (outcome.kind === 'refused') {

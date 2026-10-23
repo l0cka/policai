@@ -780,5 +780,79 @@
     },
     "termsUrl": "https://www.act.gov.au/copyright",
     "checkedAt": "2026-10-22"
+  },
+  {
+    "host": "www.apsc.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "creative_commons",
+      "licence": "CC-BY-4.0",
+      "exceptions": "the Commission logo or badge, the Commonwealth Coat of Arms and trade-marked material (the page says \"4.0 Australia\" and links the 4.0 International licence)"
+    },
+    "termsUrl": "https://www.apsc.gov.au/copyright",
+    "checkedAt": "2026-10-23"
+  },
+  {
+    "host": "www.infrastructure.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "creative_commons",
+      "licence": "CC-BY-4.0",
+      "exceptions": "the Commonwealth Coat of Arms and material the department does not own or license"
+    },
+    "termsUrl": "https://www.infrastructure.gov.au/copyright",
+    "checkedAt": "2026-10-23"
+  },
+  {
+    "host": "www.gbrmpa.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "creative_commons",
+      "licence": "CC-BY-4.0",
+      "exceptions": "the Commonwealth Coat of Arms, the Reef Authority logo, trade-marked material and third-party content including photographs"
+    },
+    "termsUrl": "https://www.gbrmpa.gov.au/copyright",
+    "checkedAt": "2026-10-23"
+  },
+  {
+    "host": "www.cdpp.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "creative_commons",
+      "licence": "CC-BY-4.0",
+      "exceptions": "the Commonwealth Coat of Arms, the CDPP logo and third-party content (the page says \"4.0 Australia\")"
+    },
+    "termsUrl": "https://www.cdpp.gov.au/copyright",
+    "checkedAt": "2026-10-23"
+  },
+  {
+    "host": "www.csiro.au",
+    "status": "stated",
+    "terms": {
+      "kind": "custom",
+      "summary": "Copyright is owned by CSIRO and third parties. Material may be used only in the ways the legal notice lists."
+    },
+    "termsUrl": "https://www.csiro.au/en/about/Policies/Legal/Legal-notice",
+    "checkedAt": "2026-10-23"
+  },
+  {
+    "host": "www.parliament.nsw.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "custom",
+      "summary": "Material may be copied, downloaded and republished with the notice “© State of New South Wales through the Parliament of New South Wales”, but not for advertising, satire or ridicule, or to misrepresent members. Charging for access or modifying it needs permission. Third-party material such as tabled papers and submissions is excluded."
+    },
+    "termsUrl": "https://www.parliament.nsw.gov.au/copyright",
+    "checkedAt": "2026-10-23"
+  },
+  {
+    "host": "www.legislation.act.gov.au",
+    "status": "stated",
+    "terms": {
+      "kind": "custom",
+      "summary": "Use of register material must follow the Justice and Community Safety Directorate’s copyright policy, which the page names but does not set out."
+    },
+    "termsUrl": "https://www.legislation.act.gov.au/Static/Footerlinks/Copyright/copyright.html",
+    "checkedAt": "2026-10-23"
   }
 ]
