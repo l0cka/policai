@@ -37,6 +37,7 @@ export default async function FollowingPage() {
     <div className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
       <PageIntro
         title={FOLLOWING_TITLE}
+        eyebrow="Register · following"
         description="Records followed on this browser only. A different browser, or a new profile, starts empty. There is no account and nothing is emailed."
       />
       <FollowingList policies={rows} />

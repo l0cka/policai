@@ -139,6 +139,7 @@ export default async function StatusPage() {
     <article className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
       <PageIntro
         title="Source status"
+        eyebrow="About · collection"
         description="When each official source was last checked successfully, and where the register is thin."
         actions={<HealthSignal health={meta.collector.health} />}
       />

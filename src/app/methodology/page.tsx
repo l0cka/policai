@@ -51,6 +51,7 @@ export default async function MethodologyPage() {
     <article className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
       <PageIntro
         title="Methodology and verification"
+        eyebrow="About · method"
         description="How records are discovered, verified and published."
       />
       <MetricStrip metrics={[

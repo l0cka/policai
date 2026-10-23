@@ -264,6 +264,7 @@ export function DevelopmentsBrowser({
     <div className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
       <PageIntro
         title="Policy developments"
+        eyebrow="Updates from official sources"
         description="Updates found on official sources. Records an editor has checked are listed separately from leads that are still unconfirmed."
       />
       <div className="reveal">

@@ -254,6 +254,7 @@ export function CourtsBrowser({
 		<div ref={containerRef} className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
 			<PageIntro
 				title="Courts and tribunals"
+				eyebrow="Practice notes and directions"
 				description="Verified practice notes, directions and guidance on AI use in Australian courts and tribunals."
 			/>
 			<MetricStrip metrics={[

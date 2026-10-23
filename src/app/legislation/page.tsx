@@ -152,6 +152,7 @@ export default async function LegislationPage() {
     <div className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
       <PageIntro
         title="Legislation"
+        eyebrow="Bills and laws"
         description="AI-related bills, Acts and legislative instruments in the register, tracked through Parliament from their official pages. Every stage links to its source."
       />
       <div className="reveal">

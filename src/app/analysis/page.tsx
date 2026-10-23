@@ -51,6 +51,7 @@ export default async function AnalysisPage({
     <div className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
       <PageIntro
         title="Analysis"
+        eyebrow="Policai analysis"
         description="Written pieces signed by Policai. They are Policai's analysis, separate from the verified register and from automated developments. Every factual claim cites a verified register record or an official source."
       />
 
