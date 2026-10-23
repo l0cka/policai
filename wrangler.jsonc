@@ -8,6 +8,10 @@
 		"directory": ".open-next/assets",
 		"binding": "ASSETS"
 	},
+	// OpenNext resizes /_next/image requests through this binding.
+	"images": {
+		"binding": "IMAGES"
+	},
 	// policai.org serves from this Worker. The tunnel CNAMEs stay in the zone
 	// as the rollback: delete these routes and the tunnel answers again.
 	"routes": [
