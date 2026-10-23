@@ -50,6 +50,7 @@ import { hostOf } from '@/lib/pipeline/host';
 import { refusedHosts, type WatchSource } from '@/lib/pipeline/sources';
 import { parseBodies, type Body } from '@/lib/watch-coverage/bodies';
 import { parseSiteReuse, siteReuseCoverage } from '@/lib/watch-coverage/site-reuse';
+import { parseRuleScopes, ruleScopeCoverage } from '@/lib/rule-finder/scope';
 import { isFailureClass, publicFailureUrl } from '@/lib/pipeline/failure';
 import { identityExceptionState } from '@/lib/pipeline/identity';
 import { isValidCalendarDate } from '@/lib/calendar-date';
@@ -2216,6 +2217,15 @@ function validateAutomation(
 export function validateSiteReuse(raw: unknown, bodiesRaw: unknown): ValidationReport {
   try {
     return siteReuseCoverage(parseSiteReuse(raw), parseBodies(bodiesRaw));
+  } catch (error) {
+    return { errors: [error instanceof Error ? error.message : String(error)], warnings: [] };
+  }
+}
+
+/** `data/rule-scope.json`: well formed, and every entry names a register record. */
+export function validateRuleScopes(raw: unknown, policies: readonly Policy[]): ValidationReport {
+  try {
+    return ruleScopeCoverage(parseRuleScopes(raw), policies.filter((policy) => policy.status !== 'trashed'));
   } catch (error) {
     return { errors: [error instanceof Error ? error.message : String(error)], warnings: [] };
   }
