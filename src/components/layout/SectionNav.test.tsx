@@ -12,9 +12,10 @@ function renderAt(path: string) {
 
 describe('SectionNav', () => {
   it.each([
-    ['/', 'Register views', ['Records', 'Timeline', 'Coverage map'], 'Records'],
-    ['/timeline', 'Register views', ['Records', 'Timeline', 'Coverage map'], 'Timeline'],
-    ['/coverage', 'Register views', ['Records', 'Timeline', 'Coverage map'], 'Coverage map'],
+    ['/', 'Register views', ['Records', 'Timeline', 'Coverage map', 'Rule finder'], 'Records'],
+    ['/timeline', 'Register views', ['Records', 'Timeline', 'Coverage map', 'Rule finder'], 'Timeline'],
+    ['/coverage', 'Register views', ['Records', 'Timeline', 'Coverage map', 'Rule finder'], 'Coverage map'],
+    ['/rule-finder', 'Register views', ['Records', 'Timeline', 'Coverage map', 'Rule finder'], 'Rule finder'],
     ['/this-week', 'Updates views', ['This week', 'Developments'], 'This week'],
     ['/developments', 'Updates views', ['This week', 'Developments'], 'Developments'],
     ['/methodology', 'About views', ['Methodology', 'Source status', 'Refusing sites', 'Reuse terms'], 'Methodology'],
