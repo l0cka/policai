@@ -29,6 +29,7 @@
     "signal:reviews": "tsx scripts/signal-source-reviews.ts",
     "mcp": "tsx src/mcp/server.ts",
     "mcp:public": "tsx src/mcp/public-server.ts",
+    "pretest": "node scripts/bundle-data.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage"
