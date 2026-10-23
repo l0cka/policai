@@ -3336,15 +3336,79 @@ tbody th[scope='row'] {
 
 /* ------------------------------------------------------------- deadlines -- */
 
-.timeline-month + .timeline-month {
+/* Eight weeks of closing dates as bars; each bar jumps to its week below. */
+.week-strip {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 4px;
+  max-width: 44rem;
   margin-top: var(--space-5);
 }
 
-/* A quiet chronological marker. The date stamp on every row already carries
-   the month, so this only has to say when one month hands over to the next. */
-.timeline-month > h3 {
-  padding-block: 0.4rem;
-  border-bottom: 1px solid var(--rule-hair);
+.week-strip-week {
+  display: grid;
+  grid-template-rows: auto 3.5rem auto;
+  gap: var(--space-1);
+  min-height: 2.75rem;
+  padding: 0.35rem 0.2rem;
+  border-radius: var(--radius-control);
+  color: inherit;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color var(--dur-fast);
+}
+
+.week-strip-week[href]:hover {
+  background: var(--row-hover);
+}
+
+.week-strip-week.is-current {
+  background: var(--muted);
+}
+
+.week-strip-count {
+  min-height: 1lh;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.week-strip-track {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  border-bottom: 1px solid var(--rule-heavy);
+}
+
+.week-strip-bar {
+  width: 60%;
+  border-radius: 2px 2px 0 0;
+  background: var(--muted-foreground);
+}
+
+.week-strip-bar.due-soon {
+  background: var(--alarm);
+}
+
+.week-strip-bar.due-near {
+  background: var(--caution);
+}
+
+.week-strip-label {
+  font-family: var(--font-mono);
+  font-size: var(--type-floor);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--muted-foreground);
+}
+
+.timeline-week {
+  scroll-margin-top: var(--space-6);
+}
+
+.timeline-week > h3 {
+  padding-block: 0.9rem 0.4rem;
   color: var(--muted-foreground);
   font-family: var(--font-mono);
   font-size: var(--type-floor);
@@ -3355,11 +3419,11 @@ tbody th[scope='row'] {
 
 .timeline-entry {
   display: grid;
-  grid-template-columns: 3.25rem minmax(0, 1fr) auto;
+  grid-template-columns: 3.25rem minmax(0, 1fr);
   gap: 0 1.125rem;
   align-items: start;
-  padding: 1.05rem 0.5rem 1.05rem 0.75rem;
-  border-bottom: 1px solid var(--border);
+  padding-block: 1rem;
+  border-top: 1px solid var(--border);
   transition: background-color var(--dur-fast);
 }
 
@@ -3367,7 +3431,8 @@ tbody th[scope='row'] {
   background: var(--row-hover);
 }
 
-/* The date block reads as a stamp: rule box, figure over month. */
+/* The date block reads as a stamp: rule box, day over weekday. The week
+   heading above it carries the month. */
 .date-block {
   display: flex;
   flex-direction: column;
@@ -3404,12 +3469,17 @@ tbody th[scope='row'] {
   --stamp: var(--caution);
 }
 
-.date-block.due-later {
-  --stamp: var(--muted-foreground);
+.timeline-countdown.due-soon {
+  color: var(--alarm);
+}
+
+.timeline-countdown.due-near {
+  color: var(--status-proposed);
 }
 
 .timeline-body {
   min-width: 0;
+  max-width: 68ch;
 }
 
 /*
@@ -3490,6 +3560,30 @@ tbody th[scope='row'] {
   font-size: 0.8125rem;
   line-height: 1.55;
   color: var(--muted-foreground);
+}
+
+.dated-closed > summary {
+  display: block;
+  cursor: pointer;
+  list-style: none;
+}
+
+.dated-closed > summary::-webkit-details-marker {
+  display: none;
+}
+
+.dated-closed > summary .day-heading {
+  min-height: 2.75rem;
+  align-items: center;
+}
+
+.dated-closed > summary .day-count::after {
+  content: '+';
+  margin-left: var(--space-3);
+}
+
+.dated-closed[open] > summary .day-count::after {
+  content: '\2212';
 }
 
 .dated-row {
@@ -3580,13 +3674,6 @@ tbody th[scope='row'] {
 .deadline-also a:hover,
 .deadline-also a:focus-visible {
   color: var(--primary);
-}
-
-.deadline-checked {
-  margin: 0.25rem 0 0;
-  font-size: 0.75rem;
-  line-height: 1.4;
-  color: var(--muted-foreground);
 }
 
 /* Compact deadline list used in the feed rail. */
@@ -3923,17 +4010,14 @@ tbody td:first-child {
 /* --------------------------------------------------------------- narrow -- */
 
 @media (max-width: 719px) {
-  /* The countdown column has nowhere to go at this width, so it tucks under
-     the subject rather than squeezing it to a two-word column. */
-  .timeline-entry {
-    grid-template-columns: 3.25rem minmax(0, 1fr);
-    padding-inline: 0 var(--space-1);
+  /* Eight columns only clear 44px with no gap; the bars keep their own
+     inset, so the weeks still read apart. */
+  .week-strip {
+    gap: 0;
   }
 
-  .timeline-entry .chip {
-    grid-column: 2;
-    justify-self: start;
-    margin-top: var(--space-2);
+  .week-strip-label {
+    letter-spacing: 0;
   }
 
   .dated-row {

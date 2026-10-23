@@ -40,6 +40,15 @@ try {
   assert.equal(await closing.filter({ hasText: 'Ask for an alternative submission format' }).count(), 1, 'secondary date is not its own card');
   out.checks.push('Non-primary date renders as a secondary line under its item');
 
+  const officialWeek = page.locator('.timeline-week').filter({ has: page.locator(`h4 a[href="${official}"]`) });
+  assert.match(await officialWeek.locator('h3').innerText(), /^week of \d{1,2} [a-z]{3}$/i, 'a date 40 days out sits under its own week');
+  const counts = await page.locator('.week-strip-count').allInnerTexts();
+  assert.equal(counts.reduce((sum, n) => sum + Number(n || 0), 0), await page.locator('section[id^="week-"] .timeline-entry').count(), 'the strip counts match the weeks listed');
+  for (const href of await page.locator('.week-strip a[href]').evaluateAll((as) => as.map((a) => a.getAttribute('href')))) {
+    assert.equal(await page.locator(href).count(), 1, `strip link ${href} has a week to jump to`);
+  }
+  out.checks.push('Closing dates group by week, and the week strip counts and links match the list');
+
   const main = page.locator('main');
   assert.equal(await closing.filter({ hasText: 'Fixture internship program launches' }).count(), 0);
   assert.equal(await closing.filter({ hasText: 'Fixture inquiry report timetable' }).count(), 0);
