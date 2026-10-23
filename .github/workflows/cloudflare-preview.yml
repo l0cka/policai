@@ -5,10 +5,6 @@ name: Cloudflare preview
 # GitHub-hosted runner so the deploy token never sits on Argus.
 on:
   workflow_dispatch:
-  # Until this file is on main, a push to the spike branch is the only trigger.
-  push:
-    branches:
-      - claude/project-thread-hkqaqh
 
 permissions:
   contents: read
