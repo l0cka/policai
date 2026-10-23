@@ -282,6 +282,32 @@ describe('createBrowserFetch', () => {
     expect(state.closedBrowser).toBe(true);
   });
 
+  it('relaunches after close, so each source can start a fresh browser', async () => {
+    const url = 'https://www.example.gov.au/news';
+    const { launch, state } = fakeBrowser({ [url]: { contents: ['<html><body>x</body></html>'] } });
+    const browserFetch = createBrowserFetch({ launch });
+
+    await browserFetch.close();
+    await browserFetch.fetchImpl(url);
+    await browserFetch.close();
+    await browserFetch.fetchImpl(url);
+
+    expect(state.launches).toBe(2);
+  });
+
+  it('closes cleanly after a failed launch and tries again on the next fetch', async () => {
+    const url = 'https://www.example.gov.au/news';
+    const { launch: working } = fakeBrowser({ [url]: { contents: ['<html><body>ok</body></html>'] } });
+    const launch = vi.fn().mockRejectedValueOnce(new Error('chromium crashed')).mockImplementation(working);
+    const browserFetch = createBrowserFetch({ launch });
+
+    await expect(browserFetch.fetchImpl(url)).rejects.toThrow('chromium crashed');
+    await expect(browserFetch.close()).resolves.toBeUndefined();
+    const response = await browserFetch.fetchImpl(url);
+
+    expect(await response.text()).toContain('ok');
+  });
+
   it('returns raw response bytes for non-HTML payloads', async () => {
     const rss = '<?xml version="1.0"?><rss><channel></channel></rss>';
     const { launch } = fakeBrowser({

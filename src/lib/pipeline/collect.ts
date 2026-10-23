@@ -129,6 +129,11 @@ export interface CollectOptions {
    * retriever is blocked or an index renders no extractable items.
    */
   browserFetchImpl?: typeof fetch;
+  /**
+   * Closes the browser before each source, so one source's pages, memory and
+   * a crashed renderer never carry into the next. The next use relaunches it.
+   */
+  recycleBrowser?: () => Promise<void>;
   hostGate: HostGate;
   now?: () => Date;
   maxItemsPerSource?: number;
@@ -1214,6 +1219,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
   const browserFetchImpl = options.browserFetchImpl;
 
   for (const source of sources) {
+    await options.recycleBrowser?.();
     const startedAt = Date.now();
     const preferBrowser =
       source.fetchStrategy === 'browser' && Boolean(browserFetchImpl);

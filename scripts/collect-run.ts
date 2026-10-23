@@ -50,6 +50,8 @@ export interface CollectionRun {
   maxItems?: number;
   fetchImpl?: typeof fetch;
   browserFetchImpl?: BrowserFetch['fetchImpl'];
+  /** Closes the browser so the next source starts a fresh one. */
+  recycleBrowser?: BrowserFetch['close'];
   hostGate?: HostGate;
   now?: () => Date;
   scoreRelevance?: RelevanceScorer;
@@ -188,6 +190,7 @@ export async function runCollection(run: CollectionRun): Promise<void> {
     sourceReviews: reviews,
     fetchImpl: run.fetchImpl,
     browserFetchImpl: run.browserFetchImpl,
+    recycleBrowser: run.recycleBrowser,
     now: run.now,
     trackedUrls: reviews.flatMap((review) =>
       sourceIdentityUrls(review.sourceUrl, review.sourceEvidence),
