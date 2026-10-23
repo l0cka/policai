@@ -1,7 +1,7 @@
 /* @vitest-environment node */
 
 import { createHash } from 'node:crypto';
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -237,5 +237,82 @@ describe('collection CLI write path', () => {
       consecutiveFailures: 0,
     });
     expect(digest(registerFile())).toBe(before);
+  });
+
+  describe('with host state and an outbox', () => {
+    let stateDir: string;
+    const outbox = (dir = path.join(stateDir, 'next')) =>
+      JSON.parse(readFileSync(path.join(dir, 'outbox.json'), 'utf8')) as {
+        developments: Development[];
+        sourceReviews: SourceReview[];
+      };
+    const promote = () => cpSync(path.join(stateDir, 'next'), stateDir, { recursive: true });
+    const resetMain = () => {
+      for (const file of ['developments.json', 'source-reviews.json', 'watch-state.json']) {
+        rmSync(path.join(rootDir, 'data', file), { force: true });
+      }
+    };
+    const collectOnce = (now: string) => {
+      const fetchImpl = vi.fn(async (input: RequestInfo | URL) => {
+        const url = String(input);
+        if (url === SOURCE.url) return new Response(RSS_XML, { status: 200 });
+        if (url.startsWith('https://www.example.gov.au/media/')) return new Response(PAGE_HTML, { status: 200 });
+        return new Response('not found', { status: 404 });
+      }) as unknown as typeof fetch;
+      return runCollection({
+        rootDir,
+        sources: [SOURCE],
+        dryRun: false,
+        fetchImpl,
+        now: () => new Date(now),
+        stateDir,
+        hostGate: createHostGate({
+          hosts: {},
+          refused: new Map(),
+          fetchRobots: robotsFetcher({ fetchImpl }),
+          now: Date.now,
+          sleep: async () => {},
+        }),
+      });
+    };
+
+    beforeEach(() => {
+      stateDir = mkdtempSync(path.join(tmpdir(), 'policai-collector-state-'));
+    });
+    afterEach(() => rmSync(stateDir, { recursive: true, force: true }));
+
+    it('replays findings an unmerged run made onto a main that never received them', async () => {
+      await collectOnce('2026-07-10T00:00:00.000Z');
+      const [finding] = outbox().developments;
+      expect(finding.url).toBe('https://www.example.gov.au/media/ai-assurance-consultation');
+      expect(outbox().sourceReviews).toHaveLength(1);
+      promote();
+      resetMain();
+
+      await collectOnce('2026-07-11T00:00:00.000Z');
+
+      expect(readJson<Development[]>('data', 'developments.json').map((d) => d.id)).toEqual([finding.id]);
+      expect(readJson<SourceReview[]>('data', 'source-reviews.json')).toHaveLength(1);
+      expect(outbox().developments.map((d) => d.id)).toEqual([finding.id]);
+      expect(readJson<WatchState>('data', 'watch-state.json').seen).toEqual(
+        expect.objectContaining({ [finding.url]: expect.anything() }),
+      );
+    });
+
+    it('drops a finding from the outbox once main carries it', async () => {
+      await collectOnce('2026-07-10T00:00:00.000Z');
+      promote();
+
+      await collectOnce('2026-07-11T00:00:00.000Z');
+
+      expect(outbox()).toEqual({ developments: [], sourceReviews: [] });
+      expect(readJson<Development[]>('data', 'developments.json')).toHaveLength(1);
+    });
+
+    it('writes nothing to the promoted state itself', async () => {
+      await collectOnce('2026-07-10T00:00:00.000Z');
+      expect(() => readFileSync(path.join(stateDir, 'outbox.json'))).toThrow();
+      expect(outbox().developments).toHaveLength(1);
+    });
   });
 });
