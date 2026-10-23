@@ -77,21 +77,14 @@
 .container { max-width: 1240px; }
 .site-header { background: var(--background); color: var(--foreground); }
 .rule-masthead { border-bottom: 1px solid var(--border); box-shadow: none; }
-.masthead { height: 6rem; }
-.brand svg { width: 2.25rem; height: 2.25rem; color: var(--foreground); }
-.brand-wordmark { color: var(--foreground); font-size: 1.9rem; font-weight: 700; letter-spacing: -.06em; text-transform: none; }
+.masthead { height: 4rem; }
+.brand svg { width: 2rem; height: 2rem; color: var(--foreground); }
+.brand-wordmark { color: var(--foreground); font-size: 1.5rem; font-weight: 700; letter-spacing: -.06em; text-transform: none; }
 .brand-edition { display: inline-block; margin-left: var(--space-3); padding-left: var(--space-3); border-left: 1px solid var(--border); color: var(--primary); font: 500 .75rem var(--font-mono); letter-spacing: .06em; vertical-align: middle; }
-.site-nav { gap: var(--space-6); }
+.site-nav { gap: var(--space-8); margin-inline: var(--space-4) 0; }
 .site-nav a { color: var(--muted-foreground); font-size: var(--type-ui); }
 .site-nav a:hover, .site-nav a.active { color: var(--foreground); }
 .site-nav a::after { background: var(--primary); }
-.dateline { background: var(--muted); color: var(--muted-foreground); border-color: var(--border); }
-.dateline > .container { min-height: 2.25rem; height: auto; padding-block: .6rem; font-size: 11px; letter-spacing: .04em; }
-.live-status { color: var(--primary); }
-.site-header .theme-toggle { border-color: var(--border); background: var(--background); }
-.site-header .theme-toggle button { color: var(--muted-foreground); }
-.site-header .theme-toggle button:hover { color: var(--foreground); }
-.site-header .theme-toggle button[aria-checked='true'] { background: var(--primary); color: var(--primary-foreground); }
 .mobile-menu-toggle { min-width: 44px; min-height: 44px; }
 .mobile-nav-panel { max-height: calc(100dvh - 5rem); overflow-y: auto; border-radius: 0; }
 .section-heading, .register-title { font-family: var(--font-display); font-weight: 400; }

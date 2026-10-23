@@ -301,47 +301,29 @@ time,
   backdrop-filter: blur(12px);
 }
 
-/* Dateline strip, in the manner of a masthead's edition line. */
-.dateline {
-  border-top: 1px solid var(--border);
-  background: rgba(5, 20, 35, 0.38);
-  color: #9fb0c2;
-}
-
-.dateline > .container {
-  display: flex;
-  height: 2.75rem;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-4);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-}
-
-.dateline-mobile {
-  display: none;
-}
-
-.dateline-links {
-  display: flex;
-  align-items: center;
-  gap: var(--space-5);
-  flex-shrink: 0;
-}
-
-.live-status {
+/* Collector status: a dot that links to Source health, as on Policai. */
+.header-status {
+  margin-left: auto;
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
-  color: #65d2b4;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--primary);
+  transition: opacity var(--dur-fast);
 }
 
-.live-status i {
+.header-status:hover {
+  opacity: 0.75;
+}
+
+.header-status i {
   display: block;
-  width: 0.45rem;
-  height: 0.45rem;
+  width: 0.5rem;
+  height: 0.5rem;
   border-radius: var(--radius-pill);
   background: currentColor;
 }
@@ -531,50 +513,6 @@ time,
   color: var(--muted-foreground);
   font-size: var(--type-ui);
   font-weight: 500;
-}
-
-.mobile-theme-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: var(--space-2);
-  border-top: 1px solid var(--border);
-  padding: var(--space-3);
-}
-
-.mobile-theme-row > span {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--muted-foreground);
-}
-
-.header-actions {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
-  flex-shrink: 0;
-}
-
-.site-header .theme-toggle {
-  border-color: var(--border);
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.site-header .theme-toggle button {
-  color: #9fb0c2;
-}
-
-.site-header .theme-toggle button:hover {
-  color: #f4f8fc;
-}
-
-.site-header .theme-toggle button[aria-checked='true'] {
-  background: #5272e8;
-  color: #fff;
 }
 
 .theme-toggle {
@@ -3853,37 +3791,64 @@ tbody td:first-child {
 @media (min-width: 1024px) {
   .site-footer > .container {
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
+    gap: var(--space-8);
   }
 }
 
 .site-footer p {
-  max-width: 48rem;
   font-size: var(--type-small);
   line-height: 1.6;
   color: var(--muted-foreground);
 }
 
-.footer-links {
+.footer-about {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-2) var(--space-6);
-  font-size: var(--type-small);
-  color: var(--muted-foreground);
+  max-width: 28rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
 }
 
-.footer-links a {
+.footer-current {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.footer-groups {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-6);
+  font-size: var(--type-small);
+}
+
+@media (min-width: 640px) {
+  .footer-groups {
+    grid-template-columns: repeat(3, minmax(8rem, 1fr));
+  }
+}
+
+.footer-groups > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.footer-groups a {
+  color: var(--muted-foreground);
   transition: color var(--dur-fast);
 }
 
-.footer-links a:hover {
+.footer-groups a:hover {
   color: var(--foreground);
 }
 
 @media (pointer: coarse) {
-  .footer-links a,
+  .footer-groups a,
   .rail-more,
   .recent-signals-head a,
   .sector-org-source-link {
@@ -3914,23 +3879,16 @@ tbody td:first-child {
 /* The full masthead needs 829px; switch before it can push the theme controls
    beyond the viewport. Content keeps its narrower breakpoint below. */
 @media (max-width: 839px) {
-  .dateline > .container {
-    justify-content: flex-start;
-    height: 2.35rem;
-  }
-
-  .dateline-desktop,
-  .dateline-links,
-  .site-nav,
-  .header-actions {
+  .site-nav {
     display: none;
   }
 
-  .dateline-mobile {
-    display: block;
-    min-width: 0;
+  .header-status span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
     overflow: hidden;
-    text-overflow: ellipsis;
+    clip-path: inset(50%);
     white-space: nowrap;
   }
 
@@ -3947,9 +3905,14 @@ tbody td:first-child {
     font-size: 1.05rem;
   }
 
+  .header-status {
+    order: 1;
+  }
+
   .mobile-menu-toggle {
     display: flex;
-    margin-left: auto;
+    order: 2;
+    margin-left: var(--space-2);
   }
 
   .mobile-nav-panel {

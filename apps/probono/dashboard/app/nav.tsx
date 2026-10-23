@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import ThemeToggle from './theme-toggle';
 import { ArrowUpRight } from './icons';
 
 const LINKS: Array<[string, string]> = [
@@ -85,10 +84,6 @@ export default function Nav() {
               Policai <ArrowUpRight />
             </a>
           </nav>
-          <div className="mobile-theme-row">
-            <span>Theme</span>
-            <ThemeToggle />
-          </div>
         </div>
       ) : null}
     </>
