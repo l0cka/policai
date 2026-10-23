@@ -14,6 +14,7 @@ import {
   policyPageDescription,
   policyPageTitle,
   SITE_NAME,
+  SITE_SHARE_IMAGE,
   SITE_URL,
 } from '@/lib/site-seo';
 import { getJurisdictionName } from '@/types';
@@ -48,11 +49,13 @@ export async function generateMetadata({
       description,
       siteName: SITE_NAME,
       locale: 'en_AU',
+      images: [SITE_SHARE_IMAGE],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
+      images: [SITE_SHARE_IMAGE],
     },
   };
 }

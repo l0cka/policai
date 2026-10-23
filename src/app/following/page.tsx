@@ -13,6 +13,8 @@ export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
   title: FOLLOWING_TITLE,
   description: FOLLOWING_DESCRIPTION,
+  // Follows live in this browser, so a crawler only ever sees the empty list.
+  robots: { index: false, follow: true },
   alternates: pageAlternates('/following'),
   ...pageSocialMeta({
     title: FOLLOWING_TITLE,

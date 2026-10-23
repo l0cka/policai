@@ -7,6 +7,7 @@ import { getPool } from '../lib/db';
 import './globals.css';
 import './editorial.css';
 import { auDate } from '../lib/au-date';
+import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL, pageMetadata, siteJsonLd } from '../lib/site-meta';
 
 export const dynamic = 'force-dynamic';
 
@@ -22,11 +23,10 @@ export const dynamic = 'force-dynamic';
  */
 export const metadata: Metadata = {
   // pi-lens-ignore: unchecked-throwing-call
-  metadataBase: new URL('https://a2j.policai.org'),
+  metadataBase: new URL(SITE_URL),
+  ...pageMetadata({ description: SITE_DESCRIPTION, path: '/' }),
   // Same separator as the Policai register: "Page - Policai A2J".
-  title: { default: 'Policai A2J', template: '%s - Policai A2J' },
-  description:
-    'A monitor of Australian pro bono, access-to-justice and legal assistance news, law reform, funding and deadlines, each item linked to its source.',
+  title: { default: SITE_TITLE, template: `%s - ${SITE_NAME}` },
   // './' resolves against metadataBase *and* the current path, so every page
   // gets its own canonical rather than all four claiming the home page.
   alternates: { canonical: './' },
@@ -78,6 +78,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           system theme on the way to the chosen one.
         */}
         <script>{themeInitScript}</script>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: siteJsonLd() }} />
       </head>
       <body>
         <a href="#main-content" className="sr-only skip-link">

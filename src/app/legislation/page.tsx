@@ -22,7 +22,7 @@ export const revalidate = 3600;
 const RECENT_DAYS = 90;
 const LEGISLATION_TITLE = 'AI legislation in Australian Parliaments';
 const LEGISLATION_DESCRIPTION =
-  'AI-related bills before each Australian Parliament, the commencements and deadlines coming up, and the Acts and instruments made recently, each from its official source.';
+  'AI-related bills before each Australian Parliament, upcoming commencements and deadlines, and recently made Acts and instruments, each from its official source.';
 
 export const metadata: Metadata = {
   title: LEGISLATION_TITLE,

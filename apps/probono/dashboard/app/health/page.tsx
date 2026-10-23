@@ -1,14 +1,17 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '../../lib/site-meta';
 import { getPool } from '../../lib/db';
 import { fetchMethodLabel, getItemCompleteness, sourceErrorLabel, getSourceHealth, sourceHealthState, ITEM_EXPECTED_FIELDS, ITEM_EXPECTED_FIELD_LABELS, type SourceHealthState } from '../../lib/health-data';
 import { CheckCircle, CircleAlert, CircleDash } from '../icons';
 import { auDate } from '../../lib/au-date';
 
 export const dynamic = 'force-dynamic';
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'Source health',
-  description: 'The most recent collection run for every active Policai A2J source, with overdue, failures and their last error.',
-};
+  description:
+    'The most recent collection run for every active Policai A2J source, with overdue, failures and their last error.',
+  path: '/health',
+});
 
 function StatusCell({ state }: { state: SourceHealthState }) {
   if (state === 'retired') {
