@@ -17,9 +17,9 @@ export const LEGAL_FORCES = [
     description: 'Policy that the named government bodies must follow.',
   },
   {
-    key: 'regulator_expectation',
-    label: 'Regulator expectation',
-    description: 'Guidance from a regulator on how it applies existing law.',
+    key: 'expectation',
+    label: 'Expectation',
+    description: 'Guidance from a regulator or court on how existing duties apply.',
   },
   {
     key: 'voluntary',
