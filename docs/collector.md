@@ -287,7 +287,11 @@ endpoint on `127.0.0.1:11434` as one `noul` question ("Is this item
 Australian AI policy, regulation, governance or court guidance?"), and the
 model's P(true) becomes the score. An item at 0.5 or above is relevant.
 Summary, type and jurisdiction still come from the keyword rules, and the
-assessment records `promptVersion: 'clef-noul-v1'`.
+assessment records `promptVersion: 'clef-noul-v1'`. The log carries one
+`model score` line per scored candidate, so a dismissal's confidence can be
+read back. Register search hits (Federal Register, SA, Vic and state bill
+lists) are scored too. Without a score they keep the fixed 0.55 search-match
+rule (`register-search-v1`).
 
 Clef never fails a run. `scripts/collect.ts` checks once per run that at least
 13 GB of GPU memory is free (`nvidia-smi`, which must report exactly one GPU;
