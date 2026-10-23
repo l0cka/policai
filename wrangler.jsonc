@@ -14,5 +14,6 @@
 		{ "pattern": "policai.org/*", "zone_name": "policai.org" },
 		{ "pattern": "www.policai.org/*", "zone_name": "policai.org" }
 	],
-	"workers_dev": true
+	// Off so the Signal write API answers only on policai.org.
+	"workers_dev": false
 }

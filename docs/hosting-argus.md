@@ -21,7 +21,8 @@ than the last successful deploy. Allow up to about ten minutes for a merge
 to go live.
 
 The routes for `policai.org/*` and `www.policai.org/*` are in
-`wrangler.jsonc`. To roll back to Argus, delete them and deploy; the tunnel
+`wrangler.jsonc`. The workers.dev URL is off, so the Signal write API
+answers only on policai.org. To roll back to Argus, delete them and deploy; the tunnel
 CNAMEs still point at the host, which keeps running Policai.
 
 Signal reads `POLICAI_SIGNAL_TOKEN` and `POLICAI_SIGNAL_GITHUB_TOKEN` from
