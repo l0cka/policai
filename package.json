@@ -9,7 +9,7 @@
     "dev": "next dev",
     "build": "node scripts/bundle-data.mjs && next build",
     "build:cloudflare": "opennextjs-cloudflare build",
-    "preview:cloudflare": "opennextjs-cloudflare build && wrangler dev",
+    "preview:cloudflare": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
