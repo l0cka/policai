@@ -8,13 +8,6 @@
     "lastRunSources": [
       "pm-media",
       "pmc-office-ai",
-      "industry-ai-publications",
-      "industry-ministers-media",
-      "dta-media",
-      "digital-gov-ai",
-      "disr-news",
-      "agd-ministers-media",
-      "apsc-latest-news",
       "senate-new-inquiries",
       "senate-reports",
       "house-new-inquiries",
@@ -22,7 +15,6 @@
       "legislation-whats-new",
       "oaic-media",
       "apra-rss",
-      "acma-media",
       "ahrc-media",
       "sa-courts-news",
       "nsw-gazette-recent",
@@ -39,13 +31,13 @@
     ],
     "lastRunErrors": [],
     "health": "healthy",
-    "dueSourceCount": 30,
-    "successfulSourceCount": 30,
+    "dueSourceCount": 22,
+    "successfulSourceCount": 22,
     "failedSourceCount": 0,
     "skippedSourceCount": 41,
     "successRate": 1,
     "automaticSourceCount": 73,
-    "manualSourceCount": 11,
+    "manualSourceCount": 19,
     "sourceResults": [
       {
         "sourceId": "pm-media",
@@ -68,61 +60,6 @@
         "newCandidateCount": 0
       },
       {
-        "sourceId": "industry-ai-publications",
-        "status": "success",
-        "coverageEligible": true,
-        "checkedAt": "2026-10-17T19:33:37.076Z",
-        "durationMs": 4179,
-        "itemCount": 10,
-        "candidateCount": 5,
-        "newCandidateCount": 0,
-        "identityException": "active"
-      },
-      {
-        "sourceId": "industry-ministers-media",
-        "status": "success",
-        "coverageEligible": true,
-        "checkedAt": "2026-10-17T19:33:37.076Z",
-        "durationMs": 298,
-        "itemCount": 10,
-        "candidateCount": 0,
-        "newCandidateCount": 0,
-        "identityException": "active"
-      },
-      {
-        "sourceId": "dta-media",
-        "status": "success",
-        "coverageEligible": true,
-        "checkedAt": "2026-10-17T19:33:37.076Z",
-        "durationMs": 584,
-        "itemCount": 7,
-        "candidateCount": 1,
-        "newCandidateCount": 0,
-        "identityException": "active"
-      },
-      {
-        "sourceId": "digital-gov-ai",
-        "status": "success",
-        "coverageEligible": true,
-        "checkedAt": "2026-10-17T19:33:37.076Z",
-        "durationMs": 3961,
-        "itemCount": 1,
-        "candidateCount": 1,
-        "newCandidateCount": 0,
-        "identityException": "active"
-      },
-      {
-        "sourceId": "disr-news",
-        "status": "success",
-        "coverageEligible": true,
-        "checkedAt": "2026-10-17T19:33:37.076Z",
-        "durationMs": 2363,
-        "itemCount": 12,
-        "candidateCount": 1,
-        "newCandidateCount": 0,
-        "identityException": "active"
-      },
-      {
         "sourceId": "naic-news",
         "status": "skipped",
         "coverageEligible": false,
@@ -143,17 +80,6 @@
         "newCandidateCount": 0
       },
       {
-        "sourceId": "agd-ministers-media",
-        "status": "success",
-        "coverageEligible": true,
-        "checkedAt": "2026-10-17T19:33:37.076Z",
-        "durationMs": 2337,
-        "itemCount": 11,
-        "candidateCount": 0,
-        "newCandidateCount": 0,
-        "identityException": "active"
-      },
-      {
         "sourceId": "treasury-publications",
         "status": "skipped",
         "coverageEligible": false,
@@ -172,17 +98,6 @@
         "itemCount": null,
         "candidateCount": 0,
         "newCandidateCount": 0
-      },
-      {
-        "sourceId": "apsc-latest-news",
-        "status": "success",
-        "coverageEligible": true,
-        "checkedAt": "2026-10-17T19:33:37.076Z",
-        "durationMs": 2567,
-        "itemCount": 30,
-        "candidateCount": 0,
-        "newCandidateCount": 0,
-        "identityException": "active"
       },
       {
         "sourceId": "anao-performance-audits",
@@ -323,17 +238,6 @@
         "itemCount": null,
         "candidateCount": 0,
         "newCandidateCount": 0
-      },
-      {
-        "sourceId": "acma-media",
-        "status": "success",
-        "coverageEligible": true,
-        "checkedAt": "2026-10-17T19:33:37.076Z",
-        "durationMs": 8279,
-        "itemCount": 10,
-        "candidateCount": 0,
-        "newCandidateCount": 0,
-        "identityException": "active"
       },
       {
         "sourceId": "tga-media",

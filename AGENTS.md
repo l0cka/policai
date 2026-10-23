@@ -54,7 +54,7 @@ Policai is an Australian AI policy tracker. It maintains a curated register of A
 - **Testing:** Vitest (+ Testing Library)
 - **Automation:** a daily scheduled run on the maintainer's server
 
-**Collector identity:** The collector identifies itself as `Policai/1.0 (+https://policai.org)` on every retrieval path. A refusal of that identity is a block we respect: the source moves to manual tracking. Time-boxed exception: 16 Commonwealth sources keep a plain browser UA until 2026-10-21 while an allow-list request is pending (E24).
+**Collector identity:** The collector identifies itself as `Policai/1.0 (+https://policai.org)` on every retrieval path. A refusal of that identity is a block we respect: the source moves to manual tracking. No source carries an identity exception; the E24 exception for 16 Commonwealth sources expired at 2026-10-21 00:00 AEDT (#162), and granting a new one needs Daniel's approval.
 
 ## Commands
 

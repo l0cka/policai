@@ -15,26 +15,6 @@ const STATE_LEGISLATION_SOURCES: Record<string, string> = {
   'wa-legislation-as-passed': 'wa',
 };
 
-// Pinned from the 2026-10-06 honest-UA audit; Daniel's E24 decision allows
-// no other source to opt out of the declared identity.
-const E24_IDENTITY_EXCEPTION_IDS = [
-  'industry-ai-publications',
-  'industry-ministers-media',
-  'dta-media',
-  'digital-gov-ai',
-  'disr-news',
-  'naic-news',
-  'finance-news',
-  'agd-ministers-media',
-  'apsc-latest-news',
-  'anao-performance-audits',
-  'acma-media',
-  'tga-media',
-  'teqsa-news',
-  'fcfcoa-practice-directions',
-  'art-practice-directions',
-] as const;
-
 const REGISTER_POLICIES = JSON.parse(
   readFileSync(join(process.cwd(), 'data', 'policies.json'), 'utf8'),
 ) as Policy[];
@@ -122,8 +102,15 @@ describe('WATCH_SOURCES', () => {
 
   it('derives refused hosts from identity_refused decisions only', () => {
     expect(Object.fromEntries(refusedHosts(WATCH_SOURCES))).toEqual({
+      'www.industry.gov.au': 'industry-ai-publications',
+      'www.minister.industry.gov.au': 'industry-ministers-media',
+      'www.dta.gov.au': 'dta-media',
+      'www.digital.gov.au': 'digital-gov-ai',
+      'ministers.ag.gov.au': 'agd-ministers-media',
       'www.cyber.gov.au': 'cyber-news',
+      'www.apsc.gov.au': 'apsc-latest-news',
       'www.accc.gov.au': 'accc-rss',
+      'www.acma.gov.au': 'acma-media',
       'www.esafety.gov.au': 'esafety-media',
     });
   });
@@ -138,16 +125,9 @@ describe('WATCH_SOURCES', () => {
     expect(refusedHosts([broken]).size).toBe(0);
   });
 
-  it('grants the time-boxed E24 identity exception to the 15 refusing sources still automatic', () => {
-    const exempt = WATCH_SOURCES.filter((source) => source.identityException);
-    expect(exempt.map((source) => source.id).sort()).toEqual(
-      [...E24_IDENTITY_EXCEPTION_IDS].sort(),
-    );
-    for (const source of exempt) {
-      expect(source.identityException?.until, source.id).toBe('2026-10-21');
-      expect(source.identityException?.reason, source.id).toMatch(/E24/);
-      expect(source.fetchStrategy, source.id).toBe('browser');
-      expect(source.automation, source.id).toBe('automatic');
-    }
+  it('lets no source retrieve without the declared identity', () => {
+    expect(
+      WATCH_SOURCES.filter((source) => source.identityException).map((source) => source.id),
+    ).toEqual([]);
   });
 });

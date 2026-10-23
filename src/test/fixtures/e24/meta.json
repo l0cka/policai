@@ -1,0 +1,29 @@
+{
+  "lastCollectedAt": "2026-10-20T19:31:00.000Z",
+  "lastHealthyAt": "2026-10-06T19:30:00.000Z",
+  "lastReviewedAt": null,
+  "collector": {
+    "runCount": 120,
+    "lastRunSources": ["industry-ai-publications", "dta-media", "digital-gov-ai", "disr-news", "naic-news", "wa-ai-policy", "accc-rss", "oaic-media"],
+    "lastRunErrors": [],
+    "health": "failed",
+    "dueSourceCount": 8,
+    "successfulSourceCount": 2,
+    "failedSourceCount": 6,
+    "skippedSourceCount": 1,
+    "successRate": 0.25,
+    "automaticSourceCount": 75,
+    "manualSourceCount": 3,
+    "sourceResults": [
+      { "sourceId": "industry-ai-publications", "status": "error", "coverageEligible": true, "checkedAt": "2026-10-20T19:31:00.000Z", "durationMs": 900, "itemCount": null, "candidateCount": 0, "newCandidateCount": 0, "error": "industry-ai-publications: page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.industry.gov.au/publications?pub-topic=2963\nCall log:\n  - navigating to \"https://www.industry.gov.au/publications?pub-topic=2963\", waiting until \"load\"\n", "identityException": "expired" },
+      { "sourceId": "dta-media", "status": "error", "coverageEligible": true, "checkedAt": "2026-10-20T19:31:00.000Z", "durationMs": 400, "itemCount": null, "candidateCount": 0, "newCandidateCount": 0, "error": "dta-media: HTTP 403", "identityException": "expired" },
+      { "sourceId": "digital-gov-ai", "status": "success", "coverageEligible": true, "checkedAt": "2026-10-20T19:31:00.000Z", "durationMs": 4000, "itemCount": 1, "candidateCount": 1, "newCandidateCount": 0, "identityException": "expired" },
+      { "sourceId": "disr-news", "status": "error", "coverageEligible": true, "checkedAt": "2026-10-20T19:31:00.000Z", "durationMs": 3000, "itemCount": 12, "candidateCount": 1, "newCandidateCount": 1, "error": "disr-news: 1 candidate retrieval failure", "identityException": "expired" },
+      { "sourceId": "naic-news", "status": "error", "coverageEligible": true, "checkedAt": "2026-10-20T19:31:00.000Z", "durationMs": 60000, "itemCount": null, "candidateCount": 0, "newCandidateCount": 0, "error": "naic-news: Timed out after 60000ms", "identityException": "expired" },
+      { "sourceId": "finance-news", "status": "skipped", "coverageEligible": false, "checkedAt": "2026-10-20T19:31:00.000Z", "durationMs": 0, "itemCount": null, "candidateCount": 0, "newCandidateCount": 0 },
+      { "sourceId": "wa-ai-policy", "status": "error", "coverageEligible": true, "checkedAt": "2026-10-20T19:31:00.000Z", "durationMs": 6800, "itemCount": null, "candidateCount": 0, "newCandidateCount": 0, "error": "wa-ai-policy: page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.finance.gov.au/sites/default/files/2024-06/National-framework-for-the-assurance-of-AI-in-government.pdf\nCall log:\n" },
+      { "sourceId": "accc-rss", "status": "error", "coverageEligible": true, "checkedAt": "2026-10-20T19:31:00.000Z", "durationMs": 5700, "itemCount": null, "candidateCount": 0, "newCandidateCount": 0, "error": "accc-rss: HTTP 403" },
+      { "sourceId": "oaic-media", "status": "error", "coverageEligible": true, "checkedAt": "2026-10-20T19:31:00.000Z", "durationMs": 20000, "itemCount": null, "candidateCount": 0, "newCandidateCount": 0, "error": "oaic-media: Timed out after 20000ms" }
+    ]
+  }
+}

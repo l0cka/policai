@@ -405,15 +405,18 @@ fetch after idle takes longer (around 17.5 seconds observed) than a warm one.
 
 The collector identifies itself as `Policai/1.0 (+https://policai.org)`
 on every retrieval path. A refusal of that identity is a block we respect: the
-source moves to manual tracking. Time-boxed exception: 16 Commonwealth
-sources keep a plain browser UA until 2026-10-21 while an allow-list request
-is pending (E24).
+source moves to manual tracking. No source carries an identity exception.
+The E24 exception, which let 16 Commonwealth sources present a plain browser
+UA while an allow-list request was pending, expired at 2026-10-21 00:00 AEDT
+and was removed after the first collection run on or after that date (#162).
+`npm run report:e24` lists what a run did with those 16 sources
+([scripts/README.md](../scripts/README.md#e24-reportts)).
 
 How each path presents it (`src/lib/pipeline/identity.ts` holds the token):
 
 - Plain HTTP (Node fetch and the HTTP/1.1 fallback):
   `Mozilla/5.0 (compatible; Policai/1.0 (+https://policai.org))`, for every
-  source, including the exempt ones. Format change: before E24 this string
+  source, including one with an exception. Format change: before E24 this string
   was `Mozilla/5.0 (compatible; Policai/1.0; +https://policai.org)`, so
   server-log or WAF rules that match the old string exactly need updating;
   rules that match `Policai/1.0` still match.
@@ -428,11 +431,11 @@ How each path presents it (`src/lib/pipeline/identity.ts` holds the token):
   browser-context level. Custom request headers disable Firecrawl's URL-index
   cache reads and writes; this is not a guarantee about every upstream cache.
 
-The exception is the optional `identityException: { until, reason }` field on
-a `WatchSource`, set only on the 16 sources listed in the E24 comment in
-`src/lib/pipeline/sources.ts` (pinned by `sources.test.ts`). It expires at the
-START of `until` in Australia/Sydney: for E24, 2026-10-21 00:00 AEDT,
-which is 2026-10-20T13:00:00.000Z. There is no exception on 21 October.
+The exception mechanism remains for a future decision: the optional
+`identityException: { until, reason }` field on a `WatchSource`. Granting one
+needs Daniel's approval; `sources.test.ts` fails while any source carries the
+field. It expires at the START of `until` in Australia/Sydney (for an `until`
+of 2026-10-21, at 2026-10-20T13:00:00.000Z).
 
 Retrieval carries the registered source ID, exact listing URL and expiry,
 not a transferable exempt flag. Before each request the authority is checked
@@ -469,8 +472,8 @@ requests. A refusal is reported as an ordinary source failure.
 exception, so expiry remains visible without failing CI.
 `npm run audit:sources` carries the same source-bound authority to retrieval
 and tags each exception source's line with
-`[identity exception active until 2026-10-21]` (exclusive, Sydney) or
-`[identity exception expired on 2026-10-21]` (`identityException` and
+`[identity exception active until <until>]` (exclusive, Sydney) or
+`[identity exception expired on <until>]` (`identityException` and
 `identityNote` in `--json`). Source retirement is a separate editorial approval:
 remove the exception after allow-listing, or move a still-refusing source to
 manual tracking. The collector never automatically changes canonical source

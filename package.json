@@ -19,6 +19,7 @@
     "validate:data": "tsx scripts/validate-data.ts",
     "add:article-image": "tsx scripts/add-article-image.ts",
     "check:freshness": "tsx scripts/check-freshness.ts",
+    "report:e24": "tsx scripts/e24-report.ts",
     "report:watch-coverage": "tsx scripts/report-watch-coverage.ts",
     "discover:sources": "tsx scripts/discover-sources.ts",
     "survey:site-reuse": "tsx scripts/survey-site-reuse.ts",
