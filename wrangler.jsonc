@@ -8,7 +8,11 @@
 		"directory": ".open-next/assets",
 		"binding": "ASSETS"
 	},
-	// No routes: a deploy only reaches policai.<account>.workers.dev until
-	// policai.org is pointed at the Worker.
+	// policai.org serves from this Worker. The tunnel CNAMEs stay in the zone
+	// as the rollback: delete these routes and the tunnel answers again.
+	"routes": [
+		{ "pattern": "policai.org/*", "zone_name": "policai.org" },
+		{ "pattern": "www.policai.org/*", "zone_name": "policai.org" }
+	],
 	"workers_dev": true
 }

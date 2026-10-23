@@ -1,8 +1,8 @@
 name: Cloudflare deploy
 
 # Builds the site for Workers and deploys it from a GitHub-hosted runner, so
-# the deploy token never sits on Argus. The Worker answers only on
-# workers.dev until wrangler.jsonc routes policai.org to it.
+# the deploy token never sits on Argus. wrangler.jsonc routes policai.org
+# to the Worker.
 #
 # PRs merged by auto-merge land through GITHUB_TOKEN, and GitHub starts no
 # workflow for a push made that way. So a five-minute schedule also checks

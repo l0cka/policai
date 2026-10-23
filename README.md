@@ -50,7 +50,7 @@ High-confidence detections are staged in `data/source-reviews.json`; a reviewer 
 - Next.js 16 App Router, React 19, TypeScript 5 (strict)
 - Tailwind CSS 4, shadcn/ui on Radix UI, D3.js
 - Cheerio for scraping; keyword heuristic or Claude (Anthropic) for relevance classification
-- Vitest; daily scheduled collection on the maintainer's server; self-hosted behind a Cloudflare tunnel
+- Vitest; daily scheduled collection on the maintainer's server; site served from Cloudflare Workers
 
 ## Quick Start
 
@@ -132,7 +132,7 @@ filters, response formats, and MCP tools.
 
 ## Deployment
 
-The site is self-hosted at [policai.org](https://policai.org), served by `next start` behind a Cloudflare tunnel. The host pulls `main` on a timer: a guarded dispatcher routes each change by path: data-only commits are served through ISR with no rebuild, and code changes rebuild the affected app. See [docs/hosting-argus.md](./docs/hosting-argus.md). The collector runs on the same host, in a separate checkout on a daily schedule, and pushes its commits to the same repository. It retrieves browser-only candidate pages through a self-hosted Firecrawl instance and, in production, classifies candidates with Claude through the Claude Code CLI already installed on the host. See [docs/collector.md](./docs/collector.md).
+[policai.org](https://policai.org) is served from Cloudflare Workers through OpenNext. Data is bundled into the Worker at build time, so every commit to `main`, data included, redeploys it from a GitHub-hosted runner. See [docs/hosting-argus.md](./docs/hosting-argus.md). The collector runs on the same host, in a separate checkout on a daily schedule, and pushes its commits to the same repository. It retrieves browser-only candidate pages through a self-hosted Firecrawl instance and, in production, classifies candidates with Claude through the Claude Code CLI already installed on the host. See [docs/collector.md](./docs/collector.md).
 
 ## Contributing
 
