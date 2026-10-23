@@ -104,15 +104,19 @@ export async function clefUnavailableReason(
 ): Promise<string | null> {
   const fetchImpl = deps.fetchImpl ?? fetch;
   try {
-    const free = await (deps.freeVramMb ?? nvidiaFreeVramMb)();
-    if (free < MIN_FREE_VRAM_MB) {
-      return `free VRAM ${free} MB is below ${MIN_FREE_VRAM_MB} MB`;
+    const isClef = (model: { name: string }) =>
+      [CLEF_MODEL, `${CLEF_MODEL}:latest`].includes(model.name);
+    // A clef-flash already loaded from an earlier call holds the VRAM this
+    // check looks for, so it would read as a busy GPU.
+    const loaded = tagsSchema.parse(await getJson(fetchImpl, '/api/ps'));
+    if (!loaded.models.some(isClef)) {
+      const free = await (deps.freeVramMb ?? nvidiaFreeVramMb)();
+      if (free < MIN_FREE_VRAM_MB) {
+        return `free VRAM ${free} MB is below ${MIN_FREE_VRAM_MB} MB`;
+      }
     }
     const tags = tagsSchema.parse(await getJson(fetchImpl, '/api/tags'));
-    const installed = tags.models.some((model) =>
-      [CLEF_MODEL, `${CLEF_MODEL}:latest`].includes(model.name),
-    );
-    if (!installed) return `${CLEF_MODEL} is not installed`;
+    if (!tags.models.some(isClef)) return `${CLEF_MODEL} is not installed`;
     // Listed is not the same as loadable: an Ollama upgrade can leave a model
     // on disk in a format it no longer reads. One real question proves it.
     await askClef(fetchImpl, {
