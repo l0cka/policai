@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { DevelopmentsBrowser } from '@/components/developments-browser';
 import { getDevelopments } from '@/lib/data-service';
+import { toDevelopmentRow } from '@/lib/development-row';
 import { getDevelopmentStream } from '@/lib/development-streams';
 import { WATCH_SOURCES } from '@/lib/pipeline/sources';
 import { pageAlternates, pageSocialMeta } from '@/lib/site-seo';
@@ -34,7 +35,7 @@ export default async function DevelopmentsPage() {
 
   return (
     <DevelopmentsBrowser
-      developments={visible}
+      developments={visible.map(toDevelopmentRow)}
       streamById={streamById}
     />
   );
