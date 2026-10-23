@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import type { SourceRunResult } from '@/types';
-import { advanceSourceHealth, sourcesNotReachedSince } from './source-health';
+import {
+  advanceSourceHealth,
+  manualMoveProposals,
+  manualProposalTitle,
+  proposalIssueChanges,
+  sourcesNotReachedSince,
+  type SourceHealthRecord,
+} from './source-health';
 
 const row = (overrides: Partial<SourceRunResult>): SourceRunResult => ({
   sourceId: 'a',
@@ -76,5 +83,34 @@ describe('sourcesNotReachedSince', () => {
 
   it('ignores sources outside the automatic inventory', () => {
     expect(sourcesNotReachedSince('2026-10-10T19:30:00.000Z', ledger, ['ok'])).toEqual([]);
+  });
+});
+
+describe('manual move proposals', () => {
+  const failing = (consecutiveFailures: number): SourceHealthRecord => ({
+    lastSuccessAt: '2026-10-01T00:00:00.000Z',
+    firstFailureAt: '2026-10-20T00:00:00.000Z',
+    consecutiveFailures,
+    lastFailureClass: 'identity_refused',
+  });
+  const ledger = { twice: failing(2), thrice: failing(3), moved: failing(9) };
+
+  it('proposes automatic sources that failed three runs in a row', () => {
+    expect(manualMoveProposals(ledger, ['twice', 'thrice']).map((p) => p.sourceId)).toEqual(['thrice']);
+  });
+
+  it('opens one issue per new proposal and closes issues whose source recovered or moved', () => {
+    const proposals = manualMoveProposals(ledger, ['thrice', 'fresh']);
+    const changes = proposalIssueChanges(
+      [...proposals, { ...proposals[0], sourceId: 'fresh' }],
+      [
+        { number: 1, title: manualProposalTitle('thrice') },
+        { number: 2, title: manualProposalTitle('thrice') },
+        { number: 3, title: manualProposalTitle('moved') },
+        { number: 4, title: 'Unrelated issue' },
+      ],
+    );
+    expect(changes.open.map((p) => p.sourceId)).toEqual(['fresh']);
+    expect(changes.close).toEqual([2, 3]);
   });
 });

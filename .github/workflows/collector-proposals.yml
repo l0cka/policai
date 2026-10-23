@@ -1,0 +1,48 @@
+name: Collector proposals
+
+# Keeps one open `collector-proposal` issue per automatic source that has
+# failed three collection runs in a row, and closes it once the source
+# succeeds again or leaves the automatic catalogue. It only proposes: a person
+# decides on a decision card, and the move to manual is a reviewed code change.
+# Runs when a collection merge updates the source-health ledger.
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - data/watch-state.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: collector-proposals
+
+jobs:
+  proposals:
+    name: collector proposals
+    runs-on: [self-hosted, linux, argus]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Sync proposal issues
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -o pipefail
+          npm run collector:proposals -- --sync-issues | tee "$GITHUB_STEP_SUMMARY"
