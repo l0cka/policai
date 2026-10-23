@@ -2,8 +2,8 @@ import { expect, it, vi } from 'vitest';
 import type { Development } from '@/types';
 
 const feed = [
-  { id: 'dev-live', status: 'detected', jurisdiction: 'federal', title: 'Live', sourceId: 's' },
-  { id: 'dev-gone', status: 'dismissed', jurisdiction: 'federal', title: 'Gone', sourceId: 's' },
+  { id: 'dev-live', status: 'detected', jurisdiction: 'federal', title: 'Live', sourceId: 's', verification: { status: 'verified' } },
+  { id: 'dev-gone', status: 'dismissed', jurisdiction: 'federal', title: 'Gone', sourceId: 's', verification: { status: 'verified' } },
 ] as Development[];
 
 vi.mock('@/lib/data-service', () => ({

@@ -13,11 +13,8 @@ import {
 } from 'lucide-react';
 import { jurisdictionRailStyle } from '@/lib/jurisdiction-accent';
 import { formatPolicyDate } from '@/lib/format-policy-date';
-import {
-  JURISDICTION_NAMES,
-  getJurisdictionName,
-  type Development,
-} from '@/types';
+import { JURISDICTION_NAMES, getJurisdictionName } from '@/types';
+import type { DevelopmentRow } from '@/lib/development-row';
 import { cn } from '@/lib/utils';
 import {
   DEVELOPMENT_STREAMS,
@@ -27,7 +24,7 @@ import {
 import { auDate } from '@/lib/au-date';
 
 interface DevelopmentsBrowserProps {
-  developments: Development[];
+  developments: DevelopmentRow[];
   /** Reader stream per development id, derived on the server. */
   streamById: Record<string, DevelopmentStream>;
 }
@@ -41,7 +38,7 @@ function formatDate(value: string): string {
   });
 }
 
-function developmentDate(development: Development): string {
+function developmentDate(development: DevelopmentRow): string {
   if (!development.publishedAt) return formatDate(development.detectedAt);
   return formatPolicyDate(
     {
@@ -53,12 +50,12 @@ function developmentDate(development: Development): string {
   );
 }
 
-function developmentStamp(development: Development): number {
+function developmentStamp(development: DevelopmentRow): number {
   return new Date(development.publishedAt || development.detectedAt).getTime();
 }
 
 /** YYYYMM in Australia/Sydney so month order matches monthKey grouping. */
-function sydneyMonthRank(development: Development): number {
+function sydneyMonthRank(development: DevelopmentRow): number {
   const label = new Date(development.publishedAt || development.detectedAt).toLocaleDateString(
     'en-CA',
     { year: 'numeric', month: '2-digit', timeZone: 'Australia/Sydney' },
@@ -66,7 +63,7 @@ function sydneyMonthRank(development: Development): number {
   return Number(label.replace('-', ''));
 }
 
-function monthKey(development: Development): string {
+function monthKey(development: DevelopmentRow): string {
   return auDate(new Date(development.publishedAt || development.detectedAt), { month: 'long', year: 'numeric', timeZone: 'Australia/Sydney' })
     .toUpperCase();
 }
@@ -76,7 +73,7 @@ function monthKey(development: Development): string {
  * relevance within the month, then recency. Global relevance-first would let an
  * older high-score month float above a newer one via Map insertion order.
  */
-function compareRadarDevelopments(a: Development, b: Development): number {
+function compareRadarDevelopments(a: DevelopmentRow, b: DevelopmentRow): number {
   return (
     sydneyMonthRank(b) - sydneyMonthRank(a) ||
     b.relevanceScore - a.relevanceScore ||
@@ -84,7 +81,7 @@ function compareRadarDevelopments(a: Development, b: Development): number {
   );
 }
 
-function eventType(development: Development): string {
+function eventType(development: DevelopmentRow): string {
   const title = development.title.toLowerCase();
   if (title.includes('consult')) return 'Consultation';
   if (title.includes('release') || title.includes('publish')) return 'New';
@@ -96,10 +93,10 @@ function DevelopmentFeed({
   items,
   onReset,
 }: {
-  items: Development[];
+  items: DevelopmentRow[];
   onReset?: () => void;
 }) {
-  const grouped = new Map<string, Development[]>();
+  const grouped = new Map<string, DevelopmentRow[]>();
   for (const development of items) {
     const key = monthKey(development);
     grouped.set(key, [...(grouped.get(key) ?? []), development]);
@@ -137,30 +134,30 @@ function DevelopmentFeed({
                   key={development.id}
                   id={development.id}
                   style={jurisdictionRailStyle(development.jurisdiction)}
-                  className="ink-rail scroll-mt-20 grid gap-1.5 border-b border-border py-3 pl-3 transition-colors duration-[var(--dur-fast)] hover:bg-[var(--row-hover)] sm:grid-cols-[6.5rem_7rem_minmax(0,1fr)] sm:gap-2 sm:py-4 lg:grid-cols-[6.5rem_7rem_minmax(0,1fr)_9rem_10rem]"
+                  className="ink-rail scroll-mt-20 grid gap-1.5 border-b border-border py-3 pl-3 transition-colors duration-[var(--dur-fast)] hover:bg-[var(--row-hover)] sm:py-4 lg:grid-cols-[minmax(0,1fr)_9rem_10rem] lg:gap-x-4"
                 >
-                  <time className="text-xs font-medium text-muted-foreground tabular">{developmentDate(development)}</time>
-                  <div className="flex flex-wrap items-center gap-2 sm:block">
-                    <span className={cn('inline-flex rounded-md px-2 py-1 font-mono text-[11px] uppercase tracking-[0.08em]', label === 'Consultation' || !verified ? 'bg-[var(--status-proposed-bg)] text-[var(--status-proposed)]' : 'bg-[var(--status-active-bg)] text-[var(--trust)]')}>
-                      {label}
-                    </span>
-                    <span className={cn('inline-flex items-center gap-1 text-xs lg:hidden', verified ? 'text-[var(--trust)]' : 'text-[var(--caution)]')}>
-                      {verified ? <CheckCircle2 className="h-3 w-3" fill="currentColor" /> : <CircleAlert className="h-3 w-3" />}
-                      {verified ? 'Verified' : 'Needs review'}
-                    </span>
-                  </div>
                   <div className="min-w-0">
                     <a href={development.url} target="_blank" rel="noopener noreferrer" className="group inline-flex items-start gap-1.5 record-title hover:text-primary">
                       {development.title}
                       <ArrowUpRight className="mt-0.5 h-3.5 w-3.5 shrink-0 opacity-50 group-hover:opacity-100" />
                     </a>
                     {development.summary ? <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">{development.summary}</p> : null}
+                    <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
+                      <time className="text-xs font-medium text-muted-foreground tabular">{developmentDate(development)}</time>
+                      <span className={cn('inline-flex rounded-md px-2 py-0.5 font-mono text-[11px] uppercase tracking-[0.08em]', label === 'Consultation' || !verified ? 'bg-[var(--status-proposed-bg)] text-[var(--status-proposed)]' : 'bg-[var(--status-active-bg)] text-[var(--trust)]')}>
+                        {label}
+                      </span>
+                      <span className={cn('inline-flex items-center gap-1 text-xs lg:hidden', verified ? 'text-[var(--trust)]' : 'text-[var(--caution)]')}>
+                        {verified ? <CheckCircle2 className="h-3 w-3" fill="currentColor" /> : <CircleAlert className="h-3 w-3" />}
+                        {verified ? 'Verified' : 'Needs review'}
+                      </span>
+                    </div>
                     <p className="mt-1.5 text-xs text-muted-foreground lg:hidden">
                       {getJurisdictionName(development.jurisdiction)} · {development.sourceName}
                       {development.relatedPolicyId ? (
                         <>
                           {' · '}
-                          <Link href={`/policies/${development.relatedPolicyId}`} className="text-primary hover:underline">
+                          <Link href={`/policies/${development.relatedPolicyId}`} className="text-primary underline underline-offset-2 hover:no-underline">
                             In the register
                           </Link>
                         </>
@@ -175,7 +172,7 @@ function DevelopmentFeed({
                       {verified ? 'Verified' : 'Needs review'}
                     </p>
                     {development.relatedPolicyId ? (
-                      <Link href={`/policies/${development.relatedPolicyId}`} className="mt-1 inline-flex items-center gap-1 text-xs text-primary hover:underline">In the register <ArrowRight className="h-3 w-3" /></Link>
+                      <Link href={`/policies/${development.relatedPolicyId}`} className="mt-1 inline-flex items-center gap-1 text-xs text-primary underline underline-offset-2 hover:no-underline">In the register <ArrowRight className="h-3 w-3" /></Link>
                     ) : null}
                   </div>
                 </article>

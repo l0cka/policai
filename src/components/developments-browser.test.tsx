@@ -208,3 +208,12 @@ it('leaves the feed alone for an unknown hash', async () => {
   expect(scroll).not.toHaveBeenCalled();
   expect(document.getElementById('dev-missing')).toBeNull();
 });
+
+it('puts the title before the date and type in each row', () => {
+  renderBrowser([development('dev-order-1', 'Order item')]);
+
+  const row = screen.getByText('Order item').closest('article')!;
+  const title = screen.getByRole('link', { name: /Order item/ });
+  const date = row.querySelector('time')!;
+  expect(title.compareDocumentPosition(date) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+});
