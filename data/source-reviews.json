@@ -1,5 +1,1067 @@
 [
   {
+    "id": "source-review-dev-rapid-review-into-australian-government-arrangem-1lc8cyp",
+    "sourceUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+    "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
+    "entryKind": "policy",
+    "targetPolicyId": "pmc-rapid-review-ai-driven-cyber-incident-2026",
+    "targetPolicyBaseRevisionHash": "e7bb5e4cea839eabc72bec6bf760ec5c3b950026b1554e1a684f5f17687cbcf6",
+    "status": "pending_review",
+    "discoveredAt": "2026-10-23T03:06:54.019Z",
+    "createdBy": "collector",
+    "notes": "The verified register record for \"Rapid review into Australian Government arrangements for an AI-driven cyber incident\" has no stored source fingerprint. The currently served document requires editorial comparison before it can establish a trusted baseline. Re-verify the existing register record before restoring it to public reads. Detected by PM&C — Rapid review into AI-driven cyber incident arrangements (heuristic assessment).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": "policy",
+      "suggestedJurisdiction": "federal",
+      "summary": "The verified register record for \"Rapid review into Australian Government arrangements for an AI-driven cyber incident\" has no stored source fingerprint. The currently served document requires editorial comparison before it can establish a trusted baseline.",
+      "tags": [
+        "rapid review",
+        "PM&C",
+        "cyber security",
+        "AI incident reporting",
+        "terms of reference",
+        "OpenAI",
+        "Medicare portal"
+      ],
+      "agencies": [
+        "Department of the Prime Minister and Cabinet",
+        "National Cyber Security Coordinator",
+        "Australian Signals Directorate",
+        "Australian AI Safety Institute",
+        "Services Australia"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+      "finalUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+      "retrievedAt": "2026-10-23T03:06:54.019Z",
+      "contentType": "text/html",
+      "contentHash": "5b7468b8c7812ea1616ff48f6183541408fdd92d8dd4edfbf8a6eb171fe0eb1b",
+      "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident"
+    },
+    "proposedRecord": {
+      "id": "pmc-rapid-review-ai-driven-cyber-incident-2026",
+      "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
+      "description": "PM&C-led rapid review, announced with formal terms of reference on 24 September 2026, of whether Australia's legislative, governance and information-sharing arrangements are fit for purpose for cyber incidents involving AI.",
+      "jurisdiction": "federal",
+      "type": "policy",
+      "status": "proposed",
+      "effectiveDate": "2026-09-24",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-09-24",
+          "precision": "day",
+          "primary": true
+        }
+      ],
+      "agencies": [
+        "Department of the Prime Minister and Cabinet",
+        "National Cyber Security Coordinator",
+        "Australian Signals Directorate",
+        "Australian AI Safety Institute",
+        "Services Australia"
+      ],
+      "sourceUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+      "content": "On 24 September 2026 the Prime Minister announced a Department of the Prime Minister and Cabinet (PM&C)-led rapid review of whether existing legislative, governance and information-sharing arrangements are fit for purpose to prepare for and respond to cyber incidents involving artificial intelligence. PM&C published formal terms of reference the same day (https://www.pmc.gov.au/resources/terms-reference-rapid-review-australian-government-arrangements-ai-driven-cyber-incident; release date Thursday 24 September 2026). The review page states that PM&C leads the review in collaboration with the National Cyber Security Coordinator, the Australian Signals Directorate, the Australian AI Safety Institute and Services Australia. Per the terms of reference, recommendations scope covers: reporting requirements relating to AI-driven cyber incidents, AI-identified cyber vulnerabilities and cyber-related AI safety incidents (including obligations, thresholds, pathways and systems); Commonwealth governance and information-sharing arrangements for managing incidents involving AI (including roles, responsibilities and escalation pathways); engagement and information-sharing obligations of AI firms (including notification requirements and cooperation arrangements during incidents); the adequacy of existing system and legislative, regulatory and enforcement frameworks in deterring AI-driven cyber incidents (including whether current offences, liabilities, penalties and enforcement mechanisms are sufficient and effective); and mechanisms to strengthen networks and systems of government departments and agencies against AI vulnerabilities. PM&C states the review will also inform Australia's AI Standards and international work on safety incident reporting. The Prime Minister's disclosure of the underlying OpenAI / Medicare statistics portal incident is recorded separately as timeline event tl-2026-09-24-pm-discloses-openai-medicare-portal-access. This record is the government rapid review with published terms of reference; it is not a completed instrument and it is not OpenAI's later company taskforce.",
+      "aiSummary": "PM&C-led rapid review announced 24 September 2026 with published terms of reference on whether legislative, governance and information-sharing arrangements are fit for AI-driven cyber incidents; recommendations to inform Australia's AI Standards.",
+      "tags": [
+        "rapid review",
+        "PM&C",
+        "cyber security",
+        "AI incident reporting",
+        "terms of reference",
+        "OpenAI",
+        "Medicare portal"
+      ],
+      "themes": [
+        "cyber-security",
+        "ai-governance",
+        "risk-assurance",
+        "standards",
+        "agentic-ai"
+      ],
+      "createdAt": "2026-10-20T05:20:00.000Z",
+      "updatedAt": "2026-10-23T03:06:54.019Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-rapid-review-into-australian-government-arrangem-1lc8cyp",
+      "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
+      "url": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+      "sourceId": "pmc-rapid-review-ai-cyber",
+      "sourceName": "PM&C — Rapid review into AI-driven cyber incident arrangements",
+      "jurisdiction": "federal",
+      "detectedAt": "2026-10-23T03:06:54.019Z",
+      "summary": "The verified register record for \"Rapid review into Australian Government arrangements for an AI-driven cyber incident\" has no stored source fingerprint. The currently served document requires editorial comparison before it can establish a trusted baseline.",
+      "relevanceScore": 1,
+      "classification": "heuristic",
+      "assessment": {
+        "method": "heuristic",
+        "promptVersion": "source-hash-change-v1",
+        "assessedAt": "2026-10-23T03:06:54.019Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+          "finalUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+          "retrievedAt": "2026-10-23T03:06:54.019Z",
+          "contentType": "text/html",
+          "contentHash": "5b7468b8c7812ea1616ff48f6183541408fdd92d8dd4edfbf8a6eb171fe0eb1b",
+          "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident"
+        }
+      },
+      "status": "detected"
+    },
+    "sourceVersionSequence": 1,
+    "updatedAt": "2026-10-23T03:06:54.019Z"
+  },
+  {
+    "id": "source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-pjbk73",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+    "title": "Senate opens inquiry into artificial intelligence and data centres",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-05-13-senate-ai-data-centres-inquiry",
+    "targetTimelineRevisionHash": "4a298476cdc715dc2d28e5eb6e4ae504fdad8bf64958b7844173609ceeb69910",
+    "sourceVersionSequence": 12,
+    "status": "pending_review",
+    "discoveredAt": "2026-10-23T03:06:54.019Z",
+    "createdBy": "collector",
+    "notes": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current. Re-verify the existing timeline event before treating it as current. Detected by Senate inquiry — artificial intelligence and data centres (heuristic assessment).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+      "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+      "retrievedAt": "2026-10-23T03:06:54.019Z",
+      "contentType": "text/html",
+      "contentHash": "b42ef68b82b6e38a9ec910af5b9eb38baaf7602a9715e1afec39c3fbe9417a5a",
+      "title": "Senate opens inquiry into artificial intelligence and data centres"
+    },
+    "proposedRecord": {
+      "id": "tl-2026-05-13-senate-ai-data-centres-inquiry",
+      "date": "2026-05-13",
+      "datePrecision": "day",
+      "title": "Senate opens inquiry into artificial intelligence and data centres",
+      "description": "The Senate inquiry covers AI and data-centre regulation, government deals, and community, industry, energy, water and environmental impacts. Submissions closed on 1 September 2026. On 20 October 2026 the committee tabled a progress report moving its reporting date to 23 March 2027.",
+      "type": "announcement",
+      "jurisdiction": "federal",
+      "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P"
+    },
+    "linkedDevelopment": {
+      "id": "dev-senate-opens-inquiry-into-artificial-intelligenc-pjbk73",
+      "title": "Senate opens inquiry into artificial intelligence and data centres",
+      "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+      "sourceId": "senate-ai-data-centres",
+      "sourceName": "Senate inquiry — artificial intelligence and data centres",
+      "jurisdiction": "federal",
+      "detectedAt": "2026-10-23T03:06:54.019Z",
+      "summary": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+      "relevanceScore": 1,
+      "classification": "heuristic",
+      "assessment": {
+        "method": "heuristic",
+        "promptVersion": "source-hash-change-v1",
+        "assessedAt": "2026-10-23T03:06:54.019Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+          "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+          "retrievedAt": "2026-10-23T03:06:54.019Z",
+          "contentType": "text/html",
+          "contentHash": "b42ef68b82b6e38a9ec910af5b9eb38baaf7602a9715e1afec39c3fbe9417a5a",
+          "title": "Senate opens inquiry into artificial intelligence and data centres"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-10-23T03:06:54.019Z"
+  },
+  {
+    "id": "source-review-dev-asic-market-integrity-rules-futures-markets-amen-3keefd",
+    "sourceUrl": "https://www.legislation.gov.au/F2026L01224/asmade/details",
+    "title": "ASIC Market Integrity Rules (Futures Markets) Amendment Instrument 2026/575",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-10-23T03:06:54.019Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from Federal Register of Legislation — new AI instruments (score 0.55, heuristic).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.55,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "Federal Register full-text search for \"artificial intelligence\", \"machine learning\", \"generative AI\", \"automated decision\" matched this instrument as made (relevance 25.7).",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.legislation.gov.au/F2026L01224/asmade/details",
+      "finalUrl": "https://www.legislation.gov.au/F2026L01224/asmade/details",
+      "retrievedAt": "2026-10-23T03:06:54.019Z",
+      "contentType": "text/html",
+      "contentHash": "f95344cb7f1f3d4a09d91c3a0d20fa0dadd7c615057aadf54ddc4e9d6e7c86ff",
+      "etag": "W/\"ea1a-aj6aNwmdCNda2YYavg6t8cOG8wo\"",
+      "title": "ASIC Market Integrity Rules (Futures Markets) Amendment Instrument 2026/575",
+      "publishedAt": "2026-09-17",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "asic-market-integrity-rules-futures-markets-amendment-instru",
+      "title": "ASIC Market Integrity Rules (Futures Markets) Amendment Instrument 2026/575",
+      "description": "Federal Register full-text search for \"artificial intelligence\", \"machine learning\", \"generative AI\", \"automated decision\" matched this instrument as made (relevance 25.7).",
+      "jurisdiction": "federal",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2026-09-17",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-09-17",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.legislation.gov.au/F2026L01224/asmade/details",
+            "finalUrl": "https://www.legislation.gov.au/F2026L01224/asmade/details",
+            "retrievedAt": "2026-10-23T03:06:54.019Z",
+            "contentType": "text/html",
+            "contentHash": "f95344cb7f1f3d4a09d91c3a0d20fa0dadd7c615057aadf54ddc4e9d6e7c86ff",
+            "etag": "W/\"ea1a-aj6aNwmdCNda2YYavg6t8cOG8wo\"",
+            "title": "ASIC Market Integrity Rules (Futures Markets) Amendment Instrument 2026/575",
+            "publishedAt": "2026-09-17",
+            "publishedAtPrecision": "day"
+          }
+        }
+      ],
+      "agencies": [],
+      "sourceUrl": "https://www.legislation.gov.au/F2026L01224/asmade/details",
+      "content": "Text Details Authorises Downloads All versions Interactions ASIC Market Integrity Rules (Futures Markets) Amendment Instrument 2026/575 In force Administered by Department of the Treasury This item is authorised by the following title:Corporations Act 2001Latest versionOrder print copySave this title to My AccountSet up an alertF2026L0122417 September 2026DetailsTitle IDF2026L01224CollectionLegislative instrumentTypeAmending | As MadeRegistered17 September 2026Effective17 September 2026Any available explanatory material for this instrument can be found on the Downloads tabTo be repealedRepeale",
+      "aiSummary": "Federal Register full-text search for \"artificial intelligence\", \"machine learning\", \"generative AI\", \"automated decision\" matched this instrument as made (relevance 25.7).",
+      "tags": [],
+      "themes": [],
+      "createdAt": "2026-10-23T03:06:54.019Z",
+      "updatedAt": "2026-10-23T03:06:54.019Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-asic-market-integrity-rules-futures-markets-amen-3keefd",
+      "title": "ASIC Market Integrity Rules (Futures Markets) Amendment Instrument 2026/575",
+      "url": "https://www.legislation.gov.au/F2026L01224/asmade/details",
+      "sourceId": "legislation-whats-new",
+      "sourceName": "Federal Register of Legislation — new AI instruments",
+      "jurisdiction": "federal",
+      "publishedAt": "2026-09-17",
+      "publishedAtPrecision": "day",
+      "detectedAt": "2026-10-23T03:06:54.019Z",
+      "summary": "Federal Register full-text search for \"artificial intelligence\", \"machine learning\", \"generative AI\", \"automated decision\" matched this instrument as made (relevance 25.7).",
+      "relevanceScore": 0.55,
+      "classification": "heuristic",
+      "assessment": {
+        "method": "heuristic",
+        "promptVersion": "register-search-v1",
+        "assessedAt": "2026-10-23T03:06:54.019Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.legislation.gov.au/F2026L01224/asmade/details",
+          "finalUrl": "https://www.legislation.gov.au/F2026L01224/asmade/details",
+          "retrievedAt": "2026-10-23T03:06:54.019Z",
+          "contentType": "text/html",
+          "contentHash": "f95344cb7f1f3d4a09d91c3a0d20fa0dadd7c615057aadf54ddc4e9d6e7c86ff",
+          "etag": "W/\"ea1a-aj6aNwmdCNda2YYavg6t8cOG8wo\"",
+          "title": "ASIC Market Integrity Rules (Futures Markets) Amendment Instrument 2026/575",
+          "publishedAt": "2026-09-17",
+          "publishedAtPrecision": "day"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-10-23T03:06:54.019Z"
+  },
+  {
+    "id": "source-review-dev-health-insurance-accredited-pathology-laboratori-au4lkw",
+    "sourceUrl": "https://www.legislation.gov.au/F2026L00927/asmade/details",
+    "title": "Health Insurance (Accredited Pathology Laboratories—Approval) Amendment (Relevant Standards) Principles (No. 3) 2026",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-10-23T03:06:54.019Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from Federal Register of Legislation — new AI instruments (score 0.55, heuristic).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.55,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "Federal Register full-text search for \"artificial intelligence\", \"machine learning\", \"generative AI\", \"automated decision\" matched this instrument as made (relevance 20.6).",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.legislation.gov.au/F2026L00927/asmade/details",
+      "finalUrl": "https://www.legislation.gov.au/F2026L00927/asmade/details",
+      "retrievedAt": "2026-10-23T03:06:54.019Z",
+      "contentType": "text/html",
+      "contentHash": "51d4088679fcf755dbbe9fdc8ad8eeb17a9ee4e6cfbd4827b426ac99324bc421",
+      "etag": "W/\"e85a-bztwXXRS+/qSZbPNiAMdBUIIgYE\"",
+      "title": "Health Insurance (Accredited Pathology Laboratories—Approval) Amendment (Relevant Standards) Principles (No. 3) 2026",
+      "publishedAt": "2026-07-06",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "health-insurance-accredited-pathology-laboratories-approval-",
+      "title": "Health Insurance (Accredited Pathology Laboratories—Approval) Amendment (Relevant Standards) Principles (No. 3) 2026",
+      "description": "Federal Register full-text search for \"artificial intelligence\", \"machine learning\", \"generative AI\", \"automated decision\" matched this instrument as made (relevance 20.6).",
+      "jurisdiction": "federal",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2026-07-06",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-07-06",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.legislation.gov.au/F2026L00927/asmade/details",
+            "finalUrl": "https://www.legislation.gov.au/F2026L00927/asmade/details",
+            "retrievedAt": "2026-10-23T03:06:54.019Z",
+            "contentType": "text/html",
+            "contentHash": "51d4088679fcf755dbbe9fdc8ad8eeb17a9ee4e6cfbd4827b426ac99324bc421",
+            "etag": "W/\"e85a-bztwXXRS+/qSZbPNiAMdBUIIgYE\"",
+            "title": "Health Insurance (Accredited Pathology Laboratories—Approval) Amendment (Relevant Standards) Principles (No. 3) 2026",
+            "publishedAt": "2026-07-06",
+            "publishedAtPrecision": "day"
+          }
+        }
+      ],
+      "agencies": [],
+      "sourceUrl": "https://www.legislation.gov.au/F2026L00927/asmade/details",
+      "content": "Text Details Authorises Downloads All versions Interactions Health Insurance (Accredited Pathology Laboratories—Approval) Amendment (Relevant Standards) Principles (No. 3) 2026 In force Administered by Department of Health, Disability and Ageing This item is authorised by the following title:Health Insurance Act 1973Latest versionOrder print copySave this title to My AccountSet up an alertF2026L0092706 July 2026DetailsTitle IDF2026L00927CollectionLegislative instrumentTypeAmending | As MadeRegistered06 July 2026Effective06 July 2026Any available explanatory material for this instrument can be ",
+      "aiSummary": "Federal Register full-text search for \"artificial intelligence\", \"machine learning\", \"generative AI\", \"automated decision\" matched this instrument as made (relevance 20.6).",
+      "tags": [],
+      "themes": [],
+      "createdAt": "2026-10-23T03:06:54.019Z",
+      "updatedAt": "2026-10-23T03:06:54.019Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-health-insurance-accredited-pathology-laboratori-au4lkw",
+      "title": "Health Insurance (Accredited Pathology Laboratories—Approval) Amendment (Relevant Standards) Principles (No. 3) 2026",
+      "url": "https://www.legislation.gov.au/F2026L00927/asmade/details",
+      "sourceId": "legislation-whats-new",
+      "sourceName": "Federal Register of Legislation — new AI instruments",
+      "jurisdiction": "federal",
+      "publishedAt": "2026-07-06",
+      "publishedAtPrecision": "day",
+      "detectedAt": "2026-10-23T03:06:54.019Z",
+      "summary": "Federal Register full-text search for \"artificial intelligence\", \"machine learning\", \"generative AI\", \"automated decision\" matched this instrument as made (relevance 20.6).",
+      "relevanceScore": 0.55,
+      "classification": "heuristic",
+      "assessment": {
+        "method": "heuristic",
+        "promptVersion": "register-search-v1",
+        "assessedAt": "2026-10-23T03:06:54.019Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.legislation.gov.au/F2026L00927/asmade/details",
+          "finalUrl": "https://www.legislation.gov.au/F2026L00927/asmade/details",
+          "retrievedAt": "2026-10-23T03:06:54.019Z",
+          "contentType": "text/html",
+          "contentHash": "51d4088679fcf755dbbe9fdc8ad8eeb17a9ee4e6cfbd4827b426ac99324bc421",
+          "etag": "W/\"e85a-bztwXXRS+/qSZbPNiAMdBUIIgYE\"",
+          "title": "Health Insurance (Accredited Pathology Laboratories—Approval) Amendment (Relevant Standards) Principles (No. 3) 2026",
+          "publishedAt": "2026-07-06",
+          "publishedAtPrecision": "day"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-10-23T03:06:54.019Z"
+  },
+  {
+    "id": "source-review-dev-competition-and-consumer-scams-prevention-framew-1133o4v",
+    "sourceUrl": "https://www.legislation.gov.au/F2026L00627/asmade/details",
+    "title": "Competition and Consumer (Scams Prevention Framework—Regulated Sectors) Designation 2026",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-10-23T03:06:54.019Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from Federal Register of Legislation — new AI instruments (score 0.55, heuristic).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.55,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "Federal Register full-text search for \"artificial intelligence\", \"machine learning\", \"generative AI\", \"automated decision\" matched this instrument as made (relevance 23.8).",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.legislation.gov.au/F2026L00627/asmade/details",
+      "finalUrl": "https://www.legislation.gov.au/F2026L00627/asmade/details",
+      "retrievedAt": "2026-10-23T03:06:54.019Z",
+      "contentType": "text/html",
+      "contentHash": "7d1716b65634350ce226769204161799bac404278b2a76552e12337879adc549",
+      "etag": "W/\"e98e-lAS5Ec9w4az6nhgjcUW3Ree/V+Q\"",
+      "title": "Competition and Consumer (Scams Prevention Framework—Regulated Sectors) Designation 2026",
+      "publishedAt": "2026-05-28",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "competition-and-consumer-scams-prevention-framework-regulate",
+      "title": "Competition and Consumer (Scams Prevention Framework—Regulated Sectors) Designation 2026",
+      "description": "Federal Register full-text search for \"artificial intelligence\", \"machine learning\", \"generative AI\", \"automated decision\" matched this instrument as made (relevance 23.8).",
+      "jurisdiction": "federal",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2026-05-28",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-05-28",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.legislation.gov.au/F2026L00627/asmade/details",
+            "finalUrl": "https://www.legislation.gov.au/F2026L00627/asmade/details",
+            "retrievedAt": "2026-10-23T03:06:54.019Z",
+            "contentType": "text/html",
+            "contentHash": "7d1716b65634350ce226769204161799bac404278b2a76552e12337879adc549",
+            "etag": "W/\"e98e-lAS5Ec9w4az6nhgjcUW3Ree/V+Q\"",
+            "title": "Competition and Consumer (Scams Prevention Framework—Regulated Sectors) Designation 2026",
+            "publishedAt": "2026-05-28",
+            "publishedAtPrecision": "day"
+          }
+        }
+      ],
+      "agencies": [],
+      "sourceUrl": "https://www.legislation.gov.au/F2026L00627/asmade/details",
+      "content": "Text Details Authorises Downloads All versions Interactions Competition and Consumer (Scams Prevention Framework—Regulated Sectors) Designation 2026 In force Administered by Department of the Treasury This item is authorised by the following title:Competition and Consumer Act 2010Latest versionOrder print copySave this title to My AccountSet up an alertF2026L0062728 May 2026DetailsTitle IDF2026L00627CollectionLegislative instrumentTypePrincipal | As MadeRegistered28 May 2026Effective28 May 2026Any available explanatory material for this instrument can be found on the Downloads tabTo be repeale",
+      "aiSummary": "Federal Register full-text search for \"artificial intelligence\", \"machine learning\", \"generative AI\", \"automated decision\" matched this instrument as made (relevance 23.8).",
+      "tags": [],
+      "themes": [],
+      "createdAt": "2026-10-23T03:06:54.019Z",
+      "updatedAt": "2026-10-23T03:06:54.019Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-competition-and-consumer-scams-prevention-framew-1133o4v",
+      "title": "Competition and Consumer (Scams Prevention Framework—Regulated Sectors) Designation 2026",
+      "url": "https://www.legislation.gov.au/F2026L00627/asmade/details",
+      "sourceId": "legislation-whats-new",
+      "sourceName": "Federal Register of Legislation — new AI instruments",
+      "jurisdiction": "federal",
+      "publishedAt": "2026-05-28",
+      "publishedAtPrecision": "day",
+      "detectedAt": "2026-10-23T03:06:54.019Z",
+      "summary": "Federal Register full-text search for \"artificial intelligence\", \"machine learning\", \"generative AI\", \"automated decision\" matched this instrument as made (relevance 23.8).",
+      "relevanceScore": 0.55,
+      "classification": "heuristic",
+      "assessment": {
+        "method": "heuristic",
+        "promptVersion": "register-search-v1",
+        "assessedAt": "2026-10-23T03:06:54.019Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.legislation.gov.au/F2026L00627/asmade/details",
+          "finalUrl": "https://www.legislation.gov.au/F2026L00627/asmade/details",
+          "retrievedAt": "2026-10-23T03:06:54.019Z",
+          "contentType": "text/html",
+          "contentHash": "7d1716b65634350ce226769204161799bac404278b2a76552e12337879adc549",
+          "etag": "W/\"e98e-lAS5Ec9w4az6nhgjcUW3Ree/V+Q\"",
+          "title": "Competition and Consumer (Scams Prevention Framework—Regulated Sectors) Designation 2026",
+          "publishedAt": "2026-05-28",
+          "publishedAtPrecision": "day"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-10-23T03:06:54.019Z"
+  },
+  {
+    "id": "source-review-dev-practice-notes-nq4ujl",
+    "sourceUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes",
+    "title": "Practice Notes",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-10-23T03:06:54.019Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from Federal Court — practice notes (score 0.65, ai).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.65,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "Accessibility Links Skip to main navigation Skip to sub navigation Skip to main content Home Search Field Contact Us Complaints & Feedback Employment Main Menu Going to Court I am a Party - Information for Litigants Help with legal problem Learn about Court processes, procedures & documents Communicating with the Court Find out about an area of law Interpreters Jury Service About jury service Am I eligible? Attendance fees & allowances Requests to be excused FAQs I am a Practitioner Practice Areas Communicating with the Court Using the Court's Online Services Robing Registering to practice I a",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes",
+      "finalUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes",
+      "retrievedAt": "2026-10-23T03:06:54.019Z",
+      "contentType": "text/html",
+      "contentHash": "300416e7a2709f8e1afc645560253963bc11a5566efc24a0fc24b1be4b351c19",
+      "title": "Practice Notes"
+    },
+    "proposedRecord": {
+      "id": "practice-notes",
+      "title": "Practice Notes",
+      "description": "Accessibility Links Skip to main navigation Skip to sub navigation Skip to main content Home Search Field Contact Us Complaints & Feedback Employment Main Menu Going to Court I am a Party - Information for Litigants Help with legal problem Learn about Court processes, procedures & documents Communicating with the Court Find out about an area of law Interpreters Jury Service About jury service Am I eligible? Attendance fees & allowances Requests to be excused FAQs I am a Practitioner Practice Areas Communicating with the Court Using the Court's Online Services Robing Registering to practice I a",
+      "jurisdiction": "federal",
+      "type": "guideline",
+      "status": "active",
+      "agencies": [],
+      "sourceUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes",
+      "content": "Accessibility Links Skip to main navigation Skip to sub navigation Skip to main content Home Search Field Contact Us Complaints & Feedback Employment Main Menu Going to Court I am a Party - Information for Litigants Help with legal problem Learn about Court processes, procedures & documents Communicating with the Court Find out about an area of law Interpreters Jury Service About jury service Am I eligible? Attendance fees & allowances Requests to be excused FAQs I am a Practitioner Practice Areas Communicating with the Court Using the Court's Online Services Robing Registering to practice I a",
+      "aiSummary": "Accessibility Links Skip to main navigation Skip to sub navigation Skip to main content Home Search Field Contact Us Complaints & Feedback Employment Main Menu Going to Court I am a Party - Information for Litigants Help with legal problem Learn about Court processes, procedures & documents Communicating with the Court Find out about an area of law Interpreters Jury Service About jury service Am I eligible? Attendance fees & allowances Requests to be excused FAQs I am a Practitioner Practice Areas Communicating with the Court Using the Court's Online Services Robing Registering to practice I a",
+      "tags": [],
+      "themes": [],
+      "createdAt": "2026-10-23T03:06:54.019Z",
+      "updatedAt": "2026-10-23T03:06:54.019Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-practice-notes-nq4ujl",
+      "title": "Practice Notes",
+      "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes",
+      "sourceId": "fedcourt-practice-notes",
+      "sourceName": "Federal Court — practice notes",
+      "jurisdiction": "federal",
+      "detectedAt": "2026-10-23T03:06:54.019Z",
+      "summary": "Accessibility Links Skip to main navigation Skip to sub navigation Skip to main content Home Search Field Contact Us Complaints & Feedback Employment Main Menu Going to Court I am a Party - Information for Litigants Help with legal problem Learn about Court processes, procedures & documents Communicating with the Court Find out about an area of law Interpreters Jury Service About jury service Am I eligible? Attendance fees & allowances Requests to be excused FAQs I am a Practitioner Practice Areas Communicating with the Court Using the Court's Online Services Robing Registering to practice I a",
+      "relevanceScore": 0.65,
+      "classification": "ai",
+      "assessment": {
+        "method": "ai",
+        "promptVersion": "clef-noul-v1",
+        "assessedAt": "2026-10-23T03:06:54.019Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes",
+          "finalUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes",
+          "retrievedAt": "2026-10-23T03:06:54.019Z",
+          "contentType": "text/html",
+          "contentHash": "300416e7a2709f8e1afc645560253963bc11a5566efc24a0fc24b1be4b351c19",
+          "title": "Practice Notes"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-10-23T03:06:54.019Z"
+  },
+  {
+    "id": "source-review-dev-practice-directions-supreme-court-of-tasmania-17m5qlx",
+    "sourceUrl": "https://www.supremecourt.tas.gov.au/publications/directions",
+    "title": "Practice Directions - Supreme Court of Tasmania",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-10-23T03:06:54.019Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from Tasmanian Supreme Court — practice directions (score 0.65, ai).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.65,
+      "suggestedType": null,
+      "suggestedJurisdiction": "tas",
+      "summary": "🔊 Listen Practice Directions NumberTitleDateSubject 2 of 2026Amended Judge-Alone Criminal Trials15/10/2026Criminal 1 of 2026Criminal Case Management List - Amending 1 of 202527/02/2026Criminal 1 of 2025Criminal Case Management List7/07/2025Criminal 4 of 2022Appeals and Reviews (Miscellaneous) - Written Outlines of Contentions24/08/2022Practice and Procedure 3 of 2022Appeal Books, Lists of Authorities & Written Submissions24/08/2022Practice and Procedure 2 of 2022Judge-Alone Criminal Trials06/06/2022Criminal 1 of 2022Arrangements Relating to COVID-1919/01/2022Criminal 1 of 2021Directions Heari",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.supremecourt.tas.gov.au/publications/directions",
+      "finalUrl": "https://www.supremecourt.tas.gov.au/publications/directions",
+      "retrievedAt": "2026-10-23T03:06:54.019Z",
+      "contentType": "text/html",
+      "contentHash": "ee214c2a96e3986b66d722bba86d3d59acad179981a0ba646028d62bda89fbb8",
+      "title": "Practice Directions - Supreme Court of Tasmania"
+    },
+    "proposedRecord": {
+      "id": "practice-directions-supreme-court-of-tasmania",
+      "title": "Practice Directions - Supreme Court of Tasmania",
+      "description": "🔊 Listen Practice Directions NumberTitleDateSubject 2 of 2026Amended Judge-Alone Criminal Trials15/10/2026Criminal 1 of 2026Criminal Case Management List - Amending 1 of 202527/02/2026Criminal 1 of 2025Criminal Case Management List7/07/2025Criminal 4 of 2022Appeals and Reviews (Miscellaneous) - Written Outlines of Contentions24/08/2022Practice and Procedure 3 of 2022Appeal Books, Lists of Authorities & Written Submissions24/08/2022Practice and Procedure 2 of 2022Judge-Alone Criminal Trials06/06/2022Criminal 1 of 2022Arrangements Relating to COVID-1919/01/2022Criminal 1 of 2021Directions Heari",
+      "jurisdiction": "tas",
+      "type": "guideline",
+      "status": "active",
+      "agencies": [],
+      "sourceUrl": "https://www.supremecourt.tas.gov.au/publications/directions",
+      "content": "🔊 Listen Practice Directions NumberTitleDateSubject 2 of 2026Amended Judge-Alone Criminal Trials15/10/2026Criminal 1 of 2026Criminal Case Management List - Amending 1 of 202527/02/2026Criminal 1 of 2025Criminal Case Management List7/07/2025Criminal 4 of 2022Appeals and Reviews (Miscellaneous) - Written Outlines of Contentions24/08/2022Practice and Procedure 3 of 2022Appeal Books, Lists of Authorities & Written Submissions24/08/2022Practice and Procedure 2 of 2022Judge-Alone Criminal Trials06/06/2022Criminal 1 of 2022Arrangements Relating to COVID-1919/01/2022Criminal 1 of 2021Directions Heari",
+      "aiSummary": "🔊 Listen Practice Directions NumberTitleDateSubject 2 of 2026Amended Judge-Alone Criminal Trials15/10/2026Criminal 1 of 2026Criminal Case Management List - Amending 1 of 202527/02/2026Criminal 1 of 2025Criminal Case Management List7/07/2025Criminal 4 of 2022Appeals and Reviews (Miscellaneous) - Written Outlines of Contentions24/08/2022Practice and Procedure 3 of 2022Appeal Books, Lists of Authorities & Written Submissions24/08/2022Practice and Procedure 2 of 2022Judge-Alone Criminal Trials06/06/2022Criminal 1 of 2022Arrangements Relating to COVID-1919/01/2022Criminal 1 of 2021Directions Heari",
+      "tags": [],
+      "themes": [],
+      "createdAt": "2026-10-23T03:06:54.019Z",
+      "updatedAt": "2026-10-23T03:06:54.019Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-practice-directions-supreme-court-of-tasmania-17m5qlx",
+      "title": "Practice Directions - Supreme Court of Tasmania",
+      "url": "https://www.supremecourt.tas.gov.au/publications/directions",
+      "sourceId": "tas-sc-practice-directions",
+      "sourceName": "Tasmanian Supreme Court — practice directions",
+      "jurisdiction": "tas",
+      "detectedAt": "2026-10-23T03:06:54.019Z",
+      "summary": "🔊 Listen Practice Directions NumberTitleDateSubject 2 of 2026Amended Judge-Alone Criminal Trials15/10/2026Criminal 1 of 2026Criminal Case Management List - Amending 1 of 202527/02/2026Criminal 1 of 2025Criminal Case Management List7/07/2025Criminal 4 of 2022Appeals and Reviews (Miscellaneous) - Written Outlines of Contentions24/08/2022Practice and Procedure 3 of 2022Appeal Books, Lists of Authorities & Written Submissions24/08/2022Practice and Procedure 2 of 2022Judge-Alone Criminal Trials06/06/2022Criminal 1 of 2022Arrangements Relating to COVID-1919/01/2022Criminal 1 of 2021Directions Heari",
+      "relevanceScore": 0.65,
+      "classification": "ai",
+      "assessment": {
+        "method": "ai",
+        "promptVersion": "clef-noul-v1",
+        "assessedAt": "2026-10-23T03:06:54.019Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.supremecourt.tas.gov.au/publications/directions",
+          "finalUrl": "https://www.supremecourt.tas.gov.au/publications/directions",
+          "retrievedAt": "2026-10-23T03:06:54.019Z",
+          "contentType": "text/html",
+          "contentHash": "ee214c2a96e3986b66d722bba86d3d59acad179981a0ba646028d62bda89fbb8",
+          "title": "Practice Directions - Supreme Court of Tasmania"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-10-23T03:06:54.019Z"
+  },
+  {
+    "id": "source-review-follow-federal-online-safety-relevant-electronic-services-industry-standard-2024-e714ea14ecf93702",
+    "sourceUrl": "https://www.legislation.gov.au/F2024L00711/asmade/details",
+    "title": "Online Safety (Relevant Electronic Services—Class 1A and Class 1B Material) Industry Standard 2024",
+    "entryKind": "policy",
+    "targetPolicyId": "federal-online-safety-relevant-electronic-services-industry-standard-2024",
+    "targetPolicyBaseRevisionHash": "2864927d0c5cb3e4b02280dc1cb5049b8d5af85026ed8311d799ef1d456c922f",
+    "status": "pending_review",
+    "discoveredAt": "2026-10-23T03:15:49.936Z",
+    "createdBy": "collector",
+    "notes": "Online Safety (Relevant Electronic Services—Class 1A and Class 1B Material) Industry Standard 2024: Commenced on 21 June 2024. The page also shows \"Notice of a disallowance motion by The Parliamentary Joint Committee On Human Rights, withdrawn\" on 22 August 2024, which has no lifecycle meaning yet; read the page. Not applied: the register and the record together break the legal order of stages. Read the page and correct the record by hand. Detected by the follow watch track:federal-online-safety-relevant-electronic-services-industry-standard-2024.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": "regulation",
+      "suggestedJurisdiction": "federal",
+      "summary": "Online Safety (Relevant Electronic Services—Class 1A and Class 1B Material) Industry Standard 2024: Commenced on 21 June 2024. The page also shows \"Notice of a disallowance motion by The Parliamentary Joint Committee On Human Rights, withdrawn\" on 22 August 2024, which has no lifecycle meaning yet; read the page. Not applied: the register and the record together break the legal order of stages. Read the page and correct the record by hand.",
+      "tags": [
+        "eSafety",
+        "industry standard",
+        "messaging",
+        "online safety",
+        "child safety"
+      ],
+      "agencies": [
+        "eSafety Commissioner"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://api.prod.legislation.gov.au/v1/Titles('F2024L00711')?%24expand=parliamentaryScrutiny%2CparliamentaryScrutinySummary",
+      "finalUrl": "https://api.prod.legislation.gov.au/v1/Titles('F2024L00711')?%24expand=parliamentaryScrutiny%2CparliamentaryScrutinySummary",
+      "retrievedAt": "2026-10-23T03:17:24.496Z",
+      "contentType": "application/json",
+      "contentHash": "a5ecd0183ae71ee5182242f941e76e8d94f025fa9f265c818a4792f5cf0338ae",
+      "title": "Federal Register title record"
+    },
+    "proposedRecord": {
+      "id": "federal-online-safety-relevant-electronic-services-industry-standard-2024",
+      "title": "Online Safety (Relevant Electronic Services—Class 1A and Class 1B Material) Industry Standard 2024",
+      "description": "Industry standard made by the eSafety Commissioner under section 145 of the Online Safety Act 2021 for relevant electronic services such as messaging, email, dating and gaming services, covering class 1A and class 1B material such as child sexual abuse and pro-terror material. It requires providers to consider the risk of such material generated by artificial intelligence. Registered on 21 June 2024; it commenced on 22 December 2024, six months after the day after registration.",
+      "jurisdiction": "federal",
+      "type": "regulation",
+      "status": "active",
+      "effectiveDate": "2024-12-22",
+      "dates": [
+        {
+          "type": "issued",
+          "date": "2024-06-19",
+          "precision": "day",
+          "source": {
+            "url": "https://www.legislation.gov.au/F2024L00711/asmade/details",
+            "finalUrl": "https://www.legislation.gov.au/F2024L00711/asmade/details",
+            "title": "Online Safety (Relevant Electronic Services—Class 1A and Class 1B Material) Industry Standard 2024 - Federal Register of Legislation",
+            "retrievedAt": "2026-10-22T05:56:38.328Z",
+            "contentType": "text/html",
+            "contentHash": "af123d07f0aeddcce2256c3159688da8f6f10641f2a0aef808c7469ebbafb26f",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-10-22T05:56:38.328Z",
+              "capturedBy": "Claude (agent)",
+              "requestedBy": "Daniel Alkurdi",
+              "notes": "Headless Chromium capture of the Federal Register of Legislation details page for F2024L00711, rendered with the Policai collector identity. Staged by Claude (agent) for Daniel Alkurdi's federal register backfill.",
+              "pageContentHash": "43a52aeb2893c0b9b4b88e256ec115e905eac1115011dc84b451d4fa70c0acb7",
+              "characterCount": 2234
+            },
+            "reviewedDate": {
+              "date": "2024-06-19",
+              "precision": "day",
+              "reviewedAt": "2026-10-22T05:56:38.353Z",
+              "reviewedBy": "Claude (agent)",
+              "notes": "The Federal Register title record for F2024L00711 gives a making date of 19 June 2024; the captured details page records registration on 2024-06-21."
+            }
+          }
+        },
+        {
+          "type": "commenced",
+          "date": "2024-12-22",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.legislation.gov.au/F2024L00711/asmade/details",
+            "finalUrl": "https://www.legislation.gov.au/F2024L00711/asmade/details",
+            "title": "Online Safety (Relevant Electronic Services—Class 1A and Class 1B Material) Industry Standard 2024 - Federal Register of Legislation",
+            "retrievedAt": "2026-10-22T05:56:38.328Z",
+            "contentType": "text/html",
+            "contentHash": "af123d07f0aeddcce2256c3159688da8f6f10641f2a0aef808c7469ebbafb26f",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-10-22T05:56:38.328Z",
+              "capturedBy": "Claude (agent)",
+              "requestedBy": "Daniel Alkurdi",
+              "notes": "Headless Chromium capture of the Federal Register of Legislation details page for F2024L00711, rendered with the Policai collector identity. Staged by Claude (agent) for Daniel Alkurdi's federal register backfill.",
+              "pageContentHash": "43a52aeb2893c0b9b4b88e256ec115e905eac1115011dc84b451d4fa70c0acb7",
+              "characterCount": 2234
+            },
+            "reviewedDate": {
+              "date": "2024-12-22",
+              "precision": "day",
+              "reviewedAt": "2026-10-22T07:41:33.269Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "The captured details page records registration on 2024-06-21. Section 2 of the standard and its explanatory statement (https://www.legislation.gov.au/F2024L00711/asmade/2024-06-21/es/original/pdf) commence it six months after the day after registration on the Federal Register, which is 2024-12-22."
+            }
+          }
+        }
+      ],
+      "agencies": [
+        "eSafety Commissioner"
+      ],
+      "sourceUrl": "https://www.legislation.gov.au/F2024L00711/asmade/details",
+      "content": "The standard applies to relevant electronic services, including messaging, email, dating and gaming services, and sets compliance measures for class 1A and class 1B material, including detection and removal, user reporting and annual reports to the Commissioner. Its risk assessment factors include the risk of such material generated by artificial intelligence. Tabled in both Houses on 24 June 2024. A Senate disallowance motion was withdrawn on 18 November 2024.",
+      "aiSummary": "eSafety industry standard for messaging, email, dating and gaming services on child sexual abuse and pro-terror material, including AI-generated material. In force since 22 December 2024.",
+      "tags": [
+        "eSafety",
+        "industry standard",
+        "messaging",
+        "online safety",
+        "child safety"
+      ],
+      "themes": [
+        "online-safety",
+        "generative-ai"
+      ],
+      "createdAt": "2026-10-22T05:55:28.601Z",
+      "updatedAt": "2026-10-23T03:15:49.936Z",
+      "legislative": {
+        "kind": "instrument",
+        "ref": {
+          "register": "frl",
+          "titleId": "F2024L00711"
+        },
+        "issuerBodyId": "esafety",
+        "enablingAct": "Online Safety Act 2021, s 145",
+        "events": [
+          {
+            "date": "2024-06-21",
+            "precision": "day",
+            "event": {
+              "kind": "registered"
+            },
+            "source": {
+              "url": "https://www.legislation.gov.au/F2024L00711/asmade/details",
+              "title": "Online Safety (Relevant Electronic Services—Class 1A and Class 1B Material) Industry Standard 2024"
+            }
+          },
+          {
+            "date": "2024-06-24",
+            "precision": "day",
+            "event": {
+              "kind": "tabled",
+              "chamber": "lower"
+            },
+            "source": {
+              "url": "https://www.legislation.gov.au/F2024L00711/asmade/details",
+              "title": "Online Safety (Relevant Electronic Services—Class 1A and Class 1B Material) Industry Standard 2024"
+            }
+          },
+          {
+            "date": "2024-06-24",
+            "precision": "day",
+            "event": {
+              "kind": "tabled",
+              "chamber": "upper"
+            },
+            "source": {
+              "url": "https://www.legislation.gov.au/F2024L00711/asmade/details",
+              "title": "Online Safety (Relevant Electronic Services—Class 1A and Class 1B Material) Industry Standard 2024"
+            }
+          },
+          {
+            "date": "2024-12-22",
+            "precision": "day",
+            "event": {
+              "kind": "commenced",
+              "extent": "full",
+              "note": "Section 2 commences the standard 6 months after the later of the day after its registration under the Online Safety Act 2021 and the day after its registration under the Legislation Act 2003. The explanatory statement says six months after the day after registration on the Federal Register (2024-06-21). The Federal Register shows the instrument in force from registration."
+            },
+            "source": {
+              "url": "https://www.legislation.gov.au/F2024L00711/asmade/text",
+              "title": "Online Safety (Relevant Electronic Services—Class 1A and Class 1B Material) Industry Standard 2024, section 2"
+            }
+          }
+        ]
+      }
+    },
+    "legislativeUpdate": {
+      "added": [
+        {
+          "date": "2024-06-21",
+          "precision": "day",
+          "event": {
+            "kind": "commenced",
+            "extent": "full"
+          },
+          "source": {
+            "url": "https://www.legislation.gov.au/F2024L00711/asmade/details",
+            "title": "Online Safety (Relevant Electronic Services—Class 1A and Class 1B Material) Industry Standard 2024"
+          }
+        }
+      ],
+      "unrecognised": [
+        {
+          "chamber": "upper",
+          "stage": "Notice of a disallowance motion by The Parliamentary Joint Committee On Human Rights, withdrawn",
+          "date": "2024-08-22"
+        }
+      ],
+      "error": "the register and the record together break the legal order of stages"
+    },
+    "updatedAt": "2026-10-23T03:15:49.936Z"
+  },
+  {
+    "id": "source-review-follow-federal-online-safety-designated-internet-services-industry-standard-2024-b1dcc887764b77a0",
+    "sourceUrl": "https://www.legislation.gov.au/F2024L00710/asmade/details",
+    "title": "Online Safety (Designated Internet Services—Class 1A and Class 1B Material) Industry Standard 2024",
+    "entryKind": "policy",
+    "targetPolicyId": "federal-online-safety-designated-internet-services-industry-standard-2024",
+    "targetPolicyBaseRevisionHash": "b0c8ed3816c142004e80ede9fed4ea5a3cf0f3c1752c67b721e465855e7b6c25",
+    "status": "pending_review",
+    "discoveredAt": "2026-10-23T03:15:49.936Z",
+    "createdBy": "collector",
+    "notes": "Online Safety (Designated Internet Services—Class 1A and Class 1B Material) Industry Standard 2024: Commenced on 21 June 2024. The page also shows \"Notice of a disallowance motion by The Parliamentary Joint Committee On Human Rights, withdrawn\" on 22 August 2024, which has no lifecycle meaning yet; read the page. Not applied: the register and the record together break the legal order of stages. Read the page and correct the record by hand. Detected by the follow watch track:federal-online-safety-designated-internet-services-industry-standard-2024.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": "regulation",
+      "suggestedJurisdiction": "federal",
+      "summary": "Online Safety (Designated Internet Services—Class 1A and Class 1B Material) Industry Standard 2024: Commenced on 21 June 2024. The page also shows \"Notice of a disallowance motion by The Parliamentary Joint Committee On Human Rights, withdrawn\" on 22 August 2024, which has no lifecycle meaning yet; read the page. Not applied: the register and the record together break the legal order of stages. Read the page and correct the record by hand.",
+      "tags": [
+        "eSafety",
+        "industry standard",
+        "generative AI",
+        "online safety",
+        "child safety"
+      ],
+      "agencies": [
+        "eSafety Commissioner"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://api.prod.legislation.gov.au/v1/Titles('F2024L00710')?%24expand=parliamentaryScrutiny%2CparliamentaryScrutinySummary",
+      "finalUrl": "https://api.prod.legislation.gov.au/v1/Titles('F2024L00710')?%24expand=parliamentaryScrutiny%2CparliamentaryScrutinySummary",
+      "retrievedAt": "2026-10-23T03:17:39.186Z",
+      "contentType": "application/json",
+      "contentHash": "8bdfe7e7d971c1d263c6a118bb74d3c3bbc4f02d1e1165967808dbf220fd92b8",
+      "title": "Federal Register title record"
+    },
+    "proposedRecord": {
+      "id": "federal-online-safety-designated-internet-services-industry-standard-2024",
+      "title": "Online Safety (Designated Internet Services—Class 1A and Class 1B Material) Industry Standard 2024",
+      "description": "Industry standard made by the eSafety Commissioner under section 145 of the Online Safety Act 2021 for designated internet services, covering class 1A and class 1B material such as child sexual abuse and pro-terror material. It sets specific obligations for high impact generative AI services and model distribution platforms. Registered on 21 June 2024; it commenced on 22 December 2024, six months after the day after registration.",
+      "jurisdiction": "federal",
+      "type": "regulation",
+      "status": "active",
+      "effectiveDate": "2024-12-22",
+      "dates": [
+        {
+          "type": "issued",
+          "date": "2024-06-19",
+          "precision": "day",
+          "source": {
+            "url": "https://www.legislation.gov.au/F2024L00710/asmade/details",
+            "finalUrl": "https://www.legislation.gov.au/F2024L00710/asmade/details",
+            "title": "Online Safety (Designated Internet Services—Class 1A and Class 1B Material) Industry Standard 2024 - Federal Register of Legislation",
+            "retrievedAt": "2026-10-22T05:56:24.195Z",
+            "contentType": "text/html",
+            "contentHash": "de0429579f0a7371c9c98756905fa4c783df373a7971ad17178500574727d041",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-10-22T05:56:24.195Z",
+              "capturedBy": "Claude (agent)",
+              "requestedBy": "Daniel Alkurdi",
+              "notes": "Headless Chromium capture of the Federal Register of Legislation details page for F2024L00710, rendered with the Policai collector identity. Staged by Claude (agent) for Daniel Alkurdi's federal register backfill.",
+              "pageContentHash": "5c44b0b73b787c98f9275f4b6873881f30e91cd5a5ce75d93c12a69b62c702d3",
+              "characterCount": 2234
+            },
+            "reviewedDate": {
+              "date": "2024-06-19",
+              "precision": "day",
+              "reviewedAt": "2026-10-22T05:56:24.228Z",
+              "reviewedBy": "Claude (agent)",
+              "notes": "The Federal Register title record for F2024L00710 gives a making date of 19 June 2024; the captured details page records registration on 2024-06-21."
+            }
+          }
+        },
+        {
+          "type": "commenced",
+          "date": "2024-12-22",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.legislation.gov.au/F2024L00710/asmade/details",
+            "finalUrl": "https://www.legislation.gov.au/F2024L00710/asmade/details",
+            "title": "Online Safety (Designated Internet Services—Class 1A and Class 1B Material) Industry Standard 2024 - Federal Register of Legislation",
+            "retrievedAt": "2026-10-22T05:56:24.195Z",
+            "contentType": "text/html",
+            "contentHash": "de0429579f0a7371c9c98756905fa4c783df373a7971ad17178500574727d041",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-10-22T05:56:24.195Z",
+              "capturedBy": "Claude (agent)",
+              "requestedBy": "Daniel Alkurdi",
+              "notes": "Headless Chromium capture of the Federal Register of Legislation details page for F2024L00710, rendered with the Policai collector identity. Staged by Claude (agent) for Daniel Alkurdi's federal register backfill.",
+              "pageContentHash": "5c44b0b73b787c98f9275f4b6873881f30e91cd5a5ce75d93c12a69b62c702d3",
+              "characterCount": 2234
+            },
+            "reviewedDate": {
+              "date": "2024-12-22",
+              "precision": "day",
+              "reviewedAt": "2026-10-22T06:08:02.182Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "The captured details page records registration on 2024-06-21. Section 2 of the standard and its explanatory statement (https://www.legislation.gov.au/F2024L00710/asmade/2024-06-21/es/original/pdf) commence it six months after the day after registration on the Federal Register, which is 2024-12-22."
+            }
+          }
+        }
+      ],
+      "agencies": [
+        "eSafety Commissioner"
+      ],
+      "sourceUrl": "https://www.legislation.gov.au/F2024L00710/asmade/details",
+      "content": "The standard applies to designated internet services, including high impact generative AI services and model distribution platforms, and sets compliance measures for class 1A and class 1B material, including requirements to detect, remove and deter such material and to report to the Commissioner. Tabled in both Houses on 24 June 2024. A Senate disallowance motion was withdrawn on 18 November 2024.",
+      "aiSummary": "eSafety industry standard for websites and apps, including generative AI services and model distribution platforms, on child sexual abuse and pro-terror material. In force since 22 December 2024.",
+      "tags": [
+        "eSafety",
+        "industry standard",
+        "generative AI",
+        "online safety",
+        "child safety"
+      ],
+      "themes": [
+        "online-safety",
+        "generative-ai"
+      ],
+      "createdAt": "2026-10-22T05:55:28.601Z",
+      "updatedAt": "2026-10-23T03:15:49.936Z",
+      "legislative": {
+        "kind": "instrument",
+        "ref": {
+          "register": "frl",
+          "titleId": "F2024L00710"
+        },
+        "issuerBodyId": "esafety",
+        "enablingAct": "Online Safety Act 2021, s 145",
+        "events": [
+          {
+            "date": "2024-06-21",
+            "precision": "day",
+            "event": {
+              "kind": "registered"
+            },
+            "source": {
+              "url": "https://www.legislation.gov.au/F2024L00710/asmade/details",
+              "title": "Online Safety (Designated Internet Services—Class 1A and Class 1B Material) Industry Standard 2024"
+            }
+          },
+          {
+            "date": "2024-06-24",
+            "precision": "day",
+            "event": {
+              "kind": "tabled",
+              "chamber": "lower"
+            },
+            "source": {
+              "url": "https://www.legislation.gov.au/F2024L00710/asmade/details",
+              "title": "Online Safety (Designated Internet Services—Class 1A and Class 1B Material) Industry Standard 2024"
+            }
+          },
+          {
+            "date": "2024-06-24",
+            "precision": "day",
+            "event": {
+              "kind": "tabled",
+              "chamber": "upper"
+            },
+            "source": {
+              "url": "https://www.legislation.gov.au/F2024L00710/asmade/details",
+              "title": "Online Safety (Designated Internet Services—Class 1A and Class 1B Material) Industry Standard 2024"
+            }
+          },
+          {
+            "date": "2024-12-22",
+            "precision": "day",
+            "event": {
+              "kind": "commenced",
+              "extent": "full",
+              "note": "Section 2 commences the standard 6 months after the later of the day after its registration under the Online Safety Act 2021 and the day after its registration under the Legislation Act 2003. The explanatory statement says six months after the day after registration on the Federal Register (2024-06-21). The Federal Register shows the instrument in force from registration."
+            },
+            "source": {
+              "url": "https://www.legislation.gov.au/F2024L00710/asmade/text",
+              "title": "Online Safety (Designated Internet Services—Class 1A and Class 1B Material) Industry Standard 2024, section 2"
+            }
+          }
+        ]
+      }
+    },
+    "legislativeUpdate": {
+      "added": [
+        {
+          "date": "2024-06-21",
+          "precision": "day",
+          "event": {
+            "kind": "commenced",
+            "extent": "full"
+          },
+          "source": {
+            "url": "https://www.legislation.gov.au/F2024L00710/asmade/details",
+            "title": "Online Safety (Designated Internet Services—Class 1A and Class 1B Material) Industry Standard 2024"
+          }
+        }
+      ],
+      "unrecognised": [
+        {
+          "chamber": "upper",
+          "stage": "Notice of a disallowance motion by The Parliamentary Joint Committee On Human Rights, withdrawn",
+          "date": "2024-08-22"
+        }
+      ],
+      "error": "the register and the record together break the legal order of stages"
+    },
+    "updatedAt": "2026-10-23T03:15:49.936Z"
+  },
+  {
     "id": "source-review-3ae7ea4b-d3f7-4466-a505-5acb20f39244",
     "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7537",
     "title": "AI Kill Switch and Data Centre Control Bill 2026",
