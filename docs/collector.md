@@ -614,8 +614,8 @@ been unreachable on 3 consecutive runs is reported as robots unverified
   `document` source, the linked documents hashed into its fingerprint
   (`collect.ts` hands them the gate with `admit(url, 'wait')`). These
   waits are charged, so later candidates are deferred sooner. The reason
-  is the review gate: it rejects a run whose output marks a due source
-  `skipped`, so deferring an index would lose the whole run.
+  is coverage: a due source marked `skipped` counts against the run's
+  health, so an index is never deferred.
   An index wait is at most 30 s for each index request that follows
   another request to the same host. The model
   (`~/Reports/2026-10-17-policai-source-coverage/pr5-index-wait-model.mts`)
@@ -687,7 +687,7 @@ is used for the run but not persisted); `Sitemap:` lines are resolved
 against the robots.txt URL, kept only when https, deduplicated and capped at
 20 (nothing reads them yet); a rule list over 500 patterns or with a pattern
 over 1,000 characters is used for the run but persisted as `robots: null`.
-`npm run validate:data` and the review gate check the shape. A daily run
+`npm run validate:data` checks the shape. A daily run
 changes `seenAt` on every host and `fetchedAt` on the refetched ones. For a
 67-host state with Drupal-sized robots (60 rules each) QA measured the map
 at about 131 KB, adding about 141.5 KB to the file.

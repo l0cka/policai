@@ -1,0 +1,6 @@
+[Unit]
+Description=Alert on Policai collection failure
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/policai-collect-alert.sh

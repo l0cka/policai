@@ -28,6 +28,25 @@ No units, guard pins, backup scripts, credentials or deployment clones change.
 Source review and installed-wrapper approval are separate: record the exact
 source commit/PR and installed digest in the change report.
 
+## Units
+
+The systemd user units live in `ops/collector/systemd/` and are the source
+for `~/.config/systemd/user/` on Argus: `policai-collect.service` (with
+`USE_CLEF_CLASSIFIER=1`, the review grace and a 4 GiB memory ceiling),
+`policai-collect.timer` (19:30 UTC daily) and `policai-collect-alert.service`,
+which runs `policai-collect-alert.sh` on failure to open or update one
+`collector-failure` issue. Install them like the wrapper, as a reviewed host
+step:
+
+```sh
+install -m 644 ops/collector/systemd/policai-collect*.service ops/collector/systemd/policai-collect.timer ~/.config/systemd/user/
+install -m 755 ops/collector/policai-collect-alert.sh ~/.local/bin/
+systemctl --user daemon-reload
+```
+
+The unit file carries the environment, so drop-ins under
+`policai-collect.service.d/` that set the same variables can be removed.
+
 ## Commands and evidence
 
 - `~/.local/bin/policai-collect.sh --preflight`: clean source, a valid or
@@ -120,7 +139,7 @@ While the oldest pending PR is younger than `POLICAI_COLLECT_REVIEW_GRACE_HOURS`
 `"skipped": "awaiting-review"`, so `OnFailure=` alerts and topology drift stay
 reserved for real faults. Past the grace period, or when the PR age cannot be
 read, the blocked run exits 1 so a forgotten review surfaces.
-Main requires an approving review and lint/test/build checks. Merging collected
+Main requires the lint, test and build checks and resolved review threads. Merging collected
 data and approving register entries are separate decisions; neither happens here.
 The wrapper uses only unique collection branches, so a branch push cannot activate
 the existing main-following app deployment timer.
@@ -230,279 +249,6 @@ then use the separately authorised manual review/archive-pointer route above.
 Do not archive a normal `published` pointer just because its PR was merged:
 a successfully recorded publication resumes normally once no collection PR is
 open. No automatic merged/closed-PR reconciliation is implemented.
-
-## Routine collection review gate — SHADOW ONLY (X60)
-
-`collection_review_gate.py` is a standalone, stdlib-only assessor, offline by
-default. It has **no merge action** and no wrapper, CI or timer integration.
-`--clef-advisory` opts into the local log-only check below. Exit 0 means
-`would-merge`, not permission to merge; exit 1 means `would-escalate`. Both print
-structured JSON, with the exact
-base/head, policy version, evidence manifest path/digest, reasons and a one-line
-`summary` for a digest. This phase does not activate the X60 standing rule or
-bypass the existing pending-PR gate. It cannot approve a PR touching
-`data/developments.json`, `data/source-reviews.json`, register content, source
-identity, exceptions or code. In particular, it does not authorise PR #155.
-
-### Trusted acquisition boundary
-
-Run this reviewed script from a trusted checkout, **not the candidate PR's
-copy**. The candidate checkout must be clean and at the exact full head SHA.
-Git reads pinned commit objects; the gate never checks out or executes candidate
-code. A nonempty diff may contain only ordinary `100644` modifications to the
-exact paths `data/watch-state.json` and `public/data/meta.json`. Additions,
-deletions, renames, symlinks, other modes and basename lookalikes refuse.
-The watch-state shape check covers `seen`, `lastCheckedBySource`,
-`sourceSnapshots` and, when present, the host gate's `hosts` map (one object
-per host; docs/collector.md "Politeness").
-
-The collector/coordinator must acquire and retain evidence independently of the
-PR author: capture the scheduled-run receipt and scheduler provenance; inspect
-the approved source inventory and both schedules; obtain actual test, lint,
-build and data-validation receipts at the exact head; arrange the independent
-read; and retain source text for any date checks. Run checks only in the normal
-trusted/sandboxed verification workflow, not through this assessor. Do not copy
-PR-owned claims, comments, model prose or PR artifacts into an apparently trusted
-receipt. The gate accepts **attestations, not authenticated ground truth**:
-`acquired_by`, scheduler and model strings are not signatures, and content
-hashes establish byte identity, not honesty or completeness. It cannot prove
-that CI, a scheduled run or an independent review happened. The coordinator
-must verify those facts and remote base/head immediately before assessment;
-a changed remote SHA invalidates the old result. Never claim external CI ran
-from the presence of an input JSON file.
-
-All input artifacts, manifest, output and ledger must be outside the candidate
-checkout, at absolute non-symlink paths in coordinator-controlled directories.
-The local path restriction is defence in depth, not authentication: copying a
-PR-authored file elsewhere does not make it trustworthy. Keep these directories
-private from PR jobs and source content, including concurrent path replacement.
-The gate reads source text as data only; it does not interpret instructions in it.
-
-### Evidence format, version 1
-
-The coordinator writes one JSON manifest with these required fields (unknown
-fields confer no authority). JSON duplicate keys and non-finite numbers refuse.
-Every `artifact` below is `{"path":"/absolute/retained/file","sha256":"<64 lowercase hex>"}`;
-its bytes must exist and match the digest. Paths are never fetched as URLs.
-
-- `schema_version`: integer `1`; `base`, `head`: full, exact 40-character Git
-  commit SHAs; `acquired_by`: `"coordinator"`; `clean`: boolean `true`.
-- `run`: `id` (1–128 ASCII letters/digits/dot/underscore/hyphen), `kind`
-  (`"scheduled"`, `"historic"` or `"synthetic"`), and `artifact`. For scheduled
-  runs also set `scheduler: "policai-collect.timer"`. The artifact must be the
-  coordinator-verified receipt/scheduler evidence binding this run to base/head;
-  the existing wrapper does not yet generate this manifest.
-- `receipts`: exactly four objects, uniquely named `tests`, `lint`, `build`,
-  `data-validation`; each has `head`, `status: "success"`, integer
-  `data_errors: 0`, and `artifact`. Missing, pending, stale or failed receipts
-  refuse. A local `npm run check` log can support all four if the coordinator
-  actually ran it on that head and verifies all stages and zero data errors.
-- `review`: `base`, `head`, `status: "completed"`, `vendor: "ollama-cloud"`,
-  `model: "glm-5.3"`, `findings: []`, and `artifact`. This initial shadow policy
-  admits GLM 5.3 only while Claude is paused. The coordinator must arrange an
-  actual independent cross-vendor review, retain its report and verify its
-  identity and SHA; the gate does not call the model. Wrong identity/SHA,
-  missing/pending review, any finding or a nonempty `flags` field refuses. Later model-policy changes
-  require review, not a free-text override.
-- `coverage`: `base_automatic_source_ids` and `head_automatic_source_ids`
-  (each a complete, unique nonempty list for that commit),
-  `base_manual_source_count` and `head_manual_source_count` (nonnegative
-  integers), `base_due` and `head_due` (objects mapping every automatic source
-  ID on that side to a boolean), and `artifact` retaining the inventory and
-  scheduling calculation at both commits. Base and head inventories may differ
-  when a source moves between automatic and manual (or is added/removed); do
-  not force one shared list. Do not derive this evidence solely from the
-  candidate's self-reported meta totals.
-- `dates`: an array covering **exactly** new or changed watch-state candidates,
-  keyed by their `seen` map key. Each object has `key`, `source_id`, `url`,
-  `artifact` (retained UTF-8 source text), and nonempty `values`. Each value is
-  `{"kind":"published","value":"7 October 2026"}` or an `updated` value.
-  The raw values must occur in the retained text. Include all relevant,
-  potentially conflicting publication/update hints, not only the convenient
-  one. Normal retry-attempt changes with an identical candidate need no new
-  date proof. Removed candidates or missing new-candidate details refuse.
-
-The synthetic fixture builder in `test_collection_review_gate.py` is an
-executable example of the complete manifest, including date entries. Its
-receipts, sources, scheduler and human decisions are explicitly **synthetic**;
-none establishes actual CI, review or trial progress.
-
-### Coverage and date policy
-
-The gate reconciles per-source rows with the independent per-side inventory,
-schedule, checked IDs, success/failure/skipped totals, error list and rounded
-success rate. Missing rows, duplicate IDs, invalid types/statuses/counts,
-hidden errors and inconsistent eligibility refuse. `coverageEligible: false`
-retries and skipped sources never count as successful coverage or recovery.
-Comparisons label scheduling changes, not-due rows, and source-set changes
-(a source present on only one side's automatic inventory) separately. The gate
-does not treat a not-due or source-set-change row as proof of health. Every head
-error, including explicit new success-to-error transitions and continuing
-failures, escalates for human review; making a failure explicit is necessary,
-not sufficient to pass.
-
-The proposed shadow count-drop limit is **at most 20% for each comparable,
-successful source**, checked with integer arithmetic:
-`(base_count - head_count) * 100 <= base_count * 20`. Positive-to-zero always
-refuses. Known zero baselines permit zero or growth without inventing a
-percentage; missing counts are unknown and refuse when due/successful or
-comparable. Aggregate growth cannot offset another source's drop. This 20%
-number is a **proposal requiring acceptance before live activation**, not a
-number already approved by Daniel.
-
-`src/lib/pipeline/extract.ts:parseSourceDate` preserves the source calendar
-date, including the leading date of an ISO timestamp. Its tests explicitly
-reject rolling that calendar day through UTC. Month/year hints are anchored
-on the first day with `dateHintPrecision: "month"`/`"year"`, never silently
-upgraded to day precision. `collect.ts` carries those hints into candidates and
-publication fields; retrieval/fetch time is not publication evidence.
-
-The gate uses a conservative parser for ISO day, offset-bearing ISO timestamp,
-ISO month/year, English month/day dates and day/month/year numeric dates.
-Unsupported or ambiguous formats escalate instead of guessing. All supplied
-publication and update values must agree on date **and precision**, with at
-least one publication value; updated-only evidence escalates in this shadow
-policy even where extraction accepts an update hint. New/changed candidates
-without source-date evidence, mismatched hints/precision or contradictory
-metadata refuse. A bare `7 October 2026` cannot justify `2026-10-06` by an AEDT
-conversion; even `2026-10-07T00:30:00+11:00` retains `2026-10-07` under the traced
-rule. These are synthetic offline examples, not a conclusion about the
-independent DTA date investigation. No source facts are rewritten by the gate.
-
-### Operator command and three-run comparison
-
-Choose the evidence directory explicitly; the parent directory must already
-exist. Replace the placeholder variables with coordinator-verified paths/SHAs:
-
-```sh
-PYTHONDONTWRITEBYTECODE=1 python3 /trusted/policai/ops/collector/collection_review_gate.py \
-  --repo "$CANDIDATE_CHECKOUT" --base "$BASE_SHA" --head "$HEAD_SHA" \
-  --evidence "$EVIDENCE_DIR/manifest.json" \
-  --output "$EVIDENCE_DIR/shadow-result.json" --ledger "$EVIDENCE_DIR/shadow-ledger.json"
-```
-
-Without `--output`/`--ledger`, the assessor writes only stdout. With a ledger,
-it uses a sibling `.lock` file and atomic replacement, with one record per
-run ID/head and deduplicated assessment history. Repeated identical input does
-not add an evaluation or run. Different heads for one run still count once.
-Corrupt/duplicate/inconsistent ledgers refuse and remain untouched; retain
-stdout as evidence of that refusal. Do not discard failed assessments or
-rewrite disagreements to make the trial pass. An unidentified/malformed run
-cannot be placed safely in the ledger; retain its structured stdout and
-reconcile its provenance manually.
-
-1. For each of the next three **genuine scheduled collections**, acquire the
-   above evidence, run the gate and retain stdout/output and the manifest.
-   Historical and synthetic replays never count. Scheduler provenance is
-   coordinator-attested, not inferred from a branch name or timestamp. Tests
-   use temporary ledgers, never the host ledger. Failed scheduled assessments
-   count as observations, not as successes.
-2. A human independently reviews the exact same base/head and records the
-   ordinary decision using the existing approval process. Until known, the
-   ledger's `human_decision` is `pending`. To record the result, repeat the
-   command with `--human-decision merged|escalated|rejected` and
-   `--human-artifact /absolute/retained/decision.txt`. This only records an
-   attestation and its digest: **it does not merge or escalate anything**.
-   Both assessment and human-decision histories are preserved; `disagreement`
-   remains true if any retained assessment disagrees with a human decision.
-3. Compare all three distinct scheduled run IDs, each exact head, every reason,
-   human decision, unresolved failure and disagreement. Pending human decisions
-   do not complete the trial. Carry the output `summary` into the digest, with
-   `live_action=none`; retain artifact links beside it. Raise a new activation
-   **E item** containing the three-run matrix and requesting explicit acceptance
-   of the proposed threshold, trust boundary, reviewer identity and future live
-   design. Do not update standing approvals as live or install anything here.
-
-Any future live path must be separately reviewed/approved and use squash via
-`factory merge`, never `--admin`. Three observations do not themselves activate
-anything. This PR stops at source, tests and operating documentation.
-
-### Clef-flash advisory check 5 — opt-in, log-only
-
-Run the trusted gate command above with `--clef-advisory`; retain the entire
-JSON result/ledger, not only its deterministic summary. The `clef_advisory`
-record cannot change checks 1–4, reasons, verdict, exit status or the required
-GLM 5.3 independent review. Flags, skips and errors never approve anything.
-There is no collector trigger, source fetch, cloud fallback or installation.
-
-The request uses only pinned changed candidates, retained digest-checked source
-text/dates and base/head per-source counts, statuses and schedules. It includes
-at most 24 items and 128 source comparisons, with 48,000 bytes of serialized
-state and 64 KiB of request JSON. Field limits and omitted/missing context are
-reported in `coverage`; truncated JSON fragments are data strings, not commands.
-Individual retained artifacts over 4 MiB refuse advisory context. Source text is
-untrusted; prompt boundaries reduce but cannot eliminate model prompt injection.
-
-Before HTTP, bounded telemetry requires at least 13 GB free
-(13,000,000,000 bytes; nvidia-smi MiB converted without rounding up) and no
-known game process. Minecraft is a `java`/`javaw` process with a minecraft/lwjgl
-argument, or the exact `minecraft` process name. Steam reaper/app processes and
-non-helper game descendants block; an idle Steam launcher, desktop/browser
-clients and their helper subtrees do not. No graphics-client inventory is used:
-voxtype-osd, Hyprland and browsers never block merely because they use the GPU.
-
-For other games, set `POLICAI_CLEF_GAME_PROCESSES` per invocation to at most 16
-comma-separated exact process names, case-insensitive, for example
-`POLICAI_CLEF_GAME_PROCESSES=rivet,another-game`. Names must be 1–64 ASCII
-letters/digits/dot/underscore/hyphen, with no spaces, wildcards or paths; use the
-name reported by `ps`'s `comm` field, including any kernel truncation. Empty
-means no extra names; Minecraft/Steam detection remains enabled. This does not
-edit host configuration or read an environment file. Invalid configuration,
-failed/malformed telemetry or an unsupported multiple-GPU result still skips
-safely. Known games/low VRAM record `skipped: gpu busy`; telemetry-only failures
-record `skipped: telemetry unavailable`. Every collected cause is retained in
-`gpu.reasons` and the combined `reason`, including simultaneous game/VRAM/errors.
-Telemetry calls each have a five-second bound. A game starting after inspection
-remains a race; this is not a GPU reservation.
-
-HTTP connects directly to `127.0.0.1:11434`, ignores proxy settings and refuses
-redirects. A bounded `/api/tags` read verifies the installed `clef-flash` digest;
-absence records `skipped: model missing`, never a pull. The only inference path
-is `/v1/systemone`, model `clef-flash`, `keep_alive: "5m"`. One owned client
-process enforces a 30-second total network deadline; overdue client termination
-cannot cancel inference already accepted by Ollama. No games/services are killed.
-
-Three `noul` questions flag off-topic items, implausible dates and anomalous
-counts at P(true) >= 0.5. This is a logging threshold, not a calibrated rule.
-Request/question identity, full input and digest, response and digest, installed
-model digest, exact SHAs, run provenance and coverage are retained. The verified
-[System One schema](https://docs.ollama.com/api/systemone) and
-[clef-flash example](https://ollama.com/library/clef-flash) return `noul` as
-P(true), without requiring a confidence field. We retain both probabilities and
-explicitly label derived concentration `1 - binary_entropy(P(true))` as
-`confidence`; optional provider confidence is separately validated/preserved.
-Neither concentration is calibrated correctness; no provider value is invented.
-
-After an independent human review, write an external comparison JSON containing
-`base`, `head`, `run_id`, `input_sha256`, `response_sha256` from the retained
-completed advisory; `review_complete: true`; `reviewed_questions` containing
-all three question IDs; and `reviewer_findings`, an array of
-`{"question_id":"off_topic","detail":"reviewer finding"}`. Question IDs are
-`off_topic`, `implausible_dates`, `anomalous_counts`, or `other` for findings
-outside these checks. An empty array means the human actually found nothing.
-Keep the comparison/report in the coordinator-controlled evidence directory.
-
-```sh
-PYTHONDONTWRITEBYTECODE=1 python3 /trusted/policai/ops/collector/clef_shadow.py compare \
-  --repo "$CANDIDATE_CHECKOUT" --ledger "$EVIDENCE_DIR/shadow-ledger.json" \
-  --comparison "$EVIDENCE_DIR/human-clef-comparison.json"
-PYTHONDONTWRITEBYTECODE=1 python3 /trusted/policai/ops/collector/clef_shadow.py trial \
-  --repo "$CANDIDATE_CHECKOUT" --ledger "$EVIDENCE_DIR/shadow-ledger.json"
-```
-
-Comparison history retains findings, artifact digest and matched/missed/false
-flags by question category, not inferred item-level matches. Replays are
-idempotent. Only three distinct coordinator-verified scheduled run IDs with
-completed, untruncated inference and complete human comparisons complete this
-additional trial. Synthetic/historic fixtures, skips, errors, partial context and
-pending human reviews do not count. The original `scheduled_run_count` still
-counts deterministic observations, not completed clef comparisons; use `trial`
-for the separate count/incomplete list. A missing comparison or valid partial
-context remains incomplete. A malformed stored comparison instead returns
-explicit JSON `status: "error"`, exits 1, identifies the run/head/record index,
-and leaves the ledger unchanged; it is never disguised as incomplete coverage.
-These remain attestations, not signatures. Three comparisons confer no approval
-or activation authority.
 
 ## Dependency retention
 

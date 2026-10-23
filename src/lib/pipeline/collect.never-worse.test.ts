@@ -1,9 +1,5 @@
 /* @vitest-environment node */
 
-import { spawnSync } from 'node:child_process';
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
-import os from 'node:os';
-import path from 'node:path';
 import { describe, expect, it, vi } from 'vitest';
 
 const { scrapeWithFirecrawl } = vi.hoisted(() => ({
@@ -14,7 +10,7 @@ vi.mock('./firecrawl', () => ({ scrapeWithFirecrawl }));
 import { collect, collectionRunFailed, emptyWatchState, type WatchState } from './collect';
 import { createHostGate, type HostGate } from './host-gate';
 import type { WatchSource } from './sources';
-import type { CollectionMeta, SourceRunResult } from '@/types';
+import type { SourceRunResult } from '@/types';
 
 const base = { jurisdiction: 'federal', category: 'government', enabled: true, automation: 'automatic' } as const;
 const HTML: WatchSource = { ...base, id: 'p-html', bodyId: 'test-body', name: 'P HTML', url: 'https://www.example.gov.au/news', kind: 'html-index', schedule: 'daily' };
@@ -185,39 +181,6 @@ function realGate(robots: RobotsResponse, waitBudgetMs?: number) {
     });
 }
 
-const REVIEW_GATE = path.join(process.cwd(), 'ops', 'collector', 'collection_review_gate.py');
-const REVIEW_GATE_COVERAGE = `
-import importlib.util, json, sys
-spec = importlib.util.spec_from_file_location('collection_review_gate', sys.argv[1])
-gate = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(gate)
-data = json.load(open(sys.argv[2]))
-result = {'reasons': []}
-try:
-    gate.coverage_rows(data['meta'], data['coverage'], 'head', result)
-except gate.Refused as error:
-    result['reasons'].append(str(error))
-print(json.dumps(result['reasons']))
-`;
-
-function reviewGateReasons(meta: CollectionMeta, due: Record<string, boolean>): string[] {
-  const dir = mkdtempSync(path.join(os.tmpdir(), 'policai-review-gate-'));
-  try {
-    const input = path.join(dir, 'input.json');
-    const coverage = {
-      head_automatic_source_ids: Object.keys(due),
-      head_manual_source_count: 0,
-      head_due: due,
-    };
-    writeFileSync(input, JSON.stringify({ meta, coverage }));
-    const run = spawnSync('python3', ['-I', '-B', '-c', REVIEW_GATE_COVERAGE, REVIEW_GATE, input], { encoding: 'utf8' });
-    expect(run.status, run.stderr).toBe(0);
-    return JSON.parse(run.stdout) as string[];
-  } finally {
-    rmSync(dir, { recursive: true, force: true });
-  }
-}
-
 const skippedIds = (outcome: RunOutcome) =>
   outcome.rows.filter((row) => row.status === 'skipped').map((row) => row.sourceId);
 
@@ -329,7 +292,6 @@ describe('a spent wait budget never makes a host that asked for nothing worse', 
   const pairedSources = Array.from({ length: 75 }, (_, i) =>
     i < 2 * SHARED ? manySource(i, Math.floor(i / 2), i % 2 === 1) : manySource(i, i - SHARED, false),
   );
-  const allDue = (sources: WatchSource[]) => Object.fromEntries(sources.map((source) => [source.id, true]));
 
   function manyFetch(requests: string[]): typeof fetch {
     return (async (input: RequestInfo | URL) => {
@@ -426,22 +388,10 @@ describe('a spent wait budget never makes a host that asked for nothing worse', 
   it.each([
     ['Crawl-delay 30 on all 63 hosts', manySources, undefined],
     ['Crawl-delay 30 on all 63 hosts with the budget spent and shared hosts back to back', pairedSources, 60_000],
-  ] as Array<[string, WatchSource[], number | undefined]>)('the review gate accepts the collector output: %s', async (_label, sources, waitBudgetMs) => {
+  ] as Array<[string, WatchSource[], number | undefined]>)('no source is skipped or failed: %s', async (_label, sources, waitBudgetMs) => {
     const { result } = await runMany(gateWithCrawlDelay(() => true, waitBudgetMs), sources);
     const rows = result.meta.collector.sourceResults;
     expect(rows.filter((row) => row.status === 'skipped')).toEqual([]);
     expect(rows.filter((row) => row.status === 'error')).toEqual([]);
-    expect(reviewGateReasons(result.meta, allDue(sources))).toEqual([]);
-    const shared = sources[1].id;
-    const skipped: CollectionMeta = {
-      ...result.meta,
-      collector: {
-        ...result.meta.collector,
-        sourceResults: rows.map((row) =>
-          row.sourceId === shared ? { ...row, status: 'skipped', itemCount: null, candidateCount: 0, newCandidateCount: 0 } : row,
-        ),
-      },
-    };
-    expect(reviewGateReasons(skipped, allDue(sources))).toContain(`coverage head ${shared}: ${shared}: due source skipped`);
   }, 120_000);
 });
