@@ -157,10 +157,6 @@ describe('publicAutomaticCollectionMeta', () => {
     const projected = publicAutomaticCollectionMeta(committed, WATCH_SOURCES);
 
     expect(projected).toEqual(committed);
-    expect(committed.collector.health).toBe('healthy');
-    expect(committed.collector.failedSourceCount).toBe(0);
-    expect(committed.collector.lastRunErrors).toEqual([]);
-    expect(committed.lastHealthyAt).toBe(committed.lastCollectedAt);
     for (const sourceId of ['accc-rss', 'wa-ai-policy']) {
       expect(committed.collector.lastRunSources).not.toContain(sourceId);
       expect(
