@@ -13,6 +13,7 @@ import { WATCH_SOURCES } from "@/lib/pipeline/sources";
 import type { SourceHealthRecord } from "@/lib/pipeline/source-health";
 import { parseBodies, type Body } from "@/lib/watch-coverage/bodies";
 import { parseSiteReuse, type SiteReuse } from "@/lib/watch-coverage/site-reuse";
+import { parseRuleScopes, type RuleScope } from "@/lib/rule-finder/scope";
 import {
 	canonicalizeRecordVerification,
 	canonicalizeSourceEvidence,
@@ -333,6 +334,7 @@ const AGENCIES_FILE = path.join(
 );
 const BODIES_FILE = path.join(process.cwd(), "data", "bodies.json");
 const SITE_REUSE_FILE = path.join(process.cwd(), "data", "site-reuse.json");
+const RULE_SCOPE_FILE = path.join(process.cwd(), "data", "rule-scope.json");
 const COMMONWEALTH_AGENCIES_FILE = path.join(
 	process.cwd(),
 	"data",
@@ -1441,6 +1443,11 @@ export async function getBodies(): Promise<Body[]> {
 
 export async function getSiteReuse(): Promise<SiteReuse[]> {
 	return parseSiteReuse(await readJsonFile<unknown>(SITE_REUSE_FILE, []));
+}
+
+/** Legal force and audience per register record, for the rule finder. */
+export async function getRuleScopes(): Promise<RuleScope[]> {
+	return parseRuleScopes(await readJsonFile<unknown>(RULE_SCOPE_FILE, []));
 }
 
 /** Per-source reach ledger; like check times, the only part of watch-state served. */

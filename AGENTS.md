@@ -132,6 +132,7 @@ docs/                             # collector.md + docs index
 5. **Review**: high-confidence detections are staged in `data/source-reviews.json`; a separate approval action is required before publishing creates a register record. Changed direct-document sources stage a version-specific review with `targetPolicyId`, temporarily withhold the existing policy publicly, and update that policy in place after approval.
 6. **Coverage**: automatic sources report usable-content health in `public/data/meta.json`; protected sources are tracked in `data/source-monitoring.json`.
    **Reuse terms** (`data/site-reuse.json`, parsed by `src/lib/watch-coverage/site-reuse.ts`): one entry per body host with what its copyright page permits (`stated` with a Creative Commons id, `all_rights_reserved` or `custom` terms, plus `termsUrl`; or `not_stated` / `refused` with a note) and `checkedAt`. `validate:data` errors on a host no body owns and warns on an unchecked body host. Shown at `/status/reuse` and as "Site reuse terms" on `/policies/[id]`. Re-check with `npm run survey:site-reuse -- --out=<file>` on the collector host (declared identity, robots.txt, 2 s gap); the survey only gathers evidence, an editor writes the file.
+   **Rule scope** (`data/rule-scope.json`, parsed by `src/lib/rule-finder/scope.ts`): one entry per register record, kept outside `policies.json` so it never changes a record's revision hash. A `rule` gives its `legalForce` (binding, government_mandatory, regulator_expectation, voluntary, proposed), the audiences it `appliesTo`, and a `scope` citation quoting the instrument's own words with a pinpoint; a `not_a_rule` entry (strategy, report, funding program) carries a note. `review` is `draft` until an editor approves it on a decision card, then `reviewed` with `reviewedBy`. Only reviewed rules reach `/rule-finder`, which returns 404 while there are none. `validate:data` errors on an unknown record or a proposed record not marked proposed, and warns with a count of unscoped records. The finder reports what an instrument says about whom it covers; it never says whether a reader complies.
 7. **Freshness**: register source fingerprints are checked with `npm run audit:register`; changed content marks a record stale until editorial re-verification. Separately, a record whose manual verification is older than 90 days stays public but is shown as "Review due"; `npm run check:freshness` (CI, weekly) fails when overdue records exceed the ratchet in `data/freshness-budget.json`.
 
 8. **Articles** (`data/articles/<slug>.md`): Policai's written analysis. See Articles below.
@@ -546,3 +547,13 @@ Keep docs HADS-aligned:
 - **Actionable:** include exact commands, paths, environment variables, and verification steps.
 - **Durable:** avoid vendor/model claims that drift quickly unless the code depends on them.
 - **Specific:** prefer concrete project paths and behaviours over generic advice.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
