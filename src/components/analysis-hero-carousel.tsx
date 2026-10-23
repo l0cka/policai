@@ -1,7 +1,8 @@
 'use client';
 
-import { Children, useEffect, useState, type ReactNode } from 'react';
+import { Children, useEffect, useState, type CSSProperties, type ReactNode } from 'react';
 import Link from 'next/link';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import {
   ANALYSIS_HERO_INTERVAL_MS,
   analysisHeroIndex,
@@ -58,6 +59,8 @@ export function AnalysisHeroCarousel({
       aria-labelledby="analysis-hero-heading"
       className="analysis-hero"
       data-reduced-motion={reduced ? 'true' : 'false'}
+      data-running={!reduced && !paused && count > 1 ? 'true' : 'false'}
+      style={{ '--analysis-hero-interval': `${ANALYSIS_HERO_INTERVAL_MS}ms` } as CSSProperties}
       onPointerEnter={() => setHovered(true)}
       onPointerLeave={() => setHovered(false)}
       onFocusCapture={() => setFocused(true)}
@@ -68,66 +71,50 @@ export function AnalysisHeroCarousel({
         }
       }}
     >
-      <div className="flex items-baseline justify-between gap-4 border-b border-[var(--rule-heavy)] py-2 font-mono text-[length:var(--type-label)] font-medium uppercase tracking-[var(--tracking-eyebrow)]">
-        <p id="analysis-hero-heading">Analysis</p>
-        <div className="flex gap-4">
-          <Link href="/analysis" className="hover:text-primary">
+      <div className="analysis-hero-head">
+        <p id="analysis-hero-heading" className="analysis-hero-eyebrow">
+          Analysis
+        </p>
+        <div className="flex items-center gap-3 sm:gap-4">
+          {count > 1 ? (
+            <div className="flex items-center gap-1 whitespace-nowrap">
+              <p className="analysis-hero-count max-sm:hidden">
+                <span className="sr-only">Showing article </span>
+                {current + 1} of {count}
+              </p>
+              <button
+                type="button"
+                className="analysis-hero-arrow"
+                aria-label="Previous article"
+                onClick={() => show(current - 1)}
+              >
+                <ChevronLeft aria-hidden="true" className="size-4" />
+              </button>
+              <button
+                type="button"
+                className="analysis-hero-arrow"
+                aria-label="Next article"
+                onClick={() => show(current + 1)}
+              >
+                <ChevronRight aria-hidden="true" className="size-4" />
+              </button>
+            </div>
+          ) : null}
+          <Link href="/analysis" className="analysis-hero-eyebrow whitespace-nowrap hover:text-primary">
             All analysis
           </Link>
-          <a href="/analysis/feed.xml" aria-label="Analysis feed (Atom)" className="hover:text-primary">
-            Analysis feed
+          <a
+            href="/analysis/feed.xml"
+            aria-label="Analysis feed (Atom)"
+            className="analysis-hero-eyebrow hover:text-primary max-sm:hidden"
+          >
+            Feed
           </a>
         </div>
       </div>
       <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">
         {notice}
       </p>
-      <div className="analysis-hero-controls">
-        <p className="font-mono text-[length:var(--type-label)] uppercase tracking-[var(--tracking-eyebrow)] text-muted-foreground">
-          <span className="sr-only">Showing article </span>
-          <span>
-            {current + 1} of {count}
-          </span>
-        </p>
-        {count > 1 ? (
-          <div className="flex flex-wrap items-center gap-2">
-            <div className="analysis-hero-dots flex flex-wrap items-center" role="group" aria-label="Articles">
-              {slides.map((article, slideIndex) => {
-                const active = slideIndex === current;
-                return (
-                  <button
-                    key={article.slug}
-                    type="button"
-                    aria-label={`Show article ${slideIndex + 1}: ${article.title}`}
-                    aria-current={active ? 'true' : undefined}
-                    aria-controls={`analysis-hero-slide-${article.slug}`}
-                    onClick={() => show(slideIndex)}
-                    className="analysis-hero-dot"
-                  >
-                    <span aria-hidden="true" />
-                  </button>
-                );
-              })}
-            </div>
-            <button
-              type="button"
-              className="analysis-hero-control"
-              aria-label="Previous article"
-              onClick={() => show(current - 1)}
-            >
-              Previous
-            </button>
-            <button
-              type="button"
-              className="analysis-hero-control"
-              aria-label="Next article"
-              onClick={() => show(current + 1)}
-            >
-              Next
-            </button>
-          </div>
-        ) : null}
-      </div>
       <div className="analysis-hero-stage">
         {panels.map((panel, slideIndex) => {
           const active = slideIndex === current;
@@ -146,6 +133,24 @@ export function AnalysisHeroCarousel({
           );
         })}
       </div>
+      {count > 1 ? (
+        <div className="analysis-hero-segments" role="group" aria-label="Articles">
+          {slides.map((article, slideIndex) => (
+            <button
+              key={article.slug}
+              type="button"
+              aria-label={`Show article ${slideIndex + 1}: ${article.title}`}
+              aria-current={slideIndex === current ? 'true' : undefined}
+              aria-controls={`analysis-hero-slide-${article.slug}`}
+              data-state={slideIndex < current ? 'seen' : slideIndex === current ? 'current' : 'ahead'}
+              onClick={() => show(slideIndex)}
+              className="analysis-hero-segment"
+            >
+              <span key={slideIndex === current ? current : undefined} aria-hidden="true" />
+            </button>
+          ))}
+        </div>
+      ) : null}
     </section>
   );
 }
