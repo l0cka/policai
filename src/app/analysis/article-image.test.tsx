@@ -6,8 +6,8 @@ import { buildPolicy } from '@/test/factories';
 const readJsonFile = vi.fn();
 
 vi.mock('@/lib/file-store', () => ({ readJsonFile, writeJsonFile: vi.fn() }));
-vi.mock('next-mdx-remote/rsc', () => ({
-  MDXRemote: ({ source }: { source: string }) => <div>{source}</div>,
+vi.mock('@/lib/article-markdown', () => ({
+  renderArticleMarkdown: (markdown: string) => <div>{markdown}</div>,
 }));
 vi.mock('next/navigation', () => ({
   notFound: () => {

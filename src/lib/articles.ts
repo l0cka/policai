@@ -1,5 +1,6 @@
 import { readdir, readFile } from "fs/promises";
 import path from "path";
+import { listBundledDir, readBundledFile } from "@/lib/bundled-files";
 import { isValidCalendarDate, sydneyCalendarDate } from "@/lib/calendar-date";
 import { parseFrontmatter, type FrontmatterFile } from "@/lib/frontmatter";
 import { parseArticleBody } from "@/lib/article-figures";
@@ -103,6 +104,18 @@ export function articleEditorialDate(article: PublicArticle): string {
 }
 
 export async function readArticleSources(dir: string): Promise<ArticleSource[]> {
+	const bundled = await listBundledDir(dir);
+	if (bundled) {
+		return Promise.all(
+			bundled
+				.filter((name) => name.endsWith(".md"))
+				.sort()
+				.map(async (name) => ({
+					slug: name.slice(0, -".md".length),
+					source: (await readBundledFile(path.join(dir, name))) ?? "",
+				})),
+		);
+	}
 	let names: string[];
 	try {
 		names = await readdir(dir);
