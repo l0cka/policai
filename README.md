@@ -132,7 +132,7 @@ filters, response formats, and MCP tools.
 
 ## Deployment
 
-[policai.org](https://policai.org) is served from Cloudflare Workers through OpenNext. Data is bundled into the Worker at build time, so every commit to `main`, data included, redeploys it from a GitHub-hosted runner. See [docs/hosting-argus.md](./docs/hosting-argus.md). The collector runs on the same host, in a separate checkout on a daily schedule, and pushes its commits to the same repository. It retrieves browser-only candidate pages through a self-hosted Firecrawl instance and, in production, classifies candidates with Claude through the Claude Code CLI already installed on the host. See [docs/collector.md](./docs/collector.md).
+[policai.org](https://policai.org) is served from Cloudflare Workers through OpenNext. Data is bundled into the Worker at build time, so every commit to `main`, data included, redeploys it through Cloudflare Workers Builds. See [docs/hosting-argus.md](./docs/hosting-argus.md). The collector runs on the same host, in a separate checkout on a daily schedule, and pushes its commits to the same repository. It retrieves browser-only candidate pages through a self-hosted Firecrawl instance and, in production, classifies candidates with Claude through the Claude Code CLI already installed on the host. See [docs/collector.md](./docs/collector.md).
 
 ## Contributing
 
