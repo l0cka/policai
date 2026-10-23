@@ -61,6 +61,7 @@ describe('createClefScorer', () => {
 
 describe('clefUnavailableReason', () => {
   const tags = {
+    '/api/ps': () => ({ models: [] }),
     '/api/tags': () => ({ models: [{ name: 'clef-flash:latest' }] }),
     '/v1/systemone': () => answer(0.9),
   };
@@ -74,17 +75,33 @@ describe('clefUnavailableReason', () => {
     ).toBeNull();
   });
 
-  it('declines when the GPU is busy, without asking Ollama', async () => {
+  it('declines when the GPU is busy, without asking the model', async () => {
     const fetchImpl = ollama(tags);
     expect(
       await clefUnavailableReason({ fetchImpl, freeVramMb: async () => 4_000 }),
     ).toMatch(/free VRAM 4000 MB/);
-    expect(fetchImpl).not.toHaveBeenCalled();
+    expect(fetchImpl.mock.calls.map(([url]) => new URL(String(url)).pathname)).toEqual([
+      '/api/ps',
+    ]);
+  });
+
+  it('is ready when clef-flash is already loaded, however little VRAM is free', async () => {
+    expect(
+      await clefUnavailableReason({
+        fetchImpl: ollama({
+          ...tags,
+          '/api/ps': () => ({ models: [{ name: 'clef-flash:latest' }] }),
+        }),
+        freeVramMb: async () => 8_973,
+      }),
+    ).toBeNull();
   });
 
   it('declines when the listed model cannot answer', async () => {
     const fetchImpl = vi.fn(async (url: string | URL | Request) =>
-      new URL(String(url)).pathname === '/api/tags'
+      new URL(String(url)).pathname === '/api/ps'
+        ? Response.json({ models: [] })
+        : new URL(String(url)).pathname === '/api/tags'
         ? Response.json({ models: [{ name: 'clef-flash:latest' }] })
         : new Response(
             JSON.stringify({ error: "'clef-flash:latest' was downloaded in a format that is no longer supported" }),
@@ -99,7 +116,10 @@ describe('clefUnavailableReason', () => {
   it('declines when the model is missing or Ollama is down', async () => {
     expect(
       await clefUnavailableReason({
-        fetchImpl: ollama({ '/api/tags': () => ({ models: [{ name: 'other' }] }) }),
+        fetchImpl: ollama({
+          '/api/ps': () => ({ models: [] }),
+          '/api/tags': () => ({ models: [{ name: 'other' }] }),
+        }),
         freeVramMb: async () => 20_000,
       }),
     ).toMatch(/not installed/);
