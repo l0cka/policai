@@ -1,0 +1,10 @@
+[Unit]
+Description=Daily Policai collection (19:30 UTC, matching the retired Actions schedule)
+
+[Timer]
+OnCalendar=*-*-* 19:30:00 UTC
+Persistent=true
+RandomizedDelaySec=300
+
+[Install]
+WantedBy=timers.target
