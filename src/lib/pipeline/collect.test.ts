@@ -614,7 +614,7 @@ describe('collect', () => {
     expect(result.state.seen['https://parlinfo.aph.gov.au/debate/petition']).toBeUndefined();
   });
 
-  it('turns Federal Register full-text matches into developments for review', async () => {
+  function collectRegisterSearch(scoreRelevance?: RelevanceScorer, logger?: (message: string) => void) {
     const REGISTER_SOURCE: WatchSource = {
       id: 'test-frl-search',
       bodyId: 'test-body',
@@ -641,7 +641,7 @@ describe('collect', () => {
       },
     });
 
-    const result = await collect({
+    return collect({
       sources: [REGISTER_SOURCE],
       state: emptyWatchState(),
       existingDevelopments: [],
@@ -655,7 +655,13 @@ describe('collect', () => {
         'https://www.legislation.gov.au/F2026L01223/asmade/details': page('ASIC Market Integrity Rules (Securities Markets) Amendment Instrument 2026/574'),
       }),
       now: () => new Date('2026-09-18T00:00:00.000Z'),
+      scoreRelevance,
+      logger,
     });
+  }
+
+  it('turns Federal Register full-text matches into developments for review', async () => {
+    const result = await collectRegisterSearch();
 
     expect(result.errors).toEqual([]);
     expect(result.developments.map((d) => [d.url, d.title, d.publishedAt])).toEqual([
@@ -668,6 +674,22 @@ describe('collect', () => {
     expect(result.developments[0].summary).toContain('matched this instrument as made (relevance 25.7)');
     expect(result.developments[0].relevanceScore).toBeLessThanOrEqual(MACHINE_CONFIDENCE_CAP);
     expect(result.state.seen['https://www.legislation.gov.au/F2026L01187/asmade/details']).toBeUndefined();
+  });
+
+  it('lets the model dismiss a register search hit and logs its score', async () => {
+    const logs: string[] = [];
+    const result = await collectRegisterSearch(
+      vi.fn<RelevanceScorer>(async (items) => new Map(items.map((item) => [item.id, 0.12]))),
+      (message) => logs.push(message),
+    );
+
+    expect(result.developments).toEqual([]);
+    expect(result.state.seen['https://www.legislation.gov.au/F2026L01224/asmade/details']).toMatchObject({
+      status: 'dismissed',
+    });
+    expect(logs).toContainEqual(
+      '[collect] test-frl-search: model score 0.12 for "ASIC Market Integrity Rules (Futures Markets) Amendment Instrument 2026/575"',
+    );
   });
 
   it('suppresses same-month alternate government release URLs by headline', async () => {

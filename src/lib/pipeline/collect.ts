@@ -1737,19 +1737,26 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
       `[collect] ${source.id}: ${candidateCount} candidates, ${newCandidateCount} new, ${pending.length} pending`,
     );
 
+    const scoredCandidates = candidates.filter(
+      (candidate) => !trackedChangeTarget(candidate),
+    );
     const modelScoresById: Map<string, number> | null =
-      scoreRelevance && !source.bodyRelevance && !isRegisterSearch(source.kind)
+      scoreRelevance && !source.bodyRelevance
         ? await scoreRelevance(
-            candidates
-              .filter((candidate) => !trackedChangeTarget(candidate))
-              .map((candidate) => ({
-                id: candidateStateKey(candidate),
-                title: candidate.title,
-                text: candidate.text,
-                sourceName: source.name,
-              })),
+            scoredCandidates.map((candidate) => ({
+              id: candidateStateKey(candidate),
+              title: candidate.title,
+              text: candidate.text,
+              sourceName: source.name,
+            })),
           )
         : null;
+    for (const candidate of modelScoresById ? scoredCandidates : []) {
+      const score = modelScoresById?.get(candidateStateKey(candidate));
+      if (score !== undefined) {
+        log(`[collect] ${source.id}: model score ${score.toFixed(2)} for "${candidate.title}"`);
+      }
+    }
 
     let candidateFailureCount = 0;
     for (const candidate of candidates) {
@@ -1927,7 +1934,12 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
             changeDetectionReason(changeTarget.record, pageRetrieval),
           )
         : isRegisterSearch(source.kind)
-          ? classifyBySearchMatch(candidate)
+          ? modelScoresById?.has(candidateStateKey(candidate))
+            ? classificationFromScore(
+                modelScoresById.get(candidateStateKey(candidate)),
+                enrichedCandidate,
+              )
+            : classifyBySearchMatch(candidate)
           : source.bodyRelevance
             ? classifyByBodyMentions(
                 enrichedCandidate,
