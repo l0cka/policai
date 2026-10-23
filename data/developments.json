@@ -1,5 +1,223 @@
 [
   {
+    "id": "dev-rapid-review-into-australian-government-arrangem-1lc8cyp",
+    "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
+    "url": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+    "sourceId": "pmc-rapid-review-ai-cyber",
+    "sourceName": "PM&C — Rapid review into AI-driven cyber incident arrangements",
+    "jurisdiction": "federal",
+    "detectedAt": "2026-10-23T03:06:54.019Z",
+    "summary": "The verified register record for \"Rapid review into Australian Government arrangements for an AI-driven cyber incident\" has no stored source fingerprint. The currently served document requires editorial comparison before it can establish a trusted baseline.",
+    "relevanceScore": 1,
+    "classification": "heuristic",
+    "assessment": {
+      "method": "heuristic",
+      "promptVersion": "source-hash-change-v1",
+      "assessedAt": "2026-10-23T03:06:54.019Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+        "finalUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+        "retrievedAt": "2026-10-23T03:06:54.019Z",
+        "contentType": "text/html",
+        "contentHash": "5b7468b8c7812ea1616ff48f6183541408fdd92d8dd4edfbf8a6eb171fe0eb1b",
+        "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-senate-opens-inquiry-into-artificial-intelligenc-pjbk73",
+    "title": "Senate opens inquiry into artificial intelligence and data centres",
+    "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+    "sourceId": "senate-ai-data-centres",
+    "sourceName": "Senate inquiry — artificial intelligence and data centres",
+    "jurisdiction": "federal",
+    "detectedAt": "2026-10-23T03:06:54.019Z",
+    "summary": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+    "relevanceScore": 1,
+    "classification": "heuristic",
+    "assessment": {
+      "method": "heuristic",
+      "promptVersion": "source-hash-change-v1",
+      "assessedAt": "2026-10-23T03:06:54.019Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+        "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+        "retrievedAt": "2026-10-23T03:06:54.019Z",
+        "contentType": "text/html",
+        "contentHash": "b42ef68b82b6e38a9ec910af5b9eb38baaf7602a9715e1afec39c3fbe9417a5a",
+        "title": "Senate opens inquiry into artificial intelligence and data centres"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-asic-market-integrity-rules-futures-markets-amen-3keefd",
+    "title": "ASIC Market Integrity Rules (Futures Markets) Amendment Instrument 2026/575",
+    "url": "https://www.legislation.gov.au/F2026L01224/asmade/details",
+    "sourceId": "legislation-whats-new",
+    "sourceName": "Federal Register of Legislation — new AI instruments",
+    "jurisdiction": "federal",
+    "publishedAt": "2026-09-17",
+    "publishedAtPrecision": "day",
+    "detectedAt": "2026-10-23T03:06:54.019Z",
+    "summary": "Federal Register full-text search for \"artificial intelligence\", \"machine learning\", \"generative AI\", \"automated decision\" matched this instrument as made (relevance 25.7).",
+    "relevanceScore": 0.55,
+    "classification": "heuristic",
+    "assessment": {
+      "method": "heuristic",
+      "promptVersion": "register-search-v1",
+      "assessedAt": "2026-10-23T03:06:54.019Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.legislation.gov.au/F2026L01224/asmade/details",
+        "finalUrl": "https://www.legislation.gov.au/F2026L01224/asmade/details",
+        "retrievedAt": "2026-10-23T03:06:54.019Z",
+        "contentType": "text/html",
+        "contentHash": "f95344cb7f1f3d4a09d91c3a0d20fa0dadd7c615057aadf54ddc4e9d6e7c86ff",
+        "etag": "W/\"ea1a-aj6aNwmdCNda2YYavg6t8cOG8wo\"",
+        "title": "ASIC Market Integrity Rules (Futures Markets) Amendment Instrument 2026/575",
+        "publishedAt": "2026-09-17",
+        "publishedAtPrecision": "day"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-health-insurance-accredited-pathology-laboratori-au4lkw",
+    "title": "Health Insurance (Accredited Pathology Laboratories—Approval) Amendment (Relevant Standards) Principles (No. 3) 2026",
+    "url": "https://www.legislation.gov.au/F2026L00927/asmade/details",
+    "sourceId": "legislation-whats-new",
+    "sourceName": "Federal Register of Legislation — new AI instruments",
+    "jurisdiction": "federal",
+    "publishedAt": "2026-07-06",
+    "publishedAtPrecision": "day",
+    "detectedAt": "2026-10-23T03:06:54.019Z",
+    "summary": "Federal Register full-text search for \"artificial intelligence\", \"machine learning\", \"generative AI\", \"automated decision\" matched this instrument as made (relevance 20.6).",
+    "relevanceScore": 0.55,
+    "classification": "heuristic",
+    "assessment": {
+      "method": "heuristic",
+      "promptVersion": "register-search-v1",
+      "assessedAt": "2026-10-23T03:06:54.019Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.legislation.gov.au/F2026L00927/asmade/details",
+        "finalUrl": "https://www.legislation.gov.au/F2026L00927/asmade/details",
+        "retrievedAt": "2026-10-23T03:06:54.019Z",
+        "contentType": "text/html",
+        "contentHash": "51d4088679fcf755dbbe9fdc8ad8eeb17a9ee4e6cfbd4827b426ac99324bc421",
+        "etag": "W/\"e85a-bztwXXRS+/qSZbPNiAMdBUIIgYE\"",
+        "title": "Health Insurance (Accredited Pathology Laboratories—Approval) Amendment (Relevant Standards) Principles (No. 3) 2026",
+        "publishedAt": "2026-07-06",
+        "publishedAtPrecision": "day"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-competition-and-consumer-scams-prevention-framew-1133o4v",
+    "title": "Competition and Consumer (Scams Prevention Framework—Regulated Sectors) Designation 2026",
+    "url": "https://www.legislation.gov.au/F2026L00627/asmade/details",
+    "sourceId": "legislation-whats-new",
+    "sourceName": "Federal Register of Legislation — new AI instruments",
+    "jurisdiction": "federal",
+    "publishedAt": "2026-05-28",
+    "publishedAtPrecision": "day",
+    "detectedAt": "2026-10-23T03:06:54.019Z",
+    "summary": "Federal Register full-text search for \"artificial intelligence\", \"machine learning\", \"generative AI\", \"automated decision\" matched this instrument as made (relevance 23.8).",
+    "relevanceScore": 0.55,
+    "classification": "heuristic",
+    "assessment": {
+      "method": "heuristic",
+      "promptVersion": "register-search-v1",
+      "assessedAt": "2026-10-23T03:06:54.019Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.legislation.gov.au/F2026L00627/asmade/details",
+        "finalUrl": "https://www.legislation.gov.au/F2026L00627/asmade/details",
+        "retrievedAt": "2026-10-23T03:06:54.019Z",
+        "contentType": "text/html",
+        "contentHash": "7d1716b65634350ce226769204161799bac404278b2a76552e12337879adc549",
+        "etag": "W/\"e98e-lAS5Ec9w4az6nhgjcUW3Ree/V+Q\"",
+        "title": "Competition and Consumer (Scams Prevention Framework—Regulated Sectors) Designation 2026",
+        "publishedAt": "2026-05-28",
+        "publishedAtPrecision": "day"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-practice-notes-nq4ujl",
+    "title": "Practice Notes",
+    "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes",
+    "sourceId": "fedcourt-practice-notes",
+    "sourceName": "Federal Court — practice notes",
+    "jurisdiction": "federal",
+    "detectedAt": "2026-10-23T03:06:54.019Z",
+    "summary": "Accessibility Links Skip to main navigation Skip to sub navigation Skip to main content Home Search Field Contact Us Complaints & Feedback Employment Main Menu Going to Court I am a Party - Information for Litigants Help with legal problem Learn about Court processes, procedures & documents Communicating with the Court Find out about an area of law Interpreters Jury Service About jury service Am I eligible? Attendance fees & allowances Requests to be excused FAQs I am a Practitioner Practice Areas Communicating with the Court Using the Court's Online Services Robing Registering to practice I a",
+    "relevanceScore": 0.65,
+    "classification": "ai",
+    "assessment": {
+      "method": "ai",
+      "promptVersion": "clef-noul-v1",
+      "assessedAt": "2026-10-23T03:06:54.019Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes",
+        "finalUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes",
+        "retrievedAt": "2026-10-23T03:06:54.019Z",
+        "contentType": "text/html",
+        "contentHash": "300416e7a2709f8e1afc645560253963bc11a5566efc24a0fc24b1be4b351c19",
+        "title": "Practice Notes"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-practice-directions-supreme-court-of-tasmania-17m5qlx",
+    "title": "Practice Directions - Supreme Court of Tasmania",
+    "url": "https://www.supremecourt.tas.gov.au/publications/directions",
+    "sourceId": "tas-sc-practice-directions",
+    "sourceName": "Tasmanian Supreme Court — practice directions",
+    "jurisdiction": "tas",
+    "detectedAt": "2026-10-23T03:06:54.019Z",
+    "summary": "🔊 Listen Practice Directions NumberTitleDateSubject 2 of 2026Amended Judge-Alone Criminal Trials15/10/2026Criminal 1 of 2026Criminal Case Management List - Amending 1 of 202527/02/2026Criminal 1 of 2025Criminal Case Management List7/07/2025Criminal 4 of 2022Appeals and Reviews (Miscellaneous) - Written Outlines of Contentions24/08/2022Practice and Procedure 3 of 2022Appeal Books, Lists of Authorities & Written Submissions24/08/2022Practice and Procedure 2 of 2022Judge-Alone Criminal Trials06/06/2022Criminal 1 of 2022Arrangements Relating to COVID-1919/01/2022Criminal 1 of 2021Directions Heari",
+    "relevanceScore": 0.65,
+    "classification": "ai",
+    "assessment": {
+      "method": "ai",
+      "promptVersion": "clef-noul-v1",
+      "assessedAt": "2026-10-23T03:06:54.019Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.supremecourt.tas.gov.au/publications/directions",
+        "finalUrl": "https://www.supremecourt.tas.gov.au/publications/directions",
+        "retrievedAt": "2026-10-23T03:06:54.019Z",
+        "contentType": "text/html",
+        "contentHash": "ee214c2a96e3986b66d722bba86d3d59acad179981a0ba646028d62bda89fbb8",
+        "title": "Practice Directions - Supreme Court of Tasmania"
+      }
+    },
+    "status": "detected"
+  },
+  {
     "id": "dev-inslm-annual-report-2025-26-ai-scoping",
     "title": "INSLM 2025–26 Annual Report scopes AI regulation in the national intelligence community",
     "url": "https://www.inslm.gov.au/system/files/2026-10/INSLM-annual-report-2025-26.pdf",
