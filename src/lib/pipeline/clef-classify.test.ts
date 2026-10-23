@@ -60,7 +60,10 @@ describe('createClefScorer', () => {
 });
 
 describe('clefUnavailableReason', () => {
-  const tags = { '/api/tags': () => ({ models: [{ name: 'clef-flash:latest' }] }) };
+  const tags = {
+    '/api/tags': () => ({ models: [{ name: 'clef-flash:latest' }] }),
+    '/v1/systemone': () => answer(0.9),
+  };
 
   it('is ready when the GPU has room and the model is installed', async () => {
     expect(
@@ -77,6 +80,20 @@ describe('clefUnavailableReason', () => {
       await clefUnavailableReason({ fetchImpl, freeVramMb: async () => 4_000 }),
     ).toMatch(/free VRAM 4000 MB/);
     expect(fetchImpl).not.toHaveBeenCalled();
+  });
+
+  it('declines when the listed model cannot answer', async () => {
+    const fetchImpl = vi.fn(async (url: string | URL | Request) =>
+      new URL(String(url)).pathname === '/api/tags'
+        ? Response.json({ models: [{ name: 'clef-flash:latest' }] })
+        : new Response(
+            JSON.stringify({ error: "'clef-flash:latest' was downloaded in a format that is no longer supported" }),
+            { status: 400 },
+          ),
+    ) as unknown as typeof fetch;
+    expect(
+      await clefUnavailableReason({ fetchImpl, freeVramMb: async () => 20_000 }),
+    ).toMatch(/HTTP 400 from \/v1\/systemone: .*no longer supported/);
   });
 
   it('declines when the model is missing or Ollama is down', async () => {
