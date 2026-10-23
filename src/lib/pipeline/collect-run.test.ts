@@ -189,7 +189,7 @@ describe('collection CLI write path', () => {
       expect.arrayContaining(['www.cyber.gov.au']),
     );
   });
-  it('follows a tracked federal bill through the browser and stages its new stages without touching the register', async () => {
+  it('follows a tracked federal bill weekly through the browser and stages its new stages without touching the register', async () => {
     const billUrl = aphBillPage('r7249');
     const bill = buildPolicy({
       id: 'privacy-bill',
@@ -213,21 +213,33 @@ describe('collection CLI write path', () => {
         : new Response('not found', { status: 404 }),
     ) as unknown as typeof fetch;
 
-    await runCollection({
-      rootDir,
-      sources: [],
-      dryRun: false,
-      fetchImpl,
-      browserFetchImpl,
-      now: () => new Date('2026-10-22T05:00:00.000Z'),
-      hostGate: createHostGate({
-        hosts: {},
-        refused: new Map(),
-        fetchRobots: robotsFetcher({ fetchImpl }),
-        now: Date.now,
-        sleep: async () => {},
-      }),
-    });
+    const followAt = (now: string) =>
+      runCollection({
+        rootDir,
+        sources: [],
+        dryRun: false,
+        fetchImpl,
+        browserFetchImpl,
+        now: () => new Date(now),
+        hostGate: createHostGate({
+          hosts: {},
+          refused: new Map(),
+          fetchRobots: robotsFetcher({ fetchImpl }),
+          now: Date.now,
+          sleep: async () => {},
+        }),
+      });
+    const billReads = () => vi.mocked(browserFetchImpl).mock.calls.filter(([input]) => String(input) === billUrl).length;
+
+    const decideStagedUpdate = () => writeFileSync(path.join(rootDir, 'data', 'source-reviews.json'), '[]\n');
+
+    await followAt('2026-10-22T05:00:00.000Z');
+    expect(billReads()).toBe(1);
+    decideStagedUpdate();
+    await followAt('2026-10-25T05:00:00.000Z');
+    expect(billReads()).toBe(1);
+    await followAt('2026-10-29T05:00:00.000Z');
+    expect(billReads()).toBe(2);
 
     const reviews = readJson<SourceReview[]>('data', 'source-reviews.json');
     expect(reviews).toHaveLength(1);

@@ -5,6 +5,7 @@ import {
   collect,
   collectionRunFailed,
   emptyWatchState,
+  isWeeklyDue,
   type WatchState,
 } from '../src/lib/pipeline/collect';
 import type { BrowserFetch } from '../src/lib/pipeline/browser-fetch';
@@ -202,7 +203,10 @@ export async function runCollection(run: CollectionRun): Promise<void> {
     scoreRelevance: run.scoreRelevance,
   });
 
-  const follow = await followTrackedLegislation(run, policies, reviews, hostGate);
+  const follow = await followTrackedLegislation(run, policies, reviews, hostGate, result.state);
+  for (const row of follow.results) {
+    if (row.status === 'success') result.state.lastCheckedBySource[row.sourceId] = row.checkedAt;
+  }
   const reviewCandidates = [...result.reviewCandidates, ...follow.reviews];
   result.state.sourceHealth = advanceSourceHealth(
     result.state.sourceHealth,
@@ -309,28 +313,31 @@ export async function runCollection(run: CollectionRun): Promise<void> {
  * Follow watches read each tracked federal bill's APH page through the
  * browser with the Policai identity, since APH refuses plain HTTP clients,
  * and each tracked federal instrument's Federal Register title record over
- * plain HTTP. A run targeted at one catalogue source skips them;
- * `--source track:<policyId>` follows one record.
+ * plain HTTP. Each record is followed weekly, counted from its last
+ * successful check, so a failed follow is retried on the next run. A run
+ * targeted at one catalogue source skips them; `--source track:<policyId>`
+ * follows one record now.
  */
 async function followTrackedLegislation(
   run: CollectionRun,
   policies: Policy[],
   reviews: SourceReview[],
   gate: HostGate,
+  state: WatchState,
 ): Promise<FollowResult> {
   if (run.sourceId && !run.sourceId.startsWith(FOLLOW_SOURCE_PREFIX)) {
     return { reviews: [], errors: [], results: [] };
   }
   const browserFetchImpl = run.browserFetchImpl;
-  const targets = followTargets(policies).filter(
-    (target) =>
-      (!run.sourceId || target.sourceId === run.sourceId) &&
-      (!BROWSER_REGISTERS.has(target.register) || browserFetchImpl),
-  );
+  const now = run.now ?? (() => new Date());
+  const targets = followTargets(policies).filter((target) =>
+    run.sourceId
+      ? target.sourceId === run.sourceId
+      : isWeeklyDue(state.lastCheckedBySource[target.sourceId], now()),
+  ).filter((target) => !BROWSER_REGISTERS.has(target.register) || browserFetchImpl);
   if (!browserFetchImpl) {
     console.log('[follow] No browser retriever; APH, NSW and WA bill watches skipped.');
   }
-  const now = run.now ?? (() => new Date());
   return followLegislation({
     targets,
     existingReviews: reviews,

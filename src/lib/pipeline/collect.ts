@@ -610,7 +610,11 @@ function isSourceDue(
   now: Date,
 ): boolean {
   if (source.schedule === 'daily') return true;
-  const lastChecked = state.lastCheckedBySource[source.id];
+  return isWeeklyDue(state.lastCheckedBySource[source.id], now);
+}
+
+/** A weekly check is due once its last success is six days old, or there is none. */
+export function isWeeklyDue(lastChecked: string | undefined, now: Date): boolean {
   if (!lastChecked) return true;
   return now.getTime() - new Date(lastChecked).getTime() >= WEEKLY_INTERVAL_MS;
 }

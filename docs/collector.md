@@ -25,7 +25,13 @@ The collector is the automation behind the Developments feed: it watches officia
      robots and backoff records, and the per-source `sourceHealth` ledger
      (`lastSuccessAt`, `firstFailureAt`, `consecutiveFailures`,
      `lastFailureClass`; [`source-health.ts`](../src/lib/pipeline/source-health.ts)) →
-     `data/watch-state.json`,
+     `data/watch-state.json`. An automatic source that fails three runs in a
+     row is proposed for a move to manual: when the ledger lands on main, the
+     `Collector proposals` workflow (`npm run collector:proposals`) opens one
+     `collector-proposal` issue per such source and closes it once the source
+     succeeds again. Nothing moves on its own. A person decides on a decision
+     card in the Policai project, and the move is a `ManualDecision` in
+     [`sources.ts`](../src/lib/pipeline/sources.ts),
    - coverage health, per-source item/candidate counts, and errors →
      `public/data/meta.json`.
    The site header strip reads `lastCollectedAt` ("Collected 17 Oct 2026,
@@ -860,8 +866,11 @@ failures, such as timeouts, 404s and 5xx responses, still refuse.
 
 ### Follow watches for federal legislation
 
-Each collection run follows two kinds of register record, each under the watch
-id `track:<policyId>`:
+Collection follows two kinds of register record, each under the watch id
+`track:<policyId>`. Each record is followed weekly: a run reads it when its
+last successful follow (`lastCheckedBySource` in the watch state) is six days
+old or more, so a failed follow is retried on the next run. A targeted
+`--source track:<policyId>` run follows that record at once.
 
 - A bill whose `legislative.ref` is an APH bill id, and whose `sourceUrl` is
   that bill's home page. The watch reads the page through the browser with the
