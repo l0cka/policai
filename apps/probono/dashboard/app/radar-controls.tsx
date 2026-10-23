@@ -2,20 +2,23 @@ import Link from 'next/link';
 import { STREAMS, radarHref, type RadarState, type radarPage } from '../lib/radar-state';
 import { ArrowRight, Flag, Search } from './icons';
 
-export function RadarControls({ state }: { state: RadarState }) {
+/** The home hero already has a search box, so the feed's own appears only once results are filtered or paged. */
+export function RadarControls({ state, showSearch }: { state: RadarState; showSearch: boolean }) {
   const filtered = Boolean(state.q || state.stream || state.opp || state.filtered);
   return (
     <div className="radar-controls">
-      <form action="/#radar-feed" method="get" className="radar-search" role="search" aria-label="Search radar results">
-        {state.stream ? <input type="hidden" name="stream" value={state.stream} /> : null}
-        {state.opp ? <input type="hidden" name="opp" value="1" /> : null}
-        {state.filtered ? <input type="hidden" name="filtered" value="1" /> : null}
-        <label htmlFor="feed-search">Search signals, sources or topics</label>
-        <div className="radar-search-row">
-          <input key={state.q ?? ''} id="feed-search" type="search" name="q" maxLength={300} placeholder="For example, legal assistance or a source name" defaultValue={state.q ?? ''} />
-          <button type="submit" className="button-quiet"><Search /> Search</button>
-        </div>
-      </form>
+      {showSearch ? (
+        <form action="/#radar-feed" method="get" className="radar-search" role="search" aria-label="Search radar results">
+          {state.stream ? <input type="hidden" name="stream" value={state.stream} /> : null}
+          {state.opp ? <input type="hidden" name="opp" value="1" /> : null}
+          {state.filtered ? <input type="hidden" name="filtered" value="1" /> : null}
+          <label htmlFor="feed-search">Search signals, sources or topics</label>
+          <div className="radar-search-row">
+            <input key={state.q ?? ''} id="feed-search" type="search" name="q" maxLength={300} placeholder="For example, legal assistance or a source name" defaultValue={state.q ?? ''} />
+            <button type="submit" className="button-quiet"><Search /> Search</button>
+          </div>
+        </form>
+      ) : null}
       <nav className="filters" aria-label="Radar filters">
         <Link href={radarHref(state, { stream: undefined })} className={!state.stream ? 'active' : ''} aria-current={!state.stream ? 'true' : undefined}>All</Link>
         {Object.entries(STREAMS).map(([key, label]) => (

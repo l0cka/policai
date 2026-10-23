@@ -180,7 +180,7 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Rad
             </p>
           </header>
 
-          <RadarControls state={state} />
+          <RadarControls state={state} showSearch={isResearch} />
 
           <div className="workspace">
         <div className="workspace-main">
