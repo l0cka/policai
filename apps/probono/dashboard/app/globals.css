@@ -3883,7 +3883,10 @@ tbody td:first-child {
 }
 
 @media (pointer: coarse) {
-  .footer-links a {
+  .footer-links a,
+  .rail-more,
+  .recent-signals-head a,
+  .sector-org-source-link {
     display: inline-flex;
     align-items: center;
     min-height: 2.75rem;
