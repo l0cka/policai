@@ -1068,9 +1068,10 @@
 }
 
 /*
- * Register analysis hero. Compact strip: about half the first viewport on a
- * typical desktop so the register (filters or first rows) shows without a
- * scroll. Slides share one grid cell and crossfade. The Bayer dither tile is
+ * Register analysis hero. Compact strip: about a third of the first viewport
+ * on a typical desktop so the register (filters or first rows) shows without a
+ * scroll. Counter and arrows sit in the header rule; a segmented line along
+ * the bottom shows where the rotation is and fills over each interval. Slides share one grid cell and crossfade. The Bayer dither tile is
  * static CSS (no JS, no animated noise); reduced-motion leaves it still.
  */
 .analysis-hero {
@@ -1078,8 +1079,8 @@
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  margin-bottom: var(--space-8);
-  padding: var(--space-4) var(--space-5) var(--space-4);
+  margin-bottom: var(--space-6);
+  padding: var(--space-3) var(--space-5) var(--space-2);
   background: color-mix(in srgb, var(--primary) 7%, var(--background));
   border-top: 3px solid var(--primary);
 }
@@ -1126,7 +1127,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-block: var(--space-4);
+  padding-block: var(--space-4) var(--space-3);
   opacity: 0;
   visibility: hidden;
   transform: translateY(0.5rem);
@@ -1147,12 +1148,57 @@
     transform calc(var(--dur-slow) * 2) var(--ease-out-quint),
     visibility 0s linear 0s;
 }
+.analysis-hero-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-height: 2.75rem;
+  padding-bottom: var(--space-1);
+  border-bottom: 1px solid var(--rule-heavy);
+}
+.analysis-hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--type-label);
+  font-weight: 500;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+}
+.analysis-hero-count {
+  margin-right: var(--space-1);
+  font-family: var(--font-mono);
+  font-size: var(--type-label);
+  font-variant-numeric: tabular-nums;
+  color: var(--muted-foreground);
+}
+.analysis-hero-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--radius);
+}
+.analysis-hero-arrow:hover {
+  color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 10%, transparent);
+}
+.analysis-hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.5rem;
+  font-family: var(--font-mono);
+  font-size: var(--type-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
 .analysis-hero-title {
-  margin-top: var(--space-1);
+  margin-top: var(--space-2);
   font-family: var(--font-display);
-  font-size: clamp(1.25rem, 1rem + 1.1vw, 1.85rem);
+  font-size: clamp(1.3rem, 1rem + 1.1vw, 1.9rem);
   font-weight: 400;
-  line-height: 1.25;
+  line-height: 1.2;
   letter-spacing: -0.015em;
   text-wrap: balance;
   overflow-wrap: anywhere;
@@ -1161,26 +1207,41 @@
   -webkit-line-clamp: 2;
   overflow: hidden;
 }
+@media (max-width: 39.99rem) {
+  .analysis-hero-title {
+    -webkit-line-clamp: 3;
+  }
+}
 .analysis-hero-teaser {
   margin-top: var(--space-2);
-  max-width: 40rem;
+  max-width: 44rem;
   font-size: var(--type-ui);
-  line-height: 1.4;
+  line-height: 1.45;
   color: var(--muted-foreground);
   overflow-wrap: anywhere;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
+  -webkit-line-clamp: 2;
   overflow: hidden;
+}
+.analysis-hero-read {
+  font-family: var(--font-mono);
+  font-size: var(--type-label);
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.analysis-hero-read:hover {
+  text-decoration: none;
 }
 .analysis-hero-layout {
   display: grid;
-  gap: var(--space-4);
+  gap: var(--space-5);
   align-items: center;
 }
 @media (min-width: 40rem) {
   .analysis-hero-layout {
-    grid-template-columns: minmax(0, 1fr) 7.5rem;
+    grid-template-columns: minmax(0, 1fr) 11rem;
   }
   .analysis-hero-layout-text {
     grid-template-columns: minmax(0, 1fr);
@@ -1188,8 +1249,7 @@
 }
 @media (min-width: 64rem) {
   .analysis-hero-layout {
-    grid-template-columns: minmax(0, 1fr) 9.5rem;
-    gap: var(--space-5);
+    grid-template-columns: minmax(0, 1fr) 13rem;
   }
 }
 .analysis-hero-figure {
@@ -1229,53 +1289,53 @@
     display: block;
   }
 }
-.analysis-hero-controls {
+.analysis-hero-segments {
   display: flex;
-  flex-wrap: wrap;
+  gap: 4px;
+}
+.analysis-hero-segment {
+  flex: 1;
+  display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--space-2) var(--space-4);
-  margin-top: var(--space-3);
+  min-width: 0;
+  height: 1.5rem;
 }
-.analysis-hero-control {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 2.75rem;
-  padding-inline: var(--space-4);
-  border: 1px solid var(--rule);
-  background: var(--background);
-  font-family: var(--font-mono);
-  font-size: var(--type-label);
-  font-weight: 500;
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
+.analysis-hero-segment > span {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 3px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--foreground) 18%, transparent);
 }
-.analysis-hero-control:hover {
-  color: var(--primary);
+.analysis-hero-segment:hover > span {
+  background: color-mix(in srgb, var(--primary) 45%, transparent);
 }
-.analysis-hero-control:focus-visible,
-.analysis-hero-dot:focus-visible {
+.analysis-hero-segment[data-state="seen"] > span {
+  background: color-mix(in srgb, var(--primary) 55%, transparent);
+}
+.analysis-hero-segment[data-state="current"] > span::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--primary);
+  transform-origin: left;
+}
+.analysis-hero[data-running="true"] .analysis-hero-segment[data-state="current"] > span::after {
+  animation: analysis-hero-fill var(--analysis-hero-interval) linear both;
+}
+@keyframes analysis-hero-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+.analysis-hero-arrow:focus-visible,
+.analysis-hero-segment:focus-visible {
   outline: var(--focus-ring-width) solid var(--focus-ring-color);
   outline-offset: var(--focus-ring-offset);
-}
-.analysis-hero-dot {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.75rem;
-  height: 2.75rem;
-  background: transparent;
-}
-.analysis-hero-dot > span {
-  width: 0.5rem;
-  height: 0.5rem;
-  border: 1px solid var(--foreground);
-  border-radius: var(--radius-pill);
-}
-.analysis-hero-dot[aria-current="true"] > span {
-  background: var(--primary);
-  border-color: var(--primary);
 }
 
 /* Respect reduced motion preferences */
@@ -1300,7 +1360,8 @@
     opacity: 1;
   }
   .analysis-hero-slide,
-  .analysis-hero-slide[data-current="true"] {
+  .analysis-hero-slide[data-current="true"],
+  .analysis-hero-segment > span::after {
     transition: none !important;
     transform: none !important;
     animation: none !important;

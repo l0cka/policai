@@ -68,7 +68,7 @@ describe('AnalysisHero', () => {
       `/analysis/${lead.slug}`,
     );
     expect(within(hero).getByText(lead.summary)).toHaveClass('analysis-hero-teaser');
-    expect(within(hero).getByText(`1 of ${articles.length}`)).toBeInTheDocument();
+    expect(hero.querySelector('.analysis-hero-count')).toHaveTextContent(`Showing article 1 of ${articles.length}`);
     expect(within(hero).queryByText('By Policai')).not.toBeInTheDocument();
     expect(container.innerHTML).toContain('Fixture weekly: 8–14 October 2026');
     expect(container.innerHTML).not.toContain('Fixture explainer in draft');
@@ -86,17 +86,30 @@ describe('AnalysisHero', () => {
     fireEvent.click(within(hero).getByRole('button', { name: 'Next article' }));
     expect(within(hero).getByRole('link', { name: articles[1].title })).toBeInTheDocument();
     expect(within(hero).queryByRole('link', { name: articles[0].title })).not.toBeInTheDocument();
-    expect(within(hero).getByText(`2 of ${articles.length}`)).toBeInTheDocument();
+    expect(hero.querySelector('.analysis-hero-count')).toHaveTextContent(`Showing article 2 of ${articles.length}`);
     expect(within(hero).getByRole('status')).toHaveTextContent(articles[1].title);
 
     fireEvent.click(within(hero).getByRole('button', { name: 'Previous article' }));
     expect(within(hero).getByRole('link', { name: articles[0].title })).toBeInTheDocument();
-    expect(within(hero).getByText(`1 of ${articles.length}`)).toBeInTheDocument();
+    expect(hero.querySelector('.analysis-hero-count')).toHaveTextContent(`Showing article 1 of ${articles.length}`);
 
     fireEvent.click(within(hero).getByRole('button', { name: 'Previous article' }));
     const last = articles[articles.length - 1];
     expect(within(hero).getByRole('link', { name: last.title })).toBeInTheDocument();
-    expect(within(hero).getByText(`${articles.length} of ${articles.length}`)).toBeInTheDocument();
+    expect(hero.querySelector('.analysis-hero-count')).toHaveTextContent(`Showing article ${articles.length} of ${articles.length}`);
+  });
+
+  it('jumps to an article from the progress line and marks the ones already shown', async () => {
+    const { articles } = await renderHero('articles');
+    const hero = screen.getByRole('region', { name: 'Analysis' });
+    const segments = within(within(hero).getByRole('group', { name: 'Articles' })).getAllByRole('button');
+    expect(segments).toHaveLength(articles.length);
+
+    fireEvent.click(segments[2]);
+    expect(within(hero).getByRole('link', { name: articles[2].title })).toBeInTheDocument();
+    expect(segments[2]).toHaveAttribute('aria-current', 'true');
+    expect(segments[0]).toHaveAttribute('data-state', 'seen');
+    expect(segments[3]).toHaveAttribute('data-state', 'ahead');
   });
 
   it('advances on its own, and pauses while the pointer is over it or a control is focused', async () => {
@@ -150,7 +163,7 @@ describe('AnalysisHero', () => {
     const image = screen.getByRole('img', { hidden: true });
     expect(image).toHaveAttribute('width', '2048');
     expect(image).toHaveAttribute('height', '1365');
-    expect(image).toHaveAttribute('sizes', '(min-width: 64rem) 160px, 120px');
+    expect(image).toHaveAttribute('sizes', '(min-width: 64rem) 208px, 176px');
     expect(image.closest('.analysis-hero-figure')).toHaveAttribute('aria-hidden', 'true');
     expect(screen.getByText('Explainer')).toBeInTheDocument();
     expect(container.innerHTML).not.toContain('status-amended');
@@ -165,8 +178,7 @@ describe('AnalysisHero', () => {
       'utf8',
     );
     expect(css).toContain('.analysis-hero-teaser');
-    expect(css).toContain('-webkit-line-clamp: 1');
-    expect(css).toContain('clamp(1.25rem, 1rem + 1.1vw, 1.85rem)');
+    expect(css).toContain('clamp(1.3rem, 1rem + 1.1vw, 1.9rem)');
     expect(css).not.toContain('min-height: clamp(20rem, 46vh, 32rem)');
     expect(css).toContain("url('/images/analysis-hero-dither.svg')");
     expect(css).toContain('analysis-hero::before');
