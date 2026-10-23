@@ -56,8 +56,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: npm
-          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
         run: npm ci
@@ -83,8 +81,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: npm
-          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
         run: npm ci
@@ -113,8 +109,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: npm
-          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
         run: npm ci
@@ -145,8 +139,6 @@ jobs:
         if: ${{ env.AFFECTED == 'true' }}
         with:
           node-version: 24
-          cache: npm
-          cache-dependency-path: apps/probono/dashboard/package-lock.json
       - name: Install dashboard dependencies
         if: ${{ env.AFFECTED == 'true' }}
         run: npm ci
@@ -224,8 +216,6 @@ jobs:
         if: ${{ env.AFFECTED == 'true' }}
         with:
           node-version: 24
-          cache: npm
-          cache-dependency-path: apps/probono/worker/package-lock.json
       - name: Install worker dependencies
         if: ${{ env.AFFECTED == 'true' }}
         run: npm ci
