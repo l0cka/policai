@@ -3882,6 +3882,14 @@ tbody td:first-child {
   color: var(--foreground);
 }
 
+@media (pointer: coarse) {
+  .footer-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+  }
+}
+
 @media (max-width: 1279px) {
   .rail {
     order: -1;

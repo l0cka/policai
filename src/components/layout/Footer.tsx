@@ -25,7 +25,7 @@ const groups: Array<{ label: string; links: FooterLink[] }> = [
 ];
 
 const linkClass =
-  'underline-grow transition-colors duration-[var(--dur-fast)] hover:text-foreground';
+  'underline-grow transition-colors duration-[var(--dur-fast)] hover:text-foreground pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center';
 
 export function Footer() {
   return (
@@ -47,7 +47,7 @@ export function Footer() {
         </div>
         <nav aria-label="Footer" className="grid grid-cols-2 gap-6 text-xs sm:grid-cols-4">
           {groups.map((group) => (
-            <div key={group.label} className="flex flex-col gap-2.5">
+            <div key={group.label} className="flex flex-col gap-2.5 pointer-coarse:gap-0">
               <p className="page-eyebrow">{group.label}</p>
               {group.links.map((link) =>
                 link.href.startsWith('http') ? (
