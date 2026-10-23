@@ -115,8 +115,7 @@
 
 /* Touch targets: every control is at least 44px (the shared touch-target), matching Policai. */
 .theme-toggle button { width: 2.75rem; height: 2.75rem; }
-.sector-view-tabs button, .sector-zoom-toggle button, .sector-org-picker select, .sector-org-actions button,
-.sector-relationship-chips button, .sector-org-step button, .sector-filter-trigger, .sector-breakdown button { min-height: 44px; }
+.sector-view-tabs button, .sector-org-actions button, .sector-relationship-chips button, .sector-org-step button { min-height: 44px; }
 .maplibregl-ctrl.maplibregl-ctrl-group button { width: 44px; height: 44px; }
 
 /* One filled primary button per view: the feed's own Search is the outlined quiet style. */
