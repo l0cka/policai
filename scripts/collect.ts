@@ -109,6 +109,7 @@ async function main() {
       sourceId: options.sourceId,
       maxItems: options.maxItems,
       browserFetchImpl: browserFetch?.fetchImpl,
+      recycleBrowser: browserFetch?.close,
       scoreRelevance,
       stateDir: process.env.POLICAI_COLLECTOR_STATE || undefined,
     });

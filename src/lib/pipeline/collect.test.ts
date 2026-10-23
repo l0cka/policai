@@ -507,6 +507,39 @@ describe('robots unverified report', () => {
 });
 
 describe('collect', () => {
+  it('starts each source with a fresh browser', async () => {
+    const events: string[] = [];
+    const pages = fakeFetch({
+      'https://www.example.gov.au/news': INDEX_HTML,
+      'https://www.example.gov.au/rss': RSS_XML,
+    });
+    const browserFetchImpl = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      events.push(`browser ${String(input)}`);
+      return pages(input, init);
+    }) as unknown as typeof fetch;
+
+    await collect({
+      sources: [
+        { ...HTML_SOURCE, fetchStrategy: 'browser' },
+        { ...RSS_SOURCE, fetchStrategy: 'browser' },
+      ],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl: fakeFetch({}),
+      browserFetchImpl,
+      recycleBrowser: async () => {
+        events.push('recycle');
+      },
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+    });
+
+    const sourceStarts = events.flatMap((event, index) =>
+      event === `browser ${HTML_SOURCE.url}` || event === `browser ${RSS_SOURCE.url}` ? [index] : [],
+    );
+    expect(sourceStarts).toHaveLength(2);
+    for (const start of sourceStarts) expect(events[start - 1]).toBe('recycle');
+  });
+
   it('detects new items, skips seen URLs, and updates state', async () => {
     const state = emptyWatchState();
     state.seen['https://www.example.gov.au/news/seen-before'] = {

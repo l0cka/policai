@@ -555,10 +555,10 @@ export function createBrowserFetch(
   return {
     fetchImpl,
     close: async () => {
-      if (!browserPromise) return;
-      const browser = await browserPromise;
+      const closing = browserPromise;
       browserPromise = null;
-      await browser.close();
+      // A browser that failed to launch or has crashed has nothing to close.
+      await closing?.then((browser) => browser.close()).catch(() => {});
     },
   };
 }

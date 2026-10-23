@@ -379,7 +379,9 @@ Firecrawl and use the scoped browser (see Collector identity below). Every other
 the plain HTTP client is blocked or an index renders no extractable items. CI
 installs the browser with `npx playwright-core install --with-deps chromium`
 (cached between runs); without it the collector still runs, minus the
-fallback.
+fallback. The browser is closed before each source and relaunched on first
+use, so one source's memory, open pages or a crashed renderer never carry into
+the next.
 
 A Firecrawl scrape requests both `markdown` and `rawHtml`. The markdown is
 replayed through `retrieveSource` as `text/plain` (extraction reads HTML, XML
