@@ -7,7 +7,6 @@ OnFailure=policai-collect-alert.service
 Type=oneshot
 ExecStart=%h/.local/bin/policai-collect.sh
 Environment=USE_CLEF_CLASSIFIER=1
-Environment=POLICAI_COLLECT_REVIEW_GRACE_HOURS=168
 Nice=15
 TimeoutStartSec=3600
 # Runs peak at 2.1 to 2.6 GB; the ceiling stops a runaway browser taking the host.

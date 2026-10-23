@@ -48,6 +48,25 @@ export interface CollectionRun {
   hostGate?: HostGate;
   now?: () => Date;
   scoreRelevance?: RelevanceScorer;
+  /**
+   * The collector's own memory on the host, outside the repo. Its watch state
+   * replaces main's, and its outbox of findings main does not have yet is
+   * replayed into this run's output, so an unmerged run loses nothing. The
+   * run writes the next state to `<stateDir>/next/`; the host wrapper
+   * promotes it only once the output validates.
+   */
+  stateDir?: string;
+}
+
+/** Findings this collector made that main does not carry yet. */
+export interface Outbox {
+  developments: Development[];
+  sourceReviews: SourceReview[];
+}
+
+function notOn<T extends { id: string }>(main: readonly T[], items: readonly T[]): T[] {
+  const ids = new Set(main.map((item) => item.id));
+  return [...new Map(items.filter((item) => !ids.has(item.id)).map((item) => [item.id, item])).values()];
 }
 
 const sleep = (ms: number) =>
@@ -66,7 +85,7 @@ function dataPaths(rootDir: string) {
 
 export async function runCollection(run: CollectionRun): Promise<void> {
   const paths = dataPaths(run.rootDir);
-  const [state, developments, meta, reviews, policies, timelineEvents] =
+  const [mainState, mainDevelopments, meta, mainReviews, policies, timelineEvents] =
     await Promise.all([
       readJsonFile<WatchState>(paths.watchState, emptyWatchState()),
       readJsonFile<Development[]>(paths.developments, []),
@@ -81,6 +100,24 @@ export async function runCollection(run: CollectionRun): Promise<void> {
         [],
       ),
     ]);
+  const [state, outbox] = run.stateDir
+    ? await Promise.all([
+        readJsonFile<WatchState>(path.join(run.stateDir, 'watch-state.json'), mainState),
+        readJsonFile<Outbox>(path.join(run.stateDir, 'outbox.json'), { developments: [], sourceReviews: [] }),
+      ])
+    : [mainState, { developments: [], sourceReviews: [] }];
+  const carried: Outbox = {
+    developments: notOn(mainDevelopments, outbox.developments),
+    sourceReviews: notOn(mainReviews, outbox.sourceReviews),
+  };
+  if (run.stateDir) {
+    console.log(
+      `[collect] Outbox: replaying ${carried.developments.length} developments and ` +
+        `${carried.sourceReviews.length} reviews main does not have yet`,
+    );
+  }
+  const developments = [...mainDevelopments, ...carried.developments];
+  const reviews = [...mainReviews, ...carried.sourceReviews];
 
   const hosts = state.hosts ?? {};
   const hostGate =
@@ -185,13 +222,21 @@ export async function runCollection(run: CollectionRun): Promise<void> {
       new Date(b.detectedAt).getTime() - new Date(a.detectedAt).getTime(),
   );
 
-  if (reviewCandidates.length > 0) {
+  if (reviewCandidates.length > 0 || carried.sourceReviews.length > 0) {
     await writeJsonFile(paths.sourceReviews, mergedReviews);
   }
   await writeJsonFile(paths.developments, mergedDevelopments);
   await writeJsonFile(paths.watchState, result.state);
   if (!run.sourceId) {
     await writeJsonFile(paths.meta, publicMeta);
+  }
+  if (run.stateDir) {
+    const next: Outbox = {
+      developments: notOn(mainDevelopments, [...carried.developments, ...result.developments]),
+      sourceReviews: notOn(mainReviews, mergedReviews),
+    };
+    await writeJsonFile(path.join(run.stateDir, 'next', 'watch-state.json'), result.state);
+    await writeJsonFile(path.join(run.stateDir, 'next', 'outbox.json'), next);
   }
 
   console.log(

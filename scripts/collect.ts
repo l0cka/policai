@@ -10,6 +10,8 @@
  * Classification is deterministic keyword analysis with capped confidence.
  * USE_CLEF_CLASSIFIER=1 asks the local clef-flash model instead when the GPU
  * and model are available. Detections always require editorial review.
+ * POLICAI_COLLECTOR_STATE names the host folder holding the collector's watch
+ * state and outbox (see scripts/collect-run.ts).
  */
 
 import { withDataMutationLock } from '../src/lib/data-lock';
@@ -108,6 +110,7 @@ async function main() {
       maxItems: options.maxItems,
       browserFetchImpl: browserFetch?.fetchImpl,
       scoreRelevance,
+      stateDir: process.env.POLICAI_COLLECTOR_STATE || undefined,
     });
 
   try {

@@ -783,59 +783,26 @@ at `~/.local/bin/policai-collect.sh`. See the
 [wrapper runbook](../ops/collector/README.md) for installation, tests and recovery.
 Each run holds the existing concurrency lock and:
 
-1. Refuses source-checkout dirt, an invalid active-run pointer (only a pointer
-   that does not exist means "no active run"), incomplete prior runs,
-   insufficient storage headroom (a mount inside the retained-run storage or an
-   unreadable mount table refuses the inventory), or an open collection PR
-   (except the opt-in state-only proposal below).
-2. Creates a unique branch/worktree from fetched main, installs dependencies,
-   and runs the full `npm run collect` with a bounded deadline.
-3. Preserves before/after outputs and checks `data/policies.json` even after a
-   nonzero exit or timeout. Mutated evidence is never silently restored.
-4. Validates data and commits only `data/developments.json`,
-   `public/data/meta.json`, `data/watch-state.json`, `data/source-reviews.json`.
-5. Pushes only its unique collection branch, opens a draft PR, and reads back
-   the head/base/state. No direct-main push, force, merge, or automatic approval.
-6. Returns failed source health as a failure even if structurally valid retry
-   and coverage data reached a PR. Other failures retain local evidence.
-7. Optionally (`POLICAI_COLLECT_PRUNE_DEPENDENCIES=1`, off by default) removes
-   `node_modules` from runs that finished at least a week ago and whose PR is
-   merged or closed, before the storage check and on its own bounded time
-   budget. Trees, receipts and logs are kept; see the wrapper runbook's
-   dependency retention section.
+1. Resets one reusable worktree to freshly fetched main, reinstalling
+   dependencies only when the lockfile changed, and runs the full
+   `npm run collect` with a bounded deadline and `POLICAI_COLLECTOR_STATE`
+   pointing at the collector's host state.
+2. Preserves before/after outputs and checks `data/policies.json` even after a
+   nonzero exit or timeout.
+3. Validates data. Only then does the run's next watch state and outbox
+   become the host state.
+4. Commits only `data/developments.json`, `public/data/meta.json`,
+   `data/watch-state.json` and `data/source-reviews.json`, pushes a unique
+   collection branch and opens a ready PR that auto-merges when the required
+   checks pass. Older open collection PRs are closed. It never pushes main.
+5. Returns failed source health as a failure even when the output was
+   published, so the failure alert fires.
 
-By default, the next scheduled collection is blocked until a pending collection
-PR is reviewed/merged/closed; it never overwrites a reviewer's pending data.
-The opt-in **policy proposal** `POLICAI_COLLECT_SUPERSEDE_STATE_ONLY=1` defaults
-to `0` and requires maintainer approval to enable (host environment change).
-It permits a fresh-main run only when every pending collection PR is an
-unreviewed draft, changes solely `data/watch-state.json` and/or
-`public/data/meta.json`, has unchanged register hashes/blobs, and matches a
-retained collector receipt and exact branch head. The receipt base must be an
-ancestor of freshly fetched main; the author-string check is consistency only,
-not independent provenance. Ready/reviewed, editorial/feed or unknown-provenance
-PRs retain the ordinary review wait.
-After output/structural validation, the wrapper pushes and creates the replacement
-draft, verifies its read-back and superseded URL notices, then comments on and
-closes the old state-only PRs. Branches and all old evidence remain intact.
-No-changes runs (including failures without output) leave the old PRs open;
-their `superseded_prs` entries stay `planned` as an unused plan, not pending work.
-A close failure is nonzero and leaves the verified replacement visible alongside
-any old PRs not yet closed. Its `superseding` receipt blocks new collection;
-`--retry-publication` re-verifies the existing replacement without recollecting.
-A retry of an already `published` run never lowers that phase, even if rechecking
-fails. Main/head/review changes, or a reopened PR whose closure was recorded,
-require manual reconciliation for retry. A later scheduled run may supersede a
-reopened PR again unless it is reviewed or taken out of draft; mark it ready or
-review it to keep it. With the toggle on and no merges, changed output can cause
-daily PR churn without advancing main's state.
-See the [wrapper policy and recovery details](../ops/collector/README.md#opt-in-state-only-supersession-policy-proposal).
-Installation and enabling the toggle require separate host approval; this proposal
-is not an instruction to modify the installed script or act on any current PR.
-The existing main-following deployment timer can consume merged data through
-ISR without a rebuild. A draft branch push does not activate it, and a PR alone
-is not evidence of current public freshness. The existing scheduled failure
-alert and nonzero job receipt remain in use.
+With `POLICAI_COLLECTOR_STATE` set, `scripts/collect-run.ts` reads its watch
+state from `<dir>/watch-state.json` instead of main's, and replays the
+developments and source reviews in `<dir>/outbox.json` whose ids main does not
+carry. It writes the next state and outbox to `<dir>/next/`. A failed run
+therefore never blocks the next one, and an unmerged PR loses nothing.
 
 The CLI persists source reviews and developments before advancing
 `watch-state.json`. Stable review/development ids make a retry idempotent if an
@@ -1247,12 +1214,10 @@ a fingerprint baseline.
 
 ## Troubleshooting
 
-- **Publication fails with `GH013`** — retain the run and inspect its branch and
-  applicable rules. The wrapper must only push `automation/collection-*`, never
-  main. Do not add a bypass actor. After an authorised connectivity/rules fix,
-  `~/.local/bin/policai-collect.sh --retry-publication` reuses the exact validated
-  commit without recollection. A changed remote main or run branch needs manual
-  reconciliation, not a forced push.
+- **Publication fails with `GH013`**: inspect the run's branch and the
+  applicable rules. The wrapper only pushes `automation/collection-*`, never
+  main. Do not add a bypass actor. The host state was already promoted, so the
+  next run's PR carries the same findings once the rules are fixed.
 - **A source keeps failing** — check `meta.json` → `collector.sourceResults`.
   If the endpoint consistently requires a browser, keep it enabled but move
   it to manual tracking with a reviewed decision (below). Do not count a challenge page
