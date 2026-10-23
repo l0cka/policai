@@ -77,10 +77,6 @@ export function urgency(days: number): string {
   return 'due-later';
 }
 
-export function monthHeading(date: string): string {
-  return new Date(`${date}T00:00:00`).toLocaleDateString('en-AU', { month: 'long', year: 'numeric' });
-}
-
 export const safeHref = (u: string) => (/^https?:\/\//i.test(u) ? u : undefined);
 
 /*

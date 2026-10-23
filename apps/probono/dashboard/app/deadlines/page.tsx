@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { pageMetadata } from '../../lib/site-meta';
-import { DeadlineList, DeadlineTimeline } from '../deadlines';
+import { DeadlineList, DeadlineTimeline, DeadlineWeekStrip } from '../deadlines';
 import { getDeadlineView } from '../../lib/deadline-data';
 
 export const dynamic = 'force-dynamic';
@@ -20,10 +20,9 @@ export default async function DeadlinesPage() {
         <p className="page-eyebrow">Consultations · submissions · grants</p>
         <h1 className="page-title">Deadlines</h1>
         <p className="page-intro">
-          Closing dates extracted from the items on the radar, soonest first. Each entry links back
-          to the source it was read from; a deadline reported by several items appears once. Dates
-          that simply arrive — reports handed down, schemes starting — are listed separately below.
+          Closing dates read from the sources on the radar, soonest first. Each links to its source.
         </p>
+        <DeadlineWeekStrip rows={upcoming} />
       </header>
 
       <div className="workspace reveal reveal-1" style={{ gridTemplateColumns: 'minmax(0, 1fr)' }}>
@@ -49,13 +48,15 @@ export default async function DeadlinesPage() {
           ) : null}
 
           {passed.length > 0 ? (
-            <section className="dated-section" aria-labelledby="closed-heading">
-              <h2 id="closed-heading" className="day-heading">
-                Recently closed
-                <span className="day-count">last 30 days</span>
-              </h2>
+            <details className="dated-section dated-closed">
+              <summary>
+                <h2 className="day-heading">
+                  Recently closed
+                  <span className="day-count">{passed.length} in the last 30 days</span>
+                </h2>
+              </summary>
               <DeadlineList rows={passed} showYear={false} />
-            </section>
+            </details>
           ) : null}
         </section>
       </div>
