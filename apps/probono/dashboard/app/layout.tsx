@@ -49,7 +49,7 @@ async function lastIngestAt(): Promise<string | null> {
 }
 
 function formatDataDate(value: string | null): string {
-  if (!value) return 'SOURCE STATUS ON THE SOURCES PAGE';
+  if (!value) return 'COLLECTION STATUS UNAVAILABLE';
   return `DATA CURRENT TO ${auDate(new Date(value), {
       timeZone: 'Australia/Sydney',
       day: '2-digit',
@@ -63,8 +63,22 @@ function formatDataDate(value: string | null): string {
     .toUpperCase()}`;
 }
 
+const FOOTER_GROUPS: Array<{ label: string; links: Array<[string, string]> }> = [
+  { label: 'Radar', links: [['/', 'Feed'], ['/this-week', 'This week'], ['/deadlines', 'Deadlines']] },
+  { label: 'Reference', links: [['/sector', 'Sector'], ['/health', 'Source health']] },
+  {
+    label: 'About',
+    links: [
+      ['https://policai.org/methodology', 'Methodology'],
+      ['https://github.com/l0cka/probono-radar', 'GitHub'],
+      ['https://policai.org', 'Policai'],
+    ],
+  },
+];
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const dataCurrentAt = await lastIngestAt();
+  const dataCurrent = formatDataDate(dataCurrentAt);
 
   return (
     <html
@@ -92,56 +106,48 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <span className="brand-wordmark">policai<span className="brand-edition">A2J</span></span>
             </Link>
             <Nav />
-            <div className="header-actions">
-              <ThemeToggle />
-            </div>
-          </div>
-
-          <div className="dateline">
-            <div className="container">
-              <span className="dateline-desktop">{formatDataDate(dataCurrentAt)}</span>
-              <span className="dateline-mobile">
-                {formatDataDate(dataCurrentAt).replace('DATA CURRENT TO ', 'CURRENT · ')}
-              </span>
-              <div className="dateline-links">
-                <span className="live-status"><i /> Live</span>
-                <a
-                  href="https://github.com/l0cka/probono-radar"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline-grow"
-                >
-                  GitHub
-                </a>
-              </div>
-            </div>
+            <Link
+              href="/health"
+              className="header-status"
+              title={dataCurrent}
+              aria-label={`Source health: ${dataCurrent.toLowerCase()}`}
+            >
+              <i aria-hidden="true" />
+              <span>Live</span>
+            </Link>
           </div>
         </header>
 
         <main id="main-content">{children}</main>
 
         <footer className="site-footer">
-          <div className="container">
-            <p>
-              A standing watch on Australian pro bono and access to justice. Every item links to the
-              source it was collected from, and the collector&rsquo;s run history is public.
-            </p>
-            <div className="footer-links">
-              <Link href="/health" className="underline-grow">
-                Source health
-              </Link>
-              <Link href="/deadlines" className="underline-grow">
-                Deadlines
-              </Link>
-              <a
-                href="https://policai.org"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline-grow"
-              >
-                Policai
-              </a>
+          <div className="container footer-grid">
+            <div className="footer-about">
+              <p>
+                A standing watch on Australian pro bono and access to justice. Every item links to the
+                source it was collected from, and the collector&rsquo;s run history is public.
+              </p>
+              <p className="footer-current">{dataCurrent}</p>
+              <ThemeToggle />
             </div>
+            <nav aria-label="Footer" className="footer-groups">
+              {FOOTER_GROUPS.map((group) => (
+                <div key={group.label}>
+                  <p className="page-eyebrow">{group.label}</p>
+                  {group.links.map(([href, label]) =>
+                    href.startsWith('http') ? (
+                      <a key={href} href={href} target="_blank" rel="noopener noreferrer" className="underline-grow">
+                        {label}
+                      </a>
+                    ) : (
+                      <Link key={href} href={href} className="underline-grow">
+                        {label}
+                      </Link>
+                    ),
+                  )}
+                </div>
+              ))}
+            </nav>
           </div>
         </footer>
       </body>
