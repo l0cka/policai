@@ -544,12 +544,12 @@ export default async function StatusPage() {
               — Atom of published analysis
             </li>
             <li>
-              <Link
+              <a
                 href="/api/policies"
                 className="font-mono text-xs text-primary underline underline-offset-4 hover:no-underline"
               >
                 /api/policies
-              </Link>
+              </a>
               {' '}
               — public register JSON;{' '}
               <span className="font-mono text-xs">

@@ -196,12 +196,12 @@ export default async function MethodologyPage() {
           <h3 className="mt-5 font-medium">JSON and markdown</h3>
           <ul className="mt-2 list-disc space-y-2 pl-5 text-muted-foreground">
             <li>
-              <Link
+              <a
                 href="/api/policies"
                 className="font-mono text-xs text-primary underline underline-offset-4 hover:no-underline"
               >
                 /api/policies
-              </Link>
+              </a>
               {' '}
               — search the public register;{' '}
               <span className="font-mono text-xs">/api/policies/&#123;id&#125;</span>{' '}
