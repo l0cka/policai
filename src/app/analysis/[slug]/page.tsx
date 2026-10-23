@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
+import { Fragment } from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { MDXRemote } from 'next-mdx-remote/rsc';
 import {
   ArticleBreadcrumb,
   ArticleDate,
@@ -13,7 +13,7 @@ import {
 } from '@/components/analysis';
 import { ArticleFigureView } from '@/components/article-figures';
 import { ArticleTable } from '@/components/article-table';
-import { articleMdxOptions } from '@/lib/article-markdown';
+import { renderArticleMarkdown } from '@/lib/article-markdown';
 import { getArticleBySlug, type ArticleView } from '@/lib/data-service';
 import { ARTICLE_BYLINE, articleEditorialDate } from '@/lib/articles';
 import { metaDescription, pageAlternates, SITE_SHARE_IMAGE, SITE_URL } from '@/lib/site-seo';
@@ -147,12 +147,9 @@ export default async function ArticlePage({ params }: Params) {
       <div className="prose article-body mt-8 max-w-none dark:prose-invert">
         {article.blocks.map((block, index) =>
           block.kind === 'prose' ? (
-            <MDXRemote
-              key={index}
-              source={block.markdown}
-              components={{ table: ArticleTable }}
-              options={{ mdxOptions: articleMdxOptions }}
-            />
+            <Fragment key={index}>
+              {renderArticleMarkdown(block.markdown, { components: { table: ArticleTable } })}
+            </Fragment>
           ) : (
             <ArticleFigureView
               key={index}

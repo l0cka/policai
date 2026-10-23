@@ -1,21 +1,19 @@
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { compileMDX } from 'next-mdx-remote/rsc';
 import matter from 'gray-matter';
 import { describe, expect, it } from 'vitest';
 import path from 'path';
 import { readArticleSources } from './articles';
 import { validateArticles } from './validate-data';
-import { articleMdxOptions } from './article-markdown';
+import { renderArticleMarkdown } from './article-markdown';
 import { ArticleTable } from '@/components/article-table';
 import { buildPolicy } from '@/test/factories';
 
 const FIXTURES = path.join(process.cwd(), 'src/test/fixtures/articles');
 
-async function render(source: string, mdxOptions: object, withTable = false) {
-  const { content } = await compileMDX({
-    source,
-    options: { mdxOptions },
+function render(source: string, tables: boolean, withTable = false) {
+  const content = renderArticleMarkdown(source, {
+    tables,
     components: withTable ? { table: ArticleTable } : {},
   });
   return renderToStaticMarkup(createElement('div', null, content));
@@ -30,7 +28,7 @@ async function fixtureSource(slug: string) {
 describe('article markdown tables', () => {
   it('renders pipe tables with thead, th and td inside a focusable scroll region', async () => {
     const { source } = await fixtureSource('fixture-tables-published');
-    const html = await render(matter(source).content, articleMdxOptions, true);
+    const html = render(matter(source).content, true, true);
     const doc = new DOMParser().parseFromString(html, 'text/html');
     const tables = doc.querySelectorAll('table');
     expect(tables).toHaveLength(2);
@@ -46,12 +44,12 @@ describe('article markdown tables', () => {
 
   it('leaves pipe tables as paragraphs without the plugin', async () => {
     const { source } = await fixtureSource('fixture-tables-published');
-    const html = await render(matter(source).content, { format: 'md' });
+    const html = render(matter(source).content, false);
     expect(html).not.toContain('<table');
   });
 
   it('keeps other GFM syntax inert', async () => {
-    const html = await render('~~gone~~ https://example.com [^1]\n\n- [ ] task\n', articleMdxOptions);
+    const html = render('~~gone~~ https://example.com [^1]\n\n- [ ] task\n', true);
     expect(html).not.toMatch(/<(del|a|input|section)\b/);
   });
 
@@ -62,7 +60,7 @@ describe('article markdown tables', () => {
     expect(others.length).toBeGreaterThan(5);
     for (const entry of others) {
       const body = matter(entry.source).content;
-      expect(await render(body, articleMdxOptions), entry.slug).toBe(await render(body, { format: 'md' }));
+      expect(render(body, true), entry.slug).toBe(render(body, false));
     }
   });
 });

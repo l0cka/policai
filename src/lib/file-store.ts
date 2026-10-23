@@ -2,11 +2,14 @@ import { promises as fs } from 'fs';
 import { randomUUID } from 'node:crypto';
 import path from 'path';
 import { assertActiveDataMutationLease } from '@/lib/data-lock';
+import { readBundledFile } from '@/lib/bundled-files';
 import { readDataOverlay, writeDataOverlay } from '@/lib/data-overlay';
 
 async function readFileText(filePath: string): Promise<string | null> {
   const overlay = readDataOverlay(filePath);
   if (overlay) return overlay;
+  const bundled = await readBundledFile(filePath);
+  if (bundled !== undefined) return bundled;
   try {
     return await fs.readFile(filePath, 'utf-8');
   } catch (error) {
