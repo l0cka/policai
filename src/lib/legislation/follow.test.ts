@@ -3,6 +3,8 @@ import { join } from 'node:path';
 import { describe, expect, it, vi } from 'vitest';
 import { buildPolicy } from '@/test/factories';
 import type { Policy, SourceReview } from '@/types';
+import { canonicalizeSourceUrl } from '@/lib/source-url';
+import { validateSourceReviews } from '@/lib/validate-data';
 import { aphBillPage, BROWSER_REGISTERS, followLegislation, followTargets } from './follow';
 import { frlAmendedPrincipals, frlTitleRecord, frlVersionsFrom, parseFrlTitle } from './frl-title';
 import type { Dated, Legislative, LegislativeEvent } from './model';
@@ -317,6 +319,18 @@ describe('followLegislation on a Federal Register instrument', () => {
     ]);
     expect(reviews[0].notes).toContain('the House disallowance window now ends 3 December 2026; the Senate disallowance window now ends 4 December 2026');
     expect(reviews[0].sourceEvidence?.title).toBe('Federal Register title record');
+  });
+
+  it('stages a review the data validator accepts when the record cites its Federal Register details page', async () => {
+    const record = { ...rules(parseFrlTitle(frlFixture).events), sourceUrl: 'https://www.legislation.gov.au/F2026L01223/asmade/details' };
+    const { reviews } = await followLegislation({
+      targets: followTargets([record]),
+      existingReviews: [],
+      retrieve: async (url) => ({ ...(await register(fixed())(url)), evidence: { url: canonicalizeSourceUrl(url) } }),
+      now,
+    });
+    expect(reviews).toHaveLength(1);
+    expect(validateSourceReviews(reviews, { policies: [record], timelineEvents: [] }).errors).toEqual([]);
   });
 
   it('reports a response that is not a title record as a parse failure', async () => {

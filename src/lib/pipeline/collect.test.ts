@@ -2038,6 +2038,41 @@ describe('collect', () => {
     ).toMatchObject({ changeCount: 1 });
   });
 
+  it('stages a valid re-verification review for a draft record whose primary date has no evidence yet', async () => {
+    const draftPolicy = buildPolicy({
+      id: 'draft-document-without-baseline',
+      sourceUrl: DOCUMENT_SOURCE.url,
+      dates: [{ type: 'published', date: '2026-06-24', precision: 'day', primary: true }],
+      verification: {
+        status: 'needs_review',
+        source: { url: DOCUMENT_SOURCE.url, publishedAt: '2026-06-24', publishedAtPrecision: 'day' },
+      },
+    });
+
+    const result = await collect({
+      sources: [DOCUMENT_SOURCE],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      trackedUrls: [DOCUMENT_SOURCE.url],
+      trackedPolicies: [draftPolicy],
+      fetchImpl: fakeFetch({
+        [DOCUMENT_SOURCE.url]:
+          '<html><body><main><h1>AI governance policy</h1><p>On 24 June 2026 the department published this policy.</p></main></body></html>',
+      }),
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+    });
+
+    expect(result.reviewCandidates).toEqual([
+      expect.objectContaining({ targetPolicyId: draftPolicy.id }),
+    ]);
+    expect(
+      validateSourceReviews(result.reviewCandidates, {
+        policies: [draftPolicy],
+        timelineEvents: [],
+      }).errors,
+    ).toEqual([]);
+  });
+
   it('anchors tracked documents to the canonical verified fingerprint', async () => {
     const versionABody =
       '<html><body><main><h1>AI governance policy</h1><p>Version A source.</p></main></body></html>';

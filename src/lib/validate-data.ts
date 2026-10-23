@@ -22,6 +22,7 @@ import {
   type CourtRequirement,
   type Development,
   type Policy,
+  type PolicyDate,
   type RecordVerification,
   type SourceEvidence,
   type SourceMonitoringState,
@@ -52,6 +53,7 @@ import { parseSiteReuse, siteReuseCoverage } from '@/lib/watch-coverage/site-reu
 import { isFailureClass, publicFailureUrl } from '@/lib/pipeline/failure';
 import { identityExceptionState } from '@/lib/pipeline/identity';
 import { isValidCalendarDate } from '@/lib/calendar-date';
+import { followTargets } from '@/lib/legislation/follow';
 import { legislativeErrors } from '@/lib/legislation/model';
 import { VERIFICATION_CLOCK_SKEW_TOLERANCE_MS } from '@/lib/verification';
 import {
@@ -289,8 +291,21 @@ function sourceBacksRecordDate(
   );
 }
 
-function proposedDateEvidenceErrors(policy: Policy): string[] {
+/**
+ * A primary date the target record already carries is not a new claim, so an
+ * update review may propose it unchanged; publishing it as verified still
+ * needs the evidence validatePolicies requires.
+ */
+function proposedDateEvidenceErrors(policy: Policy, target?: Policy): string[] {
   if (!Array.isArray(policy.dates)) return [];
+  const carried = (candidate: PolicyDate) =>
+    target?.dates?.some(
+      (date) =>
+        date.primary === true &&
+        date.type === candidate.type &&
+        date.date === candidate.date &&
+        date.precision === candidate.precision,
+    ) ?? false;
   const errors: string[] = [];
   policy.dates.forEach((candidateDate, index) => {
     if (
@@ -305,6 +320,7 @@ function proposedDateEvidenceErrors(policy: Policy): string[] {
       : undefined;
     if (
       candidateDate.primary === true &&
+      !carried(candidateDate as PolicyDate) &&
       !sourceBacksRecordDate(
         source,
         candidateDate.date,
@@ -1768,12 +1784,20 @@ export function validateSourceReviews(
       : review.targetTimelineEventId
         ? timelineEventsById.get(review.targetTimelineEventId)
         : undefined;
+    // A stage update's evidence is the register record its follow watch reads.
+    const followedRegisterUrls =
+      review.legislativeUpdate && review.targetPolicyId && targetRecord
+        ? followTargets([targetRecord as Policy]).map(({ url }) => sourceUrlIdentity(url))
+        : [];
     const reviewSourceUrls =
       targetRecord && sourceUrlsEqual(targetRecord.sourceUrl, review.sourceUrl)
-        ? sourceIdentityUrls(
-            targetRecord.sourceUrl,
-            targetRecord.verification?.source,
-          )
+        ? [
+            ...sourceIdentityUrls(
+              targetRecord.sourceUrl,
+              targetRecord.verification?.source,
+            ),
+            ...followedRegisterUrls,
+          ]
         : [sourceUrlIdentity(review.sourceUrl)];
     const identifiesReviewSource = (url: string) =>
       reviewSourceUrls.includes(sourceUrlIdentity(url));
@@ -1924,7 +1948,10 @@ export function validateSourceReviews(
       isRecord(review.proposedRecord)
     ) {
       errors.push(
-        ...proposedDateEvidenceErrors(review.proposedRecord as Policy).map(
+        ...proposedDateEvidenceErrors(
+          review.proposedRecord as Policy,
+          review.targetPolicyId ? policiesById.get(review.targetPolicyId) : undefined,
+        ).map(
           (error) => `${label}: proposedRecord: ${error}`,
         ),
       );
