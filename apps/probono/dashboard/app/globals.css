@@ -2964,8 +2964,9 @@ tbody th[scope='row'] {
   color: var(--muted-foreground);
 }
 
+/* Clears the sticky header, as the other in-page anchors do. */
 .timeline-week {
-  scroll-margin-top: var(--space-6);
+  scroll-margin-top: 7.25rem;
 }
 
 .timeline-week > h3 {

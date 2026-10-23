@@ -47,6 +47,17 @@ try {
   for (const href of await page.locator('.week-strip a[href]').evaluateAll((as) => as.map((a) => a.getAttribute('href')))) {
     assert.equal(await page.locator(href).count(), 1, `strip link ${href} has a week to jump to`);
   }
+  // A short viewport leaves the fixture page room to scroll the week to the top.
+  await page.setViewportSize({ width: 1440, height: 500 });
+  const jump = page.locator('.week-strip a[href]').last();
+  const target = await jump.getAttribute('href');
+  await jump.click();
+  await page.waitForFunction((h) => location.hash === h, target);
+  const headerBottom = await page.locator('.site-header').evaluate((el) => el.getBoundingClientRect().bottom);
+  const headingTop = await page.locator(`${target} > h3`).evaluate((el) => el.getBoundingClientRect().top);
+  assert(headingTop >= headerBottom, `week heading clears the sticky header after a strip jump (${headingTop} < ${headerBottom})`);
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.evaluate(() => window.scrollTo(0, 0));
   out.checks.push('Closing dates group by week, and the week strip counts and links match the list');
 
   const main = page.locator('main');
