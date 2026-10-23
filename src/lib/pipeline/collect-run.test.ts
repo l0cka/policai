@@ -5,7 +5,7 @@ import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } f
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { runCollection } from '../../../scripts/collect-run';
+import { runCollection, withoutInvalidChanges } from '../../../scripts/collect-run';
 import { aphBillPage } from '@/lib/legislation/follow';
 import { buildManualDecision, buildPolicy } from '@/test/factories';
 import type { Development, SourceReview } from '@/types';
@@ -309,10 +309,53 @@ describe('collection CLI write path', () => {
       expect(readJson<Development[]>('data', 'developments.json')).toHaveLength(1);
     });
 
+    it('drops an invalid carried finding and publishes the rest', async () => {
+      await collectOnce('2026-07-10T00:00:00.000Z');
+      const [finding] = outbox().developments;
+      const carried = outbox();
+      carried.developments.push({ ...finding, id: 'bad-finding', url: 'http://www.example.gov.au/media/x' });
+      promote();
+      writeFileSync(path.join(stateDir, 'outbox.json'), JSON.stringify(carried));
+      resetMain();
+      vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+      await collectOnce('2026-07-11T00:00:00.000Z');
+
+      expect(readJson<Development[]>('data', 'developments.json').map((d) => d.id)).toEqual([finding.id]);
+      expect(outbox().developments.map((d) => d.id)).toEqual([finding.id]);
+      expect(
+        readJson<{ collector: { lastRunErrors: string[] } }>('public', 'data', 'meta.json').collector.lastRunErrors,
+      ).toEqual([expect.stringMatching(/^dropped invalid record bad-finding: /)]);
+    });
+
     it('writes nothing to the promoted state itself', async () => {
       await collectOnce('2026-07-10T00:00:00.000Z');
       expect(() => readFileSync(path.join(stateDir, 'outbox.json'))).toThrow();
       expect(outbox().developments).toHaveLength(1);
+    });
+  });
+});
+
+describe('withoutInvalidChanges', () => {
+  type Row = { id: string; ok: boolean };
+  const validate = (items: Row[]) => ({
+    errors: items.filter((item) => !item.ok).map((item) => `${item.id}: not ok`),
+    warnings: [],
+  });
+
+  it('keeps records main already has, even invalid ones', () => {
+    const main = [{ id: 'legacy', ok: false }];
+    expect(withoutInvalidChanges(main, [{ id: 'legacy', ok: false }, { id: 'new', ok: true }], validate)).toEqual({
+      items: [{ id: 'legacy', ok: false }, { id: 'new', ok: true }],
+      dropped: [],
+    });
+  });
+
+  it('reverts a rejected change to main and drops a rejected new record', () => {
+    const main = [{ id: 'kept', ok: true }];
+    expect(withoutInvalidChanges(main, [{ id: 'kept', ok: false }, { id: 'new', ok: false }], validate)).toEqual({
+      items: [{ id: 'kept', ok: true }],
+      dropped: ['kept: not ok', 'new: not ok'],
     });
   });
 });
