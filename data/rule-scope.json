@@ -40,6 +40,26 @@
     }
   },
   {
+    "policyId": "nsw-electoral-legislation-amendment-elections-act-2026",
+    "kind": "rule",
+    "legalForce": "binding",
+    "appliesTo": [
+      "election_participant"
+    ],
+    "scope": {
+      "quote": "(1)A person must not, during the regulated period, print, publish, distribute or publicly display digitally generated electoral material that contains a depiction…",
+      "pinpoint": "Sch 1 [81] (Electoral Act 2017 s 189A(1))",
+      "url": "https://files.parliament.nsw.gov.au/fileapi/ParlFiles/GetArtifact?serverRelativeUrl=%2Fbill%2Ffiles%2F18875%2FPassed%20by%20both%20Houses.pdf"
+    },
+    "review": {
+      "status": "reviewed",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-10-23"
+    }
+  },
+  {
     "policyId": "federal-online-safety-basic-online-safety-expectations-determination-2022",
     "kind": "rule",
     "legalForce": "binding",
@@ -100,6 +120,46 @@
     }
   },
   {
+    "policyId": "asd-risks-ai-misalignment-2026",
+    "kind": "rule",
+    "legalForce": "voluntary",
+    "appliesTo": [
+      "any_organisation"
+    ],
+    "scope": {
+      "quote": "This alert is relevant to all Australian organisations with public-facing websites or applications. This alert is intended for all audiences.",
+      "pinpoint": "Introduction",
+      "url": "https://www.cyber.gov.au/alert/risks-of-ai-misalignment-to-australian-organisations"
+    },
+    "review": {
+      "status": "reviewed",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "asd-protect-organisations-ai-services-2026",
+    "kind": "rule",
+    "legalForce": "voluntary",
+    "appliesTo": [
+      "any_organisation"
+    ],
+    "scope": {
+      "quote": "Organisations should treat access to advanced AI services as a security-sensitive asset.",
+      "pinpoint": "Introduction",
+      "url": "https://www.cyber.gov.au/advisory/protect-your-organisations-ai-services"
+    },
+    "review": {
+      "status": "reviewed",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-10-23"
+    }
+  },
+  {
     "policyId": "nsw-nesa-stage-6-take-home-assessment-ai-rules",
     "kind": "rule",
     "legalForce": "proposed",
@@ -150,6 +210,26 @@
       "quote": "As set out in APRA’s and ASIC’s letters, the regulators expect entities to take action now to lift their resilience and to demonstrate that key decisions, escalation pathways, recovery arrangements, assurance activities and governance processes can operate at the speed required by emerging frontier AI threats.",
       "pinpoint": "From awareness to action – what entities should do next",
       "url": "https://download.asic.gov.au/media/imunrchk/asic-and-apra-resilience-at-frontier-ai-speed-roundatable.pdf"
+    },
+    "review": {
+      "status": "reviewed",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "new-ai-frontier-cyber-threat-guidance-for-boards-of-director",
+    "kind": "rule",
+    "legalForce": "voluntary",
+    "appliesTo": [
+      "any_organisation"
+    ],
+    "scope": {
+      "quote": "The publication outlines frontier AI cyber threats and provides practical guidance to help organisations strengthen governance, improve preparedness, and build their cyber security posture.",
+      "pinpoint": "News item",
+      "url": "https://www.cyber.gov.au/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors"
     },
     "review": {
       "status": "reviewed",
@@ -230,6 +310,106 @@
       "quote": "For the purpose of this guidance, VPS organisations are organisations subject to Parts 3 and 4 of the Privacy and Data Protection Act 2014.",
       "pinpoint": "Definitions",
       "url": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-enterprise-generative-ai-tools-in-the-victorian-public-sector"
+    },
+    "review": {
+      "status": "reviewed",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "ai-in-recruitment",
+    "kind": "rule",
+    "legalForce": "government_mandatory",
+    "appliesTo": [
+      "commonwealth_entity"
+    ],
+    "scope": {
+      "quote": "Agencies are expected to implement the Principles for agency use of AI in Recruitment by 1 June 2026 to guide the responsible and transparent use of AI tools in recruitment.",
+      "pinpoint": "Overview",
+      "url": "https://www.apsc.gov.au/working-aps/hr-practitioners/recruitment-aps/ai-recruitment"
+    },
+    "review": {
+      "status": "reviewed",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "asd-careful-adoption-agentic-ai-services-2026",
+    "kind": "rule",
+    "legalForce": "voluntary",
+    "appliesTo": [
+      "any_organisation"
+    ],
+    "scope": {
+      "quote": "This guidance is intended for government, industry and critical infrastructure teams adopting agentic AI, helping them reduce risk and adopt these systems safely.",
+      "pinpoint": "Summary",
+      "url": "https://www.cyber.gov.au/publication/careful-adoption-of-agentic-ai-services"
+    },
+    "review": {
+      "status": "reviewed",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "asd-agentic-ai-harnesses-2026",
+    "kind": "rule",
+    "legalForce": "voluntary",
+    "appliesTo": [
+      "any_organisation"
+    ],
+    "scope": {
+      "quote": "Written for executive decision-makers, chief information security officers (CISOs) and IT leaders, the publication supports organisations considering or adopting agentic AI…",
+      "pinpoint": "Summary",
+      "url": "https://www.cyber.gov.au/advisory/agentic-ai-harnesses"
+    },
+    "review": {
+      "status": "reviewed",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "acsc-opportunities-ai-cyber-defence-2026",
+    "kind": "rule",
+    "legalForce": "voluntary",
+    "appliesTo": [
+      "any_organisation"
+    ],
+    "scope": {
+      "quote": "This guidance is for CISOs, senior security leaders, and cyber defenders who manage cyber risk and strategy.",
+      "pinpoint": "Summary",
+      "url": "https://www.cyber.gov.au/publication/opportunities-for-ai-in-cyber-defence"
+    },
+    "review": {
+      "status": "reviewed",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "expectations-data-centres-ai-infrastructure-2026",
+    "kind": "rule",
+    "legalForce": "voluntary",
+    "appliesTo": [
+      "data_centre"
+    ],
+    "scope": {
+      "quote": "The expectations apply to new or expanded developments within Australia. Operators of co‑location sites, hyperscale operations, and large-scale AI compute centres – referred to as ‘AI factories’ – should consider how these expectations apply in their contexts.",
+      "pinpoint": "Scope",
+      "url": "https://www.industry.gov.au/publications/expectations-data-centres-and-ai-infrastructure-developers"
     },
     "review": {
       "status": "reviewed",
@@ -340,6 +520,26 @@
     }
   },
   {
+    "policyId": "agentic-ai-addendum-technical-standard-2026",
+    "kind": "rule",
+    "legalForce": "voluntary",
+    "appliesTo": [
+      "commonwealth_entity"
+    ],
+    "scope": {
+      "quote": "Agencies exploring, developing or using agentic AI are expected to apply this addendum in conjunction with the AI technical standard.",
+      "pinpoint": "Introduction",
+      "url": "https://www.digital.gov.au/policy/ai/agentic-ai-addendum"
+    },
+    "review": {
+      "status": "reviewed",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-10-23"
+    }
+  },
+  {
     "policyId": "asd-blueprint-secure-cloud-ai-usage-policy",
     "kind": "rule",
     "legalForce": "voluntary",
@@ -351,6 +551,114 @@
       "pinpoint": "Policies",
       "url": "https://blueprint.asd.gov.au/security-and-governance/policies"
     },
+    "review": {
+      "status": "reviewed",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "policy-responsible-use-ai-government-v2",
+    "kind": "rule",
+    "legalForce": "government_mandatory",
+    "appliesTo": [
+      "commonwealth_entity"
+    ],
+    "scope": {
+      "quote": "It applies to all non-corporate Commonwealth entities",
+      "pinpoint": "Overview",
+      "url": "https://www.digital.gov.au/ai/ai-in-government-policy"
+    },
+    "review": {
+      "status": "reviewed",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "implementation-plan-policy-responsible-use-ai-government-2025",
+    "kind": "not_a_rule",
+    "note": "A whole-of-government implementation plan reporting AI initiatives and milestones; it sets no obligation of its own.",
+    "review": {
+      "status": "reviewed",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "aps-ai-plan-2025",
+    "kind": "not_a_rule",
+    "note": "A plan for the Australian Public Service's adoption of AI; it sets no obligation of its own.",
+    "review": {
+      "status": "reviewed",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "national-ai-plan-2025",
+    "kind": "not_a_rule",
+    "note": "The Australian Government's national strategy for AI; it sets no obligation.",
+    "review": {
+      "status": "reviewed",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "voluntary-ai-safety-standard",
+    "kind": "rule",
+    "legalForce": "voluntary",
+    "appliesTo": [
+      "any_organisation"
+    ],
+    "scope": {
+      "quote": "The Voluntary AI Safety Standard gives practical guidance to all Australian organisations on how to safely and responsibly use and innovate with artificial intelligence (AI).",
+      "pinpoint": "Overview",
+      "url": "https://www.industry.gov.au/publications/voluntary-ai-safety-standard"
+    },
+    "review": {
+      "status": "reviewed",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "australias-ai-ethics-framework",
+    "kind": "rule",
+    "legalForce": "voluntary",
+    "appliesTo": [
+      "any_organisation"
+    ],
+    "scope": {
+      "quote": "The Artificial Intelligence (AI) Ethics Principles guided businesses and governments to responsibly design, develop and implement AI.",
+      "pinpoint": "Overview",
+      "url": "https://www.industry.gov.au/publications/australias-ai-ethics-principles"
+    },
+    "review": {
+      "status": "reviewed",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "government-response-privacy-act-review-report",
+    "kind": "not_a_rule",
+    "note": "The Government's response to the Privacy Act Review Report; it states policy positions and sets no obligation.",
     "review": {
       "status": "reviewed",
       "draftedBy": "Claude (agent)",
@@ -612,6 +920,26 @@
     }
   },
   {
+    "policyId": "family-court-ai-practice-direction",
+    "kind": "rule",
+    "legalForce": "binding",
+    "appliesTo": [
+      "court_user"
+    ],
+    "scope": {
+      "quote": "1.4 This Practice Direction applies to litigants (including self-represented litigants), lawyers, experts and all other court users…",
+      "pinpoint": "para 1.4",
+      "url": "https://www.fcfcoa.gov.au/pd/pd-ai"
+    },
+    "review": {
+      "status": "reviewed",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-10-23"
+    }
+  },
+  {
     "policyId": "qld-supreme-court-ai-practice-direction",
     "kind": "rule",
     "legalForce": "binding",
@@ -632,6 +960,26 @@
     }
   },
   {
+    "policyId": "asd-frontier-ai-models-cyber-security-2026",
+    "kind": "rule",
+    "legalForce": "voluntary",
+    "appliesTo": [
+      "any_organisation"
+    ],
+    "scope": {
+      "quote": "Organisations should assess which systems are exposed to external networks and whether such connectivity is operationally necessary.",
+      "pinpoint": "Recommendations",
+      "url": "https://www.cyber.gov.au/blog/frontier-models-and-their-impact-on-cyber-security"
+    },
+    "review": {
+      "status": "reviewed",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-10-23"
+    }
+  },
+  {
     "policyId": "apra-ai-industry-letter-2026",
     "kind": "rule",
     "legalForce": "expectation",
@@ -642,6 +990,67 @@
       "quote": "APRA requires regulated entities to ensure appropriate risk management of AI, including setting risk appetite, managing AI related exposures, and ensuring appropriate oversight and accountability.",
       "pinpoint": "Letter (To: All APRA-regulated entities)",
       "url": "https://www.apra.gov.au/apra-letter-to-industry-on-artificial-intelligence-ai"
+    },
+    "review": {
+      "status": "reviewed",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "guidance-for-ai-adoption",
+    "kind": "rule",
+    "legalForce": "voluntary",
+    "appliesTo": [
+      "any_organisation"
+    ],
+    "scope": {
+      "quote": "The essential practices are the Australian Government’s guidance for responsible AI use. They help organisations put appropriate governance, oversight and transparency in place.",
+      "pinpoint": "Overview",
+      "url": "https://www.ai.gov.au/staying-safe-and-responsible/essential-ai-practices"
+    },
+    "review": {
+      "status": "reviewed",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "ai-technical-standard",
+    "kind": "rule",
+    "legalForce": "voluntary",
+    "appliesTo": [
+      "commonwealth_entity"
+    ],
+    "scope": {
+      "quote": "Agencies that adopt the standard are accountable for ensuring it is met in line with the required and recommended criterion.",
+      "pinpoint": "Introduction, scope and target audience",
+      "url": "https://www.digital.gov.au/policy/ai/AI-technical-standard/technical-standard-governments-use-artificial-intelligence-introduction-scope-and-target-audience"
+    },
+    "review": {
+      "status": "reviewed",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "national-framework-assurance-ai-government",
+    "kind": "rule",
+    "legalForce": "voluntary",
+    "appliesTo": [
+      "commonwealth_entity",
+      "state_entity"
+    ],
+    "scope": {
+      "quote": "The cornerstones are 5 mechanisms that governments should consider to ensure effective application of the ethics principles.",
+      "pinpoint": "Overview",
+      "url": "https://www.finance.gov.au/government/public-data/data-and-digital-ministers-meeting/national-framework-assurance-artificial-intelligence-government"
     },
     "review": {
       "status": "reviewed",
@@ -703,6 +1112,26 @@
       "quote": "This fact sheet is intended to help APP entities implement new Australian Privacy Principle (APP) 1 transparency obligations under APP 1.7-1.9, with respect to the usage of computer programs to make or inform decisions (transparency obligation).",
       "pinpoint": "p 1",
       "url": "https://www.oaic.gov.au/__data/assets/pdf_file/0021/269013/APP-1.7-1.9-Transparency-Obligation-Fact-Sheet.PDF"
+    },
+    "review": {
+      "status": "reviewed",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "esafety-genai-industry-codes",
+    "kind": "rule",
+    "legalForce": "binding",
+    "appliesTo": [
+      "online_service"
+    ],
+    "scope": {
+      "quote": "The remaining six codes were registered on 9 September 2025 and came into effect on 9 March 2026. These apply to app distribution platforms, equipment providers, social media services (core features), social media services (messaging features), relevant electronic services and designated internet services…",
+      "pinpoint": "Phase 2 codes",
+      "url": "https://www.esafety.gov.au/industry/codes"
     },
     "review": {
       "status": "reviewed",
@@ -1153,6 +1582,38 @@
     }
   },
   {
+    "policyId": "pmc-ai-infrastructure-consultation-2026",
+    "kind": "not_a_rule",
+    "note": "A closed consultation to inform Australia's AI standards; it sets no obligation.",
+    "review": {
+      "status": "reviewed",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "asd-ai-considerations-within-the-essentials-2026",
+    "kind": "rule",
+    "legalForce": "voluntary",
+    "appliesTo": [
+      "any_organisation"
+    ],
+    "scope": {
+      "quote": "Regardless of whether an organisation consumes, develops or deploys Al - the Essentials framework still applies.",
+      "pinpoint": "Summary",
+      "url": "https://www.cyber.gov.au/publication/ai-considerations-within-the-essentials"
+    },
+    "review": {
+      "status": "reviewed",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-10-23"
+    }
+  },
+  {
     "policyId": "tas-local-community-benefit-fund-ai-data-centres-2026",
     "kind": "not_a_rule",
     "note": "A proposed fund to share the benefits of AI and data-centre developments with host communities; it sets no obligation.",
@@ -1176,6 +1637,38 @@
       "pinpoint": "Scope, p 3",
       "url": "https://engage.building.tas.gov.au/download_file/view/2683/1065"
     },
+    "review": {
+      "status": "reviewed",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "asic-market-integrity-rules-ai-trading-2026",
+    "kind": "rule",
+    "legalForce": "binding",
+    "appliesTo": [
+      "financial_services"
+    ],
+    "scope": {
+      "quote": "(1) Without limiting any other rule, a Trading Participant must have appropriate controls and governance arrangements (including written procedures) for the development, testing, approval, deployment and monitoring of all Trading Algorithms used by the Trading Participant…",
+      "pinpoint": "r 5.6.3B(1)",
+      "url": "https://www.legislation.gov.au/F2026L01223/asmade/2026-09-17/text/original/epub/OEBPS/document_1/document_1.html"
+    },
+    "review": {
+      "status": "reviewed",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-10-23",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-10-23"
+    }
+  },
+  {
+    "policyId": "pmc-rapid-review-ai-driven-cyber-incident-2026",
+    "kind": "not_a_rule",
+    "note": "A government review of arrangements after an AI-driven cyber incident; it sets no obligation.",
     "review": {
       "status": "reviewed",
       "draftedBy": "Claude (agent)",
