@@ -1,18 +1,46 @@
 # Hosting
 
-The site is self-hosted by the maintainer behind a Cloudflare tunnel. A
-timer on the host runs a guarded dispatcher that deploys `main`. This page
-describes that deploy path. The operational runbook (server topology,
-units, cutover and rollback procedure) is kept privately by the maintainer.
+policai.org is served from a Cloudflare Worker named `policai`, built with
+OpenNext. The Pro Bono site, the collector and the CI runners stay on the
+maintainer's host, Argus. The operational runbook (server topology, units,
+cutover and rollback procedure) is kept privately by the maintainer.
 
-## Cadence
+## policai.org on Workers
+
+Cloudflare Workers Builds deploys the Worker on every push to `main`,
+including auto-merges, which start no GitHub workflow. It runs
+`npm run build:cloudflare`, then `npx opennextjs-cloudflare deploy`, with
+`NODE_VERSION=24`. A commit that changes only `apps/probono/` is skipped.
+The build settings live on the Worker in the Cloudflare dashboard, not in
+this repository.
+
+Workers have no project filesystem, so `scripts/bundle-data.mjs` bundles
+`data/` and `public/data/` into the Worker at build time. Every commit to
+`main`, data included, is public only after its build deploys, about three
+minutes after the merge.
+
+The routes for `policai.org/*` and `www.policai.org/*` are in
+`wrangler.jsonc`. The workers.dev URL is off, so the Signal write API
+answers only on policai.org. To roll back to Argus, delete them and deploy; the tunnel
+CNAMEs still point at the host, which keeps running Policai.
+
+Signal reads `POLICAI_SIGNAL_TOKEN` and `POLICAI_SIGNAL_GITHUB_TOKEN` from
+Worker secrets, set with `wrangler secret put` or in the dashboard.
+
+## Argus
+
+A timer on Argus runs a guarded dispatcher that deploys `main` to the Pro
+Bono site and to the Policai copy kept there for rollback. The rest of this
+page describes that deploy path.
+
+### Cadence
 
 The pull timer, `policai-pull.timer`, fires every 2 minutes with up to
 15 seconds of random jitter. A run that finds nothing to deploy takes about
 10 seconds. A merged commit goes live on the next cycle that finishes, so
 allow a few minutes, plus build time for code changes.
 
-## Lane routing
+### Lane routing
 
 Each cycle, the dispatcher compares the new `main` with the deployed
 commit and routes each changed path by the first matching row of `ROUTES`
@@ -40,7 +68,7 @@ to Policai, `apps/probono/` to Pro Bono, and every other path to both
 lanes. The invariant behind the no-lane rows is in
 [`ops/host/README.txt`](../ops/host/README.txt).
 
-## Health gate and failure
+### Health gate and failure
 
 A deploy counts as done only when each rebuilt lane passes its health
 check and the dispatcher reports `verified: true`. That result line also
@@ -66,7 +94,7 @@ a fix to `main` does not clear the gate.
 Recovery is a manual, reviewed step by the maintainer. The procedure is in
 [`ops/host/README.txt`](../ops/host/README.txt) under "FAILURE / RECOVERY".
 
-## What this means for contributors
+### What this means for contributors
 
 - Merging to `main` is a deploy trigger. Check the timer before you push a
   production-tracked branch.
