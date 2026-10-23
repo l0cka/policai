@@ -290,7 +290,8 @@ Summary, type and jurisdiction still come from the keyword rules, and the
 assessment records `promptVersion: 'clef-noul-v1'`.
 
 Clef never fails a run. `scripts/collect.ts` checks once per run that at least
-13 GB of GPU memory is free (`nvidia-smi`) and that the model is installed. If
+13 GB of GPU memory is free (`nvidia-smi`, which must report exactly one GPU;
+a second card would need that check changed) and that the model is installed. If
 not, the run logs why and uses the keyword rules. A malformed or failed answer
 for one candidate leaves only that candidate on the keyword rules. The request
 carries no tools and nothing leaves the machine. The scheduled wrapper refuses

@@ -1013,7 +1013,8 @@ def main():
             # and its credentials refuse; USE_CLEF_CLASSIFIER=1 opts into local Clef.
             if any(os.environ.get(name) for name in ('USE_CLAUDE_CLASSIFIER', 'CLASSIFIER_BASE_URL', 'CLASSIFIER_API_KEY')):
                 raise Refused('cloud classifier retired; only local Clef (USE_CLEF_CLASSIFIER=1) is allowed')
-            if os.environ.get('USE_CLEF_CLASSIFIER', '1') != '1':
+            # Unset keeps the keyword rules; only an explicit 1 turns Clef on.
+            if os.environ.get('USE_CLEF_CLASSIFIER') not in (None, '1'):
                 raise Refused('USE_CLEF_CLASSIFIER must be unset or 1')
             os.environ['FIRECRAWL_URL'] = 'http://127.0.0.1:3003'
             os.environ['NODE_EXTRA_CA_CERTS'] = str(HOME / '.local/share/policai/geotrust-tls-rsa-ca-g1.pem')
