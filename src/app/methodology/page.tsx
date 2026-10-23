@@ -77,12 +77,12 @@ export default async function MethodologyPage() {
             <div className="border-l-2 border-[var(--caution)] bg-[var(--status-proposed-bg)]/30 px-4 py-3">
               <dt className="font-medium">Automated radar item</dt>
               <dd className="text-muted-foreground">
-                A lead detected on an official source and assessed by Claude,
-                an Anthropic model, with a keyword-rule fallback when that
-                classifier is not enabled. This is a change from earlier
-                versions of the collector, which used keyword rules only and
-                no external model. Machine confidence is capped at 0.65 in
-                every stored and displayed figure, so a radar item never reads
+                A lead detected on an official source. Keyword rules, or a
+                language model running on our own server, decide whether it
+                is about AI policy. No page text is sent to an outside AI
+                service.
+                Machine confidence is capped at 0.65 in every stored and
+                displayed figure, so a radar item never reads
                 as more certain than an editor&apos;s review, and it remains
                 “Needs review” until editorially checked against the primary
                 source.

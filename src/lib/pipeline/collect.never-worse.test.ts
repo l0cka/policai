@@ -10,7 +10,6 @@ const { scrapeWithFirecrawl } = vi.hoisted(() => ({
   scrapeWithFirecrawl: vi.fn(async () => ({ ok: false as const, reason: 'unavailable', detail: 'harness' })),
 }));
 vi.mock('./firecrawl', () => ({ scrapeWithFirecrawl }));
-vi.mock('./claude-classify', () => ({ classifyBatch: vi.fn(), CLAUDE_BATCH_SIZE: 20 }));
 
 import { collect, collectionRunFailed, emptyWatchState, type WatchState } from './collect';
 import { createHostGate, type HostGate } from './host-gate';

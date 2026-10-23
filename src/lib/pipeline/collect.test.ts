@@ -18,14 +18,6 @@ const { scrapeWithFirecrawl } = vi.hoisted(() => ({
 }));
 vi.mock('./firecrawl', () => ({ scrapeWithFirecrawl }));
 
-// Same hoisting requirement as above. classifyBatch is only ever invoked when
-// USE_CLAUDE_CLASSIFIER is stubbed on for a test; every other test leaves it
-// unmocked-but-uncalled, which is fine since the collector never reaches it
-// with the flag off.
-const { classifyBatch } = vi.hoisted(() => ({
-  classifyBatch: vi.fn(),
-}));
-vi.mock('./claude-classify', () => ({ classifyBatch, CLAUDE_BATCH_SIZE: 20 }));
 vi.mock('./sources', async (importOriginal) => {
   const actual = await importOriginal<typeof import('./sources')>();
   const { withFixtureIdentityException } = await import('@/test/identity-exception');
@@ -46,6 +38,7 @@ const collect = (options: Omit<CollectOptions, 'hostGate'> & { hostGate?: HostGa
   collectThroughGate({ hostGate: buildOpenHostGate(), ...options });
 import type { SourceReview } from '@/types';
 import { MACHINE_CONFIDENCE_CAP, type Classification } from './classify';
+import type { RelevanceScorer } from './clef-classify';
 import { validateCollectionMeta, validateSourceReviews, validateWatchState } from '../validate-data';
 
 beforeEach(() => {
@@ -55,7 +48,6 @@ beforeEach(() => {
     reason: 'unavailable',
     detail: 'not mocked for this test',
   });
-  classifyBatch.mockReset();
 });
 
 describe('collection CLI failure policy', () => {
@@ -4005,10 +3997,10 @@ describe('collect browser fallback', () => {
   });
 });
 
-describe('collect with Claude classifier', () => {
+describe('collect with a model relevance scorer', () => {
   // Same fixture as 'detects new items, skips seen URLs, and updates state'
   // above: one candidate ('seen-before') is already known and filtered out
-  // during dedup, so exactly one surviving candidate reaches classifyBatch.
+  // during dedup, so exactly one surviving candidate reaches the scorer.
   const CANDIDATE_URL = 'https://www.example.gov.au/news/ai-policy-framework';
 
   function stateWithSeenBefore() {
@@ -4020,7 +4012,18 @@ describe('collect with Claude classifier', () => {
     return state;
   }
 
-  function collectWithOneCandidate() {
+  function scorer(scores: Record<string, number>) {
+    return vi.fn<RelevanceScorer>(
+      async (items) =>
+        new Map(
+          items
+            .filter((item) => item.id in scores)
+            .map((item) => [item.id, scores[item.id]]),
+        ),
+    );
+  }
+
+  function collectWithOneCandidate(scoreRelevance?: RelevanceScorer) {
     return collect({
       sources: [HTML_SOURCE],
       state: stateWithSeenBefore(),
@@ -4031,96 +4034,69 @@ describe('collect with Claude classifier', () => {
           '<html><body><h1>New AI policy framework released</h1></body></html>',
       }),
       now: () => new Date('2026-07-10T00:00:00.000Z'),
+      scoreRelevance,
     });
   }
 
-  afterEach(() => {
-    vi.unstubAllEnvs();
-  });
-
-  it('never marks a Claude-classified development as verified', async () => {
-    vi.stubEnv('USE_CLAUDE_CLASSIFIER', '1');
-    classifyBatch.mockResolvedValueOnce([
-      {
-        id: CANDIDATE_URL,
-        relevant: true,
-        confidence: 0.99,
-        jurisdiction: 'federal',
-        type: 'guideline',
-        summary: 'A summary.',
-      },
-    ]);
-
-    const result = await collectWithOneCandidate();
+  it('never marks a model-scored development as verified', async () => {
+    const result = await collectWithOneCandidate(
+      scorer({ [CANDIDATE_URL]: 0.99 }),
+    );
 
     const development = result.developments.find(
       (d) => d.url === CANDIDATE_URL,
     );
-    expect(development).toBeDefined();
     expect(development?.classification).toBe('ai');
     expect(development?.verification.status).not.toBe('verified');
   });
 
-  it('maps Claude verdicts onto the development, calling classifyBatch once for the source', async () => {
-    vi.stubEnv('USE_CLAUDE_CLASSIFIER', '1');
-    // Confidence deliberately at-or-below MACHINE_CONFIDENCE_CAP here so this
-    // test pins the straightforward field mapping; the high-confidence
-    // capping behaviour has its own dedicated regression test below.
-    classifyBatch.mockResolvedValueOnce([
-      {
-        id: CANDIDATE_URL,
-        relevant: true,
-        confidence: 0.6,
-        jurisdiction: 'nsw',
-        type: 'framework',
-        summary: 'Claude summary.',
-      },
+  it('scores the source once and records the model assessment', async () => {
+    const scoreRelevance = scorer({ [CANDIDATE_URL]: 0.6 });
+    const result = await collectWithOneCandidate(scoreRelevance);
+
+    expect(scoreRelevance).toHaveBeenCalledTimes(1);
+    expect(scoreRelevance.mock.calls[0][0]).toEqual([
+      expect.objectContaining({ id: CANDIDATE_URL, sourceName: HTML_SOURCE.name }),
     ]);
-
-    const result = await collectWithOneCandidate();
-
-    expect(classifyBatch).toHaveBeenCalledTimes(1);
-    const development = result.developments.find(
-      (d) => d.url === CANDIDATE_URL,
-    );
-    expect(development).toMatchObject({
+    expect(
+      result.developments.find((d) => d.url === CANDIDATE_URL),
+    ).toMatchObject({
       classification: 'ai',
-      jurisdiction: 'nsw',
       relevanceScore: 0.6,
-      summary: 'Claude summary.',
+      assessment: { method: 'ai', promptVersion: 'clef-noul-v1' },
     });
   });
 
-  it('caps a high-confidence Claude verdict for storage while still gating it for review', async () => {
-    // Regression pin: confidence must do two separate jobs. 0.99 is far
-    // above minScoreForReview (0.7), so the item must still reach the review
-    // queue (the collector must not silently drop a confident detection) —
-    // but the score written into Development/SourceReview must never exceed
-    // MACHINE_CONFIDENCE_CAP, matching the deterministic path's convention
-    // that stored machine confidence always reads as needs-review, not as a
-    // near-certain verification.
-    vi.stubEnv('USE_CLAUDE_CLASSIFIER', '1');
-    classifyBatch.mockResolvedValueOnce([
-      {
-        id: CANDIDATE_URL,
-        relevant: true,
-        confidence: 0.99,
-        jurisdiction: 'federal',
-        type: 'guideline',
-        summary: 'High-confidence Claude summary.',
-      },
-    ]);
-
-    const result = await collectWithOneCandidate();
-
-    const development = result.developments.find(
-      (d) => d.url === CANDIDATE_URL,
-    );
-    expect(development).toBeDefined();
-    expect(development?.relevanceScore).toBeLessThanOrEqual(
-      MACHINE_CONFIDENCE_CAP,
+  it('dismisses an item the keyword rules would keep when the model says no', async () => {
+    const result = await collectWithOneCandidate(
+      scorer({ [CANDIDATE_URL]: 0.1 }),
     );
 
+    expect(result.developments.map((d) => d.url)).not.toContain(CANDIDATE_URL);
+    expect(result.state.seen[CANDIDATE_URL]).toMatchObject({
+      status: 'dismissed',
+    });
+  });
+
+  it('falls back to the keyword rules for an item the model did not score', async () => {
+    const result = await collectWithOneCandidate(scorer({}));
+
+    expect(
+      result.developments.find((d) => d.url === CANDIDATE_URL)?.classification,
+    ).toBe('heuristic');
+  });
+
+  it('caps a high model score for storage while still gating it for review', async () => {
+    // The score does two jobs. 0.99 clears minScoreForReview (0.7), so the
+    // item must reach the review queue, but the stored score never exceeds
+    // MACHINE_CONFIDENCE_CAP, so it always reads as needs-review.
+    const result = await collectWithOneCandidate(
+      scorer({ [CANDIDATE_URL]: 0.99 }),
+    );
+
+    expect(
+      result.developments.find((d) => d.url === CANDIDATE_URL)?.relevanceScore,
+    ).toBeLessThanOrEqual(MACHINE_CONFIDENCE_CAP);
     const review = result.reviewCandidates.find(
       (r) => r.sourceUrl === CANDIDATE_URL,
     );
@@ -4172,16 +4148,8 @@ describe('collect with Claude classifier', () => {
   ])(
     'keeps a tracked $kind change detection editor-gated whatever the model says',
     async ({ tracked, target }) => {
-      vi.stubEnv('USE_CLAUDE_CLASSIFIER', '1');
-      classifyBatch.mockImplementation(async (candidates: { id: string }[]) =>
-        candidates.map((candidate) => ({
-          id: candidate.id,
-          relevant: false,
-          confidence: 0.1,
-          jurisdiction: null,
-          type: null,
-          summary: 'Model says irrelevant.',
-        })),
+      const scoreRelevance = vi.fn<RelevanceScorer>(
+        async (items) => new Map(items.map((item) => [item.id, 0.1])),
       );
 
       const result = await collect({
@@ -4195,6 +4163,7 @@ describe('collect with Claude classifier', () => {
             '<html><body><main><h1>AI governance policy</h1><p>Changed since editorial verification.</p></main></body></html>',
         }),
         now: () => new Date('2026-07-10T00:00:00.000Z'),
+        scoreRelevance,
       });
 
       expect(result.developments).toHaveLength(1);
@@ -4212,18 +4181,16 @@ describe('collect with Claude classifier', () => {
           analysis: expect.objectContaining({ relevanceScore: 1 }),
         }),
       ]);
-      expect(classifyBatch.mock.calls.flat(2)).toEqual([]);
+      expect(scoreRelevance.mock.calls.flat(2)).toEqual([]);
     },
   );
 
-  it('keeps the deterministic heuristic path when the flag is unset', async () => {
+  it('keeps the keyword rules when no scorer is configured', async () => {
     const result = await collectWithOneCandidate();
 
-    expect(classifyBatch).not.toHaveBeenCalled();
-    const development = result.developments.find(
-      (d) => d.url === CANDIDATE_URL,
-    );
-    expect(development?.classification).toBe('heuristic');
+    expect(
+      result.developments.find((d) => d.url === CANDIDATE_URL)?.classification,
+    ).toBe('heuristic');
   });
 });
 
@@ -4234,7 +4201,7 @@ describe('qualifiesForReview', () => {
     classification: 'ai',
     tags: [],
     agencies: [],
-    assessment: { method: 'ai', promptVersion: 'claude-classify-v1' },
+    assessment: { method: 'ai', promptVersion: 'clef-noul-v1' },
   } satisfies Classification;
 
   it('stages a tracked change detection even when it is labelled ai and capped', () => {

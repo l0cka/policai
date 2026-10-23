@@ -3,8 +3,9 @@
 `policai-collect.sh` is an executable **Python 3** program with the historical
 entry-point name. Do not run it with `bash`. It needs standard-library Python,
 Git, authenticated GitHub CLI, npm and the existing public TLS intermediate at
-`~/.local/share/policai/geotrust-tls-rsa-ca-g1.pem`. No cloud credentials are read;
-the approved scheduled classifier remains heuristic.
+`~/.local/share/policai/geotrust-tls-rsa-ca-g1.pem`. No cloud credentials are read.
+Relevance uses the keyword rules unless the unit sets `USE_CLEF_CLASSIFIER=1`,
+which uses the local `clef-flash` model; the cloud classifier variables refuse.
 
 ## Verify and install
 

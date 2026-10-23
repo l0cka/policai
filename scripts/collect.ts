@@ -7,8 +7,9 @@
  * Usage:
  *   npx tsx scripts/collect.ts [--dry-run] [--source=<id>] [--max-items=<n>]
  *
- * Classification is deterministic keyword analysis with capped confidence;
- * detections always require editorial review.
+ * Classification is deterministic keyword analysis with capped confidence.
+ * USE_CLEF_CLASSIFIER=1 asks the local clef-flash model instead when the GPU
+ * and model are available. Detections always require editorial review.
  */
 
 import { withDataMutationLock } from '../src/lib/data-lock';
@@ -20,6 +21,12 @@ import {
   getAutomaticSources,
   getSourceById,
 } from '../src/lib/pipeline/sources';
+import {
+  CLEF_MODEL,
+  clefUnavailableReason,
+  createClefScorer,
+  type RelevanceScorer,
+} from '../src/lib/pipeline/clef-classify';
 import { runCollection } from './collect-run';
 import { FOLLOW_SOURCE_PREFIX } from '../src/lib/legislation/follow';
 
@@ -52,14 +59,24 @@ async function createOptionalBrowserFetch(): Promise<BrowserFetch | null> {
   return createBrowserFetch();
 }
 
+async function createOptionalClefScorer(): Promise<RelevanceScorer | undefined> {
+  if (process.env.USE_CLEF_CLASSIFIER !== '1') {
+    console.log('[collect] Analysis mode: keyword rules (detections require review)');
+    return undefined;
+  }
+  const unavailable = await clefUnavailableReason();
+  if (unavailable) {
+    console.warn(`[collect] Analysis mode: keyword rules; Clef unavailable (${unavailable})`);
+    return undefined;
+  }
+  console.log(`[collect] Analysis mode: local ${CLEF_MODEL} (detections require review)`);
+  return createClefScorer({ log: (message) => console.warn(message) });
+}
+
 async function main() {
   const options = parseArgs(process.argv.slice(2));
 
-  console.log(
-    process.env.USE_CLAUDE_CLASSIFIER
-      ? '[collect] Analysis mode: Claude classifier (detections require review)'
-      : '[collect] Analysis mode: deterministic heuristics (detections require review)',
-  );
+  const scoreRelevance = await createOptionalClefScorer();
 
   let sources = getAutomaticSources();
   if (options.sourceId?.startsWith(FOLLOW_SOURCE_PREFIX)) {
@@ -90,6 +107,7 @@ async function main() {
       sourceId: options.sourceId,
       maxItems: options.maxItems,
       browserFetchImpl: browserFetch?.fetchImpl,
+      scoreRelevance,
     });
 
   try {

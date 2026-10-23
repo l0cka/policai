@@ -84,7 +84,6 @@ describe('official search redirect extraction', () => {
   });
 
   it('fetches the canonical candidate despite a terminal failed wrapper seen entry', async () => {
-    vi.stubEnv('USE_CLAUDE_CLASSIFIER', '');
     const source = WATCH_SOURCES.find((entry) => entry.id === 'oaic-media')!;
     const wrappedUrl = canonicalizeSourceUrl(wrapper(TARGET));
     const state = emptyWatchState();

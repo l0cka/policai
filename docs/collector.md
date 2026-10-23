@@ -280,27 +280,22 @@ the newest version rejects older still-active update reviews as superseded.
 ## Classification
 
 Candidates that survive dedup are classified by keyword heuristic by default.
-When `USE_CLAUDE_CLASSIFIER` is set, candidates are
-classified by the configured AI model instead, invoked in batches of
-`CLAUDE_BATCH_SIZE` (20) candidates per call through
-`src/lib/pipeline/classifier-cli.ts`: one OpenAI-compatible
-`POST {CLASSIFIER_BASE_URL}chat/completions` per batch, authenticated with
-`CLASSIFIER_API_KEY` and pinned to `CLASSIFIER_MODEL`. Each source's
-surviving candidates go out together before the per-candidate loop, so a
-source costs one batch rather than one call per candidate. An authentication
-failure is not caught: it fails the run so a human re-authenticates. The
-scheduled wrapper
-uses the keyword heuristic: it does not read cloud credentials and refuses a
-nonempty `USE_CLAUDE_CLASSIFIER` until that mode is separately reviewed.
-The optional AI request carries no
-tools, so scraped page text cannot invoke anything. For each candidate the
-model returns whether it is relevant, a confidence score, a
-jurisdiction/type guess, and a short draft summary. A verdict that fails
-schema validation is dropped, and that candidate falls back to the keyword
-heuristic rather than being persisted unchecked. Legacy naming: the opt-in
-flag, the `ClaudeAuthError` class and the `claude-classify-v1` prompt
-version date from the original Claude Code CLI transport and are kept for
-log, data and call-site stability.
+With `USE_CLEF_CLASSIFIER=1`, the local `clef-flash` model on Argus decides
+relevance instead (`src/lib/pipeline/clef-classify.ts`). Each candidate's
+title, source name and a 600-character excerpt go to Ollama's System One
+endpoint on `127.0.0.1:11434` as one `noul` question ("Is this item
+Australian AI policy, regulation, governance or court guidance?"), and the
+model's P(true) becomes the score. An item at 0.5 or above is relevant.
+Summary, type and jurisdiction still come from the keyword rules, and the
+assessment records `promptVersion: 'clef-noul-v1'`.
+
+Clef never fails a run. `scripts/collect.ts` checks once per run that at least
+13 GB of GPU memory is free (`nvidia-smi`) and that the model is installed. If
+not, the run logs why and uses the keyword rules. A malformed or failed answer
+for one candidate leaves only that candidate on the keyword rules. The request
+carries no tools and nothing leaves the machine. The scheduled wrapper refuses
+the retired cloud classifier (`USE_CLAUDE_CLASSIFIER`, `CLASSIFIER_BASE_URL`,
+`CLASSIFIER_API_KEY`) and passes `USE_CLEF_CLASSIFIER=1` through.
 
 Sources with `bodyRelevance` (currently `aph-hansard-bill-debates`) use a
 third deterministic rule instead of either path above. Their feed items are
@@ -309,7 +304,7 @@ titles name the bill, not AI. After the page is fetched, a candidate is
 relevant only when its body has at least `bodyRelevance.minAiMentions` explicit
 AI mentions (`countAiMentions` in `src/lib/scraper-filter.ts`). Relevant items
 score 0.55 with `promptVersion: 'body-mentions-v1'` and a summary that states
-the mention count. These sources are not sent to the AI classifier.
+the mention count. These sources are not sent to Clef.
 
 Confidence from either classifier path is capped at 0.65
 (`MACHINE_CONFIDENCE_CAP`) before it is stored or shown, so every automated
@@ -326,14 +321,14 @@ to a classifier, always carries `classification: 'heuristic'` and
 `promptVersion: 'source-hash-change-v1'`, and always stages a review,
 whichever classifier path is active. The review gate (`qualifiesForReview` in
 `collect.ts`) keys these detections on that `promptVersion`, not on the
-classification label. For a Claude detection it compares the uncapped
+classification label. For a Clef detection it compares the uncapped
 `rawConfidence` with the review threshold, because the capped score could
 never clear it. `rawConfidence` is used for that decision only and is never
 persisted. These detections land as
 `needs_review` and pass through the identical editorial gate; the cap and
 the score-1 path never let an automated detection publish anything. `data/policies.json` is never written by either path:
 a Vitest test asserts the file is byte-identical before and after a
-Claude-enabled collection run, and a separate guard step fails the run if the
+collection run, and a separate guard step fails the run if the
 file changed on disk (see Production automation below).
 
 ## Running locally
