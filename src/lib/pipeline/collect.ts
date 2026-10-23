@@ -16,12 +16,10 @@ import {
   classifyByBodyMentions,
   classifyBySearchMatch,
   classifyCandidate,
-  classifyCandidatesWithClaude,
-  classificationFromVerdict,
-  isClaudeClassifierEnabled,
+  classificationFromScore,
   type Classification,
 } from './classify';
-import type { ClaudeVerdict } from './claude-classify';
+import type { RelevanceScorer } from './clef-classify';
 import { extractFromFrlSearch, trackedFrlPages } from '@/lib/legislation/frl-search';
 import { extractFromSaltSearch } from '@/lib/legislation/sa-salt';
 import { extractFromBillList } from '@/lib/legislation/state-bill-lists';
@@ -143,6 +141,8 @@ export interface CollectOptions {
   /** A run below this successful-source ratio is failed, not fresh. */
   minHealthySourceRate?: number;
   logger?: (message: string) => void;
+  /** Model relevance scores; unset keeps the keyword rules. */
+  scoreRelevance?: RelevanceScorer;
 }
 
 export interface CollectResult {
@@ -1143,7 +1143,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     options.minScoreForReview ?? DEFAULT_MIN_SCORE_FOR_REVIEW;
   const minHealthySourceRate =
     options.minHealthySourceRate ?? DEFAULT_MIN_HEALTHY_SOURCE_RATE;
-  const useClaudeClassifier = isClaudeClassifierEnabled();
+  const scoreRelevance = options.scoreRelevance;
 
   const state: WatchState = {
     seen: { ...options.state.seen },
@@ -1712,17 +1712,17 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
       `[collect] ${source.id}: ${candidateCount} candidates, ${newCandidateCount} new, ${pending.length} pending`,
     );
 
-    const claudeVerdictsById: Map<string, ClaudeVerdict> | null =
-      useClaudeClassifier && !source.bodyRelevance && !isRegisterSearch(source.kind)
-        ? await classifyCandidatesWithClaude(
+    const modelScoresById: Map<string, number> | null =
+      scoreRelevance && !source.bodyRelevance && !isRegisterSearch(source.kind)
+        ? await scoreRelevance(
             candidates
               .filter((candidate) => !trackedChangeTarget(candidate))
               .map((candidate) => ({
                 id: candidateStateKey(candidate),
                 title: candidate.title,
                 text: candidate.text,
+                sourceName: source.name,
               })),
-            source.name,
           )
         : null;
 
@@ -1909,9 +1909,9 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
                 document.text,
                 source.bodyRelevance.minAiMentions,
               )
-            : useClaudeClassifier
-              ? classificationFromVerdict(
-                  claudeVerdictsById?.get(candidateStateKey(candidate)),
+            : modelScoresById
+              ? classificationFromScore(
+                  modelScoresById.get(candidateStateKey(candidate)),
                   enrichedCandidate,
                 )
               : await classifyCandidate(enrichedCandidate, document.text);

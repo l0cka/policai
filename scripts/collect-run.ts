@@ -8,6 +8,7 @@ import {
   type WatchState,
 } from '../src/lib/pipeline/collect';
 import type { BrowserFetch } from '../src/lib/pipeline/browser-fetch';
+import type { RelevanceScorer } from '../src/lib/pipeline/clef-classify';
 import {
   createHostGate,
   robotsFetcher,
@@ -46,6 +47,7 @@ export interface CollectionRun {
   browserFetchImpl?: BrowserFetch['fetchImpl'];
   hostGate?: HostGate;
   now?: () => Date;
+  scoreRelevance?: RelevanceScorer;
 }
 
 const sleep = (ms: number) =>
@@ -118,6 +120,7 @@ export async function runCollection(run: CollectionRun): Promise<void> {
     maxItemsPerSource: run.maxItems,
     force: Boolean(run.sourceId),
     logger: (message) => console.log(message),
+    scoreRelevance: run.scoreRelevance,
   });
 
   const follow = await followTrackedLegislation(run, policies, reviews, hostGate);

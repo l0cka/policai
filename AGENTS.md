@@ -49,7 +49,7 @@ Policai is an Australian AI policy tracker. It maintains a curated register of A
 - **Data:** public-safe JSON in `public/data/`; editorial and collector JSON in
   `data/`, all canonical and versioned
 - **Retrieval:** plain HTTP first; self-hosted Firecrawl for candidate pages on browser-strategy sources, falling back to headless Chromium (Playwright); index and RSS listing pages always use headless Chromium directly. Every path sends the collector identity `Policai/1.0 (+https://policai.org)` (`src/lib/pipeline/identity.ts`; see Collector identity below) and passes through one `HostGate` (`src/lib/pipeline/host-gate.ts`: robots.txt, a 2 s gap per host, `Retry-After`, a per-run breaker; docs/collector.md "Politeness"). Firecrawl `map` and `crawl` are not used.
-- **Analysis:** keyword heuristic by default; Claude, an Anthropic model, batched through an OpenAI-compatible chat-completions endpoint (`src/lib/pipeline/classifier-cli.ts`) when `USE_CLAUDE_CLASSIFIER` is set — both classifier paths cap stored/displayed confidence at 0.65 (`MACHINE_CONFIDENCE_CAP`); direct-document change detections on tracked records store `relevanceScore: 1` by design (change-certainty, not classifier confidence) and stay editor-gated
+- **Analysis:** keyword heuristic by default; the local `clef-flash` model on Argus (`src/lib/pipeline/clef-classify.ts`) when `USE_CLEF_CLASSIFIER=1` and the GPU and model are available, falling back to keyword rules otherwise — both classifier paths cap stored/displayed confidence at 0.65 (`MACHINE_CONFIDENCE_CAP`); direct-document change detections on tracked records store `relevanceScore: 1` by design (change-certainty, not classifier confidence) and stay editor-gated
 - **Scraping:** Cheerio
 - **Testing:** Vitest (+ Testing Library)
 - **Automation:** a daily scheduled run on the maintainer's server
@@ -106,7 +106,7 @@ src/
 │   ├── related-policies.ts       # Ranked related instruments for /policies/[id] (see Related instruments)
 │   ├── scraper-filter.ts         # Keyword heuristics shared by the pipeline
 │   ├── source-ingest.ts          # Curated publish path (used by the MCP server)
-│   └── pipeline/                 # Collector: sources.ts, extract.ts, classify.ts, claude-classify.ts, classifier-cli.ts, firecrawl.ts, collect.ts
+│   └── pipeline/                 # Collector: sources.ts, extract.ts, classify.ts, clef-classify.ts, firecrawl.ts, collect.ts
 ├── mcp/                          # Local MCP server for staging/publishing records
 └── types/index.ts                # All shared domain types
 
@@ -121,7 +121,7 @@ docs/                             # collector.md + docs index
 
 1. **Register** (`data/policies.json`): curated policy records. Changed only through explicit editorial approval (human or MCP-assisted). `/data/policies.json` and API/site reads expose only verified, non-trashed, non-withheld records. The collector never writes it. The host wrapper `ops/collector/policai-collect.sh` fails a collection run that changes it. No GitHub workflow checks this, so a hand-made PR that edits the register is caught only by review.
    A `legislation` or `regulation` record may carry `legislative`: its official id (APH bill id, Federal Register title id, or a state register URL) and dated, sourced lifecycle events (introduced, referred, passed, assented, registered, tabled, commenced, amended, repealed, and the ends: lapsed, withdrawn, negatived, disallowed). `src/lib/legislation/model.ts` replays the events through one transition function; `validate:data` fails on an out-of-order event, a `status` that disagrees with the events, or a `commenced`, `amended` or `repealed` record date that is none of that kind's events. Every non-trashed `legislation` record must carry it (snapshots in approved or published source reviews are exempt); on `regulation` it is optional, because registered eSafety industry codes and consultations are not Federal Register instruments.
-2. **Developments** (`data/developments.json`): automated radar feed. Each entry has provenance (`sourceId`, `url`), a relevance score, and a `classification` label — `heuristic` (deterministic keyword rules, the default) or `ai` (Claude classification, active when `USE_CLAUDE_CLASSIFIER` is set), plus `curated` for promoted register entries. Both classifier paths cap confidence at 0.65 (`MACHINE_CONFIDENCE_CAP`) and show as "Needs review". Direct-document change detections on tracked records carry `relevanceScore: 1` — the score records change-certainty for a known instrument, not classifier confidence — and are equally editor-gated. `/data/developments.json` filters dismissed entries. Public feed entries render `id={development.id}` so `/developments#<id>` reveals past the other tab and filters (#223); dismissed rows never reach the browser. `docs/editorial-policy.md` allows those fragment links.
+2. **Developments** (`data/developments.json`): automated radar feed. Each entry has provenance (`sourceId`, `url`), a relevance score, and a `classification` label — `heuristic` (deterministic keyword rules, the default) or `ai` (local Clef classification, active when `USE_CLEF_CLASSIFIER=1`), plus `curated` for promoted register entries. Both classifier paths cap confidence at 0.65 (`MACHINE_CONFIDENCE_CAP`) and show as "Needs review". Direct-document change detections on tracked records carry `relevanceScore: 1` — the score records change-certainty for a known instrument, not classifier confidence — and are equally editor-gated. `/data/developments.json` filters dismissed entries. Public feed entries render `id={development.id}` so `/developments#<id>` reveals past the other tab and filters (#223); dismissed rows never reach the browser. `docs/editorial-policy.md` allows those fragment links.
 3. **Editorial directories** (`data/timeline.json`, `data/agencies.json`,
    `data/commonwealth-agencies.json`): may contain records awaiting review and
    are never served statically; `/data/*.json` route handlers apply public
@@ -488,15 +488,12 @@ POLICAI_SIGNAL_TOKEN=     # HTTPS /api/signal/* Bearer token (Grok Bot product p
 POLICAI_SIGNAL_GITHUB_TOKEN= # host-only; Signal POST reads GitHub main and commits changed files as a PR (or main push); never writes the checkout
 POLICAI_SIGNAL_REVIEWERS= # allowlist for Signal reviewer (default: Daniel Alkurdi,Daniel)
 POLICAI_MCP_ADMIN_TOKEN=  # local MCP source-ingest writes (laptop recovery; not the bot path)
-USE_CLAUDE_CLASSIFIER=    # opt into Claude classification instead of the keyword heuristic (set on the collection host)
+USE_CLEF_CLASSIFIER=      # 1 = score relevance with local clef-flash instead of keyword rules (collection host only)
 FIRECRAWL_URL=            # self-hosted Firecrawl base URL, defaults to http://127.0.0.1:3003
-CLASSIFIER_BASE_URL=      # chat-completions base URL used when USE_CLAUDE_CLASSIFIER is set
-CLASSIFIER_API_KEY=       # bearer token for that endpoint
-CLASSIFIER_MODEL=         # model id sent with each request
 POLICAI_ARTICLES_DIR=     # read articles from this directory instead of data/articles (previews only)
 ```
 
-Classification needs all three `CLASSIFIER_*` variables. A missing one raises `ClaudeAuthError` before any request is sent. Keep the key in the host environment, never in the repo. Tests clear all three in `vitest.setup.ts`.
+Clef needs no key: it talks only to Ollama on `127.0.0.1:11434`. The retired cloud variables (`USE_CLAUDE_CLASSIFIER`, `CLASSIFIER_BASE_URL`, `CLASSIFIER_API_KEY`) make the host wrapper refuse to run.
 
 ## Editing Data
 

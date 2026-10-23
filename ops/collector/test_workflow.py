@@ -82,7 +82,8 @@ else:
         ca.parent.mkdir(parents=True)
         ca.touch()
         self.env = dict(os.environ, HOME=str(self.home), PATH=str(bin_dir)+':'+os.environ['PATH'])
-        self.env.pop('USE_CLAUDE_CLASSIFIER', None)
+        for name in ('USE_CLAUDE_CLASSIFIER', 'USE_CLEF_CLASSIFIER', 'CLASSIFIER_BASE_URL', 'CLASSIFIER_API_KEY'):
+            self.env.pop(name, None)
         for name in list(self.env):
             if name.startswith('POLICAI_COLLECT_'):
                 self.env.pop(name)
@@ -1173,6 +1174,21 @@ else:
         self.env['POLICAI_COLLECT_BRANCH'] = 'other'
         self.assertNotEqual(self.run_workflow().returncode, 0)
         self.assertEqual(self.git('ls-remote', 'origin', 'refs/heads/main').split()[0], self.base)
+
+    def test_cloud_classifier_refuses_and_local_clef_passes_through(self):
+        for name, value in (('USE_CLAUDE_CLASSIFIER', '1'), ('CLASSIFIER_API_KEY', 'k'), ('USE_CLEF_CLASSIFIER', 'yes')):
+            with self.subTest(name=name):
+                env = dict(self.env)
+                self.env[name] = value
+                result = self.run_workflow()
+                self.assertEqual(result.returncode, 1)
+                self.assertIn('classifier', result.stderr.lower())
+                self.assertEqual(self.run_names(), [])
+                self.env = env
+        self.env['USE_CLEF_CLASSIFIER'] = '1'
+        self.set_collector('import os, pathlib; pathlib.Path("data/developments.json").write_text(os.environ["USE_CLEF_CLASSIFIER"] + "\\n")')
+        result = self.run_workflow()
+        self.assertEqual(result.returncode, 0, result.stderr)
 
     def test_success_publishes_pr_not_main_and_preserves_source(self):
         result = self.run_workflow()

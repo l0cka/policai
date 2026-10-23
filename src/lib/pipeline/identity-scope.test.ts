@@ -7,7 +7,6 @@ import { validateWatchSources } from '../validate-data';
 import { destinationCollectorIdentity, identityAuthorityFor } from './identity';
 const { scrapeWithFirecrawl } = vi.hoisted(() => ({ scrapeWithFirecrawl: vi.fn() }));
 vi.mock('./firecrawl', () => ({ scrapeWithFirecrawl }));
-vi.mock('./claude-classify', () => ({ classifyBatch: vi.fn(), CLAUDE_BATCH_SIZE: 20 }));
 vi.mock('./sources', async (importOriginal) => {
   const actual = await importOriginal<typeof import('./sources')>();
   const { withFixtureIdentityException } = await import('@/test/identity-exception');
@@ -23,7 +22,6 @@ const html = '<html><body><main><h1>AI policy</h1><p>Government artificial intel
 beforeEach(() => {
   vi.useFakeTimers();
   vi.setSystemTime(new Date('2026-10-07T00:00:00Z'));
-  vi.stubEnv('USE_CLAUDE_CLASSIFIER', '');
   scrapeWithFirecrawl.mockReset();
   scrapeWithFirecrawl.mockResolvedValue({ ok: false, reason: 'unavailable', detail: 'offline fixture' });
 });

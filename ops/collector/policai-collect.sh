@@ -1009,9 +1009,13 @@ def main():
         try:
             if os.environ.get('POLICAI_COLLECT_BRANCH', 'main') != 'main':
                 raise Refused('branch override retired; collection base must be main')
-            # Preserve heuristic mode; never read cloud credentials or opt into AI.
-            if os.environ.get('USE_CLAUDE_CLASSIFIER'):
-                raise Refused('AI classifier requires separately reviewed configuration')
+            # Model relevance stays on this machine: the retired cloud classifier
+            # and its credentials refuse; USE_CLEF_CLASSIFIER=1 opts into local Clef.
+            if any(os.environ.get(name) for name in ('USE_CLAUDE_CLASSIFIER', 'CLASSIFIER_BASE_URL', 'CLASSIFIER_API_KEY')):
+                raise Refused('cloud classifier retired; only local Clef (USE_CLEF_CLASSIFIER=1) is allowed')
+            # Unset keeps the keyword rules; only an explicit 1 turns Clef on.
+            if os.environ.get('USE_CLEF_CLASSIFIER') not in (None, '1'):
+                raise Refused('USE_CLEF_CLASSIFIER must be unset or 1')
             os.environ['FIRECRAWL_URL'] = 'http://127.0.0.1:3003'
             os.environ['NODE_EXTRA_CA_CERTS'] = str(HOME / '.local/share/policai/geotrust-tls-rsa-ca-g1.pem')
             assert_clean(SOURCE)
