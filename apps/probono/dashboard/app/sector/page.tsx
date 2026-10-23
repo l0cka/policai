@@ -37,21 +37,22 @@ export default async function SectorPage() {
 
   return (
     <div className="container page">
-      <section aria-labelledby="sector-explorer-title" className="sector-hero reveal">
-        <header className="sector-hero-head">
-          <p className="page-eyebrow">Sector reference · compiled {COMPILED}</p>
-          <h1 id="sector-explorer-title" className="page-title">Funding and referral structure</h1>
-        </header>
-        <SectorExplorer orgs={orgs} monitoringAvailable={monitoringAvailable} />
-      </section>
+      <header className="sector-head reveal">
+        <p className="page-eyebrow">Sector reference · compiled {COMPILED}</p>
+        <h1 className="page-title">The legal assistance sector</h1>
+        <p className="sector-lede">
+          Who funds, coordinates, delivers and studies legal help in Australia, and how money and
+          referrals move between them.
+        </p>
+      </header>
 
       <dl className="stat-strip reveal reveal-1" aria-label="Sector snapshot">
         <div className="stat">
-          <dt>directory records</dt>
+          <dt>organisations</dt>
           <dd>{orgs.length}</dd>
         </div>
         <div className="stat">
-          <dt>primary offices mapped</dt>
+          <dt>offices mapped</dt>
           <dd>{locations.locations.length}</dd>
         </div>
         <div className="stat">
@@ -67,6 +68,25 @@ export default async function SectorPage() {
           <dd>$3.9b</dd>
         </div>
       </dl>
+
+      <section aria-label="Map and system" className="reveal reveal-2">
+        <SectorExplorer orgs={orgs} monitoringAvailable={monitoringAvailable} />
+      </section>
+
+      <section aria-labelledby="sector-directory-title">
+        <h2 id="sector-directory-title" className="section-heading">
+          Directory
+        </h2>
+        <p className="section-intro">
+          Every researched organisation and program, by primary kind. Core provider networks are
+          directory-based; the other kinds are selective rather than a full census. Open a row for
+          its funding line and website.{' '}
+          {monitoringAvailable
+            ? 'A green dot marks an active radar source.'
+            : 'Live radar-source coverage is unavailable in this local preview.'}
+        </p>
+        <SectorDirectory orgs={orgs} monitoringAvailable={monitoringAvailable} />
+      </section>
 
       <section aria-label="The National Access to Justice Partnership">
         <h2 className="section-heading">The funding agreement</h2>
@@ -113,19 +133,6 @@ export default async function SectorPage() {
           Legal Centres Australia in 2020; the National FVPLS Forum became First Nations Advocates
           Against Family Violence.
         </p>
-      </section>
-
-      <section aria-label="Directory">
-        <h2 className="section-heading">Directory</h2>
-        <p className="section-intro">
-          {orgs.length} researched organisation and program records by primary tier. Core provider
-          networks are directory-based; contextual ecosystem tiers are selective rather than an
-          exhaustive census.{' '}
-          {monitoringAvailable
-            ? 'A green dot marks an active radar source.'
-            : 'Live radar-source coverage is unavailable in this local preview.'}
-        </p>
-        <SectorDirectory orgs={orgs} monitoringAvailable={monitoringAvailable} />
       </section>
 
       <section aria-label="Method" className="sector-method">

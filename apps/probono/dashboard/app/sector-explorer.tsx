@@ -2,7 +2,6 @@
 
 import { useMemo, useState, type KeyboardEvent } from 'react';
 import dynamic from 'next/dynamic';
-import { MapPinOff, MapPinned } from 'lucide-react';
 import {
   RELATIONSHIP_EVIDENCE,
   RELATIONSHIP_LABELS,
@@ -59,7 +58,7 @@ const SERVICE_CATEGORIES: Array<{
     label: 'Community Legal Centres',
     match: (org) => org.tier === 'clc' && !isWomenLegalService(org),
   },
-  { key: 'wls', label: 'Women’s Legal Services (WLSA)', match: (org) => isWomenLegalService(org) },
+  { key: 'wls', label: 'Women’s Legal Services', match: (org) => isWomenLegalService(org) },
   { key: 'atsils', label: 'ATSILS', match: (org) => org.tier === 'atsils' },
   { key: 'fvpls', label: 'FVPLS', match: (org) => org.tier === 'fvpls' },
 ];
@@ -261,17 +260,30 @@ export default function SectorExplorer({
 
   return (
     <div className="sector-explorer">
-      <header className="sector-explorer-head">
-        <div>
-          <p className="sector-explorer-kicker">
-            {view === 'map' ? 'Explore by jurisdiction' : 'How the system connects'}
-          </p>
+      <div className="sector-explorer-bar">
+        {view === 'map' ? (
+          <div className="sector-category-chips" role="group" aria-label="Provider category">
+            <button type="button" aria-pressed={category === null} onClick={() => selectCategory(null)}>
+              <span className="sector-key-dot sector-key-all" aria-hidden="true" />
+              All providers
+            </button>
+            {SERVICE_CATEGORIES.map((entry) => (
+              <button
+                type="button"
+                key={entry.key}
+                aria-pressed={category === entry.key}
+                onClick={() => selectCategory(entry.key)}
+              >
+                <span className={`sector-key-dot sector-key-${entry.key}`} aria-hidden="true" />
+                {entry.label}
+              </button>
+            ))}
+          </div>
+        ) : (
           <p className="sector-explorer-summary">
-            {view === 'map'
-              ? 'Primary-office records for the five provider categories; this is not a service-coverage map.'
-              : 'The core NAJP funding spine, profession pathways and connected access-to-justice ecosystem.'}
+            The NAJP funding spine, profession pathways and the wider access-to-justice ecosystem.
           </p>
-        </div>
+        )}
         <div className="sector-view-tabs" role="tablist" aria-label="Sector explorer view">
           <button
             type="button"
@@ -295,17 +307,16 @@ export default function SectorExplorer({
             onClick={() => setView('system')}
             onKeyDown={(event) => handleTablistKeys(event, 'system', 'map')}
           >
-            System
+            How it connects
           </button>
         </div>
-      </header>
+      </div>
 
       {view === 'system' ? (
         <div
           role="tabpanel"
           id="sector-view-panel-system"
           aria-labelledby="sector-view-tab-system"
-          aria-label="System view"
           tabIndex={0}
           className="sector-system-panel"
         >
@@ -316,223 +327,124 @@ export default function SectorExplorer({
           role="tabpanel"
           id="sector-view-panel-map"
           aria-labelledby="sector-view-tab-map"
-          aria-label="Map view"
           tabIndex={0}
           className="sector-map-layout"
         >
-          <div className="sector-map-toolbar">
-            <div className="sector-zoom-toggle" role="group" aria-label="Fit map to">
-              <button
-                type="button"
-                onClick={() => setFit((prev) => ({ seq: prev.seq + 1, target: 'australia' }))}
-              >
-                Australia
-              </button>
-              <button
-                type="button"
-                onClick={() => setFit((prev) => ({ seq: prev.seq + 1, target: jurisdiction }))}
-              >
-                {STATE_NAMES[jurisdiction]}
-              </button>
-            </div>
+          <div className="sector-map-stage">
+            <SectorMapView
+              orgs={mapOrgs}
+              stateCounts={mapCounts}
+              selectedName={selectedOrg?.name ?? ''}
+              jurisdiction={jurisdiction}
+              fit={fit}
+              fly={fly}
+              onSelectOrgAction={(name, orgJurisdiction) => {
+                if (orgJurisdiction !== jurisdiction) {
+                  setJurisdiction(orgJurisdiction as MapJurisdiction);
+                }
+                setSelectedName(name);
+              }}
+              onSelectJurisdictionAction={(next) => selectJurisdiction(next as MapJurisdiction)}
+            />
+            <p className="sector-map-caption">
+              Dots are primary offices, not service areas, branches or outreach. Numbered circles
+              are clusters; zoom in to split them. Faded dots are suburb-level. Addresses come from
+              provider pages, geocoded with OpenStreetMap Nominatim; map data © OpenStreetMap
+              contributors.
+            </p>
           </div>
 
-          <div className="sector-map-columns">
-            <aside className="sector-map-controls" aria-label="Map filters">
-              <div className="sector-detail-swap" key={`${jurisdiction}-${category ?? 'all'}`}>
-                <header className="sector-jurisdiction-head">
-                  <p>{jurisdiction}</p>
-                  <span className="sector-jurisdiction-name">{STATE_NAMES[jurisdiction]}</span>
-                  <strong>{totals[jurisdiction]} directory records across all tiers</strong>
-                </header>
-
-                <div className="sector-breakdown">
-                  <p className="sector-panel-label">Filter by service category</p>
-                  <button
-                    type="button"
-                    aria-pressed={category === null}
-                    onClick={() => selectCategory(null)}
-                  >
-                    <span className="sector-key-dot sector-key-all" />
-                    <span>All five provider categories</span>
-                    <strong>{frontlineTotal}</strong>
-                  </button>
-                  {serviceCounts.map((entry) => (
-                    <button
-                      type="button"
-                      key={entry.key}
-                      aria-pressed={category === entry.key}
-                      onClick={() => selectCategory(entry.key)}
-                    >
-                      <span className={`sector-key-dot sector-key-${entry.key}`} />
-                      <span>{entry.label}</span>
-                      <strong>{entry.count}</strong>
-                    </button>
-                  ))}
-                </div>
-
-                <section className="sector-map-guide" aria-labelledby="sector-map-guide-title">
-                  <p id="sector-map-guide-title" className="sector-map-guide-title">Map legend</p>
-                  <dl>
-                    <div>
-                      <dt>
-                        <span
-                          className={`sector-map-legend-mark sector-map-legend-office sector-key-${category ?? 'all'}`}
-                          aria-hidden="true"
-                        />
-                        Primary office
-                      </dt>
-                      <dd>Mapped location.</dd>
-                    </div>
-                    <div>
-                      <dt>
-                        <span className="sector-map-legend-mark sector-map-legend-cluster" aria-hidden="true">
-                          8
-                        </span>
-                        Cluster
-                      </dt>
-                      <dd>Zoom in to split nearby offices.</dd>
-                    </div>
-                    <div>
-                      <dt>
-                        <MapPinned className="sector-map-legend-icon" aria-hidden="true" />
-                        Outlined state
-                      </dt>
-                      <dd>Jurisdiction in view.</dd>
-                    </div>
-                    <div>
-                      <dt>
-                        <MapPinOff className="sector-map-legend-icon is-muted" aria-hidden="true" />
-                        Not mapped
-                      </dt>
-                      <dd>Service areas, branches, outreach and online coverage.</dd>
-                    </div>
-                  </dl>
-                  <p className="sector-map-source-note">
-                    Source: provider pages, geocoded with OpenStreetMap Nominatim. Faded dots are
-                    suburb-level.
-                  </p>
-                </section>
-              </div>
-            </aside>
-
-            <div className="sector-map-stage">
-              <SectorMapView
-                orgs={mapOrgs}
-                stateCounts={mapCounts}
-                selectedName={selectedOrg?.name ?? ''}
-                jurisdiction={jurisdiction}
-                fit={fit}
-                fly={fly}
-                onSelectOrgAction={(name, orgJurisdiction) => {
-                  if (orgJurisdiction !== jurisdiction) {
-                    setJurisdiction(orgJurisdiction as MapJurisdiction);
-                  }
-                  setSelectedName(name);
-                }}
-                onSelectJurisdictionAction={(next) => selectJurisdiction(next as MapJurisdiction)}
-              />
-            </div>
-          </div>
-
-          {/* Live announcements stay short: the full detail panel is read by
-              navigation, not re-announced on every selection change. */}
-          <aside className="sector-map-detail">
+          {/* Live announcements stay short: the card is read by navigation,
+              not re-announced on every selection change. */}
+          <aside className="sector-map-card" aria-label="Selected organisation">
             <p className="sr-only" role="status">
               {selectedOrg ? `${selectedOrg.name} selected` : 'No organisations match this view.'}
             </p>
+            <div className="sector-card-state">
+              <label htmlFor="sector-state-select" className="ctrl-label">
+                State or territory
+              </label>
+              <div className="sector-card-state-row">
+                <select
+                  id="sector-state-select"
+                  value={jurisdiction}
+                  onChange={(event) => {
+                    const next = event.target.value as MapJurisdiction;
+                    selectJurisdiction(next);
+                    setFit((prev) => ({ seq: prev.seq + 1, target: next }));
+                  }}
+                >
+                  {MAP_JURISDICTIONS.map((key) => (
+                    <option key={key} value={key}>
+                      {STATE_NAMES[key]} ({totals[key]} records)
+                    </option>
+                  ))}
+                </select>
+                <button
+                  type="button"
+                  onClick={() => setFit((prev) => ({ seq: prev.seq + 1, target: 'australia' }))}
+                >
+                  All of Australia
+                </button>
+              </div>
+            </div>
+
             {selectedOrg ? (
-              <div className="sector-selected-org sector-detail-swap" key={selectedOrg.name}>
-                <div className="sector-org-picker sector-org-picker-detail">
-                  <div className="sector-org-picker-head">
-                    <label htmlFor="sector-org-select">
-                      {category ? categoryLabel[category] : 'Provider records'} in {jurisdiction}
-                    </label>
-                    <div className="sector-org-step" role="group" aria-label="Step through organisations">
-                      <button
-                        type="button"
-                        aria-label="Previous organisation"
-                        disabled={selectedIndex <= 0}
-                        onClick={() => stepOrg(-1)}
-                      >
-                        ‹
-                      </button>
-                      <button
-                        type="button"
-                        aria-label="Next organisation"
-                        disabled={selectedIndex < 0 || selectedIndex >= visibleOrgs.length - 1}
-                        onClick={() => stepOrg(1)}
-                      >
-                        ›
-                      </button>
-                    </div>
-                  </div>
-                  <div className="sector-org-picker-control">
-                    <span
-                      className={`sector-key-dot sector-key-${categoryOf(selectedOrg) ?? 'all'}`}
-                      aria-hidden="true"
-                    />
-                    <select
-                      id="sector-org-select"
-                      value={selectedOrg.name}
-                      onChange={(event) => setSelectedName(event.target.value)}
+              <div className="sector-card-org sector-detail-swap" key={selectedOrg.name}>
+                <div className="sector-card-step">
+                  <label htmlFor="sector-org-select" className="ctrl-label">
+                    {selectedIndex + 1} of {visibleOrgs.length}{' '}
+                    {category ? categoryLabel[category] : 'providers'} in {jurisdiction}
+                  </label>
+                  <div className="sector-org-step" role="group" aria-label="Step through organisations">
+                    <button
+                      type="button"
+                      aria-label="Previous organisation"
+                      disabled={selectedIndex <= 0}
+                      onClick={() => stepOrg(-1)}
                     >
-                      {visibleOrgs.map((org) => (
-                        <option key={`${org.tier}-${org.name}`} value={org.name}>
-                          {org.name}
-                        </option>
-                      ))}
-                    </select>
+                      ‹
+                    </button>
+                    <button
+                      type="button"
+                      aria-label="Next organisation"
+                      disabled={selectedIndex < 0 || selectedIndex >= visibleOrgs.length - 1}
+                      onClick={() => stepOrg(1)}
+                    >
+                      ›
+                    </button>
                   </div>
-                  <span>
-                    {selectedIndex >= 0 ? `${selectedIndex + 1} of ` : ''}
-                    {visibleOrgs.length} records in this view
-                  </span>
-                  <h2 className="sr-only">{selectedOrg.name}</h2>
                 </div>
-                <dl>
-                  <div>
-                    <dt>Type</dt>
-                    <dd>
-                      {categoryOf(selectedOrg) === 'wls'
-                        ? 'Women’s Legal Services'
-                        : tierLabel[selectedOrg.tier]}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt>Jurisdiction</dt>
-                    <dd>{selectedOrg.jurisdiction}</dd>
-                  </div>
-                  <div>
-                    <dt>Radar</dt>
-                    <dd>
-                      {monitoringAvailable ? (
-                        <>
-                          <span
-                            className={`sector-radar-dot ${selectedOrg.monitored ? 'is-on' : ''}`}
-                            aria-hidden="true"
-                          />
-                          {selectedOrg.monitored ? 'Active source' : 'Not currently monitored'}
-                        </>
-                      ) : (
-                        'Unavailable in local preview'
-                      )}
-                    </dd>
-                  </div>
-                  {selectedLocation ? (
-                    <div>
-                      <dt>Office</dt>
-                      <dd>
-                        {selectedLocation.suburb ?? 'Located'}
-                        {selectedLocation.precision === 'locality' ? ' · suburb-level' : ''}
-                      </dd>
-                    </div>
-                  ) : null}
-                </dl>
+                <div className="sector-card-org-picker">
+                  <span
+                    className={`sector-key-dot sector-key-${categoryOf(selectedOrg) ?? 'all'}`}
+                    aria-hidden="true"
+                  />
+                  <select
+                    id="sector-org-select"
+                    value={selectedOrg.name}
+                    onChange={(event) => setSelectedName(event.target.value)}
+                  >
+                    {visibleOrgs.map((org) => (
+                      <option key={`${org.tier}-${org.name}`} value={org.name}>
+                        {org.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <h2 className="sr-only">{selectedOrg.name}</h2>
+                <p className="sector-card-meta">
+                  {categoryOf(selectedOrg) === 'wls'
+                    ? 'Women’s Legal Services'
+                    : tierLabel[selectedOrg.tier]}
+                  {selectedLocation?.suburb ? ` · ${selectedLocation.suburb}` : ''}
+                  {selectedLocation?.precision === 'locality' ? ' (suburb-level)' : ''}
+                  {monitoringAvailable && selectedOrg.monitored ? ' · on the radar' : ''}
+                </p>
                 <p className="sector-selected-role">{selectedOrg.role}</p>
 
                 <div className="sector-evidence">
-                  <p className="sector-panel-label">Sourced relationships</p>
+                  <p className="ctrl-label">Sourced relationships</p>
                   <div
                     className="sector-relationship-chips"
                     role="group"
@@ -556,10 +468,7 @@ export default function SectorExplorer({
                   {relationship === 'funding' ? (
                     <div className="sector-evidence-item">
                       <p>{selectedOrg.funded_by || 'No funding attribution recorded.'}</p>
-                      <small>
-                        Directory attribution · sector or program level · indicative, not
-                        provider-audited
-                      </small>
+                      <small>Directory attribution · indicative, not provider-audited</small>
                     </div>
                   ) : selectedEvidence.length ? (
                     selectedEvidence.map((item) => (
@@ -576,15 +485,14 @@ export default function SectorExplorer({
                       </div>
                     ))
                   ) : (
-                    <div className="sector-evidence-empty">
-                      No named {RELATIONSHIP_LABELS[relationship].toLowerCase()} relationship has been
+                    <p className="sector-evidence-empty">
+                      No named {RELATIONSHIP_LABELS[relationship].toLowerCase()} link has been
                       sourced for this organisation yet.
-                    </div>
+                    </p>
                   )}
                   <p className="sector-evidence-note">
-                    Named links appear only when a published source describes that relationship.
-                    Historical examples are labelled; general support is not converted into a
-                    specific link. Counts cover the current map view.
+                    A link appears only when a published source describes it. Counts cover this
+                    state and category.
                   </p>
                 </div>
 
@@ -596,7 +504,7 @@ export default function SectorExplorer({
                         setFly((prev) => ({ seq: prev.seq + 1, lon: selectedLocation.lon, lat: selectedLocation.lat }));
                       }}
                     >
-                      ⌖ Show on map
+                      Show on map
                     </button>
                   ) : null}
                   {selectedOrg.url ? (
@@ -625,23 +533,6 @@ export default function SectorExplorer({
               <p className="sector-evidence-empty">No organisations match this view.</p>
             )}
           </aside>
-
-          <div className="sector-map-foot">
-            <div className="sector-map-government" role="group" aria-label="National funding context">
-              <div>
-                <span>Australian Government</span>
-                <small>NAJP 2025–30 · estimated $3.864b GST exclusive · publicly rounded to $3.9b</small>
-              </div>
-              <div>
-                <span>State and territory governments</span>
-                <small>Agreement parties / administrators · maintain their own real-terms investment</small>
-              </div>
-            </div>
-            <p className="sector-map-source">
-              Counts are provider records assigned to one primary category. Select a dot to open its
-              record. Map location data © OpenStreetMap contributors.
-            </p>
-          </div>
         </div>
       )}
     </div>

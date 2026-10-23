@@ -11,11 +11,14 @@ import {
 } from '../lib/sector-data';
 import { Search } from './icons';
 
-function toggle<T>(set: Set<T>, v: T): Set<T> {
-  const next = new Set(set);
-  if (next.has(v)) next.delete(v);
-  else next.add(v);
-  return next;
+/* Rows each kind shows before its "Show all" button; a kind only a couple of
+   rows longer than this is shown whole rather than hiding one or two. */
+const PREVIEW_ROWS = 6;
+
+function countBy<K>(orgs: ScoredOrg[], key: (org: ScoredOrg) => K) {
+  const counts = new Map<K, number>();
+  for (const org of orgs) counts.set(key(org), (counts.get(key(org)) ?? 0) + 1);
+  return counts;
 }
 
 export default function SectorDirectory({
@@ -26,10 +29,10 @@ export default function SectorDirectory({
   monitoringAvailable: boolean;
 }) {
   const [q, setQ] = useState('');
-  const [jurs, setJurs] = useState<Set<Jurisdiction>>(new Set());
-  const [tiers, setTiers] = useState<Set<TierKey>>(new Set());
+  const [jurisdiction, setJurisdiction] = useState<Jurisdiction | ''>('');
+  const [tier, setTier] = useState<TierKey | ''>('');
   const [onlyMonitored, setOnlyMonitored] = useState(false);
-  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [expanded, setExpanded] = useState<Set<TierKey>>(new Set());
   const deferredQ = useDeferredValue(q.trim().toLowerCase());
 
   // Built once: the searchable haystack per row, so typing does not re-lowercase
@@ -48,26 +51,18 @@ export default function SectorDirectory({
       indexed
         .filter(({ org, hay }) => {
           if (deferredQ && !hay.includes(deferredQ)) return false;
-          if (jurs.size && !jurs.has(org.jurisdiction)) return false;
-          if (tiers.size && !tiers.has(org.tier)) return false;
+          if (jurisdiction && org.jurisdiction !== jurisdiction) return false;
+          if (tier && org.tier !== tier) return false;
           if (onlyMonitored && !org.monitored) return false;
           return true;
         })
         .map(({ org }) => org),
-    [indexed, deferredQ, jurs, tiers, onlyMonitored],
+    [indexed, deferredQ, jurisdiction, tier, onlyMonitored],
   );
 
   const monitoredTotal = useMemo(() => orgs.filter((o) => o.monitored).length, [orgs]);
-  const tierCounts = useMemo(() => {
-    const m = new Map<TierKey, number>();
-    for (const o of orgs) m.set(o.tier, (m.get(o.tier) ?? 0) + 1);
-    return m;
-  }, [orgs]);
-  const jurCounts = useMemo(() => {
-    const m = new Map<Jurisdiction, number>();
-    for (const o of orgs) m.set(o.jurisdiction, (m.get(o.jurisdiction) ?? 0) + 1);
-    return m;
-  }, [orgs]);
+  const tierCounts = useMemo(() => countBy(orgs, (o) => o.tier), [orgs]);
+  const jurCounts = useMemo(() => countBy(orgs, (o) => o.jurisdiction), [orgs]);
 
   const grouped = useMemo(() => {
     const m = new Map<TierKey, ScoredOrg[]>();
@@ -86,17 +81,19 @@ export default function SectorDirectory({
     return m;
   }, [visible]);
 
-  const activeFilterCount = jurs.size + tiers.size + (onlyMonitored ? 1 : 0);
-  const clearFilters = () => {
-    setJurs(new Set());
-    setTiers(new Set());
+  // A search or filter narrows the list enough to show every match.
+  const narrowed = Boolean(deferredQ || jurisdiction || tier || onlyMonitored);
+
+  const clearAll = () => {
+    setQ('');
+    setJurisdiction('');
+    setTier('');
     setOnlyMonitored(false);
   };
 
   return (
     <>
-      <div className="sector-directory-search-row">
-        <span className="ctrl-label">Search</span>
+      <div className="sector-directory-controls">
         <label className="sector-search">
           <Search />
           <span className="sr-only">Search the sector</span>
@@ -104,171 +101,123 @@ export default function SectorDirectory({
             type="search"
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Name, acronym or what they do…"
+            placeholder={`Search ${orgs.length} organisations by name, acronym or what they do`}
           />
         </label>
+        <div className="sector-directory-filters">
+          <label>
+            <span className="ctrl-label">Where</span>
+            <select
+              value={jurisdiction}
+              onChange={(e) => setJurisdiction(e.target.value as Jurisdiction | '')}
+            >
+              <option value="">Everywhere</option>
+              {JURISDICTIONS.map((j) => (
+                <option key={j} value={j}>
+                  {jurisdictionLabel(j)} ({jurCounts.get(j) ?? 0})
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            <span className="ctrl-label">Kind</span>
+            <select value={tier} onChange={(e) => setTier(e.target.value as TierKey | '')}>
+              <option value="">All kinds</option>
+              {TIERS.map((t) => (
+                <option key={t.key} value={t.key}>
+                  {t.label} ({tierCounts.get(t.key) ?? 0})
+                </option>
+              ))}
+            </select>
+          </label>
+          {monitoringAvailable ? (
+            <button
+              type="button"
+              className="sector-radar-toggle"
+              aria-pressed={onlyMonitored}
+              onClick={() => setOnlyMonitored((value) => !value)}
+            >
+              <span className="radar-dot" aria-hidden="true">●</span>
+              On the radar ({monitoredTotal})
+            </button>
+          ) : null}
+          <span className="sector-count" aria-live="polite">
+            {visible.length} of {orgs.length}
+          </span>
+        </div>
       </div>
 
-      <div className="sector-directory-layout">
-        <aside className="sector-directory-sidebar" aria-label="Directory filters">
-          <div className="sector-controls">
-            <div className="sector-sidebar-summary">
-              <span className="ctrl-label">Showing</span>
-              <span className="sector-count" aria-live="polite">
-                {visible.length} of {orgs.length} records
-              </span>
-            </div>
+      {visible.length === 0 ? (
+        <div className="empty-state" role="status">
+          <p className="section-title">Nothing matches</p>
+          <p>Try a broader search or fewer filters.</p>
+          <button type="button" className="button-primary" onClick={clearAll}>
+            Clear search and filters
+          </button>
+        </div>
+      ) : null}
 
-            <div className="sector-sidebar-actions">
-              {monitoringAvailable ? (
-                <button
-                  type="button"
-                  className="pill"
-                  aria-pressed={onlyMonitored}
-                  onClick={() => setOnlyMonitored((value) => !value)}
-                >
-                  On the radar<span className="pill-n">{monitoredTotal}</span>
-                </button>
-              ) : (
-                <p className="sector-monitoring-unavailable">
-                  Live radar coverage unavailable in this local preview
-                </p>
-              )}
-              <button
-                type="button"
-                className="sector-filter-trigger"
-                aria-expanded={filtersOpen}
-                aria-controls="sector-filter-groups"
-                onClick={() => setFiltersOpen((value) => !value)}
-              >
-                Filters{activeFilterCount ? ` (${activeFilterCount})` : ''}
-              </button>
-            </div>
-
-            <div
-              id="sector-filter-groups"
-              className={`sector-filter-groups ${filtersOpen ? 'open' : ''}`}
-            >
-              <div className="ctrl-row" role="group" aria-labelledby="where-label">
-                <span className="ctrl-label" id="where-label">Where</span>
-                {JURISDICTIONS.map((jurisdiction) => (
-                  <button
-                    key={jurisdiction}
-                    type="button"
-                    className="pill"
-                    aria-pressed={jurs.has(jurisdiction)}
-                    onClick={() => setJurs((current) => toggle(current, jurisdiction))}
-                  >
-                    {jurisdictionLabel(jurisdiction)}
-                    <span className="pill-n">{jurCounts.get(jurisdiction) ?? 0}</span>
-                  </button>
-                ))}
-              </div>
-
-              <div className="ctrl-row" role="group" aria-labelledby="kind-label">
-                <span className="ctrl-label" id="kind-label">Kind</span>
-                {TIERS.map((tier) => (
-                  <button
-                    key={tier.key}
-                    type="button"
-                    className="pill"
-                    aria-pressed={tiers.has(tier.key)}
-                    onClick={() => setTiers((current) => toggle(current, tier.key))}
-                  >
-                    {tier.label}
-                    <span className="pill-n">{tierCounts.get(tier.key) ?? 0}</span>
-                  </button>
-                ))}
-              </div>
-
-              {activeFilterCount ? (
-                <div className="sector-clear-row">
-                  <button type="button" className="sector-clear" onClick={clearFilters}>
-                    Clear all filters
-                  </button>
-                </div>
-              ) : null}
-            </div>
-          </div>
-        </aside>
-
-        <div className="sector-directory-results">
-          {visible.length === 0 ? (
-            <div className="empty-state" role="status">
-              <p className="section-title">Nothing matches</p>
-              <p>Try a broader search or fewer filters.</p>
-              <button
-                type="button"
-                className="button-primary"
-                onClick={() => {
-                  setQ('');
-                  clearFilters();
-                }}
-              >
-                Clear search and filters
-              </button>
-            </div>
-          ) : null}
-
-          {TIERS.map((t) => {
-            const rows = grouped.get(t.key);
-            if (!rows?.length) return null;
-            const mon = rows.filter((r) => r.monitored).length;
-            return (
-              <section className="sector-tier" key={t.key} aria-label={t.label}>
-                <header className="sector-tier-head">
-                  <h3 className="day-heading">
-                    {t.label}
-                    <span className="day-count">{rows.length}</span>
-                  </h3>
-                  <p className="sector-tier-blurb">{t.blurb}</p>
-                  {monitoringAvailable ? (
-                    <p className="sector-tier-cov">
-                      {mon} of {rows.length} on the radar
-                    </p>
-                  ) : null}
-                </header>
-                <ul className="sector-orgs">
-                  {rows.map((o) => (
-                    <li className="sector-org" key={`${o.tier}-${o.name}`}>
-                      <div className="sector-org-head">
-                        <span className={`jur jur-${o.jurisdiction}`}>
-                          {jurisdictionLabel(o.jurisdiction)}
-                        </span>
-                        <h4>
-                          {o.url ? (
-                            <a href={o.url} target="_blank" rel="noopener noreferrer">
-                              {o.name}
-                            </a>
-                          ) : (
-                            o.name
-                          )}
-                          {o.abbrev ? <>{' '}<span className="sector-abbr">{o.abbrev}</span></> : null}
-                          {monitoringAvailable && o.monitored ? (
-                            <span
-                              className="radar-dot"
-                              title="Already a Policai A2J source"
-                              aria-label="Already a Policai A2J source"
-                            >
-                              ●
-                            </span>
-                          ) : null}
-                        </h4>
-                      </div>
-                      <p className="sector-role">{o.role}</p>
+      {TIERS.map((t) => {
+        const rows = grouped.get(t.key);
+        if (!rows?.length) return null;
+        const whole = narrowed || expanded.has(t.key) || rows.length <= PREVIEW_ROWS + 2;
+        const shown = whole ? rows : rows.slice(0, PREVIEW_ROWS);
+        const mon = rows.filter((r) => r.monitored).length;
+        return (
+          <section className="sector-tier" key={t.key} aria-label={t.label}>
+            <h3 className="day-heading">
+              {t.label}
+              <span className="day-count">{rows.length}</span>
+            </h3>
+            <p className="sector-tier-blurb">
+              {t.blurb}
+              {monitoringAvailable ? ` ${mon} of ${rows.length} on the radar.` : ''}
+            </p>
+            <ul className="sector-orgs">
+              {shown.map((o) => (
+                <li className="sector-org" key={`${o.tier}-${o.name}`}>
+                  <details>
+                    <summary>
+                      <span className="sector-org-name">
+                        {o.name}
+                        {o.abbrev ? <span className="sector-abbr">{o.abbrev}</span> : null}
+                        {monitoringAvailable && o.monitored ? (
+                          <span className="radar-dot" title="Already a Policai A2J source">
+                            ●<span className="sr-only">Already a Policai A2J source</span>
+                          </span>
+                        ) : null}
+                      </span>
+                      <span className="sector-org-jur">{jurisdictionLabel(o.jurisdiction)}</span>
+                      <span className="sector-role">{o.role}</span>
+                    </summary>
+                    <div className="sector-org-body">
                       {o.funded_by ? (
                         <p className="sector-funded">
                           <span>Funded by</span> {o.funded_by}
                         </p>
                       ) : null}
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            );
-          })}
-        </div>
-      </div>
+                      {o.url ? (
+                        <a href={o.url} target="_blank" rel="noopener noreferrer">
+                          Organisation site ↗
+                        </a>
+                      ) : null}
+                    </div>
+                  </details>
+                </li>
+              ))}
+            </ul>
+            {whole ? null : (
+              <button
+                type="button"
+                className="sector-tier-more"
+                onClick={() => setExpanded((s) => new Set(s).add(t.key))}
+              >
+                Show all {rows.length}
+              </button>
+            )}
+          </section>
+        );
+      })}
     </>
   );
 }
