@@ -14,8 +14,15 @@ name: Auto-merge
 # branch, so a PR cannot rewrite its own arming policy. pull_request_target
 # has no `submitted` activity. Submitting a review starts the Cursor review
 # workflow, which stamps `cursor-review`. This job runs when that workflow is
-# requested — that run can race the stamp — and again when the workflow
-# completes, after the check exists. The job never checks out PR code.
+# requested and again when it completes. `requested` only disarms: a later
+# review of a SHA that already has a successful check must not squash before
+# the new stamp. `completed` re-reads the PR and arms only if that stamp is
+# a completed success. A `workflow_run` skips any PR whose head is not
+# `workflow_run.head_sha`, so an issue comment keyed to `main` cannot arm a
+# PR associated with the default-branch commit. `hold` and `workflow_run`
+# share one concurrency group keyed by the PR head SHA, and the arming
+# decision re-reads the PR immediately before a merge or enable. The job
+# never checks out PR code.
 on:
   pull_request_target:
     branches:
@@ -31,9 +38,11 @@ permissions:
   checks: read
 
 concurrency:
+  # One group for a label change and a Cursor review run of the same head.
   # Separate expressions so a pull_request_target run never indexes
-  # workflow_run, and a workflow_run never indexes pull_request.
-  group: auto-merge-${{ github.event.pull_request.number }}${{ github.event.workflow_run.head_sha }}
+  # workflow_run, and a workflow_run never indexes pull_request. Only one
+  # side is set, so both events queue as auto-merge-<head sha>.
+  group: auto-merge-${{ github.event.pull_request.head.sha }}${{ github.event.workflow_run.head_sha }}
 
 jobs:
   arm:
@@ -51,11 +60,20 @@ jobs:
             // and the `labeled` run must see the auto-merge it armed.
             const prs = await loadPullRequests();
             for (const pr of prs) {
+              if (skipForWorkflowHead(pr)) {
+                core.info(`PR #${pr.number} head ${pr.head.sha} is not the Cursor review SHA.`);
+                continue;
+              }
               if (!eligible(pr)) {
                 core.info(`PR #${pr.number} is not eligible for auto-merge.`);
                 continue;
               }
               await arm(pr);
+            }
+
+            function skipForWorkflowHead(pr) {
+              if (context.eventName !== 'workflow_run') return false;
+              return pr.head.sha !== context.payload.workflow_run.head_sha;
             }
 
             function eligible(pr) {
@@ -150,32 +168,59 @@ jobs:
               core.info(disabled);
             }
 
+            function held(pr) {
+              return pr.labels.some((label) => label.name === 'hold');
+            }
+
+            async function reload(pr) {
+              const { data } = await github.rest.pulls.get({
+                ...context.repo,
+                pull_number: pr.number,
+              });
+              return data;
+            }
+
             async function arm(pr) {
-              const held = pr.labels.some((label) => label.name === 'hold');
-              if (held) {
-                await disable(pr, 'Held, auto-merge already off.');
+              // Re-read immediately before any merge or enable. A workflow_run
+              // that loaded the PR before `hold` must not squash or re-arm
+              // after the label has disarmed it. `requested` never arms: the
+              // previous success on this SHA is not the new stamp.
+              const current = await reload(pr);
+              if (skipForWorkflowHead(current) || !eligible(current)) return;
+              if (held(current)) {
+                await disable(current, 'Held, auto-merge already off.');
                 return;
               }
-              const runs = await cursorReviewRuns(pr.head.sha);
+              if (context.eventName === 'workflow_run' && context.payload.action === 'requested') {
+                await disable(current, 'Cursor review requested, auto-merge already off.');
+                return;
+              }
+              const runs = await cursorReviewRuns(current.head.sha);
               if (!cursorReviewSucceeded(runs)) {
-                await disable(pr, 'cursor-review not successful, auto-merge already off.');
+                await disable(current, 'cursor-review not successful, auto-merge already off.');
                 return;
               }
-              if (pr.auto_merge) return core.info('Auto-merge already on.');
+              const latest = await reload(current);
+              if (skipForWorkflowHead(latest) || !eligible(latest)) return;
+              if (held(latest)) {
+                await disable(latest, 'Held, auto-merge already off.');
+                return;
+              }
+              if (latest.auto_merge) return core.info('Auto-merge already on.');
               // GitHub refuses to arm a PR that can already merge, e.g. when
               // `hold` comes off after CI went green. Merge that one directly.
-              if (pr.mergeable_state === 'clean') {
+              if (latest.mergeable_state === 'clean') {
                 await github.rest.pulls.merge({
                   ...context.repo,
-                  pull_number: pr.number,
-                  sha: pr.head.sha,
+                  pull_number: latest.number,
+                  sha: latest.head.sha,
                   merge_method: 'squash',
                 });
                 return core.info('Already mergeable, squash-merged.');
               }
               await github.graphql(
                 'mutation($id: ID!) { enablePullRequestAutoMerge(input: { pullRequestId: $id, mergeMethod: SQUASH }) { clientMutationId } }',
-                { id: pr.node_id },
+                { id: latest.node_id },
               );
               core.info('Auto-merge enabled (squash).');
             }
