@@ -4451,12 +4451,40 @@
         "text": "Latest Search Yesterday at 01:22 PM Premier appoints Child Safety Minister to continue reform agenda The Premier has today announced the appointment of... Fri 23 Oct 26 at 01:36 PM Queensland Water Resources appointed to advance Emu Swamp Dam The Crisafulli Government has appointed Queensland... Fri 23 Oct 26 at 12:31 PM US market recognises Queensland is open for business The Crisafulli Government is restoring Queensland’... Fri 23 Oct 26 at 12:00 PM Kuranda Weir built back better to strengthen Queensland’s energy resilience The Crisafulli Government is delivering stronger, ... Fri 23 Oct 26 ",
         "changeFingerprint": "9040268860ba68ef8c3cd0c52aa61f5c0cddaac79300103e9f7f8e314a5c7548:67"
       }
+    },
+    "https://www.aph.gov.au/Parliamentary_Business/Committees/Joint/Current_Inquiries#policai-change=8257f55f3791e72d97f8357786312c4e0b5b0fceb0bb865d6a0f61cfbf0e5a3f:37": {
+      "firstSeenAt": "2026-10-25T19:32:36.876Z",
+      "sourceId": "joint-new-inquiries",
+      "status": "dismissed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-10-25T19:32:36.876Z",
+      "processedAt": "2026-10-25T19:32:36.876Z",
+      "candidate": {
+        "title": "Current Joint Inquiries",
+        "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Joint/Current_Inquiries",
+        "text": "Current Joint Inquiries In this section Bills and LegislationTabled documentsChamber documentsHansardSenate estimatesCommitteesLodge my submissionSenate CommitteesHouse of Representatives CommitteesJoint CommitteesAboriginal and Torres Strait Islander AffairsArtificial IntelligenceBroadcasting of Parliamentary ProceedingsCentenary of Parliament in CanberraCorporations and Financial ServicesForeign Affairs, Defence and TradeDefenceElectoral MattersHuman RightsMigrationImplementation of the National Redress Scheme (Standing)Intelligence and SecurityLaw EnforcementNational Anti-Corruption Commiss",
+        "changeFingerprint": "8257f55f3791e72d97f8357786312c4e0b5b0fceb0bb865d6a0f61cfbf0e5a3f:37"
+      }
+    },
+    "https://statements.qld.gov.au/#policai-change=59b72bc1a2120b027f5cfb6b4529672474616794f130a9508eb1a5d7256d073b:68": {
+      "firstSeenAt": "2026-10-25T19:32:36.876Z",
+      "sourceId": "qld-ministerial-statements",
+      "status": "dismissed",
+      "attempts": 1,
+      "lastAttemptAt": "2026-10-25T19:32:36.876Z",
+      "processedAt": "2026-10-25T19:32:36.876Z",
+      "candidate": {
+        "title": "Media Statements",
+        "url": "https://statements.qld.gov.au/",
+        "text": "Latest Search Sat 24 Oct 26 at 01:22 PM Premier appoints Child Safety Minister to continue reform agenda The Premier has today announced the appointment of... Fri 23 Oct 26 at 01:36 PM Queensland Water Resources appointed to advance Emu Swamp Dam The Crisafulli Government has appointed Queensland... Fri 23 Oct 26 at 12:31 PM US market recognises Queensland is open for business The Crisafulli Government is restoring Queensland’... Fri 23 Oct 26 at 12:00 PM Kuranda Weir built back better to strengthen Queensland’s energy resilience The Crisafulli Government is delivering stronger, ... Fri 23 Oct",
+        "changeFingerprint": "59b72bc1a2120b027f5cfb6b4529672474616794f130a9508eb1a5d7256d073b:68"
+      }
     }
   },
   "lastCheckedBySource": {
-    "apra-rss": "2026-10-24T19:30:43.669Z",
+    "apra-rss": "2026-10-25T19:32:36.876Z",
     "csiro-news": "2026-10-23T03:06:54.019Z",
-    "oaic-media": "2026-10-24T19:30:43.669Z",
+    "oaic-media": "2026-10-25T19:32:36.876Z",
     "accc-rss": "2026-10-06T19:33:28.224Z",
     "asic-newsroom": "2026-10-23T19:31:33.147Z",
     "pc-media": "2026-10-23T03:06:54.019Z",
@@ -4469,8 +4497,8 @@
     "sa-office-for-ai": "2026-07-18T20:12:16.563Z",
     "treasury-publications": "2026-10-23T03:06:54.019Z",
     "qld-courts-news": "2026-10-23T03:06:54.019Z",
-    "pm-media": "2026-10-24T19:30:43.669Z",
-    "pmc-office-ai": "2026-10-24T19:30:43.669Z",
+    "pm-media": "2026-10-25T19:32:36.876Z",
+    "pmc-office-ai": "2026-10-25T19:32:36.876Z",
     "industry-ai-publications": "2026-10-17T19:33:37.076Z",
     "industry-ministers-media": "2026-10-17T19:33:37.076Z",
     "dta-media": "2026-10-17T19:33:37.076Z",
@@ -4483,12 +4511,12 @@
     "apsc-latest-news": "2026-10-17T19:33:37.076Z",
     "anao-performance-audits": "2026-10-23T19:31:33.147Z",
     "senate-ai-data-centres": "2026-10-23T03:06:54.019Z",
-    "senate-new-inquiries": "2026-10-24T19:30:43.669Z",
-    "senate-reports": "2026-10-24T19:30:43.669Z",
-    "house-new-inquiries": "2026-10-24T19:30:43.669Z",
-    "joint-new-inquiries": "2026-10-24T19:30:43.669Z",
+    "senate-new-inquiries": "2026-10-25T19:32:36.876Z",
+    "senate-reports": "2026-10-25T19:32:36.876Z",
+    "house-new-inquiries": "2026-10-25T19:32:36.876Z",
+    "joint-new-inquiries": "2026-10-25T19:32:36.876Z",
     "aph-bills-digests": "2026-10-17T19:33:37.076Z",
-    "legislation-whats-new": "2026-10-24T19:30:43.669Z",
+    "legislation-whats-new": "2026-10-25T19:32:36.876Z",
     "agd-consultations": "2026-10-23T03:06:54.019Z",
     "industry-consultations": "2026-10-23T03:06:54.019Z",
     "treasury-consultations": "2026-10-23T03:06:54.019Z",
@@ -4499,22 +4527,22 @@
     "teqsa-news": "2026-10-16T19:35:00.990Z",
     "aec-media": "2026-10-23T03:06:54.019Z",
     "esafety-media": "2026-10-17T19:33:37.076Z",
-    "ahrc-media": "2026-10-24T19:30:43.669Z",
+    "ahrc-media": "2026-10-25T19:32:36.876Z",
     "fedcourt-practice-notes": "2026-10-23T03:06:54.019Z",
     "nsw-media-releases": "2026-10-17T19:33:37.076Z",
     "ovic-news": "2026-10-23T03:06:54.019Z",
-    "qld-ministerial-statements": "2026-10-24T19:30:43.669Z",
+    "qld-ministerial-statements": "2026-10-25T19:32:36.876Z",
     "tas-dpac-policies": "2026-10-23T03:06:54.019Z",
     "act-ai-policy": "2026-10-23T03:06:54.019Z",
     "nt-ai-assurance": "2026-10-23T03:06:54.019Z",
     "ipa-news": "2026-10-23T03:06:54.019Z",
-    "wa-media-statements": "2026-10-24T19:30:43.669Z",
+    "wa-media-statements": "2026-10-25T19:32:36.876Z",
     "ovic-privacy-resources": "2026-10-23T03:06:54.019Z",
     "ovic-enterprise-generative-ai": "2026-10-23T03:06:54.019Z",
     "ovic-public-generative-ai": "2026-10-23T03:06:54.019Z",
     "art-practice-directions": "2026-10-12T19:32:59.811Z",
     "wa-sc-practice-directions": "2026-10-23T03:06:54.019Z",
-    "sa-courts-news": "2026-10-24T19:30:43.669Z",
+    "sa-courts-news": "2026-10-25T19:32:36.876Z",
     "act-sc-practice-directions": "2026-10-23T03:06:54.019Z",
     "tas-sc-practice-directions": "2026-10-23T03:06:54.019Z",
     "nt-sc-practice-directions": "2026-10-23T03:06:54.019Z",
@@ -4523,25 +4551,25 @@
     "ncat-procedural-directions": "2026-10-23T03:06:54.019Z",
     "qcat-practice-directions": "2026-10-23T03:06:54.019Z",
     "ntcat-procedural-directions": "2026-10-23T03:06:54.019Z",
-    "nsw-gazette-recent": "2026-10-24T19:30:43.669Z",
-    "vcat-rss": "2026-10-24T19:30:43.669Z",
+    "nsw-gazette-recent": "2026-10-25T19:32:36.876Z",
+    "vcat-rss": "2026-10-25T19:32:36.876Z",
     "vcat-pnvcat11-generative-ai": "2026-10-23T03:06:54.019Z",
-    "vic-legislation-whats-new": "2026-10-24T19:30:43.669Z",
-    "qld-legislation-new": "2026-10-24T19:30:43.669Z",
-    "tas-legislation-statutory-rules": "2026-10-24T19:30:43.669Z",
-    "tas-legislation-acts": "2026-10-24T19:30:43.669Z",
-    "wa-legislation-as-made": "2026-10-24T19:30:43.669Z",
-    "wa-legislation-as-passed": "2026-10-24T19:30:43.669Z",
+    "vic-legislation-whats-new": "2026-10-25T19:32:36.876Z",
+    "qld-legislation-new": "2026-10-25T19:32:36.876Z",
+    "tas-legislation-statutory-rules": "2026-10-25T19:32:36.876Z",
+    "tas-legislation-acts": "2026-10-25T19:32:36.876Z",
+    "wa-legislation-as-made": "2026-10-25T19:32:36.876Z",
+    "wa-legislation-as-passed": "2026-10-25T19:32:36.876Z",
     "pmc-rapid-review-ai-cyber": "2026-10-23T03:06:54.019Z",
-    "nsw-dcs-media-releases": "2026-10-24T19:30:43.669Z",
-    "vic-parliament-bills": "2026-10-24T19:30:43.669Z",
-    "nsw-parliament-bills": "2026-10-24T19:30:43.669Z",
-    "wa-parliament-bills": "2026-10-24T19:30:43.669Z",
-    "qld-parliament-bills": "2026-10-24T19:30:43.669Z",
-    "nt-assembly-bills": "2026-10-24T19:30:43.669Z",
-    "act-legislation-whats-new": "2026-10-24T19:30:43.669Z",
-    "tas-parliament-bills": "2026-10-24T19:30:43.669Z",
-    "sa-parliament-bills": "2026-10-24T19:30:43.669Z",
+    "nsw-dcs-media-releases": "2026-10-25T19:32:36.876Z",
+    "vic-parliament-bills": "2026-10-25T19:32:36.876Z",
+    "nsw-parliament-bills": "2026-10-25T19:32:36.876Z",
+    "wa-parliament-bills": "2026-10-25T19:32:36.876Z",
+    "qld-parliament-bills": "2026-10-25T19:32:36.876Z",
+    "nt-assembly-bills": "2026-10-25T19:32:36.876Z",
+    "act-legislation-whats-new": "2026-10-25T19:32:36.876Z",
+    "tas-parliament-bills": "2026-10-25T19:32:36.876Z",
+    "sa-parliament-bills": "2026-10-25T19:32:36.876Z",
     "track:federal-ai-kill-switch-and-data-centre-control-bill-2026": "2026-10-23T19:40:31.491Z",
     "track:federal-online-safety-basic-online-safety-expectations-determination-2022": "2026-10-23T19:40:31.491Z",
     "track:federal-online-safety-other-legislation-amendment-my-face-my-rights-bill-2025": "2026-10-23T19:40:31.491Z",
@@ -4553,7 +4581,7 @@
     "pmc-office-ai": {
       "contentHash": "ed17b42cccc33dec7d0a8d0bb1fa0703585ba238763b8f1ba3e64695f1af4439",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-10-24T19:30:43.669Z",
+      "lastCheckedAt": "2026-10-25T19:32:36.876Z",
       "changeCount": 1,
       "lastChangedAt": "2026-09-17T19:32:40.681Z"
     },
@@ -4612,11 +4640,11 @@
       "lastChangedAt": "2026-10-23T03:06:54.019Z"
     },
     "qld-ministerial-statements": {
-      "contentHash": "9040268860ba68ef8c3cd0c52aa61f5c0cddaac79300103e9f7f8e314a5c7548",
+      "contentHash": "59b72bc1a2120b027f5cfb6b4529672474616794f130a9508eb1a5d7256d073b",
       "firstCheckedAt": "2026-07-20T12:19:40.243Z",
-      "lastCheckedAt": "2026-10-24T19:30:43.669Z",
-      "changeCount": 67,
-      "lastChangedAt": "2026-10-24T19:30:43.669Z"
+      "lastCheckedAt": "2026-10-25T19:32:36.876Z",
+      "changeCount": 68,
+      "lastChangedAt": "2026-10-25T19:32:36.876Z"
     },
     "act-ai-policy": {
       "contentHash": "3fc3bd0769e87afe9f2b1c5ea34cb9ef978a12daf229ad4d2e4b025962335bfb",
@@ -4705,16 +4733,16 @@
     "house-new-inquiries": {
       "contentHash": "a17fb3a450f8825cac4c839839b16e15dd3bee21bb475b9625da8e4be830a923",
       "firstCheckedAt": "2026-08-07T04:32:08.175Z",
-      "lastCheckedAt": "2026-10-24T19:30:43.669Z",
+      "lastCheckedAt": "2026-10-25T19:32:36.876Z",
       "changeCount": 14,
       "lastChangedAt": "2026-10-16T19:35:00.990Z"
     },
     "joint-new-inquiries": {
-      "contentHash": "f3ed5ad3acc3ce5da21b053098110493951a7117d0a64711d66365efb9d76cc7",
+      "contentHash": "8257f55f3791e72d97f8357786312c4e0b5b0fceb0bb865d6a0f61cfbf0e5a3f",
       "firstCheckedAt": "2026-08-07T04:32:08.175Z",
-      "lastCheckedAt": "2026-10-24T19:30:43.669Z",
-      "changeCount": 36,
-      "lastChangedAt": "2026-10-23T03:06:54.019Z"
+      "lastCheckedAt": "2026-10-25T19:32:36.876Z",
+      "changeCount": 37,
+      "lastChangedAt": "2026-10-25T19:32:36.876Z"
     },
     "art-practice-directions": {
       "contentHash": "4b68d0ccf77794390152d126d540f0a8b34eae661123a135b4157c2aeff59a7f",
@@ -4772,7 +4800,7 @@
     "nsw-gazette-recent": {
       "contentHash": "d406c610c31c1682006af9425a8ad68aebc4e52e9222bd91c1850c5965ac2b48",
       "firstCheckedAt": "2026-09-24T19:32:58.402Z",
-      "lastCheckedAt": "2026-10-24T19:30:43.669Z",
+      "lastCheckedAt": "2026-10-25T19:32:36.876Z",
       "changeCount": 0
     },
     "vcat-pnvcat11-generative-ai": {
@@ -4791,7 +4819,7 @@
   },
   "hosts": {
     "www.pm.gov.au": {
-      "seenAt": "2026-10-24T19:30:45.767Z",
+      "seenAt": "2026-10-25T19:32:38.958Z",
       "robots": {
         "allow": [
           "/core/*.css$",
@@ -4856,7 +4884,7 @@
         ],
         "crawlDelaySec": null,
         "sitemaps": [],
-        "fetchedAt": "2026-10-24T19:30:43.804Z",
+        "fetchedAt": "2026-10-25T19:32:37.026Z",
         "status": "parsed"
       },
       "backoffUntil": null,
@@ -4865,7 +4893,7 @@
       "robotsUnreachableRuns": 0
     },
     "www.pmc.gov.au": {
-      "seenAt": "2026-10-24T19:30:53.376Z",
+      "seenAt": "2026-10-25T19:32:46.514Z",
       "robots": {
         "allow": [
           "/core/*.css$",
@@ -4930,7 +4958,7 @@
         ],
         "crawlDelaySec": null,
         "sitemaps": [],
-        "fetchedAt": "2026-10-24T19:30:46.154Z",
+        "fetchedAt": "2026-10-25T19:32:39.131Z",
         "status": "parsed"
       },
       "backoffUntil": null,
@@ -4939,19 +4967,19 @@
       "robotsUnreachableRuns": 0
     },
     "www.ai.gov.au": {
-      "seenAt": "2026-10-24T19:31:14.034Z",
+      "seenAt": "2026-10-25T19:33:07.425Z",
       "robots": {
         "allow": [],
         "disallow": [],
         "crawlDelaySec": null,
         "sitemaps": [],
-        "fetchedAt": "2026-10-24T19:31:13.655Z",
+        "fetchedAt": "2026-10-25T19:33:06.823Z",
         "status": "unreachable"
       },
       "backoffUntil": null,
       "backoffStatus": null,
       "backoffCount": 0,
-      "robotsUnreachableRuns": 3
+      "robotsUnreachableRuns": 4
     },
     "www.finance.gov.au": {
       "seenAt": "2026-10-23T19:32:24.604Z",
@@ -5058,7 +5086,7 @@
       "robotsUnreachableRuns": 2
     },
     "www.aph.gov.au": {
-      "seenAt": "2026-10-24T19:31:34.208Z",
+      "seenAt": "2026-10-25T19:33:25.969Z",
       "robots": {
         "allow": [
           "/",
@@ -5076,7 +5104,7 @@
         ],
         "crawlDelaySec": null,
         "sitemaps": [],
-        "fetchedAt": "2026-10-24T19:31:16.244Z",
+        "fetchedAt": "2026-10-25T19:33:09.448Z",
         "status": "parsed"
       },
       "backoffUntil": null,
@@ -5085,13 +5113,13 @@
       "robotsUnreachableRuns": 0
     },
     "api.prod.legislation.gov.au": {
-      "seenAt": "2026-10-24T19:31:40.354Z",
+      "seenAt": "2026-10-25T19:33:32.422Z",
       "robots": {
         "allow": [],
         "disallow": [],
         "crawlDelaySec": null,
         "sitemaps": [],
-        "fetchedAt": "2026-10-24T19:31:34.363Z",
+        "fetchedAt": "2026-10-25T19:33:26.257Z",
         "status": "absent"
       },
       "backoffUntil": null,
@@ -5243,7 +5271,7 @@
       "robotsUnreachableRuns": 0
     },
     "www.oaic.gov.au": {
-      "seenAt": "2026-10-24T19:31:42.410Z",
+      "seenAt": "2026-10-25T19:33:34.488Z",
       "robots": {
         "allow": [],
         "disallow": [
@@ -5264,7 +5292,7 @@
         ],
         "crawlDelaySec": null,
         "sitemaps": [],
-        "fetchedAt": "2026-10-24T19:31:40.472Z",
+        "fetchedAt": "2026-10-25T19:33:32.567Z",
         "status": "parsed"
       },
       "backoffUntil": null,
@@ -5273,7 +5301,7 @@
       "robotsUnreachableRuns": 0
     },
     "www.apra.gov.au": {
-      "seenAt": "2026-10-24T19:31:44.813Z",
+      "seenAt": "2026-10-25T19:33:36.874Z",
       "robots": {
         "allow": [
           "/core/*.css$",
@@ -5338,7 +5366,7 @@
         ],
         "crawlDelaySec": null,
         "sitemaps": [],
-        "fetchedAt": "2026-10-24T19:31:42.932Z",
+        "fetchedAt": "2026-10-25T19:33:34.999Z",
         "status": "parsed"
       },
       "backoffUntil": null,
@@ -5485,19 +5513,19 @@
       "robotsUnreachableRuns": 0
     },
     "www.teqsa.gov.au": {
-      "seenAt": "2026-10-24T19:32:05.486Z",
+      "seenAt": "2026-10-25T19:33:57.752Z",
       "robots": {
         "allow": [],
         "disallow": [],
         "crawlDelaySec": null,
         "sitemaps": [],
-        "fetchedAt": "2026-10-24T19:32:05.105Z",
+        "fetchedAt": "2026-10-25T19:33:57.155Z",
         "status": "unreachable"
       },
       "backoffUntil": null,
       "backoffStatus": null,
       "backoffCount": 0,
-      "robotsUnreachableRuns": 3
+      "robotsUnreachableRuns": 4
     },
     "www.aec.gov.au": {
       "seenAt": "2026-10-23T03:10:35.641Z",
@@ -5635,7 +5663,7 @@
       "robotsUnreachableRuns": 0
     },
     "humanrights.gov.au": {
-      "seenAt": "2026-10-24T19:32:20.101Z",
+      "seenAt": "2026-10-25T19:34:12.195Z",
       "robots": {
         "allow": [],
         "disallow": [
@@ -5653,7 +5681,7 @@
         "sitemaps": [
           "https://humanrights.gov.au/sitemap.xml"
         ],
-        "fetchedAt": "2026-10-24T19:32:07.372Z",
+        "fetchedAt": "2026-10-25T19:33:59.863Z",
         "status": "parsed"
       },
       "backoffUntil": null,
@@ -5705,19 +5733,19 @@
       "robotsUnreachableRuns": 0
     },
     "www.art.gov.au": {
-      "seenAt": "2026-10-24T19:32:40.853Z",
+      "seenAt": "2026-10-25T19:34:32.910Z",
       "robots": {
         "allow": [],
         "disallow": [],
         "crawlDelaySec": null,
         "sitemaps": [],
-        "fetchedAt": "2026-10-24T19:32:40.479Z",
+        "fetchedAt": "2026-10-25T19:34:32.545Z",
         "status": "unreachable"
       },
       "backoffUntil": null,
       "backoffStatus": null,
       "backoffCount": 0,
-      "robotsUnreachableRuns": 3
+      "robotsUnreachableRuns": 4
     },
     "ncat.nsw.gov.au": {
       "seenAt": "2026-10-23T03:11:56.200Z",
@@ -5791,7 +5819,7 @@
       "robotsUnreachableRuns": 0
     },
     "www.courts.sa.gov.au": {
-      "seenAt": "2026-10-24T19:32:55.707Z",
+      "seenAt": "2026-10-25T19:34:47.498Z",
       "robots": {
         "allow": [],
         "disallow": [
@@ -5811,7 +5839,7 @@
         ],
         "crawlDelaySec": 10,
         "sitemaps": [],
-        "fetchedAt": "2026-10-24T19:32:42.827Z",
+        "fetchedAt": "2026-10-25T19:34:35.319Z",
         "status": "parsed"
       },
       "backoffUntil": null,
@@ -6055,13 +6083,13 @@
       "robotsUnreachableRuns": 0
     },
     "gazette.nsw.gov.au": {
-      "seenAt": "2026-10-24T19:32:57.831Z",
+      "seenAt": "2026-10-25T19:34:49.619Z",
       "robots": {
         "allow": [],
         "disallow": [],
         "crawlDelaySec": null,
         "sitemaps": [],
-        "fetchedAt": "2026-10-24T19:32:55.871Z",
+        "fetchedAt": "2026-10-25T19:34:47.650Z",
         "status": "absent"
       },
       "backoffUntil": null,
@@ -6145,7 +6173,7 @@
       "robotsUnreachableRuns": 0
     },
     "www.vcat.vic.gov.au": {
-      "seenAt": "2026-10-24T19:32:59.882Z",
+      "seenAt": "2026-10-25T19:34:51.668Z",
       "robots": {
         "allow": [
           "/core/*.css$",
@@ -6209,7 +6237,7 @@
         "sitemaps": [
           "https://nginx.deploy-lagoon-production.vcat-website-drupal8-2020.dh1.amazee.io/sitemap.xml"
         ],
-        "fetchedAt": "2026-10-24T19:32:57.928Z",
+        "fetchedAt": "2026-10-25T19:34:49.738Z",
         "status": "parsed"
       },
       "backoffUntil": null,
@@ -6248,7 +6276,7 @@
       "robotsUnreachableRuns": 0
     },
     "www.nsw.gov.au": {
-      "seenAt": "2026-10-24T19:33:10.424Z",
+      "seenAt": "2026-10-25T19:35:01.638Z",
       "robots": {
         "allow": [
           "/core/*.css$",
@@ -6316,7 +6344,7 @@
         "sitemaps": [
           "https://www.nsw.gov.au/sitemap.xml"
         ],
-        "fetchedAt": "2026-10-24T19:32:59.998Z",
+        "fetchedAt": "2026-10-25T19:34:51.767Z",
         "status": "parsed"
       },
       "backoffUntil": null,
@@ -6325,7 +6353,7 @@
       "robotsUnreachableRuns": 0
     },
     "www.legislation.vic.gov.au": {
-      "seenAt": "2026-10-24T19:33:17.498Z",
+      "seenAt": "2026-10-25T19:35:08.787Z",
       "robots": {
         "allow": [],
         "disallow": [
@@ -6349,7 +6377,7 @@
         "sitemaps": [
           "https://www.legislation.vic.gov.au/sitemap.xml"
         ],
-        "fetchedAt": "2026-10-24T19:33:10.659Z",
+        "fetchedAt": "2026-10-25T19:35:01.852Z",
         "status": "parsed"
       },
       "backoffUntil": null,
@@ -6358,7 +6386,7 @@
       "robotsUnreachableRuns": 0
     },
     "www.legislation.qld.gov.au": {
-      "seenAt": "2026-10-24T19:33:19.564Z",
+      "seenAt": "2026-10-25T19:35:10.849Z",
       "robots": {
         "allow": [],
         "disallow": [
@@ -6369,7 +6397,7 @@
         ],
         "crawlDelaySec": null,
         "sitemaps": [],
-        "fetchedAt": "2026-10-24T19:33:17.612Z",
+        "fetchedAt": "2026-10-25T19:35:08.937Z",
         "status": "parsed"
       },
       "backoffUntil": null,
@@ -6378,7 +6406,7 @@
       "robotsUnreachableRuns": 0
     },
     "www.legislation.tas.gov.au": {
-      "seenAt": "2026-10-24T19:33:23.630Z",
+      "seenAt": "2026-10-25T19:35:14.910Z",
       "robots": {
         "allow": [],
         "disallow": [
@@ -6386,7 +6414,7 @@
         ],
         "crawlDelaySec": null,
         "sitemaps": [],
-        "fetchedAt": "2026-10-24T19:33:19.742Z",
+        "fetchedAt": "2026-10-25T19:35:11.138Z",
         "status": "parsed"
       },
       "backoffUntil": null,
@@ -6395,13 +6423,13 @@
       "robotsUnreachableRuns": 0
     },
     "www.legislation.wa.gov.au": {
-      "seenAt": "2026-10-24T19:33:28.413Z",
+      "seenAt": "2026-10-25T19:35:23.762Z",
       "robots": {
         "allow": [],
         "disallow": [],
         "crawlDelaySec": null,
         "sitemaps": [],
-        "fetchedAt": "2026-10-24T19:33:23.904Z",
+        "fetchedAt": "2026-10-25T19:35:15.208Z",
         "status": "absent"
       },
       "backoffUntil": null,
@@ -6410,7 +6438,7 @@
       "robotsUnreachableRuns": 0
     },
     "www.parliament.nsw.gov.au": {
-      "seenAt": "2026-10-24T19:33:38.746Z",
+      "seenAt": "2026-10-25T19:35:41.632Z",
       "robots": {
         "allow": [],
         "disallow": [
@@ -6431,7 +6459,7 @@
         "sitemaps": [
           "https://www.parliament.nsw.gov.au/sitemap.xml"
         ],
-        "fetchedAt": "2026-10-23T19:39:54.000Z",
+        "fetchedAt": "2026-10-25T19:35:31.729Z",
         "status": "parsed"
       },
       "backoffUntil": null,
@@ -6440,7 +6468,7 @@
       "robotsUnreachableRuns": 0
     },
     "www.parliament.wa.gov.au": {
-      "seenAt": "2026-10-24T19:33:46.372Z",
+      "seenAt": "2026-10-25T19:35:48.683Z",
       "robots": {
         "allow": [],
         "disallow": [
@@ -6455,7 +6483,7 @@
         ],
         "crawlDelaySec": null,
         "sitemaps": [],
-        "fetchedAt": "2026-10-24T19:33:40.717Z",
+        "fetchedAt": "2026-10-25T19:35:43.629Z",
         "status": "parsed"
       },
       "backoffUntil": null,
@@ -6464,13 +6492,13 @@
       "robotsUnreachableRuns": 0
     },
     "www.parliament.qld.gov.au": {
-      "seenAt": "2026-10-24T19:33:50.768Z",
+      "seenAt": "2026-10-25T19:35:53.482Z",
       "robots": {
         "allow": [],
         "disallow": [],
         "crawlDelaySec": null,
         "sitemaps": [],
-        "fetchedAt": "2026-10-24T19:33:47.333Z",
+        "fetchedAt": "2026-10-25T19:35:49.639Z",
         "status": "absent"
       },
       "backoffUntil": null,
@@ -6479,13 +6507,13 @@
       "robotsUnreachableRuns": 0
     },
     "legislation.nt.gov.au": {
-      "seenAt": "2026-10-24T19:33:52.905Z",
+      "seenAt": "2026-10-25T19:35:55.636Z",
       "robots": {
         "allow": [],
         "disallow": [],
         "crawlDelaySec": null,
         "sitemaps": [],
-        "fetchedAt": "2026-10-24T19:33:51.073Z",
+        "fetchedAt": "2026-10-25T19:35:54.170Z",
         "status": "parsed"
       },
       "backoffUntil": null,
@@ -6494,7 +6522,7 @@
       "robotsUnreachableRuns": 0
     },
     "www.legislation.act.gov.au": {
-      "seenAt": "2026-10-24T19:33:57.991Z",
+      "seenAt": "2026-10-25T19:36:00.730Z",
       "robots": {
         "allow": [],
         "disallow": [
@@ -6509,7 +6537,7 @@
         ],
         "crawlDelaySec": 10,
         "sitemaps": [],
-        "fetchedAt": "2026-10-24T19:33:53.122Z",
+        "fetchedAt": "2026-10-25T19:35:55.838Z",
         "status": "parsed"
       },
       "backoffUntil": null,
@@ -6518,7 +6546,7 @@
       "robotsUnreachableRuns": 0
     },
     "www.parliament.tas.gov.au": {
-      "seenAt": "2026-10-24T19:34:00.075Z",
+      "seenAt": "2026-10-25T19:36:02.790Z",
       "robots": {
         "allow": [],
         "disallow": [
@@ -6538,7 +6566,7 @@
         ],
         "crawlDelaySec": null,
         "sitemaps": [],
-        "fetchedAt": "2026-10-24T19:33:58.364Z",
+        "fetchedAt": "2026-10-25T19:36:01.844Z",
         "status": "parsed"
       },
       "backoffUntil": null,
@@ -6547,13 +6575,13 @@
       "robotsUnreachableRuns": 0
     },
     "prod-internet-salt-functionapp.azurewebsites.net": {
-      "seenAt": "2026-10-24T19:34:02.337Z",
+      "seenAt": "2026-10-25T19:36:05.059Z",
       "robots": {
         "allow": [],
         "disallow": [],
         "crawlDelaySec": null,
         "sitemaps": [],
-        "fetchedAt": "2026-10-24T19:34:00.267Z",
+        "fetchedAt": "2026-10-25T19:36:03.429Z",
         "status": "absent"
       },
       "backoffUntil": null,
@@ -6562,7 +6590,7 @@
       "robotsUnreachableRuns": 0
     },
     "www.vic.gov.au": {
-      "seenAt": "2026-10-24T19:34:07.190Z",
+      "seenAt": "2026-10-25T19:36:10.028Z",
       "robots": {
         "allow": [],
         "disallow": [
@@ -6586,7 +6614,7 @@
         "sitemaps": [
           "https://www.vic.gov.au/sitemap.xml"
         ],
-        "fetchedAt": "2026-10-24T19:34:04.571Z",
+        "fetchedAt": "2026-10-25T19:36:05.141Z",
         "status": "parsed"
       },
       "backoffUntil": null,
@@ -6595,7 +6623,7 @@
       "robotsUnreachableRuns": 0
     },
     "prov.vic.gov.au": {
-      "seenAt": "2026-10-24T19:34:07.159Z",
+      "seenAt": "2026-10-25T19:36:09.996Z",
       "robots": {
         "allow": [
           "/core/*.css$",
@@ -6655,7 +6683,7 @@
         ],
         "crawlDelaySec": null,
         "sitemaps": [],
-        "fetchedAt": "2026-10-24T19:34:05.451Z",
+        "fetchedAt": "2026-10-25T19:36:08.074Z",
         "status": "parsed"
       },
       "backoffUntil": null,
@@ -6706,13 +6734,13 @@
       "robotsUnreachableRuns": 0
     },
     "statements.qld.gov.au": {
-      "seenAt": "2026-10-24T19:34:12.229Z",
+      "seenAt": "2026-10-25T19:36:15.263Z",
       "robots": {
         "allow": [],
         "disallow": [],
         "crawlDelaySec": null,
         "sitemaps": [],
-        "fetchedAt": "2026-10-24T19:34:07.299Z",
+        "fetchedAt": "2026-10-25T19:36:10.152Z",
         "status": "absent"
       },
       "backoffUntil": null,
@@ -6721,13 +6749,13 @@
       "robotsUnreachableRuns": 0
     },
     "www.mediastatements.wa.gov.au": {
-      "seenAt": "2026-10-24T19:34:15.490Z",
+      "seenAt": "2026-10-25T19:36:18.313Z",
       "robots": {
         "allow": [],
         "disallow": [],
         "crawlDelaySec": null,
         "sitemaps": [],
-        "fetchedAt": "2026-10-24T19:34:12.930Z",
+        "fetchedAt": "2026-10-25T19:36:15.994Z",
         "status": "parsed"
       },
       "backoffUntil": null,
@@ -6939,19 +6967,19 @@
   },
   "sourceHealth": {
     "pm-media": {
-      "lastSuccessAt": "2026-10-24T19:30:43.669Z",
+      "lastSuccessAt": "2026-10-25T19:32:36.876Z",
       "firstFailureAt": null,
       "consecutiveFailures": 0,
       "lastFailureClass": null
     },
     "pmc-office-ai": {
-      "lastSuccessAt": "2026-10-24T19:30:43.669Z",
+      "lastSuccessAt": "2026-10-25T19:32:36.876Z",
       "firstFailureAt": null,
       "consecutiveFailures": 0,
       "lastFailureClass": null
     },
     "pmc-rapid-review-ai-cyber": {
-      "lastSuccessAt": "2026-10-24T19:30:43.669Z",
+      "lastSuccessAt": "2026-10-25T19:32:36.876Z",
       "firstFailureAt": null,
       "consecutiveFailures": 0,
       "lastFailureClass": null
@@ -6959,7 +6987,7 @@
     "naic-news": {
       "lastSuccessAt": null,
       "firstFailureAt": "2026-10-23T03:06:54.019Z",
-      "consecutiveFailures": 3,
+      "consecutiveFailures": 4,
       "lastFailureClass": "identity_refused"
     },
     "finance-news": {
@@ -6993,31 +7021,31 @@
       "lastFailureClass": null
     },
     "senate-new-inquiries": {
-      "lastSuccessAt": "2026-10-24T19:30:43.669Z",
+      "lastSuccessAt": "2026-10-25T19:32:36.876Z",
       "firstFailureAt": null,
       "consecutiveFailures": 0,
       "lastFailureClass": null
     },
     "senate-reports": {
-      "lastSuccessAt": "2026-10-24T19:30:43.669Z",
+      "lastSuccessAt": "2026-10-25T19:32:36.876Z",
       "firstFailureAt": null,
       "consecutiveFailures": 0,
       "lastFailureClass": null
     },
     "house-new-inquiries": {
-      "lastSuccessAt": "2026-10-24T19:30:43.669Z",
+      "lastSuccessAt": "2026-10-25T19:32:36.876Z",
       "firstFailureAt": null,
       "consecutiveFailures": 0,
       "lastFailureClass": null
     },
     "joint-new-inquiries": {
-      "lastSuccessAt": "2026-10-24T19:30:43.669Z",
+      "lastSuccessAt": "2026-10-25T19:32:36.876Z",
       "firstFailureAt": null,
       "consecutiveFailures": 0,
       "lastFailureClass": null
     },
     "legislation-whats-new": {
-      "lastSuccessAt": "2026-10-24T19:30:43.669Z",
+      "lastSuccessAt": "2026-10-25T19:32:36.876Z",
       "firstFailureAt": null,
       "consecutiveFailures": 0,
       "lastFailureClass": null
@@ -7047,13 +7075,13 @@
       "lastFailureClass": null
     },
     "oaic-media": {
-      "lastSuccessAt": "2026-10-24T19:30:43.669Z",
+      "lastSuccessAt": "2026-10-25T19:32:36.876Z",
       "firstFailureAt": null,
       "consecutiveFailures": 0,
       "lastFailureClass": null
     },
     "apra-rss": {
-      "lastSuccessAt": "2026-10-24T19:30:43.669Z",
+      "lastSuccessAt": "2026-10-25T19:32:36.876Z",
       "firstFailureAt": null,
       "consecutiveFailures": 0,
       "lastFailureClass": null
@@ -7085,7 +7113,7 @@
     "teqsa-news": {
       "lastSuccessAt": null,
       "firstFailureAt": "2026-10-23T03:06:54.019Z",
-      "consecutiveFailures": 3,
+      "consecutiveFailures": 4,
       "lastFailureClass": "identity_refused"
     },
     "aec-media": {
@@ -7101,7 +7129,7 @@
       "lastFailureClass": null
     },
     "ahrc-media": {
-      "lastSuccessAt": "2026-10-24T19:30:43.669Z",
+      "lastSuccessAt": "2026-10-25T19:32:36.876Z",
       "firstFailureAt": null,
       "consecutiveFailures": 0,
       "lastFailureClass": null
@@ -7121,7 +7149,7 @@
     "art-practice-directions": {
       "lastSuccessAt": null,
       "firstFailureAt": "2026-10-23T03:06:54.019Z",
-      "consecutiveFailures": 3,
+      "consecutiveFailures": 4,
       "lastFailureClass": "identity_refused"
     },
     "ncat-procedural-directions": {
@@ -7143,7 +7171,7 @@
       "lastFailureClass": null
     },
     "sa-courts-news": {
-      "lastSuccessAt": "2026-10-24T19:30:43.669Z",
+      "lastSuccessAt": "2026-10-25T19:32:36.876Z",
       "firstFailureAt": null,
       "consecutiveFailures": 0,
       "lastFailureClass": null
@@ -7179,7 +7207,7 @@
       "lastFailureClass": null
     },
     "nsw-gazette-recent": {
-      "lastSuccessAt": "2026-10-24T19:30:43.669Z",
+      "lastSuccessAt": "2026-10-25T19:32:36.876Z",
       "firstFailureAt": null,
       "consecutiveFailures": 0,
       "lastFailureClass": null
@@ -7197,7 +7225,7 @@
       "lastFailureClass": null
     },
     "vcat-rss": {
-      "lastSuccessAt": "2026-10-24T19:30:43.669Z",
+      "lastSuccessAt": "2026-10-25T19:32:36.876Z",
       "firstFailureAt": null,
       "consecutiveFailures": 0,
       "lastFailureClass": null
@@ -7217,95 +7245,95 @@
     "nsw-media-releases": {
       "lastSuccessAt": null,
       "firstFailureAt": "2026-10-23T03:06:54.019Z",
-      "consecutiveFailures": 3,
+      "consecutiveFailures": 4,
       "lastFailureClass": "not_found"
     },
     "nsw-dcs-media-releases": {
-      "lastSuccessAt": "2026-10-24T19:30:43.669Z",
+      "lastSuccessAt": "2026-10-25T19:32:36.876Z",
       "firstFailureAt": null,
       "consecutiveFailures": 0,
       "lastFailureClass": null
     },
     "vic-legislation-whats-new": {
-      "lastSuccessAt": "2026-10-24T19:30:43.669Z",
+      "lastSuccessAt": "2026-10-25T19:32:36.876Z",
       "firstFailureAt": null,
       "consecutiveFailures": 0,
       "lastFailureClass": null
     },
     "vic-parliament-bills": {
-      "lastSuccessAt": "2026-10-24T19:30:43.669Z",
+      "lastSuccessAt": "2026-10-25T19:32:36.876Z",
       "firstFailureAt": null,
       "consecutiveFailures": 0,
       "lastFailureClass": null
     },
     "qld-legislation-new": {
-      "lastSuccessAt": "2026-10-24T19:30:43.669Z",
+      "lastSuccessAt": "2026-10-25T19:32:36.876Z",
       "firstFailureAt": null,
       "consecutiveFailures": 0,
       "lastFailureClass": null
     },
     "tas-legislation-statutory-rules": {
-      "lastSuccessAt": "2026-10-24T19:30:43.669Z",
+      "lastSuccessAt": "2026-10-25T19:32:36.876Z",
       "firstFailureAt": null,
       "consecutiveFailures": 0,
       "lastFailureClass": null
     },
     "tas-legislation-acts": {
-      "lastSuccessAt": "2026-10-24T19:30:43.669Z",
+      "lastSuccessAt": "2026-10-25T19:32:36.876Z",
       "firstFailureAt": null,
       "consecutiveFailures": 0,
       "lastFailureClass": null
     },
     "wa-legislation-as-made": {
-      "lastSuccessAt": "2026-10-24T19:30:43.669Z",
+      "lastSuccessAt": "2026-10-25T19:32:36.876Z",
       "firstFailureAt": null,
       "consecutiveFailures": 0,
       "lastFailureClass": null
     },
     "wa-legislation-as-passed": {
-      "lastSuccessAt": "2026-10-24T19:30:43.669Z",
+      "lastSuccessAt": "2026-10-25T19:32:36.876Z",
       "firstFailureAt": null,
       "consecutiveFailures": 0,
       "lastFailureClass": null
     },
     "nsw-parliament-bills": {
-      "lastSuccessAt": "2026-10-24T19:30:43.669Z",
+      "lastSuccessAt": "2026-10-25T19:32:36.876Z",
       "firstFailureAt": null,
       "consecutiveFailures": 0,
       "lastFailureClass": null
     },
     "wa-parliament-bills": {
-      "lastSuccessAt": "2026-10-24T19:30:43.669Z",
+      "lastSuccessAt": "2026-10-25T19:32:36.876Z",
       "firstFailureAt": null,
       "consecutiveFailures": 0,
       "lastFailureClass": null
     },
     "qld-parliament-bills": {
-      "lastSuccessAt": "2026-10-24T19:30:43.669Z",
+      "lastSuccessAt": "2026-10-25T19:32:36.876Z",
       "firstFailureAt": null,
       "consecutiveFailures": 0,
       "lastFailureClass": null
     },
     "nt-assembly-bills": {
-      "lastSuccessAt": "2026-10-24T19:30:43.669Z",
+      "lastSuccessAt": "2026-10-25T19:32:36.876Z",
       "firstFailureAt": null,
       "consecutiveFailures": 0,
       "lastFailureClass": null
     },
     "act-legislation-whats-new": {
-      "lastSuccessAt": "2026-10-24T19:30:43.669Z",
+      "lastSuccessAt": "2026-10-25T19:32:36.876Z",
       "firstFailureAt": null,
       "consecutiveFailures": 0,
       "lastFailureClass": null
     },
     "tas-parliament-bills": {
-      "lastSuccessAt": "2026-10-24T19:30:43.669Z",
+      "lastSuccessAt": "2026-10-25T19:32:36.876Z",
       "firstFailureAt": null,
       "consecutiveFailures": 0,
       "lastFailureClass": null
     },
     "sa-parliament-bills": {
-      "lastSuccessAt": "2026-10-24T19:30:43.669Z",
+      "lastSuccessAt": "2026-10-25T19:32:36.876Z",
       "firstFailureAt": null,
       "consecutiveFailures": 0,
       "lastFailureClass": null
@@ -7313,7 +7341,7 @@
     "vic-ai": {
       "lastSuccessAt": null,
       "firstFailureAt": "2026-10-23T03:06:54.019Z",
-      "consecutiveFailures": 3,
+      "consecutiveFailures": 4,
       "lastFailureClass": "robots_disallowed"
     },
     "ovic-news": {
@@ -7347,13 +7375,13 @@
       "lastFailureClass": null
     },
     "qld-ministerial-statements": {
-      "lastSuccessAt": "2026-10-24T19:30:43.669Z",
+      "lastSuccessAt": "2026-10-25T19:32:36.876Z",
       "firstFailureAt": null,
       "consecutiveFailures": 0,
       "lastFailureClass": null
     },
     "wa-media-statements": {
-      "lastSuccessAt": "2026-10-24T19:30:43.669Z",
+      "lastSuccessAt": "2026-10-25T19:32:36.876Z",
       "firstFailureAt": null,
       "consecutiveFailures": 0,
       "lastFailureClass": null
