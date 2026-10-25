@@ -8,12 +8,13 @@
 		"directory": ".open-next/assets",
 		"binding": "ASSETS"
 	},
-	// Pooled connections to the Neon database. localConnectionString serves
-	// `wrangler dev` and the OpenNext preview against a local Postgres.
+	// Pooled connections to the Neon database (project `a2j`, Postgres 18).
+	// localConnectionString serves `wrangler dev` and the OpenNext preview
+	// against a local Postgres.
 	"hyperdrive": [
 		{
 			"binding": "HYPERDRIVE",
-			"id": "00000000000000000000000000000000",
+			"id": "45660d5757304238ab83360f8fa5c7ea",
 			"localConnectionString": "postgres://radar:radar@127.0.0.1:5433/radar"
 		}
 	],
