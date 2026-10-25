@@ -1,0 +1,23 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "a2j",
+	"main": ".open-next/worker.js",
+	"compatibility_date": "2026-10-01",
+	"compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+	"assets": {
+		"directory": ".open-next/assets",
+		"binding": "ASSETS"
+	},
+	// Pooled connections to the Neon database. localConnectionString serves
+	// `wrangler dev` and the OpenNext preview against a local Postgres.
+	"hyperdrive": [
+		{
+			"binding": "HYPERDRIVE",
+			"id": "00000000000000000000000000000000",
+			"localConnectionString": "postgres://radar:radar@127.0.0.1:5433/radar"
+		}
+	],
+	// No routes yet: a deploy only reaches a2j.<account>.workers.dev until
+	// a2j.policai.org is pointed at the Worker.
+	"workers_dev": true
+}
