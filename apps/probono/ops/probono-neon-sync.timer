@@ -1,0 +1,12 @@
+[Unit]
+Description=Copy the Pro Bono Radar database to Neon every hour
+
+[Timer]
+# :45 past each hour, Sydney. The sync skips the copy when the dump is
+# unchanged, so the hourly run costs one local pg_dump between data changes.
+OnCalendar=*-*-* *:45:00 Australia/Sydney
+Persistent=true
+RandomizedDelaySec=120
+
+[Install]
+WantedBy=timers.target

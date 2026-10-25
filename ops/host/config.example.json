@@ -27,6 +27,7 @@
     "/home/l0cka/.config/systemd/user/probono-enrich.service": "REPLACE_WITH_REVIEWED_INSTALLED_SHA256",
     "/home/l0cka/.config/systemd/user/probono-backup.service": "REPLACE_WITH_REVIEWED_INSTALLED_SHA256",
     "/home/l0cka/.config/systemd/user/probono-backup-mirror.service": "REPLACE_WITH_REVIEWED_INSTALLED_SHA256",
-    "/home/l0cka/.config/systemd/user/probono-verify-deadlines.service": "REPLACE_WITH_REVIEWED_INSTALLED_SHA256"
+    "/home/l0cka/.config/systemd/user/probono-verify-deadlines.service": "REPLACE_WITH_REVIEWED_INSTALLED_SHA256",
+    "/home/l0cka/.config/systemd/user/probono-neon-sync.service": "REPLACE_WITH_REVIEWED_INSTALLED_SHA256"
   }
 }

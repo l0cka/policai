@@ -40,7 +40,8 @@ def parser():
         "worker", help="run exactly one guarded scheduled operation as l0cka"
     )
     worker.add_argument(
-        "operation", choices=("ingest", "enrich", "backup", "backup-mirror", "verify-deadlines")
+        "operation",
+        choices=("ingest", "enrich", "backup", "backup-mirror", "verify-deadlines", "neon-sync"),
     )
     compose = commands.add_parser(
         "compose", help="internal allowlisted worker adapter; never arbitrary docker"
@@ -227,9 +228,13 @@ def main():
             tx.rollback()
             print("rollback health verified; persistent gate remains")
         elif args.command == "worker":
-            with h.worker_guard(state, h.WORKER_GUARDS[args.operation]) as fds:
-                host.run_worker(args.operation, fds)
-            print("scheduled operation completed")
+            # neon-sync reads the database through a pg_dump snapshot and writes
+            # only Neon, so it shares worker.lock's job instead of queueing on it.
+            serialize = args.operation != "neon-sync"
+            with h.worker_guard(state, h.WORKER_GUARDS[args.operation], serialize) as fds:
+                outcome = host.run_worker(args.operation, fds)
+            # Only neon-sync reports, and only "synced" or "unchanged".
+            print(f"scheduled operation completed{': ' + outcome if outcome else ''}")
         elif args.command == "compose":
             command = args.arguments[1:] if args.arguments[:1] == ["--"] else args.arguments
             h.worker_arguments(command)

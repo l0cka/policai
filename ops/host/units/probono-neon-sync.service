@@ -1,0 +1,8 @@
+[Unit]
+Description=Copy the Pro Bono Radar database to the Neon copy the A2J site reads
+
+[Service]
+Type=oneshot
+WorkingDirectory=/var/lib/probono-radar/app/apps/probono
+ExecStart=/usr/bin/python3 -I /usr/local/libexec/policai-host/cli.py worker neon-sync
+TimeoutStartSec=900

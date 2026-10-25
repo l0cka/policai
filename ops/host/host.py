@@ -16,6 +16,7 @@ import subprocess
 import time
 from contextlib import contextmanager
 from pathlib import Path
+from urllib.parse import unquote, urlsplit
 
 from dispatcher import Refused, State, promote, secure_path, sha, sync_dir, undo_promote
 
@@ -24,6 +25,7 @@ CONFIG = Path("/etc/policai-deploy/config.json")
 USER_UNITS = Path("/home/l0cka/.config/systemd/user")
 UNIT_VIEW = Path("/run/policai-deploy-observation/user-units")
 ENV_FILE = Path("/etc/probono-radar/runtime.env")
+NEON_ENV_FILE = Path("/etc/probono-radar/neon.env")
 CODE = Path("/usr/local/libexec/policai-host")
 BASES = {"policai": Path("/var/lib/policai"), "probono": Path("/var/lib/probono-radar")}
 USERS = {"policai": "policai", "probono": "l0cka"}
@@ -48,6 +50,7 @@ WORKER_GUARDS = {
     "verify-deadlines": "release",
     "backup": "database",
     "backup-mirror": "mirror",
+    "neon-sync": "database",
 }
 
 
@@ -172,6 +175,66 @@ BACKUP_DUMPS = (
     ["pg_dump", "-U", "radar", "radar"],
     ["pg_dumpall", "-U", "radar", "--globals-only"],
 )
+
+
+# The A2J site reads a copy of the radar database on Neon. Argus stays the
+# database of record: this replaces the copy whole, inside one transaction, and
+# only when the dump differs from the last one copied. pg_dump runs over the
+# container's socket with -h, so the NEON_* variables cannot redirect it, and a
+# dump without its completion line is never sent. The password arrives on stdin,
+# never in argv or the environment. The \restrict lines carry a fresh random
+# key each run, so they are left out of the change digest.
+NEON_SYNC_SCRIPT = r"""set -eu
+set -o pipefail
+umask 077
+IFS= read -r NEON_PASSWORD
+dump=$(mktemp /tmp/neon-sync.XXXXXX)
+trap 'rm -f "$dump"' EXIT
+pg_dump -h /var/run/postgresql -U radar --no-owner --no-acl radar > "$dump"
+tail -n 3 "$dump" | grep -q 'PostgreSQL database dump complete'
+digest=$(grep -Ev '^[\](un)?restrict ' "$dump" | sha256sum | cut -d' ' -f1)
+if [ "$(cat /tmp/neon-sync.sha256 2>/dev/null || true)" = "$digest" ]; then
+  echo unchanged
+  exit 0
+fi
+{ printf 'DROP SCHEMA IF EXISTS public CASCADE;\nCREATE SCHEMA public;\n'; cat "$dump"; } \
+  | PGPASSWORD="$NEON_PASSWORD" PGSSLMODE=verify-full PGSSLROOTCERT=system \
+    psql -X -q -v ON_ERROR_STOP=1 --single-transaction \
+      -h "$NEON_HOST" -U "$NEON_USER" -d "$NEON_DATABASE" > /dev/null
+printf '%s\n' "$digest" > /tmp/neon-sync.sha256
+echo synced
+"""
+NEON_HOST = re.compile(r"ep-[a-z0-9-]+\.[a-z0-9-]+\.aws\.neon\.tech")
+NEON_NAME = re.compile(r"[A-Za-z0-9_]{1,63}")
+
+
+def neon_environment(text):
+    """Parse the one NEON_DATABASE_URL line into the sync's NEON_* variables."""
+    urls = [
+        line[len("NEON_DATABASE_URL=") :]
+        for line in text.splitlines()
+        if line.startswith("NEON_DATABASE_URL=")
+    ]
+    if len(urls) != 1:
+        raise Refused("exactly one NEON_DATABASE_URL required")
+    url = urlsplit(urls[0].strip())
+    password = unquote(url.password or "")
+    if (
+        url.scheme not in ("postgres", "postgresql")
+        or not NEON_HOST.fullmatch(url.hostname or "")
+        or "-pooler." in (url.hostname or "")
+        or url.port not in (None, 5432)
+        or not NEON_NAME.fullmatch(unquote(url.username or ""))
+        or not NEON_NAME.fullmatch(url.path.lstrip("/"))
+        or not re.fullmatch(r"[\x21-\x7e]{8,256}", password)
+    ):
+        raise Refused("NEON_DATABASE_URL must be a direct Neon endpoint")
+    return {
+        "NEON_HOST": url.hostname,
+        "NEON_USER": unquote(url.username),
+        "NEON_PASSWORD": password,
+        "NEON_DATABASE": url.path.lstrip("/"),
+    }
 
 
 def compose_guard(args):
@@ -456,7 +519,7 @@ class Host:
             str(CODE / "backup.sh"),
             str(CODE / "backup-mirror.sh"),
             "/etc/systemd/system/policai-pull.service",
-            *(str(USER_UNITS / f"probono-{name}.service") for name in WORKER_SCRIPTS),
+            *(str(USER_UNITS / f"probono-{name}.service") for name in WORKER_GUARDS),
         }
         if not required.issubset(self.config["installed_hashes"]):
             raise Refused("guarded entrypoint installation proof missing")
@@ -826,6 +889,8 @@ class Host:
             raise Refused("unknown worker guard")
 
     def run_worker(self, name, lockfds):
+        if name == "neon-sync":
+            return self.neon_sync(lockfds)
         if name not in WORKER_SCRIPTS:
             raise Refused("scheduled command out of scope")
         self.check_worker(WORKER_GUARDS[name])
@@ -847,6 +912,35 @@ class Host:
                 extra_env=extra_env,
             )
         # Do not return or journal worker output, which can contain article data.
+
+    def neon_sync(self, lockfds):
+        self.check_worker(WORKER_GUARDS["neon-sync"])
+        envstat = secure_path(NEON_ENV_FILE)
+        if envstat.st_mode & 0o007 or envstat.st_size > 4096:
+            raise Refused("Neon environment file unsafe")
+        neon = neon_environment(NEON_ENV_FILE.read_text())
+        password = neon.pop("NEON_PASSWORD")
+        app = BASES["probono"] / "app/apps/probono"
+        with worker_task("neon-sync"):
+            return self.runner.execute(
+                [
+                    *self.compose_argv(app, "active"),
+                    "exec",
+                    "-T",
+                    *(item for name in neon for item in ("-e", name)),
+                    "db",
+                    "sh",
+                    "-c",
+                    NEON_SYNC_SCRIPT,
+                ],
+                app,
+                identity="l0cka",
+                timeout=600,
+                limit=4096,
+                pass_fds=lockfds,
+                extra_env=neon,
+                stdin_data=password.encode() + b"\n",
+            ).strip()
 
     def worker_compose(self, args, lockfds, stdin_data=None):
         allowed = worker_arguments(args)

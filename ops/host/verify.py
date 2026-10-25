@@ -76,6 +76,7 @@ checks = [
     "units/probono-backup.service",
     "units/probono-backup-mirror.service",
     "units/probono-verify-deadlines.service",
+    "units/probono-neon-sync.service",
     "ruff.toml",
     "run_tests.py",
     "verify.py",
