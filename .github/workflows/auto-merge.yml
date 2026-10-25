@@ -1,29 +1,44 @@
 name: Auto-merge
 
-# Arms GitHub auto-merge (squash) on non-draft PRs opened by l0cka. GitHub
-# then merges once the "Protect main" ruleset passes: lint, test and build
-# green and every review thread resolved. A `hold` label disarms it, for PRs
-# gated on a date or an event. Merging to main deploys Argus.
+# Arms GitHub auto-merge (squash) on non-draft PRs opened by l0cka from this
+# repository, and only once the head commit has a completed `cursor-review`
+# check whose conclusion is `success`. GitHub then merges once the "Protect
+# main" ruleset passes: lint, test and build green and every review thread
+# resolved. `cursor-review` stays off that ruleset, so a hand merge does not
+# wait for it. A `hold` label disarms auto-merge even when the check is
+# already green. A `failure` conclusion, an in-progress or queued run, or no
+# run leaves auto-merge off and disables it if it was already armed. Merging
+# to main deploys Argus.
 #
-# pull_request_target runs this file from main, so a PR cannot rewrite its own
-# arming policy. The job never checks out PR code.
+# pull_request_target and workflow_run both use this file from the default
+# branch, so a PR cannot rewrite its own arming policy. pull_request_target
+# has no `submitted` activity. Submitting a review starts the Cursor review
+# workflow, which stamps `cursor-review`. This job runs when that workflow is
+# requested — that run can race the stamp — and again when the workflow
+# completes, after the check exists. The job never checks out PR code.
 on:
   pull_request_target:
     branches:
       - main
     types: [opened, reopened, ready_for_review, labeled, unlabeled]
+  workflow_run:
+    workflows: ["Cursor review"]
+    types: [requested, completed]
 
 permissions:
   contents: write
   pull-requests: write
+  checks: read
 
 concurrency:
-  group: auto-merge-${{ github.event.pull_request.number }}
+  # Separate expressions so a pull_request_target run never indexes
+  # workflow_run, and a workflow_run never indexes pull_request.
+  group: auto-merge-${{ github.event.pull_request.number }}${{ github.event.workflow_run.head_sha }}
 
 jobs:
   arm:
     name: arm auto-merge
-    if: ${{ github.event.pull_request.user.login == 'l0cka' && !github.event.pull_request.draft && github.event.pull_request.head.repo.full_name == github.repository }}
+    if: ${{ github.event_name == 'workflow_run' || (github.event.pull_request.user.login == 'l0cka' && !github.event.pull_request.draft && github.event.pull_request.head.repo.full_name == github.repository) }}
     runs-on: [self-hosted, linux, argus]
 
     steps:
@@ -34,33 +49,133 @@ jobs:
             // Read the PR fresh, not from the event payload: when `hold` is
             // added right after opening, the `opened` run must see the label
             // and the `labeled` run must see the auto-merge it armed.
-            const { data: pr } = await github.rest.pulls.get({
-              ...context.repo,
-              pull_number: context.payload.pull_request.number,
-            });
-            const held = pr.labels.some((label) => label.name === 'hold');
-            if (held) {
-              if (!pr.auto_merge) return core.info('Held, auto-merge already off.');
+            const prs = await loadPullRequests();
+            for (const pr of prs) {
+              if (!eligible(pr)) {
+                core.info(`PR #${pr.number} is not eligible for auto-merge.`);
+                continue;
+              }
+              await arm(pr);
+            }
+
+            function eligible(pr) {
+              const sameRepo = pr.head.repo
+                && pr.head.repo.full_name === `${context.repo.owner}/${context.repo.repo}`;
+              return pr.user.login === 'l0cka'
+                && !pr.draft
+                && pr.state === 'open'
+                && pr.base.ref === 'main'
+                && sameRepo;
+            }
+
+            async function loadPullRequests() {
+              if (context.eventName !== 'workflow_run') {
+                const { data } = await github.rest.pulls.get({
+                  ...context.repo,
+                  pull_number: context.payload.pull_request.number,
+                });
+                return [data];
+              }
+              const run = context.payload.workflow_run;
+              const numbers = new Set(
+                (run.pull_requests || []).map((pull) => pull.number).filter(Boolean),
+              );
+              if (numbers.size === 0 && run.head_branch) {
+                const owner = run.head_repository?.owner?.login || context.repo.owner;
+                const { data } = await github.rest.pulls.list({
+                  ...context.repo,
+                  state: 'open',
+                  head: `${owner}:${run.head_branch}`,
+                  base: 'main',
+                  per_page: 20,
+                });
+                for (const pull of data) numbers.add(pull.number);
+              }
+              if (numbers.size === 0 && run.head_sha) {
+                const { data } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+                  ...context.repo,
+                  commit_sha: run.head_sha,
+                });
+                for (const pull of data) {
+                  if (pull.state === 'open') numbers.add(pull.number);
+                }
+              }
+              if (numbers.size === 0) {
+                core.info('No open pull request for this Cursor review run.');
+                return [];
+              }
+              const loaded = [];
+              for (const pull_number of numbers) {
+                const { data } = await github.rest.pulls.get({
+                  ...context.repo,
+                  pull_number,
+                });
+                loaded.push(data);
+              }
+              return loaded;
+            }
+
+            async function cursorReviewRuns(sha) {
+              const runs = [];
+              for (let page = 1; page <= 10; page += 1) {
+                const { data } = await github.rest.checks.listForRef({
+                  ...context.repo,
+                  ref: sha,
+                  check_name: 'cursor-review',
+                  per_page: 100,
+                  page,
+                });
+                runs.push(...data.check_runs.filter((run) => run.name === 'cursor-review'));
+                if (data.check_runs.length < 100) break;
+              }
+              return runs;
+            }
+
+            // A completed success is required. A failure, or any run that is
+            // not completed (in progress or queued), keeps auto-merge off.
+            function cursorReviewSucceeded(runs) {
+              if (runs.length === 0) return false;
+              if (runs.some((run) => run.status !== 'completed')) return false;
+              if (runs.some((run) => run.conclusion === 'failure')) return false;
+              return runs.some((run) => run.conclusion === 'success');
+            }
+
+            async function disable(pr, message) {
+              if (!pr.auto_merge) return core.info(message);
               await github.graphql(
                 'mutation($id: ID!) { disablePullRequestAutoMerge(input: { pullRequestId: $id }) { clientMutationId } }',
                 { id: pr.node_id },
               );
-              return core.info('Held, auto-merge disabled.');
+              const disabled = message.replace('already off', 'disabled');
+              core.info(disabled);
             }
-            if (pr.auto_merge) return core.info('Auto-merge already on.');
-            // GitHub refuses to arm a PR that can already merge, e.g. when
-            // `hold` comes off after CI went green. Merge that one directly.
-            if (pr.mergeable_state === 'clean') {
-              await github.rest.pulls.merge({
-                ...context.repo,
-                pull_number: pr.number,
-                sha: pr.head.sha,
-                merge_method: 'squash',
-              });
-              return core.info('Already mergeable, squash-merged.');
+
+            async function arm(pr) {
+              const held = pr.labels.some((label) => label.name === 'hold');
+              if (held) {
+                await disable(pr, 'Held, auto-merge already off.');
+                return;
+              }
+              const runs = await cursorReviewRuns(pr.head.sha);
+              if (!cursorReviewSucceeded(runs)) {
+                await disable(pr, 'cursor-review not successful, auto-merge already off.');
+                return;
+              }
+              if (pr.auto_merge) return core.info('Auto-merge already on.');
+              // GitHub refuses to arm a PR that can already merge, e.g. when
+              // `hold` comes off after CI went green. Merge that one directly.
+              if (pr.mergeable_state === 'clean') {
+                await github.rest.pulls.merge({
+                  ...context.repo,
+                  pull_number: pr.number,
+                  sha: pr.head.sha,
+                  merge_method: 'squash',
+                });
+                return core.info('Already mergeable, squash-merged.');
+              }
+              await github.graphql(
+                'mutation($id: ID!) { enablePullRequestAutoMerge(input: { pullRequestId: $id, mergeMethod: SQUASH }) { clientMutationId } }',
+                { id: pr.node_id },
+              );
+              core.info('Auto-merge enabled (squash).');
             }
-            await github.graphql(
-              'mutation($id: ID!) { enablePullRequestAutoMerge(input: { pullRequestId: $id, mergeMethod: SQUASH }) { clientMutationId } }',
-              { id: pr.node_id },
-            );
-            core.info('Auto-merge enabled (squash).');
