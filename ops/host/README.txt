@@ -51,6 +51,23 @@ WHAT EXISTS
   Docker calls are the only exec forms worker_arguments allows, exactly
   pg_dump -U radar radar and pg_dumpall -U radar --globals-only (BACKUP_DUMPS).
   Rotation runs only after both dumps pass their checks.
+  neon-sync (host.py, no script): replaces the Neon copy of the radar
+  database that the a2j Worker reads through Hyperdrive. Argus stays the
+  database of record. It runs one fixed script (NEON_SYNC_SCRIPT) inside the db
+  container: pg_dump over the local socket, a check for the dump's completion
+  line, then, only when the dump differs from the last one sent, DROP SCHEMA
+  public, CREATE SCHEMA public and the dump in a single psql transaction with
+  verify-full TLS. A failed copy rolls back and leaves the old copy serving;
+  the digest is written only after a copy commits, so the next run retries.
+  The destination comes from NEON_DATABASE_URL in /etc/probono-radar/neon.env
+  (root:l0cka 0640, no world bits, no group write), which must be a direct
+  *.aws.neon.tech endpoint, not -pooler. Host, user and database pass as -e
+  variables; the password goes on stdin, never into argv or the environment.
+  Its guard is "database", like backup. It takes deploy.lock shared but not
+  worker.lock: a pg_dump snapshot is consistent while ingest or enrich write,
+  so an hourly run never refuses on a long ingest. Each run dumps to its own
+  mktemp file and copies in one transaction, so two runs cannot mix. The cli prints "synced" or
+  "unchanged". The timer is apps/probono/ops/probono-neon-sync.timer (hourly).
   backup-mirror.sh: additive copy of the radar-*.sql.gz dumps and their
   globals-*.sql.gz role dumps (needed to restore onto a fresh cluster) onto a second
   physical disk, so one device failure cannot take the database and every backup
@@ -161,7 +178,8 @@ UPGRADE CONTRACT — ONLY IN A HOST WINDOW DANIEL APPROVES THROUGH ARGUS DEVOPS
        the snapshot must hash to the same values or apply refuses;
     3. deploy.lock is held exclusively, so no deploy or worker is running;
     4. held(): policai-pull and every probono service and timer (ingest, enrich,
-       backup, backup-mirror, verify-deadlines) inactive with no drop-ins, both
+       backup, backup-mirror, verify-deadlines, neon-sync) inactive with no
+       drop-ins (neon-sync may also be not-found, before its first install), both
        digest units masked, no legacy worker container or process;
     5. dispatcher_ready(): no blocked.json, and active.json present as a JSON
        object with target and heads (the record the dispatcher writes after a
@@ -289,6 +307,7 @@ SERVICE ROUTING (REVIEW EXISTING HARDENING; NOT BLIND DROP-INS)
     /usr/bin/python3 -I /usr/local/libexec/policai-host/cli.py worker backup
     /usr/bin/python3 -I /usr/local/libexec/policai-host/cli.py worker backup-mirror
     /usr/bin/python3 -I /usr/local/libexec/policai-host/cli.py worker verify-deadlines
+    /usr/bin/python3 -I /usr/local/libexec/policai-host/cli.py worker neon-sync
   Working directory: /var/lib/probono-radar/app/apps/probono.
   Preserve original schedules, principal and Claude capability restrictions.
   Ingest holds one guard through its exec into enrichment. Nested Docker calls
@@ -321,7 +340,8 @@ SERVICE ROUTING (REVIEW EXISTING HARDENING; NOT BLIND DROP-INS)
   left the database ~38 h without one). backup still proves the database
   identity (verify_database) and the Compose source digest and contract
   (validate_compose) before it dumps; backup-mirror needs only its
-  backup_mirror config paths. Both still take deploy.lock shared, so they
+  backup_mirror config paths. neon-sync ("database") proves the database
+  identity, like backup, and reads only neon.env. All three still take deploy.lock shared, so they
   never overlap a deploy, rollback or recovery, and worker.lock, so they
   never overlap another worker. The nested `cli.py compose` call picks its
   guard with host.compose_guard: the db exec pair is "database", every

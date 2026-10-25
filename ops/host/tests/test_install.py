@@ -45,7 +45,7 @@ class InstallDirectoryTests(unittest.TestCase):
         }
         required.add("/etc/systemd/system/policai-pull.service")
         required.update(
-            str(host.USER_UNITS / f"probono-{name}.service") for name in host.WORKER_SCRIPTS
+            str(host.USER_UNITS / f"probono-{name}.service") for name in host.WORKER_GUARDS
         )
         hashes = json.loads((HOST / "config.example.json").read_text())["installed_hashes"]
         self.assertEqual(set(hashes), required)
@@ -173,7 +173,7 @@ class InstallationTests(unittest.TestCase):
             [sys.executable, "-I", str(script), "plan"], capture_output=True, text=True, check=True
         )
         plan = json.loads(result.stdout)
-        self.assertEqual(len(plan["files"]), 14)
+        self.assertEqual(len(plan["files"]), 15)
         self.assertFalse(plan["activates_runtimes"])
         self.assertFalse(plan["changes_timers"])
         for item in plan["files"]:

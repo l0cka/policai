@@ -47,10 +47,10 @@ class Fixture(unittest.TestCase):
 
 class GuardTableTests(Fixture):
     def test_only_the_backups_run_without_a_ready_release(self):
-        self.assertEqual(set(h.WORKER_GUARDS), set(h.WORKER_SCRIPTS))
+        self.assertEqual(set(h.WORKER_GUARDS), {*h.WORKER_SCRIPTS, "neon-sync"})
         self.assertEqual(
             {name for name, guard in h.WORKER_GUARDS.items() if guard != "release"},
-            {"backup", "backup-mirror"},
+            {"backup", "backup-mirror", "neon-sync"},
         )
         self.assertEqual(h.compose_guard(DUMP), "database")
         self.assertEqual(h.compose_guard(FETCH), "release")
@@ -169,6 +169,7 @@ class CliRoutingTests(Fixture):
 
             def run_worker(self, name, fds):
                 calls.append(("worker", name, len(fds)))
+                return "synced" if name == "neon-sync" else None
 
             def worker_compose(self, args, fds, payload):
                 calls.append(("compose", args[3], len(fds)))
@@ -216,6 +217,14 @@ class CliRoutingTests(Fixture):
                 code, calls, out, err = self.main("worker", operation)
                 self.assertEqual((code, calls, out), (1, [], ""))
                 self.assertTrue(err.startswith(f"Refused: {BLOCK}."), err)
+
+    def test_neon_sync_runs_under_a_block_and_beside_a_running_worker(self):
+        self.block(lanes=["policai"])
+        with h.worker_guard(self.state, "database"):
+            code, calls, out, err = self.main("worker", "neon-sync")
+        self.assertEqual((code, err), (0, ""))
+        self.assertEqual(calls, [("worker", "neon-sync", 1)])
+        self.assertEqual(out, "scheduled operation completed: synced\n")
 
     def test_blocked_host_admits_the_nested_dump_and_refuses_worker_tasks(self):
         self.block()

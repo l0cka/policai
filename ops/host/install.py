@@ -58,7 +58,7 @@ FILES = {
             0o644,
             "l0cka",
         )
-        for name in ("ingest", "enrich", "backup", "backup-mirror", "verify-deadlines")
+        for name in ("ingest", "enrich", "backup", "backup-mirror", "verify-deadlines", "neon-sync")
     },
 }
 
@@ -518,6 +518,7 @@ def held():
                 "probono-backup",
                 "probono-backup-mirror",
                 "probono-verify-deadlines",
+                "probono-neon-sync",
                 "probono-digest",
             ),
         ),
@@ -533,11 +534,15 @@ def held():
                 ]
                 state = dict(line.split("=", 1) for line in command(args, user).splitlines())
                 masked = name == "probono-digest"
+                # The upgrade that adds neon-sync finds neither of its units yet.
+                loads = {"masked"} if masked else {"loaded"}
+                if name == "probono-neon-sync":
+                    loads.add("not-found")
                 if (
                     state.get("ActiveState") != "inactive"
                     or state.get("SubState") != "dead"
                     or state.get("DropInPaths") != ""
-                    or state.get("LoadState") != ("masked" if masked else "loaded")
+                    or state.get("LoadState") not in loads
                 ):
                     raise Refused("timers/jobs must be held with reviewed effective units")
                 if masked and state.get("UnitFileState") != "masked":
