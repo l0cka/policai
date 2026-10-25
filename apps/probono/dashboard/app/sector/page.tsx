@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { pageMetadata } from '../../lib/site-meta';
-import { getPool } from '../../lib/db';
+import { databaseConfigured, getPool } from '../../lib/db';
 import locations from '../../lib/sector-locations.json';
 import SectorDirectory from '../sector-directory';
 import SectorExplorer from '../sector-explorer';
@@ -23,8 +23,8 @@ export const metadata: Metadata = pageMetadata({
 export default async function SectorPage() {
   // The sector reference is file-backed and remains useful in a local checkout
   // without Postgres. Production still fails loudly if a configured database
-  // cannot be queried; only an intentionally absent DATABASE_URL falls back.
-  const monitoringAvailable = Boolean(process.env.DATABASE_URL);
+  // cannot be queried; only an intentionally absent database falls back.
+  const monitoringAvailable = databaseConfigured();
   const { rows } = monitoringAvailable
     ? await getPool().query<{ name: string; url: string }>(`SELECT name, url FROM sources WHERE active`)
     : { rows: [] };

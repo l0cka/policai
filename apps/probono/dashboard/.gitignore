@@ -1,2 +1,4 @@
 *.tsbuildinfo
 public/maplibre/
+.open-next/
+.wrangler/
