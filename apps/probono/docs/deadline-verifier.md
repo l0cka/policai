@@ -55,8 +55,8 @@ For each stored date `checkDeadlines`:
 - quotes the sentence or line holding it;
 - leaves every date unchanged, and logs it, when the page mentions an
   extension, postponement, deferral or deferment, rescheduling, a new closing date,
-  or "extends" in a sentence that names a date, a close, a deadline or
-  the consultation
+  or "extends" (usually scope, but telling scope from an extension is the
+  same judgement)
   anywhere, read from the whole uncapped page. Telling
   whether the page moved this deadline, and to which date, is judgement the
   checker can't make reliably, and a wrong later date is worse than an

@@ -60,15 +60,6 @@ describe('checkDeadlines on real pages', () => {
     expect(verdicts[0]).toMatchObject({ status: 'open', kind: 'action', primary: true });
   });
 
-  it('"extends" as scope, with no date after it, is not an extension', () => {
-    for (const page of ['The duty extends to contractors. Submissions close 6 November 2026.',
-      'This section extends the existing offence. Submissions close 6 November 2026.',
-      'The scheme extends to 6 months of support. Submissions close 6 November 2026.']) {
-      const { verdicts } = check([action('2026-11-06', 'Submissions close')], page);
-      expect(verdicts[0]).toMatchObject({ status: 'open', kind: 'action', primary: true });
-    }
-  });
-
   it('81181: two "commence" mentions outvote one "deadline" mention', () => {
     const { verdicts } = check([action('2026-12-10', 'ADM obligations')], [
       'New privacy obligations requiring disclosure of certain automated decision-making (ADM) processes commence on 10 December 2026.',
@@ -136,6 +127,8 @@ describe('checkDeadlines on cases the real batch lacked', () => {
       'The Minister extends the consultation. Submissions close 6 December 2026.',
       'This notice extends the closing date to 20 December 2026. Submissions close 6 December 2026.',
       'The closing date extends until Friday the 18th of December 2026. Submissions close 6 December 2026.',
+      'The period extends to 20.12.2026. Submissions close 6 December 2026.',
+      'The Minister extends the period. Submissions close 6 December 2026.',
       'Submissions close 6 December 2026. The closing date extends to 20 December 2026.',
       `${'Body copy about the consultation. '.repeat(3000)}\nThe consultation period was extended.\n${'More body copy. '.repeat(3000)}\nSubmissions close 6 December 2026.`,
     ]) {
@@ -151,6 +144,11 @@ describe('checkDeadlines on cases the real batch lacked', () => {
   it('treats "due to" as prose', () => {
     const { verdicts } = check([action('2026-11-06', 'Register for Changing Mind & Positive Ageing Expo')], 'Date: Friday 6 November 2026 due to high demand');
     expect(verdicts[0]).toMatchObject({ kind: 'milestone', primary: false });
+  });
+
+  it('a period inside a number does not end the sentence', () => {
+    expect(check([action('2026-11-06')], 'Under version 1.2.10 of the rules, submissions close 6 November 2026.').verdicts[0])
+      .toMatchObject({ quote: 'Under version 1.2.10 of the rules, submissions close 6 November 2026.' });
   });
 
   it('keeps a "5 p.m." sentence whole', () => {

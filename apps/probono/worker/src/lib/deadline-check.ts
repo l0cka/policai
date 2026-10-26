@@ -29,11 +29,10 @@ const PRIMARY_RE = /\b(close[sd]?|closing|submi|deadline|due(?!\s+to)|until)/i;
 // "Date: Friday 23 October 2026" heads an event listing.
 const DATE_HEADER_RE = /(?:^|\n)[ \t>*#-]*(?:event\s+)?date\s*:\s*$/i;
 const CLOSED_RE = /\b(has|have|had) (now )?closed|\bnow closed|\bis closed|\bclosed on\b|\bsubmissions? closed|\bapplications? closed|\bconsultation (has )?closed/i;
-const EXTENSION_RE = /\b(extend(ed|ing)|extensions?|postpon\w*|defer(red|rals?|ments?)|re[-–—]?schedul\w*|new closing date)\b/i;
-// "extends" is mostly scope ("the duty extends to contractors"); it counts
-// only in a sentence that also names a date or a deadline.
-const EXTENDS_RE = /\bextends\b/gi;
-const DEADLINE_TALK_RE = new RegExp(`\\b(${MON})\\b|\\d{1,2}[/.]\\d{1,2}[/.]\\d{2,4}|\\d{4}-\\d{2}-\\d{2}|\\b(clos(e|es|ed|ing)|deadline|consultation|submissions?|due)\\b`, 'i');
+// "extends" is usually scope ("the duty extends to contractors"), but telling
+// that from "the period extends to 20.11.2026" is the same judgement, so it
+// counts too.
+const EXTENSION_RE = /\b(extend(s|ed|ing)|extensions?|postpon\w*|defer(red|rals?|ments?)|re[-–—]?schedul\w*|new closing date)\b/i;
 // A close word a "Date:" heading yields to; "until" there is usually a clock time.
 const HEADER_ACTION_RE = /\b(close[sd]?|closing|submi|deadline|due\b(?!\s+to)|lodg|apply|register(ed)? by|registrations? close|rsvp)/i;
 
@@ -96,33 +95,18 @@ function endsSentence(text: string, i: number): boolean {
   return !(text[i] === '.' && /[a-z]/i.test(text[i - 1] ?? '') && !/[a-z]/i.test(text[i - 2] ?? ''));
 }
 
-/* The sentence or line holding the span. */
-function sentenceSpan(text: string, hit: { index: number; end: number }): Span {
+/* The sentence or line holding the date, capped at QUOTE_LIMIT characters. */
+function sentenceAround(text: string, hit: { index: number; end: number }): Span {
   let start = hit.index;
   while (start > 0 && text[start - 1] !== '\n' && !(/\s/.test(text[start - 1]) && endsSentence(text, start - 2))) start--;
   let end = hit.end;
-  while (end < text.length && text[end] !== '\n' && !(endsSentence(text, end) && /\s|$/.test(text[end + 1] ?? ''))) end++;
+  while (end < text.length && text[end] !== '\n' && !(endsSentence(text, end) && (end + 1 === text.length || /\s/.test(text[end + 1])))) end++;
   if (end < text.length && /[.!?]/.test(text[end])) end++;
-  return { start, end };
-}
-
-/* The sentence holding the date, capped at QUOTE_LIMIT characters. */
-function sentenceAround(text: string, hit: { index: number; end: number }): Span {
-  let { start, end } = sentenceSpan(text, hit);
   if (end - start > QUOTE_LIMIT) {
     start = Math.max(start, hit.index - 150);
     end = Math.min(end, start + QUOTE_LIMIT);
   }
   return { start, end };
-}
-
-function mentionsExtension(text: string): boolean {
-  if (EXTENSION_RE.test(text)) return true;
-  for (const mm of text.matchAll(EXTENDS_RE)) {
-    const { start, end } = sentenceSpan(text, { index: mm.index!, end: mm.index! + mm[0].length });
-    if (DEADLINE_TALK_RE.test(text.slice(start, end))) return true;
-  }
-  return false;
 }
 
 function nearest(re: RegExp, text: string, span: Span, hit: Hit): { distance: number; within: boolean } | null {
@@ -156,7 +140,7 @@ export function checkDeadlines(item: VerifyItem, pageText: string, today: string
   // postponed", "cannot be extended"), is judgement this checker can't make
   // reliably, and a wrong date is worse than an unconfirmed one. A page that
   // talks about an extension anywhere is left for the next run.
-  if (mentionsExtension(text)) {
+  if (EXTENSION_RE.test(text)) {
     return item.deadlines.map((s) => ({ verdict: null, uncertain: `${s.date} left unchanged: the page mentions an extension or postponement` }));
   }
   const storedPrimary = primaryAction(item.deadlines);
