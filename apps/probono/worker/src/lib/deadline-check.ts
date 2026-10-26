@@ -29,7 +29,12 @@ const PRIMARY_RE = /\b(close[sd]?|closing|submi|deadline|due(?!\s+to)|until)/i;
 // "Date: Friday 23 October 2026" heads an event listing.
 const DATE_HEADER_RE = /(?:^|\n)[ \t>*#-]*(?:event\s+)?date\s*:\s*$/i;
 const CLOSED_RE = /\b(has|have|had) (now )?closed|\bnow closed|\bis closed|\bclosed on\b|\bsubmissions? closed|\bapplications? closed|\bconsultation (has )?closed/i;
-const EXTENSION_RE = /\b(extend(s|ed|ing)|extensions?|postpon\w*|defer(red|rals?|ments?)|re-?schedul\w*|new closing date)\b/i;
+// "extends" is mostly scope ("the duty extends to contractors"); it counts
+// only when a date follows it.
+const EXTENSION_RE = new RegExp(
+  `\\b(extend(ed|ing)|extensions?|postpon\\w*|defer(red|rals?|ments?)|re[-–—]?schedul\\w*|new closing date)\\b|\\bextends\\s+(to|until|till)\\s+${WEEKDAY}(\\d|(${MON})\\b)`,
+  'i',
+);
 // A close word a "Date:" heading yields to; "until" there is usually a clock time.
 const HEADER_ACTION_RE = /\b(close[sd]?|closing|submi|deadline|due\b(?!\s+to)|lodg|apply|register(ed)? by|registrations? close|rsvp)/i;
 

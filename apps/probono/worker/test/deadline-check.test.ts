@@ -60,6 +60,14 @@ describe('checkDeadlines on real pages', () => {
     expect(verdicts[0]).toMatchObject({ status: 'open', kind: 'action', primary: true });
   });
 
+  it('"extends" as scope, with no date after it, is not an extension', () => {
+    for (const page of ['The duty extends to contractors. Submissions close 6 November 2026.',
+      'This section extends the existing offence. Submissions close 6 November 2026.']) {
+      const { verdicts } = check([action('2026-11-06', 'Submissions close')], page);
+      expect(verdicts[0]).toMatchObject({ status: 'open', kind: 'action', primary: true });
+    }
+  });
+
   it('81181: two "commence" mentions outvote one "deadline" mention', () => {
     const { verdicts } = check([action('2026-12-10', 'ADM obligations')], [
       'New privacy obligations requiring disclosure of certain automated decision-making (ADM) processes commence on 10 December 2026.',
@@ -122,6 +130,8 @@ describe('checkDeadlines on cases the real batch lacked', () => {
       'Submissions close 6 December 2026. We are extending the closing date.',
       'Submissions close 6 December 2026. A deferment to 20 December 2026 applies.',
       'Submissions close 6 December 2026. The hearing has been re-scheduled to 4 January 2027.',
+      'Submissions close 6 December 2026. The hearing has been re–scheduled to 4 January 2027.',
+      'Submissions close 6 December 2026. The closing date extends until Friday 18 December 2026.',
       'Submissions close 6 December 2026. The closing date extends to 20 December 2026.',
       `${'Body copy about the consultation. '.repeat(3000)}\nThe consultation period was extended.\n${'More body copy. '.repeat(3000)}\nSubmissions close 6 December 2026.`,
     ]) {
