@@ -2,13 +2,14 @@ name: Cursor review
 
 # Stamps the `cursor-review` Check Run. Cursor Cloud Agents cannot write
 # check runs (403); this workflow's GITHUB_TOKEN can. The Cursor Project
-# still writes the review. A marker in a PR comment or review body tells
-# this workflow the conclusion.
+# still writes the review. A marker in the review body tells this workflow
+# the conclusion for the commit that review covers. Conversation comments
+# are ignored: they carry no commit, so a marker there could pass a head
+# nobody reviewed. `cursor-review` is a required check in
+# Protect main, so auto-merge and thread merges wait for it.
 on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
-  issue_comment:
-    types: [created]
   pull_request_review:
     types: [submitted]
 
@@ -20,7 +21,7 @@ permissions:
 # One stamp at a time per PR, so a completion cannot race a new head SHA's
 # in_progress run and land on the wrong commit.
 concurrency:
-  group: cursor-review-${{ github.event.pull_request.number || github.event.issue.number }}
+  group: cursor-review-${{ github.event.pull_request.number }}
   cancel-in-progress: false
 
 jobs:
@@ -38,8 +39,12 @@ jobs:
             const CHECK_NAME = 'cursor-review';
             const MARKER = /<!-- cursor-review: (success|failure) -->/gi;
 
-            function markerConclusion(body) {
-              if (!body) return null;
+            // The repo is public, so anyone can comment. Only a marker from
+            // someone with write access may pass or fail the required check.
+            const TRUSTED = new Set(['OWNER', 'MEMBER', 'COLLABORATOR']);
+
+            function markerConclusion(body, association) {
+              if (!body || !TRUSTED.has(association)) return null;
               const matches = [...body.matchAll(MARKER)];
               if (matches.length === 0) return null;
               return matches[matches.length - 1][1].toLowerCase();
@@ -122,33 +127,13 @@ jobs:
               return;
             }
 
-            let body = null;
-            let sha = null;
-
-            if (eventName === 'issue_comment') {
-              const issue = context.payload.issue;
-              if (!issue.pull_request) {
-                core.info('Issue comment is not on a pull request.');
-                return;
-              }
-              body = context.payload.comment.body;
-              const conclusion = markerConclusion(body);
-              if (!conclusion) return;
-              const { data: pull } = await github.rest.pulls.get({
-                ...context.repo,
-                pull_number: issue.number,
-              });
-              sha = pull.head.sha;
-              await complete(sha, conclusion);
-              return;
-            }
-
             if (eventName === 'pull_request_review') {
-              body = context.payload.review.body;
-              const conclusion = markerConclusion(body);
+              const { review } = context.payload;
+              const conclusion = markerConclusion(review.body, review.author_association);
               if (!conclusion) return;
-              sha = context.payload.pull_request.head.sha;
-              await complete(sha, conclusion);
+              // Stamp the commit that was reviewed. A push made during the
+              // review leaves the new head waiting for its own review.
+              await complete(review.commit_id, conclusion);
               return;
             }
 
