@@ -1,8 +1,8 @@
 name: Cursor review
 
 # Stamps the `cursor-review` Check Run. Cursor Cloud Agents cannot write
-# check runs (403); this workflow's GITHUB_TOKEN can. The Cursor Project
-# still writes the review. A marker in the review body tells this workflow
+# check runs (403); this workflow's GITHUB_TOKEN can. The Cursor Automation
+# (cursor[bot]) writes the review. A marker in the review body tells this workflow
 # the conclusion for the commit that review covers. Conversation comments
 # are ignored: they carry no commit, so a marker there could pass a head
 # nobody reviewed. `cursor-review` is a required check in
@@ -39,12 +39,17 @@ jobs:
             const CHECK_NAME = 'cursor-review';
             const MARKER = /<!-- cursor-review: (success|failure) -->/gi;
 
-            // The repo is public, so anyone can comment. Only a marker from
-            // someone with write access may pass or fail the required check.
-            const TRUSTED = new Set(['OWNER', 'MEMBER', 'COLLABORATOR']);
+            // The Cursor Automation reviews as the cursor[bot] app. Only its
+            // marker counts: GitHub reserves [bot] logins for apps, so a review
+            // from a stranger or the PR author's account cannot pass the check.
+            // This file runs from the PR's merge ref, so a branch that edits it
+            // can still stamp the check; that is true of every Actions check.
+            function fromCursor(user) {
+              return user?.login === 'cursor[bot]' && user?.type === 'Bot';
+            }
 
-            function markerConclusion(body, association) {
-              if (!body || !TRUSTED.has(association)) return null;
+            function markerConclusion(body, user) {
+              if (!body || !fromCursor(user)) return null;
               const matches = [...body.matchAll(MARKER)];
               if (matches.length === 0) return null;
               return matches[matches.length - 1][1].toLowerCase();
@@ -85,15 +90,15 @@ jobs:
                 status: 'in_progress',
                 output: {
                   title: 'Cursor review',
-                  summary: 'Waiting for Cursor Project review.',
+                  summary: 'Waiting for Cursor review.',
                 },
               });
             }
 
             async function complete(sha, conclusion) {
               const summary = conclusion === 'success'
-                ? 'Cursor Project review succeeded.'
-                : 'Cursor Project review failed.';
+                ? 'Cursor review succeeded.'
+                : 'Cursor review failed.';
               const output = { title: 'Cursor review', summary };
               const existing = newestInProgress(await runsFor(sha));
               if (existing) {
@@ -129,7 +134,7 @@ jobs:
 
             if (eventName === 'pull_request_review') {
               const { review } = context.payload;
-              const conclusion = markerConclusion(review.body, review.author_association);
+              const conclusion = markerConclusion(review.body, review.user);
               if (!conclusion) return;
               // Stamp the commit that was reviewed. A push made during the
               // review leaves the new head waiting for its own review.
