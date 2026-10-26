@@ -62,7 +62,8 @@ For each stored date `checkDeadlines`:
 - makes the single action date primary, or the one whose quote says close,
   submit, due or until. A tie keeps the stored primary.
 
-A date with no keyword either way, or with both at the same distance, gets
+When a date appears several times, the kind most mentions agree on wins.
+A date with no keyword either way, or whose mentions split evenly, gets
 no verdict, so the saver leaves it as stored and the run logs `left
 unchanged`. Proposals carry `model: "deterministic-v1"`.
 

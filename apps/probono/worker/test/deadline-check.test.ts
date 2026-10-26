@@ -54,6 +54,16 @@ describe('checkDeadlines on real pages', () => {
     expect(saved.deadlines[0]).toMatchObject({ kind: 'milestone', primary: false });
   });
 
+  it('81181: two "commence" mentions outvote one "deadline" mention', () => {
+    const { verdicts } = check([action('2026-12-10', 'ADM obligations')], [
+      'New privacy obligations requiring disclosure of certain automated decision-making (ADM) processes commence on 10 December 2026.',
+      'To be ready by 10 December, review your systems.',
+      '* Review and update your privacy policy: Prepare and issue updates to your privacy policy by the 10 December deadline.',
+      'Get advice before the obligations commence on 10 December.',
+    ].join('\n'));
+    expect(verdicts[0]).toMatchObject({ kind: 'milestone', primary: false, quote: expect.stringContaining('commence on 10 December 2026') });
+  });
+
   it('86679: a "Date:" heading marks an event', () => {
     const { verdicts } = check([action('2026-10-23', 'Register for Changing Mind & Positive Ageing Expo')],
       'Title: Changing Mind & Positive Ageing Expo 2026\nDate: Friday 23 October 2026\nVenue: City of Geelong Bowls Club\nRegister: https://www.trybooking.com/DLYGM');
@@ -128,6 +138,11 @@ describe('checkDeadlines on cases the real batch lacked', () => {
     const { checks, saved } = check(stored, 'Round one closes 2 November 2026. Round two closes 16 November 2026.');
     expect(checks.every((c) => c.uncertain === null)).toBe(true);
     expect(saved.deadlines.map((d) => d.primary)).toEqual([false, true]);
+  });
+
+  it('leaves a date unchanged when its mentions split evenly', () => {
+    const { checks } = check([action('2026-11-16')], 'Submissions close 16 November 2026.\nThe forum opens 16 November 2026.');
+    expect(checks[0]).toEqual({ verdict: null, uncertain: '2026-11-16: mentions disagree on deadline or event' });
   });
 
   it('leaves a date unchanged when nothing beside it says what it is', () => {

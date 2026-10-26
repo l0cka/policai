@@ -154,8 +154,13 @@ export function checkDeadlines(item: VerifyItem, pageText: string, today: string
       const sentence = sentenceAround(text, hit);
       return { hit, sentence, kind: kindAt(text, hit, sentence) };
     });
-    const pick = read.find((r) => r.kind === 'action') ?? read.find((r) => r.kind !== null);
-    if (!pick?.kind) return { verdict: null, uncertain: `${s.date}: no deadline or event wording beside the date` };
+    // A page can mention one date several times ("commence on 10 December",
+    // "by the 10 December deadline"); the kind most mentions agree on wins.
+    const actions = read.filter((r) => r.kind === 'action').length;
+    const milestones = read.filter((r) => r.kind === 'milestone').length;
+    if (actions === 0 && milestones === 0) return { verdict: null, uncertain: `${s.date}: no deadline or event wording beside the date` };
+    if (actions === milestones) return { verdict: null, uncertain: `${s.date}: mentions disagree on deadline or event` };
+    const pick = read.find((r) => r.kind === (actions > milestones ? 'action' : 'milestone'))!;
     const around = { start: Math.max(0, pick.sentence.start - 200), end: Math.min(text.length, pick.sentence.end + 200) };
     const extension = extendedTo(text, around, s.date);
     // The saver wants the quote to show the date it stores, so an extension
@@ -164,7 +169,7 @@ export function checkDeadlines(item: VerifyItem, pageText: string, today: string
     const quote = text.slice(quoted.start, quoted.end).trim();
     const status = extension ? 'extended' : s.date < today || CLOSED_RE.test(quote) ? 'closed' : 'open';
     return {
-      verdict: { ...base, corrected_date: extension?.date ?? null, kind: pick.kind, precision: pick.hit.precision, primary: false, quote, status },
+      verdict: { ...base, corrected_date: extension?.date ?? null, kind: pick.kind!, precision: pick.hit.precision, primary: false, quote, status },
       uncertain: null,
       quoteHasClose: PRIMARY_RE.test(quote),
     };
