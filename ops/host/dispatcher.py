@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Two-runtime deployment transaction. Uninstalled; see host.py for fixed adapters."""
+"""Pro Bono release deployment transaction. Uninstalled; see host.py for fixed adapters."""
 
 import contextlib
 import fcntl
@@ -174,6 +174,26 @@ def sha(value):
     return value
 
 
+def parse_active(raw):
+    """Read active.json into the one record shape the transaction uses.
+
+    The retired two-runtime code also wrote a policai head, root_build and a
+    dashboard image. They are dropped here, so the first deploy after that
+    code accepts its record as the before state and writes the new shape.
+    """
+    try:
+        active = {
+            "heads": {"probono": sha(raw["heads"]["probono"])},
+            "images": {"worker": raw["images"]["worker"]},
+            "target": sha(raw["target"]),
+        }
+    except (KeyError, TypeError):
+        raise Refused("invalid persistent state") from None
+    if raw.get("bootstrap_pending"):
+        active["bootstrap_pending"] = True
+    return active
+
+
 def move(source, destination):
     # Same-filesystem rename only, never a recursive copy or delete.
     if source.is_symlink() or not source.is_dir() or os.path.lexists(destination):
@@ -221,12 +241,12 @@ class Transaction:
                     "phase": "rolled-back-healthy",
                 }:
                     raise Refused("reviewed healthy rollback required")
-                active = self.state.read("active.json")
+                active = parse_active(self.state.read("active.json"))
                 self.state.archive_block(prior)
             else:
-                active = self.state.require_ready()
+                active = parse_active(self.state.require_ready())
             if active.get("bootstrap_pending") and not initial:
-                raise Refused("first activation must build both runtimes")
+                raise Refused("first activation must build the release")
             record = {
                 "id": uuid.uuid4().hex,
                 "target": target,
@@ -250,7 +270,7 @@ class Transaction:
                     record["target"] = target
                     checkpoint("target-resolved")
                 record.update(self.host.prepare(target))
-                lanes = {"policai", "probono"} if initial else classify(record.pop("paths"))
+                lanes = set(PROBONO) if initial else classify(record.pop("paths"))
                 record["lanes"] = sorted(lanes)
                 checkpoint("stage")
                 self.host.stage(record, lanes)
@@ -311,16 +331,11 @@ class Transaction:
             # Deliberately leave blocked.json. Resume needs independent review.
 
 
-POLICAI, PROBONO = frozenset({"policai"}), frozenset({"probono"})
-BOTH = POLICAI | PROBONO
+PROBONO = frozenset({"probono"})
 
 
 def prefix(*prefixes):
     return lambda path: path.startswith(prefixes)
-
-
-def named(*names):
-    return lambda path: path in names
 
 
 def is_test(path):
@@ -331,30 +346,14 @@ def is_markdown(path):
     return path.endswith(".md") and "public" not in path.split("/")
 
 
+# The worker image is built from apps/probono/worker alone (validate_compose
+# pins the build context), so no path outside apps/probono can change it and
+# the fallback is no lane: the checkout fast-forwards and health still runs.
 ROUTES = (
     ("test", is_test, frozenset()),
-    ("data", prefix("data/", "public/data/"), frozenset()),
     ("markdown", is_markdown, frozenset()),
-    ("docs", prefix("docs/"), frozenset()),
-    ("github", prefix(".github/"), frozenset()),
-    ("ops", prefix("ops/host/", "ops/collector/"), frozenset()),
-    ("scripts", prefix("scripts/"), frozenset()),
+    ("dashboard", prefix("apps/probono/dashboard/"), frozenset()),
     ("probono", prefix("apps/probono/"), PROBONO),
-    ("policai", prefix("src/", "public/", "mcp/", "design/"), POLICAI),
-    (
-        "policai-config",
-        named(
-            "next.config.ts",
-            "next.config.js",
-            "next.config.mjs",
-            "postcss.config.mjs",
-            "components.json",
-            "package.json",
-            "package-lock.json",
-            "tsconfig.json",
-        ),
-        POLICAI,
-    ),
 )
 
 
@@ -367,5 +366,5 @@ def classify(paths):
             or any(p in ("", ".", "..") for p in path.split("/"))
         ):
             raise ValueError("invalid repository-relative path")
-        lanes.update(next((route for _, matches, route in ROUTES if matches(path)), BOTH))
+        lanes.update(next((route for _, matches, route in ROUTES if matches(path)), frozenset()))
     return lanes

@@ -18,18 +18,6 @@ services:
       timeout: 3s
       retries: 10
 
-  dashboard:
-    build: ./dashboard
-    restart: unless-stopped
-    depends_on:
-      db:
-        condition: service_healthy
-    environment:
-      DATABASE_URL: postgres://radar:${POSTGRES_PASSWORD}@db:5432/radar
-      TZ: Australia/Sydney
-    ports:
-      - "127.0.0.1:8850:3000"
-
   # Worker is run on demand (systemd timers / manual), never long-running.
   # network_mode host lets it reach Postgres (127.0.0.1:5433) and the
   # existing Firecrawl instance on the Argus host. On macOS dev, skip the
@@ -47,7 +35,7 @@ services:
       SMTP_USER: ${SMTP_USER:-}
       SMTP_PASS: ${SMTP_PASS:-}
       DIGEST_TO: ${DIGEST_TO:-}
-      DASHBOARD_URL: ${DASHBOARD_URL:-http://100.87.255.67:8850}
+      DASHBOARD_URL: ${DASHBOARD_URL:-https://a2j.policai.org}
       # Deadline verifier (src/verify-deadlines.ts): OpenAI-compatible chat
       # completions, no tools. Set in the external env file, never in Git.
       VERIFIER_BASE_URL: ${VERIFIER_BASE_URL:-}

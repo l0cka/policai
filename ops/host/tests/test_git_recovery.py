@@ -4,6 +4,7 @@ import subprocess
 import tempfile
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import patch
 
 import host as h
@@ -51,15 +52,19 @@ class GitRecoveryTests(unittest.TestCase):
                 git(app, "commit", "-am", "candidate")
                 new[lane] = git(app, "rev-parse", "HEAD")
             self.assertEqual(len(set(new.values())), 1)
+            image = "sha256:" + "a" * 64
             record = {
                 "id": "1" * 32,
                 "previous": old,
-                "target": new["policai"],
+                "target": new["probono"],
                 "lanes": [],
                 "activation_started": True,
+                "before": {"images": {"worker": image}},
             }
             obj = h.Host.__new__(h.Host)
             obj.checkpoint = lambda phase: None
+            overlays = []
+            obj.state = SimpleNamespace(write=lambda name, value: overlays.append((name, value)))
 
             def check_repo(lane):
                 app = bases[lane] / "app"
@@ -88,8 +93,10 @@ class GitRecoveryTests(unittest.TestCase):
                 for _ in bases:
                     with self.assertRaises(InterruptedError):
                         obj.rollback(record)
+                self.assertEqual(overlays, [])
                 obj.rollback(record)
                 obj.rollback(record)
+                self.assertEqual(overlays, [("active-compose.json", h.overlay(image))] * 2)
                 for lane in bases:
                     self.assertEqual(check_repo(lane), old[lane])
                     self.assertEqual((bases[lane] / "app/data.json").read_text(), "old\n")
