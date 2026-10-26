@@ -160,7 +160,6 @@ export async function followLegislation(run: FollowRun): Promise<FollowResult> {
     // The waiting update must be what the register shows now; once it is not,
     // the watch withdraws it, so no card waits on stages the register dropped.
     const waiting = updates.find((review) => review.status === 'pending_review');
-    const decided = updates.filter((review) => review !== waiting);
     const withdraw = (because: string) => {
       if (!waiting) return;
       reviews.push({ ...waiting, status: 'rejected', rejectionReason: because, updatedAt: nowIso });
@@ -233,11 +232,6 @@ export async function followLegislation(run: FollowRun): Promise<FollowResult> {
     const recordedCommencement = policy.dates.find((date) => date.type === 'commenced');
     const commencementMoved =
       scheduled && String(recordedCommencement?.date ?? '').slice(0, 10) !== scheduled.date ? scheduled : undefined;
-    if (update.kind === 'unchanged' && !commencementMoved && unrecognised.every((stage) => shownBefore(stage, decided))) {
-      withdraw('The register no longer shows this stage update.');
-      log(`[follow] ${sourceId}: no new stage`);
-      continue;
-    }
     const added = update.kind === 'unchanged' ? [] : update.added;
     const changed = update.kind === 'unchanged' ? [] : update.changed;
     const id = `source-review-follow-${policy.id}-${fingerprint({
@@ -248,6 +242,11 @@ export async function followLegislation(run: FollowRun): Promise<FollowResult> {
     })}`;
     if (waiting?.id === id) {
       log(`[follow] ${sourceId}: this stage update is waiting for a decision`);
+      continue;
+    }
+    if (update.kind === 'unchanged' && !commencementMoved && unrecognised.every((stage) => shownBefore(stage, updates))) {
+      withdraw('The register no longer shows this stage update.');
+      log(`[follow] ${sourceId}: no new stage`);
       continue;
     }
     if (run.existingReviews.some((review) => review.id === id)) {
@@ -320,9 +319,9 @@ export async function followLegislation(run: FollowRun): Promise<FollowResult> {
   return { reviews, errors, results };
 }
 
-/** A decided update already showed this stage, so it is not news on its own. */
-function shownBefore(stage: UnrecognisedStage, decided: readonly SourceReview[]): boolean {
-  return decided.some(
+/** An earlier update already showed this stage, so it is not news on its own. */
+function shownBefore(stage: UnrecognisedStage, updates: readonly SourceReview[]): boolean {
+  return updates.some(
     (review) =>
       review.legislativeUpdate?.unrecognised.some(
         (shown) => shown.stage === stage.stage && shown.date === stage.date && shown.chamber === stage.chamber,

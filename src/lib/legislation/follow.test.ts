@@ -328,9 +328,25 @@ describe('followLegislation', () => {
 });
 
 describe('a waiting Federal Register update the register no longer shows', () => {
-  it('is withdrawn, so its card does not wait on a stage the register dropped', async () => {
-    const title = frl('F2024L00710');
-    const [registered] = parseFrlTitle(title).events;
+  it('is withdrawn, with no replacement for the notice it already showed', async () => {
+    const live = JSON.parse(frl('F2024L00710'));
+    live.parliamentaryScrutiny = [
+      { id: 1, eventType: 'Tabled', eventDate: '2024-06-24T00:00:00', house: 'HouseOfReps' },
+      { id: 2, eventType: 'Tabled', eventDate: '2024-06-24T00:00:00', house: 'Senate' },
+      {
+        id: 3,
+        eventType: 'DisallowanceMotion',
+        eventDate: '2024-08-22T00:00:00',
+        house: 'Senate',
+        disallowanceMotionSponsor: 'The Parliamentary Joint Committee On Human Rights',
+        disallowanceMotionOutcomeId: 4,
+      },
+      { id: 4, eventType: 'MotionOutcome', eventDate: '2024-09-09T00:00:00', house: 'Senate', motionOutcomeType: 'Withdrawn' },
+    ];
+    const title = JSON.stringify(live);
+    const reading = parseFrlTitle(title);
+    expect(reading.unrecognised).toHaveLength(1);
+    const [registered] = reading.events;
     const commenced = { date: '2024-12-22', precision: 'day' as const, event: { kind: 'commenced' as const, extent: 'full' as const }, source: registered.source };
     const record = buildPolicy({
       id: 'online-safety-standard',
@@ -342,7 +358,7 @@ describe('a waiting Federal Register update the register no longer shows', () =>
         ref: { register: 'frl', titleId: 'F2024L00710' },
         issuerBodyId: 'esafety',
         enablingAct: 'Online Safety Act 2021, s 145',
-        events: [registered, commenced] as Extract<Legislative, { kind: 'instrument' }>['events'],
+        events: [...reading.events, commenced] as Extract<Legislative, { kind: 'instrument' }>['events'],
       },
     });
     const falseCommencement = { ...commenced, date: '2024-06-21' };
@@ -357,7 +373,7 @@ describe('a waiting Federal Register update the register no longer shows', () =>
       createdBy: 'collector',
       sourceEvidence: { url: frlTitleRecord('F2024L00710') },
       proposedRecord: record,
-      legislativeUpdate: { added: [falseCommencement], unrecognised: [] },
+      legislativeUpdate: { added: [falseCommencement], unrecognised: reading.unrecognised },
       updatedAt: '2026-10-22T00:00:00.000Z',
     } as unknown as SourceReview;
 
