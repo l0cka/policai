@@ -36,11 +36,6 @@ services:
       SMTP_PASS: ${SMTP_PASS:-}
       DIGEST_TO: ${DIGEST_TO:-}
       DASHBOARD_URL: ${DASHBOARD_URL:-https://a2j.policai.org}
-      # Deadline verifier (src/verify-deadlines.ts): OpenAI-compatible chat
-      # completions, no tools. Set in the external env file, never in Git.
-      VERIFIER_BASE_URL: ${VERIFIER_BASE_URL:-}
-      VERIFIER_API_KEY: ${VERIFIER_API_KEY:-}
-      VERIFIER_MODEL: ${VERIFIER_MODEL:-}
       TZ: Australia/Sydney
 
 volumes:

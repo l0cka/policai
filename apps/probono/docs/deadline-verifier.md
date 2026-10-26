@@ -15,10 +15,10 @@ verifier re-reads the source page and checks every stored date.
    The rules are `selectItemsToVerify` in `worker/src/lib/deadline-verify.ts`.
 2. `worker/src/verify-deadlines.ts` fetches each source page itself
    (Firecrawl at `FIRECRAWL_URL`, then a plain GET; bot-wall pages count as
-   unreadable and the item is skipped), and sends title, URL, page text (capped
-   at 24k characters, date lines kept) and the stored dates to the verifier
-   model with **no tools** and a JSON schema. It only reads the database and
-   prints one proposal per item.
+   unreadable and the item is skipped), and checks each stored date against
+   the page text with `worker/src/lib/deadline-check.ts` (no model; see
+   Checker below). It only reads the database and prints one proposal per
+   item.
 3. `ops/verify-deadlines.sh` checks the batch shape with `jq` (integer, unique
    item IDs; at most 25) and pipes each `{model, output}` to
    `worker/src/save-deadline-verification.ts <item_id>`.
@@ -37,21 +37,34 @@ The dashboard shows "Checked against the source <date>" on cards with
 and the calendar (`not_found` also from Recently closed). The digest skips
 them too.
 
-## Model
+## Checker
 
-DeepSeek V4.1 Flash on Ollama Cloud, through the OpenAI-compatible transport
-in `worker/src/lib/verifier-transport.ts`. It scored 31/31 on the audited rows
-against 30/31 for Claude Sonnet (see the bake-off notes held with the audit).
-Configuration, all from the external environment file, never Git:
+Code, not a model. Until 26 Oct 2026 this was DeepSeek V4.1 Flash on Ollama
+Cloud; its key stopped working on 23 Oct. On the 13 items DeepSeek had last
+verified, the checker gave the same answer on all 12 dates still on their
+pages, where local qwen3:14b got 10 (it called a commencement and an expo
+date action deadlines) and timed out once. Clef cannot do this job: it only
+answers yes/no and scoring questions.
 
-| variable | value |
-|---|---|
-| `VERIFIER_BASE_URL` | `https://ollama.com/v1` |
-| `VERIFIER_MODEL` | `deepseek-v4.1-flash` |
-| `VERIFIER_API_KEY` | the Ollama Cloud API key (today `OLLAMA_API_KEY` in `/home/l0cka/.hermes/.env`) |
+For each stored date `checkDeadlines`:
 
-`docker-compose.yaml` passes the three variables through to the worker
-container. The worker exits 3 on a credential error and never logs the key.
+- finds the date in the page text (`2 November 2026`, `Friday 2 Nov`,
+  `June 30, 2027`, `02/11/2026`, ISO, `1–13 November`; the year may be left
+  out unless a different year follows). Month and year dates match `December
+  2026` and `by 2027`. No match is `not_found`;
+- quotes the sentence or line holding it;
+- reads the kind from the nearest keyword (40 characters before, 30 after):
+  close, submissions, until, due, deadline mean `action`; commence, opens,
+  election, expo, event, takes effect and a `Date:` heading mean `milestone`;
+- marks `extended` when extension wording near the quote is followed by a
+  later date, and quotes that sentence instead; otherwise `closed` when the
+  date has passed or the sentence says closed, else `open`;
+- makes the single action date primary, or the one whose quote says close,
+  submit, due or until. A tie keeps the stored primary.
+
+A date with no keyword either way, or with both at the same distance, gets
+no verdict, so the saver leaves it as stored and the run logs `left
+unchanged`. Proposals carry `model: "deterministic-v1"`.
 
 ## Host dispatcher (installed)
 
@@ -65,9 +78,9 @@ installed and its file hashes are recorded, hash-pinned, in the root config
 `/home/l0cka/.config/systemd/user/probono-verify-deadlines.service` and
 `.timer` (daily 07:10 Sydney) are installed and active; the service unit's
 hash is in `installed_hashes`. The release running the verifier is the live
-tree `/var/lib/probono-radar/app/apps/probono`. The three verifier variables
-(`VERIFIER_BASE_URL`, `VERIFIER_MODEL`, `VERIFIER_API_KEY`) are in
-`/etc/probono-radar/runtime.env` (names only here; never print their values).
+tree `/var/lib/probono-radar/app/apps/probono`. The checker needs no credentials; the
+old `VERIFIER_BASE_URL`, `VERIFIER_MODEL` and `VERIFIER_API_KEY` lines in
+`/etc/probono-radar/runtime.env` are unused since 26 Oct 2026.
 The sections below record what was installed, as the reviewed record of the
 change:
 
@@ -101,10 +114,8 @@ change:
      `/home/l0cka/.config/systemd/user/probono-verify-deadlines.service` and
      its hash is recorded in the root config `installed_hashes`.
 
-3. `/etc/probono-radar/runtime.env` (root-controlled, mode not world- or
-   group-writable): contains `VERIFIER_BASE_URL`, `VERIFIER_MODEL` and
-   `VERIFIER_API_KEY`. The key is the Ollama Cloud key; copy it without
-   printing it.
+3. `/etc/probono-radar/runtime.env`: no verifier settings needed since the
+   checker replaced the model (26 Oct 2026).
 
 4. User units: `ops/probono-verify-deadlines.service` and
    `ops/probono-verify-deadlines.timer` (daily 07:10 Sydney) are installed in
@@ -112,7 +123,7 @@ change:
    (`ExecStart=/usr/bin/python3 -I /usr/local/libexec/policai-host/cli.py worker verify-deadlines`).
 
 5. A worker image built from a release that contains these files. The
-   container needs outbound HTTPS to `ollama.com` (it uses host networking, as
+   container needs the source pages (it uses host networking, as
    enrichment's fetches do) and the existing Firecrawl entry point.
 
 ## Open incident: 2026-09-24 Refused runs
@@ -131,16 +142,14 @@ runs are the observation points if the incident is still open: ingest 06:00,
 backup 02:30, verify-deadlines 07:10 (all Sydney time, next morning).
 
 Each save is its own `docker compose run` like enrichment, so a batch of 25
-starts up to 26 containers; the verify step itself takes about 3–5 minutes,
-inside the dispatcher's 1200 s compose timeout.
+starts up to 26 containers; the verify step itself is page fetches only.
 
 ## Running by hand (read-only)
 
 ```bash
 cd apps/probono/worker
 DATABASE_URL=... npx tsx src/list-deadlines-to-verify.ts          # what would be checked
-DATABASE_URL=... VERIFIER_BASE_URL=... VERIFIER_MODEL=... VERIFIER_API_KEY=... \
-  npx tsx src/verify-deadlines.ts > proposals.json                 # proposals, no writes
+DATABASE_URL=... npx tsx src/verify-deadlines.ts > proposals.json  # proposals, no writes
 ```
 
 Only `save-deadline-verification.ts` writes.
