@@ -191,7 +191,7 @@ IFS= read -r NEON_PASSWORD
 dump=$(mktemp /tmp/neon-sync.XXXXXX)
 trap 'rm -f "$dump"' EXIT
 pg_dump -h /var/run/postgresql -U radar --no-owner --no-acl radar > "$dump"
-tail -n 3 "$dump" | grep -q 'PostgreSQL database dump complete'
+grep -qx -- '-- PostgreSQL database dump complete' "$dump"
 digest=$(grep -Ev '^[\](un)?restrict ' "$dump" | sha256sum | cut -d' ' -f1)
 if [ "$(cat /tmp/neon-sync.sha256 2>/dev/null || true)" = "$digest" ]; then
   echo unchanged
