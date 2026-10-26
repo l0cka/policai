@@ -214,11 +214,11 @@ describe('proposeVerifications', () => {
     expect(r.notes).toEqual([{ item_id: 2, note: 'source page unreadable' }]);
   });
 
-  it('leaves a date with no deadline or event wording out of the proposal and says so', async () => {
+  it('proposes nothing for an item whose dates all stay unchanged, so it stays queued', async () => {
     const items = [{ id: 3, title: 'C', url: 'https://c.test', deadlines: [{ date: '2026-10-16', label: 'Close', kind: 'action' as const }] }];
     const fetchPage = async () => ({ text: 'Posted 16 October 2026 by the team.', via: 'direct' as const });
     const r = await proposeVerifications(items, { fetchPage, today: '2026-09-23' });
-    expect(r.proposals[0].output.verdicts).toEqual([]);
-    expect(r.notes).toEqual([{ item_id: 3, note: 'left unchanged: 2026-10-16: no deadline or event wording beside the date' }]);
+    expect(r.proposals).toEqual([]);
+    expect(r.notes).toEqual([{ item_id: 3, note: '2026-10-16 left unchanged: no deadline or event wording beside the date' }]);
   });
 });

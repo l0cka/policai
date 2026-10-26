@@ -42,8 +42,11 @@ export async function proposeVerifications(
       continue;
     }
     const checks = checkDeadlines(item, page.text, today);
-    for (const c of checks) if (c.uncertain) notes.push({ item_id: item.id, note: `left unchanged: ${c.uncertain}` });
+    for (const c of checks) if (c.uncertain) notes.push({ item_id: item.id, note: c.uncertain });
     const verdicts = checks.flatMap((c) => (c.verdict ? [c.verdict] : []));
+    // Saving no verdicts would still stamp the item verified and drop it from
+    // tomorrow's queue.
+    if (verdicts.length === 0) continue;
     proposals.push({ item_id: item.id, model: CHECKER_MODEL, page_via: page.via, output: { verdicts } });
   }
   return { proposals, notes };

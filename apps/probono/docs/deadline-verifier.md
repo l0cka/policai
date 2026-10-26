@@ -53,19 +53,24 @@ For each stored date `checkDeadlines`:
   out unless a different year follows). Month and year dates match `December
   2026` and `by 2027`. No match is `not_found`;
 - quotes the sentence or line holding it;
-- reads the kind from the nearest keyword (40 characters before, 30 after):
+- reads the kind from the nearest keyword, which must sit within 40
+  characters before or 30 after the date:
   close, submissions, until, due, deadline mean `action`; commence, opens,
   election, expo, event, takes effect and a `Date:` heading mean `milestone`;
-- marks `extended` when extension wording near the quote is followed by a
-  later date, and quotes that sentence instead; otherwise `closed` when the
-  date has passed or the sentence says closed, else `open`;
+- marks `extended` when the date's sentence or the next one says a close was
+  extended or postponed to a later date (not negated, day- or month-first,
+  rolling into next year when the month has passed), and quotes that
+  sentence instead; otherwise `closed` when the period has ended (end of
+  month or year for those precisions) or the sentence says closed, else
+  `open`;
 - makes the single action date primary, or the one whose quote says close,
   submit, due or until. A tie keeps the stored primary.
 
 When a date appears several times, the kind most mentions agree on wins.
 A date with no keyword either way, or whose mentions split evenly, gets
 no verdict, so the saver leaves it as stored and the run logs `left
-unchanged`. Proposals carry `model: "deterministic-v1"`.
+unchanged`. An item with no verdicts at all is not saved, so it stays in the
+next day's queue. Proposals carry `model: "deterministic-v1"`.
 
 ## Host dispatcher (installed)
 
