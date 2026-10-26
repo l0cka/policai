@@ -111,13 +111,16 @@ class NeonSyncScriptTests(unittest.TestCase):
         bin_dir.mkdir()
         (self.root / "rows").write_text("row 1\n")
         stubs = {
-            # A real dump carries a fresh \restrict key every run.
+            # Shaped like pg_dump 16.15: a fresh \restrict key every run, and
+            # \unrestrict plus blank lines after the completion line.
             "pg_dump": f"""#!/bin/sh
 printf '\\\\restrict %s\\n' $$
 cat {self.root}/rows
 [ -e {self.root}/truncate ] && exit 0
-printf '\\\\unrestrict %s\\n' $$
 echo '-- PostgreSQL database dump complete'
+echo
+printf '\\\\unrestrict %s\\n' $$
+echo
 """,
             "psql": f"""#!/bin/sh
 [ "$PGPASSWORD" = s3cret ] || exit 9
