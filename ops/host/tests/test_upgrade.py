@@ -15,6 +15,8 @@ SOURCE = Path(install.__file__).parent
 FIXTURE = SOURCE / "tests" / "fixtures" / "installed-2026-09-11"
 ABSENT = set((FIXTURE / "absent.txt").read_text().split())
 CHANGED = {name for name in install.FILES if (FIXTURE / name).is_file()}
+# The record the retired two-runtime dispatcher wrote: upgrade apply reads it
+# before the first deploy under the new code rewrites it.
 ACTIVE = {
     "heads": {"policai": "0" * 40, "probono": "0" * 40},
     "images": {"dashboard": "sha256:" + "0" * 64, "worker": "sha256:" + "0" * 64},

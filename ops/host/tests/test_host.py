@@ -63,19 +63,17 @@ class AdapterTests(unittest.TestCase):
                     limit=100,
                 )
 
-    def test_identity_is_explicit_and_no_root_npm(self):
+    def test_identity_is_explicit_and_only_l0cka(self):
         h = self.host()
         r = h.Runner()
         # Exercise the identity transition without requiring production accounts
         # on the CI runner or developer machine.
         with patch.object(h.pwd, "getpwnam", return_value=SimpleNamespace(pw_uid=os.geteuid() + 1)):
-            root = r.identity_argv("policai", ["/usr/bin/npm", "run", "build"])
-        self.assertIn("policai", root)
-        self.assertEqual(root[0], "/usr/bin/runuser")
-        with self.assertRaises(h.Refused):
-            r.identity_argv("root", ["/usr/bin/npm", "run", "build"])
-        with self.assertRaises(h.Refused):
-            r.identity_argv("unknown-user", ["/usr/bin/git", "status"])
+            root = r.identity_argv("l0cka", ["/usr/bin/git", "status"])
+        self.assertEqual(root[:4], ["/usr/bin/runuser", "-u", "l0cka", "--"])
+        for identity in ("root", "policai", "unknown-user"):
+            with self.subTest(identity), self.assertRaises(h.Refused):
+                r.identity_argv(identity, ["/usr/bin/git", "status"])
 
     def test_deploy_clients_keep_state_outside_protected_home(self):
         h = self.host()

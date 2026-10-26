@@ -1,7 +1,11 @@
-TWO-RUNTIME HOST DISPATCHER — INSTALLED, LIVE DEPLOY PATH
+PRO BONO HOST DISPATCHER: INSTALLED, LIVE DEPLOY PATH
 
-The dispatcher is installed and is the live deploy path for both runtimes.
-/usr/local/libexec/policai-host holds a copy installed from this bundle through
+The dispatcher is installed and is the live deploy path for the Pro Bono
+release checkout and worker image on Argus. Both public sites run on
+Cloudflare Workers (docs/hosting-argus.md), so the Policai server and the
+dashboard container that earlier versions deployed here are retired; see
+RETIRED RUNTIMES under UPGRADE CONTRACT for the install window that removes
+them. /usr/local/libexec/policai-host holds a copy installed from this bundle through
 install.py. That copy can lag main until the next reviewed install.
 cli.ENTRYPOINT names that directory. host.CODE, the install.py FILES
 destinations, bin/docker and policai-deploy (which hard-code the entrypoint),
@@ -25,7 +29,7 @@ No invocation from this user-owned bundle can pass the CLI installation guard.
 Do not run this bundle as root. Review and install a fixed snapshot first.
 
 WHAT EXISTS
-  install.py: file transactions over the 14-entry install set (FILES: source name,
+  install.py: file transactions over the 15-entry install set (FILES: source name,
   destination, mode, owner), shared by first install and upgrade. First install
   (plan/apply/rollback) is one-shot: protected source-manifest checks, held-job
   preflight, original-file backups and repeatable pre-initialization rollback.
@@ -41,8 +45,8 @@ WHAT EXISTS
   dispatcher.py: table-driven lane routing (ROUTES), stable flock exclusion,
   fsynced journals, retained-directory activation and rollback, persistent failure
   gate, reviewed recovery with preserved prior failure records.
-  host.py: bounded subprocess/identity adapters; fixed Git, systemd, Compose,
-  database identity and HTTP health checks; worker/backup guard.
+  host.py: bounded subprocess/identity adapters; fixed Git, Compose, database
+  identity and listener checks; worker/backup guard.
   cli.py: initialize / deploy / rollback / status / worker / compose.
   bin/docker: allowlisted nested Compose adapter for ingest, enrichment and
   deadline verification.
@@ -83,13 +87,23 @@ WHAT EXISTS
   compatibility/policai-deploy.sh: tested home-bin delegate to system service.
 
 RUNTIME CONTRACT
-  Policai: /var/lib/policai/app, commands as policai, port 127.0.0.1:8794.
-  Pro Bono: /var/lib/probono-radar/app/apps/probono, commands as l0cka,
-  dashboard port 127.0.0.1:8850. No new Docker principal.
+  Pro Bono: /var/lib/probono-radar/app/apps/probono, commands as l0cka. The
+  only lane. No new Docker principal. Nothing listens for the sites on Argus:
+  policai.org and a2j.policai.org are Cloudflare Workers.
   Existing Postgres container, cluster, image, volume and port 5433 stay fixed.
   Compose project probono-radar; external volume probono-radar_pgdata;
-  external network probono-radar_default. Dashboard activation uses up with
-  --no-deps --no-build --pull never. No DB up/down, migration or seed command.
+  external network probono-radar_default. Compose services are db and worker
+  only (validate_compose refuses any other set). Activation builds the worker
+  image from the candidate checkout, swaps the checkout and writes
+  active-compose.json; it starts no container. No DB up/down, migration or
+  seed command.
+  Health after activation, and before each deploy (preflight), is
+  health_snapshot: verify_database (container id, image, running and healthy,
+  the pgdata volume, the 127.0.0.1:5433 port map, the Compose labels, the
+  volume and network, the cluster identifier), the active worker image
+  present in the image store, and ss showing exactly one listener on :5433,
+  bound to 127.0.0.1. There is no HTTP probe and no retry loop: each check
+  is a settled identity, so a failure refuses at once.
   Worker run does NOT use --no-build: the installed Compose run CLI does not
   support that flag. It checks the selected existing image, uses --pull never
   and --no-deps, and never passes --build. External pruning is prohibited.
@@ -107,8 +121,7 @@ INSTALLATION CONTRACT — ONLY IN THE SEPARATELY APPROVED WINDOW
      The executable file transaction and its protected snapshot staging procedure
      are specified in INSTALL-REVIEW.txt. Complete directory/lock provisioning first.
   3. Provision root-owned 0755 /var/lib/policai-deploy-state and, beneath it,
-     artifacts/policai/candidates, artifacts/policai/retained,
-     artifacts/probono/candidates, artifacts/probono/retained.
+     artifacts/probono/candidates and artifacts/probono/retained.
      Provision deploy.lock and worker.lock as root-owned regular 0644 files ONCE.
      Never replace their inodes. Artifact and active directories must share a
      filesystem. The application identities must NOT own artifact ancestors.
@@ -279,6 +292,94 @@ UPGRADE CONTRACT — ONLY IN A HOST WINDOW DANIEL APPROVES THROUGH ARGUS DEVOPS
   onto cli.py worker backup-mirror; the old script is left in place and its
   removal is an operator act.
 
+  RETIRED RUNTIMES: config and window for the change set that retires the
+  Policai server and the dashboard container. The installed dispatcher
+  still builds the Policai lane, runs the dashboard and requires three
+  Compose services. This change set removes all three, changes
+  apps/probono/docker-compose.yaml (dashboard service gone) and changes the
+  shape of active.json. Four consequences bind the window:
+
+    a. Hold policai-pull.timer BEFORE the change set reaches main and keep
+       it held until step d. The installed code classifies the Compose
+       change into the Pro Bono lane, refuses the new file ("Compose source
+       requires new review", because config.json still holds the old
+       compose_sha256) and blocks. A block refuses upgrade apply (gate 5),
+       and the installed code cannot deploy the new file, so a cycle that
+       runs between merge and apply costs a reviewed recovery.
+    b. compose_sha256 changes. check_compose_source hashes the bytes of
+       apps/probono/docker-compose.yaml in the checkout being validated
+       (sha256 of the file, lowercase hex). Compute it from the merged
+       commit, never from a worktree:
+         git show "$COMMIT:apps/probono/docker-compose.yaml" | sha256sum
+       and write it to compose_sha256 in /etc/policai-deploy/config.json
+       after apply and before the timers return. The installed code reads
+       the key too, so the new value cannot go in early: it would refuse
+       every cycle until apply.
+    c. installed_hashes keeps the same keys (policai-pull.service stays the
+       dispatcher's system unit and no unit file changes) and takes the new
+       digests of cli.py, host.py and dispatcher.py after apply.
+    d. The first deploy under the new code reads the installed active.json
+       ({heads: {policai, probono}, root_build, images: {dashboard,
+       worker}}) through dispatcher.parse_active, keeps the probono head and
+       worker image, and writes the new shape ({heads: {probono}, images:
+       {worker}, target}). It also rewrites active-compose.json from the
+       worker image, which drops the dashboard service from the overlay.
+       Until that deploy, release workers refuse ("worker image selection
+       differs from active release"), because the old overlay names a
+       service the new code does not accept, so restore the pull timer
+       before the ingest, enrich and verify-deadlines timers. backup and
+       neon-sync refuse too, though a block does not stop them: the
+       "database" guard runs validate_compose on the active checkout,
+       whose old Compose file has three services, so the new code refuses
+       it from apply onwards, and from b also on its digest. They work
+       again once the active checkout holds the approved Compose file,
+       which a verified deploy brings. A first deploy that blocks before
+       activation leaves the old checkout in place, and a rollback after a
+       failed health check puts it back, so in both cases the dump and the
+       Neon copy stay off until a later deploy succeeds. Run and check
+       cli.py worker backup before apply, while the old code and digest
+       still match. The merged
+       change set selects the Pro Bono lane, so that deploy builds the
+       worker image and prints
+         {"verified": true, "activated_lanes": ["probono"], "main": "<sha>",
+          "heads": {"probono": "<sha>"}}
+       The new code never touches policai.service, 8794, 8850 or the
+       dashboard container, so both may keep running through that deploy.
+
+  Window order: hold the triggers (INSTALL-REVIEW.txt step 2, the pull timer
+  first), merge, copy /etc/policai-deploy/config.json and the state files
+  active.json and active-compose.json aside, stage the snapshot, upgrade
+  plan, upgrade apply, edit config.json (b and c), restore the pull timer
+  and wait for the verified line in d, restore the user timers. Then, as
+  operator acts outside this bundle: systemctl stop and disable
+  policai.service (leave its unit and the policai account for the operator
+  to remove or keep); remove the dashboard container, which the Compose
+  project no longer owns, with docker rm -f probono-radar-dashboard-1 as
+  l0cka; retire /var/lib/policai/app, the policai artifacts under
+  /var/lib/policai-deploy-state/artifacts/policai and the retained
+  dashboard images when the retention review allows; and remove the
+  Policai service, the dashboard container, 8794 and 8850 from
+  topology.json and its rendered document.
+
+  Rollback of this change set. Before the first deploy attempt under the
+  new code, install.py upgrade rollback plus the saved config.json restores
+  the previous host in full: no state file has changed, policai.service and the
+  dashboard container are still running, and the checkout still holds the
+  old Compose file. A first attempt that blocks has already written
+  blocked.json with a new-shape before record, and cli.py rollback writes
+  that record to active.json; it rewrites active-compose.json only when
+  activation had started. Reverting the code after an attempt therefore
+  also means restoring the copies of active.json and active-compose.json
+  taken in the window and handling blocked.json and recovery.json as a
+  reviewed recovery. After the first verified deploy, rollback to the
+  installed code is unsupported and a forward fix is the path. The upgrade
+  journal holds only the install-set files, never active.json or
+  active-compose.json, and the old code needs the old record shape
+  (active["heads"]["policai"] and root_build in preflight), the dashboard
+  container running at active["images"]["dashboard"], policai.service
+  active, and a checkout whose Compose file has three services, which main
+  no longer has. Restoring all of that is a new install, not a rollback.
+
   Fixture: tests/fixtures/installed-2026-09-11 holds the installed tree as
   observed on 2026-10-16 (cli.py, host.py, dispatcher.py, backup.sh and the
   backup-mirror unit; absent.txt lists backup-mirror.sh as not installed),
@@ -288,13 +389,14 @@ UPGRADE CONTRACT — ONLY IN A HOST WINDOW DANIEL APPROVES THROUGH ARGUS DEVOPS
 
 SERVICE ROUTING (REVIEW EXISTING HARDENING; NOT BLIND DROP-INS)
   System policai-pull.service remains the compatibility entrypoint. It must
-  execute the new delegate as root. Git/npm run as policai; child Git/Docker run
-  as l0cka. The service needs permission for the two release parents, trusted
-  state, systemd operations and identity transitions. Do not remove hardening
-  wholesale. Keep ProtectHome=true. The draft system unit binds ONLY the user
+  execute the new delegate as root. Git and Docker run as l0cka. The service
+  needs permission for the release parent, trusted state and identity
+  transitions. Its installed bytes are unchanged by the retirement (the
+  Description still names both releases), so no unit hash moves. Do not
+  remove hardening wholesale. Keep ProtectHome=true. The draft system unit binds ONLY the user
   unit directory read-only to /run/policai-deploy-observation/user-units, not back
   beneath inaccessible /home. Verify the actual bind, hashes and digest symlinks
-  inside the final sandbox. Both release origins must use the exact public URL
+  inside the final sandbox. The release origin must use the exact public URL
   https://github.com/l0cka/policai.git. No SSH key or credential grant is required.
   Git/Compose deployment clients use /var/lib/probono-radar as HOME; provision
   its .docker directory mode0700 owned by l0cka for Docker build-client state.
@@ -335,7 +437,7 @@ SERVICE ROUTING (REVIEW EXISTING HARDENING; NOT BLIND DROP-INS)
   ("mirror") do not read either: backup.sh and backup-mirror.sh are root-
   installed beside cli.py, the only Compose call is the db exec pg_dump pair
   and no deploy ever touches the db service or its volume. They skip
-  require_ready and bootstrap_pending, so a failed Policai or Pro Bono deploy
+  require_ready and bootstrap_pending, so a failed deploy
   no longer stops the nightly dump or its mirror (2026-10-18: a ~24 h block
   left the database ~38 h without one). backup still proves the database
   identity (verify_database) and the Compose source digest and contract
@@ -371,12 +473,13 @@ SERVICE ROUTING (REVIEW EXISTING HARDENING; NOT BLIND DROP-INS)
 
 EXACT CLI (INSTALLED ROOT CODE ONLY)
   sudo /usr/bin/python3 -I /usr/local/libexec/policai-host/cli.py initialize
-    Reads baseline.json. Verifies current source/artifacts/images/health and
-    writes bootstrap_pending. Workers remain blocked. Initialization is one-shot.
+    Reads baseline.json ({heads: {probono}, images: {worker}}, see
+    baseline.example.json). Verifies current source/image/health and writes
+    bootstrap_pending. Workers remain blocked. Initialization is one-shot.
 
   sudo /usr/bin/python3 -I /usr/local/libexec/policai-host/cli.py deploy --initial
-    Always uses approved_target and builds BOTH runtimes, even when HEAD matches.
-    Both candidate builds finish before either active runtime changes.
+    Always uses approved_target and builds the worker image, even when HEAD
+    matches. The candidate build finishes before the active checkout changes.
 
   /usr/bin/python3 -I /usr/local/libexec/policai-host/cli.py status
     Metadata only. It does not claim live health.
@@ -385,46 +488,43 @@ EXACT CLI (INSTALLED ROOT CODE ONLY)
     Default follow_main=false pins approved_target. For restored normal
     automatic collection/ISR deployments, explicitly review follow_main=true
     AFTER initial verification. It resolves main inside the locked/latched
-    transaction, requires both fetched heads to agree, and rejects divergence.
+    transaction and requires the fetched head to equal the target.
     classify() routes each changed path by the first matching ROUTES row; a
-    change set selects the union of its paths' lanes. A lane not selected
-    fast-forwards in place without a build or restart (the merge --ff-only
+    change set selects the lane when any path does. When no path selects it,
+    the checkout fast-forwards in place without a build (the merge --ff-only
     branch of host.py activate()), and health() runs after activation for
-    every change set, including one that selects no lane. Both checkouts
-    therefore hold the new commit after every verified cycle. That invariant
-    makes the Markdown row safe: the enrichment worker reads
+    every change set, including one that selects no lane. The checkout
+    therefore holds the new commit after every verified cycle. That
+    invariant makes the Markdown row safe: the enrichment worker reads
     apps/probono/RUNBOOK.md from the checkout at run time
     (apps/probono/ops/enrich.sh, prompt="$(cat RUNBOOK.md)"), not from an
-    image, so a no-lane change to it is live on the next cycle.
+    image, so a no-lane change to it is live on the next cycle. The same
+    holds for apps/probono/ops/*.sh, which the timers run from the checkout.
       no lane: test files (*.test.ts, *.test.tsx, any __tests__/ directory),
-        data/ and public/data/ (served through ISR), Markdown outside any
-        public/ directory, docs/, .github/, ops/host/ (installed by install.py),
-        ops/collector/ (runs from its own checkout) and scripts/.
-      Pro Bono only: apps/probono/. Its Compose build contexts are
-        apps/probono/dashboard and apps/probono/worker (validate_compose
-        enforces this), so no root file reaches its images.
-      Policai only: src/, public/, mcp/, design/, package.json,
-        package-lock.json, tsconfig.json, next.config.ts, next.config.js,
-        next.config.mjs, postcss.config.mjs and components.json.
-      both: every other path, the safe default.
-    No scripts/ file runs during `npm run build` or under `next start`: the
-    root package.json has no pre/post hooks and only test files import from
-    scripts/. Route a script back to Policai if that changes. Tailwind's source
-    scan reads every tracked text file, but a file outside src/ can only add or
-    drop utilities no compiled component uses. A failure blocks every
-    subsequent timer cycle.
+        Markdown outside any public/ directory, apps/probono/dashboard/ (the
+        a2j Worker, built by Cloudflare), and every path outside
+        apps/probono/, the default.
+      Pro Bono: every other path under apps/probono/.
+    The default is no lane because the worker image is built from
+    apps/probono/worker alone (validate_compose refuses any other build
+    context) and the only other image input is apps/probono/docker-compose.yaml,
+    so a path outside apps/probono/ cannot change the image. The old
+    "rebuild both" default protected a Next.js build that read root files;
+    that build no longer runs here. A failure blocks every subsequent timer
+    cycle.
 
   Deploy result: a verified deploy prints one JSON line to stdout, which the
   policai-pull.service journal records:
-    {"verified": true, "activated_lanes": ["policai"], "main": "<sha>",
-     "heads": {"policai": "<sha>", "probono": "<sha>"}}
+    {"verified": true, "activated_lanes": ["probono"], "main": "<sha>",
+     "heads": {"probono": "<sha>"}}
     verified and activated_lanes keep their meaning and lead the line, so
-    parsers that match that prefix still work. activated_lanes lists the
-    rebuilt lanes; it is empty for a no-lane change set and for a cycle where
-    main did not move. main is the target the locked transaction deployed:
-    the resolved main that both fetched heads matched, or approved_target when
-    follow_main is off (prepare() also requires it to equal fetched main).
-    heads is the per-checkout commit written to active.json. To prove a merge
+    parsers that match that prefix still work. activated_lanes is ["probono"]
+    when the worker image was rebuilt and [] for a no-lane change set or a
+    cycle where main did not move. main is the target the locked transaction
+    deployed: the resolved main, or approved_target when follow_main is off
+    (prepare() also requires it to equal fetched main). heads is the
+    checkout's commit written to active.json; it keeps its map shape, with
+    the one key, so the line stays parseable by readers of the old form. To prove a merge
     deployed, find a run whose main equals the merge commit or a descendant of
     it; do not infer it from run timing. A refused or failed run prints no
     result and no SHA, exits 1 and leaves the persistent gate. One exception:
@@ -444,12 +544,14 @@ EXACT CLI (INSTALLED ROOT CODE ONLY)
 
 FAILURE / RECOVERY
   sudo /usr/bin/python3 -I /usr/local/libexec/policai-host/cli.py rollback
-    Uses blocked.json and retained files/images. Stops affected root before
-    rollback swaps. Repeated directory rollback is supported. Failed builds do
-    not trigger runtime restarts. Data-only rollback uses one attached-branch Git
-    switch, not a detach/reset sequence. A real-Git regression interrupts after
-    each completed switch and verifies repeated recovery for both release clones.
-    Successful rollback leaves blocked.json intact.
+    Uses blocked.json and retained files/images. Repeated directory rollback
+    is supported. Once activation has started, it rewrites
+    active-compose.json from the before record's worker image; a block in
+    preflight, prepare or stage leaves the overlay as it was. It starts no
+    container. Data-only rollback uses one
+    attached-branch Git switch, not a detach/reset sequence. A real-Git
+    regression interrupts after each completed switch and verifies repeated
+    recovery. Successful rollback leaves blocked.json intact.
 
   Review the failure. A failed deploy records failure in blocked.json and
   cli.py status prints it: phase is the last checkpoint reached before the
@@ -484,10 +586,10 @@ LIMITATIONS / REMAINING CUTOVER GATES
   require the approved window and independent review. The separate protected
   same-snapshot DB restore report is evidence, not permission to skip fresh
   cutover identity checks.
-  Root health proves readable deployed build ID + running service + successful
-  API response; it is not a cryptographic attestation of code inside a process.
-  Child HTML health is tied to the current Source health/table markup and readonly
-  DB identity. Source collection failures are not falsely treated as deploy failure.
+  Health proves the database container identity, the presence of the active
+  worker image and a loopback-only 5433 listener; it does not run the worker
+  image. The public sites are not probed from Argus: their health belongs to
+  Cloudflare Workers Builds and is outside this dispatcher.
   Commands suppress raw output deliberately. Diagnostics are phase/identity based;
   investigate failures with separately approved, redacted observations.
   Once its arguments parse, cli.py exits 1 on every Exception and prints one

@@ -10,6 +10,13 @@ from unittest.mock import patch
 import dispatcher as d
 import host as h
 
+OLD, NEW = "a" * 40, "b" * 40
+WORKER = "sha256:" + "1" * 64
+
+
+def active(target=OLD):
+    return {"heads": {"probono": target}, "images": {"worker": WORKER}, "target": target}
+
 
 class FakeClock:
     def __init__(self, on_sleep=lambda count: None, limit=1000):
@@ -55,7 +62,7 @@ class FakeHost:
     def prepare(self, target):
         self.event("prepare")
         return {
-            "previous": {"policai": "a" * 40, "probono": "a" * 40},
+            "previous": {"probono": "a" * 40},
             "paths": self.paths,
         }
 
@@ -99,7 +106,7 @@ class TransactionTests(unittest.TestCase):
             (p / "deploy.lock").touch()
             (p / "worker.lock").touch()
             s = FixtureState(p)
-            s.write("active.json", {"target": "a" * 40})
+            s.write("active.json", active())
             h = FakeHost(["src/a", "apps/probono/x"])
             h.fail = fail
             t = d.Transaction(s, h)
@@ -141,7 +148,7 @@ class TransactionTests(unittest.TestCase):
         (root / "deploy.lock").touch()
         (root / "worker.lock").touch()
         state = FixtureState(root)
-        state.write("active.json", {"target": "a" * 40})
+        state.write("active.json", active())
         return root, state
 
     def test_pre_staging_failures_retry_until_the_limit_then_block(self):
@@ -168,7 +175,7 @@ class TransactionTests(unittest.TestCase):
             blocked = state.read("blocked.json")
             self.assertEqual(blocked["phase"], "failed-review-required")
             self.assertEqual(blocked["failure"], failure)
-            self.assertEqual(state.read("active.json"), {"target": "a" * 40})
+            self.assertEqual(state.read("active.json"), active())
 
     def test_success_resets_the_retry_count(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -210,7 +217,7 @@ class TransactionTests(unittest.TestCase):
             (root / "deploy.lock").touch()
             (root / "worker.lock").touch()
             state = FixtureState(root)
-            state.write("active.json", {"target": "a" * 40})
+            state.write("active.json", active())
             host = FakeHost(["data/feed.json"])
 
             def resolve():
@@ -224,28 +231,21 @@ class TransactionTests(unittest.TestCase):
             self.assertEqual(state.read("active.json")["target"], "b" * 40)
 
     def test_result_reports_resolved_main_and_deployed_heads(self):
-        old, new = "a" * 40, "b" * 40
-        both = {"policai": new, "probono": new}
+        old, new = OLD, NEW
         cases = (
-            ("changed lane", new, ["src/app/page.tsx"], None, ["policai"], new, both),
-            ("no-lane merge", new, ["docs/hosting-argus.md"], None, [], new, both),
-            ("main did not move", old, [], None, [], old, {"policai": old, "probono": old}),
-            ("fails before resolving main", new, [], "resolve", None, None, None),
-            ("fails health", new, ["src/app/page.tsx"], "health", None, None, None),
+            ("changed lane", new, ["apps/probono/worker/src/digest.ts"], None, ["probono"], new),
+            ("no-lane merge", new, ["docs/hosting-argus.md"], None, [], new),
+            ("main did not move", old, [], None, [], old),
+            ("fails before resolving main", new, [], "resolve", None, None),
+            ("fails health", new, ["apps/probono/worker/src/digest.ts"], "health", None, None),
         )
-        for name, main, paths, fail, lanes, reported, heads in cases:
+        for name, main, paths, fail, lanes, reported in cases:
             with self.subTest(name), tempfile.TemporaryDirectory() as tmp:
                 root = Path(tmp)
                 (root / "deploy.lock").touch()
                 (root / "worker.lock").touch()
                 state = FixtureState(root)
-                active = {
-                    "heads": {"policai": old, "probono": old},
-                    "root_build": "build-a",
-                    "images": {},
-                    "target": old,
-                }
-                state.write("active.json", active)
+                state.write("active.json", active())
                 host = FakeHost(paths)
                 host.active_record = lambda record: h.Host.active_record(None, record)
                 host.fail = fail
@@ -259,9 +259,10 @@ class TransactionTests(unittest.TestCase):
                 if fail:
                     with self.assertRaises(d.Refused):
                         tx.deploy(None)
-                    self.assertEqual(state.read("active.json"), active)
+                    self.assertEqual(state.read("active.json"), active())
                     continue
                 result = tx.deploy(None)
+                heads = {"probono": reported}
                 self.assertEqual(
                     result,
                     {"verified": True, "activated_lanes": lanes, "main": reported, "heads": heads},
@@ -277,7 +278,7 @@ class TransactionTests(unittest.TestCase):
             (root / "deploy.lock").touch()
             (root / "worker.lock").touch()
             state = FixtureState(root)
-            state.write("active.json", {"target": "a" * 40})
+            state.write("active.json", active())
             host = FakeHost(["src/change"])
             host.fail = "health"
             tx = d.Transaction(state, host)
@@ -292,6 +293,59 @@ class TransactionTests(unittest.TestCase):
                 tx.deploy("c" * 40, recovery="0" * 32)
             tx.deploy("c" * 40, recovery=blocked["id"])
             self.assertTrue((root / "history" / (blocked["id"] + ".json")).is_file())
+            self.assertFalse((root / "blocked.json").exists())
+
+    def test_the_first_deploy_after_the_two_runtime_code_rewrites_its_record(self):
+        legacy = {
+            "heads": {"policai": OLD, "probono": OLD},
+            "root_build": "next-build-id",
+            "images": {"dashboard": "sha256:" + "2" * 64, "worker": WORKER},
+            "target": OLD,
+        }
+        for fail in (None, "health"):
+            with self.subTest(fail=fail), tempfile.TemporaryDirectory() as tmp:
+                root, state = self.fixture(tmp)
+                state.write("active.json", legacy)
+                host = FakeHost(["apps/probono/docker-compose.yaml"])
+                host.active_record = lambda record: h.Host.active_record(None, record)
+                host.fail = fail
+                tx = d.Transaction(state, host)
+                if fail is None:
+                    tx.deploy(NEW)
+                    self.assertEqual(state.read("active.json"), active(NEW))
+                    continue
+                with self.assertRaises(d.Refused):
+                    tx.deploy(NEW)
+                self.assertEqual(state.read("active.json"), legacy)
+                self.assertEqual(state.read("blocked.json")["before"], active())
+                host.fail = None
+                tx.rollback()
+                self.assertEqual(state.read("active.json"), active())
+                self.assertEqual(state.read("blocked.json")["before"], active())
+
+    def test_an_initialized_baseline_deploys_only_with_initial(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root, state = self.fixture(tmp)
+            import cli
+
+            baseline = {"heads": {"probono": OLD}, "images": {"worker": WORKER}}
+            state.write("active.json", cli.initial_baseline(baseline))
+            host = FakeHost()
+            with self.assertRaises(d.Refused):
+                d.Transaction(state, host).deploy(NEW)
+            self.assertEqual(host.events, [])
+            d.Transaction(state, host).deploy(NEW, initial=True)
+            self.assertIn("stage", host.events)
+            self.assertFalse(state.read("active.json").get("bootstrap_pending"))
+
+    def test_a_record_without_the_release_identity_refuses_before_any_host_call(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root, state = self.fixture(tmp)
+            state.write("active.json", {"target": OLD})
+            host = FakeHost()
+            with self.assertRaises(d.Refused):
+                d.Transaction(state, host).deploy(NEW)
+            self.assertEqual(host.events, [])
             self.assertFalse((root / "blocked.json").exists())
 
     def test_invalid_sha_never_commands(self):

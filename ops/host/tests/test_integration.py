@@ -116,15 +116,11 @@ class HostIntegrationTests(unittest.TestCase):
         self.assertIs(obj.state, state)
         self.assertIsInstance(obj.runner, h.Runner)
 
-    def test_rollback_of_failed_build_never_restarts_runtime(self):
+    def test_rollback_of_failed_build_touches_no_release_or_compose_state(self):
         obj = h.Host.__new__(h.Host)
-        obj.system = lambda *args: self.fail("unnecessary runtime change after failed build")
-        obj.rollback(
-            {
-                "previous": {"policai": OLD, "probono": OLD},
-                "lanes": ["policai", "probono"],
-            }
-        )
+        obj.state = obj.git = obj.compose = None
+        obj.check_repo = lambda lane: self.fail("release inspected after a failed build")
+        obj.rollback({"previous": {"probono": OLD}, "lanes": ["probono"]})
 
     def test_worker_command_has_supported_flags_once(self):
         obj = h.Host.__new__(h.Host)
@@ -164,20 +160,20 @@ class HostIntegrationTests(unittest.TestCase):
             self.assertTrue(old.is_relative_to(h.STATE / "artifacts"))
             self.assertFalse(old.is_relative_to(h.BASES[lane]))
 
-    def test_activation_stops_root_before_real_swap_and_never_touches_db(self):
+    def test_activation_swaps_the_release_and_publishes_the_worker_image_without_compose(self):
         self.assertTrue(hasattr(h.Host, "activate"), "activation adapter missing")
         with tempfile.TemporaryDirectory() as tmp:
             base = Path(tmp)
-            bases = {k: base / k for k in ("policai", "probono")}
+            bases = {"probono": base / "probono"}
+            sroot = base / "state"
             for lane, b in bases.items():
                 (b / "app").mkdir(parents=True)
                 (b / "app" / "version").write_text("old")
-                artifact = base / "state" / "artifacts" / lane
+                artifact = sroot / "artifacts" / lane
                 candidate = artifact / "candidates" / ("1" * 32) / "app"
                 candidate.mkdir(parents=True)
                 (candidate / "version").write_text("new")
                 (artifact / "retained" / ("1" * 32)).mkdir(parents=True)
-            sroot = base / "state"
             s = FixtureState(sroot)
             obj = h.Host.__new__(h.Host)
             obj.state = s
@@ -185,32 +181,31 @@ class HostIntegrationTests(unittest.TestCase):
             events = []
             obj.check_repo = lambda lane: OLD
             obj.checkpoint = lambda p: events.append(p)
-            obj.system = lambda *args: (
-                events.append(" ".join(args)) or ("inactive" if args[0] == "show" else "")
-            )
-            obj.compose = lambda *args, **kw: events.append(("compose", args)) or ""
-            obj.git = lambda *args, **kw: ""
+            obj.compose = lambda *args, **kw: self.fail("activation runs no Compose command")
+            obj.git = lambda *args, **kw: events.append(("git", args)) or ""
             record = {
                 "id": "1" * 32,
                 "target": NEW,
-                "previous": {k: OLD for k in bases},
-                "images": {"dashboard": IMG, "worker": WIMG},
-                "lanes": list(bases),
+                "previous": {"probono": OLD},
+                "before": {"images": {"worker": IMG}},
+                "images": {"worker": WIMG},
+                "lanes": ["probono"],
             }
             with patch.object(h, "BASES", bases), patch.object(h, "STATE", sroot):
-                obj.activate(record, set(bases))
-            self.assertLess(
-                events.index("stop policai.service"),
-                events.index("policai:old-retained"),
-            )
-            for lane, b in bases.items():
-                self.assertEqual((b / "app" / "version").read_text(), "new")
+                obj.activate(record, {"probono"})
+                self.assertEqual((bases["probono"] / "app" / "version").read_text(), "new")
                 self.assertEqual(
-                    (
-                        sroot / "artifacts" / lane / "retained" / ("1" * 32) / "app" / "version"
-                    ).read_text(),
+                    (sroot / "artifacts/probono/retained" / ("1" * 32) / "app/version").read_text(),
                     "old",
                 )
-            commands = [e for e in events if isinstance(e, tuple)]
-            self.assertTrue(any("--no-deps" in e[1] for e in commands))
-            self.assertFalse(any("db" in e[1] for e in commands))
+                self.assertEqual(s.read("active-compose.json"), h.overlay(WIMG))
+                self.assertEqual(
+                    events, ["probono:old-retained", "probono:candidate-active", "activated"]
+                )
+                events.clear()
+                unchanged = {key: value for key, value in record.items() if key != "images"}
+                obj.activate({**unchanged, "lanes": []}, set())
+            self.assertEqual(
+                events[0], ("git", ("probono", "merge", "--ff-only", "--no-edit", NEW))
+            )
+            self.assertEqual(s.read("active-compose.json"), h.overlay(IMG))

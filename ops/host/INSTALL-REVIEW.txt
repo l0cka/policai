@@ -1,16 +1,20 @@
-Two-runtime deployment: installation and rollback review
-STATUS: uninstalled draft. This file is a procedure for a later approved window,
-not permission to execute it. Dispatcher implementation/CLI README is authoritative
-for exact invocations. Do not run an unreviewed artifact from a user-owned directory
-as root. Review and copy a fixed snapshot into root-owned installed paths first.
+Pro Bono deployment: installation and rollback review
+STATUS: the first install ran on 2026-09-23 against the two-runtime version of
+this bundle. The text below keeps that procedure, with the Policai and dashboard
+steps removed, for a later first install and for the upgrade path (README.txt,
+UPGRADE CONTRACT). It is not permission to execute it. Dispatcher
+implementation/CLI README is authoritative for exact invocations. Do not run an
+unreviewed artifact from a user-owned directory as root. Review and copy a fixed
+snapshot into root-owned installed paths first.
 
 Boundary
-  One source repository; independent Policai and Pro Bono runtimes.
-  Policai full release clone: /var/lib/policai/app, identity policai.
+  One source repository; one Pro Bono release on Argus. The sites are Cloudflare
+  Workers (docs/hosting-argus.md); the Policai server and dashboard container that
+  the first install deployed are retired (README.txt, RETIRED RUNTIMES).
   Pro Bono full release clone: /var/lib/probono-radar/app; apps/probono below it.
   Pro Bono execution identity remains l0cka. Do not create another Docker-group user.
-  Origins remain 127.0.0.1:8794, 127.0.0.1:8850 and Postgres 127.0.0.1:5433.
-  Tunnel config, DNS, Access, and policai.service database environment stay unchanged.
+  Postgres stays at 127.0.0.1:5433. Nothing else listens for the sites on Argus.
+  Tunnel config, DNS and Access stay unchanged.
   No migration, schema, seed, volume creation/removal or database restart is included.
 
 1. Review and preserve
@@ -29,8 +33,8 @@ Boundary
   values into the source/code archive. Secrets require their existing protected route.
 
   Record the DB full container ID, image ID, volume name/mount and cluster identifier;
-  do not accept the historical ID as a current live observation. Record current dashboard
-  and worker image IDs with retention tags or another verified retention route. Do not
+  do not accept the historical ID as a current live observation. Record the current
+  worker image ID with a retention tag or another verified retention route. Do not
   prune images/volumes. Confirm the current network is probono-radar_default and the
   named volume is probono-radar_pgdata. Record old/new release SHA independently.
 
@@ -90,11 +94,11 @@ Boundary
   binds the user-unit directory read-only to /run/policai-deploy-observation/user-units.
   Bind destinations under /home do not work with ProtectHome=yes (systemd.exec).
   Verify the effective read-only alias and all expected unit hashes/mask symlinks.
-  Both clean release clones must use https://github.com/l0cka/policai.git; Git
+  The clean release clone must use https://github.com/l0cka/policai.git; Git
   credentials/helpers/SSH keys are not needed. Deployment Git/Docker client HOME
   is /var/lib/probono-radar, with its .docker directory l0cka-owned mode0700.
   Verify clean HTTPS Git and Docker build-client state inside the final namespace.
-  Do not expose the full home or run Git/npm as root. User workers retain their
+  Do not expose the full home or run Git as root. User workers retain their
   existing home/Claude context and do not execute in the system deploy namespace.
 
   Install guarded ingest/enrich/backup units. The lock covers an entire ingest -> enrich
@@ -122,29 +126,23 @@ Boundary
   SHA must agree with fetched main. Do not pass an arbitrary shell command or change
   target formats. Build every affected lane before modifying either active lane.
 
-  Policai code activation: stop service only after candidate build succeeds; verify
-  stopped; perform the journaled source/dependencies/.next swap with retained old files;
-  restart and read back service state. Do not copy recursively over a running .next tree.
-  Data-only updates require no npm build or restart, but validate data health afterwards.
+  Pro Bono: the candidate worker image is built before the checkout swap. Keep DB
+  untouched. Publish active worker image selection (active-compose.json) only under the
+  global lock. Verify the image ID and unchanged DB container ID, cluster identifier,
+  volume mount and loopback binding after activation. Do not run an ingestion job simply
+  to prove the worker image. No container is started by activation.
 
-  Pro Bono: activate reviewed dashboard image with no-deps/no-build/pull-never. Keep DB
-  untouched. Publish active worker image selection only under the global lock. Verify
-  image IDs and unchanged DB container ID, cluster identifier, volume mount and loopback
-  bindings after activation. Do not run an ingestion job simply to prove the worker image.
-
-  Root /api/status must parse as expected and assert success, not merely return 200.
-  Pro Bono /health is HTML from a force-dynamic DB query, not a JSON health API. Check its
-  expected content and read-only DB readiness; streamed HTML 200 alone is insufficient.
-  Validate local/public page and redirect behavior without dumping page bodies or rows.
-  Verify external policai.org, www redirect, a2j.policai.org and probono redirect. Do not
-  change/restart cloudflared. Compare the exact existing tunnel route map and config hash.
+  The sites are not served from Argus, so no local HTTP check belongs here. Verify
+  external policai.org, www redirect, a2j.policai.org and probono redirect against the
+  Workers after a Workers Builds deploy, not after a dispatcher cycle. Do not
+  change/restart cloudflared.
 
   Run topology fixture suite, regenerate topology documentation, and reconcile installed
   source/unit paths in the topology/registry in the same approved change. Temporary
   maintenance timer drift must be explained, not silently reclassified as healthy.
 
   Restore only the original scheduler states, except digest remains masked. Resume pull
-  timer last after both releases/main and persistent state are known-good. This timer
+  timer last after the release, main and persistent state are known-good. This timer
   uses OnBootSec/OnUnitActiveSec; Persistent=true applies to OnCalendar timers, not these
   monotonic triggers. An elapsed OnBootSec may still make a start trigger promptly.
   Read back timer enabled/active/waiting, worker guards, digest masks and topology OK.
@@ -160,9 +158,8 @@ Boundary
   states only if no runtime activation occurred; verify topology and original health.
 
   After activation: use the implementation's journaled rollback against retained previous
-  artifacts/images. Stop affected root runtime before swapping its dependencies and .next;
-  restore both source and built artifacts coherently. Restore Pro Bono's previous selected
-  dashboard/worker images without touching Postgres. Keep the gate after rollback until
+  artifacts/images. Restore Pro Bono's previous selected worker image (active-compose.json)
+  without touching Postgres. Keep the gate after rollback until
   health, identities and origin/main disposition are reviewed. Do not overwrite data-only
   changes or unrelated edits during rollback. Interrupted recovery must remain repeatable
   from its journal, not from guesswork about which rename completed.
@@ -190,8 +187,8 @@ Executable file installation (new candidate; not executed on the host)
 
     python3 -I ops/host/install.py plan
 
-  This lists exactly 14 file replacements: six dispatcher files, the system helper,
-  the compatibility helper, the system pull service and five user worker services.
+  This lists exactly 15 file replacements: six dispatcher files, the system helper,
+  the compatibility helper, the system pull service and six user worker services.
   No digest or timer file is an installation target. The installer does not change
   secrets, databases, containers, release checkouts or scheduler state.
 

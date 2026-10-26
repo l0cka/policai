@@ -4,12 +4,22 @@ import subprocess
 import tempfile
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import patch
 
 import host as h
 
 
 class GitRecoveryTests(unittest.TestCase):
+    def test_rollback_before_activation_leaves_the_overlay(self):
+        obj = h.Host.__new__(h.Host)
+        writes = []
+        obj.state = SimpleNamespace(write=lambda name, value: writes.append(name))
+        obj.check_repo = lambda lane: self.fail("nothing to restore before activation")
+        image = "sha256:" + "a" * 64
+        obj.rollback({"previous": {"probono": "a" * 40}, "before": {"images": {"worker": image}}})
+        self.assertEqual(writes, [])
+
     def test_data_rollback_survives_interruption_after_each_git_mutation(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -51,15 +61,19 @@ class GitRecoveryTests(unittest.TestCase):
                 git(app, "commit", "-am", "candidate")
                 new[lane] = git(app, "rev-parse", "HEAD")
             self.assertEqual(len(set(new.values())), 1)
+            image = "sha256:" + "a" * 64
             record = {
                 "id": "1" * 32,
                 "previous": old,
-                "target": new["policai"],
+                "target": new["probono"],
                 "lanes": [],
                 "activation_started": True,
+                "before": {"images": {"worker": image}},
             }
             obj = h.Host.__new__(h.Host)
             obj.checkpoint = lambda phase: None
+            overlays = []
+            obj.state = SimpleNamespace(write=lambda name, value: overlays.append((name, value)))
 
             def check_repo(lane):
                 app = bases[lane] / "app"
@@ -88,8 +102,10 @@ class GitRecoveryTests(unittest.TestCase):
                 for _ in bases:
                     with self.assertRaises(InterruptedError):
                         obj.rollback(record)
+                self.assertEqual(overlays, [])
                 obj.rollback(record)
                 obj.rollback(record)
+                self.assertEqual(overlays, [("active-compose.json", h.overlay(image))] * 2)
                 for lane in bases:
                     self.assertEqual(check_repo(lane), old[lane])
                     self.assertEqual((bases[lane] / "app/data.json").read_text(), "old\n")
