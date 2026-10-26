@@ -1,9 +1,9 @@
 {
   "id": "dta-ai-policy-v2",
   "title": "Policy for the Responsible Use of AI in Government",
-  "version": "2.1",
+  "version": "2.0",
   "effectiveDate": "2025-12-15",
-  "lastUpdated": "2026-10-21",
+  "lastUpdated": "2025-12-01",
   "authority": "Digital Transformation Agency",
   "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
   "application": {
@@ -72,9 +72,8 @@
           "deadline": null,
           "description": "Publicly available statement outlining approach to AI adoption and use",
           "details": [
-            "Must follow the Standard for AI transparency statements (version 2.1)",
-            "Classify AI use by the Appendix D usage patterns and domains",
-            "Review and update at least annually, on a significant change, or when a new factor materially affects accuracy",
+            "Must follow Standard for transparency statements",
+            "Review and update annually or on significant changes",
             "Notify DTA when published or changed"
           ]
         },
@@ -123,7 +122,7 @@
           "details": [
             "Enable recording of accountable use case owners",
             "Share register with DTA every 6 months",
-            "Minimum fields in the Standard for accountability (version 2.1) include usage pattern and domain from Appendix D"
+            "Minimum fields listed in Standard for accountability"
           ]
         }
       ]
@@ -348,17 +347,17 @@
     "source": {
       "url": "https://www.digital.gov.au/ai/ai-in-government-policy",
       "finalUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
-      "title": "Policy for the responsible use of AI in government - Version 2.1 | digital.gov.au",
+      "title": "Policy for the responsible use of AI in government - Version 2.0 | digital.gov.au",
       "retrievedAt": "2026-07-19T01:02:33.000Z",
       "contentType": "text/html",
       "contentHash": "384e529e7460f92b6886998f1530575a9f006516f042468e19a98450612ba5ab",
       "linkedDocuments": [
         {
-          "url": "https://www.digital.gov.au/sites/default/files/documents/2026-10/Policy%20for%20the%20responsible%20use%20of%20AI%20in%20government%202_1_1.pdf",
-          "finalUrl": "https://www.digital.gov.au/sites/default/files/documents/2026-10/Policy%20for%20the%20responsible%20use%20of%20AI%20in%20government%202_1_1.pdf",
-          "retrievedAt": "2026-10-26T06:40:00.000Z",
+          "url": "https://www.digital.gov.au/sites/default/files/documents/2025-12/Policy%20for%20the%20responsible%20use%20of%20AI%20in%20Government%202.0_0.pdf",
+          "finalUrl": "https://www.digital.gov.au/sites/default/files/documents/2025-12/Policy%20for%20the%20responsible%20use%20of%20AI%20in%20Government%202.0_0.pdf",
+          "retrievedAt": "2026-07-19T01:02:33.000Z",
           "contentType": "application/pdf",
-          "contentHash": "7da206ff9bb77c5c4505577ea2fd11367700b38f4ff8c4e4592501e95221e5c2"
+          "contentHash": "94beda4e6e9f61e0dd5d5f17b45b18cf6015b20fd9aabe41d20318f725273c11"
         }
       ],
       "browserCapture": {
@@ -380,62 +379,6 @@
     "checkedAt": "2026-10-16T00:00:00.000Z",
     "checkedBy": "Policai Developer source re-read (issue 161)",
     "method": "manual",
-    "notes": "Daniel Alkurdi reviewed the framework artifact against the approved official digital.gov.au page and version 2.0 PDF evidence. Its scope, exclusions, pillars, requirements and effective date remain consistent with the source; the exact page and PDF fingerprints match the related policy verification. Issue 161 corrections 2026-10-16: set the deadline of the transparency statement and accountable official requirements to null (the policy states none; it is effective 15 December 2025), restored the 'by, or under the direction of, an Australian Government agency directly or indirectly' qualifier and the full item (c) wording of the AI incident definition, and used the Appendix A titles verbatim with the two public generative AI tools items listed separately. The PDF byte hash was not recomputed in this pass. Machine observation on 2026-10-26 through the collection host's self-hosted Firecrawl (http://127.0.0.1:3003), not a human verification. The live page title is 'Policy for the responsible use of AI in government - Version 2.1' and the page states: 'This version of the policy came into effect 15 December 2025 (v2.0), with minor updates published on 21 October 2026 (v2.1).' The PDF linked from that page is Version 2.1 (cover line 'Version: 2.1'). The previous v2.0 PDF URL returns 404 and is no longer the live source. The linked-document content hash is the SHA-256 of the live PDF bytes retrieved on 2026-10-26. The composite verification contentHash and the July 2026 page fingerprint were not recomputed, and lastReviewedAt was not stamped."
-  },
-  "appendixD": {
-    "title": "Appendix D: Classification system for AI use",
-    "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy/policy-responsible-use-ai-government-version-21-appendix-d-classification-system-ai-use",
-    "summary": "Agencies subject to the policy must classify in-scope AI use by these usage patterns and domains in the use case register, the AI impact assessment, and the AI transparency statement.",
-    "usagePatterns": [
-      {
-        "id": "decision-making",
-        "title": "Decision-making and administrative action",
-        "description": "Uses AI to make, or substantially and directly inform, a decision or administrative action that could affect the rights or interests of an individual or entity. This includes refusing or failing to take such an action."
-      },
-      {
-        "id": "analytics",
-        "title": "Analytics",
-        "description": "Identifies patterns, generates insights, forecasts outcomes or makes recommendations from structured or unstructured information to support evidence-based decision-making."
-      },
-      {
-        "id": "strategic-support",
-        "title": "Strategic support",
-        "description": "Assists research, policy development and drafting, issue framing, idea exploration, hypothesis development, sensemaking, information synthesis, knowledge management and advisory activities."
-      },
-      {
-        "id": "workplace-productivity",
-        "title": "Workplace productivity",
-        "description": "Supports routine work, communication, collaboration and personal productivity without materially changing business processes or administrative outcomes."
-      },
-      {
-        "id": "workflow-automation",
-        "title": "Workflow automation",
-        "description": "Executes or coordinates predefined processes, tasks or actions with limited discretion."
-      },
-      {
-        "id": "image-processing",
-        "title": "Image processing",
-        "description": "Processes images or visual information to identify, classify, detect or verify objects, such as features or patterns for official purposes."
-      },
-      {
-        "id": "coding",
-        "title": "Coding",
-        "description": "Supports software engineering activities across the software lifecycle, including code generation, prototyping, debugging, testing and documentation."
-      }
-    ]
-  },
-  "standards": {
-    "transparencyStatements": {
-      "title": "Standard for AI transparency statements",
-      "version": "2.1",
-      "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy/standard-ai-transparency-statements",
-      "pdfUrl": "https://www.digital.gov.au/sites/default/files/documents/2026-10/Standard%20for%20AI%20transparency%20statements%202_1.pdf"
-    },
-    "accountability": {
-      "title": "Standard for accountability",
-      "version": "2.1",
-      "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy/accountability",
-      "pdfUrl": "https://www.digital.gov.au/sites/default/files/documents/2026-10/Standard%20for%20accountable%20officials%202_1.pdf"
-    }
+    "notes": "Daniel Alkurdi reviewed the framework artifact against the approved official digital.gov.au page and version 2.0 PDF evidence. Its scope, exclusions, pillars, requirements and effective date remain consistent with the source; the exact page and PDF fingerprints match the related policy verification. Issue 161 corrections 2026-10-16: set the deadline of the transparency statement and accountable official requirements to null (the policy states none; it is effective 15 December 2025), restored the 'by, or under the direction of, an Australian Government agency directly or indirectly' qualifier and the full item (c) wording of the AI incident definition, and used the Appendix A titles verbatim with the two public generative AI tools items listed separately. The PDF byte hash was not recomputed in this pass."
   }
 }
