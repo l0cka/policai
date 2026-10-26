@@ -1,8 +1,8 @@
 # Hosting
 
-policai.org is served from a Cloudflare Worker named `policai`, built with
-OpenNext. The Pro Bono site, the collector and the CI runners stay on the
-maintainer's host, Argus. The operational runbook (server topology, units,
+policai.org and a2j.policai.org are served from Cloudflare Workers named
+`policai` and `a2j`, built with OpenNext. The Pro Bono database and its jobs,
+the collector and the CI runners stay on the maintainer's host, Argus. The operational runbook (server topology, units,
 cutover and rollback procedure) is kept privately by the maintainer.
 
 ## policai.org on Workers
@@ -26,6 +26,21 @@ CNAMEs still point at the host, which keeps running Policai.
 
 Signal reads `POLICAI_SIGNAL_TOKEN` and `POLICAI_SIGNAL_GITHUB_TOKEN` from
 Worker secrets, set with `wrangler secret put` or in the dashboard.
+
+## a2j.policai.org on Workers
+
+Workers Builds deploys the `a2j` Worker from `apps/probono/dashboard` on
+pushes to `main`. Its routes for `a2j.policai.org/*`
+and `probono.policai.org/*` are in `apps/probono/dashboard/wrangler.jsonc`;
+`middleware.ts` redirects the old probono name.
+
+The Worker reads a Neon copy of the Pro Bono database through Hyperdrive. The
+Postgres on Argus stays the database of record: ingest, enrichment, deadline
+checks and backups write there, and the guarded `cli.py worker neon-sync`
+(`probono-neon-sync.timer`, hourly at :45) replaces the Neon copy when the
+data changed. The site can lag Argus by up to an hour. To roll back, delete
+the routes and deploy; the tunnel still points at Argus, which keeps serving
+the dashboard.
 
 ## Argus
 
