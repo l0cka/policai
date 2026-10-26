@@ -175,6 +175,17 @@ describe('checkDeadlines on cases the real batch lacked', () => {
     expect(saved.deadlines.map((d) => d.primary)).toEqual([false, true]);
   });
 
+  it('counts a date range as one mention', () => {
+    const { verdicts } = check([action('2026-12-12', 'Registrations close')],
+      'The expo runs 10–12 December 2026. Register by 12 December 2026. Applications close 12 December 2026.');
+    expect(verdicts[0]).toMatchObject({ kind: 'action', primary: true });
+  });
+
+  it('lets a close word beat a "Date:" heading', () => {
+    const { verdicts } = check([action('2026-11-06')], 'Date: 6 November 2026 (submissions close).');
+    expect(verdicts[0]).toMatchObject({ kind: 'action', primary: true });
+  });
+
   it('leaves a date unchanged when its mentions split evenly', () => {
     const { checks } = check([action('2026-11-16')], 'Submissions close 16 November 2026.\nThe forum opens 16 November 2026.');
     expect(checks[0]).toEqual({ verdict: null, uncertain: '2026-11-16 left unchanged: mentions disagree on deadline or event' });

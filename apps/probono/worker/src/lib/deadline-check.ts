@@ -77,8 +77,12 @@ function findDate(text: string, date: string, precision: 'day' | 'month' | 'year
   } else {
     add(new RegExp(`\\b(in|by|during|from|until)\\s+${y}\\b`, 'g'), () => true);
   }
-  const seen = new Set<number>();
-  return hits.sort((a, b) => a.index - b.index).filter((h) => !seen.has(h.index) && seen.add(h.index));
+  // "10–12 December" also matches "12 December"; one phrase is one mention.
+  const mentions: Hit[] = [];
+  for (const h of hits.sort((a, b) => a.index - b.index || b.end - a.end)) {
+    if (h.index >= (mentions.at(-1)?.end ?? 0)) mentions.push(h);
+  }
+  return mentions;
 }
 
 // Punctuation at i ends a sentence, unless it closes a one-letter
@@ -118,8 +122,8 @@ function nearest(re: RegExp, text: string, span: Span, hit: Hit): { distance: nu
 function kindAt(text: string, hit: Hit, sentence: Span): 'action' | 'milestone' | null {
   const lineStart = text.lastIndexOf('\n', hit.index - 1) + 1;
   const lead = text.slice(Math.max(lineStart - 1, 0), hit.index).replace(/\b(mon|tue|wed|thu|fri|sat|sun)\w*,?\s*$/i, '');
-  if (DATE_HEADER_RE.test(lead)) return 'milestone';
   const clause = { start: Math.max(sentence.start, text.lastIndexOf(';', hit.index) + 1), end: sentence.end };
+  if (DATE_HEADER_RE.test(lead) && !new RegExp(ACTION_RE.source, 'i').test(text.slice(clause.start, clause.end))) return 'milestone';
   const action = nearest(ACTION_RE, text, clause, hit);
   const milestone = nearest(MILESTONE_RE, text, clause, hit);
   if (action?.within && !(milestone?.within && milestone.distance <= action.distance)) return 'action';
