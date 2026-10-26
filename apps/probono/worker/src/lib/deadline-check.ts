@@ -22,17 +22,20 @@ const ORD = '(?:st|nd|rd|th)?';
 const WEEKDAY = '(?:(?:mon|tue|tues|wed|thu|thur|thurs|fri|sat|sun)(?:day|nesday|rsday|urday)?\\.?,?\\s+)?';
 
 const ACTION_RE =
-  /\b(close[sd]?|closing|submi(t|ts|tted|ssions?)|apply|applications? (close|due)|lodge[sd]?|lodg(ing|ement)|register(ed)? by|registrations? close|deadline|due|rsvp( by)?|nominations? close|eoi|expressions? of interest|until|no later than|cut-?off)\b/gi;
+  /\b(close[sd]?|closing|submi(t|ts|tted|ssions?)|apply|applications? (close|due)|lodge[sd]?|lodg(ing|ement)|register(ed)? by|registrations? close|deadline|due(?!\s+to)|rsvp( by)?|nominations? close|eoi|expressions? of interest|until|no later than|cut-?off)\b/gi;
 const MILESTONE_RE =
   /\b(open(s|ed|ing)?|commenc(e|es|ed|ement|ing)|start(s|ed|ing)?|launch(es|ed|ing)?|event|expo|forum|webinar|conference|symposium|summit|workshop|hearing|info(rmation)? session|agm|general meeting|released?|takes? effect|comes? into (force|effect)|in force|election|held on|meeting|ceremony|festival)\b/gi;
-const PRIMARY_RE = /\b(close[sd]?|closing|submi|deadline|due|until)/i;
+const PRIMARY_RE = /\b(close[sd]?|closing|submi|deadline|due(?!\s+to)|until)/i;
 // "Date: Friday 23 October 2026" heads an event listing.
 const DATE_HEADER_RE = /(?:^|\n)[ \t>*#-]*(?:event\s+)?date\s*:\s*$/i;
 const CLOSED_RE = /\b(has|have|had) (now )?closed|\bnow closed|\bis closed|\bclosed on\b|\bsubmissions? closed|\bapplications? closed|\bconsultation (has )?closed/i;
 const EXTENDED_RE = /\bextended\b|\bnew closing date\b|\bpostponed\b/gi;
-const NEGATION_RE = /(\bnot|\bcannot|\bnever|\bno longer|n't)\b[^.!?\n]{0,15}$/i;
+const NEGATION_RE = /\bnot\b|\bcannot\b|\bnever\b|\bno longer\b|n't\b/i;
+// Where a new clause starts, so "Submissions close 6 November and the forum
+// was postponed" gives the postponement its own subject.
+const CLAUSE_BREAK_RE = /[;,]|\b(and|but|while|whereas)\b/gi;
 // A close word a "Date:" heading yields to; "until" there is usually a clock time.
-const HEADER_ACTION_RE = /\b(close[sd]?|closing|submi|deadline|due\b|lodg|apply|register(ed)? by|registrations? close|rsvp)/i;
+const HEADER_ACTION_RE = /\b(close[sd]?|closing|submi|deadline|due\b(?!\s+to)|lodg|apply|register(ed)? by|registrations? close|rsvp)/i;
 const EXTENSION_SUBJECT_RE = /\b(close[sd]?|closing|deadline|submissions?|applications?)\b/i;
 
 // Keyword reach either side of a date, in characters.
@@ -142,9 +145,11 @@ function nextSentenceStart(text: string, sentence: Span): number {
 /*
  * The new date when the date's sentence, or the one after it, says a close
  * was "extended to", "postponed until" or has a "new closing date" of a later
- * date, with the date straight after that wording. Negated wording ("cannot
- * be extended") and other things postponed ("the forum was postponed") don't
- * count.
+ * date, with the date straight after that wording. The close word must be in
+ * the wording's own clause, or the clause must carry on an extension already
+ * read ("extended to 20 November and then extended to 4 December"). Negated
+ * clauses and other things postponed ("the forum was postponed") don't
+ * count. The latest such date wins.
  */
 function extendedTo(text: string, sentence: Span, stored: string): { date: string; hit: Hit } | null {
   const [year, storedMonth] = stored.split('-').map(Number);
@@ -153,12 +158,17 @@ function extendedTo(text: string, sentence: Span, stored: string): { date: strin
     `^\\s*(?:(?:to|until|till|is|of|:)\\s*)?(?:${WEEKDAY})?(?:(\\d{1,2})${ORD}(?:\\s+of)?\\s+(${MON})|(${MON})\\.?\\s+(\\d{1,2})${ORD})\\b\\.?(?:,?\\s+(\\d{4}))?`,
     'i',
   );
+  let best: { date: string; hit: Hit } | null = null;
+  let extendedSentence = -1;
   for (const word of text.slice(region.start, region.end).matchAll(EXTENDED_RE)) {
     const at = region.start + word.index!;
     const wordSentence = sentenceAround(text, { index: at, end: at + word[0].length });
     if (wordSentence.start > nextSentenceStart(text, sentence)) continue;
     const lead = text.slice(wordSentence.start, at);
-    if (NEGATION_RE.test(lead) || !EXTENSION_SUBJECT_RE.test(`${lead}${word[0]}`)) continue;
+    const clause = `${lead.slice(Math.max(0, ...[...lead.matchAll(CLAUSE_BREAK_RE)].map((m) => m.index! + m[0].length)))}${word[0]}`;
+    if (NEGATION_RE.test(clause)) continue;
+    const carriesOn = extendedSentence === wordSentence.start && !new RegExp(MILESTONE_RE.source, 'i').test(clause);
+    if (!EXTENSION_SUBJECT_RE.test(clause) && !carriesOn) continue;
     const from = at + word[0].length;
     const mm = text.slice(from, wordSentence.end).match(dateAfter);
     if (!mm) continue;
@@ -167,10 +177,10 @@ function extendedTo(text: string, sentence: Span, stored: string): { date: strin
     // "extended to 15 January" from a December date means next January.
     const y = mm[5] ? Number(mm[5]) : month < storedMonth ? year + 1 : year;
     const date = `${y}-${pad(month)}-${pad(day)}`;
-    if (date <= stored) continue;
-    return { date, hit: { index: from, end: from + mm[0].length, precision: 'day' } };
+    extendedSentence = wordSentence.start;
+    if (date > stored && (!best || date > best.date)) best = { date, hit: { index: from, end: from + mm[0].length, precision: 'day' } };
   }
-  return null;
+  return best;
 }
 
 export function checkDeadlines(item: VerifyItem, pageText: string, today: string): DateCheck[] {
