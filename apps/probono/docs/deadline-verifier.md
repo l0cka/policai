@@ -58,9 +58,10 @@ For each stored date `checkDeadlines`:
   close, submissions, until, due, deadline mean `action`; commence, opens,
   election, expo, event, takes effect and a `Date:` heading mean `milestone`;
 - marks `extended` when the date's sentence or the next one says a close was
-  extended or postponed to a later date (not negated, day- or month-first,
-  rolling into next year when the month has passed), and quotes that
-  sentence instead; otherwise `closed` when the period has ended (end of
+  "extended to", "postponed until" or has a "new closing date" of a later
+  date written straight after those words (not negated; day- or
+  month-first; a yearless date in an earlier month rolls into next year),
+  and quotes that sentence instead; otherwise `closed` when the period has ended (end of
   month or year for those precisions) or the sentence says closed, else
   `open`;
 - makes the single action date primary, or the one whose quote says close,

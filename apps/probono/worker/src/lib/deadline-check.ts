@@ -30,13 +30,15 @@ const PRIMARY_RE = /\b(close[sd]?|closing|submi|deadline|due|until)/i;
 const DATE_HEADER_RE = /(?:^|\n)[ \t>*#-]*(?:event\s+)?date\s*:\s*$/i;
 const CLOSED_RE = /\b(has|have|had) (now )?closed|\bnow closed|\bis closed|\bclosed on\b|\bsubmissions? closed|\bapplications? closed|\bconsultation (has )?closed/i;
 const EXTENDED_RE = /\bextended\b|\bnew closing date\b|\bpostponed\b/gi;
-const NEGATION_RE = /\b(not|never|no longer)\b[^.!?\n]{0,15}$|n't\s+(been\s+|be\s+)?$/i;
+const NEGATION_RE = /(\bnot|\bcannot|\bnever|\bno longer|n't)\b[^.!?\n]{0,15}$/i;
+// A close word a "Date:" heading yields to; "until" there is usually a clock time.
+const HEADER_ACTION_RE = /\b(close[sd]?|closing|submi|deadline|due\b|lodg|apply|register(ed)? by|registrations? close|rsvp)/i;
+const EXTENSION_SUBJECT_RE = /\b(close[sd]?|closing|deadline|submissions?|applications?)\b/i;
 
 // Keyword reach either side of a date, in characters.
 const BEFORE_REACH = 40;
 const AFTER_REACH = 30;
 const QUOTE_LIMIT = 300;
-const EXTENSION_REACH = 120;
 
 type Hit = { index: number; end: number; precision: 'day' | 'month' | 'year' };
 type Span = { start: number; end: number };
@@ -123,7 +125,7 @@ function kindAt(text: string, hit: Hit, sentence: Span): 'action' | 'milestone' 
   const lineStart = text.lastIndexOf('\n', hit.index - 1) + 1;
   const lead = text.slice(Math.max(lineStart - 1, 0), hit.index).replace(/\b(mon|tue|wed|thu|fri|sat|sun)\w*,?\s*$/i, '');
   const clause = { start: Math.max(sentence.start, text.lastIndexOf(';', hit.index) + 1), end: sentence.end };
-  if (DATE_HEADER_RE.test(lead) && !new RegExp(ACTION_RE.source, 'i').test(text.slice(clause.start, clause.end))) return 'milestone';
+  if (DATE_HEADER_RE.test(lead) && !HEADER_ACTION_RE.test(text.slice(clause.start, clause.end))) return 'milestone';
   const action = nearest(ACTION_RE, text, clause, hit);
   const milestone = nearest(MILESTONE_RE, text, clause, hit);
   if (action?.within && !(milestone?.within && milestone.distance <= action.distance)) return 'action';
@@ -138,38 +140,37 @@ function nextSentenceStart(text: string, sentence: Span): number {
 }
 
 /*
- * The new date when the date's sentence, or the one after it, says the
- * closing date was extended or postponed to a later date. Negated wording
- * ("will not be extended") and sentences about something other than a close
- * ("the forum was postponed") don't count.
+ * The new date when the date's sentence, or the one after it, says a close
+ * was "extended to", "postponed until" or has a "new closing date" of a later
+ * date, with the date straight after that wording. Negated wording ("cannot
+ * be extended") and other things postponed ("the forum was postponed") don't
+ * count.
  */
 function extendedTo(text: string, sentence: Span, stored: string): { date: string; hit: Hit } | null {
-  const year = Number(stored.slice(0, 4));
+  const [year, storedMonth] = stored.split('-').map(Number);
   const region = { start: sentence.start, end: Math.min(text.length, sentence.end + 200) };
-  let best: { date: string; hit: Hit } | null = null;
+  const dateAfter = new RegExp(
+    `^\\s*(?:(?:to|until|till|is|of|:)\\s*)?(?:${WEEKDAY})?(?:(\\d{1,2})${ORD}(?:\\s+of)?\\s+(${MON})|(${MON})\\.?\\s+(\\d{1,2})${ORD})\\b\\.?(?:,?\\s+(\\d{4}))?`,
+    'i',
+  );
   for (const word of text.slice(region.start, region.end).matchAll(EXTENDED_RE)) {
     const at = region.start + word.index!;
     const wordSentence = sentenceAround(text, { index: at, end: at + word[0].length });
     if (wordSentence.start > nextSentenceStart(text, sentence)) continue;
-    if (NEGATION_RE.test(text.slice(wordSentence.start, at))) continue;
-    if (!/\b(close[sd]?|closing|deadline|submissions?|applications?|due)\b/i.test(text.slice(wordSentence.start, wordSentence.end))) continue;
+    const lead = text.slice(wordSentence.start, at);
+    if (NEGATION_RE.test(lead) || !EXTENSION_SUBJECT_RE.test(`${lead}${word[0]}`)) continue;
     const from = at + word[0].length;
-    const after = text.slice(from, Math.min(wordSentence.end, from + EXTENSION_REACH));
-    const dayFirst = new RegExp(`\\b(\\d{1,2})${ORD}(?:\\s+of)?\\s+(${MON})\\b\\.?(?:,?\\s+(\\d{4}))?`, 'gi');
-    const monthFirst = new RegExp(`\\b(${MON})\\.?\\s+(\\d{1,2})${ORD}\\b(?:,?\\s+(\\d{4}))?`, 'gi');
-    const found = [
-      ...[...after.matchAll(dayFirst)].map((mm) => ({ mm, day: Number(mm[1]), month: MONTHS[mm[2].toLowerCase()], y: mm[3] })),
-      ...[...after.matchAll(monthFirst)].map((mm) => ({ mm, day: Number(mm[2]), month: MONTHS[mm[1].toLowerCase()], y: mm[3] })),
-    ];
-    for (const { mm, day, month, y } of found) {
-      let date = `${y ?? year}-${pad(month)}-${pad(day)}`;
-      // "extended to 15 January" from a December date means next January.
-      if (!y && date <= stored) date = `${year + 1}-${pad(month)}-${pad(day)}`;
-      const index = from + mm.index!;
-      if (date > stored && (!best || date > best.date)) best = { date, hit: { index, end: index + mm[0].length, precision: 'day' } };
-    }
+    const mm = text.slice(from, wordSentence.end).match(dateAfter);
+    if (!mm) continue;
+    const day = Number(mm[1] ?? mm[4]);
+    const month = MONTHS[(mm[2] ?? mm[3]).toLowerCase()];
+    // "extended to 15 January" from a December date means next January.
+    const y = mm[5] ? Number(mm[5]) : month < storedMonth ? year + 1 : year;
+    const date = `${y}-${pad(month)}-${pad(day)}`;
+    if (date <= stored) continue;
+    return { date, hit: { index: from, end: from + mm[0].length, precision: 'day' } };
   }
-  return best;
+  return null;
 }
 
 export function checkDeadlines(item: VerifyItem, pageText: string, today: string): DateCheck[] {

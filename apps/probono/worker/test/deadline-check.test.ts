@@ -109,6 +109,27 @@ describe('checkDeadlines on cases the real batch lacked', () => {
     }
   });
 
+  it('ignores "cannot", "due to" and other later dates beside an extension', () => {
+    expect(check([action('2026-11-06')], 'Submissions close 6 November 2026 and cannot be extended to 20 November 2026.').verdicts[0])
+      .toMatchObject({ status: 'open', corrected_date: null });
+    expect(check([action('2026-11-06')], 'Submissions close 6 November 2026. The forum was postponed to 30 November 2026 due to rain.').verdicts[0])
+      .toMatchObject({ status: 'open', corrected_date: null });
+    expect(check([action('2026-11-06')], 'Submissions close 6 November 2026. The closing date was extended to 20 November 2026 and the forum was postponed to 4 December 2026.').verdicts[0])
+      .toMatchObject({ status: 'extended', corrected_date: '2026-11-20' });
+  });
+
+  it('rolls a yearless extension into next year only when its month is earlier', () => {
+    expect(check([action('2026-11-06')], 'Submissions close 6 November 2026. The closing date was extended to 6 November.').verdicts[0])
+      .toMatchObject({ corrected_date: null });
+    expect(check([action('2026-11-20')], 'Submissions close 20 November 2026. The closing date was extended to 6 November.').verdicts[0])
+      .toMatchObject({ corrected_date: null });
+  });
+
+  it('keeps a "Date:" heading with a clock range a milestone', () => {
+    const { verdicts } = check([action('2026-11-06', 'Register for Changing Mind & Positive Ageing Expo')], 'Date: Friday 6 November 2026, 9am until 5pm');
+    expect(verdicts[0]).toMatchObject({ kind: 'milestone', primary: false });
+  });
+
   it('follows extensions written month-first or into the next year', () => {
     expect(check([action('2026-11-06')], 'Submissions close 6 November 2026. The closing date was extended to November 20, 2026.').verdicts[0])
       .toMatchObject({ status: 'extended', corrected_date: '2026-11-20' });
