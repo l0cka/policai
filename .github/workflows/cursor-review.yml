@@ -40,8 +40,10 @@ jobs:
             const MARKER = /<!-- cursor-review: (success|failure) -->/gi;
 
             // The Cursor Automation reviews as the cursor[bot] app. Only its
-            // marker counts: GitHub reserves [bot] logins for apps, so neither
-            // a stranger nor the PR author's own account can pass the check.
+            // marker counts: GitHub reserves [bot] logins for apps, so a review
+            // from a stranger or the PR author's account cannot pass the check.
+            // This file runs from the PR's merge ref, so a branch that edits it
+            // can still stamp the check; that is true of every Actions check.
             function fromCursor(user) {
               return user?.login === 'cursor[bot]' && user?.type === 'Bot';
             }
