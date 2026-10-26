@@ -223,9 +223,12 @@ comparing each piece with the base revision:
   Australia/Sydney (Daniel, 2026-10-17, #293; not collection or
   `lastHealthyAt`, which #282 had used). The count and the date come from
   the same render, so the date is always when the count was taken, and it
-  reveals nothing about withheld, unverified or trashed records. The piece
-  page is rendered on every request and never cached, so the count, its date
-  and the citation states are those of the request. Its query must group by
+  reveals nothing about withheld, unverified or trashed records. Published
+  pieces are prerendered at build (Dan, 2026-10-26, #560), so the count, its
+  date and the citation states are those of the deploy that built the page.
+  Data changes ship by commit and every commit redeploys, but a citation that
+  crosses the 90-day review-due mark with no new commit stays off the banner
+  until the next deploy. Its query must group by
   jurisdiction, type or status and match at least one public record. The
   prose does not restate a chart's numbers, so the text cannot go stale
   against the live count.

@@ -372,8 +372,9 @@ count and its date come from the deploy that built the page (Dan,
 2026-10-26, #560; supersedes the per-request render). The count stays true
 for that date because the data only changes through commits, and every
 commit redeploys. On Workers a per-request render cost 440 to 655 ms of CPU.
-A test in `src/app/analysis/article-figures.test.tsx` fails if
-`force-dynamic` returns or a published piece drops out of the static params.
+A test in `src/app/analysis/article-figures.test.tsx` fails if the
+route exports `dynamic` again or `generateStaticParams()` drops the
+`figure-kinds-published` fixture.
 The date is formatted
 in the server render, so a reader's timezone cannot change it.
 `validateArticles` (`registerChartErrors`) fails a
