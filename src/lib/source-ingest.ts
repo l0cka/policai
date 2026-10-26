@@ -6,6 +6,7 @@ import { isAbsolute, relative, resolve } from "node:path";
 import { analyseContentRelevance } from "@/lib/analysis";
 import { isValidCalendarDate } from "@/lib/calendar-date";
 import { withDataMutationLock } from "@/lib/data-lock";
+import { followLegislation, followTargets } from "@/lib/legislation/follow";
 import { isLegislativeDraft } from "@/lib/legislation/model";
 import {
 	extractRetrievedDocument,
@@ -1497,6 +1498,152 @@ function rebaseLinkedDevelopment(
 	};
 }
 
+function assertTargetRevisionApprovable(
+	review: SourceReview,
+	targetPolicy: Policy,
+	input: { proposedRecord?: unknown; expectedTargetRevisionHash?: string },
+): void {
+	const currentTargetRevisionHash = policyRevisionHash(targetPolicy);
+	if (
+		input.expectedTargetRevisionHash !== undefined &&
+		input.expectedTargetRevisionHash !== currentTargetRevisionHash
+	) {
+		throw new Error(
+			"Expected target revision does not match the current policy; refresh the review before approval",
+		);
+	}
+	if (
+		review.targetPolicyBaseRevisionHash !== currentTargetRevisionHash &&
+		(!input.proposedRecord ||
+			input.expectedTargetRevisionHash !== currentTargetRevisionHash)
+	) {
+		throw new Error(
+			"Target policy changed after this update was staged; approval requires an explicitly reviewed proposedRecord plus expectedTargetRevisionHash for the current policy",
+		);
+	}
+}
+
+/**
+ * A follow watch stages a stage update from the register record it reads,
+ * which for a Federal Register instrument or a SALT bill is not the
+ * record's own page. The decision attests that reading, so approval and
+ * publication re-read it, and the record's verification of its page stays
+ * as it was.
+ */
+function registerReading(review: SourceReview): SourceEvidence | null {
+	return review.legislativeUpdate &&
+		review.targetPolicyId &&
+		!sourceUrlsEqual(review.sourceEvidence.url, review.sourceUrl)
+		? review.sourceEvidence
+		: null;
+}
+
+/**
+ * The register still shows this update when a live follow of the target
+ * stages the same review id, which hashes the parsed stages rather than the
+ * response bytes. A refused read fails rather than echoing the staged hash.
+ */
+async function assertRegisterStillShows(
+	review: SourceReview,
+	targetPolicy: Policy,
+): Promise<void> {
+	const followed = await followLegislation({
+		targets: followTargets([targetPolicy]),
+		existingReviews: [],
+		retrieve: (url) => retrieveEditorialSource(url),
+		now: new Date(),
+	});
+	if (followed.errors.length > 0) {
+		throw new Error(
+			`The register record could not be read: ${followed.errors.join("; ")}`,
+		);
+	}
+	if (!followed.reviews.some(({ id }) => id === review.id)) {
+		throw new Error(
+			"The register no longer shows this stage update; the next follow of this record withdraws it and stages what the register shows now",
+		);
+	}
+}
+
+async function approveRegisterStageUpdate(
+	review: SourceReview,
+	reading: SourceEvidence,
+	input: Parameters<typeof approveStagedSourceUnlocked>[0],
+	writeApproval: (updates: Partial<SourceReview>) => Promise<SourceReview>,
+): Promise<SourceReview> {
+	if (
+		input.officialSourceUrl ||
+		input.browserCapture ||
+		input.manualExtraction ||
+		input.reviewedDate
+	) {
+		throw new Error(
+			"A register stage update is approved on the register record it was staged from, without other source evidence",
+		);
+	}
+	const policies = await getPolicies(undefined, { access: "admin" });
+	const targetPolicy = policies.find(
+		(policy) => policy.id === review.targetPolicyId,
+	);
+	if (!targetPolicy) {
+		throw new Error("Target policy for update review was not found");
+	}
+	if (
+		!followTargets([targetPolicy]).some(({ url }) =>
+			sourceUrlsEqual(url, reading.url),
+		)
+	) {
+		throw new Error(
+			"Stage update evidence is not the register record its follow watch reads",
+		);
+	}
+	assertTargetRevisionApprovable(review, targetPolicy, input);
+	await assertRegisterStillShows(review, targetPolicy);
+	const draft = (input.proposedRecord ?? review.proposedRecord) as PolicyDraft;
+	if (
+		draft.id !== targetPolicy.id ||
+		!sourceUrlsEqual(draft.sourceUrl, targetPolicy.sourceUrl)
+	) {
+		throw new Error(
+			"Update review must preserve the target policy id and source URL",
+		);
+	}
+	const now = new Date().toISOString();
+	assertChronological(
+		review.discoveredAt,
+		now,
+		"Review cannot be approved before it was discovered",
+	);
+	const policy: Policy = {
+		...targetPolicy,
+		...draft,
+		updatedAt: now,
+		lastReviewedAt: targetPolicy.lastReviewedAt,
+		verification: targetPolicy.verification,
+	};
+	const report = mergeReports(
+		validatePolicies(
+			[policy],
+			new Set(policies.map((existing) => existing.id)),
+		),
+		validatePolicyThemes([policy]),
+	);
+	if (report.errors.length > 0) {
+		throw new Error(`Policy is not publishable: ${report.errors.join("; ")}`);
+	}
+	const targetRevisionHash = policyRevisionHash(targetPolicy);
+	return writeApproval({
+		status: "approved",
+		proposedRecord: policy,
+		targetPolicyBaseRevisionHash: targetRevisionHash,
+		targetPolicyRevisionHash: targetRevisionHash,
+		reviewedAt: now,
+		reviewedBy: input.actor,
+		approvalNotes: input.approvalNotes,
+		decision: input.decision,
+	});
+}
+
 async function approveStagedSourceUnlocked(input: {
 	id: string;
 	actor: string;
@@ -1531,6 +1678,10 @@ async function approveStagedSourceUnlocked(input: {
 	}
 	if (review.status === "rejected") {
 		throw new Error("Rejected sources cannot be approved");
+	}
+	const reading = registerReading(review);
+	if (reading) {
+		return approveRegisterStageUpdate(review, reading, input, writeApproval);
 	}
 
 	let sourceUrl = canonicalizeSourceUrl(review.sourceUrl);
@@ -1948,24 +2099,7 @@ async function approveStagedSourceUnlocked(input: {
 				"Update review source URL does not match the target policy",
 			);
 		}
-		const currentTargetRevisionHash = policyRevisionHash(targetPolicy);
-		if (
-			input.expectedTargetRevisionHash !== undefined &&
-			input.expectedTargetRevisionHash !== currentTargetRevisionHash
-		) {
-			throw new Error(
-				"Expected target revision does not match the current policy; refresh the review before approval",
-			);
-		}
-		if (
-			review.targetPolicyBaseRevisionHash !== currentTargetRevisionHash &&
-			(!input.proposedRecord ||
-				input.expectedTargetRevisionHash !== currentTargetRevisionHash)
-		) {
-			throw new Error(
-				"Target policy changed after this update was staged; approval requires an explicitly reviewed proposedRecord plus expectedTargetRevisionHash for the current policy",
-				);
-			}
+		assertTargetRevisionApprovable(review, targetPolicy, input);
 		const newlyAdoptedIdentityUrls = sourceIdentityUrlsNotOwnedBy(
 			approvalSourceIdentityUrls,
 			targetPolicy.sourceUrl,
@@ -2317,6 +2451,19 @@ async function assertSourceStillMatchesApproval(
 	approvedVerification: Policy["verification"],
 	options: PublishOptions,
 ): Promise<void> {
+	if (registerReading(review)) {
+		const targetPolicy = (await getPolicies(undefined, { access: "admin" })).find(
+			(policy) => policy.id === review.targetPolicyId,
+		);
+		if (!targetPolicy) {
+			throw new Error("Target policy for update review was not found");
+		}
+		// A retried publication finds the update already written.
+		if (!wasPublishedFromReview(targetPolicy, review.proposedRecord as Policy)) {
+			await assertRegisterStillShows(review, targetPolicy);
+		}
+		return;
+	}
 	const { browserCapture, reuseStagedCapture } = options;
 	const approvedHash = approvedVerification.source.contentHash;
 	const approvedDestination =
@@ -2521,7 +2668,8 @@ async function publishStagedSourceUnlocked(
 		review.entryKind === "timeline_event"
 			? (review.proposedRecord as TimelineEvent).verification
 			: (review.proposedRecord as Policy).verification;
-	if (!isVerificationCurrent(approvedVerification)) {
+	// A register stage update keeps the record's page verification as it was.
+	if (!registerReading(review) && !isVerificationCurrent(approvedVerification)) {
 		throw new Error(
 			"Approved verification has expired; re-approve the source before publication",
 		);

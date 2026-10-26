@@ -258,15 +258,59 @@ describe('followLegislation', () => {
     expect(reviews[0].notes).toContain('"Discharged from Notice Paper" on 25 November 2024');
   });
 
-  it('waits while an update is undecided, and never restages a decided one', async () => {
+  it('does not ask again about an unmapped stage a decided update already showed', async () => {
+    const page = (await import('./aph-progress')).parseAphProgress(fixture('r7239'), { url: aphBillPage('r7239') });
+    const record = bill('r7239', page.events);
+    const [shown] = (await followLegislation({ targets: followTargets([record]), existingReviews: [], retrieve: retrieveFixture('r7239'), now })).reviews;
+    const decided: SourceReview = {
+      ...shown,
+      id: 'source-review-follow-bill-r7239-earlier',
+      status: 'published',
+      legislativeUpdate: { ...shown.legislativeUpdate!, added: [introduced('2024-01-01', 'lower', 'r7239')] },
+    };
+    const again = await followLegislation({ targets: followTargets([record]), existingReviews: [decided], retrieve: retrieveFixture('r7239'), now });
+    expect(again.reviews).toEqual([]);
+  });
+
+  it('never restages a pending or decided update, and skips a record whose update is being published', async () => {
     const record = bill('r7249', [introduced('2024-09-12', 'lower', 'r7249')]);
     const first = await followLegislation({ targets: followTargets([record]), existingReviews: [], retrieve: retrieveFixture('r7249'), now });
     const pending = first.reviews[0];
     const retrieve = vi.fn(retrieveFixture('r7249'));
     expect((await followLegislation({ targets: followTargets([record]), existingReviews: [pending], retrieve, now })).reviews).toEqual([]);
-    expect(retrieve).not.toHaveBeenCalled();
     const rejected: SourceReview = { ...pending, status: 'rejected' };
     expect((await followLegislation({ targets: followTargets([record]), existingReviews: [rejected], retrieve, now })).reviews).toEqual([]);
+    retrieve.mockClear();
+    const approved: SourceReview = { ...pending, status: 'approved' };
+    expect((await followLegislation({ targets: followTargets([record]), existingReviews: [approved], retrieve, now })).reviews).toEqual([]);
+    expect(retrieve).not.toHaveBeenCalled();
+  });
+
+  it('replaces a waiting update the register has moved past', async () => {
+    const record = bill('r7249', [introduced('2024-09-12', 'lower', 'r7249')]);
+    const [current] = (await followLegislation({ targets: followTargets([record]), existingReviews: [], retrieve: retrieveFixture('r7249'), now })).reviews;
+    const outdated: SourceReview = { ...current, id: 'source-review-follow-bill-r7249-outdated' };
+    const { reviews } = await followLegislation({ targets: followTargets([record]), existingReviews: [outdated], retrieve: retrieveFixture('r7249'), now });
+    expect(reviews.map(({ id, status }) => [id, status])).toEqual([
+      [outdated.id, 'rejected'],
+      [current.id, 'pending_review'],
+    ]);
+    expect(reviews[0].rejectionReason).toBe(`Superseded by ${current.id}: the register now shows a different stage update.`);
+  });
+
+  it('keeps a waiting update when the register cannot be read', async () => {
+    const record = bill('r7249', [introduced('2024-09-12', 'lower', 'r7249')]);
+    const [waiting] = (await followLegislation({ targets: followTargets([record]), existingReviews: [], retrieve: retrieveFixture('r7249'), now })).reviews;
+    const { reviews, errors } = await followLegislation({
+      targets: followTargets([record]),
+      existingReviews: [{ ...waiting, id: 'source-review-follow-bill-r7249-outdated' }],
+      retrieve: async () => {
+        throw new Error('HTTP 503');
+      },
+      now,
+    });
+    expect(reviews).toEqual([]);
+    expect(errors).toHaveLength(1);
   });
 
   it('reports a page with no Progress stages as a failure, so a markup change is not silent', async () => {
@@ -280,6 +324,62 @@ describe('followLegislation', () => {
     expect(reviews).toEqual([]);
     expect(results).toMatchObject([{ sourceId: 'track:bill-r7553', status: 'error', failureClass: 'parse' }]);
     expect(errors).toEqual(['track:bill-r7553: the bill home page shows no stages; its format may have changed']);
+  });
+});
+
+describe('a waiting Federal Register update the register no longer shows', () => {
+  it('is withdrawn, with no replacement for the notice it already showed', async () => {
+    const live = JSON.parse(frl('F2024L00710'));
+    live.parliamentaryScrutiny = [
+      { id: 1, eventType: 'Tabled', eventDate: '2024-06-24T00:00:00', house: 'HouseOfReps' },
+      { id: 2, eventType: 'Tabled', eventDate: '2024-06-24T00:00:00', house: 'Senate' },
+      {
+        id: 3,
+        eventType: 'DisallowanceMotion',
+        eventDate: '2024-08-22T00:00:00',
+        house: 'Senate',
+        disallowanceMotionSponsor: 'The Parliamentary Joint Committee On Human Rights',
+        disallowanceMotionOutcomeId: 4,
+      },
+      { id: 4, eventType: 'MotionOutcome', eventDate: '2024-09-09T00:00:00', house: 'Senate', motionOutcomeType: 'Withdrawn' },
+    ];
+    const title = JSON.stringify(live);
+    const reading = parseFrlTitle(title);
+    expect(reading.unrecognised).toHaveLength(1);
+    const [registered] = reading.events;
+    const commenced = { date: '2024-12-22', precision: 'day' as const, event: { kind: 'commenced' as const, extent: 'full' as const }, source: registered.source };
+    const record = buildPolicy({
+      id: 'online-safety-standard',
+      type: 'regulation',
+      status: 'active',
+      sourceUrl: 'https://www.legislation.gov.au/F2024L00710/asmade/details',
+      legislative: {
+        kind: 'instrument',
+        ref: { register: 'frl', titleId: 'F2024L00710' },
+        issuerBodyId: 'esafety',
+        enablingAct: 'Online Safety Act 2021, s 145',
+        events: [...reading.events, commenced] as Extract<Legislative, { kind: 'instrument' }>['events'],
+      },
+    });
+    const falseCommencement = { ...commenced, date: '2024-06-21' };
+    const waiting = {
+      id: 'source-review-follow-online-safety-standard-earlier',
+      sourceUrl: record.sourceUrl,
+      title: record.title,
+      entryKind: 'policy',
+      targetPolicyId: record.id,
+      status: 'pending_review',
+      discoveredAt: '2026-10-22T00:00:00.000Z',
+      createdBy: 'collector',
+      sourceEvidence: { url: frlTitleRecord('F2024L00710') },
+      proposedRecord: record,
+      legislativeUpdate: { added: [falseCommencement], unrecognised: reading.unrecognised },
+      updatedAt: '2026-10-22T00:00:00.000Z',
+    } as unknown as SourceReview;
+
+    const { reviews } = await followLegislation({ targets: followTargets([record]), existingReviews: [waiting], retrieve: register(title), now });
+
+    expect(reviews).toMatchObject([{ id: waiting.id, status: 'rejected', rejectionReason: 'The register no longer shows this stage update.' }]);
   });
 });
 

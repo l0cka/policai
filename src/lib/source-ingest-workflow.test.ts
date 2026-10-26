@@ -104,6 +104,10 @@ import { SourceFetchError } from '@/lib/pipeline/fetch';
 import { timelineRevisionHash } from './policy-revision';
 import { buildPolicy } from '@/test/factories';
 import { THEMES } from '@/lib/themes';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { followLegislation, followTargets } from '@/lib/legislation/follow';
+import { parseFrlTitle } from '@/lib/legislation/frl-title';
 
 const SOURCE_URL = 'https://example.gov.au/policy';
 const DISCOVERY_URL = 'https://policy.example.com/analysis';
@@ -3648,6 +3652,122 @@ describe('source ingest approval workflow', () => {
     );
     expect(retrieveSource).not.toHaveBeenCalled();
     expect(updatePolicy).not.toHaveBeenCalled();
+  });
+
+  describe('a register stage update from a follow watch', () => {
+    const frl = (name: string) => readFileSync(join(__dirname, 'legislation/__fixtures__/frl', `${name}.json`), 'utf8');
+    const titleRecord = frl('F2026L01223');
+    const registered = parseFrlTitle(titleRecord).events.slice(0, 1);
+    const target = {
+      ...buildDraft({
+        id: 'asic-rules',
+        type: 'regulation',
+        effectiveDate: '2026-07-01',
+        legislative: {
+          kind: 'instrument',
+          ref: { register: 'frl', titleId: 'F2026L01223' },
+          issuerBodyId: 'asic',
+          enablingAct: 'Corporations Act 2001, s 798G(1)',
+          events: registered,
+        } as PolicyDraft['legislative'],
+      }),
+      effectiveDate: '2026-07-01',
+      dates: [
+        ...buildDraft({ effectiveDate: '2026-07-01' }).dates!,
+        { type: 'commenced' as const, date: '2028-03-17', precision: 'day' as const },
+      ],
+      lastReviewedAt: '2026-10-20T00:00:00.000Z',
+      verification: {
+        status: 'verified' as const,
+        source: { url: SOURCE_URL, contentHash: 'a'.repeat(64) },
+        checkedAt: '2026-10-20T00:00:00.000Z',
+        checkedBy: 'reviewer',
+        method: 'manual' as const,
+      },
+    } as Policy;
+    /** The register API: the title record, the principal it amends, and the principal's versions. */
+    const register = (title: string, contentHash = 'c'.repeat(64)) =>
+      retrieveSource.mockImplementation(async (url: string) => ({
+        body: url.includes('/Search(') ? frl('search-affects-F2026L01223-amending') : url.includes('/Versions?') ? frl('F2017L01474.versions') : title,
+        durationMs: 1,
+        evidence: { url, retrievedAt: new Date().toISOString(), contentType: 'application/json', contentHash },
+      }));
+    let staged: SourceReview;
+    const approve = () => approveStagedSource({ id: staged.id, actor: 'reviewer' });
+    const approvedReview = () => ({ ...staged, ...updateSourceReview.mock.calls[0][1] }) as SourceReview;
+
+    beforeEach(async () => {
+      vi.setSystemTime(new Date('2026-10-22T05:00:00.000Z'));
+      getPolicies.mockResolvedValue([target]);
+      register(titleRecord);
+      const followed = await followLegislation({
+        targets: followTargets([target]),
+        existingReviews: [],
+        retrieve: (url) => retrieveSource(url),
+        now: new Date(),
+      });
+      staged = followed.reviews[0];
+      getSourceReviewById.mockImplementation(async () => staged);
+      retrieveSource.mockClear();
+    });
+
+    it('approves on the register record it was staged from, keeping the record page verification', async () => {
+      expect(staged.legislativeUpdate?.added.map(({ event }) => event.kind)).toEqual(['tabled', 'tabled']);
+
+      const approved = await approve();
+
+      expect(retrieveSource.mock.calls.map(([url]) => url)).not.toContain(SOURCE_URL);
+      expect(approved).toMatchObject({
+        status: 'approved',
+        proposedRecord: { id: target.id, sourceUrl: SOURCE_URL, verification: target.verification },
+      });
+      expect((approved.proposedRecord as Policy).legislative?.events.map(({ event }) => event.kind)).toEqual(['registered', 'tabled', 'tabled']);
+    });
+
+    it('approves when the register response changed only in fields the stages do not come from', async () => {
+      register(JSON.stringify({ ...JSON.parse(titleRecord), publishComments: 'Compilation note added' }), 'd'.repeat(64));
+
+      await expect(approve()).resolves.toMatchObject({ status: 'approved' });
+    });
+
+    it('refuses approval when the register no longer shows the staged stages', async () => {
+      const moved = JSON.parse(titleRecord);
+      moved.parliamentaryScrutinySummary = { lastDateForDisallowanceInHoR: '2026-12-03T00:00:00', lastDateForDisallowanceInSenate: null };
+      register(JSON.stringify(moved), 'd'.repeat(64));
+
+      await expect(approve()).rejects.toThrow('register no longer shows this stage update');
+      expect(updateSourceReview).not.toHaveBeenCalled();
+    });
+
+    it('refuses approval when the register refuses the live read, instead of trusting the staged fingerprint', async () => {
+      retrieveSource.mockRejectedValue(new SourceFetchError('HTTP 403 at https://api.prod.legislation.gov.au/v1', { status: 403 }));
+
+      await expect(approve()).rejects.toThrow('HTTP 403');
+      expect(updateSourceReview).not.toHaveBeenCalled();
+    });
+
+    it('publishes the approved stages onto the record', async () => {
+      await approve();
+      getSourceReviewById.mockResolvedValue(approvedReview());
+
+      await publishStagedSource(staged.id);
+
+      expect(updatePolicy).toHaveBeenCalledWith(
+        target.id,
+        expect.objectContaining({ verification: target.verification, legislative: expect.objectContaining({ events: expect.arrayContaining(registered) }) }),
+      );
+      expect(retrieveSource.mock.calls.map(([url]) => url)).not.toContain(SOURCE_URL);
+    });
+
+    it('publishes the approved stages when the record page verification is past its review interval', async () => {
+      vi.setSystemTime(new Date('2027-03-01T00:00:00.000Z'));
+      await approve();
+      getSourceReviewById.mockResolvedValue(approvedReview());
+
+      await publishStagedSource(staged.id);
+
+      expect(updatePolicy).toHaveBeenCalledWith(target.id, expect.objectContaining({ verification: target.verification }));
+    });
   });
 
   it('publishes a validated approved record and updates editorial freshness', async () => {

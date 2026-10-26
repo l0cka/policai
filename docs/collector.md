@@ -880,9 +880,11 @@ old or more, so a failed follow is retried on the next run. A targeted
 - An instrument whose `legislative.ref` is a Federal Register title id. The
   watch reads the title record from the register's OData API
   (`api.prod.legislation.gov.au/v1/Titles('<id>')`) over plain HTTP.
-  `src/lib/legislation/frl-title.ts` reads registration, a principal
-  instrument's commencement, tabling in each House, the end of each
-  disallowance window, disallowance and repeal. The API writes 9999-12-31 for a
+  `src/lib/legislation/frl-title.ts` reads registration, tabling in each
+  House, the end of each disallowance window, disallowance and repeal. It does
+  not read a principal instrument's commencement: the register's first
+  in-force day for a principal is its registration day, whatever s 2 says, so
+  a reviewer records commencement from s 2. The API writes 9999-12-31 for a
   date it has not fixed yet; the parser treats that as no date. An amending
   instrument's amendments commence in the versions of the principal it
   amends, so for an amending instrument the watch also searches
@@ -905,10 +907,24 @@ or a disallowance motion that did not pass. A merge that breaks the legal order
 is reported in the review, not applied. Unlike a changed direct document, a
 stage update keeps the record public while it waits, because the last approved
 stage is still true as of its date. It is decided like any other review: a
-proposal, then Daniel's decision card, then `record_decision`.
+proposal, then Daniel's decision card, then `record_decision`. When the
+review's evidence is a register reading rather than the record's page (a
+Federal Register title record or a SALT bill summary), approval and
+publication follow the record again live and refuse unless the register
+still yields the same update (the review id hashes the parsed stages, not the
+response bytes), or if the host refused. The record keeps its page
+verification, and an expired page verification does not block the stage
+update.
 
-Each record has at most one waiting stage update. A decided update is never
-staged again; only a further change on the register stages a new one. A page
+Each record has at most one waiting stage update, and it is always what the
+register shows now. The watch reads the register on every follow: when the
+register no longer shows the waiting update, the watch withdraws it (marks it
+rejected with the reason) and stages the current update, if there is one. A
+decided update is never staged again; only a further change on the register
+stages a new one. The watch skips a record whose update is approved and being
+published. A stage
+the parser could not map that a decided update already showed does not stage
+a review on its own. A page
 or response with no stages counts as a failure in the source health ledger, so
 a format change cannot pass silently. A run without a browser skips the APH
 watches but still runs the Federal Register ones. Run one watch with

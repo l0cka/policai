@@ -22,7 +22,7 @@ import {
 } from './frl-title';
 import type { Dated, LawEvent, Legislative } from './model';
 import { describeEvent } from './progress';
-import { stageUpdate, type RegisterReading } from './stage-update';
+import { stageUpdate, type RegisterReading, type UnrecognisedStage } from './stage-update';
 
 /**
  * Follow watches: each register bill with an APH id is read at its bill
@@ -152,16 +152,19 @@ export async function followLegislation(run: FollowRun): Promise<FollowResult> {
   });
 
   for (const { sourceId, url, register, policy } of run.targets) {
-    const waiting = run.existingReviews.some(
-      (review) =>
-        review.targetPolicyId === policy.id &&
-        review.legislativeUpdate &&
-        (review.status === 'pending_review' || review.status === 'approved'),
-    );
-    if (waiting) {
-      log(`[follow] ${sourceId}: a stage update is already waiting for a decision`);
+    const updates = run.existingReviews.filter((review) => review.targetPolicyId === policy.id && review.legislativeUpdate);
+    if (updates.some((review) => review.status === 'approved')) {
+      log(`[follow] ${sourceId}: a stage update is being published`);
       continue;
     }
+    // The waiting update must be what the register shows now; once it is not,
+    // the watch withdraws it, so no card waits on stages the register dropped.
+    const waiting = updates.find((review) => review.status === 'pending_review');
+    const withdraw = (because: string) => {
+      if (!waiting) return;
+      reviews.push({ ...waiting, status: 'rejected', rejectionReason: because, updatedAt: nowIso });
+      log(`[follow] ${sourceId}: withdrew ${waiting.id}`);
+    };
     const startedAt = Date.now();
     let retrieved: { body: string; evidence: SourceEvidence };
     try {
@@ -229,10 +232,6 @@ export async function followLegislation(run: FollowRun): Promise<FollowResult> {
     const recordedCommencement = policy.dates.find((date) => date.type === 'commenced');
     const commencementMoved =
       scheduled && String(recordedCommencement?.date ?? '').slice(0, 10) !== scheduled.date ? scheduled : undefined;
-    if (update.kind === 'unchanged' && unrecognised.length === 0 && !commencementMoved) {
-      log(`[follow] ${sourceId}: no new stage`);
-      continue;
-    }
     const added = update.kind === 'unchanged' ? [] : update.added;
     const changed = update.kind === 'unchanged' ? [] : update.changed;
     const id = `source-review-follow-${policy.id}-${fingerprint({
@@ -241,10 +240,21 @@ export async function followLegislation(run: FollowRun): Promise<FollowResult> {
       unrecognised,
       ...(commencementMoved ? { scheduled: commencementMoved.date } : {}),
     })}`;
+    if (waiting?.id === id) {
+      log(`[follow] ${sourceId}: this stage update is waiting for a decision`);
+      continue;
+    }
+    if (update.kind === 'unchanged' && !commencementMoved && unrecognised.every((stage) => shownBefore(stage, updates))) {
+      withdraw('The register no longer shows this stage update.');
+      log(`[follow] ${sourceId}: no new stage`);
+      continue;
+    }
     if (run.existingReviews.some((review) => review.id === id)) {
+      withdraw('The register now shows a stage update that was already decided.');
       log(`[follow] ${sourceId}: this stage update was already decided`);
       continue;
     }
+    withdraw(`Superseded by ${id}: the register now shows a different stage update.`);
     const on = (date: string) => formatPolicyDate({ type: 'published', date, precision: 'day' });
     const stages = added.map(({ date, event }) => `${describeEvent(event, policy.jurisdiction).label} on ${on(date)}`);
     const deadlines = changed.map(({ event }) =>
@@ -307,6 +317,16 @@ export async function followLegislation(run: FollowRun): Promise<FollowResult> {
     log(`[follow] ${sourceId}: staged ${id}`);
   }
   return { reviews, errors, results };
+}
+
+/** An earlier update already showed this stage, so it is not news on its own. */
+function shownBefore(stage: UnrecognisedStage, updates: readonly SourceReview[]): boolean {
+  return updates.some(
+    (review) =>
+      review.legislativeUpdate?.unrecognised.some(
+        (shown) => shown.stage === stage.stage && shown.date === stage.date && shown.chamber === stage.chamber,
+      ),
+  );
 }
 
 /** When an amending instrument's provisions commence: read from the versions of each principal it amends. */
