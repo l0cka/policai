@@ -214,6 +214,20 @@ describe('proposeVerifications', () => {
     expect(r.notes).toEqual([{ item_id: 2, note: 'source page unreadable' }]);
   });
 
+  it('proposes nothing for an item with any date left unchanged, so its main date stays put', async () => {
+    const items = [{
+      id: 4, title: 'D', url: 'https://d.test',
+      deadlines: [
+        { date: '2026-11-06', label: 'Alternative formats', kind: 'action' as const, primary: false },
+        { date: '2026-11-20', label: 'Submissions close', kind: 'action' as const, primary: true },
+      ],
+    }];
+    const text = 'Responses are due by 6 November 2026 for alternative formats. Submissions close 20 November 2026. The closing date has been extended to 4 December 2026.';
+    const r = await proposeVerifications(items, { fetchPage: async () => ({ text, via: 'direct' as const }), today: '2026-10-26' });
+    expect(r.proposals).toEqual([]);
+    expect(r.notes).toEqual([{ item_id: 4, note: '2026-11-20 left unchanged: the page may have extended or postponed it' }]);
+  });
+
   it('proposes nothing for an item whose dates all stay unchanged, so it stays queued', async () => {
     const items = [{ id: 3, title: 'C', url: 'https://c.test', deadlines: [{ date: '2026-10-16', label: 'Close', kind: 'action' as const }] }];
     const fetchPage = async () => ({ text: 'Posted 16 October 2026 by the team.', via: 'direct' as const });

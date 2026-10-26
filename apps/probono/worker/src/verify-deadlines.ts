@@ -43,10 +43,11 @@ export async function proposeVerifications(
     }
     const checks = checkDeadlines(item, page.text, today);
     for (const c of checks) if (c.uncertain) notes.push({ item_id: item.id, note: c.uncertain });
+    // A date left unchanged can be the item's main date, and saving its
+    // siblings would move the headline or stamp the item checked. Propose the
+    // item only when every date got a verdict; it stays queued otherwise.
     const verdicts = checks.flatMap((c) => (c.verdict ? [c.verdict] : []));
-    // Saving no verdicts would still stamp the item verified and drop it from
-    // tomorrow's queue.
-    if (verdicts.length === 0) continue;
+    if (verdicts.length < checks.length) continue;
     proposals.push({ item_id: item.id, model: CHECKER_MODEL, page_via: page.via, output: { verdicts } });
   }
   return { proposals, notes };

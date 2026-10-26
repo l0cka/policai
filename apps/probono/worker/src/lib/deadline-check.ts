@@ -138,25 +138,17 @@ function nextSentenceStart(text: string, sentence: Span): number {
 }
 
 /*
- * Whether the date's sentence, or the one after it, has extension wording
- * followed by a later date. Reading which date a page really moved to, and
+ * Whether the date's sentence, or the one after it, says something was
+ * extended or postponed. Reading which date a page really moved to, and
  * whether it moved this deadline at all ("the forum was postponed", "cannot
- * be extended"), is the judgement this checker can't make reliably, so such a
+ * be extended"), is judgement this checker can't make reliably, so such a
  * date is left as stored and logged instead.
  */
-function mentionsLaterDate(text: string, sentence: Span, stored: string): boolean {
-  const [year, storedMonth] = stored.split('-').map(Number);
+function mentionsExtension(text: string, sentence: Span): boolean {
   const end = Math.min(text.length, sentence.end + 200);
-  const dates = new RegExp(`\\b(\\d{1,2})${ORD}(?:\\s+of)?\\s+(${MON})\\b|\\b(${MON})\\.?\\s+(\\d{1,2})${ORD}\\b`, 'gi');
   for (const word of text.slice(sentence.start, end).matchAll(EXTENDED_RE)) {
     const at = sentence.start + word.index!;
-    const wordSentence = sentenceAround(text, { index: at, end: at + word[0].length });
-    if (wordSentence.start > nextSentenceStart(text, sentence)) continue;
-    for (const mm of text.slice(at, wordSentence.end).matchAll(dates)) {
-      const month = MONTHS[(mm[2] ?? mm[3]).toLowerCase()];
-      // "15 January" after a December date is next year, so also later.
-      if (`${year}-${pad(month)}-${pad(Number(mm[1] ?? mm[4]))}` > stored || month < storedMonth) return true;
-    }
+    if (sentenceAround(text, { index: at, end: at + word[0].length }).start <= nextSentenceStart(text, sentence)) return true;
   }
   return false;
 }
@@ -184,7 +176,7 @@ export function checkDeadlines(item: VerifyItem, pageText: string, today: string
     if (actions === 0 && milestones === 0) return { verdict: null, uncertain: `${s.date} left unchanged: no deadline or event wording beside the date` };
     if (actions === milestones) return { verdict: null, uncertain: `${s.date} left unchanged: mentions disagree on deadline or event` };
     const pick = read.find((r) => r.kind === (actions > milestones ? 'action' : 'milestone'))!;
-    if (mentionsLaterDate(text, pick.sentence, s.date)) {
+    if (mentionsExtension(text, pick.sentence)) {
       return { verdict: null, uncertain: `${s.date} left unchanged: the page may have extended or postponed it` };
     }
     const quote = text.slice(pick.sentence.start, pick.sentence.end).trim();

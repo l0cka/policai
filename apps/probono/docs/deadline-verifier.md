@@ -58,8 +58,7 @@ For each stored date `checkDeadlines`:
   close, submissions, until, due, deadline mean `action`; commence, opens,
   election, expo, event, takes effect and a `Date:` heading mean `milestone`;
 - leaves the date unchanged, and logs it, when its sentence or the next one
-  says "extended", "postponed" or "new closing date" followed by a later
-  date. Telling whether the page moved this deadline, and to which date, is
+  says "extended", "postponed" or "new closing date". Telling whether the page moved this deadline, and to which date, is
   judgement the checker can't make reliably, and a wrong later date is worse
   than an unconfirmed one. Otherwise `closed` when the period has ended (end
   of month or year for those precisions) or the sentence says closed, else
@@ -70,8 +69,8 @@ For each stored date `checkDeadlines`:
 When a date appears several times, the kind most mentions agree on wins.
 A date with no keyword either way, or whose mentions split evenly, gets
 no verdict, so the saver leaves it as stored and the run logs `left
-unchanged`. An item with no verdicts at all is not saved, so it stays in the
-next day's queue. Proposals carry `model: "deterministic-v1"`.
+unchanged`. An item with any date left unchanged is not saved at all, so
+its main date can't move and it stays in the next day's queue. Proposals carry `model: "deterministic-v1"`.
 
 ## Host dispatcher (installed)
 
