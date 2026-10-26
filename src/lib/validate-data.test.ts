@@ -1265,6 +1265,17 @@ describe('validatePolicyFrameworkArtifact', () => {
     ).toContainEqual(
       expect.stringContaining('useClassification.sourceUrl not an allowed https government host'),
     );
+    expect(
+      validatePolicyFrameworkArtifact(
+        {
+          ...artifact,
+          useClassification: { sourceUrl: 'https://www.digital.gov.au/ai/appendix-d/' },
+        },
+        [policy],
+      ).errors,
+    ).toContainEqual(
+      expect.stringContaining('useClassification.sourceUrl: URL must use the canonical source representation'),
+    );
   });
 });
 
