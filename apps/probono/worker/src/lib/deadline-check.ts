@@ -159,10 +159,11 @@ export function checkDeadlines(item: VerifyItem, pageText: string, today: string
     }
     const read = hits.map((hit) => {
       const sentence = sentenceAround(text, hit);
-      // "close at 5 p.m. 6 November at the forum": read the kind with and
-      // without a break at the abbreviation, and trust it only if both agree.
-      const kind = kindAt(text, hit, sentence);
-      return { hit, sentence, kind: kind === kindAt(text, hit, sentenceAround(text, hit, true)) ? kind : null };
+      // "close at 5 p.m. 6 November at the forum": if the sentence depends on
+      // whether the abbreviation ends one, the mention is too unclear to read.
+      const alt = sentenceAround(text, hit, true);
+      const clear = alt.start === sentence.start && alt.end === sentence.end;
+      return { hit, sentence, kind: clear ? kindAt(text, hit, sentence) : null };
     });
     // A page can mention one date several times ("commence on 10 December",
     // "by the 10 December deadline"); the kind most mentions agree on wins.

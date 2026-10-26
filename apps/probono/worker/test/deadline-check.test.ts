@@ -164,11 +164,13 @@ describe('checkDeadlines on cases the real batch lacked', () => {
     }
   });
 
-  it('a kind that depends on whether "p.m." ends the sentence is left unchanged', () => {
+  it('a mention whose sentence depends on whether "p.m." ends it is left unchanged', () => {
     for (const page of [
       'Doors open at 5 p.m. 6 November 2026.',
       'Submissions close at 5 p.m. 6 November 2026 at the community forum.',
       'Register by 5 p.m. Friday 6 November 2026 for the information session.',
+      'The consultation has closed at 5 p.m. Submissions close on 6 November 2026.',
+      'Doors open at 5 p.m. Expressions of interest 6 November 2026.',
     ]) expect(check([action('2026-11-06')], page).checks[0].verdict).toBeNull();
   });
 
