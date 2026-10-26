@@ -66,6 +66,10 @@ Apply schema/seed:
 
 ## Production boundary (Argus)
 
+The public dashboard runs on the Cloudflare Worker `a2j`, reading an hourly
+Neon copy of this database (see [docs/hosting-argus.md](../../docs/hosting-argus.md)).
+Everything below, the database included, stays on Argus.
+
 The cutover completed on 2026-09-23. The active child release is
 `/var/lib/probono-radar/app/apps/probono`. The guarded host dispatcher runs
 scheduled jobs from that tree. The former checkout at

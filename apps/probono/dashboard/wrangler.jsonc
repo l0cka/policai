@@ -18,7 +18,12 @@
 			"localConnectionString": "postgres://radar:radar@127.0.0.1:5433/radar"
 		}
 	],
-	// No routes yet: a deploy only reaches a2j.<account>.workers.dev until
-	// a2j.policai.org is pointed at the Worker.
-	"workers_dev": true
+	// Argus and its tunnel keep serving the site behind these routes as the
+	// rollback: delete these routes and the tunnel answers again.
+	// probono.policai.org is the old name; middleware.ts redirects it.
+	"routes": [
+		{ "pattern": "a2j.policai.org/*", "zone_name": "policai.org" },
+		{ "pattern": "probono.policai.org/*", "zone_name": "policai.org" }
+	],
+	"workers_dev": false
 }
