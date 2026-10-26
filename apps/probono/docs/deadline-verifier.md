@@ -57,14 +57,12 @@ For each stored date `checkDeadlines`:
   characters before or 30 after the date:
   close, submissions, until, due, deadline mean `action`; commence, opens,
   election, expo, event, takes effect and a `Date:` heading mean `milestone`;
-- marks `extended` when the date's sentence or the next one says a close was
-  "extended to", "postponed until" or has a "new closing date" of a later
-  date written straight after those words. The close word must be in that
-  clause ("the forum was postponed" doesn't count), the clause must not be
-  negated, the latest such date wins, dates may be day- or month-first, and
-  a yearless date in an earlier month rolls into next year. It quotes that
-  sentence instead; otherwise `closed` when the period has ended (end of
-  month or year for those precisions) or the sentence says closed, else
+- leaves the date unchanged, and logs it, when its sentence or the next one
+  says "extended", "postponed" or "new closing date" followed by a later
+  date. Telling whether the page moved this deadline, and to which date, is
+  judgement the checker can't make reliably, and a wrong later date is worse
+  than an unconfirmed one. Otherwise `closed` when the period has ended (end
+  of month or year for those precisions) or the sentence says closed, else
   `open`;
 - makes the single action date primary, or the one whose quote says close,
   submit, due or until. A tie keeps the stored primary.

@@ -30,13 +30,8 @@ const PRIMARY_RE = /\b(close[sd]?|closing|submi|deadline|due(?!\s+to)|until)/i;
 const DATE_HEADER_RE = /(?:^|\n)[ \t>*#-]*(?:event\s+)?date\s*:\s*$/i;
 const CLOSED_RE = /\b(has|have|had) (now )?closed|\bnow closed|\bis closed|\bclosed on\b|\bsubmissions? closed|\bapplications? closed|\bconsultation (has )?closed/i;
 const EXTENDED_RE = /\bextended\b|\bnew closing date\b|\bpostponed\b/gi;
-const NEGATION_RE = /\bnot\b|\bcannot\b|\bnever\b|\bno longer\b|n't\b/i;
-// Where a new clause starts, so "Submissions close 6 November and the forum
-// was postponed" gives the postponement its own subject.
-const CLAUSE_BREAK_RE = /[;,]|\b(and|but|while|whereas)\b/gi;
 // A close word a "Date:" heading yields to; "until" there is usually a clock time.
 const HEADER_ACTION_RE = /\b(close[sd]?|closing|submi|deadline|due\b(?!\s+to)|lodg|apply|register(ed)? by|registrations? close|rsvp)/i;
-const EXTENSION_SUBJECT_RE = /\b(close[sd]?|closing|deadline|submissions?|applications?)\b/i;
 
 // Keyword reach either side of a date, in characters.
 const BEFORE_REACH = 40;
@@ -143,44 +138,27 @@ function nextSentenceStart(text: string, sentence: Span): number {
 }
 
 /*
- * The new date when the date's sentence, or the one after it, says a close
- * was "extended to", "postponed until" or has a "new closing date" of a later
- * date, with the date straight after that wording. The close word must be in
- * the wording's own clause, or the clause must carry on an extension already
- * read ("extended to 20 November and then extended to 4 December"). Negated
- * clauses and other things postponed ("the forum was postponed") don't
- * count. The latest such date wins.
+ * Whether the date's sentence, or the one after it, has extension wording
+ * followed by a later date. Reading which date a page really moved to, and
+ * whether it moved this deadline at all ("the forum was postponed", "cannot
+ * be extended"), is the judgement this checker can't make reliably, so such a
+ * date is left as stored and logged instead.
  */
-function extendedTo(text: string, sentence: Span, stored: string): { date: string; hit: Hit } | null {
+function mentionsLaterDate(text: string, sentence: Span, stored: string): boolean {
   const [year, storedMonth] = stored.split('-').map(Number);
-  const region = { start: sentence.start, end: Math.min(text.length, sentence.end + 200) };
-  const dateAfter = new RegExp(
-    `^\\s*(?:(?:to|until|till|is|of|:)\\s*)?(?:${WEEKDAY})?(?:(\\d{1,2})${ORD}(?:\\s+of)?\\s+(${MON})|(${MON})\\.?\\s+(\\d{1,2})${ORD})\\b\\.?(?:,?\\s+(\\d{4}))?`,
-    'i',
-  );
-  let best: { date: string; hit: Hit } | null = null;
-  let extendedSentence = -1;
-  for (const word of text.slice(region.start, region.end).matchAll(EXTENDED_RE)) {
-    const at = region.start + word.index!;
+  const end = Math.min(text.length, sentence.end + 200);
+  const dates = new RegExp(`\\b(\\d{1,2})${ORD}(?:\\s+of)?\\s+(${MON})\\b|\\b(${MON})\\.?\\s+(\\d{1,2})${ORD}\\b`, 'gi');
+  for (const word of text.slice(sentence.start, end).matchAll(EXTENDED_RE)) {
+    const at = sentence.start + word.index!;
     const wordSentence = sentenceAround(text, { index: at, end: at + word[0].length });
     if (wordSentence.start > nextSentenceStart(text, sentence)) continue;
-    const lead = text.slice(wordSentence.start, at);
-    const clause = `${lead.slice(Math.max(0, ...[...lead.matchAll(CLAUSE_BREAK_RE)].map((m) => m.index! + m[0].length)))}${word[0]}`;
-    if (NEGATION_RE.test(clause)) continue;
-    const carriesOn = extendedSentence === wordSentence.start && !new RegExp(MILESTONE_RE.source, 'i').test(clause);
-    if (!EXTENSION_SUBJECT_RE.test(clause) && !carriesOn) continue;
-    const from = at + word[0].length;
-    const mm = text.slice(from, wordSentence.end).match(dateAfter);
-    if (!mm) continue;
-    const day = Number(mm[1] ?? mm[4]);
-    const month = MONTHS[(mm[2] ?? mm[3]).toLowerCase()];
-    // "extended to 15 January" from a December date means next January.
-    const y = mm[5] ? Number(mm[5]) : month < storedMonth ? year + 1 : year;
-    const date = `${y}-${pad(month)}-${pad(day)}`;
-    extendedSentence = wordSentence.start;
-    if (date > stored && (!best || date > best.date)) best = { date, hit: { index: from, end: from + mm[0].length, precision: 'day' } };
+    for (const mm of text.slice(at, wordSentence.end).matchAll(dates)) {
+      const month = MONTHS[(mm[2] ?? mm[3]).toLowerCase()];
+      // "15 January" after a December date is next year, so also later.
+      if (`${year}-${pad(month)}-${pad(Number(mm[1] ?? mm[4]))}` > stored || month < storedMonth) return true;
+    }
   }
-  return best;
+  return false;
 }
 
 export function checkDeadlines(item: VerifyItem, pageText: string, today: string): DateCheck[] {
@@ -206,15 +184,14 @@ export function checkDeadlines(item: VerifyItem, pageText: string, today: string
     if (actions === 0 && milestones === 0) return { verdict: null, uncertain: `${s.date} left unchanged: no deadline or event wording beside the date` };
     if (actions === milestones) return { verdict: null, uncertain: `${s.date} left unchanged: mentions disagree on deadline or event` };
     const pick = read.find((r) => r.kind === (actions > milestones ? 'action' : 'milestone'))!;
-    const extension = extendedTo(text, pick.sentence, s.date);
-    // The saver wants the quote to show the date it stores, so an extension
-    // quotes the sentence with the new date.
-    const quoted = extension ? sentenceAround(text, extension.hit) : pick.sentence;
-    const quote = text.slice(quoted.start, quoted.end).trim();
+    if (mentionsLaterDate(text, pick.sentence, s.date)) {
+      return { verdict: null, uncertain: `${s.date} left unchanged: the page may have extended or postponed it` };
+    }
+    const quote = text.slice(pick.sentence.start, pick.sentence.end).trim();
     const passed = effectiveEnd(s.date, pick.hit.precision) < today;
-    const status = extension ? 'extended' : passed || CLOSED_RE.test(quote) ? 'closed' : 'open';
+    const status = passed || CLOSED_RE.test(quote) ? 'closed' : 'open';
     return {
-      verdict: { ...base, corrected_date: extension?.date ?? null, kind: pick.kind!, precision: pick.hit.precision, primary: false, quote, status },
+      verdict: { ...base, kind: pick.kind!, precision: pick.hit.precision, primary: false, quote, status },
       uncertain: null,
       quoteHasClose: PRIMARY_RE.test(quote),
     };

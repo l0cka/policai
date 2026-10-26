@@ -92,59 +92,25 @@ describe('checkDeadlines on real pages', () => {
 });
 
 describe('checkDeadlines on cases the real batch lacked', () => {
-  it('follows an extension to the later date', () => {
-    const { verdicts, saved } = check([action('2026-11-06')],
-      'Submissions close 6 November 2026. Update: the closing date has been extended to 20 November 2026.');
-    expect(verdicts[0]).toMatchObject({ status: 'extended', corrected_date: '2026-11-20' });
-    expect(saved.deadlines[0]).toMatchObject({ date: '2026-11-20', status: 'extended' });
-  });
-
-  it('ignores negated or unrelated postponements', () => {
+  it('leaves a date the page may have extended or postponed unchanged', () => {
     for (const text of [
+      'Submissions close 6 November 2026. Update: the closing date has been extended to 20 November 2026.',
+      'Submissions close 6 November 2026 and have been extended to 20 November 2026.',
+      'Submissions close 6 November 2026. The closing date was extended to November 20, 2026.',
+      'Submissions close 6 November 2026. The forum was postponed to 30 November 2026.',
       'Submissions close 6 November 2026 and will not be extended to 20 November 2026.',
-      'The community forum was postponed to 30 November 2026.\nSubmissions close 6 November 2026.',
-      'Submissions close 6 November 2026. The hearing was not postponed to 20 November 2026.',
     ]) {
-      expect(check([action('2026-11-06')], text).verdicts[0]).toMatchObject({ status: 'open', corrected_date: null });
+      expect(check([action('2026-11-06')], text).checks[0], text)
+        .toEqual({ verdict: null, uncertain: '2026-11-06 left unchanged: the page may have extended or postponed it' });
     }
+    expect(check([action('2026-12-06')], 'Submissions close 6 December 2026. Extended to 15 January.').checks[0].verdict).toBeNull();
   });
 
-  it('ignores "cannot", "due to" and other later dates beside an extension', () => {
-    expect(check([action('2026-11-06')], 'Submissions close 6 November 2026 and cannot be extended to 20 November 2026.').verdicts[0])
-      .toMatchObject({ status: 'open', corrected_date: null });
-    expect(check([action('2026-11-06')], 'Submissions close 6 November 2026. The forum was postponed to 30 November 2026 due to rain.').verdicts[0])
-      .toMatchObject({ status: 'open', corrected_date: null });
-    expect(check([action('2026-11-06')], 'Submissions close 6 November 2026. The closing date was extended to 20 November 2026 and the forum was postponed to 4 December 2026.').verdicts[0])
-      .toMatchObject({ status: 'extended', corrected_date: '2026-11-20' });
-  });
-
-  it('reads the postponement in its own clause', () => {
-    for (const text of [
-      'Submissions close 6 November 2026 but the forum was postponed to 30 November 2026 due to rain.',
-      'Submissions close 6 November 2026 and the forum was postponed to 30 November 2026.',
-      'Submissions close 6 November 2026; the forum was postponed to 30 November 2026.',
-      'The closing date was extended to 6 November 2026 and the forum was postponed to 4 December 2026.',
-      'Submissions close 6 November 2026 and cannot under any circumstances be extended to 20 November 2026.',
-    ]) {
-      expect(check([action('2026-11-06')], text).verdicts[0], text).toMatchObject({ corrected_date: null });
-    }
-  });
-
-  it('keeps the latest of two extensions in one sentence', () => {
-    expect(check([action('2026-11-06')], 'Submissions close 6 November 2026. The closing date was extended to 20 November 2026 and then extended to 4 December 2026.').verdicts[0])
-      .toMatchObject({ status: 'extended', corrected_date: '2026-12-04' });
-  });
-
-  it('treats "due to" as prose', () => {
-    const { verdicts } = check([action('2026-11-06', 'Register for Changing Mind & Positive Ageing Expo')], 'Date: Friday 6 November 2026 due to high demand');
-    expect(verdicts[0]).toMatchObject({ kind: 'milestone', primary: false });
-  });
-
-  it('rolls a yearless extension into next year only when its month is earlier', () => {
-    expect(check([action('2026-11-06')], 'Submissions close 6 November 2026. The closing date was extended to 6 November.').verdicts[0])
-      .toMatchObject({ corrected_date: null });
+  it('confirms a date when extension wording points earlier or elsewhere', () => {
+    expect(check([action('2026-11-06')], 'The forum is on 30 November 2026. Submissions close 6 November 2026 and will not be extended.').verdicts[0])
+      .toMatchObject({ status: 'open' });
     expect(check([action('2026-11-20')], 'Submissions close 20 November 2026. The closing date was extended to 6 November.').verdicts[0])
-      .toMatchObject({ corrected_date: null });
+      .toMatchObject({ status: 'open' });
   });
 
   it('keeps a "Date:" heading with a clock range a milestone', () => {
@@ -152,11 +118,9 @@ describe('checkDeadlines on cases the real batch lacked', () => {
     expect(verdicts[0]).toMatchObject({ kind: 'milestone', primary: false });
   });
 
-  it('follows extensions written month-first or into the next year', () => {
-    expect(check([action('2026-11-06')], 'Submissions close 6 November 2026. The closing date was extended to November 20, 2026.').verdicts[0])
-      .toMatchObject({ status: 'extended', corrected_date: '2026-11-20' });
-    expect(check([action('2026-12-06')], 'Submissions close 6 December 2026. Submissions have been extended to 15 January.').verdicts[0])
-      .toMatchObject({ status: 'extended', corrected_date: '2027-01-15' });
+  it('treats "due to" as prose', () => {
+    const { verdicts } = check([action('2026-11-06', 'Register for Changing Mind & Positive Ageing Expo')], 'Date: Friday 6 November 2026 due to high demand');
+    expect(verdicts[0]).toMatchObject({ kind: 'milestone', primary: false });
   });
 
   it('keeps a "5 p.m." sentence whole', () => {
@@ -175,12 +139,6 @@ describe('checkDeadlines on cases the real batch lacked', () => {
     const stored: StoredDeadline[] = [{ date: '2026-11-16', label: 'Information session', kind: 'milestone' }];
     const { saved } = check(stored, 'The deadline for the previous round has passed and the information session is 16 November 2026.');
     expect(saved.deadlines[0]).toMatchObject({ kind: 'milestone', primary: false });
-  });
-
-  it('ignores a later date that comes before the extension wording', () => {
-    const { verdicts } = check([action('2026-11-06')],
-      'The forum is on 30 November 2026. Submissions close 6 November 2026 and will not be extended.');
-    expect(verdicts[0]).toMatchObject({ status: 'open', corrected_date: null });
   });
 
   it('checks month-precision dates against "Month YYYY"', () => {
