@@ -29,5 +29,5 @@ Preconditions:
 
 ## Gotchas
 
-- `/analysis/[slug]` is `force-dynamic`; chart counts and the "as at" date are computed per request in Australia/Sydney.
+- `/analysis/[slug]` is prerendered at build; chart counts and the "as at" date are computed at build time in Australia/Sydney.
 - Fixture articles replace the real ones for the whole instance; restart without `POLICAI_ARTICLES_DIR` to return to real data.
