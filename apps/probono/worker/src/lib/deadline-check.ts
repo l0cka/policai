@@ -88,20 +88,24 @@ function findDate(text: string, date: string, precision: 'day' | 'month' | 'year
   return mentions;
 }
 
-// Punctuation at i ends a sentence, unless it closes a one-letter
-// abbreviation such as the "m." of "5 p.m.".
-function endsSentence(text: string, i: number): boolean {
+// Whitespace at j separates two sentences: it follows . ! or ?, perhaps with
+// closing quotes or brackets after it. A one-letter abbreviation ("5 p.m.")
+// ends one only when a capital or a digit comes next.
+function isSentenceBreak(text: string, j: number): boolean {
+  if (!/\s/.test(text[j] ?? '')) return false;
+  let i = j - 1;
+  while (i >= 0 && /["'”’)\]]/.test(text[i])) i--;
   if (!/[.!?]/.test(text[i] ?? '')) return false;
-  return !(text[i] === '.' && /[a-z]/i.test(text[i - 1] ?? '') && !/[a-z]/i.test(text[i - 2] ?? ''));
+  const abbreviation = text[i] === '.' && /[a-z]/i.test(text[i - 1] ?? '') && !/[a-z]/i.test(text[i - 2] ?? '');
+  return !abbreviation || /^\s*[A-Z0-9]/.test(text.slice(j, j + 8));
 }
 
 /* The sentence or line holding the date, capped at QUOTE_LIMIT characters. */
 function sentenceAround(text: string, hit: { index: number; end: number }): Span {
   let start = hit.index;
-  while (start > 0 && text[start - 1] !== '\n' && !(/\s/.test(text[start - 1]) && endsSentence(text, start - 2))) start--;
+  while (start > 0 && text[start - 1] !== '\n' && !isSentenceBreak(text, start - 1)) start--;
   let end = hit.end;
-  while (end < text.length && text[end] !== '\n' && !(endsSentence(text, end) && (end + 1 === text.length || /\s/.test(text[end + 1])))) end++;
-  if (end < text.length && /[.!?]/.test(text[end])) end++;
+  while (end < text.length && text[end] !== '\n' && !isSentenceBreak(text, end)) end++;
   if (end - start > QUOTE_LIMIT) {
     start = Math.max(start, hit.index - 150);
     end = Math.min(end, start + QUOTE_LIMIT);

@@ -151,6 +151,22 @@ describe('checkDeadlines on cases the real batch lacked', () => {
       .toMatchObject({ quote: 'Under version 1.2.10 of the rules, submissions close 6 November 2026.' });
   });
 
+  it('a sentence ends after a closing quote or bracket', () => {
+    for (const page of [
+      'The Attorney-General said "the community forum is on 6 November 2026." Submissions close on 20 November 2026.',
+      '(The community forum is on 6 November 2026.) Submissions close on 20 November 2026.',
+      'The Attorney-General said “the community forum is on 6 November 2026.” Submissions close on 20 November 2026.',
+    ]) {
+      expect(check([{ date: '2026-11-06', label: 'Community forum', kind: 'milestone' }], page).verdicts[0])
+        .toMatchObject({ kind: 'milestone', primary: false });
+    }
+  });
+
+  it('"p.m." ends a sentence when a new one starts after it', () => {
+    expect(check([action('2026-11-06')], 'Doors open at 5 p.m. 6 November 2026.').checks[0].verdict)
+      .toBeNull();
+  });
+
   it('keeps a "5 p.m." sentence whole', () => {
     expect(check([action('2026-11-06')], 'Submissions close at 5 p.m. on 6 November 2026.').verdicts[0])
       .toMatchObject({ kind: 'action', primary: true, quote: 'Submissions close at 5 p.m. on 6 November 2026.' });
