@@ -2606,6 +2606,17 @@ export function validatePolicyFrameworkArtifact(
   } else {
     if (!isNonEmptyString(classification.sourceUrl)) {
       errors.push(`${label}: useClassification.sourceUrl must be a non-empty string`);
+    } else {
+      if (!isAllowedSourceHost(classification.sourceUrl)) {
+        errors.push(
+          `${label}: useClassification.sourceUrl not an allowed https government host (${classification.sourceUrl})`,
+        );
+      }
+      validateCanonicalSourceUrl(
+        `${label}: useClassification.sourceUrl`,
+        classification.sourceUrl,
+        errors,
+      );
     }
     if (
       !Array.isArray(classification.requiredIn) ||

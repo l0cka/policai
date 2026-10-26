@@ -1233,7 +1233,37 @@ describe('validatePolicyFrameworkArtifact', () => {
         expect.stringContaining('useClassification.usagePatterns must be a non-empty array'),
         expect.stringContaining('useClassification.domains[1].id must be unique'),
         expect.stringContaining('useClassification.domains[1].description'),
+        expect.stringContaining('useClassification.domains[1].examples'),
       ]),
+    );
+  });
+
+  it('requires the use classification from a government source', () => {
+    const policy = buildPolicy({ id: 'framework-policy' });
+    const artifact = {
+      id: 'framework',
+      title: policy.title,
+      version: '2.1',
+      authority: 'Example authority',
+      sourceUrl: policy.sourceUrl,
+      effectiveDate: policy.effectiveDate,
+      lastUpdated: '2026-07-01',
+      relatedPolicyId: policy.id,
+    };
+
+    expect(validatePolicyFrameworkArtifact(artifact, [policy]).errors).toContainEqual(
+      expect.stringContaining('useClassification must be an object'),
+    );
+    expect(
+      validatePolicyFrameworkArtifact(
+        {
+          ...artifact,
+          useClassification: { sourceUrl: 'https://example.com/appendix-d' },
+        },
+        [policy],
+      ).errors,
+    ).toContainEqual(
+      expect.stringContaining('useClassification.sourceUrl not an allowed https government host'),
     );
   });
 });
