@@ -89,23 +89,23 @@ function findDate(text: string, date: string, precision: 'day' | 'month' | 'year
 }
 
 // Whitespace at j separates two sentences: it follows . ! or ?, perhaps with
-// closing quotes or brackets after it. A one-letter abbreviation ("5 p.m.")
-// ends one only when a capital or a digit comes next.
-function isSentenceBreak(text: string, j: number): boolean {
+// closing quotes, brackets or markdown emphasis after it. Whether "5 p.m." before
+// a capital or a digit ends a sentence is a guess, so the caller picks.
+function isSentenceBreak(text: string, j: number, abbreviationEnds: boolean): boolean {
   if (!/\s/.test(text[j] ?? '')) return false;
   let i = j - 1;
-  while (i >= 0 && /["'”’)\]]/.test(text[i])) i--;
+  while (i >= 0 && /["'”’)\]*_]/.test(text[i])) i--;
   if (!/[.!?]/.test(text[i] ?? '')) return false;
   const abbreviation = text[i] === '.' && /[a-z]/i.test(text[i - 1] ?? '') && !/[a-z]/i.test(text[i - 2] ?? '');
-  return !abbreviation || /^\s*[A-Z0-9]/.test(text.slice(j, j + 8));
+  return !abbreviation || (abbreviationEnds && /^\s*[A-Z0-9]/.test(text.slice(j, j + 8)));
 }
 
 /* The sentence or line holding the date, capped at QUOTE_LIMIT characters. */
-function sentenceAround(text: string, hit: { index: number; end: number }): Span {
+function sentenceAround(text: string, hit: { index: number; end: number }, abbreviationEnds = false): Span {
   let start = hit.index;
-  while (start > 0 && text[start - 1] !== '\n' && !isSentenceBreak(text, start - 1)) start--;
+  while (start > 0 && text[start - 1] !== '\n' && !isSentenceBreak(text, start - 1, abbreviationEnds)) start--;
   let end = hit.end;
-  while (end < text.length && text[end] !== '\n' && !isSentenceBreak(text, end)) end++;
+  while (end < text.length && text[end] !== '\n' && !isSentenceBreak(text, end, abbreviationEnds)) end++;
   if (end - start > QUOTE_LIMIT) {
     start = Math.max(start, hit.index - 150);
     end = Math.min(end, start + QUOTE_LIMIT);
@@ -159,7 +159,10 @@ export function checkDeadlines(item: VerifyItem, pageText: string, today: string
     }
     const read = hits.map((hit) => {
       const sentence = sentenceAround(text, hit);
-      return { hit, sentence, kind: kindAt(text, hit, sentence) };
+      // "close at 5 p.m. 6 November at the forum": read the kind with and
+      // without a break at the abbreviation, and trust it only if both agree.
+      const kind = kindAt(text, hit, sentence);
+      return { hit, sentence, kind: kind === kindAt(text, hit, sentenceAround(text, hit, true)) ? kind : null };
     });
     // A page can mention one date several times ("commence on 10 December",
     // "by the 10 December deadline"); the kind most mentions agree on wins.
