@@ -343,7 +343,7 @@
   },
   "relatedPolicyId": "policy-responsible-use-ai-government-v2",
   "verification": {
-    "status": "needs_review",
+    "status": "verified",
     "source": {
       "url": "https://www.digital.gov.au/ai/ai-in-government-policy",
       "finalUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
@@ -379,9 +379,9 @@
         "notes": "The captured official page states: \"This version of the policy came into effect 15 December 2025 (v2.0), with minor updates published on 21 October 2026 (v2.1).\" The effective date stays 15 December 2025; v2.1 is a minor update."
       }
     },
-    "checkedAt": "2026-10-16T00:00:00.000Z",
-    "checkedBy": "Policai Developer source re-read (issue 161)",
+    "checkedAt": "2026-10-26T12:14:24.000Z",
+    "checkedBy": "Daniel Alkurdi",
     "method": "manual",
-    "notes": "Re-read against the version 2.1 policy PDF (cover 'Version 2.1', published 21 October 2026) by Claude (agent) at Daniel Alkurdi's request on 26 October 2026; awaiting Daniel Alkurdi's attestation. Version 2.1 corrections: version and lastUpdated; requirement titles set to the v2.1 headings (Strategic position on AI adoption, Operationalise the responsible use of AI, Medium-risk AI use cases, High-risk AI use cases); 'Assess All New AI Use Cases' and 'In-Scope Use Case Impact Assessment' are Policai labels for the 'All new AI use cases' and 'In-scope AI use cases' requirements; AI definition punctuation as in Appendix B. checkedAt and checkedBy still record the 16 October 2026 version 2.0 check (issue 161)."
+    "notes": "Re-read against the version 2.1 policy PDF (cover 'Version 2.1', published 21 October 2026) by Claude (agent) at Daniel Alkurdi's request on 26 October 2026; attested by Daniel Alkurdi on the Policai project decision card (https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7Ur4yvnXsEauzyg1D9a2vGT, decision cmsg_019nKBbCzGtpRmfKqX3Xisd7SndHAvuvBDGeMMqVDqE1wb). Version 2.1 corrections: version and lastUpdated; requirement titles set to the v2.1 headings (Strategic position on AI adoption, Operationalise the responsible use of AI, Medium-risk AI use cases, High-risk AI use cases); 'Assess All New AI Use Cases' and 'In-Scope Use Case Impact Assessment' are Policai labels for the 'All new AI use cases' and 'In-scope AI use cases' requirements; AI definition punctuation as in Appendix B."
   }
 }
