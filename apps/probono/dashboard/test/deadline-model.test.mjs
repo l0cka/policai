@@ -26,6 +26,9 @@ describe('deadline rules for legacy rows', () => {
     for (const label of ['Applications open', 'Special General Meeting to appoint auditor', 'Register for webinar on national standards', 'Portal launch']) {
       assert.equal(effectiveKind({ label, kind: 'action' }), 'milestone', label);
     }
+    for (const label of ['ADM obligations commence', 'Reforms take effect', 'Act comes into force', 'Positive Ageing Expo', 'Victorian election']) {
+      assert.equal(effectiveKind({ label, kind: 'action' }), 'milestone', label);
+    }
     assert.equal(effectiveKind({ label: 'Consultation opens; submissions close 2 October', kind: 'action' }), 'action');
     assert.equal(effectiveKind({ label: 'Submissions close' }), 'action');
     assert.equal(effectiveKind({ label: 'Report handed down' }), 'milestone');

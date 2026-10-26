@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # One deadline-verification pass: re-read the source page of each item whose
-# action deadline is upcoming or closed in the last 30 days, ask the verifier
-# model (no tools) for a verdict on every stored date, and save the verdicts
-# that pass the deadline rules.
+# action deadline is upcoming or closed in the last 30 days, check every stored
+# date against the page text (no model), and save the verdicts that pass the
+# deadline rules.
 #
 # Daily. The T-7 re-check and the weekly staleness rule live in the worker's
 # list query (src/lib/deadline-verify.ts selectItemsToVerify), not here.
@@ -23,10 +23,9 @@ PROBONO_DOCKER_BIN="${PROBONO_DOCKER_BIN:-docker}"
 # Bounded batch; the worker clamps it to 1..50 as well.
 VERIFY_BATCH=25
 
-# The worker lists the items, fetches each page and calls the OpenAI-compatible
-# verifier (VERIFIER_BASE_URL / VERIFIER_API_KEY / VERIFIER_MODEL from the
-# host env file) with no tools. Page text and model output stay data: this
-# script never executes either, and every save re-validates the verdicts.
+# The worker lists the items, fetches each page and checks the stored dates
+# against it (src/lib/deadline-check.ts). Page text and verdicts stay data:
+# this script never executes either, and every save re-validates the verdicts.
 proposals="$("$PROBONO_DOCKER_BIN" compose --profile worker run --rm worker src/verify-deadlines.ts)"
 
 checked="$(

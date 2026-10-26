@@ -53,7 +53,7 @@ const MONTH_RE = Object.keys(MONTHS).sort((a, b) => b.length - a.length).join('|
 export const CLOSE_VERB_RE =
   /\b(close[sd]?|closing|due|deadline|lodge[sd]?|lodg(e|ing|ement)|apply by|register by|until|no later than|before \d|by (\d|5\s?pm|midnight|cob|close|mon|tue|wed|thu|fri|sat|sun))/i;
 export const NON_DEADLINE_RE =
-  /\b(open(s|ed|ing)?|launch(es|ed|ing)?|meeting|webinar|event|forum|conference|symposium|summit|info(rmation)? session|workshop|hearing|agm|general meeting)\b/i;
+  /\b(open(s|ed|ing)?|launch(es|ed|ing)?|commenc(e|es|ed|ement|ing)|takes? effect|comes? into (force|effect)|meeting|webinar|event|expo|forum|conference|symposium|summit|info(rmation)? session|workshop|hearing|election|agm|general meeting)\b/i;
 const ACTION_LABEL_RE =
   /\b(close[sd]?|closing|due|deadline|submi|lodg|apply|register by|registrations? close|nominat|expressions? of interest|eoi|tender)/i;
 

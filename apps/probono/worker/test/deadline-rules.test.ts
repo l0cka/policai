@@ -189,6 +189,9 @@ describe('legacy rows (no precision / primary / quote)', () => {
     expect(effectiveKind({ label: 'Applications open', kind: 'action' })).toBe('milestone');
     expect(effectiveKind({ label: 'Special General Meeting to appoint auditor', kind: 'action' })).toBe('milestone');
     expect(effectiveKind({ label: 'Launch of the new portal' })).toBe('milestone');
+    for (const label of ['ADM obligations commence', 'Reforms take effect', 'Act comes into force', 'Positive Ageing Expo', 'Victorian election']) {
+      expect(effectiveKind({ label, kind: 'action' })).toBe('milestone');
+    }
     expect(effectiveKind({ label: 'Submissions close' })).toBe('action');
     expect(effectiveKind({ label: 'UN report due', kind: 'milestone' })).toBe('milestone');
   });
