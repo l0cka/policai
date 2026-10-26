@@ -545,8 +545,10 @@ EXACT CLI (INSTALLED ROOT CODE ONLY)
 FAILURE / RECOVERY
   sudo /usr/bin/python3 -I /usr/local/libexec/policai-host/cli.py rollback
     Uses blocked.json and retained files/images. Repeated directory rollback
-    is supported. It rewrites active-compose.json from the before record's
-    worker image and starts no container. Data-only rollback uses one
+    is supported. Once activation has started, it rewrites
+    active-compose.json from the before record's worker image; a block in
+    preflight, prepare or stage leaves the overlay as it was. It starts no
+    container. Data-only rollback uses one
     attached-branch Git switch, not a detach/reset sequence. A real-Git
     regression interrupts after each completed switch and verifies repeated
     recovery. Successful rollback leaves blocked.json intact.

@@ -11,6 +11,15 @@ import host as h
 
 
 class GitRecoveryTests(unittest.TestCase):
+    def test_rollback_before_activation_leaves_the_overlay(self):
+        obj = h.Host.__new__(h.Host)
+        writes = []
+        obj.state = SimpleNamespace(write=lambda name, value: writes.append(name))
+        obj.check_repo = lambda lane: self.fail("nothing to restore before activation")
+        image = "sha256:" + "a" * 64
+        obj.rollback({"previous": {"probono": "a" * 40}, "before": {"images": {"worker": image}}})
+        self.assertEqual(writes, [])
+
     def test_data_rollback_survives_interruption_after_each_git_mutation(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
