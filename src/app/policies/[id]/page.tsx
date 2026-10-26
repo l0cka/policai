@@ -22,6 +22,11 @@ import { PolicyDetailTabs } from './policy-detail-tabs';
 
 export const revalidate = 3600;
 
+export async function generateStaticParams() {
+  const policies = await getPolicies();
+  return policies.map((policy) => ({ id: policy.id }));
+}
+
 export async function generateMetadata({
   params,
 }: {

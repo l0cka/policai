@@ -8,7 +8,7 @@ const FOLLOWING_TITLE = 'Following';
 const FOLLOWING_DESCRIPTION =
   'Australian AI policy records followed in this browser. Follows stay on this device and are not an account.';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: FOLLOWING_TITLE,
