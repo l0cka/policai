@@ -323,7 +323,19 @@ class TransactionTests(unittest.TestCase):
                 self.assertEqual(state.read("active.json"), active())
                 self.assertEqual(state.read("blocked.json")["before"], active())
 
-    def test_a_record_without_the_release_identity_blocks_before_any_host_call(self):
+    def test_an_initialized_baseline_deploys_only_with_initial(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root, state = self.fixture(tmp)
+            state.write("active.json", {**active(), "bootstrap_pending": True})
+            host = FakeHost()
+            with self.assertRaises(d.Refused):
+                d.Transaction(state, host).deploy(NEW)
+            self.assertEqual(host.events, [])
+            d.Transaction(state, host).deploy(NEW, initial=True)
+            self.assertIn("stage", host.events)
+            self.assertFalse(state.read("active.json").get("bootstrap_pending"))
+
+    def test_a_record_without_the_release_identity_refuses_before_any_host_call(self):
         with tempfile.TemporaryDirectory() as tmp:
             root, state = self.fixture(tmp)
             state.write("active.json", {"target": OLD})

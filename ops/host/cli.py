@@ -188,6 +188,7 @@ def main():
                 sha(baseline["heads"][lane])
             for image in baseline["images"].values():
                 h.image_id(image)
+            baseline["target"] = baseline["heads"]["probono"]
             baseline["bootstrap_pending"] = True
             with state.lock(exclusive=True):
                 if any(
