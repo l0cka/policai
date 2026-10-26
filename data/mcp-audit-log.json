@@ -1,5 +1,34 @@
 [
   {
+    "id": "mcp-audit-c06b1f42-ba82-4208-8418-02bed428bbcb",
+    "createdAt": "2026-10-26T11:51:49.103Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-3af672a7-f9cf-4b61-b0e1-617d7783ef23",
+    "createdAt": "2026-10-26T11:46:47.477Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-716d2b39-2cb8-485c-857a-912b9dcab017",
+    "createdAt": "2026-10-26T11:46:33.418Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-8590c003-434e-44c5-9e65-a3bdf487701c",
+    "createdAt": "2026-10-26T11:46:17.348Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-d4d3ceea-065a-4f66-ab65-127bee9d27ff",
     "createdAt": "2026-10-22T11:52:51.478Z",
     "actor": "local-mcp-admin",
