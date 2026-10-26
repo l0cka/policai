@@ -1543,7 +1543,8 @@ async function assertRegisterReadingUnchanged(
 	reading: SourceEvidence,
 	changed: string,
 ): Promise<void> {
-	const { retrieved } = await retrieveSourceForApproval(reading.url, review);
+	// Live only: a refusal must fail, not fall back to the staged fingerprint.
+	const retrieved = await retrieveEditorialSource(reading.url);
 	if (!matchesRetrievedContent(retrieved, reading.contentHash)) {
 		throw new Error(
 			`The register record changed ${changed}; reject this update and the follow watch stages the current one on its next run`,
@@ -2646,7 +2647,8 @@ async function publishStagedSourceUnlocked(
 		review.entryKind === "timeline_event"
 			? (review.proposedRecord as TimelineEvent).verification
 			: (review.proposedRecord as Policy).verification;
-	if (!isVerificationCurrent(approvedVerification)) {
+	// A register stage update keeps the record's page verification as it was.
+	if (!registerReading(review) && !isVerificationCurrent(approvedVerification)) {
 		throw new Error(
 			"Approved verification has expired; re-approve the source before publication",
 		);
@@ -3113,9 +3115,10 @@ async function rejectStagedSourceUnlocked(
 		throw new Error("Published sources cannot be rejected");
 	}
 	if (
-		review.targetPolicyId ||
-		review.targetTimelineEventId ||
-		review.targetTimelineRevisionHash
+		!review.legislativeUpdate &&
+		(review.targetPolicyId ||
+			review.targetTimelineEventId ||
+			review.targetTimelineRevisionHash)
 	) {
 		throw new Error(
 			"Tracked-record reviews must be approved and published to re-verify the target; they cannot be rejected",

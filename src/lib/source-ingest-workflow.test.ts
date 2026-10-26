@@ -3710,13 +3710,24 @@ describe('source ingest approval workflow', () => {
       });
     });
 
-    it('refuses approval when the register record changed after staging', async () => {
+    it('refuses approval when the register record changed after staging, and lets the stale update be rejected', async () => {
       register('d'.repeat(64));
       getSourceReviewById.mockResolvedValue(staged());
 
       await expect(approveStagedSource({ id: 'source-review-follow-asic-rules', actor: 'reviewer' })).rejects.toThrow(
         'register record changed after staging',
       );
+      await expect(rejectStagedSource('source-review-follow-asic-rules', 'The register moved on')).resolves.toMatchObject({
+        status: 'rejected',
+      });
+    });
+
+    it('refuses approval when the register refuses the live read, instead of trusting the staged fingerprint', async () => {
+      retrieveSource.mockRejectedValue(new SourceFetchError(`HTTP 403 at ${REGISTER_URL}`, { status: 403, url: REGISTER_URL }));
+      getSourceReviewById.mockResolvedValue(staged());
+
+      await expect(approveStagedSource({ id: 'source-review-follow-asic-rules', actor: 'reviewer' })).rejects.toThrow('HTTP 403');
+      expect(updateSourceReview).not.toHaveBeenCalled();
     });
 
     it('publishes the approved stages onto the record', async () => {
@@ -3729,6 +3740,18 @@ describe('source ingest approval workflow', () => {
 
       expect(updatePolicy).toHaveBeenCalledWith(target.id, expect.objectContaining({ legislative: expect.objectContaining({ events: [registered, tabled] }) }));
       expect(retrieveSource.mock.calls.map(([url]) => url)).not.toContain(SOURCE_URL);
+    });
+
+    it('publishes the approved stages when the record page verification is past its review interval', async () => {
+      vi.setSystemTime(new Date('2026-12-16T12:00:00.000Z'));
+      register('c'.repeat(64));
+      getSourceReviewById.mockResolvedValue(staged());
+      await approveStagedSource({ id: 'source-review-follow-asic-rules', actor: 'reviewer' });
+      getSourceReviewById.mockResolvedValue({ ...staged(), ...updateSourceReview.mock.calls[0][1] });
+
+      await publishStagedSource('source-review-follow-asic-rules');
+
+      expect(updatePolicy).toHaveBeenCalledWith(target.id, expect.objectContaining({ verification: target.verification }));
     });
   });
 
