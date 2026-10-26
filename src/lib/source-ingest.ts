@@ -1560,7 +1560,7 @@ async function assertRegisterStillShows(
 	}
 	if (!followed.reviews.some(({ id }) => id === review.id)) {
 		throw new Error(
-			"The register no longer shows this stage update; the follow watch stages what it shows now on its next run",
+			"The register no longer shows this stage update; the next follow of this record withdraws it and stages what the register shows now",
 		);
 	}
 }

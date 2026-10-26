@@ -286,12 +286,31 @@ describe('followLegislation', () => {
     expect(retrieve).not.toHaveBeenCalled();
   });
 
-  it('stages the register\'s new update beside a pending one it has moved past', async () => {
+  it('replaces a waiting update the register has moved past', async () => {
     const record = bill('r7249', [introduced('2024-09-12', 'lower', 'r7249')]);
     const [current] = (await followLegislation({ targets: followTargets([record]), existingReviews: [], retrieve: retrieveFixture('r7249'), now })).reviews;
     const outdated: SourceReview = { ...current, id: 'source-review-follow-bill-r7249-outdated' };
     const { reviews } = await followLegislation({ targets: followTargets([record]), existingReviews: [outdated], retrieve: retrieveFixture('r7249'), now });
-    expect(reviews.map(({ id }) => id)).toEqual([current.id]);
+    expect(reviews.map(({ id, status }) => [id, status])).toEqual([
+      [outdated.id, 'rejected'],
+      [current.id, 'pending_review'],
+    ]);
+    expect(reviews[0].rejectionReason).toBe(`Superseded by ${current.id}: the register now shows a different stage update.`);
+  });
+
+  it('keeps a waiting update when the register cannot be read', async () => {
+    const record = bill('r7249', [introduced('2024-09-12', 'lower', 'r7249')]);
+    const [waiting] = (await followLegislation({ targets: followTargets([record]), existingReviews: [], retrieve: retrieveFixture('r7249'), now })).reviews;
+    const { reviews, errors } = await followLegislation({
+      targets: followTargets([record]),
+      existingReviews: [{ ...waiting, id: 'source-review-follow-bill-r7249-outdated' }],
+      retrieve: async () => {
+        throw new Error('HTTP 503');
+      },
+      now,
+    });
+    expect(reviews).toEqual([]);
+    expect(errors).toHaveLength(1);
   });
 
   it('reports a page with no Progress stages as a failure, so a markup change is not silent', async () => {
@@ -305,6 +324,46 @@ describe('followLegislation', () => {
     expect(reviews).toEqual([]);
     expect(results).toMatchObject([{ sourceId: 'track:bill-r7553', status: 'error', failureClass: 'parse' }]);
     expect(errors).toEqual(['track:bill-r7553: the bill home page shows no stages; its format may have changed']);
+  });
+});
+
+describe('a waiting Federal Register update the register no longer shows', () => {
+  it('is withdrawn, so its card does not wait on a stage the register dropped', async () => {
+    const title = frl('F2024L00710');
+    const [registered] = parseFrlTitle(title).events;
+    const commenced = { date: '2024-12-22', precision: 'day' as const, event: { kind: 'commenced' as const, extent: 'full' as const }, source: registered.source };
+    const record = buildPolicy({
+      id: 'online-safety-standard',
+      type: 'regulation',
+      status: 'active',
+      sourceUrl: 'https://www.legislation.gov.au/F2024L00710/asmade/details',
+      legislative: {
+        kind: 'instrument',
+        ref: { register: 'frl', titleId: 'F2024L00710' },
+        issuerBodyId: 'esafety',
+        enablingAct: 'Online Safety Act 2021, s 145',
+        events: [registered, commenced] as Extract<Legislative, { kind: 'instrument' }>['events'],
+      },
+    });
+    const falseCommencement = { ...commenced, date: '2024-06-21' };
+    const waiting = {
+      id: 'source-review-follow-online-safety-standard-earlier',
+      sourceUrl: record.sourceUrl,
+      title: record.title,
+      entryKind: 'policy',
+      targetPolicyId: record.id,
+      status: 'pending_review',
+      discoveredAt: '2026-10-22T00:00:00.000Z',
+      createdBy: 'collector',
+      sourceEvidence: { url: frlTitleRecord('F2024L00710') },
+      proposedRecord: record,
+      legislativeUpdate: { added: [falseCommencement], unrecognised: [] },
+      updatedAt: '2026-10-22T00:00:00.000Z',
+    } as unknown as SourceReview;
+
+    const { reviews } = await followLegislation({ targets: followTargets([record]), existingReviews: [waiting], retrieve: register(title), now });
+
+    expect(reviews).toMatchObject([{ id: waiting.id, status: 'rejected', rejectionReason: 'The register no longer shows this stage update.' }]);
   });
 });
 

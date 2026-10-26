@@ -916,11 +916,13 @@ response bytes), or if the host refused. The record keeps its page
 verification, and an expired page verification does not block the stage
 update.
 
-A decided update is never staged again; only a further change on the
-register stages a new one. The watch reads past a pending update: when the
-register has moved on, it stages the new update beside it, and publishing the
-newer one supersedes the older. It skips a record whose update is approved
-and being published. A stage
+Each record has at most one waiting stage update, and it is always what the
+register shows now. The watch reads the register on every follow: when the
+register no longer shows the waiting update, the watch withdraws it (marks it
+rejected with the reason) and stages the current update, if there is one. A
+decided update is never staged again; only a further change on the register
+stages a new one. The watch skips a record whose update is approved and being
+published. A stage
 the parser could not map that a decided update already showed does not stage
 a review on its own. A page
 or response with no stages counts as a failure in the source health ledger, so

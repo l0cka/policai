@@ -152,15 +152,20 @@ export async function followLegislation(run: FollowRun): Promise<FollowResult> {
   });
 
   for (const { sourceId, url, register, policy } of run.targets) {
-    // A pending update is read past: if the register has moved on, the new
-    // update supersedes it when published. An approved one is mid-publication.
-    const publishing = run.existingReviews.some(
-      (review) => review.targetPolicyId === policy.id && review.legislativeUpdate && review.status === 'approved',
-    );
-    if (publishing) {
+    const updates = run.existingReviews.filter((review) => review.targetPolicyId === policy.id && review.legislativeUpdate);
+    if (updates.some((review) => review.status === 'approved')) {
       log(`[follow] ${sourceId}: a stage update is being published`);
       continue;
     }
+    // The waiting update must be what the register shows now; once it is not,
+    // the watch withdraws it, so no card waits on stages the register dropped.
+    const waiting = updates.find((review) => review.status === 'pending_review');
+    const decided = updates.filter((review) => review !== waiting);
+    const withdraw = (because: string) => {
+      if (!waiting) return;
+      reviews.push({ ...waiting, status: 'rejected', rejectionReason: because, updatedAt: nowIso });
+      log(`[follow] ${sourceId}: withdrew ${waiting.id}`);
+    };
     const startedAt = Date.now();
     let retrieved: { body: string; evidence: SourceEvidence };
     try {
@@ -228,7 +233,8 @@ export async function followLegislation(run: FollowRun): Promise<FollowResult> {
     const recordedCommencement = policy.dates.find((date) => date.type === 'commenced');
     const commencementMoved =
       scheduled && String(recordedCommencement?.date ?? '').slice(0, 10) !== scheduled.date ? scheduled : undefined;
-    if (update.kind === 'unchanged' && !commencementMoved && unrecognised.every((stage) => shownBefore(stage, policy.id, run.existingReviews))) {
+    if (update.kind === 'unchanged' && !commencementMoved && unrecognised.every((stage) => shownBefore(stage, decided))) {
+      withdraw('The register no longer shows this stage update.');
       log(`[follow] ${sourceId}: no new stage`);
       continue;
     }
@@ -240,10 +246,16 @@ export async function followLegislation(run: FollowRun): Promise<FollowResult> {
       unrecognised,
       ...(commencementMoved ? { scheduled: commencementMoved.date } : {}),
     })}`;
-    if (run.existingReviews.some((review) => review.id === id)) {
-      log(`[follow] ${sourceId}: this stage update is already staged or decided`);
+    if (waiting?.id === id) {
+      log(`[follow] ${sourceId}: this stage update is waiting for a decision`);
       continue;
     }
+    if (run.existingReviews.some((review) => review.id === id)) {
+      withdraw('The register now shows a stage update that was already decided.');
+      log(`[follow] ${sourceId}: this stage update was already decided`);
+      continue;
+    }
+    withdraw(`Superseded by ${id}: the register now shows a different stage update.`);
     const on = (date: string) => formatPolicyDate({ type: 'published', date, precision: 'day' });
     const stages = added.map(({ date, event }) => `${describeEvent(event, policy.jurisdiction).label} on ${on(date)}`);
     const deadlines = changed.map(({ event }) =>
@@ -308,11 +320,10 @@ export async function followLegislation(run: FollowRun): Promise<FollowResult> {
   return { reviews, errors, results };
 }
 
-/** An update already staged or decided showed this stage, so it is not news on its own. */
-function shownBefore(stage: UnrecognisedStage, policyId: string, reviews: readonly SourceReview[]): boolean {
-  return reviews.some(
+/** A decided update already showed this stage, so it is not news on its own. */
+function shownBefore(stage: UnrecognisedStage, decided: readonly SourceReview[]): boolean {
+  return decided.some(
     (review) =>
-      review.targetPolicyId === policyId &&
       review.legislativeUpdate?.unrecognised.some(
         (shown) => shown.stage === stage.stage && shown.date === stage.date && shown.chamber === stage.chamber,
       ),
