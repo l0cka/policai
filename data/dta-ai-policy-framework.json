@@ -311,6 +311,96 @@
     "Education",
     "Critical infrastructure"
   ],
+  "useClassification": {
+    "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy/policy-responsible-use-ai-government-version-21-appendix-d-classification-system-ai-use",
+    "requiredIn": [
+      "in their use case register, as per the Standard for accountability",
+      "when assessing a use case with the AI impact assessment tool",
+      "in their AI transparency statement, as per the Standard for AI transparency statements"
+    ],
+    "usagePatterns": [
+      {
+        "id": "decision-making-administrative-action",
+        "title": "Decision-making and administrative action",
+        "description": "Uses AI to make, or substantially and directly inform, a decision or administrative action that could affect the rights or interests of an individual or entity. This includes refusing or failing to take such an action.",
+        "examples": "Eligibility decisions and recommendations, approvals, refusals, benefit determinations, licence decisions, payment adjustments, compliance outcomes and recommendations, risk scoring, prioritisation recommendations, case triage, benefit assessment support and recommended enforcement actions for human decision makers."
+      },
+      {
+        "id": "analytics",
+        "title": "Analytics",
+        "description": "Identifies patterns, generates insights, forecasts outcomes or makes recommendations from structured or unstructured information to support evidence-based decision-making.",
+        "examples": "Risk analysis, demand forecasting, fraud detection, anomaly detection, sentiment analysis, trend identification, service performance reporting and predictive modelling."
+      },
+      {
+        "id": "strategic-support",
+        "title": "Strategic support",
+        "description": "Assists research, policy development and drafting, issue framing, idea exploration, hypothesis development, sensemaking, information synthesis, knowledge management and advisory activities.",
+        "examples": "Policy drafting, briefing preparation, legislative analysis, document comparison, consultation analysis, options analysis, sense-checking analysis and qualitative synthesis."
+      },
+      {
+        "id": "workplace-productivity",
+        "title": "Workplace productivity",
+        "description": "Supports routine work, communication, collaboration and personal productivity without materially changing business processes or administrative outcomes.",
+        "examples": "Meeting summaries, email drafting, document summaries, presentation drafting, translation support, calendar assistance, action tracking and routine secretariat support."
+      },
+      {
+        "id": "workflow-automation",
+        "title": "Workflow automation",
+        "description": "Executes or coordinates predefined processes, tasks or actions with limited discretion.",
+        "examples": "Routing requests, triaging correspondence, updating records, processing forms, triggering workflows, generating standard notifications and interacting with case management or business systems."
+      },
+      {
+        "id": "image-processing",
+        "title": "Image processing",
+        "description": "Processes images or visual information to identify, classify, detect or verify objects, such as features or patterns for official purposes.",
+        "examples": "Facial recognition for border control, image classification, object detection, document image extraction, medical or scientific image analysis and identifying pests in cargo to aid biosecurity."
+      },
+      {
+        "id": "coding",
+        "title": "Coding",
+        "description": "Supports software engineering activities across the software lifecycle, including code generation, prototyping, debugging, testing and documentation.",
+        "examples": "Requirements analysis, solution design, generating first-draft code, prototyping an advanced website search function, debugging, writing test cases, refactoring code, documenting APIs and reviewing code for accessibility or security issues."
+      }
+    ],
+    "domains": [
+      {
+        "id": "service-delivery",
+        "title": "Service delivery",
+        "description": "Enhances the efficiency and accessibility of government services through tailored and responsive offerings for the public. Supports the public to engage with services through chatbots, enhanced self-service and multilingual capabilities, and supports the staff and systems that deliver government services.",
+        "examples": "Virtual assistants for public enquiries, multilingual service guidance, triage of service requests, assisted form completion, appointment support and case officer decision support."
+      },
+      {
+        "id": "compliance-fraud-detection",
+        "title": "Compliance and fraud detection",
+        "description": "Identifies patterns or anomalies in data to detect fraud, support compliance activity and help agencies administer laws and programs.",
+        "examples": "Payment integrity analysis, tax or revenue compliance risk models, grant acquittal checks, procurement anomaly detection, identity fraud indicators and prioritisation of compliance reviews."
+      },
+      {
+        "id": "law-enforcement-intelligence-security",
+        "title": "Law enforcement, intelligence and security",
+        "description": "Supports law enforcement, intelligence and security functions by analysing information from authorised sources to identify risks, support investigations and protect public safety, national security and government systems.",
+        "examples": "Threat detection, cyber security monitoring, intelligence search and summarisation, border risk assessment, investigation support, pattern analysis and protective security monitoring."
+      },
+      {
+        "id": "policy-legal",
+        "title": "Policy and legal",
+        "description": "Analyses policy, legislation, legal instruments and related information to support policy development, legal analysis, assurance and advice that is consistent with applicable laws and government obligations. Supports policy development that is consistent with existing laws.",
+        "examples": "Policy options analysis, legislative comparison, regulatory impact analysis, consultation synthesis, legal research support, Cabinet brief preparation and consistency checks against existing policy or legislation."
+      },
+      {
+        "id": "scientific",
+        "title": "Scientific",
+        "description": "Processes complex datasets, supports modelling and simulation, predicts outcomes and enhances scientific, environmental, health, biosecurity and monitoring functions.",
+        "examples": "Biosecurity detection, environmental monitoring, weather or climate modelling, public health surveillance, medical or scientific image analysis, geospatial analysis and research data synthesis."
+      },
+      {
+        "id": "corporate-enabling",
+        "title": "Corporate and enabling",
+        "description": "Supports corporate and enabling functions, including human resources (HR), finance, procurement, media and communications, record management and information technology (IT).",
+        "examples": "HR service desk support, finance forecasting, procurement workflow support, media monitoring, records classification, IT service management, cyber triage and internal knowledge search."
+      }
+    ]
+  },
   "definitions": {
     "ai": {
       "source": "OECD",
@@ -379,9 +469,9 @@
         "notes": "The captured official page states: \"This version of the policy came into effect 15 December 2025 (v2.0), with minor updates published on 21 October 2026 (v2.1).\" The effective date stays 15 December 2025; v2.1 is a minor update."
       }
     },
-    "checkedAt": "2026-10-26T12:14:24.000Z",
+    "checkedAt": "2026-10-26T12:41:20.000Z",
     "checkedBy": "Daniel Alkurdi",
     "method": "manual",
-    "notes": "Re-read against the version 2.1 policy PDF (cover 'Version 2.1', published 21 October 2026) by Claude (agent) at Daniel Alkurdi's request on 26 October 2026; attested by Daniel Alkurdi on the Policai project decision card (https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7Ur4yvnXsEauzyg1D9a2vGT, decision cmsg_019nKBbCzGtpRmfKqX3Xisd7SndHAvuvBDGeMMqVDqE1wb). Version 2.1 corrections: version and lastUpdated; requirement titles set to the v2.1 headings (Strategic position on AI adoption, Operationalise the responsible use of AI, Medium-risk AI use cases, High-risk AI use cases); 'Assess All New AI Use Cases' and 'In-Scope Use Case Impact Assessment' are Policai labels for the 'All new AI use cases' and 'In-scope AI use cases' requirements; AI definition punctuation as in Appendix B."
+    "notes": "Re-read against the version 2.1 policy PDF (cover 'Version 2.1', published 21 October 2026) by Claude (agent) at Daniel Alkurdi's request on 26 October 2026; attested by Daniel Alkurdi on the Policai project decision card (https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7Ur4yvnXsEauzyg1D9a2vGT, decision cmsg_019nKBbCzGtpRmfKqX3Xisd7SndHAvuvBDGeMMqVDqE1wb). Version 2.1 corrections: version and lastUpdated; requirement titles set to the v2.1 headings (Strategic position on AI adoption, Operationalise the responsible use of AI, Medium-risk AI use cases, High-risk AI use cases); 'Assess All New AI Use Cases' and 'In-Scope Use Case Impact Assessment' are Policai labels for the 'All new AI use cases' and 'In-scope AI use cases' requirements; AI definition punctuation as in Appendix B. Appendix D (useClassification: 7 usage patterns, 6 domains, and the 3 places agencies must classify AI use) captured from https://www.digital.gov.au/ai/ai-in-government-policy/policy-responsible-use-ai-government-version-21-appendix-d-classification-system-ai-use in headless Chromium on Argus at 2026-10-26T12:26:24Z (main text sha256 eb031759b0bbab69cdcfd0b864a7419c22619a2742b8f5dec3b379a068e4348a), matched word for word against pages 23 to 26 of the v2.1 policy PDF; attested by Daniel Alkurdi on the Policai project decision card (https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7MUmmPf4ymq4GEusaGYeNK4, decision cmsg_019nKBbCzGtpRmfKqX3Xisd7CF4gPniHTocvRGNz7Udtbm) on 26 October 2026."
   }
 }

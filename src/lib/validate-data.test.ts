@@ -1195,6 +1195,15 @@ describe('validatePolicyFrameworkArtifact', () => {
           },
         ],
         riskAreas: [null],
+        useClassification: {
+          sourceUrl: '',
+          requiredIn: [],
+          usagePatterns: [],
+          domains: [
+            { id: 'health', title: 'Health', description: 'Health care.', examples: 'Triage.' },
+            { id: 'health', title: 'Health again' },
+          ],
+        },
         relatedPolicyId: policy.id,
         verification: {
           status: 'verified',
@@ -1219,7 +1228,53 @@ describe('validatePolicyFrameworkArtifact', () => {
         expect.stringContaining('policyAims[0].outcomes'),
         expect.stringContaining('inScopeCriteria[0].applicableTo'),
         expect.stringContaining('riskAreas must be a non-empty string array'),
+        expect.stringContaining('useClassification.sourceUrl'),
+        expect.stringContaining('useClassification.requiredIn'),
+        expect.stringContaining('useClassification.usagePatterns must be a non-empty array'),
+        expect.stringContaining('useClassification.domains[1].id must be unique'),
+        expect.stringContaining('useClassification.domains[1].description'),
+        expect.stringContaining('useClassification.domains[1].examples'),
       ]),
+    );
+  });
+
+  it('requires the use classification from a government source', () => {
+    const policy = buildPolicy({ id: 'framework-policy' });
+    const artifact = {
+      id: 'framework',
+      title: policy.title,
+      version: '2.1',
+      authority: 'Example authority',
+      sourceUrl: policy.sourceUrl,
+      effectiveDate: policy.effectiveDate,
+      lastUpdated: '2026-07-01',
+      relatedPolicyId: policy.id,
+    };
+
+    expect(validatePolicyFrameworkArtifact(artifact, [policy]).errors).toContainEqual(
+      expect.stringContaining('useClassification must be an object'),
+    );
+    expect(
+      validatePolicyFrameworkArtifact(
+        {
+          ...artifact,
+          useClassification: { sourceUrl: 'https://example.com/appendix-d' },
+        },
+        [policy],
+      ).errors,
+    ).toContainEqual(
+      expect.stringContaining('useClassification.sourceUrl not an allowed https government host'),
+    );
+    expect(
+      validatePolicyFrameworkArtifact(
+        {
+          ...artifact,
+          useClassification: { sourceUrl: 'https://www.digital.gov.au/ai/appendix-d/' },
+        },
+        [policy],
+      ).errors,
+    ).toContainEqual(
+      expect.stringContaining('useClassification.sourceUrl: URL must use the canonical source representation'),
     );
   });
 });
