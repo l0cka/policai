@@ -272,15 +272,26 @@ describe('followLegislation', () => {
     expect(again.reviews).toEqual([]);
   });
 
-  it('waits while an update is undecided, and never restages a decided one', async () => {
+  it('never restages a pending or decided update, and skips a record whose update is being published', async () => {
     const record = bill('r7249', [introduced('2024-09-12', 'lower', 'r7249')]);
     const first = await followLegislation({ targets: followTargets([record]), existingReviews: [], retrieve: retrieveFixture('r7249'), now });
     const pending = first.reviews[0];
     const retrieve = vi.fn(retrieveFixture('r7249'));
     expect((await followLegislation({ targets: followTargets([record]), existingReviews: [pending], retrieve, now })).reviews).toEqual([]);
-    expect(retrieve).not.toHaveBeenCalled();
     const rejected: SourceReview = { ...pending, status: 'rejected' };
     expect((await followLegislation({ targets: followTargets([record]), existingReviews: [rejected], retrieve, now })).reviews).toEqual([]);
+    retrieve.mockClear();
+    const approved: SourceReview = { ...pending, status: 'approved' };
+    expect((await followLegislation({ targets: followTargets([record]), existingReviews: [approved], retrieve, now })).reviews).toEqual([]);
+    expect(retrieve).not.toHaveBeenCalled();
+  });
+
+  it('stages the register\'s new update beside a pending one it has moved past', async () => {
+    const record = bill('r7249', [introduced('2024-09-12', 'lower', 'r7249')]);
+    const [current] = (await followLegislation({ targets: followTargets([record]), existingReviews: [], retrieve: retrieveFixture('r7249'), now })).reviews;
+    const outdated: SourceReview = { ...current, id: 'source-review-follow-bill-r7249-outdated' };
+    const { reviews } = await followLegislation({ targets: followTargets([record]), existingReviews: [outdated], retrieve: retrieveFixture('r7249'), now });
+    expect(reviews.map(({ id }) => id)).toEqual([current.id]);
   });
 
   it('reports a page with no Progress stages as a failure, so a markup change is not silent', async () => {

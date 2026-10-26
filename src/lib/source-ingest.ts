@@ -6,7 +6,7 @@ import { isAbsolute, relative, resolve } from "node:path";
 import { analyseContentRelevance } from "@/lib/analysis";
 import { isValidCalendarDate } from "@/lib/calendar-date";
 import { withDataMutationLock } from "@/lib/data-lock";
-import { followTargets } from "@/lib/legislation/follow";
+import { followLegislation, followTargets } from "@/lib/legislation/follow";
 import { isLegislativeDraft } from "@/lib/legislation/model";
 import {
 	extractRetrievedDocument,
@@ -1538,16 +1538,29 @@ function registerReading(review: SourceReview): SourceEvidence | null {
 		: null;
 }
 
-async function assertRegisterReadingUnchanged(
+/**
+ * The register still shows this update when a live follow of the target
+ * stages the same review id, which hashes the parsed stages rather than the
+ * response bytes. A refused read fails rather than echoing the staged hash.
+ */
+async function assertRegisterStillShows(
 	review: SourceReview,
-	reading: SourceEvidence,
-	changed: string,
+	targetPolicy: Policy,
 ): Promise<void> {
-	// Live only: a refusal must fail, not fall back to the staged fingerprint.
-	const retrieved = await retrieveEditorialSource(reading.url);
-	if (!matchesRetrievedContent(retrieved, reading.contentHash)) {
+	const followed = await followLegislation({
+		targets: followTargets([targetPolicy]),
+		existingReviews: [],
+		retrieve: (url) => retrieveEditorialSource(url),
+		now: new Date(),
+	});
+	if (followed.errors.length > 0) {
 		throw new Error(
-			`The register record changed ${changed}; reject this update and the follow watch stages the current one on its next run`,
+			`The register record could not be read: ${followed.errors.join("; ")}`,
+		);
+	}
+	if (!followed.reviews.some(({ id }) => id === review.id)) {
+		throw new Error(
+			"The register no longer shows this stage update; the follow watch stages what it shows now on its next run",
 		);
 	}
 }
@@ -1585,7 +1598,7 @@ async function approveRegisterStageUpdate(
 		);
 	}
 	assertTargetRevisionApprovable(review, targetPolicy, input);
-	await assertRegisterReadingUnchanged(review, reading, "after staging");
+	await assertRegisterStillShows(review, targetPolicy);
 	const draft = (input.proposedRecord ?? review.proposedRecord) as PolicyDraft;
 	if (
 		draft.id !== targetPolicy.id ||
@@ -2438,9 +2451,17 @@ async function assertSourceStillMatchesApproval(
 	approvedVerification: Policy["verification"],
 	options: PublishOptions,
 ): Promise<void> {
-	const reading = registerReading(review);
-	if (reading) {
-		await assertRegisterReadingUnchanged(review, reading, "after approval");
+	if (registerReading(review)) {
+		const targetPolicy = (await getPolicies(undefined, { access: "admin" })).find(
+			(policy) => policy.id === review.targetPolicyId,
+		);
+		if (!targetPolicy) {
+			throw new Error("Target policy for update review was not found");
+		}
+		// A retried publication finds the update already written.
+		if (!wasPublishedFromReview(targetPolicy, review.proposedRecord as Policy)) {
+			await assertRegisterStillShows(review, targetPolicy);
+		}
 		return;
 	}
 	const { browserCapture, reuseStagedCapture } = options;
@@ -3115,10 +3136,9 @@ async function rejectStagedSourceUnlocked(
 		throw new Error("Published sources cannot be rejected");
 	}
 	if (
-		!review.legislativeUpdate &&
-		(review.targetPolicyId ||
-			review.targetTimelineEventId ||
-			review.targetTimelineRevisionHash)
+		review.targetPolicyId ||
+		review.targetTimelineEventId ||
+		review.targetTimelineRevisionHash
 	) {
 		throw new Error(
 			"Tracked-record reviews must be approved and published to re-verify the target; they cannot be rejected",

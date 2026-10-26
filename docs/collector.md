@@ -910,14 +910,17 @@ stage is still true as of its date. It is decided like any other review: a
 proposal, then Daniel's decision card, then `record_decision`. When the
 review's evidence is a register reading rather than the record's page (a
 Federal Register title record or a SALT bill summary), approval and
-publication read the register again live and refuse if its fingerprint
-changed or the host refused. The record keeps its page verification, and an
-expired page verification does not block the stage update. A stage update,
-unlike other tracked-record reviews, can be rejected, and the next run stages
-what the register then shows.
+publication follow the record again live and refuse unless the register
+still yields the same update (the review id hashes the parsed stages, not the
+response bytes), or if the host refused. The record keeps its page
+verification, and an expired page verification does not block the stage
+update.
 
-Each record has at most one waiting stage update. A decided update is never
-staged again; only a further change on the register stages a new one. A stage
+A decided update is never staged again; only a further change on the
+register stages a new one. The watch reads past a pending update: when the
+register has moved on, it stages the new update beside it, and publishing the
+newer one supersedes the older. It skips a record whose update is approved
+and being published. A stage
 the parser could not map that a decided update already showed does not stage
 a review on its own. A page
 or response with no stages counts as a failure in the source health ledger, so

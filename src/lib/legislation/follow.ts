@@ -152,14 +152,13 @@ export async function followLegislation(run: FollowRun): Promise<FollowResult> {
   });
 
   for (const { sourceId, url, register, policy } of run.targets) {
-    const waiting = run.existingReviews.some(
-      (review) =>
-        review.targetPolicyId === policy.id &&
-        review.legislativeUpdate &&
-        (review.status === 'pending_review' || review.status === 'approved'),
+    // A pending update is read past: if the register has moved on, the new
+    // update supersedes it when published. An approved one is mid-publication.
+    const publishing = run.existingReviews.some(
+      (review) => review.targetPolicyId === policy.id && review.legislativeUpdate && review.status === 'approved',
     );
-    if (waiting) {
-      log(`[follow] ${sourceId}: a stage update is already waiting for a decision`);
+    if (publishing) {
+      log(`[follow] ${sourceId}: a stage update is being published`);
       continue;
     }
     const startedAt = Date.now();
@@ -242,7 +241,7 @@ export async function followLegislation(run: FollowRun): Promise<FollowResult> {
       ...(commencementMoved ? { scheduled: commencementMoved.date } : {}),
     })}`;
     if (run.existingReviews.some((review) => review.id === id)) {
-      log(`[follow] ${sourceId}: this stage update was already decided`);
+      log(`[follow] ${sourceId}: this stage update is already staged or decided`);
       continue;
     }
     const on = (date: string) => formatPolicyDate({ type: 'published', date, precision: 'day' });
@@ -309,7 +308,7 @@ export async function followLegislation(run: FollowRun): Promise<FollowResult> {
   return { reviews, errors, results };
 }
 
-/** A reviewer already decided an update that showed this stage, so it is not news on its own. */
+/** An update already staged or decided showed this stage, so it is not news on its own. */
 function shownBefore(stage: UnrecognisedStage, policyId: string, reviews: readonly SourceReview[]): boolean {
   return reviews.some(
     (review) =>
