@@ -199,10 +199,11 @@ describe('figures in an analysis piece', () => {
       expect(register).toHaveAttribute('href', '/');
     });
 
-    it('renders the piece on every request, so the count and its date are never cached', async () => {
+    it('prerenders every published piece, so the count is dated to the deploy that built it', async () => {
+      serve([...cited, ...counted]);
       const page = await import('./[slug]/page');
-      expect(page.dynamic).toBe('force-dynamic');
-      expect('revalidate' in page).toBe(false);
+      expect('dynamic' in page).toBe(false);
+      expect(await page.generateStaticParams()).toContainEqual({ slug: 'figure-kinds-published' });
     });
 
     it('dates the count by the Sydney day of the render, not the UTC day', async () => {
