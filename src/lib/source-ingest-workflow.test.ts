@@ -104,6 +104,8 @@ import { SourceFetchError } from '@/lib/pipeline/fetch';
 import { timelineRevisionHash } from './policy-revision';
 import { buildPolicy } from '@/test/factories';
 import { THEMES } from '@/lib/themes';
+import { frlTitleRecord } from '@/lib/legislation/frl-title';
+import { canonicalizeSourceUrl } from '@/lib/source-url';
 
 const SOURCE_URL = 'https://example.gov.au/policy';
 const DISCOVERY_URL = 'https://policy.example.com/analysis';
@@ -3648,6 +3650,86 @@ describe('source ingest approval workflow', () => {
     );
     expect(retrieveSource).not.toHaveBeenCalled();
     expect(updatePolicy).not.toHaveBeenCalled();
+  });
+
+  describe('a register stage update from a follow watch', () => {
+    const REGISTER_URL = frlTitleRecord('F2026L01223');
+    const registered = { date: '2026-09-17', precision: 'day' as const, event: { kind: 'registered' as const }, source: { url: SOURCE_URL } };
+    const tabled = { date: '2026-10-12', precision: 'day' as const, event: { kind: 'tabled' as const, chamber: 'upper' as const }, source: { url: SOURCE_URL } };
+    const instrument = (events: object[]) => ({
+      kind: 'instrument' as const,
+      ref: { register: 'frl' as const, titleId: 'F2026L01223' },
+      issuerBodyId: 'asic',
+      enablingAct: 'Corporations Act 2001, s 798G(1)',
+      events,
+    });
+    const target = {
+      ...buildDraft({ id: 'asic-rules', type: 'regulation', effectiveDate: '2026-07-01', legislative: instrument([registered]) as PolicyDraft['legislative'] }),
+      effectiveDate: '2026-07-01',
+      lastReviewedAt: '2026-07-10T00:00:00.000Z',
+      verification: {
+        status: 'verified' as const,
+        source: { url: SOURCE_URL, contentHash: 'a'.repeat(64) },
+        checkedAt: '2026-07-10T00:00:00.000Z',
+        checkedBy: 'reviewer',
+        method: 'manual' as const,
+      },
+    } as Policy;
+    const proposed = { ...target, verification: undefined, lastReviewedAt: undefined, legislative: instrument([registered, tabled]) } as PolicyDraft;
+    const staged = () =>
+      buildReview({
+        id: 'source-review-follow-asic-rules',
+        targetPolicyId: target.id,
+        targetPolicyBaseRevisionHash: policyRevisionHash(target),
+        sourceEvidence: { url: canonicalizeSourceUrl(REGISTER_URL), retrievedAt: '2026-07-16T00:00:00.000Z', contentHash: 'c'.repeat(64) },
+        proposedRecord: proposed,
+        legislativeUpdate: { added: [tabled] as never, unrecognised: [] },
+      });
+    const register = (contentHash: string) =>
+      retrieveSource.mockImplementation(async (url: string) => ({
+        body: url === SOURCE_URL ? '<main>Official AI policy</main>' : '{"id":"F2026L01223"}',
+        durationMs: 1,
+        evidence: { url, retrievedAt: '2026-07-16T00:00:00.000Z', contentHash: url === SOURCE_URL ? 'a'.repeat(64) : contentHash },
+      }));
+
+    beforeEach(() => {
+      getPolicies.mockResolvedValue([target]);
+    });
+
+    it('approves on the register record it was staged from, keeping the record page verification', async () => {
+      register('c'.repeat(64));
+      getSourceReviewById.mockResolvedValue(staged());
+
+      const approved = await approveStagedSource({ id: 'source-review-follow-asic-rules', actor: 'reviewer' });
+
+      expect(retrieveSource).toHaveBeenCalledTimes(1);
+      expect(retrieveSource.mock.calls[0][0]).toBe(canonicalizeSourceUrl(REGISTER_URL));
+      expect(approved).toMatchObject({
+        status: 'approved',
+        proposedRecord: { id: target.id, sourceUrl: SOURCE_URL, verification: target.verification, legislative: { events: [registered, tabled] } },
+      });
+    });
+
+    it('refuses approval when the register record changed after staging', async () => {
+      register('d'.repeat(64));
+      getSourceReviewById.mockResolvedValue(staged());
+
+      await expect(approveStagedSource({ id: 'source-review-follow-asic-rules', actor: 'reviewer' })).rejects.toThrow(
+        'register record changed after staging',
+      );
+    });
+
+    it('publishes the approved stages onto the record', async () => {
+      register('c'.repeat(64));
+      getSourceReviewById.mockResolvedValue(staged());
+      await approveStagedSource({ id: 'source-review-follow-asic-rules', actor: 'reviewer' });
+      getSourceReviewById.mockResolvedValue({ ...staged(), ...updateSourceReview.mock.calls[0][1] });
+
+      await publishStagedSource('source-review-follow-asic-rules');
+
+      expect(updatePolicy).toHaveBeenCalledWith(target.id, expect.objectContaining({ legislative: expect.objectContaining({ events: [registered, tabled] }) }));
+      expect(retrieveSource.mock.calls.map(([url]) => url)).not.toContain(SOURCE_URL);
+    });
   });
 
   it('publishes a validated approved record and updates editorial freshness', async () => {
