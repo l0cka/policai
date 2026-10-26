@@ -86,25 +86,21 @@ describe('parseFrlTitle', () => {
     expect(reading.events.at(-1)).toMatchObject({ event: { kind: 'repealed', by: 'sch 1 of the Repealing Rules 2024' } });
   });
 
-  it('reads commencement from the earliest in-force entry, whatever order the history comes in', () => {
-    const title = JSON.parse(fixture('F2026L01239'));
-    title.statusHistory = [{ status: 'InForce', start: '2027-01-01T00:00:00', reasons: [] }, ...title.statusHistory];
-    expect(parseFrlTitle(JSON.stringify(title)).events.find(({ event }) => event.kind === 'commenced')?.date).toBe('2026-09-21');
-  });
-
   it('reads a dated repeal with the provision that repealed it', () => {
     const reading = parseFrlTitle(fixture('F2024L01303'));
     expect(reading.events.at(-1)).toMatchObject({ date: '2025-03-26', event: { kind: 'repealed', by: 's 48A of the Legislation Act 2003' } });
     expect(legislativePhase(instrument(reading.events), 'federal')).toBe('repealed');
   });
 
-  it('reads a principal instrument commencing on its first in-force day, and ignores its future repeal', () => {
-    const reading = parseFrlTitle(fixture('F2026L01239'));
-    expect(reading.events.map(({ date, event }) => [date, event])).toEqual([
-      ['2026-09-21', { kind: 'registered' }],
-      ['2026-09-21', { kind: 'commenced', extent: 'full' }],
-    ]);
-    expect(legislativePhase(instrument(reading.events), 'federal')).toBe('in_force');
+  it('does not read a principal as commenced on its first in-force day, which is its registration day', () => {
+    const reading = parseFrlTitle(fixture('F2024L00710'));
+    expect(reading.principal).toBe(true);
+    expect(reading.events.map(({ date, event }) => [date, event])).toEqual([['2024-06-21', { kind: 'registered' }]]);
+    expect(legislativePhase(instrument(reading.events), 'federal')).toBe('made');
+  });
+
+  it('ignores a principal instrument\'s future repeal', () => {
+    expect(parseFrlTitle(fixture('F2026L01239')).events.map(({ event }) => event.kind)).toEqual(['registered']);
   });
 
   it('refuses a response that is not a title record', () => {

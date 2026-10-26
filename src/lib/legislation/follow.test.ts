@@ -258,6 +258,20 @@ describe('followLegislation', () => {
     expect(reviews[0].notes).toContain('"Discharged from Notice Paper" on 25 November 2024');
   });
 
+  it('does not ask again about an unmapped stage a decided update already showed', async () => {
+    const page = (await import('./aph-progress')).parseAphProgress(fixture('r7239'), { url: aphBillPage('r7239') });
+    const record = bill('r7239', page.events);
+    const [shown] = (await followLegislation({ targets: followTargets([record]), existingReviews: [], retrieve: retrieveFixture('r7239'), now })).reviews;
+    const decided: SourceReview = {
+      ...shown,
+      id: 'source-review-follow-bill-r7239-earlier',
+      status: 'published',
+      legislativeUpdate: { ...shown.legislativeUpdate!, added: [introduced('2024-01-01', 'lower', 'r7239')] },
+    };
+    const again = await followLegislation({ targets: followTargets([record]), existingReviews: [decided], retrieve: retrieveFixture('r7239'), now });
+    expect(again.reviews).toEqual([]);
+  });
+
   it('waits while an update is undecided, and never restages a decided one', async () => {
     const record = bill('r7249', [introduced('2024-09-12', 'lower', 'r7249')]);
     const first = await followLegislation({ targets: followTargets([record]), existingReviews: [], retrieve: retrieveFixture('r7249'), now });

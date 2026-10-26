@@ -4,11 +4,16 @@ import type { RegisterReading, UnrecognisedStage } from './stage-update';
 /**
  * Reads a Federal Register of Legislation title record from the register's
  * public OData API, which answers plain HTTP. The record gives registration,
- * a principal instrument's commencement, tabling in each House, the end of
- * each disallowance window once the register fixes it, disallowance and
- * repeal. An amending instrument's amendments commence in the versions of
- * the principal it amends: `frlAmendedPrincipals` finds the principal and
- * `frlCommencements` reads the dates from its versions.
+ * tabling in each House, the end of each disallowance window once the
+ * register fixes it, disallowance and repeal. An amending instrument's
+ * amendments commence in the versions of the principal it amends:
+ * `frlAmendedPrincipals` finds the principal and `frlCommencements` reads the
+ * dates from its versions.
+ *
+ * A principal's commencement is not in the record. Its first in-force entry
+ * starts on the day of registration, whatever s 2 of the instrument says:
+ * the Online Safety standards F2024L00710 and F2024L00711 are in force from
+ * 21 June 2024 on the register but commence on 22 December 2024 under s 2.
  *
  * A disallowance is a DisallowanceMotion event whose MotionOutcome is
  * DebatedAndAgreed; the register then also marks the title Repealed under
@@ -122,14 +127,6 @@ export function parseFrlTitle(json: string): FrlReading {
       unrecognised.push({ chamber, stage: item.eventType, date });
     }
   }
-
-  const commenced =
-    (title.statusHistory ?? [])
-      .filter((entry) => entry.status === 'InForce')
-      .map((entry) => day(entry.start))
-      .filter((date): date is string => date !== null)
-      .sort()[0] ?? null;
-  if (title.isPrincipal && commenced) dated.push({ date: commenced, event: { kind: 'commenced', extent: 'full' } });
 
   for (const entry of title.statusHistory ?? []) {
     const date = day(entry.start);

@@ -22,7 +22,7 @@ import {
 } from './frl-title';
 import type { Dated, LawEvent, Legislative } from './model';
 import { describeEvent } from './progress';
-import { stageUpdate, type RegisterReading } from './stage-update';
+import { stageUpdate, type RegisterReading, type UnrecognisedStage } from './stage-update';
 
 /**
  * Follow watches: each register bill with an APH id is read at its bill
@@ -229,7 +229,7 @@ export async function followLegislation(run: FollowRun): Promise<FollowResult> {
     const recordedCommencement = policy.dates.find((date) => date.type === 'commenced');
     const commencementMoved =
       scheduled && String(recordedCommencement?.date ?? '').slice(0, 10) !== scheduled.date ? scheduled : undefined;
-    if (update.kind === 'unchanged' && unrecognised.length === 0 && !commencementMoved) {
+    if (update.kind === 'unchanged' && !commencementMoved && unrecognised.every((stage) => shownBefore(stage, policy.id, run.existingReviews))) {
       log(`[follow] ${sourceId}: no new stage`);
       continue;
     }
@@ -307,6 +307,17 @@ export async function followLegislation(run: FollowRun): Promise<FollowResult> {
     log(`[follow] ${sourceId}: staged ${id}`);
   }
   return { reviews, errors, results };
+}
+
+/** A reviewer already decided an update that showed this stage, so it is not news on its own. */
+function shownBefore(stage: UnrecognisedStage, policyId: string, reviews: readonly SourceReview[]): boolean {
+  return reviews.some(
+    (review) =>
+      review.targetPolicyId === policyId &&
+      review.legislativeUpdate?.unrecognised.some(
+        (shown) => shown.stage === stage.stage && shown.date === stage.date && shown.chamber === stage.chamber,
+      ),
+  );
 }
 
 /** When an amending instrument's provisions commence: read from the versions of each principal it amends. */
