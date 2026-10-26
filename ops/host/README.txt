@@ -328,12 +328,17 @@ UPGRADE CONTRACT — ONLY IN A HOST WINDOW DANIEL APPROVES THROUGH ARGUS DEVOPS
        differs from active release"), because the old overlay names a
        service the new code does not accept, so restore the pull timer
        before the ingest, enrich and verify-deadlines timers. backup and
-       neon-sync refuse too from the moment b lands until that deploy,
-       because the "database" guard checks the active checkout's Compose
-       file against the new compose_sha256. A first deploy that blocks
-       therefore also stops the nightly dump and the Neon copy until a
-       reviewed recovery, so run and check cli.py worker backup before
-       apply, while the old digest still matches. The merged
+       neon-sync refuse too, though a block does not stop them: the
+       "database" guard runs validate_compose on the active checkout,
+       whose old Compose file has three services, so the new code refuses
+       it from apply onwards, and from b also on its digest. They work
+       again once the active checkout holds the approved Compose file,
+       which a verified deploy brings. A first deploy that blocks before
+       activation leaves the old checkout in place, and a rollback after a
+       failed health check puts it back, so in both cases the dump and the
+       Neon copy stay off until a later deploy succeeds. Run and check
+       cli.py worker backup before apply, while the old code and digest
+       still match. The merged
        change set selects the Pro Bono lane, so that deploy builds the
        worker image and prints
          {"verified": true, "activated_lanes": ["probono"], "main": "<sha>",
@@ -362,10 +367,11 @@ UPGRADE CONTRACT — ONLY IN A HOST WINDOW DANIEL APPROVES THROUGH ARGUS DEVOPS
   dashboard container are still running, and the checkout still holds the
   old Compose file. A first attempt that blocks has already written
   blocked.json with a new-shape before record, and cli.py rollback writes
-  new-shape active.json and active-compose.json, so reverting the code after
-  an attempt also means restoring the copies of active.json and
-  active-compose.json taken in the window and handling blocked.json and
-  recovery.json as a reviewed recovery. After the first verified deploy, rollback to the
+  that record to active.json; it rewrites active-compose.json only when
+  activation had started. Reverting the code after an attempt therefore
+  also means restoring the copies of active.json and active-compose.json
+  taken in the window and handling blocked.json and recovery.json as a
+  reviewed recovery. After the first verified deploy, rollback to the
   installed code is unsupported and a forward fix is the path. The upgrade
   journal holds only the install-set files, never active.json or
   active-compose.json, and the old code needs the old record shape
