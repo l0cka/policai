@@ -1,9 +1,10 @@
 name: Auto-merge
 
 # Arms GitHub auto-merge (squash) on non-draft PRs opened by l0cka. GitHub
-# then merges once the "Protect main" ruleset passes: lint, test and build
-# green and every review thread resolved. A `hold` label disarms it, for PRs
-# gated on a date or an event. Merging to main deploys Argus.
+# then merges once the "Protect main" ruleset passes: required checks green
+# (cursor-review included, so Cursor's review comes first) and every review
+# thread resolved. A `hold` label disarms it, for PRs
+# gated on a date or an event. Merging to main deploys policai.org.
 #
 # pull_request_target runs this file from main, so a PR cannot rewrite its own
 # arming policy. The job never checks out PR code.

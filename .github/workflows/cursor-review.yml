@@ -3,7 +3,8 @@ name: Cursor review
 # Stamps the `cursor-review` Check Run. Cursor Cloud Agents cannot write
 # check runs (403); this workflow's GITHUB_TOKEN can. The Cursor Project
 # still writes the review. A marker in a PR comment or review body tells
-# this workflow the conclusion.
+# this workflow the conclusion. `cursor-review` is a required check in
+# Protect main, so auto-merge and thread merges wait for it.
 on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
@@ -38,8 +39,12 @@ jobs:
             const CHECK_NAME = 'cursor-review';
             const MARKER = /<!-- cursor-review: (success|failure) -->/gi;
 
-            function markerConclusion(body) {
-              if (!body) return null;
+            // The repo is public, so anyone can comment. Only a marker from
+            // someone with write access may pass or fail the required check.
+            const TRUSTED = new Set(['OWNER', 'MEMBER', 'COLLABORATOR']);
+
+            function markerConclusion(body, association) {
+              if (!body || !TRUSTED.has(association)) return null;
               const matches = [...body.matchAll(MARKER)];
               if (matches.length === 0) return null;
               return matches[matches.length - 1][1].toLowerCase();
@@ -131,8 +136,9 @@ jobs:
                 core.info('Issue comment is not on a pull request.');
                 return;
               }
-              body = context.payload.comment.body;
-              const conclusion = markerConclusion(body);
+              const { comment } = context.payload;
+              body = comment.body;
+              const conclusion = markerConclusion(body, comment.author_association);
               if (!conclusion) return;
               const { data: pull } = await github.rest.pulls.get({
                 ...context.repo,
@@ -144,10 +150,13 @@ jobs:
             }
 
             if (eventName === 'pull_request_review') {
-              body = context.payload.review.body;
-              const conclusion = markerConclusion(body);
+              const { review } = context.payload;
+              body = review.body;
+              const conclusion = markerConclusion(body, review.author_association);
               if (!conclusion) return;
-              sha = context.payload.pull_request.head.sha;
+              // Stamp the commit that was reviewed. A push made during the
+              // review leaves the new head waiting for its own review.
+              sha = review.commit_id;
               await complete(sha, conclusion);
               return;
             }
