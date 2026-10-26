@@ -366,14 +366,16 @@ date the page was generated, as a calendar date in Australia/Sydney (Daniel,
 2026-10-17, #293; supersedes the collection/`lastHealthyAt` date from #282).
 `readPublicArticles` takes it from the same `now` that builds the public
 projection it counts, so the date is when the count was taken and reveals
-nothing about hidden records. `/analysis/[slug]` exports
-`dynamic = 'force-dynamic'` (`ƒ` in the build, served `no-store`), so each
-request recounts and redates, and a newly withheld citation leaves the page
-at once. Without it the route is dynamic only because it has no
-`generateStaticParams`; adding one would turn it into hourly ISR. The cost is
-one server render per request, about 18 ms median on Argus for a published
-piece (2026-10-17). A test in `src/app/analysis/article-figures.test.tsx`
-fails if the export is removed or `revalidate` returns. The date is formatted
+nothing about hidden records. `/analysis/[slug]` prerenders every published piece at build
+(`generateStaticParams` over `getArticles()`, `revalidate` 3600), so the
+count and its date come from the deploy that built the page (Dan,
+2026-10-26, #560; supersedes the per-request render). The count stays true
+for that date because the data only changes through commits, and every
+commit redeploys. On Workers a per-request render cost 440 to 655 ms of CPU.
+A test in `src/app/analysis/article-figures.test.tsx` fails if the
+route exports `dynamic` again or `generateStaticParams()` drops the
+`figure-kinds-published` fixture.
+The date is formatted
 in the server render, so a reader's timezone cannot change it.
 `validateArticles` (`registerChartErrors`) fails a
 published chart whose query matches no public record, gives fewer than 3 or
