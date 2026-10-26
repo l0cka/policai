@@ -326,7 +326,10 @@ class TransactionTests(unittest.TestCase):
     def test_an_initialized_baseline_deploys_only_with_initial(self):
         with tempfile.TemporaryDirectory() as tmp:
             root, state = self.fixture(tmp)
-            state.write("active.json", {**active(), "bootstrap_pending": True})
+            import cli
+
+            baseline = {"heads": {"probono": OLD}, "images": {"worker": WORKER}}
+            state.write("active.json", cli.initial_baseline(baseline))
             host = FakeHost()
             with self.assertRaises(d.Refused):
                 d.Transaction(state, host).deploy(NEW)

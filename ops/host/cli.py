@@ -83,6 +83,17 @@ def trusted_entrypoint():
     sys.path.insert(0, str(here.parent))
 
 
+def initial_baseline(baseline):
+    import host as h
+    from dispatcher import sha
+
+    for lane in h.BASES:
+        sha(baseline["heads"][lane])
+    for image in baseline["images"].values():
+        h.image_id(image)
+    return {**baseline, "target": baseline["heads"]["probono"], "bootstrap_pending": True}
+
+
 def failure_line(error):
     import host
 
@@ -183,13 +194,7 @@ def main():
             secure_path(baseline_path)
             if baseline_path.stat().st_size > 65536:
                 raise Refused("baseline oversized")
-            baseline = json.loads(baseline_path.read_text())
-            for lane in h.BASES:
-                sha(baseline["heads"][lane])
-            for image in baseline["images"].values():
-                h.image_id(image)
-            baseline["target"] = baseline["heads"]["probono"]
-            baseline["bootstrap_pending"] = True
+            baseline = initial_baseline(json.loads(baseline_path.read_text()))
             with state.lock(exclusive=True):
                 if any(
                     os.path.lexists(h.STATE / name)
