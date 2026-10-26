@@ -157,13 +157,16 @@ export function checkDeadlines(item: VerifyItem, pageText: string, today: string
         uncertain: null,
       };
     }
+    // "close at 5 p.m. 6 November at the forum": if a mention's sentence
+    // depends on whether the abbreviation ends one, the date is too unclear.
+    if (hits.some((hit) => {
+      const a = sentenceAround(text, hit);
+      const b = sentenceAround(text, hit, true);
+      return a.start !== b.start || a.end !== b.end;
+    })) return { verdict: null, uncertain: `${s.date} left unchanged: unclear where a sentence mentioning it ends` };
     const read = hits.map((hit) => {
       const sentence = sentenceAround(text, hit);
-      // "close at 5 p.m. 6 November at the forum": if the sentence depends on
-      // whether the abbreviation ends one, the mention is too unclear to read.
-      const alt = sentenceAround(text, hit, true);
-      const clear = alt.start === sentence.start && alt.end === sentence.end;
-      return { hit, sentence, kind: clear ? kindAt(text, hit, sentence) : null };
+      return { hit, sentence, kind: kindAt(text, hit, sentence) };
     });
     // A page can mention one date several times ("commence on 10 December",
     // "by the 10 December deadline"); the kind most mentions agree on wins.

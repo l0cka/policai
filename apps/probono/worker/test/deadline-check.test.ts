@@ -171,6 +171,7 @@ describe('checkDeadlines on cases the real batch lacked', () => {
       'Register by 5 p.m. Friday 6 November 2026 for the information session.',
       'The consultation has closed at 5 p.m. Submissions close on 6 November 2026.',
       'Doors open at 5 p.m. Expressions of interest 6 November 2026.',
+      'Submissions close on 6 November 2026 at 5 p.m. The information session follows. The information session is on 6 November 2026.',
     ]) expect(check([action('2026-11-06')], page).checks[0].verdict).toBeNull();
   });
 
