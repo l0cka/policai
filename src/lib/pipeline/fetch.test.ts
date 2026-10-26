@@ -11,6 +11,7 @@ import {
   retrieveSourceOverHttp1,
   SourceFetchError,
 } from './fetch';
+import { classifyFailure } from './failure';
 import type { Admission } from './host-gate';
 import { buildRecordingHostGate } from '@/test/factories';
 
@@ -682,6 +683,39 @@ describe('retrieveSource', () => {
       }),
     ).rejects.toThrow('bot-challenge page');
     expect(fetchImpl).toHaveBeenCalledTimes(1);
+  });
+
+  it('rejects an Imperva "Request unsuccessful" page served as HTTP 200 as a host refusal', async () => {
+    const fetchImpl = vi.fn(
+      async () =>
+        new Response(
+          '<html style="height:100%"><head><META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW"></head><body style="margin:0px;height:100%"><iframe id="main-iframe" src="/_Incapsula_Resource?CWUDNSAI=24&incident_id=1234-5678&edet=15" frameborder=0 width="100%" height="100%">Request unsuccessful. Incapsula incident ID: 1234-5678</iframe></body></html>',
+          { status: 200, headers: { 'content-type': 'text/html' } },
+        ),
+    );
+
+    const refused = retrieveSource('https://www.pmc.gov.au/domestic-policy/office-ai', {
+      fetchImpl: fetchImpl as unknown as typeof fetch,
+    });
+
+    await expect(refused).rejects.toThrow('bot-challenge page');
+    expect(classifyFailure(await refused.catch((error: unknown) => error)).cls).toBe('identity_refused');
+  });
+
+  it('keeps a real page that carries the Imperva script tag', async () => {
+    const fetchImpl = vi.fn(
+      async () =>
+        new Response(
+          '<html><head><script src="/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e"></script></head><body><main><h1>Office of AI</h1><p>The Office of AI leads national AI policy.</p></main></body></html>',
+          { status: 200, headers: { 'content-type': 'text/html' } },
+        ),
+    );
+
+    await expect(
+      retrieveSource('https://www.pmc.gov.au/domestic-policy/office-ai', {
+        fetchImpl: fetchImpl as unknown as typeof fetch,
+      }),
+    ).resolves.toMatchObject({ evidence: { contentType: 'text/html' } });
   });
 
   it('rejects HTML bot challenges mislabelled as binary content', async () => {

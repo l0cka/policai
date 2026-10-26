@@ -838,6 +838,9 @@ export const BOT_CHALLENGE_SIGNALS = [
   "verify that you're not a robot",
   'checking your browser before accessing',
   'cf-chl-',
+  // Imperva's block page, served as HTTP 200. Its script tag on real pages is
+  // /_Incapsula_Resource, so only the block page's own text counts.
+  'incapsula incident id',
 ] as const;
 
 export function looksLikeBotChallenge(body: string): boolean {
