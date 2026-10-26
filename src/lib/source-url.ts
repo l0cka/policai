@@ -9,6 +9,9 @@ const EXTRA_ALLOWED_HOSTS = new Set([
 	"www.csiro.au",
 	"csiro.au",
 	"prod-internet-salt-functionapp.azurewebsites.net",
+	// Supreme Court of Tasmania circular PDFs. The index on
+	// www.supremecourt.tas.gov.au links to this asset host.
+	"supremecourt-tas-gov-au.assets.ionatahosting.net",
 ]);
 
 const TRACKING_QUERY_PARAMETERS = new Set([

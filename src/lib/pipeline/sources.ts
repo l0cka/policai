@@ -995,7 +995,21 @@ export const WATCH_SOURCES: WatchSource[] = [
     enabled: true,
     automation: 'automatic',
     notes:
-      'Practice directions index, watched for content changes. Plain HTTP verified 2026-08-08.',
+      'Practice directions index only (/publications/directions). Circulars to practitioners, including Circular No. 14 of 2026 on generative AI, are published at /publications/circulars-to-practitioners and are watched by tas-sc-circulars. Plain HTTP verified 2026-08-08.',
+  },
+  {
+    id: 'tas-sc-circulars',
+    name: 'Tasmanian Supreme Court — circulars to practitioners',
+    bodyId: 'tas-supreme-court',
+    jurisdiction: 'tas',
+    category: 'court',
+    url: 'https://www.supremecourt.tas.gov.au/publications/circulars-to-practitioners',
+    kind: 'document',
+    schedule: 'weekly',
+    enabled: true,
+    automation: 'automatic',
+    notes:
+      'Circulars to practitioners index, watched for content changes. Practice directions stay on tas-sc-practice-directions, which does not list this page. Circular No. 14 of 2026 (AI Guidelines for Court Users, 21 October 2026) is linked from this page to the court asset host. Plain HTTP with the Policai identity returned the index on 2026-10-27.',
   },
   {
     id: 'nt-sc-practice-directions',

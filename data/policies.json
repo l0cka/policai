@@ -10279,5 +10279,88 @@
       },
       "notes": "Unverified editorial draft from the Policai Signal handoff of 20 October 2026. Consultation hub (Citizen Space) states Opened 15 October 2026 and Closes 6 November 2026; the Attorney-General's media release is dated 16 October 2026, so consultation_opened uses the hub open date and published uses the media-release date. Commitment 5 wording taken from the consultation paper (Proposed Commitment 5, DTA lead). Source URLs: consultation hub, consultation paper PDF, and ministers.ag.gov.au release. No source fingerprint, no checkedAt, no checkedBy, and no lastReviewedAt. Not marked verified. Hidden from the public read until Daniel's own review. After 6 November 2026, set status to closed if submissions have closed (same pattern as pmc-ai-infrastructure-consultation-2026)."
     }
+  },
+  {
+    "id": "tas-supreme-court-ai-guidelines-2026",
+    "title": "Guidelines for the Use of Generative Artificial Intelligence",
+    "description": "Supreme Court of Tasmania Circular to Practitioners No. 14 of 2026, attaching Guidelines for the Use of Generative Artificial Intelligence. Dated and commencing 21 October 2026. Applies to all court users in all Supreme Court proceedings.",
+    "jurisdiction": "tas",
+    "type": "practice_note",
+    "status": "active",
+    "effectiveDate": "2026-10-21",
+    "dates": [
+      {
+        "type": "published",
+        "date": "2026-10-21",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://supremecourt-tas-gov-au.assets.ionatahosting.net/uploads/2026/10/No-14-of-2026-AI-Guidelines-for-Court-Users.pdf",
+          "finalUrl": "https://supremecourt-tas-gov-au.assets.ionatahosting.net/uploads/2026/10/No-14-of-2026-AI-Guidelines-for-Court-Users.pdf",
+          "title": "Guidelines for the Use of Generative Artificial Intelligence",
+          "publisher": "Supreme Court of Tasmania",
+          "retrievedAt": "2026-10-26T21:07:17.000Z",
+          "publishedAt": "2026-10-21",
+          "publishedAtPrecision": "day",
+          "contentType": "application/pdf",
+          "contentHash": "8d4b2d5d6d616db124bbd9587ed34615cdc0147f0db31e63d709976efa19f4b7",
+          "lastModified": "Mon, 26 Oct 2026 06:02:14 GMT"
+        }
+      },
+      {
+        "type": "commenced",
+        "date": "2026-10-21",
+        "precision": "day",
+        "source": {
+          "url": "https://supremecourt-tas-gov-au.assets.ionatahosting.net/uploads/2026/10/No-14-of-2026-AI-Guidelines-for-Court-Users.pdf",
+          "finalUrl": "https://supremecourt-tas-gov-au.assets.ionatahosting.net/uploads/2026/10/No-14-of-2026-AI-Guidelines-for-Court-Users.pdf",
+          "title": "Guidelines for the Use of Generative Artificial Intelligence",
+          "publisher": "Supreme Court of Tasmania",
+          "retrievedAt": "2026-10-26T21:07:17.000Z",
+          "publishedAt": "2026-10-21",
+          "publishedAtPrecision": "day",
+          "contentType": "application/pdf",
+          "contentHash": "8d4b2d5d6d616db124bbd9587ed34615cdc0147f0db31e63d709976efa19f4b7",
+          "lastModified": "Mon, 26 Oct 2026 06:02:14 GMT"
+        }
+      }
+    ],
+    "agencies": [
+      "Supreme Court of Tasmania"
+    ],
+    "sourceUrl": "https://supremecourt-tas-gov-au.assets.ionatahosting.net/uploads/2026/10/No-14-of-2026-AI-Guidelines-for-Court-Users.pdf",
+    "content": "Circular to Practitioners No. 14 of 2026, dated 21 October 2026 and signed by Registrar Penelope Ikedife, publishes Guidelines for the Use of Generative Artificial Intelligence. The circular says the guidelines apply to all court users, including lawyers, litigants, witnesses and other third parties who produce documents to the Court, in all Supreme Court proceedings, and that they commence that day until further notice. The guidelines (as at 21 October 2026) say they apply when court users use generative AI to help create, write, edit, modify or otherwise prepare a document for court proceedings (para 2.1). Part 3 calls for caution with pleadings, written submissions, lists of documents and other documents (paras 3.2 to 3.4), and particular caution with affidavit materials, witness statements and other witness evidence (para 3.5). Expert reports must contain the expert’s own opinion and process of reasoning and comply with the relevant practice direction and Expert Witness Code of Conduct (para 3.6). Court users should not enter confidential, privileged or private information, including information subject to a suppression or non-publication order, into an AI tool that is not a closed tool (para 3.8). Any person who uses generative AI to prepare a document must verify all content before submitting it, and AI-generated content must be checked by a person, not solely by a generative AI tool (paras 4.1 and 4.3). Court users are not required to certify the use of generative AI, but must disclose that use if asked, and a person who uses it is expected to be able to explain the tool, how it was used, and the checks (paras 4.4 and 4.5). Inconsistent use may lead to less weight, a document being disregarded, adjournment, costs, or dismissal, and for lawyers a referral to the Legal Profession Board of Tasmania or personal costs orders (paras 5.1 and 5.2).",
+    "aiSummary": "Supreme Court of Tasmania guidelines, commencing 21 October 2026, for all court users in all proceedings: verify generative AI documents, take particular care with pleadings and evidence, keep confidential material out of open tools, and disclose use if asked.",
+    "tags": [
+      "guidelines",
+      "generative AI",
+      "Supreme Court of Tasmania",
+      "circular",
+      "court users",
+      "disclosure"
+    ],
+    "themes": [
+      "courts-tribunals",
+      "generative-ai",
+      "legal-practice"
+    ],
+    "createdAt": "2026-10-26T21:07:17.000Z",
+    "updatedAt": "2026-10-26T21:07:17.000Z",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://supremecourt-tas-gov-au.assets.ionatahosting.net/uploads/2026/10/No-14-of-2026-AI-Guidelines-for-Court-Users.pdf",
+        "finalUrl": "https://supremecourt-tas-gov-au.assets.ionatahosting.net/uploads/2026/10/No-14-of-2026-AI-Guidelines-for-Court-Users.pdf",
+        "title": "Guidelines for the Use of Generative Artificial Intelligence",
+        "publisher": "Supreme Court of Tasmania",
+        "retrievedAt": "2026-10-26T21:07:17.000Z",
+        "publishedAt": "2026-10-21",
+        "publishedAtPrecision": "day",
+        "contentType": "application/pdf",
+        "contentHash": "8d4b2d5d6d616db124bbd9587ed34615cdc0147f0db31e63d709976efa19f4b7",
+        "lastModified": "Mon, 26 Oct 2026 06:02:14 GMT"
+      },
+      "notes": "Unverified editorial draft. The official PDF linked from https://www.supremecourt.tas.gov.au/publications/circulars-to-practitioners/ was retrieved with the Policai collector identity on 27 October 2026 and fingerprinted. No checkedAt, no checkedBy, no lastReviewedAt, and verification is not verified. Hidden from the public read until Daniel reviews it."
+    }
   }
 ]

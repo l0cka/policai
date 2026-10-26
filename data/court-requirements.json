@@ -16897,5 +16897,343 @@
       "reviewedBy": "Claude Fable",
       "notes": "Re-read: verbatim contiguous two sentences; the first is included because it supplies the context for 'The relevant witness' and the condition. 'should' preserved. The following sentence on expert reports and the Expert Witness Code of Conduct ('Similar considerations arise...') is excluded as descriptive rather than an operative direction."
     }
+  },
+  {
+    "id": "tas-sc-ai-guidelines-2026-4-1-verify",
+    "policyId": "tas-supreme-court-ai-guidelines-2026",
+    "actor": "Any person who uses Gen AI to prepare a document",
+    "modality": "must",
+    "action": "Verify all content before submitting the document to the Court.",
+    "conditions": [],
+    "exceptions": [],
+    "topics": [
+      "verification",
+      "court documents"
+    ],
+    "source": {
+      "url": "https://supremecourt-tas-gov-au.assets.ionatahosting.net/uploads/2026/10/No-14-of-2026-AI-Guidelines-for-Court-Users.pdf",
+      "contentHash": "8d4b2d5d6d616db124bbd9587ed34615cdc0147f0db31e63d709976efa19f4b7",
+      "locator": "paragraph 4.1",
+      "quote": "Any person who uses Gen AI to prepare a document must verify all content before submitting the document to the Court."
+    },
+    "extraction": {
+      "method": "manual",
+      "extractedAt": "2026-10-26T21:07:17.000Z",
+      "extractedBy": "Cursor editorial extraction from the official PDF"
+    },
+    "verification": {
+      "status": "pending_review",
+      "notes": "Extracted from the official PDF for Daniel to review. Not verified."
+    }
+  },
+  {
+    "id": "tas-sc-ai-guidelines-2026-4-3-person-check",
+    "policyId": "tas-supreme-court-ai-guidelines-2026",
+    "actor": "Court users",
+    "modality": "must",
+    "action": "Have AI-generated content checked by a person, not solely by a Gen AI tool.",
+    "conditions": [],
+    "exceptions": [],
+    "topics": [
+      "verification",
+      "human checking"
+    ],
+    "source": {
+      "url": "https://supremecourt-tas-gov-au.assets.ionatahosting.net/uploads/2026/10/No-14-of-2026-AI-Guidelines-for-Court-Users.pdf",
+      "contentHash": "8d4b2d5d6d616db124bbd9587ed34615cdc0147f0db31e63d709976efa19f4b7",
+      "locator": "paragraph 4.3",
+      "quote": "AI-generated content must be checked by a person, not solely by a Gen AI tool."
+    },
+    "extraction": {
+      "method": "manual",
+      "extractedAt": "2026-10-26T21:07:17.000Z",
+      "extractedBy": "Cursor editorial extraction from the official PDF"
+    },
+    "verification": {
+      "status": "pending_review",
+      "notes": "Extracted from the official PDF for Daniel to review. Not verified."
+    }
+  },
+  {
+    "id": "tas-sc-ai-guidelines-2026-3-1-caution",
+    "policyId": "tas-supreme-court-ai-guidelines-2026",
+    "actor": "Court users",
+    "modality": "should",
+    "action": "Exercise caution before using Gen AI tools in areas that present more significant risks to the administration of justice.",
+    "conditions": [],
+    "exceptions": [],
+    "topics": [
+      "caution",
+      "pleadings",
+      "submissions"
+    ],
+    "source": {
+      "url": "https://supremecourt-tas-gov-au.assets.ionatahosting.net/uploads/2026/10/No-14-of-2026-AI-Guidelines-for-Court-Users.pdf",
+      "contentHash": "8d4b2d5d6d616db124bbd9587ed34615cdc0147f0db31e63d709976efa19f4b7",
+      "locator": "paragraph 3.1",
+      "quote": "Some uses of Gen AI present more significant risks to the administration of justice. Caution should be exercised before using Gen AI tools in the following areas."
+    },
+    "extraction": {
+      "method": "manual",
+      "extractedAt": "2026-10-26T21:07:17.000Z",
+      "extractedBy": "Cursor editorial extraction from the official PDF"
+    },
+    "verification": {
+      "status": "pending_review",
+      "notes": "Extracted from the official PDF for Daniel to review. Not verified."
+    }
+  },
+  {
+    "id": "tas-sc-ai-guidelines-2026-3-2-documents",
+    "policyId": "tas-supreme-court-ai-guidelines-2026",
+    "actor": "Court users",
+    "modality": "must",
+    "action": "Ensure any documents prepared using Gen AI tools do not include false, inaccurate or irrelevant information.",
+    "conditions": [],
+    "exceptions": [],
+    "topics": [
+      "pleadings",
+      "written submissions",
+      "accuracy"
+    ],
+    "source": {
+      "url": "https://supremecourt-tas-gov-au.assets.ionatahosting.net/uploads/2026/10/No-14-of-2026-AI-Guidelines-for-Court-Users.pdf",
+      "contentHash": "8d4b2d5d6d616db124bbd9587ed34615cdc0147f0db31e63d709976efa19f4b7",
+      "locator": "paragraph 3.2",
+      "quote": "Court users are responsible for ensuring any documents prepared using Gen AI tools do not include false, inaccurate or irrelevant information."
+    },
+    "extraction": {
+      "method": "manual",
+      "extractedAt": "2026-10-26T21:07:17.000Z",
+      "extractedBy": "Cursor editorial extraction from the official PDF"
+    },
+    "verification": {
+      "status": "pending_review",
+      "notes": "Extracted from the official PDF for Daniel to review. Not verified."
+    }
+  },
+  {
+    "id": "tas-sc-ai-guidelines-2026-3-5-evidence",
+    "policyId": "tas-supreme-court-ai-guidelines-2026",
+    "actor": "Court users",
+    "modality": "should",
+    "action": "Exercise particular caution if using Gen AI tools to assist with preparing affidavit materials, witness statements, or other documents which form the evidence or potential evidence of a witness.",
+    "conditions": [],
+    "exceptions": [],
+    "topics": [
+      "affidavits",
+      "witness statements",
+      "evidence"
+    ],
+    "source": {
+      "url": "https://supremecourt-tas-gov-au.assets.ionatahosting.net/uploads/2026/10/No-14-of-2026-AI-Guidelines-for-Court-Users.pdf",
+      "contentHash": "8d4b2d5d6d616db124bbd9587ed34615cdc0147f0db31e63d709976efa19f4b7",
+      "locator": "paragraph 3.5",
+      "quote": "Court users should exercise particular caution if using Gen AI tools to assist with preparing affidavit materials, witness statements, or other documents which form the evidence or potential evidence of a witness."
+    },
+    "extraction": {
+      "method": "manual",
+      "extractedAt": "2026-10-26T21:07:17.000Z",
+      "extractedBy": "Cursor editorial extraction from the official PDF"
+    },
+    "verification": {
+      "status": "pending_review",
+      "notes": "Extracted from the official PDF for Daniel to review. Not verified."
+    }
+  },
+  {
+    "id": "tas-sc-ai-guidelines-2026-3-6-expert",
+    "policyId": "tas-supreme-court-ai-guidelines-2026",
+    "actor": "Expert witnesses",
+    "modality": "must",
+    "action": "Ensure an expert report contains the expert’s own opinion and process of reasoning.",
+    "conditions": [],
+    "exceptions": [],
+    "topics": [
+      "expert reports"
+    ],
+    "source": {
+      "url": "https://supremecourt-tas-gov-au.assets.ionatahosting.net/uploads/2026/10/No-14-of-2026-AI-Guidelines-for-Court-Users.pdf",
+      "contentHash": "8d4b2d5d6d616db124bbd9587ed34615cdc0147f0db31e63d709976efa19f4b7",
+      "locator": "paragraph 3.6(b)",
+      "quote": "expert reports must contain the expert’s own opinion and process of reasoning. The preparation of expert reports must comply with the relevant Practice Direction and Expert Witness Code of Conduct."
+    },
+    "extraction": {
+      "method": "manual",
+      "extractedAt": "2026-10-26T21:07:17.000Z",
+      "extractedBy": "Cursor editorial extraction from the official PDF"
+    },
+    "verification": {
+      "status": "pending_review",
+      "notes": "Extracted from the official PDF for Daniel to review. Not verified."
+    }
+  },
+  {
+    "id": "tas-sc-ai-guidelines-2026-3-8-closed-tool",
+    "policyId": "tas-supreme-court-ai-guidelines-2026",
+    "actor": "Court users",
+    "modality": "should_not",
+    "action": "Enter confidential, privileged or private information, including information subject to a suppression or non-publication order, into an AI tool that is not a closed tool.",
+    "conditions": [],
+    "exceptions": [],
+    "topics": [
+      "confidentiality",
+      "privilege",
+      "closed tools"
+    ],
+    "source": {
+      "url": "https://supremecourt-tas-gov-au.assets.ionatahosting.net/uploads/2026/10/No-14-of-2026-AI-Guidelines-for-Court-Users.pdf",
+      "contentHash": "8d4b2d5d6d616db124bbd9587ed34615cdc0147f0db31e63d709976efa19f4b7",
+      "locator": "paragraph 3.8",
+      "quote": "Court users should not enter into an AI tool that is not a closed tool, any information which is confidential, privileged or private, including information subject to a suppression or non-publication order, or where publication or use is otherwise restricted."
+    },
+    "extraction": {
+      "method": "manual",
+      "extractedAt": "2026-10-26T21:07:17.000Z",
+      "extractedBy": "Cursor editorial extraction from the official PDF"
+    },
+    "verification": {
+      "status": "pending_review",
+      "notes": "Extracted from the official PDF for Daniel to review. Not verified."
+    }
+  },
+  {
+    "id": "tas-sc-ai-guidelines-2026-4-4-no-certificate",
+    "policyId": "tas-supreme-court-ai-guidelines-2026",
+    "actor": "Court users",
+    "modality": "may",
+    "action": "Prepare documents without certifying the use of Gen AI.",
+    "conditions": [],
+    "exceptions": [],
+    "topics": [
+      "disclosure"
+    ],
+    "source": {
+      "url": "https://supremecourt-tas-gov-au.assets.ionatahosting.net/uploads/2026/10/No-14-of-2026-AI-Guidelines-for-Court-Users.pdf",
+      "contentHash": "8d4b2d5d6d616db124bbd9587ed34615cdc0147f0db31e63d709976efa19f4b7",
+      "locator": "paragraph 4.4",
+      "quote": "Court users are not required to certify the use of Gen AI in preparing documents."
+    },
+    "extraction": {
+      "method": "manual",
+      "extractedAt": "2026-10-26T21:07:17.000Z",
+      "extractedBy": "Cursor editorial extraction from the official PDF"
+    },
+    "verification": {
+      "status": "pending_review",
+      "notes": "Extracted from the official PDF for Daniel to review. Not verified."
+    }
+  },
+  {
+    "id": "tas-sc-ai-guidelines-2026-4-4-disclose-if-asked",
+    "policyId": "tas-supreme-court-ai-guidelines-2026",
+    "actor": "Court users",
+    "modality": "must",
+    "action": "Disclose the use of Gen AI, if asked.",
+    "conditions": [],
+    "exceptions": [],
+    "topics": [
+      "disclosure"
+    ],
+    "source": {
+      "url": "https://supremecourt-tas-gov-au.assets.ionatahosting.net/uploads/2026/10/No-14-of-2026-AI-Guidelines-for-Court-Users.pdf",
+      "contentHash": "8d4b2d5d6d616db124bbd9587ed34615cdc0147f0db31e63d709976efa19f4b7",
+      "locator": "paragraph 4.4(a)",
+      "quote": "all court users must disclose the use of Gen AI, if asked"
+    },
+    "extraction": {
+      "method": "manual",
+      "extractedAt": "2026-10-26T21:07:17.000Z",
+      "extractedBy": "Cursor editorial extraction from the official PDF"
+    },
+    "verification": {
+      "status": "pending_review",
+      "notes": "Extracted from the official PDF for Daniel to review. Not verified."
+    }
+  },
+  {
+    "id": "tas-sc-ai-guidelines-2026-4-5-explain",
+    "policyId": "tas-supreme-court-ai-guidelines-2026",
+    "actor": "Any person who uses Gen AI in preparing a court document",
+    "modality": "should",
+    "action": "Be able to explain to the Court which Gen AI tool was used, how it was used, and what steps the person took to check the content of the document.",
+    "conditions": [],
+    "exceptions": [],
+    "topics": [
+      "disclosure",
+      "verification"
+    ],
+    "source": {
+      "url": "https://supremecourt-tas-gov-au.assets.ionatahosting.net/uploads/2026/10/No-14-of-2026-AI-Guidelines-for-Court-Users.pdf",
+      "contentHash": "8d4b2d5d6d616db124bbd9587ed34615cdc0147f0db31e63d709976efa19f4b7",
+      "locator": "paragraph 4.5",
+      "quote": "Any person who uses Gen AI in preparing a court document is expected to be able to explain to the Court which Gen AI tool was used, how it was used, and what steps the person took to check the content of the document."
+    },
+    "extraction": {
+      "method": "manual",
+      "extractedAt": "2026-10-26T21:07:17.000Z",
+      "extractedBy": "Cursor editorial extraction from the official PDF"
+    },
+    "verification": {
+      "status": "pending_review",
+      "notes": "Extracted from the official PDF for Daniel to review. Not verified."
+    }
+  },
+  {
+    "id": "tas-sc-ai-guidelines-2026-5-1-consequences",
+    "policyId": "tas-supreme-court-ai-guidelines-2026",
+    "actor": "The Court",
+    "modality": "may",
+    "action": "Give a document less weight or disregard it, adjourn the case, make a costs order, or dismiss the case, where Gen AI is used inconsistently with the guidelines or the Court’s orders or directions.",
+    "conditions": [],
+    "exceptions": [],
+    "topics": [
+      "consequences",
+      "costs",
+      "dismissal"
+    ],
+    "source": {
+      "url": "https://supremecourt-tas-gov-au.assets.ionatahosting.net/uploads/2026/10/No-14-of-2026-AI-Guidelines-for-Court-Users.pdf",
+      "contentHash": "8d4b2d5d6d616db124bbd9587ed34615cdc0147f0db31e63d709976efa19f4b7",
+      "locator": "paragraph 5.1",
+      "quote": "If Gen AI is used inconsistently with these guidelines or the Court’s orders or directions, there may be consequences. Consequences may include: a. documents being given less weight by the Court or being disregarded b. adjournments or delays c. costs orders d. the case being dismissed."
+    },
+    "extraction": {
+      "method": "manual",
+      "extractedAt": "2026-10-26T21:07:17.000Z",
+      "extractedBy": "Cursor editorial extraction from the official PDF"
+    },
+    "verification": {
+      "status": "pending_review",
+      "notes": "Extracted from the official PDF for Daniel to review. Not verified."
+    }
+  },
+  {
+    "id": "tas-sc-ai-guidelines-2026-5-2-referral",
+    "policyId": "tas-supreme-court-ai-guidelines-2026",
+    "actor": "Lawyers",
+    "modality": "may",
+    "action": "Be referred to the Legal Profession Board of Tasmania, or be made subject to a personal costs order, for inappropriate use of Gen AI.",
+    "conditions": [],
+    "exceptions": [],
+    "topics": [
+      "referral",
+      "costs"
+    ],
+    "source": {
+      "url": "https://supremecourt-tas-gov-au.assets.ionatahosting.net/uploads/2026/10/No-14-of-2026-AI-Guidelines-for-Court-Users.pdf",
+      "contentHash": "8d4b2d5d6d616db124bbd9587ed34615cdc0147f0db31e63d709976efa19f4b7",
+      "locator": "paragraph 5.2",
+      "quote": "For lawyers, the inappropriate use of Gen AI may result in referral to the Legal Profession Board of Tasmania or personal costs orders."
+    },
+    "extraction": {
+      "method": "manual",
+      "extractedAt": "2026-10-26T21:07:17.000Z",
+      "extractedBy": "Cursor editorial extraction from the official PDF"
+    },
+    "verification": {
+      "status": "pending_review",
+      "notes": "Extracted from the official PDF for Daniel to review. Not verified."
+    }
   }
 ]
