@@ -54,6 +54,12 @@ describe('checkDeadlines on real pages', () => {
     expect(saved.deadlines[0]).toMatchObject({ kind: 'milestone', primary: false });
   });
 
+  it('the bare verb "defer" is not a deferral', () => {
+    const { verdicts } = check([action('2026-11-06', 'Submissions close')],
+      'Courts defer to the statute. Submissions close 6 November 2026.');
+    expect(verdicts[0]).toMatchObject({ status: 'open', kind: 'action', primary: true });
+  });
+
   it('81181: two "commence" mentions outvote one "deadline" mention', () => {
     const { verdicts } = check([action('2026-12-10', 'ADM obligations')], [
       'New privacy obligations requiring disclosure of certain automated decision-making (ADM) processes commence on 10 December 2026.',
@@ -114,6 +120,9 @@ describe('checkDeadlines on cases the real batch lacked', () => {
       'Submissions close 6 December 2026. We are postponing the closing date to 4 January 2027.',
       'Submissions close 6 December 2026. We are rescheduling the closing date.',
       'Submissions close 6 December 2026. We are extending the closing date.',
+      'Submissions close 6 December 2026. A deferment to 20 December 2026 applies.',
+      'Submissions close 6 December 2026. The hearing has been re-scheduled to 4 January 2027.',
+      'Submissions close 6 December 2026. The closing date extends to 20 December 2026.',
       `${'Body copy about the consultation. '.repeat(3000)}\nThe consultation period was extended.\n${'More body copy. '.repeat(3000)}\nSubmissions close 6 December 2026.`,
     ]) {
       expect(check([action('2026-12-06')], text).checks[0].verdict, text).toBeNull();
