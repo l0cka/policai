@@ -1195,6 +1195,15 @@ describe('validatePolicyFrameworkArtifact', () => {
           },
         ],
         riskAreas: [null],
+        useClassification: {
+          sourceUrl: '',
+          requiredIn: [],
+          usagePatterns: [],
+          domains: [
+            { id: 'health', title: 'Health', description: 'Health care.', examples: 'Triage.' },
+            { id: 'health', title: 'Health again' },
+          ],
+        },
         relatedPolicyId: policy.id,
         verification: {
           status: 'verified',
@@ -1219,6 +1228,11 @@ describe('validatePolicyFrameworkArtifact', () => {
         expect.stringContaining('policyAims[0].outcomes'),
         expect.stringContaining('inScopeCriteria[0].applicableTo'),
         expect.stringContaining('riskAreas must be a non-empty string array'),
+        expect.stringContaining('useClassification.sourceUrl'),
+        expect.stringContaining('useClassification.requiredIn'),
+        expect.stringContaining('useClassification.usagePatterns must be a non-empty array'),
+        expect.stringContaining('useClassification.domains[1].id must be unique'),
+        expect.stringContaining('useClassification.domains[1].description'),
       ]),
     );
   });

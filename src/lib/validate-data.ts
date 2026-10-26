@@ -2600,6 +2600,46 @@ export function validatePolicyFrameworkArtifact(
   ) {
     errors.push(`${label}: riskAreas must be a non-empty string array`);
   }
+  const classification = artifact.useClassification;
+  if (!isRecord(classification)) {
+    errors.push(`${label}: useClassification must be an object`);
+  } else {
+    if (!isNonEmptyString(classification.sourceUrl)) {
+      errors.push(`${label}: useClassification.sourceUrl must be a non-empty string`);
+    }
+    if (
+      !Array.isArray(classification.requiredIn) ||
+      classification.requiredIn.length === 0 ||
+      classification.requiredIn.some((value) => !isNonEmptyString(value))
+    ) {
+      errors.push(`${label}: useClassification.requiredIn must be a non-empty string array`);
+    }
+    for (const listName of ['usagePatterns', 'domains'] as const) {
+      const listLabel = `${label}: useClassification.${listName}`;
+      const list = classification[listName];
+      if (!Array.isArray(list) || list.length === 0) {
+        errors.push(`${listLabel} must be a non-empty array`);
+        continue;
+      }
+      const ids = new Set<string>();
+      list.forEach((candidate, index) => {
+        const itemLabel = `${listLabel}[${index}]`;
+        if (!isRecord(candidate)) {
+          errors.push(`${itemLabel} must be an object`);
+          return;
+        }
+        for (const field of ['id', 'title', 'description', 'examples'] as const) {
+          if (!isNonEmptyString(candidate[field])) {
+            errors.push(`${itemLabel}.${field} must be a non-empty string`);
+          }
+        }
+        if (isNonEmptyString(candidate.id)) {
+          if (ids.has(candidate.id)) errors.push(`${itemLabel}.id must be unique`);
+          ids.add(candidate.id);
+        }
+      });
+    }
+  }
   if (!relatedPolicy) {
     errors.push(`${label}: relatedPolicyId does not match a policy`);
   } else {
