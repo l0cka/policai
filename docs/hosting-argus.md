@@ -21,8 +21,8 @@ minutes after the merge.
 
 The routes for `policai.org/*` and `www.policai.org/*` are in
 `wrangler.jsonc`. The workers.dev URL is off, so the Signal write API
-answers only on policai.org. To roll back to Argus, delete them and deploy; the tunnel
-CNAMEs still point at the host, which keeps running Policai.
+answers only on policai.org. There is no rollback to Argus: the Policai server
+there is retired, and the host dispatcher no longer builds it.
 
 Signal reads `POLICAI_SIGNAL_TOKEN` and `POLICAI_SIGNAL_GITHUB_TOKEN` from
 Worker secrets, set with `wrangler secret put` or in the dashboard.
@@ -38,15 +38,15 @@ The Worker reads a Neon copy of the Pro Bono database through Hyperdrive. The
 Postgres on Argus stays the database of record: ingest, enrichment, deadline
 checks and backups write there, and the guarded `cli.py worker neon-sync`
 (`probono-neon-sync.timer`, hourly at :45) replaces the Neon copy when the
-data changed. The site can lag Argus by up to an hour. To roll back, delete
-the routes and deploy; the tunnel still points at Argus, which keeps serving
-the dashboard.
+data changed. The site can lag Argus by up to an hour. There is no rollback
+to Argus: the dashboard container there is retired, and the host dispatcher
+no longer builds it.
 
 ## Argus
 
-A timer on Argus runs a guarded dispatcher that deploys `main` to the Pro
-Bono site and to the Policai copy kept there for rollback. The rest of this
-page describes that deploy path.
+A timer on Argus runs a guarded dispatcher that keeps the Pro Bono release
+checkout at `main` and rebuilds the worker image the ingest, enrichment and
+deadline-check timers run. The rest of this page describes that deploy path.
 
 ### Cadence
 
@@ -59,43 +59,45 @@ allow a few minutes, plus build time for code changes.
 
 Each cycle, the dispatcher compares the new `main` with the deployed
 commit and routes each changed path by the first matching row of `ROUTES`
-in `ops/host/dispatcher.py`. A change set selects the union of its paths'
-lanes. A lane that is not selected fast-forwards to the new commit with
-no build and no restart, so both checkouts hold the new commit after every
-verified cycle.
+in `ops/host/dispatcher.py`. A change set rebuilds the worker image when
+any of its paths selects the lane. Otherwise the checkout fast-forwards to
+the new commit with no build, so it holds the new commit after every
+verified cycle either way.
 
-| Changed paths | Lanes |
+| Changed paths | Result |
 | --- | --- |
-| Test files (`*.test.ts`, `*.test.tsx`, any `__tests__/` directory) | None |
-| `data/`, `public/data/` (ISR serves the new data) | None |
-| Markdown outside any `public/` directory | None |
-| `docs/`, `.github/`, `ops/host/`, `ops/collector/`, `scripts/` | None |
-| `apps/probono/` | Rebuild Pro Bono. Policai is not restarted. |
-| `src/`, `public/`, `mcp/`, `design/` | Rebuild and restart Policai. |
-| `package.json`, `package-lock.json`, `tsconfig.json`, `next.config.ts`, `next.config.js`, `next.config.mjs`, `postcss.config.mjs`, `components.json` | Rebuild and restart Policai. |
-| Any other path | Rebuild both. |
+| Test files (`*.test.ts`, `*.test.tsx`, any `__tests__/` directory) | Fast-forward only |
+| Markdown outside any `public/` directory | Fast-forward only |
+| `apps/probono/dashboard/` (the a2j Worker, built by Cloudflare) | Fast-forward only |
+| Any other path under `apps/probono/` | Rebuild the worker image |
+| Any other path | Fast-forward only |
+
+The default is a fast-forward because the worker image is built from
+`apps/probono/worker` alone, which `validate_compose` enforces, so a path
+outside `apps/probono/` cannot change it.
 
 This table describes `main`. The host runs a copy of the dispatcher that
 only a reviewed install refreshes, so it routes this way after the next
-install. Until then the installed copy routes `data/` and `public/data/` to
-no lane, `src/`, `public/`, `mcp/` and the Next.js and shadcn config files
-to Policai, `apps/probono/` to Pro Bono, and every other path to both
-lanes. The invariant behind the no-lane rows is in
+install. Until then the installed copy also rebuilds and restarts a Policai
+server and a dashboard container on Argus for `src/`, `public/`, `mcp/`,
+the Next.js and shadcn config files, `apps/probono/` and every path it does
+not list. The invariant behind the no-lane rows is in
 [`ops/host/README.txt`](../ops/host/README.txt).
 
 ### Health gate and failure
 
-A deploy counts as done only when each rebuilt lane passes its health
-check and the dispatcher reports `verified: true`. That result line also
-names the commit it deployed:
+A deploy counts as done only when the database identity, the worker
+image and the loopback-only Postgres listener check out after activation
+and the dispatcher reports `verified: true`. That result line also names
+the commit it deployed:
 
 ```json
-{"verified": true, "activated_lanes": ["policai"], "main": "<sha>", "heads": {"policai": "<sha>", "probono": "<sha>"}}
+{"verified": true, "activated_lanes": ["probono"], "main": "<sha>", "heads": {"probono": "<sha>"}}
 ```
 
-`activated_lanes` lists the rebuilt lanes and is empty when no lane needed
-a rebuild. `main` is the commit the cycle resolved and deployed, and
-`heads` is the commit each checkout now holds. To confirm a merge went
+`activated_lanes` is `["probono"]` when the worker image was rebuilt and
+empty when the cycle only fast-forwarded. `main` is the commit the cycle
+resolved and deployed, and `heads` is the commit the checkout now holds. To confirm a merge went
 live, look for a verified run whose `main` is the merge commit or a later
 commit on `main`, not for a run that happened after the merge. A failed or
 refused run prints no result and no commit. The host reports these fields
@@ -113,9 +115,9 @@ Recovery is a manual, reviewed step by the maintainer. The procedure is in
 
 - Merging to `main` is a deploy trigger. Check the timer before you push a
   production-tracked branch.
-- A data commit is public after the next cycle, not instantly.
-- A red deploy blocks everyone's changes. Tell the maintainer rather than
-  retrying.
+- A red deploy blocks the Pro Bono jobs and every later cycle. Tell the
+  maintainer rather than retrying. The sites keep deploying through
+  Workers Builds regardless.
 
-The collector runs separately and pushes data commits through the same
-path. See [collector.md](./collector.md).
+The collector runs separately and pushes data commits, which Workers
+Builds publishes. See [collector.md](./collector.md).

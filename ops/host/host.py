@@ -18,7 +18,16 @@ from contextlib import contextmanager
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
-from dispatcher import Refused, State, promote, secure_path, sha, sync_dir, undo_promote
+from dispatcher import (
+    Refused,
+    State,
+    parse_active,
+    promote,
+    secure_path,
+    sha,
+    sync_dir,
+    undo_promote,
+)
 
 STATE = Path("/var/lib/policai-deploy-state")
 CONFIG = Path("/etc/policai-deploy/config.json")
@@ -27,10 +36,9 @@ UNIT_VIEW = Path("/run/policai-deploy-observation/user-units")
 ENV_FILE = Path("/etc/probono-radar/runtime.env")
 NEON_ENV_FILE = Path("/etc/probono-radar/neon.env")
 CODE = Path("/usr/local/libexec/policai-host")
-BASES = {"policai": Path("/var/lib/policai"), "probono": Path("/var/lib/probono-radar")}
-USERS = {"policai": "policai", "probono": "l0cka"}
+BASES = {"probono": Path("/var/lib/probono-radar")}
+USERS = {"probono": "l0cka"}
 DB = "probono-radar-db-1"
-DASHBOARD = "probono-radar-dashboard-1"
 DEPLOY_CLIENT_ENV = {
     "HOME": "/var/lib/probono-radar",
     "DOCKER_CONFIG": "/var/lib/probono-radar/.docker",
@@ -90,46 +98,16 @@ def image_id(value):
     return value
 
 
-def overlay(dashboard, worker):
-    for value in (dashboard, worker):
-        if not re.fullmatch(
-            r"(sha256:[0-9a-f]{64}|probono-radar-(dashboard|worker):candidate-[0-9a-f]{32})",
-            value,
-        ):
-            raise Refused("invalid release image")
+def overlay(worker):
+    if not re.fullmatch(
+        r"(sha256:[0-9a-f]{64}|probono-radar-worker:candidate-[0-9a-f]{32})", worker
+    ):
+        raise Refused("invalid release image")
     return {
-        "services": {
-            "dashboard": {"image": dashboard, "pull_policy": "never"},
-            "worker": {"image": worker, "pull_policy": "never"},
-        },
+        "services": {"worker": {"image": worker, "pull_policy": "never"}},
         "volumes": {"pgdata": {"external": True, "name": "probono-radar_pgdata"}},
         "networks": {"default": {"external": True, "name": "probono-radar_default"}},
     }
-
-
-def check_root_health(text):
-    try:
-        data = json.loads(text)
-        if data.get("success") is not True or not isinstance(data.get("collection"), dict):
-            raise ValueError()
-    except (ValueError, AttributeError):
-        raise Refused("root readiness response invalid") from None
-
-
-def check_child_health(text):
-    if (
-        "Source health" not in text
-        or "<table" not in text
-        or any(
-            error in text
-            for error in (
-                "Internal Server Error",
-                "NEXT_HTTP_ERROR_FALLBACK",
-                "Application error:",
-            )
-        )
-    ):
-        raise Refused("child readiness response invalid")
 
 
 def check_compose_source(app, digest):
@@ -313,11 +291,6 @@ class Host:
             extra_env=DEPLOY_CLIENT_ENV,
         )
 
-    def system(self, *args):
-        if args[0] not in ("show", "stop", "start", "is-active") or args[-1] != "policai.service":
-            raise Refused("system command out of scope")
-        return self.runner.execute(["/usr/bin/systemctl", *args], "/", timeout=120).strip()
-
     def compose(self, app, selection, *args, timeout=180):
         return self.runner.execute(
             self.compose_argv(app, selection) + list(args),
@@ -379,13 +352,13 @@ class Host:
     def resolve_target(self):
         if self.config.get("follow_main") is not True:
             raise Refused("automatic main tracking lacks approval")
-        self.check_repo("policai")
+        self.check_repo("probono")
         self.git(
-            "policai", "fetch", "--quiet", "origin", "refs/heads/main:refs/remotes/origin/main"
+            "probono", "fetch", "--quiet", "origin", "refs/heads/main:refs/remotes/origin/main"
         )
         return sha(
             self.git(
-                "policai", "rev-parse", "--verify", "refs/remotes/origin/main^{commit}"
+                "probono", "rev-parse", "--verify", "refs/remotes/origin/main^{commit}"
             ).strip()
         )
 
@@ -586,50 +559,24 @@ class Host:
             self.git(lane, "checkout", "-B", "main", record["target"], cwd=candidate)
             if self.check_repo(lane, candidate) != record["target"]:
                 raise Refused("staged revision mismatch")
-            if lane == "policai":
-                for args in (
-                    ["/usr/bin/npm", "ci", "--no-audit", "--no-fund"],
-                    ["/usr/bin/npm", "run", "build"],
-                ):
-                    self.runner.execute(
-                        args,
-                        candidate,
-                        identity="policai",
-                        timeout=900,
-                        limit=32_000_000,
-                    )
-                buildid = candidate / ".next/BUILD_ID"
-                secure_path(buildid, account.pw_uid)
-                record["root_build"] = buildid.read_text().strip()
-            else:
-                app = candidate / "apps/probono"
-                check_compose_source(app, self.config["compose_sha256"])
-                tags = {
-                    service: "probono-radar-" + service + ":candidate-" + record["id"]
-                    for service in ("dashboard", "worker")
-                }
-                self.state.write(
-                    "candidate-compose.json", overlay(tags["dashboard"], tags["worker"])
+            app = candidate / "apps/probono"
+            check_compose_source(app, self.config["compose_sha256"])
+            tag = "probono-radar-worker:candidate-" + record["id"]
+            self.state.write("candidate-compose.json", overlay(tag))
+            self.validate_compose(app, "candidate")
+            self.compose(app, "candidate", "build", "worker", timeout=1200)
+            record["images"] = {
+                "worker": image_id(
+                    self.docker("image", "inspect", "--format", "{{.Id}}", tag).strip()
                 )
-                self.validate_compose(app, "candidate")
-                self.compose(app, "candidate", "build", "dashboard", "worker", timeout=1200)
-                record["images"] = {
-                    service: image_id(
-                        self.docker("image", "inspect", "--format", "{{.Id}}", tag).strip()
-                    )
-                    for service, tag in tags.items()
-                }
+            }
             self.checkpoint(lane + ":built")
         # No fast-forward or activation has occurred before this barrier.
 
     def validate_compose(self, app, selection):
         check_compose_source(app, self.config["compose_sha256"])
         cfg = json.loads(self.compose(app, selection, "config", "--format", "json"))
-        if cfg.get("name") != "probono-radar" or set(cfg["services"]) != {
-            "db",
-            "dashboard",
-            "worker",
-        }:
+        if cfg.get("name") != "probono-radar" or set(cfg["services"]) != {"db", "worker"}:
             raise Refused("unexpected Compose project/services")
         if (
             cfg["volumes"]["pgdata"].get("name") != "probono-radar_pgdata"
@@ -641,44 +588,31 @@ class Host:
             or cfg["networks"]["default"].get("external") is not True
         ):
             raise Refused("existing network contract changed")
-        for service, port, target in (
-            ("db", "5433", 5432),
-            ("dashboard", "8850", 3000),
+        ports = cfg["services"]["db"].get("ports", [])
+        if (
+            len(ports) != 1
+            or ports[0].get("host_ip") != "127.0.0.1"
+            or str(ports[0].get("published")) != "5433"
+            or int(ports[0].get("target", 0)) != 5432
         ):
-            item = cfg["services"][service]
-            ports = item.get("ports", [])
-            if (
-                len(ports) != 1
-                or ports[0].get("host_ip") != "127.0.0.1"
-                or str(ports[0].get("published")) != port
-                or int(ports[0].get("target", 0)) != target
-            ):
-                raise Refused("non-loopback or changed port mapping")
-        for service in ("dashboard", "worker"):
-            item = cfg["services"][service]
-            if (
-                item.get("privileged")
-                or item.get("cap_add")
-                or item.get("devices")
-                or item.get("volumes")
-            ):
-                raise Refused("unapproved application container access")
-            if Path(item["build"]["context"]).resolve() != (app / service).resolve():
-                raise Refused("build context escaped child application")
-        if cfg["services"]["worker"].get("network_mode") != "host":
+            raise Refused("non-loopback or changed port mapping")
+        worker = cfg["services"]["worker"]
+        if (
+            worker.get("privileged")
+            or worker.get("cap_add")
+            or worker.get("devices")
+            or worker.get("volumes")
+        ):
+            raise Refused("unapproved application container access")
+        if Path(worker["build"]["context"]).resolve() != (app / "worker").resolve():
+            raise Refused("build context escaped child application")
+        if worker.get("network_mode") != "host":
             raise Refused("worker networking changed")
 
     def activate(self, record, lanes):
         for lane in BASES:
             if self.check_repo(lane) != record["previous"][lane]:
                 raise Refused("release changed during build")
-        if "policai" in lanes:
-            self.system("stop", "policai.service")
-            if (
-                self.system("show", "--property=ActiveState", "--value", "policai.service")
-                != "inactive"
-            ):
-                raise Refused("Policai did not stop")
         for lane in BASES:
             if lane in lanes:
                 candidate, active, old, failed = self.candidate_paths(lane, record)
@@ -691,62 +625,21 @@ class Host:
             else:
                 self.git(lane, "merge", "--ff-only", "--no-edit", record["target"])
                 self.checkpoint(lane + ":fast-forwarded")
-        if "policai" in lanes:
-            self.system("start", "policai.service")
-        if "probono" in lanes:
-            images = record["images"]
-            self.state.write("active-compose.json", overlay(images["dashboard"], images["worker"]))
-            self.compose(
-                BASES["probono"] / "app/apps/probono",
-                "active",
-                "up",
-                "-d",
-                "--no-deps",
-                "--no-build",
-                "--pull",
-                "never",
-                "dashboard",
-            )
-        self.checkpoint("runtimes-activated")
+        # Written on every activation, so the overlay never lags active.json.
+        self.state.write(
+            "active-compose.json", overlay(self.active_record(record)["images"]["worker"])
+        )
+        self.checkpoint("activated")
 
     def active_record(self, record):
-        previous = record["before"]
         return {
             "heads": {lane: record["target"] for lane in BASES},
-            "root_build": record.get("root_build", previous["root_build"]),
-            "images": record.get("images", previous["images"]),
+            "images": record.get("images", record["before"]["images"]),
             "target": record["target"],
         }
 
-    def wait_for_runtime(self, active):
-        for attempt in range(30):
-            if self.runtime_ready(active):
-                return
-            if attempt < 29:
-                time.sleep(1)
-        raise Refused("runtime readiness timed out")
-
-    def runtime_ready(self, active):
+    def health_snapshot(self, active):
         self.verify_database()
-        service_state = self.system("show", "--property=ActiveState", "--value", "policai.service")
-        if service_state not in {"active", "activating", "inactive"}:
-            raise Refused("Policai inactive")
-        ready = service_state == "active"
-        build = BASES["policai"] / "app/.next/BUILD_ID"
-        secure_path(build, pwd.getpwnam("policai").pw_uid)
-        if build.read_text().strip() != active["root_build"]:
-            raise Refused("root artifact build identity mismatch")
-        dash = self.inspect_container(DASHBOARD)
-        if (
-            dash["Image"] != active["images"]["dashboard"]
-            or dash["NetworkSettings"]["Ports"]
-            != {"3000/tcp": [{"HostIp": "127.0.0.1", "HostPort": "8850"}]}
-            or dash["Config"]["Labels"].get("com.docker.compose.project") != "probono-radar"
-        ):
-            raise Refused("dashboard runtime identity mismatch")
-        if dash["State"]["Status"] not in {"running", "created", "restarting"}:
-            raise Refused("dashboard stopped unexpectedly")
-        ready = ready and dash["State"]["Status"] == "running"
         self.docker(
             "image",
             "inspect",
@@ -754,50 +647,15 @@ class Host:
             "{{.Id}}",
             image_id(active["images"]["worker"]),
         )
-        # Socket binding is independent proof; systemd sandbox is not a listener.
+        # Socket binding is independent proof; the container port map is not a listener.
         sockets = self.runner.execute(["/usr/bin/ss", "-H", "-ltn"], "/")
-        for port in ("8794", "8850", "5433"):
-            addresses = [
-                line.split()[3]
-                for line in sockets.splitlines()
-                if len(line.split()) >= 4 and line.split()[3].endswith(":" + port)
-            ]
-            if not addresses and port != "5433":
-                ready = False
-            elif addresses != ["127.0.0.1:" + port]:
-                raise Refused("application listener boundary mismatch")
-        return ready
-
-    def health_snapshot(self, active):
-        self.wait_for_runtime(active)
-        for url, check in (
-            ("http://127.0.0.1:8794/api/status", check_root_health),
-            ("http://127.0.0.1:8850/health", check_child_health),
-        ):
-            for attempt in range(6):
-                try:
-                    text = self.runner.execute(
-                        [
-                            "/usr/bin/curl",
-                            "--noproxy",
-                            "*",
-                            "--fail",
-                            "--silent",
-                            "--max-time",
-                            "5",
-                            "--max-filesize",
-                            "4000000",
-                            url,
-                        ],
-                        "/",
-                        timeout=7,
-                    )
-                    check(text)
-                    break
-                except Refused:
-                    if attempt == 5:
-                        raise
-                    time.sleep(1)
+        addresses = [
+            line.split()[3]
+            for line in sockets.splitlines()
+            if len(line.split()) >= 4 and line.split()[3].endswith(":5433")
+        ]
+        if addresses != ["127.0.0.1:5433"]:
+            raise Refused("database listener boundary mismatch")
 
     def health(self, record):
         for lane in BASES:
@@ -811,13 +669,6 @@ class Host:
         lanes = set(record.get("lanes", []))
         if "previous" not in record or not record.get("activation_started"):
             return
-        if "policai" in lanes:
-            self.system("stop", "policai.service")
-            if (
-                self.system("show", "--property=ActiveState", "--value", "policai.service")
-                != "inactive"
-            ):
-                raise Refused("Policai did not stop for recovery")
         for lane in BASES:
             candidate, active, old, failed = self.candidate_paths(lane, record)
             if lane in lanes and (old.exists() or failed.exists()):
@@ -829,22 +680,7 @@ class Host:
                 # immediately afterwards. No detached intermediate recovery state.
                 self.git(lane, "switch", "-C", "main", record["previous"][lane])
             self.checkpoint(lane + ":restored")
-        if "probono" in lanes:
-            images = record["before"]["images"]
-            self.state.write("active-compose.json", overlay(images["dashboard"], images["worker"]))
-            self.compose(
-                BASES["probono"] / "app/apps/probono",
-                "active",
-                "up",
-                "-d",
-                "--no-deps",
-                "--no-build",
-                "--pull",
-                "never",
-                "dashboard",
-            )
-        if "policai" in lanes:
-            self.system("start", "policai.service")
+        self.state.write("active-compose.json", overlay(record["before"]["images"]["worker"]))
 
     def restored_health(self, record):
         for lane in BASES:
@@ -857,13 +693,12 @@ class Host:
             raise Refused("scheduled workers must execute as l0cka")
 
     def check_worker_release(self):
-        active = self.state.require_ready()
+        active = parse_active(self.state.require_ready())
         if active.get("bootstrap_pending"):
             raise Refused("initial activation incomplete")
         if self.check_repo("probono") != active["heads"]["probono"]:
             raise Refused("worker source differs from active release")
-        expected = overlay(active["images"]["dashboard"], active["images"]["worker"])
-        if self.state.read("active-compose.json") != expected:
+        if self.state.read("active-compose.json") != overlay(active["images"]["worker"]):
             raise Refused("worker image selection differs from active release")
         self.validate_compose(BASES["probono"] / "app/apps/probono", "active")
         self.verify_database()
@@ -1001,14 +836,12 @@ def worker_guard(
 
 class Runner:
     def identity_argv(self, identity, argv, extra_env=None):
-        homes = {"policai": "/var/lib/policai", "l0cka": "/home/l0cka"}
-        if identity not in homes:
+        if identity != "l0cka":
             raise Refused("unapproved command identity")
         clean = {
             "PATH": "/usr/local/bin:/usr/bin:/bin",
-            "HOME": homes[identity],
+            "HOME": "/home/l0cka",
             "LANG": "C.UTF-8",
-            "NEXT_TELEMETRY_DISABLED": "1",
             "GIT_TERMINAL_PROMPT": "0",
             "GIT_CONFIG_NOSYSTEM": "1",
             "GIT_CONFIG_GLOBAL": "/dev/null",

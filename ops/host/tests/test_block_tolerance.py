@@ -58,7 +58,7 @@ class GuardTableTests(Fixture):
             h.compose_guard(["compose", "down"])
 
     def test_a_persistent_block_refuses_release_workers_and_admits_backups(self):
-        self.block(lanes=["policai"])
+        self.block(lanes=["probono"])
         with self.assertRaises(d.Refused) as caught:
             with h.worker_guard(self.state, "release"):
                 self.fail("release worker must not pass a persistent block")
@@ -205,7 +205,7 @@ class CliRoutingTests(Fixture):
         return code, calls, out.getvalue(), err.getvalue()
 
     def test_blocked_host_runs_backups_and_refuses_the_rest(self):
-        self.block(lanes=["policai"])
+        self.block(lanes=["probono"])
         for operation in ("backup", "backup-mirror"):
             with self.subTest(operation):
                 code, calls, out, err = self.main("worker", operation)
@@ -219,7 +219,7 @@ class CliRoutingTests(Fixture):
                 self.assertTrue(err.startswith(f"Refused: {BLOCK}."), err)
 
     def test_neon_sync_runs_under_a_block_and_beside_a_running_worker(self):
-        self.block(lanes=["policai"])
+        self.block(lanes=["probono"])
         with h.worker_guard(self.state, "database"):
             code, calls, out, err = self.main("worker", "neon-sync")
         self.assertEqual((code, err), (0, ""))

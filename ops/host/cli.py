@@ -15,7 +15,7 @@ from pathlib import Path
 
 def parser():
     p = argparse.ArgumentParser(
-        description="Two independent runtime deploy/worker dispatcher (approval-gated)."
+        description="Pro Bono release deploy/worker dispatcher (approval-gated)."
     )
     commands = p.add_subparsers(dest="command", required=True)
     commands.add_parser(
@@ -26,7 +26,7 @@ def parser():
         "deploy",
         help="deploy the root-config approved target; fail closed on any mismatch",
     )
-    deploy.add_argument("--initial", action="store_true", help="force both initial builds")
+    deploy.add_argument("--initial", action="store_true", help="force the initial image build")
     deploy.add_argument(
         "--recover",
         metavar="TRANSACTION_ID",
@@ -81,6 +81,17 @@ def trusted_entrypoint():
         ):
             raise RuntimeError("unsafe installed adapter")
     sys.path.insert(0, str(here.parent))
+
+
+def initial_baseline(baseline):
+    import host as h
+    from dispatcher import sha
+
+    for lane in h.BASES:
+        sha(baseline["heads"][lane])
+    for image in baseline["images"].values():
+        h.image_id(image)
+    return {**baseline, "target": baseline["heads"]["probono"], "bootstrap_pending": True}
 
 
 def failure_line(error):
@@ -183,12 +194,7 @@ def main():
             secure_path(baseline_path)
             if baseline_path.stat().st_size > 65536:
                 raise Refused("baseline oversized")
-            baseline = json.loads(baseline_path.read_text())
-            for lane in h.BASES:
-                sha(baseline["heads"][lane])
-            for image in baseline["images"].values():
-                h.image_id(image)
-            baseline["bootstrap_pending"] = True
+            baseline = initial_baseline(json.loads(baseline_path.read_text()))
             with state.lock(exclusive=True):
                 if any(
                     os.path.lexists(h.STATE / name)
@@ -206,13 +212,10 @@ def main():
                     },
                 )
                 host.preflight(baseline)
-                state.write(
-                    "active-compose.json",
-                    h.overlay(baseline["images"]["dashboard"], baseline["images"]["worker"]),
-                )
+                state.write("active-compose.json", h.overlay(baseline["images"]["worker"]))
                 state.write("active.json", baseline)
                 state.clear_marker()
-            print("baseline verified; initial two-runtime activation REQUIRED")
+            print("baseline verified; initial activation REQUIRED")
         elif args.command == "deploy":
             if args.recover and config.get("recovery_authorization") != args.recover:
                 raise Refused("exact recovery transaction not approved in root config")

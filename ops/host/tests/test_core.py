@@ -18,10 +18,9 @@ class ClassificationTests(unittest.TestCase):
             ([], set()),
             (["data/x", "public/data/x"], set()),
             (["apps/probono/worker/x"], {"probono"}),
-            (["src/x", "public/icon.svg", "mcp/x", "next.config.ts"], {"policai"}),
-            (["shared/a"], {"policai", "probono"}),
+            (["src/x", "public/icon.svg", "mcp/x", "next.config.ts"], set()),
             (["apps/probono/x", "data/x"], {"probono"}),
-            (["apps/probono"], {"policai", "probono"}),
+            (["apps/probono"], set()),
         ]
         for paths, expected in cases:
             with self.subTest(paths=paths):
@@ -30,43 +29,44 @@ class ClassificationTests(unittest.TestCase):
             with self.subTest(invalid=path), self.assertRaises(ValueError):
                 d.classify([path])
 
-    def test_each_path_class_selects_only_the_lanes_it_needs(self):
-        none, policai, probono = set(), {"policai"}, {"probono"}
-        both = policai | probono
+    def test_only_worker_image_inputs_select_the_lane(self):
+        none, probono = set(), {"probono"}
         cases = [
-            ("docs", "docs/hosting-argus.md", none),
-            ("docs", "docs/design/audit/01-policai-desktop.png", none),
+            ("probono", "apps/probono/docker-compose.yaml", probono),
+            ("probono", "apps/probono/worker/src/digest.ts", probono),
+            ("probono", "apps/probono/worker/Dockerfile", probono),
+            ("probono", "apps/probono/worker/package-lock.json", probono),
+            ("probono", "apps/probono/ops/enrich.sh", probono),
+            ("probono", "apps/probono/db/schema.sql", probono),
+            ("probono", "apps/probono/worker/security-test/enrich-boundary.test.mjs", probono),
+            ("dashboard", "apps/probono/dashboard/package.json", none),
+            ("dashboard", "apps/probono/dashboard/app/page.tsx", none),
+            ("dashboard", "apps/probono/dashboard/public/notes.md", none),
             ("markdown", "README.md", none),
             ("markdown", "apps/probono/RUNBOOK.md", none),
-            ("markdown", "apps/probono/dashboard/EDITORIAL.md", none),
-            ("markdown", "src/test/fixtures/articles/fixture-explainer-draft.md", none),
-            ("markdown", "public/notes.md", policai),
-            ("markdown", "apps/probono/dashboard/public/notes.md", probono),
-            ("github", ".github/workflows/pull-request-checks.yml", none),
-            ("ops-host", "ops/host/dispatcher.py", none),
-            ("ops-host", "ops/host/units/policai-pull.service", none),
-            ("ops-collector", "ops/collector/policai-collect.sh", none),
-            ("test", "src/lib/articles.test.ts", none),
-            ("test", "src/components/policy-browser.test.tsx", none),
-            ("test", "src/lib/__tests__/helper.ts", none),
+            ("markdown", "apps/probono/worker/NOTES.md", none),
             ("test", "apps/probono/worker/src/lib/parse.test.ts", none),
-            ("scripts", "scripts/collect.ts", none),
-            ("scripts", "scripts/sync-design-tokens.mjs", none),
-            ("package", "package.json", policai),
-            ("package", "package-lock.json", policai),
-            ("package", "tsconfig.json", policai),
-            ("design", "design/tokens.css", policai),
+            ("test", "apps/probono/worker/src/__tests__/helper.ts", none),
+            ("test", "src/lib/articles.test.ts", none),
+            ("policai", "src/app/page.tsx", none),
+            ("policai", "public/icon.svg", none),
+            ("policai", "mcp/server.ts", none),
+            ("policai", "design/tokens.css", none),
+            ("policai", "package.json", none),
+            ("policai", "package-lock.json", none),
+            ("policai", "next.config.ts", none),
+            ("policai", "wrangler.jsonc", none),
             ("data", "data/articles/weekly.md", none),
             ("data", "public/data/meta.json", none),
-            ("probono", "apps/probono/dashboard/package.json", probono),
-            ("probono", "apps/probono/worker/security-test/enrich-boundary.test.mjs", probono),
-            ("policai", "src/app/design-tokens.css", policai),
-            ("policai", "src/lib/test.ts", policai),
-            ("policai", "next.config.ts", policai),
-            ("default", "vitest.config.ts", both),
-            ("default", "eslint.config.mjs", both),
-            ("default", "ops/other/x.sh", both),
-            ("default", "docs", both),
+            ("docs", "docs/hosting-argus.md", none),
+            ("github", ".github/workflows/pull-request-checks.yml", none),
+            ("ops", "ops/host/dispatcher.py", none),
+            ("ops", "ops/collector/policai-collect.sh", none),
+            ("scripts", "scripts/collect.ts", none),
+            ("other", "vitest.config.ts", none),
+            ("other", "LICENSE", none),
+            ("other", "apps/probono", none),
+            ("other", "apps/probono-other/worker/x.ts", none),
         ]
         for name, path, expected in cases:
             with self.subTest(route=name, path=path):
@@ -75,13 +75,55 @@ class ClassificationTests(unittest.TestCase):
     def test_a_change_set_selects_the_union_of_its_lanes(self):
         cases = [
             (["README.md", "src/lib/articles.test.ts", "scripts/collect.ts"], set()),
-            (["docs/api.md", "design/tokens.css"], {"policai"}),
-            (["package-lock.json", "apps/probono/worker/src/digest.ts"], {"policai", "probono"}),
-            (["docs/api.md", "ops/host/README.txt", "LICENSE"], {"policai", "probono"}),
+            (["docs/api.md", "src/app/page.tsx", "apps/probono/dashboard/app/page.tsx"], set()),
+            (["package-lock.json", "apps/probono/worker/src/digest.ts"], {"probono"}),
+            (
+                ["docs/api.md", "ops/host/README.txt", "apps/probono/docker-compose.yaml"],
+                {"probono"},
+            ),
         ]
         for paths, expected in cases:
             with self.subTest(paths=paths):
                 self.assertEqual(d.classify(paths), expected)
+
+
+class ActiveRecordTests(unittest.TestCase):
+    OLD, NEW = "a" * 40, "b" * 40
+    WORKER = "sha256:" + "1" * 64
+    CURRENT = {"heads": {"probono": OLD}, "images": {"worker": WORKER}, "target": OLD}
+
+    def test_the_retired_two_runtime_record_parses_to_the_current_shape(self):
+        legacy = {
+            "heads": {"policai": self.NEW, "probono": self.OLD},
+            "root_build": "next-build-id",
+            "images": {"dashboard": "sha256:" + "2" * 64, "worker": self.WORKER},
+            "target": self.OLD,
+        }
+        self.assertEqual(d.parse_active(legacy), self.CURRENT)
+        self.assertEqual(d.parse_active(self.CURRENT), self.CURRENT)
+        self.assertEqual(
+            d.parse_active({**legacy, "bootstrap_pending": True}),
+            {**self.CURRENT, "bootstrap_pending": True},
+        )
+        self.assertNotIn(
+            "bootstrap_pending", d.parse_active({**legacy, "bootstrap_pending": False})
+        )
+
+    def test_a_record_without_the_release_identity_is_refused(self):
+        for record in (
+            {},
+            {"target": self.OLD},
+            {"heads": {"policai": self.OLD}, "images": {"worker": self.WORKER}, "target": self.OLD},
+            {
+                "heads": {"probono": self.OLD},
+                "images": {"dashboard": self.WORKER},
+                "target": self.OLD,
+            },
+            {"heads": {"probono": "main"}, "images": {"worker": self.WORKER}, "target": self.OLD},
+            {"heads": self.OLD, "images": {"worker": self.WORKER}, "target": self.OLD},
+        ):
+            with self.subTest(record=record), self.assertRaises(d.Refused):
+                d.parse_active(record)
 
 
 class StateTests(unittest.TestCase):
