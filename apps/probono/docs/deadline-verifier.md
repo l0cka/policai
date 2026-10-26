@@ -53,14 +53,16 @@ For each stored date `checkDeadlines`:
   out unless a different year follows). Month and year dates match `December
   2026` and `by 2027`. No match is `not_found`;
 - quotes the sentence or line holding it;
+- leaves every date unchanged, and logs it, when the page mentions an
+  extension, postponement, deferral or new closing date anywhere. Telling
+  whether the page moved this deadline, and to which date, is judgement the
+  checker can't make reliably, and a wrong later date is worse than an
+  unconfirmed one;
 - reads the kind from the nearest keyword, which must sit within 40
   characters before or 30 after the date:
   close, submissions, until, due, deadline mean `action`; commence, opens,
   election, expo, event, takes effect and a `Date:` heading mean `milestone`;
-- leaves the date unchanged, and logs it, when its sentence or the next one
-  says "extended", "postponed" or "new closing date". Telling whether the page moved this deadline, and to which date, is
-  judgement the checker can't make reliably, and a wrong later date is worse
-  than an unconfirmed one. Otherwise `closed` when the period has ended (end
+- reads `closed` when the period has ended (end
   of month or year for those precisions) or the sentence says closed, else
   `open`;
 - makes the single action date primary, or the one whose quote says close,

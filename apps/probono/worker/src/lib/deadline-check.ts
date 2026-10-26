@@ -29,7 +29,7 @@ const PRIMARY_RE = /\b(close[sd]?|closing|submi|deadline|due(?!\s+to)|until)/i;
 // "Date: Friday 23 October 2026" heads an event listing.
 const DATE_HEADER_RE = /(?:^|\n)[ \t>*#-]*(?:event\s+)?date\s*:\s*$/i;
 const CLOSED_RE = /\b(has|have|had) (now )?closed|\bnow closed|\bis closed|\bclosed on\b|\bsubmissions? closed|\bapplications? closed|\bconsultation (has )?closed/i;
-const EXTENDED_RE = /\bextended\b|\bnew closing date\b|\bpostponed\b/gi;
+const EXTENSION_RE = /\b(extended|extensions?|postpone[sd]?|postponement|new closing date|deferred|rescheduled)\b/i;
 // A close word a "Date:" heading yields to; "until" there is usually a clock time.
 const HEADER_ACTION_RE = /\b(close[sd]?|closing|submi|deadline|due\b(?!\s+to)|lodg|apply|register(ed)? by|registrations? close|rsvp)/i;
 
@@ -131,30 +131,15 @@ function kindAt(text: string, hit: Hit, sentence: Span): 'action' | 'milestone' 
   return null;
 }
 
-function nextSentenceStart(text: string, sentence: Span): number {
-  let i = sentence.end;
-  while (i < text.length && /\s/.test(text[i])) i++;
-  return i;
-}
-
-/*
- * Whether the date's sentence, or the one after it, says something was
- * extended or postponed. Reading which date a page really moved to, and
- * whether it moved this deadline at all ("the forum was postponed", "cannot
- * be extended"), is judgement this checker can't make reliably, so such a
- * date is left as stored and logged instead.
- */
-function mentionsExtension(text: string, sentence: Span): boolean {
-  const end = Math.min(text.length, sentence.end + 200);
-  for (const word of text.slice(sentence.start, end).matchAll(EXTENDED_RE)) {
-    const at = sentence.start + word.index!;
-    if (sentenceAround(text, { index: at, end: at + word[0].length }).start <= nextSentenceStart(text, sentence)) return true;
-  }
-  return false;
-}
-
 export function checkDeadlines(item: VerifyItem, pageText: string, today: string): DateCheck[] {
   const text = cleanText(pageText);
+  // Which date a page moved, and whether it moved this one ("the forum was
+  // postponed", "cannot be extended"), is judgement this checker can't make
+  // reliably, and a wrong date is worse than an unconfirmed one. A page that
+  // talks about an extension anywhere is left for the next run.
+  if (EXTENSION_RE.test(text)) {
+    return item.deadlines.map((s) => ({ verdict: null, uncertain: `${s.date} left unchanged: the page mentions an extension or postponement` }));
+  }
   const storedPrimary = primaryAction(item.deadlines);
   const checks = item.deadlines.map((s: StoredDeadline): DateCheck & { quoteHasClose?: boolean } => {
     const base = { date: s.date, corrected_date: null, label: s.label, target_url: s.target_url ?? null };
@@ -176,9 +161,6 @@ export function checkDeadlines(item: VerifyItem, pageText: string, today: string
     if (actions === 0 && milestones === 0) return { verdict: null, uncertain: `${s.date} left unchanged: no deadline or event wording beside the date` };
     if (actions === milestones) return { verdict: null, uncertain: `${s.date} left unchanged: mentions disagree on deadline or event` };
     const pick = read.find((r) => r.kind === (actions > milestones ? 'action' : 'milestone'))!;
-    if (mentionsExtension(text, pick.sentence)) {
-      return { verdict: null, uncertain: `${s.date} left unchanged: the page may have extended or postponed it` };
-    }
     const quote = text.slice(pick.sentence.start, pick.sentence.end).trim();
     const passed = effectiveEnd(s.date, pick.hit.precision) < today;
     const status = passed || CLOSED_RE.test(quote) ? 'closed' : 'open';

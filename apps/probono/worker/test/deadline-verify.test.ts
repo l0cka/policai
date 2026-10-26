@@ -225,7 +225,7 @@ describe('proposeVerifications', () => {
     const text = 'Responses are due by 6 November 2026 for alternative formats. Submissions close 20 November 2026. The closing date has been extended to 4 December 2026.';
     const r = await proposeVerifications(items, { fetchPage: async () => ({ text, via: 'direct' as const }), today: '2026-10-26' });
     expect(r.proposals).toEqual([]);
-    expect(r.notes).toEqual([{ item_id: 4, note: '2026-11-20 left unchanged: the page may have extended or postponed it' }]);
+    expect(r.notes).toEqual([{ item_id: 4, note: '2026-11-06 left unchanged: the page mentions an extension or postponement' }, { item_id: 4, note: '2026-11-20 left unchanged: the page mentions an extension or postponement' }]);
   });
 
   it('proposes nothing for an item whose dates all stay unchanged, so it stays queued', async () => {

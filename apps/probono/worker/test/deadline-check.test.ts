@@ -101,12 +101,15 @@ describe('checkDeadlines on cases the real batch lacked', () => {
       'Submissions close 6 November 2026 and will not be extended to 20 November 2026.',
     ]) {
       expect(check([action('2026-11-06')], text).checks[0], text)
-        .toEqual({ verdict: null, uncertain: '2026-11-06 left unchanged: the page may have extended or postponed it' });
+        .toEqual({ verdict: null, uncertain: '2026-11-06 left unchanged: the page mentions an extension or postponement' });
     }
     for (const text of [
       'Submissions close 6 December 2026. Extended to 15 January.',
       'Submissions close 6 December 2026. The closing date has been extended to 6 December 2027.',
       'Submissions close 6 December 2026 and the closing date has been extended to 2026-12-20.',
+      'Submissions close 6 December 2026.\nUpdate\nThe closing date of 6 December 2026 has been extended to 4 January 2027.',
+      `Submissions close 6 December 2026. ${'After requests from many services and organisations, '.repeat(6)}the closing date has been extended to 4 January 2027.`,
+      'A deadline extension to 20 December 2026 was granted. Submissions close 6 December 2026.',
     ]) {
       expect(check([action('2026-12-06')], text).checks[0].verdict, text).toBeNull();
     }
