@@ -4,7 +4,7 @@ import {
   mergeVerification,
   selectItemsToVerify,
 } from '../src/lib/deadline-verify.js';
-import { capPageText, isUsablePage } from '../src/lib/page-text.js';
+import { isUsablePage } from '../src/lib/page-text.js';
 import { proposeVerifications } from '../src/verify-deadlines.js';
 
 // Audit day, noon in Sydney.
@@ -187,13 +187,6 @@ describe('page text', () => {
   it('treats a bot wall as no page', () => {
     expect(isUsablePage('Performing security verification. This website uses a security service to protect against malicious bots. '.repeat(3))).toBe(false);
     expect(isUsablePage('Submissions close 16 October 2026. '.repeat(10))).toBe(true);
-  });
-
-  it('keeps date lines from the middle of a long page', () => {
-    const text = `${'body '.repeat(10_000)}\nCloses 25 Sep 2026\n${'footer '.repeat(10_000)}`;
-    const capped = capPageText(text, 24_000);
-    expect(capped.length).toBeLessThanOrEqual(24_000);
-    expect(capped).toContain('Closes 25 Sep 2026');
   });
 });
 

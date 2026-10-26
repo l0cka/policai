@@ -110,6 +110,11 @@ describe('checkDeadlines on cases the real batch lacked', () => {
       'Submissions close 6 December 2026.\nUpdate\nThe closing date of 6 December 2026 has been extended to 4 January 2027.',
       `Submissions close 6 December 2026. ${'After requests from many services and organisations, '.repeat(6)}the closing date has been extended to 4 January 2027.`,
       'A deadline extension to 20 December 2026 was granted. Submissions close 6 December 2026.',
+      'Submissions close 6 December 2026. A deferral to 20 December 2026 applies.',
+      'Submissions close 6 December 2026. We are postponing the closing date to 4 January 2027.',
+      'Submissions close 6 December 2026. We are rescheduling the closing date.',
+      'Submissions close 6 December 2026. We are extending the closing date.',
+      `${'Body copy about the consultation. '.repeat(3000)}\nThe consultation period was extended.\n${'More body copy. '.repeat(3000)}\nSubmissions close 6 December 2026.`,
     ]) {
       expect(check([action('2026-12-06')], text).checks[0].verdict, text).toBeNull();
     }

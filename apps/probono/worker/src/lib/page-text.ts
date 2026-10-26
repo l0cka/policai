@@ -1,11 +1,10 @@
 import { decodeEntities } from './page-title.js';
-import { PAGE_TEXT_LIMIT } from './deadline-verify.js';
 
 /*
  * The source page as plain text, for the deadline verifier. Firecrawl first
  * (it renders client-side pages and gets past most front doors), then a plain
- * GET with the markup stripped. Capped: the verifier needs the body copy, not
- * a site's whole footer.
+ * GET with the markup stripped. Uncapped: the checker reads the whole page, so
+ * extension wording in a footer or a long middle still counts.
  */
 
 const UA = 'Mozilla/5.0 (compatible; ProBonoRadar/1.0; +https://a2j.policai.org) deadline-verifier';
@@ -26,7 +25,7 @@ export function htmlToText(html: string): string {
     .trim();
 }
 
-/* Drop markdown link targets and images; they cost tokens and carry no dates. */
+/* Drop markdown link targets and images; they carry no dates. */
 export function compactMarkdown(markdown: string): string {
   return markdown
     .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
@@ -87,41 +86,11 @@ export async function fetchDirect(url: string, timeoutMs = 20_000): Promise<stri
   }
 }
 
-const DATE_LINE_RE = new RegExp(
-  `\\b\\d{1,2}(st|nd|rd|th)?\\s+(${['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'].join('|')})|\\b(close[sd]?|closing|due|deadline)\\b`,
-  'i',
-);
-
-/*
- * Cap long pages without losing their dates. Consultation platforms often put
- * "Closes 25 Sep 2026" in a footer panel well past the body, so a plain head
- * slice can drop the one line the verifier needs. Keep the head, every
- * date-bearing line from the middle, then the tail.
- */
-export function capPageText(text: string, limit = PAGE_TEXT_LIMIT): string {
-  if (text.length <= limit) return text;
-  const headLen = Math.floor(limit * 0.6);
-  const tailLen = Math.floor(limit * 0.15);
-  const head = text.slice(0, headLen);
-  const tail = text.slice(-tailLen);
-  const budget = limit - headLen - tailLen - 40;
-  const middle: string[] = [];
-  let used = 0;
-  for (const line of text.slice(headLen, text.length - tailLen).split('\n')) {
-    if (!DATE_LINE_RE.test(line)) continue;
-    const l = line.trim().slice(0, 400);
-    if (used + l.length + 1 > budget) break;
-    middle.push(l);
-    used += l.length + 1;
-  }
-  return `${head}\n[…]\n${middle.join('\n')}\n[…]\n${tail}`;
-}
-
 export async function fetchPageText(url: string): Promise<PageText | null> {
   if (!/^https?:\/\//i.test(url)) return null;
   const fc = await fetchViaFirecrawl(url);
-  if (fc) return { text: capPageText(fc), via: 'firecrawl' };
+  if (fc) return { text: fc, via: 'firecrawl' };
   const direct = await fetchDirect(url);
-  if (direct) return { text: capPageText(direct), via: 'direct' };
+  if (direct) return { text: direct, via: 'direct' };
   return null;
 }

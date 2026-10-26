@@ -54,7 +54,8 @@ For each stored date `checkDeadlines`:
   2026` and `by 2027`. No match is `not_found`;
 - quotes the sentence or line holding it;
 - leaves every date unchanged, and logs it, when the page mentions an
-  extension, postponement, deferral or new closing date anywhere. Telling
+  extension, postponement, deferral, rescheduling or new closing date
+  anywhere, read from the whole uncapped page. Telling
   whether the page moved this deadline, and to which date, is judgement the
   checker can't make reliably, and a wrong later date is worse than an
   unconfirmed one;

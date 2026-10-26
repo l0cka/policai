@@ -48,8 +48,6 @@ export type VerifyItem = {
   deadlines: StoredDeadline[];
 };
 
-export const PAGE_TEXT_LIMIT = 24_000;
-
 /* ---- Vetting a verification against the stored dates ---- */
 
 export type VerifiedDeadline = StoredDeadline & { status?: VerifyStatus };

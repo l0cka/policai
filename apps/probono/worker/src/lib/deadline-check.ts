@@ -29,7 +29,7 @@ const PRIMARY_RE = /\b(close[sd]?|closing|submi|deadline|due(?!\s+to)|until)/i;
 // "Date: Friday 23 October 2026" heads an event listing.
 const DATE_HEADER_RE = /(?:^|\n)[ \t>*#-]*(?:event\s+)?date\s*:\s*$/i;
 const CLOSED_RE = /\b(has|have|had) (now )?closed|\bnow closed|\bis closed|\bclosed on\b|\bsubmissions? closed|\bapplications? closed|\bconsultation (has )?closed/i;
-const EXTENSION_RE = /\b(extended|extensions?|postpone[sd]?|postponement|new closing date|deferred|rescheduled)\b/i;
+const EXTENSION_RE = /\b(extend(ed|ing)|extensions?|postpon\w*|defer(s|red|rals?|ring)?|reschedul\w*|new closing date)\b/i;
 // A close word a "Date:" heading yields to; "until" there is usually a clock time.
 const HEADER_ACTION_RE = /\b(close[sd]?|closing|submi|deadline|due\b(?!\s+to)|lodg|apply|register(ed)? by|registrations? close|rsvp)/i;
 
