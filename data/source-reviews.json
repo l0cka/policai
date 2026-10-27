@@ -432,16 +432,16 @@
     "entryKind": "policy",
     "targetPolicyId": "pmc-rapid-review-ai-driven-cyber-incident-2026",
     "targetPolicyBaseRevisionHash": "e7bb5e4cea839eabc72bec6bf760ec5c3b950026b1554e1a684f5f17687cbcf6",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-10-23T03:06:54.019Z",
     "createdBy": "collector",
-    "notes": "The verified register record for \"Rapid review into Australian Government arrangements for an AI-driven cyber incident\" has no stored source fingerprint. The currently served document requires editorial comparison before it can establish a trusted baseline. Re-verify the existing register record before restoring it to public reads. Detected by PM&C — Rapid review into AI-driven cyber incident arrangements (heuristic assessment).",
+    "notes": "Fresh browser capture for re-verification. pmc.gov.au answers plain HTTP clients with an Incapsula \"Request unsuccessful\" page (HTTP 200, per-request incident id), so a server-side re-fetch can never match the staged fingerprint.",
     "analysis": {
       "isRelevant": true,
       "relevanceScore": 1,
       "suggestedType": "policy",
       "suggestedJurisdiction": "federal",
-      "summary": "The verified register record for \"Rapid review into Australian Government arrangements for an AI-driven cyber incident\" has no stored source fingerprint. The currently served document requires editorial comparison before it can establish a trusted baseline.",
+      "summary": "PM&C-led rapid review, announced with formal terms of reference on 24 September 2026, of whether Australia's legislative, governance and information-sharing arrangements are fit for purpose for cyber incidents involving AI.",
       "tags": [
         "rapid review",
         "PM&C",
@@ -462,10 +462,27 @@
     "sourceEvidence": {
       "url": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
       "finalUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
-      "retrievedAt": "2026-10-23T03:06:54.019Z",
+      "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
+      "retrievedAt": "2026-10-26T12:48:03Z",
       "contentType": "text/html",
-      "contentHash": "5b7468b8c7812ea1616ff48f6183541408fdd92d8dd4edfbf8a6eb171fe0eb1b",
-      "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident"
+      "contentHash": "72e04c0756d8b67c3f4238504bf48220ac63e8c1281e0f60791f219631430391",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-10-26T12:48:03Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "Headless Chromium capture with the Policai/1.0 collector identity on Argus, 26 October 2026, for Daniel Alkurdi's review of pending developments. Main-content text of the rendered page; the terms of reference page was read in the same session and its five recommendation areas match the record content.",
+        "pageContentHash": "fd6266d22d832d97a54851e9353a99b21169cd317a891ed80f1f5cc79bc1b6ad",
+        "characterCount": 1616
+      },
+      "reviewedDate": {
+        "date": "2026-09-24",
+        "precision": "day",
+        "reviewedAt": "2026-10-27T08:01:01.423Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The review page states \"On 24 September 2026, the Prime Minister, the Hon Anthony Albanese MP, announced a rapid review\", and its resources list shows \"Terms of Reference – Rapid review into Australian Government arrangements for an AI-driven cyber incident Thursday 24 September 2026\"."
+      }
     },
     "proposedRecord": {
       "id": "pmc-rapid-review-ai-driven-cyber-incident-2026",
@@ -480,7 +497,32 @@
           "type": "published",
           "date": "2026-09-24",
           "precision": "day",
-          "primary": true
+          "primary": true,
+          "source": {
+            "url": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+            "finalUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+            "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
+            "retrievedAt": "2026-10-26T12:48:03Z",
+            "contentType": "text/html",
+            "contentHash": "72e04c0756d8b67c3f4238504bf48220ac63e8c1281e0f60791f219631430391",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-10-26T12:48:03Z",
+              "capturedBy": "Claude (agent)",
+              "requestedBy": "Daniel Alkurdi",
+              "notes": "Headless Chromium capture with the Policai/1.0 collector identity on Argus, 26 October 2026, for Daniel Alkurdi's review of pending developments. Main-content text of the rendered page; the terms of reference page was read in the same session and its five recommendation areas match the record content.",
+              "pageContentHash": "fd6266d22d832d97a54851e9353a99b21169cd317a891ed80f1f5cc79bc1b6ad",
+              "characterCount": 1616
+            },
+            "reviewedDate": {
+              "date": "2026-09-24",
+              "precision": "day",
+              "reviewedAt": "2026-10-27T08:01:01.423Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "The review page states \"On 24 September 2026, the Prime Minister, the Hon Anthony Albanese MP, announced a rapid review\", and its resources list shows \"Terms of Reference – Rapid review into Australian Government arrangements for an AI-driven cyber incident Thursday 24 September 2026\"."
+            }
+          }
         }
       ],
       "agencies": [
@@ -510,7 +552,40 @@
         "agentic-ai"
       ],
       "createdAt": "2026-10-20T05:20:00.000Z",
-      "updatedAt": "2026-10-23T03:06:54.019Z"
+      "updatedAt": "2026-10-27T08:01:01.423Z",
+      "lastReviewedAt": "2026-10-27T08:01:01.423Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+          "finalUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+          "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
+          "retrievedAt": "2026-10-26T12:48:03Z",
+          "contentType": "text/html",
+          "contentHash": "72e04c0756d8b67c3f4238504bf48220ac63e8c1281e0f60791f219631430391",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-26T12:48:03Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Headless Chromium capture with the Policai/1.0 collector identity on Argus, 26 October 2026, for Daniel Alkurdi's review of pending developments. Main-content text of the rendered page; the terms of reference page was read in the same session and its five recommendation areas match the record content.",
+            "pageContentHash": "fd6266d22d832d97a54851e9353a99b21169cd317a891ed80f1f5cc79bc1b6ad",
+            "characterCount": 1616
+          },
+          "reviewedDate": {
+            "date": "2026-09-24",
+            "precision": "day",
+            "reviewedAt": "2026-10-27T08:01:01.423Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The review page states \"On 24 September 2026, the Prime Minister, the Hon Anthony Albanese MP, announced a rapid review\", and its resources list shows \"Terms of Reference – Rapid review into Australian Government arrangements for an AI-driven cyber incident Thursday 24 September 2026\"."
+          }
+        },
+        "checkedAt": "2026-10-27T08:01:01.423Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7QBtuy9Yo71xan9RzFcY5HC#cmsg_019nKBbCzGtpRmfKqX3Xisd7CzMBoHPcVXPiPdGYZJqyWF (proposal 29eecba3). Proposed by Claude (agent). Re-verification; record unchanged. The page and terms of reference publish no reporting date, interim findings or report as at 26 October 2026. The five recommendation areas in the record match the terms of reference text."
+      }
     },
     "linkedDevelopment": {
       "id": "dev-rapid-review-into-australian-government-arrangem-1lc8cyp",
@@ -520,7 +595,7 @@
       "sourceName": "PM&C — Rapid review into AI-driven cyber incident arrangements",
       "jurisdiction": "federal",
       "detectedAt": "2026-10-23T03:06:54.019Z",
-      "summary": "The verified register record for \"Rapid review into Australian Government arrangements for an AI-driven cyber incident\" has no stored source fingerprint. The currently served document requires editorial comparison before it can establish a trusted baseline.",
+      "summary": "PM&C-led rapid review, announced with formal terms of reference on 24 September 2026, of whether Australia's legislative, governance and information-sharing arrangements are fit for purpose for cyber incidents involving AI.",
       "relevanceScore": 1,
       "classification": "heuristic",
       "assessment": {
@@ -533,16 +608,101 @@
         "source": {
           "url": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
           "finalUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
-          "retrievedAt": "2026-10-23T03:06:54.019Z",
+          "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
+          "retrievedAt": "2026-10-26T12:48:03Z",
           "contentType": "text/html",
-          "contentHash": "5b7468b8c7812ea1616ff48f6183541408fdd92d8dd4edfbf8a6eb171fe0eb1b",
-          "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident"
+          "contentHash": "72e04c0756d8b67c3f4238504bf48220ac63e8c1281e0f60791f219631430391",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-26T12:48:03Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Headless Chromium capture with the Policai/1.0 collector identity on Argus, 26 October 2026, for Daniel Alkurdi's review of pending developments. Main-content text of the rendered page; the terms of reference page was read in the same session and its five recommendation areas match the record content.",
+            "pageContentHash": "fd6266d22d832d97a54851e9353a99b21169cd317a891ed80f1f5cc79bc1b6ad",
+            "characterCount": 1616
+          },
+          "reviewedDate": {
+            "date": "2026-09-24",
+            "precision": "day",
+            "reviewedAt": "2026-10-27T08:01:01.423Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The review page states \"On 24 September 2026, the Prime Minister, the Hon Anthony Albanese MP, announced a rapid review\", and its resources list shows \"Terms of Reference – Rapid review into Australian Government arrangements for an AI-driven cyber incident Thursday 24 September 2026\"."
+          }
         }
       },
-      "status": "detected"
+      "status": "detected",
+      "publishedAt": "2026-09-24",
+      "publishedAtPrecision": "day"
     },
     "sourceVersionSequence": 1,
-    "updatedAt": "2026-10-23T03:06:54.019Z"
+    "updatedAt": "2026-10-27T08:01:01.467Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "proposedRecord": {
+        "id": "pmc-rapid-review-ai-driven-cyber-incident-2026",
+        "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
+        "description": "PM&C-led rapid review, announced with formal terms of reference on 24 September 2026, of whether Australia's legislative, governance and information-sharing arrangements are fit for purpose for cyber incidents involving AI.",
+        "jurisdiction": "federal",
+        "type": "policy",
+        "status": "proposed",
+        "effectiveDate": "2026-09-24",
+        "dates": [
+          {
+            "type": "published",
+            "date": "2026-09-24",
+            "precision": "day",
+            "primary": true
+          }
+        ],
+        "agencies": [
+          "Department of the Prime Minister and Cabinet",
+          "National Cyber Security Coordinator",
+          "Australian Signals Directorate",
+          "Australian AI Safety Institute",
+          "Services Australia"
+        ],
+        "sourceUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+        "content": "On 24 September 2026 the Prime Minister announced a Department of the Prime Minister and Cabinet (PM&C)-led rapid review of whether existing legislative, governance and information-sharing arrangements are fit for purpose to prepare for and respond to cyber incidents involving artificial intelligence. PM&C published formal terms of reference the same day (https://www.pmc.gov.au/resources/terms-reference-rapid-review-australian-government-arrangements-ai-driven-cyber-incident; release date Thursday 24 September 2026). The review page states that PM&C leads the review in collaboration with the National Cyber Security Coordinator, the Australian Signals Directorate, the Australian AI Safety Institute and Services Australia. Per the terms of reference, recommendations scope covers: reporting requirements relating to AI-driven cyber incidents, AI-identified cyber vulnerabilities and cyber-related AI safety incidents (including obligations, thresholds, pathways and systems); Commonwealth governance and information-sharing arrangements for managing incidents involving AI (including roles, responsibilities and escalation pathways); engagement and information-sharing obligations of AI firms (including notification requirements and cooperation arrangements during incidents); the adequacy of existing system and legislative, regulatory and enforcement frameworks in deterring AI-driven cyber incidents (including whether current offences, liabilities, penalties and enforcement mechanisms are sufficient and effective); and mechanisms to strengthen networks and systems of government departments and agencies against AI vulnerabilities. PM&C states the review will also inform Australia's AI Standards and international work on safety incident reporting. The Prime Minister's disclosure of the underlying OpenAI / Medicare statistics portal incident is recorded separately as timeline event tl-2026-09-24-pm-discloses-openai-medicare-portal-access. This record is the government rapid review with published terms of reference; it is not a completed instrument and it is not OpenAI's later company taskforce.",
+        "aiSummary": "PM&C-led rapid review announced 24 September 2026 with published terms of reference on whether legislative, governance and information-sharing arrangements are fit for AI-driven cyber incidents; recommendations to inform Australia's AI Standards.",
+        "tags": [
+          "rapid review",
+          "PM&C",
+          "cyber security",
+          "AI incident reporting",
+          "terms of reference",
+          "OpenAI",
+          "Medicare portal"
+        ],
+        "themes": [
+          "cyber-security",
+          "ai-governance",
+          "risk-assurance",
+          "standards",
+          "agentic-ai"
+        ],
+        "createdAt": "2026-10-20T05:20:00.000Z",
+        "updatedAt": "2026-10-26T13:02:57.767Z"
+      },
+      "reviewedDate": {
+        "date": "2026-09-24",
+        "precision": "day",
+        "notes": "The review page states \"On 24 September 2026, the Prime Minister, the Hon Anthony Albanese MP, announced a rapid review\", and its resources list shows \"Terms of Reference – Rapid review into Australian Government arrangements for an AI-driven cyber incident Thursday 24 September 2026\"."
+      },
+      "notes": "Re-verification; record unchanged. The page and terms of reference publish no reporting date, interim findings or report as at 26 October 2026. The five recommendation areas in the record match the terms of reference text.",
+      "proposedAt": "2026-10-26T13:04:22.924Z"
+    },
+    "targetPolicyRevisionHash": "e7bb5e4cea839eabc72bec6bf760ec5c3b950026b1554e1a684f5f17687cbcf6",
+    "reviewedAt": "2026-10-27T08:01:01.423Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7QBtuy9Yo71xan9RzFcY5HC#cmsg_019nKBbCzGtpRmfKqX3Xisd7CzMBoHPcVXPiPdGYZJqyWF (proposal 29eecba3). Proposed by Claude (agent). Re-verification; record unchanged. The page and terms of reference publish no reporting date, interim findings or report as at 26 October 2026. The five recommendation areas in the record match the terms of reference text.",
+    "decision": {
+      "proposalHash": "29eecba35337245baf41d90e7d64146b9c641efb059d4035e3280c952fd6b4ae",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-10-27T08:01:01.417Z",
+      "attestationUrl": "https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7QBtuy9Yo71xan9RzFcY5HC#cmsg_019nKBbCzGtpRmfKqX3Xisd7CzMBoHPcVXPiPdGYZJqyWF"
+    },
+    "publishedAt": "2026-10-27T08:01:01.461Z"
   },
   {
     "id": "source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-pjbk73",
@@ -552,26 +712,43 @@
     "targetTimelineEventId": "tl-2026-05-13-senate-ai-data-centres-inquiry",
     "targetTimelineRevisionHash": "4a298476cdc715dc2d28e5eb6e4ae504fdad8bf64958b7844173609ceeb69910",
     "sourceVersionSequence": 12,
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-10-23T03:06:54.019Z",
     "createdBy": "collector",
-    "notes": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current. Re-verify the existing timeline event before treating it as current. Detected by Senate inquiry — artificial intelligence and data centres (heuristic assessment).",
+    "notes": "Fresh browser capture for re-verification of the timeline event. aph.gov.au refuses plain HTTP clients with a WAF 403, so the rendered page text is the evidence.",
     "analysis": {
       "isRelevant": true,
       "relevanceScore": 1,
       "suggestedType": null,
       "suggestedJurisdiction": "federal",
-      "summary": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+      "summary": "The Senate inquiry covers AI and data-centre regulation, government deals, and community, industry, energy, water and environmental impacts. Submissions closed on 1 September 2026. On 20 October 2026 the committee tabled a progress report moving its reporting date to 23 March 2027.",
       "tags": [],
       "agencies": []
     },
     "sourceEvidence": {
       "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
       "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
-      "retrievedAt": "2026-10-23T03:06:54.019Z",
+      "title": "Artificial intelligence and data centres",
+      "retrievedAt": "2026-10-27T07:53:40Z",
       "contentType": "text/html",
-      "contentHash": "b42ef68b82b6e38a9ec910af5b9eb38baaf7602a9715e1afec39c3fbe9417a5a",
-      "title": "Senate opens inquiry into artificial intelligence and data centres"
+      "contentHash": "a3dbc529f2e4263cf44a57cd39cb49da863f0a242a6258cccaf48828cee05c1c",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-10-27T07:53:40Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "Headless Chromium capture through the collector browser fetch (src/lib/pipeline/browser-fetch.ts) with the Policai/1.0 identity on Argus, 27 October 2026, for Daniel Alkurdi. pageText is the main content of the rendered page with the site navigation menus and footer removed.",
+        "pageContentHash": "fd77a80467f3c5f3bda4e45799a6fe339b40ce86b0cac868e1ff935bded6ebfa",
+        "characterCount": 1628
+      },
+      "reviewedDate": {
+        "date": "2026-05-13",
+        "precision": "day",
+        "reviewedAt": "2026-10-27T08:01:00.644Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The captured inquiry page states \"Date referred: 13 May 2026\" and \"On 13 May 2026, the following matter was referred for inquiry and report:\"."
+      }
     },
     "proposedRecord": {
       "id": "tl-2026-05-13-senate-ai-data-centres-inquiry",
@@ -581,7 +758,39 @@
       "description": "The Senate inquiry covers AI and data-centre regulation, government deals, and community, industry, energy, water and environmental impacts. Submissions closed on 1 September 2026. On 20 October 2026 the committee tabled a progress report moving its reporting date to 23 March 2027.",
       "type": "announcement",
       "jurisdiction": "federal",
-      "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P"
+      "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+          "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+          "title": "Artificial intelligence and data centres",
+          "retrievedAt": "2026-10-27T07:53:40Z",
+          "contentType": "text/html",
+          "contentHash": "a3dbc529f2e4263cf44a57cd39cb49da863f0a242a6258cccaf48828cee05c1c",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-27T07:53:40Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Headless Chromium capture through the collector browser fetch (src/lib/pipeline/browser-fetch.ts) with the Policai/1.0 identity on Argus, 27 October 2026, for Daniel Alkurdi. pageText is the main content of the rendered page with the site navigation menus and footer removed.",
+            "pageContentHash": "fd77a80467f3c5f3bda4e45799a6fe339b40ce86b0cac868e1ff935bded6ebfa",
+            "characterCount": 1628
+          },
+          "reviewedDate": {
+            "date": "2026-05-13",
+            "precision": "day",
+            "reviewedAt": "2026-10-27T08:01:00.644Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The captured inquiry page states \"Date referred: 13 May 2026\" and \"On 13 May 2026, the following matter was referred for inquiry and report:\"."
+          }
+        },
+        "checkedAt": "2026-10-27T08:01:00.644Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7QBtuy9Yo71xan9RzFcY5HC#cmsg_019nKBbCzGtpRmfKqX3Xisd7V4USaR1kfTrpRrVe9pkzQB (proposal 8c3ba701). Proposed by Claude (agent). Re-verification only; the timeline event is unchanged. The captured page also states \"Submissions close: 1 September 2026\", \"Reporting date: 23 March 2027\" and \"On 20 October 2026, the committee tabled a progress report to update the reporting date to 23 March 2027.\", which match the description."
+      }
     },
     "linkedDevelopment": {
       "id": "dev-senate-opens-inquiry-into-artificial-intelligenc-pjbk73",
@@ -591,7 +800,7 @@
       "sourceName": "Senate inquiry — artificial intelligence and data centres",
       "jurisdiction": "federal",
       "detectedAt": "2026-10-23T03:06:54.019Z",
-      "summary": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+      "summary": "The Senate inquiry covers AI and data-centre regulation, government deals, and community, industry, energy, water and environmental impacts. Submissions closed on 1 September 2026. On 20 October 2026 the committee tabled a progress report moving its reporting date to 23 March 2027.",
       "relevanceScore": 1,
       "classification": "heuristic",
       "assessment": {
@@ -604,22 +813,71 @@
         "source": {
           "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
           "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
-          "retrievedAt": "2026-10-23T03:06:54.019Z",
+          "title": "Artificial intelligence and data centres",
+          "retrievedAt": "2026-10-27T07:53:40Z",
           "contentType": "text/html",
-          "contentHash": "b42ef68b82b6e38a9ec910af5b9eb38baaf7602a9715e1afec39c3fbe9417a5a",
-          "title": "Senate opens inquiry into artificial intelligence and data centres"
+          "contentHash": "a3dbc529f2e4263cf44a57cd39cb49da863f0a242a6258cccaf48828cee05c1c",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-27T07:53:40Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Headless Chromium capture through the collector browser fetch (src/lib/pipeline/browser-fetch.ts) with the Policai/1.0 identity on Argus, 27 October 2026, for Daniel Alkurdi. pageText is the main content of the rendered page with the site navigation menus and footer removed.",
+            "pageContentHash": "fd77a80467f3c5f3bda4e45799a6fe339b40ce86b0cac868e1ff935bded6ebfa",
+            "characterCount": 1628
+          },
+          "reviewedDate": {
+            "date": "2026-05-13",
+            "precision": "day",
+            "reviewedAt": "2026-10-27T08:01:00.644Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The captured inquiry page states \"Date referred: 13 May 2026\" and \"On 13 May 2026, the following matter was referred for inquiry and report:\"."
+          }
         }
       },
-      "status": "detected"
+      "status": "detected",
+      "publishedAt": "2026-05-13",
+      "publishedAtPrecision": "day"
     },
-    "updatedAt": "2026-10-23T03:06:54.019Z"
+    "updatedAt": "2026-10-27T08:01:00.700Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "proposedRecord": {
+        "id": "tl-2026-05-13-senate-ai-data-centres-inquiry",
+        "date": "2026-05-13",
+        "datePrecision": "day",
+        "title": "Senate opens inquiry into artificial intelligence and data centres",
+        "description": "The Senate inquiry covers AI and data-centre regulation, government deals, and community, industry, energy, water and environmental impacts. Submissions closed on 1 September 2026. On 20 October 2026 the committee tabled a progress report moving its reporting date to 23 March 2027.",
+        "type": "announcement",
+        "jurisdiction": "federal",
+        "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P"
+      },
+      "reviewedDate": {
+        "date": "2026-05-13",
+        "precision": "day",
+        "notes": "The captured inquiry page states \"Date referred: 13 May 2026\" and \"On 13 May 2026, the following matter was referred for inquiry and report:\"."
+      },
+      "notes": "Re-verification only; the timeline event is unchanged. The captured page also states \"Submissions close: 1 September 2026\", \"Reporting date: 23 March 2027\" and \"On 20 October 2026, the committee tabled a progress report to update the reporting date to 23 March 2027.\", which match the description.",
+      "proposedAt": "2026-10-27T07:54:41.172Z"
+    },
+    "reviewedAt": "2026-10-27T08:01:00.644Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7QBtuy9Yo71xan9RzFcY5HC#cmsg_019nKBbCzGtpRmfKqX3Xisd7V4USaR1kfTrpRrVe9pkzQB (proposal 8c3ba701). Proposed by Claude (agent). Re-verification only; the timeline event is unchanged. The captured page also states \"Submissions close: 1 September 2026\", \"Reporting date: 23 March 2027\" and \"On 20 October 2026, the committee tabled a progress report to update the reporting date to 23 March 2027.\", which match the description.",
+    "decision": {
+      "proposalHash": "8c3ba701cff85dfd943f9722dacdbe56b3154753d4f3f6093557dffdad9159d1",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-10-27T08:01:00.638Z",
+      "attestationUrl": "https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7QBtuy9Yo71xan9RzFcY5HC#cmsg_019nKBbCzGtpRmfKqX3Xisd7V4USaR1kfTrpRrVe9pkzQB"
+    },
+    "publishedAt": "2026-10-27T08:01:00.686Z"
   },
   {
     "id": "source-review-dev-asic-market-integrity-rules-futures-markets-amen-3keefd",
     "sourceUrl": "https://www.legislation.gov.au/F2026L01224/asmade/details",
     "title": "ASIC Market Integrity Rules (Futures Markets) Amendment Instrument 2026/575",
     "entryKind": "policy",
-    "status": "pending_review",
+    "status": "rejected",
     "discoveredAt": "2026-10-23T03:06:54.019Z",
     "createdBy": "collector",
     "notes": "Detected by the collector from Federal Register of Legislation — new AI instruments (score 0.55, heuristic).",
@@ -713,14 +971,15 @@
       },
       "status": "detected"
     },
-    "updatedAt": "2026-10-23T03:06:54.019Z"
+    "updatedAt": "2026-10-27T08:01:01.489Z",
+    "rejectionReason": "Duplicate of asic-market-integrity-rules-ai-trading-2026, which already covers F2026L01224. Dismissed by Daniel Alkurdi via project decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7QBtuy9Yo71xan9RzFcY5HC#cmsg_019nKBbCzGtpRmfKqX3Xisd7Ak4gPuCLCXNU243wKZDf31"
   },
   {
     "id": "source-review-dev-health-insurance-accredited-pathology-laboratori-au4lkw",
     "sourceUrl": "https://www.legislation.gov.au/F2026L00927/asmade/details",
     "title": "Health Insurance (Accredited Pathology Laboratories—Approval) Amendment (Relevant Standards) Principles (No. 3) 2026",
     "entryKind": "policy",
-    "status": "pending_review",
+    "status": "rejected",
     "discoveredAt": "2026-10-23T03:06:54.019Z",
     "createdBy": "collector",
     "notes": "Detected by the collector from Federal Register of Legislation — new AI instruments (score 0.55, heuristic).",
@@ -814,14 +1073,15 @@
       },
       "status": "detected"
     },
-    "updatedAt": "2026-10-23T03:06:54.019Z"
+    "updatedAt": "2026-10-27T08:01:01.504Z",
+    "rejectionReason": "AI is mentioned only incidentally, in the explanatory statement. Dismissed by Daniel Alkurdi via project decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7QBtuy9Yo71xan9RzFcY5HC#cmsg_019nKBbCzGtpRmfKqX3Xisd7Ak4gPuCLCXNU243wKZDf31"
   },
   {
     "id": "source-review-dev-competition-and-consumer-scams-prevention-framew-1133o4v",
     "sourceUrl": "https://www.legislation.gov.au/F2026L00627/asmade/details",
     "title": "Competition and Consumer (Scams Prevention Framework—Regulated Sectors) Designation 2026",
     "entryKind": "policy",
-    "status": "pending_review",
+    "status": "rejected",
     "discoveredAt": "2026-10-23T03:06:54.019Z",
     "createdBy": "collector",
     "notes": "Detected by the collector from Federal Register of Legislation — new AI instruments (score 0.55, heuristic).",
@@ -915,14 +1175,15 @@
       },
       "status": "detected"
     },
-    "updatedAt": "2026-10-23T03:06:54.019Z"
+    "updatedAt": "2026-10-27T08:01:01.520Z",
+    "rejectionReason": "AI is mentioned only incidentally. Dismissed by Daniel Alkurdi via project decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7QBtuy9Yo71xan9RzFcY5HC#cmsg_019nKBbCzGtpRmfKqX3Xisd7Ak4gPuCLCXNU243wKZDf31"
   },
   {
     "id": "source-review-dev-practice-notes-nq4ujl",
     "sourceUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes",
     "title": "Practice Notes",
     "entryKind": "policy",
-    "status": "pending_review",
+    "status": "rejected",
     "discoveredAt": "2026-10-23T03:06:54.019Z",
     "createdBy": "collector",
     "notes": "Detected by the collector from Federal Court — practice notes (score 0.65, ai).",
@@ -988,14 +1249,15 @@
       },
       "status": "detected"
     },
-    "updatedAt": "2026-10-23T03:06:54.019Z"
+    "updatedAt": "2026-10-27T08:01:01.534Z",
+    "rejectionReason": "Federal Court practice notes index: its AI notes, GPN-AI and GPN-LIP, are already in the register. Dismissed by Daniel Alkurdi via project decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7QBtuy9Yo71xan9RzFcY5HC#cmsg_019nKBbCzGtpRmfKqX3Xisd7Ak4gPuCLCXNU243wKZDf31"
   },
   {
     "id": "source-review-dev-practice-directions-supreme-court-of-tasmania-17m5qlx",
     "sourceUrl": "https://www.supremecourt.tas.gov.au/publications/directions",
     "title": "Practice Directions - Supreme Court of Tasmania",
     "entryKind": "policy",
-    "status": "pending_review",
+    "status": "rejected",
     "discoveredAt": "2026-10-23T03:06:54.019Z",
     "createdBy": "collector",
     "notes": "Detected by the collector from Tasmanian Supreme Court — practice directions (score 0.65, ai).",
@@ -1061,7 +1323,8 @@
       },
       "status": "detected"
     },
-    "updatedAt": "2026-10-23T03:06:54.019Z"
+    "updatedAt": "2026-10-27T08:01:01.548Z",
+    "rejectionReason": "Tasmanian Supreme Court directions: PD 2 of 2026 has no AI content. Dismissed by Daniel Alkurdi via project decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7QBtuy9Yo71xan9RzFcY5HC#cmsg_019nKBbCzGtpRmfKqX3Xisd7Ak4gPuCLCXNU243wKZDf31"
   },
   {
     "id": "source-review-3ae7ea4b-d3f7-4466-a505-5acb20f39244",
@@ -25876,5 +26139,501 @@
       "attestationUrl": "https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7Ur4yvnXsEauzyg1D9a2vGT"
     },
     "publishedAt": "2026-10-26T11:51:49.085Z"
+  },
+  {
+    "id": "source-review-96862dab-fc6a-4fe2-a121-757190960aaa",
+    "sourceUrl": "https://www.legislation.gov.au/F2022L00062/asmade/details",
+    "title": "Online Safety (Basic Online Safety Expectations) Determination 2022",
+    "entryKind": "policy",
+    "targetPolicyId": "federal-online-safety-basic-online-safety-expectations-determination-2022",
+    "targetPolicyBaseRevisionHash": "82492aefd69956043db306ae03646fcc2d86e06fb7519a940cbdb6d45edb87f4",
+    "status": "published",
+    "discoveredAt": "2026-10-26T13:23:01.529Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Correction: the record dates commencement to the registration day (2022-01-23). Section 2 of the as-made instrument (commencement table, item 1): \"The whole of this instrument.\" commences \"The day after this instrument is registered.\" The Federal Register title page shows \"Registered 23 January 2022\" (Titles API asMadeRegisteredAt 2022-01-23T10:00:42), so the instrument commenced on 24 January 2022.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": "regulation",
+      "suggestedJurisdiction": "federal",
+      "summary": "Determination made by the Minister for Communications under section 45 of the Online Safety Act 2021 setting out the Australian Government's basic online safety expectations for social media, relevant electronic and designated internet services. The Online Safety (Basic Online Safety Expectations) Amendment Determination 2024 added section 8A, which expects providers whose services use or enable generative AI capabilities to take reasonable steps to build in safety measures and to minimise the use of those capabilities to produce unlawful or harmful material, and section 8B on recommender systems. The amendment took effect on 31 May 2024.",
+      "tags": [
+        "eSafety",
+        "basic online safety expectations",
+        "generative AI",
+        "recommender systems",
+        "online safety"
+      ],
+      "agencies": [
+        "Department of Infrastructure, Transport, Regional Development, Communications, Sport and the Arts",
+        "eSafety Commissioner"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://www.legislation.gov.au/F2022L00062/asmade/details",
+      "finalUrl": "https://www.legislation.gov.au/F2022L00062/asmade/details",
+      "title": "Online Safety (Basic Online Safety Expectations) Determination 2022 - Federal Register of Legislation",
+      "retrievedAt": "2026-10-26T13:22:45.902Z",
+      "contentType": "text/html",
+      "contentHash": "c061bd82e674259fc0c10ba029e7c16b0b3f0c6261c9022b0d37cb314a6374ec",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-10-26T13:22:45.902Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "Headless Chromium capture with the Policai/1.0 collector identity on Argus, 26 October 2026, of the Federal Register title page. The as-made Word document from api.prod.legislation.gov.au was read in the same session. Section 2 of the as-made instrument (commencement table, item 1): \"The whole of this instrument.\" commences \"The day after this instrument is registered.\" The Federal Register title page shows \"Registered 23 January 2022\" (Titles API asMadeRegisteredAt 2022-01-23T10:00:42), so the instrument commenced on 24 January 2022.",
+        "pageContentHash": "4af76a49a140a93e4b241ca33fd1b3160d5b9005788d7e6147c9edb4eabc18bd",
+        "characterCount": 1563
+      },
+      "reviewedDate": {
+        "date": "2022-01-24",
+        "precision": "day",
+        "reviewedAt": "2026-10-27T07:29:59.873Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "Section 2 of the as-made instrument (commencement table, item 1): \"The whole of this instrument.\" commences \"The day after this instrument is registered.\" The Federal Register title page shows \"Registered 23 January 2022\" (Titles API asMadeRegisteredAt 2022-01-23T10:00:42), so the instrument commenced on 24 January 2022."
+      }
+    },
+    "proposedRecord": {
+      "id": "federal-online-safety-basic-online-safety-expectations-determination-2022",
+      "title": "Online Safety (Basic Online Safety Expectations) Determination 2022",
+      "description": "Determination made by the Minister for Communications under section 45 of the Online Safety Act 2021 setting out the Australian Government's basic online safety expectations for social media, relevant electronic and designated internet services. The Online Safety (Basic Online Safety Expectations) Amendment Determination 2024 added section 8A, which expects providers whose services use or enable generative AI capabilities to take reasonable steps to build in safety measures and to minimise the use of those capabilities to produce unlawful or harmful material, and section 8B on recommender systems. The amendment took effect on 31 May 2024.",
+      "jurisdiction": "federal",
+      "type": "regulation",
+      "status": "active",
+      "effectiveDate": "2022-01-24",
+      "dates": [
+        {
+          "type": "issued",
+          "date": "2022-01-20",
+          "precision": "day",
+          "source": {
+            "url": "https://www.legislation.gov.au/F2022L00062/asmade/details",
+            "finalUrl": "https://www.legislation.gov.au/F2022L00062/asmade/details",
+            "title": "Online Safety (Basic Online Safety Expectations) Determination 2022 - Federal Register of Legislation",
+            "retrievedAt": "2026-10-22T05:56:56.317Z",
+            "contentType": "text/html",
+            "contentHash": "246db43e14e6185dffb1c753178168a1a00d7006cf45485b1c469573a1f87dd9",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-10-22T05:56:56.317Z",
+              "capturedBy": "Claude (agent)",
+              "requestedBy": "Daniel Alkurdi",
+              "notes": "Headless Chromium capture of the Federal Register of Legislation details page for F2022L00062, rendered with the Policai collector identity. Staged by Claude (agent) for Daniel Alkurdi's federal register backfill.",
+              "pageContentHash": "c1a1869a16c3b81ba1d92727726df5c0f340e8e13e3f8648fc087d274ba21edf",
+              "characterCount": 2065
+            },
+            "reviewedDate": {
+              "date": "2022-01-20",
+              "precision": "day",
+              "reviewedAt": "2026-10-22T05:56:56.347Z",
+              "reviewedBy": "Claude (agent)",
+              "notes": "The Federal Register title record for F2022L00062 gives a making date of 20 January 2022."
+            }
+          }
+        },
+        {
+          "type": "commenced",
+          "date": "2022-01-24",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.legislation.gov.au/F2022L00062/asmade/details",
+            "finalUrl": "https://www.legislation.gov.au/F2022L00062/asmade/details",
+            "title": "Online Safety (Basic Online Safety Expectations) Determination 2022 - Federal Register of Legislation",
+            "retrievedAt": "2026-10-26T13:22:45.902Z",
+            "contentType": "text/html",
+            "contentHash": "c061bd82e674259fc0c10ba029e7c16b0b3f0c6261c9022b0d37cb314a6374ec",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-10-26T13:22:45.902Z",
+              "capturedBy": "Claude (agent)",
+              "requestedBy": "Daniel Alkurdi",
+              "notes": "Headless Chromium capture with the Policai/1.0 collector identity on Argus, 26 October 2026, of the Federal Register title page. The as-made Word document from api.prod.legislation.gov.au was read in the same session. Section 2 of the as-made instrument (commencement table, item 1): \"The whole of this instrument.\" commences \"The day after this instrument is registered.\" The Federal Register title page shows \"Registered 23 January 2022\" (Titles API asMadeRegisteredAt 2022-01-23T10:00:42), so the instrument commenced on 24 January 2022.",
+              "pageContentHash": "4af76a49a140a93e4b241ca33fd1b3160d5b9005788d7e6147c9edb4eabc18bd",
+              "characterCount": 1563
+            },
+            "reviewedDate": {
+              "date": "2022-01-24",
+              "precision": "day",
+              "reviewedAt": "2026-10-27T07:29:59.873Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "Section 2 of the as-made instrument (commencement table, item 1): \"The whole of this instrument.\" commences \"The day after this instrument is registered.\" The Federal Register title page shows \"Registered 23 January 2022\" (Titles API asMadeRegisteredAt 2022-01-23T10:00:42), so the instrument commenced on 24 January 2022."
+            }
+          }
+        },
+        {
+          "type": "amended",
+          "date": "2024-05-31",
+          "precision": "day",
+          "source": {
+            "url": "https://www.legislation.gov.au/F2022L00062/asmade/details",
+            "finalUrl": "https://www.legislation.gov.au/F2022L00062/asmade/details",
+            "title": "Online Safety (Basic Online Safety Expectations) Determination 2022 - Federal Register of Legislation",
+            "retrievedAt": "2026-10-22T05:56:56.317Z",
+            "contentType": "text/html",
+            "contentHash": "246db43e14e6185dffb1c753178168a1a00d7006cf45485b1c469573a1f87dd9",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-10-22T05:56:56.317Z",
+              "capturedBy": "Claude (agent)",
+              "requestedBy": "Daniel Alkurdi",
+              "notes": "Headless Chromium capture of the Federal Register of Legislation details page for F2022L00062, rendered with the Policai collector identity. Staged by Claude (agent) for Daniel Alkurdi's federal register backfill.",
+              "pageContentHash": "c1a1869a16c3b81ba1d92727726df5c0f340e8e13e3f8648fc087d274ba21edf",
+              "characterCount": 2065
+            },
+            "reviewedDate": {
+              "date": "2024-05-31",
+              "precision": "day",
+              "reviewedAt": "2026-10-22T05:56:56.347Z",
+              "reviewedBy": "Claude (agent)",
+              "notes": "The Federal Register versions of F2022L00062 start compilation 1 (F2024C00516) on 2024-05-31 for the Online Safety (Basic Online Safety Expectations) Amendment Determination 2024 (F2024L00590)."
+            }
+          }
+        }
+      ],
+      "agencies": [
+        "Department of Infrastructure, Transport, Regional Development, Communications, Sport and the Arts",
+        "eSafety Commissioner"
+      ],
+      "sourceUrl": "https://www.legislation.gov.au/F2022L00062/asmade/details",
+      "content": "The expectations are not directly enforceable, but the eSafety Commissioner can require providers to report on how they meet them and publish statements about compliance. Section 8A, inserted in 2024, gives examples of reasonable steps for generative AI capabilities: safety risk assessments across design, deployment and post-deployment, explanatory tools for end users, keeping unlawful or harmful material out of training data, and detecting and preventing prompts that generate unlawful or harmful material.",
+      "aiSummary": "Federal basic online safety expectations for online services. A 2024 amendment added expectations for generative AI capabilities and recommender systems.",
+      "tags": [
+        "eSafety",
+        "basic online safety expectations",
+        "generative AI",
+        "recommender systems",
+        "online safety"
+      ],
+      "themes": [
+        "online-safety",
+        "generative-ai"
+      ],
+      "createdAt": "2026-10-22T05:55:28.601Z",
+      "updatedAt": "2026-10-27T07:29:59.873Z",
+      "legislative": {
+        "kind": "instrument",
+        "ref": {
+          "register": "frl",
+          "titleId": "F2022L00062"
+        },
+        "issuerBodyId": "ditrdca",
+        "enablingAct": "Online Safety Act 2021, s 45",
+        "events": [
+          {
+            "date": "2022-01-23",
+            "precision": "day",
+            "event": {
+              "kind": "registered"
+            },
+            "source": {
+              "url": "https://www.legislation.gov.au/F2022L00062/asmade/details",
+              "title": "Online Safety (Basic Online Safety Expectations) Determination 2022"
+            }
+          },
+          {
+            "date": "2022-01-24",
+            "precision": "day",
+            "event": {
+              "kind": "commenced",
+              "extent": "full",
+              "note": "Section 2 commences the whole instrument on \"The day after this instrument is registered.\" Registered 23 January 2022."
+            },
+            "source": {
+              "url": "https://www.legislation.gov.au/F2022L00062/asmade/details",
+              "title": "Online Safety (Basic Online Safety Expectations) Determination 2022"
+            }
+          },
+          {
+            "date": "2022-02-08",
+            "precision": "day",
+            "event": {
+              "kind": "tabled",
+              "chamber": "lower"
+            },
+            "source": {
+              "url": "https://www.legislation.gov.au/F2022L00062/asmade/details",
+              "title": "Online Safety (Basic Online Safety Expectations) Determination 2022"
+            }
+          },
+          {
+            "date": "2022-02-08",
+            "precision": "day",
+            "event": {
+              "kind": "tabled",
+              "chamber": "upper"
+            },
+            "source": {
+              "url": "https://www.legislation.gov.au/F2022L00062/asmade/details",
+              "title": "Online Safety (Basic Online Safety Expectations) Determination 2022"
+            }
+          },
+          {
+            "date": "2024-05-31",
+            "precision": "day",
+            "event": {
+              "kind": "amended",
+              "by": "Online Safety (Basic Online Safety Expectations) Amendment Determination 2024 (F2024L00590)"
+            },
+            "source": {
+              "url": "https://api.prod.legislation.gov.au/v1/Versions?$filter=titleId%20eq%20'F2022L00062'%20and%20start%20ge%202024-01-01T00%3A00%3A00&$select=titleId,start,reasons",
+              "title": "Federal Register of Legislation: Basic Online Safety Expectations Determination versions"
+            }
+          }
+        ]
+      },
+      "lastReviewedAt": "2026-10-27T07:29:59.873Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.legislation.gov.au/F2022L00062/asmade/details",
+          "finalUrl": "https://www.legislation.gov.au/F2022L00062/asmade/details",
+          "title": "Online Safety (Basic Online Safety Expectations) Determination 2022 - Federal Register of Legislation",
+          "retrievedAt": "2026-10-26T13:22:45.902Z",
+          "contentType": "text/html",
+          "contentHash": "c061bd82e674259fc0c10ba029e7c16b0b3f0c6261c9022b0d37cb314a6374ec",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-26T13:22:45.902Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Headless Chromium capture with the Policai/1.0 collector identity on Argus, 26 October 2026, of the Federal Register title page. The as-made Word document from api.prod.legislation.gov.au was read in the same session. Section 2 of the as-made instrument (commencement table, item 1): \"The whole of this instrument.\" commences \"The day after this instrument is registered.\" The Federal Register title page shows \"Registered 23 January 2022\" (Titles API asMadeRegisteredAt 2022-01-23T10:00:42), so the instrument commenced on 24 January 2022.",
+            "pageContentHash": "4af76a49a140a93e4b241ca33fd1b3160d5b9005788d7e6147c9edb4eabc18bd",
+            "characterCount": 1563
+          },
+          "reviewedDate": {
+            "date": "2022-01-24",
+            "precision": "day",
+            "reviewedAt": "2026-10-27T07:29:59.873Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "Section 2 of the as-made instrument (commencement table, item 1): \"The whole of this instrument.\" commences \"The day after this instrument is registered.\" The Federal Register title page shows \"Registered 23 January 2022\" (Titles API asMadeRegisteredAt 2022-01-23T10:00:42), so the instrument commenced on 24 January 2022."
+          }
+        },
+        "checkedAt": "2026-10-27T07:29:59.873Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7QBtuy9Yo71xan9RzFcY5HC#cmsg_019nKBbCzGtpRmfKqX3Xisd71d1Jnur1q3CAg2Cvhdskb8 (proposal c678d400). Proposed by Claude (agent). Move commencement from the registration day (2022-01-23) to 2022-01-24 in dates[], effectiveDate and legislative.events. Registration stays 2022-01-23."
+      }
+    },
+    "updatedAt": "2026-10-27T07:29:59.922Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "proposedRecord": {
+        "id": "federal-online-safety-basic-online-safety-expectations-determination-2022",
+        "title": "Online Safety (Basic Online Safety Expectations) Determination 2022",
+        "description": "Determination made by the Minister for Communications under section 45 of the Online Safety Act 2021 setting out the Australian Government's basic online safety expectations for social media, relevant electronic and designated internet services. The Online Safety (Basic Online Safety Expectations) Amendment Determination 2024 added section 8A, which expects providers whose services use or enable generative AI capabilities to take reasonable steps to build in safety measures and to minimise the use of those capabilities to produce unlawful or harmful material, and section 8B on recommender systems. The amendment took effect on 31 May 2024.",
+        "jurisdiction": "federal",
+        "type": "regulation",
+        "status": "active",
+        "effectiveDate": "2022-01-24",
+        "dates": [
+          {
+            "type": "issued",
+            "date": "2022-01-20",
+            "precision": "day",
+            "source": {
+              "url": "https://www.legislation.gov.au/F2022L00062/asmade/details",
+              "finalUrl": "https://www.legislation.gov.au/F2022L00062/asmade/details",
+              "title": "Online Safety (Basic Online Safety Expectations) Determination 2022 - Federal Register of Legislation",
+              "retrievedAt": "2026-10-22T05:56:56.317Z",
+              "contentType": "text/html",
+              "contentHash": "246db43e14e6185dffb1c753178168a1a00d7006cf45485b1c469573a1f87dd9",
+              "linkedDocuments": [],
+              "browserCapture": {
+                "method": "browser",
+                "capturedAt": "2026-10-22T05:56:56.317Z",
+                "capturedBy": "Claude (agent)",
+                "requestedBy": "Daniel Alkurdi",
+                "notes": "Headless Chromium capture of the Federal Register of Legislation details page for F2022L00062, rendered with the Policai collector identity. Staged by Claude (agent) for Daniel Alkurdi's federal register backfill.",
+                "pageContentHash": "c1a1869a16c3b81ba1d92727726df5c0f340e8e13e3f8648fc087d274ba21edf",
+                "characterCount": 2065
+              },
+              "reviewedDate": {
+                "date": "2022-01-20",
+                "precision": "day",
+                "reviewedAt": "2026-10-22T05:56:56.347Z",
+                "reviewedBy": "Claude (agent)",
+                "notes": "The Federal Register title record for F2022L00062 gives a making date of 20 January 2022."
+              }
+            }
+          },
+          {
+            "type": "commenced",
+            "date": "2022-01-24",
+            "precision": "day",
+            "primary": true,
+            "source": {
+              "url": "https://www.legislation.gov.au/F2022L00062/asmade/details",
+              "finalUrl": "https://www.legislation.gov.au/F2022L00062/asmade/details",
+              "title": "Online Safety (Basic Online Safety Expectations) Determination 2022 - Federal Register of Legislation",
+              "retrievedAt": "2026-10-22T05:56:56.317Z",
+              "contentType": "text/html",
+              "contentHash": "246db43e14e6185dffb1c753178168a1a00d7006cf45485b1c469573a1f87dd9",
+              "linkedDocuments": [],
+              "browserCapture": {
+                "method": "browser",
+                "capturedAt": "2026-10-22T05:56:56.317Z",
+                "capturedBy": "Claude (agent)",
+                "requestedBy": "Daniel Alkurdi",
+                "notes": "Headless Chromium capture of the Federal Register of Legislation details page for F2022L00062, rendered with the Policai collector identity. Staged by Claude (agent) for Daniel Alkurdi's federal register backfill.",
+                "pageContentHash": "c1a1869a16c3b81ba1d92727726df5c0f340e8e13e3f8648fc087d274ba21edf",
+                "characterCount": 2065
+              },
+              "reviewedDate": {
+                "date": "2022-01-24",
+                "precision": "day",
+                "reviewedAt": "2026-10-22T06:08:02.678Z",
+                "reviewedBy": "Daniel Alkurdi",
+                "notes": "Section 2 of the as-made instrument (commencement table, item 1): \"The whole of this instrument.\" commences \"The day after this instrument is registered.\" The Federal Register title page shows \"Registered 23 January 2022\" (Titles API asMadeRegisteredAt 2022-01-23T10:00:42), so the instrument commenced on 24 January 2022."
+              }
+            }
+          },
+          {
+            "type": "amended",
+            "date": "2024-05-31",
+            "precision": "day",
+            "source": {
+              "url": "https://www.legislation.gov.au/F2022L00062/asmade/details",
+              "finalUrl": "https://www.legislation.gov.au/F2022L00062/asmade/details",
+              "title": "Online Safety (Basic Online Safety Expectations) Determination 2022 - Federal Register of Legislation",
+              "retrievedAt": "2026-10-22T05:56:56.317Z",
+              "contentType": "text/html",
+              "contentHash": "246db43e14e6185dffb1c753178168a1a00d7006cf45485b1c469573a1f87dd9",
+              "linkedDocuments": [],
+              "browserCapture": {
+                "method": "browser",
+                "capturedAt": "2026-10-22T05:56:56.317Z",
+                "capturedBy": "Claude (agent)",
+                "requestedBy": "Daniel Alkurdi",
+                "notes": "Headless Chromium capture of the Federal Register of Legislation details page for F2022L00062, rendered with the Policai collector identity. Staged by Claude (agent) for Daniel Alkurdi's federal register backfill.",
+                "pageContentHash": "c1a1869a16c3b81ba1d92727726df5c0f340e8e13e3f8648fc087d274ba21edf",
+                "characterCount": 2065
+              },
+              "reviewedDate": {
+                "date": "2024-05-31",
+                "precision": "day",
+                "reviewedAt": "2026-10-22T05:56:56.347Z",
+                "reviewedBy": "Claude (agent)",
+                "notes": "The Federal Register versions of F2022L00062 start compilation 1 (F2024C00516) on 2024-05-31 for the Online Safety (Basic Online Safety Expectations) Amendment Determination 2024 (F2024L00590)."
+              }
+            }
+          }
+        ],
+        "agencies": [
+          "Department of Infrastructure, Transport, Regional Development, Communications, Sport and the Arts",
+          "eSafety Commissioner"
+        ],
+        "sourceUrl": "https://www.legislation.gov.au/F2022L00062/asmade/details",
+        "content": "The expectations are not directly enforceable, but the eSafety Commissioner can require providers to report on how they meet them and publish statements about compliance. Section 8A, inserted in 2024, gives examples of reasonable steps for generative AI capabilities: safety risk assessments across design, deployment and post-deployment, explanatory tools for end users, keeping unlawful or harmful material out of training data, and detecting and preventing prompts that generate unlawful or harmful material.",
+        "aiSummary": "Federal basic online safety expectations for online services. A 2024 amendment added expectations for generative AI capabilities and recommender systems.",
+        "tags": [
+          "eSafety",
+          "basic online safety expectations",
+          "generative AI",
+          "recommender systems",
+          "online safety"
+        ],
+        "themes": [
+          "online-safety",
+          "generative-ai"
+        ],
+        "createdAt": "2026-10-22T05:55:28.601Z",
+        "updatedAt": "2026-10-26T13:23:01.529Z",
+        "legislative": {
+          "kind": "instrument",
+          "ref": {
+            "register": "frl",
+            "titleId": "F2022L00062"
+          },
+          "issuerBodyId": "ditrdca",
+          "enablingAct": "Online Safety Act 2021, s 45",
+          "events": [
+            {
+              "date": "2022-01-23",
+              "precision": "day",
+              "event": {
+                "kind": "registered"
+              },
+              "source": {
+                "url": "https://www.legislation.gov.au/F2022L00062/asmade/details",
+                "title": "Online Safety (Basic Online Safety Expectations) Determination 2022"
+              }
+            },
+            {
+              "date": "2022-01-24",
+              "precision": "day",
+              "event": {
+                "kind": "commenced",
+                "extent": "full",
+                "note": "Section 2 commences the whole instrument on \"The day after this instrument is registered.\" Registered 23 January 2022."
+              },
+              "source": {
+                "url": "https://www.legislation.gov.au/F2022L00062/asmade/details",
+                "title": "Online Safety (Basic Online Safety Expectations) Determination 2022"
+              }
+            },
+            {
+              "date": "2022-02-08",
+              "precision": "day",
+              "event": {
+                "kind": "tabled",
+                "chamber": "lower"
+              },
+              "source": {
+                "url": "https://www.legislation.gov.au/F2022L00062/asmade/details",
+                "title": "Online Safety (Basic Online Safety Expectations) Determination 2022"
+              }
+            },
+            {
+              "date": "2022-02-08",
+              "precision": "day",
+              "event": {
+                "kind": "tabled",
+                "chamber": "upper"
+              },
+              "source": {
+                "url": "https://www.legislation.gov.au/F2022L00062/asmade/details",
+                "title": "Online Safety (Basic Online Safety Expectations) Determination 2022"
+              }
+            },
+            {
+              "date": "2024-05-31",
+              "precision": "day",
+              "event": {
+                "kind": "amended",
+                "by": "Online Safety (Basic Online Safety Expectations) Amendment Determination 2024 (F2024L00590)"
+              },
+              "source": {
+                "url": "https://api.prod.legislation.gov.au/v1/Versions?$filter=titleId%20eq%20'F2022L00062'%20and%20start%20ge%202024-01-01T00%3A00%3A00&$select=titleId,start,reasons",
+                "title": "Federal Register of Legislation: Basic Online Safety Expectations Determination versions"
+              }
+            }
+          ]
+        }
+      },
+      "reviewedDate": {
+        "date": "2022-01-24",
+        "precision": "day",
+        "notes": "Section 2 of the as-made instrument (commencement table, item 1): \"The whole of this instrument.\" commences \"The day after this instrument is registered.\" The Federal Register title page shows \"Registered 23 January 2022\" (Titles API asMadeRegisteredAt 2022-01-23T10:00:42), so the instrument commenced on 24 January 2022."
+      },
+      "notes": "Move commencement from the registration day (2022-01-23) to 2022-01-24 in dates[], effectiveDate and legislative.events. Registration stays 2022-01-23.",
+      "proposedAt": "2026-10-26T13:23:17.199Z"
+    },
+    "targetPolicyRevisionHash": "82492aefd69956043db306ae03646fcc2d86e06fb7519a940cbdb6d45edb87f4",
+    "reviewedAt": "2026-10-27T07:29:59.873Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7QBtuy9Yo71xan9RzFcY5HC#cmsg_019nKBbCzGtpRmfKqX3Xisd71d1Jnur1q3CAg2Cvhdskb8 (proposal c678d400). Proposed by Claude (agent). Move commencement from the registration day (2022-01-23) to 2022-01-24 in dates[], effectiveDate and legislative.events. Registration stays 2022-01-23.",
+    "decision": {
+      "proposalHash": "c678d400f262f40d0c80c6ed345ef5129806f5f21fd3b047d64ca6c208eefc66",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-10-27T07:29:59.867Z",
+      "attestationUrl": "https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7QBtuy9Yo71xan9RzFcY5HC#cmsg_019nKBbCzGtpRmfKqX3Xisd71d1Jnur1q3CAg2Cvhdskb8"
+    },
+    "publishedAt": "2026-10-27T07:29:59.917Z"
   }
 ]

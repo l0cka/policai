@@ -7,26 +7,50 @@
     "sourceName": "PM&C — Rapid review into AI-driven cyber incident arrangements",
     "jurisdiction": "federal",
     "detectedAt": "2026-10-23T03:06:54.019Z",
-    "summary": "The verified register record for \"Rapid review into Australian Government arrangements for an AI-driven cyber incident\" has no stored source fingerprint. The currently served document requires editorial comparison before it can establish a trusted baseline.",
+    "summary": "PM&C-led rapid review, announced with formal terms of reference on 24 September 2026, of whether Australia's legislative, governance and information-sharing arrangements are fit for purpose for cyber incidents involving AI.",
     "relevanceScore": 1,
-    "classification": "heuristic",
+    "classification": "curated",
     "assessment": {
-      "method": "heuristic",
-      "promptVersion": "source-hash-change-v1",
-      "assessedAt": "2026-10-23T03:06:54.019Z"
+      "method": "editorial",
+      "assessedAt": "2026-10-27T08:01:01.423Z",
+      "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
         "url": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
         "finalUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
-        "retrievedAt": "2026-10-23T03:06:54.019Z",
+        "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
+        "retrievedAt": "2026-10-26T12:48:03Z",
         "contentType": "text/html",
-        "contentHash": "5b7468b8c7812ea1616ff48f6183541408fdd92d8dd4edfbf8a6eb171fe0eb1b",
-        "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident"
-      }
+        "contentHash": "72e04c0756d8b67c3f4238504bf48220ac63e8c1281e0f60791f219631430391",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-10-26T12:48:03Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "Headless Chromium capture with the Policai/1.0 collector identity on Argus, 26 October 2026, for Daniel Alkurdi's review of pending developments. Main-content text of the rendered page; the terms of reference page was read in the same session and its five recommendation areas match the record content.",
+          "pageContentHash": "fd6266d22d832d97a54851e9353a99b21169cd317a891ed80f1f5cc79bc1b6ad",
+          "characterCount": 1616
+        },
+        "reviewedDate": {
+          "date": "2026-09-24",
+          "precision": "day",
+          "reviewedAt": "2026-10-27T08:01:01.423Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The review page states \"On 24 September 2026, the Prime Minister, the Hon Anthony Albanese MP, announced a rapid review\", and its resources list shows \"Terms of Reference – Rapid review into Australian Government arrangements for an AI-driven cyber incident Thursday 24 September 2026\"."
+        }
+      },
+      "checkedAt": "2026-10-27T08:01:01.423Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7QBtuy9Yo71xan9RzFcY5HC#cmsg_019nKBbCzGtpRmfKqX3Xisd7CzMBoHPcVXPiPdGYZJqyWF (proposal 29eecba3). Proposed by Claude (agent). Re-verification; record unchanged. The page and terms of reference publish no reporting date, interim findings or report as at 26 October 2026. The five recommendation areas in the record match the terms of reference text."
     },
-    "status": "detected"
+    "status": "promoted",
+    "publishedAt": "2026-09-24",
+    "publishedAtPrecision": "day",
+    "relatedPolicyId": "pmc-rapid-review-ai-driven-cyber-incident-2026"
   },
   {
     "id": "dev-senate-opens-inquiry-into-artificial-intelligenc-pjbk73",
@@ -36,26 +60,50 @@
     "sourceName": "Senate inquiry — artificial intelligence and data centres",
     "jurisdiction": "federal",
     "detectedAt": "2026-10-23T03:06:54.019Z",
-    "summary": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+    "summary": "The Senate inquiry covers AI and data-centre regulation, government deals, and community, industry, energy, water and environmental impacts. Submissions closed on 1 September 2026. On 20 October 2026 the committee tabled a progress report moving its reporting date to 23 March 2027.",
     "relevanceScore": 1,
-    "classification": "heuristic",
+    "classification": "curated",
     "assessment": {
-      "method": "heuristic",
-      "promptVersion": "source-hash-change-v1",
-      "assessedAt": "2026-10-23T03:06:54.019Z"
+      "method": "editorial",
+      "assessedAt": "2026-10-27T08:01:00.644Z",
+      "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
         "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
         "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
-        "retrievedAt": "2026-10-23T03:06:54.019Z",
+        "title": "Artificial intelligence and data centres",
+        "retrievedAt": "2026-10-27T07:53:40Z",
         "contentType": "text/html",
-        "contentHash": "b42ef68b82b6e38a9ec910af5b9eb38baaf7602a9715e1afec39c3fbe9417a5a",
-        "title": "Senate opens inquiry into artificial intelligence and data centres"
-      }
+        "contentHash": "a3dbc529f2e4263cf44a57cd39cb49da863f0a242a6258cccaf48828cee05c1c",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-10-27T07:53:40Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "Headless Chromium capture through the collector browser fetch (src/lib/pipeline/browser-fetch.ts) with the Policai/1.0 identity on Argus, 27 October 2026, for Daniel Alkurdi. pageText is the main content of the rendered page with the site navigation menus and footer removed.",
+          "pageContentHash": "fd77a80467f3c5f3bda4e45799a6fe339b40ce86b0cac868e1ff935bded6ebfa",
+          "characterCount": 1628
+        },
+        "reviewedDate": {
+          "date": "2026-05-13",
+          "precision": "day",
+          "reviewedAt": "2026-10-27T08:01:00.644Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The captured inquiry page states \"Date referred: 13 May 2026\" and \"On 13 May 2026, the following matter was referred for inquiry and report:\"."
+        }
+      },
+      "checkedAt": "2026-10-27T08:01:00.644Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7QBtuy9Yo71xan9RzFcY5HC#cmsg_019nKBbCzGtpRmfKqX3Xisd7V4USaR1kfTrpRrVe9pkzQB (proposal 8c3ba701). Proposed by Claude (agent). Re-verification only; the timeline event is unchanged. The captured page also states \"Submissions close: 1 September 2026\", \"Reporting date: 23 March 2027\" and \"On 20 October 2026, the committee tabled a progress report to update the reporting date to 23 March 2027.\", which match the description."
     },
-    "status": "detected"
+    "status": "promoted",
+    "relatedTimelineEventId": "tl-2026-05-13-senate-ai-data-centres-inquiry",
+    "publishedAt": "2026-05-13",
+    "publishedAtPrecision": "day"
   },
   {
     "id": "dev-asic-market-integrity-rules-futures-markets-amen-3keefd",
@@ -89,7 +137,8 @@
         "publishedAtPrecision": "day"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Duplicate of asic-market-integrity-rules-ai-trading-2026, which already covers F2026L01224. Dismissed by Daniel Alkurdi via project decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7QBtuy9Yo71xan9RzFcY5HC#cmsg_019nKBbCzGtpRmfKqX3Xisd7Ak4gPuCLCXNU243wKZDf31"
   },
   {
     "id": "dev-health-insurance-accredited-pathology-laboratori-au4lkw",
@@ -123,7 +172,8 @@
         "publishedAtPrecision": "day"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "AI is mentioned only incidentally, in the explanatory statement. Dismissed by Daniel Alkurdi via project decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7QBtuy9Yo71xan9RzFcY5HC#cmsg_019nKBbCzGtpRmfKqX3Xisd7Ak4gPuCLCXNU243wKZDf31"
   },
   {
     "id": "dev-competition-and-consumer-scams-prevention-framew-1133o4v",
@@ -157,7 +207,8 @@
         "publishedAtPrecision": "day"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "AI is mentioned only incidentally. Dismissed by Daniel Alkurdi via project decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7QBtuy9Yo71xan9RzFcY5HC#cmsg_019nKBbCzGtpRmfKqX3Xisd7Ak4gPuCLCXNU243wKZDf31"
   },
   {
     "id": "dev-practice-notes-nq4ujl",
@@ -186,7 +237,8 @@
         "title": "Practice Notes"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Federal Court practice notes index: its AI notes, GPN-AI and GPN-LIP, are already in the register. Dismissed by Daniel Alkurdi via project decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7QBtuy9Yo71xan9RzFcY5HC#cmsg_019nKBbCzGtpRmfKqX3Xisd7Ak4gPuCLCXNU243wKZDf31"
   },
   {
     "id": "dev-practice-directions-supreme-court-of-tasmania-17m5qlx",
@@ -215,7 +267,8 @@
         "title": "Practice Directions - Supreme Court of Tasmania"
       }
     },
-    "status": "detected"
+    "status": "dismissed",
+    "dismissalReason": "Tasmanian Supreme Court directions: PD 2 of 2026 has no AI content. Dismissed by Daniel Alkurdi via project decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7QBtuy9Yo71xan9RzFcY5HC#cmsg_019nKBbCzGtpRmfKqX3Xisd7Ak4gPuCLCXNU243wKZDf31"
   },
   {
     "id": "dev-inslm-annual-report-2025-26-ai-scoping",
@@ -436,7 +489,7 @@
     "relatedTimelineEventId": "tl-2026-05-13-senate-ai-data-centres-inquiry",
     "publishedAt": "2026-05-13",
     "publishedAtPrecision": "day",
-    "dismissalReason": "Superseded by newer source update source-review-12cb291c-9c64-433d-a200-5e7b9be75d54"
+    "dismissalReason": "Superseded by newer source update source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-pjbk73"
   },
   {
     "id": "dev-new-resources-on-transparency-for-use-of-ai-and--68u2j7",
@@ -924,7 +977,7 @@
     "relatedTimelineEventId": "tl-2026-05-13-senate-ai-data-centres-inquiry",
     "publishedAt": "2026-05-13",
     "publishedAtPrecision": "day",
-    "dismissalReason": "Superseded by newer source update source-review-12cb291c-9c64-433d-a200-5e7b9be75d54"
+    "dismissalReason": "Superseded by newer source update source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-pjbk73"
   },
   {
     "id": "dev-asic-and-apra-host-super-ceos-to-discuss-frontie-wh4ka1",
@@ -1664,7 +1717,7 @@
     "relatedTimelineEventId": "tl-2026-05-13-senate-ai-data-centres-inquiry",
     "publishedAt": "2026-05-13",
     "publishedAtPrecision": "day",
-    "dismissalReason": "Superseded by newer source update source-review-12cb291c-9c64-433d-a200-5e7b9be75d54"
+    "dismissalReason": "Superseded by newer source update source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-pjbk73"
   },
   {
     "id": "dev-report-explores-risks-and-controls-for-artificia-grmboo",
@@ -1991,7 +2044,7 @@
     "relatedTimelineEventId": "tl-2026-05-13-senate-ai-data-centres-inquiry",
     "publishedAt": "2026-05-13",
     "publishedAtPrecision": "day",
-    "dismissalReason": "Superseded by newer source update source-review-12cb291c-9c64-433d-a200-5e7b9be75d54"
+    "dismissalReason": "Superseded by newer source update source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-pjbk73"
   },
   {
     "id": "dev-from-homework-to-heartache-why-children-are-turn-e0tsfo",
@@ -2252,7 +2305,7 @@
     "relatedTimelineEventId": "tl-2026-05-13-senate-ai-data-centres-inquiry",
     "publishedAt": "2026-05-13",
     "publishedAtPrecision": "day",
-    "dismissalReason": "Superseded by newer source update source-review-12cb291c-9c64-433d-a200-5e7b9be75d54"
+    "dismissalReason": "Superseded by newer source update source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-pjbk73"
   },
   {
     "id": "dev-26-092mr-asic-calls-for-urgent-cyber-uplift-as-a-v2vvmh",

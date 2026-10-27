@@ -1242,30 +1242,31 @@
         "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
         "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
         "title": "Artificial intelligence and data centres",
-        "retrievedAt": "2026-10-22T01:39:03Z",
+        "retrievedAt": "2026-10-27T07:53:40Z",
         "contentType": "text/html",
-        "contentHash": "4e8745d1e5a171544c3f1ccf6a0d1070d621dccc20b595aa86fcbc6934e7dc07",
+        "contentHash": "a3dbc529f2e4263cf44a57cd39cb49da863f0a242a6258cccaf48828cee05c1c",
         "linkedDocuments": [],
         "browserCapture": {
           "method": "browser",
-          "capturedAt": "2026-10-22T01:39:03Z",
-          "capturedBy": "Daniel Alkurdi (Claude-assisted web review)",
-          "notes": "Browser capture of the official Senate committee inquiry page on 22 October 2026 (AEDT), directed by Daniel Alkurdi. The collector's HTTP retrieval of aph.gov.au returns HTTP 403, so the rendered page text is the fingerprinted evidence boundary.",
-          "pageContentHash": "edce5a4b471665845f1f4bef4096aebf0e532c2a8c36ab26470a7739b05799b6",
-          "characterCount": 1078
+          "capturedAt": "2026-10-27T07:53:40Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "Headless Chromium capture through the collector browser fetch (src/lib/pipeline/browser-fetch.ts) with the Policai/1.0 identity on Argus, 27 October 2026, for Daniel Alkurdi. pageText is the main content of the rendered page with the site navigation menus and footer removed.",
+          "pageContentHash": "fd77a80467f3c5f3bda4e45799a6fe339b40ce86b0cac868e1ff935bded6ebfa",
+          "characterCount": 1628
         },
         "reviewedDate": {
           "date": "2026-05-13",
           "precision": "day",
-          "reviewedAt": "2026-10-22T01:39:03.499Z",
-          "reviewedBy": "Daniel Alkurdi (Claude-assisted web review)",
-          "notes": "The captured inquiry page states \"Date referred: 13 May 2026\" and \"On 13 May 2026, the following matter was referred for inquiry and report\"."
+          "reviewedAt": "2026-10-27T08:01:00.644Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The captured inquiry page states \"Date referred: 13 May 2026\" and \"On 13 May 2026, the following matter was referred for inquiry and report:\"."
         }
       },
-      "checkedAt": "2026-10-22T01:39:03.499Z",
-      "checkedBy": "Daniel Alkurdi (Claude-assisted web review)",
+      "checkedAt": "2026-10-27T08:01:00.644Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi in the Policai project thread on 22 October 2026 (reply: \"approve it\"). The committee's progress report of 20 October 2026 moved the reporting date to 23 March 2027."
+      "notes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7QBtuy9Yo71xan9RzFcY5HC#cmsg_019nKBbCzGtpRmfKqX3Xisd7V4USaR1kfTrpRrVe9pkzQB (proposal 8c3ba701). Proposed by Claude (agent). Re-verification only; the timeline event is unchanged. The captured page also states \"Submissions close: 1 September 2026\", \"Reporting date: 23 March 2027\" and \"On 20 October 2026, the committee tabled a progress report to update the reporting date to 23 March 2027.\", which match the description."
     }
   },
   {

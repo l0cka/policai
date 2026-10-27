@@ -773,7 +773,7 @@
     "jurisdiction": "federal",
     "type": "regulation",
     "status": "active",
-    "effectiveDate": "2022-01-23",
+    "effectiveDate": "2022-01-24",
     "dates": [
       {
         "type": "issued",
@@ -807,32 +807,32 @@
       },
       {
         "type": "commenced",
-        "date": "2022-01-23",
+        "date": "2022-01-24",
         "precision": "day",
         "primary": true,
         "source": {
           "url": "https://www.legislation.gov.au/F2022L00062/asmade/details",
           "finalUrl": "https://www.legislation.gov.au/F2022L00062/asmade/details",
           "title": "Online Safety (Basic Online Safety Expectations) Determination 2022 - Federal Register of Legislation",
-          "retrievedAt": "2026-10-22T05:56:56.317Z",
+          "retrievedAt": "2026-10-26T13:22:45.902Z",
           "contentType": "text/html",
-          "contentHash": "246db43e14e6185dffb1c753178168a1a00d7006cf45485b1c469573a1f87dd9",
+          "contentHash": "c061bd82e674259fc0c10ba029e7c16b0b3f0c6261c9022b0d37cb314a6374ec",
           "linkedDocuments": [],
           "browserCapture": {
             "method": "browser",
-            "capturedAt": "2026-10-22T05:56:56.317Z",
+            "capturedAt": "2026-10-26T13:22:45.902Z",
             "capturedBy": "Claude (agent)",
             "requestedBy": "Daniel Alkurdi",
-            "notes": "Headless Chromium capture of the Federal Register of Legislation details page for F2022L00062, rendered with the Policai collector identity. Staged by Claude (agent) for Daniel Alkurdi's federal register backfill.",
-            "pageContentHash": "c1a1869a16c3b81ba1d92727726df5c0f340e8e13e3f8648fc087d274ba21edf",
-            "characterCount": 2065
+            "notes": "Headless Chromium capture with the Policai/1.0 collector identity on Argus, 26 October 2026, of the Federal Register title page. The as-made Word document from api.prod.legislation.gov.au was read in the same session. Section 2 of the as-made instrument (commencement table, item 1): \"The whole of this instrument.\" commences \"The day after this instrument is registered.\" The Federal Register title page shows \"Registered 23 January 2022\" (Titles API asMadeRegisteredAt 2022-01-23T10:00:42), so the instrument commenced on 24 January 2022.",
+            "pageContentHash": "4af76a49a140a93e4b241ca33fd1b3160d5b9005788d7e6147c9edb4eabc18bd",
+            "characterCount": 1563
           },
           "reviewedDate": {
-            "date": "2022-01-23",
+            "date": "2022-01-24",
             "precision": "day",
-            "reviewedAt": "2026-10-22T06:08:02.678Z",
+            "reviewedAt": "2026-10-27T07:29:59.873Z",
             "reviewedBy": "Daniel Alkurdi",
-            "notes": "The captured details page and the Federal Register title record give registration of F2022L00062 and in-force status from 2022-01-23. The amendment F2024L00590 starts compilation 2024-05-31 (F2024C00516) of the determination."
+            "notes": "Section 2 of the as-made instrument (commencement table, item 1): \"The whole of this instrument.\" commences \"The day after this instrument is registered.\" The Federal Register title page shows \"Registered 23 January 2022\" (Titles API asMadeRegisteredAt 2022-01-23T10:00:42), so the instrument commenced on 24 January 2022."
           }
         }
       },
@@ -886,7 +886,7 @@
       "generative-ai"
     ],
     "createdAt": "2026-10-22T05:55:28.601Z",
-    "updatedAt": "2026-10-22T06:08:02.678Z",
+    "updatedAt": "2026-10-27T07:29:59.873Z",
     "legislative": {
       "kind": "instrument",
       "ref": {
@@ -908,11 +908,12 @@
           }
         },
         {
-          "date": "2022-01-23",
+          "date": "2022-01-24",
           "precision": "day",
           "event": {
             "kind": "commenced",
-            "extent": "full"
+            "extent": "full",
+            "note": "Section 2 commences the whole instrument on \"The day after this instrument is registered.\" Registered 23 January 2022."
           },
           "source": {
             "url": "https://www.legislation.gov.au/F2022L00062/asmade/details",
@@ -957,38 +958,38 @@
         }
       ]
     },
-    "lastReviewedAt": "2026-10-22T06:08:02.678Z",
+    "lastReviewedAt": "2026-10-27T07:29:59.873Z",
     "verification": {
       "status": "verified",
       "source": {
         "url": "https://www.legislation.gov.au/F2022L00062/asmade/details",
         "finalUrl": "https://www.legislation.gov.au/F2022L00062/asmade/details",
         "title": "Online Safety (Basic Online Safety Expectations) Determination 2022 - Federal Register of Legislation",
-        "retrievedAt": "2026-10-22T05:56:56.317Z",
+        "retrievedAt": "2026-10-26T13:22:45.902Z",
         "contentType": "text/html",
-        "contentHash": "246db43e14e6185dffb1c753178168a1a00d7006cf45485b1c469573a1f87dd9",
+        "contentHash": "c061bd82e674259fc0c10ba029e7c16b0b3f0c6261c9022b0d37cb314a6374ec",
         "linkedDocuments": [],
         "browserCapture": {
           "method": "browser",
-          "capturedAt": "2026-10-22T05:56:56.317Z",
+          "capturedAt": "2026-10-26T13:22:45.902Z",
           "capturedBy": "Claude (agent)",
           "requestedBy": "Daniel Alkurdi",
-          "notes": "Headless Chromium capture of the Federal Register of Legislation details page for F2022L00062, rendered with the Policai collector identity. Staged by Claude (agent) for Daniel Alkurdi's federal register backfill.",
-          "pageContentHash": "c1a1869a16c3b81ba1d92727726df5c0f340e8e13e3f8648fc087d274ba21edf",
-          "characterCount": 2065
+          "notes": "Headless Chromium capture with the Policai/1.0 collector identity on Argus, 26 October 2026, of the Federal Register title page. The as-made Word document from api.prod.legislation.gov.au was read in the same session. Section 2 of the as-made instrument (commencement table, item 1): \"The whole of this instrument.\" commences \"The day after this instrument is registered.\" The Federal Register title page shows \"Registered 23 January 2022\" (Titles API asMadeRegisteredAt 2022-01-23T10:00:42), so the instrument commenced on 24 January 2022.",
+          "pageContentHash": "4af76a49a140a93e4b241ca33fd1b3160d5b9005788d7e6147c9edb4eabc18bd",
+          "characterCount": 1563
         },
         "reviewedDate": {
-          "date": "2022-01-23",
+          "date": "2022-01-24",
           "precision": "day",
-          "reviewedAt": "2026-10-22T06:08:02.678Z",
+          "reviewedAt": "2026-10-27T07:29:59.873Z",
           "reviewedBy": "Daniel Alkurdi",
-          "notes": "The captured details page and the Federal Register title record give registration of F2022L00062 and in-force status from 2022-01-23. The amendment F2024L00590 starts compilation 2024-05-31 (F2024C00516) of the determination."
+          "notes": "Section 2 of the as-made instrument (commencement table, item 1): \"The whole of this instrument.\" commences \"The day after this instrument is registered.\" The Federal Register title page shows \"Registered 23 January 2022\" (Titles API asMadeRegisteredAt 2022-01-23T10:00:42), so the instrument commenced on 24 January 2022."
         }
       },
-      "checkedAt": "2026-10-22T06:08:02.678Z",
+      "checkedAt": "2026-10-27T07:29:59.873Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd7WF8r7jEJfHjwNzUT8rcaTq (proposal fa9974ea). Proposed by Claude (agent), at the request of Daniel Alkurdi. Instrument events from parseFrlTitle over https://api.prod.legislation.gov.au/v1/Titles('F2022L00062'); amendment from frlCommencements over https://api.prod.legislation.gov.au/v1/Versions?$filter=titleId%20eq%20'F2022L00062'%20and%20start%20ge%202024-01-01T00%3A00%3A00&$select=titleId,start,reasons. Unrecognised: none."
+      "notes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7QBtuy9Yo71xan9RzFcY5HC#cmsg_019nKBbCzGtpRmfKqX3Xisd71d1Jnur1q3CAg2Cvhdskb8 (proposal c678d400). Proposed by Claude (agent). Move commencement from the registration day (2022-01-23) to 2022-01-24 in dates[], effectiveDate and legislative.events. Registration stays 2022-01-23."
     }
   },
   {
@@ -10175,7 +10176,32 @@
         "type": "published",
         "date": "2026-09-24",
         "precision": "day",
-        "primary": true
+        "primary": true,
+        "source": {
+          "url": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+          "finalUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+          "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
+          "retrievedAt": "2026-10-26T12:48:03Z",
+          "contentType": "text/html",
+          "contentHash": "72e04c0756d8b67c3f4238504bf48220ac63e8c1281e0f60791f219631430391",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-26T12:48:03Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Headless Chromium capture with the Policai/1.0 collector identity on Argus, 26 October 2026, for Daniel Alkurdi's review of pending developments. Main-content text of the rendered page; the terms of reference page was read in the same session and its five recommendation areas match the record content.",
+            "pageContentHash": "fd6266d22d832d97a54851e9353a99b21169cd317a891ed80f1f5cc79bc1b6ad",
+            "characterCount": 1616
+          },
+          "reviewedDate": {
+            "date": "2026-09-24",
+            "precision": "day",
+            "reviewedAt": "2026-10-27T08:01:01.423Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The review page states \"On 24 September 2026, the Prime Minister, the Hon Anthony Albanese MP, announced a rapid review\", and its resources list shows \"Terms of Reference – Rapid review into Australian Government arrangements for an AI-driven cyber incident Thursday 24 September 2026\"."
+          }
+        }
       }
     ],
     "agencies": [
@@ -10205,18 +10231,40 @@
       "agentic-ai"
     ],
     "createdAt": "2026-10-20T05:20:00.000Z",
-    "updatedAt": "2026-10-20T05:20:00.000Z",
+    "updatedAt": "2026-10-27T08:01:01.423Z",
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
         "url": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+        "finalUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
         "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
-        "publisher": "Department of the Prime Minister and Cabinet",
-        "publishedAt": "2026-09-24",
-        "publishedAtPrecision": "day"
+        "retrievedAt": "2026-10-26T12:48:03Z",
+        "contentType": "text/html",
+        "contentHash": "72e04c0756d8b67c3f4238504bf48220ac63e8c1281e0f60791f219631430391",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-10-26T12:48:03Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "Headless Chromium capture with the Policai/1.0 collector identity on Argus, 26 October 2026, for Daniel Alkurdi's review of pending developments. Main-content text of the rendered page; the terms of reference page was read in the same session and its five recommendation areas match the record content.",
+          "pageContentHash": "fd6266d22d832d97a54851e9353a99b21169cd317a891ed80f1f5cc79bc1b6ad",
+          "characterCount": 1616
+        },
+        "reviewedDate": {
+          "date": "2026-09-24",
+          "precision": "day",
+          "reviewedAt": "2026-10-27T08:01:01.423Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The review page states \"On 24 September 2026, the Prime Minister, the Hon Anthony Albanese MP, announced a rapid review\", and its resources list shows \"Terms of Reference – Rapid review into Australian Government arrangements for an AI-driven cyber incident Thursday 24 September 2026\"."
+        }
       },
-      "notes": "Unverified editorial draft from the Policai Signal handoff of 20 October 2026. Primary sources are the PM&C review page and the terms of reference resource (release Thursday 24 September 2026). Partner agencies taken from the PM&C ToR/page (PM&C lead; National Cyber Security Coordinator; ASD; Australian AI Safety Institute; Services Australia), not from the PM transcript's longer verbal list that also named the Office of AI. No source fingerprint, no checkedAt, no checkedBy, and no lastReviewedAt. Not marked verified. Hidden from the public read until Daniel's own review. Do not conflate with OpenAI's separate company Australian taskforce announced 20 October 2026."
-    }
+      "checkedAt": "2026-10-27T08:01:01.423Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7QBtuy9Yo71xan9RzFcY5HC#cmsg_019nKBbCzGtpRmfKqX3Xisd7CzMBoHPcVXPiPdGYZJqyWF (proposal 29eecba3). Proposed by Claude (agent). Re-verification; record unchanged. The page and terms of reference publish no reporting date, interim findings or report as at 26 October 2026. The five recommendation areas in the record match the terms of reference text."
+    },
+    "lastReviewedAt": "2026-10-27T08:01:01.423Z"
   },
   {
     "id": "agd-ogp-nap4-consultation-2026",
