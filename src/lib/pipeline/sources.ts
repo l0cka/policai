@@ -1441,6 +1441,8 @@ export const WATCH_SOURCES: WatchSource[] = [
     schedule: 'weekly',
     enabled: true,
     automation: 'automatic',
+    notes:
+      'The guideline PDF is under /sites/default/files/, which vic.gov.au robots.txt disallows, so only the landing page is fingerprinted and the PDF is listed under skippedLinked.',
   },
   {
     id: 'ovic-news',

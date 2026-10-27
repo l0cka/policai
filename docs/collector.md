@@ -1317,6 +1317,14 @@ a fingerprint baseline.
   when the page host itself accepts the collector and only a linked host
   refuses, so the page host is not marked refused (`wa-ai-policy` until
   www.finance.gov.au has its own decision).
+- **robots.txt disallows a linked document** — the document is not
+  requested and is listed under `skippedLinked` with
+  `because: 'robots_disallowed'`; the page is still fingerprinted from its
+  own content and the remaining documents, so a new document version still
+  shows as a changed link (Daniel, 2026-10-27, for `vic-ai`, whose guideline
+  PDF sits under vic.gov.au's disallowed `/sites/default/files/`). A source
+  or candidate page that robots.txt disallows still fails as
+  `robots_disallowed`.
 - **An HTML source reports no coverage** — only links inside recognised
   publication/result containers count as index entries. Navigation, footer,
   homepage, login, and soft-error links do not make a source healthy; inspect

@@ -1455,7 +1455,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     const noteSkipped = (skipped: readonly SkippedLinked[] | undefined) => {
       for (const entry of skipped ?? []) {
         const url = publicFailureUrl(entry.url);
-        if (url) skippedLinked.set(url, { url, decidedBy: entry.decidedBy });
+        if (url) skippedLinked.set(url, { ...entry, url });
       }
     };
 
@@ -1725,7 +1725,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
           continue;
         }
         if (error instanceof DecidedBlockError) {
-          noteSkipped([{ url: candidate.url, decidedBy: error.decidedBy }]);
+          noteSkipped([{ url: candidate.url, because: 'decided_block', decidedBy: error.decidedBy }]);
           markCandidateFailed(state, candidate, nowIso, message);
           log(`[collect] ${source.id}: skipped ${candidate.url} (${message})`);
           continue;

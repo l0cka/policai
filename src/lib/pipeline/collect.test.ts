@@ -4485,11 +4485,43 @@ describe('failure classes on source results', () => {
     const row = result.meta.collector.sourceResults[0];
     expect(row).toMatchObject({
       status: 'success',
-      skippedLinked: [{ url: REFUSED_PDF, decidedBy: 'finance-news' }],
+      skippedLinked: [{ url: REFUSED_PDF, because: 'decided_block', decidedBy: 'finance-news' }],
     });
     expect(row.failureClass).toBeUndefined();
     expect(result.errors).toEqual([]);
     expect(requestedHosts(fetchImpl)).not.toContain('www.finance.gov.au');
+    expect(result.state.sourceSnapshots[LINKING_SOURCE.id]).toBeDefined();
+    expect(validateCollectionMeta(result.meta).errors).toEqual([]);
+  });
+
+  it('skips a linked document robots.txt disallows and still watches the page', async () => {
+    const fetchImpl = fakeFetch({ [LINKING_SOURCE.url]: html(LINKING_PAGE), [REFUSED_PDF]: html('unreachable') });
+    const result = await collect({
+      sources: [LINKING_SOURCE],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl,
+      hostGate: createHostGate({
+        hosts: {},
+        refused: new Map(),
+        fetchRobots: async (origin) =>
+          origin.includes('finance.gov.au')
+            ? { status: 200, body: 'User-agent: *\nDisallow: /files/*.pdf$\n' }
+            : { status: 404, body: '' },
+        now: Date.now,
+        sleep: async () => {},
+      }),
+      now,
+    });
+
+    const row = result.meta.collector.sourceResults[0];
+    expect(row).toMatchObject({
+      status: 'success',
+      skippedLinked: [{ url: REFUSED_PDF, because: 'robots_disallowed' }],
+    });
+    expect(row.failureClass).toBeUndefined();
+    expect(result.errors).toEqual([]);
+    expect(vi.mocked(fetchImpl).mock.calls.map(([input]) => String(input))).not.toContain(REFUSED_PDF);
     expect(result.state.sourceSnapshots[LINKING_SOURCE.id]).toBeDefined();
     expect(validateCollectionMeta(result.meta).errors).toEqual([]);
   });
@@ -4519,7 +4551,7 @@ describe('failure classes on source results', () => {
 
     expect(result.meta.collector.sourceResults[0]).toMatchObject({
       status: 'success',
-      skippedLinked: [{ url: refusedCandidate, decidedBy: 'finance-news' }],
+      skippedLinked: [{ url: refusedCandidate, because: 'decided_block', decidedBy: 'finance-news' }],
     });
     expect(result.state.seen[refusedCandidate]?.status).toBe('failed');
     expect(requestedHosts(fetchImpl)).not.toContain('www.finance.gov.au');
