@@ -20,11 +20,16 @@ test for a behaviour the diff changes, or a breach of `AGENTS.md`.
 Do not report style, praise, or questions. There is no notes section.
 Pass an empty `blockers` list when nothing blocks.
 
-When an earlier blocker is still true, pass it again with the same `path`
-and `title` the earlier review used. `post_review` turns that into one
-`Still open` line and drops the repeated detail. When it is fixed, leave
-it out. Do not write `Still open` yourself, and do not restate a finding
-the earlier review already made.
+`pr/prior-blockers.json` lists the blockers still open on your last review,
+each with an id. For each one that is still true on this head, pass its id
+in `stillOpen`. `post_review` turns it into one `Still open` line. When it
+is fixed, leave its id out. Do not pass it again in `blockers`, do not write
+`Still open` yourself, and do not restate any point an earlier review in
+`pr/prior-reviews.json` already made.
+
+`pr/unread.json` lists files the diff was too large to include. You cannot
+review them, and `post_review` fails the review while any are listed. Lockfile
+changes are left out of the diff on purpose.
 
 ## Post once
 

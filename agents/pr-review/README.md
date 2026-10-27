@@ -7,9 +7,10 @@ A code version of the Cursor Automation [Policai PR review](https://cursor.com/a
 - GitHub review event is always `COMMENT`.
 - Zero remaining blockers write `<!-- cursor-review: success -->`. Any remaining blocker writes `<!-- cursor-review: failure -->`.
 - The body contains that marker once.
-- A blocker whose path and title already appeared in an earlier review becomes one `Still open` line. A second copy of the same blocker is dropped. A notes-shaped finding is dropped.
+- Each review starts with `<!-- policai-pr-review -->`. The blockers on this agent's newest review, and only that review, go to the model as `pr/prior-blockers.json` with ids. The model passes the ids still true as `stillOpen`, and each becomes one `Still open` line. A blocker repeated under its old path and title is folded into the same line. A notes-shaped finding is dropped.
+- A diff over 150,000 characters is cut file by file. Lockfiles are left out. Any other file that does not fit is listed as unread, and the review fails.
 
-The channel wakes on `pull_request` `opened` and `synchronize` for `l0cka/policai`, and skips drafts. It loads `AGENTS.md` at the head SHA, the pull request diff, and earlier review bodies into the workspace.
+The channel wakes on `pull_request` `opened`, `reopened`, `synchronize` and `ready_for_review` for `l0cka/policai`, the same events on which the stamp workflow opens a waiting check, and skips drafts. It loads `AGENTS.md` at the head SHA, the pull request diff, and earlier review bodies into the workspace. It does not check out the repository, so the model cannot read code outside the diff.
 
 ## Checks
 

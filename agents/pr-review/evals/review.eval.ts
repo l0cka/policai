@@ -1,4 +1,5 @@
 import { defineEval } from "@grok/agent-sdk/evals";
+import { priorBlockers, SIGNATURE } from "../bot/lib/review-body.js";
 
 const AGENTS = [
   "# AGENTS.md",
@@ -16,6 +17,7 @@ function opened(title: string): string {
 }
 
 const PRIOR_FAILURE = [
+  SIGNATURE,
   "Blocking.",
   "",
   "- `src/app/api/policies/route.ts`: Public route returns withheld records. getPolicies is not applied.",
@@ -35,6 +37,7 @@ export default defineEval({
             "AGENTS.md": AGENTS,
             "pr/head.sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n",
             "pr/prior-reviews.json": "[]",
+            "pr/prior-blockers.json": "[]",
             "pr/diff.patch": [
               "diff --git a/src/lib/labels.ts b/src/lib/labels.ts",
               "--- a/src/lib/labels.ts",
@@ -52,7 +55,7 @@ export default defineEval({
             const review = value as { conclusion?: string; body?: string; event?: string };
             return review.conclusion === "success"
               && review.event === "COMMENT"
-              && review.body === "No blocking issues.\n\n<!-- cursor-review: success -->";
+              && review.body === `${SIGNATURE}\nNo blocking issues.\n\n<!-- cursor-review: success -->`;
           },
         });
       },
@@ -66,6 +69,7 @@ export default defineEval({
             "AGENTS.md": AGENTS,
             "pr/head.sha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\n",
             "pr/prior-reviews.json": "[]",
+            "pr/prior-blockers.json": "[]",
             "pr/diff.patch": [
               "diff --git a/src/app/api/policies/route.ts b/src/app/api/policies/route.ts",
               "--- a/src/app/api/policies/route.ts",
@@ -103,6 +107,7 @@ export default defineEval({
             "AGENTS.md": AGENTS,
             "pr/head.sha": "cccccccccccccccccccccccccccccccccccccccc\n",
             "pr/prior-reviews.json": JSON.stringify([PRIOR_FAILURE]),
+            "pr/prior-blockers.json": JSON.stringify(priorBlockers([PRIOR_FAILURE])),
             "pr/diff.patch": [
               "diff --git a/src/app/api/policies/route.ts b/src/app/api/policies/route.ts",
               "--- a/src/app/api/policies/route.ts",
@@ -136,6 +141,7 @@ export default defineEval({
             "AGENTS.md": AGENTS,
             "pr/head.sha": "dddddddddddddddddddddddddddddddddddddddd\n",
             "pr/prior-reviews.json": JSON.stringify([PRIOR_FAILURE]),
+            "pr/prior-blockers.json": JSON.stringify(priorBlockers([PRIOR_FAILURE])),
             "pr/diff.patch": [
               "diff --git a/src/app/api/policies/route.ts b/src/app/api/policies/route.ts",
               "@@ -1,2 +1,3 @@",

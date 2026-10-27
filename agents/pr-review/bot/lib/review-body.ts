@@ -5,12 +5,22 @@
 
 export const REVIEW_EVENT = "COMMENT" as const;
 
+/** Marks a review this agent wrote, so repeat handling ignores everyone else's. */
+export const SIGNATURE = "<!-- policai-pr-review -->";
+
 const MARKER = /<!--\s*cursor-review:\s*(success|failure)\s*-->/gi;
 
 export type ReviewBlocker = {
   path: string;
   title: string;
   detail: string;
+};
+
+/** A blocker still open on this agent's latest review, as the model sees it. */
+export type PriorBlocker = {
+  id: string;
+  path: string;
+  title: string;
 };
 
 export type ComposedReview = {
@@ -29,18 +39,29 @@ function keyOf(path: string, title: string): string {
   return `${path.trim().toLowerCase()}|${title.trim().toLowerCase()}`;
 }
 
-/** Lines this tool wrote on an earlier review. Prose mentions do not count. */
-function priorKeys(bodies: readonly string[]): Set<string> {
-  const keys = new Set<string>();
+export function isOwnReview(body: string): boolean {
+  return body.includes(SIGNATURE);
+}
+
+/**
+ * The blockers open on the newest review this agent wrote. A blocker fixed
+ * since then is not on that review, so it is never raised again.
+ */
+export function priorBlockers(bodies: readonly string[]): PriorBlocker[] {
+  const latest = bodies.filter(isOwnReview).at(-1);
+  if (latest === undefined) return [];
   const pattern = /^(?:- |Still open: )`([^`]+)`:?\s+(.+?)(?:\. |$)/gm;
-  for (const body of bodies) {
-    for (const match of body.matchAll(pattern)) {
-      const path = match[1] ?? "";
-      const title = (match[2] ?? "").replace(/\.\s+[\s\S]*$/, "").trim();
-      if (path !== "" && title !== "") keys.add(keyOf(path, title));
-    }
+  const found: PriorBlocker[] = [];
+  const seen = new Set<string>();
+  for (const match of latest.matchAll(pattern)) {
+    const path = match[1] ?? "";
+    const title = (match[2] ?? "").replace(/\.+$/, "").trim();
+    const key = keyOf(path, title);
+    if (path === "" || title === "" || seen.has(key)) continue;
+    seen.add(key);
+    found.push({ id: `P${found.length + 1}`, path, title });
   }
-  return keys;
+  return found;
 }
 
 export function markerLine(conclusion: "success" | "failure"): string {
@@ -49,13 +70,24 @@ export function markerLine(conclusion: "success" | "failure"): string {
 
 export function composeReview(
   blockers: readonly ReviewBlocker[],
-  priorBodies: readonly string[],
+  input: {
+    prior?: readonly PriorBlocker[];
+    stillOpenIds?: readonly string[];
+    unreadPaths?: readonly string[];
+  } = {},
 ): ComposedReview {
-  const known = priorKeys(priorBodies);
+  const prior = input.prior ?? [];
+  const priorByKey = new Map(prior.map((item) => [keyOf(item.path, item.title), item]));
+  const priorById = new Map(prior.map((item) => [item.id, item]));
+  const open = new Map<string, PriorBlocker>();
   const seen = new Set<string>();
   const dropped: string[] = [];
-  const stillOpen: string[] = [];
-  const lines: string[] = [];
+  const fresh: string[] = [];
+
+  for (const id of input.stillOpenIds ?? []) {
+    const item = priorById.get(id.trim());
+    if (item !== undefined) open.set(item.id, item);
+  }
 
   for (const blocker of blockers) {
     const path = oneLine(blocker.path);
@@ -72,21 +104,37 @@ export function composeReview(
       continue;
     }
     seen.add(key);
-    if (known.has(key)) {
-      stillOpen.push(title);
-      lines.push(`Still open: \`${path}\` ${title}`);
+    const earlier = priorByKey.get(key);
+    if (earlier !== undefined) {
+      open.set(earlier.id, earlier);
       continue;
     }
     const sentence = detail === "" ? `${title}.` : `${title}. ${detail}`;
-    lines.push(`- \`${path}\`: ${sentence}`);
+    fresh.push(`- \`${path}\`: ${sentence}`);
+  }
+
+  const lines = [
+    ...fresh,
+    ...[...open.values()].map((item) => `Still open: \`${item.path}\` ${item.title}`),
+  ];
+  const unread = (input.unreadPaths ?? []).map(oneLine).filter((path) => path !== "");
+  if (unread.length > 0) {
+    const list = unread.map((path) => `\`${path}\``).join(", ");
+    lines.push(`Not reviewed: the diff was too large to read in full. Unread files: ${list}.`);
   }
 
   const conclusion = lines.length === 0 ? "success" : "failure";
   const prose = lines.length === 0 ? "No blocking issues." : ["Blocking.", ...lines].join("\n");
-  const body = `${prose}\n\n${markerLine(conclusion)}`;
+  const body = `${SIGNATURE}\n${prose}\n\n${markerLine(conclusion)}`;
   const markers = body.match(MARKER) ?? [];
   if (markers.length !== 1) {
     throw new Error(`review body must contain exactly one cursor-review marker, found ${markers.length}`);
   }
-  return { body, conclusion, event: REVIEW_EVENT, dropped, stillOpen };
+  return {
+    body,
+    conclusion,
+    event: REVIEW_EVENT,
+    dropped,
+    stillOpen: [...open.values()].map((item) => item.title),
+  };
 }

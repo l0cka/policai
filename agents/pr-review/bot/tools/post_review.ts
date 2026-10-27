@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { parseGitHubPrContinuationKey } from "@grok/agent-sdk/channels/github";
 import { defineTool } from "@grok/agent-sdk/tools";
 import { z } from "zod";
-import { composeReview } from "../lib/review-body.js";
+import { composeReview, type PriorBlocker } from "../lib/review-body.js";
 
 const SHA = /^[0-9a-f]{40}$/i;
 
@@ -13,26 +13,33 @@ const blocker = z.object({
   detail: z.string().max(500),
 });
 
-async function priorBodies(workspaceDir: string): Promise<string[]> {
+const priorItem = z.object({ id: z.string(), path: z.string(), title: z.string() });
+
+async function readJson<T>(workspaceDir: string, file: string, schema: z.ZodType<T>, fallback: T): Promise<T> {
   try {
-    const raw = await readFile(join(workspaceDir, "pr/prior-reviews.json"), "utf8");
-    const parsed: unknown = JSON.parse(raw);
-    if (!Array.isArray(parsed)) return [];
-    return parsed.filter((item): item is string => typeof item === "string");
+    const raw = await readFile(join(workspaceDir, file), "utf8");
+    const parsed = schema.safeParse(JSON.parse(raw));
+    return parsed.success ? parsed.data : fallback;
   } catch {
-    return [];
+    return fallback;
   }
 }
 
 export default defineTool({
   description:
-    "Post this session's review. Call once. Pass every current blocker, including one that repeats an earlier review. The tool drops repeats, writes one Still open line for each unfixed earlier blocker, and appends the single cursor-review marker. The review event is COMMENT.",
+    "Post this session's review. Call once. Pass new blockers in `blockers`, and the id of each earlier blocker from pr/prior-blockers.json that is still true in `stillOpen`. The tool writes one Still open line per id, fails the review when files went unread, and appends the single cursor-review marker. The review event is COMMENT.",
   effect: "write",
   inputSchema: z.object({
-    blockers: z.array(blocker).describe("Current blockers. Empty when the head has none."),
+    blockers: z.array(blocker).describe("New blockers on this head. Empty when there are none."),
+    stillOpen: z
+      .array(z.string())
+      .default([])
+      .describe("Ids from pr/prior-blockers.json whose blocker is still true on this head."),
   }),
-  async execute({ blockers }, ctx) {
-    const review = composeReview(blockers, await priorBodies(ctx.workspaceDir));
+  async execute({ blockers, stillOpen }, ctx) {
+    const prior: PriorBlocker[] = await readJson(ctx.workspaceDir, "pr/prior-blockers.json", z.array(priorItem), []);
+    const unreadPaths = await readJson(ctx.workspaceDir, "pr/unread.json", z.array(z.string()), []);
+    const review = composeReview(blockers, { prior, stillOpenIds: stillOpen, unreadPaths });
     const result = {
       posted: false,
       event: review.event,

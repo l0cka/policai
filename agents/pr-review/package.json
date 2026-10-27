@@ -9,7 +9,7 @@
     "validate": "agent-sdk validate --dir ."
   },
   "dependencies": {
-    "@grok/agent-sdk": "latest",
+    "@grok/agent-sdk": "0.3.0",
     "zod": "^4.1.12"
   },
   "devDependencies": {
