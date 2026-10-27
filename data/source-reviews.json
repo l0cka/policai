@@ -1,5 +1,164 @@
 [
   {
+    "id": "source-review-dev-administrative-guideline-for-the-safe-and-respon-gmhnpg",
+    "sourceUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
+    "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector",
+    "entryKind": "policy",
+    "targetPolicyId": "victoria-genai-guideline-vps",
+    "targetPolicyBaseRevisionHash": "c739a70646eb436494ea27e54f5ec91388855cbfea634b590724a431846a7147",
+    "status": "pending_review",
+    "discoveredAt": "2026-10-27T19:30:32.288Z",
+    "createdBy": "collector",
+    "notes": "The official source content for \"Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector\" changed. Editorial re-verification is required before the register record can be treated as current. Re-verify the existing register record before restoring it to public reads. Detected by vic.gov.au — generative AI guidance (heuristic assessment).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": "guideline",
+      "suggestedJurisdiction": "vic",
+      "summary": "The official source content for \"Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector\" changed. Editorial re-verification is required before the register record can be treated as current.",
+      "tags": [
+        "Victoria",
+        "generative AI",
+        "guideline",
+        "public sector"
+      ],
+      "agencies": [
+        "Department of Government Services"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
+      "finalUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
+      "retrievedAt": "2026-10-27T19:30:32.288Z",
+      "contentType": "text/html",
+      "contentHash": "54775b266d9b146bc47156631b767c2bf901045fb7ee89f0631101dae33fe32f",
+      "linkedDocuments": [
+        {
+          "url": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
+          "finalUrl": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
+          "retrievedAt": "2026-10-27T19:30:32.288Z",
+          "contentType": "application/pdf",
+          "contentHash": "ab6aa1576ba4d7cd255e3ddfe6214c6a873ff0ed079346fbc4c6a17892aa08ee",
+          "etag": "\"2e976-612c9a53ad71b\"",
+          "lastModified": "Sun, 03 Mar 2024 23:05:30 GMT"
+        }
+      ],
+      "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector"
+    },
+    "proposedRecord": {
+      "id": "victoria-genai-guideline-vps",
+      "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector",
+      "description": "Current Victorian public-sector guidance on the safe and responsible use of generative AI.",
+      "jurisdiction": "vic",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2024-11-27",
+      "agencies": [
+        "Department of Government Services"
+      ],
+      "sourceUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
+      "content": "This guideline was endorsed by the Victorian Secretaries Board on 24 September 2024 and made by the Secretary, Department of Premier and Cabinet, on 27 November 2024. The public page was updated on 12 February 2025. It sets minimum requirements for safe and responsible use of generative AI in the Victorian Public Sector.",
+      "aiSummary": "Victorian public-sector generative AI guideline made in November 2024 and updated in February 2025.",
+      "tags": [
+        "Victoria",
+        "generative AI",
+        "guideline",
+        "public sector"
+      ],
+      "themes": [
+        "generative-ai",
+        "public-sector"
+      ],
+      "createdAt": "2026-04-06T16:50:00Z",
+      "updatedAt": "2026-10-27T19:30:32.288Z",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2024-11-27",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
+            "finalUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
+            "retrievedAt": "2026-08-07T05:10:37.597Z",
+            "contentType": "text/html",
+            "contentHash": "6013a3f65fd755391a25c8768410318375421342c47621c337baf604fe5abc71",
+            "linkedDocuments": [
+              {
+                "url": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
+                "finalUrl": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
+                "retrievedAt": "2026-08-07T05:10:37.989Z",
+                "contentType": "application/pdf",
+                "contentHash": "ab6aa1576ba4d7cd255e3ddfe6214c6a873ff0ed079346fbc4c6a17892aa08ee",
+                "etag": "\"2e976-612c9a53ad71b\"",
+                "lastModified": "Sun, 03 Mar 2024 23:05:30 GMT"
+              },
+              {
+                "url": "https://www.vic.gov.au/sites/default/files/2024-11/Generative-AI-Guideline-%281%29.pdf",
+                "finalUrl": "https://www.vic.gov.au/sites/default/files/2024-11/Generative-AI-Guideline-%281%29.pdf",
+                "retrievedAt": "2026-08-07T05:10:38.082Z",
+                "contentType": "application/pdf",
+                "contentHash": "eb114ba5e9e8614438dfc291a50aff04baffab52f070c9089f175c80895860bc",
+                "etag": "\"67480ace-1e00c\"",
+                "lastModified": "Thu, 28 Nov 2024 06:16:46 GMT"
+              }
+            ],
+            "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector",
+            "reviewedDate": {
+              "date": "2024-11-27",
+              "precision": "day",
+              "reviewedAt": "2026-08-07T05:10:38.082Z",
+              "reviewedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-08",
+              "notes": "Date confirmed against the live official source on 2026-08-08. VIC Gen-AI VPS guideline — endorsed VSB 24 Sep 2024, made by Secretary DPC 27 Nov 2024, updated 12 Feb 2025; all three dates confirmed on vic.gov.au."
+            }
+          }
+        }
+      ]
+    },
+    "linkedDevelopment": {
+      "id": "dev-administrative-guideline-for-the-safe-and-respon-gmhnpg",
+      "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector",
+      "url": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
+      "sourceId": "vic-ai",
+      "sourceName": "vic.gov.au — generative AI guidance",
+      "jurisdiction": "vic",
+      "detectedAt": "2026-10-27T19:30:32.288Z",
+      "summary": "The official source content for \"Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector\" changed. Editorial re-verification is required before the register record can be treated as current.",
+      "relevanceScore": 1,
+      "classification": "heuristic",
+      "assessment": {
+        "method": "heuristic",
+        "promptVersion": "source-hash-change-v1",
+        "assessedAt": "2026-10-27T19:30:32.288Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
+          "finalUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
+          "retrievedAt": "2026-10-27T19:30:32.288Z",
+          "contentType": "text/html",
+          "contentHash": "54775b266d9b146bc47156631b767c2bf901045fb7ee89f0631101dae33fe32f",
+          "linkedDocuments": [
+            {
+              "url": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
+              "finalUrl": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
+              "retrievedAt": "2026-10-27T19:30:32.288Z",
+              "contentType": "application/pdf",
+              "contentHash": "ab6aa1576ba4d7cd255e3ddfe6214c6a873ff0ed079346fbc4c6a17892aa08ee",
+              "etag": "\"2e976-612c9a53ad71b\"",
+              "lastModified": "Sun, 03 Mar 2024 23:05:30 GMT"
+            }
+          ],
+          "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector"
+        }
+      },
+      "status": "detected"
+    },
+    "sourceVersionSequence": 2,
+    "updatedAt": "2026-10-27T19:30:32.288Z"
+  },
+  {
     "id": "source-review-follow-federal-online-safety-relevant-electronic-services-industry-standard-2024-e714ea14ecf93702",
     "sourceUrl": "https://www.legislation.gov.au/F2024L00711/asmade/details",
     "title": "Online Safety (Relevant Electronic Services—Class 1A and Class 1B Material) Industry Standard 2024",
