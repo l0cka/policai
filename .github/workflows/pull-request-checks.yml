@@ -25,6 +25,7 @@ jobs:
     outputs:
       probono: ${{ steps.diff.outputs.probono }}
       host: ${{ steps.diff.outputs.host }}
+      review_agent: ${{ steps.diff.outputs.review_agent }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -41,6 +42,7 @@ jobs:
           {
             echo "probono=$(matches "^apps/probono/|$workflow")"
             echo "host=$(matches "^ops/host/|$workflow")"
+            echo "review_agent=$(matches "^agents/pr-review/|$workflow")"
           } >> "$GITHUB_OUTPUT"
 
   lint:
@@ -254,6 +256,24 @@ jobs:
         if: ${{ always() && env.AFFECTED == 'true' }}
         working-directory: .
         run: docker rm -f "${{ steps.pg.outputs.container }}" >/dev/null 2>&1 || true
+
+  pr-review-agent:
+    name: PR review agent
+    needs: changes
+    if: ${{ !cancelled() && (needs.changes.result == 'failure' || needs.changes.outputs.review_agent == 'true') }}
+    runs-on: [self-hosted, linux, argus]
+    defaults:
+      run:
+        working-directory: agents/pr-review
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Install agent dependencies
+        run: npm ci
+      - name: Typecheck and test agent
+        run: npm run check
 
   host-dispatcher:
     name: Host dispatcher
