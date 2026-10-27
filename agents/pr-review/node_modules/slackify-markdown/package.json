@@ -1,0 +1,71 @@
+{
+  "name": "slackify-markdown",
+  "version": "5.0.0",
+  "description": "Convert markdown into Slack-specific markdown",
+  "license": "MIT",
+  "type": "module",
+  "exports": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jsarafajr/slackify-markdown.git"
+  },
+  "keywords": [
+    "slack",
+    "markdown",
+    "slackify",
+    "parser",
+    "remark",
+    "unified",
+    "esm",
+    "typescript"
+  ],
+  "author": {
+    "name": "Yevhenii Baraniuk",
+    "web": "https://github.com/jsarafajr"
+  },
+  "bugs": {
+    "url": "https://github.com/jsarafajr/slackify-markdown/issues"
+  },
+  "homepage": "https://github.com/jsarafajr/slackify-markdown#readme",
+  "dependencies": {
+    "mdast-util-to-markdown": "^2.1.2",
+    "remark-gfm": "^4.0.0",
+    "remark-parse": "^11.0.0",
+    "remark-stringify": "^11.0.0",
+    "unified": "^11.0.5",
+    "unist-util-remove": "^4.0.0",
+    "unist-util-visit": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/mdast": "^4.0.4",
+    "@types/node": "^22.19.0",
+    "@types/unist": "^3.0.3",
+    "@vitest/coverage-v8": "^4.0.7",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.4.2",
+    "typescript": "^5.3.3",
+    "typescript-eslint": "^8.46.3",
+    "vitest": "^4.0.7"
+  },
+  "files": [
+    "README.md",
+    "dist",
+    "src",
+    "LICENSE"
+  ]
+}

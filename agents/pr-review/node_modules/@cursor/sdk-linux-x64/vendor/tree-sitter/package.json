@@ -1,0 +1,6 @@
+{
+  "name": "tree-sitter",
+  "version": "0.21.1",
+  "description": "anysphere/node-tree-sitter fork vendored for @cursor/sdk; loads a prebuilt binding directly.",
+  "main": "index.js"
+}

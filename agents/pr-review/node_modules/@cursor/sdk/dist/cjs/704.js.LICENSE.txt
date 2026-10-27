@@ -1,0 +1,24 @@
+/*!
+ * is-extendable <https://github.com/jonschlinkert/is-extendable>
+ *
+ * Copyright (c) 2015, Jon Schlinkert.
+ * Licensed under the MIT License.
+ */
+
+/*!
+ * re2js
+ * RE2JS is the JavaScript port of RE2, a regular expression engine that provides linear time matching
+ *
+ * @version v1.2.2
+ * @author Alexey Vasiliev
+ * @homepage https://github.com/le0pard/re2js#readme
+ * @repository github:le0pard/re2js
+ * @license MIT
+ */
+
+/*!
+ * strip-bom-string <https://github.com/jonschlinkert/strip-bom-string>
+ *
+ * Copyright (c) 2015, 2017, Jon Schlinkert.
+ * Released under the MIT License.
+ */

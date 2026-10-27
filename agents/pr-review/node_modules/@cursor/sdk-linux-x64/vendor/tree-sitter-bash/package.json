@@ -1,0 +1,6 @@
+{
+  "name": "tree-sitter-bash",
+  "version": "0.21.0",
+  "description": "tree-sitter-bash grammar vendored for @cursor/sdk; loads a prebuilt binding directly.",
+  "main": "index.js"
+}
