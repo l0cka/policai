@@ -64,8 +64,14 @@ The boundaries are deliberately strict:
 
 ## Application architecture
 
-- Server Components read repository data directly through
-  `src/lib/data-service.ts`.
+- Server Components read repository data through `src/lib/data-service.ts`.
+  On Cloudflare Workers there is no project filesystem, so
+  `scripts/bundle-data.mjs` writes `data/` and `public/data/` into
+  `src/lib/bundled-files.generated.ts` at build time. On Workers,
+  `readJsonFile` in `src/lib/file-store.ts` reads that bundle
+  (`src/lib/bundled-files.ts`). Everywhere else, including the CLIs, the MCP
+  servers, tests and `next dev`, it reads the disk. A data change
+  is public only after the deploy that bundles it.
 - Client Components receive serialisable props and own only interactive state.
 - Route handlers exist for the public JSON API, not as an internal data layer
   for server-rendered pages.

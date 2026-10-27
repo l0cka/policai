@@ -41,7 +41,7 @@ Product surface:
 - `data/source-reviews.json` — detections staged for curated review
 - `data/source-monitoring.json` — the manual-source review ledger
 
-The maintainer's server runs the collector daily, from its own checkout, over the official sources that reliably permit machine retrieval. Sources protected by browser challenges are kept in the same source catalogue but reviewed through the manual coverage ledger. Candidate pages from browser-only sources are retrieved through a self-hosted Firecrawl instance, falling back to headless Chromium when Firecrawl is unavailable. New items are classified by keyword heuristic by default, or by Claude, an Anthropic model, in batches when the collector's Claude classifier is enabled (it is enabled in production). Either classifier path caps stored confidence at 0.65, so an automated discovery never reads as more certain than an editor's review. Change detections on already-tracked records are different: they store a relevance score of 1 because the score there records certainty that a known instrument's page changed, not classifier confidence — those detections are still editor-gated before anything publishes. Detections are validated and committed. The site reads that data from disk and revalidates hourly; there is no runtime database.
+The maintainer's server runs the collector daily, from its own checkout, over the official sources that reliably permit machine retrieval. Sources protected by browser challenges are kept in the same source catalogue but reviewed through the manual coverage ledger. Candidate pages from browser-only sources are retrieved through a self-hosted Firecrawl instance, falling back to headless Chromium when Firecrawl is unavailable. New items are classified by keyword rules by default, or by the local `clef-flash` model on the collector host when `USE_CLEF_CLASSIFIER=1`, falling back to keyword rules when the model is unavailable. Either classifier path caps stored confidence at 0.65, so an automated discovery never reads as more certain than an editor's review. Change detections on already-tracked records are different: they store a relevance score of 1 because the score there records certainty that a known instrument's page changed, not classifier confidence — those detections are still editor-gated before anything publishes. Detections are validated and committed. The build bundles the data into the site, so a data commit is public once its deploy finishes. There is no runtime database.
 
 High-confidence detections are staged in `data/source-reviews.json`; a reviewer uses the local stage → approve → publish workflow before they enter the register. The public policy timeline exposes only verified lifecycle events linked to visible register records. Verified announcements and milestones belong in Developments; legacy examples still stored in `data/timeline.json` are projected there without duplicating their evidence. The collector never writes to `policies.json` directly, and CI enforces that.
 
@@ -49,7 +49,7 @@ High-confidence detections are staged in `data/source-reviews.json`; a reviewer 
 
 - Next.js 16 App Router, React 19, TypeScript 5 (strict)
 - Tailwind CSS 4, shadcn/ui on Radix UI, D3.js
-- Cheerio for scraping; keyword heuristic or Claude (Anthropic) for relevance classification
+- Cheerio for scraping; keyword rules or the local Clef model for relevance classification
 - Vitest; daily scheduled collection on the maintainer's server; site served from Cloudflare Workers
 
 ## Quick Start
@@ -97,14 +97,14 @@ scripts/            collector, source audits, validation and migrations
 design/             shared design tokens (colour, type) for Policai and Policai A2J
 docs/               operational documentation
 apps/probono/       independent Pro Bono dashboard and worker packages
-ops/host/           candidate host dispatcher, verification and cutover procedure
+ops/host/           guarded host dispatcher for the Pro Bono jobs on the maintainer's server
 ```
 
 Policai A2J ([a2j.policai.org](https://a2j.policai.org)), built from the Pro Bono Radar
 application, shares source history with Policai but retains separate packages,
 PostgreSQL data and production releases. Follow its [application guide](./apps/probono/README.md)
-for installation and checks. The [host dispatcher](./ops/host/README.txt) is a
-cutover candidate; importing the child application does not activate it in production.
+for installation and checks. Its site runs on Cloudflare Workers; its database and
+jobs run on the maintainer's server through the [host dispatcher](./ops/host/README.txt).
 
 ## Open data
 
@@ -132,7 +132,7 @@ filters, response formats, and MCP tools.
 
 ## Deployment
 
-[policai.org](https://policai.org) is served from Cloudflare Workers through OpenNext. Data is bundled into the Worker at build time, so every commit to `main`, data included, redeploys it through Cloudflare Workers Builds. See [docs/hosting-argus.md](./docs/hosting-argus.md). The collector runs on the same host, in a separate checkout on a daily schedule, and pushes its commits to the same repository. It retrieves browser-only candidate pages through a self-hosted Firecrawl instance and, in production, classifies candidates with Claude through the Claude Code CLI already installed on the host. See [docs/collector.md](./docs/collector.md).
+[policai.org](https://policai.org) is served from Cloudflare Workers through OpenNext. Data is bundled into the Worker at build time, so every commit to `main`, data included, redeploys it through Cloudflare Workers Builds. See [docs/hosting-argus.md](./docs/hosting-argus.md). The collector runs daily on the maintainer's server and opens a collection PR that auto-merges once checks pass. It retrieves browser-only candidate pages through a self-hosted Firecrawl instance and classifies candidates with the local Clef model. See [docs/collector.md](./docs/collector.md).
 
 ## Contributing
 

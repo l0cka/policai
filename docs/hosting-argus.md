@@ -76,12 +76,8 @@ The default is a fast-forward because the worker image is built from
 `apps/probono/worker` alone, which `validate_compose` enforces, so a path
 outside `apps/probono/` cannot change it.
 
-This table describes `main`. The host runs a copy of the dispatcher that
-only a reviewed install refreshes, so it routes this way after the next
-install. Until then the installed copy also rebuilds and restarts a Policai
-server and a dashboard container on Argus for `src/`, `public/`, `mcp/`,
-the Next.js and shadcn config files, `apps/probono/` and every path it does
-not list. The invariant behind the no-lane rows is in
+The host runs a copy of the dispatcher that only a reviewed install
+refreshes. The install of #550 on 26 October 2026 matches this table. The invariant behind the no-lane rows is in
 [`ops/host/README.txt`](../ops/host/README.txt).
 
 ### Health gate and failure
@@ -100,8 +96,7 @@ empty when the cycle only fast-forwarded. `main` is the commit the cycle
 resolved and deployed, and `heads` is the commit the checkout now holds. To confirm a merge went
 live, look for a verified run whose `main` is the merge commit or a later
 commit on `main`, not for a run that happened after the merge. A failed or
-refused run prints no result and no commit. The host reports these fields
-only after a reviewed install of the current dispatcher.
+refused run prints no result and no commit.
 
 A failed deploy writes
 a persistent gate. Every later timer cycle then refuses to deploy,
@@ -113,8 +108,8 @@ Recovery is a manual, reviewed step by the maintainer. The procedure is in
 
 ### What this means for contributors
 
-- Merging to `main` is a deploy trigger. Check the timer before you push a
-  production-tracked branch.
+- Merging to `main` deploys each site it touches through Workers Builds and, for
+  `apps/probono/` changes outside `dashboard/`, the Pro Bono worker image.
 - A red deploy blocks the Pro Bono jobs and every later cycle. Tell the
   maintainer rather than retrying. The sites keep deploying through
   Workers Builds regardless.

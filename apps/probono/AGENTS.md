@@ -21,7 +21,7 @@ conventions still apply, but root Policai data/runtime assumptions do not.
 ## Shared design tokens
 
 - `dashboard/app/design-tokens.css` is a generated copy of the repository's
-  `design/tokens.css`, kept in the package so the dashboard's standalone Docker
+  `design/tokens.css`, kept in the package so the dashboard's standalone Workers
   build needs nothing outside `dashboard/`. Do not edit it. Change
   `design/tokens.css`, run `node scripts/sync-design-tokens.mjs` from the
   repository root, and commit both copies. The root test suite fails on drift.

@@ -12,9 +12,10 @@ its database, credentials, and backups must never enter Git. Sharing a repositor
 does not merge their publication rules, processes, or deployment authority.
 
 Run the root `npm run check` and the affected child checks before handing off a
-cross-application change. Keep production runtimes independent. Never push a
-production-targeted branch without checking the current automatic deployment
-timer: a source push can trigger an installed host deployment job.
+cross-application change. Keep production runtimes independent. A push to `main`
+deploys: Cloudflare Workers Builds redeploys each site the change touches, and the host
+dispatcher on Argus rebuilds the Pro Bono worker image when `apps/probono/`
+changes outside `dashboard/` (`docs/hosting-argus.md`).
 
 ## Shared design tokens
 
@@ -24,7 +25,7 @@ scale (`--type-*`, `--tracking-eyebrow`), font roles (`--font-sans`,
 (`--radius`, `--radius-control`, `--radius-pill`), focus ring
 (`--focus-ring-*`), core, status and row-hover colours, rules, shadows and
 motion. The
-A2J Docker build sees only `apps/probono/dashboard`, so neither app imports
+A2J Workers build sees only `apps/probono/dashboard`, so neither app imports
 across that boundary. `node scripts/sync-design-tokens.mjs` writes
 byte-identical copies to `src/app/design-tokens.css` and
 `apps/probono/dashboard/app/design-tokens.css`; both apps import their copy
@@ -38,7 +39,7 @@ there.
 
 Policai is an Australian AI policy tracker. It maintains a curated register of AI policy, regulation, governance and court guidance across federal and state/territory jurisdictions, plus an automated "developments" feed of newly detected policy activity.
 
-**Git is the database.** All canonical data is JSON committed to this repository (`public/data/`, `data/`). The deployed site only reads that data. It is self-hosted at [policai.org](https://policai.org) behind a Cloudflare tunnel. Collection runs daily on the maintainer's server, in a checkout separate from the one that serves the site, and pushes new detections to GitHub; the serving checkout pulls those commits and serves them through ISR without a rebuild. There is no runtime database, no auth, and no admin dashboard.
+**Git is the database.** All canonical data is JSON committed to this repository (`public/data/`, `data/`). The deployed site only reads that data. [policai.org](https://policai.org) runs on the Cloudflare Worker `policai`; `scripts/bundle-data.mjs` bundles `data/` and `public/data/` into it at build time, and Workers Builds redeploys on every push to `main`, so a data commit is public once its build finishes. Collection runs daily on the maintainer's server (Argus) and opens a collection PR that auto-merges once checks pass. There is no runtime database, no auth, and no admin dashboard.
 
 ## Tech Stack
 
@@ -52,7 +53,8 @@ Policai is an Australian AI policy tracker. It maintains a curated register of A
 - **Analysis:** keyword heuristic by default; the local `clef-flash` model on Argus (`src/lib/pipeline/clef-classify.ts`) when `USE_CLEF_CLASSIFIER=1` and the GPU and model are available, falling back to keyword rules otherwise — both classifier paths cap stored/displayed confidence at 0.65 (`MACHINE_CONFIDENCE_CAP`); direct-document change detections on tracked records store `relevanceScore: 1` by design (change-certainty, not classifier confidence) and stay editor-gated
 - **Scraping:** Cheerio
 - **Testing:** Vitest (+ Testing Library)
-- **Automation:** a daily scheduled run on the maintainer's server
+- **Hosting:** Cloudflare Workers through OpenNext (`npm run build:cloudflare`, `wrangler.jsonc`)
+- **Automation:** a daily scheduled collector run on the maintainer's server
 
 **Collector identity:** The collector identifies itself as `Policai/1.0 (+https://policai.org)` on every retrieval path. A refusal of that identity is a block we respect: the source moves to manual tracking. No source carries an identity exception; the E24 exception for 16 Commonwealth sources expired at 2026-10-21 00:00 AEDT (#162), and granting a new one needs Daniel's approval.
 
@@ -98,6 +100,7 @@ src/
 ├── components/                   # UI, layout, visualisation components
 ├── lib/
 │   ├── data-service.ts           # File-backed reads/writes over the repo JSON
+│   ├── file-store.ts             # JSON I/O; reads the build-time bundle on Workers, disk elsewhere
 │   ├── validate-data.ts          # Data schema enforcement (used by CI + collector)
 │   ├── articles.ts               # Article frontmatter parser, standard notice text, citation state
 │   ├── article-figures.ts        # Figure blocks in article bodies, register chart counts
@@ -487,7 +490,7 @@ None are required to run the site or collector. Optional (see `.env.example`):
 
 ```bash
 POLICAI_SIGNAL_TOKEN=     # HTTPS /api/signal/* Bearer token (Grok Bot product path)
-POLICAI_SIGNAL_GITHUB_TOKEN= # host-only; Signal POST reads GitHub main and commits changed files as a PR (or main push); never writes the checkout
+POLICAI_SIGNAL_GITHUB_TOKEN= # Worker secret; Signal POST reads GitHub main and commits changed files as a PR (or main push); never writes the checkout
 POLICAI_SIGNAL_REVIEWERS= # allowlist for Signal reviewer (default: Daniel Alkurdi,Daniel)
 POLICAI_MCP_ADMIN_TOKEN=  # local MCP source-ingest writes (laptop recovery; not the bot path)
 USE_CLEF_CLASSIFIER=      # 1 = score relevance with local clef-flash instead of keyword rules (collection host only)
