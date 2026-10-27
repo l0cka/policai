@@ -4,13 +4,17 @@ name: Collector proposals
 # failed three collection runs in a row, and closes it once the source
 # succeeds again or leaves the automatic catalogue. It only proposes: a person
 # decides on a decision card, and the move to manual is a reviewed code change.
-# Runs when a collection merge updates the source-health ledger.
+# Runs when a collection merge updates the source-health ledger, and on a
+# schedule, because auto-merge lands collection PRs with GITHUB_TOKEN and
+# those pushes start no workflows.
 on:
   push:
     branches:
       - main
     paths:
       - data/watch-state.json
+  schedule:
+    - cron: '41 */6 * * *'
   workflow_dispatch:
 
 permissions:
