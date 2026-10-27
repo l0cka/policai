@@ -1,5 +1,20 @@
 [
   {
+    "id": "mcp-audit-512a1a95-f464-4113-a7f7-095b4d7957f0",
+    "createdAt": "2026-10-27T07:54:41.190Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-6977146d-1368-4a92-9792-eb6403cd3bd4",
+    "createdAt": "2026-10-27T07:54:08.250Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-eea0cf67-4bc8-4ada-88d4-27b6657edfd8",
     "createdAt": "2026-10-27T07:29:59.931Z",
     "actor": "local-mcp-admin",

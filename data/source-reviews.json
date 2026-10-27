@@ -620,23 +620,33 @@
     "status": "pending_review",
     "discoveredAt": "2026-10-23T03:06:54.019Z",
     "createdBy": "collector",
-    "notes": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current. Re-verify the existing timeline event before treating it as current. Detected by Senate inquiry — artificial intelligence and data centres (heuristic assessment). Evidence correction (27 October 2026, Claude (agent)): the proposal's reviewedDate note says the page was \"re-read in a browser capture on 26 October 2026\". That read was a check only and was not stored as evidence. Approval relies on the retained 23 October 2026 collector snapshot on this review, the documented fallback when aph.gov.au refuses the server re-fetch with HTTP 403.",
+    "notes": "Fresh browser capture for re-verification of the timeline event. aph.gov.au refuses plain HTTP clients with a WAF 403, so the rendered page text is the evidence.",
     "analysis": {
       "isRelevant": true,
       "relevanceScore": 1,
       "suggestedType": null,
       "suggestedJurisdiction": "federal",
-      "summary": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+      "summary": "The Senate inquiry covers AI and data-centre regulation, government deals, and community, industry, energy, water and environmental impacts. Submissions closed on 1 September 2026. On 20 October 2026 the committee tabled a progress report moving its reporting date to 23 March 2027.",
       "tags": [],
       "agencies": []
     },
     "sourceEvidence": {
       "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
       "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
-      "retrievedAt": "2026-10-23T03:06:54.019Z",
+      "title": "Artificial intelligence and data centres",
+      "retrievedAt": "2026-10-27T07:53:40Z",
       "contentType": "text/html",
-      "contentHash": "b42ef68b82b6e38a9ec910af5b9eb38baaf7602a9715e1afec39c3fbe9417a5a",
-      "title": "Senate opens inquiry into artificial intelligence and data centres"
+      "contentHash": "a3dbc529f2e4263cf44a57cd39cb49da863f0a242a6258cccaf48828cee05c1c",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-10-27T07:53:40Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "Headless Chromium capture through the collector browser fetch (src/lib/pipeline/browser-fetch.ts) with the Policai/1.0 identity on Argus, 27 October 2026, for Daniel Alkurdi. pageText is the main content of the rendered page with the site navigation menus and footer removed.",
+        "pageContentHash": "fd77a80467f3c5f3bda4e45799a6fe339b40ce86b0cac868e1ff935bded6ebfa",
+        "characterCount": 1628
+      }
     },
     "proposedRecord": {
       "id": "tl-2026-05-13-senate-ai-data-centres-inquiry",
@@ -677,7 +687,7 @@
       },
       "status": "detected"
     },
-    "updatedAt": "2026-10-26T13:04:22.795Z",
+    "updatedAt": "2026-10-27T07:54:41.172Z",
     "proposal": {
       "proposedBy": "Claude (agent)",
       "proposedRecord": {
@@ -693,10 +703,10 @@
       "reviewedDate": {
         "date": "2026-05-13",
         "precision": "day",
-        "notes": "The inquiry page states \"Date referred: 13 May 2026\" and \"On 13 May 2026, the following matter was referred for inquiry and report\". Re-read in a browser capture on 26 October 2026, which also shows \"Reporting date: 23 March 2027\" and \"On 20 October 2026, the committee tabled a progress report to update the reporting date to 23 March 2027.\""
+        "notes": "The captured inquiry page states \"Date referred: 13 May 2026\" and \"On 13 May 2026, the following matter was referred for inquiry and report:\"."
       },
-      "notes": "Re-verification only; the timeline event is unchanged. Since the 22 October verification the page also lists past public hearings on 22 September 2026 (Lane Cove) and 23 September 2026 (Yarraville), an upcoming hearing on 3 November 2026 (Darwin), and \"Inquiry Status: Submissions Closed\". None contradicts the description.",
-      "proposedAt": "2026-10-26T13:04:22.795Z"
+      "notes": "Re-verification only; the timeline event is unchanged. The captured page also states \"Submissions close: 1 September 2026\", \"Reporting date: 23 March 2027\" and \"On 20 October 2026, the committee tabled a progress report to update the reporting date to 23 March 2027.\", which match the description.",
+      "proposedAt": "2026-10-27T07:54:41.172Z"
     }
   },
   {
