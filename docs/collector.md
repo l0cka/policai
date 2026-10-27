@@ -1058,10 +1058,10 @@ Targets:
 `baseSha` and the committed `files`. The site shows the decision only after
 the PR merges (or the `main` push lands) and Workers Builds deploys it.
 
-Host requirements: `POLICAI_SIGNAL_GITHUB_TOKEN` must be set, or POST returns
-`github_token_unconfigured` (503) before any decision runs. The service needs
-outbound HTTPS to `api.github.com`. The production unit is currently
-localhost-only, so that is a host change for the maintainer.
+Worker requirements: the `POLICAI_SIGNAL_GITHUB_TOKEN` secret must be set on
+the `policai` Worker, or POST returns `github_token_unconfigured` (503) before
+any decision runs. `wrangler.jsonc` turns off the workers.dev URL, so
+`/api/signal/*` answers only on policai.org.
 
 #### Pending cards (read-only)
 

@@ -14,8 +14,9 @@ does not merge their publication rules, processes, or deployment authority.
 Run the root `npm run check` and the affected child checks before handing off a
 cross-application change. Keep production runtimes independent. A push to `main`
 deploys: Cloudflare Workers Builds redeploys each site the change touches, and the host
-dispatcher on Argus rebuilds the Pro Bono worker image when `apps/probono/`
-changes outside `dashboard/` (`docs/hosting-argus.md`).
+dispatcher on Argus rebuilds the Pro Bono worker image for code changes under
+`apps/probono/` outside `dashboard/`; tests and Markdown only fast-forward
+(`docs/hosting-argus.md`, Lane routing).
 
 ## Shared design tokens
 
@@ -39,7 +40,7 @@ there.
 
 Policai is an Australian AI policy tracker. It maintains a curated register of AI policy, regulation, governance and court guidance across federal and state/territory jurisdictions, plus an automated "developments" feed of newly detected policy activity.
 
-**Git is the database.** All canonical data is JSON committed to this repository (`public/data/`, `data/`). The deployed site only reads that data. [policai.org](https://policai.org) runs on the Cloudflare Worker `policai`; `scripts/bundle-data.mjs` bundles `data/` and `public/data/` into it at build time, and Workers Builds redeploys on every push to `main`, so a data commit is public once its build finishes. Collection runs daily on the maintainer's server (Argus) and opens a collection PR that auto-merges once checks pass. There is no runtime database, no auth, and no admin dashboard.
+**Git is the database.** All canonical data is JSON committed to this repository (`public/data/`, `data/`). The deployed site only reads that data. [policai.org](https://policai.org) runs on the Cloudflare Worker `policai`; `scripts/bundle-data.mjs` bundles `data/` and `public/data/` into it at build time, and Workers Builds redeploys on every push to `main` that changes more than `apps/probono/`, so a data commit is public once its build finishes. Collection runs daily on the maintainer's server (Argus) and opens a collection PR that auto-merges once checks pass. There is no runtime database, no auth, and no admin dashboard.
 
 ## Tech Stack
 

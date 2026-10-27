@@ -77,9 +77,8 @@ The boundaries are deliberately strict:
   for server-rendered pages.
 - Editorial policy, agency, and timeline files live outside `public/`;
   `/data/*.json` handlers expose their sanitized public projections.
-  Those compatibility routes are force-static with hourly revalidation, so
-  verification expiry is reflected without turning former CDN assets into
-  unbounded per-request file reads.
+  Those compatibility routes are force-static, so they render once per deploy
+  instead of reading files on every request.
 - `src/lib/file-store.ts` is the only canonical JSON file I/O boundary;
   `src/lib/file-lock.ts` writes only ephemeral lock ownership metadata.
   A missing file may use the caller's fallback, but malformed or unreadable
@@ -170,8 +169,11 @@ The boundaries are deliberately strict:
   Supersession references are projected only when the successor policy is
   public, preventing a visible record from pointing into withheld canonical
   data.
-  Server-rendered pages using those time-dependent projections revalidate
-  hourly so verification expiry is reflected without waiting for a deployment.
+  Those projections depend on the date they run. On Workers, pages and
+  `/data/*.json` routes render at build time and `open-next.config.ts` drops
+  revalidation, so a record that passes its verification interval shows as
+  due for review only after the next deploy. Every commit redeploys, and the
+  daily collection PR is a commit.
   Derived framework artifacts must also pass their own verification gate as
   well as the related policy's gate. Their editorial check must be at least as
   recent as the policy's current verification, and source hashes must match

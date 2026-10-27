@@ -77,7 +77,9 @@ The default is a fast-forward because the worker image is built from
 outside `apps/probono/` cannot change it.
 
 The host runs a copy of the dispatcher that only a reviewed install
-refreshes. The install of #550 on 26 October 2026 matches this table. The invariant behind the no-lane rows is in
+refreshes. The reviewed install of #550 on 26 October 2026 put this routing
+on the host. The RETIRED RUNTIMES section of `ops/host/README.txt` is the
+procedure for that install window. The invariant behind the no-lane rows is in
 [`ops/host/README.txt`](../ops/host/README.txt).
 
 ### Health gate and failure
@@ -108,8 +110,9 @@ Recovery is a manual, reviewed step by the maintainer. The procedure is in
 
 ### What this means for contributors
 
-- Merging to `main` deploys each site it touches through Workers Builds and, for
-  `apps/probono/` changes outside `dashboard/`, the Pro Bono worker image.
+- Merging to `main` deploys each site it touches through Workers Builds and,
+  for code changes under `apps/probono/` outside `dashboard/`, the Pro Bono
+  worker image (see Lane routing).
 - A red deploy blocks the Pro Bono jobs and every later cycle. Tell the
   maintainer rather than retrying. The sites keep deploying through
   Workers Builds regardless.

@@ -11,7 +11,7 @@ conventions still apply, but root Policai data/runtime assumptions do not.
   package, each with its own manifest and lockfile. Install, typecheck, test and
   build in the relevant package; do not merge their dependencies into Policai.
   See README for commands. Root checks alone do not verify the child.
-- Pro Bono is Postgres-backed, not Policai's Git-backed JSON/ISR application.
+- Pro Bono is Postgres-backed, not Policai's Git-backed JSON application.
   `db/` contains versioned schema, seeds and migrations only. Live database state,
   volumes and backups remain external to Git and application release trees.
 - Secrets, production environment files, database URLs and SMTP credentials stay
