@@ -9,9 +9,9 @@ A code version of the Cursor Automation [Policai PR review](https://cursor.com/a
 - The body contains that marker once.
 - Each review starts with `<!-- policai-pr-review -->`. The blockers on this agent's newest review, and only that review, go to the model as `pr/prior-blockers.json` with ids. The model passes the ids still true as `stillOpen`, and each becomes one `Still open` line. A blocker repeated under its old path and title is folded into the same line. Blockers are never filtered by title.
 - A diff over 150,000 characters is cut file by file, code first and lockfiles last. Any file that does not fit is listed as unread, and the review fails.
-- The diff, `AGENTS.md` and the review's `commit_id` are all pinned to the head SHA read at the start of the session, and earlier reviews are read only from bot accounts.
+- The diff and the review's `commit_id` are pinned to the head SHA read at the start of the session, `AGENTS.md` is read from the base so a pull request cannot rewrite its own rules, and earlier reviews are read only from bot accounts.
 
-The channel wakes on `pull_request` `opened`, `reopened`, `synchronize` and `ready_for_review` for `l0cka/policai`, the same events on which the stamp workflow opens a waiting check, and skips drafts. It loads `AGENTS.md` at the head SHA, the pull request diff, and earlier review bodies into the workspace. It does not check out the repository, so the model cannot read code outside the diff.
+The channel wakes on `pull_request` `opened`, `reopened`, `synchronize` and `ready_for_review` for `l0cka/policai`, the same events on which the stamp workflow opens a waiting check, and skips drafts. It loads `AGENTS.md` from the base, the pull request diff, and earlier review bodies into the workspace. It does not check out the repository, so the model cannot read code outside the diff.
 
 ## Checks
 

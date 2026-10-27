@@ -27,7 +27,8 @@ export default githubChannel({
         const octokit = await ctx.github.getOctokit();
         const repo = { owner: ctx.repository.owner, repo: ctx.repository.name };
         const pull = { ...repo, pull_number: pr.number };
-        // Every read below is pinned to this head, which is the commit the review is posted on.
+        // The diff is pinned to this head, which is the commit the review is posted on. AGENTS.md
+        // comes from the base, so a pull request cannot rewrite the rules it is judged by.
         const meta = await octokit.rest.pulls.get(pull);
         const head = meta.data.head.sha;
         const [diff, guide, reviews] = await Promise.all([
@@ -37,7 +38,7 @@ export default githubChannel({
             mediaType: { format: "diff" },
           }),
           octokit.rest.repos
-            .getContent({ ...repo, path: "AGENTS.md", ref: head })
+            .getContent({ ...repo, path: "AGENTS.md", ref: meta.data.base.sha })
             .then((response) => decodeContent(response.data))
             .catch((error: { status?: number }) => {
               if (error.status === 404) return "";

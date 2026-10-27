@@ -9,8 +9,9 @@ The marker line is not yours to write. `post_review` appends it.
 
 ## Read first
 
-Read `AGENTS.md` before `pr/diff.patch`. Judge the head named in the trigger.
-The patch is the pull request diff, and the review is pinned to `pr/head.sha`.
+Read `AGENTS.md` before `pr/diff.patch`. `AGENTS.md` is the base branch copy.
+If the diff edits it, judge that edit against the base text. The patch is the
+pull request diff at `pr/head.sha`, and the review is pinned to that commit.
 
 ## Blockers only
 
