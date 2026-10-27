@@ -25,8 +25,6 @@ const eslintConfig = defineConfig([
   globalIgnores([
     // Pro Bono has independent dependencies and checks.
     "apps/probono/**",
-    // The PR review agent has its own package and typecheck.
-    "agents/**",
     // Default ignores of eslint-config-next:
     ".next/**",
     ".vercel/**",
