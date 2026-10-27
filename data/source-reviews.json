@@ -620,7 +620,7 @@
     "status": "pending_review",
     "discoveredAt": "2026-10-23T03:06:54.019Z",
     "createdBy": "collector",
-    "notes": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current. Re-verify the existing timeline event before treating it as current. Detected by Senate inquiry — artificial intelligence and data centres (heuristic assessment).",
+    "notes": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current. Re-verify the existing timeline event before treating it as current. Detected by Senate inquiry — artificial intelligence and data centres (heuristic assessment). Evidence correction (27 October 2026, Claude (agent)): the proposal's reviewedDate note says the page was \"re-read in a browser capture on 26 October 2026\". That read was a check only and was not stored as evidence. Approval relies on the retained 23 October 2026 collector snapshot on this review, the documented fallback when aph.gov.au refuses the server re-fetch with HTTP 403.",
     "analysis": {
       "isRelevant": true,
       "relevanceScore": 1,

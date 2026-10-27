@@ -7,6 +7,87 @@
     "status": "success"
   },
   {
+    "id": "mcp-audit-0a9eab99-5fbd-4547-85db-3156eb2565e8",
+    "createdAt": "2026-10-26T13:23:17.217Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-89c682ff-9e9f-425f-a5a9-670f0da73ba4",
+    "createdAt": "2026-10-26T13:23:01.548Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.legislation.gov.au/F2022L00062/asmade/details",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-5a72b4ed-ff46-4153-ba03-ea05d8b87dc0",
+    "createdAt": "2026-10-26T13:04:38.300Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-2f399a08-7f24-45f5-86c5-e45b6ee5847d",
+    "createdAt": "2026-10-26T13:04:38.258Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-da5caa05-9cea-46dc-a650-c401fe70f6c4",
+    "createdAt": "2026-10-26T13:04:22.994Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-e1cf221d-a270-4159-95cc-0c868618ba0f",
+    "createdAt": "2026-10-26T13:04:22.963Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-5a5ad573-698f-4601-b004-2d06b67367fa",
+    "createdAt": "2026-10-26T13:04:22.932Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-56cf4883-c3cf-422c-847d-7c2745e54a65",
+    "createdAt": "2026-10-26T13:04:22.814Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-fc79e26d-4a60-41f4-8b2a-37892983bf35",
+    "createdAt": "2026-10-26T13:03:56.495Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.legislation.gov.au/F2024L00710/asmade/details",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-67c52e18-1c34-42ad-a546-648f1c23f2de",
+    "createdAt": "2026-10-26T13:03:56.470Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.legislation.gov.au/F2024L00711/asmade/details",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-7e600151-cfcd-4086-94f9-f13a86f1d0a4",
+    "createdAt": "2026-10-26T13:02:57.783Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-c06b1f42-ba82-4208-8418-02bed428bbcb",
     "createdAt": "2026-10-26T11:51:49.103Z",
     "actor": "local-mcp-admin",
@@ -3262,86 +3343,5 @@
     "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
     "status": "error",
     "errorSummary": "Timed out after 60000ms"
-  },
-  {
-    "id": "mcp-audit-0a9eab99-5fbd-4547-85db-3156eb2565e8",
-    "createdAt": "2026-10-26T13:23:17.217Z",
-    "actor": "local-mcp-admin",
-    "toolName": "propose_source_decision",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-89c682ff-9e9f-425f-a5a9-670f0da73ba4",
-    "createdAt": "2026-10-26T13:23:01.548Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.legislation.gov.au/F2022L00062/asmade/details",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-5a72b4ed-ff46-4153-ba03-ea05d8b87dc0",
-    "createdAt": "2026-10-26T13:04:38.300Z",
-    "actor": "local-mcp-admin",
-    "toolName": "propose_source_decision",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-2f399a08-7f24-45f5-86c5-e45b6ee5847d",
-    "createdAt": "2026-10-26T13:04:38.258Z",
-    "actor": "local-mcp-admin",
-    "toolName": "propose_source_decision",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-da5caa05-9cea-46dc-a650-c401fe70f6c4",
-    "createdAt": "2026-10-26T13:04:22.994Z",
-    "actor": "local-mcp-admin",
-    "toolName": "propose_source_decision",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-e1cf221d-a270-4159-95cc-0c868618ba0f",
-    "createdAt": "2026-10-26T13:04:22.963Z",
-    "actor": "local-mcp-admin",
-    "toolName": "propose_source_decision",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-5a5ad573-698f-4601-b004-2d06b67367fa",
-    "createdAt": "2026-10-26T13:04:22.932Z",
-    "actor": "local-mcp-admin",
-    "toolName": "propose_source_decision",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-56cf4883-c3cf-422c-847d-7c2745e54a65",
-    "createdAt": "2026-10-26T13:04:22.814Z",
-    "actor": "local-mcp-admin",
-    "toolName": "propose_source_decision",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-fc79e26d-4a60-41f4-8b2a-37892983bf35",
-    "createdAt": "2026-10-26T13:03:56.495Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.legislation.gov.au/F2024L00710/asmade/details",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-67c52e18-1c34-42ad-a546-648f1c23f2de",
-    "createdAt": "2026-10-26T13:03:56.470Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.legislation.gov.au/F2024L00711/asmade/details",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-7e600151-cfcd-4086-94f9-f13a86f1d0a4",
-    "createdAt": "2026-10-26T13:02:57.783Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
-    "status": "success"
   }
 ]
