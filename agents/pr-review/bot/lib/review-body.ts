@@ -35,6 +35,15 @@ function oneLine(value: string): string {
   return value.replace(/<!--[\s\S]*?-->/g, " ").replace(/\s+/g, " ").trim();
 }
 
+/** The body wraps paths in backticks and titles in `**`, so neither may hold its delimiter. */
+function cleanPath(value: string): string {
+  return oneLine(value).replace(/`/g, "");
+}
+
+function cleanTitle(value: string): string {
+  return oneLine(value).replace(/\*\*/g, "").replace(/\.+$/, "").trim();
+}
+
 function keyOf(path: string, title: string): string {
   return `${path.trim().toLowerCase()}|${title.trim().toLowerCase()}`;
 }
@@ -50,12 +59,12 @@ export function isOwnReview(body: string): boolean {
 export function priorBlockers(bodies: readonly string[]): PriorBlocker[] {
   const latest = bodies.filter(isOwnReview).at(-1);
   if (latest === undefined) return [];
-  const pattern = /^(?:- |Still open: )`([^`]+)`:?\s+(.+?)(?:\. |$)/gm;
+  const pattern = /^(?:- |Still open: )`([^`]+)`:? \*\*(.+?)\*\*/gm;
   const found: PriorBlocker[] = [];
   const seen = new Set<string>();
   for (const match of latest.matchAll(pattern)) {
     const path = match[1] ?? "";
-    const title = (match[2] ?? "").replace(/\.+$/, "").trim();
+    const title = match[2] ?? "";
     const key = keyOf(path, title);
     if (path === "" || title === "" || seen.has(key)) continue;
     seen.add(key);
@@ -90,14 +99,9 @@ export function composeReview(
   }
 
   for (const blocker of blockers) {
-    const path = oneLine(blocker.path);
-    const title = oneLine(blocker.title).replace(/\.+$/, "");
+    const path = cleanPath(blocker.path) || "(no path)";
+    const title = cleanTitle(blocker.title) || "(untitled blocker)";
     const detail = oneLine(blocker.detail);
-    if (path === "" || title === "") continue;
-    if (/^(notes?|nit|style)\b/i.test(title)) {
-      dropped.push(keyOf(path, title));
-      continue;
-    }
     const key = keyOf(path, title);
     if (seen.has(key)) {
       dropped.push(key);
@@ -109,15 +113,14 @@ export function composeReview(
       open.set(earlier.id, earlier);
       continue;
     }
-    const sentence = detail === "" ? `${title}.` : `${title}. ${detail}`;
-    fresh.push(`- \`${path}\`: ${sentence}`);
+    fresh.push(`- \`${path}\`: **${title}**${detail === "" ? "" : ` ${detail}`}`);
   }
 
   const lines = [
     ...fresh,
-    ...[...open.values()].map((item) => `Still open: \`${item.path}\` ${item.title}`),
+    ...[...open.values()].map((item) => `Still open: \`${item.path}\` **${item.title}**`),
   ];
-  const unread = (input.unreadPaths ?? []).map(oneLine).filter((path) => path !== "");
+  const unread = (input.unreadPaths ?? []).map((path) => cleanPath(path) || "(unnamed file)");
   if (unread.length > 0) {
     const list = unread.map((path) => `\`${path}\``).join(", ");
     lines.push(`Not reviewed: the diff was too large to read in full. Unread files: ${list}.`);

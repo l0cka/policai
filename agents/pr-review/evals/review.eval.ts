@@ -20,7 +20,7 @@ const PRIOR_FAILURE = [
   SIGNATURE,
   "Blocking.",
   "",
-  "- `src/app/api/policies/route.ts`: Public route returns withheld records. getPolicies is not applied.",
+  "- `src/app/api/policies/route.ts`: **Public route returns withheld records** getPolicies is not applied.",
   "",
   "<!-- cursor-review: failure -->",
 ].join("\n");
@@ -160,7 +160,7 @@ export default defineEval({
             const markers = review.body?.match(/<!-- cursor-review: (success|failure) -->/g) ?? [];
             return review.conclusion === "failure"
               && stillOpen.length === 1
-              && review.body?.includes("Still open: `src/app/api/policies/route.ts` Public route returns withheld records") === true
+              && review.body?.includes("Still open: `src/app/api/policies/route.ts` **Public route returns withheld records**") === true
               && review.body?.includes("getPolicies is not applied") === false
               && markers.length === 1;
           },

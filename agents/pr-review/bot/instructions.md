@@ -28,8 +28,8 @@ is fixed, leave its id out. Do not pass it again in `blockers`, do not write
 `pr/prior-reviews.json` already made.
 
 `pr/unread.json` lists files the diff was too large to include. You cannot
-review them, and `post_review` fails the review while any are listed. Lockfile
-changes are left out of the diff on purpose.
+review them, and `post_review` fails the review while any are listed.
+Lockfiles come last in the diff, after the code.
 
 ## Post once
 

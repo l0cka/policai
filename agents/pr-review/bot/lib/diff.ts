@@ -1,15 +1,14 @@
 /**
- * Fits a pull request diff into the model's budget. Lockfiles are left out
- * because their changes follow from `package.json`. Any other file that does
- * not fit is reported as unread, so the review fails instead of passing on
- * code nobody read.
+ * Fits a pull request diff into the model's budget. Lockfiles go last so
+ * code is read first. Any file that does not fit, lockfile or not, is
+ * reported as unread, so the review fails instead of passing on a change
+ * nobody read.
  */
 
 const LOCKFILE = /(^|\/)(package-lock\.json|npm-shrinkwrap\.json|pnpm-lock\.yaml|yarn\.lock)$/;
 
 export type FittedDiff = {
   patch: string;
-  lockfiles: string[];
   unread: string[];
 };
 
@@ -23,25 +22,21 @@ export function splitDiff(text: string): string[] {
 }
 
 export function fitDiff(text: string, maxChars: number): FittedDiff {
-  const lockfiles: string[] = [];
+  const sections = splitDiff(text);
+  const ordered = [
+    ...sections.filter((section) => !LOCKFILE.test(pathOf(section))),
+    ...sections.filter((section) => LOCKFILE.test(pathOf(section))),
+  ];
   const unread: string[] = [];
   const kept: string[] = [];
   let size = 0;
-  for (const section of splitDiff(text)) {
-    const path = pathOf(section);
-    if (LOCKFILE.test(path)) {
-      lockfiles.push(path);
-      continue;
-    }
+  for (const section of ordered) {
     if (size + section.length > maxChars) {
-      unread.push(path === "" ? "(unnamed diff section)" : path);
+      unread.push(pathOf(section) || "(unnamed diff section)");
       continue;
     }
     kept.push(section);
     size += section.length;
   }
-  const header = lockfiles.length === 0
-    ? ""
-    : `# Lockfile changes left out: ${lockfiles.join(", ")}\n`;
-  return { patch: header + kept.join(""), lockfiles, unread };
+  return { patch: kept.join(""), unread };
 }

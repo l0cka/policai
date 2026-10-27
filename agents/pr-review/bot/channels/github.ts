@@ -19,45 +19,46 @@ export default githubChannel({
       auth: defaultGitHubAuth(ctx),
       title: `Review ${ctx.repository.fullName}#${pr.number}`,
       context: [
-        `Review head ${pr.headSha}.`,
+        "Review the head in pr/head.sha.",
         "Read AGENTS.md before pr/diff.patch.",
         "Call post_review once.",
       ],
       async workspaceFiles() {
         const octokit = await ctx.github.getOctokit();
-        const pull = {
-          owner: ctx.repository.owner,
-          repo: ctx.repository.name,
-          pull_number: pr.number,
-        };
-        const [meta, diff, agents, reviews] = await Promise.all([
-          octokit.rest.pulls.get(pull),
-          octokit.rest.pulls.get({ ...pull, mediaType: { format: "diff" } }),
-          octokit.rest.repos.getContent({
-            owner: ctx.repository.owner,
-            repo: ctx.repository.name,
-            path: "AGENTS.md",
-            ref: pr.headSha,
+        const repo = { owner: ctx.repository.owner, repo: ctx.repository.name };
+        const pull = { ...repo, pull_number: pr.number };
+        // Every read below is pinned to this head, which is the commit the review is posted on.
+        const meta = await octokit.rest.pulls.get(pull);
+        const head = meta.data.head.sha;
+        const [diff, guide, reviews] = await Promise.all([
+          octokit.rest.repos.compareCommitsWithBasehead({
+            ...repo,
+            basehead: `${meta.data.base.sha}...${head}`,
+            mediaType: { format: "diff" },
           }),
+          octokit.rest.repos
+            .getContent({ ...repo, path: "AGENTS.md", ref: head })
+            .then((response) => decodeContent(response.data))
+            .catch((error: { status?: number }) => {
+              if (error.status === 404) return "";
+              throw error;
+            }),
           octokit.paginate(octokit.rest.pulls.listReviews, { ...pull, per_page: 100 }),
         ]);
         const text = typeof diff.data === "string" ? diff.data : "";
-        const guide = decodeContent(agents.data);
+        // Only an app can be this agent or the old automation; a person's review never steers it.
         const prior = reviews
+          .filter((review) => review.user?.type === "Bot")
           .map((review) => review.body ?? "")
           .filter((body) => body.includes("cursor-review:"));
-        // Only an app can be this agent, so a pasted signature from a person is ignored.
-        const fromBots = reviews
-          .filter((review) => review.user?.type === "Bot")
-          .map((review) => review.body ?? "");
         const fitted = fitDiff(text, MAX_DIFF_CHARS);
         return {
           "AGENTS.md": guide,
           "pr/diff.patch": fitted.patch,
           "pr/unread.json": JSON.stringify(fitted.unread),
-          "pr/head.sha": meta.data.head.sha,
+          "pr/head.sha": head,
           "pr/prior-reviews.json": JSON.stringify(prior),
-          "pr/prior-blockers.json": JSON.stringify(priorBlockers(fromBots)),
+          "pr/prior-blockers.json": JSON.stringify(priorBlockers(prior)),
         };
       },
     };
