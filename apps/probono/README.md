@@ -8,7 +8,7 @@ Digest delivery is approval-gated; preserve the digest service and timer masks.
 
 Canonical source is `apps/probono` in the Policai repository. Policai remains the
 root application; this child is an independent application, not part of its
-Git-backed JSON database or ISR deployment lane. The imported Pro Bono history
+Git-backed JSON database or its Worker deployment. The imported Pro Bono history
 is retained; do not replace it with a copy of a dirty runtime checkout.
 
 `dashboard/` and `worker/` retain independent package manifests and lockfiles.

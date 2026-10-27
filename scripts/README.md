@@ -13,8 +13,9 @@ npm run collect -- --max-items=3       # cap new items per source
 npm run collect                        # full pass, writes data files
 ```
 
-Classification is deterministic and local. Confidence is capped so collector
-detections are always labelled "Needs review".
+Classification uses keyword rules, or the local Clef model when
+`USE_CLEF_CLASSIFIER=1` (see `docs/collector.md`, Classification). Confidence is
+capped so collector detections are always labelled "Needs review".
 
 Discovered links must remain on allow-listed official HTTPS hosts. Redirects
 are validated before they are followed, and retryable candidate retrieval
@@ -139,6 +140,34 @@ The command strips fragments and recognised campaign parameters, sorts
 meaningful query parameters, removes non-root trailing slashes, and refuses a
 watch-state key collision. Routine writes are already canonicalized; this is a
 maintenance and migration command.
+
+## Smaller CLIs
+
+Each script's header comment lists its flags.
+
+- `bundle-data.mjs` writes `data/` and `public/data/` into
+  `src/lib/bundled-files.generated.ts` for the Cloudflare Workers build.
+  `npm run build` and `npm test` run it first.
+- `sync-design-tokens.mjs` copies `design/tokens.css` into both apps. Add
+  `--check` to fail on drift instead of writing.
+- `collector-proposals.ts` (`npm run collector:proposals`) lists automatic
+  sources that failed three runs in a row as proposals to move them to manual.
+  It moves nothing.
+- `discover-sources.ts` (`npm run discover:sources -- --body=<id>`) proposes
+  watch sources for one body in `data/bodies.json`. It writes nothing.
+- `report-watch-coverage.ts` (`npm run report:watch-coverage`) reports which
+  bodies the collector watches, by jurisdiction and tier, with every gap.
+- `survey-site-reuse.ts` (`npm run survey:site-reuse -- --out=<file>`) finds
+  each host's copyright or licence statements as evidence for
+  `data/site-reuse.json`. It never writes that file.
+- `signal-source-reviews.ts` (`npm run signal:reviews`) prints cards for
+  pending source reviews. Its `apply` mode is the laptop recovery path when
+  the Signal HTTPS API is down (`docs/collector.md`, Policai Signal).
+- `add-article-image.ts` (`npm run add:article-image -- <image-url> <slug>`)
+  downloads and optimises a lead image for an article and prints the
+  frontmatter stub to fill in.
+- `compare-classifier.ts` scores `data/developments.json` with the local Clef
+  model and compares its verdicts with editors' decisions. Run it on Argus.
 
 ## Dated migrations and reconciliations
 

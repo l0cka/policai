@@ -64,16 +64,21 @@ The boundaries are deliberately strict:
 
 ## Application architecture
 
-- Server Components read repository data directly through
-  `src/lib/data-service.ts`.
+- Server Components read repository data through `src/lib/data-service.ts`.
+  On Cloudflare Workers there is no project filesystem, so
+  `scripts/bundle-data.mjs` writes `data/` and `public/data/` into
+  `src/lib/bundled-files.generated.ts` at build time. On Workers,
+  `readJsonFile` in `src/lib/file-store.ts` reads that bundle
+  (`src/lib/bundled-files.ts`). Everywhere else, including the CLIs, the MCP
+  servers, tests and `next dev`, it reads the disk. A data change
+  is public only after the deploy that bundles it.
 - Client Components receive serialisable props and own only interactive state.
 - Route handlers exist for the public JSON API, not as an internal data layer
   for server-rendered pages.
 - Editorial policy, agency, and timeline files live outside `public/`;
   `/data/*.json` handlers expose their sanitized public projections.
-  Those compatibility routes are force-static with hourly revalidation, so
-  verification expiry is reflected without turning former CDN assets into
-  unbounded per-request file reads.
+  Those compatibility routes are force-static, so they render once per deploy
+  instead of reading files on every request.
 - `src/lib/file-store.ts` is the only canonical JSON file I/O boundary;
   `src/lib/file-lock.ts` writes only ephemeral lock ownership metadata.
   A missing file may use the caller's fallback, but malformed or unreadable
@@ -164,8 +169,13 @@ The boundaries are deliberately strict:
   Supersession references are projected only when the successor policy is
   public, preventing a visible record from pointing into withheld canonical
   data.
-  Server-rendered pages using those time-dependent projections revalidate
-  hourly so verification expiry is reflected without waiting for a deployment.
+  Those projections depend on the date they run. On Workers, the pages that
+  show verification state and the `/data/*.json` routes render at build time,
+  and `open-next.config.ts` drops revalidation, so a record that passes its
+  verification interval shows as due for review only after the next deploy.
+  Every commit outside `apps/probono/` redeploys, the daily collection PR
+  included. The `force-dynamic` pages (`/this-week`, `/coverage`) render per
+  request.
   Derived framework artifacts must also pass their own verification gate as
   well as the related policy's gate. Their editorial check must be at least as
   recent as the policy's current verification, and source hashes must match
