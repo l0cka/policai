@@ -132,7 +132,7 @@ describe('watchCoverage', () => {
           itemCount: 1,
           candidateCount: 0,
           newCandidateCount: 0,
-          skippedLinked: [{ url: 'https://hand.gov.au/a.pdf', decidedBy: 'hand-news' }],
+          skippedLinked: [{ url: 'https://hand.gov.au/a.pdf', because: 'decided_block', decidedBy: 'hand-news' }],
         },
       ],
     }),
@@ -163,7 +163,7 @@ describe('watchCoverage', () => {
       { sourceId: 'broken-news', since: '2026-10-20T00:00:00Z', runs: 2, cls: 'identity_refused' },
     ]);
     expect(report.skippedLinked).toEqual([
-      { sourceId: 'auto-news', url: 'https://hand.gov.au/a.pdf', decidedBy: 'hand-news' },
+      { sourceId: 'auto-news', url: 'https://hand.gov.au/a.pdf', because: 'decided_block', decidedBy: 'hand-news' },
     ]);
   });
 });

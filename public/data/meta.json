@@ -9,7 +9,6 @@
       "pm-media",
       "pmc-office-ai",
       "pmc-rapid-review-ai-cyber",
-      "naic-news",
       "senate-new-inquiries",
       "senate-reports",
       "house-new-inquiries",
@@ -17,9 +16,7 @@
       "legislation-whats-new",
       "oaic-media",
       "apra-rss",
-      "teqsa-news",
       "ahrc-media",
-      "art-practice-directions",
       "sa-courts-news",
       "nsw-gazette-recent",
       "vcat-rss",
@@ -44,21 +41,18 @@
       "wa-media-statements"
     ],
     "lastRunErrors": [
-      "naic-news: page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.ai.gov.au/news-and-insights\nCall log:\n  - navigating to \"https://www.ai.gov.au/news-and-insights\", waiting until \"load\"\n",
-      "teqsa-news: page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.teqsa.gov.au/latest-news\nCall log:\n  - navigating to \"https://www.teqsa.gov.au/latest-news\", waiting until \"load\"\n",
-      "art-practice-directions: page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.art.gov.au/help-and-resources/professionals-and-practitioners/practice-directions-and-other-guidance\nCall log:\n  - navigating to \"https://www.art.gov.au/help-and-resources/professionals-and-practitioners/practice-directions-and-other-guidance\", waiting until \"load\"\n",
       "nsw-media-releases: HTTP 404 at https://www.nsw.gov.au/media-releases",
       "nsw-parliament-bills: HTTP 403 at https://www.parliament.nsw.gov.au/parliamentary-business/bills/current-session-bills",
       "vic-ai: https://www.vic.gov.au/sites/default/files/2024-11/Generative-AI-Guideline-%281%29.pdf is disallowed by robots.txt for Policai"
     ],
     "health": "degraded",
-    "dueSourceCount": 36,
+    "dueSourceCount": 33,
     "successfulSourceCount": 30,
-    "failedSourceCount": 6,
+    "failedSourceCount": 3,
     "skippedSourceCount": 37,
-    "successRate": 0.833,
-    "automaticSourceCount": 73,
-    "manualSourceCount": 19,
+    "successRate": 0.909,
+    "automaticSourceCount": 70,
+    "manualSourceCount": 22,
     "sourceResults": [
       {
         "sourceId": "pm-media",
@@ -89,19 +83,6 @@
         "itemCount": 1,
         "candidateCount": 1,
         "newCandidateCount": 0
-      },
-      {
-        "sourceId": "naic-news",
-        "status": "error",
-        "coverageEligible": true,
-        "checkedAt": "2026-10-26T19:34:23.584Z",
-        "durationMs": 22865,
-        "itemCount": null,
-        "candidateCount": 0,
-        "newCandidateCount": 0,
-        "error": "naic-news: page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.ai.gov.au/news-and-insights\nCall log:\n  - navigating to \"https://www.ai.gov.au/news-and-insights\", waiting until \"load\"\n",
-        "failureClass": "identity_refused",
-        "failedUrl": "https://www.ai.gov.au/news-and-insights"
       },
       {
         "sourceId": "finance-news",
@@ -304,19 +285,6 @@
         "newCandidateCount": 0
       },
       {
-        "sourceId": "teqsa-news",
-        "status": "error",
-        "coverageEligible": true,
-        "checkedAt": "2026-10-26T19:34:23.584Z",
-        "durationMs": 22416,
-        "itemCount": null,
-        "candidateCount": 0,
-        "newCandidateCount": 0,
-        "error": "teqsa-news: page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.teqsa.gov.au/latest-news\nCall log:\n  - navigating to \"https://www.teqsa.gov.au/latest-news\", waiting until \"load\"\n",
-        "failureClass": "identity_refused",
-        "failedUrl": "https://www.teqsa.gov.au/latest-news"
-      },
-      {
         "sourceId": "aec-media",
         "status": "skipped",
         "coverageEligible": false,
@@ -365,19 +333,6 @@
         "itemCount": null,
         "candidateCount": 0,
         "newCandidateCount": 0
-      },
-      {
-        "sourceId": "art-practice-directions",
-        "status": "error",
-        "coverageEligible": true,
-        "checkedAt": "2026-10-26T19:34:23.584Z",
-        "durationMs": 22414,
-        "itemCount": null,
-        "candidateCount": 0,
-        "newCandidateCount": 0,
-        "error": "art-practice-directions: page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.art.gov.au/help-and-resources/professionals-and-practitioners/practice-directions-and-other-guidance\nCall log:\n  - navigating to \"https://www.art.gov.au/help-and-resources/professionals-and-practitioners/practice-directions-and-other-guidance\", waiting until \"load\"\n",
-        "failureClass": "identity_refused",
-        "failedUrl": "https://www.art.gov.au/help-and-resources/professionals-and-practitioners/practice-directions-and-other-guidance"
       },
       {
         "sourceId": "ncat-procedural-directions",
