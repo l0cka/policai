@@ -169,11 +169,13 @@ The boundaries are deliberately strict:
   Supersession references are projected only when the successor policy is
   public, preventing a visible record from pointing into withheld canonical
   data.
-  Those projections depend on the date they run. On Workers, pages and
-  `/data/*.json` routes render at build time and `open-next.config.ts` drops
-  revalidation, so a record that passes its verification interval shows as
-  due for review only after the next deploy. Every commit redeploys, and the
-  daily collection PR is a commit.
+  Those projections depend on the date they run. On Workers, the pages that
+  show verification state and the `/data/*.json` routes render at build time,
+  and `open-next.config.ts` drops revalidation, so a record that passes its
+  verification interval shows as due for review only after the next deploy.
+  Every commit outside `apps/probono/` redeploys, the daily collection PR
+  included. The `force-dynamic` pages (`/this-week`, `/coverage`) render per
+  request.
   Derived framework artifacts must also pass their own verification gate as
   well as the related policy's gate. Their editorial check must be at least as
   recent as the policy's current verification, and source hashes must match

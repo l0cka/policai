@@ -15,8 +15,8 @@ Run the root `npm run check` and the affected child checks before handing off a
 cross-application change. Keep production runtimes independent. A push to `main`
 deploys: Cloudflare Workers Builds redeploys each site the change touches, and the host
 dispatcher on Argus rebuilds the Pro Bono worker image for code changes under
-`apps/probono/` outside `dashboard/`; tests and Markdown only fast-forward
-(`docs/hosting-argus.md`, Lane routing).
+`apps/probono/` outside `dashboard/` (`docs/hosting-argus.md`, Lane routing,
+lists the paths that only fast-forward).
 
 ## Shared design tokens
 

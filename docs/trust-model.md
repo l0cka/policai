@@ -24,8 +24,8 @@ measured from `verification.checkedAt`. A record past the interval stays public:
 public projections mark its verification `stale` and the site labels it
 "Review due" until an editor re-verifies it. The canonical record is not
 rewritten. Public pages render at deploy time, so the label appears with
-the first deploy after the interval expires. Every commit deploys, including
-the daily collection PR. Only records that were once
+the first deploy after the interval expires. Every commit outside
+`apps/probono/` deploys, including the daily collection PR. Only records that were once
 verified manually, by a named reviewer, against a fingerprinted source are
 eligible to stay public this way (`isPubliclyEstablished` in
 `src/lib/verification.ts`); anything else is never published.
