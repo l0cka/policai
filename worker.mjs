@@ -11,12 +11,12 @@ import openNext from "./.open-next/worker.js";
 const worker = {
 	fetch(request, env, ctx) {
 		const url = new URL(request.url);
-		if (url.pathname.startsWith("/_bundled/")) {
-			return new Response("Not found", { status: 404 });
-		}
 		if (url.pathname.startsWith("/_rsc/")) {
 			url.pathname = url.pathname.slice("/_rsc".length);
-			return openNext.fetch(new Request(url, request), env, ctx);
+			request = new Request(url, request);
+		}
+		if (url.pathname.startsWith("/_bundled/")) {
+			return new Response("Not found", { status: 404 });
 		}
 		return openNext.fetch(request, env, ctx);
 	},
