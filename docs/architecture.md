@@ -74,6 +74,9 @@ The boundaries are deliberately strict:
   `/_bundled/*` with a 404. Everywhere else, including the CLIs, the MCP
   servers, tests and `next dev`, it reads the disk. A data change
   is public only after the deploy that bundles it.
+- On policai.org, prerendered pages are static assets that Cloudflare serves
+  without the Worker (`scripts/static-pages.mjs`; zone rules in
+  `docs/hosting-argus.md`).
 - Client Components receive serialisable props and own only interactive state.
 - Route handlers exist for the public JSON API, not as an internal data layer
   for server-rendered pages.
