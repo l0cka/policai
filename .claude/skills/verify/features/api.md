@@ -28,4 +28,4 @@ Preconditions:
 ## Gotchas
 
 - There is no write method on any route; a POST returning anything but 405 is a defect.
-- `/data/*.json` is prerendered with hourly revalidation; rebuild after a data edit.
+- `/data/*.json` is prerendered at build time; on Workers it does not revalidate, so rebuild after a data edit.

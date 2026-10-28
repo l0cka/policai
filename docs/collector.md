@@ -1011,23 +1011,23 @@ It must not claim TTY typing.
 | `code` | When |
 | --- | --- |
 | `unauthorized` | Missing/wrong Bearer token |
-| `signal_token_unconfigured` | Host missing `POLICAI_SIGNAL_TOKEN` |
+| `signal_token_unconfigured` | Worker missing the `POLICAI_SIGNAL_TOKEN` secret |
 | `not_found` | Unknown review id |
 | `approve_not_allowed` (403) | `action` was `approve`; Daniel approves on a decision card instead |
 | `invalid_action` / `invalid_request` (400) | Unknown action, or missing fields |
 | `dismiss_blocked` / `tracked_record_dismiss` | Tracked-record reviews cannot be dismissed |
 | `reviewer_not_allowlisted` | Reviewer not in allowlist |
 | `invalid_attestation` | Missing reply / message id / card id |
-| `github_token_unconfigured` (503) | Host missing `POLICAI_SIGNAL_GITHUB_TOKEN`; nothing ran |
+| `github_token_unconfigured` (503) | Worker missing the `POLICAI_SIGNAL_GITHUB_TOKEN` secret; nothing ran |
 | `github_unavailable` (502) | `main` could not be resolved on GitHub |
 | `main_moved` (409) | `main` target only: `main` moved after the read; retry |
 | `github_persist_failed` (502) | Commit, branch or PR creation failed; nothing merged |
 
 Rate limit: 20 POST / 30 GET per IP per minute on `/api/signal/*`.
 
-**Persistence:** Git is the database, and Signal POST never writes the
-serving checkout. The service is read-only there (`ProtectSystem=strict`), and
-a dirty release checkout would block every later deploy. The route works in
+**Persistence:** Git is the database. Signal POST runs on the `policai`
+Worker, which has no writable project filesystem, so it commits through the
+GitHub API instead. The route works in
 `src/app/api/signal/reviews/route.ts` with `src/lib/signal-git-persist.ts` and
 `src/lib/data-overlay.ts`:
 
@@ -1056,12 +1056,12 @@ Targets:
 
 `persistence` reports `target`, `branch`, `commitSha`, `prUrl`, `htmlUrl`,
 `baseSha` and the committed `files`. The site shows the decision only after
-the PR merges (or the `main` push lands) and the host deploy pulls it.
+the PR merges (or the `main` push lands) and Workers Builds deploys it.
 
-Host requirements: `POLICAI_SIGNAL_GITHUB_TOKEN` must be set, or POST returns
-`github_token_unconfigured` (503) before any decision runs. The service needs
-outbound HTTPS to `api.github.com`. The production unit is currently
-localhost-only, so that is a host change for the maintainer.
+Worker requirements: the `POLICAI_SIGNAL_GITHUB_TOKEN` secret must be set on
+the `policai` Worker, or POST returns `github_token_unconfigured` (503) before
+any decision runs. `wrangler.jsonc` turns off the workers.dev URL, so
+`/api/signal/*` answers only on policai.org.
 
 #### Pending cards (read-only)
 
@@ -1317,6 +1317,14 @@ a fingerprint baseline.
   when the page host itself accepts the collector and only a linked host
   refuses, so the page host is not marked refused (`wa-ai-policy` until
   www.finance.gov.au has its own decision).
+- **robots.txt disallows a linked document** — the document is not
+  requested and is listed under `skippedLinked` with
+  `because: 'robots_disallowed'`; the page is still fingerprinted from its
+  own content and the remaining documents, so a new document version still
+  shows as a changed link (Daniel, 2026-10-27, for `vic-ai`, whose guideline
+  PDF sits under vic.gov.au's disallowed `/sites/default/files/`). A source
+  or candidate page that robots.txt disallows still fails as
+  `robots_disallowed`.
 - **An HTML source reports no coverage** — only links inside recognised
   publication/result containers count as index entries. Navigation, footer,
   homepage, login, and soft-error links do not make a source healthy; inspect

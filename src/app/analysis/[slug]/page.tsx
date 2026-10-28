@@ -14,12 +14,17 @@ import {
 import { ArticleFigureView } from '@/components/article-figures';
 import { ArticleTable } from '@/components/article-table';
 import { renderArticleMarkdown } from '@/lib/article-markdown';
-import { getArticleBySlug, type ArticleView } from '@/lib/data-service';
+import { getArticleBySlug, getArticles, type ArticleView } from '@/lib/data-service';
 import { ARTICLE_BYLINE, articleEditorialDate } from '@/lib/articles';
 import { metaDescription, pageAlternates, SITE_SHARE_IMAGE, SITE_URL } from '@/lib/site-seo';
 import { ARTICLE_TYPE_NAMES, type ArticleImage, type PublishedArticle } from '@/types';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  const articles = await getArticles();
+  return articles.map((article) => ({ slug: article.slug }));
+}
 
 type Params = { params: Promise<{ slug: string }> };
 

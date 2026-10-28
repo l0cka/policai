@@ -29,5 +29,5 @@ Preconditions:
 
 ## Gotchas
 
-- `/analysis/[slug]` is `force-dynamic`; chart counts and the "as at" date are computed per request in Australia/Sydney.
-- Fixture articles replace the real ones for the whole instance; restart without `POLICAI_ARTICLES_DIR` to return to real data.
+- Real articles (from `data/articles`) are prerendered by `$V build`, so their chart counts and "as at" date are the build's, in Australia/Sydney. A fixture slug set with `POLICAI_ARTICLES_DIR` before `start` was not in that build, so it renders on request and dates its chart to the request.
+- Fixture articles replace the real ones for on-request renders only; pages prerendered from `data/articles` still serve the built HTML. Restart without `POLICAI_ARTICLES_DIR` to return to real data.

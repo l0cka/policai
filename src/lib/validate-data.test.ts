@@ -1846,7 +1846,7 @@ describe('validateCollectionMeta failure classes', () => {
     ).toEqual(['meta:sourceResults[0]: invalid failedUrl']);
   });
 
-  it('accepts decided skips with a public url and a decider', () => {
+  it('accepts decided skips with a decider and robots skips, each with a public url', () => {
     expect(
       validateCollectionMeta(
         meta(
@@ -1855,7 +1855,8 @@ describe('validateCollectionMeta failure classes', () => {
             itemCount: 1,
             error: undefined,
             skippedLinked: [
-              { url: 'https://www.finance.gov.au/a.pdf', decidedBy: 'finance-news' },
+              { url: 'https://www.finance.gov.au/a.pdf', because: 'decided_block', decidedBy: 'finance-news' },
+              { url: 'https://www.vic.gov.au/sites/default/files/a.pdf', because: 'robots_disallowed' },
             ],
           }),
         ),
@@ -1867,20 +1868,24 @@ describe('validateCollectionMeta failure classes', () => {
     [[], 'meta:sourceResults[0]: skippedLinked must be a non-empty array'],
     ['nope', 'meta:sourceResults[0]: skippedLinked must be a non-empty array'],
     [
-      [{ url: 'https://www.finance.gov.au/a.pdf?token=abc', decidedBy: 'finance-news' }],
+      [{ url: 'https://www.finance.gov.au/a.pdf?token=abc', because: 'decided_block', decidedBy: 'finance-news' }],
       'meta:sourceResults[0]: skippedLinked[0] has an invalid url',
     ],
     [
-      [{ url: 'http://www.finance.gov.au/a.pdf', decidedBy: 'finance-news' }],
+      [{ url: 'http://www.finance.gov.au/a.pdf', because: 'decided_block', decidedBy: 'finance-news' }],
       'meta:sourceResults[0]: skippedLinked[0] has an invalid url',
     ],
     [
-      [{ url: '', decidedBy: 'finance-news' }],
+      [{ url: '', because: 'decided_block', decidedBy: 'finance-news' }],
       'meta:sourceResults[0]: skippedLinked[0] has an invalid url',
     ],
     [
-      [{ url: 'https://www.finance.gov.au/a.pdf', decidedBy: ' ' }],
+      [{ url: 'https://www.finance.gov.au/a.pdf', because: 'decided_block', decidedBy: ' ' }],
       'meta:sourceResults[0]: skippedLinked[0] requires decidedBy',
+    ],
+    [
+      [{ url: 'https://www.finance.gov.au/a.pdf', decidedBy: 'finance-news' }],
+      'meta:sourceResults[0]: skippedLinked[0] has an invalid because',
     ],
   ])('rejects malformed skippedLinked case %#', (skippedLinked, error) => {
     expect(

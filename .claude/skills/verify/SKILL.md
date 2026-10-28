@@ -91,5 +91,5 @@ Stops and resets only `sandbox-policai-verify-<port>`, confirms the port is free
 
 - A fresh checkout has no `node_modules`; `npx next` then fetches a temporary Next and the build fails with "Could not find the Next.js package". `$V build` runs `npm ci` first.
 - `npm ci` warns that `unrs-resolver`'s postinstall was not run. The build does not need it.
-- `/coverage`, `/this-week`, `/analysis/[slug]` and `/policies/[id]` render per request; static routes (`/`, `/developments`, `/courts`) are prerendered at build time, so a data edit needs a rebuild before it shows there.
+- `/coverage` and `/this-week` render per request; other routes (`/`, `/developments`, `/courts`, `/policies/[id]`, `/analysis/[slug]`) are prerendered at build time, so a data edit needs a rebuild before it shows there.
 - `.claude/launch.json` points `npm` at a macOS path and does not work on this host; use this helper instead.

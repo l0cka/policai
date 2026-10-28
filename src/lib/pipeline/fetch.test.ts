@@ -1587,7 +1587,7 @@ describe('retrieveSource host gate', () => {
         attempts: 3,
       }),
     ).rejects.toMatchObject({
-      name: 'SourceFetchError',
+      name: 'RobotsDisallowedError',
       message: 'https://example.gov.au/search?q=ai is disallowed by robots.txt for Policai',
       retryable: false,
       code: 'gate_refused',
@@ -1726,7 +1726,7 @@ describe('retrieveSource host gate', () => {
     ).rejects.toMatchObject({ code: 'gate_refused', url: 'https://other.gov.au/policy' });
   });
 
-  it('admits each linked document and fails the page when one is disallowed', async () => {
+  it('admits each linked document and skips one robots.txt disallows', async () => {
     const page = `<html><body><main><h1>AI policy</h1>
       <a href="/files/open.pdf">AI policy PDF</a>
       <a href="/private/closed.pdf">AI framework PDF</a></main></body></html>`;
@@ -1750,13 +1750,29 @@ describe('retrieveSource host gate', () => {
 
     const closed = buildRecordingHostGate((url) => (url.pathname.startsWith('/private') ? refusal(url) : { kind: 'go' }));
     fetchImpl.mockClear();
-    await expect(
-      retrieveSource('https://example.gov.au/policy', { fetchImpl: fetchImpl as unknown as typeof fetch, gate: closed.gate }),
-    ).rejects.toMatchObject({ code: 'gate_refused', url: 'https://example.gov.au/private/closed.pdf' });
+    const retrieved = await retrieveSource('https://example.gov.au/policy', {
+      fetchImpl: fetchImpl as unknown as typeof fetch,
+      gate: closed.gate,
+    });
+    expect(retrieved.skippedLinked).toEqual([
+      { url: 'https://example.gov.au/private/closed.pdf', because: 'robots_disallowed' },
+    ]);
+    expect(retrieved.evidence.linkedDocuments?.map((document) => document.url)).toEqual([
+      'https://example.gov.au/files/open.pdf',
+    ]);
     expect(fetchImpl.mock.calls.map(([input]) => String(input))).toEqual([
       'https://example.gov.au/policy',
       'https://example.gov.au/files/open.pdf',
     ]);
+
+    const refused = buildRecordingHostGate((url) =>
+      url.pathname.startsWith('/private')
+        ? { kind: 'refused', cls: 'identity_refused', detail: `${url} was refused earlier this run` }
+        : { kind: 'go' },
+    );
+    await expect(
+      retrieveSource('https://example.gov.au/policy', { fetchImpl: fetchImpl as unknown as typeof fetch, gate: refused.gate }),
+    ).rejects.toMatchObject({ code: 'gate_refused', url: 'https://example.gov.au/private/closed.pdf' });
   });
 
   it('gates the HTTP/1.1 path per hop and observes its statuses', async () => {

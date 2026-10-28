@@ -1,4 +1,4 @@
-import type { Jurisdiction, SourceMonitoringState, SourceRunResult } from '@/types';
+import type { Jurisdiction, SkippedLinked, SourceMonitoringState, SourceRunResult } from '@/types';
 import { JURISDICTIONS } from '@/types';
 import type { FailureClass } from '@/lib/pipeline/failure';
 import type { SourceHealthRecord } from '@/lib/pipeline/source-health';
@@ -41,7 +41,7 @@ export interface WatchCoverageReport {
   gaps: Array<{ bodyId: BodyId; name: string; jurisdiction: Jurisdiction; tier: Tier; coverage: 'failing' | 'pending' | 'uncovered' }>;
   blocks: Array<{ sourceId: string; bodyId: string; automation: ManualDecision; lastReviewedAt: string | null; overdue: boolean }>;
   undecidedRefusals: Array<{ sourceId: string; since: string; runs: number; cls: FailureClass }>;
-  skippedLinked: Array<{ sourceId: string; url: string; decidedBy: string }>;
+  skippedLinked: Array<SkippedLinked & { sourceId: string }>;
   /** Bodies whose scope nobody has decided yet; counted as in scope. */
   unassessed: number;
 }

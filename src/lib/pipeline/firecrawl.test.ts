@@ -320,7 +320,7 @@ describe('scrapeWithFirecrawl host gate', () => {
       detail: `${url} is disallowed by robots.txt for Policai`,
     }));
     await expect(scrapeWithFirecrawl('https://www.oaic.gov.au/search', { gate })).rejects.toMatchObject({
-      name: 'SourceFetchError',
+      name: 'RobotsDisallowedError',
       code: 'gate_refused',
       retryable: false,
       url: 'https://www.oaic.gov.au/search',
