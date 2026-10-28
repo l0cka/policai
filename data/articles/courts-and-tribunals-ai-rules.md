@@ -4,6 +4,10 @@ title: How Australian courts and tribunals govern the use of AI
 summary: There is no single national rule. Most courts and tribunals agree that the person who files a document is responsible for it and must check it, but they differ on when AI use must be disclosed and how far it may touch evidence.
 status: published
 publishedAt: 2026-10-17
+updatedAt: 2026-10-28
+corrections:
+  - date: 2026-10-28
+    text: "Update: added the Supreme Court of Tasmania's Guidelines for the Use of Generative Artificial Intelligence, in force from 21 October 2026, which the register verified on 28 October 2026."
 cites:
   - federal-court-gpn-ai
   - family-court-ai-practice-direction
@@ -28,19 +32,20 @@ cites:
   - sa-courts-genai-guidelines
   - wa-supreme-court-genai-guidelines
   - qld-supreme-court-practice-direction-14-2024-expert-evidence
+  - tas-supreme-court-ai-guidelines-2026
 sources:
   - https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-ai
   - https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip
   - https://www.fwc.gov.au/documents/resources/guidance-note-use-of-generative-ai-in-commission-cases.pdf
 ---
 
-Courts and tribunals set their own rules for AI, and the rules differ. This guide covers the main instruments of the federal courts, the Fair Work Commission (FWC) and the Administrative Review Tribunal (ART), and of New South Wales, Victoria and Queensland. Names such as GPN-AI, SC GEN 25 and PNVCAT 11 are the instruments' own reference labels, and NCAT and VCAT are the NSW and Victorian civil and administrative tribunals. It also covers the South Australian and Western Australian guidelines. The earlier guide, [How AI is regulated across Australian jurisdictions](/analysis/how-ai-is-regulated-in-australia), gives courts one section. This guide compares what each instrument requires.
+Courts and tribunals set their own rules for AI, and the rules differ. This guide covers the main instruments of the federal courts, the Fair Work Commission (FWC) and the Administrative Review Tribunal (ART), and of New South Wales, Victoria and Queensland. Names such as GPN-AI, SC GEN 25 and PNVCAT 11 are the instruments' own reference labels, and NCAT and VCAT are the NSW and Victorian civil and administrative tribunals. It also covers the South Australian, Western Australian and Tasmanian guidelines. The earlier guide, [How AI is regulated across Australian jurisdictions](/analysis/how-ai-is-regulated-in-australia), gives courts one section. This guide compares what each instrument requires.
 
 ## What they agree on
 
 Most instruments keep responsibility with the person who files. The Federal Court says "The presentation of false or inaccurate information to the Court is unacceptable" ([GPN-AI](/policies/federal-court-gpn-ai), cl 4.4). Victoria's Supreme Court Practice Note makes court users responsible for their documents "whether or not a Court user has utilised AI" ([SC GEN 25](/policies/vic-supreme-court-sc-gen-25), cl 6.1).
 
-Most require checking. The Federal Court expects the responsible person to have confirmed that cited authorities exist and support the proposition ([GPN-AI](/policies/federal-court-gpn-ai), cl 4.5). The Queensland Supreme Court's direction requires the named practitioner to verify the accuracy and relevance of any reference to legislation, authorities or other sources in a written submission ([PD 5 of 2025](/policies/qld-supreme-court-ai-practice-direction), para 9). Several add that an AI tool cannot do the checking. From 20 October 2026, the Fair Work Commission's guidance note says "the checking must be done by a person" ([guidance note](/policies/fwc-genai-guidance-note), para 31).
+Most require checking. The Federal Court expects the responsible person to have confirmed that cited authorities exist and support the proposition ([GPN-AI](/policies/federal-court-gpn-ai), cl 4.5). The Queensland Supreme Court's direction requires the named practitioner to verify the accuracy and relevance of any reference to legislation, authorities or other sources in a written submission ([PD 5 of 2025](/policies/qld-supreme-court-ai-practice-direction), para 9). Several add that an AI tool cannot do the checking. From 20 October 2026, the Fair Work Commission's guidance note says "the checking must be done by a person" ([guidance note](/policies/fwc-genai-guidance-note), para 31). Tasmania's Supreme Court says "AI-generated content must be checked by a person, not solely by a Gen AI tool" ([Tasmanian guidelines](/policies/tas-supreme-court-ai-guidelines-2026), para 4.3).
 
 Most also protect witness evidence. The Federal Court says affidavits and witness statements must reflect the person's own recollection ([GPN-AI](/policies/federal-court-gpn-ai), cl 4.8), and the NSW Supreme Court prohibits using AI to generate their content ([SC Gen 23](/policies/nsw-supreme-court-sc-gen-23), para 10).
 
@@ -52,7 +57,7 @@ Disclosure divides them most. The Federal Court and the Administrative Review Tr
 kind: matrix
 title: Disclosure of AI use ranges from a required statement to none
 alt: "Comparison of eight court and tribunal instruments by disclosure, checking and evidence. The NSW Supreme Court requires affidavits to state that AI was not used; the Federal Court and the Administrative Review Tribunal require disclosure on request and for some evidence; the Victorian Supreme Court needs no statement but court users must be ready to identify AI-produced parts; the Queensland Supreme Court's direction requires none."
-caption: What each instrument says about disclosure, checking and evidence, as recorded in the register and read on the official pages on 17 October 2026. The Administrative Review Tribunal row is taken from the register record. Dates are the register's effective dates. Rows are the lead instrument of each court or tribunal whose text could be read and checked for this guide, and the instrument type is named in each row. The District, County and Local Courts, the Family Court, South Australia and Western Australia are covered in the text.
+caption: What each instrument says about disclosure, checking and evidence, as recorded in the register and read on the official pages on 17 October 2026. The Administrative Review Tribunal row is taken from the register record. Dates are the register's effective dates. Rows are the lead instrument of each court or tribunal whose text could be read and checked for this guide, and the instrument type is named in each row. The District, County and Local Courts, the Family Court, South Australia, Western Australia and Tasmania are covered in the text.
 wide: true
 cites: [federal-court-gpn-ai, art-generative-ai-practice-direction, fwc-genai-guidance-note, nsw-supreme-court-sc-gen-23, nsw-ncat-procedural-direction-7-genai, vic-supreme-court-sc-gen-25, vic-vcat-pnvcat-11-genai, qld-supreme-court-ai-practice-direction]
 sources:
@@ -70,7 +75,7 @@ rows:
   - ["Queensland Supreme Court (PD 5, practice direction, 24 September 2025)", "Not required; a named practitioner is responsible", "Responsible person verifies references", ~]
 ```
 
-South Australia's guidelines say a party filing a document "need not disclose" AI use by a particular statement, but should be able to inform a judicial officer if questioned ([SA guidelines](/policies/sa-courts-genai-guidelines), para 43). Western Australia's Supreme Court says use should be disclosed "when directed by the court or where otherwise necessary or appropriate" ([WA guidelines](/policies/wa-supreme-court-genai-guidelines), para 12).
+South Australia's guidelines say a party filing a document "need not disclose" AI use by a particular statement, but should be able to inform a judicial officer if questioned ([SA guidelines](/policies/sa-courts-genai-guidelines), para 43). Western Australia's Supreme Court says use should be disclosed "when directed by the court or where otherwise necessary or appropriate" ([WA guidelines](/policies/wa-supreme-court-genai-guidelines), para 12). Tasmania's Supreme Court guidelines, in force from 21 October 2026, say court users "are not required to certify the use of Gen AI in preparing documents", but "must disclose the use of Gen AI, if asked" ([Tasmanian guidelines](/policies/tas-supreme-court-ai-guidelines-2026), paras 4.4 and 4.4(a)).
 
 ## Confidential material
 
@@ -86,13 +91,13 @@ The Federal Court's practice note for litigants in person says not to use AI pro
 
 ## What happens if the rules are broken
 
-Federal Court users "should expect that there could be consequences including adverse costs orders" and issues under professional obligations ([GPN-AI](/policies/federal-court-gpn-ai), cl 5.1). The Queensland direction says a practitioner whose submissions cite non-existent material may be referred to the Legal Services Commissioner or have to show cause why a personal costs order should not be made ([PD 5 of 2025](/policies/qld-supreme-court-ai-practice-direction), para 14).
+Federal Court users "should expect that there could be consequences including adverse costs orders" and issues under professional obligations ([GPN-AI](/policies/federal-court-gpn-ai), cl 5.1). The Queensland direction says a practitioner whose submissions cite non-existent material may be referred to the Legal Services Commissioner or have to show cause why a personal costs order should not be made ([PD 5 of 2025](/policies/qld-supreme-court-ai-practice-direction), para 14). In Tasmania, "the inappropriate use of Gen AI may result in referral to the Legal Profession Board of Tasmania or personal costs orders" for lawyers ([Tasmanian guidelines](/policies/tas-supreme-court-ai-guidelines-2026), para 5.2).
 
 ## Analysis
 
 In Policai's analysis, most instruments converge on checking by the person who files, and several expect a person to be ready to explain AI use if the court asks. They diverge on disclosure and on how far AI may be used in evidence, so a lawyer who works in several courts faces different rules on those two points.
 
-The instruments call themselves practice notes and directions, issued by a court's head of jurisdiction or by a tribunal, and guidelines in South Australia and Western Australia.
+The instruments call themselves practice notes and directions, issued by a court's head of jurisdiction or by a tribunal, and guidelines in South Australia, Western Australia and Tasmania.
 
 ## Where to follow this
 
