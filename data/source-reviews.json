@@ -26802,7 +26802,7 @@
     "entryKind": "policy",
     "targetPolicyId": "tas-supreme-court-ai-guidelines-2026",
     "targetPolicyBaseRevisionHash": "372ec50ef7246ebadefdcb633eeca80874dff86297750d3d3de32eec0d282c5f",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-10-26T21:07:17.000Z",
     "createdBy": "cursor",
     "notes": "Staged for Daniel. Circular to Practitioners No. 14 of 2026 and the attached guidelines were read from the official PDF linked on the Supreme Court circulars page. The register row is withheld (verification needs_review). Do not treat this draft as verified.",
@@ -26827,14 +26827,19 @@
     "sourceEvidence": {
       "url": "https://supremecourt-tas-gov-au.assets.ionatahosting.net/uploads/2026/10/No-14-of-2026-AI-Guidelines-for-Court-Users.pdf",
       "finalUrl": "https://supremecourt-tas-gov-au.assets.ionatahosting.net/uploads/2026/10/No-14-of-2026-AI-Guidelines-for-Court-Users.pdf",
-      "title": "Guidelines for the Use of Generative Artificial Intelligence",
-      "publisher": "Supreme Court of Tasmania",
-      "retrievedAt": "2026-10-26T21:07:17.000Z",
-      "publishedAt": "2026-10-21",
-      "publishedAtPrecision": "day",
+      "retrievedAt": "2026-10-28T02:31:19.848Z",
       "contentType": "application/pdf",
       "contentHash": "8d4b2d5d6d616db124bbd9587ed34615cdc0147f0db31e63d709976efa19f4b7",
-      "lastModified": "Mon, 26 Oct 2026 06:02:14 GMT"
+      "etag": "\"ac5df42bda8587c2b0d83d4c856b6f93\"",
+      "lastModified": "Mon, 26 Oct 2026 06:02:14 GMT",
+      "title": "SUPREME COURT OF TASMANIA",
+      "reviewedDate": {
+        "date": "2026-10-21",
+        "precision": "day",
+        "reviewedAt": "2026-10-28T02:31:19.849Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "Circular to Practitioners No. 14 of 2026 is dated 21 October 2026, and paragraph 1.4 of the guidelines says they commence on 21 October 2026. The PDF's CreationDate is also 21 October 2026."
+      }
     },
     "proposedRecord": {
       "id": "tas-supreme-court-ai-guidelines-2026",
@@ -26853,14 +26858,19 @@
           "source": {
             "url": "https://supremecourt-tas-gov-au.assets.ionatahosting.net/uploads/2026/10/No-14-of-2026-AI-Guidelines-for-Court-Users.pdf",
             "finalUrl": "https://supremecourt-tas-gov-au.assets.ionatahosting.net/uploads/2026/10/No-14-of-2026-AI-Guidelines-for-Court-Users.pdf",
-            "title": "Guidelines for the Use of Generative Artificial Intelligence",
-            "publisher": "Supreme Court of Tasmania",
-            "retrievedAt": "2026-10-26T21:07:17.000Z",
-            "publishedAt": "2026-10-21",
-            "publishedAtPrecision": "day",
+            "retrievedAt": "2026-10-28T02:31:19.848Z",
             "contentType": "application/pdf",
             "contentHash": "8d4b2d5d6d616db124bbd9587ed34615cdc0147f0db31e63d709976efa19f4b7",
-            "lastModified": "Mon, 26 Oct 2026 06:02:14 GMT"
+            "etag": "\"ac5df42bda8587c2b0d83d4c856b6f93\"",
+            "lastModified": "Mon, 26 Oct 2026 06:02:14 GMT",
+            "title": "SUPREME COURT OF TASMANIA",
+            "reviewedDate": {
+              "date": "2026-10-21",
+              "precision": "day",
+              "reviewedAt": "2026-10-28T02:31:19.849Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "Circular to Practitioners No. 14 of 2026 is dated 21 October 2026, and paragraph 1.4 of the guidelines says they commence on 21 October 2026. The PDF's CreationDate is also 21 October 2026."
+            }
           }
         },
         {
@@ -26901,25 +26911,34 @@
         "legal-practice"
       ],
       "createdAt": "2026-10-26T21:07:17.000Z",
-      "updatedAt": "2026-10-26T21:07:17.000Z",
+      "updatedAt": "2026-10-28T02:31:19.849Z",
       "verification": {
-        "status": "needs_review",
+        "status": "verified",
         "source": {
           "url": "https://supremecourt-tas-gov-au.assets.ionatahosting.net/uploads/2026/10/No-14-of-2026-AI-Guidelines-for-Court-Users.pdf",
           "finalUrl": "https://supremecourt-tas-gov-au.assets.ionatahosting.net/uploads/2026/10/No-14-of-2026-AI-Guidelines-for-Court-Users.pdf",
-          "title": "Guidelines for the Use of Generative Artificial Intelligence",
-          "publisher": "Supreme Court of Tasmania",
-          "retrievedAt": "2026-10-26T21:07:17.000Z",
-          "publishedAt": "2026-10-21",
-          "publishedAtPrecision": "day",
+          "retrievedAt": "2026-10-28T02:31:19.848Z",
           "contentType": "application/pdf",
           "contentHash": "8d4b2d5d6d616db124bbd9587ed34615cdc0147f0db31e63d709976efa19f4b7",
-          "lastModified": "Mon, 26 Oct 2026 06:02:14 GMT"
+          "etag": "\"ac5df42bda8587c2b0d83d4c856b6f93\"",
+          "lastModified": "Mon, 26 Oct 2026 06:02:14 GMT",
+          "title": "SUPREME COURT OF TASMANIA",
+          "reviewedDate": {
+            "date": "2026-10-21",
+            "precision": "day",
+            "reviewedAt": "2026-10-28T02:31:19.849Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "Circular to Practitioners No. 14 of 2026 is dated 21 October 2026, and paragraph 1.4 of the guidelines says they commence on 21 October 2026. The PDF's CreationDate is also 21 October 2026."
+          }
         },
-        "notes": "Unverified editorial draft. The official PDF linked from https://www.supremecourt.tas.gov.au/publications/circulars-to-practitioners/ was retrieved with the Policai collector identity on 27 October 2026 and fingerprinted. No checkedAt, no checkedBy, no lastReviewedAt, and verification is not verified. Hidden from the public read until Daniel reviews it."
-      }
+        "checkedAt": "2026-10-28T02:31:19.849Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7FLgWUimaNTrYmuUesGeEMj#cmsg_019nKBbCzGtpRmfKqX3Xisd7AT3vB94wCMG1opY8KBzfmT (proposal ddfd041f). Proposed by Claude (agent). Proposed for Dan's approval card after #558 merged withheld. Argus re-fetched the PDF on 28 Oct 2026 and its SHA-256 matched the staged hash."
+      },
+      "lastReviewedAt": "2026-10-28T02:31:19.849Z"
     },
-    "updatedAt": "2026-10-28T02:13:25.118Z",
+    "updatedAt": "2026-10-28T02:31:20.454Z",
     "proposal": {
       "proposedBy": "Claude (agent)",
       "reviewedDate": {
@@ -26929,6 +26948,17 @@
       },
       "notes": "Proposed for Dan's approval card after #558 merged withheld. Argus re-fetched the PDF on 28 Oct 2026 and its SHA-256 matched the staged hash.",
       "proposedAt": "2026-10-28T02:13:25.118Z"
-    }
+    },
+    "targetPolicyRevisionHash": "372ec50ef7246ebadefdcb633eeca80874dff86297750d3d3de32eec0d282c5f",
+    "reviewedAt": "2026-10-28T02:31:19.849Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7FLgWUimaNTrYmuUesGeEMj#cmsg_019nKBbCzGtpRmfKqX3Xisd7AT3vB94wCMG1opY8KBzfmT (proposal ddfd041f). Proposed by Claude (agent). Proposed for Dan's approval card after #558 merged withheld. Argus re-fetched the PDF on 28 Oct 2026 and its SHA-256 matched the staged hash.",
+    "decision": {
+      "proposalHash": "ddfd041ffb2d51ef167bb1de18cda7c16f5052bed6088961bc65a52e6a14a84e",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-10-28T02:31:19.728Z",
+      "attestationUrl": "https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7FLgWUimaNTrYmuUesGeEMj#cmsg_019nKBbCzGtpRmfKqX3Xisd7AT3vB94wCMG1opY8KBzfmT"
+    },
+    "publishedAt": "2026-10-28T02:31:20.448Z"
   }
 ]
