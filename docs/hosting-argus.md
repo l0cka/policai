@@ -14,8 +14,9 @@ including auto-merges, which start no GitHub workflow. It runs
 The build settings live on the Worker in the Cloudflare dashboard, not in
 this repository.
 
-Workers have no project filesystem, so `scripts/bundle-data.mjs` bundles
-`data/` and `public/data/` into the Worker at build time. Every commit to
+Workers have no project filesystem, so `scripts/bundle-data.mjs` writes
+`data/` and `public/data/` to a static asset the Worker reads through its
+`ASSETS` binding. Every commit to
 `main`, data included, is public only after its build deploys, about three
 minutes after the merge.
 

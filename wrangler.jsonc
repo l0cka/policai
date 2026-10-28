@@ -1,12 +1,14 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "policai",
-	"main": ".open-next/worker.js",
+	"main": "worker.mjs",
 	"compatibility_date": "2026-10-01",
 	"compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
 	"assets": {
 		"directory": ".open-next/assets",
-		"binding": "ASSETS"
+		"binding": "ASSETS",
+		// worker.mjs answers these with a 404; see there.
+		"run_worker_first": ["/_bundled/*"]
 	},
 	// OpenNext resizes /_next/image requests through this binding.
 	"images": {

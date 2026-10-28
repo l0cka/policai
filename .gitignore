@@ -67,7 +67,6 @@ supabase/.temp/
 /data/.mutation.lock*
 /public/data/scraper-runs.json
 .env*.local
-/src/lib/bundled-files.generated.ts
 /.open-next/
 /.wrangler/
 .dev.vars
