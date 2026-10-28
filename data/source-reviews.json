@@ -26919,6 +26919,16 @@
         "notes": "Unverified editorial draft. The official PDF linked from https://www.supremecourt.tas.gov.au/publications/circulars-to-practitioners/ was retrieved with the Policai collector identity on 27 October 2026 and fingerprinted. No checkedAt, no checkedBy, no lastReviewedAt, and verification is not verified. Hidden from the public read until Daniel reviews it."
       }
     },
-    "updatedAt": "2026-10-26T21:07:17.000Z"
+    "updatedAt": "2026-10-28T02:13:25.118Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "reviewedDate": {
+        "date": "2026-10-21",
+        "precision": "day",
+        "notes": "Circular to Practitioners No. 14 of 2026 is dated 21 October 2026, and paragraph 1.4 of the guidelines says they commence on 21 October 2026. The PDF's CreationDate is also 21 October 2026."
+      },
+      "notes": "Proposed for Dan's approval card after #558 merged withheld. Argus re-fetched the PDF on 28 Oct 2026 and its SHA-256 matched the staged hash.",
+      "proposedAt": "2026-10-28T02:13:25.118Z"
+    }
   }
 ]
