@@ -13,6 +13,7 @@ sources:
   - https://www.digital.gov.au/sites/default/files/documents/2026-10/Policy%20for%20the%20responsible%20use%20of%20AI%20in%20government%202_1_1.pdf
   - https://www.digital.gov.au/ai/ai-in-government-policy/accountability
   - https://www.digital.gov.au/ai/ai-in-government-policy/standard-ai-transparency-statements
+  - https://www.digital.gov.au/ai/ai-in-government-policy/ai-use-case-impact-assessment
 image:
   src: "/images/articles/dta-ai-in-government-policy-v2-1-use-classification/lead.jpg"
   alt: "The pale stone facade of the Treasury Building in Parkes Place, Canberra, a multi-storey Commonwealth office block with rows of windows, framed by trees and a paved forecourt under a blue sky."
@@ -46,7 +47,7 @@ Agencies must apply the classification in three places: in their use case regist
 
 The policy is mandatory for non-corporate Commonwealth entities and encouraged for corporate Commonwealth entities; the Defence portfolio and the National Intelligence Community are listed as exceptions ([version 2.1 PDF](https://www.digital.gov.au/sites/default/files/documents/2026-10/Policy%20for%20the%20responsible%20use%20of%20AI%20in%20government%202_1_1.pdf)). Within those agencies, the classification falls to the officials who keep the internal use case register, run impact assessments and publish the transparency statement ([Appendix D](https://www.digital.gov.au/ai/ai-in-government-policy/policy-responsible-use-ai-government-version-21-appendix-d-classification-system-ai-use)).
 
-Under the policy, agencies must assess existing AI use cases by 30 April 2027, and high-risk use cases must be reported to the agency's accountable official and to the DTA before deployment ([version 2.1 PDF](https://www.digital.gov.au/sites/default/files/documents/2026-10/Policy%20for%20the%20responsible%20use%20of%20AI%20in%20government%202_1_1.pdf)). People and businesses dealing with Commonwealth agencies are affected indirectly, through what agencies disclose about their AI use in transparency statements ([Standard for AI transparency statements](https://www.digital.gov.au/ai/ai-in-government-policy/standard-ai-transparency-statements)).
+For existing use cases not yet assessed, agencies "must determine whether they are in scope of this policy and apply all relevant policy actions by 30 April 2027" ([AI use case impact assessment](https://www.digital.gov.au/ai/ai-in-government-policy/ai-use-case-impact-assessment)). Where an impact assessment gives an in-scope use case an inherent high-risk rating, the agency must report it to its accountable official with the reasons for that rating. Once the agency has decided to deploy the use case, it must also report it to the DTA through the accountable official ([AI use case impact assessment](https://www.digital.gov.au/ai/ai-in-government-policy/ai-use-case-impact-assessment)). People and businesses dealing with Commonwealth agencies are affected indirectly, through what agencies disclose about their AI use in transparency statements ([Standard for AI transparency statements](https://www.digital.gov.au/ai/ai-in-government-policy/standard-ai-transparency-statements)).
 
 ## Analysis
 
