@@ -179,7 +179,8 @@ The boundaries are deliberately strict:
   and `open-next.config.ts` drops revalidation, so a record that passes its
   verification interval shows as due for review only after the next deploy.
   Every commit outside `apps/probono/` redeploys, the daily collection PR
-  included. `/this-week` renders per request. `/coverage` is prerendered,
+  included. `/this-week` is prerendered and rebuilt nightly (`docs/this-week.md`).
+  `/coverage` is prerendered,
   and its map reads the selection from the query string after hydration.
   Derived framework artifacts must also pass their own verification gate as
   well as the related policy's gate. Their editorial check must be at least as
