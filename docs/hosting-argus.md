@@ -23,7 +23,7 @@ minutes after the merge.
 Pages prerendered at build are served as static files, without starting the
 Worker: `scripts/static-pages.mjs` copies their HTML into the assets and
 restates the site-wide security headers in `_headers`. Redirects, 404s and
-pages that render per request (`/this-week`, the API) still run
+routes that render per request (the API) still run
 the Worker. Two zone rules on policai.org, kept in the Cloudflare dashboard,
 go with this:
 
@@ -42,6 +42,12 @@ The routes for `policai.org/*` and `www.policai.org/*` are in
 `wrangler.jsonc`. The workers.dev URL is off, so the Signal write API
 answers only on policai.org. There is no rollback to Argus: the Policai server
 there is retired, and the host dispatcher no longer builds it.
+
+The Worker also rebuilds `main` every night at 00:05 Sydney time, so pages
+that count from today stay current when collection stalls. Its cron triggers
+are in `wrangler.jsonc`; `scheduled` in `worker.mjs` POSTs the Workers Builds
+deploy hook "Daily rebuild (Sydney midnight)", whose URL is the Worker secret
+`DEPLOY_HOOK_URL`.
 
 Signal reads `POLICAI_SIGNAL_TOKEN` and `POLICAI_SIGNAL_GITHUB_TOKEN` from
 Worker secrets, set with `wrangler secret put` or in the dashboard.
