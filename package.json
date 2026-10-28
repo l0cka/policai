@@ -7,9 +7,9 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/bundle-data.mjs && next build",
-    "build:cloudflare": "opennextjs-cloudflare build",
-    "preview:cloudflare": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "build": "next build",
+    "build:cloudflare": "opennextjs-cloudflare build && node scripts/bundle-data.mjs",
+    "preview:cloudflare": "npm run build:cloudflare && opennextjs-cloudflare preview",
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
@@ -29,7 +29,6 @@
     "signal:reviews": "tsx scripts/signal-source-reviews.ts",
     "mcp": "tsx src/mcp/server.ts",
     "mcp:public": "tsx src/mcp/public-server.ts",
-    "pretest": "node scripts/bundle-data.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage"

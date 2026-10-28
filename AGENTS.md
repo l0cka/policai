@@ -40,7 +40,7 @@ there.
 
 Policai is an Australian AI policy tracker. It maintains a curated register of AI policy, regulation, governance and court guidance across federal and state/territory jurisdictions, plus an automated "developments" feed of newly detected policy activity.
 
-**Git is the database.** All canonical data is JSON committed to this repository (`public/data/`, `data/`). The deployed site only reads that data. [policai.org](https://policai.org) runs on the Cloudflare Worker `policai`; `scripts/bundle-data.mjs` bundles `data/` and `public/data/` into it at build time, and Workers Builds redeploys on every push to `main` that changes more than `apps/probono/`, so a data commit is public once its build finishes. Collection runs daily on the maintainer's server (Argus) and opens a collection PR that auto-merges once checks pass. There is no runtime database, no auth, and no admin dashboard.
+**Git is the database.** All canonical data is JSON committed to this repository (`public/data/`, `data/`). The deployed site only reads that data. [policai.org](https://policai.org) runs on the Cloudflare Worker `policai`; at build time `scripts/bundle-data.mjs` writes `data/` and `public/data/` to an asset the Worker reads, and Workers Builds redeploys on every push to `main` that changes more than `apps/probono/`, so a data commit is public once its build finishes. Collection runs daily on the maintainer's server (Argus) and opens a collection PR that auto-merges once checks pass. There is no runtime database, no auth, and no admin dashboard.
 
 ## Tech Stack
 
