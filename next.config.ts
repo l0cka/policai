@@ -41,9 +41,9 @@ const nextConfig: NextConfig = {
 
 	async redirects() {
 		return [
-			// The tunnel answers for both hostnames, so the canonical choice is
-			// made here rather than as a Cloudflare rule: it stays visible in the
-			// repository and survives a move between hosts.
+			// A zone redirect rule does this first on policai.org, because static
+			// pages never reach this config (docs/hosting-argus.md). This copy
+			// covers the pages the Worker renders and any other host.
 			{
 				source: "/:path*",
 				has: [{ type: "host", value: "www.policai.org" }],

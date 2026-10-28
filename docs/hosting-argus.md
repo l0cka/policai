@@ -20,6 +20,24 @@ Workers have no project filesystem, so `scripts/bundle-data.mjs` writes
 `main`, data included, is public only after its build deploys, about three
 minutes after the merge.
 
+Pages prerendered at build are served as static files, without starting the
+Worker: `scripts/static-pages.mjs` copies their HTML into the assets and
+restates the site-wide security headers in `_headers`. Redirects, 404s and
+pages that render per request (`/coverage`, `/this-week`, the API) still run
+the Worker. Two zone rules on policai.org, kept in the Cloudflare dashboard,
+go with this:
+
+- Redirect rule "www to apex": `http.host eq "www.policai.org"` redirects
+  301 to `concat("https://policai.org", http.request.uri.path)`, keeping the
+  query string. Static pages never reach the redirect in `next.config.ts`.
+- URL rewrite "Next navigations to the Worker":
+  `http.host eq "policai.org" and any(http.request.headers["rsc"][*] eq "1")`
+  rewrites the path to
+  `concat("/_rsc", http.request.uri.path)`. The asset server ignores headers
+  and query strings, so without it an in-site click gets the page's HTML,
+  not its RSC payload, and Next falls back to a full page load. `/_rsc/*` is
+  in `run_worker_first`, and `worker.mjs` strips the prefix.
+
 The routes for `policai.org/*` and `www.policai.org/*` are in
 `wrangler.jsonc`. The workers.dev URL is off, so the Signal write API
 answers only on policai.org. There is no rollback to Argus: the Policai server

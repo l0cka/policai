@@ -7,8 +7,8 @@
 	"assets": {
 		"directory": ".open-next/assets",
 		"binding": "ASSETS",
-		// worker.mjs answers these with a 404; see there.
-		"run_worker_first": ["/_bundled/*"]
+		// worker.mjs answers /_bundled/ with a 404 and strips /_rsc/; see there.
+		"run_worker_first": ["/_bundled/*", "/_rsc/*"]
 	},
 	// OpenNext resizes /_next/image requests through this binding.
 	"images": {
