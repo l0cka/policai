@@ -1,5 +1,12 @@
 [
   {
+    "id": "mcp-audit-bc025498-af81-40cd-934e-96a38bac75f9",
+    "createdAt": "2026-10-28T02:31:20.464Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-457d69ed-be70-422f-b263-ed8af918f35a",
     "createdAt": "2026-10-27T08:01:01.558Z",
     "actor": "local-mcp-admin",
