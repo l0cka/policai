@@ -2,8 +2,8 @@ import path from "node:path";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 // On Cloudflare Workers there is no project filesystem, so data files come
-// from the static asset scripts/bundle-data.mjs writes at build time. It is
-// also public at /_bundled/files.json, like the repository it copies.
+// from the static asset scripts/bundle-data.mjs writes at build time, which
+// only the ASSETS binding can read (worker.mjs keeps it off the public site).
 // Elsewhere this returns undefined and callers read the disk as before.
 const onWorkers =
 	typeof navigator !== "undefined" &&

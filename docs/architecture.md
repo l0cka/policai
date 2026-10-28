@@ -69,8 +69,9 @@ The boundaries are deliberately strict:
   `npm run build:cloudflare` ends with `scripts/bundle-data.mjs`, which writes
   `data/` and `public/data/` to the asset `_bundled/files.json`. On Workers,
   `readJsonFile` in `src/lib/file-store.ts` reads that bundle through the
-  `ASSETS` binding (`src/lib/bundled-files.ts`). The asset is public, as the
-  repository is. Everywhere else, including the CLIs, the MCP
+  `ASSETS` binding (`src/lib/bundled-files.ts`). The asset holds the
+  unfiltered editorial files, so `worker.mjs` answers public requests for
+  `/_bundled/*` with a 404. Everywhere else, including the CLIs, the MCP
   servers, tests and `next dev`, it reads the disk. A data change
   is public only after the deploy that bundles it.
 - Client Components receive serialisable props and own only interactive state.
