@@ -45,15 +45,15 @@ beforeEach(() => {
   });
 });
 
-async function coveragePage(query: Record<string, string> = {}) {
+async function coveragePage() {
   const { default: CoveragePage } = await import('./page');
-  return CoveragePage({ searchParams: Promise.resolve(query) });
+  return CoveragePage();
 }
 
 describe('/coverage page', () => {
   it('counts only public records, so withheld, unverified and trashed records never reach a cell or a list (#330)', async () => {
     window.history.replaceState({}, '', '/coverage?theme=courts-tribunals&j=nsw');
-    render(await coveragePage({ theme: 'courts-tribunals', j: 'nsw' }));
+    render(await coveragePage());
 
     expect(screen.getAllByRole('rowheader').map((head) => head.textContent)).toEqual(['Courts and tribunals', 'Generative AI']);
     expect(screen.getByRole('button', { name: 'Courts and tribunals, New South Wales: 2 records' })).toBeInTheDocument();
@@ -70,8 +70,8 @@ describe('/coverage page', () => {
     window.history.replaceState({}, '', '/');
   });
 
-  it('server-renders the table, its headers, caption and drill-down without JavaScript (#330)', async () => {
-    const markup = renderToStaticMarkup(await coveragePage({ theme: 'courts-tribunals', j: 'nsw' }));
+  it('server-renders the table, its headers and caption without JavaScript (#330)', async () => {
+    const markup = renderToStaticMarkup(await coveragePage());
     const html = new DOMParser().parseFromString(markup, 'text/html');
     const table = html.querySelectorAll('table');
     expect(table).toHaveLength(1);
@@ -87,15 +87,10 @@ describe('/coverage page', () => {
       ['0', '2', '1', '0', '0', '0', '0', '0', '0'],
       ['0', '0', '1', '0', '0', '0', '0', '0', '0'],
     ]);
-    expect([...html.querySelectorAll('#coverage-drilldown a')].map((link) => link.getAttribute('href'))).toEqual([
-      '/policies/nsw-public-a',
-      '/policies/nsw-public-b',
-    ]);
   });
 
-  it('renders on every request, because the selection comes from the query string (#330)', async () => {
+  it('prerenders, so a first visit is a static file; the map reads the query string after hydration', async () => {
     const page = await import('./page');
-    expect(page.dynamic).toBe('force-dynamic');
-    expect('revalidate' in page).toBe(false);
+    expect('dynamic' in page).toBe(false);
   });
 });

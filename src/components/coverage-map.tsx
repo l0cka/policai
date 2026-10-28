@@ -95,15 +95,12 @@ function edge(grid: boolean[][], from: Position, end: boolean): Position {
   return { r: from.r, c: end ? indexes[indexes.length - 1] : indexes[0] };
 }
 
-export function CoverageMap({
-  data,
-  initialState,
-}: {
-  data: CoverageData;
-  initialState: CoverageViewState;
-}) {
-  const [state, setState] = useState(initialState);
-  const stateRef = useRef(initialState);
+const DEFAULT_STATE: CoverageViewState = { axis: 'theme', selection: { kind: 'none' } };
+
+export function CoverageMap({ data }: { data: CoverageData }) {
+  const [state, setState] = useState(DEFAULT_STATE);
+  const stateRef = useRef(DEFAULT_STATE);
+  const scrollToDrill = useRef(false);
   const [announcement, setAnnouncement] = useState('');
   const buttons = useRef(new Map<string, HTMLButtonElement>());
   const mapRef = useRef<HTMLDivElement>(null);
@@ -113,9 +110,7 @@ export function CoverageMap({
   const { rows } = table;
   const grid = focusableGrid(rows);
   const firstCell = firstFocusable(grid);
-  const [active, setActive] = useState<Position>(
-    () => originPosition(rows, initialState.selection) ?? firstCell,
-  );
+  const [active, setActive] = useState<Position>(firstCell);
   const activePosition =
     active.r < grid.length && grid[active.r][active.c] ? active : firstCell;
 
@@ -130,12 +125,30 @@ export function CoverageMap({
     );
   }, []);
 
+  // Declared before the effect that sets the flag, so it runs on the render
+  // that shows the drill-down row.
   useEffect(() => {
-    const onPopState = () => {
+    if (!scrollToDrill.current) return;
+    scrollToDrill.current = false;
+    drillRef.current?.scrollIntoView({ block: 'nearest' });
+  }, [state]);
+
+  // The page is prerendered, so the query string is read here, after
+  // hydration, and again on every back or forward.
+  useEffect(() => {
+    const fromUrl = () => {
       const next = parseCoverageViewState(new URLSearchParams(window.location.search), data);
       stateRef.current = next;
       setState(next);
+      return next;
     };
+    const linked = fromUrl();
+    const origin = originPosition(coverageTable(data, linked.axis).rows, linked.selection);
+    if (origin) {
+      setActive(origin);
+      scrollToDrill.current = true;
+    }
+    const onPopState = () => fromUrl();
     window.addEventListener('popstate', onPopState);
     return () => window.removeEventListener('popstate', onPopState);
   }, [data]);
@@ -155,12 +168,6 @@ export function CoverageMap({
     if (strip) observer.observe(strip, { box: 'border-box' });
     return () => observer.disconnect();
   }, []);
-
-  useEffect(() => {
-    if (initialState.selection.kind !== 'none') {
-      drillRef.current?.scrollIntoView({ block: 'nearest' });
-    }
-  }, [initialState.selection.kind]);
 
   const focusAt = useCallback((position: Position) => {
     setActive(position);

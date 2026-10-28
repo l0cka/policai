@@ -23,7 +23,7 @@ minutes after the merge.
 Pages prerendered at build are served as static files, without starting the
 Worker: `scripts/static-pages.mjs` copies their HTML into the assets and
 restates the site-wide security headers in `_headers`. Redirects, 404s and
-pages that render per request (`/coverage`, `/this-week`, the API) still run
+pages that render per request (`/this-week`, the API) still run
 the Worker. Two zone rules on policai.org, kept in the Cloudflare dashboard,
 go with this:
 

@@ -3,7 +3,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { CoverageMap } from './coverage-map';
 import {
   buildCoverageData,
-  parseCoverageViewState,
   type CoverageCategory,
   type CoverageSource,
 } from '@/lib/coverage-data';
@@ -30,7 +29,7 @@ const SOURCES = [
 function renderMap(query = '', sources = SOURCES, vocabulary = VOCABULARY) {
   window.history.replaceState({}, '', `/coverage${query ? `?${query}` : ''}`);
   const data = buildCoverageData(sources, vocabulary);
-  render(<CoverageMap data={data} initialState={parseCoverageViewState(new URLSearchParams(query), data)} />);
+  render(<CoverageMap data={data} />);
   return data;
 }
 
