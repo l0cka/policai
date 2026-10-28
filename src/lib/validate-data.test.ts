@@ -27,6 +27,11 @@ describe('isAllowedSourceHost', () => {
     expect(isAllowedSourceHost('https://www.industry.gov.au/x')).toBe(true);
     expect(isAllowedSourceHost('https://supremecourt.nsw.gov.au/x')).toBe(true);
     expect(isAllowedSourceHost('https://www.csiro.au/en/news')).toBe(true);
+    expect(
+      isAllowedSourceHost(
+        'https://supremecourt-tas-gov-au.assets.ionatahosting.net/uploads/2026/10/No-14-of-2026-AI-Guidelines-for-Court-Users.pdf',
+      ),
+    ).toBe(true);
   });
 
   it('rejects http, non-government, and malformed URLs', () => {

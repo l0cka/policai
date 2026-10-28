@@ -61,6 +61,7 @@ describe('official search redirect extraction', () => {
   it.each([
     ['www.industry.gov.au', 'https://consult.industry.gov.au/ai-policy'],
     ['www.industry.gov.au', 'https://www.csiro.au/ai-policy'],
+    ['www.supremecourt.tas.gov.au', 'https://supremecourt-tas-gov-au.assets.ionatahosting.net/uploads/2026/10/No-14-of-2026-AI-Guidelines-for-Court-Users.pdf'],
     ['www.csiro.au', 'https://www.csiro.au/ai-policy'],
     ['www.industry.gov.au', TARGET],
   ])('applies the central allow-list to non-OAIC wrappers: %s → %s', (host, target) => {
