@@ -78,9 +78,17 @@ jobs:
             }
 
             async function start(sha) {
-              const existing = newestInProgress(await runsFor(sha));
+              const runs = await runsFor(sha);
+              const existing = newestInProgress(runs);
               if (existing) {
                 core.info(`cursor-review ${existing.id} already in progress on ${sha}.`);
+                return;
+              }
+              // pull_request events can arrive after Cursor has already
+              // reviewed this head; a new in_progress run would hide that verdict.
+              const done = runs.find((run) => run.status === 'completed');
+              if (done) {
+                core.info(`cursor-review ${done.id} already ${done.conclusion} on ${sha}.`);
                 return;
               }
               await github.rest.checks.create({

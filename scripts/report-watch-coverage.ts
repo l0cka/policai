@@ -84,7 +84,12 @@ async function main() {
     'Linked documents skipped: ' +
       (report.skippedLinked.length === 0
         ? 'none'
-        : report.skippedLinked.map((row) => `${row.sourceId} -> ${row.url} (decided by ${row.decidedBy})`).join(', ')),
+        : report.skippedLinked
+            .map(
+              (row) =>
+                `${row.sourceId} -> ${row.url} (${row.because === 'decided_block' ? `decided by ${row.decidedBy}` : 'robots.txt'})`,
+            )
+            .join(', ')),
   );
 }
 

@@ -9,10 +9,14 @@ This directory holds the project-facing documentation that should stay in sync w
 - [Architecture](./architecture.md) — system boundaries, data ownership, and non-negotiable invariants.
 - [Information trust model](./trust-model.md) — verification tiers, source rules, date policy, and publication gates.
 - [Editorial policy](./editorial-policy.md) — voice, formats, citations, standard notices, images, and corrections for written pieces in `data/articles/`.
-- [Hosting](./hosting-argus.md) — how the deployed site relates to this repository; the operational runbook is private.
-- [Amalgamation status](./amalgamation.md) — source integration, verification and remaining Pro Bono cutover steps.
+- [Hosting](./hosting-argus.md) — both sites on Cloudflare Workers, and the Pro Bono deploy path on Argus; the operational runbook is private.
+- [Amalgamation record](./amalgamation.md) — how Pro Bono Radar was imported and cut over (completed 23 September 2026).
 - [Collector hosting](./collector-argus.md) — where scheduled collection runs; retrieval and classification behaviour is in collector.md.
 - [Authoritative refactor tracker](./refactor-authoritative-policai.md) — baseline findings, workstreams, and completion gates.
+- [This week](./this-week.md) — how `/this-week` picks its window and items on both sites.
+- [Research interface](./research-interface.md) — register and A2J interface architecture and their shared boundaries.
+- [Design direction](./design-direction.md) and [editorial index](./ui-editorial-index.md) — the visual identity and where it goes next.
+- [WebMCP research note](./research/webmcp.md) — status of WebMCP and the scope Policai would expose.
 - [Network relationship explorer concept](./design/policai-network-concept-02.md) — retired design for the old `/network` force graph, replaced by the coverage map (#302); kept for history.
 
 ## Canonical Sources

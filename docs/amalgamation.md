@@ -1,19 +1,21 @@
 # Policai and Pro Bono amalgamation
 
-The source import is complete; production cutover remains outstanding. Policai
-stays at the repository root. Pro Bono Radar is under `apps/probono`, with
+The import and the production cutover are complete. This page is the record of
+how they were done. The cutover ran on 23 September 2026. Since 26 October 2026
+both public sites run on Cloudflare Workers, and Argus keeps only the Pro Bono
+database and jobs ([Hosting](./hosting-argus.md)). Policai stays at the
+repository root. Pro Bono Radar is under `apps/probono`, with
 independent dashboard and worker packages, PostgreSQL data and release handling.
 
-The integration PR is [#99](https://github.com/l0cka/policai/pull/99), from
-`bob/amalgamation` into `main`. Do not merge while the legacy deployment helper
-can automatically deploy `main`.
+The integration PR was [#99](https://github.com/l0cka/policai/pull/99), from
+`bob/amalgamation` into `main`.
 
 ## Source and verification
 
 - Pro Bono history was imported in `0f395d2`; application isolation and child CI
   were added in `3c8a170`.
-- `6c0d9e3` added the host dispatcher candidate under `ops/host`. Its operational
-  code remains uninstalled. The [installation procedure](../ops/host/INSTALL-REVIEW.txt)
+- `6c0d9e3` added the host dispatcher under `ops/host`, installed for the
+  cutover. The [installation procedure](../ops/host/INSTALL-REVIEW.txt)
   and [sandbox review](../ops/host/SANDBOX-REVIEW.md) retain the cutover gates.
 - The original CI workflow used `job.services` in job-level `env`, where that
   context is unavailable, and indexed a service port with a number. The repaired
@@ -81,7 +83,7 @@ These observations are a baseline, not permission to skip fresh preflight:
   and disposition of those listeners remain to be resolved before a topology-OK
   cutover can be claimed.
 
-## Remaining sequence
+## Cutover sequence (completed 23 September 2026)
 
 1. Confirm passing checks at the latest PR #99 head, including the disposable
    database integration suite and host tests.

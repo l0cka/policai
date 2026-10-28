@@ -82,6 +82,14 @@ export class DecidedBlockError extends SourceFetchError {
   }
 }
 
+/** A URL the host's robots.txt disallows for Policai; never requested. */
+export class RobotsDisallowedError extends SourceFetchError {
+  constructor(detail: string, url: string) {
+    super(detail, { retryable: false, code: 'gate_refused', url });
+    this.name = 'RobotsDisallowedError';
+  }
+}
+
 function failedAt(error: unknown, url: string): SourceFetchError {
   const fetchError =
     error instanceof SourceFetchError
@@ -108,8 +116,11 @@ export async function admitThroughGate(
   if (admission.kind === 'deferred') {
     throw new SourceFetchError(admission.detail, { retryable: true, code: 'gate_deferred', url });
   }
+  if (admission.cls === 'robots_disallowed') {
+    throw new RobotsDisallowedError(admission.detail, url);
+  }
   throw new SourceFetchError(admission.detail, {
-    retryable: admission.cls !== 'robots_disallowed',
+    retryable: true,
     code: 'gate_refused',
     url,
   });
@@ -754,9 +765,17 @@ export async function foldLinkedDocuments(
         hashLinkedDocuments: false,
       });
     } catch (error) {
-      if (!(error instanceof DecidedBlockError)) throw error;
-      skippedLinked.push({ url, decidedBy: error.decidedBy });
-      continue;
+      // A landing page is still watched when an attachment cannot be
+      // requested; a new attachment version changes the page's links.
+      if (error instanceof DecidedBlockError) {
+        skippedLinked.push({ url, because: 'decided_block', decidedBy: error.decidedBy });
+        continue;
+      }
+      if (error instanceof RobotsDisallowedError) {
+        skippedLinked.push({ url, because: 'robots_disallowed' });
+        continue;
+      }
+      throw error;
     }
     try {
       assertLinkedDocumentBytes(linked, url);

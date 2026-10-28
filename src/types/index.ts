@@ -521,15 +521,18 @@ export interface SourceRunResult {
 	identityException?: "active" | "expired";
 	failureClass?: FailureClass;
 	failedUrl?: string;
-	/** Linked documents and candidates on a decided-refused host, not requested. */
+	/** Linked documents and candidates not requested: on a decided-refused host, or disallowed by robots.txt. */
 	skippedLinked?: SkippedLinked[];
 }
 
-export interface SkippedLinked {
-	url: string;
-	/** The source whose manual decision records the host's refusal. */
-	decidedBy: string;
-}
+export type SkippedLinked =
+	| {
+			url: string;
+			because: "decided_block";
+			/** The source whose manual decision records the host's refusal. */
+			decidedBy: string;
+	  }
+	| { url: string; because: "robots_disallowed" };
 
 export interface CollectionMeta {
 	lastCollectedAt: string | null;

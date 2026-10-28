@@ -112,6 +112,9 @@ describe('WATCH_SOURCES', () => {
       'www.accc.gov.au': 'accc-rss',
       'www.acma.gov.au': 'acma-media',
       'www.esafety.gov.au': 'esafety-media',
+      'www.ai.gov.au': 'naic-news',
+      'www.teqsa.gov.au': 'teqsa-news',
+      'www.art.gov.au': 'art-practice-directions',
     });
   });
 

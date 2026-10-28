@@ -1511,8 +1511,11 @@ export function validateCollectionMeta(meta: CollectionMeta): ValidationReport {
             publicFailureUrl(skipped.url) !== skipped.url
           )
             errors.push(`${label}: skippedLinked[${index}] has an invalid url`);
-          if (!isNonEmptyString(skipped?.decidedBy))
-            errors.push(`${label}: skippedLinked[${index}] requires decidedBy`);
+          if (skipped?.because === 'decided_block') {
+            if (!isNonEmptyString(skipped.decidedBy))
+              errors.push(`${label}: skippedLinked[${index}] requires decidedBy`);
+          } else if (skipped?.because !== 'robots_disallowed')
+            errors.push(`${label}: skippedLinked[${index}] has an invalid because`);
         });
     }
   });

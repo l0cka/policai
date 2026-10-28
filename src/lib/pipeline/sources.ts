@@ -292,7 +292,15 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'document',
     schedule: 'weekly',
     enabled: true,
-    automation: 'automatic',
+    automation: {
+      mode: 'manual',
+      because: 'identity_refused',
+      decision: 'manual',
+      since: '2026-10-27',
+      decidedBy: 'Daniel',
+      evidence:
+        'All five checks since the E24 exception expired (2026-10-23 to 2026-10-26T19:34Z) were refused by www.ai.gov.au with net::ERR_HTTP2_PROTOCOL_ERROR against the declared Policai identity. The allow-list request had no written reply, so refused E24 sources are tracked by hand (Daniel, 2026-10-17, #162).',
+    },
     fetchStrategy: 'browser',
     notes:
       'The page is now a curated hub rather than a dated index, so it is watched for content changes; GovCMS/Akamai rejects plain HTTP clients.',
@@ -795,7 +803,15 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'document',
     schedule: 'weekly',
     enabled: true,
-    automation: 'automatic',
+    automation: {
+      mode: 'manual',
+      because: 'identity_refused',
+      decision: 'manual',
+      since: '2026-10-27',
+      decidedBy: 'Daniel',
+      evidence:
+        'All five checks since the E24 exception expired (2026-10-23 to 2026-10-26T19:34Z) were refused by www.teqsa.gov.au with net::ERR_HTTP2_PROTOCOL_ERROR against the declared Policai identity. The allow-list request had no written reply, so refused E24 sources are tracked by hand (Daniel, 2026-10-17, #162).',
+    },
     fetchStrategy: 'browser',
     notes:
       'Higher-education regulation including generative AI and academic integrity; the news index markup exposes no extractable entries, so the page is watched for content changes.',
@@ -906,7 +922,15 @@ export const WATCH_SOURCES: WatchSource[] = [
     kind: 'document',
     schedule: 'weekly',
     enabled: true,
-    automation: 'automatic',
+    automation: {
+      mode: 'manual',
+      because: 'identity_refused',
+      decision: 'manual',
+      since: '2026-10-27',
+      decidedBy: 'Daniel',
+      evidence:
+        'All five checks since the E24 exception expired (2026-10-23 to 2026-10-26T19:34Z) were refused by www.art.gov.au with net::ERR_HTTP2_PROTOCOL_ERROR against the declared Policai identity. The allow-list request had no written reply, so refused E24 sources are tracked by hand (Daniel, 2026-10-17, #162).',
+    },
     fetchStrategy: 'browser',
     notes:
       'The federal merits-review tribunal, successor to the AAT and a likely venue for automated-decision-making guidance. The host resets plain HTTP/2 clients, so retrieval goes through the browser path.',
@@ -1129,14 +1153,14 @@ export const WATCH_SOURCES: WatchSource[] = [
     bodyId: 'nsw-government',
     jurisdiction: 'nsw',
     category: 'government',
-    url: 'https://www.nsw.gov.au/media-releases',
+    url: 'https://www.nsw.gov.au/ministerial-releases',
     kind: 'html-index',
     schedule: 'daily',
     enabled: true,
     automation: 'automatic',
     fetchStrategy: 'browser',
     notes:
-      'Whole-of-government NSW announcements, including AI policy and digital government decisions.',
+      'Whole-of-government NSW announcements, including AI policy and digital government decisions. The index moved from /media-releases (HTTP 404 from 2026-10-23) to /ministerial-releases, where the release pages already lived.',
   },
   {
     id: 'nsw-dcs-media-releases',
@@ -1417,6 +1441,8 @@ export const WATCH_SOURCES: WatchSource[] = [
     schedule: 'weekly',
     enabled: true,
     automation: 'automatic',
+    notes:
+      'The guideline PDF is under /sites/default/files/, which vic.gov.au robots.txt disallows, so only the landing page is fingerprinted and the PDF is listed under skippedLinked.',
   },
   {
     id: 'ovic-news',

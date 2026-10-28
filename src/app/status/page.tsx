@@ -500,7 +500,10 @@ export default async function StatusPage() {
                   <li key={`${row.sourceId} ${row.url}`}>
                     {row.sourceId}{' '}
                     <span className="font-mono text-xs text-muted-foreground">
-                      {row.url}, host decided by {row.decidedBy}
+                      {row.url},{' '}
+                      {row.because === 'decided_block'
+                        ? `host decided by ${row.decidedBy}`
+                        : 'disallowed by robots.txt'}
                     </span>
                   </li>
                 ))}
