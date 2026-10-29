@@ -16,6 +16,10 @@ import path from 'path';
 import { execFile } from 'child_process';
 import { promisify } from 'util';
 import { readJsonFile } from '../src/lib/file-store';
+import {
+  validateReconfirmLedger,
+  type ReconfirmLedger,
+} from '../src/lib/register-reconfirm';
 import { countUnsubstantiatedSecondaryDates } from '../src/lib/validate-data';
 import { readArticleImageFiles } from '../src/lib/article-image-files';
 import { readArticleSources } from '../src/lib/articles';
@@ -109,6 +113,7 @@ async function main() {
     bodies,
     siteReuse,
     ruleScopes,
+    reconfirmations,
   ] = await Promise.all([
       readJsonFile<Policy[]>(
         path.join(STATE_DIR, 'policies.json'),
@@ -173,6 +178,10 @@ async function main() {
       readJsonFile<unknown>(path.join(STATE_DIR, 'bodies.json'), null),
       readJsonFile<unknown>(path.join(STATE_DIR, 'site-reuse.json'), null),
       readJsonFile<unknown>(path.join(STATE_DIR, 'rule-scope.json'), null),
+      readJsonFile<ReconfirmLedger | null>(
+        path.join(STATE_DIR, 'reconfirmations.json'),
+        null,
+      ),
     ]);
 
   if (policies.length === 0) {
@@ -218,6 +227,7 @@ async function main() {
     }),
     validateSiteReuse(siteReuse, bodies),
     validateRuleScopes(ruleScopes, policies),
+    validateReconfirmLedger(reconfirmations, policies),
     validateArticles(articles, articleBaseline, {
       policies,
       publicPolicies,
