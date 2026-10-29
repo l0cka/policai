@@ -1,3 +1,162 @@
 {
-  "batches": []
+  "batches": [
+    {
+      "id": "2026-10-29-1",
+      "proposedAt": "2026-10-29T22:17:02.874Z",
+      "proposedBy": "Claude (agent)",
+      "entries": [
+        {
+          "policyId": "nsw-ncat-procedural-direction-7-genai",
+          "title": "NCAT Procedural Direction 7 — Use of Generative Artificial Intelligence (Gen AI)",
+          "verifiedAt": "2026-08-25T02:01:07.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "16166188601235ed6a416d6e1354e0960301995a6b484ceab52f365d59178e97",
+          "auditedAt": "2026-10-29T22:17:03.013Z"
+        },
+        {
+          "policyId": "nsw-district-court-genai-practice-note",
+          "title": "District Court General Practice Note 2 — Generative AI Practice Note",
+          "verifiedAt": "2026-08-25T02:01:07.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "ebdf82f866f587516787eff5a13c59b279afc57ba62a9615fc6d3354c5656987",
+          "auditedAt": "2026-10-29T22:17:03.038Z"
+        },
+        {
+          "policyId": "nsw-irc-practice-note-33-genai",
+          "title": "Practice Note No 33 — Use of Generative Artificial Intelligence (Gen AI)",
+          "verifiedAt": "2026-08-25T02:01:07.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "e97652ed1b4b4a41d4d91fc8dee9175a5b77a0290eff42f60b199c1964d47fc8",
+          "auditedAt": "2026-10-29T22:17:03.079Z"
+        },
+        {
+          "policyId": "nsw-lec-practice-note-genai",
+          "title": "Land and Environment Court Practice Note — Use of Generative Artificial Intelligence (Gen AI)",
+          "verifiedAt": "2026-08-25T02:01:07.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "d8e2da9c5b74f1d09435de7ac8c75d60ef9584a6d21b2e74de6d442131226aa8",
+          "auditedAt": "2026-10-29T22:17:03.122Z"
+        },
+        {
+          "policyId": "nsw-local-court-practice-note-genai",
+          "title": "Local Court Practice Note — Generative Artificial Intelligence",
+          "verifiedAt": "2026-08-25T02:01:07.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "88cb86d71bfe7f53dc757383692f4245257b502ffe0d3da02280dfc757ec77d2",
+          "auditedAt": "2026-10-29T22:17:03.285Z"
+        },
+        {
+          "policyId": "nsw-pic-procedural-direction-pic13-genai",
+          "title": "Procedural Direction PIC13 — Use of Generative Artificial Intelligence",
+          "verifiedAt": "2026-08-25T02:01:07.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "cbdd2cb402101038b5e0a52eb83e4ed67671c71d9a5cb0699050573a0b5550e4",
+          "auditedAt": "2026-10-29T22:17:03.284Z"
+        },
+        {
+          "policyId": "vic-supreme-court-ai-guidelines-judicial-officers",
+          "title": "Guidelines: The Use of Artificial Intelligence by Judicial Officers",
+          "verifiedAt": "2026-08-25T02:01:07.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "8a5d9cedd210b1b3cb9d6e32c6b775e6deb293b6a2c469a95ecf5e98eec81845",
+          "auditedAt": "2026-10-29T22:17:05.669Z"
+        },
+        {
+          "policyId": "vic-county-court-pnccv-1-2026",
+          "title": "PNCCV 1-2026 — The Use of Artificial Intelligence by Court Users",
+          "verifiedAt": "2026-08-25T02:01:07.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "1177d0ce865a13d6f02144b2e94c0f5f91b756b479cbd44d3d05702fb3a5c8bf",
+          "auditedAt": "2026-10-29T22:17:03.706Z"
+        },
+        {
+          "policyId": "vic-vcat-pnvcat-11-genai",
+          "title": "Practice Note PNVCAT 11 — Use of Generative Artificial Intelligence",
+          "verifiedAt": "2026-08-25T02:01:07.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "e8ddb193be361e8d367637877430eee59fa75814a3b6a9e2dd080f3e31a34339",
+          "auditedAt": "2026-10-29T22:17:03.571Z"
+        },
+        {
+          "policyId": "qld-qcat-practice-direction-10-2025",
+          "title": "QCAT Practice Direction No 10 of 2025 — Accuracy of References in Submissions",
+          "verifiedAt": "2026-08-25T02:01:07.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "17a2b32761ea0b74d6e2216f5e199612c7c5516e698574adac576c712b1cd739",
+          "auditedAt": "2026-10-29T22:17:04.041Z"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-29-2",
+      "proposedAt": "2026-10-29T22:17:02.874Z",
+      "proposedBy": "Claude (agent)",
+      "entries": [
+        {
+          "policyId": "qld-district-court-practice-direction-12-2025",
+          "title": "District Court Practice Direction Number 12 of 2025 — Accuracy of References in Submissions",
+          "verifiedAt": "2026-08-25T02:01:07.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "f41471f855f554cd076ef194dc3653fc7288b3b332d6db842d33de9f25bbabe4",
+          "auditedAt": "2026-10-29T22:17:04.072Z"
+        },
+        {
+          "policyId": "qld-land-court-practice-direction-4-2025",
+          "title": "Land Court Practice Direction 4 of 2025 — Accuracy of References in Submissions",
+          "verifiedAt": "2026-08-25T02:01:07.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "f02ad68c3f951a33e716378a3fcf0c345adf3daa1bbd76907a11ad6e8934ff26",
+          "auditedAt": "2026-10-29T22:17:04.461Z"
+        },
+        {
+          "policyId": "qld-planning-environment-court-practice-direction-7-2025",
+          "title": "Planning and Environment Court Practice Direction Number 7 of 2025 — Accuracy of References in Submissions",
+          "verifiedAt": "2026-08-25T02:01:07.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "d74c26b3b50adfd198ea3cb5d7cff45f54d72fe5bce4a109f76c2503a3c4c462",
+          "auditedAt": "2026-10-29T22:17:04.304Z"
+        },
+        {
+          "policyId": "qld-supreme-court-practice-direction-14-2024-expert-evidence",
+          "title": "Supreme Court Practice Direction Number 14 of 2024 — Expert Evidence in Criminal Proceedings (Other than Sentences)",
+          "verifiedAt": "2026-08-25T02:01:07.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "9da8c29accdc0805573d22b07815011f8d9abcce484c27bc22582b6ef707fee8",
+          "auditedAt": "2026-10-29T22:17:04.801Z"
+        },
+        {
+          "policyId": "wa-supreme-court-genai-guidelines",
+          "title": "Guidelines for the use of generative AI",
+          "verifiedAt": "2026-08-25T02:01:07.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "e24334d7a4fd060df81ef65580112139eac5bd0f2cac509f877c53e2cc6c57de",
+          "auditedAt": "2026-10-29T22:17:05.215Z"
+        },
+        {
+          "policyId": "nsw-judicial-gen-ai-guidelines",
+          "title": "Guidelines for New South Wales Judges in respect of Use of Generative AI",
+          "verifiedAt": "2026-08-25T13:30:09.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "044419c46de275247f265f3d53036b2178c94939a77f43c398a633e05999d4ee",
+          "auditedAt": "2026-10-29T22:17:05.135Z"
+        },
+        {
+          "policyId": "vic-county-court-judicial-ai-guidelines",
+          "title": "Guidelines: The Use of Artificial Intelligence by Judicial Officers (County Court of Victoria)",
+          "verifiedAt": "2026-08-25T13:30:09.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "080410f7f572d1fb1a331fb3048ae04bb858a268717c912942f2600bd32a729f",
+          "auditedAt": "2026-10-29T22:17:05.470Z"
+        },
+        {
+          "policyId": "sa-courts-gen-ai-self-represented-info",
+          "title": "Information for self-represented litigants regarding the use of Generative artificial intelligence in litigation",
+          "verifiedAt": "2026-08-25T13:30:09.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "974fa5eef71ab195d51c387b5db6776f20b7843e6bfb35390940ed2e724bcaf3",
+          "auditedAt": "2026-10-29T22:17:06.245Z"
+        }
+      ]
+    }
+  ]
 }
