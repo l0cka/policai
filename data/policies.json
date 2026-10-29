@@ -7873,7 +7873,7 @@
     ],
     "createdAt": "2025-04-07T00:00:00Z",
     "updatedAt": "2026-08-25T02:01:07.000Z",
-    "lastReviewedAt": "2026-08-25T02:01:07.000Z",
+    "lastReviewedAt": "2026-10-29T22:21:31.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -7887,10 +7887,10 @@
         "lastModified": "Fri, 07 Mar 2025 04:46:55 GMT",
         "etag": "W/\"2413f-62fb94fd3cdc0-gzip\""
       },
-      "checkedAt": "2026-08-25T02:01:07.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-10-29T22:21:31.000Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the procedural direction PDF from the NCAT site through the collector retrieval path, fingerprinted it, and read it in full before creating this record.",
+      "notes": "Retrieved the procedural direction PDF from the NCAT site through the collector retrieval path, fingerprinted it, and read it in full before creating this record. Re-confirmed in batch 2026-10-29-1 by Daniel Alkurdi on 2026-10-29 (https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd732MXt4YZwrggLjJxEWv7xC&decision=cmsg_019nKBbCzGtpRmfKqX3Xisd73Ths2z9svyeVN24VvqhsMU): the source fingerprint was unchanged at the 2026-10-29 register audit, matching the version verified on 2026-08-25.",
       "lastSourceAuditAt": "2026-10-29T22:17:03.013Z"
     },
     "dates": [
@@ -7970,7 +7970,7 @@
     ],
     "createdAt": "2025-02-03T00:00:00Z",
     "updatedAt": "2026-08-25T02:01:07.000Z",
-    "lastReviewedAt": "2026-08-25T02:01:07.000Z",
+    "lastReviewedAt": "2026-10-29T22:21:31.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -7984,10 +7984,10 @@
         "lastModified": "Mon, 03 Feb 2025 09:56:09 GMT",
         "etag": "W/\"3d821-62d39e6cf6040-gzip\""
       },
-      "checkedAt": "2026-08-25T02:01:07.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-10-29T22:21:31.000Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the practice note PDF from the District Court site through the collector retrieval path, fingerprinted it, and read the adopting note and the reproduced SC Gen 23 text in full before creating this record.",
+      "notes": "Retrieved the practice note PDF from the District Court site through the collector retrieval path, fingerprinted it, and read the adopting note and the reproduced SC Gen 23 text in full before creating this record. Re-confirmed in batch 2026-10-29-1 by Daniel Alkurdi on 2026-10-29 (https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd732MXt4YZwrggLjJxEWv7xC&decision=cmsg_019nKBbCzGtpRmfKqX3Xisd73Ths2z9svyeVN24VvqhsMU): the source fingerprint was unchanged at the 2026-10-29 register audit, matching the version verified on 2026-08-25.",
       "lastSourceAuditAt": "2026-10-29T22:17:03.038Z"
     },
     "dates": [
@@ -8069,7 +8069,7 @@
     ],
     "createdAt": "2025-02-19T00:00:00Z",
     "updatedAt": "2026-08-25T02:01:07.000Z",
-    "lastReviewedAt": "2026-08-25T02:01:07.000Z",
+    "lastReviewedAt": "2026-10-29T22:21:31.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -8083,10 +8083,10 @@
         "lastModified": "Fri, 14 Feb 2025 03:56:52 GMT",
         "etag": "W/\"22eb9-62e122a2ac900-gzip\""
       },
-      "checkedAt": "2026-08-25T02:01:07.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-10-29T22:21:31.000Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the practice note PDF from the Commission's site through the collector retrieval path, fingerprinted it, and read it in full before creating this record.",
+      "notes": "Retrieved the practice note PDF from the Commission's site through the collector retrieval path, fingerprinted it, and read it in full before creating this record. Re-confirmed in batch 2026-10-29-1 by Daniel Alkurdi on 2026-10-29 (https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd732MXt4YZwrggLjJxEWv7xC&decision=cmsg_019nKBbCzGtpRmfKqX3Xisd73Ths2z9svyeVN24VvqhsMU): the source fingerprint was unchanged at the 2026-10-29 register audit, matching the version verified on 2026-08-25.",
       "lastSourceAuditAt": "2026-10-29T22:17:03.079Z"
     },
     "dates": [
@@ -8146,7 +8146,7 @@
     ],
     "createdAt": "2025-02-12T00:00:00Z",
     "updatedAt": "2026-08-25T02:01:07.000Z",
-    "lastReviewedAt": "2026-08-25T02:01:07.000Z",
+    "lastReviewedAt": "2026-10-29T22:21:31.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -8160,10 +8160,10 @@
         "lastModified": "Tue, 11 Feb 2025 02:55:42 GMT",
         "etag": "W/\"1d453-62dd4f5e4e780-gzip\""
       },
-      "checkedAt": "2026-08-25T02:01:07.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-10-29T22:21:31.000Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the practice note PDF from the Land and Environment Court site through the collector retrieval path, fingerprinted it, and read it in full before creating this record.",
+      "notes": "Retrieved the practice note PDF from the Land and Environment Court site through the collector retrieval path, fingerprinted it, and read it in full before creating this record. Re-confirmed in batch 2026-10-29-1 by Daniel Alkurdi on 2026-10-29 (https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd732MXt4YZwrggLjJxEWv7xC&decision=cmsg_019nKBbCzGtpRmfKqX3Xisd73Ths2z9svyeVN24VvqhsMU): the source fingerprint was unchanged at the 2026-10-29 register audit, matching the version verified on 2026-08-25.",
       "lastSourceAuditAt": "2026-10-29T22:17:03.122Z"
     },
     "dates": [
@@ -8244,7 +8244,7 @@
     ],
     "createdAt": "2026-01-12T00:00:00Z",
     "updatedAt": "2026-08-25T02:01:07.000Z",
-    "lastReviewedAt": "2026-08-25T02:01:07.000Z",
+    "lastReviewedAt": "2026-10-29T22:21:31.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -8258,10 +8258,10 @@
         "lastModified": "Mon, 08 Dec 2025 22:27:13 GMT",
         "etag": "W/\"2705f-645784bf4f240-gzip\""
       },
-      "checkedAt": "2026-08-25T02:01:07.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-10-29T22:21:31.000Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the practice note PDF from the Local Court site through the collector retrieval path, fingerprinted it, and read it in full before creating this record.",
+      "notes": "Retrieved the practice note PDF from the Local Court site through the collector retrieval path, fingerprinted it, and read it in full before creating this record. Re-confirmed in batch 2026-10-29-1 by Daniel Alkurdi on 2026-10-29 (https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd732MXt4YZwrggLjJxEWv7xC&decision=cmsg_019nKBbCzGtpRmfKqX3Xisd73Ths2z9svyeVN24VvqhsMU): the source fingerprint was unchanged at the 2026-10-29 register audit, matching the version verified on 2026-08-25.",
       "lastSourceAuditAt": "2026-10-29T22:17:03.285Z"
     },
     "dates": [
@@ -8343,7 +8343,7 @@
     ],
     "createdAt": "2026-01-01T00:00:00Z",
     "updatedAt": "2026-08-25T02:01:07.000Z",
-    "lastReviewedAt": "2026-08-25T02:01:07.000Z",
+    "lastReviewedAt": "2026-10-29T22:21:31.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -8355,10 +8355,10 @@
         "contentType": "text/html",
         "contentHash": "cbdd2cb402101038b5e0a52eb83e4ed67671c71d9a5cb0699050573a0b5550e4"
       },
-      "checkedAt": "2026-08-25T02:01:07.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-10-29T22:21:31.000Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the procedural direction page from the Personal Injury Commission site through the collector retrieval path, fingerprinted it, and read the direction in full before creating this record.",
+      "notes": "Retrieved the procedural direction page from the Personal Injury Commission site through the collector retrieval path, fingerprinted it, and read the direction in full before creating this record. Re-confirmed in batch 2026-10-29-1 by Daniel Alkurdi on 2026-10-29 (https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd732MXt4YZwrggLjJxEWv7xC&decision=cmsg_019nKBbCzGtpRmfKqX3Xisd73Ths2z9svyeVN24VvqhsMU): the source fingerprint was unchanged at the 2026-10-29 register audit, matching the version verified on 2026-08-25.",
       "lastSourceAuditAt": "2026-10-29T22:17:03.284Z"
     },
     "dates": [
@@ -8414,7 +8414,7 @@
     ],
     "createdAt": "2026-05-14T00:00:00Z",
     "updatedAt": "2026-08-25T02:01:07.000Z",
-    "lastReviewedAt": "2026-08-25T02:01:07.000Z",
+    "lastReviewedAt": "2026-10-29T22:21:31.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -8439,10 +8439,10 @@
           }
         ]
       },
-      "checkedAt": "2026-08-25T02:01:07.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-10-29T22:21:31.000Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the guidelines page from the Supreme Court of Victoria site through the collector retrieval path, fingerprinted it, and read the guidelines in full before creating this record.",
+      "notes": "Retrieved the guidelines page from the Supreme Court of Victoria site through the collector retrieval path, fingerprinted it, and read the guidelines in full before creating this record. Re-confirmed in batch 2026-10-29-1 by Daniel Alkurdi on 2026-10-29 (https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd732MXt4YZwrggLjJxEWv7xC&decision=cmsg_019nKBbCzGtpRmfKqX3Xisd73Ths2z9svyeVN24VvqhsMU): the source fingerprint was unchanged at the 2026-10-29 register audit, matching the version verified on 2026-08-25.",
       "lastSourceAuditAt": "2026-10-29T22:17:05.669Z"
     },
     "dates": [
@@ -8500,7 +8500,7 @@
     ],
     "createdAt": "2026-06-05T00:00:00Z",
     "updatedAt": "2026-08-25T02:01:07.000Z",
-    "lastReviewedAt": "2026-08-25T02:01:07.000Z",
+    "lastReviewedAt": "2026-10-29T22:21:31.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -8514,10 +8514,10 @@
         "lastModified": "Mon, 08 Jun 2026 23:41:34 GMT",
         "etag": "\"6a27532e-1194ec\""
       },
-      "checkedAt": "2026-08-25T02:01:07.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-10-29T22:21:31.000Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the practice note document from the County Court of Victoria site through the collector retrieval path, fingerprinted it, and read the document control block and text before creating this record.",
+      "notes": "Retrieved the practice note document from the County Court of Victoria site through the collector retrieval path, fingerprinted it, and read the document control block and text before creating this record. Re-confirmed in batch 2026-10-29-1 by Daniel Alkurdi on 2026-10-29 (https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd732MXt4YZwrggLjJxEWv7xC&decision=cmsg_019nKBbCzGtpRmfKqX3Xisd73Ths2z9svyeVN24VvqhsMU): the source fingerprint was unchanged at the 2026-10-29 register audit, matching the version verified on 2026-08-25.",
       "lastSourceAuditAt": "2026-10-29T22:17:03.706Z"
     },
     "dates": [
@@ -8577,7 +8577,7 @@
     ],
     "createdAt": "2025-12-22T00:00:00Z",
     "updatedAt": "2026-08-25T02:01:07.000Z",
-    "lastReviewedAt": "2026-08-25T02:01:07.000Z",
+    "lastReviewedAt": "2026-10-29T22:21:31.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -8601,10 +8601,10 @@
           }
         ]
       },
-      "checkedAt": "2026-08-25T02:01:07.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-10-29T22:21:31.000Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the practice note page and attached document from the VCAT site through the collector retrieval path, fingerprinted it, and read the practice note before creating this record.",
+      "notes": "Retrieved the practice note page and attached document from the VCAT site through the collector retrieval path, fingerprinted it, and read the practice note before creating this record. Re-confirmed in batch 2026-10-29-1 by Daniel Alkurdi on 2026-10-29 (https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd732MXt4YZwrggLjJxEWv7xC&decision=cmsg_019nKBbCzGtpRmfKqX3Xisd73Ths2z9svyeVN24VvqhsMU): the source fingerprint was unchanged at the 2026-10-29 register audit, matching the version verified on 2026-08-25.",
       "lastSourceAuditAt": "2026-10-29T22:17:03.571Z"
     },
     "dates": [
@@ -8663,7 +8663,7 @@
     ],
     "createdAt": "2025-10-17T00:00:00Z",
     "updatedAt": "2026-08-25T02:01:07.000Z",
-    "lastReviewedAt": "2026-08-25T02:01:07.000Z",
+    "lastReviewedAt": "2026-10-29T22:21:31.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -8675,10 +8675,10 @@
         "contentType": "application/pdf",
         "contentHash": "17a2b32761ea0b74d6e2216f5e199612c7c5516e698574adac576c712b1cd739"
       },
-      "checkedAt": "2026-08-25T02:01:07.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-10-29T22:21:31.000Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the practice direction PDF from the QCAT site through the collector retrieval path, fingerprinted it, and read it in full before creating this record.",
+      "notes": "Retrieved the practice direction PDF from the QCAT site through the collector retrieval path, fingerprinted it, and read it in full before creating this record. Re-confirmed in batch 2026-10-29-1 by Daniel Alkurdi on 2026-10-29 (https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd732MXt4YZwrggLjJxEWv7xC&decision=cmsg_019nKBbCzGtpRmfKqX3Xisd73Ths2z9svyeVN24VvqhsMU): the source fingerprint was unchanged at the 2026-10-29 register audit, matching the version verified on 2026-08-25.",
       "lastSourceAuditAt": "2026-10-29T22:17:04.041Z"
     },
     "dates": [
@@ -8735,7 +8735,7 @@
     ],
     "createdAt": "2025-09-25T00:00:00Z",
     "updatedAt": "2026-08-25T02:01:07.000Z",
-    "lastReviewedAt": "2026-08-25T02:01:07.000Z",
+    "lastReviewedAt": "2026-10-29T22:21:30.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -8747,10 +8747,10 @@
         "contentType": "application/pdf",
         "contentHash": "f41471f855f554cd076ef194dc3653fc7288b3b332d6db842d33de9f25bbabe4"
       },
-      "checkedAt": "2026-08-25T02:01:07.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-10-29T22:21:30.000Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the practice direction PDF from the Queensland Courts site through the collector retrieval path, fingerprinted it, and read it in full before creating this record.",
+      "notes": "Retrieved the practice direction PDF from the Queensland Courts site through the collector retrieval path, fingerprinted it, and read it in full before creating this record. Re-confirmed in batch 2026-10-29-2 by Daniel Alkurdi on 2026-10-29 (https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd732MXt4YZwrggLjJxEWv7xC&decision=cmsg_019nKBbCzGtpRmfKqX3Xisd7HsQf2TuNgBbZbb2HWX2FMp): the source fingerprint was unchanged at the 2026-10-29 register audit, matching the version verified on 2026-08-25.",
       "lastSourceAuditAt": "2026-10-29T22:17:04.072Z"
     },
     "dates": [
@@ -8807,7 +8807,7 @@
     ],
     "createdAt": "2025-09-29T00:00:00Z",
     "updatedAt": "2026-08-25T02:01:07.000Z",
-    "lastReviewedAt": "2026-08-25T02:01:07.000Z",
+    "lastReviewedAt": "2026-10-29T22:21:30.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -8819,10 +8819,10 @@
         "contentType": "application/pdf",
         "contentHash": "f02ad68c3f951a33e716378a3fcf0c345adf3daa1bbd76907a11ad6e8934ff26"
       },
-      "checkedAt": "2026-08-25T02:01:07.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-10-29T22:21:30.000Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the practice direction PDF from the Queensland Courts site through the collector retrieval path, fingerprinted it, and read it in full before creating this record.",
+      "notes": "Retrieved the practice direction PDF from the Queensland Courts site through the collector retrieval path, fingerprinted it, and read it in full before creating this record. Re-confirmed in batch 2026-10-29-2 by Daniel Alkurdi on 2026-10-29 (https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd732MXt4YZwrggLjJxEWv7xC&decision=cmsg_019nKBbCzGtpRmfKqX3Xisd7HsQf2TuNgBbZbb2HWX2FMp): the source fingerprint was unchanged at the 2026-10-29 register audit, matching the version verified on 2026-08-25.",
       "lastSourceAuditAt": "2026-10-29T22:17:04.461Z"
     },
     "dates": [
@@ -8879,7 +8879,7 @@
     ],
     "createdAt": "2025-09-25T00:00:00Z",
     "updatedAt": "2026-08-25T02:01:07.000Z",
-    "lastReviewedAt": "2026-08-25T02:01:07.000Z",
+    "lastReviewedAt": "2026-10-29T22:21:30.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -8891,10 +8891,10 @@
         "contentType": "application/pdf",
         "contentHash": "d74c26b3b50adfd198ea3cb5d7cff45f54d72fe5bce4a109f76c2503a3c4c462"
       },
-      "checkedAt": "2026-08-25T02:01:07.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-10-29T22:21:30.000Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the practice direction PDF from the Queensland Courts site through the collector retrieval path, fingerprinted it, and read it in full before creating this record.",
+      "notes": "Retrieved the practice direction PDF from the Queensland Courts site through the collector retrieval path, fingerprinted it, and read it in full before creating this record. Re-confirmed in batch 2026-10-29-2 by Daniel Alkurdi on 2026-10-29 (https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd732MXt4YZwrggLjJxEWv7xC&decision=cmsg_019nKBbCzGtpRmfKqX3Xisd7HsQf2TuNgBbZbb2HWX2FMp): the source fingerprint was unchanged at the 2026-10-29 register audit, matching the version verified on 2026-08-25.",
       "lastSourceAuditAt": "2026-10-29T22:17:04.304Z"
     },
     "dates": [
@@ -9116,7 +9116,7 @@
     ],
     "createdAt": "2025-09-10T00:00:00Z",
     "updatedAt": "2026-08-25T02:01:07.000Z",
-    "lastReviewedAt": "2026-08-25T02:01:07.000Z",
+    "lastReviewedAt": "2026-10-29T22:21:30.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -9128,10 +9128,10 @@
         "contentType": "application/pdf",
         "contentHash": "9da8c29accdc0805573d22b07815011f8d9abcce484c27bc22582b6ef707fee8"
       },
-      "checkedAt": "2026-08-25T02:01:07.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-10-29T22:21:30.000Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the practice direction PDF from the Queensland Courts site through the collector retrieval path, fingerprinted it, and read it in full including the version history before creating this record.",
+      "notes": "Retrieved the practice direction PDF from the Queensland Courts site through the collector retrieval path, fingerprinted it, and read it in full including the version history before creating this record. Re-confirmed in batch 2026-10-29-2 by Daniel Alkurdi on 2026-10-29 (https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd732MXt4YZwrggLjJxEWv7xC&decision=cmsg_019nKBbCzGtpRmfKqX3Xisd7HsQf2TuNgBbZbb2HWX2FMp): the source fingerprint was unchanged at the 2026-10-29 register audit, matching the version verified on 2026-08-25.",
       "lastSourceAuditAt": "2026-10-29T22:17:04.801Z"
     },
     "dates": [
@@ -9212,7 +9212,7 @@
     ],
     "createdAt": "2025-11-20T00:00:00Z",
     "updatedAt": "2026-08-25T02:01:07.000Z",
-    "lastReviewedAt": "2026-08-25T02:01:07.000Z",
+    "lastReviewedAt": "2026-10-29T22:21:30.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -9226,10 +9226,10 @@
         "lastModified": "Thu, 20 Nov 2025 01:15:34 GMT",
         "etag": "\"0ffa02bbb59dc1:0\""
       },
-      "checkedAt": "2026-08-25T02:01:07.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-10-29T22:21:30.000Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the guidelines PDF from the Supreme Court of Western Australia site through the collector retrieval path, fingerprinted it, and read it in full. The undated document's date was taken from PDF creation metadata corroborated by the HTTP Last-Modified header.",
+      "notes": "Retrieved the guidelines PDF from the Supreme Court of Western Australia site through the collector retrieval path, fingerprinted it, and read it in full. The undated document's date was taken from PDF creation metadata corroborated by the HTTP Last-Modified header. Re-confirmed in batch 2026-10-29-2 by Daniel Alkurdi on 2026-10-29 (https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd732MXt4YZwrggLjJxEWv7xC&decision=cmsg_019nKBbCzGtpRmfKqX3Xisd7HsQf2TuNgBbZbb2HWX2FMp): the source fingerprint was unchanged at the 2026-10-29 register audit, matching the version verified on 2026-08-25.",
       "lastSourceAuditAt": "2026-10-29T22:17:05.215Z"
     },
     "dates": [
@@ -9287,7 +9287,7 @@
     ],
     "createdAt": "2024-11-21T00:00:00Z",
     "updatedAt": "2026-08-25T13:30:09.000Z",
-    "lastReviewedAt": "2026-08-25T13:30:09.000Z",
+    "lastReviewedAt": "2026-10-29T22:21:30.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -9303,10 +9303,10 @@
         "etag": "W/\"2cf8b-62778502dc6c0-gzip\"",
         "lastModified": "Fri, 22 Nov 2024 03:52:35 GMT"
       },
-      "checkedAt": "2026-08-25T13:30:09.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-10-29T22:21:30.000Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Located the guidelines PDF via the Supreme Court's Generative AI resources page, read the full 3-page document and confirmed the 21 November 2024 signature date and its cross-reference to SC Gen 23.",
+      "notes": "Located the guidelines PDF via the Supreme Court's Generative AI resources page, read the full 3-page document and confirmed the 21 November 2024 signature date and its cross-reference to SC Gen 23. Re-confirmed in batch 2026-10-29-2 by Daniel Alkurdi on 2026-10-29 (https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd732MXt4YZwrggLjJxEWv7xC&decision=cmsg_019nKBbCzGtpRmfKqX3Xisd7HsQf2TuNgBbZbb2HWX2FMp): the source fingerprint was unchanged at the 2026-10-29 register audit, matching the version verified on 2026-08-25.",
       "lastSourceAuditAt": "2026-10-29T22:17:05.135Z"
     },
     "dates": [
@@ -9365,7 +9365,7 @@
     ],
     "createdAt": "2026-06-05T00:00:00Z",
     "updatedAt": "2026-08-25T13:30:09.000Z",
-    "lastReviewedAt": "2026-08-25T13:30:09.000Z",
+    "lastReviewedAt": "2026-10-29T22:21:30.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -9381,10 +9381,10 @@
         "etag": "\"6a27534a-a8838\"",
         "lastModified": "Mon, 08 Jun 2026 23:42:02 GMT"
       },
-      "checkedAt": "2026-08-25T13:30:09.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-10-29T22:21:30.000Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Downloaded the .docx from the County Court site and read the full text; confirmed the title, creation date, authorising officer and all provisions, and checked that no PDF version exists at the equivalent URL.",
+      "notes": "Downloaded the .docx from the County Court site and read the full text; confirmed the title, creation date, authorising officer and all provisions, and checked that no PDF version exists at the equivalent URL. Re-confirmed in batch 2026-10-29-2 by Daniel Alkurdi on 2026-10-29 (https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd732MXt4YZwrggLjJxEWv7xC&decision=cmsg_019nKBbCzGtpRmfKqX3Xisd7HsQf2TuNgBbZbb2HWX2FMp): the source fingerprint was unchanged at the 2026-10-29 register audit, matching the version verified on 2026-08-25.",
       "lastSourceAuditAt": "2026-10-29T22:17:05.470Z"
     },
     "dates": [
@@ -9526,7 +9526,7 @@
     ],
     "createdAt": "2026-01-19T00:00:00Z",
     "updatedAt": "2026-08-25T13:30:09.000Z",
-    "lastReviewedAt": "2026-08-25T13:30:09.000Z",
+    "lastReviewedAt": "2026-10-29T22:21:30.000Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -9540,10 +9540,10 @@
         "contentType": "application/pdf",
         "contentHash": "974fa5eef71ab195d51c387b5db6776f20b7843e6bfb35390940ed2e724bcaf3"
       },
-      "checkedAt": "2026-08-25T13:30:09.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-10-29T22:21:30.000Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Read the full five-page PDF from both the SAET mirror and the courts.sa.gov.au download link and confirmed the two copies are textually identical, so the courts.sa.gov.au copy linked from the 19 January 2026 news item is used as canonical; the sheet itself carries no date.",
+      "notes": "Read the full five-page PDF from both the SAET mirror and the courts.sa.gov.au download link and confirmed the two copies are textually identical, so the courts.sa.gov.au copy linked from the 19 January 2026 news item is used as canonical; the sheet itself carries no date. Re-confirmed in batch 2026-10-29-2 by Daniel Alkurdi on 2026-10-29 (https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd732MXt4YZwrggLjJxEWv7xC&decision=cmsg_019nKBbCzGtpRmfKqX3Xisd7HsQf2TuNgBbZbb2HWX2FMp): the source fingerprint was unchanged at the 2026-10-29 register audit, matching the version verified on 2026-08-25.",
       "lastSourceAuditAt": "2026-10-29T22:17:06.245Z"
     },
     "dates": [

@@ -85,7 +85,12 @@
           "contentHash": "17a2b32761ea0b74d6e2216f5e199612c7c5516e698574adac576c712b1cd739",
           "auditedAt": "2026-10-29T22:17:04.041Z"
         }
-      ]
+      ],
+      "decision": {
+        "approvedBy": "Daniel Alkurdi",
+        "approvedAt": "2026-10-29T22:21:31.000Z",
+        "attestationUrl": "https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd732MXt4YZwrggLjJxEWv7xC&decision=cmsg_019nKBbCzGtpRmfKqX3Xisd73Ths2z9svyeVN24VvqhsMU"
+      }
     },
     {
       "id": "2026-10-29-2",
@@ -156,7 +161,12 @@
           "contentHash": "974fa5eef71ab195d51c387b5db6776f20b7843e6bfb35390940ed2e724bcaf3",
           "auditedAt": "2026-10-29T22:17:06.245Z"
         }
-      ]
+      ],
+      "decision": {
+        "approvedBy": "Daniel Alkurdi",
+        "approvedAt": "2026-10-29T22:21:30.000Z",
+        "attestationUrl": "https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd732MXt4YZwrggLjJxEWv7xC&decision=cmsg_019nKBbCzGtpRmfKqX3Xisd7HsQf2TuNgBbZbb2HWX2FMp"
+      }
     }
   ]
 }
