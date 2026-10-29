@@ -1,5 +1,103 @@
 [
   {
+    "id": "source-review-dev-latest-news-16bao",
+    "sourceUrl": "https://www.courts.qld.gov.au/newsroom/news",
+    "title": "Latest news",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-10-29T19:32:04.420Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from Queensland Courts — news (score 0.65, ai).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.65,
+      "suggestedType": null,
+      "suggestedJurisdiction": "qld",
+      "summary": "Latest news Most recent 08.10.2026 New version of UCPR Form 138 - Request to Inspect or Copy Court Documents 06.10.2026 Launch of the Supreme and District Courts – Criminal Jury Trials – Benchbook 28.10.2026 Sexual Offence Expert Evidence Panel: Legal Stakeholder Survey All news Amended District Court Practice Direction 3 of 2024 - Sexual Violence Case Management New Form DV61 - Application for Leave to Make Further Application for Court Review of Police Protection Direction Senior judges trade places for the 2026 Judicial Exchange Program Sexual Offence Expert Evidence Panel video snapshot Su",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.courts.qld.gov.au/newsroom/news",
+      "finalUrl": "https://www.courts.qld.gov.au/newsroom/news",
+      "retrievedAt": "2026-10-29T19:32:04.420Z",
+      "contentType": "text/html",
+      "contentHash": "3b6d99a49371457fd1067e31e071e623caec5c9badc36d63e4bab67477c6d094",
+      "title": "Latest news",
+      "publishedAt": "2026-06-01",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "latest-news",
+      "title": "Latest news",
+      "description": "Latest news Most recent 08.10.2026 New version of UCPR Form 138 - Request to Inspect or Copy Court Documents 06.10.2026 Launch of the Supreme and District Courts – Criminal Jury Trials – Benchbook 28.10.2026 Sexual Offence Expert Evidence Panel: Legal Stakeholder Survey All news Amended District Court Practice Direction 3 of 2024 - Sexual Violence Case Management New Form DV61 - Application for Leave to Make Further Application for Court Review of Police Protection Direction Senior judges trade places for the 2026 Judicial Exchange Program Sexual Offence Expert Evidence Panel video snapshot Su",
+      "jurisdiction": "qld",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2026-06-01",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-06-01",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.courts.qld.gov.au/newsroom/news",
+            "finalUrl": "https://www.courts.qld.gov.au/newsroom/news",
+            "retrievedAt": "2026-10-29T19:32:04.420Z",
+            "contentType": "text/html",
+            "contentHash": "3b6d99a49371457fd1067e31e071e623caec5c9badc36d63e4bab67477c6d094",
+            "title": "Latest news",
+            "publishedAt": "2026-06-01",
+            "publishedAtPrecision": "day"
+          }
+        }
+      ],
+      "agencies": [],
+      "sourceUrl": "https://www.courts.qld.gov.au/newsroom/news",
+      "content": "Latest news Most recent 08.10.2026 New version of UCPR Form 138 - Request to Inspect or Copy Court Documents 06.10.2026 Launch of the Supreme and District Courts – Criminal Jury Trials – Benchbook 28.10.2026 Sexual Offence Expert Evidence Panel: Legal Stakeholder Survey All news Amended District Court Practice Direction 3 of 2024 - Sexual Violence Case Management New Form DV61 - Application for Leave to Make Further Application for Court Review of Police Protection Direction Senior judges trade places for the 2026 Judicial Exchange Program Sexual Offence Expert Evidence Panel video snapshot Su",
+      "aiSummary": "Latest news Most recent 08.10.2026 New version of UCPR Form 138 - Request to Inspect or Copy Court Documents 06.10.2026 Launch of the Supreme and District Courts – Criminal Jury Trials – Benchbook 28.10.2026 Sexual Offence Expert Evidence Panel: Legal Stakeholder Survey All news Amended District Court Practice Direction 3 of 2024 - Sexual Violence Case Management New Form DV61 - Application for Leave to Make Further Application for Court Review of Police Protection Direction Senior judges trade places for the 2026 Judicial Exchange Program Sexual Offence Expert Evidence Panel video snapshot Su",
+      "tags": [],
+      "themes": [],
+      "createdAt": "2026-10-29T19:32:04.420Z",
+      "updatedAt": "2026-10-29T19:32:04.420Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-latest-news-16bao",
+      "title": "Latest news",
+      "url": "https://www.courts.qld.gov.au/newsroom/news",
+      "sourceId": "qld-courts-news",
+      "sourceName": "Queensland Courts — news",
+      "jurisdiction": "qld",
+      "publishedAt": "2026-06-01",
+      "publishedAtPrecision": "day",
+      "detectedAt": "2026-10-29T19:32:04.420Z",
+      "summary": "Latest news Most recent 08.10.2026 New version of UCPR Form 138 - Request to Inspect or Copy Court Documents 06.10.2026 Launch of the Supreme and District Courts – Criminal Jury Trials – Benchbook 28.10.2026 Sexual Offence Expert Evidence Panel: Legal Stakeholder Survey All news Amended District Court Practice Direction 3 of 2024 - Sexual Violence Case Management New Form DV61 - Application for Leave to Make Further Application for Court Review of Police Protection Direction Senior judges trade places for the 2026 Judicial Exchange Program Sexual Offence Expert Evidence Panel video snapshot Su",
+      "relevanceScore": 0.65,
+      "classification": "ai",
+      "assessment": {
+        "method": "ai",
+        "promptVersion": "clef-noul-v1",
+        "assessedAt": "2026-10-29T19:32:04.420Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.courts.qld.gov.au/newsroom/news",
+          "finalUrl": "https://www.courts.qld.gov.au/newsroom/news",
+          "retrievedAt": "2026-10-29T19:32:04.420Z",
+          "contentType": "text/html",
+          "contentHash": "3b6d99a49371457fd1067e31e071e623caec5c9badc36d63e4bab67477c6d094",
+          "title": "Latest news",
+          "publishedAt": "2026-06-01",
+          "publishedAtPrecision": "day"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-10-29T19:32:04.420Z"
+  },
+  {
     "id": "source-review-dev-administrative-guideline-for-the-safe-and-respon-gmhnpg",
     "sourceUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
     "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector",
