@@ -5,7 +5,6 @@ import {
   collect,
   collectionRunFailed,
   emptyWatchState,
-  isWeeklyDue,
   type WatchState,
 } from '../src/lib/pipeline/collect';
 import type { BrowserFetch } from '../src/lib/pipeline/browser-fetch';
@@ -23,6 +22,7 @@ import {
   FOLLOW_SOURCE_PREFIX,
   followLegislation,
   followTargets,
+  isFollowDue,
   type FollowResult,
 } from '../src/lib/legislation/follow';
 import {
@@ -313,8 +313,9 @@ export async function runCollection(run: CollectionRun): Promise<void> {
  * Follow watches read each tracked federal bill's APH page through the
  * browser with the Policai identity, since APH refuses plain HTTP clients,
  * and each tracked federal instrument's Federal Register title record over
- * plain HTTP. Each record is followed weekly, counted from its last
- * successful check, so a failed follow is retried on the next run. A run
+ * plain HTTP. A bill that is still proposed is followed on every run.
+ * An Act or a Federal Register instrument is followed weekly, counted from
+ * its last successful check, so a failed follow is retried on the next run. A run
  * targeted at one catalogue source skips them; `--source track:<policyId>`
  * follows one record now.
  */
@@ -333,7 +334,7 @@ async function followTrackedLegislation(
   const targets = followTargets(policies).filter((target) =>
     run.sourceId
       ? target.sourceId === run.sourceId
-      : isWeeklyDue(state.lastCheckedBySource[target.sourceId], now()),
+      : isFollowDue(target.policy, state.lastCheckedBySource[target.sourceId], now()),
   ).filter((target) => !BROWSER_REGISTERS.has(target.register) || browserFetchImpl);
   if (!browserFetchImpl) {
     console.log('[follow] No browser retriever; APH, NSW and WA bill watches skipped.');

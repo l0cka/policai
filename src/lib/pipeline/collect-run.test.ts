@@ -189,8 +189,9 @@ describe('collection CLI write path', () => {
       expect.arrayContaining(['www.cyber.gov.au']),
     );
   });
-  it('follows a tracked federal bill weekly through the browser and stages its new stages without touching the register', async () => {
+  it('follows a proposed bill on every run and an Act weekly, and stages new stages without touching the register', async () => {
     const billUrl = aphBillPage('r7249');
+    const actUrl = aphBillPage('r7001');
     const bill = buildPolicy({
       id: 'privacy-bill',
       type: 'legislation',
@@ -203,15 +204,43 @@ describe('collection CLI write path', () => {
         events: [{ date: '2024-09-12', precision: 'day', event: { kind: 'introduced', chamber: 'lower' }, source: { url: billUrl } }],
       },
     });
-    writeFileSync(registerFile(), JSON.stringify([bill], null, 2) + '\n');
+    const act = buildPolicy({
+      id: 'settled-act',
+      type: 'legislation',
+      status: 'active',
+      sourceUrl: actUrl,
+      legislative: {
+        kind: 'bill',
+        ref: { register: 'aph', billId: 'r7001' },
+        origin: 'government',
+        events: [
+          { date: '2024-01-01', precision: 'day', event: { kind: 'introduced', chamber: 'lower' }, source: { url: actUrl } },
+          { date: '2024-02-01', precision: 'day', event: { kind: 'passed', chamber: 'lower' }, source: { url: actUrl } },
+          { date: '2024-03-01', precision: 'day', event: { kind: 'passed', chamber: 'upper' }, source: { url: actUrl } },
+          { date: '2024-04-01', precision: 'day', event: { kind: 'assented', actCitation: 'Act No. 1 of 2024' }, source: { url: actUrl } },
+        ],
+      },
+    });
+    const actPage = `<div id="main_0_mainDiv"><h1>Settled Act 2024</h1><table><thead><tr><th>House of Representatives</th></tr></thead><tbody>
+      <tr><td><span>Introduced and read a first time</span></td><td>01 Jan 2024</td></tr>
+      <tr><td><span>Third reading agreed to</span></td><td>01 Feb 2024</td></tr>
+      </tbody></table>
+      <table><thead><tr><th>Senate</th></tr></thead><tbody>
+      <tr><td><span>Third reading agreed to</span></td><td>01 Mar 2024</td></tr>
+      </tbody></table>
+      <table><thead><tr><th></th></tr></thead><tbody>
+      <tr><td><span>Assent</span><ul><li><span>Act no</span>: <span>1</span></li><li><span>Year</span>: <span>2024</span></li></ul></td><td>01 Apr 2024</td></tr>
+      </tbody></table></div>`;
+    writeFileSync(registerFile(), JSON.stringify([bill, act], null, 2) + '\n');
     const before = digest(registerFile());
     const page = readFileSync(path.join(__dirname, '../legislation/__fixtures__/aph/r7249.html'), 'utf8');
     const fetchImpl = vi.fn(async () => new Response('not found', { status: 404 })) as unknown as typeof fetch;
-    const browserFetchImpl = vi.fn(async (input: RequestInfo | URL) =>
-      String(input) === billUrl
-        ? new Response(page, { status: 200, headers: { 'content-type': 'text/html' } })
-        : new Response('not found', { status: 404 }),
-    ) as unknown as typeof fetch;
+    const browserFetchImpl = vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url === billUrl) return new Response(page, { status: 200, headers: { 'content-type': 'text/html' } });
+      if (url === actUrl) return new Response(actPage, { status: 200, headers: { 'content-type': 'text/html' } });
+      return new Response('not found', { status: 404 });
+    }) as unknown as typeof fetch;
 
     const followAt = (now: string) =>
       runCollection({
@@ -229,17 +258,20 @@ describe('collection CLI write path', () => {
           sleep: async () => {},
         }),
       });
-    const billReads = () => vi.mocked(browserFetchImpl).mock.calls.filter(([input]) => String(input) === billUrl).length;
+    const readsOf = (url: string) => vi.mocked(browserFetchImpl).mock.calls.filter(([input]) => String(input) === url).length;
 
     const decideStagedUpdate = () => writeFileSync(path.join(rootDir, 'data', 'source-reviews.json'), '[]\n');
 
     await followAt('2026-10-22T05:00:00.000Z');
-    expect(billReads()).toBe(1);
+    expect(readsOf(billUrl)).toBe(1);
+    expect(readsOf(actUrl)).toBe(1);
     decideStagedUpdate();
     await followAt('2026-10-25T05:00:00.000Z');
-    expect(billReads()).toBe(1);
+    expect(readsOf(billUrl)).toBe(2);
+    expect(readsOf(actUrl)).toBe(1);
     await followAt('2026-10-29T05:00:00.000Z');
-    expect(billReads()).toBe(2);
+    expect(readsOf(billUrl)).toBe(3);
+    expect(readsOf(actUrl)).toBe(2);
 
     const reviews = readJson<SourceReview[]>('data', 'source-reviews.json');
     expect(reviews).toHaveLength(1);

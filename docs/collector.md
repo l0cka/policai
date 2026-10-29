@@ -867,10 +867,13 @@ failures, such as timeouts, 404s and 5xx responses, still refuse.
 ### Follow watches for federal legislation
 
 Collection follows two kinds of register record, each under the watch id
-`track:<policyId>`. Each record is followed weekly: a run reads it when its
-last successful follow (`lastCheckedBySource` in the watch state) is six days
-old or more, so a failed follow is retried on the next run. A targeted
-`--source track:<policyId>` run follows that record at once.
+`track:<policyId>`. A bill whose register status is still `proposed` is
+read on every collection run, so a stage change in a sitting week is staged
+the next day. An Act, and a Federal Register instrument, is followed weekly:
+a run reads it when its last successful follow (`lastCheckedBySource` in the
+watch state) is six days old or more, so a failed follow is retried on the
+next run. A targeted `--source track:<policyId>` run follows that record at
+once.
 
 - A bill whose `legislative.ref` is an APH bill id, and whose `sourceUrl` is
   that bill's home page. The watch reads the page through the browser with the
