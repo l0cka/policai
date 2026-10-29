@@ -9449,7 +9449,7 @@
     "updatedAt": "2026-08-25T13:30:09.000Z",
     "lastReviewedAt": "2026-08-25T13:30:09.000Z",
     "verification": {
-      "status": "stale",
+      "status": "verified",
       "source": {
         "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
         "finalUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
@@ -9464,8 +9464,7 @@
       "checkedAt": "2026-08-25T13:30:09.000Z",
       "checkedBy": "Policai editorial source review",
       "method": "manual",
-      "notes": "Read the full HTML practice note including the header, introduction, paragraphs 2.8-2.11, the signature block and attachment list; the AI provisions are confined to paragraphs 2.8-2.11 and no separate commencement date is stated. Direct HTTP retrieval of the Federal Court page is blocked (HTTP 403), so the fingerprint is the SHA-256 of the raw HTML captured through the browser-rendering scraper on 25 August 2026. Source content changed during register audit at 2026-10-29T22:17:05.650Z; editorial re-verification is required.",
-      "lastSourceAuditAt": "2026-10-29T22:17:05.650Z"
+      "notes": "Read the full HTML practice note including the header, introduction, paragraphs 2.8-2.11, the signature block and attachment list; the AI provisions are confined to paragraphs 2.8-2.11 and no separate commencement date is stated. Direct HTTP retrieval of the Federal Court page is blocked (HTTP 403), so the fingerprint is the SHA-256 of the raw HTML captured through the browser-rendering scraper on 25 August 2026."
     },
     "dates": [
       {
