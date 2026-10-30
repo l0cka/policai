@@ -264,7 +264,7 @@ describe("pending source review cards", () => {
 
 describe("signal source review apply", () => {
 	it.each(["approve", "publish"])(
-		"refuses %s and points to decision cards",
+		"refuses %s and points to the passkey approval",
 		async (action) => {
 			const reject = vi.fn();
 			const verify = vi.fn();
@@ -280,7 +280,7 @@ describe("signal source review apply", () => {
 			);
 
 			expect(result.exitCode).toBe(2);
-			expect(result.stderr).toContain("decision cards");
+			expect(result.stderr).toContain("passkey");
 			expect(reject).not.toHaveBeenCalled();
 			expect(verify).not.toHaveBeenCalled();
 		},

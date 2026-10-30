@@ -36,7 +36,8 @@ A later automated fingerprint check is recorded separately as
 An editor can renew it in batches instead (`npm run reconfirm:register`). The
 script audits records due within 30 days and groups those whose source
 fingerprint is unchanged into batches in `data/reconfirmations.json`. The
-editor approves a batch on one decision card. Approval renews `checkedAt` for
+editor approves a batch with one passkey signature (`reconfirm approve` reads
+it from the approvals mailbox). Approval renews `checkedAt` for
 every record in the batch, or for none: each fingerprint must still match and
 each audit must be at most seven days old. Changed or unreadable sources get a
 full review.

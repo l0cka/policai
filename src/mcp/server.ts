@@ -162,7 +162,7 @@ server.registerTool(
   {
     title: 'Show source proposal',
     description:
-      'Read-only. Returns what a decision card must show for one staged review: the current record, the proposed record, the source evidence, and proposalHash with its short proposalCode. Post a decision card with that content, then pass proposalHash to record_decision once the editor taps Approve.',
+      'Read-only. Returns what the editor must see for one staged review: the current record, the proposed record, the source evidence, proposalHash with its short proposalCode, and approvalUrl. Show the editor that content with approvalUrl, where they approve with their passkey, then pass proposalHash to record_decision.',
     inputSchema: {
       id: z.string().min(1),
     },
@@ -216,12 +216,12 @@ writeTool(server.registerTool(
   {
     title: 'Record editor decision',
     description:
-      'Approves and publishes a staged review after the editor tapped Approve on a Policai project decision card. Call it only with the proposalHash the card showed and the link to that card; a typed "go ahead" is not a decision. Refuses when the review changed since the card was posted, when the reviewer is not on the editor allowlist (POLICAI_SIGNAL_REVIEWERS, default Daniel Alkurdi), or when a staged browser capture is over 7 days old. Retrying the same decision resumes a failed publication.',
+      'Approves and publishes a staged review after the editor approved its proposalHash with their passkey at the approvalUrl from show_source_proposal. The tool reads that signature itself and records the passkey owner as the reviewer; a typed "go ahead" or a card tap is not a decision. Until an editor passkey is registered in data/editor-passkeys.json, it instead takes reviewer (on POLICAI_SIGNAL_REVIEWERS, default Daniel Alkurdi) and the attestationUrl of the claude.ai decision card. Refuses when the review changed since it was approved, or when a staged browser capture is over 7 days old. Retrying the same decision resumes a failed publication.',
     inputSchema: {
       id: z.string().min(1),
       proposalHash: z.string().regex(/^[a-f0-9]{64}$/),
-      reviewer: z.string().min(1),
-      attestationUrl: z.string().url(),
+      reviewer: z.string().min(1).optional(),
+      attestationUrl: z.string().url().optional(),
     },
     annotations: {
       readOnlyHint: false,

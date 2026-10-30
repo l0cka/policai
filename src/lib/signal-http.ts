@@ -12,7 +12,7 @@ export const SIGNAL_HTTP_REVIEWER_DEFAULT = "Daniel Alkurdi";
 export type SignalHttpAction = "dismiss";
 
 const APPROVAL_ELSEWHERE =
-	"Signal cannot approve. Daniel approves a source by tapping its decision card in the Policai Claude project.";
+	"Signal cannot approve. Daniel approves a source with his passkey on policai.org/approve.";
 
 export interface SignalAttestationInput {
 	replyText: string;

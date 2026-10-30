@@ -1,10 +1,15 @@
 /**
  * Re-confirm register records whose official source is unchanged since an
- * editor last verified them, one decision card per batch.
+ * editor last verified them, one editor approval per batch.
  *
  * Usage:
  *   npm run reconfirm:register -- propose [--due-within=30] [--batch-size=10] [--dry-run]
- *   npm run reconfirm:register -- approve --batch=<id> --attestation=<card url> [--approved-at=<ISO>] [--approved-by="Daniel Alkurdi"]
+ *   npm run reconfirm:register -- approve --batch=<id>
+ *
+ * Once an editor passkey is registered, `approve` takes the editor's passkey
+ * signature over the batch from the approvals mailbox; `propose` prints the
+ * page where the editor signs. Before then it takes
+ * --attestation=<card url> [--approved-at=<ISO>] [--approved-by="Daniel Alkurdi"].
  *
  * `propose` audits every record due within the window (it needs network
  * access to the official sources, so run it on Argus), writes the audit
@@ -29,10 +34,20 @@ import {
   proposeReconfirmBatches,
   RECONFIRM_BATCH_SIZE,
   RECONFIRM_DUE_WITHIN_DAYS,
+  reconfirmApprovalSubject,
   ReconfirmError,
   selectReconfirmCandidates,
+  type ReconfirmBatch,
+  type ReconfirmDecision,
   type ReconfirmLedger,
 } from '../src/lib/register-reconfirm';
+import {
+  approvalPageUrl,
+  fetchEditorApproval,
+  readEditorPasskeys,
+  verifyEditorApproval,
+  type EditorPasskey,
+} from '../src/lib/editor-approval';
 import type { Policy } from '../src/types';
 
 const DATA_DIR = path.join(process.cwd(), 'data');
@@ -84,6 +99,7 @@ async function propose(args: string[]) {
   console.log(`reconfirm: ${candidates.length} records due within ${dueWithinDays} days`);
   for (const batch of batches) {
     console.log(`\nBatch ${batch.id} (${batch.entries.length} unchanged)`);
+    console.log(`  approve: ${approvalPageUrl(reconfirmApprovalSubject(batch))}`);
     for (const entry of batch.entries)
       console.log(`  ${entry.policyId}  verified ${entry.verifiedAt.slice(0, 10)}  ${entry.title}`);
   }
@@ -101,22 +117,43 @@ async function propose(args: string[]) {
   console.log(`\nWrote audit evidence and ${batches.length} batch(es).`);
 }
 
+async function passkeyDecision(batch: ReconfirmBatch, passkeys: EditorPasskey[]): Promise<ReconfirmDecision> {
+  const subject = reconfirmApprovalSubject(batch);
+  const approval = await fetchEditorApproval(subject);
+  if (!approval) {
+    throw new Error(`The editor has not approved batch ${batch.id} with their passkey. Send them ${approvalPageUrl(subject)}`);
+  }
+  const verified = await verifyEditorApproval(approval, passkeys, subject);
+  if (!verified.ok) throw new Error(verified.error);
+  return { approvedBy: verified.passkey.reviewer, approvedAt: approval.receivedAt, approval };
+}
+
 async function approve(args: string[]) {
   const batchId = flag(args, 'batch');
-  const attestationUrl = flag(args, 'attestation');
-  if (!batchId || !attestationUrl) throw new Error('approve needs --batch and --attestation');
-  const decision = {
-    approvedBy: flag(args, 'approved-by') ?? 'Daniel Alkurdi',
-    approvedAt: flag(args, 'approved-at') ?? new Date().toISOString(),
-    attestationUrl,
-  };
+  if (!batchId) throw new Error('approve needs --batch');
+  const ledger = await readLedger();
+  const batch = ledger.batches.find((candidate) => candidate.id === batchId);
+  if (!batch) throw new ReconfirmError([`unknown batch ${batchId}`]);
+
+  const passkeys = await readEditorPasskeys();
+  let decision: ReconfirmDecision;
+  if (passkeys.length > 0) {
+    decision = await passkeyDecision(batch, passkeys);
+  } else {
+    const attestationUrl = flag(args, 'attestation');
+    if (!attestationUrl) throw new Error('approve needs --attestation until an editor passkey is registered');
+    decision = {
+      approvedBy: flag(args, 'approved-by') ?? 'Daniel Alkurdi',
+      approvedAt: flag(args, 'approved-at') ?? new Date().toISOString(),
+      attestationUrl,
+    };
+  }
 
   const policies = await readJsonFile<Policy[]>(POLICIES_FILE, []);
-  const result = approveReconfirmBatch(policies, await readLedger(), batchId, decision);
+  const result = approveReconfirmBatch(policies, ledger, batchId, decision);
   await writeJsonFile(POLICIES_FILE, result.policies);
   await writeJsonFile(LEDGER_FILE, result.ledger);
-  const batch = result.ledger.batches.find((candidate) => candidate.id === batchId)!;
-  console.log(`reconfirm: batch ${batchId} approved, ${batch.entries.length} records renewed.`);
+  console.log(`reconfirm: batch ${batchId} approved by ${decision.approvedBy}, ${batch.entries.length} records renewed.`);
 }
 
 async function main() {

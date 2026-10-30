@@ -23,6 +23,15 @@ import {
 import { countUnsubstantiatedSecondaryDates } from '../src/lib/validate-data';
 import { readArticleImageFiles } from '../src/lib/article-image-files';
 import { readArticleSources } from '../src/lib/articles';
+import {
+  EDITOR_PASSKEYS_PATH,
+  readEditorPasskeys,
+  type EditorPasskey,
+} from '../src/lib/editor-approval';
+import {
+  validateEditorApprovals,
+  type EditorApprovalState,
+} from '../src/lib/editor-approval-validation';
 import { readArticleBaseline } from '../src/lib/article-baseline';
 import { getPolicies } from '../src/lib/data-service';
 import {
@@ -95,6 +104,34 @@ async function budgetIncreaseCommittedOnBranch(): Promise<number | undefined> {
     // guard has no baseline to compare against.
     return undefined;
   }
+}
+
+async function gitShowJson<T>(sha: string, file: string, fallback: T): Promise<T> {
+  try {
+    const { stdout } = await execFileAsync('git', ['show', `${sha}:${file}`], { maxBuffer: 256 * 1024 * 1024 });
+    return JSON.parse(stdout) as T;
+  } catch (error) {
+    if (/does not exist|exists on disk, but not in/.test(String((error as { stderr?: string }).stderr ?? ''))) return fallback;
+    throw error;
+  }
+}
+
+/** The approval state at the merge base, or null when there is no base to compare with. */
+async function editorApprovalBase(): Promise<EditorApprovalState | null> {
+  let sha = process.env.GITHUB_BASE_SHA?.trim();
+  if (!sha) {
+    try {
+      sha = (await execFileAsync('git', ['merge-base', 'HEAD', 'origin/main'])).stdout.trim();
+    } catch {
+      return null;
+    }
+  }
+  const [passkeys, sourceReviews, ledger] = await Promise.all([
+    gitShowJson<EditorPasskey[]>(sha, EDITOR_PASSKEYS_PATH, []),
+    gitShowJson<SourceReview[]>(sha, 'data/source-reviews.json', []),
+    gitShowJson<ReconfirmLedger>(sha, 'data/reconfirmations.json', { batches: [] }),
+  ]);
+  return { passkeys, sourceReviews, reconfirmBatches: ledger.batches };
 }
 
 async function main() {
@@ -190,6 +227,12 @@ async function main() {
     return;
   }
 
+  const [passkeys, approvalBase] = await Promise.all([readEditorPasskeys(), editorApprovalBase()]);
+  const editorApprovals = await validateEditorApprovals(
+    { passkeys, sourceReviews, reconfirmBatches: reconfirmations?.batches ?? [] },
+    approvalBase,
+  );
+
   const [articles, articleBaseline, publicPolicies, articleImages] = await Promise.all([
     readArticleSources(path.join(STATE_DIR, 'articles')),
     readArticleBaseline({
@@ -228,6 +271,7 @@ async function main() {
     validateSiteReuse(siteReuse, bodies),
     validateRuleScopes(ruleScopes, policies),
     validateReconfirmLedger(reconfirmations, policies),
+    editorApprovals,
     validateArticles(articles, articleBaseline, {
       policies,
       publicPolicies,
