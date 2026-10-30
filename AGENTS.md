@@ -543,15 +543,14 @@ Clef needs no key: it talks only to Ollama on `127.0.0.1:11434`. The retired clo
   current page view only.
 - Run `npm run check` before handing off or committing.
 
-## Pull requests and Cursor review
+## Pull requests and review
 
-Every push to a non-draft PR starts another pass of the Cursor Automation and puts the `cursor-review` check back to waiting on the new head, so a push made only to answer a note starts the next round of notes.
+No automated review runs on PRs. Reviews are requested by hand, and auto-merge does not wait for one.
 
-- A review that ends `<!-- cursor-review: failure -->` is work. Fix every blocker it names.
-- A non-blocking note on a passing review: fix it once if the fix is cheap, or reply on the thread with the reason and resolve it.
-- Never push only because of a note you have already seen or handled. Later reviews often repeat earlier notes.
-- Batch fixes into one push.
-- Never post an approving review, and never write the `cursor-review` marker yourself. Only a `cursor[bot]` review can complete that check (`.github/workflows/cursor-review.yml`). Merging also needs the other required checks green and every review thread resolved.
+- Put the `hold` label on a PR that must wait for a review, a date or an event, or auto-merge lands it once CI is green.
+- When a review is posted, address it before merging: fix every blocker it names; for a non-blocking note, fix it once if the fix is cheap, or reply on the thread with the reason and resolve it.
+- Never push only because of a note you have already seen or handled. Batch fixes into one push.
+- Never post an approving review. Merging needs the required checks green and every review thread resolved.
 
 ## Documentation Standard
 
