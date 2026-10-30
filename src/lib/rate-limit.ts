@@ -1,13 +1,12 @@
 import { NextResponse } from 'next/server';
-import { parseSourceUrl } from '@/lib/source-url';
 
 /**
- * Simple in-memory sliding-window rate limiter.
- * Tracks requests per IP with automatic cleanup of expired entries.
+ * Simple in-memory fixed-window rate limiter.
+ * Tracks requests per client IP and bucket, with cleanup of expired entries.
  *
  * Note: In-memory state is per-instance and resets on deploy. This provides
  * basic protection against abuse, not a hard guarantee. For stronger rate
- * limiting, use Vercel's built-in WAF or an external service.
+ * limiting, use Cloudflare rate limiting rules.
  */
 
 interface RateLimitEntry {
@@ -26,16 +25,13 @@ setInterval(() => {
 }, 60_000);
 
 export interface RateLimitConfig {
+  /** Routes sharing a bucket share one budget, whatever their path or ids */
+  bucket: string;
   /** Maximum requests per window */
   limit: number;
   /** Window size in seconds */
   windowSeconds: number;
 }
-
-const DEFAULT_CONFIG: RateLimitConfig = {
-  limit: 60,
-  windowSeconds: 60,
-};
 
 /**
  * Check rate limit for a request. Returns null if allowed,
@@ -43,14 +39,13 @@ const DEFAULT_CONFIG: RateLimitConfig = {
  */
 export function checkRateLimit(
   request: Request,
-  config: RateLimitConfig = DEFAULT_CONFIG,
+  config: RateLimitConfig,
 ): NextResponse | null {
-  const ip =
-    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-    request.headers.get('x-real-ip') ||
-    'unknown';
+  // Cloudflare sets cf-connecting-ip and overwrites any client copy;
+  // X-Forwarded-For and X-Real-IP arrive as the caller wrote them.
+  const ip = request.headers.get('cf-connecting-ip')?.trim() || 'unknown';
 
-  const key = `${ip}:${parseSourceUrl(request.url).pathname}`;
+  const key = `${config.bucket}:${ip}`;
   const now = Date.now();
   const entry = store.get(key);
 

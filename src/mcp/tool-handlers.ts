@@ -16,6 +16,7 @@ import {
   verifyRegisterRecord,
 } from '@/lib/source-ingest';
 import { getSourceReviews } from '@/lib/data-service';
+import { tokenMatches } from '@/lib/token-match';
 import {
   isSignalReviewer,
   signalReviewers,
@@ -47,7 +48,7 @@ export function requireMcpAdminToken(token?: string) {
   if (!expected) {
     throw new Error('POLICAI_MCP_ADMIN_TOKEN is not configured');
   }
-  if (token !== expected) {
+  if (!token || !tokenMatches(token, expected)) {
     throw new Error('Invalid POLICAI_MCP_ADMIN_TOKEN');
   }
 }

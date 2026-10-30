@@ -1,5 +1,6 @@
 import type { PolicyDraft, SourceReview, TimelineEventDraft } from "@/types";
 import { getJurisdictionName, getPolicyTypeName } from "@/types";
+import { tokenMatches } from "@/lib/token-match";
 import {
 	formatSignalInstant,
 	isSignalReviewer,
@@ -93,7 +94,7 @@ export function requireSignalHttpToken(
 			error: "POLICAI_SIGNAL_TOKEN is not configured on the host",
 		};
 	}
-	if (!requestToken || requestToken !== expected) {
+	if (!requestToken || !tokenMatches(requestToken, expected)) {
 		return {
 			ok: false,
 			status: 401,

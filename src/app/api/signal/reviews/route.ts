@@ -11,7 +11,11 @@ import {
 import { runWithDataOverlay } from "@/lib/data-overlay";
 import { openSignalSnapshot } from "@/lib/signal-git-persist";
 
-const SIGNAL_RATE = { limit: 20, windowSeconds: 60 } as const;
+const SIGNAL_RATE = {
+	bucket: "signal-reviews",
+	limit: 20,
+	windowSeconds: 60,
+} as const;
 
 function signalJson(data: unknown, status = 200) {
 	return NextResponse.json(data, {

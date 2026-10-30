@@ -1023,7 +1023,9 @@ It must not claim TTY typing.
 | `main_moved` (409) | `main` target only: `main` moved after the read; retry |
 | `github_persist_failed` (502) | Commit, branch or PR creation failed; nothing merged |
 
-Rate limit: 20 POST / 30 GET per IP per minute on `/api/signal/*`.
+Rate limit: 20 POST / 30 GET per client IP per minute on `/api/signal/*`. The
+client is Cloudflare's `cf-connecting-ip`, never `X-Forwarded-For`, and every
+review id shares the one GET budget.
 
 **Persistence:** Git is the database. Signal POST runs on the `policai`
 Worker, which has no writable project filesystem, so it commits through the

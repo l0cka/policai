@@ -2,6 +2,7 @@ import os from "node:os";
 import type { Policy, PolicyDraft, SourceReview, TimelineEventDraft } from "@/types";
 import { getJurisdictionName, getPolicyTypeName } from "@/types";
 import { auDate } from "@/lib/au-date";
+import { tokenMatches } from "@/lib/token-match";
 
 /**
  * Read-only cards for pending source reviews, and a recovery CLI apply path.
@@ -118,7 +119,7 @@ export function isTrustedSignalApply(input: {
 }): boolean {
 	const expected = input.env.POLICAI_MCP_ADMIN_TOKEN;
 	if (!expected || !input.adminToken) return false;
-	return input.adminToken === expected;
+	return tokenMatches(input.adminToken, expected);
 }
 
 /**
