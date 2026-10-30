@@ -12156,7 +12156,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "introductory text before section 1",
       "quote": "The Court will ask you to sign a [form](https://www.fedcourt.gov.au/forms-and-fees/forms/administrative-forms/litigant-in-person-acknowledgement) that tells the Court that you have read all of this **practice note**."
     },
@@ -12166,10 +12166,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Quote retains markdown link and bold markup from the saved text. Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -12187,7 +12185,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 1.8",
       "quote": "You should read sections [37M](https://www.legislation.gov.au/C2004A01586/2024-12-11/2024-12-11/text/1/epub/OEBPS/document_1/document_1.html#_Toc189338032) and [37N](https://www.legislation.gov.au/C2004A01586/2024-12-11/2024-12-11/text/1/epub/OEBPS/document_1/document_1.html#_Toc189338033) of the Act before you go on."
     },
@@ -12197,10 +12195,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Quote retains markdown link markup. Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -12217,7 +12213,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 1.8",
       "quote": "Section 37N says that all litigants must help achieve that goal."
     },
@@ -12227,10 +12223,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Statutory obligation restated. Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -12246,7 +12240,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 2.1",
       "quote": "You should speak to a lawyer before you decide to start a case on your own, or to defend a case brought against you, without a lawyer to help you."
     },
@@ -12256,10 +12250,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -12278,7 +12270,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 2.2",
       "quote": "The person who loses usually must pay the **costs** of the winner."
     },
@@ -12288,10 +12280,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Stated procedural consequence; 'usually' carried as a condition. Bold markup retained. Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -12308,7 +12298,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 2.3",
       "quote": "You must think carefully about what you need to win your case, before you decide to go on without a lawyer."
     },
@@ -12318,10 +12308,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -12339,7 +12327,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 2.7",
       "quote": "The Court does not have to refer you for legal help. The Court will decide whether to refer a **party** in each case."
     },
@@ -12349,10 +12337,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Source says 'The Court can refer a party for legal help' (rendered 'may'); quoted sentences carry the discretion. Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -12370,7 +12356,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 2.8",
       "quote": "Do not use **Generative Artificial Intelligence (AI) programs** (like Chat GPT, Claude, Microsoft Copilot or Google Gemini) to get legal help about whether you have a case you can win."
     },
@@ -12380,10 +12366,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Imperative 'Do not use' rendered as 'must_not'. Bold markup retained. Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -12401,7 +12385,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 2.9",
       "quote": "Do not use **social media** or **pseudolaw** sites for legal help of any kind."
     },
@@ -12411,10 +12395,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Imperative rendered as 'must_not'. Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -12433,7 +12415,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 2.9",
       "quote": "You can be in serious trouble if you make legal arguments to the Court that are not based on real **law**."
     },
@@ -12443,10 +12425,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Stated consequence; 'can be' rendered as 'may'. Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -12465,7 +12445,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 2.10",
       "quote": "If you start or defend a case based on real **law** and **evidence**, you can use **AI programs** to help explain your case to the Court."
     },
@@ -12475,10 +12455,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "'can use' rendered as permission ('may'). Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -12497,7 +12475,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 2.10",
       "quote": "If you use **AI programs** to help explain your case, you will have to tell the Court that is what you have done if the Court asks you about it."
     },
@@ -12507,10 +12485,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Source phrase 'will have to tell' is an obligation; rendered as 'must'. Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -12527,7 +12503,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 2.10",
       "quote": "You must check everything you get from **AI programs**. You must check that all the facts are correct and complete. You must also check that the **law** is correct."
     },
@@ -12537,10 +12513,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass confirmed all three sentences."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -12559,7 +12533,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 2.10",
       "quote": "If you cannot get help from a lawyer, you can use a **legal research database** to check the **law**."
     },
@@ -12569,10 +12543,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "'can use' rendered as 'may'. Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -12592,7 +12564,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 2.10",
       "quote": "You can be in serious trouble if you give the Court false information about the facts or the **law**."
     },
@@ -12602,10 +12574,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Stated consequence; 'can be' rendered as 'may'. Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -12623,7 +12593,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 3.1",
       "quote": "You should tell the Court as soon as you can if you do not have good English and you need an **interpreter**. Make sure you tell the Court what language you speak."
     },
@@ -12633,10 +12603,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -12655,7 +12623,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 3.2",
       "quote": "You should phone 131 450 for a telephone **interpreter** if you need to speak to the **registry** through an **interpreter**."
     },
@@ -12665,10 +12633,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -12686,7 +12652,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 3.3",
       "quote": "You need to find an **interpreter** yourself if you can pay for the **interpreter**."
     },
@@ -12696,10 +12662,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "'need to' rendered as 'must'. Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -12718,7 +12682,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 3.4",
       "quote": "The Court can help you if you need an **interpreter**, but you cannot pay for one. You need to contact the **registry** at least one week before your first **hearing** in the Court. Make sure you tell the Court what language you speak."
     },
@@ -12728,10 +12692,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "'need to' rendered as 'must'. Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -12751,7 +12713,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 3.8",
       "quote": "Please contact the Court’s **registry** at least one week before your first Court **hearing** if you need help with access to the Court or with speaking about your case in Court for any reason."
     },
@@ -12761,10 +12723,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Polite imperative 'Please contact' rendered as 'should'. Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -12784,7 +12744,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 3.8",
       "quote": "**Reasonable adjustments** will be made, but there are limits on what can be done because of the nature of a Court case. The Court must make sure the process is fair to all **parties** and must consider the **costs** for other **parties** when deciding whether adjustments can be made to how the case is conducted."
     },
@@ -12794,10 +12754,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -12816,7 +12774,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 3.9",
       "quote": "You should contact the Court’s **registry** as soon as possible if you need an **adjournment** of a Court **hearing** for any reason."
     },
@@ -12826,10 +12784,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -12848,7 +12804,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 3.9",
       "quote": "You must have a good reason for an **adjournment**. You may be asked to provide **evidence** to the Court about why you need an **adjournment**. You should check with the Court’s **registry** to see what you need to do."
     },
@@ -12858,10 +12814,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -12882,7 +12836,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 4.2",
       "quote": "You must only bring a **claim** or **appeal** if you can support it with facts and **law**. You must have **evidence** to prove the facts of your **claim** and **law** that supports your **claim** or **appeal**. If you bring a **claim** or **appeal** that is not supported with facts and **law**, your case will not be allowed to go on."
     },
@@ -12892,10 +12846,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Consequence sentence included in the quote. Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -12915,7 +12867,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 4.2",
       "quote": "If you bring a **claim** or **appeal** that is not supported with facts and **law**, your case will not be allowed to go on."
     },
@@ -12925,10 +12877,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Stated procedural consequence; passive 'will not be allowed' attributed to the Court. Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -12944,7 +12894,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 4.3",
       "quote": "You must only use the Court to solve legal disputes. The Court is not the place to get someone back or to get out of what you owe to someone."
     },
@@ -12954,10 +12904,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -12973,7 +12921,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 4.4",
       "quote": "You must be able to explain your **claim** or **appeal** to the Court. You must be able to explain clearly."
     },
@@ -12983,10 +12931,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -13002,7 +12948,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 4.4",
       "quote": "You must be able to explain clearly. You must not repeat yourself."
     },
@@ -13012,10 +12958,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -13031,7 +12975,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 4.5",
       "quote": "You must tell the Court what **orders** you want the Court to make. You can only ask the Court for **orders** that it can make."
     },
@@ -13041,10 +12985,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -13061,7 +13003,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 4.6",
       "quote": "You must only include facts and **law** that will help to end the dispute. Do not include things that are not part of the dispute."
     },
@@ -13071,10 +13013,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -13092,7 +13032,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 4.7",
       "quote": "You must act respectfully and honestly when you deal with Judges, **Registrars**, Court staff and lawyers for other **parties**: > (a) in all your written **documents**, emails and phone calls; and > > (b) when you meet with people in the Court or elsewhere."
     },
@@ -13102,10 +13042,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Blockquote markers retained verbatim. Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -13122,7 +13060,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 4.8",
       "quote": "4.8 You must not shout, swear, threaten or be rude."
     },
@@ -13132,10 +13070,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Paragraph number included to distinguish from the identical sentence at 5.7. Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -13151,7 +13087,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 4.9",
       "quote": "You must only contact the Court when you have to or when your contact relates directly to your case."
     },
@@ -13161,10 +13097,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -13183,7 +13117,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 4.10",
       "quote": "All your emails or letters to the Court after you have started your case must be copied to the lawyers for the other **parties**."
     },
@@ -13193,10 +13127,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -13212,7 +13144,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 4.10",
       "quote": "You must not send multiple similar emails to the Court or try to argue your case in emails."
     },
@@ -13222,10 +13154,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -13242,7 +13172,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 4.11",
       "quote": "You must do what the Court **orders** you to do. You must **file** any **document** by the time the Court has fixed in its **orders** for **filing** that **document**. If you do not obey the Court’s **orders**, the Court might not allow you to go on with your case."
     },
@@ -13252,10 +13182,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Consequence sentence included. Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -13274,7 +13202,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 4.11",
       "quote": "If you do not obey the Court’s **orders**, the Court might not allow you to go on with your case."
     },
@@ -13284,10 +13212,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Stated consequence; 'might not' rendered as 'may' with negation in the action. Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -13304,7 +13230,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 4.12",
       "quote": "You must attend all Court **hearings** at the right place and the right time. It is up to you to make sure you know these things. If you do not attend a **hearing** at the right place and time, you might not be allowed to go on with your case."
     },
@@ -13314,10 +13240,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Consequence sentence included. Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -13334,7 +13258,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 4.13",
       "quote": "You must work with the other **parties** to end the dispute. You might not like the other **parties** and you might not trust them. You should still try your best to resolve the dispute. You should think about the risks of going on with your **claim** when you could end the dispute by agreeing with the other **parties**."
     },
@@ -13344,10 +13268,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -13365,7 +13287,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 4.14",
       "quote": "You must pay any Court fees, unless you are excused from paying. The Court has fees for **filing** **documents** and fees for **final hearings**."
     },
@@ -13375,10 +13297,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -13397,7 +13317,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 5.2",
       "quote": "You must only defend the **claim** if you can support your **defence** with facts and **law**. If the other **party** does not have **evidence** of their **claim** or their **evidence** is weak, you may be able to argue that they must lose because they have not proved their case."
     },
@@ -13407,10 +13327,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -13429,7 +13347,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 5.3",
       "quote": "If you want to argue that the facts are different from what the other **party** says they are, you must have **evidence** to support this. You must be able to show that the **law** says that the other side must lose their **claim** or **appeal**."
     },
@@ -13439,10 +13357,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -13459,7 +13375,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 5.4",
       "quote": "You must be able explain your **defence** to the Court. You must explain clearly."
     },
@@ -13469,10 +13385,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Source reads 'be able explain' (sic). Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -13489,7 +13403,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 5.4",
       "quote": "You must explain clearly. You must not repeat yourself."
     },
@@ -13499,10 +13413,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -13519,7 +13431,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 5.5",
       "quote": "5.5 You must only include facts and **law** that will help to end the dispute. Do not include things that are not part of the dispute."
     },
@@ -13529,10 +13441,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Paragraph number included to distinguish from the identical text at 4.6. Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -13550,7 +13460,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 5.6",
       "quote": "5.6 You must act respectfully and honestly when you deal with Judges, **Registrars**, Court staff and lawyers for other **parties**: > (a) in all your written **documents**, emails and phone calls; and > > (b) when you meet with people in the Court or elsewhere."
     },
@@ -13560,10 +13470,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Paragraph number included to distinguish from 4.7; blockquote markers retained. Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -13580,7 +13488,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 5.7",
       "quote": "5.7 You must not shout, swear, threaten or be rude."
     },
@@ -13590,10 +13498,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Paragraph number included to distinguish from 4.8. Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -13609,7 +13515,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 5.8",
       "quote": "You must only contact the Court when you have to and when your contact relates directly to your case."
     },
@@ -13619,10 +13525,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Wording differs from 4.9 ('and' rather than 'or'). Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -13639,7 +13543,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 5.9",
       "quote": "All your emails or letters to the Court must be copied to the lawyers for the other **parties**. You must not send multiple similar emails to the Court or try to argue your **defence** in emails."
     },
@@ -13649,10 +13553,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -13668,7 +13570,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 5.9",
       "quote": "You must not send multiple similar emails to the Court or try to argue your **defence** in emails."
     },
@@ -13678,10 +13580,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -13698,7 +13598,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 5.10",
       "quote": "You must do what the Court **orders** you to do. You must **file** any **document** by the time the Court has fixed in its **orders** for **filing** that **document**. If you do not obey the Court’s **orders**, the Court might not allow you to go on with your **defence**."
     },
@@ -13708,10 +13608,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Consequence sentence included. Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -13730,7 +13628,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 5.10",
       "quote": "If you do not obey the Court’s **orders**, the Court might not allow you to go on with your **defence**."
     },
@@ -13740,10 +13638,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "'might not' rendered as 'may' with negation in the action. Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -13760,7 +13656,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 5.11",
       "quote": "You must attend all Court **hearings** at the right place and the right time. It is up to you to make sure you know these things. If you do not attend a **hearing** at the right place and time, the Court may make **orders** against you."
     },
@@ -13770,10 +13666,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -13792,7 +13686,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 5.11",
       "quote": "If you do not attend a **hearing** at the right place and time, the Court may make **orders** against you."
     },
@@ -13802,10 +13696,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -13822,7 +13714,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 5.12",
       "quote": "You must work with the other **parties** to end the dispute. You might not like the other **parties** and you might not trust them. You should still try your best to resolve the dispute. Think about the risks of going on defending the **claim** when you could end the dispute by agreeing with the other **parties**."
     },
@@ -13832,10 +13724,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -13853,7 +13743,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 5.13",
       "quote": "You must pay any Court fees, unless you are excused from paying. The person bringing the **claim** or **appeal** will pay most of the Court fees."
     },
@@ -13863,10 +13753,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -13884,7 +13772,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 6.20",
       "quote": "If you have questions about your case, you should ask registry staff. You should only contact **chambers** staff or Registrar support staff when you have been asked to do so."
     },
@@ -13894,10 +13782,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -13914,7 +13800,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 8.2",
       "quote": "One rule is that lawyers must help the Court."
     },
@@ -13924,10 +13810,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -13946,7 +13830,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 8.3",
       "quote": "The Court also expects the **parties** to cooperate in preparing for the **final hearing** of the case. You should make a polite request of the lawyer for the other **parties** if there is something that you think should happen in the case."
     },
@@ -13956,10 +13840,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -13976,7 +13858,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 8.5",
       "quote": "The lawyer must pass on to their client anything you say to the lawyer."
     },
@@ -13986,10 +13868,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -14008,7 +13888,7 @@
     ],
     "source": {
       "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-      "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
       "locator": "paragraph 9.4",
       "quote": "If you decide to go on with the case without a lawyer but are unsure about the next steps, please contact the **registry**."
     },
@@ -14018,10 +13898,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:18:00.144Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Polite imperative 'please contact' rendered as 'should'. Second pass confirmed."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {

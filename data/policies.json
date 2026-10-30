@@ -9446,25 +9446,29 @@
       "transparency-disclosure"
     ],
     "createdAt": "2026-03-05T00:00:00Z",
-    "updatedAt": "2026-08-25T13:30:09.000Z",
-    "lastReviewedAt": "2026-08-25T13:30:09.000Z",
+    "updatedAt": "2026-10-30T00:48:04.276Z",
+    "lastReviewedAt": "2026-10-30T00:48:04.276Z",
     "verification": {
       "status": "verified",
       "source": {
         "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
         "finalUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-        "title": "Litigants in Person Practice Note (GPN-LIP)",
-        "publisher": "Federal Court of Australia",
-        "retrievedAt": "2026-08-25T13:30:09.000Z",
-        "publishedAt": "2026-03-05",
-        "publishedAtPrecision": "day",
+        "retrievedAt": "2026-10-30T00:48:04.247Z",
         "contentType": "text/html",
-        "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e"
+        "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
+        "title": "Litigants in Person Practice Note (GPN-LIP)",
+        "reviewedDate": {
+          "date": "2026-03-05",
+          "precision": "day",
+          "reviewedAt": "2026-10-30T00:48:04.276Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The practice note is headed D S Mortimer, Chief Justice 05 March 2026 and is signed D S Mortimer, Chief Justice, 5 March 2026 at its end; page metadata gives DCTERMS.date 2026-03-05. Re-read on 30 Oct 2026."
+        }
       },
-      "checkedAt": "2026-08-25T13:30:09.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-10-30T00:48:04.276Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Read the full HTML practice note including the header, introduction, paragraphs 2.8-2.11, the signature block and attachment list; the AI provisions are confined to paragraphs 2.8-2.11 and no separate commencement date is stated. Direct HTTP retrieval of the Federal Court page is blocked (HTTP 403), so the fingerprint is the SHA-256 of the raw HTML captured through the browser-rendering scraper on 25 August 2026."
+      "notes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd732MXt4YZwrggLjJxEWv7xC&decision=cmsg_019nKBbCzGtpRmfKqX3Xisd7PGU4LRW57TUPodS4Gav985 (proposal 2e163f95). Proposed by Claude (agent). Re-verification. Paragraphs 2.8 to 2.11 of the live page match the record summary; signature block D S Mortimer, Chief Justice, 5 March 2026; DCTERMS.date 2026-03-05, DCTERMS.modified 2026-06-22 (before the 25 Aug review)."
     },
     "dates": [
       {
@@ -9475,19 +9479,16 @@
         "source": {
           "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
           "finalUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
-          "title": "Litigants in Person Practice Note (GPN-LIP)",
-          "publisher": "Federal Court of Australia",
-          "retrievedAt": "2026-08-25T13:30:09.000Z",
-          "publishedAt": "2026-03-05",
-          "publishedAtPrecision": "day",
+          "retrievedAt": "2026-10-30T00:48:04.247Z",
           "contentType": "text/html",
-          "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+          "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
+          "title": "Litigants in Person Practice Note (GPN-LIP)",
           "reviewedDate": {
             "date": "2026-03-05",
             "precision": "day",
-            "reviewedAt": "2026-08-25T13:30:09.000Z",
-            "reviewedBy": "Policai editorial source review",
-            "notes": "The practice note is headed 'D S Mortimer, Chief Justice 05 March 2026' and is signed and dated 5 March 2026 at its end; page metadata gives DCTERMS.date 2026-03-05."
+            "reviewedAt": "2026-10-30T00:48:04.276Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The practice note is headed D S Mortimer, Chief Justice 05 March 2026 and is signed D S Mortimer, Chief Justice, 5 March 2026 at its end; page metadata gives DCTERMS.date 2026-03-05. Re-read on 30 Oct 2026."
           }
         }
       }
