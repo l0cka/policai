@@ -18,10 +18,10 @@
 .button-primary:hover { background: var(--foreground); color: var(--background); }
 .button-quiet { color: var(--primary); }
 .button-quiet:hover { color: var(--foreground); border-color: var(--border); }
-.observatory-stats { grid-column: 2; grid-row: 3 / 5; align-self: center; margin-top: var(--space-6); grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.observatory-stats { grid-column: 2; grid-row: 3 / 5; align-self: center; margin-top: var(--space-6); grid-template-columns: repeat(4, auto); justify-content: space-between; }
 .observatory-stats > div + div { border-color: var(--border); }
 .observatory-stats dd { font-family: var(--font-display); font-size: 2rem; }
-.observatory-stats dt { color: var(--muted-foreground); font-size: 11px; }
+.observatory-stats dt { color: var(--muted-foreground); font-size: var(--type-label); white-space: nowrap; }
 .signal-disclosure { border-top: 1px solid var(--border); padding-top: var(--space-4); }
 .signal-disclosure > summary { cursor: pointer; min-height: 44px; padding-block: .6rem; color: var(--primary); font-size: var(--type-ui); }
 .signal-disclosure > summary span { margin-left: var(--space-3); color: var(--muted-foreground); font: .6875rem var(--font-mono); }
@@ -58,11 +58,17 @@
 .radar-pagination nav { display: flex; gap: var(--space-2); }
 .radar-pagination a, .radar-pagination nav span { display: inline-flex; min-height: 44px; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-4); border: 1px solid var(--border); border-radius: var(--radius-control); }
 .radar-pagination a:hover { background: var(--muted); }
-.radar-pagination [aria-disabled] { color: var(--muted-foreground); border-color: transparent; }
+.radar-pagination [aria-disabled] { color: var(--muted-foreground); border-color: var(--border); opacity: .55; }
 .radar-pagination svg { width: 1rem; height: 1rem; }
 .empty-state .button-primary { margin-top: var(--space-4); }
 
 @media (max-width: 767px) {
+  .observatory-stats { justify-content: stretch; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .observatory-actions .button-quiet { justify-content: flex-start; padding-inline: 0; }
+  .day-heading { flex-direction: column; gap: 2px; }
+  .filters { position: relative; flex-wrap: nowrap; overflow-x: auto; scroll-snap-type: x proximity; margin-inline: calc(var(--space-4) * -1); padding-inline: var(--space-4); }
+  .filters a { flex: none; scroll-snap-align: start; }
+  .radar-pagination-top nav { display: none; }
   .observatory-grid { padding-block: 1.75rem 1rem; }
   .observatory-copy { display: block; }
   .observatory-copy h1 { font-size: 2.75rem; }
@@ -100,12 +106,12 @@
    its text uses fixed light tones instead of the page foreground. */
 .signal-disclosure .observatory-visual { color: #eef3f0; }
 .signal-network-summary dd { color: #eef3f0; }
-.signal-network-summary dt { color: #b9c8d6; font-size: 11px; }
+.signal-network-summary dt { color: #b9c8d6; font-size: var(--type-label); }
 .signal-network .network-band-label, .signal-network .network-count { fill: #b9c8d6; }
 
 
 /* Not-found page */
-.not-found-links { max-width: 42rem; margin-top: var(--space-8); border-top: 1px solid var(--border); list-style: none; padding: 0; }
+.not-found-links { max-width: 60rem; margin-top: var(--space-8); border-top: 1px solid var(--border); list-style: none; padding: 0; }
 .not-found-links li { border-bottom: 1px solid var(--border); }
 .not-found-links a { display: flex; min-height: 3.5rem; align-items: center; justify-content: space-between; gap: var(--space-4); padding-block: var(--space-3); color: var(--foreground); text-decoration: none; }
 .not-found-links a:hover { color: var(--primary); }
@@ -124,3 +130,18 @@
 
 /* Dates outside the dateline read as "20 Oct 2026" in interface text, as on Policai. */
 .recent-signals time { font-family: var(--font-sans); font-size: var(--type-small); font-weight: 400; letter-spacing: 0; text-transform: none; }
+
+.site-nav .property-link { color: var(--muted-foreground); }
+.site-nav .property-link:hover { color: var(--foreground); }
+.filters a.active { font-weight: 600; }
+.footer-groups { gap: var(--space-5); }
+@media (min-width: 900px) {
+  .not-found-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--space-8); }
+}
+@media (max-width: 839px) {
+  .header-status { min-width: 44px; justify-content: center; }
+}
+@media (max-width: 719px) {
+  .footer-groups { grid-template-columns: repeat(3, auto); justify-content: space-between; gap: var(--space-4); }
+}
+.radar-register .workspace > * { min-width: 0; }

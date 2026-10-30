@@ -41,9 +41,9 @@ export function RadarPagination({ state, pagination, position = 'top' }: {
   position?: 'top' | 'bottom';
 }) {
   const { page, pages, first, last, total } = pagination;
-  if (position === 'bottom' && pages === 1) return null;
+  if (total === 0 || (position === 'bottom' && pages === 1)) return null;
   return (
-    <div className="radar-pagination">
+    <div className={`radar-pagination radar-pagination-${position}`}>
       <p>{total ? `${first}–${last} of ${total} signals` : '0 signals'}{pages > 1 ? ` · Page ${page} of ${pages}` : ''}</p>
       {pages > 1 ? <nav aria-label={`Radar pages (${position})`}>
         {page > 1 ? <Link href={radarHref(state, { page: page - 1 })}>Newer</Link> : <span aria-disabled="true">Newer</span>}

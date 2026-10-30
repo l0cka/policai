@@ -158,7 +158,7 @@ export default function SectorMapView({
   const propsRef = useRef({ orgs, stateCounts, selectedName, jurisdiction, onSelectOrgAction, onSelectJurisdictionAction });
   propsRef.current = { orgs, stateCounts, selectedName, jurisdiction, onSelectOrgAction, onSelectJurisdictionAction };
 
-  const fitPadding = () => ({ top: 40, left: 40, bottom: 40, right: 40 });
+  const fitPadding = () => ({ top: 40, left: 40, bottom: 60, right: 40 });
 
   // Deferred init: a map created while the tab is hidden or the container is
   // off-screen can wedge before its first frame (animation frames are paused
@@ -379,7 +379,7 @@ export default function SectorMapView({
       el.type = 'button';
       el.setAttribute('aria-label', `Zoom to ${code}`);
       el.addEventListener('click', () => propsRef.current.onSelectJurisdictionAction(code));
-      const marker = new maplibregl.Marker({ element: el }).setLngLat(point).addTo(map);
+      const marker = new maplibregl.Marker({ element: el, anchor: 'bottom', offset: [0, -10] }).setLngLat(point).addTo(map);
       stateMarkersRef.current[code] = marker;
     }
     const syncStateLabels = () => {
