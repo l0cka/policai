@@ -13,6 +13,12 @@ vi.mock('@/lib/file-store', () => ({
     files.set(path.split('/').pop()!, structuredClone(value));
   },
 }));
+const { mailbox } = vi.hoisted(() => ({ mailbox: [] as EditorApproval[] }));
+vi.mock('@/lib/editor-approval', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/lib/editor-approval')>()),
+  fetchEditorApproval: async (subject: string) =>
+    mailbox.findLast((approval) => approval.subject === subject) ?? null,
+}));
 vi.mock('@/lib/data-lock', () => ({
   withDataMutationLock: async (run: () => Promise<unknown>) => run(),
 }));
@@ -23,6 +29,8 @@ import {
   handleStageSourceCapture,
 } from './tool-handlers';
 import { getTimelineEvents } from '@/lib/data-service';
+import { approvalSubject, type EditorApproval } from '@/lib/editor-approval';
+import { softwarePasskey } from '@/test/software-passkey';
 
 const inquiryUrl = 'https://example.gov.au/inquiry';
 const cardUrl = 'https://claude.ai/code/project/chan_example?thread=cmsg_example';
@@ -80,6 +88,7 @@ const decide = (id: string, proposalHash: string, extra: Record<string, unknown>
   });
 
 beforeEach(() => {
+  mailbox.length = 0;
   files.clear();
   files.set(basename('data/timeline.json'), [event()]);
 });
@@ -158,7 +167,7 @@ describe('propose, then decide on a decision card', () => {
       });
 
     await expect(decide(card.id, card.proposalHash)).rejects.toThrow(
-      'changed after its decision card was posted',
+      'changed after it was put to the editor',
     );
     expect((await readEvent()).description).toBe(oldDescription);
     expect(readReview().status).toBe('pending_review');
@@ -181,5 +190,64 @@ describe('propose, then decide on a decision card', () => {
 
     await expect(decide(card.id, card.proposalHash)).rejects.toThrow('more than 7 days old');
     expect((await readEvent()).description).toBe(oldDescription);
+  });
+});
+
+describe('decide with the editor passkey', () => {
+  function registerEditor() {
+    const editor = softwarePasskey('Daniel Alkurdi');
+    files.set('editor-passkeys.json', [editor.passkey]);
+    return editor;
+  }
+
+  it('publishes on the editor passkey signature and records its owner as the reviewer', async () => {
+    const editor = registerEditor();
+    const card = await proposeInquiryUpdate();
+    expect(card.approvalUrl).toBe(
+      `https://policai.org/approve?subject=${encodeURIComponent(`source-review:${card.id}:${card.proposalHash}`)}`,
+    );
+    mailbox.push(editor.approve(approvalSubject({ kind: 'source-review', id: card.id, proposalHash: card.proposalHash })));
+
+    const published = await handleRecordDecision({ id: card.id, proposalHash: card.proposalHash, reviewer: 'Someone Else' });
+
+    expect(published.status).toBe('published');
+    expect(published.decision).toMatchObject({ decidedBy: 'Daniel Alkurdi', decidedAt: '2026-10-30T01:00:00.000Z' });
+    expect(published.decision?.approval?.subject).toBe(`source-review:${card.id}:${card.proposalHash}`);
+    expect(published.decision?.attestationUrl).toBeUndefined();
+    expect((await readEvent()).description).toBe(newDescription);
+  });
+
+  it('refuses a card link once a passkey is registered, and names the approve page', async () => {
+    registerEditor();
+    const card = await proposeInquiryUpdate();
+
+    await expect(decide(card.id, card.proposalHash)).rejects.toThrow(card.approvalUrl);
+    expect(readReview().status).toBe('pending_review');
+  });
+
+  it('refuses a signature from a key outside the registry', async () => {
+    registerEditor();
+    const card = await proposeInquiryUpdate();
+    mailbox.push(softwarePasskey('Daniel Alkurdi').approve(
+      approvalSubject({ kind: 'source-review', id: card.id, proposalHash: card.proposalHash }),
+    ));
+
+    await expect(handleRecordDecision({ id: card.id, proposalHash: card.proposalHash })).rejects.toThrow('registered editor passkey');
+    expect(readReview().status).toBe('pending_review');
+  });
+
+  it('refuses a signature over an earlier version of the proposal', async () => {
+    const editor = registerEditor();
+    const card = await proposeInquiryUpdate();
+    mailbox.push(editor.approve(approvalSubject({ kind: 'source-review', id: card.id, proposalHash: card.proposalHash })));
+    await handleProposeSourceDecision({
+      id: card.id,
+      proposedBy: 'Claude (agent)',
+      reviewedDate: { date: '2026-05-14', precision: 'day', notes: 'A later reading of the committee page gives 14 May 2026.' },
+    });
+    const changed = await handleShowSourceProposal({ id: card.id });
+
+    await expect(handleRecordDecision({ id: card.id, proposalHash: changed.proposalHash })).rejects.toThrow('has not approved');
+    await expect(handleRecordDecision({ id: card.id, proposalHash: card.proposalHash })).rejects.toThrow('changed');
   });
 });

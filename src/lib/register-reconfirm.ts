@@ -1,3 +1,5 @@
+import { createHash } from 'node:crypto';
+import { approvalSubject, type EditorApproval } from '@/lib/approval-subject';
 import type { RegisterAuditResult } from '@/lib/register-audit';
 import { buildRecordReviewSchedule } from '@/lib/coverage-report';
 import type { Policy } from '@/types';
@@ -8,7 +10,7 @@ import type { Policy } from '@/types';
  *
  * `proposeReconfirmBatches` groups records that are due for review and that a
  * fresh register audit found unchanged. The editor approves a whole batch on
- * one decision card; `approveReconfirmBatch` then renews each record's
+ * one passkey signature; `approveReconfirmBatch` then renews each record's
  * editorial verification, provided its fingerprint still matches the one the
  * batch was proposed on and the audit is recent. Changed or unreadable sources
  * never enter a batch; they need a full review.
@@ -37,8 +39,10 @@ export interface ReconfirmEntry {
 export interface ReconfirmDecision {
   approvedBy: string;
   approvedAt: string;
-  /** Link to the decision card the editor tapped. */
-  attestationUrl: string;
+  /** The editor's passkey signature over `reconfirmApprovalSubject(batch)`. */
+  approval?: EditorApproval;
+  /** Decisions made before an editor passkey was registered: the card link. */
+  attestationUrl?: string;
 }
 
 export interface ReconfirmBatch {
@@ -65,6 +69,26 @@ function openBatchPolicyIds(ledger: ReconfirmLedger): Set<string> {
       .filter((batch) => !batch.decision)
       .flatMap((batch) => batch.entries.map((entry) => entry.policyId)),
   );
+}
+
+/** What the editor signs to approve a batch: its id and exact entries. */
+export function reconfirmApprovalSubject(batch: Pick<ReconfirmBatch, 'id' | 'entries'>): string {
+  return approvalSubject({
+    kind: 'reconfirm',
+    batchId: batch.id,
+    entriesHash: createHash('sha256').update(JSON.stringify(batch.entries)).digest('hex'),
+  });
+}
+
+function decisionAttestationProblems(batch: ReconfirmBatch, decision: ReconfirmDecision): string[] {
+  if (decision.approval) {
+    return decision.approval.subject === reconfirmApprovalSubject(batch)
+      ? []
+      : ['the passkey approval is for a different batch or different entries'];
+  }
+  return /^https:\/\//.test(decision.attestationUrl ?? '')
+    ? []
+    : ['decision needs a passkey approval or an https attestationUrl'];
 }
 
 /**
@@ -195,8 +219,7 @@ export function approveReconfirmBatch(
   const problems: string[] = [];
   if (batch.decision) problems.push(`batch ${batchId} is already decided`);
   if (!decision.approvedBy.trim()) problems.push('approvedBy is empty');
-  if (!/^https:\/\//.test(decision.attestationUrl))
-    problems.push('attestationUrl must be an https link to the decision card');
+  problems.push(...decisionAttestationProblems(batch, decision));
   const approvedTime = Date.parse(decision.approvedAt);
   if (Number.isNaN(approvedTime)) problems.push('approvedAt is not a timestamp');
 
@@ -227,7 +250,7 @@ export function approveReconfirmBatch(
     const entry = entryById.get(policy.id);
     if (!entry) return policy;
     const priorNotes = (policy.verification.notes ?? '').split(NOTE_MARKER)[0];
-    const note = `${NOTE_MARKER}${batch.id} by ${decision.approvedBy} on ${day(decision.approvedAt)} (${decision.attestationUrl}): the source fingerprint was unchanged at the ${day(entry.auditedAt)} register audit, matching the version verified on ${day(entry.verifiedAt)}.`;
+    const note = `${NOTE_MARKER}${batch.id} by ${decision.approvedBy} on ${day(decision.approvedAt)} (${decision.approval ? 'passkey approval' : decision.attestationUrl}): the source fingerprint was unchanged at the ${day(entry.auditedAt)} register audit, matching the version verified on ${day(entry.verifiedAt)}.`;
     return {
       ...policy,
       lastReviewedAt: decision.approvedAt,
@@ -288,8 +311,8 @@ export function validateReconfirmLedger(
         errors.push(`${label}: decision needs approvedBy`);
       if (Number.isNaN(Date.parse(batch.decision.approvedAt ?? '')))
         errors.push(`${label}: decision needs an approvedAt timestamp`);
-      if (!/^https:\/\//.test(batch.decision.attestationUrl ?? ''))
-        errors.push(`${label}: decision needs an https attestationUrl`);
+      for (const problem of decisionAttestationProblems(batch, batch.decision))
+        errors.push(`${label}: ${problem}`);
     }
   }
   const open = ledger.batches.filter((batch) => !batch.decision).length;

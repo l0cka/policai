@@ -63,6 +63,7 @@ import {
 	validatePolicyThemes,
 	validateTimeline,
 } from "@/lib/validate-data";
+import type { EditorApproval } from "@/lib/approval-subject";
 import {
 	isVerificationCurrent,
 	VERIFICATION_CLOCK_SKEW_TOLERANCE_MS,
@@ -3068,7 +3069,9 @@ async function decideSourceReviewUnlocked(input: {
 	id: string;
 	proposalHash: string;
 	reviewer: string;
-	attestationUrl: string;
+	attestation:
+		| { kind: "passkey"; approval: EditorApproval }
+		| { kind: "card"; attestationUrl: string };
 }): Promise<SourceReview> {
 	const review = await getSourceReviewById(input.id);
 	if (!review) {
@@ -3089,11 +3092,14 @@ async function decideSourceReviewUnlocked(input: {
 	}
 	if (sourceReviewProposalHash(review) !== input.proposalHash) {
 		throw new Error(
-			"The review changed after its decision card was posted; post a new card for the current proposal",
+			"The review changed after it was put to the editor; ask them to approve the current proposal",
 		);
 	}
+	const { attestation } = input;
 	const approvalNotes = [
-		`Approved by ${input.reviewer} on decision card ${input.attestationUrl} (proposal ${input.proposalHash.slice(0, 8)}).`,
+		attestation.kind === "passkey"
+			? `Approved by ${input.reviewer} with a passkey on policai.org (proposal ${input.proposalHash.slice(0, 8)}).`
+			: `Approved by ${input.reviewer} on decision card ${attestation.attestationUrl} (proposal ${input.proposalHash.slice(0, 8)}).`,
 		`Proposed by ${review.proposal?.proposedBy ?? review.createdBy}.`,
 		review.proposal?.notes?.trim(),
 	]
@@ -3106,8 +3112,9 @@ async function decideSourceReviewUnlocked(input: {
 		decision: {
 			proposalHash: input.proposalHash,
 			decidedBy: input.reviewer,
-			decidedAt: new Date().toISOString(),
-			attestationUrl: input.attestationUrl,
+			...(attestation.kind === "passkey"
+				? { decidedAt: attestation.approval.receivedAt, approval: attestation.approval }
+				: { decidedAt: new Date().toISOString(), attestationUrl: attestation.attestationUrl }),
 		},
 	});
 	return publishStagedSourceUnlocked(review.id, { reuseStagedCapture: true });

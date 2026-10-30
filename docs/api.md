@@ -43,6 +43,7 @@ Error responses use this form:
 | `GET` | `/api/status` | Get collection health and freshness data. |
 | `GET` | `/api/signal/reviews/{id}` | Signal dry-run for one staged review (Bearer `POLICAI_SIGNAL_TOKEN`). |
 | `POST` | `/api/signal/reviews` | Signal dismiss with attestation (same token). Signal cannot approve. |
+| `POST` | `/api/approvals` | Editor passkey signature from `/approve`. Stored only if it verifies against `data/editor-passkeys.json`. |
 
 The Signal routes are the only public-site write API. They are not part of the
 anonymous public register API. See [collector.md](./collector.md#policai-signal-grok-bot).

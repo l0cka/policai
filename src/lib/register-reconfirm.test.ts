@@ -11,12 +11,14 @@ import { validatePolicies } from '@/lib/validate-data';
 import {
   approveReconfirmBatch,
   proposeReconfirmBatches,
+  reconfirmApprovalSubject,
   ReconfirmError,
   selectReconfirmCandidates,
   validateReconfirmLedger,
   type ReconfirmLedger,
 } from './register-reconfirm';
 import type { Policy } from '@/types';
+import { softwarePasskey } from '@/test/software-passkey';
 
 const NOW = new Date('2026-11-01T00:00:00.000Z');
 const CARD = 'https://claude.ai/code/project/chan_x?thread=cmsg_y';
@@ -126,6 +128,24 @@ describe('register re-confirmation', () => {
     vi.useFakeTimers({ now: new Date('2026-11-03T00:00:00.000Z') });
     expect(validatePolicies(result.policies, new Set(), { requireLegislative: false }).errors).toEqual([]);
     expect(validateReconfirmLedger(result.ledger, result.policies)).toEqual({ errors: [], warnings: [] });
+  });
+
+  it('accepts a passkey approval only for the batch and entries it signed', () => {
+    const { audited, batches } = propose([dueSoon, overdue], [audit(dueSoon, 'unchanged'), audit(overdue, 'unchanged')]);
+    const editor = softwarePasskey();
+    const approvedAt = '2026-11-02T03:00:00.000Z';
+    const signed = editor.approve(reconfirmApprovalSubject(batches[0]), { receivedAt: approvedAt });
+    const decision = { approvedBy: 'Daniel Alkurdi', approvedAt, approval: signed };
+
+    const result = approveReconfirmBatch(audited, { batches }, batches[0].id, decision);
+    expect(result.policies.find((record) => record.id === 'due-soon')!.verification.notes).toContain('(passkey approval)');
+    vi.useFakeTimers({ now: new Date('2026-11-03T00:00:00.000Z') });
+    expect(validateReconfirmLedger(result.ledger, result.policies)).toEqual({ errors: [], warnings: [] });
+
+    const fewer = { ...batches[0], entries: batches[0].entries.slice(1) };
+    expect(() => approveReconfirmBatch(audited, { batches: [fewer] }, fewer.id, decision)).toThrow(
+      'the passkey approval is for a different batch or different entries',
+    );
   });
 
   it('keeps one re-confirmation note when a record is re-confirmed again', () => {

@@ -281,7 +281,7 @@ export async function runSignalSourceReviewCommand(
 			exitCode: 2,
 			stdout: "",
 			stderr:
-				"Approval moved to decision cards in the Policai Claude project. An agent proposes the source and records Daniel's tap with record_decision.",
+				"Approval moved to Daniel's passkey on policai.org/approve. An agent proposes the source and records his signed approval with record_decision.",
 		};
 	}
 	if (action !== "dismiss" && action !== "verify") {
