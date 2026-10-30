@@ -12,6 +12,9 @@ const EXTRA_ALLOWED_HOSTS = new Set([
 	// Supreme Court of Tasmania circular PDFs. The index on
 	// www.supremecourt.tas.gov.au links to this asset host.
 	"supremecourt-tas-gov-au.assets.ionatahosting.net",
+	// NESA publishes the ACE Rules and syllabuses on its NSW Curriculum
+	// site, which sits outside .gov.au.
+	"curriculum.nsw.edu.au",
 ]);
 
 const TRACKING_QUERY_PARAMETERS = new Set([
