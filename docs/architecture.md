@@ -179,7 +179,8 @@ The boundaries are deliberately strict:
   and `open-next.config.ts` drops revalidation, so a record that passes its
   verification interval shows as due for review only after the next deploy.
   Every commit outside `apps/probono/` redeploys, the daily collection PR
-  included. `/this-week` renders per request. `/coverage` is prerendered,
+  included. `/this-week` is prerendered and rebuilt nightly (`docs/this-week.md`).
+  `/coverage` is prerendered,
   and its map reads the selection from the query string after hydration.
   Derived framework artifacts must also pass their own verification gate as
   well as the related policy's gate. Their editorial check must be at least as
@@ -203,8 +204,9 @@ The boundaries are deliberately strict:
   When automatic extraction fails for a hash-matched document, a structured
   OCR/manual-transcription approval can provide the reviewed text while
   retaining both source-byte and transcription hashes as provenance.
-  MCP approval separately requires the human reviewer's identity; the local
-  admin token remains an authorization credential, not editorial attribution.
+  MCP approval separately requires the human reviewer's identity. Write
+  tools exist only when the local server starts with `POLICAI_MCP_WRITE=1`;
+  that is operator configuration, not editorial attribution.
   New policy and timeline approval checks both record ids and official source
   URLs across canonical and active staged content before a review can become
   approved. Editor-supplied JSON passes the same exhaustive canonical

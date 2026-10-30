@@ -17,6 +17,13 @@ import {
 } from '@/lib/source-ingest';
 import { getSourceReviews } from '@/lib/data-service';
 import {
+  approvalPageUrl,
+  approvalSubject,
+  fetchEditorApproval,
+  readEditorPasskeys,
+  verifyEditorApproval,
+} from '@/lib/editor-approval';
+import {
   isSignalReviewer,
   signalReviewers,
 } from '@/lib/signal-source-reviews';
@@ -42,16 +49,6 @@ import type {
 
 const MCP_ACTOR = 'local-mcp-admin';
 
-export function requireMcpAdminToken(token?: string) {
-  const expected = process.env.POLICAI_MCP_ADMIN_TOKEN;
-  if (!expected) {
-    throw new Error('POLICAI_MCP_ADMIN_TOKEN is not configured');
-  }
-  if (token !== expected) {
-    throw new Error('Invalid POLICAI_MCP_ADMIN_TOKEN');
-  }
-}
-
 export function toToolText(data: unknown) {
   return {
     content: [
@@ -65,7 +62,7 @@ export function toToolText(data: unknown) {
 
 async function audited<T>(
   toolName: string,
-  input: { sourceUrl?: string; adminToken?: string },
+  input: { sourceUrl?: string },
   run: () => Promise<T>,
 ): Promise<T> {
   try {
@@ -113,10 +110,8 @@ export async function handleStageSourceUrl(input: {
   proposedRecord?: Record<string, unknown>;
   notes?: string;
   stageOnly?: boolean;
-  adminToken?: string;
 }) {
   return audited('stage_source_url', { sourceUrl: input.url }, () => {
-    requireMcpAdminToken(input.adminToken);
     return stageSourceUrl({
       url: input.url,
       entryKind: input.entryKind,
@@ -140,10 +135,8 @@ export async function handleStageSourceCapture(input: {
   replaceTargetSource?: boolean;
   notes?: string;
   capture: BrowserCaptureInput;
-  adminToken?: string;
 }) {
   return audited('stage_source_capture', { sourceUrl: input.url }, () => {
-    requireMcpAdminToken(input.adminToken);
     return stageSourceCapture({
       url: input.url,
       entryKind: input.entryKind,
@@ -189,10 +182,8 @@ export async function handleReviewCourtRequirement(input: {
   reviewer?: string;
   notes?: string;
   revision?: CourtRequirementRevision;
-  adminToken?: string;
 }) {
   return audited('review_court_requirement', {}, () => {
-    requireMcpAdminToken(input.adminToken);
     const reviewer = input.reviewer?.trim();
     if (!reviewer) throw new Error('A human reviewer identity is required');
     const notes = input.notes?.trim();
@@ -207,8 +198,14 @@ export async function handleReviewCourtRequirement(input: {
   });
 }
 
-export function handleShowSourceProposal(input: { id: string }) {
-  return describeSourceProposal(input.id);
+export async function handleShowSourceProposal(input: { id: string }) {
+  const proposal = await describeSourceProposal(input.id);
+  return {
+    ...proposal,
+    approvalUrl: approvalPageUrl(
+      approvalSubject({ kind: 'source-review', id: input.id, proposalHash: proposal.proposalHash }),
+    ),
+  };
 }
 
 export async function handleProposeSourceDecision(input: {
@@ -220,10 +217,8 @@ export async function handleProposeSourceDecision(input: {
   manualExtraction?: ManualExtractionInput;
   reviewedDate?: ReviewedDateInput;
   notes?: string;
-  adminToken?: string;
 }) {
   return audited('propose_source_decision', {}, () => {
-    requireMcpAdminToken(input.adminToken);
     return proposeSourceDecision({
       id: input.id,
       proposedBy: input.proposedBy?.trim() ?? '',
@@ -243,20 +238,44 @@ export async function handleProposeSourceDecision(input: {
 const DECISION_CARD_URL = /^https:\/\/claude\.ai\/\S+$/;
 
 /**
- * Records the editor's tap on a decision card. The reviewer must be on the
- * editor allowlist and the card link is kept as the attestation.
+ * Records the editor's decision. Once an editor passkey is registered, the
+ * only accepted decision is that editor's passkey signature over this exact
+ * proposal, read from the approvals mailbox; the reviewer is whoever the
+ * signing key belongs to. Before then, the card link stands in.
  */
 export async function handleRecordDecision(input: {
   id: string;
   proposalHash: string;
   reviewer?: string;
-  attestationUrl: string;
-  adminToken?: string;
+  attestationUrl?: string;
 }) {
-  return audited('record_decision', {}, () => {
-    requireMcpAdminToken(input.adminToken);
+  return audited('record_decision', {}, async () => {
+    const passkeys = await readEditorPasskeys();
+    if (passkeys.length > 0) {
+      const subject = approvalSubject({
+        kind: 'source-review',
+        id: input.id,
+        proposalHash: input.proposalHash,
+      });
+      const approval = await fetchEditorApproval(subject);
+      if (!approval) {
+        throw new Error(
+          `The editor has not approved this proposal with their passkey. Send them ${approvalPageUrl(subject)}`,
+        );
+      }
+      const verified = await verifyEditorApproval(approval, passkeys, subject);
+      if (!verified.ok) throw new Error(verified.error);
+      return decideSourceReview({
+        id: input.id,
+        proposalHash: input.proposalHash,
+        reviewer: verified.passkey.reviewer,
+        attestation: { kind: 'passkey', approval },
+      });
+    }
+
     const reviewer = requireSignalReviewer(input.reviewer);
-    if (!DECISION_CARD_URL.test(input.attestationUrl)) {
+    const attestationUrl = input.attestationUrl ?? '';
+    if (!DECISION_CARD_URL.test(attestationUrl)) {
       throw new Error(
         'attestationUrl must link to the claude.ai decision card the editor answered',
       );
@@ -265,7 +284,7 @@ export async function handleRecordDecision(input: {
       id: input.id,
       proposalHash: input.proposalHash,
       reviewer,
-      attestationUrl: input.attestationUrl,
+      attestation: { kind: 'card', attestationUrl },
     });
   });
 }
@@ -273,10 +292,8 @@ export async function handleRecordDecision(input: {
 export async function handleRejectStagedSource(input: {
   id: string;
   reason?: string;
-  adminToken?: string;
 }) {
   return audited('reject_staged_source', {}, () => {
-    requireMcpAdminToken(input.adminToken);
     return rejectStagedSource(input.id, input.reason);
   });
 }
@@ -287,10 +304,8 @@ export async function handleRecordManualSourceReview(input: {
   reviewer?: string;
   notes?: string;
   evidence?: Omit<SourceEvidence, 'url'>;
-  adminToken?: string;
 }) {
   return audited('record_manual_source_review', {}, () => {
-    requireMcpAdminToken(input.adminToken);
     const reviewer = input.reviewer?.trim();
     if (!reviewer) {
       throw new Error(
@@ -328,10 +343,8 @@ export async function handleVerifyRegisterRecord(input: {
   policyId: string;
   reviewer?: string;
   notes?: string;
-  adminToken?: string;
 }) {
   return audited('verify_register_record', {}, () => {
-    requireMcpAdminToken(input.adminToken);
     const reviewer = requireSignalReviewer(input.reviewer);
     return verifyRegisterRecord({
       policyId: input.policyId,

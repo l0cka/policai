@@ -105,7 +105,7 @@ describe("signal HTTP dry-run preview", () => {
 		if (!fresh.ok) return;
 		expect(fresh.approve).toEqual({
 			allowed: false,
-			reason: expect.stringContaining("decision card"),
+			reason: expect.stringContaining("passkey"),
 		});
 		expect(fresh.dismiss.allowed).toBe(true);
 
@@ -135,7 +135,7 @@ const dismiss = (
 	);
 
 describe("signal HTTP apply", () => {
-	it("refuses approve and points to the decision card", async () => {
+	it("refuses approve and points to the passkey approval", async () => {
 		const reject = vi.fn();
 
 		const result = await dismiss(review(), reject, "approve");
@@ -146,7 +146,7 @@ describe("signal HTTP apply", () => {
 			code: "approve_not_allowed",
 		});
 		if (result.ok) return;
-		expect(result.error).toContain("decision card");
+		expect(result.error).toContain("passkey");
 		expect(reject).not.toHaveBeenCalled();
 	});
 

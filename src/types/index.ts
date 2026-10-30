@@ -4,6 +4,7 @@ import type { FailureClass } from "@/lib/pipeline/failure";
 import type { UnrecognisedStage } from "@/lib/legislation/stage-update";
 import type { Dated, Legislative, LegislativeEvent } from "@/lib/legislation/model";
 import type { ThemeId } from "@/lib/themes";
+import type { EditorApproval } from "@/lib/approval-subject";
 
 export const JURISDICTIONS = [
 	"federal",
@@ -429,8 +430,10 @@ export interface SourceReviewDecision {
 	proposalHash: string;
 	decidedBy: string;
 	decidedAt: string;
-	/** Link to the decision card the editor answered. */
-	attestationUrl: string;
+	/** The editor's passkey signature over this review's approval subject. */
+	approval?: EditorApproval;
+	/** Decisions made before an editor passkey was registered: the card link. */
+	attestationUrl?: string;
 }
 
 export type PolicyDraft = Omit<

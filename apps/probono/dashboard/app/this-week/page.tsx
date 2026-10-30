@@ -60,7 +60,7 @@ export default async function ThisWeek() {
         <h1 className="page-title">This week</h1>
         <p className="page-intro">What to read and what to check next: recent sector signals, potential opportunities and upcoming closing dates. These are machine-selected leads, not editorially verified advice. Check each linked source before acting.</p>
         {stale ? (
-          <p role="status" className="page-intro">
+          <p role="status" className="page-intro page-note">
             Collection is more than seven days old. This is a historical snapshot, not current
             weekly coverage. <Link href="/health">Check source coverage</Link>.
           </p>
@@ -71,7 +71,7 @@ export default async function ThisWeek() {
             {end.toLocaleTimeString('en-AU', { timeZone: 'Australia/Sydney', hour: '2-digit', minute: '2-digit', timeZoneName: 'short' })}. Dates use Sydney time. <Link href="/health">Check source coverage</Link>.
           </p>
         ) : (
-          <p role="status" className="page-intro">
+          <p role="status" className="page-intro page-note">
             No successful collection run is recorded yet, so there is no weekly window to report.{' '}
             <Link href="/health">Check source coverage</Link>.
           </p>
@@ -80,16 +80,16 @@ export default async function ThisWeek() {
           <a href="#week-opportunities">Opportunities</a><a href="#week-deadlines">Deadlines</a><a href="#week-developments">Recent signals</a>
         </nav>
       </header>
-      <div className="workspace reveal reveal-1" style={{ gridTemplateColumns: 'minmax(0, 1fr)' }}>
+      <div className="workspace workspace-single reveal reveal-1">
         <div className="workspace-main">
-          <section id="week-opportunities" aria-labelledby="week-opportunities-heading">
-            <h2 id="week-opportunities-heading" className="day-heading">Potential opportunities<span className="day-count">{opportunities.rows.length} of {opportunities.pagination.total} shown</span></h2>
-            <p className="page-intro">Not recorded as closed. Includes older opportunities and items without a known closing date; availability and eligibility still need checking.</p>
+          <section id="week-opportunities" className="week-section" aria-labelledby="week-opportunities-heading">
+            <h2 id="week-opportunities-heading" className="day-heading week-heading">Potential opportunities<span className="sr-only"> – </span><span className="day-count">{opportunities.rows.length} of {opportunities.pagination.total} shown</span></h2>
+            <p className="section-note">Not recorded as closed. Includes older opportunities and items without a known closing date; availability and eligibility still need checking.</p>
             {opportunities.rows.length ? opportunities.rows.map(item => <Signal key={item.id} item={item} opportunity />) : <div className="empty-state"><p className="section-title">No potential opportunities recorded</p><p>This reflects the current radar data, not the absence of opportunities.</p></div>}
             <Link href="/?opp=1#radar-feed" className="rail-more">All opportunities <ArrowRight /></Link>
           </section>
-          <section id="week-deadlines" aria-labelledby="week-deadlines-heading" className="dated-section">
-            <h2 id="week-deadlines-heading" className="day-heading">Approaching deadlines<span className="day-count">Up to five · soonest first</span></h2>
+          <section id="week-deadlines" aria-labelledby="week-deadlines-heading" className="dated-section week-section">
+            <h2 id="week-deadlines-heading" className="day-heading week-heading">Approaching deadlines<span className="sr-only"> – </span><span className="day-count">Up to five · soonest first</span></h2>
             {deadlines.length ? <div className="dated-list">{deadlines.map((r, n) => {
               const days = daysUntil(r.date, today);
               const href = safeHref(r.url);
@@ -101,9 +101,9 @@ export default async function ThisWeek() {
             })}</div> : <div className="empty-state"><p className="section-title">No upcoming deadlines recorded</p><p>Closing dates may be missing from the data. Check the original opportunity.</p></div>}
             <Link href="/deadlines" className="rail-more">All deadlines <ArrowRight /></Link>
           </section>
-          <section id="week-developments" aria-labelledby="week-developments-heading" className="dated-section">
-            <h2 id="week-developments-heading" className="day-heading">Recent sector signals<span className="day-count">Last seven days · {developments.length} of {totalDevelopments} shown</span></h2>
-            <p className="page-intro">Newest first, using publication date where recorded, otherwise collection date. A relevance flag is not a finding of legal significance.</p>
+          <section id="week-developments" aria-labelledby="week-developments-heading" className="dated-section week-section">
+            <h2 id="week-developments-heading" className="day-heading week-heading">Recent sector signals<span className="sr-only"> – </span><span className="day-count">Last seven days · {developments.length} of {totalDevelopments} shown</span></h2>
+            <p className="section-note">Newest first, using publication date where recorded, otherwise collection date. A relevance flag is not a finding of legal significance.</p>
             {developments.length ? developments.map(item => <Signal key={item.id} item={item} />) : <div className="empty-state"><p className="section-title">No recent signals recorded</p><p>No relevant items fall in this seven-day window. Check source coverage before treating it as a quiet week.</p></div>}
             <Link href="/#radar-feed" className="rail-more">Browse the full radar <ArrowRight /></Link>
           </section>

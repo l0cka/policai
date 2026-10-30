@@ -7,7 +7,11 @@ import {
 	requireSignalHttpToken,
 } from "@/lib/signal-http";
 
-const SIGNAL_RATE = { limit: 30, windowSeconds: 60 } as const;
+const SIGNAL_RATE = {
+	bucket: "signal-review",
+	limit: 30,
+	windowSeconds: 60,
+} as const;
 
 function signalJson(data: unknown, status = 200) {
 	return NextResponse.json(data, {

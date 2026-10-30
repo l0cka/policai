@@ -34,8 +34,10 @@ import { pageAlternates, pageSocialMeta } from '@/lib/site-seo';
 import { auDate } from '@/lib/au-date';
 import { sydneyCalendarDate } from '@/lib/calendar-date';
 
-// Upcoming dates must advance even when collection is stalled.
-export const dynamic = 'force-dynamic';
+// Prerendered. Upcoming dates count from the build's Sydney date, and the
+// Worker rebuilds every night just after midnight Sydney time (worker.mjs),
+// so they advance even when collection is stalled.
+export const revalidate = 3600;
 
 const THIS_WEEK_TITLE = 'This week in Australian AI policy';
 const THIS_WEEK_DESCRIPTION =

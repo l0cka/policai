@@ -37,16 +37,33 @@ async function connect(load: () => Promise<unknown>): Promise<Client> {
   return client
 }
 
+const WRITE_TOOLS = [
+  'stage_source_url',
+  'stage_source_capture',
+  'propose_source_decision',
+  'record_decision',
+  'review_court_requirement',
+  'record_manual_source_review',
+  'reject_staged_source',
+  'verify_register_record',
+]
+
 let editorial: Client
+let readOnlyEditorial: Client
 let publicServer: Client
 
 beforeAll(async () => {
+  vi.stubEnv('POLICAI_MCP_WRITE', '1')
   editorial = await connect(() => import('./server'))
+  vi.unstubAllEnvs()
+  vi.resetModules()
+  readOnlyEditorial = await connect(() => import('./server'))
   publicServer = await connect(() => import('./public-server'))
 })
 
 afterAll(async () => {
   await editorial.close()
+  await readOnlyEditorial.close()
   await publicServer.close()
 })
 
@@ -65,6 +82,24 @@ describe('editorial approval surface', () => {
     expect(names).toContain('record_decision')
     for (const removed of ['approve_staged_source', 'publish_staged_source', 'signal_decision']) {
       expect(names).not.toContain(removed)
+    }
+  })
+})
+
+describe('editorial write mode', () => {
+  it('registers write tools only when the server starts with POLICAI_MCP_WRITE=1', async () => {
+    const writeNames = (await editorial.listTools()).tools.map(({ name }) => name)
+    const readOnlyNames = (await readOnlyEditorial.listTools()).tools.map(({ name }) => name)
+
+    expect(writeNames).toEqual(expect.arrayContaining(WRITE_TOOLS))
+    for (const name of WRITE_TOOLS) expect(readOnlyNames).not.toContain(name)
+    expect(readOnlyNames).toContain('list_staged_sources')
+  })
+
+  it('takes no secret in any tool argument', async () => {
+    const { tools } = await editorial.listTools()
+    for (const tool of tools) {
+      expect(Object.keys(tool.inputSchema.properties ?? {})).not.toContain('adminToken')
     }
   })
 })

@@ -17,7 +17,11 @@ The server route reads `getPolicies()` and `getDevelopments()` with their defaul
 public access. That preserves withholding, stale-verification projection and
 related-record filtering. Selection helpers are not replacements for these gates.
 
-Coming up uses today's Sydney date, independently of collection freshness. It
+Coming up uses today's Sydney date, independently of collection freshness.
+The page is prerendered, so "today" is the build's date; the `policai` Worker
+rebuilds `main` every night at 00:05 Sydney time (`scheduled` in
+`worker.mjs`, through a Workers Builds deploy hook) so it never lags by more
+than the day. It
 includes verified proposed, active and amended policies with effective or
 commenced dates, or a deadline date, today or later. Current month/year-only
 dates remain visible with their original precision and an exact-day warning.

@@ -20,6 +20,11 @@
 		{ "pattern": "policai.org/*", "zone_name": "policai.org" },
 		{ "pattern": "www.policai.org/*", "zone_name": "policai.org" }
 	],
+	// Nightly rebuild at 00:05 Sydney time; worker.mjs picks the cron that
+	// matches daylight saving.
+	"triggers": {
+		"crons": ["5 13 * * *", "5 14 * * *"]
+	},
 	// Off so the Signal write API answers only on policai.org.
 	"workers_dev": false
 }

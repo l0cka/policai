@@ -59,7 +59,9 @@ function CompletenessRow({ field, missing }: { field: string; missing: number })
   return (
     <div className="completeness-row">
       <dt>{field}</dt>
-      <dd className="cell-mono">{missing === 0 ? 'All present' : `${missing} missing`}</dd>
+      <dd className={missing === 0 ? 'cell-mono cell-quiet' : 'cell-mono cell-gap'}>
+        {missing === 0 ? 'All present' : `${missing} missing`}
+      </dd>
     </div>
   );
 }
@@ -96,11 +98,11 @@ export default async function Health() {
           <dt>reporting</dt>
           <dd>{ok}</dd>
         </div>
-        <div className="stat stat-flag">
+        <div className={overdue > 0 ? 'stat stat-flag stat-warn' : 'stat'}>
           <dt>overdue</dt>
           <dd>{overdue}</dd>
         </div>
-        <div className="stat stat-flag">
+        <div className={failed > 0 ? 'stat stat-flag stat-fail' : 'stat'}>
           <dt>failed</dt>
           <dd>{failed}</dd>
         </div>
@@ -110,34 +112,37 @@ export default async function Health() {
         </div>
       </dl>
 
-      <p className="table-scroll-hint">Scroll horizontally to view all columns.</p>
+      <p className="table-scroll-hint" id="health-scroll-hint">
+        Scroll horizontally to view all columns.
+      </p>
       <div
-        className="table-wrap reveal reveal-2"
+        className="table-wrap health-table reveal reveal-2"
         role="region"
-        aria-label="Source health table"
+        aria-label="Source health, scrollable"
+        aria-describedby="health-scroll-hint"
         tabIndex={0}
       >
-        <table>
+        <table role="table">
           <caption className="sr-only">Most recent collection run for each active source</caption>
-          <thead>
-            <tr>
-              <th scope="col">Source</th>
-              <th scope="col">Method</th>
-              <th scope="col">Last run</th>
-              <th scope="col">Status</th>
-              <th scope="col">Found</th>
-              <th scope="col">New</th>
-              <th scope="col">Error</th>
+          <thead role="rowgroup">
+            <tr role="row">
+              <th scope="col" role="columnheader">Source</th>
+              <th scope="col" role="columnheader">Method</th>
+              <th scope="col" role="columnheader">Last run</th>
+              <th scope="col" role="columnheader">Status</th>
+              <th scope="col" role="columnheader" className="cell-num">Found</th>
+              <th scope="col" role="columnheader" className="cell-num">New</th>
+              <th scope="col" role="columnheader">Error</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody role="rowgroup">
             {rows.map((r) => {
               const state = sourceHealthState(r);
               return (
-                <tr key={r.name}>
-                  <th scope="row">{r.name}</th>
-                  <td>{fetchMethodLabel(r.fetch_method)}</td>
-                  <td className="cell-mono">
+                <tr key={r.name} role="row" data-state={state}>
+                  <th scope="row" role="rowheader">{r.name}</th>
+                  <td role="cell" data-label="Method" className="cell-method">{fetchMethodLabel(r.fetch_method)}</td>
+                  <td role="cell" data-label="Last run" className="cell-mono cell-run">
                     {r.next_run_at
                       ? auDate(new Date(r.next_run_at), {
                           timeZone: 'Australia/Sydney',
@@ -150,12 +155,14 @@ export default async function Health() {
                         })
                       : '—'}
                   </td>
-                  <td>
+                  <td role="cell" data-label="Status" className="cell-status">
                     <StatusCell state={state} />
                   </td>
-                  <td className="cell-mono">{r.items_found ?? '—'}</td>
-                  <td className="cell-mono">{r.items_new ?? '—'}</td>
-                  <td className="cell-error">{sourceErrorLabel(r.error)}</td>
+                  <td role="cell" data-label="Found" className="cell-mono cell-num">{r.items_found ?? '—'}</td>
+                  <td role="cell" data-label="New" className="cell-mono cell-num">{r.items_new ?? '—'}</td>
+                  <td role="cell" data-label="Error" className="cell-error">
+                    {sourceErrorLabel(r.error) || '—'}
+                  </td>
                 </tr>
               );
             })}

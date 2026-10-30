@@ -92,11 +92,12 @@ files to edit.
 ## Environment Variables
 
 The site and collector run with no environment variables. The local editorial
-MCP uses one optional administrative token:
+MCP and the Signal recovery CLI use these optional settings:
 
 | Variable | Required | Purpose |
 |----------|----------|---------|
-| `POLICAI_MCP_ADMIN_TOKEN` | For MCP ingest | Authorises local MCP source-ingest writes |
+| `POLICAI_MCP_WRITE` | For MCP ingest | `1` registers the local MCP source-ingest write tools |
+| `POLICAI_MCP_ADMIN_TOKEN` | For recovery apply | Authorises `npm run signal:reviews` recovery apply |
 
 ## License
 

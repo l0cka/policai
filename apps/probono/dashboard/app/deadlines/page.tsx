@@ -25,7 +25,7 @@ export default async function DeadlinesPage() {
         <DeadlineWeekStrip rows={upcoming} />
       </header>
 
-      <div className="workspace reveal reveal-1" style={{ gridTemplateColumns: 'minmax(0, 1fr)' }}>
+      <div className="workspace workspace-single reveal reveal-1">
         <section className="workspace-main" aria-labelledby="closing-heading">
           <h2 id="closing-heading" className="day-heading">
             Closing soon
@@ -37,7 +37,7 @@ export default async function DeadlinesPage() {
             <section className="dated-section" aria-labelledby="calendar-heading">
               <h2 id="calendar-heading" className="day-heading">
                 Sector calendar
-                <span className="day-count">nothing to lodge</span>
+                <span className="day-count">{milestones.length}</span>
               </h2>
               <p className="dated-note">
                 Dates worth knowing that carry no action: inquiries reporting, schemes commencing,
@@ -48,15 +48,18 @@ export default async function DeadlinesPage() {
           ) : null}
 
           {passed.length > 0 ? (
-            <details className="dated-section dated-closed">
-              <summary>
-                <h2 className="day-heading">
-                  Recently closed
-                  <span className="day-count">{passed.length} in the last 30 days</span>
-                </h2>
-              </summary>
-              <DeadlineList rows={passed} showYear={false} />
-            </details>
+            <section className="dated-section dated-closed" aria-labelledby="closed-heading">
+              <h2 id="closed-heading" className="day-heading">
+                Recently closed
+                <span className="day-count">{passed.length}</span>
+              </h2>
+              <details>
+                <summary>
+                  {passed.length} closed in the last 30 days
+                </summary>
+                <DeadlineList rows={passed} showYear={false} />
+              </details>
+            </section>
           ) : null}
         </section>
       </div>

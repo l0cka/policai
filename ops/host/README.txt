@@ -389,7 +389,16 @@ UPGRADE CONTRACT — ONLY IN A HOST WINDOW DANIEL APPROVES THROUGH ARGUS DEVOPS
 
 SERVICE ROUTING (REVIEW EXISTING HARDENING; NOT BLIND DROP-INS)
   System policai-pull.service remains the compatibility entrypoint. It must
-  execute the new delegate as root. Git and Docker run as l0cka. The service
+  execute the new delegate as root. Git and Docker run as l0cka. Runner switches
+  to l0cka with /usr/bin/setpriv (uid, primary gid, initgroups(3)) and umask 022,
+  the umask the earlier runuser login session set, so release files and image
+  build contexts stay world-readable. setpriv opens no PAM session: a pull cycle
+  writes no session lines to the journal (runuser wrote about 49 sessions, each
+  with a pam_systemd /run/user error under ProtectHome), and its commands stay
+  in the policai-pull.service cgroup. No PAM session also means no loginuid,
+  session keyring, pam_limits or lastlog entry for these commands; they keep the
+  unit's own limits and keyring. Commands that already run as l0cka keep their
+  own umask. The service
   needs permission for the release parent, trusted state and identity
   transitions. Its installed bytes are unchanged by the retirement (the
   Description still names both releases), so no unit hash moves. Do not
