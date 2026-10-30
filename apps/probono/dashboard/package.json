@@ -13,7 +13,7 @@
     "preview:cloudflare": "npm run build:cloudflare && opennextjs-cloudflare preview"
   },
   "dependencies": {
-    "@opennextjs/cloudflare": "^1.20.13",
+    "@opennextjs/cloudflare": "^1.20.14",
     "maplibre-gl": "^6.4.1",
     "next": "^15.5.28",
     "pg": "^8.12.0",
@@ -23,16 +23,20 @@
   "overrides": {
     "next": {
       "postcss": "8.5.23"
+    },
+    "@node-minify/core": {
+      "glob": "10.5.0"
     }
   },
   "dependencyOverrideNotes": {
-    "next>postcss": "Next 15.5.28 pins vulnerable PostCSS 8.4.31. Use same-major 8.5.23 to fix GHSA-qx2v-qp2m-jg93, GHSA-6g55-p6wh-862q, GHSA-fxqj-rqcc-2cmp and GHSA-r28c-9q8g-f849. Scoped to Next only; remove once Next declares a patched PostCSS. Sharp and Nanoid are updated within upstream ranges in package-lock.json, without overrides."
+    "next>postcss": "Next 15.5.28 pins vulnerable PostCSS 8.4.31. Use same-major 8.5.23 to fix GHSA-qx2v-qp2m-jg93, GHSA-6g55-p6wh-862q, GHSA-fxqj-rqcc-2cmp and GHSA-r28c-9q8g-f849. Scoped to Next only; remove once Next declares a patched PostCSS. Sharp and Nanoid are updated within upstream ranges in package-lock.json, without overrides.",
+    "@node-minify/core>glob": "@node-minify/core 9.0.2 (via @opennextjs/aws) pins glob 10.3.3, affected by GHSA-5j98-mcp5-4vw2. Use same-major 10.5.0. Scoped to @node-minify/core only; remove once @opennextjs/aws ships a patched @node-minify/core."
   },
   "devDependencies": {
     "@types/node": "^22.5.0",
     "@types/pg": "^8.11.6",
     "@types/react": "^19.0.0",
     "typescript": "^5.5.4",
-    "wrangler": "^4.152.0"
+    "wrangler": "^4.156.0"
   }
 }
