@@ -32,6 +32,8 @@ describe('isAllowedSourceHost', () => {
         'https://supremecourt-tas-gov-au.assets.ionatahosting.net/uploads/2026/10/No-14-of-2026-AI-Guidelines-for-Court-Users.pdf',
       ),
     ).toBe(true);
+    expect(isAllowedSourceHost('https://curriculum.nsw.edu.au/ace-rules/ace10/malpractice')).toBe(true);
+    expect(isAllowedSourceHost('https://other.nsw.edu.au/x')).toBe(false);
   });
 
   it('rejects http, non-government, and malformed URLs', () => {
