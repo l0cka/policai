@@ -1,6 +1,5 @@
 /* @vitest-environment node */
 import { basename } from 'node:path';
-import { randomUUID } from 'node:crypto';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { buildPolicy, buildTimelineEvent } from '@/test/factories';
 import type { SourceReview } from '@/types';
@@ -25,7 +24,6 @@ import { timelineRevisionHash } from '@/lib/policy-revision';
 
 const oldUrl = 'https://example.gov.au/index';
 const newUrl = 'https://example.gov.au/instrument';
-let adminToken: string;
 const capture = () => ({
   pageTitle: 'Official AI instrument',
   pageText: 'This official instrument commences on 1 July 2026 and governs artificial intelligence.',
@@ -40,7 +38,7 @@ const readEvent = async () => (await getTimelineEvents(undefined, { access: 'adm
 const stage = (extra: Record<string, unknown> = {}) => handleStageSourceCapture({
   url: newUrl, entryKind: 'timeline_event', targetRecordId: 'tracked-event',
   replaceTargetSource: true, proposedRecord: { ...event(), sourceUrl: newUrl },
-  capture: capture(), adminToken, ...extra,
+  capture: capture(), ...extra,
 });
 const approve = (id: string, { reviewer = 'Fixture Reviewer', ...extra }: Record<string, unknown> = {}) => approveStagedSource({
   id, actor: reviewer as string, browserCapture: capture(),
@@ -52,8 +50,6 @@ const publish = (id: string) => publishStagedSource(id, { browserCapture: captur
 beforeEach(() => {
   files.clear();
   files.set(basename('data/timeline.json'), [event()]);
-  adminToken = randomUUID();
-  vi.stubEnv('POLICAI_MCP_ADMIN_TOKEN', adminToken);
 });
 afterEach(() => vi.unstubAllEnvs());
 

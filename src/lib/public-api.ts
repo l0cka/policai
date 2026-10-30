@@ -4,6 +4,7 @@ import { checkRateLimit } from "@/lib/rate-limit";
 const PUBLIC_CACHE =
   "public, max-age=60, s-maxage=300, stale-while-revalidate=3600";
 const PUBLIC_ORIGIN = process.env.POLICAI_CORS_ORIGIN || "*";
+const PUBLIC_API_RATE = { bucket: "public-api", limit: 60, windowSeconds: 60 };
 
 function addPublicHeaders(response: NextResponse, cache = PUBLIC_CACHE) {
   response.headers.set("Access-Control-Allow-Origin", PUBLIC_ORIGIN);
@@ -13,7 +14,7 @@ function addPublicHeaders(response: NextResponse, cache = PUBLIC_CACHE) {
 
 export function checkPublicApiRequest(request?: Request) {
   if (!request) return null;
-  const limited = checkRateLimit(request);
+  const limited = checkRateLimit(request, PUBLIC_API_RATE);
   return limited ? addPublicHeaders(limited, "no-store") : null;
 }
 

@@ -1,10 +1,28 @@
 import type { NextConfig } from "next";
 
-// Set at origin so they hold whichever proxy sits in front. The CSP leaves
-// script, style and connect sources open: the inline theme and JSON-LD
-// scripts, Next's own inline bootstrap and the map's tile and worker loads
-// would each need a nonce or allow-list, and a nonce forces every page off
-// ISR. These directives are the ones that cost nothing to enforce.
+// Set at origin so they hold whichever proxy sits in front. Every source is
+// limited to this origin, except that scripts and styles keep 'unsafe-inline'
+// for the theme and JSON-LD scripts and Next's inline bootstrap: a nonce
+// would take every page off ISR and the static HTML assets. Cloudflare Web
+// Analytics is the one third-party origin, in case the zone injects it.
+// next dev evaluates modules with eval; production builds never do.
+const DEV_EVAL = process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : "";
+const CONTENT_SECURITY_POLICY = [
+	"default-src 'self'",
+	`script-src 'self' 'unsafe-inline'${DEV_EVAL} https://static.cloudflareinsights.com`,
+	"style-src 'self' 'unsafe-inline'",
+	"img-src 'self' data: blob:",
+	"font-src 'self' data:",
+	"connect-src 'self' https://cloudflareinsights.com",
+	"worker-src 'self' blob:",
+	"frame-src 'none'",
+	"frame-ancestors 'none'",
+	"base-uri 'self'",
+	"object-src 'none'",
+	"form-action 'self'",
+	"upgrade-insecure-requests",
+].join("; ");
+
 const SECURITY_HEADERS = [
 	{
 		key: "Strict-Transport-Security",
@@ -12,8 +30,7 @@ const SECURITY_HEADERS = [
 	},
 	{
 		key: "Content-Security-Policy",
-		value:
-			"frame-ancestors 'none'; base-uri 'self'; object-src 'none'; form-action 'self'; upgrade-insecure-requests",
+		value: CONTENT_SECURITY_POLICY,
 	},
 	{ key: "X-Frame-Options", value: "DENY" },
 	{ key: "X-Content-Type-Options", value: "nosniff" },

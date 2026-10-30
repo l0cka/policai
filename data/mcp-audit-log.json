@@ -1,5 +1,92 @@
 [
   {
+    "id": "mcp-audit-98fc00e5-6212-43f5-95a2-42d6b2b1cd31",
+    "createdAt": "2026-10-30T01:08:45.041Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-fc1168a1-be9d-49f3-8cfe-c0b90b6f165e",
+    "createdAt": "2026-10-30T01:08:44.983Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-b3b10a31-bc4e-4868-8bf0-44138a72b6d0",
+    "createdAt": "2026-10-30T00:48:04.394Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-edd72695-908c-4005-b656-1d724370a26d",
+    "createdAt": "2026-10-30T00:46:53.795Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-9c470762-3989-4d94-b66e-010456c9f34e",
+    "createdAt": "2026-10-30T00:46:53.752Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-b5f4c1e1-d934-4bcc-9b86-92e84465e938",
+    "createdAt": "2026-10-30T00:46:43.519Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-97428b85-ab79-49fb-a3e6-0cb43cf2df25",
+    "createdAt": "2026-10-30T00:46:43.480Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-25f75ed6-45f6-4012-8d2c-388888faa278",
+    "createdAt": "2026-10-30T00:46:33.078Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-92daae27-eb37-487b-8b0d-bd540a640b0c",
+    "createdAt": "2026-10-30T00:46:32.912Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-c4955d46-f593-4354-89c8-6fba38774a4f",
+    "createdAt": "2026-10-30T00:40:37.723Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-fde547d2-67fb-4c5e-8f0f-1bc001ae1e7b",
+    "createdAt": "2026-10-30T00:40:24.229Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-d0ff8e15-f3c7-48ce-bac8-0951006f7e4e",
+    "createdAt": "2026-10-30T00:40:13.571Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-bc025498-af81-40cd-934e-96a38bac75f9",
     "createdAt": "2026-10-28T02:31:20.464Z",
     "actor": "local-mcp-admin",

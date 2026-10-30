@@ -1,5 +1,6 @@
 import type { PolicyDraft, SourceReview, TimelineEventDraft } from "@/types";
 import { getJurisdictionName, getPolicyTypeName } from "@/types";
+import { tokenMatches } from "@/lib/token-match";
 import {
 	formatSignalInstant,
 	isSignalReviewer,
@@ -11,7 +12,7 @@ export const SIGNAL_HTTP_REVIEWER_DEFAULT = "Daniel Alkurdi";
 export type SignalHttpAction = "dismiss";
 
 const APPROVAL_ELSEWHERE =
-	"Signal cannot approve. Daniel approves a source by tapping its decision card in the Policai Claude project.";
+	"Signal cannot approve. Daniel approves a source with his passkey on policai.org/approve.";
 
 export interface SignalAttestationInput {
 	replyText: string;
@@ -93,7 +94,7 @@ export function requireSignalHttpToken(
 			error: "POLICAI_SIGNAL_TOKEN is not configured on the host",
 		};
 	}
-	if (!requestToken || requestToken !== expected) {
+	if (!requestToken || !tokenMatches(requestToken, expected)) {
 		return {
 			ok: false,
 			status: 401,

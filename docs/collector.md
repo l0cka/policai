@@ -494,7 +494,7 @@ status; `cyber-news` remains manual without an exception.
 
 Manual sources remain enabled. Review them with a browser and record the result
 through the MCP `record_manual_source_review` tool, supplying the human
-reviewer's identity separately from the admin token, substantive notes that
+reviewer's identity, substantive notes that
 describe what was inspected, and any available browser evidence (title,
 publisher, final URL, retrieval metadata, or fingerprint). A refresh merges
 with previously retained evidence rather than erasing it. A successful check
@@ -827,10 +827,10 @@ version cannot be lost merely because its state write completed first.
 ## Reviewing detections into the register
 
 Detections staged in `data/source-reviews.json` are proposals. An agent
-prepares each one completely, and Daniel decides on it with one tap on a
-decision card in the Policai Claude project. Approval then publishes.
+prepares each one completely, and Daniel decides on it by signing it with his
+passkey on policai.org. Approval then publishes.
 
-1. Run the local MCP server (`npm run mcp`).
+1. Run the local MCP server with its write tools (`POLICAI_MCP_WRITE=1 npm run mcp`).
 2. Stage the source with `stage_source_url`, or with `stage_source_capture`
    when the host refuses the collector. Pass the exact record to publish as
    `proposedRecord`, edits included. A capture names who made it honestly:
@@ -843,18 +843,30 @@ decision card in the Policai Claude project. Approval then publishes.
    stage-only lead, or `expectedTargetRevisionHash` after a rebase.
 4. Call `show_source_proposal`. Fix and re-propose until `blockers` is
    empty; each entry is the error approval would raise today.
-5. Post a decision card (`request_decision`) that shows the current and
-   proposed record, the source and who captured it, and the
-   `proposalCode`. A typed "go ahead" is not a decision; only a tap is.
-6. When Daniel taps Approve, call `record_decision` with the review id, the
-   `proposalHash`, `reviewer: "Daniel Alkurdi"`, and the card's link as
-   `attestationUrl`. It refuses if the review changed after the card was
-   posted, if the reviewer is not on the `POLICAI_SIGNAL_REVIEWERS`
-   allowlist, or if a staged browser capture is more than 7 days old. It
-   approves with the staged evidence, without a new capture, then publishes.
-   Calling it again with the same hash resumes a publication that failed
-   part-way.
-7. Run `npm run validate:data`, commit, and push (or open a PR).
+5. Show Daniel the current and proposed record, the source and who
+   captured it, the `proposalCode`, and the `approvalUrl`. A typed "go
+   ahead" or a card tap is not a decision; only his passkey signature is.
+6. Daniel opens `approvalUrl`, checks the proposal code, and approves with
+   his passkey. `/api/approvals` verifies the signature against
+   `data/editor-passkeys.json` and appends it to `data/editor-approvals.json`
+   on the `editor-approvals` branch (the mailbox; it never touches `main`).
+7. Call `record_decision` with the review id and the `proposalHash`. It reads
+   the signature from the mailbox, verifies it again, and records the key's
+   owner as `decidedBy`. It refuses if there is no signature for this exact
+   proposal, if the review changed after it was put to Daniel, or if a staged
+   browser capture is more than 7 days old. It approves with the staged
+   evidence, without a new capture, then publishes. Calling it again with
+   the same hash resumes a publication that failed part-way.
+8. Run `npm run validate:data`, commit, and push (or open a PR).
+
+`validate:data` is the last gate. Once a passkey is registered, every
+decision made after its registration, and every decision new on a pull
+request, must carry the key owner's signature over exactly what it approved,
+and `data/editor-passkeys.json` cannot change. The editor registers a
+passkey once at `policai.org/approve/register` and hands the result to an
+agent, which runs `npm run passkey:add`. Until a key is registered,
+`record_decision` takes `reviewer` and the claude.ai card link as
+`attestationUrl` instead.
 
 Server-fetchable sources are fetched again at decision time, and approval
 refuses if their fingerprint moved since staging. When that re-fetch is
@@ -910,7 +922,7 @@ or a disallowance motion that did not pass. A merge that breaks the legal order
 is reported in the review, not applied. Unlike a changed direct document, a
 stage update keeps the record public while it waits, because the last approved
 stage is still true as of its date. It is decided like any other review: a
-proposal, then Daniel's decision card, then `record_decision`. When the
+proposal, then Daniel's passkey approval, then `record_decision`. When the
 review's evidence is a register reading rather than the record's page (a
 Federal Register title record or a SALT bill summary), approval and
 publication follow the record again live and refuse unless the register
@@ -938,8 +950,8 @@ watches but still runs the Federal Register ones. Run one watch with
 **Policai Signal** is Daniel’s Grok Bot
 (`fa9b5c47-349a-438e-acfc-75055f2d6b8f`). It is another AI agent, so it
 cannot approve anything. It alerts Daniel to pending reviews, previews them,
-and dismisses new-source leads Daniel rejects. Approval happens only on a
-decision card in the Policai Claude project (see above). Product path:
+and dismisses new-source leads Daniel rejects. Approval happens only with
+Daniel's passkey on policai.org (see above). Product path:
 **HTTPS on policai.org**. The bot can reach HTTPS with a masked env secret; it
 has **no** Argus SSH, **will not** run a TTY CLI, and **cannot** merge PRs.
 
@@ -967,7 +979,7 @@ curl -sS -H "Authorization: Bearer $POLICAI_SIGNAL_TOKEN" \
 
 Returns `{ success, dryRun, review, approve, dismiss }`. No write.
 `approve` is always `{ allowed: false, reason }`, and the reason says that
-Daniel approves on a decision card in the Policai project.
+Daniel approves with his passkey on policai.org.
 `dismiss.blockers` explains why a review cannot be dismissed.
 
 **Apply:**
@@ -1016,7 +1028,7 @@ It must not claim TTY typing.
 | `unauthorized` | Missing/wrong Bearer token |
 | `signal_token_unconfigured` | Worker missing the `POLICAI_SIGNAL_TOKEN` secret |
 | `not_found` | Unknown review id |
-| `approve_not_allowed` (403) | `action` was `approve`; Daniel approves on a decision card instead |
+| `approve_not_allowed` (403) | `action` was `approve`; Daniel approves with his passkey instead |
 | `invalid_action` / `invalid_request` (400) | Unknown action, or missing fields |
 | `dismiss_blocked` / `tracked_record_dismiss` | Tracked-record reviews cannot be dismissed |
 | `reviewer_not_allowlisted` | Reviewer not in allowlist |
@@ -1026,7 +1038,9 @@ It must not claim TTY typing.
 | `main_moved` (409) | `main` target only: `main` moved after the read; retry |
 | `github_persist_failed` (502) | Commit, branch or PR creation failed; nothing merged |
 
-Rate limit: 20 POST / 30 GET per IP per minute on `/api/signal/*`.
+Rate limit: 20 POST / 30 GET per client IP per minute on `/api/signal/*`. The
+client is Cloudflare's `cf-connecting-ip`, never `X-Forwarded-For`, and every
+review id shares the one GET budget.
 
 **Persistence:** Git is the database. Signal POST runs on the `policai`
 Worker, which has no writable project filesystem, so it commits through the
@@ -1171,7 +1185,7 @@ A browser-captured review remains subject to the normal gates.
 `record_decision` approves and publishes against the staged capture, and
 refuses one more than 7 days old. Re-staging with a fresh capture is the only
 way to refresh it, and it clears the proposal and any decision, so a changed
-page needs a new decision card.
+page needs a new approval.
 
 Dismissals: reject the staged review and set the matching development's status
 to `dismissed` with a `dismissalReason`. Publishing a collector review promotes
