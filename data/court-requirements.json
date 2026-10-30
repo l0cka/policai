@@ -6820,8 +6820,8 @@
       "awareness"
     ],
     "source": {
-      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0012/798375/Artificial-Intelligence_Guidelines-for-Non-Lawyers.pdf",
-      "contentHash": "ee2b7fad1564eb18393efcf1919bb7727b11bcb864c76ffe81fdfd2fa48ac11a",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+      "contentHash": "fd9a288e119f57051f998c1aa5a63c2acf5f6cf0339ce1e127afdab25d8a7c2b",
       "locator": "section 1 Understand Generative AI and its applications",
       "quote": "Before using Generative AI chatbots (or any other AI tool) make sure you have a basic understanding of their capabilities and their limitations."
     },
@@ -6831,10 +6831,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Independent re-read; the same instruction also appears in the Introduction. Imperative 'make sure' rendered as 'should' consistent with guideline status."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -6852,8 +6850,8 @@
       "reliance"
     ],
     "source": {
-      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0012/798375/Artificial-Intelligence_Guidelines-for-Non-Lawyers.pdf",
-      "contentHash": "ee2b7fad1564eb18393efcf1919bb7727b11bcb864c76ffe81fdfd2fa48ac11a",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+      "contentHash": "fd9a288e119f57051f998c1aa5a63c2acf5f6cf0339ce1e127afdab25d8a7c2b",
       "locator": "Introduction",
       "quote": "If you choose to use Generative AI chatbots to help you with your court case, you should not rely on this as your sole or main source of legal information. You should also seek legal advice from a lawyer (if possible) or refer to publicly available legal resources such as: Australasian Legal Information Institute (www.austlii.edu.au) Queensland Judgments (www.queenslandjudgments.com.au) Queensland Legislation (www.legislation.qld.gov.au)"
     },
@@ -6863,10 +6861,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Prior quote omitted the named resources listed in the action; expanded to include the contiguous resource list."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -6885,8 +6881,8 @@
       "witness statements"
     ],
     "source": {
-      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0012/798375/Artificial-Intelligence_Guidelines-for-Non-Lawyers.pdf",
-      "contentHash": "ee2b7fad1564eb18393efcf1919bb7727b11bcb864c76ffe81fdfd2fa48ac11a",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+      "contentHash": "fd9a288e119f57051f998c1aa5a63c2acf5f6cf0339ce1e127afdab25d8a7c2b",
       "locator": "section 1 Some capabilities of Generative AI chatbots",
       "quote": "Particular caution needs to be exercised if you use a generative AI tool to help you prepare an affidavit or witness statement, for yourself or for another person. You must ensure that the document is sworn/affirmed or finalised in a manner that accurately reflects the person’s own knowledge and words."
     },
@@ -6896,10 +6892,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Prior quote omitted the 'particular caution' sentence relied on in the action and condition; expanded to both sentences."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -6916,8 +6910,8 @@
       "accuracy"
     ],
     "source": {
-      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0012/798375/Artificial-Intelligence_Guidelines-for-Non-Lawyers.pdf",
-      "contentHash": "ee2b7fad1564eb18393efcf1919bb7727b11bcb864c76ffe81fdfd2fa48ac11a",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+      "contentHash": "fd9a288e119f57051f998c1aa5a63c2acf5f6cf0339ce1e127afdab25d8a7c2b",
       "locator": "section 1 Some limitations of Generative AI chatbots",
       "quote": "Anyone using AI must bear in mind that Generative AI chatbots cannot distinguish between facts, inferences and opinions contained in their source datasets. This means that text which they generate in response to a prompt may contain incorrect, opinionated, misleading or biased statements presented as fact."
     },
@@ -6927,10 +6921,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Added: independently operative 'must bear in mind' provision missed by the first pass."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -6947,8 +6939,8 @@
       "privilege"
     ],
     "source": {
-      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0012/798375/Artificial-Intelligence_Guidelines-for-Non-Lawyers.pdf",
-      "contentHash": "ee2b7fad1564eb18393efcf1919bb7727b11bcb864c76ffe81fdfd2fa48ac11a",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+      "contentHash": "fd9a288e119f57051f998c1aa5a63c2acf5f6cf0339ce1e127afdab25d8a7c2b",
       "locator": "section 2 Consider confidentiality, suppression, and privacy",
       "quote": "Do not enter any private, confidential, suppressed or legally privileged information into a Generative AI chatbot."
     },
@@ -6958,10 +6950,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Independent re-read of section 2; direct imperative rendered as must_not."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -6978,8 +6968,8 @@
       "responsibility"
     ],
     "source": {
-      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0012/798375/Artificial-Intelligence_Guidelines-for-Non-Lawyers.pdf",
-      "contentHash": "ee2b7fad1564eb18393efcf1919bb7727b11bcb864c76ffe81fdfd2fa48ac11a",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+      "contentHash": "fd9a288e119f57051f998c1aa5a63c2acf5f6cf0339ce1e127afdab25d8a7c2b",
       "locator": "section 3 Ensure accuracy",
       "quote": "You are responsible for ensuring that all information you rely on or provide to the court or tribunal is accurate. You must check the accuracy of any information you get from a Generative AI chatbot before using that information in court or tribunal proceedings."
     },
@@ -6989,10 +6979,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Independent re-read of section 3; quote verbatim."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -7008,8 +6996,8 @@
       "legal advice"
     ],
     "source": {
-      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0012/798375/Artificial-Intelligence_Guidelines-for-Non-Lawyers.pdf",
-      "contentHash": "ee2b7fad1564eb18393efcf1919bb7727b11bcb864c76ffe81fdfd2fa48ac11a",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+      "contentHash": "fd9a288e119f57051f998c1aa5a63c2acf5f6cf0339ce1e127afdab25d8a7c2b",
       "locator": "section 3 Ensure accuracy",
       "quote": "You should check any legal information you get from a Generative AI chatbot with a lawyer (if possible). You can also refer to publicly available legal resources such as those referred to in the introduction."
     },
@@ -7019,10 +7007,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Independent re-read of section 3; quote verbatim. Action adjusted so the resources limb reads as permissive ('can'), matching the source."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -7041,8 +7027,8 @@
       "costs"
     ],
     "source": {
-      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0012/798375/Artificial-Intelligence_Guidelines-for-Non-Lawyers.pdf",
-      "contentHash": "ee2b7fad1564eb18393efcf1919bb7727b11bcb864c76ffe81fdfd2fa48ac11a",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+      "contentHash": "fd9a288e119f57051f998c1aa5a63c2acf5f6cf0339ce1e127afdab25d8a7c2b",
       "locator": "section 3 Ensure accuracy",
       "quote": "If you rely on a document which contains non-existent or fake citations, or inaccurate AI-generated information, in court, and this causes delay in hearing the matter, a costs order may be made against you."
     },
@@ -7052,10 +7038,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Independent re-read. Actor corrected from inferred 'court or tribunal' to the person addressed by the quote; both conditions retained."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -7071,8 +7055,8 @@
       "ethics"
     ],
     "source": {
-      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0012/798375/Artificial-Intelligence_Guidelines-for-Non-Lawyers.pdf",
-      "contentHash": "ee2b7fad1564eb18393efcf1919bb7727b11bcb864c76ffe81fdfd2fa48ac11a",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+      "contentHash": "fd9a288e119f57051f998c1aa5a63c2acf5f6cf0339ce1e127afdab25d8a7c2b",
       "locator": "section 4 Be aware of ethical issues",
       "quote": "Information generated by such tools will inevitably reflect whatever gaps, errors and biases are contained in their training data. You should always have regard to this possibility and the need to correct this."
     },
@@ -7082,10 +7066,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Prior quote began at 'You should...' so 'this possibility' had no referent; expanded to include the preceding sentence."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -7104,8 +7086,8 @@
       "ethics"
     ],
     "source": {
-      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0012/798375/Artificial-Intelligence_Guidelines-for-Non-Lawyers.pdf",
-      "contentHash": "ee2b7fad1564eb18393efcf1919bb7727b11bcb864c76ffe81fdfd2fa48ac11a",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+      "contentHash": "fd9a288e119f57051f998c1aa5a63c2acf5f6cf0339ce1e127afdab25d8a7c2b",
       "locator": "section 4 Be aware of ethical issues",
       "quote": "The use of AI tools based on LLMs may also raise copyright and plagiarism issues. For example, Generative AI chatbots can be useful in condensing or summarising information or presenting the information in a different format. However, the following should be considered: using a chatbot to summarise a portion of a textbook or other intellectual property could breach the author’s copyright any such use would need to be carefully reviewed to ensure the summarised passage carries the same meaning as the original content depending on context, the source may need to be acknowledged and citations added."
     },
@@ -7115,10 +7097,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Added: 'the following should be considered' is an operative 'should' missed by the first pass. Bullet items run together in the source text after whitespace normalisation."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -7133,8 +7113,8 @@
       "security"
     ],
     "source": {
-      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0012/798375/Artificial-Intelligence_Guidelines-for-Non-Lawyers.pdf",
-      "contentHash": "ee2b7fad1564eb18393efcf1919bb7727b11bcb864c76ffe81fdfd2fa48ac11a",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+      "contentHash": "fd9a288e119f57051f998c1aa5a63c2acf5f6cf0339ce1e127afdab25d8a7c2b",
       "locator": "section 5 Maintain security",
       "quote": "Find out and follow general cyber-safety best practices for maintaining your own security and that of the courts and tribunals."
     },
@@ -7144,10 +7124,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Independent re-read of section 5; imperative rendered as 'should' consistent with guideline status."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -7162,8 +7140,8 @@
       "judicial obligations"
     ],
     "source": {
-      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
-      "contentHash": "a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+      "contentHash": "b9dc819137b1f5fe0385415b299bcaf4c2b05b2f13a10ac637fe48d77a81c736",
       "locator": "paragraph [1]",
       "quote": "Any use of Generative AI tools by judicial officers and their staff must be consistent with the fulfilment of the judiciary’s obligation to do equal justice to all persons according to law, including by facilitating the just and expeditious resolution of civil and criminal proceedings in accordance with applicable substantive and procedural law."
     },
@@ -7173,10 +7151,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Prior quote was truncated before 'including by facilitating...'; expanded to full [1]."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -7193,8 +7169,8 @@
       "suppression orders"
     ],
     "source": {
-      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
-      "contentHash": "a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+      "contentHash": "b9dc819137b1f5fe0385415b299bcaf4c2b05b2f13a10ac637fe48d77a81c736",
       "locator": "paragraph [12]",
       "quote": "Do not enter any information into a public Generative AI chatbot that is not already in the public domain. Take particular care not to enter any private, confidential, or suppressed information. Any information that you input into a public Generative AI chatbot should be seen as being published to all the world."
     },
@@ -7204,10 +7180,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Prior quote omitted the 'published to all the world' sentence relied on in the action; expanded to full [12]. Direct imperative rendered as must_not."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -7223,8 +7197,8 @@
       "chat history"
     ],
     "source": {
-      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
-      "contentHash": "a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+      "contentHash": "b9dc819137b1f5fe0385415b299bcaf4c2b05b2f13a10ac637fe48d77a81c736",
       "locator": "paragraph [13]",
       "quote": "You should disable the chat history in chatbots if this option is available."
     },
@@ -7234,10 +7208,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Independent re-read of [13]; verbatim."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -7255,8 +7227,8 @@
       "reporting"
     ],
     "source": {
-      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
-      "contentHash": "a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+      "contentHash": "b9dc819137b1f5fe0385415b299bcaf4c2b05b2f13a10ac637fe48d77a81c736",
       "locator": "paragraph [14]",
       "quote": "In the event of unintentional disclosure of confidential, suppressed, or sensitive information, your staff should report to you. You should notify your head of jurisdiction."
     },
@@ -7266,10 +7238,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Independent re-read of [14]; verbatim."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -7285,8 +7255,8 @@
       "accuracy"
     ],
     "source": {
-      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
-      "contentHash": "a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+      "contentHash": "b9dc819137b1f5fe0385415b299bcaf4c2b05b2f13a10ac637fe48d77a81c736",
       "locator": "paragraph [15]",
       "quote": "The accuracy of any information you have been provided by a Generative AI chatbot must be checked before it is used or relied upon."
     },
@@ -7296,10 +7266,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Independent re-read of [15]; verbatim."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -7317,8 +7285,8 @@
       "accuracy"
     ],
     "source": {
-      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
-      "contentHash": "a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+      "contentHash": "b9dc819137b1f5fe0385415b299bcaf4c2b05b2f13a10ac637fe48d77a81c736",
       "locator": "paragraph [17](a)",
       "quote": "With straightforward areas of law or for material you would recognise as correct but do not have to hand, AI tools might be able to produce helpful, higher-level legal explanations or summaries of relevant legal principles, but: (a) Care must be taken to provide accurate and reliable information to the chatbot."
     },
@@ -7328,10 +7296,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Prior quote covered only sub-para (a), leaving the condition unsupported; expanded to include the [17] chapeau."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -7347,8 +7313,8 @@
       "ethics"
     ],
     "source": {
-      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
-      "contentHash": "a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+      "contentHash": "b9dc819137b1f5fe0385415b299bcaf4c2b05b2f13a10ac637fe48d77a81c736",
       "locator": "paragraph [18]",
       "quote": "Information generated by such tools will inevitably reflect whatever gaps, errors and biases are contained in its training data. You should always have regard to this possibility and the need to correct this."
     },
@@ -7358,10 +7324,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Prior quote began at 'You should...' so 'this possibility' had no referent; expanded to include the preceding sentence."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -7380,8 +7344,8 @@
       "ethics"
     ],
     "source": {
-      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
-      "contentHash": "a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+      "contentHash": "b9dc819137b1f5fe0385415b299bcaf4c2b05b2f13a10ac637fe48d77a81c736",
       "locator": "paragraph [19]",
       "quote": "The use of AI tools based on LLMs may also raise copyright and plagiarism issues. For example, Generative AI chatbots can be very useful in condensing or summarising information or presenting the information in a different format. However, the following should be considered: (a) Using a chatbot to summarise a portion of a textbook or other intellectual property could breach the author’s copyright. (b) Any such use would need to be carefully reviewed to ensure the summarised passage carries the same meaning as the original content. (c) Depending on context, the source may need to be acknowledged and citations added."
     },
@@ -7391,10 +7355,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Added: 'the following should be considered' at [19] is an operative 'should' missed by the first pass; sub-paras (a)-(c) included in the quote."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -7409,8 +7371,8 @@
       "security"
     ],
     "source": {
-      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
-      "contentHash": "a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+      "contentHash": "b9dc819137b1f5fe0385415b299bcaf4c2b05b2f13a10ac637fe48d77a81c736",
       "locator": "paragraph [21]",
       "quote": "Follow best practices for maintaining your own and the Court’s security. (a) Use work devices (rather than personal devices) to access AI chatbots. 5 (b) Use your work email address. (c) If you have a paid subscription to an AI platform, use it rather than a public AI tool. (Paid subscriptions have been identified as generally more secure than non‑paid)."
     },
@@ -7420,10 +7382,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Prior quote covered only sub-para (a) while the action listed (b) and (c); expanded to all of [21]. The stray '5' is the page number in the source text between (a) and (b), retained verbatim for contiguity. Imperative rendered as 'should'."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -7441,8 +7401,8 @@
       "reporting"
     ],
     "source": {
-      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
-      "contentHash": "a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+      "contentHash": "b9dc819137b1f5fe0385415b299bcaf4c2b05b2f13a10ac637fe48d77a81c736",
       "locator": "paragraph [22]",
       "quote": "If there has been a potential security breach your staff should report to you. You should notify your head of jurisdiction."
     },
@@ -7452,10 +7412,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Independent re-read of [22]; verbatim."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -7470,8 +7428,8 @@
       "responsibility"
     ],
     "source": {
-      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
-      "contentHash": "a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+      "contentHash": "b9dc819137b1f5fe0385415b299bcaf4c2b05b2f13a10ac637fe48d77a81c736",
       "locator": "paragraph [23]",
       "quote": "You are personally responsible for material which is produced in your name."
     },
@@ -7481,10 +7439,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Independent re-read of [23]; declaratory responsibility rendered as 'will'."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -7502,8 +7458,8 @@
       "judicial values"
     ],
     "source": {
-      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
-      "contentHash": "a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+      "contentHash": "b9dc819137b1f5fe0385415b299bcaf4c2b05b2f13a10ac637fe48d77a81c736",
       "locator": "paragraph [24]",
       "quote": "Provided these guidelines are appropriately followed, there is no reason why you cannot use generative AI as a potentially useful secondary tool for research or preparatory work. However, you must ensure that any use of AI tools by you or your staff is consistent with the core judicial values of open justice, accountability, impartiality and equality before the law, procedural fairness, access to justice and efficiency."
     },
@@ -7513,10 +7469,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Prior quote was truncated before the list of judicial values named in the action; expanded to full [24]."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -7532,8 +7486,8 @@
       "reasons"
     ],
     "source": {
-      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
-      "contentHash": "a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+      "contentHash": "b9dc819137b1f5fe0385415b299bcaf4c2b05b2f13a10ac637fe48d77a81c736",
       "locator": "paragraph [25]",
       "quote": "AI tools should not be used for decision-making nor used to develop or prepare reasons for decision. The development and expression of judicial reasoning must be done by the judicial officer themselves."
     },
@@ -7543,10 +7497,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Independent re-read of [25]; 'should not' retained with the embedded 'must' on judicial reasoning."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -7564,8 +7516,8 @@
       "supervision"
     ],
     "source": {
-      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
-      "contentHash": "a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+      "contentHash": "b9dc819137b1f5fe0385415b299bcaf4c2b05b2f13a10ac637fe48d77a81c736",
       "locator": "paragraph [26]",
       "quote": "If your staff are using AI tools in the course of their work for you, you should discuss it with them to ensure they are using such tools appropriately and taking steps to mitigate any risks."
     },
@@ -7575,10 +7527,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Independent re-read of [26]; verbatim."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -7595,8 +7545,8 @@
       "responsibility"
     ],
     "source": {
-      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
-      "contentHash": "a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+      "contentHash": "b9dc819137b1f5fe0385415b299bcaf4c2b05b2f13a10ac637fe48d77a81c736",
       "locator": "paragraph [31]",
       "quote": "All legal representatives are responsible for the material they put before the courts and tribunals and have a professional obligation to ensure it is accurate and appropriate."
     },
@@ -7606,10 +7556,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Added: [31] states a professional obligation ('have a professional obligation to ensure'), rendered as 'must'; missed by the first pass."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -7626,8 +7574,8 @@
       "citations"
     ],
     "source": {
-      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
-      "contentHash": "a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+      "contentHash": "b9dc819137b1f5fe0385415b299bcaf4c2b05b2f13a10ac637fe48d77a81c736",
       "locator": "paragraph [32]",
       "quote": "Lawyers should be required to confirm that they have independently verified the accuracy of any research or case citations that have been generated with the assistance of AI."
     },
@@ -7637,10 +7585,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Independent re-read of [32]; passive 'should be required' preserved literally rather than attributing the requiring to a particular actor."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -7658,8 +7604,8 @@
       "inquiry"
     ],
     "source": {
-      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
-      "contentHash": "a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+      "contentHash": "b9dc819137b1f5fe0385415b299bcaf4c2b05b2f13a10ac637fe48d77a81c736",
       "locator": "paragraph [34]",
       "quote": "If it appears an AI chatbot may have been used to prepare submissions or other documents, it may be appropriate to inquire about this, and ask what checks for accuracy have been undertaken (if any). Indications which may suggest an AI chatbot has been used include: (a) references to cases that do not sound familiar, or have unfamiliar citations; (b) citation of different bodies of case law in relation to the same legal issues; (c) submissions that do not accord with your general understanding of the law in the area; (d) elaborate language, or language which is inconsistent with the manner in which the person otherwise speaks or writes."
     },
@@ -7669,10 +7615,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Prior quote omitted the (a)-(d) indicators listed in the action; expanded to full [34]."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -7688,8 +7632,8 @@
       "awareness"
     ],
     "source": {
-      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
-      "contentHash": "a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+      "contentHash": "b9dc819137b1f5fe0385415b299bcaf4c2b05b2f13a10ac637fe48d77a81c736",
       "locator": "paragraph [35]",
       "quote": "AI tools are now being used to produce fake material, including text, images and video. Courts have always had to handle forgeries, and allegations of forgery, involving varying levels of sophistication. Judges should be aware of this new possibility and potential challenges posed by deepfake technology."
     },
@@ -7699,10 +7643,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Prior quote began at 'Judges should...' so 'this new possibility' had no referent; expanded to full [35]."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
@@ -7718,8 +7660,8 @@
       "disclosure"
     ],
     "source": {
-      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
-      "contentHash": "a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba",
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+      "contentHash": "b9dc819137b1f5fe0385415b299bcaf4c2b05b2f13a10ac637fe48d77a81c736",
       "locator": "paragraph [36]",
       "quote": "Judges should also be alert to the use of AI by experts to assist in the generation or expression of an opinion contained in an expert report and consider whether the expert should be required to identify in their report the precise way in which they have used AI."
     },
@@ -7729,10 +7671,8 @@
       "extractedBy": "claude-fable-5 (medium reasoning)"
     },
     "verification": {
-      "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Independent re-read of [36]; verbatim."
+      "status": "pending_review",
+      "notes": "Rebound on 30 Oct 2026 to the re-verified source; the quote appears verbatim in it. Awaiting editorial re-review."
     }
   },
   {
