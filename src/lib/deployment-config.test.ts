@@ -30,4 +30,27 @@ describe("deployment data packaging", () => {
 			permanent: true,
 		});
 	});
+
+	it("limits every page's script, style and connect sources to this origin", async () => {
+		const [{ source, headers }] = (await nextConfig.headers?.()) ?? [];
+		const csp = headers.find(({ key }) => key === "Content-Security-Policy")?.value ?? "";
+		const directives = new Map(
+			csp.split(";").map((directive) => {
+				const [name, ...values] = directive.trim().split(/\s+/);
+				return [name, values];
+			}),
+		);
+
+		expect(source).toBe("/:path*");
+		expect(directives.get("default-src")).toEqual(["'self'"]);
+		expect(directives.get("script-src")).toEqual([
+			"'self'",
+			"'unsafe-inline'",
+			"https://static.cloudflareinsights.com",
+		]);
+		expect(directives.get("style-src")).toEqual(["'self'", "'unsafe-inline'"]);
+		expect(directives.get("connect-src")).toEqual(["'self'", "https://cloudflareinsights.com"]);
+		expect(directives.get("frame-ancestors")).toEqual(["'none'"]);
+		expect(directives.get("object-src")).toEqual(["'none'"]);
+	});
 });

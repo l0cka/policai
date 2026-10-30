@@ -1,6 +1,5 @@
 /* @vitest-environment node */
 import { basename } from 'node:path';
-import { randomUUID } from 'node:crypto';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { buildTimelineEvent } from '@/test/factories';
 import type { SourceReview, TimelineEvent } from '@/types';
@@ -29,7 +28,6 @@ const inquiryUrl = 'https://example.gov.au/inquiry';
 const cardUrl = 'https://claude.ai/code/project/chan_example?thread=cmsg_example';
 const oldDescription = 'The committee is due to report on 16 November 2026.';
 const newDescription = 'The committee is due to report on 23 March 2027.';
-let adminToken: string;
 
 const event = () =>
   buildTimelineEvent({
@@ -59,7 +57,6 @@ async function proposeInquiryUpdate() {
       notes: 'The host refuses the collector, so the rendered committee page was captured in a browser.',
       linkedDocuments: [],
     },
-    adminToken,
   });
   await handleProposeSourceDecision({
     id: staged.id,
@@ -69,7 +66,6 @@ async function proposeInquiryUpdate() {
       precision: 'day',
       notes: 'The committee page states the Senate referred the inquiry on 13 May 2026.',
     },
-    adminToken,
   });
   return handleShowSourceProposal({ id: staged.id });
 }
@@ -80,15 +76,12 @@ const decide = (id: string, proposalHash: string, extra: Record<string, unknown>
     proposalHash,
     reviewer: 'Daniel Alkurdi',
     attestationUrl: cardUrl,
-    adminToken,
     ...extra,
   });
 
 beforeEach(() => {
   files.clear();
   files.set(basename('data/timeline.json'), [event()]);
-  adminToken = randomUUID();
-  vi.stubEnv('POLICAI_MCP_ADMIN_TOKEN', adminToken);
 });
 afterEach(() => {
   vi.useRealTimers();
@@ -113,7 +106,7 @@ describe('propose, then decide on a decision card', () => {
 
   it('lists what would block approval before a card is posted', async () => {
     const card = await proposeInquiryUpdate();
-    await handleProposeSourceDecision({ id: card.id, proposedBy: 'Claude (agent)', adminToken });
+    await handleProposeSourceDecision({ id: card.id, proposedBy: 'Claude (agent)' });
 
     const { blockers } = await handleShowSourceProposal({ id: card.id });
 
@@ -162,8 +155,7 @@ describe('propose, then decide on a decision card', () => {
       id: card.id,
       proposedBy: 'Claude (agent)',
       proposedRecord: { ...event(), description: 'Something the editor never saw.' },
-      adminToken,
-    });
+      });
 
     await expect(decide(card.id, card.proposalHash)).rejects.toThrow(
       'changed after its decision card was posted',

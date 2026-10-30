@@ -21,24 +21,24 @@ describe('checkRateLimit', () => {
     const { checkRateLimit } = await loadRateLimitModule()
     const request = new Request('https://example.com/api/policies', {
       headers: {
-        'x-forwarded-for': '203.0.113.1',
+        'cf-connecting-ip': '203.0.113.1',
       },
     })
 
-    expect(checkRateLimit(request, { limit: 2, windowSeconds: 10 })).toBeNull()
-    expect(checkRateLimit(request, { limit: 2, windowSeconds: 10 })).toBeNull()
+    expect(checkRateLimit(request, { bucket: 'api', limit: 2, windowSeconds: 10 })).toBeNull()
+    expect(checkRateLimit(request, { bucket: 'api', limit: 2, windowSeconds: 10 })).toBeNull()
   })
 
   it('returns a 429 response with a retry header when the limit is exceeded', async () => {
     const { checkRateLimit } = await loadRateLimitModule()
     const request = new Request('https://example.com/api/policies', {
       headers: {
-        'x-real-ip': '203.0.113.2',
+        'cf-connecting-ip': '203.0.113.2',
       },
     })
 
-    checkRateLimit(request, { limit: 1, windowSeconds: 10 })
-    const response = checkRateLimit(request, { limit: 1, windowSeconds: 10 })
+    checkRateLimit(request, { bucket: 'api', limit: 1, windowSeconds: 10 })
+    const response = checkRateLimit(request, { bucket: 'api', limit: 1, windowSeconds: 10 })
 
     expect(response?.status).toBe(429)
     expect(response?.headers.get('Retry-After')).toBe('10')
@@ -52,15 +52,43 @@ describe('checkRateLimit', () => {
     const { checkRateLimit } = await loadRateLimitModule()
     const request = new Request('https://example.com/api/policies', {
       headers: {
-        'x-forwarded-for': '203.0.113.3',
+        'cf-connecting-ip': '203.0.113.3',
       },
     })
 
-    checkRateLimit(request, { limit: 1, windowSeconds: 5 })
-    expect(checkRateLimit(request, { limit: 1, windowSeconds: 5 })?.status).toBe(429)
+    checkRateLimit(request, { bucket: 'api', limit: 1, windowSeconds: 5 })
+    expect(checkRateLimit(request, { bucket: 'api', limit: 1, windowSeconds: 5 })?.status).toBe(429)
 
     vi.advanceTimersByTime(5_001)
 
-    expect(checkRateLimit(request, { limit: 1, windowSeconds: 5 })).toBeNull()
+    expect(checkRateLimit(request, { bucket: 'api', limit: 1, windowSeconds: 5 })).toBeNull()
+  })
+
+  it('ignores client-supplied forwarding headers when picking the client', async () => {
+    const { checkRateLimit } = await loadRateLimitModule()
+    const config = { bucket: 'signal', limit: 1, windowSeconds: 60 }
+    const request = (spoofed: string) =>
+      new Request('https://example.com/api/signal/reviews', {
+        headers: {
+          'cf-connecting-ip': '203.0.113.4',
+          'x-forwarded-for': spoofed,
+          'x-real-ip': spoofed,
+        },
+      })
+
+    expect(checkRateLimit(request('198.51.100.1'), config)).toBeNull()
+    expect(checkRateLimit(request('198.51.100.2'), config)?.status).toBe(429)
+  })
+
+  it('shares one budget across every path in a bucket', async () => {
+    const { checkRateLimit } = await loadRateLimitModule()
+    const config = { bucket: 'signal-review', limit: 1, windowSeconds: 60 }
+    const request = (id: string) =>
+      new Request(`https://example.com/api/signal/reviews/${id}`, {
+        headers: { 'cf-connecting-ip': '203.0.113.5' },
+      })
+
+    expect(checkRateLimit(request('review-1'), config)).toBeNull()
+    expect(checkRateLimit(request('review-2'), config)?.status).toBe(429)
   })
 })

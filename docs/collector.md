@@ -494,7 +494,7 @@ status; `cyber-news` remains manual without an exception.
 
 Manual sources remain enabled. Review them with a browser and record the result
 through the MCP `record_manual_source_review` tool, supplying the human
-reviewer's identity separately from the admin token, substantive notes that
+reviewer's identity, substantive notes that
 describe what was inspected, and any available browser evidence (title,
 publisher, final URL, retrieval metadata, or fingerprint). A refresh merges
 with previously retained evidence rather than erasing it. A successful check
@@ -830,7 +830,7 @@ Detections staged in `data/source-reviews.json` are proposals. An agent
 prepares each one completely, and Daniel decides on it with one tap on a
 decision card in the Policai Claude project. Approval then publishes.
 
-1. Run the local MCP server (`npm run mcp`).
+1. Run the local MCP server with its write tools (`POLICAI_MCP_WRITE=1 npm run mcp`).
 2. Stage the source with `stage_source_url`, or with `stage_source_capture`
    when the host refuses the collector. Pass the exact record to publish as
    `proposedRecord`, edits included. A capture names who made it honestly:
@@ -1023,7 +1023,9 @@ It must not claim TTY typing.
 | `main_moved` (409) | `main` target only: `main` moved after the read; retry |
 | `github_persist_failed` (502) | Commit, branch or PR creation failed; nothing merged |
 
-Rate limit: 20 POST / 30 GET per IP per minute on `/api/signal/*`.
+Rate limit: 20 POST / 30 GET per client IP per minute on `/api/signal/*`. The
+client is Cloudflare's `cf-connecting-ip`, never `X-Forwarded-For`, and every
+review id shares the one GET budget.
 
 **Persistence:** Git is the database. Signal POST runs on the `policai`
 Worker, which has no writable project filesystem, so it commits through the
