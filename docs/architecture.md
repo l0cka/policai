@@ -204,8 +204,9 @@ The boundaries are deliberately strict:
   When automatic extraction fails for a hash-matched document, a structured
   OCR/manual-transcription approval can provide the reviewed text while
   retaining both source-byte and transcription hashes as provenance.
-  MCP approval separately requires the human reviewer's identity; the local
-  admin token remains an authorization credential, not editorial attribution.
+  MCP approval separately requires the human reviewer's identity. Write
+  tools exist only when the local server starts with `POLICAI_MCP_WRITE=1`;
+  that is operator configuration, not editorial attribution.
   New policy and timeline approval checks both record ids and official source
   URLs across canonical and active staged content before a review can become
   approved. Editor-supplied JSON passes the same exhaustive canonical

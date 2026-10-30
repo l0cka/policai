@@ -1,5 +1,5 @@
 #!/usr/bin/env tsx
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { McpServer, type RegisteredTool } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { z } from 'zod';
 import {
@@ -29,6 +29,15 @@ const server = new McpServer({
   name: 'policai-source-ingest',
   version: '0.1.0',
 });
+
+// Write tools exist only when the operator starts the server with
+// POLICAI_MCP_WRITE=1. No secret travels through tool arguments, so none
+// lands in a model's context or transcript.
+const WRITE_ENABLED = process.env.POLICAI_MCP_WRITE === '1';
+
+function writeTool(tool: RegisteredTool) {
+  if (!WRITE_ENABLED) tool.remove();
+}
 
 const browserCaptureSchema = z.object({
   pageTitle: z.string().min(1).max(500),
@@ -84,12 +93,12 @@ server.registerTool(
   async (input) => toToolText(await handleAnalyseSourceUrl(input)),
 );
 
-server.registerTool(
+writeTool(server.registerTool(
   'stage_source_url',
   {
     title: 'Stage source URL',
     description:
-      'Writes a source review proposal. If the URL belongs to tracked records, use entryKind and targetRecordId to select the record to re-verify; targetRecordId is required when multiple records of that kind share the URL. proposedRecord sets the exact record to publish, edits included. Requires POLICAI_MCP_ADMIN_TOKEN. Does not publish.',
+      'Writes a source review proposal. If the URL belongs to tracked records, use entryKind and targetRecordId to select the record to re-verify; targetRecordId is required when multiple records of that kind share the URL. proposedRecord sets the exact record to publish, edits included. Does not publish.',
     inputSchema: {
       url: z.string().url(),
       entryKind: z.enum(['policy', 'timeline_event']),
@@ -97,7 +106,6 @@ server.registerTool(
       proposedRecord: z.record(z.string(), z.unknown()).optional(),
       notes: z.string().optional(),
       stageOnly: z.boolean().optional(),
-      adminToken: z.string(),
     },
     annotations: {
       readOnlyHint: false,
@@ -106,14 +114,14 @@ server.registerTool(
     },
   },
   async (input) => toToolText(await handleStageSourceUrl(input)),
-);
+));
 
-server.registerTool(
+writeTool(server.registerTool(
   'stage_source_capture',
   {
     title: 'Stage browser-captured source',
     description:
-      `Stages a fresh, reviewer-attributed browser capture when the official source blocks the hardened server-side retriever. Existing policy or timeline records use targetRecordId; new records require an explicit proposedRecord; replacing a target URL additionally requires replaceTargetSource and a proposedRecord preserving its id. A policy proposedRecord needs ${MIN_THEMES_PER_RECORD} to ${MAX_THEMES_PER_RECORD} themes, keys listed by list_themes, before it can be approved. A timeline replacement may share its already-related policy canonical URL, but not unrelated identities. The capture includes normalized page text and local bytes for linked canonical documents; paths are validated and never persisted. Requires POLICAI_MCP_ADMIN_TOKEN. Does not approve or publish.`,
+      `Stages a fresh, reviewer-attributed browser capture when the official source blocks the hardened server-side retriever. Existing policy or timeline records use targetRecordId; new records require an explicit proposedRecord; replacing a target URL additionally requires replaceTargetSource and a proposedRecord preserving its id. A policy proposedRecord needs ${MIN_THEMES_PER_RECORD} to ${MAX_THEMES_PER_RECORD} themes, keys listed by list_themes, before it can be approved. A timeline replacement may share its already-related policy canonical URL, but not unrelated identities. The capture includes normalized page text and local bytes for linked canonical documents; paths are validated and never persisted. Does not approve or publish.`,
     inputSchema: {
       url: z.string().url(),
       entryKind: z.enum(['policy', 'timeline_event']),
@@ -122,7 +130,6 @@ server.registerTool(
       replaceTargetSource: z.boolean().optional(),
       notes: z.string().optional(),
       capture: browserCaptureSchema,
-      adminToken: z.string(),
     },
     annotations: {
       readOnlyHint: false,
@@ -131,7 +138,7 @@ server.registerTool(
     },
   },
   async (input) => toToolText(await handleStageSourceCapture(input)),
-);
+));
 
 server.registerTool(
   'list_staged_sources',
@@ -168,12 +175,12 @@ server.registerTool(
   async (input) => toToolText(await handleShowSourceProposal(input)),
 );
 
-server.registerTool(
+writeTool(server.registerTool(
   'propose_source_decision',
   {
     title: 'Propose source decision',
     description:
-      `Prepares everything a pending review needs for approval, so the editor decides on one complete proposal: the edited proposedRecord, reviewedDate for a date the source shows but does not expose as metadata, manualExtraction, officialSourceUrl for a stage-only lead, or expectedTargetRevisionHash after a rebase. A policy record needs ${MIN_THEMES_PER_RECORD} to ${MAX_THEMES_PER_RECORD} themes, keys listed by list_themes; collector drafts have none, so propose a proposedRecord carrying themes. proposedBy names who prepared it honestly, for example "Claude (agent)". Returns proposalHash. Requires POLICAI_MCP_ADMIN_TOKEN. Does not approve or publish.`,
+      `Prepares everything a pending review needs for approval, so the editor decides on one complete proposal: the edited proposedRecord, reviewedDate for a date the source shows but does not expose as metadata, manualExtraction, officialSourceUrl for a stage-only lead, or expectedTargetRevisionHash after a rebase. A policy record needs ${MIN_THEMES_PER_RECORD} to ${MAX_THEMES_PER_RECORD} themes, keys listed by list_themes; collector drafts have none, so propose a proposedRecord carrying themes. proposedBy names who prepared it honestly, for example "Claude (agent)". Returns proposalHash. Does not approve or publish.`,
     inputSchema: {
       id: z.string().min(1),
       proposedBy: z.string().min(1),
@@ -194,7 +201,6 @@ server.registerTool(
         notes: z.string().min(20),
       }).optional(),
       notes: z.string().optional(),
-      adminToken: z.string(),
     },
     annotations: {
       readOnlyHint: false,
@@ -203,20 +209,19 @@ server.registerTool(
     },
   },
   async (input) => toToolText(await handleProposeSourceDecision(input)),
-);
+));
 
-server.registerTool(
+writeTool(server.registerTool(
   'record_decision',
   {
     title: 'Record editor decision',
     description:
-      'Approves and publishes a staged review after the editor tapped Approve on a Policai project decision card. Call it only with the proposalHash the card showed and the link to that card; a typed "go ahead" is not a decision. Refuses when the review changed since the card was posted, when the reviewer is not on the editor allowlist (POLICAI_SIGNAL_REVIEWERS, default Daniel Alkurdi), or when a staged browser capture is over 7 days old. Retrying the same decision resumes a failed publication. Requires POLICAI_MCP_ADMIN_TOKEN.',
+      'Approves and publishes a staged review after the editor tapped Approve on a Policai project decision card. Call it only with the proposalHash the card showed and the link to that card; a typed "go ahead" is not a decision. Refuses when the review changed since the card was posted, when the reviewer is not on the editor allowlist (POLICAI_SIGNAL_REVIEWERS, default Daniel Alkurdi), or when a staged browser capture is over 7 days old. Retrying the same decision resumes a failed publication.',
     inputSchema: {
       id: z.string().min(1),
       proposalHash: z.string().regex(/^[a-f0-9]{64}$/),
       reviewer: z.string().min(1),
       attestationUrl: z.string().url(),
-      adminToken: z.string(),
     },
     annotations: {
       readOnlyHint: false,
@@ -225,7 +230,7 @@ server.registerTool(
     },
   },
   async (input) => toToolText(await handleRecordDecision(input)),
-);
+));
 
 server.registerTool(
   'list_themes',
@@ -262,12 +267,12 @@ server.registerTool(
     toToolText(await handleListCourtRequirementCandidates(input)),
 );
 
-server.registerTool(
+writeTool(server.registerTool(
   'review_court_requirement',
   {
     title: 'Review a court requirement candidate',
     description:
-      'Verifies or rejects one pending court requirement after human comparison with its exact quote and pinpoint. Verification re-checks the candidate against the current policy source fingerprint. Requires a human reviewer identity and POLICAI_MCP_ADMIN_TOKEN.',
+      'Verifies or rejects one pending court requirement after human comparison with its exact quote and pinpoint. Verification re-checks the candidate against the current policy source fingerprint. Requires a human reviewer identity.',
     inputSchema: {
       id: z.string().min(1).max(200),
       decision: z.enum(['verified', 'rejected']),
@@ -281,7 +286,6 @@ server.registerTool(
         exceptions: z.array(z.string().min(1).max(1_000)).max(20).optional(),
         topics: z.array(z.string().min(1).max(200)).max(20).optional(),
       }).optional(),
-      adminToken: z.string(),
     },
     annotations: {
       readOnlyHint: false,
@@ -290,14 +294,14 @@ server.registerTool(
     },
   },
   async (input) => toToolText(await handleReviewCourtRequirement(input)),
-);
+));
 
-server.registerTool(
+writeTool(server.registerTool(
   'record_manual_source_review',
   {
     title: 'Record a manual source review',
     description:
-      'Records an explicit browser-based check for a catalogue source that cannot be collected reliably. Requires the human reviewer identity separately from POLICAI_MCP_ADMIN_TOKEN.',
+      'Records an explicit browser-based check for a catalogue source that cannot be collected reliably. Requires the human reviewer identity.',
     inputSchema: {
       sourceId: z.string(),
       status: z.enum(['checked', 'source_unavailable']),
@@ -315,7 +319,6 @@ server.registerTool(
         etag: z.string().min(1).optional(),
         lastModified: z.string().min(1).optional(),
       }).optional(),
-      adminToken: z.string(),
     },
     annotations: {
       readOnlyHint: false,
@@ -324,18 +327,17 @@ server.registerTool(
     },
   },
   async (input) => toToolText(await handleRecordManualSourceReview(input)),
-);
+));
 
-server.registerTool(
+writeTool(server.registerTool(
   'reject_staged_source',
   {
     title: 'Reject staged source',
     description:
-      'Marks a new-source proposal rejected and then dismisses its radar lead. Reviews targeting existing policies or timeline events must instead be approved and published to re-verify the record. Requires POLICAI_MCP_ADMIN_TOKEN.',
+      'Marks a new-source proposal rejected and then dismisses its radar lead. Reviews targeting existing policies or timeline events must instead be approved and published to re-verify the record.',
     inputSchema: {
       id: z.string(),
       reason: z.string().optional(),
-      adminToken: z.string(),
     },
     annotations: {
       readOnlyHint: false,
@@ -344,19 +346,18 @@ server.registerTool(
     },
   },
   async (input) => toToolText(await handleRejectStagedSource(input)),
-);
+));
 
-server.registerTool(
+writeTool(server.registerTool(
   'verify_register_record',
   {
     title: 'Verify register record',
     description:
-      'Stamps a public register policy as editorially verified after a named human decision (Policai Signal). Sets lastReviewedAt and verification.status=verified. Refuses withheld, unverified, and trashed records. Requires an allowlisted Signal reviewer (POLICAI_SIGNAL_REVIEWERS, default Daniel) and POLICAI_MCP_ADMIN_TOKEN. Agents must not call this unless that human named the policy id verified.',
+      'Stamps a public register policy as editorially verified after a named human decision (Policai Signal). Sets lastReviewedAt and verification.status=verified. Refuses withheld, unverified, and trashed records. Requires an allowlisted Signal reviewer (POLICAI_SIGNAL_REVIEWERS, default Daniel). Agents must not call this unless that human named the policy id verified.',
     inputSchema: {
       policyId: z.string().min(1),
       reviewer: z.string().min(1),
       notes: z.string().optional(),
-      adminToken: z.string(),
     },
     annotations: {
       readOnlyHint: false,
@@ -365,7 +366,7 @@ server.registerTool(
     },
   },
   async (input) => toToolText(await handleVerifyRegisterRecord(input)),
-);
+));
 
 async function main() {
   const transport = new StdioServerTransport();

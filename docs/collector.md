@@ -494,7 +494,7 @@ status; `cyber-news` remains manual without an exception.
 
 Manual sources remain enabled. Review them with a browser and record the result
 through the MCP `record_manual_source_review` tool, supplying the human
-reviewer's identity separately from the admin token, substantive notes that
+reviewer's identity, substantive notes that
 describe what was inspected, and any available browser evidence (title,
 publisher, final URL, retrieval metadata, or fingerprint). A refresh merges
 with previously retained evidence rather than erasing it. A successful check
@@ -830,7 +830,7 @@ Detections staged in `data/source-reviews.json` are proposals. An agent
 prepares each one completely, and Daniel decides on it with one tap on a
 decision card in the Policai Claude project. Approval then publishes.
 
-1. Run the local MCP server (`npm run mcp`).
+1. Run the local MCP server with its write tools (`POLICAI_MCP_WRITE=1 npm run mcp`).
 2. Stage the source with `stage_source_url`, or with `stage_source_capture`
    when the host refuses the collector. Pass the exact record to publish as
    `proposedRecord`, edits included. A capture names who made it honestly:
