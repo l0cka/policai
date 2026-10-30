@@ -1,5 +1,105 @@
 [
   {
+    "id": "source-review-b23f2aa1-7d4c-494e-b68f-35985de595a8",
+    "sourceUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
+    "title": "Litigants in Person Practice Note (GPN-LIP)",
+    "entryKind": "policy",
+    "targetPolicyId": "federal-court-gpn-lip-ai",
+    "targetPolicyBaseRevisionHash": "fe844ea60d365ac2e3a9a0975b8c12c666cd373954b0a798845449ec46d5bccb",
+    "status": "pending_review",
+    "discoveredAt": "2026-10-30T00:40:13.547Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Re-verification before the record goes Review due on 22-23 Nov 2026. Requested by Daniel Alkurdi; staged by Claude (agent). audit:register on 30 Oct 2026 reported a changed fingerprint against the 25 Aug browser capture; paragraphs 2.8 to 2.11 read unchanged on the live page.",
+    "analysis": {
+      "isRelevant": false,
+      "relevanceScore": 0,
+      "suggestedType": null,
+      "suggestedJurisdiction": null,
+      "summary": "",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
+      "finalUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
+      "retrievedAt": "2026-10-30T00:40:13.488Z",
+      "contentType": "text/html",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
+      "title": "Litigants in Person Practice Note (GPN-LIP)"
+    },
+    "proposedRecord": {
+      "id": "federal-court-gpn-lip-ai",
+      "title": "Litigants in Person Practice Note (GPN-LIP)",
+      "description": "Federal Court of Australia general practice note for litigants in person, issued by Chief Justice Mortimer on 5 March 2026, which at paragraphs 2.8 to 2.11 directs self-represented litigants on when they may and may not use generative AI programs.",
+      "jurisdiction": "federal",
+      "type": "practice_note",
+      "status": "active",
+      "effectiveDate": "2026-03-05",
+      "agencies": [
+        "Federal Court of Australia"
+      ],
+      "sourceUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
+      "content": "GPN-LIP is a General Practice Note of the Federal Court of Australia written in plain language for litigants in person, that is, parties who have a legal case in the Court without a lawyer. It is issued under the Federal Court of Australia Act 1976 (Cth) and litigants are asked to sign an acknowledgement form confirming they have read it. Its generative AI provisions sit in Part 2 (Getting legal help). Paragraph 2.8 directs litigants not to use generative AI programs such as ChatGPT, Claude, Microsoft Copilot or Google Gemini to obtain legal help about whether they have a case they can win, because such programs are not reliable, are not trained like lawyers, may give answers based on American law and can give false answers to legal questions. Paragraph 2.9 similarly warns against social media and pseudolaw sites, noting a litigant can be in serious trouble for making arguments not based on real law. Paragraph 2.10 permits litigants who start or defend a case based on real law and evidence to use AI programs to help explain their case to the Court, but requires them to tell the Court they have done so if asked, to check that all facts from AI programs are correct and complete and that the law is correct, preferably with a lawyer or otherwise using the free legal research databases listed in Attachment D, and warns of serious consequences for giving the Court false information about facts or law. Paragraph 2.11 states the Court will soon publish more about what litigants can and cannot do with AI programs in their cases; that further guidance was issued as GPN-AI on 16 April 2026. The remainder of the practice note covers interpreters, the Court's expectations of litigants in person, the registry, hearings and costs, and includes four attachments on definitions, sections 37M and 37N of the Act, other practice notes and legal research databases.",
+      "aiSummary": "The Federal Court's litigants in person practice note tells self-represented parties not to rely on generative AI to assess whether they have a winnable case, permits AI to help explain a case founded on real law and evidence, and requires them to disclose AI use on request and verify every fact and legal proposition.",
+      "tags": [
+        "generative AI",
+        "courts",
+        "practice note",
+        "federal court of australia",
+        "litigants in person",
+        "self-represented litigants",
+        "verification",
+        "disclosure"
+      ],
+      "themes": [
+        "courts-tribunals",
+        "generative-ai",
+        "human-oversight",
+        "self-represented-litigants",
+        "transparency-disclosure"
+      ],
+      "createdAt": "2026-03-05T00:00:00Z",
+      "updatedAt": "2026-10-30T00:40:13.547Z",
+      "dates": [
+        {
+          "type": "issued",
+          "date": "2026-03-05",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
+            "finalUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
+            "title": "Litigants in Person Practice Note (GPN-LIP)",
+            "publisher": "Federal Court of Australia",
+            "retrievedAt": "2026-08-25T13:30:09.000Z",
+            "publishedAt": "2026-03-05",
+            "publishedAtPrecision": "day",
+            "contentType": "text/html",
+            "contentHash": "eb7688b7095d9e42d59474df41eac7ec3fef0603c6e02c7f5e39d22981b5488e",
+            "reviewedDate": {
+              "date": "2026-03-05",
+              "precision": "day",
+              "reviewedAt": "2026-08-25T13:30:09.000Z",
+              "reviewedBy": "Policai editorial source review",
+              "notes": "The practice note is headed 'D S Mortimer, Chief Justice 05 March 2026' and is signed and dated 5 March 2026 at its end; page metadata gives DCTERMS.date 2026-03-05."
+            }
+          }
+        }
+      ]
+    },
+    "updatedAt": "2026-10-30T00:40:37.706Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "reviewedDate": {
+        "date": "2026-03-05",
+        "precision": "day",
+        "notes": "The practice note is headed D S Mortimer, Chief Justice 05 March 2026 and is signed D S Mortimer, Chief Justice, 5 March 2026 at its end; page metadata gives DCTERMS.date 2026-03-05. Re-read on 30 Oct 2026."
+      },
+      "notes": "Re-verification. Paragraphs 2.8 to 2.11 of the live page match the record summary; signature block D S Mortimer, Chief Justice, 5 March 2026; DCTERMS.date 2026-03-05, DCTERMS.modified 2026-06-22 (before the 25 Aug review).",
+      "proposedAt": "2026-10-30T00:40:37.706Z"
+    }
+  },
+  {
     "id": "source-review-dev-latest-news-16bao",
     "sourceUrl": "https://www.courts.qld.gov.au/newsroom/news",
     "title": "Latest news",

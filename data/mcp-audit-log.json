@@ -1,5 +1,27 @@
 [
   {
+    "id": "mcp-audit-c4955d46-f593-4354-89c8-6fba38774a4f",
+    "createdAt": "2026-10-30T00:40:37.723Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-fde547d2-67fb-4c5e-8f0f-1bc001ae1e7b",
+    "createdAt": "2026-10-30T00:40:24.229Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-d0ff8e15-f3c7-48ce-bac8-0951006f7e4e",
+    "createdAt": "2026-10-30T00:40:13.571Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-bc025498-af81-40cd-934e-96a38bac75f9",
     "createdAt": "2026-10-28T02:31:20.464Z",
     "actor": "local-mcp-admin",
