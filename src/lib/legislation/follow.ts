@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto';
 import { formatPolicyDate } from '@/lib/format-policy-date';
 import { policyRevisionHash } from '@/lib/policy-revision';
 import { sourceUrlsEqual } from '@/lib/source-url';
+import { isWeeklyDue } from '@/lib/pipeline/collect';
 import { classifyFailure } from '@/lib/pipeline/failure';
 import type { Policy, PolicyDate, PolicyDraft, SourceEvidence, SourceReview, SourceRunResult } from '@/types';
 import { parseAphProgress } from './aph-progress';
@@ -27,10 +28,13 @@ import { stageUpdate, type RegisterReading, type UnrecognisedStage } from './sta
 /**
  * Follow watches: each register bill with an APH id is read at its bill
  * home page, and each instrument with a Federal Register id at its title
- * record, on every collection run. A stage the record lacks, or a deadline
- * the register has set or moved, becomes one update review for Dan's
- * decision card. The record stays public while the review waits, because its
- * last approved stage is still true as of its date.
+ * record. A bill still `proposed` is read on every collection run, so a
+ * stage change during a sitting week is staged the next day. Any other
+ * follow (an Act, or a Federal Register instrument) stays on the six-day
+ * interval. A stage the record lacks, or a deadline the register has set or
+ * moved, becomes one update review for Dan's decision card. The record stays
+ * public while the review waits, because its last approved stage is still
+ * true as of its date.
  */
 
 export const FOLLOW_SOURCE_PREFIX = 'track:';
@@ -65,6 +69,16 @@ const TAS_BILL_PAGE = /^https:\/\/www\.parliament\.tas\.gov\.au\/bills\/bills\d{
 
 export function aphBillPage(billId: string): string {
   return `${APH_BILL_PAGE}${billId}`;
+}
+
+/**
+ * A bill that is still proposed can change stage on any sitting day, so it
+ * is due on every run. Acts and register instruments move slowly and stay
+ * on the six-day follow.
+ */
+export function isFollowDue(policy: Policy, lastChecked: string | undefined, now: Date): boolean {
+  if (policy.legislative?.kind === 'bill' && policy.status === 'proposed') return true;
+  return isWeeklyDue(lastChecked, now);
 }
 
 /**
