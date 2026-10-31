@@ -20,5 +20,16 @@
       "signature": "MEUCIDIa42hZOfiKX1odOpAbmxWWN3ugHL0jA3fNFWB9jY3MAiEAstODxNtIKA6X6hIISkOXhC0a_x6_j0HPmOOWiRdYt8o",
       "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
     }
+  },
+  {
+    "subject": "source-review:source-review-05007dd0-f3ff-476e-b0fc-8578932e432e:ca7d74e74c47b3862140e58783db2124ce2ed1e93fb6c0b0a1b02fc3cf1876b9",
+    "receivedAt": "2026-10-31T23:43:46.803Z",
+    "response": {
+      "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+      "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+      "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoib3ZlbUpvZko2ZXdiQVNqSmZaRUJYMjd0Umw3c3gxc0lETm9fUWxOVmhKNCIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+      "signature": "MEQCICop9-qnPNAJXAn-d6byqdpSMcbxycbEYefoC8Ye8ZFKAiAlFF6z6pOwnJGP6m1Y0_QHknZ4ZRXMSUeL8YCNWWzQ3A",
+      "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+    }
   }
 ]
