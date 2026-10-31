@@ -46,7 +46,17 @@
       "relatedPolicyId": "federal-online-safety-amendment-digital-duty-of-care-bill-2026",
       "sourceUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22legislation%2Fbillhome%2Fr7553%22"
     },
-    "updatedAt": "2026-10-31T01:06:43.037Z"
+    "updatedAt": "2026-10-31T01:15:32.552Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "reviewedDate": {
+        "date": "2026-10-28",
+        "precision": "day",
+        "notes": "The captured ParlInfo bill home shows \"Third reading agreed to 28/10/26\" in the House of Representatives, with amendment details \"15 Government and 8 Crossbench agreed to\"."
+      },
+      "notes": "Prepared for Daniel Alkurdi after #581 merged.",
+      "proposedAt": "2026-10-31T01:15:32.552Z"
+    }
   },
   {
     "id": "source-review-10e34480-ee6b-4c6c-bdc5-17d652b5f1db",
@@ -27853,6 +27863,16 @@
         ]
       }
     },
-    "updatedAt": "2026-10-29T21:08:00.000Z"
+    "updatedAt": "2026-10-31T01:15:32.382Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "reviewedDate": {
+        "date": "2026-10-15",
+        "precision": "day",
+        "notes": "The bill home page shows the bill introduced and read a first time in the House of Representatives on 15 Oct 2026; the record's published date is the introduction day."
+      },
+      "notes": "Prepared for Daniel Alkurdi after #581 merged.",
+      "proposedAt": "2026-10-31T01:15:32.382Z"
+    }
   }
 ]
