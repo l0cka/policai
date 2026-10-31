@@ -68,12 +68,49 @@ class AdapterTests(unittest.TestCase):
         r = h.Runner()
         # Exercise the identity transition without requiring production accounts
         # on the CI runner or developer machine.
-        with patch.object(h.pwd, "getpwnam", return_value=SimpleNamespace(pw_uid=os.geteuid() + 1)):
+        account = SimpleNamespace(pw_uid=os.geteuid() + 1, pw_gid=4242)
+        with patch.object(h.pwd, "getpwnam", return_value=account):
             root = r.identity_argv("l0cka", ["/usr/bin/git", "status"])
-        self.assertEqual(root[:4], ["/usr/bin/runuser", "-u", "l0cka", "--"])
+        self.assertEqual(
+            root[:5],
+            [
+                "/usr/bin/setpriv",
+                f"--reuid={account.pw_uid}",
+                "--regid=4242",
+                "--init-groups",
+                "--",
+            ],
+        )
+        self.assertEqual(root[5:7], ["/usr/bin/env", "-i"])
         for identity in ("root", "policai", "unknown-user"):
             with self.subTest(identity), self.assertRaises(h.Refused):
                 r.identity_argv(identity, ["/usr/bin/git", "status"])
+
+    def test_switched_commands_get_login_umask_and_workers_keep_their_own(self):
+        h = self.host()
+        with tempfile.TemporaryDirectory() as tmp:
+            switch = Path(tmp) / "switch"
+            switch.write_text('#!/bin/sh\nwhile [ "$1" != "--" ]; do shift; done\nshift\nexec "$@"\n')
+            switch.chmod(0o700)
+            umask = ["/bin/sh", "-c", "umask"]
+            previous = os.umask(0o027)
+            try:
+                switched = SimpleNamespace(pw_uid=os.geteuid() + 1, pw_gid=os.getegid())
+                with (
+                    patch.object(h, "SETPRIV", str(switch)),
+                    patch.object(h.pwd, "getpwnam", return_value=switched),
+                ):
+                    self.assertEqual(
+                        h.Runner().execute(umask, Path(tmp), identity="l0cka").strip(), "0022"
+                    )
+                os.umask(0o077)
+                same = SimpleNamespace(pw_uid=os.geteuid(), pw_gid=os.getegid())
+                with patch.object(h.pwd, "getpwnam", return_value=same):
+                    self.assertEqual(
+                        h.Runner().execute(umask, Path(tmp), identity="l0cka").strip(), "0077"
+                    )
+            finally:
+                os.umask(previous)
 
     def test_deploy_clients_keep_state_outside_protected_home(self):
         h = self.host()

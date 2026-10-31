@@ -1,5 +1,560 @@
 [
   {
+    "id": "source-review-10e34480-ee6b-4c6c-bdc5-17d652b5f1db",
+    "sourceUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+    "title": "The Use of Generative AI — Guidelines for Judicial Officers",
+    "entryKind": "policy",
+    "targetPolicyId": "qld-courts-genai-guidelines-judicial-officers",
+    "targetPolicyBaseRevisionHash": "f7f16b77565cfbbca783aecc126a3c5f6d8348d93c0d9c0253ea00a53a509f1e",
+    "targetPolicyPreviousSourceUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+    "status": "published",
+    "discoveredAt": "2026-10-30T00:46:33.068Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Source URL replacement. The tracked URL https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf now redirects to squizadmin.justice.qld.gov.au, which returns HTTP 403 (Cloudflare block) to every client. The Queensland Courts 'Using Generative AI' page links the current PDF at https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf. Requested by Daniel Alkurdi; staged by Claude (agent).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": "practice_note",
+      "suggestedJurisdiction": "qld",
+      "summary": "Queensland Courts guidelines governing judicial officers' and their staff's use of generative AI, revised on 15 September 2025.",
+      "tags": [
+        "guidelines",
+        "generative AI",
+        "Queensland Courts",
+        "judicial",
+        "judicial officers",
+        "expert evidence",
+        "courts"
+      ],
+      "agencies": [
+        "Queensland Courts"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+      "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+      "title": "The use of Generative AI: Guidelines for judicial officers",
+      "retrievedAt": "2026-10-30T00:46:00.000Z",
+      "contentType": "text/html",
+      "contentHash": "b9dc819137b1f5fe0385415b299bcaf4c2b05b2f13a10ac637fe48d77a81c736",
+      "linkedDocuments": [
+        {
+          "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+          "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+          "retrievedAt": "2026-10-30T00:46:00.000Z",
+          "contentType": "application/pdf",
+          "contentHash": "a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba"
+        }
+      ],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-10-30T00:46:00.000Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "PDF retrieved over HTTPS from courts.qld.gov.au with the Policai/1.0 (+https://policai.org) identity (HTTP 200, application/pdf); page text extracted with pdftotext. Linked from https://www.courts.qld.gov.au/going-to-court/prepare-for-court/representing-yourself/using-generative-ai.",
+        "pageContentHash": "e2c878609db63614362d6ceff52e76830093de7431c4286e19fae8c48ef2b3b6",
+        "characterCount": 15273
+      },
+      "reviewedDate": {
+        "date": "2025-09-15",
+        "precision": "day",
+        "reviewedAt": "2026-10-30T01:08:44.915Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The Guidelines print the date 15 September 2025, and their version history records Guidelines issued on 13 May 2024 and Revised version issued on 15 September 2025. PDF ModDate is 15 September 2025."
+      }
+    },
+    "proposedRecord": {
+      "id": "qld-courts-genai-guidelines-judicial-officers",
+      "title": "The Use of Generative AI — Guidelines for Judicial Officers",
+      "description": "Queensland Courts guidelines governing judicial officers' and their staff's use of generative AI, revised on 15 September 2025.",
+      "jurisdiction": "qld",
+      "type": "practice_note",
+      "status": "active",
+      "effectiveDate": "2025-09-15",
+      "agencies": [
+        "Queensland Courts"
+      ],
+      "sourceUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+      "content": "First issued on 13 May 2024 and reissued in a revised version on 15 September 2025, these Guidelines govern the use of generative AI by Queensland judicial officers and their staff. They open with the principle that any use of generative AI tools by judicial officers and their staff must be consistent with the fulfilment of the judiciary's obligation to do equal justice to all persons according to law. They address what generative AI is and how it fails, the confidentiality of court information and the risks of entering it into publicly available tools, and the limits on relying on generative AI output in the exercise of the judicial function, including in the preparation of reasons. The revised version also addresses the intersection with expert evidence: it directs judicial officers to consider whether generative AI has been used in the formulation or expression of an opinion contained in an expert report, and whether the expert should be required to identify in their report the precise way in which they have used AI. That provision sits alongside Supreme Court of Queensland Practice Direction Number 14 of 2024 on expert evidence in criminal proceedings, which was amended and reissued on 10 September 2025 to add generative AI requirements for experts. The Guidelines are the bench-facing counterpart to the Queensland Courts guidelines for non-lawyers and to the Accuracy of References in Submissions practice directions issued across the Queensland hierarchy. A version history at the end of the document records both the original issue on 13 May 2024 and the revision on 15 September 2025.",
+      "aiSummary": "Queensland Courts guidelines on judicial officers' use of generative AI, revised 15 September 2025 to address generative AI in expert reports.",
+      "tags": [
+        "guidelines",
+        "generative AI",
+        "Queensland Courts",
+        "judicial",
+        "judicial officers",
+        "expert evidence",
+        "courts"
+      ],
+      "themes": [
+        "courts-tribunals",
+        "generative-ai",
+        "legal-practice"
+      ],
+      "createdAt": "2025-09-15T00:00:00Z",
+      "updatedAt": "2026-10-30T01:08:44.915Z",
+      "dates": [
+        {
+          "type": "amended",
+          "date": "2025-09-15",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+            "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+            "title": "The use of Generative AI: Guidelines for judicial officers",
+            "retrievedAt": "2026-10-30T00:46:00.000Z",
+            "contentType": "text/html",
+            "contentHash": "b9dc819137b1f5fe0385415b299bcaf4c2b05b2f13a10ac637fe48d77a81c736",
+            "linkedDocuments": [
+              {
+                "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+                "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+                "retrievedAt": "2026-10-30T00:46:00.000Z",
+                "contentType": "application/pdf",
+                "contentHash": "a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba"
+              }
+            ],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-10-30T00:46:00.000Z",
+              "capturedBy": "Claude (agent)",
+              "requestedBy": "Daniel Alkurdi",
+              "notes": "PDF retrieved over HTTPS from courts.qld.gov.au with the Policai/1.0 (+https://policai.org) identity (HTTP 200, application/pdf); page text extracted with pdftotext. Linked from https://www.courts.qld.gov.au/going-to-court/prepare-for-court/representing-yourself/using-generative-ai.",
+              "pageContentHash": "e2c878609db63614362d6ceff52e76830093de7431c4286e19fae8c48ef2b3b6",
+              "characterCount": 15273
+            },
+            "reviewedDate": {
+              "date": "2025-09-15",
+              "precision": "day",
+              "reviewedAt": "2026-10-30T01:08:44.915Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "The Guidelines print the date 15 September 2025, and their version history records Guidelines issued on 13 May 2024 and Revised version issued on 15 September 2025. PDF ModDate is 15 September 2025."
+            }
+          }
+        },
+        {
+          "type": "issued",
+          "date": "2024-05-13",
+          "precision": "day",
+          "source": {
+            "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+            "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+            "title": "The Use of Generative AI — Guidelines for Judicial Officers",
+            "publisher": "Queensland Courts",
+            "retrievedAt": "2026-08-25T01:54:16.966Z",
+            "contentType": "application/pdf",
+            "contentHash": "a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba",
+            "reviewedDate": {
+              "date": "2024-05-13",
+              "precision": "day",
+              "reviewedAt": "2026-08-25T02:01:07.000Z",
+              "reviewedBy": "Policai editorial source review",
+              "notes": "The version history records 'Guidelines issued on 13 May 2024' as the original issue date."
+            }
+          }
+        }
+      ],
+      "lastReviewedAt": "2026-10-30T01:08:44.915Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+          "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+          "title": "The use of Generative AI: Guidelines for judicial officers",
+          "retrievedAt": "2026-10-30T00:46:00.000Z",
+          "contentType": "text/html",
+          "contentHash": "b9dc819137b1f5fe0385415b299bcaf4c2b05b2f13a10ac637fe48d77a81c736",
+          "linkedDocuments": [
+            {
+              "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+              "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+              "retrievedAt": "2026-10-30T00:46:00.000Z",
+              "contentType": "application/pdf",
+              "contentHash": "a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba"
+            }
+          ],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-30T00:46:00.000Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "PDF retrieved over HTTPS from courts.qld.gov.au with the Policai/1.0 (+https://policai.org) identity (HTTP 200, application/pdf); page text extracted with pdftotext. Linked from https://www.courts.qld.gov.au/going-to-court/prepare-for-court/representing-yourself/using-generative-ai.",
+            "pageContentHash": "e2c878609db63614362d6ceff52e76830093de7431c4286e19fae8c48ef2b3b6",
+            "characterCount": 15273
+          },
+          "reviewedDate": {
+            "date": "2025-09-15",
+            "precision": "day",
+            "reviewedAt": "2026-10-30T01:08:44.915Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The Guidelines print the date 15 September 2025, and their version history records Guidelines issued on 13 May 2024 and Revised version issued on 15 September 2025. PDF ModDate is 15 September 2025."
+          }
+        },
+        "checkedAt": "2026-10-30T01:08:44.915Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd732MXt4YZwrggLjJxEWv7xC&decision=cmsg_019nKBbCzGtpRmfKqX3Xisd7HQqa7euWdCCvv5reNZ94gj (proposal ac6ce362). Proposed by Claude (agent)."
+      }
+    },
+    "updatedAt": "2026-10-30T01:08:44.972Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "reviewedDate": {
+        "date": "2025-09-15",
+        "precision": "day",
+        "notes": "The Guidelines print the date 15 September 2025, and their version history records Guidelines issued on 13 May 2024 and Revised version issued on 15 September 2025. PDF ModDate is 15 September 2025."
+      },
+      "proposedAt": "2026-10-30T00:46:53.786Z"
+    },
+    "targetPolicyRevisionHash": "f7f16b77565cfbbca783aecc126a3c5f6d8348d93c0d9c0253ea00a53a509f1e",
+    "reviewedAt": "2026-10-30T01:08:44.915Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd732MXt4YZwrggLjJxEWv7xC&decision=cmsg_019nKBbCzGtpRmfKqX3Xisd7HQqa7euWdCCvv5reNZ94gj (proposal ac6ce362). Proposed by Claude (agent).",
+    "decision": {
+      "proposalHash": "ac6ce3624351941a0ecb34f8855c2808d1efd1fdda9ef5afcd18ac8d38fc95dc",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-10-30T01:08:44.909Z",
+      "attestationUrl": "https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd732MXt4YZwrggLjJxEWv7xC&decision=cmsg_019nKBbCzGtpRmfKqX3Xisd7HQqa7euWdCCvv5reNZ94gj"
+    },
+    "publishedAt": "2026-10-30T01:08:44.967Z"
+  },
+  {
+    "id": "source-review-f93901e9-0a74-47d3-96d1-fe043332ef4e",
+    "sourceUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+    "title": "The Use of Generative Artificial Intelligence (AI) — Guidelines for Responsible Use by Non-Lawyers",
+    "entryKind": "policy",
+    "targetPolicyId": "qld-courts-genai-guidelines-non-lawyers",
+    "targetPolicyBaseRevisionHash": "d9d8392faa5325931bfd8f3191507f25ee94d21d836fb38a864d464c32d10dd3",
+    "targetPolicyPreviousSourceUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0012/798375/Artificial-Intelligence_Guidelines-for-Non-Lawyers.pdf",
+    "status": "published",
+    "discoveredAt": "2026-10-30T00:46:32.895Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Source URL replacement. The tracked URL https://www.courts.qld.gov.au/__data/assets/pdf_file/0012/798375/Artificial-Intelligence_Guidelines-for-Non-Lawyers.pdf now redirects to squizadmin.justice.qld.gov.au, which returns HTTP 403 (Cloudflare block) to every client. The Queensland Courts 'Using Generative AI' page links the current PDF at https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf. Requested by Daniel Alkurdi; staged by Claude (agent).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": "practice_note",
+      "suggestedJurisdiction": "qld",
+      "summary": "Queensland Courts plain-language guidelines for self-represented litigants and other non-lawyers using generative AI in civil and criminal proceedings.",
+      "tags": [
+        "guidelines",
+        "generative AI",
+        "Queensland Courts",
+        "self-represented litigants",
+        "courts",
+        "access to justice"
+      ],
+      "agencies": [
+        "Queensland Courts"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+      "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+      "title": "The Use of Generative AI: Guidelines for non-lawyers",
+      "retrievedAt": "2026-10-30T00:46:00.000Z",
+      "contentType": "text/html",
+      "contentHash": "fd9a288e119f57051f998c1aa5a63c2acf5f6cf0339ce1e127afdab25d8a7c2b",
+      "linkedDocuments": [
+        {
+          "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+          "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+          "retrievedAt": "2026-10-30T00:46:00.000Z",
+          "contentType": "application/pdf",
+          "contentHash": "c56a9a20e1740724ea6c9672563798d36e0dbe9243027fc33714b1aba3714c6b"
+        }
+      ],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-10-30T00:46:00.000Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "PDF retrieved over HTTPS from courts.qld.gov.au with the Policai/1.0 (+https://policai.org) identity (HTTP 200, application/pdf); page text extracted with pdftotext. Linked from https://www.courts.qld.gov.au/going-to-court/prepare-for-court/representing-yourself/using-generative-ai.",
+        "pageContentHash": "6a8998a424bf3de72279b19ca6b6a2b56038ef37a26902807dbcf113c9e2943f",
+        "characterCount": 13733
+      },
+      "reviewedDate": {
+        "date": "2025-09-15",
+        "precision": "day",
+        "reviewedAt": "2026-10-30T01:08:44.995Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The Guidelines print the date 15 September 2025, and their version history records Guideline issued on 13 May 2024 and Revised version issued on 15 September 2025. QCAT Practice Direction No 10 of 2025 cites the Guidelines as updated 15 September 2025."
+      }
+    },
+    "proposedRecord": {
+      "id": "qld-courts-genai-guidelines-non-lawyers",
+      "title": "The Use of Generative Artificial Intelligence (AI) — Guidelines for Responsible Use by Non-Lawyers",
+      "description": "Queensland Courts plain-language guidelines for self-represented litigants and other non-lawyers using generative AI in civil and criminal proceedings.",
+      "jurisdiction": "qld",
+      "type": "practice_note",
+      "status": "active",
+      "effectiveDate": "2025-09-15",
+      "agencies": [
+        "Queensland Courts"
+      ],
+      "sourceUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+      "content": "These Guidelines apply to civil and criminal proceedings in Queensland courts and tribunals, including the Supreme Court, District Court and Planning and Environment Court, and are directed to people who are not lawyers. They are the litigant-facing counterpart to the Queensland Courts guidelines for judicial officers and to the Accuracy of References in Submissions practice directions issued across the Queensland court and tribunal hierarchy; QCAT Practice Direction No 10 of 2025 directs self-represented litigants to read them and records that they were updated on 15 September 2025. The Guidelines explain in plain language what generative AI chatbots are and what they can usefully do, including summarising material, changing tone or format, generating new text or a plan for new text in a specific format, and answering questions on a topic. They emphasise that these tools can get information wrong, that AI-generated content should never be assumed to be correct, and that a person who puts material before a court remains responsible for its accuracy whether or not generative AI helped produce it. They address the risk of fabricated cases, citations and legislative references, the need to check anything a chatbot produces against an authoritative source before relying on it, and the privacy and confidentiality risks of entering personal or case information into publicly available tools. The document prints the date 15 September 2025 and a version history recording 'Guideline issued on 13 May 2024' and 'Revised version issued on 15 September 2025'; QCAT Practice Direction No 10 of 2025 likewise cites the Guidelines as 'updated 15 September 2025'.",
+      "aiSummary": "Queensland Courts plain-language generative AI guidelines for non-lawyers across Queensland courts and tribunals, updated 15 September 2025.",
+      "tags": [
+        "guidelines",
+        "generative AI",
+        "Queensland Courts",
+        "self-represented litigants",
+        "courts",
+        "access to justice"
+      ],
+      "themes": [
+        "courts-tribunals",
+        "generative-ai",
+        "self-represented-litigants"
+      ],
+      "createdAt": "2025-09-15T00:00:00Z",
+      "updatedAt": "2026-10-30T01:08:44.995Z",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2025-09-15",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+            "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+            "title": "The Use of Generative AI: Guidelines for non-lawyers",
+            "retrievedAt": "2026-10-30T00:46:00.000Z",
+            "contentType": "text/html",
+            "contentHash": "fd9a288e119f57051f998c1aa5a63c2acf5f6cf0339ce1e127afdab25d8a7c2b",
+            "linkedDocuments": [
+              {
+                "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+                "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+                "retrievedAt": "2026-10-30T00:46:00.000Z",
+                "contentType": "application/pdf",
+                "contentHash": "c56a9a20e1740724ea6c9672563798d36e0dbe9243027fc33714b1aba3714c6b"
+              }
+            ],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-10-30T00:46:00.000Z",
+              "capturedBy": "Claude (agent)",
+              "requestedBy": "Daniel Alkurdi",
+              "notes": "PDF retrieved over HTTPS from courts.qld.gov.au with the Policai/1.0 (+https://policai.org) identity (HTTP 200, application/pdf); page text extracted with pdftotext. Linked from https://www.courts.qld.gov.au/going-to-court/prepare-for-court/representing-yourself/using-generative-ai.",
+              "pageContentHash": "6a8998a424bf3de72279b19ca6b6a2b56038ef37a26902807dbcf113c9e2943f",
+              "characterCount": 13733
+            },
+            "reviewedDate": {
+              "date": "2025-09-15",
+              "precision": "day",
+              "reviewedAt": "2026-10-30T01:08:44.995Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "The Guidelines print the date 15 September 2025, and their version history records Guideline issued on 13 May 2024 and Revised version issued on 15 September 2025. QCAT Practice Direction No 10 of 2025 cites the Guidelines as updated 15 September 2025."
+            }
+          }
+        }
+      ],
+      "lastReviewedAt": "2026-10-30T01:08:44.995Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+          "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+          "title": "The Use of Generative AI: Guidelines for non-lawyers",
+          "retrievedAt": "2026-10-30T00:46:00.000Z",
+          "contentType": "text/html",
+          "contentHash": "fd9a288e119f57051f998c1aa5a63c2acf5f6cf0339ce1e127afdab25d8a7c2b",
+          "linkedDocuments": [
+            {
+              "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+              "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+              "retrievedAt": "2026-10-30T00:46:00.000Z",
+              "contentType": "application/pdf",
+              "contentHash": "c56a9a20e1740724ea6c9672563798d36e0dbe9243027fc33714b1aba3714c6b"
+            }
+          ],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-30T00:46:00.000Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "PDF retrieved over HTTPS from courts.qld.gov.au with the Policai/1.0 (+https://policai.org) identity (HTTP 200, application/pdf); page text extracted with pdftotext. Linked from https://www.courts.qld.gov.au/going-to-court/prepare-for-court/representing-yourself/using-generative-ai.",
+            "pageContentHash": "6a8998a424bf3de72279b19ca6b6a2b56038ef37a26902807dbcf113c9e2943f",
+            "characterCount": 13733
+          },
+          "reviewedDate": {
+            "date": "2025-09-15",
+            "precision": "day",
+            "reviewedAt": "2026-10-30T01:08:44.995Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The Guidelines print the date 15 September 2025, and their version history records Guideline issued on 13 May 2024 and Revised version issued on 15 September 2025. QCAT Practice Direction No 10 of 2025 cites the Guidelines as updated 15 September 2025."
+          }
+        },
+        "checkedAt": "2026-10-30T01:08:44.995Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd732MXt4YZwrggLjJxEWv7xC&decision=cmsg_019nKBbCzGtpRmfKqX3Xisd782bqBPJruuk36cXV1Qf1ak (proposal 66adb379). Proposed by Claude (agent)."
+      }
+    },
+    "updatedAt": "2026-10-30T01:08:45.033Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "reviewedDate": {
+        "date": "2025-09-15",
+        "precision": "day",
+        "notes": "The Guidelines print the date 15 September 2025, and their version history records Guideline issued on 13 May 2024 and Revised version issued on 15 September 2025. QCAT Practice Direction No 10 of 2025 cites the Guidelines as updated 15 September 2025."
+      },
+      "proposedAt": "2026-10-30T00:46:53.736Z"
+    },
+    "targetPolicyRevisionHash": "d9d8392faa5325931bfd8f3191507f25ee94d21d836fb38a864d464c32d10dd3",
+    "reviewedAt": "2026-10-30T01:08:44.995Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd732MXt4YZwrggLjJxEWv7xC&decision=cmsg_019nKBbCzGtpRmfKqX3Xisd782bqBPJruuk36cXV1Qf1ak (proposal 66adb379). Proposed by Claude (agent).",
+    "decision": {
+      "proposalHash": "66adb379c9f38397963db40858fe1adf8bffe3c641595caa403e13eceb56b5f6",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-10-30T01:08:44.990Z",
+      "attestationUrl": "https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd732MXt4YZwrggLjJxEWv7xC&decision=cmsg_019nKBbCzGtpRmfKqX3Xisd782bqBPJruuk36cXV1Qf1ak"
+    },
+    "publishedAt": "2026-10-30T01:08:45.027Z"
+  },
+  {
+    "id": "source-review-b23f2aa1-7d4c-494e-b68f-35985de595a8",
+    "sourceUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
+    "title": "Litigants in Person Practice Note (GPN-LIP)",
+    "entryKind": "policy",
+    "targetPolicyId": "federal-court-gpn-lip-ai",
+    "targetPolicyBaseRevisionHash": "fe844ea60d365ac2e3a9a0975b8c12c666cd373954b0a798845449ec46d5bccb",
+    "status": "published",
+    "discoveredAt": "2026-10-30T00:40:13.547Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Re-verification before the record goes Review due on 22-23 Nov 2026. Requested by Daniel Alkurdi; staged by Claude (agent). audit:register on 30 Oct 2026 reported a changed fingerprint against the 25 Aug browser capture; paragraphs 2.8 to 2.11 read unchanged on the live page.",
+    "analysis": {
+      "isRelevant": false,
+      "relevanceScore": 0,
+      "suggestedType": null,
+      "suggestedJurisdiction": null,
+      "summary": "",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
+      "finalUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
+      "retrievedAt": "2026-10-30T00:48:04.247Z",
+      "contentType": "text/html",
+      "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
+      "title": "Litigants in Person Practice Note (GPN-LIP)",
+      "reviewedDate": {
+        "date": "2026-03-05",
+        "precision": "day",
+        "reviewedAt": "2026-10-30T00:48:04.276Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The practice note is headed D S Mortimer, Chief Justice 05 March 2026 and is signed D S Mortimer, Chief Justice, 5 March 2026 at its end; page metadata gives DCTERMS.date 2026-03-05. Re-read on 30 Oct 2026."
+      }
+    },
+    "proposedRecord": {
+      "id": "federal-court-gpn-lip-ai",
+      "title": "Litigants in Person Practice Note (GPN-LIP)",
+      "description": "Federal Court of Australia general practice note for litigants in person, issued by Chief Justice Mortimer on 5 March 2026, which at paragraphs 2.8 to 2.11 directs self-represented litigants on when they may and may not use generative AI programs.",
+      "jurisdiction": "federal",
+      "type": "practice_note",
+      "status": "active",
+      "effectiveDate": "2026-03-05",
+      "agencies": [
+        "Federal Court of Australia"
+      ],
+      "sourceUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
+      "content": "GPN-LIP is a General Practice Note of the Federal Court of Australia written in plain language for litigants in person, that is, parties who have a legal case in the Court without a lawyer. It is issued under the Federal Court of Australia Act 1976 (Cth) and litigants are asked to sign an acknowledgement form confirming they have read it. Its generative AI provisions sit in Part 2 (Getting legal help). Paragraph 2.8 directs litigants not to use generative AI programs such as ChatGPT, Claude, Microsoft Copilot or Google Gemini to obtain legal help about whether they have a case they can win, because such programs are not reliable, are not trained like lawyers, may give answers based on American law and can give false answers to legal questions. Paragraph 2.9 similarly warns against social media and pseudolaw sites, noting a litigant can be in serious trouble for making arguments not based on real law. Paragraph 2.10 permits litigants who start or defend a case based on real law and evidence to use AI programs to help explain their case to the Court, but requires them to tell the Court they have done so if asked, to check that all facts from AI programs are correct and complete and that the law is correct, preferably with a lawyer or otherwise using the free legal research databases listed in Attachment D, and warns of serious consequences for giving the Court false information about facts or law. Paragraph 2.11 states the Court will soon publish more about what litigants can and cannot do with AI programs in their cases; that further guidance was issued as GPN-AI on 16 April 2026. The remainder of the practice note covers interpreters, the Court's expectations of litigants in person, the registry, hearings and costs, and includes four attachments on definitions, sections 37M and 37N of the Act, other practice notes and legal research databases.",
+      "aiSummary": "The Federal Court's litigants in person practice note tells self-represented parties not to rely on generative AI to assess whether they have a winnable case, permits AI to help explain a case founded on real law and evidence, and requires them to disclose AI use on request and verify every fact and legal proposition.",
+      "tags": [
+        "generative AI",
+        "courts",
+        "practice note",
+        "federal court of australia",
+        "litigants in person",
+        "self-represented litigants",
+        "verification",
+        "disclosure"
+      ],
+      "themes": [
+        "courts-tribunals",
+        "generative-ai",
+        "human-oversight",
+        "self-represented-litigants",
+        "transparency-disclosure"
+      ],
+      "createdAt": "2026-03-05T00:00:00Z",
+      "updatedAt": "2026-10-30T00:48:04.276Z",
+      "dates": [
+        {
+          "type": "issued",
+          "date": "2026-03-05",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
+            "finalUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
+            "retrievedAt": "2026-10-30T00:48:04.247Z",
+            "contentType": "text/html",
+            "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
+            "title": "Litigants in Person Practice Note (GPN-LIP)",
+            "reviewedDate": {
+              "date": "2026-03-05",
+              "precision": "day",
+              "reviewedAt": "2026-10-30T00:48:04.276Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "The practice note is headed D S Mortimer, Chief Justice 05 March 2026 and is signed D S Mortimer, Chief Justice, 5 March 2026 at its end; page metadata gives DCTERMS.date 2026-03-05. Re-read on 30 Oct 2026."
+            }
+          }
+        }
+      ],
+      "lastReviewedAt": "2026-10-30T00:48:04.276Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
+          "finalUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
+          "retrievedAt": "2026-10-30T00:48:04.247Z",
+          "contentType": "text/html",
+          "contentHash": "8903d29026929406d007e0906b6e133519ca68a6546049c58c45d9ee058531be",
+          "title": "Litigants in Person Practice Note (GPN-LIP)",
+          "reviewedDate": {
+            "date": "2026-03-05",
+            "precision": "day",
+            "reviewedAt": "2026-10-30T00:48:04.276Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The practice note is headed D S Mortimer, Chief Justice 05 March 2026 and is signed D S Mortimer, Chief Justice, 5 March 2026 at its end; page metadata gives DCTERMS.date 2026-03-05. Re-read on 30 Oct 2026."
+          }
+        },
+        "checkedAt": "2026-10-30T00:48:04.276Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd732MXt4YZwrggLjJxEWv7xC&decision=cmsg_019nKBbCzGtpRmfKqX3Xisd7PGU4LRW57TUPodS4Gav985 (proposal 2e163f95). Proposed by Claude (agent). Re-verification. Paragraphs 2.8 to 2.11 of the live page match the record summary; signature block D S Mortimer, Chief Justice, 5 March 2026; DCTERMS.date 2026-03-05, DCTERMS.modified 2026-06-22 (before the 25 Aug review)."
+      }
+    },
+    "updatedAt": "2026-10-30T00:48:04.385Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "reviewedDate": {
+        "date": "2026-03-05",
+        "precision": "day",
+        "notes": "The practice note is headed D S Mortimer, Chief Justice 05 March 2026 and is signed D S Mortimer, Chief Justice, 5 March 2026 at its end; page metadata gives DCTERMS.date 2026-03-05. Re-read on 30 Oct 2026."
+      },
+      "notes": "Re-verification. Paragraphs 2.8 to 2.11 of the live page match the record summary; signature block D S Mortimer, Chief Justice, 5 March 2026; DCTERMS.date 2026-03-05, DCTERMS.modified 2026-06-22 (before the 25 Aug review).",
+      "proposedAt": "2026-10-30T00:40:37.706Z"
+    },
+    "targetPolicyRevisionHash": "fe844ea60d365ac2e3a9a0975b8c12c666cd373954b0a798845449ec46d5bccb",
+    "reviewedAt": "2026-10-30T00:48:04.276Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd732MXt4YZwrggLjJxEWv7xC&decision=cmsg_019nKBbCzGtpRmfKqX3Xisd7PGU4LRW57TUPodS4Gav985 (proposal 2e163f95). Proposed by Claude (agent). Re-verification. Paragraphs 2.8 to 2.11 of the live page match the record summary; signature block D S Mortimer, Chief Justice, 5 March 2026; DCTERMS.date 2026-03-05, DCTERMS.modified 2026-06-22 (before the 25 Aug review).",
+    "decision": {
+      "proposalHash": "2e163f9550b4814481ba1d9771591d5dc536064e83f0a33ee1470b8f24e50152",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-10-30T00:48:03.460Z",
+      "attestationUrl": "https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd732MXt4YZwrggLjJxEWv7xC&decision=cmsg_019nKBbCzGtpRmfKqX3Xisd7PGU4LRW57TUPodS4Gav985"
+    },
+    "publishedAt": "2026-10-30T00:48:04.378Z"
+  },
+  {
     "id": "source-review-dev-latest-news-16bao",
     "sourceUrl": "https://www.courts.qld.gov.au/newsroom/news",
     "title": "Latest news",

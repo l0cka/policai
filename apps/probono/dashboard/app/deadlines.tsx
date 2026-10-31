@@ -65,7 +65,8 @@ function Checked({ row }: { row: DeadlineCard }) {
   if (!row.checkedOn) return null;
   return (
     <>
-      {' · '}checked <time dateTime={row.checkedOn}>{formatDeadlineDate(row.checkedOn, 'day', false)}</time>
+      <span className="timeline-sep">{' · '}</span>
+      <span className="timeline-checked">checked <time dateTime={row.checkedOn}>{formatDeadlineDate(row.checkedOn, 'day', false)}</time></span>
     </>
   );
 }
@@ -100,6 +101,8 @@ const utcDate = (date: string) => new Date(`${date}T00:00:00Z`);
 const addDays = (date: string, n: number) => new Date(utcDate(date).getTime() + n * MS_DAY).toISOString().slice(0, 10);
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const weekday = (date: string) => WEEKDAYS[utcDate(date).getUTCDay()];
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const month = (date: string) => MONTHS[utcDate(date).getUTCMonth()];
 const dayMonth = (date: string) => formatDeadlineDate(date, 'day', false);
 
 function weekHeading(i: number, start: string): string {
@@ -133,13 +136,19 @@ export function DeadlineWeekStrip({ rows }: { rows: DeadlineCard[] }) {
         const tone = n ? urgency(daysUntil(w.rows[0].date, today)) : '';
         const Tag = n ? 'a' : 'span';
         return (
-          <Tag key={w.id} href={n ? `#${w.id}` : undefined} className={`week-strip-week${i === 0 ? ' is-current' : ''}`}>
+          <Tag
+            key={w.id}
+            href={n ? `#${w.id}` : undefined}
+            aria-hidden={n ? undefined : true}
+            aria-current={i === 0 ? 'date' : undefined}
+            className={`week-strip-week${i === 0 ? ' is-current' : ''}`}
+          >
             <span className="sr-only">
               {w.heading}: {n} closing
             </span>
             <span className="week-strip-count" aria-hidden="true">{n || ''}</span>
             <span className="week-strip-track" aria-hidden="true">
-              <span className={`week-strip-bar ${tone}`} style={{ height: `${(n / most) * 100}%` }} />
+              <span className={`week-strip-bar ${tone}`} style={{ height: `${n ? Math.max(n / most, 0.4) * 100 : 0}%` }} />
             </span>
             <span className="week-strip-label" aria-hidden="true">
               {i === 0 ? 'Now' : dayMonth(w.start)}
@@ -176,6 +185,7 @@ export function DeadlineTimeline({ rows }: { rows: DeadlineCard[] }) {
                   <div className={`date-block ${urgency(days)}`} aria-hidden="true">
                     <span className="day">{utcDate(r.date).getUTCDate()}</span>
                     <span className="mon">{weekday(r.date)}</span>
+                    <span className="mon mon-month">{month(r.date)}</span>
                   </div>
                   <div className="timeline-body">
                     <h4 className="timeline-subject">
@@ -184,7 +194,7 @@ export function DeadlineTimeline({ rows }: { rows: DeadlineCard[] }) {
                     <p className="timeline-kind">
                       <span className="sr-only">{weekday(r.date)} {formatDeadlineDate(r.date, 'day')}: </span>
                       {r.label}
-                      {' · '}
+                      <span className="timeline-sep">{' · '}</span>
                       <span className={`timeline-countdown ${urgency(days)}`}>
                         <span className="sr-only">closes </span>
                         {countdown(days)}

@@ -39,6 +39,8 @@ CODE = Path("/usr/local/libexec/policai-host")
 BASES = {"probono": Path("/var/lib/probono-radar")}
 USERS = {"probono": "l0cka"}
 DB = "probono-radar-db-1"
+SETPRIV = "/usr/bin/setpriv"
+LOGIN_UMASK = 0o022
 DEPLOY_CLIENT_ENV = {
     "HOME": "/var/lib/probono-radar",
     "DOCKER_CONFIG": "/var/lib/probono-radar/.docker",
@@ -853,9 +855,17 @@ class Runner:
             *(key + "=" + value for key, value in clean.items()),
             *argv,
         ]
-        if os.geteuid() == pwd.getpwnam(identity).pw_uid:
+        account = pwd.getpwnam(identity)
+        if os.geteuid() == account.pw_uid:
             return command
-        return ["/usr/bin/runuser", "-u", identity, "--", *command]
+        return [
+            SETPRIV,
+            f"--reuid={account.pw_uid}",
+            f"--regid={account.pw_gid}",
+            "--init-groups",
+            "--",
+            *command,
+        ]
 
     def execute(
         self,
@@ -873,8 +883,11 @@ class Runner:
             not isinstance(stdin_data, bytes) or len(stdin_data) > 262144
         ):
             raise Refused("command input exceeds bound")
+        umask = -1
         if identity is not None:
             argv = self.identity_argv(identity, argv, extra_env)
+            if argv[0] == SETPRIV:
+                umask = LOGIN_UMASK
         clean = {"PATH": "/usr/bin:/bin", "LANG": "C.UTF-8"}
         clean.update(env or {})
         if identity is None:
@@ -891,6 +904,7 @@ class Runner:
                 start_new_session=True,
                 close_fds=True,
                 pass_fds=pass_fds,
+                umask=umask,
             )
             deadline = time.monotonic() + timeout
             output, count, position = bytearray(), 0, 0

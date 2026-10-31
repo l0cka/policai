@@ -178,7 +178,7 @@ describe("POST /api/signal/reviews", () => {
 
 		expect(status).toBe(403);
 		expect(json).toMatchObject({ success: false, code: "approve_not_allowed" });
-		expect(json.error).toContain("decision card");
+		expect(json.error).toContain("passkey");
 		expect(github.requests.filter((r) => r.method !== "GET")).toEqual([]);
 		await expectDiskUntouched();
 	});

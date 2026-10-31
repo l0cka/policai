@@ -87,6 +87,13 @@ guarded host dispatcher. The reviewed service units installed on the host are
 record the schedules only.
 The maintainer keeps the operational runbook privately.
 
+The `worker` Compose service runs on demand (systemd timers or by hand) and never
+stays up. It uses host networking to reach Postgres on `127.0.0.1:5433` and
+Firecrawl on `127.0.0.1:3003`, the socket-activated `firecrawl-proxy.socket`
+entry point that wakes the idle Firecrawl stack (`3002` is the raw API and stays
+down until something connects to `3003`). On a macOS development machine, skip the
+container and run the worker scripts directly with `tsx`.
+
 Ingest and enrichment use `probono-ingest.timer` and `probono-enrich.timer`;
 backups remain a separate operational responsibility. Preserve masks on both
 `probono-digest.service` and `probono-digest.timer`; no tracked unit file exists
@@ -105,7 +112,11 @@ queue.
 `worker/src/digest.ts` defaults to a dry run that prints the HTML. It sends only
 when invoked with `--send` and `PROBONO_DIGEST_SEND_APPROVED=yes` is set, and
 SMTP credentials alone never enable it. Docker Compose does not pass the approval
-variable, so a sending run has to supply it deliberately. A period is one Sydney
+variable, so a sending run has to supply it deliberately. Compose passes no SMTP
+settings either. The digest reads `SMTP_USER`, `SMTP_PASS` and `DIGEST_TO` from its
+environment, so it cannot send from the worker container. To give the container
+those credentials, use a Compose secret, never Compose environment, for the reason
+under Database password. A period is one Sydney
 calendar week by `digests.period_end`; the digest claims that week in a locked
 transaction before sending and refuses when a row already exists, releasing the
 claim if the send fails. Setting the variable is the approval step and still
@@ -116,3 +127,40 @@ the pool is closed. Without that exit a leftover handle holds the ingest
 container open until the host dispatcher times out, and a worker left running
 blocks later deployments and workers. Feed retrieval reads the response body
 before it returns, including when the status is not 200.
+
+## Database password
+
+No container gets the `radar` password as an environment variable. Docker sends a
+container's environment in the create request and keeps it in `docker inspect`,
+and Argus's Docker authorization plugin logged create request bodies to the
+journal. Compose reads `POSTGRES_PASSWORD` from the env file
+(`/etc/probono-radar/runtime.env` on Argus, `.env` locally) into the
+`postgres_password` secret, whose source is `environment: POSTGRES_PASSWORD`.
+Compose creates the container first, then copies the secret into it as
+`/run/secrets/postgres_password` (root-owned, mode 0444) through the archive
+endpoint. That upload carries no `Content-Type: application/json`, so Docker does
+not pass its body to an authorization plugin. No file under `/etc/probono-radar`
+is needed for the secret. A `file:` source would be a bind mount, and the
+container's `node` user can read it only if the host file's owner and mode allow
+it.
+
+- `db` gets `POSTGRES_PASSWORD_FILE`. The Postgres image reads it only when it
+  initialises an empty data volume. The running Argus container was created
+  from the earlier Compose file and keeps the password in its environment until
+  it is recreated, which is a separate approved change.
+- `worker` gets `DATABASE_URL=postgres://radar@127.0.0.1:5433/radar` with no
+  password, and `POSTGRES_PASSWORD_FILE`. `databaseUrl` in
+  `worker/src/lib/db.ts` reads the file once, when the first pool is created. It
+  removes one trailing newline and puts the password into the URL. It fails,
+  naming the variable and never the value, when the file is missing or empty,
+  when `POSTGRES_PASSWORD` and `POSTGRES_PASSWORD_FILE` are both set, or when
+  `DATABASE_URL` already has a password. Without `POSTGRES_PASSWORD_FILE` it uses
+  `DATABASE_URL` as given, so local runs and CI keep a password in the URL.
+- When the env file has no `POSTGRES_PASSWORD`, `docker compose config` still
+  succeeds, but `docker compose run` and `up` refuse: `environment variable
+  "POSTGRES_PASSWORD" required by secret ... is not set`.
+
+`docker-compose.yaml` is hash-pinned by `compose_sha256` in the root-owned
+`/etc/policai-deploy/config.json`. A change to it needs that value updated in the
+same reviewed window as its deploy (`ops/host/README.txt`, UPGRADE CONTRACT,
+step b).

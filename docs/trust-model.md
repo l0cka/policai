@@ -33,6 +33,14 @@ eligible to stay public this way (`isPubliclyEstablished` in
 budget in `data/freshness-budget.json`.
 A later automated fingerprint check is recorded separately as
 `verification.lastSourceAuditAt`; it does not renew the editorial review.
+An editor can renew it in batches instead (`npm run reconfirm:register`). The
+script audits records due within 30 days and groups those whose source
+fingerprint is unchanged into batches in `data/reconfirmations.json`. The
+editor approves a batch with one passkey signature (`reconfirm approve` reads
+it from the approvals mailbox). Approval renews `checkedAt` for
+every record in the batch, or for none: each fingerprint must still match and
+each audit must be at most seven days old. Changed or unreadable sources get a
+full review.
 A record also becomes stale when its source content changes or its source is
 confirmed missing with an HTTP 404 or 410 response, redirects to a homepage, or
 leaves the official-source allow-list. A timeout, bot challenge, or access

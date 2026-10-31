@@ -1,6 +1,6 @@
 /* @vitest-environment node */
 
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const {
   decideSourceReview,
@@ -56,21 +56,14 @@ import {
 import {
   handleListThemes,
   handleListCourtRequirementCandidates,
-  handleProposeSourceDecision,
-  handleRecordDecision,
   handleRecordManualSourceReview,
-  handleRejectStagedSource,
   handleStageSourceCapture,
-  handleStageSourceUrl,
   handleReviewCourtRequirement,
   handleVerifyRegisterRecord,
 } from './tool-handlers'
 
-const originalToken = process.env.POLICAI_MCP_ADMIN_TOKEN
-
 describe('MCP tool handlers', () => {
   beforeEach(() => {
-    process.env.POLICAI_MCP_ADMIN_TOKEN = 'secret-token'
     stageSourceUrl.mockReset()
     stageSourceCapture.mockReset()
     decideSourceReview.mockReset()
@@ -80,71 +73,6 @@ describe('MCP tool handlers', () => {
     verifyRegisterRecord.mockReset()
     getCourtRequirementsForReview.mockReset()
     reviewCourtRequirement.mockReset()
-  })
-
-  afterEach(() => {
-    process.env.POLICAI_MCP_ADMIN_TOKEN = originalToken
-  })
-
-  it('rejects mutating tools when the admin token is missing or invalid', async () => {
-    await expect(
-      handleStageSourceUrl({
-        url: 'https://example.gov.au/source',
-        entryKind: 'policy',
-      }),
-    ).rejects.toThrow('Invalid POLICAI_MCP_ADMIN_TOKEN')
-
-    await expect(
-      handleProposeSourceDecision({ id: 'source-review-1', adminToken: 'wrong' }),
-    ).rejects.toThrow('Invalid POLICAI_MCP_ADMIN_TOKEN')
-
-    await expect(
-      handleRecordDecision({
-        id: 'source-review-1',
-        proposalHash: 'a'.repeat(64),
-        reviewer: 'Daniel',
-        attestationUrl: 'https://claude.ai/code/project/chan_x?thread=cmsg_x',
-        adminToken: 'wrong',
-      }),
-    ).rejects.toThrow('Invalid POLICAI_MCP_ADMIN_TOKEN')
-
-    await expect(
-      handleRejectStagedSource({ id: 'source-review-1', adminToken: 'wrong' }),
-    ).rejects.toThrow('Invalid POLICAI_MCP_ADMIN_TOKEN')
-
-    await expect(
-      handleRecordManualSourceReview({
-        sourceId: 'dta-media',
-        status: 'checked',
-        adminToken: 'wrong',
-      }),
-    ).rejects.toThrow('Invalid POLICAI_MCP_ADMIN_TOKEN')
-
-    await expect(
-      handleReviewCourtRequirement({
-        id: 'requirement-1',
-        decision: 'verified',
-        reviewer: 'Jane Reviewer',
-        adminToken: 'wrong',
-      }),
-    ).rejects.toThrow('Invalid POLICAI_MCP_ADMIN_TOKEN')
-
-    await expect(
-      handleVerifyRegisterRecord({
-        policyId: 'policy-1',
-        reviewer: 'Daniel',
-        adminToken: 'wrong',
-      }),
-    ).rejects.toThrow('Invalid POLICAI_MCP_ADMIN_TOKEN')
-
-    expect(stageSourceUrl).not.toHaveBeenCalled()
-    expect(stageSourceCapture).not.toHaveBeenCalled()
-    expect(proposeSourceDecision).not.toHaveBeenCalled()
-    expect(decideSourceReview).not.toHaveBeenCalled()
-    expect(rejectStagedSource).not.toHaveBeenCalled()
-    expect(recordManualSourceReview).not.toHaveBeenCalled()
-    expect(reviewCourtRequirement).not.toHaveBeenCalled()
-    expect(verifyRegisterRecord).not.toHaveBeenCalled()
   })
 
   it('lists and reviews court requirement candidates', async () => {
@@ -165,7 +93,6 @@ describe('MCP tool handlers', () => {
       decision: 'verified',
       reviewer: ' Jane Reviewer ',
       notes: 'Compared against paragraph 4.',
-      adminToken: 'secret-token',
     })
 
     expect(reviewCourtRequirement).toHaveBeenCalledWith({
@@ -197,7 +124,6 @@ describe('MCP tool handlers', () => {
       entryKind: 'policy',
       targetRecordId: 'policy-1',
       capture,
-      adminToken: 'secret-token',
     })
 
     expect(stageSourceCapture).toHaveBeenCalledWith({
@@ -220,7 +146,6 @@ describe('MCP tool handlers', () => {
       status: 'checked',
       reviewer: 'Jane Reviewer',
       notes: 'Checked in a browser.',
-      adminToken: 'secret-token',
     })
 
     expect(recordManualSourceReview).toHaveBeenCalledWith({
@@ -244,7 +169,6 @@ describe('MCP tool handlers', () => {
         publisher: 'Digital Transformation Agency',
         finalUrl: 'https://www.dta.gov.au/news-and-blogs/latest',
       },
-      adminToken: 'secret-token',
     })
 
     expect(recordManualSourceReview).toHaveBeenCalledWith({
@@ -266,7 +190,6 @@ describe('MCP tool handlers', () => {
         sourceId: 'dta-media',
         status: 'checked',
         reviewer: '   ',
-        adminToken: 'secret-token',
       }),
     ).rejects.toThrow('human reviewer identity')
 
@@ -280,7 +203,6 @@ describe('MCP tool handlers', () => {
       policyId: 'policy-1',
       reviewer: 'Daniel',
       notes: 'Checked against source.',
-      adminToken: 'secret-token',
     })
 
     expect(verifyRegisterRecord).toHaveBeenCalledWith({
@@ -295,7 +217,6 @@ describe('MCP tool handlers', () => {
       handleVerifyRegisterRecord({
         policyId: 'policy-1',
         reviewer: 'Random Agent',
-        adminToken: 'secret-token',
       }),
     ).rejects.toThrow('Signal reviewer must be one of: Daniel Alkurdi, Daniel')
     expect(verifyRegisterRecord).not.toHaveBeenCalled()

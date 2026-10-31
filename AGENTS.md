@@ -493,7 +493,8 @@ None are required to run the site or collector. Optional (see `.env.example`):
 POLICAI_SIGNAL_TOKEN=     # HTTPS /api/signal/* Bearer token (Grok Bot product path)
 POLICAI_SIGNAL_GITHUB_TOKEN= # Worker secret; Signal POST reads GitHub main and commits changed files as a PR (or main push); never writes the checkout
 POLICAI_SIGNAL_REVIEWERS= # allowlist for Signal reviewer (default: Daniel Alkurdi,Daniel)
-POLICAI_MCP_ADMIN_TOKEN=  # local MCP source-ingest writes (laptop recovery; not the bot path)
+POLICAI_MCP_WRITE=        # 1 = npm run mcp registers its write tools; unset, the server is read-only
+POLICAI_MCP_ADMIN_TOKEN=  # signal:reviews recovery apply only (laptop recovery; not the bot path)
 USE_CLEF_CLASSIFIER=      # 1 = score relevance with local clef-flash instead of keyword rules (collection host only)
 FIRECRAWL_URL=            # self-hosted Firecrawl base URL, defaults to http://127.0.0.1:3003
 POLICAI_ARTICLES_DIR=     # read articles from this directory instead of data/articles (previews only)
@@ -508,7 +509,7 @@ Clef needs no key: it talks only to Ollama on `127.0.0.1:11434`. The retired clo
 - Every policy needs a real, verified `sourceUrl` (https, `.gov.au` or allow-listed host) and accurate dates — if a day-level date can't be verified, say so in `content` rather than inventing precision.
 - Mark replaced instruments `superseded` (+ `supersededBy`) and dead consultations `closed`; don't delete history.
 - Stamp `lastReviewedAt` when you have verified a record against its source.
-- Give every policy 1 to 5 `themes` from `src/lib/themes.ts`. Collector and staged drafts carry `themes: []`, and approval and publication refuse a policy without themes, so propose a new policy (`propose_source_decision`) with an explicit `proposedRecord` that sets them. Re-verification drafts keep the record's existing themes. `npm run validate:data` runs both `validatePolicyThemes` and `validateThemeCoverage` (`scripts/validate-data.ts`; `src/lib/validate-data-script.test.ts` fails if either call is removed). Publication also refuses an approved snapshot whose themes were emptied, set to an unknown id, omitted, nested (a non-string entry is named by type and JSON value, not as an unknown theme id), or grown past five, and does not call `createPolicy` or `updatePolicy` (`src/lib/source-ingest-workflow.test.ts`). Through MCP, `list_themes` (read-only, no admin token) returns each key and label from `THEMES` with the per-record and per-theme limits. When a record has theme errors, the last error for that record ends with `; valid theme ids are <keys>` (not a separate `<id>: valid theme ids are <keys>` line). Approve and publish refusals join those errors, so they name the keys too.
+- Give every policy 1 to 5 `themes` from `src/lib/themes.ts`. Collector and staged drafts carry `themes: []`, and approval and publication refuse a policy without themes, so propose a new policy (`propose_source_decision`) with an explicit `proposedRecord` that sets them. Re-verification drafts keep the record's existing themes. `npm run validate:data` runs both `validatePolicyThemes` and `validateThemeCoverage` (`scripts/validate-data.ts`; `src/lib/validate-data-script.test.ts` fails if either call is removed). Publication also refuses an approved snapshot whose themes were emptied, set to an unknown id, omitted, nested (a non-string entry is named by type and JSON value, not as an unknown theme id), or grown past five, and does not call `createPolicy` or `updatePolicy` (`src/lib/source-ingest-workflow.test.ts`). Through MCP, `list_themes` (read-only) returns each key and label from `THEMES` with the per-record and per-theme limits. When a record has theme errors, the last error for that record ends with `; valid theme ids are <keys>` (not a separate `<id>: valid theme ids are <keys>` line). Approve and publish refusals join those errors, so they name the keys too.
 
 ## Code Conventions
 
@@ -542,15 +543,14 @@ Clef needs no key: it talks only to Ollama on `127.0.0.1:11434`. The retired clo
   current page view only.
 - Run `npm run check` before handing off or committing.
 
-## Pull requests and Cursor review
+## Pull requests and review
 
-Every push to a non-draft PR starts another pass of the Cursor Automation and puts the `cursor-review` check back to waiting on the new head, so a push made only to answer a note starts the next round of notes.
+No automated review runs on PRs. Reviews are requested by hand, and auto-merge does not wait for one.
 
-- A review that ends `<!-- cursor-review: failure -->` is work. Fix every blocker it names.
-- A non-blocking note on a passing review: fix it once if the fix is cheap, or reply on the thread with the reason and resolve it.
-- Never push only because of a note you have already seen or handled. Later reviews often repeat earlier notes.
-- Batch fixes into one push.
-- Never post an approving review, and never write the `cursor-review` marker yourself. Only a `cursor[bot]` review can complete that check (`.github/workflows/cursor-review.yml`). Merging also needs the other required checks green and every review thread resolved.
+- Put the `hold` label on a PR that must wait for a review, a date or an event, or auto-merge lands it once CI is green.
+- When a review is posted, address it before merging: fix every blocker it names; for a non-blocking note, fix it once if the fix is cheap, or reply on the thread with the reason and resolve it.
+- Never push only because of a note you have already seen or handled. Batch fixes into one push.
+- Never post an approving review. Merging needs the required checks green and every review thread resolved.
 
 ## Documentation Standard
 
