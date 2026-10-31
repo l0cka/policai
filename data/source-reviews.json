@@ -6,7 +6,7 @@
     "entryKind": "policy",
     "targetPolicyId": "nsw-nesa-stage-6-take-home-assessment-ai-rules",
     "targetPolicyBaseRevisionHash": "e98540a5de6600942dfb59bed4e1152206b7b66cb35c95b9e879e40c071b7519",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-10-31T07:50:18.427Z",
     "createdBy": "local-mcp-admin",
     "notes": "Re-verification at Daniel Alkurdi’s request: status moves from proposed to active because the changes are now in the ACE Rules (https://curriculum.nsw.edu.au/ace-rules/ace2/assessment-programs and https://curriculum.nsw.edu.au/ace-rules/ace10/malpractice, both read 2026-10-31). The sourceUrl stays the NESA notice. No day-precision in-force date is added because no source states one.",
@@ -24,7 +24,7 @@
     "sourceEvidence": {
       "url": "https://www.nsw.gov.au/education-and-training/nesa/news/all/new-take-home-assessment-rules",
       "finalUrl": "https://www.nsw.gov.au/education-and-training/nesa/news/all/new-take-home-assessment-rules",
-      "retrievedAt": "2026-10-31T07:50:18.391Z",
+      "retrievedAt": "2026-10-31T23:44:55.590Z",
       "contentType": "text/html",
       "contentHash": "fae8545d8ca4d6d2681af71387d214a2424fab03d56b764a306744331094a61a",
       "etag": "\"1793433017\"",
@@ -50,11 +50,11 @@
           "source": {
             "url": "https://www.nsw.gov.au/education-and-training/nesa/news/all/new-take-home-assessment-rules",
             "finalUrl": "https://www.nsw.gov.au/education-and-training/nesa/news/all/new-take-home-assessment-rules",
-            "retrievedAt": "2026-09-09T23:41:05.638Z",
+            "retrievedAt": "2026-10-31T23:44:55.590Z",
             "contentType": "text/html",
-            "contentHash": "8fd22712fb09af7b8dea60268b02e213eff593e8bf51ab4435db789f0f6ed5a2",
-            "etag": "\"1788996408\"",
-            "lastModified": "Wed, 09 Sep 2026 23:26:48 GMT",
+            "contentHash": "fae8545d8ca4d6d2681af71387d214a2424fab03d56b764a306744331094a61a",
+            "etag": "\"1793433017\"",
+            "lastModified": "Sat, 31 Oct 2026 07:50:17 GMT",
             "title": "New limit on take-home assessment tasks from Term 4 2026",
             "publishedAt": "2026-08-31",
             "publishedAtPrecision": "day"
@@ -79,29 +79,50 @@
         "generative-ai"
       ],
       "createdAt": "2026-09-09T23:26:21.926Z",
-      "updatedAt": "2026-09-09T23:41:05.648Z",
-      "lastReviewedAt": "2026-09-09T23:41:05.648Z",
+      "updatedAt": "2026-10-31T23:44:55.599Z",
+      "lastReviewedAt": "2026-10-31T23:44:55.599Z",
       "verification": {
         "status": "verified",
         "source": {
           "url": "https://www.nsw.gov.au/education-and-training/nesa/news/all/new-take-home-assessment-rules",
           "finalUrl": "https://www.nsw.gov.au/education-and-training/nesa/news/all/new-take-home-assessment-rules",
-          "retrievedAt": "2026-09-09T23:41:05.638Z",
+          "retrievedAt": "2026-10-31T23:44:55.590Z",
           "contentType": "text/html",
-          "contentHash": "8fd22712fb09af7b8dea60268b02e213eff593e8bf51ab4435db789f0f6ed5a2",
-          "etag": "\"1788996408\"",
-          "lastModified": "Wed, 09 Sep 2026 23:26:48 GMT",
+          "contentHash": "fae8545d8ca4d6d2681af71387d214a2424fab03d56b764a306744331094a61a",
+          "etag": "\"1793433017\"",
+          "lastModified": "Sat, 31 Oct 2026 07:50:17 GMT",
           "title": "New limit on take-home assessment tasks from Term 4 2026",
           "publishedAt": "2026-08-31",
           "publishedAtPrecision": "day"
         },
-        "checkedAt": "2026-09-09T23:41:05.648Z",
+        "checkedAt": "2026-10-31T23:44:55.599Z",
         "checkedBy": "Daniel Alkurdi",
         "method": "manual",
-        "notes": "Approved as a proposed standard based on NESA notice 29/26. The record preserves the notice publication date and states the Term 4 2026 and Term 1 2027 commencement windows in content without inventing day precision."
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal ca7d74e7). Proposed by local-mcp-admin."
       }
     },
-    "updatedAt": "2026-10-31T07:50:18.427Z"
+    "updatedAt": "2026-10-31T23:44:55.715Z",
+    "targetPolicyRevisionHash": "e98540a5de6600942dfb59bed4e1152206b7b66cb35c95b9e879e40c071b7519",
+    "reviewedAt": "2026-10-31T23:44:55.599Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal ca7d74e7). Proposed by local-mcp-admin.",
+    "decision": {
+      "proposalHash": "ca7d74e74c47b3862140e58783db2124ce2ed1e93fb6c0b0a1b02fc3cf1876b9",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-10-31T23:43:46.803Z",
+      "approval": {
+        "subject": "source-review:source-review-05007dd0-f3ff-476e-b0fc-8578932e432e:ca7d74e74c47b3862140e58783db2124ce2ed1e93fb6c0b0a1b02fc3cf1876b9",
+        "receivedAt": "2026-10-31T23:43:46.803Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoib3ZlbUpvZko2ZXdiQVNqSmZaRUJYMjd0Umw3c3gxc0lETm9fUWxOVmhKNCIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEQCICop9-qnPNAJXAn-d6byqdpSMcbxycbEYefoC8Ye8ZFKAiAlFF6z6pOwnJGP6m1Y0_QHknZ4ZRXMSUeL8YCNWWzQ3A",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      }
+    },
+    "publishedAt": "2026-10-31T23:44:55.709Z"
   },
   {
     "id": "source-review-ddoc-house-timeline-2026-10-28",
