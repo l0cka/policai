@@ -2850,5 +2850,48 @@
       },
       "notes": "Unverified timeline draft. CS 63 page states Released 24 September 2026 and Comments close 5 November 2026 (5 pm AEDT). Not fingerprinted and not marked verified. Withheld from the public timeline until Daniel's own review."
     }
+  },
+  {
+    "id": "tl-2026-10-28-digital-duty-of-care-bill-passed-house",
+    "date": "2026-10-28",
+    "datePrecision": "day",
+    "title": "Online Safety Amendment (Digital Duty of Care) Bill 2026 passed the House",
+    "description": "The House of Representatives agreed to the third reading on 28 October 2026. The APH bill home page records that consideration in detail that day agreed 15 government amendments and 8 crossbench amendments. The bill is not an Act. The Senate Environment and Communications Legislation Committee is still due to report on 20 November 2026. A sheet by Kate Chaney MP linked from the bill page (https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22legislation/amend/r7553_amend_94de72af-fd1a-4779-b6c7-c0230408dc0f%22) proposes a new paragraph 25E(1)(da) on material or conduct that simulates emotional intimacy and fosters a child's dependence on it in place of human relationships. The page's Status field still reads \"Before Reps\".",
+    "type": "milestone",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "federal-online-safety-amendment-digital-duty-of-care-bill-2026",
+    "sourceUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22legislation%2Fbillhome%2Fr7553%22",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22legislation%2Fbillhome%2Fr7553%22",
+        "finalUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22legislation%2Fbillhome%2Fr7553%22",
+        "title": "ParlInfo - Online Safety Amendment (Digital Duty of Care) Bill 2026",
+        "retrievedAt": "2026-10-31T01:06:42.992Z",
+        "contentType": "text/html",
+        "contentHash": "61209ac5c5aff4485819ca650691d96b1c2c4197fc11d88a56a8975ba1a5d81d",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-10-31T01:06:42.992Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "Headless Chromium capture of the ParlInfo bill home for r7553 with the Policai collector identity; ParlInfo refuses plain HTTP clients. Staged by Claude (agent) for Daniel Alkurdi.",
+          "pageContentHash": "c7f2b69a821ed0db6fa3d95de1dc7dd89a548de985a7553096b7b1b6b58a418b",
+          "characterCount": 3480
+        },
+        "reviewedDate": {
+          "date": "2026-10-28",
+          "precision": "day",
+          "reviewedAt": "2026-10-31T05:31:00.162Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The captured ParlInfo bill home shows \"Third reading agreed to 28/10/26\" in the House of Representatives, with amendment details \"15 Government and 8 Crossbench agreed to\"."
+        }
+      },
+      "checkedAt": "2026-10-31T05:31:00.162Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal e192f588). Proposed by Claude (agent). Prepared for Daniel Alkurdi after #581 merged."
+    }
   }
 ]

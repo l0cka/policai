@@ -9785,7 +9785,7 @@
   {
     "id": "federal-online-safety-amendment-digital-duty-of-care-bill-2026",
     "title": "Online Safety Amendment (Digital Duty of Care) Bill 2026",
-    "description": "Proposed federal bill introduced in the House of Representatives on 15 October 2026, with the second reading moved the same day. It would place a digital duty of care on online services, including services that generate material using AI. It is before the House and is not law.",
+    "description": "Proposed federal bill. The House of Representatives agreed to the third reading on 28 October 2026, with amendments: the bill home page records that 15 government amendments and 8 crossbench amendments were agreed that day. It would place a digital duty of care on online services, including services that generate material using AI. It is not law. The Senate Environment and Communications Legislation Committee is still due to report on 20 November 2026.",
     "jurisdiction": "federal",
     "type": "legislation",
     "status": "proposed",
@@ -9800,25 +9800,25 @@
           "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
           "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
           "title": "Online Safety Amendment (Digital Duty of Care) Bill 2026 – Parliament of Australia",
-          "retrievedAt": "2026-10-22T05:57:12.034Z",
+          "retrievedAt": "2026-10-29T21:08:00.000Z",
           "contentType": "text/html",
-          "contentHash": "ee4cd1fa2283818ac255e27ec0cd8b39eec6667da7c614d7138b8b85be232612",
+          "contentHash": "2c49db754908b887b195cdd73fdd5f5e63fc3e726e4ced732cfdebb4694ce63d",
           "linkedDocuments": [],
           "browserCapture": {
             "method": "browser",
-            "capturedAt": "2026-10-22T05:57:12.034Z",
-            "capturedBy": "Claude (agent)",
-            "requestedBy": "Daniel Alkurdi",
-            "notes": "Headless Chromium capture of the APH bill home page for r7553 with the Policai collector identity; APH refuses plain HTTP clients. Staged by Claude (agent) for Daniel Alkurdi as a re-verification of the hidden draft.",
-            "pageContentHash": "3bd30c6d8e60fe4dbda1daf776c976b0bab1990120cea1c801fc3cfbf3b272bf",
-            "characterCount": 4768
+            "capturedAt": "2026-10-29T21:08:00.000Z",
+            "capturedBy": "Cursor agent",
+            "requestedBy": "Policai Signal",
+            "notes": "Headless Chrome capture of the APH bill home page for r7553 with the Policai collector identity; APH refuses plain HTTP clients. Staged for Daniel Alkurdi. The progress table shows third reading agreed on 28 Oct 2026, with amendment details \"15 Government and 8 Crossbench agreed to\".",
+            "pageContentHash": "7b009f86251b5a8e3bb204ce7cbc5183c53cce698949c6abc92812288cd288da",
+            "characterCount": 6528
           },
           "reviewedDate": {
             "date": "2026-10-15",
             "precision": "day",
-            "reviewedAt": "2026-10-22T07:41:32.742Z",
+            "reviewedAt": "2026-10-31T05:30:59.397Z",
             "reviewedBy": "Daniel Alkurdi",
-            "notes": "The captured bill home page shows \"Introduced and read a first time 15 Oct 2026\" in the House of Representatives, and a note \"Referred to Committee (15/10/2026): Senate Environment and Communications Legislation Committee; Report due 20/11/2026\"."
+            "notes": "The bill home page shows the bill introduced and read a first time in the House of Representatives on 15 Oct 2026; the record's published date is the introduction day."
           }
         }
       },
@@ -9858,8 +9858,8 @@
       "Department of Infrastructure, Transport, Regional Development, Communications and the Arts"
     ],
     "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
-    "content": "The Online Safety Amendment (Digital Duty of Care) Bill 2026 was introduced and read a first time in the House of Representatives on 15 October 2026, and the second reading was moved that day. Status is proposed: the register has no separate before-Parliament status. The bill is not an Act. The House progress page (https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553) records that introduction, the second reading, portfolio Infrastructure, Transport, Regional Development, Communications, Sport and the Arts, and referral on 15 October 2026 to the Senate Environment and Communications Legislation Committee, with a report due on 20 November 2026. That reporting date is stored as scheduled_review because the register has no committee-report date type. It is the committee's reporting date, not a statutory review of an Act. As described in the approved 11–17 October 2026 signal, the bill covers services that generate material using AI (s 25B(1)(h)), requires yearly risk assessments, and in Schedule 3 would repeal the online-safety industry codes and standards 12 months after Royal Assent. Those codes remain in force on esafety-genai-industry-codes. An exposure draft was released for targeted consultation on 8 September 2026 (Minister for Communications, https://minister.infrastructure.gov.au/wells/media-release/my-feed-my-way). The Minister announced introduction on 15 October 2026 (https://minister.infrastructure.gov.au/wells/media-release/digital-duty-care-next-step-australias-world-leading-reforms). The department's page is https://www.infrastructure.gov.au/media-communications/internet/online-safety/digital-duty-care. Secondary reports, not the canonical source: https://www.openaustralia.org.au/debates/?id=2026-10-15.6.2 and https://aigeek.au/news/digital-duty-of-care-bill-introduced-ai/.",
-    "aiSummary": "Proposed Online Safety Amendment (Digital Duty of Care) Bill 2026, introduced on 15 October 2026. It is not law. The Senate Environment and Communications Legislation Committee is due to report on 20 November 2026.",
+    "content": "The Online Safety Amendment (Digital Duty of Care) Bill 2026 was introduced and read a first time in the House of Representatives on 15 October 2026, and the second reading was moved that day. On 28 October 2026 the bill home page records that the second reading was agreed, that consideration in detail agreed 15 government amendments and 8 crossbench amendments, and that the third reading was agreed. Status remains proposed: the register has no separate before-Parliament status, and the bill is not an Act. The same page's Status field still reads \"Before Reps\" and it shows no Senate progress table. The page records referral on 15 October 2026 to the Senate Environment and Communications Legislation Committee, with a report due on 20 November 2026. That reporting date is stored as scheduled_review because the register has no committee-report date type. It is the committee's reporting date, not a statutory review of an Act. Divisions listed on the bill home page for 28 October 2026 include the question that the amendments moved by Ms Chaney be agreed to. The sheet linked from that page (Kate Chaney MP, https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22legislation/amend/r7553_amend_94de72af-fd1a-4779-b6c7-c0230408dc0f%22) proposes inserting paragraph 25E(1)(da), \"material or conduct that simulates emotional intimacy and encourages or fosters a child's dependence on it in place of human relationships\". The third-reading PDF was not readable in this capture, so that sentence is the circulated sheet, not a quotation from the text as agreed. As described in the approved 11–17 October 2026 signal, the bill covers services that generate material using AI (s 25B(1)(h)), requires yearly risk assessments, and in Schedule 3 would repeal the online-safety industry codes and standards 12 months after Royal Assent. Those codes remain in force on esafety-genai-industry-codes. An exposure draft was released for targeted consultation on 8 September 2026 (Minister for Communications, https://minister.infrastructure.gov.au/wells/media-release/my-feed-my-way). The Minister announced introduction on 15 October 2026 (https://minister.infrastructure.gov.au/wells/media-release/digital-duty-care-next-step-australias-world-leading-reforms). The department's page is https://www.infrastructure.gov.au/media-communications/internet/online-safety/digital-duty-care.",
+    "aiSummary": "Proposed Online Safety Amendment (Digital Duty of Care) Bill 2026. The House agreed to the third reading on 28 October 2026, with amendments. It is not law. The Senate Environment and Communications Legislation Committee is still due to report on 20 November 2026.",
     "tags": [
       "digital duty of care",
       "online safety",
@@ -9874,38 +9874,38 @@
       "ai-governance"
     ],
     "createdAt": "2026-10-17T09:00:00.000Z",
-    "updatedAt": "2026-10-22T07:41:32.742Z",
+    "updatedAt": "2026-10-31T05:30:59.397Z",
     "verification": {
       "status": "verified",
       "source": {
         "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
         "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
         "title": "Online Safety Amendment (Digital Duty of Care) Bill 2026 – Parliament of Australia",
-        "retrievedAt": "2026-10-22T05:57:12.034Z",
+        "retrievedAt": "2026-10-29T21:08:00.000Z",
         "contentType": "text/html",
-        "contentHash": "ee4cd1fa2283818ac255e27ec0cd8b39eec6667da7c614d7138b8b85be232612",
+        "contentHash": "2c49db754908b887b195cdd73fdd5f5e63fc3e726e4ced732cfdebb4694ce63d",
         "linkedDocuments": [],
         "browserCapture": {
           "method": "browser",
-          "capturedAt": "2026-10-22T05:57:12.034Z",
-          "capturedBy": "Claude (agent)",
-          "requestedBy": "Daniel Alkurdi",
-          "notes": "Headless Chromium capture of the APH bill home page for r7553 with the Policai collector identity; APH refuses plain HTTP clients. Staged by Claude (agent) for Daniel Alkurdi as a re-verification of the hidden draft.",
-          "pageContentHash": "3bd30c6d8e60fe4dbda1daf776c976b0bab1990120cea1c801fc3cfbf3b272bf",
-          "characterCount": 4768
+          "capturedAt": "2026-10-29T21:08:00.000Z",
+          "capturedBy": "Cursor agent",
+          "requestedBy": "Policai Signal",
+          "notes": "Headless Chrome capture of the APH bill home page for r7553 with the Policai collector identity; APH refuses plain HTTP clients. Staged for Daniel Alkurdi. The progress table shows third reading agreed on 28 Oct 2026, with amendment details \"15 Government and 8 Crossbench agreed to\".",
+          "pageContentHash": "7b009f86251b5a8e3bb204ce7cbc5183c53cce698949c6abc92812288cd288da",
+          "characterCount": 6528
         },
         "reviewedDate": {
           "date": "2026-10-15",
           "precision": "day",
-          "reviewedAt": "2026-10-22T07:41:32.742Z",
+          "reviewedAt": "2026-10-31T05:30:59.397Z",
           "reviewedBy": "Daniel Alkurdi",
-          "notes": "The captured bill home page shows \"Introduced and read a first time 15 Oct 2026\" in the House of Representatives, and a note \"Referred to Committee (15/10/2026): Senate Environment and Communications Legislation Committee; Report due 20/11/2026\"."
+          "notes": "The bill home page shows the bill introduced and read a first time in the House of Representatives on 15 Oct 2026; the record's published date is the introduction day."
         }
       },
-      "checkedAt": "2026-10-22T07:41:32.742Z",
+      "checkedAt": "2026-10-31T05:30:59.397Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd7Rr5zTM5redgLaFizPo3awj (proposal d0bd5125). Proposed by Claude (agent), at the request of Daniel Alkurdi. Re-verification of the hidden draft with a fresh APH capture; lifecycle events re-read with parseAphProgress."
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal fc68e583). Proposed by Claude (agent). Prepared for Daniel Alkurdi after #581 merged."
     },
     "legislative": {
       "kind": "bill",
@@ -9940,10 +9940,23 @@
             "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
             "title": "Bill home page"
           }
+        },
+        {
+          "date": "2026-10-28",
+          "precision": "day",
+          "event": {
+            "kind": "passed",
+            "chamber": "lower",
+            "withAmendments": true
+          },
+          "source": {
+            "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+            "title": "Bill home page"
+          }
         }
       ]
     },
-    "lastReviewedAt": "2026-10-22T07:41:32.742Z"
+    "lastReviewedAt": "2026-10-31T05:30:59.397Z"
   },
   {
     "id": "asd-ai-considerations-within-the-essentials-2026",
