@@ -1,0 +1,13 @@
+[
+  {
+    "subject": "source-review:source-review-ddoc-house-2026-10-28:fc68e5831b6f62d4f1233158131e38c5620ebcc32bd4e5a94c96114c1c2c18b9",
+    "receivedAt": "2026-10-31T05:29:54.755Z",
+    "response": {
+      "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+      "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+      "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiZVNxaXIwelFvQi0yclM4a090NWJQeXlCRmZXR2hYTDV1MVpfbkFSUmh1WSIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+      "signature": "MEYCIQD-E_7-1aF7lb3nI7GpyiuJQL6vRr00HSGXOwzP1kOX3AIhALCNJjGAmtyfd2v1iyQaR1nuyH-ZgsYWZUkQszHGCTyE",
+      "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+    }
+  }
+]
