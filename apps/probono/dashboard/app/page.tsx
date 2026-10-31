@@ -188,7 +188,6 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Rad
             <div className="empty-state">
               <p className="section-title">Nothing matches</p>
               <p>{isResearch ? 'Try fewer filters or a broader search.' : 'No signals have been collected yet.'}</p>
-              {isResearch ? <Link className="button-primary" href="/#radar-feed">Clear search and filters <ArrowRight /></Link> : null}
             </div>
           ) : null}
 
