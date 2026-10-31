@@ -1676,10 +1676,10 @@
   {
     "id": "nsw-nesa-stage-6-take-home-assessment-ai-rules",
     "title": "NESA Stage 6 take-home assessment and generative AI rules",
-    "description": "Forthcoming ACE Rule changes cap take-home assessment in each Preliminary and HSC course at one task weighted no more than 15%, require marks to reflect students’ own work rather than generative-AI use, and direct schools not to rely primarily on AI-detection software.",
+    "description": "ACE Rules cap take-home assessment in each Preliminary and HSC course at one task weighted no more than 15%, except in exempt courses, require marks to reflect students’ own work rather than generative-AI use, and require schools not to rely on software tools that detect generative AI when determining malpractice.",
     "jurisdiction": "nsw",
     "type": "standard",
-    "status": "proposed",
+    "status": "active",
     "effectiveDate": "2026-08-31",
     "dates": [
       {
@@ -1690,11 +1690,11 @@
         "source": {
           "url": "https://www.nsw.gov.au/education-and-training/nesa/news/all/new-take-home-assessment-rules",
           "finalUrl": "https://www.nsw.gov.au/education-and-training/nesa/news/all/new-take-home-assessment-rules",
-          "retrievedAt": "2026-09-09T23:41:05.638Z",
+          "retrievedAt": "2026-10-31T23:44:55.590Z",
           "contentType": "text/html",
-          "contentHash": "8fd22712fb09af7b8dea60268b02e213eff593e8bf51ab4435db789f0f6ed5a2",
-          "etag": "\"1788996408\"",
-          "lastModified": "Wed, 09 Sep 2026 23:26:48 GMT",
+          "contentHash": "fae8545d8ca4d6d2681af71387d214a2424fab03d56b764a306744331094a61a",
+          "etag": "\"1793433017\"",
+          "lastModified": "Sat, 31 Oct 2026 07:50:17 GMT",
           "title": "New limit on take-home assessment tasks from Term 4 2026",
           "publishedAt": "2026-08-31",
           "publishedAtPrecision": "day"
@@ -1705,8 +1705,8 @@
       "NSW Education Standards Authority"
     ],
     "sourceUrl": "https://www.nsw.gov.au/education-and-training/nesa/news/all/new-take-home-assessment-rules",
-    "content": "NESA announced forthcoming ACE Rule changes for Stage 6 assessment. Each Preliminary and HSC course may have no more than one take-home assessment task, weighted at no more than 15%. Schools must design formal tasks so marks reflect students’ own knowledge, skills and understanding rather than generative-AI use. Schools should not use AI-detection tools as the main safeguard against malpractice. The limit starts in Term 4 2026 for HSC courses and Term 1 2027 for Preliminary courses. NESA had not stated exact day-level commencement dates when this record was reviewed.",
-    "aiSummary": "Proposed NESA assessment rules limit take-home tasks and set safeguards for generative AI in Stage 6 assessment.",
+    "content": "NESA announced the changes on 31 August 2026 and has written them into the ACE Rules. The pages for Rule 2.1 (formal assessment programs and tasks) and Rule 10.1 (breaches and malpractice) show \"Last updated: 15 September 2026\" and change notices dated 16 September 2026. Under Rule 2.1, for each HSC course schools \"must not exceed one take-home assessment task, worth a maximum of 15%\", except for exempt courses with major projects or HSC practical exams, and the same limit applies to each Preliminary course, except for courses that are a prerequisite for an exempt HSC course. Schools must design formal tasks so marks reflect students’ own work and not their use of generative AI, and teachers must award marks based on evidence of the student’s own knowledge, skills and understanding, \"and not the use of generative artificial intelligence\". Rule 10.1 requires schools to \"not rely on software tools for the detection of generative artificial intelligence\" when determining whether malpractice has occurred. NESA’s notice says the limit starts from Term 4, 2026 for HSC courses and Term 1, 2027 for Preliminary courses. NESA had not stated exact day-level commencement dates when this record was reviewed.",
+    "aiSummary": "NESA’s ACE Rules limit take-home tasks and set safeguards for generative AI in Stage 6 assessment.",
     "tags": [
       "NSW",
       "education",
@@ -1719,26 +1719,26 @@
       "generative-ai"
     ],
     "createdAt": "2026-09-09T23:26:21.926Z",
-    "updatedAt": "2026-09-09T23:41:05.648Z",
-    "lastReviewedAt": "2026-09-09T23:41:05.648Z",
+    "updatedAt": "2026-10-31T23:44:55.599Z",
+    "lastReviewedAt": "2026-10-31T23:44:55.599Z",
     "verification": {
       "status": "verified",
       "source": {
         "url": "https://www.nsw.gov.au/education-and-training/nesa/news/all/new-take-home-assessment-rules",
         "finalUrl": "https://www.nsw.gov.au/education-and-training/nesa/news/all/new-take-home-assessment-rules",
-        "retrievedAt": "2026-09-09T23:41:05.638Z",
+        "retrievedAt": "2026-10-31T23:44:55.590Z",
         "contentType": "text/html",
-        "contentHash": "8fd22712fb09af7b8dea60268b02e213eff593e8bf51ab4435db789f0f6ed5a2",
-        "etag": "\"1788996408\"",
-        "lastModified": "Wed, 09 Sep 2026 23:26:48 GMT",
+        "contentHash": "fae8545d8ca4d6d2681af71387d214a2424fab03d56b764a306744331094a61a",
+        "etag": "\"1793433017\"",
+        "lastModified": "Sat, 31 Oct 2026 07:50:17 GMT",
         "title": "New limit on take-home assessment tasks from Term 4 2026",
         "publishedAt": "2026-08-31",
         "publishedAtPrecision": "day"
       },
-      "checkedAt": "2026-09-09T23:41:05.648Z",
+      "checkedAt": "2026-10-31T23:44:55.599Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved as a proposed standard based on NESA notice 29/26. The record preserves the notice publication date and states the Term 4 2026 and Term 1 2027 commencement windows in content without inventing day precision."
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal ca7d74e7). Proposed by local-mcp-admin."
     }
   },
   {
