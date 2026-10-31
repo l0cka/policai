@@ -3,6 +3,7 @@ import {
   APPROVAL_MAILBOX_PATH,
   type EditorApproval,
 } from '@/lib/editor-approval';
+import { COLLECTOR_USER_AGENT } from '@/lib/pipeline/identity';
 
 type Env = Readonly<Record<string, string | undefined>>;
 
@@ -45,6 +46,8 @@ export async function appendToApprovalMailbox(
         Authorization: `Bearer ${token}`,
         'X-GitHub-Api-Version': '2022-11-28',
         'Content-Type': 'application/json',
+        // GitHub refuses requests without one (403), and Workers fetch sends none.
+        'User-Agent': COLLECTOR_USER_AGENT,
       },
     });
   }
@@ -65,7 +68,9 @@ export async function appendToApprovalMailbox(
       }
       return { approvals: [] };
     }
-    if (!response.ok) throw new Error(`reading the mailbox failed (${response.status})`);
+    if (!response.ok) {
+      throw new Error(`reading the mailbox failed (${response.status}): ${(await response.text()).slice(0, 200)}`);
+    }
     const file = (await response.json()) as GhContents;
     return {
       approvals: JSON.parse(Buffer.from(file.content, 'base64').toString('utf8')) as EditorApproval[],
@@ -94,7 +99,7 @@ export async function appendToApprovalMailbox(
         return { ok: true, commitSha: commit.sha };
       }
       if (written.status !== 409 && written.status !== 422) {
-        throw new Error(`writing the mailbox failed (${written.status})`);
+        throw new Error(`writing the mailbox failed (${written.status}): ${(await written.text()).slice(0, 200)}`);
       }
     }
     return { ok: false, status: 409, code: 'mailbox_busy', error: 'The mailbox changed twice while writing; approve again' };

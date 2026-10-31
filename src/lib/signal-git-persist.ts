@@ -1,5 +1,6 @@
 import type { SignalHttpAction } from "@/lib/signal-http";
 import type { DataOverlayChange } from "@/lib/data-overlay";
+import { COLLECTOR_USER_AGENT } from "@/lib/pipeline/identity";
 
 export type SignalCommitTarget = "pr" | "main";
 
@@ -151,6 +152,7 @@ export async function openSignalSnapshot(
 				Authorization: `Bearer ${token}`,
 				"X-GitHub-Api-Version": "2022-11-28",
 				"Content-Type": "application/json",
+				"User-Agent": COLLECTOR_USER_AGENT,
 			},
 		});
 		const text = await response.text();
