@@ -9,7 +9,6 @@
  *   npm run collector:proposals -- --sync-issues   # one open GitHub issue per proposal
  */
 
-import { execFileSync } from 'child_process';
 import { getCollectionMeta, getSourceHealth } from '../src/lib/data-service';
 import {
   manualMoveProposals,
@@ -18,6 +17,7 @@ import {
   proposalIssueChanges,
   type UnreachedSource,
 } from '../src/lib/pipeline/source-health';
+import { COLLECTOR_USER_AGENT } from '../src/lib/pipeline/identity';
 import { getAutomaticSources, getSourceById } from '../src/lib/pipeline/sources';
 
 const LABEL = 'collector-proposal';
@@ -39,8 +39,36 @@ function issueBody(proposal: UnreachedSource, lastError: string | undefined): st
   ].join('\n');
 }
 
-function gh(args: string[]): string {
-  return execFileSync('gh', args, { encoding: 'utf8' });
+// Calls the REST API directly rather than the gh CLI, which the self-hosted
+// runners do not have.
+async function github<T>(method: string, pathname: string, body?: unknown): Promise<T> {
+  const token = process.env.GH_TOKEN ?? process.env.GITHUB_TOKEN;
+  const repo = process.env.GH_REPO ?? process.env.GITHUB_REPOSITORY;
+  if (!token || !repo) throw new Error('--sync-issues needs GH_TOKEN and GH_REPO');
+  const response = await fetch(`https://api.github.com/repos/${repo}${pathname}`, {
+    method,
+    headers: {
+      Accept: 'application/vnd.github+json',
+      Authorization: `Bearer ${token}`,
+      'X-GitHub-Api-Version': '2022-11-28',
+      'Content-Type': 'application/json',
+      'User-Agent': COLLECTOR_USER_AGENT,
+    },
+    body: body === undefined ? undefined : JSON.stringify(body),
+  });
+  if (!response.ok) {
+    throw new Error(`${method} ${pathname} failed (${response.status}): ${(await response.text()).slice(0, 200)}`);
+  }
+  return (await response.json()) as T;
+}
+
+async function ensureLabel() {
+  const label = { color: 'd93f0b', description: 'Collector proposes moving a source to manual' };
+  try {
+    await github('PATCH', `/labels/${LABEL}`, label);
+  } catch {
+    await github('POST', '/labels', { name: LABEL, ...label });
+  }
 }
 
 async function main() {
@@ -63,23 +91,27 @@ async function main() {
   }
   if (!process.argv.includes('--sync-issues')) return;
 
-  gh(['label', 'create', LABEL, '--force', '--color', 'd93f0b', '--description', 'Collector proposes moving a source to manual']);
-  const openIssues = JSON.parse(
-    gh(['issue', 'list', '--label', LABEL, '--state', 'open', '--limit', '200', '--json', 'number,title']),
-  ) as { number: number; title: string }[];
+  await ensureLabel();
+  const openIssues = (
+    await github<{ number: number; title: string; pull_request?: unknown }[]>(
+      'GET',
+      `/issues?labels=${LABEL}&state=open&per_page=100`,
+    )
+  ).filter((issue) => !issue.pull_request);
   const changes = proposalIssueChanges(proposals, openIssues);
   for (const proposal of changes.open) {
-    const url = gh([
-      'issue', 'create',
-      '--label', LABEL,
-      '--title', manualProposalTitle(proposal.sourceId),
-      '--body', issueBody(proposal, lastErrors.get(proposal.sourceId)),
-    ]).trim();
-    console.log(`Opened ${url}`);
+    const issue = await github<{ html_url: string }>('POST', '/issues', {
+      labels: [LABEL],
+      title: manualProposalTitle(proposal.sourceId),
+      body: issueBody(proposal, lastErrors.get(proposal.sourceId)),
+    });
+    console.log(`Opened ${issue.html_url}`);
   }
   for (const number of changes.close) {
-    gh(['issue', 'close', String(number), '--reason', 'not planned', '--comment',
-      'The source succeeded again or is no longer automatic, so this proposal no longer applies.']);
+    await github('POST', `/issues/${number}/comments`, {
+      body: 'The source succeeded again or is no longer automatic, so this proposal no longer applies.',
+    });
+    await github('PATCH', `/issues/${number}`, { state: 'closed', state_reason: 'not_planned' });
     console.log(`Closed #${number}`);
   }
 }
