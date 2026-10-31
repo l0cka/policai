@@ -2,9 +2,9 @@
   {
     "id": "source-review-ddoc-house-timeline-2026-10-28",
     "sourceUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22legislation%2Fbillhome%2Fr7553%22",
-    "title": "ParlInfo - Online Safety Amendment (Digital Duty of Care) Bill 2026",
+    "title": "Online Safety Amendment (Digital Duty of Care) Bill 2026 passed the House",
     "entryKind": "timeline_event",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-10-31T01:06:43.037Z",
     "createdBy": "Claude (agent)",
     "notes": "New timeline milestone for the House third reading on 28 October 2026. The stage is taken from the APH bill home page (https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553). This ParlInfo URL is the bill-home permalink on that page, used so the event does not share the register record's source URL. Not published until Daniel Alkurdi approves.",
@@ -33,6 +33,13 @@
         "notes": "Headless Chromium capture of the ParlInfo bill home for r7553 with the Policai collector identity; ParlInfo refuses plain HTTP clients. Staged by Claude (agent) for Daniel Alkurdi.",
         "pageContentHash": "c7f2b69a821ed0db6fa3d95de1dc7dd89a548de985a7553096b7b1b6b58a418b",
         "characterCount": 3480
+      },
+      "reviewedDate": {
+        "date": "2026-10-28",
+        "precision": "day",
+        "reviewedAt": "2026-10-31T05:30:44.031Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The captured ParlInfo bill home shows \"Third reading agreed to 28/10/26\" in the House of Representatives, with amendment details \"15 Government and 8 Crossbench agreed to\"."
       }
     },
     "proposedRecord": {
@@ -44,9 +51,41 @@
       "type": "milestone",
       "jurisdiction": "federal",
       "relatedPolicyId": "federal-online-safety-amendment-digital-duty-of-care-bill-2026",
-      "sourceUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22legislation%2Fbillhome%2Fr7553%22"
+      "sourceUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22legislation%2Fbillhome%2Fr7553%22",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22legislation%2Fbillhome%2Fr7553%22",
+          "finalUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22legislation%2Fbillhome%2Fr7553%22",
+          "title": "ParlInfo - Online Safety Amendment (Digital Duty of Care) Bill 2026",
+          "retrievedAt": "2026-10-31T01:06:42.992Z",
+          "contentType": "text/html",
+          "contentHash": "61209ac5c5aff4485819ca650691d96b1c2c4197fc11d88a56a8975ba1a5d81d",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-31T01:06:42.992Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Headless Chromium capture of the ParlInfo bill home for r7553 with the Policai collector identity; ParlInfo refuses plain HTTP clients. Staged by Claude (agent) for Daniel Alkurdi.",
+            "pageContentHash": "c7f2b69a821ed0db6fa3d95de1dc7dd89a548de985a7553096b7b1b6b58a418b",
+            "characterCount": 3480
+          },
+          "reviewedDate": {
+            "date": "2026-10-28",
+            "precision": "day",
+            "reviewedAt": "2026-10-31T05:30:44.031Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The captured ParlInfo bill home shows \"Third reading agreed to 28/10/26\" in the House of Representatives, with amendment details \"15 Government and 8 Crossbench agreed to\"."
+          }
+        },
+        "checkedAt": "2026-10-31T05:30:44.031Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal e192f588). Proposed by Claude (agent). Prepared for Daniel Alkurdi after #581 merged."
+      }
     },
-    "updatedAt": "2026-10-31T01:15:32.552Z",
+    "updatedAt": "2026-10-31T05:30:44.081Z",
     "proposal": {
       "proposedBy": "Claude (agent)",
       "reviewedDate": {
@@ -56,7 +95,27 @@
       },
       "notes": "Prepared for Daniel Alkurdi after #581 merged.",
       "proposedAt": "2026-10-31T01:15:32.552Z"
-    }
+    },
+    "reviewedAt": "2026-10-31T05:30:44.031Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal e192f588). Proposed by Claude (agent). Prepared for Daniel Alkurdi after #581 merged.",
+    "decision": {
+      "proposalHash": "e192f588413f0ea93c020e016c8876309a28e0fb25f261e39ca857f897ab8e1f",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-10-31T05:30:06.549Z",
+      "approval": {
+        "subject": "source-review:source-review-ddoc-house-timeline-2026-10-28:e192f588413f0ea93c020e016c8876309a28e0fb25f261e39ca857f897ab8e1f",
+        "receivedAt": "2026-10-31T05:30:06.549Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiY0E1aXduSXB6dEFZNkJoOEJsUEpndkZLVEZBSjNRb2QwUjhZYVg1bThCTSIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEUCIDIa42hZOfiKX1odOpAbmxWWN3ugHL0jA3fNFWB9jY3MAiEAstODxNtIKA6X6hIISkOXhC0a_x6_j0HPmOOWiRdYt8o",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      }
+    },
+    "publishedAt": "2026-10-31T05:30:44.059Z"
   },
   {
     "id": "source-review-10e34480-ee6b-4c6c-bdc5-17d652b5f1db",
@@ -27680,7 +27739,7 @@
     "entryKind": "policy",
     "targetPolicyId": "federal-online-safety-amendment-digital-duty-of-care-bill-2026",
     "targetPolicyBaseRevisionHash": "0e905659ceb6567c49cda854a8c338714b83be323159dcdbf4605fb6a5c1ae1d",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-10-29T21:08:00.000Z",
     "createdBy": "cursor-agent",
     "notes": "House third reading on 28 October 2026, read from the APH bill home page (headless Chrome; plain HTTP is 403). Progress: second reading agreed 28 Oct 2026; consideration in detail the same day with \"Amendment details: 15 Government and 8 Crossbench agreed to\"; third reading agreed to the same day. The page Status field still reads \"Before Reps\" and there is no Senate table. Committee note unchanged: Senate Environment and Communications Legislation Committee, report due 20/11/2026. Divisions for 28 October 2026 include the question that the amendments moved by Ms Chaney be agreed to. Her sheet, linked from the bill page, proposes new paragraph 25E(1)(da) on material or conduct that simulates emotional intimacy and fosters a child's dependence on it in place of human relationships. The third-reading PDF returned 403, so that wording is not recorded as text of the bill as passed. News wording such as \"attachment hacking\" is not on the bill page or the sheet. This review withholds the verified record until Daniel Alkurdi approves. It does not stamp lastReviewedAt.",
@@ -27718,6 +27777,13 @@
         "notes": "Headless Chrome capture of the APH bill home page for r7553 with the Policai collector identity; APH refuses plain HTTP clients. Staged for Daniel Alkurdi. The progress table shows third reading agreed on 28 Oct 2026, with amendment details \"15 Government and 8 Crossbench agreed to\".",
         "pageContentHash": "7b009f86251b5a8e3bb204ce7cbc5183c53cce698949c6abc92812288cd288da",
         "characterCount": 6528
+      },
+      "reviewedDate": {
+        "date": "2026-10-15",
+        "precision": "day",
+        "reviewedAt": "2026-10-31T05:30:43.928Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The bill home page shows the bill introduced and read a first time in the House of Representatives on 15 Oct 2026; the record's published date is the introduction day."
       }
     },
     "proposedRecord": {
@@ -27738,25 +27804,25 @@
             "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
             "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
             "title": "Online Safety Amendment (Digital Duty of Care) Bill 2026 – Parliament of Australia",
-            "retrievedAt": "2026-10-22T05:57:12.034Z",
+            "retrievedAt": "2026-10-29T21:08:00.000Z",
             "contentType": "text/html",
-            "contentHash": "ee4cd1fa2283818ac255e27ec0cd8b39eec6667da7c614d7138b8b85be232612",
+            "contentHash": "2c49db754908b887b195cdd73fdd5f5e63fc3e726e4ced732cfdebb4694ce63d",
             "linkedDocuments": [],
             "browserCapture": {
               "method": "browser",
-              "capturedAt": "2026-10-22T05:57:12.034Z",
-              "capturedBy": "Claude (agent)",
-              "requestedBy": "Daniel Alkurdi",
-              "notes": "Headless Chromium capture of the APH bill home page for r7553 with the Policai collector identity; APH refuses plain HTTP clients. Staged by Claude (agent) for Daniel Alkurdi as a re-verification of the hidden draft.",
-              "pageContentHash": "3bd30c6d8e60fe4dbda1daf776c976b0bab1990120cea1c801fc3cfbf3b272bf",
-              "characterCount": 4768
+              "capturedAt": "2026-10-29T21:08:00.000Z",
+              "capturedBy": "Cursor agent",
+              "requestedBy": "Policai Signal",
+              "notes": "Headless Chrome capture of the APH bill home page for r7553 with the Policai collector identity; APH refuses plain HTTP clients. Staged for Daniel Alkurdi. The progress table shows third reading agreed on 28 Oct 2026, with amendment details \"15 Government and 8 Crossbench agreed to\".",
+              "pageContentHash": "7b009f86251b5a8e3bb204ce7cbc5183c53cce698949c6abc92812288cd288da",
+              "characterCount": 6528
             },
             "reviewedDate": {
               "date": "2026-10-15",
               "precision": "day",
-              "reviewedAt": "2026-10-22T07:41:32.742Z",
+              "reviewedAt": "2026-10-31T05:30:43.928Z",
               "reviewedBy": "Daniel Alkurdi",
-              "notes": "The captured bill home page shows \"Introduced and read a first time 15 Oct 2026\" in the House of Representatives, and a note \"Referred to Committee (15/10/2026): Senate Environment and Communications Legislation Committee; Report due 20/11/2026\"."
+              "notes": "The bill home page shows the bill introduced and read a first time in the House of Representatives on 15 Oct 2026; the record's published date is the introduction day."
             }
           }
         },
@@ -27812,7 +27878,7 @@
         "ai-governance"
       ],
       "createdAt": "2026-10-17T09:00:00.000Z",
-      "updatedAt": "2026-10-29T21:08:00.000Z",
+      "updatedAt": "2026-10-31T05:30:43.928Z",
       "legislative": {
         "kind": "bill",
         "ref": {
@@ -27861,9 +27927,42 @@
             }
           }
         ]
+      },
+      "lastReviewedAt": "2026-10-31T05:30:43.928Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+          "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+          "title": "Online Safety Amendment (Digital Duty of Care) Bill 2026 – Parliament of Australia",
+          "retrievedAt": "2026-10-29T21:08:00.000Z",
+          "contentType": "text/html",
+          "contentHash": "2c49db754908b887b195cdd73fdd5f5e63fc3e726e4ced732cfdebb4694ce63d",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-10-29T21:08:00.000Z",
+            "capturedBy": "Cursor agent",
+            "requestedBy": "Policai Signal",
+            "notes": "Headless Chrome capture of the APH bill home page for r7553 with the Policai collector identity; APH refuses plain HTTP clients. Staged for Daniel Alkurdi. The progress table shows third reading agreed on 28 Oct 2026, with amendment details \"15 Government and 8 Crossbench agreed to\".",
+            "pageContentHash": "7b009f86251b5a8e3bb204ce7cbc5183c53cce698949c6abc92812288cd288da",
+            "characterCount": 6528
+          },
+          "reviewedDate": {
+            "date": "2026-10-15",
+            "precision": "day",
+            "reviewedAt": "2026-10-31T05:30:43.928Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The bill home page shows the bill introduced and read a first time in the House of Representatives on 15 Oct 2026; the record's published date is the introduction day."
+          }
+        },
+        "checkedAt": "2026-10-31T05:30:43.928Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal fc68e583). Proposed by Claude (agent). Prepared for Daniel Alkurdi after #581 merged."
       }
     },
-    "updatedAt": "2026-10-31T01:15:32.382Z",
+    "updatedAt": "2026-10-31T05:30:43.972Z",
     "proposal": {
       "proposedBy": "Claude (agent)",
       "reviewedDate": {
@@ -27873,6 +27972,27 @@
       },
       "notes": "Prepared for Daniel Alkurdi after #581 merged.",
       "proposedAt": "2026-10-31T01:15:32.382Z"
-    }
+    },
+    "targetPolicyRevisionHash": "0e905659ceb6567c49cda854a8c338714b83be323159dcdbf4605fb6a5c1ae1d",
+    "reviewedAt": "2026-10-31T05:30:43.928Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal fc68e583). Proposed by Claude (agent). Prepared for Daniel Alkurdi after #581 merged.",
+    "decision": {
+      "proposalHash": "fc68e5831b6f62d4f1233158131e38c5620ebcc32bd4e5a94c96114c1c2c18b9",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-10-31T05:29:54.755Z",
+      "approval": {
+        "subject": "source-review:source-review-ddoc-house-2026-10-28:fc68e5831b6f62d4f1233158131e38c5620ebcc32bd4e5a94c96114c1c2c18b9",
+        "receivedAt": "2026-10-31T05:29:54.755Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiZVNxaXIwelFvQi0yclM4a090NWJQeXlCRmZXR2hYTDV1MVpfbkFSUmh1WSIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEYCIQD-E_7-1aF7lb3nI7GpyiuJQL6vRr00HSGXOwzP1kOX3AIhALCNJjGAmtyfd2v1iyQaR1nuyH-ZgsYWZUkQszHGCTyE",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      }
+    },
+    "publishedAt": "2026-10-31T05:30:43.965Z"
   }
 ]
