@@ -1808,7 +1808,7 @@
     "updatedAt": "2026-09-09T23:40:47.928Z",
     "lastReviewedAt": "2026-09-09T23:40:47.928Z",
     "verification": {
-      "status": "verified",
+      "status": "stale",
       "source": {
         "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-strategy-and-operational-policy/nsw-ai-operational-policy",
         "finalUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-strategy-and-operational-policy/nsw-ai-operational-policy",
@@ -1840,7 +1840,8 @@
       "checkedAt": "2026-09-09T23:40:47.928Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved from the dedicated NSW AI Operational Policy page and linked final version 1.1 PDF. This is the mandatory all-of-government instrument; the general Digital NSW AI landing page is not a policy instrument."
+      "notes": "Approved from the dedicated NSW AI Operational Policy page and linked final version 1.1 PDF. This is the mandatory all-of-government instrument; the general Digital NSW AI landing page is not a policy instrument. Source content changed during register audit at 2026-11-01T09:48:59.880Z; editorial re-verification is required.",
+      "lastSourceAuditAt": "2026-11-01T09:48:59.880Z"
     }
   },
   {
@@ -1908,7 +1909,7 @@
       "source": {
         "url": "https://download.asic.gov.au/media/imunrchk/asic-and-apra-resilience-at-frontier-ai-speed-roundatable.pdf",
         "finalUrl": "https://download.asic.gov.au/media/imunrchk/asic-and-apra-resilience-at-frontier-ai-speed-roundatable.pdf",
-        "retrievedAt": "2026-09-09T23:40:21.560Z",
+        "retrievedAt": "2026-11-01T09:48:59.823Z",
         "contentType": "application/pdf",
         "contentHash": "9b8658e9da9dbd16cf52e92b1f8765ec1783a2f3046f812e11032594b25b4bd7",
         "etag": "\"0921f24389ac15ba1914d37c1f53b7fb\"",
@@ -1925,7 +1926,8 @@
       "checkedAt": "2026-09-09T23:40:21.561Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved as the joint APRA–ASIC information paper, not the media release that announced it. The paper states supervisory expectations and practical preparedness measures for frontier-AI-related cyber, technology and operational risks."
+      "notes": "Approved as the joint APRA–ASIC information paper, not the media release that announced it. The paper states supervisory expectations and practical preparedness measures for frontier-AI-related cyber, technology and operational risks.",
+      "lastSourceAuditAt": "2026-11-01T09:48:59.823Z"
     }
   },
   {

@@ -167,6 +167,21 @@
         "approvedAt": "2026-10-29T22:21:30.000Z",
         "attestationUrl": "https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd732MXt4YZwrggLjJxEWv7xC&decision=cmsg_019nKBbCzGtpRmfKqX3Xisd7HsQf2TuNgBbZbb2HWX2FMp"
       }
+    },
+    {
+      "id": "2026-11-01-1",
+      "proposedAt": "2026-11-01T09:48:59.544Z",
+      "proposedBy": "Claude (agent)",
+      "entries": [
+        {
+          "policyId": "asic-apra-resilience-at-frontier-ai-speed-2026",
+          "title": "Resilience at Frontier AI Speed: Insights from the APRA-ASIC Industry Roundtables",
+          "verifiedAt": "2026-09-09T23:40:21.561Z",
+          "verifiedBy": "Daniel Alkurdi",
+          "contentHash": "9b8658e9da9dbd16cf52e92b1f8765ec1783a2f3046f812e11032594b25b4bd7",
+          "auditedAt": "2026-11-01T09:48:59.823Z"
+        }
+      ]
     }
   ]
 }
