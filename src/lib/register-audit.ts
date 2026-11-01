@@ -363,27 +363,23 @@ export function applyRegisterAuditEvidence(
 
     if (!result.currentEvidence) return policy;
 
-    const observedSource = {
-      ...policy.verification.source,
-      ...result.currentEvidence,
-      url: policy.sourceUrl,
-    };
+    // The stored source is the evidence for the version the editor reviewed;
+    // an unchanged audit leaves it alone and records only when it checked.
     if (result.status === 'unchanged') {
       return {
         ...policy,
         verification: {
           ...policy.verification,
-          source:
-            result.comparisonBasis === 'linked_documents'
-              ? policy.verification.source
-              : {
-                  ...observedSource,
-                  contentHash: policy.verification.source.contentHash,
-                },
           lastSourceAuditAt: result.checkedAt,
         },
       };
     }
+
+    const observedSource = {
+      ...policy.verification.source,
+      ...result.currentEvidence,
+      url: policy.sourceUrl,
+    };
 
     const changeNote =
       result.status === 'baseline_missing'

@@ -61,6 +61,44 @@ describe('register audit', () => {
     expect(validatePolicies(updated).errors).toEqual([]);
   });
 
+  it('keeps the reviewed evidence of a record with a reviewed date when its source is unchanged', async () => {
+    const base = buildPolicy();
+    const policy = buildPolicy({
+      verification: {
+        ...base.verification,
+        source: {
+          ...base.verification.source,
+          retrievedAt: '2026-07-15T00:00:00.000Z',
+          reviewedDate: {
+            date: '2026-07-01',
+            precision: 'month',
+            reviewedAt: '2026-07-15T00:00:01.000Z',
+            reviewedBy: 'Daniel Alkurdi',
+            notes: 'The paper states July 2026 and gives no day-level date.',
+          },
+        },
+      },
+    });
+    const results = await auditRegister([policy], {
+      retrieve: async () => ({
+        body: '<h1>Unchanged policy</h1>',
+        durationMs: 1,
+        evidence: {
+          ...CURRENT_EVIDENCE,
+          retrievedAt: '2026-11-01T00:00:00.000Z',
+          contentHash: policy.verification.source.contentHash,
+        },
+      }),
+      now: () => new Date('2026-11-01T00:00:01.000Z'),
+    });
+
+    expect(results[0]).toMatchObject({ status: 'unchanged' });
+    const updated = applyRegisterAuditEvidence([policy], results);
+    expect(updated[0].verification.source).toEqual(policy.verification.source);
+    expect(updated[0].verification.lastSourceAuditAt).toBe('2026-11-01T00:00:01.000Z');
+    expect(validatePolicies(updated).errors).toEqual([]);
+  });
+
   it('stores a missing baseline but requires editorial re-verification', async () => {
     const policy = buildPolicy({
       verification: {
