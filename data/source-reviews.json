@@ -29239,5 +29239,654 @@
       }
     },
     "publishedAt": "2026-10-31T05:30:43.965Z"
+  },
+  {
+    "id": "source-review-29e10174-82f8-424b-ab3c-b0f16dde013b",
+    "sourceUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+    "title": "WA Government Artificial Intelligence Policy and Assurance Framework",
+    "entryKind": "policy",
+    "targetPolicyId": "wa-ai-policy-assurance-framework",
+    "targetPolicyBaseRevisionHash": "72adcf46c8d74be5447330858bfb305017e872c8581f4d89bcce661085748fa9",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-01T10:58:04.472Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Plain HTTP read of the page and linked policy PDF with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": "framework",
+      "suggestedJurisdiction": "wa",
+      "summary": "Western Australia’s whole-of-government AI policy and assurance framework, first published 5 March 2024 and with the current policy document updated June 2025, requiring AI Accountable Officers and lifecycle self-assessment of AI and automated-decision-making projects.",
+      "tags": [
+        "assurance",
+        "framework",
+        "WA",
+        "risk assessment",
+        "automated decision making",
+        "accountability"
+      ],
+      "agencies": [
+        "Office of Digital Government",
+        "Department of the Premier and Cabinet"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+      "finalUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+      "title": "WA Government Artificial Intelligence Policy and Assurance Framework",
+      "retrievedAt": "2026-11-01T10:50:38.112Z",
+      "contentType": "text/html",
+      "contentHash": "f06764aba978257689f78a3344751fd55bb4734dd8f457d3a927ce6f778e1376",
+      "linkedDocuments": [
+        {
+          "url": "https://www.wa.gov.au/system/files/2025-07/ai_policyv2.pdf",
+          "finalUrl": "https://www.wa.gov.au/system/files/2025-07/ai_policyv2.pdf",
+          "retrievedAt": "2026-11-01T10:50:38.112Z",
+          "contentType": "application/pdf",
+          "contentHash": "f0474b1616dfdc3f14df3ef170096d99682ec423e15fd631aeedcae03aa542b6"
+        }
+      ],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-11-01T10:50:38.112Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "Plain HTTP read of the page and linked policy PDF with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture.",
+        "pageContentHash": "c4c846051a21e2b1ea545b7f6d29496d87d84cc5f75c8c5d98bf6853ec743afd",
+        "characterCount": 13325
+      },
+      "publishedAt": "2024-03-05",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "wa-ai-policy-assurance-framework",
+      "title": "WA Government Artificial Intelligence Policy and Assurance Framework",
+      "description": "Western Australia’s whole-of-government AI policy and assurance framework, first published 5 March 2024 and with the current policy document updated June 2025, requiring AI Accountable Officers and lifecycle self-assessment of AI and automated-decision-making projects.",
+      "jurisdiction": "wa",
+      "type": "framework",
+      "status": "active",
+      "effectiveDate": "2024-03-05",
+      "agencies": [
+        "Office of Digital Government",
+        "Department of the Premier and Cabinet"
+      ],
+      "sourceUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+      "content": "The WA Government Artificial Intelligence Policy and Assurance Framework was first published on 5 March 2024 by the Office of Digital Government. The current policy document states that it was updated in June 2025. Government entities must nominate an AI Accountable Officer and use the AI Assurance Framework self-assessment for any system or project driven by AI or automated decision making, applying it throughout the project lifecycle. The project lead submits the assessment for approval by the entity’s AI Accountable Officer. Assessments must also be submitted to the WA Government AI Advisory Board when residual risk is mid-range or higher, Digital Capability Fund funding applies, or total project cost exceeds $5 million. The Board’s recommendations are non-binding. The official framework page was last updated on 25 August 2026.",
+      "aiSummary": "WA’s AI policy requires accountable officers and lifecycle self-assessment, with specified higher-risk and major projects referred to the AI Advisory Board.",
+      "tags": [
+        "assurance",
+        "framework",
+        "WA",
+        "risk assessment",
+        "automated decision making",
+        "accountability"
+      ],
+      "themes": [
+        "ai-governance",
+        "automated-decisions",
+        "risk-assurance"
+      ],
+      "createdAt": "2026-07-10T00:00:00.000Z",
+      "updatedAt": "2026-11-01T10:58:04.472Z",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2024-03-05",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+            "finalUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+            "title": "WA Government Artificial Intelligence Policy and Assurance Framework",
+            "retrievedAt": "2026-09-09T23:27:30.699Z",
+            "contentType": "text/html",
+            "contentHash": "d3a1cf61f79987a4b84e3dd1814cf66322584932d194b880d81a20734645d58e",
+            "linkedDocuments": [
+              {
+                "url": "https://www.wa.gov.au/system/files/2025-07/ai_policyv2.pdf",
+                "finalUrl": "https://www.wa.gov.au/system/files/2025-07/ai_policyv2.pdf",
+                "retrievedAt": "2026-09-09T23:27:30.699Z",
+                "contentType": "application/pdf",
+                "contentHash": "f0474b1616dfdc3f14df3ef170096d99682ec423e15fd631aeedcae03aa542b6"
+              }
+            ],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-09-09T23:27:30.699Z",
+              "capturedBy": "Daniel Alkurdi",
+              "notes": "Daniel Alkurdi approved this controlled browser capture after reviewing the current official policy page. The hardened retriever was blocked by the host.",
+              "pageContentHash": "45822a32ac5a834887419662c9db20b637d77abae958319c541c18cead84b47e",
+              "characterCount": 5104
+            },
+            "publishedAt": "2024-03-05",
+            "publishedAtPrecision": "day"
+          }
+        },
+        {
+          "type": "amended",
+          "date": "2025-06-01",
+          "precision": "month",
+          "primary": false,
+          "source": {
+            "url": "https://www.wa.gov.au/system/files/2025-07/ai_policyv2.pdf",
+            "finalUrl": "https://www.wa.gov.au/system/files/2025-07/ai_policyv2.pdf",
+            "retrievedAt": "2026-09-09T23:27:30.699Z",
+            "contentType": "application/pdf",
+            "contentHash": "f0474b1616dfdc3f14df3ef170096d99682ec423e15fd631aeedcae03aa542b6",
+            "title": "Artificial Intelligence Policy"
+          }
+        }
+      ]
+    },
+    "updatedAt": "2026-11-01T10:58:04.500Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "reviewedDate": {
+        "date": "2024-03-05",
+        "precision": "day",
+        "notes": "The publication page states \"First published: 5 March 2024\"."
+      },
+      "notes": "Plain HTTP read of the page and linked policy PDF with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture.",
+      "proposedAt": "2026-11-01T10:58:04.500Z"
+    }
+  },
+  {
+    "id": "source-review-0ac56b15-d946-4ce7-b43d-6cc6ac031a23",
+    "sourceUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+    "title": "WA AI Policy and Assurance Framework published",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2024-03-05-wa-ai-policy-and-assurance-framework-published",
+    "targetTimelineRevisionHash": "bac786534792490067cef0f86e3579e65a72a65763be0de0c796ab720d8b9f80",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-01T10:57:48.278Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Plain HTTP read with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "wa",
+      "summary": "Western Australia publishes its whole-of-government AI policy and assurance framework.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+      "finalUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+      "title": "WA Government Artificial Intelligence Policy and Assurance Framework",
+      "retrievedAt": "2026-11-01T10:50:38.112Z",
+      "contentType": "text/html",
+      "contentHash": "e39f3e583ee12bee084c7155eb284e1fe2a0e67b844e9eddd1877bbb26c0addd",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-11-01T10:50:38.112Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "Plain HTTP read with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture.",
+        "pageContentHash": "037368ae740055d2310c871a2ce5d4fc6106d18799c132b18ec726d59d7a6ba8",
+        "characterCount": 13325
+      },
+      "publishedAt": "2024-03-05",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "tl-2024-03-05-wa-ai-policy-and-assurance-framework-published",
+      "date": "2024-03-05",
+      "title": "WA AI Policy and Assurance Framework published",
+      "description": "Western Australia publishes its whole-of-government AI policy and assurance framework.",
+      "type": "policy_introduced",
+      "jurisdiction": "wa",
+      "relatedPolicyId": "wa-ai-policy-assurance-framework",
+      "sourceUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+      "datePrecision": "day"
+    },
+    "updatedAt": "2026-11-01T10:57:48.292Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "proposedRecord": {
+        "id": "tl-2024-03-05-wa-ai-policy-and-assurance-framework-published",
+        "date": "2024-03-05",
+        "title": "WA AI Policy and Assurance Framework published",
+        "description": "Western Australia publishes its whole-of-government AI policy and assurance framework.",
+        "type": "policy_introduced",
+        "jurisdiction": "wa",
+        "relatedPolicyId": "wa-ai-policy-assurance-framework",
+        "sourceUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+        "datePrecision": "day"
+      },
+      "reviewedDate": {
+        "date": "2024-03-05",
+        "precision": "day",
+        "notes": "The publication page states \"First published: 5 March 2024\"."
+      },
+      "notes": "Plain HTTP read with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture.",
+      "proposedAt": "2026-11-01T10:57:48.292Z"
+    }
+  },
+  {
+    "id": "source-review-bde849bd-3867-46c8-86fd-7fc1352dae04",
+    "sourceUrl": "https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-developing-and-training-generative-ai-models",
+    "title": "OAIC publishes twin AI privacy guidance",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2024-10-21-oaic-publishes-twin-ai-privacy-guidance",
+    "targetTimelineRevisionHash": "3208c2c174ee9d916974da4a89a259278baf304630a4bd98b8dd03b356116f87",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-01T10:53:22.424Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Plain HTTP read with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "Guidance on developing and training generative AI models, and on using commercially available AI products.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-developing-and-training-generative-ai-models",
+      "finalUrl": "https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-developing-and-training-generative-ai-models",
+      "title": "Guidance on privacy and developing and training generative AI models | OAIC",
+      "retrievedAt": "2026-11-01T10:49:29.049Z",
+      "contentType": "text/html",
+      "contentHash": "b5e7bc6146d9a011f07e8c0994e4f695af016bca77dde96601fc577093b38485",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-11-01T10:49:29.049Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "Plain HTTP read with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture.",
+        "pageContentHash": "6a84117e3dc468fd237f61bcfa17c590acd40497f5054cd51723b88bef260fd7",
+        "characterCount": 88126
+      },
+      "publishedAt": "2024-10-21",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "tl-2024-10-21-oaic-publishes-twin-ai-privacy-guidance",
+      "date": "2024-10-21",
+      "title": "OAIC publishes AI privacy guidance",
+      "description": "OAIC publishes guidance on privacy and developing and training generative AI models.",
+      "type": "policy_introduced",
+      "jurisdiction": "federal",
+      "relatedPolicyId": "oaic-guidance-developing-training-genai",
+      "sourceUrl": "https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-developing-and-training-generative-ai-models",
+      "datePrecision": "day"
+    },
+    "updatedAt": "2026-11-01T10:53:22.445Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "proposedRecord": {
+        "id": "tl-2024-10-21-oaic-publishes-twin-ai-privacy-guidance",
+        "date": "2024-10-21",
+        "title": "OAIC publishes AI privacy guidance",
+        "description": "OAIC publishes guidance on privacy and developing and training generative AI models.",
+        "type": "policy_introduced",
+        "jurisdiction": "federal",
+        "relatedPolicyId": "oaic-guidance-developing-training-genai",
+        "sourceUrl": "https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-developing-and-training-generative-ai-models",
+        "datePrecision": "day"
+      },
+      "reviewedDate": {
+        "date": "2024-10-21",
+        "precision": "day",
+        "notes": "The guidance page states \"Published:\" then \"21 October 2024\"."
+      },
+      "notes": "Plain HTTP read with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture.",
+      "proposedAt": "2026-11-01T10:53:22.445Z"
+    }
+  },
+  {
+    "id": "source-review-46cda26c-3079-4bf1-8bec-44539d98a3ae",
+    "sourceUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
+    "title": "Artificial intelligence governance policy",
+    "entryKind": "policy",
+    "targetPolicyId": "queensland-ai-governance-policy",
+    "targetPolicyBaseRevisionHash": "a7ccef4a8048c44b24da42291cd3ff97286c6a0255e137671d90f977a5ffa2c1",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-01T10:52:52.890Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Retrieved through the standard declared-identity path.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.65,
+      "suggestedType": "legislation",
+      "suggestedJurisdiction": "qld",
+      "summary": "Artificial intelligence governance policy Subscribe Document type: Policy Version: v2.0.0 Status: CurrentMandated Effective: August 2026–current Security classification: OFFICIAL-Public Category: Artificial intelligence PurposeThis policy ensures agency strategic planning for artificial intelligence (AI) demonstrates a structured and consistent approach when evaluating AI solutions for transparency, accountability, and risk.Policy statementThe Queensland Government plans the lifecycle of AI investments using structured and consistent methods to support agency, cross-agency, government, and…",
+      "tags": [
+        "assurance",
+        "public-sector"
+      ],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
+      "finalUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
+      "retrievedAt": "2026-11-01T10:52:52.822Z",
+      "contentType": "text/html",
+      "contentHash": "f80962af801d5af96b5e8d637271e83df2e9e2ee0309a4dfb8e5d6474cc1fbd2",
+      "title": "Artificial intelligence governance policy - forgov.qld.gov.au"
+    },
+    "proposedRecord": {
+      "id": "queensland-ai-governance-policy",
+      "title": "Artificial intelligence governance policy",
+      "description": "Queensland’s mandated whole-of-government AI governance policy, version 2.0.0, requiring covered agencies to establish AI governance with regard to ISO 38507 and apply FAIRA, FAIRA LITE or an agreed equivalent to assess AI transparency, accountability and risk.",
+      "jurisdiction": "qld",
+      "type": "policy",
+      "status": "active",
+      "effectiveDate": "2026-08-01",
+      "agencies": [
+        "Department of Customer Services, Open Data and Small and Family Business"
+      ],
+      "sourceUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
+      "content": "Queensland’s current QGEA artificial intelligence governance policy is Policy v2.0.0, Current/Mandated and effective from August 2026. It requires covered agencies to establish AI governance arrangements with regard to the current version of ISO 38507. Agencies must align with Australia’s AI Ethics Principles by preparing a Foundational AI Risk Assessment (FAIRA), or an agreed equivalent, as evidence of a structured assessment of transparency, accountability and risk across the AI lifecycle. FAIRA LITE may be used for low-risk use cases, including proofs of concept, trials and exploratory activities. The policy applies to Queensland Government departments and also to specified accountable officers and statutory bodies. The official page was last updated on 26 August 2026.",
+      "aiSummary": "Queensland’s mandated v2.0.0 AI governance policy requires ISO 38507-aligned governance and FAIRA-based lifecycle risk assessment.",
+      "tags": [
+        "Queensland",
+        "AI governance",
+        "QGEA",
+        "FAIRA",
+        "risk assessment",
+        "public sector"
+      ],
+      "themes": [
+        "ai-governance",
+        "public-sector",
+        "risk-assurance"
+      ],
+      "createdAt": "2026-04-06T16:50:00Z",
+      "updatedAt": "2026-11-01T10:52:52.890Z",
+      "dates": [
+        {
+          "type": "effective",
+          "date": "2026-08-01",
+          "precision": "month",
+          "primary": true,
+          "source": {
+            "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
+            "finalUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
+            "title": "Artificial intelligence governance policy | For government | Queensland Government",
+            "retrievedAt": "2026-09-09T23:33:41.619839Z",
+            "contentType": "text/html",
+            "contentHash": "96998680821df71560957914185af04ecd7ba3b7411d7976b392d82a24f3686c",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-09-09T23:33:41.619839Z",
+              "capturedBy": "Daniel Alkurdi",
+              "notes": "Daniel Alkurdi approved this Firecrawl-backed controlled capture after plain HTTP and direct browser rendering were blocked by the official host. The current official page was reviewed for version, status, effective month and policy requirements.",
+              "pageContentHash": "d419eeb33bb8d28872b24ab2b348516c2ec7393fd5bcc4f3c01116264b5e6e78",
+              "characterCount": 7829
+            },
+            "reviewedDate": {
+              "date": "2026-08-01",
+              "precision": "month",
+              "reviewedAt": "2026-09-09T23:40:12.513Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "The official Queensland Government page identifies Policy v2.0.0 as Current/Mandated and effective August 2026–current. Month precision is retained because no day-level effective date is stated."
+            }
+          }
+        }
+      ]
+    },
+    "updatedAt": "2026-11-01T10:57:47.422Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "reviewedDate": {
+        "date": "2026-08-01",
+        "precision": "month",
+        "notes": "The policy page states \"Effective:\" then \"August 2026–current\", with \"Version:\" then \"v2.0.0\" and status \"Current\" and \"Mandated\"."
+      },
+      "notes": "Register full review through the standard declared-identity path.",
+      "proposedAt": "2026-11-01T10:57:47.422Z"
+    }
+  },
+  {
+    "id": "source-review-ce258f93-e282-48b7-b9a1-94584fdcd751",
+    "sourceUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-strategy-and-operational-policy/nsw-ai-operational-policy",
+    "title": "NSW AI Operational Policy",
+    "entryKind": "policy",
+    "targetPolicyId": "nsw-ai-operational-policy",
+    "targetPolicyBaseRevisionHash": "82e22ce8cb94731fa95b0ea588f19ed8ef0af05a6cbba7425c5d3bf2300eaa8f",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-01T10:52:50.930Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Retrieved through the standard declared-identity path.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.65,
+      "suggestedType": "legislation",
+      "suggestedJurisdiction": "nsw",
+      "summary": "[Document 1: NSW AI Operational Policy] NSW AI Operational Policy The NSW AI Operational Policy sets out requirements for the governance and assurance of AI, and the acceptable use of AI by public servants. About the policy The NSW AI Operational Policy is an all-of-government policy that outlines mandatory agency requirements to ensure the safe, lawful and ethical use of AI in the NSW Government.",
+      "tags": [
+        "assurance",
+        "public-sector"
+      ],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-strategy-and-operational-policy/nsw-ai-operational-policy",
+      "finalUrl": "https://digital.nsw.gov.au/policy/artificial-intelligence/ai-strategy-and-operational-policy/nsw-ai-operational-policy",
+      "retrievedAt": "2026-11-01T10:52:50.553Z",
+      "contentType": "text/html",
+      "contentHash": "ab6aac49fdfd29bbe3b7f6a365501c0d79824a7a763344c082fc4ab8cc6d4475",
+      "etag": "\"bcea44f2779288f8883b26eaf6efa676\"",
+      "lastModified": "Sat, 31 Oct 2026 14:18:26 GMT",
+      "linkedDocuments": [
+        {
+          "url": "https://digital.nsw.gov.au/sites/default/files/2026-09/nsw-ai-operational-policy-01092026.pdf",
+          "finalUrl": "https://digital.nsw.gov.au/sites/default/files/2026-09/nsw-ai-operational-policy-01092026.pdf",
+          "retrievedAt": "2026-11-01T10:52:50.632Z",
+          "contentType": "application/pdf",
+          "contentHash": "cbbabcdb27fb987b0fa3541f489c73bd1359f30b4c6c75b9a6a549990cb87160",
+          "etag": "\"61044dcabf9f177f8ce7eed06b686c18\"",
+          "lastModified": "Sat, 31 Oct 2026 16:52:00 GMT"
+        }
+      ],
+      "title": "NSW AI Operational Policy"
+    },
+    "proposedRecord": {
+      "id": "nsw-ai-operational-policy",
+      "title": "NSW AI Operational Policy",
+      "description": "Mandatory all-of-government policy governing AI accountability, assurance and acceptable use by NSW Government agencies and employees, including use-case registration, risk assessment, high-risk review, training and annual compliance attestation.",
+      "jurisdiction": "nsw",
+      "type": "policy",
+      "status": "active",
+      "effectiveDate": "2026-07-30",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-07-30",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-strategy-and-operational-policy/nsw-ai-operational-policy",
+            "finalUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-strategy-and-operational-policy/nsw-ai-operational-policy",
+            "retrievedAt": "2026-09-09T23:40:39.317Z",
+            "contentType": "text/html",
+            "contentHash": "197bf9433a292ca12ef00da62db13cb9c445563b497906c16d8868998cf580dc",
+            "etag": "\"1788996399\"",
+            "lastModified": "Wed, 09 Sep 2026 23:26:39 GMT",
+            "linkedDocuments": [
+              {
+                "url": "https://www.digital.nsw.gov.au/sites/default/files/2026-09/nsw-ai-operational-policy-01092026.pdf",
+                "finalUrl": "https://www.digital.nsw.gov.au/sites/default/files/2026-09/nsw-ai-operational-policy-01092026.pdf",
+                "retrievedAt": "2026-09-09T23:40:47.927Z",
+                "contentType": "application/pdf",
+                "contentHash": "cbbabcdb27fb987b0fa3541f489c73bd1359f30b4c6c75b9a6a549990cb87160",
+                "etag": "\"6a96152f-84676\"",
+                "lastModified": "Mon, 31 Aug 2026 23:58:39 GMT"
+              }
+            ],
+            "title": "NSW AI Operational Policy",
+            "reviewedDate": {
+              "date": "2026-07-30",
+              "precision": "day",
+              "reviewedAt": "2026-09-09T23:40:47.928Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "The official NSW AI Operational Policy and supporting DCS-2026-02 circular identify 30 July 2026 as the first publication and issue date."
+            }
+          }
+        }
+      ],
+      "agencies": [
+        "Digital NSW"
+      ],
+      "sourceUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-strategy-and-operational-policy/nsw-ai-operational-policy",
+      "content": "The NSW AI Operational Policy sets mandatory all-of-government requirements for AI governance, assurance and acceptable use. It replaces the NSW AI Ethics Policy. Agencies must register AI use cases, apply the NSW AI Assessment Framework when the registration process requires it, refer high- and critical-risk uses to the AI Review Committee, provide relevant training, and attest annually to compliance. The policy applies across the NSW Government sector, subject to limited stated scope and law-enforcement exceptions.",
+      "aiSummary": "Mandatory NSW policy for AI accountability, use-case registration, risk assessment, acceptable use and compliance reporting.",
+      "tags": [
+        "NSW",
+        "AI governance",
+        "acceptable use",
+        "AI assurance",
+        "risk assessment",
+        "public sector"
+      ],
+      "themes": [
+        "ai-governance",
+        "public-sector",
+        "risk-assurance"
+      ],
+      "createdAt": "2026-09-09T23:26:21.926Z",
+      "updatedAt": "2026-11-01T10:52:50.930Z"
+    },
+    "updatedAt": "2026-11-01T10:57:46.746Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "reviewedDate": {
+        "date": "2026-07-30",
+        "precision": "day",
+        "notes": "The linked policy PDF, byte-identical to the version verified on 9 September 2026, states \"First published: 30 July 2026.\" and \"Final version 1.1 – 30 July 2026\". The page text changed but stays consistent with the record; only the earlier page hash is stored, so the earlier text cannot be compared."
+      },
+      "notes": "Register full review through the standard declared-identity path.",
+      "proposedAt": "2026-11-01T10:57:46.746Z"
+    }
+  },
+  {
+    "id": "source-review-99fb1852-b6ed-4ffc-80d5-1136d0a5238f",
+    "sourceUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
+    "title": "Victorian Generative AI Guideline Published",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2024-11-27-victorian-generative-ai-guideline-published",
+    "targetTimelineRevisionHash": "79bc464752f753d7eda59b993c2a798a36b89cb288c7d4663f58231e259212c8",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-01T10:52:49.138Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Retrieved through the standard declared-identity path.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.65,
+      "suggestedType": "guideline",
+      "suggestedJurisdiction": "vic",
+      "summary": "[Document 1: Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public ] On this pageIntroductionScopeStatementApplying Australia’s AI Ethics PrinciplesConsequences of non-compliance ImplementationReviewFurther informationDefinitionsDownloadIntroductionThe Victorian Government is committed to digital transformation, innovation and community safety.",
+      "tags": [
+        "generative-ai",
+        "public-sector"
+      ],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
+      "finalUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
+      "retrievedAt": "2026-11-01T10:52:47.863Z",
+      "contentType": "text/html",
+      "contentHash": "b4b980e826f57c655edca52007be924ce36e5c290b92de04715c92bd48230dcf",
+      "linkedDocuments": [
+        {
+          "url": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
+          "finalUrl": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
+          "retrievedAt": "2026-11-01T10:52:48.656Z",
+          "contentType": "application/pdf",
+          "contentHash": "ab6aa1576ba4d7cd255e3ddfe6214c6a873ff0ed079346fbc4c6a17892aa08ee",
+          "etag": "\"2e976-612c9a53ad71b\"",
+          "lastModified": "Sun, 03 Mar 2024 23:05:30 GMT"
+        },
+        {
+          "url": "https://www.vic.gov.au/sites/default/files/2024-11/Generative-AI-Guideline-%281%29.pdf",
+          "finalUrl": "https://www.vic.gov.au/sites/default/files/2024-11/Generative-AI-Guideline-%281%29.pdf",
+          "retrievedAt": "2026-11-01T10:52:48.748Z",
+          "contentType": "application/pdf",
+          "contentHash": "eb114ba5e9e8614438dfc291a50aff04baffab52f070c9089f175c80895860bc",
+          "etag": "\"67480ace-1e00c\"",
+          "lastModified": "Thu, 28 Nov 2024 06:16:46 GMT"
+        }
+      ],
+      "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector"
+    },
+    "proposedRecord": {
+      "id": "tl-2024-11-27-victorian-generative-ai-guideline-published",
+      "date": "2024-11-27",
+      "title": "Victorian Generative AI Guideline Published",
+      "description": "Victoria publishes its current administrative guideline for safe and responsible generative AI use in the public sector.",
+      "type": "policy_introduced",
+      "jurisdiction": "vic",
+      "relatedPolicyId": "victoria-genai-guideline-vps",
+      "sourceUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps"
+    },
+    "linkedDevelopment": {
+      "id": "dev-administrative-guideline-for-the-safe-and-respon-gmhnpg",
+      "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector",
+      "url": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
+      "sourceId": "vic-ai",
+      "sourceName": "vic.gov.au — generative AI guidance",
+      "jurisdiction": "vic",
+      "detectedAt": "2026-10-27T19:30:32.288Z",
+      "summary": "The official source content for \"Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector\" changed. Editorial re-verification is required before the register record can be treated as current.",
+      "relevanceScore": 1,
+      "classification": "heuristic",
+      "assessment": {
+        "method": "heuristic",
+        "promptVersion": "source-hash-change-v1",
+        "assessedAt": "2026-10-27T19:30:32.288Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
+          "finalUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
+          "retrievedAt": "2026-10-27T19:30:32.288Z",
+          "contentType": "text/html",
+          "contentHash": "54775b266d9b146bc47156631b767c2bf901045fb7ee89f0631101dae33fe32f",
+          "linkedDocuments": [
+            {
+              "url": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
+              "finalUrl": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
+              "retrievedAt": "2026-10-27T19:30:32.288Z",
+              "contentType": "application/pdf",
+              "contentHash": "ab6aa1576ba4d7cd255e3ddfe6214c6a873ff0ed079346fbc4c6a17892aa08ee",
+              "etag": "\"2e976-612c9a53ad71b\"",
+              "lastModified": "Sun, 03 Mar 2024 23:05:30 GMT"
+            }
+          ],
+          "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-11-01T10:52:49.167Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "proposedRecord": {
+        "id": "tl-2024-11-27-victorian-generative-ai-guideline-published",
+        "date": "2024-11-27",
+        "title": "Victorian Generative AI Guideline Made",
+        "description": "The Secretary of the Department of Premier and Cabinet makes the administrative guideline for safe and responsible generative AI use in the Victorian public sector.",
+        "type": "policy_introduced",
+        "jurisdiction": "vic",
+        "relatedPolicyId": "victoria-genai-guideline-vps",
+        "sourceUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
+        "datePrecision": "day"
+      },
+      "reviewedDate": {
+        "date": "2024-11-27",
+        "precision": "day",
+        "notes": "The guideline states it \"was endorsed by the Victorian Secretaries Board (VSB) on 24 September 2024 and made by the Secretary, Department of Premier and Cabinet, on 27 November 2024\"."
+      },
+      "notes": "Retrieved through the standard declared-identity path.",
+      "proposedAt": "2026-11-01T10:52:49.167Z"
+    }
   }
 ]

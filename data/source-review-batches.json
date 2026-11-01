@@ -34,6 +34,44 @@
           "proposalHash": "e43a4ec535df92f3d3fab2f9d13d3a591f70d5b419b06b984d6f49776c8335b4"
         }
       ]
+    },
+    {
+      "id": "2026-11-01-2",
+      "proposedAt": "2026-11-01T10:58:42.575Z",
+      "proposedBy": "Claude (agent)",
+      "entries": [
+        {
+          "id": "source-review-99fb1852-b6ed-4ffc-80d5-1136d0a5238f",
+          "proposalHash": "ca4883b2246621862f23e4938ae23c80345e8be39b4d7d9f7692caf0d10acecc"
+        },
+        {
+          "id": "source-review-bde849bd-3867-46c8-86fd-7fc1352dae04",
+          "proposalHash": "141e51cde224b1f04a27e68e178923f94c5757135395a869734ce811c936d0d6"
+        },
+        {
+          "id": "source-review-0ac56b15-d946-4ce7-b43d-6cc6ac031a23",
+          "proposalHash": "45b8fa4a3f742cd5361ec743147625b05de87f88387f88bf2c02f822578ba0a6"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-01-3",
+      "proposedAt": "2026-11-01T10:58:44.422Z",
+      "proposedBy": "Claude (agent)",
+      "entries": [
+        {
+          "id": "source-review-ce258f93-e282-48b7-b9a1-94584fdcd751",
+          "proposalHash": "691757ddadcf5b96cb3e1fa688e498edb760adf31f4fa4e2a623ecc9932b2ac6"
+        },
+        {
+          "id": "source-review-46cda26c-3079-4bf1-8bec-44539d98a3ae",
+          "proposalHash": "06d573b0632781e600f83b6bd3be9d275bd67b4fe6c32e8bca0b6ad1f5eb72c7"
+        },
+        {
+          "id": "source-review-29e10174-82f8-424b-ab3c-b0f16dde013b",
+          "proposalHash": "5529a202648246be13374cf5766eb70e37b2d1df633f324d7e9a4daa86e624ca"
+        }
+      ]
     }
   ]
 }
