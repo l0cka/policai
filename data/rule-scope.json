@@ -1702,9 +1702,11 @@
       "url": "https://supremecourt-tas-gov-au.assets.ionatahosting.net/uploads/2026/10/No-14-of-2026-AI-Guidelines-for-Court-Users.pdf"
     },
     "review": {
-      "status": "draft",
+      "status": "reviewed",
       "draftedBy": "Claude (agent)",
-      "draftedAt": "2026-11-01"
+      "draftedAt": "2026-11-01",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-11-01"
     }
   },
   {
@@ -1712,9 +1714,11 @@
     "kind": "not_a_rule",
     "note": "A closed 2024 consultation on mandatory guardrails for high-risk AI, which the government has since decided not to pursue; it sets no obligation.",
     "review": {
-      "status": "draft",
+      "status": "reviewed",
       "draftedBy": "Claude (agent)",
-      "draftedAt": "2026-11-01"
+      "draftedAt": "2026-11-01",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-11-01"
     }
   },
   {
@@ -1722,9 +1726,11 @@
     "kind": "not_a_rule",
     "note": "A closed 2022 issues paper on regulating automated decision making and AI; it sets no obligation.",
     "review": {
-      "status": "draft",
+      "status": "reviewed",
       "draftedBy": "Claude (agent)",
-      "draftedAt": "2026-11-01"
+      "draftedAt": "2026-11-01",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-11-01"
     }
   },
   {
@@ -1732,9 +1738,11 @@
     "kind": "not_a_rule",
     "note": "A closed South Australian discussion paper seeking views on a government AI strategy; it sets no obligation.",
     "review": {
-      "status": "draft",
+      "status": "reviewed",
       "draftedBy": "Claude (agent)",
-      "draftedAt": "2026-11-01"
+      "draftedAt": "2026-11-01",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-11-01"
     }
   }
 ]
