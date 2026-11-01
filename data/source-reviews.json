@@ -6,7 +6,7 @@
     "entryKind": "policy",
     "targetPolicyId": "dta-ai-reference-architecture",
     "targetPolicyBaseRevisionHash": "0f013d4ab05e1ad36069d29e94130c75324bb462c8b19f122c297476556aee36",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-11-01T23:25:32.567Z",
     "createdBy": "local-mcp-admin",
     "notes": "Removes a staging leftover sentence flagged by the claude-pr-review on #627. Nothing else changes.",
@@ -43,6 +43,13 @@
         "notes": "Reuses the single headless Chromium read of 1 Nov 2026 23:12 UTC with the declared Policai identity (Policai/1.0 (+https://policai.org)) from Argus; no new read. The host refuses the collector over plain HTTP. One-off read approved by Daniel Alkurdi on 1 Nov 2026 and on the 1 Nov 23:11 UTC decision card.",
         "pageContentHash": "c7e1192a2a4cb615e1e7c591dfe8bf7eb0b56068e411e442540b68542c5e7527",
         "characterCount": 1886
+      },
+      "reviewedDate": {
+        "date": "2026-10-30",
+        "precision": "day",
+        "reviewedAt": "2026-11-01T23:31:43.481Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "This landing page shows no publication date; its PDFs read \"LAST UPDATED: 23 Oct 2026\". The primary date is unchanged and comes from the DTA media release announcing the publication, whose page states 30 October 2026."
       }
     },
     "proposedRecord": {
@@ -72,16 +79,16 @@
               "capturedAt": "2026-11-01T23:12:55.599Z",
               "capturedBy": "Claude (agent)",
               "requestedBy": "Daniel Alkurdi",
-              "notes": "Headless Chromium read with the declared Policai identity (Policai/1.0 (+https://policai.org)), single read of this page from Argus. The host refuses the collector over plain HTTP. One-off read approved by Daniel Alkurdi on 1 Nov 2026 and on the 1 Nov 23:11 UTC decision card. Replaces the earlier staging, whose HTML came through a reader proxy.",
+              "notes": "Reuses the single headless Chromium read of 1 Nov 2026 23:12 UTC with the declared Policai identity (Policai/1.0 (+https://policai.org)) from Argus; no new read. The host refuses the collector over plain HTTP. One-off read approved by Daniel Alkurdi on 1 Nov 2026 and on the 1 Nov 23:11 UTC decision card.",
               "pageContentHash": "c7e1192a2a4cb615e1e7c591dfe8bf7eb0b56068e411e442540b68542c5e7527",
               "characterCount": 1886
             },
             "reviewedDate": {
               "date": "2026-10-30",
               "precision": "day",
-              "reviewedAt": "2026-11-01T23:18:42.056Z",
+              "reviewedAt": "2026-11-01T23:31:43.481Z",
               "reviewedBy": "Daniel Alkurdi",
-              "notes": "This landing page shows no publication date; its PDFs read \"LAST UPDATED: 23 Oct 2026\". The primary date comes from the DTA media release announcing the publication, whose page states 30 October 2026."
+              "notes": "This landing page shows no publication date; its PDFs read \"LAST UPDATED: 23 Oct 2026\". The primary date is unchanged and comes from the DTA media release announcing the publication, whose page states 30 October 2026."
             }
           }
         }
@@ -107,8 +114,8 @@
         "risk-assurance"
       ],
       "createdAt": "2026-11-01T21:20:00.000Z",
-      "updatedAt": "2026-11-01T23:18:42.056Z",
-      "lastReviewedAt": "2026-11-01T23:18:42.056Z",
+      "updatedAt": "2026-11-01T23:31:43.481Z",
+      "lastReviewedAt": "2026-11-01T23:31:43.481Z",
       "verification": {
         "status": "verified",
         "source": {
@@ -124,25 +131,25 @@
             "capturedAt": "2026-11-01T23:12:55.599Z",
             "capturedBy": "Claude (agent)",
             "requestedBy": "Daniel Alkurdi",
-            "notes": "Headless Chromium read with the declared Policai identity (Policai/1.0 (+https://policai.org)), single read of this page from Argus. The host refuses the collector over plain HTTP. One-off read approved by Daniel Alkurdi on 1 Nov 2026 and on the 1 Nov 23:11 UTC decision card. Replaces the earlier staging, whose HTML came through a reader proxy.",
+            "notes": "Reuses the single headless Chromium read of 1 Nov 2026 23:12 UTC with the declared Policai identity (Policai/1.0 (+https://policai.org)) from Argus; no new read. The host refuses the collector over plain HTTP. One-off read approved by Daniel Alkurdi on 1 Nov 2026 and on the 1 Nov 23:11 UTC decision card.",
             "pageContentHash": "c7e1192a2a4cb615e1e7c591dfe8bf7eb0b56068e411e442540b68542c5e7527",
             "characterCount": 1886
           },
           "reviewedDate": {
             "date": "2026-10-30",
             "precision": "day",
-            "reviewedAt": "2026-11-01T23:18:42.056Z",
+            "reviewedAt": "2026-11-01T23:31:43.481Z",
             "reviewedBy": "Daniel Alkurdi",
-            "notes": "This landing page shows no publication date; its PDFs read \"LAST UPDATED: 23 Oct 2026\". The primary date comes from the DTA media release announcing the publication, whose page states 30 October 2026."
+            "notes": "This landing page shows no publication date; its PDFs read \"LAST UPDATED: 23 Oct 2026\". The primary date is unchanged and comes from the DTA media release announcing the publication, whose page states 30 October 2026."
           }
         },
-        "checkedAt": "2026-11-01T23:18:42.056Z",
+        "checkedAt": "2026-11-01T23:31:43.481Z",
         "checkedBy": "Daniel Alkurdi",
         "method": "manual",
-        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal 7571c389). Proposed by Claude (agent), requested by Daniel Alkurdi. Re-staged from a one-off declared-identity browser read. Record text unchanged from the earlier proposal; the date source evidence now points to the new media release capture."
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal c2545861). Proposed by Claude (agent). Removes a staging leftover sentence flagged by the claude-pr-review on #627. Nothing else changes."
       }
     },
-    "updatedAt": "2026-11-01T23:25:44.291Z",
+    "updatedAt": "2026-11-01T23:31:43.530Z",
     "proposal": {
       "proposedBy": "Claude (agent)",
       "proposedRecord": {
@@ -250,7 +257,28 @@
       },
       "notes": "Removes a staging leftover sentence flagged by the claude-pr-review on #627. Nothing else changes.",
       "proposedAt": "2026-11-01T23:25:44.291Z"
-    }
+    },
+    "targetPolicyRevisionHash": "0f013d4ab05e1ad36069d29e94130c75324bb462c8b19f122c297476556aee36",
+    "reviewedAt": "2026-11-01T23:31:43.481Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal c2545861). Proposed by Claude (agent). Removes a staging leftover sentence flagged by the claude-pr-review on #627. Nothing else changes.",
+    "decision": {
+      "proposalHash": "c2545861d7f572dbfc500a80482d7fff11b3dfa256d515f47508f8f41d7eab76",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-01T23:31:24.224Z",
+      "approval": {
+        "subject": "source-review:source-review-ae9cafc8-e18f-47f6-b867-5f55d5a10d88:c2545861d7f572dbfc500a80482d7fff11b3dfa256d515f47508f8f41d7eab76",
+        "receivedAt": "2026-11-01T23:31:24.224Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiLXJLVDA0ZGNaQzBMMHoxNkM1bERSQzlUQnJRY1VjM2NoNkV6b0hIcHppZyIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEQCICfUAxN2Js4itIjb3c63810A61DNe2XtIgIUyRYaRLE2AiBG1_UGadfTctBLmjhb0n1AnT7B98WBZniZJC-Lxr28jg",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      }
+    },
+    "publishedAt": "2026-11-01T23:31:43.523Z"
   },
   {
     "id": "source-review-b750156f-d3e0-4872-81b6-957f471df4ac",
