@@ -1,5 +1,35 @@
 [
   {
+    "id": "mcp-audit-45cbd87a-83af-42ac-b260-b658988211d9",
+    "createdAt": "2026-11-01T23:13:52.181Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-4e563da9-3642-410f-9ad9-c5dc7a15d348",
+    "createdAt": "2026-11-01T23:13:52.164Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-31629dd7-935c-454a-8f19-afc710bcb5da",
+    "createdAt": "2026-11-01T23:13:25.756Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.dta.gov.au/media-releases/ai-reference-architecture-new-blueprint-help-government-agencies-design-ai-systems",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-3f5e3cde-d765-4174-a149-2aa9bbac1058",
+    "createdAt": "2026-11-01T23:13:25.729Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.digital.gov.au/ai-reference-architecture",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-8e22bb18-da89-4702-89e9-b619bc287786",
     "createdAt": "2026-11-01T11:03:04.790Z",
     "actor": "local-mcp-admin",
@@ -3687,37 +3717,6 @@
     "actor": "local-mcp-admin",
     "toolName": "stage_source_capture",
     "sourceUrl": "https://www.industry.gov.au/publications/voluntary-ai-safety-standard",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-8707621f-f900-4d93-b289-78b0ae520099",
-    "createdAt": "2026-07-19T02:26:41.683Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.industry.gov.au/publications/voluntary-ai-safety-standard",
-    "status": "error",
-    "errorSummary": "POLICAI_MCP_ADMIN_TOKEN is not configured"
-  },
-  {
-    "id": "mcp-audit-e4d6065e-f1b3-49c8-8a09-511a791c10ad",
-    "createdAt": "2026-07-19T02:19:09.884Z",
-    "actor": "local-mcp-admin",
-    "toolName": "publish_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-bfff0dc6-9da2-4b36-9db6-70d596c4790c",
-    "createdAt": "2026-07-19T02:19:09.868Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-1195cc8c-dd1d-41b0-9830-fea0d7c6a706",
-    "createdAt": "2026-07-19T02:09:40.793Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.industry.gov.au/publications/national-ai-plan",
     "status": "success"
   }
 ]
