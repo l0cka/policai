@@ -5,6 +5,7 @@ summary: On 30 October 2026 the Digital Transformation Agency published the AI R
 status: published
 publishedAt: 2026-11-02
 cites:
+  - dta-ai-reference-architecture
   - policy-responsible-use-ai-government-v2
   - aps-ai-plan-2025
   - ai-technical-standard
