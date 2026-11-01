@@ -1,5 +1,19 @@
 [
   {
+    "id": "mcp-audit-44c3befb-7132-4477-8dd3-bad4cb91c026",
+    "createdAt": "2026-11-01T10:58:44.423Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_review_batch",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-0cc7f906-4163-43a6-8fff-936d1de733fb",
+    "createdAt": "2026-11-01T10:58:42.602Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_review_batch",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-5ac245a7-3c90-4e0f-ace9-ee569d8f14ec",
     "createdAt": "2026-11-01T10:46:05.830Z",
     "actor": "local-mcp-admin",
@@ -3657,5 +3671,63 @@
     "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
     "status": "error",
     "errorSummary": "Timed out after 60000ms"
+  },
+  {
+    "id": "mcp-audit-4adfb506-6a6f-468c-bafa-46f50691c8fc",
+    "createdAt": "2026-11-01T10:58:20.597Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_review_batch",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-02b4ea74-aa42-4808-89e3-f5d9511baa04",
+    "createdAt": "2026-11-01T10:58:18.707Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_review_batch",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-e946b929-8f9d-414a-b9b6-b6f198f789db",
+    "createdAt": "2026-11-01T10:58:04.518Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-0da2575d-fd8c-40b6-bb73-b85b2ecca4f9",
+    "createdAt": "2026-11-01T10:58:04.493Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-ab856585-deda-4c33-8fd1-451526b0ca4f",
+    "createdAt": "2026-11-01T10:57:48.301Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-cc40d012-234d-4209-ad9c-6b9a400f00d5",
+    "createdAt": "2026-11-01T10:57:48.287Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-c6158624-d0fa-499c-a149-2f2302d7a0ad",
+    "createdAt": "2026-11-01T10:57:47.430Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-4c986a8f-798d-4cdc-910b-5294a7f891cb",
+    "createdAt": "2026-11-01T10:57:46.766Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
   }
 ]
