@@ -42,26 +42,30 @@ export interface EditorApproval {
 
 export type ApprovalSubject =
   | { kind: 'source-review'; id: string; proposalHash: string }
-  | { kind: 'reconfirm'; batchId: string; entriesHash: string };
+  | { kind: 'reconfirm'; batchId: string; entriesHash: string }
+  | { kind: 'source-review-batch'; batchId: string; entriesHash: string };
 
 const SUBJECT_ID = '[A-Za-z0-9._-]{1,200}';
 const SUBJECT_PATTERN = new RegExp(
-  `^(source-review|reconfirm):(${SUBJECT_ID}):([a-f0-9]{64})$`,
+  `^(source-review|reconfirm|source-review-batch):(${SUBJECT_ID}):([a-f0-9]{64})$`,
 );
 
 export function approvalSubject(subject: ApprovalSubject): string {
   return subject.kind === 'source-review'
     ? `source-review:${subject.id}:${subject.proposalHash}`
-    : `reconfirm:${subject.batchId}:${subject.entriesHash}`;
+    : `${subject.kind}:${subject.batchId}:${subject.entriesHash}`;
 }
 
 export function parseApprovalSubject(text: string): ApprovalSubject | null {
   const match = SUBJECT_PATTERN.exec(text);
   if (!match) return null;
   const [, kind, id, hash] = match;
-  return kind === 'source-review'
-    ? { kind, id, proposalHash: hash }
-    : { kind: 'reconfirm', batchId: id, entriesHash: hash };
+  if (kind === 'source-review') return { kind, id, proposalHash: hash };
+  return {
+    kind: kind as 'reconfirm' | 'source-review-batch',
+    batchId: id,
+    entriesHash: hash,
+  };
 }
 
 export function approvalPageUrl(subject: string): string {

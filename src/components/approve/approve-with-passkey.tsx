@@ -21,9 +21,13 @@ async function challengeFor(subject: string): Promise<string> {
 }
 
 function describe(subject: ApprovalSubject) {
-  return subject.kind === 'source-review'
-    ? { what: 'Publish source review', id: subject.id, code: subject.proposalHash.slice(0, 8) }
-    : { what: 'Re-confirm register batch', id: subject.batchId, code: subject.entriesHash.slice(0, 8) };
+  if (subject.kind === 'source-review')
+    return { what: 'Publish source review', id: subject.id, code: subject.proposalHash.slice(0, 8) };
+  return {
+    what: subject.kind === 'reconfirm' ? 'Re-confirm register batch' : 'Publish source review batch',
+    id: subject.batchId,
+    code: subject.entriesHash.slice(0, 8),
+  };
 }
 
 export function ApproveWithPasskey() {

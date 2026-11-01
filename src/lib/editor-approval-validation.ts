@@ -5,6 +5,7 @@ import {
   type EditorPasskey,
 } from '@/lib/editor-approval';
 import { reconfirmApprovalSubject, type ReconfirmBatch } from '@/lib/register-reconfirm';
+import { batchCovers, sourceReviewBatchSubject } from '@/lib/source-review-batch';
 import type { SourceReview } from '@/types';
 
 export interface EditorApprovalState {
@@ -20,6 +21,8 @@ interface Decision {
   decidedBy: string;
   decidedAt: string;
   approval?: EditorApproval;
+  /** Why the decision's own record contradicts what it claims was signed. */
+  problem?: string;
 }
 
 function decisions(state: Omit<EditorApprovalState, 'passkeys'>): Decision[] {
@@ -28,10 +31,17 @@ function decisions(state: Omit<EditorApprovalState, 'passkeys'>): Decision[] {
       ? [{
           label: `sourceReviews:${review.id}`,
           key: `source-review:${review.id}:${review.decision.proposalHash}`,
-          subject: approvalSubject({ kind: 'source-review', id: review.id, proposalHash: review.decision.proposalHash }),
+          subject: review.decision.batch
+            ? sourceReviewBatchSubject(review.decision.batch)
+            : approvalSubject({ kind: 'source-review', id: review.id, proposalHash: review.decision.proposalHash }),
           decidedBy: review.decision.decidedBy,
           decidedAt: review.decision.decidedAt,
           approval: review.decision.approval,
+          problem:
+            review.decision.batch &&
+            !batchCovers(review.decision.batch, { id: review.id, proposalHash: review.decision.proposalHash })
+              ? `batch ${review.decision.batch.id} does not include this proposal`
+              : undefined,
         }]
       : [],
   );
@@ -77,6 +87,7 @@ export async function validateEditorApprovals(
   const since = Math.min(...head.passkeys.map((passkey) => Date.parse(passkey.registeredAt)));
   const baseKeys = new Set(base ? decisions(base).map((decision) => decision.key) : []);
   for (const decision of decisions(head)) {
+    if (decision.problem) errors.push(`${decision.label}: ${decision.problem}`);
     const required =
       head.passkeys.length > 0 &&
       (Date.parse(decision.decidedAt) >= since || (base !== null && !baseKeys.has(decision.key)));

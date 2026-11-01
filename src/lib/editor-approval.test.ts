@@ -64,9 +64,11 @@ describe('verifyEditorApproval', () => {
 })
 
 describe('parseApprovalSubject', () => {
-  it('round-trips both subject kinds and rejects anything else', () => {
+  it('round-trips every subject kind and rejects anything else', () => {
     const reconfirm = { kind: 'reconfirm', batchId: '2026-10-29-1', entriesHash: 'd'.repeat(64) } as const
+    const batch = { kind: 'source-review-batch', batchId: '2026-11-01-1', entriesHash: 'e'.repeat(64) } as const
     expect(parseApprovalSubject(approvalSubject(reconfirm))).toEqual(reconfirm)
+    expect(parseApprovalSubject(approvalSubject(batch))).toEqual(batch)
     expect(parseApprovalSubject(SUBJECT)).toEqual({ kind: 'source-review', id: 'source-review-1', proposalHash: 'a'.repeat(64) })
     expect(parseApprovalSubject('source-review:x:short')).toBeNull()
     expect(parseApprovalSubject('publish:x:' + 'a'.repeat(64))).toBeNull()

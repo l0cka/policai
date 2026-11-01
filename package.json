@@ -20,6 +20,7 @@
     "audit:register": "tsx scripts/audit-register.ts",
     "audit:sources": "tsx scripts/audit-sources.ts",
     "reconfirm:register": "tsx scripts/reconfirm-register.ts",
+    "source-review:batch": "tsx scripts/source-review-batch.ts",
     "validate:data": "tsx scripts/validate-data.ts",
     "add:article-image": "tsx scripts/add-article-image.ts",
     "check:freshness": "tsx scripts/check-freshness.ts",

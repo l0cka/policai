@@ -3,6 +3,7 @@
 import { describe, expect, it } from 'vitest'
 import { approvalSubject } from './editor-approval'
 import { validateEditorApprovals, type EditorApprovalState } from './editor-approval-validation'
+import { sourceReviewBatchSubject } from './source-review-batch'
 import { softwarePasskey } from '@/test/software-passkey'
 import type { SourceReview, SourceReviewDecision } from '@/types'
 
@@ -22,6 +23,26 @@ const subject = (id: string) => approvalSubject({ kind: 'source-review', id, pro
 describe('validateEditorApprovals', () => {
   const editor = softwarePasskey('Daniel Alkurdi')
   const legacy = review('old', { proposalHash: HASH, decidedBy: 'Daniel Alkurdi', decidedAt: '2026-10-20T00:00:00.000Z', attestationUrl: CARD })
+
+  it('accepts decisions signed once for a batch that pins each proposal', async () => {
+    const batch = { id: '2026-11-01-1', entries: [{ id: 'a', proposalHash: HASH }, { id: 'b', proposalHash: HASH }] }
+    const approval = editor.approve(sourceReviewBatchSubject(batch))
+    const decided = (id: string) =>
+      review(id, { proposalHash: HASH, decidedBy: 'Daniel Alkurdi', decidedAt: approval.receivedAt, approval, batch })
+    const head = state({ passkeys: [editor.passkey], sourceReviews: [decided('a'), decided('b')] })
+
+    expect((await validateEditorApprovals(head, state({ passkeys: [editor.passkey] }))).errors).toEqual([])
+  })
+
+  it('refuses a batch signature on a review the batch does not pin', async () => {
+    const batch = { id: '2026-11-01-1', entries: [{ id: 'a', proposalHash: HASH }] }
+    const approval = editor.approve(sourceReviewBatchSubject(batch))
+    const stowaway = review('c', { proposalHash: HASH, decidedBy: 'Daniel Alkurdi', decidedAt: approval.receivedAt, approval, batch })
+
+    const { errors } = await validateEditorApprovals(state({ passkeys: [editor.passkey], sourceReviews: [stowaway] }), state({ passkeys: [editor.passkey] }))
+
+    expect(errors).toEqual(['sourceReviews:c: batch 2026-11-01-1 does not include this proposal'])
+  })
 
   it('keeps card-link decisions valid while no passkey is registered', async () => {
     const head = state({ sourceReviews: [legacy, review('new', { ...legacy.decision!, decidedAt: '2026-11-01T00:00:00.000Z' })] })

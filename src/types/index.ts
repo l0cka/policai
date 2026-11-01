@@ -5,6 +5,7 @@ import type { UnrecognisedStage } from "@/lib/legislation/stage-update";
 import type { Dated, Legislative, LegislativeEvent } from "@/lib/legislation/model";
 import type { ThemeId } from "@/lib/themes";
 import type { EditorApproval } from "@/lib/approval-subject";
+import type { SourceReviewBatchRef } from "@/lib/source-review-batch";
 
 export const JURISDICTIONS = [
 	"federal",
@@ -432,6 +433,8 @@ export interface SourceReviewDecision {
 	decidedAt: string;
 	/** The editor's passkey signature over this review's approval subject. */
 	approval?: EditorApproval;
+	/** Set when `approval` signs a batch of proposals that includes this one. */
+	batch?: SourceReviewBatchRef;
 	/** Decisions made before an editor passkey was registered: the card link. */
 	attestationUrl?: string;
 }
