@@ -1744,5 +1744,60 @@
       "reviewedBy": "Daniel Alkurdi",
       "reviewedAt": "2026-11-01"
     }
+  },
+  {
+    "policyId": "federal-ai-kill-switch-and-data-centre-control-bill-2026",
+    "kind": "rule",
+    "legalForce": "proposed",
+    "appliesTo": [
+      "online_service",
+      "data_centre"
+    ],
+    "scope": {
+      "quote": "A responsible provider of a covered technology must at all times maintain a technical capability to do the following: (a) stop inference undertaken by the technology; (b) terminate user access to the technology;…",
+      "pinpoint": "cl 12(1) (first reading)",
+      "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7537"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-11-01"
+    }
+  },
+  {
+    "policyId": "federal-online-safety-amendment-digital-duty-of-care-bill-2026",
+    "kind": "rule",
+    "legalForce": "proposed",
+    "appliesTo": [
+      "online_service"
+    ],
+    "scope": {
+      "quote": "A person responsible for an online service must take appropriate action to ensure a safe online environment, including by taking effective measures to mitigate risks identified in risk assessments conducted in accordance with section 27.",
+      "pinpoint": "Sch 2 item 8, proposed s 26(1) (as read a third time)",
+      "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-11-01"
+    }
+  },
+  {
+    "policyId": "federal-online-safety-other-legislation-amendment-my-face-my-rights-bill-2025",
+    "kind": "rule",
+    "legalForce": "proposed",
+    "appliesTo": [
+      "anyone"
+    ],
+    "scope": {
+      "quote": "A person contravenes this subsection if: (a) the person posts deepfake material on a social media service, a relevant electronic service or a designated internet service; and (b) the person is an end-user of the service;…",
+      "pinpoint": "Sch 1 item 13, proposed s 93B (first reading)",
+      "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=s1471"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-11-01"
+    }
   }
 ]
