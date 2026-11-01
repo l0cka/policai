@@ -1903,7 +1903,7 @@
     ],
     "createdAt": "2026-09-09T23:26:21.926Z",
     "updatedAt": "2026-09-09T23:40:21.561Z",
-    "lastReviewedAt": "2026-09-09T23:40:21.561Z",
+    "lastReviewedAt": "2026-11-01T11:00:24.391Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -1923,10 +1923,10 @@
           "notes": "The official joint APRA–ASIC information paper states August 2026 and does not identify a day-level publication date."
         }
       },
-      "checkedAt": "2026-09-09T23:40:21.561Z",
+      "checkedAt": "2026-11-01T11:00:24.391Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved as the joint APRA–ASIC information paper, not the media release that announced it. The paper states supervisory expectations and practical preparedness measures for frontier-AI-related cyber, technology and operational risks.",
+      "notes": "Approved as the joint APRA–ASIC information paper, not the media release that announced it. The paper states supervisory expectations and practical preparedness measures for frontier-AI-related cyber, technology and operational risks. Re-confirmed in batch 2026-11-01-1 by Daniel Alkurdi on 2026-11-01 (passkey approval): the source fingerprint was unchanged at the 2026-11-01 register audit, matching the version verified on 2026-09-09.",
       "lastSourceAuditAt": "2026-11-01T09:48:59.823Z"
     }
   },
