@@ -1759,9 +1759,11 @@
       "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7537"
     },
     "review": {
-      "status": "draft",
+      "status": "reviewed",
       "draftedBy": "Claude (agent)",
-      "draftedAt": "2026-11-01"
+      "draftedAt": "2026-11-01",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-11-01"
     }
   },
   {
@@ -1777,9 +1779,11 @@
       "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553"
     },
     "review": {
-      "status": "draft",
+      "status": "reviewed",
       "draftedBy": "Claude (agent)",
-      "draftedAt": "2026-11-01"
+      "draftedAt": "2026-11-01",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-11-01"
     }
   },
   {
@@ -1795,9 +1799,11 @@
       "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=s1471"
     },
     "review": {
-      "status": "draft",
+      "status": "reviewed",
       "draftedBy": "Claude (agent)",
-      "draftedAt": "2026-11-01"
+      "draftedAt": "2026-11-01",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-11-01"
     }
   }
 ]
