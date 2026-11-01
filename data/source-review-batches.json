@@ -1,0 +1,39 @@
+{
+  "batches": [
+    {
+      "id": "2026-11-01-1",
+      "proposedAt": "2026-11-01T10:46:05.829Z",
+      "proposedBy": "Claude (agent)",
+      "entries": [
+        {
+          "id": "source-review-e203a93f-5e7f-41e6-a91f-30011b115d69",
+          "proposalHash": "5427ac4ef40038a1e38d2c7ee5c0ae7f77571234452b137ca8b7c9a6118bba5c"
+        },
+        {
+          "id": "source-review-be5f15cd-2a9b-40f0-a67e-2e7076bbda21",
+          "proposalHash": "edc82c8b6bfd283919b7f68302dd49b31285f7374ae00279e942dfc58fba82ec"
+        },
+        {
+          "id": "source-review-e121e97d-8e0e-4881-9f62-90eb7bc28ce2",
+          "proposalHash": "180a66b71c6e32850912d63a39afe28045a6fa3fafdac67ae2fcfc360ba5277b"
+        },
+        {
+          "id": "source-review-1c625372-be21-4131-86e3-444337ac0ac7",
+          "proposalHash": "e81318e3d8c02893e80c8b205ba6dbffcf2e2523f9ba6b0d31e43ed80d9ba1c5"
+        },
+        {
+          "id": "source-review-b0a6213b-a338-4c4e-b68d-1e149a44f799",
+          "proposalHash": "69298b93e2b097037e06c039c2a01bb372fa58c5822d558eb90c91bec1dcd04c"
+        },
+        {
+          "id": "source-review-a4e8673a-15b7-4c8a-852f-baae129b2b6f",
+          "proposalHash": "eaa9879a3e8fd2d1a4511913fd3dd83ec41ed06a4b18428212f9cafacddd3644"
+        },
+        {
+          "id": "source-review-b750156f-d3e0-4872-81b6-957f471df4ac",
+          "proposalHash": "e43a4ec535df92f3d3fab2f9d13d3a591f70d5b419b06b984d6f49776c8335b4"
+        }
+      ]
+    }
+  ]
+}

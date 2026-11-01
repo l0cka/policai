@@ -1,5 +1,515 @@
 [
   {
+    "id": "source-review-b750156f-d3e0-4872-81b6-957f471df4ac",
+    "sourceUrl": "https://www.industry.gov.au/news/australian-governments-interim-response-safe-and-responsible-ai-consultation",
+    "title": "Interim response to Safe and Responsible AI consultation",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2024-01-17-interim-response-to-safe-and-responsible-ai-consul",
+    "targetTimelineRevisionHash": "baa3af6b2b0d137a54d36c6355ea1eb5192d12ed0f8c5b064b3ca29d333f749a",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-01T10:45:54.073Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "Government agrees to a risk-based approach to AI regulation and establishes a temporary AI Expert Group.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.industry.gov.au/news/australian-governments-interim-response-safe-and-responsible-ai-consultation",
+      "finalUrl": "https://www.industry.gov.au/news/australian-governments-interim-response-safe-and-responsible-ai-consultation",
+      "title": "The Australian Government’s interim response to safe and responsible AI consultation | Department of Industry Science and Resources",
+      "retrievedAt": "2026-11-01T10:42:58.335Z",
+      "contentType": "text/html",
+      "contentHash": "ebd61e3bffd8c397c04f42dac4bd765a3dd6f65cd75a6963c6792c58a518d172",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-11-01T10:42:58.335Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+        "pageContentHash": "2de95e49426a065247ddc02d0cfc56f47ddbc77491bc8d2d33f7e1aad09b8e64",
+        "characterCount": 2291
+      }
+    },
+    "proposedRecord": {
+      "id": "tl-2024-01-17-interim-response-to-safe-and-responsible-ai-consul",
+      "date": "2024-01-17",
+      "title": "Interim response to Safe and Responsible AI consultation",
+      "description": "The Government publishes its interim response to the 2023 consultation, pointing to testing, transparency and accountability measures for high-risk settings and clearer, stronger laws.",
+      "type": "announcement",
+      "jurisdiction": "federal",
+      "sourceUrl": "https://www.industry.gov.au/news/australian-governments-interim-response-safe-and-responsible-ai-consultation",
+      "datePrecision": "day"
+    },
+    "updatedAt": "2026-11-01T10:45:54.086Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "proposedRecord": {
+        "id": "tl-2024-01-17-interim-response-to-safe-and-responsible-ai-consul",
+        "date": "2024-01-17",
+        "title": "Interim response to Safe and Responsible AI consultation",
+        "description": "The Government publishes its interim response to the 2023 consultation, pointing to testing, transparency and accountability measures for high-risk settings and clearer, stronger laws.",
+        "type": "announcement",
+        "jurisdiction": "federal",
+        "sourceUrl": "https://www.industry.gov.au/news/australian-governments-interim-response-safe-and-responsible-ai-consultation",
+        "datePrecision": "day"
+      },
+      "reviewedDate": {
+        "date": "2024-01-17",
+        "precision": "day",
+        "notes": "The news item is dated \"17 January 2024\" and states \"The Australian Government has published its interim response\"."
+      },
+      "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+      "proposedAt": "2026-11-01T10:45:54.086Z"
+    }
+  },
+  {
+    "id": "source-review-b0a6213b-a338-4c4e-b68d-1e149a44f799",
+    "sourceUrl": "https://www.finance.gov.au/government/public-data/data-and-digital-ministers-meeting/national-framework-assurance-artificial-intelligence-government",
+    "title": "National framework for the assurance of AI in government agreed",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2024-06-21-national-framework-for-the-assurance-of-ai-in-gove",
+    "targetTimelineRevisionHash": "9b09185b16ecc40ab0749815af80f9c5886862efa941dd02d405bcb287b55a07",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-01T10:45:53.981Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "Data and Digital Ministers agree a joint Commonwealth-state assurance framework mapped to the AI Ethics Principles.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.finance.gov.au/government/public-data/data-and-digital-ministers-meeting/national-framework-assurance-artificial-intelligence-government",
+      "finalUrl": "https://www.finance.gov.au/government/public-data/data-and-digital-ministers-meeting/national-framework-assurance-artificial-intelligence-government",
+      "title": "National framework for the assurance of artificial intelligence in government | Department of Finance",
+      "retrievedAt": "2026-11-01T10:42:44.526Z",
+      "contentType": "text/html",
+      "contentHash": "fc91d8df2b3370f2f67a4ee3f068684070a85801e5e14de1abaf643360d535f0",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-11-01T10:42:44.526Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+        "pageContentHash": "fb13570311879b1494be2b7ac9f120df3aad9f4691837948a79ddb7638fbbbcb",
+        "characterCount": 1721
+      }
+    },
+    "proposedRecord": {
+      "id": "tl-2024-06-21-national-framework-for-the-assurance-of-ai-in-gove",
+      "date": "2024-06-21",
+      "title": "National framework for the assurance of AI in government agreed",
+      "description": "Data and Digital Ministers agree and release a joint assurance framework showing how governments can apply the AI Ethics Principles.",
+      "type": "policy_introduced",
+      "jurisdiction": "federal",
+      "relatedPolicyId": "national-framework-assurance-ai-government",
+      "sourceUrl": "https://www.finance.gov.au/government/public-data/data-and-digital-ministers-meeting/national-framework-assurance-artificial-intelligence-government",
+      "datePrecision": "day"
+    },
+    "updatedAt": "2026-11-01T10:45:53.997Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "proposedRecord": {
+        "id": "tl-2024-06-21-national-framework-for-the-assurance-of-ai-in-gove",
+        "date": "2024-06-21",
+        "title": "National framework for the assurance of AI in government agreed",
+        "description": "Data and Digital Ministers agree and release a joint assurance framework showing how governments can apply the AI Ethics Principles.",
+        "type": "policy_introduced",
+        "jurisdiction": "federal",
+        "relatedPolicyId": "national-framework-assurance-ai-government",
+        "sourceUrl": "https://www.finance.gov.au/government/public-data/data-and-digital-ministers-meeting/national-framework-assurance-artificial-intelligence-government",
+        "datePrecision": "day"
+      },
+      "reviewedDate": {
+        "date": "2024-06-21",
+        "precision": "day",
+        "notes": "The page states the framework \"was agreed to and released by the Data and Digital Ministers Meeting on 21 June 2024\"."
+      },
+      "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+      "proposedAt": "2026-11-01T10:45:53.997Z"
+    }
+  },
+  {
+    "id": "source-review-1c625372-be21-4131-86e3-444337ac0ac7",
+    "sourceUrl": "https://www.industry.gov.au/publications/australias-ai-ethics-principles",
+    "title": "AI Ethics Principles Published",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2019-11-07-ai-ethics-principles-published",
+    "targetTimelineRevisionHash": "66393321167b33e29a54d4ff16b9aaa66b06a59b1e460e372470e86ebf909c8f",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-01T10:45:53.935Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "Australia publishes its voluntary AI Ethics Principles, establishing 8 principles for responsible AI.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.industry.gov.au/publications/australias-ai-ethics-principles",
+      "finalUrl": "https://www.industry.gov.au/publications/australias-ai-ethics-principles",
+      "title": "Australia’s AI Ethics Principles | Department of Industry Science and Resources",
+      "retrievedAt": "2026-11-01T10:42:36.193Z",
+      "contentType": "text/html",
+      "contentHash": "0b7ed94e5d544a5ffb02d6c272d299ea9e5f8be4de1f5f8578266910d82dabf3",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-11-01T10:42:36.193Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+        "pageContentHash": "37580e6388f59c70b0cf45b0224b7cd6cdb3a70443166df80cc09a50c6f33245",
+        "characterCount": 12269
+      },
+      "publishedAt": "2019-11-07",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "tl-2019-11-07-ai-ethics-principles-published",
+      "date": "2019-11-07",
+      "title": "AI Ethics Principles Published",
+      "description": "Australia publishes its voluntary AI Ethics Principles, establishing 8 principles for responsible AI.",
+      "type": "policy_introduced",
+      "jurisdiction": "federal",
+      "relatedPolicyId": "australias-ai-ethics-framework",
+      "sourceUrl": "https://www.industry.gov.au/publications/australias-ai-ethics-principles",
+      "datePrecision": "day"
+    },
+    "updatedAt": "2026-11-01T10:45:53.946Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "proposedRecord": {
+        "id": "tl-2019-11-07-ai-ethics-principles-published",
+        "date": "2019-11-07",
+        "title": "AI Ethics Principles Published",
+        "description": "Australia publishes its voluntary AI Ethics Principles, establishing 8 principles for responsible AI.",
+        "type": "policy_introduced",
+        "jurisdiction": "federal",
+        "relatedPolicyId": "australias-ai-ethics-framework",
+        "sourceUrl": "https://www.industry.gov.au/publications/australias-ai-ethics-principles",
+        "datePrecision": "day"
+      },
+      "reviewedDate": {
+        "date": "2019-11-07",
+        "precision": "day",
+        "notes": "The publication page states \"Date published:\" then \"7 November 2019\"."
+      },
+      "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+      "proposedAt": "2026-11-01T10:45:53.946Z"
+    }
+  },
+  {
+    "id": "source-review-e121e97d-8e0e-4881-9f62-90eb7bc28ce2",
+    "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
+    "title": "DTA AI Policy Version 2.0 Released",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2025-12-15-dta-ai-policy-version-2-0-released",
+    "targetTimelineRevisionHash": "2f7b442e012a96c185fa6282f51974dcf993da0cd7e14e1b182036f2ed964b73",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-01T10:45:53.890Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "Digital Transformation Agency releases Version 2.0 of the Policy for the Responsible Use of AI in Government, introducing mandatory requirements for transparency statements, accountable officials, use case registers, and risk-based impact assessments.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.digital.gov.au/ai/ai-in-government-policy",
+      "finalUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
+      "title": "Policy for the responsible use of AI in government - Version 2.1 | digital.gov.au",
+      "retrievedAt": "2026-11-01T10:42:23.247Z",
+      "contentType": "text/html",
+      "contentHash": "6ebea7670da4fdebfbf4270d6f245af395ab7462d97afd7be8b4ff826ba99a64",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-11-01T10:42:23.247Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+        "pageContentHash": "79daa851abf79bb5ab4beac851544f49f1064842262ced35d3a58e1fbf80dbde",
+        "characterCount": 3750
+      },
+      "publishedAt": "2026-10-21",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "tl-2025-12-15-dta-ai-policy-version-2-0-released",
+      "date": "2025-12-15",
+      "title": "DTA AI Policy Version 2.0 Takes Effect",
+      "description": "Version 2.0 of the Policy for the Responsible Use of AI in Government takes effect, with new AI governance requirements for non-corporate Commonwealth entities.",
+      "type": "policy_introduced",
+      "jurisdiction": "federal",
+      "relatedPolicyId": "policy-responsible-use-ai-government-v2",
+      "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
+      "datePrecision": "day"
+    },
+    "updatedAt": "2026-11-01T10:45:53.902Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "proposedRecord": {
+        "id": "tl-2025-12-15-dta-ai-policy-version-2-0-released",
+        "date": "2025-12-15",
+        "title": "DTA AI Policy Version 2.0 Takes Effect",
+        "description": "Version 2.0 of the Policy for the Responsible Use of AI in Government takes effect, with new AI governance requirements for non-corporate Commonwealth entities.",
+        "type": "policy_introduced",
+        "jurisdiction": "federal",
+        "relatedPolicyId": "policy-responsible-use-ai-government-v2",
+        "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
+        "datePrecision": "day"
+      },
+      "reviewedDate": {
+        "date": "2025-12-15",
+        "precision": "day",
+        "notes": "The policy page states \"This version of the policy came into effect 15 December 2025 (v2.0)\"."
+      },
+      "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+      "proposedAt": "2026-11-01T10:45:53.902Z"
+    }
+  },
+  {
+    "id": "source-review-be5f15cd-2a9b-40f0-a67e-2e7076bbda21",
+    "sourceUrl": "https://www.industry.gov.au/publications/voluntary-ai-safety-standard",
+    "title": "Voluntary AI Safety Standard published",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2024-09-05-voluntary-ai-safety-standard-published",
+    "targetTimelineRevisionHash": "80b3bf9dff5bae79b0012a671470d0fc4a004d34e53a14334711de829ccbe899",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-01T10:45:53.847Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "Ten voluntary guardrails for organisations developing and deploying AI, published alongside the mandatory-guardrails proposals paper.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.industry.gov.au/publications/voluntary-ai-safety-standard",
+      "finalUrl": "https://www.industry.gov.au/publications/voluntary-ai-safety-standard",
+      "title": "Voluntary AI Safety Standard | Department of Industry Science and Resources",
+      "retrievedAt": "2026-11-01T10:42:10.612Z",
+      "contentType": "text/html",
+      "contentHash": "92a792913a2c1f4e96320a4fd3ae9e51a64c10817749c8162f03d1e0614a3092",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-11-01T10:42:10.612Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+        "pageContentHash": "cc62ec7732d0c5d2a049d93f91c8837be355eea24720123edf50635b0bf2adeb",
+        "characterCount": 4312
+      },
+      "publishedAt": "2024-09-05",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "tl-2024-09-05-voluntary-ai-safety-standard-published",
+      "date": "2024-09-05",
+      "title": "Voluntary AI Safety Standard published",
+      "description": "The standard sets out 10 voluntary guardrails that apply to all organisations throughout the AI supply chain.",
+      "type": "policy_introduced",
+      "jurisdiction": "federal",
+      "relatedPolicyId": "voluntary-ai-safety-standard",
+      "sourceUrl": "https://www.industry.gov.au/publications/voluntary-ai-safety-standard",
+      "datePrecision": "day"
+    },
+    "updatedAt": "2026-11-01T10:45:53.858Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "proposedRecord": {
+        "id": "tl-2024-09-05-voluntary-ai-safety-standard-published",
+        "date": "2024-09-05",
+        "title": "Voluntary AI Safety Standard published",
+        "description": "The standard sets out 10 voluntary guardrails that apply to all organisations throughout the AI supply chain.",
+        "type": "policy_introduced",
+        "jurisdiction": "federal",
+        "relatedPolicyId": "voluntary-ai-safety-standard",
+        "sourceUrl": "https://www.industry.gov.au/publications/voluntary-ai-safety-standard",
+        "datePrecision": "day"
+      },
+      "reviewedDate": {
+        "date": "2024-09-05",
+        "precision": "day",
+        "notes": "The publication page states \"Date published:\" then \"5 September 2024\"."
+      },
+      "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+      "proposedAt": "2026-11-01T10:45:53.858Z"
+    }
+  },
+  {
+    "id": "source-review-e203a93f-5e7f-41e6-a91f-30011b115d69",
+    "sourceUrl": "https://www.industry.gov.au/publications/national-ai-plan",
+    "title": "National AI Plan Released",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2025-12-02-national-ai-plan-released",
+    "targetTimelineRevisionHash": "e35e70369da7bd34b5e22c38f9570b9d97ddf4ea01ee979a32c550a5977a196a",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-01T10:45:53.782Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "The Australian Government publishes the National AI Plan setting out its economy-wide direction for AI.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.industry.gov.au/publications/national-ai-plan",
+      "finalUrl": "https://www.industry.gov.au/publications/national-ai-plan",
+      "title": "National AI Plan | Department of Industry Science and Resources",
+      "retrievedAt": "2026-11-01T10:42:04.600Z",
+      "contentType": "text/html",
+      "contentHash": "4d3315b6b81de24a09f50caf886abb7d1278419568386de24139e19ddc2349c0",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-11-01T10:42:04.600Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+        "pageContentHash": "28ae772e4098f32a44d2fd1d61070761f092ed62f56ba4f4658a3d59cf87ae3e",
+        "characterCount": 3051
+      },
+      "publishedAt": "2025-12-02",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "tl-2025-12-02-national-ai-plan-released",
+      "date": "2025-12-02",
+      "title": "National AI Plan Released",
+      "description": "The Australian Government publishes the National AI Plan, its plan to grow the AI industry and build an AI-enabled economy.",
+      "type": "policy_introduced",
+      "jurisdiction": "federal",
+      "relatedPolicyId": "national-ai-plan-2025",
+      "sourceUrl": "https://www.industry.gov.au/publications/national-ai-plan",
+      "datePrecision": "day"
+    },
+    "updatedAt": "2026-11-01T10:45:53.805Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "proposedRecord": {
+        "id": "tl-2025-12-02-national-ai-plan-released",
+        "date": "2025-12-02",
+        "title": "National AI Plan Released",
+        "description": "The Australian Government publishes the National AI Plan, its plan to grow the AI industry and build an AI-enabled economy.",
+        "type": "policy_introduced",
+        "jurisdiction": "federal",
+        "relatedPolicyId": "national-ai-plan-2025",
+        "sourceUrl": "https://www.industry.gov.au/publications/national-ai-plan",
+        "datePrecision": "day"
+      },
+      "reviewedDate": {
+        "date": "2025-12-02",
+        "precision": "day",
+        "notes": "The publication page states \"Date published:\" then \"2 December 2025\"."
+      },
+      "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+      "proposedAt": "2026-11-01T10:45:53.805Z"
+    }
+  },
+  {
+    "id": "source-review-a4e8673a-15b7-4c8a-852f-baae129b2b6f",
+    "sourceUrl": "https://www.finance.gov.au/about-us/news/2025/introducing-aps-ai-plan",
+    "title": "APS AI Plan launched",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2025-11-12-aps-ai-plan-launched",
+    "targetTimelineRevisionHash": "72f62238cc4894ac6c299364c55a8e5c4feaf887f24289d5a6b21f9a7d1d34d5",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-01T10:45:54.029Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "Department of Finance launches the APS AI Plan: Chief AI Officers in every agency, the GovAI platform, and GovAI Chat trials from April 2026.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.finance.gov.au/about-us/news/2025/introducing-aps-ai-plan",
+      "finalUrl": "https://www.finance.gov.au/about-us/news/2025/introducing-aps-ai-plan",
+      "title": "Introducing the APS AI Plan | Department of Finance",
+      "retrievedAt": "2026-11-01T10:42:52.370Z",
+      "contentType": "text/html",
+      "contentHash": "09ffb47ec098f1795554e4d8f859961e5416f05a942afeaae99c9b9f2093a9a8",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-11-01T10:42:52.370Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+        "pageContentHash": "3fcb99a4701663be39a60dbfb53fb0e643f40d5266f4b3267490a785ad4658c5",
+        "characterCount": 3498
+      }
+    },
+    "proposedRecord": {
+      "id": "tl-2025-11-12-aps-ai-plan-launched",
+      "date": "2025-11-12",
+      "title": "APS AI Plan launched",
+      "description": "The Government launches the APS AI Plan, with Chief AI Officers, an expanded GovAI platform and GovAI Chat trials from April 2026.",
+      "type": "policy_introduced",
+      "jurisdiction": "federal",
+      "relatedPolicyId": "aps-ai-plan-2025",
+      "sourceUrl": "https://www.finance.gov.au/about-us/news/2025/introducing-aps-ai-plan",
+      "datePrecision": "day"
+    },
+    "updatedAt": "2026-11-01T10:45:54.044Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "proposedRecord": {
+        "id": "tl-2025-11-12-aps-ai-plan-launched",
+        "date": "2025-11-12",
+        "title": "APS AI Plan launched",
+        "description": "The Government launches the APS AI Plan, with Chief AI Officers, an expanded GovAI platform and GovAI Chat trials from April 2026.",
+        "type": "policy_introduced",
+        "jurisdiction": "federal",
+        "relatedPolicyId": "aps-ai-plan-2025",
+        "sourceUrl": "https://www.finance.gov.au/about-us/news/2025/introducing-aps-ai-plan",
+        "datePrecision": "day"
+      },
+      "reviewedDate": {
+        "date": "2025-11-12",
+        "precision": "day",
+        "notes": "The news item is dated \"12 November 2025\" and states \"The Government has today launched the APS AI Plan\"."
+      },
+      "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+      "proposedAt": "2026-11-01T10:45:54.044Z"
+    }
+  },
+  {
     "id": "source-review-05007dd0-f3ff-476e-b0fc-8578932e432e",
     "sourceUrl": "https://www.nsw.gov.au/education-and-training/nesa/news/all/new-take-home-assessment-rules",
     "title": "NESA Stage 6 take-home assessment and generative AI rules",
