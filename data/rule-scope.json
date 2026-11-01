@@ -1688,5 +1688,53 @@
       "reviewedBy": "Daniel Alkurdi",
       "reviewedAt": "2026-10-23"
     }
+  },
+  {
+    "policyId": "tas-supreme-court-ai-guidelines-2026",
+    "kind": "rule",
+    "legalForce": "expectation",
+    "appliesTo": [
+      "court_user"
+    ],
+    "scope": {
+      "quote": "Any person who uses Gen AI to prepare a document must verify all content before submitting the document to the Court.",
+      "pinpoint": "para 4.1",
+      "url": "https://supremecourt-tas-gov-au.assets.ionatahosting.net/uploads/2026/10/No-14-of-2026-AI-Guidelines-for-Court-Users.pdf"
+    },
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-11-01"
+    }
+  },
+  {
+    "policyId": "safe-and-responsible-ai-australia-proposals-paper",
+    "kind": "not_a_rule",
+    "note": "A closed 2024 consultation on mandatory guardrails for high-risk AI, which the government has since decided not to pursue; it sets no obligation.",
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-11-01"
+    }
+  },
+  {
+    "policyId": "automated-decision-making-ai-regulation-issues-paper",
+    "kind": "not_a_rule",
+    "note": "A closed 2022 issues paper on regulating automated decision making and AI; it sets no obligation.",
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-11-01"
+    }
+  },
+  {
+    "policyId": "sa-ai-for-better-government-discussion-paper",
+    "kind": "not_a_rule",
+    "note": "A closed South Australian discussion paper seeking views on a government AI strategy; it sets no obligation.",
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-11-01"
+    }
   }
 ]
