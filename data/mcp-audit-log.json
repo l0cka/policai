@@ -1,5 +1,27 @@
 [
   {
+    "id": "mcp-audit-6f3b9d65-9970-42dc-a18f-410b82dbdd0e",
+    "createdAt": "2026-11-01T23:31:43.540Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-0da02f59-3565-439c-928f-ed9631ebfe4c",
+    "createdAt": "2026-11-01T23:25:44.306Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-d61bc48d-7fc9-4133-9d3b-792df62f632e",
+    "createdAt": "2026-11-01T23:25:32.584Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.digital.gov.au/ai-reference-architecture",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-4c972b8a-b202-4374-84a2-6b73288a7e85",
     "createdAt": "2026-11-01T23:18:42.212Z",
     "actor": "local-mcp-admin",
@@ -3692,30 +3714,5 @@
     "sourceUrl": "https://www.digital.gov.au/policy/ai/agentic-ai-addendum",
     "status": "error",
     "errorSummary": "Timed out after 60000ms"
-  },
-  {
-    "id": "mcp-audit-3c507d74-cccf-4f9a-9fcf-9aac5ce51705",
-    "createdAt": "2026-07-19T03:58:15.178Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_url",
-    "sourceUrl": "https://blueprint.asd.gov.au/security-and-governance/policies",
-    "status": "error",
-    "errorSummary": "401 {\"type\":\"error\",\"error\":{\"type\":\"authentication_error\",\"message\":\"API key is invalid.\"},\"request_id\":null}"
-  },
-  {
-    "id": "mcp-audit-7c747a8b-345b-4d4a-97c6-6f69558734b0",
-    "createdAt": "2026-07-19T03:58:13.916Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_url",
-    "sourceUrl": "https://www.digital.gov.au/policy/ai/agentic-ai-addendum",
-    "status": "error",
-    "errorSummary": "Timed out after 60000ms"
-  },
-  {
-    "id": "mcp-audit-ca470993-325f-444f-95df-a4e4ee278b96",
-    "createdAt": "2026-07-19T02:30:21.297Z",
-    "actor": "local-mcp-admin",
-    "toolName": "publish_staged_source",
-    "status": "success"
   }
 ]
