@@ -1,5 +1,19 @@
 [
   {
+    "id": "mcp-audit-4c972b8a-b202-4374-84a2-6b73288a7e85",
+    "createdAt": "2026-11-01T23:18:42.212Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-4094dd7e-1ccf-416d-89f9-4878850b8f6f",
+    "createdAt": "2026-11-01T23:18:42.122Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-45cbd87a-83af-42ac-b260-b658988211d9",
     "createdAt": "2026-11-01T23:13:52.181Z",
     "actor": "local-mcp-admin",
@@ -3702,21 +3716,6 @@
     "createdAt": "2026-07-19T02:30:21.297Z",
     "actor": "local-mcp-admin",
     "toolName": "publish_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-359e6829-b7a1-4471-a77e-37dab0810703",
-    "createdAt": "2026-07-19T02:30:21.288Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-54bd4cad-4300-46e0-83c9-eb14f91b0320",
-    "createdAt": "2026-07-19T02:27:12.885Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.industry.gov.au/publications/voluntary-ai-safety-standard",
     "status": "success"
   }
 ]

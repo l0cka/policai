@@ -30342,9 +30342,9 @@
   {
     "id": "source-review-dev-2026-10-30-dta-ai-reference-architecture",
     "sourceUrl": "https://www.digital.gov.au/ai-reference-architecture",
-    "title": "AI Reference Architecture | digital.gov.au",
+    "title": "AI Reference Architecture",
     "entryKind": "policy",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-11-01T23:13:25.716Z",
     "createdBy": "editorial (Inky Quill handoff, 2026-11-01)",
     "notes": "Headless Chromium read with the declared Policai identity (Policai/1.0 (+https://policai.org)), single read of this page from Argus. The host refuses the collector over plain HTTP. One-off read approved by Daniel Alkurdi on 1 Nov 2026 and on the 1 Nov 23:11 UTC decision card. Replaces the earlier staging, whose HTML came through a reader proxy.",
@@ -30381,6 +30381,13 @@
         "notes": "Headless Chromium read with the declared Policai identity (Policai/1.0 (+https://policai.org)), single read of this page from Argus. The host refuses the collector over plain HTTP. One-off read approved by Daniel Alkurdi on 1 Nov 2026 and on the 1 Nov 23:11 UTC decision card. Replaces the earlier staging, whose HTML came through a reader proxy.",
         "pageContentHash": "c7e1192a2a4cb615e1e7c591dfe8bf7eb0b56068e411e442540b68542c5e7527",
         "characterCount": 1886
+      },
+      "reviewedDate": {
+        "date": "2026-10-30",
+        "precision": "day",
+        "reviewedAt": "2026-11-01T23:18:42.056Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "This landing page shows no publication date; its PDFs read \"LAST UPDATED: 23 Oct 2026\". The primary date comes from the DTA media release announcing the publication, whose page states 30 October 2026."
       }
     },
     "proposedRecord": {
@@ -30398,15 +30405,29 @@
           "precision": "day",
           "primary": true,
           "source": {
-            "url": "https://www.dta.gov.au/media-releases/ai-reference-architecture-new-blueprint-help-government-agencies-design-ai-systems",
-            "finalUrl": "https://www.dta.gov.au/media-releases/ai-reference-architecture-new-blueprint-help-government-agencies-design-ai-systems",
-            "title": "AI Reference Architecture: A new blueprint to help government agencies design AI systems",
-            "publisher": "Digital Transformation Agency",
-            "retrievedAt": "2026-11-01T21:20:00.000Z",
-            "publishedAt": "2026-10-30",
-            "publishedAtPrecision": "day",
+            "url": "https://www.digital.gov.au/ai-reference-architecture",
+            "finalUrl": "https://www.digital.gov.au/ai-reference-architecture",
+            "title": "AI Reference Architecture | digital.gov.au",
+            "retrievedAt": "2026-11-01T23:12:55.599Z",
             "contentType": "text/html",
-            "contentHash": "27e030eff862cfe9c2c9865efc0bd85b05b5d54d96f3c52358e99cacaa922edf"
+            "contentHash": "5b666aee92deaed420f29d07114cacccffb425897e73506eb3fc5ba72cee6835",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-11-01T23:12:55.599Z",
+              "capturedBy": "Claude (agent)",
+              "requestedBy": "Daniel Alkurdi",
+              "notes": "Headless Chromium read with the declared Policai identity (Policai/1.0 (+https://policai.org)), single read of this page from Argus. The host refuses the collector over plain HTTP. One-off read approved by Daniel Alkurdi on 1 Nov 2026 and on the 1 Nov 23:11 UTC decision card. Replaces the earlier staging, whose HTML came through a reader proxy.",
+              "pageContentHash": "c7e1192a2a4cb615e1e7c591dfe8bf7eb0b56068e411e442540b68542c5e7527",
+              "characterCount": 1886
+            },
+            "reviewedDate": {
+              "date": "2026-10-30",
+              "precision": "day",
+              "reviewedAt": "2026-11-01T23:18:42.056Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "This landing page shows no publication date; its PDFs read \"LAST UPDATED: 23 Oct 2026\". The primary date comes from the DTA media release announcing the publication, whose page states 30 October 2026."
+            }
           }
         }
       ],
@@ -30431,11 +30452,44 @@
         "risk-assurance"
       ],
       "createdAt": "2026-11-01T21:20:00.000Z",
-      "updatedAt": "2026-11-01T21:20:00.000Z"
+      "updatedAt": "2026-11-01T23:18:42.056Z",
+      "lastReviewedAt": "2026-11-01T23:18:42.056Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.digital.gov.au/ai-reference-architecture",
+          "finalUrl": "https://www.digital.gov.au/ai-reference-architecture",
+          "title": "AI Reference Architecture | digital.gov.au",
+          "retrievedAt": "2026-11-01T23:12:55.599Z",
+          "contentType": "text/html",
+          "contentHash": "5b666aee92deaed420f29d07114cacccffb425897e73506eb3fc5ba72cee6835",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-01T23:12:55.599Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Headless Chromium read with the declared Policai identity (Policai/1.0 (+https://policai.org)), single read of this page from Argus. The host refuses the collector over plain HTTP. One-off read approved by Daniel Alkurdi on 1 Nov 2026 and on the 1 Nov 23:11 UTC decision card. Replaces the earlier staging, whose HTML came through a reader proxy.",
+            "pageContentHash": "c7e1192a2a4cb615e1e7c591dfe8bf7eb0b56068e411e442540b68542c5e7527",
+            "characterCount": 1886
+          },
+          "reviewedDate": {
+            "date": "2026-10-30",
+            "precision": "day",
+            "reviewedAt": "2026-11-01T23:18:42.056Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "This landing page shows no publication date; its PDFs read \"LAST UPDATED: 23 Oct 2026\". The primary date comes from the DTA media release announcing the publication, whose page states 30 October 2026."
+          }
+        },
+        "checkedAt": "2026-11-01T23:18:42.056Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal 7571c389). Proposed by Claude (agent), requested by Daniel Alkurdi. Re-staged from a one-off declared-identity browser read. Record text unchanged from the earlier proposal; the date source evidence now points to the new media release capture."
+      }
     },
     "linkedDevelopment": {
       "id": "dev-2026-10-30-dta-ai-reference-architecture",
-      "title": "DTA publishes the AI Reference Architecture",
+      "title": "AI Reference Architecture",
       "url": "https://www.digital.gov.au/ai-reference-architecture",
       "sourceId": "editorial-dta-aira",
       "sourceName": "Digital Transformation Agency — AI Reference Architecture (editorial staging)",
@@ -30443,7 +30497,7 @@
       "publishedAt": "2026-10-30",
       "publishedAtPrecision": "day",
       "detectedAt": "2026-11-01T21:20:00.000Z",
-      "summary": "The Digital Transformation Agency published the AI Reference Architecture (AIRA) and a Companion Guide (Scenarios). AIRA is an architectural foundation for designing, implementing and governing AI across the Australian Government. It supports the AI Plan for the Australian Public Service 2025 and the Policy for the responsible use of AI in government (policy-responsible-use-ai-government-v2). It covers a functional stack, communication, trustworthiness and assurance, and human agency, oversight and control, with appendices on roles and relationships to other frameworks. Use is voluntary and does not replace existing requirements. Media release: https://www.dta.gov.au/media-releases/ai-reference-architecture-new-blueprint-help-government-agencies-design-ai-systems.",
+      "summary": "Digital Transformation Agency architectural foundation for designing, implementing and governing AI across the Australian Government. It supports the Policy for the responsible use of AI in government and the AI Plan for the APS 2025. Use is voluntary.",
       "relevanceScore": 1,
       "classification": "curated",
       "assessment": {
@@ -30457,10 +30511,26 @@
           "url": "https://www.digital.gov.au/ai-reference-architecture",
           "finalUrl": "https://www.digital.gov.au/ai-reference-architecture",
           "title": "AI Reference Architecture | digital.gov.au",
-          "publisher": "Digital Transformation Agency",
-          "retrievedAt": "2026-11-01T21:20:00.000Z",
+          "retrievedAt": "2026-11-01T23:12:55.599Z",
           "contentType": "text/html",
-          "contentHash": "723f9357cd16b073906eeb49c93a2e53662d9b5206ca5f52126157da7b5eb0d9"
+          "contentHash": "5b666aee92deaed420f29d07114cacccffb425897e73506eb3fc5ba72cee6835",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-01T23:12:55.599Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Headless Chromium read with the declared Policai identity (Policai/1.0 (+https://policai.org)), single read of this page from Argus. The host refuses the collector over plain HTTP. One-off read approved by Daniel Alkurdi on 1 Nov 2026 and on the 1 Nov 23:11 UTC decision card. Replaces the earlier staging, whose HTML came through a reader proxy.",
+            "pageContentHash": "c7e1192a2a4cb615e1e7c591dfe8bf7eb0b56068e411e442540b68542c5e7527",
+            "characterCount": 1886
+          },
+          "reviewedDate": {
+            "date": "2026-10-30",
+            "precision": "day",
+            "reviewedAt": "2026-11-01T23:18:42.056Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "This landing page shows no publication date; its PDFs read \"LAST UPDATED: 23 Oct 2026\". The primary date comes from the DTA media release announcing the publication, whose page states 30 October 2026."
+          }
         },
         "method": "manual",
         "notes": "Staged for Dan to verify. Not a public verified development until this review is approved and published."
@@ -30468,7 +30538,7 @@
       "status": "detected",
       "relatedPolicyId": "policy-responsible-use-ai-government-v2"
     },
-    "updatedAt": "2026-11-01T23:13:52.147Z",
+    "updatedAt": "2026-11-01T23:18:42.110Z",
     "proposal": {
       "proposedBy": "Claude (agent), requested by Daniel Alkurdi",
       "proposedRecord": {
@@ -30529,14 +30599,34 @@
       },
       "notes": "Re-staged from a one-off declared-identity browser read. Record text unchanged from the earlier proposal; the date source evidence now points to the new media release capture.",
       "proposedAt": "2026-11-01T23:13:52.147Z"
-    }
+    },
+    "reviewedAt": "2026-11-01T23:18:42.056Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal 7571c389). Proposed by Claude (agent), requested by Daniel Alkurdi. Re-staged from a one-off declared-identity browser read. Record text unchanged from the earlier proposal; the date source evidence now points to the new media release capture.",
+    "decision": {
+      "proposalHash": "7571c389ef452874e8ce0a8fa6a089c4c229b2301d2febeb1e5447fd1a96e8b8",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-01T23:18:17.329Z",
+      "approval": {
+        "subject": "source-review:source-review-dev-2026-10-30-dta-ai-reference-architecture:7571c389ef452874e8ce0a8fa6a089c4c229b2301d2febeb1e5447fd1a96e8b8",
+        "receivedAt": "2026-11-01T23:18:17.329Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoibFFEbzBaZXBHYWpHSWYya3NTVlBFOExLd21BM0NwNnNNd3AwUUtjcEhtWSIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEUCIEAP9BKTs4P4Rzphb34nswP-qiDUxiJhgKfdvyZbrWoOAiEAjwSHXWI3PxcqZMUsToJwnwRni7qq8ZgzUUq66Z0bfKg",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      }
+    },
+    "publishedAt": "2026-11-01T23:18:42.092Z"
   },
   {
     "id": "source-review-tl-2026-10-30-dta-ai-reference-architecture",
     "sourceUrl": "https://www.dta.gov.au/media-releases/ai-reference-architecture-new-blueprint-help-government-agencies-design-ai-systems",
-    "title": "AI Reference Architecture: A new blueprint to help government agencies design AI systems | Digital Transformation Agency",
+    "title": "DTA publishes the AI Reference Architecture",
     "entryKind": "timeline_event",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-11-01T23:13:25.746Z",
     "createdBy": "editorial (Inky Quill handoff, 2026-11-01)",
     "notes": "Headless Chromium read with the declared Policai identity (Policai/1.0 (+https://policai.org)), single read of this page from Argus. The host refuses the collector over plain HTTP. One-off read approved by Daniel Alkurdi on 1 Nov 2026 and on the 1 Nov 23:11 UTC decision card. Replaces the earlier staging, whose HTML came through a reader proxy.",
@@ -30565,6 +30655,13 @@
         "notes": "Headless Chromium read with the declared Policai identity (Policai/1.0 (+https://policai.org)), single read of this page from Argus. The host refuses the collector over plain HTTP. One-off read approved by Daniel Alkurdi on 1 Nov 2026 and on the 1 Nov 23:11 UTC decision card. Replaces the earlier staging, whose HTML came through a reader proxy.",
         "pageContentHash": "3bf04a0907a06a568366f51b1f5de0e4e250c70f0a5624c95cb6c0b813416b54",
         "characterCount": 8296
+      },
+      "reviewedDate": {
+        "date": "2026-10-30",
+        "precision": "day",
+        "reviewedAt": "2026-11-01T23:18:42.153Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The media release page states 30 October 2026 under its title."
       }
     },
     "proposedRecord": {
@@ -30578,23 +30675,39 @@
       "relatedPolicyId": "policy-responsible-use-ai-government-v2",
       "sourceUrl": "https://www.dta.gov.au/media-releases/ai-reference-architecture-new-blueprint-help-government-agencies-design-ai-systems",
       "verification": {
-        "status": "needs_review",
+        "status": "verified",
         "source": {
           "url": "https://www.dta.gov.au/media-releases/ai-reference-architecture-new-blueprint-help-government-agencies-design-ai-systems",
           "finalUrl": "https://www.dta.gov.au/media-releases/ai-reference-architecture-new-blueprint-help-government-agencies-design-ai-systems",
-          "title": "AI Reference Architecture: A new blueprint to help government agencies design AI systems",
-          "publisher": "Digital Transformation Agency",
-          "retrievedAt": "2026-11-01T21:20:00.000Z",
-          "publishedAt": "2026-10-30",
-          "publishedAtPrecision": "day",
+          "title": "AI Reference Architecture: A new blueprint to help government agencies design AI systems | Digital Transformation Agency",
+          "retrievedAt": "2026-11-01T23:12:57.636Z",
           "contentType": "text/html",
-          "contentHash": "27e030eff862cfe9c2c9865efc0bd85b05b5d54d96f3c52358e99cacaa922edf"
+          "contentHash": "5e701572e8cdab03fde961f1e3d295ed969626dcaff466e0822a7b59f8b8a1a7",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-01T23:12:57.636Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Headless Chromium read with the declared Policai identity (Policai/1.0 (+https://policai.org)), single read of this page from Argus. The host refuses the collector over plain HTTP. One-off read approved by Daniel Alkurdi on 1 Nov 2026 and on the 1 Nov 23:11 UTC decision card. Replaces the earlier staging, whose HTML came through a reader proxy.",
+            "pageContentHash": "3bf04a0907a06a568366f51b1f5de0e4e250c70f0a5624c95cb6c0b813416b54",
+            "characterCount": 8296
+          },
+          "reviewedDate": {
+            "date": "2026-10-30",
+            "precision": "day",
+            "reviewedAt": "2026-11-01T23:18:42.153Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The media release page states 30 October 2026 under its title."
+          }
         },
+        "checkedAt": "2026-11-01T23:18:42.153Z",
+        "checkedBy": "Daniel Alkurdi",
         "method": "manual",
-        "notes": "Staged for Dan to verify. The page date element reads 30 October 2026. Not marked verified."
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal f764eb6f). Proposed by Claude (agent), requested by Daniel Alkurdi. Re-staged from a one-off declared-identity browser read. Event text unchanged from the earlier proposal; verification evidence now points to the new capture."
       }
     },
-    "updatedAt": "2026-11-01T23:13:52.168Z",
+    "updatedAt": "2026-11-01T23:18:42.199Z",
     "proposal": {
       "proposedBy": "Claude (agent), requested by Daniel Alkurdi",
       "proposedRecord": {
@@ -30632,6 +30745,26 @@
       },
       "notes": "Re-staged from a one-off declared-identity browser read. Event text unchanged from the earlier proposal; verification evidence now points to the new capture.",
       "proposedAt": "2026-11-01T23:13:52.168Z"
-    }
+    },
+    "reviewedAt": "2026-11-01T23:18:42.153Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal f764eb6f). Proposed by Claude (agent), requested by Daniel Alkurdi. Re-staged from a one-off declared-identity browser read. Event text unchanged from the earlier proposal; verification evidence now points to the new capture.",
+    "decision": {
+      "proposalHash": "f764eb6fb85c5a91b1f7fc484f044bd988e7883b60220bce07c589305f5525c0",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-01T23:18:27.141Z",
+      "approval": {
+        "subject": "source-review:source-review-tl-2026-10-30-dta-ai-reference-architecture:f764eb6fb85c5a91b1f7fc484f044bd988e7883b60220bce07c589305f5525c0",
+        "receivedAt": "2026-11-01T23:18:27.141Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiNlVld1NBLThfNERMVW44cVZWbDdHV0YtajRRSjZLV04xRFBxa3BJZGJBUSIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEYCIQCTwKxXYJV--5dm0VDqPaYPXLb82sqkdBhHWsIltN6KlwIhAMWexdGUA68y-N_ktGPiAAhe9MaAfU39FuhW1pw6Y-xV",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      }
+    },
+    "publishedAt": "2026-11-01T23:18:42.179Z"
   }
 ]
