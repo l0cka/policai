@@ -1,5 +1,54 @@
 [
   {
+    "id": "mcp-audit-76778f25-6779-4be4-8f29-c63f79396179",
+    "createdAt": "2026-11-01T10:57:30.896Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-adf8adac-f916-409f-aaa1-d4cec05be11a",
+    "createdAt": "2026-11-01T10:57:30.645Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-4a50c4b8-fc4f-4e42-8a17-184117423250",
+    "createdAt": "2026-11-01T10:57:30.376Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-333f65ff-fc7f-449f-b613-4eda9c269dc1",
+    "createdAt": "2026-11-01T10:57:30.164Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-21f06f5b-2a4b-4840-9c0c-2605830f3d06",
+    "createdAt": "2026-11-01T10:57:29.967Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-010d523e-2904-4e2b-aea7-6f84310aac18",
+    "createdAt": "2026-11-01T10:57:29.687Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-4a7509e9-06ff-4a99-a5e2-5838f4aa0d1c",
+    "createdAt": "2026-11-01T10:57:29.370Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-5ac245a7-3c90-4e0f-ace9-ee569d8f14ec",
     "createdAt": "2026-11-01T10:46:05.830Z",
     "actor": "local-mcp-admin",
