@@ -14,6 +14,113 @@
     "status": "success"
   },
   {
+    "id": "mcp-audit-4adfb506-6a6f-468c-bafa-46f50691c8fc",
+    "createdAt": "2026-11-01T10:58:20.597Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_review_batch",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-02b4ea74-aa42-4808-89e3-f5d9511baa04",
+    "createdAt": "2026-11-01T10:58:18.707Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_review_batch",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-e946b929-8f9d-414a-b9b6-b6f198f789db",
+    "createdAt": "2026-11-01T10:58:04.518Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-0da2575d-fd8c-40b6-bb73-b85b2ecca4f9",
+    "createdAt": "2026-11-01T10:58:04.493Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-ab856585-deda-4c33-8fd1-451526b0ca4f",
+    "createdAt": "2026-11-01T10:57:48.301Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-cc40d012-234d-4209-ad9c-6b9a400f00d5",
+    "createdAt": "2026-11-01T10:57:48.287Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-c6158624-d0fa-499c-a149-2f2302d7a0ad",
+    "createdAt": "2026-11-01T10:57:47.430Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-4c986a8f-798d-4cdc-910b-5294a7f891cb",
+    "createdAt": "2026-11-01T10:57:46.766Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-76778f25-6779-4be4-8f29-c63f79396179",
+    "createdAt": "2026-11-01T10:57:30.896Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-adf8adac-f916-409f-aaa1-d4cec05be11a",
+    "createdAt": "2026-11-01T10:57:30.645Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-4a50c4b8-fc4f-4e42-8a17-184117423250",
+    "createdAt": "2026-11-01T10:57:30.376Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-333f65ff-fc7f-449f-b613-4eda9c269dc1",
+    "createdAt": "2026-11-01T10:57:30.164Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-21f06f5b-2a4b-4840-9c0c-2605830f3d06",
+    "createdAt": "2026-11-01T10:57:29.967Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-010d523e-2904-4e2b-aea7-6f84310aac18",
+    "createdAt": "2026-11-01T10:57:29.687Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-4a7509e9-06ff-4a99-a5e2-5838f4aa0d1c",
+    "createdAt": "2026-11-01T10:57:29.370Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-5ac245a7-3c90-4e0f-ace9-ee569d8f14ec",
     "createdAt": "2026-11-01T10:46:05.830Z",
     "actor": "local-mcp-admin",
@@ -3613,121 +3720,6 @@
     "actor": "local-mcp-admin",
     "toolName": "stage_source_capture",
     "sourceUrl": "https://www.dataanddigital.gov.au/implementation-plan/2025/artificial-intelligence",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-00b77223-8b2e-4551-a56f-2bf84bfa843b",
-    "createdAt": "2026-07-19T01:29:37.957Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_url",
-    "sourceUrl": "https://www.dataanddigital.gov.au/implementation-plan/2025/artificial-intelligence",
-    "status": "error",
-    "errorSummary": "Timed out after 60000ms"
-  },
-  {
-    "id": "mcp-audit-b938b77b-bc87-4f25-b4e7-0740efe1aa5d",
-    "createdAt": "2026-07-19T01:04:34.405Z",
-    "actor": "local-mcp-admin",
-    "toolName": "publish_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-52c2b4c1-272b-4003-972c-fc531d7d41c4",
-    "createdAt": "2026-07-19T01:03:17.920Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-b6681e27-9738-4b2e-a6be-7177328dff2e",
-    "createdAt": "2026-07-19T00:55:55.779Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-804e8b72-db76-45d4-b5c6-234d95f2787c",
-    "createdAt": "2026-07-19T00:54:45.096Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-adc01152-c8f6-45a8-8834-4b9295d41de5",
-    "createdAt": "2026-07-19T00:54:20.286Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
-    "status": "error",
-    "errorSummary": "401 {\"type\":\"error\",\"error\":{\"type\":\"authentication_error\",\"message\":\"API key is invalid.\"},\"request_id\":null}"
-  },
-  {
-    "id": "mcp-audit-c7eff1c4-adbd-4c34-8482-8ff411cb91a3",
-    "createdAt": "2026-07-19T00:32:18.841Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_url",
-    "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
-    "status": "error",
-    "errorSummary": "Timed out after 60000ms"
-  },
-  {
-    "id": "mcp-audit-4adfb506-6a6f-468c-bafa-46f50691c8fc",
-    "createdAt": "2026-11-01T10:58:20.597Z",
-    "actor": "local-mcp-admin",
-    "toolName": "propose_source_review_batch",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-02b4ea74-aa42-4808-89e3-f5d9511baa04",
-    "createdAt": "2026-11-01T10:58:18.707Z",
-    "actor": "local-mcp-admin",
-    "toolName": "propose_source_review_batch",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-e946b929-8f9d-414a-b9b6-b6f198f789db",
-    "createdAt": "2026-11-01T10:58:04.518Z",
-    "actor": "local-mcp-admin",
-    "toolName": "propose_source_decision",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-0da2575d-fd8c-40b6-bb73-b85b2ecca4f9",
-    "createdAt": "2026-11-01T10:58:04.493Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-ab856585-deda-4c33-8fd1-451526b0ca4f",
-    "createdAt": "2026-11-01T10:57:48.301Z",
-    "actor": "local-mcp-admin",
-    "toolName": "propose_source_decision",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-cc40d012-234d-4209-ad9c-6b9a400f00d5",
-    "createdAt": "2026-11-01T10:57:48.287Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-c6158624-d0fa-499c-a149-2f2302d7a0ad",
-    "createdAt": "2026-11-01T10:57:47.430Z",
-    "actor": "local-mcp-admin",
-    "toolName": "propose_source_decision",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-4c986a8f-798d-4cdc-910b-5294a7f891cb",
-    "createdAt": "2026-11-01T10:57:46.766Z",
-    "actor": "local-mcp-admin",
-    "toolName": "propose_source_decision",
     "status": "success"
   }
 ]

@@ -6,7 +6,7 @@
     "entryKind": "timeline_event",
     "targetTimelineEventId": "tl-2024-01-17-interim-response-to-safe-and-responsible-ai-consul",
     "targetTimelineRevisionHash": "baa3af6b2b0d137a54d36c6355ea1eb5192d12ed0f8c5b064b3ca29d333f749a",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-11-01T10:45:54.073Z",
     "createdBy": "local-mcp-admin",
     "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
@@ -35,6 +35,13 @@
         "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
         "pageContentHash": "2de95e49426a065247ddc02d0cfc56f47ddbc77491bc8d2d33f7e1aad09b8e64",
         "characterCount": 2291
+      },
+      "reviewedDate": {
+        "date": "2024-01-17",
+        "precision": "day",
+        "reviewedAt": "2026-11-01T10:57:30.677Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The news item is dated \"17 January 2024\" and states \"The Australian Government has published its interim response\"."
       }
     },
     "proposedRecord": {
@@ -45,9 +52,41 @@
       "type": "announcement",
       "jurisdiction": "federal",
       "sourceUrl": "https://www.industry.gov.au/news/australian-governments-interim-response-safe-and-responsible-ai-consultation",
-      "datePrecision": "day"
+      "datePrecision": "day",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.industry.gov.au/news/australian-governments-interim-response-safe-and-responsible-ai-consultation",
+          "finalUrl": "https://www.industry.gov.au/news/australian-governments-interim-response-safe-and-responsible-ai-consultation",
+          "title": "The Australian Government’s interim response to safe and responsible AI consultation | Department of Industry Science and Resources",
+          "retrievedAt": "2026-11-01T10:42:58.335Z",
+          "contentType": "text/html",
+          "contentHash": "ebd61e3bffd8c397c04f42dac4bd765a3dd6f65cd75a6963c6792c58a518d172",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-01T10:42:58.335Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+            "pageContentHash": "2de95e49426a065247ddc02d0cfc56f47ddbc77491bc8d2d33f7e1aad09b8e64",
+            "characterCount": 2291
+          },
+          "reviewedDate": {
+            "date": "2024-01-17",
+            "precision": "day",
+            "reviewedAt": "2026-11-01T10:57:30.677Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The news item is dated \"17 January 2024\" and states \"The Australian Government has published its interim response\"."
+          }
+        },
+        "checkedAt": "2026-11-01T10:57:30.677Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-1, proposal e43a4ec5). Proposed by Claude (agent). Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval."
+      }
     },
-    "updatedAt": "2026-11-01T10:45:54.086Z",
+    "updatedAt": "2026-11-01T10:57:30.842Z",
     "proposal": {
       "proposedBy": "Claude (agent)",
       "proposedRecord": {
@@ -67,7 +106,60 @@
       },
       "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
       "proposedAt": "2026-11-01T10:45:54.086Z"
-    }
+    },
+    "reviewedAt": "2026-11-01T10:57:30.677Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-1, proposal e43a4ec5). Proposed by Claude (agent). Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+    "decision": {
+      "proposalHash": "e43a4ec535df92f3d3fab2f9d13d3a591f70d5b419b06b984d6f49776c8335b4",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-01T10:56:20.908Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-01-1:71933e41418bc0cdd07e70215898fbe6fde7b3666f283da6f8087c238e220a4e",
+        "receivedAt": "2026-11-01T10:56:20.908Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWGNDZDJWRTZCdkdRLUozcWQwUnRULWZibERKWnE5ZTJORTlTZkozSlEwUSIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEUCIQCkBxiQHBBPAKoY_C-nX5X7gRpqjWwhEvk-BD1w8kc8gAIgDNep7EKuAXbQjBwnSu8_8sE_LmMpIxhA4RwscDCUUwc",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-01-1",
+        "entries": [
+          {
+            "id": "source-review-e203a93f-5e7f-41e6-a91f-30011b115d69",
+            "proposalHash": "5427ac4ef40038a1e38d2c7ee5c0ae7f77571234452b137ca8b7c9a6118bba5c"
+          },
+          {
+            "id": "source-review-be5f15cd-2a9b-40f0-a67e-2e7076bbda21",
+            "proposalHash": "edc82c8b6bfd283919b7f68302dd49b31285f7374ae00279e942dfc58fba82ec"
+          },
+          {
+            "id": "source-review-e121e97d-8e0e-4881-9f62-90eb7bc28ce2",
+            "proposalHash": "180a66b71c6e32850912d63a39afe28045a6fa3fafdac67ae2fcfc360ba5277b"
+          },
+          {
+            "id": "source-review-1c625372-be21-4131-86e3-444337ac0ac7",
+            "proposalHash": "e81318e3d8c02893e80c8b205ba6dbffcf2e2523f9ba6b0d31e43ed80d9ba1c5"
+          },
+          {
+            "id": "source-review-b0a6213b-a338-4c4e-b68d-1e149a44f799",
+            "proposalHash": "69298b93e2b097037e06c039c2a01bb372fa58c5822d558eb90c91bec1dcd04c"
+          },
+          {
+            "id": "source-review-a4e8673a-15b7-4c8a-852f-baae129b2b6f",
+            "proposalHash": "eaa9879a3e8fd2d1a4511913fd3dd83ec41ed06a4b18428212f9cafacddd3644"
+          },
+          {
+            "id": "source-review-b750156f-d3e0-4872-81b6-957f471df4ac",
+            "proposalHash": "e43a4ec535df92f3d3fab2f9d13d3a591f70d5b419b06b984d6f49776c8335b4"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-01T10:57:30.825Z"
   },
   {
     "id": "source-review-b0a6213b-a338-4c4e-b68d-1e149a44f799",
@@ -76,7 +168,7 @@
     "entryKind": "timeline_event",
     "targetTimelineEventId": "tl-2024-06-21-national-framework-for-the-assurance-of-ai-in-gove",
     "targetTimelineRevisionHash": "9b09185b16ecc40ab0749815af80f9c5886862efa941dd02d405bcb287b55a07",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-11-01T10:45:53.981Z",
     "createdBy": "local-mcp-admin",
     "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
@@ -105,6 +197,13 @@
         "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
         "pageContentHash": "fb13570311879b1494be2b7ac9f120df3aad9f4691837948a79ddb7638fbbbcb",
         "characterCount": 1721
+      },
+      "reviewedDate": {
+        "date": "2024-06-21",
+        "precision": "day",
+        "reviewedAt": "2026-11-01T10:57:30.193Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The page states the framework \"was agreed to and released by the Data and Digital Ministers Meeting on 21 June 2024\"."
       }
     },
     "proposedRecord": {
@@ -116,9 +215,41 @@
       "jurisdiction": "federal",
       "relatedPolicyId": "national-framework-assurance-ai-government",
       "sourceUrl": "https://www.finance.gov.au/government/public-data/data-and-digital-ministers-meeting/national-framework-assurance-artificial-intelligence-government",
-      "datePrecision": "day"
+      "datePrecision": "day",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.finance.gov.au/government/public-data/data-and-digital-ministers-meeting/national-framework-assurance-artificial-intelligence-government",
+          "finalUrl": "https://www.finance.gov.au/government/public-data/data-and-digital-ministers-meeting/national-framework-assurance-artificial-intelligence-government",
+          "title": "National framework for the assurance of artificial intelligence in government | Department of Finance",
+          "retrievedAt": "2026-11-01T10:42:44.526Z",
+          "contentType": "text/html",
+          "contentHash": "fc91d8df2b3370f2f67a4ee3f068684070a85801e5e14de1abaf643360d535f0",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-01T10:42:44.526Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+            "pageContentHash": "fb13570311879b1494be2b7ac9f120df3aad9f4691837948a79ddb7638fbbbcb",
+            "characterCount": 1721
+          },
+          "reviewedDate": {
+            "date": "2024-06-21",
+            "precision": "day",
+            "reviewedAt": "2026-11-01T10:57:30.193Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The page states the framework \"was agreed to and released by the Data and Digital Ministers Meeting on 21 June 2024\"."
+          }
+        },
+        "checkedAt": "2026-11-01T10:57:30.193Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-1, proposal 69298b93). Proposed by Claude (agent). Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval."
+      }
     },
-    "updatedAt": "2026-11-01T10:45:53.997Z",
+    "updatedAt": "2026-11-01T10:57:30.345Z",
     "proposal": {
       "proposedBy": "Claude (agent)",
       "proposedRecord": {
@@ -139,7 +270,60 @@
       },
       "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
       "proposedAt": "2026-11-01T10:45:53.997Z"
-    }
+    },
+    "reviewedAt": "2026-11-01T10:57:30.193Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-1, proposal 69298b93). Proposed by Claude (agent). Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+    "decision": {
+      "proposalHash": "69298b93e2b097037e06c039c2a01bb372fa58c5822d558eb90c91bec1dcd04c",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-01T10:56:20.908Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-01-1:71933e41418bc0cdd07e70215898fbe6fde7b3666f283da6f8087c238e220a4e",
+        "receivedAt": "2026-11-01T10:56:20.908Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWGNDZDJWRTZCdkdRLUozcWQwUnRULWZibERKWnE5ZTJORTlTZkozSlEwUSIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEUCIQCkBxiQHBBPAKoY_C-nX5X7gRpqjWwhEvk-BD1w8kc8gAIgDNep7EKuAXbQjBwnSu8_8sE_LmMpIxhA4RwscDCUUwc",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-01-1",
+        "entries": [
+          {
+            "id": "source-review-e203a93f-5e7f-41e6-a91f-30011b115d69",
+            "proposalHash": "5427ac4ef40038a1e38d2c7ee5c0ae7f77571234452b137ca8b7c9a6118bba5c"
+          },
+          {
+            "id": "source-review-be5f15cd-2a9b-40f0-a67e-2e7076bbda21",
+            "proposalHash": "edc82c8b6bfd283919b7f68302dd49b31285f7374ae00279e942dfc58fba82ec"
+          },
+          {
+            "id": "source-review-e121e97d-8e0e-4881-9f62-90eb7bc28ce2",
+            "proposalHash": "180a66b71c6e32850912d63a39afe28045a6fa3fafdac67ae2fcfc360ba5277b"
+          },
+          {
+            "id": "source-review-1c625372-be21-4131-86e3-444337ac0ac7",
+            "proposalHash": "e81318e3d8c02893e80c8b205ba6dbffcf2e2523f9ba6b0d31e43ed80d9ba1c5"
+          },
+          {
+            "id": "source-review-b0a6213b-a338-4c4e-b68d-1e149a44f799",
+            "proposalHash": "69298b93e2b097037e06c039c2a01bb372fa58c5822d558eb90c91bec1dcd04c"
+          },
+          {
+            "id": "source-review-a4e8673a-15b7-4c8a-852f-baae129b2b6f",
+            "proposalHash": "eaa9879a3e8fd2d1a4511913fd3dd83ec41ed06a4b18428212f9cafacddd3644"
+          },
+          {
+            "id": "source-review-b750156f-d3e0-4872-81b6-957f471df4ac",
+            "proposalHash": "e43a4ec535df92f3d3fab2f9d13d3a591f70d5b419b06b984d6f49776c8335b4"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-01T10:57:30.326Z"
   },
   {
     "id": "source-review-1c625372-be21-4131-86e3-444337ac0ac7",
@@ -148,7 +332,7 @@
     "entryKind": "timeline_event",
     "targetTimelineEventId": "tl-2019-11-07-ai-ethics-principles-published",
     "targetTimelineRevisionHash": "66393321167b33e29a54d4ff16b9aaa66b06a59b1e460e372470e86ebf909c8f",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-11-01T10:45:53.935Z",
     "createdBy": "local-mcp-admin",
     "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
@@ -190,9 +374,36 @@
       "jurisdiction": "federal",
       "relatedPolicyId": "australias-ai-ethics-framework",
       "sourceUrl": "https://www.industry.gov.au/publications/australias-ai-ethics-principles",
-      "datePrecision": "day"
+      "datePrecision": "day",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.industry.gov.au/publications/australias-ai-ethics-principles",
+          "finalUrl": "https://www.industry.gov.au/publications/australias-ai-ethics-principles",
+          "title": "Australia’s AI Ethics Principles | Department of Industry Science and Resources",
+          "retrievedAt": "2026-11-01T10:42:36.193Z",
+          "contentType": "text/html",
+          "contentHash": "0b7ed94e5d544a5ffb02d6c272d299ea9e5f8be4de1f5f8578266910d82dabf3",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-01T10:42:36.193Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+            "pageContentHash": "37580e6388f59c70b0cf45b0224b7cd6cdb3a70443166df80cc09a50c6f33245",
+            "characterCount": 12269
+          },
+          "publishedAt": "2019-11-07",
+          "publishedAtPrecision": "day"
+        },
+        "checkedAt": "2026-11-01T10:57:30.023Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-1, proposal e81318e3). Proposed by Claude (agent). Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval."
+      }
     },
-    "updatedAt": "2026-11-01T10:45:53.946Z",
+    "updatedAt": "2026-11-01T10:57:30.131Z",
     "proposal": {
       "proposedBy": "Claude (agent)",
       "proposedRecord": {
@@ -213,16 +424,69 @@
       },
       "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
       "proposedAt": "2026-11-01T10:45:53.946Z"
-    }
+    },
+    "reviewedAt": "2026-11-01T10:57:30.023Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-1, proposal e81318e3). Proposed by Claude (agent). Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+    "decision": {
+      "proposalHash": "e81318e3d8c02893e80c8b205ba6dbffcf2e2523f9ba6b0d31e43ed80d9ba1c5",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-01T10:56:20.908Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-01-1:71933e41418bc0cdd07e70215898fbe6fde7b3666f283da6f8087c238e220a4e",
+        "receivedAt": "2026-11-01T10:56:20.908Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWGNDZDJWRTZCdkdRLUozcWQwUnRULWZibERKWnE5ZTJORTlTZkozSlEwUSIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEUCIQCkBxiQHBBPAKoY_C-nX5X7gRpqjWwhEvk-BD1w8kc8gAIgDNep7EKuAXbQjBwnSu8_8sE_LmMpIxhA4RwscDCUUwc",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-01-1",
+        "entries": [
+          {
+            "id": "source-review-e203a93f-5e7f-41e6-a91f-30011b115d69",
+            "proposalHash": "5427ac4ef40038a1e38d2c7ee5c0ae7f77571234452b137ca8b7c9a6118bba5c"
+          },
+          {
+            "id": "source-review-be5f15cd-2a9b-40f0-a67e-2e7076bbda21",
+            "proposalHash": "edc82c8b6bfd283919b7f68302dd49b31285f7374ae00279e942dfc58fba82ec"
+          },
+          {
+            "id": "source-review-e121e97d-8e0e-4881-9f62-90eb7bc28ce2",
+            "proposalHash": "180a66b71c6e32850912d63a39afe28045a6fa3fafdac67ae2fcfc360ba5277b"
+          },
+          {
+            "id": "source-review-1c625372-be21-4131-86e3-444337ac0ac7",
+            "proposalHash": "e81318e3d8c02893e80c8b205ba6dbffcf2e2523f9ba6b0d31e43ed80d9ba1c5"
+          },
+          {
+            "id": "source-review-b0a6213b-a338-4c4e-b68d-1e149a44f799",
+            "proposalHash": "69298b93e2b097037e06c039c2a01bb372fa58c5822d558eb90c91bec1dcd04c"
+          },
+          {
+            "id": "source-review-a4e8673a-15b7-4c8a-852f-baae129b2b6f",
+            "proposalHash": "eaa9879a3e8fd2d1a4511913fd3dd83ec41ed06a4b18428212f9cafacddd3644"
+          },
+          {
+            "id": "source-review-b750156f-d3e0-4872-81b6-957f471df4ac",
+            "proposalHash": "e43a4ec535df92f3d3fab2f9d13d3a591f70d5b419b06b984d6f49776c8335b4"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-01T10:57:30.117Z"
   },
   {
     "id": "source-review-e121e97d-8e0e-4881-9f62-90eb7bc28ce2",
     "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
-    "title": "DTA AI Policy Version 2.0 Released",
+    "title": "DTA AI Policy Version 2.0 Takes Effect",
     "entryKind": "timeline_event",
     "targetTimelineEventId": "tl-2025-12-15-dta-ai-policy-version-2-0-released",
     "targetTimelineRevisionHash": "2f7b442e012a96c185fa6282f51974dcf993da0cd7e14e1b182036f2ed964b73",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-11-01T10:45:53.890Z",
     "createdBy": "local-mcp-admin",
     "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
@@ -253,7 +517,14 @@
         "characterCount": 3750
       },
       "publishedAt": "2026-10-21",
-      "publishedAtPrecision": "day"
+      "publishedAtPrecision": "day",
+      "reviewedDate": {
+        "date": "2025-12-15",
+        "precision": "day",
+        "reviewedAt": "2026-11-01T10:57:29.758Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The policy page states \"This version of the policy came into effect 15 December 2025 (v2.0)\"."
+      }
     },
     "proposedRecord": {
       "id": "tl-2025-12-15-dta-ai-policy-version-2-0-released",
@@ -264,9 +535,43 @@
       "jurisdiction": "federal",
       "relatedPolicyId": "policy-responsible-use-ai-government-v2",
       "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
-      "datePrecision": "day"
+      "datePrecision": "day",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.digital.gov.au/ai/ai-in-government-policy",
+          "finalUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
+          "title": "Policy for the responsible use of AI in government - Version 2.1 | digital.gov.au",
+          "retrievedAt": "2026-11-01T10:42:23.247Z",
+          "contentType": "text/html",
+          "contentHash": "6ebea7670da4fdebfbf4270d6f245af395ab7462d97afd7be8b4ff826ba99a64",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-01T10:42:23.247Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+            "pageContentHash": "79daa851abf79bb5ab4beac851544f49f1064842262ced35d3a58e1fbf80dbde",
+            "characterCount": 3750
+          },
+          "publishedAt": "2026-10-21",
+          "publishedAtPrecision": "day",
+          "reviewedDate": {
+            "date": "2025-12-15",
+            "precision": "day",
+            "reviewedAt": "2026-11-01T10:57:29.758Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The policy page states \"This version of the policy came into effect 15 December 2025 (v2.0)\"."
+          }
+        },
+        "checkedAt": "2026-11-01T10:57:29.758Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-1, proposal 180a66b7). Proposed by Claude (agent). Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval."
+      }
     },
-    "updatedAt": "2026-11-01T10:45:53.902Z",
+    "updatedAt": "2026-11-01T10:57:29.911Z",
     "proposal": {
       "proposedBy": "Claude (agent)",
       "proposedRecord": {
@@ -287,7 +592,60 @@
       },
       "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
       "proposedAt": "2026-11-01T10:45:53.902Z"
-    }
+    },
+    "reviewedAt": "2026-11-01T10:57:29.758Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-1, proposal 180a66b7). Proposed by Claude (agent). Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+    "decision": {
+      "proposalHash": "180a66b71c6e32850912d63a39afe28045a6fa3fafdac67ae2fcfc360ba5277b",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-01T10:56:20.908Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-01-1:71933e41418bc0cdd07e70215898fbe6fde7b3666f283da6f8087c238e220a4e",
+        "receivedAt": "2026-11-01T10:56:20.908Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWGNDZDJWRTZCdkdRLUozcWQwUnRULWZibERKWnE5ZTJORTlTZkozSlEwUSIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEUCIQCkBxiQHBBPAKoY_C-nX5X7gRpqjWwhEvk-BD1w8kc8gAIgDNep7EKuAXbQjBwnSu8_8sE_LmMpIxhA4RwscDCUUwc",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-01-1",
+        "entries": [
+          {
+            "id": "source-review-e203a93f-5e7f-41e6-a91f-30011b115d69",
+            "proposalHash": "5427ac4ef40038a1e38d2c7ee5c0ae7f77571234452b137ca8b7c9a6118bba5c"
+          },
+          {
+            "id": "source-review-be5f15cd-2a9b-40f0-a67e-2e7076bbda21",
+            "proposalHash": "edc82c8b6bfd283919b7f68302dd49b31285f7374ae00279e942dfc58fba82ec"
+          },
+          {
+            "id": "source-review-e121e97d-8e0e-4881-9f62-90eb7bc28ce2",
+            "proposalHash": "180a66b71c6e32850912d63a39afe28045a6fa3fafdac67ae2fcfc360ba5277b"
+          },
+          {
+            "id": "source-review-1c625372-be21-4131-86e3-444337ac0ac7",
+            "proposalHash": "e81318e3d8c02893e80c8b205ba6dbffcf2e2523f9ba6b0d31e43ed80d9ba1c5"
+          },
+          {
+            "id": "source-review-b0a6213b-a338-4c4e-b68d-1e149a44f799",
+            "proposalHash": "69298b93e2b097037e06c039c2a01bb372fa58c5822d558eb90c91bec1dcd04c"
+          },
+          {
+            "id": "source-review-a4e8673a-15b7-4c8a-852f-baae129b2b6f",
+            "proposalHash": "eaa9879a3e8fd2d1a4511913fd3dd83ec41ed06a4b18428212f9cafacddd3644"
+          },
+          {
+            "id": "source-review-b750156f-d3e0-4872-81b6-957f471df4ac",
+            "proposalHash": "e43a4ec535df92f3d3fab2f9d13d3a591f70d5b419b06b984d6f49776c8335b4"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-01T10:57:29.884Z"
   },
   {
     "id": "source-review-be5f15cd-2a9b-40f0-a67e-2e7076bbda21",
@@ -296,7 +654,7 @@
     "entryKind": "timeline_event",
     "targetTimelineEventId": "tl-2024-09-05-voluntary-ai-safety-standard-published",
     "targetTimelineRevisionHash": "80b3bf9dff5bae79b0012a671470d0fc4a004d34e53a14334711de829ccbe899",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-11-01T10:45:53.847Z",
     "createdBy": "local-mcp-admin",
     "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
@@ -338,9 +696,36 @@
       "jurisdiction": "federal",
       "relatedPolicyId": "voluntary-ai-safety-standard",
       "sourceUrl": "https://www.industry.gov.au/publications/voluntary-ai-safety-standard",
-      "datePrecision": "day"
+      "datePrecision": "day",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.industry.gov.au/publications/voluntary-ai-safety-standard",
+          "finalUrl": "https://www.industry.gov.au/publications/voluntary-ai-safety-standard",
+          "title": "Voluntary AI Safety Standard | Department of Industry Science and Resources",
+          "retrievedAt": "2026-11-01T10:42:10.612Z",
+          "contentType": "text/html",
+          "contentHash": "92a792913a2c1f4e96320a4fd3ae9e51a64c10817749c8162f03d1e0614a3092",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-01T10:42:10.612Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+            "pageContentHash": "cc62ec7732d0c5d2a049d93f91c8837be355eea24720123edf50635b0bf2adeb",
+            "characterCount": 4312
+          },
+          "publishedAt": "2024-09-05",
+          "publishedAtPrecision": "day"
+        },
+        "checkedAt": "2026-11-01T10:57:29.457Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-1, proposal edc82c8b). Proposed by Claude (agent). Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval."
+      }
     },
-    "updatedAt": "2026-11-01T10:45:53.858Z",
+    "updatedAt": "2026-11-01T10:57:29.640Z",
     "proposal": {
       "proposedBy": "Claude (agent)",
       "proposedRecord": {
@@ -361,7 +746,60 @@
       },
       "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
       "proposedAt": "2026-11-01T10:45:53.858Z"
-    }
+    },
+    "reviewedAt": "2026-11-01T10:57:29.457Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-1, proposal edc82c8b). Proposed by Claude (agent). Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+    "decision": {
+      "proposalHash": "edc82c8b6bfd283919b7f68302dd49b31285f7374ae00279e942dfc58fba82ec",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-01T10:56:20.908Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-01-1:71933e41418bc0cdd07e70215898fbe6fde7b3666f283da6f8087c238e220a4e",
+        "receivedAt": "2026-11-01T10:56:20.908Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWGNDZDJWRTZCdkdRLUozcWQwUnRULWZibERKWnE5ZTJORTlTZkozSlEwUSIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEUCIQCkBxiQHBBPAKoY_C-nX5X7gRpqjWwhEvk-BD1w8kc8gAIgDNep7EKuAXbQjBwnSu8_8sE_LmMpIxhA4RwscDCUUwc",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-01-1",
+        "entries": [
+          {
+            "id": "source-review-e203a93f-5e7f-41e6-a91f-30011b115d69",
+            "proposalHash": "5427ac4ef40038a1e38d2c7ee5c0ae7f77571234452b137ca8b7c9a6118bba5c"
+          },
+          {
+            "id": "source-review-be5f15cd-2a9b-40f0-a67e-2e7076bbda21",
+            "proposalHash": "edc82c8b6bfd283919b7f68302dd49b31285f7374ae00279e942dfc58fba82ec"
+          },
+          {
+            "id": "source-review-e121e97d-8e0e-4881-9f62-90eb7bc28ce2",
+            "proposalHash": "180a66b71c6e32850912d63a39afe28045a6fa3fafdac67ae2fcfc360ba5277b"
+          },
+          {
+            "id": "source-review-1c625372-be21-4131-86e3-444337ac0ac7",
+            "proposalHash": "e81318e3d8c02893e80c8b205ba6dbffcf2e2523f9ba6b0d31e43ed80d9ba1c5"
+          },
+          {
+            "id": "source-review-b0a6213b-a338-4c4e-b68d-1e149a44f799",
+            "proposalHash": "69298b93e2b097037e06c039c2a01bb372fa58c5822d558eb90c91bec1dcd04c"
+          },
+          {
+            "id": "source-review-a4e8673a-15b7-4c8a-852f-baae129b2b6f",
+            "proposalHash": "eaa9879a3e8fd2d1a4511913fd3dd83ec41ed06a4b18428212f9cafacddd3644"
+          },
+          {
+            "id": "source-review-b750156f-d3e0-4872-81b6-957f471df4ac",
+            "proposalHash": "e43a4ec535df92f3d3fab2f9d13d3a591f70d5b419b06b984d6f49776c8335b4"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-01T10:57:29.621Z"
   },
   {
     "id": "source-review-e203a93f-5e7f-41e6-a91f-30011b115d69",
@@ -370,7 +808,7 @@
     "entryKind": "timeline_event",
     "targetTimelineEventId": "tl-2025-12-02-national-ai-plan-released",
     "targetTimelineRevisionHash": "e35e70369da7bd34b5e22c38f9570b9d97ddf4ea01ee979a32c550a5977a196a",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-11-01T10:45:53.782Z",
     "createdBy": "local-mcp-admin",
     "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
@@ -412,9 +850,36 @@
       "jurisdiction": "federal",
       "relatedPolicyId": "national-ai-plan-2025",
       "sourceUrl": "https://www.industry.gov.au/publications/national-ai-plan",
-      "datePrecision": "day"
+      "datePrecision": "day",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.industry.gov.au/publications/national-ai-plan",
+          "finalUrl": "https://www.industry.gov.au/publications/national-ai-plan",
+          "title": "National AI Plan | Department of Industry Science and Resources",
+          "retrievedAt": "2026-11-01T10:42:04.600Z",
+          "contentType": "text/html",
+          "contentHash": "4d3315b6b81de24a09f50caf886abb7d1278419568386de24139e19ddc2349c0",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-01T10:42:04.600Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+            "pageContentHash": "28ae772e4098f32a44d2fd1d61070761f092ed62f56ba4f4658a3d59cf87ae3e",
+            "characterCount": 3051
+          },
+          "publishedAt": "2025-12-02",
+          "publishedAtPrecision": "day"
+        },
+        "checkedAt": "2026-11-01T10:57:29.098Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-1, proposal 5427ac4e). Proposed by Claude (agent). Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval."
+      }
     },
-    "updatedAt": "2026-11-01T10:45:53.805Z",
+    "updatedAt": "2026-11-01T10:57:29.282Z",
     "proposal": {
       "proposedBy": "Claude (agent)",
       "proposedRecord": {
@@ -435,7 +900,60 @@
       },
       "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
       "proposedAt": "2026-11-01T10:45:53.805Z"
-    }
+    },
+    "reviewedAt": "2026-11-01T10:57:29.098Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-1, proposal 5427ac4e). Proposed by Claude (agent). Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+    "decision": {
+      "proposalHash": "5427ac4ef40038a1e38d2c7ee5c0ae7f77571234452b137ca8b7c9a6118bba5c",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-01T10:56:20.908Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-01-1:71933e41418bc0cdd07e70215898fbe6fde7b3666f283da6f8087c238e220a4e",
+        "receivedAt": "2026-11-01T10:56:20.908Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWGNDZDJWRTZCdkdRLUozcWQwUnRULWZibERKWnE5ZTJORTlTZkozSlEwUSIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEUCIQCkBxiQHBBPAKoY_C-nX5X7gRpqjWwhEvk-BD1w8kc8gAIgDNep7EKuAXbQjBwnSu8_8sE_LmMpIxhA4RwscDCUUwc",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-01-1",
+        "entries": [
+          {
+            "id": "source-review-e203a93f-5e7f-41e6-a91f-30011b115d69",
+            "proposalHash": "5427ac4ef40038a1e38d2c7ee5c0ae7f77571234452b137ca8b7c9a6118bba5c"
+          },
+          {
+            "id": "source-review-be5f15cd-2a9b-40f0-a67e-2e7076bbda21",
+            "proposalHash": "edc82c8b6bfd283919b7f68302dd49b31285f7374ae00279e942dfc58fba82ec"
+          },
+          {
+            "id": "source-review-e121e97d-8e0e-4881-9f62-90eb7bc28ce2",
+            "proposalHash": "180a66b71c6e32850912d63a39afe28045a6fa3fafdac67ae2fcfc360ba5277b"
+          },
+          {
+            "id": "source-review-1c625372-be21-4131-86e3-444337ac0ac7",
+            "proposalHash": "e81318e3d8c02893e80c8b205ba6dbffcf2e2523f9ba6b0d31e43ed80d9ba1c5"
+          },
+          {
+            "id": "source-review-b0a6213b-a338-4c4e-b68d-1e149a44f799",
+            "proposalHash": "69298b93e2b097037e06c039c2a01bb372fa58c5822d558eb90c91bec1dcd04c"
+          },
+          {
+            "id": "source-review-a4e8673a-15b7-4c8a-852f-baae129b2b6f",
+            "proposalHash": "eaa9879a3e8fd2d1a4511913fd3dd83ec41ed06a4b18428212f9cafacddd3644"
+          },
+          {
+            "id": "source-review-b750156f-d3e0-4872-81b6-957f471df4ac",
+            "proposalHash": "e43a4ec535df92f3d3fab2f9d13d3a591f70d5b419b06b984d6f49776c8335b4"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-01T10:57:29.264Z"
   },
   {
     "id": "source-review-a4e8673a-15b7-4c8a-852f-baae129b2b6f",
@@ -444,7 +962,7 @@
     "entryKind": "timeline_event",
     "targetTimelineEventId": "tl-2025-11-12-aps-ai-plan-launched",
     "targetTimelineRevisionHash": "72f62238cc4894ac6c299364c55a8e5c4feaf887f24289d5a6b21f9a7d1d34d5",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-11-01T10:45:54.029Z",
     "createdBy": "local-mcp-admin",
     "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
@@ -473,6 +991,13 @@
         "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
         "pageContentHash": "3fcb99a4701663be39a60dbfb53fb0e643f40d5266f4b3267490a785ad4658c5",
         "characterCount": 3498
+      },
+      "reviewedDate": {
+        "date": "2025-11-12",
+        "precision": "day",
+        "reviewedAt": "2026-11-01T10:57:30.410Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The news item is dated \"12 November 2025\" and states \"The Government has today launched the APS AI Plan\"."
       }
     },
     "proposedRecord": {
@@ -484,9 +1009,41 @@
       "jurisdiction": "federal",
       "relatedPolicyId": "aps-ai-plan-2025",
       "sourceUrl": "https://www.finance.gov.au/about-us/news/2025/introducing-aps-ai-plan",
-      "datePrecision": "day"
+      "datePrecision": "day",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.finance.gov.au/about-us/news/2025/introducing-aps-ai-plan",
+          "finalUrl": "https://www.finance.gov.au/about-us/news/2025/introducing-aps-ai-plan",
+          "title": "Introducing the APS AI Plan | Department of Finance",
+          "retrievedAt": "2026-11-01T10:42:52.370Z",
+          "contentType": "text/html",
+          "contentHash": "09ffb47ec098f1795554e4d8f859961e5416f05a942afeaae99c9b9f2093a9a8",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-01T10:42:52.370Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+            "pageContentHash": "3fcb99a4701663be39a60dbfb53fb0e643f40d5266f4b3267490a785ad4658c5",
+            "characterCount": 3498
+          },
+          "reviewedDate": {
+            "date": "2025-11-12",
+            "precision": "day",
+            "reviewedAt": "2026-11-01T10:57:30.410Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The news item is dated \"12 November 2025\" and states \"The Government has today launched the APS AI Plan\"."
+          }
+        },
+        "checkedAt": "2026-11-01T10:57:30.410Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-1, proposal eaa9879a). Proposed by Claude (agent). Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval."
+      }
     },
-    "updatedAt": "2026-11-01T10:45:54.044Z",
+    "updatedAt": "2026-11-01T10:57:30.601Z",
     "proposal": {
       "proposedBy": "Claude (agent)",
       "proposedRecord": {
@@ -507,7 +1064,60 @@
       },
       "notes": "Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
       "proposedAt": "2026-11-01T10:45:54.044Z"
-    }
+    },
+    "reviewedAt": "2026-11-01T10:57:30.410Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-1, proposal eaa9879a). Proposed by Claude (agent). Firecrawl read with the declared Policai identity (self-hosted, single read), approved by Daniel Alkurdi on 1 Nov 2026 for one-off review reads. The host refuses plain Policai retrieval.",
+    "decision": {
+      "proposalHash": "eaa9879a3e8fd2d1a4511913fd3dd83ec41ed06a4b18428212f9cafacddd3644",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-01T10:56:20.908Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-01-1:71933e41418bc0cdd07e70215898fbe6fde7b3666f283da6f8087c238e220a4e",
+        "receivedAt": "2026-11-01T10:56:20.908Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWGNDZDJWRTZCdkdRLUozcWQwUnRULWZibERKWnE5ZTJORTlTZkozSlEwUSIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEUCIQCkBxiQHBBPAKoY_C-nX5X7gRpqjWwhEvk-BD1w8kc8gAIgDNep7EKuAXbQjBwnSu8_8sE_LmMpIxhA4RwscDCUUwc",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-01-1",
+        "entries": [
+          {
+            "id": "source-review-e203a93f-5e7f-41e6-a91f-30011b115d69",
+            "proposalHash": "5427ac4ef40038a1e38d2c7ee5c0ae7f77571234452b137ca8b7c9a6118bba5c"
+          },
+          {
+            "id": "source-review-be5f15cd-2a9b-40f0-a67e-2e7076bbda21",
+            "proposalHash": "edc82c8b6bfd283919b7f68302dd49b31285f7374ae00279e942dfc58fba82ec"
+          },
+          {
+            "id": "source-review-e121e97d-8e0e-4881-9f62-90eb7bc28ce2",
+            "proposalHash": "180a66b71c6e32850912d63a39afe28045a6fa3fafdac67ae2fcfc360ba5277b"
+          },
+          {
+            "id": "source-review-1c625372-be21-4131-86e3-444337ac0ac7",
+            "proposalHash": "e81318e3d8c02893e80c8b205ba6dbffcf2e2523f9ba6b0d31e43ed80d9ba1c5"
+          },
+          {
+            "id": "source-review-b0a6213b-a338-4c4e-b68d-1e149a44f799",
+            "proposalHash": "69298b93e2b097037e06c039c2a01bb372fa58c5822d558eb90c91bec1dcd04c"
+          },
+          {
+            "id": "source-review-a4e8673a-15b7-4c8a-852f-baae129b2b6f",
+            "proposalHash": "eaa9879a3e8fd2d1a4511913fd3dd83ec41ed06a4b18428212f9cafacddd3644"
+          },
+          {
+            "id": "source-review-b750156f-d3e0-4872-81b6-957f471df4ac",
+            "proposalHash": "e43a4ec535df92f3d3fab2f9d13d3a591f70d5b419b06b984d6f49776c8335b4"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-01T10:57:30.585Z"
   },
   {
     "id": "source-review-05007dd0-f3ff-476e-b0fc-8578932e432e",
