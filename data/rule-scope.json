@@ -162,21 +162,21 @@
   {
     "policyId": "nsw-nesa-stage-6-take-home-assessment-ai-rules",
     "kind": "rule",
-    "legalForce": "proposed",
+    "legalForce": "binding",
     "appliesTo": [
       "education"
     ],
     "scope": {
-      "quote": "Schools must design formal assessment tasks so that marks reflect the student’s own knowledge, skills and understanding. Marks must not reflect a student’s use of generative AI.",
-      "pinpoint": "Generative AI use in school-based assessment",
-      "url": "https://www.nsw.gov.au/education-and-training/nesa/news/all/new-take-home-assessment-rules"
+      "quote": "must not exceed one take-home assessment task, worth a maximum of 15%, except for courses with major projects or HSC practical exams that are exempt",
+      "pinpoint": "ACE Rule 2.1.2",
+      "url": "https://curriculum.nsw.edu.au/ace-rules/ace2/assessment-programs"
     },
     "review": {
       "status": "reviewed",
       "draftedBy": "Claude (agent)",
-      "draftedAt": "2026-10-23",
+      "draftedAt": "2026-11-01",
       "reviewedBy": "Daniel Alkurdi",
-      "reviewedAt": "2026-10-23"
+      "reviewedAt": "2026-11-01"
     }
   },
   {
