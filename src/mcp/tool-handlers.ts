@@ -15,7 +15,17 @@ import {
   stageSourceUrl,
   verifyRegisterRecord,
 } from '@/lib/source-ingest';
+import path from 'node:path';
 import { getSourceReviews } from '@/lib/data-service';
+import { readJsonFile, writeJsonFile } from '@/lib/file-store';
+import { withDataMutationLock } from '@/lib/data-lock';
+import {
+  batchCovers,
+  planSourceReviewBatches,
+  sourceReviewBatchSubject,
+  type SourceReviewBatchLedger,
+  type SourceReviewBatchRef,
+} from '@/lib/source-review-batch';
 import {
   approvalPageUrl,
   approvalSubject,
@@ -236,27 +246,78 @@ export async function handleProposeSourceDecision(input: {
 }
 
 const DECISION_CARD_URL = /^https:\/\/claude\.ai\/\S+$/;
+const SOURCE_REVIEW_BATCHES_FILE = path.join(process.cwd(), 'data', 'source-review-batches.json');
+
+const readSourceReviewBatches = () =>
+  readJsonFile<SourceReviewBatchLedger>(SOURCE_REVIEW_BATCHES_FILE, { batches: [] });
+
+/**
+ * Puts several approvable proposals to the editor for one passkey signature.
+ * Every proposal must have no blockers; the batch pins each review to its
+ * current proposalHash. Returns each batch's approvalUrl and what the editor
+ * must see for every entry.
+ */
+export async function handleProposeSourceReviewBatch(input: { ids: string[]; batchSize?: number }) {
+  return audited('propose_source_review_batch', {}, () =>
+    withDataMutationLock(async () => {
+      const ids = [...new Set(input.ids)];
+      if (ids.length === 0) throw new Error('Name at least one staged review');
+      const proposals = await Promise.all(ids.map((id) => describeSourceProposal(id)));
+      const problems = proposals.flatMap((proposal) =>
+        proposal.blockers.map((blocker) => `${proposal.id}: ${blocker}`),
+      );
+      if (problems.length > 0) {
+        throw new Error(`These proposals cannot go to the editor yet:\n- ${problems.join('\n- ')}`);
+      }
+      const ledger = await readSourceReviewBatches();
+      const batches = planSourceReviewBatches(
+        proposals.map((proposal) => ({ id: proposal.id, proposalHash: proposal.proposalHash })),
+        ledger,
+        { now: new Date(), batchSize: input.batchSize },
+      );
+      await writeJsonFile(SOURCE_REVIEW_BATCHES_FILE, { batches: [...ledger.batches, ...batches] });
+      const byId = new Map(proposals.map((proposal) => [proposal.id, proposal]));
+      return batches.map((batch) => ({
+        id: batch.id,
+        approvalUrl: approvalPageUrl(sourceReviewBatchSubject(batch)),
+        proposals: batch.entries.map((entry) => byId.get(entry.id)!),
+      }));
+    }),
+  );
+}
+
+async function batchForDecision(batchId: string, entry: { id: string; proposalHash: string }): Promise<SourceReviewBatchRef> {
+  const batch = (await readSourceReviewBatches()).batches.find((candidate) => candidate.id === batchId);
+  if (!batch) throw new Error(`Unknown source review batch ${batchId}`);
+  if (!batchCovers(batch, entry)) {
+    throw new Error(`Batch ${batchId} does not include proposal ${entry.proposalHash.slice(0, 8)} of ${entry.id}`);
+  }
+  return { id: batch.id, entries: batch.entries };
+}
 
 /**
  * Records the editor's decision. Once an editor passkey is registered, the
  * only accepted decision is that editor's passkey signature over this exact
- * proposal, read from the approvals mailbox; the reviewer is whoever the
- * signing key belongs to. Before then, the card link stands in.
+ * proposal, or over a batch that pins it (batchId), read from the approvals
+ * mailbox; the reviewer is whoever the signing key belongs to. Before then,
+ * the card link stands in.
  */
 export async function handleRecordDecision(input: {
   id: string;
   proposalHash: string;
+  batchId?: string;
   reviewer?: string;
   attestationUrl?: string;
 }) {
   return audited('record_decision', {}, async () => {
     const passkeys = await readEditorPasskeys();
     if (passkeys.length > 0) {
-      const subject = approvalSubject({
-        kind: 'source-review',
-        id: input.id,
-        proposalHash: input.proposalHash,
-      });
+      const batch = input.batchId
+        ? await batchForDecision(input.batchId, { id: input.id, proposalHash: input.proposalHash })
+        : undefined;
+      const subject = batch
+        ? sourceReviewBatchSubject(batch)
+        : approvalSubject({ kind: 'source-review', id: input.id, proposalHash: input.proposalHash });
       const approval = await fetchEditorApproval(subject);
       if (!approval) {
         throw new Error(
@@ -269,8 +330,11 @@ export async function handleRecordDecision(input: {
         id: input.id,
         proposalHash: input.proposalHash,
         reviewer: verified.passkey.reviewer,
-        attestation: { kind: 'passkey', approval },
+        attestation: { kind: 'passkey', approval, ...(batch ? { batch } : {}) },
       });
+    }
+    if (input.batchId) {
+      throw new Error('Batch approval needs a registered editor passkey');
     }
 
     const reviewer = requireSignalReviewer(input.reviewer);

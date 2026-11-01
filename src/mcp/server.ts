@@ -9,6 +9,7 @@ import {
   handleListStagedSources,
   handleListThemes,
   handleProposeSourceDecision,
+  handleProposeSourceReviewBatch,
   handleRecordDecision,
   handleRecordManualSourceReview,
   handleRejectStagedSource,
@@ -216,10 +217,11 @@ writeTool(server.registerTool(
   {
     title: 'Record editor decision',
     description:
-      'Approves and publishes a staged review after the editor approved its proposalHash with their passkey at the approvalUrl from show_source_proposal. The tool reads that signature itself and records the passkey owner as the reviewer; a typed "go ahead" or a card tap is not a decision. Until an editor passkey is registered in data/editor-passkeys.json, it instead takes reviewer (on POLICAI_SIGNAL_REVIEWERS, default Daniel Alkurdi) and the attestationUrl of the claude.ai decision card. Refuses when the review changed since it was approved, or when a staged browser capture is over 7 days old. Retrying the same decision resumes a failed publication.',
+      'Approves and publishes a staged review after the editor approved its proposalHash with their passkey at the approvalUrl from show_source_proposal, or approved a batch that includes it (pass batchId from propose_source_review_batch). The tool reads that signature itself and records the passkey owner as the reviewer; a typed "go ahead" or a card tap is not a decision. Until an editor passkey is registered in data/editor-passkeys.json, it instead takes reviewer (on POLICAI_SIGNAL_REVIEWERS, default Daniel Alkurdi) and the attestationUrl of the claude.ai decision card. Refuses when the review changed since it was approved, or when a staged browser capture is over 7 days old. Retrying the same decision resumes a failed publication.',
     inputSchema: {
       id: z.string().min(1),
       proposalHash: z.string().regex(/^[a-f0-9]{64}$/),
+      batchId: z.string().min(1).optional(),
       reviewer: z.string().min(1).optional(),
       attestationUrl: z.string().url().optional(),
     },
@@ -230,6 +232,25 @@ writeTool(server.registerTool(
     },
   },
   async (input) => toToolText(await handleRecordDecision(input)),
+));
+
+writeTool(server.registerTool(
+  'propose_source_review_batch',
+  {
+    title: 'Propose a batch of source reviews',
+    description:
+      'Puts up to ten approvable proposals (no blockers in show_source_proposal) to the editor for one passkey signature, pinning each review to its current proposalHash. Returns each batch id, its approvalUrl and every proposal in it. Show the editor every proposal with approvalUrl; after they sign, call record_decision for each entry with its batchId. Does not approve or publish.',
+    inputSchema: {
+      ids: z.array(z.string().min(1)).min(1),
+      batchSize: z.number().int().min(1).max(10).optional(),
+    },
+    annotations: {
+      readOnlyHint: false,
+      idempotentHint: false,
+      destructiveHint: false,
+    },
+  },
+  async (input) => toToolText(await handleProposeSourceReviewBatch(input)),
 ));
 
 server.registerTool(

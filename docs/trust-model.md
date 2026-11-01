@@ -41,6 +41,12 @@ it from the approvals mailbox). Approval renews `checkedAt` for
 every record in the batch, or for none: each fingerprint must still match and
 each audit must be at most seven days old. Changed or unreadable sources get a
 full review.
+Full reviews of staged sources can also be approved in batches of up to ten
+(`npm run source-review:batch`). Each batch in `data/source-review-batches.json`
+pins every review to the exact proposal the editor was shown, and the editor
+signs the batch once. Each review is still decided and published separately and
+keeps a copy of the batch, so validation checks its signature without the
+ledger.
 A record also becomes stale when its source content changes or its source is
 confirmed missing with an HTTP 404 or 410 response, redirects to a homepage, or
 leaves the official-source allow-list. A timeout, bot challenge, or access

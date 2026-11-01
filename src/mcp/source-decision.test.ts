@@ -23,6 +23,7 @@ vi.mock('@/lib/data-lock', () => ({
   withDataMutationLock: async (run: () => Promise<unknown>) => run(),
 }));
 import {
+  handleProposeSourceReviewBatch,
   handleProposeSourceDecision,
   handleRecordDecision,
   handleShowSourceProposal,
@@ -31,6 +32,7 @@ import {
 import { getTimelineEvents } from '@/lib/data-service';
 import { approvalSubject, type EditorApproval } from '@/lib/editor-approval';
 import { softwarePasskey } from '@/test/software-passkey';
+import { sourceReviewBatchSubject, type SourceReviewBatchLedger } from '@/lib/source-review-batch';
 
 const inquiryUrl = 'https://example.gov.au/inquiry';
 const cardUrl = 'https://claude.ai/code/project/chan_example?thread=cmsg_example';
@@ -249,5 +251,33 @@ describe('decide with the editor passkey', () => {
 
     await expect(handleRecordDecision({ id: card.id, proposalHash: changed.proposalHash })).rejects.toThrow('has not approved');
     await expect(handleRecordDecision({ id: card.id, proposalHash: card.proposalHash })).rejects.toThrow('changed');
+  });
+
+  it('publishes each proposal of a batch the editor signed once', async () => {
+    const editor = registerEditor();
+    const card = await proposeInquiryUpdate();
+    const [batch] = await handleProposeSourceReviewBatch({ ids: [card.id] });
+    const ledger = files.get('source-review-batches.json') as SourceReviewBatchLedger;
+    expect(ledger.batches).toHaveLength(1);
+    expect(ledger.batches[0].entries).toEqual([{ id: card.id, proposalHash: card.proposalHash }]);
+    expect(batch.proposals.map((proposal) => proposal.id)).toEqual([card.id]);
+
+    await expect(handleRecordDecision({ id: card.id, proposalHash: card.proposalHash, batchId: batch.id })).rejects.toThrow(batch.approvalUrl);
+    mailbox.push(editor.approve(sourceReviewBatchSubject(ledger.batches[0])));
+    const published = await handleRecordDecision({ id: card.id, proposalHash: card.proposalHash, batchId: batch.id });
+
+    expect(published.status).toBe('published');
+    expect(published.decision?.batch).toEqual({ id: batch.id, entries: ledger.batches[0].entries });
+    expect((await readEvent()).description).toBe(newDescription);
+  });
+
+  it('refuses to batch a proposal that has blockers, and a decision the batch does not pin', async () => {
+    registerEditor();
+    const card = await proposeInquiryUpdate();
+    const [batch] = await handleProposeSourceReviewBatch({ ids: [card.id] });
+
+    await expect(handleRecordDecision({ id: card.id, proposalHash: 'b'.repeat(64), batchId: batch.id })).rejects.toThrow('does not include');
+    await handleProposeSourceDecision({ id: card.id, proposedBy: 'Claude (agent)' });
+    await expect(handleProposeSourceReviewBatch({ ids: [card.id] })).rejects.toThrow('cannot go to the editor yet');
   });
 });

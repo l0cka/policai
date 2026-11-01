@@ -64,6 +64,7 @@ import {
 	validateTimeline,
 } from "@/lib/validate-data";
 import type { EditorApproval } from "@/lib/approval-subject";
+import type { SourceReviewBatchRef } from "@/lib/source-review-batch";
 import {
 	isVerificationCurrent,
 	VERIFICATION_CLOCK_SKEW_TOLERANCE_MS,
@@ -3070,7 +3071,7 @@ async function decideSourceReviewUnlocked(input: {
 	proposalHash: string;
 	reviewer: string;
 	attestation:
-		| { kind: "passkey"; approval: EditorApproval }
+		| { kind: "passkey"; approval: EditorApproval; batch?: SourceReviewBatchRef }
 		| { kind: "card"; attestationUrl: string };
 }): Promise<SourceReview> {
 	const review = await getSourceReviewById(input.id);
@@ -3098,7 +3099,7 @@ async function decideSourceReviewUnlocked(input: {
 	const { attestation } = input;
 	const approvalNotes = [
 		attestation.kind === "passkey"
-			? `Approved by ${input.reviewer} with a passkey on policai.org (proposal ${input.proposalHash.slice(0, 8)}).`
+			? `Approved by ${input.reviewer} with a passkey on policai.org (${attestation.batch ? `batch ${attestation.batch.id}, ` : ""}proposal ${input.proposalHash.slice(0, 8)}).`
 			: `Approved by ${input.reviewer} on decision card ${attestation.attestationUrl} (proposal ${input.proposalHash.slice(0, 8)}).`,
 		`Proposed by ${review.proposal?.proposedBy ?? review.createdBy}.`,
 		review.proposal?.notes?.trim(),
@@ -3113,7 +3114,11 @@ async function decideSourceReviewUnlocked(input: {
 			proposalHash: input.proposalHash,
 			decidedBy: input.reviewer,
 			...(attestation.kind === "passkey"
-				? { decidedAt: attestation.approval.receivedAt, approval: attestation.approval }
+				? {
+						decidedAt: attestation.approval.receivedAt,
+						approval: attestation.approval,
+						...(attestation.batch ? { batch: attestation.batch } : {}),
+					}
 				: { decidedAt: new Date().toISOString(), attestationUrl: attestation.attestationUrl }),
 		},
 	});
