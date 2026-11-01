@@ -325,6 +325,36 @@ describe('followLegislation', () => {
     expect(results).toMatchObject([{ sourceId: 'track:bill-r7553', status: 'error', failureClass: 'parse' }]);
     expect(errors).toEqual(['track:bill-r7553: the bill home page shows no stages; its format may have changed']);
   });
+
+  it('reports an APH 403 as identity_refused and names the manual fallback', async () => {
+    const record = bill('r7553', [introduced('2026-10-15', 'lower', 'r7553')]);
+    const { results, errors } = await followLegislation({
+      targets: followTargets([record]),
+      existingReviews: [],
+      retrieve: async () => {
+        throw new Error('HTTP 403 at https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553');
+      },
+      now,
+    });
+    expect(results).toMatchObject([{ sourceId: 'track:bill-r7553', status: 'error', failureClass: 'identity_refused' }]);
+    expect(errors[0]).toContain('identity_refused');
+    expect(errors[0]).toContain('fallback is a manual check of');
+  });
+
+  it('treats an Azure WAF block page as a refusal rather than a markup change', async () => {
+    const record = bill('r7553', [introduced('2026-10-15', 'lower', 'r7553')]);
+    const { results, errors } = await followLegislation({
+      targets: followTargets([record]),
+      existingReviews: [],
+      retrieve: async (url) => ({
+        body: '<html><head><title>WAF Block Page </title></head><body><h1>Page Blocked by WAF</h1></body></html>',
+        evidence: { url },
+      }),
+      now,
+    });
+    expect(results).toMatchObject([{ failureClass: 'identity_refused' }]);
+    expect(errors[0]).toContain('fallback is a manual check of');
+  });
 });
 
 describe('a waiting Federal Register update the register no longer shows', () => {

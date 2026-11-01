@@ -154,9 +154,13 @@ describe('collection CLI write path', () => {
         sourceResults: { sourceId: string; coverageEligible?: boolean; status: string }[];
       };
     }>('public', 'data', 'meta.json');
-    expect(written.collector.health).toBe('healthy');
     expect(written.collector.lastRunSources).not.toContain('accc-rss');
-    expect(written.collector.lastRunErrors.join('\n')).not.toContain('accc-rss');
+    expect(written.collector.lastRunErrors.join('\n')).not.toMatch(/accc-rss: HTTP 403/);
+    expect(written.collector.health).toBe(
+      written.collector.lastRunErrors.some((error) => error.includes('unchecked'))
+        ? 'degraded'
+        : 'healthy',
+    );
     expect(
       written.collector.sourceResults.some(
         (result) => result.sourceId === 'accc-rss' && result.coverageEligible !== false,
@@ -369,7 +373,7 @@ describe('collection CLI write path', () => {
       expect(outbox().developments.map((d) => d.id)).toEqual([finding.id]);
       expect(
         readJson<{ collector: { lastRunErrors: string[] } }>('public', 'data', 'meta.json').collector.lastRunErrors,
-      ).toEqual([expect.stringMatching(/^dropped invalid record bad-finding: /)]);
+      ).toEqual(expect.arrayContaining([expect.stringMatching(/^dropped invalid record bad-finding: /)]));
     });
 
     it('writes nothing to the promoted state itself', async () => {

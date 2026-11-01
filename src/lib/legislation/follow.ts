@@ -4,6 +4,7 @@ import { policyRevisionHash } from '@/lib/policy-revision';
 import { sourceUrlsEqual } from '@/lib/source-url';
 import { isWeeklyDue } from '@/lib/pipeline/collect';
 import { classifyFailure } from '@/lib/pipeline/failure';
+import { looksLikeBotChallenge } from '@/lib/pipeline/fetch';
 import type { Policy, PolicyDate, PolicyDraft, SourceEvidence, SourceReview, SourceRunResult } from '@/types';
 import { parseAphProgress } from './aph-progress';
 import { parseNswBillDetail } from './nsw-progress';
@@ -184,9 +185,18 @@ export async function followLegislation(run: FollowRun): Promise<FollowResult> {
     try {
       retrieved = await run.retrieve(url, register);
     } catch (error) {
-      const message = `${sourceId}: ${error instanceof Error ? error.message : String(error)}`;
+      const cls = classifyFailure(error).cls;
+      const detail = error instanceof Error ? error.message : String(error);
+      const message = `${sourceId}: ${detail} (${cls}); fallback is a manual check of ${url}`;
       errors.push(message);
-      results.push(row(sourceId, startedAt, { error: message, failureClass: classifyFailure(error).cls, failedUrl: url }));
+      results.push(row(sourceId, startedAt, { error: message, failureClass: cls, failedUrl: url }));
+      log(`[follow] FAILED ${message}`);
+      continue;
+    }
+    if (looksLikeBotChallenge(retrieved.body)) {
+      const message = `${sourceId}: the page is a bot-challenge or WAF block (identity_refused); fallback is a manual check of ${url}`;
+      errors.push(message);
+      results.push(row(sourceId, startedAt, { error: message, failureClass: 'identity_refused', failedUrl: url }));
       log(`[follow] FAILED ${message}`);
       continue;
     }
