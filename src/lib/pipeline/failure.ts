@@ -7,7 +7,7 @@ export const FAILURE_CLASSES = [
   {
     cls: 'identity_refused',
     pattern:
-      /ERR_HTTP2_PROTOCOL_ERROR|ERR_CONNECTION_RESET|ECONNRESET|\bHTTP 403\b|bot-challenge page|refused the headless browser with a 403/,
+      /ERR_HTTP2_PROTOCOL_ERROR|ERR_CONNECTION_RESET|ECONNRESET|\bHTTP 403\b|bot-challenge page|refused the headless browser with a 403|decided refused by|page blocked by waf/,
     description:
       'Heuristic label: HTTP/2 protocol error, connection reset, HTTP 403 or a bot challenge. An outage can look the same; a human decides.',
   },

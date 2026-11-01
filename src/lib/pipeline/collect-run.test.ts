@@ -8,10 +8,11 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { runCollection, withoutInvalidChanges } from '../../../scripts/collect-run';
 import { aphBillPage } from '@/lib/legislation/follow';
 import { buildManualDecision, buildPolicy } from '@/test/factories';
-import type { Development, SourceReview } from '@/types';
+import { publicAutomaticCollectionMeta } from '@/lib/collection-coverage';
+import type { CollectionMeta, Development, SourceReview } from '@/types';
 import type { WatchState } from './collect';
 import { createHostGate, robotsFetcher } from './host-gate';
-import type { WatchSource } from './sources';
+import { WATCH_SOURCES, type WatchSource } from './sources';
 
 const SOURCE: WatchSource = {
   id: 'cli-test-rss',
@@ -146,17 +147,15 @@ describe('collection CLI write path', () => {
       }),
     });
 
-    const written = readJson<{
-      collector: {
-        health: string;
-        lastRunSources: string[];
-        lastRunErrors: string[];
-        sourceResults: { sourceId: string; coverageEligible?: boolean; status: string }[];
-      };
-    }>('public', 'data', 'meta.json');
-    expect(written.collector.health).toBe('healthy');
+    const written = readJson<CollectionMeta>('public', 'data', 'meta.json');
     expect(written.collector.lastRunSources).not.toContain('accc-rss');
-    expect(written.collector.lastRunErrors.join('\n')).not.toContain('accc-rss');
+    expect(written.collector.lastRunErrors.join('\n')).not.toMatch(/accc-rss: HTTP 403/);
+    expect(written.collector.lastRunErrors).toContainEqual(
+      expect.stringMatching(/^dta-media: unchecked \(/),
+    );
+    expect(written.collector.health).toBe('degraded');
+    expect(written.lastHealthyAt).not.toBe('2026-07-10T00:00:00.000Z');
+    expect(publicAutomaticCollectionMeta(written, WATCH_SOURCES)).toEqual(written);
     expect(
       written.collector.sourceResults.some(
         (result) => result.sourceId === 'accc-rss' && result.coverageEligible !== false,
@@ -369,7 +368,7 @@ describe('collection CLI write path', () => {
       expect(outbox().developments.map((d) => d.id)).toEqual([finding.id]);
       expect(
         readJson<{ collector: { lastRunErrors: string[] } }>('public', 'data', 'meta.json').collector.lastRunErrors,
-      ).toEqual([expect.stringMatching(/^dropped invalid record bad-finding: /)]);
+      ).toEqual(expect.arrayContaining([expect.stringMatching(/^dropped invalid record bad-finding: /)]));
     });
 
     it('writes nothing to the promoted state itself', async () => {

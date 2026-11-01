@@ -65,6 +65,7 @@ vi.mock('@/lib/pipeline/fetch', async (importOriginal) => {
   return {
     documentKindFromBytes,
     matchesRetrievedContent: actual.matchesRetrievedContent,
+    looksLikeBotChallenge: actual.looksLikeBotChallenge,
     SourceFetchError: actual.SourceFetchError,
     retrieveSource,
   };

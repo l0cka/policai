@@ -1,4 +1,10 @@
+import { UNCHECKED_SOURCE_MARKER } from '@/lib/collection-coverage';
 import type { WatchSource } from '@/lib/pipeline/sources';
+import {
+  MANUAL_REVIEW_LIMIT_DAYS,
+  reviewIsCurrent,
+} from '@/lib/source-monitoring';
+import type { SourceMonitoringState } from '@/types';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -40,6 +46,7 @@ export function assessSourceFreshness(
   sources: readonly WatchSource[],
   lastCheckedBySource: Readonly<Record<string, string>>,
   now: Date = new Date(),
+  monitoring: SourceMonitoringState = { manualReviews: [] },
 ): SourceFreshness[] {
   return sources
     .filter((source) => source.enabled)
@@ -51,8 +58,16 @@ export function assessSourceFreshness(
         lastCheckedAt === null
           ? null
           : Math.floor((now.getTime() - parsed) / DAY_MS);
+      const review = monitoring.manualReviews.find(
+        (entry) => entry.sourceId === source.id,
+      );
+      const manualCurrent =
+        source.automation !== 'automatic' &&
+        review !== undefined &&
+        reviewIsCurrent(source, review, now);
       let state: SourceFreshnessState;
-      if (source.automation !== 'automatic') state = 'manual';
+      if (manualCurrent) state = 'manual';
+      else if (source.automation !== 'automatic') state = 'overdue';
       else if (ageDays === null) state = 'never_checked';
       else if (ageDays > FRESHNESS_LIMIT_DAYS[source.schedule]) state = 'overdue';
       else state = 'current';
@@ -71,6 +86,35 @@ export function assessSourceFreshness(
         STATE_ORDER[a.state] - STATE_ORDER[b.state] ||
         (b.ageDays ?? 0) - (a.ageDays ?? 0),
     );
+}
+
+/**
+ * Sources the collector must name because nobody has checked them inside
+ * the existing limit: {@link FRESHNESS_LIMIT_DAYS} for an automatic source
+ * (3 days daily, 10 weekly), and {@link MANUAL_REVIEW_LIMIT_DAYS} for a
+ * manual source (2 days daily, 8 weekly). A manual source counts only when
+ * its hand review is missing or no longer current.
+ */
+export function uncheckedSourceErrors(
+  sources: readonly WatchSource[],
+  lastCheckedBySource: Readonly<Record<string, string>>,
+  monitoring: SourceMonitoringState,
+  now: Date = new Date(),
+): string[] {
+  return assessSourceFreshness(sources, lastCheckedBySource, now, monitoring)
+    .filter((row) => row.state === 'overdue' || row.state === 'never_checked')
+    .map((row) => {
+      const limit =
+        sources.find((source) => source.id === row.sourceId)?.automation ===
+        'automatic'
+          ? FRESHNESS_LIMIT_DAYS[row.schedule]
+          : MANUAL_REVIEW_LIMIT_DAYS[row.schedule];
+      const age =
+        row.ageDays === null
+          ? 'never checked'
+          : `last checked ${row.ageDays} day${row.ageDays === 1 ? '' : 's'} ago`;
+      return `${row.sourceId}${UNCHECKED_SOURCE_MARKER}${age}; limit ${limit} days, ${row.schedule})`;
+    });
 }
 
 export function summarizeSourceFreshness(rows: readonly SourceFreshness[]) {

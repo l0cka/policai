@@ -79,11 +79,42 @@ function isManualSourceId(manualIds: ReadonlySet<string>, sourceId: string): boo
   return manualIds.has(sourceId);
 }
 
+/** Marks a run-level note that a source went unchecked past its limit. */
+export const UNCHECKED_SOURCE_MARKER = ': unchecked (';
+
+/**
+ * A retrieval failure of a manual source. A note that a manual source went
+ * unchecked is not one: the public meta must keep it.
+ */
 function errorNamesManualSource(error: string, manualIds: ReadonlySet<string>): boolean {
   for (const sourceId of manualIds) {
+    if (error.startsWith(`${sourceId}${UNCHECKED_SOURCE_MARKER}`)) return false;
     if (error.startsWith(`${sourceId}:`)) return true;
   }
   return false;
+}
+
+/**
+ * Adds run-level errors that no source result carries (legislation follows,
+ * unchecked sources). A healthy run with any of them is degraded, so it
+ * keeps the previous `lastHealthyAt`.
+ */
+export function withRunLevelErrors(
+  meta: CollectionMeta,
+  errors: readonly string[],
+  previousLastHealthyAt: string | null,
+): CollectionMeta {
+  if (errors.length === 0) return meta;
+  const degraded = meta.collector.health === 'healthy';
+  return {
+    ...meta,
+    lastHealthyAt: degraded ? previousLastHealthyAt : meta.lastHealthyAt,
+    collector: {
+      ...meta.collector,
+      lastRunErrors: [...meta.collector.lastRunErrors, ...errors],
+      health: degraded ? 'degraded' : meta.collector.health,
+    },
+  };
 }
 
 /**
@@ -120,11 +151,17 @@ export function publicAutomaticCollectionMeta(
   const sourceResults = collector.sourceResults.filter(
     (result) => !isManualSourceId(manualIds, result.sourceId),
   );
+  const lastRunErrors = collector.lastRunErrors.filter(
+    (error) => !errorNamesManualSource(error, manualIds),
+  );
   const health = collectionRunHealth(
     sourceResults,
     catalog,
     minHealthySourceRate,
   );
+  if (health.status === 'healthy' && lastRunErrors.length > 0) {
+    health.status = 'degraded';
+  }
   return {
     ...meta,
     lastHealthyAt:
@@ -140,9 +177,7 @@ export function publicAutomaticCollectionMeta(
       lastRunSources: collector.lastRunSources.filter(
         (sourceId) => !isManualSourceId(manualIds, sourceId),
       ),
-      lastRunErrors: collector.lastRunErrors.filter(
-        (error) => !errorNamesManualSource(error, manualIds),
-      ),
+      lastRunErrors,
       health: health.status,
       dueSourceCount: health.dueSourceCount,
       successfulSourceCount: health.successfulSourceCount,

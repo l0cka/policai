@@ -39,7 +39,7 @@ export async function GET(request?: Request) {
 	);
 
 	const freshness = summarizeSourceFreshness(
-		assessSourceFreshness(WATCH_SOURCES, checkTimes),
+		assessSourceFreshness(WATCH_SOURCES, checkTimes, new Date(), monitoring),
 	);
 
 	const recordFreshness = summarizeRecordFreshness(policies);

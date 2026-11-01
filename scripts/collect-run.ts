@@ -1,5 +1,8 @@
 import path from 'path';
-import { publicAutomaticCollectionMeta } from '../src/lib/collection-coverage';
+import {
+  publicAutomaticCollectionMeta,
+  withRunLevelErrors,
+} from '../src/lib/collection-coverage';
 import { readJsonFile, writeJsonFile } from '../src/lib/file-store';
 import {
   collect,
@@ -17,6 +20,7 @@ import {
 import { retrieveSource } from '../src/lib/pipeline/fetch';
 import { advanceSourceHealth } from '../src/lib/pipeline/source-health';
 import { refusedHosts, WATCH_SOURCES, type WatchSource } from '../src/lib/pipeline/sources';
+import { uncheckedSourceErrors } from '../src/lib/source-freshness';
 import {
   BROWSER_REGISTERS,
   FOLLOW_SOURCE_PREFIX,
@@ -39,6 +43,7 @@ import type {
   CollectionMeta,
   Development,
   Policy,
+  SourceMonitoringState,
   SourceReview,
   TimelineEvent,
 } from '../src/types';
@@ -121,13 +126,14 @@ function dataPaths(rootDir: string) {
     watchState: path.join(rootDir, 'data', 'watch-state.json'),
     sourceReviews: path.join(rootDir, 'data', 'source-reviews.json'),
     policies: path.join(rootDir, 'data', 'policies.json'),
+    sourceMonitoring: path.join(rootDir, 'data', 'source-monitoring.json'),
     timeline: path.join(rootDir, 'data', 'timeline.json'),
   };
 }
 
 export async function runCollection(run: CollectionRun): Promise<void> {
   const paths = dataPaths(run.rootDir);
-  const [mainState, mainDevelopments, meta, mainReviews, policies, timelineEvents] =
+  const [mainState, mainDevelopments, meta, mainReviews, policies, timelineEvents, monitoring] =
     await Promise.all([
       readJsonFile<WatchState>(paths.watchState, emptyWatchState()),
       readJsonFile<Development[]>(paths.developments, []),
@@ -141,6 +147,7 @@ export async function runCollection(run: CollectionRun): Promise<void> {
         paths.timeline,
         [],
       ),
+      readJsonFile<SourceMonitoringState>(paths.sourceMonitoring, { manualReviews: [] }),
     ]);
   const [state, outbox] = run.stateDir
     ? await Promise.all([
@@ -213,9 +220,20 @@ export async function runCollection(run: CollectionRun): Promise<void> {
     follow.results,
   );
 
+  const unchecked = uncheckedSourceErrors(
+    WATCH_SOURCES,
+    result.state.lastCheckedBySource,
+    monitoring,
+    (run.now ?? (() => new Date()))(),
+  );
+  const runMeta = withRunLevelErrors(
+    result.meta,
+    [...follow.errors, ...unchecked],
+    meta?.lastHealthyAt ?? null,
+  );
   const publicMeta = run.sourceId
-    ? result.meta
-    : publicAutomaticCollectionMeta(result.meta, WATCH_SOURCES);
+    ? runMeta
+    : publicAutomaticCollectionMeta(runMeta, WATCH_SOURCES);
 
   console.log(
     `[collect] ${result.developments.length} new developments, ` +

@@ -31,6 +31,9 @@ import { GET } from "./route";
 const AUTOMATIC_SOURCE_COUNT = WATCH_SOURCES.filter(
 	(source) => source.enabled && source.automation === "automatic",
 ).length;
+const MANUAL_SOURCE_COUNT = WATCH_SOURCES.filter(
+	(source) => source.enabled && source.automation !== "automatic",
+).length;
 
 describe("/api/status", () => {
 	beforeEach(() => {
@@ -84,7 +87,7 @@ describe("/api/status", () => {
 				manualSourceCount: 14,
 				manualCurrentCount: 0,
 				manualUnavailableCount: 0,
-				overdueSourceCount: 0,
+				overdueSourceCount: MANUAL_SOURCE_COUNT,
 				neverCheckedSourceCount: AUTOMATIC_SOURCE_COUNT,
 			},
 			records: {
@@ -166,7 +169,7 @@ describe("/api/status", () => {
 				manualSourceCount: 14,
 				manualCurrentCount: 0,
 				manualUnavailableCount: 0,
-				overdueSourceCount: 0,
+				overdueSourceCount: MANUAL_SOURCE_COUNT,
 				neverCheckedSourceCount: AUTOMATIC_SOURCE_COUNT,
 			},
 			records: {
@@ -222,7 +225,7 @@ describe("/api/status", () => {
 
 		const body = await (await GET()).json();
 
-		expect(body.collection.overdueSourceCount).toBe(1);
+		expect(body.collection.overdueSourceCount).toBe(MANUAL_SOURCE_COUNT + 1);
 		expect(body.collection.neverCheckedSourceCount).toBe(
 			AUTOMATIC_SOURCE_COUNT - 1,
 		);

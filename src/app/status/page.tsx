@@ -112,7 +112,7 @@ export default async function StatusPage() {
     sourceHealth,
     automatic.map((source) => source.id),
   );
-  const rows = assessSourceFreshness(WATCH_SOURCES, checkTimes);
+  const rows = assessSourceFreshness(WATCH_SOURCES, checkTimes, new Date(), monitoring);
   const freshness = summarizeSourceFreshness(rows);
   const manual = summarizeManualSourceCoverage(WATCH_SOURCES, monitoring);
   const queue = summarizeReviewQueue(pendingReviews);
