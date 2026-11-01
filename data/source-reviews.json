@@ -1,5 +1,258 @@
 [
   {
+    "id": "source-review-ae9cafc8-e18f-47f6-b867-5f55d5a10d88",
+    "sourceUrl": "https://www.digital.gov.au/ai-reference-architecture",
+    "title": "AI Reference Architecture",
+    "entryKind": "policy",
+    "targetPolicyId": "dta-ai-reference-architecture",
+    "targetPolicyBaseRevisionHash": "0f013d4ab05e1ad36069d29e94130c75324bb462c8b19f122c297476556aee36",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-01T23:25:32.567Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Removes a staging leftover sentence flagged by the claude-pr-review on #627. Nothing else changes.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": "framework",
+      "suggestedJurisdiction": "federal",
+      "summary": "Digital Transformation Agency architectural foundation for designing, implementing and governing AI across the Australian Government. It supports the Policy for the responsible use of AI in government and the AI Plan for the APS 2025. Use is voluntary.",
+      "tags": [
+        "AI Reference Architecture",
+        "AIRA",
+        "architecture",
+        "public sector",
+        "DTA"
+      ],
+      "agencies": [
+        "Digital Transformation Agency"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://www.digital.gov.au/ai-reference-architecture",
+      "finalUrl": "https://www.digital.gov.au/ai-reference-architecture",
+      "title": "AI Reference Architecture | digital.gov.au",
+      "retrievedAt": "2026-11-01T23:12:55.599Z",
+      "contentType": "text/html",
+      "contentHash": "5b666aee92deaed420f29d07114cacccffb425897e73506eb3fc5ba72cee6835",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-11-01T23:12:55.599Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "Reuses the single headless Chromium read of 1 Nov 2026 23:12 UTC with the declared Policai identity (Policai/1.0 (+https://policai.org)) from Argus; no new read. The host refuses the collector over plain HTTP. One-off read approved by Daniel Alkurdi on 1 Nov 2026 and on the 1 Nov 23:11 UTC decision card.",
+        "pageContentHash": "c7e1192a2a4cb615e1e7c591dfe8bf7eb0b56068e411e442540b68542c5e7527",
+        "characterCount": 1886
+      }
+    },
+    "proposedRecord": {
+      "id": "dta-ai-reference-architecture",
+      "title": "AI Reference Architecture",
+      "description": "Digital Transformation Agency architectural foundation for designing, implementing and governing AI across the Australian Government. It supports the Policy for the responsible use of AI in government and the AI Plan for the APS 2025. Use is voluntary.",
+      "jurisdiction": "federal",
+      "type": "framework",
+      "status": "active",
+      "effectiveDate": "2026-10-30",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-10-30",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.digital.gov.au/ai-reference-architecture",
+            "finalUrl": "https://www.digital.gov.au/ai-reference-architecture",
+            "title": "AI Reference Architecture | digital.gov.au",
+            "retrievedAt": "2026-11-01T23:12:55.599Z",
+            "contentType": "text/html",
+            "contentHash": "5b666aee92deaed420f29d07114cacccffb425897e73506eb3fc5ba72cee6835",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-11-01T23:12:55.599Z",
+              "capturedBy": "Claude (agent)",
+              "requestedBy": "Daniel Alkurdi",
+              "notes": "Headless Chromium read with the declared Policai identity (Policai/1.0 (+https://policai.org)), single read of this page from Argus. The host refuses the collector over plain HTTP. One-off read approved by Daniel Alkurdi on 1 Nov 2026 and on the 1 Nov 23:11 UTC decision card. Replaces the earlier staging, whose HTML came through a reader proxy.",
+              "pageContentHash": "c7e1192a2a4cb615e1e7c591dfe8bf7eb0b56068e411e442540b68542c5e7527",
+              "characterCount": 1886
+            },
+            "reviewedDate": {
+              "date": "2026-10-30",
+              "precision": "day",
+              "reviewedAt": "2026-11-01T23:18:42.056Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "This landing page shows no publication date; its PDFs read \"LAST UPDATED: 23 Oct 2026\". The primary date comes from the DTA media release announcing the publication, whose page states 30 October 2026."
+            }
+          }
+        }
+      ],
+      "agencies": [
+        "Digital Transformation Agency"
+      ],
+      "sourceUrl": "https://www.digital.gov.au/ai-reference-architecture",
+      "content": "The DTA media release of 30 October 2026 (https://www.dta.gov.au/media-releases/ai-reference-architecture-new-blueprint-help-government-agencies-design-ai-systems) announces the AI Reference Architecture (AIRA) and a companion guide. The resource is https://www.digital.gov.au/ai-reference-architecture. The introduction (https://www.digital.gov.au/ai-reference-architecture/introduction) says AIRA provides an architectural foundation for designing, implementing and governing AI across the Australian Government and supports the AI Plan for the Australian Public Service 2025 (https://www.digital.gov.au/policy/ai/australian-public-service-ai-plan-2025) and the Policy for the responsible use of AI in government (https://www.digital.gov.au/ai/ai-in-government-policy; register id policy-responsible-use-ai-government-v2). It covers a functional stack (experience, application and orchestration, intelligence and analytics, data and metadata, platform and infrastructure), communication, trustworthiness and assurance, and human agency, oversight and control. Appendix A covers key roles (https://www.digital.gov.au/ai-reference-architecture/appendix-a). Appendix B covers the relationship with other frameworks (https://www.digital.gov.au/ai-reference-architecture/appendix-b). The Companion Guide — Scenarios is https://www.digital.gov.au/ai-reference-architecture/companion-guide. The landing page offers https://www.digital.gov.au/sites/default/files/documents/2026-10/AI-Architecture-ACCESSIBLE.pdf and https://www.digital.gov.au/sites/default/files/documents/2026-10/AI-Architecture-Companion-Guide-ACCESSIBLE.pdf, each marked last updated 23 Oct 2026. The release says using the architecture is voluntary: it supports agencies to meet applicable requirements and does not replace them.",
+      "aiSummary": "DTA published AIRA on 30 October 2026 as a voluntary architectural foundation for Australian Government AI systems, supporting the AI Plan for the APS 2025 and the Policy for the responsible use of AI in government. PDF files on the landing page are marked last updated 23 October 2026.",
+      "tags": [
+        "AI Reference Architecture",
+        "AIRA",
+        "architecture",
+        "public sector",
+        "DTA"
+      ],
+      "themes": [
+        "ai-governance",
+        "public-sector",
+        "standards",
+        "human-oversight",
+        "risk-assurance"
+      ],
+      "createdAt": "2026-11-01T21:20:00.000Z",
+      "updatedAt": "2026-11-01T23:18:42.056Z",
+      "lastReviewedAt": "2026-11-01T23:18:42.056Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.digital.gov.au/ai-reference-architecture",
+          "finalUrl": "https://www.digital.gov.au/ai-reference-architecture",
+          "title": "AI Reference Architecture | digital.gov.au",
+          "retrievedAt": "2026-11-01T23:12:55.599Z",
+          "contentType": "text/html",
+          "contentHash": "5b666aee92deaed420f29d07114cacccffb425897e73506eb3fc5ba72cee6835",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-01T23:12:55.599Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Headless Chromium read with the declared Policai identity (Policai/1.0 (+https://policai.org)), single read of this page from Argus. The host refuses the collector over plain HTTP. One-off read approved by Daniel Alkurdi on 1 Nov 2026 and on the 1 Nov 23:11 UTC decision card. Replaces the earlier staging, whose HTML came through a reader proxy.",
+            "pageContentHash": "c7e1192a2a4cb615e1e7c591dfe8bf7eb0b56068e411e442540b68542c5e7527",
+            "characterCount": 1886
+          },
+          "reviewedDate": {
+            "date": "2026-10-30",
+            "precision": "day",
+            "reviewedAt": "2026-11-01T23:18:42.056Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "This landing page shows no publication date; its PDFs read \"LAST UPDATED: 23 Oct 2026\". The primary date comes from the DTA media release announcing the publication, whose page states 30 October 2026."
+          }
+        },
+        "checkedAt": "2026-11-01T23:18:42.056Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal 7571c389). Proposed by Claude (agent), requested by Daniel Alkurdi. Re-staged from a one-off declared-identity browser read. Record text unchanged from the earlier proposal; the date source evidence now points to the new media release capture."
+      }
+    },
+    "updatedAt": "2026-11-01T23:25:44.291Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "proposedRecord": {
+        "id": "dta-ai-reference-architecture",
+        "title": "AI Reference Architecture",
+        "description": "Digital Transformation Agency architectural foundation for designing, implementing and governing AI across the Australian Government. It supports the Policy for the responsible use of AI in government and the AI Plan for the APS 2025. Use is voluntary.",
+        "jurisdiction": "federal",
+        "type": "framework",
+        "status": "active",
+        "effectiveDate": "2026-10-30",
+        "dates": [
+          {
+            "type": "published",
+            "date": "2026-10-30",
+            "precision": "day",
+            "primary": true,
+            "source": {
+              "url": "https://www.digital.gov.au/ai-reference-architecture",
+              "finalUrl": "https://www.digital.gov.au/ai-reference-architecture",
+              "title": "AI Reference Architecture | digital.gov.au",
+              "retrievedAt": "2026-11-01T23:12:55.599Z",
+              "contentType": "text/html",
+              "contentHash": "5b666aee92deaed420f29d07114cacccffb425897e73506eb3fc5ba72cee6835",
+              "linkedDocuments": [],
+              "browserCapture": {
+                "method": "browser",
+                "capturedAt": "2026-11-01T23:12:55.599Z",
+                "capturedBy": "Claude (agent)",
+                "requestedBy": "Daniel Alkurdi",
+                "notes": "Headless Chromium read with the declared Policai identity (Policai/1.0 (+https://policai.org)), single read of this page from Argus. The host refuses the collector over plain HTTP. One-off read approved by Daniel Alkurdi on 1 Nov 2026 and on the 1 Nov 23:11 UTC decision card. Replaces the earlier staging, whose HTML came through a reader proxy.",
+                "pageContentHash": "c7e1192a2a4cb615e1e7c591dfe8bf7eb0b56068e411e442540b68542c5e7527",
+                "characterCount": 1886
+              },
+              "reviewedDate": {
+                "date": "2026-10-30",
+                "precision": "day",
+                "reviewedAt": "2026-11-01T23:18:42.056Z",
+                "reviewedBy": "Daniel Alkurdi",
+                "notes": "This landing page shows no publication date; its PDFs read \"LAST UPDATED: 23 Oct 2026\". The primary date comes from the DTA media release announcing the publication, whose page states 30 October 2026."
+              }
+            }
+          }
+        ],
+        "agencies": [
+          "Digital Transformation Agency"
+        ],
+        "sourceUrl": "https://www.digital.gov.au/ai-reference-architecture",
+        "content": "The DTA media release of 30 October 2026 (https://www.dta.gov.au/media-releases/ai-reference-architecture-new-blueprint-help-government-agencies-design-ai-systems) announces the AI Reference Architecture (AIRA) and a companion guide. The resource is https://www.digital.gov.au/ai-reference-architecture. The introduction (https://www.digital.gov.au/ai-reference-architecture/introduction) says AIRA provides an architectural foundation for designing, implementing and governing AI across the Australian Government and supports the AI Plan for the Australian Public Service 2025 (https://www.digital.gov.au/policy/ai/australian-public-service-ai-plan-2025) and the Policy for the responsible use of AI in government (https://www.digital.gov.au/ai/ai-in-government-policy; register id policy-responsible-use-ai-government-v2). It covers a functional stack (experience, application and orchestration, intelligence and analytics, data and metadata, platform and infrastructure), communication, trustworthiness and assurance, and human agency, oversight and control. Appendix A covers key roles (https://www.digital.gov.au/ai-reference-architecture/appendix-a). Appendix B covers the relationship with other frameworks (https://www.digital.gov.au/ai-reference-architecture/appendix-b). The Companion Guide — Scenarios is https://www.digital.gov.au/ai-reference-architecture/companion-guide. The landing page offers https://www.digital.gov.au/sites/default/files/documents/2026-10/AI-Architecture-ACCESSIBLE.pdf and https://www.digital.gov.au/sites/default/files/documents/2026-10/AI-Architecture-Companion-Guide-ACCESSIBLE.pdf, each marked last updated 23 Oct 2026. The release says using the architecture is voluntary: it supports agencies to meet applicable requirements and does not replace them.",
+        "aiSummary": "DTA published AIRA on 30 October 2026 as a voluntary architectural foundation for Australian Government AI systems, supporting the AI Plan for the APS 2025 and the Policy for the responsible use of AI in government. PDF files on the landing page are marked last updated 23 October 2026.",
+        "tags": [
+          "AI Reference Architecture",
+          "AIRA",
+          "architecture",
+          "public sector",
+          "DTA"
+        ],
+        "themes": [
+          "ai-governance",
+          "public-sector",
+          "standards",
+          "human-oversight",
+          "risk-assurance"
+        ],
+        "createdAt": "2026-11-01T21:20:00.000Z",
+        "updatedAt": "2026-11-01T23:18:42.056Z",
+        "lastReviewedAt": "2026-11-01T23:18:42.056Z",
+        "verification": {
+          "status": "verified",
+          "source": {
+            "url": "https://www.digital.gov.au/ai-reference-architecture",
+            "finalUrl": "https://www.digital.gov.au/ai-reference-architecture",
+            "title": "AI Reference Architecture | digital.gov.au",
+            "retrievedAt": "2026-11-01T23:12:55.599Z",
+            "contentType": "text/html",
+            "contentHash": "5b666aee92deaed420f29d07114cacccffb425897e73506eb3fc5ba72cee6835",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-11-01T23:12:55.599Z",
+              "capturedBy": "Claude (agent)",
+              "requestedBy": "Daniel Alkurdi",
+              "notes": "Headless Chromium read with the declared Policai identity (Policai/1.0 (+https://policai.org)), single read of this page from Argus. The host refuses the collector over plain HTTP. One-off read approved by Daniel Alkurdi on 1 Nov 2026 and on the 1 Nov 23:11 UTC decision card. Replaces the earlier staging, whose HTML came through a reader proxy.",
+              "pageContentHash": "c7e1192a2a4cb615e1e7c591dfe8bf7eb0b56068e411e442540b68542c5e7527",
+              "characterCount": 1886
+            },
+            "reviewedDate": {
+              "date": "2026-10-30",
+              "precision": "day",
+              "reviewedAt": "2026-11-01T23:18:42.056Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "This landing page shows no publication date; its PDFs read \"LAST UPDATED: 23 Oct 2026\". The primary date comes from the DTA media release announcing the publication, whose page states 30 October 2026."
+            }
+          },
+          "checkedAt": "2026-11-01T23:18:42.056Z",
+          "checkedBy": "Daniel Alkurdi",
+          "method": "manual",
+          "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal 7571c389). Proposed by Claude (agent), requested by Daniel Alkurdi. Re-staged from a one-off declared-identity browser read. Record text unchanged from the earlier proposal; the date source evidence now points to the new media release capture."
+        }
+      },
+      "officialSourceUrl": "https://www.digital.gov.au/ai-reference-architecture",
+      "reviewedDate": {
+        "date": "2026-10-30",
+        "precision": "day",
+        "notes": "This landing page shows no publication date; its PDFs read \"LAST UPDATED: 23 Oct 2026\". The primary date is unchanged and comes from the DTA media release announcing the publication, whose page states 30 October 2026."
+      },
+      "notes": "Removes a staging leftover sentence flagged by the claude-pr-review on #627. Nothing else changes.",
+      "proposedAt": "2026-11-01T23:25:44.291Z"
+    }
+  },
+  {
     "id": "source-review-b750156f-d3e0-4872-81b6-957f471df4ac",
     "sourceUrl": "https://www.industry.gov.au/news/australian-governments-interim-response-safe-and-responsible-ai-consultation",
     "title": "Interim response to Safe and Responsible AI consultation",
