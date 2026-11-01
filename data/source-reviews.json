@@ -30338,5 +30338,201 @@
       }
     },
     "publishedAt": "2026-11-01T11:03:01.620Z"
+  },
+  {
+    "id": "source-review-dev-2026-10-30-dta-ai-reference-architecture",
+    "sourceUrl": "https://www.digital.gov.au/ai-reference-architecture",
+    "title": "AI Reference Architecture",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-01T21:20:00.000Z",
+    "createdBy": "editorial (Inky Quill handoff, 2026-11-01)",
+    "notes": "Editorial staging from the 1 Nov 2026 Inky Quill handoff. Not verified. Dan must read the official pages and approve before this becomes a public register record. The media release page shows au-date 30 October 2026 (Published Time Thu, 29 Oct 2026 20:42:10 GMT, which is 30 Oct 2026 in Australia/Sydney). The architecture landing page lists AI-Architecture-ACCESSIBLE.pdf and the Companion Guide PDF as last updated 23 Oct 2026; that document date is not the primary date. Direct requests from this environment to www.dta.gov.au and www.digital.gov.au completed TLS and then returned no body (HTTP/2 INTERNAL_ERROR, then HTTP/1.1 timeout). The HTML hashed here is the origin page as returned by https://r.jina.ai with X-Return-Format: html. Re-fetch on the collector host before treating the fingerprint as current.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": "framework",
+      "suggestedJurisdiction": "federal",
+      "summary": "The Digital Transformation Agency published the AI Reference Architecture (AIRA) and a Companion Guide (Scenarios). AIRA is an architectural foundation for designing, implementing and governing AI across the Australian Government. It supports the AI Plan for the Australian Public Service 2025 and the Policy for the responsible use of AI in government (policy-responsible-use-ai-government-v2). It covers a functional stack, communication, trustworthiness and assurance, and human agency, oversight and control, with appendices on roles and relationships to other frameworks. Use is voluntary and does not replace existing requirements.",
+      "tags": [
+        "AI Reference Architecture",
+        "AIRA",
+        "architecture",
+        "public sector"
+      ],
+      "agencies": [
+        "Digital Transformation Agency"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://www.digital.gov.au/ai-reference-architecture",
+      "finalUrl": "https://www.digital.gov.au/ai-reference-architecture",
+      "title": "AI Reference Architecture | digital.gov.au",
+      "publisher": "Digital Transformation Agency",
+      "retrievedAt": "2026-11-01T21:20:00.000Z",
+      "contentType": "text/html",
+      "contentHash": "723f9357cd16b073906eeb49c93a2e53662d9b5206ca5f52126157da7b5eb0d9"
+    },
+    "proposedRecord": {
+      "id": "dta-ai-reference-architecture",
+      "title": "AI Reference Architecture",
+      "description": "Digital Transformation Agency architectural foundation for designing, implementing and governing AI across the Australian Government. It supports the Policy for the responsible use of AI in government and the AI Plan for the APS 2025. Use is voluntary.",
+      "jurisdiction": "federal",
+      "type": "framework",
+      "status": "active",
+      "effectiveDate": "2026-10-30",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-10-30",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.dta.gov.au/media-releases/ai-reference-architecture-new-blueprint-help-government-agencies-design-ai-systems",
+            "finalUrl": "https://www.dta.gov.au/media-releases/ai-reference-architecture-new-blueprint-help-government-agencies-design-ai-systems",
+            "title": "AI Reference Architecture: A new blueprint to help government agencies design AI systems",
+            "publisher": "Digital Transformation Agency",
+            "retrievedAt": "2026-11-01T21:20:00.000Z",
+            "publishedAt": "2026-10-30",
+            "publishedAtPrecision": "day",
+            "contentType": "text/html",
+            "contentHash": "27e030eff862cfe9c2c9865efc0bd85b05b5d54d96f3c52358e99cacaa922edf"
+          }
+        }
+      ],
+      "agencies": [
+        "Digital Transformation Agency"
+      ],
+      "sourceUrl": "https://www.digital.gov.au/ai-reference-architecture",
+      "content": "The DTA media release of 30 October 2026 (https://www.dta.gov.au/media-releases/ai-reference-architecture-new-blueprint-help-government-agencies-design-ai-systems) announces the AI Reference Architecture (AIRA) and a companion guide. The resource is https://www.digital.gov.au/ai-reference-architecture. The introduction (https://www.digital.gov.au/ai-reference-architecture/introduction) says AIRA provides an architectural foundation for designing, implementing and governing AI across the Australian Government and supports the AI Plan for the Australian Public Service 2025 (https://www.digital.gov.au/policy/ai/australian-public-service-ai-plan-2025) and the Policy for the responsible use of AI in government (https://www.digital.gov.au/ai/ai-in-government-policy; register id policy-responsible-use-ai-government-v2). It covers a functional stack (experience, application and orchestration, intelligence and analytics, data and metadata, platform and infrastructure), communication, trustworthiness and assurance, and human agency, oversight and control. Appendix A covers key roles (https://www.digital.gov.au/ai-reference-architecture/appendix-a). Appendix B covers the relationship with other frameworks (https://www.digital.gov.au/ai-reference-architecture/appendix-b). The Companion Guide — Scenarios is https://www.digital.gov.au/ai-reference-architecture/companion-guide. The landing page offers https://www.digital.gov.au/sites/default/files/documents/2026-10/AI-Architecture-ACCESSIBLE.pdf and https://www.digital.gov.au/sites/default/files/documents/2026-10/AI-Architecture-Companion-Guide-ACCESSIBLE.pdf, each marked last updated 23 Oct 2026. The release says using the architecture is voluntary: it supports agencies to meet applicable requirements and does not replace them. This staged record is not verified and has no lastReviewedAt.",
+      "aiSummary": "DTA published AIRA on 30 October 2026 as a voluntary architectural foundation for Australian Government AI systems, supporting the AI Plan for the APS 2025 and the Policy for the responsible use of AI in government. PDF files on the landing page are marked last updated 23 October 2026.",
+      "tags": [
+        "AI Reference Architecture",
+        "AIRA",
+        "architecture",
+        "public sector",
+        "DTA"
+      ],
+      "themes": [
+        "ai-governance",
+        "public-sector",
+        "standards",
+        "human-oversight",
+        "risk-assurance"
+      ],
+      "createdAt": "2026-11-01T21:20:00.000Z",
+      "updatedAt": "2026-11-01T21:20:00.000Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-2026-10-30-dta-ai-reference-architecture",
+      "title": "DTA publishes the AI Reference Architecture",
+      "url": "https://www.digital.gov.au/ai-reference-architecture",
+      "sourceId": "editorial-dta-aira",
+      "sourceName": "Digital Transformation Agency — AI Reference Architecture (editorial staging)",
+      "jurisdiction": "federal",
+      "publishedAt": "2026-10-30",
+      "publishedAtPrecision": "day",
+      "detectedAt": "2026-11-01T21:20:00.000Z",
+      "summary": "The Digital Transformation Agency published the AI Reference Architecture (AIRA) and a Companion Guide (Scenarios). AIRA is an architectural foundation for designing, implementing and governing AI across the Australian Government. It supports the AI Plan for the Australian Public Service 2025 and the Policy for the responsible use of AI in government (policy-responsible-use-ai-government-v2). It covers a functional stack, communication, trustworthiness and assurance, and human agency, oversight and control, with appendices on roles and relationships to other frameworks. Use is voluntary and does not replace existing requirements. Media release: https://www.dta.gov.au/media-releases/ai-reference-architecture-new-blueprint-help-government-agencies-design-ai-systems.",
+      "relevanceScore": 1,
+      "classification": "curated",
+      "assessment": {
+        "method": "editorial",
+        "assessedAt": "2026-11-01T21:20:00.000Z",
+        "promptVersion": "editorial-staging-v1"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.digital.gov.au/ai-reference-architecture",
+          "finalUrl": "https://www.digital.gov.au/ai-reference-architecture",
+          "title": "AI Reference Architecture | digital.gov.au",
+          "publisher": "Digital Transformation Agency",
+          "retrievedAt": "2026-11-01T21:20:00.000Z",
+          "contentType": "text/html",
+          "contentHash": "723f9357cd16b073906eeb49c93a2e53662d9b5206ca5f52126157da7b5eb0d9"
+        },
+        "method": "manual",
+        "notes": "Staged for Dan to verify. Not a public verified development until this review is approved and published."
+      },
+      "status": "detected",
+      "relatedPolicyId": "policy-responsible-use-ai-government-v2"
+    },
+    "updatedAt": "2026-11-01T21:20:00.000Z",
+    "proposal": {
+      "proposedBy": "editorial (Inky Quill handoff, 2026-11-01)",
+      "proposedAt": "2026-11-01T21:20:00.000Z",
+      "officialSourceUrl": "https://www.digital.gov.au/ai-reference-architecture",
+      "notes": "Editorial staging from the 1 Nov 2026 Inky Quill handoff. Not verified. Dan must read the official pages and approve before this becomes a public register record. The media release page shows au-date 30 October 2026 (Published Time Thu, 29 Oct 2026 20:42:10 GMT, which is 30 Oct 2026 in Australia/Sydney). The architecture landing page lists AI-Architecture-ACCESSIBLE.pdf and the Companion Guide PDF as last updated 23 Oct 2026; that document date is not the primary date. Direct requests from this environment to www.dta.gov.au and www.digital.gov.au completed TLS and then returned no body (HTTP/2 INTERNAL_ERROR, then HTTP/1.1 timeout). The HTML hashed here is the origin page as returned by https://r.jina.ai with X-Return-Format: html. Re-fetch on the collector host before treating the fingerprint as current. Dan must verify before approval. Do not treat this proposal as his verification."
+    }
+  },
+  {
+    "id": "source-review-tl-2026-10-30-dta-ai-reference-architecture",
+    "sourceUrl": "https://www.dta.gov.au/media-releases/ai-reference-architecture-new-blueprint-help-government-agencies-design-ai-systems",
+    "title": "DTA publishes the AI Reference Architecture",
+    "entryKind": "timeline_event",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-01T21:20:00.000Z",
+    "createdBy": "editorial (Inky Quill handoff, 2026-11-01)",
+    "notes": "Editorial staging from the 1 Nov 2026 Inky Quill handoff. Not verified. Dan must read the official pages and approve before this becomes a public register record. The media release page shows au-date 30 October 2026 (Published Time Thu, 29 Oct 2026 20:42:10 GMT, which is 30 Oct 2026 in Australia/Sydney). The architecture landing page lists AI-Architecture-ACCESSIBLE.pdf and the Companion Guide PDF as last updated 23 Oct 2026; that document date is not the primary date. Direct requests from this environment to www.dta.gov.au and www.digital.gov.au completed TLS and then returned no body (HTTP/2 INTERNAL_ERROR, then HTTP/1.1 timeout). The HTML hashed here is the origin page as returned by https://r.jina.ai with X-Return-Format: html. Re-fetch on the collector host before treating the fingerprint as current.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": "announcement",
+      "suggestedJurisdiction": "federal",
+      "summary": "DTA media release dated 30 October 2026 announcing the AI Reference Architecture and Companion Guide.",
+      "tags": [
+        "AI Reference Architecture",
+        "AIRA"
+      ],
+      "agencies": [
+        "Digital Transformation Agency"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://www.dta.gov.au/media-releases/ai-reference-architecture-new-blueprint-help-government-agencies-design-ai-systems",
+      "finalUrl": "https://www.dta.gov.au/media-releases/ai-reference-architecture-new-blueprint-help-government-agencies-design-ai-systems",
+      "title": "AI Reference Architecture: A new blueprint to help government agencies design AI systems",
+      "publisher": "Digital Transformation Agency",
+      "retrievedAt": "2026-11-01T21:20:00.000Z",
+      "publishedAt": "2026-10-30",
+      "publishedAtPrecision": "day",
+      "contentType": "text/html",
+      "contentHash": "27e030eff862cfe9c2c9865efc0bd85b05b5d54d96f3c52358e99cacaa922edf"
+    },
+    "proposedRecord": {
+      "id": "tl-2026-10-30-dta-ai-reference-architecture-published",
+      "date": "2026-10-30",
+      "datePrecision": "day",
+      "title": "DTA publishes the AI Reference Architecture",
+      "description": "The Digital Transformation Agency published the AI Reference Architecture (AIRA) and the Companion Guide — Scenarios. The release is dated 30 October 2026. AIRA supports the Policy for the responsible use of AI in government (register id policy-responsible-use-ai-government-v2) and the AI Plan for the APS 2025. Resource: https://www.digital.gov.au/ai-reference-architecture. Introduction: https://www.digital.gov.au/ai-reference-architecture/introduction. Companion guide: https://www.digital.gov.au/ai-reference-architecture/companion-guide.",
+      "type": "announcement",
+      "jurisdiction": "federal",
+      "relatedPolicyId": "policy-responsible-use-ai-government-v2",
+      "sourceUrl": "https://www.dta.gov.au/media-releases/ai-reference-architecture-new-blueprint-help-government-agencies-design-ai-systems",
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.dta.gov.au/media-releases/ai-reference-architecture-new-blueprint-help-government-agencies-design-ai-systems",
+          "finalUrl": "https://www.dta.gov.au/media-releases/ai-reference-architecture-new-blueprint-help-government-agencies-design-ai-systems",
+          "title": "AI Reference Architecture: A new blueprint to help government agencies design AI systems",
+          "publisher": "Digital Transformation Agency",
+          "retrievedAt": "2026-11-01T21:20:00.000Z",
+          "publishedAt": "2026-10-30",
+          "publishedAtPrecision": "day",
+          "contentType": "text/html",
+          "contentHash": "27e030eff862cfe9c2c9865efc0bd85b05b5d54d96f3c52358e99cacaa922edf"
+        },
+        "method": "manual",
+        "notes": "Staged for Dan to verify. The page date element reads 30 October 2026. Not marked verified."
+      }
+    },
+    "updatedAt": "2026-11-01T21:20:00.000Z",
+    "proposal": {
+      "proposedBy": "editorial (Inky Quill handoff, 2026-11-01)",
+      "proposedAt": "2026-11-01T21:20:00.000Z",
+      "officialSourceUrl": "https://www.dta.gov.au/media-releases/ai-reference-architecture-new-blueprint-help-government-agencies-design-ai-systems",
+      "notes": "Timeline event for the 30 October 2026 publication, linked to policy-responsible-use-ai-government-v2. Pending Dan's verification. The new AIRA record id dta-ai-reference-architecture is staged on source-review-dev-2026-10-30-dta-ai-reference-architecture and is not public yet, so this event cannot point at it until that record is published."
+    }
   }
 ]
