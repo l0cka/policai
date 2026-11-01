@@ -1,5 +1,8 @@
 import path from 'path';
-import { publicAutomaticCollectionMeta } from '../src/lib/collection-coverage';
+import {
+  publicAutomaticCollectionMeta,
+  withRunLevelErrors,
+} from '../src/lib/collection-coverage';
 import { readJsonFile, writeJsonFile } from '../src/lib/file-store';
 import {
   collect,
@@ -217,19 +220,20 @@ export async function runCollection(run: CollectionRun): Promise<void> {
     follow.results,
   );
 
-  const publicMeta = run.sourceId
-    ? result.meta
-    : publicAutomaticCollectionMeta(result.meta, WATCH_SOURCES);
   const unchecked = uncheckedSourceErrors(
     WATCH_SOURCES,
     result.state.lastCheckedBySource,
     monitoring,
     (run.now ?? (() => new Date()))(),
   );
-  if (follow.errors.length > 0 || unchecked.length > 0) {
-    publicMeta.collector.lastRunErrors.push(...follow.errors, ...unchecked);
-    if (publicMeta.collector.health === 'healthy') publicMeta.collector.health = 'degraded';
-  }
+  const runMeta = withRunLevelErrors(
+    result.meta,
+    [...follow.errors, ...unchecked],
+    meta?.lastHealthyAt ?? null,
+  );
+  const publicMeta = run.sourceId
+    ? runMeta
+    : publicAutomaticCollectionMeta(runMeta, WATCH_SOURCES);
 
   console.log(
     `[collect] ${result.developments.length} new developments, ` +

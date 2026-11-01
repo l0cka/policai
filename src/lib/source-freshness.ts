@@ -1,3 +1,4 @@
+import { UNCHECKED_SOURCE_MARKER } from '@/lib/collection-coverage';
 import type { WatchSource } from '@/lib/pipeline/sources';
 import {
   MANUAL_REVIEW_LIMIT_DAYS,
@@ -112,7 +113,7 @@ export function uncheckedSourceErrors(
         row.ageDays === null
           ? 'never checked'
           : `last checked ${row.ageDays} day${row.ageDays === 1 ? '' : 's'} ago`;
-      return `${row.sourceId}: unchecked (${age}; limit ${limit} days, ${row.schedule})`;
+      return `${row.sourceId}${UNCHECKED_SOURCE_MARKER}${age}; limit ${limit} days, ${row.schedule})`;
     });
 }
 
