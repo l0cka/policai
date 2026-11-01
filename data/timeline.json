@@ -163,14 +163,33 @@
     "jurisdiction": "wa",
     "relatedPolicyId": "wa-ai-policy-assurance-framework",
     "sourceUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+    "datePrecision": "day",
     "verification": {
-      "status": "stale",
+      "status": "verified",
       "source": {
-        "url": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework"
+        "url": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+        "finalUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+        "title": "WA Government Artificial Intelligence Policy and Assurance Framework",
+        "retrievedAt": "2026-11-01T10:50:38.112Z",
+        "contentType": "text/html",
+        "contentHash": "e39f3e583ee12bee084c7155eb284e1fe2a0e67b844e9eddd1877bbb26c0addd",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-11-01T10:50:38.112Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "Plain HTTP read with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture.",
+          "pageContentHash": "037368ae740055d2310c871a2ce5d4fc6106d18799c132b18ec726d59d7a6ba8",
+          "characterCount": 13325
+        },
+        "publishedAt": "2024-03-05",
+        "publishedAtPrecision": "day"
       },
-      "checkedAt": "2026-07-10T00:00:00.000Z",
-      "checkedBy": "Policai editorial review",
-      "method": "manual"
+      "checkedAt": "2026-11-01T11:03:01.727Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-2, proposal 45b8fa4a). Proposed by Claude (agent). Plain HTTP read with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture."
     }
   },
   {
@@ -348,20 +367,39 @@
   {
     "id": "tl-2024-10-21-oaic-publishes-twin-ai-privacy-guidance",
     "date": "2024-10-21",
-    "title": "OAIC publishes twin AI privacy guidance",
-    "description": "Guidance on developing and training generative AI models, and on using commercially available AI products.",
+    "title": "OAIC publishes AI privacy guidance",
+    "description": "OAIC publishes guidance on privacy and developing and training generative AI models.",
     "type": "policy_introduced",
     "jurisdiction": "federal",
     "relatedPolicyId": "oaic-guidance-developing-training-genai",
     "sourceUrl": "https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-developing-and-training-generative-ai-models",
+    "datePrecision": "day",
     "verification": {
-      "status": "stale",
+      "status": "verified",
       "source": {
-        "url": "https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-developing-and-training-generative-ai-models"
+        "url": "https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-developing-and-training-generative-ai-models",
+        "finalUrl": "https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-developing-and-training-generative-ai-models",
+        "title": "Guidance on privacy and developing and training generative AI models | OAIC",
+        "retrievedAt": "2026-11-01T10:49:29.049Z",
+        "contentType": "text/html",
+        "contentHash": "b5e7bc6146d9a011f07e8c0994e4f695af016bca77dde96601fc577093b38485",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-11-01T10:49:29.049Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "Plain HTTP read with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture.",
+          "pageContentHash": "6a84117e3dc468fd237f61bcfa17c590acd40497f5054cd51723b88bef260fd7",
+          "characterCount": 88126
+        },
+        "publishedAt": "2024-10-21",
+        "publishedAtPrecision": "day"
       },
-      "checkedAt": "2026-07-10T00:00:00.000Z",
-      "checkedBy": "Policai editorial review",
-      "method": "manual"
+      "checkedAt": "2026-11-01T11:03:01.661Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-2, proposal 141e51cd). Proposed by Claude (agent). Plain HTTP read with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture."
     }
   },
   {
@@ -399,20 +437,54 @@
   {
     "id": "tl-2024-11-27-victorian-generative-ai-guideline-published",
     "date": "2024-11-27",
-    "title": "Victorian Generative AI Guideline Published",
-    "description": "Victoria publishes its current administrative guideline for safe and responsible generative AI use in the public sector.",
+    "title": "Victorian Generative AI Guideline Made",
+    "description": "The Secretary of the Department of Premier and Cabinet makes the administrative guideline for safe and responsible generative AI use in the Victorian public sector.",
     "type": "policy_introduced",
     "jurisdiction": "vic",
     "relatedPolicyId": "victoria-genai-guideline-vps",
     "sourceUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
+    "datePrecision": "day",
     "verification": {
-      "status": "stale",
+      "status": "verified",
       "source": {
-        "url": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps"
+        "url": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
+        "finalUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
+        "retrievedAt": "2026-11-01T11:03:00.905Z",
+        "contentType": "text/html",
+        "contentHash": "b4b980e826f57c655edca52007be924ce36e5c290b92de04715c92bd48230dcf",
+        "linkedDocuments": [
+          {
+            "url": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
+            "finalUrl": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
+            "retrievedAt": "2026-11-01T11:03:01.029Z",
+            "contentType": "application/pdf",
+            "contentHash": "ab6aa1576ba4d7cd255e3ddfe6214c6a873ff0ed079346fbc4c6a17892aa08ee",
+            "etag": "\"2e976-612c9a53ad71b\"",
+            "lastModified": "Sun, 03 Mar 2024 23:05:30 GMT"
+          },
+          {
+            "url": "https://www.vic.gov.au/sites/default/files/2024-11/Generative-AI-Guideline-%281%29.pdf",
+            "finalUrl": "https://www.vic.gov.au/sites/default/files/2024-11/Generative-AI-Guideline-%281%29.pdf",
+            "retrievedAt": "2026-11-01T11:03:01.048Z",
+            "contentType": "application/pdf",
+            "contentHash": "eb114ba5e9e8614438dfc291a50aff04baffab52f070c9089f175c80895860bc",
+            "etag": "\"67480ace-1e00c\"",
+            "lastModified": "Thu, 28 Nov 2024 06:16:46 GMT"
+          }
+        ],
+        "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector",
+        "reviewedDate": {
+          "date": "2024-11-27",
+          "precision": "day",
+          "reviewedAt": "2026-11-01T11:03:01.049Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The guideline states it \"was endorsed by the Victorian Secretaries Board (VSB) on 24 September 2024 and made by the Secretary, Department of Premier and Cabinet, on 27 November 2024\"."
+        }
       },
-      "checkedAt": "2026-07-10T00:00:00.000Z",
-      "checkedBy": "Policai editorial review",
-      "method": "manual"
+      "checkedAt": "2026-11-01T11:03:01.049Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-2, proposal ca4883b2). Proposed by Claude (agent). Retrieved through the standard declared-identity path."
     }
   },
   {
