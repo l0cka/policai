@@ -3124,5 +3124,48 @@
       "method": "manual",
       "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal e192f588). Proposed by Claude (agent). Prepared for Daniel Alkurdi after #581 merged."
     }
+  },
+  {
+    "id": "tl-2026-10-30-dta-ai-reference-architecture-published",
+    "date": "2026-10-30",
+    "datePrecision": "day",
+    "title": "DTA publishes the AI Reference Architecture",
+    "description": "The Digital Transformation Agency published the AI Reference Architecture (AIRA) and the Companion Guide — Scenarios. The release is dated 30 October 2026. AIRA supports the Policy for the responsible use of AI in government (register id policy-responsible-use-ai-government-v2) and the AI Plan for the APS 2025. Resource: https://www.digital.gov.au/ai-reference-architecture. Introduction: https://www.digital.gov.au/ai-reference-architecture/introduction. Companion guide: https://www.digital.gov.au/ai-reference-architecture/companion-guide.",
+    "type": "announcement",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "policy-responsible-use-ai-government-v2",
+    "sourceUrl": "https://www.dta.gov.au/media-releases/ai-reference-architecture-new-blueprint-help-government-agencies-design-ai-systems",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.dta.gov.au/media-releases/ai-reference-architecture-new-blueprint-help-government-agencies-design-ai-systems",
+        "finalUrl": "https://www.dta.gov.au/media-releases/ai-reference-architecture-new-blueprint-help-government-agencies-design-ai-systems",
+        "title": "AI Reference Architecture: A new blueprint to help government agencies design AI systems | Digital Transformation Agency",
+        "retrievedAt": "2026-11-01T23:12:57.636Z",
+        "contentType": "text/html",
+        "contentHash": "5e701572e8cdab03fde961f1e3d295ed969626dcaff466e0822a7b59f8b8a1a7",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-11-01T23:12:57.636Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "Headless Chromium read with the declared Policai identity (Policai/1.0 (+https://policai.org)), single read of this page from Argus. The host refuses the collector over plain HTTP. One-off read approved by Daniel Alkurdi on 1 Nov 2026 and on the 1 Nov 23:11 UTC decision card. Replaces the earlier staging, whose HTML came through a reader proxy.",
+          "pageContentHash": "3bf04a0907a06a568366f51b1f5de0e4e250c70f0a5624c95cb6c0b813416b54",
+          "characterCount": 8296
+        },
+        "reviewedDate": {
+          "date": "2026-10-30",
+          "precision": "day",
+          "reviewedAt": "2026-11-01T23:18:42.153Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The media release page states 30 October 2026 under its title."
+        }
+      },
+      "checkedAt": "2026-11-01T23:18:42.153Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal f764eb6f). Proposed by Claude (agent), requested by Daniel Alkurdi. Re-staged from a one-off declared-identity browser read. Event text unchanged from the earlier proposal; verification evidence now points to the new capture."
+    }
   }
 ]

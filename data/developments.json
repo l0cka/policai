@@ -1,5 +1,58 @@
 [
   {
+    "id": "dev-2026-10-30-dta-ai-reference-architecture",
+    "title": "AI Reference Architecture",
+    "url": "https://www.digital.gov.au/ai-reference-architecture",
+    "sourceId": "editorial-dta-aira",
+    "sourceName": "Digital Transformation Agency — AI Reference Architecture (editorial staging)",
+    "jurisdiction": "federal",
+    "publishedAt": "2026-10-30",
+    "publishedAtPrecision": "day",
+    "detectedAt": "2026-11-01T21:20:00.000Z",
+    "summary": "Digital Transformation Agency architectural foundation for designing, implementing and governing AI across the Australian Government. It supports the Policy for the responsible use of AI in government and the AI Plan for the APS 2025. Use is voluntary.",
+    "relevanceScore": 1,
+    "classification": "curated",
+    "assessment": {
+      "method": "editorial",
+      "assessedAt": "2026-11-01T23:18:42.056Z",
+      "promptVersion": "editorial-review-v1"
+    },
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.digital.gov.au/ai-reference-architecture",
+        "finalUrl": "https://www.digital.gov.au/ai-reference-architecture",
+        "title": "AI Reference Architecture | digital.gov.au",
+        "retrievedAt": "2026-11-01T23:12:55.599Z",
+        "contentType": "text/html",
+        "contentHash": "5b666aee92deaed420f29d07114cacccffb425897e73506eb3fc5ba72cee6835",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-11-01T23:12:55.599Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "Headless Chromium read with the declared Policai identity (Policai/1.0 (+https://policai.org)), single read of this page from Argus. The host refuses the collector over plain HTTP. One-off read approved by Daniel Alkurdi on 1 Nov 2026 and on the 1 Nov 23:11 UTC decision card. Replaces the earlier staging, whose HTML came through a reader proxy.",
+          "pageContentHash": "c7e1192a2a4cb615e1e7c591dfe8bf7eb0b56068e411e442540b68542c5e7527",
+          "characterCount": 1886
+        },
+        "reviewedDate": {
+          "date": "2026-10-30",
+          "precision": "day",
+          "reviewedAt": "2026-11-01T23:18:42.056Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "This landing page shows no publication date; its PDFs read \"LAST UPDATED: 23 Oct 2026\". The primary date comes from the DTA media release announcing the publication, whose page states 30 October 2026."
+        }
+      },
+      "checkedAt": "2026-11-01T23:18:42.056Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal 7571c389). Proposed by Claude (agent), requested by Daniel Alkurdi. Re-staged from a one-off declared-identity browser read. Record text unchanged from the earlier proposal; the date source evidence now points to the new media release capture."
+    },
+    "status": "promoted",
+    "relatedPolicyId": "dta-ai-reference-architecture"
+  },
+  {
     "id": "dev-latest-news-16bao",
     "title": "Latest news",
     "url": "https://www.courts.qld.gov.au/newsroom/news",
